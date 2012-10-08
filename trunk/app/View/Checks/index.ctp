@@ -6,50 +6,50 @@
 		<div id="tabbedWrapperSoftware" class="tabs">
 			<div id="apache">
 				<h3 class="title">Apache</h3>
-				<?php echo $checks->table( $results['Apache']['informations'] );?>
+				<?php echo $this->Checks->table( $results['Apache']['informations'] );?>
 				<h4>Modules</h4>
-				<?php echo $checks->table( $results['Apache']['modules'] );?>
+				<?php echo $this->Checks->table( $results['Apache']['modules'] );?>
 			</div>
 			<div id="binaries">
 				<h3 class="title">Binaires</h3>
-				<?php echo $checks->table( $results['Environment']['binaries'] );?>
+				<?php echo $this->Checks->table( $results['Environment']['binaries'] );?>
 			</div>
 			<div id="cakephp">
 				<h3 class="title">CakePHP</h3>
-				<?php echo $checks->table( $results['Cakephp']['informations'] );?>
+				<?php echo $this->Checks->table( $results['Cakephp']['informations'] );?>
 			</div>
 			<div id="directories">
 				<h3 class="title">Installation</h3>
 				<h4>Répertoires</h4>
-				<?php echo $checks->table( $results['Environment']['directories'] );?>
+				<?php echo $this->Checks->table( $results['Environment']['directories'] );?>
 				<h4>Fichiers</h4>
-				<?php echo $checks->table( $results['Environment']['files'] );?>
+				<?php echo $this->Checks->table( $results['Environment']['files'] );?>
 			</div>
 			<div id="php">
 				<h3 class="title">PHP</h3>
-				<?php echo $checks->table( $results['Php']['informations'] );?>
+				<?php echo $this->Checks->table( $results['Php']['informations'] );?>
 				<h4>Configuration</h4>
-				<?php echo $checks->table( $results['Php']['inis'] );?>
+				<?php echo $this->Checks->table( $results['Php']['inis'] );?>
 				<h4>Extensions</h4>
-				<?php echo $checks->table( $results['Php']['extensions'] );?>
+				<?php echo $this->Checks->table( $results['Php']['extensions'] );?>
 				<h4>Extensions PEAR</h4>
-				<?php echo $checks->table( $results['Php']['pear_extensions'] );?>
+				<?php echo $this->Checks->table( $results['Php']['pear_extensions'] );?>
 			</div>
 			<div id="postgresql">
 				<h3 class="title">PostgreSQL</h3>
-				<?php echo $checks->table( $results['Postgresql'] );?>
+				<?php echo $this->Checks->table( $results['Postgresql'] );?>
 			</div>
 			<div id="webrsa">
 				<h3 class="title">WebRSA</h3>
-				<?php echo $checks->table( $results['Webrsa']['informations'] );?><br/>
+				<?php echo $this->Checks->table( $results['Webrsa']['informations'] );?><br/>
 				<div id="tabbedWrapperWebrsa" class="tabs">
 					<div id="webrsa_configuration">
 						<h4 class="title">Configuration</h4>
-						<?php echo $checks->table( $results['Webrsa']['configure'] );?>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure'] );?>
 					</div>
 					<div id="webrsa_pgsqlintervals">
 						<h4 class="title">Intervalles PostgreSQL</h4>
-						<?php echo $checks->table( $results['Webrsa']['intervals'] );?>
+						<?php echo $this->Checks->table( $results['Webrsa']['intervals'] );?>
 					</div>
 					<?php if( !is_null( Configure::read( "Recherche.qdFilters" ) ) ):?>
 					<div id="webrsa_sqrecherche">
@@ -83,9 +83,9 @@
 	<div id="modeles">
 		<h2 class="title">Modèles de documents</h2>
 		<h3>Paramétrables</h3>
-		<?php echo $checks->table( $results['Modelesodt']['parametrables'] );?>
+		<?php echo $this->Checks->table( $results['Modelesodt']['parametrables'] );?>
 		<h3>Statiques</h3>
-		<?php echo $checks->table( $results['Modelesodt']['statiques'] );?>
+		<?php echo $this->Checks->table( $results['Modelesodt']['statiques'] );?>
 	</div>
 	<div id="data">
 		<h2 class="title">Données stockées en base</h2>
@@ -117,11 +117,11 @@
 			<h3><?php echo h( $serviceName );?></h3>
 			<?php if( !empty( $serviceResults['configure'] ) ):?>
 				<h4>Configuration</h4>
-				<?php echo $checks->table( $serviceResults['configure'] );?>
+				<?php echo $this->Checks->table( $serviceResults['configure'] );?>
 			<?php endif;?>
 			<?php if( !empty( $serviceResults['tests'] ) ):?>
 				<h4>Tests</h4>
-				<?php echo $checks->table( $serviceResults['tests'] );?>
+				<?php echo $this->Checks->table( $serviceResults['tests'] );?>
 			<?php endif;?>
 		<?php endforeach;?>
 	</div>
