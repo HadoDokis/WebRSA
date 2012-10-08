@@ -13,7 +13,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'add' => 'Reorientationseps93:edit'

@@ -36,7 +36,7 @@
 			),
 			'Fileuploader',
 			'Gestionzonesgeos',
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
 					'notisemploi' => array( 'filter' => 'Search' ),

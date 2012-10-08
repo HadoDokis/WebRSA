@@ -25,7 +25,7 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
-			'Prg2' => array( 'actions' => array( 'index', 'nouvelles' ) )
+			'Search.Prg' => array( 'actions' => array( 'index', 'nouvelles' ) )
 		);
 
 		public $aucunDroit = array( 'exportcsv' );

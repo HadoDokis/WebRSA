@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Xform', 'Default2' );
 
-		public $components = array( 'Menu', 'Dbdroits', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Menu', 'Dbdroits', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $aucunDroit = array( 'login', 'logout' );
 

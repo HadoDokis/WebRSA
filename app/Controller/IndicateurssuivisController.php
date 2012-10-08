@@ -4,7 +4,7 @@
 		public $name = 'Indicateurssuivis';
 		public $helpers = array( 'Xform', 'Xhtml', 'Default2', 'Search', 'Csv' );
 		public $uses = array('Dossier','Option','Structurereferente','Referent', 'Indicateursuivi', 'Dossierep', 'Foyer', 'Personne', 'Informationpe');
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		protected function _setOptions() {
 			$natpfsSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );

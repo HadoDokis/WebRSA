@@ -25,7 +25,7 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Search', 'Default2' );
 
 		public $components = array(
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'valides',
 					'nouveaux' => array( 'filter' => 'Filtre' ),

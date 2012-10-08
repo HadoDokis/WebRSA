@@ -6,7 +6,7 @@
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos','Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos','Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
 		*

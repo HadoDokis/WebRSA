@@ -30,7 +30,7 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search' );
 
 		public $components = array(
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'enattenteaffectation' => array( 'filter' => 'Search' ),
 					'affectes' => array( 'filter' => 'Search' ),

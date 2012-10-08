@@ -32,7 +32,7 @@
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
 
 		public $components = array(
-			'Prg2' => array(
+			'Search.Prg' => array(
 				'actions' => array(
 					'apresavalider' => array(
 						'filter' => 'Search'

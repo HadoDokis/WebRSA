@@ -5,7 +5,7 @@
 
 		public $uses = array( 'Critereentretien', 'Entretien' );
 		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Search' );
-		public $components = array( 'Gestionzonesgeos', 'Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		/**
 		 *

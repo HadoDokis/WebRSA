@@ -17,7 +17,7 @@
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo', 'Cohortes' => array( 'cohorte' ) );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo', 'Cohortes' => array( 'cohorte' ) );
 
 		public $helpers = array( 'Default2', 'Csv' );
 
