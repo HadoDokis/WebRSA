@@ -322,5 +322,65 @@
 
 			return $conditions;
 		}
+
+		/**
+		 * Ajoute des conditions sur des plages de dates. Pour chacun des $paths, on extrait le nom du
+		 * modèle et le nom du champ; si un checkbox existe avec ce chemin-là, on cherchera une date
+		 * située entre <chemin>_from (inclus) et <chemin>_to (exclus).
+		 *
+		 * Exemple:
+		 * <pre>$this->conditionsDates(
+		 *	$model,
+		 *	array(),
+		 *	array(
+		 *		'Orientstruct' => array(
+		 *			'date_valid' => true,
+		 *			'date_valid_from' => array(
+		 *				'year' => '2012',
+		 *				'month' => '03',
+		 *				'day' => '01'
+		 *			),
+		 *			'date_valid_to' => array(
+		 *				'year' => '2012',
+		 *				'month' => '03',
+		 *				'day' => '02'
+		 *			),
+		 *		)
+		 *	),
+		 *	'Orientstruct.date_valid'
+		 * );</pre>
+		 * retournera
+		 * <pre>array( '"Orientstruct"."date_valid" BETWEEN \'2012-03-01\' AND \'2012-03-02\'' )</pre>
+		 *
+		 * @see app/views/criteres/index.ctp
+		 * @see app/views/cohortes/filtre.ctp
+		 * @see Dossier.dtdemrsa, ...
+		 *
+		 * @param Model $model Le modèle auquel ce behavior est attaché
+		 * @param array $conditions Les conditions déjà existantes
+		 * @param array $search Les critères renvoyés par le formulaire de recherche
+		 * @param mixed $paths Le chemin (ou les chemins) sur lesquels on cherche à appliquer ces filtres.
+		 * @return array
+		 */
+		public function conditionsDates( &$model, $conditions, $search, $paths ) {
+			$paths = (array)$paths;
+
+			if( !empty( $paths ) ) {
+				foreach( $paths as $path ) {
+					list( $modelName, $fieldName ) = model_field( $path );
+					if( isset( $search[$modelName][$fieldName] ) && $search[$modelName][$fieldName] ) {
+						$from = $search[$modelName]["{$fieldName}_from"];
+						$to = $search[$modelName]["{$fieldName}_to"];
+
+						$from = $from['year'].'-'.$from['month'].'-'.$from['day'];
+						$to = $to['year'].'-'.$to['month'].'-'.$to['day'];
+
+						$conditions[] = "{$modelName}.{$fieldName} BETWEEN '{$from}' AND '{$to}'";
+					}
+				}
+			}
+
+			return $conditions;
+		}
 	}
 ?>

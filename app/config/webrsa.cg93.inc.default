@@ -509,17 +509,17 @@
 	Configure::write( 'Filtresdefaut.Cohortes_orientees.Dossier', array( 'dernier' => false ) );
 
 	/**
-     * Harry - CG93
-     * Apre complementaire CG93
-     * @default true
-     */
-    Configure::write( 'Apre.complementaire.query', true );
+	 * Harry - CG93
+	 * Apre complementaire CG93
+	 * @default true
+	 */
+	Configure::write( 'Apre.complementaire.query', true );
 
 	/**
-     * Url pointant sur le serveur qui nous intéresse pour lcontacter QUERY
-     * %s récupère le nom de l'utilisateur connecté
-     */
-    Configure::write( 'Apre.complementaire.queryUrl', 'http://rsa-psql-p02.cg93.fr/query/?nomuser=%s' );
+	 * Url pointant sur le serveur qui nous intéresse pour lcontacter QUERY
+	 * %s récupère le nom de l'utilisateur connecté
+	 */
+	Configure::write( 'Apre.complementaire.queryUrl', 'http://rsa-psql-p02.cg93.fr/query/?nomuser=%s' );
 
 	/**
 	 * 	Mise en paramétrage de la liste des chargés d'insertion et secrétaire liés à une fiche de candidature
@@ -527,4 +527,62 @@
 	 * 	Mise en place suite à la demande d'améliorations du 28/02/2012 ( #5630 )
 	 */
 	Configure::write( 'Chargeinsertion.Secretaire.group_id', array( 16, 7, 12 ) );
+
+	/**
+	 * Pagination progressive pour la cohorte d'affectation de référents.
+	 */
+	Configure::write( 'Optimisations.Cohortesreferents93_affecter.progressivePaginate', true );
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortesreferents93/affecter
+	 * (menu "CER" > "1. Affectation d'un référent" > "Référents à affecter") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortesreferents93_affecter',
+		array(
+			'Search' => array(
+				// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+				'Dossier' => array( 'dernier' => true ),
+				'Orientstruct' => array(
+					// Case à cocher "Filtrer par date d'orientation"
+					'date_valid' => false,
+					// Du (inclus)
+					'date_valid_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
+					// Au (exclus)
+					'date_valid_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
+				),
+				'Situationdossierrsa' => array(
+					// Case à cocher "Filtrer par état du dossier"
+					'etatdosrsa_choice' => true,
+					// Cases à cocher "État du dossier RSA"
+					'etatdosrsa' => array( 2, 3, 4 )
+				),
+			),
+		)
+	);
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortesreferents93/affectes
+	 * (menu "CER" > "1. Affectation d'un référent" > "Référents déjà affectés") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortesreferents93_affectes',
+		Set::merge(
+			Configure::read( 'Filtresdefaut.Cohortesreferents93_affecter' ),
+			array(
+				'Search' => array(
+					'PersonneReferent' => array(
+						'dddesignation' => false,
+						// Du (inclus)
+						'dddesignation_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
+						// Au (exclus)
+						'dddesignation_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
+					),
+					'Pagination' => array(
+						'nombre_total' => true
+					)
+				)
+			)
+		)
+	);
 ?>

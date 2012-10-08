@@ -247,6 +247,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisionnonorientationproep58' => array(
 				'className' => 'Decisionnonorientationproep58',
 				'foreignKey' => 'structurereferente_id',

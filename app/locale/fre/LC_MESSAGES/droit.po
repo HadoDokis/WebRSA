@@ -2576,7 +2576,7 @@ msgstr "Offre d'insertion (CG66)"
 msgid "Offresinsertion:index"
 msgstr "Visualisation du tableau de l'offre d'insertion"
 
-msgid "Offresinsertion:exportcsv"  
+msgid "Offresinsertion:exportcsv"
 msgstr "Export CSV"
 ###############################################################################
 
@@ -2655,3 +2655,14 @@ msgstr "Modification d'une suspension"
 
 msgid "Suspensionscuis66:delete"
 msgstr "Suppression d'une suspension"
+
+###############################################################################
+
+msgid "Module:Cohortesreferents93"
+msgstr "Cohorte d'affectation d'un référent (Workflow CER CG 93)"
+
+msgid "Cohortesreferents93:affecter"
+msgstr "Cohorte d'affectation d'un référent - référents à affecter"
+
+msgid "Cohortesreferents93:affectes"
+msgstr "Cohorte d'affectation d'un référent - référents déjà affectés"

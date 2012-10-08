@@ -68,6 +68,9 @@
 				if( is_null( $progressivePaginate ) ) {
 					$progressivePaginate = $this->_hasProgressivePagination();
 				}
+				else {
+					Configure::write( "Optimisations.{$this->name}_{$this->action}.progressivePaginate", $progressivePaginate );
+				}
 
 				if( $progressivePaginate ) {
 					return $this->_progressivePaginate( $object, $scope, $whitelist );

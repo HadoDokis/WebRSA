@@ -124,7 +124,21 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Structurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
@@ -354,6 +368,16 @@
 			// Critère sur le nom du serviceinstructeur de l'utilisateur
 			if ( isset($criteresusers['Serviceinstructeur']['lib_service']) && !empty($criteresusers['Serviceinstructeur']['lib_service']) ) {
 				$conditions[] = array('Serviceinstructeur.id'=>$this->wildcard( $criteresusers['Serviceinstructeur']['lib_service'] ));
+			}
+
+			// Critère sur la structure référente de l'utilisateur
+			if( isset( $criteresusers['User']['structurereferente_id'] ) && !empty( $criteresusers['User']['structurereferente_id'] ) ) {
+				$conditions[] = array( 'User.structurereferente_id' => $criteresusers['User']['structurereferente_id'] );
+			}
+
+			// Critère sur le référent lié à l'utilisateur
+			if( isset( $criteresusers['User']['referent_id'] ) && !empty( $criteresusers['User']['referent_id'] ) ) {
+				$conditions[] = array( 'User.referent_id' => $criteresusers['User']['referent_id'] );
 			}
 
 			$query = array(
