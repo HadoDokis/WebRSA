@@ -98,7 +98,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::checkUnique
+		 * Test de la méthode Validation.ExtraValidationRules::checkUnique
 		 *
 		 * @return void
 		 */

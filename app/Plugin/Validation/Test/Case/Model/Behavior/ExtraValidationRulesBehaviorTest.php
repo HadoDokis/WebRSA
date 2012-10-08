@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * ExtraValidationRulesBehaviorTest file
+	 * Validation.ExtraValidationRulesBehaviorTest file
 	 *
 	 * PHP 5.3
 	 *
@@ -11,12 +11,12 @@
 	App::uses( 'AppModel', 'Model' );
 
 	/**
-	 * ExtraValidationRulesTest class
+	 * Validation.ExtraValidationRulesTest class
 	 *
 	 * @package Validation
 	 * @subpackage Test.Case.Model.Behavior
 	 */
-	class ExtraValidationRulesBehaviorTest extends CakeTestCase
+	class Validation.ExtraValidationRulesBehaviorTest extends CakeTestCase
 	{
 		/**
 		 * Fixtures associated with this test case
@@ -34,7 +34,7 @@
 		public function setUp() {
 			parent::setUp();
 			$this->Site = ClassRegistry::init( 'Site' );
-			$this->Site->Behaviors->attach( 'Validation.ExtraValidationRules' );
+			$this->Site->Behaviors->attach( 'Validation.Validation.ExtraValidationRules' );
 		}
 
 		/**
@@ -47,7 +47,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::exactLength
+		 * Test de la méthode Validation.ExtraValidationRules::exactLength
 		 *
 		 * @return void
 		 */
@@ -71,7 +71,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::futureDate
+		 * Test de la méthode Validation.ExtraValidationRules::futureDate
 		 *
 		 * @return void
 		 */
@@ -94,7 +94,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::datePassee
+		 * Test de la méthode Validation.ExtraValidationRules::datePassee
 		 *
 		 * @return void
 		 */
@@ -117,7 +117,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::phoneFr
+		 * Test de la méthode Validation.ExtraValidationRules::phoneFr
 		 *
 		 * @return void
 		 */
@@ -136,7 +136,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::allEmpty
+		 * Test de la méthode Validation.ExtraValidationRules::allEmpty
 		 *
 		 * @return void
 		 */
@@ -155,7 +155,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::notEmptyIf
+		 * Test de la méthode Validation.ExtraValidationRules::notEmptyIf
 		 *
 		 * @return void
 		 */
@@ -174,7 +174,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::greaterThanIfNotZero
+		 * Test de la méthode Validation.ExtraValidationRules::greaterThanIfNotZero
 		 *
 		 * @return void
 		 */
@@ -195,7 +195,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::compareDates
+		 * Test de la méthode Validation.ExtraValidationRules::compareDates
 		 *
 		 * @return void
 		 */
@@ -226,7 +226,7 @@
 		}
 
 		/**
-		 * Test de la méthode ExtraValidationRules::inclusiveRange
+		 * Test de la méthode Validation.ExtraValidationRules::inclusiveRange
 		 *
 		 * @return void
 		 */
