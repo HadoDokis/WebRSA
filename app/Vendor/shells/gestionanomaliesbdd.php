@@ -3,8 +3,8 @@
 	* http://bakery.cakephp.org/articles/Jippi/2007/12/02/emailcomponent-in-a-cake-shell
 	*/
 
-	App::import( 'Core', array( 'Controller' ) );
-	App::import( 'Component', array( 'Gestionanomaliesbdd' ) );
+	App::import( 'Core', 'Controller' );
+	App::import( 'Component', 'Gestionanomaliesbdd' );
 
 	class GestionanomaliesbddShell extends AppShell
 	{

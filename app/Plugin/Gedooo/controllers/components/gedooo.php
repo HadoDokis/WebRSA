@@ -109,7 +109,7 @@
 		 * @return mixed
 		 */
 		public function check( $asBoolean = false, $setFlash = false ) {
-			App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
+			App::import( 'Behavior', 'Gedooo.Gedooo' );
 
 			$GedModel = ClassRegistry::init( 'User' );
 			$GedModel->Behaviors->attach( 'Gedooo' );

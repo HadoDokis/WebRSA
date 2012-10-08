@@ -5,7 +5,7 @@
 	 *
 	 * @package       app.models.behaviors
 	 */
-	App::import( 'Behavior', array( 'Gedooo.GedoooClassic' ) );
+	App::import( 'Behavior', 'Gedooo.GedoooClassic' );
 
 	abstract class GedoooFusionConverterBehavior extends GedoooClassicBehavior
 	{

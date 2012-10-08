@@ -23,7 +23,7 @@
 	 *
 	 * @package		app.models.behaviors
 	 */
-	App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
+	App::import( 'Behavior', 'Gedooo.Gedooo' );
 
 	class StorablePdfBehavior extends GedoooBehavior
 	{

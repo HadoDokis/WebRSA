@@ -14,7 +14,7 @@
 		return dataTranslate( $data, $params['url'] );
 	}
 
-	App::import( 'Helper', array( 'Model' ) );
+	App::import( 'Helper', 'Model' );
 	class Type2Helper extends ModelHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Locale', 'Xform' );

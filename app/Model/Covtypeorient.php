@@ -1,5 +1,5 @@
 <?php
-	App::import( 'Model', array( 'Typeorient' ) );
+	App::import( 'Model', 'Typeorient' );
 
 	class Covtypeorient extends Typeorient
 	{

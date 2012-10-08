@@ -1,7 +1,7 @@
 <?php
     @ini_set( 'memory_limit', '2048M' );
 
-	App::import( 'Core', array( 'Helper' ) );
+	App::import( 'Core', 'Helper' );
 
 	/**
 	* INFO:

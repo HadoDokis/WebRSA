@@ -271,7 +271,7 @@
 		 * @return array
 		 */
 		public function gedTests( &$model ) {
-			App::import( 'Model', array( 'Appchecks.Check' ) );
+			App::import( 'Model', 'Appchecks.Check' );
 			$Check = ClassRegistry::init( 'Check' );
 
 			return array(
