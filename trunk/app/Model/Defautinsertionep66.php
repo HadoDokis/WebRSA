@@ -1,5 +1,5 @@
 <?php
-	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
 	* Saisines d'EP pour les bilans de parcours pour le conseil général du

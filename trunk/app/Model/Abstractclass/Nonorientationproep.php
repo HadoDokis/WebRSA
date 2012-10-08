@@ -1,7 +1,7 @@
 <?php
 	App::import( 'Sanitize' );
 
-	require_once( ABSTRACTMODELS.'thematiqueep.php' );
+	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	abstract class Nonorientationproep extends Thematiqueep
 	{
