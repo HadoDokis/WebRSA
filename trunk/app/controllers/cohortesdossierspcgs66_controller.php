@@ -27,7 +27,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
+		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search' );
 
 		public $components = array(
 			'Prg2' => array(
@@ -50,7 +50,7 @@
 		*
 		*/
 		public function _setOptions() {
-			$this->set( 'options',  $this->Dossierpcg66->allEnumLists() );
+			$options = $this->Dossierpcg66->allEnumLists();
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'serviceinstructeur', $this->Dossierpcg66->Serviceinstructeur->listOptions() );
@@ -71,6 +71,9 @@
 					)
 				)
 			);
+
+			$etatdossierpcg = $options['etatdossierpcg'];
+			$this->set( compact( 'options', 'etatdossierpcg' ) );
 		}
 
 
