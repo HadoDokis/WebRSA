@@ -55,7 +55,8 @@
 				array(
 					 'Dossier.numdemrsatemp' => array( 'label' => 'Génération automatique d\'un N° de demande RSA temporaire', 'type' => 'checkbox' ),
 					 'Dossier.numdemrsa' => array( 'required' => true ),
-					 'Dossier.matricule'
+					 'Dossier.matricule',
+                    'Serviceinstructeur.id' => array( 'label'=> 'Service instructeur', 'options' => $services ),
 				)
 			);
 		echo '</fieldset>';

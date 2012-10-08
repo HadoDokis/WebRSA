@@ -8,11 +8,12 @@
 		
 		protected function  _setOptions() {
 			$options = array();
+            $services = ClassRegistry::init( 'Serviceinstructeur' )->find( 'list' );
 			$options = array(
 				'qual' => ClassRegistry::init( 'Option' )->qual(),
 				'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 			);
-			$this->set( compact( 'options' ) );
+			$this->set( compact( 'options', 'services' ) );
 		}
 		
 		
@@ -110,38 +111,43 @@
 					)
 				);
 				$this->assert( !empty( $user ), 'error500' );
-				// Service instructeur
-// 				$service = $this->Serviceinstructeur->find(
-// 					'first',
-// 					array(
-// 						'conditions' => array(
-// 							'Serviceinstructeur.id' => $data['dossier']['Ajoutdossier']['serviceinstructeur_id']
-// 						),
-// 						'recursive' => -1
-// 					)
-// 				);
-// 				$this->assert( !empty( $service ), 'error500' );
+                
+                if( !empty( $data['Serviceinstructeur']['id'] ) ) {
+                    // Service instructeur
+                    $service = ClassRegistry::init( 'Serviceinstructeur' )->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Serviceinstructeur.id' => $data['Serviceinstructeur']['id']
+                            ),
+                            'recursive' => -1
+                        )
+                    );
+                    $this->assert( !empty( $service ), 'error500' );
 
 
-// 
-// 				$suiviinstruction = array(
-// 					'Suiviinstruction' => array(
-// 						'dossier_id'           => $this->Dossier->id,
-// 						'suiirsa'                  => '01',
-// 						'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
-// 						'nomins'                   => $user['User']['nom'],
-// 						'prenomins'                => $user['User']['prenom'],
-// 						'numdepins'                => $service['Serviceinstructeur']['numdepins'],
-// 						'typeserins'               => $service['Serviceinstructeur']['typeserins'],
-// 						'numcomins'                => $service['Serviceinstructeur']['numcomins'],
-// 						'numagrins'                => $service['Serviceinstructeur']['numagrins']
-// 					)
-// 				);
-// 				$this->Suiviinstruction->set( $suiviinstruction );
-// 
-// 				if( $this->Suiviinstruction->validates() ) { // FIXME -> plus haut
-// 					$saved = $this->Suiviinstruction->save( $suiviinstruction ) && $saved;
-// 				}
+                    $suiviinstruction = array(
+                        'Suiviinstruction' => array(
+                            'dossier_id'           => $this->Dossier->id,
+                            'suiirsa'                  => '01',
+                            'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
+                            'nomins'                   => $user['User']['nom'],
+                            'prenomins'                => $user['User']['prenom'],
+                            'numdepins'                => $service['Serviceinstructeur']['numdepins'],
+                            'typeserins'               => $service['Serviceinstructeur']['typeserins'],
+                            'numcomins'                => $service['Serviceinstructeur']['numcomins'],
+                            'numagrins'                => $service['Serviceinstructeur']['numagrins']
+                        )
+                    );
+                    $this->Dossier->Suiviinstruction->set( $suiviinstruction );
+
+                    $validate = $this->Dossier->Suiviinstruction->validates();
+    //debug($validate);
+    //die(); 
+                    if( $validate ) {
+                        $saved = $this->Dossier->Suiviinstruction->save( $suiviinstruction ) && $saved;
+                    }
+                }
 
 				// Fin de la transaction
 				if( $saved ) {
