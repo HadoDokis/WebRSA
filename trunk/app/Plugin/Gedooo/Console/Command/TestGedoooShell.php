@@ -1,7 +1,7 @@
 <?php
-//	App::import( 'Model', array( 'AppModel' ) );
-//	App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
-//	App::import( 'Model', array( 'Appchecks.Check' ) );
+//	App::import( 'Model', 'AppModel' );
+//	App::import( 'Behavior', 'Gedooo.Gedooo' );
+//	App::import( 'Model', 'Appchecks.Check' );
 
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'GedoooBehavior', 'Gedooo.Model/Behavior' );

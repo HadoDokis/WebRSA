@@ -388,7 +388,7 @@
 		 * @return array
 		 */
 		protected function _serviceGedooo() {
-			App::import( 'Behavior', array( 'Gedooo.Gedooo' ) );
+			App::import( 'Behavior', 'Gedooo.Gedooo' );
 
 			$GedModel = ClassRegistry::init( 'User' );
 			$GedModel->Behaviors->attach( 'Gedooo' );

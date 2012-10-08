@@ -41,7 +41,7 @@
 				)
 			);
 
-			App::import( 'Behaviors', array( 'Occurences' ) );
+			App::import( 'Behaviors', 'Occurences' );
 			$this->Structurereferente->Behaviors->attach( 'Occurences' );
 			$this->set( 'occurences', $this->Structurereferente->occurencesExists() );
 

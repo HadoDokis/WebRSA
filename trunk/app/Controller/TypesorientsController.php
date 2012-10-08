@@ -30,7 +30,7 @@
 				)
 			);
 
-			App::import( 'Behaviors', array( 'Occurences' ) );
+			App::import( 'Behaviors', 'Occurences' );
 			$this->Typeorient->Behaviors->attach( 'Occurences' );
 			$this->set( 'occurences', $this->Typeorient->occurencesExists() );
 			$this->_setOptions();

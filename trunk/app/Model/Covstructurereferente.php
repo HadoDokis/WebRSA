@@ -1,5 +1,5 @@
 <?php
-	App::import( 'Model', array( 'Structurereferente' ) );
+	App::import( 'Model', 'Structurereferente' );
 
 	class Covstructurereferente extends Structurereferente
 	{

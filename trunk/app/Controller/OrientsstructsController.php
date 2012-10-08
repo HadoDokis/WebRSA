@@ -177,7 +177,7 @@
 			// L'entrée la plus récente est-elle non liée à d'autres tables, et donc suppressible ?
 			$last_orientstruct_suppressible = false;
 			if( !empty( $orientstructs ) ) {
-				App::import( 'Behaviors', array( 'Occurences' ) );
+				App::import( 'Behaviors', 'Occurences' );
 				$this->Orientstruct->Behaviors->attach( 'Occurences' );
 
 				$occurences = $this->Orientstruct->occurencesExists( array( 'Orientstruct.id' => $orientstructs[0]['Orientstruct']['id'] ), array( 'Fichiermodule', 'Nonoriente66' ) );
