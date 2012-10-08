@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Source file for the ExtraValidationRulesBehavior behavior class.
+	 * Source file for the Validation.ExtraValidationRulesBehavior behavior class.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,7 +10,7 @@
 	App::uses( 'ExtraBasicValidationRulesBehavior', 'Validation.Model/Behavior' );
 
 	/**
-	 * ExtraValidationRulesBehavior behavior class.
+	 * Validation.ExtraValidationRulesBehavior behavior class.
 	 *
 	 * Cette classe ajout plusieurs règles de validation.
 	 *
@@ -19,7 +19,7 @@
 	 * @package Validation
 	 * @subpackage Model.Behavior
 	 */
-	class ExtraValidationRulesBehavior extends ExtraBasicValidationRulesBehavior
+	class Validation.ExtraValidationRulesBehavior extends ExtraBasicValidationRulesBehavior
 	{
 		/**
 		 * Permet de s'assurer qu'une chaîne est d'une longueur donnée.

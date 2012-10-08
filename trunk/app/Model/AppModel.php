@@ -796,30 +796,30 @@
 			}
 
 			/**
-			 * Chargement du behavior ExtraValidationRules.
+			 * Chargement du behavior Validation.ExtraValidationRules.
 			 *
 			 * @param array $options
 			 * @return boolean
 			 */
 			public function beforeValidate( $options = array( ) ) {
 				$loaded = true;
-				if( !$this->Behaviors->attached( 'ExtraValidationRules' ) ) {
-					$loaded = $this->Behaviors->attach( 'ExtraValidationRules' );
+				if( !$this->Behaviors->attached( 'Validation.ExtraValidationRules' ) ) {
+					$loaded = $this->Behaviors->attach( 'Validation.ExtraValidationRules' );
 				}
 
 				return parent::beforeValidate( $options ) && $loaded;
 			}
 
 			/**
-			 * Chargement du behavior ExtraValidationRules.
+			 * Chargement du behavior Validation.ExtraValidationRules.
 			 *
 			 * @param array $options
 			 * @return boolean
 			 */
 			public function beforeSave( $options = array( ) ) {
 				$loaded = true;
-				if( !$this->Behaviors->attached( 'ExtraValidationRules' ) ) {
-					$loaded = $this->Behaviors->attach( 'ExtraValidationRules' );
+				if( !$this->Behaviors->attached( 'Validation.ExtraValidationRules' ) ) {
+					$loaded = $this->Behaviors->attach( 'Validation.ExtraValidationRules' );
 				}
 
 				return parent::beforeSave( $options ) && $loaded;
