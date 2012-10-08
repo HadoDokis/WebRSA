@@ -1,4 +1,0 @@
-grep "INSERT INTO pdfs VALUES" /home/cbuffin/mnt/share/projets/webrsa/14-Dumps/CG66/20110704_dump_prod_rc16_CG66/20110706_prod_cg66_dump.sql > /home/cbuffin/test.sql;\
-sed -i "s/'%PDF\-1.4.\+012', /NULL, /" /home/cbuffin/test.sql
-
-sed -i "s/'%PDF\-1.4.\+012', /NULL, /" /home/cbuffin/tmp/dump/20110706_prod_cg66_dump.sql
