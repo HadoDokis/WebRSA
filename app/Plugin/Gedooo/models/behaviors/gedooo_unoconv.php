@@ -58,7 +58,7 @@
 		 */
 		public function gedTests( &$model ) {
 			App::import( 'Model', 'Appchecks.Check' );
-			$Check = ClassRegistry::init( 'Check' );
+			$Check = ClassRegistry::init( 'Appchecks.Check' );
 
 			$results = parent::gedTests( $model );
 

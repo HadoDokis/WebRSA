@@ -69,7 +69,7 @@
 		 */
 		public function gedTests( &$model ) {
 			App::import( 'Model', 'Appchecks.Check' );
-			$Check = ClassRegistry::init( 'Check' );
+			$Check = ClassRegistry::init( 'Appchecks.Check' );
 
 			$results = parent::gedTests( $model );
 			$results['ping_cloudooo'] = $Check->socket( Configure::read( 'Gedooo.cloudooo_host' ), Configure::read( 'Gedooo.cloudooo_port' ) );

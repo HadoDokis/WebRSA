@@ -272,7 +272,7 @@
 		 */
 		public function gedTests( &$model ) {
 			App::import( 'Model', 'Appchecks.Check' );
-			$Check = ClassRegistry::init( 'Check' );
+			$Check = ClassRegistry::init( 'Appchecks.Check' );
 
 			return array(
 				'Accès au WebService' => $Check->webservice( GEDOOO_WSDL ),
