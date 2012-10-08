@@ -5,8 +5,8 @@
 	 * @package       app.plugins.checks.models
 	 */
 	define( 'APPCHECKS_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS );
-	require_once( APPCHECKS_PLUGIN_DIR.'libs'.DS.'basics.php' );
-	require_once( APPCHECKS_PLUGIN_DIR.'libs'.DS.'xvalidation.php' );
+	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'basics.php' );
+	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'xvalidation.php' );
 
 	class Check extends AppModel
 	{
