@@ -13,7 +13,7 @@
 		public $name = 'Sanctionrendezvousep58';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo'

@@ -78,7 +78,7 @@
 			),
 			'Formattable',
 			'Gedooo.Gedooo',
-			'Autovalidate'
+			'Validation.Autovalidate'
 		);
 
 

@@ -18,7 +18,7 @@
 		public $name = 'Saisinepdoep66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo'

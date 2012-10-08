@@ -6,7 +6,7 @@
 		public $displayField = 'intitule';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Validation.Autovalidate'
 		);
 
 		public $hasMany = array(

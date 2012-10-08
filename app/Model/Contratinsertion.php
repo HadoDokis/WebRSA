@@ -35,7 +35,7 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
 			),
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(

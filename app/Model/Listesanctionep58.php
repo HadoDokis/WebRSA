@@ -7,7 +7,7 @@
 		public $displayField = 'sanction';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Formattable'
 		);
 

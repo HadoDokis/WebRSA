@@ -16,7 +16,7 @@
 					'dureefinperiode'
 				)
 			),
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'Gedooo.Gedooo'
 		);
 

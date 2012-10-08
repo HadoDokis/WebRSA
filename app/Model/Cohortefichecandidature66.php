@@ -7,7 +7,7 @@ App::import( 'Sanitize' );
 		public $useTable = false;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable'
 		);

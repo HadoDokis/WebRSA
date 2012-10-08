@@ -15,7 +15,7 @@
 		public $name = 'Signalementep93';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Validation.Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo'
