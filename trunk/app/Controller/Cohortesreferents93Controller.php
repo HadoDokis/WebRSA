@@ -32,7 +32,7 @@
 			'Cohortes'=> array(
 				'affecter'
 			),
-			'Filtresdefaut' => array(
+			'Search.Filtresdefaut' => array(
 				'affectes',
 				'affecter'
 			),
