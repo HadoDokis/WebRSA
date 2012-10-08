@@ -35,6 +35,7 @@
                         'options' => $options
                     )
                 );
+                echo $search->etatDossierPCG66( $etatdossierpcg );
             ?>
         </fieldset>
 

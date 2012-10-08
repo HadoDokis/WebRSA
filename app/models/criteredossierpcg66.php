@@ -25,8 +25,6 @@
 			/// Critères
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
-			$etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );
-
 			$datereceptionpdo = Set::extract( $params, 'Dossierpcg66.datereceptionpdo' );
 			$datereceptionpdo_to = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_to' );
 			$datereceptionpdo_from = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_from' );
@@ -43,7 +41,8 @@
 				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo ).'\'';
 			}
 
-			//Etat du dossier PCG - multi-choix
+             // Filtre sur l'état du dossier PCG
+            $etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );
 			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
 				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
@@ -182,9 +181,12 @@
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
 			}
 			
-			// Conditions de base pour qu'un allocataire puisse passer en EP
-			$conditions['Dossierpcg66.etatdossierpcg'] = array( 'attinstr', 'instrencours', 'dossiertraite', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' );
-// 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+             // Filtre sur l'état du dossier PCG
+            $etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );
+			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
+				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
+			}
+            
 			$conditions[] = array(
 				'OR' => array(
 					'Adressefoyer.id IS NULL',
