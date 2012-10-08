@@ -66,18 +66,18 @@ App::import( 'Sanitize' );
 			// Critères sur un dossier pcg - originepdo, typepdo, serviecinstructeur, orgpayeur
 			foreach( array( 'serviceinstructeur_id', 'orgpayeur' ) as $criteredossierpcg66 ) {
 				if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ) ) {
-					$conditions[] = 'Dossierpcg66.'.$criteredossierpcg66.' = \''.Sanitize::clean( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66] ).'\'';
+					$conditions[] = 'Dossierpcg66.'.$criteredossierpcg66.' = \''.Sanitize::clean( $criteresdossierspcgs66['Search']['Dossierpcg66'][$criteredossierpcg66], array( 'encode' => false ) ).'\'';
 				}
 			}
 
 			// Commune au sens INSEE
 			if( !empty( $originepdo_id ) ) {
-				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo_id ).'\'';
+				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo_id, array( 'encode' => false ) ).'\'';
 			}
 
 			// Commune au sens INSEE
 			if( !empty( $typepdo_id ) ) {
-				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id ).'\'';
+				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false ) ).'\'';
 			}
             
             // Filtre sur l'état du dossier PCG

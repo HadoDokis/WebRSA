@@ -43,12 +43,12 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$this->set( 'statutrdv', $this->Statutrdv->find( 'list' ) );
-			$this->set( 'struct', $this->Structurereferente->listOptions() );
+			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
+			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
 			$typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
 			$this->set( 'typerdv', $typerdv );
-			$this->set( 'permanences', $this->Permanence->find( 'list' ) );
-			$this->set( 'referents', $this->Referent->find( 'list' ) );
+			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
+			$this->set( 'referents', $this->Rendezvous->Referent->find( 'list' ) );
 
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
@@ -100,7 +100,7 @@
 
 			// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
-			$referents = $this->Referent->referentsListe( $structurereferente_id );
+			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 
 			$this->layout = '';

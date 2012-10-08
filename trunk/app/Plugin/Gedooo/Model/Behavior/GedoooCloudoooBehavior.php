@@ -20,7 +20,7 @@
 		 * @param string $format
 		 * @return string
 		 */
-		public function gedConversion( &$model, $fileName, $format ) {
+		public function gedConversion( Model $model, $fileName, $format ) {
 			// FIXME: http://pear.php.net/manual/en/package.webservices.xml-rpc.examples.php -> vérifier la présecence
 			// pear upgrade
 			// pear install xml_rpc / var_dump(class_exists('System', false));
@@ -54,7 +54,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$model ) {
+		public function gedConfigureKeys( Model $model ) {
 			return array_merge(
 				parent::gedConfigureKeys( $model ),
 				array(
@@ -67,7 +67,7 @@
 		/**
 		 * @return array
 		 */
-		public function gedTests( &$model ) {
+		public function gedTests( Model $model ) {
 			App::import( 'Model', 'Appchecks.Check' );
 			$Check = ClassRegistry::init( 'Appchecks.Check' );
 

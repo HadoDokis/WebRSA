@@ -12,7 +12,7 @@
 		* @param array $settings Configuration settings for $model
 		* @access public
 		*/
-		public function setup( &$model, $settings = array() ) {
+		public function setup( Model $model, $settings = array() ) {
 			$driver = $model->driver();
 			if( $driver != 'postgres' ) {
 				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).' ), __CLASS__, $driver, $model->alias ), E_USER_WARNING );
@@ -33,7 +33,7 @@
 		* @return boolean
 		*/
 
-		public function hasUniqueIndex( &$model, $column, $expectedName = null ) {
+		public function hasUniqueIndex( Model $model, $column, $expectedName = null ) {
 			$indexes = $model->getDataSource( $model->useDbConfig )->index( $model );
 
 			foreach( $indexes as $name => $index ) {
@@ -51,7 +51,7 @@
 		* Retrouver une contraine nommée
 		*/
 
-		public function hasCheck( &$model, $constraintName ) {
+		public function hasCheck( Model $model, $constraintName ) {
 			$ds = $model->getDataSource( $model->useDbConfig );
 
 			$sql = "SELECT
@@ -81,7 +81,7 @@
 		 * @param Model $model Le modèle pour lequel on veut la liste des contraintes de la table liée
 		 * @return array
 		 */
-		public function pgCheckConstraints( &$model ) {
+		public function pgCheckConstraints( Model $model ) {
 			$ds = $model->getDataSource( $model->useDbConfig );
 
 			// FIXME: '{$ds->config['database']}'
@@ -129,7 +129,7 @@
 		*
 		*/
 
-		protected function _foreignKeys( &$model, $acceptedTables = true, $direction = 'to' ) {
+		protected function _foreignKeys( Model $model, $acceptedTables = true, $direction = 'to' ) {
 			$ds = $model->getDataSource( $model->useDbConfig );
 
 			if( $direction == 'to' ) {
@@ -237,7 +237,7 @@
 		*
 		*/
 
-		public function foreignKeysFrom( &$model, $acceptedTables = true ) {
+		public function foreignKeysFrom( Model $model, $acceptedTables = true ) {
 			return $this->_foreignKeys( $model, $acceptedTables, 'from' );
 		}
 
@@ -245,7 +245,7 @@
 		*
 		*/
 
-		public function foreignKeysTo( &$model, $acceptedTables = true ) {
+		public function foreignKeysTo( Model $model, $acceptedTables = true ) {
 			return $this->_foreignKeys( $model, $acceptedTables, 'to' );
 		}
 
@@ -258,7 +258,7 @@
 		 * @param array $conditions Les conditions de base (ex. array( 'namespace.nspname = \'public\'' ) )
 		 * @return array
 		 */
-		public function pgFunctions( &$model, $names = array(), $conditions = array() ) {
+		public function pgFunctions( Model $model, $names = array(), $conditions = array() ) {
 			$ds = $model->getDataSource( $model->useDbConfig );
 
 			if( !is_array( $names ) ) {
@@ -297,7 +297,7 @@
 		 * @param boolean $full true: renvoie la chaîne complète, false: renvoie le numéro de version.
 		 * @return string
 		 */
-		public function pgVersion( &$model, $full = false ) {
+		public function pgVersion( Model $model, $full = false ) {
 			$psqlVersion = $model->getDataSource( $model->useDbConfig )->query( 'SELECT version();' );
 			$psqlVersion = Set::classicExtract( $psqlVersion, '0.0.version' );
 
@@ -316,7 +316,7 @@
 		 * @param string $message Le message d'erreur lorsque des fonctions ne sont pas trouvées.
 		 * @return array
 		 */
-		public function pgHasFunctions( &$model, array $expected, $message = 'Les fonctions PostgreSQL suivantes sont manquantes: %s.' ) {
+		public function pgHasFunctions( Model $model, array $expected, $message = 'Les fonctions PostgreSQL suivantes sont manquantes: %s.' ) {
 			$pg_functions = $this->pgFunctions( $model, $expected );
 			$pg_functions = Set::extract( $pg_functions, '/Function/name' );
 			$pg_functions = array_unique( $pg_functions );
@@ -344,7 +344,7 @@
 		 * @param string $message Le message d'erreur la tolérance est dépassée.
 		 * @return array
 		 */
-		public function pgCheckTimeDifference( &$model, $message = 'Différence de date entre le serveur Web et le serveur de base de données trop importante.' ) {
+		public function pgCheckTimeDifference( Model $model, $message = 'Différence de date entre le serveur Web et le serveur de base de données trop importante.' ) {
 			$sqlAge = 'AGE( DATE_TRUNC( \'second\', localtimestamp ), \''.date( 'Y-m-d H:i:s' ).'\' )';
 			$sqlAgeSuccess = "{$sqlAge} < '1 min'";
 			$sql = "SELECT
@@ -363,7 +363,7 @@
 		 * @return mixed true si la syntaxe est correcte, sinon une chaîne de
 		 *         caractères contenant l'erreur.
 		 */
-		public function pgCheckIntervalSyntax( &$model, $interval ) {
+		public function pgCheckIntervalSyntax( Model $model, $interval ) {
 			$sql = "EXPLAIN SELECT NOW() + interval '{$interval}'";
 
 			$success = false;

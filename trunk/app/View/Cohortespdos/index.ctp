@@ -27,7 +27,7 @@
 	}
 ?>
 
-<?php echo $this->Form->create( 'Cohortepdo', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Cohortepdo', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
 		<legend>Recherche PDO</legend>
 		<?php echo $this->Form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>

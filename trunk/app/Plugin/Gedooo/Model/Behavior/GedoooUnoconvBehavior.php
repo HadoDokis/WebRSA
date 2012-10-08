@@ -19,7 +19,7 @@
 		 * @param string $format
 		 * @return string
 		 */
-		public function gedConversion( &$model, $fileName, $format ) {
+		public function gedConversion( Model $model, $fileName, $format ) {
 			// lecture fichier exécutable de unoconv
 			$convertorExec = Configure::read( 'Gedooo.unoconv_bin' );
 			if( empty( $convertorExec ) ) {
@@ -44,7 +44,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$model ) {
+		public function gedConfigureKeys( Model $model ) {
 			return array_merge(
 				parent::gedConfigureKeys( $model ),
 				array(
@@ -56,7 +56,7 @@
 		/**
 		 * @return array
 		 */
-		public function gedTests( &$model ) {
+		public function gedTests( Model $model ) {
 			App::import( 'Model', 'Appchecks.Check' );
 			$Check = ClassRegistry::init( 'Appchecks.Check' );
 

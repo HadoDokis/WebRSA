@@ -89,47 +89,47 @@
 
 			//Type de demande
 			if( !empty( $typedemandeapre ) ) {
-				$conditions[] = 'Apre.typedemandeapre = \''.Sanitize::clean( $typedemandeapre ).'\'';
+				$conditions[] = 'Apre.typedemandeapre = \''.Sanitize::clean( $typedemandeapre, array( 'encode' => false ) ).'\'';
 			}
 
 			//Activité du bénéficiaire
 			if( !empty( $activitebeneficiaire ) ) {
-				$conditions[] = 'Apre.activitebeneficiaire = \''.Sanitize::clean( $activitebeneficiaire ).'\'';
+				$conditions[] = 'Apre.activitebeneficiaire = \''.Sanitize::clean( $activitebeneficiaire, array( 'encode' => false ) ).'\'';
 			}
 
 			//Etat du dossier apre
 			if( !empty( $etatdossierapre ) ) {
-				$conditions[] = 'Apre.etatdossierapre = \''.Sanitize::clean( $etatdossierapre ).'\'';
+				$conditions[] = 'Apre.etatdossierapre = \''.Sanitize::clean( $etatdossierapre, array( 'encode' => false ) ).'\'';
 			}
 
 			//Eligibilité du dossier apre
 			if( !empty( $eligibiliteapre ) ) {
-				$conditions[] = 'Apre.eligibiliteapre = \''.Sanitize::clean( $eligibiliteapre ).'\'';
+				$conditions[] = 'Apre.eligibiliteapre = \''.Sanitize::clean( $eligibiliteapre, array( 'encode' => false ) ).'\'';
 			}
 
 			//Eligibilité du dossier apre
 			if( !empty( $statutapre ) ) {
-				$conditions[] = 'Apre.statutapre = \''.Sanitize::clean( $statutapre ).'\'';
+				$conditions[] = 'Apre.statutapre = \''.Sanitize::clean( $statutapre, array( 'encode' => false ) ).'\'';
 			}
 
 			//Décision émise sur le dossier APRE
 			if( !empty( $isdecision ) ) {
-				$conditions[] = 'Apre.isdecision = \''.Sanitize::clean( $isdecision ).'\'';
+				$conditions[] = 'Apre.isdecision = \''.Sanitize::clean( $isdecision, array( 'encode' => false ) ).'\'';
 			}
 
 			//Accord ou Rejet
 			if( !empty( $decisionapre ) ) {
-				$conditions[] = 'Aideapre66.decisionapre = \''.Sanitize::clean( $decisionapre ).'\'';
+				$conditions[] = 'Aideapre66.decisionapre = \''.Sanitize::clean( $decisionapre, array( 'encode' => false ) ).'\'';
 			}
 
 			//Thème de l'aide
 			if( !empty( $themeapre66_id ) ) {
-				$conditions[] = 'Aideapre66.themeapre66_id = \''.Sanitize::clean( $themeapre66_id ).'\'';
+				$conditions[] = 'Aideapre66.themeapre66_id = \''.Sanitize::clean( $themeapre66_id, array( 'encode' => false ) ).'\'';
 			}
 
 			//Type d'aide
 			if( !empty( $typeaideapre66_id ) ) {
-				$conditions[] = 'Aideapre66.typeaideapre66_id = \''.Sanitize::clean( suffix( $typeaideapre66_id ) ).'\'';
+				$conditions[] = 'Aideapre66.typeaideapre66_id = \''.Sanitize::clean( suffix( $typeaideapre66_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			//Nature de l'aide
@@ -161,12 +161,12 @@
 
 			//Structure référente où l'apre est faite
 			if( !empty( $structurereferente_id ) ) {
-				$conditions[] = 'Apre.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+				$conditions[] = 'Apre.structurereferente_id = \''.Sanitize::clean( $structurereferente_id, array( 'encode' => false ) ).'\'';
 			}
 
 			//Référent de l'APRE
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'Apre.referent_id = \''.Sanitize::clean( suffix( $referent_id ) ).'\'';
+				$conditions[] = 'Apre.referent_id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			/// Requête

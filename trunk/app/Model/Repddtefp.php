@@ -53,7 +53,7 @@
 							INNER JOIN adresses ON adressesfoyers.adresse_id = adresses.id
 						WHERE '.$this->_conditionsTemporelles( $annee, $semestre ).'
 							AND personnes.sexe = \''.$sexe.'\'
-							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'
+							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'
 						GROUP BY annee, mois, quinzaine
 						ORDER BY annee, mois, quinzaine;';
 
@@ -74,7 +74,7 @@
 							INNER JOIN adresses ON adressesfoyers.adresse_id = adresses.id
 						WHERE '.$this->_conditionsTemporelles( $annee, $semestre ).'
 							AND ( EXTRACT ( YEAR FROM AGE( personnes.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax.'
-							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'
+							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'
 						GROUP BY annee, mois, quinzaine
 						ORDER BY annee, mois, quinzaine;';
 
@@ -177,7 +177,7 @@
 
 			/// Localité adresse
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			$queryData = array(
@@ -330,7 +330,7 @@
 			/// Localité adresse
 			$numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			$joins = array(

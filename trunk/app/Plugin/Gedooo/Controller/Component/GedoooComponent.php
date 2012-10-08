@@ -13,9 +13,8 @@
 		 * The initialize method is called before the controller's beforeFilter method.
 		 *
 		 * @param Controller $controller
-		 * @param array $settings
 		 */
-		public function initialize( &$controller, $settings = array( ) ) {
+		public function initialize( Controller $controller ) {
 			$this->controller = $controller;
 		}
 
@@ -161,21 +160,5 @@
 			echo $content;
 			die();
 		}
-
-		/**
-		 * The beforeRedirect method is invoked when the controller's redirect method is called but before
-		 * any further action. If this method returns false the controller will not continue on to redirect
-		 * the request.
-		 * The $url, $status and $exit variables have same meaning as for the controller's method.
-		 *
-		 * @param Controller $controller
-		 * @param mixed $url
-		 * @param integer $status
-		 * @param boolean $exit
-		 */
-		public function beforeRedirect( &$controller, $url, $status = null, $exit = true ) {
-			parent::beforeRedirect( $controller, $url, $status, $exit );
-		}
-
 	}
 ?>

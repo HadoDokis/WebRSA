@@ -70,21 +70,18 @@
 			$this->assert( empty( $cmp ) || in_array( $cmp, array_keys( $comparators ) ), 'invalidParameter' );
 
 			if( !empty( $this->request->data ) ) {
-				$this->Cohorteindu->create( $this->request->data );
-				if( $this->Cohorteindu->validates() ) {
-					$paginate = $this->Cohorteindu->search(
-						(array)$this->Session->read( 'Auth.Zonegeographique' ),
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$this->request->data
-					);
-					$paginate['limit'] = 10;
-					$paginate = $this->_qdAddFilters( $paginate );
+				$paginate = $this->Cohorteindu->search(
+					(array)$this->Session->read( 'Auth.Zonegeographique' ),
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->request->data
+				);
+				$paginate['limit'] = 10;
+				$paginate = $this->_qdAddFilters( $paginate );
 
-					$this->paginate = $paginate;
-					$cohorteindu = $this->paginate( 'Dossier' );
+				$this->paginate = $paginate;
+				$cohorteindu = $this->paginate( 'Dossier' );
 
-					$this->set( 'cohorteindu', $cohorteindu );
-				}
+				$this->set( 'cohorteindu', $cohorteindu );
 			}
 
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );

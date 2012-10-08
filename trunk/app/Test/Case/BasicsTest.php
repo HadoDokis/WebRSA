@@ -514,7 +514,7 @@
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = validRib( '12345', '6789012345', '6789012345', '97' );
+			$result = validRib( '12345', '6789012345', '6789012345', '96' );
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }

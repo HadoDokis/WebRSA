@@ -26,7 +26,7 @@
 	$pagination = $this->Xpaginator->paginationBlock( 'Dossier', $this->passedArgs );
 ?>
 
-<?php echo $this->Form->create( 'Indicateursuivi', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Indicateursuivi', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->etatdosrsa($etatdosrsa);
 		echo $this->Search->natpf($natpf);

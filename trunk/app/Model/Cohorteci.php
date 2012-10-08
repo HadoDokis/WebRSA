@@ -166,12 +166,12 @@
 
 			// ...
 			if( !empty( $decision_ci ) ) {
-				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci ).'\'';
+				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci, array( 'encode' => false ) ).'\'';
 			}
 
 			// ...
 			if( !empty( $positioncer ) ) {
-				$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer ).'\'';
+				$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer, array( 'encode' => false ) ).'\'';
 			}
 
 			// ...
@@ -183,22 +183,22 @@
 
 			// Personne chargée du suiv
 			if( !empty( $personne_suivi ) ) {
-				$conditions[] = 'Contratinsertion.pers_charg_suivi = \''.Sanitize::clean( $personne_suivi ).'\'';
+				$conditions[] = 'Contratinsertion.pers_charg_suivi = \''.Sanitize::clean( $personne_suivi, array( 'encode' => false ) ).'\'';
 			}
 
 			// Forme du contrat
 			if( !empty( $forme_ci ) ) {
-				$conditions[] = 'Contratinsertion.forme_ci = \''.Sanitize::clean( $forme_ci ).'\'';
+				$conditions[] = 'Contratinsertion.forme_ci = \''.Sanitize::clean( $forme_ci, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Structure référente
 			if( !empty( $structurereferente_id ) ) {
-				$conditions[] = 'Contratinsertion.structurereferente_id = \''.Sanitize::clean( $structurereferente_id ).'\'';
+				$conditions[] = 'Contratinsertion.structurereferente_id = \''.Sanitize::clean( $structurereferente_id, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
 			}
 
 			// Liste des CERs arrivant à échéance -> dont la date de fin est pour le mois en cours

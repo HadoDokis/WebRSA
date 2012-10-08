@@ -57,18 +57,18 @@
 
 			// Description du traitement
 			if( !empty( $descriptionpdo ) ) {
-				$conditions[] = 'Traitementpcg66.descriptionpdo_id = \''.Sanitize::clean( $descriptionpdo ).'\'';
+				$conditions[] = 'Traitementpcg66.descriptionpdo_id = \''.Sanitize::clean( $descriptionpdo, array( 'encode' => false ) ).'\'';
 			}
 			if( !empty( $clos ) ) {
-				$conditions[] = 'Traitementpcg66.clos = \''.Sanitize::clean( $clos ).'\'';
+				$conditions[] = 'Traitementpcg66.clos = \''.Sanitize::clean( $clos, array( 'encode' => false ) ).'\'';
 			}
 			if( !empty( $annule ) ) {
-				$conditions[] = 'Traitementpcg66.annule = \''.Sanitize::clean( $annule ).'\'';
+				$conditions[] = 'Traitementpcg66.annule = \''.Sanitize::clean( $annule, array( 'encode' => false ) ).'\'';
 			}
 			
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
 			
 			// Motif concernant la perosnne du dossier

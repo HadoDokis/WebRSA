@@ -59,9 +59,9 @@ debug( $tables );*/
 					$model = ClassRegistry::init( $modelName );
 
 					$this->_modelInfos[$modelName] = array(
-						'primaryKey' => $this->Model->primaryKey,
-						'displayField' => $this->Model->displayField,
-						'schema' => $this->Model->schema(),
+						'primaryKey' => $model->primaryKey,
+						'displayField' => $model->displayField,
+						'schema' => $model->schema(),
 					);
 
 					// MySQL enum ?

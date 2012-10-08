@@ -20,7 +20,7 @@
 	$pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs );
 ?>
 
-<?php echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) && empty( $this->validationErrors ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire();
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
@@ -36,7 +36,7 @@
 			echo $this->Search->etatdosrsa($etatdosrsa);
 		?>
 	</fieldset>
-	
+
 	<fieldset>
 		<legend>Situation professionnelle</legend>
 		<?php

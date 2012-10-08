@@ -63,7 +63,7 @@
 
 			// N° APRE
 			if( !empty( $numeroapre ) ) {
-				$conditions[] = 'Apre.numeroapre ILIKE \'%'.Sanitize::clean( $numeroapre ).'%\'';
+				$conditions[] = 'Apre.numeroapre ILIKE \'%'.Sanitize::clean( $numeroapre, array( 'encode' => false ) ).'%\'';
 			}
 
 			/// Requête

@@ -56,13 +56,13 @@
 
 			// Secteur du contrat
 			if( !empty( $secteur ) ) {
-				$conditions[] = 'Cui.secteur = \''.Sanitize::clean( $secteur ).'\'';
+				$conditions[] = 'Cui.secteur = \''.Sanitize::clean( $secteur, array( 'encode' => false ) ).'\'';
 			}
 
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Requête

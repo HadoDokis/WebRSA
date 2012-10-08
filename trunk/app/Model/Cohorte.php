@@ -254,7 +254,7 @@
 				$conditions['Orientstruct.statut_orient'] = $enattente;
 			}
 
-			$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation ).'\'';
+			$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation, array( 'encode' => false ) ).'\'';
 
 			if( $statutOrientation == 'Orienté' ) {
 				// INFO: nouvelle manière de générer les PDFs
@@ -315,10 +315,10 @@
 
 			if( isset( $typeorient ) && !empty( $typeorient ) ) {
 				if( Configure::read( 'with_parentid' ) ) { // TODO: subquery
-					$conditions[] = 'Orientstruct.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.parentid = \''.Sanitize::clean( $typeorient ).'\' )';
+					$conditions[] = 'Orientstruct.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.parentid = \''.Sanitize::clean( $typeorient, array( 'encode' => false ) ).'\' )';
 				}
 				else {
-					$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient ).'\'';
+					$conditions[] = 'Orientstruct.typeorient_id = \''.Sanitize::clean( $typeorient, array( 'encode' => false ) ).'\'';
 				}
 			}
 			elseif( isset( $preorient ) && !empty( $preorient ) ) {
@@ -329,14 +329,14 @@
 					$conditions[] = 'Orientstruct.propo_algo IS NOT NULL';
 				}
 				else {
-					$conditions[] = 'Orientstruct.propo_algo = \''.Sanitize::clean( $preorient ).'\'';
+					$conditions[] = 'Orientstruct.propo_algo = \''.Sanitize::clean( $preorient, array( 'encode' => false ) ).'\'';
 				}
 			}
 
 			//-------------------------------------------------------
 
 			if( isset( $criteres['Filtre']['origine'] ) && !empty( $criteres['Filtre']['origine'] ) ) {
-				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Filtre']['origine'] ).'\'';
+				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Filtre']['origine'], array( 'encode' => false ) ).'\'';
 			}
 
 			// Origine de la demande
@@ -354,15 +354,15 @@
 
 			// Localité adresse
 			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
 			}
 			// Commune au sens INSEE
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt ).'\'';
+				$conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'\'';
 			}
 			// Code postal adresse
 			if( !empty( $codepos ) ) {
-				$conditions[] = 'Adresse.codepos = \''.Sanitize::clean( $codepos ).'\'';
+				$conditions[] = 'Adresse.codepos = \''.Sanitize::clean( $codepos, array( 'encode' => false ) ).'\'';
 			}
 
 			/// Critères sur l'adresse - canton

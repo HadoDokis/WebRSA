@@ -34,7 +34,7 @@
 		public function setUp() {
 			parent::setUp();
 			$this->Site = ClassRegistry::init( 'Site' );
-			$this->Site->Behaviors->attach( 'Validation.Validation.ExtraValidationRules' );
+			$this->Site->Behaviors->attach( 'Validation.ExtraValidationRules' );
 		}
 
 		/**

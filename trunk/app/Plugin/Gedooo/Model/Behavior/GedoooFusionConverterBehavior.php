@@ -16,7 +16,7 @@
 		 * @param array $config Configuration settings for $model
 		 * @return void
 		 */
-		public function setup( &$model, $config = array() ) {
+		public function setup( Model $model, $config = array() ) {
 			Configure::WRITE( 'GEDOOO_WSDL', GEDOOO_WSDL );
 		}
 
@@ -29,7 +29,7 @@
 		 * @param type $options
 		 * @return type
 		 */
-		public function gedFusion( &$model, $datas, $document, $section = false, $options = array() ) {
+		public function gedFusion( Model $model, $datas, $document, $section = false, $options = array() ) {
 			return parent::ged( $model, $datas, $document, $section, $options );
 		}
 
@@ -38,7 +38,7 @@
 		 * @param string $fileName
 		 * @param string $format
 		 */
-		abstract public function gedConversion( &$model, $fileName, $format );
+		abstract public function gedConversion( Model $model, $fileName, $format );
 
 		/**
 		 *
@@ -49,7 +49,7 @@
 		 * @param array $options
 		 * @return string
 		 */
-		public function ged( &$model, $datas, $document, $section = false, $options = array() ) {
+		public function ged( Model $model, $datas, $document, $section = false, $options = array() ) {
 			Configure::write( 'GEDOOO_WSDL', GEDOOO_WSDL ); // FIXME ?
 
 			$odt = $this->gedFusion( $model, $datas, $document, $section, $options );
@@ -83,7 +83,7 @@
 		 *
 		 * @return array
 		 */
-		public function gedConfigureKeys( &$model ) {
+		public function gedConfigureKeys( Model $model ) {
 			return array(
 				'Gedooo.wsdl' => 'string',
 			);

@@ -95,17 +95,17 @@
 
 			/// Type d'allocation
 			if( !empty( $types ) ) {
-				$conditions[] = 'Infofinanciere.type_allocation ILIKE \'%'.Sanitize::clean( $types ).'%\'';
+				$conditions[] = 'Infofinanciere.type_allocation ILIKE \'%'.Sanitize::clean( $types, array( 'encode' => false ) ).'%\'';
 			}
 
 			/// Par adresse
 			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr ).'%\'';
+				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
 			}
 
 			/// Par code postal
 			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt ).'%\'';
+				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
 			}
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );

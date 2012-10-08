@@ -22,7 +22,7 @@
 		protected function _nbrDossiersInstruits( $annee ) {
 			$sql = 'SELECT EXTRACT(MONTH FROM dossiers.dtdemrsa) AS mois, EXTRACT(YEAR FROM dossiers.dtdemrsa) AS annee, COUNT(dossiers.*) AS indicateur
 						FROM dossiers
-						WHERE EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee ).'
+						WHERE EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -37,7 +37,7 @@
 						FROM dossiers
 							INNER JOIN situationsdossiersrsa ON situationsdossiersrsa.dossier_id = dossiers.id
 						WHERE situationsdossiersrsa.etatdosrsa = \'1\'
-							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -52,7 +52,7 @@
 						FROM dossiers
 							INNER JOIN situationsdossiersrsa ON situationsdossiersrsa.dossier_id = dossiers.id
 						WHERE situationsdossiersrsa.etatdosrsa IN ( \'2\', \'3\', \'4\' )
-							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -76,7 +76,7 @@
 						WHERE calculsdroitsrsa.toppersdrodevorsa = \'1\'
 							AND prestations.natprest = \'RSA\'
 							AND prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -95,7 +95,7 @@
 									FROM typesorients
 										WHERE typesorients.lib_type_orient = \''.$type.'\'
 								)
-							AND EXTRACT(YEAR FROM orientsstructs.date_propo) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM orientsstructs.date_propo) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -114,7 +114,7 @@
 						WHERE orientsstructs.statut_orient = \'Orienté\'
 							AND orientsstructs.date_impression IS NOT NULL
 							AND dossiers.dtdemrsa IS NOT NULL
-							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM dossiers.dtdemrsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -128,7 +128,7 @@
 			$sql = 'SELECT EXTRACT(MONTH FROM orientsstructs.date_impression) AS mois, EXTRACT(YEAR FROM orientsstructs.date_impression) AS annee, AVG( ABS( contratsinsertion.date_saisi_ci - orientsstructs.date_impression ) ) AS indicateur
 						FROM orientsstructs
 							INNER JOIN contratsinsertion ON contratsinsertion.personne_id = orientsstructs.personne_id
-						WHERE EXTRACT(YEAR FROM orientsstructs.date_impression) = '.Sanitize::clean( $annee ).'
+						WHERE EXTRACT(YEAR FROM orientsstructs.date_impression) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 							AND orientsstructs.date_impression IS NOT NULL
 							AND contratsinsertion.date_saisi_ci IS NOT NULL
 						GROUP BY annee, mois
@@ -144,7 +144,7 @@
 			$sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
 						FROM infosfinancieres
 						WHERE infosfinancieres.type_allocation = \'IndusConstates\'
-							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 							AND infosfinancieres.moismoucompta IS NOT NULL
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
@@ -159,7 +159,7 @@
             $sql = 'SELECT EXTRACT(MONTH FROM infosfinancieres.moismoucompta) AS mois, EXTRACT(YEAR FROM infosfinancieres.moismoucompta) AS annee, SUM(infosfinancieres.mtmoucompta) AS indicateur
                         FROM infosfinancieres
                         WHERE infosfinancieres.type_allocation = \'IndusTransferesCG\'
-                            AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee ).'
+                            AND EXTRACT(YEAR FROM infosfinancieres.moismoucompta) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
                             AND infosfinancieres.moismoucompta IS NOT NULL
                         GROUP BY annee, mois
                         ORDER BY annee, mois;';
@@ -180,7 +180,7 @@
 							AND contratsinsertion.num_contrat = \'PRE\'
 							AND contratsinsertion.rg_ci = 1
 							AND contratsinsertion.date_saisi_ci IS NOT NULL
-							AND EXTRACT(YEAR FROM contratsinsertion.date_saisi_ci) = '.Sanitize::clean( $annee ).'
+							AND EXTRACT(YEAR FROM contratsinsertion.date_saisi_ci) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
 			return $this->_query( $sql );
@@ -193,7 +193,7 @@
 		protected function _nbrSuspensionsDroits( $annee ) {
 			$sql = 'SELECT EXTRACT(MONTH FROM suspensionsdroits.ddsusdrorsa) AS mois, EXTRACT(YEAR FROM suspensionsdroits.ddsusdrorsa) AS annee, COUNT(suspensionsdroits.*) AS indicateur
 						FROM suspensionsdroits
-						WHERE EXTRACT(YEAR FROM suspensionsdroits.ddsusdrorsa) = '.Sanitize::clean( $annee ).'
+						WHERE EXTRACT(YEAR FROM suspensionsdroits.ddsusdrorsa) = '.Sanitize::clean( $annee, array( 'encode' => false ) ).'
 							AND suspensionsdroits.ddsusdrorsa IS NOT NULL
 						GROUP BY annee, mois
 						ORDER BY annee, mois;';
