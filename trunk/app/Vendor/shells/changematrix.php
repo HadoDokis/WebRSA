@@ -7,7 +7,7 @@
 	*   * denière révision/date pour
 	*       - l'ensemble
 	*       - chaque "composant"
-	* 	* on n'a pas les shells/tasks, vendors, ...
+	* 	* on n'a pas les shells/tasks, Vendor, ...
 	*
 	*/
 
@@ -112,7 +112,7 @@
 							//**************************************************
 
 							// Shells
-							if( preg_match( '/^vendors\/shells\/([^\/]+).php$/', $matches['file'], $matches_shells ) ) {
+							if( preg_match( '/^Vendor\/shells\/([^\/]+).php$/', $matches['file'], $matches_shells ) ) {
 								$shells[$matches_shells[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']

@@ -9,7 +9,7 @@
 	*/
 
 	if( CAKE_BRANCH == '1.2' ) {
-		require_once( APP.'vendors'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
+		require_once( APP.'Vendor'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
 		//App::import( 'Vendor', 'apache_chemistry'.DS.'cmis_repository_wrapper' );
 	}
 	else {

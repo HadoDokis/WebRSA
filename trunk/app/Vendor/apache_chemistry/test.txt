@@ -362,46 +362,46 @@ stdClass Object
 ===========================================
 
 
-Notice: Undefined index: cmis:document in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php on line 691
+Notice: Undefined index: cmis:document in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php on line 691
 
 Call Stack:
-    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:0
-    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:44
-    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1156
-    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1123
-    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:973
+    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:0
+    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:44
+    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1156
+    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1123
+    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:973
 
 
-Notice: Trying to get property of non-object in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php on line 691
-
-Call Stack:
-    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:0
-    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:44
-    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1156
-    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1123
-    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:973
-
-
-Notice: Undefined variable: children_feed_l in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php on line 464
+Notice: Trying to get property of non-object in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php on line 691
 
 Call Stack:
-    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:0
-    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:44
-    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1156
-    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:1123
-    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:973
-    0.9230     783872   6. CMISService->getTypeDefinition() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:695
-    1.2191     797932   7. CMISRepositoryWrapper::extractTypeDef() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:791
-    1.2197     798164   8. CMISRepositoryWrapper::extractTypeDefFromNode() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/cmis_repository_wrapper.php:422
+    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:0
+    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:44
+    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1156
+    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1123
+    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:973
+
+
+Notice: Undefined variable: children_feed_l in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php on line 464
+
+Call Stack:
+    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:0
+    0.9225     781504   2. CMISService->createDocument() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:44
+    0.9225     781672   3. CMISService->postObject() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1156
+    0.9226     782352   4. CMISService->processPropertyTemplates() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:1123
+    0.9226     783872   5. CMISService->getPropertyType() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:973
+    0.9230     783872   6. CMISService->getTypeDefinition() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:695
+    1.2191     797932   7. CMISRepositoryWrapper::extractTypeDef() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:791
+    1.2197     798164   8. CMISRepositoryWrapper::extractTypeDefFromNode() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/cmis_repository_wrapper.php:422
 
 Return From Create Document
 :
 ===========================================
 
-Notice: Undefined variable: objs in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php on line 48
+Notice: Undefined variable: objs in /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php on line 48
 
 Call Stack:
-    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/vendors/apache_chemistry/test_webrsa.php:0
+    0.0004     337328   1. {main}() /home/cbuffin/projets/htdocs/adullact/webrsa/alfresco/app/Vendor/apache_chemistry/test_webrsa.php:0
 
 
 ===========================================

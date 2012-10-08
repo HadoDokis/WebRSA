@@ -13,7 +13,7 @@
 	 *	$this->Gedooo->sendPdfContentToClient( $pdf, 'foo.pdf' );
 	 *	return;
 	 *
-	 * TODO: ajouter une version check, la conf (les define), les fichiers vendors
+	 * TODO: ajouter une version check, la conf (les define), les fichiers Vendor
 	 */
 	if( !defined( 'GEDOOO_PLUGIN_DIR' ) ) {
 		define( 'GEDOOO_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS.'..'.DS );
@@ -22,7 +22,7 @@
 		define( 'GEDOOO_WSDL', Configure::read( 'Gedooo.wsdl' ) );
 	}
 	if( !defined( 'GEDOOO_TEST_FILE' ) ) {
-		define( 'GEDOOO_TEST_FILE', GEDOOO_PLUGIN_DIR.'vendors'.DS.'modelesodt'.DS.'test_gedooo.odt' );
+		define( 'GEDOOO_TEST_FILE', GEDOOO_PLUGIN_DIR.'Vendor'.DS.'modelesodt'.DS.'test_gedooo.odt' );
 	}
 
 	class GedoooBehavior extends ModelBehavior
@@ -56,10 +56,10 @@
 			if( !empty( $this->_gedoooBehavior ) ) {
 				if( !defined( 'PHPGEDOOO_DIR' ) ) {
 					if( $method == 'classic' ) {
-						define( 'PHPGEDOOO_DIR', GEDOOO_PLUGIN_DIR.'vendors'.DS.'phpgedooo_ancien'.DS );
+						define( 'PHPGEDOOO_DIR', GEDOOO_PLUGIN_DIR.'Vendor'.DS.'phpgedooo_ancien'.DS );
 					}
 					else {
-						define( 'PHPGEDOOO_DIR', GEDOOO_PLUGIN_DIR.'vendors'.DS.'phpgedooo_nouveau'.DS );
+						define( 'PHPGEDOOO_DIR', GEDOOO_PLUGIN_DIR.'Vendor'.DS.'phpgedooo_nouveau'.DS );
 					}
 				}
 

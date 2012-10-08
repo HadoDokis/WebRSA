@@ -6,7 +6,7 @@ WORK_DIR="$PWD"
 
 # ------------------------------------------------------------------------------
 
-find "$APP_DIR/vendors/modelesodt" -type f -iname "*.odt.default" | while read -r ;
+find "$APP_DIR/Vendor/modelesodt" -type f -iname "*.odt.default" | while read -r ;
 do
 	NORMAL=`echo "$REPLY" |sed 's/\.default$//g'`
 

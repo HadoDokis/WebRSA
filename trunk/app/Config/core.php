@@ -203,7 +203,7 @@
 	/**
 	 * Compress CSS output by removing comments, whitespace, repeating tags, etc.
 	 * This requires a/var/cache directory to be writable by the web server for caching.
-	 * and /vendors/csspp/csspp.php
+	 * and /Vendor/csspp/csspp.php
 	 *
 	 * To use, prefix the CSS link URL with '/ccss/' instead of '/css/' or use HtmlHelper::css().
 	 */
