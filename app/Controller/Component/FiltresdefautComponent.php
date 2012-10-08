@@ -16,7 +16,7 @@
 	 * Utilisation dans le contrôleur:
 	 * <pre>
 	 * public $components = array(
-	 *	'Filtresdefaut' => array( 'index' )
+	 *	'Search.Filtresdefaut' => array( 'index' )
 	 * );
 	 * </pre>
 	 *
@@ -43,7 +43,7 @@
 		 *
 		 * @var string
 		 */
-		public $name = 'Filtresdefaut';
+		public $name = 'Search.Filtresdefaut';
 
 		/**
 		 * Le contrôleur auquel le component est attaché.
