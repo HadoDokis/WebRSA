@@ -202,23 +202,25 @@
 
 			// Récupération du nom de l'allocataire
 			$personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
-					'first', array(
-				'fields' => array( 'nom_complet' ),
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-				'contain' => false
-					)
+                'first',
+                array(
+                    'fields' => array( 'nom_complet' ),
+                    'conditions' => array(
+                        'Personne.id' => $personne_id
+                    ),
+                    'contain' => false
+                )
 			);
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
 			$this->set( compact( 'nompersonne' ) );
 
-////			$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
-////			if( !empty( $dossierpcgId ) ) {
-//				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
-////			}
-			$this->set( 'dossierpcgId', $dossierpcg66_id );
-
+            if( !empty( $this->request->data ) ){
+                $dossierpcg66_id = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
+                if( !empty( $dossierpcg66_id ) ) {
+                    $this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
+                }
+            }
+                $this->set( 'dossierpcgId', $dossierpcg66_id );
 			//Formulaire de recherche pour trouver l'historique de tous les dossiers PCG d'une personne
 			$queryData = array(
 				'conditions' => array(
