@@ -60,7 +60,8 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+			( count( $personnes_referents ) > 0 )
 		);
 	?></li>
 </ul>

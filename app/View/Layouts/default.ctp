@@ -21,7 +21,14 @@
 	<head>
 		<?php echo $this->Html->charset(); ?>
 		<title>
-			<?php echo $title_for_layout; ?>
+			<?php
+				if( isset( $this->pageTitle ) && !empty( $this->pageTitle ) ) {
+					echo $this->pageTitle;
+				}
+				else {
+					echo $title_for_layout;
+				}
+			?>
 		</title>
 		<?php
 			if( Configure::read( 'debug' ) ) {
