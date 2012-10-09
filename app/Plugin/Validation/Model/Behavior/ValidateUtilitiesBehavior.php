@@ -89,6 +89,9 @@
 			if( !is_array( $rule ) ) {
 				$rule = array( 'rule' => array( $rule ) );
 			}
+            else if( !isset( $rule['rule'] ) && isset( $rule[0] ) ) {
+                $rule = array( 'rule' => $rule );
+            }
 			else if( !is_array( $rule['rule'] ) ) {
 				$rule['rule'] = (array)$rule['rule'];
 			}
