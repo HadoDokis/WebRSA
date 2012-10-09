@@ -265,6 +265,11 @@
 			if( Set::check( $params, 'options' ) && ( isset( $params['type'] ) && in_array( $params['type'], array( 'text', 'integer' ) ) ) ) {
 				$params['type'] = 'select';
 			}
+
+			if( isset( $params['type'] ) && $params['type'] == 'radio' ) {
+				unset( $params['empty'] );
+			}
+
 			return $this->Xform->input( $path, $params );
 		}
 	}
