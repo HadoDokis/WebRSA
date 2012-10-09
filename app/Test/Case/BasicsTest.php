@@ -505,16 +505,16 @@
 		 }
 
 		/**
-		 * Test de la fonction replace_accents().
+		 * Test de la fonction validRib().
 		 *
 		 * @return void
 		 */
 		 public function testValidRib() {
-			$result = validRib( '00000', '0000000000', '0000000000', '97' );
+			$result = validRib( '20041', '01005', '0500013M026', '06' );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = validRib( '12345', '6789012345', '6789012345', '96' );
+			$result = validRib( '00000', '0000000000', '0000000000', '97' );
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }
