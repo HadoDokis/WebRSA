@@ -323,6 +323,10 @@ $path = "{$model}.{$field}";
 
 			}*/
 
+			if( isset( $params['type'] ) && $params['type'] == 'radio' ) {
+				unset( $params['empty'] );
+			}
+
 			return $this->Xform->input( $path, $params );
 		}
 	}
