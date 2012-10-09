@@ -22,7 +22,7 @@
 					'decisionpcg'
 				)
 			),
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id' )

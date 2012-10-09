@@ -4,7 +4,7 @@
 		public $name = 'ActioncandidatMotifsortie';
         
         public $actsAs = array(
-            'Validation.Autovalidate',
+            'Autovalidate',
             'Formattable'
         );
 

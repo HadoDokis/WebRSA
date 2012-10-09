@@ -4,7 +4,7 @@
 		public $name = 'Membreep';
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

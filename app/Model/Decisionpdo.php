@@ -8,7 +8,7 @@
 		public $order = 'Decisionpdo.id ASC';
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'clos',

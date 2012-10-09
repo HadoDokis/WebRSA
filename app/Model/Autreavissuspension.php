@@ -20,7 +20,7 @@
 					'autreavissuspension'
 				)
 			),
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate'
 		);
 

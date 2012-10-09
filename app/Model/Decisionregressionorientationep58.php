@@ -21,7 +21,7 @@
 					'decision'
 				)
 			),
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(

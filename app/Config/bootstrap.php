@@ -22,6 +22,14 @@
 	 * @since         CakePHP(tm) v 0.10.8.2117
 	 * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
 	 */
+
+	/**
+	 *
+	 */
+	Configure::write( 'Config.language', 'fre' );
+	$locales = array( 'fr_FR', 'fr_FR@euro', 'fr', 'fr_FR.UTF8' );
+	setlocale( LC_ALL, $locales );
+
 	/**
 	 * Cache Engine Configuration
 	 * Default settings provided below
@@ -194,12 +202,6 @@
 			'file' => 'error',
 		)
 	);
-
-	/**
-	 *
-	 */
-	Configure::write( 'Config.language', 'fre' );
-	setlocale( 'LC_ALL', 'fr_FR.utf8' );
 
 	// Branche de CakePHP que l'on utilise: 1.1, 1.2, 1.3
 	define( 'CAKE_BRANCH', preg_replace( '/^([0-9]+\.[0-9]+)(?![0-9]).*$/', '\1', Configure::version() ) );

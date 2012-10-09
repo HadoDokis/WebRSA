@@ -18,6 +18,15 @@
 	 * @since         CakePHP(tm) v 0.2.9
 	 * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
 	 */
+
+	/**
+	 * En production: le debug est à 0 et le cache activé.
+	 * Sinon: le debug est à 2 et le cache désactivé.
+	 *
+	 * @var boolean
+	 */
+	Configure::write( 'production', false );
+
 	/**
 	 * CakePHP Debug Level:
 	 *
@@ -31,7 +40,7 @@
 	 * In production mode, flash messages redirect after a time interval.
 	 * In development mode, you need to click the flash message to continue.
 	 */
-	Configure::write( 'debug', 2 );
+	Configure::write( 'debug', ( Configure::read( 'production' ) ? 0 : 2 ) );
 
 	/**
 	 * Configure the Error handler used to handle errors for your application.  By default
@@ -115,7 +124,7 @@
 	 * Turn off all caching application-wide.
 	 *
 	 */
-	//Configure::write('Cache.disable', true);
+	Configure::write( 'Cache.disable', ( Configure::read( 'production' ) ? false : true ) );
 
 	/**
 	 * Enable cache checking.

@@ -237,7 +237,7 @@
 
 		public $actsAs = array(
 			'Conditionnable',
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'sitpersdemrsa' => array(
