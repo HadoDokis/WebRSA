@@ -277,7 +277,7 @@
 				'conditions' => array(
 					'Personne.id' => $id
 				),
-				'fields' => null,
+				'fields' => array( 'Personne.nom_complet'),
 				'order' => null,
 				'recursive' => -1
 			);
@@ -478,34 +478,37 @@
 		public function view_revs( $id = null ) {
 			$this->DspRev->forceVirtualFields = true;
 			$dsprevs = $this->DspRev->find(
-					'first', array(
-				'conditions' => array(
-					'DspRev.id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				)
-					)
+                'first',
+                array(
+                    'conditions' => array(
+                        'DspRev.id' => $id
+                    ),
+                    'contain' => array(
+                        'Personne',
+                        'Libderact66Metier',
+                        'Libsecactderact66Secteur',
+                        'Libactdomi66Metier',
+                        'Libsecactdomi66Secteur',
+                        'Libemploirech66Metier',
+                        'Libsecactrech66Secteur',
+                        'DetaildifsocRev',
+                        'DetailaccosocfamRev',
+                        'DetailaccosocindiRev',
+                        'DetaildifdispRev',
+                        'DetailnatmobRev',
+                        'DetaildiflogRev',
+                        'DetailmoytransRev',
+                        'DetaildifsocproRev',
+                        'DetailprojproRev',
+                        'DetailfreinformRev',
+                        'DetailconfortRev',
+                        'Fichiermodule'
+                    )
+                )
 			);
 
+            $personne = Set::classicExtract( $dsprevs, 'Personne.nom_complet' );
+            $this->set( compact( 'personne' ) );
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'histo', $dsprevs['DspRev']['personne_id'] ) );
@@ -762,7 +765,7 @@
 					)
 				);
 				$dsp = $this->Dsp->Personne->find( 'first', $qd_dsp );
-				debug($dsp);
+
 			}
 
 			// Vérification indirecte de l'id
