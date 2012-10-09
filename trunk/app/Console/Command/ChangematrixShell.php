@@ -88,7 +88,7 @@
 			$shells = array( );
 
 			$this->_wait( 'Récupération des informations via svn' );
-			$hasList = @exec( 'svn list -R --verbose '.$svnUrl, &$lines );
+			$hasList = @exec( 'svn list -R --verbose '.$svnUrl, $lines );
 
 			if( $hasList ) {
 				$this->_wait( 'Génération du document' );

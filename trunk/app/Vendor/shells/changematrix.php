@@ -43,7 +43,7 @@
 
 			$shells = array();
 
-			$hasList = @exec( 'svn list -R --verbose '.$svnUrl, &$lines );
+			$hasList = @exec( 'svn list -R --verbose '.$svnUrl, $lines );
 
 			if( $hasList ) {
 				foreach( $lines as $line ) {
