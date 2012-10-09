@@ -5,7 +5,10 @@
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 ?>
-<h1><?php echo $this->pageTitle; ?></h1>
+<h1><?php
+    echo $this->pageTitle;
+//    $this->set('title_for_layout', $this->pageTitle);
+?></h1>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

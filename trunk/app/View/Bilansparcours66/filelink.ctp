@@ -6,7 +6,7 @@
 	}
 
 	$this->pageTitle =  __d( 'bilanparcours66', "Bilansparcours66::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 ?>
 <div class="with_treemenu">
