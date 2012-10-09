@@ -134,12 +134,14 @@
 					)
 				);
 
-				$this->Controller->cakeError(
-					'lockedAction',
+				throw new LockedActionException(
+					'Action verrouillée',
+					401,
 					array(
 						'time' => ( strtotime( $result[0]['jetonsfonctions']['modified'] ) + readTimeout() ),
 						'user' => $lockingUser['User']['username']
 					)
+
 				);
 				return;
 			}

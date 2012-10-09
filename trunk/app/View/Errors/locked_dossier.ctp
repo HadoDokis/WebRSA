@@ -11,3 +11,8 @@
 		echo sprintf( "Ce dossier a été bloqué en modification par %s jusqu'au %s.", '<strong>'.$error->params['user'].'</strong>', '<strong>'.strftime( '%d/%m/%Y à %H:%M:%S', $error->params['time'] ).'</strong>' );
 		?>
 </p>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->element( 'exception_stack_trace' );
+	}
+?>
