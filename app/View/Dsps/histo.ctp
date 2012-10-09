@@ -19,7 +19,7 @@
 
 			if (!empty($histos[0]['DspRev'])) {
 				echo "<table><thead>";
-				echo "<tr><th>Date de création</th><th>Date de modification</th><th>Différences</th><th class='action' colspan='5'>Actions</th></tr></thead><tbody>";
+				echo "<tr><th>Date de création</th><th>Date de modification</th><th>Différences</th><th class='action' colspan='6'>Actions</th></tr></thead><tbody>";
 
 				foreach ($histos as $histo) {
 					$nbFichiersLies = 0;

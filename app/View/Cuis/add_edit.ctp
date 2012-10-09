@@ -566,10 +566,12 @@
 				echo '<p class="notice">Veuillez paramétrer les tables codes ROME</p>';
 			}
 			else {
+                $dataSelected = ( isset( $this->request->data['Cui']['secteuremploipropose_id'] ) && isset( $this->request->data['Cui']['metieremploipropose_id'] ) ) ? ( $this->request->data['Cui']['secteuremploipropose_id'].'_'.$this->request->data['Cui']['metieremploipropose_id'] ) : null;
+                $selected = ( isset( $cui['Cui']['secteuremploipropose_id'] ) && isset( $cui['Cui']['metieremploipropose_id'] ) ) ? ( $cui['Cui']['secteuremploipropose_id'].'_'.$cui['Cui']['metieremploipropose_id'] ) : $dataSelected;
 				echo $this->Default->subform(
 					array(
 						'Cui.secteuremploipropose_id' => array( 'options' => $secteursactivites ),
-						'Cui.metieremploipropose_id' => array( 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->request->data['Cui']['secteuremploipropose_id'].'_'.$this->request->data['Cui']['metieremploipropose_id'] ),
+						'Cui.metieremploipropose_id' => array( 'options' => $options['Coderomemetierdsp66'], 'selected' => $selected ),
 						'Cui.salairebrut'
 					),
 					array(
@@ -582,7 +584,7 @@
 		<table class="cuiduree noborder">
 			<tr>
 				<?php
-					$nbErrors = count( $this->validationErrors );
+					$nbErrors = count( $this->validationErrors['Cui'] );
 					$errors = array(
 						'dureehebdosalarieheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieheure' ),
 						'dureehebdosalarieminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdosalarieminute' ),
@@ -632,13 +634,15 @@
 	<fieldset>
 		<legend>LES ACTIONS D'ACCOMPAGNEMENT ET DE FORMATION PRÉVUES</legend>
 		<?php
+            $dataSelectedPresta = ( isset( $this->request->data['Cui']['orgsuivi_id'] ) && isset( $this->request->data['Cui']['prestataire_id'] ) ) ? ( $this->request->data['Cui']['prestataire_id'].'_'.$this->request->data['Cui']['prestataire_id'] ) : null;
+            $selectedPresta = ( isset( $cui['Cui']['orgsuivi_id'] ) && isset( $cui['Cui']['prestataire_id'] ) ) ? ( $cui['Cui']['prestataire_id'].'_'.$cui['Cui']['prestataire_id'] ) : $dataSelectedPresta;
+
 			echo $this->Default->subform(
 				array(
 					'Cui.tuteur',
 					'Cui.fonctiontuteur',
-// 					'Cui.structurereferente_id' => array( 'options' => $structs, 'empty' => true ),
 					'Cui.orgsuivi_id' => array( 'options' => $structs, 'empty' => true ),
-					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true, 'selected' => $this->request->data['Cui']['orgsuivi_id'].'_'.$this->request->data['Cui']['prestataire_id'] ),
+					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true, 'selected' => $selectedPresta ),
 					'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
 					'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas' ), 'type' => 'radio', 'options' => $options['isaas'] )
 				),
@@ -881,7 +885,7 @@
 		<table class="cuiduree noborder">
 			<tr>
 				<?php
-					$nbErrors3 = count($this->validationErrors);
+					$nbErrors3 = count($this->validationErrors['Cui']);
 					$errors = array(
 						'dureehebdoretenueheure' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueheure' ),
 						'dureehebdoretenueminute' => Set::extract( $this->validationErrors, 'Cui.dureehebdoretenueminute' ),
