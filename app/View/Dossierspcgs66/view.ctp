@@ -44,14 +44,11 @@
                     foreach( $dossierpcg66['Decisiondossierpcg66'] as $decision ){      
                         echo $this->Xhtml->tableCells(
                             array(
-                                h( Set::classicExtract( $decisionpdo, Set::classicExtract( $decision, 'decisionpdo_id' ) ) ),
+                                h( Set::enum( Set::classicExtract( $decision, 'decisionpdo_id' ), $decisionpdo ) ),
                                 h( date_short( Set::classicExtract( $decision, 'datepropositiontechnicien' ) ) ),
                                 h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $decision, 'validationproposition' ) ) ),
                                 h( date_short( Set::classicExtract( $decision, 'datevalidation' ) ) ),
                                 h( Set::classicExtract( $decision, 'commentairetechnicien' ) )
-                            ),
-                            array(
-                                'options' => $options
                             )
                         );
                     }
