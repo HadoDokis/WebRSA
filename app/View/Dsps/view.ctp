@@ -6,7 +6,8 @@
 	// Titre
 	$this->pageTitle = sprintf(
 		__( 'Données socio-professionnelles de %s' ),
-		Set::extract( $personne, 'Personne.qual' ).' '.Set::extract( $personne, 'Personne.nom' ).' '.Set::extract( $personne, 'Personne.prenom' )
+            $personne
+//		Set::extract( $personne, 'Personne.qual' ).' '.Set::extract( $personne, 'Personne.nom' ).' '.Set::extract( $personne, 'Personne.prenom' )
 	);
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
@@ -161,15 +162,15 @@
 						$dsp,
 						array(
 							'Dsp.hispro',
-							'Libsecactderact66Secteur.intitule',
+							'Libsecactderact66Secteur.intitule' => array( 'type' => 'text' ),
 							'Dsp.libsecactderact' => array( 'label' => 'Complément d\'information' ),
-							'Libderact66Metier.intitule',
+							'Libderact66Metier.intitule' => array('type' => ('text')),
 							'Dsp.libderact' => array( 'label' => 'Complément d\'information' ),
 							'Dsp.cessderact',
 							'Dsp.topdomideract',
-							'Libsecactdomi66Secteur.intitule',
+							'Libsecactdomi66Secteur.intitule' => array( 'type' => 'text' ),
 							'Dsp.libsecactdomi' => array( 'label' => 'Complément d\'information' ),
-							'Libactdomi66Metier.intitule',
+							'Libactdomi66Metier.intitule' => array( 'type' => 'text' ),
 							'Dsp.libactdomi' => array( 'label' => 'Complément d\'information' ),
 							'Dsp.duractdomi',
 							'Dsp.inscdememploi',
@@ -216,9 +217,9 @@
 					echo $this->Default->view(
 						$dsp,
 						array(
-							'Libsecactrech66Secteur.intitule',
+							'Libsecactrech66Secteur.intitule' => array( 'type' => 'text' ),
 							'Dsp.libsecactrech' => array( 'label' => 'Complément d\'information' ),
-							'Libemploirech66Metier.intitule',
+							'Libemploirech66Metier.intitule' => array( 'type' => 'text' ),
 							'Dsp.libemploirech' => array( 'label' => 'Complément d\'information' ),
 							'Dsp.topcreareprientre',
 							'Dsp.concoformqualiemploi'
