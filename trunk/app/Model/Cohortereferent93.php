@@ -70,7 +70,7 @@
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
 			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'Contratinsertion.decision_ci' => 'V' ) );
-			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id"';
+			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
 
 			$conditions = array(
