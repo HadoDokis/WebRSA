@@ -45,17 +45,17 @@
 			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
 
 			$decisionspcgsCer = $this->Decisiondossierpcg66->Decisionpdo->find(
-					'all', array(
-				'fields' => array(
-					'Decisionpdo.id',
-					'Decisionpdo.libelle',
-					'Decisionpdo.decisioncerparticulier'
-				),
-				'conditions' => array(
-					'Decisionpdo.cerparticulier' => 'O'
-				),
-				'contain' => false
-					)
+                'all', array(
+                    'fields' => array(
+                        'Decisionpdo.id',
+                        'Decisionpdo.libelle',
+                        'Decisionpdo.decisioncerparticulier'
+                    ),
+                    'conditions' => array(
+                        'Decisionpdo.cerparticulier' => 'O'
+                    ),
+                    'contain' => false
+                )
 			);
 			$listdecisionpcgCer = Set::combine( $decisionspcgsCer, '{n}.Decisionpdo.id', '{n}.Decisionpdo.libelle' );
 
