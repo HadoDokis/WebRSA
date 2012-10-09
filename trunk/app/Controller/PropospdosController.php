@@ -154,13 +154,6 @@
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
 			$pdos = $this->Propopdo->find( 'all', $options );
 
-			if( !empty( $pdos ) ) {
-				/// Récupération des Pièces liées à la PDO
-				$piecespdos = $this->Piecepdo->find( 'all', array( 'conditions' => array( 'Piecepdo.propopdo_id' => Set::extract( $pdos, '/Propopdo/id' ) ), 'order' => 'Piecepdo.dateajout DESC' ) );
-
-				$this->set( 'piecespdos', $piecespdos );
-			}
-
 			$this->set( 'personne_id', $personne_id );
 			$this->_setOptions();
 			$this->set( 'pdos', $pdos );
@@ -282,7 +275,13 @@
 					'conditions' => array(
 						'Propopdo.id' => $pdo_id
 					),
-					'fields' => null,
+                    'joins' => array(
+                      $this->Propopdo->join( 'Decisionpropopdo' )
+                    ),
+					'fields' => array_merge(
+                        $this->Propopdo->fields(),
+                        $this->Propopdo->Decisionpropopdo->fields()
+                    ),
 					'order' => null,
 					'recursive' => -1
 				);
@@ -292,77 +291,78 @@
 				$this->assert( !empty( $pdo ), 'invalidParameter' );
 				$personne_id = Set::classicExtract( $pdo, 'Propopdo.personne_id' );
 				$dossier_id = $this->Personne->dossierId( $personne_id );
+//
+//				$traitementspdos = $this->{$this->modelClass}->Traitementpdo->find(
+//					'all',
+//					array(
+//						'conditions' => array(
+//							'propopdo_id' => $pdo_id
+//						),
+//						'contain' => array(
+//							'Descriptionpdo',
+//							'Traitementtypepdo'
+//						)
+//					)
+//				);
+//				$this->set( compact( 'traitementspdos' ) );
 
-				$traitementspdos = $this->{$this->modelClass}->Traitementpdo->find(
-					'all',
-					array(
-						'conditions' => array(
-							'propopdo_id' => $pdo_id
-						),
-						'contain' => array(
-							'Descriptionpdo',
-							'Traitementtypepdo'
-						)
-					)
-				);
-				$this->set( compact( 'traitementspdos' ) );
-
-				$joins = array(
-					array(
-						'table' => 'pdfs',
-						'alias' => 'Pdf',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Pdf.modele' => 'Decisionpropopdo',
-							'Pdf.fk_value = Decisionpropopdo.id'
-						)
-					),
-					array(
-						'table' => 'decisionspdos',
-						'alias' => 'Decisionpdo',
-						'type' => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Decisionpdo.id = Decisionpropopdo.decisionpdo_id'
-						)
-					)
-				);
-
-				$decisionspropospdos = $this->{$this->modelClass}->Decisionpropopdo->find(
-						'all', array(
-					'fields' => array(
-						'Decisionpdo.libelle',
-						'Decisionpropopdo.id',
-						'Decisionpropopdo.datedecisionpdo',
-						'Decisionpropopdo.decisionpdo_id',
-						'Decisionpropopdo.avistechnique',
-						'Decisionpropopdo.dateavistechnique',
-						'Decisionpropopdo.validationdecision',
-						'Decisionpropopdo.datevalidationdecision',
-						'Pdf.fk_value'
-					),
-					'conditions' => array(
-						'propopdo_id' => $pdo_id
-					),
-					'joins' => $joins,
-					'order' => array(
-						'Decisionpropopdo.created DESC'
-					),
-					'recursive' => -1
-						)
-				);
-
-				$this->set( compact( 'decisionspropospdos' ) );
-				if( !empty( $decisionspropospdos ) ) {
-					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];
-					( is_numeric( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
-				}
-				else {
-					$lastDecisionId = null;
-					$ajoutDecision = null;
-				}
-				$this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
+//				$joins = array(
+//					array(
+//						'table' => 'pdfs',
+//						'alias' => 'Pdf',
+//						'type' => 'LEFT OUTER',
+//						'foreignKey' => false,
+//						'conditions' => array(
+//							'Pdf.modele' => 'Decisionpropopdo',
+//							'Pdf.fk_value = Decisionpropopdo.id'
+//						)
+//					),
+//					array(
+//						'table' => 'decisionspdos',
+//						'alias' => 'Decisionpdo',
+//						'type' => 'LEFT OUTER',
+//						'foreignKey' => false,
+//						'conditions' => array(
+//							'Decisionpdo.id = Decisionpropopdo.decisionpdo_id'
+//						)
+//					)
+//				);
+//
+//				$decisionspropospdos = $this->{$this->modelClass}->Decisionpropopdo->find(
+//                    'all',
+//                    array(
+//                        'fields' => array(
+//                            'Decisionpdo.libelle',
+//                            'Decisionpropopdo.id',
+//                            'Decisionpropopdo.datedecisionpdo',
+//                            'Decisionpropopdo.decisionpdo_id',
+//                            'Decisionpropopdo.avistechnique',
+//                            'Decisionpropopdo.dateavistechnique',
+//                            'Decisionpropopdo.validationdecision',
+//                            'Decisionpropopdo.datevalidationdecision',
+//                            'Pdf.fk_value'
+//                        ),
+//                        'conditions' => array(
+//                            'propopdo_id' => $pdo_id
+//                        ),
+//                        'joins' => $joins,
+//                        'order' => array(
+//                            'Decisionpropopdo.created DESC'
+//                        ),
+//                        'recursive' => -1
+//                    )
+//				);
+//
+//				$this->set( compact( 'decisionspropospdos' ) );
+//				if( !empty( $decisionspropospdos ) ) {
+//					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];
+//					( is_numeric( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
+//				}
+//				else {
+//					$lastDecisionId = null;
+//					$ajoutDecision = null;
+//				}
+//				$this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
 				$this->set( 'pdo_id', $pdo_id );
 			}
 
@@ -377,7 +377,7 @@
 				$this->redirect( array( 'action' => 'index', $id ) );
 			}
 
-			$this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
+//			$this->Dossier->Suiviinstruction->order = 'Suiviinstruction.id DESC';
 
 			$qd_dossier = array(
 				'conditions' => array(
@@ -391,17 +391,18 @@
 
 			// Recherche de la dernière entrée des suivis instruction  associée au dossier
 			$suiviinstruction = $this->Dossier->Suiviinstruction->find(
-					'first', array(
-				'conditions' => array( 'Suiviinstruction.dossier_id' => $dossier_id ),
-				'order' => array( 'Suiviinstruction.date_etat_instruction DESC' ),
-				'recursive' => -1
-					)
+                'first',
+                array(
+                    'conditions' => array( 'Suiviinstruction.dossier_id' => $dossier_id ),
+                    'order' => array( 'Suiviinstruction.date_etat_instruction DESC' ),
+                    'recursive' => -1
+                )
 			);
 			$dossier = Set::merge( $dossier, $suiviinstruction );
 			$this->set( compact( 'dossier' ) );
 
 			$this->set( 'referents', $this->Referent->find( 'list' ) );
-
+//debug($dossier);
 			/**
 			 *   FIN
 			 */
@@ -416,7 +417,9 @@
 
 				$this->request->data['Propopdo'] = Set::merge( $defaults, $this->request->data['Propopdo'] );
 
-				$saved = $this->Propopdo->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
+                $this->request->data['Decisionpropopdo'] = array( $this->request->data['Decisionpropopdo'] );
+//debug($this->request->data);
+				$saved = $this->Propopdo->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 				if( $saved ) {
 					// Sauvegarde des fichiers liés à une PDO
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
