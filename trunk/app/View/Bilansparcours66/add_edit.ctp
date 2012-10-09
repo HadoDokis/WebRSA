@@ -1358,7 +1358,14 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 
 		// ---------------------------------------------------------------------
-
+        // Si le formulaire est de type PE (orientation actuelle = 'emploi', alors on grise le bouton CG'
+        <?php if($typeformulaire == 'pe') {?>
+            ['Bilanparcours66TypeformulaireCg'].each( function ( elmt ) {
+                $( elmt ).writeAttribute('disabled', 'disabled');
+            } );   
+        <?php }?>
+        // ---------------------------------------------------------------------
+            
 		<?php if ( isset( $passagecommissionep ) && !empty( $passagecommissionep ) ) { ?>
 			['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
