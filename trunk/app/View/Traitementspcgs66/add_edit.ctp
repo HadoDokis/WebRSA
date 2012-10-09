@@ -22,7 +22,7 @@
 
 		echo $this->Default2->subform(
 			array(
-				'Traitementpcg66.personnepcg66_id' => array( 'type' => 'hidden', 'value' => $personnepcg66Id ),
+				'Traitementpcg66.personnepcg66_id' => array( 'type' => 'hidden', 'value' => $personnepcg66_id ),
 				'Traitementpcg66.personne_id' => array( 'type' => 'hidden', 'value' => $personne_id ),
 				'Traitementpcg66.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
 				'Traitementpcg66.clos' => array( 'type' => 'hidden', 'value' => 'N' ),
