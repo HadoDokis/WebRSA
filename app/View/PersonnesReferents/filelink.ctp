@@ -6,12 +6,12 @@
 	}
 
 	$this->pageTitle =  __d( 'personne_referent', "PersonnesReferents::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( 'PersonneReferent', $fichiers, $personneReferent, $options['haspiecejointe'] );
+		echo $this->Fileuploader->element( 'PersonneReferent', $fichiers, $personne_referent, $options['haspiecejointe'] );
 	?>
 </div>
 <div class="clearer"><hr /></div>

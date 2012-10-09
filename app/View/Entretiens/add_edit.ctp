@@ -57,7 +57,7 @@
 					echo $this->Default->subform(
 						array(
 							'Entretien.structurereferente_id',
-							'Entretien.referent_id',
+							'Entretien.referent_id' => array( 'options' => $referents, 'empty' => true ),
 							'Entretien.dateentretien' => array( 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
 							'Entretien.typeentretien' => array( 'required' => true, 'options' => $options['Entretien']['typeentretien'], 'empty' => true ),
 							'Entretien.objetentretien_id' => array(  'empty' => true )

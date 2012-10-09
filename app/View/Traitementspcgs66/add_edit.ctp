@@ -5,7 +5,7 @@
 		echo $this->Html->script( 'fileuploader.js' );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <div class="with_treemenu">
@@ -23,7 +23,7 @@
 		echo $this->Default2->subform(
 			array(
 				'Traitementpcg66.personnepcg66_id' => array( 'type' => 'hidden', 'value' => $personnepcg66Id ),
-				'Traitementpcg66.personne_id' => array( 'type' => 'hidden', 'value' => $personneId ),
+				'Traitementpcg66.personne_id' => array( 'type' => 'hidden', 'value' => $personne_id ),
 				'Traitementpcg66.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
 				'Traitementpcg66.clos' => array( 'type' => 'hidden', 'value' => 'N' ),
 				'Traitementpcg66.annule' => array( 'type' => 'hidden', 'value' => 'N' )

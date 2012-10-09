@@ -6,7 +6,7 @@
 	}
 	$this->modelClass = Inflector::classify( $this->request->params['controller'] );
 	$this->pageTitle =  __d( 'apre', "Apres::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 ?>
 <div class="with_treemenu">

@@ -7,7 +7,7 @@
 	}
 	else {
 		$this->pageTitle = 'CER ';
-		$foyer_id = $this->request->data['Personne']['foyer_id'];
+//		$foyer_id = $this->request->data['Personne']['foyer_id'];
 	}
 ?>
 <div class="with_treemenu">

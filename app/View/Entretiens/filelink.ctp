@@ -5,7 +5,7 @@
 		echo $this->Html->script( 'fileuploader.js' );
 	}
 	$this->pageTitle =  __d( 'entretien', "Entretiens::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personneId ) );
+	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <div class="with_treemenu">
 	<?php
