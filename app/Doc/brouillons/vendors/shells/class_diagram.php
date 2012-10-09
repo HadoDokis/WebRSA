@@ -168,7 +168,7 @@
 			if( !empty( $methods ) ) {
 				sort( $methods );
 				foreach( $methods as $i => $method ) {
-					$methods[$i] = $this->_classMethodSignature( &$reflection, $method ).'\l';
+					$methods[$i] = $this->_classMethodSignature( $reflection, $method ).'\l';
 				}
 				return '|'.implode( '|', $methods );
 			}
