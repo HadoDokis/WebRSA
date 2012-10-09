@@ -490,7 +490,8 @@
 
 	/**
 	* Retourne true pour un RIB bien formé, false pour un RIB mal formé
-	* INFO: http://fr.wikipedia.org/wiki/Cl%C3%A9_RIB#Algorithme_de_calcul_qui_fonctionne_avec_des_entiers_32_bits
+	* @see http://fr.wikipedia.org/wiki/Cl%C3%A9_RIB#Algorithme_de_calcul_qui_fonctionne_avec_des_entiers_32_bits
+	 * @see http://ime-data.com/articles/banque.html
 	*/
 
 	function validRib( $etaban, $guiban, $numcomptban, $clerib ) {
@@ -505,6 +506,10 @@
 			8 => array( 'H', 'Q', 'Y' ),
 			9 => array( 'I', 'R', 'Z' )
 		);
+		// 5, 5, 11, 2
+		if( strlen( $etaban ) != 5 || strlen( $guiban ) != 5 || strlen( $numcomptban ) != 11 || strlen( $clerib ) != 2 ) {
+			return false;
+		}
 
 		foreach( $replacements as $number =>  $letters ) {
 			foreach( $letters as $letter ) {
