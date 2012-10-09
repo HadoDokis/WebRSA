@@ -54,7 +54,6 @@
 			'cancelLink' => array( 'icons/cancel.png', 'Annuler' ),
 			'editLink' => array( 'icons/pencil.png', 'Modifier' ),
 			'validateLink' => array( 'icons/tick.png', 'Valider' ),
-			'deleteLink' => array( 'icons/delete.png', 'Supprimer' ),
 			'actionsLink' => array( 'icons/lightning.png', 'Actions' ),
 			'aidesLink' => array( 'icons/ruby.png', 'Aides' ),
 			'ajoutcomiteLink' => array( 'icons/add.png', 'Ajout comité' ),
@@ -347,6 +346,31 @@
 			}
 			else {
 				return parent::__call( $method, $params );
+			}
+		}
+
+		/**
+		 *
+		 * @param string $title
+		 * @param mixed $url
+		 * @param boolean $enabled
+		 * @return string
+		 */
+		public function deleteLink( $title, $url, $enabled = true ) {
+			$content = $this->image(
+					'icons/delete.png',
+					array( 'alt' => '' )
+				).' Supprimer';
+			if( $enabled ) {
+				return $this->link(
+					$content,
+					$url,
+					array( 'escape' => false, 'title' => $title ),
+					$title.' ?'
+				);
+			}
+			else{
+				return '<span class="disabled">'.$content.'</span>';
 			}
 		}
 
