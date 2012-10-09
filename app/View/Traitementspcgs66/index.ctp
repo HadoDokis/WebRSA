@@ -75,22 +75,22 @@
 			);
 
 		}
-		if( !empty( $listeTraitements ) ){
-			echo '<div class="aere">';
-			echo $this->Default->button(
-				'backpdo',
-				array(
-					'controller' => 'dossierspcgs66',
-					'action'     => 'edit',
-					$personnepcg66['Personnepcg66']['dossierpcg66_id']
-				),
-				array(
-					'id' => 'Back',
-					'label' => 'Retour au dossier'
-				)
-			);
-			echo '</div>';
-		}
+        
+        echo '<div class="aere">';
+        echo $this->Default->button(
+            'backpdo',
+            array(
+                'controller' => 'dossierspcgs66',
+                'action'     => 'edit',
+                $personnepcg66['Personnepcg66']['dossierpcg66_id']
+            ),
+            array(
+                'id' => 'Back',
+                'label' => 'Retour au dossier'
+            )
+        );
+        echo '</div>';
+
 
 	?>
 </div>

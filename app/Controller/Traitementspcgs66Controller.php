@@ -58,16 +58,18 @@
 			);
 			$this->set( compact( 'descriptionspdos' ) );
 
-			$this->set( 'gestionnaire', $this->User->find(
-							'list', array(
-						'fields' => array(
+			$this->set(
+                'gestionnaire',
+                $this->User->find(
+                    'list', array(
+                        'fields' => array(
 							'User.nom_complet'
 						),
 						'conditions' => array(
 							'User.isgestionnaire' => 'O'
 						)
-							)
-					)
+                    )
+                )
 			);
 			$this->set( 'typescourrierspcgs66', $this->Traitementpcg66->Typecourrierpcg66->find(
 							'list', array(
@@ -211,10 +213,10 @@
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
 			$this->set( compact( 'nompersonne' ) );
 
-			$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
-			if( !empty( $dossierpcgId ) ) {
-				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcgId ) );
-			}
+////			$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
+////			if( !empty( $dossierpcgId ) ) {
+//				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
+////			}
 			$this->set( 'dossierpcgId', $dossierpcg66_id );
 
 			//Formulaire de recherche pour trouver l'historique de tous les dossiers PCG d'une personne
@@ -335,7 +337,7 @@
 
 			$searchOptions['Personnepcg66']['dossierpcg66_id'] = array( );
 			foreach( $dossierspcgs66 as $dossierpcg66 ) {
-				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::classicExtract( $this->viewVars['gestionnaire'], $dossierpcg66['Dossierpcg66']['user_id'] );
+				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::enum( $dossierpcg66['Dossierpcg66']['user_id'], $this->viewVars['gestionnaire'] );
 			}
 			$this->set( 'searchOptions', $searchOptions );
 

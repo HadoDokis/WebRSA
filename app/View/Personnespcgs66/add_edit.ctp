@@ -6,7 +6,7 @@
 		echo $this->Html->script( 'fileuploader.js' );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyerId ) );
+	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
 ?>
 
 <script type="text/javascript">
@@ -20,8 +20,7 @@
 
 <div class="with_treemenu">
 	<?php
-
-		$chargeDossier = Set::classicExtract( $gestionnaire, Set::classicExtract( $dossierpcg66, 'Dossierpcg66.user_id' ) );
+		$chargeDossier = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire );
 		echo $this->Xhtml->tag(
 			'h1',
 			$this->pageTitle = __d( 'personnepcg66', "Personnespcgs66::{$this->action}" ).' géré par '.$chargeDossier
@@ -34,7 +33,7 @@
 
 		echo $this->Default2->subform(
 			array(
-				'Personnepcg66.dossierpcg66_id' => array( 'type' => 'hidden', 'value' => $dossierpcg66Id ),
+				'Personnepcg66.dossierpcg66_id' => array( 'type' => 'hidden', 'value' => $dossierpcg66_id ),
 				'Personnepcg66.personne_id' => array( 'type' => 'select', 'empty' => true, 'options' => $personnes, 'required' => true ),
 				'Personnepcg66.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
 			),

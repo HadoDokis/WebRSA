@@ -1,6 +1,6 @@
 <?php
 	$this->pageTitle =  __d( 'personnepcg66', "Personnespcgs66::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyerId ) );
+	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
 ?>
 
 <div class="with_treemenu">
