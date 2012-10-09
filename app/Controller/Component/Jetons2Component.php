@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe Jetons2Component permet de mettre des jetons (des locks fonctionnels) sur des
 	 * enregistrements de la table dossiers pour un utilisateur particulier.
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 */
 	class Jetons2Component extends Component
 	{
@@ -143,8 +143,9 @@
 						)
 					);
 
-					$this->Controller->cakeError(
-						'lockedDossier',
+					throw new LockedDossierException(
+						'Dossier verrouillé',
+						401,
 						array(
 							'time' => ( strtotime( $jetonObtenu['modified'] ) + readTimeout() ),
 							'user' => $lockingUser['User']['username']
