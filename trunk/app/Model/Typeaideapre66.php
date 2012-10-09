@@ -6,7 +6,7 @@
 		public $order = 'Typeaideapre66.name ASC';
 
 		public $actsAs = array(
-            'Validation.Autovalidate',
+            'Autovalidate',
             'Enumerable' => array(
                 'fields' => array(
                     'isincohorte'

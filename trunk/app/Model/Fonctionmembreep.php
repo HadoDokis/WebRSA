@@ -4,7 +4,7 @@
 		public $name = 'Fonctionmembreep';
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable'
 		);

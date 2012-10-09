@@ -172,7 +172,7 @@
 				}
 			}
 
-			$this->controller->render( $this->controller->action, null, 'add_edit' );
+			$this->controller->render( 'add_edit' );
 		}
 
 		/**

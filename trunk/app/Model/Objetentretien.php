@@ -6,7 +6,7 @@
 		public $displayField = 'name';
 		public $order = 'Objetentretien.id ASC';
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Formattable',
 			'Enumerable'
 		);

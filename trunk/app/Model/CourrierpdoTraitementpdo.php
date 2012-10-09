@@ -6,7 +6,7 @@
 		public $actsAs = array (
 			'Formattable',
 			'ValidateTranslate',
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Gedooo.Gedooo',
 			'StorablePdf'
 		);

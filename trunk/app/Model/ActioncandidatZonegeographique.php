@@ -4,7 +4,7 @@
 		public $name = 'ActioncandidatZonegeographique';
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Formattable',
 			'ValidateTranslate'
 		);

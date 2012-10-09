@@ -4,7 +4,7 @@
 		public $name = 'Motifreorientep93';
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable'
 		);

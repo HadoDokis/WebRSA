@@ -6,7 +6,7 @@
 		public $order = array( 'Regroupementep.name ASC' );
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

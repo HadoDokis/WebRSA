@@ -66,7 +66,7 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'prestataire_id', 'metieraffectation_id', 'metieremploipropose_id' ),
 			),
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Gedooo.Gedooo'
 		);
 

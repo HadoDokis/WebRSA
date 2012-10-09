@@ -8,7 +8,7 @@
 		*/
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo',

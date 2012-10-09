@@ -15,7 +15,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(

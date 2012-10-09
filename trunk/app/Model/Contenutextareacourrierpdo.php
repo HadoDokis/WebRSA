@@ -6,7 +6,7 @@
 
 		public $actsAs = array(
 			'Enumerable',
-			'Validation.Autovalidate'
+			'Autovalidate'
 		);
 
 		public $belongsTo = array(

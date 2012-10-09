@@ -6,7 +6,7 @@
 		public $order = array( 'Sitecov58.name ASC' );
 
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'ValidateTranslate'
 		);
 

@@ -6,7 +6,7 @@
 	abstract class Nonorientationproep extends Thematiqueep
 	{
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Autovalidate',
 			'Conditionnable',
 			'Enumerable',
 			'Formattable',
