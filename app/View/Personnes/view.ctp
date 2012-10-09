@@ -96,7 +96,7 @@
 			</tr>
 			<tr class="odd">
 				<th><?php echo __d( 'personne', 'Personne.sexe' );?></th>
-				<td><?php echo $sexe[$personne['Personne']['sexe']];?></td>
+				<td><?php echo @$sexe[$personne['Personne']['sexe']];?></td>
 			</tr>
 			<?php if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' ):?>
 				<tr class="even">
@@ -135,7 +135,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<?php if( $sexe[$personne['Personne']['sexe']] == 'Femme'  && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' && isset( $personne['Grossesse'] ) ):?>
+	<?php if( @$sexe[$personne['Personne']['sexe']] == 'Femme'  && $rolepers[$personne['Prestation']['rolepers']] != 'Enfant' && isset( $personne['Grossesse'] ) ):?>
 		<table>
 			<?php echo thead( 10 );?>
 			<tbody>
@@ -153,7 +153,7 @@
 				</tr>
 				<tr class="even">
 					<th><?php echo __d( 'grossesse', 'Grossesse.natfingro' );?></th>
-					<td><?php echo isset( $natfingro[$personne['Grossesse'][0]['natfingro']] ) ? $natfingro[$personne['Grossesse'][0]['natfingro']] : null;?></td>
+                    <td><?php echo isset( $personne['Grossesse'][0]['natfingro'] ) ? Set::enum( $personne['Grossesse'][0]['natfingro'], $natfingro ) : null;?></td>
 				</tr>
 			</tbody>
 		</table>
