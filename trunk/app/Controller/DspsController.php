@@ -156,7 +156,7 @@
 		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
 		 */
 		public function filelink( $id ) {
-			$this->assert( valid_int( $id ), 'invalidParameter' );
+            $this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
 
@@ -173,7 +173,7 @@
 					)
 			);
 
-			$optionsrevs = $this->DspRev->allEnumlists();
+			$optionsrevs = $this->DspRev->allEnumLists();
 
 			$personne_id = $dsprev['DspRev']['personne_id'];
 			$dsp_id = $dsprev['DspRev']['dsp_id'];

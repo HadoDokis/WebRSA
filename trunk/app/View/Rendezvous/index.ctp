@@ -80,7 +80,11 @@
 								'Supprimer le Rendez-vous',
 								array( 'controller' => 'rendezvous', 'action' => 'delete',
 								$rdv['Rendezvous']['id'] ),
-								( ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id ) && ( $dossierepLie == 0 ) && ( $this->Permissions->check( 'rendezvous', 'delete' ) == 1 ) )
+								(
+                                    ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id )
+                                    && ( $dossierepLie == 0 )
+                                    && ( $this->Permissions->check( 'rendezvous', 'delete' ) == 1 )
+                                )
 							),
 							$this->Xhtml->fileLink(
 								'Lier des fichiers',
