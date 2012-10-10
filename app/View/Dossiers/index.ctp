@@ -90,6 +90,11 @@
 	<?php
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
 		echo $this->Search->blocAllocataire( $trancheage );
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo '<fieldset>';
+			echo $form->input( 'Prestation.rolepers', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $chooserolepers, 'empty' => true ) );
+			echo '</fieldset>';
+		}
 	?>
 
 	<fieldset>

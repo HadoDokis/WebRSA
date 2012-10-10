@@ -80,6 +80,14 @@
 				$this->set( 'optionsDossier', $optionsDossier );
 			}
 			$this->set( 'fonorg', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
+			
+			$this->set(
+				'chooserolepers',
+				array(
+					'0' => 'Aucune prestation',
+					'1' => 'Demandeur ou Conjoint du RSA'
+				)
+			);
 
 		}
 

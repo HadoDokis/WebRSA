@@ -226,28 +226,39 @@
 			$typeJointure = 'INNER';
 			if( Configure::read( 'Cg.departement' ) != 66) {
 				$conditions = array(
-					'Adressefoyer.rgadr' => '01',
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.rgadr' => '01'
+					),
 					'Prestation.rolepers' => array( 'DEM', 'CJT' )
 				);
 			}
 			else {
 				$typeJointure = 'LEFT OUTER';
 				$conditions = array(
-                    array(
-                        'OR' => array(
-                            'Prestation.rolepers IS NULL',
-                            'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
-                        )
-                    ),
-                    array(
-                        'OR' => array(
-                            'Adressefoyer.id IS NULL',
-                            'Adressefoyer.rgadr' => '01'
-                        )
-                    )
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.rgadr' => '01'
+					)
 				);
+				
+				if( isset( $params['Prestation']['rolepers'] ) ){
+					if( $params['Prestation']['rolepers'] == '0' ){
+						$conditions[] = 'Prestation.rolepers IS NULL';
+					}
+					else if( $params['Prestation']['rolepers'] == '1' ){
+						$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+					}
+					else {
+						$conditions[] = array(
+							'OR' => array(
+								'Prestation.rolepers IS NULL',
+								'Prestation.rolepers IN ( \'DEM\', \'CJT\' )'
+							)
+						);
+					}
+				}
 			}
-
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
