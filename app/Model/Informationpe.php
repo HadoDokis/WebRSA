@@ -151,7 +151,7 @@
 								SELECT h.id
 									FROM historiqueetatspe AS h
 									WHERE h.informationpe_id = Informationpe.id
-									ORDER BY h.date DESC
+									ORDER BY h.date DESC, h.id DESC
 									LIMIT 1
 					)'
 				)
@@ -174,7 +174,7 @@
 			$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
 			$queryData['conditions'][] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
 
-			$queryData['order'] = array( 'Historiqueetatpe.date ASC' );
+			$queryData['order'] = array( 'Historiqueetatpe.date ASC', 'Historiqueetatpe.id ASC' );
 
 			return $queryData;
 		}
@@ -200,7 +200,7 @@
 										SELECT h.id
 											FROM historiqueetatspe AS h
 											WHERE h.informationpe_id = informationspe.id
-											ORDER BY h.date DESC
+											ORDER BY h.date DESC, h.id DESC
 											LIMIT 1
 							)
 						)
@@ -254,7 +254,7 @@
 								SELECT h.id
 									FROM historiqueetatspe AS h
 									WHERE h.informationpe_id = informationspe.id
-									ORDER BY h.date DESC
+									ORDER BY h.date DESC, h.id DESC
 									LIMIT 1
 							)
 						)
@@ -286,7 +286,7 @@
 					array(
 						'contain' => array(
 							'Historiqueetatpe' => array(
-								'order' => "Historiqueetatpe.date DESC",
+								'order' => array( "Historiqueetatpe.date DESC", "Historiqueetatpe.id DESC" ),
 								'limit' => 1
 							)
 						),
