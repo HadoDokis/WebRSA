@@ -584,7 +584,7 @@
 					}
 
                     // Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
-                    $nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER66( $data['Bilanparcours66']['personne_id'] );
+                    $nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
                     $Option = ClassRegistry::init( 'Option' );
                     $durees = $Option->duree_engag();
                     $dureeEngagReconductionCER = Set::classicExtract( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );

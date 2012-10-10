@@ -526,7 +526,7 @@
 			);
 
             // Nombre de mois cumulés pour la contractualisation
-            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER66( $personne_id );
+            $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $personne_id );
             $this->set('nbCumulDureeCER66', $nbCumulDureeCER66);
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {

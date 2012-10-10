@@ -48,6 +48,8 @@
 			<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 		<?php elseif( empty( $soumisADroitEtDevoir ) ) :?>
 			<p class="error">Cette personne n'est pas soumise à droit et devoir. Impossible de créer un CER.</p>
+		<?php elseif( $nbDemandedemaintienNonfinalisesCovs == 0 ) :?>
+			<p class="error">Cette personne n'a pas encore été présentée en demande de maintien en social. Impossible de créer un CER.</p>
 		<?php else:?>
 			<?php if( $nbdossiersnonfinalisescovs > 0 ):?>
 				<p class="notice">Cette personne possède un contrat d'engagement réciproque en attente de passage en COV.</p>

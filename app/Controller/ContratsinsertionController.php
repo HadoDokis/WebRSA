@@ -457,7 +457,7 @@
                 $blockCumulCER66 = false;
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
                     // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs dépasse 24 mois
-                    if( $this->Contratinsertion->limiteCumulDureeCER66( $personne_id ) >= 24 ){
+                    if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) >= 24 ){
                         $blockCumulCER66 = true;
                     }
                     $this->set( 'blockCumulCER66', $blockCumulCER66  );
@@ -517,7 +517,7 @@
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 			
 				$nbDemandedemaintienNonfinalisesCovs = 1; //FIXME à vérifier une fois le script SQL mettant à jour les durées d'engagement en place
-				$cumulCer = $this->Contratinsertion->limiteCumulDureeCER66( $personne_id );
+				$cumulCer = $this->Contratinsertion->limiteCumulDureeCER( $personne_id );
 				if( $cumulCer >= 12 ){
 					// Nombre de dossiers COV de cette thématique qui ne sont pas finalisés (Demande de maintien en social)
 					$demandedemaintien = $this->Contratinsertion->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, 'proposnonorientationsproscovs58' );
