@@ -408,6 +408,21 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Rendezvous->begin();
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					unset( $this->Rendezvous->validate['daterdv'] );
+					$this->Rendezvous->validate['daterdv'] = array(
+						array(
+							'rule' => array( 'notEmpty' ),
+							'message' => __( 'Validate::notEmpty', true ),
+							'allowEmpty' => false
+						),
+						array(
+							'rule' => 'date',
+							'message' => 'Veuillez vérifier le format de la date.'
+						)
+					);
+					
+				}
 
 				if( $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					if( $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
