@@ -1769,7 +1769,7 @@
          * @param integer $personne_id
          * @return integer
          */
-        public function limiteCumulDureeCER66( $personne_id ){
+        public function limiteCumulDureeCER( $personne_id ){
             $Option = ClassRegistry::init( 'Option' );
             $durees = $Option->duree_engag();
             $case = array();
