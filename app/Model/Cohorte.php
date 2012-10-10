@@ -679,11 +679,21 @@
 				$this->Typeorient = ClassRegistry::init( 'Typeorient' );
 
 				// FIXME: valeurs magiques
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$intitule = array( 'Emploi', 'Social', 'Préprofessionnelle' );
+				}
+				else if( Configure::read( 'Cg.departement' ) == 93 ) {
+					$intitule = array( 'Emploi', 'Social', 'Socioprofessionnelle' );
+				}
+				else if( Configure::read( 'Cg.departement' ) == 58 ) {
+					$intitule = array( 'Professionnelle', 'Sociale' );
+				}
+				
 				$typesPermis = $this->Typeorient->find(
 					'list',
 					array(
 						'conditions' => array(
-							'Typeorient.lib_type_orient' => array( 'Emploi', 'Social', 'Socioprofessionnelle' )
+							'Typeorient.lib_type_orient' => $intitule
 						),
 						'recursive' => -1
 					)

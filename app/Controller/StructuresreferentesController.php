@@ -15,6 +15,11 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
 			$optionsradio = $this->Structurereferente->allEnumLists();
+			
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$optionsradio['typestructure']['oa'] = 'Structure liée à un PPAE';
+				$optionsradio['typestructure']['msp'] = 'Structure débouchant sur CER pro';
+			}
 			$this->set( 'optionsradio', $optionsradio );
 		}
 
