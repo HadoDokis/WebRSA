@@ -84,7 +84,7 @@
 			$this->set(
 				'chooserolepers',
 				array(
-					'0' => 'Aucune prestation',
+					'0' => 'Sans prestation',
 					'1' => 'Demandeur ou Conjoint du RSA'
 				)
 			);
