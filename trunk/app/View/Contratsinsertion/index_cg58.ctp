@@ -46,6 +46,8 @@
 
 		<?php if( empty( $orientstruct ) ) :?>
 			<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
+		<?php elseif( !empty( $bloquageAjoutCER ) ) :?>
+			<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
 		<?php elseif( empty( $soumisADroitEtDevoir ) ) :?>
 			<p class="error">Cette personne n'est pas soumise à droit et devoir. Impossible de créer un CER.</p>
 		<?php elseif( $nbDemandedemaintienNonfinalisesCovs == 0 ) :?>
@@ -59,9 +61,9 @@
 				<p class="notice">Cette personne ne possède pas encore de contrat d'engagement réciproque.</p>
 			<?php endif;?>
 
-			<?php  if( !empty( $orientstructEmploi ) ) :?>
+			<?php  /*if( !empty( $orientstructEmploi ) ) :?>
 				<p class="error">Cette personne possède actuellement une orientation professionnelle. Une réorientation sociale doit être sollicitée pour pouvoir enregistrer un CER.</p>
-			<?php endif; ?>
+			<?php endif;*/ ?>
 
 			<?php if( $this->Permissions->check( 'proposcontratsinsertioncovs58', 'add' ) && $nbdossiersnonfinalisescovs == 0 ):?>
 				<ul class="actionMenu">

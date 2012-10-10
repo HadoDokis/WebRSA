@@ -512,6 +512,14 @@
 					)
 				);
 				$this->set( compact( 'orientstructEmploi' ) );
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					$isOrientBloquante = Set::classicExtract( $orientstructEmploi, 'Structurereferente.typestructure' );
+					$bloquageAjoutCER = 0;
+					if( $isOrientBloquante == 'oa' ) {
+						$bloquageAjoutCER = 1;
+					}
+					$this->set( 'bloquageAjoutCER', $bloquageAjoutCER );
+				}
 			}
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
