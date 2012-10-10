@@ -1780,7 +1780,12 @@
             $case = implode( ' ', $case );
             $case = "CASE {$case} ELSE 0 END";
             
-            $emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+			}
+			else if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$emploi = (array)Configure::read( 'Typeorient.emploi_id' );
+			}
             $emploi = '('.implode( ',', $emploi ).')';
             
             $sql = "SELECT SUM( {$case} ) AS \"sum\"
