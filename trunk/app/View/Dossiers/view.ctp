@@ -129,6 +129,20 @@
 								<td><?php echo value( $options['Orientstruct']['origine'], Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.origine' ) );?></td>
 							</tr>
 							<?php endif;?>
+							<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+									<th>Orientation en cours...</th>
+									<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
+									<td><?php
+										$nonoriente66 = Set::extract( "{$rolepers}.Nonoriente66.derniere", $details );
+										$orientation = Set::extract( "{$rolepers}.Orientstruct.derniere", $details );
+										if( empty( $orientation ) && !empty( $nonoriente66 ) ) {
+											echo '<p class="error">Orientation en cours: Traitement DPS</p>';
+										}
+									?></td>
+									<?php endforeach;?>
+								</tr>
+							<?php endif;?>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th>Type d'orientation</th>
 								<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>

@@ -495,7 +495,24 @@
 				);
 				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
 
-
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$tNonoriente66 = $this->Dossier->Foyer->Personne->Nonoriente66->find(
+						'first',
+						array(
+							'fields' => array(
+								'Nonoriente66.id'
+							),
+							'contain' => false,
+							'conditions' => array(
+								'Nonoriente66.personne_id' => $personnesFoyer[$index]['Personne']['id']
+							),
+							'order' => "Nonoriente66.id DESC",
+						)
+					);
+					$personnesFoyer[$index]['Nonoriente66']['derniere'] = $tNonoriente66;
+				}
+				
+				
 				// Dernière relance effective
 				$tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->Relancenonrespectsanctionep93->find(
 					'first',
