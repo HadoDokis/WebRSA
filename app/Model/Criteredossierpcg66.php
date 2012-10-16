@@ -174,7 +174,7 @@
 		public function searchGestionnaire( $params, $mesCodesInsee,  $filtre_zone_geo ) {
 			$conditions = array();
 			$Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
-			$gestionnaire = Set::extract( $params, 'Search.Dossierpcg66.user_id' );
+			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
 			
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {

@@ -19,7 +19,7 @@
     ).'</li></ul>';
 ?>
 
-<?php echo $this->Xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => $this->action,  'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );?>
 
         <fieldset>
 			<?php echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
@@ -29,7 +29,7 @@
 
                 echo $this->Default2->subform(
                     array(
-						'Search.Dossierpcg66.user_id' => array(  'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'options' => $gestionnaire, 'empty' => true )
+						'Dossierpcg66.user_id' => array(  'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'options' => $gestionnaire, 'empty' => true )
                     ),
                     array(
                         'options' => $options

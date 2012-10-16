@@ -93,6 +93,10 @@
 
 				$this->set( compact( 'criteresdossierspcgs66' ) );
 			}
+			else {
+				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
+				$this->data = Set::merge( $this->data, $filtresdefaut );
+			}
 // debug($params);
 			$this->_setOptions();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
