@@ -73,6 +73,7 @@
 			echo $this->Default->subform(
 				array(
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
+					'Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale', 'value' => isset( $this->request->data['Bilanparcours66']['serviceinstructeur_id'] ) ? $this->request->data['Bilanparcours66']['serviceinstructeur_id'] : $serviceinstruceteurUser ),
 					'Bilanparcours66.structurereferente_id',
 					'Bilanparcours66.referent_id',
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
@@ -593,6 +594,7 @@
 			echo $this->Default->subform(
 				array(
 					'Pe.Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
+					'Pe.Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale' ),
 					'Pe.Bilanparcours66.structurereferente_id'
 				),
 				array(
@@ -1001,20 +1003,23 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			$options['Decisiondefautinsertionep66']['decision'][$avisep['decision']]
 		);
 
-		echo $this->Xhtml->tag(
-			'p',
-			'<strong>Type d\'orientation : </strong>'.$avisEPTypeorient
-		);
+		
+		if( !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['typeorient_id'] ) ) {
+			echo $this->Xhtml->tag(
+				'p',
+				'<strong>Type d\'orientation : </strong>'.$avisEPTypeorient
+			);
 
-		echo $this->Xhtml->tag(
-			'p',
-			'<strong>Structure référente : </strong>'.$avisEPStructure
-		);
+			echo $this->Xhtml->tag(
+				'p',
+				'<strong>Structure référente : </strong>'.$avisEPStructure
+			);
 
-		echo $this->Xhtml->tag(
-			'p',
-			'<strong>Nom du prescripteur : </strong>'.$avisEPReferent
-		);
+			echo $this->Xhtml->tag(
+				'p',
+				'<strong>Nom du prescripteur : </strong>'.$avisEPReferent
+			);
+		}
 
 
 
@@ -1101,11 +1106,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				'p',
 				$dossierpcg66['Decisiondossierpcg66'][0]['Decisionpcg66']['name']
 			);
-// 			$accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
-// 			echo $this->Xhtml->tag(
-// 				'p',
-// 				"En accord avec l'avis de l'EPL commission Audition : ".$accord
-// 			);
+
 			echo $this->Xhtml->tag(
 				'p',
 				"Commentaire :",
@@ -1117,6 +1118,8 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				'p',
 				$dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien']
 			);
+			$dateproposition = date_short( $dossierpcg66['Decisiondossierpcg66'][0]['datepropositiontechnicien'] );
+			echo $this->Xform->fieldValue( 'Decisiondossierpcg66.datepropositiontechnicien', $dateproposition );
 		echo '</fieldset>';
 	}
 

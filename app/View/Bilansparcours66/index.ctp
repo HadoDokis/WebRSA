@@ -62,8 +62,8 @@
 				}
 				else{
 
-					$pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
-					echo $pagination;
+// 					$pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
+// 					echo $pagination;
 
 					echo "<table><thead><tr>";
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.datebilan' )."</th>";
@@ -79,7 +79,7 @@
 					echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $bilanparcour66) {
-// debug( $bilanparcour66 );
+
 						$nbFichiersLies = 0;
 						$nbFichiersLies = ( isset( $bilanparcour66['Fichiermodule'] ) ? count( $bilanparcour66['Fichiermodule'] ) : 0 );
 
@@ -92,7 +92,7 @@
 						echo "<tr>";
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.positionbilan', array(  'tag' => 'td', 'options' => $options ) );
-							echo $this->Type2->format( $bilanparcour66, 'Referent.Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
+							echo $this->Type2->format( $bilanparcour66, 'Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
 
@@ -162,16 +162,7 @@
 							}
 							else if( $thematique == 'defautsinsertionseps66' ) {
 								// Proposition du référent
-								// FIXME: vide ??
 								echo '<td colspan="2"></td>';
-								/*echo $this->Xhtml->tag(
-									'td',
-									Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ) )
-								);
-								echo $this->Xhtml->tag(
-									'td',
-									Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ) )
-								);*/
 
 								// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
 								$iDernierpassage = count( $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'] ) - 1;
@@ -181,8 +172,7 @@
 									}
 									else {
 										$decision = $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision];
-// debug( $decision );
-// 'suspensionnonrespect','suspensiondefaut','maintien','reorientationprofverssoc','reorientationsocversprof'
+
 										if( in_array( $decision['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof', 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule', 'reporte' ) ) && empty( $decision['decisionsup'] ) ) {
 											echo $this->Xhtml->tag(
 												'td',
@@ -229,7 +219,7 @@
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'bilanparcoursGedooo', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'bilanparcoursGedooo' ) == 1 && $block )  )
+								$this->Xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'impression', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'impression' ) == 1 && $block )  )
 							);
 							echo $this->Xhtml->tag(
 								'td',
@@ -246,7 +236,6 @@
 						echo "</tr>";
 					}
 					echo "</tbody></table>";
-					echo $pagination;
 				}
 			?>
 

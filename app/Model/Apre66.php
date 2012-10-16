@@ -261,7 +261,7 @@
 				'fields' => array_merge(
 						$this->fields(), $this->Personne->fields(), $this->Structurereferente->fields(), $this->Referent->fields(), $this->Aideapre66->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->fields(), $this->Personne->Foyer->Dossier->fields(), array(
 					'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
-					'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
+					'( '.$this->Aideapre66->Typeaideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
 					$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
 						)
 				),
@@ -369,7 +369,7 @@
 					'fields' => array_merge(
 							$this->fields(), $this->Personne->fields(), $this->Structurereferente->fields(), $this->Referent->fields(), $this->Aideapre66->fields(), $this->Aideapre66->Fraisdeplacement66->fields(), $this->Aideapre66->Themeapre66->fields(), $this->Aideapre66->Themeapre66->Typeaideapre66->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->fields(), $this->Personne->Foyer->Dossier->fields(), array(
 						'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
-						'( '.$this->Aideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
+						'( '.$this->Aideapre66->Typeaideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
 						$this->Personne->Foyer->sqVirtualField( 'enerreur' ),
 						$this->Personne->Foyer->sqVirtualField( 'sansprestation' ),
 						$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )

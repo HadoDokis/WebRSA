@@ -106,6 +106,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'serviceinstructeur_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
 				'foreignKey' => 'serviceinstructeur_id',
@@ -208,11 +221,13 @@
 		 *
 		 * @return array
 		 */
-		public function listOptions() {
-			$cacheKey = 'serviceinstructeur_list_options';
+		public function listOptions( $typeserinsC = false ) {
+			$cacheKey = 'serviceinstructeur_list_options_typec'.( $typeserinsC ? '1' : '0' );
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
+				$conditions = ( $typeserinsC ? array( 'Serviceinstructeur.typeserins <>' => 'C' ) : array() );
+
 				$results = $this->find(
 					'list',
 					array (
@@ -220,7 +235,8 @@
 							'Serviceinstructeur.id',
 							'Serviceinstructeur.lib_service'
 						),
-						'order'  => array( 'Serviceinstructeur.lib_service ASC' )
+						'order'  => array( 'Serviceinstructeur.lib_service ASC' ),
+						'conditions' => $conditions
 					)
 				);
 
@@ -379,7 +395,8 @@
 		protected function _regenerateCache() {
 			// Suppression des éléments du cache.
 			$keys = array(
-				'serviceinstructeur_list_options',
+				'serviceinstructeur_list_options_typec1',
+				'serviceinstructeur_list_options_typec0'
 			);
 
 			foreach( $keys as $key ) {

@@ -387,19 +387,19 @@ msgid "Bilanparcours66.observbenefcompterendu"
 msgstr "Compte rendu de l'audition (le cas échéant)"
 
 msgid "ENUM::PROPOSITION::audition"
-msgstr "EPL Audition"
+msgstr "Avec Saisine EPL Audition pour défaut d'insertion"
 
 msgid "ENUM::PROPOSITION::auditionpe"
-msgstr "EPL Audition Public Pôle Emploi"
+msgstr "Saisine EPL Audition Défaut d'insertion Public suivi par Pôle Emploi"
 
 msgid "ENUM::PROPOSITION::parcours"
-msgstr "EPL Parcours"
+msgstr "Avec Saisine EPL Parcours pour réorientation ou maintien"
 
 msgid "ENUM::PROPOSITION::parcourspe"
-msgstr "EPL Parcours Public Pôle Emploi"
+msgstr "Saisine EPL Parcours Public suivi par Pôle Emploi"
 
 msgid "ENUM::PROPOSITION::traitement"
-msgstr "sans passage en EP"
+msgstr "Sans saisine de l'EPL Parcours ou Audition"
 
 msgid "ENUM::CHOIXPARCOURS::DOD"
 msgstr "Défaut de conclusion"
