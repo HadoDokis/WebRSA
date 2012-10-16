@@ -19,7 +19,7 @@
 				<?php echo $this->Form->input( 'Decisiondossierpcg66.etatop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.etatop' ), 'legend' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['etatop'] )  ); ?>
 
 				<feildset id="etattransmission" class="noborder" >
-					<?php echo $this->Form->input( 'Decisiondossierpcg66.datetransmissionop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.datetransmissionop' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 , 'empty' => true)  ); ?>
+					<?php echo $this->Form->input( 'Decisiondossierpcg66.datetransmissionop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.datetransmissionop' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 )  ); ?>
 				</fieldset>
 		</fieldset>
 
