@@ -36,6 +36,29 @@
 									)
 								);
 								
+								if( in_array( $id, $modeletypecourrierpcg66avecmontant ) ) {
+									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantsaisi", array(
+										'label' =>  "Montant calculé",
+										'type' => 'text',
+										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantsaisi']
+										)
+									);
+									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantdatedebut", array(
+										'label' =>  "Du",
+										'type' => 'date',
+										'dateFormat' => 'DMY',
+										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantdatedebut']
+										)
+									);
+									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantdatefin", array(
+										'label' =>  "Au",
+										'type' => 'date',
+										'dateFormat' => 'DMY',
+										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantdatefin']
+										)
+									);
+								}
+								
 								echo $this->Autrepiecetraitementpcg66->fieldsetPieces( 'Piecemodeletypecourrierpcg66', $id, $listepieces, $listePiecesWithAutre, 'Modeletraitementpcg66.autrepiecemanquante' );
 
 							echo '</fieldset>';

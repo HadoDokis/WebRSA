@@ -8,7 +8,9 @@
 		public $actsAs = array(
 			'Enumerable' => array(
 				'fields' => array(
-					'isautrepiece'
+					'isautrepiece',
+					'ismontant',
+					'isdates'
 				)
 			)
 		);

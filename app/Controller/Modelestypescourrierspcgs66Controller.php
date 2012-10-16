@@ -25,17 +25,20 @@
 						'Modeletypecourrierpcg66.id',
 						'Modeletypecourrierpcg66.name',
 						'Modeletypecourrierpcg66.modeleodt',
+						'Modeletypecourrierpcg66.ismontant',
+						'Modeletypecourrierpcg66.isdates',
 						'Typecourrierpcg66.name'
 					),
 					'contain' => array(
 						'Typecourrierpcg66'
 					),
-					'group' => array(  'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name', 'Modeletypecourrierpcg66.modeleodt', 'Modeletypecourrierpcg66.typecourrierpcg66_id', 'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
+					'group' => array(  'Modeletypecourrierpcg66.id', 'Modeletypecourrierpcg66.name', 'Modeletypecourrierpcg66.modeleodt', 'Modeletypecourrierpcg66.ismontant', 'Modeletypecourrierpcg66.isdates', 'Modeletypecourrierpcg66.typecourrierpcg66_id', 'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
 					'order' => array( 'Typecourrierpcg66.name ASC' ),
 					'limit' => 10
 				)
 			);
 
+			$this->_setOptions();
             $this->Default->index( $queryData );
         }
 

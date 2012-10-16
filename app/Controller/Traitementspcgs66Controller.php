@@ -108,6 +108,18 @@
 					'contain' => false
 						)
 				);
+			
+				$modeletypecourrierpcg66avecmontant = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Modeletypecourrierpcg66.typecourrierpcg66_id' => $typecourrierpcg66_id,
+							'Modeletypecourrierpcg66.ismontant' => '1'
+						),
+						'fields' => array( 'Modeletypecourrierpcg66.id'),
+						'contain' => false
+					)
+				);
 			}
 
 			// Liste des pièces liées aux modèles de courrier
@@ -154,7 +166,7 @@
 				$this->request->data = Set::merge( $this->request->data, $datas );
 			}
 
-			$this->set( compact( 'modeletypecourrierpcg66' ) );
+			$this->set( compact( 'modeletypecourrierpcg66', 'modeletypecourrierpcg66avecmontant' ) );
 			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
@@ -213,14 +225,13 @@
 			);
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
 			$this->set( compact( 'nompersonne' ) );
-
-            if( !empty( $this->request->data ) ){
-                $dossierpcg66_id = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
-                if( !empty( $dossierpcg66_id ) ) {
-                    $this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcg66_id ) );
-                }
-            }
-                $this->set( 'dossierpcgId', $dossierpcg66_id );
+			
+			$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
+			if( !empty( $dossierpcgId ) ) {
+				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcgId ) );
+			}
+			$this->set( 'dossierpcgId', $dossierpcg66_id );
+			
 			//Formulaire de recherche pour trouver l'historique de tous les dossiers PCG d'une personne
 			$queryData = array(
 				'conditions' => array(
@@ -339,7 +350,7 @@
 
 			$searchOptions['Personnepcg66']['dossierpcg66_id'] = array( );
 			foreach( $dossierspcgs66 as $dossierpcg66 ) {
-				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::enum( $dossierpcg66['Dossierpcg66']['user_id'], $this->viewVars['gestionnaire'] );
+				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::classicExtract( $this->viewVars['gestionnaire'], $dossierpcg66['Dossierpcg66']['user_id'] );
 			}
 			$this->set( 'searchOptions', $searchOptions );
 
@@ -485,6 +496,13 @@
 				// INFO: attention, on peut se le permettre car il n'y a pas de règle de validation sur le commentaire
 				if( !empty( $dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id'] ) ) {
 					$dataToSave['Modeletraitementpcg66']['commentaire'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['commentaire'];
+					
+					$dataToSave['Modeletraitementpcg66']['montantsaisi'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantsaisi'];
+					
+					$dataToSave['Modeletraitementpcg66']['montantdatedebut'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatedebut'];
+					
+					$dataToSave['Modeletraitementpcg66']['montantdatefin'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatefin'];
+
 					unset( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']] );
 				}
 

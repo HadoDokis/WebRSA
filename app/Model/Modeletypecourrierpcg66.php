@@ -4,6 +4,16 @@
 		public $name = 'Modeletypecourrierpcg66';
 
 		public $order = 'Modeletypecourrierpcg66.name ASC';
+		
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'ismontant',
+					'isdates'
+				)
+			)
+		);
+
 
 		public $validate = array(
 			'name' => array(
