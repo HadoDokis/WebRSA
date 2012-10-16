@@ -659,6 +659,16 @@
 				<p class="notice">Aucun passage en EP présent.</p>
 			<?php endif;?>
 		<?php endif;?>
+		<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+			<ul class="actionMenu">
+				<li><?php
+					echo $this->Xhtml->printLinkJs(
+						'Imprimer l\'écran',
+						array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+					);
+				?></li>
+			</ul>
+		<?php endif;?>
 	</div>
 </div>
 
