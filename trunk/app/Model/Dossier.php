@@ -259,18 +259,22 @@
 					}
 				}
 			}
+			
+			$joins = array(
+				$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+				$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
+				$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+				$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) )
+			);
+			
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
-						
-// 			$sansPrestation  = Set::extract( $params, 'Personne.sansprestation' );
-// 			if( ( $sansPrestation = '1' ) ) {
-// 				$conditions[] = 'Prestation.rolepers IS NULL';
-// 			}
-// 			else {
-// 				$conditions = array( 'Prestation.rolepers' => array( 'DEM', 'CJT' ) );
-// 			}
-			
 
 			// Critères sur le dossier - service instructeur
 			if( isset( $params['Serviceinstructeur']['id'] ) && !empty( $params['Serviceinstructeur']['id'] ) ) {
@@ -291,6 +295,10 @@
 			// Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
 			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$joins[] = $this->Foyer->Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) );
+					$conditions[] = array( 'Nonoriente66.id IS NULL' );
+				}
 			}
 
 
@@ -338,17 +346,7 @@
 					'PersonneReferent.referent_id'
 				),
 				'recursive' => -1,
-				'joins' => array(
-					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
-					$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-					$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
-				),
+				'joins' => $joins,
 				'limit' => 10,
 				'order' => array( 'Personne.nom ASC' ),
 				'conditions' => $conditions
