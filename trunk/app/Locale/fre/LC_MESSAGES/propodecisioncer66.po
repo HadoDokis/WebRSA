@@ -42,3 +42,15 @@ msgstr "Validation le"
 
 msgid "Proposdecisionscers66::propositionsimple"
 msgstr "Décision du CER Simple"
+
+msgid "Proposdecisionscers66::propositionparticulier"
+msgstr "Décision du CER Particulier"
+
+msgid "Propodecisioncer66.nonvalidationparticulier"
+msgstr "Reprise de droit ou radiation ?"
+
+msgid "ENUM::NONVALIDATIONPARTICULIER::reprise"
+msgstr "Reprise de droit"
+
+msgid "ENUM::NONVALIDATIONPARTICULIER::radiation"
+msgstr "Radiation"

@@ -10,7 +10,8 @@
 			'Containable',
 			'Enumerable' => array(
 				'fields' => array(
-					'isvalidcer' => array( 'type' => 'no' )
+					'isvalidcer' => array( 'type' => 'no' ),
+					'nonvalidationparticulier'
 				)
 			),
 			'Formattable'
