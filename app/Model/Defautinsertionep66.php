@@ -144,6 +144,16 @@
 									'Adressefoyer.rgadr' => '01'
 								),
 								'Adresse'
+							),
+							'Dossierpcg66' => array(
+								'Decisiondefautinsertionep66',
+								'Decisiondossierpcg66' => array(
+									'conditions' => array(
+										'Decisiondossierpcg66.validationproposition' => 'O'
+									),
+									'order' => array( 'Decisiondossierpcg66.datevalidation DESC' ),
+									'Decisionpdo'
+								)
 							)
 						)
 					),

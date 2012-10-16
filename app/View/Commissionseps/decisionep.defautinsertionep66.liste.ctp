@@ -12,6 +12,7 @@ echo '<table>
 		<colgroup />
 		<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
 		<colgroup />
+		<colgroup />
 		<thead>
 			<tr>
 				<th rowspan="2">Nom du demandeur</th>
@@ -25,11 +26,12 @@ echo '<table>
 				<th rowspan="2">Date de radiation Pôle Emploi</th>
 				<th rowspan="2">Motif de radiation Pôle Emploi</th>
 				<th colspan="4">Avis EPL</th>
+				<th rowspan="2">Décision PCG</th>
 				<th rowspan="2">Observations</th>
-                                <th rowspan="2">Actions</th>
+				<th rowspan="2">Actions</th>
 			</tr>
 			<tr>
-				<th>Décision</th>
+				<th>Avis</th>
 				<th>Type d\'orientation</th>
 				<th>Structure référente</th>
 				<th>Référent</th>
@@ -40,6 +42,8 @@ echo '<table>
 		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
 
 		$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
+		
+		$decisioncg = @$dossierep['Personne']['Foyer']['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo'];
 
 		echo $this->Xhtml->tableCells(
 			array(
@@ -62,8 +66,9 @@ echo '<table>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
+				Set::classicExtract( $decisioncg, "libelle" ),
 				Set::classicExtract( $decisionep, "commentaire" ),
-                                array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )

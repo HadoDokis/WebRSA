@@ -50,10 +50,10 @@ msgid "ENUM::DECISIONSUP::maintien"
 msgstr "Maintien du versement de l'allocation"
 
 msgid "Decisiondefautinsertionep66.decision"
-msgstr "Décision"
+msgstr "Avis"
 
 msgid "Decisiondefautinsertionep66.decisionsup"
-msgstr "Décision supplémentaire"
+msgstr "Avis supplémentaire"
 
 msgid "Decisiondefautinsertionep66.commentaire"
 msgstr "Commentaire"

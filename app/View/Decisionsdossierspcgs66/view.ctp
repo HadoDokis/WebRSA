@@ -18,7 +18,6 @@
 				'Decisiondossierpcg66.commentairetechnicien',
 				'Decisiondossierpcg66.datepropositiontechnicien',
 				'Decisiondossierpcg66.datevalidation',
-				'Decisiondossierpcg66.commentaire' => array( 'label' => 'Commentaire global : ' ),
                 'Dossierpcg66.etatdossierpcg'
 			),
 			array(
