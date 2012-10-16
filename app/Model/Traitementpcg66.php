@@ -651,6 +651,9 @@
 				$this->Personnepcg66->join( 'Personnepcg66Situationpdo' ),
 				$this->Personnepcg66->join( 'Dossierpcg66' ),
 				$this->Personnepcg66->join( 'Personne' ),
+				$this->Personnepcg66->Personne->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Personnepcg66->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Personnepcg66->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Personnepcg66->Dossierpcg66->join( 'Foyer' ),
 				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier' ),
 				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
@@ -660,7 +663,11 @@
 			);
 
 			$conditions = array(
-				'Traitementpcg66.id' => $id
+				'Traitementpcg66.id' => $id,
+				'OR' => array(
+					'Orientstruct.id IS NULL',
+					'Orientstruct.id IN ( '.$this->Personnepcg66->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
+				)
 			);
 
 			$queryData = array(
@@ -668,6 +675,8 @@
 					$this->fields(),
 					$this->Modeletraitementpcg66->fields(),
 					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
+					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
+					$this->Personnepcg66->Personne->Orientstruct->fields(),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
