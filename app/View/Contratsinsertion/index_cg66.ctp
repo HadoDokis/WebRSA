@@ -121,7 +121,7 @@
 						echo $this->Xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $forme_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ) ) ),
-								h( Set::classicExtract( $options['num_contrat'], Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ) ) ),
+								h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ), $options['num_contrat'] ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' ) ) ),
