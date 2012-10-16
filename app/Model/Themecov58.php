@@ -11,7 +11,8 @@
 				'fields' => array(
 					'propoorientationcov58',
 					'propocontratinsertioncov58',
-					'propononorientationprocov58'
+					'propononorientationprocov58',
+					'propoorientsocialecov58',
 				)
 			)
 		);
@@ -53,8 +54,7 @@
 		public function themes() {
 			$enums = $this->enums();
 			foreach( array_keys( $enums[$this->alias] ) as $key ) {
-// debug($key);
-				if( substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) {
+ 				if( substr( $key, -2 ) != Configure::read( 'Cg.departement' ) ) {
 					unset( $enums[$this->alias][$key] );
 				}
 			}

@@ -20,10 +20,13 @@
 	<?php if( !empty( $rdvs ) ):?>
 		<?php
 			if( isset( $dossierep ) && !empty( $dossierep ) ) {
-			echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['StatutrdvTyperdv']['motifpassageep'].'.</p>';
+				echo '<p class="error">Ce dossier est en cours de passage en EP : '.$dossierep['StatutrdvTyperdv']['motifpassageep'].'.</p>';
 			}
-			if ( !isset( $dossierepLie ) ) {
-				$dossierepLie = 0;
+			if( isset( $dossiercov ) && !empty( $dossiercov ) ) {
+				echo '<p class="error">Ce dossier est en cours de passage en COV: '.$dossiercov['StatutrdvTyperdv']['motifpassageep'].'.</p>';
+			}
+			if ( !isset( $dossiercommissionLie ) ) {
+				$dossiercommissionLie = 0;
 			}
 		?>
 	<table class="tooltips">
@@ -68,7 +71,7 @@
 								'Editer le référent',
 								array( 'controller' => 'rendezvous', 'action' => 'edit',
 								$rdv['Rendezvous']['id'] ),
-								( ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id ) && ( $dossierepLie == 0 ) && ( $this->Permissions->check( 'rendezvous', 'edit' ) == 1 ) )
+								( ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id ) && ( $dossiercommissionLie== 0 ) && ( $this->Permissions->check( 'rendezvous', 'edit' ) == 1 ) )
 							),
 							$this->Xhtml->printLink(
 								'Imprimer le Rendez-vous',
@@ -82,7 +85,7 @@
 								$rdv['Rendezvous']['id'] ),
 								(
                                     ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id )
-                                    && ( $dossierepLie == 0 )
+                                    && ( $dossiercommissionLie== 0 )
                                     && ( $this->Permissions->check( 'rendezvous', 'delete' ) == 1 )
                                 )
 							),

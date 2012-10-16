@@ -1,50 +1,45 @@
 <?php
-/* SVN FILE: $Id$ */
-/**
-* Custom Inflected Words.
-*
-* This file is used to hold words that are not matched in the normail Inflector::pluralize() and
-* Inflector::singularize()
-*
-* PHP versions 4 and %
-*
-* CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
-* Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
-*
-* Licensed under The MIT License
-* Redistributions of files must retain the above copyright notice.
-*
-* @filesource
-* @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
-* @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
-* @package       cake
-* @subpackage    cake.app.config
-* @since         CakePHP(tm) v 1.0.0.2312
-* @version       $Revision$
-* @modifiedby    $LastChangedBy$
-* @lastmodified  $Date$
-* @license       http://www.opensource.org/licenses/mit-license.php The MIT License
-*/
-/**
-* This is a key => value array of regex used to match words.
-* If key matches then the value is returned.
-*
-*  $pluralRules = array('/(s)tatus$/i' => '\1\2tatuses', '/^(ox)$/i' => '\1\2en', '/([m|l])ouse$/i' => '\1ice');
-*/
-	$pluralRules = array();
-/**
-* This is a key only array of plural words that should not be inflected.
-* Notice the last comma
-*
-* $uninflectedPlural = array('.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox');
-*/
-// 	$uninflectedPlural = array(
-// 		// Tables
-// 		'parcours' => 'parcours',
-// 		'permisb' => 'permisb',
-// 		'rendezvous' => 'rendezvous',
-// 	);
+	/* SVN FILE: $Id$ */
+	/**
+	 * Custom Inflected Words.
+	 *
+	 * This file is used to hold words that are not matched in the normail Inflector::pluralize() and
+	 * Inflector::singularize()
+	 *
+	 * PHP versions 4 and %
+	 *
+	 * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
+	 * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+	 *
+	 * Licensed under The MIT License
+	 * Redistributions of files must retain the above copyright notice.
+	 *
+	 * @filesource
+	 * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+	 * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+	 * @package       cake
+	 * @subpackage    cake.app.config
+	 * @since         CakePHP(tm) v 1.0.0.2312
+	 * @version       $Revision$
+	 * @modifiedby    $LastChangedBy$
+	 * @lastmodified  $Date$
+	 * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+	 */
 
+	/**
+	 * This is a key => value array of regex used to match words.
+	 * If key matches then the value is returned.
+	 *
+	 *  $pluralRules = array('/(s)tatus$/i' => '\1\2tatuses', '/^(ox)$/i' => '\1\2en', '/([m|l])ouse$/i' => '\1ice');
+	 */
+	$pluralRules = array( );
+
+	/**
+	 * This is a key only array of plural words that should not be inflected.
+	 * Notice the last comma
+	 *
+	 * $uninflectedPlural = array('.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox');
+	 */
 	$uninflectedPlural = array(
 		'recours',
 		'rendezvous',
@@ -55,12 +50,13 @@
 		'rejet_historique',
 		//Fin harry
 	);
-/**
-* This is a key => value array of plural irregular words.
-* If key matches then the value is returned.
-*
-*  $irregularPlural = array('atlas' => 'atlases', 'beef' => 'beefs', 'brother' => 'brothers')
-*/
+
+	/**
+	 * This is a key => value array of plural irregular words.
+	 * If key matches then the value is returned.
+	 *
+	 *  $irregularPlural = array('atlas' => 'atlases', 'beef' => 'beefs', 'brother' => 'brothers')
+	 */
 	$irregularPlural = array(
 		// Tables
 		'acccreaentr' => 'accscreaentr',
@@ -68,7 +64,7 @@
 		'acqmatprof' => 'acqsmatsprofs',
 		'acqmatprof_pieceacqmatprof' => 'acqsmatsprofs_piecesacqsmatsprofs',
 		'actioncandidat' => 'actionscandidats',
-        'actioncandidat_motifsortie' => 'actionscandidats_motifssortie',
+		'actioncandidat_motifsortie' => 'actionscandidats_motifssortie',
 		'actioncandidat_partenaire' => 'actionscandidats_partenaires',
 		'actioncandidat_personne' => 'actionscandidats_personnes',
 		'actioncandidat_zonegeographique' => 'actionscandidats_zonesgeographiques',
@@ -297,10 +293,8 @@
 		'decisionpropononorientationprocov58' => 'decisionsproposnonorientationsproscovs58',
 		'passagecov58' => 'passagescovs58',
 		'cov58' => 'covs58',
-        'sitecov58' => 'sitescovs58',
+		'sitecov58' => 'sitescovs58',
 		'sitecov58_zonegeographique' => 'sitescovs58_zonesgeographiques',
-
-
 		'autreavissuspension' => 'autresavissuspension',
 		'autreavisradiation' => 'autresavisradiation',
 		'criterebilanparcours66' => 'criteresbilansparcours66',
@@ -317,7 +311,6 @@
 		// EPs restructuration
 		'passagecommissionep' => 'passagescommissionseps',
 		'compositionregroupementep' => 'compositionsregroupementseps',
-
 		'signalementep93' => 'signalementseps93',
 		'decisionsignalementep93' => 'decisionssignalementseps93',
 		'contratcomplexeep93' => 'contratscomplexeseps93',
@@ -326,7 +319,6 @@
 		'criterefichecandidature' => 'criteresfichescandidature',
 		'historiqueep' => 'historiqueseps',
 		'cohortefichecandidature66' => 'cohortesfichescandidature66',
-
 		// Dossiers PCGs
 		'dossierpcg66' => 'dossierspcgs66',
 		'criteredossierpcg66' => 'criteresdossierspcgs66',
@@ -354,13 +346,10 @@
 		'mtpcg66_pmtcpcg66' => 'mtpcgs66_pmtcpcgs66',
 		'typecourrierpcg66' => 'typescourrierspcgs66',
 		'courrierpcg66' => 'courrierspcgs66',
-
 		// DSPS cg66
 		'coderomemetierdsp66' => 'codesromemetiersdsps66',
 		'coderomesecteurdsp66' => 'codesromesecteursdsps66',
-
 		'historiqueemploi' => 'historiqueemplois',
-
 		// Gestion des anomalies
 		'gestionano' => 'gestionsanos',
 		'conditionactiviteprealable' => 'conditionsactivitesprealables',
@@ -368,37 +357,41 @@
 		'cohortenonoriente66' => 'cohortesnonorientes66',
 		'nonoriente66' => 'nonorientes66',
 		'gestionsanctionep58' => 'gestionssanctionseps58',
-
 		'propodecisioncui66' => 'proposdecisionscuis66',
 		'decisioncui66' => 'decisionscuis66',
 		'suspensioncui66' => 'suspensionscuis66',
 		'accompagnementcui66' => 'accompagnementscuis66',
 		'motifsortiecui66' => 'motifssortiecuis66',
 		'offreinsertion' => 'offresinsertion',
+		'propoorientsocialecov58' => 'proposorientssocialescovs58',
+		'decisionpropoorientsocialecov58' => 'decisionsproposorientssocialescovs58',
 		// Workflow CER
 		'cohortereferent93' => 'cohortesreferents93',
 		'cer93' => 'cers93',
 		'etatcivilcer93' => 'etatscivilscers93',
 	);
-/**
-* This is a key => value array of regex used to match words.
-* If key matches then the value is returned.
-*
-*  $singularRules = array('/(s)tatuses$/i' => '\1\2tatus', '/(matr)ices$/i' =>'\1ix','/(vert|ind)ices$/i')
-*/
-	$singularRules = array();
-/**
-* This is a key only array of singular words that should not be inflected.
-* You should not have to change this value below if you do change it use same format
-* as the $uninflectedPlural above.
-*/
+
+	/**
+	 * This is a key => value array of regex used to match words.
+	 * If key matches then the value is returned.
+	 *
+	 *  $singularRules = array('/(s)tatuses$/i' => '\1\2tatus', '/(matr)ices$/i' =>'\1ix','/(vert|ind)ices$/i')
+	 */
+	$singularRules = array( );
+
+	/**
+	 * This is a key only array of singular words that should not be inflected.
+	 * You should not have to change this value below if you do change it use same format
+	 * as the $uninflectedPlural above.
+	 */
 	$uninflectedSingular = $uninflectedPlural;
-/**
-* This is a key => value array of singular irregular words.
-* Most of the time this will be a reverse of the above $irregularPlural array
-* You should not have to change this value below if you do change it use same format
-*
-* $irregularSingular = array('atlases' => 'atlas', 'beefs' => 'beef', 'brothers' => 'brother')
-*/
-	$irregularSingular = array_flip($irregularPlural);
+
+	/**
+	 * This is a key => value array of singular irregular words.
+	 * Most of the time this will be a reverse of the above $irregularPlural array
+	 * You should not have to change this value below if you do change it use same format
+	 *
+	 * $irregularSingular = array('atlases' => 'atlas', 'beefs' => 'beef', 'brothers' => 'brother')
+	 */
+	$irregularSingular = array_flip( $irregularPlural );
 ?>

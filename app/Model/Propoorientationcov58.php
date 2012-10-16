@@ -664,14 +664,14 @@
 						'alias'      => 'Typeorient',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.typeorient_id = Typeorient.id' ),
+						'conditions' => array( "{$modeleDecisions}.typeorient_id = Typeorient.id" ),
 					),
 					array(
 						'table'      => 'structuresreferentes',
 						'alias'      => 'Structurereferente',
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
-						'conditions' => array( 'Propoorientationcov58.structurereferente_id = Structurereferente.id' ),
+						'conditions' => array( "{$modeleDecisions}.structurereferente_id = Structurereferente.id" ),
 					)
 				)
 			);

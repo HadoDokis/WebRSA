@@ -17,7 +17,7 @@
 	{
 		public $name = 'Criteresrdv';
 
-		public $uses = array( 'Critererdv', 'Rendezvous', 'Option', 'Typerdv', 'Referent' );
+		public $uses = array( 'Critererdv', 'Rendezvous', 'Option' );
 
 		public $helpers = array( 'Csv', 'Ajax', 'Paginator', 'Search' );
 
@@ -45,7 +45,7 @@
 		protected function _setOptions() {
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
-			$typerdv = $this->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
+			$typerdv = $this->Rendezvous->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
 			$this->set( 'typerdv', $typerdv );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
 			$this->set( 'referents', $this->Rendezvous->Referent->find( 'list' ) );

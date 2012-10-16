@@ -247,6 +247,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionpropoorientsocialecov58' => array(
+				'className' => 'Decisionpropoorientsocialecov58',
+				'foreignKey' => 'structurereferente_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'structurereferente_id',

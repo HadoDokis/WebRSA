@@ -12,20 +12,21 @@
 		);
 
 		public function _setOptions() {
-			$options = array();
+			$options = $this->StatutrdvTyperdv->enums();
 			$statutsrdvs = $this->StatutrdvTyperdv->Statutrdv->find( 'list', array( 'fields' => 'Statutrdv.libelle' ) );
 			$typesrdv = $this->StatutrdvTyperdv->Typerdv->find( 'list', array( 'fields' => 'Typerdv.libelle' ) );
 			$this->set( compact( 'options', 'typesrdv', 'statutsrdvs' ) );
 		}
 
-		function index() {
+		public function index() {
 			// Retour à la liste en cas d'annulation
-            if( isset( $this->request->data['Cancel'] ) ) {
+			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'statutsrdvs_typesrdv', 'action' => 'index' ) );
 			}
 			$fields = array(
 				'StatutrdvTyperdv.id',
-				'StatutrdvTyperdv.nbabsenceavantpassageep',
+				'StatutrdvTyperdv.nbabsenceavantpassagecommission',
+				'StatutrdvTyperdv.typecommission',
 				'StatutrdvTyperdv.motifpassageep',
 				'Typerdv.libelle',
 				'Statutrdv.libelle'
@@ -46,7 +47,7 @@
 			$this->_setOptions();
 		}
 
-		function add() {
+		public function add() {
 			if( !empty( $this->request->data ) ) {
 				$this->StatutrdvTyperdv->begin();
 				if( $this->StatutrdvTyperdv->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
@@ -63,7 +64,7 @@
 			$this->render( 'add_edit' );
 		}
 
-		function edit( $statutrdv_typerdv_id = null ){
+		public function edit( $statutrdv_typerdv_id = null ){
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $statutrdv_typerdv_id ), 'invalidParameter' );
@@ -96,12 +97,7 @@
 			$this->render( 'add_edit' );
 		}
 
-
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
-		function delete( $statutrdv_typerdv_id = null ) {
+		public function delete( $statutrdv_typerdv_id = null ) {
 			// Vérification du format de la variable
 			if( !valid_int( $statutrdv_typerdv_id ) ) {
 				$this->cakeError( 'error404' );

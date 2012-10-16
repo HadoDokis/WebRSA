@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle = 'Gestion pour passage en EP par objet et type de RDV';?></h1>
+<h1><?php echo $this->pageTitle = 'Gestion pour passage en commission par objet et type de RDV';?></h1>
 
 <?php
 
@@ -7,7 +7,8 @@
 			array(
 				'Typerdv.libelle',
 				'Statutrdv.libelle',
-				'StatutrdvTyperdv.nbabsenceavantpassageep',
+				'StatutrdvTyperdv.nbabsenceavantpassagecommission',
+				'StatutrdvTyperdv.typecommission',
 				'StatutrdvTyperdv.motifpassageep'
 			),
 			array(

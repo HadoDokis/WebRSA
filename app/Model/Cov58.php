@@ -329,7 +329,7 @@
 					}
 				}
 			}
-// debug( $queryData );
+
 			$options = Set::merge( $options, $this->enums() );
 
 			$dossierscovs58 = $this->Passagecov58->Dossiercov58->find( 'all', $queryData );
@@ -582,9 +582,10 @@
 			);
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
 
+			$themeClassNames = array();
 			foreach( $this->Passagecov58->Dossiercov58->Themecov58->themes() as $theme ) {
-
 				$model = Inflector::classify( $theme );
+				$themeClassNames[] = $model;
 
 				if( in_array( 'Enumerable', $this->Passagecov58->Dossiercov58->{$model}->Behaviors->attached() ) ) {
 					$options = Set::merge( $options, $this->Passagecov58->Dossiercov58->{$model}->enums() );
@@ -597,42 +598,117 @@
 			}
 			$options = Set::merge( $options, $this->enums() );
 
+			// Combinaison des jointures
+			if( isset( $queryData['joins'] ) && !empty( $queryData['joins'] ) ) {
+				$joins = array();
+				$joinIndices = array();
+				$mergedJoins = array();
+
+				foreach( $queryData['joins'] as $join ) {
+
+					$join['conditions'] = (array)$join['conditions'];
+					if( !isset( $joinIndices[$join['alias']] ) ) {
+						$joins[] = $join;
+						$joinIndices[$join['alias']] = count( $joins ) - 1;
+					}
+					else {
+						$mergedJoins[] = $joinIndices[$join['alias']];
+						if( !isset( $joins[$joinIndices[$join['alias']]]['conditions']['OR'] ) ) {
+							$joins[$joinIndices[$join['alias']]]['conditions'] = array(
+								'OR' => array(
+									$joins[$joinIndices[$join['alias']]]['conditions'],
+									$join['conditions']
+								)
+							);
+						}
+						else {
+							$joins[$joinIndices[$join['alias']]]['conditions']['OR'][] = $join['conditions'];
+						}
+					}
+				}
+
+				if( !empty( $mergedJoins ) ) {
+					foreach( $mergedJoins as $indice ) {
+						$join = $joins[$indice];
+						unset( $joins[$indice] );
+						$joins[] = $join;
+					}
+				}
+
+				$queryData['joins'] = array_values( $joins );
+			}
+
 			$dossierscovs58 = $this->Passagecov58->Dossiercov58->find( 'all', $queryData );
+
+			// Préparation d'un enregistrement vide
+			if( !empty( $dossierscovs58 ) ) {
+				$empty = array_keys( Set::flatten( $dossierscovs58[0] ) );
+				$empty = Xset::bump( Set::normalize( $empty ) );
+				foreach( $themeClassNames as $themeClassName ) {
+					$empty[$themeClassName]['Typeorient'] = $empty['Typeorient'];
+					$empty[$themeClassName]['Structurereferente'] = $empty['Structurereferente'];
+				}
+				unset( $empty['Typeorient'], $empty['Structurereferente'] );
+			}
 
 			// FIXME: faire la traduction des enums dans les modèles correspondants ?
 			$this->Informationpe = ClassRegistry::init( 'Informationpe' );
 			foreach( $dossierscovs58 as $key => $dossiercov58 ) {
-				$dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
-				$dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
 
-				unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+				// Déplacement des données du type d'orientation et de la structure référente
+				foreach( $themeClassNames as $themeClassName ) {
+					if( !empty( $dossierscovs58[$key][$themeClassName]['id'] ) ) {
+						$dossierscovs58[$key][$themeClassName]['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
+						$dossierscovs58[$key][$themeClassName]['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
 
-				$champsOrientation = array_keys( $dossierscovs58[$key]['Propoorientationcov58'] );
+						unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+					}
+				}
+				/*if( !empty( $dossierscovs58[$key]['Propoorientationcov58']['id'] ) ) {
+					$dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
+					$dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
+
+					unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+				}
+				else if( !empty( $dossierscovs58[$key]['Propoorientsocialecov58']['id'] ) ) {
+					$dossierscovs58[$key]['Propoorientsocialecov58']['Typeorient'] = $dossierscovs58[$key]['Typeorient'];
+					$dossierscovs58[$key]['Propoorientsocialecov58']['Structurereferente'] = $dossierscovs58[$key]['Structurereferente'];
+
+					unset( $dossierscovs58[$key]['Typeorient'], $dossierscovs58[$key]['Structurereferente'] );
+				}*/
+
+				// Ajout de données à NULL pour l'impression en sections
+				$dossierscovs58[$key] = Set::merge( $empty, $dossierscovs58[$key] );
+
+				/*$champsOrientation = array_keys( $dossierscovs58[$key]['Propoorientationcov58'] );
+debug( $champsOrientation );
 				$orientationVide = array_fill_keys( $champsOrientation, null );
 				$orientationVide['Typeorient'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Typeorient'] ), null );
 				$orientationVide['Structurereferente'] = array_fill_keys( array_keys( $dossierscovs58[$key]['Propoorientationcov58']['Structurereferente'] ), null );
+debug( $orientationVide );*/
 
-				if ( isset( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && !empty( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && $dossiercov58['Propoorientationcov58']['rgorient'] > 0 ) {
+				/*if ( isset( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && !empty( $dossiercov58['Propoorientationcov58']['decisioncov'] ) && $dossiercov58['Propoorientationcov58']['rgorient'] > 0 ) {
 					$dossierscovs58[$key]['Proporeorientationcov58'] = $dossierscovs58[$key]['Propoorientationcov58'];
 					$dossierscovs58[$key]['Propoorientationcov58'] = $orientationVide;
 				}
 				else {
 					$dossierscovs58[$key]['Proporeorientationcov58'] = $orientationVide;
-				}
+				}*/
 
 				$infope = $this->Informationpe->derniereInformation( $dossiercov58 );
 				$dossierscovs58[$key]['Personne']['inscritpe'] = ( isset( $infope['Historiqueetatpe'][0]['etat'] ) && $infope['Historiqueetatpe'][0]['etat'] == 'inscription' ) ? 'Oui' : 'Non';
 
 				// Traduction ...
-				$dossierscovs58[$key]['Themecov58']['name'] = __d( 'dossiercov58', 'ENUM::THEMECOV::'.$dossiercov58['Themecov58']['name'] );
+				$dossierscovs58[$key]['Themecov58']['name'] = __d( 'dossiercov58', 'ENUM::THEMECOV::'.$dossiercov58['Themecov58']['name'], true );
 			}
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
-			$options['Propoorientationcov58']['decisioncov'] = $decisionscovs;
-			$options['Proporeorientationcov58']['decisioncov'] = $decisionscovs;
+			foreach( $themeClassNames as $themeClassName ) {
+				$options[$themeClassName]['decisioncov'] = $decisionscovs;
+			}
+			/*$options['Proporeorientationcov58']['decisioncov'] = $decisionscovs;
 			$options['Propocontratinsertioncov58']['decisioncov'] = $decisionscovs;
-// debug($dossierscovs58);
-// die();
+			$options['Propoorientsocialecov58']['decisioncov'] = $decisionscovs;*/
 
 			return $this->ged(
 				array_merge(

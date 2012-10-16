@@ -44,6 +44,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propoorientsocialecov58' => array(
+				'className' => 'Propoorientsocialecov58',
+				'foreignKey' => 'dossiercov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Propocontratinsertioncov58' => array(
 				'className' => 'Propocontratinsertioncov58',
 				'foreignKey' => 'dossiercov58_id',

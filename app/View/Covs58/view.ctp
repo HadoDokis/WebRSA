@@ -87,10 +87,7 @@
 		</ul>
 		<div id="dossierscovs">
 			<?php
-
-// 					foreach( $themes as $theme ) {
-// 						require_once( "view.{$theme}.liste.ctp" );
-// 					}
+				$covTraitee = ( $cov58['Cov58']['etatcov'] == 'finalise' );
 
 				foreach( $themes as $theme ) {
 					if( $theme == 'propoorientationcov58' ){
@@ -118,8 +115,15 @@
 						),
 						array(
 							'actions' => array(
-								'Dossierscovs58::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' ) ),
-								'Dossierscovs58::impressiondecision' => array( 'label' => 'Imprimer la décision', 'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ), 'disabled' => '"#Passagecov58.etatdossiercov#" != "traite"' && $theme == "propocontratinsertioncov58" )
+								'Dossierscovs58::view' => array(
+									'label' => 'Voir',
+									'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' )
+								),
+								'Dossierscovs58::impressiondecision' => array(
+									'label' => 'Imprimer la décision',
+									'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ),
+									'disabled' => '( "#Passagecov58.etatdossiercov#" != "traite" ) || ( "'.$theme.'" == "propocontratinsertioncov58" )'
+								)
 							),
 							'options' => $options
 						)
