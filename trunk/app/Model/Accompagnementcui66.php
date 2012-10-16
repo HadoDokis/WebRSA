@@ -30,7 +30,7 @@
 			),
 			'User' => array(
 				'className' => 'User',
-				'foreignKey' => 'cui_id',
+				'foreignKey' => 'user_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

@@ -74,6 +74,8 @@
 			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
 			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
 
+			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( true ); // Liste des services instructeurs en lien avec un Service Social 
+			
 			$this->set( compact( 'options' ) );
 		}
 
@@ -225,6 +227,8 @@
 							)
 						)
 					),
+					'Structurereferente',
+					'Serviceinstructeur',
 					'Referent' => array(
 						'Structurereferente'
 					),
@@ -422,7 +426,7 @@
 					);
 					$this->set( compact( 'passagecommissionep' ) );
 				}
-				elseif ( $bilanparcours66['Bilanparcours66']['proposition'] == 'audition' ) {
+				elseif ( in_array( $bilanparcours66['Bilanparcours66']['proposition'], array( 'audition', 'auditionpe' ) ) ) {
 					$passagecommissionep = $this->Dossierep->Passagecommissionep->find(
 						'first',
 						array(
@@ -467,7 +471,7 @@
 							),
 							'contain' => array(
 								'Decisiondossierpcg66' => array(
-									'Decisionpcg66',
+									'Decisionpdo',
 									'order' => array( 'Decisiondossierpcg66.datevalidation DESC' )
 								)
 							)
@@ -528,6 +532,26 @@
             // Nombre de mois cumulés pour la contractualisation
             $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $personne_id );
             $this->set('nbCumulDureeCER66', $nbCumulDureeCER66);
+            
+            // On récupère l'utilisateur connecté et qui exécute l'action
+			$userConnected = $this->Session->read( 'Auth.User.id' );
+			$this->set( compact( 'userConnected' ) );
+			// On récupère le service instructeur de l'utilisateur connecté
+			$user = $this->Bilanparcours66->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $userConnected
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					),
+					'recursive' => -1
+				)
+			);
+			$serviceinstruceteurUser = Set::classicExtract( $user, 'User.serviceinstructeur_id' );
+			$this->set( 'serviceinstruceteurUser', $serviceinstruceteurUser );
+			
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {
 // debug( $this->request->data );
@@ -883,15 +907,12 @@
 		*
 		*/
 
-		public function bilanparcoursGedooo( $id ) {
+		public function impression( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
 
-			$pdf = $this->Bilanparcours66->getStoredPdf( $id );
+			$pdf = $this->Bilanparcours66->getDefaultPdf( $id );
 
-			$this->assert( !empty( $pdf ), 'error404' );
-			$this->assert( !empty( $pdf['Pdf']['document'] ), 'error500' ); // FIXME: ou en faire l'impression ?
-
-			$this->Gedooo->sendPdfContentToClient( $pdf['Pdf']['document'], "{$id}.pdf" );
+			$this->Gedooo->sendPdfContentToClient( $pdf, "Bilanparcours-{$id}.pdf" );
 		}
 	}
 ?>

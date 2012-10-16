@@ -533,6 +533,49 @@ CREATE INDEX actionscandidats_motifssortie_actioncandidat_id_idx ON actionscandi
 
 DROP INDEX IF EXISTS actionscandidats_motifssortie_motifsortie_id_idx;
 CREATE INDEX actionscandidats_motifssortie_motifsortie_id_idx ON actionscandidats_motifssortie(motifsortie_id);
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 20121012: Modification du bilan de parcours suite à la rencontre du 11/10/2012
+-------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE bilansparcours66 ALTER COLUMN structurereferente_id DROP NOT NULL;
+
+SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'serviceinstructeur_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'bilansparcours66', 'bilansparcours66_serviceinstructeur_id_fkey', 'servicesinstructeurs', 'serviceinstructeur_id', false );
+
+
+SELECT add_missing_table_field ('public', 'bilansparcours66', 'user_id', 'INTEGER');
+SELECT add_missing_constraint( 'public', 'bilansparcours66', 'bilansparcours66_user_id_fk', 'users', 'user_id' );
+DROP INDEX IF EXISTS bilansparcours66_user_id_idx;
+CREATE INDEX bilansparcours66_user_id_idx ON bilansparcours66(user_id);
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 20121015: Modification des pièces manquantes liées au traitementpcg66 avec 
+--				ajout des montants et de dates si la case est cochée
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'modelestypescourrierspcgs66', 'ismontant', 'TYPE_BOOLEANNUMBER');
+ALTER TABLE modelestypescourrierspcgs66 ALTER COLUMN ismontant SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE modelestypescourrierspcgs66 SET ismontant = '0'::TYPE_BOOLEANNUMBER WHERE ismontant IS NULL;
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_ismontant_idx;
+CREATE INDEX modelestypescourrierspcgs66_ismontant_idx ON modelestypescourrierspcgs66 (ismontant);
+
+SELECT add_missing_table_field ('public', 'modelestypescourrierspcgs66', 'isdates', 'TYPE_BOOLEANNUMBER');
+ALTER TABLE modelestypescourrierspcgs66 ALTER COLUMN isdates SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE modelestypescourrierspcgs66 SET isdates = '0'::TYPE_BOOLEANNUMBER WHERE isdates IS NULL;
+DROP INDEX IF EXISTS modelestypescourrierspcgs66_isdates_idx;
+CREATE INDEX modelestypescourrierspcgs66_isdates_idx ON modelestypescourrierspcgs66(isdates);
+
+
+SELECT add_missing_table_field ( 'public', 'modelestraitementspcgs66', 'montantsaisi', 'NUMERIC' );
+SELECT add_missing_table_field ( 'public', 'modelestraitementspcgs66', 'montantdatedebut', 'DATE' );
+SELECT add_missing_table_field ( 'public', 'modelestraitementspcgs66', 'montantdatefin', 'DATE' );
+
+DROP TYPE IF EXISTS TYPE_NONVALIDATIONPARTICULIER66 CASCADE;
+CREATE TYPE TYPE_NONVALIDATIONPARTICULIER66 AS ENUM ( 'reprise','radiation');
+SELECT add_missing_table_field ( 'public', 'proposdecisionscers66', 'nonvalidationparticulier', 'TYPE_NONVALIDATIONPARTICULIER66' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

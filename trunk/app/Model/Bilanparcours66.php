@@ -53,9 +53,6 @@
 				)
 			),
 			'Gedooo.Gedooo',
-			'StorablePdf' => array(
-				'active' => array( 66 )
-			),
 			'ModelesodtConditionnables' => array(
 				66 => array(
 					'Bilanparcours/bilanparcours.odt',
@@ -214,6 +211,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'structurereferente_id',
@@ -228,6 +232,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
 		);
 
 		public $hasOne = array(
@@ -535,7 +546,7 @@
 // 						return false;
 // 					}
 					if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
-						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat.' );
+						$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
 						return false;
 					}
 				}
@@ -1103,97 +1114,61 @@
 
 		public function getDataForPdf( $id ) {
 			// TODO: error404/error500 si on ne trouve pas les données
-			$optionModel = ClassRegistry::init( 'Option' );
-			$qual = $optionModel->qual();
-			$typevoie = $optionModel->typevoie();
-			$conditions = array( 'Bilanparcours66.id' => $id );
+			$conditions = array(
+				'Bilanparcours66.id' => $id,
+				'OR' => array(
+					'Adressefoyer.id IS NULL',
+					'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+				)
+			);
+
+			// Jointure spéciale sur Dossierep suivant la thématique
+			$joinSaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+			$joinDefautinsertionep66 = $this->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+
+			$joinDossierep = $joinSaisinebilanparcoursep66;
+			$joinDossierep['conditions'] = array(
+				'OR' => array(
+					$joinSaisinebilanparcoursep66['conditions'],
+					$joinDefautinsertionep66['conditions']
+				)
+			);
 
 			$joins = array(
-				array(
-					'table'      => 'orientsstructs',
-					'alias'      => 'Orientstruct',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Orientstruct.id = Bilanparcours66.orientstruct_id' )
-				),
-				array(
-					'table'      => 'contratsinsertion',
-					'alias'      => 'Contratinsertion',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array( 'Contratinsertion.id = Bilanparcours66.contratinsertion_id' )
-				),
-				array(
-					'table'      => 'personnes',
-					'alias'      => 'Personne',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Personne.id = Bilanparcours66.personne_id' )
-				),
-				array(
-					'table'      => 'foyers',
-					'alias'      => 'Foyer',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-				),
-				array(
-					'table'      => 'dossiers',
-					'alias'      => 'Dossier',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-				),
-				array(
-					'table'      => 'adressesfoyers',
-					'alias'      => 'Adressefoyer',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Foyer.id = Adressefoyer.foyer_id',
-						'Adressefoyer.rgadr' => '01'
-					)
-				),
-				array(
-					'table'      => 'adresses',
-					'alias'      => 'Adresse',
-					'type'       => 'INNER',
-					'foreignKey' => false,
-					'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-				),
-				array(
-					'table'      => 'pdfs',
-					'alias'      => 'Pdf',
-					'type'       => 'LEFT OUTER',
-					'foreignKey' => false,
-					'conditions' => array(
-						'Pdf.modele' => $this->alias,
-						'Pdf.fk_value = Bilanparcours66.id'
-					)
-				),
+				$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+				$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+				$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+				$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+				$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				$joinDossierep,
+				$this->Saisinebilanparcoursep66->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisionsaisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Defautinsertionep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) )
 			);
 
 			$queryData = array(
-				'fields' => array(
-					'Dossier.matricule',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie',
-					'Adresse.complideadr',
-					'Adresse.compladr',
-					'Adresse.lieudist',
-					'Adresse.numcomrat',
-					'Adresse.numcomptt',
-					'Adresse.codepos',
-					'Adresse.locaadr',
-					'Adresse.pays',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.nir',
-					'Orientstruct.date_impression',
-					'Contratinsertion.df_ci',
-					'Contratinsertion.datevalidation_ci',
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Orientstruct->fields(),
+					$this->Referent->fields(),
+					$this->Serviceinstructeur->fields(),
+					$this->Defautinsertionep66->fields(),
+					$this->Saisinebilanparcoursep66->fields(),
+					$this->Saisinebilanparcoursep66->Dossierep->fields(),
+					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->fields(),
+					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
+					$this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
+					$this->Contratinsertion->fields(),
+					$this->Personne->fields(),
+					$this->Personne->Foyer->fields(),
+					$this->Personne->Foyer->Dossier->fields(),
+					$this->Personne->Foyer->Adressefoyer->Adresse->fields()
 				),
 				'joins' => $joins,
 				'conditions' => $conditions,
@@ -1202,10 +1177,44 @@
 
 			$data = $this->find( 'first', $queryData );
 
-			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-
 			return $data;
+		}
+		
+		/**
+		*
+		*
+		*/
+		
+		public function getDefaultPdf( $id ) {
+			$data = $this->getDataForPdf( $id );
+			$modeleodt = $this->modeleOdt( $data );
+
+			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
+			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
+			
+			$Option = ClassRegistry::init( 'Option' );
+			$options =  Set::merge(
+				array(
+					'Persone' => array(
+						'qual' => $Option->qual()
+					),
+					'Adresse' => array(
+						'typevoie' => $Option->typevoie()
+					)
+				),
+				$this->enums()
+			);
+			
+			$typeformulaire = Set::classicExtract( $data, 'Bilanparcours66.typeformulaire' );
+			
+			if( $typeformulaire == 'pe' ) {
+				$modeleodt = 'Bilanparcours/bilanparcourspe.odt';
+			}
+
+// debug($data);
+// debug($options);
+// die();
+			return $this->ged( $data, $modeleodt, false, $options );
 		}
 
 		/**
@@ -1280,7 +1289,7 @@
 						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					),
 					'conditions' => array(
-						'$bilanparcours66.id' => $id
+						'Bilanparcours66.id' => $id
 					),
 					'contain' => false
 				)

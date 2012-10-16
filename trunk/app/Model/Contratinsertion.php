@@ -1101,7 +1101,8 @@
 					'Adresse.codepos',
 					'Propodecisioncer66.isvalidcer',
 					'Propodecisioncer66.motifficheliaison',
-					'Propodecisioncer66.motifnotifnonvalid'
+					'Propodecisioncer66.motifnotifnonvalid',
+					'Propodecisioncer66.nonvalidationparticulier'
 						)
 				),
 				'joins' => array(
@@ -1151,6 +1152,11 @@
 			$modelenotifdecision = '';
 
 			$decision = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.isvalidcer' );
+			$nonvalidationparticulier = Set::classicExtract( $contratinsertion, 'Propodecisioncer66.nonvalidationparticulier' );
+
+			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
+			$valueFormeci = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
+			$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 
 			if( !empty( $decision ) ) {
 				if( $decision == 'O' ) {
@@ -1158,11 +1164,11 @@
 				}
 				else if( $decision == 'N' ) {
 					$modelenotifdecision = "nonvalide";
+					if( $valueFormeci == 'C' ) {
+						$modelenotifdecision = $modelenotifdecision.$nonvalidationparticulier;
+					}
 				}
 			}
-
-			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
-			$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 
 
 			return $this->ged(
