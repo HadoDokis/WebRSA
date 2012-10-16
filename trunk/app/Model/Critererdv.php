@@ -189,6 +189,7 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
 					),
+					$this->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					array(
 						'table'      => 'referents',
 						'alias'      => 'Referent',

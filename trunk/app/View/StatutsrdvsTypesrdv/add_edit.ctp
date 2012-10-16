@@ -23,8 +23,9 @@
 		array(
 			'StatutrdvTyperdv.typerdv_id' => array('required' => true, 'type' => 'select', 'options' => $typesrdv),
 			'StatutrdvTyperdv.statutrdv_id' => array('required' => true, 'type' => 'select', 'options' => $statutsrdvs),
-			'StatutrdvTyperdv.nbabsenceavantpassageep' => array('required' => true, 'type' => 'text'),
-			'StatutrdvTyperdv.motifpassageep' => array('type' => 'text')
+			'StatutrdvTyperdv.nbabsenceavantpassagecommission' => array('required' => true, 'type' => 'text'),
+			'StatutrdvTyperdv.typecommission' => array( 'required' => true, 'type' => 'select' ),
+			'StatutrdvTyperdv.motifpassageep' => array('type' => 'text'),
 		),
 		array(
 			'options' => $options

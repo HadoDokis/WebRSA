@@ -99,16 +99,17 @@
 
 			$fichiers = array( );
 			$rendezvous = $this->Rendezvous->find(
-					'first', array(
-				'conditions' => array(
-					'Rendezvous.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'Rendezvous.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$personne_id = $rendezvous['Rendezvous']['personne_id'];
@@ -226,79 +227,139 @@
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
-						'first', array(
-					'fields' => array(
-						'StatutrdvTyperdv.motifpassageep',
-					),
-					'joins' => array(
-						$this->Rendezvous->Personne->Dossierep->join( 'Sanctionrendezvousep58' ),
-						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->join( 'Rendezvous' ),
-						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->join( 'Typerdv' ),
-						$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
-					),
-// 						'contain' => array(
-// 							'Sanctionrendezvousep58' => array(
-// 								'Rendezvous' => array(
-// 									'Typerdv' => array(
-// 										'StatutrdvTyperdv'
-// 									)
-// 								)
-// 							)
-// 						),
-					'conditions' => array(
-						'Dossierep.themeep' => 'sanctionsrendezvouseps58',
-						'Dossierep.personne_id' => $personne_id,
-						'Dossierep.id NOT IN ( '.
-						$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-								array(
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'alias' => 'passagescommissionseps',
-									'conditions' => array(
-										'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+					'first',
+					array(
+						'fields' => array(
+							'StatutrdvTyperdv.motifpassageep',
+						),
+						'joins' => array(
+							$this->Rendezvous->Personne->Dossierep->join( 'Sanctionrendezvousep58' ),
+							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->join( 'Rendezvous' ),
+							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->join( 'Typerdv' ),
+							$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+						),
+						'conditions' => array(
+							'Dossierep.themeep' => 'sanctionsrendezvouseps58',
+							'Dossierep.personne_id' => $personne_id,
+							'Dossierep.id NOT IN ( '.
+							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+										)
 									)
-								)
-						)
-						.' )'
-					),
-					'order' => array( 'Dossierep.created ASC' )
-						)
+							)
+							.' )'
+						),
+						'order' => array( 'Dossierep.created ASC' )
+					)
 				);
 				$this->set( compact( 'dossierep' ) );
 
-				$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
-						'count', array(
-					'conditions' => array(
-						'Dossierep.id IN ( '.
-						$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
-								array(
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'alias' => 'passagescommissionseps',
-									'conditions' => array(
-										'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
+				$dossiercov = $this->Rendezvous->Personne->Dossiercov58->find(
+					'first',
+					array(
+						'fields' => array(
+							'StatutrdvTyperdv.motifpassageep',
+						),
+						'joins' => array(
+							$this->Rendezvous->Personne->Dossiercov58->join( 'Propoorientsocialecov58' ),
+							$this->Rendezvous->Personne->Dossiercov58->Propoorientsocialecov58->join( 'Rendezvous' ),
+							$this->Rendezvous->Personne->Dossiercov58->Propoorientsocialecov58->Rendezvous->join( 'Typerdv' ),
+							$this->Rendezvous->Personne->Dossiercov58->Propoorientsocialecov58->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+						),
+						'conditions' => array(
+							'Dossiercov58.themecov58' => 'proposorientssocialescovs58',
+							'Dossiercov58.personne_id' => $personne_id,
+							'Dossiercov58.id NOT IN ( '.
+								$this->Rendezvous->Personne->Dossiercov58->Passagecov58->sq(
+									array(
+										'fields' => array(
+											'passagescovs58.dossiercov58_id'
+										),
+										'alias' => ' passagescovs58',
+										'conditions' => array(
+											'passagescovs58.etatdossiercov' => array( 'traite', 'annule' )
+										)
 									)
 								)
-						)
-						.' )'
-					),
-					'joins' => array(
-						array(
-							'table' => 'sanctionsrendezvouseps58',
-							'alias' => 'Sanctionrendezvousep58',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
-								'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
-							)
-						)
-					),
-					'order' => array( 'Dossierep.created ASC' )
-						)
+							.' )'
+						),
+						'order' => array( 'Dossiercov58.created ASC' ),
+						'contain' => false
+					)
 				);
-				$this->set( compact( 'dossierepLie' ) );
+				$this->set( compact( 'dossiercov' ) );
+
+				$dossierepLie = $this->Rendezvous->Personne->Dossierep->find(
+					'count',
+					array(
+						'conditions' => array(
+							'Dossierep.id IN ( '.
+							$this->Rendezvous->Personne->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'traite', 'annule', 'reporte' )
+										)
+									)
+							)
+							.' )'
+						),
+						'joins' => array(
+							array(
+								'table' => 'sanctionsrendezvouseps58',
+								'alias' => 'Sanctionrendezvousep58',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Sanctionrendezvousep58.dossierep_id = Dossierep.id',
+									'Sanctionrendezvousep58.rendezvous_id' => $lastrdv_id
+								)
+							)
+						),
+						'order' => array( 'Dossierep.created ASC' )
+					)
+				);
+
+				$dossiercovLie = $this->Rendezvous->Personne->Dossiercov58->find(
+					'count',
+					array(
+						'conditions' => array(
+							'OR' => array(
+								'Dossiercov58.id IS NULL',
+								'Dossiercov58.id IN ( '.
+									$this->Rendezvous->Personne->Dossiercov58->Passagecov58->sq(
+										array(
+											'fields' => array(
+												'passagescovs58.dossiercov58_id'
+											),
+											'alias' => ' passagescovs58',
+											'conditions' => array(
+												'passagescovs58.etatdossiercov' => array( 'cree', 'associe', 'annule', 'reporte' )
+											)
+										)
+									)
+								.' )',
+							),
+							'Propoorientsocialecov58.rendezvous_id' => $lastrdv_id
+						),
+						'joins' => array(
+							$this->Rendezvous->Personne->Dossiercov58->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Rendezvous->Personne->Dossiercov58->Propoorientsocialecov58->join( 'Rendezvous', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'order' => array( 'Dossiercov58.created ASC' ),
+						'contain' => false
+					)
+				);
+
+				$this->set( 'dossiercommissionLie', ( $dossierepLie + $dossiercovLie ) );
 			}
 
 			$this->set( compact( 'rdvs' ) );
@@ -421,39 +482,20 @@
 							'message' => 'Veuillez vérifier le format de la date.'
 						)
 					);
-					
+
 				}
 
-				if( $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					if( $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
-						if( !empty( $this->request->data['Rendezvous']['statutrdv_id'] ) && $this->Rendezvous->Statutrdv->provoquePassageEp( $this->request->data['Rendezvous']['statutrdv_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
-							if( $this->Rendezvous->passageEp( $personne_id, $this->request->data['Rendezvous']['typerdv_id'], $this->request->data['Rendezvous']['statutrdv_id'] ) ) {
-								$dossierep = array(
-									'Dossierep' => array(
-										'personne_id' => $personne_id,
-										'themeep' => 'sanctionsrendezvouseps58'
-									)
-								);
-								$this->Rendezvous->Personne->Dossierep->save( $dossierep );
+				$success = $this->Rendezvous->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 
-								$sanctionrendezvousep58 = array(
-									'Sanctionrendezvousep58' => array(
-										'dossierep_id' => $this->Rendezvous->Personne->Dossierep->id,
-										'rendezvous_id' => $this->Rendezvous->id
-									)
-								);
-								$this->Rendezvous->Personne->Dossierep->Sanctionrendezvousep58->save( $sanctionrendezvousep58 );
-							}
-						}
-						$this->Rendezvous->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $personne_id ) );
-					}
-					else {
-						$this->Rendezvous->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+				if( $this->Rendezvous->provoquePassageCommission( $this->request->data ) ) {
+					$success = $this->Rendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
+				}
+
+				if( $success ) {
+					$this->Rendezvous->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'rendezvous', 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Rendezvous->rollback();

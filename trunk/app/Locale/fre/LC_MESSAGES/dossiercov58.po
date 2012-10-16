@@ -67,6 +67,9 @@ msgstr "Proposition de CER"
 msgid "ENUM::THEMECOV::proposnonorientationsproscovs58"
 msgstr "Proposition de maintien dans le social"
 
+msgid "ENUM::THEMECOV::proposorientssocialescovs58"
+msgstr "Proposition d'orientation sociale de fait"
+
 msgid "ENUM::THEMECOV::propoorientationcov58"
 msgstr "Proposition d'orientation"
 
@@ -75,6 +78,9 @@ msgstr "Proposition de CER"
 
 msgid "ENUM::THEMECOV::propononorientationprocov58"
 msgstr "Proposition de maintien dans le social"
+
+msgid "ENUM::THEMECOV::propoorientsocialecov58"
+msgstr "Orientation sociale de fait"
 
 msgid "Dossiercov58.created"
 msgstr "Dossier créé le"

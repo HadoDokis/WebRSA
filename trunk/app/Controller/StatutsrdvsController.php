@@ -12,14 +12,14 @@
 		);
 
 		protected function _setOptions() {
-			$provoquepassageep = array( '0' => 'Non', '1' => 'Oui' );
+			$provoquepassagecommission = array( '0' => 'Non', '1' => 'Oui' );
 			$permetpassageepl = array( '0' => 'Non', '1' => 'Oui' );
-			$this->set( compact( 'provoquepassageep', 'permetpassageepl' ) );
+			$this->set( compact( 'provoquepassagecommission', 'permetpassageepl' ) );
 		}
 
 		public function index() {
 			// Retour à la liste en cas d'annulation
-            if( isset( $this->request->data['Cancel'] ) ) {
+			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'gestionsrdvs', 'action' => 'index' ) );
 			}
 

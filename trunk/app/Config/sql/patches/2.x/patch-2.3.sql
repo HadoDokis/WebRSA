@@ -507,7 +507,7 @@ DROP INDEX IF EXISTS jetonsfonctions_controller_action_params_idx;
 CREATE UNIQUE INDEX jetonsfonctions_controller_action_params_idx ON jetonsfonctions( controller, action, params );
 
 -------------------------------------------------------------------------------------------------------------
--- 20121001: Ajout d'une colonne pour la table typesaidesapres66 afin de 
+-- 20121001: Ajout d'une colonne pour la table typesaidesapres66 afin de
 --           déterminer si l'aide se voit passer en cohorte de validation ou pas
 -------------------------------------------------------------------------------------------------------------
 
@@ -535,7 +535,6 @@ DROP INDEX IF EXISTS actionscandidats_motifssortie_motifsortie_id_idx;
 CREATE INDEX actionscandidats_motifssortie_motifsortie_id_idx ON actionscandidats_motifssortie(motifsortie_id);
 
 
-
 -------------------------------------------------------------------------------------------------------------
 -- 20121012: Modification du bilan de parcours suite à la rencontre du 11/10/2012
 -------------------------------------------------------------------------------------------------------------
@@ -551,9 +550,77 @@ SELECT add_missing_constraint( 'public', 'bilansparcours66', 'bilansparcours66_u
 DROP INDEX IF EXISTS bilansparcours66_user_id_idx;
 CREATE INDEX bilansparcours66_user_id_idx ON bilansparcours66(user_id);
 
+-------------------------------------------------------------------------------------------------------------
+-- 20121012: Nouvelle thématique de passage en COV (CG 58)
+-------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE statutsrdvs RENAME COLUMN provoquepassageep TO provoquepassagecommission;
+ALTER TABLE statutsrdvs_typesrdv RENAME COLUMN nbabsenceavantpassageep TO nbabsenceavantpassagecommission;
+
+DROP TYPE IF EXISTS TYPE_TYPECOMMISSION CASCADE;
+CREATE TYPE TYPE_TYPECOMMISSION AS ENUM ( 'cov', 'ep' );
+SELECT add_missing_table_field( 'public', 'statutsrdvs_typesrdv', 'typecommission', 'TYPE_TYPECOMMISSION' );
+ALTER TABLE statutsrdvs_typesrdv ALTER COLUMN typecommission SET DEFAULT 'ep';
+UPDATE statutsrdvs_typesrdv SET typecommission = 'ep' WHERE typecommission IS NULL;
+ALTER TABLE statutsrdvs_typesrdv ALTER COLUMN typecommission SET NOT NULL;
+
+-- Nouvelle thématique de COV: orientations sociales de fait
+
+INSERT INTO themescovs58 ( name ) VALUES ( 'proposorientssocialescovs58' );
+
+SELECT add_missing_table_field ( 'public', 'rendezvous', 'rang', 'INTEGER' );
+
+DROP TABLE IF EXISTS proposorientssocialescovs58;
+CREATE TABLE proposorientssocialescovs58 (
+	id 				SERIAL NOT NULL PRIMARY KEY,
+	dossiercov58_id		INTEGER NOT NULL REFERENCES dossierscovs58(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	rendezvous_id		INTEGER NOT NULL REFERENCES rendezvous(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	nvorientstruct_id		INTEGER DEFAULT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire		TEXT DEFAULT NULL,
+	user_id			INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created			TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE proposorientssocialescovs58 IS 'Orientations sociales de fait en attente de validation par la COV (cg58)';
+
+CREATE UNIQUE INDEX proposorientssocialescovs58_dossiercov58_id_idx ON proposorientssocialescovs58(dossiercov58_id);
+CREATE UNIQUE INDEX proposorientssocialescovs58_rendezvous_id_idx ON proposorientssocialescovs58(rendezvous_id);
+CREATE UNIQUE INDEX proposorientssocialescovs58_nvorientstruct_id_idx ON proposorientssocialescovs58(nvorientstruct_id);
+CREATE INDEX proposorientssocialescovs58_user_id_idx ON proposorientssocialescovs58(user_id);
+-- CREATE INDEX proposorientssocialescovs58_typeorient_id_idx ON proposorientssocialescovs58(typeorient_id);
+-- CREATE INDEX proposorientssocialescovs58_orientstruct_id_idx ON proposorientssocialescovs58(orientstruct_id);
+-- CREATE INDEX proposorientssocialescovs58_structurereferente_id_idx ON proposorientssocialescovs58(structurereferente_id);
+-- CREATE INDEX proposorientssocialescovs58_referent_id_idx ON proposorientssocialescovs58(referent_id);
+-- CREATE INDEX proposorientssocialescovs58_covtypeorient_id_idx ON proposorientssocialescovs58(covtypeorient_id);
+-- CREATE INDEX proposorientssocialescovs58_covstructurereferente_id_idx ON proposorientssocialescovs58(covstructurereferente_id);
+
+-- Décisions de la thématique de COV "orientations sociales de fait"
+
+DROP TABLE IF EXISTS decisionsproposorientssocialescovs58;
+CREATE TABLE decisionsproposorientssocialescovs58 (
+	id      				SERIAL NOT NULL PRIMARY KEY,
+	passagecov58_id	INTEGER NOT NULL REFERENCES passagescovs58(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etapecov			TYPE_ETAPECOV NOT NULL,
+	decisioncov		TYPE_DECISIONORIENTATIONCOV NOT NULL,
+	typeorient_id 		INTEGER DEFAULT NULL REFERENCES typesorients(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	structurereferente_id	INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	referent_id 		INTEGER DEFAULT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	datevalidation		DATE,
+	commentaire		TEXT DEFAULT NULL,
+	created			TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
+CREATE INDEX decisionsproposorientssocialescovs58_passagecov58_id_idx ON decisionsproposorientssocialescovs58( passagecov58_id );
+CREATE INDEX decisionsproposorientssocialescovs58_etapecov_idx ON decisionsproposorientssocialescovs58( etapecov );
+CREATE INDEX decisionsproposorientssocialescovs58_decisioncov_idx ON decisionsproposorientssocialescovs58( decisioncov );
+CREATE UNIQUE INDEX decisionsproposorientssocialescovs58_passagecov58_id_etapecov_idx ON decisionsproposorientssocialescovs58(passagecov58_id, etapecov);
+
+SELECT public.alter_enumtype ( 'TYPE_THEMECOV58', ARRAY[ 'proposorientationscovs58', 'proposcontratsinsertioncovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ] );
+SELECT add_missing_table_field ('public', 'themescovs58', 'propoorientsocialecov58', 'TYPE_ETAPECOV');
 
 -------------------------------------------------------------------------------------------------------------
--- 20121015: Modification des pièces manquantes liées au traitementpcg66 avec 
+-- 20121015: Modification des pièces manquantes liées au traitementpcg66 avec
 --				ajout des montants et de dates si la case est cochée
 -------------------------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ('public', 'modelestypescourrierspcgs66', 'ismontant', 'TYPE_BOOLEANNUMBER');
@@ -576,6 +643,7 @@ SELECT add_missing_table_field ( 'public', 'modelestraitementspcgs66', 'montantd
 DROP TYPE IF EXISTS TYPE_NONVALIDATIONPARTICULIER66 CASCADE;
 CREATE TYPE TYPE_NONVALIDATIONPARTICULIER66 AS ENUM ( 'reprise','radiation');
 SELECT add_missing_table_field ( 'public', 'proposdecisionscers66', 'nonvalidationparticulier', 'TYPE_NONVALIDATIONPARTICULIER66' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

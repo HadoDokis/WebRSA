@@ -224,6 +224,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propoorientsocialecov58' => array(
+				'className' => 'Propoorientsocialecov58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Propononorientationprocov58' => array(
 				'className' => 'Propononorientationprocov58',
 				'foreignKey' => 'orientstruct_id',
@@ -1127,27 +1140,37 @@
 							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),
 							$this->Personne->Dossiercov58->join( 'Themecov58', array( 'type' => 'INNER' ) ),
 							$this->Personne->Dossiercov58->join( 'Propononorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) )
+							$this->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Personne->Dossiercov58->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
 						),
 						'conditions' => array(
 							'Dossiercov58.personne_id = Personne.id',
-							'Themecov58.name' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' ),
+							'Themecov58.name' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ),
 							'Passagecov58.etatdossiercov' => 'traite',
 							'Cov58.etatcov' => 'finalise',
 							'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid',
 							'OR' => array(
 								array(
 									'Propoorientationcov58.nvorientstruct_id IS NULL',
+									'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 									'Propononorientationprocov58.nvorientstruct_id IS NOT NULL',
 									'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
 								),
 								array(
 									'Propoorientationcov58.nvorientstruct_id IS NOT NULL',
+									'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 									'Propononorientationprocov58.nvorientstruct_id IS NULL',
 									'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
 								),
 								array(
 									'Propoorientationcov58.nvorientstruct_id IS NULL',
+									'Propoorientsocialecov58.nvorientstruct_id IS NOT NULL',
+									'Propononorientationprocov58.nvorientstruct_id IS NULL',
+									'Propoorientsocialecov58.nvorientstruct_id = Orientstruct.id',
+								),
+								array(
+									'Propoorientationcov58.nvorientstruct_id IS NULL',
+									'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 									'Propononorientationprocov58.nvorientstruct_id IS NULL',
 								),
 							)
@@ -1164,6 +1187,7 @@
 						'Themecov58' => 'themescovs58',
 						'Propoorientationcov58' => 'proposorientationscovs58',
 						'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
+						'Propoorientsocialecov58' => 'proposorientssocialescovs58',
 						'Passagecov58__id' => 'passagescovs58__id',
 					)
 				);
@@ -1184,7 +1208,7 @@
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => array(
-							'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' )
+							'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' )
 						)
 					)
 				);

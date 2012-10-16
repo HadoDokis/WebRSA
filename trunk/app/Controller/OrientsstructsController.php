@@ -208,11 +208,18 @@
 					$qdReorientationEnCours
 				);
 
+				// Orientation sociale de fait e cours de validation par la commission d'orientation et de validation ?
+				$qdPropoorientsocialecov58EnCours = $this->Orientstruct->Personne->Dossiercov58->Propoorientsocialecov58->qdEnCours( $personne_id );
+				$propoorientsocialecov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientsocialecov58->find(
+					'first',
+					$qdPropoorientsocialecov58EnCours
+				);
+
 				if( $rgorient_max <= 1 ) {
 					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id )
 						&& $this->Orientstruct->ajoutPossible( $personne_id );
 
-					$qdDossiersCov58NonFinalises = $this->Orientstruct->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, array( 'proposorientationscovs58', 'proposnonorientationsproscovs58' ) );
+					$qdDossiersCov58NonFinalises = $this->Orientstruct->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ) );
 					$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find( 'count',  $qdDossiersCov58NonFinalises );
 					$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
 				}
@@ -220,7 +227,7 @@
 					$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
 				}
 
-				$this->set( compact( 'regressionorientaionep58' ) );
+				$this->set( compact( 'regressionorientaionep58', 'propoorientsocialecov58' ) );
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {

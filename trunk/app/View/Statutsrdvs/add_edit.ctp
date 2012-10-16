@@ -23,7 +23,7 @@
 	<?php
 		echo $this->Form->input( 'Statutrdv.libelle', array( 'label' =>  required( __( 'Statut du RDV' ) ), 'type' => 'text' ) );
 		if ( Configure::read( 'Cg.departement' ) == 58 ) {
-			echo $this->Form->input( 'Statutrdv.provoquepassageep', array( 'legend' =>  required( __( 'Provoque un passage en EP ?' ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $provoquepassageep ) );
+			echo $this->Form->input( 'Statutrdv.provoquepassagecommission', array( 'legend' =>  required( __( 'Provoque un passage en commission ?' ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $provoquepassagecommission ) );
 		}
 		elseif ( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo $this->Form->input( 'Statutrdv.permetpassageepl', array( 'legend' =>  required( __( 'Permet un passage en EPL Audition ?' ) ), 'fieldset' => false, 'type' => 'radio', 'options' => $permetpassageepl ) );

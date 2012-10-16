@@ -58,6 +58,19 @@
 		);
 
 		public $hasMany = array(
+			'Decisionpropoorientsocialecov58' => array(
+				'className' => 'Decisionpropoorientsocialecov58',
+				'foreignKey' => 'passagecov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisionpropoorientationcov58' => array(
 				'className' => 'Decisionpropoorientationcov58',
 				'foreignKey' => 'passagecov58_id',

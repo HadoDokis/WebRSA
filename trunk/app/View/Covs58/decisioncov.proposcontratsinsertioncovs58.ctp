@@ -28,7 +28,7 @@
 				$dossiercov['Personne']['nir'],
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['locaadr'] ) ),
-				implode( ' ', array( $dossiercov['Propocontratinsertioncov58']['Referent']['qual'], $dossiercov['Propocontratinsertioncov58']['Referent']['nom'], $dossiercov['Propocontratinsertioncov58']['Referent']['prenom'] ) ),
+				implode( ' ', array( @$dossiercov['Propocontratinsertioncov58']['Referent']['qual'], @$dossiercov['Propocontratinsertioncov58']['Referent']['nom'], @$dossiercov['Propocontratinsertioncov58']['Referent']['prenom'] ) ),
 
 
 				array(
@@ -90,7 +90,7 @@
 
 	document.observe( "dom:loaded", function() {
 // 		for( var i = 0 ; i < <?php echo count( $dossiers[$theme]['liste'] );?> ; i++ ) {
-// 
+//
 // 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DdCiDay' ), 'change', function() {
 // 				checkDatesToRefresh( i );
 // 			} );
@@ -100,7 +100,7 @@
 // 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DdCiYear' ), 'change', function() {
 // 				checkDatesToRefresh( i );
 // 			} );
-// 
+//
 // 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DureeEngag' ), 'change', function() {
 // // alert(i);
 // 				checkDatesToRefresh( i );

@@ -22,7 +22,7 @@
 				<th>Statut de rendez-vous</th>
 				<?php
 					if( Configure::read( 'Cg.departement' ) == 58 ) {
-						echo '<th>Provoque un passage en EP ?</th>';
+						echo '<th>Provoque un passage en commission ?</th>';
 					}
 					elseif( Configure::read( 'Cg.departement' ) == 66 ) {
 						echo '<th>Permet un passage en EPL Audition ?</th>';
@@ -38,13 +38,13 @@
 					if( Configure::read( 'Cg.departement' ) == 58 ) {
 						$listefields = array_merge(
 							$listefields,
-							array( $provoquepassageep[$statutrdv['Statutrdv']['provoquepassageep']] )
+							array( $provoquepassagecommission[$statutrdv['Statutrdv']['provoquepassagecommission']] )
 						);
 					}
 					elseif( Configure::read( 'Cg.departement' ) == 66 ) {
 						$listefields = array_merge(
 							$listefields,
-							array( $provoquepassageep[$statutrdv['Statutrdv']['permetpassageepl']] )
+							array( $provoquepassagecommission[$statutrdv['Statutrdv']['permetpassageepl']] )
 						);
 					}
 					$listefields = array_merge(

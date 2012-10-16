@@ -80,23 +80,7 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-		);
-
-		public $hasOne = array(
-			'User' => array(
-				'className' => 'User',
-				'foreignKey' => 'referent_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+			)
 		);
 
 		public $hasMany = array(
@@ -255,7 +239,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Decisionpropoorientsocialecov58' => array(
+				'className' => 'Decisionpropoorientsocialecov58',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

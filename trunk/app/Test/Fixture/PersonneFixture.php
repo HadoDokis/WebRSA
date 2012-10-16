@@ -32,6 +32,33 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'id' => 1,
+				'foyer_id' => 1,
+				'qual' => 'MR',
+				'nom' => 'BUFFIN',
+				'prenom' => 'CHRISTIAN',
+				'nomnai' => 'BUFFIN',
+				'prenom2' => null,
+				'prenom3' => null,
+				'nomcomnai' => null,
+				'dtnai' => '1979-01-24',
+				'rgnai' => null,
+				'typedtnai' => 'N',
+				'nir' => null,
+				'topvalec' => true,
+				'sexe' => '1',
+				'nati' => null,
+				'dtnati' => null,
+				'pieecpres' => null,
+				'idassedic' => null,
+				'numagenpoleemploi' => null,
+				'dtinscpoleemploi' => null,
+				'numfixe' => null,
+				'numport' => null,
+				'haspiecejointe' => null,
+				'email' => null,
+			)
 		);
 
 	}

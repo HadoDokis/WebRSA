@@ -84,3 +84,6 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "Rendezvous.rang"
+msgstr "Rang du rendez-vous"

@@ -59,7 +59,7 @@
 		 * Retourne un booléen suivant si le statut du rdv passé en paramètre
 		 * peut ou non provoquer un passage en EP
 		 */
-		public function provoquePassageEp( $statutrdv_id ) {
+		public function provoquePassageCommission( $statutrdv_id ) {
 			$statutrdv = $this->find(
 				'first',
 				array(
@@ -70,7 +70,7 @@
 				)
 			);
 
-			return $statutrdv['Statutrdv']['provoquepassageep'];
+			return $statutrdv['Statutrdv']['provoquepassagecommission'];
 		}
 	}
 ?>

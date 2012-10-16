@@ -207,6 +207,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Propoorientsocialecov58' => array(
+				'className' => 'Propoorientsocialecov58',
+				'foreignKey' => 'user_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
 				'foreignKey' => 'user_id',

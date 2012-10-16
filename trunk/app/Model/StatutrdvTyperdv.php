@@ -3,6 +3,15 @@
 	{
 		public $name = 'StatutrdvTyperdv';
 
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'typecommission'
+				)
+			),
+			'ValidateTranslate'
+		);
+
 		public $validate = array(
 			'statutrdv_id' => array(
 				'numeric' => array(
@@ -17,6 +26,11 @@
 			'nbavantpassageep' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
+				),
+			),
+			'typecommission' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
 				),
 			),
 		);
