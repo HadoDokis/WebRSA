@@ -58,7 +58,7 @@
 		 * @param string $prefix
 		 * @return string
 		 */
-		public function vfListePieces( $aideapre66Id = 'Aideapre66.id', $prefix = '\\n\r-' ) {
+		public function vfListePieces( $typeaideapre66_id = 'Aideapre66.typeaideapre66_id', $prefix = '\\n\r-' ) {
 			$alias = Inflector::tableize( $this->alias );
 
 			$sq = $this->sq(
@@ -70,22 +70,23 @@
 					'contain' => false,
 					'joins' => array(
 						array_words_replace(
-							$this->join( 'Aideapre66Piececomptable66', array( 'type' => 'INNER' ) ),
+							$this->join( 'Piececomptable66Typeaideapre66', array( 'type' => 'INNER' ) ),
 							array(
-								'Aideapre66Piececomptable66' => 'aidesapres66_piecescomptables66',
+								'Piececomptable66Typeaideapre66' => 'piecescomptables66_typesaidesapres66',
 								'Piececomptable66' => 'piecescomptables66'
 							)
 						),
 					),
 					'conditions' => array(
-						"aidesapres66_piecescomptables66.aideapre66_id = {$aideapre66Id}"
+						"piecescomptables66_typesaidesapres66.piececomptable66_id = piecescomptables66.id",
+						"piecescomptables66_typesaidesapres66.typeaideapre66_id = {$typeaideapre66_id}"
 					),
 					'order' => array(
 						"{$alias}.name ASC"
 					)
 				)
 			);
-
+			
 			return "ARRAY_TO_STRING( ARRAY( {$sq} ), '' )";
 		}
 	}
