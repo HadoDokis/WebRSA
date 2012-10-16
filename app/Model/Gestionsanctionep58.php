@@ -22,7 +22,7 @@
 		public $useTable = false;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable',
 			'Conditionnable',/*

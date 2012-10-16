@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'Model', 'Model' );
 	App::uses( 'AppModel', 'Model' );
+	App::uses( 'AutovalidateBehavior', 'Validation.Model/Behavior' );
 
 	/**
 	 * AutovalidateTest class
@@ -96,6 +97,7 @@
 				$tokens = explode( '.', $fixture );
 				$modelName = Inflector::camelize( $tokens[1] );
 				$this->{$modelName} = ClassRegistry::init( $modelName );
+				$this->{$modelName}->validate = array();
 				$this->{$modelName}->Behaviors->attach( 'Validation.Autovalidate' );
 			}
 		}
@@ -111,15 +113,6 @@
 				unset( $this->{$modelName} );
 			}
 			parent::tearDown();
-		}
-
-		/**
-		 * Test de la méthode Autovalidate::setup
-		 *
-		 * @return void
-		 */
-		public function testFixme() {
-			$this->assertEqual( 1, 1 );
 		}
 
 		/**

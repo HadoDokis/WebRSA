@@ -6,7 +6,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Enumerable' => array(
 				'fields' => array(
 					'propoorientationcov58',

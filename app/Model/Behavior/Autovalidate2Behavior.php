@@ -1,5 +1,5 @@
 <?php
-	class AutovalidateBehavior extends ModelBehavior
+	class Autovalidate2Behavior extends ModelBehavior
 	{
 		public $settings = array();
 

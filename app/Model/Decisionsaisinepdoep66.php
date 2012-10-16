@@ -6,7 +6,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(

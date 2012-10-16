@@ -7,7 +7,7 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
 			),
-			'Autovalidate',
+			'Autovalidate2',
 			'Enumerable' => array(
 				'fields' => array(
 					'typeentretien',

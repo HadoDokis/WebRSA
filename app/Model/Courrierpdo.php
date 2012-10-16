@@ -4,7 +4,7 @@
 		public $name = 'Courrierpdo';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable'
 		);

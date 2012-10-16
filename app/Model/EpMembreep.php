@@ -4,7 +4,7 @@
 		public $name = 'EpMembreep';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Formattable',
 			'ValidateTranslate'
 		);

@@ -227,7 +227,7 @@
 				'message' => ANNOBTNIVDIPMAX_MESSAGE,
 				'allowEmpty' => true
 			),
-			'personne_id' => array( // FIXME: Autovalidate ne le fait pas ? -> contratsinsertion/edit/10630
+			'personne_id' => array( // FIXME: Autovalidate2 ne le fait pas ? -> contratsinsertion/edit/10630
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
@@ -237,7 +237,7 @@
 
 		public $actsAs = array(
 			'Conditionnable',
-			'Autovalidate',
+			'Autovalidate2',
 			'Enumerable' => array(
 				'fields' => array(
 					'sitpersdemrsa' => array(

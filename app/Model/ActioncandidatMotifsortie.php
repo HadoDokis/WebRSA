@@ -4,7 +4,7 @@
 		public $name = 'ActioncandidatMotifsortie';
         
         public $actsAs = array(
-            'Autovalidate',
+            'Autovalidate2',
             'Formattable'
         );
 

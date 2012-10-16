@@ -4,7 +4,7 @@
 		public $name = 'Modeletraitementpcg66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable'
 		);

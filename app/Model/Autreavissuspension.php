@@ -20,7 +20,7 @@
 					'autreavissuspension'
 				)
 			),
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate'
 		);
 
