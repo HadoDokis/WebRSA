@@ -36,6 +36,12 @@
                     )
                 );
                 echo $this->Search->etatDossierPCG66( $etatdossierpcg );
+                
+                echo $this->Default2->subform(
+                    array(
+						'Dossierpcg66.dossierechu' => array(  'label' => 'Dossier échu', 'type' => 'checkbox' )
+                    )
+                );
             ?>
         </fieldset>
 

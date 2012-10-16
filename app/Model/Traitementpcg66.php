@@ -792,5 +792,29 @@
 // 				)
 // 			);
 		}
+		
+		
+		/**
+		*	Sous-requête afin d'obtenir la liste des traitements PCG 
+		*		- non clos 
+		*		- et dont la date d'échéance est dépassée
+		*/
+		public function sqTraitementpcg66Echu( $personnepcg66IdFied = 'Personnepcg66.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'traitementspcgs66.id'
+					),
+					'alias' => 'traitementspcgs66',
+					'conditions' => array(
+						"traitementspcgs66.personnepcg66_id = {$personnepcg66IdFied}",
+						'traitementspcgs66.clos' => 'N',
+						"traitementspcgs66.dateecheance < NOW()",
+					),
+					'order' => array( 'traitementspcgs66.datereception DESC' )
+				)
+			);
+		}
+
 	}
 ?>
