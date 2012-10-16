@@ -70,16 +70,31 @@
 		echo '</div>';
 		echo $this->Form->end();
 
-		echo $this->Default->button(
-			'back',
-			array(
-				'controller' => 'commissionseps',
-				'action'     => 'arbitrageep'
-			),
-			array(
-				'id' => 'Back'
-			)
-		);
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $this->Default->button(
+				'back',
+				array(
+					'controller' => 'commissionseps',
+					'action'     => 'view',
+					$commissionep['Commissionep']['id'] 
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		}
+		else {
+			echo $this->Default->button(
+				'back',
+				array(
+					'controller' => 'commissionseps',
+					'action'     => 'arbitrageep'
+				),
+				array(
+					'id' => 'Back'
+				)
+			);
+		}
 	?>
 </div>
 

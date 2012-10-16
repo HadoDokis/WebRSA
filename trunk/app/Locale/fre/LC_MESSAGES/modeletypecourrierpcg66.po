@@ -48,3 +48,21 @@ msgstr "Confirmer la suppression ?"
 
 msgid "Modeletypecourrierpcg66.modeleodt"
 msgstr "Nom du modèle ODT"
+
+msgid "Modeletypecourrierpcg66.ismontant"
+msgstr "Champ de type Montant ?"
+
+msgid "ENUM::ISMONTANT::1"
+msgstr "Oui"
+
+msgid "ENUM::ISMONTANT::0"
+msgstr "Non"
+
+msgid "Modeletypecourrierpcg66.isdates"
+msgstr "Champ de type Date (début+fin) ?"
+
+msgid "ENUM::ISDATES::1"
+msgstr "Oui"
+
+msgid "ENUM::ISDATES::0"
+msgstr "Non"

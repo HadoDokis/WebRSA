@@ -10,7 +10,9 @@
         array(
             'Modeletypecourrierpcg66.name',
             'Typecourrierpcg66.name',
-            'Modeletypecourrierpcg66.modeleodt'
+            'Modeletypecourrierpcg66.modeleodt',
+            'Modeletypecourrierpcg66.ismontant',
+            'Modeletypecourrierpcg66.isdates'
         ),
         array(
             'actions' => array(
