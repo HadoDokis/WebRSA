@@ -45,7 +45,8 @@
 					array(
 						'Motifcernonvalid66.Motifcernonvalid66' => array( 'type' => 'select', 'label' => 'Motif de non validation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listMotifs ),
 						'Propodecisioncer66.motifficheliaison' => array( 'type' => 'textarea' ),
-						'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' )
+						'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' ),
+						'Propodecisioncer66.nonvalidationparticulier' => array( 'type' => 'radio', 'options' => $options['nonvalidationparticulier'] )
 					),
 					array(
 						'options' => $options
