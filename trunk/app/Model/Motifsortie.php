@@ -4,7 +4,7 @@
 		public $name = 'Motifsortie';
 
 		public $actsAs = array(
-			'Autovalidate'
+			'Autovalidate2'
 		);
 
 		public $validate = array(

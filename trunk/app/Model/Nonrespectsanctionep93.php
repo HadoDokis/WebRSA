@@ -19,7 +19,7 @@
 					'decision' => array( 'domain' => 'decisionnonrespectsanctionep93' ),
 				)
 			),
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo',

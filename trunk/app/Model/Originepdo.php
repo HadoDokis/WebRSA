@@ -7,7 +7,7 @@
 
 		public $actsAs = array(
 			'ValidateTranslate',
-			'Autovalidate',
+			'Autovalidate2',
 			'Enumerable' => array(
 				'fields' => array(
 					'originepcg',

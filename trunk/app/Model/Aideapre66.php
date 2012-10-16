@@ -4,7 +4,7 @@
 		public $name = 'Aideapre66';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Formattable' => array(
 				'amount' => array( 'montantaide' ),
 				'suffix' => array( 'typeaideapre66_id' ),

@@ -4,7 +4,7 @@
 		public $name = 'Motifreorientep93';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable'
 		);

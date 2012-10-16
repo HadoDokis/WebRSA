@@ -19,7 +19,7 @@
 		*/
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable',
 			'Enumerable' => array(

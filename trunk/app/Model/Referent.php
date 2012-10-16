@@ -6,7 +6,7 @@
 		public $displayField = 'nom_complet';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(

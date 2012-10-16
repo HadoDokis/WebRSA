@@ -7,7 +7,7 @@
 
 		public $actsAs = array(
 			'Enumerable' => array( 'fields' => array( 'type', ) ),
-			'Autovalidate'
+			'Autovalidate2'
 		);
 
 		public $belongsTo = array(

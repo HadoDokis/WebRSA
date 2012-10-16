@@ -14,7 +14,7 @@
 				)
 			),
 			'Formattable',
-			'Autovalidate',
+			'Autovalidate2',
 			'Gedooo.Gedooo'
 		);
 

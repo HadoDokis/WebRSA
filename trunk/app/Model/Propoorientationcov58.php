@@ -19,7 +19,7 @@
 		);
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Containable',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),

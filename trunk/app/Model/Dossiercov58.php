@@ -4,7 +4,7 @@
 		public $name = 'Dossiercov58';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'Containable',
 			'Enumerable' => array(
 				'fields' => array(

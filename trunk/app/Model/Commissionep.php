@@ -17,7 +17,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable',
 			'Enumerable' => array(
@@ -372,7 +372,7 @@
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$modeleDecision = Inflector::classify( "decision{$themeTraite}" );
 				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) ) {
-					// FIXME: pas possible de faire un merge avec les règles déduites par Autovalidate ?
+					// FIXME: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
 					$this->Passagecommissionep->{$modeleDecision}->validate = $this->Passagecommissionep->{$modeleDecision}->validateFinalisation;
 				}
 			}

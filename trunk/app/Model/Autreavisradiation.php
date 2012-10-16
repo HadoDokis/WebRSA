@@ -20,7 +20,7 @@
 					'autreavisradiation'
 				)
 			),
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate'
 		);
 

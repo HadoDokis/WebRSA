@@ -6,7 +6,7 @@
 		public $name = 'Regressionorientationep58';
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(

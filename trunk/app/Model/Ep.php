@@ -6,7 +6,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate',
+			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable'
 		);
@@ -72,7 +72,7 @@
 			),
 		);
 
-		// INFO: le behavior Autovalidate ne trouve pas les contraintes UNIQUE (17/02/2011)
+		// INFO: le behavior Autovalidate2 ne trouve pas les contraintes UNIQUE (17/02/2011)
 		public $validate = array(
 			'name' => array(
 				array(
