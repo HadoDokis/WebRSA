@@ -1,5 +1,0 @@
-http://localhost/webrsa/branche-2.1/contratsinsertion/add/351254
-1°) Lors de l'envoi du formulaire, on ne perd plus les modfication faites à la liste des emplois précédents
-2°) Lorsqu'on ajoute ou supprime une ligne, problèmes d'indexes
-3°) Il reste à modifier le formulaire de l'emploi occupé actuellement
-4°) Il faut sauvegarder l'historique des emplois dans la contrôleur
