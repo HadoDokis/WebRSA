@@ -6,7 +6,7 @@
 	// Titre
 	$this->pageTitle = sprintf(
 		__( 'Les différences des DSPs de %s' ),
-		Set::extract( $personne, 'Personne.qual' ).' '.Set::extract( $personne, 'Personne.nom' ).' '.Set::extract( $personne, 'Personne.prenom' )
+		Set::extract( $personne, 'Personne.nom_complet' )
 	);
 
 	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );
