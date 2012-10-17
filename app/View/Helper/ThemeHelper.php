@@ -2,6 +2,8 @@
 	class ThemeHelper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Locale' );
+		
+		public $columnTypes = array();
 
 		/**
 		* FIXME docs

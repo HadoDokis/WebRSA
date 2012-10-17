@@ -1,15 +1,6 @@
 <?php $this->pageTitle = 'Dossier de la personne';?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<?php
-	if( $this->action == 'add' ) {
-		$this->pageTitle = 'Ajout de ressources';
-	}
-	else {
-		$this->pageTitle = 'Visualisation des ressources ';
-		$foyer_id = $this->request->data['Personne']['foyer_id'];
-	}
-?>
 <div class="with_treemenu">
 	<h1><?php echo 'Visualisation des ressources  ';?></h1>
 
@@ -53,6 +44,9 @@
 		</tbody>
 	</table>
 			<h2>Ressources mensuelles</h2>
+				<?php if( empty( $ressource['Ressourcemensuelle'] ) ):?>
+					<p class="notice">Aucune ressource mensuelle déclarée</p>
+				<?php else:?>
 				<h3>Généralités des ressources mensuelles</h3>
 				<table>
 					<thead>
@@ -106,6 +100,7 @@
 						<?php endforeach;?>
 					</tbody>
 				</table>
+				<?php endif;?>
 
 </div>
 	<?php endif;?>

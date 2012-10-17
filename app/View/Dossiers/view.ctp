@@ -76,8 +76,20 @@
 <?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
 
 <div class="with_treemenu">
-	<h1>&nbsp;</h1> <!--FIXME: grugeage -->
 <div id="resumeDossier">
+	<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+		<ul class="actionMenu">
+			<li><?php
+				echo $this->Xhtml->printLinkJs(
+					'Imprimer l\'écran',
+					array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
+				);
+			?></li>
+		</ul>
+		<?php else:?>
+			<h1>&nbsp;</h1> 
+	<?php endif;?>
+	
 	<table  id="ficheDossier">
 		<tbody>
 			<tr>
@@ -607,16 +619,6 @@
 
 		</tbody>
 	</table>
-	<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
-		<ul class="actionMenu">
-			<li><?php
-				echo $this->Xhtml->printLinkJs(
-					'Imprimer l\'écran',
-					array( 'onclick' => 'printit(); return false;', 'class' => 'noprint' )
-				);
-			?></li>
-		</ul>
-	<?php endif;?>
 </div>
 </div>
 <div class="clearer"><hr /></div>

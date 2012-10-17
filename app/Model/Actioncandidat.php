@@ -303,13 +303,12 @@
 				array (
 					'fields' => array(
 						'Actioncandidat.id',
-						'Actioncandidat.contactpartenaire_id',
+						'Partenaire.id',
 						'Actioncandidat.name'
 					),
-					'contain' => array(
-						'Contactpartenaire' => array(
-							'Partenaire'
-						)
+					'joins' => array(
+						$this->join( 'Contactpartenaire', array( 'type' => 'INNER' ) ),
+						$this->Contactpartenaire->join( 'Partenaire', array( 'type' => 'INNER' ) )
 					),
 					'order' => 'Actioncandidat.name ASC',
 					'conditions' => array(
@@ -321,7 +320,7 @@
 
 			$results = array();
 			foreach( $tmp as $key => $value ) {
-				$results[$value['Contactpartenaire']['Partenaire']['id'].'_'.$value['Actioncandidat']['id']] = $value['Actioncandidat']['name'];
+				$results[$value['Partenaire']['id'].'_'.$value['Actioncandidat']['id']] = $value['Actioncandidat']['name'];
 			}
 			return $results;
 		}

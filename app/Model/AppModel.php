@@ -762,7 +762,7 @@
 					$linkedModels = Set::extract( $queryData, '/joins/alias' );
 					$contains = Set::extract( $queryData, '/contain' );
 					if( !empty( $contains ) && is_array( $contains ) ) {
-						$linkedModels += array_keys( Set::normalize( $contains ) );
+						$linkedModels += array_keys( (array)Set::normalize( $contains ) );
 					}
 
 					if( !empty( $linkedModels ) ) {

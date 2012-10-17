@@ -17,12 +17,12 @@
 		echo $this->Default->view(
 			$entretien,
 			array(
-				'Entretien.dateentretien',
-				'Structurereferente.lib_struc',
-				'Referent.nom_complet',
-				'Entretien.typeentretien',
-				'Entretien.typerdv_id',
-				'Entretien.commentaireentretien'
+				'Entretien.dateentretien' => array( 'type' => 'date' ),
+				'Structurereferente.lib_struc' => array( 'type' => 'text' ),
+				'Referent.nom_complet' => array( 'type' => 'text' ),
+				'Entretien.typeentretien' => array( 'type' => 'text' ),
+				'Entretien.typerdv_id' => array( 'type' => 'text' ),
+				'Entretien.commentaireentretien' => array( 'type' => 'text' )
 			),
 			array(
 				'options' => $options
