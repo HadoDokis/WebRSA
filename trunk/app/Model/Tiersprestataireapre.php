@@ -5,10 +5,6 @@
 
 		public $displayField = 'nomtiers';
 
-		public $actsAs = array(
-			'Enumerable'
-		);
-
 		public $order = 'Tiersprestataireapre.id ASC';
 
 		public $hasMany = array(

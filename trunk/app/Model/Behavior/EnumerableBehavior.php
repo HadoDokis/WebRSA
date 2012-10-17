@@ -69,22 +69,12 @@
 		}
 
 		/**
-		 *
 		 * Read settings, add validation rules if needed.
 		 *
 		 * @param object $model
 		 * @param array $settings
 		 */
 		public function setup( Model $model, $settings = array() ) {
-			// Setup ... FIXME: case insensitive
-			/* $default = array(
-			  // FIXME: en Anglais
-			  'validationRule' => 'Veuillez entrer une valeur parmi %s',
-			  'validationDomain' => 'default',
-			  'addValidation' => true,
-			  'validationRuleSeparator' => ', ',
-			  'validationRuleAllowEmpty' => true
-			  ); */
 			$settings = Set::merge( $this->defaultSettings, $settings );
 
 			if( !isset( $this->settings[$model->alias] ) ) {
@@ -96,6 +86,15 @@
 				$this->settings[$model->alias],
 				(array) $settings
 			);
+
+			// Si les champs ne sont pas spécifiés, on va les chercher.
+			if( empty( $this->settings[$model->alias]['fields'] ) ) {
+				$enums = $this->_readEnums( $model );
+				if( !empty( $enums ) ) {
+					$fields = array_keys( $enums );
+					$this->settings[$model->alias]['fields'] = Set::normalize( $fields );
+				}
+			}
 
 			// Setup fields
 			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
@@ -116,20 +115,11 @@
 
 					$enumFields[$field] = Set::merge( $default, $options );
 
-					/// Load from config
-					/* if( Set::check( $enumFields[$field], 'type' ) ) {
-					  $config = Configure::read( "Enumerable.{$enumFields[$field]['type']}" );
-					  if( is_array( $config ) && !empty( $config ) ) {
-					  $enumFields[$field] = Set::merge( $enumFields[$field], $config );
-					  }
-					  } */
-
 					$enumFields[$field]['type'] = strtoupper( $enumFields[$field]['type'] );
 				}
 				$this->settings[$model->alias]['fields'] = $enumFields;
 			}
 
-// 			$this->_readEnums( $model );
 			// Add validation rules if needed
 			if( $this->settings[$model->alias]['addValidation'] && !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
@@ -140,7 +130,7 @@
 
 		/**
 		 * Recherche et mise en cache des valeurs des enums pour tous les champs
-		 * d'un modÃšle pour le SGBD PostgreSQL.
+		 * d'un modèle pour le SGBD PostgreSQL.
 		 * Retourne la liste des champs ainsi que leurs valeurs.
 		 *
 		 * @param AppModel $model
@@ -160,7 +150,7 @@
 					$enums = $model->query( $sql );
 
 					if( empty( $enums ) ) {
-						trigger_error( sprintf( __( 'RequÃªte inutile gÃ©nÃ©rÃ©e par %s pour le modÃšle %s.' ), __CLASS__, $model->alias ), E_USER_WARNING );
+						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.' ), __CLASS__, $model->alias ), E_USER_WARNING );
 					}
 					else {
 						$types = array( );
@@ -189,7 +179,7 @@
 
 		/**
 		 * Recherche et mise en cache des valeurs des enums pour tous les champs
-		 * d'un modÃšle pour le SGBD MySQL.
+		 * d'un modèle pour le SGBD MySQL.
 		 * Retourne la liste des champs ainsi que leurs valeurs.
 		 *
 		 * @param AppModel $model
@@ -209,7 +199,7 @@
 					$enums = $model->query( $sql );
 
 					if( empty( $enums ) ) {
-						trigger_error( sprintf( __( 'RequÃªte inutile gÃ©nÃ©rÃ©e par %s pour le modÃšle %s.' ), __CLASS__, $model->alias ), E_USER_WARNING );
+						trigger_error( sprintf( __( 'Requête inutile générée par %s pour le modèle %s.' ), __CLASS__, $model->alias ), E_USER_WARNING );
 					}
 					else {
 						$types = array( );

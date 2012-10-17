@@ -8,7 +8,6 @@
 		public $actsAs = array(
 			'Autovalidate2',
 			'Formattable',
-			'Enumerable'
 		);
 		public $validate = array(
 			'name' => array(

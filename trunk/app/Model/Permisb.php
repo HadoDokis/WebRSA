@@ -5,7 +5,6 @@
 
 		public $actsAs = array(
 			'Aideapre',
-			'Enumerable', // FIXME ?
 			'Frenchfloat' => array( 'fields' => array( 'coutform', 'dureeform' ) )
 		);
 

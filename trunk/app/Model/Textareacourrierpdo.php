@@ -4,7 +4,6 @@
 		public $name = 'Textareacourrierpdo';
 
 		public $actsAs = array(
-			'Enumerable',
 			'Autovalidate2'
 		);
 
