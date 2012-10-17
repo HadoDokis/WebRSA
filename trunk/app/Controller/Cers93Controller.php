@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
-	 * Classe Cers93Controller.
+	 * La classe Cers93Controller permet la gestion des CER du CG 93 (hors workflow).
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class Cers93Controller extends AppController
 	{
@@ -48,24 +48,26 @@
 		 *
 		 * @param integer $personne_id L'id technique de l'allocataire auquel le CER est attaché.
 		 * @return void
+		 * @throws NotFoundException
 		 */
-		public function index( $personne_id ) {
-			$this->paginate = array(
-				'Contratinsertion' => array(
-					'contain' => array(
-						'Cer93'
-					),
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne_id
-					),
-					'limit' => 10
+		public function index( $personne_id = null ) {
+			if( !$this->Cer93->Contratinsertion->Personne->exists( $personne_id ) ) {
+				throw new NotFoundException();
+			}
+
+			$querydata = array(
+				'contain' => array(
+					'Cer93'
+				),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne_id
 				)
 			);
 
-			$varname = Inflector::tableize( 'Contratinsertion' );
-			$results = $this->paginate( $this->Cer93->Contratinsertion );
-			debug( $results );
-			$this->set( $varname, $results );
+			$results = $this->Cer93->Contratinsertion->find( 'all', $querydata );
+
+			$this->set( 'cers93', $results );
+			$this->set( 'personne_id', $personne_id );
 		}
 
 		/**
@@ -82,27 +84,46 @@
 		 * Formulaire de modification d'un <élément>.
 		 *
 		 * @return void
-		 * @throws BadRequestException
+		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
 			if( $this->action == 'add' ) {
-				$dossier_id = $this->Cer93->Contratinsertion->Personne->dossierId( $id );
+				$personne_id = $id;
 			}
 			else {
-				$dossier_id = $this->Cer93->Contratinsertion->dossierId( $id );
+				$this->Cer93->Contratinsertion->id = $id;
+				$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			}
+
+			// Le dossier auquel appartient la personne
+			$dossier_id = $this->Cer93->Contratinsertion->Personne->dossierId( $personne_id );
+
+			// On s'assure que l'id passé en paramètre et le dossier lié existent bien
+			if( empty( $personne_id ) || empty( $dossier_id ) ) {
+				throw new NotFoundException();
+			}
+
+			// Tentative d'acquisition du jeton sur le dossier
 			$this->Jetons2->get( $dossier_id );
 
-			if( !empty( $this->request->data ) ) {
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
+			// Tentative de sauvegarde du formulaire
+			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
 
-				// FIXME: en Cake 2 l'enregistrement multiple devrait mieux fonctionner
-				if( $this->Cer93->Contratinsertion->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+				// Sinon, ça pose des problèmes lors du add car la valeur n'existe pas encore
+				$this->Cer93->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
+
+				if( $this->Cer93->Contratinsertion->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) ) ) {
 					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-//					$this->redirect( array( 'action' => 'index', $this->request->data['Contratinsertion']['personne_id'] ) );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cer93->Contratinsertion->rollback();
@@ -115,47 +136,49 @@
 					array(
 						'fields' => array_merge(
 							$this->Cer93->Contratinsertion->fields(),
-							$this->Cer93->fields(),
-							$this->Cer93->Etatcivilcer93->fields()
+							$this->Cer93->fields()
 						),
 						'conditions' => array(
 							'Contratinsertion.id' => $id
 						),
 						'joins' => array(
 							$this->Cer93->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Cer93->join( 'Etatcivilcer93', array( 'type' => 'LEFT OUTER' ) )
 						),
 						'contain' => false
 					)
 				);
-
-				// FIXME: après avoir fait le passage des ancienns données, on peut remettre cette règle
-				/*if( empty( $this->request->data  ) ) {
-					$this->cakeError( 'error404' );
-				}*/
 			}
 
+			// Lecture des informations non modifiables
+			$personne = $this->Cer93->Contratinsertion->Personne->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->Cer93->Contratinsertion->Personne->fields(),
+						$this->Cer93->Contratinsertion->Personne->Foyer->fields(),
+						$this->Cer93->Contratinsertion->Personne->Foyer->Dossier->fields()
+					),
+					'joins' => array(
+						$this->Cer93->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
+						$this->Cer93->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'contain' => false
+				)
+			);
+
+			// Options
+			$options = array(
+				'Contratinsertion' => array(
+					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions()
+				)
+			);
+
+			$this->set( 'personne_id', $personne_id );
+			$this->set( compact( 'options', 'personne' ) );
 			$this->render( 'edit' );
 		}
-
-		/**
-		 * Suppression d'un <élément> et redirection vers l'index.
-		 *
-		 * @param integer $id
-		 */
-		/*public function delete( $id ) {
-			$this->Cer93->begin();
-
-			if( $this->Cer93->delete( $id ) ) {
-				$this->Cer93->commit();
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-			}
-			else {
-				$this->Cer93->rollback();
-				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
-			}
-
-			$this->redirect( array( 'action' => 'index' ) );
-		}*/
 	}
 ?>
