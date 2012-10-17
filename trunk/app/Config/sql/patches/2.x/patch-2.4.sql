@@ -33,31 +33,73 @@ CREATE INDEX users_referent_id_idx ON users( referent_id );
 -- 20121003: nouveau CER pour le CG 93
 -------------------------------------------------------------------------------------
 
+-- Tables devenues obsolètes au cours des développements
+DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
+
+DROP TYPE IF EXISTS TYPE_CMU;
+CREATE TYPE TYPE_CMU AS ENUM ( 'oui', 'non', 'encours' );
+
+-- Données spécifiques au CG 93
 DROP TABLE IF EXISTS cers93 CASCADE;
 CREATE TABLE cers93 (
-	id 					SERIAL NOT NULL PRIMARY KEY,
-	contratinsertion_id             	INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE
+	id						SERIAL NOT NULL PRIMARY KEY,
+	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- Bloc 2: état cvil
+	matricule				VARCHAR(15) DEFAULT NULL,
+	dtdemrsa				DATE NOT NULL,
+	qual					VARCHAR(3) DEFAULT NULL,
+	nom						VARCHAR(50) NOT NULL,
+	nomnai					VARCHAR(50) NOT NULL,
+	prenom					VARCHAR(50) NOT NULL,
+	dtnai					DATE NOT NULL,
+	adresse					VARCHAR(250) DEFAULT NULL,
+	codepos					VARCHAR(5) DEFAULT NULL,
+	locaadr					VARCHAR(50) DEFAULT NULL,
+	sitfam					VARCHAR(3) NOT NULL,
+	natlog					VARCHAR(4) DEFAULT NULL,
+	incoherencesetatcivil	TEXT DEFAULT NULL,
+	-- Bloc 3: vérification des droits
+	inscritpe				TYPE_BOOLEANNUMBER DEFAULT NULL,
+	cmu						TYPE_CMU DEFAULT NULL,
+	cmuc					TYPE_CMU DEFAULT NULL,
+	-- Bloc 4: formation et expérience
+	nivetu					TYPE_NIVETU DEFAULT NULL
+
 );
 COMMENT ON TABLE cers93 IS 'Données du CER spécifiques au CG 93';
 
-SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_contratinsertion_id_fkey', 'contratsinsertion', 'contratinsertion_id', false );
 DROP INDEX IF EXISTS cers93_contratinsertion_id_idx;
 CREATE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
 
 -------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
-CREATE TABLE etatscivilscers93 (
-	id 			SERIAL NOT NULL PRIMARY KEY,
-	cer93_id             	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	incoherences	TEXT DEFAULT NULL
+DROP TABLE IF EXISTS composfoyerscers93 CASCADE;
+CREATE TABLE composfoyerscers93 (
+	id			SERIAL NOT NULL PRIMARY KEY,
+	cer93_id	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	qual		VARCHAR(3) DEFAULT NULL,
+	nom			VARCHAR(50) NOT NULL,
+	prenom		VARCHAR(50) NOT NULL,
+	dtnai		DATE NOT NULL
 );
-COMMENT ON TABLE etatscivilscers93 IS 'Données du CER spécifiques au (CG 93)';
+COMMENT ON TABLE composfoyerscers93 IS 'Compositions du foyer pour le CER 93 (bloc 2, état civil)';
 
-SELECT add_missing_constraint ( 'public', 'etatscivilscers93', 'etatscivilscers93_cer93_id_fkey', 'cers93', 'cer93_id', false );
-DROP INDEX IF EXISTS etatscivilscers93_cer93_id_idx;
-CREATE INDEX etatscivilscers93_cer93_id_idx ON etatscivilscers93( cer93_id );
+DROP INDEX IF EXISTS composfoyerscers93_cer93_id_idx;
+CREATE INDEX composfoyerscers93_cer93_id_idx ON composfoyerscers93( cer93_id );
 
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS diplomescers93 CASCADE;
+CREATE TABLE diplomescers93 (
+	id			SERIAL NOT NULL PRIMARY KEY,
+	cer93_id	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	name		VARCHAR(250) NOT NULL,
+	annee		INTEGER NOT NULL
+);
+COMMENT ON TABLE diplomescers93 IS 'Diplômes obtenus pour le CER 93 (bloc 4, formation et expérience)';
+
+DROP INDEX IF EXISTS diplomescers93_cer93_id_idx;
+CREATE INDEX diplomescers93_cer93_id_idx ON diplomescers93( cer93_id );
 
 -- *****************************************************************************
 COMMIT;

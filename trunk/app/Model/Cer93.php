@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
-	 * Classe Cer93.
+	 * La classe Cer93 ...
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Cer93 extends AppModel
 	{
@@ -30,7 +30,17 @@
 		public $recursive = -1;
 
 		/**
-		 * Liaison "belongsTo" avec d'autres modèles.
+		 * Behaviors utilisés.
+		 *
+		 * @var array
+		 */
+		public $actsAs = array(
+			'Validation.Autovalidate',
+			'Formattable',
+		);
+
+		/**
+		 * Liaisons "belongsTo" avec d'autres modèles.
 		 *
 		 * @var array
 		 */
@@ -39,21 +49,65 @@
 				'className' => 'Contratinsertion',
 				'foreignKey' => 'contratinsertion_id',
 				'conditions' => null,
-				'type' => null,
+				'type' => 'INNER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
 			),
 		);
 
+		/**
+		 * Liaisons "hasOne" avec d'autres modèles.
+		 *
+		 * @var array
+		 */
 		public $hasOne = array(
-			'Etatcivilcer93' => array(
-				'className' => 'Etatcivilcer93',
+			'Compofoyercer93' => array(
+				'className' => 'Compofoyercer93',
 				'foreignKey' => 'cer93_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => true
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
+
+		/**
+		 * Liaisons "hasMany" avec d'autres modèles.
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Compofoyercer93' => array(
+				'className' => 'Compofoyercer93',
+				'foreignKey' => 'cer93_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Diplomecer93' => array(
+				'className' => 'Diplomecer93',
+				'foreignKey' => 'cer93_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			),
 		);
 	}
