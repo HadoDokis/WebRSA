@@ -162,7 +162,8 @@
 			}
 
 			$this->_setOptions();
-			$this->set( compact( 'dossier_id', 'id', 'fichiers', 'actioncandidat_personne' ) );
+			$this−>set( 'actioncandidat_personne', $actioncandidat_personne );
+			$this->set( compact( 'dossier_id', 'id', 'fichiers' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
 
@@ -179,13 +180,14 @@
 
 			//Vérification de la présence d'une orientation ou d'un référent pour cet allocataire
 			$referentLie = $this->ActioncandidatPersonne->Personne->PersonneReferent->find(
-					'count', array(
-				'conditions' => array(
-					'PersonneReferent.personne_id' => $personne_id,
-					'PersonneReferent.dfdesignation IS NULL'
-				),
-				'contain' => false
-					)
+				'count',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $personne_id,
+						'PersonneReferent.dfdesignation IS NULL'
+					),
+					'contain' => false
+				)
 			);
 			$this->set( compact( 'referentLie' ) );
 
@@ -200,41 +202,37 @@
 			);
 			$this->set( compact( 'orientationLiee' ) );
 
-
-
-
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$queryData = array(
-				'ActioncandidatPersonne' => array(
-					'conditions' => array(
-						'ActioncandidatPersonne.personne_id' => $personne_id
+				'conditions' => array(
+					'ActioncandidatPersonne.personne_id' => $personne_id
+				),
+				'contain' => array(
+					'Actioncandidat' => array(
+						'Contactpartenaire' => array(
+							'Partenaire'
+						)
 					),
-					'contain' => array(
-						'Actioncandidat' => array(
-							'Contactpartenaire' => array(
-								'Partenaire'
-							)
-						),
-						'Referent',
-						'Motifsortie',
-						'Fichiermodule'
-					)
+					'Referent',
+					'Motifsortie',
+					'Fichiermodule'
 				)
 			);
-			$this->paginate = array(
-				$this->modelClass => array(
-					'limit' => 10
-				)
-			);
+			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $queryData );
+			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
+// 			debug($actionscandidats_personnes);
+// 			$this->paginate = array(
+// 				$this->modelClass => array(
+// 					'limit' => 10
+// 				)
+// 			);
 
-			$this->paginate = Set::merge( $this->paginate, $queryData );
-			$items = $this->paginate( $this->modelClass );
-			$varname = Inflector::tableize( $this->name );
-			$this->set( $varname, $items );
+// 			$this->paginate = Set::merge( $this->paginate, $queryData );
+// 			$items = $this->paginate( $this->modelClass );
+// 			$varname = Inflector::tableize( $this->name );
+// 			$this->set( $varname, $items );
 			$this->_setOptions();
-// debug($items);
 			$this->set( 'personne_id', $personne_id );
-// 			$this->render( '/actionscandidats_personnes/index_'.Configure::read( 'nom_form_ci_cg' ) );
 		}
 
 		/**
@@ -597,6 +595,30 @@
 					$this->request->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
 					$this->request->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
 					///Fin des Dsps
+					
+					// Liste des motifs de sortie pour le CG66
+					$sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
+						array(
+							'alias' => 'actionscandidats_motifssortie',
+							'fields' => array( 'actionscandidats_motifssortie.motifsortie_id' ),
+							'conditions' => array(
+								'actionscandidats_motifssortie.actioncandidat_id' => $actioncandidat_personne['ActioncandidatPersonne']['actioncandidat_id']
+							),
+							'contain' => false
+						)
+					);
+					$options[$this->modelClass]['motifsortie_id'] = 
+						$this->{$this->modelClass}->Motifsortie->find(
+							'list',
+							array(
+								'fields' => array( 'Motifsortie.id', 'Motifsortie.name'),
+								'conditions' => array(
+									"Motifsortie.id IN ( {$sqMotifsortie} )"
+								),
+								'contain' => false,
+								'order' => array( 'Motifsortie.name ASC')
+							)
+					);
 				}
 			}
 
@@ -624,28 +646,6 @@
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
 
-            $sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
-                array(
-                    'alias' => 'actionscandidats_motifssortie',
-                    'fields' => array( 'actionscandidats_motifssortie.motifsortie_id' ),
-                    'conditions' => array(
-                        'actionscandidats_motifssortie.actioncandidat_id' => $actioncandidat_personne['ActioncandidatPersonne']['actioncandidat_id']
-                    ),
-                    'contain' => false
-                )
-            );
-            $options[$this->modelClass]['motifsortie_id'] = 
-            $this->{$this->modelClass}->Motifsortie->find(
-                'list',
-                array(
-                    'fields' => array( 'Motifsortie.id', 'Motifsortie.name'),
-                    'conditions' => array(
-                        "Motifsortie.id IN ( {$sqMotifsortie} )"
-                    ),
-                    'contain' => false,
-                    'order' => array( 'Motifsortie.name ASC')
-                )
-            );
 			$this->set( compact( 'options' ) );
 
 			$this->render( 'add_edit_'.Configure::read( 'ActioncandidatPersonne.suffixe' ) );

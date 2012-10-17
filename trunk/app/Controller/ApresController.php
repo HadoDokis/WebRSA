@@ -498,22 +498,23 @@
 			$this->Apre->forceVirtualFields = true;
 
 			$apre = $this->Apre->find(
-					'first', array(
-				'conditions' => array(
-					'Apre.id' => $apre_id
-				),
-				'contain' => array(
-					'Personne',
-					'Comiteapre' => array(
-						'order' => array(
-							'Comiteapre.datecomite DESC',
-							'Comiteapre.heurecomite DESC'
-						)
+				'first',
+				array(
+					'conditions' => array(
+						'Apre.id' => $apre_id
 					),
-					'Referent',
-					'Structurereferente'
-				)
+					'contain' => array(
+						'Personne',
+						'Comiteapre' => array(
+							'order' => array(
+								'Comiteapre.datecomite DESC',
+								'Comiteapre.heurecomite DESC'
+							)
+						),
+						'Referent',
+						'Structurereferente'
 					)
+				)
 			);
 
 			$this->assert( !empty( $apre ), 'invalidParameter' );

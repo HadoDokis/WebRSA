@@ -67,15 +67,15 @@
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['positioncui66'] ) ),
 							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
-							$this->Default2->button(
-								'view',
-								array( 'controller' => 'cuis', 'action' => 'view', $cui['Cui']['id'] ),
-								array(
-									'enabled' => (
-										( $this->Permissions->check( 'cuis', 'view' ) == 1 )
-									)
-								)
-							),
+// 							$this->Default2->button(
+// 								'view',
+// 								array( 'controller' => 'cuis', 'action' => 'view', $cui['Cui']['id'] ),
+// 								array(
+// 									'enabled' => (
+// 										( $this->Permissions->check( 'cuis', 'view' ) == 1 )
+// 									)
+// 								)
+// 							),
 							$this->Default2->button(
 								'edit',
 								array( 'controller' => 'cuis', 'action' => 'edit', $cui['Cui']['id'] ),

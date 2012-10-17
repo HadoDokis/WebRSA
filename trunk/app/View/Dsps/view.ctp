@@ -6,8 +6,7 @@
 	// Titre
 	$this->pageTitle = sprintf(
 		__( 'Données socio-professionnelles de %s' ),
-            $personne
-//		Set::extract( $personne, 'Personne.qual' ).' '.Set::extract( $personne, 'Personne.nom' ).' '.Set::extract( $personne, 'Personne.prenom' )
+            Set::extract( $personne, 'Personne.nom_complet' )
 	);
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>

@@ -1,15 +1,6 @@
 <?php $this->pageTitle = 'APREs';?>
 <?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<?php
-	if( $this->action == 'add' ) {
-		$this->pageTitle = 'Ajout d\'une APRE';
-	}
-	else {
-		$this->pageTitle = 'APRE ';
-		$foyer_id = $this->request->data['Personne']['foyer_id'];
-	}
-?>
 <div class="with_treemenu">
 	<h1><?php echo 'APRE  ';?></h1>
 

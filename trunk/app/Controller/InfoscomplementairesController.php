@@ -64,7 +64,7 @@
 
 			$qd_tFoyer = array(
 				'conditions' => array(
-					'Foyer.id' => $id
+					'Foyer.dossier_id' => $id
 				),
 				'fields' => null,
 				'order' => null,
@@ -91,6 +91,7 @@
 			);
 
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
+
 			foreach( $roles as $index => $role ) {
 				///Créances alimentaires
 				$tCreancealimentaire = $this->Creancealimentaire->find(
