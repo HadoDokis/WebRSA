@@ -36,6 +36,7 @@
 		 */
 		public $actsAs = array(
 			'Validation.Autovalidate',
+			'Enumerable',
 			'Formattable',
 		);
 

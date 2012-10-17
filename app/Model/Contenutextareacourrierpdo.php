@@ -5,7 +5,6 @@
 		public $name = 'Contenutextareacourrierpdo';
 
 		public $actsAs = array(
-			'Enumerable',
 			'Autovalidate2'
 		);
 

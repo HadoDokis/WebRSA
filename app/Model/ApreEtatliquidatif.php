@@ -4,7 +4,6 @@
 
 		public $name = 'ApreEtatliquidatif';
 		public $actsAs = array(
-			'Enumerable',
 			'Frenchfloat' => array(
 				'fields' => array(
 					'montantattribue',

@@ -8,7 +8,6 @@
 		public $actsAs = array(
 			'Autovalidate2',
 			'Conditionnable',
-			'Enumerable',
 			'Formattable',
 			'Gedooo.Gedooo',
 			'ValidateTranslate'

@@ -5,10 +5,6 @@
 
 		public $order = 'Participantcomite.id ASC';
 
-		public $actsAs = array(
-			'Enumerable'
-		);
-
 		public $hasAndBelongsToMany = array(
 			'Comiteapre' => array(
 				'className' => 'Comiteapre',

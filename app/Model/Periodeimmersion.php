@@ -4,7 +4,6 @@
 		public $name = 'Periodeimmersion';
 
 		public $actsAs = array(
-			'Enumerable',
 			'Formattable',
 			'Autovalidate2'
 		);
