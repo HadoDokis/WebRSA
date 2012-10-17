@@ -526,6 +526,8 @@
 			$this->set( 'dsp', $dsp );
 
 			$this->set( 'personne_id', $dsprevs['DspRev']['personne_id'] );
+			$personne = $dsprevs; // Pour récupérer les informations de la personne
+			$this->set( 'personne', $personne );
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsprevs['DspRev']['personne_id'] );
 			$this->render( 'view' );
 		}
