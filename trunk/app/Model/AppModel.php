@@ -225,9 +225,9 @@
 		 * @param array $fieldList List of fields to allow to be written
 		 * @return boolean
 		 */
-		public function save( $data = null, $validate = true, $fieldList = array( ) ) {
-			return ( parent::save( $data, $validate, $fieldList ) !== false );
-		}
+//		public function save( $data = null, $validate = true, $fieldList = array( ) ) {
+//			return ( parent::save( $data, $validate, $fieldList ) !== false );
+//		}
 
 		/**
 		 * Retourne les résultats d'une opération de sauvegarde sous forme d'un
@@ -236,7 +236,7 @@
 		 * @param mixed $result
 		 * @return boolean
 		 */
-		protected function _saveResultAsBool( $result ) {
+		public function saveResultAsBool( $result ) {
 			if( is_array( $result ) ) {
 				foreach( Set::flatten( $result ) as $boolean ) {
 					if( $boolean === false ) {
@@ -261,7 +261,7 @@
 		 */
 		public function saveAll( $data, $options = array( ) ) {
 			$result = parent::saveAll( $data, $options );
-			return $this->_saveResultAsBool( $result );
+			return $this->saveResultAsBool( $result );
 		}
 
 		/**
@@ -271,10 +271,10 @@
 		 * @param array $options Options to use when saving record data, See $options above.
 		 * @return boolean
 		 */
-		public function saveAssociated( $data = null, $options = array( ) ) {
-			$result = parent::saveAssociated( $data, $options );
-			return $this->_saveResultAsBool( $result );
-		}
+//		public function saveAssociated( $data = null, $options = array( ) ) {
+//			$result = parent::saveAssociated( $data, $options );
+//			return $this->saveResultAsBool( $result );
+//		}
 
 		/**
 		 * Retourne un booléen dans tous les cas.
@@ -283,10 +283,10 @@
 		 * @param array $options Options to use when saving record data, See $options above.
 		 * @return boolean
 		 */
-		public function saveMany( $data = null, $options = array( ) ) {
-			$result = parent::saveMany( $data, $options );
-			return $this->_saveResultAsBool( $result );
-		}
+//		public function saveMany( $data = null, $options = array( ) ) {
+//			$result = parent::saveMany( $data, $options );
+//			return $this->saveResultAsBool( $result );
+//		}
 
 		/**
 		 * Filtre zone géographique
