@@ -133,14 +133,20 @@
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
                 <?php
-                    $isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
-                    if( $isPoleemploi == 'ANP' )
-                        echo 'Oui';
-                    else
-                        echo 'Non';
-                ?>
-                <br />
-                <strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
+					$valueIdentifiantpe = '';
+					$dernierIdentifiantpe = Set::classicExtract( $personne, 'Historiqueetatpe.identifiantpe' );
+					if( !empty( $dernierIdentifiantpe ) ){
+						$valueIdentifiantpe = $dernierIdentifiantpe;
+						echo 'Oui';
+					}
+					else{
+						$valueIdentifiantpe = $dernierIdentifiantpe;
+						echo 'Non';
+					}
+				?>
+				<br />
+				<strong>N° identifiant : </strong><?php echo $valueIdentifiantpe;?>
+				
             </td>
         </tr>
         <tr>
@@ -222,6 +228,7 @@
 			'Cer93.locaadr' => array( 'type' => 'hidden', 'value' => $personne['Adresse']['locaadr'] ),
 			'Cer93.sitfam' => array( 'type' => 'hidden', 'value' => $personne['Foyer']['sitfam'] ),
 			'Cer93.natlog' => array( 'type' => 'hidden', 'value' => $personne['Dsp']['natlog'] ),
+			'Cer93.nivetu' => array( 'type' => 'hidden', 'value' => $personne['Dsp']['nivetu'] ),
 			'Cer93.incoherencesetatcivil' => array( 'domain' => 'cer93', 'type' => 'textarea' )
 		)
 	);
@@ -234,23 +241,31 @@
 		array(
 			'fieldset' => true,
 			'legend' => 'Vérification des droits',
-			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['inscritpe'], 'empty' => true ),
+			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['inscritpe'], 'empty' => true, 'selected' => isset( $etatInscription ) ? $etatInscription : null ),
 			'Cer93.cmu' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmu'], 'empty' => true ),
 			'Cer93.cmuc' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmuc'], 'empty' => true )
 		)
 	);
 
+	// bloc 4 : Formation et expérience
 	echo $this->Xform->inputs(
 		array(
-			'fieldset' => false,
-			'legend' => false,
+			'fieldset' => true,
+			'legend' => 'Formation et expérience',
+			'Cer93.nivetu' => array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['Cer93']['nivetu'], 'selected' => isset( $personne['Dsp']['nivetu'] ) ? $personne['Dsp']['nivetu'] : $this->request->data['Cer93']['nivetu'] )
+		)
+	);
+?>
+<?php
+	echo $this->Xform->inputs(
+		array(
+			'fieldset' => true,
+			'legend' => 'Formation et expérience',
 			'Contratinsertion.dd_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
 			'Contratinsertion.df_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
 			'Contratinsertion.date_saisi_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' )
 		)
 	);
-
-
 ?>
 
 <?php

@@ -21,6 +21,9 @@ msgstr ""
 msgid "Cer93.incoherencesetatcivil"
 msgstr "Incohérence à déclarer"
 
+msgid "Cer93.nivetu"
+msgstr "Niveau d'étude"
+
 msgid "Cer93.cmu"
 msgstr "CMU"
 
@@ -54,3 +57,23 @@ msgstr "Non"
 msgid "ENUM::INSCRITPE::1"
 msgstr "Oui"
 
+msgid "ENUM::NIVETU::1201"
+msgstr "Niveau I/II : sorties avec un diplôme de niveau supérieur à bac+2 (licence, maîtrise, master, dea, dess, doctorat, diplôme de grande école)"
+
+msgid "ENUM::NIVETU::1202"
+msgstr "Niveau III : sorties avec un diplôme de niveau Bac + 2 ans (DUT, BTS, DEUG, écoles des formations sanitaires ou sociales, etc.)"
+
+msgid "ENUM::NIVETU::1203"
+msgstr "Niveau IV : sorties des classes de terminale de l'enseignement secondaire (avec ou sans le baccalauréat). Abandons des études supérieures sans diplôme"
+
+msgid "ENUM::NIVETU::1204"
+msgstr "Niveau V : sorties de dernière année de CAP, BEP ou équivalent avec ou sans diplôme. Abandons des études en seconde ou en première"
+
+msgid "ENUM::NIVETU::1205"
+msgstr "Niveau Vbis : sorties de 3ème générale, de 4ème et 3ème technologiques et des classes du second cycle court (notamment CAP, BEP) avant l'année terminale"
+
+msgid "ENUM::NIVETU::1206"
+msgstr "Niveau VI : sorties du 1er cycle de l'enseignement secondaire (6ème, 5ème, 4ème) et des formations préprofessionnelles en un an"
+
+msgid "ENUM::NIVETU::1207"
+msgstr "Niveau VII : jamais scolarisé"
