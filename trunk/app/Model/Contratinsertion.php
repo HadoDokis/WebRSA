@@ -1827,6 +1827,15 @@
 
             return ( isset( $result[0][0]['sum'] ) ? $result[0][0]['sum'] : 0 );
         }
-       
+        
+        /**
+        *	Fonction permettant de récupérer le rang maximal du CER validé d'un l'allocataire
+        *
+        *	@param $alias -> par défaut Contratinsertion.personne_id
+        *	@return integer
+        */
+		public function vfRgCiMax( $alias = 'Contratinsertion.personne_id' ) {
+			return "( SELECT MAX(rg_ci) FROM contratsinsertion WHERE contratsinsertion.decision_ci = 'V' AND contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__rangcer\"";
+		}
 	}
 ?>

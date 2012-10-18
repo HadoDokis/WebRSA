@@ -19,11 +19,13 @@ msgstr ""
 
 ###############################################################################
 
-# msgid "Contratinsertion.dd_ci"
-# msgstr "Date de début du contrat ?"
 
-# msgid "Contratinsertion.df_ci"
-# msgstr "Date de fin du contrat ?"
+msgid "Contratinsertion.structurereferente_id"
+msgstr "Nom de l'organisme de suivi"
+
+msgid "Contratinsertion.referent_id"
+msgstr "Nom du référent chargé du suivi"
+
 msgid "Contratsinsertion::add"
 msgstr "Ajouter un CER"
 
@@ -314,7 +316,7 @@ msgstr "En attente d'examen du CER"
 
 msgid "ENUM::POSITIONCER::attvalidsimple"
 msgstr "En attente de validation du CER Simple"
-
+*
 msgid "ENUM::POSITIONCER::attvalidpartpropopcg"
 msgstr "En attente de validation du PCG"
 

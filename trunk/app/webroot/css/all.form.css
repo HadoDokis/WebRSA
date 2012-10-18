@@ -183,3 +183,7 @@ h2.bilanparcours {
 #dspform div.input.checkbox label {
     width: auto;
 }
+
+table.cers93 div.input label {
+    width: 100%;
+}
