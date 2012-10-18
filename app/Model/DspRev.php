@@ -266,5 +266,25 @@
 				return null;
 			}
 		}
+		
+		/**
+		* Permet de récupérer les dernières DSP d'une personne, en attendant l'index unique sur personne_id
+		*/
+
+		public function sqDerniere( $personneIdFied = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'alias' => 'tmp_dsps_revs',
+					'fields' => array(
+						'tmp_dsps_revs.id'
+					),
+					'conditions' => array(
+						"tmp_dsps_revs.personne_id = {$personneIdFied}"
+					),
+					'order' => 'tmp_dsps_revs.modified DESC',
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

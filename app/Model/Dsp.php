@@ -483,19 +483,7 @@
 						'foreignKey' => false,
 						'conditions' => array(
 							'DspRev.personne_id = Personne.id',
-							'DspRev.id IN ( '.$this->Personne->DspRev->sq(
-								array(
-									'alias' => 'tmp_dsps_revs',
-									'fields' => array(
-										'tmp_dsps_revs.id'
-									),
-									'conditions' => array(
-										'tmp_dsps_revs.personne_id = Personne.id'
-									),
-									'order' => 'tmp_dsps_revs.modified DESC',
-									'limit' => 1
-								)
-							).' )'
+							'DspRev.id IN ( '.$this->DspRev->sqDerniere( 'Personne.id' ).' )'
 						)
 					),
 					array(
