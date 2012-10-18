@@ -116,14 +116,11 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
 
-				// Sinon, ça pose des problèmes lors du add car la valeur n'existe pas encore
-				$this->Cer93->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
-
-				if( $this->Cer93->Contratinsertion->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) ) ) {
+				if( $this->Cer93->saveFormulaire( $this->request->data ) ) {
 					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'action' => 'index', $personne_id ) );
+// 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cer93->Contratinsertion->rollback();
@@ -169,15 +166,40 @@
 				)
 			);
 
+			// Récupération des informations de composition du foyer de l'allocataire
+			$composfoyerscers93 = $this->Cer93->Contratinsertion->Personne->find(
+				'all',
+				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.dtnai',
+						'Prestation.rolepers'
+					),
+					'conditions' => array( 'Personne.foyer_id' => $personne['Foyer']['id'] ),
+					'contain' => array(
+						'Prestation'
+					)
+				)
+			);
+
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
 					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions()
+				),
+				'Prestation' => array(
+					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+				),
+				'Personne' => array(
+					'qual' => ClassRegistry::init( 'Option' )->qual()
 				)
 			);
 
 			$this->set( 'personne_id', $personne_id );
-			$this->set( compact( 'options', 'personne' ) );
+			$this->set( compact( 'options', 'personne', 'composfoyerscers93' ) );
 			$this->render( 'edit' );
 		}
 	}

@@ -34,9 +34,58 @@
 			'Cer93.prenom' => array( 'type' => 'hidden', 'value' => $personne['Personne']['prenom'] ),
 			'Cer93.dtnai' => array( 'type' => 'hidden', 'value' => $personne['Personne']['dtnai'] ),
 			'Cer93.sitfam' => array( 'type' => 'hidden', 'value' => $personne['Foyer']['sitfam'] ),
-			'Cer93.incoherencesetatcivil' => array( 'type' => 'textarea' ),
+			'Cer93.incoherencesetatcivil' => array( 'type' => 'textarea' )
 		)
 	);
+	
+	// Composition du foyer 
+	if( !empty( $composfoyerscers93 ) ) {
+
+		// Sauvegarde des informations
+		foreach( $composfoyerscers93 as $index => $compofoyercer93 ) {
+			echo $this->Xform->inputs(
+				array(
+					'fieldset' => false,
+					'legend' => false,
+					"Compofoyercer93.{$index}.id" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.cer93_id" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.qual" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['qual'] ),
+					"Compofoyercer93.{$index}.nom" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['nom'] ),
+					"Compofoyercer93.{$index}.prenom" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['prenom'] ),
+					"Compofoyercer93.{$index}.dtnai" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['dtnai'] )
+				)
+			);
+		}
+		
+		// Affichage des informations sous forme de tableau
+		echo '<table>
+			<thead>
+				<tr>
+					<th>Rôle</th>
+					<th>Civilité</th>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Date de naissance</th>
+			</thead>
+		<tbody>';
+		foreach( $composfoyerscers93 as $index => $compofoyercer93 ){
+			echo $this->Xhtml->tableCells(
+				array(
+					h( Set::enum( $compofoyercer93['Prestation']['rolepers'], $options['Prestation']['rolepers'] ) ),
+					h( Set::enum( $compofoyercer93['Personne']['qual'], $options['Personne']['qual'] ) ),
+					h( $compofoyercer93['Personne']['nom'] ),
+					h( $compofoyercer93['Personne']['prenom'] ),
+					h( $this->Locale->date( 'Date::short', $compofoyercer93['Personne']['dtnai'] ) )
+				),
+				array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+				array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+			);
+		}
+		echo '</tbody></table>';
+	}
+	
+	
+
 
 	echo $this->Html->tag(
 		'div',

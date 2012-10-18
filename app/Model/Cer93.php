@@ -62,21 +62,21 @@
 		 *
 		 * @var array
 		 */
-		public $hasOne = array(
-			'Compofoyercer93' => array(
-				'className' => 'Compofoyercer93',
-				'foreignKey' => 'cer93_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-		);
+// 		public $hasOne = array(
+// 			'Compofoyercer93' => array(
+// 				'className' => 'Compofoyercer93',
+// 				'foreignKey' => 'cer93_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			),
+// 		);
 
 		/**
 		 * Liaisons "hasMany" avec d'autres modèles.
@@ -111,5 +111,32 @@
 				'counterQuery' => ''
 			),
 		);
+		
+		/**
+		*	Fonction permettant la sauvegarde du CER 93
+		*	Une règle de validation est supprimée en amont
+		*	Les valeurs de la table Compofoyercer93 sont mises à jour à chaque modifciation
+		*	@param $data
+		*	@return boolean
+		*/
+		
+		public function saveFormulaire( $data ){
+			$success = true;
+			// Sinon, ça pose des problèmes lors du add car la valeur n'existe pas encore
+			$this->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
+
+			if( isset( $data['Cer93']['id'] ) && !empty( $data['Cer93']['id'] ) ) {
+				$success = $this->Compofoyercer93->deleteAll(
+					array( 'Compofoyercer93.cer93_id' => $data['Cer93']['id'] )
+				);
+			}
+				
+			$success = $this->saveResultAsBool(
+				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
+			) && $success;
+
+			return $success;
+		}
+
 	}
 ?>
