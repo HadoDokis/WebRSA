@@ -42,6 +42,8 @@
 		 * @var array
 		 */
 		public $uses = array( 'Cer93' );
+		
+		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
 
 		
 		/**
@@ -208,6 +210,7 @@
 // 				debug($this->request->data );
 			}
 
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			// Lecture des informations non modifiables
 			$personne = $this->Cer93->Contratinsertion->Personne->find(
 				'first',
@@ -221,10 +224,14 @@
 						$this->Cer93->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Cer93->Contratinsertion->Personne->Foyer->Dossier->fields(),
 						array(
-							$this->Cer93->Contratinsertion->vfRgCiMax( '"Personne"."id"' )
+							$this->Cer93->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
+							'Historiqueetatpe.identifiantpe',
+							'Historiqueetatpe.etat'
 						)
 					),
 					'joins' => array(
+						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Cer93->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
 						$this->Cer93->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
 						$this->Cer93->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
@@ -252,6 +259,18 @@
 								'DspRev.id IS NULL',
 								'DspRev.id IN ( '.$this->Cer93->Contratinsertion->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
 							)
+						),
+						array(
+							'OR' => array(
+								'Informationpe.id IS NULL',
+								'Informationpe.id IN( '.$Informationpe->sqDerniere( 'Personne' ).' )'
+							)
+						),
+						array(
+							'OR' => array(
+								'Historiqueetatpe.id IS NULL',
+								'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
+							)
 						)
 					),
 					'contain' => false
@@ -263,6 +282,12 @@
 				$personne['Dsp'] = $personne['DspRev'];
 				unset( $personne['DspRev'], $personne['Dsp']['id'], $personne['Dsp']['dsp_id'] );
 			}
+			
+			$etatInscription = null;
+			if( !empty( $personne['Historiqueetatpe']['etat'] ) && ( $personne['Historiqueetatpe']['etat'] == 'inscription' ) ) {
+				$etatInscription = '1';
+			}
+			$this->set( 'etatInscription', $etatInscription );
 // debug($personne);
 			// Récupération des informations de composition du foyer de l'allocataire
 			$composfoyerscers93 = $this->Cer93->Contratinsertion->Personne->find(
@@ -311,7 +336,7 @@
 					'natlog' => ClassRegistry::init( 'Option' )->natlog()
 				)
 			);
-			$options = array_merge( $this->Cer93->enums(), $options );
+			$options = array_merge( $this->Cer93->Contratinsertion->Personne->Dsp->enums(), $this->Cer93->enums(), $options );
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options', 'personne', 'composfoyerscers93' ) );
