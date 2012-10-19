@@ -23,7 +23,7 @@
 			);
 			echo $this->Xhtml->tableCells(
 				array(
-					h( 'Secteur d\'activité' ),
+					h( 'Secteurs d\'activité' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
 						array( 'controller' => 'secteursactis', 'action' => 'index' ),
