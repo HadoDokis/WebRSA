@@ -370,6 +370,9 @@
 		'cer93' => 'cers93',
 		'compofoyercer93' => 'composfoyerscers93',
 		'diplomecer93' => 'diplomescers93',
+		'metierexerce' => 'metiersexerces',
+		'secteuracti' => 'secteursactis',
+		'expprocer93' => 'expsproscers93',
 	);
 
 	/**
