@@ -32,7 +32,7 @@
 				.' '.Set::enum( Set::classicExtract( $data, "{$options['alias']}.typevoie" ), $options['options'] )
 				.' '.Set::classicExtract( $data, "{$options['alias']}.nomvoie" )
 				.$options['separator'].Set::classicExtract( $data, "{$options['alias']}.compladr" )
-				.$options['separator'].Set::classicExtract( $data, "{$options['alias']}.complideadr" );
+				.' '.Set::classicExtract( $data, "{$options['alias']}.complideadr" );
 				
 			if( $options['ville'] ) {
 				$return .= $options['separator'].Set::classicExtract( $data, "{$options['alias']}.codepos" )

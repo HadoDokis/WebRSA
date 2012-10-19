@@ -45,6 +45,7 @@ CREATE TABLE cers93 (
 	id						SERIAL NOT NULL PRIMARY KEY,
 	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	-- Bloc 2: état cvil
+	-- FIXME: numdemrsa, rolepers, identifiantpe
 	matricule				VARCHAR(15) DEFAULT NULL,
 	dtdemrsa				DATE NOT NULL,
 	qual					VARCHAR(3) DEFAULT NULL,

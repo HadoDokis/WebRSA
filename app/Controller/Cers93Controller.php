@@ -190,123 +190,10 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			else if( $this->action == 'edit' ) {
-				$this->request->data = $this->Cer93->Contratinsertion->find(
-					'first',
-					array(
-						'fields' => array_merge(
-							$this->Cer93->Contratinsertion->fields(),
-							$this->Cer93->fields()
-						),
-						'conditions' => array(
-							'Contratinsertion.id' => $id
-						),
-						'joins' => array(
-							$this->Cer93->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
-						),
-						'contain' => false
-					)
-				);
-// 				debug($this->request->data );
-			}
-
-			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			// Lecture des informations non modifiables
-			$personne = $this->Cer93->Contratinsertion->Personne->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->Cer93->Contratinsertion->Personne->fields(),
-						$this->Cer93->Contratinsertion->Personne->Prestation->fields(),
-						$this->Cer93->Contratinsertion->Personne->Dsp->fields(),
-						$this->Cer93->Contratinsertion->Personne->DspRev->fields(),
-						$this->Cer93->Contratinsertion->Personne->Foyer->fields(),
-						$this->Cer93->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Cer93->Contratinsertion->Personne->Foyer->Dossier->fields(),
-						array(
-							$this->Cer93->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
-							'Historiqueetatpe.identifiantpe',
-							'Historiqueetatpe.etat'
-						)
-					),
-					'joins' => array(
-						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cer93->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
-						$this->Cer93->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
-						$this->Cer93->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
-						$this->Cer93->Contratinsertion->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER'  )),
-						$this->Cer93->Contratinsertion->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cer93->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cer93->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => array(
-						'Personne.id' => $personne_id,
-						array(
-							'OR' => array(
-								'Adressefoyer.id IS NULL',
-								'Adressefoyer.id IN ( '.$this->Cer93->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Dsp.id IS NULL',
-								'Dsp.id IN ( '.$this->Cer93->Contratinsertion->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'DspRev.id IS NULL',
-								'DspRev.id IN ( '.$this->Cer93->Contratinsertion->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Informationpe.id IS NULL',
-								'Informationpe.id IN( '.$Informationpe->sqDerniere( 'Personne' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Historiqueetatpe.id IS NULL',
-								'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
-							)
-						)
-					),
-					'contain' => false
-				)
-			);
 			
-			// On copie les DspsRevs si elles existent à la place des DSPs (on garde l'information la plus récente)
-			if( !empty( $personne['DspRev']['id'] ) ) {
-				$personne['Dsp'] = $personne['DspRev'];
-				unset( $personne['DspRev'], $personne['Dsp']['id'], $personne['Dsp']['dsp_id'] );
+			if( empty( $this->request->data ) ) {
+				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ) );
 			}
-			
-			$etatInscription = null;
-			if( !empty( $personne['Historiqueetatpe']['etat'] ) && ( $personne['Historiqueetatpe']['etat'] == 'inscription' ) ) {
-				$etatInscription = '1';
-			}
-			$this->set( 'etatInscription', $etatInscription );
-// debug($personne);
-			// Récupération des informations de composition du foyer de l'allocataire
-			$composfoyerscers93 = $this->Cer93->Contratinsertion->Personne->find(
-				'all',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.dtnai',
-						'Prestation.rolepers'
-					),
-					'conditions' => array( 'Personne.foyer_id' => $personne['Foyer']['id'] ),
-					'contain' => array(
-						'Prestation'
-					)
-				)
-			);
 
 			// Options
 			$options = array(
@@ -339,7 +226,7 @@
 			$options = array_merge( $this->Cer93->Contratinsertion->Personne->Dsp->enums(), $this->Cer93->enums(), $options );
 
 			$this->set( 'personne_id', $personne_id );
-			$this->set( compact( 'options', 'personne', 'composfoyerscers93' ) );
+			$this->set( compact( 'options' ) );
 			$this->render( 'edit' );
 		}
 	}
