@@ -115,6 +115,9 @@
 						'fields' => array(
 							'Aco.alias',
 							'Permission._create'
+						),
+						'conditions' => array(
+							'Permission.aro_id' => array( $aro['Aro']['id'], $aro['Aro']['parent_id'] )
 						)
 					);
 					$data = $this->Acl->Aro->Permission->find( 'all', $qd_permissions );
