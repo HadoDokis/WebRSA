@@ -88,34 +88,56 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Expprocer93' => array(
+				'className' => 'Expprocer93',
+				'foreignKey' => 'cer93_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
-		
+
 		/**
-		*	Fonction permettant la sauvegarde du CER 93
-		*	Une règle de validation est supprimée en amont
-		*	Les valeurs de la table Compofoyercer93 sont mises à jour à chaque modifciation
-		*	@param $data
-		*	@return boolean
-		*/
-		
-		public function saveFormulaire( $data ){
+		 * 	Fonction permettant la sauvegarde du formulaire du CER 93.
+		 *
+		 * 	Une règle de validation est supprimée en amont
+		 * 	Les valeurs de la table Compofoyercer93 sont mises à jour à chaque modifciation
+		 *
+		 * 	@param $data Les données à sauvegarder.
+		 * 	@return boolean
+		 */
+		public function saveFormulaire( $data ) {
 			$success = true;
-			// Sinon, ça pose des problèmes lors du add car la valeur n'existe pas encore
+
+			// Sinon, ça pose des problèmes lors du add car les valeurs n'existent pas encore
 			$this->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
 
-			if( isset( $data['Cer93']['id'] ) && !empty( $data['Cer93']['id'] ) ) {
-				$success = $this->Compofoyercer93->deleteAll(
-					array( 'Compofoyercer93.cer93_id' => $data['Cer93']['id'] )
-				);
+			foreach( array( 'Compofoyercer93', 'Diplomecer93', 'Expprocer93' ) as $hasManyModel ) {
+				$this->{$hasManyModel}->unsetValidationRule( 'cer93_id', 'notEmpty' );
+
+				if( isset( $data['Cer93']['id'] ) && !empty( $data['Cer93']['id'] ) ) {
+					$success = $this->{$hasManyModel}->deleteAll(
+						array( "{$hasManyModel}.cer93_id" => $data['Cer93']['id'] )
+					) && $success;
+				}
 			}
-				
+
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
 
+			if( !$success ) {
+				debug( $this->validationErrors );
+			}
+
 			return $success;
 		}
-
 		public function prepareFormData( $personneId, $contratinsertion_id  ) {
 			// Donnée de la CAF stockée en base
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
@@ -211,8 +233,8 @@
 			$dataCaf['Cer93']['natlog'] = $dataCaf['Dsp']['natlog'];
 			// Bloc 3
 			$dataCaf['Cer93']['inscritpe'] = ( ( !empty( $dataCaf['Historiqueetatpe']['etat'] ) && ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' ) ) ? true : null );
-			
-			// Bloc 2 : Composition du foyer 
+
+			// Bloc 2 : Composition du foyer
 			// Récupération des informations de composition du foyer de l'allocataire
 			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
 				'all',
@@ -233,23 +255,6 @@
 			$composfoyerscers93 = array( 'Compofoyercer93' => Set::classicExtract( $composfoyerscers93, '{n}.Compofoyercer93' ) );
 			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
 
-			
-			// Bloc 4 : Diplômes
-			// Récupération des informations de diplômes de l'allocataire
-// 			$diplomescers93 = $this->Diplomecer93->find(
-// 				'all',
-// 				array(
-// 					'fields' => array(
-// 						'Diplomecer93.id',
-// 						'Diplomecer93.cer93_id',
-// 						'Diplomecer93.name',
-// 						'Diplomecer93.annee'
-// 					),
-// 					'conditions' => array( 'Diplomecer93.cer93_id' => $id ),
-// 					'contain' => false
-// 				)
-// 			);
-// 			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
 
 			//Donnée du CER actuel
 			$dataActuelCer= array();
@@ -265,8 +270,48 @@
 						)
 					)
 				);
+
+				// Bloc 4 : Diplômes
+				// Récupération des informations de diplômes de l'allocataire
+				$diplomescers93 = $this->Diplomecer93->find(
+					'all',
+					array(
+						'fields' => array(
+							'Diplomecer93.id',
+							'Diplomecer93.cer93_id',
+							'Diplomecer93.name',
+							'Diplomecer93.annee'
+						),
+						'conditions' => array( 'Diplomecer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
+						'order' => array( 'Diplomecer93.annee DESC' ),
+						'contain' => false
+					)
+				);
+				$diplomescers93 = array( 'Diplomecer93' => Set::classicExtract( $diplomescers93, '{n}.Diplomecer93' ) );
+				$dataActuelCer = Set::merge( $dataActuelCer, $diplomescers93 );
+
+				// Bloc 4 : Formation et expériece
+				// Récupération des informations de diplômes de l'allocataire
+				$expsproscers93 = $this->Expprocer93->find(
+					'all',
+					array(
+						'fields' => array(
+							'Expprocer93.id',
+							'Expprocer93.cer93_id',
+							'Expprocer93.metierexerce_id',
+							'Expprocer93.secteuracti_id',
+							'Expprocer93.anneedeb',
+							'Expprocer93.duree',
+						),
+						'conditions' => array( 'Expprocer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
+						'order' => array( 'Expprocer93.anneedeb DESC' ),
+						'contain' => false
+					)
+				);
+				$expsproscers93 = array( 'Expprocer93' => Set::classicExtract( $expsproscers93, '{n}.Expprocer93' ) );
+				$dataActuelCer = Set::merge( $dataActuelCer, $expsproscers93 );
 			}
-			
+
 			//Donnée du précédent CER validé
 			$dataPcdCer = $this->Contratinsertion->find(
 				'first',
@@ -283,7 +328,7 @@
 			);
 
 			$formData = Set::merge( Set::merge( $dataCaf, $dataPcdCer ), $dataActuelCer );
-			
+
 			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
 
 			return $formData;

@@ -202,6 +202,7 @@
 
 		public function beforeValidate( Model $model ) {
 			$model->data = $this->doFormatting( $model, $model->data );
+			return true;
 		}
 
 		/**
@@ -210,6 +211,7 @@
 
 		public function beforeSave( Model $model ) {
 			$model->data = $this->doFormatting( $model, $model->data );
+			return true;
 		}
 	}
 ?>

@@ -13,8 +13,8 @@
 		dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
 	});
 </script>
-<script type="text/javascript"> 
-	document.observe( "dom:loaded", function() {	
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
 		<?php
 			$ref_id = Set::extract( $this->request->data, 'Contratinsertion.referent_id' );
             echo $this->Ajax->remoteFunction(
@@ -54,7 +54,7 @@
 // 	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br/>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
 // 	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => false ) );
 
-	
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => false,
@@ -152,9 +152,9 @@
         </tr>
     </table>
 
-<?php	
-	
-	// Bloc 2 : Composition du foyer 
+<?php
+
+	// Bloc 2 : Composition du foyer
 	if( !empty( $this->request->data['Compofoyercer93'] ) ) {
 
 		// Sauvegarde des informations
@@ -173,7 +173,7 @@
 				)
 			);
 		}
-		
+
 		// Affichage des informations sous forme de tableau
 		echo '<table class="mediumSize aere">
 			<thead>
@@ -200,7 +200,7 @@
 		}
 		echo '</tbody></table>';
 	}
-	
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => false,
@@ -223,10 +223,9 @@
 	);
 ?>
 </fieldset>
-	
+
 <?php
 	//Bloc 3 : Vérification des droits
-
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => true,
@@ -244,26 +243,77 @@
 	<?php
 		// bloc 4 : Formation et expérience
 		echo $this->Xform->input( 'Cer93.nivetu', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['Cer93']['nivetu'] ) );
-		
-		// Diplômes (scolaires, universitaires et/ou professionnels
-// 		echo '<p>Diplômes (scolaires, universitaires et/ou professionnels)</p>';
-// 		echo $this->Default2->index(
-// 			$diplomescers93,
-// 			array(
-// 				'Diplomecer93.name',
-// 				'Diplomecer93.annee'
-// 			),
-// 			array(
-// 				'actions' => array(
-// 					'Diplomescers93::edit',
-// 					'Diplomescers93::delete'
-// 				),
-// 				'add' => array( 'Diplomecer93.add' ),
-// 				'options' => $options
-// 			)
-// 		);
-// 		
 	?>
+
+	<fieldset>
+		<legend>Diplômes (scolaires, universitaires et/ou professionnels</legend>
+		<ul class="actionMenu">
+			<li><a href="#" onclick="addDynamicTrInputs( 'Diplomecer93', gabaritDiplomecer93 ); return false;">Ajouter</a></li>
+		</ul>
+		<table id="Diplomecer93">
+			<thead>
+				<tr>
+					<th>Intitulé du diplôme</th>
+					<th>Année d'obtention</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					if( !empty( $this->request->data['Diplomecer93'] ) ) {
+						foreach( $this->request->data['Diplomecer93'] as $index => $diplomecer93 ) {
+							echo $this->Html->tableCells(
+								array(
+									$this->Xform->input( "Diplomecer93.{$index}.id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Diplomecer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Diplomecer93.{$index}.name", array( 'type' => 'text', 'label' => false ) ),
+									$this->Xform->input( "Diplomecer93.{$index}.annee", array( 'type' => 'select', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) ),
+									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Diplomecer93', {$index} );return false;" ) ),
+								)
+							);
+						}
+					}
+				?>
+			</tbody>
+		</table>
+	</fieldset>
+
+	<fieldset>
+		<legend>Expériences professionnelles significatives</legend>
+		<ul class="actionMenu">
+			<li><a href="#" onclick="addDynamicTrInputs( 'Expprocer93', gabaritExpprocer93 ); return false;">Ajouter</a></li>
+		</ul>
+		<table id="Expprocer93">
+			<thead>
+				<tr>
+					<th>Métier exercé</th>
+					<th>Secteur d'activité</th>
+					<th>Année de début</th>
+					<th>Durée</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					if( !empty( $this->request->data['Expprocer93'] ) ) {
+						foreach( $this->request->data['Expprocer93'] as $index => $expprocer93 ) {
+							echo $this->Html->tableCells(
+								array(
+									$this->Xform->input( "Expprocer93.{$index}.id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Expprocer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'text', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.duree", array( 'type' => 'text', 'label' => false ) ),
+									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
+								)
+							);
+						}
+					}
+				?>
+			</tbody>
+		</table>
+	</fieldset>
 </fieldset>
 <?php
 	echo $this->Xform->inputs(
@@ -289,3 +339,66 @@
 ?>
 </div>
 <div class="clearer"><hr /></div>
+
+<script type="text/javascript">
+	<!--//--><![CDATA[//><!--
+		var gabaritDiplomecer93 = '<tr><td><?php
+			$fields = $this->Xform->input( 'Diplomecer93.%line%.id', array( 'type' => 'hidden', 'label' => false ) )
+				.$this->Xform->input( 'Diplomecer93.%line%.cer93_id', array( 'type' => 'hidden', 'label' => false ) )
+				.$this->Xform->input( 'Diplomecer93.%line%.name', array( 'type' => 'text', 'label' => false ) );
+			echo str_replace( "'", "\\'", $fields );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Diplomecer93.%line%.annee', array( 'type' => 'select', 'options' => range( 1960, date( 'Y' ) ), 'label' => false, 'empty' => true ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Diplomecer93\', %line% );return false;">Supprimer</a></td></tr>';
+
+		var gabaritExpprocer93 = '<tr><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.id', array( 'type' => 'hidden', 'label' => false ) )
+				.$this->Xform->input( 'Expprocer93.%line%.cer93_id', array( 'type' => 'hidden', 'label' => false ) )
+				.$this->Xform->input( 'Expprocer93.%line%.metierexerce_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.secteuracti_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'text', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Expprocer93\', %line% );return false;">Supprimer</a></td></tr>';
+	//--><!]]>
+</script>
+
+<script type="text/javascript">
+	<!--//--><![CDATA[//><!--
+		function addDynamicTrInputs( tableId, gabarit ) {
+			var index = 0;
+			$$( '#' + tableId + ' tbody tr > td:nth-child(1) > input:nth-child(1)' ).each( function( input ) {
+				var i = parseInt( input.name.replace( new RegExp( '^.*\\]\\[([0-9]+)\\]\\[.*$', 'gi' ), '$1' ) );
+				if( i >= index ) {
+					index = i + 1;
+				}
+			} );
+			var line = gabarit.replace( new RegExp( '%line%', 'gi' ), index );
+			$$( '#' + tableId + ' tbody' )[0].insert( { 'top': line } );
+		}
+
+		function deleteDynamicTrInputs( tableId, index ) {
+			var lineNr = -1;
+			$$( '#' + tableId + ' tbody tr > td:nth-child(1) > input:nth-child(1)' ).each( function( input, l ) {
+				console.log( l );
+				var i = parseInt( input.name.replace( new RegExp( '^.*\\]\\[([0-9]+)\\]\\[.*$', 'gi' ), '$1' ) );
+				if( i == index ) {
+					lineNr = l;
+				}
+			} );
+
+			if( lineNr != -1 ) {
+				$$( '#' + tableId + ' tbody tr' )[parseInt(lineNr)].remove();
+			}
+		}
+	//--><!]]>
+</script>
+
+<?php debug( $this->request->data );?>

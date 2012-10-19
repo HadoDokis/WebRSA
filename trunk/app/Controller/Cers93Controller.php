@@ -42,14 +42,14 @@
 		 * @var array
 		 */
 		public $uses = array( 'Cer93' );
-		
+
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
 
-		
+
 		public function indexparams() {
-			
+
 		}
-		
+
 		/**
 		 * Ajax pour les coordonnées de la structure référente liée (CG 93).
 		 *
@@ -76,8 +76,8 @@
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
-		
-		
+
+
 		/**
 		 * Ajax pour les coordonnées du référent (CG 58, 66, 93).
 		 *
@@ -108,8 +108,8 @@
 			$this->set( 'referent', $referent );
 			$this->render( 'ajaxref', 'ajax' );
 		}
-		
-		
+
+
 		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
@@ -127,7 +127,11 @@
 					'Cer93'
 				),
 				'conditions' => array(
-					'Contratinsertion.personne_id' => $personne_id
+					'Contratinsertion.personne_id' => $personne_id,
+					'Cer93.id IS NOT NULL'
+				),
+				'order' => array(
+					'Cer93.id DESC' // FIXME
 				)
 			);
 
@@ -194,7 +198,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			
+
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ) );
 			}
@@ -202,7 +206,8 @@
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
-					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions()
+					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions(),
+					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
 				),
 				'Prestation' => array(
 					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
@@ -216,9 +221,9 @@
 				'Serviceinstructeur' => array(
 					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
 				),
-				'Contratinsertion' => array(
-					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions(),
-					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
+				'Expprocer93' => array(
+					'metierexerce_id' => $this->Cer93->Expprocer93->Metierexerce->find( 'list' ),
+					'secteuracti_id' => $this->Cer93->Expprocer93->Secteuracti->find( 'list' )
 				),
 				'Foyer' => array(
 					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
