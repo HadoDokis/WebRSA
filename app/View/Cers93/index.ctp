@@ -12,7 +12,6 @@
 	</ul>
 
 	<?php
-		debug( $cers93 );
 		echo $this->Default2->index(
 			$cers93,
 			array(
@@ -28,6 +27,8 @@
 				)
 			)
 		);
+
+		debug( $cers93 );
 	?>
 </div>
 <div class="clearer"><hr /></div>
