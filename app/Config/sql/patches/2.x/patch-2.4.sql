@@ -102,6 +102,47 @@ COMMENT ON TABLE diplomescers93 IS 'Diplômes obtenus pour le CER 93 (bloc 4, fo
 DROP INDEX IF EXISTS diplomescers93_cer93_id_idx;
 CREATE INDEX diplomescers93_cer93_id_idx ON diplomescers93( cer93_id );
 
+
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS metiersexerces CASCADE;
+CREATE TABLE metiersexerces (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			TEXT
+);
+COMMENT ON TABLE metiersexerces IS 'Métiers exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+
+DROP INDEX IF EXISTS metiersexerces_name_idx;
+CREATE UNIQUE INDEX metiersexerces_name_idx ON metiersexerces( name );
+
+-------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS secteursactis CASCADE;
+CREATE TABLE secteursactis (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			TEXT
+);
+COMMENT ON TABLE secteursactis IS 'Secteurs d''activités exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+
+DROP INDEX IF EXISTS secteursactis_name_idx;
+CREATE UNIQUE INDEX secteursactis_name_idx ON secteursactis( name );
+
+
+-------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS expsproscers93 CASCADE;
+CREATE TABLE expsproscers93 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	cer93_id			INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	metierexerce_id		INTEGER NOT NULL REFERENCES metiersexerces(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	secteuracti_id		INTEGER NOT NULL REFERENCES secteursactis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	anneedeb			INTEGER NOT NULL,
+	duree				VARCHAR(25) NOT NULL
+);
+COMMENT ON TABLE expsproscers93 IS 'Expériences professionnelles significatives pour le CER 93 (bloc 4, formation et expérience)';
+
+DROP INDEX IF EXISTS expsproscers93_cer93_id_idx;
+CREATE INDEX expsproscers93_cer93_id_idx ON expsproscers93( cer93_id );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

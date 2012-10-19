@@ -49,6 +49,20 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					echo $this->Xhtml->tableCells(
+						array(
+							h( 'CERs' ),
+							$this->Xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'cers93', 'action' => 'indexparams' ),
+								$this->Permissions->check( 'cers93', 'indexparams' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
 				echo $this->Xhtml->tableCells(
 					array(
 						h( 'CUIs' ),

@@ -236,20 +236,20 @@
 			
 			// Bloc 4 : Diplômes
 			// Récupération des informations de diplômes de l'allocataire
-			$diplomescers93 = $this->Cer93->Diplomecer93->find(
-				'all',
-				array(
-					'fields' => array(
-						'Diplomecer93.id',
-						'Diplomecer93.cer93_id',
-						'Diplomecer93.name',
-						'Diplomecer93.annee'
-					),
-					'conditions' => array( 'Diplomecer93.cer93_id' => $id ),
-					'contain' => false
-				)
-			);
-			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
+// 			$diplomescers93 = $this->Diplomecer93->find(
+// 				'all',
+// 				array(
+// 					'fields' => array(
+// 						'Diplomecer93.id',
+// 						'Diplomecer93.cer93_id',
+// 						'Diplomecer93.name',
+// 						'Diplomecer93.annee'
+// 					),
+// 					'conditions' => array( 'Diplomecer93.cer93_id' => $id ),
+// 					'contain' => false
+// 				)
+// 			);
+// 			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
 
 			//Donnée du CER actuel
 			$dataActuelCer= array();

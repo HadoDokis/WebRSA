@@ -46,6 +46,10 @@
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
 
 		
+		public function indexparams() {
+			
+		}
+		
 		/**
 		 * Ajax pour les coordonnées de la structure référente liée (CG 93).
 		 *
