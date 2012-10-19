@@ -953,7 +953,9 @@
 		 * @param string $personneIdFied Le champ où trouver l'id de la personne.
 		 * @return string
 		 */
-		public function sqDernierContrat( $personneIdFied = 'Personne.id' ) {
+		public function sqDernierContrat( $personneIdFied = 'Personne.id', $cerValide = false ) {
+			
+			$conditions = ( $cerValide ? array( 'contratsinsertion.decision_ci' => 'V' ) : array() );			
 			return $this->sq(
 				array(
 					'fields' => array(
@@ -961,7 +963,8 @@
 					),
 					'alias' => 'contratsinsertion',
 					'conditions' => array(
-						"contratsinsertion.personne_id = {$personneIdFied}"
+						"contratsinsertion.personne_id = {$personneIdFied}",
+						$conditions
 					),
 					'order' => array( 'contratsinsertion.dd_ci DESC' ),
 					'limit' => 1
@@ -1835,7 +1838,7 @@
         *	@return integer
         */
 		public function vfRgCiMax( $alias = 'Contratinsertion.personne_id' ) {
-			return "( SELECT MAX(rg_ci) FROM contratsinsertion WHERE contratsinsertion.decision_ci = 'V' AND contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__rangcer\"";
+			return "( SELECT MAX(rg_ci) FROM contratsinsertion WHERE contratsinsertion.decision_ci = 'V' AND contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__rg_ci\"";
 		}
 	}
 ?>

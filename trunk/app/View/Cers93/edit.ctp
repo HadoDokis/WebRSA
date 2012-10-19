@@ -50,9 +50,9 @@
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ) ) );
-
-	$adresseAffichage = $this->Webrsa->blocAdresse( $personne, array( 'separator' => "<br/>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
-	$adresseFormulaire = $this->Webrsa->blocAdresse( $personne, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => false ) );
+//FIXME
+// 	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br/>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
+// 	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => false ) );
 
 	
 	echo $this->Xform->inputs(
@@ -62,7 +62,13 @@
 			'Contratinsertion.id' => array( 'type' => 'hidden' ),
 			'Contratinsertion.personne_id' => array( 'type' => 'hidden', 'value' => $personne_id ),
 			'Cer93.id' => array( 'type' => 'hidden' ),
-			'Cer93.contratinsertion_id' => array( 'type' => 'hidden' )
+			'Cer93.contratinsertion_id' => array( 'type' => 'hidden' ),
+			// Champs non sauvegardés mais nécessaires en cas d'erreur et de renvoi du formulaire
+			'Contratinsertion.rg_ci' => array( 'type' => 'hidden' ),
+			'Personne.sexe' => array( 'type' => 'hidden' ),
+			'Cer93.rolepers' => array( 'type' => 'hidden' ),
+			'Cer93.numdemrsa' => array( 'type' => 'hidden' ),
+			'Cer93.identifiantpe' => array( 'type' => 'hidden' )
 		)
 	);
 ?>
@@ -87,7 +93,7 @@
         </tr>
         <tr>
             <td class="wide noborder">
-				<?php echo $this->Html->tag( 'p', 'Rang du contrat: '.$personne['Contratinsertion']['rangcer'] ); ?>
+				<?php echo $this->Html->tag( 'p', 'Rang du contrat: '.( !empty( $this->request->data['Contratinsertion']['rg_ci'] ) ? $this->request->data['Contratinsertion']['rg_ci'] : '1' ) ); ?>
 			</td>
         </tr>
     </table>
@@ -103,22 +109,25 @@
 	 <table class="wide noborder">
         <tr>
             <td class="mediumSize noborder">
-                <strong>Statut de la personne : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Prestation.rolepers' ), $options['Prestation']['rolepers'] ); ?>
+                <strong>Statut de la personne : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.rolepers' ), $options['Prestation']['rolepers'] ); ?>
                 <br />
-                <strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual'), $options['Personne']['qual'] ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
+                <strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.qual'), $options['Personne']['qual'] ).' '.Set::classicExtract( $this->request->data, 'Cer93.nom' );?>
                 <br />
-                <?php if( $personne['Personne']['sexe'] == 2 ):?>
-					<strong>Nom de jeune fille : </strong><?php echo Set::classicExtract( $personne, 'Personne.nomnai' );?>
+                <?php if( $this->request->data['Personne']['sexe'] == 2 ):?>
+					<strong>Nom de jeune fille : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.nomnai' );?>
 					<br />
                 <?php endif;?>
-                <strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
+                <strong>Prénom : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.prenom' );?>
                 <br />
-                <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
+                <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtnai' ) );?>
+                <br />
+                <strong>Adresse : </strong>
+                <br /><?php /*echo $adresseAffichage;*/ echo Set::classicExtract( $this->request->data, 'Cer93.adresse' ); /* FIXME*/ ?>
             </td>
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong>
                 <?php
-					$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $options['Serviceinstructeur']['typeserins'] );
+					$libservice = Set::enum( Set::classicExtract( $this->request->data, 'Suiviinstruction.typeserins' ),  $options['Serviceinstructeur']['typeserins'] );
 					if( isset( $libservice ) ) {
 						echo $libservice;
 					}
@@ -127,59 +136,40 @@
 					}
                 ?>
                 <br />
-                <strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
+                <strong>N° demandeur : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.numdemrsa' );?>
                 <br />
-                <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
+                <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.matricule' );?>
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
-                <?php
-					$valueIdentifiantpe = '';
-					$dernierIdentifiantpe = Set::classicExtract( $personne, 'Historiqueetatpe.identifiantpe' );
-					if( !empty( $dernierIdentifiantpe ) ){
-						$valueIdentifiantpe = $dernierIdentifiantpe;
-						echo 'Oui';
-					}
-					else{
-						$valueIdentifiantpe = $dernierIdentifiantpe;
-						echo 'Non';
-					}
-				?>
+                <?php echo ( !empty( $this->request->data['Cer93']['identifiantpe'] ) ? 'Oui' : 'Non' );?>
 				<br />
-				<strong>N° identifiant : </strong><?php echo $valueIdentifiantpe;?>
-				
-            </td>
-        </tr>
-        <tr>
-            <td class="mediumSize noborder">
-                <strong>Adresse : </strong><br /><?php echo $adresseAffichage;?>
-            </td>
-        </tr>
-		<tr>
-            <td colspan="2" class="mediumSize noborder">
-                <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Foyer.sitfam' ), $options['Foyer']['sitfam'] );?>
+				<strong>N° identifiant : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.identifiantpe' );?>
+				<br />
+				 <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.sitfam' ), $options['Foyer']['sitfam'] );?>
                 <br />
-                <strong>Conditions de logement : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Dsp.natlog' ), $options['Dsp']['natlog'] );?>
+                <strong>Conditions de logement : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.natlog' ), $options['Dsp']['natlog'] );?>
             </td>
         </tr>
     </table>
 
 <?php	
 	
-	// Composition du foyer 
-	if( !empty( $composfoyerscers93 ) ) {
+	// Bloc 2 : Composition du foyer 
+	if( !empty( $this->request->data['Compofoyercer93'] ) ) {
 
 		// Sauvegarde des informations
-		foreach( $composfoyerscers93 as $index => $compofoyercer93 ) {
+		foreach( $this->request->data['Compofoyercer93'] as $index => $compofoyercer93 ) {
 			echo $this->Xform->inputs(
 				array(
 					'fieldset' => false,
 					'legend' => false,
 					"Compofoyercer93.{$index}.id" => array( 'type' => 'hidden' ),
 					"Compofoyercer93.{$index}.cer93_id" => array( 'type' => 'hidden' ),
-					"Compofoyercer93.{$index}.qual" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['qual'] ),
-					"Compofoyercer93.{$index}.nom" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['nom'] ),
-					"Compofoyercer93.{$index}.prenom" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['prenom'] ),
-					"Compofoyercer93.{$index}.dtnai" => array( 'type' => 'hidden', 'value' => $compofoyercer93['Personne']['dtnai'] )
+					"Compofoyercer93.{$index}.qual" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.nom" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.prenom" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.dtnai" => array( 'type' => 'hidden' ),
+					"Compofoyercer93.{$index}.rolepers" => array( 'type' => 'hidden' ),
 				)
 			);
 		}
@@ -195,14 +185,14 @@
 					<th>Date de naissance</th>
 			</thead>
 		<tbody>';
-		foreach( $composfoyerscers93 as $index => $compofoyercer93 ){
+		foreach( $this->request->data['Compofoyercer93'] as $index => $compofoyercer93 ){
 			echo $this->Xhtml->tableCells(
 				array(
-					h( Set::enum( $compofoyercer93['Prestation']['rolepers'], $options['Prestation']['rolepers'] ) ),
-					h( Set::enum( $compofoyercer93['Personne']['qual'], $options['Personne']['qual'] ) ),
-					h( $compofoyercer93['Personne']['nom'] ),
-					h( $compofoyercer93['Personne']['prenom'] ),
-					h( $this->Locale->date( 'Date::short', $compofoyercer93['Personne']['dtnai'] ) )
+					h( Set::enum( $compofoyercer93['rolepers'], $options['Prestation']['rolepers'] ) ),
+					h( Set::enum( $compofoyercer93['qual'], $options['Personne']['qual'] ) ),
+					h( $compofoyercer93['nom'] ),
+					h( $compofoyercer93['prenom'] ),
+					h( $this->Locale->date( 'Date::short', $compofoyercer93['dtnai'] ) )
 				),
 				array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 				array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -216,19 +206,18 @@
 			'fieldset' => false,
 			'legend' => false,
 			// Bloc 2: état cvil
-			'Cer93.matricule' => array( 'type' => 'hidden', 'value' => $personne['Dossier']['matricule'] ),
-			'Cer93.dtdemrsa' => array( 'type' => 'hidden', 'value' => $personne['Dossier']['dtdemrsa'] ),
-			'Cer93.qual' => array( 'type' => 'hidden', 'value' => $personne['Personne']['qual'] ),
-			'Cer93.nom' => array( 'type' => 'hidden', 'value' => $personne['Personne']['nom'] ),
-			'Cer93.nomnai' => array( 'type' => 'hidden', 'value' => $personne['Personne']['nomnai'] ),
-			'Cer93.prenom' => array( 'type' => 'hidden', 'value' => $personne['Personne']['prenom'] ),
-			'Cer93.dtnai' => array( 'type' => 'hidden', 'value' => $personne['Personne']['dtnai'] ),
-			'Cer93.adresse' => array( 'type' => 'hidden', 'value' => $adresseFormulaire ),
-			'Cer93.codepos' => array( 'type' => 'hidden', 'value' => $personne['Adresse']['codepos'] ),
-			'Cer93.locaadr' => array( 'type' => 'hidden', 'value' => $personne['Adresse']['locaadr'] ),
-			'Cer93.sitfam' => array( 'type' => 'hidden', 'value' => $personne['Foyer']['sitfam'] ),
-			'Cer93.natlog' => array( 'type' => 'hidden', 'value' => $personne['Dsp']['natlog'] ),
-			'Cer93.nivetu' => array( 'type' => 'hidden', 'value' => $personne['Dsp']['nivetu'] ),
+			'Cer93.matricule' => array( 'type' => 'hidden' ),
+			'Cer93.dtdemrsa' => array( 'type' => 'hidden' ),
+			'Cer93.qual' => array( 'type' => 'hidden' ),
+			'Cer93.nom' => array( 'type' => 'hidden' ),
+			'Cer93.nomnai' => array( 'type' => 'hidden' ),
+			'Cer93.prenom' => array( 'type' => 'hidden' ),
+			'Cer93.dtnai' => array( 'type' => 'hidden' ),
+			'Cer93.adresse' => array( 'type' => 'hidden' ),//FIXME virtual fiuelds adresse.php
+			'Cer93.codepos' => array( 'type' => 'hidden' ),
+			'Cer93.locaadr' => array( 'type' => 'hidden' ),
+			'Cer93.sitfam' => array( 'type' => 'hidden' ),
+			'Cer93.natlog' => array( 'type' => 'hidden' ),
 			'Cer93.incoherencesetatcivil' => array( 'domain' => 'cer93', 'type' => 'textarea' )
 		)
 	);
@@ -237,30 +226,50 @@
 	
 <?php
 	//Bloc 3 : Vérification des droits
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => true,
 			'legend' => 'Vérification des droits',
-			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['inscritpe'], 'empty' => true, 'selected' => isset( $etatInscription ) ? $etatInscription : null ),
+			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['inscritpe'], 'empty' => true ),
 			'Cer93.cmu' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmu'], 'empty' => true ),
 			'Cer93.cmuc' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmuc'], 'empty' => true )
 		)
 	);
 
-	// bloc 4 : Formation et expérience
-	echo $this->Xform->inputs(
-		array(
-			'fieldset' => true,
-			'legend' => 'Formation et expérience',
-			'Cer93.nivetu' => array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['Cer93']['nivetu'], 'selected' => isset( $personne['Dsp']['nivetu'] ) ? $personne['Dsp']['nivetu'] : $this->request->data['Cer93']['nivetu'] )
-		)
-	);
+
 ?>
+<fieldset>
+	<legend>Formation et expérience</legend>
+	<?php
+		// bloc 4 : Formation et expérience
+		echo $this->Xform->input( 'Cer93.nivetu', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['Cer93']['nivetu'] ) );
+		
+		// Diplômes (scolaires, universitaires et/ou professionnels
+// 		echo '<p>Diplômes (scolaires, universitaires et/ou professionnels)</p>';
+// 		echo $this->Default2->index(
+// 			$diplomescers93,
+// 			array(
+// 				'Diplomecer93.name',
+// 				'Diplomecer93.annee'
+// 			),
+// 			array(
+// 				'actions' => array(
+// 					'Diplomescers93::edit',
+// 					'Diplomescers93::delete'
+// 				),
+// 				'add' => array( 'Diplomecer93.add' ),
+// 				'options' => $options
+// 			)
+// 		);
+// 		
+	?>
+</fieldset>
 <?php
 	echo $this->Xform->inputs(
 		array(
-			'fieldset' => true,
-			'legend' => 'Formation et expérience',
+			'fieldset' => false,
+			'legend' => false,
 			'Contratinsertion.dd_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
 			'Contratinsertion.df_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
 			'Contratinsertion.date_saisi_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' )
