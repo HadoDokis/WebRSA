@@ -1,9 +1,25 @@
 <?php
 	/**
-	 * Cette classe comprend des combinaisons de champs de formulaire de recherche.
+	 * Fichier source de la classe SearchHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 */
+
+	/**
+	 * La classe SearchHelper comprend des combinaisons de champs de formulaire
+	 * de recherche pour WebRSA.
+	 *
+	 * @package app.View.Helper
 	 */
 	class SearchHelper extends AppHelper
 	{
+		/**
+		 * Les helpers utilisés par ce helper.
+		 *
+		 * @var array
+		 */
 		public $helpers = array( 'Xhtml', 'Html', 'Xform', 'Form' );
 
 		/**

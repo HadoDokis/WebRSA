@@ -4,18 +4,16 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package Search
-	 * @subpackage Test.Case.View.Helper
+	 * @package app.Test.Case.View.Helper
 	 */
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'View', 'View' );
-	App::uses( 'SearchHelper', 'Search.View/Helper' );
+	App::uses( 'SearchHelper', 'View/Helper' );
 
 	/**
 	 * SearchHelperTest class
 	 *
-	 * @package Search
-	 * @subpackage Test.Case.View.Helper
+	 * @package app.Test.Case.View.Helper
 	 */
 	class SearchHelperTest extends CakeTestCase
 	{
@@ -84,7 +82,7 @@
 		 */
 		public function testEtatDossierPCG66() {
 			$result = $this->Search->etatDossierPCG66( array( '1' => 'One' ) );
-			$expected = '<script type=\'text/javascript\'>document.observe(\'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'Dossierpcg66EtatdossierpcgChoice\', $( \'Dossierpcg66Etatdossierpcg\' ), false ); });</script><div class="input checkbox"><input type="hidden" name="data[Dossierpcg66][etatdossierpcg_choice]" id="Dossierpcg66EtatdossierpcgChoice_" value="0"/><input type="checkbox" name="data[Dossierpcg66][etatdossierpcg_choice]" value="1" id="Dossierpcg66EtatdossierpcgChoice"/><label for="Dossierpcg66EtatdossierpcgChoice">Filtrer par état du dossier PCG</label></div><fieldset id="Dossierpcg66Etatdossierpcg"><legend>État du dossier PCG</legend><div class="input select"><input type="hidden" name="data[Dossierpcg66][etatdossierpcg]" value="" id="Dossierpcg66Etatdossierpcg"/> <div class="checkbox"><input type="checkbox" name="data[Dossierpcg66][etatdossierpcg][]" checked="checked" value="1" id="Dossierpcg66Etatdossierpcg1" /><label for="Dossierpcg66Etatdossierpcg1" class="selected">One</label></div> </div></fieldset>';
+			$expected = '<script type=\'text/javascript\'>document.observe(\'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'Dossierpcg66EtatdossierpcgChoice\', $( \'Dossierpcg66Etatdossierpcg\' ), false ); });</script><div class="input checkbox"><input type="hidden" name="data[Dossierpcg66][etatdossierpcg_choice]" id="Dossierpcg66EtatdossierpcgChoice_" value="0"/><input type="checkbox" name="data[Dossierpcg66][etatdossierpcg_choice]" value="1" id="Dossierpcg66EtatdossierpcgChoice"/><label for="Dossierpcg66EtatdossierpcgChoice">Filtrer par état du dossier PCG</label></div><fieldset id="Dossierpcg66Etatdossierpcg"><legend>État du dossier PCG</legend><div class="input select"><input type="hidden" name="data[Dossierpcg66][etatdossierpcg]" value="" id="Dossierpcg66Etatdossierpcg"/> <div class="checkbox"><input type="checkbox" name="data[Dossierpcg66][etatdossierpcg][]" value="1" id="Dossierpcg66Etatdossierpcg1" /><label for="Dossierpcg66Etatdossierpcg1">One</label></div> </div></fieldset>';
 			$expected = preg_replace( '/[[:space:]]+/m', ' ', $expected );
 			$result = preg_replace( '/[[:space:]]+/m', ' ', $result );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
