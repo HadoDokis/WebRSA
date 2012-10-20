@@ -1,4 +1,12 @@
 <?php
+	/**
+	 * Fichier source de la classe GedoooComponent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Gedooo
+	 * @subpackage Controller.Component
+	 */
 	@set_time_limit( 0 );
 	// Mémoire maximum allouée à l'exécution de ce script
 	@ini_set( 'memory_limit', '512M' );
@@ -7,6 +15,14 @@
 	// Temps maximum (en seconde), avant que le script n'arrête d'attendre la réponse de Gedooo
 	@ini_set( 'default_socket_timeout', 12000 );
 
+	/**
+	 * La classe GedoooComponent fournit des méthodes permettant de concaténer
+	 * des fichiers PDF (grâce au binaire pdftk) et d'envoyer un fichier PDF au
+	 * navigateur.
+	 *
+	 * @package Gedooo
+	 * @subpackage Controller.Component
+	 */
 	class GedoooComponent extends Component
 	{
 		/**

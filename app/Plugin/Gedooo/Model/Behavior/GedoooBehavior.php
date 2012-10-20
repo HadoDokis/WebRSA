@@ -1,19 +1,11 @@
 <?php
 	/**
-	 * Cette classe correspond au patron de conception "fabrique" (Factory method pattern) et permet d'attacher
-	 * le bon behavior suivant la configuration utilisée.
+	 * Fichier source de la classe GedoooBehavior.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.models.behaviors
-	 *
-	 *  Exemple:
-	 *	$this->User->Behaviors->attach( 'Gedooo.Gedooo' );
-	 *	$pdf = $this->User->ged( array( 'Personne' => array( 'nom' => 'Buffin' ) ), 'APRE/apre66.odt' );
-	 *	$this->Gedooo->sendPdfContentToClient( $pdf, 'foo.pdf' );
-	 *	return;
-	 *
-	 * TODO: ajouter une version check, la conf (les define), les fichiers Vendor
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
 	 */
 	if( !defined( 'GEDOOO_PLUGIN_DIR' ) ) {
 		define( 'GEDOOO_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS.'..'.DS );
@@ -25,6 +17,22 @@
 		define( 'GEDOOO_TEST_FILE', GEDOOO_PLUGIN_DIR.'Vendor'.DS.'modelesodt'.DS.'test_gedooo.odt' );
 	}
 
+	/**
+	 * La classe GedoooBehavior correspond au patron de conception "fabrique"
+	 * (Factory method pattern) et permet d'attacher le bon behavior suivant la
+	 * configuration utilisée.
+	 *
+	 *  Exemple:
+	 *	$this->User->Behaviors->attach( 'Gedooo.Gedooo' );
+	 *	$pdf = $this->User->ged( array( 'Personne' => array( 'nom' => 'Buffin' ) ), 'APRE/apre66.odt' );
+	 *	$this->Gedooo->sendPdfContentToClient( $pdf, 'foo.pdf' );
+	 *	return;
+	 *
+	 * TODO: ajouter une version check, la conf (les define), les fichiers Vendor
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	class GedoooBehavior extends ModelBehavior
 	{
 		protected $_gedoooBehavior = null;

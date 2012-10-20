@@ -1,17 +1,21 @@
 <?php
 	/**
+	 * Fichier source de la classe GedoooCloudoooBehavior.
 	 *
 	 * PHP 5.3
 	 *
-	 * FIXME:
-	 *	- une classe abstraite parente pour la méthode ged
-	 *	- rendre la méthode toPdf publique ?
-	 *	- @package
-	 *
-	 * @package       App.Model.Behavior
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
 	 */
 	App::import( 'Behavior', 'Gedooo.GedoooFusionConverter' );
 
+	/**
+	 * La classe GedoooCloudoooBehavior fournit une méthode de conversion de
+	 * document ODT au format PDF en utilisant le serveur de conversion Cloudooo.
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	class GedoooCloudoooBehavior extends GedoooFusionConverterBehavior
 	{
 		/**
