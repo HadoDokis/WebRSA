@@ -1,16 +1,21 @@
 <?php
 	/**
+	 * Fichier source de la classe GedoooUnoconvBehavior.
 	 *
 	 * PHP 5.3
 	 *
-	 *	- une classe abstraite parente pour la méthode ged
-	 *	- rendre la méthode toPdf publique ?
-	 *	- @package
-	 *
-	 * @package       App.Model.Behavior
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
 	 */
 	App::import( 'Behavior', 'Gedooo.GedoooFusionConverter' );
 
+	/**
+	 * La classe GedoooUnoconvBehavior fournit une méthode de conversion de
+	 * document ODT au format PDF en utilisant le binaire unoconv.
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	class GedoooUnoconvBehavior extends GedoooFusionConverterBehavior
 	{
 		/**

@@ -1,4 +1,12 @@
 <?php
+	/**
+	 * Fichier source de la classe GedoooClassicBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	// Inclusion des fichiers nécessaires à GEDOOo
 	require_once( PHPGEDOOO_DIR.'GDO_Utility.class' );
 	require_once( PHPGEDOOO_DIR.'GDO_FieldType.class' );
@@ -10,9 +18,17 @@
 	require_once( PHPGEDOOO_DIR.'GDO_MatrixRowType.class' );
 	require_once( PHPGEDOOO_DIR.'GDO_AxisTitleType.class' );
 
+	/**
+	 * La classe GedoooClassicBehavior permet de générer un fichier PDF avec
+	 * l'ancienne version de Gedooo et un ODT avec la nouvelle version.
+	 *
+	 * Cette classe est utilisée comme classe parente d'autres behaviors.
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	class GedoooClassicBehavior extends ModelBehavior
 	{
-
 		/**
 		 * INFO: GDO_FieldType: text, string, number, date
 		 */

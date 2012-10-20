@@ -1,12 +1,24 @@
 <?php
 	/**
+	 * Fichier source de la classe GedoooFusionConverterBehavior.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.models.behaviors
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
 	 */
 	App::import( 'Behavior', 'Gedooo.GedoooClassic' );
 
+	/**
+	 * La classe GedoooFusionConverterBehavior permet de générer un fichier PDF
+	 * grâce à la classe GedoooClassicBehavior et au passage dans la méthode
+	 * de conversion gedConversion() des classes descendantes.
+	 *
+	 * Cette classe est utilisée comme classe parente d'autres behaviors.
+	 *
+	 * @package Gedooo
+	 * @subpackage Model.Behavior
+	 */
 	abstract class GedoooFusionConverterBehavior extends GedoooClassicBehavior
 	{
 		/**

@@ -1,20 +1,27 @@
 <?php
-//	App::import( 'Model', 'AppModel' );
-//	App::import( 'Behavior', 'Gedooo.Gedooo' );
-//	App::import( 'Model', 'Appchecks.Check' );
-
+	/**
+	 * Fichier source de la classe TestGedoooShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Gedooo
+	 * @subpackage Console.Command
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'GedoooBehavior', 'Gedooo.Model/Behavior' );
 	App::uses( 'Check', 'Appchecks.Model' );
-//	App:uses( 'Appchecks.Check', 'Model' );
+
 	/**
-	 * Shell permettant de tester l'état du serveur Gedooo.
-	 * Un test d'impression sera également réalisé.
+	 * La classe TestGedoooShell permet de tester l'état du serveur Gedooo.
+	 * Un test d'impression est également réalisé.
 	 *
 	 * Codes de retour:
 	 * 	0: succès
 	 * 	1: erreur lors de la connexion au serveur Gedooo
 	 * 	2: erreur lors de la génération du document de test
+	 *
+	 * @package Gedooo
+	 * @subpackage Console.Command
 	 */
 	class TestGedoooShell extends XShell
 	{
