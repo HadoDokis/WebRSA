@@ -177,12 +177,16 @@
 		}
 
 		/**
-		 * FIXME: passe dans un navigateur, pas en console.
+		 * TODO: passe dans un navigateur, pas en console.
 		 * testRedirect method
 		 *
 		 * @return void
 		 */
-		/*public function testPostRedirectFilter() {
+		public function testPostRedirectFilter() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
 			$_SERVER['REQUEST_METHOD'] = 'POST';
 			$data = array(
 				'Search' => array(
@@ -219,15 +223,19 @@
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-		}*/
+		}
 
 		/**
-		 * FIXME: passe dans un navigateur, pas en console.
+		 * TODO: passe dans un navigateur, pas en console.
 		 * testRedirect method
 		 *
 		 * @return void
 		 */
-		/*public function testGetFilter() {
+		public function testGetFilter() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
 			$_SERVER['REQUEST_METHOD'] = 'GET';
 			$prgSessionKey = "{$this->Controller->Prg->name}.{$this->Controller->name}__{$this->Controller->action}";
 			$sessionKey = '62cdb7020ff920e5aa642c3d4066950dd1f01f4d';
@@ -252,6 +260,6 @@
 				'Foo' => 'bar'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-		}*/
+		}
 	}
 ?>
