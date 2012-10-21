@@ -1,8 +1,22 @@
 <?php
+	/**
+	 * Code source de la classe IndexesShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'AppModel', 'Model' );
 	App::uses( 'XShell', 'Console/Command' );
+
 	/**
+	 * La classe IndexesShell vérifie si toutes les colonnes se terminant par _id
+	 * possèdent bien un index.
 	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
 	 */
 	class IndexesShell extends XShell
 	{
