@@ -1,10 +1,19 @@
 <?php
-	// FIXME: dans /cohortesnonorientes66/isemploi, on n'a pas la clé Search.Situationdossierrsa.etatdosrsa_choice mais Situationdossierrsa.etatdosrsa_choice dans le formulaire
 	/**
+	 * Fichier source de la classe Prg2Component.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       App.Controller.Component
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * POST/redirect/GET.
+	 *
+	 * FIXME: dans /cohortesnonorientes66/isemploi, on n'a pas la clé Search.Situationdossierrsa.etatdosrsa_choice mais Situationdossierrsa.etatdosrsa_choice dans le formulaire
+	 *
+	 * @package app.Controller.Component
 	 */
 	class Prg2Component extends Component
 	{

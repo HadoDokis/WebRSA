@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
@@ -13,7 +13,7 @@
 	 * La classe Gestionsanctionep58 fournit un traitement des filtres de recherche concernant la gestion des
 	 * sanctions émises par une EP du CG 58.
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Gestionsanctionep58 extends AppModel
 	{

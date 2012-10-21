@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe DsphmHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe DsphmHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class DsphmHelper extends AppHelper
 	{
 		public $helpers = array( 'Xform', 'Xhtml' );

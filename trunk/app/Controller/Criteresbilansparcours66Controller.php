@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Moteur de recherche pour les bilans de parcours du CG 66
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Fichier source de la classe Criteresbilansparcours66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Moteur de recherche de bilans de parcours (CG 66).
+	 *
+	 * @package app.Controller
+	 */
 	class Criteresbilansparcours66Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
@@ -30,7 +35,7 @@
 
 		public function index() {
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
-			
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 

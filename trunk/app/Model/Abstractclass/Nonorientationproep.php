@@ -1,8 +1,20 @@
 <?php
+	/**
+	 * Code source de la classe Nonorientationproep.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Abstractclass
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
-
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
+	/**
+	 * La classe Nonorientationproep ...
+	 *
+	 * @package app.Model.Abstractclass
+	 */
 	abstract class Nonorientationproep extends Thematiqueep
 	{
 		public $actsAs = array(

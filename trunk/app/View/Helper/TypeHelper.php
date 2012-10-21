@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe TypeHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe TypeHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class TypeHelper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Locale', 'Xform' );

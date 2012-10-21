@@ -1,11 +1,19 @@
 <?php
-	require_once( APPLIBS.'cmis.php' );
 	/**
+	 * Fichier source de la classe TransfertCmsShell.
 	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( APPLIBS.'cmis.php' );
 	App::uses( 'XShell', 'Console/Command' );
+
 	/**
+	 * La classe TransfertCmsShell ...
 	 *
+	 * @package app.Console.Command
 	 */
 	class TransfertCmsShell extends XShell
 	{

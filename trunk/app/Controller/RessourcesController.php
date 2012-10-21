@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe RessourcesController permet de gérer les ressources d'un allocataire.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class RessourcesController extends AppController
 	{

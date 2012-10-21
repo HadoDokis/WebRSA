@@ -1,9 +1,19 @@
 <?php
+	/**
+	 * Fichier source de la classe AnomaliesrShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Cake', 'Router' );
-//	define( 'FULL_BASE_URL', Configure::read( 'FULL_BASE_URL' ) );
+
 	/**
-	 * INFO: http://docs.postgresqlfr.org/8.2/maintenance.html
+	 * La classe AnomaliesrShell ...
+	 *
+	 * @package app.Console.Command
 	 */
 	class AnomaliesrShell extends XShell
 	{

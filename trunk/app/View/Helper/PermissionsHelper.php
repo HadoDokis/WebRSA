@@ -1,5 +1,20 @@
 <?php
-	class PermissionsHelper extends AppHelper {
+	/**
+	 * Fichier source de la classe PermissionsHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PermissionsHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
+	class PermissionsHelper extends AppHelper
+	{
 		public $helpers = array( 'Session' );
 
 		// INFO: utiliser grep -R "permissions->" * dans le dossier views pour voir ce qui est déjà traité

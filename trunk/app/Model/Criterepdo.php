@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
@@ -12,7 +12,7 @@
 	/**
 	 * La classe Criterepdo s'occupe du moteur de recherche des PDOs (CG 58, et 93).
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Criterepdo extends AppModel
 	{

@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
@@ -12,7 +12,7 @@
 	/**
 	 * La classe Contratinsertion permet de gérer les CER de manière individuelle.
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Contratinsertion extends AppModel
 	{

@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.View.Helper
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Helper', 'Html' );
 
@@ -15,20 +16,7 @@
 	 * Certaines méthodes sont "magiques", celles correspondant aux clés de
 	 * l'attribut $_linksMap.
 	 *
-	 * PHPMD de cette classe au départ (11/08/2012):
-	 *	3 - 729 	The class XhtmlHelper has 46 public methods and attributes. Consider to reduce the number of public items under 45. 	3
-	 *	3 - 729 	The class XhtmlHelper has 47 methods. Consider refactoring XhtmlHelper to keep number of methods under 10. 	3
-	 *	3 - 729 	The class XhtmlHelper has an overall complexity of 87 which is very high. The configured complexity threshold is 50. 	3
-	 *	75 - 145 	The method details() has a Cyclomatic Complexity of 21. The configured cyclomatic complexity threshold is 10. 	3
-	 *	75 - 145 	The method details() has an NPath complexity of 47308. The configured NPath complexity threshold is 200.
-	 *
-	 * PHPMD de cette classe actuellement (11/08/2012):
-	 *	18 - 832 	The class XhtmlHelper has 11 methods. Consider refactoring XhtmlHelper to keep number of methods under 10. 	3
-	 *	18 - 832 	The class XhtmlHelper has an overall complexity of 59 which is very high. The configured complexity threshold is 50. 	3
-	 *	211 - 281 	The method details() has a Cyclomatic Complexity of 21. The configured cyclomatic complexity threshold is 10. 	3
-	 *	211 - 281 	The method details() has an NPath complexity of 47308. The configured NPath complexity threshold is 200. 	3
-	 *
-	 * @package       app.View.Helper
+	 * @package app.View.Helper
 	 */
 	class XhtmlHelper extends HtmlHelper
 	{

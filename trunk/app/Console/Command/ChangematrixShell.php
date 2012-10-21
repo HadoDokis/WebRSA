@@ -1,15 +1,18 @@
 <?php
-	App::uses( 'XShell', 'Console/Command' );
 	/**
+	 * Fichier source de la classe ChangematrixShell.
 	 *
-	 * Usage: cake/console/cake changematrix
+	 * PHP 5.3
 	 *
-	 * TODO
-	 *   * denière révision/date pour
-	 *       - l'ensemble
-	 *       - chaque "composant"
-	 * 	* on n'a pas les shells/tasks, Vendor, ...
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'XShell', 'Console/Command' );
+
+	/**
+	 * La classe ChangematrixShell ...
 	 *
+	 * @package app.Console.Command
 	 */
 	class ChangematrixShell extends XShell
 	{

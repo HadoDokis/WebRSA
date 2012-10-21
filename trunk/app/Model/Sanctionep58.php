@@ -1,18 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Sanctionep58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
-	* Saisines d'EP pour les bilans de parcours pour le conseil général du
-	* département 66.
-	*
-	* Une saisine regoupe plusieurs thèmes des EPs pour le CG 66.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
-
+	 * ...
+	 *
+	 * @package app.Model
+	 */
 	class Sanctionep58 extends Thematiqueep
 	{
 		public $name = 'Sanctionep58';
@@ -841,6 +842,6 @@
 					'Typeorient'
 				),
 			);
-		}		
+		}
 	}
 ?>

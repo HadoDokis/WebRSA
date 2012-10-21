@@ -1,8 +1,20 @@
 <?php
 	/**
-	* @url http://fr2.php.net/manual/fr/function.array-merge.php#95294
-	*/
+	 * Fichier source de la classe Default2Helper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * @url http://fr2.php.net/manual/fr/function.array-merge.php#95294
+	 *
+	 * @param type $a
+	 * @param type $b
+	 * @return type
+	 */
 	function array_extend( $a, $b ) {
 		foreach($b as $k=>$v) {
 			if( is_array($v) ) {
@@ -18,6 +30,11 @@
 		return $a;
 	}
 
+	/**
+	 * La classe Default2Helper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class Default2Helper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Xpaginator2', 'Locale', 'Xform', 'Type2' );

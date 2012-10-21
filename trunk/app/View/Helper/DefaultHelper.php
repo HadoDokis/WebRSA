@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe DefaultHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe DefaultHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class DefaultHelper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Xpaginator', 'Locale', 'Xform', 'Type', 'Permissions' );

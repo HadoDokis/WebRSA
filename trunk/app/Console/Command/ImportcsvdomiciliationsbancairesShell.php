@@ -1,7 +1,18 @@
 <?php
-	App::uses( 'XShell', 'Console/Command' );
 	/**
+	 * Fichier source de la classe ImportcsvdomiciliationsbancairesShell.
 	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'XShell', 'Console/Command' );
+
+	/**
+	 * La classe ImportcsvdomiciliationsbancairesShell ...
+	 *
+	 * @package app.Console.Command
 	 */
 	class ImportcsvdomiciliationsbancairesShell extends XShell
 	{

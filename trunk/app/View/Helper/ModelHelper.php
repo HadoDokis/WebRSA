@@ -1,8 +1,20 @@
 <?php
 	/**
-	* TODO: dans une classe (AppHelper ?), un meilleur nom ?
-	*/
+	 * Fichier source de la classe ModelHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * TODO: dans une classe (AppHelper ?), un meilleur nom ?
+	 *
+	 * @param array $data
+	 * @param string $string
+	 * @return string
+	 */
 	function dataTranslate( $data, $string ) {
 		//if( preg_match_all( '/#(?<!\w)(\w+)(\.|\.[0-9]+\.)(\w+)#/', $string, $matches, PREG_SET_ORDER ) ) {
 		if( preg_match_all( '/#(?<!\w)((\w+)(\.|\.[0-9]+\.))+(\w+)#/', $string, $matches, PREG_SET_ORDER ) ) {
@@ -22,13 +34,12 @@
 	}
 
 	/**
-	* Fournit des fonctions d'accès à un cache d'informations concernant les modèles,
-	* ainsi que des fonctions de manipulation de données liées aux modèles.
-	*
-	* Cette classe est est abstraite car uniquement destinée à être sous-classée
-	* (ou pas obligatoirement ?).
-	*/
-
+	 * La classe ModelHelper fournit des fonctions d'accès à un cache d'informations concernant les modèles, ainsi que des fonctions de manipulation de données liées aux modèles.
+	 *
+	 * Cette classe est est abstraite car uniquement destinée à être sous-classée.
+	 *
+	 * @package app.View.Helper
+	 */
 	abstract class ModelHelper extends AppHelper
 	{
 		/**

@@ -1,13 +1,23 @@
 <?php
 	/**
-	 * http://bakery.cakephp.org/articles/Jippi/2007/12/02/emailcomponent-in-a-cake-shell
+	 * Fichier source de la classe GenerationpdfsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'Component', 'Controller/Component' );
 	App::uses( 'GestionanomaliesbddComponent', 'Controller/Component' );
+
 	/**
+	 * La classe GenerationpdfsShell ...
 	 *
+	 * @see http://bakery.cakephp.org/articles/Jippi/2007/12/02/emailcomponent-in-a-cake-shell
+	 *
+	 * @package app.Console.Command
 	 */
 	class GestionanomaliesbddShell extends XShell
 	{

@@ -1,9 +1,21 @@
 <?php
-	App::uses( 'XShell', 'Console/Command' );
 	/**
-	 * INFO: http://bakery.cakephp.org/articles/melgior/2010/01/26/simple-excel-spreadsheet-helper
-	 * http://onlamp.com/pub/a/onlamp/2006/05/11/postgresql-plpgsql.html
+	 * Fichier source de la classe DictionnaireShell.
 	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'XShell', 'Console/Command' );
+
+	/**
+	 * La classe DictionnaireShell ...
+	 *
+	 * @url http://bakery.cakephp.org/articles/melgior/2010/01/26/simple-excel-spreadsheet-helper
+	 * @url http://onlamp.com/pub/a/onlamp/2006/05/11/postgresql-plpgsql.html
+	 *
+	 * @package app.Console.Command
 	 */
 	class DictionnaireShell extends XShell
 	{

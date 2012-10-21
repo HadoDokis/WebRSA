@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.models.behaviors
+	 * @package app.Model.Behavior
 	 */
 	App::import( 'Sanitize' );
 
@@ -12,7 +12,7 @@
 	 * Ce behavior permet de transformer les critères d'un filtre de recherche en conditions pour les queryData
 	 * d'une requête CakePHP pour le projet WebRSA
 	 *
-	 * @package app.models.behaviors
+	 * @package app.Model.Behavior
 	 */
 	class ConditionnableBehavior extends ModelBehavior
 	{

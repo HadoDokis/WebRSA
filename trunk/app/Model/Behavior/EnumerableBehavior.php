@@ -1,24 +1,19 @@
 <?php
 	/**
-	 * Behavior with useful functionality around models containing an enum type field
+	 * Source code for the EnumerableBehavior class.
+	 *
+	 * PHP 5.3
 	 *
 	 * Copyright (c) Debuggable, http://debuggable.com
-	 *
-	 * @package default
-	 * @access public
 	 * @url http://www.debuggable.com/posts/How_to_Fetch_the_ENUM_Options_of_a_Field_The_CakePHP_Enumerable_Behavior:4a977c9b-1bdc-44b4-b027-1a54cbdd56cb
 	 *
-	 *  Requête permettant d'obtenir la liste des types d'ENUM utilisés en base de données:
-	 *   SELECT DISTINCT(udt_name)
-	 *    FROM information_schema.columns
-	 *    WHERE table_catalog = 'cg66_newapre'
-	 *        AND table_schema = 'public'
-	 *        AND udt_name ILIKE 'type_%'
-	 *    ORDER BY udt_name ASC;
+	 * @package app.Model.Behavior
+	 */
+
+	/**
+	 * Behavior with useful functionality around models containing an enum type field.
 	 *
-	 *  Affichage des valeurs des enum -->  SELECT enum_range(null::type_...);
-	 *
-	 *
+	 * @package app.Model.Behavior
 	 */
 	class EnumerableBehavior extends ModelBehavior
 	{

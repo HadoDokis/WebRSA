@@ -1,10 +1,21 @@
 <?php
+	/**
+	 * Fichier source de la classe ControllertcShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Model', 'Cake/Model' );
 	App::uses( 'AppModel', 'Cake/Model' );
 	App::uses( 'File', 'Cake/Utility' );
+
 	/**
+	 * La classe ControllertcShell ...
 	 *
+	 * @package app.Console.Command
 	 */
 	class ControllertcShell extends XShell
 	{

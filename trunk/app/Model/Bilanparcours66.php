@@ -1,13 +1,18 @@
 <?php
 	/**
+	 * Code source de la classe Bilanparcours66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
 	* Bilan de parcours pour le conseil général du département 66.
 	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.model
+	* @package app.Model
 	*/
-
 	class Bilanparcours66 extends AppModel
 	{
 		public $name = 'Bilanparcours66';
@@ -528,7 +533,7 @@
 							'contain' => false
 						)
 					);
-					
+
 					$vxCui = $this->Cui->find(
 						'first',
 						array(
@@ -570,7 +575,7 @@
 					$success = $this->Orientstruct->save() && $success;
 				}
 				else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
-                                      
+
 					$contratinsertion = $vxContratinsertion;
 					unset( $contratinsertion['Contratinsertion']['id'] );
 					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
@@ -600,9 +605,9 @@
                     $durees = $Option->duree_engag();
                     $dureeEngagReconductionCER = Set::classicExtract( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
                     $dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
-     
+
                     debug(var_export($dureeEngagReconductionCER, true));
-                    
+
                     if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) >= 24 ){
                         $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
                         return false;
@@ -675,7 +680,7 @@
 							return false;
 						}
 
-						// Possède-t-on un CER 
+						// Possède-t-on un CER
 						$vxContratinsertion = $this->Contratinsertion->find(
 							'first',
 							array(
@@ -687,7 +692,7 @@
 								'recursive' => -1
 							)
 						);
-						
+
 						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
 						$vxCui = $this->Cui->find(
 							'first',
@@ -700,9 +705,9 @@
 								'recursive' => -1
 							)
 						);
-	
-						
-						
+
+
+
 						if( ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
 							if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
 								$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
@@ -717,7 +722,7 @@
 						// Sauvegarde du bilan
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
 						$data[$this->alias]['cui_id'] = @$vxCui['Cui']['id'];
-						
+
 
 					}
 
@@ -1056,7 +1061,7 @@
 
 				$this->create( $data );
 				if( $success = $this->validates() ) {
-                    
+
 					$success = $this->save() && $success;
 
 					// Avant de sauvegarder le dossier d'EP, on va rechercher
@@ -1179,19 +1184,19 @@
 
 			return $data;
 		}
-		
+
 		/**
 		*
 		*
 		*/
-		
+
 		public function getDefaultPdf( $id ) {
 			$data = $this->getDataForPdf( $id );
 			$modeleodt = $this->modeleOdt( $data );
 
 			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
 			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
-			
+
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
 				array(
@@ -1204,9 +1209,9 @@
 				),
 				$this->enums()
 			);
-			
+
 			$typeformulaire = Set::classicExtract( $data, 'Bilanparcours66.typeformulaire' );
-			
+
 			if( $typeformulaire == 'pe' ) {
 				$modeleodt = 'Bilanparcours/bilanparcourspe.odt';
 			}
@@ -1270,7 +1275,7 @@
 
 			return ( $count == 0 );
 		}
-        
+
         /**
 		 * Retourne l'id du dossier à partir de l'id du Bilan
 		 *

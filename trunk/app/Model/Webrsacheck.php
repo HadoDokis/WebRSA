@@ -7,7 +7,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.models
+	 * @package app.Model
 	 */
 	require_once( APPLIBS.'cmis.php' );
 

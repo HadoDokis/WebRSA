@@ -1,8 +1,22 @@
 <?php
+	/**
+	 * Fichier source de la classe ThemeHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ThemeHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class ThemeHelper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Locale' );
-		
+
 		public $columnTypes = array();
 
 		/**

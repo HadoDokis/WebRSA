@@ -1,22 +1,20 @@
 <?php
 	/**
-	* Subquery behavior class.
-	*
-	* Utility class to generate subqueries using a CakePHP find-like operation.
-	*
-	* PHP version 5
-	*
-	* @package		app
-	* @subpackage	app.app.models.behaviors
-	*/
+	 * Subquery behavior class.
+	 *
+	 * Utility class to generate subqueries using a CakePHP find-like operation.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	/**
-	* Behavior that generates a clean subquery string from a $queryData array.
-	*
-	* @package		app
-	* @subpackage	app.app.model.behaviors
-	*/
-
+	 * Behavior that generates a clean subquery string from a $queryData array.
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class SubqueryBehavior extends ModelBehavior
 	{
 		/**

@@ -1,13 +1,19 @@
 <?php
 	/**
-	 * ...
+	 * Code source de la classe Nonrespectsanctionep93.
 	 *
-	 * PHP versions 5
+	 * PHP 5.3
 	 *
-	 * @package       app
-	 * @subpackage    app.app.models
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
+
+	/**
+	 * La classe Nonrespectsanctionep93 ...
+	 *
+	 * @package app.Model
+	 */
 	class Nonrespectsanctionep93 extends Thematiqueep
 	{
 

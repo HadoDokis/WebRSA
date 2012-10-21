@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import('Sanitize');
@@ -12,7 +12,7 @@
 	/**
 	 * La classe CohortesindusController implémente un moteur de rechrche par indus.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class CohortesindusController extends AppController
 	{

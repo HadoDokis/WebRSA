@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Gestion des séances d'équipes pluridisciplinaires.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Fichier source de la classe CriteresfichescandidatureController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Moteur de recherche de fiches de candidatures.
+	 *
+	 * @package app.Controller
+	 */
 	class CriteresfichescandidatureController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );

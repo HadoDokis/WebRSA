@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Suivisanctionep58Behavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Suivisanctionep58Behavior ...
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class Suivisanctionep58Behavior extends ModelBehavior
 	{
 		/**

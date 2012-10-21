@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.models
+	 * @package app.Model
 	 */
 	class Foyer extends AppModel
 	{

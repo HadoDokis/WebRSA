@@ -1,6 +1,17 @@
 <?php
-	App::uses( 'XShell', 'Console/Command' );
 	/**
+	 * Fichier source de la classe IntegrationfluxpeShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'XShell', 'Console/Command' );
+
+	/**
+	 * La classe IntegrationfluxpeShell ...
+	 *
 	 * Constats (CG 66, 20101217_dump_webrsaCG66_rc9.sql.gz):
 	 * - une personne garde en général son identifiant PE à vie (?)
 	 * - une personne peut changer d'identifiant PE lors d'une nouvelle inscription (cas rare, cf. personne 34057)
@@ -11,6 +22,8 @@
 	 * (table personnes, et les tables traitées ici) ?
 	 * - bouger l'identifiant PE dans les tables d'historique ?
 	 * - ajouter motif lié au code (Catégorie de l'inscription) pour les inscriptions ?
+	 *
+	 * @package app.Console.Command
 	 */
 	class IntegrationfluxpeShell extends XShell
 	{

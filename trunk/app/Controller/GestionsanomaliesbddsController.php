@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	ini_set( 'max_execution_time', 0 );
@@ -13,7 +13,7 @@
 	/**
 	 * La classe GestionsanomaliesbddsController permet de rechercher et de traiter les doublons "simples".
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class GestionsanomaliesbddsController extends AppController
 	{

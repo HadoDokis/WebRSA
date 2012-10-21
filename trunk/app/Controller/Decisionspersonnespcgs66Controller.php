@@ -4,7 +4,7 @@
 	*
 	* PHP 5.3
 	*
-	* @package app.controllers
+	* @package app.Controller
 	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	*/
 
@@ -12,7 +12,7 @@
 	* La classe Decisionspersonnespcgs66Controller permet de gérer les décisions
 	* au niveau des personnes d'un dossier PCG 66
 	*
-	* @package app.controllers
+	* @package app.Controller
 	*/
 	class Decisionspersonnespcgs66Controller extends AppController
 	{

@@ -1,33 +1,21 @@
 <?php
-	/* SVN FILE: $Id$ */
 	/**
 	 * Javascript Helper class file.
 	 *
 	 * PHP versions 4 and 5
 	 *
-	 * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
-	 * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
-	 *
-	 * Licensed under The MIT License
-	 * Redistributions of files must retain the above copyright notice.
-	 *
-	 * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
-	 * @link          http://cakephp.org CakePHP(tm) Project
-	 * @package       cake
-	 * @subpackage    cake.cake.libs.view.helpers
-	 * @since         CakePHP(tm) v 0.10.0.1076
-	 * @version       $Revision$
-	 * @modifiedby    $LastChangedBy$
-	 * @lastmodified  $Date$
-	 * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+	 * @copyright Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+	 * @package app.View.Helper
+	 * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+	 * @see CakePHP 1.2.11
 	 */
+
 	/**
 	 * Javascript Helper class for easy use of JavaScript.
 	 *
 	 * JavascriptHelper encloses all methods needed while working with JavaScript.
 	 *
-	 * @package       cake
-	 * @subpackage    cake.cake.libs.view.helpers
+	 * @package app.View.Helper
 	 */
 	class JavascriptHelper extends AppHelper
 	{

@@ -1,28 +1,40 @@
 <?php
 	/**
-	*	Extended paginator helper (based on PaginatorHelp from CakePHP 1.2.5).
-	*
-	*		* Adds a sort class and a direction class (asc, desc) on the sorting links
-	*
-	*/
-
+	 * Fichier source de la classe XPaginatorHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Helper', 'Paginator' );
 
+	/**
+	 * La classe XPaginatorHelper permet la traduction automatique des titres et
+	 * l'ajout de classes aux liens de tris, et fournit une méthode permettant
+	 * d'obtenir un bloc de pagination.
+	 *
+	 * @package app.View.Helper
+	 */
 	class XPaginatorHelper extends PaginatorHelper
 	{
+		/**
+		 * Helpers utilisés par ce helper.
+		 *
+		 * @var array
+		 */
 		public $helpers = array( 'Xhtml', 'Html' );
 
 		/**
-		* Generates a sorting link
-		*
-		* @param  string $title Title for the link.
-		* @param  string $key The name of the key that the recordset should be sorted.
-		* @param  array $options Options for sorting link. See #options for list of keys.
-		* @return string A link sorting default by 'asc'. If the resultset is sorted 'asc' by the specified
-		*  key the returned link will sort by 'desc'.
-		*/
-
-		public function sort( $title, $key = null, $options = array() ) {
+		 * Generates a sorting link
+		 *
+		 * @param  string $title Title for the link.
+		 * @param  string $key The name of the key that the recordset should be sorted.
+		 * @param  array $options Options for sorting link. See #options for list of keys.
+		 * @return string A link sorting default by 'asc'. If the resultset is sorted 'asc' by the specified
+		 *  key the returned link will sort by 'desc'.
+		 */
+		public function sort( $title, $key = null, $options = array( ) ) {
 			$options = array_merge( array('url' => array(), 'model' => null), $options );
 			$url = $options['url'];
 			unset($options['url']);
@@ -61,13 +73,13 @@
 		}
 
 		/**
-		* FIXME: dans theme
-		* Generates a default pagination block
-		*
-		* FIXME: nom de fonction
-		* FIXME: docs
-		*/
-
+		 * Génère un bloc de pagination (nombre de résultats, liens).
+		 *
+		 * @param type $classname L'alias du modèle
+		 * @param type $urlOptions Les options supplémentaires à passer dans l'url
+		 * @param string $format Le format du texte concernant le nombre de résultats
+		 * @return string
+		 */
 		public function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
 			$page = Set::classicExtract( $this->request->params, "paging.{$classname}.page" );
 			$count = Set::classicExtract( $this->request->params, "paging.{$classname}.count" );

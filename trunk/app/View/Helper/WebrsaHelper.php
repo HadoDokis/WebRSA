@@ -5,6 +5,7 @@
 	 * PHP 5.3
 	 *
 	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
@@ -27,13 +28,13 @@
 				'ville' => false
 			);
 			$options = array_merge( $default, $options );
-			
+
 			$return = Set::classicExtract( $data, "{$options['alias']}.numvoie" )
 				.' '.Set::enum( Set::classicExtract( $data, "{$options['alias']}.typevoie" ), $options['options'] )
 				.' '.Set::classicExtract( $data, "{$options['alias']}.nomvoie" )
 				.$options['separator'].Set::classicExtract( $data, "{$options['alias']}.compladr" )
 				.' '.Set::classicExtract( $data, "{$options['alias']}.complideadr" );
-				
+
 			if( $options['ville'] ) {
 				$return .= $options['separator'].Set::classicExtract( $data, "{$options['alias']}.codepos" )
 						.' '.Set::classicExtract( $data, "{$options['alias']}.locaadr" );

@@ -1,13 +1,19 @@
 <?php
 	/**
-	* TODO: essayer avec des modèles liés
-	* TODO: un troisième paramètre aux fonctions formatXXX: fields (defaut null)
-	* TODO ?
-	* 'unsetOnNull' => array( 'foo' ),
-	* 'nullOnUnset' => array( 'bar' ), // attention quand on fait une mise à jour
-	*/
+	 * Code source de la classe FormattableBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-    class FormattableBehavior extends ModelBehavior
+	/**
+	 * La classe FormattableBehavior ...
+	 *
+	 * @package app.Model.Behavior
+	 */
+	class FormattableBehavior extends ModelBehavior
 	{
 		/**
 		* Settings

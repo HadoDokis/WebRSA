@@ -1,5 +1,15 @@
 <?php
 	/**
+	 * Code source de la classe StorablePdfBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Behavior', 'Gedooo.Gedooo' );
+
+	/**
 	 * Classe StorablePdfBehavior, nécessite le plugin Gedooo.
 	 *
 	 * Cette classe permet
@@ -12,19 +22,17 @@
 	 *
 	 * Il est possible de passer une configuration lors de l'attachement du behavior (ici avec les valeurs par
 	 * défaut):
+	 * <pre>
 	 * $actsAs = array(
 	 *	'StorablePdf' => array(
 	 *		'afterSave' => 'generatePdf', (valeurs possibles: 'generatePdf', 'deleteAll', null/false)
 	 *		'afterDelete' => 'deleteAll', (valeurs possibles: 'deleteAll', null/false)
 	 *	)
 	 * );
+	 * </pre>
 	 *
-	 * PHP version 5.3
-	 *
-	 * @package		app.models.behaviors
+	 * @package app.Model.Behavior
 	 */
-	App::import( 'Behavior', 'Gedooo.Gedooo' );
-
 	class StorablePdfBehavior extends GedoooBehavior
 	{
 		/**

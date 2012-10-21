@@ -1,13 +1,18 @@
 <?php
 	/**
-	* FIXME
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Fichier source de la classe Sanctionseps58Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	* Gestion des dossiers d'EP pour "Non respect et sanctions" (CG 58).
+	 *
+	 * @package app.Controller
+	 */
 	class Sanctionseps58Controller extends AppController
 	{
 		public $helpers = array( 'Default2', 'Csv', 'Search');

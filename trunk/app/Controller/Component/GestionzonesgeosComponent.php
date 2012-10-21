@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -14,7 +14,7 @@
 	 *
 	 * Ces listes sont mises en cache dans la session, car elles dépendent de l'utilisateur.
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 */
 	class GestionzonesgeosComponent extends Component
 	{

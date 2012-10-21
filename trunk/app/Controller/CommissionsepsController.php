@@ -1,11 +1,17 @@
 <?php
 	/**
+	 * Fichier source de la classe CommissionsepsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
 	 * Gestion des séances d'équipes pluridisciplinaires.
 	 *
-	 * PHP versions 5
-	 *
-	 * @package       app
-	 * @subpackage    app.app.controllers
+	 * @package app.Controller
 	 */
 	class CommissionsepsController extends AppController
 	{
@@ -635,10 +641,10 @@
 				$qd['contain'] = false;
 
 				$qd['fields'][] = $this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' );
-				
+
 				$qd['limit'] = 50;
 
-				
+
 				// Ajout des tris sur les colonnes des dossiers affectés à une EP
 				$this->paginate = $qd;
 				$dossiers[$theme] = $this->paginate( $this->Commissionep->Passagecommissionep->Dossierep );
@@ -1338,7 +1344,7 @@
 			}
 		}
 
-		
+
 		/**
 		* Export du tableau en CSV de l'écran de synthèse des commissions d'EP CG58
 		*/
@@ -1387,7 +1393,7 @@
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 			$this->_setOptions();
-			
+
 // 			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->request->params['named'], '__' ) );
 // 			unset( $dossierseps['limit'] );
 
@@ -1398,6 +1404,6 @@
 			$this->set( compact( 'dossierseps' ) );
 
 		}
-		
+
 	}
 ?>

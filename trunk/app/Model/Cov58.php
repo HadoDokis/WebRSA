@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Commission d'orientation et validation (COV)
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Cov58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Commission d'orientation et validation (COV)
+	 *
+	 * @package app.Model
+	 */
 	class Cov58 extends AppModel
 	{
 		public $name = 'Cov58';

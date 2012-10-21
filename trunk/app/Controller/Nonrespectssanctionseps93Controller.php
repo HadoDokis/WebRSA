@@ -1,13 +1,18 @@
 <?php
 	/**
-	* FIXME
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Fichier source de la classe Nonrespectssanctionseps93Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Cohorte de relance pour les dossiers d'EP "Non respect et sanctions" (CG 93).
+	 *
+	 * @package app.Controller
+	 */
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv' );

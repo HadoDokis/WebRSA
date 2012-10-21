@@ -1,7 +1,18 @@
 <?php
-	App::uses( 'XShell', 'Console/Command' );
 	/**
-	 * 	FIXME: vérifier le format du fichier, ...
+	 * Fichier source de la classe ImportcsvcantonsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses( 'XShell', 'Console/Command' );
+
+	/**
+	 * La classe ImportcsvcantonsShell ...
+	 *
+	 * @package app.Console.Command
 	 */
 	class ImportcsvcantonsShell extends XShell
 	{
