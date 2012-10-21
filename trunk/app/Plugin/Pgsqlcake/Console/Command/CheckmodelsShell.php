@@ -1,7 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe CheckmodelsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'ConnectionManager', 'Model' );
 	App::uses( 'AppModel', 'Model' );
+
+	/**
+	 * La classe CheckmodelsShell permet de vérifier si tout est cohérent entre
+	 * les relation entre les tables matérialisées par des clés étrangères, les
+	 * liaisons des modèles et les champs se terminant par _id.
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 */
 	class CheckmodelsShell extends XShell
 	{
 

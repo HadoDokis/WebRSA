@@ -1,8 +1,23 @@
 <?php
+	/**
+	 * Code source de la classe ConstraintsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'AppModel', 'Model' );
 	App::uses( 'XShell', 'Console/Command' );
+
 	/**
+	 * La classe ConstraintsShell permet la vérification des contraintes de clés
+	 * étrangères des tables de la base de données, et fournit les commandes SQL
+	 * permettant d'ajouter les contraintes manquantes (pour les champs xxx_id).
 	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
 	 */
 	class ConstraintsShell extends XShell
 	{

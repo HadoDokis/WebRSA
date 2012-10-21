@@ -1,7 +1,21 @@
 <?php
 	/**
-	*
-	*/
+	 * Code source de la classe SchemaBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe SchemaBehavior fournit des méthodes pour interroger des
+	 * propriétés propres à Postgresql à partir des classes de modèles.
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Model.Behavior
+	 */
 	class SchemaBehavior extends ModelBehavior
 	{
 		/**

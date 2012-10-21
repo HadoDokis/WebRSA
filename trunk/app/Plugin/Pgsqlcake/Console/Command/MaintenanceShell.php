@@ -1,8 +1,23 @@
 <?php
+	/**
+	 * Code source de la classe MaintenanceShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'ConnectionManager', 'Model' );
 	App::uses( 'XShell', 'Console/Command' );
+
 	/**
-	 * INFO: http://docs.postgresqlfr.org/8.2/maintenance.html
+	 * La classe MaintenanceShell fournit des méthodes de maintenance de base
+	 * de données PostgreSQL.
+	 *
+	 * @package Pgsqlcake
+	 * @subpackage Console.Command
+	 * @see http://docs.postgresqlfr.org/8.2/maintenance.html
 	 */
 	class MaintenanceShell extends XShell
 	{
@@ -70,7 +85,7 @@
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		protected function _showParams() {
 			parent::_showParams();
