@@ -198,7 +198,7 @@
 		 * @param array $criteres Critères du formulaire de recherche
 		 * @return array
 		 */
-		public function statistiques( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
+		/*public function statistiques( $mesCodesInsee, $filtre_zone_geo, $criteres ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 			$Option = ClassRegistry::init( 'Option' );
 
@@ -224,7 +224,7 @@
 			}
 
 			return  $return;
-		}
+		}*/
 
 		/**
 		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes d'orientation.
@@ -246,13 +246,13 @@
 			$conditions = array();
 			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteres );
 
-			if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
-				$enattente = Set::classicExtract( $criteres, 'Filtre.enattente' );
-				if( empty( $enattente ) ) {
-					$enattente = array( 'En attente', 'Non orienté' );
-				}
-				$conditions['Orientstruct.statut_orient'] = $enattente;
-			}
+//			if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
+//				$enattente = Set::classicExtract( $criteres, 'Filtre.enattente' );
+//				if( empty( $enattente ) ) {
+//					$enattente = array( 'En attente', 'Non orienté' );
+//				}
+//				$conditions['Orientstruct.statut_orient'] = $enattente;
+//			}
 
 			$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statutOrientation, array( 'encode' => false ) ).'\'';
 
@@ -261,23 +261,23 @@
 				$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
 			}
 			else {
-				if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
-					$toppersdrodevorsa = Set::classicExtract( $criteres, 'Filtre.toppersdrodevorsa' );
-					if( $toppersdrodevorsa != '' ) {
-						if( $toppersdrodevorsa == 'NULL' ) {
-							$conditions[] = 'Calculdroitrsa.toppersdrodevorsa IS NULL';
-						}
-						else {
-							$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
-						}
-					}
-				}
-				else {
+//				if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
+//					$toppersdrodevorsa = Set::classicExtract( $criteres, 'Filtre.toppersdrodevorsa' );
+//					if( $toppersdrodevorsa != '' ) {
+//						if( $toppersdrodevorsa == 'NULL' ) {
+//							$conditions[] = 'Calculdroitrsa.toppersdrodevorsa IS NULL';
+//						}
+//						else {
+//							$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
+//						}
+//					}
+//				}
+//				else {
 					$toppersdrodevorsa = Set::classicExtract( $criteres, 'Filtre.toppersdrodevorsa' );
 					if( isset( $toppersdrodevorsa ) && !empty( $toppersdrodevorsa ) ) {
 						$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
 					}
-				}
+//				}
 
 				$conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $criteres );
 			}
@@ -688,7 +688,7 @@
 				else if( Configure::read( 'Cg.departement' ) == 58 ) {
 					$intitule = array( 'Professionnelle', 'Sociale' );
 				}
-				
+
 				$typesPermis = $this->Typeorient->find(
 					'list',
 					array(
