@@ -7,7 +7,6 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Sanitize' );
 	require_once( APPLIBS.'cmis.php' );
 
 	/**
@@ -26,7 +25,15 @@
 			'Personne',
 		);
 
-		public $helpers = array( 'Csv', 'Paginator', 'Ajax', 'Default', 'Xpaginator', 'Locale', 'Search' );
+		public $helpers = array(
+			'Csv',
+//			'Paginator',
+//			'Ajax',
+//			'Default',
+			'Xpaginator',
+			'Locale',
+			'Search'
+		);
 
 		public $components = array(
 			'Gedooo.Gedooo',
@@ -48,7 +55,7 @@
 			ini_set('memory_limit', '1024M');
 			parent::beforeFilter();
 
-			if( in_array( $this->action, array( 'orientees', 'exportcsv' ) ) ) {
+			if( in_array( $this->action, array( 'orientees'/*, 'exportcsv'*/ ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
 
@@ -105,7 +112,7 @@
 				)
 			);
 
-			if( in_array( $this->action, array( 'orientees', 'exportcsv', 'statistiques' ) ) ) {
+			if( in_array( $this->action, array( 'orientees'/*, 'exportcsv', 'statistiques'*/ ) ) ) {
 				$this->set( 'options', $this->Personne->Orientstruct->enums() );
 			}
 			$this->set( 'moticlorsa', $this->Option->moticlorsa() );
@@ -137,18 +144,18 @@
 		/**
 		 *
 		 */
-		public function preconisationscalculables() {
+		/*public function preconisationscalculables() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'Calculables' );
-		}
+		}*/
 
 		/**
 		 *
 		 */
-		public function preconisationsnoncalculables() {
+		/*public function preconisationsnoncalculables() {
 			$this->Gedooo->check( false, true );
 			$this->_index( 'Non calculables' );
-		}
+		}*/
 
 		/**
 		 *
@@ -297,14 +304,14 @@
 					$this->set( 'pageTitle', 'Demandes non orientées' );
 					$this->render( 'formulaire' );
 					break;
-				case 'Calculables':
-					$this->set( 'pageTitle', 'Demandes d\'orientation préorientées' );
-					$this->render( 'formulaire' );
-					break;
-				case 'Non calculables':
-					$this->set( 'pageTitle', 'Demandes d\'orientation non préorientées' );
-					$this->render( 'formulaire' );
-					break;
+//				case 'Calculables':
+//					$this->set( 'pageTitle', 'Demandes d\'orientation préorientées' );
+//					$this->render( 'formulaire' );
+//					break;
+//				case 'Non calculables':
+//					$this->set( 'pageTitle', 'Demandes d\'orientation non préorientées' );
+//					$this->render( 'formulaire' );
+//					break;
 				case 'Orienté':
 					$this->set( 'pageTitle', 'Demandes orientées' );
 					$this->render( 'visualisation' );
@@ -400,7 +407,7 @@
 		/**
 		 *
 		 */
-		public function statistiques() {
+		/*public function statistiques() {
 			if( !empty( $this->request->data ) ) {
 				$statistiques = $this->Cohorte->statistiques(
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
@@ -413,6 +420,6 @@
 			$this->set( compact( 'statistiques' ) );
 			$this->set( 'pageTitle', 'Statistiques' );
 			$this->render( 'statistiques' );
-		}
+		}*/
 	}
 ?>

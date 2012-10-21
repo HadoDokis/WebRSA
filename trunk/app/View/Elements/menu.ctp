@@ -167,7 +167,12 @@
                                     </ul>
                             </li>
                         <?php endif;?>
-						<?php if( $this->Permissions->check( 'cohortes', 'nouvelles' ) || $this->Permissions->check( 'cohortes', 'orientees' ) || $this->Permissions->check( 'cohortes', 'enattente' ) /*|| $this->Permissions->check( 'cohortes', 'preconisationscalculables' )|| $this->Permissions->check( 'cohortes', 'preconisationsnoncalculables' ) || $this->Permissions->check( 'cohortes', 'statistiques' )*/ ): ?>
+						<?php if( $this->Permissions->check( 'cohortes', 'nouvelles' )
+								|| $this->Permissions->check( 'cohortes', 'orientees' )
+								|| $this->Permissions->check( 'cohortes', 'enattente' )
+								/*|| $this->Permissions->check( 'cohortes', 'preconisationscalculables' )
+								|| $this->Permissions->check( 'cohortes', 'preconisationsnoncalculables' )
+								|| $this->Permissions->check( 'cohortes', 'statistiques' )*/ ): ?>
 							<!-- MODIF POUR LA GESTION DES ORIENTATIONS (Cohorte) -->
 							<li onmouseover="$(this).addClassName( 'hover' );" onmouseout="$(this).removeClassName( 'hover' );">
 								<?php  echo $this->Xhtml->link( 'Orientation', '#' );?>
