@@ -1,5 +1,15 @@
 <?php
 	/**
+	 * Fonctions utilitaires pour le plugin Appchecks.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Appchecks
+	 * @subpackage Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
 	 * Retourne un nombre qui sera plus grand pour une version plus élevée.
 	 *
 	 * @see http://az.php.net/manual/en/function.phpversion.php (Exemple 2: PHP_VERSION_ID)
