@@ -23,10 +23,12 @@
 	 * configuration utilisée.
 	 *
 	 *  Exemple:
+	 * <pre>
 	 *	$this->User->Behaviors->attach( 'Gedooo.Gedooo' );
 	 *	$pdf = $this->User->ged( array( 'Personne' => array( 'nom' => 'Buffin' ) ), 'APRE/apre66.odt' );
 	 *	$this->Gedooo->sendPdfContentToClient( $pdf, 'foo.pdf' );
 	 *	return;
+	 * </pre>
 	 *
 	 * TODO: ajouter une version check, la conf (les define), les fichiers Vendor
 	 *
