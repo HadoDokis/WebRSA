@@ -1,8 +1,18 @@
 <?php
 	/**
-	* FIXME: ne fonctionne actuellement qu'avec traitementspdos_controller car les URL sont en dur.
-	*/
+	 * Fichier source de la classe FileuploaderHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe FileuploaderHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class FileuploaderHelper extends AppHelper
 	{
 		/**

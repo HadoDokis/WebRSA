@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
@@ -12,7 +12,7 @@
 	/**
 	 * La classe Critererdv s'occupe du moteur de recherche par rendez-vous (CG 58, 66 et 93).
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Critererdv extends AppModel
 	{

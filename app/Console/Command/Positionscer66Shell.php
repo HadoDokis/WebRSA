@@ -1,8 +1,17 @@
 <?php
+	/**
+	 * Fichier source de la classe Positionscer66Shell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Contratinsertion', 'Model' );
+
 	/**
-	 * Effectue la mise à jour de la position des CER qui en ont besoin :
+	 * La classe Positionscer66Shell effectue la mise à jour de la position des CER qui en ont besoin :
 	 * 	- les CER sont positionnés « En cours:Bilan à réaliser » lorsque la date de fin
 	 * 	  du CER n'est pas encore dépassée, mais que celle-ci est plus petite que l'intervalle
 	 * 	  spécifié par la configuration  Contratinsertion.Cg66.updateEncoursbilan.
@@ -14,6 +23,8 @@
 	 *
 	 * Voir le document app/docs/Documentation administrateurs.odt, partie
 	 * "Intervalles PostgreSQL"
+	 *
+	 * @package app.Console.Command
 	 */
 	class Positionscer66Shell extends XShell
 	{

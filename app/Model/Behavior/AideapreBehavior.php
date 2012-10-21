@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe AideapreBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe AideapreBehavior ...
+	 *
+	 * @package app.Model.Behavior
+	 */
     class AideapreBehavior extends ModelBehavior
     {
         function beforeSave( Model $model ) {

@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe CuisController permet de gérer les CUIs (CG 58, 66 et 93).
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class CuisController extends AppController
 	{

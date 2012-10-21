@@ -1,13 +1,18 @@
 <?php
 	/**
-	* ...
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Autreavisradiation.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Autreavisradiation ...
+	 *
+	 * @package app.Model
+	 */
 	class Autreavisradiation extends AppModel
 	{
 		public $name = 'Autreavisradiation';

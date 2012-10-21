@@ -1,4 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Xinflector.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Xinflector fournit des méthodes supplémentaires pour gérer les
+	 * chaînes de caractères contenant des noms de modèles et de champs.
+	 *
+	 * @package app.Lib
+	 */
 	class Xinflector extends Inflector
 	{
 		/**

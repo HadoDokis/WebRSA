@@ -1,44 +1,44 @@
 <?php
 	/**
-	* ModelesodtConditionnables behavior class.
-	*
-	* Permet de compléter l'attribut modelesOdt du modèle, suivant la valeur de
-	* configuration de 'Cg.departement'.
-	*
-	* PHP version 5
-	*
-	* @package		app
-	* @subpackage	app.app.models.behaviors
-	*/
+	 * Code source de la classe ModelesodtConditionnables.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	/**
-	* Exemple:
-	*	class Foo extends AppModel
-	*	{
-	*		public $modelesOdt = array(
-	*			'%s/modele_commun.odt'
-	*		);
-	*
-	*		public $actsAs = array(
-	*			'ModelesodtConditionnables' => array(
-	*				66 => '%s/modele_66.odt',
-	*				93 => array(
-	*					'%s/modele_93.odt',
-	*					'%s/modele_93_autre.odt',
-	*				)
-	*			)
-	*		);
-	*	}
-	*
-	* Une fois la classe instanciée, contenu de l'attribut modelesOdt:
-	*	- CG 58: array( 'Foo/modele_commun.odt' )
-	*	- CG 66: array( 'Foo/modele_commun.odt', 'Foo/modele_66.odt' )
-	*	- CG 93: array( 'Foo/modele_commun.odt', 'Foo/modele_93.odt', 'Foo/modele_93_autre.odt' )
-	*
-	* @package		app
-	* @subpackage	app.app.model.behaviors
-	*/
-
+	 * Permet de compléter l'attribut modelesOdt du modèle, suivant la valeur de
+	 * configuration de 'Cg.departement'.
+	 *
+	 * Exemple:
+	 * <pre>
+	 * 	class Foo extends AppModel
+	 * 	{
+	 * 		public $modelesOdt = array(
+	 * 			'%s/modele_commun.odt'
+	 * 		);
+	 *
+	 * 		public $actsAs = array(
+	 * 			'ModelesodtConditionnables' => array(
+	 * 				66 => '%s/modele_66.odt',
+	 * 				93 => array(
+	 * 					'%s/modele_93.odt',
+	 * 					'%s/modele_93_autre.odt',
+	 * 				)
+	 * 			)
+	 * 		);
+	 * 	}
+	 * </pre>
+	 *
+	 * Une fois la classe instanciée, contenu de l'attribut modelesOdt:
+	 * 	- CG 58: array( 'Foo/modele_commun.odt' )
+	 * 	- CG 66: array( 'Foo/modele_commun.odt', 'Foo/modele_66.odt' )
+	 * 	- CG 93: array( 'Foo/modele_commun.odt', 'Foo/modele_93.odt', 'Foo/modele_93_autre.odt' )
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class ModelesodtConditionnablesBehavior extends ModelBehavior
 	{
 		/**

@@ -1,6 +1,11 @@
 <?php
 	/**
-	 * @package       app.View.Helper
+	 * Fichier source de la classe XformHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'FormHelper', 'View/Helper' );
 
@@ -9,7 +14,12 @@
 	}
 
 	/**
-	 * @package       app.View.Helper
+	 * La classe XformHelper adapte la classe FormHelper de CakePHP pour lui ajouter
+	 * la traduction automatique du label (suivant le domain), la possibilité de
+	 * régler plus finement les listes déroulantes de dates et heures, ainsi que
+	 * d'auters méthodes utiles.
+	 *
+	 * @package app.View.Helper
 	 */
 	class XformHelper extends FormHelper
 	{

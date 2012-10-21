@@ -1,7 +1,24 @@
 <?php
+	/**
+	 * Fichier source de la classe CsvHelper.
+	 *
+	 * PHP versions 4 and 5
+	 *
+	 * Licensed under The MIT License
+	 *
+	 * @copyright Adam Royle
+	 * @license http://www.opensource.org/licenses/mit-license.php The MIT License
+	 *
+	 * @package app.View.Helper
+	 */
 
-	class CsvHelper extends AppHelper {
-
+	/**
+	 * CSV helper for cakePHP. Compatible with version 1.1.x.x and higher.
+	 *
+	 * @package app.View.Helper
+	 */
+	class CsvHelper extends AppHelper
+	{
 		public $delimiter = ',';
 		public $enclosure = '"';
 		public $filename = 'Export.csv';

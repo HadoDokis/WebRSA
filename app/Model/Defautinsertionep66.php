@@ -1,17 +1,22 @@
 <?php
+	/**
+	 * Code source de la classe Defautinsertionep66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
-	* Saisines d'EP pour les bilans de parcours pour le conseil général du
-	* département 66.
-	*
-	* Une saisine regoupe plusieurs thèmes des EPs pour le CG 66.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Saisines d'EP pour les bilans de parcours pour le conseil général du
+	 * département 66.
+	 *
+	 * Une saisine regoupe plusieurs thèmes des EPs pour le CG 66.
+	 *
+	 * @package app.Model
+	 */
 	class Defautinsertionep66 extends Thematiqueep
 	{
 		public $name = 'Defautinsertionep66';
@@ -180,7 +185,7 @@
 
 		/**
 		 * Sauvegarde des décisions de la commission (avant validation )
-		 * @param array $data données de la commission EP à sauvegarder 
+		 * @param array $data données de la commission EP à sauvegarder
 		 * @param string $niveauDecision ep ou cg, selon le type de commission
 		 * @return boolean
 		 * FIXME: type_positionbilan -> {eplaudit,eplparc,attcga,attct,ajourne,annule} => ajouter traite
@@ -205,8 +210,8 @@
 
 				// Mise à jour de la position du bilan de parcours
 				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
-				
-				
+
+
 // debug($data);
 
 				// INFO: On ne crée un dossier PCG qu'après la validation au niveau EP
@@ -214,9 +219,9 @@
 				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
 				if( $niveauAvis == 'ep' ){
 					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
-					
+
 					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
-					
+
 					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
 						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
 					}
@@ -228,12 +233,12 @@
 
 		/**
 		 * Récupère l'id de la commission d'EP à partir d'une liste d'ids
-		 * d'entrées de passages en commissions EP. 
+		 * d'entrées de passages en commissions EP.
 		 * @param array $passagescommissionseps_ids Ids des passages commissions des dossiers eps
 		 *
 		 */
 		protected function _commissionepIdParPassagecommissionId( $passagescommissionseps_ids ) {
-			
+
 			return $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',
 				array(
@@ -256,8 +261,8 @@
 				)
 			);
 		}
-		
-		
+
+
 		/**
 		 *	Génération d'un dossier PCG une fois l'avis de l'EP validé
 		 * @param integer $commissionep_id L'id technique de la séance d'EP
@@ -268,7 +273,7 @@
 		 * @access protected
 		 */
 		protected function _generateDossierpcg( $commissionep_id, $dateseanceCommission, $etape ) {
-			
+
 			$dossierseps = $this->find(
 				'all',
 				array(
@@ -301,7 +306,7 @@
 					)
 				)
 			);
-			
+
 // 			debug($dossierseps);
 // 			die();
 			$success = true;
@@ -442,7 +447,7 @@
 						'decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
 					)
 				);
-				
+
 				$nbDossierPCG66PourDecisiondefautinsertion66 = $this->Bilanparcours66->Dossierpcg66->find(
 					'count',
 					array(
@@ -461,9 +466,9 @@
 			}
 			return $success;
 		}
-		
-		
-		
+
+
+
 		/**
 		* Prépare les données du formulaire d'un niveau de décision
 		* en prenant en compte les données du bilan ou du niveau de décision
@@ -626,7 +631,7 @@
 								$referent_id = $bilanparcours66['Bilanparcours66']['referent_id'];
 							}
 						}
-						
+
 						// En cas de demande de réorientation, l'EPL Audition va statuer et générer l'orientation
 						$orientstruct = array(
 							'Orientstruct' => array(
@@ -849,20 +854,20 @@
 				)
 			);
 
-			
+
 			// On a un filtre par défaut sur l'état du dossier si celui-ci n'est pas renseigné dans le formulaire.
-			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );			
+			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$etatdossier = Set::extract( $datas, 'Situationdossierrsa.etatdosrsa' );
 			if( !isset( $datas['Situationdossierrsa']['etatdosrsa'] ) || empty( $datas['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$datas['Situationdossierrsa']['etatdosrsa']  = $Situationdossierrsa->etatOuvert();
 			}
-			
+
 			/// Filtre zone géographique
 			$queryData['conditions'][] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
 			$queryData['conditions'][] = $this->conditionsAdresse( $queryData['conditions'], $datas, $filtre_zone_geo, $mesCodesInsee );
 			$queryData['conditions'][] = $this->conditionsPersonneFoyerDossier( $queryData['conditions'], $datas );
 			$queryData['conditions'][] = $this->conditionsDernierDossierAllocataire( $queryData['conditions'], $datas );
-			
+
 			if( isset( $datas['Orientstruct']['date_valid'] ) && !empty( $datas['Orientstruct']['date_valid'] ) ) {
 				if( valid_int( $datas['Orientstruct']['date_valid']['year'] ) ) {
 				$queryData['conditions'][] = 'EXTRACT(YEAR FROM Orientstruct.date_valid) = '.$datas['Orientstruct']['date_valid']['year'];
@@ -984,11 +989,11 @@
 					)
 				)
 			);
-            
+
             // Non inscription PE
                 //  Bilanparcours66.examenauditionpe = noninscriptionpe --> personne_id 35253
                 // Defautinsertionep66.origine = noninscriptionpe
-            // 
+            //
             // Radiation PE
                 // Bilanparcours66.examenauditionpe = radidationpe --> personne_id 33507
                 // Defautinsertionep66.origine = radidationpe
@@ -1004,15 +1009,15 @@
                 // Bilanparcours66.proposition = audition
                 // Defautinsertionep66.origine = bilanparcours
                 // Bilanparcours66.orientstruct_id IS NULL
-            // 
+            //
             // Audition pour Non Respect
                 // Bilanparcours66.examenaudition = DRD --> personne_id 74
                 // Bilanparcours66.proposition = audition
                 // Defautinsertionep66.origine = bilanparcours
-            
+
             $origineAudition = $gedooo_data['Defautinsertionep66']['origine'];
             $modele = null;
-            
+
             if( $origineAudition == 'noninscriptionpe' ) {
                 $modele = 'noninscriptionpe_courrierinformationavantep.odt';
             }
@@ -1023,7 +1028,7 @@
                 $examenaudition = $gedooo_data['Bilanparcours66']['examenaudition'];
                 $proposition = $gedooo_data['Bilanparcours66']['proposition'];
                 $orientstruct_id = $gedooo_data['Bilanparcours66']['orientstruct_id'];
-                
+
                 if( $examenaudition == 'DOD' && $proposition == 'audition' && !empty( $orientstruct_id ) ){
                     $modele = 'nonconclusioncer_courrierinformationavantep.odt';
                 }

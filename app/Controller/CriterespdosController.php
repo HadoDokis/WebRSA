@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe CriterespdosController implémente un moteur de recherche par PDOs (CG 58 et 93).
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class CriterespdosController extends AppController
 	{

@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Recherche de fiche de candidature (actioncandidat_personne)
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Criterefichecandidature.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Moteur de recherche pour les fiche de candidature (actioncandidat_personne).
+	 *
+	 * @package app.Model
+	 */
 	class Criterefichecandidature extends AppModel
 	{
 		public $name = 'Criterefichecandidature';

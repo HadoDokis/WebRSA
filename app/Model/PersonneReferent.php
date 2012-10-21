@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe PersonneReferent ...
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class PersonneReferent extends AppModel
 	{

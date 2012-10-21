@@ -1,12 +1,21 @@
 <?php
 	/**
-	* TODO: disabled -> conditions, default false pour les url
-	*/
+	 * Fichier source de la classe Type2Helper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Helper', 'Model' );
 
 	/**
-	* TODO: dane une classe, un meilleur nom ?
-	*/
-
+	 * TODO: dane une classe, un meilleur nom ?
+	 *
+	 * @param array $data
+	 * @param array $params
+	 * @return string
+	 */
 	function dataUrl( $data, $params ) {
 		if( !is_string( $params['url'] ) ) {
 			$params['url'] = Router::url( $params['url'], true ); /// TODO ?
@@ -14,7 +23,13 @@
 		return dataTranslate( $data, $params['url'] );
 	}
 
-	App::import( 'Helper', 'Model' );
+	/**
+	 * La classe Type2Helper ...
+	 *
+	 * TODO: disabled -> conditions, default false pour les url
+	 *
+	 * @package app.View.Helper
+	 */
 	class Type2Helper extends ModelHelper
 	{
 		public $helpers = array( 'Xhtml', 'Html', 'Locale', 'Xform' );

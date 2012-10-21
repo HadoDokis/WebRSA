@@ -1,14 +1,19 @@
 <?php
 	/**
+	 * Fichier source de la classe Reorientationseps93Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
 	* Gestion des saisines d'EP pour les réorientations proposées par les structures
 	* référentes pour le conseil général du département 93.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
-
+	 *
+	 * @package app.Controller
+	 */
 	class Reorientationseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );

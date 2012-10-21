@@ -1,15 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Signalementep93.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
-	* ...
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
-
+	 * La classe Signalementep93 ...
+	 *
+	 * @package app.Model
+	 */
 	class Signalementep93 extends Thematiqueep
 	{
 		public $name = 'Signalementep93';

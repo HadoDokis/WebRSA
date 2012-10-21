@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Séance d'équipe pluridisciplinaire.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Commissionep.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Séance d'équipe pluridisciplinaire.
+	 *
+	 * @package app.Model
+	 */
 	class Commissionep extends AppModel
 	{
 		public $name = 'Commissionep';
@@ -1280,17 +1285,17 @@
 
 			$options = $this->Membreep->enums();
 			$options['Membreep']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-            
+
             $modele = null;
             if( Configure::read( 'Cg.departement' ) == 66 ) {
                 if( $convocation['Compositionregroupementep']['prioritaire'] == '1' ) {
-                    $modele = 'convocationep_participant_prioritaire.odt';                
+                    $modele = 'convocationep_participant_prioritaire.odt';
                 }
                 else {
                     $modele = 'convocationep_participant_facultatif.odt';
                 }
             }
-            else {            
+            else {
                 $modele = 'convocationep_participant.odt';
             }
 //debug($modele);

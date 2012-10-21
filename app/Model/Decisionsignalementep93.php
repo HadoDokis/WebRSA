@@ -1,13 +1,18 @@
 <?php
 	/**
-	* ...
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Decisionsignalementep93.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Decisionsignalementep93 ...
+	 *
+	 * @package app.Model
+	 */
 	class Decisionsignalementep93 extends AppModel
 	{
 		public $name = 'Decisionsignalementep93';

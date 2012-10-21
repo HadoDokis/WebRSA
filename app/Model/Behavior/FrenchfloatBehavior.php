@@ -1,8 +1,18 @@
 <?php
 	/**
-	*
-	*/
+	 * Code source de la classe FrenchfloatBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe FrenchfloatBehavior ...
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class FrenchfloatBehavior extends ModelBehavior
 	{
 		/**

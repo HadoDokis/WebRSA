@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe XlsHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe XlsHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class XlsHelper extends AppHelper
 	{
 		/**

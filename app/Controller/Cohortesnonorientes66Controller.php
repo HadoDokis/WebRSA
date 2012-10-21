@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe Cohortesnonorientes66Controller permet de traiter les cohortes d'orientation au CG 66 et les
 	 * impressions liées.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class Cohortesnonorientes66Controller extends AppController
 	{

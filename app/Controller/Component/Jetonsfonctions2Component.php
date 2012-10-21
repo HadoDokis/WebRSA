@@ -4,12 +4,12 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 */
 	class Jetonsfonctions2Component extends Component
 	{

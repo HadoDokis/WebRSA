@@ -1,31 +1,22 @@
 <?php
-	@ini_set( 'memory_limit', '2048M' );
-
 	/**
-	 * AppShell file
+	 * Code source de la classe XShell.
 	 *
-	 * PHP 5
+	 * PHP 5.3
 	 *
-	 * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
-	 * Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
-	 *
-	 * Licensed under The MIT License
-	 * Redistributions of files must retain the above copyright notice.
-	 *
-	 * @copyright     Copyright 2005-2012, Cake Software Foundation, Inc. (http://cakefoundation.org)
-	 * @link          http://cakephp.org CakePHP(tm) Project
-	 * @since         CakePHP(tm) v 2.0
-	 * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	@ini_set( 'memory_limit', '2048M' );
 	App::uses( 'Shell', 'Console' );
 	App::uses( 'ConnectionManager', 'Model' );
+
 	/**
-	 * Application Shell
+	 * La classe XShell sert de classe parente aux shells de l'application, sans
+	 * surcharger la classe parente de tous les shells (notamment ceux du coeur
+	 * de CakePHP).
 	 *
-	 * Add your application-wide methods in the class below, your shells
-	 * will inherit them.
-	 *
-	 * @package       app.Console.Command
+	 * @package app.Console.Command
 	 */
 	class XShell extends AppShell
 	{

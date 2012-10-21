@@ -1,9 +1,20 @@
 <?php
+	/**
+	 * Fichier source de la classe CohortepdfsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Component', 'Controller' );
 	App::uses( 'GedoooComponent', 'Gedooo.Controller/Component' );
+
 	/**
+	 * La classe CohortepdfsShell ...
 	 *
+	 * @package app.Console.Command
 	 */
 	class CohortepdfsShell extends XShell
 	{

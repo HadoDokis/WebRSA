@@ -1,13 +1,12 @@
 <?php
 	/**
-	* Classe utilitaire CMIS
-	*
-	* PHP version 5
-	*
-	* @package		app
-	* @subpackage	app.app.libs
-	*/
-
+	 * Code source de la classe Cmis.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	if( CAKE_BRANCH == '1.2' ) {
 		require_once( APP.'Vendor'.DS.'apache_chemistry'.DS.'cmis_repository_wrapper.php' );
 		//App::import( 'Vendor', 'apache_chemistry'.DS.'cmis_repository_wrapper' );
@@ -17,21 +16,19 @@
 	}
 
 	/**
-	* Classe utilitaire permettant de dialoguer avec un serveur CMS via le protocole
-	* CMIS grâce à l'utilisation de la librairie phpclient d'Apache Chemistry.
-	*
-	* Un seul serveur Cmis est possible. Les paramètres suivants doivent être ajoutés
-	* au fichier app/boostrap.php avec Cmis::config( $url, $username, $password )
-	*
-	* FIXME: Tickets / transactions ?
-	* FIXME: will not work on Pre CMIS-1.0 repositories
-	* FIXME: Your version of php must support DOMDocument and curl
-	*
-	* @see			http://incubator.apache.org/chemistry/phpclient.html
-	* @package		app
-	* @subpackage	app.app.libs
-	*/
-
+	 * Classe utilitaire permettant de dialoguer avec un serveur CMS via le protocole
+	 * CMIS grâce à l'utilisation de la librairie phpclient d'Apache Chemistry.
+	 *
+	 * Un seul serveur Cmis est possible. Les paramètres suivants doivent être ajoutés
+	 * au fichier app/boostrap.php avec Cmis::config( $url, $username, $password )
+	 *
+	 * FIXME: Tickets / transactions ?
+	 * FIXME: will not work on Pre CMIS-1.0 repositories
+	 * FIXME: Your version of php must support DOMDocument and curl
+	 *
+	 * @see http://incubator.apache.org/chemistry/phpclient.html
+	 * @package app.Lib
+	 */
 	abstract class Cmis
 	{
 		/**

@@ -1,8 +1,12 @@
 <?php
 	/**
-	* CREATE INDEX referents_nom_complet_idx ON referents ( ( nom || ' ' || prenom ) );
-	* CREATE INDEX personnes_nom_complet_idx ON personnes ( ( nom || ' ' || prenom ) );
-	*/
+	 * Fonctions utilitaires de WebRSA.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	function __translate( $value ) {
 		switch( gettype( $value ) ) {

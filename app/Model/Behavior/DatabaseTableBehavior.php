@@ -1,24 +1,22 @@
 <?php
 	/**
-	* DatabaseTable behavior class.
-	*
-	* Behavior class adding methods to perform database operations on a CakePHP
-	* model class.
-	*
-	* PHP version 5
-	*
-	* @package		app
-	* @subpackage	app.models.behaviors
-	*/
+	 * DatabaseTable behavior class.
+	 *
+	 * Behavior class adding methods to perform database operations on a CakePHP
+	 * model class.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	/**
-	* Behavior class adding methods to perform database operations on a CakePHP
-	* model class.
-	*
-	* @package		app
-	* @subpackage	app.model.behaviors
-	*/
-
+	 * Behavior class adding methods to perform database operations on a CakePHP
+	 * model class.
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class DatabaseTableBehavior extends ModelBehavior
 	{
 		/**

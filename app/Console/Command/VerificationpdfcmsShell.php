@@ -1,9 +1,20 @@
 <?php
+	/**
+	 * Fichier source de la classe VerificationpdfcmsShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( APPLIBS.'cmis.php' );
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Pdf', 'Model' );
+
 	/**
+	 * La classe VerificationpdfcmsShell ...
 	 *
+	 * @package app.Console.Command
 	 */
 	class VerificationpdfcmsShell extends XShell
 	{

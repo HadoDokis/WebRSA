@@ -1,8 +1,19 @@
 <?php
+	/**
+	 * Fichier source de la classe AnomaliesbddShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'View', 'Cake/View' );
 	App::uses( 'HtmlHelper', 'View/Helper' );
+
 	/**
+	 * La classe AnomaliesbddShell ...
+	 *
 	 * INFO:
 	 * 	- base de données d'environ 200 Mo, datée du 04/11/2009
 	 * 		* 103664 dossiers
@@ -16,6 +27,7 @@
 	 * 			+ Personnes avec au moins un NIR manquant en doublon dans le même foyer: 32 personnes à traiter
 	 * 			+ Recherche des personnes demandeurs ou conjoints multiples au sein d'un foyer: 14444 personnes à traiter
 	 *
+	 * @package app.Console.Command
 	 */
 	class AnomaliesbddShell extends XShell
 	{

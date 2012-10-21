@@ -1,11 +1,26 @@
 <?php
+	/**
+	 * Code source de la classe Xset.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Xset fournit des méthodes supplémentaires pour gérer les
+	 * dictionnaires (associations nom => valeur(s)).
+	 *
+	 * @package app.Lib
+	 */
 	class Xset extends Set
 	{
 		/**
-		* @access public
-		* @static
-		*/
-
+		 *
+		 * @param array $data
+		 * @return array
+		 */
 		static public function filterDeep( $data ) {
 			if( !is_array( $data ) ) {
 				return $data;
@@ -17,39 +32,12 @@
 		}
 
 		/**
-		* Retourne un array où les éléments de l'array d'entrée de type integer => valeur
-		* sont remplacés par des éléments de type valeur => defaultValue.
-		*
-		* @param array $data Array d'entrée pouvant contenir des clés de type integer
-		* @param mixed $defaultValue Valeur par défaut à assigner lorsqu'une valeur devient une clé
-		* @return array Array dans laquelle il n'existe plus de clé de type integer
-		* @access public
-		* @static
-		*/
-		/// FIXME: Set::normalize ?
-		/*static public function mkkeys( array $data, $defaultValue = array() ) {
-			$newArray = array();
-
-			if( !empty( $data ) ) {
-				foreach( $data as $key => $value ) {
-					if( is_int( $key ) ) {
-						$newArray[$value] = $defaultValue;
-					}
-					else {
-						$newArray[$key] = $value;
-					}
-				}
-			}
-
-			return $newArray;
-		}*/
-
-		/**
-		* FIXME: docs -> contraire de flatten
-		* @param array $data (eg. array( 'Foo__Bar' => 'value' ) )
-		* @return array multisized array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
-		*/
-
+		 * Le contraire de Set::flatten().
+		 *
+		 * @param array $data (eg. array( 'Foo__Bar' => 'value' ) )
+		 * @param string $separator (eg. '__' )
+		 * @return array (eg. array( 'Foo' => array( 'Bar' => 'value' ) ) )
+		 */
 		static public function bump( $data, $separator = '.' ) {
 			if( is_array( $data ) && !empty( $data ) ) {
 				$newArray = array();
@@ -62,16 +50,13 @@
 		}
 
 		/**
-		* TODO: docs
-		* TODO: tests unitaires
-		* ...
-		*
-		* @param array $array
-		* @param array $filterKeys
-		* @return array $newArray
-		*/
-
-		static public function filterkeys( array $array, array $filterKeys, $remove = false ) { // FIXME ?
+		 *
+		 * @param array $array
+		 * @param array $filterKeys
+		 * @param boolean $remove
+		 * @return array
+		 */
+		static public function filterkeys( array $array, array $filterKeys, $remove = false ) {
 			$newArray = array();
 			foreach( $array as $key => $value) {
 				if( $remove && !in_array( $key, $filterKeys ) ) {
@@ -85,39 +70,33 @@
 		}
 
 		/**
-		* TODO: docs
-		* TODO: tests unitaires
-		* ...
-		*
-		* @param array $array
-		* @param array $filterKeys
-		* @return array $newArray
-		*/
-
+		 *
+		 * @param array $array
+		 * @param array $filterKeys
+		 * @return array
+		 */
 		static public function whitelist( array $array, array $filterKeys ) {
 			return self::filterkeys( $array, $filterKeys, false );
 		}
 
 		/**
-		* TODO: docs
-		* TODO: tests unitaires
-		* ...
-		*
-		* @param array $array
-		* @param array $filterKeys
-		* @return array $newArray
-		*/
-
+		 *
+		 * @param array $array
+		 * @param array $filterKeys
+		 * @return array
+		 */
 		static public function blacklist( array $array, array $filterKeys ) {
 			return self::filterkeys( $array, $filterKeys, true );
 		}
 
 		/**
-		* Vérifie si au moins une des valeurs des clés existe en tant que clé
-		* dans le second paramètre
-		* TODO: docs + tests
-		*/
-
+		 * Vérifie si au moins une des valeurs des clés existe en tant que clé
+		 * dans le second paramètre.
+		 *
+		 * @param array $needles
+		 * @param array $haystack
+		 * @return boolean
+		 */
 		static public function anykey( $needles, $haystack ) {
 			if( !is_array( $needles ) ) {
 				$needles = array( $needles );
@@ -131,45 +110,11 @@
 		}
 
 		/**
-		* TODO: docs + tests
-		*/
-
-		/*function search( $subject, $pathPattern, $valuePattern = null ) {
-			$paths = array();
-
-			foreach( Xset::flatten( $subject ) as $path => $value ) {
-				if( preg_match( $pathPattern, $path ) ) {
-					if( func_num_args() == 2 || preg_match( $valuePattern, $value ) ) {
-						$paths[] = $path;
-					}
-				}
-			}
-
-			return $paths;
-		}*/
-
-		/**
-		* TODO: docs + tests
-		* debug( Xset::inject( $this->modelClass, array_keys( $this->{$this->modelClass}->schema() ) ) );
-		*/
-
-		/*function inject( $string, array $array ) {
-			$return = array();
-
-			foreach( $array as $value ) {
-				$return[] = "{$string}.{$value}";
-			}
-
-			return $return;
-		}*/
-
-		/**
-		*	TODO: docs
-		*	TODO: recursive
-		*	TODO: corriger dans webrsa
-		*	FIXME: trim ?
-		*/
-
+		 * Remplace les chaînes vides par la valeur null.
+		 *
+		 * @param array $array
+		 * @return array
+		 */
 		static public function nullify( array $array ) {
 			$newArray = array();
 			foreach( $array as $key => $value ) {

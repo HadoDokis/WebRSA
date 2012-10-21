@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe GestionanomaliebddHelper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe GestionanomaliebddHelper ...
+	 *
+	 * @package app.View.Helper
+	 */
 	class GestionanomaliebddHelper extends AppHelper
 	{
 		public $helpers = array( 'Xhtml', 'Permissions' );

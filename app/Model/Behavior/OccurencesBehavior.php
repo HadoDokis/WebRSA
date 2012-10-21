@@ -1,22 +1,18 @@
 <?php
 	/**
-	* Subquery behavior class.
-	*
-	* Utility class to generate subqueries using a CakePHP find-like operation.
-	*
-	* PHP version 5
-	*
-	* @package		app
-	* @subpackage	app.app.models.behaviors
-	*/
+	 * Code source de la classe OccurencesBehavior.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Behavior
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	/**
-	* ....
-	*
-	* @package		app
-	* @subpackage	app.app.model.behaviors
-	*/
-
+	 * La classe OccurencesBehavior ...
+	 *
+	 * @package app.Model.Behavior
+	 */
 	class OccurencesBehavior extends ModelBehavior
 	{
 		/**

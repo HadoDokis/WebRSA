@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
@@ -12,7 +12,7 @@
 	/**
 	 * La classe Critereapre s'occupe du moteur de recherche des APREs (CG 66 et 93).
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Critereapre extends AppModel
 	{

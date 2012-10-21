@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe Gestionssanctionseps58Controller permet de gérer les sanctions émises par une EP pour le cG58.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class Gestionssanctionseps58Controller extends AppController
 	{

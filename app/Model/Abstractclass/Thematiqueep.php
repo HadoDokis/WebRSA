@@ -1,9 +1,20 @@
 <?php
 	/**
-	* Classe abstraite contenant les signatures de méthodes qui doivent être
-	* implémentées dans les classes des thématiques d'EP, et des méthodes pouvant
-	* être utilisées dans ces mêmes classes.
-	*/
+	 * Code source de la classe Thematiqueep.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model.Abstractclass
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * Classe abstraite contenant les signatures de méthodes qui doivent être
+	 * implémentées dans les classes des thématiques d'EP, et des méthodes pouvant
+	 * être utilisées dans ces mêmes classes.
+	 *
+	 * @package app.Model.Abstractclass
+	 */
 	abstract class Thematiqueep extends AppModel
 	{
 		/**

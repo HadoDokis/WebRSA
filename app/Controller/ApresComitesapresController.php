@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe ApresComitesapresController ...
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class ApresComitesapresController extends AppController
 	{

@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
@@ -13,7 +13,7 @@
 	 * La classe Cohortenonoriente66 fournit un traitement des filtres de recherche des cohortes d'orientation
 	 * au CG 66 et des impression liées.
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Cohortenonoriente66 extends AppModel
 	{

@@ -4,14 +4,14 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
 	 * La classe PersonnesController permet de gérer les personnes au sein d'un foyer RSA.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class PersonnesController extends AppController
 	{

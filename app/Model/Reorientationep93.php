@@ -1,18 +1,22 @@
 <?php
+	/**
+	 * Code source de la classe Defautinsertionep66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
 	/**
-	* Saisines d'EP pour les réorientations proposées par les structures
-	* référentes pour le conseil général du département 93.
-	*
-	* Il s'agit de l'un des thèmes des EPs pour le CG 93.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
-
+	 * Saisines d'EP pour les réorientations proposées par les structures
+	 * référentes pour le conseil général du département 93.
+	 *
+	 * Il s'agit de l'un des thèmes des EPs pour le CG 93.
+	 *
+	 * @package app.Model
+	 */
 	class Reorientationep93 extends Thematiqueep
 	{
 		public $name = 'Reorientationep93';

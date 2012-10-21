@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Gestion des séances d'équipes pluridisciplinaires.
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.controllers
-	*/
+	 * Fichier source de la classe Criteresdossierscovs58Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Moteur de recherche de dossiers COV (CG 58).
+	 *
+	 * @package app.Controller
+	 */
 	class Criteresdossierscovs58Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
@@ -29,12 +34,12 @@
 		*/
 
 		public function index() {
-		
+
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 			if( !empty( $this->request->data ) ) {
 				$data = $this->request->data;
 
@@ -45,8 +50,8 @@
 				);
 				$queryData['limit'] = 10;
 				$this->paginate = $this->_qdAddFilters( $queryData );
-				
-				
+
+
 				$forceVirtualFields = $this->Dossiercov58->forceVirtualFields;
 				$this->Dossiercov58->forceVirtualFields = true;
 				$dossierscovs58 = $this->paginate( $this->Dossiercov58 );

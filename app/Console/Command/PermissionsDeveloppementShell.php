@@ -1,15 +1,23 @@
 <?php
+	/**
+	 * Fichier source de la classe PermissionsDeveloppementShell.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Console.Command
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'AclComponent', 'Controller/Component' );
 	App::uses( 'DbdroitsComponent', 'Controller/Component' );
-//	App::uses( 'AppController', 'Controller' );
-//	App::uses( 'UserController', 'Controller' );
+	App::uses( 'AppController', 'Controller' );
 	App::uses( 'ComponentCollection', 'Controller' );
-//	App::uses( 'Router', 'Cake/Routing' );
-//	include CONFIGS.'routes.php';
+
 	/**
-	 * TODO: le parent_id des Groupes dans les Aros des groupes
+	 * La classe PermissionsDeveloppementShell ...
+	 *
+	 * @package app.Console.Command
 	 */
 	class PermissionsDeveloppementShell extends XShell
 	{

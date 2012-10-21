@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe CohortesComponent permet de gérer les jetons dans les cohortes, avec prise en compte du
 	 * passage de page en page.
 	 *
-	 * @package app.controllers.components
+	 * @package app.Controller.Component
 	 */
 	class CohortesComponent extends Component
 	{

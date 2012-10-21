@@ -325,6 +325,7 @@
 		/**
 		 * Test de la méthode Cohortereferent93::search().
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSearch() {

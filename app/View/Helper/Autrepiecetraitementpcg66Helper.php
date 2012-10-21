@@ -1,6 +1,17 @@
 <?php
 	/**
-	 * 
+	 * Fichier source de la classe Autrepiecetraitementpcg66Helper.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Autrepiecetraitementpcg66Helper ...
+	 *
+	 * @package app.View.Helper
 	 */
 	class Autrepiecetraitementpcg66Helper extends AppHelper
 	{
@@ -16,7 +27,7 @@
 
 			$i = 0;
 			$return = '';
-			foreach( $options as $value => $label ) {		
+			foreach( $options as $value => $label ) {
 				$checkboxId = $this->domId( "{$modelName}.{$i}.id{$id}.{$modelName}" );
 
 				// reprise de données par envoi de formulaire incomplet

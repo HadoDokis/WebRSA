@@ -1,13 +1,18 @@
 <?php
 	/**
-	* Moteur de recherche pour les bilans de parcours du CG 66
-	*
-	* PHP versions 5
-	*
-	* @package       app
-	* @subpackage    app.app.models
-	*/
+	 * Code source de la classe Criterebilanparcours66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * Moteur de recherche pour les bilans de parcours du CG 66
+	 *
+	 * @package app.Model
+	 */
 	class Criterebilanparcours66 extends AppModel
 	{
 		public $name = 'Criterebilanparcours66';

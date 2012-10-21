@@ -5,6 +5,7 @@
 	 * PHP 5.3
 	 *
 	 * @package app.View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**

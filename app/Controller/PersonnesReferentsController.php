@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe PersonnesReferentsController permet la gestion des référents du parcours au niveau du dossier
 	 * de l'allocataire.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class PersonnesReferentsController extends AppController
 	{
