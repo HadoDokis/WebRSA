@@ -1,13 +1,26 @@
 <?php
 	/**
+	 * Code source de la classe Check.
+	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.plugins.checks.models
+	 * @package Appchecks
+	 * @subpackage Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	define( 'APPCHECKS_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS );
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'basics.php' );
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'xvalidation.php' );
 
+	/**
+	 * La classe Check fournit des méthodes de vérification de l'environnement
+	 * applicatif.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Appchecks
+	 * @subpackage Model
+	 */
 	class Check extends AppModel
 	{
 		/**

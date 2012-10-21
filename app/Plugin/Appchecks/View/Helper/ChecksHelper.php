@@ -1,8 +1,20 @@
 <?php
 	/**
+	 * Code source de la classe ChecksHelper.
+	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.plugins.checks.views.helpers
+	 * @package Appchecks
+	 * @subpackage View.Helper
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ChecksHelper fournit des méthodes pour réprésentater les résultats
+	 * de vérifications de l'environnement applicatif.
+	 *
+	 * @package Appchecks
+	 * @subpackage View.Helper
 	 */
 	class ChecksHelper extends AppHelper
 	{

@@ -1,4 +1,23 @@
 <?php
+	/**
+	 * Code source de la classe Xvalidation.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package Appchecks
+	 * @subpackage Lib
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Xvalidation fournit des méthodes de validation de paramètres
+	 * simples.
+	 *
+	 * Cette classe est une adaptation d'une classe du coeur de 1.2.11.
+	 *
+	 * @package Appchecks
+	 * @subpackage Lib
+	 */
 	class Xvalidation
 	{
 		/**
