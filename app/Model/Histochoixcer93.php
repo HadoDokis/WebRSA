@@ -36,8 +36,11 @@
 		 */
 		public $actsAs = array(
 			'Validation.Autovalidate',
+			'Enumerable',
 			'Formattable',
 		);
+
+		// FIXME: Histochoixcer93.decision est obligatoire lorsque l'on est à l'étape 04premierelecture
 
 		/**
 		 * Liaisons "belongsTo" avec d'autres modèles.
@@ -64,7 +67,7 @@
 				'counterCache' => null
 			)
 		);
-		
+
 		/**
 		 *
 		 */
@@ -88,7 +91,7 @@
 					$action = 'edit';
 				}
 			}
-			
+
 			if( $action == 'add' ) {
 				$formData = array(
 					'Histochoixcer93' => array(
@@ -110,7 +113,7 @@
 			}
 
 			debug( $formData );
-			
+
 			return $formData;
 		}
 
@@ -128,7 +131,7 @@
 					array( 'Cer93.positioncer' => '\'99rejete\'' ),
 					array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 				) && $success;
-				
+
 				$this->Cer93->id = $data['Histochoixcer93']['cer93_id'];
 				$contratinsertion_id = $this->Cer93->field( 'contratinsertion_id' );
 

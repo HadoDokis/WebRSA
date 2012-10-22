@@ -36,7 +36,7 @@ CREATE INDEX users_referent_id_idx ON users( referent_id );
 -- Tables devenues obsolètes au cours des développements
 DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
 
-DROP TYPE IF EXISTS TYPE_CMU;
+DROP TYPE IF EXISTS TYPE_CMU CASCADE;
 CREATE TYPE TYPE_CMU AS ENUM ( 'oui', 'non', 'encours' );
 
 DROP TYPE IF EXISTS TYPE_POSITIONCER93 CASCADE;
@@ -162,8 +162,11 @@ COMMENT ON TABLE expsproscers93 IS 'Expériences professionnelles significatives
 DROP INDEX IF EXISTS expsproscers93_cer93_id_idx;
 CREATE INDEX expsproscers93_cer93_id_idx ON expsproscers93( cer93_id );
 
-
 -------------------------------------------------------------------------------------
+
+DROP TYPE IF EXISTS TYPE_DECISIONHISTOCER93 CASCADE;
+CREATE TYPE TYPE_DECISIONHISTOCER93 AS ENUM ( 'arelire', 'prevalide' ); -- FIXME: aux autres étapes ?
+
 DROP TABLE IF EXISTS histoschoixcers93 CASCADE;
 CREATE TABLE histoschoixcers93 (
 	id					SERIAL NOT NULL PRIMARY KEY,
@@ -172,6 +175,7 @@ CREATE TABLE histoschoixcers93 (
 	commentaire			VARCHAR(250) DEFAULT NULL,
 	formeci				CHAR(1) NOT NULL,
 	etape				TYPE_POSITIONCER93 NOT NULL,
+	decision			TYPE_DECISIONHISTOCER93 DEFAULT NULL,
 	datechoix			DATE DEFAULT NULL,
 	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
@@ -186,7 +190,7 @@ CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( c
 
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
--- 
+--
 -- SELECT add_missing_table_field ('public', 'cers93', 'positioncer', 'TYPE_POSITIONCER93');
 -- ALTER TABLE cers93 ALTER COLUMN positioncer SET DEFAULT 'enregistre'::TYPE_POSITIONCER93;
 -- SELECT add_missing_table_field ('public', 'cers93', 'formeci', 'CHAR(1)');
