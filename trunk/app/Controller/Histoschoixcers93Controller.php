@@ -43,11 +43,11 @@
 		public function attdecisioncg( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '03attdecisioncg' );
 		}
-		
-		public function lecture( $contratinsertion_id ) {
+
+		public function premierelecture( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '04premierelecture' );
 		}
-		
+
 		/**
 		 * FIXME: decision()
 		 * @return void
@@ -57,7 +57,7 @@
 			if( empty( $contratinsertion_id ) ) {
 				throw new NotFoundException();
 			}
-			
+
 			$this->Histochoixcer93->Cer93->Contratinsertion->id = $contratinsertion_id;
 			$personne_id = $this->Histochoixcer93->Cer93->Contratinsertion->field( 'personne_id' );
 
@@ -82,7 +82,7 @@
 				$this->Histochoixcer93->begin();
 
 				$saved = $this->Histochoixcer93->saveDecision( $this->request->data );
-				
+
 				if( $saved ) {
 					$this->Histochoixcer93->commit();
 					$this->Jetons2->release( $dossier_id );
@@ -104,6 +104,9 @@
 					),
 					'contain' => array(
 						'Cer93' => array(
+							'Compofoyercer93',
+							'Diplomecer93',
+							'Expprocer93',
 							'Histochoixcer93' => array(
 								'order' => array( 'Histochoixcer93.etape ASC' )
 							)
@@ -115,16 +118,24 @@
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Histochoixcer93->prepareFormData( $contratinsertion, $etape, $this->Session->read( 'Auth.User.id' ) );
 			}
-			
-			$options = array(
-				'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
+
+			$options = array_merge(
+				$this->Histochoixcer93->enums(),
+				array(
+					'Cer93' => array(
+						'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
+					)
+				)
 			);
 			$this->set( 'options', $options );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'contratinsertion', $contratinsertion );
 			$this->set( 'userConnected', $this->Session->read( 'Auth.User.id' ) );
 // 			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
-			$this->render( 'decision' );
+
+			if( in_array( $this->action, array( 'attdecisioncpdv', 'attdecisioncg' ) ) ) {
+				$this->render( 'decision' );
+			}
 		}
 	}
 ?>

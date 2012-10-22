@@ -1,5 +1,5 @@
 <?php
-	$title_for_layout = 'Décison du CPDV';
+	$title_for_layout = '1ère lecture';
 	$this->set( 'title_for_layout', $title_for_layout );
 
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -10,14 +10,11 @@
 
 <div class="with_treemenu">
 <?php
-	// FIXME: liste de titres depuis le contrôleur
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
-	if( $this->action == 'attdecisioncg' ) {
-		echo $this->Xform->input( 'Histochoixcer93.isrejet', array( 'type' => 'checkbox' ) );
-	}
+	// FIXME: affichage du CER et des étapes précédentes de l'historique
 
 	echo $this->Xform->inputs(
 		array(
@@ -29,6 +26,7 @@
 			'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
 			'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 			'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+			'Histochoixcer93.decision' => array( 'type' => 'radio', 'options' => $options['Histochoixcer93']['decision'] ),
 			'Histochoixcer93.etape' => array( 'type' => 'hidden' )
 		)
 	);

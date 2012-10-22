@@ -156,10 +156,19 @@
 				)
 			);
 			$options = Set::merge( $options, $this->Cer93->enums() );
-			
+
+			$disabledLinks = array(
+				'Cers93::edit' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )' ,
+				'Cers93::signature' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) || ( \'%permission%\' == \'0\' )' ,
+				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\', \'03attdecisioncg\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::premierelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\', \'04premierelecture\' ) ) || ( \'%permission%\' == \'0\' )',
+			);
+
 			$this->set( 'options', $options);
 			$this->set( 'cers93', $results );
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'disabledLinks', $disabledLinks );
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
@@ -261,7 +270,7 @@
 			$this->render( 'edit' );
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
-		
+
 		/**
 		 * Fonction permettant de saisir la date de signature du CER.
 		 * Le statut du CER est également mis à jour à la valeur "signé"
@@ -274,10 +283,10 @@
 			if( empty( $id ) ) {
 				throw new NotFoundException();
 			}
-			
+
 			$this->Cer93->Contratinsertion->id = $id;
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
-			
+
 			// Le dossier auquel appartient la personne
 			$dossier_id = $this->Cer93->Contratinsertion->Personne->dossierId( $personne_id );
 
@@ -309,7 +318,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			
+
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Cer93->prepareFormData( $personne_id, $id );
 			}

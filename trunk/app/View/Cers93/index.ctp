@@ -26,22 +26,25 @@
 			array(
 				'actions' => array(
 					'Cers93::view' => array( 'url' => array( 'action' => 'view', '#Contratinsertion.id#' ) ),
-					'Cers93::edit' => array( 'url' => array( 'action' => 'edit', '#Contratinsertion.id#' ) ),
+					'Cers93::edit' => array(
+						'url' => array( 'action' => 'edit', '#Contratinsertion.id#' ),
+						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'edit' ), $disabledLinks['Cers93::edit'] )
+					),
 					'Cers93::signature' => array(
 						'url' => array( 'action' => 'signature', '#Contratinsertion.id#' ),
-// 						'disabled' => '\'#Cer93.positioncer#\' != (  \'enregistre\' )' 
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'signature' ), $disabledLinks['Cers93::signature'] )
 					),
 					'Histoschoixcers93::attdecisioncpdv' => array(
 						'url' => array( 'action' => 'attdecisioncpdv', '#Contratinsertion.id#' ),
-// 						'disabled' => '\'#Cer93.positioncer#\' != (  \'signe\' )' 
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'attdecisioncpdv' ), $disabledLinks['Histoschoixcers93::attdecisioncpdv'] )
 					),
 					'Histoschoixcers93::attdecisioncg' => array(
 						'url' => array( 'action' => 'attdecisioncg', '#Contratinsertion.id#' ),
-// 						'disabled' => '\'#Cer93.positioncer#\' != (  \'attdecisioncpdv\' )' 
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'attdecisioncg' ), $disabledLinks['Histoschoixcers93::attdecisioncg'] )
 					),
-					'Histoschoixcers93::lecture' => array(
-						'url' => array( 'action' => 'lecture', '#Contratinsertion.id#' ),
-// 						'disabled' => '\'#Cer93.positioncer#\' != (  \'attdecisioncpdv\' )' 
+					'Histoschoixcers93::premierelecture' => array(
+						'url' => array( 'action' => 'premierelecture', '#Contratinsertion.id#' ),
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'premierelecture' ), $disabledLinks['Histoschoixcers93::premierelecture'] )
 					),
 					'Contratsinsertion::impression' => array( 'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ) ),
 					'Contratsinsertion::filelink' => array( 'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' ) )
@@ -51,6 +54,8 @@
 		);
 
 		debug( $cers93 );
+
+		debug( $this->Session->read( 'Auth.Permissions' ) );
 	?>
 </div>
 <div class="clearer"><hr /></div>
