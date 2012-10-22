@@ -246,7 +246,7 @@
 	?>
 
 	<fieldset>
-		<legend>Diplômes (scolaires, universitaires et/ou professionnels</legend>
+		<legend>Diplômes (scolaires, universitaires et/ou professionnels)</legend>
 		<ul class="actionMenu">
 			<li><a href="#" onclick="addDynamicTrInputs( 'Diplomecer93', gabaritDiplomecer93 ); return false;">Ajouter</a></li>
 		</ul>

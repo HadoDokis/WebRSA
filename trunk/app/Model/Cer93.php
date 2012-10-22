@@ -101,6 +101,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Histochoixcer93' => array(
+				'className' => 'Histochoixcer93',
+				'foreignKey' => 'cer93_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		/**
@@ -138,6 +151,8 @@
 
 			return $success;
 		}
+		
+		
 		public function prepareFormData( $personneId, $contratinsertion_id  ) {
 			// Donnée de la CAF stockée en base
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
@@ -331,6 +346,25 @@
 
 			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
 
+			// Dans le cas d'un ajout, il faut supprimer les id et les clés étrangères des
+			// enregistrements que l'on "copie".
+			if( empty( $contratinsertion_id ) ) {
+				$keys = array(
+					'Contratinsertion.id',
+					'Cer93.id',
+					'Cer93.contratinsertion_id',
+					'Compofoyercer93.{n}.id',
+					'Compofoyercer93.{n}.cer93_id',
+					'Diplomecer93.{n}.id',
+					'Diplomecer93.{n}.cer93_id',
+					'Expprocer93.{n}.id',
+					'Expprocer93.{n}.cer93_id'
+				);
+				foreach( $keys as $key ) {
+					$formData = Set::remove( $formData, $key );
+				}
+			}
+			
 			return $formData;
 		}
 	}

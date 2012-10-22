@@ -579,3 +579,16 @@ msgstr "Notification fin sanction 1"
 
 msgid "Button::impressionSanction2"
 msgstr "Notification fin sanction 2"
+
+
+msgid "Button::signature"
+msgstr "Signer"
+
+msgid "Button::attdecisioncpdv"
+msgstr "Envoi CPDV"
+
+msgid "Button::attdecisioncg"
+msgstr "Envoi CG"
+
+msgid "Button::lecture"
+msgstr "Première lecture"

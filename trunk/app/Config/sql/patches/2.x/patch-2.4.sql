@@ -39,13 +39,15 @@ DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
 DROP TYPE IF EXISTS TYPE_CMU;
 CREATE TYPE TYPE_CMU AS ENUM ( 'oui', 'non', 'encours' );
 
+DROP TYPE IF EXISTS TYPE_POSITIONCER93 CASCADE;
+CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( '00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide' );
+
 -- Données spécifiques au CG 93
 DROP TABLE IF EXISTS cers93 CASCADE;
 CREATE TABLE cers93 (
 	id						SERIAL NOT NULL PRIMARY KEY,
 	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	-- Bloc 2: état cvil
-	-- FIXME: numdemrsa, rolepers, identifiantpe
 	matricule				VARCHAR(15) DEFAULT NULL,
 	dtdemrsa				DATE NOT NULL,
 	qual					VARCHAR(3) DEFAULT NULL,
@@ -64,13 +66,25 @@ CREATE TABLE cers93 (
 	cmu						TYPE_CMU DEFAULT NULL,
 	cmuc					TYPE_CMU DEFAULT NULL,
 	-- Bloc 4: formation et expérience
-	nivetu					TYPE_NIVETU DEFAULT NULL
+	nivetu					TYPE_NIVETU DEFAULT NULL,
+	-- FIXME: numdemrsa, rolepers, identifiantpe
+	numdemrsa				VARCHAR(11) DEFAULT NULL,
+	rolepers				CHAR(3) DEFAULT NULL,
+	identifiantpe			VARCHAR(11) DEFAULT NULL,
+	positioncer				TYPE_POSITIONCER93 NOT NULL DEFAULT '00enregistre',
+	formeci					CHAR(1) DEFAULT NULL,
+	datesignature			DATE DEFAULT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
 
 );
 COMMENT ON TABLE cers93 IS 'Données du CER spécifiques au CG 93';
 
 DROP INDEX IF EXISTS cers93_contratinsertion_id_idx;
-CREATE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
+CREATE UNIQUE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
+
+-- ALTER TABLE modelestypescourrierspcgs66 ALTER COLUMN ismontant SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+-- UPDATE modelestypescourrierspcgs66 SET ismontant = '0'::TYPE_BOOLEANNUMBER WHERE ismontant IS NULL;
 
 -------------------------------------------------------------------------------------
 
@@ -81,7 +95,9 @@ CREATE TABLE composfoyerscers93 (
 	qual		VARCHAR(3) DEFAULT NULL,
 	nom			VARCHAR(50) NOT NULL,
 	prenom		VARCHAR(50) NOT NULL,
-	dtnai		DATE NOT NULL
+	dtnai		DATE NOT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE composfoyerscers93 IS 'Compositions du foyer pour le CER 93 (bloc 2, état civil)';
 
@@ -95,7 +111,9 @@ CREATE TABLE diplomescers93 (
 	id			SERIAL NOT NULL PRIMARY KEY,
 	cer93_id	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	name		VARCHAR(250) NOT NULL,
-	annee		INTEGER NOT NULL
+	annee		INTEGER NOT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE diplomescers93 IS 'Diplômes obtenus pour le CER 93 (bloc 4, formation et expérience)';
 
@@ -135,13 +153,44 @@ CREATE TABLE expsproscers93 (
 	metierexerce_id		INTEGER NOT NULL REFERENCES metiersexerces(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	secteuracti_id		INTEGER NOT NULL REFERENCES secteursactis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	anneedeb			INTEGER NOT NULL,
-	duree				VARCHAR(25) NOT NULL
+	duree				VARCHAR(25) NOT NULL,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE expsproscers93 IS 'Expériences professionnelles significatives pour le CER 93 (bloc 4, formation et expérience)';
 
 DROP INDEX IF EXISTS expsproscers93_cer93_id_idx;
 CREATE INDEX expsproscers93_cer93_id_idx ON expsproscers93( cer93_id );
 
+
+-------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS histoschoixcers93 CASCADE;
+CREATE TABLE histoschoixcers93 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	cer93_id			INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id				INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire			VARCHAR(250) DEFAULT NULL,
+	formeci				CHAR(1) NOT NULL,
+	etape				TYPE_POSITIONCER93 NOT NULL,
+	datechoix			DATE DEFAULT NULL,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE histoschoixcers93 IS 'Historiques des choix pris sur le CER 93 (signature, transfert cpdv, ...)';
+
+DROP INDEX IF EXISTS histoschoixcers93_cer93_id_idx;
+CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
+
+DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
+CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
+
+-- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
+-- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
+-- 
+-- SELECT add_missing_table_field ('public', 'cers93', 'positioncer', 'TYPE_POSITIONCER93');
+-- ALTER TABLE cers93 ALTER COLUMN positioncer SET DEFAULT 'enregistre'::TYPE_POSITIONCER93;
+-- SELECT add_missing_table_field ('public', 'cers93', 'formeci', 'CHAR(1)');
+-- SELECT add_missing_table_field ('public', 'cers93', 'datesignature', 'DATE');
 
 -- *****************************************************************************
 COMMIT;

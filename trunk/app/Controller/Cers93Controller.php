@@ -123,6 +123,18 @@
 			}
 
 			$querydata = array(
+				'fields' => array(
+					$this->Cer93->Contratinsertion->Fichiermodule->sqNbFichiersLies( $this->Cer93->Contratinsertion, 'nb_fichiers_lies' ),
+					'Cer93.positioncer',
+					'Cer93.formeci',
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Cer93.id',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Contratinsertion.rg_ci',
+					'Contratinsertion.decision_ci'
+				),
 				'contain' => array(
 					'Cer93'
 				),
@@ -132,13 +144,23 @@
 				),
 				'order' => array(
 					'Cer93.id DESC' // FIXME
-				)
+				),
+				'order' => array( 'Contratinsertion.dd_ci DESC' )
 			);
 
 			$results = $this->Cer93->Contratinsertion->find( 'all', $querydata );
 
+			$options = array(
+				'Contratinsertion' => array(
+					'decision_ci' => ClassRegistry::init( 'Option' )->decision_ci()
+				)
+			);
+			$options = Set::merge( $options, $this->Cer93->enums() );
+			
+			$this->set( 'options', $options);
 			$this->set( 'cers93', $results );
 			$this->set( 'personne_id', $personne_id );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
 		/**
@@ -237,6 +259,63 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
 			$this->render( 'edit' );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
+		}
+		
+		/**
+		 * Fonction permettant de saisir la date de signature du CER.
+		 * Le statut du CER est également mis à jour à la valeur "signé"
+		 *
+		 * @param integer $id du contratinsertion en question
+		 * @return void
+		 */
+		public function signature( $id ) {
+			// On s'assure que l'id passé en paramètre existe bien
+			if( empty( $id ) ) {
+				throw new NotFoundException();
+			}
+			
+			$this->Cer93->Contratinsertion->id = $id;
+			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
+			
+			// Le dossier auquel appartient la personne
+			$dossier_id = $this->Cer93->Contratinsertion->Personne->dossierId( $personne_id );
+
+			// On s'assure que l'id passé en paramètre et le dossier lié existent bien
+			if( empty( $personne_id ) || empty( $dossier_id ) ) {
+				throw new NotFoundException();
+			}
+
+			// Tentative d'acquisition du jeton sur le dossier
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Cer93->begin();
+				$saved = $this->Cer93->save( $this->request->data );
+				if( $saved ) {
+					$this->Cer93->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Cer93->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			
+			if( empty( $this->request->data ) ) {
+				$this->request->data = $this->Cer93->prepareFormData( $personne_id, $id );
+			}
+
+			$this->set( 'personne_id', $personne_id );
+			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 	}
 ?>
