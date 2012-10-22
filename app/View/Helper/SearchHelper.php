@@ -254,5 +254,35 @@
 				)
 			);
 		}
+		
+		/**
+		 * Filtre sur les statuts du CER CG93
+		 *
+		 * @param string $positioncer
+		 * @param string $path
+		 * @return string
+		 */
+		public function statutCER93( $positioncer, $path = 'Cer93.positioncer' ) {
+			$fieldsetId = $this->domId( $path );
+
+			$script = $this->_constuctObserve( $this->domId( $path.'_choice' ), $fieldsetId, false );
+
+			$input = $this->Xform->input( $path.'_choice', array( 'label' => 'Filtrer par statut du CER', 'type' => 'checkbox' ) );
+
+			$positionscersCoches = Set::extract( $this->request->data, $path );
+			if( empty( $positionscersCoches ) ) {
+				$positionscersCoches = array_keys( $positioncer );
+			}
+
+			$input.= $this->Xhtml->tag(
+				'fieldset',
+				$this->Xhtml->tag( 'legend', 'Statut du CER' ).
+				$this->Xform->input( $path, array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $positioncer, 'fieldset' => false ) ),
+				array( 'id' => $fieldsetId )
+			);
+
+			return $script.$input;
+		}
+
 	}
 ?>

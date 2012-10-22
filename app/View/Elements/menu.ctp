@@ -607,6 +607,35 @@
 							<li><?php echo $this->Xhtml->link( 'Référents déjà affectés',  array( 'controller' => 'cohortesreferents93', 'action' => 'affectes'  ) );?></li>
 						</ul>
 					</li>
+					<li>
+						<?php echo $this->Xhtml->link( '2. Saisie d\'un CER',  array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) );?>
+						<!--<ul>
+							<li><?php echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
+							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );?></li>
+						</ul>-->
+					</li>
+					<li>
+						<?php echo $this->Xhtml->link( '3. Validation CPDV', '#' );?>
+						<!-- <ul>
+							<li><?php /*echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
+							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );*/?></li>
+						</ul> -->
+					</li>
+					<li>
+						<?php echo $this->Xhtml->link( '4. Décision CG', '#' );?>
+						<ul>
+							<li><?php echo $this->Xhtml->link( '4.1 Première lecture',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'asigner'  )*/ );?></li>
+							<li><?php echo $this->Xhtml->link( '4.2 Validation CS',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'signes'  )*/ );?></li>
+							<li><?php echo $this->Xhtml->link( '4.3 Validation Cadre',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'signes'  )*/ );?></li>
+						</ul>
+					</li>
+					<li>
+						<?php echo $this->Xhtml->link( '5. Tableau de suivi', '#' );?>
+						<!-- <ul>
+							<li><?php /*echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
+							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );*/?></li>
+						</ul> -->
+					</li>
 				</ul>
 			</li>
 			<?php endif;?>

@@ -18,6 +18,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+msgid "Cer93::index::empty"
+msgstr "Cette personne ne possède aucun CER"
+
+msgid "Cers93::view"
+msgstr "Voir le CER"
+
+msgid "Cers93::edit"
+msgstr "Modifier le CER"
+
+msgid "Cers93::signature"
+msgstr "Signer le CER"
+
 msgid "Cer93.incoherencesetatcivil"
 msgstr "Incohérence à déclarer"
 
@@ -77,3 +89,42 @@ msgstr "Niveau VI : sorties du 1er cycle de l'enseignement secondaire (6ème, 5�
 
 msgid "ENUM::NIVETU::1207"
 msgstr "Niveau VII : jamais scolarisé"
+
+msgid "ENUM::POSITIONCER::00enregistre"
+msgstr "Enregistré"
+
+msgid "ENUM::POSITIONCER::01signe"
+msgstr "Signé"
+
+msgid "ENUM::POSITIONCER::02attdecisioncpdv"
+msgstr "En attente de décision CPDV"
+
+msgid "ENUM::POSITIONCER::03attdecisioncg"
+msgstr "En attente de décision CG"
+
+msgid "ENUM::POSITIONCER::04arelire"
+msgstr "A relire"
+ 
+msgid "ENUM::POSITIONCER::04prevalide"
+msgstr "Pré-validé"
+
+msgid "ENUM::POSITIONCER::05attaviscadre"
+msgstr "En attente avis cadre"
+
+msgid "ENUM::POSITIONCER::05attavisep"
+msgstr "En attente passage EP"
+
+msgid "ENUM::POSITIONCER::99rejete"
+msgstr "Rejeté"
+
+msgid "ENUM::POSITIONCER::99valide"
+msgstr "Validé"
+
+msgid "Cer93.datesignature"
+msgstr "Signé le"
+
+msgid "Cer93.positioncer"
+msgstr "Statut CER"
+
+msgid "Cer93.formeci"
+msgstr "Forme du CER"

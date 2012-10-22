@@ -321,7 +321,12 @@
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					$this->redirect( array( 'controller' => 'cers93', 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
 			}
 
 			if( !empty( $this->request->data ) ) {
