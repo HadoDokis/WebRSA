@@ -162,6 +162,9 @@ msgstr "Durée d'engagement"
 msgid "Cer93.pointparcours"
 msgstr "Je reprends contact avec mon référent pour faire un point sur mon parcours"
 
+msgid "Cer93.datepointparcours"
+msgstr " "
+
 msgid "ENUM::DUREE::3"
 msgstr "3 mois"
 
@@ -179,3 +182,24 @@ msgstr "18 mois"
 
 msgid "ENUM::DUREE::24"
 msgstr "24 mois"
+
+msgid "Cer93.structureutilisateur"
+msgstr "Nom de la structure"
+
+msgid "Cer93.nomutilisateur"
+msgstr "Nom / Prénom"
+
+msgid "ENUM::POINTPARCOURS::alafin"
+msgstr "À la fin de mon contrat"
+
+msgid "ENUM::POINTPARCOURS::aladate"
+msgstr "À la date du"
+
+msgid "Cer93.pourlecomptede"
+msgstr "Pour le compte de"
+
+msgid "Cer93.observpro"
+msgstr "Observations et/ou proposition du professionnel"
+
+msgid "Cer93.observbenef"
+msgstr "Observation(s) complémentaire(s)"
