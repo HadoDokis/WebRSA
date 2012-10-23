@@ -68,7 +68,10 @@
 			'Personne.sexe' => array( 'type' => 'hidden' ),
 			'Cer93.rolepers' => array( 'type' => 'hidden' ),
 			'Cer93.numdemrsa' => array( 'type' => 'hidden' ),
-			'Cer93.identifiantpe' => array( 'type' => 'hidden' )
+			'Cer93.identifiantpe' => array( 'type' => 'hidden' ),
+			'Cer93.user_id' => array( 'type' => 'hidden' ),
+			'Cer93.nomutilisateur' => array( 'type' => 'hidden' ),
+			'Cer93.structureutilisateur' => array( 'type' => 'hidden' ),
 		)
 	);
 ?>
@@ -328,7 +331,7 @@
 	<?php
 		echo $this->Xform->inputs(
 			array(
-				'fieldset' => 'Emploi trouvé',
+				'fieldset' => true,
 				'legend' => 'Si oui, veuillez préciser :',
 				'Cer93.secteuracti_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ),
 				'Cer93.metierexerce_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ),
@@ -361,8 +364,55 @@
 			<?php endif;?>
 		});
 	</script>
+	<!-- Fin bloc 4 -->
 </fieldset>
+
 <?php
+	//Bloc 5 : Bilan du précédent contrat
+	echo $this->Xform->inputs(
+		array(
+			'fieldset' => true,
+			'legend' => 'Bilan du contrat précédent',
+			'Cer93.bilancerpcd' => array( 'domain' => 'cer93', 'label' => false, 'type' => 'textarea' )
+		)
+	);
+	
+	//Bloc 6 : Projet pour ce nouveau contrat
+	
+	
+	//Bloc 7 : Durée proposée
+	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );
+	
+	//Bloc 8 : Projet pour ce nouveau contrat
+	echo $this->Xform->input( 'Cer93.pointparcours', array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['pointparcours'], 'empty' => true ) );
+	
+	echo $this->Xform->input( 'Cer93.datepointparcours', array( 'domain' => 'cer93', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
+?>
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsOnValue(
+			'Cer93Pointparcours',
+			[
+				'Cer93DatepointparcoursDay',
+				'Cer93DatepointparcoursMonth',
+				'Cer93DatepointparcoursYear'
+			],
+			[ 'aladate' ],
+			false,
+			true
+		);
+	});
+</script>
+<?php
+	
+	
+	//Bloc 9 : Partie réservée au professionnel en charge du contrat
+	echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $this->request->data, 'Cer93.structureutilisateur' ) );
+	echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $this->request->data, 'Cer93.nomutilisateur' ) );
+	
+	echo $this->Xform->input( 'Cer93.pourlecomptede', array( 'domain' => 'cer93', 'type' => 'text' ) );
+	echo $this->Xform->input( 'Cer93.observpro', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => false,

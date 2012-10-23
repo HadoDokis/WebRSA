@@ -336,9 +336,22 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),//FIXME
+			),
 			'Histochoixcer93' => array(
 				'className' => 'Histochoixcer93',
+				'foreignKey' => 'user_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Cer93' => array(
+				'className' => 'Cer93',
 				'foreignKey' => 'user_id',
 				'dependent' => true,
 				'conditions' => '',

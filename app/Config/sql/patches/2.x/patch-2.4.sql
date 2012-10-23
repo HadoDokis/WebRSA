@@ -92,6 +92,7 @@ DROP TABLE IF EXISTS cers93 CASCADE;
 CREATE TABLE cers93 (
 	id						SERIAL NOT NULL PRIMARY KEY,
 	contratinsertion_id		INTEGER NOT NULL REFERENCES contratsinsertion(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id					INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	-- Bloc 2: état cvil
 	matricule				VARCHAR(15) DEFAULT NULL,
 	dtdemrsa				DATE NOT NULL,
@@ -128,6 +129,10 @@ CREATE TABLE cers93 (
 	bilancerpcd				TEXT DEFAULT NULL,
 	duree					INTEGER DEFAULT NULL,
 	pointparcours			VARCHAR(25) DEFAULT NULL,
+	datepointparcours		DATE DEFAULT NULL,
+	pourlecomptede			VARCHAR(250)  DEFAULT NULL,
+	observpro				TEXT,
+	observbenef				TEXT,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 
@@ -137,7 +142,8 @@ COMMENT ON TABLE cers93 IS 'Données du CER spécifiques au CG 93';
 DROP INDEX IF EXISTS cers93_contratinsertion_id_idx;
 CREATE UNIQUE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
 
-ALTER TABLE cers93 ADD CONSTRAINT cers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12, 18, 24] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_pointparcours_in_list_chk CHECK ( cakephp_validate_in_list( pointparcours, ARRAY['aladate','alafin'] ) );
 
 
 -------------------------------------------------------------------------------------
@@ -251,6 +257,17 @@ CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( c
 -- SELECT add_missing_table_field ('public', 'cers93', 'duree', 'INTEGER');
 -- SELECT add_missing_table_field ('public', 'cers93', 'pointparcours', 'VARCHAR(25)');
 
+-- SELECT add_missing_table_field('public', 'cers93', 'user_id', 'INTEGER' );
+-- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_user_id_fkey', 'users', 'user_id', false );
+
+-- SELECT add_missing_table_field ('public', 'cers93', 'nomutilisateur', 'VARCHAR(50)');
+-- SELECT add_missing_table_field ('public', 'cers93', 'structureutilisateur', 'VARCHAR(100)');
+
+-- SELECT add_missing_table_field ('public', 'cers93', 'pourlecomptede', 'VARCHAR(250)');
+-- SELECT add_missing_table_field ('public', 'cers93', 'observpro', 'TEXT');
+-- SELECT add_missing_table_field ('public', 'cers93', 'observbenef', 'TEXT');
+
+-- SELECT add_missing_table_field ('public', 'cers93', 'datepointparcours', 'DATE');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

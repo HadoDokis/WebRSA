@@ -233,7 +233,7 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ) );
+				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$naturescontrats = $this->Cer93->Naturecontrat->find(
@@ -337,7 +337,7 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormData( $personne_id, $id );
+				$this->request->data = $this->Cer93->prepareFormData( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$this->set( 'personne_id', $personne_id );

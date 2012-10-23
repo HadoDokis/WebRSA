@@ -83,6 +83,15 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'User' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 		);
 		/**
 		 * Liaisons "hasMany" avec d'autres modèles.
@@ -178,6 +187,15 @@
 					$data['Cer93'][$field] = null;
 				}
 			}
+			
+			// On passe le champ date de point de aprcours à null au cas où l'allocataire
+			// décide finalement de faire le point à la find e son contrat
+			if( $data['Cer93']['pointparcours'] == 'alafin' ) {
+				$fields = array( 'datepointparcours' );
+				foreach( $fields as $field ) {
+					$data['Cer93'][$field] = null;
+				}
+			}
 
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
@@ -191,7 +209,7 @@
 		}
 
 
-		public function prepareFormData( $personneId, $contratinsertion_id  ) {
+		public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
 			// Donnée de la CAF stockée en base
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
@@ -383,6 +401,22 @@
 			$formData = Set::merge( Set::merge( $dataCaf, $dataPcdCer ), $dataActuelCer );
 
 			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
+			
+			//Données de l'utilsiateur connecté
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Structurereferente'
+					)
+				)
+			);
+			$formData['Cer93']['user_id'] = $user_id;
+			$formData['Cer93']['nomutilisateur'] = $user['User']['nom_complet'];
+			$formData['Cer93']['structureutilisateur'] = $user['Structurereferente']['lib_struc'];;
 
 			// Dans le cas d'un ajout, il faut supprimer les id et les clés étrangères des
 			// enregistrements que l'on "copie".
