@@ -23,6 +23,13 @@
 		public $name = 'Secteuracti';
 
 		/**
+		 * Tri par défaut
+		 *
+		 * @var array
+		 */
+		public $order = array( 'Secteuracti.name ASC' );
+
+		/**
 		 * Récursivité.
 		 *
 		 * @var integer

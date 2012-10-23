@@ -36,20 +36,57 @@
 		 */
 		public $uses = array( 'Histochoixcer93' );
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
 		public function attdecisioncpdv( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '02attdecisioncpdv' );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
 		public function attdecisioncg( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '03attdecisioncg' );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
 		public function premierelecture( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '04premierelecture' );
 		}
 
 		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function secondelecture( $contratinsertion_id ) {
+			return $this->_decision( $contratinsertion_id, '05secondelecture' );
+		}
+
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function aviscadre( $contratinsertion_id ) {
+			return $this->_decision( $contratinsertion_id, '06attaviscadre' );
+		}
+
+		/**
 		 * FIXME: decision()
+		 *
+		 * @param integer $contratinsertion_id
+		 * @param string $etape
+		 * @throws NotFoundException
 		 * @return void
 		 */
 		protected function _decision( $contratinsertion_id, $etape ) {
@@ -116,7 +153,11 @@
 			);
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Histochoixcer93->prepareFormData( $contratinsertion, $etape, $this->Session->read( 'Auth.User.id' ) );
+				$this->request->data = $this->Histochoixcer93->prepareFormData(
+					$contratinsertion,
+					$etape,
+					$this->Session->read( 'Auth.User.id' )
+				);
 			}
 
 			$options = array_merge(

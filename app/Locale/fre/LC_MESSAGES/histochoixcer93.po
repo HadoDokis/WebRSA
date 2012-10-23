@@ -29,3 +29,30 @@ msgstr "Commentaire"
 
 msgid "Histochoixcer93.datechoix"
 msgstr "Date de décision"
+
+msgid "Histochoixcer93.decisioncs"
+msgstr "Décision"
+
+msgid "ENUM::PREVALIDE::arelire"
+msgstr "À relire"
+
+msgid "ENUM::PREVALIDE::prevalide"
+msgstr "Pré-validé"
+
+msgid "ENUM::DECISIONCS::valide"
+msgstr "Validé"
+
+msgid "ENUM::DECISIONCS::aviscadre"
+msgstr "Avis cadre"
+
+msgid "ENUM::DECISIONCS::passageep"
+msgstr "Passage en EP"
+
+msgid "ENUM::DECISIONCADRE::valide"
+msgstr "Validé"
+
+msgid "ENUM::DECISIONCADRE::rejete"
+msgstr "Rejeté"
+
+msgid "ENUM::DECISIONCADRE::passageep"
+msgstr "Passage en EP"

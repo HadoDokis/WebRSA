@@ -46,6 +46,14 @@
 						'url' => array( 'action' => 'premierelecture', '#Contratinsertion.id#' ),
  						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'premierelecture' ), $disabledLinks['Histoschoixcers93::premierelecture'] )
 					),
+					'Histoschoixcers93::secondelecture' => array(
+						'url' => array( 'action' => 'secondelecture', '#Contratinsertion.id#' ),
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'secondelecture' ), $disabledLinks['Histoschoixcers93::secondelecture'] )
+					),
+					'Histoschoixcers93::aviscadre' => array(
+						'url' => array( 'action' => 'aviscadre', '#Contratinsertion.id#' ),
+ 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'aviscadre' ), $disabledLinks['Histoschoixcers93::aviscadre'] )
+					),
 					'Contratsinsertion::impression' => array( 'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ) ),
 					'Contratsinsertion::filelink' => array( 'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' ) )
 				),
