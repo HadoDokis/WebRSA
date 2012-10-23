@@ -155,3 +155,27 @@ msgstr "Nature du contrat"
 
 msgid "Cer93.dureecdd"
 msgstr "Durée CDD"
+
+msgid "Cer93.duree"
+msgstr "Durée d'engagement"
+
+msgid "Cer93.pointparcours"
+msgstr "Je reprends contact avec mon référent pour faire un point sur mon parcours"
+
+msgid "ENUM::DUREE::3"
+msgstr "3 mois"
+
+msgid "ENUM::DUREE::6"
+msgstr "6 mois"
+
+msgid "ENUM::DUREE::9"
+msgstr "9 mois"
+
+msgid "ENUM::DUREE::12"
+msgstr "12 mois"
+
+msgid "ENUM::DUREE::18"
+msgstr "18 mois"
+
+msgid "ENUM::DUREE::24"
+msgstr "24 mois"
