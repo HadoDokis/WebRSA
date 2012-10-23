@@ -438,34 +438,44 @@
 		}
 
 		/**
-		 * FIXME: mettre en cache + doc
+		 * Retourne la liste des options venant de EnumerableBehavior, ainsi que
+		 * des champs possédant la règle de validation inList.
 		 *
 		 * @return array
 		 */
 		public function enums() {
-			// Dans enumerable ?
-			if( $this->Behaviors->attached( 'Enumerable' ) ) {
-				$options = $this->Behaviors->Enumerable->enums( $this );
-			}
-			else {
-				$options = array();
-			}
+			$cacheKey = $this->useDbConfig.'_'.__CLASS__.'_enums_'.$this->alias;
+			$options = Cache::read( $cacheKey );
 
-			// D'autres champs avec la règle inList ?
-			foreach( $this->validate as $field => $validate ) {
-				foreach( $validate as $ruleName => $rule ) {
-					if( ( $ruleName == 'inList' ) && !isset( $options[$this->alias][$field] ) ) {
-						$fieldNameUpper = strtoupper( $field );
-						$tmp = $rule['rule'][1];
-						$list = array();
+			if( $options === false ) {
+				// Dans enumerable ?
+				if( $this->Behaviors->attached( 'Enumerable' ) ) {
+					$options = $this->Behaviors->Enumerable->enums( $this );
+				}
+				else {
+					$options = array();
+				}
 
-						foreach( $tmp as $value ) {
-							$list[$value] = "ENUM::{$fieldNameUpper}::{$value}";
+				// D'autres champs avec la règle inList ?
+				$domain = Inflector::underscore( $this->alias );
+				foreach( $this->validate as $field => $validate ) {
+					foreach( $validate as $ruleName => $rule ) {
+						if( ( $ruleName === 'inList' ) && !isset( $options[$this->alias][$field] ) ) {
+							$fieldNameUpper = strtoupper( $field );
+
+							$tmp = $rule['rule'][1];
+							$list = array();
+
+							foreach( $tmp as $value ) {
+								$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
+							}
+
+							$options[$this->alias][$field] = $list;
 						}
-
-						$options[$this->alias][$field] = $list;
 					}
 				}
+
+				Cache::write( $cacheKey, $options );
 			}
 
 			return $options;
