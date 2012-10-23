@@ -128,3 +128,30 @@ msgstr "Statut CER"
 
 msgid "Cer93.formeci"
 msgstr "Forme du CER"
+
+msgid "Cer93.autresexps"
+msgstr "Autres expériences, savoirs, connaissances"
+
+msgid "Cer93.isemploitrouv"
+msgstr "Avez-vous trouvé un emploi ?"
+
+msgid "ENUM::ISEMPLOITROUV::N"
+msgstr "Non"
+
+msgid "ENUM::ISEMPLOITROUV::O"
+msgstr "Oui"
+
+msgid "Cer93.secteuracti_id"
+msgstr "Secteur d'activité"
+
+msgid "Cer93.metierexerce_id"
+msgstr "Métier exercé"
+
+msgid "Cer93.dureehebdo"
+msgstr "Durée hebdomadaire"
+
+msgid "Cer93.naturecontrat_id"
+msgstr "Nature du contrat"
+
+msgid "Cer93.dureecdd"
+msgstr "Durée CDD"

@@ -342,7 +342,9 @@ function observeDisableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisib
 
 //*****************************************************************************
 
-function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
+function disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
 	if( ( typeof value ) != 'object' ) {
 		value = [ value ];
 	}
@@ -367,6 +369,10 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 					input.addClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
 					input.addClassName( 'disabled' );
+				
+				if( toggleVisibility ) {
+					input.hide();
+				}
 			}
 			else {
    				field.enable();
@@ -375,18 +381,24 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition ) {
 					input.removeClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
 					input.removeClassName( 'disabled' );
+
+				if( toggleVisibility ) {
+					input.show();
+				}
 			}
 		}
 	} );
 }
 //----------------------------------------------------------------------------
 
-function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition ) {
-	disableFieldsOnValue( selectId, fieldsIds, value, condition );
+function observeDisableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility ) {
+	toggleVisibility = typeof(toggleVisibility) != 'undefined' ? toggleVisibility : false;
+
+	disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility );
 
 	var select = $( selectId );
 	$( select ).observe( 'change', function( event ) {
-		disableFieldsOnValue( selectId, fieldsIds, value, condition );
+		disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisibility );
 	} );
 }
 

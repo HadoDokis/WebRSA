@@ -49,7 +49,7 @@
 <?php
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
-	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ) ) );
+	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion' ) );
 //FIXME
 // 	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br/>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
 // 	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => false ) );
@@ -314,6 +314,53 @@
 			</tbody>
 		</table>
 	</fieldset>
+	<?php
+		echo $this->Xform->inputs(
+			array(
+				'fieldset' => false,
+				'legend' => false,
+				'Cer93.autresexps' => array( 'domain' => 'cer93', 'type' => 'textarea' ),
+				'Cer93.isemploitrouv' => array( 'legend' => __d( 'cer93', 'Cer93.isemploitrouv' ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['isemploitrouv'] )
+			)
+		);
+	?>
+	<fieldset id="emploitrouv" class="noborder">
+	<?php
+		echo $this->Xform->inputs(
+			array(
+				'fieldset' => 'Emploi trouvé',
+				'legend' => 'Si oui, veuillez préciser :',
+				'Cer93.secteuracti_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ),
+				'Cer93.metierexerce_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ),
+				'Cer93.dureehebdo' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['dureehebdo'], 'empty' => true),
+				'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true )
+			)
+		);
+		
+		echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'] ) );
+	?>
+	</fieldset>
+	<script type="text/javascript">
+		document.observe( "dom:loaded", function() {
+			observeDisableFieldsetOnRadioValue(
+				'contratinsertion',
+				'data[Cer93][isemploitrouv]',
+				$( 'emploitrouv' ),
+				'O',
+				false,
+				true
+			);
+			<?php if( !empty( $naturecontratDuree ) ):?>
+				observeDisableFieldsOnValue(
+					'Cer93NaturecontratId',
+					[ 'Cer93Dureecdd' ],
+					[ '<?php echo implode( "', '", $naturecontratDuree ); ?>' ],
+					false,
+					true
+				);
+			<?php endif;?>
+		});
+	</script>
 </fieldset>
 <?php
 	echo $this->Xform->inputs(
@@ -339,6 +386,7 @@
 ?>
 </div>
 <div class="clearer"><hr /></div>
+
 
 <script type="text/javascript">
 	<!--//--><![CDATA[//><!--

@@ -65,7 +65,8 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'webrsa',
 		'password' => 'webrsa',
-		'database' => 'cg93_20120116_v22',
+// 		'database' => 'cg66_octobre2012',
+        'database' => 'cg93_ete2012',
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);

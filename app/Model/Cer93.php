@@ -55,6 +55,33 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'Metierexerce' => array(
+				'className' => 'Metierexerce',
+				'foreignKey' => 'metierexerce_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Secteuracti' => array(
+				'className' => 'Secteuracti',
+				'foreignKey' => 'secteuracti_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Naturecontrat' => array(
+				'className' => 'Naturecontrat',
+				'foreignKey' => 'naturecontrat_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 		);
 		/**
 		 * Liaisons "hasMany" avec d'autres modèles.
@@ -116,6 +143,7 @@
 			),
 		);
 
+
 		/**
 		 * 	Fonction permettant la sauvegarde du formulaire du CER 93.
 		 *
@@ -141,6 +169,15 @@
 				}
 			}
 
+			// On passe les champs du fieldset emploi trouvé si l'allocataire déclare
+			// ne pas avoir trouvé d'emploi
+			if( $data['Cer93']['isemploitrouv'] == 'N' ) {			
+				$fields = array( 'secteuracti_id', 'metierexerce_id', 'dureehebdo', 'naturecontrat_id', 'dureecdd' );
+				foreach( $fields as $field ) {
+					$data['Cer93'][$field] = null;
+				}
+			}
+			
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;

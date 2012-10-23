@@ -62,8 +62,6 @@
 		);
 
 		debug( $cers93 );
-
-		debug( $this->Session->read( 'Auth.Permissions' ) );
 	?>
 </div>
 <div class="clearer"><hr /></div>

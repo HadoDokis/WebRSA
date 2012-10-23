@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source du modèle Metierexerce.
+	 * Fichier source du modèle Naturecontrat.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,25 +9,18 @@
 	 */
 
 	/**
-	 * Classe Metierexerce.
+	 * Classe Naturecontrat.
 	 *
 	 * @package app.Model
 	 */
-	class Metierexerce extends AppModel
+	class Naturecontrat extends AppModel
 	{
 		/**
 		 * Nom.
 		 *
 		 * @var string
 		 */
-		public $name = 'Metierexerce';
-
-		/**
-		 * Tri par défaut
-		 *
-		 * @var array
-		 */
-		public $order = array( 'Metierexerce.name ASC' );
+		public $name = 'Naturecontrat';
 
 		/**
 		 * Récursivité.
@@ -44,6 +37,7 @@
 		public $actsAs = array(
 			'Validation.Autovalidate',
 			'Formattable',
+			'Enumerable'
 		);
 
 		/**
@@ -54,20 +48,7 @@
 		public $hasMany = array(
 			'Cer93' => array(
 				'className' => 'Cer93',
-				'foreignKey' => 'metierexerce_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Expprocer93' => array(
-				'className' => 'Expprocer93',
-				'foreignKey' => 'metierexerce_id',
+				'foreignKey' => 'naturecontrat_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',

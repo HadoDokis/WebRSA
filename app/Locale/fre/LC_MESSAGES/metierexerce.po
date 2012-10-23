@@ -24,6 +24,9 @@ msgstr "Métier exercé"
 msgid "Metiersexerces::index"
 msgstr "Table de paramétrage des métiers exercés"
 
+msgid "Metiersexerces::index::empty"
+msgstr "Aucun métier défini"
+
 msgid "Metiersexerces::add"
 msgstr "Ajouter un métier"
 

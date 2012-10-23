@@ -374,7 +374,8 @@
 		'secteuracti' => 'secteursactis',
 		'expprocer93' => 'expsproscers93',
 		'cohortecer93' => 'cohortescers93',
-		'histochoixcer93' => 'histoschoixcers93'
+		'histochoixcer93' => 'histoschoixcers93',
+		'naturecontrat' => 'naturescontrats'
 	);
 
 	/**
