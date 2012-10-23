@@ -74,6 +74,13 @@ CREATE TABLE cers93 (
 	positioncer				TYPE_POSITIONCER93 NOT NULL DEFAULT '00enregistre',
 	formeci					CHAR(1) DEFAULT NULL,
 	datesignature			DATE DEFAULT NULL,
+	autresexps				VARCHAR(250) DEFAULT NULL,
+	isemploitrouv			TYPE_NO DEFAULT NULL,
+	metierexerce_id			INTEGER REFERENCES metiersexerces(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	secteuracti_id			INTEGER REFERENCES secteursactis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	naturecontrat_id		INTEGER REFERENCES naturescontrats(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dureehebdo				INTEGER DEFAULT NULL,
+	dureecdd				VARCHAR(3) DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 
@@ -196,6 +203,17 @@ CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
 DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
 CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
 
+
+DROP TABLE IF EXISTS naturescontrats CASCADE;
+CREATE TABLE naturescontrats (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			VARCHAR(250) NOT NULL,
+	isduree			TYPE_BOOLEANNUMBER DEFAULT '0'
+);
+COMMENT ON TABLE naturescontrats IS 'Liste des natures de contrat paramétrable pour le CER93)';
+
+DROP INDEX IF EXISTS naturescontrats_name_idx;
+CREATE UNIQUE INDEX naturescontrats_name_idx ON naturescontrats( name );
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
 --
@@ -203,6 +221,21 @@ CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( c
 -- ALTER TABLE cers93 ALTER COLUMN positioncer SET DEFAULT 'enregistre'::TYPE_POSITIONCER93;
 -- SELECT add_missing_table_field ('public', 'cers93', 'formeci', 'CHAR(1)');
 -- SELECT add_missing_table_field ('public', 'cers93', 'datesignature', 'DATE');
+-- SELECT add_missing_table_field ('public', 'cers93', 'isemploitrouv', 'TYPE_NO');
+-- SELECT add_missing_table_field ('public', 'cers93', 'autresexps', 'VARCHAR(250)');
+
+
+-- SELECT add_missing_table_field('public', 'cers93', 'metierexerce_id', 'INTEGER' );
+-- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_metierexerce_id_fkey', 'metiersexerces', 'metierexerce_id', false );
+-- SELECT add_missing_table_field('public', 'cers93', 'secteuracti_id', 'INTEGER' );
+-- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_secteuracti_id_fkey', 'secteursactis', 'secteuracti_id', false );
+-- SELECT add_missing_table_field('public', 'cers93', 'naturecontrat_id', 'INTEGER' );
+-- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_naturecontrat_id_fkey', 'naturescontrats', 'naturecontrat_id', false );
+
+
+	-- SELECT add_missing_table_field ('public', 'cers93', 'dureehebdo', 'INTEGER');
+-- ALTER TABLE cers93 ALTER COLUMN dureehebdo SET DEFAULT '0'::TYPE_DUREEHEBDO;
+-- SELECT add_missing_table_field ('public', 'cers93', 'dureecdd', 'VARCHAR(3)');
 
 -- *****************************************************************************
 COMMIT;

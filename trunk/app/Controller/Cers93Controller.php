@@ -236,6 +236,16 @@
 				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ) );
 			}
 
+			$naturescontrats = $this->Cer93->Naturecontrat->find(
+				'all',
+				array(
+					'order' => array( 'Naturecontrat.name ASC' )
+				)
+			);
+			$naturecontratDuree = Set::extract( '/Naturecontrat[isduree=1]', $naturescontrats );
+			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
+			$this->set( 'naturecontratDuree', $naturecontratDuree );
+
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
@@ -263,7 +273,12 @@
 				),
 				'Dsp' => array(
 					'natlog' => ClassRegistry::init( 'Option' )->natlog()
-				)
+				),
+				'Naturecontrat' => array(
+					'naturecontrat_id' => Set::combine( $naturescontrats, '{n}.Naturecontrat.id', '{n}.Naturecontrat.name' )
+				),
+				'dureehebdo' => range('0', '39'),
+				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()
 			);
 			$options = array_merge( $this->Cer93->Contratinsertion->Personne->Dsp->enums(), $this->Cer93->enums(), $options );
 

@@ -23,6 +23,18 @@
 			);
 			echo $this->Xhtml->tableCells(
 				array(
+					h( 'Natures de contrat' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'naturescontrats', 'action' => 'index' ),
+						$this->Permissions->check( 'naturescontrats', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
+			echo $this->Xhtml->tableCells(
+				array(
 					h( 'Secteurs d\'activité' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',

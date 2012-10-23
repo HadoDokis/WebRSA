@@ -52,6 +52,19 @@
 		 * @var array
 		 */
 		public $hasMany = array(
+			'Cer93' => array(
+				'className' => 'Cer93',
+				'foreignKey' => 'secteuracti_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Expprocer93' => array(
 				'className' => 'Expprocer93',
 				'foreignKey' => 'secteuracti_id',

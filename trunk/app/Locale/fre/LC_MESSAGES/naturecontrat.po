@@ -18,23 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
-msgid "Secteuracti.name"
-msgstr "Secteur d'activité"
+msgid "Naturecontrat.name"
+msgstr "Nature de contrat"
 
-msgid "Secteursactis::index"
-msgstr "Table de paramétrage des secteurs d''activité"
+msgid "Naturescontrats::index"
+msgstr "Table de paramétrage des natures de contrat"
 
-msgid "Secteursactis::index::empty"
-msgstr "Aucun secteur défini"
+msgid "Naturecontrat::index::empty"
+msgstr "Aucune nature définie"
 
-msgid "Secteursactis::add"
-msgstr "Ajouter un secteur"
+msgid "Naturescontrats::add"
+msgstr "Ajouter une nature"
 
-msgid "Secteursactis::edit"
-msgstr "Modifier un secteur"
+msgid "Naturescontrats::edit"
+msgstr "Modifier une nature"
 
-msgid "Secteursactis::delete"
-msgstr "Supprimer un secteur"
+msgid "Naturescontrats::delete"
+msgstr "Supprimer une nature"
 
-msgid "Secteursactis::delete::confirm"
+msgid "Naturescontrats::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "Naturecontrat.isduree"
+msgstr "Une durée doit être définie pour cette nature "
