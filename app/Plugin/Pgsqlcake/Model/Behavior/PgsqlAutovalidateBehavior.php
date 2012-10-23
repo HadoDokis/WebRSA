@@ -27,7 +27,7 @@
 		 * @param Model $model
 		 */
 		protected function _readTableConstraints( Model $model ) {
-			$cacheKey = Inflector::underscore( __CLASS__ ).'_'.$model->useDbConfig.'_'.$model->alias;
+			$cacheKey = $this->methodCacheKey( $model, __CLASS__, __FUNCTION__ );
 			$this->_checkRules[$model->alias] = Cache::read( $cacheKey );
 
 			if( $this->_checkRules[$model->alias] === false ) {
