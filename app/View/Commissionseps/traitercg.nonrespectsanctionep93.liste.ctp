@@ -56,7 +56,7 @@ echo '<table id="Decisionnonrespectsanctionep93" class="tooltips"><thead>
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 				Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionnonrespectsanctionep93'][$indexDecision]['decision'], $options['Decisionnonrespectsanctionep93']['decision'] ),
 
-				$this->Form->input( "Decisionnonrespectsanctionep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
+				$this->Form->input( "Decisionnonrespectsanctionep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'type' => 'radio' ) ),
 				array(
 					$this->Form->input( "Decisionnonrespectsanctionep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false, 'empty' => true ) ),
 					array( 'id' => "Decisionnonrespectsanctionep93{$i}ColumnDecision", 'colspan' => 2, 'class' => ( !empty( $this->validationErrors['Decisionnonrespectsanctionep93'][$i]['decision'] ) ? 'error' : '' ) )

@@ -289,7 +289,7 @@
 					array(
 						'Decisiondossierpcg66.defautinsertion' => array( 'type' => 'hidden', 'value' => $decisiondossierpcg66_decision	 ),
 						'Decisiondossierpcg66.compofoyerpcg66_id' => array( 'type' => 'select', 'empty' => true, 'options' => $compofoyerpcg66 ),
-						'Decisiondossierpcg66.recidive' => array(  'type' => 'radio', 'empty' => true ),
+						'Decisiondossierpcg66.recidive' => array(  'type' => 'radio' ),
 						'Decisiondossierpcg66.phase' => array( 'type' => 'select', 'empty' => true )
 					),
 					array(

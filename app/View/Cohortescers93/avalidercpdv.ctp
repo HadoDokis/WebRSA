@@ -79,7 +79,7 @@
 
 			echo $pagination;
 		}
-		debug($cers93);
+
 	}
 ?>
 <?php if( isset( $cers93 ) && !empty( $cers93 ) ):?>
