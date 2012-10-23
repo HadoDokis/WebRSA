@@ -436,5 +436,39 @@
 
 			return parent::beforeSave( $options ) && $loaded;
 		}
+
+		/**
+		 * FIXME: mettre en cache + doc
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			// Dans enumerable ?
+			if( $this->Behaviors->attached( 'Enumerable' ) ) {
+				$options = $this->Behaviors->Enumerable->enums( $this );
+			}
+			else {
+				$options = array();
+			}
+
+			// D'autres champs avec la règle inList ?
+			foreach( $this->validate as $field => $validate ) {
+				foreach( $validate as $ruleName => $rule ) {
+					if( ( $ruleName == 'inList' ) && !isset( $options[$this->alias][$field] ) ) {
+						$fieldNameUpper = strtoupper( $field );
+						$tmp = $rule['rule'][1];
+						$list = array();
+
+						foreach( $tmp as $value ) {
+							$list[$value] = "ENUM::{$fieldNameUpper}::{$value}";
+						}
+
+						$options[$this->alias][$field] = $list;
+					}
+				}
+			}
+
+			return $options;
+		}
 	}
 ?>

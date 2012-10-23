@@ -35,9 +35,10 @@
 		 * @var array
 		 */
 		public $actsAs = array(
-			'Validation.Autovalidate',
+//			'Validation.Autovalidate',
 			'Enumerable',
 			'Formattable',
+			'Pgsqlcake.PgsqlAutovalidate',
 		);
 
 		/**
@@ -171,13 +172,13 @@
 
 			// On passe les champs du fieldset emploi trouvé si l'allocataire déclare
 			// ne pas avoir trouvé d'emploi
-			if( $data['Cer93']['isemploitrouv'] == 'N' ) {			
+			if( $data['Cer93']['isemploitrouv'] == 'N' ) {
 				$fields = array( 'secteuracti_id', 'metierexerce_id', 'dureehebdo', 'naturecontrat_id', 'dureecdd' );
 				foreach( $fields as $field ) {
 					$data['Cer93'][$field] = null;
 				}
 			}
-			
+
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
@@ -188,8 +189,8 @@
 
 			return $success;
 		}
-		
-		
+
+
 		public function prepareFormData( $personneId, $contratinsertion_id  ) {
 			// Donnée de la CAF stockée en base
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
@@ -401,7 +402,7 @@
 					$formData = Set::remove( $formData, $key );
 				}
 			}
-			
+
 			return $formData;
 		}
 	}
