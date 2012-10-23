@@ -23,6 +23,13 @@
 		public $name = 'Metierexerce';
 
 		/**
+		 * Tri par défaut
+		 *
+		 * @var array
+		 */
+		public $order = array( 'Metierexerce.name ASC' );
+
+		/**
 		 * Récursivité.
 		 *
 		 * @var integer

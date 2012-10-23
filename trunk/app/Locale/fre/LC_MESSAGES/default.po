@@ -592,3 +592,9 @@ msgstr "Envoi CG"
 
 msgid "Button::premierelecture"
 msgstr "Première lecture"
+
+msgid "Button::secondelecture"
+msgstr "Valider chargé de suivi"
+
+msgid "Button::aviscadre"
+msgstr "Valider cadre"

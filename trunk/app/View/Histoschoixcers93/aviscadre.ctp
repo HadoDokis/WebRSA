@@ -1,5 +1,5 @@
 <?php
-	$title_for_layout = '1ère lecture';
+	$title_for_layout = 'Avis cadre';
 	$this->set( 'title_for_layout', $title_for_layout );
 
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -26,7 +26,7 @@
 			'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
 			'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 			'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
-			'Histochoixcer93.prevalide' => array( 'type' => 'radio', 'options' => $options['Histochoixcer93']['prevalide'] ),
+			'Histochoixcer93.decisioncadre' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncadre'] ),
 			'Histochoixcer93.etape' => array( 'type' => 'hidden' )
 		)
 	);

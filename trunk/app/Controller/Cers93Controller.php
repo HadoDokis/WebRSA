@@ -163,6 +163,8 @@
 				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
 				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\', \'03attdecisioncg\' ) ) || ( \'%permission%\' == \'0\' )',
 				'Histoschoixcers93::premierelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\', \'04premierelecture\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::secondelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\', \'05secondelecture\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::aviscadre' => '!in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\', \'06attaviscadre\' ) ) || ( \'%permission%\' == \'0\' )',
 			);
 
 			$this->set( 'options', $options);
