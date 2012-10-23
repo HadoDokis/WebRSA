@@ -44,7 +44,7 @@
 			$options = Set::insert( $options, 'typevoie', $typevoie );
 
 			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->listOptions();
+			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 
@@ -628,17 +628,6 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->request->data = $bilanparcours66;
-
-					$referent = $this->{$this->modelClass}->Referent->find(
-						'first',
-						array(
-							'conditions'=>array(
-								'Referent.id' => $bilanparcours66['Bilanparcours66']['referent_id']
-							),
-							'contain'=>false
-						)
-					);
-					$this->request->data['Bilanparcours66']['referent_id'] = $bilanparcours66['Bilanparcours66']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
 				}
 				else {
 					$orientstruct = $this->Bilanparcours66->Orientstruct->find(
@@ -665,7 +654,9 @@
 						$this->request->data['Bilanparcours66']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
 						//ajout arnaud
 						$this->request->data['Bilanparcours66']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
-						$this->request->data['Bilanparcours66']['referent_id'] = $orientstruct['Structurereferente']['id'].'_'.$orientstruct['Referent']['id'];
+						if( !empty( $orientstruct['Orientstruct']['referent_id'] ) ) {
+							$this->request->data['Bilanparcours66']['referent_id'] = $orientstruct['Orientstruct']['referent_id'];
+						}
 					}
 				}
 
