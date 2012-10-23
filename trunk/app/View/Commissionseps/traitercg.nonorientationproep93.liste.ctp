@@ -53,7 +53,7 @@ echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 
 				$avisep,
 
-				$this->Form->input( "Decisionnonorientationproep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
+				$this->Form->input( "Decisionnonorientationproep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'type' => 'radio' ) ),
 
 				array(
 					$this->Form->input( "Decisionnonorientationproep93.{$i}.decision", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => $options['Decisionnonorientationproep93']['decision'] ) ),

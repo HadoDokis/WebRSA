@@ -68,7 +68,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 					)
 				),
 
-				$this->Form->input( "Decisionsignalementep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'empty' => true, 'type' => 'radio' ) ),
+				$this->Form->input( "Decisionsignalementep93.{$i}.decisionpcg", array( 'legend' => false, 'options' => @$options['Decisionreorientationep93']['decisionpcg'], 'type' => 'radio' ) ),
 				array(
 					$this->Form->input( "Decisionsignalementep93.{$i}.decision", array( 'type' => 'select', 'options' => $lineOptions, 'div' => false, 'label' => false, 'empty' => true ) ),
 					array( 'id' => "Decisionsignalementep93{$i}ColumnDecision", 'class' => ( !empty( $this->validationErrors['Decisionsignalementep93'][$i]['decision'] ) ? 'error' : '' ) )

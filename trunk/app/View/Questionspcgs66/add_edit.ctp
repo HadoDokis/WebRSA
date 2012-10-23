@@ -16,7 +16,7 @@
 			'Questionpcg66.id' => array( 'type'=>'hidden' ),
 			'Questionpcg66.defautinsertion' => array( 'required' => true, 'type' => 'select', 'empty' => true ),
 			'Questionpcg66.compofoyerpcg66_id' => array( 'required' => true, 'type' => 'select', 'empty' => true, 'options' => $options['Compofoyerpcg66'] ),
-			'Questionpcg66.recidive' => array( 'required' => true, 'type' => 'radio', 'empty' => true ),
+			'Questionpcg66.recidive' => array( 'required' => true, 'type' => 'radio' ),
 			'Questionpcg66.phase' => array( 'required' => true, 'type' => 'select', 'empty' => true ),
 			'Questionpcg66.decisionpcg66_id' => array( 'required' => true, 'type' => 'select', 'empty' => true, 'options' => $options['Decisionpcg66'] )
 		),
