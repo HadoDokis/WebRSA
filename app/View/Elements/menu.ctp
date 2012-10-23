@@ -609,17 +609,9 @@
 					</li>
 					<li>
 						<?php echo $this->Xhtml->link( '2. Saisie d\'un CER',  array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) );?>
-						<!--<ul>
-							<li><?php echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
-							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );?></li>
-						</ul>-->
 					</li>
 					<li>
-						<?php echo $this->Xhtml->link( '3. Validation CPDV', '#' );?>
-						<!-- <ul>
-							<li><?php /*echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
-							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );*/?></li>
-						</ul> -->
+						<?php echo $this->Xhtml->link( '3. Validation CPDV',  array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) );?>
 					</li>
 					<li>
 						<?php echo $this->Xhtml->link( '4. Décision CG', '#' );?>

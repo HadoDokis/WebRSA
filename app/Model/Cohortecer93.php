@@ -53,6 +53,9 @@
 			
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
+			
+			$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
+
 
 			$conditions = array(
 // 				'Contratinsertion.decision_ci' => 'E',
@@ -73,7 +76,8 @@
 						'Rendezvous.id IS NULL',
 						"Rendezvous.id IN ( {$sqDernierRdv} )"
 					)
-				)
+				),
+				$sqDerniereHistochoixcer93Etape
 			);
 			
 			// Choix du référent affecté ?
@@ -112,6 +116,38 @@
 			if( isset( $search['Cer93']['positioncer'] ) && !empty( $search['Cer93']['positioncer'] ) ) {
 				$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
 			}
+			
+			if( $statut == 'avalidercpdv' ) {
+				$conditions[] = array(
+					'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
+						array_words_replace(
+							array(
+								'fields' => array(
+									'Contratinsertion.id'
+								),
+								'alias' => 'contratsinsertion',
+								'conditions' => array(
+									'Contratinsertion.personne_id = Personne.id',
+									'Cer93.positioncer' => '02attdecisioncpdv',
+									'Histochoixcer93.etape' => '02attdecisioncpdv' 
+								),
+								'joins' => array(
+									$Personne->Contratinsertion->join( 'Cer93' ),
+									$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93' )
+								),
+								'order' => array( 'Contratinsertion.dd_ci DESC' ),
+								'limit' => 1
+							),
+							array(
+								'Contratinsertion' => 'contratsinsertion',
+								'Cer93' => 'cers93',
+								'Histochoixcer93' => 'histoschoixcers93',
+							)
+						)
+					).')'
+				);
+				
+			}
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -119,6 +155,7 @@
 					$Personne->Calculdroitrsa->fields(),
 					$Personne->Contratinsertion->fields(),
 					$Personne->Contratinsertion->Cer93->fields(),
+					$Personne->Contratinsertion->Cer93->Histochoixcer93->fields(),
 					$Personne->Orientstruct->fields(),
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
@@ -150,6 +187,7 @@
 					),
 					$Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'PersonneReferent', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Rendezvous', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
@@ -168,18 +206,42 @@
 			);
 
 			// Lorsqu'on recherche les référents affecté, on doit ajouter des champs et une jointure
-			if( $statut == 'saisie' ) {
-				$querydata['fields'] = Set::merge(
-					$querydata['fields'],
-					array(
-						'PersonneReferent.dddesignation',
-						$Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet', true )
-					)
-				);
-				$querydata['joins'][] = $Personne->PersonneReferent->join( 'Referent', array( 'type' => 'INNER' ) );
-			}
+			$querydata['fields'] = Set::merge(
+				$querydata['fields'],
+				array(
+					'PersonneReferent.dddesignation',
+					$Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet', true )
+				)
+			);
+			$querydata['joins'][] = $Personne->PersonneReferent->join( 'Referent', array( 'type' => 'INNER' ) );
 
 			return $querydata;
+		}
+		
+		
+		/**
+		 *	Fonction permettant de précharger le formulaire de cohorte avec les informations
+		 *	du dernier historique lié aux cers93 
+		 *	@param $datas
+		 *	@return array()
+		 */
+		public function prepareFormData( $datas, $etape, $user_id ) {
+			$formData = array();
+// debug($datas);
+
+			foreach( $datas as $index => $data ) {
+				$formData['Histochoixcer93'][$index] = array(
+					'cer93_id' => $data['Histochoixcer93']['cer93_id'],
+					'user_id' => $user_id,
+					'commentaire' => $data['Histochoixcer93']['commentaire'],
+					'formeci' => $data['Histochoixcer93']['formeci'],
+					'etape' => $etape,
+					'action' => 'En attente',
+					'dossier_id' => $data['Dossier']['id']
+				);
+			}
+			
+			return $formData;
 		}
 	}
 ?>

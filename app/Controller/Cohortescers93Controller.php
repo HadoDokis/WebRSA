@@ -112,6 +112,57 @@
 		protected function _index( $structurereferente_id ) {
 			if( !empty( $this->request->data ) ) {
 			
+					// Traitement du formulaire d'affectation
+				if( ( $this->action == 'avalidercpdv' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
+					$dossiers_ids = array_unique( Set::extract( '/Histochoixcer93/dossier_id', $this->request->data ) );
+					$this->Cohortes->get( $dossiers_ids );
+
+					// On change les règles de validation du modèle PersonneReferent avec celles qui sont spécfiques à la cohorte
+					$histochoixcer93Validate = $this->Contratinsertion->Cer93->Histochoixcer93->validate;
+
+					$datas = Set::extract( '/Histochoixcer93[action]', $this->request->data );
+					if( $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $datas, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+						$this->Contratinsertion->Cer93->Histochoixcer93->begin();
+
+						$datas = Set::extract( '/Histochoixcer93[action=Valider]', $this->request->data );
+
+						if( !empty( $datas ) ) {
+// 							debug($datas);
+// 							die();
+							foreach( $datas as $key => $data ) {
+								$saved = $this->Contratinsertion->Cer93->Histochoixcer93->saveDecision( $data );
+								
+								if( $saved ) {
+									$this->Contratinsertion->Cer93->Histochoixcer93->commit();
+									$this->Cohortes->release( $dossiers_ids );
+									$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+									unset( $this->request->data['Histochoixcer93'] );	
+								}
+								else {
+									$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
+									$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+								}
+							}
+						}
+						else {
+							$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
+
+							if( empty( $datas ) ) {
+								$this->Session->setFlash( 'Aucun élément à enregistrer', 'flash/notice' );
+							}
+							else {
+								$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+							}
+						}
+					}
+					else {
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
+
+					$this->Contratinsertion->Cer93->Histochoixcer93->validate = $histochoixcer93Validate;
+				}
+				
+		
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortecer93->search(
 					$this->action,
@@ -129,19 +180,33 @@
 					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 				$this->set( 'cers93', $cers93 );
+
+				if( $this->action == 'avalidercpdv' ) {
+					$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $cers93 ) ) );
+
+					// Par défaut, on récupère les informations déjà saisies en individuel
+					if( !isset( $this->request->data['Histochoixcer93'] ) ) {
+						$datas = $this->Cohortecer93->prepareFormData( $cers93, '03attdecisioncg', $this->Session->read( 'Auth.User.id' ) );
+						$this->request->data['Histochoixcer93'] = $datas['Histochoixcer93'];
+					}
+				}
 			}
+			
+
 
 			$this->set( 'structurereferente_id', $structurereferente_id );
 
 			// Options
 			$options = array(
+				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
-				'rolepers' => $this->Option->rolepers()
+				'rolepers' => $this->Option->rolepers(),
+				'formeci' => $this->Option->forme_ci()
 			);
 			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );
@@ -150,7 +215,7 @@
 				$this->render( 'saisie' );
 			}
 			else {
-				$this->render( 'visualisation' );
+				$this->render( 'avalidercpdv' );
 			}
 		}
 		
