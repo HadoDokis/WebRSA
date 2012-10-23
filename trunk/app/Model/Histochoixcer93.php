@@ -112,8 +112,6 @@
 				$formData = array( 'Histochoixcer93' => $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1] );
 			}
 
-			debug( $formData );
-
 			return $formData;
 		}
 
@@ -151,6 +149,24 @@
 			}
 
 			return $success;
+		}
+		
+		/**
+		 * Retourne une sous-requête permettant de connaître le dernier historique pour un
+		 * CER93 donné
+		 *
+		 * @param string $field Le champ Cer93.id sur lequel faire la sous-requête
+		 * @return string
+		 */
+		public function sqDernier( $field ) {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$table = $dbo->fullTableName( $this, false );
+			return "SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.cer93_id = ".$field."
+					ORDER BY {$table}.modified DESC
+					LIMIT 1";
 		}
 	}
 ?>

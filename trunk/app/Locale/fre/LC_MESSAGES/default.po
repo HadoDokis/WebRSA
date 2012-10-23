@@ -590,5 +590,5 @@ msgstr "Envoi CPDV"
 msgid "Button::attdecisioncg"
 msgstr "Envoi CG"
 
-msgid "Button::lecture"
+msgid "Button::premierelecture"
 msgstr "Première lecture"

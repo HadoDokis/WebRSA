@@ -58,7 +58,7 @@
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['Dossier']['id'] ) ).
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.actioncandidat_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['actioncandidat_id'] ) ).
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.referent_id', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['referent_id'] ) ).
-						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'legend' => false, 'separator' => '<br />', 'empty' => true, 'type' => 'radio', 'options' => $options['bilanvenu'], 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ),
+						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.bilanvenu', array( 'label' => false, 'legend' => false, 'separator' => '<br />', /*'empty' => true,*/ 'type' => 'radio', 'options' => $options['bilanvenu'], 'value' => $ficheenattente['ActioncandidatPersonne']['bilanvenu'] ) ),
 
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.bilanretenu', array( 'label' => false, 'legend' => false, 'separator' => '<br />','type' => 'radio', 'value' => $ficheenattente['ActioncandidatPersonne']['bilanretenu'], 'options' =>  $options['bilanretenu'] ) ),
 

@@ -102,16 +102,16 @@ msgstr "En attente de décision CPDV"
 msgid "ENUM::POSITIONCER::03attdecisioncg"
 msgstr "En attente de décision CG"
 
-msgid "ENUM::POSITIONCER::04arelire"
-msgstr "A relire"
+msgid "ENUM::POSITIONCER::04premierelecture"
+msgstr "Première lecture"
  
-msgid "ENUM::POSITIONCER::04prevalide"
-msgstr "Pré-validé"
+msgid "ENUM::POSITIONCER::05secondelecture"
+msgstr "Seconde lecture"
 
-msgid "ENUM::POSITIONCER::05attaviscadre"
+msgid "ENUM::POSITIONCER::06attaviscadre"
 msgstr "En attente avis cadre"
 
-msgid "ENUM::POSITIONCER::05attavisep"
+msgid "ENUM::POSITIONCER::07attavisep"
 msgstr "En attente passage EP"
 
 msgid "ENUM::POSITIONCER::99rejete"
