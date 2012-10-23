@@ -32,6 +32,51 @@ CREATE INDEX users_referent_id_idx ON users( referent_id );
 -------------------------------------------------------------------------------------
 -- 20121003: nouveau CER pour le CG 93
 -------------------------------------------------------------------------------------
+-- Règle de validation inList pour des entiers
+CREATE OR REPLACE FUNCTION cakephp_validate_in_list( integer, integer[] ) RETURNS boolean AS
+$$
+	SELECT $1 IS NULL OR ( ARRAY[CAST($1 AS TEXT)] <@ CAST($2 AS TEXT[]) );
+$$
+LANGUAGE sql IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_in_list( integer, integer[] ) IS
+	'@see http://api.cakephp.org/class/validation#method-ValidationinList';
+
+-------------------------------------------------------------------------------------
+
+-- tables liées au cers93
+DROP TABLE IF EXISTS naturescontrats CASCADE;
+CREATE TABLE naturescontrats (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			VARCHAR(250) NOT NULL,
+	isduree			TYPE_BOOLEANNUMBER DEFAULT '0'
+);
+COMMENT ON TABLE naturescontrats IS 'Liste des natures de contrat paramétrable pour le CER93)';
+DROP INDEX IF EXISTS naturescontrats_name_idx;
+CREATE UNIQUE INDEX naturescontrats_name_idx ON naturescontrats( name );
+
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS metiersexerces CASCADE;
+CREATE TABLE metiersexerces (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			TEXT
+);
+COMMENT ON TABLE metiersexerces IS 'Métiers exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+DROP INDEX IF EXISTS metiersexerces_name_idx;
+CREATE UNIQUE INDEX metiersexerces_name_idx ON metiersexerces( name );
+
+-------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS secteursactis CASCADE;
+CREATE TABLE secteursactis (
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			TEXT
+);
+COMMENT ON TABLE secteursactis IS 'Secteurs d''activités exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+DROP INDEX IF EXISTS secteursactis_name_idx;
+CREATE UNIQUE INDEX secteursactis_name_idx ON secteursactis( name );
+
+-------------------------------------------------------------------------------------
 
 -- Tables devenues obsolètes au cours des développements
 DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
@@ -67,7 +112,6 @@ CREATE TABLE cers93 (
 	cmuc					TYPE_CMU DEFAULT NULL,
 	-- Bloc 4: formation et expérience
 	nivetu					TYPE_NIVETU DEFAULT NULL,
-	-- FIXME: numdemrsa, rolepers, identifiantpe
 	numdemrsa				VARCHAR(11) DEFAULT NULL,
 	rolepers				CHAR(3) DEFAULT NULL,
 	identifiantpe			VARCHAR(11) DEFAULT NULL,
@@ -81,6 +125,9 @@ CREATE TABLE cers93 (
 	naturecontrat_id		INTEGER REFERENCES naturescontrats(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	dureehebdo				INTEGER DEFAULT NULL,
 	dureecdd				VARCHAR(3) DEFAULT NULL,
+	bilancerpcd				TEXT DEFAULT NULL,
+	duree					INTEGER DEFAULT NULL,
+	pointparcours			VARCHAR(25) DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 
@@ -90,8 +137,8 @@ COMMENT ON TABLE cers93 IS 'Données du CER spécifiques au CG 93';
 DROP INDEX IF EXISTS cers93_contratinsertion_id_idx;
 CREATE UNIQUE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
 
--- ALTER TABLE modelestypescourrierspcgs66 ALTER COLUMN ismontant SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
--- UPDATE modelestypescourrierspcgs66 SET ismontant = '0'::TYPE_BOOLEANNUMBER WHERE ismontant IS NULL;
+ALTER TABLE cers93 ADD CONSTRAINT cers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12, 18, 24] ) );
+
 
 -------------------------------------------------------------------------------------
 
@@ -126,31 +173,6 @@ COMMENT ON TABLE diplomescers93 IS 'Diplômes obtenus pour le CER 93 (bloc 4, fo
 
 DROP INDEX IF EXISTS diplomescers93_cer93_id_idx;
 CREATE INDEX diplomescers93_cer93_id_idx ON diplomescers93( cer93_id );
-
-
--------------------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS metiersexerces CASCADE;
-CREATE TABLE metiersexerces (
-	id				SERIAL NOT NULL PRIMARY KEY,
-	name			TEXT
-);
-COMMENT ON TABLE metiersexerces IS 'Métiers exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
-
-DROP INDEX IF EXISTS metiersexerces_name_idx;
-CREATE UNIQUE INDEX metiersexerces_name_idx ON metiersexerces( name );
-
--------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS secteursactis CASCADE;
-CREATE TABLE secteursactis (
-	id				SERIAL NOT NULL PRIMARY KEY,
-	name			TEXT
-);
-COMMENT ON TABLE secteursactis IS 'Secteurs d''activités exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
-
-DROP INDEX IF EXISTS secteursactis_name_idx;
-CREATE UNIQUE INDEX secteursactis_name_idx ON secteursactis( name );
-
 
 -------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS expsproscers93 CASCADE;
@@ -203,17 +225,6 @@ CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
 DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
 CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
 
-
-DROP TABLE IF EXISTS naturescontrats CASCADE;
-CREATE TABLE naturescontrats (
-	id				SERIAL NOT NULL PRIMARY KEY,
-	name			VARCHAR(250) NOT NULL,
-	isduree			TYPE_BOOLEANNUMBER DEFAULT '0'
-);
-COMMENT ON TABLE naturescontrats IS 'Liste des natures de contrat paramétrable pour le CER93)';
-
-DROP INDEX IF EXISTS naturescontrats_name_idx;
-CREATE UNIQUE INDEX naturescontrats_name_idx ON naturescontrats( name );
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
 --
@@ -236,6 +247,9 @@ CREATE UNIQUE INDEX naturescontrats_name_idx ON naturescontrats( name );
 	-- SELECT add_missing_table_field ('public', 'cers93', 'dureehebdo', 'INTEGER');
 -- ALTER TABLE cers93 ALTER COLUMN dureehebdo SET DEFAULT '0'::TYPE_DUREEHEBDO;
 -- SELECT add_missing_table_field ('public', 'cers93', 'dureecdd', 'VARCHAR(3)');
+-- SELECT add_missing_table_field ('public', 'cers93', 'bilancerpcd', 'TEXT');
+-- SELECT add_missing_table_field ('public', 'cers93', 'duree', 'INTEGER');
+-- SELECT add_missing_table_field ('public', 'cers93', 'pointparcours', 'VARCHAR(25)');
 
 -- *****************************************************************************
 COMMIT;
