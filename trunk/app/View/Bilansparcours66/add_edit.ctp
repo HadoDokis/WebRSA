@@ -1473,7 +1473,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 	function checkMemeReorientation( structurereferenteId, typeorientId, contractualisationFieldset, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
 		if ( ( $F( structurereferenteId ) != '' || $F( typeorientId ) != '' ) && $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
-			<?php if ( $this->action == 'edit' && $this->request->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
+			<?php if ( $this->action == 'edit' && @$this->request->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
 				var typeorient_id = '<?php echo @$this->request->data['Orientstruct']['typeorient_id'] ?>';
 				var structurereferente_id = '<?php echo @$this->request->data['Orientstruct']['structurereferente_id'] ?>';
 			<?php } elseif ( $this->action == 'edit' ) { ?>
@@ -1534,7 +1534,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
  	function checkMemeReorientationSansContractualisation( structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
 //		if ( ( $F( structurereferenteId ) != '' || $F( typeorientId ) != '' ) && $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
         if( ( formRadioValue( 'Bilan', 'data[Bilanparcours66][proposition]' ) == 'parcours' ) || ( formRadioValue( 'Bilan', 'data[Pe][Bilanparcours66][proposition]' ) == 'parcourspe' ) )  {
-			<?php if ( $this->action == 'edit' && $this->request->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
+			<?php if ( $this->action == 'edit' && @$this->request->data['Bilanparcours66']['changementref'] == 'O' ) { ?>
 				var typeorient_id = '<?php echo @$this->request->data['Orientstruct']['typeorient_id'] ?>';
 				var structurereferente_id = '<?php echo @$this->request->data['Orientstruct']['structurereferente_id'] ?>';
 			<?php } elseif ( $this->action == 'edit' ) { ?>
