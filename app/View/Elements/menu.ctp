@@ -596,10 +596,12 @@
 			<!-- Fin du Nouveau menu pour les Equipes pluridisciplinaires -->
 
 			<!-- Début workflow CER 93 -->
-			<?php if( Configure::read( 'Cg.departement' ) == 93 && ( $this->Permissions->check( 'cohortesreferents93', 'affecter' ) || $this->Permissions->check( 'cohortesreferents93', 'affectes' ) ) ) :?>
+			<?php if( Configure::read( 'Cg.departement' ) == 93 && ( $this->Permissions->check( 'cohortesreferents93', 'affecter' ) || $this->Permissions->check( 'cohortesreferents93', 'affectes' ) || $this->Permissions->check( 'cohortescers93', 'saisie' ) || $this->Permissions->check( 'cohortescers93', 'avalidercpdv' ) || $this->Permissions->check( 'cohortescers93', 'premierelecture' ) || $this->Permissions->check( 'cohortescers93', 'validationcs' ) || $this->Permissions->check( 'cohortescers93', 'validationcadre' ) || $this->Permissions->check( 'cohortescers93', 'visualisation' ) ) ) :?>
+			
 			<li id="menu4one">
 				<?php echo $this->Xhtml->link( 'CER', '#' );?>
 				<ul>
+					<?php if( $this->Permissions->check( 'cohortesreferents93', 'affecter' ) || $this->Permissions->check( 'cohortesreferents93', 'affectes' ) ):?>
 					<li>
 						<?php echo $this->Xhtml->link( '1. Affectation d\'un référent', '#' );?>
 						<ul>
@@ -607,27 +609,35 @@
 							<li><?php echo $this->Xhtml->link( 'Référents déjà affectés',  array( 'controller' => 'cohortesreferents93', 'action' => 'affectes'  ) );?></li>
 						</ul>
 					</li>
+					<?php endif;?>
+					<?php if( $this->Permissions->check( 'cohortescers93', 'saisie' ) ):?>
 					<li>
 						<?php echo $this->Xhtml->link( '2. Saisie d\'un CER',  array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) );?>
 					</li>
+					<?php endif;?>
+					<?php if( $this->Permissions->check( 'cohortescers93', 'avalidercpdv' ) ):?>
 					<li>
 						<?php echo $this->Xhtml->link( '3. Validation CPDV',  array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) );?>
 					</li>
+					<?php endif;?>
+					<?php if( $this->Permissions->check( 'cohortescers93', 'premierelecture' ) || $this->Permissions->check( 'cohortescers93', 'validationcs' ) || $this->Permissions->check( 'cohortescers93', 'validationcadre' ) ):?>
 					<li>
 						<?php echo $this->Xhtml->link( '4. Décision CG', '#' );?>
 						<ul>
-							<li><?php echo $this->Xhtml->link( '4.1 Première lecture',  array( 'controller' => 'cohortescers93', 'action' => 'premierelecture'  ) );?></li>
-							<li><?php echo $this->Xhtml->link( '4.2 Validation CS',  array( 'controller' => 'cohortescers93', 'action' => 'validationcs'  ) );?></li>
-							<li><?php echo $this->Xhtml->link( '4.3 Validation Cadre',  array( 'controller' => 'cohortescers93', 'action' => 'validationcadre'  ) );?></li>
+							<?php if( $this->Permissions->check( 'cohortescers93', 'premierelecture' ) ):?>
+							<li><?php echo $this->Xhtml->link( '4.1 Première lecture',  array( 'controller' => 'cohortescers93', 'action' => 'premierelecture'  ) );?></li><?php endif;?>
+							<?php if( $this->Permissions->check( 'cohortescers93', 'validationcs' ) ):?>
+							<li><?php echo $this->Xhtml->link( '4.2 Validation CS',  array( 'controller' => 'cohortescers93', 'action' => 'validationcs'  ) );?></li><?php endif;?>
+							<?php if( $this->Permissions->check( 'cohortescers93', 'validationcadre' ) ):?>
+							<li><?php echo $this->Xhtml->link( '4.3 Validation Cadre',  array( 'controller' => 'cohortescers93', 'action' => 'validationcadre'  ) );?></li><?php endif;?>
 						</ul>
 					</li>
+					<?php endif;?>
+					<?php if( $this->Permissions->check( 'cohortescers93', 'visualisation' ) ):?>
 					<li>
-						<?php echo $this->Xhtml->link( '5. Tableau de suivi', '#' );?>
-						<!-- <ul>
-							<li><?php /*echo $this->Xhtml->link( 'CERs à signer',  array( 'controller' => 'cohortescers93', 'action' => 'asigner'  ) );?></li>
-							<li><?php echo $this->Xhtml->link( 'CERs déjà signés',  array( 'controller' => 'cohortescers93', 'action' => 'signes'  ) );*/?></li>
-						</ul> -->
+						<?php echo $this->Xhtml->link( '5. Tableau de suivi',  array( 'controller' => 'cohortescers93', 'action' => 'visualisation'  ) );?>
 					</li>
+					<?php endif;?>
 				</ul>
 			</li>
 			<?php endif;?>

@@ -79,13 +79,12 @@
 		public $uses = array( 'Cohortecer93', 'Contratinsertion', 'Option' );
 
 		/**
-		 * Cohorte d'affectation des référents au sein d'une structure référente (PDV).
-		 * La date de début d'affectation est la date du jour.
+		 * Cohorte des CERs au sein d'une structure référente (PDV).
 		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
 		 *
 		 * @return void
 		 */
-		public function saisie() {
+		 protected function _affichage() {
 			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 			if( empty( $structurereferente_id ) ) {
 				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
@@ -93,6 +92,26 @@
 			}
 
 			$this->_index( $structurereferente_id );
+		}
+		
+		/**
+		 * ....
+		 * Fonction pour la saisie des CERs (avant entré dans la partie validation/décision
+		 *
+		 * @return void
+		 */
+		public function saisie() {
+			$this->_affichage();
+		}
+		
+		/**
+		 * ....
+		 * Fonction pour la visualisation des CERs (après gestion par le workflow)
+		 *
+		 * @return void
+		 */
+		public function visualisation() {
+			$this->_affichage();
 		}
 
 		/**
@@ -112,6 +131,26 @@
 		 * @return void
 		 */
 		public function premierelecture() {
+			$this->_validations();
+		}
+		
+		/**
+		 * ....
+		 * Fonction pour la validation CS, seconde lecture
+		 *
+		 * @return void
+		 */
+		public function validationcs() {
+			$this->_validations();
+		}
+		
+		/**
+		 * ....
+		 * Fonction pour la validation cadre
+		 *
+		 * @return void
+		 */
+		public function validationcadre() {
 			$this->_validations();
 		}
 		
@@ -214,7 +253,7 @@
 				);
 				$this->set( 'cers93', $cers93 );
 
-				if( $this->action != 'saisie' ) {
+				if( !in_array( $this->action, array( 'saisie', 'visualisation' ) ) ) {
 					$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $cers93 ) ) );
 
 					// Par défaut, on récupère les informations déjà saisies en individuel
@@ -225,8 +264,16 @@
 						else if( $this->action == 'premierelecture' ) {
 							$etape = '04premierelecture';
 						}
+						else if( $this->action == 'validationcs' ) {
+							$etape = '05secondelecture';
+						}
+						else if( $this->action == 'validationcadre' ) {
+							$etape = '06attaviscadre';
+						}
 						$datas = $this->Cohortecer93->prepareFormData( $cers93, $etape, $this->Session->read( 'Auth.User.id' ) );
-						$this->request->data['Histochoixcer93'] = $datas['Histochoixcer93'];
+						if( !empty( $datas ) ) {
+							$this->request->data['Histochoixcer93'] = $datas['Histochoixcer93'];
+						}
 					}
 				}
 			}
@@ -259,6 +306,9 @@
 			}
 			else if( $this->action == 'premierelecture' ) {
 				$this->render( 'premierelecture' );
+			}
+			else if( $this->action == 'visualisation' ) {
+				$this->render( 'visualisation' );
 			}
 		}
 		

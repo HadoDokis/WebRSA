@@ -145,7 +145,10 @@
 		 */
 		public function saveDecision( $data ) {
 			$success = $this->save( $data );
-
+			
+			// Parfois le champ datechoix vient du formulaire parfois c'est un champ caché
+			$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );
+				
 			if( $data['Histochoixcer93']['etape'] == '03attdecisioncg' && $data['Histochoixcer93']['isrejet'] ) {
 				$success = $this->Cer93->updateAll(
 					array( 'Cer93.positioncer' => '\'99rejete\'' ),
@@ -155,8 +158,6 @@
 				$this->Cer93->id = $data['Histochoixcer93']['cer93_id'];
 				$contratinsertion_id = $this->Cer93->field( 'contratinsertion_id' );
 
-				// Parfois le champ datechoix vient du formulaire parfois c'est un champ caché
-				$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );
 				$success = $this->Cer93->Contratinsertion->updateAll(
 					array(
 						'Contratinsertion.decision_ci' => '\'R\'',
@@ -185,8 +186,8 @@
 					$success = $this->Cer93->Contratinsertion->updateAll(
 						array(
 							'Contratinsertion.decision_ci' => '\'V\'',
-							'Contratinsertion.datevalidation_ci' => '\''.date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ).'\'',
-							'Contratinsertion.datedecision' => '\''.date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ).'\''
+							'Contratinsertion.datevalidation_ci' => '\''.$datechoix.'\'',
+							'Contratinsertion.datedecision' => '\''.$datechoix.'\''
 						),
 						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
@@ -258,11 +259,11 @@
 
 					$fields = array(
 						'Contratinsertion.decision_ci' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? 'V' : 'R' ).'\'',
-						'Contratinsertion.datedecision' => '\''.date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ).'\''
+						'Contratinsertion.datedecision' => '\''.$datechoix.'\''
 					);
 
 					if( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) {
-						$fields['Contratinsertion.datevalidation_ci'] = '\''.date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ).'\'';
+						$fields['Contratinsertion.datevalidation_ci'] = '\''.$datechoix.'\'';
 					}
 
 					$success = $this->Cer93->Contratinsertion->updateAll(
