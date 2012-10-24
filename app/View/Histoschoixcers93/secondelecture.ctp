@@ -12,7 +12,7 @@
 <?php
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
-	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
+	echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
 	// FIXME: affichage du CER et des étapes précédentes de l'historique
 
@@ -43,4 +43,15 @@
 	echo $this->Xform->end();
 ?>
 </div>
+<script type="text/javascript">
+	observeFilterSelectOptionsFromRadioValue(
+		'FormHistochoixcer93',
+		'data[Histochoixcer93][formeci]',
+		'Histochoixcer93Decisioncs',
+		{
+			'S': ['valide', 'aviscadre'],
+			'C': ['aviscadre', 'passageep']
+		}
+	);
+</script>
 <div class="clearer"><hr /></div>

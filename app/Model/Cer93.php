@@ -36,7 +36,7 @@
 		 */
 		public $actsAs = array(
 //			'Validation.Autovalidate',
-			'Enumerable',
+//			'Enumerable',
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate',
 		);
@@ -187,7 +187,7 @@
 					$data['Cer93'][$field] = null;
 				}
 			}
-			
+
 			// On passe le champ date de point de aprcours à null au cas où l'allocataire
 			// décide finalement de faire le point à la find e son contrat
 			if( $data['Cer93']['pointparcours'] == 'alafin' ) {
@@ -401,7 +401,7 @@
 			$formData = Set::merge( Set::merge( $dataCaf, $dataPcdCer ), $dataActuelCer );
 
 			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
-			
+
 			//Données de l'utilsiateur connecté
 			$user = $this->User->find(
 				'first',
