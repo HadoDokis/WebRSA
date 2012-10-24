@@ -270,7 +270,7 @@
 									$this->Xform->input( "Diplomecer93.{$index}.id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Diplomecer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Diplomecer93.{$index}.name", array( 'type' => 'text', 'label' => false ) ),
-									$this->Xform->input( "Diplomecer93.{$index}.annee", array( 'type' => 'select', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) ),
+									$this->Xform->input( "Diplomecer93.{$index}.annee", array( 'type' => 'select', 'label' => false, 'options' => array_range( 1960, date( 'Y' ) ), 'empty' => true ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Diplomecer93', {$index} );return false;" ) ),
 								)
 							);
@@ -339,7 +339,7 @@
 				'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true )
 			)
 		);
-		
+
 		echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'] ) );
 	?>
 	</fieldset>
@@ -376,16 +376,16 @@
 			'Cer93.bilancerpcd' => array( 'domain' => 'cer93', 'label' => false, 'type' => 'textarea' )
 		)
 	);
-	
+
 	//Bloc 6 : Projet pour ce nouveau contrat
-	
-	
+
+
 	//Bloc 7 : Durée proposée
 	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );
-	
+
 	//Bloc 8 : Projet pour ce nouveau contrat
 	echo $this->Xform->input( 'Cer93.pointparcours', array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['pointparcours'], 'empty' => true ) );
-	
+
 	echo $this->Xform->input( 'Cer93.datepointparcours', array( 'domain' => 'cer93', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
 ?>
 <script type="text/javascript">
@@ -404,12 +404,12 @@
 	});
 </script>
 <?php
-	
-	
+
+
 	//Bloc 9 : Partie réservée au professionnel en charge du contrat
 	echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $this->request->data, 'Cer93.structureutilisateur' ) );
 	echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $this->request->data, 'Cer93.nomutilisateur' ) );
-	
+
 	echo $this->Xform->input( 'Cer93.pourlecomptede', array( 'domain' => 'cer93', 'type' => 'text' ) );
 	echo $this->Xform->input( 'Cer93.observpro', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 

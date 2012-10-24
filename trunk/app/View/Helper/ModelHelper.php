@@ -98,7 +98,12 @@ debug( $tables );*/
 
 		public function primaryKey( $modelName ) {
 			$modelInfos = $this->_modelInfos( $modelName );
-			return $modelInfos['primaryKey'];
+			if( !isset( $modelInfos['primaryKey'] ) ) {
+				return false;
+			}
+			else {
+				return $modelInfos['primaryKey'];
+			}
 		}
 
 		/**

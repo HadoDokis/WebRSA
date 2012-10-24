@@ -31,6 +31,12 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'personne_id' => 1,
+				'natprest' => 'RSA',
+				'rolepers' => 'DEM',
+				'topchapers' => null,
+			)
 		);
 
 	}

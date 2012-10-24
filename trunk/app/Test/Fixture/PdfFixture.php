@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe AdresseFixture.
+	 * Code source de la classe PdfFixture.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,11 +9,11 @@
 	 */
 
 	/**
-	 * Classe AdresseFixture.
+	 * Classe PdfFixture.
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class AdresseFixture extends CakeTestFixture
+	class PdfFixture extends CakeTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
@@ -21,7 +21,7 @@
 		 * @var array
 		 */
 		public $import = array(
-			'model' => 'Adresse',
+			'model' => 'Pdf',
 			'records' => false
 		);
 
@@ -31,19 +31,7 @@
 		 * @var array
 		 */
 		public $records = array(
-			array(
-				'numvoie' => 66,
-				'typevoie' => 'AV',
-				'nomvoie' => 'DE LA REPUBLIQUE',
-				'complideadr' => null,
-				'compladr' => null,
-				'lieudist' => null,
-				'numcomrat' => '93001',
-				'numcomptt' => '93001',
-				'codepos' => '93300',
-				'locaadr' => 'AUBERVILLIERS',
-				'pays' => 'FRA',
-			)
 		);
+
 	}
 ?>

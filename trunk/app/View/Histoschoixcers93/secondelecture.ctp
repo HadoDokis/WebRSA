@@ -27,7 +27,7 @@
 			'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 			'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
 			'Histochoixcer93.decisioncs' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncs'], 'empty' => true ),
-			'Histochoixcer93.etape' => array( 'type' => 'hidden' )
+			'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 		)
 	);
 ?>
