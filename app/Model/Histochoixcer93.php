@@ -35,8 +35,8 @@
 		 * @var array
 		 */
 		public $actsAs = array(
-			'Validation.Autovalidate',
-			'Enumerable',
+// 			'Validation.Autovalidate',
+			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable',
 		);
 
@@ -155,10 +155,12 @@
 				$this->Cer93->id = $data['Histochoixcer93']['cer93_id'];
 				$contratinsertion_id = $this->Cer93->field( 'contratinsertion_id' );
 
+				// Parfois le champ datechoix vient du formulaire parfois c'est un champ caché
+				$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );
 				$success = $this->Cer93->Contratinsertion->updateAll(
 					array(
 						'Contratinsertion.decision_ci' => '\'R\'',
-						'Contratinsertion.datedecision' => '\''.date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ).'\''
+						'Contratinsertion.datedecision' => '\''.$datechoix.'\''
 					),
 					array( '"Contratinsertion"."id"' => $contratinsertion_id )
 				) && $success;

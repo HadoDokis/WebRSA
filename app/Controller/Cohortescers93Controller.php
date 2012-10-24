@@ -30,11 +30,17 @@
 		 */
 		public $components = array(
 			'Cohortes' => array(
-				'avalidercpdv'
+				'avalidercpdv',
+				'premierelecture',
+				'validationcs',
+				'validationcadre'
 			),
 			'Search.Filtresdefaut' => array(
 				'saisie',
-				'avalidercpdv'
+				'avalidercpdv',
+				'premierelecture',
+				'validationcs',
+				'validationcadre'
 			),
 			'Gestionzonesgeos',
 			'Search.Prg' => array(
@@ -43,6 +49,15 @@
 						'filter' => 'Search'
 					),
 					'avalidercpdv' => array(
+						'filter' => 'Search'
+					),
+					'premierelecture' => array(
+						'filter' => 'Search'
+					),
+					'validationcs' => array(
+						'filter' => 'Search'
+					),
+					'validationcadre' => array(
 						'filter' => 'Search'
 					),
 				)
@@ -82,11 +97,31 @@
 
 		/**
 		 * ....
-		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
+		 * Fonction pour la validation CPDV, première lecture
 		 *
 		 * @return void
 		 */
 		public function avalidercpdv() {
+			$this->_validations();
+		}
+		
+		/**
+		 * ....
+		 * Fonction pour la validation CG, première lecture
+		 *
+		 * @return void
+		 */
+		public function premierelecture() {
+			$this->_validations();
+		}
+		
+		/**
+		 * ....
+		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
+		 *
+		 * @return void
+		 */
+		protected function _validations() {
 			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 			if( empty( $structurereferente_id ) ) {
 				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
@@ -113,22 +148,20 @@
 			if( !empty( $this->request->data ) ) {
 			
 					// Traitement du formulaire d'affectation
-				if( ( $this->action == 'avalidercpdv' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
+				if( ( $this->action != 'saisie' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
 					$dossiers_ids = array_unique( Set::extract( '/Histochoixcer93/dossier_id', $this->request->data ) );
 					$this->Cohortes->get( $dossiers_ids );
 
 					// On change les règles de validation du modèle PersonneReferent avec celles qui sont spécfiques à la cohorte
 					$histochoixcer93Validate = $this->Contratinsertion->Cer93->Histochoixcer93->validate;
 
-					$datas = Set::extract( '/Histochoixcer93[action]', $this->request->data );
+					$datas = Set::extract( '/Histochoixcer93[action=Valider]', $this->request->data );
+
 					if( $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $datas, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$this->Contratinsertion->Cer93->Histochoixcer93->begin();
 
-						$datas = Set::extract( '/Histochoixcer93[action=Valider]', $this->request->data );
-
 						if( !empty( $datas ) ) {
-// 							debug($datas);
-// 							die();
+
 							foreach( $datas as $key => $data ) {
 								$saved = $this->Contratinsertion->Cer93->Histochoixcer93->saveDecision( $data );
 								
@@ -169,7 +202,7 @@
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->request->data['Search'],
-					( ( $this->action == 'avalidercpdv' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+					( ( $this->action != 'saisie' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 				);
 
 				$this->paginate = $querydata;
@@ -181,12 +214,18 @@
 				);
 				$this->set( 'cers93', $cers93 );
 
-				if( $this->action == 'avalidercpdv' ) {
+				if( $this->action != 'saisie' ) {
 					$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $cers93 ) ) );
 
 					// Par défaut, on récupère les informations déjà saisies en individuel
 					if( !isset( $this->request->data['Histochoixcer93'] ) ) {
-						$datas = $this->Cohortecer93->prepareFormData( $cers93, '03attdecisioncg', $this->Session->read( 'Auth.User.id' ) );
+						if( $this->action == 'avalidercpdv' ) {
+							$etape = '03attdecisioncg';
+						}
+						else if( $this->action == 'premierelecture' ) {
+							$etape = '04premierelecture';
+						}
+						$datas = $this->Cohortecer93->prepareFormData( $cers93, $etape, $this->Session->read( 'Auth.User.id' ) );
 						$this->request->data['Histochoixcer93'] = $datas['Histochoixcer93'];
 					}
 				}
@@ -208,14 +247,18 @@
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci()
 			);
-			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums() );
+			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums(), $this->Contratinsertion->Cer93->Histochoixcer93->enums() );
+// 			debug($options);
 			$this->set( compact( 'options' ) );
 
 			if( $this->action == 'saisie' ) {
 				$this->render( 'saisie' );
 			}
-			else {
+			else if( $this->action == 'avalidercpdv' ) {
 				$this->render( 'avalidercpdv' );
+			}
+			else if( $this->action == 'premierelecture' ) {
+				$this->render( 'premierelecture' );
 			}
 		}
 		

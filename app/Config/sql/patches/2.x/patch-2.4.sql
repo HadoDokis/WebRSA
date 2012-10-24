@@ -199,15 +199,6 @@ CREATE INDEX expsproscers93_cer93_id_idx ON expsproscers93( cer93_id );
 
 -------------------------------------------------------------------------------------
 
-DROP TYPE IF EXISTS TYPE_DECISIONPREVALIDHISTOCER93 CASCADE;
-CREATE TYPE TYPE_DECISIONPREVALIDHISTOCER93 AS ENUM ( 'arelire', 'prevalide' );
-
-DROP TYPE IF EXISTS TYPE_DECISIONCSHISTOCER93 CASCADE;
-CREATE TYPE TYPE_DECISIONCSHISTOCER93 AS ENUM ( 'valide', 'aviscadre', 'passageep' );
-
-DROP TYPE IF EXISTS TYPE_DECISIONCADREHISTOCER93 CASCADE;
-CREATE TYPE TYPE_DECISIONCADREHISTOCER93 AS ENUM ( 'valide', 'rejete', 'passageep' );
-
 DROP TABLE IF EXISTS histoschoixcers93 CASCADE;
 CREATE TABLE histoschoixcers93 (
 	id					SERIAL NOT NULL PRIMARY KEY,
@@ -216,9 +207,9 @@ CREATE TABLE histoschoixcers93 (
 	commentaire			VARCHAR(250) DEFAULT NULL,
 	formeci				CHAR(1) NOT NULL,
 	etape				TYPE_POSITIONCER93 NOT NULL,
-	prevalide			TYPE_DECISIONPREVALIDHISTOCER93 DEFAULT NULL,
-	decisioncs			TYPE_DECISIONCSHISTOCER93 DEFAULT NULL,
-	decisioncadre		TYPE_DECISIONCADREHISTOCER93 DEFAULT NULL,
+	prevalide			VARCHAR(20) DEFAULT NULL,
+	decisioncs			VARCHAR(20) DEFAULT NULL,
+	decisioncadre		VARCHAR(20) DEFAULT NULL,
 	datechoix			DATE DEFAULT NULL,
 	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
@@ -231,6 +222,9 @@ CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
 DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
 CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
 
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_prevalide_in_list_chk CHECK ( cakephp_validate_in_list( prevalide, ARRAY['arelire', 'prevalide'] ) );
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_in_list_chk CHECK ( cakephp_validate_in_list( decisioncs, ARRAY['valide', 'aviscadre', 'passageep'] ) );
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_list_chk CHECK ( cakephp_validate_in_list( decisioncadre, ARRAY['valide', 'rejete', 'passageep'] ) );
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
 --
@@ -268,6 +262,10 @@ CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( c
 -- SELECT add_missing_table_field ('public', 'cers93', 'observbenef', 'TEXT');
 
 -- SELECT add_missing_table_field ('public', 'cers93', 'datepointparcours', 'DATE');
+
+-- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'prevalide', 'VARCHAR(20)');
+-- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncs', 'VARCHAR(20)');
+-- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncadre', 'VARCHAR(20)');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

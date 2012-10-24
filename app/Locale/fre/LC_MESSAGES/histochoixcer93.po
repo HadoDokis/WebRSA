@@ -56,3 +56,6 @@ msgstr "Rejeté"
 
 msgid "ENUM::DECISIONCADRE::passageep"
 msgstr "Passage en EP"
+
+msgid "Histochoixcer93.isrejet"
+msgstr "Rejeté ?"
