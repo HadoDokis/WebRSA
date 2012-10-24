@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.Model.Behavior
+	 * @package Pgsqlcake
+	 * @subpackage Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AutovalidateBehavior', 'Validation.Model/Behavior' );
@@ -12,7 +13,8 @@
 	/**
 	 * Classe PgsqlAutovalidateBehavior.
 	 *
-	 * @package app.Model.Behavior
+	 * @package Pgsqlcake
+	 * @subpackage Model.Behavior
 	 */
 	class PgsqlAutovalidateBehavior extends AutovalidateBehavior
 	{

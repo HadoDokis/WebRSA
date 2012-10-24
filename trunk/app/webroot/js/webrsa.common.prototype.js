@@ -369,7 +369,7 @@ function disableFieldsOnValue( selectId, fieldsIds, value, condition, toggleVisi
 					input.addClassName( 'disabled' );
 				else if( input = field.up( 'div.checkbox' ) )
 					input.addClassName( 'disabled' );
-				
+
 				if( toggleVisibility ) {
 					input.hide();
 				}
@@ -1173,6 +1173,95 @@ function makeErrorTabs() {
 					$(tabLink).up( 'li' ).addClassName( 'error' );
 				} );
 			}
+		} );
+	} );
+}
+
+/**
+ * Fonction permettant de filtrer les options d'un select à partir de la valeur
+ * d'un radio.
+ * Une option avec une valeur vide est toujours conservée.
+ * Lorsque le select valait une des valeurs que l'on cache, sa valeur devient
+ * la chaîne vide.
+ *
+ * Exemple:
+ * <pre>
+ * filterSelectOptionsFromRadioValue(
+ *		'FormHistochoixcer93',
+ *		'data[Histochoixcer93][formeci]',
+ *		'Histochoixcer93Decisioncs',
+ *		{
+ *			'S': ['valide', 'aviscadre'],
+ *			'C': ['aviscadre', 'passageep']
+ *		}
+ * );
+ * </pre>
+ *
+ * @param string formId
+ * @param string radioName
+ * @param string selectId
+ * @param hash values
+ */
+function filterSelectOptionsFromRadioValue( formId, radioName, selectId, values ) {
+	var v = $( formId ).getInputs( 'radio', radioName );
+
+	var currentValue = undefined;
+	$( v ).each( function( radio ) {
+		if( radio.checked ) {
+			currentValue = radio.value;
+		}
+	} );
+
+	var accepted = values[currentValue];
+
+	$$('#' + selectId + ' option').each( function ( option ) {
+		if( option.value != '' ) {
+			if( in_array( option.value, accepted ) ) {
+				option.show();
+			}
+			else {
+				option.hide();
+			}
+		}
+	} );
+
+	var currentSelectValue = $F( selectId );
+	if( currentSelectValue != '' && !in_array( currentSelectValue, accepted ) ) {
+		$( selectId ).value = '';
+	}
+}
+
+/**
+ * Fonction permettant de d'observer le changement de valeur d'un radio et de
+ * filtrer les options d'un select à partir de sa valeur.
+ *
+ * Exemple:
+ * <pre>
+ * observeFilterSelectOptionsFromRadioValue(
+ *		'FormHistochoixcer93',
+ *		'data[Histochoixcer93][formeci]',
+ *		'Histochoixcer93Decisioncs',
+ *		{
+ *			'S': ['valide', 'aviscadre'],
+ *			'C': ['aviscadre', 'passageep']
+ *		}
+ * );
+ * </pre>
+ *
+ * @see filterSelectOptionsFromRadioValue()
+ *
+ * @param string formId
+ * @param string radioName
+ * @param string selectId
+ * @param hash values
+ */
+function observeFilterSelectOptionsFromRadioValue( formId, radioName, selectId, values ) {
+	filterSelectOptionsFromRadioValue( formId, radioName, selectId, values );
+
+	var v = $( formId ).getInputs( 'radio', radioName );
+	$( v ).each( function( radio ) {
+		$( radio ).observe( 'change', function( event ) {
+			filterSelectOptionsFromRadioValue( formId, radioName, selectId, values );
 		} );
 	} );
 }

@@ -36,8 +36,8 @@
 		 */
 		public $actsAs = array(
 // 			'Validation.Autovalidate',
-			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable',
+			'Pgsqlcake.PgsqlAutovalidate',
 		);
 
 		/**

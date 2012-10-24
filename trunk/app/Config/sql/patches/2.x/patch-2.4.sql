@@ -30,8 +30,11 @@ DROP INDEX IF EXISTS users_referent_id_idx;
 CREATE INDEX users_referent_id_idx ON users( referent_id );
 
 -------------------------------------------------------------------------------------
--- 20121003: nouveau CER pour le CG 93
+-- Règles de validation CakePHP adaptées à PostgreSQL
+-- @see Pgsqlcake.PgsqlAutovalidateBehavior.php
+-- @see /2011/03/20110307
 -------------------------------------------------------------------------------------
+
 -- Règle de validation inList pour des entiers
 CREATE OR REPLACE FUNCTION cakephp_validate_in_list( integer, integer[] ) RETURNS boolean AS
 $$
@@ -42,6 +45,43 @@ LANGUAGE sql IMMUTABLE;
 COMMENT ON FUNCTION cakephp_validate_in_list( integer, integer[] ) IS
 	'@see http://api.cakephp.org/class/validation#method-ValidationinList';
 
+-- FIXME: cakephp_validate_range
+CREATE OR REPLACE FUNCTION cakephp_validate_range( p_check float, p_lower float, p_upper float ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN p_check IS NULL
+			OR p_lower IS NULL
+			OR p_upper IS NULL
+			OR(
+				p_check > p_lower
+				AND p_check < p_upper
+			);
+	END;
+$$
+LANGUAGE plpgsql IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_range( p_check float, p_lower float, p_upper float ) IS
+	'@see http://api.cakephp.org/class/validation#method-Validationrange';
+
+CREATE OR REPLACE FUNCTION cakephp_validate_inclusive_range( p_check float, p_lower float, p_upper float ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN p_check IS NULL
+			OR p_lower IS NULL
+			OR p_upper IS NULL
+			OR(
+				p_check >= p_lower
+				AND p_check <= p_upper
+			);
+	END;
+$$
+LANGUAGE plpgsql IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_inclusive_range( p_check float, p_lower float, p_upper float ) IS
+	'Comme cakephp_validate_range(), mais avec les bornes incluses';
+
+-------------------------------------------------------------------------------------
+-- 20121003: nouveau CER pour le CG 93
 -------------------------------------------------------------------------------------
 
 -- tables liées au cers93
@@ -49,11 +89,14 @@ DROP TABLE IF EXISTS naturescontrats CASCADE;
 CREATE TABLE naturescontrats (
 	id				SERIAL NOT NULL PRIMARY KEY,
 	name			VARCHAR(250) NOT NULL,
-	isduree			TYPE_BOOLEANNUMBER DEFAULT '0'
+	isduree			VARCHAR(1) DEFAULT '0'
 );
 COMMENT ON TABLE naturescontrats IS 'Liste des natures de contrat paramétrable pour le CER93)';
+
 DROP INDEX IF EXISTS naturescontrats_name_idx;
 CREATE UNIQUE INDEX naturescontrats_name_idx ON naturescontrats( name );
+
+ALTER TABLE naturescontrats ADD CONSTRAINT naturescontrats_isduree_in_list_chk CHECK ( cakephp_validate_in_list( isduree, ARRAY['0', '1'] ) );
 
 -------------------------------------------------------------------------------------
 
@@ -63,6 +106,7 @@ CREATE TABLE metiersexerces (
 	name			TEXT
 );
 COMMENT ON TABLE metiersexerces IS 'Métiers exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+
 DROP INDEX IF EXISTS metiersexerces_name_idx;
 CREATE UNIQUE INDEX metiersexerces_name_idx ON metiersexerces( name );
 
@@ -73,6 +117,7 @@ CREATE TABLE secteursactis (
 	name			TEXT
 );
 COMMENT ON TABLE secteursactis IS 'Secteurs d''activités exercés en lien avec le CER 93 (bloc 4, formation et expérience)';
+
 DROP INDEX IF EXISTS secteursactis_name_idx;
 CREATE UNIQUE INDEX secteursactis_name_idx ON secteursactis( name );
 
@@ -81,11 +126,11 @@ CREATE UNIQUE INDEX secteursactis_name_idx ON secteursactis( name );
 -- Tables devenues obsolètes au cours des développements
 DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
 
-DROP TYPE IF EXISTS TYPE_CMU CASCADE;
-CREATE TYPE TYPE_CMU AS ENUM ( 'oui', 'non', 'encours' );
+-- DROP TYPE IF EXISTS TYPE_CMU CASCADE;
+-- CREATE TYPE TYPE_CMU AS ENUM ( 'oui', 'non', 'encours' );
 
-DROP TYPE IF EXISTS TYPE_POSITIONCER93 CASCADE;
-CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( '00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide' );
+-- DROP TYPE IF EXISTS TYPE_POSITIONCER93 CASCADE;
+-- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( '00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide' );
 
 -- Données spécifiques au CG 93
 DROP TABLE IF EXISTS cers93 CASCADE;
@@ -108,19 +153,19 @@ CREATE TABLE cers93 (
 	natlog					VARCHAR(4) DEFAULT NULL,
 	incoherencesetatcivil	TEXT DEFAULT NULL,
 	-- Bloc 3: vérification des droits
-	inscritpe				TYPE_BOOLEANNUMBER DEFAULT NULL,
-	cmu						TYPE_CMU DEFAULT NULL,
-	cmuc					TYPE_CMU DEFAULT NULL,
+	inscritpe				VARCHAR(1) DEFAULT NULL,
+	cmu						VARCHAR(10) DEFAULT NULL,
+	cmuc					VARCHAR(10) DEFAULT NULL,
 	-- Bloc 4: formation et expérience
-	nivetu					TYPE_NIVETU DEFAULT NULL,
+	nivetu					VARCHAR(4) DEFAULT NULL,
 	numdemrsa				VARCHAR(11) DEFAULT NULL,
 	rolepers				CHAR(3) DEFAULT NULL,
 	identifiantpe			VARCHAR(11) DEFAULT NULL,
-	positioncer				TYPE_POSITIONCER93 NOT NULL DEFAULT '00enregistre',
+	positioncer				VARCHAR(20) NOT NULL DEFAULT '00enregistre',
 	formeci					CHAR(1) DEFAULT NULL,
 	datesignature			DATE DEFAULT NULL,
 	autresexps				VARCHAR(250) DEFAULT NULL,
-	isemploitrouv			TYPE_NO DEFAULT NULL,
+	isemploitrouv			VARCHAR(1) DEFAULT NULL,
 	metierexerce_id			INTEGER REFERENCES metiersexerces(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	secteuracti_id			INTEGER REFERENCES secteursactis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	naturecontrat_id		INTEGER REFERENCES naturescontrats(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -142,9 +187,15 @@ COMMENT ON TABLE cers93 IS 'Données du CER spécifiques au CG 93';
 DROP INDEX IF EXISTS cers93_contratinsertion_id_idx;
 CREATE UNIQUE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_id );
 
+ALTER TABLE cers93 ADD CONSTRAINT cers93_inscritpe_in_list_chk CHECK ( cakephp_validate_in_list( inscritpe, ARRAY['0', '1'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_cmu_in_list_chk CHECK ( cakephp_validate_in_list( cmu, ARRAY['oui', 'non', 'encours'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_cmuc_in_list_chk CHECK ( cakephp_validate_in_list( cmuc, ARRAY['oui', 'non', 'encours'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( positioncer, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_isemploitrouv_in_list_chk CHECK ( cakephp_validate_in_list( isemploitrouv, ARRAY['N', 'O'] ) );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_dureehebdo_inclusive_range_chk CHECK ( cakephp_validate_inclusive_range( dureehebdo, 0, 39 ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_pointparcours_in_list_chk CHECK ( cakephp_validate_in_list( pointparcours, ARRAY['aladate','alafin'] ) );
-
 
 -------------------------------------------------------------------------------------
 
@@ -156,8 +207,8 @@ CREATE TABLE composfoyerscers93 (
 	nom			VARCHAR(50) NOT NULL,
 	prenom		VARCHAR(50) NOT NULL,
 	dtnai		DATE NOT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
+	created		TIMESTAMP WITHOUT TIME ZONE,
+	modified	TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE composfoyerscers93 IS 'Compositions du foyer pour le CER 93 (bloc 2, état civil)';
 
@@ -172,8 +223,8 @@ CREATE TABLE diplomescers93 (
 	cer93_id	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	name		VARCHAR(250) NOT NULL,
 	annee		INTEGER NOT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
+	created		TIMESTAMP WITHOUT TIME ZONE,
+	modified	TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE diplomescers93 IS 'Diplômes obtenus pour le CER 93 (bloc 4, formation et expérience)';
 
@@ -189,8 +240,8 @@ CREATE TABLE expsproscers93 (
 	secteuracti_id		INTEGER NOT NULL REFERENCES secteursactis(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	anneedeb			INTEGER NOT NULL,
 	duree				VARCHAR(25) NOT NULL,
-	created					TIMESTAMP WITHOUT TIME ZONE,
-	modified				TIMESTAMP WITHOUT TIME ZONE
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE expsproscers93 IS 'Expériences professionnelles significatives pour le CER 93 (bloc 4, formation et expérience)';
 
@@ -206,7 +257,7 @@ CREATE TABLE histoschoixcers93 (
 	user_id				INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	commentaire			VARCHAR(250) DEFAULT NULL,
 	formeci				CHAR(1) NOT NULL,
-	etape				TYPE_POSITIONCER93 NOT NULL,
+	etape				VARCHAR(20) NOT NULL,
 	prevalide			VARCHAR(20) DEFAULT NULL,
 	decisioncs			VARCHAR(20) DEFAULT NULL,
 	decisioncadre		VARCHAR(20) DEFAULT NULL,
@@ -222,9 +273,11 @@ CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
 DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
 CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
 
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_etape_in_list_chk CHECK ( cakephp_validate_in_list( etape, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide'] ) );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_prevalide_in_list_chk CHECK ( cakephp_validate_in_list( prevalide, ARRAY['arelire', 'prevalide'] ) );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_in_list_chk CHECK ( cakephp_validate_in_list( decisioncs, ARRAY['valide', 'aviscadre', 'passageep'] ) );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_list_chk CHECK ( cakephp_validate_in_list( decisioncadre, ARRAY['valide', 'rejete', 'passageep'] ) );
+
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
 --
@@ -244,7 +297,7 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_
 -- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_naturecontrat_id_fkey', 'naturescontrats', 'naturecontrat_id', false );
 
 
-	-- SELECT add_missing_table_field ('public', 'cers93', 'dureehebdo', 'INTEGER');
+-- SELECT add_missing_table_field ('public', 'cers93', 'dureehebdo', 'INTEGER');
 -- ALTER TABLE cers93 ALTER COLUMN dureehebdo SET DEFAULT '0'::TYPE_DUREEHEBDO;
 -- SELECT add_missing_table_field ('public', 'cers93', 'dureecdd', 'VARCHAR(3)');
 -- SELECT add_missing_table_field ('public', 'cers93', 'bilancerpcd', 'TEXT');
@@ -266,6 +319,17 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_
 -- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'prevalide', 'VARCHAR(20)');
 -- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncs', 'VARCHAR(20)');
 -- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncadre', 'VARCHAR(20)');
+
+-- TODO aauzolat, remplacement des enums par des cakephp_validate_in_list
+-- naturescontrats.isduree: TYPE_BOOLEANNUMBER -> VARCHAR(1)
+-- cers.inscritpe TYPE_BOOLEANNUMBER -> VARCHAR(1)
+-- cers.cmu TYPE_CMU -> VARCHAR(10)
+-- cers.cmuc TYPE_CMU -> VARCHAR(10)
+-- cers.nivetu TYPE_NIVETU -> VARCHAR(4)
+-- cers.positioncer TYPE_POSITIONCER93 -> VARCHAR(20)
+-- cers.isemploitrouv TYPE_NO -> VARCHAR(1)
+-- histoschoixcers93.etape TYPE_POSITIONCER93 -> VARCHAR(20)
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
