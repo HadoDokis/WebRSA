@@ -306,7 +306,7 @@
 									.$this->Xform->input( "Expprocer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
-									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'text', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'text', 'label' => false, 'options' => array_range( 1960, date( 'Y' ) ), 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.duree", array( 'type' => 'text', 'label' => false ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
 								)
@@ -446,7 +446,7 @@
 				.$this->Xform->input( 'Diplomecer93.%line%.name', array( 'type' => 'text', 'label' => false ) );
 			echo str_replace( "'", "\\'", $fields );
 		?></td><td><?php
-			$fields = $this->Xform->input( 'Diplomecer93.%line%.annee', array( 'type' => 'select', 'options' => range( 1960, date( 'Y' ) ), 'label' => false, 'empty' => true ) );
+			$fields = $this->Xform->input( 'Diplomecer93.%line%.annee', array( 'type' => 'select', 'options' => array_range( 1960, date( 'Y' ) ), 'label' => false, 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Diplomecer93\', %line% );return false;">Supprimer</a></td></tr>';
 
@@ -459,7 +459,7 @@
 			$fields = $this->Xform->input( 'Expprocer93.%line%.secteuracti_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><?php
-			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'text', 'label' => false, 'options' => range( 1960, date( 'Y' ) ), 'empty' => true ) );
+			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'text', 'label' => false, 'options' => array_range( 1960, date( 'Y' ) ), 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
@@ -498,5 +498,3 @@
 		}
 	//--><!]]>
 </script>
-
-<?php debug( $this->request->data );?>

@@ -439,5 +439,35 @@
 
 			return $formData;
 		}
+
+		
+		/**
+		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
+		 * à la méthode ged du behavior Gedooo et le stocke,
+		 *
+		 * @param integer $id Id du CER
+		 * @param integer $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $id ) {
+			$data = $this->getDataForPdf( $id );
+			$modeleodt = $this->modeleOdt( $data );
+
+			$Option = ClassRegistry::init( 'Option' );
+			$options =  Set::merge(
+				array(
+					'Persone' => array(
+						'qual' => $Option->qual()
+					),
+					'Adresse' => array(
+						'typevoie' => $Option->typevoie()
+					)
+				),
+				$this->enums()
+			);
+
+			return $this->ged( $data, $modeleodt, false, $options );
+		}
+
 	}
 ?>

@@ -290,12 +290,17 @@
 										<?php endif;?>
 											<li><span>Contrats</span>
 												<ul>
-												<?php if( $this->Permissions->check( 'contratsinsertion', 'index' ) ):?>
+												<?php
+													$contratcontroller = 'contratsinsertion';
+													if( Configure::read( 'Cg.departement' ) == 93 ) {
+														$contratcontroller = 'cers93';
+													}
+													if( $this->Permissions->check( $contratcontroller, 'index' ) ):?>
 													<li>
 														<?php
 															echo $this->Xhtml->link(
 																'CER',
-																array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne['id'] )
+																array( 'controller' => $contratcontroller, 'action' => 'index', $personne['id'] )
 															);
 														?>
 													</li>

@@ -40,7 +40,8 @@
 				'avalidercpdv',
 				'premierelecture',
 				'validationcs',
-				'validationcadre'
+				'validationcadre',
+				'visualisation'
 			),
 			'Gestionzonesgeos',
 			'Search.Prg' => array(
@@ -60,6 +61,9 @@
 					'validationcadre' => array(
 						'filter' => 'Search'
 					),
+					'visualisation' => array(
+						'filter' => 'Search'
+					)
 				)
 			)
 		);
@@ -316,7 +320,7 @@
 		/**
 		 * @return void
 		 */
-		public function exportcsv() {
+		public function exportcsv( $etape ) {
 			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 			if( empty( $structurereferente_id ) ) {
 				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
@@ -325,7 +329,7 @@
 
 			$data = Xset::bump( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortecer93->search(
-				'saisie',
+				$etape,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$data['Search'],

@@ -54,11 +54,12 @@
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
 			
-			$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
+// 			if( $statut != 'visualisation') {
+// 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
+// 			}
 
 
 			$conditions = array(
-				'Contratinsertion.decision_ci' => 'E',
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 				array(
 					'OR' => array(
@@ -76,8 +77,7 @@
 						'Rendezvous.id IS NULL',
 						"Rendezvous.id IN ( {$sqDernierRdv} )"
 					)
-				),
-				$sqDerniereHistochoixcer93Etape
+				)
 			);
 			
 			// Choix du référent affecté ?
@@ -169,7 +169,6 @@
 					$Personne->Calculdroitrsa->fields(),
 					$Personne->Contratinsertion->fields(),
 					$Personne->Contratinsertion->Cer93->fields(),
-					$Personne->Contratinsertion->Cer93->Histochoixcer93->fields(),
 					$Personne->Orientstruct->fields(),
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
@@ -180,6 +179,7 @@
 					// Présence DSP
 					array(
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
+						'Structurereferente.lib_struc',
 						"( {$sqDspExists} ) AS \"Dsp__exists\"" // TODO: mettre dans le modèle
 					)
 				),
@@ -201,7 +201,7 @@
 					),
 					$Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
-					$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'PersonneReferent', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Rendezvous', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
@@ -218,6 +218,29 @@
 				),
 				'limit' => 10
 			);
+
+			// 
+			if( $statut != 'visualisation') {
+				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
+				$querydata['conditions'][] = $sqDerniereHistochoixcer93Etape;
+				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
+
+				$querydata['fields'] = array_merge( $querydata['fields'], $Personne->Contratinsertion->Cer93->Histochoixcer93->fields() );
+				$querydata['joins'][] = $Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) );
+			}
+			else {
+				$fields = $Personne->Contratinsertion->Cer93->Histochoixcer93->fields(); 
+				$etapes = array( '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre' );
+				foreach( $etapes as $e ) {
+					$alias = 'Histochoixcer93etape'.preg_replace( '/^([0-9]+).*$/', '\1', $e );
+					
+					$querydata['fields'] = array_merge( $querydata['fields'], array_words_replace( $fields, array( 'Histochoixcer93' => $alias ) ) );
+					$querydata['joins'][] = array_words_replace(
+						$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER', 'conditions' => array( 'Histochoixcer93.etape' => $e ) ) ),
+						array( 'Histochoixcer93' => $alias )
+					);
+				}
+			}
 
 			// Lorsqu'on recherche les référents affecté, on doit ajouter des champs et une jointure
 			$querydata['fields'] = Set::merge(
@@ -254,6 +277,7 @@
 					'prevalide' => $data['Histochoixcer93']['prevalide'],
 					'decisioncs' => $data['Histochoixcer93']['decisioncs'],
 					'decisioncadre' => $data['Histochoixcer93']['decisioncadre'],
+					'isrejet' => $data['Histochoixcer93']['isrejet'],
 					'action' => 'En attente',
 					'dossier_id' => $data['Dossier']['id']
 				);
