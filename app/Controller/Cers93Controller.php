@@ -277,7 +277,7 @@
 				'Naturecontrat' => array(
 					'naturecontrat_id' => Set::combine( $naturescontrats, '{n}.Naturecontrat.id', '{n}.Naturecontrat.name' )
 				),
-				'dureehebdo' => range('0', '39'),
+				'dureehebdo' => array_range( '0', '39' ),
 				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()
 			);
 			$options = array_merge( $this->Cer93->Contratinsertion->Personne->Dsp->enums(), $this->Cer93->enums(), $options );

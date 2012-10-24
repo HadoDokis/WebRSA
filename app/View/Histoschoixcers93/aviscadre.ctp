@@ -12,7 +12,7 @@
 <?php
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
-	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
+	echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
 	// FIXME: affichage du CER et des étapes précédentes de l'historique
 
@@ -26,8 +26,8 @@
 			'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
 			'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 			'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
-			'Histochoixcer93.decisioncadre' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncadre'] ),
-			'Histochoixcer93.etape' => array( 'type' => 'hidden' )
+			'Histochoixcer93.decisioncadre' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncadre'], 'empty' => true ),
+			'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 		)
 	);
 ?>
@@ -43,4 +43,15 @@
 	echo $this->Xform->end();
 ?>
 </div>
+<script type="text/javascript">
+	observeFilterSelectOptionsFromRadioValue(
+		'FormHistochoixcer93',
+		'data[Histochoixcer93][formeci]',
+		'Histochoixcer93Decisioncadre',
+		{
+			'S': ['valide', 'rejete'],
+			'C': ['rejete', 'passageep']
+		}
+	);
+</script>
 <div class="clearer"><hr /></div>

@@ -33,6 +33,9 @@ msgstr "Date de décision"
 msgid "Histochoixcer93.decisioncs"
 msgstr "Décision"
 
+msgid "Histochoixcer93.decisioncadre"
+msgstr "Décision"
+
 msgid "ENUM::PREVALIDE::arelire"
 msgstr "À relire"
 
