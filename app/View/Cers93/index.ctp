@@ -61,7 +61,6 @@
 			)
 		);
 
-		debug( $cers93 );
 	?>
 </div>
 <div class="clearer"><hr /></div>

@@ -343,5 +343,24 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
+		
+		/**
+		 * Imprime un CER 93.
+		 * INFO: http://localhost/webrsa/trunk/cers93/impression/44327
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function impression( $contratinsertion_id = null ) {
+			$pdf = $this->Cer93->getDefaultPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}_nouveau.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'insertion.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>

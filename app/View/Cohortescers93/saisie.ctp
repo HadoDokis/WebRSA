@@ -109,7 +109,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+			array( 'action' => 'exportcsv', 'saisie' ) + Set::flatten( $this->request->data, '__' ),
 			( count( $cers93 ) > 0 )
 		);
 	?></li>
