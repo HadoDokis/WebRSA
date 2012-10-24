@@ -117,12 +117,18 @@
 				$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
 			}
 			
-			if( $statut != 'saisie' ) {
+			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
 				if( $statut == 'avalidercpdv' ) {
 					$position = '02attdecisioncpdv';
 				}
 				else if( $statut == 'premierelecture' ) {
 					$position = '03attdecisioncg';
+				}
+				else if( $statut == 'validationcs' ) {
+					$position = '04premierelecture';
+				}
+				else if( $statut == 'validationcadre' ) {
+					$position = '05secondelecture';
 				}
 					
 				$conditions[] = array(
@@ -246,6 +252,8 @@
 					'etape' => $etape,
 					'datechoix' => date( 'Y-m-d' ),
 					'prevalide' => $data['Histochoixcer93']['prevalide'],
+					'decisioncs' => $data['Histochoixcer93']['decisioncs'],
+					'decisioncadre' => $data['Histochoixcer93']['decisioncadre'],
 					'action' => 'En attente',
 					'dossier_id' => $data['Dossier']['id']
 				);
