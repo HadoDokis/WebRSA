@@ -616,9 +616,9 @@
 					<li>
 						<?php echo $this->Xhtml->link( '4. Décision CG', '#' );?>
 						<ul>
-							<li><?php echo $this->Xhtml->link( '4.1 Première lecture',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'asigner'  )*/ );?></li>
-							<li><?php echo $this->Xhtml->link( '4.2 Validation CS',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'signes'  )*/ );?></li>
-							<li><?php echo $this->Xhtml->link( '4.3 Validation Cadre',  '#'/*array( 'controller' => 'cohortescers93', 'action' => 'signes'  )*/ );?></li>
+							<li><?php echo $this->Xhtml->link( '4.1 Première lecture',  array( 'controller' => 'cohortescers93', 'action' => 'premierelecture'  ) );?></li>
+							<li><?php echo $this->Xhtml->link( '4.2 Validation CS',  array( 'controller' => 'cohortescers93', 'action' => 'validationcs'  ) );?></li>
+							<li><?php echo $this->Xhtml->link( '4.3 Validation Cadre',  array( 'controller' => 'cohortescers93', 'action' => 'validationcadre'  ) );?></li>
 						</ul>
 					</li>
 					<li>

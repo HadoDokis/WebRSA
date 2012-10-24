@@ -1,5 +1,10 @@
 <?php
-	$title_for_layout = 'Décison du CPDV';
+	if( $this->action == 'attdecisioncpdv' ) {
+		$title_for_layout = 'Décison du CPDV';
+	}
+	else {
+		$title_for_layout = 'Décison CG';
+	}
 	$this->set( 'title_for_layout', $title_for_layout );
 
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -15,9 +20,6 @@
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
-	if( $this->action == 'attdecisioncg' ) {
-		echo $this->Xform->input( 'Histochoixcer93.isrejet', array( 'type' => 'checkbox' ) );
-	}
 
 	echo $this->Xform->inputs(
 		array(
@@ -32,6 +34,10 @@
 			'Histochoixcer93.etape' => array( 'type' => 'hidden' )
 		)
 	);
+	
+	if( $this->action == 'attdecisioncg' ) {
+		echo $this->Xform->input( 'Histochoixcer93.isrejet', array( 'type' => 'checkbox' ) );
+	}
 ?>
 
 <?php

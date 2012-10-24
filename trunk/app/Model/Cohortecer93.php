@@ -58,7 +58,7 @@
 
 
 			$conditions = array(
-// 				'Contratinsertion.decision_ci' => 'E',
+				'Contratinsertion.decision_ci' => 'E',
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 				array(
 					'OR' => array(
@@ -117,7 +117,14 @@
 				$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
 			}
 			
-			if( $statut == 'avalidercpdv' ) {
+			if( $statut != 'saisie' ) {
+				if( $statut == 'avalidercpdv' ) {
+					$position = '02attdecisioncpdv';
+				}
+				else if( $statut == 'premierelecture' ) {
+					$position = '03attdecisioncg';
+				}
+					
 				$conditions[] = array(
 					'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
 						array_words_replace(
@@ -128,8 +135,9 @@
 								'alias' => 'contratsinsertion',
 								'conditions' => array(
 									'Contratinsertion.personne_id = Personne.id',
-									'Cer93.positioncer' => '02attdecisioncpdv',
-									'Histochoixcer93.etape' => '02attdecisioncpdv' 
+									'Cer93.positioncer <>' => '99rejete',
+									'Cer93.positioncer' => $position,
+									'Histochoixcer93.etape' => $position
 								),
 								'joins' => array(
 									$Personne->Contratinsertion->join( 'Cer93' ),
@@ -236,6 +244,8 @@
 					'commentaire' => $data['Histochoixcer93']['commentaire'],
 					'formeci' => $data['Histochoixcer93']['formeci'],
 					'etape' => $etape,
+					'datechoix' => date( 'Y-m-d' ),
+					'prevalide' => $data['Histochoixcer93']['prevalide'],
 					'action' => 'En attente',
 					'dossier_id' => $data['Dossier']['id']
 				);

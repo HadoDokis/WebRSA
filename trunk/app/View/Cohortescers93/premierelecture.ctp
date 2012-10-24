@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = '3. Validation CPDV';
+	$this->pageTitle = '4. Décision CG - 4.1 Première lecture';
 	
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
@@ -26,9 +26,11 @@
 						<th>Rang CER</th>
 						<th>Dernier RDV</th>
 						<th>Statut CER</th>
-						<th>Forme du CER</th>
-						<th>Rejeté ?</th>
-						<th>Commentaire</th>
+						<th>Forme du CER (CPDV)</th>
+						<th>Commentaire (CPDV)</th>
+						<th>Forme du CER (CG)</th>
+						<th>Commentaire (CG)</th>
+						<th>Décision</th>
 						<th>Action</th>
 						<th>Détails</th>
 					</tr>
@@ -46,6 +48,8 @@
 						$cer93['Contratinsertion']['rg_ci'],
 						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
+						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
+						$cer93['Histochoixcer93']['commentaire'],
 						// Choix du CPDV
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )
@@ -55,11 +59,14 @@
 							.$this->Form->input( "Histochoixcer93.{$index}.formeci", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['formeci'], 'separator' => '<br />' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['formeci'] ) ? 'error' : null ) )
 						),
-						$this->Form->input( "Histochoixcer93.{$index}.isrejet", array( 'div' => false, 'label' => false, 'type' => 'checkbox' ) ),
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) )
-							.$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'type' => 'hidden' ) ),
+							.$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
+						),
+						array(
+							$this->Form->input( "Histochoixcer93.{$index}.prevalide", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Histochoixcer93']['prevalide'], 'separator' => '<br />' ) ),
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['prevalide'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
@@ -94,7 +101,8 @@
 			[
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
-				'Histochoixcer93<?php echo $index;?>Isrejet',
+				'Histochoixcer93<?php echo $index;?>PrevalideArelire',
+				'Histochoixcer93<?php echo $index;?>PrevalidePrevalide',
 				'Histochoixcer93<?php echo $index;?>Commentaire'
 			],
 			[ 'Valider' ],
