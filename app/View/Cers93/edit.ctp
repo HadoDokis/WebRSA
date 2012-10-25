@@ -366,17 +366,18 @@
 	</script>
 	<!-- Fin bloc 4 -->
 </fieldset>
+<fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
+	<?php
+		//Bloc 5 : Bilan du précédent contrat
+		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea' ) );	
+
+		echo $this->Xform->input( 'Sujetcer93.Sujetcer93', array( 'domain' => 'cer93', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options['Sujetcer93']['sujetcer93_id'] ) );	
+		
+		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+	?>
+</fieldset>
 
 <?php
-	//Bloc 5 : Bilan du précédent contrat
-	echo $this->Xform->inputs(
-		array(
-			'fieldset' => true,
-			'legend' => 'Bilan du contrat précédent',
-			'Cer93.bilancerpcd' => array( 'domain' => 'cer93', 'label' => false, 'type' => 'textarea' )
-		)
-	);
-
 	//Bloc 6 : Projet pour ce nouveau contrat
 
 

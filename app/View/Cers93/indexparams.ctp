@@ -45,6 +45,42 @@
 				array( 'class' => 'odd' ),
 				array( 'class' => 'even' )
 			);
+			echo $this->Xhtml->tableCells(
+				array(
+					h( 'Sujets du CER' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'sujetscers93', 'action' => 'index' ),
+						$this->Permissions->check( 'sujetscers93', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
+			echo $this->Xhtml->tableCells(
+				array(
+					h( 'Types de sujet du CER' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'typessujetscers93', 'action' => 'index' ),
+						$this->Permissions->check( 'typessujetscers93', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
+			echo $this->Xhtml->tableCells(
+				array(
+					h( 'Association entre les sujets et leurs types' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'sujetscers93_typessujetscers93', 'action' => 'index' ),
+						$this->Permissions->check( 'sujetscers93_typessujetscers93', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
 		?>
 	</tbody>
 </table>

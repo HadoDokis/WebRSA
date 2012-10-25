@@ -54,7 +54,7 @@
 						'url' => array( 'action' => 'aviscadre', '#Contratinsertion.id#' ),
  						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'aviscadre' ), $disabledLinks['Histoschoixcers93::aviscadre'] )
 					),
-					'Contratsinsertion::impression' => array( 'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ) ),
+					'Cers93::impression' => array( 'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ) ),
 					'Contratsinsertion::filelink' => array( 'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' ) )
 				),
 				'options' => $options

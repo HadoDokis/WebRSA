@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Gedooo.Gedooo', 'Jetons2' );
 
 		/**
 		 * Helpers utilisés.
@@ -219,12 +219,12 @@
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
-
+debug($this->request->data);
 				if( $this->Cer93->saveFormulaire( $this->request->data ) ) {
-					$this->Cer93->Contratinsertion->commit();
+					$this->Cer93->Contratinsertion->rollback(); //FIXME
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'action' => 'index', $personne_id ) );
+// 				s	$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cer93->Contratinsertion->rollback();
@@ -245,6 +245,13 @@
 			$naturecontratDuree = Set::extract( '/Naturecontrat[isduree=1]', $naturescontrats );
 			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
+			
+			$sujetscers93 = $this->Cer93->Sujetcer93->find(
+				'all',
+				array(
+					'order' => array( 'Sujetcer93.name ASC' )
+				)
+			);
 
 			// Options
 			$options = array(
@@ -276,6 +283,9 @@
 				),
 				'Naturecontrat' => array(
 					'naturecontrat_id' => Set::combine( $naturescontrats, '{n}.Naturecontrat.id', '{n}.Naturecontrat.name' )
+				),
+				'Sujetcer93' => array(
+					'sujetcer93_id' => Set::combine( $sujetscers93, '{n}.Sujetcer93.id', '{n}.Sujetcer93.name' )
 				),
 				'dureehebdo' => array_range( '0', '39' ),
 				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()

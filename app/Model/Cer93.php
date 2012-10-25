@@ -39,6 +39,10 @@
 //			'Enumerable',
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate',
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				93 => 'Contratinsertion/contratinsertion.odt'
+			)
 		);
 
 		/**
@@ -86,6 +90,15 @@
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Sujetcer93' => array(
+				'className' => 'Sujetcer93',
+				'foreignKey' => 'sujetcer93_id',
 				'conditions' => null,
 				'type' => 'INNER',
 				'fields' => null,
@@ -153,7 +166,29 @@
 			),
 		);
 
-
+		/**
+		 * Liaisons "hasAndBelongsToMany" avec d'autres modèles.
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+            'Sujetcer93' => array(
+				'className' => 'Sujetcer93',
+				'joinTable' => 'cers93_sujetscers93',
+				'foreignKey' => 'cer93_id',
+				'associationForeignKey' => 'sujetcer93_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'Cer93Sujetcer93'
+			),
+		);
 		/**
 		 * 	Fonction permettant la sauvegarde du formulaire du CER 93.
 		 *
@@ -440,6 +475,161 @@
 			return $formData;
 		}
 
+		/**
+		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
+		*/
+
+		public function modeleOdt( $data ) {
+			return "Contratinsertion/contratinsertion.odt";
+		}
+		
+		
+		
+		/**
+		* Récupère les données pour le PDf
+		*/
+
+		public function getDataForPdf( $contratinsertion_id, $user_id ) {
+
+			$this->Contratinsertion->Personne->forceVirtualFields = true;
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			
+			$joins = array(
+				$this->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
+				$this->join( 'User', array( 'type' => 'INNER' ) ),
+				$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' )),
+				$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+				$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
+				$this->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
+				$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
+				$this->Contratinsertion->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER'  )),
+				$this->Contratinsertion->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) )
+			);
+
+			$queryData = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->User->fields(),
+					$this->Contratinsertion->fields(),
+					$this->Contratinsertion->Personne->fields(),
+					$this->Contratinsertion->Personne->Prestation->fields(),
+					$this->Contratinsertion->Personne->Dsp->fields(),
+					$this->Contratinsertion->Personne->DspRev->fields(),
+					$this->Contratinsertion->Personne->Foyer->fields(),
+					$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
+					array(
+						$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
+						'Historiqueetatpe.identifiantpe',
+						'Historiqueetatpe.etat'
+					)
+				),
+				'joins' => $joins,
+				'conditions' => array(
+					'Cer93.contratinsertion_id' => $contratinsertion_id,
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Dsp.id IS NULL',
+							'Dsp.id IN ( '.$this->Contratinsertion->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'DspRev.id IS NULL',
+							'DspRev.id IN ( '.$this->Contratinsertion->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Informationpe.id IS NULL',
+							'Informationpe.id IN( '.$Informationpe->sqDerniere( 'Personne' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Historiqueetatpe.id IS NULL',
+							'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
+						)
+					)
+				),
+				'contain' => false
+			);
+
+			// On copie les DspsRevs si elles existent à la place des DSPs (on garde l'information la plus récente)
+			if( !empty( $data['DspRev']['id'] ) ) {
+				$data['Dsp'] = $data['DspRev'];
+				unset( $data['DspRev'], $data['Dsp']['id'], $data['Dsp']['dsp_id'] );
+			}
+			$data = $this->find( 'first', $queryData );
+			
+			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
+				'all',
+				array(
+					'fields' => array(
+						'"Personne"."qual" AS "Compofoyercer93__qual"',
+						'"Personne"."nom" AS "Compofoyercer93__nom"',
+						'"Personne"."prenom" AS "Compofoyercer93__prenom"',
+						'"Personne"."dtnai" AS "Compofoyercer93__dtnai"',
+						'"Prestation"."rolepers" AS "Compofoyercer93__rolepers"'
+					),
+					'conditions' => array( 'Personne.foyer_id' => $data['Foyer']['id'] ),
+					'contain' => array(
+						'Prestation'
+					)
+				)
+			);
+			
+			$diplomescers93 = $this->Diplomecer93->find(
+				'all',
+				array(
+					'fields' => array(
+						'Diplomecer93.id',
+						'Diplomecer93.cer93_id',
+						'Diplomecer93.name',
+						'Diplomecer93.annee'
+					),
+					'conditions' => array( 'Diplomecer93.cer93_id' => $data['Cer93']['id'] ),
+					'order' => array( 'Diplomecer93.annee DESC' ),
+					'contain' => false
+				)
+			);
+
+			// Bloc 4 : Formation et expériece
+			// Récupération des informations de diplômes de l'allocataire
+			$expsproscers93 = $this->Expprocer93->find(
+				'all',
+				array(
+					'fields' => array(
+						'Expprocer93.id',
+						'Expprocer93.cer93_id',
+						'Expprocer93.metierexerce_id',
+						'Expprocer93.secteuracti_id',
+						'Expprocer93.anneedeb',
+						'Expprocer93.duree',
+					),
+					'conditions' => array( 'Expprocer93.cer93_id' => $data['Cer93']['id'] ),
+					'order' => array( 'Expprocer93.anneedeb DESC' ),
+					'contain' => false
+				)
+			);
+
+			return array(
+				$data,
+				'compofoyer' => $composfoyerscers93,
+				'exppro' => $expsproscers93,
+				'diplome' => $diplomescers93
+			);
+		}
+		
 		
 		/**
 		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
@@ -449,8 +639,8 @@
 		 * @param integer $user_id Id de l'utilisateur connecté
 		 * @return string
 		 */
-		public function getDefaultPdf( $id ) {
-			$data = $this->getDataForPdf( $id );
+		public function getDefaultPdf( $contratinsertion_id, $user_id ) {
+			$data = $this->getDataForPdf( $contratinsertion_id, $user_id );
 			$modeleodt = $this->modeleOdt( $data );
 
 			$Option = ClassRegistry::init( 'Option' );
@@ -465,7 +655,8 @@
 				),
 				$this->enums()
 			);
-
+debug($data);
+die();
 			return $this->ged( $data, $modeleodt, false, $options );
 		}
 
