@@ -18,23 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
-msgid "Metierexerce.name"
-msgstr "Métier exercé"
+msgid "Typesujetcer93.name"
+msgstr "Type de sujet sur lequel le CER porte"
 
-msgid "Metiersexerces::index"
-msgstr "Table de paramétrage des métiers exercés"
+msgid "Typesujetcer93.sujetcer93_id"
+msgstr "Sujet lié"
 
-msgid "Metierexerce::index::empty"
-msgstr "Aucun métier défini"
+msgid "Typessujetscers93::index"
+msgstr "Table de paramétrage des types de sujet sur lequel le CER porte"
 
-msgid "Metiersexerces::add"
-msgstr "Ajouter un métier"
+msgid "Typesujetcer93::index::empty"
+msgstr "Aucun type de sujet défini"
 
-msgid "Metiersexerces::edit"
-msgstr "Modifier un métier"
+msgid "Typessujetscers93::add"
+msgstr "Ajouter un type de sujet"
 
-msgid "Metiersexerces::delete"
-msgstr "Supprimer un métier"
+msgid "Typessujetscers93::edit"
+msgstr "Modifier un type de sujet"
 
-msgid "Metiersexerces::delete::confirm"
+msgid "Typessujetscers93::delete"
+msgstr "Supprimer un type de sujet"
+
+msgid "Typessujetscers93::delete::confirm"
 msgstr "Confirmer la suppression ?"

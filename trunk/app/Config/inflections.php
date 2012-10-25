@@ -375,7 +375,10 @@
 		'expprocer93' => 'expsproscers93',
 		'cohortecer93' => 'cohortescers93',
 		'histochoixcer93' => 'histoschoixcers93',
-		'naturecontrat' => 'naturescontrats'
+		'naturecontrat' => 'naturescontrats',
+		'sujetcer93' => 'sujetscers93',
+		'cer93_sujetcer93' => 'cers93_sujetscers93',
+		'typesujetcer93' => 'typessujetscers93',
 	);
 
 	/**

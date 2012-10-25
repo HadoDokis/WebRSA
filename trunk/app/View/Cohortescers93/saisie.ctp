@@ -89,7 +89,7 @@
 						$cer93['Contratinsertion']['rg_ci'],
 						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
-						$cer93['Cer93']['formeci'],
+						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
