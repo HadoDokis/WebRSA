@@ -416,6 +416,16 @@
 				);
 				$expsproscers93 = array( 'Expprocer93' => Set::classicExtract( $expsproscers93, '{n}.Expprocer93' ) );
 				$dataActuelCer = Set::merge( $dataActuelCer, $expsproscers93 );
+				
+				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
+				$sujetscers93 = $this->Cer93Sujetcer93->find(
+					'all',
+					array(
+						'conditions' => array( 'Cer93Sujetcer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
+						'contain' => false
+					)
+				);
+				$dataActuelCer = Set::merge( $dataActuelCer, array( 'Sujetcer93' => array( 'Sujetcer93' => Set::extract( '/Cer93Sujetcer93/sujetcer93_id', $sujetscers93 ) ) ) );
 			}
 
 			//Donnée du précédent CER validé

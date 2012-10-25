@@ -219,12 +219,12 @@
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
-debug($this->request->data);
+
 				if( $this->Cer93->saveFormulaire( $this->request->data ) ) {
-					$this->Cer93->Contratinsertion->rollback(); //FIXME
+					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 				s	$this->redirect( array( 'action' => 'index', $personne_id ) );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Cer93->Contratinsertion->rollback();
@@ -252,6 +252,19 @@ debug($this->request->data);
 					'order' => array( 'Sujetcer93.name ASC' )
 				)
 			);
+			
+			$typessujetscers93 = $this->Cer93->Sujetcer93->Typesujetcer93->find(
+				'list',
+				array(
+					'fields' => array(
+						'Typesujetcer93.id',
+						'Typesujetcer93.name',
+						'Typesujetcer93.sujetcer93_id',
+					),
+					'order' => array( 'Typesujetcer93.sujetcer93_id ASC', 'Typesujetcer93.name ASC' )
+				)
+			);
+			$this->set( 'typessujetscers93', $typessujetscers93 );
 
 			// Options
 			$options = array(
