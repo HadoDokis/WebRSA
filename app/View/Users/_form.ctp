@@ -20,10 +20,18 @@
 	<?php echo $this->Form->input( 'User.date_fin_hab', array( 'label' => required(  __( 'date_fin_hab' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y') + 10, 'minYear'=>date('Y') - 10, 'empty' => true ) ) ;?>
 </fieldset>
 <div><?php echo $this->Form->input( 'User.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
+<script type="text/javascript">
+	function toutCocherZonesgeographiques() {
+		return toutCocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+	function toutDecocherZonesgeographiques() {
+		return toutDecocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+</script>
 <fieldset class="col2" id="filtres_zone_geo">
 	<legend>Zones géographiques</legend>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();" ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();" ) );?>
 
 	<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>
@@ -60,7 +68,6 @@
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
-
 		observeDisableFieldsOnValue( 'UserStructurereferenteId', [ 'UserReferentId' ], '', false );
 		observeDisableFieldsOnValue( 'UserReferentId', [ 'UserStructurereferenteId' ], '', false );
 	} );
