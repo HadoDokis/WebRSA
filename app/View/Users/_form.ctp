@@ -22,11 +22,6 @@
 <div><?php echo $this->Form->input( 'User.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
 <fieldset class="col2" id="filtres_zone_geo">
 	<legend>Zones géographiques</legend>
-	<script type="text/javascript">
-		document.observe("dom:loaded", function() {
-			observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
-		});
-	</script>
 	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
 	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
 
@@ -64,6 +59,8 @@
 </fieldset>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
+		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
+
 		observeDisableFieldsOnValue( 'UserStructurereferenteId', [ 'UserReferentId' ], '', false );
 		observeDisableFieldsOnValue( 'UserReferentId', [ 'UserStructurereferenteId' ], '', false );
 	} );

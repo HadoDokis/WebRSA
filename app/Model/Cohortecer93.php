@@ -48,12 +48,13 @@
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci'/*, array( 'Contratinsertion.decision_ci' => 'V' )*/ );
+
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
 			$sqDernierRdv = $Personne->Rendezvous->sqDernier( 'Personne.id' );
-			
+
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
-			
+
 // 			if( $statut != 'visualisation') {
 // 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
 // 			}
@@ -79,7 +80,7 @@
 					)
 				)
 			);
-			
+
 			// Choix du référent affecté ?
 			if( isset( $search['PersonneReferent']['referent_id'] ) && ( $search['PersonneReferent']['referent_id'] != '' ) ) {
 				$conditions['PersonneReferent.referent_id'] = $search['PersonneReferent']['referent_id'];
@@ -110,13 +111,13 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
 			$conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
-			
+
 			//Filtre sur la position du CER
 			$positioncer = Set::extract( $search, 'Cer93.positioncer' );
 			if( isset( $search['Cer93']['positioncer'] ) && !empty( $search['Cer93']['positioncer'] ) ) {
 				$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
 			}
-			
+
 			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
 				if( $statut == 'avalidercpdv' ) {
 					$position = '02attdecisioncpdv';
@@ -130,7 +131,7 @@
 				else if( $statut == 'validationcadre' ) {
 					$position = '05secondelecture';
 				}
-					
+
 				$conditions[] = array(
 					'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
 						array_words_replace(
@@ -160,7 +161,7 @@
 						)
 					).')'
 				);
-				
+
 			}
 
 			$querydata = array(
@@ -219,21 +220,25 @@
 				'limit' => 10
 			);
 
-			// 
+			//
 			if( $statut != 'visualisation') {
-				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
+				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest(
+					'Histochoixcer93',
+					'modified',
+					array( 'Contratinsertion.decision_ci' => 'E' )
+				);
 				$querydata['conditions'][] = $sqDerniereHistochoixcer93Etape;
-				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
+//				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
 
 				$querydata['fields'] = array_merge( $querydata['fields'], $Personne->Contratinsertion->Cer93->Histochoixcer93->fields() );
 				$querydata['joins'][] = $Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) );
 			}
 			else {
-				$fields = $Personne->Contratinsertion->Cer93->Histochoixcer93->fields(); 
+				$fields = $Personne->Contratinsertion->Cer93->Histochoixcer93->fields();
 				$etapes = array( '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre' );
 				foreach( $etapes as $e ) {
 					$alias = 'Histochoixcer93etape'.preg_replace( '/^([0-9]+).*$/', '\1', $e );
-					
+
 					$querydata['fields'] = array_merge( $querydata['fields'], array_words_replace( $fields, array( 'Histochoixcer93' => $alias ) ) );
 					$querydata['joins'][] = array_words_replace(
 						$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER', 'conditions' => array( 'Histochoixcer93.etape' => $e ) ) ),
@@ -254,11 +259,11 @@
 
 			return $querydata;
 		}
-		
-		
+
+
 		/**
 		 *	Fonction permettant de précharger le formulaire de cohorte avec les informations
-		 *	du dernier historique lié aux cers93 
+		 *	du dernier historique lié aux cers93
 		 *	@param $datas
 		 *	@return array()
 		 */
@@ -282,7 +287,7 @@
 					'dossier_id' => $data['Dossier']['id']
 				);
 			}
-			
+
 			return $formData;
 		}
 	}
