@@ -22,7 +22,12 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'app.Cer93',
+			'app.Contratcomplexeep93',
+			'app.Contratinsertion',
+			'app.Dossierep',
 			'app.Histochoixcer93',
+			'app.Personne',
 		);
 
 		/**
@@ -142,15 +147,16 @@
 		}
 
 		/**
-		 * Test de la méthode Histochoixcer93::saveDecision()
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 02attdecisioncpdv.
 		 *
 		 * @return void
 		 */
-		public function testSaveDecision() {
+		public function testSaveDecision02attdecisioncpdv() {
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '3',
+					'cer93_id' => '1',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -163,7 +169,803 @@
 				)
 			);
 			$result = $this->Histochoixcer93->saveDecision( $data );
-			$expected = null;
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '02attdecisioncpdv',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '02attdecisioncpdv',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'E',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => NULL,
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 03attdecisioncg, sans rejet.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision03attdecisioncgSansRejet() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '03attdecisioncg',
+					'isrejet' => 0
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '03attdecisioncg',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '03attdecisioncg',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'E',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => NULL,
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 03attdecisioncg, sans rejet.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision03attdecisioncgAvecRejet() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '03attdecisioncg',
+					'isrejet' => 1
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '99rejete',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '03attdecisioncg',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'R',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => '2012-10-25',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 05secondelecture, decision valide.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision05secondelectureValide() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '05secondelecture',
+					'decisioncs' => 'valide'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' =>
+				array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '99valide',
+				),
+				'Histochoixcer93' =>
+				array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '05secondelecture',
+					'decisioncs' => 'valide',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' =>
+				array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'V',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => '2012-10-25',
+					'datedecision' => '2012-10-25',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 05secondelecture, decision passageep.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision05secondelecturePassageep() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '05secondelecture',
+					'decisioncs' => 'passageep'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+						'Contratcomplexeep93.id',
+						'Dossierep.id',
+						'Dossierep.personne_id',
+						'Dossierep.themeep',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+						$this->Histochoixcer93->Cer93->Contratinsertion->join( 'Contratcomplexeep93' ),
+						$this->Histochoixcer93->Cer93->Contratinsertion->Contratcomplexeep93->join( 'Dossierep' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '07attavisep',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '05secondelecture',
+					'decisioncs' => 'passageep',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'E',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => NULL,
+				),
+				'Contratcomplexeep93' => array(
+					'id' => 1,
+				),
+				'Dossierep' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'themeep' => 'contratscomplexeseps93',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 05secondelecture, decision aviscadre.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision05secondelectureAviscadre() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '05secondelecture',
+					'decisioncs' => 'aviscadre'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '05secondelecture',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '05secondelecture',
+					'decisioncs' => 'aviscadre',
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'E',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => NULL,
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 06attaviscadre, décision valide.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision06attaviscadreValide() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '06attaviscadre',
+					'decisioncadre' => 'valide'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '99valide',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '06attaviscadre',
+					'decisioncs' => NULL,
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'V',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => '2012-10-25',
+					'datedecision' => '2012-10-25',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 06attaviscadre, décision rejete.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision06attaviscadreRejete() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '06attaviscadre',
+					'decisioncadre' => 'rejete'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '99rejete',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '06attaviscadre',
+					'decisioncs' => NULL,
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'R',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => '2012-10-25',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
+		 * 06attaviscadre, décision passageep.
+		 *
+		 * @return void
+		 */
+		public function testSaveDecision06attaviscadrePassageep() {
+			$data = array(
+				'Histochoixcer93' => array(
+					'id' => '',
+					'cer93_id' => '1',
+					'user_id' => '6',
+					'formeci' => 'S',
+					'commentaire' => 'drsg',
+					'datechoix' => array(
+						'day' => '25',
+						'month' => '10',
+						'year' => '2012'
+					),
+					'etape' => '06attaviscadre',
+					'decisioncadre' => 'passageep'
+				)
+			);
+			$result = $this->Histochoixcer93->saveDecision( $data );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// On vérifie que l'on a bien enregistré les informations
+			$result = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array(
+						'Cer93.id',
+						'Cer93.contratinsertion_id',
+						'Cer93.user_id',
+						'Cer93.positioncer',
+						'Histochoixcer93.id',
+						'Histochoixcer93.cer93_id',
+						'Histochoixcer93.user_id',
+						'Histochoixcer93.etape',
+						'Histochoixcer93.decisioncs',
+						'Histochoixcer93.datechoix',
+						'Contratinsertion.id',
+						'Contratinsertion.personne_id',
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.forme_ci',
+						'Contratinsertion.datevalidation_ci',
+						'Contratinsertion.datedecision',
+						'Contratcomplexeep93.id',
+						'Dossierep.id',
+						'Dossierep.personne_id',
+						'Dossierep.themeep',
+					),
+					'conditions' => array(
+						'Histochoixcer93.id' => $this->Histochoixcer93->id
+					),
+					'joins' => array(
+						$this->Histochoixcer93->join( 'Cer93' ),
+						$this->Histochoixcer93->Cer93->join( 'Contratinsertion' ),
+						$this->Histochoixcer93->Cer93->Contratinsertion->join( 'Contratcomplexeep93' ),
+						$this->Histochoixcer93->Cer93->Contratinsertion->Contratcomplexeep93->join( 'Dossierep' ),
+					),
+					'contain' => false
+				)
+			);
+
+			$expected = array(
+				'Cer93' => array(
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'positioncer' => '07attavisep',
+				),
+				'Histochoixcer93' => array(
+					'id' => 1,
+					'cer93_id' => 1,
+					'user_id' => 6,
+					'etape' => '06attaviscadre',
+					'decisioncs' => NULL,
+					'datechoix' => '2012-10-25',
+				),
+				'Contratinsertion' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'decision_ci' => 'E',
+					'forme_ci' => NULL,
+					'datevalidation_ci' => NULL,
+					'datedecision' => NULL,
+				),
+				'Contratcomplexeep93' => array(
+					'id' => 1,
+				),
+				'Dossierep' => array(
+					'id' => 1,
+					'personne_id' => 1,
+					'themeep' => 'contratscomplexeseps93',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Histochoixcer93::sqDernier()
+		 *
+		 * @return void
+		 */
+		public function testSqDernier() {
+			$result = $this->Histochoixcer93->sqDernier( 'Cer.id' );
+			$expected = 'SELECT public.histoschoixcers93.id
+					FROM public.histoschoixcers93
+					WHERE
+						public.histoschoixcers93.cer93_id = Cer.id
+					ORDER BY public.histoschoixcers93.modified DESC
+					LIMIT 1';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
