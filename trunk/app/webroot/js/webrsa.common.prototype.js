@@ -431,7 +431,13 @@ function disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleV
 			elmt.removeClassName( 'disabled' );
 		} );
 		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-			elmt.enable();
+			// INFO: elmt.enable() ne fonctionne pas avec des button
+			try{
+				elmt.enable();
+			} catch( err ) {
+				elmt.disabled = false;
+			}
+
 		} );
 	}
 	else {
@@ -443,7 +449,12 @@ function disableFieldsetOnValue( selectId, fieldsetId, value, condition, toggleV
 			elmt.addClassName( 'disabled' );
 		} );
 		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-			elmt.disable();
+			// INFO: elmt.disable() ne fonctionne pas avec des button
+			try{
+				elmt.disable();
+			} catch( err ) {
+				elmt.disabled = true;
+			}
 		} );
 	}
 
@@ -480,7 +491,12 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibilit
 			elmt.removeClassName( 'disabled' );
 		} );
 		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-			elmt.enable();
+			// INFO: elmt.disable() ne fonctionne pas avec des button
+			try{
+				elmt.enable();
+			} catch( err ) {
+				elmt.disabled = false;
+			}
 		} );
 	}
 	else {
@@ -492,7 +508,12 @@ function disableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVisibilit
 			elmt.addClassName( 'disabled' );
 		} );
 		$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-			elmt.disable();
+			// INFO: elmt.enable() ne fonctionne pas avec des button
+			try{
+				elmt.disable();
+			} catch( err ) {
+				elmt.disabled = true;
+			}
 		} );
 	}
 }
@@ -773,7 +794,12 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
 			} );
 
 			$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-				elmt.enable();
+				// INFO: elmt.enable() ne fonctionne pas avec des button
+				try{
+					elmt.enable();
+				} catch( err ) {
+					elmt.disabled = false;
+				}
 			} );
 		}
 		else {
@@ -787,7 +813,12 @@ function disableFieldsetOnRadioValue( form, radioName, fieldsetId, value, condit
 			} );
 
 			$( fieldset ).getElementsBySelector( 'input', 'select', 'button', 'textarea' ).each( function( elmt ) {
-				elmt.disable();
+				// INFO: elmt.disable() ne fonctionne pas avec des button
+				try{
+					elmt.disable();
+				} catch( err ) {
+					elmt.disabled = true;
+				}
 			} );
 		}
 	}
@@ -1140,7 +1171,12 @@ function enableAndShowFormPart( formpartid ) {
 	} );
 
 	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
-		$( elmt ).enable();
+		// INFO: elmt.enable() ne fonctionne pas avec des button
+		try{
+			elmt.enable();
+		} catch( err ) {
+			elmt.disabled = false;
+		}
 	} );
 }
 
@@ -1157,7 +1193,12 @@ function disableAndHideFormPart( formpartid ) {
 	} );
 
 	$( formpartid ).getElementsBySelector( 'input', 'select', 'button', 'textarea', 'radio' ).each( function( elmt ) {
-		$( elmt ).disable();
+		// INFO: elmt.disable() ne fonctionne pas avec des button
+		try{
+			elmt.disable();
+		} catch( err ) {
+			elmt.disabled = true;
+		}
 	} );
 }
 
