@@ -339,7 +339,21 @@
 
 			$cers93 = $this->Contratinsertion->Personne->find( 'all', $querydata );
 
+			$options = array(
+				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
+				'cantons' => $this->Gestionzonesgeos->listeCantons(),
+				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
+				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
+				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
+				'rolepers' => $this->Option->rolepers(),
+				'formeci' => $this->Option->forme_ci()
+			);
+			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums(), $this->Contratinsertion->Cer93->Histochoixcer93->enums() );
+			$this->set( compact( 'options' ) );
 			$this->layout = '';
+			$this->set( 'etape', $etape );
 			$this->set( 'cers93', $cers93 );
 		}
 	}
