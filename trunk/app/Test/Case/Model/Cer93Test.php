@@ -50,6 +50,7 @@
 		/**
 		 * Test de la méthode Cer93::prepareFormData().
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testPrepareFormDataSansCerPrecedent() {
@@ -97,6 +98,7 @@
 		/**
 		 * Test de la méthode Cer93::saveFormulaire().
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveFormulaire() {

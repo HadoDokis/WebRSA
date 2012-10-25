@@ -127,6 +127,10 @@
 			$params = array();
 			if( count( $rule['rule'] ) > 1 ) {
 				$params = array_slice( $rule['rule'], 1 );
+
+				if( is_array( $params[0] ) ) {
+					$params = $params[0];
+				}
 			}
 
 			if( isset( $rule['domain'] ) ) {
