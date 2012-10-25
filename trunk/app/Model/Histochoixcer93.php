@@ -145,10 +145,10 @@
 		 */
 		public function saveDecision( $data ) {
 			$success = $this->save( $data );
-			
+
 			// Parfois le champ datechoix vient du formulaire parfois c'est un champ caché
 			$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );
-				
+
 			if( $data['Histochoixcer93']['etape'] == '03attdecisioncg' && $data['Histochoixcer93']['isrejet'] ) {
 				$success = $this->Cer93->updateAll(
 					array( 'Cer93.positioncer' => '\'99rejete\'' ),

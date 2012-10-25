@@ -2,7 +2,7 @@
 	class Cer93Test extends CakeTestCase
 	{
 		/**
-		 * Fixtures associées à cette classe de tests unitaires.
+		 * Fixtures utilisées dans ce test unitaire.
 		 *
 		 * @var array
 		 */

@@ -1,7 +1,7 @@
 <?php
 	$this->pageTitle = '5. Tableau de suivi';
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	
+
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
 
 	if( isset( $cers93 ) ) {
@@ -12,11 +12,11 @@
 			$pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs );
 			echo $pagination;
 // - Non orienté PDV : avec comme domaine de valeurs ( visible uniquement des profils CG)
-// 
+//
 // 	- si allocataire non orienté alors : lien hypertexte Orientation vers le dossier allocataire rubrique Orientation
 // 	- si allocataire est orienté PE ou Social : lien hypertexte Réorientation vers le dossier allocataire rubrique Orientation
 // 	- si allocataire orienté vers PDV : vide
-// 
+//
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<colgroup />
 					<colgroup />
@@ -57,13 +57,13 @@
 				</thead>';
 			echo '<tbody>';
 			foreach( $cers93 as $index => $cer93 ) {
-				if( $cer93['Histochoixcer93etape03']['isrejet'] == '1' ) {
+				if( isset( $cer93['Histochoixcer93etape03']['isrejet'] ) && ( $cer93['Histochoixcer93etape03']['isrejet'] == '1' ) ) {
 					$validationcpdv = 'Rejeté';
 				}
 				else{
 					$validationcpdv = Set::enum( $cer93['Histochoixcer93etape03']['etape'], $options['Cer93']['positioncer'] );
 				}
-				
+
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],

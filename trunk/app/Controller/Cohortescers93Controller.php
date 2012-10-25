@@ -97,7 +97,7 @@
 
 			$this->_index( $structurereferente_id );
 		}
-		
+
 		/**
 		 * ....
 		 * Fonction pour la saisie des CERs (avant entré dans la partie validation/décision
@@ -107,7 +107,7 @@
 		public function saisie() {
 			$this->_affichage();
 		}
-		
+
 		/**
 		 * ....
 		 * Fonction pour la visualisation des CERs (après gestion par le workflow)
@@ -127,7 +127,7 @@
 		public function avalidercpdv() {
 			$this->_validations();
 		}
-		
+
 		/**
 		 * ....
 		 * Fonction pour la validation CG, première lecture
@@ -137,7 +137,7 @@
 		public function premierelecture() {
 			$this->_validations();
 		}
-		
+
 		/**
 		 * ....
 		 * Fonction pour la validation CS, seconde lecture
@@ -147,7 +147,7 @@
 		public function validationcs() {
 			$this->_validations();
 		}
-		
+
 		/**
 		 * ....
 		 * Fonction pour la validation cadre
@@ -157,7 +157,7 @@
 		public function validationcadre() {
 			$this->_validations();
 		}
-		
+
 		/**
 		 * ....
 		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
@@ -189,7 +189,7 @@
 		 */
 		protected function _index( $structurereferente_id ) {
 			if( !empty( $this->request->data ) ) {
-			
+
 					// Traitement du formulaire d'affectation
 				if( ( $this->action != 'saisie' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
 					$dossiers_ids = array_unique( Set::extract( '/Histochoixcer93/dossier_id', $this->request->data ) );
@@ -207,12 +207,12 @@
 
 							foreach( $datas as $key => $data ) {
 								$saved = $this->Contratinsertion->Cer93->Histochoixcer93->saveDecision( $data );
-								
+
 								if( $saved ) {
 									$this->Contratinsertion->Cer93->Histochoixcer93->commit();
 									$this->Cohortes->release( $dossiers_ids );
 									$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
-									unset( $this->request->data['Histochoixcer93'] );	
+									unset( $this->request->data['Histochoixcer93'] );
 								}
 								else {
 									$this->Contratinsertion->Cer93->Histochoixcer93->rollback();
@@ -237,8 +237,8 @@
 
 					$this->Contratinsertion->Cer93->Histochoixcer93->validate = $histochoixcer93Validate;
 				}
-				
-		
+
+
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortecer93->search(
 					$this->action,
@@ -281,7 +281,7 @@
 					}
 				}
 			}
-			
+
 
 
 			$this->set( 'structurereferente_id', $structurereferente_id );
@@ -315,8 +315,8 @@
 				$this->render( 'visualisation' );
 			}
 		}
-		
-		
+
+
 		/**
 		 * @return void
 		 */
