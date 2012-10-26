@@ -311,6 +311,7 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_isrejet_in_list_chk CHECK ( cakephp_validate_in_list( isrejet, ARRAY['0', '1'] ) );
 
 -------------------------------------------------------------------------------------------------------------
+
 DROP TABLE IF EXISTS cers93_sujetscers93 CASCADE;
 CREATE TABLE cers93_sujetscers93 (
     id                 SERIAL NOT NULL PRIMARY KEY,
@@ -336,7 +337,7 @@ CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetc
 -- );
 -- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx;
 -- CREATE INDEX cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(cer93_sujetcer93_id);
--- 
+--
 -- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx;
 -- CREATE INDEX cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(soussujetcer93_id);
 
@@ -391,6 +392,25 @@ CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetc
 -- cers.positioncer TYPE_POSITIONCER93 -> VARCHAR(20)
 -- cers.isemploitrouv TYPE_NO -> VARCHAR(1)
 -- histoschoixcers93.etape TYPE_POSITIONCER93 -> VARCHAR(20)
+
+--------------------------------------------------------------------------------
+-- 20121026: la table derniersdossiersallocataires permet de se passer d'une
+-- sous-requête très coûteuse (à condition de lancer le shell
+-- Derniersdossiersallocataires) afin de trouver le dernier dossier d'un allocataire.
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS derniersdossiersallocataires CASCADE;
+CREATE TABLE derniersdossiersallocataires (
+	id 				SERIAL NOT NULL PRIMARY KEY,
+	personne_id		INTEGER NOT NULL REFERENCES personnes(id),
+	dossier_id		INTEGER NOT NULL REFERENCES dossiers(id)
+);
+CREATE INDEX derniersdossiersallocataires_personne_id_idx ON derniersdossiersallocataires(personne_id);
+CREATE INDEX derniersdossiersallocataires_dossier_id_idx ON derniersdossiersallocataires(dossier_id);
+CREATE UNIQUE INDEX derniersdossiersallocataires_personne_id_dossier_id_idx ON derniersdossiersallocataires(personne_id,dossier_id);
+
+SELECT add_missing_constraint ( 'public', 'derniersdossiersallocataires', 'derniersdossiersallocataires_dossier_id_fkey', 'dossiers', 'dossier_id', true );
+SELECT add_missing_constraint ( 'public', 'derniersdossiersallocataires', 'derniersdossiersallocataires_personne_id_fkey', 'personnes', 'personne_id', true );
 
 -- *****************************************************************************
 COMMIT;

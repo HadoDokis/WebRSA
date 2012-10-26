@@ -433,7 +433,7 @@
 			'statutrdv_id' => 1
 		)
 	);
-	
+
 	/**
 	 * Permet d'indiquer les valeurs par défaut des formulaires de recherche.
 	 * Utilisé pour le fomulaire de recherche par Dossiers PCGs -> Par Gestionnaires PCGs
@@ -448,4 +448,15 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet de rechercher le dernier dossier d'un allocataire dans la table
+	 * derniersdossiersallocataires (il faudra mettre le shell Derniersdossiersallocataires
+	 * en tâche planifiée) afin de se passer d'une sous-requête coûteuse dans les
+	 * recherches.
+	 *
+	 * @param boolean
+	 * @default null
+	 */
+	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
 ?>

@@ -94,19 +94,25 @@
 		<?php
 			$fields = array();
 			$controllerName = Inflector::camelize( $tablename );
+			$modelName = Inflector::classify( $controllerName );
 
 			if( count( $errors ) > 0 ) {
 				$fields = array_keys( Set::flatten( $errors[0] ) );
 			}
 
-			echo $this->Default2->index(
-				$errors,
-				$fields,
-				array(
+			$cohorteParams = array();
+			if( in_array( "{$modelName}.id", $fields ) ) {
+				$cohorteParams = array(
 					'actions' => array(
 						"{$controllerName}::edit"
 					)
-				)
+				);
+			}
+
+			echo $this->Default2->index(
+				$errors,
+				$fields,
+				$cohorteParams
 			);
 		?>
 		<?php endforeach;?>
