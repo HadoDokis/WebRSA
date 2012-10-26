@@ -225,7 +225,7 @@
     <?php
         echo $this->Default2->subform(
             array(
-                'Motifsortie.Motifsortie' => array( 'multiple' => 'checkbox', 'empty' => false )
+                'Motifsortie.Motifsortie' => array( 'label' => 'Liste des motifs de sortie liés à l\'action', 'multiple' => 'checkbox', 'empty' => false )
             ),
             array(
                 'options' => $motifssortie

@@ -272,7 +272,7 @@
 					echo $this->Default->subform(
 						array(
 							'ActioncandidatPersonne.sortiele' => array(  'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2  ),
-							'ActioncandidatPersonne.motifsortie_id'
+							'ActioncandidatPersonne.motifsortie_id' => array( 'type' => 'select', 'empty' => true )
 						),
 						array(
 							'domain' => $domain,
