@@ -62,8 +62,8 @@
 					h( 'Types de sujet du CER' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'typessujetscers93', 'action' => 'index' ),
-						$this->Permissions->check( 'typessujetscers93', 'index' )
+						array( 'controller' => 'soussujetscers93', 'action' => 'index' ),
+						$this->Permissions->check( 'soussujetscers93', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -74,8 +74,8 @@
 					h( 'Association entre les sujets et leurs types' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'sujetscers93_typessujetscers93', 'action' => 'index' ),
-						$this->Permissions->check( 'sujetscers93_typessujetscers93', 'index' )
+						array( 'controller' => 'sujetscers93_soussujetscers93', 'action' => 'index' ),
+						$this->Permissions->check( 'sujetscers93_soussujetscers93', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),

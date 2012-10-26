@@ -33,7 +33,7 @@
 				<thead>
 					<tr>
 						<th rowspan="2">Commune</th>
- 						<th rowspan="2">Non orienté PDV</th>
+ 						<!-- <th rowspan="2">Non orienté PDV</th> -->
 						<th rowspan="2">Nom/Prénom</th>
 						<th rowspan="2">Structure référente</th>
 						<th rowspan="2">Référent</th>
@@ -67,7 +67,7 @@
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],
-						'e',
+// 						'e',
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Structurereferente']['lib_struc'],
 						$cer93['Referent']['nom_complet'],

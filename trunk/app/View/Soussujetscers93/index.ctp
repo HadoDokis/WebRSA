@@ -1,25 +1,25 @@
 <?php
 	echo $this->Xhtml->tag(
 		'h1',
-		$this->pageTitle = __d( 'typesujetcer93', "Typessujetscers93::{$this->action}" )
+		$this->pageTitle = __d( 'soussujetcer93', "Soussujetscers93::{$this->action}" )
 	)
 ?>
 
 <?php
 	$fields = array(
 		'Sujetcer93.name',
-		'Typesujetcer93.name'
+		'Soussujetcer93.name'
 	);
 	echo $this->Default2->index(
-		$typessujetscers93,
+		$soussujetscers93,
 		$fields,
 		array(
 			'cohorte' => false,
 			'actions' => array(
-				'Typessujetscers93::edit',
-				'Typessujetscers93::delete',
+				'Soussujetscers93::edit',
+				'Soussujetscers93::delete',
 			),
-			'add' => 'Typessujetscers93::add'
+			'add' => 'Soussujetscers93::add'
 		)
 	);
 	echo '<br />';

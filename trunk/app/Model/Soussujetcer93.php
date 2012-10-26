@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source du modèle Typesujetcer93.
+	 * Fichier source du modèle Soussujetcer93.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,25 +9,25 @@
 	 */
 
 	/**
-	 * Classe Typesujetcer93.
+	 * Classe Soussujetcer93.
 	 *
 	 * @package app.Model
 	 */
-	class Typesujetcer93 extends AppModel
+	class Soussujetcer93 extends AppModel
 	{
 		/**
 		 * Nom.
 		 *
 		 * @var string
 		 */
-		public $name = 'Typesujetcer93';
+		public $name = 'Soussujetcer93';
 
 		/**
 		 * Tri par défaut
 		 *
 		 * @var array
 		 */
-		public $order = array( 'Typesujetcer93.name ASC' );
+		public $order = array( 'Soussujetcer93.name ASC' );
 
 		
 		/**

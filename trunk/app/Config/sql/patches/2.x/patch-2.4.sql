@@ -136,20 +136,20 @@ CREATE UNIQUE INDEX sujetscers93_name_idx ON sujetscers93( name );
 
 -------------------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS typessujetscers93 CASCADE;
-CREATE TABLE typessujetscers93 (
+DROP TABLE IF EXISTS soussujetscers93 CASCADE;
+CREATE TABLE soussujetscers93 (
 	id					SERIAL NOT NULL PRIMARY KEY,
 	name				VARCHAR(250) NOT NULL,
 	sujetcer93_id		INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );
-COMMENT ON TABLE typessujetscers93 IS 'Types de sujet sur lequel porte le CER CG93 (bloc 6)';
-DROP INDEX IF EXISTS typessujetscers93_name_idx;
-CREATE UNIQUE INDEX typessujetscers93_name_idx ON typessujetscers93( name );
+COMMENT ON TABLE soussujetscers93 IS 'Types de sujet sur lequel porte le CER CG93 (bloc 6)';
+DROP INDEX IF EXISTS soussujetscers93_name_idx;
+CREATE UNIQUE INDEX soussujetscers93_name_idx ON soussujetscers93( name );
 
-DROP INDEX IF EXISTS typessujetscers93_sujetcer93_id_idx;
-CREATE INDEX typessujetscers93_sujetcer93_id_idx ON typessujetscers93(sujetcer93_id);
+DROP INDEX IF EXISTS soussujetscers93_sujetcer93_id_idx;
+CREATE INDEX soussujetscers93_sujetcer93_id_idx ON soussujetscers93(sujetcer93_id);
 
 -- Tables devenues obsolètes au cours des développements
 DROP TABLE IF EXISTS etatscivilscers93 CASCADE;
@@ -311,7 +311,7 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_isrejet_in_list_chk CHECK ( cakephp_validate_in_list( isrejet, ARRAY['0', '1'] ) );
 
 -------------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS cers93_sujetscers93;
+DROP TABLE IF EXISTS cers93_sujetscers93 CASCADE;
 CREATE TABLE cers93_sujetscers93 (
     id                 SERIAL NOT NULL PRIMARY KEY,
     cer93_id       		INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -325,6 +325,20 @@ CREATE INDEX cers93_sujetscers93_cer93_id_idx ON cers93_sujetscers93(cer93_id);
 DROP INDEX IF EXISTS cers93_sujetscers93_sujetcer93_id_idx;
 CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetcer93_id);
 
+-------------------------------------------------------------------------------------------------------------
+-- DROP TABLE IF EXISTS cers93_sujetscers93_soussujetscers93 CASCADE;
+-- CREATE TABLE cers93_sujetscers93_soussujetscers93 (
+--     id                 SERIAL NOT NULL PRIMARY KEY,
+--     cer93_sujetcer93_id       		INTEGER NOT NULL REFERENCES cers93_sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+--     soussujetcer93_id      INTEGER NOT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+--     created				TIMESTAMP WITHOUT TIME ZONE,
+-- 	modified			TIMESTAMP WITHOUT TIME ZONE
+-- );
+-- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx;
+-- CREATE INDEX cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(cer93_sujetcer93_id);
+-- 
+-- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx;
+-- CREATE INDEX cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(soussujetcer93_id);
 
 -- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
 -- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );

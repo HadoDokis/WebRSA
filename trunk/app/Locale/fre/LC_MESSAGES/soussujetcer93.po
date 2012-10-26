@@ -18,26 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
-msgid "Typesujetcer93.name"
-msgstr "Type de sujet sur lequel le CER porte"
+msgid "Soussujetcer93.name"
+msgstr "Sous-sujet sur lequel le CER porte"
 
-msgid "Typesujetcer93.sujetcer93_id"
+msgid "Soussujetcer93.sujetcer93_id"
 msgstr "Sujet lié"
 
-msgid "Typessujetscers93::index"
-msgstr "Table de paramétrage des types de sujet sur lequel le CER porte"
+msgid "Soussujetscers93::index"
+msgstr "Table de paramétrage des sous-sujets sur lequel le CER porte"
 
-msgid "Typesujetcer93::index::empty"
-msgstr "Aucun type de sujet défini"
+msgid "Soussujetcer93::index::empty"
+msgstr "Aucun sous-sujet défini"
 
-msgid "Typessujetscers93::add"
-msgstr "Ajouter un type de sujet"
+msgid "Soussujetscers93::add"
+msgstr "Ajouter un sous-sujet"
 
-msgid "Typessujetscers93::edit"
-msgstr "Modifier un type de sujet"
+msgid "Soussujetscers93::edit"
+msgstr "Modifier un sous-sujet"
 
-msgid "Typessujetscers93::delete"
-msgstr "Supprimer un type de sujet"
+msgid "Soussujetscers93::delete"
+msgstr "Supprimer un sous-sujet"
 
-msgid "Typessujetscers93::delete::confirm"
+msgid "Soussujetscers93::delete::confirm"
 msgstr "Confirmer la suppression ?"
