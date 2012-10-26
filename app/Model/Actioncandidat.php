@@ -312,7 +312,7 @@
 					),
 					'order' => 'Actioncandidat.name ASC',
 					'conditions' => array(
-						'Actioncandidat.actif' => 'O',
+// 						'Actioncandidat.actif' => 'O',
 						'Actioncandidat.hasfichecandidature' => '1'
 					)
 				)
