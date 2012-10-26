@@ -585,4 +585,15 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet de rechercher le dernier dossier d'un allocataire dans la table
+	 * derniersdossiersallocataires (il faudra mettre le shell Derniersdossiersallocataires
+	 * en tâche planifiée) afin de se passer d'une sous-requête coûteuse dans les
+	 * recherches.
+	 *
+	 * @param boolean
+	 * @default null
+	 */
+	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
 ?>

@@ -535,6 +535,22 @@
 				'insertQuery' => '',
 				'with' => 'ActioncandidatPersonne'
 			),
+			'Dossier' => array(
+				'className' => 'Dossier',
+				'joinTable' => 'derniersdossiersallocataires',
+				'foreignKey' => 'personne_id',
+				'associationForeignKey' => 'dossier_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'Dernierdossierallocataire'
+			),
 			'Referent' => array(
 				'className' => 'Referent',
 				'joinTable' => 'personnes_referents',

@@ -379,6 +379,7 @@
 		'sujetcer93' => 'sujetscers93',
 		'cer93_sujetcer93' => 'cers93_sujetscers93',
 		'soussujetcer93' => 'soussujetscers93',
+		'dernierdossierallocataire' => 'derniersdossiersallocataires',
 	);
 
 	/**

@@ -16,7 +16,7 @@
 	 */
 	class DerniersdossiersallocatairesShell extends XShell
 	{
-		public $uses = array( 'Personne' );
+		public $uses = array( 'Dernierdossierallocataire' );
 
 		/**
 		 *
@@ -24,19 +24,16 @@
 		public function main() {
 			$success = true;
 			$start = microtime( true );
-			$this->Personne->begin();
+			$this->Dernierdossierallocataire->begin();
 
-			$sql = "DROP TABLE IF EXISTS derniersdossiersallocataires CASCADE;
-CREATE TABLE derniersdossiersallocataires (
-	id 				SERIAL NOT NULL PRIMARY KEY,
-	personne_id		INTEGER NOT NULL REFERENCES personnes(id),
-	dossier_id		INTEGER NOT NULL REFERENCES dossiers(id)
-);
-CREATE INDEX derniersdossiersallocataires_personne_id_idx ON derniersdossiersallocataires(personne_id);
-CREATE INDEX derniersdossiersallocataires_dossier_id_idx ON derniersdossiersallocataires(dossier_id);
-CREATE UNIQUE INDEX derniersdossiersallocataires_personne_id_dossier_id_idx ON derniersdossiersallocataires(personne_id,dossier_id);";
-			$this->out( 'Recréation de la table derniersdossiersallocataires' );
-			$success = ( $this->Personne->query( $sql ) !== false ) && $success;
+			$this->out( 'Suppression des entrées de la table derniersdossiersallocataires' );
+			$sql = 'TRUNCATE derniersdossiersallocataires;';
+			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+
+			$this->out( 'Remise à zéro de la clé primaire de la table derniersdossiersallocataires' );
+			$sql = "SELECT pg_catalog.setval('derniersdossiersallocataires_id_seq', ( SELECT max(derniersdossiersallocataires.id) + 1 FROM derniersdossiersallocataires ), false);";
+			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+
 
 			$sql = "INSERT INTO derniersdossiersallocataires (personne_id, dossier_id)
 	SELECT
@@ -82,15 +79,15 @@ CREATE UNIQUE INDEX derniersdossiersallocataires_personne_id_dossier_id_idx ON d
 		WHERE prestations.rolepers IN ( 'DEM', 'CJT' );";
 
 			$this->out( 'Population de la table derniersdossiersallocataires' );
-			$success = ( $this->Personne->query( $sql ) !== false ) && $success;
+			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
 
 			if( $success ) {
-				$this->Personne->commit();
-				$this->out( "Glop" );
+				$this->Dernierdossierallocataire->commit();
+				$this->out( "Succès" );
 			}
 			else {
-				$this->Personne->rollback();
-				$this->err( "Pas glop" );
+				$this->Dernierdossierallocataire->rollback();
+				$this->err( "Erreur" );
 			}
 
 			$this->out( sprintf( "\nExécuté en %s secondes.", number_format( microtime( true ) - $start, 2, ',', ' ' ) ) );

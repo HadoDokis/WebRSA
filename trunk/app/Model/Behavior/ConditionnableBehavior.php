@@ -278,6 +278,10 @@
 		/**
 		 * Conditions permettant d'obtenir le dernier dossier pour un allocataire donné.
 		 *
+		 * Si dans la configuration, la clé Optimisations.useTableDernierdossierallocataire
+		 * est à la valeur booléenne true, alors la table derniersdossiersallocataires
+		 * sera utilisée, sinon on effectuera la sous-requête avec les jointures.
+		 *
 		 * @param Model $model
 		 * @param array $conditions
 		 * @param array $search
@@ -285,39 +289,50 @@
 		 */
 		public function conditionsDernierDossierAllocataire( Model $model, $conditions, $search ) {
 			if( isset( $search['Dossier']['dernier'] ) && $search['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
+				if( Configure::read( 'Optimisations.useTableDernierdossierallocataire' ) === true ) {
+					$conditions[] = 'Dossier.id IN (
+						SELECT
+								derniersdossiersallocataires.dossier_id
+							FROM derniersdossiersallocataires
+							WHERE
+								derniersdossiersallocataires.personne_id = Personne.id
+					)';
+				}
+				else {
+					$conditions[] = 'Dossier.id IN (
+						SELECT
+								dossiers.id
+							FROM personnes
+								INNER JOIN prestations ON (
+									personnes.id = prestations.personne_id
+									AND prestations.natprest = \'RSA\'
 								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
+								INNER JOIN foyers ON (
+									personnes.foyer_id = foyers.id
 								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
+								INNER JOIN dossiers ON (
+									dossiers.id = foyers.dossier_id
+								)
+							WHERE
+								prestations.rolepers IN ( \'DEM\', \'CJT\' )
+								AND (
+									(
+										nir_correct13( Personne.nir )
+										AND nir_correct13( personnes.nir )
+										AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
+										AND personnes.dtnai = Personne.dtnai
+									)
+									OR
+									(
+										UPPER(personnes.nom) = UPPER(Personne.nom)
+										AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
+										AND personnes.dtnai = Personne.dtnai
+									)
+								)
+							ORDER BY dossiers.dtdemrsa DESC
+							LIMIT 1
+					)';
+				}
 			}
 
 			return $conditions;

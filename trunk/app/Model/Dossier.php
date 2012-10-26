@@ -141,6 +141,30 @@
 		);
 
 		/**
+		 * Associations "Has and belongs to many".
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+			'Personne' => array(
+				'className' => 'Personne',
+				'joinTable' => 'derniersdossiersallocataires',
+				'foreignKey' => 'dossier_id',
+				'associationForeignKey' => 'personne_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'Dernierdossierallocataire'
+			),
+		);
+
+		/**
 		 * Mise en majuscule du champ numdemrsa.
 		 *
 		 * @param array $options
@@ -219,10 +243,10 @@
 		 * @return array
 		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
-			
+
 			$conditions = array(
 			);
-			
+
 			$typeJointure = 'INNER';
 			if( Configure::read( 'Cg.departement' ) != 66) {
 				$conditions = array(
@@ -241,7 +265,7 @@
 						'Adressefoyer.rgadr' => '01'
 					)
 				);
-				
+
 				if( isset( $params['Prestation']['rolepers'] ) ){
 					if( $params['Prestation']['rolepers'] == '0' ){
 						$conditions[] = 'Prestation.rolepers IS NULL';
@@ -259,7 +283,7 @@
 					}
 				}
 			}
-			
+
 			$joins = array(
 				$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
 				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
@@ -271,7 +295,7 @@
 				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) )
 			);
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
@@ -317,7 +341,7 @@
 											AND '.$conditionsReferent.'
 								)';
 			}
-			
+
 			$query = array(
 				'fields' => array(
 					'Dossier.id',

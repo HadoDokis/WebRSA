@@ -164,6 +164,9 @@
 				'FULL_BASE_URL' => 'url',
 				'Jetons.disabled' => 'boolean',
 				'Optimisations.progressivePaginate' => 'boolean',
+				'Optimisations.useTableDernierdossierallocataire' => array(
+					array( 'rule' => 'boolean', 'allowEmpty' => true ),
+				),
 				'Periode.modifiable.nbheure' => 'integer',
 				'Recherche.identifiantpecourt' => 'boolean',
 				'Recherche.qdFilters.Serviceinstructeur' => 'boolean',
@@ -378,7 +381,8 @@
 				'servicesinstructeurs' => ClassRegistry::init( 'Serviceinstructeur' )->storedDataErrors(),
 				'structuresreferentes' => ClassRegistry::init( 'Structurereferente' )->storedDataErrors(),
 				'users' => ClassRegistry::init( 'User' )->storedDataErrors(),
-				'regroupementseps' => ClassRegistry::init( 'Regroupementep' )->storedDataErrors()
+				'regroupementseps' => ClassRegistry::init( 'Regroupementep' )->storedDataErrors(),
+				'derniersdossiersallocataires' => ClassRegistry::init( 'Dernierdossierallocataire' )->storedDataErrors()
 			);
 		}
 
