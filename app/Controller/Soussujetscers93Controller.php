@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Typessujetscers93Controller.
+	 * Code source de la classe Soussujetscers93Controller.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,25 +9,25 @@
 	 */
 
 	/**
-	 * La classe Typessujetscers93Controller permet la gestion des CER du CG 93 (hors workflow).
+	 * La classe Soussujetscers93Controller permet la gestion des CER du CG 93 (hors workflow).
 	 *
 	 * @package app.Controller
 	 */
-	class Typessujetscers93Controller extends AppController
+	class Soussujetscers93Controller extends AppController
 	{
 		/**
 		 * Nom
 		 *
 		 * @var string
 		 */
-		public $name = 'Typessujetscers93';
+		public $name = 'Soussujetscers93';
 
 		/**
 		 * Modèles utilisés.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Typesujetcer93' );
+		public $uses = array( 'Soussujetcer93' );
 
 		
 		
@@ -37,12 +37,12 @@
 		 * @return void
 		 */
 		public function index() {
-			$typessujetscers93 = $this->Typesujetcer93->find(
+			$soussujetscers93 = $this->Soussujetcer93->find(
 				'all',
 				array(
 					'fields' => array_merge(
-						$this->Typesujetcer93->fields(),
-						$this->Typesujetcer93->Sujetcer93->fields()
+						$this->Soussujetcer93->fields(),
+						$this->Soussujetcer93->Sujetcer93->fields()
 					),
 					'contain' => array(
 						'Sujetcer93'
@@ -51,7 +51,7 @@
 				)
 			);
 
-			$this->set('typessujetscers93', $typessujetscers93);
+			$this->set('soussujetscers93', $soussujetscers93);
 		}
 
 		/**
@@ -70,37 +70,37 @@
 		 * @return void
 		 * @throws NotFoundException
 		 */
-		public function edit( $typesujetcer93_id = null ) {
+		public function edit( $soussujetcer93_id = null ) {
 			if( $this->action == 'edit') {
 				// Vérification du format de la variable
-				if( !$this->Typesujetcer93->exists( $typesujetcer93_id ) ) {
+				if( !$this->Soussujetcer93->exists( $soussujetcer93_id ) ) {
 					throw new NotFoundException();
 				}
 			}
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'typessujetscers93', 'action' => 'index' ) );
+				$this->redirect( array( 'controller' => 'soussujetscers93', 'action' => 'index' ) );
 			}
 		
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
-				$this->Typesujetcer93->begin();
-				if( $this->Typesujetcer93->saveAll( $this->request->data ) ) {
-					$this->Typesujetcer93->commit();
+				$this->Soussujetcer93->begin();
+				if( $this->Soussujetcer93->saveAll( $this->request->data ) ) {
+					$this->Soussujetcer93->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index' ) );
 				}
 				else {
-					$this->Typesujetcer93->rollback();
+					$this->Soussujetcer93->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
 			else if( $this->action == 'edit') {
-				$this->request->data = $this->Typesujetcer93->find(
+				$this->request->data = $this->Soussujetcer93->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Typesujetcer93.id' => $typesujetcer93_id
+							'Soussujetcer93.id' => $soussujetcer93_id
 						),
 						'contain' => array(
 							'Sujetcer93'
@@ -110,8 +110,8 @@
 			}
 			
 			$options = array(
-				'Typesujetcer93' => array(
-					'sujetcer93_id' => $this->Typesujetcer93->Sujetcer93->find( 'list', array( 'fields' => array( 'id', 'name' ) ) )
+				'Soussujetcer93' => array(
+					'sujetcer93_id' => $this->Soussujetcer93->Sujetcer93->find( 'list', array( 'fields' => array( 'id', 'name' ) ) )
 				)
 			);
 			$this->set( compact( 'options' ) );
@@ -119,22 +119,22 @@
 			$this->render( 'edit' );
 		}
 		
-		public function delete( $typesujetcer93_id = null ) {
+		public function delete( $soussujetcer93_id = null ) {
 			// Vérification du format de la variable
-			if( !$this->Typesujetcer93->exists( $typesujetcer93_id ) ) {
+			if( !$this->Soussujetcer93->exists( $soussujetcer93_id ) ) {
 				throw new NotFoundException();
 			}
 
-			$typesujetcer93 = $this->Typesujetcer93->find(
+			$soussujetcer93 = $this->Soussujetcer93->find(
 				'first',
-				array( 'conditions' => array( 'Typesujetcer93.id' => $typesujetcer93_id )
+				array( 'conditions' => array( 'Soussujetcer93.id' => $soussujetcer93_id )
 				)
 			);
 
 			// Tentative de suppression ... FIXME
-			if( $this->Typesujetcer93->deleteAll( array( 'Typesujetcer93.id' => $typesujetcer93_id ), true ) ) {
+			if( $this->Soussujetcer93->deleteAll( array( 'Soussujetcer93.id' => $soussujetcer93_id ), true ) ) {
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'typessujetscers93', 'action' => 'index' ) );
+				$this->redirect( array( 'controller' => 'soussujetscers93', 'action' => 'index' ) );
 			}
 		}
 	}

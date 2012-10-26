@@ -378,7 +378,7 @@
 		'naturecontrat' => 'naturescontrats',
 		'sujetcer93' => 'sujetscers93',
 		'cer93_sujetcer93' => 'cers93_sujetscers93',
-		'typesujetcer93' => 'typessujetscers93',
+		'soussujetcer93' => 'soussujetscers93',
 	);
 
 	/**

@@ -369,50 +369,31 @@
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
 	<?php
 		//Bloc 5 : Bilan du précédent contrat
-		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 		
+		
+		// Bloc 6 : Projet pour ce nouveau contrat
+		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 		echo '<fieldset><legend>Votre contrat porte sur</legend>';
 		$selectedSujetcer93 = ( isset( $this->request->data['Sujetcer93']['Sujetcer93'] ) ? $this->request->data['Sujetcer93']['Sujetcer93'] : array() );
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$checked = ( in_array( $idSujet, $selectedSujetcer93 ) ? 'checked' : '' );
 			echo $this->Xform->input( "Sujetcer93.Sujetcer93.$idSujet", array( 'name' => 'data[Sujetcer93][Sujetcer93][]', 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
+			
+			//Test
+			echo $this->Xform->input( "Soussujetcer93.Soussujetcer93.$idSujet", array( 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true ) );
+			// Fin de test
 		}
-		
-		// Test
-// 		echo '<div id="Modeletraitementpcg66Modeletypecourrierpcg66Id" class="input radio">';
-// 		foreach( $typessujetscers93 as $id => $name['Typesujetcer93']['name'] ) {
-// 			echo '<div>';
-// // 			echo $this->Xform->singleRadioElement( "Cer93Sujetcer93.typesujetcer93_id", $id['Typesujetcer93']['id'], $name['Typesujetcer93']['name'] ).'<br/>';
-// 			echo '</div>';
-// 		}
-// 		echo '</div>';
-// 		
-// 		// Fin de test
-// 		
 		echo '</fieldset>';
-// 		
-		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 	?>
 </fieldset>
-<!--<script type="text/javascript">
+<script type="text/javascript">
 	//<![CDATA[
-	<?php foreach( array_keys( $typessujetscers93 ) as $id ) :?>
-		observeDisableFieldsetOnRadioValue(
-			'contratinsertion',
-			'data[Cer93Sujetcer93][typesujetrcer93_id]',
-			$( 'detailstypessujetscers93<?php echo $id;?>' ),
-			'<?php echo $id;?>',
-			false,
-			true
-		);
-	<?php endforeach;?>
+
 	//]]>
-</script>-->
+</script>
 <?php
-	//Bloc 6 : Projet pour ce nouveau contrat
-
-
 	//Bloc 7 : Durée proposée
 	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );
 

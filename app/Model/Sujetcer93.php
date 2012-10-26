@@ -53,8 +53,8 @@
 		 * @var array
 		 */
 		public $hasMany = array(
-			'Typesujetcer93' => array(
-				'className' => 'Typesujetcer93',
+			'Soussujetcer93' => array(
+				'className' => 'Soussujetcer93',
 				'foreignKey' => 'sujetcer93_id',
 				'dependent' => true,
 				'conditions' => '',
