@@ -64,7 +64,7 @@
 				'className' => 'Metierexerce',
 				'foreignKey' => 'metierexerce_id',
 				'conditions' => null,
-				'type' => 'INNER',
+				'type' => 'LEFT OUTER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
@@ -73,7 +73,7 @@
 				'className' => 'Secteuracti',
 				'foreignKey' => 'secteuracti_id',
 				'conditions' => null,
-				'type' => 'INNER',
+				'type' => 'LEFT OUTER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
@@ -82,7 +82,7 @@
 				'className' => 'Naturecontrat',
 				'foreignKey' => 'naturecontrat_id',
 				'conditions' => null,
-				'type' => 'INNER',
+				'type' => 'LEFT OUTER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
@@ -96,16 +96,8 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			'Sujetcer93' => array(
-				'className' => 'Sujetcer93',
-				'foreignKey' => 'sujetcer93_id',
-				'conditions' => null,
-				'type' => 'INNER',
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),
 		);
+
 		/**
 		 * Liaisons "hasMany" avec d'autres modèles.
 		 *
@@ -189,6 +181,7 @@
 				'with' => 'Cer93Sujetcer93'
 			),
 		);
+
 		/**
 		 * 	Fonction permettant la sauvegarde du formulaire du CER 93.
 		 *
@@ -244,6 +237,15 @@
 		}
 
 
+		/**
+		 * Prépare les données du formulaire de saisie du CER du CG 93 à partir
+		 * des données CAF et des CERs précédents, pour un allocataire donné.
+		 *
+		 * @param integer $personneId L'id technique de l'allocataire
+		 * @param integer $contratinsertion_id L'id technique du CER que l'on souhaite éventuellement modifier
+		 * @param integer $user_id L'id technique de l'utilisateur qui réalise la saisie du formulaire
+		 * @return array
+		 */
 		public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
 			// Donnée de la CAF stockée en base
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
@@ -416,7 +418,7 @@
 				);
 				$expsproscers93 = array( 'Expprocer93' => Set::classicExtract( $expsproscers93, '{n}.Expprocer93' ) );
 				$dataActuelCer = Set::merge( $dataActuelCer, $expsproscers93 );
-				
+
 				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
 				$sujetscers93 = $this->Cer93Sujetcer93->find(
 					'all',
@@ -425,7 +427,7 @@
 						'contain' => false
 					)
 				);
-				$dataActuelCer = Set::merge( $dataActuelCer, array( 'Sujetcer93' => array( 'Sujetcer93' => Set::extract( '/Cer93Sujetcer93/sujetcer93_id', $sujetscers93 ) ) ) );
+				$dataActuelCer = Set::merge( $dataActuelCer, array( 'Sujetcer93' => array( 'Sujetcer93' => Set::classicExtract( $sujetscers93, '{n}.Cer93Sujetcer93' ) ) ) );
 			}
 
 			//Donnée du précédent CER validé
@@ -486,24 +488,27 @@
 		}
 
 		/**
-		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
-		*/
-
+		 * Retourne le chemin relatif du modèle de document à utiliser pour
+		 * l'enregistrement du PDF.
+		 *
+		 * @param array $data
+		 * @return string
+		 */
 		public function modeleOdt( $data ) {
 			return "Contratinsertion/contratinsertion.odt";
 		}
-		
-		
-		
+
 		/**
-		* Récupère les données pour le PDf
-		*/
-
+		 * Récupère les données pour le PDF.
+		 *
+		 * @param integer $contratinsertion_id
+		 * @param integer $user_id
+		 * @return array
+		 */
 		public function getDataForPdf( $contratinsertion_id, $user_id ) {
-
 			$this->Contratinsertion->Personne->forceVirtualFields = true;
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			
+
 			$joins = array(
 				$this->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
 				$this->join( 'User', array( 'type' => 'INNER' ) ),
@@ -580,7 +585,7 @@
 				unset( $data['DspRev'], $data['Dsp']['id'], $data['Dsp']['dsp_id'] );
 			}
 			$data = $this->find( 'first', $queryData );
-			
+
 			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
 				'all',
 				array(
@@ -597,7 +602,7 @@
 					)
 				)
 			);
-			
+
 			$diplomescers93 = $this->Diplomecer93->find(
 				'all',
 				array(
@@ -639,8 +644,8 @@
 				'diplome' => $diplomescers93
 			);
 		}
-		
-		
+
+
 		/**
 		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo et le stocke,
@@ -665,8 +670,7 @@
 				),
 				$this->enums()
 			);
-debug($data);
-die();
+
 			return $this->ged( $data, $modeleodt, false, $options );
 		}
 

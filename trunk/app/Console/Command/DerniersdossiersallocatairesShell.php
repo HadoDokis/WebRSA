@@ -30,10 +30,22 @@
 			$sql = 'TRUNCATE derniersdossiersallocataires;';
 			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
 
-			$this->out( 'Remise à zéro de la clé primaire de la table derniersdossiersallocataires' );
-			$sql = "SELECT pg_catalog.setval('derniersdossiersallocataires_id_seq', ( SELECT max(derniersdossiersallocataires.id) + 1 FROM derniersdossiersallocataires ), false);";
-			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+			$this->out( 'Remise à zéro de séquence de la clé primaire de la table derniersdossiersallocataires' );
+			$sql = "SELECT table_name AS \"Model__table\",
+						column_name	AS \"Model__column\",
+						column_default AS \"Model__sequence\"
+						FROM information_schema.columns
+						WHERE table_schema = 'public'
+							AND table_name = 'derniersdossiersallocataires'
+							AND column_default LIKE 'nextval(%::regclass)'
+						ORDER BY table_name, column_name";
 
+			foreach( $this->Dernierdossierallocataire->query( $sql ) as $model ) {
+				$sequence = preg_replace( '/^nextval\(\'(.*)\'.*\)$/', '\1', $model['Model']['sequence'] );
+
+				$sql = "SELECT setval('{$sequence}', 1, true);";
+				$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+			}
 
 			$sql = "INSERT INTO derniersdossiersallocataires (personne_id, dossier_id)
 	SELECT

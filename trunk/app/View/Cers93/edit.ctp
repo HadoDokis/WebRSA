@@ -370,28 +370,41 @@
 	<?php
 		//Bloc 5 : Bilan du précédent contrat
 		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
-		
-		
+
+
 		// Bloc 6 : Projet pour ce nouveau contrat
 		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+
+		// HABTM spécial, avec des select liés aux cases à cocher
 		echo '<fieldset><legend>Votre contrat porte sur</legend>';
-		$selectedSujetcer93 = ( isset( $this->request->data['Sujetcer93']['Sujetcer93'] ) ? $this->request->data['Sujetcer93']['Sujetcer93'] : array() );
+		$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
+		$i = 0;
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
-			$checked = ( in_array( $idSujet, $selectedSujetcer93 ) ? 'checked' : '' );
-			echo $this->Xform->input( "Sujetcer93.Sujetcer93.$idSujet", array( 'name' => 'data[Sujetcer93][Sujetcer93][]', 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
-			
-			//Test
-			echo $this->Xform->input( "Soussujetcer93.Soussujetcer93.$idSujet", array( 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true ) );
-			// Fin de test
+			$array_key = array_search( $idSujet, $selectedSujetcer93 );
+			$checked = ( ( $array_key !== false ) ? 'checked' : '' );
+			$soussujetcer93_id = null;
+			if( $checked ) {
+				$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
+			}
+			// TODO: sur la même ligne ?
+			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
+			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
+			$i++;
 		}
 		echo '</fieldset>';
 	?>
 </fieldset>
 <script type="text/javascript">
-	//<![CDATA[
-
-	//]]>
+//<![CDATA[
+	<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ) :?>
+	observeDisableFieldsOnCheckbox(
+		'Sujetcer93Sujetcer93<?php echo $key;?>Sujetcer93Id',
+		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id'],
+		false
+	);
+	<?php endforeach;?>
+//]]>
 </script>
 <?php
 	//Bloc 7 : Durée proposée

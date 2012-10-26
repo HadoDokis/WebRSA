@@ -39,7 +39,7 @@
 			'Validation.Autovalidate',
 			'Formattable',
 		);
-		
+
 		/**
 		 * Règles de validation
 		 *
@@ -71,13 +71,20 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Soussujetcer93' => array(
+				'className' => 'Soussujetcer93',
+				'foreignKey' => 'soussujetcer93_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Sujetcer93' => array(
 				'className' => 'Sujetcer93',
 				'foreignKey' => 'sujetcer93_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
 		);
 	}
 ?>
