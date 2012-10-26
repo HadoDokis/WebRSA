@@ -29,7 +29,7 @@
 		 */
 		public $order = array( 'Sujetcer93.name ASC' );
 
-		
+
 		/**
 		 * Récursivité.
 		 *
@@ -67,8 +67,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
-		
+
 		/**
 		 * Liaisons "hasAndBelongsToMany" avec d'autres modèles.
 		 *

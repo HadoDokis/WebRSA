@@ -29,7 +29,7 @@
 		 */
 		public $order = array( 'Soussujetcer93.name ASC' );
 
-		
+
 		/**
 		 * Récursivité.
 		 *
@@ -59,6 +59,27 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			)
+		);
+
+		/**
+		 * Liaisons "hasMany" avec d'autres modèles.
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Cer93Sujetcer93' => array(
+				'className' => 'Cer93Sujetcer93',
+				'foreignKey' => 'soussujetcer93_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 	}

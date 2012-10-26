@@ -43,11 +43,20 @@
 		 */
 		public $uses = array( 'Cer93' );
 
+		/**
+		 * Actions non soumises aux droits.
+		 *
+		 * @var array
+		 */
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
 
 
+		/**
+		 * Action vide pour obtenir l'écran de paramétrage.
+		 *
+		 * @return void
+		 */
 		public function indexparams() {
-
 		}
 
 		/**
@@ -219,7 +228,7 @@
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
-// debug($this->request->data);
+
 				if( $this->Cer93->saveFormulaire( $this->request->data ) ) {
 					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
@@ -245,14 +254,14 @@
 			$naturecontratDuree = Set::extract( '/Naturecontrat[isduree=1]', $naturescontrats );
 			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
-			
+
 			$sujetscers93 = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
 					'order' => array( 'Sujetcer93.name ASC' )
 				)
 			);
-			
+
 			$soussujetscers93 = $this->Cer93->Sujetcer93->Soussujetcer93->find(
 				'list',
 				array(
@@ -366,7 +375,7 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
-		
+
 		/**
 		 * Imprime un CER 93.
 		 * INFO: http://localhost/webrsa/trunk/cers93/impression/44327

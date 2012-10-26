@@ -201,7 +201,6 @@ CREATE TABLE cers93 (
 	dureecdd				VARCHAR(3) DEFAULT NULL,
 	prevu					TEXT DEFAULT NULL,
 	bilancerpcd				TEXT DEFAULT NULL,
-	sujetcer93_id			INTEGER REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	duree					INTEGER DEFAULT NULL,
 	pointparcours			VARCHAR(25) DEFAULT NULL,
 	datepointparcours		DATE DEFAULT NULL,
@@ -316,7 +315,8 @@ DROP TABLE IF EXISTS cers93_sujetscers93 CASCADE;
 CREATE TABLE cers93_sujetscers93 (
     id                 SERIAL NOT NULL PRIMARY KEY,
     cer93_id       		INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    sujetcer93_id      INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    sujetcer93_id		INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	soussujetcer93_id	INTEGER DEFAULT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
     created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );
@@ -326,72 +326,8 @@ CREATE INDEX cers93_sujetscers93_cer93_id_idx ON cers93_sujetscers93(cer93_id);
 DROP INDEX IF EXISTS cers93_sujetscers93_sujetcer93_id_idx;
 CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetcer93_id);
 
--------------------------------------------------------------------------------------------------------------
--- DROP TABLE IF EXISTS cers93_sujetscers93_soussujetscers93 CASCADE;
--- CREATE TABLE cers93_sujetscers93_soussujetscers93 (
---     id                 SERIAL NOT NULL PRIMARY KEY,
---     cer93_sujetcer93_id       		INTEGER NOT NULL REFERENCES cers93_sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
---     soussujetcer93_id      INTEGER NOT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
---     created				TIMESTAMP WITHOUT TIME ZONE,
--- 	modified			TIMESTAMP WITHOUT TIME ZONE
--- );
--- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx;
--- CREATE INDEX cers93_sujetscers93_soussujetscers93_cer93_sujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(cer93_sujetcer93_id);
---
--- DROP INDEX IF EXISTS cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx;
--- CREATE INDEX cers93_sujetscers93_soussujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93_soussujetscers93(soussujetcer93_id);
-
--- DROP TYPE IF EXISTS TYPE_POSITIONCER93;
--- CREATE TYPE TYPE_POSITIONCER93 AS ENUM ( 'enregistre', 'signe', 'attdecisioncpdv', 'attdecisioncg', 'relire', 'prevalide'  );
---
--- SELECT add_missing_table_field ('public', 'cers93', 'positioncer', 'TYPE_POSITIONCER93');
--- ALTER TABLE cers93 ALTER COLUMN positioncer SET DEFAULT 'enregistre'::TYPE_POSITIONCER93;
--- SELECT add_missing_table_field ('public', 'cers93', 'formeci', 'CHAR(1)');
--- SELECT add_missing_table_field ('public', 'cers93', 'datesignature', 'DATE');
--- SELECT add_missing_table_field ('public', 'cers93', 'isemploitrouv', 'TYPE_NO');
--- SELECT add_missing_table_field ('public', 'cers93', 'autresexps', 'VARCHAR(250)');
-
-
--- SELECT add_missing_table_field('public', 'cers93', 'metierexerce_id', 'INTEGER' );
--- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_metierexerce_id_fkey', 'metiersexerces', 'metierexerce_id', false );
--- SELECT add_missing_table_field('public', 'cers93', 'secteuracti_id', 'INTEGER' );
--- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_secteuracti_id_fkey', 'secteursactis', 'secteuracti_id', false );
--- SELECT add_missing_table_field('public', 'cers93', 'naturecontrat_id', 'INTEGER' );
--- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_naturecontrat_id_fkey', 'naturescontrats', 'naturecontrat_id', false );
-
-
--- SELECT add_missing_table_field ('public', 'cers93', 'dureehebdo', 'INTEGER');
--- ALTER TABLE cers93 ALTER COLUMN dureehebdo SET DEFAULT '0'::TYPE_DUREEHEBDO;
--- SELECT add_missing_table_field ('public', 'cers93', 'dureecdd', 'VARCHAR(3)');
--- SELECT add_missing_table_field ('public', 'cers93', 'bilancerpcd', 'TEXT');
--- SELECT add_missing_table_field ('public', 'cers93', 'duree', 'INTEGER');
--- SELECT add_missing_table_field ('public', 'cers93', 'pointparcours', 'VARCHAR(25)');
-
--- SELECT add_missing_table_field('public', 'cers93', 'user_id', 'INTEGER' );
--- SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_user_id_fkey', 'users', 'user_id', false );
-
--- SELECT add_missing_table_field ('public', 'cers93', 'nomutilisateur', 'VARCHAR(50)');
--- SELECT add_missing_table_field ('public', 'cers93', 'structureutilisateur', 'VARCHAR(100)');
-
--- SELECT add_missing_table_field ('public', 'cers93', 'pourlecomptede', 'VARCHAR(250)');
--- SELECT add_missing_table_field ('public', 'cers93', 'observpro', 'TEXT');
--- SELECT add_missing_table_field ('public', 'cers93', 'observbenef', 'TEXT');
-
--- SELECT add_missing_table_field ('public', 'cers93', 'datepointparcours', 'DATE');
-
--- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'prevalide', 'VARCHAR(20)');
--- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncs', 'VARCHAR(20)');
--- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'decisioncadre', 'VARCHAR(20)');
-
--- TODO aauzolat, remplacement des enums par des cakephp_validate_in_list
--- naturescontrats.isduree: TYPE_BOOLEANNUMBER -> VARCHAR(1)
--- cers.inscritpe TYPE_BOOLEANNUMBER -> VARCHAR(1)
--- cers.cmu TYPE_CMU -> VARCHAR(10)
--- cers.cmuc TYPE_CMU -> VARCHAR(10)
--- cers.nivetu TYPE_NIVETU -> VARCHAR(4)
--- cers.positioncer TYPE_POSITIONCER93 -> VARCHAR(20)
--- cers.isemploitrouv TYPE_NO -> VARCHAR(1)
--- histoschoixcers93.etape TYPE_POSITIONCER93 -> VARCHAR(20)
+DROP INDEX IF EXISTS cers93_sujetscers93_soussujetcer93_id_idx;
+CREATE INDEX cers93_sujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93(soussujetcer93_id);
 
 --------------------------------------------------------------------------------
 -- 20121026: la table derniersdossiersallocataires permet de se passer d'une
@@ -402,15 +338,12 @@ CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetc
 DROP TABLE IF EXISTS derniersdossiersallocataires CASCADE;
 CREATE TABLE derniersdossiersallocataires (
 	id 				SERIAL NOT NULL PRIMARY KEY,
-	personne_id		INTEGER NOT NULL REFERENCES personnes(id),
-	dossier_id		INTEGER NOT NULL REFERENCES dossiers(id)
+	personne_id		INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dossier_id		INTEGER NOT NULL REFERENCES dossiers(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE INDEX derniersdossiersallocataires_personne_id_idx ON derniersdossiersallocataires(personne_id);
 CREATE INDEX derniersdossiersallocataires_dossier_id_idx ON derniersdossiersallocataires(dossier_id);
 CREATE UNIQUE INDEX derniersdossiersallocataires_personne_id_dossier_id_idx ON derniersdossiersallocataires(personne_id,dossier_id);
-
-SELECT add_missing_constraint ( 'public', 'derniersdossiersallocataires', 'derniersdossiersallocataires_dossier_id_fkey', 'dossiers', 'dossier_id', true );
-SELECT add_missing_constraint ( 'public', 'derniersdossiersallocataires', 'derniersdossiersallocataires_personne_id_fkey', 'personnes', 'personne_id', true );
 
 -- *****************************************************************************
 COMMIT;
