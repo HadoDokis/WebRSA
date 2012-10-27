@@ -363,7 +363,7 @@
 					'datedecision' => NULL,
 					'datenotification' => NULL,
 					'actioncandidat_id' => NULL,
-					'nbjours' => '-124',
+					'nbjours' => number_format( ceil( ( time() - strtotime( '2013-02-28' ) ) / ( 60 * 60 * 24 ) ) ),
 					'present' => true,
 				),
 				'Compofoyercer93' => array(

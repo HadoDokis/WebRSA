@@ -30,8 +30,8 @@
 </script>
 <fieldset class="col2" id="filtres_zone_geo">
 	<legend>Zones géographiques</legend>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();" ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();" ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();return false;" ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();return false;" ) );?>
 
 	<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>

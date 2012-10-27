@@ -4,7 +4,7 @@
 	class Criteresdossierspcgs66Controller extends AppController
 	{
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
+		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
 		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
 
@@ -13,7 +13,7 @@
 		*/
 
 		protected function _setOptions() {
-			
+
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
@@ -36,7 +36,7 @@
 
 			$options = $this->Dossierpcg66->enums();
 			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
-			
+
 			$options = array_merge(
 				$options,
 				$this->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
@@ -49,23 +49,23 @@
 		*/
 
 		private function _index( $searchFunction ) {
-		
+
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
 
-			
+
+
 			$params = $this->request->data;
 			if( !empty( $params ) ) {
 				$this->paginate = $this->Criteredossierpcg66->{$searchFunction}( $this->request->data, $mesCodesInsee,
 					$mesZonesGeographiques );
-					
+
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
 				$this->Dossierpcg66->forceVirtualFields = true;
 				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
-				
+
 				foreach( $criteresdossierspcgs66 as $i => $criteredossierpcg66 ) {
 					$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
 
@@ -110,7 +110,7 @@
 		public function dossier() {
 			$this->_index( 'searchDossier' );
 		}
-		
+
 		/**
 		*
 		*/

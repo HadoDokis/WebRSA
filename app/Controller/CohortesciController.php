@@ -18,11 +18,11 @@
 	{
 		public $name = 'Cohortesci';
 
-		public $uses = array( 'Cohorteci', 'Dossier', 'Option', 'Situationdossierrsa' );
+		public $uses = array( 'Cohorteci', 'Dossier', 'Option' );
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Search', 'Default2' );
+		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search', 'Default2' );
 
 		public $components = array(
 			'Search.Prg' => array(
@@ -72,7 +72,7 @@
 			}
 			$this->set( 'forme_ci', $forme_ci );
 
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Dossier->Situationdossierrsa->etatOuvert()) );
 		}
 
 		/**

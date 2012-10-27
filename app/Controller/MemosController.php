@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Memo', 'Option', 'Personne' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
+		public $helpers = array( 'Locale', 'Xform' );
 
 		public $components = array( 'Jetons2' );
 

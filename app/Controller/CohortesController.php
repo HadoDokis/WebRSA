@@ -27,9 +27,6 @@
 
 		public $helpers = array(
 			'Csv',
-//			'Paginator',
-//			'Ajax',
-//			'Default',
 			'Xpaginator',
 			'Locale',
 			'Search'

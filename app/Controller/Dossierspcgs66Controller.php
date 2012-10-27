@@ -15,7 +15,7 @@
 	 */
 	class Dossierspcgs66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
 		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2' );
 

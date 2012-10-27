@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Cui', 'Option', 'Departement' );
 
-		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Ajax', 'Xform', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Xform', 'Fileuploader' );
 
 		public $components = array(
 			'Default',
@@ -490,11 +490,11 @@
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}
-        
+
         /**
          * Annulation du CUI
-         * 
-         * @param integer $id 
+         *
+         * @param integer $id
          */
         public function cancel( $id ) {
 			$qd_cui = array(

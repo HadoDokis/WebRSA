@@ -21,7 +21,7 @@
 			'Propopdo', 'Decisionpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationdossierrsa'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax','Search', 'Default2' );
+		public $helpers = array( 'Csv', 'Search', 'Default2' );
 
 		public $components = array(
 			'Gestionzonesgeos',

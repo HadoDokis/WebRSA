@@ -18,7 +18,7 @@
 
 		public $name = 'Apres';
 		public $uses = array( 'Apre', 'Histoaprecomplementaire', 'Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
+		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 		public $components = array( 'Fileuploader', 'Jetons2' );
 		public $commeDroit = array(
 			'view' => 'Apres:index',

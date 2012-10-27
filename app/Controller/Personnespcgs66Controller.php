@@ -17,7 +17,7 @@
 	{
 		public $name = 'Personnespcgs66';
 		public $uses = array( 'Personnepcg66', 'Option', 'Dossierpcg66' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
 		public $components = array( 'Fileuploader', 'Jetons2' );
 		public $commeDroit = array(
 			'view' => 'Personnespcgs66:index',

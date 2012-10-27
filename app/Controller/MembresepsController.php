@@ -1,7 +1,7 @@
 <?php
 	class MembresepsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax' );
+		public $helpers = array( 'Default', 'Default2' );
 
 		public $commeDroit = array(
 			'add' => 'Membreseps:edit'

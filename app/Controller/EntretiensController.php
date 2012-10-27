@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Entretien', 'Option' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
 		public $components = array( 'Fileuploader', 'Jetons2' );
 

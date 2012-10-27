@@ -39,13 +39,13 @@
 				echo $this->Xhtml->css( array( 'menu' ), 'stylesheet', array( 'media' => 'all' ) );
 				echo $this->Xhtml->css( array( 'popup' ), 'stylesheet', array( 'media' => 'all' ) );
 
-				echo $this->Javascript->link( 'prototype.js' );
-				echo $this->Javascript->link( 'tooltip.prototype.js' );
-				echo $this->Javascript->link( 'webrsa.common.prototype.js' );
+				echo $this->Html->script( 'prototype' );
+				echo $this->Html->script( 'tooltip.prototype' );
+				echo $this->Html->script( 'webrsa.common.prototype' );
 			}
 			else {
 				echo $this->Xhtml->css( array( 'webrsa' ), 'stylesheet' );
-				echo $this->Javascript->link( 'webrsa.js' );
+				echo $this->Html->script( 'webrsa' );
 			}
 
 			echo $this->fetch( 'meta' );

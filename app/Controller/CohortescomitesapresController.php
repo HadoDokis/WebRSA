@@ -1,18 +1,54 @@
 <?php
-	App::import( 'Sanitize' );
+	/**
+	 * Code source de la classe CohortescomitesapresController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe CohortescomitesapresController permet la gestion de comités
+	 * d'examen APRE en cohorte (CG 93).
+	 *
+	 * @package app.Controller
+	 */
 	class CohortescomitesapresController extends AppController
 	{
-
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Cohortescomitesapres';
-		public $uses = array( 'Apre', 'Option', 'Personne', 'ApreComiteapre', 'Cohortecomiteapre', 'Comiteapre', 'Participantcomite', 'Apre', 'ComiteapreParticipantcomite', 'Adressefoyer', 'Tiersprestataireapre', 'Suiviaideapretypeaide', 'Referent', 'Dossier' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml' );
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Cohortecomiteapre', 'Option', 'Comiteapre' );
+
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml' );
+
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array( 'Gedooo.Gedooo', 'Search.Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
 
 		/**
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'referent', $this->Referent->find( 'list' ) );
+			$this->set( 'referent', $this->Comiteapre->Apre->Personne->Referent->find( 'list' ) );
 			$options = array(
 				'decisioncomite' => array(
 					'ACC' => __d( 'apre', 'ENUM::DECISIONCOMITE::ACC' ),
@@ -24,20 +60,22 @@
 		}
 
 		/**
-		 *
+		 * Prise de décision du comité.
 		 */
 		public function aviscomite() {
 			$this->_index( 'Cohortecomiteapre::aviscomite' );
 		}
 
-		//---------------------------------------------------------------------
-
+		/**
+		 * Visualisation des décisions prises par les comités.
+		 */
 		public function notificationscomite() {
 			$this->_index( 'Cohortecomiteapre::notificationscomite' );
 		}
 
 		/**
 		 *
+		 * @param string $avisComite
 		 */
 		protected function _index( $avisComite = null ) {
 			$this->set( 'comitesapre', $this->Comiteapre->find( 'list' ) );
@@ -47,7 +85,7 @@
 			$idRapport = Set::classicExtract( $this->request->params, 'named.Cohortecomiteapre__id' );
 			$idComite = Set::classicExtract( $this->request->data, 'Cohortecomiteapre.id' );
 
-			$this->Dossier->begin(); // Pour les jetons
+			$this->Comiteapre->begin(); // Pour les jetons
 			if( !empty( $this->request->data ) ) {
 				// Sauvegarde
 				if( !empty( $this->request->data['ApreComiteapre'] ) ) {
@@ -55,19 +93,19 @@
 					$dataApre = Set::combine( $this->request->data, 'ApreComiteapre.{n}.apre_id', 'ApreComiteapre.{n}.montantattribue' );
 
 					// On oblige le comité à prendre une décision
-					$this->ApreComiteapre->validate['decisioncomite'][] = array(
+					$this->Comiteapre->ApreComiteapre->validate['decisioncomite'][] = array(
 						'rule' => array( 'notEmpty' ),
 						'required' => true,
 						'message' => 'Champ obligatoire',
 					);
 
-					$return = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) );
+					$return = $this->Comiteapre->ApreComiteapre->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) );
 
 					if( $return ) {
-						$return = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
+						$return = $this->Comiteapre->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
 
 						$saved = $return;
-						$this->Apre->deepAfterFind = false;
+						$this->Comiteapre->Apre->deepAfterFind = false;
 						foreach( $dataApre as $apre_id => $montantattribue ) {
 							$qd_apre = array(
 								'conditions' => array(
@@ -77,15 +115,15 @@
 								'order' => null,
 								'recursive' => -1
 							);
-							$apre = $this->Apre->find( 'first', $qd_apre );
+							$apre = $this->Comiteapre->Apre->find( 'first', $qd_apre );
 
 							$apre['Apre']['montantaverser'] = (!empty( $montantattribue ) ? $montantattribue : 0 );
-							$this->Apre->create( $apre );
-							$saved = $this->Apre->save( $apre ) && $saved;
+							$this->Comiteapre->Apre->create( $apre );
+							$saved = $this->Comiteapre->Apre->save( $apre ) && $saved;
 						}
 
 						if( $saved ) {
-							$this->ApreComiteapre->commit();
+							$this->Comiteapre->ApreComiteapre->commit();
 							if( !$isRapport ) {
 								$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 								$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', $idComite ) );
@@ -96,7 +134,7 @@
 							}
 						}
 						else {
-							$this->ApreComiteapre->rollback();
+							$this->Comiteapre->ApreComiteapre->rollback();
 						}
 					}
 				}
@@ -121,9 +159,12 @@
 					break;
 			}
 
-			$this->Dossier->commit(); //FIXME
+			$this->Comiteapre->commit();
 		}
 
+		/**
+		 *
+		 */
 		public function exportcsv() {
 			$querydata = $this->Cohortecomiteapre->search( null, Xset::bump( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
@@ -135,9 +176,11 @@
 
 		/**
 		 * Modifications du Comité d'examen
-		 * */
+		 *
+		 * @param integer $apre_id
+		 */
 		public function editdecision( $apre_id = null ) {
-			$this->ApreComiteapre->Apre->deepAfterFind = false;
+			$this->Comiteapre->ApreComiteapre->Apre->deepAfterFind = false;
 			// Retour à l'index en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', Set::classicExtract( $this->request->data, 'ApreComiteapre.comiteapre_id' ) ) );
@@ -154,7 +197,7 @@
 				'order' => null,
 				'recursive' => -1
 			);
-			$aprecomiteapre = $this->ApreComiteapre->find( 'first', $qd_aprecomiteapre );
+			$aprecomiteapre = $this->Comiteapre->ApreComiteapre->find( 'first', $qd_aprecomiteapre );
 			$this->set( compact( 'aprecomiteapre' ) );
 
 			$qd_comiteapre = array(
@@ -168,7 +211,7 @@
 			$comiteapre = $this->Comiteapre->find( 'first', $qd_comiteapre );
 			$this->set( compact( 'comiteapre' ) );
 
-			$apre = $this->Apre->find(
+			$apre = $this->Comiteapre->Apre->find(
 					'first', array(
 				'conditions' => array(
 					'Apre.id' => $apre_id
@@ -182,7 +225,7 @@
 			unset( $apre['Apre']['Natureaide'] );
 			unset( $apre['Pieceapre'] );
 			unset( $apre['Montantconsomme'] );
-			foreach( $this->Apre->aidesApre as $model ) {
+			foreach( $this->Comiteapre->Apre->aidesApre as $model ) {
 				unset( $apre[$model] );
 			}
 			unset( $apre['Relanceapre'] );
@@ -196,7 +239,7 @@
 				'order' => null,
 				'recursive' => -1
 			);
-			$foyer = $this->Apre->Personne->Foyer->find( 'first', $qd_foyer );
+			$foyer = $this->Comiteapre->Apre->Personne->Foyer->find( 'first', $qd_foyer );
 
 			$apre['Foyer'] = $foyer['Foyer'];
 
@@ -209,7 +252,7 @@
 				'order' => null,
 				'recursive' => -1
 			);
-			$dossier = $this->Apre->Personne->Foyer->Dossier->find( 'first', $qd_dossier );
+			$dossier = $this->Comiteapre->Apre->Personne->Foyer->Dossier->find( 'first', $qd_dossier );
 			$apre['Dossier'] = $dossier['Dossier'];
 
 			// Adresse
@@ -221,22 +264,22 @@
 				'order' => null,
 				'recursive' => -1
 			);
-			$adresse = $this->Apre->Personne->Foyer->Adressefoyer->Adresse->find( 'first', $qd_adresse );
+			$adresse = $this->Comiteapre->Apre->Personne->Foyer->Adressefoyer->Adresse->find( 'first', $qd_adresse );
 			$apre['Adresse'] = $adresse['Adresse'];
 
-			$this->Dossier->begin(); // Pour les jetons
+			$this->Comiteapre->begin(); // Pour les jetons
 			if( !empty( $this->request->data ) ) {
 
 				$data = Set::extract( $this->request->data, '/ApreComiteapre' );
 
-				if( $this->ApreComiteapre->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					$saved = $this->ApreComiteapre->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
-					if( $saved && empty( $this->Apre->ApreComiteapre->validationErrors ) ) {
-						$this->ApreComiteapre->commit();
+				if( $this->Comiteapre->ApreComiteapre->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
+					$saved = $this->Comiteapre->ApreComiteapre->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
+					if( $saved && empty( $this->Comiteapre->Apre->ApreComiteapre->validationErrors ) ) {
+						$this->Comiteapre->ApreComiteapre->commit();
 						$this->redirect( array( 'controller' => 'comitesapres', 'action' => 'rapport', Set::classicExtract( $this->request->data, 'ApreComiteapre.comiteapre_id' ) ) );
 					}
 					else {
-						$this->ApreComiteapre->rollback();
+						$this->Comiteapre->ApreComiteapre->rollback();
 					}
 				}
 			}
@@ -244,7 +287,7 @@
 				$this->request->data = $apre;
 			}
 			$this->_setOptions();
-			$this->Dossier->commit(); // Pour les jetons
+			$this->Comiteapre->commit(); // Pour les jetons
 			$this->set( 'apre', $apre );
 		}
 
@@ -258,7 +301,7 @@
 		public function impression( $apre_comiteapre_id = null ) {
 			$dest = Set::classicExtract( $this->request->params, 'named.dest' );
 
-			$pdf = $this->ApreComiteapre->getNotificationPdf(
+			$pdf = $this->Comiteapre->ApreComiteapre->getNotificationPdf(
 					$apre_comiteapre_id, $dest, $this->Session->read( 'Auth.User.id' )
 			);
 

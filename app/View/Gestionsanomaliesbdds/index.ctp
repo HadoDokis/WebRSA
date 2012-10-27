@@ -21,7 +21,7 @@
 		).'</li></ul>';
 	}
 
-	echo $this->Xform->create( null, array( 'id' => 'Search', 'class' => 'gestionsanomaliesbdd index' ) );
+	echo $this->Xform->create( null, array( 'id' => 'Search', 'class' => 'gestionsanomaliesbdd index '.( isset( $results ) ? 'folded' : 'unfolded' ) ) );
 	// Types de problèmes à détecter
 	echo '<fieldset id="SearchProblemes"><legend>Détection des problèmes</legend>'.$this->Xform->input(
 			'Gestionanomaliebdd.touteerreur', array( 'type' => 'checkbox', 'domain' => 'gestionanomaliebdd' )
@@ -186,15 +186,6 @@
 			echo $pagination.'<table id="searchResults" class="tooltips default2 gestionsanomaliesbdd"><thead>'.$thead.'</thead><tbody>'.$tbody.'</tbody></table>'.$pagination;
 		}
 	}
-
-	echo $this->Javascript->codeBlock(
-		"\$('Search').removeClassName( 'folded' ); \$('Search').removeClassName( 'unfolded' ); \$('Search').addClassName( '".( isset( $results ) ? 'folded' : 'unfolded' )."' );",
-		array(
-			'allowCache' => false,
-			'safe' => true,
-			'inline'=>true
-		)
-	);
 ?>
 <script type="text/javascript">
 //<![CDATA[

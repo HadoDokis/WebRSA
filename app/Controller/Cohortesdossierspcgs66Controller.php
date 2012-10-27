@@ -27,7 +27,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search' );
+		public $helpers = array( 'Csv', 'Default2', 'Locale', 'Search' );
 
 		public $components = array(
 			'Search.Prg' => array(

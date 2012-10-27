@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Critererdv', 'Rendezvous', 'Option' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Paginator', 'Search' );
+		public $helpers = array( 'Csv', 'Paginator', 'Search' );
 
 		public $components = array(
 			'Gestionzonesgeos',

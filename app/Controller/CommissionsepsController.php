@@ -16,14 +16,13 @@
 	class CommissionsepsController extends AppController
 	{
 
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Csv' );
+		public $helpers = array( 'Default', 'Default2', 'Csv' );
 		public $uses = array( 'Commissionep', 'Option' );
 		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
 			'view' => 'Commissionseps:index'
 		);
-		public $aucunDroit = array( 'ajaxadresse' );
 
 		/**
 		 *
@@ -397,28 +396,6 @@
 
 			$this->_setOptions();
 			$this->render( 'add_edit' );
-		}
-
-		/**
-		 *
-		 */
-		public function ajaxadresse( $structurereferente_id = null ) { // FIXME
-			Configure::write( 'debug', 0 );
-			$dataStructurereferente_id = Set::extract( $this->request->data, 'Commissionep.structurereferente_id' );
-			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
-			$qd_struct = array(
-				'conditions' => array(
-					'Structurereferente.id' => $structurereferente_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$struct = $this->Commissionep->Structurereferente->find( 'first', $qd_struct );
-
-			$this->set( 'struct', $struct );
-			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->render( 'ajaxadresse', 'ajax' );
 		}
 
 		/**

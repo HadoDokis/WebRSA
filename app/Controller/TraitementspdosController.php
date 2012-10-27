@@ -24,7 +24,7 @@
 		 */
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
-		public $helpers = array( 'Default2', 'Ajax', 'Locale', 'Fileuploader' );
+		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Locale', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'view' => 'Traitementspdos:index',

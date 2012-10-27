@@ -15,7 +15,7 @@
 	 */
 	class Criteresdossierscovs58Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
+		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criteredossiercov58', 'Dossiercov58' );
 		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 

@@ -18,7 +18,7 @@
 
 		public $name = "Proposcontratsinsertioncovs58";
 		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action' );
-		public $helpers = array( 'Ajax' );
+		public $helpers = array( 'Cake1xLegacy.Ajax' );
 		public $components = array( 'RequestHandler', 'Jetons2' );
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
 		public $commeDroit = array(

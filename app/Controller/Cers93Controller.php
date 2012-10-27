@@ -34,7 +34,7 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Webrsa' );
+		public $helpers = array( 'Cake1xLegacy.Ajax', 'Webrsa' );
 
 		/**
 		 * Modèles utilisés.

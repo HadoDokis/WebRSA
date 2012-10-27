@@ -18,7 +18,7 @@
 
 		public $name = 'Apres66';
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
-		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
+		public $helpers = array( 'Default', 'Locale'/*, 'Csv'*/, 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email', 'Jetons2' );
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
@@ -870,7 +870,7 @@
 			$this->redirect( $this->referer() );
 		}
 
-        
+
 		/**
 		 * Fonction pour annuler une APRE pour le CG66
 		 *
@@ -926,7 +926,7 @@
 				$this->request->data = $apre;
 			}
 			$this->set( 'urlmenu', '/apres66/index/'.$personne_id );
-            
+
             $this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'cancel' );
 		}
 

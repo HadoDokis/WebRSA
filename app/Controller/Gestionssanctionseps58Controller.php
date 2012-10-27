@@ -15,7 +15,7 @@
 	 */
 	class Gestionssanctionseps58Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Csv', 'Ajax', 'Search' );
+		public $helpers = array( 'Default', 'Default2', 'Csv', 'Search' );
 
 		public $uses = array( 'Gestionsanctionep58', 'Personne', 'Commissionep', 'Option', 'Dossier', 'Zonegeographique' );
 
