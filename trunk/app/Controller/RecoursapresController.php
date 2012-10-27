@@ -9,7 +9,7 @@
 
 		public $components = array( 'Gestionzonesgeos', 'Gedooo.Gedooo', 'Search.Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Search' );
+		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml', 'Search' );
 
 		/**
 		*
@@ -59,7 +59,7 @@
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = (!empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array( ) );
-			
+
 
 			$this->Dossier->begin();
 			if( !empty( $this->request->data ) ) {

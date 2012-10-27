@@ -29,7 +29,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale' );
+		public $helpers = array( 'Csv', 'Default2', 'Locale' );
 
 		public $components = array(
 			'Search.Prg' => array(
@@ -136,7 +136,7 @@
 
                     unset( $this->Apre66->Aideapre66->validate['montantpropose'] );
 					$valid = $this->Apre66->Aideapre66->saveAll( $this->request->data['Aideapre66'], array( 'validate' => 'only', 'atomic' => false ) );
-                        
+
 					if( $valid ) {
 						$this->Aideapre66->begin();
 						$saved = $this->Apre66->Aideapre66->saveAll( $this->request->data['Aideapre66'], array( 'validate' => 'first', 'atomic' => false ) );

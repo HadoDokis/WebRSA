@@ -53,6 +53,7 @@
 		/**
 		 * Test de la méthode Histochoixcer93::prepareFormData()
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testPrepareFormData() {
@@ -150,6 +151,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 02attdecisioncpdv.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision02attdecisioncpdv() {
@@ -234,6 +236,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 03attdecisioncg, sans rejet.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision03attdecisioncgSansRejet() {
@@ -319,6 +322,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 03attdecisioncg, sans rejet.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision03attdecisioncgAvecRejet() {
@@ -404,6 +408,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 05secondelecture, decision valide.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision05secondelectureValide() {
@@ -494,6 +499,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 05secondelecture, decision passageep.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision05secondelecturePassageep() {
@@ -595,6 +601,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 05secondelecture, decision aviscadre.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision05secondelectureAviscadre() {
@@ -682,6 +689,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 06attaviscadre, décision valide.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision06attaviscadreValide() {
@@ -769,6 +777,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 06attaviscadre, décision rejete.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision06attaviscadreRejete() {
@@ -856,6 +865,7 @@
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
 		 * 06attaviscadre, décision passageep.
 		 *
+		 * @group medium
 		 * @return void
 		 */
 		public function testSaveDecision06attaviscadrePassageep() {

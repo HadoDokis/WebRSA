@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Criterecui', 'Cui', 'Option', 'Structurereferente' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Search' );
+		public $helpers = array( 'Csv', 'Search' );
 
 		public $components = array(
 			'Gestionzonesgeos',

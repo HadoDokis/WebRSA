@@ -12,7 +12,7 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2' );
+		public $helpers = array( 'Default2' );
 
 		public $components = array(
             'Search.Prg' => array(
@@ -81,9 +81,9 @@
 				// On a renvoyé  le formulaire de la cohorte
 				if( !empty( $this->request->data['ActioncandidatPersonne'] ) ) {
                     $this->Cohortes->get( array_unique( Set::extract( $this->request->data, 'ActioncandidatPersonne.{n}.dossier_id' ) ) );
-                    
+
 					$valid = $this->ActioncandidatPersonne->saveAll( $this->request->data['ActioncandidatPersonne'], array( 'validate' => 'only', 'atomic' => false ) );
-                    
+
 					if( $valid ) {
 						$this->ActioncandidatPersonne->begin();
 						$saved = $this->ActioncandidatPersonne->saveAll( $this->request->data['ActioncandidatPersonne'], array( 'validate' => 'first', 'atomic' => false ) );
@@ -122,7 +122,7 @@
                         $this->request->data['Search'],
                         $this->Cohortes->sqLocked( 'Dossier' )
                     );
-                    
+
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;

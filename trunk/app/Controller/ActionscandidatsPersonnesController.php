@@ -1,13 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe ActionscandidatsPersonnesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ActionscandidatsPersonnesController permet la gestion des fiches
+	 * de liaison (CG 66 et 93).
+	 *
+	 * @package app.Controller
+	 */
 	class ActionscandidatsPersonnesController extends AppController
 	{
-
 		public $name = 'ActionscandidatsPersonnes';
-//6,08 secondes. 25.48 MB / 25.75 MB. 132 modèles
-//5,97 secondes. 25.36 MB / 25.75 MB. 130 modèles
-//2,99 secondes. 20.16 MB / 20.50 MB. 75 modèles
 		public $uses = array( 'ActioncandidatPersonne','Option' );
-		public $helpers = array( 'Default', 'Locale', 'Csv', 'Ajax', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
@@ -48,7 +59,7 @@
 		}
 
 		/**
-		 *
+		 * Liste des paramétrages pour le module.
 		 */
 		public function indexparams() {
 			// Retour à la liste en cas d'annulation
@@ -64,35 +75,32 @@
 		}
 
 		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 *
 		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		 * FIXME: traiter les valeurs de retour
+		 *
 		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Visualisation d'un fichier lié avant son envoi sur le serveur.
+		 *
+		 * @param integer $id
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement d'un fichier lié au module.
+		 *
+		 * @param integer $fichiermodule_id
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -100,23 +108,26 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Liste des fichiers liés à une fiche de liaison.
+		 *
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
 			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
-					'first', array(
-				'conditions' => array(
-					'ActioncandidatPersonne.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'ActioncandidatPersonne.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 
@@ -136,13 +147,12 @@
                 $this->ActioncandidatPersonne->begin();
 
 				$saved = $this->ActioncandidatPersonne->updateAll(
-						array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->request->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ), array(
-					'"ActioncandidatPersonne"."id"' => $id
-						)
+					array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->request->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ),
+					array( '"ActioncandidatPersonne"."id"' => $id )
 				);
 
 				if( $saved ) {
-					// Sauvegarde des fichiers liés à une PDO
+					// Sauvegarde des fichiers liés.
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
 					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->request->data, "ActioncandidatPersonne.haspiecejointe" ), $id ) && $saved;
 				}
@@ -151,7 +161,6 @@
 					$this->ActioncandidatPersonne->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'actionscandidats_personnes','action' => 'index', $personne_id ) );
 					$this->redirect( $this->referer() );
 				}
 				else {
@@ -168,9 +177,9 @@
 		}
 
 		/**
-		 *   Ajout à la suite de l'utilisation des nouveaux helpers
-		 *   - default.php
-		 *   - theme.php
+		 * Liste des fiches de liaison d'un allocataire.
+		 *
+		 * @param integer $personne_id
 		 */
 		public function index( $personne_id ) {
 			// Préparation du menu du dossier
@@ -220,25 +229,17 @@
 			);
 			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $queryData );
 			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
-// 			debug($actionscandidats_personnes);
-// 			$this->paginate = array(
-// 				$this->modelClass => array(
-// 					'limit' => 10
-// 				)
-// 			);
 
-// 			$this->paginate = Set::merge( $this->paginate, $queryData );
-// 			$items = $this->paginate( $this->modelClass );
-// 			$varname = Inflector::tableize( $this->name );
-// 			$this->set( $varname, $items );
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 		}
 
 		/**
-		 *   Ajax pour les partenaires fournissant les actions
+		 * Ajax pour les partenaires fournissant les actions
+		 *
+		 * @param integer $actioncandidat_id
 		 */
-		public function ajaxpart( $actioncandidat_id = null ) { // FIXME
+		public function ajaxpart( $actioncandidat_id = null ) {
 			Configure::write( 'debug', 0 );
 
 			$dataActioncandidat_id = Set::extract( $this->request->data, 'ActioncandidatPersonne.actioncandidat_id' );
@@ -269,13 +270,17 @@
 			$this->render( 'ajaxpart', 'ajax' );
 		}
 
-		public function ajaxreferent( $referent_id = null ) {  // FIXME
+		/**
+		 *
+		 * @param integer $referent_id
+		 */
+		public function ajaxreferent( $referent_id = null ) {
 			Configure::write( 'debug', 0 );
 			$dataReferent_id = Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->find( 
+			$prescripteur = $this->ActioncandidatPersonne->Personne->Referent->find(
 				'first',
 				array(
 					'fields' => array(
@@ -300,9 +305,11 @@
 		}
 
 		/**
-		 *   Ajax pour les partenaires fournissant les actions
+		 * Ajax pour les partenaires fournissant les actions
+		 *
+		 * @param integer $referent_id
 		 */
-		public function ajaxstruct( $referent_id = null ) { // FIXME
+		public function ajaxstruct( $referent_id = null ) {
 			Configure::write( 'debug', 0 );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$dataReferent_id = Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' );
@@ -336,11 +343,13 @@
 		}
 
 		/**
-		 *   Ajax pour les partenaires fournissant les actions
+		 * Ajax pour les partenaires fournissant les actions
+		 *
+		 * @param integer $referent_id
 		 */
-		public function ajaxreffonct( $referent_id = null ) { // FIXME
+		public function ajaxreffonct( $referent_id = null ) {
 			Configure::write( 'debug', 0 );
-// debug($referent_id);
+
 			if( !empty( $referent_id ) ) {
 				$referent_id = suffix( $referent_id );
 			}
@@ -411,7 +420,7 @@
                 $dossier_id = $this->ActioncandidatPersonne->dossierId( $id );
             }
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
-            
+
             $this->Jetons2->get( $dossier_id );
 
 			$useDsps = ( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' );
@@ -486,7 +495,6 @@
 			$this->set( 'referents', $referents );
 
 			///Données Dsp
-
 			$qd_dsp = array(
 				'conditions' => array(
 					'Dsp.personne_id' => $personne_id
@@ -512,8 +520,8 @@
 			$user = $this->User->find( 'first', $qd_user );
 
 			$codeinseeUser = Set::classicExtract( $user, 'Serviceinstructeur.code_insee' );
-                        
-            //On affiche les actions inactives en édition mais pas en ajout, 
+
+            //On affiche les actions inactives en édition mais pas en ajout,
             // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
             $isactive = 'O';
             if( $this->action == 'edit' ){
@@ -531,7 +539,7 @@
 						$success = $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 					}
                     else {
-                        $success = true;                        
+                        $success = true;
                     }
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
@@ -595,7 +603,7 @@
 					$this->request->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
 					$this->request->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
 					///Fin des Dsps
-					
+
 					// Liste des motifs de sortie pour le CG66
 					$sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
 						array(
@@ -607,7 +615,7 @@
 							'contain' => false
 						)
 					);
-					$options[$this->modelClass]['motifsortie_id'] = 
+					$options[$this->modelClass]['motifsortie_id'] =
 						$this->{$this->modelClass}->Motifsortie->find(
 							'list',
 							array(
@@ -652,7 +660,9 @@
 		}
 
 		/**
-		 * Impression de la fiche de candidature
+		 * Impression d'une fiche de liaison.
+		 *
+		 * @param integer $actioncandidat_personne_id
 		 */
 		public function printFiche( $actioncandidat_personne_id ) {
 			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
@@ -666,12 +676,19 @@
 			}
 		}
 
+		/**
+		 * Suppression d'une fiche de liaison.
+		 *
+		 * @param integer $id
+		 */
 		public function delete( $id ) {
 			$this->Default->delete( $id );
 		}
 
 		/**
-		 *   Fonction pour annuler la fiche de candidature pour le CG66
+		 * Fonction pour annuler la fiche de candidature (CG 66).
+		 *
+		 * @param integer $id
 		 */
 		public function cancel( $id = null ) {
 			$qd_actioncandidat = array(
@@ -697,7 +714,7 @@
 				if( $this->ActioncandidatPersonne->save( $this->request->data ) ) {
 
 					$this->{$this->modelClass}->updateAll(
-                        array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ), 
+                        array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
                         array(
                             '"ActioncandidatPersonne"."id"' => $id
                         )
@@ -713,6 +730,11 @@
 			$this->set( 'urlmenu', '/actionscandidats_personnes/index/'.$personne_id );
 		}
 
+		/**
+		 * Visualisation d'une fiche de liaison.
+		 *
+		 * @param integer $id
+		 */
 		public function view( $id ) {
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
@@ -723,18 +745,19 @@
 
 
 			$actionscandidatspersonne = $this->ActioncandidatPersonne->find(
-					'first', array(
-				'conditions' => array(
-					'ActioncandidatPersonne.id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'Referent',
-					'Actioncandidat',
-					'Motifsortie',
-					'Fichiermodule'
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'ActioncandidatPersonne.id' => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Referent',
+						'Actioncandidat',
+						'Motifsortie',
+						'Fichiermodule'
 					)
+				)
 			);
 
 			if( ($actionscandidatspersonne['Actioncandidat']['correspondantaction'] == 1) && !empty( $actionscandidatspersonne['Actioncandidat']['referent_id'] ) ) {
@@ -755,7 +778,7 @@
 			}
 		}
 
-		
+
 		/**
 		 * Permet d'envoyer un mail au référent en lien avec la fiche de candidature
 		 *
@@ -786,8 +809,6 @@
 			}
 
 			$this->Email->reset();
-// debug($actioncandidat_personne);
-// die();
 			$this->Email->smtpOptions = Configure::read( 'Email.smtpOptions' );
 			$this->Email->delivery = 'smtp';
 			$this->Email->from = Configure::read( 'FicheCandidature.Email.from' );

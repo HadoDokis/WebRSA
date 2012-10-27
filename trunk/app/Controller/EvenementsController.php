@@ -4,7 +4,7 @@
 
 		public $name = 'Evenements';
 		public $uses = array( 'Option', 'Foyer', 'Evenement' );
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform' );
+		public $helpers = array( 'Locale', 'Xform' );
 
 		/** ********************************************************************
 		*

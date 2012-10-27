@@ -6,7 +6,7 @@
 		public $name = 'Etatsliquidatifs';
 		public $uses = array( 'Etatliquidatif', 'Parametrefinancier', 'Option' );
 		public $components = array( 'Gedooo.Gedooo' );
-		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement', 'Theme' );
+		public $helpers = array( 'Xform', 'Locale', 'Paginator', 'Apreversement', 'Theme', 'Cake1xLegacy.Ajax' );
 		public $commeDroit = array(
 			'add' => 'Etatsliquidatifs:edit'
 		);

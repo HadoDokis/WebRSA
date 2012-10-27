@@ -15,9 +15,9 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
 
-		public $uses = array( 'Bilanparcours66', 'Option', 'Pdf', 'Dossierep'  );
+		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep'  );
 
 		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
@@ -74,8 +74,8 @@
 			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
 			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
 
-			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( true ); // Liste des services instructeurs en lien avec un Service Social 
-			
+			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( true ); // Liste des services instructeurs en lien avec un Service Social
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -532,7 +532,7 @@
             // Nombre de mois cumulés pour la contractualisation
             $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $personne_id );
             $this->set('nbCumulDureeCER66', $nbCumulDureeCER66);
-            
+
             // On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
@@ -551,7 +551,7 @@
 			);
 			$serviceinstruceteurUser = Set::classicExtract( $user, 'User.serviceinstructeur_id' );
 			$this->set( 'serviceinstruceteurUser', $serviceinstruceteurUser );
-			
+
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {
 // debug( $this->request->data );

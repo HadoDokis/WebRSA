@@ -6,7 +6,7 @@
 		public $name = 'Criteresci';
 
 		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa' );
-		public $helpers = array( 'Csv', 'Ajax', 'Search' );
+		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );

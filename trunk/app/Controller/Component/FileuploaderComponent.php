@@ -1,29 +1,44 @@
 <?php
-	if( CAKE_BRANCH == '1.2' ) {
-		App::import( 'Core', 'File' );
-	}
-	else {
-		App::uses('Folder', 'Utility');
-		App::uses('File', 'Utility');
-	}
+	/**
+	 * Fichier source de la classe FileuploaderComponent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::uses('Folder', 'Utility');
+	App::uses('File', 'Utility');
 
-    class FileuploaderComponent extends Component
+	/**
+	 * La classe FileuploaderComponent permet de gérer les fichiers liés pour
+	 * différents modules (contrôleurs).
+	 *
+	 * @see http://valums.com/ajax-upload/
+	 * @see http://doc.ubuntu-fr.org/modules_php
+	 * increase post_max_size and upload_max_filesize to 10M
+	 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+	 *
+	 * @package app.Controller.Component
+	 */
+	class FileuploaderComponent extends Component
     {
         /**
-        *
-        */
-
-        protected $_modeleStockage = 'Fichiermodule';
+		 * @var string
+		 */
+		protected $_modeleStockage = 'Fichiermodule';
 
         /**
-        * Le nom du modèle au sens CakePHP auquel les fichiers sont liés
-        */
+		 * Le nom du modèle au sens CakePHP auquel les fichiers sont liés
+		 * @var string
+		 */
+		protected $_colonneModele = null;
 
-        protected $_colonneModele = null;
-
-        /** *******************************************************************
-            The initialize method is called before the controller's beforeFilter method.
-        ******************************************************************** */
+		/**
+		 * Initialisation du component.
+		 *
+		 * @param Controller $controller
+		 */
         public function initialize( Controller $controller ) {
 			$settings = $this->settings;
             $this->controller = $controller;
@@ -40,15 +55,27 @@
             }
         }
 
-        /**
-        *
-        */
-
+		/**
+		 * Retourne le nom du répertoire teporaire où sont stockés les fichiers
+		 * en attente d'enregistrement.
+		 *
+		 * @param string $action
+		 * @param integer $id
+		 * @return string
+		 */
         public function dirFichiersModule( $action, $id ){
             return APP.'tmp'.DS.'files'.DS.session_id().DS.$this->_colonneModele.DS.$action.DS.$id;
         }
 
-
+		/**
+		 * Sauvegarde des fichiers temporaires liés en base et suppression des
+		 * données temporaires.
+		 *
+		 * @param string $dir
+		 * @param boolean $delete
+		 * @param integer $id
+		 * @return boolean
+		 */
         public function saveFichiers( $dir, $delete = false, $id ){
             $oFolder = new Folder( $dir, true, 0777 );
             $saved = true;
@@ -110,22 +137,23 @@
             return $saved;
         }
 
-        /**
-        *   Permet de supprimer les fichiers temporaire en cas d'annulation du formulaire
-        */
-
+		/**
+		 * Suppression des fichiers temporaire en cas d'annulation du formulaire.
+		 *
+		 */
         public function deleteDir(){
             $dir = $this->dirFichiersModule( $this->controller->action, $id );
             $oFolder = new Folder( $dir, true, 0777 );
             $oFolder->delete( $dir );
         }
 
-
-
-        /**
-        *   Permet de savoir si les fichiers à charger sont sur le disque où en base
-        */
-
+		/**
+		 * Permet d'obtenir la liste complète des fichiers liés à un enregistremennt,
+		 * qu'ils soient sur disque ou en base.
+		 *
+		 * @param integer $id
+		 * @return array
+		 */
         public function fichiers( $id ){
             $fichiers = array();
             if($this->controller->action == 'edit' ){
@@ -135,11 +163,13 @@
             return $fichiers;
         }
 
-        /**
-        *   Récupération des fichiers chargés sur le disque mais non encore envoyé sur le serveur.
-        *   Permet de conserver les fichiers chargés dans le cas où le formulaire nous renvoie une erreur.
-        */
-
+		/**
+         * Récupération des fichiers chargés sur le disque mais non encore envoyé sur le serveur.
+         * Permet de conserver les fichiers chargés dans le cas où le formulaire nous renvoie une erreur.
+		 *
+		 * @param integer $id L'enregistrement auquel ces fichiers sont liés.
+		 * @return array
+		 */
         public function _fichiersSurDisque($id){
             $fichiers = array();
 
@@ -168,10 +198,12 @@
             return $fichiers;
         }
 
-        /**
-        * Récupération des fichiers en base
-        */
-
+		/**
+		 * Récupération des fichiers en base.
+		 *
+		 * @param integer $id L'enregistrement auquel ces fichiers sont liés.
+		 * @return array
+		 */
         public function _fichiersEnBase( $id ) {
             $fichiers = array();
 
@@ -192,15 +224,9 @@
             return $fichiers;
         }
 
-
-
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        */
-
+		/**
+		 *
+		 */
         public function ajaxfileupload() {
             $error = false;
 
@@ -231,17 +257,11 @@
             die();
         }
 
-        /**
-        * http://valums.com/ajax-upload/
-        * http://doc.ubuntu-fr.org/modules_php
-        * increase post_max_size and upload_max_filesize to 10M
-        * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-        * FIXME: traiter les valeurs de retour
-        */
-
+		/**
+		 * TODO: traiter les valeurs de retour
+		 *
+		 */
         public function ajaxfiledelete() {
-
-
             $dir = $this->dirFichiersModule( $this->controller->params['pass'][0], $this->controller->params['pass'][1] );
             $path = $dir.DS.$this->controller->params['pass'][2];
             $error = false;
@@ -272,7 +292,11 @@
             die();
         }
 
-
+		/**
+		 * Visualisation d'un fichier lié avant son envoi sur le serveur.
+		 *
+		 * @param integer $id
+		 */
         public function fileview( $id ) {
             $dir = $this->dirFichiersModule( $this->controller->params['pass'][0], $this->controller->params['pass'][1] );
 
@@ -326,12 +350,11 @@
             die();
         }
 
-
-
-        /**
-        *
-        */
-
+		/**
+		 * Téléchargement d'un fichier lié au module.
+		 *
+		 * @param integer $id
+		 */
         public function download( $id ) {
             $item = ClassRegistry::init( $this->_modeleStockage)->find( 'first', array( 'conditions' => array( "{$this->_modeleStockage}.id" =>  $id) ) );
 
@@ -362,14 +385,14 @@
             }
         }
 
-
-        /** *******************************************************************
-            The beforeRedirect method is invoked when the controller's redirect method
-            is called but before any further action. If this method returns false the
-            controller will not continue on to redirect the request.
-            The $url, $status and $exit variables have same meaning as for the controller's method.
-        ******************************************************************** */
-        public function beforeRedirect( Controller $controller, $url, $status = null, $exit = true ) {
+		/**
+		 * @param Controller $controller Controller with components to beforeRedirect
+		 * @param string|array $url Either the string or url array that is being redirected to.
+		 * @param integer $status The status code of the redirect
+		 * @param boolean $exit Will the script exit.
+		 * @return array|null Either an array or null.
+		 */
+		public function beforeRedirect( Controller $controller, $url, $status = null, $exit = true ) {
             parent::beforeRedirect( $controller, $url, $status , $exit );
         }
     }

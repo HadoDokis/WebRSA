@@ -574,7 +574,7 @@
 	{
 		public $components = array( 'Session', 'Auth', 'Acl', 'Default', 'Gedooo.Gedooo' );
 
-		public $helpers = array( 'Xhtml', 'Form', 'Javascript', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd' );
+		public $helpers = array( 'Xhtml', 'Form', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd' );
 
 		public $uses = array( 'User', 'Connection' );
 

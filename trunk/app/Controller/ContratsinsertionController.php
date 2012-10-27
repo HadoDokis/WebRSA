@@ -20,7 +20,7 @@
 
 		public $uses = array( 'Contratinsertion', 'Option' );
 
-		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader', 'Widget' );
+		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Widget' );
 
 		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 

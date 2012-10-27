@@ -8,7 +8,7 @@
 
 		public $aucunDroit = array( 'constReq', 'ajaxstruc' );
 
-		public $helpers = array( 'Csv', 'Ajax', 'Search' );
+		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 
 		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.Prg' => array( 'actions' => array( 'index' ) )  );
 

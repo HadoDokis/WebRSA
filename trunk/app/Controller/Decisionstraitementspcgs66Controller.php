@@ -21,7 +21,7 @@
 		*/
 
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
-		public $helpers = array( 'Default2', 'Ajax' );
+		public $helpers = array( 'Default2' );
 		public $uses = array( 'Decisiontraitementpcg66', 'Option', 'Pdf'  );
 
 		public $commeDroit = array(

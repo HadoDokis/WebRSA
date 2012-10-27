@@ -27,14 +27,13 @@
 			'Canton'
 		);
 
-		public $helpers = array( 'Csv', 'Ajax', 'Default2', 'Locale', 'Search', 'Fileuploader', 'Gestionanomaliebdd' );
+		public $helpers = array( 'Csv', 'Default2', 'Search', 'Gestionanomaliebdd' );
 
 		public $components = array(
 			'Cohortes' => array(
 				'isemploi',
 				'notisemploi',
 			),
-			'Fileuploader',
 			'Gestionzonesgeos',
 			'Search.Prg' => array(
 				'actions' => array(

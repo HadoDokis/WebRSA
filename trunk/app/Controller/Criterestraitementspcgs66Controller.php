@@ -4,7 +4,7 @@
 	class Criterestraitementspcgs66Controller extends AppController
 	{
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );
-		public $helpers = array( 'Default', 'Default2', 'Ajax', 'Locale', 'Csv', 'Search' );
+		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
 		public $components = array( 'Gestionzonesgeos','Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
@@ -53,7 +53,7 @@
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-			
+
 
 			$params = $this->request->data;
 			if( !empty( $params ) ) {

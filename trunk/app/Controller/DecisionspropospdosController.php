@@ -22,7 +22,7 @@
 		 * @access public
 		 */
 		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
-		public $helpers = array( 'Default2', 'Ajax' );
+		public $helpers = array( 'Default2' );
 		public $uses = array( 'Decisionpropopdo', 'Option', 'Pdf' );
 		public $commeDroit = array(
 			'view' => 'Decisionspropospdos:index',

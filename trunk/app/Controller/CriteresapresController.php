@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Critereapre', 'Aideapre66', 'Apre',  'Apre66', 'Tiersprestataireapre', 'Option' );
 
-		public $helpers = array( 'Locale', 'Csv', 'Ajax', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
+		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml', 'Xpaginator', 'Search' );
 
 		public $components = array(
 			'Gestionzonesgeos',
