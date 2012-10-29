@@ -75,13 +75,32 @@
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale', 'value' => isset( $this->request->data['Bilanparcours66']['serviceinstructeur_id'] ) ? $this->request->data['Bilanparcours66']['serviceinstructeur_id'] : $serviceinstruceteurUser ),
 					'Bilanparcours66.structurereferente_id' => array( 'type' => 'hidden' ),
-					'Bilanparcours66.referent_id',
+					'Bilanparcours66.referent_id'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			
+			echo $this->Ajax->observeField( 'Bilanparcours66ReferentId', array( 'update' => 'Bilanparcours66Structurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );
+
+			echo $this->Xhtml->tag(
+				'div',
+				' ',
+				array(
+					'id' => 'Bilanparcours66Structurereferente'
+				)
+			);
+			
+			echo $this->Default->subform(
+				array(
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
 				),
 				array(
 					'options' => $options
 				)
 			);
+			
 		?>
 
 	<fieldset>
@@ -247,7 +266,16 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-
+		
+		<?php
+			echo $this->Ajax->remoteFunction(
+				array(
+					'update' => 'Bilanparcours66Structurereferente',
+					'url' => Router::url( array( 'action' => 'ajaxstruc', Set::extract( $this->request->data, 'Bilanparcours66.referent_id' ) ), true)
+				)
+			);
+		?>
+		
 		observeDisableFieldsetOnCheckbox(
 			'Bilanparcours66Bilanparcoursinsertion',
 			'BilanparcoursinsertionCheckbox',

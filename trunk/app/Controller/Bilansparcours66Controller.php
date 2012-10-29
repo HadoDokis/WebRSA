@@ -15,7 +15,7 @@
 	 */
 	class Bilansparcours66Controller extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Default', 'Default2', 'Fileuploader', 'Cake1xLegacy.Ajax' );
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep'  );
 
@@ -25,7 +25,7 @@
 			'add' => 'Bilansparcours66:edit'
 		);
 
-		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajaxstruc', 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 
 		/**
@@ -199,6 +199,33 @@
 		}
 
 		/**
+		 *   Ajax pour les structures liées aux référents
+		 */
+		public function ajaxstruc( $referent_id = null ) {
+			Configure::write( 'debug', 0 );
+
+			$dataReferent_id = Set::extract( $this->request->data, 'Bilanparcours66.referent_id' );
+			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
+
+			if( !empty( $referent_id ) ) {
+				$referent = $this->Bilanparcours66->Referent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Referent.id' => $referent_id
+						),
+						'contain' => array(
+							'Structurereferente'
+						)
+					)
+				);
+				$this->set( 'referent', $referent );
+			}
+			$this->render( 'ajaxstruc', 'ajax' );
+		}
+		
+		
+		/**
 		*
 		*/
 
@@ -269,7 +296,7 @@
 					'Bilanparcours66.personne_id' => $personne_id
 				),
 				'limit' => 10,
-				'order' => array( 'Bilanparcours66.created DESC', 'Bilanparcours66.id DESC' )
+				'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
 			);
 
 			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );
