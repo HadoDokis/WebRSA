@@ -114,7 +114,7 @@
 								echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.examenauditionpe', array( 'tag' => 'td', 'options' => $options ) );
 							}
 							elseif ( $bilanparcour66['Bilanparcours66']['proposition'] == 'parcours' ) {
-								$bilanparcour66['Bilanparcours66']['choixparcours'] = 'maintien';
+// 								$bilanparcour66['Bilanparcours66']['choixparcours'] = 'maintien';
 								echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
 							}
 							else {
