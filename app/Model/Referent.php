@@ -440,7 +440,7 @@
 						),
 						'order' => array(
 							'Structurereferente.lib_struc ASC',
-							'Referent.nom_complet'
+							'Referent.nom_complet_court ASC'
 						),
 						'conditions' => array(
 							'Structurereferente.actif' => 'O'
