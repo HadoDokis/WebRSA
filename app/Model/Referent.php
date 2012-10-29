@@ -415,6 +415,44 @@
 		}
 
 		/**
+		 * Récupère la liste des référents groupés par structure référente
+		 * Cette liste est mise en cache, donc on se sert des fonctions de callback
+		 * afterSave et afterDelete pour supprimer et regénérer le cache.
+		 *
+		 * @return array
+		 */
+		public function listOptionsParStructure() {
+			$cacheKey = 'referentparstructure_list_options';
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = $this->find(
+					'list',
+					array(
+						'fields' => array(
+							'Referent.id',
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc',
+						),
+						'recursive' => -1,
+						'joins' => array(
+							$this->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+						),
+						'order' => array(
+							'Structurereferente.lib_struc ASC',
+							'Referent.nom_complet'
+						),
+						'conditions' => array(
+							'Structurereferente.actif' => 'O'
+						)
+					)
+				);
+				Cache::write( $cacheKey, $results );
+			}
+			return $results;
+		}
+		
+		/**
 		 * Suppression et regénération du cache.
 		 *
 		 * @return boolean
@@ -422,6 +460,7 @@
 		protected function _regenerateCache() {
 			$keys = array(
 				'referent_list_options',
+				'referentparstructure_list_options'
 			);
 
 			foreach( $keys as $key ) {

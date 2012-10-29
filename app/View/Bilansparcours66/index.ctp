@@ -65,9 +65,10 @@
 // 					$pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
 // 					echo $pagination;
 
-					echo "<table><thead><tr>";
+					echo '<table class="tooltips"  id="searchResults"><thead><tr>';
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.datebilan' )."</th>";
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.positionbilan' )."</th>";
+						echo "<th>MSP</th>";
 						echo "<th>".__d( 'structurereferente', 'Structurereferente.lib_struc' )."</th>";
 						echo "<th>Nom du référent</th>";
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.proposition' )."</th>";
@@ -76,10 +77,19 @@
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep' )."</th>";
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg' )."</th>";
 						echo "<th colspan='5'>Actions</th>";
-					echo "</tr></thead><tbody>";
+						echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $bilanparcour66) {
 
+						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+								<tbody>
+									<tr>
+										<th>Raison annulation</th>
+										<td>'.$bilanparcour66['Bilanparcours66']['motifannulation'].'</td>
+									</tr>
+								</tbody>
+							</table>';
+							
 						$nbFichiersLies = 0;
 						$nbFichiersLies = ( isset( $bilanparcour66['Fichiermodule'] ) ? count( $bilanparcour66['Fichiermodule'] ) : 0 );
 
@@ -89,9 +99,10 @@
 							$block = false;
 						}
 
-						echo "<tr>";
+						echo "<tr class=\"dynamic\" id=\"innerTableTrigger{$index}\">";
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.positionbilan', array(  'tag' => 'td', 'options' => $options ) );
+							echo $this->Type2->format( $bilanparcour66, 'Serviceinstructeur.lib_service', array( 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
 							echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
@@ -103,12 +114,7 @@
 								echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.examenauditionpe', array( 'tag' => 'td', 'options' => $options ) );
 							}
 							elseif ( $bilanparcour66['Bilanparcours66']['proposition'] == 'parcours' ) {
-								if ( $bilanparcour66['Bilanparcours66']['maintienorientation'] == 0)  {
-									$bilanparcour66['Bilanparcours66']['choixparcours'] = 'reorientation';
-								}
-								else {
-									$bilanparcour66['Bilanparcours66']['choixparcours'] = 'maintien';
-								}
+								$bilanparcour66['Bilanparcours66']['choixparcours'] = 'maintien';
 								echo $this->Type2->format( $bilanparcour66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
 							}
 							else {
@@ -232,6 +238,11 @@
 							echo $this->Xhtml->tag(
 								'td',
 								'('.$nbFichiersLies.')'
+							);
+							echo $html->tag(
+								'td',
+								$innerTable,
+								array( 'class' => 'innerTableCell noprint' ) 
 							);
 						echo "</tr>";
 					}

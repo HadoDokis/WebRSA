@@ -489,3 +489,6 @@ msgstr "Date de fin de reconduction du contrat"
 
 msgid "Pe.Bilanparcours66.avecep_typeorientprincipale_id"
 msgstr "Pour un accompagnement"
+
+msgid "Bilanparcours66.motifannulation"
+msgstr "Raison de l'annulation"

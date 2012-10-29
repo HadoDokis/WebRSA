@@ -74,7 +74,7 @@
 				array(
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale', 'value' => isset( $this->request->data['Bilanparcours66']['serviceinstructeur_id'] ) ? $this->request->data['Bilanparcours66']['serviceinstructeur_id'] : $serviceinstruceteurUser ),
-					'Bilanparcours66.structurereferente_id',
+					'Bilanparcours66.structurereferente_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.referent_id',
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
 				),
@@ -98,8 +98,6 @@
 					<strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
 				</td>
 				<td class="mediumSize noborder">
-					<strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service');?>
-					<br />
 					<strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
 					<br />
 					<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
@@ -595,7 +593,7 @@
 				array(
 					'Pe.Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Pe.Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale' ),
-					'Pe.Bilanparcours66.structurereferente_id'
+					'Pe.Bilanparcours66.structurereferente_id' => array( 'type' => 'hidden' )
 				),
 				array(
 					'options' => $options
@@ -647,8 +645,6 @@
 					<strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
 				</td>
 				<td class="mediumSize noborder">
-					<strong>N° Service instructeur : </strong><?php echo Set::classicExtract( $personne, 'Serviceinstructeur.lib_service');?>
-					<br />
 					<strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.numdemrsa' );?>
 					<br />
 					<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Foyer.Dossier.matricule' );?>
@@ -1245,12 +1241,14 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		dependantSelect( 'Saisinebilanparcoursep66StructurereferenteId', 'Saisinebilanparcoursep66TypeorientId' );
 		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
-		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+		// Dépendant select entre structure et référent pour le formulaire CG
+// 		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
 
 		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
 		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
-		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
+		// Dépendant select entre structure et référent pour le formulaire Pôle Emploi
+// 		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
 
 		$( 'Bilanparcours66DdreconductoncontratSansEpYear' ).observe( 'change', function(event) {
 			checkDatesToRefresh( '', 'SansEp' );
