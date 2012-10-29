@@ -504,20 +504,22 @@
 			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 			$data[$this->alias]['positionbilan'] = 'traite';
 			$this->create( $data );
-			if( $success = $this->validates() ) {
-				// Recherche de l'ancienne orientation
-				$vxOrientstruct = $this->Orientstruct->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Orientstruct.id' => $data[$this->alias]['orientstruct_id'] // TODO: autre conditions ?
-						),
-						'contain' => false
-					)
-				);
+			// Recherche de l'ancienne orientation
+				$vxOrientstruct = array();
+				if( !empty( $data[$this->alias]['orientstruct_id'] ) ) {
+					$vxOrientstruct = $this->Orientstruct->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Orientstruct.id' => $data[$this->alias]['orientstruct_id']
+							),
+							'contain' => false
+						)
+					);
+				}
 
 				if( empty( $vxOrientstruct ) ) {
-					debug( 'Vieille orientation répondant aux critères non trouvé.' );
+					$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
 					return false;
 				}
 

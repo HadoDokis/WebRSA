@@ -25,7 +25,7 @@
 			'add' => 'Bilansparcours66:edit'
 		);
 
-		public $aucunDroit = array( 'ajaxstruc', 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 
 		/**
@@ -43,9 +43,9 @@
 
 			$options = Set::insert( $options, 'typevoie', $typevoie );
 
-// 			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 // 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
-			$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptionsParStructure();
+			$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptions();
 			$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 
@@ -583,21 +583,7 @@
 
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {
-// debug( $this->request->data );
-//                die();
 
-				// On va chercher le structure référente dont dépend le référent sélectionné
-				if( !empty( $this->request->data['Bilanparcours66']['referent_id'] ) ) {
-					$this->Bilanparcours66->Referent->id = $this->request->data['Bilanparcours66']['referent_id'];
-					$this->request->data = Set::merge(
-						$this->request->data,
-						array(
-							'Bilanparcours66' => array(
-								'structurereferente_id' => $this->Bilanparcours66->Referent->field( 'structurereferente_id' )
-							)
-						)
-					);
-				}
                 $this->Bilanparcours66->begin();
 
 				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
@@ -669,6 +655,8 @@
 			// Premier accès à la page
 			else {
 				if( $this->action == 'edit' ) {
+					$bilanparcours66['Bilanparcours66']['referent_id'] = $bilanparcours66['Bilanparcours66']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
+					
 					$this->request->data = $bilanparcours66;
 				}
 				else {

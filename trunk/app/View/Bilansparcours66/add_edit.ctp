@@ -74,26 +74,8 @@
 				array(
 					'Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale', 'value' => isset( $this->request->data['Bilanparcours66']['serviceinstructeur_id'] ) ? $this->request->data['Bilanparcours66']['serviceinstructeur_id'] : $serviceinstruceteurUser ),
-					'Bilanparcours66.structurereferente_id' => array( 'type' => 'hidden' ),
-					'Bilanparcours66.referent_id'
-				),
-				array(
-					'options' => $options
-				)
-			);
-			
-			echo $this->Ajax->observeField( 'Bilanparcours66ReferentId', array( 'update' => 'Bilanparcours66Structurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );
-
-			echo $this->Xhtml->tag(
-				'div',
-				' ',
-				array(
-					'id' => 'Bilanparcours66Structurereferente'
-				)
-			);
-			
-			echo $this->Default->subform(
-				array(
+					'Bilanparcours66.structurereferente_id',
+					'Bilanparcours66.referent_id',
 					'Bilanparcours66.presenceallocataire' => array('required'=>true)
 				),
 				array(
@@ -266,15 +248,6 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		
-		<?php
-			echo $this->Ajax->remoteFunction(
-				array(
-					'update' => 'Bilanparcours66Structurereferente',
-					'url' => Router::url( array( 'action' => 'ajaxstruc', Set::extract( $this->request->data, 'Bilanparcours66.referent_id' ) ), true)
-				)
-			);
-		?>
 		
 		observeDisableFieldsetOnCheckbox(
 			'Bilanparcours66Bilanparcoursinsertion',
@@ -621,7 +594,7 @@
 				array(
 					'Pe.Bilanparcours66.orientstruct_id' => array( 'type' => 'hidden' ),
 					'Pe.Bilanparcours66.serviceinstructeur_id' => array( 'label' => 'Maison sociale' ),
-					'Pe.Bilanparcours66.structurereferente_id' => array( 'type' => 'hidden' )
+					'Pe.Bilanparcours66.structurereferente_id'
 				),
 				array(
 					'options' => $options
@@ -1270,13 +1243,13 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
 		// Dépendant select entre structure et référent pour le formulaire CG
-// 		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
+		dependantSelect( 'Bilanparcours66ReferentId', 'Bilanparcours66StructurereferenteId' );
 
 		dependantSelect( 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId' );
 		try { $( 'PeSaisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
 		// Dépendant select entre structure et référent pour le formulaire Pôle Emploi
-// 		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
+		dependantSelect( 'PeBilanparcours66ReferentId', 'PeBilanparcours66StructurereferenteId' );
 
 		$( 'Bilanparcours66DdreconductoncontratSansEpYear' ).observe( 'change', function(event) {
 			checkDatesToRefresh( '', 'SansEp' );
