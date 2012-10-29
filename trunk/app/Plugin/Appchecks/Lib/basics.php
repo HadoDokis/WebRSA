@@ -19,7 +19,7 @@
 	 */
 	function version_id( $version ) {
 		$version = explode( '.', $version );
-		return ( @$version[0] * 10000 + @$version[1] * 100 + @$version[2] );
+		return ( @$version[0] * 1000000 + @$version[1] * 10000 + @$version[2] * 100 + @$version[3] );
 	}
 
 	/**

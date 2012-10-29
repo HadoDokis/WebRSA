@@ -1,4 +1,4 @@
-<h1><?php echo $this->pageTitle;?></h1>
+<h1><?php echo $title_for_layout = __d( 'gestionanomaliebdd', 'Gestionsanomaliesbdds::personnes' );$this->set( 'title_for_layout', $title_for_layout );?></h1>
 
 <?php if( !empty( $fichiersModuleLies ) ): ?>
 	<div class="errorslist">

@@ -65,7 +65,8 @@
 							dossiers.id = foyers.dossier_id
 						)
 					WHERE
-						prestations.rolepers IN ( 'DEM', 'CJT' )
+						dossiers.dtdemrsa IS NOT NULL
+						AND prestations.rolepers IN ( 'DEM', 'CJT' )
 						AND (
 							(
 								nir_correct13( personnes.nir )
@@ -90,8 +91,7 @@
 		)
 		WHERE
 			prestations.rolepers IN ( 'DEM', 'CJT' )
-			AND personnes.dtnai IS NOT NULL
-			AND dossiers.dtdemrsa IS NOT NULL;";
+			AND personnes.dtnai IS NOT NULL;";
 
 			$this->out( 'Population de la table derniersdossiersallocataires' );
 			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;

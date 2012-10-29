@@ -184,7 +184,7 @@
 			return array(
 				'Cakephp' => array(
 					'informations' => array(
-						'Version' => $this->Check->version( 'CakePHP', Configure::version(), '2.2.2' ),
+						'Version' => $this->Check->version( 'CakePHP', Configure::version(), '2.2.3.1' ),
 						'Timeout' => $this->Check->timeout()
 					)
 				)
