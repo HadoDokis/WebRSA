@@ -43,8 +43,9 @@
 
 			$options = Set::insert( $options, 'typevoie', $typevoie );
 
-			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+// 			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+// 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+			$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptionsParStructure();
 			$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 			$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
 
@@ -161,6 +162,7 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
+			
 				$this->Bilanparcours66->begin();
 
 				$saved = $this->Bilanparcours66->updateAll(
@@ -556,6 +558,19 @@
 			if( !empty( $this->request->data ) ) {
 // debug( $this->request->data );
 //                die();
+
+				// On va chercher le structure référente dont dépend le référent sélectionné
+				if( !empty( $this->request->data['Bilanparcours66']['referent_id'] ) ) {
+					$this->Bilanparcours66->Referent->id = $this->request->data['Bilanparcours66']['referent_id'];
+					$this->request->data = Set::merge(
+						$this->request->data,
+						array(
+							'Bilanparcours66' => array(
+								'structurereferente_id' => $this->Bilanparcours66->Referent->field( 'structurereferente_id' )
+							)
+						)
+					);
+				}
                 $this->Bilanparcours66->begin();
 
 				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
@@ -824,74 +839,89 @@
 		*   Fonction pour annuler le Bilan de parcours pour le CG66
 		*/
 
+		/**
+		*   Fonction pour annuler le Bilan de parcours pour le CG66
+		*/
+
 		public function cancel( $id ) {
-			$bilan = $this->{$this->modelClass}->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Bilanparcours66.id' => $id
-					),
-					'contain' => false
-				)
+			$qd_bilan = array(
+				'conditions' => array(
+					$this->modelClass.'.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
 			);
-// 			$orientstruct_id = Set::classicExtract( $bilan, 'Bilanparcours66.orientstruct_id' );
-// 			$orientstruct = $this->{$this->modelClass}->Orientstruct->find(
-// 				'first',
-// 				array(
-// 					'conditions' => array(
-// 						'Orientstruct.id' => $orientstruct_id
-// 					),
-// 					'contain' => false
-// 				)
-// 			);
+			$bilan = $this->{$this->modelClass}->find( 'first', $qd_bilan );
+			$personne_id = Set::classicExtract( $bilan, 'Bilanparcours66.personne_id' );
+			$this->set( 'personne_id', $personne_id );
 
-			$personne = $this->Bilanparcours66->Personne->find(
-				'first',
-				array(
-					'fields' => array( 'id' ),
-					'conditions' => array(
-						'Personne.id' => $bilan['Bilanparcours66']['personne_id']
-					),
-					'recursive' => -1
-				)
-			);
+			$dossier_id = $this->Bilanparcours66->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
 
-			// On cherche le dossier EP créé par le bilan de parcours lors de l'enregistrement
-			// Dans un premier temps, on regarde si le dossier EP est lié à une demande de réorientation (saisinebilanparcoursep66)
-			$dossierep = $this->Dossierep->Saisinebilanparcoursep66->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Saisinebilanparcoursep66.bilanparcours66_id' => $id
-					)
-				)
-			);
-			// Si c'est le cas, on supprime le dossier d'EP dans la thématique en question
-			if ( !empty( $dossierep ) ) {
-				$this->Dossierep->Saisinebilanparcoursep66->deleteAll( array( 'Saisinebilanparcoursep66.bilanparcours66_id' => $id ) );
-				$this->Dossierep->delete( $dossierep['Saisinebilanparcoursep66']['dossierep_id'] );
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->params['form']['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			// Sinon on cherche dans l'autre thématique (defautinsertionep66) et on supprime le dossier d'EP
-			else {
-				$dossierep = $this->Dossierep->Defautinsertionep66->find(
+
+			if( !empty( $this->request->data ) ) {
+				$this->Bilanparcours66->begin();
+
+				// On cherche le dossier EP créé par le bilan de parcours lors de l'enregistrement
+				// Dans un premier temps, on regarde si le dossier EP est lié à une demande de réorientation (saisinebilanparcoursep66)
+				$dossierep = $this->Dossierep->Saisinebilanparcoursep66->find(
 					'first',
 					array(
 						'conditions' => array(
-							'Defautinsertionep66.bilanparcours66_id' => $id
+							'Saisinebilanparcoursep66.bilanparcours66_id' => $id
 						)
 					)
 				);
-				$this->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
-				$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
-			}
+				// Si c'est le cas, on supprime le dossier d'EP dans la thématique en question
+				if ( !empty( $dossierep ) ) {
+					$this->Dossierep->Saisinebilanparcoursep66->deleteAll( array( 'Saisinebilanparcoursep66.bilanparcours66_id' => $id ) );
+					$this->Dossierep->delete( $dossierep['Saisinebilanparcoursep66']['dossierep_id'] );
+				}
+				// Sinon on cherche dans l'autre thématique (defautinsertionep66) et on supprime le dossier d'EP
+				else {
+					$dossierep = $this->Dossierep->Defautinsertionep66->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Defautinsertionep66.bilanparcours66_id' => $id
+							)
+						)
+					);
+					$this->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
+					$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
+				}
 
-			$this->{$this->modelClass}->updateAll(
-				array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
-				array(
-					'"Bilanparcours66"."id"' => $id
-				)
-			);
-			$this->redirect( array( 'action' => 'index', $personne['Personne']['id'] ) );
+				
+				$saved = $this->Bilanparcours66->save( $this->request->data );
+				$saved = $this->{$this->modelClass}->updateAll(
+					array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
+					array(
+						'"Bilanparcours66"."personne_id"' => $bilan['Bilanparcours66']['personne_id'],
+						'"Bilanparcours66"."id"' => $bilan['Bilanparcours66']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->Bilanparcours66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Bilanparcours66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
+			}
+			else {
+				$this->request->data = $bilan;
+			}
+			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
 		}
 
 		/**

@@ -644,6 +644,11 @@ DROP TYPE IF EXISTS TYPE_NONVALIDATIONPARTICULIER66 CASCADE;
 CREATE TYPE TYPE_NONVALIDATIONPARTICULIER66 AS ENUM ( 'reprise','radiation');
 SELECT add_missing_table_field ( 'public', 'proposdecisionscers66', 'nonvalidationparticulier', 'TYPE_NONVALIDATIONPARTICULIER66' );
 
+
+-------------------------------------------------------------------------------------------------------------
+-- 20121026: Ajout d'un champ pour noter la raison de l'annulation du bilan de parcours 66
+-------------------------------------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'motifannulation', 'TEXT' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

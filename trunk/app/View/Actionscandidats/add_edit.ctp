@@ -221,18 +221,22 @@
 			);
 		?>
 	</fieldset>
-    <fieldset class="invisible">
-    <?php
-        echo $this->Default2->subform(
-            array(
-                'Motifsortie.Motifsortie' => array( 'label' => 'Liste des motifs de sortie liés à l\'action', 'multiple' => 'checkbox', 'empty' => false )
-            ),
-            array(
-                'options' => $motifssortie
-            )
-        );
-    ?>
-</fieldset>
+   <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+		<fieldset class="invisible">
+		<?php 
+			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
+			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
+			echo $this->Default2->subform(
+				array(
+					'Motifsortie.Motifsortie' => array( 'label' => 'Liste des motifs de sortie liés à l\'action', 'multiple' => 'checkbox', 'empty' => false )
+				),
+				array(
+					'options' => $motifssortie
+				)
+			);
+		?>
+		</fieldset>
+	<?php endif;?>
 <?php
 	echo $this->Xform->end( __( 'Save' ) );
 	echo $this->Default->button(
