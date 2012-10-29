@@ -333,6 +333,16 @@ CREATE INDEX cers93_sujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93(so
 -- 20121026: la table derniersdossiersallocataires permet de se passer d'une
 -- sous-requête très coûteuse (à condition de lancer le shell
 -- Derniersdossiersallocataires) afin de trouver le dernier dossier d'un allocataire.
+--
+-- La contrainte d'index unique est violée dans la BDD de prod du 05/10/2012 du
+-- CG 66 car les allocataires ont plusieurs prestations.
+-- personne_id	dossier_id	count
+-- 75820		30492		2
+-- 77064		38530		2
+-- 126883		52453		2
+-- Ces problèmes NE peuvent PAS être corrigés en passant par la partie "Administration"
+-- => "Gestion des anomalies" => "Gestion des doublons simples".
+-- Il faudra effectuer des requêtes du genre DELETE FROM prestations WHERE id = XXXXX.
 --------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS derniersdossiersallocataires CASCADE;

@@ -143,7 +143,7 @@
 					<div class="fade" style="z-index: 31"></div>
 					<div class="popup_block">
 						<div class="popup">
-					<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+							<a href="#" onclick="$('alertEndSession').hide(); return false;"><?php echo $this->Xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
 							<div id="popup-content">Attention votre session expire dans 5 minutes.</div>
 						</div>
 					</div>
