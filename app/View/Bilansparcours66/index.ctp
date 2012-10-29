@@ -79,7 +79,7 @@
 						echo "<th colspan='5'>Actions</th>";
 						echo "</tr></thead><tbody>";
 
-					foreach($bilansparcours66 as $bilanparcour66) {
+					foreach($bilansparcours66 as $index => $bilanparcour66) {
 
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 								<tbody>
@@ -129,11 +129,11 @@
 								// Proposition du référent
 								echo $this->Xhtml->tag(
 									'td',
-									( !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) ? Set::classicExtract( $typesorients, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ) ) : null
+									( !empty( $bilanparcour66['Saisinebilanparcoursep66']['typeorient_id'] ) ) ? Set::enum( Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.typeorient_id' ), $typesorients ) : null
 								);
 								echo $this->Xhtml->tag(
 									'td',
-									( !empty( $bilanparcour66['Saisinebilanparcoursep66']['structurereferente_id'] ) ) ? Set::classicExtract( $structuresreferentes, Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ) ) : null
+									( !empty( $bilanparcour66['Saisinebilanparcoursep66']['structurereferente_id'] ) ) ? Set::enum( Set::classicExtract( $bilanparcour66, 'Saisinebilanparcoursep66.structurereferente_id' ), $structuresreferentes ) : null
 								);
 
 								// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
@@ -239,7 +239,7 @@
 								'td',
 								'('.$nbFichiersLies.')'
 							);
-							echo $html->tag(
+							echo $this->Xhtml->tag(
 								'td',
 								$innerTable,
 								array( 'class' => 'innerTableCell noprint' ) 

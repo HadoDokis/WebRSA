@@ -88,7 +88,10 @@
 			personnes.id = prestations.personne_id
 			AND prestations.natprest = 'RSA'
 		)
-		WHERE prestations.rolepers IN ( 'DEM', 'CJT' );";
+		WHERE
+			prestations.rolepers IN ( 'DEM', 'CJT' )
+			AND personnes.dtnai IS NOT NULL
+			AND dossiers.dtdemrsa IS NOT NULL;";
 
 			$this->out( 'Population de la table derniersdossiersallocataires' );
 			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
