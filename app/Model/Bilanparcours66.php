@@ -504,7 +504,7 @@
 			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 			$data[$this->alias]['positionbilan'] = 'traite';
 			$this->create( $data );
-			// Recherche de l'ancienne orientation
+			if( $success = $this->validates() ) {
 				$vxOrientstruct = array();
 				if( !empty( $data[$this->alias]['orientstruct_id'] ) ) {
 					$vxOrientstruct = $this->Orientstruct->find(
@@ -521,8 +521,8 @@
 				if( empty( $vxOrientstruct ) ) {
 					$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
 					return false;
-				}
-
+				} 
+				
 				if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
 					// Recherche de l'ancien contrat d'insertion
 					$vxContratinsertion = $this->Contratinsertion->find(
