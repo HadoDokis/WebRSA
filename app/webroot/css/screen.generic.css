@@ -1521,11 +1521,11 @@ table#Cers93Index span.button.attdecisioncg.disabled { background-image: url( ..
 table#Cers93Index a.button.premierelecture { background-image: url( ../img/icons/folder_table.png ); }
 table#Cers93Index span.button.premierelecture.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
 
-table#Cers93Index a.button.secondelecture { background-image: url( ../img/icons/folder_table.png ); }
-table#Cers93Index span.button.secondelecture.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
+table#Cers93Index a.button.secondelecture { background-image: url( ../img/icons/tick.png ); }
+table#Cers93Index span.button.secondelecture.disabled { background-image: url( ../img/icons/tick_disabled.png ); }
 
-table#Cers93Index a.button.aviscadre { background-image: url( ../img/icons/folder_table.png ); }
-table#Cers93Index span.button.aviscadre.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
+table#Cers93Index a.button.aviscadre { background-image: url( ../img/icons/tick.png ); }
+table#Cers93Index span.button.aviscadre.disabled { background-image: url( ../img/icons/tick_disabled.png ); }
 
 table#Cers93Index a.button.add { background-image: url( ../img/icons/folder_table.png ); }
 table#Cers93Index span.button.add.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
