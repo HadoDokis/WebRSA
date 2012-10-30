@@ -32,27 +32,26 @@
 		 */
 		public $records = array(
 			array(
-//				'id' => 1,
 				'contratinsertion_id' => 1,
 				'user_id' => 1,
-				'matricule' => '66666666693',
-				'dtdemrsa' => '2009-09-01',
-				'qual' => 'MR',
-				'nom' => 'BUFFIN',
-				'prenom' => 'CHRISTIAN',
-				'nomnai' => 'BUFFIN',
-				'dtnai' => '1979-01-24',
+				'matricule' => '987654321000000',
+				'dtdemrsa' => '2010-07-12',
+				'qual' => 'MME',
+				'nom' => 'DURAND',
+				'prenom' => 'JEANNE',
+				'nomnai' => 'DUPUIS',
+				'dtnai' => '1956-12-05',
 				'adresse' => NULL,
 				'codepos' => NULL,
 				'locaadr' => NULL,
-				'sitfam' => 'CEL',
+				'sitfam' => 'MAR',
 				'natlog' => NULL,
 				'incoherencesetatcivil' => NULL,
 				'inscritpe' => NULL,
 				'cmu' => NULL,
 				'cmuc' => NULL,
 				'nivetu' => NULL,
-				'numdemrsa' => '66666666693',
+				'numdemrsa' => '77777777793',
 				'rolepers' => NULL,
 				'identifiantpe' => NULL,
 				'positioncer' => '00enregistre',
@@ -76,6 +75,5 @@
 				'modified' => NULL,
 			),
 		);
-
 	}
 ?>

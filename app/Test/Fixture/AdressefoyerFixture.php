@@ -31,7 +31,27 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'adresse_id' => 1,
+				'foyer_id' => 1,
+				'rgadr' => '01',
+				'dtemm' => '2010-05-25',
+				'typeadr' => 'D'
+			),
+			array(
+				'adresse_id' => 2,
+				'foyer_id' => 2,
+				'rgadr' => '01',
+				'dtemm' => '2012-06-08',
+				'typeadr' => 'D'
+			),
+			array(
+				'adresse_id' => 3,
+				'foyer_id' => 2,
+				'rgadr' => '01',
+				'dtemm' => '2010-09-20',
+				'typeadr' => 'D'
+			),
 		);
-
 	}
 ?>

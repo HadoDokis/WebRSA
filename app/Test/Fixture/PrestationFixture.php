@@ -36,7 +36,19 @@
 				'natprest' => 'RSA',
 				'rolepers' => 'DEM',
 				'topchapers' => null,
-			)
+			),
+			array(
+				'personne_id' => 2,
+				'natprest' => 'RSA',
+				'rolepers' => 'DEM',
+				'topchapers' => null,
+			),
+			array(
+				'personne_id' => 3,
+				'natprest' => 'RSA',
+				'rolepers' => 'CJT',
+				'topchapers' => null,
+			),
 		);
 
 	}

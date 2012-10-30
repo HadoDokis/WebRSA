@@ -32,7 +32,18 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'informationpe_id' => 1,
+				'identifiantpe' => '0609065370Y',
+				'date' => '2010-12-01',
+				'etat' => 'inscription',
+				'code' => 1,
+				'motif' => null,
+				'codeinsee' => null,
+				'localite' => null,
+				'adresse' => null,
+				'ale' => null,
+			)
 		);
-
 	}
 ?>

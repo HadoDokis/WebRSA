@@ -31,8 +31,8 @@
 		 * @var array
 		 */
 		public $records = array(
-			array( 'id' => 1, 'libelle' => 'Présent', 'provoquepassageep' => '0', 'permetpassageepl' => '0' ),
-			array( 'id' => 2, 'libelle' => 'Absent non excusé', 'provoquepassageep' => '1', 'permetpassageepl' => '0' ),
+			array( 'libelle' => 'Présent', 'provoquepassageep' => '0', 'permetpassageepl' => '0' ),
+			array( 'libelle' => 'Absent non excusé', 'provoquepassageep' => '1', 'permetpassageepl' => '0' ),
 		);
 
 	}

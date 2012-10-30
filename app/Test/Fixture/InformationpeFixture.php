@@ -31,7 +31,12 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'nir' => null,
+				'nom' => 'BUFFIN',
+				'prenom' => 'CHRISTIAN',
+				'dtnai' => '1979-01-24'
+			)
 		);
-
 	}
 ?>

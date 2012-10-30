@@ -32,7 +32,6 @@
 		 */
 		public $records = array(
 			array(
-				'id' => 1,
 				'statutrdv_id' => 2,
 				'typerdv_id' => 1,
 				'nbabsenceavantpassageep' => 2,

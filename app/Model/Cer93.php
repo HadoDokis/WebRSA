@@ -45,6 +45,91 @@
 			)
 		);
 
+		public $validate = array(
+			'matricule' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'qual' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			// FIXME
+			/*'adresse' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),*/
+			'codepos' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'locaadr' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'isemploitrouv' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'secteuracti_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'metierexerce_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'dureehebdo' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'naturecontrat_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'dureecdd' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'prevu' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'duree' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'pointparcours' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'datepointparcours' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'pointparcours', true, array( 'aladate' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+		);
+
 		/**
 		 * Liaisons "belongsTo" avec d'autres modèles.
 		 *
@@ -265,7 +350,7 @@
 							$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
 							'Historiqueetatpe.identifiantpe',
 							'Historiqueetatpe.etat',
-							'Adresse.adresse_complete'
+							$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'adresse_complete' ),
 						)
 					),
 					'joins' => array(
