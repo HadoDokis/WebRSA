@@ -33,7 +33,6 @@
 		 */
 		public $records = array(
 			array(
-				'id' => 1,
 				'personne_id' => 1,
 				'structurereferente_id' => 1,
 				'daterdv' => '2012-01-01',

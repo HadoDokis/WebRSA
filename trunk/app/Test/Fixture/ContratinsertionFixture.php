@@ -33,12 +33,11 @@
 		 */
 		public $records = array(
 			array(
-//				'id' => 1,
-				'personne_id' => 1,
+				'personne_id' => 2,
 				'structurereferente_id' => 1,
 				'typocontrat_id' => null,
-				'dd_ci' => null,
-				'df_ci' => null,
+				'dd_ci' => '2011-03-01',
+				'df_ci' => '2011-05-31',
 				'diplomes' => null,
 				'form_compl' => null,
 				'expr_prof' => null,
@@ -58,7 +57,7 @@
 				'duree_engag' => null,
 				'nature_projet' => null,
 				'observ_ci' => null,
-				'decision_ci' => 'E',
+				'decision_ci' => 'V',
 				'datevalidation_ci' => null,
 				'date_saisi_ci' => null,
 				'lieu_saisi_ci' => null,

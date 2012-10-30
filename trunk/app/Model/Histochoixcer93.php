@@ -173,20 +173,25 @@
 			else if( $data['Histochoixcer93']['etape'] == '05secondelecture' ) {
 				// Validation du contrat en seconde lecture
 				if( $data['Histochoixcer93']['decisioncs'] == 'valide' ) {
+					$success = $this->Cer93->updateAll(
+						array(
+							'Cer93.positioncer' => '\'99valide\'',
+							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
+						),
+						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
+					) && $success;
+
 					$cer93 = $this->Cer93->find(
 						'first',
 						array(
+							'fields' => array(
+								'Cer93.contratinsertion_id'
+							),
 							'conditions' => array(
 								'Cer93.id' => $data['Histochoixcer93']['cer93_id']
 							)
 						)
 					);
-
-					$cer93['Cer93']['positioncer'] = '99valide';
-					$cer93['Cer93']['formeci'] = $data['Histochoixcer93']['formeci'];
-
-					$this->Cer93->create( $cer93 );
-					$success = ( $this->Cer93->save() !== false ) && $success;
 
 					$success = $this->Cer93->Contratinsertion->updateAll(
 						array(
@@ -259,20 +264,25 @@
 			else if( $data['Histochoixcer93']['etape'] == '06attaviscadre' ) {
 				// Validation du contrat en seconde lecture
 				if( in_array( $data['Histochoixcer93']['decisioncadre'], array( 'valide', 'rejete' ) ) ) {
+					$success = $this->Cer93->updateAll(
+						array(
+							'Cer93.positioncer' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' ).'\'',
+							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
+						),
+						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
+					) && $success;
+
 					$cer93 = $this->Cer93->find(
 						'first',
 						array(
+							'fields' => array(
+								'Cer93.contratinsertion_id'
+							),
 							'conditions' => array(
 								'Cer93.id' => $data['Histochoixcer93']['cer93_id']
 							)
 						)
 					);
-
-					$cer93['Cer93']['positioncer'] = ( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' );
-					$cer93['Cer93']['formeci'] = $data['Histochoixcer93']['formeci'];
-
-					$this->Cer93->create( $cer93 );
-					$success = ( $this->Cer93->save() !== false ) && $success;
 
 					$fields = array(
 						'Contratinsertion.decision_ci' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? 'V' : 'R' ).'\'',

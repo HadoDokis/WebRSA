@@ -73,44 +73,207 @@
 		public function testPrepareFormDataSansCerPrecedent() {
 			$formData = $this->Cer93->prepareFormData( 1, null, 1  );
 
-			$result = $formData['Cer93'];
-			$expected = array (
-				'matricule' => '123456700000000',
-				'numdemrsa' => '66666666693',
-				'rolepers' => 'DEM',
-				'dtdemrsa' => '2009-09-01',
-				'identifiantpe' => NULL,
-				'qual' => 'MR',
-				'nom' => 'BUFFIN',
-				'nomnai' => 'BUFFIN',
-				'prenom' => 'CHRISTIAN',
-				'dtnai' => '1979-01-24',
-				'adresse' => NULL,
-				'codepos' => NULL,
-				'locaadr' => NULL,
-				'sitfam' => 'CEL',
-				'natlog' => NULL,
-				'inscritpe' => NULL,
-				'nivetu' => NULL,
-				'user_id' => 1,
-				'nomutilisateur' => NULL,
-				'structureutilisateur' => NULL,
+			$result = array(
+				'Contratinsertion' => $formData['Contratinsertion'],
+				'Cer93' => $formData['Cer93'],
+				'Compofoyercer93' => $formData['Compofoyercer93'],
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $formData['Compofoyercer93'];
-			$expected = array(
-				array(
+			$expected = array (
+				'Contratinsertion' => array(
+					'rg_ci' => null
+				),
+				'Cer93' => array(
+					'matricule' => '123456700000000',
+					'numdemrsa' => '66666666693',
+					'rolepers' => 'DEM',
+					'dtdemrsa' => '2009-09-01',
+					'identifiantpe' => '0609065370Y',
 					'qual' => 'MR',
 					'nom' => 'BUFFIN',
+					'nomnai' => 'BUFFIN',
 					'prenom' => 'CHRISTIAN',
 					'dtnai' => '1979-01-24',
-					'rolepers' => 'DEM',
+					'adresse' => NULL, // FIXME
+					'codepos' => '93300',
+					'locaadr' => 'AUBERVILLIERS',
+					'sitfam' => 'CEL',
+					'natlog' => '0909',
+					'inscritpe' => true,
+					'nivetu' => '1202',
+					'user_id' => 1,
+					'nomutilisateur' => 'Dupont Jean',
+					'structureutilisateur' => NULL,
+				),
+				'Compofoyercer93' => array(
+					array(
+					  'qual' => 'MR',
+					  'nom' => 'BUFFIN',
+					  'prenom' => 'CHRISTIAN',
+					  'dtnai' => '1979-01-24',
+					  'rolepers' => 'DEM',
+					),
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
+		/**
+		 * Test de la méthode Cer93::prepareFormData() avec un CER précédent.
+		 *
+		 * TODO:
+		 *	- à faire sans dsps_revs
+		 *
+		 * @group medium
+		 * @return void
+		 */
+		public function testPrepareFormDataAvecCerPrecedent() {
+			$formData = $this->Cer93->prepareFormData( 2, 1, 1  );
+
+			$result = array(
+				'Contratinsertion' => $formData['Contratinsertion'],
+				'Cer93' => $formData['Cer93'],
+				'Compofoyercer93' => $formData['Compofoyercer93'],
+			);
+
+			$expected = array(
+				'Contratinsertion' => array(
+					'rg_ci' => NULL,
+					'id' => 1,
+					'personne_id' => 2,
+					'structurereferente_id' => 1,
+					'typocontrat_id' => NULL,
+					'dd_ci' => '2011-03-01',
+					'df_ci' => '2011-05-31',
+					'diplomes' => NULL,
+					'form_compl' => NULL,
+					'expr_prof' => NULL,
+					'aut_expr_prof' => NULL,
+					'actions_prev' => NULL,
+					'obsta_renc' => NULL,
+					'service_soutien' => NULL,
+					'pers_charg_suivi' => NULL,
+					'objectifs_fixes' => NULL,
+					'engag_object' => NULL,
+					'sect_acti_emp' => NULL,
+					'emp_occupe' => NULL,
+					'duree_hebdo_emp' => NULL,
+					'nat_cont_trav' => NULL,
+					'duree_cdd' => NULL,
+					'duree_engag' => NULL,
+					'nature_projet' => NULL,
+					'observ_ci' => NULL,
+					'decision_ci' => 'V',
+					'datevalidation_ci' => NULL,
+					'date_saisi_ci' => NULL,
+					'lieu_saisi_ci' => NULL,
+					'emp_trouv' => NULL,
+					'forme_ci' => NULL,
+					'commentaire_action' => NULL,
+					'raison_ci' => NULL,
+					'aviseqpluri' => NULL,
+					'sitfam_ci' => NULL,
+					'sitpro_ci' => NULL,
+					'observ_benef' => NULL,
+					'referent_id' => NULL,
+					'avisraison_ci' => NULL,
+					'type_demande' => NULL,
+					'num_contrat' => NULL,
+					'typeinsertion' => NULL,
+					'bilancontrat' => NULL,
+					'engag_object_referent' => NULL,
+					'outilsmobilises' => NULL,
+					'outilsamobiliser' => NULL,
+					'niveausalaire' => NULL,
+					'zonegeographique_id' => NULL,
+					'autreavisradiation' => NULL,
+					'autreavissuspension' => NULL,
+					'datesuspensionparticulier' => NULL,
+					'dateradiationparticulier' => NULL,
+					'faitsuitea' => NULL,
+					'positioncer' => NULL,
+					'created' => '2012-10-25 12:00:00',
+					'modified' => '2012-10-25 12:00:00',
+					'current_action' => NULL,
+					'haspiecejointe' => '0',
+					'avenant_id' => NULL,
+					'sitfam' => NULL,
+					'typeocclog' => NULL,
+					'persacharge' => NULL,
+					'objetcerprecautre' => NULL,
+					'motifannulation' => NULL,
+					'datedecision' => NULL,
+					'datenotification' => NULL,
+					'actioncandidat_id' => NULL,
+					'nbjours' => number_format( ceil( ( time() - strtotime( '2011-06-01' ) ) / ( 60 * 60 * 24 ) ) ),
+					'present' => true,
+				),
+				'Cer93' => array(
+					'matricule' => '987654321000000',
+					'numdemrsa' => '77777777793',
+					'rolepers' => NULL,
+					'dtdemrsa' => '2010-07-12',
+					'identifiantpe' => NULL,
+					'qual' => 'MME',
+					'nom' => 'DURAND',
+					'nomnai' => 'DUPUIS',
+					'prenom' => 'JEANNE',
+					'dtnai' => '1956-12-05',
+					'adresse' => NULL,
+					'codepos' => NULL,
+					'locaadr' => NULL,
+					'sitfam' => 'MAR',
+					'natlog' => NULL,
+					'inscritpe' => NULL,
+					'id' => 1,
+					'contratinsertion_id' => 1,
+					'user_id' => 1,
+					'incoherencesetatcivil' => NULL,
+					'cmu' => NULL,
+					'cmuc' => NULL,
+					'nivetu' => NULL,
+					'positioncer' => '00enregistre',
+					'formeci' => NULL,
+					'datesignature' => NULL,
+					'autresexps' => NULL,
+					'isemploitrouv' => NULL,
+					'metierexerce_id' => NULL,
+					'secteuracti_id' => NULL,
+					'naturecontrat_id' => NULL,
+					'dureehebdo' => NULL,
+					'dureecdd' => NULL,
+					'prevu' => '',
+					'bilancerpcd' => NULL,
+					'duree' => NULL,
+					'pointparcours' => NULL,
+					'datepointparcours' => NULL,
+					'pourlecomptede' => NULL,
+					'observpro' => NULL,
+					'observbenef' => NULL,
+					'created' => NULL,
+					'modified' => NULL,
+					'nomutilisateur' => 'Dupont Jean',
+					'structureutilisateur' => NULL,
+				),
+				'Compofoyercer93' => array(
+					array(
+						'qual' => 'MME',
+						'nom' => 'DURAND',
+						'prenom' => 'JEANNE',
+						'dtnai' => '1956-12-05',
+						'rolepers' => 'DEM',
+					),
+					array(
+						'qual' => 'MR',
+						'nom' => 'DURAND',
+						'prenom' => 'RAOUL',
+						'dtnai' => '1950-05-07',
+						'rolepers' => 'CJT',
+					),
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 
 		/**
 		 * Test de la méthode Cer93::saveFormulaire().

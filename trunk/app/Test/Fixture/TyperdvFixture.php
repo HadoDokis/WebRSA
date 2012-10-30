@@ -32,7 +32,6 @@
 		 */
 		public $records = array(
 			array(
-				'id' => 1,
 				'libelle' => 'Evaluation pour orientation',
 				'modelenotifrdv' => 'Evaluation',
 				'nbabsencesavpassageep' => 0,
@@ -40,7 +39,6 @@
 				'motifpassageep' => null
 			),
 			array(
-				'id' => 2,
 				'libelle' => 'Elaboration du CER',
 				'modelenotifrdv' => 'Elaboration_CER',
 				'nbabsencesavpassageep' => 0,

@@ -49,9 +49,10 @@
 				else {
 					$text = __d( $domain, $msgid, true );
 				}
-				if( isset( $options['required'] ) && ( $options['required'] == true ) ) {
-					$text = $this->required( $text );
-				}
+			}
+
+			if( isset( $options['required'] ) && ( $options['required'] == true ) ) {
+				$text = $this->required( $text );
 			}
 
 			unset( $options['required'] );

@@ -323,7 +323,7 @@
 				'fieldset' => false,
 				'legend' => false,
 				'Cer93.autresexps' => array( 'domain' => 'cer93', 'type' => 'textarea' ),
-				'Cer93.isemploitrouv' => array( 'legend' => __d( 'cer93', 'Cer93.isemploitrouv' ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['isemploitrouv'] )
+				'Cer93.isemploitrouv' => array( 'legend' => required( __d( 'cer93', 'Cer93.isemploitrouv' ) ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['isemploitrouv'] )
 			)
 		);
 	?>
@@ -333,14 +333,14 @@
 			array(
 				'fieldset' => true,
 				'legend' => 'Si oui, veuillez préciser :',
-				'Cer93.secteuracti_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ),
-				'Cer93.metierexerce_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ),
-				'Cer93.dureehebdo' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['dureehebdo'], 'empty' => true),
-				'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true )
+				'Cer93.secteuracti_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true, 'required' => true ),
+				'Cer93.metierexerce_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true, 'required' => true ),
+				'Cer93.dureehebdo' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['dureehebdo'], 'empty' => true, 'required' => true ),
+				'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true, 'required' => true )
 			)
 		);
 
-		echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'] ) );
+		echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'], 'required' => true ) );
 	?>
 	</fieldset>
 	<script type="text/javascript">
@@ -373,7 +373,7 @@
 
 
 		// Bloc 6 : Projet pour ce nouveau contrat
-		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea', 'required' => true ) );
 
 		// HABTM spécial, avec des select liés aux cases à cocher
 		echo '<fieldset><legend>Votre contrat porte sur</legend>';
@@ -408,10 +408,10 @@
 </script>
 <?php
 	//Bloc 7 : Durée proposée
-	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );
+	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => required( 'Ce contrat est proposé pour une durée de ' ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );
 
 	//Bloc 8 : Projet pour ce nouveau contrat
-	echo $this->Xform->input( 'Cer93.pointparcours', array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['pointparcours'], 'empty' => true ) );
+	echo $this->Xform->input( 'Cer93.pointparcours', array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['pointparcours'], 'empty' => true, 'required' => true ) );
 
 	echo $this->Xform->input( 'Cer93.datepointparcours', array( 'domain' => 'cer93', 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ) );
 ?>
@@ -525,3 +525,4 @@
 		}
 	//--><!]]>
 </script>
+<?php debug( $this->request->data );?>

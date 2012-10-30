@@ -43,7 +43,33 @@
 				'codepos' => '93300',
 				'locaadr' => 'AUBERVILLIERS',
 				'pays' => 'FRA',
-			)
+			),
+			array(
+				'numvoie' => 120,
+				'typevoie' => 'R',
+				'nomvoie' => 'DU MARECHAL BROUILLON',
+				'complideadr' => null,
+				'compladr' => null,
+				'lieudist' => null,
+				'numcomrat' => '93063',
+				'numcomptt' => '93063',
+				'codepos' => '93230',
+				'locaadr' => 'ROMAINVILLE',
+				'pays' => 'FRA',
+			),
+			array(
+				'numvoie' => 10,
+				'typevoie' => 'R',
+				'nomvoie' => 'HECTOR BERLIOZ',
+				'complideadr' => null,
+				'compladr' => null,
+				'lieudist' => null,
+				'numcomrat' => '93008',
+				'numcomptt' => '93008',
+				'codepos' => '93000',
+				'locaadr' => 'BOBIGNY',
+				'pays' => 'FRA',
+			),
 		);
 	}
 ?>
