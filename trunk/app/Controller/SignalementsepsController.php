@@ -36,9 +36,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			if( $this->action == 'add' ) {
 				$contratinsertion_id = $id;
@@ -125,9 +125,15 @@
 			$this->assert( $traitable, 'error500' );
 
 			if( !empty( $this->request->data ) ) {
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					$redirectUrl = array( 'controller' => 'cers93', 'action' => 'index', $personne_id );
+				}
+				else {
+					$redirectUrl = array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id );
+				}
 
 				if ( isset( $this->request->data['Cancel'] ) ) {
-					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+					$this->redirect( $redirectUrl );
 				}
 
 				$this->{$this->modelClass}->Dossierep->begin();
@@ -150,7 +156,7 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->{$this->modelClass}->commit();
-					$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $personne_id ) );
+					$this->redirect( $redirectUrl );
 				}
 				else {
 					$this->{$this->modelClass}->Dossierep->rollback();

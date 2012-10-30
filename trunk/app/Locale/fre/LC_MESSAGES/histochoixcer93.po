@@ -62,3 +62,9 @@ msgstr "Passage en EP"
 
 msgid "Histochoixcer93.isrejet"
 msgstr "Rejeté ?"
+
+msgid "ENUM::FORMECI::S"
+msgstr "Simple"
+
+msgid "ENUM::FORMECI::C"
+msgstr "Complexe"

@@ -34,7 +34,7 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Cake1xLegacy.Ajax', 'Webrsa' );
+		public $helpers = array( 'Cake1xLegacy.Ajax', 'Locale', 'Webrsa' );
 
 		/**
 		 * Modèles utilisés.
@@ -118,6 +118,60 @@
 			$this->render( 'ajaxref', 'ajax' );
 		}
 
+		/**
+		 * FIXME: à bouger dans le modèle Contratinsertion + remplacer celui du ContratsinsertionController
+		 * (CG 58, 93)
+		 *
+		 * @param type $modele
+		 * @param type $personne_id
+		 * @return type
+		 */
+		protected function _qdThematiqueEp( $modele, $personne_id ) {
+			$fields = array(
+				'Dossierep.id',
+				'Dossierep.personne_id',
+				'Dossierep.themeep',
+				'Dossierep.created',
+				'Dossierep.modified',
+				'Passagecommissionep.etatdossierep',
+				'Contratinsertion.dd_ci',
+				'Contratinsertion.df_ci',
+				"{$modele}.id",
+			);
+
+			// FIXME: d'autres champs pour le CG 58 ?
+			if( $modele == 'Signalementep93' ) {
+				$fields[] = 'Signalementep93.date';
+				$fields[] = 'Signalementep93.rang';
+			}
+			else if( $modele == 'Contratcomplexeep93' ) {
+				$fields[] = 'Contratcomplexeep93.created';
+			}
+
+			return array(
+				'fields' => $fields,
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id,
+					'Dossierep.themeep' => Inflector::tableize( $modele ),
+					'Dossierep.id NOT IN ( '.$this->Cer93->Contratinsertion->{$modele}->Dossierep->Passagecommissionep->sq(
+						array(
+							'alias' => 'passagescommissionseps',
+							'fields' => array(
+								'passagescommissionseps.dossierep_id'
+							),
+							'conditions' => array(
+								'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+							)
+						)
+					).' )'
+				),
+				'joins' => array(
+					$this->Cer93->Contratinsertion->{$modele}->Dossierep->join( $modele, array( 'type' => 'INNER' ) ),
+					$this->Cer93->Contratinsertion->{$modele}->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
+					$this->Cer93->Contratinsertion->{$modele}->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+				),
+			);
+		}
 
 		/**
 		 * Pagination sur les <élément>s de la table.
@@ -142,7 +196,8 @@
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.df_ci',
 					'Contratinsertion.rg_ci',
-					'Contratinsertion.decision_ci'
+					'Contratinsertion.decision_ci',
+					'Contratinsertion.forme_ci',
 				),
 				'contain' => array(
 					'Cer93'
@@ -166,17 +221,48 @@
 			);
 			$options = Set::merge( $options, $this->Cer93->enums() );
 
+			// Partie passage en EP
+			// Liste des dossiers d'EP en cours pour la thématique Signalementep93
+			$qdSignalementseps93 = $this->_qdThematiqueEp( 'Signalementep93', $personne_id );
+			$signalementseps93 = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->find( 'all', $qdSignalementseps93 );
+
+			// Liste des dossiers d'EP en cours pour la thématique Contratcomplexeep93
+			$qdContratscomplexeseps93 = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
+			$contratscomplexeseps93 = $this->Cer93->Contratinsertion->Contratcomplexeep93->Dossierep->find( 'all', $qdContratscomplexeseps93 );
+
+			// L'allocataire peut-il passer en EP ?
+			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
+
+			// Logique d'activation / désactiviation des liens dans la vue
 			$disabledLinks = array(
 				'Cers93::edit' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )' ,
 				'Cers93::signature' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) || ( \'%permission%\' == \'0\' )' ,
-				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\', \'03attdecisioncg\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::premierelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\', \'04premierelecture\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::secondelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\', \'05secondelecture\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::aviscadre' => '!in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\', \'06attaviscadre\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::premierelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::secondelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Histoschoixcers93::aviscadre' => '!in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Signalementseps::add' => '!(
+					// Contrat validé
+					\'#Contratinsertion.decision_ci#\' == \'V\'
+					// En cours, avec une durée de tolérance
+					&& (
+						( strtotime( \'#Contratinsertion.dd_ci#\' ) <= time() )
+						&& ( strtotime( \'#Contratinsertion.df_ci#\' ) + ( Configure::read( \'Signalementep93.dureeTolerance\' ) * 24 * 60 * 60 ) >= time() )
+					)
+					// Aucun contrat de la personne n\'est en cours de passage en EP actuellement
+					&& ( \''.( count( $signalementseps93 ) + count( $contratscomplexeseps93 ) ).'\' == \'0\' )
+					//
+					&& ( \''.count( $erreursCandidatePassage ).'\' == \'0\' )
+				)
+				|| ( \'%permission%\' == \'0\' )',
 			);
 
+			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
+			$this->set( 'signalementseps93', $signalementseps93 );
+			$this->set( 'contratscomplexeseps93', $contratscomplexeseps93 );
 			$this->set( 'options', $options);
+			$this->set( 'optionsdossierseps', $this->Cer93->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			$this->set( 'cers93', $results );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'disabledLinks', $disabledLinks );

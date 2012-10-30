@@ -151,7 +151,10 @@
 
 			if( $data['Histochoixcer93']['etape'] == '03attdecisioncg' && $data['Histochoixcer93']['isrejet'] ) {
 				$success = $this->Cer93->updateAll(
-					array( 'Cer93.positioncer' => '\'99rejete\'' ),
+					array(
+						'Cer93.positioncer' => '\'99rejete\'',
+						'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
+					),
 					array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 				) && $success;
 
@@ -161,7 +164,8 @@
 				$success = $this->Cer93->Contratinsertion->updateAll(
 					array(
 						'Contratinsertion.decision_ci' => '\'R\'',
-						'Contratinsertion.datedecision' => '\''.$datechoix.'\''
+						'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
+						'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\''
 					),
 					array( '"Contratinsertion"."id"' => $contratinsertion_id )
 				) && $success;
@@ -179,6 +183,7 @@
 					);
 
 					$cer93['Cer93']['positioncer'] = '99valide';
+					$cer93['Cer93']['formeci'] = $data['Histochoixcer93']['formeci'];
 
 					$this->Cer93->create( $cer93 );
 					$success = ( $this->Cer93->save() !== false ) && $success;
@@ -187,7 +192,8 @@
 						array(
 							'Contratinsertion.decision_ci' => '\'V\'',
 							'Contratinsertion.datevalidation_ci' => '\''.$datechoix.'\'',
-							'Contratinsertion.datedecision' => '\''.$datechoix.'\''
+							'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
+							'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\''
 						),
 						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
@@ -228,8 +234,18 @@
 					$success = ( $this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->save() !== false ) && $success;
 
 					$success = $this->Cer93->updateAll(
-						array( 'Cer93.positioncer' => '\'07attavisep\'' ),
+						array(
+							'Cer93.positioncer' => '\'07attavisep\'',
+							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
+						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
+					) && $success;
+
+					$success = $this->Cer93->Contratinsertion->updateAll(
+						array(
+							'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
+						),
+						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
 				}
 				// Avis cadre
@@ -253,13 +269,15 @@
 					);
 
 					$cer93['Cer93']['positioncer'] = ( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' );
+					$cer93['Cer93']['formeci'] = $data['Histochoixcer93']['formeci'];
 
 					$this->Cer93->create( $cer93 );
 					$success = ( $this->Cer93->save() !== false ) && $success;
 
 					$fields = array(
 						'Contratinsertion.decision_ci' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? 'V' : 'R' ).'\'',
-						'Contratinsertion.datedecision' => '\''.$datechoix.'\''
+						'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
+						'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
 					);
 
 					if( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) {
@@ -307,8 +325,18 @@
 					$success = ( $this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->save() !== false ) && $success;
 
 					$success = $this->Cer93->updateAll(
-						array( 'Cer93.positioncer' => '\'07attavisep\'' ),
+						array(
+							'Cer93.positioncer' => '\'07attavisep\'',
+							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
+						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
+					) && $success;
+
+					$success = $this->Cer93->Contratinsertion->updateAll(
+						array(
+							'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\''
+						),
+						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
 				}
 			}

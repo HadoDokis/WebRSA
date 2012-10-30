@@ -104,7 +104,7 @@ msgstr "En attente de décision CG"
 
 msgid "ENUM::POSITIONCER::04premierelecture"
 msgstr "Première lecture"
- 
+
 msgid "ENUM::POSITIONCER::05secondelecture"
 msgstr "Seconde lecture"
 
@@ -212,3 +212,9 @@ msgstr "Quel bilan faites-vous des actions précisées dans le précédent contr
 
 msgid "Sujetcer93.Sujetcer93"
 msgstr "Votre contrat porte sur "
+
+msgid "ENUM::FORMECI::S"
+msgstr "Simple"
+
+msgid "ENUM::FORMECI::C"
+msgstr "Complexe"
