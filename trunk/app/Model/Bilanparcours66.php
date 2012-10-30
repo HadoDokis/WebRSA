@@ -1150,6 +1150,8 @@
 
 				$joins = array(
 					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
@@ -1162,6 +1164,7 @@
 					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$joinDossierep,
 					$this->Saisinebilanparcoursep66->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisionsaisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
 					
 					array_words_replace(
@@ -1217,12 +1220,15 @@
 					'fields' => array_merge(
 						$this->fields(),
 						$this->Orientstruct->fields(),
+						$this->Orientstruct->Typeorient->fields(),
+						$this->Orientstruct->Structurereferente->fields(),
 						$this->Referent->fields(),
 						$this->Serviceinstructeur->fields(),
 						$this->Defautinsertionep66->fields(),
 						$this->Saisinebilanparcoursep66->fields(),
 						$this->Saisinebilanparcoursep66->Dossierep->fields(),
 						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->fields(),
+						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Commissionep->fields(),
 						$fieldsDecisionsaisinebilanparcoursep66,
 						$this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
 						$this->Contratinsertion->fields(),
