@@ -594,7 +594,7 @@ msgid "Button::premierelecture"
 msgstr "Première lecture"
 
 msgid "Button::secondelecture"
-msgstr "Valider chargé de suivi"
+msgstr "Valider CS"
 
 msgid "Button::aviscadre"
 msgstr "Valider cadre"
