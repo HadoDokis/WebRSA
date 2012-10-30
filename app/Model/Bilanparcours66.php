@@ -1116,73 +1116,136 @@
 		}
 
 		/**
-		* Récupère les données pour le PDf
-		*/
-
+		 * Récupère les données pour le PDF du bilan de parcours.
+		 *
+		 * @param integer $id L'id technique du bilan de parcours
+		 * @return array
+		 */
 		public function getDataForPdf( $id ) {
-			// TODO: error404/error500 si on ne trouve pas les données
-			$conditions = array(
-				'Bilanparcours66.id' => $id,
-				'OR' => array(
-					'Adressefoyer.id IS NULL',
-					'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-				)
-			);
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$querydata = Cache::read( $cacheKey );
 
-			// Jointure spéciale sur Dossierep suivant la thématique
-			$joinSaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
-			$joinDefautinsertionep66 = $this->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+			if( $querydata === false ) {
+				$conditions = array(
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					$this->Dossierpcg66->sqLatest( 'Decisiondossierpcg66', 'datevalidation', array( 'Decisiondossierpcg66.validationproposition' => 'O' ) )
+				);
 
-			$joinDossierep = $joinSaisinebilanparcoursep66;
-			$joinDossierep['conditions'] = array(
-				'OR' => array(
-					$joinSaisinebilanparcoursep66['conditions'],
-					$joinDefautinsertionep66['conditions']
-				)
-			);
+				// Jointure spéciale sur Dossierep suivant la thématique
+				$joinSaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+				$joinDefautinsertionep66 = $this->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
 
-			$joins = array(
-				$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-				$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-				$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-				$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				$joinDossierep,
-				$this->Saisinebilanparcoursep66->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisionsaisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Defautinsertionep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) )
-			);
+				$joinDossierep = $joinSaisinebilanparcoursep66;
+				$joinDossierep['conditions'] = array(
+					'OR' => array(
+						$joinSaisinebilanparcoursep66['conditions'],
+						$joinDefautinsertionep66['conditions']
+					)
+				);
 
-			$queryData = array(
-				'fields' => array_merge(
-					$this->fields(),
-					$this->Orientstruct->fields(),
-					$this->Referent->fields(),
-					$this->Serviceinstructeur->fields(),
-					$this->Defautinsertionep66->fields(),
-					$this->Saisinebilanparcoursep66->fields(),
-					$this->Saisinebilanparcoursep66->Dossierep->fields(),
-					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->fields(),
-					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
-					$this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
-					$this->Contratinsertion->fields(),
-					$this->Personne->fields(),
-					$this->Personne->Foyer->fields(),
-					$this->Personne->Foyer->Dossier->fields(),
-					$this->Personne->Foyer->Adressefoyer->Adresse->fields()
-				),
-				'joins' => $joins,
-				'conditions' => $conditions,
-				'contain' => false
-			);
+				$joins = array(
+					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$joinDossierep,
+					$this->Saisinebilanparcoursep66->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisionsaisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+					
+					array_words_replace(
+						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
+							'Decisionsaisinebilanparcoursep66',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisionsaisinebilanparcoursep66.etape' => 'ep'
+								)
+							)
+						),
+						array(
+							'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66ep'
+						)
+					),
+					array_words_replace(
+						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
+							'Decisionsaisinebilanparcoursep66',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisionsaisinebilanparcoursep66.etape' => 'cg'
+								)
+							)
+						),
+						array(
+							'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66cg'
+						)
+					),
+					
+					$this->Defautinsertionep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Dossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) )
+				);
 
-			$data = $this->find( 'first', $queryData );
+				// Liste des champs par étpae de décisions pour le passage en EPL Parcours du bilan
+				$fieldsDecisionsaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields();
+				$fieldsDecisionsaisinebilanparcoursep66ep = array_words_replace(
+					$fieldsDecisionsaisinebilanparcoursep66,
+					array(
+						'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66ep'
+					)
+				);
+				$fieldsDecisionsaisinebilanparcoursep66cg = array_words_replace(
+					$fieldsDecisionsaisinebilanparcoursep66,
+					array(
+						'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66cg'
+					)
+				);
+				
+				$querydata = array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Orientstruct->fields(),
+						$this->Referent->fields(),
+						$this->Serviceinstructeur->fields(),
+						$this->Defautinsertionep66->fields(),
+						$this->Saisinebilanparcoursep66->fields(),
+						$this->Saisinebilanparcoursep66->Dossierep->fields(),
+						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->fields(),
+						$fieldsDecisionsaisinebilanparcoursep66,
+						$this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
+						$this->Contratinsertion->fields(),
+						$this->Personne->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Dossierpcg66->fields(),
+						$this->Dossierpcg66->Decisiondossierpcg66->fields(),
+						$fieldsDecisionsaisinebilanparcoursep66ep,
+						$fieldsDecisionsaisinebilanparcoursep66cg
+					),
+					'joins' => $joins,
+					'conditions' => $conditions,
+					'contain' => false
+				);
+				
+				Cache::write( $cacheKey, $querydata );
+			}
+			
+			$querydata['conditions']['Bilanparcours66.id'] = $id;
+
+			$data = $this->find( 'first', $querydata );
 
 			return $data;
 		}
