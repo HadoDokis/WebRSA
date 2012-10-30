@@ -183,6 +183,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -212,6 +213,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '02attdecisioncpdv',
+					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -269,6 +271,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -298,6 +301,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '03attdecisioncg',
+					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -320,7 +324,7 @@
 
 		/**
 		 * Test de la méthode Histochoixcer93::saveDecision() à l'étape
-		 * 03attdecisioncg, sans rejet.
+		 * 03attdecisioncg, avec rejet.
 		 *
 		 * @group medium
 		 * @return void
@@ -355,6 +359,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -384,6 +389,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '99rejete',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -396,7 +402,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'R',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => NULL,
 					'datedecision' => '2012-10-25',
 				),
@@ -441,6 +447,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -472,6 +479,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '99valide',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' =>
 				array(
@@ -487,7 +495,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'V',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => '2012-10-25',
 					'datedecision' => '2012-10-25',
 				),
@@ -532,6 +540,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -568,6 +577,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '07attavisep',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -581,7 +591,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => NULL,
 					'datedecision' => NULL,
 				),
@@ -634,6 +644,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -664,6 +675,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '05secondelecture',
+					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -722,6 +734,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -752,6 +765,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '99valide',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -765,7 +779,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'V',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => '2012-10-25',
 					'datedecision' => '2012-10-25',
 				),
@@ -810,6 +824,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -840,6 +855,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '99rejete',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -853,7 +869,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'R',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => NULL,
 					'datedecision' => '2012-10-25',
 				),
@@ -898,6 +914,7 @@
 						'Cer93.contratinsertion_id',
 						'Cer93.user_id',
 						'Cer93.positioncer',
+						'Cer93.formeci',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -934,6 +951,7 @@
 					'contratinsertion_id' => 1,
 					'user_id' => 1,
 					'positioncer' => '07attavisep',
+					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
@@ -947,7 +965,7 @@
 					'id' => 1,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
-					'forme_ci' => NULL,
+					'forme_ci' => 'S',
 					'datevalidation_ci' => NULL,
 					'datedecision' => NULL,
 				),

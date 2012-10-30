@@ -523,7 +523,7 @@
 				);
 			}
 
-			$tableOptions = array();
+			$tableOptions = array( 'id' => $containerId );
 			if( Set::check( $cohorteParams, 'tooltip' ) ) { /// TODO: th
 				$tableOptions['class'] = 'tooltips';
 			}
