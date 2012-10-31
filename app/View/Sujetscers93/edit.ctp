@@ -16,7 +16,8 @@
 			'fieldset' => false,
 			'legend' => false,
 			'Sujetcer93.id' => array( 'type' => 'hidden' ),
-			'Sujetcer93.name' => array( 'type' => 'text' )
+			'Sujetcer93.name' => array( 'type' => 'text' ),
+			'Sujetcer93.isautre' => array( 'type' => 'checkbox' )
 		)
 	);
 

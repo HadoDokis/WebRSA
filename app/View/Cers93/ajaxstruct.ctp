@@ -6,7 +6,7 @@
 	</tr>
 	<tr>
 		<td class="wide noborder"><?php echo Set::enum( Set::classicExtract( $struct, 'Structurereferente.typeorient_id' ), $typesorients );?></td>
-		<td class="wide noborder"><?php echo Set::classicExtract( $struct, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $struct, 'Structurereferente.type_voie'), $typevoie ).' '.Set::classicExtract( $struct, 'Structurereferente.nom_voie').'<br /> '.Set::classicExtract( $struct, 'Structurereferente.code_postal').' '.Set::classicExtract( $struct, 'Structurereferente.ville');?></td>
+		<td class="wide noborder"><?php echo Set::classicExtract( $struct, 'Structurereferente.num_voie').' '.Set::enum( Set::classicExtract( $struct, 'Structurereferente.type_voie'), $options['Structurereferente']['type_voie'] ).' '.Set::classicExtract( $struct, 'Structurereferente.nom_voie').'<br /> '.Set::classicExtract( $struct, 'Structurereferente.code_postal').' '.Set::classicExtract( $struct, 'Structurereferente.ville');?></td>
 	</tr>
 </table>
 <?php endif;?>

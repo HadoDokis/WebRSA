@@ -50,10 +50,6 @@
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion' ) );
-//FIXME
-	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br \>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
-	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
-
 
 	echo $this->Xform->inputs(
 		array(
@@ -377,19 +373,37 @@
 
 		// HABTM spécial, avec des select liés aux cases à cocher
 		echo '<fieldset><legend>Votre contrat porte sur</legend>';
-		$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
+		//$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
+		$selectedSujetcer93 = array();
+		if( !empty( $this->request->data['Sujetcer93']['Sujetcer93'] ) ) {
+			$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
+			$keys = array_keys( $this->request->data['Sujetcer93']['Sujetcer93'] );
+			$selectedSujetcer93 = array_combine( $keys, $selectedSujetcer93 );
+		}
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		$i = 0;
+
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$array_key = array_search( $idSujet, $selectedSujetcer93 );
 			$checked = ( ( $array_key !== false ) ? 'checked' : '' );
 			$soussujetcer93_id = null;
+			$commentaireautre = null;
 			if( $checked ) {
-				$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
+				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'] ) ) {
+					$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
+				}
+				else if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'] ) ) {
+					$commentaireautre = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'];
+				}
 			}
 			// TODO: sur la même ligne ?
 			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
-			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
+			if( !empty( $soussujetscers93[$idSujet] ) ) {
+				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
+			}
+			else {
+				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.commentaireautre", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'text', 'value' => $commentaireautre ) );
+			}
 			$i++;
 		}
 		echo '</fieldset>';
@@ -400,7 +414,7 @@
 	<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ) :?>
 	observeDisableFieldsOnCheckbox(
 		'Sujetcer93Sujetcer93<?php echo $key;?>Sujetcer93Id',
-		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id'],
+		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Commentaireautre'],
 		false
 	);
 	<?php endforeach;?>
