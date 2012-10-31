@@ -51,8 +51,8 @@
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion' ) );
 //FIXME
-// 	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br/>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
-// 	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => false ) );
+	$adresseAffichage = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "<br \>", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
+	$adresseFormulaire = $this->Webrsa->blocAdresse( $this->request->data, array( 'separator' => "\n", 'options' => $options['Adresse']['typevoie'], 'ville' => true ) );
 
 
 	echo $this->Xform->inputs(
@@ -125,7 +125,7 @@
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtnai' ) );?>
                 <br />
                 <strong>Adresse : </strong>
-                <br /><?php /*echo $adresseAffichage;*/ echo Set::classicExtract( $this->request->data, 'Cer93.adresse' ); /* FIXME*/ ?>
+				<br /><?php echo Set::classicExtract( $this->request->data, 'Cer93.adresse' ).'<br \>'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.locaadr' );?>
             </td>
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong>
@@ -216,7 +216,7 @@
 			'Cer93.nomnai' => array( 'type' => 'hidden' ),
 			'Cer93.prenom' => array( 'type' => 'hidden' ),
 			'Cer93.dtnai' => array( 'type' => 'hidden' ),
-			'Cer93.adresse' => array( 'type' => 'hidden' ),//FIXME virtual fiuelds adresse.php
+			'Cer93.adresse' => array( 'type' => 'hidden' ),
 			'Cer93.codepos' => array( 'type' => 'hidden' ),
 			'Cer93.locaadr' => array( 'type' => 'hidden' ),
 			'Cer93.sitfam' => array( 'type' => 'hidden' ),

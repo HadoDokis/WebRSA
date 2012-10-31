@@ -7,11 +7,7 @@
 			'localite' => array(
 				'type'      => 'string',
 				'postgres'  => '( "%s"."codepos" || \' \' || "%s"."locaadr" )'
-			),
-			'adresse_complete' => array(
-				'type' => 'string',
-				'postgres' => '( "%s"."numvoie" || \' \' || "%s"."typevoie" || \' \' || "%s"."nomvoie" || \' \' || "%s"."compladr" || \' \' || "%s"."complideadr" || \' \' ||  "%s"."codepos" || \' \' || "%s"."locaadr")'
-			),
+			)
 		);
 
 		public $validate = array(

@@ -333,7 +333,6 @@
 		 */
 		public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
 			// Donnée de la CAF stockée en base
-			$this->Contratinsertion->Personne->forceVirtualFields = true;
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$dataCaf = $this->Contratinsertion->Personne->find(
 				'first',
@@ -349,8 +348,7 @@
 						array(
 							$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
 							'Historiqueetatpe.identifiantpe',
-							'Historiqueetatpe.etat',
-							$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'adresse_complete' ),
+							'Historiqueetatpe.etat'
 						)
 					),
 					'joins' => array(
@@ -407,6 +405,16 @@
 				unset( $dataCaf['DspRev'], $dataCaf['Dsp']['id'], $dataCaf['Dsp']['dsp_id'] );
 			}
 
+			//Récupération de l'adresse complète afin de remplir le champ adresse du CER93
+			$Option = ClassRegistry::init( 'Option' );
+			$options =  array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				)
+			);
+			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
+			$adresseComplete = $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie'].' '.$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'];
+			
 			// Transposition des données
 			//Bloc 2 : Etat civil
 			$dataCaf['Cer93']['matricule'] = $dataCaf['Dossier']['matricule'];
@@ -419,7 +427,7 @@
 			$dataCaf['Cer93']['nomnai'] = $dataCaf['Personne']['nomnai'];
 			$dataCaf['Cer93']['prenom'] = $dataCaf['Personne']['prenom'];
 			$dataCaf['Cer93']['dtnai'] = $dataCaf['Personne']['dtnai'];
-			$dataCaf['Cer93']['adresse'] = $dataCaf['Adresse']['adresse_complete'];//FIXME virtual fiuelds adresse.php
+			$dataCaf['Cer93']['adresse'] = $adresseComplete;
 			$dataCaf['Cer93']['codepos'] = $dataCaf['Adresse']['codepos'];
 			$dataCaf['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
 			$dataCaf['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
