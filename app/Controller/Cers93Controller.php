@@ -490,5 +490,22 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+		
+		/**
+		 * Visualisation du CER 93.
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function view( $contratinsertion_id ) {
+			
+			$this->Cer93->Contratinsertion->id = $contratinsertion_id;
+			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
+			$this->set( 'personne_id', $personne_id );
+			
+			$this->set( 'options', $this->Cer93->optionsView() );
+			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
+			
+		}
 	}
 ?>

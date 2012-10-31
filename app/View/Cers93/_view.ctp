@@ -257,27 +257,26 @@
 			</tbody>
 		</table>
 </fieldset>
-<?php
-	//Bloc 7 : Durée proposée
-	echo $this->Xform->fieldValue( 'Cer93.duree', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.duree'), $options['Cer93']['duree'] ) );
+<fieldset>
+	<?php
+		//Bloc 7 : Durée proposée
+		echo $this->Xform->fieldValue( 'Cer93.duree', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.duree'), $options['Cer93']['duree'] ) );
 
-	//Bloc 8 : Projet pour ce nouveau contrat
-	echo $this->Xform->fieldValue( 'Cer93.pointparcours', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.pointparcours'), $options['Cer93']['pointparcours'] ) );
-	if( !empty( $contratinsertion['Cer93']['datepointparcours'] ) ) {
-		echo $this->Xform->fieldValue( 'Cer93.datepointparcours', date_short( Set::classicExtract( $contratinsertion, 'Cer93.datepointparcours') ) );
-	}
-?>
-<?php
+		//Bloc 8 : Projet pour ce nouveau contrat
+		echo $this->Xform->fieldValue( 'Cer93.pointparcours', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.pointparcours'), $options['Cer93']['pointparcours'] ) );
+		if( !empty( $contratinsertion['Cer93']['datepointparcours'] ) ) {
+			echo $this->Xform->fieldValue( 'Cer93.datepointparcours', date_short( Set::classicExtract( $contratinsertion, 'Cer93.datepointparcours') ) );
+		}
 
+		//Bloc 9 : Partie réservée au professionnel en charge du contrat
+		echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.structureutilisateur' ) );
+		echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.nomutilisateur' ) );
 
-	//Bloc 9 : Partie réservée au professionnel en charge du contrat
-	echo $this->Xform->fieldValue( 'Cer93.structureutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.structureutilisateur' ) );
-	echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.nomutilisateur' ) );
+		echo $this->Xform->fieldValue( 'Cer93.pourlecomptede', Set::classicExtract( $contratinsertion, 'Cer93.pourlecomptede' ) );
+		echo $this->Xform->fieldValue( 'Cer93.observpro', Set::classicExtract( $contratinsertion, 'Cer93.observpro' ) );
 
-	echo $this->Xform->fieldValue( 'Cer93.pourlecomptede', Set::classicExtract( $contratinsertion, 'Cer93.pourlecomptede' ) );
-	echo $this->Xform->fieldValue( 'Cer93.observpro', Set::classicExtract( $contratinsertion, 'Cer93.observpro' ) );
-
-	echo $this->Xform->fieldValue( 'Contratinsertion.dd_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci') ) );
-	echo $this->Xform->fieldValue( 'Contratinsertion.df_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci') ) );
-	echo $this->Xform->fieldValue( 'Contratinsertion.date_saisi_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci') ) );
-?>
+		echo $this->Xform->fieldValue( 'Contratinsertion.dd_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci') ) );
+		echo $this->Xform->fieldValue( 'Contratinsertion.df_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci') ) );
+		echo $this->Xform->fieldValue( 'Contratinsertion.date_saisi_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci') ) );
+	?>
+</fieldset>

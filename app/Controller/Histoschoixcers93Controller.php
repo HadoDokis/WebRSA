@@ -131,45 +131,11 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
+			
+			$this->set( 'options', $this->Histochoixcer93->Cer93->optionsView() );
+			$contratinsertion = $this->Histochoixcer93->Cer93->dataView( $contratinsertion_id );
 
-			// Recherche du contrat pour l'affichage
-			$contratinsertion = $this->Histochoixcer93->Cer93->Contratinsertion->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Contratinsertion.id' => $contratinsertion_id
-					),
-					'contain' => array(
-						'Cer93' => array(
-							'Compofoyercer93',
-							'Diplomecer93',
-							'Expprocer93',
-							'Histochoixcer93' => array(
-								'order' => array( 'Histochoixcer93.etape ASC' )
-							),
-							'Sujetcer93'
-						),
-						'Structurereferente' => array(
-							'Typeorient'
-						),
-						'Referent'
-					)
-				)
-			);
-
-			$sousSujetsIds = Set::filter( Set::extract( $contratinsertion, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
-			if( !empty( $sousSujetsIds ) ) { 
-				$sousSujets = $this->Histochoixcer93->Cer93->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
-				foreach( $contratinsertion['Cer93']['Sujetcer93'] as $key => $values ) {
-					if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
-						$contratinsertion['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => $sousSujets[$values['Cer93Sujetcer93']['soussujetcer93_id']] );
-					}
-					else {
-						$contratinsertion['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => null );
-					}
-				}
-			}
-
+						
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Histochoixcer93->prepareFormData(
 					$contratinsertion,
@@ -177,64 +143,7 @@
 					$this->Session->read( 'Auth.User.id' )
 				);
 			}
-/*
-			$options = array_merge(
-				$this->Histochoixcer93->enums(),
-				array(
-					'Cer93' => array(
-						'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
-					)
-				)
-			);
-			*/
-			// Options
-			$options = array(
-				'Cer93' => array(
-					'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
-				),
-				'Contratinsertion' => array(
-					'structurereferente_id' => $this->Histochoixcer93->Cer93->Contratinsertion->Structurereferente->listOptions(),
-					'referent_id' => $this->Histochoixcer93->Cer93->Contratinsertion->Referent->listOptions()
-				),
-				'Prestation' => array(
-					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
-				),
-				'Personne' => array(
-					'qual' => ClassRegistry::init( 'Option' )->qual()
-				),
-				'Adresse' => array(
-					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
-				),
-				'Serviceinstructeur' => array(
-					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
-				),
-				'Expprocer93' => array(
-					'metierexerce_id' => $this->Histochoixcer93->Cer93->Expprocer93->Metierexerce->find( 'list' ),
-					'secteuracti_id' => $this->Histochoixcer93->Cer93->Expprocer93->Secteuracti->find( 'list' )
-				),
-				'Foyer' => array(
-					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
-				),
-				'Dsp' => array(
-					'natlog' => ClassRegistry::init( 'Option' )->natlog()
-				),
-				'dureehebdo' => array_range( '0', '39' ),
-				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd(),
-				'Structurereferente' => array(
-					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
-				),
-				'Naturecontrat' => array(
-					'naturecontrat_id' => $this->Histochoixcer93->Cer93->Naturecontrat->find( 'list' )
-				)
-			);
-			$options = Set::merge(
-				$this->Histochoixcer93->Cer93->Contratinsertion->Personne->Dsp->enums(),
-				$this->Histochoixcer93->Cer93->enums(),
-				$this->Histochoixcer93->enums(),
-				$options
-			);
-// debug($options);
-			$this->set( 'options', $options );
+			
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'contratinsertion', $contratinsertion );
 			$this->set( 'userConnected', $this->Session->read( 'Auth.User.id' ) );
