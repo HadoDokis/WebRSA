@@ -596,4 +596,19 @@
 	 * @default null
 	 */
 	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/visualisation
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_visualisation',
+		array(
+			'Search' => array(
+				'Contratinsertion' => array(
+					'dernier' => true
+				)
+			)
+		)
+	);
 ?>

@@ -47,17 +47,17 @@
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
-			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci'/*, array( 'Contratinsertion.decision_ci' => 'V' )*/ );
+			$sqDernierContratinsertion = array();
+
+			if( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) {
+				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci' );
+			}
 
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
 			$sqDernierRdv = $Personne->Rendezvous->sqDernier( 'Personne.id' );
 
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
-
-// 			if( $statut != 'visualisation') {
-// 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'modified' );
-// 			}
 
 
 			$conditions = array(
