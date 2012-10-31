@@ -17,7 +17,16 @@
 	{
 		public $uses = array( 'Relancenonrespectsanctionep93', 'Nonrespectsanctionep93', 'Orientstruct', 'Contratinsertion', 'Dossierep', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'cohorte' => array( 'filter' => 'Search' ), 'impressions' ) ), 'Gedooo.Gedooo', 'Cohortes' => array( 'cohorte' ) );
+		public $components = array(
+			'Search.Prg' => array(
+				'actions' => array(
+					'cohorte' => array( 'filter' => 'Search' ),
+					'impressions'
+				)
+			),
+			'Gedooo.Gedooo',
+			'Cohortes' => array( 'cohorte' )
+		);
 
 		public $helpers = array( 'Default2', 'Csv' );
 
@@ -182,6 +191,7 @@
 
 		public function cohorte() {
 			if( !empty( $this->request->data ) ) {
+				$this->request->data = Set::expand( $this->request->data );
 				$search = $this->request->data['Search'];
 
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );

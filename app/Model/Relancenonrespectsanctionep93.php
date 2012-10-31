@@ -33,11 +33,13 @@
 		);
 
 		public $actsAs = array(
-			'Autovalidate2',
-			'ValidateTranslate',
+// 			'Autovalidate2',
+			'Pgsqlcake.PgsqlAutovalidate',
+// 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo',
-			'StorablePdf'
+			'StorablePdf',
+			'Conditionnable'
 		);
 
 		public $belongsTo = array(
