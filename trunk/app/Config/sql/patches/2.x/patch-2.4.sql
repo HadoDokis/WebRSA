@@ -127,13 +127,14 @@ DROP TABLE IF EXISTS sujetscers93 CASCADE;
 CREATE TABLE sujetscers93 (
 	id					SERIAL NOT NULL PRIMARY KEY,
 	name				VARCHAR(250) NOT NULL,
+	isautre				VARCHAR(1) DEFAULT '0', --FIXME: un seul enregistrement à vrai
 	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE sujetscers93 IS 'Sujets sur lequel porte le CER CG93 (bloc 6)';
 DROP INDEX IF EXISTS sujetscers93_name_idx;
 CREATE UNIQUE INDEX sujetscers93_name_idx ON sujetscers93( name );
-
+ALTER TABLE sujetscers93 ADD CONSTRAINT sujetscers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
 -------------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS soussujetscers93 CASCADE;
@@ -319,6 +320,7 @@ CREATE TABLE cers93_sujetscers93 (
     cer93_id       		INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
     sujetcer93_id		INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
  	soussujetcer93_id	INTEGER DEFAULT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	commentaireautre	VARCHAR(250) DEFAULT NULL,
     created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );

@@ -81,6 +81,12 @@
 			);
 			$struct = $this->Cer93->Contratinsertion->Structurereferente->find( 'first', $qd_struct );
 
+			$options = array(
+				'Structurereferente' => array(
+					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
+				)
+			);
+			$this->set( 'options', $options );
 
 			$this->set( 'struct', $struct );
 			$this->render( 'ajaxstruct', 'ajax' );
@@ -344,7 +350,7 @@
 			$sujetscers93 = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
-					'order' => array( 'Sujetcer93.name ASC' )
+					'order' => array( 'Sujetcer93.isautre DESC', 'Sujetcer93.name ASC' )
 				)
 			);
 

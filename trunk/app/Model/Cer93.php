@@ -413,8 +413,8 @@
 				)
 			);
 			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
-			$adresseComplete = $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie'].' '.$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'];
-			
+			$adresseComplete = $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'];
+
 			// Transposition des données
 			//Bloc 2 : Etat civil
 			$dataCaf['Cer93']['matricule'] = $dataCaf['Dossier']['matricule'];

@@ -19,10 +19,12 @@
 		?>
 	</ul>
 <?php endif;?>
-
 <?php
 	// Formulaire
 	echo $this->Xform->create();
+// 	echo $this->Xform->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
+
+// 	echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
 		$this->Default->subform(
