@@ -76,8 +76,8 @@
 					'Structurereferente.id' => $structurereferente_id
 				),
 				'fields' => null,
-				'order' => null,
-				'recursive' => -1
+				'contain' => array( 'Typeorient' ),
+				'order' => null
 			);
 			$struct = $this->Cer93->Contratinsertion->Structurereferente->find( 'first', $qd_struct );
 
@@ -404,7 +404,11 @@
 				'dureehebdo' => array_range( '0', '39' ),
 				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()
 			);
-			$options = array_merge( $this->Cer93->Contratinsertion->Personne->Dsp->enums(), $this->Cer93->enums(), $options );
+			$options = Set::merge(
+				$this->Cer93->Contratinsertion->Personne->Dsp->enums(),
+				$this->Cer93->enums(),
+				$options
+			);
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );

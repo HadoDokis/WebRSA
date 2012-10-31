@@ -208,6 +208,8 @@ CREATE TABLE cers93 (
 	pourlecomptede			VARCHAR(250)  DEFAULT NULL,
 	observpro				TEXT,
 	observbenef				TEXT,
+	structureutilisateur	VARCHAR(250) DEFAULT NULL,
+	nomutilisateur 			VARCHAR(100) DEFAULT NULL,
 	created					TIMESTAMP WITHOUT TIME ZONE,
 	modified				TIMESTAMP WITHOUT TIME ZONE
 

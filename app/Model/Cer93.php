@@ -101,12 +101,12 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
-			'dureecdd' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
+// 			'dureecdd' => array(
+// 				'notEmpty' => array(
+// 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
+// 					'message' => 'Champ obligatoire',
+// 				)
+// 			),
 			'prevu' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )
@@ -299,6 +299,10 @@
 				foreach( $fields as $field ) {
 					$data['Cer93'][$field] = null;
 				}
+			}
+			
+			if( !isset( $data['Cer93']['dureecdd'] ) ){
+				$data['Cer93']['dureecdd'] = null;
 			}
 
 			// On passe le champ date de point de aprcours à null au cas où l'allocataire
