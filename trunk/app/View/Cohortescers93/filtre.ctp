@@ -25,6 +25,9 @@
 		echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 		echo $this->Form->input( 'Search.Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );
 		echo $this->Form->input( 'Search.Contratinsertion.exists', array( 'label' => 'Possède un CER ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );
+		if( $this->action == 'visualisation' ) {
+			echo $this->Form->input( 'Search.Contratinsertion.dernier', array( 'label' => 'Uniquement le dernier CER en cours pour un même allocataire', 'type' => 'checkbox' ) );
+		}
 		echo $this->Search->statutCER93( $options['Cer93']['positioncer'], 'Search.Cer93.positioncer' );
 		
 		echo $this->Search->date( 'Search.Orientstruct.date_valid' );
