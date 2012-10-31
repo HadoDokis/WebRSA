@@ -771,5 +771,109 @@
 			return $this->ged( $data, $modeleodt, false, $options );
 		}
 
+		/**
+		 * Retourne l'ensemble de données liées au CER en cours
+		 *
+		 * @param integer $id Id du CER
+		 * @return array
+		 */
+		public function dataView( $contratinsertion_id ) {
+		
+			// Recherche du contrat pour l'affichage
+			$data = $this->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.id' => $contratinsertion_id
+					),
+					'contain' => array(
+						'Cer93' => array(
+							'Compofoyercer93',
+							'Diplomecer93',
+							'Expprocer93',
+							'Histochoixcer93' => array(
+								'order' => array( 'Histochoixcer93.etape ASC' )
+							),
+							'Sujetcer93'
+						),
+						'Structurereferente' => array(
+							'Typeorient'
+						),
+						'Referent'
+					)
+				)
+			);
+
+			$sousSujetsIds = Set::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+			if( !empty( $sousSujetsIds ) ) { 
+				$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
+				foreach( $data['Cer93']['Sujetcer93'] as $key => $values ) {
+					if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
+						$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => $sousSujets[$values['Cer93Sujetcer93']['soussujetcer93_id']] );
+					}
+					else {
+						$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => null );
+					}
+				}
+			}
+			
+			return $data;
+		}
+		
+		
+		/**
+		 *	Liste des options envoyées à la vue pour le CER93
+		 * 	@return array
+		 */
+		public function optionsView() {
+			// Options
+			$options = array(
+				'Cer93' => array(
+					'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
+				),
+				'Contratinsertion' => array(
+					'structurereferente_id' => $this->Contratinsertion->Structurereferente->listOptions(),
+					'referent_id' => $this->Contratinsertion->Referent->listOptions()
+				),
+				'Prestation' => array(
+					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+				),
+				'Personne' => array(
+					'qual' => ClassRegistry::init( 'Option' )->qual()
+				),
+				'Adresse' => array(
+					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
+				),
+				'Serviceinstructeur' => array(
+					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
+				),
+				'Expprocer93' => array(
+					'metierexerce_id' => $this->Expprocer93->Metierexerce->find( 'list' ),
+					'secteuracti_id' => $this->Expprocer93->Secteuracti->find( 'list' )
+				),
+				'Foyer' => array(
+					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
+				),
+				'Dsp' => array(
+					'natlog' => ClassRegistry::init( 'Option' )->natlog()
+				),
+				'dureehebdo' => array_range( '0', '39' ),
+				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd(),
+				'Structurereferente' => array(
+					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
+				),
+				'Naturecontrat' => array(
+					'naturecontrat_id' => $this->Naturecontrat->find( 'list' )
+				)
+			);
+			$options = Set::merge(
+				$this->Contratinsertion->Personne->Dsp->enums(),
+				$this->enums(),
+				$this->Histochoixcer93->enums(),
+				$options
+			);
+			return $options;
+
+		}
 	}
 ?>
