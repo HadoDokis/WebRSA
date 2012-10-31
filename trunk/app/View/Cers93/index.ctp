@@ -146,9 +146,6 @@
 				'options' => $options
 			)
 		);
-		debug( $cers93 );
-//		debug( $signalementseps93 );
-//		debug( $contratscomplexeseps93 );
 	?>
 </div>
 <div class="clearer"><hr /></div>
