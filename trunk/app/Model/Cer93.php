@@ -9,7 +9,7 @@
 	 */
 
 	/**
-	 * La classe Cer93 ...
+	 * La classe Cer93 gère les CER du CG 93.
 	 *
 	 * @package app.Model
 	 */
@@ -300,7 +300,7 @@
 					$data['Cer93'][$field] = null;
 				}
 			}
-			
+
 			if( !isset( $data['Cer93']['dureecdd'] ) ){
 				$data['Cer93']['dureecdd'] = null;
 			}
@@ -323,6 +323,294 @@
 			}
 
 			return $success;
+		}
+
+		/**
+		 * Recherche des données CAF liées à l'allocataire dans le cadre du Cer93.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 * @throws NotFoundException
+		 * @throws InternalErrorException
+		 */
+		public function dataCafAllocataire( $personne_id ) {
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+
+			$querydataCaf = array(
+				'fields' => array_merge(
+					$this->Contratinsertion->Personne->fields(),
+					$this->Contratinsertion->Personne->Prestation->fields(),
+					$this->Contratinsertion->Personne->Dsp->fields(),
+					$this->Contratinsertion->Personne->DspRev->fields(),
+					$this->Contratinsertion->Personne->Foyer->fields(),
+					$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
+					array(
+						'Historiqueetatpe.identifiantpe',
+						'Historiqueetatpe.etat'
+					)
+				),
+				'joins' => array(
+					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
+					$this->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
+					$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
+					$this->Contratinsertion->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER'  )),
+					$this->Contratinsertion->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id,
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Dsp.id IS NULL',
+							'Dsp.id IN ( '.$this->Contratinsertion->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'DspRev.id IS NULL',
+							'DspRev.id IN ( '.$this->Contratinsertion->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Informationpe.id IS NULL',
+							'Informationpe.id IN( '.$Informationpe->sqDerniere( 'Personne' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Historiqueetatpe.id IS NULL',
+							'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
+						)
+					)
+				),
+				'contain' => false
+			);
+			$dataCaf = $this->Contratinsertion->Personne->find( 'first', $querydataCaf );
+
+			// On copie les DspsRevs si elles existent à la place des DSPs (on garde l'information la plus récente)
+			if( !empty( $dataCaf['DspRev']['id'] ) ) {
+				$dataCaf['Dsp'] = $dataCaf['DspRev'];
+			}
+			unset( $dataCaf['DspRev'] );
+
+			// On s'assure d'avoir trouvé l'allocataire
+			if( empty( $dataCaf ) ) {
+				throw new NotFoundException();
+			}
+
+			// Et que celui-ci soit bien demandeur ou conjoint
+			if( !in_array( $dataCaf['Prestation']['rolepers'], array( 'DEM', 'CJT' ) ) ) {
+				throw new InternalErrorException( "L'allocataire \"{$personne_id}\" doit être demandeur ou conjont" );
+			}
+
+			// Bloc 2 : Composition du foyer
+			// Récupération des informations de composition du foyer de l'allocataire
+			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
+				'all',
+				array(
+					'fields' => array(
+						'"Personne"."qual" AS "Compofoyercer93__qual"',
+						'"Personne"."nom" AS "Compofoyercer93__nom"',
+						'"Personne"."prenom" AS "Compofoyercer93__prenom"',
+						'"Personne"."dtnai" AS "Compofoyercer93__dtnai"',
+						'"Prestation"."rolepers" AS "Compofoyercer93__rolepers"'
+					),
+					'conditions' => array( 'Personne.foyer_id' => $dataCaf['Foyer']['id'] ),
+					'contain' => array(
+						'Prestation'
+					)
+				)
+			);
+			$composfoyerscers93 = array( 'Compofoyercer93' => Set::classicExtract( $composfoyerscers93, '{n}.Compofoyercer93' ) );
+			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
+
+			return $dataCaf;
+		}
+
+		/**
+		 * Préparation des données du formulaire d'ajout ou de modification d'un
+		 * CER pour le CG 93.
+		 *
+		 * @param integer $personne_id
+		 * @param integer $contratinsertion_id
+		 * @param integer $user_id
+		 * @return array
+		 * @throws InternalErrorException
+		 * @throws NotFoundException
+		 */
+		public function prepareFormDataAddEdit( $personne_id, $contratinsertion_id, $user_id ) {
+			// Recherche des données CAF.
+			$dataCaf = $this->dataCafAllocataire( $personne_id );
+
+			// Querydata pour le contrat
+			$querydataCer = array(
+				'contain' => array(
+					'Cer93' => array(
+						'Diplomecer93',
+						'Expprocer93',
+						'Sujetcer93',
+					),
+				)
+			);
+
+			// Données de l'utilisateur
+			$querydataUser = array(
+				'conditions' => array(
+					'User.id' => $user_id
+				),
+				'contain' => array(
+					'Structurereferente',
+					'Referent' => array(
+						'Structurereferente'
+					)
+				)
+			);
+			$dataUser = $this->Contratinsertion->User->find( 'first', $querydataUser );
+
+			// On s'assure que l'utilisateur existe
+			if( empty( $dataUser ) ) {
+				throw new InternalErrorException( "Utilisateur non trouvé \"{$user_id}\"" );
+			}
+
+			// Si c'est une modification, on lit l'enregistrement, on actualise
+			// les données (CAF et dernier CER validé) et on renvoit.
+			if( !empty( $contratinsertion_id ) ) {
+				$querydataCerActuel['conditions'] = array(
+					'Contratinsertion.id' => $contratinsertion_id
+				);
+				$dataCerActuel = $this->Contratinsertion->find( 'first', $querydataCerActuel );
+
+				// Il faut que l'enregistrement à modifier existe
+				if( empty( $dataCerActuel ) ) {
+					throw new NotFoundException();
+				}
+
+				// Il faut que l'enregistrement à modifier soit en attente
+				if( $dataCerActuel['Contratinsertion']['decision_ci'] != 'E' ) {
+					throw new InternalErrorException( "Tentative de modification d'un enregistrement déjà traité \"{$contratinsertion_id}\"" );
+				}
+
+				// FIXME: il faut en faire quelque chose de $dataCerActuel
+			}
+			// Sinon, on construit un nouvel enregistrement vide, on y met les
+			// données CAF et ancien CER.
+			else {
+				// Création d'un "enregistrement type" vide.
+				$data = array(
+					'Contratinsertion' => array(
+						'id' => null,
+						'decision_ci' => 'E',
+						'rg_ci' => null
+					),
+					'Cer93' => array(
+						'id' => null,
+						'contratinsertion_id' => null,
+						'nomutilisateur' => null,
+						'structureutilisateur' => null,
+					)
+				);
+
+				// On préremplit le formulaire avec des données de l'utilisateur connecté si possible
+				if( !empty( $dataUser['Structurereferente']['id'] ) ) {
+					$data['Contratinsertion']['structurereferente_id'] = $dataUser['Structurereferente']['id'];
+				}
+				else if( !empty( $dataUser['Referent']['id'] ) ) {
+					$data['Contratinsertion']['structurereferente_id'] = $dataUser['Referent']['structurereferente_id'];
+					$data['Contratinsertion']['referent_id'] = $dataUser['Referent']['id'];
+				}
+			}
+
+			// On ajoute d'autres données de l'utilisateur connecté
+			// TODO: du coup, on peut faire on delete set null (+la structure ?)
+			$data['Cer93']['user_id'] = $user_id;
+			$data['Cer93']['nomutilisateur'] = $dataUser['User']['nom_complet'];
+			if( !empty( $dataUser['Structurereferente']['id'] ) ) {
+				$data['Cer93']['structureutilisateur'] = $dataUser['Structurereferente']['lib_struc'];;
+			}
+			else if( !empty( $dataUser['Referent']['id'] ) ) {
+				$data['Cer93']['structureutilisateur'] = $dataUser['Referent']['Structurereferente']['lib_struc'];
+			}
+
+			// Fusion avec les données CAF
+			$data = Set::merge( $data, $dataCaf );
+
+			// 1. Récupération de l'adresse complète afin de remplir le champ adresse du CER93
+			$Option = ClassRegistry::init( 'Option' );
+			$options =  array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				)
+			);
+			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
+			$adresseComplete = trim( $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'] );
+
+			// 2. Transposition des données
+			//Bloc 2 : Etat civil
+			$data['Cer93']['matricule'] = $dataCaf['Dossier']['matricule'];
+			$data['Cer93']['numdemrsa'] = $dataCaf['Dossier']['numdemrsa'];
+			$data['Cer93']['rolepers'] = $dataCaf['Prestation']['rolepers'];
+			$data['Cer93']['dtdemrsa'] = $dataCaf['Dossier']['dtdemrsa'];
+			$data['Cer93']['identifiantpe'] = $dataCaf['Historiqueetatpe']['identifiantpe'];
+			$data['Cer93']['qual'] = $dataCaf['Personne']['qual'];
+			$data['Cer93']['nom'] = $dataCaf['Personne']['nom'];
+			$data['Cer93']['nomnai'] = $dataCaf['Personne']['nomnai'];
+			$data['Cer93']['prenom'] = $dataCaf['Personne']['prenom'];
+			$data['Cer93']['dtnai'] = $dataCaf['Personne']['dtnai'];
+			$data['Cer93']['adresse'] = $adresseComplete;
+			$data['Cer93']['codepos'] = $dataCaf['Adresse']['codepos'];
+			$data['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
+			$data['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
+
+			// Bloc 3
+			$data['Cer93']['inscritpe'] = ( ( !empty( $dataCaf['Historiqueetatpe']['etat'] ) && ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' ) ) ? true : null );
+
+			// Copie des données du dernier CER validé en cas d'ajout
+			if( empty( $contratinsertion_id ) ) {
+				// Données du dernier CER validé
+				$sqDernierCerValide = $this->Contratinsertion->sq(
+					array(
+						'alias' => 'derniercervalide',
+						'fields' => array( 'derniercervalide.id' ),
+						'conditions' => array(
+							'derniercervalide.personne_id = Contratinsertion.personne_id',
+							'derniercervalide.decision_ci' => 'V',
+						),
+						'order' => array( 'derniercervalide.datevalidation_ci DESC' ),
+						'limit' => 1
+					)
+				);
+				$querydataDernierCerValide = $querydataCer;
+				$querydataDernierCerValide['conditions'] = array(
+					'Contratinsertion.personne_id' => $personne_id,
+					"Contratinsertion.id IN ( {$sqDernierCerValide} )"
+				);
+				$dataDernierCerValide = $this->Contratinsertion->find( 'first', $querydataDernierCerValide );
+
+				// Copie des données du dernier CER validé
+				if( !empty( $dataDernierCerValide ) ) {
+					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'natlog', 'nivetu', 'autresexps', 'isemploitrouv', 'metierexerce_id', 'secteuracti_id', 'naturecontrat_id', 'dureehebdo', 'dureecdd' );
+					foreach( $cer93FieldsToCopy as $field ) {
+						$data['Cer93'][$field] = $dataDernierCerValide['Cer93'][$field];
+					}
+				}
+			}
+
+			// FIXME: dans quels cas ?
+			$data['Cer93']['natlog'] = $dataCaf['Dsp']['natlog'];
+			$data['Cer93']['nivetu'] = $dataCaf['Dsp']['nivetu'];
+
+			return $data;
 		}
 
 
@@ -350,7 +638,7 @@
 						$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
 						array(
-							$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
+//							$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
 							'Historiqueetatpe.identifiantpe',
 							'Historiqueetatpe.etat'
 						)
@@ -417,7 +705,7 @@
 				)
 			);
 			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
-			$adresseComplete = $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'];
+			$adresseComplete = trim( $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'] );
 
 			// Transposition des données
 			//Bloc 2 : Etat civil
@@ -436,6 +724,7 @@
 			$dataCaf['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
 			$dataCaf['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
 			$dataCaf['Cer93']['natlog'] = $dataCaf['Dsp']['natlog'];
+
 			// Bloc 3
 			$dataCaf['Cer93']['inscritpe'] = ( ( !empty( $dataCaf['Historiqueetatpe']['etat'] ) && ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' ) ) ? true : null );
 
@@ -459,7 +748,6 @@
 			);
 			$composfoyerscers93 = array( 'Compofoyercer93' => Set::classicExtract( $composfoyerscers93, '{n}.Compofoyercer93' ) );
 			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
-
 
 			//Donnée du CER actuel
 			$dataActuelCer= array();
@@ -531,17 +819,46 @@
 			$dataPcdCer = $this->Contratinsertion->find(
 				'first',
 				array(
+					'fields' => array(
+						'Cer93.incoherencesetatcivil',
+//						'Cer93.inscritpe', // FIXME
+						'Cer93.cmu',
+						'Cer93.cmuc',
+//						'Cer93.nivetu', // FIXME
+						'Cer93.autresexps',
+						'Cer93.isemploitrouv',
+						'Cer93.secteuracti_id',
+						'Cer93.metierexerce_id',
+						'Cer93.dureehebdo',
+						'Cer93.naturecontrat_id',
+						'Cer93.dureecdd',
+					),
 					'conditions' => array(
 						'Contratinsertion.personne_id' => $personneId,
-						'OR' => array(
-							'Contratinsertion.id IS NULL',
+//						'OR' => array(
+//							'Contratinsertion.id IS NULL',
 							'Contratinsertion.id IN ( '.$this->Contratinsertion->sqDernierContrat( 'Contratinsertion.personne_id', true ).' )'
-						)
+//						)
 					),
-					'contain' => false
+					'contain' => array(
+						'Cer93'
+					)
 				)
 			);
 
+			// FIXME
+			//Cer93.sujetscerpcd
+			//Cer93.prevupcd
+			//Diplomecer93.0.id
+			//Diplomecer93.0.cer93_id
+			//Diplomecer93.0.name
+			//Diplomecer93.0.annee
+			//Expprocer93.0.id
+			//Expprocer93.0.cer93_id
+			//Expprocer93.0.metierexerce_id
+			//Expprocer93.0.secteuracti_id
+			//Expprocer93.0.anneedeb
+			//Expprocer93.0.duree
 			$formData = Set::merge( Set::merge( $dataCaf, $dataPcdCer ), $dataActuelCer );
 
 			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
@@ -778,7 +1095,7 @@
 		 * @return array
 		 */
 		public function dataView( $contratinsertion_id ) {
-		
+
 			// Recherche du contrat pour l'affichage
 			$data = $this->Contratinsertion->find(
 				'first',
@@ -805,7 +1122,7 @@
 			);
 
 			$sousSujetsIds = Set::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
-			if( !empty( $sousSujetsIds ) ) { 
+			if( !empty( $sousSujetsIds ) ) {
 				$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
 				foreach( $data['Cer93']['Sujetcer93'] as $key => $values ) {
 					if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
@@ -816,11 +1133,11 @@
 					}
 				}
 			}
-			
+
 			return $data;
 		}
-		
-		
+
+
 		/**
 		 *	Liste des options envoyées à la vue pour le CER93
 		 * 	@return array

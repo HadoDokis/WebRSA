@@ -32,6 +32,24 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'typeorient_id' => 1,
+				'lib_struc' => '« Projet de Ville RSA d\'Aubervilliers»',
+				'num_voie' => '117',
+				'type_voie' => 'R',
+				'nom_voie' => '	Andre Karman',
+				'code_postal' => '93300',
+				'ville' => 'Aubervilliers',
+				'code_insee' => '93001',
+				'filtre_zone_geo' => true,
+				'contratengagement' => 	'O',
+				'apre' => 'O',
+				'orientation' => 'O',
+				'pdo' => 'O',
+				'numtel' => '0153560510',
+				'actif' => 'O',
+				'typestructure' => 'msp',
+			)
 		);
 
 	}

@@ -52,7 +52,7 @@
 				'ville' => null,
 				'isgestionnaire' => 'O',
 				'sensibilite' => 'O',
-				'structurereferente_id' => null,
+				'structurereferente_id' => 1,
 				'referent_id' => null,
 			),
 		);

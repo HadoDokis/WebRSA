@@ -48,7 +48,7 @@
 			array(
 				'adresse_id' => 3,
 				'foyer_id' => 2,
-				'rgadr' => '01',
+				'rgadr' => '02',
 				'dtemm' => '2010-09-20',
 				'typeadr' => 'D'
 			),

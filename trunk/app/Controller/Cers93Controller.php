@@ -316,7 +316,14 @@
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-
+			// FIXME: remplacer Cer93::prepareFormData() par Cer93::prepareFormDataAddEdit()
+//debug(
+//	$this->Cer93->prepareFormDataAddEdit(
+//		$personne_id,
+//		( ( $this->action == 'add' ) ? null : $id ),
+//		$this->Session->read( 'Auth.User.id' )
+//	)
+//);
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
@@ -490,7 +497,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 * Visualisation du CER 93.
 		 *
@@ -498,14 +505,14 @@
 		 * @return void
 		 */
 		public function view( $contratinsertion_id ) {
-			
+
 			$this->Cer93->Contratinsertion->id = $contratinsertion_id;
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );
-			
+
 			$this->set( 'options', $this->Cer93->optionsView() );
 			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
-			
+
 		}
 	}
 ?>

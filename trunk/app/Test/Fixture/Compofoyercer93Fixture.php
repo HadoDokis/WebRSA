@@ -31,6 +31,22 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'cer93_id' => 1,
+				'qual' => 'MME',
+				'nom' => 'DURAND',
+				'prenom' => 'JEANNE',
+				'dtnai' => '1956-12-05',
+				'rolepers' => 'CJT',
+			),
+			array(
+				'cer93_id' => 1,
+				'qual' => 'MR',
+				'nom' => 'DURAND',
+				'prenom' => 'ROBERT',
+				'dtnai' => '1966-11-17',
+				'rolepers' => 'DEM',
+			),
 		);
 
 	}
