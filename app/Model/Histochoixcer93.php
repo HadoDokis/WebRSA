@@ -94,6 +94,11 @@
 		 *
 		 */
 		public function prepareFormData( $contratinsertion, $etape, $user_id ) {
+			// Si le contrat n'est pas en attente, on lance une exception
+			if( $contratinsertion['Contratinsertion']['decision_ci'] != 'E' ) {
+				throw new InternalErrorException( "Workflow interdit pour le CER \"{$contratinsertion['Contratinsertion']['id']}\" à l' état non traitable \"{$contratinsertion['Contratinsertion']['decision_ci']}\"." );
+			}
+
 			$formData = array();
 
 			// Ajout ou modification

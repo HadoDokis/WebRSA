@@ -51,6 +51,21 @@
 		}
 
 		/**
+		 * Test de la méthode Histochoixcer93::prepareFormData() avec une erreur
+		 *
+		 * @return void
+		 */
+		public function testPrepapreFormDataError() {
+			$this->expectError( 'PHPUnit_Framework_Error_Notice' );
+			$contratinsertion = array(
+				'Contratinsertion' => array(
+					'decision_ci' => 'V'
+				),
+			);
+			$result = $this->Histochoixcer93->prepareFormData( $contratinsertion, '03attdecisioncg', 1 );
+		}
+
+		/**
 		 * Test de la méthode Histochoixcer93::prepareFormData()
 		 *
 		 * @group medium
@@ -59,6 +74,9 @@
 		public function testPrepareFormData() {
 			// 1°) Ajout à l'étape 03attdecisioncg
 			$contratinsertion = array(
+				'Contratinsertion' => array(
+					'decision_ci' => 'E'
+				),
 				'Cer93' => array(
 					'id' => 1,
 					'Histochoixcer93' => array(
@@ -93,6 +111,9 @@
 
 			// 2°) Modification à l'étape 03attdecisioncg
 			$contratinsertion = array(
+				'Contratinsertion' => array(
+					'decision_ci' => 'E'
+				),
 				'Cer93' => array(
 					'id' => 1,
 					'Histochoixcer93' => array(
@@ -158,7 +179,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -209,21 +230,21 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '02attdecisioncpdv',
 					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '02attdecisioncpdv',
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
 					'forme_ci' => NULL,
@@ -245,7 +266,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -297,21 +318,21 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '03attdecisioncg',
 					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '03attdecisioncg',
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
 					'forme_ci' => NULL,
@@ -333,7 +354,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -385,21 +406,21 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '99rejete',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '03attdecisioncg',
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'R',
 					'forme_ci' => 'S',
@@ -421,7 +442,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -475,8 +496,8 @@
 			$expected = array(
 				'Cer93' =>
 				array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '99valide',
 					'formeci' => 'S',
@@ -484,7 +505,7 @@
 				'Histochoixcer93' =>
 				array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '05secondelecture',
 					'decisioncs' => 'valide',
@@ -492,7 +513,7 @@
 				),
 				'Contratinsertion' =>
 				array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'V',
 					'forme_ci' => 'S',
@@ -514,7 +535,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -573,22 +594,22 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '07attavisep',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '05secondelecture',
 					'decisioncs' => 'passageep',
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
 					'forme_ci' => 'S',
@@ -618,7 +639,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -671,22 +692,22 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '05secondelecture',
 					'formeci' => null,
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '05secondelecture',
 					'decisioncs' => 'aviscadre',
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
 					'forme_ci' => NULL,
@@ -708,7 +729,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -761,22 +782,22 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '99valide',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '06attaviscadre',
 					'decisioncs' => NULL,
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'V',
 					'forme_ci' => 'S',
@@ -798,7 +819,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -851,22 +872,22 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '99rejete',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '06attaviscadre',
 					'decisioncs' => NULL,
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'R',
 					'forme_ci' => 'S',
@@ -888,7 +909,7 @@
 			$data = array(
 				'Histochoixcer93' => array(
 					'id' => '',
-					'cer93_id' => '1',
+					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
 					'commentaire' => 'drsg',
@@ -947,22 +968,22 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 1,
-					'contratinsertion_id' => 1,
+					'id' => 2,
+					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '07attavisep',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
 					'id' => 1,
-					'cer93_id' => 1,
+					'cer93_id' => 2,
 					'user_id' => 6,
 					'etape' => '06attaviscadre',
 					'decisioncs' => NULL,
 					'datechoix' => '2012-10-25',
 				),
 				'Contratinsertion' => array(
-					'id' => 1,
+					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'E',
 					'forme_ci' => 'S',
