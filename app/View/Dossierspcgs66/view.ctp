@@ -8,6 +8,11 @@
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 		echo $this->Form->create( 'Dossierpcg66', array( 'type' => 'post', 'id' => 'dossierpcg66form', 'url' => Router::url( null, true ) ) );
+		
+		$class = '';
+		if( empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {
+			$class = 'aere';
+		}
 
 		echo $this->Default2->view(
 			$dossierpcg66,
@@ -22,10 +27,23 @@
 				'Dossierpcg66.etatdossierpcg'
 			),
 			array(
-				'class' => 'aere',
+				'class' => $class,
 				'options' => $options
 			)
 		);
+		
+		if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {
+			echo $this->Default2->view(
+				$dossierpcg66,
+				array(
+					'Decisiondossierpcg66.0.datetransmissionop'
+				),
+				array(
+					'class' => 'aere',
+					'options' => $options
+				)
+			);
+		}
     ?>
     <h2>Décisions du dossier</h2>
     <?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>

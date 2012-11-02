@@ -28,7 +28,7 @@ msgid "Typepdo.libelle"
 msgstr "Type de dossier PDO"
 
 msgid "Typepdo.originepcg"
-msgstr "Origine par défaut d'un dossier PDO venant d'une EP ?"
+msgstr "Type par défaut d'un dossier PCG venant d'une EP ?"
 
 msgid "ENUM::ORIGINEPCG::N"
 msgstr "Non"

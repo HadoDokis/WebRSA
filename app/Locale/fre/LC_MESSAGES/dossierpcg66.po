@@ -47,7 +47,7 @@ msgid "Dossierpcg66.etatdossierpdo"
 msgstr "Etat du dossier"
 
 msgid "Dossierpcg66.user_id"
-msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
+msgstr "Gestionnaire du dossier (technicien en charge du dossier)"
 
 msgid "Dossierpcg66.datereceptionpdo"
 msgstr "Date de réception du dossier"
