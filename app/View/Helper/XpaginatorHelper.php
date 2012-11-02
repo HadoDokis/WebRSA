@@ -83,7 +83,7 @@
 		public function paginationBlock( $classname, $urlOptions, $format = 'Results %start% - %end% out of %count%.' ) {
 			$page = Set::classicExtract( $this->request->params, "paging.{$classname}.page" );
 			$count = Set::classicExtract( $this->request->params, "paging.{$classname}.count" );
-			$limit = Set::classicExtract( $this->request->params, "paging.{$classname}.options.limit" );
+			$limit = Set::classicExtract( $this->request->params, "paging.{$classname}.limit" );
 
 			$controllerName = Inflector::camelize( $this->request->params['controller'] );
 
@@ -107,22 +107,25 @@
 			$this->options( array( 'url' => $urlOptions ) );
 			$pagination = null;
 
-			if( Set::classicExtract( $this->request->params, "paging.{$classname}.pageCount" ) >= 1 ) {
+			$pageCount = Set::classicExtract( $this->request->params, "paging.{$classname}.pageCount" );
+			if( $pageCount >= 1 ) {
 				$pagination = $this->Xhtml->tag ( 'p', $this->counter( array( 'format' => __( $format ) ) ), array( 'class' => 'pagination counter' ) );
 
-				$links = array(
-					$this->first( __( '<<' ) ),
-					$this->prev( __( '<' ) ),
-					$this->numbers(),
-					$this->next( __( '>' ) )
-				);
+				if( $pageCount > 1 ) {
+					$links = array(
+						$this->first( __( '<<' ) ),
+						$this->prev( __( '<' ) ),
+						$this->numbers(),
+						$this->next( __( '>' ) )
+					);
 
-				if( !Configure::read( 'Optimisations.progressivePaginate' ) ) {
-					$links[] = $this->last( __( '>>' ) );
+					if( !$progressivePaginate ) {
+						$links[] = $this->last( __( '>>' ) );
+					}
+
+					$links = implode( ' ', $links );
+					$pagination .= $this->Xhtml->tag( 'p', $links, array( 'class' => 'pagination links' ) );
 				}
-
-				$links = implode( ' ', $links );
-				$pagination .= $this->Xhtml->tag( 'p', $links, array( 'class' => 'pagination links' ) );
 			}
 
 			return $pagination;

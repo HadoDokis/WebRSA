@@ -90,7 +90,7 @@
 		public function paginationBlock( $classname, $urlOptions, $format = 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) {
 			$page = Set::classicExtract( $this->request->params, "paging.{$classname}.page" );
 			$count = Set::classicExtract( $this->request->params, "paging.{$classname}.count" );
-			$limit = Set::classicExtract( $this->request->params, "paging.{$classname}.options.limit" );
+			$limit = Set::classicExtract( $this->request->params, "paging.{$classname}.limit" );
 			$options = array( 'model' => $classname );
 
 			$controllerName = Inflector::camelize( $this->request->params['controller'] );
