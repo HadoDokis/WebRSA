@@ -19,7 +19,7 @@
 						'PersonneReferent.id' => array( 'type' => 'hidden' ),
 						'PersonneReferent.personne_id' => array( 'type' => 'hidden' ),
 						'PersonneReferent.structurereferente_id' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['structurereferente_id'] ),
-						'PersonneReferent.referent_id' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ),
+						'PersonneReferent.referent_id' => array( 'type' => 'select', 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ),
 						'PersonneReferent.dddesignation' => array( 'disabled' => true, 'value' => $personne_referent['PersonneReferent']['dddesignation'] )
 					),
 					array(
