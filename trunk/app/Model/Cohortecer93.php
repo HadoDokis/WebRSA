@@ -49,7 +49,7 @@
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierContratinsertion = array();
 
-			if( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) {
+			if( ( $statut != 'visualisation' ) || ( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) ) {
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci' );
 			}
 
@@ -228,7 +228,7 @@
 					array( 'Contratinsertion.decision_ci' => 'E' )
 				);
 				$querydata['conditions'][] = $sqDerniereHistochoixcer93Etape;
-//				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
+// 				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
 
 				$querydata['fields'] = array_merge( $querydata['fields'], $Personne->Contratinsertion->Cer93->Histochoixcer93->fields() );
 				$querydata['joins'][] = $Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) );

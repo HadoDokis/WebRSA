@@ -69,6 +69,12 @@ msgstr "Simple"
 msgid "ENUM::FORMECI::C"
 msgstr "Complexe"
 
+msgid "ENUM::ISREJET::0"
+msgstr "Non"
+
+msgid "ENUM::ISREJET::1"
+msgstr "Oui"
+
 msgid "ENUM::ETAPE::02attdecisioncpdv"
 msgstr "Décision CI"
 
@@ -83,3 +89,6 @@ msgstr "Décision seconde lecture"
 
 msgid "ENUM::ETAPE::06aviscadre"
 msgstr "Avis cadre"
+
+msgid "Histochoixcer93.prevalide"
+msgstr "Pré-validé ou A relire ?"
