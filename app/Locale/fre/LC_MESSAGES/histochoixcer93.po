@@ -68,3 +68,18 @@ msgstr "Simple"
 
 msgid "ENUM::FORMECI::C"
 msgstr "Complexe"
+
+msgid "ENUM::ETAPE::02attdecisioncpdv"
+msgstr "Décision CI"
+
+msgid "ENUM::ETAPE::03attdecisioncg"
+msgstr "Décision CPDV"
+
+msgid "ENUM::ETAPE::04premierelecture"
+msgstr "Décision première lecture"
+
+msgid "ENUM::ETAPE::05secondelecture"
+msgstr "Décision seconde lecture"
+
+msgid "ENUM::ETAPE::06aviscadre"
+msgstr "Avis cadre"
