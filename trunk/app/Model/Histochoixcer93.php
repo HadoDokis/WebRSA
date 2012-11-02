@@ -92,6 +92,12 @@
 
 		/**
 		 *
+		 * @param type $contratinsertion
+		 * @param type $etape
+		 * @param type $user_id
+		 * @return type
+		 * @throws InternalErrorException
+		 * @throws error500Exception
 		 */
 		public function prepareFormData( $contratinsertion, $etape, $user_id ) {
 			// Si le contrat n'est pas en attente, on lance une exception
@@ -103,20 +109,22 @@
 
 			// Ajout ou modification
 			$action = 'add';
+
+			$intEtape = (int)preg_replace( '/^([0-9]{2}).*$/', '\1', $etape );
+			$intEtapeHistochoixcer93 = 2;
+
 			$nbHistochoixcer93 = count( $contratinsertion['Cer93']['Histochoixcer93'] );
 			if( $nbHistochoixcer93 > 0 ) {
 				$etapeHistochoixcer93 = $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['etape'];
-
-				$intEtapeHistochoixcer93 = preg_replace( '/^([0-9]{2}).*$/', '\1', $etapeHistochoixcer93 );
-				$intEtape = preg_replace( '/^([0-9]{2}).*$/', '\1', $etape );
-
-				if( !( ( $intEtapeHistochoixcer93 == $intEtape ) || ( $intEtapeHistochoixcer93 == ( $intEtape - 1 ) ) ) ) {
-					throw new error500Exception( 'Incohérence des étapes' );
-				}
+				$intEtapeHistochoixcer93 = (int)preg_replace( '/^([0-9]{2}).*$/', '\1', $etapeHistochoixcer93 );
 
 				if( $etapeHistochoixcer93 == $etape ) {
 					$action = 'edit';
 				}
+			}
+
+			if( !( ( ( $intEtapeHistochoixcer93 == ( $intEtape - 1 ) ) && !empty( $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['id'] ) ) ) ) {
+				throw new error500Exception( "Incohérence des étapes pour le CER \"{$contratinsertion['Contratinsertion']['id']}\"" );
 			}
 
 			if( $action == 'add' ) {
