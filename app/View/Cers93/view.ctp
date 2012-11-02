@@ -1,5 +1,5 @@
 <?php
-	$title_for_layout = ( ( $this->action == 'add' ) ? 'Ajout d\'un CER' : 'Modification d\'un CER' );
+	$title_for_layout = 'Visualisation du CER';
 	$this->set( 'title_for_layout', $title_for_layout );
 
 	if( Configure::read( 'debug' ) > 0 ) {

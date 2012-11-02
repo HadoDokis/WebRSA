@@ -146,6 +146,7 @@
 	<tr>
 		<td style="width:48%" class="noborder">
 		<h3>Diplômes (scolaires, universitaires et/ou professionnels)</h3>
+		<?php if( !empty( $contratinsertion['Cer93']['Diplomecer93'] ) ):?>
 			<table id="Diplomecer93">
 				<thead>
 					<tr>
@@ -171,9 +172,13 @@
 					?>
 				</tbody>
 			</table>
+		<?php else:?>
+			<p class="notice">Aucun diplôme renseigné pour cet allocataire</p>
+		<?php endif;?>
 		</td>
 		<td class="noborder">
 			<h3>Expériences professionnelles significatives</h3>
+			<?php if( !empty( $contratinsertion['Cer93']['Expprocer93'] ) ):?>
 				<table>
 					<thead>
 						<tr>
@@ -202,6 +207,9 @@
 						?>
 					</tbody>
 				</table>
+			<?php else:?>
+				<p class="notice">Aucune expérience renseignée pour cet allocataire</p>
+			<?php endif;?>
 			</td>
 		</tr>
 	</table>
@@ -230,6 +238,8 @@
 		echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu') );
 
 	?>
+	<h3>Votre contrat porte sur </h3>
+	<?php if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ):?>
 		<table>
 			<thead>
 				<tr>
@@ -256,6 +266,9 @@
 				?>
 			</tbody>
 		</table>
+	<?php else:?>
+		<p class="notice">Aucune information renseignée</p>
+	<?php endif;?>
 </fieldset>
 <fieldset>
 	<?php
