@@ -1000,6 +1000,7 @@
 			}
 			$data = $this->find( 'first', $queryData );
 
+			// Liste des informations concernant la composition du foyer
 			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
 				'all',
 				array(
@@ -1017,6 +1018,7 @@
 				)
 			);
 
+			// Liste des diplômes enregistrés pour ce CER
 			$diplomescers93 = $this->Diplomecer93->find(
 				'all',
 				array(
@@ -1033,7 +1035,7 @@
 			);
 
 			// Bloc 4 : Formation et expériece
-			// Récupération des informations de diplômes de l'allocataire
+			// Liste des expériences pro enregistrés pour ce CER
 			$expsproscers93 = $this->Expprocer93->find(
 				'all',
 				array(
@@ -1050,12 +1052,25 @@
 					'contain' => false
 				)
 			);
-
+			
+			// Liste des sujets sur lequel porte ce CER
+			$sujetscers93 = $this->Cer93Sujetcer93->find(
+				'all',
+				array(
+					'conditions' => array( 'Cer93Sujetcer93.cer93_id' => $data['Cer93']['id'] ),
+					'contain' => array(
+						'Sujetcer93',
+						'Soussujetcer93'
+					)
+				)
+			);
+			
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
 				'exppro' => $expsproscers93,
-				'diplome' => $diplomescers93
+				'diplome' => $diplomescers93,
+				'sujetcer' => $sujetscers93
 			);
 		}
 
