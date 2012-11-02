@@ -31,6 +31,42 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'cer93_id' => 1,
+				'metierexerce_id' => 1,
+				'secteuracti_id' => 2,
+				'anneedeb' => 2005,
+				'duree' => '3 mois',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 1,
+				'metierexerce_id' => 2,
+				'secteuracti_id' => 2,
+				'anneedeb' => 2007,
+				'duree' => '9 mois',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 2,
+				'metierexerce_id' => 2,
+				'secteuracti_id' => 2,
+				'anneedeb' => 2009,
+				'duree' => '6 mois',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 2,
+				'metierexerce_id' => 1,
+				'secteuracti_id' => 1,
+				'anneedeb' => 2005,
+				'duree' => '3 ans',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
 		);
 
 	}

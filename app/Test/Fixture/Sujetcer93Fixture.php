@@ -33,10 +33,16 @@
 		public $records = array(
 			array(
 				'name' => 'Sujet 1',
+				'isautre' => '0',
 			),
 			array(
 				'name' => 'Sujet 2',
-			)
+				'isautre' => '0'
+			),
+			array(
+				'name' => 'Sujet 3',
+				'isautre' => '1'
+			),
 		);
 
 	}

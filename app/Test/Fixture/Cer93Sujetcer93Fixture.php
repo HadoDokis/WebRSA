@@ -31,6 +31,38 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'cer93_id' => 1,
+				'sujetcer93_id' => 1,
+				'soussujetcer93_id' => 1,
+				'commentaireautre' => null,
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 1,
+				'sujetcer93_id' => 3,
+				'soussujetcer93_id' => null,
+				'commentaireautre' => 'Commentaire autre',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 2,
+				'sujetcer93_id' => 2,
+				'soussujetcer93_id' => 2,
+				'commentaireautre' => null,
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
+			array(
+				'cer93_id' => 2,
+				'sujetcer93_id' => 3,
+				'soussujetcer93_id' => null,
+				'commentaireautre' => 'Commentaire autre',
+				'created' => '2012-10-01 15:36:00',
+				'modified' => '2012-10-01 15:36:00',
+			),
 		);
 
 	}

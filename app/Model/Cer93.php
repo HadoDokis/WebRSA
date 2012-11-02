@@ -457,8 +457,12 @@
 			$querydataCer = array(
 				'contain' => array(
 					'Cer93' => array(
-						'Diplomecer93',
-						'Expprocer93',
+						'Diplomecer93' => array(
+							'order' => array( 'Diplomecer93.annee DESC' )
+						),
+						'Expprocer93' => array(
+							'order' => array( 'Expprocer93.anneedeb DESC' )
+						),
 						'Sujetcer93',
 					),
 				)
@@ -486,6 +490,7 @@
 			// Si c'est une modification, on lit l'enregistrement, on actualise
 			// les données (CAF et dernier CER validé) et on renvoit.
 			if( !empty( $contratinsertion_id ) ) {
+				$querydataCerActuel = $querydataCer;
 				$querydataCerActuel['conditions'] = array(
 					'Contratinsertion.id' => $contratinsertion_id
 				);
@@ -501,7 +506,24 @@
 					throw new InternalErrorException( "Tentative de modification d'un enregistrement déjà traité \"{$contratinsertion_id}\"" );
 				}
 
+				$fieldsToCopy = array(
+					'Contratinsertion' => array( 'id', 'personne_id', 'rg_ci', 'decision_ci' ),
+				);
+				foreach( $fieldsToCopy as $modelName => $fields ) {
+					foreach( $fields as $field ) {
+						$data[$modelName][$field] = $dataCerActuel[$modelName][$field];
+					}
+				}
+
+				$data['Cer93'] = $dataCerActuel['Cer93'];
+
+				$modelsToCopy = array( 'Diplomecer93', 'Expprocer93', 'Sujetcer93' );
+				foreach( $modelsToCopy as $modelName ) {
+					$data[$modelName] = $dataCerActuel['Cer93'][$modelName];
+				}
+
 				// FIXME: il faut en faire quelque chose de $dataCerActuel
+//				$this->log( var_export( $data, true ), LOG_DEBUG );
 			}
 			// Sinon, on construit un nouvel enregistrement vide, on y met les
 			// données CAF et ancien CER.
@@ -518,7 +540,12 @@
 						'contratinsertion_id' => null,
 						'nomutilisateur' => null,
 						'structureutilisateur' => null,
-					)
+						'nivetu' => null
+					),
+					'Compofoyercer93' => array(),
+					'Diplomecer93' => array(),
+					'Expprocer93' => array(),
+					'Sujetcer93' => array(),
 				);
 
 				// On préremplit le formulaire avec des données de l'utilisateur connecté si possible
@@ -573,7 +600,10 @@
 			$data['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
 
 			// Bloc 3
-			$data['Cer93']['inscritpe'] = ( ( !empty( $dataCaf['Historiqueetatpe']['etat'] ) && ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' ) ) ? true : null );
+			$data['Cer93']['inscritpe'] = null;
+			if( isset( $dataCaf['Historiqueetatpe']['etat'] ) && !empty( $dataCaf['Historiqueetatpe']['etat'] ) ) {
+				$data['Cer93']['inscritpe'] = ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' );
+			}
 
 			// Copie des données du dernier CER validé en cas d'ajout
 			if( empty( $contratinsertion_id ) ) {
@@ -599,16 +629,36 @@
 
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
-					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'natlog', 'nivetu', 'autresexps', 'isemploitrouv', 'metierexerce_id', 'secteuracti_id', 'naturecontrat_id', 'dureehebdo', 'dureecdd' );
+					// Copie des champs du CER précédent
+					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps' );
 					foreach( $cer93FieldsToCopy as $field ) {
 						$data['Cer93'][$field] = $dataDernierCerValide['Cer93'][$field];
 					}
+
+					// Copie des enregistrements liés
+					$cer93ModelsToCopy = array( 'Diplomecer93', 'Expprocer93', 'Sujetcer93' );
+					foreach( $cer93ModelsToCopy as $modelName ) {
+						$data[$modelName] = $dataDernierCerValide['Cer93'][$modelName];
+						if( !empty( $data[$modelName] ) ) {
+							foreach( array_keys( $data[$modelName] ) as $key ) {
+								unset(
+									$data[$modelName][$key]['id'],
+									$data[$modelName][$key]['cer93_id'],
+									$data[$modelName][$key]['Cer93Sujetcer93']['id'],
+									$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id']
+								);
+							}
+						}
+					}
+				}
+				else {
+					// RG CER précédent, puis RG DSP
+					$data['Cer93']['nivetu'] = $dataCaf['Dsp']['nivetu'];
 				}
 			}
 
-			// FIXME: dans quels cas ?
+			// Les données CAF prévalent
 			$data['Cer93']['natlog'] = $dataCaf['Dsp']['natlog'];
-			$data['Cer93']['nivetu'] = $dataCaf['Dsp']['nivetu'];
 
 			return $data;
 		}
@@ -623,7 +673,7 @@
 		 * @param integer $user_id L'id technique de l'utilisateur qui réalise la saisie du formulaire
 		 * @return array
 		 */
-		public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
+		/*public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
 			// Donnée de la CAF stockée en base
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 			$dataCaf = $this->Contratinsertion->Personne->find(
@@ -899,7 +949,7 @@
 			}
 
 			return $formData;
-		}
+		}*/
 
 		/**
 		 * Retourne le chemin relatif du modèle de document à utiliser pour

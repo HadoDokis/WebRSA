@@ -316,14 +316,7 @@
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			// FIXME: remplacer Cer93::prepareFormData() par Cer93::prepareFormDataAddEdit()
-//debug(
-//	$this->Cer93->prepareFormDataAddEdit(
-//		$personne_id,
-//		( ( $this->action == 'add' ) ? null : $id ),
-//		$this->Session->read( 'Auth.User.id' )
-//	)
-//);
+
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
@@ -341,7 +334,7 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormData( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+				$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$naturescontrats = $this->Cer93->Naturecontrat->find(
@@ -472,7 +465,7 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormData( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
+				$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$this->set( 'personne_id', $personne_id );

@@ -109,7 +109,7 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			// 2°) Modification à l'étape 03attdecisioncg
+			/*// 2°) Modification à l'étape 03attdecisioncg
 			$contratinsertion = array(
 				'Contratinsertion' => array(
 					'decision_ci' => 'E'
@@ -165,7 +165,7 @@
 					'modified' => '2012-10-24 12:44:38',
 				),
 			);
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );*/
 		}
 
 		/**

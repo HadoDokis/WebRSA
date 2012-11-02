@@ -4,6 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
+	 * FIXME: Contratinsertion.dd_ci, Contratinsertion.df_ci, Contratinsertion.duree
+	 *
 	 * @package app.Test.Case.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
@@ -78,6 +80,9 @@
 				'Contratinsertion' => $formData['Contratinsertion'],
 				'Cer93' => $formData['Cer93'],
 				'Compofoyercer93' => $formData['Compofoyercer93'],
+				'Diplomecer93' => $formData['Diplomecer93'],
+				'Expprocer93' => $formData['Expprocer93'],
+				'Sujetcer93' => $formData['Sujetcer93'],
 			);
 
 			$expected = array (
@@ -120,6 +125,9 @@
 					  'rolepers' => 'DEM',
 					),
 				),
+				'Diplomecer93' => array(),
+				'Expprocer93' => array(),
+				'Sujetcer93' => array()
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -127,22 +135,19 @@
 		/**
 		 * Test de la méthode Cer93::prepareFormDataAddEdit() avec un CER précédent.
 		 *
-		 * TODO:
-		 *	- à faire sans dsps_revs
-		 *
-		 * FIXME: à faire fonctionner
-		 *
 		 * @group medium
 		 * @return void
 		 */
-		/*public function testPrepareFormDataAddEditAvecCerPrecedent() {
+		public function testPrepareFormDataAddEditAvecCerPrecedent() {
 			$formData = $this->Cer93->prepareFormDataAddEdit( 2, null, 1  );
 
 			$result = array(
 				'Contratinsertion' => $formData['Contratinsertion'],
 				'Cer93' => $formData['Cer93'],
 				'Compofoyercer93' => $formData['Compofoyercer93'],
-				// FIXME: diplômes, expériences, ....
+				'Diplomecer93' => $formData['Diplomecer93'],
+				'Expprocer93' => $formData['Expprocer93'],
+				'Sujetcer93' => $formData['Sujetcer93'],
 			);
 
 			$expected = array(
@@ -153,6 +158,7 @@
 					'structurereferente_id' => 1,
 				),
 				'Cer93' => array(
+					'id' => NULL,
 					'matricule' => '987654321000000',
 					'numdemrsa' => '77777777793',
 					'rolepers' => 'DEM',
@@ -168,35 +174,16 @@
 					'locaadr' => 'ROMAINVILLE',
 					'sitfam' => 'MAR',
 					'natlog' => NULL, // FIXME
-					'inscritpe' => '1', // FIXME
+					'inscritpe' => null,
 					'contratinsertion_id' => NULL,
 					'user_id' => 1,
+					'nomutilisateur' => 'Dupont Jean',
+					'structureutilisateur' => '« Projet de Ville RSA d\'Aubervilliers»',
 					'incoherencesetatcivil' => 'Aucune incohérence',
 					'cmu' => 'non',
 					'cmuc' => 'encours',
 					'nivetu' => '1203',
-					'positioncer' => '00enregistre',
-					'formeci' => NULL,
-					'datesignature' => NULL,
-					'autresexps' => NULL,
-					'isemploitrouv' => NULL,
-					'metierexerce_id' => NULL,
-					'secteuracti_id' => NULL,
-					'naturecontrat_id' => NULL,
-					'dureehebdo' => NULL,
-					'dureecdd' => NULL,
-					'prevu' => '',
-					'bilancerpcd' => NULL,
-					'duree' => NULL,
-					'pointparcours' => NULL,
-					'datepointparcours' => NULL,
-					'pourlecomptede' => NULL,
-					'observpro' => NULL,
-					'observbenef' => NULL,
-					'created' => NULL,
-					'modified' => NULL,
-					'nomutilisateur' => 'Dupont Jean',
-					'structureutilisateur' => NULL,
+					'autresexps' => 'Autre expériences professionnelles',
 				),
 				'Compofoyercer93' => array(
 					array(
@@ -214,9 +201,310 @@
 						'rolepers' => 'CJT',
 					),
 				),
+				'Diplomecer93' => array(
+					array(
+						'name' => 'Diplôme de soudeur',
+						'annee' => '2005',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+					array(
+						'name' => 'Diplôme de manutentionnaire',
+						'annee' => '2003',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+				),
+				'Expprocer93' => array(
+					array(
+						'metierexerce_id' => 2,
+						'secteuracti_id' => 2,
+						'anneedeb' => 2007,
+						'duree' => '9 mois',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+					array(
+						'metierexerce_id' => 1,
+						'secteuracti_id' => 2,
+						'anneedeb' => 2005,
+						'duree' => '3 mois',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+				),
+				'Sujetcer93' => array(
+					array(
+						'name' => 'Sujet 1',
+						'isautre' => '0',
+						'created' => NULL,
+						'modified' => NULL,
+						'Cer93Sujetcer93' =>
+						array(
+							'sujetcer93_id' => 1,
+							'soussujetcer93_id' => 1,
+							'commentaireautre' => NULL,
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+					array(
+						'name' => 'Sujet 3',
+						'isautre' => '1',
+						'created' => NULL,
+						'modified' => NULL,
+						'Cer93Sujetcer93' =>
+						array(
+							'sujetcer93_id' => 3,
+							'soussujetcer93_id' => NULL,
+							'commentaireautre' => 'Commentaire autre',
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-		}*/
+		}
+
+		/**
+		 * TODO:
+		 * Test de la méthode Cer93::prepareFormDataAddEdit() avec une modification de CER.
+		 *
+		 * @group medium
+		 * @return void
+		 */
+		public function testPrepareFormDataAddEditAvecModificationCer() {
+			$formData = $this->Cer93->prepareFormDataAddEdit( 1, 2, 1  );
+
+			$result = array(
+				'Contratinsertion' => $formData['Contratinsertion'],
+				'Cer93' => $formData['Cer93'],
+				'Compofoyercer93' => $formData['Compofoyercer93'],
+				'Diplomecer93' => $formData['Diplomecer93'],
+				'Expprocer93' => $formData['Expprocer93'],
+				'Sujetcer93' => $formData['Sujetcer93'],
+			);
+
+			$expected = array(
+				'Contratinsertion' => array(
+					'id' => 2,
+					'personne_id' => 1,
+					'rg_ci' => NULL,
+					'decision_ci' => 'E',
+				),
+				'Cer93' => array(
+					'id' => 2,
+					'contratinsertion_id' => 2,
+					'user_id' => 1,
+					'matricule' => '123456700000000',
+					'dtdemrsa' => '2009-09-01',
+					'qual' => 'MR',
+					'nom' => 'BUFFIN',
+					'nomnai' => 'BUFFIN',
+					'prenom' => 'CHRISTIAN',
+					'dtnai' => '1979-01-24',
+					'adresse' => '66 Avenue DE LA REPUBLIQUE',
+					'codepos' => '93300',
+					'locaadr' => 'AUBERVILLIERS',
+					'sitfam' => 'CEL',
+					'natlog' => '0909',
+					'incoherencesetatcivil' => 'Aucune incohérence',
+					'inscritpe' => true,
+					'cmu' => 'non',
+					'cmuc' => 'encours',
+					'nivetu' => '1203',
+					'numdemrsa' => '66666666693',
+					'rolepers' => 'DEM',
+					'identifiantpe' => '0609065370Y',
+					'positioncer' => '02attdecisioncpdv',
+					'formeci' => NULL,
+					'datesignature' => NULL,
+					'autresexps' => 'Autre expériences professionnelles',
+					'isemploitrouv' => 'O',
+					'metierexerce_id' => 1,
+					'secteuracti_id' => 2,
+					'naturecontrat_id' => 3,
+					'dureehebdo' => 35,
+					'dureecdd' => '1',
+					'prevu' => '',
+					'bilancerpcd' => NULL,
+					'duree' => 1,
+					'pointparcours' => 'aladate',
+					'datepointparcours' => '2010-12-31',
+					'pourlecomptede' => 'JACQUES ANTOINE',
+					'observpro' => 'Observations du professionnel',
+					'observbenef' => 'Obsrevations du bénéficiaire',
+					'structureutilisateur' => '« Projet de Ville RSA d\'Aubervilliers»',
+					'nomutilisateur' => 'Dupont Jean',
+					'created' => '2010-10-25 11:00:00',
+					'modified' => '2010-10-25 11:45:00',
+					'Diplomecer93' => array(
+						array(
+							'id' => 4,
+							'cer93_id' => 2,
+							'name' => 'Diplôme d\'informatique',
+							'annee' => 2005,
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+						array(
+							'id' => 3,
+							'cer93_id' => 2,
+							'name' => 'BAC',
+							'annee' => 2001,
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+					'Expprocer93' => array(
+						array(
+							'id' => 3,
+							'cer93_id' => 2,
+							'metierexerce_id' => 2,
+							'secteuracti_id' => 2,
+							'anneedeb' => 2009,
+							'duree' => '6 mois',
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+						array(
+							'id' => 4,
+							'cer93_id' => 2,
+							'metierexerce_id' => 1,
+							'secteuracti_id' => 1,
+							'anneedeb' => 2005,
+							'duree' => '3 ans',
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+					'Sujetcer93' => array(
+						array(
+							'id' => 2,
+							'name' => 'Sujet 2',
+							'isautre' => '0',
+							'created' => NULL,
+							'modified' => NULL,
+							'Cer93Sujetcer93' =>
+							array(
+								'id' => 3,
+								'cer93_id' => 2,
+								'sujetcer93_id' => 2,
+								'soussujetcer93_id' => 2,
+								'commentaireautre' => NULL,
+								'created' => '2012-10-01 15:36:00',
+								'modified' => '2012-10-01 15:36:00',
+							),
+						),
+						array(
+							'id' => 3,
+							'name' => 'Sujet 3',
+							'isautre' => '1',
+							'created' => NULL,
+							'modified' => NULL,
+							'Cer93Sujetcer93' =>
+							array(
+								'id' => 4,
+								'cer93_id' => 2,
+								'sujetcer93_id' => 3,
+								'soussujetcer93_id' => NULL,
+								'commentaireautre' => 'Commentaire autre',
+								'created' => '2012-10-01 15:36:00',
+								'modified' => '2012-10-01 15:36:00',
+							),
+						),
+					),
+				),
+				'Compofoyercer93' => array(
+					array(
+						'qual' => 'MR',
+						'nom' => 'BUFFIN',
+						'prenom' => 'CHRISTIAN',
+						'dtnai' => '1979-01-24',
+						'rolepers' => 'DEM',
+					),
+				),
+				'Diplomecer93' => array(
+					array(
+						'id' => 4,
+						'cer93_id' => 2,
+						'name' => 'Diplôme d\'informatique',
+						'annee' => 2005,
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+					array(
+						'id' => 3,
+						'cer93_id' => 2,
+						'name' => 'BAC',
+						'annee' => 2001,
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+				),
+				'Expprocer93' => array(
+					array(
+						'id' => 3,
+						'cer93_id' => 2,
+						'metierexerce_id' => 2,
+						'secteuracti_id' => 2,
+						'anneedeb' => 2009,
+						'duree' => '6 mois',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+					array(
+						'id' => 4,
+						'cer93_id' => 2,
+						'metierexerce_id' => 1,
+						'secteuracti_id' => 1,
+						'anneedeb' => 2005,
+						'duree' => '3 ans',
+						'created' => '2012-10-01 15:36:00',
+						'modified' => '2012-10-01 15:36:00',
+					),
+				),
+				'Sujetcer93' => array(
+					array(
+						'id' => 2,
+						'name' => 'Sujet 2',
+						'isautre' => '0',
+						'created' => NULL,
+						'modified' => NULL,
+						'Cer93Sujetcer93' =>
+						array(
+							'id' => 3,
+							'cer93_id' => 2,
+							'sujetcer93_id' => 2,
+							'soussujetcer93_id' => 2,
+							'commentaireautre' => NULL,
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+					array(
+						'id' => 3,
+						'name' => 'Sujet 3',
+						'isautre' => '1',
+						'created' => NULL,
+						'modified' => NULL,
+						'Cer93Sujetcer93' =>
+						array(
+							'id' => 4,
+							'cer93_id' => 2,
+							'sujetcer93_id' => 3,
+							'soussujetcer93_id' => NULL,
+							'commentaireautre' => 'Commentaire autre',
+							'created' => '2012-10-01 15:36:00',
+							'modified' => '2012-10-01 15:36:00',
+						),
+					),
+				),
+			);
+
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 
 		/**
 		 * Test de la méthode Cer93::saveFormulaire().
@@ -224,7 +512,7 @@
 		 * @group medium
 		 * @return void
 		 */
-		/*public function testSaveFormulaire() {
+		public function testSaveFormulaire() {
 			$data = array(
 				'Contratinsertion' => array(
 					'id' => '',
@@ -362,8 +650,8 @@
 
 			$expected = array(
 				'Cer93' => array(
-					'id' => 2,
-					'contratinsertion_id' => 2,
+					'id' => 3,
+					'contratinsertion_id' => 3,
 					'user_id' => 1,
 					'matricule' => '123456700000000',
 					'dtdemrsa' => '2009-06-01',
@@ -403,9 +691,11 @@
 					'pourlecomptede' => 'AAAPDVAUBERVILLIERS',
 					'observpro' => 'Observations',
 					'observbenef' => '',
+					'structureutilisateur' => '« Projet de Ville RSA d\'Aubervilliers»',
+					'nomutilisateur' => 'DUPONT Robert',
 				),
 				'Contratinsertion' => array(
-					'id' => 2,
+					'id' => 3,
 					'personne_id' => 1,
 					'structurereferente_id' => 1,
 					'typocontrat_id' => NULL,
@@ -476,25 +766,26 @@
 				'Compofoyercer93' => array(
 					array(
 						'id' => 3,
-						'cer93_id' => 2,
+						'cer93_id' => 3,
 						'qual' => 'MR',
 						'nom' => 'BUFFIN',
 						'prenom' => 'CHRISTIAN',
 						'dtnai' => '1979-01-24',
+						'rolepers' => 'DEM'
 					),
 				),
 				'Diplomecer93' => array(
 					array(
-						'id' => 1,
-						'cer93_id' => 2,
+						'id' => 5,
+						'cer93_id' => 3,
 						'name' => 'Diplôme d\'informatique',
 						'annee' => 2000,
 					),
 				),
 				'Expprocer93' => array(
 					array(
-						'id' => 1,
-						'cer93_id' => 2,
+						'id' => 5,
+						'cer93_id' => 3,
 						'metierexerce_id' => 1,
 						'secteuracti_id' => 1,
 						'anneedeb' => 2010,
@@ -506,8 +797,8 @@
 						'id' => 1,
 						'name' => 'Sujet 1',
 						'Cer93Sujetcer93' => array(
-							'id' => 1,
-							'cer93_id' => 2,
+							'id' => 5,
+							'cer93_id' => 3,
 							'sujetcer93_id' => 1,
 							'soussujetcer93_id' => 1,
 							'commentaireautre' => null,
@@ -518,8 +809,8 @@
 						'id' => 2,
 						'name' => 'Sujet 2',
 						'Cer93Sujetcer93' => array(
-							'id' => 2,
-							'cer93_id' => 2,
+							'id' => 6,
+							'cer93_id' => 3,
 							'sujetcer93_id' => 2,
 							'soussujetcer93_id' => NULL,
 							'commentaireautre' => null,
@@ -537,6 +828,6 @@
 			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-		}*/
+		}
 	}
 ?>
