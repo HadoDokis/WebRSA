@@ -50,6 +50,33 @@ if( Configure::read( 'debug' ) > 0 ) {
 				echo $this->Xform->end();
 			?>
 		</div>
+		<div id="historique">
+			<h2 class="title">Décisions précédentes</h2>
+				<?php 
+					echo '<table class="mediumSize aere">
+					<thead>
+						<tr>
+							<th>Etape</th>
+							<th>Forme du CER</th>
+							<th>Date de décision</th>
+							<th>Commentaire</th>
+					</thead>
+				<tbody>';
+				foreach( $contratinsertion['Cer93']['Histochoixcer93'] as $index => $histochoixcer93 ) {
+					echo $this->Xhtml->tableCells(
+						array(
+							h( Set::enum( $histochoixcer93['etape'], $options['Histochoixcer93']['etape'] ) ),
+							h( Set::enum( $histochoixcer93['formeci'], $options['Cer93']['formeci'] ) ),
+							h( date_short( $histochoixcer93['datechoix'] ) ),
+							h( $histochoixcer93['commentaire'] ),
+						),
+						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+					);
+				}
+				echo '</tbody></table>';
+			?>
+		</div>
 		<div id="cerview">
 			<h2 class="title">Visualisation du CER</h2>
 			<?php
