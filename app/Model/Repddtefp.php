@@ -122,27 +122,27 @@
 
 			/// Année de demande APRE
 			if( !empty( $annee ) ) {
-				$conditionsApresEtatsliquidatifs[] = 'EXTRACT(YEAR FROM etatsliquidatifs.datecloture ) = '.$annee;
+				$conditionsApresEtatsliquidatifs[] = 'EXTRACT(YEAR FROM "etatsliquidatifs"."datecloture" ) = '.$annee;
 			}
 
 			/// Mois de demande APRE
 			if( !empty( $mois ) ) {
-				$conditionsApresEtatsliquidatifs[] = 'EXTRACT(MONTH FROM etatsliquidatifs.datecloture ) = '.$mois;
+				$conditionsApresEtatsliquidatifs[] = 'EXTRACT(MONTH FROM "etatsliquidatifs"."datecloture" ) = '.$mois;
 			}
 
 			/// Quinzaine du mois de demande APRE
 			if( !empty( $quinzaine ) ) {
 				if( $quinzaine == 1 ) {
-					$conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM etatsliquidatifs.datecloture ) < 15';
+					$conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM "etatsliquidatifs"."datecloture" ) < 15';
 				}
 				else if( $quinzaine == 2 ) {
-					$conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM etatsliquidatifs.datecloture ) >= 15';
+					$conditionsApresEtatsliquidatifs[] = 'EXTRACT( DAY FROM "etatsliquidatifs"."datecloture" ) >= 15';
 				}
 			}
 
 			/// Statut de l'APRE
 			if( !empty( $statutapre ) ) {
-				$conditionsApresEtatsliquidatifs[] = 'etatsliquidatifs.typeapre = \''.( $statutapre == 'C' ? 'complementaire' : 'forfaitaire' ).'\'';
+				$conditionsApresEtatsliquidatifs[] = '"etatsliquidatifs"."typeapre" = \''.( $statutapre == 'C' ? 'complementaire' : 'forfaitaire' ).'\'';
 			}
 
 			return $conditionsApresEtatsliquidatifs;
