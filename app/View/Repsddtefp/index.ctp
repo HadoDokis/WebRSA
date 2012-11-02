@@ -122,8 +122,8 @@
 
 
 		$thead = $this->Xhtml->tag( 'thead', $headers1.$headers2 );
-		$tbody = $this->Xhtml->tag( 'tbody', '<tr><th colspan="19">Sexe</th></tr>'.implode( '', lines( $listeSexe, $this->request->data, $locale ) ) );
-		$tbody .= $this->Xhtml->tag( 'tbody', '<tr><th colspan="19">Âge</th></tr>'.implode( '', lines( $listeAge, $this->request->data, $locale ) ) );
+		$tbody = $this->Xhtml->tag( 'tbody', '<tr><th colspan="19">Sexe</th></tr>'.implode( '', lines( $listeSexe, $this->request->data, $this->Locale ) ) );
+		$tbody .= $this->Xhtml->tag( 'tbody', '<tr><th colspan="19">Âge</th></tr>'.implode( '', lines( $listeAge, $this->request->data, $this->Locale ) ) );
 		echo $this->Xhtml->tag( 'table', $thead.$tbody, array( 'id' => 'repddtefp' ) );
 	}
 ?>
