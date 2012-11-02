@@ -101,7 +101,7 @@
 
 				if( $destinataireAllocataire ) {
 					/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
-					$libelledomiciliation = Set::filter( Set::classicExtract( $element, 'Domiciliationbancaire.libelledomiciliation' ) );
+					$libelledomiciliation = Set::classicExtract( $element, 'Domiciliationbancaire.libelledomiciliation' );
 					if( empty( $libelledomiciliation ) || !paiementfoyerComplet( Set::extract( $element, 'Paiementfoyer' ) ) ) {
 						$trClass = 'error';
 					}
