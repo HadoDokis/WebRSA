@@ -63,16 +63,24 @@
 
 			$this->Dossier->begin();
 			if( !empty( $this->request->data ) ) {
+// 			debug($this->request->data);
 				if( !empty( $this->request->data['ApreComiteapre'] ) ) {
 					$data = Set::extract( $this->request->data, '/ApreComiteapre' );
 					if( $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$saved = $this->ApreComiteapre->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
 						if( $saved && empty( $this->Apre->ApreComiteapre->validationErrors ) ) {
 							$this->ApreComiteapre->commit();
-							$this->redirect( array( 'action' => 'demande' ) ); // FIXME
+							$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
+							$urlData = $this->request->data;
+							unset(
+								$urlData['Recoursapre'],
+								$urlData['Apre'],
+								$urlData['ApreComiteapre']
+							);
 						}
 						else {
 							$this->ApreComiteapre->rollback();
+							$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 						}
 					}
 				}
