@@ -36,6 +36,16 @@
 	<?php echo $this->Form->input( 'Structurereferente.numtel', array( 'label' => __( 'numtel' ), 'type' => 'text', 'maxlength' => 19 ) );?>
 </fieldset>
 <div><?php echo $this->Form->input( 'Structurereferente.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
+
+
+<script type="text/javascript">
+	function toutCocherZonesgeographiques() {
+		return toutCocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+	function toutDecocherZonesgeographiques() {
+		return toutDecocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+</script>
 <fieldset class="col2" id="filtres_zone_geo">
 	<legend>Zones géographiques</legend>
 	<script type="text/javascript">
@@ -43,10 +53,12 @@
 			observeDisableFieldsetOnCheckbox( 'StructurereferenteFiltreZoneGeo', 'filtres_zone_geo', false );
 		} );
 	</script>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-	<?php echo $this->Xform->input( 'Zonegeographique.Zonegeographique', array( 'fieldset' => false, 'required' => true, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();return false;" ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();return false;" ) );?>
+
+	<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>
+
 <fieldset class="col2">
 	<legend><?php echo required( 'Types d\'orientations' ); ?></legend>
 	<?php echo $this->Xform->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
