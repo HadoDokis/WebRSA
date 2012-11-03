@@ -26,9 +26,17 @@
 	);
 ?>
 <div>
+<script type="text/javascript">
+	function toutCocherPieceaide66() {
+		return toutCocher( 'input[name="data[Pieceaide66][Pieceaide66][]"]' );
+	}
+	function toutDecocherPieceaide66() {
+		return toutDecocher( 'input[name="data[Pieceaide66][Pieceaide66][]"]' );
+	}
+</script>
 <?php
-	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Pieceaide66][Pieceaide66][]\"]' )" ) );
-	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Pieceaide66][Pieceaide66][]\"]' )" ) );
+	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherPieceaide66();return false;" ) );
+	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherPieceaide66();return false;" ) );
 ?>
 </div>
 <?php
@@ -43,9 +51,17 @@
 	);
 ?>
 <div>
+<script type="text/javascript">
+	function toutCocherPiececomptable66() {
+		return toutCocher( 'input[name="data[Piececomptable66][Piececomptable66][]"]' );
+	}
+	function toutDecocherPiececomptable66() {
+		return toutDecocher( 'input[name="data[Piececomptable66][Piececomptable66][]"]' );
+	}
+</script>
 <?php
-	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Piececomptable66][Piececomptable66][]\"]' )" ) );
-	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Piececomptable66][Piececomptable66][]\"]' )" ) );
+	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherPiececomptable66();return false;" ) );
+	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherPiececomptable66();return false;" ) );
 ?>
 </div>
 
