@@ -105,7 +105,7 @@
 					$success = false;
 					$this->Ep->invalidate( 'Membreep.Membreep', 'Il est obligatoire de saisir au moins un membre pour participer à une commission d\'EP.' );
 				}
-
+// debug( $this->request->data );
 				if ( $success ) {
 					$this->Ep->create( $this->request->data );
 					$success = $this->Ep->save() && $success;
