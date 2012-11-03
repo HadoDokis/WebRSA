@@ -134,6 +134,8 @@
 		*/
 
 		public function beforeValidate( $options = array() ) {
+			$return = parent::beforeValidate( $options );
+			
 			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
 			$identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
 
@@ -141,7 +143,7 @@
 				$this->data[$this->alias]['identifiant'] = $this->identifiant();
 			}
 
-			return true;
+			return $return;
 		}
 
 		/**

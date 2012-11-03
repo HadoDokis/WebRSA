@@ -58,13 +58,13 @@
 		)
 	);
 
-	echo $this->Form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');"));
+	echo $this->Form->button('Tout cocher', array('onclick' => "GereChkbox('listeZonesgeographiques','cocher');return false;"));
 
-	echo $this->Form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');"));
+	echo $this->Form->button('Tout décocher', array('onclick' => "GereChkbox('listeZonesgeographiques','decocher');return false;"));
 
 	$i = 0;
 	if ( isset( $this->validationErrors['Ep']['Membreep.Membreep'] ) && !empty( $this->validationErrors['Ep']['Membreep.Membreep'] ) ) {
-		echo "<p class='error'>".$this->validationErrors['Ep']['Membreep.Membreep']."</p>";
+		echo "<p class='error'>".$this->validationErrors['Ep']['Membreep.Membreep'][0]."</p>";
 	}
 	foreach( $fonctionsParticipants as $fonction ) {
 		$i++;
