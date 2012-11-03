@@ -196,6 +196,14 @@
 				);
 			?>
 		</fieldset>
+		<script type="text/javascript">
+			function toutCocherZonesgeographiques() {
+				return toutCocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+			}
+			function toutDecocherZonesgeographiques() {
+				return toutDecocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+			}
+		</script>
 		<fieldset class="col2">
 			<legend>Zones géographiques</legend>
 			<script type="text/javascript">
@@ -203,8 +211,9 @@
 					observeDisableFieldsetOnCheckbox( 'ActioncandidatFiltreZoneGeo', 'filtres_zone_geo', false );
 				} );
 			</script>
-			<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-			<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
+				<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();return false;" ) );?>
+				<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();return false;" ) );?>
+
 
 			<?php
 				echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $options['Zonegeographique'] ) );
