@@ -132,20 +132,23 @@
 			$this->Actioncandidat->recursive = -1;
 
 			$this->paginate = array(
-                            'contain' => array(
-				'Contactpartenaire' => array(
-                                    'Partenaire'
+				'joins' => array(
+					$this->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Actioncandidat->join( 'Chargeinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Actioncandidat->join( 'Secretaire', array( 'type' => 'LEFT OUTER' ) )
 				),
-				'Chargeinsertion',
-				'Secretaire'
-                            ),
-                            'fields' => array_merge(
-				$this->Actioncandidat->fields(),
-				array(
-                                    $this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' )
-                            	)
-                            ),
-                            'limit' => '1000'
+				'fields' => array_merge(
+					$this->Actioncandidat->fields(),
+					$this->Actioncandidat->Contactpartenaire->fields(),
+					$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+					$this->Actioncandidat->Chargeinsertion->fields(),
+					$this->Actioncandidat->Secretaire->fields(),
+					array(
+						$this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' )
+					)
+				),
+				'limit' => '1000'
 			);
 
 			$this->set(

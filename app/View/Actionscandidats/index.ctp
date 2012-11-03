@@ -24,7 +24,6 @@
 		?>
 	</ul>
 	<?php if( !empty( $actionscandidats ) ):?>
-	<?php echo $pagination;?>
 		<table class="tooltips">
 			<thead>
 				<tr>
@@ -39,7 +38,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nombre de postes disponibles', 'Actioncandidat.nbpostedispo' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nombre d\'heures disponibles', 'Actioncandidat.nbheuredispo' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Présence fiche de candidature', 'Actioncandidat.hasfichecandidature' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Libellé du partenaire', 'Contactpartenaire.Partenaire.libstruc' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Libellé du partenaire', 'Partenaire.libstruc' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom du contact', 'Contactpartenaire.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Active', 'Actioncandidat.actif' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Modèle de notification', 'Actioncandidat.modele_document' );?></th>
@@ -64,7 +63,7 @@
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.nbpostedispo' ) ),
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.nbheuredispo' ) ),
 								h( Set::enum( Set::classicExtract( $actioncandidat, 'Actioncandidat.hasfichecandidature' ), $options['Actioncandidat']['hasfichecandidature'] ) ),
-								h( Set::classicExtract( $actioncandidat, 'Contactpartenaire.Partenaire.libstruc' ) ),
+								h( Set::classicExtract( $actioncandidat, 'Partenaire.libstruc' ) ),
 								h( Set::classicExtract( $actioncandidat, 'Contactpartenaire.nom' ).' '.Set::classicExtract( $actioncandidat, 'Contactpartenaire.prenom' ) ),
 								h( Set::enum( Set::classicExtract( $actioncandidat, 'Actioncandidat.actif' ), $options['Actioncandidat']['actif'] ) ),
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.modele_document' ) ),
@@ -91,7 +90,6 @@
 				?>
 			</tbody>
 		</table>
-		<?php echo $pagination;?>
 	<?php  endif;?>
 
 

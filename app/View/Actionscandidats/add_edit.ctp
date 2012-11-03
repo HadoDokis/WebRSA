@@ -231,19 +231,31 @@
 		?>
 	</fieldset>
    <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+		<script type="text/javascript">
+			function toutCocherMotifs() {
+				return toutCocher( 'input[name="data[Motifsortie][Motifsortie][]"]' );
+			}
+			function toutDecocherMotifs() {
+				return toutDecocher( 'input[name="data[Motifsortie][Motifsortie][]"]' );
+			}
+		</script>
 		<fieldset class="invisible">
 		<?php 
-			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
-			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
-			echo $this->Default2->subform(
-				array(
-					'Motifsortie.Motifsortie' => array( 'label' => 'Liste des motifs de sortie liés à l\'action', 'multiple' => 'checkbox', 'empty' => false )
-				),
-				array(
-					'options' => $motifssortie
-				)
-			);
+// 			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
+// 			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
 		?>
+			<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherMotifs();return false;" ) );?>
+			<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherMotifs();return false;" ) );?>
+			<?php
+				echo $this->Default2->subform(
+					array(
+						'Motifsortie.Motifsortie' => array( 'label' => 'Liste des motifs de sortie liés à l\'action', 'multiple' => 'checkbox', 'empty' => false )
+					),
+					array(
+						'options' => $motifssortie
+					)
+				);
+			?>
 		</fieldset>
 	<?php endif;?>
 <?php
