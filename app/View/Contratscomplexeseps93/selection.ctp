@@ -27,6 +27,6 @@
 	);
 ?>
 <?php if( !empty( $contratsinsertion) ):?>
-    <?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
-    <?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
+    <?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'toutCocher();return false;' ) );?>
+    <?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher();return false;' ) );?>
 <?php endif;?>
