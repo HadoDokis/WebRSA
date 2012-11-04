@@ -19,14 +19,7 @@
 		)
 	);
 ?>
-<?php /*if( Configure::read( 'Cg.departement' ) == 66 ):?>
-	<fieldset class="col2" id="filtres_zone_geo">
-		<legend>Modèles de courrier</legend>
-		<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Modeletypecourrierpcg66][Modeletypecourrierpcg66][]\"]' )" ) );?>
-		<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Modeletypecourrierpcg66][Modeletypecourrierpcg66][]\"]' )" ) );?>
-		<?php echo $this->Xform->input( 'Modeletypecourrierpcg66.Modeletypecourrierpcg66', array( 'fieldset' => false, 'required' => true, 'multiple' => 'checkbox' , 'options' => $modelelist ) );?>
-	</fieldset>
-<?php endif;*/?>
+
 <?php
 	echo $this->Xform->end( 'Save' );
 
