@@ -4,7 +4,7 @@
 	if( in_array( 'dossierseps::choose', $etatsActions[$commissionep['Commissionep']['etatcommissionep']] ) ) {
 		echo '<ul class="actionMenu"><li>'.$this->Xhtml->affecteLink(
 			'Affecter les dossiers',
-			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
+			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), '#' => $theme )
 		).' </li></ul>';
 	}
 	else {
