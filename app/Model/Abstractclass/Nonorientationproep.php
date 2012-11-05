@@ -91,6 +91,7 @@
 							)
 						)
 						AND typesorients.id <> '.Configure::read( 'Typeorient.emploi_id' ).'
+						LIMIT 1
 				)';
 			}
 			else if( $cg == 66 ){
@@ -162,6 +163,7 @@
 						)
 						AND typesorients.lib_type_orient NOT LIKE \'Emploi%\'
 						AND orientsstructs.date_valid <= \''.date( 'Y-m-d', strtotime( '- '.$nbmois.' month', time() ) ).'\'
+						LIMIT 1
 				)';
 			}
 
@@ -212,6 +214,7 @@
 					WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
 				)
 				AND "dossierseps"."themeep" = \''.$modelTable.'\'
+				AND "'.$modelTable.'"."orientstruct_id" = "Orientstruct"."id"
 			)';
 
 			// On peut repasser pour cette thématique si le passage lié à cette orientation est plus vieux que
