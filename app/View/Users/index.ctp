@@ -112,6 +112,9 @@
 		</tbody>
 	</table>
 	<?php echo $pagination;?>
+<?php endif;?>
+<?php endif;?>
+</div>
 <?php
 	echo $this->Default->button(
 		'back',
@@ -124,6 +127,3 @@
 		)
 	);
 ?>
-<?php endif;?>
-<?php endif;?>
-</div>

@@ -20,7 +20,7 @@
 		/**
 		* @access public
 		*/
-		public $helpers = array( 'Appchecks.Checks', 'Default2' );
+		public $helpers = array( 'Appchecks.Checks', 'Default2', 'Default' );
 
 		/**
 		 * Vérifications concernant Apache:

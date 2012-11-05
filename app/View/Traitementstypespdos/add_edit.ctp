@@ -22,3 +22,15 @@
 		)
 	);
 ?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'traitementstypespdos',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

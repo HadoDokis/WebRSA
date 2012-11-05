@@ -21,3 +21,15 @@
 		)
 	);
 ?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'statutspdos',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

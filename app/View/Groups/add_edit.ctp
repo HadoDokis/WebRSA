@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Groupe';
+// 	$this->pageTitle = 'Groupe';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
@@ -7,7 +7,14 @@
 		echo $this->Html->script( 'prototype.tabs.js' );
 	}
 ?>
-<h1><?php echo $this->pageTitle." ".$this->request->data['Group']['name'];?></h1><br />
+<h1><?php
+	if( $this->action == 'add' ) {
+		$this->pageTitle = 'Ajout d\'un nouveau groupe';
+	}
+	else {
+		$this->pageTitle = 'Modification du groupe '.$this->request->data['Group']['name'];
+	}
+echo $this->pageTitle;?></h1><br />
 <?php echo $this->Form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );?>
 
 <div id="tabbedWrapper" class="tabs">
@@ -48,3 +55,15 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'groups',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

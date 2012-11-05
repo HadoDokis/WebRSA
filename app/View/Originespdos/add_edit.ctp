@@ -38,3 +38,15 @@
 		)
 	);
 ?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'originespdos',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

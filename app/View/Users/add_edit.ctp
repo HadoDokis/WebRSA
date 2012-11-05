@@ -49,3 +49,15 @@
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'users',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>
