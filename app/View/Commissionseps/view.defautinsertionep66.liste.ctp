@@ -5,7 +5,7 @@
 		echo '<ul class="actionMenu">';
 		echo '<li>'.$this->Xhtml->affecteLink(
 			'Affecter les dossiers',
-			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), "#{$theme}" )
+			array( 'controller' => 'dossierseps', 'action' => 'choose', Set::classicExtract( $commissionep, 'Commissionep.id' ), '#' => $theme )
 		).' </li>';
 		echo '<li>'.$this->Xhtml->link(
 			'Impression des confirmations de RDV',

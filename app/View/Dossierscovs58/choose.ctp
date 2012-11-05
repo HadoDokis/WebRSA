@@ -34,8 +34,8 @@
 					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58',  'ENUM::THEMECOV::'.Inflector::tableize( $theme ) )."</h3>";
 					require_once( "choose.{$class}.liste.ctp" );
 					if( !empty( $dossiers[$theme]) ) {
-						echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
-						echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#{$theme} input[type=\"checkbox\"]' )" ) );
+						echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( '#{$theme} input[type=checkbox]' );return false;" ) );
+						echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( '#{$theme} input[type=checkbox]' );return false;" ) );
 					}
 					echo "</div>";
 				}

@@ -1135,6 +1135,8 @@ function toutCocher( selecteur, simulate ) {
 			$( checkbox ).simulate( 'click' );
 		}
 	} );
+
+	return false;
 }
 
 /**
@@ -1156,6 +1158,8 @@ function toutDecocher( selecteur, simulate ) {
 			$( checkbox ).simulate( 'click' );
 		}
 	} );
+
+	return false;
 }
 
 /**
