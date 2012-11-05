@@ -625,7 +625,11 @@
 					'Contratinsertion.personne_id' => $personne_id,
 					"Contratinsertion.id IN ( {$sqDernierCerValide} )"
 				);
+				
 				$dataDernierCerValide = $this->Contratinsertion->find( 'first', $querydataDernierCerValide );
+
+				//Champ pour le bloc 5 reprenant ce qui était prévu dans le pcd CER
+				$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
 
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
@@ -651,6 +655,24 @@
 								}
 							}
 						}
+					}
+					
+					if( !empty( $data['Sujetcer93'] ) ) {
+						$sousSujetsIds = Set::filter( Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+						if( !empty( $sousSujetsIds ) ) {
+							$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
+							foreach( $data['Sujetcer93'] as $key => $values ) {
+								if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
+									$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => $sousSujets[$values['Cer93Sujetcer93']['soussujetcer93_id']] );
+								}
+								else {
+									$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => null );
+								}
+							}
+						}
+						
+						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'] ) );
+						$data['Sujetcer93'] = array();
 					}
 				}
 				else {

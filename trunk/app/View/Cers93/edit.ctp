@@ -217,6 +217,8 @@
 			'Cer93.locaadr' => array( 'type' => 'hidden' ),
 			'Cer93.sitfam' => array( 'type' => 'hidden' ),
 			'Cer93.natlog' => array( 'type' => 'hidden' ),
+			'Cer93.prevupcd' => array( 'type' => 'hidden' ),
+			'Cer93.sujetpcd' => array( 'type' => 'hidden' ),
 			'Cer93.incoherencesetatcivil' => array( 'domain' => 'cer93', 'type' => 'textarea' )
 		)
 	);
@@ -362,12 +364,53 @@
 	</script>
 	<!-- Fin bloc 4 -->
 </fieldset>
+<!--  Bloc 5 -->
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
+
+	<h4>Le précédent contrat portait sur </h4>
+		<?php if( !empty( $this->request->data['Cer93']['sujetpcd'] ) ):?>
+		<table class="aere">
+			<thead>
+				<tr>
+					<th>Sujet du CER</th>
+					<th>Sous sujet</th>
+					<th>Si autre, commentaire</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					// Le précédent CER portait sur (liste des cases à cocher)
+					$sujetscers93 = unserialize( $this->request->data['Cer93']['sujetpcd'] );
+					foreach( $sujetscers93['Sujetcer93']  as $index => $sujetcer93 ) {
+						echo $this->Html->tableCells(
+							array(
+								h( $sujetcer93['name'] ),
+								h( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'] ),
+								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] )
+							),
+							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+						);
+					}
+				?>
+			</tbody>
+		</table>
+	<?php else:?>
+		<p class="notice">Aucune information renseignée</p>
+	<?php endif;?>
+		
 	<?php
+		//Il a été prévu (champ prevu du bloc 6)
+		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $this->request->data, 'Cer93.prevupcd' ) );
+		
 		//Bloc 5 : Bilan du précédent contrat
 		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
+	?>
+</fieldset>
+<!--  Fin bloc 5 -->
 
-
+<fieldset><legend>Projet pour ce nouveau contrat</legend>
+		<?php
 		// Bloc 6 : Projet pour ce nouveau contrat
 		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea', 'required' => true ) );
 
@@ -539,4 +582,3 @@
 		}
 	//--><!]]>
 </script>
-<?php debug( $this->request->data );?>
