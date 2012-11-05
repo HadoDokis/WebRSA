@@ -39,3 +39,15 @@
 		)
 	);
 ?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'typespdos',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

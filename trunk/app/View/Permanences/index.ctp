@@ -37,7 +37,7 @@
 					<?php echo $this->Xhtml->tableCells(
 						array(
 							h( Set::classicExtract( $permanence, 'Permanence.libpermanence' ) ),
-							h( Set::classicExtract( $sr, Set::classicExtract( $permanence, 'Permanence.structurereferente_id' ) ) ),
+							h( Set::enum( Set::classicExtract( $permanence, 'Permanence.structurereferente_id' ), $sr ) ),
 							h( Set::classicExtract( $permanence, 'Permanence.numtel' ) ),
 							h( Set::classicExtract( $permanence, 'Permanence.numvoie' ) ),
 							h( Set::classicExtract( $typevoie, Set::classicExtract( $permanence, 'Permanence.typevoie' ) ) ),

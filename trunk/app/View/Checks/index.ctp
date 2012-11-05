@@ -144,3 +144,15 @@
 	makeTabbed( 'tabbedWrapperWebrsa', 4 );
 	makeErrorTabs();
 </script>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

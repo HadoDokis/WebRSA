@@ -31,10 +31,10 @@ msgid "Traitementstypespdos::add"
 msgstr "Ajout d'un type de traitement"
 
 msgid "Traitementstypespdos::edit"
-msgstr "Modification d'une traitement"
+msgstr "Modification d'un type de traitement"
 
 msgid "Traitementstypespdos::delete"
-msgstr "Suppression d'une traitement"
+msgstr "Suppression d'un traitement"
 
 msgid "Traitementstypespdos::delete::confirm"
 msgstr "Confirmer la suppression ?"

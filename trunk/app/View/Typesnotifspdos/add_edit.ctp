@@ -28,3 +28,15 @@
 <?php echo $this->Form->end();?>
 
 <div class="clearer"><hr /></div>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'typesnotifspdos',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

@@ -22,3 +22,15 @@
 
 	<?php echo $this->Form->submit( 'Enregistrer' );?>
 <?php echo $this->Form->end();?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'actions',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

@@ -14,7 +14,7 @@
 			parent::beforeFilter();
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$options = $this->Tiersprestataireapre->allEnumLists();
+			$options = $this->Tiersprestataireapre->enums();
 			$this->set( 'options', $options );
 			$this->set( 'aidesApres', $this->Apre->aidesApre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
