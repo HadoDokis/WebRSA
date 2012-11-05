@@ -595,9 +595,11 @@
 			$data['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
 
 			// Bloc 3
-			$data['Cer93']['inscritpe'] = null;
-			if( isset( $dataCaf['Historiqueetatpe']['etat'] ) && !empty( $dataCaf['Historiqueetatpe']['etat'] ) ) {
-				$data['Cer93']['inscritpe'] = ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' );
+			if( !isset( $data['Cer93']['inscritpe'] ) || is_null( $data['Cer93']['inscritpe'] ) ) {
+				$data['Cer93']['inscritpe'] = null;
+				if( isset( $dataCaf['Historiqueetatpe']['etat'] ) && !empty( $dataCaf['Historiqueetatpe']['etat'] ) ) {
+					$data['Cer93']['inscritpe'] = ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' );
+				}
 			}
 
 			// Copie des données du dernier CER validé en cas d'ajout
