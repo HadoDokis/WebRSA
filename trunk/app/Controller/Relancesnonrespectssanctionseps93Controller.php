@@ -25,7 +25,8 @@
 				)
 			),
 			'Gedooo.Gedooo',
-			'Cohortes' => array( 'cohorte' )
+			'Cohortes' => array( 'cohorte' ),
+			'Jetons2'
 		);
 
 		public $helpers = array( 'Default2', 'Csv' );
@@ -457,6 +458,23 @@
 
 				$this->set( compact( 'origine', 'numrelance' ) );
 
+				// Le dossier auquel appartient la personne
+				$dossier_id = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Contratinsertion->Personne->dossierId( $personne_id );
+
+				// On s'assure que l'id passé en paramètre et le dossier lié existent bien
+				if( empty( $personne_id ) || empty( $dossier_id ) ) {
+					throw new NotFoundException();
+				}
+
+				// Tentative d'acquisition du jeton sur le dossier
+				$this->Jetons2->get( $dossier_id );
+				
+				// Retour à l'index en cas d'annulation
+				if( isset( $this->request->data['Cancel'] ) ) {
+					$this->Jetons2->release( $dossier_id );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				
 				if( !empty( $this->request->data ) ) {
 					if( empty( $this->request->data['Nonrespectsanctionep93']['id'] ) ) {
 						unset( $this->request->data['Nonrespectsanctionep93']['id'] );
@@ -510,10 +528,13 @@
 					$this->_setFlashResult( 'Save', $success );
 					if( $success ) {
 						$this->Relancenonrespectsanctionep93->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->Relancenonrespectsanctionep93->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 					}
 				}
 			}
