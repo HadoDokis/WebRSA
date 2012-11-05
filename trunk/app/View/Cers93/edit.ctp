@@ -121,7 +121,7 @@
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtnai' ) );?>
                 <br />
                 <strong>Adresse : </strong>
-				<br /><?php echo nl2br( Set::classicExtract( $this->request->data, 'Cer93.adresse' ) ).'<br \>'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.locaadr' );?>
+				<br /><?php echo nl2br( Set::classicExtract( $this->request->data, 'Cer93.adresse' ) ).'<br />'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.locaadr' );?>
             </td>
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong>
