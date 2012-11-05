@@ -218,3 +218,6 @@ msgstr "Simple"
 
 msgid "ENUM::FORMECI::C"
 msgstr "Complexe"
+
+msgid "Cer93.prevupcd"
+msgstr "Il a été prévu"
