@@ -638,15 +638,17 @@
 					// Copie des enregistrements liés
 					$cer93ModelsToCopy = array( 'Diplomecer93', 'Expprocer93', 'Sujetcer93' );
 					foreach( $cer93ModelsToCopy as $modelName ) {
-						$data[$modelName] = $dataDernierCerValide['Cer93'][$modelName];
-						if( !empty( $data[$modelName] ) ) {
-							foreach( array_keys( $data[$modelName] ) as $key ) {
-								unset(
-									$data[$modelName][$key]['id'],
-									$data[$modelName][$key]['cer93_id'],
-									$data[$modelName][$key]['Cer93Sujetcer93']['id'],
-									$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id']
-								);
+						if( isset( $dataDernierCerValide['Cer93'][$modelName] ) ) {
+							$data[$modelName] = $dataDernierCerValide['Cer93'][$modelName];
+							if( !empty( $data[$modelName] ) ) {
+								foreach( array_keys( $data[$modelName] ) as $key ) {
+									unset(
+										$data[$modelName][$key]['id'],
+										$data[$modelName][$key]['cer93_id'],
+										$data[$modelName][$key]['Cer93Sujetcer93']['id'],
+										$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id']
+									);
+								}
 							}
 						}
 					}
@@ -1102,7 +1104,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			// Liste des sujets sur lequel porte ce CER
 			$sujetscers93 = $this->Cer93Sujetcer93->find(
 				'all',
@@ -1114,7 +1116,7 @@
 					)
 				)
 			);
-			
+
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,

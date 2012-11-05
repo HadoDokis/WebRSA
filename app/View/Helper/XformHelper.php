@@ -49,6 +49,9 @@
 		 * @return string
 		 */
 		protected function _input( $fieldName, $options = array() ) {
+			/*$options = Set::merge( $this->inputDefaults, $options );
+			$options['label'] = $this->label( $fieldName, null, $options );*/
+
 			if( !isset( $options['label'] ) ) {
 				$options['label'] = $this->label( $fieldName, null, $options );
 			}
