@@ -172,7 +172,7 @@
 			}
 		?>
 		<?php
-			if( Configure::read( 'Cg.departement' ) != 58 ){
+			if( Configure::read( 'Cg.departement' ) == 93 ){
 				echo $this->Form->button( 'Tout cocher EP', array( 'onclick' => "return toutCocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
 				echo $this->Form->button( 'Tout décocher EP', array( 'onclick' => "return toutDecocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
 			}
