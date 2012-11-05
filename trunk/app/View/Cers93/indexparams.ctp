@@ -69,6 +69,18 @@
 				array( 'class' => 'odd' ),
 				array( 'class' => 'even' )
 			);
+			echo $this->Xhtml->tableCells(
+				array(
+					h( 'Valeurs par sous-sujets du CER' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'valeursparsoussujetscers93', 'action' => 'index' )
+// 						$this->Permissions->check( 'valeursparsoussujetscers93', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
 		?>
 	</tbody>
 </table>

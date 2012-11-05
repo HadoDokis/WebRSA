@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source du modèle Soussujetcer93.
+	 * Fichier source du modèle Valeurparsoussujetcer93.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,25 +9,25 @@
 	 */
 
 	/**
-	 * Classe Soussujetcer93.
+	 * Classe Valeurparsoussujetcer93.
 	 *
 	 * @package app.Model
 	 */
-	class Soussujetcer93 extends AppModel
+	class Valeurparsoussujetcer93 extends AppModel
 	{
 		/**
 		 * Nom.
 		 *
 		 * @var string
 		 */
-		public $name = 'Soussujetcer93';
+		public $name = 'Valeurparsoussujetcer93';
 
 		/**
 		 * Tri par défaut
 		 *
 		 * @var array
 		 */
-		public $order = array( 'Soussujetcer93.name ASC' );
+		public $order = array( 'Valeurparsoussujetcer93.name ASC' );
 
 
 		/**
@@ -53,9 +53,9 @@
 		 * @var array
 		 */
 		public $belongsTo = array(
-			'Sujetcer93' => array(
-				'className' => 'Sujetcer93',
-				'foreignKey' => 'sujetcer93_id',
+			'Soussujetcer93' => array(
+				'className' => 'Soussujetcer93',
+				'foreignKey' => 'soussujetcer93_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -70,20 +70,7 @@
 		public $hasMany = array(
 			'Cer93Sujetcer93' => array(
 				'className' => 'Cer93Sujetcer93',
-				'foreignKey' => 'soussujetcer93_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-			'Valeurparsoussujetcer93' => array(
-				'className' => 'Valeurparsoussujetcer93',
-				'foreignKey' => 'soussujetcer93_id',
+				'foreignKey' => 'valeurparsoussujetcer93_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',
@@ -95,6 +82,5 @@
 				'counterQuery' => ''
 			)
 		);
-
 	}
 ?>

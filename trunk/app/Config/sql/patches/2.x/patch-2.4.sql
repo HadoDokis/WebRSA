@@ -319,15 +319,30 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_isrejet_in_list_c
 
 -------------------------------------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS valeursparsoussujetscers93 CASCADE;
+CREATE TABLE valeursparsoussujetscers93 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	name				VARCHAR(250) NOT NULL,
+	soussujetcer93_id		INTEGER NOT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE valeursparsoussujetscers93 IS 'Valeurs en lien avec les sous-types de sujet sur lequel porte le CER CG93 (bloc 6)';
+DROP INDEX IF EXISTS valeursparsoussujetscers93_name_idx;
+CREATE UNIQUE INDEX valeursparsoussujetscers93_name_idx ON valeursparsoussujetscers93( name );
+
+-------------------------------------------------------------------------------------------------------------
+
 DROP TABLE IF EXISTS cers93_sujetscers93 CASCADE;
 CREATE TABLE cers93_sujetscers93 (
-    id                 SERIAL NOT NULL PRIMARY KEY,
-    cer93_id       		INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    sujetcer93_id		INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
- 	soussujetcer93_id	INTEGER DEFAULT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
- 	commentaireautre	VARCHAR(250) DEFAULT NULL,
-    created				TIMESTAMP WITHOUT TIME ZONE,
-	modified			TIMESTAMP WITHOUT TIME ZONE
+    id                 			SERIAL NOT NULL PRIMARY KEY,
+    cer93_id       				INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    sujetcer93_id				INTEGER NOT NULL REFERENCES sujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	soussujetcer93_id			INTEGER DEFAULT NULL REFERENCES soussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	valeurparsoussujetcer93_id	INTEGER DEFAULT NULL REFERENCES valeursparsoussujetscers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	commentaireautre			VARCHAR(250) DEFAULT NULL,
+    created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
 );
 DROP INDEX IF EXISTS cers93_sujetscers93_cer93_id_idx;
 CREATE INDEX cers93_sujetscers93_cer93_id_idx ON cers93_sujetscers93(cer93_id);
@@ -338,6 +353,8 @@ CREATE INDEX cers93_sujetscers93_sujetcer93_id_idx ON cers93_sujetscers93(sujetc
 DROP INDEX IF EXISTS cers93_sujetscers93_soussujetcer93_id_idx;
 CREATE INDEX cers93_sujetscers93_soussujetcer93_id_idx ON cers93_sujetscers93(soussujetcer93_id);
 
+DROP INDEX IF EXISTS cers93_sujetscers93_valeurparsoussujetcer93_id_idx;
+CREATE INDEX cers93_sujetscers93_valeurparsoussujetcer93_id_idx ON cers93_sujetscers93(valeurparsoussujetcer93_id);
 --------------------------------------------------------------------------------
 -- 20121026: la table derniersdossiersallocataires permet de se passer d'une
 -- sous-requête très coûteuse (à condition de lancer le shell

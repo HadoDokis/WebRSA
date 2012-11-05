@@ -505,23 +505,18 @@
 				if( $dataCerActuel['Contratinsertion']['decision_ci'] != 'E' ) {
 					throw new InternalErrorException( "Tentative de modification d'un enregistrement déjà traité \"{$contratinsertion_id}\"" );
 				}
-
-				$fieldsToCopy = array(
-					'Contratinsertion' => array( 'id', 'personne_id', 'rg_ci', 'decision_ci' ),
-				);
-				foreach( $fieldsToCopy as $modelName => $fields ) {
-					foreach( $fields as $field ) {
-						$data[$modelName][$field] = $dataCerActuel[$modelName][$field];
-					}
-				}
-
-				$data['Cer93'] = $dataCerActuel['Cer93'];
+				
+				$data = $dataCerActuel;
 
 				$modelsToCopy = array( 'Diplomecer93', 'Expprocer93', 'Sujetcer93' );
 				foreach( $modelsToCopy as $modelName ) {
 					$data[$modelName] = $dataCerActuel['Cer93'][$modelName];
+					unset( $data['Cer93'][$modelName] );
 				}
-
+				
+				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
+				$data['Sujetcer93'] = array( 'Sujetcer93' => Set::classicExtract( $data, 'Sujetcer93.{n}.Cer93Sujetcer93' ) );
+				
 				// FIXME: il faut en faire quelque chose de $dataCerActuel
 //				$this->log( var_export( $data, true ), LOG_DEBUG );
 			}

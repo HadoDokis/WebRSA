@@ -37,7 +37,11 @@
 		 */
 		public $actsAs = array(
 			'Validation.Autovalidate',
-			'Formattable',
+			'Formattable' => array(
+				'suffix' => array(
+					'valeurparsoussujetcer93_id'
+				)
+			)
 		);
 
 		/**
@@ -85,6 +89,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Valeurparsoussujetcer93' => array(
+				'className' => 'Valeurparsoussujetcer93',
+				'foreignKey' => 'valeurparsoussujetcer93_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
 		);
 	}
 ?>

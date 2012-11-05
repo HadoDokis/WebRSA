@@ -425,18 +425,27 @@
 		}
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		$i = 0;
+		$foos = array();
 
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$array_key = array_search( $idSujet, $selectedSujetcer93 );
 			$checked = ( ( $array_key !== false ) ? 'checked' : '' );
 			$soussujetcer93_id = null;
 			$commentaireautre = null;
+			
+			$valeurparsoussujetcer93_id = null;
+			
 			if( $checked ) {
 				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'] ) ) {
 					$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
 				}
 				else if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'] ) ) {
 					$commentaireautre = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'];
+				}
+				
+				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['valeurparsoussujetcer93_id'] ) ) {
+					$valeurparsoussujetcer93_id = suffix( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['valeurparsoussujetcer93_id'] );
+					$valeurparsoussujetcer93_id = "{$soussujetcer93_id}_{$valeurparsoussujetcer93_id}";
 				}
 			}
 			// TODO: sur la même ligne ?
@@ -447,6 +456,12 @@
 			else {
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.commentaireautre", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'text', 'value' => $commentaireautre ) );
 			}
+			
+			if( !empty( $valeursparsoussujetscers93[$idSujet] ) ) {
+				$correspondChilParent[$this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id" )] = $this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id" );
+				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][valeurparsoussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $valeursparsoussujetscers93[$idSujet], 'empty' => true, 'value' => $valeurparsoussujetcer93_id ) );
+			}
+			
 			$i++;
 		}
 		echo '</fieldset>';
@@ -457,10 +472,17 @@
 	<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ) :?>
 	observeDisableFieldsOnCheckbox(
 		'Sujetcer93Sujetcer93<?php echo $key;?>Sujetcer93Id',
-		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Commentaireautre'],
-		false
+		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Valeurparsoussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Commentaireautre'],
+		false,
+		true
 	);
 	<?php endforeach;?>
+	
+	<?php if( !empty( $correspondChilParent ) ):?>
+		<?php foreach( $correspondChilParent as $childId => $parentId ):?>
+			dependantSelect( '<?php echo $childId;?>', '<?php echo $parentId;?>' );
+		<?php endforeach;?>
+	<?php endif;?>
 //]]>
 </script>
 <?php
@@ -582,3 +604,4 @@
 		}
 	//--><!]]>
 </script>
+<?php debug( $this->request->data );?>
