@@ -25,6 +25,105 @@
 	{
 		/**
 		 *
+		 * @var array
+		 */
+		public $_schemas = array();
+
+		/**
+		 *
+		 * @param string $fieldName
+		 * @param array $options
+		 * @return string
+		 */
+		public function input( $fieldName, $options = array( ) ) {
+			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
+				return $this->multiple( $fieldName, $options );
+			}
+			return $this->_input( $fieldName, $options );
+		}
+
+		/**
+		 *
+		 * @param string $fieldName
+		 * @param array $options
+		 * @return string
+		 */
+		protected function _input( $fieldName, $options = array() ) {
+			if( !isset( $options['label'] ) ) {
+				$options['label'] = $this->label( $fieldName, null, $options );
+			}
+			else if( isset( $options['required'] ) && ( $options['required'] == true ) ) {
+				$options['label'] = $this->required( $options['label'] );
+			}
+
+			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
+				if( !empty( $options['label'] ) && !isset( $options['legend'] ) ) {
+					$options['legend'] = $options['label'];
+				}
+				$options['label'] = false;
+			}
+
+			unset( $options['required'] );
+			unset( $options['domain'] );
+
+			if( isset( $options['type'] ) && in_array( $options['type'], array( 'radio' ) ) && !Set::check( $options, 'legend' )  ) {
+				$options['legend'] = $options['label'];
+			}
+
+			// maxLength
+			if( ( !isset( $options['type'] ) || in_array( $options['type'], array( 'string', 'text' ) ) ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
+				list( $model, $field ) = model_field( $fieldName );
+				if( ClassRegistry::isKeySet( $model ) ) {
+					if( !isset( $this->_schemas[$model] ) ) {
+						$this->_schemas[$model] = ClassRegistry::init( $model )->schema();
+					}
+					$schema = $this->_schemas[$model];
+					$field = Set::classicExtract( $schema, $field );
+					if( !empty( $field ) && ( $field['type'] == 'string' ) && isset( $field['length'] ) ) {
+						$options['maxlength'] = $field['length'];
+					}
+				}
+			}
+
+			return parent::input( $fieldName, $options );
+		}
+
+		/**
+		 *
+		 * @param string $fieldName
+		 * @param array $options
+		 * @return string
+		 */
+		public function multiple( $fieldName, $options = array() ) {
+			$errors = Set::extract( $this->validationErrors, $fieldName );
+			$htmlAttributes = array( 'class' => 'multiple' );
+			if( !empty( $errors ) ) {
+				$htmlAttributes['class'] = $htmlAttributes['class'].' error';
+			}
+
+			// FIXME: legend
+			$label = Set::extract( $options, 'label' );
+			if( empty( $label ) ) {
+				$label =  $this->label( $fieldName, null, $options );
+			}
+
+			unset( $options['label'] );
+
+			if( !isset( $options["fieldset"] ) || $options["fieldset"] != false ) {
+				return $this->Html->tag(
+					'fieldset',
+					$this->Html->tag( 'legend', $label ).
+						$this->_input( $fieldName, $options ),
+					$htmlAttributes
+				);
+			}
+			else {
+				return $this->_input( $fieldName, $options );
+			}
+		}
+
+		/**
+		 *
 		 * @param string $label
 		 * @return string
 		 */
@@ -197,7 +296,7 @@
 
 			$options['rows'] = ( isset( $options['rows'] ) ? $options['rows'] : '3' );
 			$options['class'] = 'input textarea address';
-			$options['label'] = $this->_label( $fieldName, $options );
+			$options['label'] = $this->label( $fieldName, null, $options );
 
 			unset( $options['required'] );
 			unset( $options['domain'] );
