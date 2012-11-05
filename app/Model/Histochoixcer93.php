@@ -123,7 +123,12 @@
 				}
 			}
 
-			if( !( ( ( $intEtapeHistochoixcer93 == ( $intEtape - 1 ) ) && !empty( $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['id'] ) ) ) ) {
+			$etapeCoherente = (
+				( $intEtapeHistochoixcer93 == ( $intEtape - 1 ) ) && !empty( $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['id'] )
+				|| ( ( $intEtapeHistochoixcer93 == 2 && $intEtape == 2 ) && !isset( $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['id'] ) )
+			);
+
+			if( !$etapeCoherente ) {
 				throw new error500Exception( "Incohérence des étapes pour le CER \"{$contratinsertion['Contratinsertion']['id']}\"" );
 			}
 
