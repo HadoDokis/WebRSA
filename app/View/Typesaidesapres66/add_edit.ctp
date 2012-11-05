@@ -35,8 +35,8 @@
 	}
 </script>
 <?php
-	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherPieceaide66();return false;" ) );
-	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherPieceaide66();return false;" ) );
+	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherPieceaide66();" ) );
+	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherPieceaide66();" ) );
 ?>
 </div>
 <?php
@@ -60,8 +60,8 @@
 	}
 </script>
 <?php
-	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherPiececomptable66();return false;" ) );
-	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherPiececomptable66();return false;" ) );
+	echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherPiececomptable66();" ) );
+	echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherPiececomptable66();" ) );
 ?>
 </div>
 

@@ -80,6 +80,6 @@
 ?>
 <?php endif;?>
 <?php if( !empty( $radiespe ) ):?>
-	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );?>
-	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );?>
+	<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );?>
+	<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );?>
 <?php endif;?>

@@ -36,7 +36,7 @@
 			?></li>
 		</ul>
 <?php
-		echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'toutCocher()' ) );
-		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'toutDecocher()' ) );
+		echo $this->Form->button( 'Tout cocher', array( 'onclick' => 'return toutCocher();' ) );
+		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );
 
 endif;?>

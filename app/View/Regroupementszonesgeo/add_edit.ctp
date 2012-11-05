@@ -28,8 +28,8 @@
 			document.observe( "dom:loaded", function() {
 			} );
 		</script>
-		<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-		<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
+		<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocher();" ) );?>
+		<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocher();" ) );?>
 
 		<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 	</fieldset>
