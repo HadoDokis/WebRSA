@@ -19,7 +19,18 @@
 		echo '<div class="input select"><span class="label">Date de relance minimale</span><span class="input">'.date_short( $daterelance_min ).'</span></div>';
 		echo $this->Xform->input( 'Relancenonrespectsanctionep93.daterelance', array( 'domain' => 'relancenonrespectsanctionep93', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1, 'empty' => true ) );
 
-		echo $this->Xform->end( 'Enregistrer' );
+// 		echo $this->Xform->end( 'Enregistrer' );
+// 		echo $this->Xform->button( 'Annuler', array( 'type' => 'submit', 'name' => 'Cancel' ) )
+// 		
+		
+		echo $this->Html->tag(
+			'div',
+			$this->Xform->button( 'Enregistrer', array( 'type' => 'submit' ) )
+			.$this->Xform->button( 'Annuler', array( 'type' => 'submit', 'name' => 'Cancel' ) ),
+			array( 'class' => 'submit noprint' )
+		);
+		
+		echo $this->Xform->end();
 	?>
 
 	<script type="text/javascript">
