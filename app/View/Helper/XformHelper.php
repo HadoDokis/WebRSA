@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $_schemas = array();
+		// public $_schemas = array();
 
 		/**
 		 *
@@ -74,7 +74,7 @@
 			}
 
 			// maxLength
-			if( ( !isset( $options['type'] ) || in_array( $options['type'], array( 'string', 'text' ) ) ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
+			/*if( ( !isset( $options['type'] ) || in_array( $options['type'], array( 'string', 'text' ) ) ) && !isset( $options['maxlength'] ) ) { // FIXME: maxLength
 				list( $model, $field ) = model_field( $fieldName );
 				if( ClassRegistry::isKeySet( $model ) ) {
 					if( !isset( $this->_schemas[$model] ) ) {
@@ -86,7 +86,7 @@
 						$options['maxlength'] = $field['length'];
 					}
 				}
-			}
+			}*/
 
 			return parent::input( $fieldName, $options );
 		}
@@ -157,8 +157,14 @@
 				$text = $this->required( $text );
 			}
 
-			unset( $options['required'] );
-			unset( $options['domain'] );
+			unset(
+				$options['required'],
+				$options['domain'],
+				$options['options'],
+				$options['type'],
+				$options['empty']
+			);
+
 			return parent::label( $fieldName, $text, $options );
 		}
 
