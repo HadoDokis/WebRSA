@@ -501,9 +501,9 @@
 		array(
 			'fieldset' => false,
 			'legend' => false,
-			'Contratinsertion.dd_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
-			'Contratinsertion.df_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
-			'Contratinsertion.date_saisi_ci' => array( 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' )
+			'Contratinsertion.dd_ci' => array( 'domain' => 'contratinsertion', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
+			'Contratinsertion.df_ci' => array( 'domain' => 'contratinsertion','type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
+			'Contratinsertion.date_saisi_ci' => array( 'label' => 'Contrat saisi le', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' )
 		)
 	);
 ?>
