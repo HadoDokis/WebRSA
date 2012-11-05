@@ -161,6 +161,7 @@
 
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 
+
 			$queryData = array(
 				'fields' => array(
 					'Personne.id',
@@ -170,11 +171,11 @@
 					'Personne.dtnai',
 					'Personne.nir',
 					'Dossier.matricule',
-					'Structurereferente.lib_struc',
-					'Typeorient.lib_type_orient',
 					'Serviceinstructeur.lib_service',
 					'Adresse.locaadr',
 					'"Situationdossierrsa"."etatdosrsa"',
+					'Structurereferente.lib_struc',
+					'Typeorient.lib_type_orient'
 				),
 				'contain' => false,
 				'joins' => array(
@@ -223,10 +224,6 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id /*AND ( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $Situationdossierrsa->etatOuvert() ).'\' ) )*/' )
-						/*'conditions' => array(
-							'Situationdossierrsa.dossier_id = Dossier.id',
-							'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' )
-						)*/
 					),
 					array(
 						'table'      => 'calculsdroitsrsa', // FIXME:
@@ -262,9 +259,7 @@
 									WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
 							)'// FIXME
 						)
-					),
-					$this->Dossierep->Personne->Orientstruct->join( 'Structurereferente' ),
-					$this->Dossierep->Personne->Orientstruct->join( 'Typeorient' )
+					)
 				),
 				'conditions' => array(
 					'Personne.id NOT IN (
@@ -294,7 +289,24 @@
 			if ( !empty( $personnesEnSanction ) ) {
 				$queryData['conditions'][] = 'Personne.id NOT IN ( '.$personnesEnSanction.' )';
 			}
-
+			
+			if( $origine == 'radiepe' ) {
+				$queryData['joins'] = array_merge(
+					$queryData['joins'],
+					array(
+						$this->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) )
+					)
+				);
+				$queryData['fields'] = array_merge(
+					$queryData['fields'],
+					array(
+						'Structurereferente.lib_struc',
+						'Typeorient.lib_type_orient'
+					)
+				);
+			}
+			
 			return $queryData;
 		}
 

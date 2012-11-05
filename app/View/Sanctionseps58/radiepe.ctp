@@ -14,7 +14,7 @@
 			'Historiqueetatpe.code' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
-			'Serviceinstructeur.lib_service',
+			'Serviceinstructeur.lib_service' => array( 'type' => 'text' ),
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc'
 		);
