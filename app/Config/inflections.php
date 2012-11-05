@@ -380,6 +380,7 @@
 		'cer93_sujetcer93' => 'cers93_sujetscers93',
 		'soussujetcer93' => 'soussujetscers93',
 		'dernierdossierallocataire' => 'derniersdossiersallocataires',
+		'valeurparsoussujetcer93' => 'valeursparsoussujetscers93',
 	);
 
 	/**

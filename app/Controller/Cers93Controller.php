@@ -366,6 +366,34 @@
 				)
 			);
 			$this->set( 'soussujetscers93', $soussujetscers93 );
+			
+			
+			$tmpValeursparsoussujetscers93 = $this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find(
+				'all',
+				array(
+					'fields' => array(
+						'( "Soussujetcer93"."id" || \'_\'|| "Valeurparsoussujetcer93"."id" ) AS "Valeurparsoussujetcer93__id"',
+						'Valeurparsoussujetcer93.name',
+						'Soussujetcer93.sujetcer93_id',
+					),
+					'joins' => array(
+						$this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->join( 'Soussujetcer93', array( 'type' => 'INNER' ) )
+					),
+					'order' => array( 'Valeurparsoussujetcer93.soussujetcer93_id ASC', 'Valeurparsoussujetcer93.name ASC' )
+				)
+			);
+
+			$valeursparsoussujetscers93 = array();
+			foreach( $tmpValeursparsoussujetscers93 as $tmp ) {
+				if( !isset( $valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']] ) ) {
+					$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']] = array();
+				}
+				
+				$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']][$tmp['Valeurparsoussujetcer93']['id']] = $tmp['Valeurparsoussujetcer93']['name'];
+			}
+
+// 			debug( $valeursparsoussujetscers93 );
+			$this->set( 'valeursparsoussujetscers93', $valeursparsoussujetscers93 );
 
 			// Options
 			$options = array(
