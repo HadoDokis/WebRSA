@@ -23,15 +23,20 @@
 		)
 	);
 	?>
-	<fieldset class="col2">
-		<legend>Zones géographiques</legend>
-		<script type="text/javascript">
-			document.observe( "dom:loaded", function() {
-			} );
-		</script>
-		<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
-		<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Zonegeographique][Zonegeographique][]\"]' )" ) );?>
 
+<script type="text/javascript">
+	function toutCocherZonesgeographiques() {
+		return toutCocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+	function toutDecocherZonesgeographiques() {
+		return toutDecocher( 'input[name="data[Zonegeographique][Zonegeographique][]"]' );
+	}
+</script>
+
+	<fieldset class="col2" id="filtres_zone_geo">
+		<legend>Zones géographiques</legend>
+		<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();return false;" ) );?>
+		<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();return false;" ) );?>
 		<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 	</fieldset>
 	<?php echo $this->Form->submit( 'Enregistrer' );?>
