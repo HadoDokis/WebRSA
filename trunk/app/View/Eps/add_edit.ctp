@@ -69,10 +69,22 @@
 	foreach( $fonctionsParticipants as $fonction ) {
 		$i++;
 		$params = array(
-			'required' => true, 'fieldset' => false, 'domain' => 'ep', 'div' => false, 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false,  'id' => 'listeParticipants', 'options' => Set::combine( $fonction, 'Membreep.{n}.id', 'Membreep.{n}.name' )  );
+			'required' => true,
+			'fieldset' => false,
+			'domain' => 'ep',
+			'div' => false,
+			'label' => false,
+			'type' => 'select',
+			'multiple' => 'checkbox',
+			'empty' => false,
+			'id' => 'listeParticipants',
+			'options' => Set::combine( $fonction, 'Membreep.{n}.id', 'Membreep.{n}.name' )
+		);
+
 		if( $i != 1 ) {
-			$params['hiddeninput'] = false;
+			$params['hiddenField'] = false;
 		}
+
 		echo "<fieldset><legend>{$fonction['Fonctionmembreep']['name']}</legend>";
 		echo $this->Xhtml->tag(
 			'div',
