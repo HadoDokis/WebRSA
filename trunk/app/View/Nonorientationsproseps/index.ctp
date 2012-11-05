@@ -66,7 +66,7 @@
 	<?php if( empty( $cohorte ) ):?>
 		<p class="notice"><?php echo 'Aucun allocataire ne correspond à vos critères de recherche.';?>
 	<?php else: ?>
-		<?php /*echo $this->Form->create( 'Nonorientationproep', array( 'url'=> Router::url( null, true ) ) );*/ 
+		<?php /*echo $this->Form->create( 'Nonorientationproep', array( 'url'=> Router::url( null, true ) ) );*/
 		echo $this->Form->create();?>
 		<?php echo $pagination;?>
 		<table class="tooltips">
@@ -167,14 +167,14 @@
 
 		<?php
 			if( Configure::read( 'Cg.departement' ) == 58 ){
-				echo $this->Form->button( 'Tout cocher COV', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passagecov.enabled\', \'passagecov\', \'passageep\')' ) );
-				echo $this->Form->button( 'Tout décocher COV', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passagecov.enabled\', \'passagecov\', \'passageep\')' ) );
+				echo $this->Form->button( 'Tout cocher COV', array( 'onclick' => "return toutCocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
+				echo $this->Form->button( 'Tout décocher COV', array( 'onclick' => "return toutDecocherCov('input[type=checkbox].passagecov.enabled', 'passagecov', 'passageep');" ) );
 			}
 		?>
 		<?php
 			if( Configure::read( 'Cg.departement' ) != 58 ){
-				echo $this->Form->button( 'Tout cocher EP', array( 'onclick' => 'toutCocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
-				echo $this->Form->button( 'Tout décocher EP', array( 'onclick' => 'toutDecocherCov(\'input[type="checkbox"].passageep.enabled\', \'passageep\', \'passagecov\')' ) );
+				echo $this->Form->button( 'Tout cocher EP', array( 'onclick' => "return toutCocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
+				echo $this->Form->button( 'Tout décocher EP', array( 'onclick' => "return toutDecocherCov('input[type=checkbox].passageep.enabled', 'passageep', 'passagecov');" ) );
 			}
 		?>
 	<?php endif;?>
@@ -182,7 +182,6 @@
 
 <?php endif;?>
 
-<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
 <script type="text/javascript">
 	function togglePassageCovEp( checkbox, cbClass, otherCbClass ) {
 		var otherCbName = $( checkbox ).readAttribute( 'name' ).replace( cbClass, otherCbClass );
@@ -204,6 +203,8 @@
 			$( checkbox ).checked = true;
 			togglePassageCovEp( checkbox, cbClass, otherCbClass );
 		} );
+
+		return false;
 	}
 
 	function toutDecocherCov( selecteur, cbClass, otherCbClass ) {
@@ -215,6 +216,8 @@
 			$( checkbox ).checked = false;
 			togglePassageCovEp( checkbox, cbClass, otherCbClass );
 		} );
+
+		return false;
 	}
 
 	$$( 'input[type="checkbox"].passagecov' ).each( function( checkbox ) {
@@ -229,7 +232,7 @@
 		} );
 	} );
 </script>
-<?php endif;?>
+
 <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

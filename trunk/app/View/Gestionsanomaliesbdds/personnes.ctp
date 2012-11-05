@@ -222,8 +222,8 @@
 			$( radio ).observe( 'change', function( event ) {
 				toutDecocher( '.tableliee input[type="checkbox"]' );
 				toutDecocher( '.tableliee input[type="radio"]' );
-				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type="checkbox"]' );
-				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type="radio"]' );
+				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type=checkbox]' );
+				toutCocher( '.tableliee .personne_id' + radio.value + ' input[type=radio]' );
 			} );
 		} );
 
@@ -235,8 +235,8 @@
 				$( radio ).observe( 'change', function( event ) {
 					toutDecocher( '#' + modelFrom + ' input[type="checkbox"]' );
 					toutDecocher( '#' + modelFrom + ' input[type="radio"]' );
-					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type="checkbox"]' );
-					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type="radio"]' );
+					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=checkbox]' );
+					toutCocher( '#' + modelFrom + ' .' + columnFrom + radio.value + ' input[type=radio]' );
 				} );
 			} );
 		}

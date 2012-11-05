@@ -211,8 +211,8 @@
 					observeDisableFieldsetOnCheckbox( 'ActioncandidatFiltreZoneGeo', 'filtres_zone_geo', false );
 				} );
 			</script>
-				<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherZonesgeographiques();return false;" ) );?>
-				<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherZonesgeographiques();return false;" ) );?>
+				<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherZonesgeographiques();" ) );?>
+				<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherZonesgeographiques();" ) );?>
 
 
 			<?php
@@ -240,12 +240,12 @@
 			}
 		</script>
 		<fieldset class="invisible">
-		<?php 
+		<?php
 // 			echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
 // 			echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocher( 'input[name=\"data[Motifsortie][Motifsortie][]\"]' )" ) );
 		?>
-			<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "toutCocherMotifs();return false;" ) );?>
-			<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "toutDecocherMotifs();return false;" ) );?>
+			<?php echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocherMotifs();" ) );?>
+			<?php echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocherMotifs();" ) );?>
 			<?php
 				echo $this->Default2->subform(
 					array(
