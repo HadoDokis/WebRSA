@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td class="wide noborder">
-				<?php echo $this->Html->tag( 'p', 'Rang du contrat: '.( !empty( $contratinsertion['Contratinsertion']['rg_ci'] ) ? $contratinsertion['Contratinsertion']['rg_ci'] : '1' ) ); ?>
+				<?php echo $this->Html->tag( 'p', 'Rang du contrat: '.$contratinsertion['Contratinsertion']['rg_ci'] ); ?>
 			</td>
         </tr>
     </table>
@@ -229,15 +229,48 @@
 	?>
 	<!-- Fin bloc 4 -->
 </fieldset>
+<!-- Bloc 5 : Bilan du précédent contrat -->
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
+	<h4>Le précédent contrat portait sur </h4>
+		<?php if( !empty( $contratinsertion['Cer93']['sujetpcd'] ) ):?>
+		<table class="aere">
+			<thead>
+				<tr>
+					<th>Sujet du CER</th>
+					<th>Sous sujet</th>
+					<th>Si autre, commentaire</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+					// Le précédent CER portait sur (liste des cases à cocher)
+					$sujetscers93 = unserialize( $contratinsertion['Cer93']['sujetpcd'] );
+					foreach( $sujetscers93['Sujetcer93']  as $index => $sujetcer93 ) {
+						echo $this->Html->tableCells(
+							array(
+								h( $sujetcer93['name'] ),
+								h( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'] ),
+								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] )
+							),
+							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+						);
+					}
+				?>
+			</tbody>
+		</table>
+	<?php else:?>
+		<p class="notice">Aucune information renseignée</p>
+	<?php endif;?>
 	<?php
-		//Bloc 5 : Bilan du précédent contrat
+		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $contratinsertion, 'Cer93.prevupcd' ) );
 		echo $this->Xform->fieldValue( 'Cer93.bilancerpcd', Set::classicExtract( $contratinsertion, 'Cer93.bilancerpcd') );
-
-		// Bloc 6 : Projet pour ce nouveau contrat
-		echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu') );
-
 	?>
+</fieldset>
+<!-- Fin du Bloc 5-->
+<!-- Bloc 6 : Projet pour ce nouveau contrat -->
+<fieldset id="projetbilan"><legend>Projet pour ce nouveau contrat</legend>
+	<?php echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu') );?>
 	<h3>Votre contrat porte sur </h3>
 	<?php if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ):?>
 		<table>
@@ -270,6 +303,8 @@
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
 </fieldset>
+<!-- Fin du Bloc 6 -->
+<!-- Bloc 7-8-9 -->
 <fieldset>
 	<?php
 		//Bloc 7 : Durée proposée
