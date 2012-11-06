@@ -516,7 +516,7 @@
 				
 				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
 				$data['Sujetcer93'] = array( 'Sujetcer93' => Set::classicExtract( $data, 'Sujetcer93.{n}.Cer93Sujetcer93' ) );
-				
+			
 				// FIXME: il faut en faire quelque chose de $dataCerActuel
 //				$this->log( var_export( $data, true ), LOG_DEBUG );
 			}
@@ -627,7 +627,7 @@
 
 				//Champ pour le bloc 5 reprenant ce qui était prévu dans le pcd CER
 				$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
-
+				
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
 					// Copie des champs du CER précédent
@@ -671,8 +671,12 @@
 						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'] ) );
 						$data['Sujetcer93'] = array();
 					}
+					// Cas où on a un dernier CER validé
+					$data['Contratinsertion']['rg_ci'] = ( $dataDernierCerValide['Contratinsertion']['rg_ci'] ) + 1;
 				}
 				else {
+					$data['Contratinsertion']['rg_ci'] = 1;
+
 					// RG CER précédent, puis RG DSP
 					$data['Cer93']['nivetu'] = $dataCaf['Dsp']['nivetu'];
 				}

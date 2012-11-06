@@ -1840,5 +1840,16 @@
 		public function vfRgCiMax( $alias = 'Contratinsertion.personne_id' ) {
 			return "( SELECT MAX(rg_ci) FROM contratsinsertion WHERE contratsinsertion.decision_ci = 'V' AND contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__rg_ci\"";
 		}
+		
+		        
+        /**
+        *	Fonction permettant de récupérer le nombre de CER enregsitré pour un allocataire
+        *
+        *	@param $alias -> par défaut Contratinsertion.personne_id
+        *	@return integer
+        */
+		public function vfCountCer( $alias = 'Contratinsertion.personne_id' ) {
+			return "( SELECT COUNT(*) FROM contratsinsertion WHERE contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__count_ci\"";
+		}
 	}
 ?>
