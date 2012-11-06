@@ -229,7 +229,8 @@
 							),
 							'conditions' => array(
 								'Contratinsertion.id' => $cer93['Cer93']['contratinsertion_id']
-							)
+							),
+							'contain' => false
 						)
 					);
 
@@ -340,7 +341,8 @@
 								),
 								'conditions' => array(
 									'Contratinsertion.id' => $cer93['Cer93']['contratinsertion_id']
-								)
+								),
+								'contain' => false
 							)
 						);
 
