@@ -92,7 +92,9 @@
         </tr>
         <tr>
             <td class="wide noborder">
-				<?php echo $this->Html->tag( 'p', 'Rang du contrat: '.( !empty( $this->request->data['Contratinsertion']['rg_ci'] ) ? $this->request->data['Contratinsertion']['rg_ci'] : '1' ) ); ?>
+				<?php
+					echo $this->Html->tag( 'p', 'Rang du contrat: '.$this->request->data['Contratinsertion']['rg_ci'] );
+				?>
 			</td>
         </tr>
     </table>
@@ -604,4 +606,3 @@
 		}
 	//--><!]]>
 </script>
-<?php debug( $this->request->data );?>

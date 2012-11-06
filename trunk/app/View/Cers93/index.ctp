@@ -73,7 +73,17 @@
 	<?php endif;?>
 
 	<ul class="actionMenu">
-		<li><?php echo $this->Xhtml->addLink( 'Ajouter', array( 'action' => 'add', $personne_id ) );?></li>
+		<li><?php
+				echo $this->Xhtml->addLink(
+					'Ajouter',
+					array(
+						'action' => 'add',
+						$personne_id
+					),
+					$disabledLinks['Cers93::add']
+				);
+			?>
+		</li>
 	</ul>
 
 	<?php if( !empty( $erreursCandidatePassage ) ):?>
@@ -101,6 +111,7 @@
 				'Contratinsertion.df_ci',
 				'Contratinsertion.rg_ci',
 				'Contratinsertion.decision_ci',
+				'Contratinsertion.datedecision',
 				'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb fichiers liés', 'type' => 'text' )
 			),
 			array(
