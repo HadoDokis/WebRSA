@@ -11,7 +11,7 @@
 ?>
 
 <div class="with_treemenu">
-	<?php 
+	<?php
 		// FIXME: liste de titres depuis le contrôleur
 		echo $this->Html->tag( 'h1', $title_for_layout );
 	?>
@@ -54,7 +54,7 @@
 		</div>
 		<div id="historique">
 			<h2 class="title">Décisions précédentes</h2>
-				<?php 
+				<?php
 				$histo = $contratinsertion['Cer93']['Histochoixcer93'];
 				foreach( $histo as $i => $h ) {
 					$etape = Set::enum( Set::classicExtract( $h, 'etape'), $options['Histochoixcer93']['etape'] );

@@ -92,3 +92,6 @@ msgstr "Avis cadre"
 
 msgid "Histochoixcer93.prevalide"
 msgstr "Pré-validé ou A relire ?"
+
+msgid "Histochoixcer93.formeci"
+msgstr "Forme du contrat"

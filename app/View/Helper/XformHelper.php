@@ -36,9 +36,16 @@
 		 * @return string
 		 */
 		public function input( $fieldName, $options = array( ) ) {
+			$options = array_merge(
+				array('before' => null, 'between' => null, 'after' => null, 'format' => null),
+				$this->_inputDefaults,
+				$options
+			);
+
 			if( isset( $options['multiple'] ) && !empty( $options['multiple'] ) ) {
 				return $this->multiple( $fieldName, $options );
 			}
+
 			return $this->_input( $fieldName, $options );
 		}
 
@@ -49,9 +56,6 @@
 		 * @return string
 		 */
 		protected function _input( $fieldName, $options = array() ) {
-			/*$options = Set::merge( $this->inputDefaults, $options );
-			$options['label'] = $this->label( $fieldName, null, $options );*/
-
 			if( !isset( $options['label'] ) ) {
 				$options['label'] = $this->label( $fieldName, null, $options );
 			}
@@ -141,6 +145,8 @@
 		 * @param type $options
 		 */
 		public function label( $fieldName = null, $text = null, $options = array( ) ) {
+			$options = array_merge( $this->_inputDefaults, $options );
+
 			if( !empty( $fieldName ) && is_null( $text ) ) {
 				$domain = Set::extract( $options, 'domain' );
 
