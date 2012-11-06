@@ -102,7 +102,7 @@
 
 			Configure::write( 'CG.cantons', true );
 			$result = $this->Search->blocAdresse( array( '1' => 'One' ), array( '2' => 'Two' ) );
-			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text required"><label for="AdresseLocaadr">Commune de l\'allocataire </label><input name="data[Adresse][locaadr]" maxlength="26" type="text" id="AdresseLocaadr"/></div><div class="input select required"><label for="AdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcomptt]" id="AdresseNumcomptt"> <option value=""></option> <option value="1">One</option> </select></div><div class="input select required"><label for="CantonCanton">Canton</label><select name="data[Canton][canton]" id="CantonCanton"> <option value=""></option> <option value="2">Two</option> </select></div></fieldset>';
+			$expected = '<fieldset><legend>Recherche par Adresse</legend><div class="input text required"><label for="AdresseLocaadr">Commune de l\'allocataire </label><input name="data[Adresse][locaadr]" type="text" id="AdresseLocaadr"/></div><div class="input select required"><label for="AdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Adresse][numcomptt]" id="AdresseNumcomptt"> <option value=""></option> <option value="1">One</option> </select></div><div class="input select required"><label for="CantonCanton">Canton</label><select name="data[Canton][canton]" id="CantonCanton"> <option value=""></option> <option value="2">Two</option> </select></div></fieldset>';
 			$expected = preg_replace( '/[[:space:]]+/m', ' ', $expected );
 			$result = preg_replace( '/[[:space:]]+/m', ' ', $result );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
