@@ -244,6 +244,7 @@
 						'Nonoriente66<?php echo $key;?>ReponseallocataireN',
 						'Nonoriente66<?php echo $key;?>ReponseallocataireO',
 						'Orientstruct<?php echo $key;?>Codeinsee',
+						'Orientstruct<?php echo $key;?>Id',
 						'Orientstruct<?php echo $key;?>DossierId',
 						'Orientstruct<?php echo $key;?>TypeorientId',
 						'Orientstruct<?php echo $key;?>Origine',
