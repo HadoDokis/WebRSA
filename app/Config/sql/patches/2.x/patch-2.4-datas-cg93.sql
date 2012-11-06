@@ -11,6 +11,8 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
+UPDATE contratsinsertion SET decision_ci = 'R' WHERE decision_ci = 'N';
+
 INSERT INTO secteursactis ( name ) VALUES
 	( 'Agriculture, sylviculture et pêche' ),
 	( 'Industries extractives' ),

@@ -309,10 +309,17 @@
 
 			$enum = array(
 				'valide' => 'V',
-				'rejete' => 'N',
-				'annule' => 'N',
+				'rejete' => 'R',
+				'annule' => 'R',
 				'reporte' => 'E'
 			);
+
+			$enumCer93 = array(
+				'valide' => '99valide',
+				'rejete' => '99rejete',
+				'annule' => '99rejete',
+			);
+
 			$success = true;
 			$validate = $this->Contratinsertion->validate;
 			foreach( $dossierseps as $dossierep ) {
@@ -331,9 +338,23 @@
 					$contratinsertion['Contratinsertion']['decision_ci'] = Set::enum( @$dossierep['Decisioncontratcomplexeep93']['decision'], $enum );
 					$contratinsertion['Contratinsertion']['observ_ci'] = @$dossierep['Decisioncontratcomplexeep93']['observ_ci'];
 					$contratinsertion['Contratinsertion']['datevalidation_ci'] = @$dossierep['Decisioncontratcomplexeep93']['datevalidation_ci'];
+					$contratinsertion['Contratinsertion']['datedecision'] = @$dossierep['Decisioncontratcomplexeep93']['datevalidation_ci'];
 
 					$this->Contratinsertion->create( $contratinsertion );
 					$success = $this->Contratinsertion->save() && $success;
+
+					if( in_array( $dossierep['Decisioncontratcomplexeep93']['decision'], array( 'valide', 'rejete', 'annule' ) ) ) {
+						$success = $this->Contratinsertion->Cer93->updateAll(
+							array(
+								'Cer93.positioncer' => '\''.Set::enum( @$dossierep['Decisioncontratcomplexeep93']['decision'], $enumCer93 ).'\'',
+							),
+							array( '"Cer93"."contratinsertion_id"' => $contratinsertion['Contratinsertion']['id'] )
+						) && $success;
+
+						if( $dossierep['Decisioncontratcomplexeep93']['decision'] == 'valide' ) {
+							$success = $this->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+						}
+					}
 				}
 			}
 			$this->Contratinsertion->validate = $validate;
