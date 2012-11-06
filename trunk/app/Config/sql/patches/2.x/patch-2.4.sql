@@ -172,7 +172,7 @@ CREATE TABLE cers93 (
 	dtdemrsa				DATE NOT NULL,
 	qual					VARCHAR(3) DEFAULT NULL,
 	nom						VARCHAR(50) NOT NULL,
-	nomnai					VARCHAR(50) NOT NULL,
+	nomnai					VARCHAR(50) DEFAULT NULL,
 	prenom					VARCHAR(50) NOT NULL,
 	dtnai					DATE NOT NULL,
 	adresse					VARCHAR(250) DEFAULT NULL,

@@ -220,6 +220,20 @@
 						),
 						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
+
+					$contratinsertion = $this->Cer93->Contratinsertion->find(
+						'first',
+						array(
+							'fields' => array(
+								'Contratinsertion.personne_id'
+							),
+							'conditions' => array(
+								'Contratinsertion.id' => $cer93['Cer93']['contratinsertion_id']
+							)
+						)
+					);
+
+					$success = $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
 				}
 				// Passage en EP du contrat en seconde lecture
 				else if( $data['Histochoixcer93']['decisioncs'] == 'passageep' ) {
@@ -316,6 +330,22 @@
 						$fields,
 						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
+
+					if( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) {
+						$contratinsertion = $this->Cer93->Contratinsertion->find(
+							'first',
+							array(
+								'fields' => array(
+									'Contratinsertion.personne_id'
+								),
+								'conditions' => array(
+									'Contratinsertion.id' => $cer93['Cer93']['contratinsertion_id']
+								)
+							)
+						);
+
+						$success = $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+					}
 				}
 				// Passage en EP du contrat en seconde lecture
 				else if( $data['Histochoixcer93']['decisioncadre'] == 'passageep' ) {

@@ -1,9 +1,9 @@
 <?php
 	if( $this->action == 'attdecisioncpdv' ) {
-		$title_for_layout = 'Décison du CPDV';
+		$title_for_layout = 'Décison du CI';
 	}
 	else {
-		$title_for_layout = 'Décison CG';
+		$title_for_layout = 'Décison CPDV';
 	}
 	$this->set( 'title_for_layout', $title_for_layout );
 
@@ -16,7 +16,7 @@
 ?>
 
 <div class="with_treemenu">
-	<?php 
+	<?php
 		// FIXME: liste de titres depuis le contrôleur
 		echo $this->Html->tag( 'h1', $title_for_layout );
 	?>
@@ -41,7 +41,7 @@
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' )
 					)
 				);
-				
+
 				if( $this->action == 'attdecisioncg' ) {
 					echo $this->Xform->input( 'Histochoixcer93.isrejet', array( 'type' => 'checkbox' ) );
 				}
