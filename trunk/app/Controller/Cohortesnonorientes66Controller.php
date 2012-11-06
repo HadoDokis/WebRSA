@@ -175,8 +175,9 @@
 			if( !empty( $this->request->data ) ) {
 				// On a renvoyé  le formulaire de la cohorte, tentative de sauvegarde
 				if( !empty( $this->request->data['Orientstruct'] ) ) {
-					$this->Cohortes->get( array_unique( Set::extract( $this->request->data, 'Orientstruct.{n}.dossier_id' ) ) );
-
+					$datas = Set::extract( '/Orientstruct[atraiter=1]', $this->request->data );
+					$dossiers_ids = array_unique( Set::extract( '/Orientstruct/dossier_id', $datas ) );
+					$this->Cohortes->get( $dossiers_ids );
 					$this->Personne->Orientstruct->begin();
 
 					// Tentative de validation
@@ -200,8 +201,7 @@
 
 					if( $success ) {
 						$this->Personne->Orientstruct->commit();
-						$this->Cohortes->release( array_unique( Set::extract( $this->request->data, 'Orientstruct.{n}.dossier_id' ) ) );
-
+						$this->Cohortes->release( $dossiers_ids );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						unset( $this->request->data['Orientstruct'], $this->request->data['Nonoriente66'] );
 
