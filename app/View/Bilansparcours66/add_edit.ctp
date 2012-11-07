@@ -50,7 +50,7 @@
 		}
 		echo '<div>';
 		echo $this->Form->input( 'Bilanparcours66.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id') ) );
-		echo $this->Form->input( 'Bilanparcours66.nvuser_id', array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ) );
+		echo $this->Form->input( 'Bilanparcours66.user_id', array( 'type' => 'hidden', 'value' => $userConnected['User']['id'] ) );
 		echo '</div>';
 	?>
 
