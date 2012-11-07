@@ -7,7 +7,7 @@
 	 * @package app.Controller
 	 */
 	App::uses( 'Controller', 'Controller' );
-	ini_set( 'session.gc_maxlifetime', readTimeout() ); // FIXME
+//	ini_set( 'session.gc_maxlifetime', readTimeout() ); // FIXME
 
 	/**
 	 * Classe de base de tous les contrôleurs de l'application.
