@@ -978,14 +978,39 @@
 			$gedooo_data = $this->find(
 				'first',
 				array(
-					'conditions' => array( 'Dossierep.id' => $dossierep_id ),
-					'contain' => array(
-						'Dossierep' => array(
-							'Personne'
-						),
-						'Bilanparcours66',
-						'Contratinsertion',
-						'Orientstruct'
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Dossierep->fields(),
+						$this->Dossierep->Personne->fields(),
+						$this->Dossierep->Personne->Foyer->fields(),
+						$this->Dossierep->Personne->Foyer->Adressefoyer->fields(),
+						$this->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Bilanparcours66->fields(),
+						$this->Bilanparcours66->Structurereferente->fields(),
+						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
+						$this->Bilanparcours66->Serviceinstructeur->fields(),
+						$this->Bilanparcours66->User->fields(),
+						$this->Contratinsertion->fields(),
+						$this->Orientstruct->fields()
+					),
+					'joins' => array(
+						$this->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+						$this->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
+						$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						'Dossierep.id' => $dossierep_id,
+						$this->Dossierep->Personne->Foyer->sqLatest( 'Adressefoyer', 'dtemm', array( 'Adressefoyer.rgadr' => '01' ) )
 					)
 				)
 			);
