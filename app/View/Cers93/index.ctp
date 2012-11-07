@@ -145,14 +145,23 @@
 						'url' => array( 'action' => 'aviscadre', '#Contratinsertion.id#' ),
  						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'histoschoixcers93', 'aviscadre' ), $disabledLinks['Histoschoixcers93::aviscadre'] )
 					),
-					'Cers93::impression' => array( 'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ) ),
+					'Cers93::impression' => array(
+						'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ),
+						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'impression' ), $disabledLinks['Cers93::impression'] )
+					),
+					'Cers93::delete' => array(
+						'url' => array( 'action' => 'delete', '#Contratinsertion.id#' ),
+						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'delete' ), $disabledLinks['Cers93::delete'] )
+					),
 					'Signalementseps::add' => array(
 						'label' => 'Signalement',
 						'url' => array( 'controller' => 'signalementseps', 'action' => 'add', '#Contratinsertion.id#' ),
 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'signalementseps', 'add' ), $disabledLinks['Signalementseps::add'] ),
 						'class' => 'signalementseps add'
 					),
-					'Contratsinsertion::filelink' => array( 'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' ) )
+					'Contratsinsertion::filelink' => array(
+						'url' => array( 'action' => 'filelink', '#Contratinsertion.id#' )
+					)
 				),
 				'options' => $options
 			)
