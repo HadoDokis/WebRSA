@@ -21,6 +21,21 @@ msgstr ""
 msgid "Histoschoixcers93::decisioncpdv"
 msgstr "Prendre la décision CPDV"
 
+msgid "Histoschoixcers93::attdecisioncpdv"
+msgstr "Envoyer au CPDV"
+
+msgid "Histoschoixcers93::attdecisioncg"
+msgstr "Envoyer au CG"
+
+msgid "Histoschoixcers93::premierelecture"
+msgstr "Première lecture"
+
+msgid "Histoschoixcers93::secondelecture"
+msgstr "Valider CS"
+
+msgid "Histoschoixcers93::aviscadre"
+msgstr "Valider au cadre"
+
 msgid "Histoschoixcers93::decisioncg"
 msgstr "Prendre la décision CG"
 
