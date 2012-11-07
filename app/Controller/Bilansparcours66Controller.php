@@ -546,17 +546,7 @@
 			);
 			$this->assert( ( $nPersonnes == 1 ), 'error404' );
 
-			$contrat = $this->Bilanparcours66->Contratinsertion->find(
-				'first',
-				array(
-					'contain' => false,
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personne_id
-					),
-					'recursive' => -1,
-					'order' => 'Contratinsertion.date_saisi_ci DESC'
-				)
-			);
+
 
             // Nombre de mois cumulés pour la contractualisation
             $nbCumulDureeCER66 = $this->Bilanparcours66->Contratinsertion->limiteCumulDureeCER( $personne_id );
@@ -584,43 +574,83 @@
 			// Si le formulaire a été renvoyé
 			if( !empty( $this->request->data ) ) {
 
+				//On regarde si un CER est lié au bilan sans passage en EP
+				if( $this->action == 'edit' ) {
+					$this->Bilanparcours66->id = $this->request->data['Bilanparcours66']['id'];
+					$nvcontratinsertionId = $this->Bilanparcours66->field( 'nvcontratinsertion_id' );
+					$proposition = $this->Bilanparcours66->field( 'proposition' );
+				}
+				
+				//On regarde si un dossier EP pour passage en EP Parcours existe pour ce bilan
+				$dossierepParcours = $this->Dossierep->Saisinebilanparcoursep66->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Saisinebilanparcoursep66.bilanparcours66_id' => $id
+						)
+					)
+				);
+				//On regarde si un dossier EP pour passage en EP Audition existe pour ce bilan
+				$dossierepAudition = $this->Dossierep->Defautinsertionep66->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Defautinsertionep66.bilanparcours66_id' => $id
+						)
+					)
+				);
+				
                 $this->Bilanparcours66->begin();
 
-				if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && $this->action == 'edit' ) {
-					$dossierep = $this->Dossierep->Saisinebilanparcoursep66->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Saisinebilanparcoursep66.bilanparcours66_id' => $id
-							)
-						)
-					);
+				if//Avec passage en EP
+                if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && ( !empty( $dossierepAudition ) || !empty( $dossierepParcours ) ) && ( $this->action == 'edit' ) && empty( $nvcontratinsertionId ) ) {
 
-					if ( !empty( $dossierep ) ) {
+					if ( !empty( $dossierepParcours ) ) {
 						$this->Dossierep->Saisinebilanparcoursep66->deleteAll( array( 'Saisinebilanparcoursep66.bilanparcours66_id' => $id ) );
-						$this->Dossierep->delete( $dossierep['Saisinebilanparcoursep66']['dossierep_id'] );
+						$this->Dossierep->delete( $dossierepParcours['Saisinebilanparcoursep66']['dossierep_id'] );
 					}
 					else {
-						$dossierep = $this->Dossierep->Defautinsertionep66->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Defautinsertionep66.bilanparcours66_id' => $id
-								)
-							)
-						);
 						$this->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
-						$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
+						$this->Dossierep->delete( $dossierepAudition['Defautinsertionep66']['dossierep_id'] );
 					}
+
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 // debug($success);
 				}
-				elseif ( $this->action == 'edit' ) {
-					$success = $this->Bilanparcours66->save( $this->request->data );
+				// Sans passage en EP
+				elseif ( ( $this->action == 'edit' ) && !empty( $nvcontratinsertionId ) ) {
+					//Suppression du CER tacitement reconduit si on modifie et que l'on passe finalement l'allocataire en EP
+					$success = true;
+
+					$propositionModifie = $this->request->data['Bilanparcours66']['proposition'];
+					if( $proposition != $propositionModifie ) {
+						$success = $this->Bilanparcours66->Contratinsertion->delete( $nvcontratinsertionId, true ) && $success;
+						foreach( array( 'typeorientprincipale_id', 'nvcontratinsertion_id', 'duree_engag', 'ddreconductoncontrat', 'dfreconductoncontrat', 'nvtypeorient_id', 'nvstructurereferente_id' ) as $field ) {
+							$this->request->data['Bilanparcours66'][$field] = null;
+						}
+						
+						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data ) && $success;
+					}
+					else {
+						$success = $this->Bilanparcours66->save( $this->request->data ) && $success;
+					}
 				}
 				elseif ( $this->action == 'add' ) {
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 				}
+				
+				
+				$contrat = $this->Bilanparcours66->Contratinsertion->find(
+					'first',
+					array(
+						'contain' => false,
+						'conditions' => array(
+							'Contratinsertion.personne_id' => $personne_id
+						),
+						'recursive' => -1,
+						'order' => 'Contratinsertion.date_saisi_ci DESC'
+					)
+				);
 
 				if( !empty( $contrat['Contratinsertion'] ) ) {
 					//Modification de la position du CER lorsque le bilan est créé et que le CER existe

@@ -292,6 +292,9 @@
 		if ( $this->action == 'edit' ){
 			echo $this->Xform->input( 'Bilanparcours66.proposition', array( 'type' => 'hidden' ) );
 			echo $this->Xform->input( 'Bilanparcours66.maintienorientation', array( 'type' => 'hidden' ) );
+			echo $this->Xform->input( 'Bilanparcours66.positionbilan', array( 'type' => 'hidden' ) );
+			echo $this->Xform->input( 'Bilanparcours66.nvtypeorient_id', array( 'type' => 'hidden' ) );
+			echo $this->Xform->input( 'Bilanparcours66.nvstructurereferente_id', array( 'type' => 'hidden' ) );
 		}
 	?>
 
@@ -387,7 +390,8 @@
 							array(
 								'Bilanparcours66.duree_engag' => array( 'required' => true, 'id' => 'Bilanparcours66DureeEngagSansEp' ),
 								'Bilanparcours66.ddreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DdreconductoncontratSansEp' ),
-								'Bilanparcours66.dfreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DfreconductoncontratSansEp' )
+								'Bilanparcours66.dfreconductoncontrat' => array( 'required' => true, 'id' => 'Bilanparcours66DfreconductoncontratSansEp' ),
+								'Bilanparcours66.nvcontratinsertion_id' => array( 'type' => 'hidden' )
 							),
 							array(
 								'options' => $options,
