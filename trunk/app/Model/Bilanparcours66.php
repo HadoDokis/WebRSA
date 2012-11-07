@@ -188,6 +188,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Nvcontratinsertion' => array(
+				'className' => 'Contratinsertion',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'cui_id',
@@ -618,6 +625,7 @@
 					$success = $this->Contratinsertion->save() && $success;
 
 					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+					$data[$this->alias]['nvcontratinsertion_id'] = $this->Contratinsertion->id;
 				}
 
 				if( !empty( $this->validationErrors ) ) {

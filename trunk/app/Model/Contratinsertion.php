@@ -454,6 +454,19 @@
 			)
 		);
 		public $hasOne = array(
+			'Bilanparcours66nv' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'nvcontratinsertion_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Cer93' => array(
 				'className' => 'Cer93',
 				'foreignKey' => 'contratinsertion_id',
