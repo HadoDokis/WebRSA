@@ -241,7 +241,7 @@
 			// Logique d'activation / désactiviation des liens dans la vue
 			$disabledLinks = array(
 				'Cers93::add' => empty( $results ) || in_array( $results[0]['Cer93']['positioncer'], array( '99rejete', '99valide' ) ), //On bloque l'ajout tant que le CER n'est pas validé ou  rejeté
-				'Cers93::edit' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )' ,
+				'Cers93::edit' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
 				'Cers93::signature' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) || ( \'%permission%\' == \'0\' )' ,
 				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) || ( \'%permission%\' == \'0\' )',
 				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
@@ -262,6 +262,8 @@
 					&& ( \''.count( $erreursCandidatePassage ).'\' == \'0\' )
 				)
 				|| ( \'%permission%\' == \'0\' )',
+				'Cers93::impression' => '( \'%permission%\' == \'0\' )' ,
+				'Cers93::delete' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
 			);
 
 			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
@@ -526,14 +528,37 @@
 		 * @return void
 		 */
 		public function view( $contratinsertion_id ) {
-
 			$this->Cer93->Contratinsertion->id = $contratinsertion_id;
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );
 
 			$this->set( 'options', $this->Cer93->optionsView() );
 			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
+		}
 
+		/**
+		 * Suppression d'un CER 93.
+		 *
+		 * @param integer $id
+		 */
+		public function delete( $id ) {
+			$dossier_id = $this->Cer93->Contratinsertion->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
+			$this->Cer93->Contratinsertion->begin();
+			$success = $this->Cer93->Contratinsertion->Actioninsertion->deleteAll( array( 'Actioninsertion.contratinsertion_id' => $id ) );
+			$success = $this->Cer93->Contratinsertion->delete( $id ) && $success;
+			$this->_setFlashResult( 'Delete', $success );
+
+			if( $success ) {
+				$this->Cer93->Contratinsertion->commit();
+				$this->Jetons2->release( $dossier_id );
+			}
+			else {
+				$this->Cer93->Contratinsertion->rollback();
+			}
+
+			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 	}
 ?>
