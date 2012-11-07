@@ -577,7 +577,7 @@
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
-							'user_id' => $data['Bilanparcours66']['nvuser_id']
+							'user_id' => $data['Bilanparcours66']['user_id']
 						)
 					);
 					$this->Orientstruct->create( $orientstruct );
@@ -617,7 +617,7 @@
 
                     debug(var_export($dureeEngagReconductionCER, true));
 
-                    if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) >= 24 ){
+                    if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 ){
                         $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
                         return false;
                     }
