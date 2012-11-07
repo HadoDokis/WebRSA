@@ -181,8 +181,13 @@
 	 *
 	 */
 	Configure::write( 'Session', array(
-		'defaults' => 'php'
+		'defaults' => 'php',
+		'timeout' => 240, // Test 4 * 60 minutes
+		'ini' => array(
+			'session.gc_maxlifetime' => 240 * 60
+		)
 	) );
+	ini_set( 'session.gc_maxlifetime', 240 * 60 );
 
 	/**
 	 * The level of CakePHP security.
