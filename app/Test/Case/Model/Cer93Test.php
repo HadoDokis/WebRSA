@@ -317,8 +317,8 @@
 					'dateradiationparticulier' => NULL,
 					'faitsuitea' => NULL,
 					'positioncer' => NULL,
-					'created' => '2012-10-25 12:00:00',
-					'modified' => '2012-10-25 12:00:00',
+//					'created' => '2012-10-25 12:00:00',
+//					'modified' => '2012-10-25 12:00:00',
 					'current_action' => NULL,
 					'haspiecejointe' => '0',
 					'avenant_id' => NULL,
@@ -330,7 +330,7 @@
 					'datedecision' => NULL,
 					'datenotification' => NULL,
 					'actioncandidat_id' => NULL,
-					'nbjours' => '525',
+//					'nbjours' => '525',
 					'present' => true,
 				),
 				'Cer93' => array(
@@ -379,8 +379,8 @@
 					'nomutilisateur' => 'Dupont Jean',
 					'prevupcd' => '',
 					'sujetpcd' => '',
-					'created' => '2010-10-25 11:00:00',
-					'modified' => '2010-10-25 11:45:00',
+//					'created' => '2010-10-25 11:00:00',
+//					'modified' => '2010-10-25 11:45:00',
 				),
 				'Compofoyercer93' => array(
 					array(
@@ -397,16 +397,16 @@
 						'cer93_id' => 2,
 						'name' => 'Diplôme d\'informatique',
 						'annee' => 2005,
-						'created' => '2012-10-01 15:36:00',
-						'modified' => '2012-10-01 15:36:00',
+//						'created' => '2012-10-01 15:36:00',
+//						'modified' => '2012-10-01 15:36:00',
 					),
 					array(
 						'id' => 3,
 						'cer93_id' => 2,
 						'name' => 'BAC',
 						'annee' => 2001,
-						'created' => '2012-10-01 15:36:00',
-						'modified' => '2012-10-01 15:36:00',
+//						'created' => '2012-10-01 15:36:00',
+//						'modified' => '2012-10-01 15:36:00',
 					),
 				),
 				'Expprocer93' => array(
@@ -417,8 +417,8 @@
 						'secteuracti_id' => 2,
 						'anneedeb' => 2009,
 						'duree' => '6 mois',
-						'created' => '2012-10-01 15:36:00',
-						'modified' => '2012-10-01 15:36:00',
+//						'created' => '2012-10-01 15:36:00',
+//						'modified' => '2012-10-01 15:36:00',
 					),
 					array(
 						'id' => 4,
@@ -427,8 +427,8 @@
 						'secteuracti_id' => 1,
 						'anneedeb' => 2005,
 						'duree' => '3 ans',
-						'created' => '2012-10-01 15:36:00',
-						'modified' => '2012-10-01 15:36:00',
+//						'created' => '2012-10-01 15:36:00',
+//						'modified' => '2012-10-01 15:36:00',
 					),
 				),
 				'Sujetcer93' => array(
@@ -440,8 +440,8 @@
 							'soussujetcer93_id' => 2,
 							'valeurparsoussujetcer93_id' => NULL,
 							'commentaireautre' => NULL,
-							'created' => '2012-10-01 15:36:00',
-							'modified' => '2012-10-01 15:36:00',
+//							'created' => '2012-10-01 15:36:00',
+//							'modified' => '2012-10-01 15:36:00',
 						),
 						array(
 							'id' => 4,
@@ -450,12 +450,19 @@
 							'soussujetcer93_id' => NULL,
 							'valeurparsoussujetcer93_id' => NULL,
 							'commentaireautre' => 'Commentaire autre',
-							'created' => '2012-10-01 15:36:00',
-							'modified' => '2012-10-01 15:36:00',
+//							'created' => '2012-10-01 15:36:00',
+//							'modified' => '2012-10-01 15:36:00',
 						),
 					),
 				),
 			);
+
+			// TODO: en faire une fonction
+			foreach( Set::flatten( $result ) as $path => $value ) {
+				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
+					$result = Set::remove( $result, $path );
+				}
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -716,7 +723,7 @@
 					'datedecision' => NULL,
 					'datenotification' => NULL,
 					'actioncandidat_id' => NULL,
-					'nbjours' => number_format( ceil( ( time() - strtotime( '2013-02-28' ) ) / ( 60 * 60 * 24 ) ) ),
+//					'nbjours' => number_format( ceil( ( time() - strtotime( '2013-02-28' ) ) / ( 60 * 60 * 24 ) ) ),
 					'present' => true,
 				),
 				'Compofoyercer93' => array(
@@ -780,7 +787,7 @@
 
 			// TODO: en faire une fonction
 			foreach( Set::flatten( $result ) as $path => $value ) {
-				if( preg_match( '/\.(created|modified)/', $path ) ) {
+				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
 					$result = Set::remove( $result, $path );
 				}
 			}

@@ -318,10 +318,6 @@
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
 
-			if( !$success ) {
-				debug( $this->validationErrors );
-			}
-
 			return $success;
 		}
 
@@ -505,7 +501,7 @@
 				if( $dataCerActuel['Contratinsertion']['decision_ci'] != 'E' ) {
 					throw new InternalErrorException( "Tentative de modification d'un enregistrement déjà traité \"{$contratinsertion_id}\"" );
 				}
-				
+
 				$data = $dataCerActuel;
 
 				$modelsToCopy = array( 'Diplomecer93', 'Expprocer93', 'Sujetcer93' );
@@ -513,10 +509,10 @@
 					$data[$modelName] = $dataCerActuel['Cer93'][$modelName];
 					unset( $data['Cer93'][$modelName] );
 				}
-				
+
 				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
 				$data['Sujetcer93'] = array( 'Sujetcer93' => Set::classicExtract( $data, 'Sujetcer93.{n}.Cer93Sujetcer93' ) );
-			
+
 				// FIXME: il faut en faire quelque chose de $dataCerActuel
 //				$this->log( var_export( $data, true ), LOG_DEBUG );
 			}
@@ -613,7 +609,7 @@
 							'derniercervalide.personne_id = Contratinsertion.personne_id',
 							'derniercervalide.decision_ci' => 'V',
 						),
-						'order' => array( 'derniercervalide.datevalidation_ci DESC' ),
+						'order' => array( 'derniercervalide.rg_ci DESC' ),
 						'limit' => 1
 					)
 				);
@@ -622,12 +618,12 @@
 					'Contratinsertion.personne_id' => $personne_id,
 					"Contratinsertion.id IN ( {$sqDernierCerValide} )"
 				);
-				
+
 				$dataDernierCerValide = $this->Contratinsertion->find( 'first', $querydataDernierCerValide );
 
 				//Champ pour le bloc 5 reprenant ce qui était prévu dans le pcd CER
 				$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
-				
+
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
 					// Copie des champs du CER précédent
@@ -653,7 +649,7 @@
 							}
 						}
 					}
-					
+
 					if( !empty( $data['Sujetcer93'] ) ) {
 						$sousSujetsIds = Set::filter( Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
 						if( !empty( $sousSujetsIds ) ) {
@@ -667,7 +663,7 @@
 								}
 							}
 						}
-						
+
 						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'] ) );
 						$data['Sujetcer93'] = array();
 					}

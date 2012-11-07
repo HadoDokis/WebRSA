@@ -162,7 +162,7 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-			
+
 				$this->Bilanparcours66->begin();
 
 				$saved = $this->Bilanparcours66->updateAll(
@@ -223,8 +223,8 @@
 			}
 			$this->render( 'ajaxstruc', 'ajax' );
 		}
-		
-		
+
+
 		/**
 		*
 		*/
@@ -580,7 +580,7 @@
 					$nvcontratinsertionId = $this->Bilanparcours66->field( 'nvcontratinsertion_id' );
 					$proposition = $this->Bilanparcours66->field( 'proposition' );
 				}
-				
+
 				//On regarde si un dossier EP pour passage en EP Parcours existe pour ce bilan
 				$dossierepParcours = $this->Dossierep->Saisinebilanparcoursep66->find(
 					'first',
@@ -599,10 +599,10 @@
 						)
 					)
 				);
-				
+
                 $this->Bilanparcours66->begin();
 
-				if//Avec passage en EP
+				//Avec passage en EP
                 if ( ( !isset( $passagecommissionep ) || empty( $passagecommissionep ) ) && ( !empty( $dossierepAudition ) || !empty( $dossierepParcours ) ) && ( $this->action == 'edit' ) && empty( $nvcontratinsertionId ) ) {
 
 					if ( !empty( $dossierepParcours ) ) {
@@ -628,7 +628,7 @@
 						foreach( array( 'typeorientprincipale_id', 'nvcontratinsertion_id', 'duree_engag', 'ddreconductoncontrat', 'dfreconductoncontrat', 'nvtypeorient_id', 'nvstructurereferente_id' ) as $field ) {
 							$this->request->data['Bilanparcours66'][$field] = null;
 						}
-						
+
 						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data ) && $success;
 					}
 					else {
@@ -638,8 +638,8 @@
 				elseif ( $this->action == 'add' ) {
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 				}
-				
-				
+
+
 				$contrat = $this->Bilanparcours66->Contratinsertion->find(
 					'first',
 					array(
@@ -686,7 +686,7 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$bilanparcours66['Bilanparcours66']['referent_id'] = $bilanparcours66['Bilanparcours66']['structurereferente_id'].'_'.$bilanparcours66['Bilanparcours66']['referent_id'];
-					
+
 					$this->request->data = $bilanparcours66;
 				}
 				else {
@@ -942,7 +942,7 @@
 					$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
 				}
 
-				
+
 				$saved = $this->Bilanparcours66->save( $this->request->data );
 				$saved = $this->{$this->modelClass}->updateAll(
 					array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),

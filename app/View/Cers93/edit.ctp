@@ -400,11 +400,11 @@
 	<?php else:?>
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
-		
+
 	<?php
 		//Il a été prévu (champ prevu du bloc 6)
 		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $this->request->data, 'Cer93.prevupcd' ) );
-		
+
 		//Bloc 5 : Bilan du précédent contrat
 		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 	?>
@@ -434,9 +434,9 @@
 			$checked = ( ( $array_key !== false ) ? 'checked' : '' );
 			$soussujetcer93_id = null;
 			$commentaireautre = null;
-			
+
 			$valeurparsoussujetcer93_id = null;
-			
+
 			if( $checked ) {
 				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'] ) ) {
 					$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
@@ -444,7 +444,7 @@
 				else if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'] ) ) {
 					$commentaireautre = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['commentaireautre'];
 				}
-				
+
 				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['valeurparsoussujetcer93_id'] ) ) {
 					$valeurparsoussujetcer93_id = suffix( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['valeurparsoussujetcer93_id'] );
 					$valeurparsoussujetcer93_id = "{$soussujetcer93_id}_{$valeurparsoussujetcer93_id}";
@@ -458,12 +458,12 @@
 			else {
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.commentaireautre", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'text', 'value' => $commentaireautre ) );
 			}
-			
+
 			if( !empty( $valeursparsoussujetscers93[$idSujet] ) ) {
 				$correspondChilParent[$this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id" )] = $this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id" );
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][valeurparsoussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $valeursparsoussujetscers93[$idSujet], 'empty' => true, 'value' => $valeurparsoussujetcer93_id ) );
 			}
-			
+
 			$i++;
 		}
 		echo '</fieldset>';
@@ -479,7 +479,7 @@
 		true
 	);
 	<?php endforeach;?>
-	
+
 	<?php if( !empty( $correspondChilParent ) ):?>
 		<?php foreach( $correspondChilParent as $childId => $parentId ):?>
 			dependantSelect( '<?php echo $childId;?>', '<?php echo $parentId;?>' );
@@ -525,9 +525,9 @@
 		array(
 			'fieldset' => false,
 			'legend' => false,
-			'Contratinsertion.dd_ci' => array( 'domain' => 'contratinsertion', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
-			'Contratinsertion.df_ci' => array( 'domain' => 'contratinsertion','type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' ),
-			'Contratinsertion.date_saisi_ci' => array( 'label' => 'Contrat saisi le', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY' )
+			'Contratinsertion.dd_ci' => array( 'domain' => 'contratinsertion', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true ),
+			'Contratinsertion.df_ci' => array( 'domain' => 'contratinsertion','type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true ),
+			'Contratinsertion.date_saisi_ci' => array( 'label' => 'Contrat saisi le', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true )
 		)
 	);
 ?>

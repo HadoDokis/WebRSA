@@ -214,10 +214,7 @@
 					'Contratinsertion.personne_id' => $personne_id,
 					'Cer93.id IS NOT NULL'
 				),
-				'order' => array(
-					'Cer93.id DESC' // FIXME
-				),
-				'order' => array( 'Contratinsertion.dd_ci DESC' )
+				'order' => array( 'Contratinsertion.dd_ci DESC', 'Contratinsertion.rg_ci DESC' )
 			);
 
 			$results = $this->Cer93->Contratinsertion->find( 'all', $querydata );
@@ -369,8 +366,8 @@
 				)
 			);
 			$this->set( 'soussujetscers93', $soussujetscers93 );
-			
-			
+
+
 			$tmpValeursparsoussujetscers93 = $this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find(
 				'all',
 				array(
@@ -391,7 +388,7 @@
 				if( !isset( $valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']] ) ) {
 					$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']] = array();
 				}
-				
+
 				$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']][$tmp['Valeurparsoussujetcer93']['id']] = $tmp['Valeurparsoussujetcer93']['name'];
 			}
 

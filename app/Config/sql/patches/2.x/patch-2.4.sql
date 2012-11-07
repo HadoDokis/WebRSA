@@ -381,6 +381,51 @@ CREATE INDEX derniersdossiersallocataires_personne_id_idx ON derniersdossiersall
 CREATE INDEX derniersdossiersallocataires_dossier_id_idx ON derniersdossiersallocataires(dossier_id);
 CREATE UNIQUE INDEX derniersdossiersallocataires_personne_id_dossier_id_idx ON derniersdossiersallocataires(personne_id,dossier_id);
 
+--------------------------------------------------------------------------------
+-- Mise à jour des rangs de CER
+--------------------------------------------------------------------------------
+UPDATE contratsinsertion SET rg_ci = NULL;
+
+UPDATE contratsinsertion
+	SET rg_ci = (
+		SELECT ( COUNT(contratsinsertionpcd.id) + 1 )
+			FROM contratsinsertion AS contratsinsertionpcd
+			WHERE contratsinsertionpcd.personne_id = contratsinsertion.personne_id
+				AND contratsinsertionpcd.id <> contratsinsertion.id
+				AND contratsinsertionpcd.decision_ci = 'V'
+				AND contratsinsertionpcd.dd_ci IS NOT NULL
+				AND contratsinsertionpcd.datevalidation_ci IS NOT NULL
+
+				AND (
+					contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
+					OR (
+						contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+						AND contratsinsertionpcd.datevalidation_ci < contratsinsertion.datevalidation_ci
+					)
+					OR (
+						contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+						AND contratsinsertionpcd.datevalidation_ci = contratsinsertion.datevalidation_ci
+						AND contratsinsertionpcd.id < contratsinsertion.id
+					)
+				)
+
+				AND (
+					contratsinsertion.positioncer IS NULL
+					OR contratsinsertion.positioncer <> 'annule'
+				)
+	)
+	WHERE
+		contratsinsertion.dd_ci IS NOT NULL
+		AND contratsinsertion.datevalidation_ci IS NOT NULL
+		AND contratsinsertion.decision_ci = 'V'
+		AND (
+			contratsinsertion.positioncer IS NULL
+			OR contratsinsertion.positioncer <> 'annule'
+		);
+
+DROP INDEX IF EXISTS contratsinsertion_personne_id_rg_ci_idx;
+CREATE UNIQUE INDEX contratsinsertion_personne_id_rg_ci_idx ON contratsinsertion( personne_id, rg_ci ) WHERE rg_ci IS NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

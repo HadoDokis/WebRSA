@@ -22,9 +22,9 @@
 		 * @var array
 		 */
 		public $fixtures = array(
-			'app.adresse',
-			'app.dossierpcg66',
-			'app.personne',
+			'app.Adresse',
+			'app.Dossierpcg66',
+			'app.Personne',
 		);
 
 		/**
