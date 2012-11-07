@@ -1014,7 +1014,22 @@
 					)
 				)
 			);
-
+			
+			$Option = ClassRegistry::init( 'Option' );
+			$options =  Set::merge(
+				array(
+					'Persone' => array(
+						'qual' => $Option->qual()
+					),
+					'Adresse' => array(
+						'typevoie' => $Option->typevoie()
+					),
+					'type' => array(
+						'voie' => $Option->typevoie()
+					)
+				),
+				$this->enums()
+			);
             // Non inscription PE
                 //  Bilanparcours66.examenauditionpe = noninscriptionpe --> personne_id 35253
                 // Defautinsertionep66.origine = noninscriptionpe
@@ -1073,7 +1088,7 @@
 			$this->saveField( 'dateimpressionconvoc', date( 'Y-m-d' ) );
 
 //			return $this->ged( $gedooo_data, "{$this->alias}/{$gedooo_data[$this->alias]['origine']}_courrierinformationavantep.odt" );
-            return $this->ged( $gedooo_data, "{$this->alias}/{$modele}" );
+            return $this->ged( $gedooo_data, "{$this->alias}/{$modele}", false, $options  );
 		}
 
 		/**
