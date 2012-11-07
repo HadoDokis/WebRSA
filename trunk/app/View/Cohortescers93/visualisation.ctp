@@ -19,7 +19,7 @@
 //
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<colgroup />
-					<colgroup />
+					<!-- <colgroup /> -->
 					<colgroup />
 					<colgroup />
 					<colgroup />
