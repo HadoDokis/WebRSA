@@ -76,12 +76,20 @@
 				'notEmpty' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
+				),
+				'compareDates' => array(
+					'rule' => array( 'compareDates', 'df_ci', '<' ),
+					'message' => 'La date de début de contrat doit être strictement inférieure à la date de fin de contrat'
 				)
 			),
 			'df_ci' => array(
 				'notEmpty' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
+				),
+				'compareDates' => array(
+					'rule' => array( 'compareDates', 'dd_ci', '>' ),
+					'message' => 'La date de fin de contrat doit être strictement supérieure à la date de début de contrat'
 				)
 			),
 			'aut_expr_prof' => array(
@@ -537,7 +545,19 @@
 									AND contratsinsertionpcd.id <> contratsinsertion.id
 									AND contratsinsertionpcd.decision_ci = 'V'
 									AND contratsinsertionpcd.dd_ci IS NOT NULL
-									AND contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
+									AND contratsinsertionpcd.datevalidation_ci IS NOT NULL
+									AND (
+										contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
+										OR (
+											contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+											AND contratsinsertionpcd.datevalidation_ci < contratsinsertion.datevalidation_ci
+										)
+										OR (
+											contratsinsertionpcd.dd_ci = contratsinsertion.dd_ci
+											AND contratsinsertionpcd.datevalidation_ci = contratsinsertion.datevalidation_ci
+											AND contratsinsertionpcd.id < contratsinsertion.id
+										)
+									)
 									AND (
 										contratsinsertion.positioncer IS NULL
 										OR contratsinsertion.positioncer <> 'annule'
@@ -545,6 +565,7 @@
 						)
 						WHERE
 							contratsinsertion.dd_ci IS NOT NULL
+							AND contratsinsertion.datevalidation_ci IS NOT NULL
 							".(!empty( $condition ) ? " AND {$condition}" : "" )."
 							AND contratsinsertion.decision_ci = 'V'
 							AND (
@@ -967,8 +988,8 @@
 		 * @return string
 		 */
 		public function sqDernierContrat( $personneIdFied = 'Personne.id', $cerValide = false ) {
-			
-			$conditions = ( $cerValide ? array( 'contratsinsertion.decision_ci' => 'V' ) : array() );			
+
+			$conditions = ( $cerValide ? array( 'contratsinsertion.decision_ci' => 'V' ) : array() );
 			return $this->sq(
 				array(
 					'fields' => array(
@@ -1782,12 +1803,12 @@
 
 			return $querydata;
 		}
-        
-        
+
+
         /**
          * Somme des durées de CER validés tel que ils soint liés à des
          * orientations sociales sans emploi au milieu.
-         * 
+         *
          * @param integer $personne_id
          * @return integer
          */
@@ -1801,7 +1822,7 @@
             }
             $case = implode( ' ', $case );
             $case = "CASE {$case} ELSE 0 END";
-            
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
 			}
@@ -1809,7 +1830,7 @@
 				$emploi = (array)Configure::read( 'Typeorient.emploi_id' );
 			}
             $emploi = '('.implode( ',', $emploi ).')';
-            
+
             $sql = "SELECT SUM( {$case} ) AS \"sum\"
                     FROM contratsinsertion
                     WHERE
@@ -1843,7 +1864,7 @@
 
             return ( isset( $result[0][0]['sum'] ) ? $result[0][0]['sum'] : 0 );
         }
-        
+
         /**
         *	Fonction permettant de récupérer le rang maximal du CER validé d'un l'allocataire
         *
@@ -1853,8 +1874,8 @@
 		public function vfRgCiMax( $alias = 'Contratinsertion.personne_id' ) {
 			return "( SELECT MAX(rg_ci) FROM contratsinsertion WHERE contratsinsertion.decision_ci = 'V' AND contratsinsertion.personne_id = {$alias} GROUP BY {$alias} ) AS \"Contratinsertion__rg_ci\"";
 		}
-		
-		        
+
+
         /**
         *	Fonction permettant de récupérer le nombre de CER enregsitré pour un allocataire
         *

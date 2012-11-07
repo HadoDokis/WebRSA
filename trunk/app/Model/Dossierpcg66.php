@@ -4,8 +4,8 @@
 		public $name = 'Dossierpcg66';
 
 		public $recursive = -1;
-		
-		public $virtualFields = array( 
+
+		public $virtualFields = array(
 			'nbpropositions' => array(
 				'type'      => 'integer',
 				'postgres'  => '(
@@ -236,7 +236,7 @@
 // 		* Mise à jour de l'état du dossierpcg66 du traitementpcg66 passé en paramètre.
 // 		* Si le nouveau traitement nécessite une décision, le dossier repasse en instruction en cours
 // 		**/
-// 
+//
 // 		public function updateEtatViaTraitement( $traitementpcg66_id ) {
 // 			$traitementpcg66 = $this->Personnepcg66->Traitementpcg66->find(
 // 				'first',
@@ -448,7 +448,7 @@
 		}
 
 		/**
-		* 
+		*
 		*/
 
 		public function updateEtatViaDecisionFoyer( $decisiondossierpcg66_id ) {
@@ -479,7 +479,7 @@
 
 
 		/**
-		* 
+		*
 		*/
 
 		public function updateEtatViaTransmissionop( $decisiondossierpcg66_id ) {
@@ -509,7 +509,7 @@
 			return $return;
 		}
 
-		
+
 						/**
 		*   AfterSave
 		*/
@@ -537,7 +537,7 @@
 					'order' => array( 'Decisiondossierpcg66.datevalidation DESC')
 				)
 			);
-			
+
 			$dossierpcg66 = $this->find(
 				'first',
 				array(
@@ -547,15 +547,15 @@
 					'contain' => false
 				)
 			);
-			
-			
+
+
 // debug($decisiondossierpcg66);
 // die();
 			$dateDecision = $decisiondossierpcg66['Decisiondossierpcg66']['datevalidation'];
 			$propositiondecision = $decisiondossierpcg66['Decisionpdo']['decisioncerparticulier'];
 			if( !empty( $decisiondossierpcg66 ) && isset( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] ) ) {
 				if( ( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] == 'O' ) && ( ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '0' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '0' ) ) || ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '1' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '1' ) ) ) ) {
-					
+
 					if( $propositiondecision == 'N' ) {
 						$success = $this->Contratinsertion->updateAll(
 							array(
@@ -584,13 +584,13 @@
 					}
 				}
 			}
-			
+
 // 			debug($decisiondossierpcg66);
 // 			die();
-			
+
 			return $success;
 		}
-		
+
         /**
 		 * Retourne l'id du dossier à partir de l'id du dosiserpcg66
 		 *
