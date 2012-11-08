@@ -93,10 +93,10 @@ function __cleanFilesForRelease() {
 	version="$2"
 
 	cd "$dir"
-	rm -f "app/config/database.php.default" >> /dev/null 2>&1
-	mv "app/config/database.php" "app/config/database.php.default" >> /dev/null 2>&1
-	mv "app/config/webrsa.inc" "app/config/webrsa.inc.default" >> /dev/null 2>&1
-	mv "app/config/core.php" "app/config/core.php.default" >> /dev/null 2>&1
+	rm -f "app/Config/database.php.default" >> /dev/null 2>&1
+	mv "app/Config/database.php" "app/Config/database.php.default" >> /dev/null 2>&1
+	mv "app/Config/webrsa.inc" "app/Config/webrsa.inc.default" >> /dev/null 2>&1
+	mv "app/Config/core.php" "app/Config/core.php.default" >> /dev/null 2>&1
 
 	# Passage de tous les modèles .odt du répertoire app/Vendor/modelesodt en .odt7.default
 	(
@@ -106,10 +106,11 @@ function __cleanFilesForRelease() {
 		fi
 	)
 	echo -n "$version" > "app/VERSION.txt"
-	sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "app/config/core.php.default" >> /dev/null 2>&1
-	sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/config/core.php.default" >> /dev/null 2>&1
-	sed -i "s/Configure::write *( *'CG\.cantons' *, *[^)]\+ *) *;/Configure::write('CG.cantons', false);/" "app/config/webrsa.inc.default" >> /dev/null 2>&1
-	sed -i "s/Configure::write *( *'Zonesegeographiques\.CodesInsee' *, *[^)]\+ *) *;/Configure::write('Zonesegeographiques.CodesInsee', true);/" "app/config/webrsa.inc.default" >> /dev/null 2>&1
+	sed -i "s/Configure::write *( *'production' *, *[^)]\+ *) *;/Configure::write('production', true);/" "app/Config/core.php.default" >> /dev/null 2>&1
+# 	sed -i "s/Configure::write *( *'debug' *, *[0-9] *) *;/Configure::write('debug', 0);/" "app/Config/core.php.default" >> /dev/null 2>&1
+# 	sed -i "s/Configure::write *( *'Cache\.disable' *, *[^)]\+ *) *;/Configure::write('Cache.disable', false);/" "app/Config/core.php.default" >> /dev/null 2>&1
+	sed -i "s/Configure::write *( *'CG\.cantons' *, *[^)]\+ *) *;/Configure::write('CG.cantons', false);/" "app/Config/webrsa.inc.default" >> /dev/null 2>&1
+	sed -i "s/Configure::write *( *'Zonesegeographiques\.CodesInsee' *, *[^)]\+ *) *;/Configure::write('Zonesegeographiques.CodesInsee', true);/" "app/Config/webrsa.inc.default" >> /dev/null 2>&1
 
 	# Suppression des fichiers "internes" au développement
 	(
