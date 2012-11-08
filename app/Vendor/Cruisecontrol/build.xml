@@ -6,6 +6,7 @@
 	<property name="dir.cakephp.app" value="${basedir}/source/app" />
 	<property name="dir.cakephp.tmp" value="${dir.cakephp.app}/tmp" />
 	<property name="dir.phpcs.ruleset" value="${dir.cakephp.app}/Vendor/Cruisecontrol/phpcs_rulesets/webrsa" />
+	<property name="file.phpmd.ruleset" value="${dir.cakephp.app}/Vendor/Cruisecontrol/phpmd/ruleset.xml" />
 	<property name="ignorelist" value="*/Config/sql/*,*/Config/Schema/*,*/docs/*,*/locale/*,*/Test/*,*/tmp/*,*/Vendor/*,*/webroot/*" />
 
 	<!-- Build -->
@@ -91,14 +92,14 @@
 		</exec>
 	</target>
 
-	<!-- Mess detector -->
-	<target name="phpmd" depends="lint">
+	<!-- Mess detector, avant: depends="lint", arg line=". xml codesize" -->
+	<target name="phpmd">
 		<exec executable="phpmd"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
 			<arg line=".
 				xml
-				codesize
+				${file.phpmd.ruleset}
 				--exclude ${ignorelist}
 				--reportfile ${dir.ant.logs}/phpmd.xml"/>
 		</exec>

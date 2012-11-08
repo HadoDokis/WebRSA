@@ -723,6 +723,7 @@
 				}
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient', 'Zonegeographique' ) );
 			}
 
 			return $results;
