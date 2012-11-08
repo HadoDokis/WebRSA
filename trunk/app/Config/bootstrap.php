@@ -219,6 +219,7 @@
 	require_once( APPLIBS.'xinflector.php' );
 	require_once( APP.DS.'Vendor'.DS.'money_format.php' );
 	require_once( APP.'Lib'.DS.'Error'.DS.'rsa_exceptions.php' );
+	App::uses( 'ModelCache', 'Model/Datasource' );
 
 	/**
 	 * Retourne la version de CakePHP utilisée.

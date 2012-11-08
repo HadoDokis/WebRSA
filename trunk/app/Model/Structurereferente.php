@@ -349,6 +349,7 @@
 				}
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient' ) );
 			}
 
 			return $results;
@@ -388,6 +389,7 @@
 					)
 				);
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Structurereferente', 'Typeorient' ) );
 			}
 			return $results;
 		}
@@ -458,15 +460,18 @@
 		 */
 		protected function _regenerateCache() {
 			// Suppression des éléments du cache.
-			$keys = array(
-				'structurereferente_list1_options',
-				'structurereferente_list_options',
-				'cohorte_structures_automatiques',
-				'referent_list_options',
-			);
-
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
+			// TODO: ModelCache::write( $cacheKey, ... ); dans toutes ces fonctions
+			/*$keys = array(
+				OK -> 'structurereferente_list1_options',
+				OK -> 'structurereferente_list_options', // TODO: dans Typeorient
+				OK -> 'cohorte_structures_automatiques',
+				OK -> 'referent_list_options',
+			);*/
+			$keys = ModelCache::read( $this->name );
+			if( !empty( $keys ) ) {
+				foreach( $keys as $key ) {
+					Cache::delete( $key );
+				}
 			}
 
 			// Regénération des éléments du cache.
@@ -479,6 +484,7 @@
 				$tmp  = $this->list1Options();
 				$success = !empty( $tmp ) && $success;
 
+				// TODO: le déplacer dans ce modèle ?
 				$tmp  = ClassRegistry::init( 'Cohorte' )->structuresAutomatiques();
 				$success = !empty( $tmp ) && $success;
 			}
@@ -492,10 +498,10 @@
 		 * @param boolean $created True if this save created a new record
 		 * @return void
 		 */
-		public function afterSave( $created ) {
-			parent::afterSave( $created );
-			$this->_regenerateCache();
-		}
+//		public function afterSave( $created ) {
+//			parent::afterSave( $created );
+//			$this->_regenerateCache();
+//		}
 
 		/**
 		 * Après une suppression, on regénère les données en cache.
@@ -503,10 +509,10 @@
 		 * @param boolean $created True if this save created a new record
 		 * @return void
 		 */
-		public function afterDelete() {
-			parent::afterDelete();
-			$this->_regenerateCache();
-		}
+//		public function afterDelete() {
+//			parent::afterDelete();
+//			$this->_regenerateCache();
+//		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.

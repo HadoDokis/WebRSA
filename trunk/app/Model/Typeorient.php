@@ -385,6 +385,7 @@
 				);
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Typeorient' ) );
 			}
 
 			return $results;
@@ -413,6 +414,7 @@
 				);
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Typeorient' ) );
 			}
 
 			return $results;
@@ -424,15 +426,16 @@
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			$keys = array(
-				'typeorient_list_options_cohortes93',
-				'typeorient_list_options_preorientation_cohortes93',
-				'structurereferente_list1_options',
-				'structurereferente_list_options',
-				'cohorte_structures_automatiques',
-				'referent_list_options',
-			);
+			/*$keys = array(
+				OK -> 'typeorient_list_options_cohortes93',
+				OK -> 'typeorient_list_options_preorientation_cohortes93',
+				OK -> 'structurereferente_list1_options',
+				OK -> 'structurereferente_list_options',
+				OK -> 'cohorte_structures_automatiques',
+				OK -> 'referent_list_options',
+			);*/
 
+			$keys = ModelCache::read( $this->name );
 			foreach( $keys as $key ) {
 				Cache::delete( $key );
 			}
@@ -466,20 +469,20 @@
 		 * @param type $created
 		 * @return type
 		 */
-		public function afterSave( $created ) {
-			parent::afterSave( $created );
-			$this->_regenerateCache();
-		}
+//		public function afterSave( $created ) {
+//			parent::afterSave( $created );
+//			$this->_regenerateCache();
+//		}
 
 		/**
 		 * On s'assure de nettoyer le cache en cas de suppression.
 		 *
 		 * @return type
 		 */
-		public function afterDelete() {
-			parent::afterDelete();
-			$this->_regenerateCache();
-		}
+//		public function afterDelete() {
+//			parent::afterDelete();
+//			$this->_regenerateCache();
+//		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.

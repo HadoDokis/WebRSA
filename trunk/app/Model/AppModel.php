@@ -480,5 +480,44 @@
 
 			return $options;
 		}
+
+		/**
+		 * Suppression des données du cache.
+		 *
+		 * INFO: on pourrait en faire un behavior / un plugin ?
+		 *
+		 * @return void
+		 */
+		protected function _clearModelCache() {
+			$keys = ModelCache::read( $this->name );
+			if( !empty( $keys ) ) {
+				foreach( $keys as $key ) {
+					Cache::delete( $key );
+					ModelCache::delete( $key );
+				}
+			}
+		}
+
+		/**
+		 * Après une sauvegarde, on supprime les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterSave( $created ) {
+			parent::afterSave( $created );
+			$this->_clearModelCache();
+		}
+
+		/**
+		 * Après une suppression, on supprime les données en cache.
+		 *
+		 * @param boolean $created True if this save created a new record
+		 * @return void
+		 */
+		public function afterDelete() {
+			parent::afterDelete();
+			$this->_clearModelCache();
+		}
 	}
 ?>
