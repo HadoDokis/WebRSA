@@ -66,6 +66,7 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
+			$this->set( 'printed',  ClassRegistry::init('Option')->printed() );
 
 			if( !empty( $this->request->data ) ) {
 				$search = $this->request->data['Search'];
