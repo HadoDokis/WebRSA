@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Actioncandidat.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Actioncandidat s'occupe de la gestion des fiches de candidature.
+	 *
+	 * @package app.Model
+	 */
 	class Actioncandidat extends AppModel
 	{
 		public $name = 'Actioncandidat';
@@ -255,7 +269,7 @@
 							).'
 						)';
             }
-            
+
             $actionscandidats = $this->find(
 				'list',
 				array(
@@ -346,53 +360,24 @@
 				);
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Actioncandidat' ) );
 			}
 
 			return $results;
 		}
-        
+
 		/**
 		 * Suppression et regénération du cache.
 		 *
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			$keys = array(
-				'actionscandidats_list_options',
-			);
-
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
-			$success = true;
-
-			$tmp  = $this->listOptions();
-			$success = !empty( $tmp ) && $success;
+			$success = ( $this->listOptions() !== false );
 
 			return $success;
-		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de modification.
-		 *
-		 * @param type $created
-		 * @return type
-		 */
-		public function afterSave( $created ) {
-			parent::afterSave( $created );
-			$this->_regenerateCache();
-		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de suppression.
-		 *
-		 * @return type
-		 */
-		public function afterDelete() {
-			parent::afterDelete();
-			$this->_regenerateCache();
 		}
 
 		/**

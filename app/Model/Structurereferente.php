@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Structurereferente.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Structurereferente s'occupe de la gestion des structures référentes.
+	 *
+	 * @package app.Model
+	 */
 	class Structurereferente extends AppModel
 	{
 		public $name = 'Structurereferente';
@@ -357,8 +371,9 @@
 
 		/**
 		 * Récupère la liste des structures référentes groupées par type d'orientation.
-		 * Cette liste est mise en cache, donc on se sert des fonctions de callback
-		 * afterSave et afterDelete pour supprimer et regénérer le cache.
+		 * Cette liste est mise en cache et on se sert de la classe ModelCache
+		 * pour savoir quelles clés de cache supprimer lorsque les données de ce
+		 * modèle changent.
 		 *
 		 * @return array
 		 */
@@ -459,60 +474,18 @@
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			// Suppression des éléments du cache.
-			// TODO: ModelCache::write( $cacheKey, ... ); dans toutes ces fonctions
-			/*$keys = array(
-				OK -> 'structurereferente_list1_options',
-				OK -> 'structurereferente_list_options', // TODO: dans Typeorient
-				OK -> 'cohorte_structures_automatiques',
-				OK -> 'referent_list_options',
-			);*/
-			$keys = ModelCache::read( $this->name );
-			if( !empty( $keys ) ) {
-				foreach( $keys as $key ) {
-					Cache::delete( $key );
-				}
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
 			$success = true;
 
 			if( $this->alias == 'Structurereferente' ) {
-				$tmp  = $this->listOptions();
-				$success = !empty( $tmp ) && $success;
-
-				$tmp  = $this->list1Options();
-				$success = !empty( $tmp ) && $success;
-
-				// TODO: le déplacer dans ce modèle ?
-				$tmp  = ClassRegistry::init( 'Cohorte' )->structuresAutomatiques();
-				$success = !empty( $tmp ) && $success;
+				$success = ( $this->listOptions() !== false )
+					&& ( $this->list1Options() !== false );
 			}
 
 			return $success;
 		}
-
-		/**
-		 * Après une sauvegarde, on regénère les données en cache.
-		 *
-		 * @param boolean $created True if this save created a new record
-		 * @return void
-		 */
-//		public function afterSave( $created ) {
-//			parent::afterSave( $created );
-//			$this->_regenerateCache();
-//		}
-
-		/**
-		 * Après une suppression, on regénère les données en cache.
-		 *
-		 * @param boolean $created True if this save created a new record
-		 * @return void
-		 */
-//		public function afterDelete() {
-//			parent::afterDelete();
-//			$this->_regenerateCache();
-//		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.

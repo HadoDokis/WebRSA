@@ -10,8 +10,8 @@
 	App::import( 'Sanitize' );
 
 	/**
-	 * La classe Gestionsanctionep58 fournit un traitement des filtres de recherche concernant la gestion des
-	 * sanctions émises par une EP du CG 58.
+	 * La classe Gestionsanctionep58 fournit un traitement des filtres de recherche
+	 * concernant la gestion des sanctions émises par une EP du CG 58.
 	 *
 	 * @package app.Model
 	 */
@@ -22,15 +22,7 @@
 		public $useTable = false;
 
 		public $actsAs = array(
-			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable',
-			'Conditionnable',/*
-			'Enumerable' => array(
-				'fields' => array(
-					'etatcommissionep'
-				)
-			),*/
+			'Conditionnable',
 			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
 				58 => array(
@@ -43,9 +35,15 @@
 		);
 
 		/**
-		*
-		*/
-
+		 * Traitement des critères du moteur de recherche.
+		 *
+		 * @param string $statutSanctionep
+		 * @param array $criteressanctionseps
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param mixed $lockedDossiers
+		 * @return array
+		 */
 		public function search( $statutSanctionep, $criteressanctionseps, $mesCodesInsee, $filtre_zone_geo, $lockedDossiers = null ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 			$Ep = ClassRegistry::init( 'Ep' );

@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Typeorient.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Typeorient s'occupe de la gestion des types d'orientation.
+	 *
+	 * @package app.Model
+	 */
 	class Typeorient extends AppModel
 	{
 		public $name = 'Typeorient';
@@ -426,63 +440,18 @@
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			/*$keys = array(
-				OK -> 'typeorient_list_options_cohortes93',
-				OK -> 'typeorient_list_options_preorientation_cohortes93',
-				OK -> 'structurereferente_list1_options',
-				OK -> 'structurereferente_list_options',
-				OK -> 'cohorte_structures_automatiques',
-				OK -> 'referent_list_options',
-			);*/
-
-			$keys = ModelCache::read( $this->name );
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
 			$success = true;
 
 			if( $this->alias == 'Typeorient' ) {
-				$tmp  = $this->listOptionsCohortes93();
-				$success = !empty( $tmp ) && $success;
-
-				$tmp  = $this->listOptionsPreorientationCohortes93();
-				$success = !empty( $tmp ) && $success;
-
-				$tmp  = $this->Structurereferente->listOptions();
-				$success = !empty( $tmp ) && $success;
-
-				$tmp  = $this->Structurereferente->list1Options();
-				$success = !empty( $tmp ) && $success;
-
-				$tmp  = ClassRegistry::init( 'Cohorte' )->structuresAutomatiques();
-				$success = !empty( $tmp ) && $success;
+				$success = ( $this->listOptionsCohortes93() !== false )
+					&& ( $this->listOptionsPreorientationCohortes93() !== false );
 			}
 
 			return $success;
 		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de modification.
-		 *
-		 * @param type $created
-		 * @return type
-		 */
-//		public function afterSave( $created ) {
-//			parent::afterSave( $created );
-//			$this->_regenerateCache();
-//		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de suppression.
-		 *
-		 * @return type
-		 */
-//		public function afterDelete() {
-//			parent::afterDelete();
-//			$this->_regenerateCache();
-//		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.

@@ -1,4 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Motifsortie.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Motifsortie s'occupe de la gestion des motifs de sortie liés aux
+	 * fiches de candidature.
+	 *
+	 * @package app.Model
+	 */
 	class Motifsortie extends AppModel
 	{
 		public $name = 'Motifsortie';
@@ -34,7 +49,7 @@
 				'with' => 'ActioncandidatMotifsortie'
 			)
         );
-        
+
 		public $hasMany = array(
 			'ActioncandidatPersonne' => array(
 				'className' => 'ActioncandidatPersonne',
@@ -50,7 +65,7 @@
 				'counterQuery' => ''
 			)
 		);
-        
+
 		/**
 		 * Renvoit une liste clé / valeur avec clé qui est l'id du motif de sortie
 		 * et la valeur qui est le name du motif de sortie.
@@ -72,53 +87,24 @@
 				);
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Motifsortie' ) );
 			}
 
 			return $results;
 		}
-        
+
 		/**
 		 * Suppression et regénération du cache.
 		 *
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			$keys = array(
-				'motifssortie_list_options',
-			);
-
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
-			$success = true;
-
-			$tmp  = $this->listOptions();
-			$success = !empty( $tmp ) && $success;
+			$success = ( $this->listOptions() !== false );
 
 			return $success;
-		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de modification.
-		 *
-		 * @param type $created
-		 * @return type
-		 */
-		public function afterSave( $created ) {
-			parent::afterSave( $created );
-			$this->_regenerateCache();
-		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de suppression.
-		 *
-		 * @return type
-		 */
-		public function afterDelete() {
-			parent::afterDelete();
-			$this->_regenerateCache();
 		}
 
 		/**

@@ -1,7 +1,21 @@
 <?php
+	/**
+	 * Code source de la classe AppModel.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'Model', 'Model' );
 	App::uses( 'Sanitize', 'Utility' );
 
+	/**
+	 * La classe AppModel est la classe parente de toutes les classes de modèle
+	 * de l'application.
+	 *
+	 * @package app.Model
+	 */
 	class AppModel extends Model
 	{
 		/**
