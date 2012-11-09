@@ -50,7 +50,7 @@
 		}
 		echo '<div>';
 		echo $this->Form->input( 'Bilanparcours66.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id') ) );
-		echo $this->Form->input( 'Bilanparcours66.user_id', array( 'type' => 'hidden', 'value' => $userConnected['User']['id'] ) );
+		echo $this->Form->input( 'Bilanparcours66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 		echo '</div>';
 	?>
 
@@ -297,6 +297,15 @@
 			echo $this->Xform->input( 'Bilanparcours66.nvstructurereferente_id', array( 'type' => 'hidden' ) );
 		}
 	?>
+
+	<fieldset>
+		<?php
+			/// Aucune proposition requise pour le bilan
+			$tmp = radioBilan( $this, 'Bilanparcours66.proposition', 'aucun', 'Aucune proposition' );
+			echo $xhtml->tag( 'h3', $tmp );
+			echo $xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'N' ) );
+		?>
+	</fieldset>
 
 	<fieldset>
 		<?php

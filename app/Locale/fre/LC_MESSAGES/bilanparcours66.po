@@ -67,6 +67,12 @@ msgstr "Aucun bilan de parcours présent"
 msgid "Bilansparcours66::add"
 msgstr "Ajout d'un bilan de parcours"
 
+msgid "Bilansparcours66::cancel"
+msgstr "Annulation du bilan de parcours"
+
+msgid "Bilanparcour66.motifannulation"
+msgstr "Raison d'annulation"
+
 msgid "Bilanparcours66.duree_engag"
 msgstr "Durée de la reconduction du contrat"
 
@@ -385,6 +391,9 @@ msgstr "Lors de la réalisation du bilan :"
 
 msgid "Bilanparcours66.observbenefcompterendu"
 msgstr "Compte rendu de l'audition (le cas échéant)"
+
+msgid "ENUM::PROPOSITION::aucun"
+msgstr "Aucune proposition"
 
 msgid "ENUM::PROPOSITION::audition"
 msgstr "Avec Saisine EPL Audition pour défaut d'insertion"

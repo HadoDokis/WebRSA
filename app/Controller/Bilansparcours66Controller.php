@@ -501,7 +501,8 @@
 							'contain' => array(
 								'Decisiondossierpcg66' => array(
 									'Decisionpdo',
-									'order' => array( 'Decisiondossierpcg66.datevalidation DESC' )
+// 									'order' => array( 'Decisiondossierpcg66.datevalidation DESC' )
+									'order' => array( 'Decisiondossierpcg66.datetransmissionop DESC' )
 								)
 							)
 						)
@@ -635,6 +636,9 @@
 						$success = $this->Bilanparcours66->save( $this->request->data ) && $success;
 					}
 				}
+				elseif ( ( $this->action == 'edit' ) && empty( $nvcontratinsertionId ) ) {
+					$success = $this->Bilanparcours66->save( $this->request->data );
+				}
 				elseif ( $this->action == 'add' ) {
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 				}
@@ -652,7 +656,7 @@
 					)
 				);
 
-				if( !empty( $contrat['Contratinsertion'] ) ) {
+				if( !empty( $contrat['Contratinsertion'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
 					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
 					$success = $this->{$this->modelClass}->Contratinsertion->updateAll(
 						array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
