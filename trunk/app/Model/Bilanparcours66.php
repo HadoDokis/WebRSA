@@ -482,7 +482,7 @@
 
 
 			// Recondution du contrat
-			if( isset( $data[$this->alias]['proposition'] ) && $data[$this->alias]['proposition'] == 'traitement' ) {
+			if( isset( $data[$this->alias]['proposition'] ) && in_array( $data[$this->alias]['proposition'], array( 'traitement', 'aucun' ) ) ){
 				$cleanedData = $data;
 				unset( $cleanedData['Saisinebilanparcoursep66'] );
 				return $this->maintien( $cleanedData );
@@ -512,131 +512,138 @@
 			$data[$this->alias]['positionbilan'] = 'traite';
 			$this->create( $data );
 			if( $success = $this->validates() ) {
-				$vxOrientstruct = array();
-				if( !empty( $data[$this->alias]['orientstruct_id'] ) ) {
-					$vxOrientstruct = $this->Orientstruct->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Orientstruct.id' => $data[$this->alias]['orientstruct_id']
-							),
-							'contain' => false
-						)
-					);
+				if( $data[$this->alias]['proposition'] == 'aucun' ) {
+					$this->create( $data );
+					$success = $this->save() && $success;
 				}
+				else{
+					// Recherche de l'ancienne orientation
+					$vxOrientstruct = array();
+					if( !empty( $data[$this->alias]['orientstruct_id'] ) ) {
+						$vxOrientstruct = $this->Orientstruct->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Orientstruct.id' => $data[$this->alias]['orientstruct_id']
+								),
+								'contain' => false
+							)
+						);
+					}
 
-				if( empty( $vxOrientstruct ) ) {
-					$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
-					return false;
-				} 
-				
-				if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
-					// Recherche de l'ancien contrat d'insertion
-					$vxContratinsertion = $this->Contratinsertion->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
-							),
-							'contain' => false
-						)
-					);
-
-					$vxCui = $this->Cui->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-								'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
-							),
-							'contain' => false,
-							'recursive' => -1
-						)
-					);
-
-// 					if( empty( $vxContratinsertion ) ) {
-// 						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-// 						return false;
-// 					}
-					if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
-						$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
+					if( empty( $vxOrientstruct ) ) {
+						$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
 						return false;
-					}
-				}
+					} 
+					
+					if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
+						// Recherche de l'ancien contrat d'insertion
+						$vxContratinsertion = $this->Contratinsertion->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
+								),
+								'contain' => false
+							)
+						);
 
-				if ( $data['Bilanparcours66']['changementrefsansep'] == 'O' ) {
-					list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
-					// Sauvegarde de la nouvelle orientation
-					$orientstruct = array(
-						'Orientstruct' => array(
-							'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-							'typeorient_id' => $typeorient_id,
-							'structurereferente_id' => $structurereferente_id,
-							'referent_id' => $vxOrientstruct['Orientstruct']['referent_id'],
-							'date_propo' => date( 'Y-m-d' ),
-							'date_valid' => date( 'Y-m-d' ),
-							'statut_orient' => 'Orienté',
-							'user_id' => $data['Bilanparcours66']['user_id']
-						)
-					);
-					$this->Orientstruct->create( $orientstruct );
-					$success = $this->Orientstruct->save() && $success;
-				}
-				else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
+						$vxCui = $this->Cui->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+								),
+								'contain' => false,
+								'recursive' => -1
+							)
+						);
 
-					$contratinsertion = $vxContratinsertion;
-					unset( $contratinsertion['Contratinsertion']['id'] );
-					$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
-					$contratinsertion['Contratinsertion']['df_ci'] = $data['Bilanparcours66']['dfreconductoncontrat'];
-					$contratinsertion['Contratinsertion']['duree_engag'] = $data['Bilanparcours66']['duree_engag'];
-
-					$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
-					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
-					$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
-
-					// La date de validation est à null afin de pouvoir modifier le contrat
-					$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
-					// La date de saisie du nouveau contrat est égale à la date du jour
-					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
-
-					unset($contratinsertion['Contratinsertion']['decision_ci']);
-					unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
-
-					$fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
-					foreach( $fields as $field ) {
-						unset( $contratinsertion['Contratinsertion'][$field] );
+	// 					if( empty( $vxContratinsertion ) ) {
+	// 						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
+	// 						return false;
+	// 					}
+						if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
+							$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
+							return false;
+						}
 					}
 
-                    // Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
-                    $nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
-                    $Option = ClassRegistry::init( 'Option' );
-                    $durees = $Option->duree_engag();
-                    $dureeEngagReconductionCER = Set::classicExtract( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
-                    $dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
+					if ( $data['Bilanparcours66']['changementrefsansep'] == 'O' ) {
+						list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
+						// Sauvegarde de la nouvelle orientation
+						$orientstruct = array(
+							'Orientstruct' => array(
+								'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+								'typeorient_id' => $typeorient_id,
+								'structurereferente_id' => $structurereferente_id,
+								'referent_id' => $vxOrientstruct['Orientstruct']['referent_id'],
+								'date_propo' => date( 'Y-m-d' ),
+								'date_valid' => date( 'Y-m-d' ),
+								'statut_orient' => 'Orienté',
+								'user_id' => $data['Bilanparcours66']['user_id']
+							)
+						);
+						$this->Orientstruct->create( $orientstruct );
+						$success = $this->Orientstruct->save() && $success;
+					}
+					else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
 
-                    debug(var_export($dureeEngagReconductionCER, true));
+						$contratinsertion = $vxContratinsertion;
+						unset( $contratinsertion['Contratinsertion']['id'] );
+						$contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
+						$contratinsertion['Contratinsertion']['df_ci'] = $data['Bilanparcours66']['dfreconductoncontrat'];
+						$contratinsertion['Contratinsertion']['duree_engag'] = $data['Bilanparcours66']['duree_engag'];
 
-                    if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 ){
-                        $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
-                        return false;
-                    }
-					$this->Contratinsertion->create( $contratinsertion );
-					$success = $this->Contratinsertion->save() && $success;
+						$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
+						$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
+						$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
 
-					$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
-					$data[$this->alias]['nvcontratinsertion_id'] = $this->Contratinsertion->id;
+						// La date de validation est à null afin de pouvoir modifier le contrat
+						$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
+						// La date de saisie du nouveau contrat est égale à la date du jour
+						$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
+
+						unset($contratinsertion['Contratinsertion']['decision_ci']);
+						unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
+
+						$fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
+						foreach( $fields as $field ) {
+							unset( $contratinsertion['Contratinsertion'][$field] );
+						}
+
+						// Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
+						$nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
+						$Option = ClassRegistry::init( 'Option' );
+						$durees = $Option->duree_engag();
+						$dureeEngagReconductionCER = Set::classicExtract( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
+						$dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
+
+// 						debug(var_export($dureeEngagReconductionCER, true));
+
+						if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 ){
+							$this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
+							return false;
+						}
+						$this->Contratinsertion->create( $contratinsertion );
+						$success = $this->Contratinsertion->save() && $success;
+
+						$data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
+						$data[$this->alias]['nvcontratinsertion_id'] = $this->Contratinsertion->id;
+					}
+
+					if( !empty( $this->validationErrors ) ) {
+						debug( $this->validationErrors );
+					}
+
+					$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
+					$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
+
+					$this->create( $data );
+					$success = $this->save() && $success;
 				}
-
-				if( !empty( $this->validationErrors ) ) {
-					debug( $this->validationErrors );
-				}
-
-				$data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
-				$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
-
-				$this->create( $data );
-				$success = $this->save() && $success;
 			}
 			else {
 				// S'il manque l'information "Bilan du parcours d'insertion", on supprime
@@ -791,16 +798,11 @@
 					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
 						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
 					}
-// 					else {
-// 						$data['Saisinebilanparcoursep66']['reorientation'] = 'reorientation';
-// 					}
+
 
 					$this->Saisinebilanparcoursep66->create( $data );
 					$success = $this->Saisinebilanparcoursep66->save() && $success;
 
-// debug($this->Saisinebilanparcoursep66->validationErrors);
-// debug($success);
-// die();
 				}
 			}
 			// Saisine audition
@@ -1279,7 +1281,7 @@
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
 				array(
-					'Persone' => array(
+					'Personne' => array(
 						'qual' => $Option->qual()
 					),
 					'Adresse' => array(
@@ -1295,9 +1297,6 @@
 				$modeleodt = 'Bilanparcours/bilanparcourspe.odt';
 			}
 
-// debug($data);
-// debug($options);
-// die();
 			return $this->ged( $data, $modeleodt, false, $options );
 		}
 
