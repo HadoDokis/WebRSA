@@ -88,6 +88,12 @@
 				if( $statutNonoriente == 'Nonoriente::isemploi' ) {
 					// FIXME: Historiqueetatpe::sqDerniere + historiqueetatspe.etat = \'inscription\'
 					$conditions['Historiqueetatpe.etat'] = 'inscription';
+					$conditions[] = 'Personne.id NOT IN (
+						SELECT nonorientes66.personne_id
+							FROM nonorientes66
+								WHERE
+									nonorientes66.personne_id = Personne.id
+						)';
 				}
 				else if( $statutNonoriente == 'Nonoriente::notisemploiaimprimer' ) {
 					$conditions[] = 'Personne.id NOT IN (
@@ -113,13 +119,7 @@
 									nonorientes66.personne_id = Personne.id
 						)';
 
-// 					$conditions['NOT'] = array( 'Historiqueetatpe.etat' => 'inscription' );
-					$conditions[] = array(
-						'OR' => array(
-							'Historiqueetatpe.id IS NULL',
-							'NOT' => array( 'Historiqueetatpe.etat' => 'inscription' )
-						)
-					);
+					$conditions[] = array( 'Nonoriente66.origine' => 'notisemploi' );
 				}
 				else if( $statutNonoriente == 'Nonoriente::notifaenvoyer' ) {
 					$conditions[] = 'Personne.id IN (
