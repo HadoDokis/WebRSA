@@ -1161,7 +1161,7 @@
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
 				array(
-					'Persone' => array(
+					'Personne' => array(
 						'qual' => $Option->qual()
 					),
 					'Adresse' => array(
