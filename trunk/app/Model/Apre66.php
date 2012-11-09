@@ -257,33 +257,46 @@
 		 */
 		public function getNotificationAprePdf( $apre_id ) {
 			$apre = $this->find(
-					'first', array(
-				'fields' => array_merge(
-						$this->fields(), $this->Personne->fields(), $this->Structurereferente->fields(), $this->Referent->fields(), $this->Aideapre66->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->fields(), $this->Personne->Foyer->Dossier->fields(), array(
-					'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
-					'( '.$this->Aideapre66->Typeaideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
-					$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Aideapre66->Themeapre66->fields(),
+						$this->Aideapre66->Typeaideapre66->fields(),
+						$this->Personne->fields(),
+						$this->Structurereferente->fields(),
+						$this->Referent->fields(),
+						$this->Aideapre66->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						array(
+							'( '.$this->Aideapre66->Pieceaide66->vfListePieces().' ) AS "Aideapre66__piecesaides66"',
+							'( '.$this->Aideapre66->Typeaideapre66->Piececomptable66->vfListePieces().' ) AS "Aideapre66__piecescomptables66"',
+							$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' )
 						)
-				),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				'conditions' => array(
-					"Apre66.id" => $apre_id,
-					'OR' => array(
-						'Adressefoyer.id IS NULL',
-						'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-					)
-				),
-				'contain' => false
-					)
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Aideapre66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Aideapre66->join( 'Themeapre66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Aideapre66->join( 'Typeaideapre66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(
+						"Apre66.id" => $apre_id,
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					'contain' => false
+				)
 			);
 
 			if( empty( $apre ) ) {
@@ -309,10 +322,11 @@
 
 			// On sauvagarde la date de notification si ce n'est pas déjà fait.
 			$this->updateAll(
-					array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ), array(
-				'"Apre66"."id"' => $apre_id,
-				'"Apre66"."datenotifapre" IS NULL'
-					)
+				array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ), 
+				array(
+					'"Apre66"."id"' => $apre_id,
+					'"Apre66"."datenotifapre" IS NULL'
+				)
 			);
 
 			// Construction du champ virtuel Structurereferente.adresse

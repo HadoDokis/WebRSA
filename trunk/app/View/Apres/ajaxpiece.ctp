@@ -36,7 +36,7 @@
 					<?php
 						echo $this->Default->subform(
 							array(
-								'Piececomptable66.Piececomptable66' => array( 'label' => 'Pièces comptables', 'multiple' => 'checkbox', 'options' => $piecescomptable, 'empty' => false )
+								'Piececomptable66.Piececomptable66' => array( 'label' => 'Cocher les pièces comptables à fournir', 'multiple' => 'checkbox', 'options' => $piecescomptable, 'empty' => false )
 							)
 						);
 					?>
