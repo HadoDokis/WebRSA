@@ -91,12 +91,12 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 		) ) );
 
 		$enabled = ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' );
-		if( $decisioncg['decision'] == 'maintien' ){
-			$enabled = false;
-		}
-		else{
-			$enabled = $enabled;
-		}
+// 		if( $decisioncg['decision'] == 'maintien' ){
+// 			$enabled = false;
+// 		}
+// 		else{
+// 			$enabled = $enabled;
+// 		}
 
 		$typeorientPrincipale = null;
 		if( in_array( @$decisioncg['Typeorient']['parentid'], $typeorientprincipaleSocial ) ) {

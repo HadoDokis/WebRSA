@@ -766,12 +766,18 @@
 
 			// Choix du modèle de document
 			$decision = $gedooo_data[$modeleDecisions]['decision'];
+			$proposition = $gedooo_data['Bilanparcours66']['proposition'];
 			if( $decision == 'maintien' ) {
-				if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'O' ) {
-					$modeleOdt  = "{$this->alias}/decision_maintien_avec_changement.odt";
+				if( $proposition != 'parcourspe' ) {
+					if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'O' ) {
+						$modeleOdt  = "{$this->alias}/decision_maintien_avec_changement.odt";
+					}
+					else if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'N' ) {
+						$modeleOdt  = "{$this->alias}/decision_maintien_sans_changement.odt";
+					}
 				}
-				else if( $gedooo_data[$modeleDecisions]['changementrefparcours'] == 'N' ) {
-					$modeleOdt  = "{$this->alias}/decision_maintien_sans_changement.odt";
+				else {
+					$modeleOdt  = "{$this->alias}/decision_maintien.odt";
 				}
 			}
 			else { // reorientation, reporte, annule
