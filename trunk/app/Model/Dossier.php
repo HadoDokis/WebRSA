@@ -292,8 +292,7 @@
 				$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) )
+				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) )
 			);
 
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
@@ -325,21 +324,14 @@
 				}
 			}
 
-
 			$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
-			if( !empty( $referent_id ) ) {
-				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
+			if( isset( $referent_id ) && !empty( $referent_id ) ) {
+				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
 
-				$conditions[] = 'Personne.id IN (
-									SELECT personnes_referents.personne_id
-										FROM personnes_referents
-											INNER JOIN personnes ON (
-												personnes_referents.personne_id = personnes.id
-											)
-										WHERE
-											personnes_referents.dfdesignation IS NULL
-											AND '.$conditionsReferent.'
-								)';
+				$conditions[] = array(
+					'PersonneReferent.dfdesignation IS NULL',
+					$conditionsReferent
+				);
 			}
 
 			$query = array(
@@ -366,8 +358,7 @@
 					'Adresse.codepos',
 					'Adresse.locaadr',
 					'Situationdossierrsa.etatdosrsa',
-					'Prestation.rolepers',
-					'PersonneReferent.referent_id'
+					'Prestation.rolepers'
 				),
 				'recursive' => -1,
 				'joins' => $joins,
@@ -375,6 +366,16 @@
 				'order' => array( 'Personne.nom ASC' ),
 				'conditions' => $conditions
 			);
+
+			if( isset( $referent_id ) && !empty( $referent_id ) ) {
+				$query['joins'][] = $this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
+				$query['fields'] = Set::merge(
+					$query['fields'],
+					array(
+						'PersonneReferent.referent_id'
+					)
+				);
+			}
 
 			return $query;
 		}
