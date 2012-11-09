@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Serviceinstructeur.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Serviceinstructeur s'occupe de la gestion des services instructeurs.
+	 *
+	 * @package app.Model
+	 */
 	class Serviceinstructeur extends AppModel
 	{
 		public $name = 'Serviceinstructeur';
@@ -241,6 +255,7 @@
 				);
 
 				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Serviceinstructeur' ) );
 			}
 
 			return $results;
@@ -394,44 +409,12 @@
 		 */
 		protected function _regenerateCache() {
 			// Suppression des éléments du cache.
-			$keys = array(
-				'serviceinstructeur_list_options_typec1',
-				'serviceinstructeur_list_options_typec0'
-			);
-
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
-			$success = true;
-
-			$tmp  = $this->listOptions();
-			$success = !empty( $tmp ) && $success;
+			$success = ( $this->listOptions() !== false );
 
 			return $success;
-		}
-
-		/**
-		 * Après une sauvegarde, on regénère les données en cache.
-		 *
-		 * @param boolean $created True if this save created a new record
-		 * @return void
-		 */
-		public function afterSave( $created ) {
-			parent::afterSave( $created );
-			$this->_regenerateCache();
-		}
-
-		/**
-		 * Après une suppression, on regénère les données en cache.
-		 *
-		 * @param boolean $created True if this save created a new record
-		 * @return void
-		 */
-		public function afterDelete() {
-			parent::afterDelete();
-			$this->_regenerateCache();
 		}
 
 		/**

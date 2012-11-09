@@ -1,21 +1,36 @@
 <?php
-App::import( 'Sanitize' );
+	/**
+	 * Code source de la classe Cohortefichecandidature66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Cohortefichecandidature66 s'occupe de la gestion du moteur de
+	 * recherche des cohortes de fiches de candidatures du CG 66.
+	 *
+	 * @package app.Model
+	 */
 	class Cohortefichecandidature66 extends AppModel
 	{
 		public $name = 'Cohortefichecandidature66';
 
 		public $useTable = false;
 
-		public $actsAs = array(
-			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable'
-		);
-
 		/**
-		*
-		*/
-
+		 * Traitement des critères du moteur de recherche.
+		 *
+		 * @param string $statutFiche
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param array $criteresfichescandidature
+		 * @param mixed $lockedDossiers
+		 * @return array
+		 */
 		public function search( $statutFiche, $mesCodesInsee, $filtre_zone_geo, $criteresfichescandidature, $lockedDossiers ) {
 			/// Conditions de base
 			$conditions = array(
@@ -245,8 +260,6 @@ App::import( 'Sanitize' );
 			);
 
 			return $query;
-
-
 		}
 	}
 ?>

@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Referent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Referent s'occupe de la gestion des référents.
+	 *
+	 * @package app.Model
+	 */
 	class Referent extends AppModel
 	{
 		public $name = 'Referent';
@@ -417,8 +431,9 @@
 
 		/**
 		 * Récupère la liste des référents groupés par structure référente
-		 * Cette liste est mise en cache, donc on se sert des fonctions de callback
-		 * afterSave et afterDelete pour supprimer et regénérer le cache.
+		 * Cette liste est mise en cache et on se sert de la classe ModelCache
+		 * pour savoir quelles clés de cache supprimer lorsque les données de ce
+		 * modèle changent.
 		 *
 		 * @return array
 		 */
@@ -449,7 +464,7 @@
 					)
 				);
 				Cache::write( $cacheKey, $results );
-				ModelCache::write( $cacheKey, array( 'Referent', 'Structurereferente' ) );
+				ModelCache::write( $cacheKey, array( 'Referent', 'Structurereferente', 'Typeorient' ) );
 			}
 			return $results;
 		}
@@ -460,40 +475,14 @@
 		 * @return boolean
 		 */
 		protected function _regenerateCache() {
-			$keys = ModelCache::read( $this->name );
-			foreach( $keys as $key ) {
-				Cache::delete( $key );
-			}
+			$this->_clearModelCache();
 
 			// Regénération des éléments du cache.
-			$success = true;
-
-			$tmp  = $this->listOptions();
-			$success = !empty( $tmp ) && $success;
+			$success = ( $this->listOptions() !== false )
+				&& ( $this->listOptionsParStructure() !== false );
 
 			return $success;
 		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de modification.
-		 *
-		 * @param type $created
-		 * @return type
-		 */
-//		public function afterSave( $created ) {
-//			parent::afterSave( $created );
-//			$this->_regenerateCache();
-//		}
-
-		/**
-		 * On s'assure de nettoyer le cache en cas de suppression.
-		 *
-		 * @return type
-		 */
-//		public function afterDelete() {
-//			parent::afterDelete();
-//			$this->_regenerateCache();
-//		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.
