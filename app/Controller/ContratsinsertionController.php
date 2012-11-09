@@ -462,7 +462,7 @@
                 $blockCumulCER66 = false;
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
                     // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs dépasse 24 mois
-                    if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) >= 24 ){
+                    if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) > 24 ){
                         $blockCumulCER66 = true;
                     }
                     $this->set( 'blockCumulCER66', $blockCumulCER66  );
@@ -512,7 +512,8 @@
 						),
 						'order' => 'Orientstruct.date_valid DESC',
 						'contain' => array(
-							'Typeorient'
+							'Typeorient',
+							'Structurereferente'
 						)
 					)
 				);
