@@ -53,6 +53,14 @@
 			$fields
 		)
 	);
+	
+	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par courriers' ).
+		$this->Default->subform(
+			array(
+				'Search.Defautinsertionep66.isimprime' => array( 'type' => 'select', 'options' => $printed, 'label' => 'Imprimé / Non imprimé', 'required' => false )
+			)
+		)
+	);
 
 	echo $this->Xform->end( __( 'Rechercher' ) );
 	// Résultats

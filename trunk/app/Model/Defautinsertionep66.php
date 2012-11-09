@@ -983,6 +983,7 @@
 						$this->Dossierep->fields(),
 						$this->Dossierep->Personne->fields(),
 						$this->Dossierep->Personne->Foyer->fields(),
+						$this->Dossierep->Personne->Foyer->Dossier->fields(),
 						$this->Dossierep->Personne->Foyer->Adressefoyer->fields(),
 						$this->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Bilanparcours66->fields(),
@@ -997,6 +998,7 @@
 						$this->join( 'Dossierep', array( 'type' => 'INNER' ) ),
 						$this->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 						$this->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
@@ -1018,7 +1020,7 @@
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
 				array(
-					'Persone' => array(
+					'Personne' => array(
 						'qual' => $Option->qual()
 					),
 					'Adresse' => array(
@@ -1242,11 +1244,25 @@
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
 			$conditions = array();
 
+			$date_impression = Set::extract( $params, 'Defautinsertionep66.isimprime' );
+			
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
-			$conditions[] = "Defautinsertionep66.dateimpressionconvoc IS NULL";
+			// Statut impression
+			if( !empty( $date_impression ) && in_array( $date_impression, array( 'I', 'N' ) ) ) {
+				if( $date_impression == 'I' ) {
+					$conditions[] = 'Defautinsertionep66.dateimpressionconvoc IS NOT NULL';
+				}
+				else {
+					$conditions[] = 'Defautinsertionep66.dateimpressionconvoc IS NULL';
+				}
+			}
+			else {
+				$conditions[] = "Defautinsertionep66.dateimpressionconvoc IS NULL";
+			}
+
 
 			$query = array(
 				'fields' => array(
