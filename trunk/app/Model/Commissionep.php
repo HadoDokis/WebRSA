@@ -937,6 +937,19 @@
 				$commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
 			}
 
+			$typeEp = $commissionep_data['Ep']['Regroupementep'];
+			if( Configure::read( 'Cg.departement' ) != 66 ) {
+				$pv = "pv.odt";
+			}
+			else {
+				if( $typeEp['saisinebilanparcoursep66'] != 'nontraite' ) {
+					$pv = "pv_parcours.odt";
+				}
+				else {
+					$pv = "pv_audition.odt";
+				}
+			}
+
 			return $this->ged(
 				array_merge(
 					array(
@@ -945,7 +958,7 @@
 					),
 					$presences
 				),
-				"{$this->alias}/pv.odt",
+				"{$this->alias}/{$pv}",
 				true,
 				$options
 			);
@@ -1288,16 +1301,22 @@
 
             $modele = null;
             if( Configure::read( 'Cg.departement' ) == 66 ) {
-                if( $convocation['Compositionregroupementep']['prioritaire'] == '1' ) {
-                    $modele = 'convocationep_participant_prioritaire.odt';
-                }
-                else {
-                    $modele = 'convocationep_participant_facultatif.odt';
-                }
+            	if( $commissionep['Ep']['Regroupementep']['saisinebilanparcoursep66'] == 'nontraite' ){
+					if( $convocation['Compositionregroupementep']['prioritaire'] == '1' ) {
+						$modele = 'convocationep_participant_prioritaire.odt';                
+					}
+					else {
+						$modele = 'convocationep_participant_facultatif.odt';
+					}
+				}
+				else {
+					$modele = 'convocationep_participant.odt';
+				}
             }
-            else {
+            else {            
                 $modele = 'convocationep_participant.odt';
             }
+
 //debug($modele);
 //die();
 			return $this->ged(
@@ -1609,6 +1628,20 @@
 				$options['Contratinsertion']['duree_engag'] = $options['Duree']['engag'] = ClassRegistry::init( 'Option' )->duree_engag_cg58();
 			}
 
+			$typeEp = $convocation['Commissionep']['Ep']['Regroupementep'];
+			if( Configure::read( 'Cg.departement' ) != 66 ) {
+				$ordredujourodt = "ordredujour_participant_".Configure::read( 'Cg.departement' );
+			}
+			else {
+				if( $typeEp['saisinebilanparcoursep66'] != 'nontraite' ) {
+					$ordredujourodt = "ordredujour_participant_parcours";
+				}
+				else {
+					$ordredujourodt = "ordredujour_participant_audition";
+				}
+				
+			}
+
 			return $this->ged(
 				array_merge(
 					array(
@@ -1618,7 +1651,7 @@
 					),
 					$reponses
 				),
-				"{$this->alias}/ordredujour_participant_".Configure::read( 'Cg.departement' ).".odt",
+				"{$this->alias}/{$ordredujourodt}.odt",
 				true,
 				$options
 			);
