@@ -10,7 +10,9 @@
 	App::uses( 'XShell', 'Console/Command' );
 
 	/**
-	 * La classe ChangematrixShell ...
+	 * La classe ChangematrixShell permet de générer un fichier "changematrix.html"
+	 * qui présente la date de dernière modification des fichiers controllers,
+	 * models et views pour chacun des modules.
 	 *
 	 * @package app.Console.Command
 	 */
@@ -105,7 +107,7 @@
 					if( $extract ) {
 						if( substr( $matches['file'], -1 ) != '/' ) {
 							// Controller
-							if( ( $matches['file'] != 'controllers/app_controller.php' ) && preg_match( '/^controllers\/([^\/]+)_controller.php$/', $matches['file'], $matches_controllers ) ) {
+							if( ( $matches['file'] != 'Controller/AppController.php' ) && preg_match( '/^Controller\/([^\/]+)Controller.php$/', $matches['file'], $matches_controllers ) ) {
 								$controllers[$matches_controllers[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
@@ -113,7 +115,7 @@
 							}
 
 							// Models
-							if( ( $matches['file'] != 'models/app_model.php' ) && preg_match( '/^models\/([^\/]+).php$/', $matches['file'], $matches_models ) ) {
+							if( ( $matches['file'] != 'Model/AppModel.php' ) && preg_match( '/^Model\/([^\/]+).php$/', $matches['file'], $matches_models ) ) {
 								$models[Inflector::pluralize( $matches_models[1] )] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
@@ -121,7 +123,7 @@
 							}
 
 							// Views
-							if( !preg_match( '/^views\/helpers\//', $matches['file'] ) && preg_match( '/^views\/([^\/]+)\/([^\/]+).ctp/', $matches['file'], $matches_views ) ) {
+							if( !preg_match( '/^View\/Helper\//', $matches['file'] ) && preg_match( '/^View\/([^\/]+)\/([^\/]+).ctp/', $matches['file'], $matches_views ) ) {
 								// Si n'existe pas ou est plus récent
 								if( !isset( $views[$matches_views[1]] ) ) {
 									$views[$matches_views[1]] = array( );
@@ -134,7 +136,7 @@
 
 							//**************************************************
 							// Behaviors
-							if( preg_match( '/^models\/behaviors\/([^\/]+).php$/', $matches['file'], $matches_behaviors ) ) {
+							if( preg_match( '/^Model\/Behavior\/([^\/]+).php$/', $matches['file'], $matches_behaviors ) ) {
 								$behaviors[$matches_behaviors[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
@@ -142,7 +144,7 @@
 							}
 
 							// Components
-							if( preg_match( '/^controllers\/components\/([^\/]+).php$/', $matches['file'], $matches_components ) ) {
+							if( preg_match( '/^Controller\/Component\/([^\/]+).php$/', $matches['file'], $matches_components ) ) {
 								$components[$matches_components[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
@@ -150,7 +152,7 @@
 							}
 
 							// Helpers
-							if( preg_match( '/^views\/helpers\/([^\/]+).php$/', $matches['file'], $matches_helpers ) ) {
+							if( preg_match( '/^View\/Helper\/([^\/]+).php$/', $matches['file'], $matches_helpers ) ) {
 								$helpers[$matches_helpers[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
@@ -159,7 +161,7 @@
 
 							//**************************************************
 							// Shells
-							if( preg_match( '/^Vendor\/shells\/([^\/]+).php$/', $matches['file'], $matches_shells ) ) {
+							if( preg_match( '/^Console\/Command\/([^\/]+).php$/', $matches['file'], $matches_shells ) ) {
 								$shells[$matches_shells[1]] = array(
 									'revision' => $matches['revision'],
 									'date' => $matches['date']
