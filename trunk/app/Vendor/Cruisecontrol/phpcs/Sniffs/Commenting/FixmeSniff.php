@@ -26,7 +26,7 @@
  * @version   Release: 1.3.0RC1
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class Webrsa_Sniffs_Commenting_FixmeSniff implements PHP_CodeSniffer_Sniff
+class Phpcs_Sniffs_Commenting_FixmeSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
