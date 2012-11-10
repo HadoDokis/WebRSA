@@ -2,7 +2,7 @@
 <!--
 @see https://pear.php.net/manual/en/package.php.php-codesniffer.annotated-ruleset.php
 -->
-<ruleset name="webrsa">
+<ruleset name="phpcs">
 	<description>Standards de codage pour WebRSA</description>
 	<rule ref="Generic.Commenting.Todo"/>
 	<rule ref="Generic.PHP.DeprecatedFunctions"/>
