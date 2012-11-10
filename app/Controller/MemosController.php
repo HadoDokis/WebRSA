@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Locale', 'Xform' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'Default' );
 
 		public $commeDroit = array(
 			'add' => 'Memos:edit'

@@ -2,9 +2,16 @@
     class Motifscersnonvalids66Controller extends AppController
     {
         public $name = 'Motifscersnonvalids66';
-        
+
         public $helpers = array( 'Default2' );
-        
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Motifscersnonvalids66:index',
 			'add' => 'Motifscersnonvalids66:edit'

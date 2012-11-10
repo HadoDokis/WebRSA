@@ -7,6 +7,13 @@
 		public $name = 'Visionneuses';
 		public $uses = array( 'Visionneuse','RejetHistorique');
 
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $paginate = array('limit'=>10,'order'=>'Visionneuse.dtdeb DESC');
 
 		public function index() {

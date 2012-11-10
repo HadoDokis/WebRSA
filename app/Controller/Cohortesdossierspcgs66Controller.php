@@ -38,6 +38,7 @@
 					'atransmettre' => array( 'filter' => 'Search' )
 				)
 			),
+			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'Cohortes' => array(
 				'enattenteaffectation',

@@ -3,6 +3,13 @@
 	{
 		public $name = 'Piecescomptables66';
 
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Piecescomptables66:index',
 			'add' => 'Piecescomptables66:edit'

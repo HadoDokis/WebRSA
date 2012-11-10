@@ -2,7 +2,14 @@
 	class Themesapres66Controller extends AppController
 	{
 		public $name = 'Themesapres66';
-		
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Themesapres66:index',
 			'add' => 'Themesapres66:edit'

@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'Default' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',

@@ -2,12 +2,12 @@
     class Decisionscuis66Controller extends AppController
     {
         public $name = 'Decisionscuis66';
-        
+
         public $uses = array( 'Decisioncui66', 'Option' );
-        
+
         public $helpers = array( 'Default2', 'Default' );
-        public $components = array( 'Jetons2' );
-        
+        public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo' );
+
         protected function _setOptions() {
 			$options = $this->Decisioncui66->enums();
 
@@ -62,7 +62,7 @@
 				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 		}
-		
+
 		/** ********************************************************************
 		*
 		*** *******************************************************************/
@@ -101,11 +101,11 @@
 					)
 				);
 				$this->set( 'decisioncui66', $decisioncui66 );
-				
+
 				$cui_id = Set::classicExtract( $decisioncui66, 'Decisioncui66.cui_id' );
 			}
-			
-						
+
+
 			// CUI en lien avec la proposition
 			$cui = $this->Decisioncui66->Cui->find(
 				'first',
@@ -120,12 +120,12 @@
 
 
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-			
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
 
-			
+
 			// Récupération des avis proposés sur le CUI
 			$proposdecisionscuis66 = $this->Decisioncui66->Cui->Propodecisioncui66->find(
 				'all',
@@ -138,24 +138,24 @@
 				)
 			);
 			$this->set( compact( 'proposdecisionscuis66' ) );
-			
+
 			// On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
 
-						
+
 			$dossier_id = $this->Decisioncui66->Cui->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-            
+
             $this->Jetons2->get( $dossier_id );
-            
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
                 $this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'decisionscuis66', 'action' => 'decisioncui', $cui_id ) );
 			}
 
-			
+
 			if ( !empty( $this->request->data ) ) {
                 $this->Decisioncui66->begin();
 
@@ -180,12 +180,12 @@
 					$this->request->data = $decisioncui66;
 				}
 			}
-			
+
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( 'add_edit' );
         }
-       
+
 		/**
 		*
 		*/
@@ -194,7 +194,7 @@
 			$this->Default->delete( $id );
 		}
 
-		
+
 		/**
 		 * Imprime la notification au bénéficiaire pour le CUI.
 		 *

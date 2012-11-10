@@ -21,7 +21,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Session', 'Auth', 'Acl', 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Session', 'Auth', 'Acl' );
 
 		/**
 		 * Helpers utilisés

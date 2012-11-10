@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Default2', 'Default' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo' );
 
 		protected function _setOptions() {
 			$options = $this->Propodecisioncui66->enums();

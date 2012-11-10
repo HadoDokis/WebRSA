@@ -2,9 +2,16 @@
     class Piecesmodelestypescourrierspcgs66Controller extends AppController
     {
         public $name = 'Piecesmodelestypescourrierspcgs66';
-        
+
         public $helpers = array( 'Default2' );
-        
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Piecesmodelestypescourrierspcgs66:index',
 			'add' => 'Piecesmodelestypescourrierspcgs66:edit'

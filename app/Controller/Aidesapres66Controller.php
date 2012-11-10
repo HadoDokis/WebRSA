@@ -5,6 +5,8 @@
 		public $name = 'Aidesapres66';
 		public $uses = array( 'Aideapre66', 'Themeapre66', 'Pieceaide66' );
 
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Aidesapres66:index',
 			'add' => 'Aidesapres66:edit'

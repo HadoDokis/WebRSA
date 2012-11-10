@@ -2,12 +2,12 @@
     class Suspensionscuis66Controller extends AppController
     {
         public $name = 'Suspensionscuis66';
-        
+
         public $uses = array( 'Suspensioncui66', 'Option' );
-        
+
         public $helpers = array( 'Default2', 'Default' );
-        public $components = array( 'Jetons2' );
-        
+        public $components = array( 'Jetons2', 'Default' );
+
         protected function _setOptions() {
 			$options = $this->Suspensioncui66->enums();
 
@@ -61,8 +61,8 @@
 				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 		}
-		
-			
+
+
 		/** ********************************************************************
 		*
 		*** *******************************************************************/
@@ -101,11 +101,11 @@
 					)
 				);
 				$this->set( 'decisioncui66', $suspensioncui66 );
-				
+
 				$cui_id = Set::classicExtract( $suspensioncui66, 'Suspensioncui66.cui_id' );
 			}
-			
-						
+
+
 			// CUI en lien avec la proposition
 			$cui = $this->Suspensioncui66->Cui->find(
 				'first',
@@ -120,7 +120,7 @@
 
 
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-			
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
@@ -131,16 +131,16 @@
 
             $dossier_id = $this->Suspensioncui66->Cui->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-            
+
             $this->Jetons2->get( $dossier_id );
-            
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
                 $this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'suspensionscuis66', 'action' => 'index', $cui_id ) );
 			}
-            
-			
+
+
 			if ( !empty( $this->request->data ) ) {
                 $this->Suspensioncui66->begin();
 				if( $this->Suspensioncui66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
@@ -164,12 +164,12 @@
 					$this->request->data = $suspensioncui66;
 				}
 			}
-			
+
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( 'add_edit' );
         }
-		
+
 		/**
 		*
 		*/

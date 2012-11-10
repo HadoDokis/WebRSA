@@ -2,12 +2,13 @@
     class Accompagnementscuis66Controller extends AppController
     {
         public $name = 'Accompagnementscuis66';
-        
+
         public $uses = array( 'Accompagnementcui66', 'Option' );
-        
+
         public $helpers = array( 'Default2', 'Default' );
-        public $components = array( 'Jetons2' );
-        
+
+        public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo' );
+
         protected function _setOptions() {
 			$options = $this->Accompagnementcui66->enums();
 
@@ -18,7 +19,7 @@
 			);
 			$typevoie = $this->Option->typevoie();
 			$options = Set::insert( $options, 'typevoie', $typevoie );
-			
+
 			$secteursactivites = $this->Accompagnementcui66->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
 					'list',
 					array(
@@ -27,7 +28,7 @@
 					)
 				);
 			$this->set( 'secteursactivites', $secteursactivites );
-			
+
 			$codesromemetiersdsps66 = $this->Accompagnementcui66->Cui->Personne->	Dsp->Libderact66Metier->find(
 					'all',
 					array(
@@ -38,7 +39,7 @@
 			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
 				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
 			}
-			
+
 			$this->set( 'options', $options );
 		}
 
@@ -80,8 +81,8 @@
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 
 		}
-		
-		
+
+
 		/** ********************************************************************
 		*
 		*** *******************************************************************/
@@ -120,11 +121,11 @@
 					)
 				);
 				$this->set( 'decisioncui66', $accompagnementcui66 );
-				
+
 				$cui_id = Set::classicExtract( $accompagnementcui66, 'Accompagnementcui66.cui_id' );
 			}
-			
-						
+
+
 			// CUI en lien avec la proposition
 			$cui = $this->Accompagnementcui66->Cui->find(
 				'first',
@@ -139,12 +140,12 @@
 
 
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-			
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
 
-			
+
 			// On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
@@ -155,7 +156,7 @@
 			// On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
-			
+
             $this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
@@ -163,7 +164,7 @@
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
 			}
-            
+
 			if ( !empty( $this->request->data ) ) {
                 $this->Accompagnementcui66->begin();
 
@@ -188,12 +189,12 @@
 					$this->request->data = $accompagnementcui66;
 				}
 			}
-			
+
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( 'add_edit' );
         }
-        
+
 
 		/**
 		 * Imprime un document pour les périodes d'immersion liées au CUI.
@@ -212,8 +213,8 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-        
-        
+
+
 		/**
 		*
 		*/
