@@ -2,7 +2,14 @@
 	class Piecesaides66Controller extends AppController
 	{
 		public $name = 'Piecesaides66';
-		
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Piecesaides66:index',
 			'add' => 'Piecesaides66:edit'

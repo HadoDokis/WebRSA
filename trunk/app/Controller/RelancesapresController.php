@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Locale', 'Csv',  'Xform', 'Xhtml' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'

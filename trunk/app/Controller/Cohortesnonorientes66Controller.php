@@ -34,6 +34,7 @@
 				'isemploi',
 				'notisemploi',
 			),
+			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'Search.Prg' => array(
 				'actions' => array(

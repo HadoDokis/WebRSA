@@ -2,9 +2,16 @@
     class Typesrsapcgs66Controller extends AppController
     {
         public $name = 'Typesrsapcgs66';
-        
+
         public $helpers = array( 'Default2' );
-        
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Typesrsapcgs66:index',
 			'add' => 'Typesrsapcgs66:edit'
@@ -24,7 +31,7 @@
 // 						'COUNT("Aideapre66"."id") AS "Typersapcg66__occurences"',
 					),
 					'contain' => false,
-// 					'joins' => array( 
+// 					'joins' => array(
 // 						$this->Typersapcg66->join( 'Aideapre66' ),
 // 						$this->Typersapcg66->join( 'Themeapre66' ),
 // 					),

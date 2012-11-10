@@ -2,11 +2,18 @@
     class Typesaidesapres66Controller extends AppController
     {
         public $name = 'Typesaidesapres66';
-        
+
         public $helpers = array( 'Default', 'Default2' );
 
         public $uses = array( 'Typeaideapre66', 'Themeapre66', 'Pieceaide66', 'Piececomptable66' );
-        
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Typesaidesapres66:index',
 			'add' => 'Typesaidesapres66:edit'
@@ -56,7 +63,7 @@
 
 
 //         public function index() {
-// 
+//
 // 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
 // // 			debug( $this->Typeaideapre66->occurences() );
 // 			$queryData = array(
@@ -73,7 +80,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'typesaidesapres66', 'action' => 'index' ) );
 			}
-            
+
 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
 
 			$queryData = array(
@@ -85,7 +92,7 @@
 						'Themeapre66.name',
 						'COUNT("Aideapre66"."id") AS "Typeaideapre66__occurences"',
 					),
-					'joins' => array( 
+					'joins' => array(
 						$this->Typeaideapre66->join( 'Aideapre66' ),
 						$this->Typeaideapre66->join( 'Themeapre66' ),
 					),

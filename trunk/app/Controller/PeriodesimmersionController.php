@@ -20,7 +20,7 @@
 		public $name = 'Periodesimmersion';
 		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2', 'Default' );
 		public $aucunDroit = array( 'gedooo' );
 		public $commeDroit = array(
 			'view' => 'Periodesimmersion:index',

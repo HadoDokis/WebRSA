@@ -2,9 +2,16 @@
     class Typescourrierspcgs66Controller extends AppController
     {
         public $name = 'Typescourrierspcgs66';
-        
+
         public $helpers = array( 'Default2' );
-        
+
+		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Default' );
+
 		public $commeDroit = array(
 			'view' => 'Typescourrierspcgs66:index',
 			'add' => 'Typescourrierspcgs66:edit'

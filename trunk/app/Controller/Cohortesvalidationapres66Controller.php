@@ -51,6 +51,7 @@
 					)
 				)
 			),
+			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'Cohortes' => array(
 				'apresavalider',

@@ -23,6 +23,13 @@
 		public $helpers = array( 'Appchecks.Checks', 'Default2', 'Default' );
 
 		/**
+		 * Components utilisés par ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $components = array( 'Gedooo.Gedooo' );
+
+		/**
 		 * Vérifications concernant Apache:
 		 *	- la version utilisée
 		 *	- les modules nécessaires
