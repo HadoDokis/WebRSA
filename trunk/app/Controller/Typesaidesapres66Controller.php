@@ -23,7 +23,7 @@
         *
         */
 
-        function beforeFilter() {
+        public function beforeFilter() {
             $return = parent::beforeFilter();
 
             $options = array();
@@ -127,7 +127,7 @@
         *
         */
 
-        function _add_edit(){
+        protected function _add_edit(){
             $args = func_get_args();
 
             $this->Default->{$this->action}( $args );

@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source du modèle Histochoixcer93.
+	 * Fichier source de la classe Histochoixcer93.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,7 +9,7 @@
 	 */
 
 	/**
-	 * Classe Histochoixcer93.
+	 * La classe Histochoixcer93 ...
 	 *
 	 * @package app.Model
 	 */

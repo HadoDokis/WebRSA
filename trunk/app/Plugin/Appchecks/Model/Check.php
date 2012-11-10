@@ -286,7 +286,7 @@
 						$testValue = str_replace( ' ', '%20', $testValue );
 					}
 				}
-				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !call_user_method_array ( $rule, $Xvalidation, Set::merge( array( $testValue ), $ruleParams ) ) ) ) {
+				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !call_user_func_array( array( $Xvalidation, $rule ), Set::merge( array( $testValue ), $ruleParams ) ) ) ) {
 					$message = "Validate::{$rule}";
 					$sprintfParams = Set::merge( array( __( $message ) ), $ruleParams );
 					for( $i = 1 ; ( $i <= count( $sprintfParams ) - 1 ) ; $i++ ) {

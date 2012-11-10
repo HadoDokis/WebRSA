@@ -1,12 +1,12 @@
 <?php
 
-	class SituationspdosController extends AppController 
+	class SituationspdosController extends AppController
 	{
 		public $name = 'Situationspdos';
 		public $uses = array( 'Situationpdo', 'Propopdo', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
 		public $components = array( 'Default' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Situationspdos:index',
 			'add' => 'Situationspdos:edit'
@@ -60,7 +60,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 // 			$this->_setOptions();
 			$this->Default->{$this->action}( $args );

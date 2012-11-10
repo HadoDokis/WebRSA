@@ -8,7 +8,7 @@
 	<h1>Insertion d'une nouvelle demande de RSA</h1>
 	<h2>Étape 3: ressources allocataire</h2>
 
-	<?php include( $this->__paths[0].'ressources/_form.ctp' ); /* FIXME */?>
+	<?php require_once( APP.DS.'View'.DS.'Ressources'.DS.'_form.ctp' );?>
 
 	<div class="submit">
 		<?php echo $this->Form->submit( '< Précédent', array( 'name' => 'Previous', 'div' => false ) );?>

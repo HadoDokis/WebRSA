@@ -222,35 +222,9 @@
 	App::uses( 'ModelCache', 'Model/Datasource' );
 
 	/**
-	 * Retourne la version de CakePHP utilisée.
-	 *
-	 * @todo basics.php
-	 *
-	 * @return string
-	 */
-	function core_version() {
-		$versionData = explode( "\n", file_get_contents( ROOT.DS.'lib'.DS.'Cake'.DS.'VERSION.txt' ) );
-		$version = explode( '.', $versionData[count( $versionData ) - 1] );
-		return implode( '.', $version );
-	}
-
-	/**
-	 * Retourne la version de WebRSA utilisée.
-	 *
-	 * @todo basics.php
-	 *
-	 * @return string
-	 */
-	function app_version() {
-		$versionData = explode( "\n", file_get_contents( ROOT.DS.'app'.DS.'VERSION.txt' ) );
-		$version = explode( '.', $versionData[count( $versionData ) - 1] );
-		return implode( '.', $version );
-	}
-
-	/**
 	 * Paramétrage iconv.
 	 */
-	iconv_set_encoding("input_encoding", "UTF-8");
-	iconv_set_encoding("output_encoding", "UTF-8");
-	iconv_set_encoding("internal_encoding", "UTF-8");
+	iconv_set_encoding( 'input_encoding', Configure::read( 'App.encoding' ) );
+	iconv_set_encoding( 'output_encoding', Configure::read( 'App.encoding' ) );
+	iconv_set_encoding( 'internal_encoding', Configure::read( 'App.encoding' ) );
 ?>

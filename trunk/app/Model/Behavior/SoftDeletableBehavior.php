@@ -25,7 +25,7 @@
 		 * @var array
 		 * @access private
 		 */
-		var $__settings = array();
+		private $__settings = array( );
 
 		/**
 		 * Initiate behaviour for the model using settings.
@@ -34,22 +34,19 @@
 		 * @param array $settings Settings to override for model.
 		 * @access public
 		 */
-		function setup( Model $model, $settings = array())
-		{
-			$default = array('field' => 'deleted', 'field_date' => 'deleted_date', 'delete' => true, 'find' => true);
+		public function setup( Model $model, $settings = array( ) ) {
+			$default = array( 'field' => 'deleted', 'field_date' => 'deleted_date', 'delete' => true, 'find' => true );
 
-			if (!isset($this->__settings[$model->alias]))
-			{
+			if( !isset( $this->__settings[$model->alias] ) ) {
 				$this->__settings[$model->alias] = $default;
 			}
 
-			$options = array();
-			if ( is_array( $settings ) )
-			{
+			$options = array( );
+			if( is_array( $settings ) ) {
 				$options = $settings;
 			}
 
-			$this->__settings[$model->alias] = am($this->__settings[$model->alias], $options);
+			$this->__settings[$model->alias] = am( $this->__settings[$model->alias], $options );
 		}
 
 		/**
@@ -60,39 +57,33 @@
 		 * @return boolean Set to true to continue with delete, false otherwise
 		 * @access public
 		 */
-		function beforeDelete( Model $model, $cascade = true)
-		{
-			if ($this->__settings[$model->alias]['delete'] && $model->hasField($this->__settings[$model->alias]['field']))
-			{
+		public function beforeDelete( Model $model, $cascade = true ) {
+			if( $this->__settings[$model->alias]['delete'] && $model->hasField( $this->__settings[$model->alias]['field'] ) ) {
 				$attributes = $this->__settings[$model->alias];
 				$id = $model->id;
 
-				$data = array($model->alias => array(
-					$attributes['field'] => 1
-				));
+				$data = array( $model->alias => array(
+						$attributes['field'] => 1
+						) );
 
-				if (isset($attributes['field_date']) && $model->hasField($attributes['field_date']))
-				{
-					$data[$model->alias][$attributes['field_date']] = date('Y-m-d H:i:s');
+				if( isset( $attributes['field_date'] ) && $model->hasField( $attributes['field_date'] ) ) {
+					$data[$model->alias][$attributes['field_date']] = date( 'Y-m-d H:i:s' );
 				}
 
-				foreach(am(array_keys($data[$model->alias]), array('field', 'field_date', 'find', 'delete')) as $field)
-				{
-					unset($attributes[$field]);
+				foreach( am( array_keys( $data[$model->alias] ), array( 'field', 'field_date', 'find', 'delete' ) ) as $field ) {
+					unset( $attributes[$field] );
 				}
 
-				if (!empty($attributes))
-				{
-					$data[$model->alias] = am($data[$model->alias], $attributes);
+				if( !empty( $attributes ) ) {
+					$data[$model->alias] = am( $data[$model->alias], $attributes );
 				}
 
 				$model->id = $id;
-				$deleted = $model->save($data, false, array_keys($data[$model->alias]));
+				$deleted = $model->save( $data, false, array_keys( $data[$model->alias] ) );
 
-				if ($deleted && $cascade)
-				{
-					$model->_deleteDependent($id, $cascade);
-					$model->_deleteLinks($id);
+				if( $deleted && $cascade ) {
+					$model->_deleteDependent( $id, $cascade );
+					$model->_deleteLinks( $id );
 				}
 
 				return false;
@@ -110,16 +101,15 @@
 		 * @return boolean Result of the operation.
 		 * @access public
 		 */
-		function hardDelete( Model $model, $id, $cascade = true)
-		{
+		public function hardDelete( Model $model, $id, $cascade = true ) {
 			$onFind = $this->__settings[$model->alias]['find'];
 			$onDelete = $this->__settings[$model->alias]['delete'];
-			$this->enableSoftDeletable($model, false);
+			$this->enableSoftDeletable( $model, false );
 
-			$deleted = $model->del($id, $cascade);
+			$deleted = $model->del( $id, $cascade );
 
-			$this->enableSoftDeletable($model, 'delete', $onDelete);
-			$this->enableSoftDeletable($model, 'find', $onFind);
+			$this->enableSoftDeletable( $model, 'delete', $onDelete );
+			$this->enableSoftDeletable( $model, 'find', $onFind );
 
 			return $deleted;
 		}
@@ -132,20 +122,18 @@
 		 * @return boolean Result of the operation.
 		 * @access public
 		 */
-		function purge( Model $model, $cascade = true)
-		{
+		public function purge( Model $model, $cascade = true ) {
 			$purged = false;
 
-			if ($model->hasField($this->__settings[$model->alias]['field']))
-			{
+			if( $model->hasField( $this->__settings[$model->alias]['field'] ) ) {
 				$onFind = $this->__settings[$model->alias]['find'];
 				$onDelete = $this->__settings[$model->alias]['delete'];
-				$this->enableSoftDeletable($model, false);
+				$this->enableSoftDeletable( $model, false );
 
-				$purged = $model->deleteAll(array($this->__settings[$model->alias]['field'] => '1'), $cascade);
+				$purged = $model->deleteAll( array( $this->__settings[$model->alias]['field'] => '1' ), $cascade );
 
-				$this->enableSoftDeletable($model, 'delete', $onDelete);
-				$this->enableSoftDeletable($model, 'find', $onFind);
+				$this->enableSoftDeletable( $model, 'delete', $onDelete );
+				$this->enableSoftDeletable( $model, 'find', $onFind );
 			}
 
 			return $purged;
@@ -160,39 +148,34 @@
 		 * @return boolean Result of the operation.
 		 * @access public
 		 */
-		function undelete( Model $model, $id = null, $attributes = array())
-		{
-			if ($model->hasField($this->__settings[$model->alias]['field']))
-			{
-				if (empty($id))
-				{
+		public function undelete( Model $model, $id = null, $attributes = array( ) ) {
+			if( $model->hasField( $this->__settings[$model->alias]['field'] ) ) {
+				if( empty( $id ) ) {
 					$id = $model->id;
 				}
 
-				$data = array($model->alias => array(
-					$model->primaryKey => $id,
-					$this->__settings[$model->alias]['field'] => '0'
-				));
+				$data = array( $model->alias => array(
+						$model->primaryKey => $id,
+						$this->__settings[$model->alias]['field'] => '0'
+						) );
 
-				if (isset($this->__settings[$model->alias]['field_date']) && $model->hasField($this->__settings[$model->alias]['field_date']))
-				{
+				if( isset( $this->__settings[$model->alias]['field_date'] ) && $model->hasField( $this->__settings[$model->alias]['field_date'] ) ) {
 					$data[$model->alias][$this->__settings[$model->alias]['field_date']] = null;
 				}
 
-				if (!empty($attributes))
-				{
-					$data[$model->alias] = am($data[$model->alias], $attributes);
+				if( !empty( $attributes ) ) {
+					$data[$model->alias] = am( $data[$model->alias], $attributes );
 				}
 
 				$onFind = $this->__settings[$model->alias]['find'];
 				$onDelete = $this->__settings[$model->alias]['delete'];
-				$this->enableSoftDeletable($model, false);
+				$this->enableSoftDeletable( $model, false );
 
 				$model->id = $id;
-				$result = $model->save($data, false, array_keys($data[$model->alias]));
+				$result = $model->save( $data, false, array_keys( $data[$model->alias] ) );
 
-				$this->enableSoftDeletable($model, 'find', $onFind);
-				$this->enableSoftDeletable($model, 'delete', $onDelete);
+				$this->enableSoftDeletable( $model, 'find', $onFind );
+				$this->enableSoftDeletable( $model, 'delete', $onDelete );
 
 				return ($result !== false);
 			}
@@ -208,21 +191,17 @@
 		 * @param boolean $enable If specified method should be overriden.
 		 * @access public
 		 */
-		function enableSoftDeletable( Model $model, $methods, $enable = true)
-		{
-			if (is_bool($methods))
-			{
+		public function enableSoftDeletable( Model $model, $methods, $enable = true ) {
+			if( is_bool( $methods ) ) {
 				$enable = $methods;
-				$methods = array('find', 'delete');
+				$methods = array( 'find', 'delete' );
 			}
 
-			if (!is_array($methods))
-			{
-				$methods = array($methods);
+			if( !is_array( $methods ) ) {
+				$methods = array( $methods );
 			}
 
-			foreach($methods as $method)
-			{
+			foreach( $methods as $method ) {
 				$this->__settings[$model->alias][$method] = $enable;
 			}
 		}
@@ -235,62 +214,51 @@
 		 * @return mixed Set to false to abort find operation, or return an array with data used to execute query
 		 * @access public
 		 */
-		function beforeFind( Model $model, $queryData)
-		{
-			if ($this->__settings[$model->alias]['find'] && $model->hasField($this->__settings[$model->alias]['field']))
-			{
-				$Db =  ConnectionManager::getDataSource($model->useDbConfig);
+		public function beforeFind( Model $model, $queryData ) {
+			if( $this->__settings[$model->alias]['find'] && $model->hasField( $this->__settings[$model->alias]['field'] ) ) {
+				$Db = ConnectionManager::getDataSource( $model->useDbConfig );
 				$include = false;
 
-				if (!empty($queryData['conditions']) && is_string($queryData['conditions']))
-				{
+				if( !empty( $queryData['conditions'] ) && is_string( $queryData['conditions'] ) ) {
 					$include = true;
 
 					$fields = array(
-						$Db->name($model->alias) . '.' . $Db->name($this->__settings[$model->alias]['field']),
-						$Db->name($this->__settings[$model->alias]['field']),
-						$model->alias . '.' . $this->__settings[$model->alias]['field'],
+						$Db->name( $model->alias ).'.'.$Db->name( $this->__settings[$model->alias]['field'] ),
+						$Db->name( $this->__settings[$model->alias]['field'] ),
+						$model->alias.'.'.$this->__settings[$model->alias]['field'],
 						$this->__settings[$model->alias]['field']
 					);
 
-					foreach($fields as $field)
-					{
-						if (preg_match('/^' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions']) || preg_match('/\\x20+' . preg_quote($field) . '[\s=!]+/i', $queryData['conditions']))
-						{
+					foreach( $fields as $field ) {
+						if( preg_match( '/^'.preg_quote( $field ).'[\s=!]+/i', $queryData['conditions'] ) || preg_match( '/\\x20+'.preg_quote( $field ).'[\s=!]+/i', $queryData['conditions'] ) ) {
 							$include = false;
 							break;
 						}
 					}
 				}
-				else if (empty($queryData['conditions']) || (!in_array($this->__settings[$model->alias]['field'], array_keys($queryData['conditions'])) && !in_array($model->alias . '.' . $this->__settings[$model->alias]['field'], array_keys($queryData['conditions']))))
-				{
+				else if( empty( $queryData['conditions'] ) || (!in_array( $this->__settings[$model->alias]['field'], array_keys( $queryData['conditions'] ) ) && !in_array( $model->alias.'.'.$this->__settings[$model->alias]['field'], array_keys( $queryData['conditions'] ) )) ) {
 					$include = true;
 				}
 
-				if ($include)
-				{
-					if (empty($queryData['conditions']))
-					{
-						$queryData['conditions'] = array();
+				if( $include ) {
+					if( empty( $queryData['conditions'] ) ) {
+						$queryData['conditions'] = array( );
 					}
 
-					if (is_string($queryData['conditions']))
-					{
+					if( is_string( $queryData['conditions'] ) ) {
 						//$queryData['conditions'] = $Db->name($model->alias) . '.' . $Db->name($this->__settings[$model->alias]['field']) . '<> 1 AND ' . $queryData['conditions'];
-						$modelName = $Db->name($model->alias);
-						$fieldName = $Db->name($this->__settings[$model->alias]['field']);
+						$modelName = $Db->name( $model->alias );
+						$fieldName = $Db->name( $this->__settings[$model->alias]['field'] );
 						$queryData['conditions'] = Set::merge(
-							array( "{$modelName}.{$fieldName} <>" => 1 ),
-							$queryData['conditions']
+										array( "{$modelName}.{$fieldName} <>" => 1 ), $queryData['conditions']
 						);
 					}
-					else
-					{
+					else {
 						//$queryData['conditions'][$model->alias . '.' . $this->__settings[$model->alias]['field']] = '<> 1';
-						$modelName = $Db->name($model->alias);
-						$fieldName = $Db->name($this->__settings[$model->alias]['field']);
+						$modelName = $Db->name( $model->alias );
+						$fieldName = $Db->name( $this->__settings[$model->alias]['field'] );
 						$queryData['conditions'] = Set::merge(
-							array( "{$modelName}.{$fieldName} <>" => 1 )
+										array( "{$modelName}.{$fieldName} <>" => 1 )
 						);
 					}
 				}
@@ -306,22 +274,18 @@
 		 * @return boolean True if the operation should continue, false if it should abort
 		 * @access public
 		 */
-		function beforeSave( Model $model)
-		{
-			if ($this->__settings[$model->alias]['find'])
-			{
-				if (!isset($this->__backAttributes))
-				{
-					$this->__backAttributes = array($model->alias => array());
+		public function beforeSave( Model $model ) {
+			if( $this->__settings[$model->alias]['find'] ) {
+				if( !isset( $this->__backAttributes ) ) {
+					$this->__backAttributes = array( $model->alias => array( ) );
 				}
-				else if (!isset($this->__backAttributes[$model->alias]))
-				{
-					$this->__backAttributes[$model->alias] = array();
+				else if( !isset( $this->__backAttributes[$model->alias] ) ) {
+					$this->__backAttributes[$model->alias] = array( );
 				}
 
 				$this->__backAttributes[$model->alias]['find'] = $this->__settings[$model->alias]['find'];
 				$this->__backAttributes[$model->alias]['delete'] = $this->__settings[$model->alias]['delete'];
-				$this->enableSoftDeletable($model, false);
+				$this->enableSoftDeletable( $model, false );
 			}
 
 			return true;
@@ -334,15 +298,14 @@
 		 * @param boolean $created True if this save created a new record
 		 * @access public
 		 */
-		function afterSave( Model $model, $created)
-		{
-			if (isset($this->__backAttributes[$model->alias]['find']))
-			{
-				$this->enableSoftDeletable($model, 'find', $this->__backAttributes[$model->alias]['find']);
-				$this->enableSoftDeletable($model, 'delete', $this->__backAttributes[$model->alias]['delete']);
-				unset($this->__backAttributes[$model->alias]['find']);
-				unset($this->__backAttributes[$model->alias]['delete']);
+		public function afterSave( Model $model, $created ) {
+			if( isset( $this->__backAttributes[$model->alias]['find'] ) ) {
+				$this->enableSoftDeletable( $model, 'find', $this->__backAttributes[$model->alias]['find'] );
+				$this->enableSoftDeletable( $model, 'delete', $this->__backAttributes[$model->alias]['delete'] );
+				unset( $this->__backAttributes[$model->alias]['find'] );
+				unset( $this->__backAttributes[$model->alias]['delete'] );
 			}
 		}
+
 	}
 ?>

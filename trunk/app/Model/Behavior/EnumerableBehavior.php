@@ -247,7 +247,7 @@
 		 * @return void
 		 * @access public
 		 */
-		function enumOptions( Model $model, $field ) {
+		public function enumOptions( Model $model, $field ) {
 			$options = $this->_readEnums( $model );
 			return @$options[$field];
 		}
@@ -255,7 +255,7 @@
 		/**
 		 * Fetches the enum translated list for a field
 		 */
-		function enumList( Model $model, $field ) {
+		public function enumList( Model $model, $field ) {
 			$options = array( );
 			$tmpOptions = self::enumOptions( $model, $field );
 			if( !empty( $tmpOptions ) ) {
@@ -276,7 +276,7 @@
 		/**
 		 * 	Fetches the enum lists for all the $enumFields of the model
 		 */
-		function allEnumLists( Model $model ) {
+		public function allEnumLists( Model $model ) {
 			$options = array( );
 			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {
@@ -289,7 +289,7 @@
 		/**
 		 * 	Fetches the enum lists for all the $enumFields of the model
 		 */
-		function enums( Model $model ) {
+		public function enums( Model $model ) {
 			$options = array( );
 			if( !empty( $this->settings[$model->alias]['fields'] ) ) {
 				foreach( $this->settings[$model->alias]['fields'] as $field => $data ) {

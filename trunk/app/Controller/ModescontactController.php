@@ -38,7 +38,7 @@
 			$this->set( compact( 'options' ) );
 		}
 
-		function index( $foyer_id = null ){
+		public function index( $foyer_id = null ){
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
@@ -91,7 +91,7 @@
 			$this->render( 'add_edit' );
 		}
 
-		function edit( $id = null ){
+		public function edit( $id = null ){
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$dossier_id = $this->Modecontact->dossierId( $id );
@@ -138,7 +138,7 @@
 
 		}
 
-		function view( $modecontact_id = null ) {
+		public function view( $modecontact_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $modecontact_id ), 'error404' );
 

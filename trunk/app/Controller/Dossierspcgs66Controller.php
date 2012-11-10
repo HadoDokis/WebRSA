@@ -476,7 +476,7 @@
 		*
 		*/
 
-		function view( $id = null ) {
+		public function view( $id = null ) {
 			$dossierpcg66 = $this->Dossierpcg66->find(
 				'first',
 				array(

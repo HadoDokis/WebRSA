@@ -6,8 +6,8 @@
 	class PrgComponent extends Component
 	{
 
-		var $_prgActions = array( );
-		var $_realGetParams = false;
+		protected $_prgActions = array( );
+		protected $_realGetParams = false;
 		public $components = array( 'Session' );
 
 		/**		 * ******************************************************************
@@ -15,7 +15,7 @@
 		 * "true"    -> url like ..controller/action?name=value...
 		 * "false"   -> url like ..controller/action/name:value...
 		 * ******************************************************************* */
-		function _realGetParams() {
+		protected function _realGetParams() {
 			$args = func_get_args();
 			$this->_realGetParams = true;
 		}
@@ -23,7 +23,7 @@
 		/**		 * ******************************************************************
 		  The initialize method is called before the controller's beforeFilter method.
 		 * ******************************************************************* */
-		function initialize( Controller $controller ) {
+		public function initialize( Controller $controller ) {
 			$settings = $this->settings;
 			$this->controller = $controller;
 			$this->_prgActions = Set::extract( $settings, 'actions' );
@@ -39,7 +39,7 @@
 		  The startup method is called after the controller's beforeFilter
 		  method but before the controller executes the current action handler.
 		 * ******************************************************************* */
-		function startup( Controller $controller ) {
+		public function startup( Controller $controller ) {
 			$controller->request->data = Set::merge(
 							$controller->request->data, (!empty( $controller->request->params['form'] ) ? $controller->request->params['form'] : array( ) )
 			);
@@ -128,16 +128,6 @@
 					$controller->request->data = Xset::bump( $params, '__' );
 				}
 			}
-		}
-
-		/**		 * ******************************************************************
-		  The beforeRedirect method is invoked when the controller's redirect method
-		  is called but before any further action. If this method returns false the
-		  controller will not continue on to redirect the request.
-		  The $url, $status and $exit variables have same meaning as for the controller's method.
-		 * ******************************************************************* */
-		function beforeRedirect( Controller $controller, $url, $status = null, $exit = true ) {
-			parent::beforeRedirect( $controller, $url, $status, $exit );
 		}
 	}
 ?>

@@ -8,6 +8,28 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+	/**
+	 * Retourne la version de CakePHP utilisée.
+	 *
+	 * @return string
+	 */
+	function core_version() {
+		$versionData = explode( "\n", file_get_contents( ROOT.DS.'lib'.DS.'Cake'.DS.'VERSION.txt' ) );
+		$version = explode( '.', $versionData[count( $versionData ) - 1] );
+		return implode( '.', $version );
+	}
+
+	/**
+	 * Retourne la version de WebRSA utilisée.
+	 *
+	 * @return string
+	 */
+	function app_version() {
+		$versionData = explode( "\n", file_get_contents( ROOT.DS.'app'.DS.'VERSION.txt' ) );
+		$version = explode( '.', $versionData[count( $versionData ) - 1] );
+		return implode( '.', $version );
+	}
+
 	function __translate( $value ) {
 		switch( gettype( $value ) ) {
 			case 'NULL':

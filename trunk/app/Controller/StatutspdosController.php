@@ -1,12 +1,12 @@
 <?php
 
-	class StatutspdosController extends AppController 
+	class StatutspdosController extends AppController
 	{
 		public $name = 'Statutspdos';
 		public $uses = array( 'Statutpdo', 'Propopdo', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
 		public $components = array( 'Default' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Statutspdos:index',
 			'add' => 'Statutspdos:edit'
@@ -47,7 +47,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 			$this->Default->{$this->action}( $args );
 		}

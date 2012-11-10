@@ -48,7 +48,7 @@
 		*
 		*/
 
-		function _add_edit( $id = null){
+		protected function _add_edit( $id = null){
 			if( !empty( $this->request->data ) ) {
 				$this->Motifsortie->create( $this->request->data );
 				$success = $this->Motifsortie->save();

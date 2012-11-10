@@ -717,7 +717,7 @@
 		/**
 		 *
 		 */
-		function checkEtat( $commissionep_id ) {
+		public function checkEtat( $commissionep_id ) {
 			$commissionep = $this->find(
 				'first',
 				array(
@@ -1303,7 +1303,7 @@
             if( Configure::read( 'Cg.departement' ) == 66 ) {
             	if( $commissionep['Ep']['Regroupementep']['saisinebilanparcoursep66'] == 'nontraite' ){
 					if( $convocation['Compositionregroupementep']['prioritaire'] == '1' ) {
-						$modele = 'convocationep_participant_prioritaire.odt';                
+						$modele = 'convocationep_participant_prioritaire.odt';
 					}
 					else {
 						$modele = 'convocationep_participant_facultatif.odt';
@@ -1313,7 +1313,7 @@
 					$modele = 'convocationep_participant.odt';
 				}
             }
-            else {            
+            else {
                 $modele = 'convocationep_participant.odt';
             }
 
@@ -1639,7 +1639,7 @@
 				else {
 					$ordredujourodt = "ordredujour_participant_audition";
 				}
-				
+
 			}
 
 			return $this->ged(

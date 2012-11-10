@@ -11,12 +11,13 @@
 			'view' => 'Contactspartenaires:index',
 			'add' => 'Contactspartenaires:edit'
 		);
-		/**
-		*
-		*/
 
-		function beforeFilter() {
-			$return = parent::beforeFilter();
+		/**
+		 *
+		 * @return type
+		 */
+		public function beforeFilter() {
+			parent::beforeFilter();
 
 			$options = array();
 			foreach( array( 'Partenaire' ) as $linkedModel ) {
@@ -26,8 +27,6 @@
 			$this->set( 'qual', $this->Option->qual() );
 
 			$this->set( compact( 'options', 'qual' ) );
-
-			return $return;
 		}
 
 
@@ -67,7 +66,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 			$this->Default->{$this->action}( $args );
 		}

@@ -45,7 +45,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 			$this->Default->{$this->action}( $args );
 		}
