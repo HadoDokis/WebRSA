@@ -1,12 +1,12 @@
 <?php
 
-	class OriginespdosController extends AppController 
+	class OriginespdosController extends AppController
 	{
 		public $name = 'Originespdos';
 		public $uses = array( 'Originepdo', 'Propopdo', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
 		public $components = array( 'Default' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Originespdos:index',
 			'add' => 'Originespdos:edit'
@@ -53,7 +53,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 			$this->_setOptions();
 			$this->Default->{$this->action}( $args );

@@ -365,7 +365,7 @@
 		/**
 		 *
 		 */
-		function ajaxstatutpersonne( $personne_id = null ) {
+		public function ajaxstatutpersonne( $personne_id = null ) {
 			$dataTraitementpdo_id = Set::extract( $this->request->data, 'Traitementpdo.personne_id' );
 			$personne_id = ( empty( $personne_id ) && !empty( $dataTraitementpdo_id ) ? $dataTraitementpdo_id : $personne_id );
 			$personne = $this->Traitementpdo->Propopdo->find(

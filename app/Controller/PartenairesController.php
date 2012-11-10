@@ -1,12 +1,12 @@
 <?php
 
-	class PartenairesController extends AppController 
+	class PartenairesController extends AppController
 	{
 		public $name = 'Partenaires';
 		public $uses = array( 'Partenaire', 'ActioncandidatPartenaire', 'Option', 'Personne' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
 		public $components = array( 'Default' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Partenaires:index',
 			'add' => 'Partenaires:edit'
@@ -34,7 +34,7 @@
 		*/
 
 		public function index() {
-			
+
 			$this->paginate = array( 'limit' => 1000 );
 			$this->set(
 				Inflector::tableize( $this->modelClass ),
@@ -64,7 +64,7 @@
 		*
 		*/
 
-		function _add_edit(){
+		protected function _add_edit(){
 			$args = func_get_args();
 			$this->Default->{$this->action}( $args );
 		}

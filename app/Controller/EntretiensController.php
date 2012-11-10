@@ -191,7 +191,7 @@
 		/**
 		 *
 		 */
-		function index( $personne_id = null ) {
+		public function index( $personne_id = null ) {
 			// On s'assure que la personne existe
 			$this->Entretien->Personne->unbindModelAll();
 			$nbrPersonnes = $this->Entretien->Personne->find(

@@ -411,7 +411,7 @@
 		/**
 		 *
 		 */
-		function view( $id = null ) {
+		public function view( $id = null ) {
 
 			$personnepcg66 = $this->Personnepcg66->find(
 					'first', array(

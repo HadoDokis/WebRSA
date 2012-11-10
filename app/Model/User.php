@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe User.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe User ...
+	 *
+	 * @package app.Model
+	 */
 	class User extends AppModel
 	{
 		public $name = 'User';
@@ -464,11 +478,11 @@
 			return parent::beforeSave( $options );
 		}
 
-		function validatesPassword($data) {
+		public function validatesPassword($data) {
 			return ((!empty($data['User']['newpasswd'])) && (!empty($data['User']['confnewpasswd'])) && ($data['User']['newpasswd']==$data['User']['confnewpasswd']));
 		}
 
-		function validOldPassword($data) {
+		public function validOldPassword($data) {
 			$oldPass = $this->find('first',array('conditions'=>array('id'=>$data['User']['id']),'fields'=>array('password'),'recursive'=>-1));
 			return (Security::hash($data['User']['passwd'], null, true)==$oldPass['User']['password']);
 		}

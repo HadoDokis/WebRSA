@@ -172,8 +172,7 @@
 		* @return boolean True if validate operation should continue, false to abort
 		* @access public
 		*/
-
-		function beforeValidate( Model $model ) {
+		public function beforeValidate( Model $model ) {
 			if( Set::classicExtract( $this->settings, "{$model->alias}.translate" ) ) {
 				$modelDomain = Set::classicExtract( $this->settings, "{$model->alias}.domain" );
 

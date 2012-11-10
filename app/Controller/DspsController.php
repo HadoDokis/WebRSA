@@ -68,7 +68,7 @@
 		/**
 		 *
 		 */
-		function beforeFilter() {
+		public function beforeFilter() {
 			$return = parent::beforeFilter();
 
 			$cg = Configure::read( 'nom_form_ci_cg' );
