@@ -39,7 +39,7 @@
 			<fileset
 				dir="${dir.cakephp.app}"
 				includes="**/*.php,**/*.ctp"
-				excludes="**/.*/**,**/Config/sql/**,**/tmp/**" />
+				excludes="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
 		</apply>
 	</target>
 

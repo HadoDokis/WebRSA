@@ -1,20 +1,22 @@
+<#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe Histochoixcer93Fixture.
+	 * Code source de la classe ${class_name(name)}.
 	 *
-	 * PHP 5.3
+<#if php_version??>
+	 * PHP ${php_version}
 	 *
+</#if>
 	 * @package app.Test.Fixture
-	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 * @license ${license}
 	 */
-	require_once( dirname( __FILE__ ).DS.'pgsql_constraints_fixture.php' );
 
 	/**
-	 * Classe Histochoixcer93Fixture.
+	 * Classe ${class_name(name)}.
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class Histochoixcer93Fixture extends PgsqlConstraintsFixture
+	class ${class_name(name)} extends CakeTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
@@ -22,7 +24,7 @@
 		 * @var array
 		 */
 		public $import = array(
-			'model' => 'Histochoixcer93',
+			'model' => '${class_name(name)?replace("Fixture$", "","r")}',
 			'records' => false
 		);
 

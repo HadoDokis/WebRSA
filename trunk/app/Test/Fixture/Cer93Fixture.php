@@ -7,13 +7,14 @@
 	 * @package app.Test.Fixture
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( dirname( __FILE__ ).DS.'pgsql_constraints_fixture.php' );
 
 	/**
 	 * Classe Cer93Fixture.
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class Cer93Fixture extends CakeTestFixture
+	class Cer93Fixture extends PgsqlConstraintsFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
@@ -65,7 +66,7 @@
 				'dureehebdo' => 35,
 				'dureecdd' => 1,
 				'bilancerpcd' => NULL,
-				'duree' => '1',
+				'duree' => '3',
 				'pointparcours' => 'aladate',
 				'datepointparcours' => '2010-12-31',
 				'pourlecomptede' => 'JACQUES ANTOINE',
@@ -109,7 +110,7 @@
 				'dureehebdo' => 35,
 				'dureecdd' => 1,
 				'bilancerpcd' => NULL,
-				'duree' => '1',
+				'duree' => '3',
 				'pointparcours' => 'aladate',
 				'datepointparcours' => '2010-12-31',
 				'pourlecomptede' => 'JACQUES ANTOINE',

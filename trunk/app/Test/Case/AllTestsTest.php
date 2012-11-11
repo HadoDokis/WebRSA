@@ -28,6 +28,7 @@
 			$suite->addTestDirectoryRecursive( TESTS.DS.'Case'.DS );
 
 			// FIXME: tous les plugins ?
+			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Appchecks'.DS.'Test'.DS.'Case'.DS );
 			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Search'.DS.'Test'.DS.'Case'.DS );
 			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Validation'.DS.'Test'.DS.'Case'.DS );
 

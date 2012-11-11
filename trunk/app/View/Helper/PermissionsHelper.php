@@ -9,28 +9,55 @@
 	 */
 
 	/**
-	 * La classe PermissionsHelper ...
+	 * La classe PermissionsHelper permet de vérifier les droits d'accès de
+	 * l'utilisateur.
 	 *
 	 * @package app.View.Helper
 	 */
 	class PermissionsHelper extends AppHelper
 	{
+		/**
+		 * Helpers utilisés par ce helper.
+		 *
+		 * @var array
+		 */
 		public $helpers = array( 'Session' );
 
-		// INFO: utiliser grep -R "permissions->" * dans le dossier views pour voir ce qui est déjà traité
 		/**
-			FIXME: http://localhost/adullact/webrsa/adressesfoyers/edit/1
-			avec
-				[Module:Adressefoyers] =>
-				[Adressefoyers:index] => 1
-				[Adressefoyers:view] => 1
-		*/
+		 * Le chemin vers les données "Acl" dans la session.
+		 *
+		 * @var string
+		 */
+		public $sessionKey = 'Auth.Permissions';
 
+		/**
+		 * Vérifie les droits d'accès à un couple controller/action par-rapport
+		 * aux droits stockés en session.
+		 *
+		 * Ex: si on dans la session, sous la clé "Auth.Permissions":
+		 * <pre>
+		 * [Module:Users] => false
+		 * [Users:index] => true
+		 * [Users:add] => false
+		 * </pre>
+		 * alors
+		 * <pre>
+		 * $this->check( 'users', 'index' ); // vaudra true
+		 * $this->check( 'users', 'add' ); // vaudra false
+		 * $this->check( 'users', 'view' ); // vaudra false
+		 * </pre>
+		 *
+		 * @see PermissionsHelper::sessionKey
+		 *
+		 * @param string $controller
+		 * @param string $action
+		 * @return boolean
+		 */
 		public function check( $controller, $action ) {
 			$controller = Inflector::camelize( $controller );
 			$action = strtolower( $action );
 
-			$permissions = $this->Session->read( 'Auth.Permissions' );
+			$permissions = $this->Session->read( $this->sessionKey );
 
 			$returnController = Set::extract( $permissions, "Module:{$controller}" );
 			$returnAction = Set::extract( $permissions, $controller.':'.$action );
