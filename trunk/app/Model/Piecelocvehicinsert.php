@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Piecelocvehicinsert.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Piecelocvehicinsert ...
+	 *
+	 * @package app.Model
+	 */
 	class Piecelocvehicinsert extends AppModel
 	{
 		public $name = 'Piecelocvehicinsert';

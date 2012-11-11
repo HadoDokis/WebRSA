@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe TypesorientsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe TypesorientsController ...
+	 *
+	 * @package app.Controller
+	 */
 	class TypesorientsController extends AppController
 	{
 
 		public $name = 'Typesorients';
 		public $uses = array( 'Typeorient', 'Structurereferente');
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Typesorients:edit'
 		);

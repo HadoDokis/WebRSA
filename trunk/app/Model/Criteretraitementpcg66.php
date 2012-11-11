@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Criteretraitementpcg66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Criteretraitementpcg66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Criteretraitementpcg66 extends AppModel
 	{
 		public $name = 'Criteretraitementpcg66';
@@ -18,7 +31,7 @@
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
@@ -33,7 +46,7 @@
 			$dateecheance = Set::extract( $params, 'Traitementpcg66.dateecheance' );
 			$dateecheance_to = Set::extract( $params, 'Traitementpcg66.dateecheance_to' );
 			$dateecheance_from = Set::extract( $params, 'Traitementpcg66.dateecheance_from' );
-			
+
 			// Gestionnaire du dossier gérant le traitement
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
 
@@ -43,7 +56,7 @@
 				$dateecheance_to = "{$dateecheance_to['year']}-{$dateecheance_to['month']}-{$dateecheance_to['day']}";
 				$conditions[] = "Traitementpcg66.dateecheance BETWEEN '{$dateecheance_from}' AND '{$dateecheance_to}'";
 			}
-			
+
 			$daterevision = Set::extract( $params, 'Traitementpcg66.daterevision' );
 			$daterevision_to = Set::extract( $params, 'Traitementpcg66.daterevision_to' );
 			$daterevision_from = Set::extract( $params, 'Traitementpcg66.daterevision_from' );
@@ -65,12 +78,12 @@
 			if( !empty( $annule ) ) {
 				$conditions[] = 'Traitementpcg66.annule = \''.Sanitize::clean( $annule, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Motif concernant la perosnne du dossier
 			if( !empty( $motifpersonnepcg66_id ) ) {
 				$conditions[] = 'Traitementpcg66.personnepcg66_situationpdo_id IN ( '.
@@ -95,7 +108,7 @@
 					)
 				.' )';
 			}
-			
+
 			// Statut de la personne
 			if( !empty( $statutpersonnepcg66_id ) ) {
 				$conditions[] = 'Personnepcg66.id IN ( '.
@@ -122,8 +135,8 @@
 				)
 			);
 			$conditions[] = 'Personne.id IN ( '.$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
-			
-			
+
+
 			$query = array(
 				'fields' => array(
 					'Traitementpcg66.id',

@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Fichiertraitementpdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( APPLIBS.'cmis.php' );
 
+	/**
+	 * La classe Fichiertraitementpdo ...
+	 *
+	 * @package app.Model
+	 */
 	class Fichiertraitementpdo extends AppModel
 	{
 		public $name = 'Fichiertraitementpdo';

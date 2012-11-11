@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe IntegrationfichiersapreController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe IntegrationfichiersapreController ...
+	 *
+	 * @package app.Controller
+	 */
 	class IntegrationfichiersapreController extends AppController
 	{
 		/**

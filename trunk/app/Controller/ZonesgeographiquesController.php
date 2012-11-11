@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe ZonesgeographiquesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ZonesgeographiquesController ...
+	 *
+	 * @package app.Controller
+	 */
 	class ZonesgeographiquesController extends AppController
 	{
 
 		public $name = 'Zonesgeographiques';
 		public $uses = array( 'Zonegeographique', 'User', 'Adresse', 'Structurereferente');
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Zonesgeographiques:edit'
 		);

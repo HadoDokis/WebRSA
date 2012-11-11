@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Motifssortiecuis66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Motifssortiecuis66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Motifssortiecuis66Controller extends AppController
 	{
 		public $name = 'Motifssortiecuis66';

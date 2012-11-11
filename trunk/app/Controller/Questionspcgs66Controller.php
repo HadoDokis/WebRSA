@@ -1,14 +1,28 @@
 <?php
+	/**
+	 * Code source de la classe Questionspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Questionspcgs66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Questionspcgs66Controller extends AppController
 	{
 
 		public $name = 'Questionspcgs66';
 		public $helpers = array( 'Xform', 'Default2' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Questionspcgs66:edit'
 		);
-		
+
 		protected function _setOptions() {
 			$options = $this->Questionpcg66->enums();
 			$options['Decisionpcg66'] = $this->Questionpcg66->Decisionpcg66->find( 'list' );

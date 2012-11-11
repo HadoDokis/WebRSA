@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe TypespdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe TypespdosController ...
+	 *
+	 * @package app.Controller
+	 */
 	class TypespdosController extends AppController
 	{
 
 		public $name = 'Typespdos';
 		public $uses = array( 'Typepdo', 'Propopdo' );
 		public $helpers = array( 'Xform', 'Default2' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Typespdos:edit'
 		);

@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe PrestsformController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PrestsformController ...
+	 *
+	 * @package app.Controller
+	 */
 	class PrestsformController extends AppController
 	{
 

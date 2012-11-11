@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe EpsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe EpsController ...
+	 *
+	 * @package app.Controller
+	 */
 	class EpsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );

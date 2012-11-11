@@ -1,14 +1,28 @@
 <?php
+	/**
+	 * Code source de la classe Composfoyerspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Composfoyerspcgs66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Composfoyerspcgs66Controller extends AppController
 	{
 
 		public $name = 'Composfoyerspcgs66';
 		public $helpers = array( 'Xform', 'Default2' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Composfoyerspcgs66:edit'
 		);
-		
+
 		protected function _setOptions() {
 // 			$options = $this->Compofoyerpcg66->enums();
 			$this->set( compact( 'options' ) );
@@ -19,7 +33,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
-			
+
 			$qdOccurences = $this->Compofoyerpcg66->qdOccurences();
 
 			$composfoyerspcgs66 = $this->Compofoyerpcg66->find( 'all', $qdOccurences );

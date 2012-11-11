@@ -1,9 +1,23 @@
 <?php
+	/**
+	 * Code source de la classe AvispcgdroitsrsaController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe AvispcgdroitsrsaController ...
+	 *
+	 * @package app.Controller
+	 */
 	class AvispcgdroitsrsaController extends AppController
 	{
 		public $name = 'Avispcgdroitrsa';
 		public $uses = array( 'Avispcgdroitrsa', 'Option' , 'Dossier', 'Condadmin',  'Reducrsa');
-		
+
 		public $commeDroit = array( 'view' => 'Actionscandidats:index' );
 
 		/**

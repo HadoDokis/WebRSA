@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Covstructurereferente.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Model', 'Structurereferente' );
 
+	/**
+	 * La classe Covstructurereferente ...
+	 *
+	 * @package app.Model
+	 */
 	class Covstructurereferente extends Structurereferente
 	{
 		public $name = 'Covstructurereferente';

@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe PermanencesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PermanencesController ...
+	 *
+	 * @package app.Controller
+	 */
 	class PermanencesController extends AppController
 	{
 
 		public $name = 'Permanences';
 		public $uses = array( 'Permanence', 'Structurereferente', 'Option' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Permanences:edit'
 		);

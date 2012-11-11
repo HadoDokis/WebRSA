@@ -1,5 +1,19 @@
 <?php
-	class SuivisaidesaprestypesaidesController extends AppController 
+	/**
+	 * Code source de la classe SuivisaidesaprestypesaidesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe SuivisaidesaprestypesaidesController ...
+	 *
+	 * @package app.Controller
+	 */
+	class SuivisaidesaprestypesaidesController extends AppController
 	{
 
 		public $name = 'Suivisaidesaprestypesaides';
@@ -16,7 +30,7 @@
 			$this->set( 'personnessuivis', $this->Suiviaideapre->find( 'list' ) );
 			$this->set( 'aidesApres', $this->Apre->aidesApre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
-			
+
 			return $return;
 		}
 

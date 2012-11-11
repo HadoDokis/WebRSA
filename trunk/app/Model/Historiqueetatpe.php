@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Historiqueetatpe.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Historiqueetatpe ...
+	 *
+	 * @package app.Model
+	 */
 	class Historiqueetatpe extends AppModel
 	{
 		public $name = 'Historiqueetatpe';

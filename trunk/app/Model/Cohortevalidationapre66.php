@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Cohortevalidationapre66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Cohortevalidationapre66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Cohortevalidationapre66 extends AppModel
 	{
 		public $name = 'Cohortevalidationapre66';

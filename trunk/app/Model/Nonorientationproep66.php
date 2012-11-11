@@ -1,10 +1,24 @@
 <?php
 	/**
+	 * Code source de la classe Nonorientationproep66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
 	 * INFO: cette thématique n'est actuellement pas utilisée lorsqu'on crée un regroupementep, même si
 	 * la thématique figure dans l'enum type_themeep.
 	 */
 	require_once( ABSTRACTMODELS.'Nonorientationproep.php' );
 
+	/**
+	 * La classe Nonorientationproep66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Nonorientationproep66 extends Nonorientationproep
 	{
 		public $belongsTo = array(

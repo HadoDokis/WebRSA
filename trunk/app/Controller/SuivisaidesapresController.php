@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe SuivisaidesapresController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe SuivisaidesapresController ...
+	 *
+	 * @package app.Controller
+	 */
 	class SuivisaidesapresController extends AppController
 	{
 
 		public $name = 'Suivisaidesapres';
 		public $uses = array( 'Suiviaideapre', 'Option' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Suivisaidesapres:edit'
 		);
@@ -13,7 +27,7 @@
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$this->set( 'qual', $this->Option->qual() );
-			
+
 			return $return;
 		}
 

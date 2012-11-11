@@ -1,10 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe DetailsdroitsrsaController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe DetailsdroitsrsaController ...
+	 *
+	 * @package app.Controller
+	 */
 	class DetailsdroitsrsaController extends AppController
 	{
 
 		public $name = 'Detailsdroitsrsa';
 		public $uses = array( 'Detaildroitrsa',  'Option' , 'Dossier', 'Detailcalculdroitrsa');
-		
+
 		public $commeDroit = array(
 			'view' => 'Detailsdroitsrsa:index'
 		);
@@ -15,7 +29,7 @@
 			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
 			$this->set( 'topfoydrodevorsa', $this->Option->topfoydrodevorsa() );
 			$this->set( 'natpf', $this->Option->natpf() );
-			$this->set( 'sousnatpf', $this->Option->sousnatpf() );	    
+			$this->set( 'sousnatpf', $this->Option->sousnatpf() );
 		}
 
 		public function index( $dossier_id = null ){

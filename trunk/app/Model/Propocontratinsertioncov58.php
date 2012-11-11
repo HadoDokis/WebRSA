@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Propocontratinsertioncov58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Propocontratinsertioncov58 ...
+	 *
+	 * @package app.Model
+	 */
 	class Propocontratinsertioncov58 extends AppModel
 	{
 		public $name = 'Propocontratinsertioncov58';

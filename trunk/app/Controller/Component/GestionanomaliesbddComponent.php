@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe GestionanomaliesbddComponent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe GestionanomaliesbddComponent ...
+	 *
+	 * @package app.Controller.Component
+	 */
 	class GestionanomaliesbddComponent extends Component
 	{
 // 		public $tablesMetier = array( 'actionscandidats_personnes', 'apres',  'contratsinsertion', 'cuis', 'dossierscovs58', 'dossierseps', 'dsps_revs', 'entretiens', 'memos', 'orientsstructs', 'personnespcgs66', 'personnes_referents', 'propospdos', 'rendezvous' );

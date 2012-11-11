@@ -1,5 +1,19 @@
 <?php
-App::import( 'Sanitize' );
+	/**
+	 * Code source de la classe Cohortedossierpcg66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
+
+	/**
+	 * La classe Cohortedossierpcg66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Cohortedossierpcg66 extends AppModel
 	{
 		public $name = 'Cohortedossierpcg66';
@@ -79,7 +93,7 @@ App::import( 'Sanitize' );
 			if( !empty( $typepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false ) ).'\'';
 			}
-            
+
             // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.etatdossierpcg' );
 			if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) ) {

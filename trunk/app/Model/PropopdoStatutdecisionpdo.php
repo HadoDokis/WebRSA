@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe PropopdoStatutdecisionpdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PropopdoStatutdecisionpdo ...
+	 *
+	 * @package app.Model
+	 */
 	class PropopdoStatutdecisionpdo extends AppModel
 	{
 		public $name = 'PropopdoStatutdecisionpdo';

@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Descriptionpdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Descriptionpdo ...
+	 *
+	 * @package app.Model
+	 */
 	class Descriptionpdo extends AppModel
 	{
 		public $name = 'Descriptionpdo';

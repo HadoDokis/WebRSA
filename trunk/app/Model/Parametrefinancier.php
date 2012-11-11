@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Parametrefinancier.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Parametrefinancier ...
+	 *
+	 * @package app.Model
+	 */
 	class Parametrefinancier extends AppModel
 	{
 		public $name = 'Parametrefinancier';

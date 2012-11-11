@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Decisionsaisinepdoep66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Decisionsaisinepdoep66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Decisionsaisinepdoep66 extends AppModel
 	{
 		public $name = 'Decisionsaisinepdoep66';

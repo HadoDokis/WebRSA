@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Decisiondossierpcg66Typersapcg66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Decisiondossierpcg66Typersapcg66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Decisiondossierpcg66Typersapcg66 extends AppModel
 	{
 		public $name = 'Decisiondossierpcg66Typersapcg66';

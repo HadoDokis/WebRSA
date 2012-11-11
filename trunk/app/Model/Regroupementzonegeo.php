@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Regroupementzonegeo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Regroupementzonegeo ...
+	 *
+	 * @package app.Model
+	 */
 	class Regroupementzonegeo extends AppModel
 	{
 		public $name = 'Regroupementzonegeo';

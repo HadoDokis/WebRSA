@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Decisionreorientationep93.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Decisionreorientationep93 ...
+	 *
+	 * @package app.Model
+	 */
 	class Decisionreorientationep93 extends AppModel
 	{
 		public $name = 'Decisionreorientationep93';

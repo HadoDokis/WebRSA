@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe MotifssortieController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe MotifssortieController ...
+	 *
+	 * @package app.Controller
+	 */
 	class MotifssortieController extends AppController
 	{
 		public $name = 'Motifssortie';

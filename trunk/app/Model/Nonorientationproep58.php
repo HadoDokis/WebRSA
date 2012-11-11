@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Nonorientationproep58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Nonorientationproep.php' );
 
+	/**
+	 * La classe Nonorientationproep58 ...
+	 *
+	 * @package app.Model
+	 */
 	class Nonorientationproep58 extends Nonorientationproep
 	{
 		public $belongsTo = array(
@@ -142,8 +155,8 @@
 						) && $success;
 
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
-						
-						
+
+
 						$referent_id = $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['referent_id'];
 						if( $success && !empty( $referent_id ) ) {
 							$pastReferent = $this->Orientstruct->Personne->PersonneReferent->find(
@@ -169,7 +182,7 @@
 									)
 								) && $success;
 							}
-							
+
 							$personneReferent = array(
 								'PersonneReferent' => array(
 									'personne_id' => $dossierep['Dossierep']['personne_id'],

@@ -1,7 +1,17 @@
 <?php
-	/*
-	  http://localhost/adullact/webrsa/trunk/dspps/view/174537
-	  http://localhost/adullact/webrsa/trunk/dsps/view/174537
+	/**
+	 * Code source de la classe DspsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe DspsController ...
+	 *
+	 * @package app.Controller
 	 */
 	class DspsController extends AppController
 	{

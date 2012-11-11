@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Sitescovs58Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Sitescovs58Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Sitescovs58Controller extends AppController
 	{
 

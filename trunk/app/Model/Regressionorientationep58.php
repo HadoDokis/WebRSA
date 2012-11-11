@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Regressionorientationep58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
+	/**
+	 * La classe Regressionorientationep58 ...
+	 *
+	 * @package app.Model
+	 */
 	class Regressionorientationep58 extends Thematiqueep
 	{
 		public $name = 'Regressionorientationep58';
