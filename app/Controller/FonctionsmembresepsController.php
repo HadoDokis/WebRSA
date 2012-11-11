@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe FonctionsmembresepsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe FonctionsmembresepsController ...
+	 *
+	 * @package app.Controller
+	 */
 	class FonctionsmembresepsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );

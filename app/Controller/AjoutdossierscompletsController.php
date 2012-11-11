@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe AjoutdossierscompletsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-	class AjoutdossierscompletsController extends AppController {
+	/**
+	 * La classe AjoutdossierscompletsController ...
+	 *
+	 * @package app.Controller
+	 */
+	class AjoutdossierscompletsController extends AppController
+	{
 		public $components = array( 'Default' );
 		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Detaildroitrsa', 'Option', 'Ajoutdossiercomplet' );
 
 		public $helpers = array( 'Default2' );
-		
+
 		protected function  _setOptions() {
 			$options = array();
             $services = ClassRegistry::init( 'Serviceinstructeur' )->find( 'list' );
@@ -15,8 +29,8 @@
 			);
 			$this->set( compact( 'options', 'services' ) );
 		}
-		
-		
+
+
        /**
         *
         */
@@ -26,9 +40,9 @@
         */
 
         public function add(){
-        
+
 // 			$this->Ajoutdossiercomplet->begin();
-            
+
 			// Validation
 			$this->Personne->set( $this->request->data['Personne'] );
 			unset( $this->Personne->validate['dtnai'] );
@@ -43,7 +57,7 @@
 
 			$this->Dossier->set( $this->request->data['Dossier'] );
 			$valid = $this->Dossier->validates() && $valid;
-			
+
             // Si validation -> sauvegarde
             if( !empty( $this->request->data ) && $valid ) {
 				$data = $this->request->data;
@@ -53,7 +67,7 @@
 				if( !empty( $data['Dossier']['numdemrsatemp'] ) ) {
 					$data['Dossier']['numdemrsa'] = $this->Dossier->generationNumdemrsaTemporaire();
 				}
-				
+
 				// Tentatives de sauvegarde
 				$saved = $this->Dossier->save( $data['Dossier'] );
 
@@ -111,7 +125,7 @@
 					)
 				);
 				$this->assert( !empty( $user ), 'error500' );
-                
+
                 if( !empty( $data['Serviceinstructeur']['id'] ) ) {
                     // Service instructeur
                     $service = ClassRegistry::init( 'Serviceinstructeur' )->find(
@@ -143,7 +157,7 @@
 
                     $validate = $this->Dossier->Suiviinstruction->validates();
     //debug($validate);
-    //die(); 
+    //die();
                     if( $validate ) {
                         $saved = $this->Dossier->Suiviinstruction->save( $suiviinstruction ) && $saved;
                     }

@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Statistiquesministerielle.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Statistiquesministerielle ...
+	 *
+	 * @package app.Model
+	 */
 	class Statistiquesministerielle extends AppModel
 	{
 		public $name = 'Statistiqueministerielle';
@@ -10,13 +23,13 @@
  		public $isSocial = ' SELECT t.id FROM typesorients AS t WHERE (t.lib_type_orient NOT IN ( SELECT t2.lib_type_orient FROM typesorients AS t2 WHERE t2.lib_type_orient LIKE \'Emploi%\'  ) ) ';
 
 		public $now_and_before = "
-			INNER JOIN ( 
-				SELECT personne_id, typeorient_id, rgorient, row_number() OVER (partition BY personne_id ORDER BY date_valid DESC, rgorient DESC) rank 
-				FROM orientsstructs 
-			) noworient ON noworient.personne_id = p.id AND noworient.rank = 1 
-		 	INNER JOIN ( 
-		 		SELECT personne_id, typeorient_id, rgorient, row_number() OVER (partition BY personne_id ORDER BY date_valid DESC, rgorient DESC) rank 
-		 		FROM orientsstructs 
+			INNER JOIN (
+				SELECT personne_id, typeorient_id, rgorient, row_number() OVER (partition BY personne_id ORDER BY date_valid DESC, rgorient DESC) rank
+				FROM orientsstructs
+			) noworient ON noworient.personne_id = p.id AND noworient.rank = 1
+		 	INNER JOIN (
+		 		SELECT personne_id, typeorient_id, rgorient, row_number() OVER (partition BY personne_id ORDER BY date_valid DESC, rgorient DESC) rank
+		 		FROM orientsstructs
 		 	) beforeorient ON beforeorient.personne_id = p.id AND beforeorient.rank = 2
 		";
 
@@ -32,7 +45,7 @@
 		 * $args contient les clés : 'localisation', 'service', 'annee'.
 		 * @author Thierry Nemes - Adullact projet
 		 */
-		public function indicateursOrientations($args) { 
+		public function indicateursOrientations($args) {
 			set_time_limit(0);
 			$resultats = array();
 			$resultats['age'] = $this->_indicOrientAge($args);
@@ -72,12 +85,12 @@
 					calculsdroitsrsa.toppersdrodevorsa = '1'
 					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
 					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
-				
+
 				<COLONNE>
 
 				GROUP BY age_range
-				ORDER BY age_range ASC			
-			";			
+				ORDER BY age_range ASC
+			";
 
 			$colonnes = array(
 				1 => "", // Seulement le champ Droit et Devoirs.
@@ -88,10 +101,10 @@
 			$resultats = array();
 			foreach( $colonnes as $keyCol => $colonne)
 			{
-				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );	
+				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
 				$results_tous = array();
 				foreach( $sqlFound as $result) {
-					
+
 					$results_tous[$result[0]['age_range']] = $result[0]['count'];
 				}
 				$resultats[$keyCol] = $results_tous;
@@ -128,13 +141,13 @@
 					calculsdroitsrsa.toppersdrodevorsa = '1'
 					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
 					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
-				
+
 				<COLONNE>
 
 				GROUP BY anciennete_range
-				ORDER BY anciennete_range ASC			
-			";			
-			
+				ORDER BY anciennete_range ASC
+			";
+
 			$colonnes = array(
 			1 => "", // Seulement le champ Droit et Devoirs.
 			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
@@ -147,12 +160,12 @@
 				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
 				$results_tous = array();
 				foreach( $sqlFound as $result) {
-						
+
 					$results_tous[$result[0]['anciennete_range']] = $result[0]['count'];
 				}
 				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;	
+			return $resultats;
 		}
 
 		/**
@@ -244,7 +257,7 @@
 							AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
 							AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
 						) THEN '10 - Femme en couple avec enfant'
-		
+
 						ELSE '11 - Non connue'
 					END
 				) AS sitfam_range,
@@ -258,13 +271,13 @@
 					calculsdroitsrsa.toppersdrodevorsa = '1'
 					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
 					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
-				
+
 				<COLONNE>
 
 				GROUP BY sitfam_range
-				ORDER BY sitfam_range ASC			
-			";			
-			
+				ORDER BY sitfam_range ASC
+			";
+
 			$colonnes = array(
 			1 => "", // Seulement le champ Droit et Devoirs.
 			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
@@ -277,12 +290,12 @@
 				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
 				$results_tous = array();
 				foreach( $sqlFound as $result) {
-						
+
 					$results_tous[$result[0]['sitfam_range']] = $result[0]['count'];
 				}
 				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;			
+			return $resultats;
 		}
 
 			/**
@@ -314,13 +327,13 @@
 					calculsdroitsrsa.toppersdrodevorsa = '1'
 					AND ( EXTRACT ( YEAR FROM dossiers.dtdemrsa ) ) <= {$args['annee']}
 					AND ( orientsstructs.rgorient IS NULL OR orientsstructs.rgorient = 1 )
-				
+
 				<COLONNE>
 
 				GROUP BY formation_range
-				ORDER BY formation_range ASC			
-			";			
-			
+				ORDER BY formation_range ASC
+			";
+
 			$colonnes = array(
 			1 => "", // Seulement le champ Droit et Devoirs.
 			2 => "AND orientsstructs.typeorient_id IN ( SELECT typesorients.id FROM typesorients WHERE typesorients.lib_type_orient LIKE 'Emploi%' )",
@@ -333,12 +346,12 @@
 				$sqlFound = $this->query( preg_replace('#<COLONNE>#', $colonne, $globalQuery) );
 				$results_tous = array();
 				foreach( $sqlFound as $result) {
-						
+
 					$results_tous[$result[0]['formation_range']] = $result[0]['count'];
 				}
 				$resultats[$keyCol] = $results_tous;
 			}
-			return $resultats;			
+			return $resultats;
 		}
 
 		//##############################################################################
@@ -401,14 +414,14 @@
 							personnes pe
 							LEFT JOIN contratsinsertion ci ON pe.id = ci.personne_id,
 							structuresreferentes sr
-						WHERE 
+						WHERE
 							sr.id = ci.structurereferente_id
 							AND ( EXTRACT ( YEAR FROM ci.df_ci ) ) <= {$args['annee']}
 							AND ( EXTRACT ( YEAR FROM ci.datevalidation_ci ) ) <= {$args['annee']}
 							AND ci.rg_ci = (
 								SELECT MAX(ci2.rg_ci)
 								FROM contratsinsertion ci2
-								WHERE pe.id = ci2.personne_id 
+								WHERE pe.id = ci2.personne_id
 							)
 							{$bloc}
 					;";
@@ -447,14 +460,14 @@
 								dossiers dr,
 								calculsdroitsrsa cdr,
 								orientsstructs os
-							WHERE 
+							WHERE
 								sr.id = ci.structurereferente_id
 								AND ( EXTRACT ( YEAR FROM ci.df_ci ) ) <= {$args['annee']}
 								AND ( EXTRACT ( YEAR FROM ci.datevalidation_ci ) ) <= {$args['annee']}
 								AND ci.rg_ci = (
 									SELECT MAX(ci2.rg_ci)
 									FROM contratsinsertion ci2
-									WHERE pe.id = ci2.personne_id 
+									WHERE pe.id = ci2.personne_id
 								)
 								{$bloc}
 								AND pe.id = cdr.personne_id
@@ -489,16 +502,16 @@
 							personnes pe
 							LEFT JOIN contratsinsertion ci ON pe.id = ci.personne_id,
 							structuresreferentes sr
-						WHERE 
+						WHERE
 							sr.id = ci.structurereferente_id
 							AND ( EXTRACT ( YEAR FROM ci.df_ci ) ) <= {$args['annee']}
 							AND ( EXTRACT ( YEAR FROM ci.datevalidation_ci ) ) <= {$args['annee']}
 							AND ci.rg_ci = (
 								SELECT MAX(ci2.rg_ci)
 								FROM contratsinsertion ci2
-								WHERE pe.id = ci2.personne_id 
+								WHERE pe.id = ci2.personne_id
 							)
-							AND sr.typeorient_id IN ({$this->isEmploi}) 
+							AND sr.typeorient_id IN ({$this->isEmploi})
 							{$bloc}
 					;";
 					$sqlFound = $this->query( $blocSQL );
@@ -525,16 +538,16 @@
 							personnes pe
 							LEFT JOIN contratsinsertion ci ON pe.id = ci.personne_id,
 							structuresreferentes sr
-						WHERE 
+						WHERE
 							sr.id = ci.structurereferente_id
 							AND ( EXTRACT ( YEAR FROM ci.df_ci ) ) <= {$args['annee']}
 							AND ( EXTRACT ( YEAR FROM ci.datevalidation_ci ) ) <= {$args['annee']}
 							AND ci.rg_ci = (
 								SELECT MAX(ci2.rg_ci)
 								FROM contratsinsertion ci2
-								WHERE pe.id = ci2.personne_id 
+								WHERE pe.id = ci2.personne_id
 							)
-							AND sr.typeorient_id IN ({$this->isSocial}) 
+							AND sr.typeorient_id IN ({$this->isSocial})
 							{$bloc}
 					;";
 					$sqlFound = $this->query( $blocSQL );
@@ -591,14 +604,14 @@
 								personnes pe
 								LEFT JOIN contratsinsertion ci ON pe.id = ci.personne_id,
 								structuresreferentes sr
-							WHERE 
+							WHERE
 								sr.id = ci.structurereferente_id
 								AND ( EXTRACT ( YEAR FROM ci.df_ci ) ) <= {$args['annee']}
 								AND ( EXTRACT ( YEAR FROM ci.datevalidation_ci ) ) <= {$args['annee']}
 								AND ci.rg_ci = (
 									SELECT MAX(ci2.rg_ci)
 									FROM contratsinsertion ci2
-									WHERE pe.id = ci2.personne_id 
+									WHERE pe.id = ci2.personne_id
 								)
 								{$bloc}
 
@@ -624,7 +637,7 @@
 		 * $args contient les clés : 'localisation', 'service', 'annee'.
 		 * @author Thierry Nemes - Adullact projet
 		 */
-		public function indicateursDelais($args) { 
+		public function indicateursDelais($args) {
 			set_time_limit(0);
 			$resultats = array();
 			$resultats['Amoy'] = $this->_indicDelaisAmoy($args);
@@ -637,7 +650,7 @@
 			set_time_limit(0);
 			$blocSQL = "
 				SELECT
-					avg(os.date_valid - dr.dtdemrsa) 
+					avg(os.date_valid - dr.dtdemrsa)
 				FROM
 				 	dossiers dr,
 				 	orientsstructs os,
@@ -672,7 +685,7 @@
 				{
 					$blocSQL = "
 						SELECT
-							avg(ci.date_saisi_ci - os.date_valid) 
+							avg(ci.date_saisi_ci - os.date_valid)
 							-- os.date_valid, ci.date_saisi_ci, (ci.date_saisi_ci - os.date_valid)
 						FROM
 							orientsstructs os,
@@ -758,7 +771,7 @@
 			$fieldName = Configure::read('with_parentid') ? 'parentid' : 'id';
 
 			$results = array();
-			$results['DroitsEtDevoirs'] = 0; 
+			$results['DroitsEtDevoirs'] = 0;
 			$results['Autres'] = $results['SP'] = $results['SSD'] = $results['PE'] = 0;
 			foreach($sqlFound as $row)
 			{
@@ -851,7 +864,7 @@
 					<EXTENDQUERY>
 				GROUP BY age_range
 				ORDER BY age_range ASC";
-			
+
 			$extendQuery = "
 			AND derniereorientstruct.typeorient_id IN (
 				SELECT typesorients.id
@@ -863,7 +876,7 @@
 					FROM typesorients
 					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
 			)";
-			
+
 			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
 			$results_tous = array();
 			foreach( $sqlFound_tous as $result) {
@@ -876,20 +889,20 @@
 			$results_social = array();
 			foreach( $sqlFound_social as $result) {
 				$results_social[$result[0]['age_range']] = $result[0]['count'];
-			}			
-			
+			}
+
 			$query = preg_replace('#<NOT1>#', '', $extendQuery);
 			$query = preg_replace('#<NOT2>#', 'NOT', $query);
-			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );			
+			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
 			$results_pro = array();
 			foreach( $sqlFound_pro as $result) {
 				$results_pro[$result[0]['age_range']] = $result[0]['count'];
-			}			
+			}
 			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);
 		}
-		
-		
-		
+
+
+
 
 		/**
 		 * Calcul des indicateurs de réorientation pour le bloc 'situation'.
@@ -980,7 +993,7 @@
 						AND foyers.sitfam IN ('MAR', 'PAC', 'RPA', 'RVC', 'RVM', 'VIM')
 						AND ( SELECT COUNT(*) FROM personnes AS enfants INNER JOIN prestations ON ( enfants.id = prestations.personne_id AND prestations.natprest = 'RSA' ) WHERE enfants.foyer_id = foyers.id AND prestations.rolepers = 'ENF' ) > 0
 					) THEN '10 - Femme en couple avec enfant'
-	
+
 					ELSE '11 - Non connue'
 				END
 			) AS sitfam_range,
@@ -1018,8 +1031,8 @@
 		GROUP BY sitfam_range
 		ORDER BY sitfam_range ASC
 		";
-			
-			
+
+
 			$extendQuery = "
 			AND derniereorientstruct.typeorient_id IN (
 				SELECT typesorients.id
@@ -1030,15 +1043,15 @@
 				SELECT typesorients.id
 					FROM typesorients
 					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
-			)		
+			)
 			";
-			
+
 			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
 			$results_tous = array();
 			foreach( $sqlFound_tous as $result) {
 				$results_tous[$result[0]['sitfam_range']] = $result[0]['count'];
 			}
-			
+
 			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
 			$query = preg_replace('#<NOT2>#', '', $query);
 			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1046,7 +1059,7 @@
 			foreach( $sqlFound_social as $result) {
 				$results_social[$result[0]['sitfam_range']] = $result[0]['count'];
 			}
-				
+
 			$query = preg_replace('#<NOT1>#', '', $extendQuery);
 			$query = preg_replace('#<NOT2>#', 'NOT', $query);
 			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1054,7 +1067,7 @@
 			foreach( $sqlFound_pro as $result) {
 				$results_pro[$result[0]['sitfam_range']] = $result[0]['count'];
 			}
-			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);
 		}
 
 		/**
@@ -1106,9 +1119,9 @@
 				)
 				<EXTENDQUERY>
 			GROUP BY formation_range
-			ORDER BY formation_range ASC			
+			ORDER BY formation_range ASC
 			";
-			
+
 			$extendQuery = "
 			AND derniereorientstruct.typeorient_id IN (
 				SELECT typesorients.id
@@ -1120,13 +1133,13 @@
 					FROM typesorients
 					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
 			)";
-				
+
 			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
 			$results_tous = array();
 			foreach( $sqlFound_tous as $result) {
 				$results_tous[$result[0]['formation_range']] = $result[0]['count'];
 			}
-			
+
 			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
 			$query = preg_replace('#<NOT2>#', '', $query);
 			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1134,7 +1147,7 @@
 			foreach( $sqlFound_social as $result) {
 				$results_social[$result[0]['formation_range']] = $result[0]['count'];
 			}
-				
+
 			$query = preg_replace('#<NOT1>#', '', $extendQuery);
 			$query = preg_replace('#<NOT2>#', 'NOT', $query);
 			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1142,7 +1155,7 @@
 			foreach( $sqlFound_pro as $result) {
 				$results_pro[$result[0]['formation_range']] = $result[0]['count'];
 			}
-			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);
 		}
 
 		/**
@@ -1197,8 +1210,8 @@
 				<EXTENDQUERY>
 			GROUP BY anciennete_range
 			ORDER BY anciennete_range ASC
-			";			
-			
+			";
+
 			$extendQuery = "
 			AND derniereorientstruct.typeorient_id IN (
 				SELECT typesorients.id
@@ -1210,13 +1223,13 @@
 					FROM typesorients
 					WHERE typesorients.lib_type_orient <NOT2> LIKE 'Emploi%'
 			)";
-			
+
 			$sqlFound_tous = $this->query( preg_replace('#<EXTENDQUERY>#', '', $globalQuery) );
 			$results_tous = array();
 			foreach( $sqlFound_tous as $result) {
 				$results_tous[$result[0]['anciennete_range']] = $result[0]['count'];
 			}
-				
+
 			$query = preg_replace('#<NOT1>#', 'NOT', $extendQuery);
 			$query = preg_replace('#<NOT2>#', '', $query);
 			$sqlFound_social = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1224,7 +1237,7 @@
 			foreach( $sqlFound_social as $result) {
 				$results_social[$result[0]['anciennete_range']] = $result[0]['count'];
 			}
-			
+
 			$query = preg_replace('#<NOT1>#', '', $extendQuery);
 			$query = preg_replace('#<NOT2>#', 'NOT', $query);
 			$sqlFound_pro = $this->query( preg_replace('#<EXTENDQUERY>#', $query, $globalQuery) );
@@ -1232,7 +1245,7 @@
 			foreach( $sqlFound_pro as $result) {
 				$results_pro[$result[0]['anciennete_range']] = $result[0]['count'];
 			}
-			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);			
+			return array('tous'=>$results_tous, 'versSocial'=>$results_social, 'versPro'=>$results_pro);
 		}
 
 		//##############################################################################
@@ -1258,8 +1271,8 @@
 		protected function _indicMotifsReorientTab1($args) {
 			$blocs = array(
 				array("select" => true, "now"=>$this->isSocial, "before"=>$this->isEmploi),
-				null, 
-				null, 
+				null,
+				null,
 				null
 			);
 
@@ -1273,7 +1286,7 @@
 
 					if( $bloc['select'] ) {
 						$select = $this->now_and_before;
-						$where = " 
+						$where = "
 							AND o.rgorient = noworient.rgorient
 							AND noworient.typeorient_id IN ( {$bloc['now']})
 							AND beforeorient.typeorient_id IN ( {$bloc['before']} )
@@ -1281,14 +1294,14 @@
 					}
 
 					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
+						SELECT count(DISTINCT p.id)
 						FROM
 							personnes p {$select},
 							foyers f,
 							dossiers d,
 							calculsdroitsrsa c,
 							orientsstructs o
-						WHERE 
+						WHERE
 							p.id = c.personne_id
 							AND p.foyer_id = f.id
 							AND d.id = f.dossier_id
@@ -1322,14 +1335,14 @@
 
 					if( $bloc['select'] ) {
 						$select = $this->now_and_before;
-						$where = " 
+						$where = "
 							AND o.rgorient = noworient.rgorient
 							AND noworient.typeorient_id IN ( {$bloc['now']})
 							AND beforeorient.typeorient_id IN ( {$bloc['before']} )
 						";
 					}
 					$blocSQL = "
-						SELECT count(DISTINCT p.id)     
+						SELECT count(DISTINCT p.id)
 						FROM
 							personnes p {$select},
 							foyers f,
@@ -1338,7 +1351,7 @@
 							orientsstructs o,
 							dossierseps de,
 							passagescommissionseps pc
-						WHERE 
+						WHERE
 							p.id = c.personne_id
 							AND p.foyer_id = f.id
 							AND d.id = f.dossier_id

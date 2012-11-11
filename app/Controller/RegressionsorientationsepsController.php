@@ -1,7 +1,21 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe RegressionsorientationsepsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
 
-	class RegressionsorientationsepsController extends AppController {
+	/**
+	 * La classe RegressionsorientationsepsController ...
+	 *
+	 * @package app.Controller
+	 */
+	class RegressionsorientationsepsController extends AppController
+	{
 
 		public $helpers = array( 'Default2', 'Xpaginator' );
 

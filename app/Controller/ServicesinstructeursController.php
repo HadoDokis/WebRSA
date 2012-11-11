@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe ServicesinstructeursController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ServicesinstructeursController ...
+	 *
+	 * @package app.Controller
+	 */
 	class ServicesinstructeursController extends AppController
 	{
 

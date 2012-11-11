@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Cohortecomiteapre.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Cohortecomiteapre ...
+	 *
+	 * @package app.Model
+	 */
 	class Cohortecomiteapre extends AppModel
 	{
 		public $name = 'Cohortecomiteapre';

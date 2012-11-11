@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe DossiersepsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Core', 'Sanitize' );
 
+	/**
+	 * La classe DossiersepsController ...
+	 *
+	 * @package app.Controller
+	 */
 	class DossiersepsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv', 'Type2' );

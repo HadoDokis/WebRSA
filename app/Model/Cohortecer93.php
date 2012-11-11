@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe Cohortecer93 permet de rechercher le allocataires ne possédant pas de référent de parcours
 	 * en cours.
 	 *
-	 * @package app.models
+	 * @package app.Model
 	 */
 	class Cohortecer93 extends AppModel
 	{

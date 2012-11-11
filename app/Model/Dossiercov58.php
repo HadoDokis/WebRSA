@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Dossiercov58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Dossiercov58 ...
+	 *
+	 * @package app.Model
+	 */
 	class Dossiercov58 extends AppModel
 	{
 		public $name = 'Dossiercov58';

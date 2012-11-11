@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Pieceformpermfimo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Pieceformpermfimo ...
+	 *
+	 * @package app.Model
+	 */
 	class Pieceformpermfimo extends AppModel
 	{
 		public $name = 'Pieceformpermfimo';

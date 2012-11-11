@@ -1,16 +1,22 @@
 <?php
 	/**
-	 * Classe permettant de connaître la liste des modèles de documents (odt),
-	 * la liste des chemins devant être configurés dans le webrsa.inc et
-	 * qui permet de varifier que les intervalles sont correctement paramétrés
-	 * pour l'installation courante
+	 * Code source de la classe Webrsacheck.
 	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	require_once( APPLIBS.'cmis.php' );
 
+	/**
+	 * Classe permettant de connaître la liste des modèles de documents (odt),
+	 * la liste des chemins devant être configurés dans le webrsa.inc et
+	 * qui permet de varifier que les intervalles sont correctement paramétrés
+	 * pour l'installation courante.
+	 *
+	 * @package app.Model
+	 */
 	class Webrsacheck extends AppModel
 	{
 		/**

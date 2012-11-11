@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Indicateurmensuel.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Indicateurmensuel ...
+	 *
+	 * @package app.Model
+	 */
 	class Indicateurmensuel extends AppModel
 	{
 		public $name = 'Indicateurmensuel';

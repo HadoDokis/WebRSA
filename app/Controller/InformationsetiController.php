@@ -1,10 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe InformationsetiController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe InformationsetiController ...
+	 *
+	 * @package app.Controller
+	 */
 	class InformationsetiController extends AppController
 	{
 
 		public $name = 'Informationseti';
 		public $uses = array( 'Informationeti',  'Option' , 'Personne' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Informationseti:index'
 		);
@@ -19,8 +33,8 @@
 			$this->set( 'topsansempl', $this->Option->topsansempl() );
 			$this->set( 'regfiseti', $this->Option->regfiseti() );
 			$this->set( 'topbeneti', $this->Option->topbeneti() );
-			$this->set( 'regfisetia1', $this->Option->regfisetia1() );	      
-			$this->set( 'topevoreveti', $this->Option->topevoreveti() );	      
+			$this->set( 'regfisetia1', $this->Option->regfisetia1() );
+			$this->set( 'topevoreveti', $this->Option->topevoreveti() );
 			$this->set( 'topressevaeti', $this->Option->topressevaeti() );
 		}
 

@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Infoagricole.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Infoagricole ...
+	 *
+	 * @package app.Model
+	 */
 	class Infoagricole extends AppModel
 	{
 		public $name = 'Infoagricole';

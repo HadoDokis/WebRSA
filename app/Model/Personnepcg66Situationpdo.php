@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Personnepcg66Situationpdo.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Personnepcg66Situationpdo ...
+	 *
+	 * @package app.Model
+	 */
 	class Personnepcg66Situationpdo extends AppModel
 	{
 		public $name = 'Personnepcg66Situationpdo';

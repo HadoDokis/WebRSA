@@ -1,4 +1,18 @@
 <?php
+    /**
+     * Code source de la classe Typesaidesapres66Controller.
+     *
+     * PHP 5.3
+     *
+     * @package app.Controller
+     * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+     */
+
+    /**
+     * La classe Typesaidesapres66Controller ...
+     *
+     * @package app.Controller
+     */
     class Typesaidesapres66Controller extends AppController
     {
         public $name = 'Typesaidesapres66';

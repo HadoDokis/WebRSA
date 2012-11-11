@@ -1,10 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe RegroupementszonesgeoController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe RegroupementszonesgeoController ...
+	 *
+	 * @package app.Controller
+	 */
 	class RegroupementszonesgeoController extends AppController
 	{
 
 		public $name = 'Regroupementszonesgeo';
 		public $uses = array( 'Regroupementzonegeo', 'Zonegeographique', 'User', 'Adresse', 'Structurereferente');
-		
+
 		public $commeDroit = array(
 			'add' => 'Regroupementszonesgeo:edit'
 		);

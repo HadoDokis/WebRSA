@@ -1,10 +1,24 @@
 <?php
+	/**
+	 * Code source de la classe PiecespdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe PiecespdosController ...
+	 *
+	 * @package app.Controller
+	 */
 	class PiecespdosController extends AppController
 	{
 
 		public $name = 'Piecespdos';
 		public $uses = array( 'Piecepdo', 'Propopdo' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Piecespdos:index',
 			'add' => 'Piecespdos:edit'

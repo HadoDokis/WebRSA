@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe Propononorientationprocov58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe Propononorientationprocov58 ...
+	 *
+	 * @package app.Model
+	 */
 	class Propononorientationprocov58 extends AppModel
 	{
 		public $name = 'Propononorientationprocov58';

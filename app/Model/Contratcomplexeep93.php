@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Contratcomplexeep93.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( ABSTRACTMODELS.'Thematiqueep.php' );
 
+	/**
+	 * La classe Contratcomplexeep93 ...
+	 *
+	 * @package app.Model
+	 */
 	class Contratcomplexeep93 extends Thematiqueep
 	{
 		/**

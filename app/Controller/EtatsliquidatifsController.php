@@ -1,5 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe EtatsliquidatifsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
+
+	/**
+	 * La classe EtatsliquidatifsController ...
+	 *
+	 * @package app.Controller
+	 */
 	class EtatsliquidatifsController extends AppController
 	{
 

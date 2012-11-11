@@ -1,6 +1,20 @@
 <?php
+	/**
+	 * Code source de la classe FichiersmodulesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-	class FichiersmodulesController extends AppController{
+	/**
+	 * La classe FichiersmodulesController ...
+	 *
+	 * @package app.Controller
+	 */
+	class FichiersmodulesController extends AppController
+	{
 
 		public $name = 'Fichiersmodules';
 		public $uses = array( 'Fichiermodule' );

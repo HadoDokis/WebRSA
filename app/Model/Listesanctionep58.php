@@ -1,7 +1,20 @@
 <?php
+	/**
+	 * Code source de la classe Listesanctionep58.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
-	class Listesanctionep58 extends AppModel {
-
+	/**
+	 * La classe Listesanctionep58 ...
+	 *
+	 * @package app.Model
+	 */
+	class Listesanctionep58 extends AppModel
+	{
 		public $name = 'Listesanctionep58';
 
 		public $displayField = 'sanction';

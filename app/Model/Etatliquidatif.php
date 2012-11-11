@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Etatliquidatif.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Etatliquidatif ...
+	 *
+	 * @package app.Model
+	 */
 	class Etatliquidatif extends AppModel
 	{
 		public $name = 'Etatliquidatif';

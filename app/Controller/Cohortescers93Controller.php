@@ -4,7 +4,7 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
@@ -12,7 +12,7 @@
 	 * La classe Cohortescers93Controller permet d'assigner un référent du parcours aux allocataires qui
 	 * n'en possèdent pas.
 	 *
-	 * @package app.controllers
+	 * @package app.Controller
 	 */
 	class Cohortescers93Controller extends AppController
 	{

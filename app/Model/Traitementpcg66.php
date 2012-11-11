@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Traitementpcg66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Traitementpcg66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Traitementpcg66 extends AppModel
 	{
 		public $name = 'Traitementpcg66';

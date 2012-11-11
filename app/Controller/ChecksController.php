@@ -1,10 +1,18 @@
 <?php
-    /**
-     *
-     * PHP 5.3
-     *
-     * @package       app.controllers
-     */
+	/**
+	 * Code source de la classe ChecksController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ChecksController ...
+	 *
+	 * @package app.Controller
+	 */
 	class ChecksController extends AppController
 	{
 		/**

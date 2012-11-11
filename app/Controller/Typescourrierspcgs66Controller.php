@@ -1,4 +1,18 @@
-<?php
+<?php    
+    /**
+     * Code source de la classe Typescourrierspcgs66Controller.
+     *
+     * PHP 5.3
+     *
+     * @package app.Controller
+     * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+     */
+
+    /**
+     * La classe Typescourrierspcgs66Controller ...
+     *
+     * @package app.Controller
+     */
     class Typescourrierspcgs66Controller extends AppController
     {
         public $name = 'Typescourrierspcgs66';

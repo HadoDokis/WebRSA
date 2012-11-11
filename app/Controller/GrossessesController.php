@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe GrossessesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe GrossessesController ...
+	 *
+	 * @package app.Controller
+	 */
 	class GrossessesController extends AppController
 	{
 

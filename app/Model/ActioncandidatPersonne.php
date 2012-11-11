@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe ActioncandidatPersonne.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ActioncandidatPersonne ...
+	 *
+	 * @package app.Controller
+	 */
 	class ActioncandidatPersonne extends AppModel
 	{
 		public $name = 'ActioncandidatPersonne';
@@ -476,7 +490,7 @@
 			);
 			return Set::extract( $items, '/'.$this->Actioncandidat->alias.'/modele' );
 		}
-        
+
 		/**
 		 * Retourne l'id du dossier à partir de l'id de l'enregistrement du modèle.
 		 *
@@ -505,5 +519,5 @@
 				return null;
 			}
 		}
-	}  
+	}
 ?>

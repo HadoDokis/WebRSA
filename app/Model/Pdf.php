@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Pdf.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	require_once( APPLIBS.'cmis.php' );
 
+	/**
+	 * La classe Pdf ...
+	 *
+	 * @package app.Model
+	 */
 	class Pdf extends AppModel
 	{
 		public $name = 'Pdf';

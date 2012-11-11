@@ -1,6 +1,19 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe RecoursapresController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
 
+	/**
+	 * La classe RecoursapresController ...
+	 *
+	 * @package app.Controller
+	 */
 	class RecoursapresController extends AppController
 	{
 		public $name = 'Recoursapres';

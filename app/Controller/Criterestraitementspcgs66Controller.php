@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Criterestraitementspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import('Sanitize');
 
+	/**
+	 * La classe Criterestraitementspcgs66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Criterestraitementspcgs66Controller extends AppController
 	{
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );

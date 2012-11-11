@@ -1,5 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe SituationspdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
+	/**
+	 * La classe SituationspdosController ...
+	 *
+	 * @package app.Controller
+	 */
 	class SituationspdosController extends AppController
 	{
 		public $name = 'Situationspdos';

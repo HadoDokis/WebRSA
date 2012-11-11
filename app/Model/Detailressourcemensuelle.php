@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Detailressourcemensuelle.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Detailressourcemensuelle ...
+	 *
+	 * @package app.Model
+	 */
 	class Detailressourcemensuelle extends AppModel
 	{
 		public $name = 'Detailressourcemensuelle';

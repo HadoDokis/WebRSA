@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Code source de la classe StructuresreferentesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe StructuresreferentesController ...
+	 *
+	 * @package app.Controller
+	 */
 	class StructuresreferentesController extends AppController
 	{
 
@@ -15,7 +29,7 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
 			$optionsradio = $this->Structurereferente->allEnumLists();
-			
+
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$optionsradio['typestructure']['oa'] = 'Structure liée à un PPAE';
 				$optionsradio['typestructure']['msp'] = 'Structure débouchant sur CER pro';

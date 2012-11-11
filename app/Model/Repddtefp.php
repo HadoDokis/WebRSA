@@ -1,6 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe Repddtefp.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe Repddtefp ...
+	 *
+	 * @package app.Model
+	 */
 	class Repddtefp extends AppModel
 	{
 		public $name = 'Repddtefp';

@@ -1,7 +1,21 @@
 <?php
-	App::import('Sanitize');
+	/**
+	 * Code source de la classe NonorientationsprosepsController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+	App::import( 'Sanitize' );
 
-	class NonorientationsprosepsController extends AppController {
+	/**
+	 * La classe NonorientationsprosepsController ...
+	 *
+	 * @package app.Controller
+	 */
+	class NonorientationsprosepsController extends AppController
+	{
 
 		public $helpers = array( 'Default2', 'Xpaginator', 'Csv' );
 

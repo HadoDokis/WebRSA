@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Detaildifdisp.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Detaildifdisp ...
+	 *
+	 * @package app.Model
+	 */
 	class Detaildifdisp extends AppModel
 	{
 		public $name = 'Detaildifdisp';

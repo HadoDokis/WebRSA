@@ -1,11 +1,25 @@
 <?php
+	/**
+	 * Code source de la classe ParticipantscomitesController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe ParticipantscomitesController ...
+	 *
+	 * @package app.Controller
+	 */
 	class ParticipantscomitesController extends AppController
 	{
 
 		public $name = 'Participantscomites';
 		public $uses = array( 'Participantcomite', 'Comiteapre', 'Option' );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Participantscomites:edit'
 		);
@@ -13,7 +27,7 @@
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$this->set( 'qual', $this->Option->qual() );
-			
+
 			return $return;
 		}
 

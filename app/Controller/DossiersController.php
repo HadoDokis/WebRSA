@@ -1,13 +1,19 @@
 <?php
 	/**
-	 * Fichier source de la classe DossiersController.
+	 * Code source de la classe DetailsdroitsrsaController.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package       app.controllers
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Sanitize' );
 
+	/**
+	 * La classe DetailsdroitsrsaController ...
+	 *
+	 * @package app.Controller
+	 */
 	class DossiersController extends AppController
 	{
 		public $name = 'Dossiers';
@@ -80,7 +86,7 @@
 				$this->set( 'optionsDossier', $optionsDossier );
 			}
 			$this->set( 'fonorg', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
-			
+
 			$this->set(
 				'chooserolepers',
 				array(
@@ -511,8 +517,8 @@
 					);
 					$personnesFoyer[$index]['Nonoriente66']['derniere'] = $tNonoriente66;
 				}
-				
-				
+
+
 				// Dernière relance effective
 				$tRelance = $this->Dossier->Foyer->Personne->Contratinsertion->Nonrespectsanctionep93->Relancenonrespectsanctionep93->find(
 					'first',

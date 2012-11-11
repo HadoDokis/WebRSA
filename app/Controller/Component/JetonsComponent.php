@@ -1,4 +1,18 @@
 <?php
+	/**
+	 * Fichier source de la classe JetonsComponent.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller.Component
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe JetonsComponent ...
+	 *
+	 * @package app.Controller.Component
+	 */
     class JetonsComponent extends Component
     {
         public $components = array( 'Session' );

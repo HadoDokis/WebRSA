@@ -1,4 +1,18 @@
-<?php
+<?php    
+    /**
+     * Code source de la classe Decisionscuis66Controller.
+     *
+     * PHP 5.3
+     *
+     * @package app.Controller
+     * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+     */
+
+    /**
+     * La classe Decisionscuis66Controller ...
+     *
+     * @package app.Controller
+     */
     class Decisionscuis66Controller extends AppController
     {
         public $name = 'Decisionscuis66';

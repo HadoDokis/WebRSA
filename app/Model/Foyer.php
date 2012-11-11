@@ -1,8 +1,15 @@
 <?php
 	/**
-	 * Fichier source de la classe Foyer.
+	 * Code source de la classe Foyer.
 	 *
 	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Foyer ...
 	 *
 	 * @package app.Model
 	 */

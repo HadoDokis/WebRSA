@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Codesromemetiersdsps66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Codesromemetiersdsps66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Codesromemetiersdsps66Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );

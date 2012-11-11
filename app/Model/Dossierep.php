@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Dossierep.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Dossierep ...
+	 *
+	 * @package app.Model
+	 */
 	class Dossierep extends AppModel
 	{
 		public $name = 'Dossierep';

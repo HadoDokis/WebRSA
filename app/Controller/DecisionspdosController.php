@@ -1,15 +1,29 @@
 <?php
+	/**
+	 * Code source de la classe DecisionspdosController.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe DecisionspdosController ...
+	 *
+	 * @package app.Controller
+	 */
 	class DecisionspdosController extends AppController
 	{
 
 		public $name = 'Decisionspdos';
 		public $uses = array( 'Decisionpdo', 'Propopdo', 'Option'  );
 		public $helpers = array( 'Xform' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Decisionspdos:edit'
 		);
-		
+
 		protected function _setOptions() {
 			$options = $this->Decisionpdo->enums();
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -53,7 +67,7 @@
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index' ) );
 			}
-	
+
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $decisionpdo_id ), 'invalidParameter' );

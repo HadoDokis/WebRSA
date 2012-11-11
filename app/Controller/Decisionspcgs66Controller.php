@@ -1,14 +1,28 @@
 <?php
+	/**
+	 * Code source de la classe Decisionspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Decisionspcgs66Controller ...
+	 *
+	 * @package app.Controller
+	 */
 	class Decisionspcgs66Controller extends AppController
 	{
 
 		public $name = 'Decisionspcgs66';
 		public $helpers = array( 'Xform', 'Default2' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Decisionspcgs66:edit'
 		);
-		
+
 		protected function _setOptions() {
 // 			$options = $this->Decisionpcg66->enums();
 			$this->set( compact( 'options' ) );
@@ -19,7 +33,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
-			
+
 			$qdOccurences = $this->Decisionpcg66->qdOccurences();
 
 			$decisionspcgs66 = $this->Decisionpcg66->find( 'all', $qdOccurences );

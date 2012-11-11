@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Motifcernonvalid66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Motifcernonvalid66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Motifcernonvalid66 extends AppModel
 	{
 		public $name = 'Motifcernonvalid66';

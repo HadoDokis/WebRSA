@@ -1,4 +1,18 @@
-<?php
+<?php	
+	/**
+	 * Code source de la classe Piececomptable66.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Piececomptable66 ...
+	 *
+	 * @package app.Model
+	 */
 	class Piececomptable66 extends AppModel
 	{
 		public $name = 'Piececomptable66';
