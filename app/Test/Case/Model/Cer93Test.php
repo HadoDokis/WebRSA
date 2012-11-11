@@ -369,7 +369,7 @@
 					'dureecdd' => '1',
 					'prevu' => '',
 					'bilancerpcd' => NULL,
-					'duree' => 1,
+					'duree' => 3,
 					'pointparcours' => 'aladate',
 					'datepointparcours' => '2010-12-31',
 					'pourlecomptede' => 'JACQUES ANTOINE',
