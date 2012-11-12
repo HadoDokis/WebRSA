@@ -662,13 +662,69 @@
 		return  "{ ".implode( ', ', $return )." }";
 	}
 
+
 	/**
-	 * Retourne le numéro de version Apache utilisé.
+	 * Retourne le chemin vers le binaire Apache2.
+	 * Par défaut, retourne /usr/sbin/apache2, sinon retourne la valeur paramétrée
+	 * dans le fichier app/Config/webrsa.inc, sous la clé 'apache_bin'.
+	 *
+	 * Exemple:
+	 * <pre>Configure::write( 'apache_bin', '/usr/bin/apache2' );</pre>
+	 * @return string
+	 */
+	function apache_bin() {
+		$bin = Configure::read( 'apache_bin' );
+
+		if( empty( $bin ) ) {
+			$bin = '/usr/sbin/apache2';
+		}
+
+		return $bin;
+	}
+
+	/**
+	 * Retourne le numéro de version Apache utilisé, que l'on soit en mode CGI
+	 * ou mod_php (dans ce cas, on se sert de la fonction apache_get_version()).
 	 *
 	 * @return string
 	 */
 	function apache_version()  {
-		return preg_replace( '/^Apache\/([^ ]+) .*/', '\1', apache_get_version() );
+		if( function_exists( 'apache_get_version' ) ) {
+			$rawVersion = apache_get_version();
+		}
+		else {
+			$rawVersion = 'Apache/0';
+			$output = array();
+			@exec( apache_bin().' -v', $output );
+			if( !empty( $output ) ) {
+				$rawVersion = $output[0];
+			}
+		}
+
+		return preg_replace( '/^.*Apache\/([^ ]+) .*$/', '\1', $rawVersion );
+	}
+
+	/**
+	 * Retourne la liste des modules chargés par Apache, que l'on soit en mode CGI
+	 * ou mod_php (dans ce cas, on se sert de la fonction apache_get_modules()).
+	 *
+	 * @return string
+	 */
+	function apache_modules() {
+		if( function_exists( 'apache_get_modules' ) ) {
+			return apache_get_modules();
+		}
+		else {
+			$return = array();
+			$output = array();
+			@exec( apache_bin().' -M', $output );
+			if( !empty( $output ) ) {
+				foreach( $output as $module ) {
+					$return[] = 'mod_'.trim( preg_replace( '/^(.*)_module.*$/', '\1', $module ) );
+				}
+			}
+			return $return;
+		}
 	}
 
 	/**
