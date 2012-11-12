@@ -53,7 +53,7 @@
 		 * @return array
 		 */
 		public function apacheModules( array $modules, $message = "Le module Apache %s n'est pas disponible." ) {
-			$loaded = apache_get_modules();
+			$loaded = apache_modules();
 
 			$checks = array();
 			foreach( $modules as $module ) {
