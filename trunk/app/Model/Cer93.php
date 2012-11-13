@@ -539,13 +539,32 @@
 					'Sujetcer93' => array(),
 				);
 
-				// On préremplit le formulaire avec des données de l'utilisateur connecté si possible
-				if( !empty( $dataUser['Structurereferente']['id'] ) ) {
-					$data['Contratinsertion']['structurereferente_id'] = $dataUser['Structurereferente']['id'];
+				$dataReferentParcours = $this->Contratinsertion->Personne->PersonneReferent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $personne_id,
+							'PersonneReferent.dfdesignation IS NULL'
+						),
+						'contain' => array(
+							'Referent'
+						)
+					)
+				);
+				// On préremplit le formulaire avec des données du référent affecté (du parcours actuel)
+				if( !empty( $dataReferentParcours ) ) {
+					$data['Contratinsertion']['structurereferente_id'] = $dataReferentParcours['Referent']['structurereferente_id'];
+					$data['Contratinsertion']['referent_id'] = $dataReferentParcours['Referent']['id'];
 				}
-				else if( !empty( $dataUser['Referent']['id'] ) ) {
-					$data['Contratinsertion']['structurereferente_id'] = $dataUser['Referent']['structurereferente_id'];
-					$data['Contratinsertion']['referent_id'] = $dataUser['Referent']['id'];
+				// On préremplit le formulaire avec des données de l'utilisateur connecté si possible
+				else {
+					if( !empty( $dataUser['Structurereferente']['id'] ) ) {
+						$data['Contratinsertion']['structurereferente_id'] = $dataUser['Structurereferente']['id'];
+					}
+					else if( !empty( $dataUser['Referent']['id'] ) ) {
+						$data['Contratinsertion']['structurereferente_id'] = $dataUser['Referent']['structurereferente_id'];
+						$data['Contratinsertion']['referent_id'] = $dataUser['Referent']['id'];
+					}
 				}
 			}
 
