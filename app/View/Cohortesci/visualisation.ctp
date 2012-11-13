@@ -55,7 +55,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach( $cohorteci as $index => $contrat ):?>
+				<?php 
+					$controller = 'contratsinsertion';
+					if( Configure::read( 'Cg.departement' ) == 93 ) {
+						$controller = 'cers93';
+					}
+					foreach( $cohorteci as $index => $contrat ):?>
 						<?php
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
@@ -174,8 +179,8 @@
 							$array2 = array(
 								$this->Xhtml->viewLink(
 									'Voir le contrat',
-									array( 'controller' => 'contratsinsertion', 'action' => 'view', $contrat['Contratinsertion']['id'] ),
-									$this->Permissions->check( 'contratsinsertion', 'view' )
+									array( 'controller' => $controller, 'action' => 'view', $contrat['Contratinsertion']['id'] ),
+									$this->Permissions->check( $controller, 'view' )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell' ) ),
 							);
