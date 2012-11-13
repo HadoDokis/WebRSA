@@ -77,7 +77,7 @@
 				$this->XProgressBar->next( 1, '<info>'.$fonction.'</info>' );
 				$return = $this->Gestionanomaliesbdd->{$fonction}( $this->params['solve'] );
 				$return = ( is_bool( $return ) ? ( ( $return ) ? 'true' : 'false' ) : $return );
-				$out[] = str_pad( '<info>'.__d( 'gestionanomaliebdd', "Component::{$fonction}", true ).'</info>', 65 ).'<important>'.$return.'</important>';
+				$out[] = str_pad( '<info>'.__d( 'gestionanomaliebdd', "Component::{$fonction}" ).'</info>', 65 ).'<important>'.$return.'</important>';
 			}
 
 			$this->out();
