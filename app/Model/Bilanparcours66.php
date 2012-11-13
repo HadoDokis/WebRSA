@@ -538,28 +538,31 @@
 					
 					if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
 						// Recherche de l'ancien contrat d'insertion
+						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
 						$vxContratinsertion = $this->Contratinsertion->find(
 							'first',
 							array(
 								'conditions' => array(
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
+									"Contratinsertion.id IN ( {$sqDernierCer} )"
 								),
 								'contain' => false
 							)
 						);
 
+						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Cui->find(
 							'first',
 							array(
 								'conditions' => array(
 									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+									"Cui.id IN ( {$sqDernierCui} )"
 								),
 								'contain' => false,
 								'recursive' => -1
 							)
 						);
+
 
 	// 					if( empty( $vxContratinsertion ) ) {
 	// 						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
@@ -698,30 +701,33 @@
 						}
 
 						// Possède-t-on un CER
+						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
 						$vxContratinsertion = $this->Contratinsertion->find(
 							'first',
 							array(
 								'conditions' => array(
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
+									"Contratinsertion.id IN ( {$sqDernierCer} )"
+								),
+								'contain' => false
+							)
+						);
+
+						
+						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
+						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
+						$vxCui = $this->Cui->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
+									"Cui.id IN ( {$sqDernierCui} )"
 								),
 								'contain' => false,
 								'recursive' => -1
 							)
 						);
 
-						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
-						$vxCui = $this->Cui->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
-								),
-								'contain' => false,
-								'recursive' => -1
-							)
-						);
 
 
 
@@ -935,28 +941,31 @@
 							return false;
 						}
 
+						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
 						$vxContratinsertion = $this->Contratinsertion->find(
 							'first',
 							array(
 								'conditions' => array(
 									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Contratinsertion.structurereferente_id' => $vxOrientstruct['Orientstruct']['structurereferente_id']
+									"Contratinsertion.id IN ( {$sqDernierCer} )"
 								),
 								'contain' => false
 							)
 						);
 
+						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Cui->find(
 							'first',
 							array(
 								'conditions' => array(
 									'Cui.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									'Cui.datefinprisecharge >=' => date( 'Y-m-d' )
+									"Cui.id IN ( {$sqDernierCui} )"
 								),
 								'contain' => false,
 								'recursive' => -1
 							)
 						);
+
 						// FIXME: erreur pas dans choixparcours
 // 						if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
 // 							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
@@ -1208,7 +1217,8 @@
 					
 					$this->Defautinsertionep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Dossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) )
+					$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) )
 				);
 
 				// Liste des champs par étpae de décisions pour le passage en EPL Parcours du bilan
@@ -1248,6 +1258,7 @@
 						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Dossierpcg66->fields(),
 						$this->Dossierpcg66->Decisiondossierpcg66->fields(),
+						$this->Dossierpcg66->Decisiondossierpcg66->Decisionpdo->fields(),
 						$fieldsDecisionsaisinebilanparcoursep66ep,
 						$fieldsDecisionsaisinebilanparcoursep66cg
 					),
@@ -1288,7 +1299,12 @@
 						'typevoie' => $Option->typevoie()
 					)
 				),
-				$this->enums()
+				$this->enums(),
+				$this->Defautinsertionep66->enums(),
+				$this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums(),
+				$this->Saisinebilanparcoursep66->enums(),
+				$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums()
+
 			);
 
 			$typeformulaire = Set::classicExtract( $data, 'Bilanparcours66.typeformulaire' );
