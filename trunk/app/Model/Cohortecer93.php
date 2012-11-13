@@ -99,11 +99,13 @@
 
 			// Présence CER ?
 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
+				 $sqDernierContratinsertionExists = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array(), false );
+
 				if( $search['Contratinsertion']['exists'] ) {
-					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NOT NULL )";
+					$conditions[] = "( ( {$sqDernierContratinsertionExists} ) IS NOT NULL )";
 				}
 				else {
-					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NULL )";
+					$conditions[] = "( ( {$sqDernierContratinsertionExists} ) IS NULL )";
 				}
 			}
 
