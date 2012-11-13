@@ -40,6 +40,7 @@
 			'app.Informationpe',
 			'app.Pdf',
 			'app.Personne',
+			'app.PersonneReferent',
 			'app.Prestation',
 			'app.Referent',
 			'app.Soussujetcer93',
