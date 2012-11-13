@@ -165,8 +165,8 @@
 				}
 			}
 
-			if( isset( $criteres['Critere']['origine'] ) && !empty( $criteres['Critere']['origine'] ) ) {
-				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Critere']['origine'], array( 'encode' => false ) ).'\'';
+			if( isset( $criteres['Orientstruct']['origine'] ) && !empty( $criteres['Orientstruct']['origine'] ) ) {
+				$conditions[] = 'Orientstruct.origine = \''.Sanitize::clean( $criteres['Orientstruct']['origine'], array( 'encode' => false ) ).'\'';
 			}
 
 			$hasReferent  = Set::extract( $criteres, 'Critere.hasreferent' );
