@@ -439,6 +439,7 @@
 				$this->Cer93->enums(),
 				$options
 			);
+			
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
