@@ -842,5 +842,27 @@
 				return null;
 			}
 		}
+		
+		/**
+		 * Sous-requête permettant de récupérer le dernier contrat d'un allocataire.
+		 *
+		 * @param string $personneIdFied Le champ où trouver l'id de la personne.
+		 * @return string
+		 */
+		public function sqDernierContrat( $personneIdFied = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'cuis.id'
+					),
+					'alias' => 'cuis',
+					'conditions' => array(
+						"cuis.personne_id = {$personneIdFied}"
+					),
+					'order' => array( 'cuis.datedebprisecharge DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
