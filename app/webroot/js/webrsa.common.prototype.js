@@ -1310,3 +1310,23 @@ function observeFilterSelectOptionsFromRadioValue( formId, radioName, selectId, 
 		} );
 	} );
 }
+
+/**
+ * Retourne la valeur d'un radio présent au sein d'un formulaire particulier
+ * 
+ * @param string form L'id du formulaire (ex.: 'contratinsertion')
+ * @param string radioName Le name du radio (ex.: 'data[Cer93][duree]')
+ * @return string
+ */
+function radioValue( form, radioName ) {
+	var v = $( form ).getInputs( 'radio', radioName );
+
+	var currentValue = undefined;
+	$( v ).each( function( radio ) {
+		if( radio.checked ) {
+			currentValue = radio.value;
+		}
+	} );
+	
+	return currentValue;
+}
