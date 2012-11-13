@@ -249,10 +249,11 @@
 			$success = $this->_addAcos() && $success;
 
 			$acos = $this->Acl->Aco->find(
-					'list', array(
-				'fields' => array( 'id', 'alias' ),
-				'conditions' => array( 'Aco.alias LIKE' => 'Module:%' )
-					)
+				'list',
+				array(
+					'fields' => array( 'id', 'alias' ),
+					'conditions' => array( 'Aco.alias LIKE' => 'Module:%' )
+				)
 			);
 
 			$this->_wait( 'Paramétrage des permissions des Administrateurs' );
