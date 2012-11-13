@@ -157,7 +157,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach( $contrats as $index => $contrat ):?>
+				<?php
+					$controller = 'contratsinsertion';
+					if( Configure::read( 'Cg.departement' ) == 93 ) {
+						$controller = 'cers93';
+					}
+					foreach( $contrats as $index => $contrat ):?>
 					<?php
 						$title = $contrat['Dossier']['numdemrsa'];
 
@@ -220,7 +225,7 @@
 								array(
 									$this->Xhtml->viewLink(
 										'Voir le dossier « '.$title.' »',
-										array( 'controller' => 'contratsinsertion', 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+										array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
 									),
 									array( 'class' => 'noprint' )
 								),
