@@ -527,7 +527,7 @@
 			'legend' => false,
 			'Contratinsertion.dd_ci' => array( 'domain' => 'contratinsertion', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true ),
 			'Contratinsertion.df_ci' => array( 'domain' => 'contratinsertion','type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true ),
-			'Contratinsertion.date_saisi_ci' => array( 'label' => 'Contrat saisi le', 'type' => 'date', 'empty' => true, 'dateFormat' => 'DMY', 'required' => true )
+			'Contratinsertion.date_saisi_ci' => array( 'label' => 'Contrat saisi le', 'type' => 'date', 'dateFormat' => 'DMY', 'required' => true )
 		)
 	);
 ?>
