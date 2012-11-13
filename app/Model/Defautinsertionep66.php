@@ -931,7 +931,9 @@
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->fields(),
-					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields()
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->Permanence->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields(),
+					$this->Dossierep->Defautinsertionep66->Bilanparcours66->fields()
 				),
 				'joins' => array(
 					array(
@@ -953,10 +955,12 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
-
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
 				)
 			);
+
 
 			$modeleDecisionPart = 'decdefins'.Configure::read( 'Cg.departement' );
 			return array_words_replace(
@@ -1108,7 +1112,42 @@
 			}
 
 			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			
+			$datas['querydata']['joins'] = array_merge(
+				$datas['querydata']['joins'],
+				array(
+					$this->join( 'Bilanparcours66' ),
+					$this->Bilanparcours66->join( 'Structurereferente' ),
+					$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+					array_words_replace(
+						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
+						array(
+							'User' => 'Userbilan'
+						)
+					)
+				)
+			);
+
+			$datas['querydata']['fields'] = Set::merge(
+				$datas['querydata']['fields'],
+				array_merge(
+					$this->Bilanparcours66->fields(),
+					$this->Bilanparcours66->Structurereferente->fields(),
+					$this->Bilanparcours66->Structurereferente->Permanence->fields(),
+					array_words_replace(
+						$this->Bilanparcours66->User->fields(),
+						array(
+							'User' => 'Userbilan'
+						)
+					)
+				)
+			);
+
+			$virtualFields = $this->Dossierep->Passagecommissionep->virtualFields;
+			$this->Dossierep->Passagecommissionep->virtualFields = array();
 			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$this->Dossierep->Passagecommissionep->virtualFields = $virtualFields;
+
 			$modeleOdt = 'Commissionep/convocationep_beneficiaire.odt';
 
 			if( empty( $gedooo_data ) ) {

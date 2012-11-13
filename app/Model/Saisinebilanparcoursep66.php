@@ -525,7 +525,9 @@
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->fields(),
-					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields()
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->Permanence->fields(),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields(),
+					$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->fields()
 				),
 				'joins' => array(
 					array(
@@ -547,9 +549,12 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
 				)
 			);
+
 
 			$modeleDecisionPart = 'decbilan'.Configure::read( 'Cg.departement' );
 			return array_words_replace(
@@ -734,15 +739,39 @@
 				$modelesProposes = array(
 					'Typeorient' => "{$modeleDecisions}typeorient",
 					'Structurereferente' => "{$modeleDecisions}structurereferente",
-					'Referent' => "{$modeleDecisions}referent",
+					'Referent' => "{$modeleDecisions}referent"
 				);
 
 				foreach( $modelesProposes as $modelePropose => $modeleProposeAliase ) {
 					$replacement = array( $modelePropose => $modeleProposeAliase );
 
 					$datas['querydata']['joins'][] = array_words_replace( $this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( $modelePropose ), $replacement );
-					$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], array_words_replace( $this->Dossierep->Passagecommissionep->{$modeleDecisions}->{$modelePropose}->fields(), $replacement ) );
+					$datas['querydata']['fields'] = array_merge(
+						$datas['querydata']['fields'],
+						array_words_replace(
+							$this->Dossierep->Passagecommissionep->{$modeleDecisions}->{$modelePropose}->fields(),
+							$replacement
+						)
+					);
 				}
+
+				$datas['querydata']['joins'][] = array_words_replace(
+					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->join( 'Permanence' ),
+					array( 
+						'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
+						'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
+					)
+				);
+				$datas['querydata']['fields'] = array_merge(
+					$datas['querydata']['fields'],
+					array_words_replace(
+						$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->Permanence->fields(),
+						array(
+							'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
+							'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
+						)
+					)
+				);
 
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();

@@ -776,84 +776,29 @@
 			);
 
 			$queryData = array(
-				'fields' => array(
-					'Dossierep.id',
-					'Dossierep.personne_id',
-					'Dossierep.themeep',
-					'Dossierep.created',
-					'Dossierep.modified',
-					'Personne.id',
-					'Personne.foyer_id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.nomnai',
-					'Personne.prenom2',
-					'Personne.prenom3',
-					'Personne.nomcomnai',
-					'Personne.dtnai',
-					'Personne.rgnai',
-					'Personne.typedtnai',
-					'Personne.nir',
-					'Personne.topvalec',
-					'Personne.sexe',
-					'Personne.nati',
-					'Personne.dtnati',
-					'Personne.pieecpres',
-					'Personne.idassedic',
-					'Personne.numagenpoleemploi',
-					'Personne.dtinscpoleemploi',
-					'Personne.numfixe',
-					'Personne.numport',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
-					'Adresse.codepos',
-
+				'fields' => array_merge(
+					$this->Passagecommissionep->fields(),
+					$this->Passagecommissionep->Dossierep->fields(),
+					$this->Passagecommissionep->Dossierep->Personne->fields(),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields()
 				),
 				'joins' => array(
+					$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'conditions' => array(
+					'Passagecommissionep.dossierep_id = Dossierep.id',
+					'Passagecommissionep.commissionep_id' => $commissionep_id,
 					array(
-						'table'      => 'passagescommissionseps',
-						'alias'      => 'Passagecommissionep',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Passagecommissionep.dossierep_id = Dossierep.id',
-							'Passagecommissionep.commissionep_id' => $commissionep_id,
-						),
-					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							// FIXME: c'est un hack pour n'avoir qu'une seule adresse de range 01 par foyer!
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 					)
 				)
 			);
@@ -1400,6 +1345,13 @@
 							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
 						),
 						array(
+							'table'      => 'dossiers',
+							'alias'      => 'Dossier',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+						),
+						array(
 							'table'      => 'adressesfoyers',
 							'alias'      => 'Adressefoyer',
 							'type'       => 'LEFT OUTER',
@@ -1433,97 +1385,54 @@
 				);
 			}
 			else {
+				// Jointure spéciale sur Dossierep suivant la thématique
+				$joinSaisinebilanparcoursep66 = $this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
+				$joinDefautinsertionep66 = $this->Passagecommissionep->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'LEFT OUTER' ) );
+
+				$joinBilanparcours66 = $joinSaisinebilanparcoursep66;
+				$joinBilanparcours66['conditions'] = array(
+					'OR' => array(
+						$joinSaisinebilanparcoursep66['conditions'],
+						$joinDefautinsertionep66['conditions']
+					)
+				);
+	
 				$queryData = array(
-					'fields' => array(
-						'Dossierep.id',
-						'Dossierep.personne_id',
-						'Passagecommissionep.commissionep_id',
-						'Passagecommissionep.etatdossierep',
-						'Dossierep.themeep',
-						'Dossierep.created',
-						'Dossierep.modified',
-						//
-						'Personne.id',
-						'Personne.foyer_id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.nomnai',
-						'Personne.prenom2',
-						'Personne.prenom3',
-						'Personne.nomcomnai',
-						'Personne.dtnai',
-						'Personne.rgnai',
-						'Personne.typedtnai',
-						'Personne.nir',
-						'Personne.topvalec',
-						'Personne.sexe',
-						'Personne.nati',
-						'Personne.dtnati',
-						'Personne.pieecpres',
-						'Personne.idassedic',
-						'Personne.numagenpoleemploi',
-						'Personne.dtinscpoleemploi',
-						'Personne.numfixe',
-						'Personne.numport',
-						'Adresse.locaadr',
-						'Adresse.numcomptt',
-						'Adresse.codepos',
-						//
-						'Defautinsertionep66.origine'
+					'fields' => array_merge(
+						$this->Passagecommissionep->fields(),
+						$this->Passagecommissionep->Dossierep->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields(),
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()
 					),
 					'joins' => array(
-						array(
-							'table'      => 'defautsinsertionseps66',
-							'alias'      => 'Defautinsertionep66',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array( "Dossierep.id = Defautinsertionep66.dossierep_id" ),
-						),
-						array(
-							'table'      => 'passagescommissionseps',
-							'alias'      => 'Passagecommissionep',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( "Dossierep.id = Passagecommissionep.dossierep_id" ),
-						),
-						array(
-							'table'      => 'personnes',
-							'alias'      => 'Personne',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( "Dossierep.personne_id = Personne.id" ),
-						),
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-						),
-						array(
-							'table'      => 'adressesfoyers',
-							'alias'      => 'Adressefoyer',
-							'type'       => 'LEFT OUTER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Foyer.id = Adressefoyer.foyer_id',
-								// FIXME: c'est un hack pour n'avoir qu'une seule adresse de rang 01 par foyer!
-								'Adressefoyer.id IN (
-									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-								)'
-							)
-						),
-						array(
-							'table'      => 'adresses',
-							'alias'      => 'Adresse',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						)
+						$this->Passagecommissionep->Dossierep->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+						$joinBilanparcours66,
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'conditions' => array(
-						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id']
+						'Passagecommissionep.commissionep_id' => $convocation['Commissionep']['id'],
+						array(
+							'OR' => array(
+								'Adressefoyer.id IS NULL',
+								'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+							)
+						)
 					)
 				);
 			}
