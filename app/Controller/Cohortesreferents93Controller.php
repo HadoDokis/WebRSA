@@ -44,7 +44,8 @@
 						'filter' => 'Search'
 					),
 				)
-			)
+			),
+			'Workflowscers93'
 		);
 
 		/**
@@ -69,11 +70,7 @@
 		 * @return void
 		 */
 		public function affecter() {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( false, true );
 
 			$this->_index( $structurereferente_id );
 		}
@@ -85,19 +82,7 @@
 		 * @return void
 		 */
 		public function affectes() {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
-				if( !empty( $referent_id ) ) {
-					$this->User->Referent->id = $referent_id;
-					$structurereferente_id = $this->User->Referent->field( 'structurereferente_id' );
-				}
-			}
-
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
 
 			$this->_index( $structurereferente_id );
 		}
@@ -156,7 +141,10 @@
 					$this->request->data['Search'],
 					( ( $this->action == 'affecter' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 				);
-				$querydata['conditions']['Orientstruct.structurereferente_id'] = $structurereferente_id;
+
+				if( !empty( $structurereferente_id ) ) {
+					$querydata['conditions']['Orientstruct.structurereferente_id'] = $structurereferente_id;
+				}
 
 				$this->paginate = $querydata;
 				$personnes_referents = $this->paginate(
@@ -206,11 +194,7 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
 
 			$data = Xset::bump( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortereferent93->search(
