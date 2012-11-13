@@ -65,7 +65,8 @@
 						'filter' => 'Search'
 					)
 				)
-			)
+			),
+			'Workflowscers93'
 		);
 
 		/**
@@ -86,14 +87,11 @@
 		 * Cohorte des CERs au sein d'une structure référente (PDV).
 		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
 		 *
+		 * @param boolean $checkStructurereferente L'utilisateur doit-il être attaché à une structure référente ?
 		 * @return void
 		 */
-		 protected function _affichage() {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+		 protected function _affichage( $checkStructurereferente ) {
+			 $structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, $checkStructurereferente );
 
 			$this->_index( $structurereferente_id );
 		}
@@ -105,7 +103,7 @@
 		 * @return void
 		 */
 		public function saisie() {
-			$this->_affichage();
+			$this->_affichage( true );
 		}
 
 		/**
@@ -115,7 +113,7 @@
 		 * @return void
 		 */
 		public function visualisation() {
-			$this->_affichage();
+			$this->_affichage( false );
 		}
 
 		/**
@@ -125,7 +123,7 @@
 		 * @return void
 		 */
 		public function avalidercpdv() {
-			$this->_validations();
+			$this->_validations( true );
 		}
 
 		/**
@@ -135,7 +133,7 @@
 		 * @return void
 		 */
 		public function premierelecture() {
-			$this->_validations();
+			$this->_validations( false );
 		}
 
 		/**
@@ -145,7 +143,7 @@
 		 * @return void
 		 */
 		public function validationcs() {
-			$this->_validations();
+			$this->_validations( false );
 		}
 
 		/**
@@ -155,29 +153,17 @@
 		 * @return void
 		 */
 		public function validationcadre() {
-			$this->_validations();
+			$this->_validations( false );
 		}
 
 		/**
-		 * ....
 		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
 		 *
+		 * @param boolean $checkStructurereferente L'utilisateur doit-il être attaché à une structure référente ?
 		 * @return void
 		 */
-		protected function _validations() {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
-				if( !empty( $referent_id ) ) {
-					$this->User->Referent->id = $referent_id;
-					$structurereferente_id = $this->User->Referent->field( 'structurereferente_id' );
-				}
-			}
-
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+		protected function _validations( $checkStructurereferente ) {
+			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, $checkStructurereferente );
 
 			$this->_index( $structurereferente_id );
 		}
@@ -247,6 +233,11 @@
 					$this->request->data['Search'],
 					( ( $this->action != 'saisie' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 				);
+
+				if( !empty( $structurereferente_id ) ) {
+					$querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+				}
+
 
 				$this->paginate = $querydata;
 				$cers93 = $this->paginate(
@@ -321,11 +312,7 @@
 		 * @return void
 		 */
 		public function exportcsv( $etape ) {
-			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-			if( empty( $structurereferente_id ) ) {
-				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->cakeError( 'error403' );
-			}
+			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
 
 			$data = Xset::bump( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortecer93->search(
