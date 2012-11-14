@@ -606,11 +606,13 @@
 
 						// La date de validation est à null afin de pouvoir modifier le contrat
 						$contratinsertion['Contratinsertion']['datevalidation_ci'] = null;
+						$contratinsertion['Contratinsertion']['datedecision'] = null;
 						// La date de saisie du nouveau contrat est égale à la date du jour
 						$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
 
 						unset($contratinsertion['Contratinsertion']['decision_ci']);
 						unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
+						unset($contratinsertion['Contratinsertion']['datedecision']);
 
 						$fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
 						foreach( $fields as $field ) {
