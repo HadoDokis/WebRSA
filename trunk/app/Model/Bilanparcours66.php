@@ -1310,9 +1310,14 @@
 			);
 
 			$typeformulaire = Set::classicExtract( $data, 'Bilanparcours66.typeformulaire' );
-
+			$proposition = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
 			if( $typeformulaire == 'pe' ) {
-				$modeleodt = 'Bilanparcours/bilanparcourspe.odt';
+				if( $proposition == 'parcourspe' ) {
+					$modeleodt = 'Bilanparcours/bilanparcourspe_parcours.odt';
+				}
+				else {
+					$modeleodt = 'Bilanparcours/bilanparcourspe_audition.odt';
+				}
 			}
 
 			return $this->ged( $data, $modeleodt, false, $options );
