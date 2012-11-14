@@ -748,7 +748,10 @@
 						'Personne.id' => $personne_id,
 						'Prestation.natprest' => 'RSA',
 						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-// 						'PersonneReferent.dfdesignation IS NULL'
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
 					),
 					'contain' => false,
 					'recursive' => -1
@@ -868,7 +871,10 @@
 					'conditions' => array(
 						'Personne.id' => $personne_id,
 						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						'Adressefoyer.rgadr' => '01'
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
 					),
 					'joins' => array(
 						$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
