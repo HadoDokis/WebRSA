@@ -149,6 +149,10 @@
 						'url' => array( 'action' => 'impression', '#Contratinsertion.id#' ),
 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'impression' ), $disabledLinks['Cers93::impression'] )
 					),
+					'Cers93::impressionDecision' => array(
+						'url' => array( 'action' => 'impressionDecision', '#Contratinsertion.id#' ),
+						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'impressionDecision' ), $disabledLinks['Cers93::impressionDecision'] )
+					),
 					'Cers93::delete' => array(
 						'url' => array( 'action' => 'delete', '#Contratinsertion.id#' ),
 						'disabled' => str_replace( '%permission%', $this->Permissions->check( 'cers93', 'delete' ), $disabledLinks['Cers93::delete'] )

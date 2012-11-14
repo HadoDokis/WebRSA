@@ -41,7 +41,11 @@
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
-				93 => 'Contratinsertion/contratinsertion.odt'
+				93 => array(
+					'Contratinsertion/contratinsertion.odt',
+					'Contratinsertion/cer_valide.odt',
+					'Contratinsertion/cer_rejete.odt'
+				)
 			)
 		);
 
@@ -1251,7 +1255,8 @@
 			// Options
 			$options = array(
 				'Cer93' => array(
-					'formeci' => ClassRegistry::init( 'Option' )->forme_ci()
+					'formeci' => ClassRegistry::init( 'Option' )->forme_ci(),
+					'qual' => ClassRegistry::init( 'Option' )->qual()
 				),
 				'Contratinsertion' => array(
 					'structurereferente_id' => $this->Contratinsertion->Structurereferente->listOptions(),
@@ -1296,6 +1301,30 @@
 			);
 			return $options;
 
+		}
+		
+		/**
+		 * Retourne le PDF de décision pour un CER donné
+		 *
+		 * @param integer $id Id du CER
+		 * @param integer $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+
+		public function getDecisionPdf( $contratinsertion_id, $user_id ) {
+			$options = $this->optionsView();
+			$data = $this->dataView( $contratinsertion_id );
+
+			// Choix du modèle de document
+			$decision = $data['Contratinsertion']['decision_ci'];
+			if( $decision == 'V' ) {
+				$modeleodt  = "Contratinsertion/cer_valide.odt";
+			}
+			else if( in_array( $decision, array( 'R', 'N' ) ) ){
+				$modeleodt  = "Contratinsertion/cer_rejete.odt";
+			}
+
+			return $this->ged( $data, $modeleodt, false, $options );
 		}
 	}
 ?>
