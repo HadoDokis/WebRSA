@@ -264,6 +264,7 @@
 				|| ( \'%permission%\' == \'0\' )',
 				'Cers93::impression' => '( \'%permission%\' == \'0\' )' ,
 				'Cers93::delete' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
+				'Cers93::impressionDecision' => '!in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) || ( \'%permission%\' == \'0\' )' 
 			);
 
 			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
@@ -517,7 +518,7 @@
 				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}_nouveau.pdf" );
 			}
 			else {
-				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'insertion.', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'engagement réciproque.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}
@@ -560,6 +561,25 @@
 			}
 
 			$this->redirect( Router::url( $this->referer(), true ) );
+		}
+		
+		/**
+		 * Imprime une décision sur le CER 93.
+		 * INFO: http://localhost/webrsa/trunk/cers93/printdecision/44327
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function impressionDecision( $contratinsertion_id = null ) {
+			$pdf = $this->Cer93->getDecisionPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$contratinsertion_id}.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 	}
 ?>
