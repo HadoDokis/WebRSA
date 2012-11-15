@@ -7,6 +7,8 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses('Folder', 'Utility');
+	App::uses('File', 'Utility');
 
 	/**
 	 * La classe UsersController permet la gestion des utilisateurs.
@@ -206,31 +208,14 @@
 		}
 
 		/**
-		 * Permet la connexion via le composant Auth en fonction de la version de CakePHP
-		 *
-		 * @return type
-		 */
-		private function _cakeLogin() {
-			if( CAKE_BRANCH == '1.2' ) {
-				return $this->Auth->user();
-			}
-			else {
-				return $this->Auth->login();
-			}
-		}
-
-		/**
 		 *
 		 */
 		public function login() {
-			if( $this->_cakeLogin() ) {
-				/* Lecture de l'utilisateur authentifié */
-				if( CAKE_BRANCH == '1.2' ) {
-					$authUser = $this->Auth->user();
-				}
-				else { //Si CakePHP est en version >= 2.0 on interroge la base de données plutôt que le composant Auth
-					$authUser = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => -1 ) );
-				}
+			if( $this->Auth->login() ) {
+				// Lecture de l'utilisateur authentifié
+				//Si CakePHP est en version >= 2.0 on interroge la base de données plutôt que le composant Auth
+				$authUser = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => -1 ) );
+
 				// Utilisateurs concurrents
 				if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
 					$this->User->Connection->begin();
@@ -276,17 +261,15 @@
 				}
 				// Fin utilisateurs concurrents
 
-				/* lecture du service de l'utilisateur authentifié */
-				if( CAKE_BRANCH == '1.2' ) {
-					$this->User->Service->recursive = -1;
-				}
+				// lecture du service de l'utilisateur authentifié
 				$group = $this->User->Group->find(
-						'first', array(
-					'conditions' => array(
-						'Group.id' => $authUser['User']['group_id']
-					),
-					'contain' => false
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Group.id' => $authUser['User']['group_id']
+						),
+						'contain' => false
+					)
 				);
 				$authUser['User']['aroAlias'] = $authUser['User']['username'];
 				/* lecture de la collectivite de l'utilisateur authentifié */
@@ -302,6 +285,9 @@
 				$this->_deleteCachedElements();
 
 				$this->redirect( $this->Auth->redirect() );
+			}
+			else if( !empty( $this->request->data ) ) {
+				$this->Session->setFlash( __( 'Login failed. Invalid username or password.' ), 'default', array( ), 'auth' );
 			}
 		}
 
@@ -350,14 +336,6 @@
 		 * @return boolean
 		 */
 		protected function _deleteCachedElements() {
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Core', 'File' );
-			}
-			else {
-				App::uses('Folder', 'Utility');
-				App::uses('File', 'Utility');
-			}
-
 			$Folder =  new Folder();
 			$dir = TMP.'cache'.DS.'views';
 			$Folder->cd( $dir );
@@ -382,14 +360,6 @@
 		 * @return void
 		 */
 		protected function _deleteTemporaryFiles() {
-			if( CAKE_BRANCH == '1.2' ) {
-				App::import( 'Core', 'File' );
-			}
-			else {
-				App::uses('Folder', 'Utility');
-				App::uses('File', 'Utility');
-			}
-
 			foreach( array( 'files', 'pdf' ) as $subdir ) {
 				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true, 0777 );
 				$oFolder->delete();
