@@ -168,6 +168,9 @@ msgstr "Veuillez entrer une chaîne de caractères"
 msgid "Validate::isarray"
 msgstr "Veuillez entrer un tableau"
 
+msgid "Validate::comparison"
+msgstr "Veuillez entrer une valeur %s %s"
+
 ###############################################################################
 # Forms/Index
 ###############################################################################

@@ -11,6 +11,7 @@
 	define( 'APPCHECKS_PLUGIN_DIR', dirname( __FILE__ ).DS.'..'.DS );
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'basics.php' );
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'xvalidation.php' );
+	App::uses( 'Validation', 'Utility' );
 
 	/**
 	 * La classe Check fournit des méthodes de vérification de l'environnement
@@ -69,7 +70,7 @@
 		}
 
 		/**
-		 * Vérifie la disponibilité dextensions PHP
+		 * Vérifie la disponibilité d'extensions PHP.
 		 *
 		 * @param array $extensions Les extensions à vérifier.
 		 * @param string $message Le gabarit du message à utiliser en cas de non disponibilité.
@@ -92,18 +93,31 @@
 		/**
 		 * Vérifie la configuration de variables dans le php.ini
 		 *
-		 * @param array $extensions Les variables à vérifier.
+		 * @param array $inis Les variables à vérifier, avec règles de validation éventuelles.
 		 * @param string $message Le gabarit du message à utiliser en cas de non disponibilité.
 		 * @return array
 		 */
 		public function phpInis( array $inis, $message = "Le paramétrage de %s doit être fait dans le fichier php.ini" ) {
 			$checks = array();
-			foreach( $inis as $ini ) {
+			foreach( Set::normalize( $inis ) as $ini => $rules ) {
+				$message = null;
 				$value = ini_get( $ini );
+
+				if( !empty( $rules ) ) {
+					foreach( $rules as $rule => $ruleParams ) {
+						if( is_null( $message ) ) {
+							$message = $this->_validate( $value, $rule, $ruleParams );
+						}
+					}
+				}
+				else {
+					$message = ( !empty( $value ) ? null : sprintf( $message, $ini ) );
+				}
+
 				$checks[$ini] = array(
 					'value' => $value,
-					'success' => !empty( $value ),
-					'message' => ( !empty( $value ) ? null : sprintf( $message, $ini ) )
+					'success' => is_null( $message ),
+					'message' => $message
 				);
 			}
 
@@ -133,13 +147,15 @@
 		}
 
 		/**
+		 * Vérifie si des fichiers sont présents et accessibles en lecture.
 		 *
-		 * @param array $files
+		 * @param array $files Les chemins vers les fichiers à vérifier
+		 * @param string $base Le répertoire de base de l'application (en général ROOT.DS)
 		 * @return array
 		 */
 		public function files( array $files, $base = null ) {
 			if( !is_null( $base ) ) {
-				$base = '/^'.preg_quote( $base, '/' ).'/'; // FIXME
+				$base = '/^'.preg_quote( $base, '/' ).'/';
 			}
 			$checks = array();
 			foreach( $files as $file ) {
@@ -156,7 +172,9 @@
 		}
 
 		/**
-		 * TODO: is_executable
+		 * Vérifie les permissions sur un répertoire.
+		 *
+		 * @todo is_executable
 		 *
 		 * @param string $directory
 		 * @param string $permission
@@ -189,8 +207,10 @@
 		}
 
 		/**
+		 * Vérifie les permissions sur des répertoires.
 		 *
 		 * @param array $directories
+		 * @param string $base Le répertoire de base de l'application (en général ROOT.DS)
 		 * @return array
 		 */
 		public function directories( array $directories, $base = null ) {
@@ -212,7 +232,9 @@
 		}
 
 		/**
-		 * TODO: is_executable
+		 * Vérifie les paermissions sur un fichier.
+		 *
+		 * @todo is_executable
 		 *
 		 * @param string $file
 		 * @param string $permission
@@ -245,7 +267,10 @@
 		}
 
 		/**
-		 * FIXME: utiliser files avec un préfixe
+		 * Vérifie la présence de modèles odt.
+		 *
+		 * @todo utiliser files avec un préfixe
+		 *
 		 * @param array $modeles
 		 * @param string $prefixPath Le répertoire de base des modèles.
 		 * @return array
@@ -261,21 +286,20 @@
 		}
 
 		/**
+		 * Validation d'une valeur par-rapport à une règle de validation.
+		 * Retourne un message d'erreur en cas de non validation, null sinon.
 		 *
-		 * @param string $key
-		 * @param string $rule
-		 * @param array $ruleParams
-		 * @return array
+		 * @param mixed $value La valeur à tester.
+		 * @param string $rule Le nom de la règle à vérifier.
+		 * @param array $ruleParams Les paramètres à passer à la règle.
+		 * @return string
 		 */
-		public function validateConfigurePath( $path, $rule, $ruleParams = array() ) {
-			$message = null;
-			$value = Configure::read( $path );
+		protected function _validate( $value, $rule, $ruleParams = array() ) {
 			$allowEmpty = $ruleParams['allowEmpty'];
 			unset( $ruleParams['allowEmpty'] );
+			$message = null;
 
-			$Xvalidation =  Xvalidation::getInstance();
-			if (method_exists( $Xvalidation, $rule ) ) {
-
+			if( method_exists( 'Xvalidation', $rule ) || method_exists( 'Validation', $rule ) ) {
 				// FIXME: nettoyage des URL contenant %s (pour le CG 58) et des espaces
 				$testValue = $value;
 				if( $rule == 'url' ) {
@@ -286,8 +310,31 @@
 						$testValue = str_replace( ' ', '%20', $testValue );
 					}
 				}
-				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !call_user_func_array( array( $Xvalidation, $rule ), Set::merge( array( $testValue ), $ruleParams ) ) ) ) {
+
+				if( isset( $ruleParams['rule'] ) ) {
+					$ruleParams = $ruleParams['rule'];
+				}
+
+				if( method_exists( 'Xvalidation', $rule ) ) {
+					$Validator =  Xvalidation::getInstance();
+					$validate = call_user_func_array( array( $Validator, $rule ), Set::merge( array( $testValue ), $ruleParams ) );
+				}
+				else {
+					$Validator =  'Validation';
+					$testRuleParams = $ruleParams;
+
+					if( $testRuleParams[0] == $rule ) {
+						$testRuleParams[0] = $testValue;
+					}
+
+					$validate = call_user_func_array( array( $Validator, $rule ), $testRuleParams );
+				}
+
+				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !$validate ) ) {
 					$message = "Validate::{$rule}";
+					if( $ruleParams[0] == $rule ) {
+						unset( $ruleParams[0] );
+					}
 					$sprintfParams = Set::merge( array( __( $message ) ), $ruleParams );
 					for( $i = 1 ; ( $i <= count( $sprintfParams ) - 1 ) ; $i++ ) {
 						if( is_array( $sprintfParams[$i] ) ) {
@@ -301,6 +348,23 @@
 				$message = "La méthode de validation {$rule} n'existe pas.";
 			}
 
+			return $message;
+		}
+
+		/**
+		 * Valide la valeur donnée par un chemin de configuration par une règle
+		 * de validation.
+		 *
+		 * @param string $path Le chemin de la configuration.
+		 * @param string $rule Le nom de la règle à vérifier.
+		 * @param array $ruleParams Les paramètres à passer à la règle.
+		 * @return array
+		 */
+		public function validateConfigurePath( $path, $rule, $ruleParams = array() ) {
+			$value = Configure::read( $path );
+
+			$message = $this->_validate( $value, $rule, $ruleParams );
+
 			return array(
 				'success' => is_null( $message ),
 				'value' => var_export( $value, true ),
@@ -309,8 +373,10 @@
 		}
 
 		/**
+		 * Lecture des chemins de configuration et validation (à minima, les
+		 * valeurs ne pourront pas être vides).
 		 *
-		 * @param array $paths
+		 * @param array $paths Les chemins à vérifier
 		 * @return array
 		 */
 		public function configure( array $paths ) {
@@ -341,11 +407,12 @@
 		}
 
 		/**
+		 * Vérifie qu'un logiciel sse trouve dans une version donnée.
 		 *
-		 * @param string $software
-		 * @param string $actual
-		 * @param string $low
-		 * @param string $high
+		 * @param string $software Le nom du logiciel
+		 * @param string $actual La version du logiciel
+		 * @param string $low La version minimale
+		 * @param string $high La version maximale
 		 * @return array
 		 */
 		public function version( $software, $actual, $low, $high = null ) {
@@ -372,7 +439,7 @@
 		 * Retourne la vérification du timeout, avec en message la configuration
 		 * utilisée.
 		 *
-		 * FIXME: la fonction readTimeout n'est pas dans le plugin
+		 * @fixme La fonction readTimeout n'est pas dans le plugin
 		 *
 		 * @return array
 		 */
