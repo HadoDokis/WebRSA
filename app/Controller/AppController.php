@@ -7,7 +7,6 @@
 	 * @package app.Controller
 	 */
 	App::uses( 'Controller', 'Controller' );
-//	ini_set( 'session.gc_maxlifetime', readTimeout() ); // FIXME
 
 	/**
 	 * Classe de base de tous les contrôleurs de l'application.
@@ -65,9 +64,7 @@
 				// Need to finish transaction ?
 				if( isset( $this->{$this->modelClass} ) ) {
 					$db = $this->{$this->modelClass}->getDataSource();
-					if( CAKE_BRANCH != '1.2' || $db->_transactionStarted ) {
-						$db->rollback( $this->{$this->modelClass} );
-					}
+					$db->rollback( $this->{$this->modelClass} );
 				}
 
 				throw new InternalErrorException( $error );
@@ -210,25 +207,15 @@
 
 
 			//Paramétrage du composant Auth
-			if( CAKE_BRANCH == '1.2' ) {
-				$this->Auth->autoRedirect = false;
-			}
-			else {
-				$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
-				$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
-				$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
-
-				$this->Auth->authorize = array(
-					'Actions' => array( 'actionPath' => 'controllers' )
-				);
-			}
+			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
+			$this->Auth->logoutRedirect = array( 'controller' => 'users', 'action' => 'login' );
+			$this->Auth->loginRedirect = array( 'controller' => 'dossiers', 'action' => 'index' );
+			$this->Auth->authorize = array( 'Actions' => array( 'actionPath' => 'controllers' ) );
 
 			$this->set( 'etatdosrsa', ClassRegistry::init( 'Option' )->etatdosrsa() );
 			$return = parent::beforeFilter();
 
-			if( CAKE_BRANCH != '1.2' ) {
-				$this->Auth->allow( '*' );
-			}
+			$this->Auth->allow( '*' );
 
 			// Fin du traitement pour les requestactions et les appels ajax
 			if( isset( $this->request->params['requested'] ) ) {
