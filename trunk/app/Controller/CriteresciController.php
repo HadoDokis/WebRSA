@@ -138,10 +138,19 @@
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
 
+				$progressivePaginate = !Set::classicExtract( $this->request->data, 'Filtre.paginationNombreTotal' );
 				$this->paginate = $paginate;
-				$contrats = $this->paginate( 'Contratinsertion' );
+				
+				$contrats = $this->paginate( 'Contratinsertion', array(), array(), $progressivePaginate  );
 
 				$this->set( 'contrats', $contrats );
+			}
+			else {
+				// Valeurs par défaut des filtres
+				$progressivePaginate = $this->_hasProgressivePagination();
+				if( !is_null( $progressivePaginate ) ) {
+					$this->request->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
+				}
 			}
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
@@ -168,6 +177,9 @@
 				$values = Set::format( $referents, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
 				$referents = array_combine( $ids, $values );
 			}
+			
+			
+			
 
 			$this->set( 'referents', $referents );
 			$this->_setOptions();
@@ -177,6 +189,9 @@
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
+			ini_set( 'max_execution_time', 0 );
+			ini_set( 'memory_limit', '512M' );
+
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
@@ -192,7 +207,8 @@
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$contrats = $this->Contratinsertion->find( 'all', $querydata );
-
+// debug($contrats);
+// die();
 			/// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
 			$referents = $this->Referent->referentsListe( $structurereferente_id );
