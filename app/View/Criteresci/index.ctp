@@ -34,7 +34,7 @@
 
 ?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>
-<?php echo $this->Form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Filtre']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire( $trancheage );
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
@@ -122,6 +122,10 @@
 					echo $this->Form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.$nbjoursTranslate, 'type' => 'checkbox' )  );
 				}
 			?>
+	</fieldset>
+	<fieldset>
+		<legend>Comptage des résultats</legend>
+		<?php echo $this->Form->input( 'Filtre.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats afin de pouvoir télécharger le tableau (plus lent)', 'type' => 'checkbox' ) );?>
 	</fieldset>
 
 	<div class="submit noprint">
@@ -248,7 +252,8 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'criteresci', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+					array( 'controller' => 'criteresci', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					( $this->request->data['Filtre']['paginationNombreTotal'])
 				);
 			?></li>
 		</ul>
