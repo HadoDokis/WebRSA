@@ -187,3 +187,12 @@ h2.bilanparcours {
 table.cers93 div.input label {
     width: 100%;
 }
+
+table#Expprocer93 div.input.select select {
+	max-width: 15em;
+	overflow: hidden;
+}
+
+table#Expprocer93 div.input input {
+	max-width: 8em;
+}
