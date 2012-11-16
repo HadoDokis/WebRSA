@@ -88,13 +88,18 @@
 			'id' => 'chkBoxDroits'.$rownum,
 			'div' => false
 		);
-		if ( $ctrlAction['nbSousElements'] > 0 )
+
+		if ( $ctrlAction['nbSousElements'] > 0 ) {
 			$optionsCheckBox['onclick'] = 'toggleCheckBoxDroits('.$rownum.', '.$ctrlAction['nbSousElements'].');';
+		}
+		else {
+			$optionsCheckBox['onclick'] = 'syncDroitsEnfantsParents( $(this) );';
+		}
 
 		echo '<tr class="'.$classTd.'">';
-			echo $this->Xhtml->tag( 'td', ' '.$indentation.$ctrlAction['title'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', array( 'class' => "$classTd label" ) );
+			echo $this->Xhtml->tag( 'td', ' '.$indentation.$ctrlAction['title'].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', array( 'class' => "{$classTd} label children{$ctrlAction['nbSousElements']}" ) );
 			if ( $ctrlAction['modifiable'] ) {
-				echo $this->Xhtml->tag( 'td', $this->Form->input( 'Droits.'.$ctrlAction['acosAlias'], $optionsCheckBox ), array( 'class'=>$classTd ) );
+				echo $this->Xhtml->tag( 'td', $this->Form->input( 'Droits.'.$ctrlAction['acosAlias'], $optionsCheckBox ), array( 'class' => $classTd ) );
 			}
 			else
 				echo $this->Xhtml->tag( 'td', $this->Form->hidden('Droits.'.$ctrlAction['acosAlias'] ), array( 'class'=>$classTd ) );
