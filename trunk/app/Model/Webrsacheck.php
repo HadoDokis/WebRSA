@@ -196,7 +196,7 @@
 				'nom_form_ci_cg' => array(
 					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
 				),
-				'nom_form_cui_cg' =>array(
+				'nom_form_cui_cg' => array(
 					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
 				),
 				'nom_form_pdo_cg' => array(
@@ -286,6 +286,7 @@
 				'Signalementep93.dureeSursis' => 'integer',
 				'Signalementep93.dureeTolerance' => 'integer',
 				'Signalementep93.montantReduction' => 'numeric',
+				'apache_bin' => 'string',
 			);
 		}
 
