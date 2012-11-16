@@ -74,8 +74,8 @@
 					h( 'Valeurs par sous-sujets du CER' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'valeursparsoussujetscers93', 'action' => 'index' )
-// 						$this->Permissions->check( 'valeursparsoussujetscers93', 'index' )
+						array( 'controller' => 'valeursparsoussujetscers93', 'action' => 'index' ),
+ 						$this->Permissions->check( 'valeursparsoussujetscers93', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
