@@ -596,7 +596,7 @@
 	 * @default null
 	 */
 	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/visualisation
 	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
@@ -611,4 +611,16 @@
 			)
 		)
 	);
+
+	/**
+	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
+	 * et apache_get_modules() ne sont pas disponibles. Du coup, on passe par
+	 * la fonction exec() pour interroger directement le binaire apache.
+	 *
+	 * Ce paramètre de configuration permet de spécifier le chemin complet vers
+	 * le binaire apache.
+	 *
+	 * @default /usr/sbin/apache2
+	 */
+	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
 ?>

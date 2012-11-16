@@ -332,7 +332,7 @@
 
 				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !$validate ) ) {
 					$message = "Validate::{$rule}";
-					if( $ruleParams[0] == $rule ) {
+					if( isset( $ruleParams[0] ) && $ruleParams[0] == $rule ) {
 						unset( $ruleParams[0] );
 					}
 					$sprintfParams = Set::merge( array( __( $message ) ), $ruleParams );
