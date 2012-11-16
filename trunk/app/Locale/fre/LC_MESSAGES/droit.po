@@ -2659,10 +2659,193 @@ msgstr "Suppression d'une suspension"
 ###############################################################################
 
 msgid "Module:Cohortesreferents93"
-msgstr "Cohorte d'affectation d'un référent (Workflow CER CG 93)"
+msgstr "CER (CG 93): cohortes et recherches d'affectation d'un référent (workflow CER)"
 
 msgid "Cohortesreferents93:affecter"
-msgstr "Cohorte d'affectation d'un référent - référents à affecter"
+msgstr "Workflow CER: cohorte d'affectation d'un référent - référents à affecter (cohorte)"
 
 msgid "Cohortesreferents93:affectes"
-msgstr "Cohorte d'affectation d'un référent - référents déjà affectés"
+msgstr "Workflow CER: cohorte d'affectation d'un référent - référents déjà affectés (moteur de recherche)"
+
+msgid "Cohortesreferents93:exportcsv"
+msgstr "Workflow CER: cohorte d'affectation d'un référent - télécharger le tableau"
+
+###############################################################################
+
+msgid "Module:Cers93"
+msgstr "CER (CG 93)"
+
+msgid "Cers93:indexparams"
+msgstr "Liste des paramétrage du CER (CG 93)"
+
+msgid "Cers93:index"
+msgstr "Liste des CER d'un allocataire"
+
+msgid "Cers93:add"
+msgstr "Ajout d'un CER"
+
+msgid "Cers93:edit"
+msgstr "Modification d'un CER"
+
+msgid "Cers93:signature"
+msgstr "Signature d'un CER"
+
+msgid "Cers93:impression"
+msgstr "Impression d'un CER"
+
+msgid "Cers93:view"
+msgstr "Visualisation d'un CER"
+
+msgid "Cers93:delete"
+msgstr "Suppression d'un CER"
+
+msgid "Cers93:impressionDecision"
+msgstr "Impression de la décision d'un CER"
+
+###############################################################################
+
+msgid "Module:Cohortescers93"
+msgstr "CER (CG 93): cohortes et recherches (workflow CER)"
+
+msgid "Cohortescers93:saisie"
+msgstr "Workflow CER: 2. Saisie d'un CER (moteur de recherche)"
+
+msgid "Cohortescers93:visualisation"
+msgstr "Workflow CER: 5. Tableau de suivi (moteur de recherche)"
+
+msgid "Cohortescers93:avalidercpdv"
+msgstr "Workflow CER: 3. Validation CPDV (cohorte)"
+
+msgid "Cohortescers93:premierelecture"
+msgstr "Workflow CER: 4. Décision CG - 4.1 Première lecture (cohorte)"
+
+msgid "Cohortescers93:validationcs"
+msgstr "Workflow CER: 4. Décision CG - 4.2 Validation CS (cohorte)"
+
+msgid "Cohortescers93:validationcadre"
+msgstr "Workflow CER: 4. Décision CG - 4.3 Validation Cadre (cohorte)"
+
+msgid "Cohortescers93:exportcsv"
+msgstr "Workflow CER: 2. Saisie d'un CER (télécharger le tableau)"
+
+###############################################################################
+
+msgid "Module:Histoschoixcers93"
+msgstr "CER (CG 93): workflow CER, validations individuelles"
+
+msgid "Histoschoixcers93:attdecisioncpdv"
+msgstr "Workflow CER: 2.3. Envoi CG (individuel)"
+
+msgid "Histoschoixcers93:attdecisioncg"
+msgstr "Workflow CER: 3. Validation CPDV (individuel)"
+
+msgid "Histoschoixcers93:premierelecture"
+msgstr "Workflow CER: 4. Décision CG - 4.1 Première lecture (individuel)"
+
+msgid "Histoschoixcers93:secondelecture"
+msgstr "Workflow CER: 4. Décision CG - 4.2 Validation CS (individuel)"
+
+msgid "Histoschoixcers93:aviscadre"
+msgstr "Workflow CER: 4. Décision CG - 4.3 Validation Cadre (individuel)"
+
+###############################################################################
+
+msgid "Module:Metiersexerces"
+msgstr "CER (CG 93): paramétrages, métiers exercés"
+
+msgid "Metiersexerces:index"
+msgstr "Liste des métiers exercés"
+
+msgid "Metiersexerces:add"
+msgstr "Ajout d'un métier exercé"
+
+msgid "Metiersexerces:edit"
+msgstr "Modification d'un métier exercé"
+
+msgid "Metiersexerces:delete"
+msgstr "Suppresion d'un métier exercé"
+
+###############################################################################
+
+msgid "Module:Naturescontrats"
+msgstr "CER (CG 93): paramétrages, natures de contrat"
+
+msgid "Naturescontrats:index"
+msgstr "Liste des natures de contrat"
+
+msgid "Naturescontrats:add"
+msgstr "Ajout d'une nature de contrat"
+
+msgid "Naturescontrats:edit"
+msgstr "Modification d'une nature de contrat"
+
+msgid "Naturescontrats:delete"
+msgstr "Suppression d'une nature de contrat"
+
+###############################################################################
+
+msgid "Module:Secteursactis"
+msgstr "CER (CG 93): paramétrages, secteurs d'activité"
+
+msgid "Secteursactis:index"
+msgstr "Liste des secteurs d'activité"
+
+msgid "Secteursactis:add"
+msgstr "Ajout d'un secteur d'activité"
+
+msgid "Secteursactis:edit"
+msgstr "Modification d'un secteur d'activité"
+
+msgid "Secteursactis:delete"
+msgstr "Suppression d'un secteur d'activité"
+
+###############################################################################
+
+msgid "Module:Soussujetscers93"
+msgstr "CER (CG 93): paramétrages, sous-sujets du CER"
+
+msgid "Soussujetscers93:index"
+msgstr "Liste des sous-sujets du CER"
+
+msgid "Soussujetscers93:add"
+msgstr "Ajout d'un sous-sujet du CER"
+
+msgid "Soussujetscers93:edit"
+msgstr "Modification d'un sous-sujet du CER"
+
+msgid "Soussujetscers93:delete"
+msgstr "Suppression d'un sous-sujet du CER"
+
+###############################################################################
+
+msgid "Module:Sujetscers93"
+msgstr "CER (CG 93): paramétrages, sujets du CER"
+
+msgid "Sujetscers93:index"
+msgstr "Liste des sujets du CER"
+
+msgid "Sujetscers93:add"
+msgstr "Ajout d'un sujet du CER"
+
+msgid "Sujetscers93:edit"
+msgstr "Modification d'un sujet du CER"
+
+msgid "Sujetscers93:delete"
+msgstr "Suppression d'un sujet du CER"
+
+###############################################################################
+
+msgid "Module:Valeursparsoussujetscers93"
+msgstr "CER (CG 93): paramétrages, valeurs par sous-sujets du CER"
+
+msgid "Valeursparsoussujetscers93:index"
+msgstr "Liste des valeurs par sous-sujets du CER"
+
+msgid "Valeursparsoussujetscers93:add"
+msgstr "Ajout d'une valeur par sous-sujet du CER"
+
+msgid "Valeursparsoussujetscers93:edit"
+msgstr "Modification d'une valeur par sous-sujet du CER"
+
+msgid "Valeursparsoussujetscers93:delete"
+msgstr "Suppression d'une valeur par sous-sujet du CER"
