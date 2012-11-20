@@ -510,6 +510,11 @@
 						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
 						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
+						
+						if( !in_array( $formData['Decisiondefautinsertionep66'][$key]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
+							$formData['Decisiondefautinsertionep66'][$key]['field_type'] = 'hidden';
+						}
+
 					}
 				}
 			}
@@ -578,9 +583,9 @@
 			foreach( $dossierseps as $i => $dossierep ) {
 				if( $niveauDecisionFinale == "decision{$etape}" ) {
 					$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
-					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
-						$success = false;
-					}
+// 					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
+// 						$success = false;
+// 					}
 					$defautinsertionep66['Defautinsertionep66']['decision'] = @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
 
 					// Si réorientation, alors passage en EP Parcours "Réorientation ou maintien d'orientation"
@@ -931,7 +936,7 @@
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->fields(),
-					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->Permanence->fields(),
+// 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields(),
 					$this->Dossierep->Defautinsertionep66->Bilanparcours66->fields()
 				),
@@ -955,7 +960,7 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+// 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
 				)
@@ -992,7 +997,7 @@
 						$this->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Bilanparcours66->fields(),
 						$this->Bilanparcours66->Structurereferente->fields(),
-						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
+// 						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
 						$this->Bilanparcours66->Serviceinstructeur->fields(),
 						$this->Bilanparcours66->User->fields(),
 						$this->Contratinsertion->fields(),
@@ -1011,7 +1016,7 @@
 						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+// 						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'recursive' => -1,
 					'conditions' => array(
@@ -1118,7 +1123,7 @@
 				array(
 					$this->join( 'Bilanparcours66' ),
 					$this->Bilanparcours66->join( 'Structurereferente' ),
-					$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+// 					$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					array_words_replace(
 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 						array(
@@ -1133,7 +1138,7 @@
 				array_merge(
 					$this->Bilanparcours66->fields(),
 					$this->Bilanparcours66->Structurereferente->fields(),
-					$this->Bilanparcours66->Structurereferente->Permanence->fields(),
+// 					$this->Bilanparcours66->Structurereferente->Permanence->fields(),
 					array_words_replace(
 						$this->Bilanparcours66->User->fields(),
 						array(

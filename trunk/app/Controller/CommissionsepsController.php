@@ -124,8 +124,22 @@
 		 */
 		protected function _setOptions() {
 			$options = Set::merge(
-							$this->Commissionep->Passagecommissionep->Dossierep->enums(), $this->Commissionep->enums(), $this->Commissionep->CommissionepMembreep->enums(), $this->Commissionep->Passagecommissionep->enums(), array( 'Foyer' => array( 'sitfam' => $this->Option->sitfam() ) ), array( 'Orientstruct' => array( 'structurereferente_id' => $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) ) ) )
+				$this->Commissionep->Passagecommissionep->Dossierep->enums(),
+				$this->Commissionep->enums(),
+				$this->Commissionep->CommissionepMembreep->enums(),
+				$this->Commissionep->Passagecommissionep->enums(),
+				array(
+					'Foyer' => array(
+						'sitfam' => $this->Option->sitfam()
+					)
+				),
+				array(
+					'Orientstruct' => array(
+						'structurereferente_id' => $this->Commissionep->Passagecommissionep->Dossierep->Personne->Orientstruct->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ) ) )
+					)
+				)
 			);
+
 
 			$options[$this->modelClass]['ep_id'] = $this->{$this->modelClass}->Ep->listOptions(
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->Session->read( 'Auth.Zonegeographique' )
@@ -152,6 +166,7 @@
 				$referents = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->listOptions();
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$options['Decisionsaisinepdoep66']['decisionpdo_id'] = $this->Commissionep->Passagecommissionep->Decisionsaisinepdoep66->Decisionpdo->find( 'list' );
+					$options = Set::merge( $options, $this->Commissionep->Passagecommissionep->Dossierep->Personne->Bilanparcours66->enums() );
 				}
 			}
 
@@ -893,6 +908,44 @@
 			}
 		}
 
+		/**
+		 * Impression du PV en cohorte pour l'ensemble des participants
+		 */
+		public function impressionpvcohorte( $commissionep_id ) {
+			$commissionep = $this->Commissionep->find(
+				'first',
+				array(
+					'fields' => array(
+						'Commissionep.etatcommissionep'
+					),
+					'conditions' => array(
+						'Commissionep.id' => $commissionep_id
+					),
+					'contain' => array(
+						'Membreep' => array(
+							'fields' => array(
+								'Membreep.id'
+							)
+						)
+					)
+				)
+			);
+			
+			$pdfs = array();
+			foreach( Set::extract( '/Membreep/id', $commissionep ) as $participant_id ) {
+				$pdfs[] = $this->Commissionep->getPdfPv( $commissionep_id, $participant_id, $this->Session->read( 'Auth.User.id' ) );
+			}
+			$pdf = $this->Gedooo->concatPdfs( $pdfs, 'PV' );
+
+			if( $pdf ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le PV de la commission d\'EP', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
+		
 		/**
 		 *
 		 */

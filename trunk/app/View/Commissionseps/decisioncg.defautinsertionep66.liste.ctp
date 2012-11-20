@@ -8,9 +8,6 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 		<colgroup />
 		<colgroup />
 		<colgroup />
-		<colgroup />
-		<colgroup />
-		<colgroup />
 		<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
 		<colgroup />
 		<colgroup />
@@ -19,13 +16,10 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Nom du demandeur</th>
 				<th rowspan="2">Adresse</th>
 				<th rowspan="2">Date de naissance</th>
-				<th rowspan="2">Création du dossier EP</th>
 				<th rowspan="2">Date d\'orientation</th>
 				<th rowspan="2">Orientation actuelle</th>
-				<th rowspan="2">Origine</th>
+				<th rowspan="2">Structure</th>
 				<th rowspan="2">Motif saisine</th>
-				<th rowspan="2">Date de radiation Pôle Emploi</th>
-				<th rowspan="2">Motif de radiation Pôle Emploi</th>
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="4">Décision CG</th>
 				<th rowspan="2">Observations</th>
@@ -41,53 +35,58 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 		</thead>
 	<tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
+		if( in_array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
+			
+			$examenaudition = Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenaudition'], $options['Defautinsertionep66']['type'] );
+			if( !empty( $dossierep['Defautinsertionep66']['Bilanparcours66']['examenauditionpe'] ) ){
+				$examenaudition = Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenauditionpe'], $options['Bilanparcours66']['examenauditionpe'] );
+			}
 
-		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
-		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
+			$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
 
-		$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id']] ) ) );
+			$decisionep = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
+			$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 
-		$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
-			<tbody>
-				<tr>
-					<th>Observations de l'EP</th>
-					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>
-			</tbody>
-		</table>";
+			$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id']] ) ) );
 
-		echo $this->Xhtml->tableCells(
-			array(
-				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
-				$this->Locale->date( __( 'Locale->date' ), $dossierep['Personne']['dtnai'] ),
-				$this->Locale->date( __( 'Locale->date' ), $dossierep['Dossierep']['created'] ),
-				$this->Locale->date( __( 'Locale->date' ), @$dossierep['Defautinsertionep66']['Orientstruct']['date_valid'] ),
-				@$dossierep['Defautinsertionep66']['Orientstruct']['Typeorient']['lib_type_orient'],
+			$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
+				<tbody>
+					<tr>
+						<th>Observations de l'EP</th>
+						<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
+					</tr>
+				</tbody>
+			</table>";
 
-				Set::enum( $dossierep['Defautinsertionep66']['origine'], $options['Defautinsertionep66']['origine'] ),
-				Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenaudition'], $options['Defautinsertionep66']['type'] ),
-				$this->Locale->date( __( 'Locale->date' ), @$dossierep['Defautinsertionep66']['Historiqueetatpe']['date'] ),
-				@$dossierep['Defautinsertionep66']['Historiqueetatpe']['motif'],
+			echo $this->Xhtml->tableCells(
+				array(
+					implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
+					implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['locaadr'] ) ),
+					$this->Locale->date( __( 'Locale->date' ), $dossierep['Personne']['dtnai'] ),
+					$this->Locale->date( __( 'Locale->date' ), @$dossierep['Defautinsertionep66']['Orientstruct']['date_valid'] ),
+					@$dossierep['Defautinsertionep66']['Orientstruct']['Typeorient']['lib_type_orient'],
 
-				$avisEp,
+					@$dossierep['Defautinsertionep66']['Orientstruct']['Structurereferente']['lib_struc'],
 
-				array( implode( ' / ', Set::filter( array(
-					@$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
-					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
-				) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
+					$examenaudition,
+					$avisEp,
 
-				array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
-				array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
-				array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-				Set::classicExtract( $decisioncg, "commentaire" ),
-				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
-				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
-			),
-			array( 'class' => "odd {$multiple}" ),
-			array( 'class' => "even {$multiple}" )
-		);
+					array( implode( ' / ', Set::filter( array(
+						@$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisioncg, "decision" )],
+						@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisioncg, "decisionsup" )]
+					) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),
+
+					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
+					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
+					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
+					Set::classicExtract( $decisioncg, "commentaire" ),
+					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
+// 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+				),
+				array( 'class' => "odd {$multiple}" ),
+				array( 'class' => "even {$multiple}" )
+			);
+		}
 	}
 	echo '</tbody></table>';
 ?>
