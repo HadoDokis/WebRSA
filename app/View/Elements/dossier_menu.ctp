@@ -124,7 +124,6 @@
 										?>
 									</li>
 									<?php endif;?>
-								<?php if( $this->Permissions->check( 'situationsdossiersrsa', 'index' ) || $this->Permissions->check( 'detailsdroitsrsa', 'index' ) ):?>
 									<li><span>Droit</span>
 										<ul>
 											<?php if( $this->Permissions->check( 'dsps', 'view' ) ):?>
@@ -157,15 +156,6 @@
                                                     </li>
                                                 <?php endif;?>
                                             <?php endif;?>
-											<!--<?php if( $this->Permissions->check( 'dspps', 'view' ) ):?>
-												<li>
-													<?php
-														echo $this->Xhtml->link(
-															'DSP CAF',
-															array( 'controller' => 'dspps', 'action' => 'view', $personne['id'] )
-														);?>
-												</li>
-											<?php endif;?>-->
 
 											<?php if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) { ?>
 
@@ -244,7 +234,21 @@
 								<?php endif;?>
 
 
-								<?php if( $this->Permissions->check( 'personnes_referents', 'index' ) || $this->Permissions->check( 'rendezvous', 'index' ) || $this->Permissions->check( 'contratsinsertion', 'index' ) || $this->Permissions->check( 'cuis', 'index' ) ):?>
+								<?php if(
+										$this->Permissions->check( 'personnes_referents', 'index' )
+										|| $this->Permissions->check( 'rendezvous', 'index' )
+										|| $this->Permissions->check( 'contratsinsertion', 'index' )
+										|| $this->Permissions->check( 'cuis', 'index' )
+										|| $this->Permissions->check( 'bilansparcours66', 'index' ) 
+										|| $this->Permissions->check( 'cers93', 'index' ) 
+										|| $this->Permissions->check( 'entretiens', 'index' ) 
+										|| $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' )
+										|| $this->Permissions->check( 'historiqueseps', 'index' ) 
+										|| $this->Permissions->check( 'actionscandidats_personnes', 'index' ) 
+										|| $this->Permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'index' ) 
+										|| $this->Permissions->check( 'historiqueemplois', 'index' ) 
+										|| $this->Permissions->check( 'memos', 'index' ) 
+									):?>
 									<li><span>Accompagnement du parcours</span>
 										<ul>
 											<li>
@@ -355,14 +359,6 @@
                                             <?php endif;?>
 											<li><span>Offre d'insertion</span>
 												<ul>
-												<!-- <li>
-														<?php
-															/*echo $this->Xhtml->link(
-																'Recherche action',
-																array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
-															);*/
-														?>
-													</li> -->
 													<?php if( $this->Permissions->check( 'actionscandidats_personnes', 'index' ) ):?>
 													<li>
 														<?php
@@ -452,21 +448,8 @@
 								<?php endif;?>
 
 							</ul>
-							<?php endif;?>
 							<!-- Fin "Partie du sous-menu concernant uniquement le demandeur et son conjoint" -->
 
-							<!-- Début "Partie du sous-menu concernant toutes les personnes du foyer" -->
-							<!--<?php if( $this->Permissions->check( 'dossierscaf', 'view' ) ):?>
-								<li>
-									<?php
-										echo $this->Xhtml->link(
-											'Dossier CAF',
-											array( 'controller' => 'dossierscaf', 'action' => 'view', $personne['id'] )
-										);
-									?>
-								</li>
-							<?php endif;?>-->
-							<!-- Fin "Partie du sous-menu concernant toutes les personnes du foyer" -->
 					</li>
 				<?php endforeach;?>
 			</ul>
@@ -474,7 +457,7 @@
 		<!-- TODO: permissions à partir d'ici et dans les fichiers concernés -->
 		<li><span>Informations foyer</span>
 			<ul>
-				<?php if( $this->Permissions->check( 'situationsdossiersrsa', 'index' ) || $this->Permissions->check( 'detailsdroitsrsa', 'index' ) || $this->Permissions->check( 'dossierspdo', 'index' ) ):?>
+				<?php if( $this->Permissions->check( 'situationsdossiersrsa', 'index' ) || $this->Permissions->check( 'detailsdroitsrsa', 'index' )  ):?>
 					<li>
 						<?php
 							echo $this->Xhtml->link(
@@ -492,7 +475,7 @@
 						?>
 					</li>
 				<?php endif;?>
-				<?php if( $this->Permissions->check( 'adressesfoyers', 'index' ) ):?>
+				<?php if( $this->Permissions->check( 'adressesfoyers', 'index' ) || $this->Permissions->check( 'adressesfoyers', 'view' ) ):?>
 					<li><?php echo $this->Xhtml->link( 'Adresses', array( 'controller' => 'adressesfoyers', 'action' => 'index', $dossier['Foyer']['id'] ) );?>
 						<?php if( !empty( $dossier['Foyer']['AdressesFoyer'] ) ):?>
 							<?php if( $this->Permissions->check( 'adressesfoyers', 'view' ) ):?>
@@ -575,7 +558,7 @@
 			</ul>
 		</li>
 
-		<?php if( $this->Permissions->check( 'dossierspcgs66', 'view' ) && Configure::read( 'Cg.departement' ) == 66 ):?>
+		<?php if( $this->Permissions->check( 'dossierspcgs66', 'index' ) && Configure::read( 'Cg.departement' ) == 66 ):?>
 			<?php
 				echo '<li>'.$this->Xhtml->link(
 					'Dossier PCG',

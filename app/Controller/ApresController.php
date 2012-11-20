@@ -21,8 +21,7 @@
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 		public $components = array( 'Fileuploader', 'Jetons2' );
 		public $commeDroit = array(
-			'view' => 'Apres:index',
-			'add' => 'Apres:edit'
+			'view' => 'Apres:index'
 		);
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 

@@ -22,9 +22,9 @@
 		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
 		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
-		public $aucunDroit = array( 'menu' );
+// 		public $aucunDroit = array( 'menu' );
 
-		public $commeDroit = array( 'view' => 'Dossiers:index' );
+// 		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
 		/**
 		 * @return void
