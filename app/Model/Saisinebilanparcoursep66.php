@@ -172,47 +172,7 @@
 
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' && $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['changementrefparcours'] == 'N' && ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorientprincipale_id'] != $typeOrientPrincipaleEmploiId ) ) {
-					$vxContratinsertion = $this->Bilanparcours66->Contratinsertion->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Contratinsertion.personne_id' => $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['personne_id'],
-								'Contratinsertion.structurereferente_id' => $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['structurereferente_id']
-							),
-							'contain' => false
-						)
-					);
-					if( empty( $vxContratinsertion ) ) {
-						$vxContratinsertion = array();
-					}
-					$contratinsertion = $vxContratinsertion;
-					$contratinsertion['Contratinsertion']['dd_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['ddreconductoncontrat'];
-					$contratinsertion['Contratinsertion']['df_ci'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['dfreconductoncontrat'];
-					$contratinsertion['Contratinsertion']['duree_engag'] = $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['duree_engag'];
-
-					$idRenouvellement = $this->Bilanparcours66->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
-					$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
-					$contratinsertion['Contratinsertion']['rg_ci'] = ( Set::classicExtract( $contratinsertion, 'Contratinsertion.rg_ci' ) + 1 );
-
-					// La date de saisie du nouveau contrat est égale à la date du jour
-					$contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
-
-					$fields = array( 'id', 'decision_ci', 'datevalidation_ci', 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
-					foreach( $fields as $field ) {
-						unset( $contratinsertion['Contratinsertion'][$field] );
-					}
-
-					$this->Bilanparcours66->Contratinsertion->create( $contratinsertion );
-					$success = $this->Bilanparcours66->Contratinsertion->save() && $success;
-
-					// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-					$success = $this->updateAll(
-						array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Bilanparcours66->Contratinsertion->id ),
-						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-					) && $success;
-				}
-				elseif ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
+				if ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
 					$orientstruct = array(
 						'Orientstruct' => array(
 							'personne_id' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
@@ -525,7 +485,7 @@
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Typeorient->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->fields(),
-					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->Permanence->fields(),
+// 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields(),
 					$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->fields()
 				),
@@ -549,7 +509,7 @@
 					),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
+// 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
 				)
@@ -755,23 +715,23 @@
 					);
 				}
 
-				$datas['querydata']['joins'][] = array_words_replace(
-					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->join( 'Permanence' ),
-					array( 
-						'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
-						'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
-					)
-				);
-				$datas['querydata']['fields'] = array_merge(
-					$datas['querydata']['fields'],
-					array_words_replace(
-						$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->Permanence->fields(),
-						array(
-							'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
-							'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
-						)
-					)
-				);
+// 				$datas['querydata']['joins'][] = array_words_replace(
+// 					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->join( 'Permanence' ),
+// 					array( 
+// 						'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
+// 						'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
+// 					)
+// 				);
+// 				$datas['querydata']['fields'] = array_merge(
+// 					$datas['querydata']['fields'],
+// 					array_words_replace(
+// 						$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->Permanence->fields(),
+// 						array(
+// 							'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
+// 							'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
+// 						)
+// 					)
+// 				);
 
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
