@@ -304,7 +304,7 @@
             if( $this->action == 'edit' ){
                 $isactive = array( 'O', 'N' );
             }
-            $actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, '0' );
+            $actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, array( '0', '1' ) );
             $this->set( 'actionsSansFiche', $actionsSansFiche );
 
 			if( !empty( $this->request->data ) ) {
