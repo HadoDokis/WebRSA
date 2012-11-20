@@ -390,11 +390,11 @@
 			$success = true;
 			$totalErrors = 0;
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
-				$themeTraite = Inflector::tableize( $themeTraite );
+// 				$themeTraite = Inflector::tableize( $themeTraite );
 
 				// On est au niveau de décision final ou au niveau cg
 				if( ( $niveauDecisionTheme == "decision{$niveauDecision}" ) || $niveauDecisionTheme == 'decisioncg' ) {
-					$conditions = array(
+					/*$conditions = array(
 						'Dossierep.themeep' => $themeTraite,
 						'Dossierep.id IN ( '.$this->Passagecommissionep->sq(
 							array(
@@ -408,8 +408,12 @@
 								)
 							)
 						).' )',
-					);
-					$totalErrors += $this->Passagecommissionep->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+					);*/
+// 					$totalErrors += $this->Passagecommissionep->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+
+					// FIXME: nbDossiersPourEtape et nbDossiersEtapeSuivante
+					$themeTraite = Inflector::classify( $themeTraite );
+					$totalErrors += $this->Passagecommissionep->Dossierep->{$themeTraite}->nbErreursFinaliserCg( $commissionep_id, $niveauDecision );
 				}
 			}
 
@@ -554,7 +558,51 @@
 				$success = $this->save() && $success;
 			}
 
-			return $success && empty( $totalErrors );
+			$success = $success && empty( $totalErrors );
+
+			// FIXME: mettre en champs cachés les décisions de cette thématique au niveau CG lorsqu'au moins un dossier de cette thématique doit avoir une décision CG
+			if( $success && Configure::read( 'Cg.departement' ) == 66 && $niveauDecision == 'ep' ) {
+				$dataCg = $data;
+				$nbDossierATraiterCg = 0;
+
+				$containStoredDataCg = array();
+				foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
+					$modelName = Inflector::classify( $themeTraite );
+					$modelDecisionName = 'Decision'.strtolower( $modelName );
+
+					if( $niveauDecisionTheme == 'decisioncg' ) {
+						$nbDossierATraiterCg += $this->Passagecommissionep->Dossierep->{$modelName}->nbDossiersATraiterCg( $commissionep_id );
+
+						if( $nbDossierATraiterCg == 0 ) {
+							foreach( $dataCg[$modelDecisionName] as $i => $dataDecision  ) {
+								unset( $dataCg[$modelDecisionName][$i]['id'] );
+								$dataCg[$modelDecisionName][$i]['etape'] = 'cg';
+							}
+						}
+						
+						$containStoredDataCg[$modelDecisionName] = array( 'conditions' => array( 'etape' => 'cg' ) );
+					}
+				}
+
+				if( $nbDossierATraiterCg == 0 ) {
+					$success = $this->saveDecisions( $commissionep_id, $dataCg, 'cg' ) && $success;
+					$storedDataCg = $this->Passagecommissionep->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Passagecommissionep.commissionep_id' => $commissionep_id
+							),
+							'contain' => $containStoredDataCg
+						)
+					);	
+					unset( $storedDataCg['Passagecommissionep'] );
+
+					$success = $this->finaliser( $commissionep_id, $storedDataCg, 'cg', $user_id ) && $success;
+				}
+			}
+			
+			return $success;
+
 		}
 
 		/**
@@ -760,7 +808,7 @@
 		*
 		*/
 
-		public function getPdfPv( $commissionep_id ) {
+		public function getPdfPv( $commissionep_id, $participant_id = null, $user_id ) {
 			$commissionep_data = $this->find(
 				'first',
 				array(
@@ -774,6 +822,25 @@
 					)
 				)
 			);
+
+			if( !is_null( $participant_id ) ) {
+				$participant = $this->CommissionepMembreep->Membreep->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Membreep.id' => $participant_id
+						),
+						'contain' => false
+					)
+				);
+				
+				if( !empty( $participant ) ) {
+					$participant['Participant'] = $participant['Membreep'];
+					unset($participant['Membreep']);
+					$commissionep_data = Set::merge( $participant, $commissionep_data );
+				}
+			}
+			
 
 			$queryData = array(
 				'fields' => array_merge(
@@ -882,6 +949,17 @@
 				$commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
 			}
 
+			$user = ClassRegistry::init( 'User' )->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$commissionep_data = Set::merge( $commissionep_data, $user );
+
 			$typeEp = $commissionep_data['Ep']['Regroupementep'];
 			if( Configure::read( 'Cg.departement' ) != 66 ) {
 				$pv = "pv.odt";
@@ -899,7 +977,7 @@
 				array_merge(
 					array(
 						$commissionep_data,
-						'Decisionseps' => $dossierseps,
+						'Decisionseps' => $dossierseps
 					),
 					$presences
 				),
@@ -1408,8 +1486,8 @@
 						$this->Passagecommissionep->Dossierep->Defautinsertionep66->fields(),
 						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
 						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields(),
-						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields()/*,
+						$this->Passagecommissionep->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->Permanence->fields()*/
 					),
 					'joins' => array(
 						$this->Passagecommissionep->Dossierep->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
@@ -1417,7 +1495,7 @@
 						$joinBilanparcours66,
 						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
+// 						$this->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'INNER' ) ),
 						$this->Passagecommissionep->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
 						$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),

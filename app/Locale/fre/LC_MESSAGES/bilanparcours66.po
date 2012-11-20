@@ -77,7 +77,7 @@ msgid "Bilanparcours66.duree_engag"
 msgstr "Durée de la reconduction du contrat"
 
 msgid "Bilanparcours66.structurereferente_id"
-msgstr "Structure référente"
+msgstr "Structure"
 
 msgid "Bilanparcours66.referent_id"
 msgstr "Rédigé par"

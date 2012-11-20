@@ -130,6 +130,8 @@
 		}
 		else {
 			$pagination = $this->Xpaginator->paginationBlock( 'Commissionep', $this->passedArgs );
+			
+			$showLienAvisEp = ( Configure::read( 'Cg.departement' ) == 66 );
 
 			echo $pagination;
 
@@ -144,7 +146,7 @@
 					$colspan = 4;
 					break;
 				case 'arbitragecg':
-					$colspan = 1;
+					$colspan = ( $showLienAvisEp ) ? 2 : 1;
 					break;
 				case 'decisions':
 					$colspan = 1;
@@ -192,7 +194,12 @@
 						$lien .= '<td>'.$this->Xhtml->link( 'Avis', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' || $commissionep['Commissionep']['etatcommissionep'] == 'traite' ) ) ).'</td>';
 						break;
 					case 'arbitragecg':
-						$lien = '<td>'.$this->Xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
+						$lien = '';
+						if( $showLienAvisEp ) { 
+							$lien = '<td>'.$this->Xhtml->link( 'Voir avis EP', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
+						}
+						
+						$lien .= '<td>'.$this->Xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
 					case 'decisions':
 						$niveaudecisionmax = $commissionep['Commissionep']['niveaudecisionmax'];

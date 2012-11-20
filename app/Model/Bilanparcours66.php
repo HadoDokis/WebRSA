@@ -602,6 +602,8 @@
 
 						$idRenouvellement = $this->Contratinsertion->Typocontrat->field( 'Typocontrat.id', array( 'Typocontrat.lib_typo' => 'Renouvellement' ) );
 						$contratinsertion['Contratinsertion']['typocontrat_id'] = $idRenouvellement;
+						$contratinsertion['Contratinsertion']['num_contrat'] = 'REN';
+
 						$contratinsertion['Contratinsertion']['rg_ci'] = ( $contratinsertion['Contratinsertion']['rg_ci'] + 1 );
 
 						// La date de validation est à null afin de pouvoir modifier le contrat
@@ -892,7 +894,9 @@
 										'contain' => false
 									)
 								);
-								$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+								if( ( $typerdv['Typerdv']['nbabsaveplaudition'] != 0 ) ) {
+									$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+								}
 							}
 
 							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {
@@ -1036,7 +1040,9 @@
 										'contain' => false
 									)
 								);
-								$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+								if( ( $typerdv['Typerdv']['nbabsaveplaudition'] != 0 ) ) {
+									$nbPosPasEplAud += floor( $nbrdvsnonvenu / $typerdv['Typerdv']['nbabsaveplaudition'] );
+								}
 							}
 
 							if ( $nbpassageeplaudition >= $nbPosPasEplAud ) {

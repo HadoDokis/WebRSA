@@ -122,14 +122,27 @@
 			echo "</div>";
 		}
 		else {
-			echo '<ul class="actions center">';
+			if( Configure::read( 'Cg.departement' ) != 66 ) {
+
+				echo '<ul class="actions center">';
+					echo '<li>'.$this->Xhtml->link(
+						__d( 'commissionep','Commissionseps::impressionpv' ),
+						array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
+						array( 'class' => 'button impressionpv' ),
+						'Etes-vous sûr de vouloir imprimer le PV de la commission ?'
+					).' </li>';
+				echo '</ul>';
+			}
+			else {
+				echo '<ul class="actions center">';
 				echo '<li>'.$this->Xhtml->link(
 					__d( 'commissionep','Commissionseps::impressionpv' ),
-					array( 'controller' => 'commissionseps', 'action' => 'impressionpv', $commissionep['Commissionep']['id'] ),
+					array( 'controller' => 'commissionseps', 'action' => 'impressionpvcohorte', $commissionep['Commissionep']['id'] ),
 					array( 'class' => 'button impressionpv' ),
                     'Etes-vous sûr de vouloir imprimer le PV de la commission ?'
 				).' </li>';
-			echo '</ul>';
+				echo '</ul>';
+			}
 		}
 
 		echo $this->Default->button(

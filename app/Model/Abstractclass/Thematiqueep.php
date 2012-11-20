@@ -314,5 +314,50 @@
 			}
 			return $pdf;
 		}
+		
+		/**
+		 *
+		 */
+		public function nbErreursFinaliserCg( $commissionep_id, $niveauDecision ) {
+			$conditions = array(
+				'Dossierep.themeep' => Inflector::tableize( $this->name ),
+				'Dossierep.id IN ( '.$this->Dossierep->Passagecommissionep->sq(
+					array(
+						'alias' => 'passagescommissionseps',
+						'fields' => array(
+							'passagescommissionseps.dossierep_id'
+						),
+						'conditions' => array(
+							'passagescommissionseps.commissionep_id' => $commissionep_id,
+							'passagescommissionseps.etatdossierep <>' => "decision{$niveauDecision}",
+						)
+					)
+				).' )',
+			);
+			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+		}
+
+		/**
+		 *
+		 */
+		public function nbDossiersATraiterCg( $commissionep_id ) {
+			$conditions = array(
+				'Dossierep.themeep' => Inflector::tableize( $this->name ),
+				'Dossierep.id IN ( '.$this->Dossierep->Passagecommissionep->sq(
+					array(
+						'alias' => 'passagescommissionseps',
+						'fields' => array(
+							'passagescommissionseps.dossierep_id'
+						),
+						'conditions' => array(
+							'passagescommissionseps.commissionep_id' => $commissionep_id,
+							'passagescommissionseps.etatdossierep <>' => "decisionep", // FIXME: annulé/reporté
+						)
+					)
+				).' )',
+			);
+			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
+		}
+
 	}
 ?>

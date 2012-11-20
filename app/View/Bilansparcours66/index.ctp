@@ -156,11 +156,11 @@
 										else { // reorientation
 											echo $this->Xhtml->tag(
 												'td',
-												Set::classicExtract( $typesorients, $decision['typeorient_id'] )
+												Set::enum( $decision['typeorient_id'], $typesorients )
 											);
 											echo $this->Xhtml->tag(
 												'td',
-												Set::classicExtract( $structuresreferentes, $decision['structurereferente_id'] )
+												Set::enum( $decision['structurereferente_id'], $structuresreferentes )
 											);
 										}
 									}
@@ -178,35 +178,53 @@
 									}
 									else {
 										$decision = $bilanparcour66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision];
+										
+										if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'ep' ) {
+											if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && empty( $decision['decisionsup'] ) ) {
+												echo $this->Xhtml->tag(
+													'td',
+													__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
+													array(
+														'colspan' => 2
+													)
+												);
 
-										if( in_array( $decision['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof', 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule', 'reporte' ) ) && empty( $decision['decisionsup'] ) ) {
-											echo $this->Xhtml->tag(
-												'td',
-												__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
-												array(
-													'colspan' => 2
-												)
-											);
+											}
+											else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && !empty( $decision['decisionsup'] ) ) {
+												echo $this->Xhtml->tag(
+													'td',
+													__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decisionsup'] ).' - <br />'.__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
+													array(
+														'colspan' => 2
+													)
+												);
+											}
 
 										}
-										else if( in_array( $decision['decision'], array( 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'reorientationprofverssoc', 'reorientationsocversprof', 'suspensionnonrespect', 'suspensiondefaut', 'maintien', 'annule', 'reporte' ) ) && !empty( $decision['decisionsup'] ) ) {
-											echo $this->Xhtml->tag(
-												'td',
-												__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decisionsup'], true ).' - <br />'.__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
-												array(
-													'colspan' => 2
-												)
-											);
+										else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'cg' ) {
+											if( in_array( $decision['decision'], array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ) ) {
+												echo $this->Xhtml->tag(
+													'td',
+													__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
+													array(
+														'colspan' => 2
+													)
+												);
+											}
+											else {
+												//TODO: récupérer les décisions émises par le dossier PCG
+												echo '<td colspan="2"></td>';
+											}
 
 										}
 										else { // reorientationprofverssoc, reorientationsocversprof
 											echo $this->Xhtml->tag(
 												'td',
-												Set::classicExtract( $typesorients, $decision['typeorient_id'] )
+												Set::enum( $decision['typeorient_id'], $typesorients )
 											);
 											echo $this->Xhtml->tag(
 												'td',
-												Set::classicExtract( $structuresreferentes, $decision['structurereferente_id'] )
+												Set::enum( $decision['structurereferente_id'], $structuresreferentes )
 											);
 										}
 									}
@@ -233,7 +251,7 @@
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->fileLink( 'Fichiers liés', array( 'controller'=>'bilansparcours66', 'action'=>'filelink', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'filelink' ) == 1 && $block ) )
+								$this->Xhtml->fileLink( 'Fichiers liés', array( 'controller'=>'bilansparcours66', 'action'=>'filelink', Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ), ( $this->Permissions->check( 'bilansparcours66', 'filelink' ) == 1 && $block ) )
 							);
 							echo $this->Xhtml->tag(
 								'td',
