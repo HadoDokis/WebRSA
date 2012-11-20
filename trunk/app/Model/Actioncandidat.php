@@ -245,7 +245,7 @@
 		*
 		*/
 
-		public function listePourFicheCandidature( $codelocalite, $isactif, $hasFiche ) {
+		public function listePourFicheCandidature( $codelocalite, $isactif, $hasFiche = array() ) {
 			$conditions = array();
             if( Configure::read( 'Cg.departement') != 66 ) {
                 $conditions[] = 'Actioncandidat.id IN (
