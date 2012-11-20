@@ -199,7 +199,10 @@ msgid "Apres:index"
 msgstr "Visualisation des APREs"
 
 msgid "Apres:edit"
-msgstr "Ajout/Édition d'une APRE"
+msgstr "Édition d'une APRE"
+
+msgid "Apres:add"
+msgstr "Ajout d'une APRE"
 
 ###############################################################################
 
@@ -949,11 +952,19 @@ msgstr "Visulaisation des détails du droit RSA"
 ###############################################################################
 
 msgid "Module:Dossiers"
-msgstr "Recherche par dossier"
+msgstr "Recherche par dossier/allocataire"
+
+msgid "Dossiers:menu"
+msgstr "Recherche de dossiers"
+
+msgid "Dossiers:view"
+msgstr "Accès au dossier"
 
 msgid "Dossiers:exportcsv"
 msgstr "Export CSV"
 
+msgid "Dossiers:edit"
+msgstr "Modification du dossier RSA"
 ###############################################################################
 
 msgid "Module:Dossierscovs58"
