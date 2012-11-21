@@ -40,6 +40,11 @@
 					'message' => 'Veuillez vérifier le format de la date.',
 					'allowEmpty' => true
 				)
+			),
+			'matricule' => array(
+				'rule' => array( 'between', 15, 15 ),
+				'message' => 'Le n° est composé de 15 caractères minimum',
+				'allowEmpty' => true
 			)
 		);
 
