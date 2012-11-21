@@ -1,5 +1,6 @@
 <?php
 	/**
+	 * Code source de la classe ControllerCache.
 	 *
 	 * PHP 5.3
 	 *
@@ -8,15 +9,58 @@
 	App::uses( 'AppController', 'Controller' );
 
 	/**
+	 * La classe ControllerCache permet de connaître les actions des contrôleurs
+	 * pour lesquelles il n'est pas nécessaire d'avoir de droit ("aucun droit")
+	 * ou pour lesquelles les droits sont équivalents à ceux d'une autre action
+	 * ("comme droit").
 	 *
+	 * Ces listes sont mises en cache.
 	 *
 	 * @package app.Model.Datasource
 	 */
 	class ControllerCache
 	{
+		/**
+		 * Le nom de la clé sous laquelle le cache sera stocké.
+		 *
+		 * @var string
+		 */
 		protected static $_cacheKey = 'ControllerCache';
+
+		/**
+		 * Permet de savoir si la classe a déjà été initialisée.
+		 *
+		 * @var boolean
+		 */
 		protected static $_init = false;
+
+		/**
+		 * La liste des actions pour lesquelles aucun droit n'est requis (tout
+		 * le monde a le droit).
+		 *
+		 * Exemple:
+		 * <pre>
+		 *	array(
+		 *		'Users::login',
+		 *	)
+		 * </pre>
+		 *
+		 * @var array
+		 */
 		protected static $_aucunDroit = array( );
+
+		/**
+		 * La liste des correspondances "comme droit".
+		 *
+		 * Si on a:
+		 * <pre>
+		 *	array(
+		 *		'Actions:add' => 'Actions:edit',
+		 *	)
+		 * </pre>
+		 *
+		 * @var array
+		 */
 		protected static $_commeDroit = array( );
 
 		/**
@@ -71,7 +115,17 @@
 		}
 
 		/**
-		 * @param array
+		 * Retourne la liste des actions pour lesquelles aucun droit n'est
+		 * requis (tout le monde a le droit).
+		 *
+		 * Exemple:
+		 * <pre>
+		 *	array(
+		 *		'Users::login',
+		 *	)
+		 * </pre>
+		 *
+		 * @return array
 		 */
 		public static function aucunDroit() {
 			self::init();
@@ -80,7 +134,16 @@
 		}
 
 		/**
-		 * @param array
+		 * Retourne la liste des correspondances "comme droit".
+		 *
+		 * Exemple:
+		 * <pre>
+		 *	array(
+		 *		'Actions:add' => 'Actions:edit',
+		 *	)
+		 * </pre>
+		 *
+		 * @return array
 		 */
 		public static function commeDroit() {
 			self::init();

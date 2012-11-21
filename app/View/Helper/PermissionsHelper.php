@@ -92,6 +92,7 @@
 		 * </pre>
 		 *
 		 * @see PermissionsHelper::sessionKey
+		 * @see AppController::_checkPermissions()
 		 *
 		 * @param string $controller
 		 * @param string $action

@@ -18,10 +18,38 @@
 	 */
 	class ModelCache
 	{
+		/**
+		 * Le nom de la clé sous laquelle le cache sera stocké.
+		 *
+		 * @var string
+		 */
 		protected static $_cacheKey = 'ModelCache';
+
+		/**
+		 * Permet de savoir si les données ont changé et si le cache doit être
+		 * réécrit.
+		 *
+		 * @var boolean
+		 */
 		protected static $_hasChanged = false;
+
+		/**
+		 * Permet de savoir si la classe a déjà été initialisée.
+		 *
+		 * @var boolean
+		 */
 		protected static $_init = false;
+
+		/**
+		 *
+		 * @var array
+		 */
 		protected static $_cache = array( );
+
+		/**
+		 *
+		 * @var array
+		 */
 		protected static $_map = array( );
 
 		/**
