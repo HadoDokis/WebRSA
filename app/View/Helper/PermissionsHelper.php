@@ -31,6 +31,50 @@
 		public $sessionKey = 'Auth.Permissions';
 
 		/**
+		 * La liste des correspondances "comme droit".
+		 *
+		 * Si on a:
+		 * <pre>
+		 *	array(
+		 *		'Actions:add' => 'Actions:edit',
+		 *	)
+		 * </pre>
+		 * Alors, les droits de ActionsController::add() sont lus dans
+		 * ActionsController::edit().
+		 *
+		 * @var array
+		 */
+		public $commeDroit = array();
+
+		/**
+		 * La liste des actions pour lesquelles aucun droit n'est requis (tout
+		 * le monde a le droit).
+		 *
+		 * Exemple:
+		 * <pre>
+		 *	array(
+		 *		'Users::login',
+		 *	)
+		 * </pre>
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array();
+
+		/**
+		 * Surcharge du constructeur
+		 *
+		 * @param View $View
+		 * @param type $settings
+		 */
+		public function __construct( View $View, $settings = array( ) ) {
+			parent::__construct( $View, $settings );
+
+			$this->commeDroit = ControllerCache::commeDroit();
+			$this->aucunDroit = ControllerCache::aucunDroit();
+		}
+
+		/**
 		 * Vérifie les droits d'accès à un couple controller/action par-rapport
 		 * aux droits stockés en session.
 		 *
@@ -56,6 +100,13 @@
 		public function check( $controller, $action ) {
 			$controller = Inflector::camelize( $controller );
 			$action = strtolower( $action );
+
+			if( in_array( $controller.':'.$action, $this->aucunDroit ) ) {
+				return true;
+			}
+			else if( isset( $this->commeDroit[$controller.':'.$action] ) ) {
+				list( $controller, $action ) = explode( ':', $this->commeDroit[$controller.':'.$action] );
+			}
 
 			$permissions = $this->Session->read( $this->sessionKey );
 
