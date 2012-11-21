@@ -43,7 +43,7 @@
 			),
 			'matricule' => array(
 				'rule' => array( 'between', 15, 15 ),
-				'message' => 'Le n° est composé de 15 caractères minimum',
+				'message' => 'Le n° est composé de 15 caractères minimum (ajouter des zéros à la fin)',
 				'allowEmpty' => true
 			)
 		);
