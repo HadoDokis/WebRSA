@@ -220,6 +220,7 @@
 	require_once( APP.DS.'Vendor'.DS.'money_format.php' );
 	require_once( APP.'Lib'.DS.'Error'.DS.'rsa_exceptions.php' );
 	App::uses( 'ModelCache', 'Model/Datasource' );
+	App::uses( 'ControllerCache', 'Model/Datasource' );
 
 	/**
 	 * Paramétrage iconv.

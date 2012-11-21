@@ -7,10 +7,13 @@
 	 * @package app.Test.Case.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses('CakeSession', 'Model/Datasource');
+	App::uses('Controller', 'Controller');
 	App::uses( 'View', 'View' );
-	App::uses( 'CakeSession', 'Model/Datasource' );
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'MenuHelper', 'View/Helper' );
+	App::uses( 'PermissionsHelper', 'View/Helper' );
+	App::uses( 'SessionHelper', 'View/Helper' );
 
 	/**
 	 * Classe MenuHelperTest.
@@ -56,6 +59,10 @@
 		 * @return void
 		 */
 		public function testMenu() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
 			CakeSession::write(
 				'Auth.Permissions',
 				array(

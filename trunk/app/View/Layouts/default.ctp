@@ -171,8 +171,9 @@
 					if ($this->Session->check( 'Message.auth' ) ) {
 						echo $this->Session->flash( 'auth' );
 					}
+
+					echo $this->fetch( 'content' );
 				?>
-				<?php echo $this->fetch( 'content' );?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
 				webrsa v. <?php echo app_version();?> 2009 - 2012 @ Adullact.
