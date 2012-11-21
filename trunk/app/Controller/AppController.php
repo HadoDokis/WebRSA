@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Xhtml', 'Form', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd' );
+		public $helpers = array( 'Xhtml', 'Form', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd', 'Menu' );
 
 		/**
 		 * Modèles utilisés
