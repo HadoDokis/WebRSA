@@ -176,19 +176,28 @@
 		/**
 		 * Vérifie que l'utilisateur a la permission d'accéder à la page.
 		 *
+		 * @see PermissionsHelper::check()
+		 *
 		 * @return void
 		 */
 		protected function _checkPermissions() {
 			// Vérification des droits d'accès à la page
 			if( $this->name != 'Pages' && !( $this->name == 'Users' && ( $this->action == 'login' || $this->action == 'logout' ) ) ) {
 				if( !( isset( $this->aucunDroit ) && is_array( $this->aucunDroit ) && in_array( $this->action, $this->aucunDroit ) ) ) {
+					$controllerName = $this->name;
+					$actionName = $this->action;
+
+					if( isset( $this->commeDroit ) && is_array( $this->commeDroit ) && isset( $this->commeDroit[$actionName] ) ) {
+						list( $controllerName, $actionName ) = explode( ':', $this->commeDroit[$actionName] );
+					}
+
 					/// Nouvelle manière, accès au cache se trouvant dans la session
 					$permissions = $this->Session->read( 'Auth.Permissions' );
-					if( isset( $permissions["{$this->name}:{$this->action}"] ) ) {
-						$this->assert( !empty( $permissions["{$this->name}:{$this->action}"] ), 'error403' );
+					if( isset( $permissions["{$controllerName}:{$actionName}"] ) ) {
+						$this->assert( !empty( $permissions["{$controllerName}:{$actionName}"] ), 'error403' );
 					}
-					else if( isset( $permissions["Module:{$this->name}"] ) ) {
-						$this->assert( !empty( $permissions["Module:{$this->name}"] ), 'error403' );
+					else if( isset( $permissions["Module:{$controllerName}"] ) ) {
+						$this->assert( !empty( $permissions["Module:{$controllerName}"] ), 'error403' );
 					}
 					else {
 						$this->cakeError( 'error403' );
@@ -204,7 +213,6 @@
 			// Désactivation du cache du navigateur: (quand on revient en arrière dans l'historique de
 			// navigation, la page n'est pas cachée du côté du navigateur, donc il ré-exécute la demande)
 			$this->disableCache();
-
 
 			//Paramétrage du composant Auth
 			$this->Auth->loginAction = array( 'controller' => 'users', 'action' => 'login' );
