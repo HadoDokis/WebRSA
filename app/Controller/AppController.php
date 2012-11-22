@@ -67,7 +67,13 @@
 					$db->rollback( $this->{$this->modelClass} );
 				}
 
-				throw new InternalErrorException( $error );
+				$exceptionClass = "{$error}Exception";
+				if( class_exists( $exceptionClass, false ) ) {
+					throw new $exceptionClass( $error );
+				}
+				else {
+					throw new InternalErrorException( $error );
+				}
 
 				exit();
 			}
@@ -130,17 +136,24 @@
 		 */
 		protected function _checkHabilitations() {
 			$habilitations = array(
-				'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
-				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
+				'habilitations' => array(
+					'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
+					'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
+				)
 			);
 
-			if( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= time() ) ) {
-				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
-			}
+			$error = (
+				( !empty( $habilitations['date_deb_hab'] ) && ( strtotime( $habilitations['date_deb_hab'] ) >= time() ) )
+				// Si la date d'habilitation est celle du jour il n'est plus habilité du tout
+				|| ( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < time() ) )
+			);
 
-			// Si la date d'habilitation est celle du jour il n'est plus habilité du tout
-			if( !empty( $habilitations['date_fin_hab'] ) && ( strtotime( $habilitations['date_fin_hab'] ) < time() ) ) {
-				$this->cakeError( 'dateHabilitationUser', array( 'habilitations' => $habilitations ) );
+			if( $error ) {
+				throw new DateHabilitationUserException(
+					'Mauvaises dates d\'habilitation de l\'utilisateur',
+					401,
+					$habilitations
+				);
 			}
 		}
 

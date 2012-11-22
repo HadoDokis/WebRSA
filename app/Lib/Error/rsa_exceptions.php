@@ -13,7 +13,7 @@
 	 *
 	 * @package app.Lib.Error
 	 */
-	class RsaException extends CakeException
+	abstract class RsaException extends CakeException
 	{
 
 		/**
@@ -60,7 +60,7 @@
 	 *
 	 * @package app.Lib.Error
 	 */
-	class lockedActionException extends RsaException
+	class LockedActionException extends RsaException
 	{
 
 		/**
@@ -115,6 +115,27 @@
 		 * @param type $params
 		 */
 		public function __construct( $message, $code = 403, $params = array( ) ) {
+			parent::__construct( $message, $code, $params );
+		}
+
+	}
+
+	/**
+	 * Exception lancée lorsqu'une URL n'existe pas.
+	 *
+	 * @package app.Lib.Error
+	 */
+	class error404Exception extends RsaException
+	{
+
+		/**
+		 * Constructor
+		 *
+		 * @param type $message
+		 * @param type $code
+		 * @param type $params
+		 */
+		public function __construct( $message, $code = 404, $params = array( ) ) {
 			parent::__construct( $message, $code, $params );
 		}
 
