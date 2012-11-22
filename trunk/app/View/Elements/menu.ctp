@@ -3,7 +3,6 @@
 	<div class="menu1">
 <?php
 	// INFO: réécriture des clés -> ajouter un espace en début ou fin par exemple
-	// TODO: javascript pour IE
 	$items = array(
 		( Configure::read( 'Cg.departement' ) == 66 ? 'Gestion de listes' : 'Cohortes' ) => array(
 			'APRE' => array(
@@ -253,4 +252,14 @@
 ?>
 	</div>
 </div>
+<script type="text/javascript">
+//<![CDATA[
+$$( '#menu1Wrapper li.branch' ).each(
+	function( elmt ) {
+		$(elmt).observe( 'mouseover', function() { $(this).addClassName( 'hover' ); } );
+		$(elmt).observe( 'mouseout', function() { $(this).removeClassName( 'hover' ); } );
+    }
+);
+//]]>
+</script>
 <?php endif;?>
