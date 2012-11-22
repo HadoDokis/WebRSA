@@ -27,7 +27,7 @@
 			'view' => 'Traitementspcgs66:index',
 			'add' => 'Traitementspcgs66:edit'
 		);
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		public $aucunDroit = array( 'ajaxpiece', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		/**
 		 *

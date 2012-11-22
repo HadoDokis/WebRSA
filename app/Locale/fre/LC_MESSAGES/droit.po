@@ -347,6 +347,12 @@ msgstr "Contrats validés"
 msgid "Cohortesci:exportcsv"
 msgstr "Export CSV"
 
+msgid "Cohortesci:nouveauxparticulier"
+msgstr "Gestion de listes -> Contrats Particuliers à valider (CG66)"
+
+msgid "Cohortesci:nouveauxsimple"
+msgstr "Gestion de listes -> Contrats Simples à valider (CG66)"
+
 ###############################################################################
 
 msgid "Module:Cohortescomitesapres"
@@ -568,6 +574,11 @@ msgstr "Impression de la fiche de synthèse"
 msgid "Commissionseps:fichessynthese"
 msgstr "Impression des fiches de synthèse"
 
+msgid "Commissionseps:exportcsv"
+msgstr "Export CSV"
+
+msgid "Commissionseps:impressionpvcohorte"
+msgstr "Impression du PV de l'EP (CG66)"
 ###############################################################################
 
 msgid "Module:Composfoyerspcgs66"
@@ -750,6 +761,12 @@ msgstr "Liste des PDOs"
 msgid "Criteresdossierspcgs66:nouvelles"
 msgstr "Recherche de nouvelles PDOs"
 
+msgid "Criteresdossierspcgs66:dossier"
+msgstr "Recherche par Dossiers PCGs (CG66)"
+
+msgid "Criteresdossierspcgs66:gestionnaire"
+msgstr "Recherche par Gestionnaires PCGs (CG66)"
+
 ###############################################################################
 
 msgid "Module:Criteresentretiens"
@@ -807,6 +824,18 @@ msgstr "Validation d'un CUI"
 
 msgid "Cuis:delete"
 msgstr "Suppression d'un CUI"
+
+msgid "Cuis:indexparams"
+msgstr "Paramétrage des CUIs"
+
+msgid "Cuis:ajaxfiledelete"
+msgstr "Supprimer un fichier lié"
+
+msgid "Cuis:filelink"
+msgstr "Lier des fichiers au CUI"
+
+msgid "Cuis:cancel"
+msgstr "Annulation du CUI"
 
 ###############################################################################
 
@@ -996,6 +1025,8 @@ msgstr "Impression du courrier d'information"
 msgid "Dossierseps:courriersInformations"
 msgstr "Impression des courriers d'information"
 
+msgid "Dossierseps:exportcsv"
+msgstr "Export CSV des dossiers affectés"
 ###############################################################################
 
 msgid "Module:Dossierspcgs66"
@@ -1050,6 +1081,11 @@ msgstr "Visualisation d'une version antérieure"
 msgid "Dsps:view_diff"
 msgstr "Visualisation des différences entre les DSPs"
 
+msgid "Dsps:index"
+msgstr "Recherche par DSPs"
+
+msgid "Dsps:exportcsv"
+msgstr "Export CSV"
 ###############################################################################
 
 msgid "Module:Entretiens"
@@ -1174,13 +1210,13 @@ msgstr "Impression des relances d'APRE"
 msgid "Module:Gestionsanomaliesbdds"
 msgstr "Gestion des anomalies"
 
-msgid "Gestionsrdvs:index"
+msgid "Gestionsanomaliesbdds:index"
 msgstr "Recherche des anomalies de perosnnes par foyer"
 
-msgid "Gestionsrdvs:foyer"
+msgid "Gestionsanomaliesbdds:foyer"
 msgstr "Accès aux anomalies par foyer"
 
-msgid "Gestionsrdvs:personne"
+msgid "Gestionsanomaliesbdds:personnes"
 msgstr "Correction des anomalies par personne"
 
 ###############################################################################
@@ -1413,6 +1449,8 @@ msgstr "Recherche des allocataires non réorientés en professionnel"
 msgid "Nonorientationsproseps:index"
 msgstr "Moteur de recherche"
 
+msgid "Nonorientationsproseps:exportcsv"
+msgstr "Export CSV"
 ###############################################################################
 
 msgid "Module:Nonrespectssanctionseps93"
@@ -1463,6 +1501,9 @@ msgstr "Impression d'une orientation"
 
 msgid "Orientsstructs:delete"
 msgstr "Suppression d'une orientation"
+
+msgid "Orientsstructs:printChangementReferent"
+msgstr "Notification de changement de référent (CG66)"
 ###############################################################################
 
 msgid "Module:Originespdos"
@@ -1665,6 +1706,8 @@ msgstr "Prestation pour les actions d'insertion du CER"
 msgid "Prestsform:index"
 msgstr "Visualisation des prestations"
 
+msgid "Prestsform:edit"
+msgstr "Modification des prestations"
 ###############################################################################
 
 msgid "Module:Proposcontratsinsertioncovs58"
@@ -1917,6 +1960,8 @@ msgstr "Non respect du CER"
 msgid "Sanctionseps58:deleteNonrespectcer"
 msgstr "Suppression des non respect du CER"
 
+msgid "Sanctionseps58:exportcsv"
+msgstr "Export CSV"
 ###############################################################################
 
 msgid "Module:Servicesinstructeurs"
@@ -2197,6 +2242,14 @@ msgstr "Proposition de la décision au niveau du traitement de la personne"
 msgid "Traitementspcgs66:printFicheCalcul"
 msgstr "Impression de la fiche de calcul"
 
+msgid "Traitementspcgs66:reverseDO"
+msgstr "Reverser dans la DO"
+
+msgid "Traitementspcgs66:deverseDO"
+msgstr "Déverser de la DO"
+
+msgid "Traitementspcgs66:printModeleCourrier"
+msgstr "Impression du modèle de courrier du traitement PCG"
 
 ###############################################################################
 
@@ -2226,7 +2279,7 @@ msgstr "Visualisation des types de traitements PDO"
 msgid "Traitementstypespdos:edit"
 msgstr "Ajout/Édition d'un type de traitement PDO"
 
-msgid "Traitementspdos:delete"
+msgid "Traitementstypespdos:delete"
 msgstr "Suppression d'un type de traitement PDO"
 
 ###############################################################################
