@@ -54,11 +54,15 @@
 		}
 
 		/**
-		 * Test de la méthode MenuHelper::method()
+		 * Test de la méthode MenuHelper::make()
+		 *
+		 * INFO: si on utilise des contrôleurs de l'application, on risque de ne
+		 * pas avoir de bons résultats à cause de attributs $commeDroit et
+		 * $aucunDroit.
 		 *
 		 * @return void
 		 */
-		public function testMenu() {
+		public function testMake() {
 			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
 				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
 			}
@@ -66,25 +70,71 @@
 			CakeSession::write(
 				'Auth.Permissions',
 				array(
-					'Personnes:index' => true,
-					'Personnes:view' => false,
-					'Memos:index' => true,
+					'Apples:index' => true,
+					'Apples:view' => false,
+					'Worms:index' => true,
 				)
 			);
 
 			$items = array(
-				'Composition du foyer' => array(
-					'url' => array( 'controller' => 'personnes', 'action' => 'index', 1 ),
-					'M. BUFFIN Christian' => array(
-						'url' => array( 'controller' => 'personnes', 'action' => 'view', 2 ),
-						'Mémos' => array(
-							'url' => array( 'controller' => 'memos', 'action' => 'index', 2 )
+				'Panier' => array(
+					'url' => array( 'controller' => 'apples', 'action' => 'index', 1 ),
+					'Pomme Granny' => array(
+						'url' => array( 'controller' => 'apples', 'action' => 'view', 2 ),
+						'Vers' => array(
+							'url' => array( 'controller' => 'worms', 'action' => 'index', 2 )
 						)
 					)
 				)
 			);
 			$result = $this->Menu->make( $items );
-			$expected = '<ul><li class="branch"><a href="/personnes/index/1">Composition du foyer</a><ul><li class="branch"><span>M. BUFFIN Christian</span><ul><li class="leaf"><a href="/memos/index/2">Mémos</a></li></ul></li></ul></li></ul>';
+			$expected = '<ul><li class="branch"><a href="/apples/index/1">Panier</a><ul><li class="branch"><span>Pomme Granny</span><ul><li class="leaf"><a href="/worms/index/2">Vers</a></li></ul></li></ul></li></ul>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode MenuHelper::make2()
+		 *
+		 * INFO: si on utilise des contrôleurs de l'application, on risque de ne
+		 * pas avoir de bons résultats à cause de attributs $commeDroit et
+		 * $aucunDroit.
+		 *
+		 * @return void
+		 */
+		public function testMake2() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
+			CakeSession::write(
+				'Auth.Permissions',
+				array(
+					'Apples:index' => true,
+					'Apples:view' => false,
+					'Worms:index' => true,
+					'Pips:index' => true,
+				)
+			);
+
+			$items = array(
+				'Panier' => array(
+					'url' => array( 'controller' => 'apples', 'action' => 'index', 1 ),
+					'Pomme Granny' => array(
+						'url' => array( 'controller' => 'apples', 'action' => 'view', 2 ),
+						'Vers' => array(
+							'disabled' => true,
+							'url' => array( 'controller' => 'worms', 'action' => 'index', 2 ),
+						),
+						'Pépins' => array(
+							'disabled' => false,
+							'url' => array( 'controller' => 'pips', 'action' => 'index', 2 ),
+							'title' => 'Des pépins pour replanter'
+						),
+					)
+				)
+			);
+			$result = $this->Menu->make2( $items, 'a' );
+			$expected = '<ul><li class="branch"><a href="/apples/index/1">Panier</a><ul><li class="branch"><a href="#">Pomme Granny</a><ul><li class="leaf"><a href="/pips/index/2" title="Des pépins pour replanter">Pépins</a></li></ul></li></ul></li></ul>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}

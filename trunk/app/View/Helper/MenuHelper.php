@@ -11,7 +11,7 @@
 	/**
 	 * La classe MenuHelper fournit des méthodes facilitant la construction de
 	 * menus sous forme de liste non ordonnées (ul) imbriquées tout en vérifiant
-	 * les permissions des différentes URLs.
+	 * les permissions des différentes URLs grâce à la classe PermissionsHelper.
 	 *
 	 * @package app.View.Helper
 	 */
@@ -29,6 +29,13 @@
 		 * permissions vérifiées grâce au PermissionsHelper.
 		 *
 		 * <pre>
+		 * Si les permissions sont:
+		 * array(
+		 *	'Personnes:index' => true,
+		 *	'Personnes:view' => false,
+		 *	'Memos:index' => true,
+		 * );
+		 *
 		 * $items = array(
 		 *	'Composition du foyer' => array(
 		 *		'url' => array( 'controller' => 'personnes', 'action' => 'index', 1 ),
@@ -44,25 +51,28 @@
 		 * $this->Menu->make( $items );
 		 *
 		 * <ul>
-		 * 	<li class="branch">
-		 * 		<a href="/personnes/index/1">Composition du foyer</a>
-		 * 		<ul>
-		 * 			<li class="branch">
-		 * 				<span>M. BUFFIN Christian</span>
-		 * 				<ul>
-		 * 					<li class="leaf"><a href="/memos/index/2">Mémos</a></li>
-		 * 				</ul>
-		 * 			</li>
-		 * 		</ul>
-		 * 	</li>
+		 *	<li class="branch">
+		 *		<a href="/personnes/index/1">Composition du foyer</a>
+		 *		<ul>
+		 *			<li class="branch">
+		 *				<span>M. BUFFIN Christian</span>
+		 *				<ul>
+		 *					<li class="leaf">
+		 *						<a href="/memos/index/2">Mémos</a>
+		 *					</li>
+		 *				</ul>
+		 *			</li>
+		 *		</ul>
+		 *	</li>
 		 * </ul>
 		 * </pre>
 		 *
-		 * @param array $items
+		 * @param array $items Les éléments du menu
 		 * @return string
 		 */
 		public function make( $items ) {
 			$return = '';
+
 			foreach( $items as $key => $item ) {
 				$sub = $item;
 				unset( $sub['url'] );
@@ -83,9 +93,61 @@
 		}
 
 		/**
+		 * Permet de construire un menu à plusieurs niveaux en tenant compte des
+		 * permissions vérifiées grâce au PermissionsHelper.
 		 *
-		 * @param array $items
-		 * @param string $disabledTag
+		 * Cette méthode ajoute la possibilité de:spécifier la balise qui sera
+		 * utilisée pour construire les éléments inactifs "parents" d'éléments
+		 * actifs, d'ajouter un attribut title aux éléments et de désactiver un
+		 * élément (et ses sous-éléments) en plus des permissions.
+		 *
+		 * <pre>
+		 * Si les permissions sont:
+		 * array(
+		 *	'Personnes:index' => true,
+		 *	'Personnes:view' => false,
+		 *	'Memos:index' => true,
+		 * );
+		 *
+		 * $items = array(
+		 *	'Composition du foyer' => array(
+		 *		'url' => array( 'controller' => 'personnes', 'action' => 'index', 1 ),
+		 *		'M. BUFFIN Christian' => array(
+		 *			'url' => array( 'controller' => 'personnes', 'action' => 'view', 2 ),
+		 *			'Mémos' => array(
+		 *				'url' => array( 'controller' => 'memos', 'action' => 'index', 2 ),
+		 *				'title' => 'Mémos de M. BUFFIN Christian'
+		 *			),
+		 *			'Contrats' => array(
+		 *				'url' => array( 'controller' => 'cers', 'action' => 'index', 2 ),
+		 *				'disabled' => true,
+		 *				'title' => 'CERs de M. BUFFIN Christian'
+		 *			),
+		 *		)
+		 *	)
+		 * );
+		 *
+		 * $this->Menu->make2( $items, 'a' );
+		 *
+		 * <ul>
+		 *	<li class="branch">
+		 *		<a href="/personnes/index/1">Composition du foyer</a>
+		 *		<ul>
+		 *			<li class="branch">
+		 *				<a href="#">M. BUFFIN Christian</a>
+		 *				<ul>
+		 *					<li class="leaf">
+		 *						<a href="/memos/index/2" title="Mémos de M. BUFFIN Christian">Mémos</a>
+		 *					</li>
+		 *				</ul>
+		 *			</li>
+		 *		</ul>
+		 *	</li>
+		 * </ul>
+		 * </pre>
+		 *
+		 * @param array $items Les éléments du menu
+		 * @param string $disabledTag La balise à utiliser pour les éléments parents inactifs
 		 * @return string
 		 */
 		public function make2( $items, $disabledTag = 'span' ) {
@@ -93,20 +155,22 @@
 			foreach( $items as $key => $item ) {
 				if( !isset( $item['disabled'] ) || !$item['disabled'] ) {
 					$sub = $item;
-					unset( $sub['url'], $sub['disabled'] );
+					$title = ( isset( $sub['title'] ) ? $sub['title'] : false );
+					unset( $sub['url'], $sub['disabled'], $sub['title'] );
 
 					$sub = $this->make2( $sub, $disabledTag );
 
 					$content = '';
+					$htmlOptions = array( 'title' => $title );
 					if( isset( $item['url'] ) && $this->Permissions->check( $item['url']['controller'], $item['url']['action'] ) ) {
-						$content .= $this->Html->link( $key, $item['url'] ).$sub;
+						$content .= $this->Html->link( $key, $item['url'], $htmlOptions ).$sub;
 					}
 					else if( !empty( $sub ) ) {
-						$options = array();
+						$htmlOptions = array();
 						if( $disabledTag == 'a' ) {
-							$options['href'] = '#';
+							$htmlOptions['href'] = '#';
 						}
-						$content .= $this->Html->tag( $disabledTag, $key, $options ).$sub;
+						$content .= $this->Html->tag( $disabledTag, $key, $htmlOptions ).$sub;
 					}
 
 					$return .= empty( $content ) ? '' : $this->Html->tag( 'li', $content, array( 'class' => ( empty( $sub ) ? 'leaf' : 'branch' ) ) );

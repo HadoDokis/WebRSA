@@ -52,7 +52,7 @@
 						'Module:Users' => false,
 						'Users:index' => true,
 						'Users:view' => true,
-						'Users:add' => true,
+						'Users:add2' => true,
 					)
 				),
 				'Otherkey' => array(
@@ -89,7 +89,7 @@
 			$expected = true;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->Permissions->check( 'users', 'add' );
+			$result = $this->Permissions->check( 'users', 'add2' );
 			$expected = true;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
