@@ -119,6 +119,10 @@
 			else
 				$content = $text;
 
+			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
+				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
+			}
+
 			$class = implode(
 				' ',
 				array(
@@ -130,10 +134,6 @@
 			);
 			$htmlAttributes['class'] = $class;
 			unset( $htmlAttributes['enabled'] );
-
-			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
-				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
-			}
 
 			if( $enabled ) {
 				return $this->Xhtml->link(

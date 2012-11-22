@@ -58,6 +58,10 @@
 				$label = __( "Button::{$urlParams['action']}" );
 			}
 
+			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
+				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
+			}
+
 			$class = implode(
 				' ',
 				array(
@@ -69,10 +73,6 @@
 			);
 			$htmlAttributes['class'] = $class;
 			$htmlAttributes['escape'] = false;
-
-			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
-				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
-			}
 
 			if( $enabled ) {
 				return $this->Xhtml->link(
