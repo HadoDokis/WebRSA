@@ -37,7 +37,7 @@
 	 */
 	class Default2Helper extends AppHelper
 	{
-		public $helpers = array( 'Xhtml', 'Html', 'Xpaginator2', 'Locale', 'Xform', 'Type2' );
+		public $helpers = array( 'Xhtml', 'Html', 'Xpaginator2', 'Locale', 'Xform', 'Type2', 'Permissions' );
 
 		/**
 		* TODO docs
@@ -69,6 +69,10 @@
 			);
 			$htmlAttributes['class'] = $class;
 			$htmlAttributes['escape'] = false;
+
+			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
+				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
+			}
 
 			if( $enabled ) {
 				return $this->Xhtml->link(
@@ -906,7 +910,7 @@
 		* TODO: permissions
 		*/
 
-		public function menu( $items ) {
+		/*public function menu( $items ) {
 			$return = '';
 			foreach( $items as $key => $item ) {
 				if( is_array( $item ) && isset( $item['controller'] ) && isset( $item['action'] ) ) {
@@ -931,6 +935,6 @@
 			}
 
 			return $return;
-		}
+		}*/
 	}
 ?>

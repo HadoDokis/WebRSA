@@ -129,8 +129,11 @@
 				)
 			);
 			$htmlAttributes['class'] = $class;
-
 			unset( $htmlAttributes['enabled'] );
+
+			if( isset( $url['controller'] ) && isset( $url['action'] ) ) {
+				$enabled = $this->Permissions->check( $url['controller'], $url['action'] ) && $enabled;
+			}
 
 			if( $enabled ) {
 				return $this->Xhtml->link(
@@ -937,7 +940,7 @@
 		* TODO: permissions
 		*/
 
-		public function menu( $items ) {
+		/*public function menu( $items ) {
 			$return = '';
 			foreach( $items as $key => $item ) {
 				if( is_array( $item ) && isset( $item['controller'] ) && isset( $item['action'] ) ) {
@@ -962,6 +965,6 @@
 			}
 
 			return $return;
-		}
+		}*/
 	}
 ?>
