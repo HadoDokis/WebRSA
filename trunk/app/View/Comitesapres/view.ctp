@@ -1,6 +1,6 @@
 <?php $this->pageTitle = 'Comité d\'examen pour l\'APRE';?>
 <h1>Détails Comité d'examen</h1>
-<?php if( $this->Permissions->check( 'comitesapres', 'add' ) ):?>
+<?php if( $this->Permissions->check( 'comitesapres', 'edit' ) ):?>
 	<ul class="actionMenu">
 		<?php
 			echo '<li>'.$this->Xhtml->editLink(
@@ -49,7 +49,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste des participants',
-							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+							$this->Permissions->check( 'comitesapres_participantscomites', 'edit' )
 						).' </li>';
 					?>
 				</ul>
@@ -93,7 +94,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Participant',
-							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+							$this->Permissions->check( 'comitesapres_participantscomites', 'add' )
 						).' </li>';
 					?>
 				</ul>
@@ -131,7 +133,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste APRES',
-							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+							$this->Permissions->check( 'apres_comitesapres', 'edit' )
 						).' </li>';
 					?>
 				</ul>
@@ -203,7 +206,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste APRE',
-							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+							$this->Permissions->check( 'apres_comitesapres', 'add' )
 						).' </li>';
 					?>
 				</ul>
@@ -220,7 +224,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste APRES en Recours',
-							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 )
+							array( 'controller' => 'apres_comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 ),
+							$this->Permissions->check( 'apres_comitesapres', 'edit' )
 						).' </li>';
 					?>
 				</ul>
@@ -275,7 +280,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste APRES en Recours',
-							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 )
+							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'recours' => 1 ),
+							$this->Permissions->check( 'apres_comitesapres', 'add' )
 						).' </li>';
 					?>
 				</ul>
@@ -294,7 +300,8 @@
 			<?php
 				echo $this->Xhtml->decisionLink(
 					'Prise de décision du comité',
-					array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) )
+					array( 'controller' => 'cohortescomitesapres', 'action' => 'aviscomite', 'Cohortecomiteapre__id' => Set::classicExtract( $comiteapre, 'Comiteapre.id' ) ),
+					$this->Permissions->check( 'cohortescomitesapres', 'aviscomite' )
 				);
 			?>
 		</ul>

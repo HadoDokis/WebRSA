@@ -169,7 +169,8 @@
         <li><?php
             echo $this->Xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'cohortesdossierspcgs66', 'exportcsv' )
             );
         ?></li>
     </ul>

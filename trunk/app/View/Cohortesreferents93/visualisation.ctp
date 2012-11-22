@@ -61,7 +61,7 @@
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
 			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
-			( count( $personnes_referents ) > 0 )
+			( $this->Permissions->check( 'cohortescers93', 'exportcsv' ) && count( $personnes_referents ) > 0 )
 		);
 	?></li>
 </ul>

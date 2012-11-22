@@ -1,12 +1,13 @@
 <?php $this->pageTitle = 'Détails Comité d\'examen';?>
 
 <h1>Détails Comité d'examen</h1>
-<?php if( $this->Permissions->check( 'comitesapres', 'add' ) ):?>
+<?php if( $this->Permissions->check( 'comitesapres', 'edit' ) ):?>
 	<ul class="actionMenu">
 		<?php
 			echo '<li>'.$this->Xhtml->editLink(
 				'Modifier Comité',
-				array( 'controller' => 'comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
+				array( 'controller' => 'comitesapres', 'action' => 'edit', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 ),
+				$this->Permissions->check( 'comitesapres', 'edit' )
 			).' </li>';
 		?>
 	</ul>
@@ -51,7 +52,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste des participants',
-							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'rapport', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
+							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'rapport', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 ),
+							$this->Permissions->check( 'comitesapres_participantscomites', 'rapport' )
 						).' </li>';
 					?>
 				</ul>
@@ -90,7 +92,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Participant',
-							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'rapport', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
+							array( 'controller' => 'comitesapres_participantscomites', 'action' => 'rapport', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 ),
+							$this->Permissions->check( 'comitesapres_participantscomites', 'rapport' )
 						).' </li>';
 					?>
 				</ul>
@@ -177,7 +180,8 @@
 					<?php
 						echo '<li>'.$this->Xhtml->editLink(
 							'Modifier Liste APRE',
-							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 )
+							array( 'controller' => 'apres_comitesapres', 'action' => 'add', Set::classicExtract( $comiteapre, 'Comiteapre.id' ), 'rapport' => 1 ),
+							$this->Permissions->check( 'apres_comitesapres', 'add' )
 						).' </li>';
 					?>
 				</ul>

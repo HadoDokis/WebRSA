@@ -219,7 +219,8 @@
              <li><?php
                 echo $this->Xhtml->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Set::flatten( $this->request->data, '__' )
+                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Set::flatten( $this->request->data, '__' ),
+					$this->Permissions->check( 'criteresapres', 'exportcsv' )
                 );
             ?></li>
         </ul>

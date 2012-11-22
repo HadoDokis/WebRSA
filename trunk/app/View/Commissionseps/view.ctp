@@ -420,7 +420,8 @@
 									echo '<ul class="actionMenu">';
 										echo '<li>'.$this->Xhtml->exportLink(
 											'Télécharger le tableau',
-											array( 'controller' => 'commissionseps', 'action' => 'exportcsv', Set::classicExtract( $commissionep, 'Commissionep.id' ) )
+											array( 'controller' => 'commissionseps', 'action' => 'exportcsv', Set::classicExtract( $commissionep, 'Commissionep.id' ) ),
+											$this->Permissions->check( 'commissionseps', 'exportcsv' )
 										).' </li>';
 									echo '</ul>';
 								}

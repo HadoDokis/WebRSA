@@ -105,7 +105,8 @@
 		<li><?php
 			echo $this->Xhtml->exportLink(
 				'Télécharger le tableau',
-				array( 'controller' => 'comitesapres', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+				array( 'controller' => 'comitesapres', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'comitesapres', 'exportcsv' )
 			);
 		?></li>
 	</ul>

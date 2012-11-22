@@ -797,6 +797,8 @@ msgstr "Liste des PDOs"
 msgid "Criterespdos:nouvelles"
 msgstr "Recherche des nouvelles PDO"
 
+msgid "Criterespdos:exportcsv"
+msgstr "Export CSV"
 ###############################################################################
 
 msgid "Module:Criteresrdv"
