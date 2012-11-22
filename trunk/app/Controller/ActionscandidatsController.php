@@ -19,6 +19,8 @@
 		public $uses = array( 'Actioncandidat', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Theme', 'Default2', 'Fileuploader' );
 		public $components = array( 'Default', 'Fileuploader' );
+		
+		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		public $commeDroit = array(
 			'view' => 'Actionscandidats:index',

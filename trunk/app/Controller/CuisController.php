@@ -28,12 +28,12 @@
 			'Jetons2',
 		);
 
+		public $aucunDroit = array( 'ajaxfileupload', 'impression', 'fileview', 'download' );
+		
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
 			'view' => 'Cuis:index'
 		);
-
-		public $aucunDroit = array( 'impression' );
 
 		/**
 		 * Envoi des options communes dans les vues.
