@@ -28,8 +28,6 @@
 			'Search.Prg' => array( 'actions' => array( 'index', 'nouvelles' ) )
 		);
 
-		public $aucunDroit = array( 'exportcsv' );
-
 		/**
 		 * Envoi des options communes dans les vues.
 		 *

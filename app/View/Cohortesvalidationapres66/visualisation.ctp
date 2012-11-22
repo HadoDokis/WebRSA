@@ -185,13 +185,15 @@
         <li><?php
             echo $this->Xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'cohortesvalidationapres66', 'exportcsv' )
             );
         ?></li>
 		<li><?php
             echo $this->Xhtml->printCohorteLink(
 				'Imprimer la cohorte',
-				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action ) + Set::flatten( $this->request->data, '__' )
+				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action ) + Set::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'cohortesvalidationapres66', 'notificationsCohorte' )
 			);
         ?></li>
     </ul>

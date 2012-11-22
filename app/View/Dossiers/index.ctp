@@ -255,7 +255,8 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'dossiers', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+					array( 'controller' => 'dossiers', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					$this->Permissions->check( 'dossiers', 'exportcsv' )
 				);
 			?></li>
 		</ul>

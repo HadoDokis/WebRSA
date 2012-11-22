@@ -11,7 +11,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addComiteLink(
 				'Ajouter Comité',
-				array( 'controller' => 'comitesapres', 'action' => 'add' )
+				array( 'controller' => 'comitesapres', 'action' => 'add' ),
+				$this->Permissions->check( 'comitesapres', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -122,7 +123,8 @@
 		<li><?php
 			echo $this->Xhtml->exportLink(
 				'Télécharger le tableau',
-				array( 'controller' => 'comitesapres', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+				array( 'controller' => 'comitesapres', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+				$this->Permissions->check( 'comitesapres', 'exportcsv' )
 			);
 		?></li>
 	</ul>
