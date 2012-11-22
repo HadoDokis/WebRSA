@@ -16,7 +16,8 @@
 						h( 'Codes ROME pour les secteurs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'codesromesecteursdsps66', 'action' => 'index' )
+							array( 'controller' => 'codesromesecteursdsps66', 'action' => 'index' ),
+							$this->Permissions->check( 'codesromesecteursdsps66', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -27,7 +28,8 @@
 						h( 'Codes ROME pour les métiers' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'codesromemetiersdsps66', 'action' => 'index' )
+							array( 'controller' => 'codesromemetiersdsps66', 'action' => 'index' ),
+							$this->Permissions->check( 'codesromemetiersdsps66', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

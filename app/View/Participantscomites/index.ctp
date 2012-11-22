@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'participantscomites', 'action' => 'add' )
+				array( 'controller' => 'participantscomites', 'action' => 'add' ),
+				$this->Permissions->check( 'participantscomites', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -42,11 +43,13 @@
 						h( Set::classicExtract( $participant, 'Participantcomite.mail' ) ),
 						$this->Xhtml->editLink(
 							'Éditer le participant ',
-							array( 'controller' => 'participantscomites', 'action' => 'edit', $participant['Participantcomite']['id'] )
+							array( 'controller' => 'participantscomites', 'action' => 'edit', $participant['Participantcomite']['id'] ),
+							$this->Permissions->check( 'participantscomites', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer le participant ',
-							array( 'controller' => 'participantscomites', 'action' => 'delete', $participant['Participantcomite']['id'] )
+							array( 'controller' => 'participantscomites', 'action' => 'delete', $participant['Participantcomite']['id'] ),
+							$this->Permissions->check( 'participantscomites', 'delete' )
 						)
 					),
 					array( 'class' => 'odd' ),

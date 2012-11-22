@@ -17,7 +17,8 @@
 						h( 'Décision PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'decisionspdos', 'action' => 'index' )
+							array( 'controller' => 'decisionspdos', 'action' => 'index' ),
+							$this->Permissions->check( 'decisionspdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -29,7 +30,8 @@
 						h( 'Description pour traitements PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'descriptionspdos', 'action' => 'index' )
+							array( 'controller' => 'descriptionspdos', 'action' => 'index' ),
+							$this->Permissions->check( 'descriptionspdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -52,7 +54,8 @@
 						h( 'Origine PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'originespdos', 'action' => 'index' )
+							array( 'controller' => 'originespdos', 'action' => 'index' ),
+							$this->Permissions->check( 'originespdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -60,23 +63,25 @@
 				);
 
 				if ( Configure::read( 'Cg.departement' ) == 66 ) {
-                                        echo $this->Xhtml->tableCells(
-                                            array(
-                                                h( 'Module courriers lié aux traitements PCGs' ),
-                                                $this->Xhtml->viewLink(
-                                                    'Voir la table',
-                                                    array( 'controller' => 'courrierspcgs66', 'action' => 'index' )
-                                                )
-                                            ),
-                                            array( 'class' => 'odd' ),
-                                            array( 'class' => 'even' )
-                                        );
+					echo $this->Xhtml->tableCells(
+						array(
+							h( 'Module courriers lié aux traitements PCGs' ),
+							$this->Xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'courrierspcgs66', 'action' => 'index' ),
+								$this->Permissions->check( 'courrierspcgs66', 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
 					echo $this->Xhtml->tableCells(
 						array(
 							h( 'Paramétrage pour les décisions de dossiers PCG' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'index' )
+								array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'index' ),
+								$this->Permissions->check( 'decisionsdossierspcgs66', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -89,7 +94,8 @@
 						h( 'Situation PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'situationspdos', 'action' => 'index' )
+							array( 'controller' => 'situationspdos', 'action' => 'index' ),
+							$this->Permissions->check( 'situationspdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -100,7 +106,8 @@
 						h( 'Statut PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'statutspdos', 'action' => 'index' )
+							array( 'controller' => 'statutspdos', 'action' => 'index' ),
+							$this->Permissions->check( 'statutspdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -111,7 +118,8 @@
 						h( 'Type de notification' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'typesnotifspdos', 'action' => 'index' )
+							array( 'controller' => 'typesnotifspdos', 'action' => 'index' ),
+							$this->Permissions->check( 'typesnotifspdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -123,7 +131,8 @@
 							h( 'Types de traitements PDOs' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'traitementstypespdos', 'action' => 'index' )
+								array( 'controller' => 'traitementstypespdos', 'action' => 'index' ),
+								$this->Permissions->check( 'traitementstypespdos', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -135,7 +144,8 @@
 						h( 'Type de PDOs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'typespdos', 'action' => 'index' )
+							array( 'controller' => 'typespdos', 'action' => 'index' ),
+							$this->Permissions->check( 'typespdos', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -148,7 +158,8 @@
 							h( 'Types de RSA' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'typesrsapcgs66', 'action' => 'index' )
+								array( 'controller' => 'typesrsapcgs66', 'action' => 'index' ),
+								$this->Permissions->check( 'typesrsapcgs66', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -162,7 +173,7 @@
 						$this->Xhtml->viewLink(
 							'Voir la table',
 							array( 'controller' => 'textareascourrierspdos', 'action' => 'index' ),
-							( ( $compteurs['Courrierpdo'] > 0 ) )
+							( $this->Permissions->check( 'textareascourrierspdos', 'index' ) && ( $compteurs['Courrierpdo'] > 0 ) )
 						)
 					),
 					array( 'class' => 'odd' ),

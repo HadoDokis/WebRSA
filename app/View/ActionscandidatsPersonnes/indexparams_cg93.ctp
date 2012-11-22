@@ -26,7 +26,7 @@
 						$this->Xhtml->viewLink(
 							'Voir la table',
 							array( 'controller' => 'actionscandidats', 'action' => 'index' ),
-							( ( $compteurs['Contactpartenaire'] > 0 ) && ( $compteurs['Partenaire'] > 0 ) )
+							( $this->Permissions->check( 'actionscandidats', 'index' ) && ( $compteurs['Contactpartenaire'] > 0 ) && ( $compteurs['Partenaire'] > 0 ) )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -38,7 +38,7 @@
 						$this->Xhtml->viewLink(
 							'Voir la table',
 							array( 'controller' => 'contactspartenaires', 'action' => 'index' ),
-							( $compteurs['Partenaire'] > 0 )
+							( $this->Permissions->check( 'contactspartenaires', 'index' ) && $compteurs['Partenaire'] > 0 )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -49,7 +49,8 @@
 						h( 'Partenaires pour fiche de '.$typefiche ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'partenaires', 'action' => 'index' )
+							array( 'controller' => 'partenaires', 'action' => 'index' ),
+							$this->Permissions->check( 'partenaires', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -60,7 +61,8 @@
 						h( 'Motifs de sortie' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'motifssortie', 'action' => 'index' )
+							array( 'controller' => 'motifssortie', 'action' => 'index' ),
+							$this->Permissions->check( 'motifssortie', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

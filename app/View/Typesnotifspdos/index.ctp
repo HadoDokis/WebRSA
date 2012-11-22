@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'typesnotifspdos', 'action' => 'add' )
+				array( 'controller' => 'typesnotifspdos', 'action' => 'add' ),
+				$this->Permissions->check( 'typesnotifspdos', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -29,11 +30,13 @@
 								h( $typenotifpdo['Typenotifpdo']['modelenotifpdo'] ),
 								$this->Xhtml->editLink(
 									'Éditer le type de PDO ',
-									array( 'controller' => 'typesnotifspdos', 'action' => 'edit', $typenotifpdo['Typenotifpdo']['id'] )
+									array( 'controller' => 'typesnotifspdos', 'action' => 'edit', $typenotifpdo['Typenotifpdo']['id'] ),
+									$this->Permissions->check( 'typesnotifspdos', 'edit' )
 								),
 								$this->Xhtml->deleteLink(
 									'Supprimer le type de PDO ',
-									array( 'controller' => 'typesnotifspdos', 'action' => 'deleteparametrage', $typenotifpdo['Typenotifpdo']['id'] )
+									array( 'controller' => 'typesnotifspdos', 'action' => 'deleteparametrage', $typenotifpdo['Typenotifpdo']['id'] ),
+									$this->Permissions->check( 'typesnotifspdos', 'deleteparametrage' )
 								)
 							),
 							array( 'class' => 'odd' ),

@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'typesorients', 'action' => 'add' )
+				array( 'controller' => 'typesorients', 'action' => 'add' ),
+				$this->Permissions->check( 'typesorients', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -40,7 +41,8 @@
 								h( Set::enum( $typeorient['Typeorient']['actif'], $options['actif'] ) ),
 								$this->Xhtml->editLink(
 									'Éditer le type d\'orientation',
-									array( 'controller' => 'typesorients', 'action' => 'edit', $typeorient['Typeorient']['id'] )
+									array( 'controller' => 'typesorients', 'action' => 'edit', $typeorient['Typeorient']['id'] ),
+									$this->Permissions->check( 'typesorients', 'edit' )
 								),
 								$this->Xhtml->deleteLink(
 									'Supprimer le type d\'orientation',

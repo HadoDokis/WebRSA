@@ -13,7 +13,8 @@
 			<?php
 				echo '<li>'.$this->Xhtml->addLink(
 					'Ajouter',
-					array( 'controller' => 'users', 'action' => 'add' )
+					array( 'controller' => 'users', 'action' => 'add' ),
+					$this->Permissions->check( 'users', 'add' )
 				).' </li>';
 			?>
 		</ul>
@@ -98,7 +99,8 @@
 						h( $user['Serviceinstructeur']['lib_service'] ),
 						$this->Xhtml->editLink(
 							'Éditer l\'utilisateur',
-							array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] )
+							array( 'controller' => 'users', 'action' => 'edit', $user['User']['id'] ),
+							$this->Permissions->check( 'users', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer l\'utilisateur',

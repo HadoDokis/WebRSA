@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'decisionspdos', 'action' => 'add' )
+				array( 'controller' => 'decisionspdos', 'action' => 'add' ),
+				$this->Permissions->check( 'decisionspdos', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -37,11 +38,13 @@
 						( $decisionpdo['Decisionpdo']['cerparticulier'] == 'N' ) ? 'Non' : 'Oui',
 						$this->Xhtml->editLink(
 							'Éditer la décision de PDO ',
-							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
+							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] ),
+							$this->Permissions->check( 'decisionspdos', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer la décision de PDO ',
-							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] )
+							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] ),
+							$this->Permissions->check( 'decisionspdos', 'delete' )
 						)
 					);
 				}
@@ -52,11 +55,13 @@
 						h( $decisionpdo['Decisionpdo']['modeleodt'] ),
 						$this->Xhtml->editLink(
 							'Éditer la décision de PDO ',
-							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] )
+							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] ),
+							$this->Permissions->check( 'decisionspdos', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer la décision de PDO ',
-							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] )
+							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] ),
+							$this->Permissions->check( 'decisionspdos', 'delete' )
 						)
 					);
 				}

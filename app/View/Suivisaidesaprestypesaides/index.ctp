@@ -6,7 +6,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'add' )
+				array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'add' ),
+				$this->Permissions->check( 'suivisaidesaprestypesaides', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -17,7 +18,8 @@
 			<?php
 				echo '<li>'.$this->Xhtml->editLink(
 					'Modifier',
-					array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'edit' )
+					array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'edit' ),
+					$this->Permissions->check( 'suivisaidesaprestypesaides', 'edit' )
 				).' </li>';
 			?>
 		</ul>

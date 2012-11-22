@@ -17,7 +17,8 @@
 						h( 'Motifs de sortie' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'motifssortiecuis66', 'action' => 'index' )
+							array( 'controller' => 'motifssortiecuis66', 'action' => 'index' ),
+							$this->Permissions->check( 'motifssortiecuis66', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

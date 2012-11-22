@@ -133,16 +133,6 @@
 			$this->render( 'ajaxetatpdo', 'ajax' );
 		}
 
-		/**
-		 *   Partie pour les tables de paramétrages des PDOs
-		 */
-		public function indexparams() {
-			// Retour à la liste en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
-			}
-		}
-
 		public function index( $personne_id = null ) {
 			$nbrPersonnes = $this->Propopdo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 			//$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );

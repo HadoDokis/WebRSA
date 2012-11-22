@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'referents', 'action' => 'add' )
+				array( 'controller' => 'referents', 'action' => 'add' ),
+				$this->Permissions->check( 'referents', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -46,11 +47,13 @@
 						h( Set::enum( $referent['Referent']['actif'], $options['actif'] ) ),
 						$this->Xhtml->editLink(
 							'Éditer le référent',
-							array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] )
+							array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] ),
+							$this->Permissions->check( 'referents', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer le référent',
-							array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] )
+							array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] ),
+							$this->Permissions->check( 'referents', 'delete' )
 						)
 					),
 					array( 'class' => 'odd' ),

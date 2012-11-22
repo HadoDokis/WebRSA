@@ -14,7 +14,8 @@
 					h( 'Paramètres financiers pour la gestion de l\'APRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'parametresfinanciers', 'action' => 'index' )
+						array( 'controller' => 'parametresfinanciers', 'action' => 'index' ),
+						$this->Permissions->check( 'parametresfinanciers', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -25,7 +26,8 @@
 					h( 'Participants comités APRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'participantscomites', 'action' => 'index' )
+						array( 'controller' => 'participantscomites', 'action' => 'index' ),
+						$this->Permissions->check( 'participantscomites', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -36,7 +38,8 @@
 					h( 'Personnes chargées du suivi des Aides APREs' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'suivisaidesapres', 'action' => 'index' )
+						array( 'controller' => 'suivisaidesapres', 'action' => 'index' ),
+						$this->Permissions->check( 'suivisaidesapres', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -47,7 +50,8 @@
 					h( 'Tiers prestataires de l\'APRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'tiersprestatairesapres', 'action' => 'index' )
+						array( 'controller' => 'tiersprestatairesapres', 'action' => 'index' ),
+						$this->Permissions->check( 'tiersprestatairesapres', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -58,7 +62,8 @@
 					h( 'Types d\'aides liées au personne chargée du suivi de l\'APRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'index' )
+						array( 'controller' => 'suivisaidesaprestypesaides', 'action' => 'index' ),
+						$this->Permissions->check( 'suivisaidesaprestypesaides', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
