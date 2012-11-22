@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'groups', 'action' => 'add' )
+				array( 'controller' => 'groups', 'action' => 'add' ),
+				$this->Permissions->check( 'groups', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -29,11 +30,13 @@
 						h( $group['Group']['parent_id'] ),
 						$this->Xhtml->editLink(
 							'Éditer le groupe',
-							array( 'controller' => 'groups', 'action' => 'edit', $group['Group']['id'] )
+							array( 'controller' => 'groups', 'action' => 'edit', $group['Group']['id'] ),
+							$this->Permissions->check( 'groups', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer le groupe',
-							array( 'controller' => 'groups', 'action' => 'delete', $group['Group']['id'] )
+							array( 'controller' => 'groups', 'action' => 'delete', $group['Group']['id'] ),
+							$this->Permissions->check( 'groups', 'delete' )
 						)
 					),
 					array( 'class' => 'odd' ),

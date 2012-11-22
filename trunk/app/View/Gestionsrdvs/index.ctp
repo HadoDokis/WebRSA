@@ -16,7 +16,8 @@
 						h( 'Objets du rendez-vous' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'typesrdv', 'action' => 'index' )
+							array( 'controller' => 'typesrdv', 'action' => 'index' ),
+							$this->Permissions->check( 'typesrdv', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -27,7 +28,8 @@
 						h( 'Statut des RDVs' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'statutsrdvs', 'action' => 'index' )
+							array( 'controller' => 'statutsrdvs', 'action' => 'index' ),
+							$this->Permissions->check( 'statutsrdvs', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -39,7 +41,8 @@
 							h( 'Passage en EP des RDVs' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'statutsrdvs_typesrdv', 'action' => 'index' )
+								array( 'controller' => 'statutsrdvs_typesrdv', 'action' => 'index' ),
+								$this->Permissions->check( 'statutsrdvs_typesrdv', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),

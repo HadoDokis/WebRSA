@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'tiersprestatairesapres', 'action' => 'add' )
+				array( 'controller' => 'tiersprestatairesapres', 'action' => 'add' ),
+				$this->Permissions->check( 'tiersprestatairesapres', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -42,7 +43,8 @@
 						h( Set::enum( Set::classicExtract( $tiersprestataire, 'Tiersprestataireapre.aidesliees' ), $natureAidesApres ) ),
 						$this->Xhtml->editLink(
 							'Éditer le tiers prestataire APRE ',
-							array( 'controller' => 'tiersprestatairesapres', 'action' => 'edit', $tiersprestataire['Tiersprestataireapre']['id'] )
+							array( 'controller' => 'tiersprestatairesapres', 'action' => 'edit', $tiersprestataire['Tiersprestataireapre']['id'] ),
+							$this->Permissions->check( 'tiersprestatairesapres', 'edit' )
 						),
 						$this->Xhtml->deleteLink(
 							'Supprimer le tiers prestataire APRE ',

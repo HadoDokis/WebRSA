@@ -6,7 +6,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'permanences', 'action' => 'add' )
+				array( 'controller' => 'permanences', 'action' => 'add' ),
+				$this->Permissions->check( 'permanences', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -47,11 +48,13 @@
 							h( Set::enum( Set::classicExtract( $permanence, 'Permanence.actif' ), $options['actif'] ) ),
 							$this->Xhtml->editLink(
 								'Éditer la structure référente ',
-								array( 'controller' => 'permanences', 'action' => 'edit', Set::classicExtract( $permanence, 'Permanence.id' ) )
+								array( 'controller' => 'permanences', 'action' => 'edit', Set::classicExtract( $permanence, 'Permanence.id' ) ),
+								$this->Permissions->check( 'permanences', 'edit' )
 							),
 							$this->Xhtml->deleteLink(
 								'Supprimer la structure référente ',
-								array( 'controller' => 'permanences', 'action' => 'delete', Set::classicExtract( $permanence, 'Permanence.id' ) )
+								array( 'controller' => 'permanences', 'action' => 'delete', Set::classicExtract( $permanence, 'Permanence.id' ) ),
+								$this->Permissions->check( 'permanences', 'delete' )
 							)
 						),
 						array( 'class' => 'odd' ),

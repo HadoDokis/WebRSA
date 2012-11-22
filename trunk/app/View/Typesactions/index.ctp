@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'typesactions', 'action' => 'add' )
+				array( 'controller' => 'typesactions', 'action' => 'add' ),
+				$this->Permissions->check( 'typesactions', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -27,11 +28,13 @@
 								h( $typeaction['Typeaction']['libelle'] ),
 								$this->Xhtml->editLink(
 									'Éditer le type d\'action',
-									array( 'controller' => 'typesactions', 'action' => 'edit', $typeaction['Typeaction']['id'] )
+									array( 'controller' => 'typesactions', 'action' => 'edit', $typeaction['Typeaction']['id'] ),
+									$this->Permissions->check( 'typesactions', 'edit' )
 								),
 								$this->Xhtml->deleteLink(
 									'Supprimer le type d\'action',
-									array( 'controller' => 'typesactions', 'action' => 'delete', $typeaction['Typeaction']['id'] )
+									array( 'controller' => 'typesactions', 'action' => 'delete', $typeaction['Typeaction']['id'] ),
+									$this->Permissions->check( 'typesactions', 'delete' )
 								)
 							),
 							array( 'class' => 'odd' ),

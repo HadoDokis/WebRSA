@@ -7,7 +7,7 @@
 
 	$pagination = $this->Xpaginator->paginationBlock( 'Canton', $this->passedArgs );
 
-	if( true || $this->Permissions->check( 'cantons', 'add' ) ) { // FIXME
+	if( $this->Permissions->check( 'cantons', 'add' ) ) {
 		echo $this->Xhtml->tag( 'ul',
 			$this->Xhtml->tag( 'li',
 				$this->Xhtml->addLink( 'Ajouter un canton', array( 'action' => 'add' ) )
@@ -39,8 +39,8 @@
 				h( Set::extract( $canton, 'Canton.locaadr' ) ),
 				h( Set::extract( $canton, 'Canton.codepos' ) ),
 				h( Set::extract( $canton, 'Canton.numcomptt' ) ),
-				$this->Xhtml->editLink( 'Modifier le canton', array( 'action' => 'edit', Set::extract( $canton, 'Canton.id' ) ), true || $this->Permissions->check( 'cantons', 'edit' ) ), // FIXME
-				$this->Xhtml->deleteLink( 'Supprimer le canton', array( 'action' => 'delete', Set::extract( $canton, 'Canton.id' ) ), true || $this->Permissions->check( 'cantons', 'delete' ) ), // FIXME
+				$this->Xhtml->editLink( 'Modifier le canton', array( 'action' => 'edit', Set::extract( $canton, 'Canton.id' ) ), $this->Permissions->check( 'cantons', 'edit' ) ),
+				$this->Xhtml->deleteLink( 'Supprimer le canton', array( 'action' => 'delete', Set::extract( $canton, 'Canton.id' ) ), $this->Permissions->check( 'cantons', 'delete' ) )
 			);
 		}
 		$tbody = $this->Xhtml->tag( 'tbody', $this->Xhtml->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );

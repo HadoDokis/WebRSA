@@ -8,7 +8,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'zonesgeographiques', 'action' => 'add' )
+				array( 'controller' => 'zonesgeographiques', 'action' => 'add' ),
+				$this->Permissions->check( 'zonesgeographiques', 'add' )
 			).' </li>';
 		?>
 	</ul>
@@ -30,11 +31,13 @@
 								h( $zone['Zonegeographique']['codeinsee'] ),
 								$this->Xhtml->editLink(
 									'Éditer la zone géographique ',
-									array( 'controller' => 'zonesgeographiques', 'action' => 'edit', $zone['Zonegeographique']['id'] )
+									array( 'controller' => 'zonesgeographiques', 'action' => 'edit', $zone['Zonegeographique']['id'] ),
+									$this->Permissions->check( 'zonesgeographiques', 'edit' )
 								),
 								$this->Xhtml->deleteLink(
 									'Supprimer la zone géographique ',
-									array( 'controller' => 'zonesgeographiques', 'action' => 'delete', $zone['Zonegeographique']['id'] )
+									array( 'controller' => 'zonesgeographiques', 'action' => 'delete', $zone['Zonegeographique']['id'] ),
+									$this->Permissions->check( 'zonesgeographiques', 'delete' )
 								)
 							),
 							array( 'class' => 'odd' ),

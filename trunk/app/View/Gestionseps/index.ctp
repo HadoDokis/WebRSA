@@ -16,7 +16,8 @@
 						h( 'Fonction des membres d\'une EP' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'fonctionsmembreseps', 'action' => 'index' )
+							array( 'controller' => 'fonctionsmembreseps', 'action' => 'index' ),
+							$this->Permissions->check( 'fonctionsmembreseps', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -27,7 +28,8 @@
 						h( __d( 'regroupementep', 'Regroupementep::index' ) ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'regroupementseps', 'action' => 'index' )
+							array( 'controller' => 'regroupementseps', 'action' => 'index' ),
+							$this->Permissions->check( 'regroupementseps', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),
@@ -40,7 +42,8 @@
 							h( 'Motifs de demandes de réorientation' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'motifsreorientseps93', 'action' => 'index' )
+								array( 'controller' => 'motifsreorientseps93', 'action' => 'index' ),
+								$this->Permissions->check( 'motifsreorientseps93', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),
@@ -54,7 +57,8 @@
 							h( 'Composition des Équipes Pluridisciplinaires' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
-								array( 'controller' => 'compositionsregroupementseps', 'action' => 'index' )
+								array( 'controller' => 'compositionsregroupementseps', 'action' => 'index' ),
+								$this->Permissions->check( 'compositionsregroupementseps', 'index' )
 							)
 						),
 						array( 'class' => 'odd' ),

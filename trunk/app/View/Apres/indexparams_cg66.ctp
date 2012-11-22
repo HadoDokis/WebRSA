@@ -16,7 +16,7 @@
 					$this->Xhtml->viewLink(
 						'Voir la table',
 						array( 'controller' => 'typesaidesapres66', 'action' => 'index' ),
-						( ( $compteurs['Pieceaide66'] > 0 ) && ( $compteurs['Themeapre66'] > 0 ) )
+						( $this->Permissions->check( 'typesaidesapres66', 'index' ) && ( $compteurs['Pieceaide66'] > 0 ) && ( $compteurs['Themeapre66'] > 0 ) )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -27,7 +27,8 @@
 					h( 'Liste des pièces administratives' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'piecesaides66', 'action' => 'index' )
+						array( 'controller' => 'piecesaides66', 'action' => 'index' ),
+						$this->Permissions->check( 'piecesaides66', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -38,7 +39,8 @@
 					h( 'Liste des pièces comptables' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'piecescomptables66', 'action' => 'index' )
+						array( 'controller' => 'piecescomptables66', 'action' => 'index' ),
+						$this->Permissions->check( 'piecescomptables66', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),
@@ -49,7 +51,8 @@
 					h( 'Thèmes de la demande d\'aide APRE' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',
-						array( 'controller' => 'themesapres66', 'action' => 'index' )
+						array( 'controller' => 'themesapres66', 'action' => 'index' ),
+						$this->Permissions->check( 'themesapres66', 'index' )
 					)
 				),
 				array( 'class' => 'odd' ),

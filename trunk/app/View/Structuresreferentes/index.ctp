@@ -52,7 +52,8 @@
 							h( Set::enum( $structurereferente['Structurereferente']['typestructure'], $optionsradio['typestructure'] ) ),
 							$this->Xhtml->editLink(
 								'Éditer la structure référente ',
-								array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] )
+								array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] ),
+								$this->Permissions->check( 'structuresreferentes', 'edit' )
 							),
 							$this->Xhtml->deleteLink(
 								'Supprimer la structure référente ',

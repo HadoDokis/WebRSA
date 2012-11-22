@@ -7,7 +7,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'suivisaidesapres', 'action' => 'add' )
+				array( 'controller' => 'suivisaidesapres', 'action' => 'add' ),
+				$this->Permissions->check( 'suivisaidesapres', 'index' )
 			).' </li>';
 		?>
 	</ul>
