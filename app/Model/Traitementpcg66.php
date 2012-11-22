@@ -691,6 +691,7 @@
 					$this->Modeletraitementpcg66->Modeletypecourrierpcg66->fields(),
 					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
 					$this->Personnepcg66->Personne->Orientstruct->fields(),
+					$this->Personnepcg66->Personne->Orientstruct->Structurereferente->fields(),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
