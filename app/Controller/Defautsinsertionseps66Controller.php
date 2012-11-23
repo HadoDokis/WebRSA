@@ -123,7 +123,7 @@
 
 			$pdfs = array();
 			foreach( Set::extract( '/Dossierep/id', $defautsinsertionseps66 ) as $dossierep_id ) {
-				$pdfs[] = $this->Defautinsertionep66->getCourrierInformationPdf( $dossierep_id );
+				$pdfs[] = $this->Defautinsertionep66->getCourrierInformationPdf( $dossierep_id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );

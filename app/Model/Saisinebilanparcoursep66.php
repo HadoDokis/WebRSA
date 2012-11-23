@@ -487,7 +487,15 @@
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->fields(),
 // 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Referent->fields(),
-					$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->fields()
+					$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->fields(),
+					array_words_replace(
+						$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Structurereferente->fields(),
+						array( 'Structurereferente' => 'Structurereferentebilan' )
+					),
+					array_words_replace(
+						$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->Referent->fields(),
+						array( 'Referent' => 'Referentbilan' )
+					)
 				),
 				'joins' => array(
 					array(
@@ -511,7 +519,15 @@
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 // 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
+					$this->Dossierep->Saisinebilanparcoursep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
+					array_words_replace(
+						$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						array( 'Structurereferente' => 'Structurereferentebilan' )
+					),
+					array_words_replace(
+						$this->Dossierep->Saisinebilanparcoursep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
+						array( 'Referent' => 'Referentbilan' )
+					)
 				)
 			);
 
