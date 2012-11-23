@@ -94,35 +94,34 @@
 		 * @see PermissionsHelper::sessionKey
 		 * @see AppController::_checkPermissions()
 		 *
-		 * @param string $controller
-		 * @param string $action
+		 * @param string $controllerName
+		 * @param string $actionName
 		 * @return boolean
 		 */
-		public function check( $controller, $action ) {
-			$controller = Inflector::camelize( $controller );
-// 			$action = strtolower( $action );
+		public function check( $controllerName, $actionName ) {
+			$controllerName = Inflector::camelize( $controllerName );
 
-			if( in_array( $controller.':'.$action, $this->aucunDroit ) ) {
+			if( in_array( "{$controllerName}:{$actionName}", $this->aucunDroit ) ) {
 				return true;
 			}
-			else if( isset( $this->commeDroit[$controller.':'.$action] ) ) {
-				list( $controller, $action ) = explode( ':', $this->commeDroit[$controller.':'.$action] );
+			else if( isset( $this->commeDroit["{$controllerName}:{$actionName}"] ) ) {
+				list( $controllerName, $actionName ) = explode( ':', $this->commeDroit["{$controllerName}:{$actionName}"] );
 			}
 
-			$permissions = $this->Session->read( $this->sessionKey );
+			$permissionAction = $this->Session->read( "{$this->sessionKey}.{$controllerName}:{$actionName}" );
 
-			$returnController = Set::extract( $permissions, "Module:{$controller}" );
-			$returnAction = Set::extract( $permissions, $controller.':'.$action );
-
-			if( $returnAction !== null ) {
-				return $returnAction;
-			}
-			else if( $returnController !== null ) {
-				return $returnController;
+			if( !is_null( $permissionAction ) ) {
+				return $permissionAction;
 			}
 			else {
-				return false;
+				$permissionModule = $this->Session->read( "{$this->sessionKey}.Module:{$controllerName}" );
+
+				if( !is_null( $permissionModule ) ) {
+					return $permissionModule;
+				}
 			}
+
+			return false;
 		}
 	}
 ?>
