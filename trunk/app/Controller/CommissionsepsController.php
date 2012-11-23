@@ -1013,7 +1013,7 @@
 				$membreep_id = $membreep['CommissionepMembreep']['reponsesuppleant_id'];
 			}
 
-			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+			$pdf = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'ConvocationEPParticipant.pdf' );

@@ -949,13 +949,15 @@
 				$commissionep_data["nbdossiers_{$theme}_count"] = count( $themes["Themes_{$theme}"] );
 			}
 
-			$user = ClassRegistry::init( 'User' )->find(
+			$user = $this->Passagecommissionep->User->find(
 				'first',
 				array(
 					'conditions' => array(
 						'User.id' => $user_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Serviceinstructeur'
+					)
 				)
 			);
 			$commissionep_data = Set::merge( $commissionep_data, $user );
@@ -1281,7 +1283,7 @@
 		*   Impression de convocation pour un participant à une commission d'EP
 		*/
 
-		public function getPdfConvocationParticipant( $commissionep_id, $membreep_id ) {
+		public function getPdfConvocationParticipant( $commissionep_id, $membreep_id, $user_id ) {
 			$commissionep = $this->find(
 				'first',
 				array(
@@ -1318,6 +1320,20 @@
 			);
 
 			$convocation = Set::merge( $commissionep, $membreep );
+			
+			$user = $this->Passagecommissionep->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+			$convocation = Set::merge( $convocation, $user );
+
 
 			$options = $this->Membreep->enums();
 			$options['Membreep']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
@@ -1592,21 +1608,21 @@
 
 			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
 
-                        $user = $this->Passagecommissionep->User->find(
-                            'first',
-                            array(
-                                'fields' => array( 'nom', 'prenom', 'numtel' ),
-                                'conditions' => array(
-                                    'User.id' => $user_id
-                                ),
-                                'contain' => false,
-                                'recursive' => -1
-                            )
-                        );
 
-			$convocation['User']['numtel'] = $user['User']['numtel'];
-			$convocation['User']['nom'] = $user['User']['nom'];
-			$convocation['User']['prenom'] = $user['User']['prenom'];
+			$user = $this->Passagecommissionep->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+
+			$convocation = Set::merge( $convocation, $user );
+
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$options['Referentpropo']['qual'] = $options['Referentcer']['qual'] = $options['Referent']['qual'] = $options['Personne']['qual'];

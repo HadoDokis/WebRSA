@@ -938,7 +938,15 @@
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->fields(),
 // 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->Permanence->fields(),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Referent->fields(),
-					$this->Dossierep->Defautinsertionep66->Bilanparcours66->fields()
+					$this->Dossierep->Defautinsertionep66->Bilanparcours66->fields(),
+					array_words_replace(
+						$this->Dossierep->Defautinsertionep66->Bilanparcours66->Structurereferente->fields(),
+						array( 'Structurereferente' => 'Structurereferentebilan' )
+					),
+					array_words_replace(
+						$this->Dossierep->Defautinsertionep66->Bilanparcours66->Referent->fields(),
+						array( 'Referent' => 'Referentbilan' )
+					)
 				),
 				'joins' => array(
 					array(
@@ -962,7 +970,15 @@
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 // 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) )
+					$this->Dossierep->Defautinsertionep66->join( 'Bilanparcours66', array( 'type' => 'INNER' ) ),
+					array_words_replace(
+						$this->Dossierep->Defautinsertionep66->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						array( 'Structurereferente' => 'Structurereferentebilan' )
+					),
+					array_words_replace(
+						$this->Dossierep->Defautinsertionep66->Bilanparcours66->join( 'Referent', array( 'type' => 'INNER' ) ),
+						array( 'Referent' => 'Referentbilan' )
+					)
 				)
 			);
 
@@ -983,7 +999,7 @@
 		* avant liaison avec la commission d'EP
 		*/
 
-		public function getCourrierInformationPdf( $dossierep_id ) {
+		public function getCourrierInformationPdf( $dossierep_id, $user_id ) {
 			$gedooo_data = $this->find(
 				'first',
 				array(
@@ -999,7 +1015,7 @@
 						$this->Bilanparcours66->Structurereferente->fields(),
 // 						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
 						$this->Bilanparcours66->Serviceinstructeur->fields(),
-						$this->Bilanparcours66->User->fields(),
+// 						$this->Bilanparcours66->User->fields(),
 						$this->Contratinsertion->fields(),
 						$this->Orientstruct->fields()
 					),
@@ -1014,7 +1030,7 @@
 						$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
+// 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
 // 						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					),
@@ -1041,6 +1057,18 @@
 				),
 				$this->enums()
 			);
+			
+			$user = $this->Bilanparcours66->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => false
+				)
+			);
+			$gedooo_data = Set::merge( $gedooo_data, $user );
+
             // Non inscription PE
                 //  Bilanparcours66.examenauditionpe = noninscriptionpe --> personne_id 35253
                 // Defautinsertionep66.origine = noninscriptionpe
@@ -1374,6 +1402,46 @@
 			);
 
 			return $query;
+		}
+
+		/**
+		 *
+		 */
+		public function nbDossiersATraiterCg( $commissionep_id ) {
+			$conditions = array(
+				'Dossierep.themeep' => Inflector::tableize( $this->name ),
+				'Dossierep.id IN ( '.$this->Dossierep->Passagecommissionep->sq(
+					array(
+						'alias' => 'passagescommissionseps',
+						'fields' => array(
+							'passagescommissionseps.dossierep_id'
+						),
+						'conditions' => array(
+							'passagescommissionseps.commissionep_id' => $commissionep_id,
+							'passagescommissionseps.etatdossierep <>' => "decisionep",
+						),
+						'joins' => array(
+							array_words_replace(
+								$this->Dossierep->Passagecommissionep->join(
+									'Decisiondefautinsertionep66',
+									array(
+										'type' => 'INNER',
+										'conditions' => array(
+											'Decisiondefautinsertionep66.decision' => array( 'reorientationsocversprof', 'reorientationprofverssoc' )
+										)
+									)
+								),
+								array(
+									'Passagecommissionep' => 'passagescommissionseps',
+									'Decisiondefautinsertionep66' => 'decisionsdefautsinsertionseps66'
+								)
+							)
+						)
+					)
+				).' )'
+			);
+
+			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
 		}
 
 	}
