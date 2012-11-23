@@ -1,5 +1,19 @@
 <?php
+	/**
+	 * Code source de la classe AppExceptionRenderer.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Lib.Error
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	App::uses( 'ExceptionRenderer', 'Error' );
+
+	/**
+	 * La classe AppExceptionRenderer ...
+	 *
+	 * @package app.Lib.Error
+	 */
 	class AppExceptionRenderer extends ExceptionRenderer
 	{
 		/**
