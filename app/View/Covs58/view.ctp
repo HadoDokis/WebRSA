@@ -5,7 +5,8 @@
 		if( in_array( $cov58['Cov58']['etatcov'], array( 'associe', 'cree' ) ) ) {
 			echo '<li>'.$this->Xhtml->editLink(
 				__d( 'cov58', 'Cov58.edit' ),
-				array( 'controller' => 'covs58', 'action' => 'edit', $cov58['Cov58']['id'] )
+				array( 'controller' => 'covs58', 'action' => 'edit', $cov58['Cov58']['id'] ),
+				$this->Permissions->check( 'covs58', 'edit' )
 			).' </li>';
 		}
 		else {
@@ -15,7 +16,8 @@
 		if( $countDossiers > 0 ) {
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::ordredujour' ),
-				array( 'controller' => 'covs58', 'action' => 'ordredujour', $cov58['Cov58']['id'] )
+				array( 'controller' => 'covs58', 'action' => 'ordredujour', $cov58['Cov58']['id'] ),
+				$this->Permissions->check( 'covs58', 'ordredujour' )
 			).' </li>';
 		}
 		else {
@@ -25,7 +27,8 @@
 		if( $cov58['Cov58']['etatcov'] != 'finalise' && $countDossiers > 0 ) {
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::decisioncov' ),
-				array( 'controller' => 'covs58', 'action' => 'decisioncov', $cov58['Cov58']['id'] )
+				array( 'controller' => 'covs58', 'action' => 'decisioncov', $cov58['Cov58']['id'] ),
+				$this->Permissions->check( 'covs58', 'decisioncov' )
 			).' </li>';
 		}
 		else {
@@ -35,7 +38,8 @@
 		if( $cov58['Cov58']['etatcov'] == 'finalise' ) {
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::impressionpv' ),
-				array( 'controller' => 'covs58', 'action' => 'impressionpv', $cov58['Cov58']['id'] )
+				array( 'controller' => 'covs58', 'action' => 'impressionpv', $cov58['Cov58']['id'] ),
+				$this->Permissions->check( 'covs58', 'impressionpv' )
 			).' </li>';
 		}
 		else {
@@ -77,7 +81,8 @@
 				if( in_array( $cov58['Cov58']['etatcov'], array( 'associe', 'cree' ) ) ) {
 					echo '<li>'.$this->Xhtml->affecteLink(
 						'Affecter les dossiers',
-						array( 'controller' => 'dossierscovs58', 'action' => 'choose', Set::classicExtract( $cov58, 'Cov58.id' ) )
+						array( 'controller' => 'dossierscovs58', 'action' => 'choose', Set::classicExtract( $cov58, 'Cov58.id' ) ),
+						$this->Permissions->check( 'dossierscovs58', 'choose' )
 					).' </li>';
 				}
 				else {

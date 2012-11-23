@@ -124,7 +124,8 @@
 								h( value( $etatdosrsa, Set::classicExtract( $criterepdo, 'Situationdossierrsa.etatdosrsa' ) ) ),
 								$this->Xhtml->viewLink(
 									'Voir',
-									array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Personne.id' ) )
+									array( 'controller' => 'propospdos', 'action' => 'index', Set::classicExtract( $criterepdo, 'Personne.id' ) ),
+									$this->Permissions->check( 'propospdos', 'index' )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),

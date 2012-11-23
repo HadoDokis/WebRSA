@@ -12,7 +12,8 @@
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
-				array( 'controller' => 'covs58', 'action' => 'add' )
+				array( 'controller' => 'covs58', 'action' => 'add' ),
+				$this->Permissions->check( 'covs58', 'add' )
 			).' </li>';
 		?>
 	</ul>

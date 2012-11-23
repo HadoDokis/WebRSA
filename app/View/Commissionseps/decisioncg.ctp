@@ -13,7 +13,7 @@
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'commissionep', 'Commissionseps::view' ),
 				array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ),
-				array( 'class' => 'button view external' )
+				array( 'class' => 'button view external', 'enabled' => $this->Permissions->check( 'commissionseps', 'view' ) )
 			).' </li>';
 		echo '</ul>';
 	}
@@ -50,7 +50,7 @@
 					echo '<li>'.$this->Xhtml->link(
 						__d( 'commissionep','Commissionseps::impressionsDecisions' ),
 						array( 'controller' => 'commissionseps', 'action' => 'impressionsDecisions', $commissionep['Commissionep']['id'] ),
-						array( 'class' => 'button impressionsDecisions', 'enabled' => $commissionep['Commissionep']['etatcommissionep'] != 'annule' ),
+						array( 'class' => 'button impressionsDecisions', 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) && $this->Permissions->check( 'commissionseps', 'impressionsDecisions' ) ),
                         'Etes-vous sûr de vouloir imprimer les décisions ?'
 					).' </li>';
 					echo '</ul>';
@@ -72,7 +72,7 @@
 								'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'view_passage', '#Passagecommissionep.id#' ), 'class' => 'external' ),
 								'Commissionseps::impressionDecision' => array(
 									'url' => array( 'controller' => 'commissionseps', 'action' => 'impressionDecision',  '#Passagecommissionep.id#' ),
-									'disabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'annule' )
+									'disabled' => ( !$this->Permissions->check( 'commissionseps', 'impressionDecision' ) || $commissionep['Commissionep']['etatcommissionep'] == 'annule' )
 								)
 							),
 							'options' => $options,

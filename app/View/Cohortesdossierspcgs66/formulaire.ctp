@@ -137,7 +137,8 @@
 
                         $this->Xhtml->viewLink(
                             'Voir le dossier « '.$title.' »',
-                            array( 'controller' => 'dossierspcgs66', 'action' => 'index', $affectationdossierpcg66['Dossierpcg66']['foyer_id'] )
+                            array( 'controller' => 'dossierspcgs66', 'action' => 'index', $affectationdossierpcg66['Dossierpcg66']['foyer_id'] ),
+                            $this->Permissions->check( 'dossierspcgs66', 'index' )
                         )
                     );
 

@@ -9,7 +9,7 @@
 				echo '<li>'.$this->Xhtml->addLink(
 					'Ajouter',
 					array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'add', $personne_id ),
-					empty( $erreurs )
+					( $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'add' ) && empty( $erreurs ) )
 				).' </li>';
 			?>
 		</ul>
