@@ -139,7 +139,8 @@
 
                         $this->Xhtml->viewLink(
                             'Voir le contrat « '.$title.' »',
-                            array( 'controller' => 'apres66', 'action' => 'index', $validationapre['Apre66']['personne_id'] )
+                            array( 'controller' => 'apres66', 'action' => 'index', $validationapre['Apre66']['personne_id'] ),
+                            $this->Permissions->check( 'apres66', 'index' )
                         )/*,
                         array( $innerTable, array( 'class' => 'innerTableCell' ) )*/
                     );

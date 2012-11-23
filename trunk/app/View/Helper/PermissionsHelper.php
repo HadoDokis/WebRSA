@@ -100,7 +100,7 @@
 		 */
 		public function check( $controller, $action ) {
 			$controller = Inflector::camelize( $controller );
-			$action = strtolower( $action );
+// 			$action = strtolower( $action );
 
 			if( in_array( $controller.':'.$action, $this->aucunDroit ) ) {
 				return true;

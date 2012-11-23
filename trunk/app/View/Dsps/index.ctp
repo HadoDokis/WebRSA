@@ -171,13 +171,15 @@
 						if( !empty( $dsp['DspRev']['id'] ) ) {
 							$viewLink = $this->Xhtml->viewLink(
 								'Voir le dossier « '.$title.' »',
-								array( 'controller' => 'dsps', 'action' => 'view_revs', $dsp['DspRev']['id'] )
+								array( 'controller' => 'dsps', 'action' => 'view_revs', $dsp['DspRev']['id'] ),
+								$this->Permissions->check( 'dsps', 'view_revs' )
 							);
 						}
 						else {
 							$viewLink = $this->Xhtml->viewLink(
 								'Voir le dossier « '.$title.' »',
-								array( 'controller' => 'dsps', 'action' => 'view', $dsp['Personne']['id'] )
+								array( 'controller' => 'dsps', 'action' => 'view', $dsp['Personne']['id'] ),
+								$this->Permissions->check( 'dsps', 'view' )
 							);
 						}
 
@@ -248,7 +250,8 @@
 			<li><?php
  				echo $this->Xhtml->exportLink(
  					'Télécharger le tableau',
- 					array( 'controller' => 'dsps', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+ 					array( 'controller' => 'dsps', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+ 					$this->Permissions->check( 'dsps', 'exportcsv' )
  				);
 			?></li>
 		</ul>

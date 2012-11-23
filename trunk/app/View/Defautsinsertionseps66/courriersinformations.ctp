@@ -73,7 +73,7 @@
 				echo '<li>'.$this->Xhtml->link(
 					'Imprimer les courriers d\'information',
 					array( 'controller' => 'defautsinsertionseps66', 'action' => 'printCourriersInformations' ) + Set::flatten( $this->request->data, '__' ),
-					array( 'class' => 'button print' ),
+					array( 'class' => 'button print', 'enabled' => $this->Permissions->check( 'defautsinsertionseps66', 'printCourriersInformations' ) ),
 					'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
 				).' </li>';
 			echo '</ul>';
@@ -124,7 +124,7 @@
 						);
 						echo $this->Xhtml->tag(
 							'td',
-							$this->Xhtml->link( 'Courrier d\'information', array( 'controller' => 'dossierseps', 'action' => 'courrierInformation', $result['Dossierep']['id'] ) )
+							$this->Xhtml->link( 'Courrier d\'information', array( 'controller' => 'dossierseps', 'action' => 'courrierInformation', $result['Dossierep']['id'] ), $this->Permissions->check( 'dossierseps', 'courrierInformation' ) )
 						);
 					echo '</tr>';
 				}

@@ -152,7 +152,8 @@
                     <li><?php
                         echo $this->Xhtml->exportLink(
                             'Télécharger le tableau',
-                            array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+                            array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+                            $this->Permissions->check( 'offresinsertion', 'exportcsv' )
                         );
                     ?></li>
                 </ul>

@@ -102,7 +102,8 @@
 
 							$this->Xhtml->viewLink(
 								'Voir le contrat « '.$title.' »',
-								array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Propopdo']['personne_id'] )
+								array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Propopdo']['personne_id'] ),
+								$this->Permissions->check( 'propospdos', 'index' )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
 						),

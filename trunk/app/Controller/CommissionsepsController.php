@@ -21,7 +21,7 @@
 		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
-			'view' => 'Commissionseps:index'
+			'view' => 'Commissionseps:recherche'
 		);
 
 		/**
