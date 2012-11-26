@@ -377,7 +377,7 @@
 				'joins' => array(
 					$this->Entretien->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$this->Entretien->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Entretien->Structurereferente->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+					$this->Entretien->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'recursive' => -1
 			);
