@@ -52,7 +52,7 @@
 		echo $this->Form->input( 'Adresse.pays', array( 'label' =>  required( __d( 'adresse', 'Adresse.pays' ) ), 'type' => 'select', 'options' => $pays, 'empty' => true ) );
 		echo $this->Form->input( 'Adresse.canton', array( 'label' =>  __d( 'adresse', 'Adresse.canton' ) ) );
 
-		if( $this->name == 'Adressefoyers' ):
+		if( $this->name == 'Adressesfoyers' ):
 			echo $this->Form->input( 'Adressefoyer.rgadr', array( 'label' => required( __d( 'adressefoyer', 'Adressefoyer.rgadr' ) ), 'type' => 'select', 'options' => $rgadr, 'empty' => true ) );
 		endif;
 		echo $this->Form->input( 'Adressefoyer.dtemm', array( 'label' =>  __d( 'adressefoyer', 'Adressefoyer.dtemm' ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );

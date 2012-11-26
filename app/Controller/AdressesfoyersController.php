@@ -22,8 +22,8 @@
 		public $components = array( 'Jetons2' );
 
 		public $commeDroit = array(
-			'view' => 'Adressefoyers:index',
-			'add' => 'Adressefoyers:edit'
+			'view' => 'Adressesfoyers:index',
+			'add' => 'Adressesfoyers:edit'
 		);
 
 		/**
