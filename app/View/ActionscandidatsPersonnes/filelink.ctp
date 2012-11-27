@@ -13,7 +13,7 @@
 <div class="with_treemenu">
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( 'ActioncandidatPersonne', $fichiers, $actioncandidatPersonne, $options['ActioncandidatPersonne']['haspiecejointe'] );
+		echo $this->Fileuploader->element( 'ActioncandidatPersonne', $fichiers, $actioncandidat_personne, $options['ActioncandidatPersonne']['haspiecejointe'] );
 	?>
 </div>
 <div class="clearer"><hr /></div>
