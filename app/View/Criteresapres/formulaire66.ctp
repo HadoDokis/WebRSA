@@ -195,7 +195,8 @@
                                 array(
                                     $this->Xhtml->viewLink(
                                         'Voir le dossier « '.$title.' »',
-                                        array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $apre['Apre']['personne_id'] )
+                                        array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'index', $apre['Apre']['personne_id'] ),
+                                        $this->Permissions->check( 'apres'.Configure::read( 'Apre.suffixe' ), 'index' )
                                     ),
                                     array( 'class' => 'noprint' )
                                 ),
