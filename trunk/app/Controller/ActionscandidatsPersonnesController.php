@@ -171,7 +171,7 @@
 			}
 
 			$this->_setOptions();
-			$this−>set( 'actioncandidat_personne', $actioncandidat_personne );
+			$this->set( 'actioncandidat_personne', $actioncandidat_personne );
 			$this->set( compact( 'dossier_id', 'id', 'fichiers' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -211,21 +211,29 @@
 			);
 			$this->set( compact( 'orientationLiee' ) );
 
-			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$queryData = array(
+				'fields' => array_merge(
+					$this->ActioncandidatPersonne->Actioncandidat->fields(),
+					$this->ActioncandidatPersonne->Motifsortie->fields(),
+					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->fields(),
+					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+					$this->ActioncandidatPersonne->fields(),
+					array(
+						$this->ActioncandidatPersonne->Referent->sqVirtualField( 'nom_complet' ),
+						$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
+					)
+				),
 				'conditions' => array(
 					'ActioncandidatPersonne.personne_id' => $personne_id
 				),
-				'contain' => array(
-					'Actioncandidat' => array(
-						'Contactpartenaire' => array(
-							'Partenaire'
-						)
-					),
-					'Referent',
-					'Motifsortie',
-					'Fichiermodule'
-				)
+				'joins' => array(
+					$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
+					$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
+					$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'contain' => false
 			);
 			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $queryData );
 			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
@@ -248,17 +256,18 @@
 			if( !empty( $actioncandidat_id ) ) {
 				$this->ActioncandidatPersonne->Actioncandidat->forceVirtualFields = true;
 				$actioncandidat = $this->ActioncandidatPersonne->Actioncandidat->find(
-						'first', array(
-					'conditions' => array(
-						'Actioncandidat.id' => $actioncandidat_id
-					),
-					'contain' => array(
-						'Contactpartenaire' => array(
-							'Partenaire'
+					'first',
+					array(
+						'conditions' => array(
+							'Actioncandidat.id' => $actioncandidat_id
 						),
-						'Fichiermodule'
-					)
+						'contain' => array(
+							'Contactpartenaire' => array(
+								'Partenaire'
+							),
+							'Fichiermodule'
 						)
+					)
 				);
 
 				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
@@ -317,23 +326,25 @@
 
 			if( !empty( $referent_id ) ) {
 				$referent = $this->ActioncandidatPersonne->Referent->find(
-						'first', array(
-					'conditions' => array(
-						'Referent.id' => $referent_id
-					),
-					'contain' => false,
-					'recursive' => -1
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Referent.id' => $referent_id
+						),
+						'contain' => false,
+						'recursive' => -1
+					)
 				);
 
 				if( !empty( $referent ) ) {
 					$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
-							'first', array(
-						'conditions' => array(
-							'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
-						),
-						'recursive' => -1
-							)
+						'first',
+						array(
+							'conditions' => array(
+								'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+							),
+							'recursive' => -1
+						)
 					);
 				}
 
@@ -375,12 +386,13 @@
 
 
 				$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->find(
-						'first', array(
-					'conditions' => array(
-						'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
-					),
-					'recursive' => -1
-						)
+					'first',
+					array(
+						'conditions' => array(
+							'Structurereferente.id' => Set::classicExtract( $referent, 'Referent.structurereferente_id' )
+						),
+						'recursive' => -1
+					)
 				);
 				$this->set( compact( 'referent', 'structs' ) );
 			}
@@ -747,16 +759,26 @@
 			$actionscandidatspersonne = $this->ActioncandidatPersonne->find(
 				'first',
 				array(
+					'fields' => array_merge(
+						$this->ActioncandidatPersonne->Actioncandidat->fields(),
+						$this->ActioncandidatPersonne->Motifsortie->fields(),
+						$this->ActioncandidatPersonne->Personne->fields(),
+						$this->ActioncandidatPersonne->Referent->fields(),
+						$this->ActioncandidatPersonne->fields(),
+						array(
+							$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
+						)
+					),
 					'conditions' => array(
 						'ActioncandidatPersonne.id' => $id
 					),
-					'contain' => array(
-						'Personne',
-						'Referent',
-						'Actioncandidat',
-						'Motifsortie',
-						'Fichiermodule'
-					)
+					'joins' => array(
+						$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
+						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
+						$this->ActioncandidatPersonne->join( 'Personne', array( 'type' => 'INNER' ) )
+					),
+					'contain' => false
 				)
 			);
 

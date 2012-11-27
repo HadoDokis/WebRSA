@@ -60,14 +60,12 @@
 					<tbody>
 						<?php
 							foreach( $actionscandidats_personnes as $actioncandidat_personne ){
-								$nbFichiersLies = 0;
-								$nbFichiersLies = ( isset( $actioncandidat_personne['Fichiermodule'] ) ? count( $actioncandidat_personne['Fichiermodule'] ) : 0 );
 
 								echo $this->Xhtml->tableCells(
 									array(
 										h( Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.name' ) ),
 										h( Set::classicExtract( $actioncandidat_personne, 'Referent.nom_complet' ) ),
-										h( Set::classicExtract( $actioncandidat_personne, 'Actioncandidat.Contactpartenaire.Partenaire.libstruc' ) ),
+										h( Set::classicExtract( $actioncandidat_personne, 'Partenaire.libstruc' ) ),
 										h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature' ) ) ),
 										h( Set::classicExtract( $options['ActioncandidatPersonne']['positionfiche'], Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ) ) ),
 										h( date_short( Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ) ),
@@ -143,7 +141,7 @@
 												)
 											)
 										),
-										h( '('.$nbFichiersLies.')' )
+										h( '('.$actioncandidat_personne['ActioncandidatPersonne']['nb_fichiers_lies'].')' )
 									),
 									array( 'class' => 'odd' ),
 									array( 'class' => 'even' )
