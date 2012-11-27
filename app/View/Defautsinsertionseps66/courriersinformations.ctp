@@ -27,7 +27,7 @@
 	$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
-		$this->Default->subform(
+		$this->Default2->subform(
 			array(
 				'Search.Personne.nom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nom' ), 'required' => false ),
 				'Search.Personne.nomnai' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nomnai' ) ),
@@ -124,7 +124,17 @@
 						);
 						echo $this->Xhtml->tag(
 							'td',
-							$this->Xhtml->link( 'Courrier d\'information', array( 'controller' => 'dossierseps', 'action' => 'courrierInformation', $result['Dossierep']['id'] ), $this->Permissions->check( 'dossierseps', 'courrierInformation' ) )
+							$this->Xhtml->link(
+								'Courrier d\'information',
+								array(
+									'controller' => 'dossierseps',
+									'action' => 'courrierInformation',
+									$result['Dossierep']['id'],
+								),
+								array(
+									'disabled' => !$this->Permissions->check( 'dossierseps', 'courrierInformation' )
+								)
+							)
 						);
 					echo '</tr>';
 				}

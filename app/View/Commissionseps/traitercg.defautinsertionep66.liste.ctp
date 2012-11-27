@@ -62,7 +62,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 
 			$hiddenFields = $this->Form->input( "Decisiondefautinsertionep66.{$i}.id", array( 'type' => 'hidden' ) ).
 							$this->Form->input( "Decisiondefautinsertionep66.{$i}.etape", array( 'type' => 'hidden', 'value' => 'cg' ) ).
-							$this->Form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden', 'value' ) ).
+							$this->Form->input( "Decisiondefautinsertionep66.{$i}.passagecommissionep_id", array( 'type' => 'hidden' ) ).
 							$this->Form->input( "Decisiondefautinsertionep66.{$i}.user_id", array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ) );
 
 			echo $this->Xhtml->tableCells(
