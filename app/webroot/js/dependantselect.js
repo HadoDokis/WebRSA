@@ -14,6 +14,13 @@
 //*****************************************************************
 
 function dependantSelect( select2Id, select1Id ) {
+	var isSelect1 = ( $( select1Id ) !== undefined && $( select1Id ).tagName.toUpperCase() == 'SELECT' );
+	var isSelect2 = ( $( select2Id ) !== undefined && $( select2Id ).tagName.toUpperCase() == 'SELECT' );
+
+	if( !isSelect1 || !isSelect2 ) {
+		return;
+	}
+
 	var selects = new Array();
 	var value2 = $F( select2Id );
 
