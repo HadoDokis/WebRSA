@@ -501,3 +501,6 @@ msgstr "Pour un accompagnement"
 
 msgid "Bilanparcours66.motifannulation"
 msgstr "Raison de l'annulation"
+
+msgid "Bilanparcours66.serviceinstructeur_id"
+msgstr "Maison sociale"

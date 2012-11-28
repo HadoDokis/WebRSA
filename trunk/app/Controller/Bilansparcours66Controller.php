@@ -17,7 +17,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader', 'Cake1xLegacy.Ajax' );
 
-		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep'  );
+		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep', 'Typeorient'  );
 
 		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
 
@@ -55,7 +55,7 @@
 
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
 
-			$typesorients = $this->Bilanparcours66->Typeorient->find('list');
+			$typesorients = $this->Typeorient->find('list');
 			$this->set(compact('typesorients'));
 			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
 			$this->set(compact('structuresreferentes'));
@@ -68,9 +68,9 @@
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->enums() );
 
 			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
-			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Bilanparcours66->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
+			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
 
-			$options['Bilanparcours66']['nvtypeorient_id'] = $this->Bilanparcours66->Typeorient->listOptionsUnderParent();
+			$options['Bilanparcours66']['nvtypeorient_id'] = $this->Typeorient->listOptionsUnderParent();
 			$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
 			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
@@ -983,6 +983,21 @@
 			$pdf = $this->Bilanparcours66->getDefaultPdf( $id );
 
 			$this->Gedooo->sendPdfContentToClient( $pdf, "Bilanparcours-{$id}.pdf" );
+		}
+		
+		/**
+		 * Visualisation du Bilan de parcours 66
+		 *
+		 * @param integer $bilanparcours66_id
+		 * @return void
+		 */
+		public function view( $bilanparcours66_id ) {
+			$this->Bilanparcours66->id = $bilanparcours66_id;
+			$personne_id = $this->Bilanparcours66->field( 'personne_id' );
+			$this->set( 'personne_id', $personne_id );
+
+			$this->set( 'options', $this->Bilanparcours66->optionsView() );
+			$this->set( 'bilanparcours66', $this->Bilanparcours66->dataView( $bilanparcours66_id ) );
 		}
 	}
 ?>

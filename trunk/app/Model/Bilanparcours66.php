@@ -237,9 +237,23 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Typeorient' => array(
+			'NvStructurereferente' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'nvstructurereferente_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Typeorientprincipale' => array(
 				'className' => 'Typeorient',
-				'foreignKey' => 'typeorient_id',
+				'foreignKey' => 'typeorientprincipale_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'NvTypeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'nvtypeorient_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -1413,6 +1427,152 @@
 			else {
 				return null;
 			}
+		}
+		
+		
+		
+		/**
+		 * Retourne l'ensemble de données liées au Bilan de parcours en cours
+		 *
+		 * @param integer $id Id du Bilan de parcours
+		 * @return array
+		 */
+		public function dataView( $bilanparcours66_id ) {
+
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			// Recherche du bilan pour l'affichage
+			$data = $this->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+// 						$this->Structurereferente->fields(),
+						$this->Referent->fields(),
+						$this->Orientstruct->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Prestation->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						array(
+							'NvTypeorient.lib_type_orient',
+							'Structurereferente.lib_struc',
+							'NvStructurereferente.lib_struc',
+							'Serviceinstructeur.lib_service',
+							$this->Referent->sqVirtualField( 'nom_complet' ),
+							'Historiqueetatpe.identifiantpe',
+							'Historiqueetatpe.etat'
+						),
+						array_words_replace(
+							$this->Orientstruct->Typeorient->fields(),
+							array(
+								'Typeorient' => 'Typeorientorigine'
+							)
+						),
+						array_words_replace(
+							$this->Orientstruct->Structurereferente->fields(),
+							array(
+								'Structurereferente' => 'Structurereferenteorigine'
+							)
+						),
+						array_words_replace(
+							$this->Typeorientprincipale->fields(),
+							array(
+								'Typeorient' => 'Typeorientaccompagnement'
+							)
+						)
+					),
+					'conditions' => array(
+						'Bilanparcours66.id' => $bilanparcours66_id,
+						array(
+							'OR' => array(
+								'Adressefoyer.id IS NULL',
+								'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+							)
+						),
+						array(
+							'OR' => array(
+								'Historiqueetatpe.id IS NULL',
+								'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
+							)
+						)
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'NvStructurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'NvTypeorient', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+						array_words_replace(
+							$this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+							array(
+								'Typeorient' => 'Typeorientorigine'
+							)
+						),
+						array_words_replace(
+							$this->join( 'Typeorientprincipale', array( 'type' => 'LEFT OUTER' ) ),
+							array(
+								'Typeorient' => 'Typeorientaccompagnement'
+							)
+						),
+						array_words_replace(
+							$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+							array(
+								'Structurereferente' => 'Structurereferenteorigine'
+							)
+						)
+					),
+					'contain' => false
+				)
+			);
+// debug($data);
+			return $data;
+		}
+		
+		/**
+		 *	Liste des options envoyées à la vue pour le Bilan de parcours 66
+		 * 	@return array
+		 */
+		public function optionsView() {
+			// Options
+			$options = array(
+				'Prestation' => array(
+					'rolepers' => ClassRegistry::init( 'Option' )->rolepers()
+				),
+				'Personne' => array(
+					'qual' => ClassRegistry::init( 'Option' )->qual()
+				),
+				'Adresse' => array(
+					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
+				),
+				'Serviceinstructeur' => array(
+					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
+				),
+				'Foyer' => array(
+					'sitfam' => ClassRegistry::init( 'Option' )->sitfam()
+				),
+				'Structurereferente' => array(
+					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
+				),
+				'Bilanparcours66' => array(
+					'duree_engag' => ClassRegistry::init( 'Option' )->duree_engag()
+				),
+			);
+			$options = Set::merge(
+				$this->enums(),
+				$options
+			);
+			return $options;
+
 		}
 	}
 ?>

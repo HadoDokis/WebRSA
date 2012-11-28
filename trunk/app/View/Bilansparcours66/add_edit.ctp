@@ -1224,7 +1224,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			true
 		);
         
-        
+
         ['auditionpe', 'parcourspe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
 				'Bilan',
@@ -1246,12 +1246,12 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		disableAndHideFormPart( 'cgContratReconduitSansEp' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpChangementRef' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpMemeRef' );
+
 		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
 			dependantSelect( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>' );
 			try { $( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>' ).onchange(); } catch(id) { }
 			observeMemeReorientation( 'Bilanparcours66SansepTypeorientprincipaleId<?php echo $key ?>', 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>', 'cgContratReconduitSansEp', 'cgMaintienOrientSansEpMemeRef', 'cgMaintienOrientSansEpChangementRef' );
 		<?php } ?>
-
 		dependantSelect( 'Saisinebilanparcoursep66StructurereferenteId', 'Saisinebilanparcoursep66TypeorientId' );
 		try { $( 'Saisinebilanparcoursep66StructurereferenteId' ).onchange(); } catch(id) { }
 
@@ -1575,7 +1575,4 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			disableAndHideFormPart( maintienOrientMemeRefDiv );
 		}
 	}
-    
-    
-    
 </script>
