@@ -57,7 +57,9 @@
 		 */
 		protected function _input( $fieldName, $options = array() ) {
 			if( !isset( $options['label'] ) ) {
-				$options['label'] = $this->label( $fieldName, null, $options );
+				$labelOptions = $options;
+				$labelOptions['tag'] = false;
+				$options['label'] = $this->label( $fieldName, null, $labelOptions );
 			}
 			else if( isset( $options['required'] ) && ( $options['required'] == true ) ) {
 				$options['label'] = $this->required( $options['label'] );
@@ -170,6 +172,10 @@
 				$options['type'],
 				$options['empty']
 			);
+			
+			if( isset( $options['tag'] ) && $options['tag'] === false ) {
+				return $text;
+			}
 
 			return parent::label( $fieldName, $text, $options );
 		}
