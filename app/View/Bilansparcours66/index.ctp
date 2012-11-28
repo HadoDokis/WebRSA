@@ -76,7 +76,7 @@
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.propref' )."</th>";
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep' )."</th>";
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg' )."</th>";
-						echo "<th colspan='5'>Actions</th>";
+						echo "<th colspan='6'>Actions</th>";
 						echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $index => $bilanparcour66) {
@@ -237,6 +237,10 @@
 								echo '<td colspan="2"></td>'; // Décision du CG
 							}
 
+							echo $this->Xhtml->tag(
+								'td',
+								$this->Xhtml->viewLink( 'Voir', array( 'controller'=>'bilansparcours66', 'action'=>'view', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'view' ) == 1 && $block ) )
+							);
 							echo $this->Xhtml->tag(
 								'td',
 								$this->Xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'edit' ) == 1 && $block ) )
