@@ -22,7 +22,7 @@
 		</tr>
 		<tr>
 			<td class="wide noborder"><strong>Email : </strong></td>
-			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Contactpartenaire.Partenaire.email' ); ?></td>
+			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Partenaire.email' ); ?></td>
 		</tr>
 		<tr>
 			<td class="wide noborder"><strong>Code action : </strong></td>
@@ -32,7 +32,7 @@
 			<td class="wide noborder"><strong>Correspondant de l'action : </strong></td>
 			<td class="wide noborder">
 				<?php
-					echo Set::classicExtract( $referent, 'Referent.nom_complet' );
+					echo Set::classicExtract( $actioncandidat, 'Referent.nom_complet' );
 				?>
 			</td>
 		</tr>

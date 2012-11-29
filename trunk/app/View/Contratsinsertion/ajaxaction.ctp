@@ -32,7 +32,7 @@
 			<td class="wide noborder"><strong>Correspondant de l'action : </strong></td>
 			<td class="wide noborder">
 				<?php
-					echo Set::classicExtract( $referent, 'Referent.nom_complet' );
+					echo Set::classicExtract( $actioncandidat, 'Referent.nom_complet' );
 				?>
 			</td>
 		</tr>
