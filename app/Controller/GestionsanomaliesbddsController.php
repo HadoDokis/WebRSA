@@ -487,11 +487,15 @@
 						) && $success;
 					}
 
+					$recursive = $modelClass->recursive;
+					$modelClass->recursive = -1;
 					// b°) On garde la dernière entrée
 					$success = $modelClass->updateAll(
 						array( "{$modelName}.personne_id" => $personneAgarderId ),
 						array( "{$modelName}.id" => $idAGarder )
 					) && $success;
+					
+					$modelClass->recursive = $recursive;
 				}
 			}
 
@@ -508,6 +512,9 @@
 			if( empty( $itemsIds ) ) {
 				return $success;
 			}
+
+			$recursive = $modelClass->recursive;
+			$modelClass->recursive = -1;
 
 			$success = $modelClass->updateAll(
 				array( "{$modelName}.personne_id" => $personneAgarderId ),
@@ -529,6 +536,8 @@
 					array( "{$modelName}.personne_id" => $personneAgarderId, "{$modelName}.rg_ci >" => 1 )
 				);
 			}
+
+			$modelClass->recursive = $recursive;
 
 			return $success;
 		}
@@ -798,15 +807,18 @@
 							array( $this, $methodName ),
 							array( $model, $data['Personne']['garder'], $data[$model]['id'] )
 						) && $success;
-$this->log( __LINE__.' method:'.$methodName.' '.var_export( $success, true ), LOG_DEBUG );
 					}
 					// Traitement générique
 					else {
+						$recursive = $modelClass->recursive;
+						$modelClass->recursive = -1;
+
 						$success = ClassRegistry::init( $model )->updateAll(
 							array( "{$model}.personne_id" => $data['Personne']['garder'] ),
 							array( "{$model}.id" => $data[$model]['id'] )
 						) && $success;
-$this->log( __LINE__.' model:'.$model.' '.var_export( $success, true ), LOG_DEBUG );
+						
+						$modelClass->recursive = $recursive;
 					}
 				}
 			}
