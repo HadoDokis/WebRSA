@@ -171,6 +171,11 @@
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
+			
+			$type = 'INNER';
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$type = 'LEFT OUTER';
+			}
 
 			$query = array(
 				'fields' => array(
@@ -277,14 +282,14 @@
 					array(
 						'table'      => 'structuresreferentes',
 						'alias'      => 'Structurereferente',
-						'type'       => 'INNER',
+						'type'       => $type,
 						'foreignKey' => false,
 						'conditions' => array( 'Structurereferente.id = Apre.structurereferente_id' )
 					),
 					array(
 						'table'      => 'referents',
 						'alias'      => 'Referent',
-						'type'       => 'INNER',
+						'type'       => $type,
 						'foreignKey' => false,
 						'conditions' => array( 'Referent.id = Apre.referent_id' )
 					),
