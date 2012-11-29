@@ -60,7 +60,6 @@
 			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
 			if( !empty( $actioncandidat_id ) ) {
-				$this->Entretien->Actioncandidat->forceVirtualFields = true;
 				$actioncandidat = $this->Entretien->Actioncandidat->find(
 					'first',
                     array(
@@ -71,16 +70,13 @@
                             'Contactpartenaire' => array(
                                 'Partenaire'
                             ),
+                            'Referent',
                             'Fichiermodule'
                         )
                     )
 				);
 
-				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
-					$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
-					$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actioncandidat['Actioncandidat']['referent_id'] );
-				}
-				$this->set( compact( 'actioncandidat', 'referent' ) );
+				$this->set( compact( 'actioncandidat' ) );
 			}
 			$this->render( 'ajaxaction', 'ajax' );
 		}

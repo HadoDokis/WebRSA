@@ -124,6 +124,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Referent' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referent_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
 		);
 
 		public $hasAndBelongsToMany = array(

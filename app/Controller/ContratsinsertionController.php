@@ -109,13 +109,12 @@
 		 * @param type $actioncandidat_id
 		 */
 		public function ajaxaction( $actioncandidat_id = null ) {
-			Configure::write( 'debug', 0 );
+			Configure::write( 'debug', 2 );
 
 			$dataActioncandidat_id = Set::extract( $this->request->data, 'Contratinsertion.actioncandidat_id' );
 			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
 			if( !empty( $actioncandidat_id ) ) {
-				$this->Contratinsertion->Actioncandidat->forceVirtualFields = true;
 				$actioncandidat = $this->Contratinsertion->Actioncandidat->find(
 					'first',
 					array(
@@ -126,16 +125,12 @@
 							'Contactpartenaire' => array(
 								'Partenaire'
 							),
-							'Fichiermodule'
+							'Fichiermodule',
+							'Referent'
 						)
 					)
 				);
-
-				if( ($actioncandidat['Actioncandidat']['correspondantaction'] == 1) && !empty( $actioncandidat['Actioncandidat']['referent_id'] ) ) {
-					$this->ActioncandidatPersonne->Personne->Referent->recursive = -1;
-					$referent = $this->ActioncandidatPersonne->Personne->Referent->read( null, $actioncandidat['Actioncandidat']['referent_id'] );
-				}
-				$this->set( compact( 'actioncandidat', 'referent' ) );
+				$this->set( compact( 'actioncandidat' ) );
 			}
 			$this->render( 'ajaxaction', 'ajax' );
 		}
@@ -1282,7 +1277,7 @@
 				if( $this->action == 'edit' ) {
 					$isactive = array( 'O', 'N' );
 				}
-				$actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, '0' );
+				$actionsSansFiche = $this->{$this->modelClass}->Actioncandidat->listePourFicheCandidature( null, $isactive, array( '0', '1' ) );
 				$this->set( 'actionsSansFiche', $actionsSansFiche );
 			}
 			else {

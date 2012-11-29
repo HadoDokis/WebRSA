@@ -98,6 +98,19 @@
 		);
 
 		public $hasMany = array(
+			'Actioncandidat' => array(
+				'className' => 'Actioncandidat',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'referent_id',
@@ -266,7 +279,7 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			),
+			)
 		);
 
 		public $hasAndBelongsToMany = array(
