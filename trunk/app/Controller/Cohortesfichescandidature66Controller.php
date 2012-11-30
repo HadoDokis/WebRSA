@@ -46,7 +46,7 @@
 		*
 		*/
 		public function _setOptions() {
-			$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list' );
+// 			$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list' );
 			$options = Set::merge(
 				$this->ActioncandidatPersonne->allEnumLists(),
 				$this->ActioncandidatPersonne->Actioncandidat->allEnumLists()
@@ -56,7 +56,7 @@
 			$options['referents'] = $this->ActioncandidatPersonne->Referent->find( 'list', array( 'recursive' => -1 ) );
 
 			$listeactions = $this->ActioncandidatPersonne->Actioncandidat->listActionParPartenaire();
-			$this->set( compact( 'options', 'motifssortie', 'listeactions' ) );
+			$this->set( compact( 'options',/* 'motifssortie',*/ 'listeactions' ) );
 		}
 
 
@@ -142,7 +142,32 @@
 					$this->paginate = $paginate;
 					$cohortefichecandidature66 = $this->paginate( 'ActioncandidatPersonne' );
 
+					$optionsMotifssortie = array();
 					foreach( $cohortefichecandidature66 as $key => $value ) {
+						// Liste des motifs de sortie pour le CG66
+						$sqMotifsortie = $this->ActioncandidatPersonne->Actioncandidat->ActioncandidatMotifsortie->sq(
+							array(
+								'alias' => 'actionscandidats_motifssortie',
+								'fields' => array( 'actionscandidats_motifssortie.motifsortie_id' ),
+								'conditions' => array(
+									'actionscandidats_motifssortie.actioncandidat_id' => $value['ActioncandidatPersonne']['actioncandidat_id']
+								),
+								'contain' => false
+							)
+						);
+						$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find(
+							'list',
+							array(
+								'fields' => array( 'Motifsortie.id', 'Motifsortie.name'),
+								'conditions' => array(
+									"Motifsortie.id IN ( {$sqMotifsortie} )"
+								),
+								'contain' => false,
+								'order' => array( 'Motifsortie.name ASC')
+							)
+						);
+						$optionsMotifssortie[$key] = $motifssortie;
+						
 						if( empty( $value['ActioncandidatPersonne']['sortiele'] ) ) {
 							$cohortefichecandidature66[$key]['ActioncandidatPersonne']['proposition_sortiele'] = date( 'Y-m-d' );
 						}
@@ -150,6 +175,7 @@
 							$cohortefichecandidature66[$key]['ActioncandidatPersonne']['proposition_sortiele'] = $value['ActioncandidatPersonne']['sortiele'];
 						}
 					}
+					$this->set( 'motifssortie', $optionsMotifssortie );
 
                     $this->Cohortes->get( array_unique( Set::extract( $cohortefichecandidature66, '{n}.Dossier.id' ) ) );
 					$this->set( 'cohortefichecandidature66', $cohortefichecandidature66 );

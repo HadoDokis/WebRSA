@@ -120,6 +120,8 @@
 		 * @return boolean
 		 */
 		public function get( $dossiers ) {
+			$dossiers = array_unique( (array)$dossiers );
+
 			$success  = $this->Jetons2->get( $dossiers );
 
 			if( $success ) {
@@ -141,6 +143,8 @@
 		 * @return boolean
 		 */
 		public function release( $dossiers ) {
+			$dossiers = array_unique( (array)$dossiers );
+
 			$success  = $this->Jetons2->release( $dossiers );
 
 			if( $success ) {

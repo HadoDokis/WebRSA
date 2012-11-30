@@ -69,7 +69,7 @@
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.infocomplementaire', array( 'label' => false, 'type' => 'hidden', 'value' => $ficheenattente['ActioncandidatPersonne']['infocomplementaire'] ) ).
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.issortie', array( 'label' => false, 'type' => 'checkbox'/*, 'value' => 1*/ ) ),
 
-						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.motifsortie_id', array( 'label' => false, 'empty' => true,  'type' => 'select', 'options' => $motifssortie, 'selected' => $ficheenattente['ActioncandidatPersonne']['motifsortie_id'] ) ),
+						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.motifsortie_id', array( 'label' => false, 'empty' => true,  'type' => 'select', 'options' => $motifssortie[$index], 'selected' => $ficheenattente['ActioncandidatPersonne']['motifsortie_id'] ) ),
 
 						$this->Form->input( 'ActioncandidatPersonne.'.$index.'.sortiele', array( 'label' => false, /*'empty' => true,*/  'type' => 'date', 'dateFormat' => 'DMY', 'selected' => $ficheenattente['ActioncandidatPersonne']['proposition_sortiele'] ) ),
 						$this->Xhtml->viewLink(
