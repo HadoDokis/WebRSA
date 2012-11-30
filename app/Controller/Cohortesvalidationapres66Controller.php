@@ -208,7 +208,6 @@
 
 
 					foreach( $cohortevalidationapre66 as $key => $value ) {
-// debug($value);
 						if( empty( $value['Aideapre66']['datemontantaccorde'] ) ) {
 							$cohortevalidationapre66[$key]['Aideapre66']['proposition_datemontantaccorde'] = date( 'Y-m-d' );
 						}
@@ -219,7 +218,8 @@
 						$cohortevalidationapre66[$key]['Aideapre66']['datemontantpropose'] = $value['Aideapre66']['datemontantpropose'];
 
 					}
-                    $this->Cohortes->get( array_unique( Set::extract( $cohortevalidationapre66, '{n}.Dossier.id' ) ) );
+                    
+					$this->Cohortes->get( Set::extract( $cohortevalidationapre66, '{n}.Dossier.id' ) );
 					$this->set( 'cohortevalidationapre66', $cohortevalidationapre66 );
 
 				}
