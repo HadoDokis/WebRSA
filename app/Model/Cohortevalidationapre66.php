@@ -185,7 +185,8 @@
 					$Apre66->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'order' => array( 'Personne.nom ASC, Personne.prenom ASC' ),
 			);
 
 			return $query;
