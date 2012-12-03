@@ -102,7 +102,8 @@
 						// Activation du bouton Manifestaitons uniquement si ep audition
 						$epparcours = true;
 						$proposition = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.proposition' );
-						if( in_array( $proposition, array( 'audition', 'auditionpe' ) ) ){
+						$datecourrierconvoc = Set::classicExtract( $bilanparcour66, 'Defautinsertionep66.dateimpressionconvoc' );
+						if( in_array( $proposition, array( 'audition', 'auditionpe' ) ) && !empty( $datecourrierconvoc ) ){
 							$epparcours = false;
 						}
 
