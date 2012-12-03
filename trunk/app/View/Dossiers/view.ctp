@@ -154,6 +154,11 @@
 									?></td>
 									<?php endforeach;?>
 								</tr>
+								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+									<th>Référent ayant réalisé l'orientation</th>
+									<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Referentorientant.nom_complet' );?></td>
+									<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Referentorientant.nom_complet' );?></td>
+								</tr>
 							<?php endif;?>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th>Type d'orientation</th>

@@ -110,6 +110,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Referentorientant' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referentorientant_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',

@@ -432,23 +432,27 @@
 					'first',
 					array(
 						'fields' => array(
-							'Orientstruct.origine',
-							'Orientstruct.date_valid',
-							'Orientstruct.statut_orient',
-							'Orientstruct.referent_id',
-							'Orientstruct.rgorient',
-							'Typeorient.lib_type_orient',
-							'Structurereferente.lib_struc'
-
+								'Orientstruct.origine',
+								'Orientstruct.date_valid',
+								'Orientstruct.statut_orient',
+								'Orientstruct.referent_id',
+								'Orientstruct.rgorient',
+								'Orientstruct.referentorientant_id',
+								'Typeorient.lib_type_orient',
+								'Structurereferente.lib_struc',
+								$this->Dossier->Foyer->Personne->Orientstruct->Referentorientant->sqVirtualField( 'nom_complet' )
+							
 						),
-						'contain' => array(
-							'Typeorient',
-							'Structurereferente'
+						'joins' => array(
+							$this->Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient' ),
+							$this->Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente' ),
+							$this->Dossier->Foyer->Personne->Orientstruct->join( 'Referentorientant', array( 'type' => 'LEFT OUTER' ) )
 						),
 						'conditions' => array(
 							'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id']
 						),
 						'order' => "Orientstruct.date_valid DESC",
+						'contain' => false
 					)
 				);
 				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct;
@@ -698,7 +702,7 @@
 			$this->_setOptions();
 			$this->set( 'optionsep', $optionsep );
 
-			$this->set( 'dossierMenu', $this->Foos->dossierMenu( array( 'id' => $id ) ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->dossierMenu( array( 'id' => $id ) ) );
 		}
 
 		/**
@@ -725,7 +729,7 @@
 				throw new NotFoundException();
 			}
 
-			$this->set( 'dossierMenu', $this->Foos->dossierMenu( array( 'id' => $id ) ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->dossierMenu( array( 'id' => $id ) ) );
 
 			$this->Jetons2->get( $id );
 
