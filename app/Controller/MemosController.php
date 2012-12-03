@@ -19,13 +19,132 @@
 
 		public $uses = array( 'Memo', 'Option', 'Personne' );
 
-		public $helpers = array( 'Locale', 'Xform' );
+		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Jetons2', 'Default' );
+		public $components = array( 'Jetons2', 'Default', 'Fileuploader' );
 
 		public $commeDroit = array(
 			'add' => 'Memos:edit'
 		);
+
+		
+		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
+		
+				
+		/**
+		*
+		*/
+		protected function _setOptions() {
+			$options = $this->Memo->enums();
+			$this->set( 'options', $options );
+		}
+		
+		/**
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 */
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+		
+		
+		/**
+		 * Fonction permettant d'accéder à la page pour lier les fichiers à une manifestation d'allocataire
+		 * (CG 66).
+		 *
+		 * @param type $id
+		 */
+		public function filelink( $id ) {
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$fichiers = array();
+			$memo = $this->Memo->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Memo.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
+
+			$personne_id = $this->Memo->field( 'personne_id' );
+
+			$dossier_id = $this->Memo->Personne->dossierId( $personne_id );
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Memo->begin();
+
+				$saved = $this->Memo->updateAll(
+					array( 'Memo.haspiecejointe' => '\''.$this->request->data['Memo']['haspiecejointe'].'\'' ),
+					array(
+						'"Memo"."personne_id"' => $personne_id,
+						'"Memo"."id"' => $id
+					)
+				);
+
+				if( $saved ) {
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->request->data, "Memo.haspiecejointe" ), $id ) && $saved;
+				}
+
+				if( $saved ) {
+					$this->Memo->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( $this->referer() );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Memo->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+
+			$this->_setOptions();
+			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'memo' ) );
+		}
 
 		/**
 		 *
@@ -36,12 +155,19 @@
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$memos = $this->Memo->find(
-					'all', array(
-				'conditions' => array(
-					'Memo.personne_id' => $personne_id
-				),
-				'recursive' => -1
-					)
+				'all',
+				array(
+					'fields' => array_merge(
+						$this->Memo->fields(),
+						array(
+							$this->Memo->Fichiermodule->sqNbFichiersLies( $this->Memo, 'nb_fichiers_lies', 'Memo' )
+						)
+					),
+					'conditions' => array(
+						'Memo.personne_id' => $personne_id
+					),
+					'recursive' => -1
+				)
 			);
 
 			$this->set( 'memos', $memos );
