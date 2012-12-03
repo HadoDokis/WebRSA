@@ -243,6 +243,16 @@
 				),
 				'fields' => '',
 				'order' => ''
+			),
+			'Memo' => array(
+				'className' => 'Memo',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Memo\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => ''
 			)
 		);
 

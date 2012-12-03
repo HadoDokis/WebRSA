@@ -3,20 +3,34 @@
 
 <div class="with_treemenu">
 	<h1>Mémos</h1>
+	<ul class="actionMenu">
+		<li><?php
+				echo $this->Xhtml->addLink(
+					'Ajouter',
+					array(
+						'action' => 'add',
+						$personne_id
+					)
+				);
+			?>
+		</li>
+	</ul>
 	<?php
-		echo $this->Default->index(
+		echo $this->Default2->index(
 			$memos,
 			array(
 				'Memo.name',
 				'Memo.created',
-				'Memo.modified'
+				'Memo.modified',
+				'Memo.nb_fichiers_lies' => array( 'type' => 'integer' )
 			),
 			array(
+				'cohorte' => false,
 				'actions' => array(
-					'Memo.edit',
-					'Memo.delete'
-				),
-				'add' => array( 'Memo.add' => $personne_id )
+					'Memos::edit',
+					'Memos::delete',
+					'Memos::filelink'
+				)
 			)
 		)
 	?>

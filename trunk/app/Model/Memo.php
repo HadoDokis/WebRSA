@@ -17,6 +17,12 @@
 	{
 		public $name = 'Memo';
 
+		public $actsAs = array(
+			'Validation.Autovalidate',
+			'Formattable',
+			'Enumerable'
+		);
+		
 		public $validate = array(
 			'dddesignation' => array(
 				array(
@@ -37,6 +43,25 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			)
+		);
+		
+		public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Memo\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 	}
