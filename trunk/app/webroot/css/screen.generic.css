@@ -1333,6 +1333,14 @@ td.button.transmettreop.disabled a, td.action a.transmettreop.disabled, td span.
     background-image: url( ../img/icons/application_view_list_disabled.png );
 }
 
+td.button.manifestation a, td.action a.manifestation, td span.button.manifestation, table.default2 td a.button.manifestation {
+    background-image: url( ../img/icons/user_go.png );
+}
+
+td.button.manifestation.disabled a, td.action a.manifestation.disabled, td span.button.manifestation.disabled, table.default2 td a.button.manifestation.disabled {
+    background-image: url( ../img/icons/user_go_disabled.png );
+}
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */

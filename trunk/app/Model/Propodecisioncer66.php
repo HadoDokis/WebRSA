@@ -25,7 +25,8 @@
 			'Enumerable' => array(
 				'fields' => array(
 					'isvalidcer' => array( 'type' => 'no' ),
-					'nonvalidationparticulier'
+					'nonvalidationparticulier',
+					'decisionfinale'
 				)
 			),
 			'Formattable'

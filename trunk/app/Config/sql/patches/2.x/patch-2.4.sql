@@ -426,6 +426,31 @@ UPDATE contratsinsertion
 DROP INDEX IF EXISTS contratsinsertion_personne_id_rg_ci_idx;
 CREATE UNIQUE INDEX contratsinsertion_personne_id_rg_ci_idx ON contratsinsertion( personne_id, rg_ci ) WHERE rg_ci IS NOT NULL;
 
+
+--------------------------------------------------------------------------------
+-- 20121203 : Ajout d'une valeur finale pour la déicison du CER Particulier CG66
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'proposdecisionscers66', 'decisionfinale', 'TYPE_NO' );
+
+--------------------------------------------------------------------------------
+-- 20121203 : Ajout d'une table manifestationsbilansparcours66 afin de stocker les 
+-- éléments reseignés par l'allocataire suite à un passage en EPL Audition
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS manifestationsbilansparcours66 CASCADE;
+CREATE TABLE manifestationsbilansparcours66 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	bilanparcours66_id 	INTEGER NOT NULL REFERENCES bilansparcours66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire			TEXT NOT NULL,
+	datemanifestation	DATE NOT NULL,
+	haspiecejointe		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE manifestationsbilansparcours66 IS 'Table pour les manifestations de l''allocataire en lien avec un passage en EPL Audition (CG66)';
+
+DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
+CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

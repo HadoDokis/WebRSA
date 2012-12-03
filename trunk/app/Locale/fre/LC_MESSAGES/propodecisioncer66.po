@@ -54,3 +54,12 @@ msgstr "Reprise de droit"
 
 msgid "ENUM::NONVALIDATIONPARTICULIER::radiation"
 msgstr "Radiation"
+
+msgid "Propodecisioncer66.decisionfinale"
+msgstr "Décision finale"
+
+msgid "ENUM::DECISIONFINALE::N"
+msgstr "Non"
+
+msgid "ENUM::DECISIONFINALE::O"
+msgstr "Oui"

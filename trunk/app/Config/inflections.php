@@ -240,6 +240,7 @@
 		'avissrmrep93' => 'avissrmreps93',
 		'saisineep66' => 'saisineseps66',
 		'bilanparcours66' => 'bilansparcours66',
+		'manifestationbilanparcours66' => 'manifestationsbilansparcours66',
 		'decisionreorientationep93' => 'decisionsreorientationseps93',
 		'reorientationep93' => 'reorientationseps93',
 		'saisinebilanparcoursep66' => 'saisinesbilansparcourseps66',

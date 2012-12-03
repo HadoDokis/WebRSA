@@ -115,34 +115,36 @@
 
 					if( $saved ){
 						$dateDecision = date_cakephp_to_sql( $this->request->data['Propodecisioncer66']['datevalidcer'] );
-						if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'O' ) {
-							$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
-								array(
-									'Contratinsertion.decision_ci' => '\'V\'',
-									'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
-									'Contratinsertion.datedecision' => "'".$dateDecision."'",
-									'Contratinsertion.positioncer' => '\'valid\'',
-								),
-								array(
-									'Contratinsertion.personne_id' => $personne_id,
-									'Contratinsertion.id' => $contratinsertion_id
-								)
-							) && $saved;
-						}
-						else if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'N' ) {
-							$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
-								array(
-									'Contratinsertion.decision_ci' => '\'N\'',
-									'Contratinsertion.datevalidation_ci' => null,
-									'Contratinsertion.datedecision' => "'".$dateDecision."'",
-									'Contratinsertion.positioncer' => '\'nonvalid\'',
-								),
-								array(
-									'Contratinsertion.personne_id' => $personne_id,
-									'Contratinsertion.id' => $contratinsertion_id
-								)
-							) && $saved;
+						if( $this->request->data['Propodecisioncer66']['decisionfinale'] == 'O' ) {
+							if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'O' ) {
+								$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+									array(
+										'Contratinsertion.decision_ci' => '\'V\'',
+										'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
+										'Contratinsertion.datedecision' => "'".$dateDecision."'",
+										'Contratinsertion.positioncer' => '\'valid\'',
+									),
+									array(
+										'Contratinsertion.personne_id' => $personne_id,
+										'Contratinsertion.id' => $contratinsertion_id
+									)
+								) && $saved;
+							}
+							else if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'N' ) {
+								$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+									array(
+										'Contratinsertion.decision_ci' => '\'N\'',
+										'Contratinsertion.datevalidation_ci' => null,
+										'Contratinsertion.datedecision' => "'".$dateDecision."'",
+										'Contratinsertion.positioncer' => '\'nonvalid\'',
+									),
+									array(
+										'Contratinsertion.personne_id' => $personne_id,
+										'Contratinsertion.id' => $contratinsertion_id
+									)
+								) && $saved;
 
+							}
 						}
 
 					}

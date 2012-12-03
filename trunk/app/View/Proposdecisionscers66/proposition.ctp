@@ -30,6 +30,10 @@
 			$referent = $contratinsertion['Referent']['nom_complet'];
 
 			echo $this->Xform->fieldValue( 'Contratinsertion.forme_ci', $formeci );
+			if( $formeci == 'Particulier' ) {
+				$typeDemande = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.type_demande' ), $options['Contratinsertion']['type_demande'] );
+				echo $this->Xform->fieldValue( 'Contratinsertion.type_demande', $typeDemande );
+			}
 			echo $this->Xform->fieldValue( 'Contratinsertion.dd_ci', $ddci );
 			echo $this->Xform->fieldValue( 'Contratinsertion.df_ci', $dfci );
 			echo $this->Xform->fieldValue( 'Contratinsertion.duree_engag', $duree );
@@ -37,7 +41,6 @@
 
 			echo $this->Form->input( 'Propodecisioncer66.isvalidcer', array( 'legend' => __d( 'propodecisioncer66', 'Propodecisioncer66.isvalidcer' ), 'type' => 'radio', 'options' => $options['isvalidcer'] ) );
 			echo $this->Form->input( 'Propodecisioncer66.datevalidcer', array( 'label' => __d( 'propodecisioncer66', 'Propodecisioncer66.datevalidcer' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) );
-
 		?>
 		<fieldset id="motifcer" class="invisible">
 			<?php
@@ -52,8 +55,8 @@
 					)
 				);
 				
-				$formeContrat = $this->Xform->fieldValue( 'Contratinsertion.forme_ci', $formeci );
-				if( $formeContrat == 'Particulier' ) {
+				$formeContrat = Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' );
+				if( $formeContrat == 'C' ) {
 					echo $this->Default2->subform(
 						array(
 							'Propodecisioncer66.nonvalidationparticulier' => array( 'type' => 'radio', 'options' => $options['nonvalidationparticulier'] )
@@ -63,6 +66,18 @@
 						)
 					);
 				}
+			?>
+		</fieldset>
+		<fieldset class="invisible">
+			<?php
+				echo $this->Default2->subform(
+					array(
+						'Propodecisioncer66.decisionfinale' => array( 'type' => 'radio', 'options' => $options['decisionfinale'] )
+					),
+					array(
+						'options' => $options
+					)
+				);
 			?>
 		</fieldset>
 
