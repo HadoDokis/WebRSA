@@ -19,6 +19,7 @@
 		public $name = 'Suivisaidesapres';
 		public $uses = array( 'Suiviaideapre', 'Option' );
 		public $helpers = array( 'Xform' );
+		public $components = array( 'Default' );
 
 		public $commeDroit = array(
 			'add' => 'Suivisaidesapres:edit'

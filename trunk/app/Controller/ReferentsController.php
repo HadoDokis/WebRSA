@@ -19,6 +19,8 @@
 		public $name = 'Referents';
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
 		public $helpers = array( 'Xform' );
+		
+		public $components = array( 'Default' );
 
 		public $commeDroit = array(
 			'add' => 'Referents:edit'
