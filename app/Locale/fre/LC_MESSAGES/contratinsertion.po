@@ -316,7 +316,7 @@ msgstr "En attente d'examen du CER"
 
 msgid "ENUM::POSITIONCER::attvalidsimple"
 msgstr "En attente de validation du CER Simple"
-*
+
 msgid "ENUM::POSITIONCER::attvalidpartpropopcg"
 msgstr "En attente de validation du PCG"
 

@@ -1364,11 +1364,23 @@ msgstr "Ajout/Édition d'une sanction"
 
 ###############################################################################
 
-# msgid "Module:Maintiensreorientseps"
-# msgstr "(???)"
+msgid "Module:Manifestationsbilansparcours66"
+msgstr "Manifestations en lien avec le bilan de parcours (CG66)"
 
-# msgid "Maintiensreorientseps:index"
-# msgstr "(???)"
+msgid "Manifestationsbilansparcours66:index"
+msgstr "Visualisation des manifestations"
+
+msgid "Manifestationsbilansparcours66:add"
+msgstr "Ajout des manifestations"
+
+msgid "Manifestationsbilansparcours66:edit"
+msgstr "Modification des manifestations"
+
+msgid "Manifestationsbilansparcours66:delete"
+msgstr "Suppression des manifestations"
+
+msgid "Manifestationsbilansparcours66:filelink"
+msgstr "Lier un fichier à une manifestation"
 
 ###############################################################################
 

@@ -601,3 +601,6 @@ msgstr "Valider CS"
 
 msgid "Button::aviscadre"
 msgstr "Valider cadre"
+
+msgid "Button::manifestation"
+msgstr "Manifestations"

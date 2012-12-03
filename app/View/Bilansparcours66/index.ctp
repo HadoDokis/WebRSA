@@ -65,7 +65,7 @@
 // 					$pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
 // 					echo $pagination;
 
-					echo '<table class="tooltips"  id="searchResults"><thead><tr>';
+					echo '<table class="tooltips default2"  id="searchResults"><thead><tr>';
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.datebilan' )."</th>";
 						echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.positionbilan' )."</th>";
 						echo "<th>MSP</th>";
@@ -76,7 +76,7 @@
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.propref' )."</th>";
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep' )."</th>";
 						echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg' )."</th>";
-						echo "<th colspan='6'>Actions</th>";
+						echo "<th colspan='7'>Actions</th>";
 						echo "</tr></thead><tbody>";
 
 					foreach($bilansparcours66 as $index => $bilanparcour66) {
@@ -97,6 +97,13 @@
 						$block = true;
 						if( $positionbilan == 'annule' ){
 							$block = false;
+						}
+						
+						// Activation du bouton Manifestaitons uniquement si ep audition
+						$epparcours = true;
+						$proposition = Set::classicExtract( $bilanparcour66, 'Bilanparcours66.proposition' );
+						if( in_array( $proposition, array( 'audition', 'auditionpe' ) ) ){
+							$epparcours = false;
 						}
 
 						echo "<tr class=\"dynamic\" id=\"innerTableTrigger{$index}\">";
@@ -239,23 +246,89 @@
 
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->viewLink( 'Voir', array( 'controller'=>'bilansparcours66', 'action'=>'view', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'view' ) == 1 && $block ) )
+								$this->Default2->button(
+									'view',
+									array( 'controller' => 'bilansparcours66', 'action' => 'view',
+									Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ),
+									array(
+										'enabled' => (
+											( $this->Permissions->check( 'bilansparcours66', 'view' ) == 1 )
+											&& $block
+										)
+									)
+								)
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->editLink( 'Modifier', array( 'controller'=>'bilansparcours66', 'action'=>'edit', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'edit' ) == 1 && $block ) )
+								$this->Default2->button(
+									'edit',
+									array( 'controller' => 'bilansparcours66', 'action' => 'edit',
+									Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ),
+									array(
+										'enabled' => (
+											( $this->Permissions->check( 'bilansparcours66', 'edit' ) == 1 )
+											&& $block
+										)
+									)
+								)
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->printLink( 'Imprimer', array( 'controller'=>'bilansparcours66', 'action'=>'impression', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'impression' ) == 1 && $block )  )
+								$this->Default2->button(
+									'print',
+									array( 'controller' => 'bilansparcours66', 'action' => 'impression',
+									Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ),
+									array(
+										'enabled' => (
+											( $this->Permissions->check( 'bilansparcours66', 'impression' ) == 1 )
+											&& $block
+										)
+									)
+								)
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->cancelLink( 'Annuler ce bilan de parcours', array( 'controller'=>'bilansparcours66', 'action'=>'cancel', Set::classicExtract($bilanparcour66, 'Bilanparcours66.id') ), ( $this->Permissions->check( 'bilansparcours66', 'cancel' ) == 1 && $block ) )
+								$this->Default2->button(
+									'manifestation',
+									array( 'controller' => 'manifestationsbilansparcours66', 'action' => 'index',
+									$bilanparcour66['Bilanparcours66']['id'] ),
+									array(
+										'label' => 'Manifestations',
+										'enabled' => (
+											( $this->Permissions->check( 'manifestationsbilansparcours66', 'index' ) == 1 )
+											&& $block
+											&& !$epparcours
+										)
+									)
+								)
 							);
 							echo $this->Xhtml->tag(
 								'td',
-								$this->Xhtml->fileLink( 'Fichiers liés', array( 'controller'=>'bilansparcours66', 'action'=>'filelink', Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ), ( $this->Permissions->check( 'bilansparcours66', 'filelink' ) == 1 && $block ) )
+								$this->Default2->button(
+									'cancel',
+									array( 'controller' => 'bilansparcours66', 'action' => 'cancel',
+									Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ),
+									array(
+										'enabled' => (
+											( $this->Permissions->check( 'bilansparcours66', 'cancel' ) == 1 )
+											&& $block
+										)
+									)
+								)
+							);
+							echo $this->Xhtml->tag(
+								'td',
+								$this->Default2->button(
+									'filelink',
+									array( 'controller' => 'bilansparcours66', 'action' => 'filelink',
+									Set::classicExtract( $bilanparcour66, 'Bilanparcours66.id' ) ),
+									array(
+										'enabled' => (
+											( $this->Permissions->check( 'bilansparcours66', 'filelink' ) == 1 )
+											&& $block
+										)
+									)
+								)
 							);
 							echo $this->Xhtml->tag(
 								'td',
