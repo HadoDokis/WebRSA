@@ -208,6 +208,75 @@
 		}
 
 		/**
+		 * Chargement des données de la structure référente et du chargé d'insertion
+		 * auquel l'utilisateur est attaché (CG 93).
+		 *
+		 * Ici, on écrase les zones géographiques de l'utilisateur connecté avec
+		 * celles de la structurereferente s'il y a lieu.
+		 *
+		 * @return void
+		 */
+		protected function _loadStructurereferente() {
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
+				$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
+
+				// Si l'utilisateur est lié à une structure référente via un CI
+				if( !$this->Session->check( 'Auth.Referent' ) ) {
+					if( !empty( $referent_id ) ) {
+						$querydata = array(
+							'conditions' => array(
+								'Referent.id' => $referent_id
+							),
+							'fields' => null,
+							'order' => null,
+							'contain' => false
+						);
+						$referent = $this->User->Referent->find( 'first', $querydata );
+						$this->Session->write( 'Auth.Referent', empty( $referent ) ? false : $referent['Referent'] );
+
+						if( !empty( $referent ) ) {
+							$structurereferente_id = $referent['Referent']['structurereferente_id'];
+						}
+					}
+					else {
+						$this->Session->write( 'Auth.Referent', false );
+					}
+				}
+
+				// Si l'utilisateur est lié (directement) à une structure référente
+				if( !$this->Session->check( 'Auth.Structurereferente' ) ) {
+					if( !empty( $structurereferente_id ) ) {
+						$querydata = array(
+							'conditions' => array(
+								'Structurereferente.id' => $structurereferente_id
+							),
+							'fields' => null,
+							'order' => null,
+							'contain' => array(
+								'Zonegeographique'
+							)
+						);
+						$structurereferente = $this->User->Structurereferente->find( 'first', $querydata );
+
+						// Si la structure référente est limitée au niveau des zones géographiques, on fait de même avec l'utilisateur
+						if( $structurereferente['Structurereferente']['filtre_zone_geo'] ) {
+							$this->Session->write(
+								'Auth.Zonegeographique',
+								Set::combine( $structurereferente, 'Zonegeographique.{n}.id', 'Zonegeographique.{n}.codeinsee' )
+							);
+							$this->Session->write( 'Auth.User.filtre_zone_geo', true );
+						}
+						$this->Session->write( 'Auth.Structurereferente', empty( $structurereferente ) ? false : $structurereferente['Structurereferente'] );
+					}
+				}
+				else {
+					$this->Session->write( 'Auth.Structurereferente', false );
+				}
+			}
+		}
+
+		/**
 		 *
 		 */
 		public function login() {
@@ -280,6 +349,7 @@
 				$this->_loadZonesgeographiques();
 				$this->_loadGroup();
 				$this->_loadServiceInstructeur();
+				$this->_loadStructurereferente();
 
 				// Supprimer la vue cachée du menu
 				$this->_deleteCachedElements();
@@ -422,7 +492,6 @@
 		/**
 		 *
 		 */
-		// FIXME: à l'ajout, on n'obtient pas toutes les acl de son groupe
 		public function add() {
 			if( !empty( $this->request->data ) ) {
 				$this->User->begin();

@@ -400,5 +400,99 @@
 			$numdemrsaTemp = sprintf( "TMP%08s",  $numSeq[0][0]['nextval'] );
 			return $numdemrsaTemp;
 		}
+
+		public function menu( $params, $sqLocked ) {
+			$conditions = array();
+			if( !empty( $params['id'] ) && is_numeric( $params['id'] ) ) {
+				$conditions['Dossier.id'] = $params['id'];
+			}
+			else if( !empty( $params['foyer_id'] ) && is_numeric( $params['foyer_id'] ) ) {
+				$conditions['Foyer.id'] = $params['foyer_id'];
+			}
+			else if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {
+				$conditions['Dossier.id'] = $this->Foyer->Personne->dossierId( $params['personne_id'] );
+			}
+
+			if( empty( $conditions ) ) {
+				throw new NotFoundException();
+			}
+
+			// Données du dossier RSA.
+			$dossier = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Dossier.id',
+						'Dossier.matricule',
+						'Dossier.fonorg',
+						'Dossier.numdemrsa',
+						'Foyer.id',
+						$this->Foyer->sqVirtualField( 'enerreur' ),
+						$this->Foyer->sqVirtualField( 'sansprestation' ),
+						'Situationdossierrsa.etatdosrsa',
+						$sqLocked // TODO: plus le nom, jusque quand, ...
+					),
+					'contain' => array(
+						'Foyer',
+						'Situationdossierrsa'
+					),
+					'conditions' => $conditions
+				)
+			);
+
+			$adresses = $this->Foyer->Adressefoyer->find(
+				'all',
+				array(
+					'fields' => array(
+						'Adressefoyer.rgadr',
+						'Adressefoyer.dtemm',
+						'"Adresse"."numcomptt" AS "Adressefoyer__codeinsee"',
+					),
+					'conditions' => array(
+						'Adressefoyer.foyer_id' => $dossier['Foyer']['id']
+					),
+					'joins' => array(
+						$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) )
+					),
+					'contain' => false,
+					'order' => array( 'Adressefoyer.rgadr ASC', 'Adressefoyer.dtemm DESC' )
+				)
+			);
+			$dossier = Set::merge( $dossier, array( 'Adressefoyer' => Hash::extract( $adresses, '{n}.Adressefoyer' ) ) );
+
+			// Les personnes du foyer
+			$personnes = $this->Foyer->Personne->find(
+				'all',
+				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Prestation.rolepers'
+					),
+					'conditions' => array(
+						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' ),
+						'Prestation.natprest' => 'RSA'
+					),
+					'contain' => array(
+						'Prestation'
+					),
+					'order' => array(
+						'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
+						'Personne.nom ASC',
+						'Personne.prenom ASC'
+					)
+				)
+			);
+
+			// Reformattage pour la vue
+			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
+			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
+				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
+			}
+
+			return $dossier;
+		}
 	}
 ?>

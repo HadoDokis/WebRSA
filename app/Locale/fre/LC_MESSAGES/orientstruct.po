@@ -65,6 +65,9 @@ msgstr "Orientation en cohorte"
 msgid "ENUM::ORIGINE::reorientation"
 msgstr "Réorientation"
 
+msgid "ENUM::ORIGINE::demenagement"
+msgstr "Transfert de PDV"
+
 msgid "Orientstruct.origine"
 msgstr "Origine de l'orientation"
 

@@ -3,7 +3,7 @@
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'id' => $id ) );
+	echo $this->element( 'dossier_menu', array( 'dossierMenu' => $dossierMenu ) );
 ?>
 
 <div class="with_treemenu">
@@ -48,23 +48,10 @@
 		);
 	?>
 </fieldset>
-
-	<?php echo $this->Form->submit( 'Enregistrer' );?>
+	<div class="submit">
+		<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
+		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+	</div>
 <?php echo $this->Form->end();?>
-
-<?php
-	echo $this->Default->button(
-		'back',
-		array(
-			'controller' => 'dossiers',
-			'action'     => 'view',
-			$id
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
-?>
-
 </div>
 <div class="clearer"><hr /></div>

@@ -426,6 +426,91 @@ UPDATE contratsinsertion
 DROP INDEX IF EXISTS contratsinsertion_personne_id_rg_ci_idx;
 CREATE UNIQUE INDEX contratsinsertion_personne_id_rg_ci_idx ON contratsinsertion( personne_id, rg_ci ) WHERE rg_ci IS NOT NULL;
 
+--------------------------------------------------------------------------------
+-- 20121127 - début du patch pour la version 2.4beta4
+--------------------------------------------------------------------------------
+
+-- INFO: lorsqu'on change le type d'une colonne et que cette colonne est utilisée
+-- dans des contraintes, la conversion de type pose problème.
+ALTER TABLE orientsstructs DROP CONSTRAINT orientsstructs_origine_check;
+SELECT public.alter_enumtype( 'TYPE_ORIGINEORIENTSTRUCT', ARRAY['manuelle','cohorte','reorientation','demenagement'] );
+ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
+	( origine IS NULL AND date_valid IS NULL )
+	OR (
+		( origine IS NOT NULL AND date_valid IS NOT NULL )
+		AND (
+			( rgorient = 1 AND origine IN ( 'manuelle', 'cohorte' ) )
+			OR ( rgorient > 1 AND origine = 'reorientation' )
+			OR ( rgorient > 1 AND origine = 'demenagement' )
+		)
+	)
+);
+
+DROP TABLE IF EXISTS transfertspdvs93;
+CREATE TABLE transfertspdvs93 (
+	id							SERIAL NOT NULL PRIMARY KEY,
+	vx_orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	nv_orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	created						TIMESTAMP WITHOUT TIME ZONE,
+	modified					TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP INDEX IF EXISTS transfertspdvs93_vx_orientstruct_id_idx;
+CREATE INDEX transfertspdvs93_vx_orientstruct_id_idx ON transfertspdvs93(vx_orientstruct_id);
+
+DROP INDEX IF EXISTS transfertspdvs93_nv_orientstruct_id_idx;
+CREATE INDEX transfertspdvs93_nv_orientstruct_id_idx ON transfertspdvs93(nv_orientstruct_id);
+
+DROP INDEX IF EXISTS transfertspdvs93_user_id_idx;
+CREATE INDEX transfertspdvs93_user_id_idx ON transfertspdvs93(user_id);
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) RETURNS bool as
+$$
+	DECLARE
+		p_namespace			alias for $1;
+		p_table				alias for $2;
+		p_constraintname    alias for $3;
+		v_row				record;
+		v_query				text;
+	BEGIN
+		SELECT
+				1 INTO v_row
+			FROM pg_constraint
+				INNER JOIN pg_namespace ON ( pg_constraint.connamespace = pg_namespace.oid )
+				INNER JOIN pg_class ON ( pg_constraint.conrelid = pg_class.oid )
+			WHERE
+				pg_namespace.nspname = p_namespace
+				AND pg_class.relname = p_table
+				AND pg_constraint.conname = p_constraintname;
+		IF FOUND THEN
+			RAISE NOTICE 'Alter table %.% - drop constraint %', p_namespace, p_table, p_constraintname;
+			v_query := 'ALTER TABLE ' || p_namespace || '.' || p_table || ' DROP constraint ' || p_constraintname || ';';
+			EXECUTE v_query;
+			RETURN 't';
+		ELSE
+			RETURN 'f';
+		END IF;
+	END;
+$$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) IS
+	'Équivalent de la fonctionnalité ALTER TABLE <table> DROP CONSTRAINT <name> disponible à partir de PostgreSQl 9.1';
+
+--------------------------------------------------------------------------------
+
+-- TODO: le faire dans le formulaire
+SELECT add_missing_table_field( 'public', 'users', 'type', 'VARCHAR(50)' );
+ALTER TABLE users ALTER COLUMN type SET DEFAULT NULL;
+SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_in_list_chk' );
+ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdv', 'externe_ci'] ) );
+UPDATE users SET type = 'externe_ci' WHERE referent_id IS NOT NULL AND type IS NULL;
+UPDATE users SET type = 'externe_cpdv' WHERE structurereferente_id IS NOT NULL AND type IS NULL;
+UPDATE users SET type = 'cg' WHERE type IS NULL;
+ALTER TABLE users ALTER COLUMN type SET NOT NULL;
 
 --------------------------------------------------------------------------------
 -- 20121203 : Ajout d'une valeur finale pour la déicison du CER Particulier CG66
@@ -433,7 +518,7 @@ CREATE UNIQUE INDEX contratsinsertion_personne_id_rg_ci_idx ON contratsinsertion
 SELECT add_missing_table_field( 'public', 'proposdecisionscers66', 'decisionfinale', 'TYPE_NO' );
 
 --------------------------------------------------------------------------------
--- 20121203 : Ajout d'une table manifestationsbilansparcours66 afin de stocker les 
+-- 20121203 : Ajout d'une table manifestationsbilansparcours66 afin de stocker les
 -- éléments reseignés par l'allocataire suite à un passage en EPL Audition
 --------------------------------------------------------------------------------
 DROP TABLE IF EXISTS manifestationsbilansparcours66 CASCADE;

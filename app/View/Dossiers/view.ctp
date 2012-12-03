@@ -73,7 +73,7 @@
 ?>
 <?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
+<?php echo $this->element( 'dossier_menu', array( 'dossierMenu' => $dossierMenu ) ); ?>
 
 <div class="with_treemenu">
 <div id="resumeDossier">
@@ -87,9 +87,9 @@
 			?></li>
 		</ul>
 		<?php else:?>
-			<h1>&nbsp;</h1> 
+			<h1>&nbsp;</h1>
 	<?php endif;?>
-	
+
 	<table  id="ficheDossier">
 		<tbody>
 			<tr>

@@ -623,4 +623,54 @@
 	 * @default /usr/sbin/apache2
 	 */
 	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/atransferer
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortestransfertspdvs93_atransferer',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Orientstruct' => array(
+					'typeorient_id' => 1
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/transferes
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortestransfertspdvs93_transferes',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Orientstruct' => array(
+					'typeorient_id' => 1
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
 ?>
