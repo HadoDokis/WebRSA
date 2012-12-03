@@ -215,6 +215,11 @@
 			),
 			'5. Tableau de suivi' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'visualisation'  ) ),
 		),
+		'Transferts PDV' => array(
+			'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+			'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
+			'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
+		),
 		'Tableaux de bord' => array(
 			'Indicateurs mensuels' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) ),
 			'Statistiques ministérielles' => array(

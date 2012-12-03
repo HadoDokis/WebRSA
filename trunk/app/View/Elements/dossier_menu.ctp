@@ -15,15 +15,19 @@
 	/*
 	* Recherche du dossier à afficher
 	*/
-
-	if( isset( $personne_id ) ) {
-		$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'personne_id' => $personne_id ) );
+	if( isset( $dossierMenu ) ) {
+		$dossier = $dossierMenu;
 	}
-	else if( isset( $foyer_id ) ) {
-		$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'foyer_id' => $foyer_id ) );
-	}
-	else if( isset( $id ) ) {
-		$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'id' => $id ) );
+	else {
+		if( isset( $personne_id ) ) {
+			$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'personne_id' => $personne_id ) );
+		}
+		else if( isset( $foyer_id ) ) {
+			$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'foyer_id' => $foyer_id ) );
+		}
+		else if( isset( $id ) ) {
+			$dossier = $this->requestAction( array( 'controller' => 'dossiers', 'action' => 'menu' ), array( 'id' => $id ) );
+		}
 	}
 ?>
 

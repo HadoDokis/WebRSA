@@ -391,7 +391,33 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'VxTransfertpdv93' => array(
+				'className' => 'Transfertpdv93',
+				'foreignKey' => 'vx_orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'NvTransfertpdv93' => array(
+				'className' => 'Transfertpdv93',
+				'foreignKey' => 'nv_orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $virtualFields = array(
@@ -827,7 +853,7 @@
 					$this->data[$this->alias]['origine'] = null;
 				}
 				else if( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) {
-					if( $this->data[$this->alias]['rgorient'] > 1 ) {
+					if( ( $this->data[$this->alias]['rgorient'] > 1 ) && ( $this->data[$this->alias]['origine'] != 'demenagement' ) ) {
 						$this->data[$this->alias]['origine'] = 'reorientation';
 					}
 				}

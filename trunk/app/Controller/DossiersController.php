@@ -19,12 +19,30 @@
 		public $name = 'Dossiers';
 
 		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
+
 		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+
+		public $components = array(
+			'DossiersMenus',
+			'Gestionzonesgeos',
+			'Jetons2',
+			'Search.Prg' => array(
+				'actions' => array( 'index' )
+			),
+		);
 
 // 		public $aucunDroit = array( 'menu' );
 
 // 		public $commeDroit = array( 'view' => 'Dossiers:index' );
+
+		public $typesActions = array(
+			'read' => array(
+				'view',
+			),
+			'write' => array(
+				'edit',
+			)
+		);
 
 		/**
 		 * @return void
@@ -151,73 +169,7 @@
 		public function menu() {
 			$this->assert( isset( $this->request->params['requested'] ), 'error404' );
 
-			// Quel paramètre avons-nous pour trouver le bon dossier ?
-			$conditions = array();
-			if( !empty( $this->request->params['id'] ) && is_numeric( $this->request->params['id'] ) ) {
-				$conditions['Dossier.id'] = $this->request->params['id'];
-			}
-			else if( !empty( $this->request->params['foyer_id'] ) && is_numeric( $this->request->params['foyer_id'] ) ) {
-				$conditions['Foyer.id'] = $this->request->params['foyer_id'];
-			}
-			else if( !empty( $this->request->params['personne_id'] ) && is_numeric( $this->request->params['personne_id'] ) ) {
-				$conditions['Dossier.id'] = $this->Dossier->Foyer->Personne->dossierId( $this->request->params['personne_id'] );
-			}
-			$this->assert( !empty( $conditions ), 'invalidParameter' );
-
-			// Données du dossier RSA.
-			$dossier = $this->Dossier->find(
-				'first',
-				array(
-					'fields' => array(
-						'Dossier.id',
-						'Dossier.matricule',
-						'Dossier.fonorg',
-						'Dossier.numdemrsa',
-						'Foyer.id',
-						$this->Dossier->Foyer->sqVirtualField( 'enerreur' ),
-						$this->Dossier->Foyer->sqVirtualField( 'sansprestation' ),
-						'Situationdossierrsa.etatdosrsa',
-						$this->Jetons2->sqLocked( 'Dossier', 'locked' )
-					),
-					'contain' => array(
-						'Foyer',
-						'Situationdossierrsa'
-					),
-					'conditions' => $conditions
-				)
-			);
-
-			// Les personnes du foyer
-			$personnes = $this->Dossier->Foyer->Personne->find(
-				'all',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Prestation.rolepers'
-					),
-					'conditions' => array(
-						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' ),
-						'Prestation.natprest' => 'RSA'
-					),
-					'contain' => array(
-						'Prestation'
-					),
-					'order' => array(
-						'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
-						'Personne.nom ASC',
-						'Personne.prenom ASC'
-					)
-				)
-			);
-
-			// Reformattage pour la vue
-			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
-			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
-				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
-			}
+			$dossier = $this->Dossier->menu( $this->request->params, $this->Jetons2->sqLocked( 'Dossier', 'locked' ) );
 
 			return $dossier;
 		}
@@ -746,6 +698,7 @@
 			$this->_setOptions();
 			$this->set( 'optionsep', $optionsep );
 
+			$this->set( 'dossierMenu', $this->Foos->dossierMenu( array( 'id' => $id ) ) );
 		}
 
 		/**
@@ -769,10 +722,18 @@
 
 
 			if( empty( $dossier ) ) {
-				$this->cakeError( 'error404' );
+				throw new NotFoundException();
 			}
 
+			$this->set( 'dossierMenu', $this->Foos->dossierMenu( array( 'id' => $id ) ) );
+
 			$this->Jetons2->get( $id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $id );
+				$this->redirect( array( 'action' => 'view', $id ) );
+			}
 
 			if( !empty( $this->request->data ) ) {
 				if( $this->Dossier->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => true ) ) ) {
