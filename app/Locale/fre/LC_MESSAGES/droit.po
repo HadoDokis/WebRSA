@@ -235,7 +235,7 @@ msgid "Bilansparcours66:filelink"
 msgstr "Lier un fichier à un bilan de parcours"
 
 msgid "Bilansparcours66:index"
-msgstr "Visualisation des bilans de parcours"
+msgstr "Accès aux bilans de parcours de l'allocataire"
 
 msgid "Bilansparcours66:edit"
 msgstr "Ajout/Édition d'un bilan de parcours"
@@ -243,12 +243,14 @@ msgstr "Ajout/Édition d'un bilan de parcours"
 msgid "Bilansparcours66:cancel"
 msgstr "Annulation d'un bilan de parcours"
 
-msgid "Bilansparcours66:bilanparcoursGedooo"
-msgstr "Impression d'un bilan de parcours"
-
 msgid "Bilansparcours66:courrier_information"
 msgstr "Impression du courrier d'information d'un bilan de parcours"
 
+msgid "Bilansparcours66:impression"
+msgstr "Impression du bilan de parcours"
+
+msgid "Bilansparcours66:view"
+msgstr "Visualisation du bilan de parcours"
 ###############################################################################
 
 msgid "Module:Budgetsapres"
@@ -1416,6 +1418,8 @@ msgstr "Ajout/Édition d'un mémo"
 msgid "Memos:delete"
 msgstr "Suppression d'un mémo"
 
+msgid "Memos:filelink"
+msgstr "Lier un fichier à un mémo"
 ###############################################################################
 
 msgid "Module:Modescontact"
