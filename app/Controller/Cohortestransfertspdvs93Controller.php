@@ -18,7 +18,6 @@
 	 */
 	class Cohortestransfertspdvs93Controller extends AppController
 	{
-
 		/**
 		 * Nom
 		 *
@@ -66,8 +65,6 @@
 		 * @var array
 		 */
 		public $uses = array( 'Cohortetransfertpdv93', 'Transfertpdv93', 'Option' );
-
-		public $aucunDroit = array( 'atransferer', 'transferes', 'exportcsv', 'impressions', 'impression' ); // FIXME
 
 		/**
 		 * Recherche et traitement des allocataires à transférer.

@@ -57,42 +57,24 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			/*'Adressefoyer' => array(
+			'NvAdressefoyer' => array(
 				'className' => 'Adressefoyer',
-				'foreignKey' => 'adressefoyer_id',
+				'foreignKey' => 'nv_adressefoyer_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
 			),
-			'Dossier' => array(
-				'className' => 'Dossier',
-				'foreignKey' => 'dossier_id',
+			'VxAdressefoyer' => array(
+				'className' => 'Adressefoyer',
+				'foreignKey' => 'vx_adressefoyer_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
 			),
-			'StructurereferenteDst' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_dst_id',
-				'conditions' => null,
-				'type' => null,
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),
-			'StructurereferenteSrc' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_src_id',
-				'conditions' => null,
-				'type' => null,
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),*/
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',

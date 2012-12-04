@@ -42,6 +42,8 @@
 			$Dossier = ClassRegistry::init( 'Dossier' );
 
 			$sqDerniereRgadr01 = $Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
+			$sqDerniereRgadr02 = str_replace( '01', '02', $sqDerniereRgadr01 );
+
 			$sqDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->sqDerniere( 'Personne.id' );
 			$sqZonesgeographiquesStructuresreferentes = $Dossier->Foyer->Personne->Orientstruct->Structurereferente->StructurereferenteZonegeographique->sq(
 				array(
@@ -64,8 +66,11 @@
 			);
 
 			$conditions = array(
+				'Prestation.natprest' => 'RSA',
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+				'Adressefoyer.rgadr' => '01',
 				"Adressefoyer.id IN ( {$sqDerniereRgadr01} )",
+				"VxAdressefoyer.id IN ( {$sqDerniereRgadr02} )",
 				'Orientstruct.statut_orient' => 'Orienté',
 				"Orientstruct.id IN ( {$sqDerniereOrientstruct} )",
 			);
@@ -105,8 +110,10 @@
 					$Dossier->Detaildroitrsa->fields(),
 					$Dossier->Detaildroitrsa->Detailcalculdroitrsa->fields(),
 					$Dossier->Foyer->Adressefoyer->fields(),
+					array_words_replace( $Dossier->Foyer->Adressefoyer->fields(), array( 'Adressefoyer' => 'VxAdressefoyer' ) ),
 					$Dossier->Foyer->Personne->fields(),
 					$Dossier->Foyer->Adressefoyer->Adresse->fields(),
+					array_words_replace( $Dossier->Foyer->Adressefoyer->Adresse->fields(), array( 'Adresse' => 'VxAdresse' ) ),
 					$Dossier->Foyer->Personne->Calculdroitrsa->fields(),
 					$Dossier->Foyer->Personne->Orientstruct->fields(),
 					$Dossier->Foyer->Personne->Prestation->fields(),
@@ -118,12 +125,14 @@
 					$Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER', 'conditions' => array( 'Adressefoyer.rgadr' => '01' ) ) ),// FIXME
+					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					array_words_replace( $Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ), array( 'Adressefoyer' => 'VxAdressefoyer' ) ),
 					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					array_words_replace( $Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ), array( 'Adresse' => 'VxAdresse' ) ),
 					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ), // FIXME
-					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER', 'conditions' => array( 'Prestation.natprest' => 'RSA' ) ) ),
+					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
 				),
@@ -232,11 +241,8 @@
 			if( !empty( $results ) ) {
 				foreach( $results as $index => $result ) {
 					$formData['Transfertpdv93'][$index] = array();
-					/*$formData['Transfertpdv93'][$index]['dossier_id'] = $result['Dossier']['id'];
-					$formData['Transfertpdv93'][$index]['structurereferente_src_id'] = $result['Structurereferente']['id'];
-					$formData['Transfertpdv93'][$index]['codeinsee'] = $result['Adresse']['numcomptt'];
-					$formData['Transfertpdv93'][$index]['dtemm'] = $result['Adressefoyer']['dtemm'];
-					$formData['Transfertpdv93'][$index]['adressefoyer_id'] = $result['Adressefoyer']['id'];*/
+					$formData['Transfertpdv93'][$index]['vx_adressefoyer_id'] = $result['VxAdressefoyer']['id'];
+					$formData['Transfertpdv93'][$index]['nv_adressefoyer_id'] = $result['Adressefoyer']['id'];
 					$formData['Transfertpdv93'][$index]['vx_orientstruct_id'] = $result['Orientstruct']['id'];
 					$formData['Transfertpdv93'][$index]['personne_id'] = $result['Orientstruct']['personne_id'];
 					$formData['Transfertpdv93'][$index]['typeorient_id'] = $result['Orientstruct']['typeorient_id'];
