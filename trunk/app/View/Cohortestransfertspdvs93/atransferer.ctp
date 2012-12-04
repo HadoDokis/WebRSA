@@ -39,18 +39,8 @@
 						"Transfertpdv93.{$index}.vx_orientstruct_id" => array( 'type' => 'hidden' ),
 						"Transfertpdv93.{$index}.personne_id" => array( 'type' => 'hidden' ),
 						"Transfertpdv93.{$index}.typeorient_id" => array( 'type' => 'hidden' ),
-						/*"Transfertpdv93.{$index}.dossier_id" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.structurereferente_src_id" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.codeinsee" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.dtemm" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.adressefoyer_id" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.orientstruct_id" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.personne_id" => array( 'type' => 'hidden' ),
-						"Transfertpdv93.{$index}.typeorient_id" => array( 'type' => 'hidden' ),*/
-	/*
-	dtdebtransfert				DATE NOT NULL,
-	dtfintransfert				DATE DEFAULT NULL,
-	*/
+						"Transfertpdv93.{$index}.vx_adressefoyer_id" => array( 'type' => 'hidden' ),
+						"Transfertpdv93.{$index}.nv_adressefoyer_id" => array( 'type' => 'hidden' ),
 					)
 				);
 

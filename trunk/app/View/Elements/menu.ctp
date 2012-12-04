@@ -81,6 +81,11 @@
 				'Parcours social sans réorientation' => array( 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
 				'Radiés de Pôle Emploi' => array( 'url' => array( 'controller' => 'nonrespectssanctionseps93', 'action' => 'selectionradies'  ) ),
 			),
+			'Transferts PDV' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+				'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
+				'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
+			),
 		),
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
@@ -133,6 +138,10 @@
 			'Demande de maintien dans le social' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
+			),
+			'Par allocataires transférés' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+				'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 			),
 		),
 		'APRE' => array(
@@ -214,11 +223,6 @@
 				'4.3 Validation Cadre' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'validationcadre'  ) ),
 			),
 			'5. Tableau de suivi' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'visualisation'  ) ),
-		),
-		'Transferts PDV' => array(
-			'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-			'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
-			'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
 		),
 		'Tableaux de bord' => array(
 			'Indicateurs mensuels' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ) ),

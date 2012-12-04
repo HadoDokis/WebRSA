@@ -384,6 +384,7 @@
 		'valeurparsoussujetcer93' => 'valeursparsoussujetscers93',
 		'transfertpdv93' => 'transfertspdvs93',
 		'cohortetransfertpdv93' => 'cohortestransfertspdvs93',
+		'criteretransfertpdv93' => 'criterestransfertspdvs93',
 	);
 
 	/**

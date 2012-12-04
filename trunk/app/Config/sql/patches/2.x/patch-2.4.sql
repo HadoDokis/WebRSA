@@ -446,11 +446,19 @@ ALTER TABLE orientsstructs ADD CONSTRAINT orientsstructs_origine_check CHECK(
 	)
 );
 
+-- FIXME: que pour les développements
+DELETE FROM pdfs WHERE modele = 'Orientstruct' AND fk_value IN ( SELECT orientsstructs.id FROM orientsstructs WHERE origine = 'demenagement' );
+DELETE FROM orientsstructs WHERE origine = 'demenagement';
+
 DROP TABLE IF EXISTS transfertspdvs93;
 CREATE TABLE transfertspdvs93 (
 	id							SERIAL NOT NULL PRIMARY KEY,
 	vx_orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	nv_orientstruct_id			INTEGER NOT NULL REFERENCES orientsstructs(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- FIXME references adressesfoyers −> on delete set null ?
+	-- FIXME: remplacer vx/nv_adressefoyer_id par vx_codeinsee/nv_codeinsee + INDEX UNIQUE (pas de sens de transférer de bagnolet à bagnolet)
+	vx_adressefoyer_id			INTEGER NOT NULL REFERENCES adressesfoyers(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	nv_adressefoyer_id			INTEGER NOT NULL REFERENCES adressesfoyers(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	user_id						INTEGER NOT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	created						TIMESTAMP WITHOUT TIME ZONE,
 	modified					TIMESTAMP WITHOUT TIME ZONE
