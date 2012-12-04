@@ -319,30 +319,30 @@
 			?>
 			<fieldset id="propononvalidcerparticulier" class="invisible">
 				<?php
-
-					if( Set::check( $this->request->data, 'Propodecisioncer66.id' ) ){
-						echo $this->Xform->input( 'Propodecisioncer66.id', array( 'type' => 'hidden' ) );
+					if( !empty( $idsDecisionNonValidCer ) ) {
+						if( Set::check( $this->request->data, 'Propodecisioncer66.id' ) ){
+							echo $this->Xform->input( 'Propodecisioncer66.id', array( 'type' => 'hidden' ) );
+						}
+						echo $this->Xform->input( 'Propodecisioncer66.contratinsertion_id', array( 'type' => 'hidden', 'value' => $contratinsertion_id ) );
+						echo $this->Xform->input( 'Propodecisioncer66.datevalidcer', array( 'label' => 'Date de la proposition du CER', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 4, 'maxYear' => date( 'Y' ) + 2, 'empty' => false ) );
+						echo $this->Default2->subform(
+							array(
+								'Motifcernonvalid66.Motifcernonvalid66' => array( 'type' => 'select', 'label' => 'Motif de non validation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listMotifs ),
+								'Propodecisioncer66.motifficheliaison' => array( 'type' => 'textarea' ),
+								'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' )
+							),
+							array(
+								'options' => $options
+							)
+						);
 					}
-					echo $this->Xform->input( 'Propodecisioncer66.contratinsertion_id', array( 'type' => 'hidden', 'value' => $contratinsertion_id ) );
-					echo $this->Xform->input( 'Propodecisioncer66.datevalidcer', array( 'label' => 'Date de la proposition du CER', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 4, 'maxYear' => date( 'Y' ) + 2, 'empty' => false ) );
-					echo $this->Default2->subform(
-						array(
-
-							'Motifcernonvalid66.Motifcernonvalid66' => array( 'type' => 'select', 'label' => 'Motif de non validation', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listMotifs ),
-							'Propodecisioncer66.motifficheliaison' => array( 'type' => 'textarea' ),
-							'Propodecisioncer66.motifnotifnonvalid' => array( 'type' => 'textarea' )
-						),
-						array(
-							'options' => $options
-						)
-					);
 				?>
 			</fieldset>
 			<?php
 				echo $this->Default2->subform(
 					array(
 						'Decisiondossierpcg66.datepropositiontechnicien' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
-						'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $this->request->data['Decisiondossierpcg66'][0]['commentairetechnicien'] ) : null )
+						'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) : null )
 					),
 					array(
 						'options' => $options
@@ -351,18 +351,20 @@
 			?>
 		</fieldset>
 
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnValue(
-			'Decisiondossierpcg66DecisionpdoId',
-			$( 'propononvalidcerparticulier' ),
-			['<?php echo implode( ',', $idsDecisionNonValidCer );?>'],
-			false,
-			true
-		);
+		<?php if( !empty( $idsDecisionNonValidCer ) ):?>
+			<script type="text/javascript">
+				document.observe("dom:loaded", function() {
+					observeDisableFieldsetOnValue(
+						'Decisiondossierpcg66DecisionpdoId',
+						$( 'propononvalidcerparticulier' ),
+						['<?php echo implode( ',', $idsDecisionNonValidCer );?>'],
+						false,
+						true
+					);
 
-	});
-</script>
+				});
+			</script>
+		<?php endif;?>
 
 		<?php if( $avistechniquemodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) ):?>
 			<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>

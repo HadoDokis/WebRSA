@@ -589,7 +589,7 @@
 								'Contratinsertion.decision_ci' => "'".$propositiondecision."'",
 								'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
 								'Contratinsertion.datedecision' => "'".$dateDecision."'",
-								'Contratinsertion.positioncer' => '\'valid\'',
+								'Contratinsertion.positioncer' => '\'encours\'',
 							),
 							array(
 								'Contratinsertion.id' => $dossierpcg66['Dossierpcg66']['contratinsertion_id']

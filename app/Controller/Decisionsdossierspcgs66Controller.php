@@ -299,32 +299,37 @@
 			else {
 				$decisiondossierpcg66_id = $id;
 				$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Decisiondossierpcg66.id' => $decisiondossierpcg66_id
-					),
-					'order' => array( 'Decisiondossierpcg66.created DESC' ),
-					'fields' => array_merge(
-							$this->Decisiondossierpcg66->fields(), $this->Decisiondossierpcg66->Dossierpcg66->fields(), $this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->Typersapcg66->fields(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->fields(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->fields()
-					),
-					'joins' => array(
-						$this->Decisiondossierpcg66->join( 'Dossierpcg66' ),
-						$this->Decisiondossierpcg66->join( 'Decisiondossierpcg66Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->join( 'Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Decisiondossierpcg66->Dossierpcg66->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
-					),
-					'contain' => false, /* array(
-						'Typersapcg66',
-						// 							'Dossierpcg66' => array(
-						// 								'Contratinsertion' => array(
-						// 									'Propodecisioncer66' => array(
-						// 										'Motifcernonvalid66'
-						// 									)
-						// 								)
-						// 							)
-						) */
+					'first',
+					array(
+						'conditions' => array(
+							'Decisiondossierpcg66.id' => $decisiondossierpcg66_id
+						),
+						'order' => array( 'Decisiondossierpcg66.created DESC' ),
+// 						'fields' => array_merge(
+// 							$this->Decisiondossierpcg66->fields(),
+// 							$this->Decisiondossierpcg66->Dossierpcg66->fields(),
+// 							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->Typersapcg66->fields(),
+// 							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->fields(),
+// 							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->fields()
+// 						),
+// 						'joins' => array(
+// 							$this->Decisiondossierpcg66->join( 'Dossierpcg66' ),
+// 							$this->Decisiondossierpcg66->join( 'Decisiondossierpcg66Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+// 							$this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->join( 'Typersapcg66', array( 'type' => 'LEFT OUTER' ) ),
+// 							$this->Decisiondossierpcg66->Dossierpcg66->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+// 							$this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) )
+// 						),
+						'contain' => array(
+							'Typersapcg66',
+							'Dossierpcg66' => array(
+								'Contratinsertion' => array(
+									'Propodecisioncer66' => array(
+										'Motifcernonvalid66'
+									)
+								)
+							)
 						)
+					)
 				);
 				$this->assert( !empty( $decisiondossierpcg66 ), 'invalidParameter' );
 
