@@ -147,7 +147,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
 								$this->Xhtml->viewLink(
 									'Voir',
-									array( 'controller' => 'dossierspcgs66', 'action' => 'edit', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' ) )
+									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )
 								),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),
