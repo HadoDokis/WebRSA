@@ -210,7 +210,9 @@
 					),
 					'contain' => array(
 						'Typepdo',
-						'Decisiondossierpcg66'
+						'Decisiondossierpcg66' => array(
+							'order' => array( 'Decisiondossierpcg66.datetransmissionop DESC' )
+						)
 					)
 				)
 			);
