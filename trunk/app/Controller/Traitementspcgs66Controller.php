@@ -225,10 +225,11 @@
 			);
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
 			$this->set( compact( 'nompersonne' ) );
-			
-			$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
-			if( !empty( $dossierpcgId ) ) {
-				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcgId ) );
+			if( !empty( $this->request->data ) ) {
+				$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
+				if( !empty( $dossierpcgId ) ) {
+					$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne_id, $dossierpcgId ) );
+				}
 			}
 			$this->set( 'dossierpcgId', $dossierpcg66_id );
 			
@@ -350,7 +351,7 @@
 
 			$searchOptions['Personnepcg66']['dossierpcg66_id'] = array( );
 			foreach( $dossierspcgs66 as $dossierpcg66 ) {
-				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::classicExtract( $this->viewVars['gestionnaire'], $dossierpcg66['Dossierpcg66']['user_id'] );
+				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::enum( $dossierpcg66['Dossierpcg66']['user_id'], $this->viewVars['gestionnaire'] );
 			}
 			$this->set( 'searchOptions', $searchOptions );
 

@@ -70,6 +70,35 @@
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
+			
+			
+			
+			
+			// Motif concernant la perosnne du dossier
+			$motifpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.situationpdo_id' );
+			if( !empty( $motifpersonnepcg66_id ) ) {
+				$conditions[] = 'Personnepcg66.id IN ( '.
+					ClassRegistry::init( 'Personnepcg66Situationpdo' )->sq(
+						array(
+							'alias' => 'personnespcgs66_situationspdos',
+							'fields' => array( 'personnespcgs66_situationspdos.personnepcg66_id' ),
+							'contain' => false,
+							'conditions' => array(
+								'personnespcgs66_situationspdos.situationpdo_id' => $motifpersonnepcg66_id
+							),
+							'joins' => array(
+								array(
+									'table'      => 'situationspdos',
+									'alias'      => 'situationspdos',
+									'type'       => 'INNER',
+									'foreignKey' => false,
+									'conditions' => array( 'personnespcgs66_situationspdos.situationpdo_id = situationspdos.id' ),
+								)
+							)
+						)
+					)
+				.' )';	
+			}
 
 			$query = array(
 				'fields' => array(
@@ -175,7 +204,7 @@
 				'limit' => 10,
 				'conditions' => $conditions
 			);
-
+			
 			return $query;
 		}
 

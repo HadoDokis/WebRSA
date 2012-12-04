@@ -97,14 +97,34 @@
 							'contain' => false
 						)
 					);
-// 					debug( $traitementspcgs66 );
 					//Liste des différents statuts de la personne
 					$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
 
 					$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
+					
+					$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
+						'all',
+						array(
+							'fields' => array(
+								'Situationpdo.libelle'
+							),
+							'conditions' => array(
+								'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+							),
+							'joins' => array(
+								$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+								$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+							)
+						)
+					);
+
+					
+					$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
+					$listeSituationsPersonnePCG66 = $listeStatuts;
+					$criteresdossierspcgs66[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
 				}
 
-				$this->set( compact( 'criteresdossierspcgs66' ) );
+				$this->set( compact( 'criteresdossierspcgs66', 'listeStatuts' ) );
 			}
 			else {
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
