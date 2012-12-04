@@ -74,6 +74,7 @@
 				$conditions = array_merge(
 					$conditions,
 					array(
+						'Adresse.numcomptt LIKE' => Configure::read( 'Cg.departement' ).'%',
 						"Adressefoyer.dtemm > Orientstruct.date_valid",
 						'Structurereferente.filtre_zone_geo' => true,
 						"Adresse.numcomptt NOT IN ( {$sqZonesgeographiquesStructuresreferentes} )",
