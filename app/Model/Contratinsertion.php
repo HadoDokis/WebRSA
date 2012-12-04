@@ -822,12 +822,12 @@
 			$personne_id = Set::classicExtract( $data, 'Contratinsertion.personne_id' );
 
 			// Modification de la position du CER selon sa forme
-			if( $formeCi == 'S' ) {
-				$positioncer = 'attvalidsimple';
-			}
-			else if( $formeCi == 'C' ) {
-				$positioncer = 'attvalidpart';
-			}
+// 			if( $formeCi == 'S' ) {
+// 				$positioncer = 'attvalidsimple';
+// 			}
+// 			else if( $formeCi == 'C' ) {
+// 				$positioncer = 'attvalidpart';
+// 			}
 
 
 			$conditions = array( 'Contratinsertion.personne_id' => $personne_id, );
@@ -846,23 +846,23 @@
 			$positioncerPrecedent = Set::classicExtract( $dernierContrat, 'Contratinsertion.positioncer' );
 
 			//FIXME: la position a périmé ne devrait aps figurer ici
-			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid', 'attvalidpart', 'attvalidsimple', 'perime' ) ) ) && !empty( $decision_ci ) ) {
+			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid',/* 'attvalidpart', 'attvalidsimple',*/ 'perime' ) ) ) && !empty( $decision_ci ) ) {
 
 				if( $decision_ci == 'V' ) {
-					if( empty( $datenotif ) ) {
+// 					if( empty( $datenotif ) ) {
 						$positioncer = 'encours';
-					}
-					else {
-						$positioncer = 'validnotifie';
-					}
+// 					}
+// 					else {
+// 						$positioncer = 'validnotifie';
+// 					}
 				}
 				else if( $decision_ci == 'N' ) {
-					if( empty( $datenotif ) ) {
+// 					if( empty( $datenotif ) ) {
 						$positioncer = 'nonvalid';
-					}
-					else {
-						$positioncer = 'nonvalidnotifie';
-					}
+// 					}
+// 					else {
+// 						$positioncer = 'nonvalidnotifie';
+// 					}
 				}
 			}
 
