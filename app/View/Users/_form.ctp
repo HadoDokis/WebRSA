@@ -43,32 +43,33 @@
 	<legend><?php echo required( 'Service instructeur' );?></legend>
 	<?php echo $this->Form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
+<?php
+	echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => null, 'id' => false ) );
+	echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => null, 'id' => false ) );
+	echo $this->Form->input( 'User.type', array( 'type' => 'hidden', 'value' => 'cg', 'id' => false ) );
+?>
+<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
 <fieldset class="col2">
-	<legend>L'utilisateur est un CPDV ou secrétaire PDV</legend>
+	<legend>Type d'utilisateur</legend>
 	<?php
-		echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
-		echo $this->Form->input( 'User.structurereferente_id', array( 'label' => false, 'type' => 'select' , 'options' => $structuresreferentes, 'empty' => true ) );
+		echo $this->Form->input( 'User.type', array( 'type' => 'select' , 'options' => $options['User']['type'], 'empty' => true, 'label' => required( __d( 'user', 'User.type' ) ) ) );
+		echo $this->Form->input( 'User.structurereferente_id', array( 'label' => 'Structure référente liée au CPDV ou secrétaire PDV', 'type' => 'select' , 'options' => $structuresreferentes, 'empty' => true ) );
+		echo $this->Form->input( 'User.referent_id', array( 'label' => 'Référent lié au chargé d\'insertion PDV', 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
 	?>
 </fieldset>
-<fieldset class="col2">
-	<legend>L'utilisateur est un chargé d'insertion d'un PDV</legend>
-	<?php
-		echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
-		echo $this->Form->input( 'User.referent_id', array( 'label' => false, 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
-	?>
-</fieldset>
+<?php endif; ?>
 <fieldset class="col2">
 	<legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
-	<?php echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['isgestionnaire'] ) );?>
+	<?php echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['isgestionnaire'] ) );?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo required( 'Peut-il accéder aux données sensibles ? ' );?></legend>
-	<?php echo $this->Xform->input( 'User.sensibilite', array( 'legend' => false, 'type' => 'radio', 'options' => $options['sensibilite'] ) );?>
+	<?php echo $this->Xform->input( 'User.sensibilite', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['sensibilite'] ) );?>
 </fieldset>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
-		observeDisableFieldsOnValue( 'UserStructurereferenteId', [ 'UserReferentId' ], '', false );
-		observeDisableFieldsOnValue( 'UserReferentId', [ 'UserStructurereferenteId' ], '', false );
+		observeDisableFieldsOnValue( 'UserType', [ 'UserStructurereferenteId' ], 'externe_cpdv', false );
+		observeDisableFieldsOnValue( 'UserType', [ 'UserReferentId' ], 'externe_ci', false );
 	} );
 </script>

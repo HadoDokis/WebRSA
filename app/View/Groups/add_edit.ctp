@@ -49,21 +49,12 @@ echo $this->pageTitle;?></h1><br />
 		?>
 	</div>
 </div>
-<?php echo $this->Form->submit( 'Enregistrer' );?>
+<div class="submit">
+	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
+	<?php echo $this->Form->submit( 'Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+</div>
 <?php echo $this->Form->end();?>
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
-<?php
-	echo $this->Default->button(
-		'back',
-		array(
-			'controller' => 'groups',
-			'action'     => 'index'
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
-?>
