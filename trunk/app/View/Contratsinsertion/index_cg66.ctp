@@ -102,10 +102,10 @@
 						}
 
 						$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
-						if( empty( $datenotif ) /*&& ( $position == 'attvalid' )*/ ) {
+						if( empty( $datenotif ) ) {
 							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
 						}
-						else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalidnotifie', 'validnotifie' ) ) ){
+						else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalid', 'encours' ) ) ){
 							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ).' le '.date_short( $datenotif );
 						}
 						else {
@@ -146,9 +146,10 @@
 										'enabled' => (
 											( $this->Permissions->check( 'contratsinsertion', 'edit' ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' ) )
-											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'nonvalidnotifie' ) )
+// 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' ) )
+// 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'nonvalidnotifie' ) )
 											&& ( !$periodeblock )
+											&& ( empty( $datenotif ) )
 										)
 									)
 								),
@@ -161,9 +162,10 @@
 												( $this->Permissions->check( 'proposdecisionscers66', $action ) == 1 )
 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
-												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
-												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
+// 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
+// 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'nonvalidnotifie' )
 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.decision_ci' ) == 'E' )
+												&& ( empty( $datenotif ) )
 										)
 									)
 								),

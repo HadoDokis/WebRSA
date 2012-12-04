@@ -223,7 +223,7 @@
 					FROM
 						contratsinsertion
 						WHERE
-							positioncer = \'nonvalidnotifie\'
+							positioncer = \'nonvalid\'
 							AND ( date_trunc( \'day\', contratsinsertion.datenotification ) + INTERVAL \''.Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' ).'\' ) <= DATE( NOW() )
 							AND contratsinsertion.id IN (
 								SELECT c.id

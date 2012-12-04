@@ -92,14 +92,14 @@
 					)
 				);
 				
-				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
-					$this->Contratinsertion->updateAll(
-						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
-						array(
-							'"Contratinsertion"."id"' => $contratinsertion_id
-						)
-					);
-				}
+// 				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
+// 					$this->Contratinsertion->updateAll(
+// 						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
+// 						array(
+// 							'"Contratinsertion"."id"' => $contratinsertion_id
+// 						)
+// 					);
+// 				}
 			}
 			return $return;
 		}

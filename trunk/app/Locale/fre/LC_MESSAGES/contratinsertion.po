@@ -311,23 +311,11 @@ msgstr "En cours"
 msgid "ENUM::POSITIONCER::attvalid"
 msgstr "En attente de validation"
 
-msgid "ENUM::POSITIONCER::attvalidpart"
-msgstr "En attente d'examen du CER"
-
-msgid "ENUM::POSITIONCER::attvalidsimple"
-msgstr "En attente de validation du CER Simple"
-
-msgid "ENUM::POSITIONCER::attvalidpartpropopcg"
-msgstr "En attente de validation du PCG"
-
 msgid "ENUM::POSITIONCER::annule"
 msgstr "Annulé"
 
 msgid "ENUM::POSITIONCER::fincontrat"
 msgstr "Fin de contrat"
-
-msgid "ENUM::POSITIONCER::nonvalide"
-msgstr "Non validation"
 
 msgid "ENUM::POSITIONCER::encoursbilan"
 msgstr "En cours : Bilan à réaliser"
@@ -336,19 +324,7 @@ msgid "ENUM::POSITIONCER::attrenouv"
 msgstr "En attente de renouvellement"
 
 msgid "ENUM::POSITIONCER::perime"
-msgstr "Périmé"
-
-msgid "ENUM::POSITIONCER::attsignature"
-msgstr "En attente de signature"
-
-msgid "ENUM::POSITIONCER::valid"
-msgstr "CER validé"
+msgstr "Périmé: bilan à réaliser"
 
 msgid "ENUM::POSITIONCER::nonvalid"
-msgstr "CER non validé"
-
-msgid "ENUM::POSITIONCER::validnotifie"
-msgstr "CER validé et notifié"
-
-msgid "ENUM::POSITIONCER::nonvalidnotifie"
-msgstr "CER non validé et notifié"
+msgstr "Non validation"

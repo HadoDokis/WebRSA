@@ -122,7 +122,7 @@
 										'Contratinsertion.decision_ci' => '\'V\'',
 										'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
 										'Contratinsertion.datedecision' => "'".$dateDecision."'",
-										'Contratinsertion.positioncer' => '\'valid\'',
+										'Contratinsertion.positioncer' => '\'encours\'',
 									),
 									array(
 										'Contratinsertion.personne_id' => $personne_id,

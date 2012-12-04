@@ -68,18 +68,23 @@
 				}
 			?>
 		</fieldset>
-		<fieldset class="invisible">
-			<?php
-				echo $this->Default2->subform(
-					array(
-						'Propodecisioncer66.decisionfinale' => array( 'type' => 'radio', 'options' => $options['decisionfinale'] )
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-		</fieldset>
+		<?php if( $formeContrat == 'C' ):?>
+			<fieldset class="invisible">
+				<?php
+					echo $this->Default2->subform(
+						array(
+							'Propodecisioncer66.decisionfinale' => array( 'type' => 'radio', 'options' => $options['decisionfinale'] )
+						),
+						array(
+							'options' => $options
+						)
+					);
+				?>
+			</fieldset>
+		<?php endif;?>
+		<?php if( $formeContrat == 'S' ):?>
+			<?php echo $this->Xform->input( 'Propodecisioncer66.decisionfinale', array( 'type' => 'hidden', 'value' => 'O' ) ); ?>
+		<?php endif;?>
 
 	</fieldset>
 	<div class="submit">

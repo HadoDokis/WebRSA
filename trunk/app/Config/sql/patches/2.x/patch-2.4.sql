@@ -541,6 +541,13 @@ SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_boolea
 ALTER TABLE memos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE memos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
+
+--------------------------------------------------------------------------------
+-- 20121203 : Modification de l'enum pour les positions du CER
+--------------------------------------------------------------------------------
+UPDATE contratsinsertion SET positioncer = CAST ( ( CASE WHEN positioncer = 'valid' THEN 'encours' WHEN positioncer = 'attvalidpart' THEN 'attvalid' WHEN positioncer = 'attvalidpartpropopcg' THEN 'attvalid' WHEN positioncer = 'attvalidsimple' THEN 'attvalid' WHEN positioncer = 'validnotifie' THEN 'encours' WHEN positioncer = 'nonvalidnotifie' THEN 'nonvalid' ELSE positioncer END ) AS type_positioncer );
+
+SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalid'] );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
