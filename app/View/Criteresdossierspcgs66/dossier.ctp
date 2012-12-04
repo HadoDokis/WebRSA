@@ -69,6 +69,8 @@
 	?>
 	<?php
 		echo $this->Search->etatDossierPCG66( $etatdossierpcg );
+		
+		echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
 	?>
 
 </fieldset>
@@ -96,6 +98,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nb de propositions de décisions', 'Dossierpcg66.nbpropositions' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Etat du dossier', 'Dossierpcg66.etatdossierpcg' );?></th>
+					<th>Motifs de la personne</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
@@ -110,6 +113,13 @@
 
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
+
+						$differentsStatuts = '';
+						foreach( $criteredossierpcg66['Personnepcg66']['listemotifs'] as $key => $statut ) {
+							if( !empty( $statut ) ) {
+								$differentsStatuts .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
+							}
+						}
 
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
@@ -151,6 +161,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
 								h( $criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
+								$differentsStatuts,
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )

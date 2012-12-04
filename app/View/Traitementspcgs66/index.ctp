@@ -28,11 +28,11 @@
 			echo '<p class="notice"> Veuillez sélectionner un dossier afin d\'afficher les traitements</p>';
 		}
 		else if( empty( $listeTraitements ) ) {
-			echo '<p class="notice"> Aucun traitement présent pour ce dossier</p>';
-			echo '<li>'.$this->Xhtml->addLink(
+			echo '<ul class="actionMenu	"><li>'.$this->Xhtml->addLink(
 				__d( 'Traitementpcg66','Traitementpcg66.add' ),
 				array( 'controller' => 'traitementspcgs66', 'action' => 'add', $personnepcg66_id )
-			).' </li>';
+			).' </li></ul>';
+			echo '<p class="notice"> Aucun traitement présent pour ce dossier</p>';
 		}
 		else{
 			$pagination = $this->Xpaginator2->paginationBlock( 'Traitementpcg66', Set::merge( $this->request->params['pass'], $this->request->params['named'] ) );

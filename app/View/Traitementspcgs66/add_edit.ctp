@@ -869,7 +869,7 @@
 			'fieldset',
 			$this->Default->subform(
 				array(
-					'Traitementpcg66.datedepart' => array(  'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5, 'empty' => false )
+					'Traitementpcg66.datedepart' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5, 'empty' => false )
 				),
 				array(
 					'options' => $options
@@ -885,7 +885,7 @@
 			'fieldset',
 			$this->Default->subform(
 				array(
-					'Traitementpcg66.datereception' => array(  'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
+					'Traitementpcg66.datereception' => array( 'dateFormat' => 'DMY', 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
 				),
 				array(
 					'options' => $options
@@ -902,7 +902,7 @@
 			$this->Default->subform(
 				array(
 					'Traitementpcg66.dureeecheance' => array( 'required' => true ),
-					'Traitementpcg66.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
+					'Traitementpcg66.dateecheance' => array( 'dateFormat' => 'DMY','required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) - 5 )
 				),
 				array(
 					'options' => $options
