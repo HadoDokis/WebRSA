@@ -50,3 +50,15 @@ msgstr "Prénom"
 
 msgid "Group.name"
 msgstr "Groupe d'utilisateur"
+
+msgid "User.type"
+msgstr "Type d'utilisateur"
+
+msgid "ENUM::TYPE::cg"
+msgstr "Conseil général"
+
+msgid "ENUM::TYPE::externe_cpdv"
+msgstr "Externe, chef de Projet de Ville"
+
+msgid "ENUM::TYPE::externe_ci"
+msgstr "Externe, chargé d'insertion"

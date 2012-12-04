@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe GroupsController.
 	 *
@@ -58,6 +58,11 @@
 		*/
 
 		public function add() {
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			if( !empty( $this->request->data ) ) {
 				if( $this->Group->saveAll( $this->request->data ) ) {
 					if ($this->request->data['Group']['parent_id']!=0) {
@@ -97,6 +102,11 @@
 		*/
 
 		public function edit( $group_id = null ) {
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $group_id ), 'error404' );

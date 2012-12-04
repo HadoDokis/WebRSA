@@ -72,6 +72,39 @@
 		}
 
 		/**
+		 * Envoi des options à la vue pour un add ou un edit
+		 *
+		 * @return void
+		 */
+		protected function _setOptionsAddEdit() {
+			$this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
+			$this->set( 'gp', $this->User->Group->find( 'list' ) );
+			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'options', $this->User->enums() );
+			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list' ) );
+			$this->set( 'referents', $this->User->Referent->find(
+					'list',
+					array(
+						'fields' => array(
+							'Referent.id',
+							'Referent.nom_complet',
+							'Structurereferente.lib_struc'
+						),
+						'recursive' => -1,
+						'joins' => array(
+							$this->User->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+						),
+						'order' => array(
+							'Structurereferente.lib_struc ASC',
+							'Referent.nom_complet ASC',
+						)
+					)
+				)
+			);
+		}
+
+		/**
 		 * Chargement et mise en cache (session) des permissions de l'utilisateur
 		 * INFO:
 		 * 	- n'est réellement exécuté que la première fois
@@ -457,42 +490,14 @@
 		}
 
 		/**
-		 * Envoi des options à la vue pour un add ou un edit
-		 *
-		 * @return void
-		 */
-		protected function _setOptionsAddEdit() {
-			$this->set( 'zglist', $this->User->Zonegeographique->find( 'list' ) );
-			$this->set( 'gp', $this->User->Group->find( 'list' ) );
-			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
-			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->set( 'options', $this->User->allEnumLists() );
-			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list' ) );
-			$this->set( 'referents', $this->User->Referent->find(
-					'list',
-					array(
-						'fields' => array(
-							'Referent.id',
-							'Referent.nom_complet',
-							'Structurereferente.lib_struc'
-						),
-						'recursive' => -1,
-						'joins' => array(
-							$this->User->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
-						),
-						'order' => array(
-							'Structurereferente.lib_struc ASC',
-							'Referent.nom_complet ASC',
-						)
-					)
-				)
-			);
-		}
-
-		/**
 		 *
 		 */
 		public function add() {
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			if( !empty( $this->request->data ) ) {
 				$this->User->begin();
 				if( $this->User->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
@@ -528,6 +533,11 @@
 		 *
 		 */
 		public function edit( $user_id = null ) {
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $user_id ), 'error404' );
