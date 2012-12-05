@@ -84,8 +84,9 @@
 					<th>Régime</th>
 					<th>Bénéfice pris en compte</th>
 					<th>Montant des revenus arrêtés à</th>
-					<th>Date de début de prise en compte</th>
-					<th>Date de fin de prise en compte</th>
+					<th>Date de début de période</th>
+					<th>Date de fin de période</th>
+					<th>Date de révision</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -104,8 +105,9 @@
 							h( Set::enum( $fichecalcul['regime'], $options['Traitementpcg66']['regime'] ) ),
 							h( $this->Locale->money( $montanttotal ) ),
 							h( $this->Locale->money( $fichecalcul['revenus'] ).' par mois' ),
-							h( date_short( $fichecalcul['dtdebutprisecompte'] ) ),
-							h( date_short( $fichecalcul['datefinprisecompte'] ) )
+							h( date_short( $fichecalcul['dtdebutperiode'] ) ),
+							h( date_short( $fichecalcul['datefinperiode'] ) ),
+							h( date_short( $fichecalcul['daterevision'] ) )
 						),
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )
