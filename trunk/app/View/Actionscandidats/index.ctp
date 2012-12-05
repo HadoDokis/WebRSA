@@ -35,6 +35,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Canton', 'Actioncandidat.cantonaction' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Début de l\'action', 'Actioncandidat.ddaction' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Fin de l\'action', 'Actioncandidat.dfaction' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Correspondant de l\'action', 'Actioncandidat.referent_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nombre de postes disponibles', 'Actioncandidat.nbpostedispo' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nombre d\'heures disponibles', 'Actioncandidat.nbheuredispo' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Présence fiche de candidature', 'Actioncandidat.hasfichecandidature' );?></th>
@@ -60,6 +61,7 @@
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.cantonaction' ) ),
 								h( date_short( Set::classicExtract( $actioncandidat, 'Actioncandidat.ddaction' ) ) ),
 								h( date_short( Set::classicExtract( $actioncandidat, 'Actioncandidat.dfaction' ) ) ),
+								h( Set::classicExtract( $actioncandidat, 'Referent.nom_complet' ) ),
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.nbpostedispo' ) ),
 								h( Set::classicExtract( $actioncandidat, 'Actioncandidat.nbheuredispo' ) ),
 								h( Set::enum( Set::classicExtract( $actioncandidat, 'Actioncandidat.hasfichecandidature' ), $options['Actioncandidat']['hasfichecandidature'] ) ),

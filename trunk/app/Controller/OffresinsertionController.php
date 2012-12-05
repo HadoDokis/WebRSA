@@ -45,9 +45,10 @@
 			$listePartenaires = $this->Actioncandidat->Partenaire->find( 'list', array( 'order' => 'Partenaire.libstruc ASC' ) );
 			$listeContacts = $this->Actioncandidat->Contactpartenaire->find( 'list', array( 'order' => 'Contactpartenaire.nom ASC' ) );
 			$options['Partenaire']['typevoie'] = $this->Option->typevoie();
+			$correspondants = $this->Actioncandidat->ActioncandidatPersonne->Referent->find('list', array( 'order' => 'Referent.nom ASC' ) );
 
 // 			$options = Set::merge( $options, $typevoie );
-			$this->set( compact( 'options', 'listeActions', 'listePartenaires', 'listeContacts', 'typevoie' ) );
+			$this->set( compact( 'options', 'listeActions', 'listePartenaires', 'listeContacts', 'typevoie', 'correspondants' ) );
 		}
 
           

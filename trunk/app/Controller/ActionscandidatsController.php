@@ -151,7 +151,8 @@
 					$this->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Actioncandidat->join( 'Chargeinsertion', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Actioncandidat->join( 'Secretaire', array( 'type' => 'LEFT OUTER' ) )
+					$this->Actioncandidat->join( 'Secretaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Actioncandidat->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'fields' => array_merge(
 					$this->Actioncandidat->fields(),
@@ -160,7 +161,8 @@
 					$this->Actioncandidat->Chargeinsertion->fields(),
 					$this->Actioncandidat->Secretaire->fields(),
 					array(
-						$this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' )
+						$this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' ),
+						$this->Actioncandidat->Referent->sqVirtualField( 'nom_complet' )
 					)
 				),
 				'limit' => '1000'
