@@ -35,6 +35,7 @@
 			$themecode = Set::extract( $params, 'Search.Actioncandidat.themecode' );
 			$codefamille = Set::extract( $params, 'Search.Actioncandidat.codefamille' );
 			$numcodefamille = Set::extract( $params, 'Search.Actioncandidat.numcodefamille' );
+			$correspondant = Set::extract( $params, 'Search.Actioncandidat.referent_id' );
 
 			if( !empty( $actionname ) ){
 				$conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $actionname, array( 'encode' => false ) ).'\'';
@@ -63,6 +64,10 @@
 			if( !empty( $numcodefamille ) ){
 				$conditions[] = 'Actioncandidat.numcodefamille = \''.Sanitize::clean( $numcodefamille, array( 'encode' => false ) ).'\'';
 			}
+			
+			if( !empty( $correspondant ) ){
+				$conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant, array( 'encode' => false ) ).'\'';
+			}
 
 			$Actioncandidat = ClassRegistry::init( 'Actioncandidat' );
 			$query = array(
@@ -84,7 +89,8 @@
 					$Actioncandidat->join( 'Contactpartenaire', array( 'LEFT OUTER' ) ),
 					$Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'LEFT OUTER' ) ),
 					$Actioncandidat->join( 'Chargeinsertion', array( 'LEFT OUTER' ) ),
-					$Actioncandidat->join( 'Secretaire', array( 'LEFT OUTER' ) )
+					$Actioncandidat->join( 'Secretaire', array( 'LEFT OUTER' ) ),
+					$Actioncandidat->join( 'Referent', array( 'LEFT OUTER' ) )
 				),
 				'recursive' => -1,
 				'conditions' => $conditions,

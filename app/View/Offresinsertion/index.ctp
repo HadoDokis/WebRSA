@@ -34,7 +34,8 @@
 					'Search.Partenaire.codepartenaire' => array( 'label' => __d( 'partenaire', 'Partenaire.codepartenaire' ) ),
 					'Search.Actioncandidat.themecode' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.themecode' ) ),
 					'Search.Actioncandidat.codefamille' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.codefamille' ) ),
-					'Search.Actioncandidat.numcodefamille' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.numcodefamille' ) )
+					'Search.Actioncandidat.numcodefamille' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.numcodefamille' ) ),
+					'Search.Actioncandidat.referent_id' => array( 'label' => __d( 'actioncandidat', 'Actioncandidat.referent_id' ), 'options' => $correspondants, 'empty' => true )
 				),
 				array(
 					'options' => $options
