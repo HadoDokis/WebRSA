@@ -262,6 +262,12 @@
 			$params = $this->prepare( 'input', $path, $params );
 			list( $modelName, $fieldName ) = model_field( $path );
 
+			if( isset( $params['type'] ) ) {
+				if( $params['type'] == 'text' ) {
+					$params['maxlength'] = $params['length'];
+				}
+			}
+
 			/// FIXME
 			unset(
 				$params['null'],

@@ -309,6 +309,12 @@
 			$params = $this->prepare( 'input', $path, $params );
 			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
 
+			if( isset( $params['type'] ) ) {
+				if( $params['type'] == 'text' ) {
+					$params['maxlength'] = $params['length'];
+				}
+			}
+
 			/// TODO
 			unset(
 				$params['null'],
