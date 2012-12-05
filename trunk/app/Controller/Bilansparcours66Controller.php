@@ -75,7 +75,7 @@
 			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
 			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
 
-			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( true ); // Liste des services instructeurs en lien avec un Service Social
+			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
 
 			$this->set( compact( 'options' ) );
 		}

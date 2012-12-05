@@ -77,7 +77,7 @@
 			// à intégrer à la fonction view pour ne pas avoir d'énormes variables
 			if( $this->action == 'view' ) {
 				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
-				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->allEnumLists() );
+				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->enums() );
 				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
 				$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
 				$this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
@@ -414,11 +414,8 @@
 				$tCui = $this->Dossier->Foyer->Personne->Cui->find(
 					'first',
 					array(
-						'fields' => array(
-							'Cui.secteur',
-							'Cui.datecontrat',
-							'Cui.decisioncui',
-							'Cui.datevalidationcui'
+						'fields' => array_merge(
+							$this->Dossier->Foyer->Personne->Cui->fields()
 						),
 						'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 						'contain' => false,

@@ -24,7 +24,7 @@
 			'cuiform',
 			'data[Cui][secteur]',
 			$( 'iscie' ),
-			'CIE',
+			'cie',
 			false,
 			true
 		);
@@ -34,17 +34,17 @@
 			'cuiform',
 			'data[Cui][secteur]',
 			$( 'iscae' ),
-			'CAE',
+			'cae',
 			false,
 			true
 		);
 
-		// Dans le cas du CAE, affichage du champ hors ACI ou en ACI
+		//Dans le cas du CAE, affichage du champ hors ACI ou en ACI
 		observeDisableFieldsetOnRadioValue(
 			'cuiform',
 			'data[Cui][secteur]',
 			$( 'isaci' ),
-			'CAE',
+			'cae',
 			false,
 			true
 		);
@@ -153,10 +153,8 @@
 			echo $this->Default->subform(
 				array(
 					'Cui.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-// 					'Cui.positioncui66' => array( 'type' => 'hidden' ),
 					'Cui.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
-					'Cui.montantrsapercu' => array( 'type' => 'hidden', 'value' => $montantrsapercu ),
-					'Cui.secteur' => array(  'legend' => required( __d( 'cui', 'Cui.secteur' )  ), 'type' => 'radio', 'options' => $options['secteur'] )
+					'Cui.montantrsapercu' => array( 'type' => 'hidden', 'value' => $montantrsapercu )
 				),
 				array(
 					'domain' => $domain,
@@ -164,18 +162,33 @@
 				)
 			);
 		?>
-		<fieldset id="isaci">
+		<fieldset>
+			<legend><?php echo required( __d( 'cui', 'Cui.secteur' )  );?></legend>
 			<?php
-				echo $this->Default->subform(
+				echo $this->Default2->subform(
 					array(
-						'Cui.isaci' => array( 'type' => 'radio', 'legend' =>  '', 'label' => false, 'options' => $options['isaci'] )
+						'Cui.secteur' => array(  'legend' => false, 'type' => 'radio', 'options' => $options['Cui']['secteur'] ),
+						'Cui.numconvention',
+						'Cui.numconventionobj'
 					),
 					array(
-						'domain' => $domain,
 						'options' => $options
 					)
 				);
 			?>
+			<fieldset id="isaci">
+				<?php
+					echo $this->Default2->subform(
+						array(
+							'Cui.isaci' => array( 'type' => 'radio', 'legend' => false, 'options' => $options['Cui']['isaci'] )
+						),
+						array(
+							'domain' => $domain,
+							'options' => $options
+						)
+					);
+				?>
+			</fieldset>
 		</fieldset>
 	</div>
 
@@ -244,7 +257,7 @@
 							if( !empty( $thisDataAdressebis ) ) {
 								$valueAdressebis = $thisDataAdressebis;
 							}
-							$input =  $this->Form->input( 'Cui.isadresse2', array( 'type' => 'radio' , 'options' => $options['isadresse2'], 'div' => false, 'legend' => __d( 'cui', 'Cui.isadresse2' ), 'value' => $valueAdressebis ) );
+							$input =  $this->Form->input( 'Cui.isadresse2', array( 'type' => 'radio' , 'options' => $options['Cui']['isadresse2'], 'div' => false, 'legend' => __d( 'cui', 'Cui.isadresse2' ), 'value' => $valueAdressebis ) );
 							echo $this->Xhtml->tag( 'div', $input, array( 'class' => $class ) );
 
 						?>
@@ -277,7 +290,8 @@
 						<?php
 							echo $this->Default->subform(
 								array(
-									'Cui.statutemployeur' => array( 'empty' => true, 'options' => $options['statutemployeur'] )
+									'Cui.statutemployeur' => array( 'empty' => true, 'options' => $options['Cui']['statutemployeur'] ),
+									'Cui.serviceinstructeur_id'
 								),
 								array(
 									'domain' => $domain,
@@ -304,7 +318,7 @@
 						<?php
 							echo $this->Default->subform(
 								array(
-									'Cui.orgrecouvcotis' => array( 'legend' => required( __d( 'cui', 'Cui.orgrecouvcotis' )  ), 'type' => 'radio', 'options' => $options['orgrecouvcotis'] )
+									'Cui.orgrecouvcotis' => array( 'legend' => required( __d( 'cui', 'Cui.orgrecouvcotis' )  ), 'type' => 'radio', 'options' => $options['Cui']['orgrecouvcotis'] )
 								),
 								array(
 									'domain' => $domain,
@@ -322,7 +336,7 @@
 				echo $this->Xhtml->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
 				echo $this->Default->subform(
 					array(
-						'Cui.iscie' => array( 'type' => 'radio', 'options' => $options['iscie'], 'label' => false  )
+						'Cui.iscie' => array( 'type' => 'radio', 'options' => $options['Cui']['iscie'], 'label' => false  )
 					),
 					array(
 						'domain' => $domain,
@@ -401,6 +415,16 @@
 				</td>
 			</tr>
 		</table>
+		<?php 
+			echo $this->Default2->subform(
+				array(
+					'Cui.compofamiliale'  => array( 'empty' => true, 'type' => 'radio', 'options' => $options['Cui']['compofamiliale'] )
+				),
+				array(
+					'options' => $options
+				)
+			);
+		?>
 	</fieldset>
 
 <!--********************* Situation SALARIE avant la signature de la convention ********************** -->
@@ -410,8 +434,8 @@
 			<?php
 				echo $this->Default->subform(
 					array(
-						'Cui.niveauformation'  => array( 'empty' => true, 'options' => $options['niveauformation'] ),
-						'Cui.dureesansemploi' => array( 'legend' => required( __d( 'cui', 'Cui.dureesansemploi' )  ), 'type' => 'radio', 'options' => $options['dureesansemploi'] )
+						'Cui.niveauformation'  => array( 'empty' => true, 'options' => $options['Cui']['niveauformation'] ),
+						'Cui.dureesansemploi' => array( 'legend' => required( __d( 'cui', 'Cui.dureesansemploi' )  ), 'type' => 'radio', 'options' => $options['Cui']['dureesansemploi'] )
 					),
 					array(
 						'domain' => $domain,
@@ -445,7 +469,7 @@
 					<?php
 						echo $this->Default->subform(
 							array(
-								'Cui.dureeinscritpe' => array( 'legend' => __d( 'cui', 'Cui.dureeinscritpe' ), 'type' => 'radio', 'options' => $options['dureeinscritpe'] ),
+								'Cui.dureeinscritpe' => array( 'legend' => __d( 'cui', 'Cui.dureeinscritpe' ), 'type' => 'radio', 'options' => $options['Cui']['dureeinscritpe'] ),
 							),
 							array(
 								'domain' => $domain,
@@ -462,7 +486,7 @@
 							<?php
 								echo $this->Default->subform(
 									array(
-										'Cui.isbeneficiaire' => array( 'label' => __d( 'cui', 'Cui.isbeneficiaire' ), 'type' => 'radio', 'options' => $options['isbeneficiaire'] )
+										'Cui.isbeneficiaire' => array( 'label' => __d( 'cui', 'Cui.isbeneficiaire' ), 'type' => 'radio', 'options' => $options['Cui']['isbeneficiaire'] )
 									),
 									array(
 										'domain' => $domain,
@@ -476,7 +500,7 @@
 								<?php
 									echo $this->Default->subform(
 										array(
-											'Cui.rsadeptmaj' => array( 'label' => __d( 'cui', 'Cui.rsadeptmaj' ), 'type' => 'radio', 'options' => $options['rsadeptmaj'], 'id' => 'fre' )
+											'Cui.rsadeptmaj' => array( 'label' => __d( 'cui', 'Cui.rsadeptmaj' ), 'type' => 'radio', 'options' => $options['Cui']['rsadeptmaj'], 'id' => 'fre' )
 										),
 										array(
 											'domain' => $domain,
@@ -493,7 +517,7 @@
 					<?php
 						echo $this->Default->subform(
 							array(
-								'Cui.dureebenefaide' => array( 'label' => ( __d( 'cui', 'Cui.dureebenefaide' )  ), 'type' => 'radio', 'options' => $options['dureebenefaide'] )
+								'Cui.dureebenefaide' => array( 'label' => ( __d( 'cui', 'Cui.dureebenefaide' )  ), 'type' => 'radio', 'options' => $options['Cui']['dureebenefaide'] )
 							),
 							array(
 								'domain' => $domain,
@@ -506,7 +530,7 @@
 				<?php
 					echo $this->Default->subform(
 						array(
-							'Cui.handicap' => array( 'label' => ( __d( 'cui', 'Cui.handicap' )  ), 'type' => 'radio', 'options' => $options['handicap'] )
+							'Cui.handicap' => array( 'label' => ( __d( 'cui', 'Cui.handicap' )  ), 'type' => 'radio', 'options' => $options['Cui']['handicap'] )
 						),
 						array(
 							'domain' => $domain,
@@ -523,7 +547,7 @@
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Cui.typecontrat' => array( 'label' => ( __d( 'cui', 'Cui.typecontrat' )  ), 'type' => 'radio', 'options' => $options['typecontrat'] )
+					'Cui.typecontrat' => array( 'label' => ( __d( 'cui', 'Cui.typecontrat' )  ), 'type' => 'radio', 'options' => $options['Cui']['typecontrat'] )
 				),
 				array(
 					'domain' => $domain,
@@ -616,7 +640,7 @@
 					<?php
 						echo $this->Default->subform(
 							array(
-								'Cui.modulation' => array( 'label' => __d( 'cui', 'Cui.modulation' ), 'type' => 'radio', 'options' => $options['modulation'] )
+								'Cui.modulation' => array( 'label' => __d( 'cui', 'Cui.modulation' ), 'type' => 'radio', 'options' => $options['Cui']['modulation'] )
 							),
 							array(
 								'domain' => $domain,
@@ -644,7 +668,7 @@
 					'Cui.orgsuivi_id' => array( 'options' => $structs, 'empty' => true ),
 					'Cui.prestataire_id' => array( 'options' => $prestataires, 'empty' => true, 'selected' => $selectedPresta ),
 					'Cui.referent_id' => array( 'options' => $referents, 'empty' => true ),
-					'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas' ), 'type' => 'radio', 'options' => $options['isaas'] )
+					'Cui.isaas' => array( 'label' => __d( 'cui', 'Cui.isaas' ), 'type' => 'radio', 'options' => $options['Cui']['isaas'] )
 				),
 				array(
 					'domain' => $domain,
@@ -696,11 +720,11 @@
 						echo $this->Xhtml->tag( 'p', 'Type d\'actions : ' );
 						echo $this->Default->subform(
 							array(
-								'Cui.remobilisation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['remobilisation'] ),
-								'Cui.aidereprise' => array( 'type' => 'select', 'empty' => true, 'options' => $options['aidereprise'] ),
-								'Cui.elaboprojetpro' => array( 'type' => 'select', 'empty' => true, 'options' => $options['elaboprojetpro'] ),
-								'Cui.evaluation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['evaluation'] ),
-								'Cui.aiderechemploi' => array( 'type' => 'select', 'empty' => true, 'options' => $options['aiderechemploi'] ),
+								'Cui.remobilisation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['remobilisation'] ),
+								'Cui.aidereprise' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['aidereprise'] ),
+								'Cui.elaboprojetpro' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['elaboprojetpro'] ),
+								'Cui.evaluation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['evaluation'] ),
+								'Cui.aiderechemploi' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['aiderechemploi'] ),
 								'Cui.autre' => array( 'type' => 'text' )
 							),
 							array(
@@ -715,13 +739,13 @@
 						echo $this->Xhtml->tag( 'p', 'Type d\'actions : ' );
 						echo $this->Default->subform(
 							array(
-								'Cui.adaptation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['adaptation'] ),
-								'Cui.remiseniveau' => array( 'type' => 'select', 'empty' => true, 'options' => $options['remiseniveau'] ),
-								'Cui.prequalification' => array( 'type' => 'select', 'empty' => true, 'options' => $options['prequalification'] ),
-								'Cui.nouvellecompetence' => array( 'type' => 'select', 'empty' => true, 'options' => $options['nouvellecompetence'] ),
-								'Cui.formqualif' => array( 'type' => 'select', 'empty' => true, 'options' => $options['formqualif'] ),
-								'Cui.formation' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.formation' ), 'options' => $options['formation'] ),
-								'Cui.isperiodepro' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.isperiodepro' ), 'options' => $options['isperiodepro'] )
+								'Cui.adaptation' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['adaptation'] ),
+								'Cui.remiseniveau' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['remiseniveau'] ),
+								'Cui.prequalification' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['prequalification'] ),
+								'Cui.nouvellecompetence' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['nouvellecompetence'] ),
+								'Cui.formqualif' => array( 'type' => 'select', 'empty' => true, 'options' => $options['Cui']['formqualif'] ),
+								'Cui.formation' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.formation' ), 'options' => $options['Cui']['formation'] ),
+								'Cui.isperiodepro' => array( 'type' => 'radio', 'label' => __d( 'cui', 'Cui.isperiodepro' ), 'options' => $options['Cui']['isperiodepro'] )
 							),
 							array(
 								'domain' => $domain,
@@ -733,7 +757,7 @@
 						<?php
 							echo $this->Default->subform(
 								array(
-									'Cui.niveauqualif' => array( 'options' => $options['niveauformation'], 'empty' => true )
+									'Cui.niveauqualif' => array( 'options' => $options['Cui']['niveauformation'], 'empty' => true )
 								),
 								array(
 									'domain' => $domain,
@@ -746,7 +770,7 @@
 						echo $this->Xhtml->tag( 'p', 'Une ou plusieurs de ces actions s\'inscrivent elles dans le cadre de la validation des acquis de l\'expérience ?' );
 						echo $this->Default->subform(
 							array(
-								'Cui.validacquis' => array( 'type' => 'radio', 'legend' => false, 'options' => $options['validacquis'] )
+								'Cui.validacquis' => array( 'type' => 'radio', 'legend' => false, 'options' => $options['Cui']['validacquis'] )
 							),
 							array(
 								'domain' => $domain,
@@ -762,7 +786,7 @@
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Cui.iscae' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.iscae' ), 'options' => $options['iscae'] )
+					'Cui.iscae' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.iscae' ), 'options' => $options['Cui']['iscae'] )
 				),
 				array(
 					'domain' => $domain,
@@ -776,7 +800,7 @@
 				<?php
 					echo $this->Xform->input( 'Accompagnementcui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
 
-					echo $this->Xform->input( 'Accompagnementcui66.typeaccompagnementcui66', array( 'required' => true, 'label' => __d( 'accompagnementcui66', 'Accompagnementcui66.typeaccompagnementcui66' ), 'type' => 'select', 'options' => $options['typeaccompagnementcui66'], 'empty' => true ) );
+					echo $this->Xform->input( 'Accompagnementcui66.typeaccompagnementcui66', array( 'required' => true, 'label' => __d( 'accompagnementcui66', 'Accompagnementcui66.typeaccompagnementcui66' ), 'type' => 'select', 'options' => $options['Accompagnementcui66']['typeaccompagnementcui66'], 'empty' => true ) );
 
 					echo $this->Default->subform(
 						array(
@@ -800,7 +824,7 @@
 
 				?>
 			</fieldset>
-						<fieldset>
+			<fieldset>
 				<legend>PÉRIODE D'IMMERSION</legend>
 				<?php
 					echo $this->Default->subform(
@@ -816,7 +840,7 @@
 				?>
 				<table class="periodeimmersion wide aere noborder">
 					<tr>
-						<td class="noborder mediumSize">Soit un nombre de jours èquivalent à </td>
+						<td class="noborder mediumSize">Soit un nombre de jours équivalent à </td>
 						<td class="noborder mediumSize" id="Accompagnementcui66Nbjourperiode"></td>
 					</tr>
 				</table>
@@ -824,8 +848,8 @@
 					echo $this->Default->subform(
 						array(
 							'Accompagnementcui66.secteuraffectation_id' => array( 'empty' => true, 'options' => $secteursactivites ),
-							'Accompagnementcui66.metieraffectation_id' => array( 'empty' => true, 'options' => $options['Coderomemetierdsp66'], 'selected' => $this->request->data['Accompagnementcui66']['secteuraffectation_id'].'_'.$this->request->data['Accompagnementcui66']['metieraffectation_id'] ),
-							'Accompagnementcui66.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['objectifimmersion'] ),
+							'Accompagnementcui66.metieraffectation_id' => array( 'empty' => true, 'options' => $options['Coderomemetierdsp66'], 'selected' => @$this->request->data['Accompagnementcui66']['secteuraffectation_id'].'_'.@$this->request->data['Accompagnementcui66']['metieraffectation_id'] ),
+							'Accompagnementcui66.objectifimmersion' => array( 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Accompagnementcui66']['objectifimmersion'] ),
 							'Accompagnementcui66.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
 						),
 						array(
@@ -984,7 +1008,7 @@
 					<td class="noborder">
 					<?php    echo $this->Default->subform(
 							array(
-								'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif' ), 'options' => $options['financementexclusif'] )
+								'Cui.financementexclusif' => array( 'type' => 'radio', 'legend' => __d( 'cui', 'Cui.financementexclusif' ), 'options' => $options['Cui']['financementexclusif'] )
 							),
 							array(
 								'domain' => $domain,
@@ -1029,7 +1053,7 @@
 							if( Configure::read( 'nom_form_cui_cg' ) == 'cg93' ){
 								echo $this->Default->subform(
 									array(
-										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur' ), 'options' => $options['orgapayeur'], 'value' => 'ASP' ),
+										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur' ), 'options' => $options['Cui']['orgapayeur'], 'value' => 'ASP' ),
 										'Cui.organisme' => array( 'value' => 'Agence de Services et de Paiement Délégation régionale Ile de France' ),
 										'Cui.adresseorganisme' => array( 'value' => 'Le Cérame hall 1  47 avenue des Genottes BP 8460 95 807 CERGY PONTOISE CEDEX' )
 									),
@@ -1042,7 +1066,7 @@
 // 							else if( Configure::read( 'nom_form_cui_cg' ) == 'cg66' ){
 // 								echo $this->Default->subform(
 // 									array(
-// 										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur' ), 'options' => $options['orgapayeur'] ),
+// 										'Cui.orgapayeur' => array(  'type' => 'radio', 'legend' => __d( 'cui', 'Cui.orgapayeur' ), 'options' => $options['Cui']['orgapayeur'] ),
 // 										'Cui.organisme',
 // 										'Cui.adresseorganisme'
 // 									),
@@ -1069,9 +1093,6 @@
 			</tr>
 		</table>
 	</fieldset>
-	<?php
-		echo $this->Xhtml->tag( 'p', 'En cas de non exécution de la présente convention, les sommes déjà versées font l\'objet d\'un ordre de reversement. L\'employeur et le salarié déclarent avoir pris connaissance des conditions générales jointes', array( 'class' => 'remarque' ) );
-	?>
 
 	<div class="submit">
 		<?php

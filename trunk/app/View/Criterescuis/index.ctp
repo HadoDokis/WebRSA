@@ -30,7 +30,7 @@
 	echo $this->Form->input( 'Criterecui.active', array( 'type' => 'hidden', 'value' => true ) );
 ?>
 	<?php
-		echo $this->Search->blocAllocataire( );
+		echo $this->Search->blocAllocataire( $trancheage );
 
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
 	?>
@@ -43,7 +43,14 @@
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $this->Search->etatdosrsa($etatdosrsa);
+			
+			echo $this->Search->date( 'Dossier.dtdemrsa' );
 		?>
+		<fieldset>
+			<legend>Code origine demande Rsa</legend>
+			<?php echo $this->Form->input( 'Dossier.oridemrsa', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $oridemrsa, 'empty' => false ) );?>
+		</fieldset>
+
 	</fieldset>
 <fieldset>
 	<legend>Recherche de Contrat Unique d'Insertion</legend>
@@ -59,7 +66,10 @@
 			?>
 		</fieldset>
 		<?php
-			echo $this->Form->input( 'Cui.secteur', array( 'label' => __d( 'cui', 'Cui.secteur' ), 'type' => 'select', 'options' => $options['secteur'], 'empty' => true ) );
+			echo $this->Form->input( 'Cui.secteur', array( 'label' => __d( 'cui', 'Cui.secteur' ), 'type' => 'select', 'options' => $options['Cui']['secteur'], 'empty' => true ) );
+			echo $this->Form->input( 'Cui.handicap', array( 'label' => __d( 'cui', 'Cui.handicap' ), 'type' => 'select', 'options' => $options['Cui']['handicap'], 'empty' => true ) );
+			echo $this->Form->input( 'Cui.niveauformation', array( 'label' => __d( 'cui', 'Cui.niveauformation' ), 'type' => 'select', 'options' => $options['Cui']['niveauformation'], 'empty' => true ) );
+			echo $this->Form->input( 'Cui.compofamiliale', array( 'label' => __d( 'cui', 'Cui.compofamiliale' ), 'type' => 'select', 'options' => $options['Cui']['compofamiliale'], 'empty' => true ) );
 		?>
 </fieldset>
 
@@ -98,11 +108,11 @@
 							<tbody>
 								<tr>
 									<th>Etat du droit</th>
-									<td>'.Set::enum( Set::classicExtract( $criterecui, 'Situationdossierrsa.etatdosrsa' ),$criterecui ).'</td>
+									<td>'.value( $etatdosrsa, Set::classicExtract( $criterecui, 'Situationdossierrsa.etatdosrsa' ) ).'</td>
 								</tr>
 								<tr>
-									<th>Commune de naissance</th>
-									<td>'. $criterecui['Personne']['nomcomnai'].'</td>
+									<th>Commune de l\'allocataire</th>
+									<td>'. $criterecui['Adresse']['locaadr'].'</td>
 								</tr>
 								<tr>
 									<th>Date de naissance</th>
@@ -122,7 +132,7 @@
 								</tr>
 								<tr>
 									<th>Rôle</th>
-									<td>'.$rolepers[$criterecui['Prestation']['rolepers']].'</td>
+									<td>'.Set::enum( $criterecui['Prestation']['rolepers'], $rolepers ).'</td>
 								</tr>
 
 							</tbody>
@@ -131,7 +141,7 @@
 							array(
 								h( Set::classicExtract( $criterecui, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criterecui, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criterecui, 'Personne.nom' ).' '.Set::classicExtract( $criterecui, 'Personne.prenom' ) ),
-								h( Set::enum( Set::classicExtract( $criterecui, 'Cui.secteur' ), $options['secteur'] ) ),
+								h( Set::enum( Set::classicExtract( $criterecui, 'Cui.secteur' ), $options['Cui']['secteur'] ) ),
 								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datecontrat' ) ) ),
 								h( Set::classicExtract( $criterecui, 'Cui.nomemployeur' ) ),
 								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criterecui, 'Cui.datedebprisecharge' ) ) ),
@@ -169,5 +179,4 @@
 		<p class="notice">Vos critères n'ont retourné aucun contrat unique d'insertion.</p>
 	<?php endif?>
 <?php endif?>
-
 <!-- *********************************************************************** -->

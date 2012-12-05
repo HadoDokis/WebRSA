@@ -133,6 +133,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'serviceinstructeur_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
 				'foreignKey' => 'serviceinstructeur_id',
@@ -232,16 +245,17 @@
 		);
 
 		/**
+		 * Retourne une liste de services instructeurs pour peupler des listes déroulantes.
+		 * Le résultat est mis en cache.
 		 *
+		 * @param array $conditions Des conditions pour filtrer les enregistrements retournés.
 		 * @return array
 		 */
-		public function listOptions( $typeserinsC = false ) {
-			$cacheKey = 'serviceinstructeur_list_options_typec'.( $typeserinsC ? '1' : '0' );
+		public function listOptions( $conditions = array() ) {
+			$cacheKey = $this->useDbConfig.'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.md5( serialize( $conditions ) );
 			$results = Cache::read( $cacheKey );
 
 			if( $results === false ) {
-				$conditions = ( $typeserinsC ? array( 'Serviceinstructeur.typeserins <>' => 'C' ) : array() );
-
 				$results = $this->find(
 					'list',
 					array (

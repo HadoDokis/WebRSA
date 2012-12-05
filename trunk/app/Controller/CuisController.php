@@ -42,8 +42,8 @@
 		 */
 		protected function _setOptions() {
 			$options = array( );
-			$options = $this->Cui->allEnumLists();
-			$optionsaccompagnement = $this->Cui->Accompagnementcui66->allEnumLists();
+			$options = $this->Cui->enums();
+			$optionsaccompagnement = $this->Cui->Accompagnementcui66->enums();
 			$options = Set::merge( $options, $optionsaccompagnement );
 
 			$secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
@@ -92,6 +92,9 @@
 
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
+			
+			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins' => 'S' ) ); // Liste des services instructeurs en lien avec un Service Social
+
 			$this->set( compact( 'options' ) );
 		}
 
@@ -405,6 +408,51 @@
 						$this->request->data['Accompagnementcui66'] = $this->request->data['Accompagnementcui66'][0];
 					}
 					$nbCui = $cui['Cui']['rangcui'];
+				}
+			}
+			
+			
+			if (!isset($this->request->data['Cui']['compofamiliale']) || empty($this->request->data['Cui']['compofamiliale'])) {
+				$compofamiliale = $this->Cui->Personne->Foyer->find(
+					'first',
+					array(
+						'fields' => array(
+							'Foyer.id',
+							'Foyer.sitfam'
+						),
+						'joins' => array(
+							$this->Cui->Personne->Foyer->join( 'Personne', array( 'type' => 'INNER' ) )/*
+							array(
+								'table' => 'personnes',
+								'alias' => 'Personne',
+								'type' => 'INNER',
+								'foreignKey' => false,
+								
+							)*/
+						),
+						'conditions' => array(
+							'Personne.foyer_id = Foyer.id',
+							'Personne.id' => $personne_id
+						),
+						'contain'=>false
+					)
+				);
+				$nbenfant = $this->Cui->Personne->Foyer->nbEnfants($compofamiliale['Foyer']['id']);
+				if (in_array($compofamiliale['Foyer']['sitfam'], array('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU'))) {
+					if ($nbenfant==0) {
+						$this->request->data['Cui']['compofamiliale']='isole';
+					}
+					else {
+						$this->request->data['Cui']['compofamiliale']='isoleenfant';
+					}
+				}
+				elseif (in_array($compofamiliale['Foyer']['sitfam'], array('MAR', 'PAC', 'RPA', 'RVC', 'VIM'))) {
+					if ($nbenfant==0) {
+						$this->request->data['Cui']['compofamiliale']='couple';
+					}
+					else {
+						$this->request->data['Cui']['compofamiliale']='coupleenfant';
+					}
 				}
 			}
 

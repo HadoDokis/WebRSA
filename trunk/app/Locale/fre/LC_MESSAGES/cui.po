@@ -53,7 +53,7 @@ msgid "ENUM::ISACI::horsaci"
 msgstr "Hors ACI"
 
 msgid "ENUM::ISACI::enaci"
-msgstr "En ACI"
+msgstr "CAE ACI"
 
 msgid "Cui.avenant"
 msgstr "Avenant"
@@ -691,7 +691,7 @@ msgid "Cui.orgsuivi_id"
 msgstr "Organisme chargé de suivi"
 
 msgid "Cui.prestataire_id"
-msgstr "Prestataire"
+msgstr "Référent du contrat"
 
 msgid "Cuis::filelink"
 msgstr "Liste des fichiers liés au CUI"
@@ -758,3 +758,27 @@ msgstr "Annuler le CUI"
 
 msgid "Cui.motifannulation"
 msgstr "Raison de l'annulation"
+
+msgid "Cui.compofamiliale"
+msgstr "Composition du foyer"
+
+msgid "ENUM::COMPOFAMILIALE::couple" 
+msgstr "Couple sans enfant"
+
+msgid "ENUM::COMPOFAMILIALE::coupleenfant"
+msgstr "Couple avec enfant(s)"
+
+msgid "ENUM::COMPOFAMILIALE::isole"
+msgstr "Isolé sans enfant"
+
+msgid "ENUM::COMPOFAMILIALE::isoleenfant"
+msgstr "Isolé avec enfant(s)"
+
+msgid "Cui.numconvention"
+msgstr "N° de convention individuelle"
+
+msgid "Cui.numconventionobj"
+msgstr "N° de convention annuelle d'objectifs et de moyens"
+
+msgid "Cui.serviceinstructeur_id"
+msgstr "Maison sociale"

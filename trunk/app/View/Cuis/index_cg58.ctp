@@ -44,9 +44,9 @@
 					echo $this->Xhtml->tableCells(
 						array(
 							h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
-							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['Cui']['secteur'] ) ),
 							h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
-							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['Cui']['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
 // 							$this->Default2->button(
 // 								'view',

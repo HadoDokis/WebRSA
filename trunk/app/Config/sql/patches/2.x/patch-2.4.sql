@@ -556,6 +556,22 @@ ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
 UPDATE contratsinsertion SET positioncer = CAST ( ( CASE WHEN positioncer = 'valid' THEN 'encours' WHEN positioncer = 'attvalidpart' THEN 'attvalid' WHEN positioncer = 'attvalidpartpropopcg' THEN 'attvalid' WHEN positioncer = 'attvalidsimple' THEN 'attvalid' WHEN positioncer = 'validnotifie' THEN 'encours' WHEN positioncer = 'nonvalidnotifie' THEN 'nonvalid' ELSE positioncer END ) AS type_positioncer );
 
 SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalid'] );
+
+--------------------------------------------------------------------------------
+-- 20121205 : Modification de la table cuis avec ajout d'un enum sur la composition familiale 
+--------------------------------------------------------------------------------
+-- FIXME
+SELECT add_missing_table_field( 'public', 'cuis', 'compofamiliale', 'VARCHAR(20)' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_compofamiliale_in_list_chk CHECK ( cakephp_validate_in_list( compofamiliale, ARRAY['couple', 'coupleenfant','isole','isoleenfant'] ) );
+
+SELECT public.alter_columnname_ifexists( 'public', 'cuis', 'numsecteur', 'numconvention' );
+SELECT public.alter_columnname_ifexists( 'public', 'cuis', 'numconventioncollect', 'numconventionobj' );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'serviceinstructeur_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_serviceinstructeur_id_fkey', 'servicesinstructeurs', 'serviceinstructeur_id', false );
+DROP INDEX IF EXISTS cuis_serviceinstructeur_id_idx;
+CREATE INDEX cuis_serviceinstructeur_id_idx ON cuis( serviceinstructeur_id );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

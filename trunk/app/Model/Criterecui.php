@@ -32,18 +32,37 @@
 		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criterescuis ) {
 			/// Conditions de base
-			$conditions = array();
+			$Cui = ClassRegistry::init( 'Cui' );
 
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
+			$conditions = array(
+				'Prestation.natprest' => 'RSA',
+				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+				array(
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Cui->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				)
+			);
+
 			$conditions = $this->conditionsAdresse( $conditions, $criterescuis, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterescuis );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterescuis );
+			
 
 			/// Critères
 			$datecontrat = Set::extract( $criterescuis, 'Cui.datecontrat' );
 			$secteur = Set::extract( $criterescuis, 'Cui.secteur' );
 			$nir = Set::extract( $criterescuis, 'Cui.nir' );
+			$oridemrsa = Set::extract( $criterescuis, 'Dossier.oridemrsa' );
+			$handicap = Set::extract( $criterescuis, 'Cui.handicap' );
+			$niveauformation = Set::extract( $criterescuis, 'Cui.niveauformation' );
+			$compofamiliale = Set::extract( $criterescuis, 'Cui.compofamiliale' );
 
+			// Origine de la demande
+			if( !empty( $oridemrsa ) ) {
+				$conditions[] = 'Detaildroitrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' )';
+			}
 
 			/// Critères sur le CI - date de saisi contrat
 			if( isset( $criterescuis['Cui']['datecontrat'] ) && !empty( $criterescuis['Cui']['datecontrat'] ) ) {
@@ -58,110 +77,52 @@
 			if( !empty( $secteur ) ) {
 				$conditions[] = 'Cui.secteur = \''.Sanitize::clean( $secteur, array( 'encode' => false ) ).'\'';
 			}
-
-
-			/// Référent
-			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
+			
+			// Handicape ?
+			if( !empty( $handicap ) ) {
+				$conditions[] = 'Cui.handicap = \''.Sanitize::clean( $handicap, array( 'encode' => false ) ).'\'';
 			}
-
-			/// Requête
-			$this->Dossier = ClassRegistry::init( 'Dossier' );
+			
+			// Niveau de formation
+			if( !empty( $niveauformation ) ) {
+				$conditions[] = 'Cui.niveauformation = \''.Sanitize::clean( $niveauformation, array( 'encode' => false ) ).'\'';
+			}
+			
+			// Composition du foyer
+			if( !empty( $compofamiliale ) ) {
+				$conditions[] = 'Cui.compofamiliale = \''.Sanitize::clean( $compofamiliale, array( 'encode' => false ) ).'\'';
+			}
+			
 
 			$query = array(
-				'fields' => array(
-					'Cui.id',
-					'Cui.personne_id',
-					'Cui.secteur',
-					'Cui.datecontrat',
-					'Cui.nomemployeur',
-					'Cui.datedebprisecharge',
-					'Cui.datefinprisecharge',
-					'Dossier.id',
-					'Dossier.numdemrsa',
-					'Dossier.dtdemrsa',
-					'Dossier.matricule',
-					'Personne.id',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Personne.nir',
-					'Personne.qual',
-					'Personne.nomcomnai',
-					'Adresse.locaadr',
-					'Adresse.codepos',
-					'Adresse.numcomptt',
-					'PersonneReferent.referent_id',
-					'Prestation.rolepers'
+				'fields' => array_merge(
+					$Cui->fields(),
+					$Cui->Personne->fields(),
+					$Cui->Personne->Foyer->fields(),
+					$Cui->Personne->Prestation->fields(),
+					$Cui->Personne->Foyer->Dossier->fields(),
+					$Cui->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
+					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->fields(),
+					$Cui->Personne->Foyer->Adressefoyer->fields(),
+					$Cui->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$Cui->Personne->Calculdroitrsa->fields()
 				),
-				'recursive' => -1,
 				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.id = Cui.personne_id' )
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-						)
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' )
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'personnes_referents',
-						'alias'      => 'PersonneReferent',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'PersonneReferent.personne_id = Personne.id',
-							'PersonneReferent.dfdesignation IS NULL'
-						)
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
-					)
+					$Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
+					$Cui->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$Cui->Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) )
 				),
-				'limit' => 10,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'contain' => false,
+				'limit' => 10
 			);
 
 			return $query;
