@@ -278,7 +278,7 @@
 				'div',
 				$this->Xhtml->tag(
 					'div',
-					$this->validationErrors['Bilanparcours66']['proposition'],
+					$this->validationErrors['Bilanparcours66']['proposition'][0],
 					array(
 						'class' => 'error-message'
 					)
@@ -378,7 +378,7 @@
 						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
 							echo $this->Xhtml->tag(
 								'div',
-								$this->validationErrors['Bilanparcours66']['changementref'],
+								$this->validationErrors['Bilanparcours66']['changementref'][0],
 								array(
 									'class' => 'error-message'
 								)
@@ -495,7 +495,7 @@
 						if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
 							echo $this->Xhtml->tag(
 								'div',
-								$this->validationErrors['Bilanparcours66']['changementref'],
+								$this->validationErrors['Bilanparcours66']['changementref'][0],
 								array(
 									'class' => 'error-message'
 								)
@@ -626,7 +626,7 @@
 				)
 			);
 			if (isset($this->validationErrors['Bilanparcours66']['referent_id'])) {
-				echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['referent_id'].'</div>';
+				echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['referent_id'][0].'</div>';
 			}
 			echo '</div>';
 
@@ -641,7 +641,7 @@
 					'options' => $options
 				)
 			);
-			if (isset($this->validationErrors['Bilanparcours66']['presenceallocataire'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['presenceallocataire'].'</div>';
+			if (isset($this->validationErrors['Bilanparcours66']['presenceallocataire'])) echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['presenceallocataire'][0].'</div>';
 			echo '</div>';
 		?>
 
@@ -755,7 +755,7 @@
                     )
                 );
                 if (isset($this->validationErrors['Bilanparcours66']['choixparcours'])) {
-                    echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['choixparcours'].'</div>';
+                    echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['choixparcours'][0].'</div>';
                 }
                 echo '</div>';
             ?>
@@ -809,7 +809,7 @@
                         )
                     );
                     if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) {
-                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'].'</div>';
+                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'][0].'</div>';
                     }
                     echo '</div>';
 
@@ -825,7 +825,7 @@
                         )
                     );
                     if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) {
-                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'].'</div>';
+                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'][0].'</div>';
                     }
                     echo '</div>';
 
@@ -839,7 +839,7 @@
                         if ( isset( $this->validationErrors['Bilanparcours66']['changementref'] ) && !empty( $this->validationErrors['Bilanparcours66']['changementref'] ) ) {
                             echo $this->Xhtml->tag(
                                 'div',
-                                $this->validationErrors['Bilanparcours66']['changementref'],
+                                $this->validationErrors['Bilanparcours66']['changementref'][0],
                                 array(
                                     'class' => 'error-message'
                                 )
@@ -882,7 +882,7 @@
                         )
                     );
                     if (isset($this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'])) {
-                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'].'</div>';
+                        echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['avecep_typeorientprincipale_id'][0].'</div>';
                     }
                     echo '</div>';
 
@@ -901,7 +901,7 @@
                                 )
                             );
                             if (isset($this->validationErrors['Bilanparcours66']['nvtypeorient_id'])) {
-                                echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'].'</div>';
+                                echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvtypeorient_id'][0].'</div>';
                             }
                             echo '</div>';
 
@@ -917,7 +917,7 @@
                                 )
                             );
                             if (isset($this->validationErrors['Bilanparcours66']['nvstructurereferente_id'])) {
-                                echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'].'</div>';
+                                echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['nvstructurereferente_id'][0].'</div>';
                             }
                             echo '</div>';
 
@@ -936,6 +936,7 @@
                 echo '<div class ="input date';
                     if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
                 echo '">';
+                
                 echo $this->Default->subform(
                     array(
                         'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
@@ -945,7 +946,7 @@
                     )
                 );
                 if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) {
-                    echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['datebilan'].'</div>';
+                    echo '<div class="error-message">'.$this->validationErrors['Bilanparcours66']['datebilan'][0].'</div>';
                 }
                 echo '</div>';
             ?>

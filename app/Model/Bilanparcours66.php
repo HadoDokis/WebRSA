@@ -77,12 +77,11 @@
 				)
 			),
 			'datebilan' => array(
-				array(
-					'rule' => array('datePassee'),
-					'message' => 'Merci de choisir une date antérieure à la date du jour',
-					'on' => 'create'
+				'datePassee' => array(
+					'rule' => 'datePassee',
+					'message' => 'Merci de choisir une date antérieure à la date du jour'
 				),
-				array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Merci de rentrer une date valide',
 					'allowEmpty' => false,
