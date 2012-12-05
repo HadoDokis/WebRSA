@@ -60,12 +60,12 @@
 					echo $this->Xhtml->tableCells(
 						array(
 							h( date_short( Set::classicExtract( $cui, 'Cui.datecontrat' ) ) ),
-							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['secteur'] ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.secteur' ), $options['Cui']['secteur'] ) ),
 							h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datedebprisecharge' ) ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datefinprisecharge' ) ) ),
-							h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['positioncui66'] ) ),
-							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['decisioncui'] ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] ) ),
+							h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['Cui']['decisioncui'] ) ),
 							h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
 // 							$this->Default2->button(
 // 								'view',

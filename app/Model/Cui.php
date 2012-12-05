@@ -66,8 +66,9 @@
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'prestataire_id', 'metieraffectation_id', 'metieremploipropose_id' ),
 			),
-			'Autovalidate2',
-			'Gedooo.Gedooo'
+// 			'Autovalidate2',
+			'Gedooo.Gedooo',
+			'Pgsqlcake.PgsqlAutovalidate'
 		);
 
 		/**
@@ -82,26 +83,32 @@
 
 		public $validate = array(
 			'secteur' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'siret' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
+			),/*
+			'numconvention' => array(
 				array(
 					'rule' => 'isUnique',
-					'message' => 'Ce numéro SIRET existe déjà'
+					'message' => 'Ce numéro existe déjà'
 				),
 				array(
-					'rule' => 'numeric',
+					'rule' => 'between',
 					'message' => 'Le numéro SIRET est composé de 14 chiffres'
 				)
-			),
+			),*/
 			'datedebprisecharge' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'datefinprisecharge' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			/*'nomemployeur' => array(
 				'rule' => 'notEmpty',
@@ -364,6 +371,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
 		);
 
 		public $hasMany = array(

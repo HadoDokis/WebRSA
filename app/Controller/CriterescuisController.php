@@ -38,9 +38,22 @@
 			$struct = $this->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$this->set( 'struct', $struct );
 			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set(
+				'trancheage',
+				array(
+					'- 25 ans',
+					'25 - 35 ans',
+					'35 - 45 ans',
+					'45 - 55 ans',
+					'+ 55 ans'
+				)
+			);
+
 			$qual = $this->Option->qual();
 			$this->set( 'qual', $qual );
-			$options = $this->Cui->allEnumLists();
+			$options = $this->Cui->enums();
+			$this->set( 'oridemrsa', $this->Option->oridemrsa() );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 			$this->set( 'options', $options );
 		}
 
