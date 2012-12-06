@@ -15,6 +15,10 @@
 		echo $this->Form->input( 'Prestation.natprest', array( 'type' => 'hidden', 'value' => 'RSA' ) );
 		echo $this->Form->input( 'Prestation.rolepers', array( 'type' => 'hidden', 'value' => 'DEM' ) );
 
+// 		echo $this->Form->input( 'Dernierdossierallocataire.dossier_id', array( 'type' => 'hidden' ) );
+// 		echo $this->Form->input( 'Dernierdossierallocataire.personne_id', array( 'type' => 'hidden' ) );
+
+		
 		// Données de la personne
 		echo '<fieldset><legend>Données de la personne</legend>';
 			echo $this->Default2->subform(
