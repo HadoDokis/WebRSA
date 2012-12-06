@@ -16,7 +16,7 @@
 	class AjoutdossierscompletsController extends AppController
 	{
 		public $components = array( 'Default' );
-		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Detaildroitrsa', 'Option', 'Ajoutdossiercomplet' );
+		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Adresse', 'Adressefoyer', 'Detaildroitrsa', 'Option', 'Ajoutdossiercomplet', 'Dernierdossierallocataire' );
 
 		public $helpers = array( 'Default2' );
 
@@ -41,136 +41,152 @@
 
         public function add(){
 
-// 			$this->Ajoutdossiercomplet->begin();
-
-			// Validation
-			$this->Personne->set( $this->request->data['Personne'] );
-			unset( $this->Personne->validate['dtnai'] );
-			$valid = $this->Personne->validates();
-
-			$this->Adresse->set( $this->request->data['Adresse'] );
-			$this->Adressefoyer->set( $this->request->data['Adressefoyer'] );
-			unset( $this->Adresse->validate['compladr'] );
-			unset( $this->Adresse->validate['complideadr'] );
-			$valid = $this->Adresse->validates() && $valid;
-			$valid = $this->Adressefoyer->validates() && $valid;
-
-			$this->Dossier->set( $this->request->data['Dossier'] );
-			$valid = $this->Dossier->validates() && $valid;
-
-            // Si validation -> sauvegarde
-            if( !empty( $this->request->data ) && $valid ) {
+            // Si le formulaire est renvoyé
+            if( !empty( $this->request->data ) ) {
 				$data = $this->request->data;
-				// Début de la transaction
-				$this->Dossier->begin();
+				
+				// Validation
+				$this->Personne->set( $this->request->data['Personne'] );
+				unset( $this->Personne->validate['dtnai'] );
+				$valid = $this->Personne->validates();
 
-				if( !empty( $data['Dossier']['numdemrsatemp'] ) ) {
-					$data['Dossier']['numdemrsa'] = $this->Dossier->generationNumdemrsaTemporaire();
-				}
+				$this->Adresse->set( $this->request->data['Adresse'] );
+				$this->Adressefoyer->set( $this->request->data['Adressefoyer'] );
+				unset( $this->Adresse->validate['compladr'] );
+				unset( $this->Adresse->validate['complideadr'] );
+				$valid = $this->Adresse->validates() && $valid;
+				$valid = $this->Adressefoyer->validates() && $valid;
 
-				// Tentatives de sauvegarde
-				$saved = $this->Dossier->save( $data['Dossier'] );
+				$this->Dossier->set( $this->request->data['Dossier'] );
+				$valid = $this->Dossier->validates() && $valid;
+				
+				if( $valid ){
+					// Début de la transaction
+					$this->Dossier->begin();
 
-				if( $saved ){
-					// Détails du droit
-					$data['Detaildroitrsa']['dossier_id'] = $this->Dossier->id;
-					$saved = $this->Detaildroitrsa->save( $data['Detaildroitrsa'] ) && $saved;
+					if( !empty( $data['Dossier']['numdemrsatemp'] ) ) {
+						$data['Dossier']['numdemrsa'] = $this->Dossier->generationNumdemrsaTemporaire();
+					}
 
-					// Situation dossier RSA
-					$situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) );
-					$this->Dossier->Situationdossierrsa->validate = array();
-					$saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
+					// Tentatives de sauvegarde
+					$saved = $this->Dossier->save( $data['Dossier'] );
 
-					// Foyer
-					$saved = $this->Foyer->save( array( 'dossier_id' => $this->Dossier->id ) ) && $saved;
+					if( $saved ){
 
-// debug($data);
-// debug( !empty( $data['Adresse'] ) );
-// debug( isset( $data['Adresse'] ) );
-// die();
+						// Détails du droit
+						$data['Detaildroitrsa']['dossier_id'] = $this->Dossier->id;
+						$saved = $this->Detaildroitrsa->save( $data['Detaildroitrsa'] ) && $saved;
 
+						// Situation dossier RSA
+						$situationdossierrsa = array( 'Situationdossierrsa' => array( 'dossier_id' => $this->Dossier->id, 'etatdosrsa' => 'Z' ) );
+						$this->Dossier->Situationdossierrsa->validate = array();
+						$saved = $this->Dossier->Situationdossierrsa->save( $situationdossierrsa ) && $saved;
 
-					if( $data['Adresse']['presence'] == 1 ) {
-						// Adresse
-						$saved = $this->Adresse->save( $data['Adresse'] ) && $saved;
+						// Foyer
+						$saved = $this->Foyer->save( array( 'dossier_id' => $this->Dossier->id ) ) && $saved;
 
+						if( $data['Adresse']['presence'] == 1 ) {
+							// Adresse
+							$saved = $this->Adresse->save( $data['Adresse'] ) && $saved;
+
+							
+						}
+						else {
+							//FIXME : création d'une adresse spécifique pour éviter les problèmes de code insee manquants
+							$dataAdresse = array(
+								'Adresse' => array(
+									'numvoie'	=> '25',
+									'typevoie'	=> 'R',
+									'nomvoie'	=> 'petite la monnaie',
+									'codepos'	=> '66000',
+									'locaadr'	=> 'PERPIGNAN CEDEX',
+									'numcomptt'	=> '66136',
+									'foyerid'	=> $this->Foyer->id
+								)
+							);
+							$saved = $this->Adresse->save( $dataAdresse ) && $saved;
+						}
+						
 						// Adresse foyer
 						$data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
 						$data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
 						$saved = $this->Adressefoyer->save( $data['Adressefoyer'] ) && $saved;
+						
+						// Personne
+						$dataPersonne = array(
+							'Personne' => $data['Personne']
+						);
+						$dataPersonne['Personne']['foyer_id'] = $this->Foyer->id;
+						$this->Personne->create( $dataPersonne );
+						$saved = $this->Personne->save() && $saved;
+						
+						// Prestation
+						$dataPrestation = array(
+							'Prestation' => $data['Prestation']
+						);
+						$dataPrestation['Prestation']['personne_id'] = $this->Personne->id;
+						$this->Personne->Prestation->create( $dataPrestation );
+						$saved = $this->Personne->Prestation->save() && $saved;
+
 					}
 
-					// Demandeur
-					$this->Personne->create();
-					$data['Personne']['foyer_id'] = $this->Foyer->id;
-					$this->Personne->set( $data );
-					$saved = $this->Personne->save( $data ) && $saved;
-					$demandeur_id = $this->Personne->id;
+					// Utilisateur
+					$user = $this->User->find(
+						'first',
+						array(
+							'conditions' => array(
+								'User.id' => $this->Session->read( 'Auth.User.id' )
+							),
+							'recursive' => -1
+						)
+					);
+					$this->assert( !empty( $user ), 'error500' );
 
-					// Prestation
-					$this->Personne->Prestation->create();
-					$data['Prestation']['personne_id'] = $demandeur_id;
-					$this->Personne->Prestation->set( $data );
-					$saved = $this->Personne->Prestation->save( $data ) && $saved;
-				}
-
-				// Utilisateur
-				$user = $this->User->find(
-					'first',
-					array(
-						'conditions' => array(
-							'User.id' => $this->Session->read( 'Auth.User.id' )
-						),
-						'recursive' => -1
-					)
-				);
-				$this->assert( !empty( $user ), 'error500' );
-
-                if( !empty( $data['Serviceinstructeur']['id'] ) ) {
-                    // Service instructeur
-                    $service = ClassRegistry::init( 'Serviceinstructeur' )->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Serviceinstructeur.id' => $data['Serviceinstructeur']['id']
-                            ),
-                            'recursive' => -1
-                        )
-                    );
-                    $this->assert( !empty( $service ), 'error500' );
+					if( !empty( $data['Serviceinstructeur']['id'] ) ) {
+						// Service instructeur
+						$service = ClassRegistry::init( 'Serviceinstructeur' )->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Serviceinstructeur.id' => $data['Serviceinstructeur']['id']
+								),
+								'recursive' => -1
+							)
+						);
+						$this->assert( !empty( $service ), 'error500' );
 
 
-                    $suiviinstruction = array(
-                        'Suiviinstruction' => array(
-                            'dossier_id'           => $this->Dossier->id,
-                            'suiirsa'                  => '01',
-                            'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
-                            'nomins'                   => $user['User']['nom'],
-                            'prenomins'                => $user['User']['prenom'],
-                            'numdepins'                => $service['Serviceinstructeur']['numdepins'],
-                            'typeserins'               => $service['Serviceinstructeur']['typeserins'],
-                            'numcomins'                => $service['Serviceinstructeur']['numcomins'],
-                            'numagrins'                => $service['Serviceinstructeur']['numagrins']
-                        )
-                    );
-                    $this->Dossier->Suiviinstruction->set( $suiviinstruction );
+						$suiviinstruction = array(
+							'Suiviinstruction' => array(
+								'dossier_id'           => $this->Dossier->id,
+								'suiirsa'                  => '01',
+								'date_etat_instruction'    => strftime( '%Y-%m-%d' ),
+								'nomins'                   => $user['User']['nom'],
+								'prenomins'                => $user['User']['prenom'],
+								'numdepins'                => $service['Serviceinstructeur']['numdepins'],
+								'typeserins'               => $service['Serviceinstructeur']['typeserins'],
+								'numcomins'                => $service['Serviceinstructeur']['numcomins'],
+								'numagrins'                => $service['Serviceinstructeur']['numagrins']
+							)
+						);
+						$this->Dossier->Suiviinstruction->set( $suiviinstruction );
 
-                    $validate = $this->Dossier->Suiviinstruction->validates();
-    //debug($validate);
-    //die();
-                    if( $validate ) {
-                        $saved = $this->Dossier->Suiviinstruction->save( $suiviinstruction ) && $saved;
-                    }
-                }
+						$validate = $this->Dossier->Suiviinstruction->validates();
 
-				// Fin de la transaction
-				if( $saved ) {
-					$this->Dossier->commit();
-					$this->redirect( array('controller'=>'dossiers', 'action'=>'view', $this->Dossier->id ) );
-				}
-				// Annulation de la transaction
-				else {
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+						if( $validate ) {
+							$saved = $this->Dossier->Suiviinstruction->save( $suiviinstruction ) && $saved;
+						}
+					}
+
+					// Fin de la transaction
+					if( $saved ) {
+						$this->Dossier->commit();
+						$this->redirect( array('controller'=>'dossiers', 'action'=>'view', $this->Dossier->id ) );
+					}
+					// Annulation de la transaction
+					else {
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
 				}
 			}
 			$this->_setOptions();
