@@ -24,7 +24,7 @@
 			'Cer93.id' => array( 'type' => 'hidden' ),
 			'Cer93.contratinsertion_id' => array( 'type' => 'hidden' ),
 			'Cer93.observbenef' => array( 'type' => 'textarea' ),
-			'Cer93.datesignature' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ),
+			'Cer93.datesignature' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ),
 			'Cer93.positioncer' => array( 'type' => 'hidden', 'value' => '01signe' ) // FIXME
 		)
 	);

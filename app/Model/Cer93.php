@@ -132,6 +132,12 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
+			'datesignature' => array(
+				'datePassee' => array(
+					'rule' => 'datePassee',
+					'message' => 'Merci de renseigner une date antérieure ou égale à la date du jour'
+				)
+			)
 		);
 
 		/**
@@ -612,6 +618,7 @@
 			$data['Cer93']['codepos'] = $dataCaf['Adresse']['codepos'];
 			$data['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
 			$data['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
+			$data['Cer93']['dtdemrsa'] = $dataCaf['Dossier']['dtdemrsa'];
 
 			// Bloc 3
 			if( !isset( $data['Cer93']['inscritpe'] ) || is_null( $data['Cer93']['inscritpe'] ) ) {
@@ -1218,6 +1225,9 @@
 							'Diplomecer93',
 							'Expprocer93',
 							'Histochoixcer93' => array(
+// 								'User' => array(
+// 									'fields' => array( 'nom_complet' )
+// 								),
 								'order' => array( 'Histochoixcer93.etape ASC' )
 							),
 							'Sujetcer93'
