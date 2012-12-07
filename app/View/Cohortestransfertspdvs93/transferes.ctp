@@ -21,7 +21,7 @@
 					__d( 'dossier', 'Dossier.numdemrsa' ),
 					__d( 'dossier', 'Dossier.matricule' ),
 					'Adresse actuelle',
-					'Alocataire',
+					'Allocataire',
 					__d( 'prestation', 'Prestation.rolepers' ),
 					'Date de transfert',
 					'Structure référente source',
