@@ -80,6 +80,45 @@ LANGUAGE plpgsql IMMUTABLE;
 COMMENT ON FUNCTION cakephp_validate_inclusive_range( p_check float, p_lower float, p_upper float ) IS
 	'Comme cakephp_validate_range(), mais avec les bornes incluses';
 
+	
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) RETURNS bool as
+$$
+	DECLARE
+		p_namespace			alias for $1;
+		p_table				alias for $2;
+		p_constraintname    alias for $3;
+		v_row				record;
+		v_query				text;
+	BEGIN
+		SELECT
+				1 INTO v_row
+			FROM pg_constraint
+				INNER JOIN pg_namespace ON ( pg_constraint.connamespace = pg_namespace.oid )
+				INNER JOIN pg_class ON ( pg_constraint.conrelid = pg_class.oid )
+			WHERE
+				pg_namespace.nspname = p_namespace
+				AND pg_class.relname = p_table
+				AND pg_constraint.conname = p_constraintname;
+		IF FOUND THEN
+			RAISE NOTICE 'Alter table %.% - drop constraint %', p_namespace, p_table, p_constraintname;
+			v_query := 'ALTER TABLE ' || p_namespace || '.' || p_table || ' DROP constraint ' || p_constraintname || ';';
+			EXECUTE v_query;
+			RETURN 't';
+		ELSE
+			RETURN 'f';
+		END IF;
+	END;
+$$
+LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) IS
+	'Équivalent de la fonctionnalité ALTER TABLE <table> DROP CONSTRAINT <name> disponible à partir de PostgreSQl 9.1';
+
+--------------------------------------------------------------------------------
+
+	
 -------------------------------------------------------------------------------------
 -- 20121003: nouveau CER pour le CG 93
 -------------------------------------------------------------------------------------
@@ -224,7 +263,8 @@ CREATE UNIQUE INDEX cers93_contratinsertion_id_idx ON cers93( contratinsertion_i
 ALTER TABLE cers93 ADD CONSTRAINT cers93_inscritpe_in_list_chk CHECK ( cakephp_validate_in_list( inscritpe, ARRAY['0', '1'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_cmu_in_list_chk CHECK ( cakephp_validate_in_list( cmu, ARRAY['oui', 'non', 'encours'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_cmuc_in_list_chk CHECK ( cakephp_validate_in_list( cmuc, ARRAY['oui', 'non', 'encours'] ) );
-ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_nivetu_in_list_chk' );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207', '1208'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( positioncer, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_formeci_in_list_chk CHECK ( cakephp_validate_in_list( formeci, ARRAY['S', 'C'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_isemploitrouv_in_list_chk CHECK ( cakephp_validate_in_list( isemploitrouv, ARRAY['N', 'O'] ) );
@@ -472,43 +512,6 @@ CREATE INDEX transfertspdvs93_nv_orientstruct_id_idx ON transfertspdvs93(nv_orie
 
 DROP INDEX IF EXISTS transfertspdvs93_user_id_idx;
 CREATE INDEX transfertspdvs93_user_id_idx ON transfertspdvs93(user_id);
-
---------------------------------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) RETURNS bool as
-$$
-	DECLARE
-		p_namespace			alias for $1;
-		p_table				alias for $2;
-		p_constraintname    alias for $3;
-		v_row				record;
-		v_query				text;
-	BEGIN
-		SELECT
-				1 INTO v_row
-			FROM pg_constraint
-				INNER JOIN pg_namespace ON ( pg_constraint.connamespace = pg_namespace.oid )
-				INNER JOIN pg_class ON ( pg_constraint.conrelid = pg_class.oid )
-			WHERE
-				pg_namespace.nspname = p_namespace
-				AND pg_class.relname = p_table
-				AND pg_constraint.conname = p_constraintname;
-		IF FOUND THEN
-			RAISE NOTICE 'Alter table %.% - drop constraint %', p_namespace, p_table, p_constraintname;
-			v_query := 'ALTER TABLE ' || p_namespace || '.' || p_table || ' DROP constraint ' || p_constraintname || ';';
-			EXECUTE v_query;
-			RETURN 't';
-		ELSE
-			RETURN 'f';
-		END IF;
-	END;
-$$
-LANGUAGE plpgsql;
-
-COMMENT ON FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) IS
-	'Équivalent de la fonctionnalité ALTER TABLE <table> DROP CONSTRAINT <name> disponible à partir de PostgreSQl 9.1';
-
---------------------------------------------------------------------------------
 
 -- TODO: le faire dans le formulaire
 SELECT add_missing_table_field( 'public', 'users', 'type', 'VARCHAR(50)' );
