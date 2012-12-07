@@ -88,8 +88,6 @@
 						if( $data['Adresse']['presence'] == 1 ) {
 							// Adresse
 							$saved = $this->Adresse->save( $data['Adresse'] ) && $saved;
-
-							
 						}
 						else {
 							//FIXME : création d'une adresse spécifique pour éviter les problèmes de code insee manquants
