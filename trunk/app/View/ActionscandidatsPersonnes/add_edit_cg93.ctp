@@ -286,7 +286,7 @@
 		?>
 	</fieldset>
 
-	<fieldset class="loici">
+	<fieldset>
 		<?php
 			echo $this->Default->subform(
 				array(
