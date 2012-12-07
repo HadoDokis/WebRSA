@@ -48,11 +48,6 @@
 					'rule' => array('notEmpty'),
 				),
 			),
-			'compladr' => array(
-				array(
-					'rule' => array('notEmpty'),
-				),
-			),
 			'codepostal' => array(
 				array(
 					'rule' => array('notEmpty'),
