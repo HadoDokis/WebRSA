@@ -287,12 +287,6 @@
 	</fieldset>
 
 	<fieldset class="loici">
-		<p>
-			<strong>Engagement:</strong><br />
-			<em>Je m’engage à me rendre disponible afin d’être présent à la prestation ou au rendez vous qui me sera fixé. En cas de force majeure, je m’engage à prévenir le conseiller d’insertion ou l’assistante sociale chargé de mon suivi.<br />
-			Nous vous rappelons que dans le cas où vous ne donneriez pas suite à ce rendez vous sans motif valable, vous seriez convoqué(e) par l'Equipe Pluridisciplinaire Locale (Commission Audition), pour non respect de vos obligations dans le cadre de votre contrat.<br />
-			</em>
-		</p>
 		<?php
 			echo $this->Default->subform(
 				array(
