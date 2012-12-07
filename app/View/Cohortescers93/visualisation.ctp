@@ -57,11 +57,15 @@
 				</thead>';
 			echo '<tbody>';
 			foreach( $cers93 as $index => $cer93 ) {
+
 				if( isset( $cer93['Histochoixcer93etape03']['isrejet'] ) && ( $cer93['Histochoixcer93etape03']['isrejet'] == '1' ) ) {
 					$validationcpdv = 'Rejeté';
 				}
-				else{
-					$validationcpdv = Set::enum( $cer93['Histochoixcer93etape03']['etape'], $options['Cer93']['positioncer'] );
+				else if( isset( $cer93['Histochoixcer93etape03']['isrejet'] ) && ( $cer93['Histochoixcer93etape03']['isrejet'] == '0' ) ) {
+					$validationcpdv = 'Oui';//Set::enum( $cer93['Histochoixcer93etape03']['etape'], $options['Cer93']['positioncer'] );
+				}
+				else {
+					$validationcpdv = '';
 				}
 
 				echo $this->Html->tableCells(
