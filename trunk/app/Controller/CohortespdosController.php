@@ -29,7 +29,18 @@
 				'avisdemande',
 			),
 			'Gestionzonesgeos',
-			'Search.Prg' => array( 'actions' => array( 'avisdemande', 'valide' ) )
+			'Search.Filtresdefaut' => array(
+				'avisdemande',
+				'valide'
+			),
+			'Search.Prg' => array(
+				'actions' => array(
+					'avisdemande' => array(
+						'filter' => 'Search'
+					),
+					'valide'
+				)
+			)
 		);
 
 		/**
@@ -37,9 +48,8 @@
 		 *
 		 * @return void
 		 */
-		public function beforeFilter(){
-			parent::beforeFilter();
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()) );
+		protected function _setOptions(){
+
 			$this->set( 'typepdo', $this->Typepdo->find( 'list' ) );
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 			$this->set( 'typenotifpdo', $this->Typenotifpdo->find( 'list' ) );
@@ -60,6 +70,16 @@
 					)
 				)
 			);
+			
+			$options = array(
+				'cantons' => $this->Gestionzonesgeos->listeCantons(),
+				'etatdosrsa' => $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()),
+				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
+				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
+				'rolepers' => $this->Option->rolepers(),
+				'qual' => $this->Option->qual()
+			);
+			$this->set( 'options', $options );
 		}
 
 		/**
@@ -90,18 +110,21 @@
 
 			if( !empty( $this->request->data ) ) {
 				if( !empty( $this->request->data['Propopdo'] ) ) {
-					$dossiers_ids = Set::extract(  $this->request->data, 'Propopdo.{n}.dossier_id'  );
+				
+					$data = Set::extract( '/Propopdo[user_id=/[0-9]+/]', $this->request->data );
+
+					$dossiers_ids = Set::extract(  $data, 'Propopdo.{n}.dossier_id'  );
 					$this->Cohortes->get( $dossiers_ids );
 
-					$valid = $this->Propopdo->saveAll( $this->request->data['Propopdo'], array( 'validate' => 'only', 'atomic' => false ) );
+					$valid = $this->Propopdo->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) );
 
 					if( $valid ) {
 						$this->Dossier->begin();
-						$saved = $this->Propopdo->saveAll( $this->request->data['Propopdo'], array( 'validate' => 'first', 'atomic' => false ) );
+						$saved = $this->Propopdo->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) );
 						if( $saved ) {
 							$this->Dossier->commit();
+							unset( $this->request->data['Propopdo'] );
 							$this->Cohortes->release( $dossiers_ids );
-							$this->request->data['Propopdo'] = array();
 						}
 						else {
 							$this->Dossier->rollback();
@@ -118,9 +141,11 @@
 						( $this->Cohortes->active() ? $this->Cohortes->sqLocked() : null )
 					);
 
+					$progressivePaginate = !Set::classicExtract( $this->request->data, 'Search.paginationNombreTotal' );
+					
 					$queryData['limit'] = 10;
 					$this->paginate = array( 'Personne' => $queryData );
-					$cohortepdo = $this->paginate( 'Personne' );
+					$cohortepdo = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 					// Obtention des jetons lorsque l'on est en cohortes
 					if( $this->Cohortes->active() ) {
@@ -132,8 +157,7 @@
 				}
 			}
 
-			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+			$this->_setOptions();
 
 			switch( $statutValidationAvis ) {
 				case 'Decisionpdo::nonvalide':
@@ -160,6 +184,7 @@
 				Xset::bump( $this->request->params['named'], '__' ),
 				( $this->Cohortes->active() ? $this->Cohortes->sqLocked() : null )
 			);
+			$this->_setOptions();
 
 			unset( $params['limit'] );
 			$pdos = $this->Propopdo->Personne->find( 'all', $params );

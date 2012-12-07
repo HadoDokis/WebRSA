@@ -18,6 +18,10 @@
 		public $name = 'Cohortepdo';
 
 		public $useTable = false;
+		
+		public $actsAs = array(
+			'Conditionnable'
+		);
 
 		/**
 		 * Traitement du formulaire de recherche concernant les PDOs.
@@ -25,20 +29,31 @@
 		 * @param string $statutValidationAvis
 		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
 		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
-		 * @param array $criterespdo Critères du formulaire de recherche
+		 * @param array $criterespdo['Search'] Critères du formulaire de recherche
 		 * @param mixed $lockedDossiers
 		 * @return array
 		 */
 		public function search( $statutValidationAvis, $mesCodesInsee, $filtre_zone_geo, $criterespdo, $lockedDossiers ) {
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
+			$Personne = ClassRegistry::init( 'Personne' );
 
 			// Conditions de base
 			$conditions = array( );
+			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+			$conditions['Prestation.natprest'] = array( 'RSA' );
+			$conditions[] = array(
+				'OR' => array(
+					'Adressefoyer.id IS NULL',
+					'Adressefoyer.id IN ( '
+						.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id')
+					.' )'
+				)
+			);
 
 			if( !empty( $statutValidationAvis ) ) {
 				if( $statutValidationAvis == 'Decisionpdo::nonvalide' ) {
-					$etatdossier = Set::extract( $criterespdo, 'Situationdossierrsa.etatdosrsa' );
-					if( isset( $criterespdo['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criterespdo['Situationdossierrsa']['etatdosrsa'] ) ) {
+					$etatdossier = Set::extract( $criterespdo['Search'], 'Situationdossierrsa.etatdosrsa' );
+					if( isset( $criterespdo['Search']['Situationdossierrsa']['etatdosrsa'] ) && !empty( $criterespdo['Search']['Situationdossierrsa']['etatdosrsa'] ) ) {
 						$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
 					}
 					else {
@@ -52,8 +67,6 @@
 				}
 			}
 
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) ) {
 				if( is_array( $lockedDossiers ) ) {
@@ -62,39 +75,27 @@
 				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
-			/// Critères
-			$typepdo_id = Set::extract( $criterespdo, 'Cohortepdo.typepdo_id' );
-			$decisionpdo = Set::extract( $criterespdo, 'Cohortepdo.decisionpdo_id' );
-			$motifpdo = Set::extract( $criterespdo, 'Cohortepdo.motifpdo' );
-			$datedecisionpdo = Set::extract( $criterespdo, 'Cohortepdo.datedecisionpdo' );
-			$matricule = Set::extract( $criterespdo, 'Cohortepdo.matricule' );
-			$numdemrsa = Set::extract( $criterespdo, 'Cohortepdo.numdemrsa' );
-			$numcomptt = Set::extract( $criterespdo, 'Cohortepdo.numcomptt' );
-			$gestionnaire = Set::extract( $criterespdo, 'Cohortepdo.user_id' );
+			$conditions = $this->conditionsAdresse( $conditions, $criterespdo['Search'], $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsDossier( $conditions, $criterespdo['Search'] );
+			$conditions = $this->conditionsPersonne( $conditions, $criterespdo['Search'] );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterespdo['Search'] );
+			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criterespdo['Search'] );
 
-			$daterevision = Set::extract( $criterespdo, 'Cohortepdo.daterevision' );
+			/// Critères
+			$typepdo_id = Set::extract( $criterespdo['Search'], 'Propopdo.typepdo_id' );
+			$decisionpdo = Set::extract( $criterespdo['Search'], 'Propopdo.decisionpdo_id' );
+			$motifpdo = Set::extract( $criterespdo['Search'], 'Propopdo.motifpdo' );
+			$datedecisionpdo = Set::extract( $criterespdo['Search'], 'Propopdo.datedecisionpdo' );
+			$gestionnaire = Set::extract( $criterespdo['Search'], 'Propopdo.user_id' );
+
+			$daterevision = Set::extract( $criterespdo['Search'], 'Propopdo.daterevision' );
 			$traitementCheck = false;
 			if (!empty($daterevision)) {
-				$valid_daterevision = ( valid_int( $criterespdo['Cohortepdo']['daterevision']['year'] ) && valid_int( $criterespdo['Cohortepdo']['daterevision']['month'] ) && valid_int( $criterespdo['Cohortepdo']['daterevision']['day'] ) );
+				$valid_daterevision = ( valid_int( $criterespdo['Search']['Propopdo']['daterevision']['year'] ) && valid_int( $criterespdo['Search']['Propopdo']['daterevision']['month'] ) && valid_int( $criterespdo['Search']['Propopdo']['daterevision']['day'] ) );
 				if ($valid_daterevision) {
-					$conditions[] = 'Traitementpdo.daterevision BETWEEN \''.implode( '-', array( '1970', '01', '01' ) ).'\' AND \''.implode( '-', array( $criterespdo['Cohortepdo']['daterevision']['year'], $criterespdo['Cohortepdo']['daterevision']['month'], $criterespdo['Cohortepdo']['daterevision']['day'] ) ).'\'';
+					$conditions[] = 'Traitementpdo.daterevision BETWEEN \''.implode( '-', array( '1970', '01', '01' ) ).'\' AND \''.implode( '-', array( $criterespdo['Search']['Propopdo']['daterevision']['year'], $criterespdo['Search']['Propopdo']['daterevision']['month'], $criterespdo['Search']['Propopdo']['daterevision']['day'] ) ).'\'';
 					$conditions[] = 'Traitementpdo.clos = 0';
 					$traitementCheck = true;
-				}
-			}
-
-			$traitementtypepdo_id = Set::extract( $criterespdo, 'Cohortepdo.traitementtypepdo_id' );
-			if( !empty( $traitementtypepdo_id ) ) {
-				$conditions[] = 'Traitementpdo.traitementtypepdo_id = \''.$traitementtypepdo_id.'\'';
-				if (!$traitementCheck)
-					$conditions[] = 'Traitementpdo.clos = 0';
-			}
-
-			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
-			$filtersPersonne = array();
-			foreach( array( 'nom', 'prenom', 'nomnai' ) as $criterePersonne ) {
-				if( isset( $criterespdo['Cohortepdo'][$criterePersonne] ) && !empty( $criterespdo['Cohortepdo'][$criterePersonne] ) ) {
-					$conditions[] = 'Personne.'.$criterePersonne.' ILIKE \''.$this->wildcard( replace_accents( $criterespdo['Cohortepdo'][$criterePersonne] ) ).'\'';
 				}
 			}
 
@@ -108,27 +109,6 @@
 				$conditions[] = 'Propopdo.motifpdo ILIKE \'%'.Sanitize::clean( $motifpdo, array( 'encode' => false ) ).'%\'';
 			}
 
-			// ...
-			if( !empty( $matricule ) ) {
-				$conditions[] = 'Dossier.matricule ILIKE \''.$this->wildcard( $matricule ).'\'';
-			}
-			// ...
-			if( !empty( $numdemrsa ) ) {
-				$conditions[] = 'Dossier.numdemrsa ILIKE \''.$this->wildcard( $numdemrsa ).'\'';
-			}
-			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
-			}
-
-			/// Critères sur l'adresse - canton
-			if( Configure::read( 'CG.cantons' ) ) {
-				if( isset( $criterespdo['Canton']['canton'] ) && !empty( $criterespdo['Canton']['canton'] ) ) {
-					$this->Canton = ClassRegistry::init( 'Canton' );
-					$conditions[] = $this->Canton->queryConditions( $criterespdo['Canton']['canton'] );
-				}
-			}
-
 			// Décision de la PDO
 			if( !empty( $decisionpdo ) ) {
 				$conditions[] = 'Decisionpropopdo.decisionpdo_id = \''.Sanitize::clean( $decisionpdo, array( 'encode' => false ) ).'\'';
@@ -140,50 +120,14 @@
 			}
 
 			/// Critères sur les PDOs - date de décision
-			if( isset( $criterespdo['Cohortepdo']['datedecisionpdo'] ) && !empty( $criterespdo['Cohortepdo']['datedecisionpdo'] ) ) {
-				$valid_from = ( valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_from']['day'] ) );
-				$valid_to = ( valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdo['Cohortepdo']['datedecisionpdo_to']['day'] ) );
+			if( isset( $criterespdo['Search']['Propopdo']['datedecisionpdo'] ) && !empty( $criterespdo['Search']['Propopdo']['datedecisionpdo'] ) ) {
+				$valid_from = ( valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['year'] ) && valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['month'] ) && valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['day'] ) );
+				$valid_to = ( valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['year'] ) && valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['month'] ) && valid_int( $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['day'] ) );
 				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_from']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdo['Cohortepdo']['datedecisionpdo_to']['year'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['month'], $criterespdo['Cohortepdo']['datedecisionpdo_to']['day'] ) ).'\'';
+					$conditions[] = 'Propopdo.datedecisionpdo BETWEEN \''.implode( '-', array( $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['year'], $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['month'], $criterespdo['Search']['Propopdo']['datedecisionpdo_from']['day'] ) ).'\' AND \''.implode( '-', array( $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['year'], $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['month'], $criterespdo['Search']['Propopdo']['datedecisionpdo_to']['day'] ) ).'\'';
 				}
 			}
 
-			// Trouver la dernière demande RSA pour chacune des personnes du jeu de résultats
-			if( isset( $criterespdo['Dossier']['dernier'] ) && $criterespdo['Dossier']['dernier'] ) {
-				$conditions[] = 'Dossier.id IN (
-					SELECT
-							dossiers.id
-						FROM personnes
-							INNER JOIN prestations ON (
-								personnes.id = prestations.personne_id
-								AND prestations.natprest = \'RSA\'
-							)
-							INNER JOIN foyers ON (
-								personnes.foyer_id = foyers.id
-							)
-							INNER JOIN dossiers ON (
-								dossiers.id = foyers.dossier_id
-							)
-						WHERE
-							prestations.rolepers IN ( \'DEM\', \'CJT\' )
-							AND (
-								(
-									nir_correct13( Personne.nir )
-									AND nir_correct13( personnes.nir )
-									AND SUBSTRING( TRIM( BOTH \' \' FROM personnes.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 )
-									AND personnes.dtnai = Personne.dtnai
-								)
-								OR
-								(
-									UPPER(personnes.nom) = UPPER(Personne.nom)
-									AND UPPER(personnes.prenom) = UPPER(Personne.prenom)
-									AND personnes.dtnai = Personne.dtnai
-								)
-							)
-						ORDER BY dossiers.dtdemrsa DESC
-						LIMIT 1
-				)';
-			}
 
 			$query = array(
 				'fields' => array(
@@ -203,7 +147,6 @@
 					'Adresse.codepos',
 					'Adresse.numcomptt',
 					'Situationdossierrsa.etatdosrsa',
-
 					'Foyer.id',
 					'Propopdo.id',
 					'Decisionpropopdo.id',
@@ -215,80 +158,15 @@
 					'Prestation.id',
 				),
 				'joins' => array(
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-					),
-					array(
-						'table'      => 'propospdos',
-						'alias'      => 'Propopdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propopdo.personne_id = Personne.id' )
-					),
-					array(
-						'table'      => 'decisionspropospdos',
-						'alias'      => 'Decisionpropopdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
-					),
-					array(
-						'table'      => 'traitementspdos',
-						'alias'      => 'Traitementpdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Traitementpdo.propopdo_id = Propopdo.id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Situationdossierrsa.dossier_id = Dossier.id'
-						)
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'Prestation.natprest = \'RSA\'',
-							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-						)
-					),
+					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Propopdo', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->Propopdo->join( 'Decisionpropopdo', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Propopdo->join( 'Traitementpdo', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) )
 				),
 				'recursive' => -1,
 				'conditions' => $conditions,
