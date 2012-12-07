@@ -585,4 +585,114 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet de rechercher le dernier dossier d'un allocataire dans la table
+	 * derniersdossiersallocataires (il faudra mettre le shell Derniersdossiersallocataires
+	 * en tâche planifiée) afin de se passer d'une sous-requête coûteuse dans les
+	 * recherches.
+	 *
+	 * @param boolean
+	 * @default null
+	 */
+	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/visualisation
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_visualisation',
+		array(
+			'Search' => array(
+				'Contratinsertion' => array(
+					'dernier' => true
+				)
+			)
+		)
+	);
+
+	/**
+	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
+	 * et apache_get_modules() ne sont pas disponibles. Du coup, on passe par
+	 * la fonction exec() pour interroger directement le binaire apache.
+	 *
+	 * Ce paramètre de configuration permet de spécifier le chemin complet vers
+	 * le binaire apache.
+	 *
+	 * @default /usr/sbin/apache2
+	 */
+	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/atransferer
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortestransfertspdvs93_atransferer',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Orientstruct' => array(
+					'typeorient_id' => 1
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
+
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortetransfertspdvs93/transferes
+	 * (menu "CER" > "5. Tableau de suivi") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortestransfertspdvs93_transferes',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Orientstruct' => array(
+					'typeorient_id' => 1
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/avisdemande)
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortespdos_avisdemande',
+		array(
+			'Search' => array(
+				'Dossier' => array(
+					'dernier' => '1',
+				)
+			)
+		)
+	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/valide)
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortespdos_valide',
+		Configure::read( 'Filtresdefaut.Cohortespdos_avisdemande' )
+	);
 ?>
