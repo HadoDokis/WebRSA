@@ -216,7 +216,7 @@
 				'Référents déjà affectés' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affectes'  ) ),
 			),
 			'2. Saisie d\'un CER' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) ),
-			'3. Validation CPDV' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) ),
+			'3. Validation Responsable' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) ),
 			'4. Décision CG' => array(
 				'4.1 Première lecture' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'premierelecture'  ) ),
 				'4.2 Validation CS' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'validationcs'  ) ),

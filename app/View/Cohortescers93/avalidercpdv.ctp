@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = '3. Validation CPDV';
+	$this->pageTitle = '3. Validation Responsable';
 	
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
