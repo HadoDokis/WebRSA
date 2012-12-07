@@ -47,8 +47,12 @@
 		</thead>
 		<tbody>
 			<?php
-
 				foreach( $rdvs as $rdv ) {
+					$lastrdv = true;
+					if( Configure::read( 'Cg.departement' ) != 93 ) {
+						$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
+					}
+					
 					echo $this->Xhtml->tableCells(
 						array(
 							h( Set::classicExtract( $rdv, 'Personne.nom_complet' ) ),
@@ -71,7 +75,7 @@
 								'Editer le référent',
 								array( 'controller' => 'rendezvous', 'action' => 'edit',
 								$rdv['Rendezvous']['id'] ),
-								( ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id ) && ( $dossiercommissionLie== 0 ) && ( $this->Permissions->check( 'rendezvous', 'edit' ) == 1 ) )
+								( $lastrdv && ( $dossiercommissionLie== 0 ) && ( $this->Permissions->check( 'rendezvous', 'edit' ) == 1 ) )
 							),
 							$this->Xhtml->printLink(
 								'Imprimer le Rendez-vous',
@@ -84,7 +88,7 @@
 								array( 'controller' => 'rendezvous', 'action' => 'delete',
 								$rdv['Rendezvous']['id'] ),
 								(
-                                    ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id )
+                                    $lastrdv
                                     && ( $dossiercommissionLie== 0 )
                                     && ( $this->Permissions->check( 'rendezvous', 'delete' ) == 1 )
                                 )
