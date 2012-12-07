@@ -63,6 +63,7 @@
 
 			$options = $this->Propopdo->allEnumLists();
 			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+			$this->set( 'structs', $this->Propopdo->Structurereferente->listeParType( 'pdo' ) );
 			$this->set( compact( 'options' ) );
 		}
 
@@ -157,16 +158,17 @@
 			$options = $this->Propopdo->prepare( 'propopdo', array( 'conditions' => $conditions ) );
 
 			$pdo = $this->Propopdo->find(
-					'first', array(
-				'conditions' => array(
-					'Propopdo.id' => $pdo_id
-				),
-				'contain' => array(
-					'Fichiermodule',
-					'Typepdo',
-					'Decisionpropopdo'
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'Propopdo.id' => $pdo_id
+					),
+					'contain' => array(
+						'Fichiermodule',
+						'Typepdo',
+						'Decisionpropopdo'
 					)
+				)
 			);
 
 			// Afficahge des traitements liés à une PDO
@@ -202,7 +204,7 @@
 			}
 			$this->set( 'pdo', $pdo );
 			$this->_setOptions();
-			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
+
 			$this->set( 'personne_id', $pdo['Propopdo']['personne_id'] );
 			$this->set( 'urlmenu', '/propospdos/index/'.$pdo['Propopdo']['personne_id'] );
 
@@ -281,78 +283,7 @@
 				$this->assert( !empty( $pdo ), 'invalidParameter' );
 				$personne_id = Set::classicExtract( $pdo, 'Propopdo.personne_id' );
 				$dossier_id = $this->Personne->dossierId( $personne_id );
-//
-//				$traitementspdos = $this->{$this->modelClass}->Traitementpdo->find(
-//					'all',
-//					array(
-//						'conditions' => array(
-//							'propopdo_id' => $pdo_id
-//						),
-//						'contain' => array(
-//							'Descriptionpdo',
-//							'Traitementtypepdo'
-//						)
-//					)
-//				);
-//				$this->set( compact( 'traitementspdos' ) );
 
-//				$joins = array(
-//					array(
-//						'table' => 'pdfs',
-//						'alias' => 'Pdf',
-//						'type' => 'LEFT OUTER',
-//						'foreignKey' => false,
-//						'conditions' => array(
-//							'Pdf.modele' => 'Decisionpropopdo',
-//							'Pdf.fk_value = Decisionpropopdo.id'
-//						)
-//					),
-//					array(
-//						'table' => 'decisionspdos',
-//						'alias' => 'Decisionpdo',
-//						'type' => 'LEFT OUTER',
-//						'foreignKey' => false,
-//						'conditions' => array(
-//							'Decisionpdo.id = Decisionpropopdo.decisionpdo_id'
-//						)
-//					)
-//				);
-//
-//				$decisionspropospdos = $this->{$this->modelClass}->Decisionpropopdo->find(
-//                    'all',
-//                    array(
-//                        'fields' => array(
-//                            'Decisionpdo.libelle',
-//                            'Decisionpropopdo.id',
-//                            'Decisionpropopdo.datedecisionpdo',
-//                            'Decisionpropopdo.decisionpdo_id',
-//                            'Decisionpropopdo.avistechnique',
-//                            'Decisionpropopdo.dateavistechnique',
-//                            'Decisionpropopdo.validationdecision',
-//                            'Decisionpropopdo.datevalidationdecision',
-//                            'Pdf.fk_value'
-//                        ),
-//                        'conditions' => array(
-//                            'propopdo_id' => $pdo_id
-//                        ),
-//                        'joins' => $joins,
-//                        'order' => array(
-//                            'Decisionpropopdo.created DESC'
-//                        ),
-//                        'recursive' => -1
-//                    )
-//				);
-//
-//				$this->set( compact( 'decisionspropospdos' ) );
-//				if( !empty( $decisionspropospdos ) ) {
-//					$lastDecisionId = $decisionspropospdos[0]['Decisionpropopdo']['id'];
-//					( is_numeric( $decisionspropospdos[0]['Decisionpropopdo']['validationdecision'] ) ) ? $ajoutDecision = true : $ajoutDecision = false;
-//				}
-//				else {
-//					$lastDecisionId = null;
-//					$ajoutDecision = null;
-//				}
-//				$this->set( compact( 'ajoutDecision', 'lastDecisionId' ) );
 				$this->set( 'pdo_id', $pdo_id );
 			}
 
@@ -442,7 +373,6 @@
 			$this->set( 'urlmenu', '/propospdos/index/'.$personne_id );
 			$this->set( 'fichiers', $fichiers );
 			$this->_setOptions();
-			$this->set( 'structs', $this->Propopdo->Structurereferente->find( 'list' ) );
 			$this->render( 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
 		}
 
