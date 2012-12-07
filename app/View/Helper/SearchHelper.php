@@ -284,5 +284,26 @@
 			return $script.$input;
 		}
 
+		/**
+		 * Retourne une fieldset de recherche par dossier contenant les champs suivants: 
+		 *
+		 * @param string $prefix Le préfixe éventuel (ex.: Search)
+		 * @return string
+		 */
+		public function blocDossier( $etatsdosrsa = array(), $prefix = null ) {
+			$prefix = ( !empty( $prefix ) ? "{$prefix}." : null );
+
+			$content = $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
+			$content .= $this->date( "{$prefix}Dossier.dtdemrsa" );
+			$content .= $this->etatdosrsa( $etatsdosrsa, "{$prefix}Situationdossierrsa.etatdosrsa" );
+			$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
+
+
+			return $this->Xhtml->tag(
+				'fieldset',
+				$this->Xhtml->tag( 'legend', 'Recherche par dossier' )
+				.$content
+			);
+		}
 	}
 ?>
