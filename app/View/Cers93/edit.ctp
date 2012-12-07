@@ -169,6 +169,8 @@
                 <br />
                 <strong>N° demandeur : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.numdemrsa' );?>
                 <br />
+                <strong>Date d'ouverture de droit : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtdemrsa' ) );?>
+                <br />
                 <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.matricule' );?>
                 <br />
                 <strong>Inscrit au Pôle emploi</strong>
@@ -336,7 +338,7 @@
 									.$this->Xform->input( "Expprocer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
-									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'text', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.duree", array( 'type' => 'text', 'label' => false ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
 								)
@@ -597,7 +599,7 @@
 			$fields = $this->Xform->input( 'Expprocer93.%line%.secteuracti_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><?php
-			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'text', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) );
+			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
