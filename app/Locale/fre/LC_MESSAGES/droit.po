@@ -2816,10 +2816,10 @@ msgid "Module:Histoschoixcers93"
 msgstr "CER (CG 93): workflow CER, validations individuelles"
 
 msgid "Histoschoixcers93:attdecisioncpdv"
-msgstr "Workflow CER: 2.3. Envoi CG (individuel)"
+msgstr "Workflow CER: 2.3. Validation CPDV (individuel)"
 
 msgid "Histoschoixcers93:attdecisioncg"
-msgstr "Workflow CER: 3. Validation CPDV (individuel)"
+msgstr "Workflow CER: 3. Envoi CG (individuel)"
 
 msgid "Histoschoixcers93:premierelecture"
 msgstr "Workflow CER: 4. Décision CG - 4.1 Première lecture (individuel)"
