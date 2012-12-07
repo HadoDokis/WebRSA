@@ -68,7 +68,7 @@
 							h( Set::extract( $pdo, 'Dossier.matricule' ) ),
 							h( Set::extract( $pdo, 'Adresse.locaadr' ) ),
 							h( date_short( Set::extract( $pdo, 'Dossier.dtdemrsa' ) ) ),
-							h( Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) ) ),
+							h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.user_id' ), $gestionnaire ) ),
 							h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),
 							$this->Xhtml->viewLink(
 								'Voir la PDO « '.$title.' »',
@@ -103,6 +103,6 @@
 		<?php echo $this->Form->end();?>
 
 	<?php else:?>
-		<p>Aucune PDO dans la cohorte.</p>
+		<p class="notice">Aucune PDO dans la cohorte.</p>
 	<?php endif?>
 <?php endif?>

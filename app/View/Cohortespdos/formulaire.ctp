@@ -73,7 +73,7 @@
 								</tr>
 								<tr>
 									<th>État du dossier</th>
-									<td>'.h( $etatdosrsa[$pdo['Situationdossierrsa']['etatdosrsa']] ).'</td>
+									<td>'.h( value( $etatdosrsa, Set::classicExtract( $pdo, 'Situationdossierrsa.etatdosrsa' ) ) ).'</td>
 								</tr>
 							</tbody>
 						</table>';
@@ -96,7 +96,7 @@
 							$this->Form->input( 'Propopdo.'.$index.'.commentairepdo', array( 'label' => false, 'type' => 'text', 'rows' => 3 ) ),
 							$this->Xhtml->viewLink(
 								'Voir le dossier « '.$pdo['Dossier']['numdemrsa'].' »',
-								array( 'controller' => 'suivisinsertion', 'action' => 'index', $pdo['Dossier']['id'] ),
+								array( 'controller' => 'propospdos', 'action' => 'index', $pdo['Personne']['id'] ),
 								true,
 								true
 							),
@@ -114,6 +114,6 @@
 		<?php echo $this->Form->end();?>
 
 	<?php else:?>
-		<p>Aucune PDO dans la cohorte.</p>
+		<p class="notice">Aucune PDO dans la cohorte.</p>
 	<?php endif?>
 <?php endif?>
