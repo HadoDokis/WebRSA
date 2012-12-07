@@ -44,8 +44,8 @@
 	<?php echo $this->Form->input( 'User.serviceinstructeur_id', array( 'label' => false, 'type' => 'select' , 'options' => $si, 'empty' => true ) );?>
 </fieldset>
 <?php
-	echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => null, 'id' => false ) );
-	echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => null, 'id' => false ) );
+	echo $this->Form->input( 'User.structurereferente_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
+	echo $this->Form->input( 'User.referent_id', array( 'type' => 'hidden', 'value' => '', 'id' => false ) );
 	echo $this->Form->input( 'User.type', array( 'type' => 'hidden', 'value' => 'cg', 'id' => false ) );
 ?>
 <?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
