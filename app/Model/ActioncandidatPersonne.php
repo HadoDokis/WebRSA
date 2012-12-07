@@ -152,18 +152,11 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
-			'integrationaction'  => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'pieceallocataire' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
 			'horairerdvpartenaire' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'required' => false
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'rendezvouspartenaire', true, array( '1' ) ),
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'ddaction' => array(
 				'rule' => 'notEmpty',
