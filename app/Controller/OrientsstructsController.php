@@ -350,14 +350,14 @@
 					}
 
 					if( /* Configure::read( 'Cg.departement' ) == 66 && */$saved && !empty( $this->request->data['Orientstruct']['referent_id'] ) ) {
-						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParOrientstruct( $this->request->data ) && $saved;
+						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParModele( $this->request->data, 'Orientstruct', 'date_valid' ) && $saved;
 					}
 
 					if( $saved ) {
-						$this->Orientstruct->commit();
+						$this->Orientstruct->rollback();
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
+// 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->Orientstruct->rollback();
@@ -462,7 +462,7 @@
 					$saved = $this->Orientstruct->save( $this->request->data ) && $saved;
 
 					if( /* Configure::read( 'Cg.departement' ) == 66 && */ $saved && !empty( $this->request->data['Orientstruct']['referent_id'] ) ) {
-						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParOrientstruct( $this->request->data ) && $saved;
+						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParModele( $this->request->data, 'Orientstruct', 'date_valid' ) && $saved;
 					}
 
 					if( $saved ) {
