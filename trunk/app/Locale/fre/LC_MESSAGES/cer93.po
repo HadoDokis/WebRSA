@@ -133,7 +133,7 @@ msgid "ENUM::POSITIONCER::99valide"
 msgstr "Validé"
 
 msgid "Cer93.datesignature"
-msgstr "Signé le"
+msgstr "Date de signature"
 
 msgid "Cer93.positioncer"
 msgstr "Statut CER"

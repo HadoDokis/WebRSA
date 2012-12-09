@@ -34,6 +34,11 @@
 			echo $this->Search->date( 'Search.Contratinsertion.created' );
 		}
 		
+		if( in_array( $this->action, array( 'avalidercpdv' ) ) ) {
+			echo $this->Search->date( 'Search.Cer93.datesignature' );
+		}
+		
+		
 		echo $this->Search->date( 'Search.Orientstruct.date_valid' );
 
 		echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
