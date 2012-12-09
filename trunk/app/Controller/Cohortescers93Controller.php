@@ -287,7 +287,8 @@
 				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
-				'formeci' => $this->Option->forme_ci()
+				'formeci' => $this->Option->forme_ci(),
+				'typevoie' => $this->Option->typevoie()
 			);
 			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums(), $this->Contratinsertion->Cer93->Histochoixcer93->enums() );
 // 			debug($options);
