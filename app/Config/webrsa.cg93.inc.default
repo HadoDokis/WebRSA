@@ -607,10 +607,60 @@
 			'Search' => array(
 				'Contratinsertion' => array(
 					'dernier' => true
+				),
+				'Dossier' => array(
+					'dernier' => true
 				)
 			)
 		)
 	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/saisie
+	 * (menu "CER" > "2. Saisie CER") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_saisie',
+		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
+	);
+	
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/avalidercpdv
+	 * (menu "CER" > "3. Validation Responsable") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_avalidercpdv',
+		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
+	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/premierelecture
+	 * (menu "CER" > "4. Décison CG -> 4.1. Première lecture") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_premierelecture',
+		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
+	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcadre
+	 * (menu "CER" "4. Décison CG -> 4.2. Validation cadre") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_validationcadre',
+		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
+	);
+	
+	/**
+	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcs
+	 * (menu "CER" "4. Décison CG -> 4.1. Validation CS") du CG 93.
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortescers93_validationcs',
+		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
+	);
+
 
 	/**
 	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
