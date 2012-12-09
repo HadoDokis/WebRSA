@@ -26,8 +26,8 @@
 						<th>Rang CER</th>
 						<th>Dernier RDV</th>
 						<th>Statut CER</th>
-						<th>Forme du CER (CPDV)</th>
-						<th>Commentaire (CPDV)</th>
+						<th>Forme du CER (Responsable)</th>
+						<th>Commentaire (Responsable)</th>
 						<th>Forme du CER (CG)</th>
 						<th>Commentaire (CG)</th>
 						<th>Décision</th>
@@ -102,7 +102,7 @@
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
 						$cer93['Histochoixcer93']['commentaire'],
-						// Choix du CPDV
+						// Choix du Responsable
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )
 							.$this->Form->input( "Histochoixcer93.{$index}.cer93_id", array( 'type' => 'hidden' ) )

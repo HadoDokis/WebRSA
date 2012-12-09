@@ -98,7 +98,7 @@
 						$cer93['Contratinsertion']['rg_ci'],
 						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
-						// Choix du CPDV
+						// Choix du Responsable
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )
 							.$this->Form->input( "Histochoixcer93.{$index}.cer93_id", array( 'type' => 'hidden' ) )

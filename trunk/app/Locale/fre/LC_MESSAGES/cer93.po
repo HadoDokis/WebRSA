@@ -109,7 +109,7 @@ msgid "ENUM::POSITIONCER::01signe"
 msgstr "Signé"
 
 msgid "ENUM::POSITIONCER::02attdecisioncpdv"
-msgstr "En attente de décision CPDV"
+msgstr "En attente de décision du Responsable"
 
 msgid "ENUM::POSITIONCER::03attdecisioncg"
 msgstr "En attente de décision CG"

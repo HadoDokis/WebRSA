@@ -19,10 +19,10 @@ msgstr ""
 
 ###############################################################################
 msgid "Histoschoixcers93::decisioncpdv"
-msgstr "Prendre la décision CPDV"
+msgstr "Prendre la décision (Responsable)"
 
 msgid "Histoschoixcers93::attdecisioncpdv"
-msgstr "Envoyer au CPDV"
+msgstr "Envoyer au Responsable"
 
 msgid "Histoschoixcers93::attdecisioncg"
 msgstr "Envoyer au CG"
@@ -91,10 +91,10 @@ msgid "ENUM::ISREJET::1"
 msgstr "Oui"
 
 msgid "ENUM::ETAPE::02attdecisioncpdv"
-msgstr "Décision CI"
+msgstr "Décision Référent"
 
 msgid "ENUM::ETAPE::03attdecisioncg"
-msgstr "Décision CPDV"
+msgstr "Décision Responsable"
 
 msgid "ENUM::ETAPE::04premierelecture"
 msgstr "Décision première lecture"
@@ -110,3 +110,6 @@ msgstr "Pré-validé ou A relire ?"
 
 msgid "Histochoixcer93.formeci"
 msgstr "Forme du contrat"
+
+msgid "Histochoixcer93.user_id"
+msgstr "Émise et rédigée par"

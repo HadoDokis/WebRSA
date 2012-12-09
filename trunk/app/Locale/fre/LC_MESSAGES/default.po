@@ -588,7 +588,7 @@ msgid "Button::signature"
 msgstr "Signer"
 
 msgid "Button::attdecisioncpdv"
-msgstr "Envoi CPDV"
+msgstr "Envoi Responsable"
 
 msgid "Button::attdecisioncg"
 msgstr "Envoi CG"

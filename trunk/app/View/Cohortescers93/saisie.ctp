@@ -24,6 +24,7 @@
 						<th>Dernier RDV</th>
 						<th>Statut CER</th>
 						<th>Forme du CER</th>
+						<!-- <th>Commentaire</th> -->
 						<th>Date de fin CER</th>
 						<th>Actions</th>
 					</tr>
@@ -94,6 +95,7 @@
 						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
+// 						$cer93['Cer93']['observbenef'],
 						date_short( $cer93['Contratinsertion']['df_ci'] ),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
