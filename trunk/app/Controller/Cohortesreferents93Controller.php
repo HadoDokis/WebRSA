@@ -175,6 +175,8 @@
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'typevoie' => $this->Option->typevoie(),
+				'rolepers' => $this->Option->rolepers(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
