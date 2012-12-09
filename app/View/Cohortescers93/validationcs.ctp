@@ -20,11 +20,10 @@
 					<tr>
 						<th>Commune</th>
 						<th>Nom/Prénom</th>
-						<th>Date d\'orientation</th>
-						<th>Date de désignation</th>
-						<th>Référent</th>
-						<th>Rang CER</th>
-						<th>Dernier RDV</th>
+						<th>N° dossier</th>
+						<th>N° CAF</th>
+						<th>Date d\'envoi du CER</th>
+						<th>Date début CER</th>
 						<th>Statut CER</th>
 						<th>Forme du CER (Responsable)</th>
 						<th>Commentaire (Responsable)</th>
@@ -40,10 +39,6 @@
 			foreach( $cers93 as $index => $cer93 ) {
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>
-						<tr>
-							<th>N° de dossier</th>
-							<td>'.$cer93['Dossier']['numdemrsa'].'</td>
-						</tr>
 						<tr>
 							<th>Date ouverture de droit</th>
 							<td>'.date_short( $cer93['Dossier']['dtdemrsa'] ).'</td>
@@ -95,10 +90,10 @@
 					array(
 						$cer93['Adresse']['locaadr'],
 						$cer93['Personne']['nom_complet_court'],
-						date_short( $cer93['Orientstruct']['date_valid'] ),
-						date_short( $cer93['PersonneReferent']['dddesignation'] ),
-						$cer93['Referent']['nom_complet'],
-						$cer93['Contratinsertion']['rg_ci'],
+						$cer93['Dossier']['numdemrsa'],
+						$cer93['Dossier']['matricule'],
+						date_short( $cer93['Contratinsertion']['date_saisi_ci'] ),
+						date_short( $cer93['Contratinsertion']['dd_ci'] ),
 						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
