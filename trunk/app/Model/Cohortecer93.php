@@ -165,6 +165,44 @@
 				);
 
 			}
+// 			else if( $statut == 'saisie' ){
+// 				$position = array( '00enregistre', '01signe', '02attdecisioncpdv' );
+// 				$conditions[] = array(
+// 					'OR' => array(
+// 						'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
+// 							array_words_replace(
+// 								array(
+// 									'fields' => array(
+// 										'Contratinsertion.id'
+// 									),
+// 									'alias' => 'contratsinsertion',
+// 									'conditions' => array(
+// 										'Contratinsertion.personne_id = Personne.id',
+// 										'Cer93.positioncer <>' => '99rejete',
+// 										'Cer93.positioncer' => $position
+// 									),
+// 									'joins' => array(
+// 										$Personne->Contratinsertion->join( 'Cer93' ),
+// 										$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93' )
+// 									),
+// 									'order' => array( 'Contratinsertion.dd_ci DESC' ),
+// 									'limit' => 1
+// 								),
+// 								array(
+// 									'Contratinsertion' => 'contratsinsertion',
+// 									'Cer93' => 'cers93',
+// 									'Histochoixcer93' => 'histoschoixcers93',
+// 								)
+// 							)
+// 						).')',
+// 						'Contratinsertion.id IS NULL',
+// 						'AND' => array(
+// 							'Contratinsertion.df_ci <' => date( 'Y-m-d' ),
+// 							'Contratinsertion.decision_ci' => 'V'
+// 						)
+// 					)
+// 				);
+// 			}
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -230,7 +268,6 @@
 					array( 'Contratinsertion.decision_ci' => 'E' )
 				);
 				$querydata['conditions'][] = $sqDerniereHistochoixcer93Etape;
-// 				$querydata['conditions']['Contratinsertion.decision_ci'] = 'E';
 
 				$querydata['fields'] = array_merge( $querydata['fields'], $Personne->Contratinsertion->Cer93->Histochoixcer93->fields() );
 				$querydata['joins'][] = $Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'LEFT OUTER' ) );
@@ -277,7 +314,7 @@
 				$formData['Histochoixcer93'][$index] = array(
 					'cer93_id' => $data['Histochoixcer93']['cer93_id'],
 					'user_id' => $user_id,
-					'commentaire' => $data['Histochoixcer93']['commentaire'],
+// 						'commentaire' => $data['Histochoixcer93']['commentaire'],
 					'formeci' => $data['Histochoixcer93']['formeci'],
 					'etape' => $etape,
 					'datechoix' => date( 'Y-m-d' ),
