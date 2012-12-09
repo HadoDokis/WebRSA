@@ -115,6 +115,8 @@
 			$conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
 			// Filtre sur la date d'envoi du CER
 			$conditions = $this->conditionsDates( $conditions, $search, 'Contratinsertion.created' );
+			// Filtre sur la date de signature
+			$conditions = $this->conditionsDates( $conditions, $search, 'Cer93.datesignature' );
 
 			//Filtre sur la position du CER
 			$positioncer = Set::extract( $search, 'Cer93.positioncer' );
