@@ -24,14 +24,14 @@
 			<?php
 				echo $this->Default2->subform(
 					array(
-						'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom' ), 'type' => 'text' ),
-						'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom' ), 'type' => 'text' ),
-						'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai' ), 'type' => 'text' ),
-						'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ), 'type' => 'text', 'maxlength' => 15 ),
-						'Search.Historiqueetatpe.identifiantpe' => array( 'label' => __d( 'historiqueetatpe', 'Historiqueetatpe.identifiantpe' ), 'type' => 'text', 'maxlength' => 11 ),
-						'Search.Adresse.locaadr' => array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ),
+						'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom' ) ),
+						'Search.Personne.prenom' => array( 'label' => __d( 'personne', 'Personne.prenom' ) ),
+						'Search.Personne.nomnai' => array( 'label' => __d( 'personne', 'Personne.nomnai' ) ),
+						'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ), 'maxlength' => 15 ),
+						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'maxlength' => 15 ),
+						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ), 'maxlength' => 15 ),
+						'Search.Historiqueetatpe.identifiantpe' => array( 'label' => __d( 'historiqueetatpe', 'Historiqueetatpe.identifiantpe' ), 'maxlength' => 11 ),
+						'Search.Adresse.locaadr' => array( 'label' => 'Commune de l\'allocataire ' ),
 						'Search.Adresse.numcomptt' => array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
 					)
 				);
