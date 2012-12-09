@@ -13,7 +13,7 @@
 			echo $pagination;
 
 			echo $this->Xform->create( null, array( 'id' => 'PersonneReferent' ) );
-			echo '<table>';
+			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
 						<th>Commune</th>
@@ -31,6 +31,59 @@
 				</thead>';
 			echo '<tbody>';
 			foreach( $personnes_referents as $index => $personne_referent ) {
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+						<tbody>
+							<tr>
+								<th>N° de dossier</th>
+								<td>'.$personne_referent['Dossier']['numdemrsa'].'</td>
+							</tr>
+							<tr>
+								<th>Date ouverture de droit</th>
+								<td>'.date_short( $personne_referent['Dossier']['dtdemrsa'] ).'</td>
+							</tr>
+							<tr>
+								<th>Date de naissance</th>
+								<td>'.date_short( $personne_referent['Personne']['dtnai'] ).'</td>
+							</tr>
+							<tr>
+								<th>N° CAF</th>
+								<td>'.$personne_referent['Dossier']['matricule'].'</td>
+							</tr>
+							<tr>
+								<th>NIR</th>
+								<td>'.$personne_referent['Personne']['nir'].'</td>
+							</tr>
+							<tr>
+								<th>Code postal</th>
+								<td>'.$personne_referent['Adresse']['codepos'].'</td>
+							</tr>
+							<tr>
+								<th>Date de fin de droit</th>
+								<td>'.$personne_referent['Situationdossierrsa']['dtclorsa'].'</td>
+							</tr>
+							<tr>
+								<th>Motif de fin de droit</th>
+								<td>'.$personne_referent['Situationdossierrsa']['moticlorsa'].'</td>
+							</tr>
+							<tr>
+								<th>Rôle</th>
+								<td>'.Set::enum( $personne_referent['Prestation']['rolepers'], $options['rolepers'] ).'</td>
+							</tr>
+							<tr>
+								<th>Etat du dossier</th>
+								<td>'.Set::classicExtract( $options['etatdosrsa'], $personne_referent['Situationdossierrsa']['etatdosrsa'] ).'</td>
+							</tr>
+							<tr>
+								<th>Présence DSP</th>
+								<td>'.$this->Xhtml->boolean( $personne_referent['Dsp']['exists'] ).'</td>
+							</tr>
+							<tr>
+								<th>Adresse</th>
+								<td>'.$personne_referent['Adresse']['numvoie'].' '.Set::enum( $personne_referent['Adresse']['typevoie'], $options['typevoie'] ).' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['locaadr'].'</td>
+							</tr>
+						</tbody>
+					</table>';
+			
 				echo $this->Html->tableCells(
 					array(
 						$personne_referent['Adresse']['locaadr'],
@@ -56,9 +109,10 @@
 							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['action'] ) ? 'error' : null ) )
 						),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['Personne']['id'] ) ),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
+					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+					array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 				);
 			}
 			echo '</tbody>';

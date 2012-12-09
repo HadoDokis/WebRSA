@@ -140,6 +140,7 @@
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
 					// Présence DSP
 					array(
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
