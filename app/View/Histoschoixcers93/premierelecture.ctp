@@ -62,6 +62,7 @@
 					echo $this->Xform->fieldValue( 'Cer93.formeci', Set::enum( Set::classicExtract( $h, 'formeci'), $options['Cer93']['formeci'] ) );
 					echo $this->Xform->fieldValue( 'Histochoixcer93.datechoix', date_short( Set::classicExtract( $h, 'datechoix') ) );
 					echo $this->Xform->fieldValue( 'Histochoixcer93.commentaire', Set::classicExtract( $h, 'commentaire') );
+					echo $this->Xform->fieldValue( 'Histochoixcer93.user_id', Set::classicExtract( $h, 'User.nom_complet') );
 
 					if( $h['etape'] == '03attdecisioncg' ) {
 						echo $this->Xform->fieldValue( 'Histochoixcer93.isrejet', Set::enum( Set::classicExtract( $h, 'isrejet'), $options['Histochoixcer93']['isrejet'] ) );
