@@ -328,3 +328,6 @@ msgstr "Périmé: bilan à réaliser"
 
 msgid "ENUM::POSITIONCER::nonvalid"
 msgstr "Non validation"
+
+msgid "Contratinsertion.created"
+msgstr "Date d'envoi CER"

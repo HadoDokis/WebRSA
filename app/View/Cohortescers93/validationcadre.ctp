@@ -91,7 +91,7 @@
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Dossier']['numdemrsa'],
 						$cer93['Dossier']['matricule'],
-						date_short( $cer93['Contratinsertion']['date_saisi_ci'] ),
+						date_short( $cer93['Contratinsertion']['created'] ),
 						date_short( $cer93['Contratinsertion']['dd_ci'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
