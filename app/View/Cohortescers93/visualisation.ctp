@@ -57,6 +57,58 @@
 				</thead>';
 			echo '<tbody>';
 			foreach( $cers93 as $index => $cer93 ) {
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>N° de dossier</th>
+							<td>'.$cer93['Dossier']['numdemrsa'].'</td>
+						</tr>
+						<tr>
+							<th>Date ouverture de droit</th>
+							<td>'.date_short( $cer93['Dossier']['dtdemrsa'] ).'</td>
+						</tr>
+						<tr>
+							<th>Date de naissance</th>
+							<td>'.date_short( $cer93['Personne']['dtnai'] ).'</td>
+						</tr>
+						<tr>
+							<th>N° CAF</th>
+							<td>'.$cer93['Dossier']['matricule'].'</td>
+						</tr>
+						<tr>
+							<th>NIR</th>
+							<td>'.$cer93['Personne']['nir'].'</td>
+						</tr>
+						<tr>
+							<th>Code postal</th>
+							<td>'.$cer93['Adresse']['codepos'].'</td>
+						</tr>
+						<tr>
+							<th>Date de fin de droit</th>
+							<td>'.$cer93['Situationdossierrsa']['dtclorsa'].'</td>
+						</tr>
+						<tr>
+							<th>Motif de fin de droit</th>
+							<td>'.$cer93['Situationdossierrsa']['moticlorsa'].'</td>
+						</tr>
+						<tr>
+							<th>Rôle</th>
+							<td>'.Set::enum( $cer93['Prestation']['rolepers'], $options['rolepers'] ).'</td>
+						</tr>
+						<tr>
+							<th>Etat du dossier</th>
+							<td>'.Set::classicExtract( $options['etatdosrsa'], $cer93['Situationdossierrsa']['etatdosrsa'] ).'</td>
+						</tr>
+						<tr>
+							<th>Présence DSP</th>
+							<td>'.$this->Xhtml->boolean( $cer93['Dsp']['exists'] ).'</td>
+						</tr>
+						<tr>
+							<th>Adresse</th>
+							<td>'.$cer93['Adresse']['numvoie'].' '.Set::enum( $cer93['Adresse']['typevoie'], $options['typevoie'] ).' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['locaadr'].'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				if( isset( $cer93['Histochoixcer93etape03']['isrejet'] ) && ( $cer93['Histochoixcer93etape03']['isrejet'] == '1' ) ) {
 					$validationcpdv = 'Rejeté';
@@ -86,7 +138,8 @@
 						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['formeci'], $options['formeci'] ),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
-						$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ) )
+						$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ) ),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 					array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )

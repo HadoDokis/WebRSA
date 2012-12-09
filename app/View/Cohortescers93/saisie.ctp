@@ -75,10 +75,13 @@
 								<th>Présence DSP</th>
 								<td>'.$this->Xhtml->boolean( $cer93['Dsp']['exists'] ).'</td>
 							</tr>
+							<tr>
+								<th>Adresse</th>
+								<td>'.$cer93['Adresse']['numvoie'].' '.Set::enum( $cer93['Adresse']['typevoie'], $options['typevoie'] ).' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['locaadr'].'</td>
+							</tr>
 						</tbody>
 					</table>';
-			
-			
+					
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],
