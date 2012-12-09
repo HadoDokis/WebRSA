@@ -1225,9 +1225,9 @@
 							'Diplomecer93',
 							'Expprocer93',
 							'Histochoixcer93' => array(
-// 								'User' => array(
-// 									'fields' => array( 'nom_complet' )
-// 								),
+								'User' => array(
+									'fields' => array( 'nom_complet' )
+								),
 								'order' => array( 'Histochoixcer93.etape ASC' )
 							),
 							'Sujetcer93'
