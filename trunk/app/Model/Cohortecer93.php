@@ -113,6 +113,8 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
 			$conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
+			// Filtre sur la date d'envoi du CER
+			$conditions = $this->conditionsDates( $conditions, $search, 'Contratinsertion.created' );
 
 			//Filtre sur la position du CER
 			$positioncer = Set::extract( $search, 'Cer93.positioncer' );
