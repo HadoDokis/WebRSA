@@ -147,20 +147,21 @@
 		}
 
 		/**
-		 * Lors de l'ajout d'une orientation, on ajoute un nouveau référent de parcours si celui-ci a été précisé
-		 * lors de la création de l'orientation.
+		 * Lors de l'ajout d'une orientation ou  d'un référent ($modelName), on ajoute un nouveau référent de parcours si celui-ci a été précisé lors de la création.
 		 *
 		 * @param array $data
+		 * @param string $modelName
+		 * @param string $datefindesignation
 		 * @return boolean
 		 */
-		public function referentParOrientstruct( $data ) {
+		public function referentParModele( $data, $modelName, $datefindesignation ) {
 			$saved = true;
 
 			$last_referent = $this->find(
 				'first',
 				array(
 					'conditions' => array(
-						'PersonneReferent.personne_id'=> $data['Orientstruct']['personne_id']
+						'PersonneReferent.personne_id'=> $data[$modelName]['personne_id']
 					),
 					'order' => array(
 						'PersonneReferent.dddesignation DESC',
@@ -170,20 +171,20 @@
 				)
 			);
 
-			list( $structurereferente_id, $referent_id ) = explode( '_', $data['Orientstruct']['referent_id'] );
+			list( $structurereferente_id, $referent_id ) = explode( '_', $data[$modelName]['referent_id'] );
 
 			if ( !empty( $referent_id ) && ( empty( $last_referent ) || ( isset( $last_referent['PersonneReferent']['referent_id'] ) && !empty( $last_referent['PersonneReferent']['referent_id'] ) && $last_referent['PersonneReferent']['referent_id'] != $referent_id ) ) ) {
 				if ( !empty( $last_referent ) && empty( $last_referent['PersonneReferent']['dfdesignation'] ) ) {
-					$last_referent['PersonneReferent']['dfdesignation'] = $data['Orientstruct']['date_valid'];
+					$last_referent['PersonneReferent']['dfdesignation'] = $data[$modelName][$datefindesignation];
 					$this->create( $last_referent );
 					$saved = $this->save( $last_referent ) && $saved;
 				}
 
 				$personnereferent['PersonneReferent'] = array(
-					'personne_id' => $data['Orientstruct']['personne_id'],
+					'personne_id' => $data[$modelName]['personne_id'],
 					'referent_id' => $referent_id,
 					'structurereferente_id' => $structurereferente_id,
-					'dddesignation' => $data['Orientstruct']['date_valid']
+					'dddesignation' => $data[$modelName][$datefindesignation]
 				);
 				$this->create( $personnereferent );
 				$saved = $this->save( $personnereferent ) && $saved;

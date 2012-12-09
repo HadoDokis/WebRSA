@@ -503,6 +503,13 @@
 				if( $this->Rendezvous->provoquePassageCommission( $this->request->data ) ) {
 					$success = $this->Rendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
 				}
+				
+				// Création du référent si celui-ci est no présent
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					if( $success && !empty( $this->request->data['Rendezvous']['referent_id'] ) ) {
+						$success = $this->Rendezvous->Referent->PersonneReferent->referentParModele( $this->request->data, 'Rendezvous', 'daterdv' ) && $success;
+					}
+				}
 
 				if( $success ) {
 					$this->Rendezvous->commit();
@@ -518,6 +525,7 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->request->data = $rdv;
+					$this->request->data['Rendezvous']['referent_id'] = $rdv['Rendezvous']['structurereferente_id'].'_'.$rdv['Rendezvous']['referent_id'];
 				}
 				else {
 					//Récupération de la structure référente liée à l'orientation
@@ -542,17 +550,21 @@
 
 					if( !empty( $orientstruct ) ) {
 						$this->request->data['Rendezvous']['structurereferente_id'] = $orientstruct['Orientstruct']['structurereferente_id'];
+						if( !empty( $orientstruct['Referent']['id'] ) ){
+							$this->request->data['Rendezvous']['referent_id'] = $orientstruct['Orientstruct']['structurereferente_id'].'_'.$orientstruct['Referent']['id'];
+
+						}
 					}
 				}
 			}
 //			$this->Rendezvous->commit();
-
+// debug($this->request->data);
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
 
-			$referent_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.referent_id" );
-			$referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
-			$this->set( 'referent_id', $referent_id );
+// 			$referent_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.referent_id" );
+// 			$referent_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $referent_id );
+// 			$this->set( 'referent_id', $referent_id );
 
 			$permanence_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.permanence_id" );
 			$permanence_id = preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', $permanence_id );
