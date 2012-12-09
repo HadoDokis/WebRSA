@@ -38,16 +38,16 @@
 						<th rowspan="2">Structure référente</th>
 						<th rowspan="2">Référent</th>
 						<th rowspan="2">Saisie du CER</th>
-						<th colspan="4">Etape CPDV</th>
+						<th colspan="4">Etape du Responsable</th>
 						<th colspan="2">Etape CG</th>
 						<th rowspan="2">Validation CS</th>
 						<th colspan="2">Etape Cadre</th>
 						<th colspan="2" rowspan="2">Actions</th>
 					</tr>
 					<tr>
-						<th>Validation CPDV</th>
+						<th>Validation Responsable</th>
 						<th>Forme du CER</th>
-						<th>Commentaire du CPDV</th>
+						<th>Commentaire du Responsable</th>
 						<th>Date de transfert au CG</th>
 						<th>Validation CG (1ère lecture)</th>
 						<th>Commentaire du CG</th>

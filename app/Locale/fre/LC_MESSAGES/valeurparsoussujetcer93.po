@@ -41,3 +41,6 @@ msgstr "Supprimer une valeur"
 
 msgid "Valeursparsoussujetscers93::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "Valeurparsoussujetcer93.soussujetcer93_id"
+msgstr "Sous-sujet lié ?"

@@ -1,9 +1,9 @@
 <?php
 	if( $this->action == 'attdecisioncpdv' ) {
-		$title_for_layout = 'Décison du CI';
+		$title_for_layout = 'Décison du Référent';
 	}
 	else {
-		$title_for_layout = 'Décison CPDV';
+		$title_for_layout = 'Décison du Responsable';
 	}
 	$this->set( 'title_for_layout', $title_for_layout );
 
