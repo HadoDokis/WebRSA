@@ -810,6 +810,7 @@
 					}
 					// Traitement générique
 					else {
+						$modelClass = ClassRegistry::init( $model );
 						$recursive = $modelClass->recursive;
 						$modelClass->recursive = -1;
 
