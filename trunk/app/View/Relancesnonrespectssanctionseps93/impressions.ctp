@@ -27,12 +27,12 @@
 	echo $this->Xform->create();
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
-		$this->Default->subform(
+		$this->Default2->subform(
 			array(
-				'Personne.nom' => array( 'type' => 'text', 'required' => false ),
-				'Personne.nomnai' => array( 'type' => 'text' ),
-				'Personne.prenom' => array( 'type' => 'text', 'required' => false ),
-				'Personne.nir' => array( 'type' => 'text' ),
+				'Personne.nom' => array( 'required' => false ),
+				'Personne.nomnai',
+				'Personne.prenom' => array( 'required' => false ),
+				'Personne.nir',
 				'Adresse.numcomptt' => array( 'required' => false ),
 				'Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93' ),
 			),
@@ -43,11 +43,11 @@
 	);
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
-		$this->Default->subform(
+		$this->Default2->subform(
 			array(
-				'Dossier.matricule' => array( 'type' => 'text' ),
-				'Dossiercaf.nomtitulaire' => array( 'type' => 'text' ),
-				'Dossiercaf.prenomtitulaire' => array( 'type' => 'text' ),
+				'Dossier.matricule',
+				'Dossiercaf.nomtitulaire',
+				'Dossiercaf.prenomtitulaire',
 				'Nonrespectsanctionep93.origine' => array( 'label' => 'Présence contrat', 'type' => 'radio', 'options' => array( 'orientstruct' => 'Non', 'contratinsertion' => 'Oui' ), 'required' => false ),
 			)
 		)

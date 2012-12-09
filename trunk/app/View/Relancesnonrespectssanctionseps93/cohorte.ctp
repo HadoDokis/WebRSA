@@ -27,12 +27,12 @@
 // 	echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
-		$this->Default->subform(
+		$this->Default2->subform(
 			array(
-				'Search.Personne.nom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nom' ), 'required' => false ),
-				'Search.Personne.nomnai' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nomnai' ) ),
-				'Search.Personne.prenom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.prenom' ), 'required' => false ),
-				'Search.Personne.nir' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nir' ) ),
+				'Search.Personne.nom' => array(  'label' => __d( 'personne', 'Personne.nom' ), 'required' => false ),
+				'Search.Personne.nomnai' => array(  'label' => __d( 'personne', 'Personne.nomnai' ) ),
+				'Search.Personne.prenom' => array(  'label' => __d( 'personne', 'Personne.prenom' ), 'required' => false ),
+				'Search.Personne.nir' => array(  'label' => __d( 'personne', 'Personne.nir' ) ),
 				'Search.Adresse.numcomptt' => array( 'required' => false, 'label' => __d( 'adresse', 'Adresse.numcomptt' ) ),
 				'Search.Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93', 'label' => __d( 'relancenonrespectsanctionep93', 'Serviceinstructeur.id' ) ),
 			),
@@ -43,11 +43,11 @@
 	);
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
-		$this->Default->subform(
+		$this->Default2->subform(
 			array(
-				'Search.Dossier.matricule' => array( 'type' => 'text', 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
-				'Search.Dossiercaf.nomtitulaire' => array( 'type' => 'text', 'label' => __d( 'dossiercaf', 'Dossiercaf.nomtitulaire' ) ),
-				'Search.Dossiercaf.prenomtitulaire' => array( 'type' => 'text', 'label' => __d( 'dossiercaf', 'Dossiercaf.prenomtitulaire' ) ),
+				'Search.Dossier.matricule' => array(  'label' => __d( 'dossier', 'Dossier.matricule' ) ),
+				'Search.Dossiercaf.nomtitulaire' => array(  'label' => __d( 'dossiercaf', 'Dossiercaf.nomtitulaire' ) ),
+				'Search.Dossiercaf.prenomtitulaire' => array(  'label' => __d( 'dossiercaf', 'Dossiercaf.prenomtitulaire' ) ),
 			)
 		)
 	);

@@ -152,10 +152,7 @@
 						$typeorient_id = Set::extract( $this->request->data, 'Orientstruct.'.$index.'.typeorient_id' );
 						$structurereferente_id = ( !empty( $typeorient_id ) ? $typeorient_id.'_'.preg_replace( '/^[0-9]+_([0-9]+)$/', '\1', Set::extract( $this->request->data, 'Orientstruct.'.$index.'.structurereferente_id' ) ) : null );
 						$statut_orient = Set::extract( $this->request->data, 'Orientstruct.'.$index.'.statut_orient' );
-/*
-						if( in_array( $this->action, array( 'nouvelles', 'enattente', 'preconisationscalculables', 'preconisationsnoncalculables' ) ) ) {
-							$personne['Orientstruct']['propo_algo'] = @$typesorientsNamesToIds[$personne['Preorientation']['name']];
-						}*/
+
 
 						$tableCells = array(
 							h( $personne['Adresse']['locaadr'] ),
