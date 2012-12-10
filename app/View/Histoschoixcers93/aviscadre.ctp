@@ -33,6 +33,7 @@ if( Configure::read( 'debug' ) > 0 ) {
 						'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
 						'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 						'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+						'Histochoixcer93.duree' => array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ),
 						'Histochoixcer93.decisioncadre' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncadre'], 'empty' => true ),
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 					)

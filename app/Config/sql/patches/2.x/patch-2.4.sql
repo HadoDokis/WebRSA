@@ -339,6 +339,7 @@ CREATE TABLE histoschoixcers93 (
 	decisioncadre		VARCHAR(20) DEFAULT NULL,
 	datechoix			DATE DEFAULT NULL,
 	isrejet				VARCHAR(1) DEFAULT NULL,
+	duree				INTEGER DEFAULT NULL, -- ARNAUD
 	created				TIMESTAMP WITHOUT TIME ZONE,
 	modified			TIMESTAMP WITHOUT TIME ZONE
 );
@@ -356,6 +357,7 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_prevalide_in_list
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_in_list_chk CHECK ( cakephp_validate_in_list( decisioncs, ARRAY['valide', 'aviscadre', 'passageep'] ) );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_list_chk CHECK ( cakephp_validate_in_list( decisioncadre, ARRAY['valide', 'rejete', 'passageep'] ) );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_isrejet_in_list_chk CHECK ( cakephp_validate_in_list( isrejet, ARRAY['0', '1'] ) );
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) ); -- ARNAUD
 
 -------------------------------------------------------------------------------------------------------------
 
@@ -578,3 +580,10 @@ CREATE INDEX cuis_serviceinstructeur_id_idx ON cuis( serviceinstructeur_id );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
+
+
+-- begin;
+-- SELECT add_missing_table_field( 'public', 'histoschoixcers93', 'duree', 'INTEGER' );
+-- 
+-- ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
+-- commit;

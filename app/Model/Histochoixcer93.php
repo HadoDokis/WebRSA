@@ -138,6 +138,7 @@
 						'cer93_id' => $contratinsertion['Cer93']['id'],
 						'user_id' => $user_id,
 						'etape' => $etape,
+						'duree' => $contratinsertion['Cer93']['duree']
 					)
 				);
 
@@ -151,7 +152,7 @@
 			else {
 				$formData = array( 'Histochoixcer93' => $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1] );
 			}
-
+// debug($formData);
 			return $formData;
 		}
 
@@ -182,6 +183,7 @@
 				$success = $this->Cer93->Contratinsertion->updateAll(
 					array(
 						'Contratinsertion.decision_ci' => '\'R\'',
+						'Contratinsertion.rg_ci' => null,
 						'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
 						'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\''
 					),
@@ -194,6 +196,7 @@
 					$success = $this->Cer93->updateAll(
 						array(
 							'Cer93.positioncer' => '\'99valide\'',
+							'Cer93.duree' => '\''.$data['Histochoixcer93']['duree'].'\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
 						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
@@ -203,16 +206,25 @@
 						'first',
 						array(
 							'fields' => array(
+								'Cer93.duree',
 								'Cer93.contratinsertion_id'
 							),
 							'conditions' => array(
 								'Cer93.id' => $data['Histochoixcer93']['cer93_id']
+							),
+							'contain' => array(
+								'Contratinsertion' => array(
+									'fields' => array(
+										'Contratinsertion.dd_ci'
+									)
+								)
 							)
 						)
 					);
 
 					$success = $this->Cer93->Contratinsertion->updateAll(
 						array(
+							'Contratinsertion.df_ci' => '\''.strftime( '%Y-%m-%d', strtotime( "{$data['Histochoixcer93']['duree']} months", strtotime( $cer93['Contratinsertion']['dd_ci'] ) )  ).'\'',
 							'Contratinsertion.decision_ci' => '\'V\'',
 							'Contratinsertion.datevalidation_ci' => '\''.$datechoix.'\'',
 							'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
@@ -300,7 +312,8 @@
 					$success = $this->Cer93->updateAll(
 						array(
 							'Cer93.positioncer' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' ).'\'',
-							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
+							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
+							'Cer93.duree' => '\''.$data['Histochoixcer93']['duree'].'\'',
 						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
@@ -309,15 +322,24 @@
 						'first',
 						array(
 							'fields' => array(
-								'Cer93.contratinsertion_id'
+								'Cer93.contratinsertion_id',
+								'Cer93.duree'
 							),
 							'conditions' => array(
 								'Cer93.id' => $data['Histochoixcer93']['cer93_id']
+							),
+							'contain' => array(
+								'Contratinsertion' => array(
+									'fields' => array(
+										'Contratinsertion.dd_ci'
+									)
+								)
 							)
 						)
 					);
 
 					$fields = array(
+						'Contratinsertion.df_ci' => '\''.strftime( '%Y-%m-%d', strtotime( "{$data['Histochoixcer93']['duree']} months", strtotime( $cer93['Contratinsertion']['dd_ci'] ) )  ).'\'',
 						'Contratinsertion.decision_ci' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? 'V' : 'R' ).'\'',
 						'Contratinsertion.datedecision' => '\''.$datechoix.'\'',
 						'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\'',

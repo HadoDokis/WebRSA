@@ -6,7 +6,9 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( 'prototype.livepipe.js' );
 		echo $this->Html->script( 'prototype.tabs.js' );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
+	
 	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
@@ -35,6 +37,7 @@
 						'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
 						'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
 						'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+						'Histochoixcer93.duree' => array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ),
 						'Histochoixcer93.decisioncs' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncs'], 'empty' => true ),
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 					)
