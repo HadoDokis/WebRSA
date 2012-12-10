@@ -1127,7 +1127,8 @@
 						'Diplomecer93.id',
 						'Diplomecer93.cer93_id',
 						'Diplomecer93.name',
-						'Diplomecer93.annee'
+						'Diplomecer93.annee',
+						'Diplomecer93.isetranger'
 					),
 					'conditions' => array( 'Diplomecer93.cer93_id' => $data['Cer93']['id'] ),
 					'order' => array( 'Diplomecer93.annee DESC' ),
@@ -1327,6 +1328,14 @@
 
 			// Choix du modèle de document
 			$decision = $data['Contratinsertion']['decision_ci'];
+
+// 			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
+// 			$NbHistos = count( $data['Cer93']['Histochoixcer93'] );
+// 			$dernierHisto = $data['Cer93']['Histochoixcer93'][$NbHistos-1];
+// 			if( $dernierHisto['isrejet'] == '1' ){
+// 				return null;
+// 			}
+			
 			if( $decision == 'V' ) {
 				$modeleodt  = "Contratinsertion/cer_valide.odt";
 			}

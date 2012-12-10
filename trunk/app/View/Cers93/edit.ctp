@@ -290,6 +290,7 @@
 				<tr>
 					<th>Intitulé du diplôme</th>
 					<th>Année d'obtention</th>
+					<th>Précisez si obtenu à l'étranger</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -303,6 +304,7 @@
 									.$this->Xform->input( "Diplomecer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Diplomecer93.{$index}.name", array( 'type' => 'text', 'label' => false ) ),
 									$this->Xform->input( "Diplomecer93.{$index}.annee", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
+									$this->Xform->input( "Diplomecer93.{$index}.isetranger", array( 'type' => 'checkbox', 'label' => false, 'empty' => true ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Diplomecer93', {$index} );return false;" ) ),
 								)
 							);
@@ -587,6 +589,9 @@
 			echo str_replace( "'", "\\'", $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Diplomecer93.%line%.annee', array( 'type' => 'select', 'options' => array_range( date( 'Y' ), 1960 ), 'label' => false, 'empty' => true ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Diplomecer93.%line%.isetranger', array( 'type' => 'checkbox', 'label' => false ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Diplomecer93\', %line% );return false;">Supprimer</a></td></tr>';
 
