@@ -112,7 +112,7 @@
 						),
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.decisioncadre", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Histochoixcer93']['decisioncadre'], 'separator' => '<br />' ) ),
-							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncs'] ) ? 'error' : null ) )
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncadre'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
