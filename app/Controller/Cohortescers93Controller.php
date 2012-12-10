@@ -183,8 +183,15 @@
 
 					// On change les règles de validation du modèle PersonneReferent avec celles qui sont spécfiques à la cohorte
 					$histochoixcer93Validate = $this->Contratinsertion->Cer93->Histochoixcer93->validate;
+					
+					$datas = array();
+					foreach( $this->request->data['Histochoixcer93'] as $i => $tmp ) {
+						if( $tmp['action'] === 'Valider' ) {
+							$datas[$i] = array( 'Histochoixcer93' => $tmp );
+						}
+					}
 
-					$datas = Set::extract( '/Histochoixcer93[action=Valider]', $this->request->data );
+// 					$datas = Set::extract( '/Histochoixcer93[action=Valider]', $this->request->data );
 
 					if( $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $datas, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$this->Contratinsertion->Cer93->Histochoixcer93->begin();
