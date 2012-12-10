@@ -657,7 +657,7 @@
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
 					// Copie des champs du CER précédent
-					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps' );
+					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps', 'secteuracti_id', 'metierexerce_id', 'dureehebdo', 'naturecontrat_id', 'isemploitrouv', 'dureecdd' );
 					foreach( $cer93FieldsToCopy as $field ) {
 						$data['Cer93'][$field] = $dataDernierCerValide['Cer93'][$field];
 					}
