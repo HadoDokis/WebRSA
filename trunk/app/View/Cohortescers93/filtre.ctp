@@ -34,7 +34,7 @@
 			echo $this->Search->date( 'Search.Contratinsertion.created' );
 		}
 		
-		if( in_array( $this->action, array( 'avalidercpdv' ) ) ) {
+		if( in_array( $this->action, array( 'avalidercpdv', 'premierelecture', 'validationcs', 'validationcadre' ) ) ) {
 			echo $this->Search->date( 'Search.Cer93.datesignature' );
 		}
 		
