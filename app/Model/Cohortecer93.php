@@ -52,6 +52,11 @@
 			if( ( $statut != 'visualisation' ) || ( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) ) {
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci' );
 			}
+			
+			// Par défaut on affiche le dernier CER dans le tableau des saisies CER
+			if( $statut == 'saisie' ) {
+				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
+			}
 
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
 			$sqDernierRdv = $Personne->Rendezvous->sqDernier( 'Personne.id' );
@@ -167,46 +172,42 @@
 						)
 					).')'
 				);
-
 			}
-// 			else if( $statut == 'saisie' ){
-// 				$position = array( '00enregistre', '01signe', '02attdecisioncpdv' );
-// 				$conditions[] = array(
-// 					'OR' => array(
-// 						'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
-// 							array_words_replace(
-// 								array(
-// 									'fields' => array(
-// 										'Contratinsertion.id'
-// 									),
-// 									'alias' => 'contratsinsertion',
-// 									'conditions' => array(
-// 										'Contratinsertion.personne_id = Personne.id',
-// 										'Cer93.positioncer <>' => '99rejete',
-// 										'Cer93.positioncer' => $position
-// 									),
-// 									'joins' => array(
-// 										$Personne->Contratinsertion->join( 'Cer93' ),
-// 										$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93' )
-// 									),
-// 									'order' => array( 'Contratinsertion.dd_ci DESC' ),
-// 									'limit' => 1
-// 								),
-// 								array(
-// 									'Contratinsertion' => 'contratsinsertion',
-// 									'Cer93' => 'cers93',
-// 									'Histochoixcer93' => 'histoschoixcers93',
-// 								)
-// 							)
-// 						).')',
-// 						'Contratinsertion.id IS NULL',
-// 						'AND' => array(
-// 							'Contratinsertion.df_ci <' => date( 'Y-m-d' ),
-// 							'Contratinsertion.decision_ci' => 'V'
-// 						)
-// 					)
-// 				);
-// 			}
+			else if( $statut == 'saisie' ){
+				$position = array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete' );
+				$conditions[] = array(
+					'OR' => array(
+						'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
+							array_words_replace(
+								array(
+									'fields' => array(
+										'Contratinsertion.id'
+									),
+									'alias' => 'contratsinsertion',
+									'conditions' => array(
+										'Contratinsertion.personne_id = Personne.id',
+										'Cer93.positioncer' => $position
+									),
+									'joins' => array(
+										$Personne->Contratinsertion->join( 'Cer93' )
+									),
+									'order' => array( 'Contratinsertion.dd_ci DESC' ),
+									'limit' => 1
+								),
+								array(
+									'Contratinsertion' => 'contratsinsertion',
+									'Cer93' => 'cers93'
+								)
+							)
+						).')',
+						'Contratinsertion.id IS NULL',
+						'AND' => array(
+							'Contratinsertion.df_ci <' => date( 'Y-m-d' ),
+							'Contratinsertion.decision_ci' => 'V'
+						)
+					)
+				);
+			}
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -265,7 +266,7 @@
 			);
 
 			//
-			if( $statut != 'visualisation') {
+			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest(
 					'Histochoixcer93',
 					'modified',
