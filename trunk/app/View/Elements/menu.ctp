@@ -211,10 +211,7 @@
 		),
 		'CER' => array(
 			'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-			'1. Affectation d\'un référent' => array(
-				'Référents à affecter' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affecter'  ) ),
-				'Référents déjà affectés' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affectes'  ) ),
-			),
+			'1. Affectation d\'un référent' => array( 'url' => array( 'controller' => 'cohortesreferents93', 'action' => 'affecter'  ) ),
 			'2. Saisie d\'un CER' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'saisie'  ) ),
 			'3. Validation Responsable' => array( 'url' => array( 'controller' => 'cohortescers93', 'action' => 'avalidercpdv'  ) ),
 			'4. Décision CG' => array(

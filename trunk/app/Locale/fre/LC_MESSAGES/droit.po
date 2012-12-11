@@ -2741,16 +2741,13 @@ msgstr "Suppression d'une suspension"
 ###############################################################################
 
 msgid "Module:Cohortesreferents93"
-msgstr "CER (CG 93): cohortes et recherches d'affectation d'un référent (workflow CER)"
+msgstr "CER (CG 93): affectation d'un référent et téléchargement du tableau (workflow CER)"
 
 msgid "Cohortesreferents93:affecter"
-msgstr "Workflow CER: cohorte d'affectation d'un référent - référents à affecter (cohorte)"
-
-msgid "Cohortesreferents93:affectes"
-msgstr "Workflow CER: cohorte d'affectation d'un référent - référents déjà affectés (moteur de recherche)"
+msgstr "Workflow CER: affectation d'un référent"
 
 msgid "Cohortesreferents93:exportcsv"
-msgstr "Workflow CER: cohorte d'affectation d'un référent - télécharger le tableau"
+msgstr "Workflow CER: affectation d'un référent - télécharger le tableau"
 
 ###############################################################################
 

@@ -9,10 +9,25 @@
 			'Date de naissance',
 			'Soumis à droits et devoirs',
 			'Présence d\'une DSP',
-			'Rang CER',
 			'Nom, prénom',
-			'Date d\'affectation',
+			'Rang CER',
+			'État CER',
+			'Date de fin de CER',
+			'Date de début d\'affectation',
 			'Affectation',
+			'N° de dossier',
+			'Date ouverture de droit',
+			'Date de naissance',
+			'N° CAF',
+			'NIR',
+			'Code postal',
+			'Date de fin de droit',
+			'Motif de fin de droit',
+			'Rôle',
+			'Etat du dossier',
+			'Présence DSP',
+			'Adresse',
+			'CER signé dans la structure',
 		)
 	);
 
@@ -24,14 +39,29 @@
 			date_short( $personne_referent['Personne']['dtnai'] ),
 			$this->Xhtml->boolean( $personne_referent['Calculdroitrsa']['toppersdrodevorsa'], false ),
 			$this->Xhtml->boolean( $personne_referent['Dsp']['exists'], false ),
-			$personne_referent['Contratinsertion']['rg_ci'],
 			$personne_referent['Personne']['nom_complet_court'],
+			$personne_referent['Contratinsertion']['rg_ci'],
+			Set::enum( $personne_referent['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
+			date_short( $personne_referent['Contratinsertion']['df_ci'] ),
 			date_short( $personne_referent['PersonneReferent']['dddesignation'] ),
-			$personne_referent['Referent']['nom_complet'],
+			Set::enum( $personne_referent['PersonneReferent']['referent_id'], $options['referents'] ),
+			$personne_referent['Dossier']['numdemrsa'],
+			date_short( $personne_referent['Dossier']['dtdemrsa'] ),
+			date_short( $personne_referent['Personne']['dtnai'] ),
+			$personne_referent['Dossier']['matricule'],
+			$personne_referent['Personne']['nir'],
+			$personne_referent['Adresse']['codepos'],
+			$personne_referent['Situationdossierrsa']['dtclorsa'],
+			$personne_referent['Situationdossierrsa']['moticlorsa'],
+			Set::enum( $personne_referent['Prestation']['rolepers'], $options['rolepers'] ),
+			Set::classicExtract( $options['etatdosrsa'], $personne_referent['Situationdossierrsa']['etatdosrsa'] ),
+			$this->Xhtml->boolean( $personne_referent['Dsp']['exists'], false ),
+			$personne_referent['Adresse']['numvoie'].' '.Set::enum( $personne_referent['Adresse']['typevoie'], $options['typevoie'] ).' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['locaadr'],
+			$this->Xhtml->boolean( $personne_referent['Contratinsertion']['interne'], false ),
 		);
 		$this->Csv->addRow( $row );
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'personnes_referents-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'personnes_referents-'.date( 'Ymd-His' ).'.csv' );
 ?>
