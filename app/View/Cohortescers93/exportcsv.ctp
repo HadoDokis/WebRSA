@@ -91,5 +91,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'cers93-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'cers93-'.date( 'Ymd-His' ).'.csv' );
 ?>

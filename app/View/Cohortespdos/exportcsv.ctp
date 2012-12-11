@@ -21,5 +21,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'pdos-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'pdos-'.date( 'Ymd-His' ).'.csv' );
 ?>

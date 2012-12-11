@@ -31,5 +31,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'dossierspcgs66_affectes-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'dossierspcgs66_affectes-'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -10,5 +10,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'totalisationsacomptes-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'totalisationsacomptes-'.date( 'Ymd-His' ).'.csv' );
 ?>

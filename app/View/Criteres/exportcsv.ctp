@@ -83,5 +83,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'orientstructs-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'orientstructs-'.date( 'Ymd-His' ).'.csv' );
 ?>

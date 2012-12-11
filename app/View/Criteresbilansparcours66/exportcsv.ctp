@@ -42,5 +42,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'bilansparcours66-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'bilansparcours66-'.date( 'Ymd-His' ).'.csv' );
 ?>
