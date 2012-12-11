@@ -26,6 +26,8 @@
 					'nbtrajetvoiture',
 					'nbtrajettranspub',
 					'prixbillettranspub',
+					'nbtotalkm',
+					'forfaitvehicule',
 					'nbnuithebergt',
 					'nbrepas',
 					'totalvehicule',
