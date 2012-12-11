@@ -1037,7 +1037,7 @@
 
 			foreach( $idsMembresEffectifs as $membreep_id ) {
 				if( !empty( $membreep_id ) ) {
-					$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id );
+					$pdfs[] = $this->Commissionep->getPdfConvocationParticipant( $commissionep_id, $membreep_id, $this->Session->read( 'Auth.User.id' ) );
 				}
 			}
 
