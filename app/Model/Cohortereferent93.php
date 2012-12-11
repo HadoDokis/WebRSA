@@ -52,24 +52,34 @@
 			),
 		);
 
+		public $vfPersonneOrder = '(
+			CASE
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NULL ) THEN 0
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL ) THEN 1
+				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NULL ) THEN 2
+				ELSE 3
+			END
+		)';
+
 		/**
 		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes de référent
 		 * du parcours.
 		 *
-		 * @param type $statut
+		 * @param integer $structurereferente_id L'id technique de la structure référente pour laquelle on effectue la recherche
 		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
 		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
 		 * @param array $search Critères du formulaire de recherche
 		 * @param mixed $lockedDossiers
 		 * @return array
 		 */
-		public function search( $statut, $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
+		public function search( $structurereferente_id, $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
-			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'Contratinsertion.decision_ci' => 'V' ) );
+			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'Contratinsertion.decision_ci <>' => array( 'A', 'R' ) ), true );
+
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
 
@@ -77,26 +87,33 @@
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 				"Adressefoyer.id IN ( {$sqDerniereRgadr01} )",
 				"Orientstruct.id IN ( {$sqDerniereOrientstruct} )",
-				$sqDernierContratinsertion
+				'Orientstruct.structurereferente_id' => $structurereferente_id,
+				$sqDernierContratinsertion,
+				array(
+					'OR' => array(
+						'Contratinsertion.id IS NULL',
+						array(
+							'Contratinsertion.structurereferente_id <>' => $structurereferente_id,
+							'Contratinsertion.df_ci <=' => date( 'Y-m-d' ),
+						),
+						array(
+							'Contratinsertion.structurereferente_id' => $structurereferente_id,
+							'Cer93.positioncer' => '00enregistre',
+						),
+					)
+				)
 			);
 
-			// Formulaire de cohorte ou formulaire de visualisation ?
-			if( $statut == 'affecter' ) {
-				$conditions[] = array(
-					'OR' => array(
-						'PersonneReferent.id IS NULL',
-						array(
-							"PersonneReferent.id IN ( {$sqDernierReferent} )",
-							'PersonneReferent.dfdesignation IS NOT NULL'
-						)
-					)
-				);
-			}
-			else {
-				$conditions[] = array(
-					"PersonneReferent.id IN ( {$sqDernierReferent} )",
-					'PersonneReferent.dfdesignation IS NULL'
-				);
+			if( isset( $search['Referent']['filtrer'] ) && $search['Referent']['filtrer'] == '1' ) {
+				// Filtre par référent désigné / non désigné
+				if( isset( $search['Referent']['designe'] ) ) {
+					if( $search['Referent']['designe'] === '1' ) {
+						$conditions[] = 'PersonneReferent.referent_id IS NOT NULL';
+					}
+					else if( $search['Referent']['designe'] === '0' ) {
+						$conditions[] = 'PersonneReferent.referent_id IS NULL';
+					}
+				}
 
 				// Choix du référent affecté ?
 				if( isset( $search['PersonneReferent']['referent_id'] ) && ( $search['PersonneReferent']['referent_id'] != '' ) ) {
@@ -105,6 +122,7 @@
 
 				$conditions = $this->conditionsDates( $conditions, $search, 'PersonneReferent.dddesignation' );
 			}
+
 
 			// Présence DSP ?
 			if( isset( $search['Dsp']['exists'] ) && ( $search['Dsp']['exists'] != '' ) ) {
@@ -134,8 +152,10 @@
 			$querydata = array(
 				'fields' => array_merge(
 					$Personne->fields(),
+					$Personne->PersonneReferent->fields(),
 					$Personne->Calculdroitrsa->fields(),
 					$Personne->Contratinsertion->fields(),
+					$Personne->Contratinsertion->Cer93->fields(),
 					$Personne->Orientstruct->fields(),
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
@@ -144,7 +164,9 @@
 					// Présence DSP
 					array(
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
-						"( {$sqDspExists} ) AS \"Dsp__exists\"" // TODO: mettre dans le modèle
+						"( {$sqDspExists} ) AS \"Dsp__exists\"", // TODO: mettre dans le modèle,
+						"( \"Contratinsertion\".\"structurereferente_id\" = {$structurereferente_id} ) AS \"Contratinsertion__interne\"",
+						$Personne->sqVirtualField( 'order', true ),
 					)
 				),
 				'contain' => false,
@@ -155,6 +177,7 @@
 					$Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
@@ -162,24 +185,13 @@
 				),
 				'conditions' => $conditions,
 				'order' => array(
+					'Personne.order' => 'ASC',
 					'Orientstruct.date_valid ASC',
 					'Personne.nom ASC',
 					'Personne.prenom ASC',
 				),
 				'limit' => 10
 			);
-
-			// Lorsqu'on recherche les référents affecté, on doit ajouter des champs et une jointure
-			if( $statut == 'affectes' ) {
-				$querydata['fields'] = Set::merge(
-					$querydata['fields'],
-					array(
-						'PersonneReferent.dddesignation',
-						$Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet', true )
-					)
-				);
-				$querydata['joins'][] = $Personne->PersonneReferent->join( 'Referent' );
-			}
 
 			return $querydata;
 		}

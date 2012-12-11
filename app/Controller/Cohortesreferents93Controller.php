@@ -72,30 +72,9 @@
 		public function affecter() {
 			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( false, true );
 
-			$this->_index( $structurereferente_id );
-		}
-
-		/**
-		 * ....
-		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
-		 *
-		 * @return void
-		 */
-		public function affectes() {
-			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
-
-			$this->_index( $structurereferente_id );
-		}
-
-		/**
-		 * Méthode de recherche générique.
-		 *
-		 * @param integer $structurereferente_id L'id de la structure référente à laquelle l'utilisateur est lié.
-		 */
-		protected function _index( $structurereferente_id ) {
 			if( !empty( $this->request->data ) ) {
-				// Traitement du formulaire d'affectation
-				if( ( $this->action == 'affecter' ) && isset( $this->request->data['PersonneReferent'] ) ) {
+				// Traitement du formulaire
+				if( isset( $this->request->data['PersonneReferent'] ) ) {
 					$dossiers_ids = array_unique( Set::extract( '/PersonneReferent/dossier_id', $this->request->data ) );
 					$this->Cohortes->get( $dossiers_ids );
 
@@ -104,6 +83,7 @@
 					$this->PersonneReferent->validate = $this->Cohortereferent93->validatePersonneReferent;
 
 					$data = Set::extract( '/PersonneReferent[action]', $this->request->data );
+
 					if( $this->PersonneReferent->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$this->PersonneReferent->begin();
 
@@ -133,18 +113,17 @@
 					$this->PersonneReferent->validate = $personneReferentValidate;
 				}
 
+				// INFO: sinon on ne peut pas trier comme on veut
+				$this->PersonneReferent->Personne->virtualFields['order'] = $this->Cohortereferent93->vfPersonneOrder;
+
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortereferent93->search(
-					$this->action,
+					$structurereferente_id,
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->request->data['Search'],
 					( ( $this->action == 'affecter' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 				);
-
-				if( !empty( $structurereferente_id ) ) {
-					$querydata['conditions']['Orientstruct.structurereferente_id'] = $structurereferente_id;
-				}
 
 				$this->paginate = $querydata;
 				$personnes_referents = $this->paginate(
@@ -155,15 +134,13 @@
 				);
 				$this->set( 'personnes_referents', $personnes_referents );
 
-				if( $this->action == 'affecter' ) {
-					$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $personnes_referents ) ) );
+				$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $personnes_referents ) ) );
 
-					// Par défaut, tout est mis en attente
-					if( !isset( $this->request->data['PersonneReferent'] ) ) {
-						$this->request->data['PersonneReferent'] = array();
-						foreach( array_keys( $personnes_referents ) as $index ) {
-							$this->request->data['PersonneReferent'][$index] = array( 'action' => 'En attente' );
-						}
+				// Par défaut, tout est mis en attente
+				if( !isset( $this->request->data['PersonneReferent'] ) ) {
+					$this->request->data['PersonneReferent'] = array();
+					foreach( array_keys( $personnes_referents ) as $index ) {
+						$this->request->data['PersonneReferent'][$index] = array( 'action' => 'En attente' );
 					}
 				}
 			}
@@ -181,38 +158,51 @@
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
+				'Referent' => array(
+					'designe' => array( '0' => 'Référent non désigné', '1' => 'Référent désigné' )
+				)
 			);
+			$options = Set::merge( $options, $this->PersonneReferent->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );
-
-			if( $this->action == 'affecter' ) {
-				$this->render( 'formulaire' );
-			}
-			else {
-				$this->render( 'visualisation' );
-			}
 		}
 
 		/**
+		 * Export CSV des résultats de la cohorte d'affectation des référents au sein d'une structure référente (PDV).
+		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
+		 *
 		 * @return void
 		 */
 		public function exportcsv() {
 			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
-
 			$data = Xset::bump( $this->request->params['named'], '__' );
+
+			// INFO: sinon on ne peut pas trier comme on veut
+			$this->PersonneReferent->Personne->virtualFields['order'] = $this->Cohortereferent93->vfPersonneOrder;
+
 			$querydata = $this->Cohortereferent93->search(
-				'affectes',
+				$structurereferente_id,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$data['Search'],
 				null
 			);
-			$querydata['conditions']['Orientstruct.structurereferente_id'] = $structurereferente_id;
+
 			unset( $querydata['limit'] );
 
 			$personnes_referents = $this->PersonneReferent->Personne->find( 'all', $querydata );
 
 			$this->layout = '';
 			$this->set( 'personnes_referents', $personnes_referents );
+
+			// Options
+			$options = array(
+				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'typevoie' => $this->Option->typevoie(),
+				'rolepers' => $this->Option->rolepers(),
+				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
+			);
+			$options = Set::merge( $options, $this->PersonneReferent->Personne->Contratinsertion->Cer93->enums() );
+			$this->set( compact( 'options' ) );
 		}
 	}
 ?>
