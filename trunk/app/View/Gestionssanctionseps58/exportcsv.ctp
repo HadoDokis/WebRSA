@@ -48,4 +48,4 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'listes_modification_sanctionep'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'listes_modification_sanctionep'.date( 'Ymd-His' ).'.csv' );

@@ -24,5 +24,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'dsps-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'dsps-'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -17,5 +17,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'contrats_unique_insertion-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'contrats_unique_insertion-'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -62,5 +62,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'cohortes-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'cohortes-'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -37,5 +37,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'orientes_notifies-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'orientes_notifies-'.date( 'Ymd-His' ).'.csv' );
 ?>

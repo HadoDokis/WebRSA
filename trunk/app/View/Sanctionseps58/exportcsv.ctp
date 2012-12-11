@@ -62,5 +62,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'listes_pe-'.$nameTableauCsv.''.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'listes_pe-'.$nameTableauCsv.''.date( 'Ymd-His' ).'.csv' );
 ?>

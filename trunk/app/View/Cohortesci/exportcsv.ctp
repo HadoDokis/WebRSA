@@ -22,5 +22,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'contrats_valides-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'contrats_valides-'.date( 'Ymd-His' ).'.csv' );
 ?>

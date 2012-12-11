@@ -58,5 +58,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'liste_des_dossiers_selectionnables_en_commission_ep_'.$commissionep_id.'_'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'liste_des_dossiers_selectionnables_en_commission_ep_'.$commissionep_id.'_'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -19,5 +19,5 @@
 		$this->Csv->addRow($row);
 	}
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'dossiers-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'dossiers-'.date( 'Ymd-His' ).'.csv' );
 ?>

@@ -47,5 +47,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'relances-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'relances-'.date( 'Ymd-His' ).'.csv' );
 ?>

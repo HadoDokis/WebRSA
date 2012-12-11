@@ -30,5 +30,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'apres-'.date( 'Ymd-Hhm' ).'.csv' );
+	echo $this->Csv->render( 'apres-'.date( 'Ymd-His' ).'.csv' );
 ?>
