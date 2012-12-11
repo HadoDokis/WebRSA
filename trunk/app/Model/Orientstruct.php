@@ -1164,14 +1164,14 @@
 			// On complète le querydata suivant le CG
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				// Si l'orientation est passée en COV, on va récupérer ces informations
-				$sqPassagecov = $this->Personne->Dossiercov58->Passagecov58->sq(
+				$sqPassagecovDossiercov58Id = $this->Personne->Dossiercov58->Passagecov58->sq(
 					array(
 						'fields' => array(
-							'Passagecov58.id'
+							'Passagecov58.dossiercov58_id'
 						),
 						'joins' => array(
-							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),
-							$this->Personne->Dossiercov58->join( 'Themecov58', array( 'type' => 'INNER' ) ),
+							$this->Personne->Dossiercov58->Passagecov58->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Personne->Dossiercov58->join( 'Themecov58', array( 'type' => 'LEFT OUTER' ) ),
 							$this->Personne->Dossiercov58->join( 'Propononorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
 							$this->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
 							$this->Personne->Dossiercov58->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
@@ -1180,8 +1180,8 @@
 							'Dossiercov58.personne_id = Personne.id',
 							'Themecov58.name' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ),
 							'Passagecov58.etatdossiercov' => 'traite',
-							'Cov58.etatcov' => 'finalise',
-							'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid',
+// 							'Cov58.etatcov' => 'finalise',
+// 							'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid',
 							'OR' => array(
 								array(
 									'Propoorientationcov58.nvorientstruct_id IS NULL',
@@ -1201,19 +1201,19 @@
 									'Propononorientationprocov58.nvorientstruct_id IS NULL',
 									'Propoorientsocialecov58.nvorientstruct_id = Orientstruct.id',
 								),
-								array(
-									'Propoorientationcov58.nvorientstruct_id IS NULL',
-									'Propoorientsocialecov58.nvorientstruct_id IS NULL',
-									'Propononorientationprocov58.nvorientstruct_id IS NULL',
-								),
+// 								array(
+// 									'Propoorientationcov58.nvorientstruct_id IS NULL',
+// 									'Propoorientsocialecov58.nvorientstruct_id IS NULL',
+// 									'Propononorientationprocov58.nvorientstruct_id IS NULL',
+// 								),
 							)
 						),
 						'contain' => false,
 					)
 				);
 
-				$sqPassagecov = array_words_replace(
-					array( $sqPassagecov ),
+				$sqPassagecovDossiercov58Id = array_words_replace(
+					array( $sqPassagecovDossiercov58Id ),
 					array(
 						'Passagecov58' => 'passagescovs58',
 						'Dossiercov58' => 'dossierscovs58',
@@ -1221,10 +1221,10 @@
 						'Propoorientationcov58' => 'proposorientationscovs58',
 						'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
 						'Propoorientsocialecov58' => 'proposorientssocialescovs58',
-						'Passagecov58__id' => 'passagescovs58__id',
+						'Passagecov58__dossiercov58_id' => 'passagescovs58__dossiercov58_id',
 					)
 				);
-				$sqPassagecov = $sqPassagecov[0];
+				$sqPassagecovDossiercov58Id = $sqPassagecovDossiercov58Id[0];
 
 				$querydata['fields'] = Set::merge(
 					$querydata['fields'],
@@ -1241,20 +1241,35 @@
 					array(
 						'type' => 'LEFT OUTER',
 						'conditions' => array(
-							'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' )
+							'OR' => array(
+								'Dossiercov58.id IS NULL',
+								array(
+									'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ),
+									"Dossiercov58.id IN ( {$sqPassagecovDossiercov58Id} )"
+								)
+							)
 						)
 					)
 				);
+
 				$querydata['joins'][] = $this->Personne->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
-				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
+
+				 $joinPassagecov58Cov58 = $this->Personne->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
+				 $joinPassagecov58Cov58['conditions'] = array(
+					$joinPassagecov58Cov58['conditions'],
+					'Cov58.etatcov' => 'finalise',
+					'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid'
+				);
+				$querydata['joins'][] = $joinPassagecov58Cov58;
+	
 				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) );
 
-				$querydata['conditions'][] = array(
-					'OR' => array(
-						'Passagecov58.id IS NULL',
-						"Passagecov58.id IN ( {$sqPassagecov} )"
-					)
-				);
+// 				$querydata['conditions'][] = array(
+// 					'OR' => array(
+// 						'Passagecov58.id IS NULL',
+// 						"Passagecov58.id IN ( {$sqPassagecov} )"
+// 					)
+// 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
 				// Pour le CG 66, on ne eut cliquer sur certains liens que sous certaines conditions

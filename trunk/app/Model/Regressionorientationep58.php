@@ -727,6 +727,7 @@
 				)
 			);
 
+			$this->Structurereferente->Orientstruct->Behaviors->detach( 'StorablePdf' );
 			foreach( $dossierseps as $dossierep ) {
 				if ( in_array( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'], array( 'accepte', 'refuse' ) ) ) {
 					$orientstruct = array(
@@ -748,13 +749,14 @@
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
 					$success = $this->updateAll(
-						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
+						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Structurereferente->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 					) && $success;
 
-					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
+// 					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
 				}
 			}
+			$this->Structurereferente->Orientstruct->Behaviors->attach( 'StorablePdf' );
 			return $success;
 		}
 

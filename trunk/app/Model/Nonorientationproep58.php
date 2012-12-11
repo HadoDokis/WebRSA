@@ -124,6 +124,7 @@
 			$success = true;
 
 			if( $niveauDecisionFinale == "decision{$etape}" ) {
+				$this->Orientstruct->Behaviors->detach( 'StorablePdf' );
 				foreach( $dossierseps as $dossierep ) {
 					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) || empty( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'] ) ) {
 						$success = false;
@@ -154,7 +155,7 @@
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						) && $success;
 
-						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
+// 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep58']['user_id'] ) && $success;
 
 
 						$referent_id = $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['referent_id'];
@@ -197,6 +198,7 @@
 						}
 					}
 				}
+				$this->Orientstruct->Behaviors->attach( 'StorablePdf' );
 			}
 
 			return $success;
