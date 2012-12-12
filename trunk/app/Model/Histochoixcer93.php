@@ -209,7 +209,7 @@
 			if( $data['Histochoixcer93']['etape'] == '03attdecisioncg' && $data['Histochoixcer93']['isrejet'] ) {
 				$success = $this->Cer93->updateAll(
 					array(
-						'Cer93.positioncer' => '\'99rejete\'',
+						'Cer93.positioncer' => '\'99rejetecpdv\'',
 						'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
 					),
 					array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )

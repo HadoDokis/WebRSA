@@ -208,7 +208,13 @@
 					'Contratinsertion.forme_ci',
 				),
 				'contain' => array(
-					'Cer93'
+					'Cer93' => array(
+						'Histochoixcer93' => array(
+							'fields' => array(
+								'Histochoixcer93.isrejet'
+							)
+						)
+					)
 				),
 				'conditions' => array(
 					'Contratinsertion.personne_id' => $personne_id,
@@ -238,6 +244,20 @@
 			// L'allocataire peut-il passer en EP ?
 			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
 
+			
+			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
+			$IsRejet = false;
+			foreach( $results as $i => $result ) {
+				$NbHistos = count( $result['Cer93']['Histochoixcer93'] );
+				if( !empty( $NbHistos ) ) {
+					$dernierHisto = $result['Cer93']['Histochoixcer93'][$NbHistos-1];
+					if( $dernierHisto['isrejet'] == '1' ){
+						$IsRejet = true;
+					}
+				}
+				$results[$i]['Cer93']['rejetcpdv'] = $IsRejet;	
+			}
+			
 			// Logique d'activation / désactiviation des liens dans la vue
 			$disabledLinks = array(
 				'Cers93::add' => empty( $results ) || in_array( $results[0]['Cer93']['positioncer'], array( '99rejete', '99valide' ) ), //On bloque l'ajout tant que le CER n'est pas validé ou  rejeté
@@ -264,7 +284,7 @@
 				|| ( \'%permission%\' == \'0\' )',
 				'Cers93::impression' => '( \'%permission%\' == \'0\' )' ,
 				'Cers93::delete' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Cers93::impressionDecision' => '!in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) || ( \'%permission%\' == \'0\' )' 
+				'Cers93::impressionDecision' => '!in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) || ( \'%permission%\' == \'0\' ) ||  ( \'#Cer93.rejetcpdv#\' == true )' 
 			);
 
 			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
