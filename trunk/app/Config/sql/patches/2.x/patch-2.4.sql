@@ -578,13 +578,48 @@ SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_serviceinstructeur_id_fk
 DROP INDEX IF EXISTS cuis_serviceinstructeur_id_idx;
 CREATE INDEX cuis_serviceinstructeur_id_idx ON cuis( serviceinstructeur_id );
 
+--------------------------------------------------------------------------------
+-- 20121211 : Création de la table permettant de définir des commentaires 
+--				commun aux décisons CI et CPDV
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS commentairesnormescers93 CASCADE;
+CREATE TABLE commentairesnormescers93 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	name				VARCHAR(250) NOT NULL,
+	isautre				VARCHAR(1) DEFAULT '0',
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE commentairesnormescers93 IS 'Commentaires normés pour les décision CI et CPDV du CER CG93';
+DROP INDEX IF EXISTS commentairesnormescers93_name_idx;
+-- DROP INDEX IF EXISTS commentairesnormescers93_isautre_true_idx;
+CREATE UNIQUE INDEX commentairesnormescers93_name_idx ON commentairesnormescers93( name );
+-- FIXME: trouver un autre moyen de le faire
+-- CREATE UNIQUE INDEX commentairesnormescers93_isautre_true_idx ON commentairesnormescers93( isautre ) WHERE isautre='1';
+ALTER TABLE commentairesnormescers93 ADD CONSTRAINT commentairesnormescers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
+
+
+
+DROP TABLE IF EXISTS commentairesnormescers93_histoschoixcers93 CASCADE;
+CREATE TABLE commentairesnormescers93_histoschoixcers93 (
+    id                 					SERIAL NOT NULL PRIMARY KEY,
+    commentairenormecer93_id       	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    histochoixcer93_id					INTEGER NOT NULL REFERENCES histoschoixcers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 	commentaireautre					VARCHAR(250) DEFAULT NULL,
+    created								TIMESTAMP WITHOUT TIME ZONE,
+	modified							TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE commentairesnormescers93_histoschoixcers93 IS 'Table de liaison entre les historiques de CER et les commentaires choisis (CER93)';
+DROP INDEX IF EXISTS commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_idx;
+CREATE INDEX commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_idx ON commentairesnormescers93_histoschoixcers93(commentairenormecer93_id);
+
+DROP INDEX IF EXISTS commentairesnormescers93_histoschoixcers93_histochoixcer93_id_idx;
+CREATE INDEX commentairesnormescers93_histoschoixcers93_histochoixcer93_id_idx ON commentairesnormescers93_histoschoixcers93(histochoixcer93_id);
+
+DROP INDEX IF EXISTS commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_histochoixcer93_id_idx;
+CREATE UNIQUE INDEX commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_histochoixcer93_id_idx ON commentairesnormescers93_histoschoixcers93(commentairenormecer93_id, histochoixcer93_id);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
-
-
--- begin;
--- SELECT add_missing_table_field( 'public', 'histoschoixcers93', 'duree', 'INTEGER' );
--- 
--- ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
--- commit;

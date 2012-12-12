@@ -36,9 +36,33 @@
 						'Histochoixcer93.cer93_id' => array( 'type' => 'hidden' ),
 						'Histochoixcer93.user_id' => array( 'type' => 'hidden' ),
 						'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
-						'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
-						'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' )
+					)
+				);
+
+				$checkedCommentaires = Set::filter( Set::extract( $this->request->data, '/Commentairenormecer93/Commentairenormecer93/commentairenormecer93_id' ) );
+				echo '<fieldset><legend>Commentaires</legend>';
+				if( !empty( $options['Commentairenormecer93']['commentairenormecer93_id'] ) ) {
+					$i = 0;
+					foreach( $options['Commentairenormecer93']['commentairenormecer93_id'] as $id => $commentaireName ) {
+						$array_key = array_search( $id, $checkedCommentaires );
+						$checked = ( ( $array_key !== false ) ? 'checked' : '' );
+
+						echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentairenormecer93_id", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentairenormecer93_id]", 'label' => $commentaireName, 'type' => 'checkbox', 'value' => $id, 'checked' => $checked, 'hiddenField' => false ) );
+						
+						if( $id == $commentairenormecer93_isautre_id) {
+							echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentaireautre", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'textarea', 'value' => Hash::get( $this->request->data, "Commentairenormecer93.Commentairenormecer93.{$array_key}.commentaireautre" ) ) );
+						}
+						$i++;
+					}
+				}
+				echo '</fieldset>';
+
+				echo $this->Xform->inputs(
+					array(
+						'fieldset' => false,
+						'legend' => false,
+						'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' )
 					)
 				);
 
@@ -66,6 +90,19 @@
 	</div>
 </div>
 <div class="clearer"><hr /></div>
+<script type="text/javascript">
+//<![CDATA[
+	<?php foreach( $options['Commentairenormecer93']['commentairenormecer93_id'] as $key => $commentairename ) :?>
+		observeDisableFieldsOnCheckbox(
+			'Commentairenormecer93Commentairenormecer93<?php echo $key;?>Commentairenormecer93Id',
+			['Commentairenormecer93Commentairenormecer93<?php echo $key;?>Commentaireautre'],
+			false,
+			true
+		);
+
+	<?php endforeach;?>
+//]]>
+</script>
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
