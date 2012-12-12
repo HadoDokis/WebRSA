@@ -78,7 +78,7 @@
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
-			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'Contratinsertion.decision_ci <>' => array( 'A', 'R' ) ), true );
+			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'NOT' => array( 'Contratinsertion.decision_ci' => array( 'A', 'R' ) ) ), true );
 
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
