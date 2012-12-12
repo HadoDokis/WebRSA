@@ -61,7 +61,31 @@
 					echo "<fieldset><legend>$etape</legend>";
 					echo $this->Xform->fieldValue( 'Cer93.formeci', Set::enum( Set::classicExtract( $h, 'formeci'), $options['Cer93']['formeci'] ) );
 					echo $this->Xform->fieldValue( 'Histochoixcer93.datechoix', date_short( Set::classicExtract( $h, 'datechoix') ) );
-					echo $this->Xform->fieldValue( 'Histochoixcer93.commentaire', Set::classicExtract( $h, 'commentaire') );
+
+					if( !empty( $h['commentaire'] ) ) {
+						echo $this->Xform->fieldValue( 'Histochoixcer93.commentaire', Set::classicExtract( $h, 'commentaire') );
+					}
+					
+					echo '<fieldset><legend>Commentaires</legend>';
+					$commentaires = '';
+					foreach( $h['Commentairenormecer93'] as $key => $commentaire ) {
+						if( !empty( $commentaire ) ) {
+							if( $commentaire['isautre'] == '1' ) {
+								$commentaires .= "<li>{$commentaire['name']}: <em>{$commentaire['Commentairenormecer93Histochoixcer93']['commentaireautre']}</em></li>";
+							}
+							else {
+								$commentaires .= '<li>'.$commentaire['name'].'</li>';
+							}
+							
+						}
+					}
+
+					if( !empty( $commentaires ) ) {
+						echo "<ul>{$commentaires}</ul>";
+					}
+					
+					echo '</fieldset>';
+
 					echo $this->Xform->fieldValue( 'Histochoixcer93.user_id', Set::classicExtract( $h, 'User.nom_complet') );
 
 					if( $h['etape'] == '03attdecisioncg' ) {

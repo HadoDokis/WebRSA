@@ -11,6 +11,18 @@
 		<?php
 			echo $this->Xhtml->tableCells(
 				array(
+					h( 'Commentaires normés' ),
+					$this->Xhtml->viewLink(
+						'Voir la table',
+						array( 'controller' => 'commentairesnormescers93', 'action' => 'index' ),
+						$this->Permissions->check( 'commentairesnormescers93', 'index' )
+					)
+				),
+				array( 'class' => 'odd' ),
+				array( 'class' => 'even' )
+			);
+			echo $this->Xhtml->tableCells(
+				array(
 					h( 'Métiers exercés' ),
 					$this->Xhtml->viewLink(
 						'Voir la table',

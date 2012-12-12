@@ -461,7 +461,6 @@
 		}
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		$i = 0;
-		$foos = array();
 
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$array_key = array_search( $idSujet, $selectedSujetcer93 );

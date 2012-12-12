@@ -91,6 +91,30 @@
 		);
 
 		/**
+		 * Liaisons "hasAndBelongsToMany" avec d'autres modèles.
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+            'Commentairenormecer93' => array(
+				'className' => 'Commentairenormecer93',
+				'joinTable' => 'commentairesnormescers93_histoschoixcers93',
+				'foreignKey' => 'histochoixcer93_id',
+				'associationForeignKey' => 'commentairenormecer93_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'Commentairenormecer93Histochoixcer93'
+			)
+		);
+		
+		/**
 		 *
 		 * @param type $contratinsertion
 		 * @param type $etape
@@ -148,11 +172,23 @@
 						$formData['Histochoixcer93'][$field] = $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1][$field];
 					}
 				}
+				if( ( $nbHistochoixcer93 > 0 ) ) {
+					$commentaires = $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['Commentairenormecer93'];
+					if( isset( $commentaires ) && !empty( $commentaires ) ) {
+						$formData['Commentairenormecer93'] = array( 'Commentairenormecer93' => array() );
+						foreach( $commentaires as $commentaire ) {
+							$formData['Commentairenormecer93']['Commentairenormecer93'][] = array(
+								'commentairenormecer93_id' => $commentaire['Commentairenormecer93Histochoixcer93']['commentairenormecer93_id'],
+								'commentaireautre' => $commentaire['Commentairenormecer93Histochoixcer93']['commentaireautre']
+							);
+						}
+					}
+				}
 			}
 			else {
 				$formData = array( 'Histochoixcer93' => $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1] );
 			}
-// debug($formData);
+
 			return $formData;
 		}
 
@@ -163,7 +199,9 @@
 		 * FIXME: plus les états finaux pour Chargé de suivi et avis cadre
 		 */
 		public function saveDecision( $data ) {
-			$success = $this->save( $data );
+// 			$success = $this->save( $data );
+
+			$success = $this->saveResultAsBool( $this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) ) );
 
 			// Parfois le champ datechoix vient du formulaire parfois c'est un champ caché
 			$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );

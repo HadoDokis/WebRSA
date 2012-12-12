@@ -274,7 +274,7 @@
 				'deleteQuery' => '',
 				'insertQuery' => '',
 				'with' => 'Cer93Sujetcer93'
-			),
+			)
 		);
 
 		/**
@@ -1229,7 +1229,8 @@
 								'User' => array(
 									'fields' => array( 'nom_complet' )
 								),
-								'order' => array( 'Histochoixcer93.etape ASC' )
+								'order' => array( 'Histochoixcer93.etape ASC' ),
+								'Commentairenormecer93'
 							),
 							'Sujetcer93'
 						),
