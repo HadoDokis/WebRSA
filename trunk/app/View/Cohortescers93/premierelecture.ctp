@@ -21,7 +21,7 @@
 						<th>Commune</th>
 						<th>Nom/Prénom</th>
 						<th>Date d\'orientation</th>
-						<th>Date de désignation</th>
+						<th>Date d\'affectation</th>
 						<th>Référent</th>
 						<th>Rang CER</th>
 						<th>Dernier RDV</th>

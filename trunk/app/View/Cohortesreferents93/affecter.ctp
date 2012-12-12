@@ -26,7 +26,7 @@
 			<?php
 				echo $this->Form->input( 'Search.Referent.designe', array( 'type' => 'radio', 'options' => $options['Referent']['designe'], 'legend' => false, 'separator' => '<br/>' ) );
 				echo $this->Form->input( 'Search.PersonneReferent.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select', 'options' => $options['referents'], 'empty' => true ) );
-				echo $this->Search->date( 'Search.PersonneReferent.dddesignation' );
+				echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
 			?>
 		</fieldset>
 	</fieldset>
@@ -89,7 +89,7 @@
 						<th>Rang CER</th>
 						<th>État CER</th>
 						<th>Date de fin de CER</th>
-						<th>Date de début d\'affectation</th>
+						<th>Date d\'affectation</th>
 						<th>Affectation</th>
 						<th>Action</th>
 						<th>Détails</th>

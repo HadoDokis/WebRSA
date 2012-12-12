@@ -19,7 +19,7 @@
 		echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 
 		echo $this->Form->input( 'Search.PersonneReferent.referent_id', array( 'label' => 'Affectation', 'type' => 'select', 'options' => $options['referents'], 'empty' => true ) );
-		echo $this->Search->date( 'Search.PersonneReferent.dddesignation' );
+		echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
 		
 		echo $this->Search->blocAllocataire( array(), 'Search' );
 		echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );

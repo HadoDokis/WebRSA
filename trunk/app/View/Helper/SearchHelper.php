@@ -194,14 +194,16 @@
 		 * @param string $path
 		 * @return string
 		 */
-		public function date( $path ) {
+		public function date( $path, $fieldLabel = null ) {
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
 			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false );
 
 			list( $model, $field ) = model_field( $path);
 			$domain = Inflector::underscore( $model );
-			$fieldLabel = __d( $domain, "{$model}.{$field}" );
+			if( empty( $fieldLabel ) ) {
+				$fieldLabel = __d( $domain, "{$model}.{$field}" );
+			}
 
 			$input = $this->Xform->input( $path, array( 'label' => 'Filtrer par '.lcfirst( $fieldLabel ), 'type' => 'checkbox' ) );
 
