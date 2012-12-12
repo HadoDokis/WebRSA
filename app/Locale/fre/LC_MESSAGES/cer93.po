@@ -113,25 +113,31 @@ msgid "ENUM::POSITIONCER::02attdecisioncpdv"
 msgstr "Signé et transféré"
 
 msgid "ENUM::POSITIONCER::03attdecisioncg"
-msgstr "En attente de décision CG"
+# msgstr "En attente de décision CG"
+msgstr "Validé Responsable"
+
+msgid "ENUM::POSITIONCER::99rejetecpdv"
+msgstr "Rejeté Responsable"
 
 msgid "ENUM::POSITIONCER::04premierelecture"
-msgstr "Première lecture"
+# msgstr "Première lecture"
+msgstr "En attente avis CS"
 
 msgid "ENUM::POSITIONCER::05secondelecture"
-msgstr "Seconde lecture"
+# msgstr "Seconde lecture"
+msgstr "En attente avis cadre"
 
 msgid "ENUM::POSITIONCER::06attaviscadre"
-msgstr "En attente avis cadre"
+msgstr "06avisacdare"
 
 msgid "ENUM::POSITIONCER::07attavisep"
 msgstr "En attente passage EP"
 
 msgid "ENUM::POSITIONCER::99rejete"
-msgstr "Rejeté"
+msgstr "Rejeté CG"
 
 msgid "ENUM::POSITIONCER::99valide"
-msgstr "Validé"
+msgstr "Validé CG"
 
 msgid "Cer93.datesignature"
 msgstr "Date de signature"
