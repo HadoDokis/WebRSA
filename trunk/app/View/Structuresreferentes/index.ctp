@@ -1,3 +1,8 @@
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
+?>
 <?php $this->pageTitle = 'Paramétrage des Structures référentes';?>
 <?php echo $this->Xform->create( 'Structurereferente' );?>
 <div>
@@ -13,7 +18,52 @@
 			?>
 		</ul>
 	<?php endif;?>
-	<div>
+<?php
+	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
+		$this->Xhtml->image(
+			'icons/application_form_magnify.png',
+			array( 'alt' => '' )
+		).' Formulaire',
+		'#',
+		array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+	).'</li></ul>';
+?>
+
+<?php echo $this->Xform->create( 'Structurereferente', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+		<fieldset>
+			<?php echo $this->Xform->input( 'Structurereferente.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+
+			<legend>Filtrer par Référent</legend>
+			<?php
+				echo $this->Default2->subform(
+					array(
+						'Structurereferente.lib_struc',
+						'Structurereferente.ville',
+						'Structurereferente.typeorient_id' => array( 'label' => 'Type d\'orientation', 'options' => $options['Structurereferente']['typeorient_id'] )
+					),
+					array(
+						'options' => $options
+					)
+				);
+			?>
+		</fieldset>
+
+		<div class="submit noprint">
+			<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+			<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+		</div>
+
+<?php echo $this->Xform->end();?>
+
+<?php  if( isset( $structuresreferentes ) ): ?>
+	<?php if( empty( $structuresreferentes ) ):?>
+		<?php
+			$message = 'Aucune structure ne correspond à votre recherche';
+		?>
+		<p class="notice"><?php echo $message;?></p>
+	<?php else:?>
+	<?php $pagination = $this->Xpaginator->paginationBlock( 'Structurereferente', $this->passedArgs ); ?>
+	<?php echo $pagination;?>
 		<h2>Table Structures référentes</h2>
 		<table>
 		<thead>
@@ -47,9 +97,9 @@
 							h( $structurereferente['Structurereferente']['ville'] ),
 							h( $structurereferente['Structurereferente']['code_insee'] ),
 							h( $structurereferente['Structurereferente']['numtel'] ),
-							h( $typeorient[$structurereferente['Structurereferente']['typeorient_id']] ),
-							h( Set::enum( $structurereferente['Structurereferente']['actif'], $optionsradio['actif'] ) ),
-							h( Set::enum( $structurereferente['Structurereferente']['typestructure'], $optionsradio['typestructure'] ) ),
+							h( Set::enum( $structurereferente['Structurereferente']['typeorient_id'], $options['Structurereferente']['typeorient_id'] ) ),
+							h( Set::enum( $structurereferente['Structurereferente']['actif'], $options['Structurereferente']['actif'] ) ),
+							h( Set::enum( $structurereferente['Structurereferente']['typestructure'], $options['Structurereferente']['typestructure'] ) ),
 							$this->Xhtml->editLink(
 								'Éditer la structure référente ',
 								array( 'controller' => 'structuresreferentes', 'action' => 'edit', $structurereferente['Structurereferente']['id'] ),
@@ -68,13 +118,18 @@
 			<?php endforeach;?>
 			</tbody>
 		</table>
+	<?php endif?>
+<?php endif?>
 </div>
-</div>
-	<div class="submit">
-		<?php
-			echo $this->Xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-
-<div class="clearer"><hr /></div>
-<?php echo $this->Xform->end();?>
+<?php
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
+?>

@@ -498,5 +498,46 @@
 			$success = $this->_regenerateCache();
 			return $success;
 		}
+		
+		
+		
+			
+		/**
+		*	Recherche des structures dans le paramétrage de l'application
+		*
+		*/
+		public function search( $criteres ) {
+			/// Conditions de base
+			$conditions = array();
+
+			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			$filtersStruct = array();
+			foreach( array( 'lib_struc', 'ville' ) as $critereStructure ) {
+				if( isset( $criteres['Structurereferente'][$critereStructure] ) && !empty( $criteres['Structurereferente'][$critereStructure] ) ) {
+					$conditions[] = 'Structurereferente.'.$critereStructure.' ILIKE \''.$this->wildcard( $criteres['Structurereferente'][$critereStructure] ).'\'';
+				}
+			}
+
+			// Critère sur la structure référente de l'utilisateur
+			if( isset( $criteres['Structurereferente']['typeorient_id'] ) && !empty( $criteres['Structurereferente']['typeorient_id'] ) ) {
+				$conditions[] = array( 'Structurereferente.typeorient_id' => $criteres['Structurereferente']['typeorient_id'] );
+			}
+
+
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Typeorient->fields()
+				),
+				'order' => array( 'Structurereferente.lib_struc ASC' ),
+				'joins' => array(
+					$this->join( 'Typeorient', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
 	}
 ?>
