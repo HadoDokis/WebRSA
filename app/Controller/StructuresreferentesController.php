@@ -24,17 +24,22 @@
 			'add' => 'Structuresreferentes:edit'
 		);
 
-		public function beforeFilter() {
-			parent::beforeFilter();
+		protected function _setOptions() {
 			$this->set( 'typevoie', $this->Option->typevoie() );
 
-			$optionsradio = $this->Structurereferente->allEnumLists();
+			$options = $this->Structurereferente->enums();
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$optionsradio['typestructure']['oa'] = 'Structure liée à un PPAE';
-				$optionsradio['typestructure']['msp'] = 'Structure débouchant sur CER pro';
+				$options['typestructure']['oa'] = 'Structure liée à un PPAE';
+				$options['typestructure']['msp'] = 'Structure débouchant sur CER pro';
 			}
-			$this->set( 'optionsradio', $optionsradio );
+			
+			foreach( array( 'Typeorient' ) as $linkedModel ) {
+				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
+				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+			}
+
+			$this->set( 'options', $options );
 		}
 
 		public function index() {
@@ -43,28 +48,18 @@
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
 
-			$typeorient = $this->Typeorient->find(
-				'list',
-				array(
-					'fields' => array(
-						'Typeorient.lib_type_orient'
-					)
-				)
-			);
-			$this->set( 'typeorient', $typeorient );
-
-			$structuresreferentes = $this->Structurereferente->find(
-				'all',
-				array(
-					'recursive' => -1
-				)
-			);
+			if( !empty( $this->request->data ) ) {
+				$queryData = $this->Structurereferente->search( $this->request->data );
+				$queryData['limit'] = 20;
+				$this->paginate = $queryData;
+				$structuresreferentes = $this->paginate( 'Structurereferente' );
+				$this->set( 'structuresreferentes', $structuresreferentes);
+			}
+			$this->_setOptions();
 
 			App::import( 'Behaviors', 'Occurences' );
 			$this->Structurereferente->Behaviors->attach( 'Occurences' );
 			$this->set( 'occurences', $this->Structurereferente->occurencesExists() );
-
-			$this->set( 'structuresreferentes', $structuresreferentes);
 		}
 
 		public function add() {
@@ -101,7 +96,7 @@
 					$this->redirect( array( 'controller' => 'structuresreferentes', 'action' => 'index' ) );
 				}
 			}
-
+			$this->_setOptions();
 			$this->render( 'add_edit' );
 		}
 
@@ -155,6 +150,7 @@
 				);
 				$this->request->data = $structurereferente;
 			}
+			$this->_setOptions();
 
 			$this->render( 'add_edit' );
 		}
