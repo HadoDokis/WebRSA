@@ -437,7 +437,7 @@
 
 	<?php
 		//Il a été prévu (champ prevu du bloc 6)
-		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $this->request->data, 'Cer93.prevupcd' ) );
+		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $this->request->data, 'Cer93.prevupcd' ), true, 'textarea' );
 
 		//Bloc 5 : Bilan du précédent contrat
 		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );

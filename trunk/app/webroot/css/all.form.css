@@ -34,9 +34,13 @@ div.input.checkbox label {
     width: 90%;
 }
 
-div.textarea label, div.textarea textarea {
+div.textarea label, div.textarea textarea, div.input.textarea span.label, div.input.textarea span.input {
     display: block;
     width: 100%;
+}
+
+div.input.textarea span.input {
+	padding-left: 1em;
 }
 
 div.text input, div.password input, div.select select, div.input.text span.input, dl.inform dd {
