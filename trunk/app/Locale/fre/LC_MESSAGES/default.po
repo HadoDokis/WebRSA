@@ -604,3 +604,6 @@ msgstr "Valider cadre"
 
 msgid "Button::manifestation"
 msgstr "Manifestations"
+
+msgid "Referent::cloturer"
+msgstr "Clôturer"

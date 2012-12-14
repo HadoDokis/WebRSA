@@ -110,6 +110,10 @@
 					$icon = 'icons/'.$url['action'].$iconFileSuffix.'.png';
 					$text = __( sprintf( '%s::%s', Inflector::classify( $url['controller'] ), $url['action'] ) );
 					break;
+				case 'cloturer':
+					$icon = 'icons/'.$url['action'].$iconFileSuffix.'.png';
+					$text = __( sprintf( '%s::%s', Inflector::classify( $url['controller'] ), $url['action'] ) );
+					break;
 				default:
 					$this->cakeError( 'error500' ); // FIXME -> proprement --> $this->cakeError( 'wrongParameter' )
 			}

@@ -13,36 +13,36 @@
 	 *
 	 * @package app.Controller
 	 */
+	App::uses('Folder', 'Utility');
+	App::uses('File', 'Utility');
+	
 	class ReferentsController extends AppController
 	{
 
 		public $name = 'Referents';
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
-		public $helpers = array( 'Xform' );
+		public $helpers = array( 'Xform', 'Default2', 'Default' );
 		
-		public $components = array( 'Default' );
+		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'add' => 'Referents:edit'
 		);
 
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
+		protected function _setOptions() {
 
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'fonction_pers', $this->Option->fonction_pers() );
 			$this->set( 'referent', $this->Referent->find( 'list' ) );
 
 			$options = array();
-			$options = $this->Referent->allEnumLists();
+			$options = $this->Referent->enums();
 			foreach( array( 'Structurereferente' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
 				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
 			}
 
 			$this->set( compact( 'options' ) );
-
-			return $return;
 		}
 
 
@@ -52,23 +52,42 @@
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
 
-			$sr = $this->Structurereferente->find(
-				'list',
-				array(
-					'fields' => array(
-						'Structurereferente.lib_struc'
-					),
-				)
-			);
-			$this->set( 'sr', $sr );
+			if( !empty( $this->request->data ) ) {
+				$queryData = $this->Referent->search( $this->request->data );
+				$queryData['limit'] = 20;
+				$this->paginate = $queryData;
+				$referents = $this->paginate( 'Referent' );
+				
+				$clotureActif = true;
+				foreach( $referents as $referent ){
+					if( !empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] == 0 ) ) {
+						$clotureActif = false;
+					}
+				}
+				$this->set( 'clotureActif', $clotureActif );
+				$this->set( 'referents', $referents );
+
+			}
+			$this->_setOptions();
+			/*
 			$referents = $this->Referent->find(
 				'all',
 				array(
+					'fields' => array_merge(
+						$this->Referent->fields(),
+						$this->Referent->Structurereferente->fields()
+					),
+					'joins' => array(
+						$this->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+					),
 					'recursive' => -1
 				)
-
 			);
-			$this->set('referents', $referents);
+			
+			
+			
+			$this->_setOptions();
+			$this->set('referents', $referents);*/
 		}
 
 		/**
@@ -108,6 +127,7 @@
 			);
 			$this->set( 'sr', $sr );
 
+			$this->_setOptions();
 			$args = func_get_args();
 			call_user_func_array( array( $this->Default, $this->action ), $args );
 		}
@@ -134,6 +154,69 @@
 			if( $this->Referent->delete( array( 'Referent.id' => $referent_id ) ) ) {
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 				$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+			}
+		}
+		
+		/**
+		*	Clôture en masse des référents
+		*/
+		
+	/**
+		 * Formulaire de clôture d'un référent du parcours.
+		 *
+		 * @param integer $id L'id technique de l'enregistrement dans la table personnes_referents
+		 * @return void
+		 */
+		public function cloturer( $id = null ) {
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$referent = $this->Referent->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Referent.id' => $id
+					)
+				)
+			);
+			$this->assert( !empty( $referent ), 'invalidParameter' );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index' ) );
+			}
+
+			// Tentative d'enregistrement du formulaire
+			if( !empty( $this->request->data ) ) {
+				$this->Referent->begin();
+				
+				$datedfdesignation = ( is_array( $this->request->data['Referent']['datecloture'] ) ? date_cakephp_to_sql( $this->request->data['Referent']['datecloture'] ) : $this->request->data['Referent']['datecloture'] );
+
+				$success = $this->Referent->PersonneReferent->updateAll(
+					array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
+					array(
+						'"PersonneReferent"."referent_id"' => $id,
+						'PersonneReferent.dfdesignation IS NULL'
+					)
+				);
+				if( $success ) {
+					$success = $this->Referent->updateAll(
+						array( 'Referent.datecloture' => '\''.$datedfdesignation.'\'' ),
+						array(
+							'"Referent"."id"' => $id
+						)
+					) && $success;
+
+					$this->Referent->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
+				}
+				else {
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					$this->Referent->rollback();
+				}
+			}
+			else {
+				$this->request->data = $referent;
 			}
 		}
 	}

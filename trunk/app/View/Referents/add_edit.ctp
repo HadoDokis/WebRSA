@@ -25,7 +25,7 @@
 
 	<fieldset>
 		<?php
-			echo $this->Default->subform(
+			echo $this->Default2->subform(
 				array(
 					'Referent.qual' => array( 'options' => $qual ),
 					'Referent.nom',
@@ -33,7 +33,7 @@
 					'Referent.fonction',
 					'Referent.numero_poste' => array( 'maxlength' => 10 ),
 					'Referent.email',
-					'Referent.actif' => array( 'label' => 'Actif ?', 'type' => 'radio', 'options' => $options['actif'] )
+					'Referent.actif' => array( 'label' => 'Actif ?', 'type' => 'radio', 'options' => $options['Referent']['actif'] )
 				)
 			);
 		?>

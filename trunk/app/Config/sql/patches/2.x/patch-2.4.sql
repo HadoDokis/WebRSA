@@ -620,6 +620,11 @@ CREATE INDEX commentairesnormescers93_histoschoixcers93_histochoixcer93_id_idx O
 DROP INDEX IF EXISTS commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_histochoixcer93_id_idx;
 CREATE UNIQUE INDEX commentairesnormescers93_histoschoixcers93_commentairenormecer93_id_histochoixcer93_id_idx ON commentairesnormescers93_histoschoixcers93(commentairenormecer93_id, histochoixcer93_id);
 
+
+--------------------------------------------------------------------------------
+-- 20121214 : Clôture en masse des référents
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'referents', 'datecloture', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

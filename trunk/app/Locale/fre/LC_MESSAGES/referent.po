@@ -19,6 +19,20 @@ msgstr ""
 
 
 ###############################################################################
+msgid "Referent::edit"
+msgstr "Modifier le référent"
+
+msgid "Referent::add"
+msgstr "Ajout d'un nouveau référent"
+
+msgid "Referent::delete"
+msgstr "Supprimer le référent"
+
+msgid "Referent::cloturer"
+msgstr "Clôturer le référent en masse"
+
+msgid "Referent::delete::confirm"
+msgstr "Confirmer la suppression ?"
 
 msgid "Referent.qual"
 msgstr "Civilité"
@@ -33,11 +47,10 @@ msgid "Referent.fonction"
 msgstr "Fonction"
 
 msgid "Referent.numero_poste"
-msgstr "N° de poste"
+msgstr "N° téléphone"
 
 msgid "Referent.email"
 msgstr "Email"
-
 
 msgid "Referent.nom_complet"
 msgstr "Nom du prescripteur"
@@ -62,3 +75,9 @@ msgstr "Aucune demande de réorientation en cours"
 
 msgid "Referent::liste_demande_reorient"
 msgstr "Liste des demandes de réorientation du référent"
+
+msgid "Referent.actif"
+msgstr "Actif"
+
+msgid "Referent.datecloture"
+msgstr "Date de clôture"
