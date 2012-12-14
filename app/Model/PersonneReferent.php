@@ -192,5 +192,41 @@
 
 			return $saved;
 		}
+		
+		
+		/**
+		 * Sous-requête permettant de savoir si une entrée existe dans la table personnes_referents
+		 *	pour une entrée de la table referents
+		 *
+		 * @param Model $Model
+		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
+		 * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
+		 * 	modèle).
+		 * @param string $modelAlias Si null, utilise l'alias de la class PersonneReferent, sinon la valeur donnée.
+		 * @return string
+		 */
+		public function sqNbLies( Model $Model, $fieldId = 'Referent.id', $fieldName = null, $modelAlias = null ) {
+			$alias = Inflector::underscore( $this->alias );
+
+			$modelAlias = ( is_null( $modelAlias ) ? $this->alias : $modelAlias );
+
+			$sq = $this->sq(
+					array(
+						'fields' => array(
+							"COUNT( {$alias}.id )"
+						),
+						'alias' => $alias,
+						'conditions' => array(
+							"{$alias}.referent_id = $fieldId"
+						)
+					)
+			);
+			
+			if( !is_null( $fieldName ) ) {
+				$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
+			}
+
+			return $sq;
+		}
 	}
 ?>

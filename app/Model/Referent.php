@@ -301,6 +301,50 @@
 			)
 		);
 
+		
+		
+		public function search( $criteres ) {
+			/// Conditions de base
+			$conditions = array();
+
+			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			$filtersReferent = array();
+			foreach( array( 'nom', 'prenom', 'fonction' ) as $critereReferent ) {
+				if( isset( $criteres['Referent'][$critereReferent] ) && !empty( $criteres['Referent'][$critereReferent] ) ) {
+					$conditions[] = 'Referent.'.$critereReferent.' ILIKE \''.$this->wildcard( $criteres['Referent'][$critereReferent] ).'\'';
+				}
+			}
+
+			if( isset( $criteres['Referent']['id'] ) && !empty( $criteres['Referent']['id'] ) ) {
+				$conditions[] = array( 'Referent.id' => $criteres['Referent']['id'] );
+			}
+			
+			// Critère sur la structure référente de l'utilisateur
+			if( isset( $criteres['Referent']['structurereferente_id'] ) && !empty( $criteres['Referent']['structurereferente_id'] ) ) {
+				$conditions[] = array( 'Referent.structurereferente_id' => $criteres['Referent']['structurereferente_id'] );
+			}
+
+
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Structurereferente->fields(),
+					array(
+						$this->PersonneReferent->sqNbLies( $this, 'Referent.id', 'nb_referents_lies' )
+					)
+				),
+				'order' => array( 'Referent.nom ASC', 'Referent.prenom ASC' ),
+				'joins' => array(
+					$this->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
+		
+		
 		/**
 		 * Renvoit une liste clé / valeur avec clé qui est l'id de la structure référente underscore l'id du référent
 		 * et la valeur qui est qual, nom, prénom du référent.

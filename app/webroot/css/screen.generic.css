@@ -1537,3 +1537,13 @@ table#Cers93Index span.button.aviscadre.disabled { background-image: url( ../img
 
 table#Cers93Index a.button.add { background-image: url( ../img/icons/folder_table.png ); }
 table#Cers93Index span.button.add.disabled { background-image: url( ../img/icons/folder_table_disabled.png ); }
+
+/**
+ * Cloture en masse des référents
+ */
+td.button.cloturer a, td.action a.cloturer, td span.button.cloturer, table.default2 td a.button.cloturer {
+	background-image: url( ../img/icons/date_edit.png );
+}
+td.button.cloturer.disabled a, td.action a.cloturer.disabled, td span.button.cloturer.disabled, table.default2 td a.button.cloturer.disabled {
+	background-image: url( ../img/icons/date_edit_disabled.png );
+}
