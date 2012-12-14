@@ -60,6 +60,10 @@
 			<tbody>
 				<?php foreach( $cohorteci as $index => $contrat ):?>
 					<?php
+						$controller = 'contratsinsertion';
+						if( Configure::read( 'Cg.departement' ) == 93 ) {
+							$controller = 'cers93';
+						}
 					$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 						<tbody>
 							<tr>
@@ -121,10 +125,11 @@
 
 							$this->Xhtml->viewLink(
 								'Voir le contrat « '.$title.' »',
-								array( 'controller' => 'contratsinsertion', 'action' => 'view', $contrat['Contratinsertion']['id'] )
+								array( 'controller' => $controller, 'action' => 'view', $contrat['Contratinsertion']['id'] )
 							),
 							array( $innerTable, array( 'class' => 'innerTableCell' ) )
 						);
+						
 
 						echo $this->Xhtml->tableCells(
 							Set::merge( $array1, $array2 ),
