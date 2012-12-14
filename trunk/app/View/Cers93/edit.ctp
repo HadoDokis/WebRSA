@@ -265,9 +265,9 @@
 		array(
 			'fieldset' => true,
 			'legend' => 'Vérification des droits',
-			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['inscritpe'], 'empty' => true ),
-			'Cer93.cmu' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmu'], 'empty' => true ),
-			'Cer93.cmuc' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Cer93']['cmuc'], 'empty' => true )
+			'Cer93.inscritpe' => array( 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['inscritpe'], 'empty' => false ),
+			'Cer93.cmu' => array( 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['cmu'], 'empty' => false ),
+			'Cer93.cmuc' => array( 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['cmuc'], 'empty' => false )
 		)
 	);
 
