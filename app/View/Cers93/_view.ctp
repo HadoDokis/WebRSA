@@ -214,7 +214,7 @@
 		</tr>
 	</table>
 	<?php
-		echo $this->Xform->fieldValue( 'Cer93.autresexps', Set::classicExtract( $contratinsertion, 'Cer93.autresexps') );
+		echo $this->Xform->fieldValue( 'Cer93.autresexps', Set::classicExtract( $contratinsertion, 'Cer93.autresexps'), true, 'textarea', true );
 		echo $this->Xform->fieldValue( 'Cer93.isemploitrouv', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.isemploitrouv'), $options['Cer93']['isemploitrouv'] ) );
 		if( $contratinsertion['Cer93']['isemploitrouv'] == 'O' ) {
 			echo $this->Xform->fieldValue( 'Cer93.secteuracti_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.secteuracti_id'), $options['Expprocer93']['secteuracti_id'] ) );
@@ -263,14 +263,14 @@
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
 	<?php
-		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $contratinsertion, 'Cer93.prevupcd' ) );
-		echo $this->Xform->fieldValue( 'Cer93.bilancerpcd', Set::classicExtract( $contratinsertion, 'Cer93.bilancerpcd') );
+		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $contratinsertion, 'Cer93.prevupcd' ), true, 'textarea', true );
+		echo $this->Xform->fieldValue( 'Cer93.bilancerpcd', Set::classicExtract( $contratinsertion, 'Cer93.bilancerpcd'), true, 'textarea', true );
 	?>
 </fieldset>
 <!-- Fin du Bloc 5-->
 <!-- Bloc 6 : Projet pour ce nouveau contrat -->
 <fieldset id="projetbilan"><legend>Projet pour ce nouveau contrat</legend>
-	<?php echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu') );?>
+	<?php echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu'), true, 'textarea', true );?>
 	<h3>Votre contrat porte sur </h3>
 	<?php if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ):?>
 		<table>
@@ -321,7 +321,7 @@
 		echo $this->Xform->fieldValue( 'Cer93.nomutilisateur', Set::classicExtract( $contratinsertion, 'Cer93.nomutilisateur' ) );
 
 		echo $this->Xform->fieldValue( 'Cer93.pourlecomptede', Set::classicExtract( $contratinsertion, 'Cer93.pourlecomptede' ) );
-		echo $this->Xform->fieldValue( 'Cer93.observpro', Set::classicExtract( $contratinsertion, 'Cer93.observpro' ) );
+		echo $this->Xform->fieldValue( 'Cer93.observpro', Set::classicExtract( $contratinsertion, 'Cer93.observpro' ), true, 'textarea', true );
 
 		echo $this->Xform->fieldValue( 'Contratinsertion.dd_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci') ) );
 		echo $this->Xform->fieldValue( 'Contratinsertion.df_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci') ) );

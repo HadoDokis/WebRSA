@@ -287,9 +287,11 @@
 		 * @param string $label
 		 * @param mixed $value
 		 * @param boolean $translate
+		 * @param string $inputClass
+		 * @param boolean $nl2br
 		 * @return string
 		 */
-		public function fieldValue( $label, $value, $translate = true ) {
+		public function fieldValue( $label, $value, $translate = true, $inputClass = 'text', $nl2br = false ) {
 			if( $translate != false ) {
 				if( $translate === true ) {
 					list( $modelName, $fieldName ) = model_field( $label );
@@ -300,7 +302,14 @@
 				}
 				$label = __d( $domain, $label );
 			}
-			return '<div class="input text"><span class="label">'.h( $label ).'</span><span class="input">'.h( $value ).'</span></div>';
+
+			$label = h( $label );
+			$value = h( $value );
+			if( $nl2br ) {
+				$value = nl2br( $value );
+			}
+
+			return '<div class="input '.$inputClass.'"><span class="label">'.$label.'</span><span class="input">'.$value.'</span></div>';
 		}
 
 		/**
