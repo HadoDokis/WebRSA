@@ -313,7 +313,6 @@
 		 */
 		public function prepareFormData( $datas, $etape, $user_id ) {
 			$formData = array();
-// debug($datas);
 
 			foreach( $datas as $index => $data ) {
 				$formData['Histochoixcer93'][$index] = array(
