@@ -20,7 +20,7 @@
 </script>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'FiltreDateSaisiCi', $( 'FiltreDateSaisiCiFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'FiltreCreated', $( 'FiltreCreatedFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 
@@ -56,15 +56,15 @@
 	</fieldset>
 	<fieldset>
 		<legend>Recherche de CER</legend>
-			<?php echo $this->Form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Filtre.created', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de saisie du contrat</legend>
 				<?php
-					$date_saisi_ci_from = Set::check( $this->request->data, 'Filtre.date_saisi_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.date_saisi_ci_from' ) : strtotime( '-1 week' );
-					$date_saisi_ci_to = Set::check( $this->request->data, 'Filtre.date_saisi_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.date_saisi_ci_to' ) : strtotime( 'now' );
+					$created_from = Set::check( $this->request->data, 'Filtre.created_from' ) ? Set::extract( $this->request->data, 'Filtre.created_from' ) : strtotime( '-1 week' );
+					$created_to = Set::check( $this->request->data, 'Filtre.created_to' ) ? Set::extract( $this->request->data, 'Filtre.created_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Filtre.date_saisi_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_saisi_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.date_saisi_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $date_saisi_ci_to ) );?>
+				<?php echo $this->Form->input( 'Filtre.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );?>
+				<?php echo $this->Form->input( 'Filtre.created_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $created_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>

@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'FiltreDateSaisiCi', $( 'FiltreDateSaisiCiFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'FiltreCreated', $( 'FiltreCreatedFromDay' ).up( 'fieldset' ), false );
 
 		observeDisableFieldsetOnCheckbox( 'FiltreDdCi', $( 'FiltreDdCiFromDay' ).up( 'fieldset' ), false );
 
@@ -63,15 +63,15 @@
 				}
 			?>
 
-			<?php echo $this->Form->input( 'Filtre.date_saisi_ci', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Filtre.created', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de saisie du contrat</legend>
 				<?php
-					$date_saisi_ci_from = Set::check( $this->request->data, 'Filtre.date_saisi_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.date_saisi_ci_from' ) : strtotime( '-1 week' );
-					$date_saisi_ci_to = Set::check( $this->request->data, 'Filtre.date_saisi_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.date_saisi_ci_to' ) : strtotime( 'now' );
+					$created_from = Set::check( $this->request->data, 'Filtre.created_from' ) ? Set::extract( $this->request->data, 'Filtre.created_from' ) : strtotime( '-1 week' );
+					$created_to = Set::check( $this->request->data, 'Filtre.created_to' ) ? Set::extract( $this->request->data, 'Filtre.created_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Filtre.date_saisi_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $date_saisi_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.date_saisi_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $date_saisi_ci_to ) );?>
+				<?php echo $this->Form->input( 'Filtre.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );?>
+				<?php echo $this->Form->input( 'Filtre.created_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
@@ -150,7 +150,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Référent lié', 'PersonneReferent.referent_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.date_saisi_ci' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.created' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$this->Xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Forme du CER', 'Contratinsertion.forme_ci' );?></th>
@@ -219,7 +219,7 @@
 								h( $contrat['Adresse']['locaadr'] ),
 								h( value( $referents, Set::classicExtract( $contrat, 'Contratinsertion.referent_id' ) ) ),
 								h( $contrat['Dossier']['matricule'] ),
-								h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),
+								h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
 								h( $contrat['Contratinsertion']['rg_ci'] ),
 								h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
 								h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),

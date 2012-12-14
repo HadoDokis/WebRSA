@@ -102,7 +102,7 @@
 			}
 
 			/// Critères
-// 			$date_saisi_ci = Set::extract( $criteresci, 'Filtre.date_saisi_ci' );
+// 			$created = Set::extract( $criteresci, 'Filtre.created' );
 			$decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
 			$datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
 			$dd_ci = Set::extract( $criteresci, 'Filtre.dd_ci' );
@@ -120,7 +120,7 @@
 
 
 			/// Critères sur le CI - dates du CER (date de saisie, date de début, date de fin)
-			foreach( array( 'date_saisi_ci', 'dd_ci', 'df_ci' ) as $typeDate ) {
+			foreach( array( 'created', 'dd_ci', 'df_ci' ) as $typeDate ) {
 				if( isset( $criteresci['Filtre'][$typeDate] )  ) {
 					if( is_array( $criteresci['Filtre'][$typeDate] ) && !empty( $criteresci['Filtre'][$typeDate]['day'] ) && !empty( $criteresci['Filtre'][$typeDate]['month'] ) && !empty( $criteresci['Filtre'][$typeDate]['year'] ) ) {
 						$conditions["Filtre.{$typeDate}"] = "{$criteresci['Filtre'][$typeDate]['year']}-{$criteresci['Filtre'][$typeDate]['month']}-{$criteresci['Filtre'][$typeDate]['day']}";
@@ -257,7 +257,7 @@
 						'Contratinsertion.datevalidation_ci',
 						'Contratinsertion.duree_engag',
 						'Contratinsertion.positioncer',
-						'Contratinsertion.date_saisi_ci',
+						'Contratinsertion.created',
 						'Contratinsertion.datedecision',
 						'Contratinsertion.pers_charg_suivi',
 						'Contratinsertion.observ_ci',
