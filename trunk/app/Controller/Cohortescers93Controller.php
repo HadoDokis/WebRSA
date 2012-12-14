@@ -278,9 +278,74 @@
 						}
 					}
 				}
+				else if( $this->action == 'visualisation' ) {
+			
+					// Valeur pour déterminer si on peut voir ou non les commentaires CG
+					$authUser = $this->Session->read( 'Auth.User.id' );
+					$user = ClassRegistry::init( 'User' )->find(
+						'first',
+						array(
+							'conditions' => array(
+								'User.id' => $authUser
+							),
+							'contain' => false
+						)
+					);
+					$authViewCommentaireCg = false;
+					if( $user['User']['type'] == 'cg' ) {
+						$authViewCommentaireCg = true;
+					}
+
+
+					foreach( $cers93 as $i => $cer93 ){
+						// Colonne Non orienté PDV
+						$typeOrientation = $cer93['Orientstruct']['typeorient_id'];
+						$labelTypeOrientation = '';
+						if( !in_array( $typeOrientation, Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ) ) ) {
+							$labelTypeOrientation = 'Réorientation';
+						}
+						else if( empty( $typeOrientation ) ) {
+							$labelTypeOrientation = 'Orientation';
+						}
+						$this->set( compact( 'labelTypeOrientation' ) );
+// 					
+						// Colonne Saisie du CER
+						if( in_array( $cer93['Cer93']['positioncer'], array( '', '00enregistre', '01signe', '02attdecisioncpdv' ) ) ) {
+							$positionAvantCG = $cer93['Cer93']['positioncer'];
+						}
+						else {
+							$positionAvantCG = ''; 
+						}
+						$cers93[$i]['Cer93']['positioncer_avantcg'] = $positionAvantCG;
+						
+						// Colonne Etape du Responsable
+						$validationcpdv = '';
+						if( !empty( $cer93['Histochoixcer93etape03']['etape'] ) ) {
+							if( $cer93['Histochoixcer93etape03']['isrejet'] != '1' ) {
+								$validationcpdv = '03attdecisioncg';
+							}
+							else {
+								$validationcpdv = '99rejetecpdv';
+							}
+						}
+						$cers93[$i]['Cer93']['validationcpdv'] = $validationcpdv;
+						
+						// On masque les commentaires du CG si l'utilisateur n'est pas du CG
+						$commentaireCg = '';
+						if( !empty( $cer93['Histochoixcer93etape04']['etape'] ) ) {
+							if( $authViewCommentaireCg ) {
+								$commentaireCg = $cer93['Histochoixcer93etape04']['commentaire'];
+							}
+							else {
+								$commentaireCg = '';
+							}
+						}
+						$cers93[$i]['Histochoixcer93etape04']['commentaire'] = $commentaireCg;
+						
+					}
+					$this->set( 'cers93', $cers93 );
+				}
 			}
-
-
 
 			$this->set( 'structurereferente_id', $structurereferente_id );
 

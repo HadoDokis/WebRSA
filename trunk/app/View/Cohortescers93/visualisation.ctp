@@ -17,31 +17,31 @@
 // 	- si allocataire est orienté PE ou Social : lien hypertexte Réorientation vers le dossier allocataire rubrique Orientation
 // 	- si allocataire orienté vers PDV : vide
 //
+
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<colgroup />
-					<!-- <colgroup /> -->
+					<colgroup />
 					<colgroup />
 					<colgroup />
 					<colgroup />
 					<colgroup />
 					<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
-					<colgroup span="2" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
+					<colgroup span="5" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
 					<colgroup />
-					<colgroup span="2" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
+					<colgroup />
 					<colgroup />
 					<colgroup />
 				<thead>
 					<tr>
 						<th rowspan="2">Commune</th>
- 						<!-- <th rowspan="2">Non orienté PDV</th> -->
+ 						<th rowspan="2">Non orienté PDV</th>
 						<th rowspan="2">Nom/Prénom</th>
 						<th rowspan="2">Structure référente</th>
 						<th rowspan="2">Référent</th>
 						<th rowspan="2">Saisie du CER</th>
 						<th colspan="4">Etape du Responsable</th>
-						<th colspan="2">Etape CG</th>
-						<th rowspan="2">Validation CS</th>
-						<th colspan="2">Etape Cadre</th>
+
+						<th colspan="5">Etape du CG</th>
 						<th colspan="2" rowspan="2">Actions</th>
 					</tr>
 					<tr>
@@ -49,10 +49,12 @@
 						<th>Forme du CER</th>
 						<th>Commentaire du Responsable</th>
 						<th>Date de transfert au CG</th>
+						
 						<th>Validation CG (1ère lecture)</th>
-						<th>Commentaire du CG</th>
+						<th>Validation CS</th>
 						<th>Validation Cadre</th>
 						<th>Forme CER</th>
+						<th>Commentaire du CG</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';
@@ -114,7 +116,7 @@
 					$validationcpdv = 'Rejeté';
 				}
 				else if( isset( $cer93['Histochoixcer93etape03']['isrejet'] ) && ( $cer93['Histochoixcer93etape03']['isrejet'] == '0' ) ) {
-					$validationcpdv = 'Oui';//Set::enum( $cer93['Histochoixcer93etape03']['etape'], $options['Cer93']['positioncer'] );
+					$validationcpdv = 'Oui';
 				}
 				else {
 					$validationcpdv = '';
@@ -123,22 +125,22 @@
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],
-// 						'e',
+						$this->Xhtml->link( $labelTypeOrientation, array( 'controller' => 'orientsstructs', 'action' => 'index', $cer93['Contratinsertion']['personne_id'] ) ),
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Structurereferente']['lib_struc'],
 						$cer93['Referent']['nom_complet'],
-						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
-						$validationcpdv,
+						Set::enum( $cer93['Cer93']['positioncer_avantcg'], $options['Cer93']['positioncer'] ), //Saisie du CER
+						Set::enum( $cer93['Cer93']['validationcpdv'], $options['Cer93']['positioncer'] ), //Validation CPDV
 						Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
 						$cer93['Histochoixcer93etape03']['commentaire'],
 						date_short( $cer93['Histochoixcer93etape03']['datechoix'] ),
 						Set::enum( $cer93['Histochoixcer93etape04']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
-						$cer93['Histochoixcer93etape04']['commentaire'],
 						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['formeci'], $options['formeci'] ),
+						$cer93['Histochoixcer93etape04']['commentaire'],
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
-						$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ) ),
+						$this->Xhtml->filelink( 'Fichier liés', array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $cer93['Contratinsertion']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -149,8 +151,8 @@
 			echo '</table>';
 
 			echo $pagination;
-
 		}
+		debug($cers93);
 	}
 ?>
 <?php if( isset( $cers93 ) ):?>
