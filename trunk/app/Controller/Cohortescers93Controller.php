@@ -350,6 +350,13 @@
 						}
 						$cers93[$i]['Histochoixcer93etape04']['commentaire'] = $commentaireCg;
 						
+						if( in_array( $cer93['Cer93']['positioncer'], array( '99valide', '99rejete' ) ) ) {
+							$commentaireCpdv = '';
+						}
+						else {
+							$commentaireCpdv = $cer93['Histochoixcer93etape03']['commentaire'];
+						}
+						$cers93[$i]['Histochoixcer93etape03']['commentaire'] = $commentaireCpdv;
 					}
 					$this->set( 'cers93', $cers93 );
 				}
