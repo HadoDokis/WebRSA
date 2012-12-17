@@ -19,17 +19,14 @@
 			echo '<thead>
 					<tr>
 						<th>Commune</th>
-						<th>Nom/Prénom</th>
+						<th>Nom/Prénom allocataire</th>
+						<th>Nom/Prénom référent</th>
 						<th>Date d\'orientation</th>
-						<th>Date d\'affectation</th>
-						<th>Référent</th>
-						<th>Rang CER</th>
-						<th>Dernier RDV</th>
-						<th>Statut CER</th>
+						<th>Date de signature</th>
 						<th>Forme du CER</th>
 						<th>Rejeté ?</th>
 						<th>Commentaire</th>
-						<th>Action</th>
+						<th colspan="2">Actions</th>
 						<th>Détails</th>
 					</tr>
 				</thead>';
@@ -92,12 +89,9 @@
 					array(
 						$cer93['Adresse']['locaadr'],
 						$cer93['Personne']['nom_complet_court'],
-						date_short( $cer93['Orientstruct']['date_valid'] ),
-						date_short( $cer93['PersonneReferent']['dddesignation'] ),
 						$cer93['Referent']['nom_complet'],
-						$cer93['Contratinsertion']['rg_ci'],
-						date_short( $cer93['Rendezvous']['daterdv'] ),
-						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
+						date_short( $cer93['Orientstruct']['date_valid'] ),
+						date_short( $cer93['Contratinsertion']['created'] ),
 						// Choix du Responsable
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )
@@ -118,6 +112,7 @@
 							$this->Form->input( "Histochoixcer93.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'], 'separator' => '<br />' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
 						),
+						$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ) ),
 						// Détails
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
