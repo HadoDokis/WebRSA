@@ -60,25 +60,52 @@
 				<?php
 				$histo = $contratinsertion['Cer93']['Histochoixcer93'];
 				foreach( $histo as $i => $h ) {
+					$etapeValue = Set::classicExtract( $h, 'etape');
 					$etape = Set::enum( Set::classicExtract( $h, 'etape'), $options['Histochoixcer93']['etape'] );
-					echo "<fieldset><legend>$etape</legend>";
-					echo $this->Xform->fieldValue( 'Cer93.formeci', Set::enum( Set::classicExtract( $h, 'formeci'), $options['Cer93']['formeci'] ) );
-					echo $this->Xform->fieldValue( 'Histochoixcer93.datechoix', date_short( Set::classicExtract( $h, 'datechoix') ) );
-					echo $this->Xform->fieldValue( 'Histochoixcer93.commentaire', Set::classicExtract( $h, 'commentaire') );
+					if( $etapeValue != '02attdecisioncpdv' ) {
+						echo "<fieldset><legend>$etape</legend>";
+						echo $this->Xform->fieldValue( 'Cer93.formeci', Set::enum( Set::classicExtract( $h, 'formeci'), $options['Cer93']['formeci'] ) );
+						echo $this->Xform->fieldValue( 'Histochoixcer93.datechoix', date_short( Set::classicExtract( $h, 'datechoix') ) );
 
-					if( $h['etape'] == '03attdecisioncg' ) {
-						echo $this->Xform->fieldValue( 'Histochoixcer93.isrejet', Set::enum( Set::classicExtract( $h, 'isrejet'), $options['Histochoixcer93']['isrejet'] ) );
+						if( !empty( $h['commentaire'] ) ) {
+							echo $this->Xform->fieldValue( 'Histochoixcer93.commentaire', Set::classicExtract( $h, 'commentaire') );
+						}
+						
+						if( !empty( $h['Commentairenormecer93'] ) ) {
+							echo '<fieldset><legend>Commentaires</legend>';
+							$commentaires = '';
+							foreach( $h['Commentairenormecer93'] as $key => $commentaire ) {
+								if( !empty( $commentaire ) ) {
+									if( $commentaire['isautre'] == '1' ) {
+										$commentaires .= "<li>{$commentaire['name']}: <em>{$commentaire['Commentairenormecer93Histochoixcer93']['commentaireautre']}</em></li>";
+									}
+									else {
+										$commentaires .= '<li>'.$commentaire['name'].'</li>';
+									}
+								}
+							}
+
+							if( !empty( $commentaires ) ) {
+								echo "<ul>{$commentaires}</ul></fieldset>";
+							}
+						}
+
+						echo $this->Xform->fieldValue( 'Histochoixcer93.user_id', Set::classicExtract( $h, 'User.nom_complet') );
+
+						if( $h['etape'] == '03attdecisioncg' ) {
+							echo $this->Xform->fieldValue( 'Histochoixcer93.isrejet', Set::enum( Set::classicExtract( $h, 'isrejet'), $options['Histochoixcer93']['isrejet'] ) );
+						}
+						else if( $h['etape'] == '04premierelecture' ) {
+							echo $this->Xform->fieldValue( 'Histochoixcer93.prevalide', Set::enum( Set::classicExtract( $h, 'prevalide'), $options['Histochoixcer93']['prevalide'] ) );
+						}
+						else if( $h['etape'] == '05secondelecture' ) {
+							echo $this->Xform->fieldValue( 'Histochoixcer93.decisioncs', Set::enum( Set::classicExtract( $h, 'decisioncs'), $options['Histochoixcer93']['decisioncs'] ) );
+						}
+						else if( $h['etape'] == '06attaviscadre' ) {
+							echo $this->Xform->fieldValue( 'Histochoixcer93.decisioncadre', Set::enum( Set::classicExtract( $h, 'decisioncadre'), $options['Histochoixcer93']['decisioncadre'] ) );
+						}
+						echo '</fieldset>';
 					}
-					else if( $h['etape'] == '04premierelecture' ) {
-						echo $this->Xform->fieldValue( 'Histochoixcer93.prevalide', Set::enum( Set::classicExtract( $h, 'prevalide'), $options['Histochoixcer93']['prevalide'] ) );
-					}
-					else if( $h['etape'] == '05secondelecture' ) {
-						echo $this->Xform->fieldValue( 'Histochoixcer93.decisioncs', Set::enum( Set::classicExtract( $h, 'decisioncs'), $options['Histochoixcer93']['decisioncs'] ) );
-					}
-					else if( $h['etape'] == '06attaviscadre' ) {
-						echo $this->Xform->fieldValue( 'Histochoixcer93.decisioncadre', Set::enum( Set::classicExtract( $h, 'decisioncadre'), $options['Histochoixcer93']['decisioncadre'] ) );
-					}
-					echo '</fieldset>';
 				}
 			?>
 		</div>
