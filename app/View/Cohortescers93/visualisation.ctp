@@ -125,7 +125,7 @@
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],
-						$this->Xhtml->link( $labelTypeOrientation, array( 'controller' => 'orientsstructs', 'action' => 'index', $cer93['Contratinsertion']['personne_id'] ) ),
+						$this->Xhtml->link( $cer93['Cer93']['nonorientepdv'], array( 'controller' => 'orientsstructs', 'action' => 'index', $cer93['Contratinsertion']['personne_id'] ), array( 'class' => 'external' ) ),
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Structurereferente']['lib_struc'],
 						$cer93['Referent']['nom_complet'],
@@ -152,7 +152,7 @@
 
 			echo $pagination;
 		}
-		debug($cers93);
+// 		debug($cers93);
 	}
 ?>
 <?php if( isset( $cers93 ) ):?>
