@@ -651,11 +651,11 @@
 
 				$dataDernierCerValide = $this->Contratinsertion->find( 'first', $querydataDernierCerValide );
 
-				//Champ pour le bloc 5 reprenant ce qui était prévu dans le pcd CER
-				$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
-
 				// Copie des données du dernier CER validé
 				if( !empty( $dataDernierCerValide ) ) {
+					//Champ pour le bloc 5 reprenant ce qui était prévu dans le pcd CER
+					$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
+
 					// Copie des champs du CER précédent
 					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps', 'secteuracti_id', 'metierexerce_id', 'dureehebdo', 'naturecontrat_id', 'isemploitrouv', 'dureecdd' );
 					foreach( $cer93FieldsToCopy as $field ) {
@@ -1202,7 +1202,7 @@
 				$this->enums()
 			);
 
-			return $this->ged( $data, $modeleodt, false, $options );
+			return $this->ged( $data, $modeleodt, true, $options );
 		}
 
 		/**
@@ -1314,7 +1314,7 @@
 			return $options;
 
 		}
-		
+
 		/**
 		 * Retourne le PDF de décision pour un CER donné
 		 *
@@ -1336,7 +1336,7 @@
 // 			if( $dernierHisto['isrejet'] == '1' ){
 // 				return null;
 // 			}
-			
+
 			if( $decision == 'V' ) {
 				$modeleodt  = "Contratinsertion/cer_valide.odt";
 			}
