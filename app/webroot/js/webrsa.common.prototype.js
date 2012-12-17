@@ -1330,3 +1330,24 @@ function radioValue( form, radioName ) {
 	
 	return currentValue;
 }
+
+/**
+* Permet de cocher un ensemble de cases à cocher.
+* @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
+* @param simulate Lorsqu'il est à true, permet de simuler l'action de click (default: false)
+*/
+
+function toutChoisir( radios, valeur, simulate ) {
+		$( radios ).each( function( radio ) {
+			if( radio.value == valeur ) {
+				if( simulate != true ) {
+					$( radio ).writeAttribute("checked", "checked");
+				}
+				else {
+					$( radio ).simulate( 'click' );
+				}
+			}
+		} );
+
+	return false;
+}
