@@ -281,6 +281,7 @@
 				else if( $this->action == 'visualisation' ) {
 			
 					// Valeur pour déterminer si on peut voir ou non les commentaires CG
+					// On masque les informations si l'utilisateur est <> CG
 					$authUser = $this->Session->read( 'Auth.User.id' );
 					$user = ClassRegistry::init( 'User' )->find(
 						'first',
@@ -298,17 +299,24 @@
 
 
 					foreach( $cers93 as $i => $cer93 ){
+
 						// Colonne Non orienté PDV
-						$typeOrientation = $cer93['Orientstruct']['typeorient_id'];
-						$labelTypeOrientation = '';
-						if( !in_array( $typeOrientation, Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ) ) ) {
-							$labelTypeOrientation = 'Réorientation';
+						$typeOrientationId = $cer93['Orientstruct']['typeorient_id'];
+						$typeOrientSociopro = Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' );
+						if( !empty( $typeOrientationId ) ) {
+							//	Nous ne sommes pas en sociopro (PDV)
+							if( !in_array( $typeOrientationId, $typeOrientSociopro ) ) {
+								$labelTypeOrientation = 'Réorientation';
+							}
+							else {
+								$labelTypeOrientation = '';
+							}
 						}
-						else if( empty( $typeOrientation ) ) {
+						else {
 							$labelTypeOrientation = 'Orientation';
 						}
-						$this->set( compact( 'labelTypeOrientation' ) );
-// 					
+						$cers93[$i]['Cer93']['nonorientepdv'] = $labelTypeOrientation;
+
 						// Colonne Saisie du CER
 						if( in_array( $cer93['Cer93']['positioncer'], array( '', '00enregistre', '01signe', '02attdecisioncpdv' ) ) ) {
 							$positionAvantCG = $cer93['Cer93']['positioncer'];
