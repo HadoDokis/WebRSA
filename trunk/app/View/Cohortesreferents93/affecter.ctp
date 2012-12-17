@@ -4,6 +4,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
 	}
 
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
@@ -195,6 +196,8 @@
 			echo $this->Xform->end();
 
 			echo $pagination;
+			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Valider', true );" ) );
+			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'En attente', true );" ) );
 		}
 	}
 ?>

@@ -202,7 +202,7 @@
 						).')',
 						'Contratinsertion.id IS NULL',
 						'AND' => array(
-							'Contratinsertion.df_ci <' => date( 'Y-m-d' ),
+							'Contratinsertion.df_ci <' => date( 'Y-m-d' ), // FIXME modifier la date de détection avec 1 mois avant son terme ou 1 fois dépassée
 							'Contratinsertion.decision_ci' => 'V'
 						)
 					)
