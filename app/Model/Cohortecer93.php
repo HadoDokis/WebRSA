@@ -247,7 +247,7 @@
 					),
 					$Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
-					$Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'PersonneReferent', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Rendezvous', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
