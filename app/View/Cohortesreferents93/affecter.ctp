@@ -91,9 +91,9 @@
 						<th>État CER</th>
 						<th>Date de fin de CER</th>
 						<th>Date d\'affectation</th>
-						<th>Affectation</th>
-						<th>Action</th>
-						<th>Détails</th>
+						<th class="action">Affectation</th>
+						<th class="action">Action</th>
+						<th class="action">Détails</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';
