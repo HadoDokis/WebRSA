@@ -1,6 +1,10 @@
 <?php
 	$this->pageTitle = '4. Décision CG - 4.2 Validation CS';
 	
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+	}
+	
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
@@ -18,21 +22,21 @@
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
-						<th>Commune</th>
+						<th>N° dossier RSA</th>
 						<th>Nom/Prénom</th>
-						<th>N° dossier</th>
 						<th>N° CAF</th>
-						<th>Date d\'envoi du CER</th>
-						<th>Date début CER</th>
-						<th>Statut CER</th>
+						<th>Commune</th>
+						<th>Date d\'envoi CER</th>
+						<th>Date de début CER</th>
+						<th>Statut du CER</th>
 						<th>Forme du CER (Responsable)</th>
 						<th>Commentaire (Responsable)</th>
 						<th>Prévalidé</th>
-						<th>Forme du CER (CG)</th>
-						<th>Commentaire (CG)</th>
-						<th>Décision CS</th>
-						<th>Action</th>
-						<th>Détails</th>
+						<th class="action">Forme du CER (CG)</th>
+						<th class="action">Commentaire (CG)</th>
+						<th class="action">Décision CS</th>
+						<th class="action">Action</th>
+						<th class="action">Détails</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';
@@ -88,16 +92,15 @@
 
 				echo $this->Html->tableCells(
 					array(
-						$cer93['Adresse']['locaadr'],
-						$cer93['Personne']['nom_complet_court'],
 						$cer93['Dossier']['numdemrsa'],
+						$cer93['Personne']['nom_complet_court'],
 						$cer93['Dossier']['matricule'],
+						$cer93['Adresse']['locaadr'],
 						date_short( $cer93['Contratinsertion']['created'] ),
 						date_short( $cer93['Contratinsertion']['dd_ci'] ),
-						date_short( $cer93['Rendezvous']['daterdv'] ),
 						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
-						$cer93['Histochoixcer93']['commentaire'],
+						$cer93['Histochoixcer93']['commentaire'].' (émis par '.Set::enum( $cer93['Histochoixcer93']['user_id'], $options['gestionnaire'] ).' )',
 						Set::enum( $cer93['Histochoixcer93']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
 						// Choix du Responsable
 						array(
@@ -114,7 +117,7 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
 						),
 						array(
-							$this->Form->input( "Histochoixcer93.{$index}.decisioncs", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Histochoixcer93']['decisioncs'], 'separator' => '<br />' ) ),
+							$this->Form->input( "Histochoixcer93.{$index}.decisioncs", array( 'empty' => 'En attente', 'label' => false, 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncs'] ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncs'] ) ? 'error' : null ) )
 						),
 						// Action
@@ -123,7 +126,7 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Détails
-						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
+						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -136,6 +139,8 @@
 			echo $this->Xform->end();
 			
 			echo $pagination;
+			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Valider', true );" ) );
+			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'En attente', true );" ) );
 		}
 
 	}
@@ -151,15 +156,27 @@
 			[
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
-				'Histochoixcer93<?php echo $index;?>DecisioncsValide',
-				'Histochoixcer93<?php echo $index;?>DecisioncsAviscadre',
-				'Histochoixcer93<?php echo $index;?>DecisioncsPassageep',
+				'Histochoixcer93<?php echo $index;?>Decisioncs',
 				'Histochoixcer93<?php echo $index;?>Commentaire'
 			],
 			[ 'Valider' ],
 			true
 		);
+		
+		observeFilterSelectOptionsFromRadioValue(
+			'Personne',
+			'data[Histochoixcer93][<?php echo $index;?>][formeci]',
+			'Histochoixcer93<?php echo $index;?>Decisioncs',
+			{
+				'S': ['valide', 'aviscadre'],
+				'C': ['aviscadre', 'passageep']
+			}
+		);
 		<?php endforeach;?>
 	} );
+</script>
+
+<script type="text/javascript">
+	
 </script>
 <?php endif;?>

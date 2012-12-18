@@ -49,7 +49,7 @@
 						$checked = ( ( $array_key !== false ) ? 'checked' : '' );
 
 						echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentairenormecer93_id", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentairenormecer93_id]", 'label' => $commentaireName, 'type' => 'checkbox', 'value' => $id, 'checked' => $checked, 'hiddenField' => false ) );
-						
+
 						if( $id == $commentairenormecer93_isautre_id) {
 							echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentaireautre", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'textarea', 'value' => Hash::get( $this->request->data, "Commentairenormecer93.Commentairenormecer93.{$array_key}.commentaireautre" ) ) );
 						}
@@ -57,7 +57,6 @@
 					}
 				}
 				echo '</fieldset>';
-
 				echo $this->Xform->inputs(
 					array(
 						'fieldset' => false,
@@ -92,14 +91,17 @@
 <div class="clearer"><hr /></div>
 <script type="text/javascript">
 //<![CDATA[
+	<?php $i=0;?>
 	<?php foreach( $options['Commentairenormecer93']['commentairenormecer93_id'] as $key => $commentairename ) :?>
+		<?php if ( $key == $commentairenormecer93_isautre_id ):?>
 		observeDisableFieldsOnCheckbox(
-			'Commentairenormecer93Commentairenormecer93<?php echo $key;?>Commentairenormecer93Id',
-			['Commentairenormecer93Commentairenormecer93<?php echo $key;?>Commentaireautre'],
+			'Commentairenormecer93Commentairenormecer93<?php echo $i;?>Commentairenormecer93Id',
+			['Commentairenormecer93Commentairenormecer93<?php echo $i;?>Commentaireautre'],
 			false,
 			true
 		);
-
+		<?php endif;?>
+		<?php $i++;?>
 	<?php endforeach;?>
 //]]>
 </script>
