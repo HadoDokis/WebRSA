@@ -25,8 +25,8 @@
 						<th>Statut CER</th>
 						<th>Forme du CER</th>
 						<!-- <th>Commentaire</th> -->
-						<th>Date de fin CER</th>
-						<th>Actions</th>
+						<th class="action">Date de fin CER</th>
+						<th class="action">Actions</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';

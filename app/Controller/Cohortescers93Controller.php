@@ -375,7 +375,8 @@
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
-				'typevoie' => $this->Option->typevoie()
+				'typevoie' => $this->Option->typevoie(),
+				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
 			$options = Set::merge( $options, $this->Contratinsertion->Cer93->enums(), $this->Contratinsertion->Cer93->Histochoixcer93->enums() );
 // 			debug($options);

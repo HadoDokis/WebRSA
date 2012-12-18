@@ -1,6 +1,9 @@
 <?php
 	$this->pageTitle = '4. Décision CG - 4.1 Première lecture';
 	
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+	}	
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
@@ -18,31 +21,25 @@
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
-						<th>Commune</th>
+						<th>N° dossier RSA</th>
 						<th>Nom/Prénom</th>
-						<th>Date d\'orientation</th>
-						<th>Date d\'affectation</th>
-						<th>Référent</th>
-						<th>Rang CER</th>
-						<th>Dernier RDV</th>
-						<th>Statut CER</th>
+						<th>N° CAF</th>
+						<th>Commune</th>
+						<th>Date d\'envoi CER</th>
+						<th>Date de début CER</th>
 						<th>Forme du CER (Responsable)</th>
 						<th>Commentaire (Responsable)</th>
-						<th>Forme du CER (CG)</th>
-						<th>Commentaire (CG)</th>
-						<th>Décision</th>
-						<th>Action</th>
-						<th>Détails</th>
+						<th class="action">Forme du CER (CG)</th>
+						<th class="action">Commentaire (CG)</th>
+						<th class="action">Décision</th>
+						<th class="action">Action</th>
+						<th class="action">Détails</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';
 			foreach( $cers93 as $index => $cer93 ) {
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>
-						<tr>
-							<th>N° de dossier</th>
-							<td>'.$cer93['Dossier']['numdemrsa'].'</td>
-						</tr>
 						<tr>
 							<th>Date ouverture de droit</th>
 							<td>'.date_short( $cer93['Dossier']['dtdemrsa'] ).'</td>
@@ -92,14 +89,12 @@
 
 				echo $this->Html->tableCells(
 					array(
-						$cer93['Adresse']['locaadr'],
+						$cer93['Dossier']['numdemrsa'],
 						$cer93['Personne']['nom_complet_court'],
-						date_short( $cer93['Orientstruct']['date_valid'] ),
-						date_short( $cer93['PersonneReferent']['dddesignation'] ),
-						$cer93['Referent']['nom_complet'],
-						$cer93['Contratinsertion']['rg_ci'],
-						date_short( $cer93['Rendezvous']['daterdv'] ),
-						Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
+						$cer93['Dossier']['matricule'],
+						$cer93['Adresse']['locaadr'],
+						date_short( $cer93['Contratinsertion']['created'] ),
+						date_short( $cer93['Contratinsertion']['dd_ci'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
 						$cer93['Histochoixcer93']['commentaire'],
 						// Choix du Responsable
@@ -117,7 +112,7 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
 						),
 						array(
-							$this->Form->input( "Histochoixcer93.{$index}.prevalide", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Histochoixcer93']['prevalide'], 'separator' => '<br />' ) ),
+							$this->Form->input( "Histochoixcer93.{$index}.prevalide", array( 'label' => false, 'type' => 'select', 'options' => $options['Histochoixcer93']['prevalide'], 'empty' => true ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['prevalide'] ) ? 'error' : null ) )
 						),
 						// Action
@@ -126,7 +121,7 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Détails
-						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
+						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
@@ -139,6 +134,8 @@
 			echo $this->Xform->end();
 
 			echo $pagination;
+			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Valider', true );" ) );
+			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'En attente', true );" ) );
 		}
 
 	}
@@ -154,8 +151,7 @@
 			[
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
-				'Histochoixcer93<?php echo $index;?>PrevalideArelire',
-				'Histochoixcer93<?php echo $index;?>PrevalidePrevalide',
+				'Histochoixcer93<?php echo $index;?>Prevalide',
 				'Histochoixcer93<?php echo $index;?>Commentaire'
 			],
 			[ 'Valider' ],
