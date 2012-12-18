@@ -495,8 +495,18 @@
 			if( !empty( $valeursparsoussujetscers93[$idSujet] ) ) {
 				$correspondChilParent[$this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id" )] = $this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id" );
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][valeurparsoussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $valeursparsoussujetscers93[$idSujet], 'empty' => true, 'value' => $valeurparsoussujetcer93_id ) );
+				
+				// Ajout
+				$inter = array_intersect( array_keys( $valeursparsoussujetscers93[$idSujet] ), $autrevaleur_isautre_id );
+				if( !empty( $inter ) ) { // FIXME
+					$autrevaleur = null;
+					if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
+						$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
+					}
+					echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autrevaleur", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autrevaleur]", 'label' => false, 'type' => 'text', 'value' => $autrevaleur ) );
+					// Ajout
+				}
 			}
-
 			$i++;
 		}
 		echo '</fieldset>';
@@ -507,7 +517,7 @@
 	<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ) :?>
 	observeDisableFieldsOnCheckbox(
 		'Sujetcer93Sujetcer93<?php echo $key;?>Sujetcer93Id',
-		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Valeurparsoussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Commentaireautre'],
+		['Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Valeurparsoussujetcer93Id', 'Sujetcer93Sujetcer93<?php echo $key;?>Commentaireautre', 'Sujetcer93Sujetcer93<?php echo $key;?>Autrevaleur'],
 		false,
 		true
 	);
@@ -520,6 +530,27 @@
 	<?php endif;?>
 //]]>
 </script>
+<!-- Ajout -->
+<script type="text/javascript">
+//<![CDATA[
+	document.observe( "dom:loaded", function() {
+		<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ):?>
+			<?php if( in_array( $key, $sujets_ids_valeurs_autres ) ):?>
+			observeDisableFieldsOnValue(
+				'Sujetcer93Sujetcer93<?php echo $key;?>Valeurparsoussujetcer93Id',
+				['Sujetcer93Sujetcer93<?php echo $key;?>Autrevaleur'],
+				['<?php echo implode( "', '", $autrevaleur_isautre_id );?>'],
+				false,
+				true
+			);
+			<?php endif;?>
+		<?php endforeach;?>
+	});
+//]]>
+</script>
+
+<!-- Ajout -->
+
 <?php
 	//Bloc 7 : Durée proposée
 	echo $this->Xform->input( 'Cer93.duree', array( 'legend' => required( 'Ce contrat est proposé pour une durée de ' ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) );

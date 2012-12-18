@@ -8,7 +8,8 @@
 <?php
 	$fields = array(
 		'Soussujetcer93.name',
-		'Valeurparsoussujetcer93.name'
+		'Valeurparsoussujetcer93.name',
+		'Valeurparsoussujetcer93.isautre' => array( 'type' => 'boolean')
 	);
 	echo $this->Default2->index(
 		$valeursparsoussujetscers93,

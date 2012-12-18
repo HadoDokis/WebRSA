@@ -17,7 +17,8 @@
 			'legend' => false,
 			'Valeurparsoussujetcer93.id' => array( 'type' => 'hidden' ),
 			'Valeurparsoussujetcer93.name' => array( 'type' => 'text' ),
-			'Valeurparsoussujetcer93.soussujetcer93_id' => array( 'type' => 'select', 'options' => $options['Valeurparsoussujetcer93']['soussujetcer93_id'], 'empty' => true )
+			'Valeurparsoussujetcer93.soussujetcer93_id' => array( 'type' => 'select', 'options' => $options['Valeurparsoussujetcer93']['soussujetcer93_id'], 'empty' => true ),
+			'Valeurparsoussujetcer93.isautre' => array( 'type' => 'checkbox' )
 		)
 	);
 

@@ -44,3 +44,6 @@ msgstr "Confirmer la suppression ?"
 
 msgid "Valeurparsoussujetcer93.soussujetcer93_id"
 msgstr "Sous-sujet lié ?"
+
+msgid "Valeurparsoussujetcer93.isautre"
+msgstr "Champ de type texte ?"
