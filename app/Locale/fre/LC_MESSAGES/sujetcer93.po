@@ -22,7 +22,7 @@ msgid "Sujetcer93.name"
 msgstr "Sujet sur lequel le CER porte"
 
 msgid "Sujetcer93.isautre"
-msgstr "Champ de type autre ?"
+msgstr "Champ de type texte ?"
 
 msgid "Sujetscers93::index"
 msgstr "Table de paramétrage des sujets sur lequel le CER porte"
