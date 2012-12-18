@@ -1322,6 +1322,8 @@
 
 			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
 			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
+			// Pour les données de Pôle emploi
+			$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
