@@ -369,6 +369,41 @@
 			$naturecontratDuree = Set::extract( '/Naturecontrat[isduree=1]', $naturescontrats );
 			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
+			
+			// -----------------------------------------------------------------
+			$choucroute = $this->Cer93->Sujetcer93->find(
+				'all',
+				array(
+					'contain' => array(
+						'Soussujetcer93' => array(
+							'order' => array( 'Soussujetcer93.sujetcer93_id ASC', 'Soussujetcer93.name ASC' ),
+							'Valeurparsoussujetcer93' => array(
+								'order' => array( 'Valeurparsoussujetcer93.isautre DESC', 'Valeurparsoussujetcer93.name ASC' )
+							)
+						)
+					),
+					'order' => array( 'Sujetcer93.isautre DESC', 'Sujetcer93.name ASC' )
+				)
+			);
+
+			$sujets_ids_valeurs_autres = array();
+			foreach( $choucroute as $sujetcer93 ) {
+				if( !empty( $sujetcer93['Soussujetcer93'] ) ) {
+					foreach( $sujetcer93['Soussujetcer93'] as $soussujetcer93 ) {
+						if( !empty( $soussujetcer93['Valeurparsoussujetcer93'] ) ) {
+							foreach( $soussujetcer93['Valeurparsoussujetcer93'] as $valeurparsousujetcer93 ) {
+								if( $valeurparsousujetcer93['isautre'] == '1' ) {
+									$sujets_ids_valeurs_autres[] = $sujetcer93['Sujetcer93']['id'];
+								}
+							}
+						}
+					}
+				}
+			}
+			$sujets_ids_valeurs_autres = array_unique( $sujets_ids_valeurs_autres );
+			$this->set( compact( 'sujets_ids_valeurs_autres' ) );
+			// -----------------------------------------------------------------
+
 
 			$sujetscers93 = $this->Cer93->Sujetcer93->find(
 				'all',
@@ -414,8 +449,18 @@
 
 				$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']][$tmp['Valeurparsoussujetcer93']['id']] = $tmp['Valeurparsoussujetcer93']['name'];
 			}
-
-// 			debug( $valeursparsoussujetscers93 );
+			
+			// Liste des valeurs possédant un champ texte
+			$valeursAutre = $this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find(
+				'all',
+				array(
+					'order' => array( 'Valeurparsoussujetcer93.isautre DESC', 'Valeurparsoussujetcer93.name ASC' )
+				)
+			);
+			$autrevaleur_isautre_id = Hash::extract( $valeursAutre, '{n}.Valeurparsoussujetcer93[isautre=1]' );
+			$autrevaleur_isautre_id = Hash::format( $autrevaleur_isautre_id, array( '{n}.soussujetcer93_id', '{n}.id' ), '%d_%d' );
+			
+			$this->set( 'autrevaleur_isautre_id', $autrevaleur_isautre_id );
 			$this->set( 'valeursparsoussujetscers93', $valeursparsoussujetscers93 );
 
 			// Options
@@ -451,6 +496,9 @@
 				),
 				'Sujetcer93' => array(
 					'sujetcer93_id' => Set::combine( $sujetscers93, '{n}.Sujetcer93.id', '{n}.Sujetcer93.name' )
+				),
+				'Valeurparsoussujetcer93' => array(
+					'soussujetcer93_id' => Set::combine( $valeursAutre, '{n}.Valeurparsoussujetcer93.id', '{n}.Valeurparsoussujetcer93.name' )
 				),
 				'dureehebdo' => array_range( '0', '39' ),
 				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()

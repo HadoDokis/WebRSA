@@ -625,6 +625,16 @@ CREATE UNIQUE INDEX commentairesnormescers93_histoschoixcers93_commentairenormec
 -- 20121214 : Clôture en masse des référents
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'referents', 'datecloture', 'DATE' );
+
+--------------------------------------------------------------------------------
+-- 20121218 : Ajout de champ de type texte dans la table valeursparsoussujetscers93
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'valeursparsoussujetscers93', 'isautre', 'VARCHAR(1)' );
+ALTER TABLE valeursparsoussujetscers93 ALTER COLUMN isautre SET DEFAULT '0';
+SELECT alter_table_drop_constraint_if_exists( 'public', 'valeursparsoussujetscers93', 'valeursparsoussujetscers93_isautre_in_list_chk' );
+ALTER TABLE valeursparsoussujetscers93 ADD CONSTRAINT valeursparsoussujetscers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
+SELECT add_missing_table_field( 'public', 'cers93_sujetscers93', 'autrevaleur', 'TEXT' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
