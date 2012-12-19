@@ -200,7 +200,7 @@
 					'url' => array( 'controller' => 'commissionseps', 'action' => 'arbitragecg' ),
 				),
 			),
-			'4. Consultation et impression des décisions' => array(
+			( Configure::read( 'Cg.departement' ) == 66 ? '4. Consultation et impression des avis et décisions' : '4. Consultation et impression des décisions' ) => array(
 				'url' => array( 'controller' => 'commissionseps', 'action' => 'decisions' ),
 			),
 			'5. Gestion des sanctions' => array(
