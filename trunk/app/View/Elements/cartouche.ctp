@@ -25,7 +25,8 @@
 								array(
 									'controller'=>'users',
 									'action'=>'changepass'
-								)
+								),
+								 array( 'enabled' => $this->Permissions->check( 'users', 'changepass' ) )
 							);
 						?>
 					</td>
