@@ -200,3 +200,12 @@ table#Expprocer93 div.input.select select {
 table#Expprocer93 div.input input {
 	max-width: 8em;
 }
+
+ul.liste_sujets, ul.liste_sujets ul {
+	list-style: none;
+}
+
+ul.liste_sujets > li {
+	margin-left: 0;
+	padding-left: 0;
+}

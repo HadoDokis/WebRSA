@@ -111,7 +111,7 @@
 			
 			$options = array(
 				'Valeurparsoussujetcer93' => array(
-					'soussujetcer93_id' => $this->Valeurparsoussujetcer93->Soussujetcer93->find( 'list', array( 'fields' => array( 'id', 'name' ) ) )
+					'soussujetcer93_id' => $this->Valeurparsoussujetcer93->Soussujetcer93->find( 'list', array( 'fields' => array( 'id', 'name' ), 'conditions' => array( 'Soussujetcer93.isautre' => '0' ) ) )
 				)
 			);
 			$this->set( compact( 'options' ) );

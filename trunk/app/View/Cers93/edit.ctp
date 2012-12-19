@@ -462,6 +462,7 @@
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		$i = 0;
 
+		echo '<ul class="liste_sujets">';
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$array_key = array_search( $idSujet, $selectedSujetcer93 );
 			$checked = ( ( $array_key !== false ) ? 'checked' : '' );
@@ -484,34 +485,52 @@
 				}
 			}
 			// TODO: sur la même ligne ?
+			echo '<li>'; // Niveau 1
 			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
+
+			// Niveau 2
 			if( !empty( $soussujetscers93[$idSujet] ) ) {
+				echo '<ul><li>'; // Niveau 2
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
+				
+				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
+				if( !empty( $interSoussujet ) ) {
+					$autresoussujet = null;
+					if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'] ) ) {
+						$autresoussujet = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'];
+					}
+					echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autresoussujet", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autresoussujet]", 'label' => false, 'type' => 'text', 'value' => $autresoussujet ) );
+				}
+
+				// Niveau 3
+				if( !empty( $valeursparsoussujetscers93[$idSujet] ) ) {
+					$correspondChilParent[$this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id" )] = $this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id" );
+					echo '<ul><li>'; // Niveau 3
+					echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][valeurparsoussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $valeursparsoussujetscers93[$idSujet], 'empty' => true, 'value' => $valeurparsoussujetcer93_id ) );
+					// Ajout
+					$inter = array_intersect( array_keys( $valeursparsoussujetscers93[$idSujet] ), $autrevaleur_isautre_id );
+					if( !empty( $inter ) ) {
+						$autrevaleur = null;
+						if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
+							$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
+						}
+						echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autrevaleur", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autrevaleur]", 'label' => false, 'type' => 'text', 'value' => $autrevaleur ) );
+					}
+					echo '</li></ul>'; // Niveau 3
+				}
+				echo '</li></ul>'; // Niveau 2
 			}
 			else {
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.commentaireautre", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'text', 'value' => $commentaireautre ) );
 			}
-
-			if( !empty( $valeursparsoussujetscers93[$idSujet] ) ) {
-				$correspondChilParent[$this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id" )] = $this->Html->domId( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id" );
-				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.valeurparsoussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][valeurparsoussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $valeursparsoussujetscers93[$idSujet], 'empty' => true, 'value' => $valeurparsoussujetcer93_id ) );
-				
-				// Ajout
-				$inter = array_intersect( array_keys( $valeursparsoussujetscers93[$idSujet] ), $autrevaleur_isautre_id );
-				if( !empty( $inter ) ) { // FIXME
-					$autrevaleur = null;
-					if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
-						$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
-					}
-					echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autrevaleur", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autrevaleur]", 'label' => false, 'type' => 'text', 'value' => $autrevaleur ) );
-					// Ajout
-				}
-			}
+			echo '</li>'; // Niveau 1
 			$i++;
 		}
+		echo '</ul>';
 		echo '</fieldset>';
 	?>
 </fieldset>
+<!-- Javascript pour les sujetscers93 -->
 <script type="text/javascript">
 //<![CDATA[
 	<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ) :?>
@@ -530,7 +549,25 @@
 	<?php endif;?>
 //]]>
 </script>
-<!-- Ajout -->
+<!-- Javascript pour les soussujetscers93 -->
+<script type="text/javascript">
+//<![CDATA[
+	document.observe( "dom:loaded", function() {
+		<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ):?>
+			<?php if( in_array( $key, $sujets_ids_soussujets_autres ) ):?>
+			observeDisableFieldsOnValue(
+				'Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id',
+				['Sujetcer93Sujetcer93<?php echo $key;?>Autresoussujet'],
+				['<?php echo implode( "', '", $autresoussujet_isautre_id );?>'],
+				false,
+				true
+			);
+			<?php endif;?>
+		<?php endforeach;?>
+	});
+//]]>
+</script>
+<!-- Javascript pour les valeursparsoussujetscers93 -->
 <script type="text/javascript">
 //<![CDATA[
 	document.observe( "dom:loaded", function() {
