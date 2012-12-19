@@ -4,7 +4,7 @@
 
 <h1><?php 
 echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $qual, Set::classicExtract( $personneDem, 'Personne.qual' ) ).' '.Set::classicExtract( $personneDem, 'Personne.nom' ).' '.Set::classicExtract( $personneDem, 'Personne.prenom' ); ?></h1>
-		<?php if( $this->Permissions->check( 'dossierspcgs66', 'add' ) ):?>
+		<?php if( $this->Permissions->check( 'dossierspcgs66', 'edit' ) ):?>
 			<ul class="actionMenu">
 				<?php
 					echo '<li>'.$this->Xhtml->addLink(
