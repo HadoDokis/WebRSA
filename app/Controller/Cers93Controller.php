@@ -371,7 +371,7 @@
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
 			
 			// -----------------------------------------------------------------
-			$choucroute = $this->Cer93->Sujetcer93->find(
+			$listeSujets = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
 					'contain' => array(
@@ -387,9 +387,13 @@
 			);
 
 			$sujets_ids_valeurs_autres = array();
-			foreach( $choucroute as $sujetcer93 ) {
+			$sujets_ids_soussujets_autres = array();
+			foreach( $listeSujets as $sujetcer93 ) {
 				if( !empty( $sujetcer93['Soussujetcer93'] ) ) {
 					foreach( $sujetcer93['Soussujetcer93'] as $soussujetcer93 ) {
+						if( $soussujetcer93['isautre'] == '1' ) {
+							$sujets_ids_soussujets_autres[] = $sujetcer93['Sujetcer93']['id'];
+						}
 						if( !empty( $soussujetcer93['Valeurparsoussujetcer93'] ) ) {
 							foreach( $soussujetcer93['Valeurparsoussujetcer93'] as $valeurparsousujetcer93 ) {
 								if( $valeurparsousujetcer93['isautre'] == '1' ) {
@@ -401,7 +405,8 @@
 				}
 			}
 			$sujets_ids_valeurs_autres = array_unique( $sujets_ids_valeurs_autres );
-			$this->set( compact( 'sujets_ids_valeurs_autres' ) );
+			$sujets_ids_soussujets_autres = array_unique( $sujets_ids_soussujets_autres );
+			$this->set( compact( 'sujets_ids_valeurs_autres', 'sujets_ids_soussujets_autres' ) );
 			// -----------------------------------------------------------------
 
 
@@ -450,7 +455,7 @@
 				$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']][$tmp['Valeurparsoussujetcer93']['id']] = $tmp['Valeurparsoussujetcer93']['name'];
 			}
 			
-			// Liste des valeurs possédant un champ texte
+			// Liste des valeurs possédant un champ texte dans Valeursparsoussujetscers93
 			$valeursAutre = $this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find(
 				'all',
 				array(
@@ -463,6 +468,18 @@
 			$this->set( 'autrevaleur_isautre_id', $autrevaleur_isautre_id );
 			$this->set( 'valeursparsoussujetscers93', $valeursparsoussujetscers93 );
 
+			
+			// Liste des valeurs possédant un champ texte dans Soussujetscers93
+			$valeursSoussujet = $this->Cer93->Sujetcer93->Soussujetcer93->find(
+				'all',
+				array(
+					'order' => array( 'Soussujetcer93.isautre DESC', 'Soussujetcer93.name ASC' )
+				)
+			);
+			$autresoussujet_isautre_id = Hash::extract( $valeursSoussujet, '{n}.Soussujetcer93[isautre=1].id' );
+// 			$autresoussujet_isautre_id = Hash::format( $autresoussujet_isautre_id, array( '{n}.sujetcer93_id', '{n}.id' ), '%%d' );
+			$this->set( 'autresoussujet_isautre_id', $autresoussujet_isautre_id );
+			
 			// Options
 			$options = array(
 				'Contratinsertion' => array(

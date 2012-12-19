@@ -635,6 +635,14 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'valeursparsoussujetscer
 ALTER TABLE valeursparsoussujetscers93 ADD CONSTRAINT valeursparsoussujetscers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
 SELECT add_missing_table_field( 'public', 'cers93_sujetscers93', 'autrevaleur', 'TEXT' );
 
+--------------------------------------------------------------------------------
+-- 20121218 : Ajout de champ de type texte dans la table soussujetscers93
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'soussujetscers93', 'isautre', 'VARCHAR(1)' );
+ALTER TABLE soussujetscers93 ALTER COLUMN isautre SET DEFAULT '0';
+SELECT alter_table_drop_constraint_if_exists( 'public', 'soussujetscers93', 'soussujetscers93_isautre_in_list_chk' );
+ALTER TABLE soussujetscers93 ADD CONSTRAINT soussujetscers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
+SELECT add_missing_table_field( 'public', 'cers93_sujetscers93', 'autresoussujet', 'TEXT' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

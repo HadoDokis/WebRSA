@@ -41,3 +41,6 @@ msgstr "Supprimer un sous-sujet"
 
 msgid "Soussujetscers93::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "Soussujetcer93.isautre"
+msgstr "Champ de type texte ?"
