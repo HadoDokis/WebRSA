@@ -18,7 +18,7 @@
 		/**
 		*
 		*/
-		public $helpers = array( 'Xhtml', 'Locale', 'Form', 'Default2' );
+		public $helpers = array( 'Xhtml', 'Locale', 'Form', 'Default2', 'Permissions' );
 
 		/**
 		* $urls = array(
@@ -128,7 +128,7 @@
 					$return .= '<tr><td>'.$fichier['name'].'</td>';
 					$return .= '<td>'.$this->Locale->date( __( 'Locale->datetime' ), $fichier['created'] ).'</td>';
 					$return .= '<td>'.$this->Xhtml->link( 'Télécharger', array( 'action' => 'download', $fichier['id']    ) ).'</td>';
-					$return .= '<td>'.$this->Xhtml->link( 'Supprimer', array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'] ), array(), 'Êtes-vous sûr de vouloir supprimer la pièce ?' ).'</td></tr>';
+					$return .= '<td>'.$this->Xhtml->link( 'Supprimer', array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'] ), array( 'enabled' => $this->Permissions->check( 'fichiersmodules', 'delete' ) ), 'Êtes-vous sûr de vouloir supprimer la pièce ?' ).'</td></tr>';
 				}
 				$return .= '</tbody></table>';
 			}
