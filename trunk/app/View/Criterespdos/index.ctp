@@ -77,7 +77,6 @@
 		///Formulaire de recherche pour les PDOs
 		echo $this->Default2->subform(
 			array(
-				'Propopdo.datereceptionpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.datereceptionpdo' ), 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 1, 'maxYear' => date( 'Y' ) + 1 ),
 				'Propopdo.originepdo_id' => array( 'label' => __d( 'propopdo', 'Propopdo.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Propopdo.etatdossierpdo' => array( 'label' => __d( 'propopdo', 'Propopdo.etatdossierpdo' ), 'type' => 'select', 'options' => $options['etatdossierpdo'], 'empty' => true ),
 				'Decisionpropopdo.decisionpdo_id' => array( 'label' => __d( 'decisionpropopdo', 'Decisionpropopdo.decisionpdo_id' ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ),
