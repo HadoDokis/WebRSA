@@ -599,6 +599,16 @@
 
 					$success = $this->finaliser( $commissionep_id, $storedDataCg, 'cg', $user_id ) && $success;
 				}
+				
+				// On génère un dossier PCG à partir du niveau EP d'une commission Audition quoi qu'il arrive
+				foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
+					$themeTraite = Inflector::tableize( $themeTraite );
+					$model = Inflector::classify( $themeTraite );
+					if( $model == 'Defautinsertionep66' ) {
+						$dateseanceCommission = $commissionep['Commissionep']['dateseance'];
+						$success = $this->Passagecommissionep->Dossierep->{$model}->generateDossierpcg( $commissionep_id, $dateseanceCommission, $niveauDecision ) && $success;
+					}
+				}
 			}
 			
 			return $success;

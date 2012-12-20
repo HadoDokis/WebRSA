@@ -216,16 +216,16 @@
 
 				// INFO: On ne crée un dossier PCG qu'après la validation au niveau EP
 				// Aucune action ne se fait à ce niveau par le CG
-				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
-				if( $niveauAvis == 'ep' ){
-					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
-
-					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
-
-					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
-						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
-					}
-				}
+// 				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
+// 				if( $niveauAvis == 'ep' ){
+// 					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
+// 
+// 					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
+// 
+// 					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
+// 						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
+// 					}
+// 				}
 
 				return $success;
 			}
@@ -272,7 +272,7 @@
 		 * @return array
 		 * @access protected
 		 */
-		protected function _generateDossierpcg( $commissionep_id, $dateseanceCommission, $etape ) {
+		public function generateDossierpcg( $commissionep_id, $dateseanceCommission, $etape ) {
 
 			$dossierseps = $this->find(
 				'all',
@@ -647,7 +647,8 @@
 								'date_propo' => date( 'Y-m-d' ),
 								'date_valid' => date( 'Y-m-d' ),
 								'statut_orient' => 'Orienté',
-								'user_id' => $user_id
+								'user_id' => $user_id,
+								'origine' => 'cohorte'
 							)
 						);
 						$this->Bilanparcours66->Orientstruct->create( $orientstruct );
