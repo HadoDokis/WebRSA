@@ -36,7 +36,12 @@
 
 			break;
 		case 'decisions':
-			$this->pageTitle = '4. Consultation des décisions';
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$this->pageTitle = '4. Consultation des avis/décisions';
+			}
+			else {
+				$this->pageTitle = '4. Consultation des décisions';
+			}
 			break;
 		default:
 			$this->pageTitle = 'Liste des commissions d\'EP';
@@ -149,7 +154,12 @@
 					$colspan = ( $showLienAvisEp ) ? 2 : 1;
 					break;
 				case 'decisions':
-					$colspan = 1;
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						$colspan = 2;
+					}
+					else {
+						$colspan = 1;
+					}
 					break;
 				default:
 					$colspan = 1;
@@ -202,9 +212,15 @@
 						$lien .= '<td>'.$this->Xhtml->link( 'Arbitrage', array( 'controller' => 'commissionseps', 'action' => 'traitercg', $commissionep['Commissionep']['id'] ), array( 'enabled' => ( $commissionep['Commissionep']['etatcommissionep'] == 'traiteep' || $commissionep['Commissionep']['etatcommissionep'] == 'decisioncg' ) ) ).'</td>';
 						break;
 					case 'decisions':
-						$niveaudecisionmax = $commissionep['Commissionep']['niveaudecisionmax'];
-						$libelledecisionmax = $commissionep['Commissionep']['libelledecisionmax'];
-						$lien = '<td>'.$this->Xhtml->link( $libelledecisionmax, array( 'controller' => 'commissionseps', 'action' => $niveaudecisionmax, $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
+						if( Configure::read( 'Cg.departement' ) == 66 ) {
+							$lien = '<td>'.$this->Xhtml->link( 'Voir les avis', array( 'controller' => 'commissionseps', 'action' => 'decisionep', $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
+							$lien .= '<td>'.$this->Xhtml->link( 'Voir les décisions', array( 'controller' => 'commissionseps', 'action' => 'decisioncg', $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
+						}
+						else {
+							$niveaudecisionmax = $commissionep['Commissionep']['niveaudecisionmax'];
+							$libelledecisionmax = $commissionep['Commissionep']['libelledecisionmax'];
+							$lien = '<td>'.$this->Xhtml->link( $libelledecisionmax, array( 'controller' => 'commissionseps', 'action' => $niveaudecisionmax, $commissionep['Commissionep']['id'] ), array( 'enabled' => in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule' ) ) ) ).'</td>';
+						}
 						break;
 					default:
 						$lien = '<td>'.$this->Xhtml->link( 'Voir', array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep['Commissionep']['id'] ) ).'</td>';
