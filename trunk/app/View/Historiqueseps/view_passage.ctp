@@ -191,6 +191,12 @@
 						$label = ( ( $i == 0 ) ? 'Avis EP' : 'Décision PCG' );
 					}
 
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						if( empty( $passage['Decision'][0]['Decisiondefautinsertionep66']['decisionsup'] ) ) {
+							unset( $passage['Decision'][1] ); // A remplacer par la valeur de la décision prise via le dossier PCG 66
+						}
+					}
+					
 					echo '<h2>'.$label.'</h2>';
 					echo $this->Default2->view(
 						$passage['Decision'][$i],
