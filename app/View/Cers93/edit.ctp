@@ -490,7 +490,7 @@
 					$valeurparsoussujetcer93_id = "{$soussujetcer93_id}_{$valeurparsoussujetcer93_id}";
 				}
 			}
-			// TODO: sur la même ligne ?
+
 			echo '<li>'; // Niveau 1
 			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
 
@@ -498,12 +498,14 @@
 			if( !empty( $soussujetscers93[$idSujet] ) ) {
 				echo '<ul><li>'; // Niveau 2
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
-
+// debug( $array_key );
 				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
 				if( !empty( $interSoussujet ) ) {
 					$autresoussujet = null;
-					if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'] ) ) {
-						$autresoussujet = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'];
+					if( !empty( $array_key ) ) {
+						if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'] ) ) {
+							$autresoussujet = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'];
+						}
 					}
 					echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autresoussujet", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autresoussujet]", 'label' => false, 'type' => 'text', 'value' => $autresoussujet ) );
 				}
@@ -517,8 +519,10 @@
 					$inter = array_intersect( array_keys( $valeursparsoussujetscers93[$idSujet] ), $autrevaleur_isautre_id );
 					if( !empty( $inter ) ) {
 						$autrevaleur = null;
-						if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
-							$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
+						if( !empty( $array_key ) ) {
+							if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
+								$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
+							}
 						}
 						echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.autrevaleur", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][autrevaleur]", 'label' => false, 'type' => 'text', 'value' => $autrevaleur ) );
 					}
