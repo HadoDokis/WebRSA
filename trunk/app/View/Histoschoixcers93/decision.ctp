@@ -40,22 +40,17 @@
 					)
 				);
 
-				$checkedCommentaires = Set::filter( Set::extract( $this->request->data, '/Commentairenormecer93/Commentairenormecer93/commentairenormecer93_id' ) );
 				echo '<fieldset><legend>Commentaires</legend>';
-				if( !empty( $options['Commentairenormecer93']['commentairenormecer93_id'] ) ) {
-					$i = 0;
-					foreach( $options['Commentairenormecer93']['commentairenormecer93_id'] as $id => $commentaireName ) {
-						$array_key = array_search( $id, $checkedCommentaires );
-						$checked = ( ( $array_key !== false ) ? 'checked' : '' );
-
-						echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentairenormecer93_id", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentairenormecer93_id]", 'label' => $commentaireName, 'type' => 'checkbox', 'value' => $id, 'checked' => $checked, 'hiddenField' => false ) );
-
-						if( $id == $commentairenormecer93_isautre_id) {
-							echo $this->Xform->input( "Commentairenormecer93.Commentairenormecer93.{$i}.commentaireautre", array( 'name' => "data[Commentairenormecer93][Commentairenormecer93][{$i}][commentaireautre]", 'label' => false, 'type' => 'textarea', 'value' => Hash::get( $this->request->data, "Commentairenormecer93.Commentairenormecer93.{$array_key}.commentaireautre" ) ) );
-						}
-						$i++;
-					}
-				}
+				echo $this->Checkboxes->inputs(
+					'Commentairenormecer93.Commentairenormecer93.%d',
+					array(
+						'fk_field' => 'commentairenormecer93_id',
+						'autre_field' => 'commentaireautre',
+						'autres_type' => 'textarea',
+						'options' => $options['Commentairenormecer93']['commentairenormecer93_id'],
+						'autres_ids' => (array)$commentairenormecer93_isautre_id
+					)
+				);
 				echo '</fieldset>';
 				echo $this->Xform->inputs(
 					array(
@@ -89,22 +84,6 @@
 	</div>
 </div>
 <div class="clearer"><hr /></div>
-<script type="text/javascript">
-//<![CDATA[
-	<?php $i=0;?>
-	<?php foreach( $options['Commentairenormecer93']['commentairenormecer93_id'] as $key => $commentairename ) :?>
-		<?php if ( $key == $commentairenormecer93_isautre_id ):?>
-		observeDisableFieldsOnCheckbox(
-			'Commentairenormecer93Commentairenormecer93<?php echo $i;?>Commentairenormecer93Id',
-			['Commentairenormecer93Commentairenormecer93<?php echo $i;?>Commentaireautre'],
-			false,
-			true
-		);
-		<?php endif;?>
-		<?php $i++;?>
-	<?php endforeach;?>
-//]]>
-</script>
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>

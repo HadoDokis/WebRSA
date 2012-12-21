@@ -92,13 +92,7 @@
 				make_treemenus( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?>, urlmenu );
 				make_folded_forms();
 				mkTooltipTables();
-
-				// External links
-				$$('a.external').each( function ( link ) {
-					$( link ).onclick = function() {
-						window.open( $( link ).href, 'external' ); return false;
-					};
-				} );
+				make_external_links();
 
 				<?php if( isset( $useAlerteFinSession ) && $useAlerteFinSession ):?>
 				if( '<?php echo $useAlerteFinSession;?>' ) {

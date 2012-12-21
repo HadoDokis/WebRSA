@@ -105,7 +105,7 @@
         if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( radioValue( 'contratinsertion', 'data[Cer93][duree]' ) !== undefined ) ) {
             var correspondances = new Array();
             <?php
-				
+
                 $duree_engag = $options['Cer93']['duree'];
                 foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
 
@@ -125,9 +125,11 @@
             checkDatesToRefresh();
         } );
 
-        Event.observe( $( 'Cer93Duree' ), 'change', function() {
+		<?php foreach( $options['Cer93']['duree'] as $duree ): ?>
+        Event.observe( $( 'Cer93Duree<?php echo str_replace( ' mois', '' ,$duree );?>' ), 'change', function() {
             checkDatesToRefresh();
         } );
+		<?php endforeach;?>
 	});
 </script>
 <script type="text/javascript">
@@ -401,6 +403,9 @@
 	<!-- Fin bloc 4 -->
 </fieldset>
 <!--  Bloc 5 -->
+<?php if( $this->request->data['Contratinsertion']['rg_ci'] <= 1 ): ?>
+	<p class="notice">Ce CER est le premier.</p>
+<?php else: ?>
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
 
 	<h4>Le précédent contrat portait sur </h4>
@@ -443,6 +448,7 @@
 		echo $this->Xform->input( 'Cer93.bilancerpcd', array( 'domain' => 'cer93', 'type' => 'textarea' ) );
 	?>
 </fieldset>
+<?php endif; ?>
 <!--  Fin bloc 5 -->
 
 <fieldset><legend>Projet pour ce nouveau contrat</legend>
@@ -492,7 +498,7 @@
 			if( !empty( $soussujetscers93[$idSujet] ) ) {
 				echo '<ul><li>'; // Niveau 2
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
-				
+
 				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
 				if( !empty( $interSoussujet ) ) {
 					$autresoussujet = null;

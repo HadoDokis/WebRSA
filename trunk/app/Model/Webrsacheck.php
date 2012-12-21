@@ -287,6 +287,10 @@
 				'Signalementep93.dureeTolerance' => 'integer',
 				'Signalementep93.montantReduction' => 'numeric',
 				'apache_bin' => 'string',
+				'Cohortescers93.saisie.periodeRenouvellement' => 'string',
+				'Contratinsertion.RdvAuto.active' => 'boolean',
+				'Contratinsertion.RdvAuto.typerdv_id' => 'integer',
+				'Contratinsertion.RdvAuto.statutrdv_id' => 'integer',
 			);
 		}
 
@@ -364,8 +368,8 @@
 					$attributes = get_class_vars( $modelName );
 					$methods = get_class_methods( $modelName );
 
-					// Peut-on instancier la classe et la fonction existe-t'elle ?
-					if( $attributes['useTable'] !== false && in_array( $attributes['useDbConfig'], $connections ) && in_array( 'checkPostgresqlIntervals', $methods ) ) {
+					// Possède-t-on la classe et la fonction existe-t'elle ?
+					if( in_array( $attributes['useDbConfig'], $connections ) && in_array( 'checkPostgresqlIntervals', $methods ) ) {
 						$modelClass = ClassRegistry::init( $modelName );
 
 						$results = Set::merge( $results, $modelClass->checkPostgresqlIntervals() );

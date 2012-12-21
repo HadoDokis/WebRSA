@@ -2,7 +2,7 @@
 
 function make_folded_forms() {
 	$$( 'form.folded' ).each( function( elmt ) {
-//         var a = new Element( 'a', { 'class': 'toggler', 'href': '#', 'onclick' : '$( \'' + $( elmt ).id + '\' ).toggle(); return false;' } ).update( 'Visibilité formulaire' );
+//         var a = new Element( 'a', { 'class': 'toggler', 'href': '#', 'onclick' : '$( '' + $( elmt ).id + '' ).toggle(); return false;' } ).update( 'Visibilité formulaire' );
 //         var p = a.wrap( 'p' );
 //         $( elmt ).insert( { 'before' : p } );
 		$( elmt ).hide();
@@ -1313,7 +1313,7 @@ function observeFilterSelectOptionsFromRadioValue( formId, radioName, selectId, 
 
 /**
  * Retourne la valeur d'un radio présent au sein d'un formulaire particulier
- * 
+ *
  * @param string form L'id du formulaire (ex.: 'contratinsertion')
  * @param string radioName Le name du radio (ex.: 'data[Cer93][duree]')
  * @return string
@@ -1327,7 +1327,7 @@ function radioValue( form, radioName ) {
 			currentValue = radio.value;
 		}
 	} );
-	
+
 	return currentValue;
 }
 
@@ -1336,7 +1336,6 @@ function radioValue( form, radioName ) {
 * @param selecteur Le sélecteur CSS pour obtenir les cases à cocher (default: input[type="checkbox"])
 * @param simulate Lorsqu'il est à true, permet de simuler l'action de click (default: false)
 */
-
 function toutChoisir( radios, valeur, simulate ) {
 		$( radios ).each( function( radio ) {
 			if( radio.value == valeur ) {
@@ -1350,4 +1349,46 @@ function toutChoisir( radios, valeur, simulate ) {
 		} );
 
 	return false;
+}
+
+//-----------------------------------------------------------------------------
+
+/**
+ * Transforme les liens ayant la classe "external" pour qu'ils s'ouvrent dans
+ * une nouvelle fenêtre (un nouvel onglet) via Javascript.
+ *
+ * @return void
+ */
+function make_external_links() {
+	$$('a.external').each( function ( link ) {
+		$( link ).onclick = function() {
+			window.open( $( link ).href, 'external' ); return false;
+		};
+	} );
+}
+
+//-----------------------------------------------------------------------------
+
+/**
+ * Retourne les éléments de formulaires sérialisés d'une des lignes d'un tableau
+ * (la ligne qui contient le lien Ajax passé en paramètre).
+ *
+ * Les éléments de formulaire doivent impérativement se trouver entre des balises
+ * <form>...</form>
+ *
+ * @param Un sélecteur vers le lien Ajax permettant d'envoyer la ligne.
+ * @return string
+ */
+function serializeTableRow( link ) {
+	var form = $(link).up( 'form' );
+	var trId = $(link).up('tr').id;
+
+	return Form.serializeElements(
+		$( form )
+		.getElementsBySelector(
+			'#' + trId + ' input',
+			'#' + trId + ' select',
+			'#' + trId + ' textarea'
+		)
+	);
 }

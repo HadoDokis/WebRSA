@@ -771,4 +771,25 @@
 			return null;
 		}
 	}
+
+	/**
+	 *
+	 * Exemple:
+	 * <pre>array_move_key( array( 0 => 'Test' ), 0, 2 )</pre>
+	 * donne
+	 * <pre>array( 2 => 'Test' )</pre>
+	 *
+	 * @param array $data
+	 * @param integer $key_from
+	 * @param integer $key_to
+	 * @return array
+	 */
+	function array_move_key( $data, $key_from, $key_to ) {
+		if( $key_from != $key_to ) {
+			$data[$key_to] = $data[$key_from];
+			unset( $data[$key_from] );
+		}
+
+		return $data;
+	}
 ?>
