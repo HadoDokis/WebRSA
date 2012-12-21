@@ -31,8 +31,9 @@
 						<th class="action">Forme du CER (CG)</th>
 						<th class="action">Commentaire (CG)</th>
 						<th class="action">Décision Cadre</th>
+						<th class="action">Date de décision</th>
 						<th class="action">Action</th>
-						<th class="action">Détails</th>
+						<th class="action" colspan="2">Détails</th>
 					</tr>
 				</thead>';
 			echo '<tbody>';
@@ -105,13 +106,16 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['formeci'] ) ? 'error' : null ) )
 						),
 						array(
-							$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) )
-							.$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) ),
+							$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
 						),
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.decisioncadre", array( 'label' => false, 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncadre'], 'empty' => 'En attente' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncadre'] ) ? 'error' : null ) )
+						),
+						array(
+							$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ) ),
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
@@ -119,6 +123,11 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Détails
+						$this->Xhtml->printLink(
+							'Décision',
+							array( 'controller' => 'cers93', 'action' => 'impressionDecision', $cer93['Contratinsertion']['id'] ),
+							( $this->Permissions->check( 'cers93', 'impressionDecision' ) )
+						),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
@@ -134,6 +143,22 @@
 			echo $pagination;
 			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Valider', true );" ) );
 			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'En attente', true );" ) );
+			
+			
+			echo '<ul class="actionMenu"><li>';
+			echo $this->Xhtml->printCohorteLink(
+				'Imprimer les décisions',
+				Set::merge(
+					array(
+						'controller' => 'cohortescers93',
+						'action'     => 'impressionsDecisions',
+						'validationcadre'
+					),
+					Set::flatten( $this->request->data )
+				),
+				$this->Permissions->check( 'cohortescers93', 'impressionsDecisions' )
+			);
+			echo '</li></ul>';
 		}
 
 	}
@@ -150,6 +175,9 @@
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
 				'Histochoixcer93<?php echo $index;?>Decisioncadre',
+				'Histochoixcer93<?php echo $index;?>DatechoixDay',
+				'Histochoixcer93<?php echo $index;?>DatechoixMonth',
+				'Histochoixcer93<?php echo $index;?>DatechoixYear',
 				'Histochoixcer93<?php echo $index;?>Commentaire'
 			],
 			[ 'Valider' ],

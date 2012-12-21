@@ -348,5 +348,34 @@
 
 			return $this->_checkPostgresqlIntervals( $keys );
 		}
+		
+		/**
+		 * Retourne le PDF concernant les Décisions CG
+		 *
+		 * @param string $search
+		 * @param integer $user_id
+		 * @return string
+		 */
+		public function getDefaultCohortePdf( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, $page ) {
+
+			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, null );
+
+			$querydata['limit'] = 100;
+			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+
+			$Personne = ClassRegistry::init( 'Personne' );
+			$cers93 = $Personne->find( 'all', $querydata );
+			
+
+			$pdfs = array();
+			foreach( $cers93 as $cer93 ) {
+				if( in_array( $cer93['Contratinsertion']['decision_ci'], array( 'V', 'R', 'N' ) ) ) {
+					$pdfs[] = $Personne->Contratinsertion->Cer93->getDecisionPdf( $cer93['Cer93']['contratinsertion_id'], $user_id
+					);
+				}
+			}
+
+			return $pdfs;
+		}
 	}
 ?>

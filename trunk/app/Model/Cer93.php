@@ -1075,13 +1075,28 @@
 				$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' )),
 				$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
 				$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' )),
+				$this->Contratinsertion->Structurereferente->join( 'Referent', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
 				$this->Contratinsertion->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER'  )),
 				$this->Contratinsertion->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) )
+				$this->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+				$this->join( 'Naturecontrat', array( 'type' => 'LEFT OUTER' ) ),
+				array_words_replace(
+					$this->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) ),
+					array(
+						'Metierexerce' => 'Metierexercecer93'
+					)
+				),
+				array_words_replace(
+					$this->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) ),
+					array(
+						'Secteuracti' => 'Secteuracticer93'
+					)
+				)
 			);
 
 			$queryData = array(
@@ -1089,6 +1104,21 @@
 					$this->fields(),
 					$this->User->fields(),
 					$this->Contratinsertion->fields(),
+					array_words_replace(
+						$this->Metierexerce->fields(),
+						array(
+							'Metierexerce' => 'Metierexercecer93'
+						)
+					),
+					array_words_replace(
+						$this->Secteuracti->fields(),
+						array(
+							'Secteuracti' => 'Secteuracticer93'
+						)
+					),
+					$this->Naturecontrat->fields(),
+					$this->Contratinsertion->Structurereferente->fields(),
+					$this->Contratinsertion->Structurereferente->Referent->fields(),
 					$this->Contratinsertion->Personne->fields(),
 					$this->Contratinsertion->Personne->Prestation->fields(),
 					$this->Contratinsertion->Personne->Dsp->fields(),
@@ -1193,10 +1223,15 @@
 						'Expprocer93.secteuracti_id',
 						'Expprocer93.anneedeb',
 						'Expprocer93.duree',
+						'Metierexerce.name',
+						'Secteuracti.name',
 					),
 					'conditions' => array( 'Expprocer93.cer93_id' => $data['Cer93']['id'] ),
 					'order' => array( 'Expprocer93.anneedeb DESC' ),
-					'contain' => false
+					'contain' => array(
+						'Metierexerce',
+						'Secteuracti'
+					)
 				)
 			);
 
@@ -1207,7 +1242,8 @@
 					'conditions' => array( 'Cer93Sujetcer93.cer93_id' => $data['Cer93']['id'] ),
 					'contain' => array(
 						'Sujetcer93',
-						'Soussujetcer93'
+						'Soussujetcer93',
+						'Valeurparsoussujetcer93'
 					)
 				)
 			);
@@ -1242,11 +1278,15 @@
 					),
 					'Adresse' => array(
 						'typevoie' => $Option->typevoie()
+					),
+					'Cer93' => array(
+						'dureecdd' => $Option->duree_cdd()
 					)
 				),
 				$this->enums()
 			);
-
+// debug($data);
+// die();
 			return $this->ged( $data, $modeleodt, true, $options );
 		}
 
@@ -1282,10 +1322,24 @@
 						'Structurereferente' => array(
 							'Typeorient'
 						),
-						'Referent'
+						'Referent',
+						'Personne' => array(
+							'Foyer' => array(
+								'Adressefoyer' => array(
+									'Adresse',
+									'conditions' => array(
+										'Adressefoyer.id IN (
+											'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+										)'
+									)
+								)
+							)
+						)
 					)
 				)
 			);
+			
+			$data['Adresse'] = $data['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 
 			$sousSujetsIds = Set::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
 			if( !empty( $sousSujetsIds ) ) {
@@ -1374,13 +1428,6 @@
 
 			// Choix du modèle de document
 			$decision = $data['Contratinsertion']['decision_ci'];
-
-// 			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
-// 			$NbHistos = count( $data['Cer93']['Histochoixcer93'] );
-// 			$dernierHisto = $data['Cer93']['Histochoixcer93'][$NbHistos-1];
-// 			if( $dernierHisto['isrejet'] == '1' ){
-// 				return null;
-// 			}
 
 			if( $decision == 'V' ) {
 				$modeleodt  = "Contratinsertion/cer_valide.odt";
