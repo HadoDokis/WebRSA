@@ -778,7 +778,7 @@
 	 *
 	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
 	 *
-	 * @var string
+	 * @var integer
 	 * @default null
 	 */
 	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', null );
@@ -789,7 +789,7 @@
 	 *
 	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
 	 *
-	 * @var string
+	 * @var integer
 	 * @default null
 	 */
 	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
