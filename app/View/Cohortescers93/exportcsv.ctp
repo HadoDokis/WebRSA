@@ -29,8 +29,8 @@
 				$this->Xhtml->boolean( $cer93['Calculdroitrsa']['toppersdrodevorsa'], false ),
 				$this->Xhtml->boolean( $cer93['Dsp']['exists'], false ),
 				$cer93['Contratinsertion']['rg_ci'],
-				$cer93['Cer93']['positioncer'],
-				$cer93['Cer93']['formeci'],
+				Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
+				Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
 				date_short( $cer93['PersonneReferent']['dddesignation'] ),
 				$cer93['Referent']['nom_complet'],
 			);
@@ -41,7 +41,6 @@
 		$this->Csv->addRow(
 			array(
 				'Commune',
-// 				'Non orienté PDV',
 				'Nom/Prénom',
 				'Structure référente',
 				'Référent',
@@ -68,10 +67,9 @@
 			else{
 				$validationcpdv = Set::enum( $cer93['Histochoixcer93etape03']['etape'], $options['Cer93']['positioncer'] );
 			}
-			
+
 			$row = array(
 				$cer93['Adresse']['locaadr'],
-// 				'e',
 				$cer93['Personne']['nom_complet_court'],
 				$cer93['Structurereferente']['lib_struc'],
 				$cer93['Referent']['nom_complet'],

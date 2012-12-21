@@ -37,6 +37,13 @@
 		public $uses = array( 'Histochoixcer93' );
 
 		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array( 'Checkboxes' );
+
+		/**
 		 *
 		 * @param integer $contratinsertion_id
 		 * @return void
@@ -131,10 +138,10 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			
+
 			$contratinsertion = $this->Histochoixcer93->Cer93->dataView( $contratinsertion_id );
 
-						
+
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Histochoixcer93->prepareFormData(
 					$contratinsertion,
@@ -142,14 +149,14 @@
 					$this->Session->read( 'Auth.User.id' )
 				);
 			}
-			
+
 			$commentairesnormescers93 = $this->Histochoixcer93->Commentairenormecer93->find(
 				'all',
 				array(
 					'order' => array( 'Commentairenormecer93.isautre ASC', 'Commentairenormecer93.name ASC' )
 				)
 			);
-			
+
 			$commentairenormecer93_isautre_id = Hash::extract( $commentairesnormescers93, '{n}.Commentairenormecer93[isautre=1]' );
 			if( !empty( $commentairenormecer93_isautre_id ) ) {
 				$commentairenormecer93_isautre_id = $commentairenormecer93_isautre_id[0]['id'];
@@ -163,14 +170,14 @@
 					'commentairenormecer93_id' => Set::combine( $commentairesnormescers93, '{n}.Commentairenormecer93.id', '{n}.Commentairenormecer93.name' )
 				)
 			);
-			
+
 			$options = Set::merge(
 				$options,
 				$this->Histochoixcer93->Cer93->optionsView()
 			);
 // debug($options);
 			$this->set( 'options', $options );
-			
+
 			$this->set( 'commentairenormecer93_isautre_id', $commentairenormecer93_isautre_id );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'contratinsertion', $contratinsertion );

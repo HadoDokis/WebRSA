@@ -52,7 +52,7 @@
 			if( ( $statut != 'visualisation' ) || ( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) ) {
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci' );
 			}
-			
+
 			// Par défaut on affiche le dernier CER dans le tableau des saisies CER
 			if( $statut == 'saisie' ) {
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
@@ -202,7 +202,8 @@
 						).')',
 						'Contratinsertion.id IS NULL',
 						'AND' => array(
-							'Contratinsertion.df_ci <' => date( 'Y-m-d' ), // FIXME modifier la date de détection avec 1 mois avant son terme ou 1 fois dépassée
+							// FIXME modifier la date de détection avec 1 mois avant son terme ou 1 fois dépassée
+							'Contratinsertion.df_ci <' => date( 'Y-m-d' ),
 							'Contratinsertion.decision_ci' => 'V'
 						)
 					)
@@ -332,6 +333,20 @@
 			}
 
 			return $formData;
+		}
+
+		/**
+		 * Retourne la liste des clés de configuration pour lesquelles il faut
+		 * vérifier la syntaxe de l'intervalle PostgreSQL.
+		 *
+		 * @return array
+		 */
+		public function checkPostgresqlIntervals() {
+			$keys = array(
+				'Cohortescers93.saisie.periodeRenouvellement'
+			);
+
+			return $this->_checkPostgresqlIntervals( $keys );
 		}
 	}
 ?>

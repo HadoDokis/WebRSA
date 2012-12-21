@@ -70,7 +70,8 @@
 		 * @return void
 		 */
 		public function affecter() {
-			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( false, true );
+			$this->Workflowscers93->assertUserCpdv();
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire
@@ -173,7 +174,9 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$structurereferente_id = $this->Workflowscers93->getStructurereferenteId( true, false );
+			$this->Workflowscers93->assertUserCpdv();
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
+
 			$data = Xset::bump( $this->request->params['named'], '__' );
 
 			// INFO: sinon on ne peut pas trier comme on veut

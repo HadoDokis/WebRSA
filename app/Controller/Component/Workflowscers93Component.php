@@ -37,6 +37,12 @@
 		public $components = array( 'Session' );
 
 		/**
+		 *
+		 * @var string
+		 */
+		protected $_assertErrorTemplate = 'L\'utilisateur doit etre %s pour pouvoir accéder à cette fonctionnalité.';
+
+		/**
 		 * Initialisation du component.
 		 *
 		 * @param Controller $controller Controller with components to initialize
@@ -49,18 +55,20 @@
 		}
 
 		/**
-		 * Retourne l'id technique de la structure référente à laquelle est liée
-		 * l'utilisateur connecté, que ce soit par le lien direct User.structurereferente_id
-		 * ou par le lien indirect User.referent_id.
+		 * Permet de récupérer la structure référente à laquelle est attaché
+		 * l'utilisateur connecté.
 		 *
-		 * @param boolean $readReferent Peut-on passer par le lien indirect User.referent_id ?
-		 * @param boolean $checkStructurereferente Doit-on s'assurer d'être lié à une structure référente ?
+		 * @param boolean $required Doit-on retourner une erreur 403 lorsque
+		 *	l'utilisateur n'est pas attaché à une structure référente ?
 		 * @return integer
+		 * @throws Error403Exception
 		 */
-		public function getStructurereferenteId( $readReferent, $checkStructurereferente ) {
+		public function getUserStructurereferenteId( $required = true ) {
+			// Si l'utilisateur est directement lié à une structure référente
 			$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 
-			if( $readReferent && empty( $structurereferente_id ) ) {
+			// Si l'utilisateur est indirectement lié, via un référent
+			if( empty( $structurereferente_id ) ) {
 				$referent_id = $this->Session->read( 'Auth.User.referent_id' );
 				if( !empty( $referent_id ) ) {
 					$this->Controller->User->Referent->id = $referent_id;
@@ -68,12 +76,62 @@
 				}
 			}
 
-			if( $checkStructurereferente && empty( $structurereferente_id ) ) {
+			// S'il est obligatoire d'être rattaché à une structure référente
+			if( $required && empty( $structurereferente_id ) ) {
 				$this->Session->setFlash( 'L\'utilisateur doit etre rattaché à une structure référente.', 'flash/error' );
-				$this->Controller->cakeError( 'error403' );
+				throw new Error403Exception( null );
 			}
 
 			return $structurereferente_id;
+		}
+
+		/**
+		 * Permet de s'assurer que l'utilisateur connecté soit bien un CPDV.
+		 *
+		 * @throws Error403Exception
+		 */
+		public function assertUserCpdv() {
+			if( $this->Session->read( 'Auth.User.type' ) !== 'externe_cpdv' ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable' ), 'flash/error' );
+				throw new error403Exception( null );
+			}
+		}
+
+		/**
+		 * Permet de s'assurer que l'utilisateur connecté soit bien un CI.
+		 *
+		 * @throws Error403Exception
+		 */
+		public function assertUserCi() {
+			if( $this->Session->read( 'Auth.User.type' ) !== 'externe_ci' ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un chargé d\'insertion' ), 'flash/error' );
+				throw new error403Exception( null );
+			}
+		}
+
+		/**
+		 * Permet de s'assurer que l'utilisateur connecté soit bien un utilisateur CG.
+		 *
+		 * @throws Error403Exception
+		 */
+		public function assertUserCg() {
+			if( $this->Session->read( 'Auth.User.type' ) !== 'cg' ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un utilisateur du conseil général' ), 'flash/error' );
+				throw new error403Exception( null );
+			}
+		}
+
+		/**
+		 * Permet de s'assurer que l'utilisateur connecté soit bien un externe
+		 * (CPDV ou un CI).
+		 *
+		 * @throws Error403Exception
+		 */
+		public function assertUserExterne() {
+			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_ci' ) ) ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable ou un chargé d\'insertion' ), 'flash/error' );
+				throw new error403Exception( null );
+			}
 		}
 	}
 ?>

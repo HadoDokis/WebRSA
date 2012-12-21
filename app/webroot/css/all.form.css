@@ -201,6 +201,8 @@ table#Expprocer93 div.input input {
 	max-width: 8em;
 }
 
+/* -------------------------------------------------------------------------- */
+
 ul.liste_sujets, ul.liste_sujets ul {
 	list-style: none;
 }
@@ -208,4 +210,27 @@ ul.liste_sujets, ul.liste_sujets ul {
 ul.liste_sujets > li {
 	margin-left: 0;
 	padding-left: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+
+ul.checkboxes.simplelist.inputs {
+	list-style: none;
+}
+
+ul.checkboxes.simplelist.inputs > li {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+
+td div.checkboxes.simplelist {
+	position: absolute;
+	z-index: 1000;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	background: red;
 }

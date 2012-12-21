@@ -614,7 +614,7 @@
 			)
 		)
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/saisie
 	 * (menu "CER" > "2. Saisie CER") du CG 93.
@@ -623,8 +623,8 @@
 		'Filtresdefaut.Cohortescers93_saisie',
 		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
 	);
-	
-	
+
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/avalidercpdv
 	 * (menu "CER" > "3. Validation Responsable") du CG 93.
@@ -633,7 +633,7 @@
 		'Filtresdefaut.Cohortescers93_avalidercpdv',
 		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/premierelecture
 	 * (menu "CER" > "4. Décison CG -> 4.1. Première lecture") du CG 93.
@@ -642,7 +642,7 @@
 		'Filtresdefaut.Cohortescers93_premierelecture',
 		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcadre
 	 * (menu "CER" "4. Décison CG -> 4.2. Validation cadre") du CG 93.
@@ -651,7 +651,7 @@
 		'Filtresdefaut.Cohortescers93_validationcadre',
 		Configure::read( 'Filtresdefaut.Cohortescers93_visualisation' )
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de recherche de /cohortescers93/validationcs
 	 * (menu "CER" "4. Décison CG -> 4.1. Validation CS") du CG 93.
@@ -723,8 +723,8 @@
 			)
 		)
 	);
-	
-		
+
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/avisdemande)
 	 */
@@ -738,7 +738,7 @@
 			)
 		)
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/valide)
 	 */
@@ -746,10 +746,51 @@
 		'Filtresdefaut.Cohortespdos_valide',
 		Configure::read( 'Filtresdefaut.Cohortespdos_avisdemande' )
 	);
-	
-		
+
+
 	/**
 	 * Variable contenant un array avec les id des typesorients du social, sociopro et de l'emploi
 	 */
 	Configure::write( 'Orientstruct.typeorientprincipale', array( 'Socioprofessionnelle' => array( 1 ), 'Social' => array( 2 ), 'Emploi' => array( 3 ) ) );
+
+	/**
+	 * Précise la durée de détection des CER qui passent dans l'état "En attente
+	 * de renouvellement" qui sera utilisée dans la partie "Workflow CER", à
+	 * l'étape "2. Saisie d'un CER" pour le CG 93.
+	 *
+	 * @value string
+	 * @default null
+	 */
+	Configure::write( 'Cohortescers93.saisie.periodeRenouvellement', '1 month' );
+
+	/**
+	 * Permet de débloquer la fonctionnalité "Enregistrement automatique d'un RDV"
+	 * lors de la saisie d'un CER.
+	 *
+	 * @var boolean
+	 * @default null (false)
+	 */
+	Configure::write( 'Contratinsertion.RdvAuto.active', true );
+
+	/**
+	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
+	 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
+	 *
+	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
+	 *
+	 * @var string
+	 * @default null
+	 */
+	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', null );
+
+	/**
+	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
+	 * qui indique que l'allocataire était présent (ex.: "Présent").
+	 *
+	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
+	 *
+	 * @var string
+	 * @default null
+	 */
+	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
 ?>

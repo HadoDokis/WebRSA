@@ -1547,3 +1547,45 @@ td.button.cloturer a, td.action a.cloturer, td span.button.cloturer, table.defau
 td.button.cloturer.disabled a, td.action a.cloturer.disabled, td span.button.cloturer.disabled, table.default2 td a.button.cloturer.disabled {
 	background-image: url( ../img/icons/date_edit_disabled.png );
 }
+
+table#searchResults ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+table#searchResults li {
+	margin: 0;
+	padding: 0;
+}
+
+table#searchResults ul.checkboxes.simplelist.view {
+	list-style: disc;
+}
+
+table#searchResults ul.checkboxes.simplelist.view li {
+	margin-left: 1.8em;
+}
+
+/* Cohorte de saisie des CER (CG 93) */
+
+#Cohortescers93Saisie td a.print, #Cohortescers93Saisie td a.transfert, #Cohortescers93Saisie td a.rendezvous, #Cohortescers93Saisie td a.comment {
+	padding-left: 20px;
+	background-repeat: no-repeat;
+}
+
+#Cohortescers93Saisie td a.print {
+	background-image: url( ../img/icons/printer.png );
+}
+
+#Cohortescers93Saisie td a.transfert {
+	background-image: url( ../img/icons/folder_go.png );
+}
+
+#Cohortescers93Saisie td a.rendezvous {
+	background-image: url( ../img/icons/date.png );
+}
+
+#Cohortescers93Saisie td a.comment {
+	background-image: url( ../img/icons/text_align_justify.png );
+}

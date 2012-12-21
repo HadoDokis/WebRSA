@@ -328,6 +328,51 @@
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
 
+			// Dans le cas d'un ajout de CER, on vérifie s'il faut ajouter un rendez-vous implicite
+			if( $success && empty( $data['Cer93']['id'] ) && Configure::read( 'Contratinsertion.RdvAuto.active' ) === true ) {
+				$created = date( 'Y-m-d H:i:s' );
+
+				$querydata = array(
+					'conditions' => array(
+						'Rendezvous.personne_id' => $data['Contratinsertion']['personne_id'],
+						'Rendezvous.structurereferente_id' => $data['Contratinsertion']['structurereferente_id'],
+						'Rendezvous.typerdv_id' => Configure::read( 'Contratinsertion.RdvAuto.typerdv_id' ),
+						'daterdv' => date( 'Y-m-d', strtotime( $created ) ),
+					),
+					'contain' => false
+				);
+
+				if( $this->Contratinsertion->Personne->Rendezvous->find( 'count', $querydata ) == 0 ) {
+					$rendezvous = array(
+						'Rendezvous' => array(
+							'personne_id' => $data['Contratinsertion']['personne_id'],
+							'structurereferente_id' => $data['Contratinsertion']['structurereferente_id'],
+							'referent_id' => suffix( $data['Contratinsertion']['referent_id'] ),
+							'objetrdv' => null,
+							'commentairerdv' => null,
+							'typerdv_id' => Configure::read( 'Contratinsertion.RdvAuto.typerdv_id' ),
+							'statutrdv_id' => Configure::read( 'Contratinsertion.RdvAuto.statutrdv_id' ),
+							'daterdv' => date( 'Y-m-d', strtotime( $created ) ),
+							'heurerdv' => date( 'H:i:s', strtotime( $created ) - ( strtotime( $created ) % ( 5 * 60 ) ) ),
+							'permanence_id' => null,
+							'isadomicile' => '0',
+						)
+					);
+
+					$this->Contratinsertion->Personne->Rendezvous->create( $rendezvous );
+					$success = $this->Contratinsertion->Personne->Rendezvous->save() && $success;
+					if( !$success ) {
+						$this->log(
+							sprintf(
+								'Erreur(s) lors de l\'enregistrement automatique d\'un rendez-vous lors de la création d\'un CER (erreurs de validation: %s)',
+								var_export( $this->Contratinsertion->Personne->Rendezvous->validationErrors, true )
+							),
+							LOG_ERROR
+						);
+					}
+				}
+			}
+
 			return $success;
 		}
 
@@ -1345,6 +1390,39 @@
 			}
 
 			return $this->ged( $data, $modeleodt, false, $options );
+		}
+
+		/**
+		 * Retourne l'id du dossier à partir de l'id du CER (CG 93)
+		 *
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$contratinsertion = $this->find(
+				'first',
+				array(
+					'fields' => array(
+						'Foyer.dossier_id'
+					),
+					'joins' => array(
+						$this->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Cer93.id' => $id
+					),
+					'contain' => false
+				)
+			);
+
+			if( !empty( $contratinsertion ) ) {
+				return $contratinsertion['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

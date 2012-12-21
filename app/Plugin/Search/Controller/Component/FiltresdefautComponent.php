@@ -88,13 +88,25 @@
 		}
 
 		/**
-		 * Retournee la clé sous laquelle la variable de confiuration sera lue
+		 * Retournee la clé sous laquelle la variable de configuration sera lue
 		 * pour le contrôleur auquel le component est attaché.
 		 *
 		 * @return string
 		 */
 		public function configureKey() {
 			return "{$this->name}.{$this->Controller->name}_{$this->Controller->action}";
+		}
+
+		/**
+		 * Retourne les valeurs par défaut du formulaire pour la clé courante.
+		 *
+		 * @see FiltresdefautComponent::configureKey()
+		 *
+		 * @return array
+		 */
+		public function values() {
+			$key = $this->configureKey();
+			return Set::expand( (array)Configure::read( $key ) );
 		}
 
 		/**
@@ -106,9 +118,8 @@
 		 * @return void
 		 */
 		public function merge() {
-			$filtresdefaut = (array)Configure::read( $this->configureKey() );
+			$filtresdefaut = $this->values();
 			if( !empty( $filtresdefaut ) ) {
-				$filtresdefaut = Set::expand( $filtresdefaut );
 				$this->Controller->request->data = Set::merge( $filtresdefaut, $this->Controller->request->data );
 			}
 		}
