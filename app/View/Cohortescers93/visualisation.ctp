@@ -42,7 +42,7 @@
 						<th colspan="4">Etape du Responsable</th>
 
 						<th colspan="5">Etape du CG</th>
-						<th colspan="2" rowspan="2">Actions</th>
+						<th class="action" colspan="2" rowspan="2">Actions</th>
 					</tr>
 					<tr>
 						<th>Validation Responsable</th>

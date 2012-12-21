@@ -32,6 +32,7 @@
 						<th class="action">Forme du CER (CG)</th>
 						<th class="action">Commentaire (CG)</th>
 						<th class="action">Décision</th>
+						<th class="action">Date de décision</th>
 						<th class="action">Action</th>
 						<th class="action">Détails</th>
 					</tr>
@@ -107,13 +108,16 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['formeci'] ) ? 'error' : null ) )
 						),
 						array(
-							$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) )
-							.$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) ),
+							$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
 						),
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.prevalide", array( 'label' => false, 'type' => 'select', 'options' => $options['Histochoixcer93']['prevalide'], 'empty' => true ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['prevalide'] ) ? 'error' : null ) )
+						),
+						array(
+							$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ) ),
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
@@ -152,6 +156,9 @@
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
 				'Histochoixcer93<?php echo $index;?>Prevalide',
+				'Histochoixcer93<?php echo $index;?>DatechoixDay',
+				'Histochoixcer93<?php echo $index;?>DatechoixMonth',
+				'Histochoixcer93<?php echo $index;?>DatechoixYear',
 				'Histochoixcer93<?php echo $index;?>Commentaire'
 			],
 			[ 'Valider' ],

@@ -692,5 +692,40 @@
 			$this->set( compact( 'options', 'etape', 'cers93' ) );
 			$this->layout = '';
 		}
+		
+		
+			
+		/**
+		 * Imprime en cohorte des décisions sur le CER 93.
+		 * INFO: http://localhost/webrsa/trunk/cers93/printdecision/44327
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function impressionsDecisions( $statut = null ) {
+			// La page sur laquelle nous sommes
+			$page = Set::classicExtract( $this->request->params, 'named.page' );
+			if( ( intval( $page ) != $page ) || $page < 0 ) {
+				$page = 1;
+			}
+
+			$pdf = $this->Cohortecer93->getDefaultCohortePdf(
+				$statut,
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				$this->Session->read( 'Auth.User.id' ),
+				XSet::bump( $this->request->params['named'] ),
+				$page
+			);
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'contratinsertion_decision-%s.pdf', date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+			
+		}
 	}
 ?>
