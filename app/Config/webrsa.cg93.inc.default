@@ -770,7 +770,7 @@
 	 * @var boolean
 	 * @default null (false)
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.active', true );
+	Configure::write( 'Contratinsertion.RdvAuto.active', false );
 
 	/**
 	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
