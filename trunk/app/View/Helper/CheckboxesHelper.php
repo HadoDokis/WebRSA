@@ -112,10 +112,10 @@
 			$return = '';
 			$script = '';
 
-			$default = array( 'autres_type' => 'textarea', 'offset' => 0 );
+			$default = array( 'autres_type' => 'textarea', 'offset' => 0, 'cohorte' => false );
 			$params = Set::merge( $default, $params );
 
-			$keys = array( 'fk_field', 'autre_field', 'autres_type', 'offset', 'options', 'autres_ids' );
+			$keys = array( 'fk_field', 'autre_field', 'autres_type', 'offset', 'options', 'autres_ids', 'cohorte' );
 			foreach( $keys as $key ) {
 				$$key = Hash::get( $params, $key );
 			}
@@ -137,12 +137,20 @@
 				$return .= '<ul class="checkboxes simplelist inputs">';
 
 				foreach( $options as $id => $name ) {
-					$array_key = array_search( $id, $checkedIds );
-					$isChecked = ( ( $array_key !== false ) ? 'checked' : '' );
+					$fkInputPath = $this->_inputPath( $explodedFkPath, $i );
+
+					if( $cohorte === false ) {
+						$array_key = array_search( $id, $checkedIds );
+						$isChecked = ( ( $array_key !== false ) ? 'checked' : '' );
+					}
+					else {
+						$fkInputValue = Hash::get( $this->request->data, $fkInputPath );
+						$isChecked = ( !empty( $fkInputValue ) ? 'checked' : '' );
+						$array_key = $i;
+					}
 
 					$return .= '<li>';
 
-					$fkInputPath = $this->_inputPath( $explodedFkPath, $i );
 					$return .= $this->Xform->input(
 						$fkInputPath,
 						array(

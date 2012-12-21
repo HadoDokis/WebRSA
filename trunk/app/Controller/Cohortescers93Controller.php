@@ -93,7 +93,37 @@
 			$this->Workflowscers93->assertUserCi();
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
+			$this->_traitercohorteajax( $structurereferente_id, '01signe' );
+		}
+
+		/**
+		 * Moteur de recherche pour la partie "3. Validation Responsable".
+		 *
+		 * @return void
+		 */
+		public function avalidercpdv() {
+			$this->Workflowscers93->assertUserCpdv();
+
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
+			$this->_traitercohorteajax( $structurereferente_id, '02attdecisioncpdv' );
+		}
+
+		/**
+		 * Moteur de recherche et de traitement Ajax commun pour les étapes
+		 * "2. Saisie d'un CER" et "3. Validation Responsable".
+		 *
+		 * @param integer $structurereferente_id
+		 * @param string $position
+		 */
+		protected function _traitercohorteajax( $structurereferente_id, $position ) {
 			$options = $this->_indexOptions( $structurereferente_id );
+
+			if( $this->action == 'saisie' ) {
+				$histochoixcer93key = 'Histochoixcer93etape02';
+			}
+			else {
+				$histochoixcer93key = 'Histochoixcer93';
+			}
 
 			if( !$this->request->is( 'ajax' ) ) {
 				// On doit pouvoir abtenir les résultats dès le premier accès à la page
@@ -113,15 +143,38 @@
 					array(),
 					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
-				$cers93 = $this->_addCommentairenormecer93( $cers93 );
+				$cers93 = $this->_addCommentairenormecer93( $cers93, $histochoixcer93key );
 
-				$dossiers_ids = Set::extract( $cers93, '/Cer93[positioncer=01signe]/../Dossier/id' );
+				$dossiers_ids = Set::extract( $cers93, "/Cer93[positioncer={$position}]/../Dossier/id" );
 				$this->Cohortes->get( $dossiers_ids );
 
 				$this->set( compact( 'cers93', 'options' ) );
+
+				if( $this->action == 'avalidercpdv' ) {
+					// INFO: l'équivalent d'une fonction prepareFormDataAvaliderCpdv()
+					$commentairesnormescers93_indexes_ids = array_keys( $options['commentairesnormescers93_list'] );
+					$requestData = $this->request->data;
+					$nbCommentairesnormescers93 = count( $commentairesnormescers93_indexes_ids );
+
+					foreach( $cers93 as $index => $cer93 ) {
+						$requestData['Histochoixcer93'][$index]['formeci'] = $cer93['Histochoixcer93']['formeci'];
+						if( isset( $cer93['Commentairenormecer93Histochoixcer93'] ) && !empty( $cer93['Commentairenormecer93Histochoixcer93'] ) ) {
+							foreach( $cer93['Commentairenormecer93Histochoixcer93'] as $commentaire ) {
+
+								$j = ( $index * $nbCommentairesnormescers93 ) + array_search( $commentaire['commentairenormecer93_id'], $commentairesnormescers93_indexes_ids );
+								$requestData['Commentairenormecer93']['Commentairenormecer93'][$j] = array(
+									'commentairenormecer93_id' => $commentaire['commentairenormecer93_id'],
+									'commentaireautre' => $commentaire['commentaireautre'],
+								);
+							}
+						}
+					}
+
+					$this->request->data = $requestData;
+				}
 			}
 			else {
-				// FIXME: avec les $keys etc ...
+				// TODO: avec les $keys etc ...
 				$formData = Set::extract( $this->request->data, '/Histochoixcer93' );
 
 				$key = array_keys( $this->request->data['Histochoixcer93'] );
@@ -138,11 +191,33 @@
 				}
 
 				$this->Contratinsertion->begin();
-				$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
-				$success = $success && $this->Contratinsertion->Cer93->updateAll(
-					array( '"Cer93"."positioncer"' => "'02attdecisioncpdv'" ),
-					array( '"Cer93"."id"' => $formData[$key]['Histochoixcer93']['cer93_id'] )
-				);
+
+				if( $this->action == 'saisie' ) {
+					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
+					$success = $success && $this->Contratinsertion->Cer93->updateAll(
+						array( '"Cer93"."positioncer"' => "'02attdecisioncpdv'" ),
+						array( '"Cer93"."id"' => $formData[$key]['Histochoixcer93']['cer93_id'] )
+					);
+				}
+				else if( $this->action == 'avalidercpdv' ) {
+					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
+					$success = $success && $this->Contratinsertion->Cer93->updateAll(
+						array( '"Cer93"."positioncer"' => "'".$this->request->data['decision']."'" ),
+						array( '"Cer93"."id"' => $formData[$key]['Histochoixcer93']['cer93_id'] )
+					);
+
+					if( $this->request->data['decision'] == '99rejetecpdv' ) {
+						$this->Contratinsertion->Cer93->id = $formData[$key]['Histochoixcer93']['cer93_id'];
+						$contratinsertion_id = $this->Contratinsertion->Cer93->field( 'contratinsertion_id' );
+						$success = $success && $this->Contratinsertion->updateAll(
+							array(
+								'"Contratinsertion"."decision_ci"' => "'R'",
+								'"Contratinsertion"."datedecision"' => "'".date( 'Y-m-d' )."'",
+							),
+							array( '"Contratinsertion"."id"' => $contratinsertion_id )
+						);
+					}
+				}
 
 				if( $success ) {
 					$this->Contratinsertion->commit();
@@ -158,7 +233,7 @@
 				$querydata['limit'] = 1;
 
 				$cers93 = $this->Contratinsertion->Personne->find( 'all', $querydata );
-				$cers93 = $this->_addCommentairenormecer93( $cers93 );
+				$cers93 = $this->_addCommentairenormecer93( $cers93, $histochoixcer93key );
 
 				if( $key != 0 ) {
 					$cers93[$key] = $cers93[0];
@@ -168,36 +243,46 @@
 				$this->set( compact( 'cers93', 'options' ) );
 
 				$this->layout = null;
-				$this->render( 'saisie_tbody_trs' );
+				$this->render( "{$this->action}_tbody_trs" );
 			}
 		}
 
-		// FIXME: à mettre dans le modèle
+		// TODO: à mettre dans le modèle
 		protected function _qd( $search = array() ) {
-			$this__action = 'saisie'; // FIXME
 			$querydata = $this->Cohortecer93->search(
-				$this__action,
+				$this->action,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$search,
-				( ( $this__action != 'saisie' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+				$this->Cohortes->sqLocked( 'Dossier' )
 			);
 
-			// FIXME: différencier CER / CER précédent
-			$querydata['conditions'][] = array(
-				'OR' => array(
-					'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
-					'Contratinsertion.id IS NULL',
-					'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
-					'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
-				),
-				'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' )
-			);
+			// TODO: différencier CER / CER précédent ?
+			if( $this->action == 'saisie' ) {
+				$querydata['conditions'][] = array(
+					'OR' => array(
+						'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
+						'Contratinsertion.id IS NULL',
+						'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
+						'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
+					),
+					'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' )
+				);
+			}
+			else if( $this->action == 'avalidercpdv' ) {
+				$querydata['conditions'][] = array(
+					'Cer93.positioncer' => '02attdecisioncpdv',
+				);
+			}
 
 			return $querydata;
 		}
 
-		// FIXME: n'est plus utilisé que dans saisie()
+		/**
+		 *
+		 * @param integer $structurereferente_id
+		 * @return array
+		 */
 		protected function _indexOptions( $structurereferente_id ) {
 			$options = array(
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
@@ -218,31 +303,37 @@
 				$this->Contratinsertion->Cer93->Histochoixcer93->enums()
 			);
 
-			// FIXME: à factoriser
+			// TODO: à factoriser
 			$commentairesnormescers93 = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93->find(
 				'all',
 				array(
 					'order' => array( 'Commentairenormecer93.isautre ASC', 'Commentairenormecer93.name ASC' )
 				)
 			);
-			// TODO: find list
-			$this->set( 'commentairesnormescers93_list', Hash::combine( $commentairesnormescers93, '{n}.Commentairenormecer93.id', '{n}.Commentairenormecer93.name' ) );
-			// TODO: Autres
-			$this->set( 'commentairesnormescers93_autres_ids', Hash::extract( $commentairesnormescers93, '{n}.Commentairenormecer93[isautre=1].id' ) );
+
+			$options['commentairesnormescers93_list'] = Hash::combine( $commentairesnormescers93, '{n}.Commentairenormecer93.id', '{n}.Commentairenormecer93.name' );
+			$options['commentairesnormescers93_autres_ids'] = Hash::extract( $commentairesnormescers93, '{n}.Commentairenormecer93[isautre=1].id' );
 
 			return $options;
 		}
 
-		// FIXME: dans le modèle ? N'est utilisé que dans saisie()
-		protected function _addCommentairenormecer93( $results ) {
+		/**
+		 *
+		 * TODO: dans le modèle ?
+		 *
+		 * @param array $results
+		 * @param string $histochoixcer93key
+		 * @return array
+		 */
+		protected function _addCommentairenormecer93( $results, $histochoixcer93key ) {
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
-					if( !empty( $result['Histochoixcer93etape02']['id'] ) ) {
+					if( !empty( $result[$histochoixcer93key]['id'] ) ) {
 						$commentaires = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93Histochoixcer93->find(
 							'all',
 							array(
 								'conditions' => array(
-									'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result['Histochoixcer93etape02']['id']
+									'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result[$histochoixcer93key]['id']
 								),
 								'contain' => array(
 									'Commentairenormecer93'
@@ -260,21 +351,9 @@
 		}
 
 		/**
-		 * Moteur de recherche pour la partie "3. Validation Responsable".
-		 *
-		 * FIXME: traitement ligne par ligne également
-		 *
-		 * @return void
-		 */
-		public function avalidercpdv() {
-			$this->Workflowscers93->assertUserCpdv();
-			$this->_validations( true ); // FIXME: partager une fonction commune avec saisietest
-		}
-
-		/**
 		 * Moteur de recherche pour la partie "4. Décision CG - 4.1 Première lecture".
 		 *
-		 * FIXME: traitement ligne par ligne également
+		 * TODO: traitement ligne par ligne également
 		 *
 		 * @return void
 		 */
@@ -286,7 +365,7 @@
 		/**
 		 * Moteur de recherche pour la partie "4. Décision CG - 4.2 Validation CS".
 		 *
-		 * FIXME: traitement ligne par ligne également
+		 * TODO: traitement ligne par ligne également
 		 *
 		 * @return void
 		 */
@@ -298,7 +377,7 @@
 		/**
 		 * Moteur de recherche pour la partie "4. Décision CG - 4.3 Validation Cadre".
 		 *
-		 * FIXME: traitement ligne par ligne également
+		 * TODO: traitement ligne par ligne également
 		 *
 		 * @return void
 		 */
@@ -321,7 +400,7 @@
 		/**
 		 * Si l'utilisateur n'est pas attaché à une structure référente, alors on envoit une erreur.
 		 *
-		 * FIXME: renommer cette fonction en _validationcg, du coup, on n'a plus la SR
+		 * TODO: renommer cette fonction en _validationcg, du coup, on n'a plus la SR
 		 *
 		 * @param boolean $checkStructurereferente L'utilisateur doit-il être attaché à une structure référente ?
 		 * @return void

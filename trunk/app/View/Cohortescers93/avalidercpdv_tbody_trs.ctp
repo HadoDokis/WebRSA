@@ -59,6 +59,81 @@
 		$cells = array(
 			$cer93['Adresse']['locaadr'],
 			$cer93['Personne']['nom_complet_court'],
+			$cer93['Referent']['nom_complet'],
+			date_short( $cer93['Orientstruct']['date_valid'] ),
+			date_short( $cer93['Contratinsertion']['created'] ),
+			array( $this->Form->input( "Histochoixcer93.{$index}.formeci", array( 'type' => 'radio', 'options' => $options['formeci'], 'div' => false, 'legend' => false, 'separator' => '<br/>' ) ), array( 'class' => ( isset( $rowValidationErrors['formeci'] ) ? 'error' : null ) ) ),
+			array(
+				$this->element(
+					'modalbox',
+					array(
+						'modalid' => "CheckboxesInputs{$index}",
+						'modalcontent' => $this->Checkboxes->inputs(
+							'Commentairenormecer93.Commentairenormecer93.%d',
+							array(
+								'fk_field' => 'commentairenormecer93_id',
+								'autre_field' => 'commentaireautre',
+								'autres_type' => 'textarea',
+								'offset' => ( count( $options['commentairesnormescers93_list'] ) * $index ),
+								'options' => $options['commentairesnormescers93_list'],
+								'autres_ids' => $options['commentairesnormescers93_autres_ids'],
+								'cohorte' => true
+							)
+						)
+					)
+				)
+				.$this->Html->link( 'Commentaire', '#', array( 'onclick' => "\$( 'CheckboxesInputs{$index}' ).show();return false;", 'class' => 'comment' ) ),
+				array()
+			),
+			$this->Form->inputs(
+				array(
+					'legend' => false,
+					'fieldset' => false,
+					"Histochoixcer93.{$index}.id" => array( 'type' => 'hidden' ),
+					"Histochoixcer93.{$index}.cer93_id" => array( 'type' => 'hidden', 'value' => $cer93['Cer93']['id'] ),
+					"Histochoixcer93.{$index}.user_id" => array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ),
+					"Histochoixcer93.{$index}.datechoix" => array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ),
+					"Histochoixcer93.{$index}.etape" => array( 'type' => 'hidden', 'value' => '03attdecisioncg' ),
+				)
+			)
+			.'<ul><li>'.$this->Html->link(
+				'Imprimer',
+				array(
+					'controller' => 'cers93',
+					'action' => 'impression',
+					$cer93['Contratinsertion']['id']
+				),
+				array(
+					'class' => 'external print'
+				)
+			).'</li><li>'
+			.$this->Ajax->link(
+				'Rejeter',
+				array( 'action' => $this->action, 'decision' => '99rejetecpdv' ),
+				array(
+					'update' => $rowId,
+					'with' => 'serializeTableRow( $(this) )',
+					'complete' => 'mkTooltipTables();make_external_links();',
+					'class' => 'rejeter'
+				)
+			).'</li><li>'
+			.$this->Ajax->link(
+				'Transférer au CG',
+				array( 'action' => $this->action, 'decision' => '03attdecisioncg' ),
+				array(
+					'update' => $rowId,
+					'with' => 'serializeTableRow( $(this) )',
+					'complete' => 'mkTooltipTables();make_external_links();',
+					'class' => 'transferer cg'
+				)
+			).'</li></ul>',
+			$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
+			array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+		);
+
+		/*$cells = array(
+			$cer93['Adresse']['locaadr'],
+			$cer93['Personne']['nom_complet_court'],
 			date_short( $cer93['Orientstruct']['date_valid'] ),
 			date_short( $cer93['PersonneReferent']['dddesignation'] ),
 			$cer93['Contratinsertion']['rg_ci'],
@@ -105,7 +180,7 @@
 			).'</li><li>'
 			.$this->Ajax->link(
 				'Transférer au CPDV',
-				array( 'action' => 'saisie' ),
+				Router::url( null, true ),
 				array(
 					'update' => $rowId,
 					'with' => 'serializeTableRow( $(this) )',
@@ -130,8 +205,7 @@
 										'autres_type' => 'textarea',
 										'offset' => ( count( $options['commentairesnormescers93_list'] ) * $index ),
 										'options' => $options['commentairesnormescers93_list'],
-										'autres_ids' => $options['commentairesnormescers93_autres_ids'],
-										'cohorte' => true
+										'autres_ids' => $options['commentairesnormescers93_autres_ids']
 									)
 								)
 							)
@@ -188,7 +262,7 @@
 				$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			)
-		);
+		);*/
 
 		echo $this->Html->tableCells(
 			$cells,
