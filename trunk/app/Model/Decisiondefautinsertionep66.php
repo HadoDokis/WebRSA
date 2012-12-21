@@ -40,7 +40,7 @@
 		public $hasOne = array(
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
-				'foreignKey' => 'dossierpcg66_id',
+				'foreignKey' => 'decisiondefautinsertionep66_id',
 				'dependent' => true,
 				'conditions' => '',
 				'fields' => '',

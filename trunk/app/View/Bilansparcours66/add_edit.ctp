@@ -1107,7 +1107,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 	if ( !empty( $decisiontechnicien ) ) {
 		echo $this->Xhtml->tag(
 			'p',
-			'DECISION DU COORDONNATEUR TECHNIQUE',
+			'DECISION DE LA CGA',
 			array(
 				'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 			)
