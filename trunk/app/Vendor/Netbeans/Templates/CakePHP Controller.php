@@ -1,36 +1,26 @@
 <#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe ${class_name(name)?replace("Controller$", "","r")}Controller.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
 	 *
 </#if>
-<#if cake_branch = "1">
-	 * @package app.controllers
-<#else>
 	 * @package app.Controller
-</#if>
 	 * @license ${license}
 	 */
-<#if cake_branch = "2">
 	App::uses('AppController', 'Controller');
-</#if>
 
 	/**
-	 * Classe ${class_name(name)?replace("Controller$", "","r")}Controller.
+	 * La classe ${name} ...
 	 *
-<#if cake_branch = "1">
-	 * @package app.controllers
-<#else>
 	 * @package app.Controller
-</#if>
 	 */
-	class ${class_name(name)?replace("Controller$", "","r")}Controller extends AppController
+	class ${name} extends AppController
 	{
 		/**
-		 * Nom
+		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
@@ -86,14 +76,12 @@
 		/**
 		 * Formulaire de modification d'un <élément>.
 		 *
-		 * @return void
-		 * @throws BadRequestException
+		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
-			if( !empty( $this-><#if cake_branch = "2">request-></#if>data ) ) {
-
+			if( !empty( $this->request->data ) ) {
 				$this->{$this->modelClass}->begin();
-				$this->{$this->modelClass}->create( $this-><#if cake_branch = "2">request-></#if>data );
+				$this->{$this->modelClass}->create( $this->request->data );
 
 				if( $this->{$this->modelClass}->save() ) {
 					$this->{$this->modelClass}->commit();
@@ -106,7 +94,7 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$this-><#if cake_branch = "2">request-></#if>data = $this->{$this->modelClass}->find(
+				$this->request->data = $this->{$this->modelClass}->find(
 					'first',
 					array(
 						'conditions' => array(
@@ -116,20 +104,12 @@
 					)
 				);
 
-				if( empty( $this-><#if cake_branch = "2">request-></#if>data  ) ) {
-<#if cake_branch = "1">
-					$this->cakeError( 'error404' );
-<#else>
-					throw new BadRequestException();
-</#if>
+				if( empty( $this->request->data  ) ) {
+					throw new NotFoundException();
 				}
 			}
 
-<#if cake_branch = "1">
-			$this->render( $this->action, null, 'edit' );
-<#else>
 			$this->render( 'edit' );
-</#if>
 		}
 
 		/**

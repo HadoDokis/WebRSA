@@ -1,7 +1,7 @@
 <#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe ${class_name(name)}.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
@@ -12,11 +12,11 @@
 	 */
 
 	/**
-	 * Classe ${class_name(name)}.
+	 * La classe ${name} ...
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class ${class_name(name)} extends CakeTestFixture
+	class ${name} extends CakeTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.

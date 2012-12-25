@@ -1,7 +1,7 @@
 <#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe ${class_name(name)}.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
@@ -12,11 +12,11 @@
 	 */
 
 	/**
-	 * Classe ${class_name(name)}.
+	 * La classe ${name} ...
 	 *
 	 * @package       app.View.Helper
 	 */
-	class ${class_name(name)?replace("Helper$", "", "r")}Helper extends AppHelper
+	class ${name} extends AppHelper
 	{
 		/**
 		 * Helpers utilisés.

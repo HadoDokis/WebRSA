@@ -1,7 +1,7 @@
 <#include "../freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe ${class_name(name)}.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
@@ -13,7 +13,7 @@
 	App::uses( '${class_name(name)?replace("Test", "", "r")}', 'Model' );
 
 	/**
-	 * Classe ${class_name(name)}.
+	 * La classe ${name} ...
 	 *
 	 * @package app.Test.Case.Model
 	 */
