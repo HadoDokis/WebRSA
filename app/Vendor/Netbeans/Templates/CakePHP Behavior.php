@@ -1,7 +1,7 @@
 <#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Code source de la classe ${class_name(name)}.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
@@ -12,11 +12,11 @@
 	 */
 
 	/**
-	 * Classe ${class_name(name)}.
+	 * La classe ${name} ...
 	 *
 	 * @package app.Model.Behavior
 	 */
-	class ${class_name(name)?replace("Behavior$", "", "r")}Behavior extends ModelBehavior
+	class ${name} extends ModelBehavior
 	{
 		/**
 		 * Contains configuration settings for use with individual model objects.  This

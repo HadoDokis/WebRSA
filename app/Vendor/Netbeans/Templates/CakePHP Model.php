@@ -1,7 +1,7 @@
 <#include "freemarker_functions.ftl">
 <?php
 	/**
-	 * Fichier source du modèle ${class_name(name)}.
+	 * Code source de la classe ${name}.
 	 *
 <#if php_version??>
 	 * PHP ${php_version}
@@ -12,18 +12,18 @@
 	 */
 
 	/**
-	 * Classe ${class_name(name)}.
+	 * La classe ${name} ...
 	 *
 	 * @package app.Model
 	 */
-	class ${class_name(name)} extends AppModel
+	class ${name} extends AppModel
 	{
 		/**
 		 * Nom.
 		 *
 		 * @var string
 		 */
-		public $name = '${class_name(name)}';
+		public $name = '${name}';
 
 		/**
 		 * Associations "Has one".
@@ -49,7 +49,7 @@
 		public $belongsTo = array(
 			/*'' => array(
 				'className' => '',
-				'foreignKey' => null,
+				'foreignKey' => '_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
@@ -66,7 +66,7 @@
 		public $hasMany = array(
 			/*'' => array(
 				'className' => '',
-				'foreignKey' => '${name?replace("([a-z0-9])([A-Z])", "$1_$2", "r")?lower_case}_id',
+				'foreignKey' => '${foreign_key(name)}',
 				'conditions' => null,
 				'order' => null,
 				'limit' => null,
@@ -84,10 +84,10 @@
 		 */
 		public $hasAndBelongsToMany = array(
 			/*'' => array(
-				'className' => '${name}',
+				'className' => '',
 				'joinTable' => '',
-				'foreignKey' => '${name?replace("([a-z0-9])([A-Z])", "$1_$2", "r")?lower_case}_id',
-				'associationForeignKey' => '',
+				'foreignKey' => '${foreign_key(name)}',
+				'associationForeignKey' => '_id',
 				'unique' => true,
 				'conditions' => null,
 				'fields' => null,

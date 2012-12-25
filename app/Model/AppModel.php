@@ -273,7 +273,7 @@
 		 * @param array $options Options to use when saving record data, See $options above.
 		 * @return boolan
 		 */
-		public function saveAll( $data, $options = array( ) ) {
+		public function saveAll( $data = array( ), $options = array( ) ) {
 			$result = parent::saveAll( $data, $options );
 			return $this->saveResultAsBool( $result );
 		}
