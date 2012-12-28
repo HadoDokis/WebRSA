@@ -6,7 +6,7 @@
 	 *
 	 * @package app.Model.Behavior
 	 */
-	App::import( 'Sanitize' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * Ce behavior permet de transformer les critères d'un filtre de recherche en conditions pour les queryData

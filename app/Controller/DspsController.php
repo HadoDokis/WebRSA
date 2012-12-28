@@ -15,12 +15,22 @@
 	 */
 	class DspsController extends AppController
 	{
-
 		public $name = 'Dsps';
 
 		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
+
 		public $uses = array( 'Dsp', 'DspRev' );
-		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+
+		public $components = array(
+			'Jetons2',
+			'Default',
+			'Fileuploader',
+			'Gestionzonesgeos',
+			'Search.Prg' => array(
+				'actions' => array( 'index' )
+			),
+			'DossiersMenus'
+		);
 
 		public $paginate = array(
 			'limit' => 10,
@@ -70,10 +80,36 @@
 			'Detailfreinform' => null,
 			'Detailfconfort' => null
 		);
+
 		public $commeDroit = array(
 			'findPersonne' => 'Dsps:view'
 		);
+
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'exportcsv' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'findPersonne' => 'read',
+			'histo' => 'read',
+			'index' => 'read',
+			'revertTo' => 'update',
+			'view' => 'read',
+			'view_diff' => 'read',
+			'view_revs' => 'read',
+		);
 
 		/**
 		 *
@@ -171,16 +207,17 @@
 			$fichiers = array( );
 
 			$dsprev = $this->DspRev->find(
-					'first', array(
-				'conditions' => array(
-					'DspRev.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'DspRev.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$optionsrevs = $this->DspRev->allEnumLists();
@@ -190,6 +227,8 @@
 
 			$dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -253,6 +292,8 @@
 		 *
 		 */
 		public function view( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
+
 			$this->Dsp->forceVirtualFields = true;
 			$dsp = $this->Dsp->find(
 				'first',
@@ -328,28 +369,30 @@
 		 *
 		 */
 		public function histo( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
 			$dsp = $this->Dsp->Personne->find(
-					'first', array(
-				'conditions' => array(
-					'Personne.id' => $id
-				),
-				'contain' => array(
-					'Dsp' => array(
-						'Detaildifsoc',
-						'Detailaccosocfam',
-						'Detailaccosocindi',
-						'Detaildifdisp',
-						'Detailnatmob',
-						'Detaildiflog',
-						'Detailmoytrans',
-						'Detaildifsocpro',
-						'Detailprojpro',
-						'Detailfreinform',
-						'Detailconfort'
+				'first',
+				array(
+					'conditions' => array(
+						'Personne.id' => $id
+					),
+					'contain' => array(
+						'Dsp' => array(
+							'Detaildifsoc',
+							'Detailaccosocfam',
+							'Detailaccosocindi',
+							'Detaildifdisp',
+							'Detailnatmob',
+							'Detaildiflog',
+							'Detailmoytrans',
+							'Detaildifsocpro',
+							'Detailprojpro',
+							'Detailfreinform',
+							'Detailconfort'
+						)
 					)
 				)
-					)
 			);
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
@@ -440,6 +483,7 @@
 		 */
 		public function revertTo( $id = null ) {
 			$dossier_id = $this->DspRev->dossierId( $id );
+
 			$this->Jetons2->get( $dossier_id );
 
 			$qd_dsprevs = array(
@@ -448,6 +492,7 @@
 				)
 			);
 			$dsprevs = $this->DspRev->find( 'first', $qd_dsprevs );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['Dsp']['personne_id'] ) ) );
 
 			$this->DspRev->begin();
 
@@ -519,6 +564,9 @@
 
             $personne = Set::classicExtract( $dsprevs, 'Personne.nom_complet' );
             $this->set( compact( 'personne' ) );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['DspRev']['personne_id'] ) ) );
+
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'histo', $dsprevs['DspRev']['personne_id'] ) );
@@ -549,34 +597,37 @@
 			$this->DspRev->forceVirtualFields = true;
 // 			$dsprevact = $this->DspRev->findById( $id );
 			$dsprevact = $this->DspRev->find(
-					'first', array(
-				'conditions' => array(
-					'DspRev.id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				)
+				'first',
+				array(
+					'conditions' => array(
+						'DspRev.id' => $id
+					),
+					'contain' => array(
+						'Personne',
+						'Libderact66Metier',
+						'Libsecactderact66Secteur',
+						'Libactdomi66Metier',
+						'Libsecactdomi66Secteur',
+						'Libemploirech66Metier',
+						'Libsecactrech66Secteur',
+						'DetaildifsocRev',
+						'DetailaccosocfamRev',
+						'DetailaccosocindiRev',
+						'DetaildifdispRev',
+						'DetailnatmobRev',
+						'DetaildiflogRev',
+						'DetailmoytransRev',
+						'DetaildifsocproRev',
+						'DetailprojproRev',
+						'DetailfreinformRev',
+						'DetailconfortRev',
+						'Fichiermodule'
 					)
+				)
 			);
 			$this->assert( !empty( $dsprevact ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevact['Personne']['id'] ) ) );
 
 			$dsprevold = $this->DspRev->find(
 					'first', array(
@@ -672,18 +723,19 @@
 		 */
 		public function findPersonne( $personne_id ) {
 			return $this->Dsp->Personne->find(
-							'first', array(
-						'fields' => array(
-							'Personne.id',
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom'
-						),
-						'conditions' => array(
-							'Personne.id' => $personne_id
-						),
-						'recursive' => -1
-							)
+				'first',
+				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom'
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'recursive' => -1
+				)
 			);
 		}
 
@@ -692,6 +744,8 @@
 		 */
 		protected function _add_edit( $personne_id = null, $version_id = null ) {
 			$dossier_id = $this->Dsp->Personne->dossierId( $personne_id );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation

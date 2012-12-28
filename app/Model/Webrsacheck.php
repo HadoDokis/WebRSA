@@ -168,7 +168,7 @@
 					array( 'rule' => 'string', 'allowEmpty' => true ),
 				),
 				'FULL_BASE_URL' => 'url',
-				'Jetons.disabled' => 'boolean',
+				'Jetons2.disabled' => 'boolean',
 				'Optimisations.progressivePaginate' => 'boolean',
 				'Optimisations.useTableDernierdossierallocataire' => array(
 					array( 'rule' => 'boolean', 'allowEmpty' => true ),

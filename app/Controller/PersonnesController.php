@@ -21,13 +21,32 @@
 
 		public $helpers = array( 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Personnes:index',
 			'add' => 'Personnes:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
 
 		/**
 		 *
@@ -66,14 +85,14 @@
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -86,18 +105,21 @@
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
+
 			$fichiers = array( );
 			$personne = $this->Personne->find(
-					'first', array(
-				'conditions' => array(
-					'Personne.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'Personne.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$dossier_id = $this->Personne->dossierId( $id );
@@ -116,9 +138,8 @@
 				$this->Personne->begin();
 
 				$saved = $this->Personne->updateAll(
-						array( 'Personne.haspiecejointe' => '\''.$this->request->data['Personne']['haspiecejointe'].'\'' ), array(
-					'"Personne"."id"' => $id
-						)
+					array( 'Personne.haspiecejointe' => '\''.$this->request->data['Personne']['haspiecejointe'].'\'' ),
+					array( '"Personne"."id"' => $id )
 				);
 
 				if( $saved ) {
@@ -153,26 +174,29 @@
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
+
 			$personnes = $this->Personne->find(
-					'all', array(
-				'fields' => array(
-					'Personne.id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.prenom2',
-					'Personne.prenom3',
-					'Personne.dtnai',
-					'Prestation.rolepers',
-					'Calculdroitrsa.toppersdrodevorsa',
-					$this->Personne->Fichiermodule->sqNbFichiersLies( $this->Personne, 'nb_fichiers_lies' )
-				),
-				'conditions' => array( 'Personne.foyer_id' => $foyer_id ),
-				'contain' => array(
-					'Prestation',
-					'Calculdroitrsa'
-				)
+				'all',
+				array(
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.prenom2',
+						'Personne.prenom3',
+						'Personne.dtnai',
+						'Prestation.rolepers',
+						'Calculdroitrsa.toppersdrodevorsa',
+						$this->Personne->Fichiermodule->sqNbFichiersLies( $this->Personne, 'nb_fichiers_lies' )
+					),
+					'conditions' => array( 'Personne.foyer_id' => $foyer_id ),
+					'contain' => array(
+						'Prestation',
+						'Calculdroitrsa'
 					)
+				)
 			);
 
 			// Assignations à la vue
@@ -238,6 +262,8 @@
 			// Mauvais paramètre ?
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
+
 			// Assignation à la vue
 			$this->_setOptions();
 			$this->set( 'personne', $personne );
@@ -252,6 +278,8 @@
 
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			$personne = $this->Personne->Foyer->find(
 					'first', array(
@@ -362,6 +390,8 @@
 			$dossier_id = $this->Personne->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
@@ -430,6 +460,7 @@
 
 				$this->Personne->commit();
 			}
+
 			$this->set( 'personne', $personne );
 			$this->_setOptions();
 			$this->render( 'add_edit' );

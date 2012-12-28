@@ -166,7 +166,14 @@
 						echo $this->Session->flash( 'auth' );
 					}
 
+					if( isset( $dossierMenu ) ) {
+						echo $this->element( 'dossier_menu', array( 'dossierMenu' => $dossierMenu ) );
+						echo '<div class="with_treemenu">';
+					}
 					echo $this->fetch( 'content' );
+					if( isset( $dossierMenu ) ) {
+						echo '</div><div class="clearer"><hr /></div>';
+					}
 				?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>

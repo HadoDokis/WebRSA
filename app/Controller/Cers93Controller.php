@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo', 'Jetons2' );
+		public $components = array( 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
 
 		/**
 		 * Helpers utilisés.
@@ -50,6 +50,25 @@
 		 */
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxref' => 'read',
+			'ajaxstruct' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'impression' => 'read',
+			'impressionDecision' => 'read',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'signature' => 'update',
+			'view' => 'read',
+		);
 
 		/**
 		 * Action vide pour obtenir l'écran de paramétrage.
@@ -191,6 +210,8 @@
 				throw new NotFoundException();
 			}
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$querydata = array(
 				'fields' => array(
 					$this->Cer93->Contratinsertion->Fichiermodule->sqNbFichiersLies( $this->Cer93->Contratinsertion, 'nb_fichiers_lies' ),
@@ -244,7 +265,7 @@
 			// L'allocataire peut-il passer en EP ?
 			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
 
-			
+
 			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
 			$IsRejet = false;
 			foreach( $results as $i => $result ) {
@@ -255,20 +276,20 @@
 						$IsRejet = true;
 					}
 				}
-				$results[$i]['Cer93']['rejetcpdv'] = $IsRejet;	
+				$results[$i]['Cer93']['rejetcpdv'] = $IsRejet;
 			}
-			
+
 			// Logique d'activation / désactiviation des liens dans la vue
 			$disabledLinks = array(
 				'Cers93::add' => empty( $results ) || in_array( $results[0]['Cer93']['positioncer'], array( '99rejetecpdv', '99rejete', '99valide' ) ), //On bloque l'ajout tant que le CER n'est pas validé ou  rejeté
-				'Cers93::edit' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Cers93::signature' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) || ( \'%permission%\' == \'0\' )' ,
-				'Histoschoixcers93::attdecisioncpdv' => '!in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::attdecisioncg' => '!in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::premierelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::secondelecture' => '!in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Histoschoixcers93::aviscadre' => '!in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Signalementseps::add' => '!(
+				'Cers93::edit' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
+				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::secondelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::aviscadre' => '!( in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Signalementseps::add' => '!( (
 					// Contrat validé
 					\'#Contratinsertion.decision_ci#\' == \'V\'
 					// En cours, avec une durée de tolérance
@@ -281,10 +302,10 @@
 					//
 					&& ( \''.count( $erreursCandidatePassage ).'\' == \'0\' )
 				)
-				|| ( \'%permission%\' == \'0\' )',
-				'Cers93::impression' => '( \'%permission%\' == \'0\' )' ,
-				'Cers93::delete' => '!in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) || ( \'%permission%\' == \'0\' )',
-				'Cers93::impressionDecision' => '!in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) || ( \'%permission%\' == \'0\' ) ||  ( \'#Cer93.rejetcpdv#\' == true )' 
+				&& ( \'%permission%\' == \'1\' ) )',
+				'Cers93::impression' => '!( \'%permission%\' == \'1\' )' ,
+				'Cers93::delete' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Cers93::impressionDecision' => '!( in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) && ( \'#Cer93.rejetcpdv#\' != true ) && ( \'%permission%\' == \'1\' ) )'
 			);
 
 			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
@@ -331,6 +352,8 @@
 				throw new NotFoundException();
 			}
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			// Tentative d'acquisition du jeton sur le dossier
 			$this->Jetons2->get( $dossier_id );
 
@@ -369,7 +392,7 @@
 			$naturecontratDuree = Set::extract( '/Naturecontrat[isduree=1]', $naturescontrats );
 			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
-			
+
 			// -----------------------------------------------------------------
 			$listeSujets = $this->Cer93->Sujetcer93->find(
 				'all',
@@ -454,7 +477,7 @@
 
 				$valeursparsoussujetscers93[$tmp['Soussujetcer93']['sujetcer93_id']][$tmp['Valeurparsoussujetcer93']['id']] = $tmp['Valeurparsoussujetcer93']['name'];
 			}
-			
+
 			// Liste des valeurs possédant un champ texte dans Valeursparsoussujetscers93
 			$valeursAutre = $this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find(
 				'all',
@@ -464,11 +487,11 @@
 			);
 			$autrevaleur_isautre_id = Hash::extract( $valeursAutre, '{n}.Valeurparsoussujetcer93[isautre=1]' );
 			$autrevaleur_isautre_id = Hash::format( $autrevaleur_isautre_id, array( '{n}.soussujetcer93_id', '{n}.id' ), '%d_%d' );
-			
+
 			$this->set( 'autrevaleur_isautre_id', $autrevaleur_isautre_id );
 			$this->set( 'valeursparsoussujetscers93', $valeursparsoussujetscers93 );
 
-			
+
 			// Liste des valeurs possédant un champ texte dans Soussujetscers93
 			$valeursSoussujet = $this->Cer93->Sujetcer93->Soussujetcer93->find(
 				'all',
@@ -479,7 +502,7 @@
 			$autresoussujet_isautre_id = Hash::extract( $valeursSoussujet, '{n}.Soussujetcer93[isautre=1].id' );
 // 			$autresoussujet_isautre_id = Hash::format( $autresoussujet_isautre_id, array( '{n}.sujetcer93_id', '{n}.id' ), '%%d' );
 			$this->set( 'autresoussujet_isautre_id', $autresoussujet_isautre_id );
-			
+
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
@@ -525,7 +548,7 @@
 				$this->Cer93->enums(),
 				$options
 			);
-			
+
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
@@ -548,6 +571,8 @@
 
 			$this->Cer93->Contratinsertion->id = $id;
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Le dossier auquel appartient la personne
 			$dossier_id = $this->Cer93->Contratinsertion->Personne->dossierId( $personne_id );
@@ -597,6 +622,9 @@
 		 * @return void
 		 */
 		public function impression( $contratinsertion_id = null ) {
+			$personne_id = $this->Cer93->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Cer93->getDefaultPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -619,6 +647,8 @@
 			$personne_id = $this->Cer93->Contratinsertion->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$this->set( 'options', $this->Cer93->optionsView() );
 			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
 		}
@@ -630,6 +660,8 @@
 		 */
 		public function delete( $id ) {
 			$dossier_id = $this->Cer93->Contratinsertion->dossierId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			$this->Cer93->Contratinsertion->begin();
@@ -647,7 +679,7 @@
 
 			$this->redirect( Router::url( $this->referer(), true ) );
 		}
-		
+
 		/**
 		 * Imprime une décision sur le CER 93.
 		 * INFO: http://localhost/webrsa/trunk/cers93/printdecision/44327
@@ -656,6 +688,9 @@
 		 * @return void
 		 */
 		public function impressionDecision( $contratinsertion_id = null ) {
+			$personne_id = $this->Cer93->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Cer93->getDecisionPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {

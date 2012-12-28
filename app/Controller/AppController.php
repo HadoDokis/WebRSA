@@ -189,33 +189,13 @@
 		/**
 		 * Vérifie que l'utilisateur a la permission d'accéder à la page.
 		 *
-		 * @see PermissionsHelper::check()
+		 * @see WebrsaPermissions::check()
 		 *
 		 * @return void
 		 */
 		protected function _checkPermissions() {
-			// Vérification des droits d'accès à la page
-			if( $this->name != 'Pages' && !( $this->name == 'Users' && ( $this->action == 'login' || $this->action == 'logout' ) ) ) {
-				if( !( isset( $this->aucunDroit ) && is_array( $this->aucunDroit ) && in_array( $this->action, $this->aucunDroit ) ) ) {
-					$controllerName = $this->name;
-					$actionName = $this->action;
-
-					if( isset( $this->commeDroit ) && is_array( $this->commeDroit ) && isset( $this->commeDroit[$actionName] ) ) {
-						list( $controllerName, $actionName ) = explode( ':', $this->commeDroit[$actionName] );
-					}
-
-					/// Nouvelle manière, accès au cache se trouvant dans la session
-					$permissions = $this->Session->read( 'Auth.Permissions' );
-					if( isset( $permissions["{$controllerName}:{$actionName}"] ) ) {
-						$this->assert( !empty( $permissions["{$controllerName}:{$actionName}"] ), 'error403' );
-					}
-					else if( isset( $permissions["Module:{$controllerName}"] ) ) {
-						$this->assert( !empty( $permissions["Module:{$controllerName}"] ), 'error403' );
-					}
-					else {
-						$this->cakeError( 'error403' );
-					}
-				}
+			if( !WebrsaPermissions::check( $this->name, $this->action ) ) {
+				throw new error403Exception( null );
 			}
 		}
 

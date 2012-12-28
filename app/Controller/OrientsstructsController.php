@@ -21,9 +21,29 @@
 
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'printChangementReferent' => 'read',
+		);
 
 		protected function _setOptions() {
 			$this->set( 'pays', $this->Option->pays() );
@@ -83,7 +103,7 @@
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -91,28 +111,31 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
 			$orientstruct = $this->Orientstruct->find(
-					'first', array(
-				'conditions' => array(
-					'Orientstruct.id' => $id
-				),
-				'contain' => array(
-					'Fichiermodule' => array(
-						'fields' => array( 'name', 'id', 'created', 'modified' )
+				'first',
+				array(
+					'conditions' => array(
+						'Orientstruct.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
 					)
 				)
-					)
 			);
 
 			$personne_id = $orientstruct['Orientstruct']['personne_id'];
 			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
+
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -165,6 +188,7 @@
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
 			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$querydata = $this->Orientstruct->qdIndex( $personne_id );
 			$orientstructs = $this->Orientstruct->find( 'all', $querydata );
@@ -276,6 +300,8 @@
 
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Récupération du dossier afin de précharger la date de demande RSA
 			$qd_dossier = array(
@@ -397,18 +423,21 @@
 			$this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
 
 			$orientstruct = $this->Orientstruct->find(
-					'first', array(
-				'conditions' => array(
-					'Orientstruct.id' => $orientstruct_id
-				),
-				'contain' => array(
-					'Personne' => array(
-						'Calculdroitrsa'
+				'first',
+				array(
+					'conditions' => array(
+						'Orientstruct.id' => $orientstruct_id
+					),
+					'contain' => array(
+						'Personne' => array(
+							'Calculdroitrsa'
+						)
 					)
 				)
-					)
 			);
 			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $orientstruct['Orientstruct']['personne_id'] ) ) );
 
 			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
 			if( !empty( $orientstruct['Orientstruct']['date_valid'] ) && $orientstruct['Orientstruct']['statut_orient'] == 'Orienté' && $orientstruct['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $orientstruct['Orientstruct']['personne_id'] ) ) {
@@ -500,6 +529,8 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
+			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
+
 			$pdf = $this->Orientstruct->getStoredPdf( $id, 'date_impression' );
 			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 
@@ -518,8 +549,23 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
-			$success = $this->Orientstruct->delete( $id );
-			$this->_setFlashResult( 'Delete', $success );
+			$dossier_id = $this->Orientstruct->dossierId( $id );
+			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) );
+
+			$this->Jetons2->get( $dossier_id );
+
+			$this->Orientstruct->begin();
+			if( $this->Orientstruct->delete( $id ) ) {
+				$this->Orientstruct->commit();
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+			}
+			else {
+				$this->Orientstruct->rollback();
+				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
+			}
+
+			$this->Jetons2->release( $dossier_id );
+
 			$this->redirect( $this->referer() );
 		}
 
@@ -534,6 +580,8 @@
 		 * @return void
 		 */
 		public function printChangementReferent( $id = null ) {
+			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
+
 			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {

@@ -70,7 +70,7 @@
 								else {
 									$methods['public'][] = $rawMethod;
 								}
-								// commeDroit, aucunDroit, typesActions ?
+								// commeDroit, aucunDroit, crudMap ?
 							}
 
 							self::$_methodsCache[$controller] = $methods;
@@ -99,22 +99,16 @@
 			return self::_extract( '{s}.aucunDroit' );
 		}
 
-		public static function typesActions() {
-			return self::_extract( '{s}.typesActions' );
-		}
-
-		protected static function _is( $type, $controllerName, $action ) {
-			$actions = (array)Hash::get( self::$_attributesCache, "{$controllerName}.typesActions.{$type}" );
-
-			return in_array( $action, $actions );
+		public static function crudMap() {
+			return self::_extract( '{s}.crudMap' );
 		}
 
 		public static function isRead( $controllerName, $action ) {
-			return self::_is( 'read', $controllerName, $action );
+			return ( Hash::get( self::$_attributesCache, "{$controllerName}.crudMap.{$action}" ) === 'read' );
 		}
 
 		public static function isWrite( $controllerName, $action ) {
-			return self::_is( 'write', $controllerName, $action );
+			return ( Hash::get( self::$_attributesCache, "{$controllerName}.crudMap.{$action}" ) !== 'read' );
 		}
 	}
 
@@ -122,7 +116,7 @@
 //	AppControllers::init();
 ////	debug( Hash::filter( AppControllers::commeDroit() ) );
 ////	debug( Hash::filter( AppControllers::aucunDroit() ) );
-////	debug( Hash::filter( AppControllers::typesActions() ) );
+////	debug( Hash::filter( AppControllers::crudMap() ) );
 //
 //	debug( AppControllers::isRead( 'DossiersController', 'edit' ) );
 //	debug( AppControllers::isWrite( 'DossiersController', 'edit' ) );

@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Widget' );
 
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Contratsinsertion:index',
@@ -30,6 +30,38 @@
 		);
 
 		public $aucunDroit = array( 'ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxaction' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxref' => 'update',
+			'ajaxstruct' => 'update',
+			'cancel' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'ficheliaisoncer' => 'read',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'notifbenef' => 'read',
+			'notification' => 'update',
+			'notificationsop' => 'read',
+			'reconductionCERPlus55Ans' => 'read',
+			'valider' => 'update',
+			'validerparticulier' => 'update',
+			'validersimple' => 'update',
+			'view' => 'read',
+		);
 
 		/**
 		 * Envoi des options communes à la vue (CG 58, 66, 93).
@@ -307,6 +339,7 @@
 			);
 
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -437,6 +470,8 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			// Pour les CGs 58  et 66, on veut avoir assez bien d'informations en plus
 			if( Configure::read( 'Cg.departement' ) != 93 ) {
 				// Recherche de la dernière orientation en cours pour l'allocataire
@@ -461,8 +496,8 @@
                         $blockCumulCER66 = true;
                     }
                     $this->set( 'blockCumulCER66', $blockCumulCER66  );
-                    
-                    
+
+
 					$typeOrientPrincipaleEmploiId = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
 					if( is_array( $typeOrientPrincipaleEmploiId ) && isset( $typeOrientPrincipaleEmploiId[0] ) ) {
 						$typeOrientPrincipaleEmploiId = $typeOrientPrincipaleEmploiId[0];
@@ -524,7 +559,7 @@
 			}
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-			
+
 				$nbDemandedemaintienNonfinalisesCovs = 1; //FIXME à vérifier une fois le script SQL mettant à jour les durées d'engagement en place
 				$cumulCer = $this->Contratinsertion->limiteCumulDureeCER( $personne_id );
 				if( $cumulCer >= 12 ){
@@ -533,7 +568,7 @@
 					$nbDemandedemaintienNonfinalisesCovs = $this->Contratinsertion->Personne->Dossiercov58->find( 'count',  $demandedemaintien );
 				}
 				$this->set( 'nbDemandedemaintienNonfinalisesCovs', $nbDemandedemaintienNonfinalisesCovs );
-				
+
 				$qdEnCours = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->qdEnCours( $personne_id );
 				$propocontratinsertioncov58 = $this->Contratinsertion->Personne->Dossiercov58->Propocontratinsertioncov58->find( 'first', $qdEnCours );
 
@@ -577,8 +612,8 @@
 					)
 				);
 				$this->set( compact( 'persreferent' ) );
-                
-                
+
+
                 $listesActions = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
 					'all',
 					array(
@@ -694,6 +729,8 @@
 
 			$this->Contratinsertion->forceVirtualFields = false;
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $contratinsertion['Contratinsertion']['personne_id'] ) ) );
 
 			 // Utilisé pour les détections de fiche de candidature pour savoir si des actions sont en cours ou non
 			$fichescandidature = $this->Contratinsertion->Personne->ActioncandidatPersonne->find(
@@ -854,6 +891,8 @@
 				// TODO: $this->request->data Contratinsertion.num_contrat
 				$tc = Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Récupération de l'id du dossier
 			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
@@ -1164,7 +1203,7 @@
 							'order' => array( 'Actioninsertion.dd_action DESC' )
 						)
 					);
-					$this->request->data['Actioninsertion'] = $actioninsertion['Actioninsertion'];
+					$this->request->data['Actioninsertion'] = Hash::get( $actioninsertion, 'Actioninsertion' );
 
 					// Suspension / Radiation (CG 66, 93)
 					if( $this->request->data['Contratinsertion']['raison_ci'] == 'S' ) {
@@ -1407,6 +1446,8 @@
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 			$this->set( 'contratinsertion', $contratinsertion );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $contratinsertion['Contratinsertion']['personne_id'] ) ) );
+
 			$dossier_id = $this->Contratinsertion->dossierId( $contratinsertion_id );
 			$this->Jetons2->get( $dossier_id );
 
@@ -1469,6 +1510,8 @@
 		 */
 		public function delete( $id ) {
 			$dossier_id = $this->Contratinsertion->dossierId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			$this->{$this->modelClass}->begin();
@@ -1505,6 +1548,8 @@
 
 			$personne_id = Set::classicExtract( $contrat, 'Contratinsertion.personne_id' );
 			$this->set( 'personne_id', $personne_id );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Contratinsertion->dossierId( $id );
 			$this->Jetons2->get( $dossier_id );
@@ -1551,6 +1596,9 @@
 		 * @return void
 		 */
 		public function notificationsop( $contratinsertion_id = null ) {
+			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Contratinsertion->getNotificationopPdf( $contratinsertion_id );
 
 			if( !empty( $pdf ) ) {
@@ -1569,6 +1617,9 @@
 		 * @return void
 		 */
 		public function ficheliaisoncer( $contratinsertion_id ) {
+			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Contratinsertion->getPdfFicheliaisoncer( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -1588,6 +1639,9 @@
 		 * @return void
 		 */
 		public function notifbenef( $contratinsertion_id ) {
+			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Contratinsertion->getPdfNotifbenef( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -1608,6 +1662,9 @@
 		 * @return void
 		 */
 		public function impression( $contratinsertion_id = null ) {
+			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Contratinsertion->getDefaultPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -1643,6 +1700,8 @@
 
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
 			$this->set( 'personne_id', $personne_id );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Contratinsertion->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -1705,6 +1764,9 @@
 		 * @return void
 		 */
 		public function reconductionCERPlus55Ans( $contratinsertion_id ) {
+			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {

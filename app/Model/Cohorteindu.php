@@ -7,7 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Sanitize' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe Cohorteindu fournit un traitement du moteur de recherche par indus et permet de valider les

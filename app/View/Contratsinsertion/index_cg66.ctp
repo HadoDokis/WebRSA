@@ -5,11 +5,8 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-
-    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
-<div class="with_treemenu">
 <h1><?php  echo $this->pageTitle;?></h1>
 <?php if( $blockCumulCER66 ):?>
     <p class="error">Cet allocataire dépasse les 24 mois de contractualisation dans une orientation SOCIALE. Vous devez donc proposer un bilan pour passage en EPL.</p>
@@ -79,7 +76,7 @@
 										<th>Positionnement sur l\'action</th>
 										<td>'.$contratinsertion['Actioncandidat']['name'].'</td>
 									</tr>
-                                   
+
                                     <tr>
 										<th>Action(s) en cours</th>
 										<td>'.( empty( $listesActions ) ? null :'<ul><li>'.implode( '</li><li>', $listesActions ).'</li></ul>' ).'</td>
@@ -134,7 +131,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											$this->Permissions->check( 'contratsinsertion', 'view' ) == 1
+											$this->Permissions->checkDossier( 'contratsinsertion', 'view', $dossierMenu ) == 1
 										)
 									)
 								),
@@ -144,7 +141,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'edit' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'edit', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 // 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'validnotifie' ) )
 // 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != ( 'nonvalidnotifie' ) )
@@ -159,7 +156,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-												( $this->Permissions->check( 'proposdecisionscers66', $action ) == 1 )
+												( $this->Permissions->checkDossier( 'proposdecisionscers66', $action, $dossierMenu ) == 1 )
 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'fincontrat' )
 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 // 												&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'validnotifie' )
@@ -175,7 +172,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'ficheliaisoncer' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'ficheliaisoncer', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 											&& ( !empty( $isvalidcer )  )
 										)
@@ -187,7 +184,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'notifbenef' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'notifbenef', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 											&& ( !empty( $isvalidcer )  )
 										)
@@ -199,7 +196,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'notificationsop' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'notificationsop', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 											&& ( !empty( $isvalidcer ) && ( $isvalidcer != 'N' ) )
 										)
@@ -211,7 +208,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'impression' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'impression', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 										)
 									)
@@ -222,7 +219,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'notification' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'notification', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 										)
 									)
@@ -233,7 +230,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'reconductionCERPlus55Ans' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'reconductionCERPlus55Ans', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 											&& $isReconductible
 										)
@@ -245,7 +242,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											( $this->Permissions->check( 'contratsinsertion', 'cancel' ) == 1 )
+											( $this->Permissions->checkDossier( 'contratsinsertion', 'cancel', $dossierMenu ) == 1 )
 											&& ( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ) != 'annule' )
 										)
 									)
@@ -256,7 +253,7 @@
 									$contratinsertion['Contratinsertion']['id'] ),
 									array(
 										'enabled' => (
-											$this->Permissions->check( 'contratsinsertion', 'filelink' ) == 1
+											$this->Permissions->checkDossier( 'contratsinsertion', 'filelink', $dossierMenu ) == 1
 										)
 									)
 								),
@@ -272,5 +269,3 @@
 		</table>
 	<?php  endif;?>
 <?php endif;?>
-</div>
-<div class="clearer"><hr /></div>

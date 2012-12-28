@@ -6,7 +6,6 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -45,7 +44,6 @@
     } );
 </script>
 
-<div class="with_treemenu">
 <?php
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
@@ -653,9 +651,6 @@
 
 	echo $this->Xform->end();
 ?>
-</div>
-<div class="clearer"><hr /></div>
-
 
 <script type="text/javascript">
 	<!--//--><![CDATA[//><!--

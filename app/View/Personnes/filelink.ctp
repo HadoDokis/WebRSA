@@ -5,12 +5,8 @@
 		echo $this->Html->script( 'fileuploader.js' );
 	}
 	$this->pageTitle =  __d( 'personne', "Personnes::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $id ) );
 ?>
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( 'Personne', $fichiers, $personne, $options['haspiecejointe'] );
-	?>
-</div>
-<div class="clearer"><hr /></div>
+<?php
+	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+	echo $this->Fileuploader->element( 'Personne', $fichiers, $personne, $options['haspiecejointe'] );
+?>

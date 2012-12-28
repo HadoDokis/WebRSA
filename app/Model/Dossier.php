@@ -401,8 +401,18 @@
 			return $numdemrsaTemp;
 		}
 
-		public function menu( $params, $sqLocked ) {
+		/**
+		 *
+		 * @param array $params Une manière d'identifier le dossier, via la valeur
+		 *	de l'une des clés suivantes: id, foyer_id, personne_id.
+		 * @param array $qdPartsJetons Les parties de querydata permettant
+		 *	d'obtenir des informations sur le jeton éventuel du dossier.
+		 * @return array
+		 * @throws NotFoundException
+		 */
+		public function menu( $params, $qdPartsJetons ) {
 			$conditions = array();
+
 			if( !empty( $params['id'] ) && is_numeric( $params['id'] ) ) {
 				$conditions['Dossier.id'] = $params['id'];
 			}
@@ -418,7 +428,32 @@
 			}
 
 			// Données du dossier RSA.
-			$dossier = $this->find(
+			$querydata = array(
+				'fields' => array(
+					'Dossier.id',
+					'Dossier.matricule',
+					'Dossier.fonorg',
+					'Dossier.numdemrsa',
+					'Foyer.id',
+					$this->Foyer->sqVirtualField( 'enerreur' ),
+					$this->Foyer->sqVirtualField( 'sansprestation' ),
+					'Situationdossierrsa.etatdosrsa',
+				),
+				'joins' => array(
+					$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->join( 'Situationdossierrsa', array( 'type' => 'LEFT' ) ),
+				),
+				'conditions' => $conditions,
+				'contain' => false
+			);
+
+			$keys = array( 'fields', 'joins' );
+			foreach( $keys as $key ) {
+				$querydata[$key] = array_merge( $querydata[$key], $qdPartsJetons[$key] );
+			}
+			$dossier = $this->find( 'first', $querydata );
+
+			/*$dossier = $this->find(
 				'first',
 				array(
 					'fields' => array(
@@ -430,7 +465,9 @@
 						$this->Foyer->sqVirtualField( 'enerreur' ),
 						$this->Foyer->sqVirtualField( 'sansprestation' ),
 						'Situationdossierrsa.etatdosrsa',
-						$sqLocked // TODO: plus le nom, jusque quand, ...
+						$sqLocked,
+						$sqLocker,
+						$sqLockedTo
 					),
 					'contain' => array(
 						'Foyer',
@@ -438,7 +475,7 @@
 					),
 					'conditions' => $conditions
 				)
-			);
+			);*/
 
 			$adresses = $this->Foyer->Adressefoyer->find(
 				'all',
@@ -458,7 +495,18 @@
 					'order' => array( 'Adressefoyer.rgadr ASC', 'Adressefoyer.dtemm DESC' )
 				)
 			);
-			$dossier = Set::merge( $dossier, array( 'Adressefoyer' => Hash::extract( $adresses, '{n}.Adressefoyer' ) ) );
+			// Mise en forme des adresses du foyer, ajout des champs virtuels ddemm et dfemm
+			$adresses = Hash::combine( $adresses, '{n}.Adressefoyer.rgadr', '{n}.Adressefoyer' );
+			$ddemm = null;
+			$dfemm = null;
+			foreach( $adresses as $rgadr => $adresse ) {
+				$dfemm = ( is_null( $ddemm ) ? null : date( 'Y-m-d', strtotime( '-1 day', strtotime( $ddemm ) ) ) );
+				$ddemm = $adresse['dtemm'];
+
+				$adresses[$rgadr]['ddemm'] = $ddemm;
+				$adresses[$rgadr]['dfemm'] = $dfemm;
+			}
+			$dossier = Set::merge( $dossier, array( 'Adressefoyer' => $adresses ) );
 
 			// Les personnes du foyer
 			$personnes = $this->Foyer->Personne->find(
@@ -490,6 +538,10 @@
 			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
 			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
 				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
+			}
+
+			if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {
+				$dossier['personne_id'] = $params['personne_id'];
 			}
 
 			return $dossier;

@@ -47,49 +47,55 @@
 			$this->Controller = $controller;
 		}
 
+		public function getDossierMenu( $params ) {
+			// Récupération du menu du dossier
+			$dossierMenu = ClassRegistry::init( 'Dossier' )->menu(
+				$params,
+				$this->Controller->Jetons2->qdLockParts()
+			);
+
+			if( empty( $dossierMenu ) ) {
+				throw new error500Exception( null );
+			}
+
+			return $dossierMenu;
+		}
+
 		/**
 		 *
 		 * FIXME: en fonction des CG lorsqu'on tape dans l'URL
 		 *
-		 * @param type $params
-		 * @return type
-		 * @throws Error403Exception
+		 * @param mixed $params
+		 * @return array
 		 */
-		public function dossierMenu( $params ) {
-			$dossierMenu = $this->Controller->Dossier->menu(
-				$params,
-				$this->Controller->Jetons2->sqLocked( 'Dossier', 'locked' )
-			);
+		public function getAndCheckDossierMenu( $params ) {
+			$dossierMenu = $this->getDossierMenu( $params );
 
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$filtre_zone_geo = $this->Session->read( 'Auth.User.filtre_zone_geo' );
-
-				if( $filtre_zone_geo === true ) {
-					$typesActions = ( isset( $this->Controller->typesActions ) ? $this->Controller->typesActions : array() );
-					if( !isset( $typesActions['read'] ) ) {
-						$typesActions['read'] = array();
-					}
-					if( !isset( $typesActions['write'] ) ) {
-						$typesActions['write'] = array();
-					}
-
-					$codesAdresses = Hash::extract( $dossierMenu, 'Adressefoyer.{n}.codeinsee' );
-
-					//FIXME: écriture seulement
-					if( in_array( $this->Controller->action, $typesActions['write'] ) && !in_array( $codesAdresses[0], $this->Session->read( 'Auth.Zonegeographique' ) ) ) {
-						throw new Error403Exception( 'FIXME' );
-					}
-					// Ici, c'est de la visualisation
-					else if( in_array( $this->Controller->action, $typesActions['read'] ) ) {
-						$inter = array_intersect( $codesAdresses, $this->Session->read( 'Auth.Zonegeographique' ) );
-						if( empty( $inter ) ) {
-							throw new Error403Exception( 'FIXME' );
-						}
-					}
-				}
-			}
+			$this->_checkDossierMenu( $dossierMenu );
 
 			return $dossierMenu;
+		}
+
+		/**
+		 *
+		 * @param array $data
+		 * @throws Error403Exception
+		 */
+		protected function _checkDossierMenu( $dossierData ) {
+			if( !WebrsaPermissions::checkDossier( $this->Controller->name, $this->Controller->action, $dossierData ) ) {
+				throw new Error403Exception( null );
+			}
+		}
+
+		/**
+		 *
+		 * @param array $data
+		 * @throws Error403Exception
+		 */
+		public function checkDossierMenu( $params ) {
+			$dossierMenu = $this->getDossierMenu( $params );
+
+			$this->_checkDossierMenu( $dossierMenu );
 		}
 	}
 ?>

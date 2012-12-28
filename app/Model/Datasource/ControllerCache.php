@@ -63,6 +63,8 @@
 		 */
 		protected static $_commeDroit = array( );
 
+		protected static $_crudMap = array( );
+
 		/**
 		 * Initialisation, lecture de notre cache si nécessaire.
 		 *
@@ -75,6 +77,7 @@
 				if( $cache === false ) {
 					$aucunDroit = array();
 					$commeDroit = array();
+					$crudMap = array();
 
 					$controllers = App::objects( 'controller');
 					if( !empty( $controllers ) ) {
@@ -98,17 +101,26 @@
 											$commeDroit["{$moduleAlias}:{$actionSlave}"] = $master;
 										}
 									}
+
+									if( array_key_exists( 'crudMap', $subClassVars ) and !empty( $subClassVars['crudMap'] ) ) {
+										$crudMap["{$moduleAlias}"] = $subClassVars['crudMap'];
+									}
 								}
 							}
 						}
 					}
-					$cache = array( 'aucunDroit' => $aucunDroit, 'commeDroit' => $commeDroit );
+					$cache = array(
+						'aucunDroit' => $aucunDroit,
+						'commeDroit' => $commeDroit,
+						'crudMap' => $crudMap,
+					);
 
 					Cache::write( self::$_cacheKey, $cache );
 				}
 
 				self::$_aucunDroit = (array)$cache['aucunDroit'];
 				self::$_commeDroit = (array)$cache['commeDroit'];
+				self::$_crudMap = (array)$cache['crudMap'];
 
 				self::$_init = true;
 			}
@@ -127,10 +139,14 @@
 		 *
 		 * @return array
 		 */
-		public static function aucunDroit() {
+		public static function aucunDroit( $controllerName = null, $actionName = null ) {
 			self::init();
 
-			return self::$_aucunDroit;
+			if( is_null( $controllerName ) ) {
+				return self::$_aucunDroit;
+			}
+
+			return in_array( "{$controllerName}:{$actionName}", self::$_aucunDroit );
 		}
 
 		/**
@@ -145,10 +161,31 @@
 		 *
 		 * @return array
 		 */
-		public static function commeDroit() {
+		public static function commeDroit( $controllerName = null, $actionName = null ) {
 			self::init();
 
-			return self::$_commeDroit;
+			if( is_null( $controllerName ) ) {
+				return self::$_commeDroit;
+			}
+
+			return ( isset( self::$_commeDroit["{$controllerName}:{$actionName}"] ) ? self::$_commeDroit["{$controllerName}:{$actionName}"] : false );
+		}
+
+		/**
+		 * @return array|string
+		 */
+		public static function crudMap( $controllerName = null, $actionName = null ) {
+			self::init();
+
+			if( is_null( $controllerName ) ) {
+				return self::$_crudMap;
+			}
+			else if( is_null( $actionName ) ) {
+				return (array)Hash::get( self::$_crudMap, $controllerName );
+			}
+			else {
+				return Hash::get( self::$_crudMap, "{$controllerName}.{$actionName}" );
+			}
 		}
 	}
 ?>

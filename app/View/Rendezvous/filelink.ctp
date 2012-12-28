@@ -6,13 +6,8 @@
 	}
 
 	$this->pageTitle =  __d( 'rendezvous', "Rendezvous::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
-
 ?>
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( 'Rendezvous', $fichiers, $rendezvous, $options['haspiecejointe'] );
-	?>
-</div>
-<div class="clearer"><hr /></div>
+<?php
+	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+	echo $this->Fileuploader->element( 'Rendezvous', $fichiers, $rendezvous, $options['haspiecejointe'] );
+?>
