@@ -835,5 +835,34 @@
 				'Motifreorientep93'
 			);
 		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est (indirectement) lié un
+		 * enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( 'Orientstruct.personne_id' ),
+				'joins' => array(
+					$this->join( 'Orientstruct', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Reorientationep93.id' => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Orientstruct']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

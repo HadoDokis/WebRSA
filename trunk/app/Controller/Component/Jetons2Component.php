@@ -41,10 +41,6 @@
 			parent::initialize( $controller, $settings );
 			$this->Controller = $controller;
 
-			if( Configure::read( 'Jetons2.disabled' ) ) {
-				return;
-			}
-
 			$this->Jeton = ClassRegistry::init( 'Jeton' );
 		}
 
@@ -268,6 +264,150 @@
 			}
 
 			return $sq;
+		}
+
+		/**
+		 * Retourne une sous-requête permettant de connaître le login de
+		 * l'utilisateur qui verrouille un Dossier.
+		 *
+		 * @param string $modelAlias Alias du modèle pour le champ virtuel
+		 * @param string $fieldName Nom du champ pour le champ virtuel
+		 * @return string
+		 */
+		public function sqLockingUser( $modelAlias = 'Dossier', $fieldName = 'locking_user' ) {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				$sq = "( NULL )";
+			}
+			else {
+				$sq = $this->Jeton->sq(
+					array(
+						'alias' => 'jetons',
+						'fields' => array(
+							'users.username',
+						),
+						'joins' => array(
+							array_words_replace(
+								$this->Jeton->join( 'User', array( 'LEFT OUTER' ) ),
+								array(
+									'Jeton' => 'jetons',
+									'User' => 'users',
+								)
+							)
+						),
+						'conditions' => array(
+							'NOT' => array(
+								array(
+									'jetons.php_sid' => $this->Session->id(),
+									'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
+								),
+								'NOT' => $this->_conditionsValid()
+							),
+							'jetons.dossier_id = Dossier.id'
+						),
+						'recursive' => -1
+					)
+				);
+			}
+
+			$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
+
+			return $sq;
+		}
+
+		/**
+		 * Retourne une sous-requête permettant de connaître le moment maximum
+		 * théorique de verrouillage d'un Dossier.
+		 *
+		 * @param string $modelAlias
+		 * @param string $fieldName
+		 * @return string
+		 */
+		public function sqLockedTo( $modelAlias = 'Dossier', $fieldName = 'locked_to' ) {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				$sq = "( NULL )";
+			}
+			else {
+				$sq = $this->Jeton->sq(
+					array(
+						'alias' => 'jetons',
+						'fields' => array(
+							'( "jetons"."modified" + INTERVAL \''.readTimeout().' seconds\' ) AS "jetons__locked_to"',
+						),
+						'conditions' => array(
+							'NOT' => array(
+								array(
+									'jetons.php_sid' => $this->Session->id(),
+									'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
+								),
+								'NOT' => $this->_conditionsValid()
+							),
+							'jetons.dossier_id = Dossier.id'
+						),
+						'recursive' => -1
+					)
+				);
+			}
+
+			$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
+
+			return $sq;
+		}
+
+		/**
+		 * Retourne des parties de querydata (les clés 'fields' et 'joins')
+		 * permettant de compléter un querydata avec les informations de dossiers
+		 * lockés, appliqué sur le modèle Dossier ou contenant une jointure sur
+		 * le modèle Dossier.
+		 *
+		 * @todo permettre d'aliaser les champs / les modèles pour pouvoir
+		 * l'utiliser ailleurs que dans Dossier::menu(), comme par exemple dans
+		 * CohortesController::_index() / Cohorte::search().
+		 *
+		 * Cette méthode permettra de remplacer à terme les méthodes suivantes:
+		 *	- Jetons2::sqLocked()
+		 *	- Jetons2::sqLockingUser()
+		 *	- Jetons2::sqLockedTo()
+		 *
+		 * @return array
+		 */
+		public function qdLockParts() {
+			$querydata = array(
+				'joins' => array(
+					$this->Jeton->Dossier->join(
+						'Jeton',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'NOT' => array(
+									array(
+										'Jeton.php_sid' => $this->Session->id(),
+										'Jeton.user_id' => $this->Session->read( 'Auth.User.id' )
+									),
+									'NOT' => $this->_conditionsValid()
+								)
+							)
+						)
+					),
+					$this->Jeton->join( 'User', array( 'type' => 'LEFT OUTER' ) )
+				)
+			);
+
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				$querydata['fields'] = array(
+					'( FALSE ) AS "Dossier__locked"',
+					'( NULL ) AS "Dossier__locking_user"',
+					'( NULL ) AS "Dossier__locked_to"',
+				);
+			}
+			else {
+				$querydata['fields'] = array(
+					'( "Jeton"."dossier_id" IS NOT NULL ) AS "Dossier__locked"',
+					'"User"."username" AS "Dossier__locking_user"',
+					'( "Jeton"."modified" + INTERVAL \''.readTimeout().' seconds\' ) AS "Dossier__locked_to"',
+				);
+			}
+
+			return $querydata;
 		}
 
 		// TODO

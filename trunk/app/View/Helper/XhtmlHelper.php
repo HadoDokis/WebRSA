@@ -445,5 +445,28 @@
 		public function saisineEpLink( $title, $url, $enabled = true ) {
 			return $this->_buttonLink( 'icons/folder_table.png', $title, $title, $url, $enabled );
 		}
+
+		/**
+		 * Retourne une image (avec un attribut 'title') lorsqu'un dossier est
+		 * verrouillé.
+		 *
+		 * @param array $data Les données qui permettent de faire cette déduction.
+		 * @return string
+		 */
+		public function lockedDossier( $data ) {
+			$return = null;
+
+			if( $data['Dossier']['locked'] ) {
+				$title = 'Dossier verrouillé';
+
+				if( isset( $data['Dossier']['locking_user'] ) && isset( $data['Dossier']['locked_to'] ) ) {
+					$title = sprintf( 'Dossier verrouillé par %s jusqu\'au %s', $data['Dossier']['locking_user'], strftime( '%d/%m/%Y à %H:%M:%S', strtotime( $data['Dossier']['locked_to'] ) ) );
+				}
+
+				$return = $this->image( 'icons/lock.png', array( 'alt' => '', 'title' => $title ) );
+			}
+
+			return $return;
+		}
 	}
 ?>

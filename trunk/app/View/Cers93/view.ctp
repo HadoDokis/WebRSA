@@ -6,9 +6,7 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
-<div class="with_treemenu">
 <?php
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
@@ -27,4 +25,3 @@
 		)
 	);
 ?>
-<div class="clearer"></div>

@@ -1338,7 +1338,7 @@
 					)
 				)
 			);
-			
+
 			$data['Adresse'] = $data['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 
 			$sousSujetsIds = Set::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
@@ -1466,6 +1466,34 @@
 
 			if( !empty( $contratinsertion ) ) {
 				return $contratinsertion['Foyer']['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Contratinsertion.personne_id" ),
+				'joins' => array(
+					$this->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Contratinsertion']['personne_id'];
 			}
 			else {
 				return null;

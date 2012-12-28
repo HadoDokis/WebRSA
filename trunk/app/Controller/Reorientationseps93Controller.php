@@ -18,16 +18,34 @@
 	{
 		public $helpers = array( 'Default', 'Default2' );
 
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+			'Search.Prg' => array( 'actions' => array( 'index' ) )
+		);
 
 		public $commeDroit = array(
 			'add' => 'Reorientationseps93:edit'
 		);
 
-		/**
-		*
-		*/
+		public $uses = array( 'Reorientationep93' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Reorientationep93->enums();
 			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
@@ -38,9 +56,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function index() {
 			$searchData = Set::classicExtract( $this->request->data, 'Search' );
 			$searchMode = Set::classicExtract( $searchData, 'Reorientationep93.mode' );
@@ -137,37 +154,47 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**
-		* FIXME: on passe orientstruct_id (add) ou Reorientationep93.id (edit)
-		*/
 
+		/**
+		 * INFO: on passe orientstruct_id (add) ou Reorientationep93.id (edit)
+		 *
+		 * @param integer $id
+		 * @throws NotFoundException
+		 */
 		protected function _add_edit( $id = null ) {
+			if( $this->action == 'add' ) {
+				$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
+			}
+			else {
+				$personne_id = $this->Reorientationep93->personneId( $id );
+			}
+			if( empty( $personne_id ) ) {
+				throw new NotFoundException( null );
+			}
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+			$dossier_id = $this->Reorientationep93->Orientstruct->Personne->dossierId( $personne_id );
+			$this->Jetons2->get( $dossier_id );
+
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				if( $this->action == 'add' ){
-					$persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
-				}
-				else if( $this->action == 'edit' ){
-					$persId = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->request->data['Reorientationep93']['orientstruct_id'] ) );
-				}
-				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $persId ) );
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 			}
 
 			if( !empty( $this->request->data ) ) {
@@ -192,7 +219,8 @@
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Reorientationep93->commit();
-					$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->request->data['Reorientationep93']['orientstruct_id'] ) );
+					$this->Jetons2->release( $dossier_id );
+					//$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $this->request->data['Reorientationep93']['orientstruct_id'] ) );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}
 				else {
@@ -236,11 +264,11 @@
 
 			// Lecture de valeurs
 			if( $this->action == 'add' ) {
-				$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
-				$this->assert( !empty( $personne_id ), 'invalidParameter' );
+				//$personne_id = $this->Reorientationep93->Orientstruct->field( 'personne_id', array( 'Orientstruct.id' => $id ) );
 
 				// Retour à l'index d'orientsstrucs s'il n'est pas possible d'ajouter une réorientation
 				if( !$this->Reorientationep93->ajoutPossible( $personne_id ) ) {
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 				}
@@ -262,6 +290,7 @@
 				);
 
 				if( !( empty( $reorientationep93['Dossierep']['etatdossierep'] ) || $reorientationep93['Dossierep']['etatdossierep'] == 'cree' ) ) {
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Cette demande de réorientation ne peut pas être modifiée', 'flash/error' );
 					$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $reorientationep93['Orientstruct']['personne_id'] ) ); // FIXME
 				}
@@ -284,8 +313,6 @@
 		 * @return void
 		 */
 		public function delete( $id ) {
-			$this->Reorientationep93->begin();
-
 			$reorientationep93 = $this->Reorientationep93->find(
 				'first',
 				array(
@@ -306,15 +333,23 @@
 			// Le dossier ne possède pas encore de passage en commission
 			$this->assert( empty( $reorientationep93['Dossierep']['Passagecommissionep'] ), 'error500' );
 
-			$success = $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] );
+			$personne_id = $this->Reorientationep93->personneId( $id );
+			$this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 
-			$this->_setFlashResult( 'Delete', $success );
-			if ( $success ) {
+			$dossier_id = $this->Reorientationep93->Orientstruct->Personne->dossierId( $personne_id );
+			$this->Jetons2->get( $dossier_id );
+
+			$this->Reorientationep93->begin();
+			if( $this->Reorientationep93->Dossierep->delete( $reorientationep93['Reorientationep93']['dossierep_id'] ) ) {
 				$this->Reorientationep93->commit();
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 			}
 			else {
 				$this->Reorientationep93->rollback();
+				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
+
+			$this->Jetons2->release( $dossier_id );
 			$this->redirect( Router::url( $this->referer(), true ) );
 		}
 	}

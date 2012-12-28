@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Propopdo', 'Situationdossierrsa', 'Option', 'Typepdo', 'Typenotifpdo', 'Decisionpdo', 'Suiviinstruction', 'Piecepdo', 'Traitementpdo', 'Originepdo', 'Statutpdo', 'Statutdecisionpdo', 'Situationpdo', 'Referent', 'Personne', 'Dossier', 'Pdf' );
 
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2' );
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
 
 		public $helpers = array( 'Default', 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
 
@@ -29,6 +29,26 @@
 		);
 
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxetatpdo', 'ajaxetat1', 'ajaxetat2', 'ajaxetat3', 'ajaxetat4', 'ajaxetat5', 'ajaxfichecalcul', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxetatpdo' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxstruct' => 'read',
+			'download' => 'read',
+			'edit' => 'update',
+			'fileview' => 'read',
+			'index' => 'read',
+			'printCourrier' => 'read',
+			'view' => 'read',
+		);
 
 		protected function _setOptions() {
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
@@ -67,6 +87,10 @@
 			$this->set( compact( 'options' ) );
 		}
 
+		/**
+		 *
+		 * @param type $structurereferente_id
+		 */
 		public function ajaxstruct( $structurereferente_id = null ) {
 			$dataStructurereferente_id = Set::extract( $this->request->data, 'Propopdo.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
@@ -87,6 +111,13 @@
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
+		/**
+		 *
+		 * @param type $typepdo_id
+		 * @param type $user_id
+		 * @param type $complet
+		 * @param type $incomplet
+		 */
 		public function ajaxetatpdo( $typepdo_id = null, $user_id = null, $complet = null, $incomplet = null ) {
 			$dataTypepdo_id = Set::extract( $this->request->params, 'form.typepdo_id' );
 			$dataUser_id = Set::extract( $this->request->params, 'form.user_id' );
@@ -134,10 +165,16 @@
 			$this->render( 'ajaxetatpdo', 'ajax' );
 		}
 
+		/**
+		 *
+		 * @param type $personne_id
+		 */
 		public function index( $personne_id = null ) {
 			$nbrPersonnes = $this->Propopdo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 			//$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 			$this->assert( ( $nbrPersonnes >= 1 ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$conditions = array( 'Propopdo.personne_id' => $personne_id );
 
@@ -150,6 +187,10 @@
 			$this->set( 'pdos', $pdos );
 		}
 
+		/**
+		 *
+		 * @param type $pdo_id
+		 */
 		public function view( $pdo_id = null ) {
 			$this->assert( valid_int( $pdo_id ), 'invalidParameter' );
 
@@ -170,6 +211,8 @@
 					)
 				)
 			);
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $pdo['Propopdo']['personne_id'] ) ) );
 
 			// Afficahge des traitements liés à une PDO
 			$traitements = $this->{$this->modelClass}->Traitementpdo->find(
@@ -239,22 +282,26 @@
 			$this->Fileuploader->fileview( $id );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param type $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$fichiers = array( );
 			if( $this->action == 'add' ) {
@@ -286,6 +333,8 @@
 
 				$this->set( 'pdo_id', $pdo_id );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -377,7 +426,9 @@
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 *
+		 * @param type $fichiermodule_id
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -385,9 +436,12 @@
 		}
 
 		/**
-		 *    Génération du courrier de PDO pour le bénéficiaire
+		 * Génération du courrier de PDO pour le bénéficiaire
+		 *
+		 * @param type $propopdo_id
 		 */
 		public function printCourrier( $propopdo_id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propopdo->personneId( $propopdo_id ) ) );
 
 			$pdf = $this->Propopdo->getCourrierPdo( $propopdo_id, $this->Session->read( 'Auth.User.id' ) );
 

@@ -10,55 +10,72 @@
 		Set::extract( $dsp, 'Personne.qual' ).' '.Set::extract( $dsp, 'Personne.nom' ).' '.Set::extract( $dsp, 'Personne.prenom' )
 	);
 
-	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::extract( $dsp, 'Personne.id' ) ) );
-
 	$dsp_id = Set::classicExtract( $this->request->data, 'Dsp.id' );
 ?>
 
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+<?php
+	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
-		// Formulaire
-		echo $this->Xform->create( null, array( 'id' => 'dspform' ) );
+	// Formulaire
+	echo $this->Xform->create( null, array( 'id' => 'dspform' ) );
 
-		// FIXME: id / personne_id
-		$tmp = '';
-		if( !empty( $this->request->data['Dsp']['id'] ) ) {
-			$tmp .= $this->Xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
-		}
-		$tmp .= $this->Xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => Set::extract( $dsp, 'Personne.id' ) ) );
-		echo $this->Xhtml->tag( 'div', $tmp );
+	// FIXME: id / personne_id
+	$tmp = '';
+	if( !empty( $this->request->data['Dsp']['id'] ) ) {
+		$tmp .= $this->Xform->input( 'Dsp.id', array( 'type' => 'hidden' ) );
+	}
+	$tmp .= $this->Xform->input( 'Dsp.personne_id', array( 'type' => 'hidden', 'value' => Set::extract( $dsp, 'Personne.id' ) ) );
+	echo $this->Xhtml->tag( 'div', $tmp );
 /*
 Plan:
-	- GeneraliteDSPP
-	- SituationSociale
-		* CommunSituationSociale
-		* DetailDifficulteSituationSociale (0-n)
-		* DetailAccompagnementSocialFamilial (0-n)
-		* DetailAccompagnementSocialIndividuel (0-n)
-		* DetailDifficulteDisponibilite (0-n)
-	- NiveauEtude
-	- DisponibiliteEmploi
-	- SituationProfessionnelle
-	- Mobilite
-		* CommunMobilite
-		* DetailMobilite (0-n)
-	- DifficulteLogement
-		* CommunDifficulteLogement
-		* DetailDifficulteLogement (0-n)
+- GeneraliteDSPP
+- SituationSociale
+	* CommunSituationSociale
+	* DetailDifficulteSituationSociale (0-n)
+	* DetailAccompagnementSocialFamilial (0-n)
+	* DetailAccompagnementSocialIndividuel (0-n)
+	* DetailDifficulteDisponibilite (0-n)
+- NiveauEtude
+- DisponibiliteEmploi
+- SituationProfessionnelle
+- Mobilite
+	* CommunMobilite
+	* DetailMobilite (0-n)
+- DifficulteLogement
+	* CommunDifficulteLogement
+	* DetailDifficulteLogement (0-n)
 */
+?>
+<fieldset>
+	<legend>Généralités</legend>
+	<?php
+		echo $this->Default->subform(
+			array(
+				'Dsp.sitpersdemrsa',
+				'Dsp.topisogroouenf',
+				'Dsp.topdrorsarmiant',
+				'Dsp.drorsarmianta2',
+				'Dsp.topcouvsoc'
+			),
+			array(
+				'options' => $options
+			)
+		);
 	?>
+</fieldset>
+
+<fieldset>
+	<legend>Situation sociale</legend>
 	<fieldset>
 		<legend>Généralités</legend>
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Dsp.sitpersdemrsa',
-					'Dsp.topisogroouenf',
-					'Dsp.topdrorsarmiant',
-					'Dsp.drorsarmianta2',
-					'Dsp.topcouvsoc'
+					'Dsp.accosocfam',
+					'Dsp.libcooraccosocfam' => array( 'type' => 'textarea' ),
+					'Dsp.accosocindi',
+					'Dsp.libcooraccosocindi' => array( 'type' => 'textarea' ),
+					'Dsp.soutdemarsoc'
 				),
 				array(
 					'options' => $options
@@ -67,280 +84,258 @@ Plan:
 		?>
 	</fieldset>
 
-	<fieldset>
-		<legend>Situation sociale</legend>
-		<fieldset>
-			<legend>Généralités</legend>
-			<?php
+	<?php
+		// SituationSociale - DetailDifficulteSituationSociale (0-n)
+		echo $this->Dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['Detaildifsoc']['difsoc'] );
+
+		// SituationSociale - DetailDifficulteSituationSocialeProfessionel (0-n)
+		if ( $cg == 'cg58' ) {
+			echo '<fieldset>';
+				echo '<legend>'.__d( 'dsp', 'Detaildifsocpro.difsocpro' ).'</legend>';
+				echo $this->Dsphm->fields( 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $dsp_id, '2110', $options['Detaildifsocpro']['difsocpro'] );
 				echo $this->Default->subform(
 					array(
-						'Dsp.accosocfam',
-						'Dsp.libcooraccosocfam' => array( 'type' => 'textarea' ),
-						'Dsp.accosocindi',
-						'Dsp.libcooraccosocindi' => array( 'type' => 'textarea' ),
-						'Dsp.soutdemarsoc'
+						'Dsp.suivimedical' => array( 'type' => 'radio', 'options' => $options['Dsp']['suivimedical'] )
 					),
 					array(
 						'options' => $options
 					)
 				);
-			?>
-		</fieldset>
+			echo '</fieldset>';
+		}
 
-		<?php
-			// SituationSociale - DetailDifficulteSituationSociale (0-n)
-			echo $this->Dsphm->fieldset( 'Detaildifsoc', 'difsoc', 'libautrdifsoc', $dsp_id, '0407', $options['Detaildifsoc']['difsoc'] );
+		// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
+		echo $this->Dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['Detailaccosocfam']['nataccosocfam'] );
 
-			// SituationSociale - DetailDifficulteSituationSocialeProfessionel (0-n)
-			if ( $cg == 'cg58' ) {
-				echo '<fieldset>';
-					echo '<legend>'.__d( 'dsp', 'Detaildifsocpro.difsocpro' ).'</legend>';
-					echo $this->Dsphm->fields( 'Detaildifsocpro', 'difsocpro', 'libautrdifsocpro', $dsp_id, '2110', $options['Detaildifsocpro']['difsocpro'] );
-					echo $this->Default->subform(
-						array(
-							'Dsp.suivimedical' => array( 'type' => 'radio', 'options' => $options['Dsp']['suivimedical'] )
-						),
-						array(
-							'options' => $options
-						)
-					);
-				echo '</fieldset>';
-			}
+		// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
+		echo $this->Dsphm->fieldset( 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $dsp_id, '0420', $options['Detailaccosocindi']['nataccosocindi'] );
 
-			// SituationSociale - DetailAccompagnementSocialFamilial (0-n)
-			echo $this->Dsphm->fieldset( 'Detailaccosocfam', 'nataccosocfam', 'libautraccosocfam', $dsp_id, '0413', $options['Detailaccosocfam']['nataccosocfam'] );
+		// SituationSociale - DetailDifficulteDisponibilite (0-n)
+		echo $this->Dsphm->fieldset( 'Detaildifdisp', 'difdisp', null, $dsp_id, null, $options['Detaildifdisp']['difdisp'] );
+	?>
+</fieldset>
 
-			// SituationSociale - DetailAccompagnementSocialIndividuel (0-n)
-			echo $this->Dsphm->fieldset( 'Detailaccosocindi', 'nataccosocindi', 'libautraccosocindi', $dsp_id, '0420', $options['Detailaccosocindi']['nataccosocindi'] );
+<fieldset>
+	<legend>Niveau d'étude</legend>
+	<?php
+		echo $this->Default->subform(
+			array(
+				'Dsp.nivetu',
+				'Dsp.nivdipmaxobt',
+				'Dsp.annobtnivdipmax',
+				'Dsp.topqualipro',
+				'Dsp.libautrqualipro',
+				'Dsp.topcompeextrapro',
+				'Dsp.libcompeextrapro'
+			),
+			array(
+				'options' => $options
+			)
+		);
+	?>
+</fieldset>
 
-			// SituationSociale - DetailDifficulteDisponibilite (0-n)
-			echo $this->Dsphm->fieldset( 'Detaildifdisp', 'difdisp', null, $dsp_id, null, $options['Detaildifdisp']['difdisp'] );
-		?>
-	</fieldset>
+<fieldset>
+	<legend>Disponibilités emploi</legend>
+	<?php
+		echo $this->Default->subform(
+			array(
+				'Dsp.topengdemarechemploi'
+			),
+			array(
+				'options' => $options
+			)
+		);
+	?>
+</fieldset>
+
+<fieldset>
+	<legend>Situation professionnelle</legend>
+	<?php
+		if ( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $this->Default->subform(
+				array(
+					'Dsp.hispro',
+					'Dsp.libsecactderact66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
+					'Dsp.libsecactderact' => array( 'label' => '' ),
+					'Dsp.libderact66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
+					'Dsp.libderact' => array( 'label' => '' ),
+					'Dsp.cessderact',
+					'Dsp.topdomideract',
+					'Dsp.libsecactdomi66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
+					'Dsp.libsecactdomi' => array( 'label' => '' ),
+					'Dsp.libactdomi66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
+					'Dsp.libactdomi' => array( 'label' => '' ),
+					'Dsp.duractdomi',
+					'Dsp.inscdememploi',
+					'Dsp.topisogrorechemploi',
+					'Dsp.accoemploi',
+					'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
+					'Dsp.topprojpro'
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+		else {
+			echo $this->Default->subform(
+				array(
+					'Dsp.hispro',
+					'Dsp.libderact',
+					'Dsp.libsecactderact',
+					'Dsp.cessderact',
+					'Dsp.topdomideract',
+					'Dsp.libactdomi',
+					'Dsp.libsecactdomi',
+					'Dsp.duractdomi',
+					'Dsp.inscdememploi',
+					'Dsp.topisogrorechemploi',
+					'Dsp.accoemploi',
+					'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
+					'Dsp.topprojpro'
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+
+		if ( $cg == 'cg58' ) {
+			echo $this->Dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
+		}
+
+		if ( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $this->Default->subform(
+				array(
+					'Dsp.libsecactrech66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
+					'Dsp.libsecactrech' => array( 'label' => '' ),
+					'Dsp.libemploirech66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
+					'Dsp.libemploirech' => array( 'label' => '' ),
+					'Dsp.topcreareprientre',
+					'Dsp.concoformqualiemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+		else {
+			echo $this->Default->subform(
+				array(
+					'Dsp.libemploirech',
+					'Dsp.libsecactrech',
+					'Dsp.topcreareprientre',
+					'Dsp.concoformqualiemploi'
+				),
+				array(
+					'options' => $options
+				)
+			);
+		}
+
+		if ($cg=='cg58') {
+			echo $this->Default->subform(
+				array(
+					'Dsp.libformenv'
+				),
+				array(
+					'options' => $options
+				)
+			);
+			echo $this->Dsphm->fieldset( 'Detailfreinform', 'freinform', null, $dsp_id, null, $options['Detailfreinform']['freinform'] );
+		}
+	?>
+</fieldset>
+
+<fieldset>
+	<legend>Mobilité</legend>
 
 	<fieldset>
-		<legend>Niveau d'étude</legend>
+		<legend>Généralités</legend>
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Dsp.nivetu',
-					'Dsp.nivdipmaxobt',
-					'Dsp.annobtnivdipmax',
-					'Dsp.topqualipro',
-					'Dsp.libautrqualipro',
-					'Dsp.topcompeextrapro',
-					'Dsp.libcompeextrapro'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		?>
-	</fieldset>
-
-	<fieldset>
-		<legend>Disponibilités emploi</legend>
-		<?php
-			echo $this->Default->subform(
-				array(
-					'Dsp.topengdemarechemploi'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		?>
-	</fieldset>
-
-	<fieldset>
-		<legend>Situation professionnelle</legend>
-		<?php
-			if ( Configure::read( 'Cg.departement' ) == 66 ) {
-				echo $this->Default->subform(
-					array(
-						'Dsp.hispro',
-						'Dsp.libsecactderact66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-						'Dsp.libsecactderact' => array( 'label' => '' ),
-						'Dsp.libderact66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-						'Dsp.libderact' => array( 'label' => '' ),
-						'Dsp.cessderact',
-						'Dsp.topdomideract',
-						'Dsp.libsecactdomi66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-						'Dsp.libsecactdomi' => array( 'label' => '' ),
-						'Dsp.libactdomi66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-						'Dsp.libactdomi' => array( 'label' => '' ),
-						'Dsp.duractdomi',
-						'Dsp.inscdememploi',
-						'Dsp.topisogrorechemploi',
-						'Dsp.accoemploi',
-						'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
-						'Dsp.topprojpro'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
-			else {
-				echo $this->Default->subform(
-					array(
-						'Dsp.hispro',
-						'Dsp.libderact',
-						'Dsp.libsecactderact',
-						'Dsp.cessderact',
-						'Dsp.topdomideract',
-						'Dsp.libactdomi',
-						'Dsp.libsecactdomi',
-						'Dsp.duractdomi',
-						'Dsp.inscdememploi',
-						'Dsp.topisogrorechemploi',
-						'Dsp.accoemploi',
-						'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
-						'Dsp.topprojpro'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
-
-			if ( $cg == 'cg58' ) {
-				echo $this->Dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
-			}
-
-			if ( Configure::read( 'Cg.departement' ) == 66 ) {
-				echo $this->Default->subform(
-					array(
-						'Dsp.libsecactrech66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-						'Dsp.libsecactrech' => array( 'label' => '' ),
-						'Dsp.libemploirech66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-						'Dsp.libemploirech' => array( 'label' => '' ),
-						'Dsp.topcreareprientre',
-						'Dsp.concoformqualiemploi'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
-			else {
-				echo $this->Default->subform(
-					array(
-						'Dsp.libemploirech',
-						'Dsp.libsecactrech',
-						'Dsp.topcreareprientre',
-						'Dsp.concoformqualiemploi'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
-
-			if ($cg=='cg58') {
-				echo $this->Default->subform(
-					array(
-						'Dsp.libformenv'
-					),
-					array(
-						'options' => $options
-					)
-				);
-				echo $this->Dsphm->fieldset( 'Detailfreinform', 'freinform', null, $dsp_id, null, $options['Detailfreinform']['freinform'] );
-			}
-		?>
-	</fieldset>
-
-	<fieldset>
-		<legend>Mobilité</legend>
-
-		<fieldset>
-			<legend>Généralités</legend>
-			<?php
-				echo $this->Default->subform(
-					array(
-						'Dsp.topmoyloco'
-					),
-					array(
-						'options' => $options
-					)
-				);
-
-				if( $cg=='cg58' ) {
-					echo $this->Dsphm->fieldset( 'Detailmoytrans', 'moytrans', 'libautrmoytrans', $dsp_id, '2008', $options['Detailmoytrans']['moytrans'] );
-				}
-
-				echo $this->Default->subform(
-					array(
-						'Dsp.toppermicondub',
-						'Dsp.topautrpermicondu',
-						'Dsp.libautrpermicondu'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			?>
-		</fieldset>
-
-		<?php
-			// Mobilite - DetailMobilite (0-n)
-			echo $this->Dsphm->fieldset( 'Detailnatmob', 'natmob', null, $dsp_id, null, $options['Detailnatmob']['natmob'] );
-		?>
-	</fieldset>
-
-	<fieldset>
-		<legend>Difficultés logement</legend>
-		<?php
-			echo $this->Default->subform(
-				array(
-					'Dsp.natlog'
+					'Dsp.topmoyloco'
 				),
 				array(
 					'options' => $options
 				)
 			);
 
-			if ($cg=='cg58') {
-				echo $this->Default->subform(
-					array(
-							'Dsp.statutoccupation'
-					),
-					array(
-							'options' => $options
-					)
-				);
-				echo $this->Dsphm->fieldset( 'Detailconfort', 'confort', null, $dsp_id, null, $options['Detailconfort']['confort'] );
+			if( $cg=='cg58' ) {
+				echo $this->Dsphm->fieldset( 'Detailmoytrans', 'moytrans', 'libautrmoytrans', $dsp_id, '2008', $options['Detailmoytrans']['moytrans'] );
 			}
 
 			echo $this->Default->subform(
 				array(
-					'Dsp.demarlog'
+					'Dsp.toppermicondub',
+					'Dsp.topautrpermicondu',
+					'Dsp.libautrpermicondu'
 				),
 				array(
 					'options' => $options
 				)
 			);
 		?>
+	</fieldset>
 
-		<?php
-			// DifficulteLogement - DetailDifficulteLogement
+	<?php
+		// Mobilite - DetailMobilite (0-n)
+		echo $this->Dsphm->fieldset( 'Detailnatmob', 'natmob', null, $dsp_id, null, $options['Detailnatmob']['natmob'] );
+	?>
+</fieldset>
+
+<fieldset>
+	<legend>Difficultés logement</legend>
+	<?php
+		echo $this->Default->subform(
+			array(
+				'Dsp.natlog'
+			),
+			array(
+				'options' => $options
+			)
+		);
+
+		if ($cg=='cg58') {
+			echo $this->Default->subform(
+				array(
+						'Dsp.statutoccupation'
+				),
+				array(
+						'options' => $options
+				)
+			);
+			echo $this->Dsphm->fieldset( 'Detailconfort', 'confort', null, $dsp_id, null, $options['Detailconfort']['confort'] );
+		}
+
+		echo $this->Default->subform(
+			array(
+				'Dsp.demarlog'
+			),
+			array(
+				'options' => $options
+			)
+		);
+	?>
+
+	<?php
+		// DifficulteLogement - DetailDifficulteLogement
 // 			if ( $cg == 'cg58' ) {
 // 				echo $this->Dsphm->fieldset( 'Detaildiflog', 'diflog', null, $dsp_id, null, $options['Detaildiflog']['diflog'] );
 // 			}
 // 			else {
-			echo $this->Dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['Detaildiflog']['diflog'] );
+		echo $this->Dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['Detaildiflog']['diflog'] );
 // 			}
-		?>
-	</fieldset>
+	?>
+</fieldset>
 
-	<div class="submit">
-		<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
-		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-	</div>
-	<?php echo $this->Form->end();?>
+<div class="submit">
+	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
+	<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 </div>
-<div class="clearer"><hr /></div>
+<?php echo $this->Form->end();?>
 
 <script type="text/javascript">
 	observeDisableFieldsOnValue( 'DspTopdrorsarmiant', [ 'DspDrorsarmianta2' ], '1', false );

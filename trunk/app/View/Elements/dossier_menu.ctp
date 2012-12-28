@@ -17,6 +17,9 @@
 	*/
 	if( isset( $dossierMenu ) ) {
 		$dossier = $dossierMenu;
+		if( isset( $dossierMenu['personne_id'] ) && !empty( $dossierMenu['personne_id'] ) ) {
+			$personne_id = $dossierMenu['personne_id'];
+		}
 	}
 	else {
 		if( isset( $personne_id ) ) {
@@ -47,10 +50,10 @@
 			<?php endif;?>
 
 			<?php
-				echo $this->Xhtml->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) ).
-				( $dossier['Dossier']['locked'] ? $this->Xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null ).
-				$this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $dossier ).
-				$this->Gestionanomaliebdd->foyerPersonnesSansPrestation( $dossier );
+				echo $this->Xhtml->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) )
+				.$this->Xhtml->lockedDossier( $dossier )
+				.$this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $dossier )
+				.$this->Gestionanomaliebdd->foyerPersonnesSansPrestation( $dossier );
 			?>
 		</h2>
 
@@ -58,8 +61,10 @@
 
 <?php
 	if( isset( $personne_id ) ) {
-		$personneDossier = Set::extract( $dossier, '/Foyer/Personne' );
-		foreach( $personneDossier as $i => $personne ) {
+		$personneDossier = null;
+
+		$personnesDossier = Set::extract( $dossier, '/Foyer/Personne' );
+		foreach( $personnesDossier as $i => $personne ) {
 			if( $personne_id == Set::classicExtract( $personne, 'Personne.id' ) ) {
 				$personneDossier = Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' ).' '.Set::classicExtract( $personne, 'Personne.prenom' );
 			}
@@ -224,7 +229,10 @@
 		}
 
 		$items['Synthèse du parcours d\'insertion'] = array( 'url' => array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] ) );
-		$items['Modification Dossier RSA'] = array( 'url' => array( 'controller' => 'dossiers', 'action' => 'edit', $dossier['Dossier']['id'] ) );
+		$items['Modification Dossier RSA'] = array(
+			'disabled' => !$this->Permissions->checkDossier( 'dossiers', 'edit', Hash::get( $this->viewVars, 'dossierMenu' ) ),
+			'url' => array( 'controller' => 'dossiers', 'action' => 'edit', $dossier['Dossier']['id'] )
+		);
 
 		// Préconisation d'orientation
 		if( Configure::read( 'Cg.departement' ) != 58 ) {
@@ -241,6 +249,6 @@
 			$items['Préconisation d\'orientation'] = $itemsPreconisations;
 		}
 
-		echo $this->Menu->make( $items );
+		echo $this->Menu->make2( $items );
 	?>
 </div>

@@ -2,11 +2,7 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'dossierMenu' => $dossierMenu ) );
 ?>
-
-<div class="with_treemenu">
 
 <?php $this->pageTitle = 'Informations sur le dossier';?>
 <h1><?php echo $this->pageTitle;?></h1>
@@ -53,5 +49,3 @@
 		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 	</div>
 <?php echo $this->Form->end();?>
-</div>
-<div class="clearer"><hr /></div>

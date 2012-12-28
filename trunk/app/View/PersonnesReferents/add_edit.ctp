@@ -5,8 +5,6 @@
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
 <script type="text/javascript">
@@ -15,7 +13,6 @@
 	} );
 </script>
 
-<div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
 <?php
 	echo $this->Xform->create( 'PersonneReferent', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
@@ -43,5 +40,3 @@
 		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 	</div>
 <?php echo $this->Xform->end();?>
-</div>
-<div class="clearer"><hr /></div>

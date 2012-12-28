@@ -17,8 +17,18 @@
 	{
 
 		public $name = 'Fichiersmodules';
+
 		public $uses = array( 'Fichiermodule' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'delete' => 'delete',
+		);
 
 		/**
 		*   Suppression du fichiers préalablement associés à un traitement donné
@@ -31,7 +41,7 @@
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 			}
 			else {
-				$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
 
 			$this->redirect( $this->referer() );

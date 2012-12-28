@@ -73,9 +73,6 @@
 ?>
 <?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
-<?php echo $this->element( 'dossier_menu', array( 'dossierMenu' => $dossierMenu ) ); ?>
-
-<div class="with_treemenu">
 <div id="resumeDossier">
 	<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
 		<ul class="actionMenu">
@@ -630,5 +627,3 @@
 		</tbody>
 	</table>
 </div>
-</div>
-<div class="clearer"><hr /></div>

@@ -22,22 +22,20 @@
 	}
 ?>
 
-<?php echo $this->element( 'dossier_menu', array( 'foyer_id' => $personne['Personne']['foyer_id'], 'personne_id' => $personne['Personne']['id'] ) );?>
+<h1><?php echo 'Visualisation d\'une personne « '.$title.' »';?></h1>
 
-<div class="with_treemenu">
-	<h1><?php echo 'Visualisation d\'une personne « '.$title.' »';?></h1>
+<ul class="actionMenu">
+	<?php
+		if( $this->Permissions->check( 'personnes', 'edit' ) ) {
+			echo '<li>'.$this->Xhtml->editLink(
+				'Éditer la personne « '.$title.' »',
+				array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
+				$this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu )
+			).' </li>';
+		}
 
-	<ul class="actionMenu">
-		<?php
-			if( $this->Permissions->check( 'personnes', 'edit' ) ) {
-				echo '<li>'.$this->Xhtml->editLink(
-					'Éditer la personne « '.$title.' »',
-					array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] )
-				).' </li>';
-			}
-
-		?>
-	</ul>
+	?>
+</ul>
 
 <div id="fichePers">
 	<table>
@@ -159,5 +157,3 @@
 		</table>
 	<?php endif;?>
 </div>
-</div>
-<div class="clearer"><hr /></div>

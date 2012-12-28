@@ -22,9 +22,27 @@
 
 		public $helpers = array( 'Locale', 'Xform', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'cloturer' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+		);
 
 		/**
 		 * http://valums.com/ajax-upload/
@@ -86,6 +104,8 @@
 			);
 
 			$personne_id = $personne_referent['PersonneReferent']['personne_id'];
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -142,6 +162,8 @@
 			if( !$this->PersonneReferent->Personne->exists() ) {
 				$this->cakeError( 'invalidParameter' );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$personnes_referents = $this->PersonneReferent->find(
 				'all',
@@ -229,6 +251,8 @@
 
 				$personne_id = $personne_referent['PersonneReferent']['personne_id'];
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Tentative d'obtention d'un jeton sur le dossier
 			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_id );
@@ -320,6 +344,8 @@
 				)
 			);
 			$this->assert( !empty( $personne_referent ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_referent['PersonneReferent']['personne_id'] ) ) );
 
 			$dossier_id = $this->PersonneReferent->Personne->dossierId( $personne_referent['PersonneReferent']['personne_id'] );
 

@@ -197,7 +197,7 @@
 	 * Si à true, on n'utilise pas les jetons sur les dossiers.
 	 * @default false
 	 */
-	Configure::write( 'Jetons.disabled', false );
+	Configure::write( 'Jetons2.disabled', false );
 
 	/**
 	 *   Paramètre pour définir les taux dans le formulaire du CUI :
@@ -390,8 +390,8 @@
 	 * @default null
 	 */
 	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
-	
-		
+
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/avisdemande)
 	 */
@@ -405,7 +405,7 @@
 			)
 		)
 	);
-	
+
 	/**
 	 * Permet de donner des valeurs par défaut au formulaire de cohorte des PDOs (cohortespdos/valide)
 	 */

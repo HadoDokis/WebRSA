@@ -16,16 +16,41 @@
 	 */
 	class RendezvousController extends AppController
 	{
-
 		public $name = 'Rendezvous';
+
 		public $uses = array( 'Rendezvous', 'Option' );
+
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
 			'add' => 'Rendezvous:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxreffonct' => 'read',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
 
 		/**
 		 *
@@ -105,7 +130,9 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Fonction permettant d'accéder à la page pour lier les fichiers.
+		 *
+		 * @param type $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -126,6 +153,8 @@
 			);
 
 			$personne_id = $rendezvous['Rendezvous']['personne_id'];
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$dossier_id = $this->Rendezvous->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -175,6 +204,7 @@
 
 		/**
 		 *
+		 * @param type $personne_id
 		 */
 		public function index( $personne_id = null ) {
 			$this->Rendezvous->Personne->unbindModelAll();
@@ -188,6 +218,8 @@
 				)
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
@@ -417,6 +449,8 @@
 
 			$this->assert( !empty( $rendezvous ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) ) );
+
 			$this->set( 'rendezvous', $rendezvous );
 			$this->set( 'personne_id', $rendezvous['Rendezvous']['personne_id'] );
 			$this->set( 'urlmenu', '/rendezvous/index/'.$rendezvous['Rendezvous']['personne_id'] );
@@ -466,6 +500,8 @@
 				$dossier_id = $this->Rendezvous->dossierId( $rdv_id );
 			}
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -503,7 +539,7 @@
 				if( $this->Rendezvous->provoquePassageCommission( $this->request->data ) ) {
 					$success = $this->Rendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
 				}
-				
+
 				// Création du référent si celui-ci est no présent
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
 					if( $success && !empty( $this->request->data['Rendezvous']['referent_id'] ) ) {
@@ -599,6 +635,8 @@
 				)
 			);
 
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $rendezvous['Rendezvous']['personne_id'] ) );
+
 			$dossier_id = $this->Rendezvous->dossierId( $id );
 			$this->Jetons2->get( $dossier_id );
 
@@ -608,16 +646,17 @@
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Sanctionrendezvousep58->find(
-						'first', array(
-					'fields' => array(
-						'Sanctionrendezvousep58.id',
-						'Sanctionrendezvousep58.dossierep_id'
-					),
-					'conditions' => array(
-						'Sanctionrendezvousep58.rendezvous_id' => $id
-					),
-					'contain' => false
-						)
+					'first',
+					array(
+						'fields' => array(
+							'Sanctionrendezvousep58.id',
+							'Sanctionrendezvousep58.dossierep_id'
+						),
+						'conditions' => array(
+							'Sanctionrendezvousep58.rendezvous_id' => $id
+						),
+						'contain' => false
+					)
 				);
 
 				if( !empty( $dossierep ) ) {
@@ -648,7 +687,10 @@
 		 * @param integer $rdv_id
 		 * @return void
 		 */
-		public function impression( $rdv_id = null ) { // FIXME: impression
+		public function impression( $rdv_id = null ) {
+			$personne_id = $this->Rendezvous->personneId( $rdv_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$pdf = $this->Rendezvous->getDefaultPdf( $rdv_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {

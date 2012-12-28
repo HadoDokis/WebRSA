@@ -127,8 +127,17 @@
 				foreach( $files as $i => $fichier ){
 					$return .= '<tr><td>'.$fichier['name'].'</td>';
 					$return .= '<td>'.$this->Locale->date( __( 'Locale->datetime' ), $fichier['created'] ).'</td>';
-					$return .= '<td>'.$this->Xhtml->link( 'Télécharger', array( 'action' => 'download', $fichier['id']    ) ).'</td>';
-					$return .= '<td>'.$this->Xhtml->link( 'Supprimer', array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'] ), array( 'enabled' => $this->Permissions->check( 'fichiersmodules', 'delete' ) ), 'Êtes-vous sûr de vouloir supprimer la pièce ?' ).'</td></tr>';
+					$return .= '<td>'.$this->Xhtml->link(
+						'Télécharger',
+						array( 'action' => 'download', $fichier['id'] ),
+						array( 'enabled' => array( 'enabled' => $this->Permissions->checkDossier( $this->request->params['controller'], 'download', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) ) ), )
+					).'</td>';
+					$return .= '<td>'.$this->Xhtml->link(
+						'Supprimer',
+						array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'] ),
+						array( 'enabled' => $this->Permissions->checkDossier( 'fichiersmodules', 'delete', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) ) ),
+						'Êtes-vous sûr de vouloir supprimer la pièce ?'
+						).'</td></tr>';
 				}
 				$return .= '</tbody></table>';
 			}
@@ -153,34 +162,42 @@
 			$datasFichiermodule = Set::classicExtract( $datas, 'Fichiermodule' );
 			$haspiecejointeDefault = ( ( count( $fichiers ) + count( $datasFichiermodule ) ) > 0 );
 
+			$permissionForm = $this->Permissions->checkDossier( $this->request->params['controller'], 'ajaxfileupload', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) );
+
 			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId, 'url' => Router::url( null, true ) ) );
-			$return .= '<fieldset><legend>'.required( $this->Default2->label( $fieldName ) ).'</legend>';
-			$return .= $this->Form->input( $fieldName, array( 'type' => 'radio', 'options' => $radioOptions, 'legend' => false, 'default' => $haspiecejointeDefault ) );
-			$return .= '<fieldset id="filecontainer-piecejointe" class="noborder invisible">'
-				.$this->create(
-					$fichiers,
-					Router::url( array( 'action' => 'ajaxfileupload' ), true )
-				)
-			.'</fieldset></fieldset>
-			<script type="text/javascript">
-			// <![CDATA[
-				document.observe( "dom:loaded", function() {
-					observeDisableFieldsetOnRadioValue(
-						\''.$formId.'\',
-						\'data['.$modelName.'][haspiecejointe]\',
-						$( \'filecontainer-piecejointe\' ),
-						\'1\',
-						false,
-						true
-					);
-				} );
-			// ]]>
-			</script>
-			<h2>Pièces déjà présentes</h2>'
-			.$this->results( $datasFichiermodule )
-			.'<div class="submit">'
-			.$this->Form->submit( 'Enregistrer', array( 'div'=>false ) )
-			.$this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) )
+			if( $permissionForm ) {
+				$return .= '<fieldset><legend>'.required( $this->Default2->label( $fieldName ) ).'</legend>';
+				$return .= $this->Form->input( $fieldName, array( 'type' => 'radio', 'options' => $radioOptions, 'legend' => false, 'default' => $haspiecejointeDefault ) );
+				$return .= '<fieldset id="filecontainer-piecejointe" class="noborder invisible">'
+					.$this->create(
+						$fichiers,
+						Router::url( array( 'action' => 'ajaxfileupload' ), true )
+					)
+				.'</fieldset></fieldset>
+				<script type="text/javascript">
+				// <![CDATA[
+					document.observe( "dom:loaded", function() {
+						observeDisableFieldsetOnRadioValue(
+							\''.$formId.'\',
+							\'data['.$modelName.'][haspiecejointe]\',
+							$( \'filecontainer-piecejointe\' ),
+							\'1\',
+							false,
+							true
+						);
+					} );
+				// ]]>
+				</script>';
+			}
+
+			$return .= '<h2>Pièces déjà présentes</h2>'
+			.$this->results( $datasFichiermodule );
+
+			$return .= '<div class="submit">';
+			if( $permissionForm ) {
+				$return .= $this->Form->submit( 'Enregistrer', array( 'div'=>false ) );
+			}
+			$return .= $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) )
 			.'</div>'
 			.$this->Form->end();
 

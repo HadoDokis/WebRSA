@@ -222,6 +222,8 @@
 	App::uses( 'ModelCache', 'Model/Datasource' );
 	App::uses( 'ControllerCache', 'Model/Datasource' );
 
+	App::uses( 'WebrsaPermissions', 'Utility' );
+
 	/**
 	 * Paramétrage iconv.
 	 */

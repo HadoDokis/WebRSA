@@ -7,7 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Sanitize' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe DetailsdroitsrsaController ...
@@ -35,13 +35,17 @@
 
 // 		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
-		public $typesActions = array(
-			'read' => array(
-				'view',
-			),
-			'write' => array(
-				'edit',
-			)
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'edit' => 'update',
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -169,7 +173,7 @@
 		public function menu() {
 			$this->assert( isset( $this->request->params['requested'] ), 'error404' );
 
-			$dossier = $this->Dossier->menu( $this->request->params, $this->Jetons2->sqLocked( 'Dossier', 'locked' ) );
+			$dossier = $this->Dossier->menu( $this->request->params, $this->Jetons2->qdLockParts() );
 
 			return $dossier;
 		}
@@ -182,6 +186,8 @@
 		 */
 		public function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $id ) ) );
 
 			$details = array();
 			$details = $this->Dossier->find(
@@ -392,7 +398,7 @@
 						'order' => array( 'PersonneReferent.dddesignation DESC' )
 					)
 				);
-				$personnesFoyer[$index]['Referent'] = $tPersReferent['Referent'];
+				$personnesFoyer[$index]['Referent'] = ( !empty( $tPersReferent ) ? $tPersReferent['Referent'] : array() );
 
 				$tContratinsertion = $this->Dossier->Foyer->Personne->Contratinsertion->find(
 					'first',
@@ -409,7 +415,7 @@
 						'order' => array( 'Contratinsertion.rg_ci DESC' )
 					)
 				);
-				$personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
+				$personnesFoyer[$index]['Contratinsertion'] = ( !empty( $tContratinsertion ) ? $tContratinsertion['Contratinsertion'] : array() );
 
 				$tCui = $this->Dossier->Foyer->Personne->Cui->find(
 					'first',
@@ -422,7 +428,7 @@
 						'order' => array( 'Cui.datecontrat DESC' )
 					)
 				);
-				$personnesFoyer[$index]['Cui'] = $tCui['Cui'];
+				$personnesFoyer[$index]['Cui'] = ( !empty( $tCui ) ? $tCui['Cui'] : array() );
 
 				// Dernière orientation
 				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(
@@ -438,7 +444,7 @@
 								'Typeorient.lib_type_orient',
 								'Structurereferente.lib_struc',
 								$this->Dossier->Foyer->Personne->Orientstruct->Referentorientant->sqVirtualField( 'nom_complet' )
-							
+
 						),
 						'joins' => array(
 							$this->Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient' ),
@@ -618,7 +624,7 @@
 
 				// Utilisation des nouvelles tables de stockage des infos Pôle Emploi
 				$tInfope = $this->Informationpe->derniereInformation($personnesFoyer[$index]);
-				$personnesFoyer[$index]['Informationpe'] = $tInfope['Historiqueetatpe'];
+				$personnesFoyer[$index]['Informationpe'] = ( !empty( $tInfope ) ? $tInfope['Historiqueetatpe'] : array() );
 
 				//  Liste des anciens dossiers par demandeurs et conjoints
 				$nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
@@ -698,8 +704,6 @@
 
 			$this->_setOptions();
 			$this->set( 'optionsep', $optionsep );
-
-			$this->set( 'dossierMenu', $this->DossiersMenus->dossierMenu( array( 'id' => $id ) ) );
 		}
 
 		/**
@@ -726,7 +730,7 @@
 				throw new NotFoundException();
 			}
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->dossierMenu( array( 'id' => $id ) ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $id ) ) );
 
 			$this->Jetons2->get( $id );
 
