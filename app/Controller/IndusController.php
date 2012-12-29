@@ -30,8 +30,8 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'index' => 'view',
-			'read' => 'view',
+			'index' => 'read',
+			'read' => 'read',
 		);
 
 		/**

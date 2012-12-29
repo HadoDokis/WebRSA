@@ -241,7 +241,10 @@
 			if( !empty( $dossier['Foyer']['Personne'] ) ) {
 				foreach( $dossier['Foyer']['Personne'] as $personnes ) {
 					if( in_array( $personnes['Prestation']['rolepers'], array( 'DEM', 'CJT' ) ) ) {
-						$itemsPreconisations[$personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom']] = array( 'url' => array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] ) );
+						$itemsPreconisations[$personnes['qual'].' '.$personnes['nom'].' '.$personnes['prenom']] = array(
+							'disabled' => !$this->Permissions->checkDossier( 'dossierssimplifies', 'edit', Hash::get( $this->viewVars, 'dossierMenu' ) ),
+							'url' => array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personnes['id'] )
+						);
 					}
 				}
 			}
