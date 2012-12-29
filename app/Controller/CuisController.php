@@ -26,10 +26,34 @@
 			'Fileuploader',
 			'Gedooo.Gedooo',
 			'Jetons2',
+			'DossiersMenus'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'cancel' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'valider' => 'update',
+			'view' => 'read',
 		);
 
 		public $aucunDroit = array( 'ajaxfileupload', 'impression', 'fileview', 'download' );
-		
+
 		public $commeDroit = array(
 			'add' => 'Cuis:edit',
 			'view' => 'Cuis:index'
@@ -92,7 +116,7 @@
 
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
-			
+
 			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins' => 'S' ) ); // Liste des services instructeurs en lien avec un Service Social
 
 			$this->set( compact( 'options' ) );
@@ -151,6 +175,8 @@
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
 
 			$fichiers = array( );
 			$cui = $this->Cui->find(
@@ -219,6 +245,8 @@
 		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
@@ -301,6 +329,8 @@
 				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 				$valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
 			$this->Jetons2->get( $dossier_id );
@@ -410,8 +440,8 @@
 					$nbCui = $cui['Cui']['rangcui'];
 				}
 			}
-			
-			
+
+
 			if (!isset($this->request->data['Cui']['compofamiliale']) || empty($this->request->data['Cui']['compofamiliale'])) {
 				$compofamiliale = $this->Cui->Personne->Foyer->find(
 					'first',
@@ -427,7 +457,7 @@
 								'alias' => 'Personne',
 								'type' => 'INNER',
 								'foreignKey' => false,
-								
+
 							)*/
 						),
 						'conditions' => array(
@@ -469,6 +499,8 @@
 		 * @param integer $cui_id
 		 */
 		public function valider( $cui_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $cui_id ) ) ) );
+
 			$qd_cui = array(
 				'conditions' => array(
 					'Cui.id' => $cui_id
@@ -509,6 +541,8 @@
 		 * @return void
 		 */
 		public function impression( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
+
 			$pdf = $this->Cui->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -526,6 +560,8 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 
@@ -535,6 +571,8 @@
 		 * @param integer $id
 		 */
 		public function view( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
+
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}
@@ -545,6 +583,8 @@
          * @param integer $id
          */
         public function cancel( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
+
 			$qd_cui = array(
 				'conditions' => array(
 					$this->modelClass.'.id' => $id

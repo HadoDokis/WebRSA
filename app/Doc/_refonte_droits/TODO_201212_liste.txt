@@ -91,7 +91,7 @@ PersonnesReferents -> OK (partiel)
 	filelink
 	'fileview' => 'read',
 	index
-Propospdos -> OK (partiel) + TODO: rechercher la liste des rendez-vous dans la plage de dates
+Propospdos -> OK (partiel)
 	add
 	'ajaxetatpdo' => 'read',
 	'ajaxfiledelete' => 'delete',
@@ -103,7 +103,7 @@ Propospdos -> OK (partiel) + TODO: rechercher la liste des rendez-vous dans la p
 	index
 	printCourrier
 	view
-Rendezvous
+Rendezvous -> OK (partiel) + TODO: rechercher la liste des rendez-vous dans la plage de dates
 	add
 	'ajaxfiledelete' => 'delete',
 	'ajaxfileupload' => 'update',

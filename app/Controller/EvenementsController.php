@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe EvenementsController.
 	 *
@@ -15,26 +15,40 @@
 	 */
 	class EvenementsController extends AppController
 	{
-
 		public $name = 'Evenements';
+
 		public $uses = array( 'Option', 'Foyer', 'Evenement' );
+
 		public $helpers = array( 'Locale', 'Xform' );
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'fg', $this->Option->fg() );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 * @param integer $foyer_id
+		 */
 		public function index( $foyer_id = null ){
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			$evenements = $this->Evenement->find(
 				'all',

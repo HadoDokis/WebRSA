@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Infofinanciere.
 	 *
@@ -245,5 +245,30 @@
 			}
 		}
 
+		/**
+		 * Retourne l'id du dossier à partir de l'id d'un enregistrement.
+		 *
+		 * @param integer $id
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$querydata = array(
+				'fields' => array( "{$this->alias}.dossier_id" ),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'order' => null,
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result[$this->alias]['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

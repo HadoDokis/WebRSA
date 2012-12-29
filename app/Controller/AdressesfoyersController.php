@@ -19,11 +19,24 @@
 
 		public $uses = array( 'Adressefoyer', 'Option' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Adressesfoyers:index',
 			'add' => 'Adressesfoyers:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'read',
+			'edit' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -48,6 +61,8 @@
 		public function index( $foyer_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			// Recherche des adresses du foyer
 			$adresses = $this->Adressefoyer->find(
@@ -87,6 +102,8 @@
 			// Mauvais paramètre
 			$this->assert( !empty( $adresse ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $adresse['Adressefoyer']['foyer_id'] ) ) );
+
 			// Assignation à la vue
 			$this->set( 'adresse', $adresse );
 			$this->set( 'urlmenu', '/adressesfoyers/index/'.$adresse['Adressefoyer']['foyer_id'] );
@@ -102,6 +119,8 @@
 		public function add( $foyer_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			$dossier_id = $this->Adressefoyer->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -150,6 +169,8 @@
 
 			$dossier_id = $this->Adressefoyer->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$this->Jetons2->get( $dossier_id );
 

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe InfosfinancieresController.
 	 *
@@ -16,18 +16,35 @@
 	class InfosfinancieresController  extends AppController
 	{
 		public $name = 'Infosfinancieres';
+
 		public $uses = array( 'Infofinanciere', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
+
 		public $helpers = array( 'Paginator', 'Locale', 'Csv' );
+
+		public $components = array(
+			'DossiersMenus',
+			'Jetons2',
+			'Search.Prg' => array( 'actions' => array( 'indexdossier' ) )
+		);
 
 		public $commeDroit = array( 'view' => 'Infosfinancieres:index' );
 
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'indexdossier' ) ) );
-
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'exportcsv' => 'read',
+			'index' => 'read',
+			'indexdossier' => 'read',
+			'view' => 'read',
+		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			parent::beforeFilter();
@@ -39,9 +56,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function indexdossier() {
 			$this->set( 'annees', $this->Infofinanciere->range() );
 			if( !empty( $this->request->data ) ) {
@@ -63,12 +79,14 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null ) {
 			//Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			//Recherche des adresses du foyer
 			$infosfinancieres = $this->Infofinanciere->find(
@@ -120,12 +138,14 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $infofinanciere_id
+		 */
 		public function view( $infofinanciere_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $infofinanciere_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Infofinanciere->dossierId( $infofinanciere_id ) ) ) );
 
 			$infofinanciere = $this->Infofinanciere->find(
 				'first',
@@ -174,9 +194,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );

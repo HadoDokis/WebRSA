@@ -1482,5 +1482,47 @@
 				)
 			);
 		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array(
+					"Contratinsertion.personne_id",
+					"Orientstruct.personne_id",
+					"Propopdo.personne_id",
+				),
+				'joins' => array(
+					$this->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
+					$this->Nonrespectsanctionep93->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Nonrespectsanctionep93->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Nonrespectsanctionep93->join( 'Propopdo', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				if( !empty( $result['Contratinsertion']['personne_id'] ) ) {
+					return $result['Contratinsertion']['personne_id'];
+				}
+				else if( !empty( $result['Orientstruct']['personne_id'] ) ) {
+					return $result['Orientstruct']['personne_id'];
+				}
+				else if( !empty( $result['Propopdo']['personne_id'] ) ) {
+					return $result['Propopdo']['personne_id'];
+				}
+			}
+
+			return null;
+		}
 	}
 ?>

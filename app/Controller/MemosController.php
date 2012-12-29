@@ -21,16 +21,32 @@
 
 		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Jetons2', 'Default', 'Fileuploader' );
+		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'add' => 'Memos:edit'
 		);
 
-		
 		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
-		
-				
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+		);
+
 		/**
 		*
 		*/
@@ -38,7 +54,7 @@
 			$options = $this->Memo->enums();
 			$this->set( 'options', $options );
 		}
-		
+
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -74,8 +90,8 @@
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
-		
-		
+
+
 		/**
 		 * Fonction permettant d'accéder à la page pour lier les fichiers à une manifestation d'allocataire
 		 * (CG 66).
@@ -84,6 +100,8 @@
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Memo->personneId( $id ) ) ) );
 
 			$fichiers = array();
 			$memo = $this->Memo->find(
@@ -151,6 +169,8 @@
 		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$nbrPersonnes = $this->Memo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'contain' => false ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
@@ -215,6 +235,8 @@
 				$personne_id = $memo['Memo']['personne_id'];
 			}
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$dossier_id = $this->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
@@ -253,6 +275,8 @@
 		 *
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Memo->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 

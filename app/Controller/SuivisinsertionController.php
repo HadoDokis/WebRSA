@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe SuivisinsertionController.
 	 *
@@ -15,13 +15,25 @@
 	 */
 	class SuivisinsertionController extends AppController
 	{
-
 		public $name = 'Suivisinsertion';
+
 		public $uses = array( 'Foyer', 'Dossier', 'Suiviinstruction', 'Contratinsertion', 'Orientstruct', 'Structurereferente', 'Typocontrat', 'Typeorient', 'Actioninsertion', 'Option', 'Rendezvous', 'Aidedirecte', 'Cui' );
 
-		/**		 * *******************************************************************
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
 		 *
-		 * ** ****************************************************************** */
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
@@ -30,12 +42,15 @@
 			$this->set( 'typeserins', $this->Option->typeserins() );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$details = array( );
 
@@ -73,7 +88,7 @@
 				)
 			);
 			$details = Set::merge( $details, $tSuiviinstruction );
-			
+
 			/**
 			  Personnes
 			 */
@@ -105,7 +120,7 @@
 					'order' => array( 'Contratinsertion.rg_ci DESC' )
 						)
 				);
-				$personnesFoyer[$index]['Contratinsertion'] = $tContratinsertion['Contratinsertion'];
+				$personnesFoyer[$index]['Contratinsertion'] = ( isset( $tContratinsertion['Contratinsertion'] ) ? $tContratinsertion['Contratinsertion'] : array() );
 
 				// Contrat insertion lié à la personne
 				$tCui = $this->Cui->find(
@@ -115,7 +130,7 @@
 					'order' => array( 'Cui.datecontrat DESC' )
 						)
 				);
-				$personnesFoyer[$index]['Cui'] = $tCui['Cui'];
+				$personnesFoyer[$index]['Cui'] = ( isset( $tCui['Cui'] ) ? $tCui['Cui'] : array() );
 
 				// Actions insertions engagées par la personne
 				$tActioninsertion = $this->Actioninsertion->find(

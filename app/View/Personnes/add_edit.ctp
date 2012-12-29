@@ -46,4 +46,5 @@
 <div class="submit">
 	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
 	<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-</div>	<?php echo $this->Form->end();?>
+</div>
+<?php echo $this->Form->end();?>

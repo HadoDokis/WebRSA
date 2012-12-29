@@ -9,12 +9,7 @@
 
 // -----------------------------------------------------------------------------
 
-	$components = array( 'DossiersMenus' );
-
-	FIXME: avant Jetons2->get( .. )
-$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $pdo['Propopdo']['personne_id'] ) );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -23,18 +18,13 @@ $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $pdo['Propopdo']
 		 * @var array
 		 */
 		public $crudMap = array(
-			'add' => 'create',
-			'ajaxfiledelete' => 'delete',
-			'ajaxfileupload' => 'update',
-			'delete' => 'delete',
-			'download' => 'read',
-			'edit' => 'update',
-			'filelink' => 'read',
-			'fileview' => 'read',
-			'impression' => 'read',
-			'index' => 'read',
-			'view' => 'read',
+			'' => '',
 		);
+
+	TODO: avant Jetons2->get( .. )
+$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) ) );
+
+$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
 
 		$this->Permissions->checkDossier( 'personnes', 'add', $dossierMenu )
 
@@ -72,3 +62,28 @@ $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $pdo['Propopdo']
 		}
 
 // -----------------------------------------------------------------------------
+
+		/**
+		 * Retourne l'id du dossier auquel est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$querydata = array(
+				'fields' => array( "{$this->alias}.dossier_id" ),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result[$this->alias]['dossier_id'];
+			}
+			else {
+				return null;
+			}
+		}

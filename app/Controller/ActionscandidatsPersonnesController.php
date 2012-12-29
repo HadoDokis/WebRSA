@@ -19,11 +19,38 @@
 		public $name = 'ActionscandidatsPersonnes';
 		public $uses = array( 'ActioncandidatPersonne','Option' );
 		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 			'view' => 'ActionscandidatsPersonnes:index',
 			'add' => 'ActionscandidatsPersonnes:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxpart' => 'read',
+			'ajaxreferent' => 'read',
+			'ajaxreffonct' => 'read',
+			'ajaxstruct' => 'read',
+			'cancel' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'maillink' => 'read',
+			'printFiche' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -135,6 +162,8 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$personne_id = Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.personne_id' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
             $this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
@@ -183,6 +212,8 @@
 		 */
 		public function index( $personne_id ) {
 			// Préparation du menu du dossier
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'dossier_id', $dossier_id );
@@ -429,9 +460,12 @@
                 $dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
             }
             else {
+				$personne_id = $this->ActioncandidatPersonne->personneId( $id );
                 $dossier_id = $this->ActioncandidatPersonne->dossierId( $id );
             }
             $this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
             $this->Jetons2->get( $dossier_id );
 
@@ -677,6 +711,8 @@
 		 * @param integer $actioncandidat_personne_id
 		 */
 		public function printFiche( $actioncandidat_personne_id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->ActioncandidatPersonne->personneId( $actioncandidat_personne_id ) ) );
+
 			$pdf = $this->ActioncandidatPersonne->getPdfFiche( $actioncandidat_personne_id );
 
 			if( $pdf ) {
@@ -694,6 +730,8 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->ActioncandidatPersonne->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 
@@ -714,6 +752,7 @@
 			$actioncandidat = $this->{$this->modelClass}->find( 'first', $qd_actioncandidat );
 
 			$personne_id = Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.personne_id' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->set( 'personne_id', $personne_id );
 
@@ -750,6 +789,9 @@
 		public function view( $id ) {
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
 			$this->ActioncandidatPersonne->forceVirtualFields = false;
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -807,6 +849,9 @@
 		 * @param integer $id
 		 */
 		public function maillink( $id = null ) {
+			$personne_id = $this->ActioncandidatPersonne->personneId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
 			$actioncandidat_personne = $this->ActioncandidatPersonne->find(
 				'first', array(
 					'conditions' => array(

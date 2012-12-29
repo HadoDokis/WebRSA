@@ -22,13 +22,29 @@
 
 		public $helpers = array( 'Xform','Default2',  'Default', 'Theme' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Modescontact:index',
 			'add' => 'Modescontact:edit'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'read',
+			'edit' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = array();
 			$options['Modecontact']['nattel'] = $this->Option->nattel();
@@ -38,10 +54,16 @@
 			$this->set( compact( 'options' ) );
 		}
 
+		/**
+		 *
+		 * @param integer $foyer_id
+		 */
 		public function index( $foyer_id = null ){
 			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			// Recherche des personnes du foyer
 			$modescontact = $this->Modecontact->find(
@@ -58,11 +80,23 @@
 			$this->_setOptions();
 		}
 
+		/**
+		 *
+		 * @param integer $foyer_id
+		 */
 		public function add( $foyer_id = null ){
 			$this->assert( valid_int( $foyer_id ), 'invalidParameter' );
 
 			$dossier_id = $this->Foyer->dossierId( $foyer_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
+			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -91,13 +125,26 @@
 			$this->render( 'add_edit' );
 		}
 
+		/**
+		 *
+		 * @param integer $id
+		 */
 		public function edit( $id = null ){
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$dossier_id = $this->Modecontact->dossierId( $id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
+
 			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$id = $this->Modecontact->field( 'foyer_id', array( 'id' => $id ) );
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $id ) );
+			}
 
 			// Essai de sauvegarde
 			if( !empty( $this->request->data ) ) {
@@ -138,6 +185,10 @@
 
 		}
 
+		/**
+		 *
+		 * @param integer $modecontact_id
+		 */
 		public function view( $modecontact_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $modecontact_id ), 'error404' );
@@ -154,6 +205,8 @@
 			);
 
 			$this->assert( !empty( $modecontact ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $modecontact['Modecontact']['foyer_id'] ) ) );
 
 			// Assignations à la vue
 			$this->set( 'foyer_id', $modecontact['Modecontact']['foyer_id'] );

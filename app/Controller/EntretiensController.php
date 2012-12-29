@@ -21,11 +21,31 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
 			'add' => 'Entretiens:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxaction' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		public $aucunDroit = array( 'ajaxaction', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
@@ -49,9 +69,10 @@
 			$this->set( compact( 'options', 'typerdv' ) );
 		}
 
-
 		/**
-		 *   Ajax pour les partenaires fournissant l'action liée à l'entretien
+		 * Ajax pour les partenaires fournissant l'action liée à l'entretien
+		 *
+		 * @param integer $actioncandidat_id
 		 */
 		public function ajaxaction( $actioncandidat_id = null ) {
 			Configure::write( 'debug', 0 );
@@ -103,14 +124,14 @@
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -118,10 +139,13 @@
 		}
 
 		/**
-		 *   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Fonction permettant d'accéder à la page pour lier les fichiers.
+		 *
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) ) );
 
 			$fichiers = array( );
 			$entretien = $this->Entretien->find(
@@ -186,8 +210,11 @@
 
 		/**
 		 *
+		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			// On s'assure que la personne existe
 			$this->Entretien->Personne->unbindModelAll();
 			$nbrPersonnes = $this->Entretien->Personne->find(
@@ -247,6 +274,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -271,6 +299,7 @@
 
 				$personne_id = $entretien['Entretien']['personne_id'];
 			}
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Entretien->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -353,8 +382,11 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) ) );
+
 			$this->Entretien->forceVirtualFields = true;
 			$qd_entretien = array(
 				'conditions' => array(
@@ -395,8 +427,11 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 

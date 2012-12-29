@@ -26,15 +26,31 @@
 			),
 			'Gedooo.Gedooo',
 			'Cohortes' => array( 'cohorte' ),
-			'Jetons2'
+			'Jetons2',
+			'DossiersMenus'
 		);
 
 		public $helpers = array( 'Default2', 'Csv' );
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'cohorte' => 'read',
+			'exportcsv' => 'read',
+			'impression' => 'read',
+			'impression_cohorte' => 'read',
+			'impressions' => 'read',
+			'index' => 'read',
+		);
 
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			/// Mise en cache (session) de la liste des codes Insee pour les selects
 			/// TODO: Une fonction ?
@@ -69,11 +85,13 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id = null ) {
 			$this->assert( is_numeric( $personne_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
 
@@ -187,9 +205,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function cohorte() {
 			if( !empty( $this->request->data ) ) {
 				$this->request->data = Set::expand( $this->request->data );
@@ -344,10 +361,13 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $personne_id
+		 * @throws NotFoundException
+		 */
 		public function add( $personne_id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
 			if( !empty( $erreurs ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -468,13 +488,13 @@
 
 				// Tentative d'acquisition du jeton sur le dossier
 				$this->Jetons2->get( $dossier_id );
-				
+
 				// Retour à l'index en cas d'annulation
 				if( isset( $this->request->data['Cancel'] ) ) {
 					$this->Jetons2->release( $dossier_id );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
-				
+
 				if( !empty( $this->request->data ) ) {
 					if( empty( $this->request->data['Nonrespectsanctionep93']['id'] ) ) {
 						unset( $this->request->data['Nonrespectsanctionep93']['id'] );
@@ -543,9 +563,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function impressions() {
 			if( !empty( $this->request->data ) ) {
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -571,9 +590,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function exportcsv() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -594,11 +612,13 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function impression( $id ) {
 			$this->assert( is_numeric( $id ), 'invalidParameter' );
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Relancenonrespectsanctionep93->personneId( $id ) ) );
 
 			$this->Relancenonrespectsanctionep93->begin();
 
@@ -621,9 +641,8 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * 
+		 */
 		public function impression_cohorte() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );

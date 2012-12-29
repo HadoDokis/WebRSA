@@ -6,13 +6,9 @@
 	}
 	$this->modelClass = Inflector::classify( $this->request->params['controller'] );
 	$this->pageTitle =  __d( 'apre', "Apres::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 ?>
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( $this->modelClass, $fichiers, $apre, $options['haspiecejointe'] );
-	?>
-</div>
-<div class="clearer"><hr /></div>
+<?php
+	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+	echo $this->Fileuploader->element( $this->modelClass, $fichiers, $apre, $options['haspiecejointe'] );
+?>

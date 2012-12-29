@@ -162,7 +162,11 @@
 
 					$content = '';
 					$htmlOptions = array( 'title' => $title );
-					if( isset( $item['url'] ) && $this->Permissions->check( $item['url']['controller'], $item['url']['action'] ) ) {
+
+					$controllerName = ( isset( $item['url']['controller'] ) ? $item['url']['controller'] : $this->request->params['controller'] );
+					$actionName = ( isset( $item['url']['action'] ) ? $item['url']['action'] : $this->request->params['action'] );
+
+					if( isset( $item['url'] ) && ( $item['url'] != '#' ) && $this->Permissions->check( $controllerName, $actionName ) ) {
 						$content .= $this->Html->link( $key, $item['url'], $htmlOptions ).$sub;
 					}
 					else if( !empty( $sub ) ) {

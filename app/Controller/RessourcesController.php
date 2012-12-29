@@ -19,11 +19,24 @@
 
 		public $uses = array( 'Ressource', 'Option', 'Personne', 'Ressourcemensuelle', 'Detailressourcemensuelle' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Ressources:index',
 			'add' => 'Ressources:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -38,10 +51,14 @@
 
 		/**
 		 *
+		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$ressources = $this->Ressource->find(
 					'all', array(
 				'conditions' => array(
@@ -64,10 +81,13 @@
 
 		/**
 		 *
+		 * @param integer $ressource_id
 		 */
 		public function view( $ressource_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Ressource->personneId( $ressource_id ) ) ) );
 
 			$ressource = $this->Ressource->find(
 					'first', array(
@@ -92,10 +112,13 @@
 
 		/**
 		 *
+		 * @param integer $personne_id
 		 */
 		public function add( $personne_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$qd_personne = array(
 				'conditions' => array(
@@ -173,12 +196,13 @@
 
 		/**
 		 *
-		 *
-		 *
+		 * @param integer $ressource_id
 		 */
 		public function edit( $ressource_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $ressource_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Ressource->personneId( $ressource_id ) ) ) );
 
 			$qd_ressource = array(
 				'conditions' => array(
