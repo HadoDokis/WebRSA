@@ -15,14 +15,29 @@
 	 */
 	class DetailsdroitsrsaController extends AppController
 	{
-
 		public $name = 'Detailsdroitsrsa';
+
+		public $components = array( 'DossiersMenus', 'Jetons2' );
+
 		public $uses = array( 'Detaildroitrsa',  'Option' , 'Dossier', 'Detailcalculdroitrsa');
 
 		public $commeDroit = array(
 			'view' => 'Detailsdroitsrsa:index'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'topsansdomfixe', $this->Option->topsansdomfixe() );
@@ -32,10 +47,15 @@
 			$this->set( 'sousnatpf', $this->Option->sousnatpf() );
 		}
 
+		/**
+		 *
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null ){
-			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$detaildroitrsa = $this->Detaildroitrsa->find(
 				'first',
@@ -52,7 +72,11 @@
 			$this->set( 'detaildroitrsa', $detaildroitrsa );
 		}
 
-		public function view( $detaildroitrsa_id = null ) {
+		/**
+		 *
+		 * @param integer $detaildroitrsa_id
+		 */
+		/*public function view( $detaildroitrsa_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $detaildroitrsa_id ), 'error404' );
 
@@ -71,7 +95,7 @@
 			// Assignations à la vue
 			$this->set( 'dossier_id', $detaildroitrsa['Detaildroitrsa']['dossier_id'] );
 			$this->set( 'detaildroitrsa', $detaildroitrsa );
-		}
+		}*/
 	}
 
 ?>

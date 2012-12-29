@@ -1,8 +1,6 @@
 <?php $this->pageTitle = 'APREs';?>
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
 
-<div class="with_treemenu">
-	<h1><?php echo 'APRE  ';?></h1>
+<h1><?php echo 'APRE  ';?></h1>
 
 <?php
 	$montantrestant = null;
@@ -96,6 +94,3 @@
 		)
 	);
 ?>
-
-</div>
-<div class="clearer"><hr /></div>

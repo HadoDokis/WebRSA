@@ -1,19 +1,16 @@
 <?php
     $domain = "actioncandidat_personne_".Configure::read( 'ActioncandidatPersonne.suffixe' );
-    echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 ?>
-
-<div class="with_treemenu">
-    <?php
-        echo $this->Xhtml->tag(
-            'h1',
-            $this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}" )
-        );
-    ?>
+<?php
+	echo $this->Xhtml->tag(
+		'h1',
+		$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}" )
+	);
+?>
 <?php
 	echo $this->Xform->create( 'ActioncandidatPersonne', array( 'id' => 'viewForm' ) );
 
@@ -128,12 +125,10 @@
 		echo $this->Fileuploader->results( Set::classicExtract( $actionscandidatspersonne, 'Fichiermodule' ) );
 	?>
 </div>
-    <div class="submit">
-        <?php
+<div class="submit">
+	<?php
 
-            echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-        ?>
-    </div>
-    <?php echo $this->Xform->end();?>
+		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+	?>
 </div>
-<div class="clearer"><hr /></div>
+<?php echo $this->Xform->end();?>

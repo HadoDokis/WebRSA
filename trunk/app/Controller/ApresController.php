@@ -17,13 +17,43 @@
 	{
 
 		public $name = 'Apres';
+
 		public $uses = array( 'Apre', 'Histoaprecomplementaire', 'Dossier', 'Option', 'Personne', 'ApreComiteapre', 'Prestation', 'Dsp', 'Formpermfimo', 'Actprof', 'Permisb', 'Amenaglogt', 'Acccreaentr', 'Acqmatprof', 'Locvehicinsert', 'Contratinsertion', 'Relanceapre', 'Tiersprestataireapre', 'Structurereferente', 'Referent', 'Foyer' );
+
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
-		public $components = array( 'Fileuploader', 'Jetons2' );
+
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+
 		public $commeDroit = array(
 			'view' => 'Apres:index'
 		);
+
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxref' => 'read',
+			'ajaxstruct' => 'read',
+			'ajaxtiersprestaactprof' => 'read',
+			'ajaxtiersprestaformpermfimo' => 'read',
+			'ajaxtiersprestaformqualif' => 'read',
+			'ajaxtiersprestapermisb' => 'read',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'view' => 'read',
+		);
 
 		/**
 		 * Méthode commune d'envoi des options dans les vues.
@@ -106,6 +136,8 @@
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) ) );
+
 			$fichiers = array( );
 			$apre = $this->{$this->modelClass}->find(
 				'first',
@@ -184,6 +216,8 @@
 		 * @return void
 		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$qd_personne = array(
 				'conditions' => array(
 					'Personne.id' => $personne_id
@@ -493,6 +527,7 @@
 		 * @return void
 		 */
 		public function view( $apre_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $apre_id ) ) ) );
 
 			$this->Apre->forceVirtualFields = true;
 
@@ -554,6 +589,14 @@
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			if( $this->action == 'add' ) {
+				$personne_id = $id;
+			}
+			else {
+				$personne_id = $this->{$this->modelClass}->personneId( $id );
+			}
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Liste de pièces pour chaque modèle lié
 			foreach( $this->Apre->aidesApre as $modeleLie ) {

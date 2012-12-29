@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Suiviinstruction.
 	 *
@@ -79,9 +79,10 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param type $field
+		 * @return type
+		 */
 		public function sqDerniere($field) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$table = $dbo->fullTableName( $this, false );
@@ -93,6 +94,31 @@
 					ORDER BY {$table}.id DESC
 					LIMIT 1
 			";
+		}
+
+		/**
+		 * Retourne l'id du dossier auquel est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function dossierId( $id ) {
+			$querydata = array(
+				'fields' => array( "{$this->alias}.dossier_id" ),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result[$this->alias]['dossier_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

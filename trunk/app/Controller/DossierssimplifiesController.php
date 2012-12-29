@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe DossierssimplifiesController.
 	 *
@@ -15,12 +15,26 @@
 	 */
 	class DossierssimplifiesController extends AppController
 	{
-
 		public $name = 'Dossierssimplifies';
+
 		public $uses = array( 'Dossier', 'Foyer', 'Personne', 'Option', 'Structurereferente', 'Zonegeographique', 'Typeorient', 'Orientstruct', 'Typocontrat' );
-		public $components = array( 'Gedooo.Gedooo' );
+
+		public $components = array( 'Gedooo.Gedooo', 'DossiersMenus', 'Jetons2' );
+
 		public $commeDroit = array(
 			'add' => 'Dossierssimplifies:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'view' => 'read',
 		);
 
 		/**
@@ -38,10 +52,14 @@
 			$this->set( 'refsorientants', $this->Structurereferente->Referent->listOptions() );
 		}
 
+
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $id ) ) );
+
 			$details = array( );
 
 			$typeorient = $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) );
@@ -247,13 +265,25 @@
 			$this->_setOptions();
 		}
 
+
 		/**
 		 *
-		 *
-		 *
+		 * @param type $personne_id
+		 * @param type $orient_id
 		 */
 		public function edit( $personne_id = null, $orient_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$dossier_id = $this->Personne->dossierId( $personne_id );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'view', $dossier_id ) );
+			}
 
 			$qd_personne = array(
 				'conditions' => array(
@@ -325,6 +355,7 @@
 
 				if( $saved ) {
 					$this->Dossier->commit();
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
 				}

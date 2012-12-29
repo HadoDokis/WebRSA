@@ -6,12 +6,8 @@
 	}
 
 	$this->pageTitle =  __d( 'cui', "Cuis::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Fileuploader->element( 'Cui', $fichiers, $cui, $options['haspiecejointe'] );
-	?>
-</div>
-<div class="clearer"><hr /></div>
+<?php
+	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+	echo $this->Fileuploader->element( 'Cui', $fichiers, $cui, $options['haspiecejointe'] );
+?>

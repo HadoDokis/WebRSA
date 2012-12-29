@@ -16,13 +16,27 @@
 	class IndusController  extends AppController
 	{
 		public $name = 'Indus';
+
 		public $uses = array( 'Infofinanciere', 'Indu', 'Option', 'Dossier', 'Personne', 'Foyer', 'Cohorteindu' );
+
 		public $commeDroit = array( 'view' => 'Indus:index' );
 
-		/**
-		*
-		*/
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'view',
+			'read' => 'view',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
@@ -33,12 +47,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null) {
-			//Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -57,6 +71,8 @@
 		public function view( $dossier_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );

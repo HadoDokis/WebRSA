@@ -47,6 +47,9 @@
 			$controllerName = Inflector::camelize( $controllerName );
 			$return = false;
 
+			if( $controllerName === 'CakeError' ) {
+				return true;
+			}
 			if( ControllerCache::aucunDroit( $controllerName, $actionName ) ) {
 				$return = true;
 			}

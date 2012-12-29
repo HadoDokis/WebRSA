@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe HistoriquesepsController.
 	 *
@@ -16,14 +16,29 @@
 	class HistoriquesepsController extends AppController
 	{
 		public $name = 'Historiqueseps';
+
 		public $uses = array( 'Dossierep', 'Option' );
 
 		public $helpers = array( 'Default2', 'Xpaginator2' );
 
-		/**
-		*
-		*/
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'view_passage' => 'read',
+		);
+
+		/**
+		 *
+		 * @param string $modeleTheme
+		 * @param string $modeleDecision
+		 */
 		protected function _setOptions( $modeleTheme = null, $modeleDecision = null ) {
 			$options = $this->Dossierep->Passagecommissionep->enums();
 			$options['Dossierep']['themeep'] = $this->Dossierep->themesCg();
@@ -46,12 +61,15 @@
 		}
 
 		/**
-		* Affiche la liste des passages en commission d'EP pour une personne donnée.
-		* Possibilité de filtrer par thématique.
-		*/
-
-		public function index( $personne_id = null ){
+		 * Affiche la liste des passages en commission d'EP pour une personne donnée.
+		 * Possibilité de filtrer par thématique.
+		 *
+		 * @param integer $personne_id
+		 */
+		public function index( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$queryData = array(
 				'conditions' => array(
@@ -85,11 +103,14 @@
 		}
 
 		/**
-		* Visualisation des détails du passage d'un dossier d'EP en commission d'EP
-		*/
-
+		 * Visualisation des détails du passage d'un dossier d'EP en commission d'EP
+		 *
+		 * @param integer $passagecommssionep_id
+		 */
 		public function view_passage( $passagecommssionep_id ) {
 			$this->assert( valid_int( $passagecommssionep_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id ) ) ) );
 
 			$passage = $this->Dossierep->Passagecommissionep->find(
 				'first',

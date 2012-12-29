@@ -1,8 +1,4 @@
 <?php $this->pageTitle = 'Préconisation d\'orientation';?>
-<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
-
-<div class="with_treemenu">
-
 <h1>Préconisation d'orientation</h1>
 
 <table class="tooltips">
@@ -32,12 +28,13 @@
 						h( Set::classicExtract( $personne, 'Structurereferente.lib_struc' )  ),
 						$this->Xhtml->editLink(
 							'Editer l\'orientation',
-							array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['Personne']['id'] )
+							array( 'controller' => 'dossierssimplifies', 'action' => 'edit', $personne['Personne']['id'] ),
+							$this->Permissions->checkDossier( 'dossierssimplifies', 'edit', $dossierMenu )
 						),
 						$this->Xhtml->printLink(
 							'Imprimer la notification',
 							array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
-							!empty( $personne['Orientstruct']['typeorient_id'] )
+							$this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) && !empty( $personne['Orientstruct']['typeorient_id'] )
 						),
 					),
 					array( 'class' => 'odd' ),
@@ -47,5 +44,3 @@
 		?>
 	</tbody>
 </table>
-</div>
-<div class="clearer"><hr /></div>

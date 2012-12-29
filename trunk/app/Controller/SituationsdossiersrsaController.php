@@ -15,14 +15,30 @@
 	 */
 	class SituationsdossiersrsaController extends AppController
 	{
-
 		public $name = 'Situationsdossiersrsa';
+
 		public $uses = array( 'Situationdossierrsa',  'Option' , 'Dossier', 'Suspensiondroit',  'Suspensionversement');
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Situationsdossiersrsa:index'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'view' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
@@ -31,10 +47,15 @@
 			$this->set( 'motisusversrsa', $this->Option->motisusversrsa() );
 		}
 
+		/**
+		 *
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null ){
-			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$situationdossierrsa = $this->Situationdossierrsa->find(
 				'first',
@@ -54,9 +75,15 @@
 			$this->set( 'situationdossierrsa', $situationdossierrsa );
 		}
 
+		/**
+		 *
+		 * @param integer $situationdossierrsa_id
+		 */
 		public function view( $situationdossierrsa_id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $situationdossierrsa_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Situationdossierrsa->dossierId( $situationdossierrsa_id ) ) ) );
 
 			$situationdossierrsa = $this->Situationdossierrsa->find(
 				'first',

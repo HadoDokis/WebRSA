@@ -1,3 +1,14 @@
+/*
+lib/Cake/Console/cake derniersdossiersallocataires
+lib/Cake/Console/cake permissions
+lib/Cake/Console/cake preorientation (? FIXME ?)
+lib/Cake/Console/cake pgsqlcake.maintenance all
+
+/checks -> max_input_vars 2000
+*/
+
+-- Mon code INSEE: Bobigny, en tant que CI/Referent du PDV de Bobigny
+
 -- Foyers qui sont dans ma zone et qui n'y étaient pas avant
 -- Ex.: 164071, 162545, 162714, 144244, 143035, 126546, 122368, 136406, 174032, 115661
 SELECT
