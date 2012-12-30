@@ -16,8 +16,10 @@
 	class Dossierspcgs66Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
+
 		public $uses = array( 'Dossierpcg66', 'Option', 'Typenotifpdo', 'Decisionpdo' );
-		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2' );
+
+		public $components = array( 'Fileuploader', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'add' => 'Dossierspcgs66:edit',
@@ -27,9 +29,27 @@
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxetatpdo' => 'read',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'fileview' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
 
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Dossierpcg66->enums();
 
@@ -76,50 +96,56 @@
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param integer $id
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		*   Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 * Téléchargement des fichiers préalablement associés
+		 *
+		 * @param integer $fichiermodule_id
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
-
 		/**
-		*	Affichage de l'état du dossier PCG
-		*/
-
+		 * Affichage de l'état du dossier PCG
+		 *
+		 * @param type $typepdo_id
+		 * @param type $user_id
+		 * @param type $decisionpdo_id
+		 * @param type $retouravistechnique
+		 * @param type $vuavistechnique
+		 * @param type $complet
+		 * @param type $incomplet
+		 */
 		public function ajaxetatpdo( $typepdo_id = null, $user_id = null, $decisionpdo_id = null, $retouravistechnique = null, $vuavistechnique = null, $complet = null, $incomplet = null ) {
 			$dataTypepdo_id = Set::extract( $this->request->params, 'form.typepdo_id' );
 			$dataUser_id = Set::extract( $this->request->params, 'form.user_id' );
@@ -175,10 +201,11 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $foyer_id
+		 */
 		public function index( $foyer_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			$personneDem = $this->Dossierpcg66->Foyer->Personne->find(
 				'first',
@@ -222,43 +249,40 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
-
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			// Vérification du format de la variable
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+			if( $this->action == 'edit' ) {
+				$foyer_id = $this->Dossierpcg66->field( 'foyer_id', array( 'id' => $id ) );
+			}
+			else {
+				$foyer_id = $id;
+			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				if( $this->action == 'edit' ) {
-					$foyer_id = $this->Dossierpcg66->field( 'foyer_id', array( 'id' => $id ) );
-				}
-				else {
-					$foyer_id = $id;
-				}
 				$dossier_id = $this->Dossierpcg66->Foyer->dossierId( $foyer_id );
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $foyer_id ) );
@@ -475,10 +499,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function view( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) ) );
+
 			$dossierpcg66 = $this->Dossierpcg66->find(
 				'first',
 				array(
@@ -520,10 +546,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) );
+
 			$dossierpcg66 = $this->Dossierpcg66->find(
 				'first',
 				array(

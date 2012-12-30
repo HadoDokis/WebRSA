@@ -2,10 +2,7 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-
 	$domain = 'bilanparcours66';
-
-	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id') ) );
 ?>
 
 <?php
@@ -33,8 +30,6 @@
 		return "<label><input type=\"radio\" id=\"radio{$value}\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
 	}
 ?>
-
-<div class="with_treemenu">
 	<h1><?php echo $this->pageTitle;?></h1>
 
 	<?php
@@ -82,7 +77,7 @@
 					'options' => $options
 				)
 			);
-			
+
 		?>
 
 	<fieldset>
@@ -248,7 +243,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		
+
 		observeDisableFieldsetOnCheckbox(
 			'Bilanparcours66Bilanparcoursinsertion',
 			'BilanparcoursinsertionCheckbox',
@@ -711,8 +706,8 @@
 			)
 		);
 	?>
-    
-    
+
+
 	<fieldset id="peAudition" >
 		<?php
 			/// "Commission Audition PE": Examen du dossier par la commission EP Locale
@@ -732,7 +727,7 @@
 			?>
 		</fieldset>
 	</fieldset>
-    
+
     <fieldset id="peEpParcours" >
 
         <?php
@@ -928,7 +923,7 @@
                         echo "Avec changement de référent.";
                     echo "</div>";
                 ?>
-            </fieldset>    
+            </fieldset>
         </fieldset>
 
         </fieldset>
@@ -936,7 +931,7 @@
                 echo '<div class ="input date';
                     if (isset($this->validationErrors['Bilanparcours66']['datebilan'])) echo ' error';
                 echo '">';
-                
+
                 echo $this->Default->subform(
                     array(
                         'Pe.Bilanparcours66.datebilan' => array( 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date('Y') - 2, 'empty' => true, 'required' => true, 'div' => false )
@@ -1014,7 +1009,7 @@ elseif ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefauti
 			$options['Decisiondefautinsertionep66']['decision'][$avisep['decision']]
 		);
 
-		
+
 		if( !empty( $passagecommissionep['Decisiondefautinsertionep66'][0]['typeorient_id'] ) ) {
 			echo $this->Xhtml->tag(
 				'p',
@@ -1175,8 +1170,6 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 	</div>
 	<?php echo $this->Form->end();?>
-</div>
-<div class="clearer"><hr /></div>
 
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
@@ -1215,7 +1208,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				true
 			);
 		} );
-        
+
         observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Pe][Bilanparcours66][proposition]',
@@ -1224,7 +1217,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			false,
 			true
 		);
-        
+
 
         ['auditionpe', 'parcourspe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
@@ -1353,7 +1346,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 //		observeMemeReorientation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peContratReconduitAvecEp', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
 //        observeMemeReorientationSansContractualisation( 'PeBilanparcours66ChoixparcoursMaintien', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
 //        observeMemeReorientationSansContractualisation( 'PeBilanparcours66ChoixparcoursReorientation', 'PeSaisinebilanparcoursep66StructurereferenteId', 'PeSaisinebilanparcoursep66TypeorientId', 'peMaintienOrientAvecEpMemeRef', 'peMaintienOrientAvecEpChangementRef' );
-        
+
         <?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
 			dependantSelect( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>', 'PeBilanparcours66NvtypeorientIdAvecEp<?php echo $key ?>' );
 			try { $( 'PeBilanparcours66NvstructurereferenteIdAvecEp<?php echo $key ?>' ).onchange(); } catch(id) { }
@@ -1378,10 +1371,10 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
         <?php if($typeformulaire == 'pe') {?>
             ['Bilanparcours66TypeformulaireCg'].each( function ( elmt ) {
                 $( elmt ).writeAttribute('disabled', 'disabled');
-            } );   
+            } );
         <?php }?>
         // ---------------------------------------------------------------------
-            
+
 		<?php if ( isset( $passagecommissionep ) && !empty( $passagecommissionep ) ) { ?>
 			['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
 				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
@@ -1519,8 +1512,8 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			disableAndHideFormPart( maintienOrientMemeRefDiv );
 		}
 	}
-    
-    
+
+
     //test arnaud
     function observeMemeReorientationSansContractualisation( radioprecedente, structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
 		[ radioprecedente, typeorientId, structurereferenteId ].each( function( elmt ) {
@@ -1542,8 +1535,8 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 //        alert(currentValue);
         return currentValue;
     }
-    
-    
+
+
  	function checkMemeReorientationSansContractualisation( structurereferenteId, typeorientId, maintienOrientMemeRefDiv, maintienOrientChangementRefDiv ) {
 //		if ( ( $F( structurereferenteId ) != '' || $F( typeorientId ) != '' ) && $( structurereferenteId ).up(1).hasClassName( 'disabled' ) == false ) {
         if( ( formRadioValue( 'Bilan', 'data[Bilanparcours66][proposition]' ) == 'parcours' ) || ( formRadioValue( 'Bilan', 'data[Pe][Bilanparcours66][proposition]' ) == 'parcourspe' ) )  {

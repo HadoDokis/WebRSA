@@ -560,8 +560,8 @@
 					if( empty( $vxOrientstruct ) ) {
 						$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
 						return false;
-					} 
-					
+					}
+
 					if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
 						// Recherche de l'ancien contrat d'insertion
 						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
@@ -743,7 +743,7 @@
 							)
 						);
 
-						
+
 						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
 						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Cui->find(
@@ -1219,7 +1219,7 @@
 					$this->Saisinebilanparcoursep66->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisionsaisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
-					
+
 					array_words_replace(
 						$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
 							'Decisionsaisinebilanparcoursep66',
@@ -1248,7 +1248,7 @@
 							'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66cg'
 						)
 					),
-					
+
 					$this->Defautinsertionep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
 					$this->join( 'Dossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
@@ -1269,7 +1269,7 @@
 						'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66cg'
 					)
 				);
-				
+
 				$querydata = array(
 					'fields' => array_merge(
 						$this->fields(),
@@ -1300,10 +1300,10 @@
 					'conditions' => $conditions,
 					'contain' => false
 				);
-				
+
 				Cache::write( $cacheKey, $querydata );
 			}
-			
+
 			$querydata['conditions']['Bilanparcours66.id'] = $id;
 
 			$data = $this->find( 'first', $querydata );
@@ -1442,9 +1442,9 @@
 				return null;
 			}
 		}
-		
-		
-		
+
+
+
 		/**
 		 * Retourne l'ensemble de données liées au Bilan de parcours en cours
 		 *
@@ -1551,7 +1551,7 @@
 // debug($data);
 			return $data;
 		}
-		
+
 		/**
 		 *	Liste des options envoyées à la vue pour le Bilan de parcours 66
 		 * 	@return array
@@ -1587,6 +1587,31 @@
 			);
 			return $options;
 
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "{$this->alias}.personne_id" ),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result[$this->alias]['personne_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

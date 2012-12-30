@@ -4,11 +4,7 @@
 		echo $this->Xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( 'fileuploader.js' );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
-
-<div class="with_treemenu">
 	<?php
 		echo $this->Xhtml->tag(
 			'h1',
@@ -979,8 +975,6 @@
 		echo $this->Form->end();
 
 ?>
-</div>
-<div class="clearer"><hr /></div>
 
 <script type="text/javascript">
 	//<![CDATA[

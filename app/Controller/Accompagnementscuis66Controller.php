@@ -21,8 +21,26 @@
 
         public $helpers = array( 'Default2', 'Default' );
 
-        public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo' );
+        public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'impression' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
+
+		/**
+		 *
+		 */
         protected function _setOptions() {
 			$options = $this->Accompagnementcui66->enums();
 
@@ -58,10 +76,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $cui_id
+		 */
 		public function index( $cui_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Accompagnementcui66->Cui->personneId( $cui_id ) ) ) );
+
 			$nbrCuis = $this->Accompagnementcui66->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
 
@@ -96,26 +116,26 @@
 
 		}
 
-
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -139,6 +159,7 @@
 				$cui_id = Set::classicExtract( $accompagnementcui66, 'Accompagnementcui66.cui_id' );
 			}
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Accompagnementcui66->Cui->personneId( $cui_id ) ) ) );
 
 			// CUI en lien avec la proposition
 			$cui = $this->Accompagnementcui66->Cui->find(
@@ -217,6 +238,8 @@
 		 * @return void
 		 */
 		public function impression( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Accompagnementcui66->personneId( $id ) ) );
+
 			$pdf = $this->Accompagnementcui66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
@@ -228,20 +251,23 @@
 			}
 		}
 
-
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Accompagnementcui66->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function view( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Accompagnementcui66->personneId( $id ) ) ) );
+
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}

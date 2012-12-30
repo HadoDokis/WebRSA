@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Traitementpcg66.
 	 *
@@ -437,7 +437,7 @@
 						'contain' => false
 					)
 				);
-			
+
 
 				$dataModelTraitementpcg66 = array( 'Modeletraitementpcg66' => $data['Modeletraitementpcg66'] );
 				$dataModelTraitementpcg66['Modeletraitementpcg66']['traitementpcg66_id'] = $traitementpcg66_id;
@@ -446,7 +446,7 @@
 				$success = $this->Modeletraitementpcg66->save() && $success;
 
 				$modeletraitementpcg66_id = $this->Modeletraitementpcg66->id;
-				
+
 				if( !empty( $listesPieces ) ) {
 					if( $success ) {
 						foreach( array( 'piecesmodelestypescourrierspcgs66' ) as $tableliee ) {
@@ -749,7 +749,7 @@
 
 			$data = Set::merge( $data, $gestionnaire );
 			// Fin Ajout Florent CG66
-			
+
 			$options = array(
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
@@ -807,11 +807,11 @@
 // 				)
 // 			);
 		}
-		
-		
+
+
 		/**
-		*	Sous-requête afin d'obtenir la liste des traitements PCG 
-		*		- non clos 
+		*	Sous-requête afin d'obtenir la liste des traitements PCG
+		*		- non clos
 		*		- et dont la date d'échéance est dépassée
 		*/
 		public function sqTraitementpcg66Echu( $personnepcg66IdFied = 'Personnepcg66.id' ) {
@@ -831,5 +831,32 @@
 			);
 		}
 
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Personnepcg66.personne_id" ),
+				'joins' => array(
+					$this->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Personnepcg66']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

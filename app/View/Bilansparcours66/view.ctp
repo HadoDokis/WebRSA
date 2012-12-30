@@ -6,13 +6,11 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
-<div class="with_treemenu">
 <?php echo $this->Html->tag( 'h1', $title_for_layout );?>
 
 <fieldset><legend>BILAN DU PARCOURS</legend>
-	<?php 
+	<?php
 
 		echo $this->Xform->fieldValue( 'Bilanparcours66.typeformulaire', Set::enum( Set::classicExtract( $bilanparcours66, 'Bilanparcours66.typeformulaire'), $options['Bilanparcours66']['typeformulaire'] ) );
 		echo $this->Xform->fieldValue( 'Bilanparcours66.serviceinstructeur_id', Set::classicExtract( $bilanparcours66, 'Serviceinstructeur.lib_service' ) );
@@ -63,7 +61,7 @@
 			);
 
 			echo $this->Xform->fieldValue( 'Bilanparcours66.sitfam', Set::enum( Set::classicExtract( $bilanparcours66, 'Bilanparcours66.sitfam'), $options['Bilanparcours66']['sitfam'] ) );
-			
+
 		?>
 	</fieldset>
 	<?php if( $bilanparcours66['Bilanparcours66']['bilanparcoursinsertion'] != '0' ) :?>
@@ -93,12 +91,12 @@
 					'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 				)
 			);
-			
+
 			$structureOrigine = Set::classicExtract( $bilanparcours66, 'Typeorientorigine.lib_type_orient' );
 			$structureNouvelle = Set::classicExtract( $bilanparcours66, 'Structurereferentenouvelle.lib_struc' );
-			
+
 			echo $this->Xform->fieldValue( 'Bilanparcours66.proposition', Set::enum( Set::classicExtract( $bilanparcours66 , 'Bilanparcours66.proposition' ), $options['Bilanparcours66']['proposition'] ) );
-			
+
 			// Affichage selon la proposition
 			if( $bilanparcours66['Bilanparcours66']['proposition'] == 'aucun' ) {
 				echo '';
@@ -107,7 +105,7 @@
 				echo $this->Xform->fieldValue( 'Bilanparcours66.avecep_typeorientprincipale_id', Set::classicExtract( $bilanparcours66 , 'Typeorientprincipale.lib_type_orient' ) );
 				echo $this->Xform->fieldValue( 'Bilanparcours66.nvtypeorient_id', Set::classicExtract( $bilanparcours66 , 'NvTypeorient.lib_type_orient' ) );
 				echo $this->Xform->fieldValue( 'Bilanparcours66.nvstructurereferente_id', Set::classicExtract( $bilanparcours66 , 'NvStructurereferente.lib_struc' ) );
-				
+
 				$avecSansChangementRef = $bilanparcours66['Bilanparcours66']['changementrefsansep'];
 				if( $avecSansChangementRef == 'N' ) {
 					echo '<div class="input text"><span class="label">&nbsp;</span><span class="input">Sans changement de référent</span></div>';
@@ -115,7 +113,7 @@
 				else {
 					echo '<div class="input text"><span class="label">&nbsp;</span><span class="input">Avec changement de référent</span></div>';
 				}
-				
+
 				//En cas de maintien au sein de la même structure
 				if( $structureNouvelle == $structureOrigine ) {
 					echo '<div class="aere">';
@@ -135,7 +133,7 @@
 				echo $this->Xform->fieldValue( 'Bilanparcours66.avecep_typeorientprincipale_id', Set::classicExtract( $bilanparcours66 , 'Typeorientprincipale.lib_type_orient' ) );
 				echo $this->Xform->fieldValue( 'Bilanparcours66.nvtypeorient_id', Set::classicExtract( $bilanparcours66 , 'NvTypeorient.lib_type_orient' ) );
 				echo $this->Xform->fieldValue( 'Bilanparcours66.nvstructurereferente_id', Set::classicExtract( $bilanparcours66 , 'NvStructurereferente.lib_struc' ) );
-				
+
 				$avecSansChangementRef = $bilanparcours66['Bilanparcours66']['changementrefsansep'];
 				$choixparcours = $bilanparcours66['Bilanparcours66']['choixparcours'];
 				if( $avecSansChangementRef == 'N' && $choixparcours == 'maintien' ) {
@@ -174,4 +172,3 @@
 		)
 	);
 ?>
-<div class="clearer"></div>

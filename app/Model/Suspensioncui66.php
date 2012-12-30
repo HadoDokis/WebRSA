@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Suspensioncui66.
 	 *
@@ -29,7 +29,7 @@
 			),
 			'Formattable'
 		);
-		
+
 		public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -46,5 +46,33 @@
 				'order' => ''
 			)
 		);
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Cui.personne_id" ),
+				'joins' => array(
+					$this->join( 'Cui', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Cui']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

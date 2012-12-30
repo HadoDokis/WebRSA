@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Accompagnementcui66.
 	 *
@@ -33,7 +33,7 @@
 			),
 			'Gedooo.Gedooo'
 		);
-		
+
 		public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -50,7 +50,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public $validate = array(
 			'typeaccompagnementcui66' => array(
 				'rule' => 'notEmpty',
@@ -69,8 +69,8 @@
 				)
 			),
 		);
-		
-		
+
+
 		/**
 		* Chemin relatif pour les modèles de documents .odt utilisés lors des
 		* impressions. Utiliser %s pour remplacer par l'alias.
@@ -119,7 +119,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -130,10 +130,10 @@
 				)
 			);
 			$accompagnementcui66 = Set::merge( $accompagnementcui66, $user );
-			
+
 			return $accompagnementcui66;
 		}
-		
+
 		/**
 		 * Retourne le PDF de notification du CUI.
 		 *
@@ -141,7 +141,7 @@
 		 * @return string
 		 */
 		public function getDefaultPdf( $id, $user_id ) {
-			
+
 			$accompagnementcui66 = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );
@@ -169,6 +169,34 @@
 				false,
 				$options
 			);
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Cui.personne_id" ),
+				'joins' => array(
+					$this->join( 'Cui', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Cui']['personne_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>
