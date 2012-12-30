@@ -152,7 +152,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Rendezvous']['premier'] = $tRendezvous['Rendezvous'];
+				$personnesFoyer[$index]['Rendezvous']['premier'] = Hash::get( $tRendezvous, 'Rendezvous' );
 
 				// Dernier Rendez-vous
 				$tRendezvous = $this->Rendezvous->find(
@@ -164,7 +164,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Rendezvous']['dernier'] = $tRendezvous['Rendezvous'];
+				$personnesFoyer[$index]['Rendezvous']['dernier'] = Hash::get( $tRendezvous, 'Rendezvous' );
 
 				// Première Orientation
 				$tOrientstruct = $this->Orientstruct->find(
@@ -176,7 +176,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Orientstruct']['premiere'] = $tOrientstruct['Orientstruct'];
+				$personnesFoyer[$index]['Orientstruct']['premiere'] = Hash::get( $tOrientstruct, 'Orientstruct' );
 
 				// Dernière Orientation
 				$tOrientstruct = $this->Orientstruct->find(
@@ -188,7 +188,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Orientstruct']['derniere'] = $tOrientstruct['Orientstruct'];
+				$personnesFoyer[$index]['Orientstruct']['derniere'] = Hash::get( $tOrientstruct, 'Orientstruct' );
 
 				// Dernier passage effectif (lié à un passagecommissionep)
 				$tdossierEp = $this->Dossier->Foyer->Personne->Dossierep->find(

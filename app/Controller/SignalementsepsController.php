@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe SignalementsepsController.
 	 *
@@ -18,23 +18,36 @@
 
 		public $uses = array( 'Signalementep93' );
 
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
 		public $commeDroit = array(
 			'add' => 'Signalementseps:edit'
 		);
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+		);
 
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			$this->modelClass = 'Signalementep'.Configure::read( 'Cg.departement' );
 			parent::beforeFilter();
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function add( $contratinsertion_id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -125,6 +138,7 @@
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$erreursCandidatePassage = $this->{$this->modelClass}->Dossierep->erreursCandidatePassage( $personne_id );
 
@@ -191,6 +205,8 @@
 		*/
 
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
+
 			$signalementep = $this->{$this->modelClass}->Dossierep->find(
 				'first',
 				array(

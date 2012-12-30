@@ -10,8 +10,6 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'personne_id' => Set::classicExtract( $personne, 'Personne.id' ) ) );
 ?>
 
 <script type="text/javascript">
@@ -82,95 +80,91 @@
 	} );
 </script>
 
-<div class="with_treemenu">
-	<h1><?php echo $this->pageTitle;?></h1>
-	<?php
-		if( $this->action == 'add' ) {
-			echo $this->Form->create( 'Propocontratinsertioncov58', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
-			echo '<div>';
-			echo $this->Form->input( 'Propocontratinsertioncov58.id', array( 'type' => 'hidden', 'value' => '' ) );
+<h1><?php echo $this->pageTitle;?></h1>
+<?php
+	if( $this->action == 'add' ) {
+		echo $this->Form->create( 'Propocontratinsertioncov58', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo '<div>';
+		echo $this->Form->input( 'Propocontratinsertioncov58.id', array( 'type' => 'hidden', 'value' => '' ) );
 
-			echo $this->Form->input( 'Propocontratinsertioncov58.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
-			echo $this->Form->input( 'Propocontratinsertioncov58.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
-			if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
-				echo $this->Form->input( 'Propocontratinsertioncov58.avenant_id', array( 'type' => 'hidden', 'value' => $avenant_id ) );
-			}
-			echo '</div>';
+		echo $this->Form->input( 'Propocontratinsertioncov58.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+		echo $this->Form->input( 'Propocontratinsertioncov58.rg_ci', array( 'type' => 'hidden'/*, 'value' => '' */) );
+		if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
+			echo $this->Form->input( 'Propocontratinsertioncov58.avenant_id', array( 'type' => 'hidden', 'value' => $avenant_id ) );
 		}
-		else {
-			echo $this->Form->create( 'Propocontratinsertioncov58', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
-			echo '<div>';
-			echo $this->Form->input( 'Propocontratinsertioncov58.id', array( 'type' => 'hidden' ) );
+		echo '</div>';
+	}
+	else {
+		echo $this->Form->create( 'Propocontratinsertioncov58', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo '<div>';
+		echo $this->Form->input( 'Propocontratinsertioncov58.id', array( 'type' => 'hidden' ) );
 
-			echo $this->Form->input( 'Propocontratinsertioncov58.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+		echo $this->Form->input( 'Propocontratinsertioncov58.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
 
-			echo $this->Form->input( 'Propocontratinsertioncov58.dossiercov58_id', array( 'type' => 'hidden' ) );
-			echo '</div>';
-		}
-	?>
+		echo $this->Form->input( 'Propocontratinsertioncov58.dossiercov58_id', array( 'type' => 'hidden' ) );
+		echo '</div>';
+	}
+?>
 <fieldset>
 
-	<fieldset>
-		<legend>RÉFÉRENT UNIQUE</legend>
-		<table class="wide noborder">
-			<tr>
-				<td class="noborder">
-					<strong>Organisme chargé de l'instruction du dossier :</strong>
-					<?php echo $this->Xform->input( 'Propocontratinsertioncov58.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true ) );?>
-					<?php echo $this->Ajax->observeField( 'Propocontratinsertioncov58StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
-				</td>
-				<td class="noborder">
-					<strong>Nom du référent unique :</strong>
-					<?php echo $this->Xform->input( 'Propocontratinsertioncov58.referent_id', array('label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
-					<?php echo $this->Ajax->observeField( 'Propocontratinsertioncov58ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
-				</td>
-			</tr>
-			<tr>
-				<td class="wide noborder"><div id="StructurereferenteRef"></div></td>
-				<td class="wide noborder"><div id="ReferentRef"></div></td>
-			</tr>
-		</table>
-	</fieldset>
-
-	<fieldset>
-		<legend>CARACTÉRISTIQUES DU PRÉSENT CONTRAT</legend>
-		<?php
-			if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
-				echo $this->Xhtml->tag(
-					'div',
-					$this->Xform->label( __d( 'contratinsertion', 'Propocontratinsertioncov58.num_contrat' ) ).
-					'Avenant',
-					array(
-						'class' => 'input select'
-					)
-				);
-				echo $this->Xform->input( 'Propocontratinsertioncov58.num_contrat', array( 'type' => 'hidden', 'value' => $tc ) );
-			}
-			else {
-				echo $this->Xform->input( 'Propocontratinsertioncov58.num_contrat', array( 'label' => 'Type de contrat' , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );
-			}
-		?>
-
-		<table class="nbrCi wide noborder">
-			<tr class="nbrCi">
-				<td class="noborder">Nombre de renouvellements </td>
-				<td class="noborder"> <?php echo $nbrCi;?> </td>
-			</tr>
-		</table>
-
-		<?php echo $this->Xform->input( 'Propocontratinsertioncov58.dd_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
-		<?php echo $this->Xform->input( 'Propocontratinsertioncov58.duree_engag', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.duree_engag' ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
-		<?php echo $this->Xform->input( 'Propocontratinsertioncov58.df_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
-
-	</fieldset>
-		<?php echo $this->Xform->input( 'Propocontratinsertioncov58.datedemande', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.date_saisi_ci' ), 'type' => 'hidden' ) ) ;?>
+<fieldset>
+	<legend>RÉFÉRENT UNIQUE</legend>
+	<table class="wide noborder">
+		<tr>
+			<td class="noborder">
+				<strong>Organisme chargé de l'instruction du dossier :</strong>
+				<?php echo $this->Xform->input( 'Propocontratinsertioncov58.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true ) );?>
+				<?php echo $this->Ajax->observeField( 'Propocontratinsertioncov58StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+			</td>
+			<td class="noborder">
+				<strong>Nom du référent unique :</strong>
+				<?php echo $this->Xform->input( 'Propocontratinsertioncov58.referent_id', array('label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
+				<?php echo $this->Ajax->observeField( 'Propocontratinsertioncov58ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="wide noborder"><div id="StructurereferenteRef"></div></td>
+			<td class="wide noborder"><div id="ReferentRef"></div></td>
+		</tr>
+	</table>
 </fieldset>
 
-	<div class="submit">
-		<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
-		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-	</div>
-	<?php echo $this->Form->end();?>
-</div>
+<fieldset>
+	<legend>CARACTÉRISTIQUES DU PRÉSENT CONTRAT</legend>
+	<?php
+		if ( isset( $avenant_id ) && !empty( $avenant_id ) ) {
+			echo $this->Xhtml->tag(
+				'div',
+				$this->Xform->label( __d( 'contratinsertion', 'Propocontratinsertioncov58.num_contrat' ) ).
+				'Avenant',
+				array(
+					'class' => 'input select'
+				)
+			);
+			echo $this->Xform->input( 'Propocontratinsertioncov58.num_contrat', array( 'type' => 'hidden', 'value' => $tc ) );
+		}
+		else {
+			echo $this->Xform->input( 'Propocontratinsertioncov58.num_contrat', array( 'label' => 'Type de contrat' , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );
+		}
+	?>
 
-<div class="clearer"><hr /></div>
+	<table class="nbrCi wide noborder">
+		<tr class="nbrCi">
+			<td class="noborder">Nombre de renouvellements </td>
+			<td class="noborder"> <?php echo $nbrCi;?> </td>
+		</tr>
+	</table>
+
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.dd_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.duree_engag', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.duree_engag' ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.df_ci', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
+
+</fieldset>
+	<?php echo $this->Xform->input( 'Propocontratinsertioncov58.datedemande', array( 'label' => __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.date_saisi_ci' ), 'type' => 'hidden' ) ) ;?>
+</fieldset>
+
+<div class="submit">
+	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
+	<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
+</div>
+<?php echo $this->Form->end();?>

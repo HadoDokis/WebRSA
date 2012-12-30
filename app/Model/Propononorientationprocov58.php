@@ -121,6 +121,21 @@
 			),
 		);
 
+		/**
+		 * Règle de validation.
+		 *
+		 * @param type $field
+		 * @param type $compare_field
+		 * @return boolean
+		 */
+		public function choixStructure( $field = array(), $compare_field = null ) {
+			foreach( $field as $key => $value ) {
+				if( !empty( $this->data[$this->name][$compare_field] ) && ( $this->data[$this->name][$compare_field] != 'En attente' ) && empty( $value ) ) {
+					return false;
+				}
+			}
+			return true;
+		}
 
 		/**
 		* Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV

@@ -9,5 +9,5 @@
 ?>
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Fileuploader->element( 'Cui', $fichiers, $cui, $options['haspiecejointe'] );
+	echo $this->Fileuploader->element( 'Cui', $fichiers, $cui, $options['Cui']['haspiecejointe'] );
 ?>

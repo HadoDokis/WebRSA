@@ -23,8 +23,23 @@
 			'add' => 'Proposorientationscovs58:edit'
 		);
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$this->set( 'referents', $this->Propoorientationcov58->Referent->listOptions() );
 			$this->set( 'typesorients', $this->Propoorientationcov58->Typeorient->listOptions() );
@@ -36,22 +51,26 @@
 		}
 
 		/**
-		*
-		*/
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		*
-		*/
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		public function _add_edit( $personne_id = null ) {
+		/**
+		 *
+		 * @param integer $personne_id
+		 */
+		protected function _add_edit( $personne_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
 			if ( $this->action == 'edit' ) {
@@ -77,13 +96,15 @@
 									'Dossiercov58.id = Propoorientationcov58.dossiercov58_id',
 									'Dossiercov58.personne_id' => $personne_id
 								)
-							),
-							'contain' => false,
-							'order' => array( 'Propoorientationcov58.rgorient DESC' )
-						)
+							)
+						),
+						'contain' => false,
+						'order' => array( 'Propoorientationcov58.rgorient DESC' )
 					)
 				);
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->Propoorientationcov58->Dossiercov58->Personne->dossierId( $personne_id );
 			$this->Jetons2->get( $dossier_id );
@@ -187,6 +208,8 @@
 					)
 				)
 			);
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propoorientationcov58->Dossiercov58->personneId( $propoorientationcov58['Propoorientationcov58']['dossiercov58_id'] ) ) );
 
 			$this->Propoorientationcov58->begin();
 

@@ -30,7 +30,7 @@ $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->pers
 
 // FIXME (de manière générale):
 	1°) Pour les fonctions de suppression (Reorientationseps93, Fichiersmodules, Orientsstructs )
-		a°) On ne se préoccupent pas des jetons
+		a°) On ne se préoccupe pas des jetons
 		b°) Cette méthode n'est pas tout à fait adaptée: $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
 		c°) Controller::download()
 

@@ -627,5 +627,33 @@
 
 			return $this->ged( $gedooo_data, "{$this->alias}/convocationep_beneficiaire.odt", false, $datas['options'] );
 		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Contratinsertion.personne_id" ),
+				'joins' => array(
+					$this->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Contratinsertion']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

@@ -10,14 +10,16 @@
 
 <ul class="actionMenu">
 	<?php
-		if( $this->Permissions->check( 'ajoutdossiers', 'wizard' ) ) {
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			if( $this->Permissions->check( 'ajoutdossierscomplets', 'add' ) ) {
 				echo '<li>'.$this->Xhtml->addLink(
 					'Ajouter un dossier',
 					array( 'controller' => 'ajoutdossierscomplets', 'action' => 'add' )
 				).' </li>';
 			}
-			else {
+		}
+		else {
+			if( $this->Permissions->check( 'ajoutdossiers', 'wizard' ) ) {
 				echo '<li>'.$this->Xhtml->addLink(
 					'Ajouter un dossier',
 					array( 'controller' => 'ajoutdossiers', 'action' => 'wizard' )
@@ -26,12 +28,11 @@
 		}
 
 		if( $this->Permissions->check( 'dossierssimplifies', 'add' ) ) {
-			if( Configure::read( 'Cg.departement' ) != 58 ) { // FIXME
-
-					echo '<li>'.$this->Xhtml->addSimpleLink(
-						'Ajouter une préconisation d\'orientation',
-						array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
-					).' </li>';
+			if( Configure::read( 'Cg.departement' ) != 58 ) {
+				echo '<li>'.$this->Xhtml->addSimpleLink(
+					'Ajouter une préconisation d\'orientation',
+					array( 'controller' => 'dossierssimplifies', 'action' => 'add' )
+				).' </li>';
 			}
 		}
 

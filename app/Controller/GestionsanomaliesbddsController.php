@@ -19,9 +19,27 @@
 	{
 		public $uses = array( 'Gestionanomaliebdd', /*'Adressefoyer', 'Foyer', */'Dossier', 'Option' );
 
-		public $components = array( 'Gestionanomaliesbdd', 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+		public $components = array(
+			'Gestionanomaliesbdd',
+			'Gestionzonesgeos',
+			'Search.Prg' => array( 'actions' => array( 'index' ) ),
+			'Jetons2',
+			'DossiersMenus'
+		);
 
 		public $helpers = array( 'Default2', 'Gestionanomaliebdd' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'foyer' => 'read',
+			'index' => 'read',
+			'personnes' => 'delete',
+		);
 
 		/**
 		* Méthodes de comparaison disponibles
@@ -195,6 +213,8 @@
 		*/
 		public function foyer( $foyer_id ) {
 			$this->assert( is_numeric( $foyer_id ), 'error404' );
+
+			$this->DossiersMenus->checkDossierMenu( array( 'foyer_id' => $foyer_id ) );
 
 			// Personnes posant problème au sein du foyer
 			$named = Xset::bump( $this->request->params['named'], '__' );
@@ -494,7 +514,7 @@
 						array( "{$modelName}.personne_id" => $personneAgarderId ),
 						array( "{$modelName}.id" => $idAGarder )
 					) && $success;
-					
+
 					$modelClass->recursive = $recursive;
 				}
 			}
@@ -818,7 +838,7 @@
 							array( "{$model}.personne_id" => $data['Personne']['garder'] ),
 							array( "{$model}.id" => $data[$model]['id'] )
 						) && $success;
-						
+
 						$modelClass->recursive = $recursive;
 					}
 				}
@@ -933,6 +953,8 @@
 		*/
 		public function personnes( $foyer_id, $personne_id ) {
 			$this->assert( is_numeric( $personne_id ), 'error404' );
+
+			$this->DossiersMenus->checkDossierMenu( array( 'foyer_id' => $foyer_id ) );
 
 			// Acquisition du lock ?
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );

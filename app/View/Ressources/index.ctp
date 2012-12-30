@@ -4,7 +4,7 @@
 <?php if( empty( $ressources ) ):?>
 	<p class="notice">aucune information relative aux ressources de cette personne.</p>
 
-	<?php if( $this->Permissions->checkDossierDossier( 'ressources', 'add', $dossierMenu ) ) :?>
+	<?php if( $this->Permissions->checkDossier( 'ressources', 'add', $dossierMenu ) ) :?>
 		<ul class="actionMenu">
 			<?php
 				echo '<li>'.$this->Xhtml->addLink(
