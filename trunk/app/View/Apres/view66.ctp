@@ -1,8 +1,5 @@
 <?php $this->pageTitle = 'APREs de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?>
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
-<div class="with_treemenu">
-	<h1><?php echo 'APRE   de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?></h1>
+<h1><?php echo 'APRE   de '.Set::classicExtract( $apre, 'Personne.qual' ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' );?></h1>
 
 <?php
 	$montantrestant = null;
@@ -18,7 +15,7 @@
 		$versement = Set::enum( $apre['Aideapre66']['versement'], $options['versement'] );
 		$virement = Set::enum( $apre['Aideapre66']['virement'], $options['virement'] );
 		$activitebeneficiaire = Set::enum( $apre['Apre66']['activitebeneficiaire'], array( 'P' => 'Recherche d\'Emploi', 'E' => 'Emploi' , 'F' => 'Formation', 'C' => 'Création d\'Entreprise' ) );
-		
+
 // 		debug( $options );
 		echo $this->Default2->view(
 			$apre,
@@ -69,6 +66,3 @@
 		)
 	);
 ?>
-
-</div>
-<div class="clearer"><hr /></div>

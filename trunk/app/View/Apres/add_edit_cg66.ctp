@@ -7,8 +7,6 @@
 
     $this->pageTitle = 'APRE';
 
-    echo $this->element( 'dossier_menu', array( 'id' => $dossier_id ) );
-
     if( $this->action == 'add' ) {
         $this->pageTitle = 'Ajout APRE';
     }
@@ -98,9 +96,8 @@
     });
 </script>
 
-<div class="with_treemenu">
     <h1>Formulaire de demande de l'APRE</h1>
-<br />
+	<br />
     <?php
         echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
         $ApreId = Set::classicExtract( $this->request->data, "{$this->modelClass}.id" );
@@ -568,7 +565,6 @@
         <?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
     </div>
     <?php echo $this->Form->end();?>
-</div>
 
 <script type="text/javascript">
     /**
@@ -646,4 +642,3 @@
 	calculTotalRepas();
 
 </script>
-<div class="clearer"><hr /></div>

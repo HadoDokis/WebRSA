@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Bilanparcours66', 'Option', 'Dossierep', 'Typeorient'  );
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'add' => 'Bilansparcours66:edit'
@@ -27,11 +27,30 @@
 
 		public $aucunDroit = array( 'choixformulaire', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxstruc' => 'read',
+			'cancel' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'view' => 'read',
+		);
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		protected function _setOptions() {
 			$options = array();
 
@@ -81,51 +100,53 @@
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param integer $id
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		*   Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 *
+		 * @param integer $fichiermodule_id
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
 		/**
-		*   Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
-		*/
-
+		 * Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 *
+		 * @param integer $id
+		 */
 		public function filelink( $id ){
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) ) );
 
 			$fichiers = array();
 			$bilanparcours66 = $this->Bilanparcours66->find(
@@ -199,7 +220,9 @@
 		}
 
 		/**
-		 *   Ajax pour les structures liées aux référents
+		 * Ajax pour les structures liées aux référents
+		 *
+		 * @param integer $referent_id
 		 */
 		public function ajaxstruc( $referent_id = null ) {
 			Configure::write( 'debug', 0 );
@@ -224,12 +247,13 @@
 			$this->render( 'ajaxstruc', 'ajax' );
 		}
 
-
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 // 			$conditions = array( 'Orientstruct.date_valid IS NOT NULL', 'Orientstruct.structurereferente_id IS NOT NULL' );
 // 			if( !empty( $personne_id ) ) {
 // 				$conditions['Orientstruct.personne_id'] =  $personne_id;
@@ -328,18 +352,17 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		* TODO: que modifie-t'on ? Dans quel cas peut-on supprimer ?
-		*/
-
+		 * TODO: que modifie-t'on ? Dans quel cas peut-on supprimer ?
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -361,9 +384,7 @@
 		* @precondition L'allocataire existe et possède une orientation
 		* @access protected
 		*/
-
 		protected function _add_edit( $id = null ) {
-
 			if( $this->action == 'add' ) {
 				$personne_id = $id;
 			}
@@ -511,6 +532,8 @@
 					$this->set( compact( 'passagecommissionep', 'dossierpcg66' ) );
 				}
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
             $dossier_id = $this->Bilanparcours66->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -885,14 +908,13 @@
 		}
 
 		/**
-		*   Fonction pour annuler le Bilan de parcours pour le CG66
-		*/
-
-		/**
-		*   Fonction pour annuler le Bilan de parcours pour le CG66
-		*/
-
+		 * Fonction pour annuler le Bilan de parcours pour le CG66
+		 *
+		 * @param integer $id
+		 */
 		public function cancel( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) ) );
+
 			$qd_bilan = array(
 				'conditions' => array(
 					$this->modelClass.'.id' => $id
@@ -909,7 +931,7 @@
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à la liste en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->params['form']['Cancel'] ) ) {
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
@@ -973,17 +995,19 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 */
 		public function impression( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $id ) ) );
 
 			$pdf = $this->Bilanparcours66->getDefaultPdf( $id );
 
 			$this->Gedooo->sendPdfContentToClient( $pdf, "Bilanparcours-{$id}.pdf" );
 		}
-		
+
 		/**
 		 * Visualisation du Bilan de parcours 66
 		 *
@@ -991,6 +1015,8 @@
 		 * @return void
 		 */
 		public function view( $bilanparcours66_id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Bilanparcours66->personneId( $bilanparcours66_id ) ) ) );
+
 			$this->Bilanparcours66->id = $bilanparcours66_id;
 			$personne_id = $this->Bilanparcours66->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id );

@@ -90,7 +90,7 @@
 		</div><!-- Fin de div entretiens -->
 
 <!-- INFO : Fin de l'affichage des Entretiens -->
-<? if( false ):?>
+<?php if( false ):?>
 	<div id="dsporigine">
 		<h2 class="title">DSP d'origine</h2>
 		<?php if( !empty( $dsps ) ):?>
@@ -199,7 +199,7 @@
 				<p class="notice">Cette personne ne possède pas encore de données CG.</p>
 		<?php endif;?>
 	</div>
-	<? endif;?>
+	<?php endif;?>
 </div> <!-- Fin de div tabbedWrapper -->
 
 <?php

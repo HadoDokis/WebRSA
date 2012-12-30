@@ -15,8 +15,7 @@
 	 */
 	class Manifestationsbilansparcours66Controller extends AppController
 	{
-	
-	/**
+		/**
 		 * Nom
 		 *
 		 * @var string
@@ -28,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Jetons2', 'Fileuploader' );
+		public $components = array( 'Jetons2', 'Fileuploader', 'DossiersMenus' );
 
 		/**
 		 * Helpers utilisés.
@@ -45,7 +44,25 @@
 		public $uses = array( 'Manifestationbilanparcours66' );
 
 		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
-		
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+		);
+
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -68,25 +85,27 @@
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param integer $id
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés
+		 *
+		 * @param integer $fichiermodule_id
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
-		
-		
-		
+
 		/**
-		*
-		**/
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Manifestationbilanparcours66->enums();
 
@@ -98,15 +117,17 @@
 			$this->set( 'options', $options );
 		}
 
-		
+
 		/**
 		 * Fonction permettant d'accéder à la page pour lier les fichiers à une manifestation d'allocataire
 		 * (CG 66).
 		 *
-		 * @param type $id
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Manifestationbilanparcours66->personneId( $id ) ) ) );
 
 			$fichiers = array();
 			$manifestationbilanparcours66 = $this->Manifestationbilanparcours66->find(
@@ -170,18 +191,20 @@
 			$this->_setOptions();
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'manifestationbilanparcours66' ) );
 		}
-		
-		
+
 		/**
-		*
-		*/
+		 *
+		 * @param integer $bilanparcours66_id
+		 */
 		public function index( $bilanparcours66_id ) {
 			$this->assert( valid_int( $bilanparcours66_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Manifestationbilanparcours66->Bilanparcours66->personneId( $bilanparcours66_id ) ) ) );
 
 			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->field( 'personne_id' );
 			$this->set( 'personne_id', $personne_id  );
 			$this->set( 'bilanparcours66_id', $bilanparcours66_id );
-			
+
 			$manifestationsbilansparcours66 = $this->Manifestationbilanparcours66->find(
 				'all',
 				array(
@@ -202,11 +225,9 @@
 			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
 		}
 
-		
+
 		/**
 		 * Formulaire d'ajout d'un élémént.
-		 *
-		 * @return void
 		 */
 		public function add() {
 			$args = func_get_args();
@@ -216,7 +237,7 @@
 		/**
 		 * Formulaire de modification d'un <élément>.
 		 *
-		 * @return void
+		 * @param integer $id
 		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
@@ -228,6 +249,7 @@
 				$bilanparcours66_id = $this->Manifestationbilanparcours66->field( 'bilanparcours66_id' );
 			}
 			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->field( 'personne_id' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Le dossier auquel appartient la personne
 			$dossier_id = $this->Manifestationbilanparcours66->Bilanparcours66->Personne->dossierId( $personne_id );
@@ -261,7 +283,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			
+
 			if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Manifestationbilanparcours66->find(
 					'first',
@@ -280,12 +302,15 @@
 		}
 
 		/**
-		 * Suppression d'un CER 93.
+		 * Suppression d'un enregistrement.
 		 *
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
 			$dossier_id = $this->Manifestationbilanparcours66->Bilanparcours66->dossierId( $id );
+
+			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) );
+
 			$this->Jetons2->get( $dossier_id );
 
 			$this->Manifestationbilanparcours66->begin();

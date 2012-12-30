@@ -2,34 +2,32 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'manifestationbilanparcours66', "Manifestationsbilansparcours66::{$this->action}" )
-		);
-	?>
-	<?php
-		echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'manifestationbilanparcours66' ), 'id' => 'manifestation' ) );
+<?php
+	echo $this->Xhtml->tag(
+		'h1',
+		$this->pageTitle = __d( 'manifestationbilanparcours66', "Manifestationsbilansparcours66::{$this->action}" )
+	);
+?>
+<?php
+	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'manifestationbilanparcours66' ), 'id' => 'manifestation' ) );
 
-		echo $this->Xform->inputs(
-			array(
-				'fieldset' => false,
-				'legend' => false,
-				'Manifestationbilanparcours66.id' => array( 'type' => 'hidden' ),
-				'Manifestationbilanparcours66.bilanparcours66_id' => array( 'type' => 'hidden', 'value' => $bilanparcours66_id )
-			)
-		);
-		
-		echo $this->Default2->subform(
-			array(
-				'Manifestationbilanparcours66.commentaire',
-				'Manifestationbilanparcours66.datemanifestation'
-			)
-		);
-	?>
+	echo $this->Xform->inputs(
+		array(
+			'fieldset' => false,
+			'legend' => false,
+			'Manifestationbilanparcours66.id' => array( 'type' => 'hidden' ),
+			'Manifestationbilanparcours66.bilanparcours66_id' => array( 'type' => 'hidden', 'value' => $bilanparcours66_id )
+		)
+	);
+
+	echo $this->Default2->subform(
+		array(
+			'Manifestationbilanparcours66.commentaire',
+			'Manifestationbilanparcours66.datemanifestation'
+		)
+	);
+?>
 <?php
 	echo $this->Html->tag(
 		'div',
@@ -40,5 +38,3 @@
 
 	echo $this->Xform->end();
 ?>
-</div>
-<div class="clearer"><hr /></div>

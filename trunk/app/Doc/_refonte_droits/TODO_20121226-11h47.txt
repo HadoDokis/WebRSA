@@ -61,6 +61,34 @@ $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->pers
 			}
 		}
 
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "XXX.personne_id" ),
+				'joins' => array(
+					$this->join( 'XXX', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['XXX']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
+
 // -----------------------------------------------------------------------------
 
 		/**

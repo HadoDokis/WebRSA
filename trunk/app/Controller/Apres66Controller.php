@@ -15,16 +15,46 @@
 	 */
 	class Apres66Controller extends AppController
 	{
-
 		public $name = 'Apres66';
+
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
+
 		public $helpers = array( 'Default', 'Locale'/*, 'Csv'*/, 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email', 'Jetons2' );
+
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email', 'Jetons2', 'DossiersMenus' );
+
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
 			'add' => 'Apres66:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxstruct', 'ajaxref', 'ajaxtierspresta', 'ajaxtiersprestaformqualif', 'ajaxtiersprestaformpermfimo', 'ajaxtiersprestaactprof', 'ajaxtiersprestapermisb', 'ajaxpiece', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxpiece' => 'read',
+			'ajaxref' => 'read',
+			'ajaxstruct' => 'read',
+			'cancel' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'impression' => 'read',
+			'index' => 'read',
+			'indexparams' => 'read',
+			'maillink' => 'read',
+			'notifications' => 'read',
+			'view66' => 'read',
+		);
 
 		/**
 		 *
@@ -104,10 +134,14 @@
 		}
 
 		/**
-		 * Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Fonction permettant d'accéder à la page pour lier les fichiers.
+		 *
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) ) );
 
 			$fichiers = array( );
 			$apre = $this->{$this->modelClass}->find(
@@ -180,7 +214,6 @@
 		 * Permet de regrouper l'ensemble des paramétrages pour l'APRE
 		 */
 		public function indexparams() {
-
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
@@ -197,8 +230,11 @@
 
 		/**
 		 *
+		 * @param integer $personne_id
 		 */
 		public function index( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$qd_personne = array(
 				'conditions' => array(
 					'Personne.id' => $personne_id
@@ -276,6 +312,8 @@
 
 		/**
 		 * Ajax pour les coordonnées de la structure référente liée
+		 *
+		 * @param integer $structurereferente_id
 		 */
 		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
@@ -292,11 +330,13 @@
 			$struct = $this->{$this->modelClass}->Structurereferente->find( 'first', $qd_struct );
 
 			$this->set( 'struct', $struct );
-			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxstruct' );
+			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxstruct', 'ajax' );
 		}
 
 		/**
 		 * Ajax pour les coordonnées du référent APRE
+		 *
+		 * @param integer $referent_id
 		 */
 		public function ajaxref( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
@@ -321,13 +361,14 @@
 			}
 //             $referent = $this->{$this->modelClass}->Referent->findbyId( $referent_id, null, null, -1 );
 			$this->set( 'referent', $referent );
-			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxref' );
+			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxref', 'ajax' );
 		}
 
 		/**
 		 * Ajax pour les coordonnées du référent APRE
+		 *
+		 * @param integer $apre_id
 		 */
-		//public function ajaxpiece( $typeaideapre66_id = null, $aideapre66_id = null, $pieceadmin = null, $piececomptable = null ) { // FIXME
 		public function ajaxpiece( $apre_id = null ) { // FIXME
 // 			$typeaideapre66_id = Set::classicExtract( $this->request->params, 'named.typeaideapre66_id' );
 // 			$pieceadmin = explode( ',', Set::classicExtract( $this->request->params, 'named.pieceadmin' ) );
@@ -438,13 +479,17 @@
 			Configure::write( 'debug', 0 );
 			$this->set( compact( 'piecesadmin', 'piecescomptable', 'typeaideapre' ) );
 
-			$this->render( $this->action, 'ajax', (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxpiece' );
+			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'ajaxpiece', 'ajax' );
 		}
 
 		/**
 		 * Visualisation de l'APRE
+		 *
+		 * @param integer $apre_id
 		 */
 		public function view66( $apre_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $apre_id ) ) ) );
+
 			$this->Apre66->forceVirtualFields = true;
 
 			$apre = $this->Apre66->find(
@@ -480,6 +525,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -487,6 +535,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -540,6 +589,8 @@
 			}
 			$this->set( 'foyer_id', $foyer_id );
 			$this->set( 'dossier_id', $dossier_id );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
             $this->Jetons2->get( $dossier_id );
 
@@ -795,6 +846,8 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
+
 			$pdf = $this->Apre66->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
@@ -813,6 +866,8 @@
 		 * @return void
 		 */
 		public function notifications( $id = null ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
+
 			$pdf = $this->Apre66->getNotificationAprePdf( $id );
 
 			if( !empty( $pdf ) ) {
@@ -831,6 +886,8 @@
 		 * @param integer $id
 		 */
 		public function maillink( $id = null ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
+
 			$apre = $this->Apre66->find(
 					'first', array(
 				'conditions' => array(
@@ -874,9 +931,11 @@
 		/**
 		 * Fonction pour annuler une APRE pour le CG66
 		 *
-		 * @param type $id
+		 * @param integer $id
 		 */
 		public function cancel( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) ) );
+
 			$qd_apre = array(
 				'conditions' => array(
 					$this->modelClass.'.id' => $id

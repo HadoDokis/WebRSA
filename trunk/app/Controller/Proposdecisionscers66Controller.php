@@ -21,8 +21,23 @@
 
 		public $helpers = array( 'Default2' );
 
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'proposition' => 'create',
+			'propositionparticulier' => 'create',
+			'propositionsimple' => 'create',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Propodecisioncer66->allEnumLists();
 
@@ -42,8 +57,14 @@
 			$this->set( 'options', $options );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function proposition( $contratinsertion_id ) {
 			$this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Propodecisioncer66->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			//Proposition de décision pour le CER
 			$propodecisioncer66 = $this->Propodecisioncer66->find(
@@ -173,7 +194,7 @@
 		/**
 		 * Fonction de validation pour les CERs Simples du CG66
 		 *
-		 * @param type $contratinsertion_id
+		 * @param integer $contratinsertion_id
 		 */
 		public function propositionsimple( $contratinsertion_id = null ) {
 			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;
@@ -185,8 +206,8 @@
 
 		/**
 		 * Fonction de validation pour les CERs Particuliers du CG66
-		 * 
-		 * @param type $contratinsertion_id
+		 *
+		 * @param integer $contratinsertion_id
 		 */
 		public function propositionparticulier( $contratinsertion_id = null ) {
 			$this->Propodecisioncer66->Contratinsertion->id = $contratinsertion_id;

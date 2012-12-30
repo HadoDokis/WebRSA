@@ -5,47 +5,52 @@
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
+	echo $this->Xhtml->tag(
+		'h1',
+		$this->pageTitle = __d( 'suspensioncui66', "Suspensionscuis66::{$this->action}" )
+	);
 ?>
-
-<div class="with_treemenu aere">
-	<?php
-		echo $this->Xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'suspensioncui66', "Suspensionscuis66::{$this->action}" )
-		);
+<ul class="actionMenu">
+	<li><?php
+			echo $this->Xhtml->addLink(
+				'Ajouter une suspension',
+				array( 'controller'=> $this->request->params['controller'], 'action'=>'add', $cui_id ),
+				false && $this->Permissions->checkDossier( $this->request->params['controller'], 'add', $dossierMenu )
+			);
+		?>
+	</li>
+</ul>
+<?php
 
 // 		$listeoptions = $options;
 // 		unset( $options );
 // 		$options['Suspensioncui66'] = $listeoptions;
 
-		echo $this->Default2->index(
-			$suspensionscuis66,
-			array(
-				'Suspensioncui66.datedebperiode',
-				'Suspensioncui66.datefinperiode',
-				'Suspensioncui66.nomentaccueil',
-				'Suspensioncui66.objectifimmersion',
-				'Suspensioncui66.datesignatureimmersion'
+	echo $this->Default2->index(
+		$suspensionscuis66,
+		array(
+			'Suspensioncui66.datedebperiode',
+			'Suspensioncui66.datefinperiode',
+			'Suspensioncui66.nomentaccueil',
+			'Suspensioncui66.objectifimmersion',
+			'Suspensioncui66.datesignatureimmersion'
+		),
+		array(
+			'actions' => array(
+				'Suspensionscuis66::edit' => array(
+					'disabled' => !$this->Permissions->checkDossier( $this->request->params['controller'], 'edit', $dossierMenu )
+				),
+				'Suspensionscuis66::delete' => array(
+					'disabled' => !$this->Permissions->checkDossier( $this->request->params['controller'], 'edit', $dossierMenu )
+				)
 			),
-			array(
-				'actions' => array(
-					'Suspensionscuis66::edit',
-					'Suspensionscuis66::delete'
-				),
-				'add' => array(
-					'Suspensioncui66.add' => array( 'controller'=>'suspensionscuis66', 'action'=>'add', $cui_id, 'disabled' => true ),
-				),
-				'options' => $options
-			)
-		);
-	?>
+			'options' => $options
+		)
+	);
+?>
 </div>
-	<?php echo $this->Xform->create( 'Suspensioncui66' );?>
-	<div class="submit">
-		<?php
-			echo $this->Xform->submit( 'Retour au CUI', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-	<?php echo $this->Xform->end(); ?>
-<div class="clearer"><hr /></div>
+<?php echo $this->Xform->create( 'Suspensioncui66' );?>
+<div class="submit">
+	<?php echo $this->Xform->submit( 'Retour au CUI', array( 'name' => 'Cancel', 'div' => false ) ); ?>
+</div>
+<?php echo $this->Xform->end(); ?>

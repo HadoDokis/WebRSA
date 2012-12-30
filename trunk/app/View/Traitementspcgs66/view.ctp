@@ -1,16 +1,14 @@
 <?php
 	$this->pageTitle =  __d( 'traitementpcg66', "Traitementspcgs66::{$this->action}" );
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 
-<div class="with_treemenu">
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 		echo $this->Form->create( 'Traitementpcg66', array( 'type' => 'post', 'id' => 'traitementpcg66form', 'url' => Router::url( null, true ) ) );
 		echo $this->Default2->view(
 			$traitementpcg66,
 			array(
-				'Descriptionpdo.name', 
+				'Descriptionpdo.name',
 				'Traitementpcg66.datereception',
 				'Traitementpcg66.datedepart',
 // 				'Traitementpcg66.dureedepart' => array( 'type' => 'text', 'value' => @$options['Traitementpcg66']['dureedepart'][$traitementpcg66['Traitementpcg66']['dureedepart']] ),
@@ -164,11 +162,9 @@
 			}
 		}
 	?>
+<div class="submit">
+	<?php
+		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
+	?>
 </div>
-	<div class="submit">
-		<?php
-			echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-	<?php echo $this->Form->end();?>
-<div class="clearer"><hr /></div>
+<?php echo $this->Form->end();?>

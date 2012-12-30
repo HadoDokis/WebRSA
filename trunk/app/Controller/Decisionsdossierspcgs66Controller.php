@@ -1,37 +1,62 @@
 <?php
 	/**
-	* Code source de la classe Decisionsdossierspcgs66Controller.
-	*
-	* PHP 5.3
-	*
-	* @package app.Controller
-	* @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
-	*/
+	 * Code source de la classe Decisionsdossierspcgs66Controller.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Controller
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 
 	/**
-	* La classe Decisionsdossierspcgs66Controller permet de gérer les décisions
-	* d'un dossier PCG 66
-	*
-	* @package app.Controller
-	*/
+	 * La classe Decisionsdossierspcgs66Controller permet de gérer les décisions
+	 * d'un dossier PCG 66
+	 *
+	 * @package app.Controller
+	 */
 	class Decisionsdossierspcgs66Controller extends AppController
 	{
 		public $name = 'Decisionsdossierspcgs66';
 
-		/**
-		* @access public
-		*/
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'Fileuploader' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'Fileuploader', 'DossiersMenus' );
+
 		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Locale' );
+
 		public $uses = array( 'Decisiondossierpcg66', 'Option', 'Pdf' );
+
 		public $aucunDroit = array( 'ajaxproposition', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
 		public $commeDroit = array(
 			'view' => 'Decisionsdossierspcgs66:index'
 		);
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxproposition' => 'view',
+			'avistechnique' => 'update',
+			'decisionproposition' => 'update',
+			'delete' => 'delete',
+			'download' => 'read',
+			'edit' => 'update',
+			'filelink' => 'read',
+			'fileview' => 'read',
+			'index' => 'read',
+			'transmitop' => 'update',
+			'validation' => 'update',
+			'view' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Decisiondossierpcg66->enums();
 			$options = array_merge( $options, $this->Decisiondossierpcg66->Dossierpcg66->enums() );
@@ -73,53 +98,55 @@
 			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 
-
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		* http://valums.com/ajax-upload/
-		* http://doc.ubuntu-fr.org/modules_php
-		* increase post_max_size and upload_max_filesize to 10M
-		* debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		* FIXME: traiter les valeurs de retour
-		*/
-
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		*   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
-		*/
-
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param type $id
+		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		*   Téléchargement des fichiers préalablement associés à un traitement donné
-		*/
-
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 *
+		 * @param type $fichiermodule_id
+		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
-
 		/**
-		*   Fonction permettant d'accéder à la page pour lier les fichiers au CER
-		*/
+		 * Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		 *
+		 * @param type $id
+		 */
 		public function filelink( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
 
 			$fichiers = array( );
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
@@ -185,8 +212,8 @@
 		}
 
 		/**
-		* 	Affichage de la proposition du
-		*/
+		 * Affichage de la proposition du
+		 */
 		public function ajaxproposition() {
 			Configure::write( 'debug', 0 );
 
@@ -236,6 +263,9 @@
 			$this->render( 'ajaxproposition', 'ajax' );
 		}
 
+		/**
+		 *
+		 */
 		public function index() {
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
@@ -243,28 +273,34 @@
 			}
 		}
 
-		/**		 * *******************************************************************
-		*
-		* ** ****************************************************************** */
+		/**
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**		 * *******************************************************************
-		*
-		* ** ****************************************************************** */
+		/**
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$dossierpcg66_id = $id;
+
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->Dossierpcg66->dossierId( $id ) ) ) );
 
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
 					'first',
@@ -298,6 +334,8 @@
 			}
 			else {
 				$decisiondossierpcg66_id = $id;
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
+
 				$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
 					'first',
 					array(
@@ -561,10 +599,14 @@
 		}
 
 		/**
-		*   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
-		*/
+		 * Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 *
+		 * @param integer $id
+		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
+
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) );
 
 			$pdf = $this->Decisiondossierpcg66->getPdfDecision( $id );
 
@@ -592,10 +634,13 @@
 		}
 
 		/**
-		*
-		*/
+		 *
+		 * @param integer $id
+		 */
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
 
 
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
@@ -632,9 +677,13 @@
 		}
 
 		/**
-		* Suppression de la proposition de décision
-		*/
+		 * Suppression de la proposition de décision
+		 *
+		 * @param integer $id
+		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) );
+
 			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find(
 					'first', array(
 				'conditions' => array(
@@ -693,10 +742,15 @@
 		}
 
 		/**
-		*   Gestion de la transmission à l'organisme payeur
-		*/
+		 * Gestion de la transmission à l'organisme payeur
+		 *
+		 * @param integer $id
+		 */
 		public function transmitop( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
+
 			$qd_decisiondossierpcg66 = array(
 				'conditions' => array(
 					'Decisiondossierpcg66.id' => $id
@@ -745,21 +799,21 @@
 		}
 
 		/**
-		* Affiche le formulaire d'ajout/modification selon l'état du dossier
-		* et selon le profil de l'utilisateur (avis technique)
-		* @param integer $id ID d'une décision liée au dossier PCG
-		*
-		*/
+		 * Affiche le formulaire d'ajout/modification selon l'état du dossier
+		 * et selon le profil de l'utilisateur (avis technique)
+		 * @param integer $id ID d'une décision liée au dossier PCG
+		 *
+		 */
 		public function avistechnique( $id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
 		/**
-		* Affiche le formulaire d'ajout/modification selon l'état du dossier
-		* et selon le profil de l'utilisateur (validation après avis technique)
-		* @param integer $id ID d'une décision liée au dossier PCG
-		*/
+		 * Affiche le formulaire d'ajout/modification selon l'état du dossier
+		 * et selon le profil de l'utilisateur (validation après avis technique)
+		 * @param integer $id ID d'une décision liée au dossier PCG
+		 */
 		public function validation( $id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );

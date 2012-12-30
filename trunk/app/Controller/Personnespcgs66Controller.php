@@ -16,12 +16,29 @@
 	class Personnespcgs66Controller extends AppController
 	{
 		public $name = 'Personnespcgs66';
+
 		public $uses = array( 'Personnepcg66', 'Option', 'Dossierpcg66' );
+
 		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default' );
+
+		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
+
 		public $commeDroit = array(
 			'view' => 'Personnespcgs66:index',
 			'add' => 'Personnespcgs66:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'view' => 'read',
 		);
 
 		/**
@@ -73,6 +90,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -89,6 +109,8 @@
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$dossierpcg66_id = $id;
+
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) ) );
 
 				$dossierpcg66 = $this->Dossierpcg66->find(
 						'first', array(
@@ -252,6 +274,8 @@
 				$this->assert( !empty( $personnepcg66 ), 'invalidParameter' );
 				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $dossierpcg66_id ) ) ) );
+
 				$qd_dossierpcg66 = array(
 					'conditions' => array(
 						'Dossierpcg66.id' => $dossierpcg66_id
@@ -412,6 +436,7 @@
 		 *
 		 */
 		public function view( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Personnepcg66->personneId( $id ) ) ) );
 
 			$personnepcg66 = $this->Personnepcg66->find(
 					'first', array(
@@ -460,8 +485,11 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Personnepcg66->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 

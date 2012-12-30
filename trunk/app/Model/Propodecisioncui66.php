@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Propodecisioncui66.
 	 *
@@ -33,7 +33,7 @@
 			),
 			'Formattable'
 		);
-		
+
 		public $validate = array(
 			'propositioncui' => array(
 				'rule' => 'notEmpty',
@@ -68,7 +68,7 @@
 				)
 			),
 		);
-		
+
 		public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -85,8 +85,8 @@
 				'order' => ''
 			)
 		);
-		
-	
+
+
 		/**
 		* Chemin relatif pour les modèles de documents .odt utilisés lors des
 		* impressions. Utiliser %s pour remplacer par l'alias.
@@ -94,8 +94,8 @@
 		public $modelesOdt = array(
 			'CUI/notifelucui.odt',
 		);
-		
-		
+
+
 		/**
 		 *
 		 * @param integer $id
@@ -136,7 +136,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -150,7 +150,7 @@
 
 			return $propodecisioncui;
 		}
-		
+
 		/**
 		 * Retourne le PDF de notification du CUI.
 		 *
@@ -159,7 +159,7 @@
 		 * @return string
 		 */
 		public function getNotifelucuiPdf( $id, $user_id ) {
-		
+
 			$propodecisioncui = $this->getDataForPdf( $id, $user_id );
 
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
@@ -190,6 +190,34 @@
 				false,
 				$options
 			);
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Cui.personne_id" ),
+				'joins' => array(
+					$this->join( 'Cui', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Cui']['personne_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

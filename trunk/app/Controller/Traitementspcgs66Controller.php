@@ -21,13 +21,40 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader', 'Autrepiecetraitementpcg66' );
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Traitementspcgs66:index',
 			'add' => 'Traitementspcgs66:edit'
 		);
+
 		public $aucunDroit = array( 'ajaxpiece', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxfiledelete' => 'delete',
+			'ajaxfileupload' => 'update',
+			'ajaxpiece' => 'read',
+			'cancel' => 'update',
+			'clore' => 'update',
+			'decision' => 'update',
+			'delete' => 'delete',
+			'deverseDO' => 'update',
+			'download' => 'read',
+			'edit' => 'update',
+			'fileview' => 'read',
+			'index' => 'read',
+			'printFicheCalcul' => 'read',
+			'printModeleCourrier' => 'read',
+			'reverseDO' => 'update',
+			'view' => 'read',
+		);
 
 		/**
 		 *
@@ -82,7 +109,7 @@
 		}
 
 		/**
-		 *   Ajax pour les pièces liées à un type de courrier
+		 * Ajax pour les pièces liées à un type de courrier
 		 */
 		public function ajaxpiece() { // FIXME
 			Configure::write( 'debug', 0 );
@@ -108,7 +135,7 @@
 					'contain' => false
 						)
 				);
-			
+
 				$modeletypecourrierpcg66avecmontant = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
 					'list',
 					array(
@@ -192,14 +219,18 @@
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param type $id
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 *   Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 *
+		 * @param type $fichiermodule_id
 		 */
 		public function download( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
@@ -208,9 +239,13 @@
 
 		/**
 		 *
+		 * @param integer $personne_id
+		 * @param integer $dossierpcg66_id
 		 */
 		public function index( $personne_id = null, $dossierpcg66_id = null ) {
 			$this->assert( valid_int( $personne_id ), 'error404' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Récupération du nom de l'allocataire
 			$personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
@@ -232,7 +267,7 @@
 				}
 			}
 			$this->set( 'dossierpcgId', $dossierpcg66_id );
-			
+
 			//Formulaire de recherche pour trouver l'historique de tous les dossiers PCG d'une personne
 			$queryData = array(
 				'conditions' => array(
@@ -378,6 +413,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -387,6 +423,7 @@
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$personnepcg66_id = $id;
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId( $personnepcg66_id ) ) ) );
 			}
 			else if( $this->action == 'edit' ) {
 				$traitementpcg66_id = $id;
@@ -402,6 +439,7 @@
 				);
 				$this->assert( !empty( $traitementpcg66 ), 'invalidParameter' );
 				$personnepcg66_id = Set::classicExtract( $traitementpcg66, 'Traitementpcg66.personnepcg66_id' );
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId( $personnepcg66_id ) ) ) );
 			}
 
 			//Récupération des informations de la personne conernée par les traitements + du dossier
@@ -500,9 +538,9 @@
 
 					if( !empty( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantsaisi'] ) ) {
 						$dataToSave['Modeletraitementpcg66']['montantsaisi'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantsaisi'];
-						
+
 						$dataToSave['Modeletraitementpcg66']['montantdatedebut'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatedebut'];
-						
+
 						$dataToSave['Modeletraitementpcg66']['montantdatefin'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatefin'];
 					}
 
@@ -580,6 +618,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id = null ) {
 			$traitementpcg66 = $this->Traitementpcg66->find(
@@ -600,6 +639,8 @@
 
 			$personnepcg66_id = Set::classicExtract( $traitementpcg66, 'Traitementpcg66.personnepcg66_id' );
 
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->personneId( $personnepcg66_id ) ) ) );
+
 			$dossierpcg66_id = Set::classicExtract( $traitementpcg66, 'Personnepcg66.dossierpcg66_id' );
 			$personne_id = Set::classicExtract( $traitementpcg66, 'Personnepcg66.personne_id' );
 
@@ -616,10 +657,9 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function cancel( $id ) {
-			$this->Traitementpcg66->begin();
-
 			$traitementpcg66 = $this->Traitementpcg66->find(
 					'first', array(
 				'fields' => array(
@@ -637,6 +677,9 @@
 					)
 			);
 
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) );
+
+			$this->Traitementpcg66->begin();
 			$traitementpcg66['Traitementpcg66']['clos'] = 'O';
 			$traitementpcg66['Traitementpcg66']['annule'] = 'O';
 			$this->Traitementpcg66->create( $traitementpcg66['Traitementpcg66'] );
@@ -657,10 +700,9 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function clore( $id ) {
-			$this->Traitementpcg66->begin();
-
 			$traitementpcg66 = $this->Traitementpcg66->find(
 					'first', array(
 				'conditions' => array(
@@ -671,6 +713,9 @@
 				)
 					)
 			);
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) );
+
+			$this->Traitementpcg66->begin();
 			$this->Traitementpcg66->id = $id;
 			$success = $this->Traitementpcg66->saveField( 'clos', 'O' );
 
@@ -687,6 +732,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function decision( $id ) {
 			$traitementpcg66 = $this->Traitementpcg66->find(
@@ -700,6 +746,8 @@
 				)
 					)
 			);
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
 
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
@@ -728,10 +776,9 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function reverseDO( $id ) {
-			$this->Traitementpcg66->begin();
-
 			$traitementpcg66 = $this->Traitementpcg66->find(
 					'first', array(
 				'conditions' => array(
@@ -742,6 +789,10 @@
 				)
 					)
 			);
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) );
+
+			$this->Traitementpcg66->begin();
 			$this->Traitementpcg66->id = $id;
 			$success = $this->Traitementpcg66->saveField( 'reversedo', '1' );
 
@@ -758,10 +809,9 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function deverseDO( $id ) {
-			$this->Traitementpcg66->begin();
-
 			$traitementpcg66 = $this->Traitementpcg66->find(
 					'first', array(
 				'conditions' => array(
@@ -772,6 +822,9 @@
 				)
 					)
 			);
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) );
+
+			$this->Traitementpcg66->begin();
 			$this->Traitementpcg66->id = $id;
 			$success = $this->Traitementpcg66->saveField( 'reversedo', '0' );
 
@@ -787,11 +840,13 @@
 		}
 
 		/**
-		 *   Enregistrement du document pour la fiche de calcul lors de l'enregistrement du traitement
+		 * Enregistrement du document pour la fiche de calcul lors de l'enregistrement du traitement
+		 *
+		 * @param integer $id
 		 */
 		public function printFicheCalcul( $id ) {
-
 			$this->assert( !empty( $id ), 'error404' );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
 
 			$pdf = $this->Traitementpcg66->getPdfFichecalcul( $id );
 
@@ -805,11 +860,13 @@
 		}
 
 		/**
-		 *   Enregistrement du modèle de document lié au type de courrier lors de l'enregistrement du traitement
+		 * Enregistrement du modèle de document lié au type de courrier lors de l'enregistrement du traitement
+		 *
+		 * @param integer $id
 		 */
 		public function printModeleCourrier( $id ) {
-
 			$this->assert( !empty( $id ), 'error404' );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
 
 			$pdf = $this->Traitementpcg66->getPdfModeleCourrier( $id, $this->Session->read( 'Auth.User.id' ) );
 
@@ -824,8 +881,11 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 

@@ -21,8 +21,25 @@
 
 		public $helpers = array( 'Default2', 'Default' );
 
-		public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo' );
+		public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo', 'DossiersMenus' );
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'udate',
+			'notifelucui' => 'read',
+			'propositioncui' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = $this->Propodecisioncui66->enums();
 
@@ -39,6 +56,8 @@
 		 * @param integer $cui_id
 		 */
 		public function propositioncui( $cui_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Propodecisioncui66->Cui->personneId( $cui_id ) ) ) );
+
 			$nbrCuis = $this->Propodecisioncui66->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
 
@@ -77,25 +96,26 @@
 			}
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -120,6 +140,8 @@
 
 				$cui_id = Set::classicExtract( $propodecisioncui66, 'Propodecisioncui66.cui_id' );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Propodecisioncui66->Cui->personneId( $cui_id ) ) ) );
 
 
 			// CUI en lien avec la proposition
@@ -197,6 +219,8 @@
 		 * @return void
 		 */
 		public function notifelucui( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propodecisioncui66->personneId( $id ) ) );
+
 			$pdf = $this->Propodecisioncui66->getNotifelucuiPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
@@ -210,8 +234,11 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propodecisioncui66->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 	}
