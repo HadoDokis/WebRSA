@@ -32,7 +32,9 @@
 						'action' => 'foyer',
 						Set::classicExtract( $data, $foyerIdPath )
 					),
-					array(),
+					array(
+						'disabled' => !$this->Permissions->checkDossier( 'gestionsanomaliesbdds', 'foyer', Hash::get( $this->_View->viewVars, 'dossierMenu' ) )
+					),
 					false,
 					false
 				);
@@ -56,7 +58,9 @@
 						'action' => 'foyer',
 						Set::classicExtract( $data, $foyerIdPath )
 					),
-					array(),
+					array(
+						'disabled' => !$this->Permissions->checkDossier( 'gestionsanomaliesbdds', 'foyer', Hash::get( $this->_View->viewVars, 'dossierMenu' ) )
+					),
 					false,
 					false
 				);
@@ -80,7 +84,9 @@
 						'action' => 'foyer',
 						Set::classicExtract( $data, $foyerIdPath )
 					),
-					array(),
+					array(
+						'disabled' => !$this->Permissions->checkDossier( 'gestionsanomaliesbdds', 'foyer', Hash::get( $this->_View->viewVars, 'dossierMenu' ) )
+					),
 					false,
 					false
 				);

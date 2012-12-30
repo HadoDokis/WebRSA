@@ -404,7 +404,7 @@
 
 			// INFO: éviter les requêtes erronées du style ... WHERE "Referent"."id" = ''
 			$referent = array( );
-			if( is_int( $referent_id ) ) {
+			if( !empty( $referent_id ) ) {
 				$qd_referent = array(
 					'conditions' => array(
 						'Referent.id' => $referent_id

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe RecoursController.
 	 *
@@ -15,9 +15,22 @@
 	 */
 	class RecoursController extends AppController
 	{
-
 		public $name = 'Recours';
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
 		public $uses = array( 'Infofinanciere', 'Option', 'Avispcgdroitrsa' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'contentieux' => 'update',
+			'gracieux' => 'update',
+		);
 
 		/**
 		 *
@@ -31,10 +44,11 @@
 
 		/**
 		 *
+		 * @param integer $dossier_id
 		 */
 		public function gracieux( $dossier_id = null ) {
-
 			$this->assert( valid_int( $dossier_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$gracieux = $this->Avispcgdroitrsa->find(
 					'first', array(
@@ -61,9 +75,11 @@
 
 		/**
 		 *
+		 * @param integer $dossier_id
 		 */
 		public function contentieux( $dossier_id = null ) {
 			$this->assert( valid_int( $dossier_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$contentieux = $this->Avispcgdroitrsa->find(
 					'first', array(

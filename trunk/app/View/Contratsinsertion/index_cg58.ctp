@@ -62,7 +62,7 @@
 			<p class="error">Cette personne possède actuellement une orientation professionnelle. Une réorientation sociale doit être sollicitée pour pouvoir enregistrer un CER.</p>
 		<?php endif;*/ ?>
 
-		<?php if( $this->Permissions->checkDossierDossier( 'proposcontratsinsertioncovs58', 'add', $dossierMenu ) && $nbdossiersnonfinalisescovs == 0 ):?>
+		<?php if( $this->Permissions->checkDossier( 'proposcontratsinsertioncovs58', 'add', $dossierMenu ) && $nbdossiersnonfinalisescovs == 0 ):?>
 			<ul class="actionMenu">
 				<?php
 					$block = empty( $orientstruct ) || !empty( $orientstructEmploi );

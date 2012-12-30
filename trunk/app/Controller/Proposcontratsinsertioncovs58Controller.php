@@ -15,14 +15,32 @@
 	 */
 	class Proposcontratsinsertioncovs58Controller extends AppController
 	{
-
 		public $name = "Proposcontratsinsertioncovs58";
+
 		public $uses = array( 'Propocontratinsertioncov58', 'Option', 'Action' );
+
 		public $helpers = array( 'Cake1xLegacy.Ajax' );
-		public $components = array( 'RequestHandler', 'Jetons2' );
+
+		public $components = array( 'RequestHandler', 'Jetons2', 'DossiersMenus' );
+
 		public $aucunDroit = array( 'ajax', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop' );
+
 		public $commeDroit = array(
 			'add' => 'Contratsinsertion:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'ajaxref' => 'read',
+			'ajaxstruct' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
 		);
 
 		/**
@@ -75,9 +93,11 @@
 		}
 
 		/**
-		 *   Ajax pour les coordonnées du référent APRE
+		 * Ajax pour les coordonnées du référent.
+		 *
+		 * @param integer $referent_id
 		 */
-		public function ajaxref( $referent_id = null ) { // FIXME
+		public function ajaxref( $referent_id = null ) {
 			Configure::write( 'debug', 0 );
 
 			if( !empty( $referent_id ) ) {
@@ -88,8 +108,7 @@
 			}
 
 			$referent = array( );
-			if( is_int( $referent_id ) ) {
-
+			if( !empty( $referent_id ) ) {
 				$qd_referent = array(
 					'conditions' => array(
 						'Referent.id' => $referent_id
@@ -106,11 +125,13 @@
 		}
 
 		/**
-		 *   Ajax pour les coordonnées de la structure référente liée
+		 * Ajax pour les coordonnées de la structure référente liée
+		 *
+		 * @param integer $structurereferente_id
 		 */
-		public function ajaxstruct( $structurereferente_id = null ) { // FIXME
+		public function ajaxstruct( $structurereferente_id = null ) {
 			Configure::write( 'debug', 0 );
-			$this->set( 'typesorients', $this->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) ) );
+			$this->set( 'typesorients', $this->Propocontratinsertioncov58->Structurereferente->Typeorient->find( 'list', array( 'fields' => array( 'lib_type_orient' ) ) ) );
 
 			$dataStructurereferente_id = Set::extract( $this->request->data, 'Propocontratinsertioncov58.structurereferente_id' );
 			$structurereferente_id = ( empty( $structurereferente_id ) && !empty( $dataStructurereferente_id ) ? $dataStructurereferente_id : $structurereferente_id );
@@ -126,6 +147,7 @@
 			$struct = $this->Propocontratinsertioncov58->Structurereferente->find( 'first', $qd_struct );
 
 			$this->set( 'struct', $struct );
+			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->render( 'ajaxstruct', 'ajax' );
 		}
 
@@ -137,6 +159,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -144,14 +169,19 @@
 
 		/**
 		 *
+		 * @param integer $id
+		 * @param integer $avenant_id
 		 */
 		protected function _add_edit( $id = null, $avenant_id = null ) {
 			$valueFormeci = null;
-
 			$contratinsertion_id = null;
+
 			$personne_id = $id;
 			$nbrPersonnes = $this->Propocontratinsertioncov58->Dossiercov58->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
 			$valueFormeci = 'S';
 
 			$nbContratsPrecedents = $this->Propocontratinsertioncov58->Dossiercov58->Personne->Contratinsertion->find( 'count', array( 'recursive' => -1, 'conditions' => array( 'Contratinsertion.personne_id' => $personne_id ) ) );
@@ -437,17 +467,20 @@
 		 */
 		public function delete( $propocontratinsertioncov58_id ) {
 			$propocontratinsertioncov58 = $this->Propocontratinsertioncov58->find(
-					'first', array(
-				'fields' => array(
-					'Propocontratinsertioncov58.id',
-					'Propocontratinsertioncov58.dossiercov58_id'
-				),
-				'contain' => false,
-				'conditions' => array(
-					'Propocontratinsertioncov58.id' => $propocontratinsertioncov58_id
-				)
+				'first',
+				array(
+					'fields' => array(
+						'Propocontratinsertioncov58.id',
+						'Propocontratinsertioncov58.dossiercov58_id'
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Propocontratinsertioncov58.id' => $propocontratinsertioncov58_id
 					)
+				)
 			);
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propocontratinsertioncov58->Dossiercov58->personneId( $propocontratinsertioncov58['Propocontratinsertioncov58']['dossiercov58_id'] ) ) );
 
 			$this->Propocontratinsertioncov58->begin();
 

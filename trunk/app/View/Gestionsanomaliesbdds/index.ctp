@@ -169,13 +169,30 @@
 						array( $this->Gestionanomaliebdd->foyerPersonnesSansPrestation( $result, false ), array( 'class' => 'icon' ) ),
 						array( $this->Gestionanomaliebdd->foyerErreursDoublonsPersonnes( $result, false ), array( 'class' => 'icon' ) ),
 						( $result['Dossier']['locked'] ? $this->Xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null ),
-						array( $this->Default2->button( 'view', array( 'controller' => 'personnes', 'action' => 'index', $result['Foyer']['id'] ), array( 'label' => 'Voir', 'title' => sprintf( 'Voir le dossier « %s »', $result['Dossier']['numdemrsa'] ) ) ), array( 'class' => 'noprint' ) ),
+						array(
+							$this->Default2->button(
+								'view',
+								array( 'controller' => 'personnes', 'action' => 'index', $result['Foyer']['id'] ),
+								array(
+									'label' => 'Voir',
+									'enabled' => $this->Permissions->check( 'personnes', 'index' ),
+									'title' => sprintf( 'Voir le dossier « %s »', $result['Dossier']['numdemrsa'] )
+								)
+							),
+							array( 'class' => 'noprint' )
+						),
 						array(
 							$this->Default2->button(
 								'edit',
 								array_merge( array( 'action' => 'foyer', $result['Foyer']['id'] ), $urlParams ),
-								array( 'label' => 'Corriger', 'enabled' => $correction, 'title' => sprintf( 'Corriger le dossier « %s »', $result['Dossier']['numdemrsa'] ), 'class' => 'external' )
-							), array( 'class' => 'noprint' )
+								array(
+									'label' => 'Corriger',
+									'enabled' => $correction && $this->Permissions->check( 'gestionsanomaliesbdds', 'foyer' ),
+									'title' => sprintf( 'Corriger le dossier « %s »', $result['Dossier']['numdemrsa'] ),
+									'class' => 'external'
+								)
+							),
+							array( 'class' => 'noprint' )
 						),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),

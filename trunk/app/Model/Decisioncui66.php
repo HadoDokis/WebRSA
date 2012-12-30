@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisioncui66.
 	 *
@@ -49,7 +49,7 @@
 				'afterSave' => 'deleteAll'
 			)
 		);
-		
+
 		public $validate = array(
 			'decisioncui' => array(
 				'rule' => 'notEmpty',
@@ -60,7 +60,7 @@
 				'message' => 'Champ obligatoire'
 			)
 		);
-		
+
 		public $belongsTo = array(
 			'Cui' => array(
 				'className' => 'Cui',
@@ -77,9 +77,9 @@
 				'order' => ''
 			)
 		);
-		
-		
-		
+
+
+
 		/**
 		 *
 		 * @param integer $id
@@ -122,7 +122,7 @@
 					'contain' => false
 				)
 			);
-			
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -133,7 +133,7 @@
 				)
 			);
 			$decisioncui66 = Set::merge( $decisioncui66, $user );
-			
+
 			$dernierePropodecisioncui66 = $this->Cui->Propodecisioncui66->find(
 				'first',
 				array(
@@ -146,11 +146,11 @@
 				)
 			);
 			$decisioncui66 = Set::merge( $decisioncui66, $dernierePropodecisioncui66 );
-			
-			
+
+
 			return $decisioncui66;
 		}
-		
+
 		/**
 		 * Retourne le PDF de notification du CUI.
 		 *
@@ -158,7 +158,7 @@
 		 * @return string
 		 */
 		public function getDefaultPdf( $id, $destinataire, $user_id ) {
-			
+
 			$decisioncui66 = $this->getDataForPdf( $id, $user_id );
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );
@@ -179,11 +179,11 @@
 					'voie' => $Option->typevoie()
 				),
 			);
-			
+
 			// Type de cui
 			$secteurcui = Set::classicExtract( $decisioncui66, 'Cui.secteur' );
 			$typedecision = Set::classicExtract( $decisioncui66, 'Decisioncui66.decisioncui' );
-			
+
 			$modeleodt = '';
 			if( $destinataire == 'elu' ) {
 				$modeleodt = 'decisionelu';
@@ -203,7 +203,7 @@
 			}
 // debug($modeleDocument);
 // debug($decisioncui66);
-// 
+//
 // die();
 			return $this->ged(
 				$decisioncui66,
@@ -213,5 +213,32 @@
 			);
 		}
 
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Cui.personne_id" ),
+				'joins' => array(
+					$this->join( 'Cui', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Cui']['personne_id'];
+			}
+			else {
+				return null;
+			}
+		}
 	}
 ?>

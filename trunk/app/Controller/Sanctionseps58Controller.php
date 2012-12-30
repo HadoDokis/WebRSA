@@ -17,17 +17,27 @@
 	{
 		public $helpers = array( 'Default2', 'Csv', 'Search');
 
-		public function beforeFilter() {
-			parent::beforeFilter();
-		}
-
-
-
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'deleteNonrespectcer' => 'delete',
+			'exportcsv' => 'read',
+			'nonrespectcer' => 'create',
+			'selectionnoninscrits' => 'create',
+			'selectionradies' => 'create',
+		);
 
+		/**
+		 *
+		 * @param string $qdName
+		 * @param string $origine
+		 */
 		protected function _selectionPassageSanctionep58( $qdName, $origine ) {
 			if( !empty( $this->request->data ) ) {
 				$success = true;
@@ -121,25 +131,23 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function selectionnoninscrits() {
 			$this->_selectionPassageSanctionep58( 'qdNonInscrits', 'noninscritpe' );
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 */
 		public function selectionradies() {
 			$this->_selectionPassageSanctionep58( 'qdRadies', 'radiepe' );
 		}
 
 		/**
 		 *
+		 * @param integer $contratinsertion_id
 		 */
-
 		public function nonrespectcer( $contratinsertion_id ) {
 			$contratinsertion = $this->Sanctionep58->Dossierep->Personne->Contratinsertion->find(
 				'first',
@@ -154,6 +162,8 @@
 					'contain' => false
 				)
 			);
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $contratinsertion['Contratinsertion']['personne_id'] ) );
 
 			$success = true;
 			$this->Sanctionep58->begin();
@@ -191,8 +201,8 @@
 
 		/**
 		 *
+		 * @param integer $sanctionep58_id
 		 */
-
 		public function deleteNonrespectcer( $sanctionep58_id ) {
 			$dossierep = $this->Sanctionep58->find(
 				'first',
@@ -205,6 +215,8 @@
 					)
 				)
 			);
+
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Sanctionep58->Dossierep->personneId( $dossierep['Sanctionep58']['dossierep_id'] ) ) );
 
 			$success = true;
 			$this->Sanctionep58->begin();
@@ -223,14 +235,11 @@
 			$this->redirect( array( 'controller' => 'contratsinsertion', 'action' => 'index', $dossierep['Dossierep']['personne_id'] ) );
 		}
 
-
-
-
-
 		/**
-		* Export du tableau en CSV
-		*/
-
+		 * Export du tableau en CSV
+		 *
+		 * @param string $qdName
+		 */
 		public function exportcsv( $qdName ) {
 
 			$nameTableauCsv = null;
@@ -250,7 +259,6 @@
 			$this->layout = ''; // FIXME ?
 
 			$this->set( compact( 'personnes', 'nameTableauCsv' ) );
-
 		}
 	}
 ?>

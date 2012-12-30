@@ -404,7 +404,7 @@
 			$dataReferent_id = Set::extract( $this->request->data, 'Rendezvous.referent_id' );
 			$referent_id = ( empty( $referent_id ) && !empty( $dataReferent_id ) ? $dataReferent_id : $referent_id );
 
-			if( is_int( $referent_id ) ) {
+			if( !empty( $referent_id ) ) {
 				$qd_referent = array(
 					'conditions' => array(
 						'Referent.id' => $referent_id

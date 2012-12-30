@@ -462,22 +462,6 @@
 		}
 
 		/**
-		 * Règle de validation.
-		 *
-		 * @param type $field
-		 * @param type $compare_field
-		 * @return boolean
-		 */
-		public function choixStructure( $field = array(), $compare_field = null ) {
-			foreach( $field as $key => $value ) {
-				if( !empty( $this->data[$this->name][$compare_field] ) && ( $this->data[$this->name][$compare_field] != 'En attente' ) && empty( $value ) ) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		/**
 		 * Retourne l'id technique du dossier auquel appartient cette orientation.
 		 *
 		 * @param integer $orientstruct_id L'id technique de l'orientation
@@ -1261,7 +1245,7 @@
 					'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid'
 				);
 				$querydata['joins'][] = $joinPassagecov58Cov58;
-	
+
 				$querydata['joins'][] = $this->Personne->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) );
 
 // 				$querydata['conditions'][] = array(
