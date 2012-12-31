@@ -15,15 +15,28 @@
 	 */
 	class AvispcgdroitsrsaController extends AppController
 	{
-		public $name = 'Avispcgdroitrsa';
+		public $name = 'Avispcgdroitsrsa';
+
 		public $uses = array( 'Avispcgdroitrsa', 'Option' , 'Dossier', 'Condadmin',  'Reducrsa');
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array( 'view' => 'Actionscandidats:index' );
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'view' => 'read',
+		);
 
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 			$this->set( 'avisdestpairsa', $this->Option->avisdestpairsa() );
@@ -33,14 +46,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $dossier_id
+		 */
 		public function index( $dossier_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			$this->assert( valid_int( $dossier_id ), 'error404' );
-
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
 			$avispcgdroitrsa = $this->Avispcgdroitrsa->find(
 				'first',
@@ -58,12 +69,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $avispcgdroitrsa_id
+		 */
 		public function view( $avispcgdroitrsa_id = null ) {
-			// Vérification du format de la variable
 			$this->assert( valid_int( $avispcgdroitrsa_id ), 'error404' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Avispcgdroitrsa->dossierId( $avispcgdroitrsa_id ) ) ) );
 
 			$avispcgdroitrsa = $this->Avispcgdroitrsa->find(
 				'first',

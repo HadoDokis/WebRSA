@@ -15,25 +15,44 @@
 	 */
 	class PrestsformController extends AppController
 	{
-
 		public $name = 'Prestsform';
+
 		public $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action', 'Personne');
 
 		public $commeDroit = array(
 			'add' => 'Prestsform:edit'
 		);
 
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-				$this->set( 'actions', $this->Action->grouplist( 'prestation' ) );// //
+			$this->set( 'actions', $this->Action->grouplist( 'prestation' ) );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function add( $contratinsertion_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			if( !valid_int( $contratinsertion_id ) ) {
 				$this->cakeError( 'error404' );
 			}
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
@@ -85,12 +104,15 @@
 			$this->render( 'add_edit' );
 		}
 
+		/**
+		 *
+		 * @param integer $prestform_id
+		 */
 		public function edit( $prestform_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			if( !valid_int( $prestform_id ) ) {
 				$this->cakeError( 'error404' );
 			}
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Prestform->personneId( $prestform_id ) ) ) );
 
 			$prestform = $this->Prestform->find(
 				'first',

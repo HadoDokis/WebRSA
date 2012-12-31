@@ -16,15 +16,34 @@
 	 */
 	class PeriodesimmersionController extends AppController
 	{
-
 		public $name = 'Periodesimmersion';
+
 		public $uses = array( 'Periodeimmersion', 'Cui', 'Option', 'Referent', 'Personne', 'Dossier', 'Adressefoyer', 'Structurereferente' );
+
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Xform' );
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2', 'Default' );
+
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Jetons2', 'Default', 'DossiersMenus' );
+
 		public $aucunDroit = array( 'gedooo' );
+
 		public $commeDroit = array(
 			'view' => 'Periodesimmersion:index',
 			'add' => 'Periodesimmersion:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'gedooo' => 'read',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -32,7 +51,7 @@
 		 */
 		protected function _setOptions() {
 			$options = array( );
-			$options = $this->Periodeimmersion->allEnumLists();
+//			$options = $this->Periodeimmersion->allEnumLists();
 			$optionscui = $this->Cui->allEnumLists();
 			$options = Set::merge( $optionscui, $options );
 			$typevoie = $this->Option->typevoie();
@@ -49,8 +68,11 @@
 
 		/**
 		 *
+		 * @param integer $cui_id
 		 */
 		public function index( $cui_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Periodeimmersion->Cui->personneId( $cui_id ) ) ) );
+
 			$nbrCuis = $this->Periodeimmersion->Cui->find( 'count', array( 'conditions' => array( 'Cui.id' => $cui_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrCuis == 1 ), 'invalidParameter' );
 
@@ -105,6 +127,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		protected function _add_edit( $id = null ) {
 			if( $this->action == 'add' ) {
@@ -148,6 +171,8 @@
 
 				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			/// Peut-on prendre le jeton ?
 			$dossier_id = $this->Periodeimmersion->Cui->Personne->dossierId( $personne_id );
@@ -209,11 +234,15 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function gedooo( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Periodeimmersion->personneId( $id ) ) );
+
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
-			$options = $this->{$this->modelClass}->allEnumLists();
+//			$options = $this->{$this->modelClass}->allEnumLists();
+			$options = array();
 
 			$periodeimmersion = $this->{$this->modelClass}->find(
 				'first',
@@ -285,15 +314,21 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Periodeimmersion->personneId( $id ) ) );
+
 			$this->Default->delete( $id );
 		}
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Periodeimmersion->personneId( $id ) ) ) );
+
 			$this->_setOptions();
 			$this->Default->view( $id );
 		}

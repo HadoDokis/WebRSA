@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpersonnepcg66.
 	 *
@@ -107,6 +107,35 @@
 				);
 
 			return $listeDecisions;
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Personnepcg66.personne_id" ),
+				'joins' => array(
+					$this->join( 'Personnepcg66Situationpdo', array( 'type' => 'INNER' ) ),
+					$this->Personnepcg66Situationpdo->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Personnepcg66']['personne_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

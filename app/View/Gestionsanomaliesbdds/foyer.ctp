@@ -32,17 +32,6 @@
 	<?php endforeach;?>
 </ul>
 
-<!--<ul>
-	<li><?php echo $this->Xhtml->link( 'Voir', array( 'controller' => 'personnes', 'action' => 'index', $this->request->params['pass'][0] ) );?></li>
-	<?php foreach( array( 1, 0 ) as $o ):?>
-		<?php $obligatoire = ( $o ? 'prestation RSA obligatoire' : 'prestation RSA non obligatoire' );?>
-		<?php foreach( $methodes as $m ):?>
-			<?php $m = strtolower( $m );?>
-			<li><?php echo $this->Xhtml->link( "Comparaison {$m}, {$obligatoire}", array( $this->request->params['pass'][0], 'Gestionanomaliebdd__methode' => $m, 'Prestation__obligatoire' => $o ) );?></li>
-		<?php endforeach;?>
-	<?php endforeach;?>
-</ul>-->
-
 <h2>Personnes du foyer</h2>
 <?php
 	echo $this->Default2->index(
@@ -63,8 +52,18 @@
 			'domain' => 'gestionanomaliebdd',
 			'id' => 'GestionsanomaliesbddsPersonnesFoyer',
 			'actions' => array(
-				'Dossiers::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'personnes', 'action' => 'view', '#Personne.id#' ), 'class' => 'external' ),
-				'Dossiers::edit' => array( 'label' => 'Modifier', 'url' => array( 'controller' => 'personnes', 'action' => 'edit', '#Personne.id#' ), 'class' => 'external' ),
+				'Dossiers::view' => array(
+					'label' => 'Voir',
+					'url' => array( 'controller' => 'personnes', 'action' => 'view', '#Personne.id#' ),
+					'class' => 'external',
+					'disabled' => !$this->Permissions->checkDossier( 'personnes', 'view', $dossierMenu )
+				),
+				'Dossiers::edit' => array(
+					'label' => 'Modifier',
+					'url' => array( 'controller' => 'personnes', 'action' => 'edit', '#Personne.id#' ),
+					'class' => 'external',
+					'disabled' => !$this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu )
+				),
 			)
 		)
 	);
@@ -89,7 +88,11 @@
 			'options' => $options,
 			'domain' => 'gestionanomaliebdd',
 			'actions' => array(
-				'Dossiers::correction' => array( 'label' => 'Corriger', 'url' => array_merge( array( 'controller' => $this->request->params['controller'], 'action' => 'personnes', '#Personne.foyer_id#', '#Personne.id#' )/*, $urlParams*/ ) ),
+				'Dossiers::correction' => array(
+					'label' => 'Corriger',
+					'url' => array( 'controller' => $this->request->params['controller'], 'action' => 'personnes', '#Personne.foyer_id#', '#Personne.id#' ),
+					'disabled' => !$this->Permissions->checkDossier( $this->request->params['controller'], 'personnes', $dossierMenu )
+				),
 			),
 			'id' => 'GestionsanomaliesbddsProblemesFoyer'
 		)

@@ -4,54 +4,64 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
+
+	echo $this->Xhtml->tag(
+		'h1',
+		$this->pageTitle = __d( 'decisionpersonnepcg66', "Decisionspersonnespcgs66::{$this->action}" ).' '.$nompersonne
+	);
 ?>
-
-<?php echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );?>
-
-<div class="with_treemenu">
-	<?php
-		echo $this->Xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'decisionpersonnepcg66', "Decisionspersonnespcgs66::{$this->action}" ).' '.$nompersonne
-		);
-
-		echo $this->Default2->index(
-			$listeDecisions,
-			array(
-				'Personnepcg66Situationpdo.Situationpdo.libelle',
-				'Decisionpdo.libelle',
-				'Decisionpersonnepcg66.datepropositions',
-				'Decisionpersonnepcg66.commentaire'
-			),
-			array(
-				'actions' => array(
-					'Decisionspersonnespcgs66::view',
-					'Decisionspersonnespcgs66::edit',
-					'Decisionspersonnespcgs66::print' => array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'gedooo' ),
-					'Decisionspersonnespcgs66::delete'
+<?php if( $this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'add', $dossierMenu ) ):?>
+	<ul class="actionMenu">
+		<?php
+			echo '<li>'.$this->Xhtml->addLink(
+				'Ajout d\'une proposition de décision',
+				 array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'add', $personnepcg66_id ),
+				$this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'add', $dossierMenu )
+			).' </li>';
+		?>
+	</ul>
+<?php endif;?>
+<?php
+	echo $this->Default2->index(
+		$listeDecisions,
+		array(
+			'Personnepcg66Situationpdo.Situationpdo.libelle',
+			'Decisionpdo.libelle',
+			'Decisionpersonnepcg66.datepropositions',
+			'Decisionpersonnepcg66.commentaire'
+		),
+		array(
+			'actions' => array(
+				'Decisionspersonnespcgs66::view' => array(
+					'disabled' => !$this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'view', $dossierMenu )
 				),
-				'add' => array(
-					'Decisionpersonnepcg66.add' => array( 'controller'=>'decisionspersonnespcgs66', 'action'=>'add', $personnepcg66_id )
+				'Decisionspersonnespcgs66::edit' => array(
+					'disabled' => !$this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'edit', $dossierMenu )
 				),
-				'options' => $options
-			)
-		);
-
-		echo '<div class="aere">';
-		echo $this->Default->button(
-			'backpdo',
-			array(
-				'controller' => 'dossierspcgs66',
-				'action'     => 'edit',
-				$dossierpcg66_id
+				'Decisionspersonnespcgs66::print' => array(
+					'url' => array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'gedooo' ),
+					'disabled' => !$this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'gedooo', $dossierMenu )
+				),
+				'Decisionspersonnespcgs66::delete' => array(
+					'disabled' => !$this->Permissions->checkDossier( 'decisionspersonnespcgs66', 'delete', $dossierMenu )
+				)
 			),
-			array(
-				'id' => 'Back',
-				'label' => 'Retour au dossier'
-			)
-		);
-		echo '</div>';
+			'options' => $options
+		)
+	);
 
-	?>
-</div>
-<div class="clearer"><hr /></div>
+	echo '<div class="aere">';
+	echo $this->Default->button(
+		'backpdo',
+		array(
+			'controller' => 'dossierspcgs66',
+			'action'     => 'edit',
+			$dossierpcg66_id
+		),
+		array(
+			'id' => 'Back',
+			'label' => 'Retour au dossier'
+		)
+	);
+	echo '</div>';
+?>

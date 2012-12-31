@@ -4,8 +4,6 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'personne_id' => $personne_id ) );
 ?>
 <?php
 	if( $this->action == 'add' ) {
@@ -76,57 +74,53 @@
 	} );
 </script>
 
-<div class="with_treemenu">
-	<h1><?php echo $this->pageTitle;?></h1>
+<h1><?php echo $this->pageTitle;?></h1>
 
-	<?php
-		if( $this->action == 'add' ) {
-			echo $this->Form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
-			echo '<div>';
-			echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
+<?php
+	if( $this->action == 'add' ) {
+		echo $this->Form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
+		echo '<div>';
+		echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
 
-			echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Aidedirecte.actioninsertion_id', array( 'type' => 'hidden'));//, 'value' => $actioninsertion_id ) );
-			echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden') );
-			echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
-			echo '</div>';
-		}
-		else {
-			echo $this->Form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
-			echo '<div>';
-			echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden') );
-			echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
-			echo $this->Form->input( 'Actioninsertion.personne_id', array( 'type' => 'hidden' ) );
-			echo '</div>';
-		}
-	?>
+		echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Aidedirecte.actioninsertion_id', array( 'type' => 'hidden'));//, 'value' => $actioninsertion_id ) );
+		echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden') );
+		echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
+		echo '</div>';
+	}
+	else {
+		echo $this->Form->create( 'Actioninsertion', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
+		echo '<div>';
+		echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden') );
+		echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' ) );
+		echo $this->Form->input( 'Actioninsertion.personne_id', array( 'type' => 'hidden' ) );
+		echo '</div>';
+	}
+?>
 
-	<fieldset>
-			<?php echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );?>
-			<?php echo $this->Form->input( 'Actioninsertion.lib_action', array( 'label' =>  __d( 'action', 'Action.lib_action' ) , 'type' => 'radio', 'options' => $lib_action ) );?>
-	</fieldset>
-	<fieldset>
-			<?php echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' )  ); ?>
-			<?php echo $this->Form->input( 'Aidedirecte.actioninsertion_id', array( 'type' => 'hidden' )  ); ?>
+<fieldset>
+		<?php echo $this->Form->input( 'Actioninsertion.id', array( 'type' => 'hidden' ) );?>
+		<?php echo $this->Form->input( 'Actioninsertion.lib_action', array( 'label' =>  __d( 'action', 'Action.lib_action' ) , 'type' => 'radio', 'options' => $lib_action ) );?>
+</fieldset>
+<fieldset>
+		<?php echo $this->Form->input( 'Aidedirecte.id', array( 'type' => 'hidden' )  ); ?>
+		<?php echo $this->Form->input( 'Aidedirecte.actioninsertion_id', array( 'type' => 'hidden' )  ); ?>
 
-			<?php echo $this->Form->input( 'Aidedirecte.typo_aide', array( 'label' => __d( 'action', 'Action.typo_aide' ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
-			<?php echo $this->Form->input( 'Aidedirecte.lib_aide', array( 'label' => __d( 'action', 'Action.lib_aide' ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-			<?php echo $this->Form->input( 'Aidedirecte.date_aide', array( 'label' => __d( 'action', 'Action.date_aide' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true)  ); ?>
-	</fieldset>
-	<fieldset>
-			<?php echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden' )  ); ?>
-			<?php echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden') ); ?>
-			<!-- <?php echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' )); ?> -->
-			<?php echo $this->Form->input( 'Prestform.lib_presta', array( 'label' => __d( 'action', 'Action.lib_presta' ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
-			<?php echo $this->Form->input( 'Refpresta.nomrefpresta', array( 'label' => __d( 'personne', 'Personne.nom' ), 'type' => 'text')); ?>
-	</fieldset>
+		<?php echo $this->Form->input( 'Aidedirecte.typo_aide', array( 'label' => __d( 'action', 'Action.typo_aide' ), 'type' => 'select', 'options' => $typo_aide, 'empty' => true )  ); ?>
+		<?php echo $this->Form->input( 'Aidedirecte.lib_aide', array( 'label' => __d( 'action', 'Action.lib_aide' ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+		<?php echo $this->Form->input( 'Aidedirecte.date_aide', array( 'label' => __d( 'action', 'Action.date_aide' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80 , 'empty' => true)  ); ?>
+</fieldset>
+<fieldset>
+		<?php echo $this->Form->input( 'Prestform.id', array( 'type' => 'hidden' )  ); ?>
+		<?php echo $this->Form->input( 'Prestform.actioninsertion_id', array( 'type' => 'hidden') ); ?>
+		<!-- <?php echo $this->Form->input( 'Refpresta.id', array( 'type' => 'hidden' )); ?> -->
+		<?php echo $this->Form->input( 'Prestform.lib_presta', array( 'label' => __d( 'action', 'Action.lib_presta' ), 'type' => 'select', 'options' => $actions, 'empty' => true )  ); ?>
+		<?php echo $this->Form->input( 'Refpresta.nomrefpresta', array( 'label' => __d( 'personne', 'Personne.nom' ), 'type' => 'text')); ?>
+</fieldset>
 
-	<?php echo $this->Form->submit( 'Enregistrer' );?>
-	<?php echo $this->Form->end();?>
-</div>
-
-<div class="clearer"><hr /></div>
+<?php echo $this->Form->submit( 'Enregistrer' );?>
+<?php echo $this->Form->end();?>

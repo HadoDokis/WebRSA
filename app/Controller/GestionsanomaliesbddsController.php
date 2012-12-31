@@ -214,7 +214,7 @@
 		public function foyer( $foyer_id ) {
 			$this->assert( is_numeric( $foyer_id ), 'error404' );
 
-			$this->DossiersMenus->checkDossierMenu( array( 'foyer_id' => $foyer_id ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			// Personnes posant problème au sein du foyer
 			$named = Xset::bump( $this->request->params['named'], '__' );
@@ -954,7 +954,7 @@
 		public function personnes( $foyer_id, $personne_id ) {
 			$this->assert( is_numeric( $personne_id ), 'error404' );
 
-			$this->DossiersMenus->checkDossierMenu( array( 'foyer_id' => $foyer_id ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			// Acquisition du lock ?
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );

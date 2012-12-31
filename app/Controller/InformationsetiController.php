@@ -15,14 +15,29 @@
 	 */
 	class InformationsetiController extends AppController
 	{
-
 		public $name = 'Informationseti';
+
 		public $uses = array( 'Informationeti',  'Option' , 'Personne' );
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Informationseti:index'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'' => '',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'topcreaentre', $this->Option->topcreaentre() );
@@ -38,10 +53,13 @@
 			$this->set( 'topressevaeti', $this->Option->topressevaeti() );
 		}
 
+		/**
+		 *
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'error404' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$informationeti = $this->Informationeti->find(
 				'first',
@@ -58,9 +76,13 @@
 			$this->set( 'informationeti', $informationeti );
 		}
 
+		/**
+		 *
+		 * @param integer $informationeti_id
+		 */
 		public function view( $informationeti_id = null ) {
-			// Vérification du format de la variable
 			$this->assert( valid_int( $informationeti_id ), 'error404' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Informationeti->personneId( $informationeti_id ) ) ) );
 
 			$informationeti = $this->Informationeti->find(
 				'first',

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe InfoscomplementairesController.
 	 *
@@ -15,10 +15,23 @@
 	 */
 	class InfoscomplementairesController extends AppController
 	{
-
 		public $name = 'Infoscomplementaires';
+
 		public $uses = array( 'Personne', 'Creancealimentaire', 'Titresejour', 'Activite', 'Allocationsoutienfamilial', 'Option', 'Dossier' );
+
 		public $helpers = array( 'Theme' );
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'view' => 'read',
+		);
 
 		/**
 		 *
@@ -46,9 +59,12 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $id ) ) );
+
 			/** Tables necessaire à l'ecran de synthèse
 
 			  OK -> Dossier

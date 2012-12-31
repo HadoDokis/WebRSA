@@ -1,9 +1,6 @@
 <?php $this->pageTitle = 'Dossier RSA '.$details['Dossier']['numdemrsa'];?>
 
-<?php echo $this->element( 'dossier_menu', array( 'id' => $details['Dossier']['id'] ) );?>
-
-<div class="with_treemenu">
-	<h1>Informations complémentaires</h1> <!--FIXME: grugeage -->
+<h1>Informations complémentaires</h1> <!--FIXME: grugeage -->
 <br />
 <div id="tabbedWrapper" class="tabs">
 	<div id="allocataires">
@@ -155,10 +152,6 @@
 	</table>
 </div>
 </div>
-
-</div>
-
-<div class="clearer"><hr /></div>
 
 <!-- *********************************************************************** -->
 

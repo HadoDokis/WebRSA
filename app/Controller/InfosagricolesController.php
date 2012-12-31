@@ -15,23 +15,42 @@
 	 */
 	class InfosagricolesController extends AppController
 	{
-
 		public $name = 'Infosagricoles';
+
 		public $uses = array( 'Infoagricole',  'Option' , 'Personne', 'Aideagricole');
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view' => 'Infosagricoles:index'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'view' => 'read',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-				$this->set( 'regfisagri', $this->Option->regfisagri() );
+			$this->set( 'regfisagri', $this->Option->regfisagri() );
 		}
 
+		/**
+		 *
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			$this->assert( valid_int( $personne_id ), 'error404' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$infoagricole = $this->Infoagricole->find(
 				'first',
@@ -51,9 +70,13 @@
 			$this->set( 'infoagricole', $infoagricole );
 		}
 
+		/**
+		 *
+		 * @param integer $infoagricole_id
+		 */
 		public function view( $infoagricole_id = null ) {
-			// Vérification du format de la variable
 			$this->assert( valid_int( $infoagricole_id ), 'error404' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Infoagricole->personneId( $infoagricole_id ) ) ) );
 
 			$infoagricole = $this->Infoagricole->find(
 				'first',
@@ -72,5 +95,4 @@
 			$this->set( 'infoagricole', $infoagricole );
 		}
 	}
-
 ?>

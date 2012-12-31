@@ -21,10 +21,23 @@
 
 		public $helpers = array( 'Locale', 'Csv',  'Xform', 'Xhtml' );
 
-		public $components = array( 'Jetons2', 'Gedooo.Gedooo' );
+		public $components = array( 'Jetons2', 'Gedooo.Gedooo', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'add' => 'Relancesapres:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'impression' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -47,6 +60,9 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
@@ -54,6 +70,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -95,6 +112,8 @@
 				$this->set( 'apre', $apre );
 				$dossier_id = $this->Personne->dossierId( $personne_id );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'dossier_id', $dossier_id );
@@ -139,8 +158,11 @@
 
 		/**
 		 *
+		 * @param integer $relanceapre_id
 		 */
 		public function view( $relanceapre_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Relanceapre->personneId( $relanceapre_id ) ) ) );
+
 			$qd_relanceapre = array(
 				'conditions' => array(
 					'Relanceapre.id' => $relanceapre_id
@@ -171,6 +193,8 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Relanceapre->personneId( $id ) ) );
+
 			$pdf = $this->Relanceapre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
