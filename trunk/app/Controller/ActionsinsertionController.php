@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ActionsinsertionController.
 	 *
@@ -15,10 +15,26 @@
 	 */
 	class ActionsinsertionController extends AppController
 	{
-
 		public $name = 'Actionsinsertion';
+
 		public $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action' );
 
+		public $components = array( 'Jetons2', 'DossiersMenus' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'index' => 'read',
+			'edit' => 'update',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'lib_action', $this->Option->lib_action() );
@@ -27,10 +43,13 @@
 			$this->set( 'typo_aide', $this->Option->typo_aide() );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function index( $contratinsertion_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			$this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Actioninsertion->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
@@ -77,14 +96,15 @@
 			$this->set( 'actionsinsertion', $actionsinsertion );
 			$this->set( 'contratinsertion_id', $contratinsertion_id);
 			$this->set( 'personne_id', $contratinsertion['Contratinsertion']['personne_id'] );
-
-
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function edit( $contratinsertion_id = null ){
-			// TODO : vérif param
-			// Vérification du format de la variable
 			$this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Actioninsertion->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			$contratinsertion = $this->Actioninsertion->Contratinsertion->find(
 				'first',
@@ -102,20 +122,17 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-
 				if( $this->Actioninsertion->saveAll( $this->request->data ) ) {
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'actionsinsertion', 'action' => 'index', $contratinsertion['Actioninsertion']['personne_id']) );
 				}
 			}
 			else {
-
 				$this->request->data = $contratinsertion;
 			}
+
 			$this->set('personne_id', $contratinsertion['Contratinsertion']['personne_id']);
 			$this->render( 'add_edit' );
-
 		}
 	}
-
 ?>

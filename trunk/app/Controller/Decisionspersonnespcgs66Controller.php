@@ -16,18 +16,35 @@
 	*/
 	class Decisionspersonnespcgs66Controller extends AppController
 	{
-
 		public $name = 'Decisionspersonnespcgs66';
 
 		/**
 		 * @access public
 		 */
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
+
 		public $helpers = array( 'Default2' );
+
 		public $uses = array( 'Decisionpersonnepcg66', 'Option', 'Pdf' );
+
 		public $commeDroit = array(
 			'view' => 'Decisionspersonnespcgs66:index',
 			'add' => 'Decisionspersonnespcgs66:edit'
+		);
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'decisionproposition' => 'read',
+			'delete' => 'delete',
+			'edit' => 'update',
+			'index' => 'read',
+			'view' => 'read',
 		);
 
 		/**
@@ -41,8 +58,11 @@
 
 		/**
 		 *
+		 * @param integer $personnepcg66_id
 		 */
 		public function index( $personnepcg66_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->personneId( $personnepcg66_id ) ) ) );
+
 			//Récupération des informations de la personne concernée par le dossier
 			$personnepcg66 = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->find(
 					'first', array(
@@ -88,22 +108,26 @@
 			$this->set( 'personne_id', $personne_id );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**		 * *******************************************************************
+		/**
 		 *
-		 * ** ****************************************************************** */
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -154,6 +178,8 @@
 				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 				$dossier_id = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->dossierId( $personne_id );
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'dossier_id', $dossier_id );
@@ -209,10 +235,14 @@
 		}
 
 		/**
-		 *   Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 * Enregistrement du courrier de proposition lors de l'enregistrement de la proposition
+		 *
+		 * @param integer $id
 		 */
 		public function decisionproposition( $id ) {
 			$this->assert( !empty( $id ), 'error404' );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Decisionpersonnepcg66->personneId( $id ) ) );
+
 
 			$pdf = $this->Decisionpersonnepcg66->getStoredPdf( $id );
 
@@ -224,6 +254,7 @@
 
 		/**
 		 *
+		 * @param integer $id
 		 */
 		public function view( $id ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
@@ -264,6 +295,7 @@
 			$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 			$this->set( 'personnepcg66_id', $personnepcg66_id );
 			$personne_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.personne_id' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 			$this->set( 'personne_id', $personne_id );
 
 			// Retour à la page d'édition de la PDO
@@ -278,8 +310,12 @@
 
 		/**
 		 * Suppression de la proposition de décision
+		 *
+		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Decisionpersonnepcg66->personneId( $id ) ) );
+
 			$qd_decisionpersonnepcg66 = array(
 				'conditions' => array(
 					'Decisionpersonnepcg66.id' => $id
@@ -309,6 +345,5 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'index', $personnepcg66_id ) );
 		}
-
 	}
 ?>

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Relanceapre.
 	 *
@@ -240,6 +240,34 @@
 			}
 
 			return $pdf;
+		}
+
+		/**
+		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 *
+		 * @param integer $id L'id de l'enregistrement
+		 * @return integer
+		 */
+		public function personneId( $id ) {
+			$querydata = array(
+				'fields' => array( "Apre.personne_id" ),
+				'joins' => array(
+					$this->join( 'Apre', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.id" => $id
+				),
+				'recursive' => -1
+			);
+
+			$result = $this->find( 'first', $querydata );
+
+			if( !empty( $result ) ) {
+				return $result['Apre']['personne_id'];
+			}
+			else {
+				return null;
+			}
 		}
 	}
 ?>

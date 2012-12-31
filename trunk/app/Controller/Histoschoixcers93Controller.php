@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Jetons2' );
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		/**
 		 * Modèles utilisés.
@@ -42,6 +42,20 @@
 		 * @var array
 		 */
 		public $helpers = array( 'Checkboxes' );
+
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'attdecisioncg' => 'create',
+			'attdecisioncpdv' => 'create',
+			'aviscadre' => 'create',
+			'premierelecture' => 'create',
+			'secondelecture' => 'create',
+		);
 
 		/**
 		 *
@@ -101,6 +115,8 @@
 			if( empty( $contratinsertion_id ) ) {
 				throw new NotFoundException();
 			}
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Histochoixcer93->Cer93->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			$this->Histochoixcer93->Cer93->Contratinsertion->id = $contratinsertion_id;
 			$personne_id = $this->Histochoixcer93->Cer93->Contratinsertion->field( 'personne_id' );

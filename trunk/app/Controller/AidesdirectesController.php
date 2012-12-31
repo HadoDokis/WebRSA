@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe AidesdirectesController.
 	 *
@@ -15,24 +15,44 @@
 	 */
 	class AidesdirectesController extends AppController
 	{
-
 		public $name = 'Aidesdirectes';
+
 		public $uses = array( 'Actioninsertion', 'Contratinsertion', 'Aidedirecte', 'Prestform', 'Option', 'Refpresta', 'Action');//, 'AideLiee' );
+
+		public $components = array( 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'add' => 'Aidesdirectes:edit'
 		);
 
+		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+		);
+
+		/**
+		 *
+		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'actions', $this->Action->grouplist( 'aide' ) );
 			$this->set( 'typo_aide', $this->Option->typo_aide() );
 		}
 
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function add( $contratinsertion_id = null ){
-			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $contratinsertion_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Contratinsertion->personneId( $contratinsertion_id ) ) ) );
 
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
@@ -43,7 +63,7 @@
 					'recursive' => -1
 				)
 			);
-// debug($contratinsertion);
+
 			// Si action n'existe pas -> 404
 			if( empty( $contratinsertion ) ) {
 				$this->cakeError( 'error404' );
@@ -79,10 +99,14 @@
 			$this->render( 'add_edit' );
 		}
 
+		/**
+		 *
+		 * @param integer $aidedirecte_id
+		 */
 		public function edit( $aidedirecte_id = null ){
-			// TODO : vérif param
 			// Vérification du format de la variable
 			$this->assert( valid_int( $aidedirecte_id ), 'invalidParameter' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Aidedirecte->personneId( $aidedirecte_id ) ) ) );
 
 			$aidedirecte = $this->Aidedirecte->find(
 				'first',

@@ -16,12 +16,11 @@
 	class Decisionstraitementspcgs66Controller extends AppController
 	{
 		public $name = 'Decisionstraitementspcgs66';
-		/**
-		* @access public
-		*/
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
+
 		public $helpers = array( 'Default2' );
+
 		public $uses = array( 'Decisiontraitementpcg66', 'Option', 'Pdf'  );
 
 		public $commeDroit = array(
@@ -30,9 +29,20 @@
 		);
 
 		/**
-		*
-		*/
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'index' => 'read',
+		);
 
+		/**
+		 *
+		 */
 		protected function _setOptions() {
 			$options = array();
 			$options['Decisiontraitementpcg66'] = $this->Decisiontraitementpcg66->allEnumLists();
@@ -40,10 +50,12 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param integer $traitementpcg66_id
+		 */
 		public function index( $traitementpcg66_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Decisiontraitementpcg66->Traitementpcg66->personneId( $traitementpcg66_id ) ) ) );
+
 			//Récupération des informations de la personne concernée par le dossier
 			$traitementpcg66 = $this->Decisiontraitementpcg66->Traitementpcg66->find(
 				'first',
@@ -76,24 +88,26 @@
 			$this->_setOptions();
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 */
 		public function add() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 *
+		 */
 		public function edit() {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/** ********************************************************************
-		*
-		*** *******************************************************************/
-
+		/**
+		 *
+		 * @param integer $id
+		 */
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
@@ -127,6 +141,8 @@
 				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 				$dossier_id = $this->Decisiontraitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->dossierId( $personne_id );;
 			}*/
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
 
 			$this->set( 'personnepcg66_id', $traitementpcg66['Personnepcg66']['id'] );
 			$this->set( 'dossierpcg66_id', $traitementpcg66['Personnepcg66']['dossierpcg66_id'] );
