@@ -66,28 +66,28 @@
 
 <fieldset class="col2">
 	<legend><?php echo required( 'Gère les CERs ?' );?></legend>
-	<?php echo $this->Xform->enum( 'Structurereferente.contratengagement', array(  'legend' => false, 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['contratengagement'] ) );?>
+	<?php echo $this->Xform->enum( 'Structurereferente.contratengagement', array(  'legend' => false, 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Structurereferente']['contratengagement'] ) );?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo required( 'Gère les APREs ?' );?></legend>
-	<?php echo $this->Xform->enum( 'Structurereferente.apre', array(  'legend' => false, 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['apre'] ) );?>
+	<?php echo $this->Xform->enum( 'Structurereferente.apre', array(  'legend' => false, 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Structurereferente']['apre'] ) );?>
 </fieldset>
 
 <fieldset class="col2">
 	<legend><?php echo 'Gère les Orientations ?';?></legend>
-	<?php echo $this->Xform->enum( 'Structurereferente.orientation', array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['orientation'] ) );?>
+	<?php echo $this->Xform->enum( 'Structurereferente.orientation', array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Structurereferente']['orientation'] ) );?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo 'Gère les PDOs ?';?></legend>
-	<?php echo $this->Xform->enum( 'Structurereferente.pdo', array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $optionsradio['pdo'] ) );?>
+	<?php echo $this->Xform->enum( 'Structurereferente.pdo', array(  'legend' => false, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Structurereferente']['pdo'] ) );?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo 'Active ?';?></legend>
-	<?php echo $this->Form->input( 'Structurereferente.actif', array( 'legend' => false, 'type' => 'radio', 'options' => $optionsradio['actif'] ) ); ?>
+	<?php echo $this->Form->input( 'Structurereferente.actif', array( 'legend' => false, 'type' => 'radio', 'options' => $options['Structurereferente']['actif'] ) ); ?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo 'Type de structure';?></legend>
-	<?php echo $this->Form->input( 'Structurereferente.typestructure', array( 'legend' => false, 'type' => 'radio', 'options' => $optionsradio['typestructure'] ) ); ?>
+	<?php echo $this->Form->input( 'Structurereferente.typestructure', array( 'legend' => false, 'type' => 'radio', 'options' => $options['Structurereferente']['typestructure'] ) ); ?>
 </fieldset>
 
 	<div class="submit">
