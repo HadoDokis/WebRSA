@@ -22,7 +22,7 @@ msgid "Commentairenormecer93.name"
 msgstr "Intitulé du commentaire"
 
 msgid "Commentairenormecer93.isautre"
-msgstr "Champ de type autre ?"
+msgstr "Champ de type texte ?"
 
 msgid "Commentairesnormescers93::index"
 msgstr "Table de paramétrage des commentaires pour les décisions du CER"

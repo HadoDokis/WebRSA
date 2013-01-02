@@ -104,7 +104,7 @@
 				)
 			).'</li><li>'
 			.$this->Ajax->link(
-				'Transférer au CPDV',
+				'Transférer au responsable',
 				array( 'action' => 'saisie' ),
 				array(
 					'update' => $rowId,
