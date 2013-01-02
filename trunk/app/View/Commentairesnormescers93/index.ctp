@@ -9,7 +9,8 @@
 	echo $this->Default2->index(
 		$commentairesnormescers93,
 		array(
-			'Commentairenormecer93.name'
+			'Commentairenormecer93.name',
+			'Commentairenormecer93.isautre' => array( 'type' => 'boolean' )
 		),
 		array(
 			'cohorte' => false,
