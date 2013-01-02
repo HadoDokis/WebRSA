@@ -64,6 +64,10 @@
 					)
 				)
 			);
+			
+			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
+			// donc on limite au dernier detail de calcul du droit rsa
+			$sqDernierDetailcalculdroitrsa = $Dossier->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
 
 			$conditions = array(
 				'Prestation.natprest' => 'RSA',
@@ -73,6 +77,7 @@
 				"VxAdressefoyer.id IN ( {$sqDerniereRgadr02} )",
 				'Orientstruct.statut_orient' => 'Orienté',
 				"Orientstruct.id IN ( {$sqDerniereOrientstruct} )",
+				"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )",
 			);
 
 			if( $statut == 'atransferer' ) {

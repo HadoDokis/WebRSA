@@ -34,5 +34,28 @@
 				'order' => ''
 			)
 		);
+		
+		
+		/**
+		 * Retourne le dernier détail du droit rsa d'un dossier RSA
+		 *
+		 * @param string $detaildroitrsaIdField
+		 * @return string
+		 */
+		public function sqDernier( $detaildroitrsaIdField = 'Detaildroitrsa.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'detailscalculsdroitsrsa.id'
+					),
+					'alias' => 'detailscalculsdroitsrsa',
+					'conditions' => array(
+						"detailscalculsdroitsrsa.detaildroitrsa_id = {$detaildroitrsaIdField}"
+					),
+					'order' => array( 'detailscalculsdroitsrsa.ddnatdro DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>
