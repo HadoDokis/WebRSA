@@ -83,7 +83,7 @@
 
 			$options = $this->Propopdo->allEnumLists();
 			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
-			$this->set( 'structs', $this->Propopdo->Structurereferente->listeParType( 'pdo' ) );
+			$this->set( 'structs', $this->Propopdo->Structurereferente->listeParType( array( 'pdo' => true ) ) );
 			$this->set( compact( 'options' ) );
 		}
 
