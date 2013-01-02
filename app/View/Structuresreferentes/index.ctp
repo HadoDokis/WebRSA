@@ -4,7 +4,6 @@
 	}
 ?>
 <?php $this->pageTitle = 'Paramétrage des Structures référentes';?>
-<?php echo $this->Xform->create( 'Structurereferente' );?>
 <div>
 	<h1><?php echo 'Visualisation de la table  ';?></h1>
 
