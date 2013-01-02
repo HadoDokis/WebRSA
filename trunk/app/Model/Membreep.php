@@ -89,5 +89,36 @@
 				'with' => 'EpMembreep' // TODO
 			),
 		);
+		
+		
+		public function search( $criteres ) {
+			$conditions = array();
+			
+			foreach( array( 'nom', 'prenom', 'ville', 'organisme' ) as $critereMembre ) {
+				if( isset( $criteres['Membreep'][$critereMembre] ) && !empty( $criteres['Membreep'][$critereMembre] ) ) {
+					$conditions[] = 'UPPER(Membreep.'.$critereMembre.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteres['Membreep'][$critereMembre] ) ) ).'\'';
+				}
+			}
+			
+			if( isset( $criteres['Membreep']['fonctionmembreep_id'] ) && !empty( $criteres['Membreep']['fonctionmembreep_id'] ) ) {
+				$conditions[] = array( 'Membreep.fonctionmembreep_id' => $criteres['Membreep']['fonctionmembreep_id'] );
+			}
+			
+			
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Fonctionmembreep->fields()
+				),
+				'order' => array( 'Membreep.nom ASC', 'Membreep.prenom ASC' ),
+				'joins' => array(
+					$this->join( 'Fonctionmembreep', array( 'type' => 'INNER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
 	}
 ?>

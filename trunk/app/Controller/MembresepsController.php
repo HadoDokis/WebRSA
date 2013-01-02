@@ -16,6 +16,8 @@
 	class MembresepsController extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2' );
+		
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'add' => 'Membreseps:edit'
@@ -24,12 +26,12 @@
 
 		protected function _setOptions() {
 			$options = $this->Membreep->enums();
-			if( $this->action != 'index' ) {
-				$options['Membreep']['fonctionmembreep_id'] = $this->Membreep->Fonctionmembreep->find( 'list' );
-				$options['Membreep']['ep_id'] = $this->Membreep->Ep->find( 'list' );
-				$optionTypevoie['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$options = Set::merge( $options, $optionTypevoie );
-			}
+
+			$options['Membreep']['fonctionmembreep_id'] = $this->Membreep->Fonctionmembreep->find( 'list' );
+			$options['Membreep']['ep_id'] = $this->Membreep->Ep->find( 'list' );
+			$optionTypevoie['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+			$options = Set::merge( $options, $optionTypevoie );
+
 			$enums = $this->Membreep->CommissionepMembreep->enums();
 			$options['CommissionepMembreep'] = $enums['CommissionepMembreep'];
 
@@ -37,45 +39,53 @@
 		}
 
 		public function index() {
-			$this->paginate = array(
-				'fields' => array(
-					'Membreep.id',
-					'Fonctionmembreep.name',
-					'Membreep.qual',
-					'Membreep.nom',
-					'Membreep.prenom',
-					'Membreep.numvoie',
-					'Membreep.typevoie',
-					'Membreep.nomvoie',
-					'Membreep.compladr',
-					'Membreep.codepostal',
-					'Membreep.ville',
-					'Membreep.organisme',
-					'Membreep.tel',
-					'Membreep.mail'
-				),
-				'contain' => array(
-					'Fonctionmembreep'
-				),
-				'limit' => 10
-			);
-			$membreseps = $this->paginate( $this->Membreep );
+			if( !empty( $this->request->data ) ) {
+			
+				$queryData = $this->Membreep->search( $this->request->data );
+				$queryData['limit'] = 20;
+				$this->paginate = $queryData;
+				$membreseps = $this->paginate( 'Membreep' );
 
-			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
-			foreach( $membreseps as &$membreep) {
-				$typevoie = Set::enum( Set::classicExtract( $membreep, 'Membreep.typevoie' ), $typesvoies );
-				$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
-				$membreep['Membreep']['adresse'] = implode ( ' ', array( $membreep['Membreep']['numvoie'], $typevoie, $membreep['Membreep']['nomvoie'], $membreep['Membreep']['compladr'], $membreep['Membreep']['codepostal'], $membreep['Membreep']['ville']  ) );
+/*			
+				$this->paginate = array(
+					'fields' => array(
+						'Membreep.id',
+						'Fonctionmembreep.name',
+						'Membreep.qual',
+						'Membreep.nom',
+						'Membreep.prenom',
+						'Membreep.numvoie',
+						'Membreep.typevoie',
+						'Membreep.nomvoie',
+						'Membreep.compladr',
+						'Membreep.codepostal',
+						'Membreep.ville',
+						'Membreep.organisme',
+						'Membreep.tel',
+						'Membreep.mail'
+					),
+					'contain' => array(
+						'Fonctionmembreep'
+					),
+					'limit' => 10
+				);
+				$membreseps = $this->paginate( $this->Membreep );*/
+
+				$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
+				foreach( $membreseps as &$membreep) {
+					$typevoie = Set::enum( Set::classicExtract( $membreep, 'Membreep.typevoie' ), $typesvoies );
+					$membreep['Membreep']['nomcomplet'] = implode ( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom']) );
+					$membreep['Membreep']['adresse'] = implode ( ' ', array( $membreep['Membreep']['numvoie'], $typevoie, $membreep['Membreep']['nomvoie'], $membreep['Membreep']['compladr'], $membreep['Membreep']['codepostal'], $membreep['Membreep']['ville']  ) );
+				}
+
+				$this->set( compact( 'membreseps' ) );
 			}
-
 			$this->_setOptions();
 
 			$compteurs = array(
 				'Fonctionmembreep' => $this->Membreep->Fonctionmembreep->find( 'count' )
 			);
 			$this->set( compact( 'compteurs' ) );
-
-			$this->set( compact( 'membreseps' ) );
 		}
 
 		/**

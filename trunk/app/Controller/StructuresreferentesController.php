@@ -19,6 +19,8 @@
 		public $name = 'Structuresreferentes';
 		public $uses = array( 'Structurereferente', 'Referent', 'Orientstruct', 'Typeorient', 'Zonegeographique', 'Apre', 'Option' );
 		public $helpers = array( 'Xform' );
+		
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'add' => 'Structuresreferentes:edit'
