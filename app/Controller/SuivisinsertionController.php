@@ -133,14 +133,16 @@
 				$personnesFoyer[$index]['Cui'] = ( isset( $tCui['Cui'] ) ? $tCui['Cui'] : array() );
 
 				// Actions insertions engagées par la personne
-				$tActioninsertion = $this->Actioninsertion->find(
-						'all', array(
-					'conditions' => array( 'Actioninsertion.contratinsertion_id' => $personnesFoyer[$index]['Contratinsertion']['id'] ),
-					'recursive' => -1,
-					'order' => 'Actioninsertion.dd_action DESC'
-						)
-				);
-				$personnesFoyer[$index]['Actioninsertion'] = Set::extract( $tActioninsertion, '/Actioninsertion' );
+				if( !empty( $personnesFoyer[$index]['Contratinsertion'] ) ) {
+					$tActioninsertion = $this->Actioninsertion->find(
+							'all', array(
+						'conditions' => array( 'Actioninsertion.contratinsertion_id' => $personnesFoyer[$index]['Contratinsertion']['id'] ),
+						'recursive' => -1,
+						'order' => 'Actioninsertion.dd_action DESC'
+							)
+					);
+				}
+				$personnesFoyer[$index]['Actioninsertion'] = ( isset( $tActioninsertion['Actioninsertion'] ) ? $tActioninsertion['Actioninsertion'] : array() );
 
 				// Premier Rendez-vous
 				$tRendezvous = $this->Rendezvous->find(
@@ -152,7 +154,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Rendezvous']['premier'] = Hash::get( $tRendezvous, 'Rendezvous' );
+				$personnesFoyer[$index]['Rendezvous']['premier'] = ( isset( $tRendezvous['Rendezvous'] ) ? $tRendezvous['Rendezvous'] : array() ); //Hash::get( $tRendezvous, 'Rendezvous' );
 
 				// Dernier Rendez-vous
 				$tRendezvous = $this->Rendezvous->find(
@@ -164,7 +166,7 @@
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Rendezvous']['dernier'] = Hash::get( $tRendezvous, 'Rendezvous' );
+				$personnesFoyer[$index]['Rendezvous']['dernier'] = ( isset( $tRendezvous['Rendezvous'] ) ? $tRendezvous['Rendezvous'] : array() ); //Hash::get( $tRendezvous, 'Rendezvous' );
 
 				// Première Orientation
 				$tOrientstruct = $this->Orientstruct->find(
@@ -255,6 +257,7 @@
 							'Nonrespectsanctionep93.created',
 							'Nonrespectsanctionep93.origine',
 							'Nonrespectsanctionep93.rgpassage',
+							'Nonrespectsanctionep93.dossierep_id',
 							'Relancenonrespectsanctionep93.daterelance',
 							'Relancenonrespectsanctionep93.numrelance'
 						),
@@ -304,14 +307,15 @@
 									'Nonrespectsanctionep93.orientstruct_id IN ( '.$this->Dossier->Foyer->Personne->Orientstruct->sq( array( 'fields' => array( 'Orientstruct.id' ), 'conditions' => array( 'Orientstruct.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
 								),
 								array(
-									'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
+									'Nonrespectsanctionep93.contratinsertion_id IN ( '.$this->Dossier->Foyer->Personne->Contratinsertion->sq( array( 'fields' => array( 'id' ), 'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ) ) ).' )'
 								)
 							)
 						),
-						'order' => "Relancenonrespectsanctionep93.daterelance DESC",
+						'order' => array( "Relancenonrespectsanctionep93.numrelance DESC, Relancenonrespectsanctionep93.daterelance DESC" ),
 							)
 					);
 					$personnesFoyer[$index]['Nonrespectsanctionep93']['derniere'] = $tRelance;
+					
 				}
 
 				$details[$role] = $personnesFoyer[$index];
