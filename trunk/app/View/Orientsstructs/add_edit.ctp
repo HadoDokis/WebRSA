@@ -109,9 +109,9 @@
 		if( $this->action == 'edit' ){
 			$selectedDateDemande = $this->request->data['Orientstruct']['date_propo'];
 		}
-		echo $this->Form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 3 ), 'empty' => true, 'selected' => $selectedDateDemande ) );
+		echo $this->Form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true, 'selected' => $selectedDateDemande ) );
 
-		echo $this->Form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 3 ) ) );
+		echo $this->Form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ) ) );
 	?>
 </fieldset>
 
