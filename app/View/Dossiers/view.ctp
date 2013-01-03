@@ -163,7 +163,7 @@
 								<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Typeorient.lib_type_orient' );?></td>
 							</tr>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
-								<th>Structure référente<!--Type de structure--></th>
+								<th>Structure référente de l'orientation<!--Type de structure--></th>
 								<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
 								<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Structurereferente.lib_struc' );?></td>
 							</tr>
