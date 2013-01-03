@@ -8,8 +8,16 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php foreach( $membres as $membre ) :?>
+			dependantSelect( 'CommissionepMembreep<?php echo $membre['Membreep']['id'];?>ReponsesuppleantId',  'CommissionepMembreep<?php echo $membre['Membreep']['id'];?>FonctionreponsesuppleantId' );
+		<?php endforeach;?>
+	});
+</script>
 
 <h1><?php echo $this->pageTitle;?></h1>
 <?php echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editliste/'.$seance_id ) ); ?>
@@ -25,7 +33,7 @@
 							'td',
 							$fonction['Fonctionmembreep']['name'].' :',
 							array(
-								'colspan' => 3
+								'colspan' => 4
 							)
 						)
 					);
@@ -55,7 +63,11 @@
 								).
 								$this->Xhtml->tag(
 									'td',
-									$this->Form->input( 'CommissionepMembreep.'.$membre['Membreep']['id'].'.reponsesuppleant_id', array( 'label' => false, 'type' => 'select', 'options' => @$membres_fonction[$membre['Membreep']['fonctionmembreep_id']] ) )
+									$this->Form->input( 'CommissionepMembreep.'.$membre['Membreep']['id'].'.fonctionreponsesuppleant_id', array( 'label' => false, 'type' => 'select', 'options' => $options['Membreep']['fonctionmembreep_id'], 'empty' => true ) )
+								).
+								$this->Xhtml->tag(
+									'td',
+									$this->Form->input( 'CommissionepMembreep.'.$membre['Membreep']['id'].'.reponsesuppleant_id', array( 'label' => false, 'type' => 'select', 'options' => $membres_fonction, 'empty' => true ) )
 								)
 							);
 						}
@@ -95,11 +107,15 @@
 	function checkPresence( id ) {
 		if ( $( 'CommissionepMembreep'+id+'Reponse' ).getValue() == 'remplacepar' ) {
 			$( 'reponse_membre_'+id ).writeAttribute('colspan', 1);
+			$( 'CommissionepMembreep'+id+'FonctionreponsesuppleantId' ).writeAttribute( 'disabled', false );
+			$( 'CommissionepMembreep'+id+'FonctionreponsesuppleantId' ).up('td').show();
 			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).writeAttribute( 'disabled', false );
 			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).up('td').show();
 		}
 		else {
 			$( 'reponse_membre_'+id ).writeAttribute('colspan', 2);
+			$( 'CommissionepMembreep'+id+'FonctionreponsesuppleantId' ).writeAttribute( 'disabled', 'disabled' );
+			$( 'CommissionepMembreep'+id+'FonctionreponsesuppleantId' ).up('td').hide();
 			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).writeAttribute( 'disabled', 'disabled' );
 			$( 'CommissionepMembreep'+id+'ReponsesuppleantId' ).up('td').hide();
 		}
