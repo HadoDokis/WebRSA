@@ -10,7 +10,7 @@
 						<td>'.$cer93['Dossier']['numdemrsa'].'</td>
 					</tr>
 					<tr>
-						<th>Date ouverture de droit</th>
+						<th>Date de demande RSA</th>
 						<td>'.date_short( $cer93['Dossier']['dtdemrsa'] ).'</td>
 					</tr>
 					<tr>

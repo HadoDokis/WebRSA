@@ -42,7 +42,7 @@
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
-							<th>Date ouverture de droit</th>
+							<th>Date de demande RSA</th>
 							<td>'.date_short( $cer93['Dossier']['dtdemrsa'] ).'</td>
 						</tr>
 						<tr>
