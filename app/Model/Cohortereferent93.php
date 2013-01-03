@@ -135,15 +135,25 @@
 			}
 
 			// Présence CER ?
+// 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
+// 				if( $search['Contratinsertion']['exists'] ) {
+// 					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NOT NULL )";
+// 				}
+// 				else {
+// 					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NULL )";
+// 				}
+// 			}
+			
+			/// Présence ou non d'un CER
 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
 				if( $search['Contratinsertion']['exists'] ) {
-					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NOT NULL )";
+					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) > 0';
 				}
 				else {
-					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NULL )";
+					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
 				}
 			}
-
+			
 			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
