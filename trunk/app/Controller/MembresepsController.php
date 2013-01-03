@@ -173,6 +173,7 @@
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
 						'CommissionepMembreep.reponse',
+						// Ajout de l'affichage des fonctions des remplaçants
 						'CommissionepMembreep.fonctionreponsesuppleant_id',
 						'CommissionepMembreep.reponsesuppleant_id'
 					),
@@ -243,6 +244,7 @@
 							$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = null;
 							if ( $reponse['reponse'] == 'remplacepar' ) {
 								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									// Ajout de l'affichage des fonctions des remplaçants
 									$existeEnBase['CommissionepMembreep']['fonctionreponsesuppleant_id'] = $reponse['fonctionreponsesuppleant_id'];
 									$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
 								}
@@ -257,6 +259,7 @@
 							$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = null;
 							if ( $reponse['reponse'] == 'remplacepar' ) {
 								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									// Ajout de l'affichage des fonctions des remplaçants
 									$nouvelleEntree['CommissionepMembreep']['fonctionreponsesuppleant_id'] = $reponse['fonctionreponsesuppleant_id'];
 									$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
 								}
@@ -284,6 +287,7 @@
 				$this->request->data = array();
 				foreach( $membres as $membre ) {
 					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponse'] = $membre['CommissionepMembreep']['reponse'];
+					// Ajout de l'affichage des fonctions des remplaçants
 					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['fonctionreponsesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'];
 					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponsesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'].'_'.$membre['CommissionepMembreep']['reponsesuppleant_id'];
 				}
@@ -367,6 +371,7 @@
 			foreach( $listemembres as $membreep ) {
 // 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
 			
+				// Modification de l'affichage des remplaçants
 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
@@ -490,6 +495,7 @@
 				)
 			);
 
+			// Ajout de la fonction des membres pour les suppléants
 			foreach( $membres as $membre ) {
 				$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponse'] = $membre['CommissionepMembreep']['reponse'];
 				$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['fonctionpresencesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'];
@@ -576,6 +582,8 @@
 			$membres_fonction = array();
 			foreach( $listemembres as $membreep ) {
 // 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+
+				// Modification de l'affichage des suppléants
 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
