@@ -3,8 +3,16 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php foreach( $membres as $membre ) :?>
+			dependantSelect( 'CommissionepMembreep<?php echo $membre['Membreep']['id'];?>PresencesuppleantId',  'CommissionepMembreep<?php echo $membre['Membreep']['id'];?>FonctionpresencesuppleantId' );
+		<?php endforeach;?>
+	});
+</script>
 
 <h1><?php echo $this->pageTitle;?></h1>
 
@@ -30,7 +38,7 @@
 							'td',
 							$fonction['Fonctionmembreep']['name'].' :',
 							array(
-								'colspan' => 3
+								'colspan' => 4
 							)
 						)
 					);
@@ -49,15 +57,15 @@
 								$defaut = $membre['CommissionepMembreep']['presence'];
 							}
 
-							if ( !empty( $membre['CommissionepMembreep']['presencesuppleant_id'] ) ) {
-								$valueDefaut = $membre['CommissionepMembreep']['presencesuppleant_id'];
-							}
-							elseif ( !empty( $membre['CommissionepMembreep']['reponsesuppleant_id'] ) ) {
-								$valueDefaut = $membre['CommissionepMembreep']['reponsesuppleant_id'];
-							}
-							else {
-								$valueDefaut = null;
-							}
+// 							if ( !empty( $membre['CommissionepMembreep']['presencesuppleant_id'] ) ) {
+// 								$valueDefaut = $membre['CommissionepMembreep']['fonctionpresencesuppleant_id'].'_'.$membre['CommissionepMembreep']['presencesuppleant_id'];
+// 							}
+// 							elseif ( !empty( $membre['CommissionepMembreep']['reponsesuppleant_id'] ) ) {
+// 								$membre['CommissionepMembreep']['presencesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'].'_'.$membre['CommissionepMembreep']['reponsesuppleant_id'];
+// 							}
+// 							else {
+// 								$valueDefaut = null;
+// 							}
 
 							echo $this->Xhtml->tag(
 								'tr',
@@ -78,7 +86,20 @@
 										)
 									),
 									array(
-										'colspan' => 1
+										'colspan' => 1,
+										'id' => 'presence_membre_'.$membre['Membreep']['id']
+									)
+								).
+								$this->Xhtml->tag(
+									'td',
+									$this->Form->input(
+										'CommissionepMembreep.'.$membre['Membreep']['id'].'.fonctionpresencesuppleant_id',
+										array(
+											'label' => false,
+											'type' => 'select',
+											'empty' => true,
+											'options' => $options['Membreep']['fonctionmembreep_id']//@$membres_fonction[$membre['Membreep']['fonctionmembreep_id']]
+										)
 									)
 								).
 								$this->Xhtml->tag(
@@ -88,7 +109,8 @@
 										array(
 											'label' => false,
 											'type' => 'select',
-											'options' => @$membres_fonction[$membre['Membreep']['fonctionmembreep_id']]
+											'empty' => true,
+											'options' => $membres_fonction//@$membres_fonction[$membre['Membreep']['fonctionmembreep_id']]
 										)
 									)
 								)
@@ -131,24 +153,32 @@
 	}
 ?>
 
+
+
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		$$('table#listeParticipants select.presence').each(function(select) {
-			$(select).observe('change', function() {
-				checkPresence(select);
+		<?php foreach( $membres as $membre ) { ?>
+			$( 'CommissionepMembreep<?php echo $membre['Membreep']['id'] ?>Presence' ).observe( 'change', function() {
+				checkPresence( <?php echo $membre['Membreep']['id'] ?> );
 			} );
-			checkPresence(select);
-		} );
-	});
+			checkPresence( <?php echo $membre['Membreep']['id'] ?> );
+		<?php } ?>
+	} );
 
-	function checkPresence(select) {
-		if (select.getValue() == 'remplacepar') {
-			select.up('td').writeAttribute('colspan', 1);
-			select.up('td').next().show();
+	function checkPresence( id ) {
+		if ( $( 'CommissionepMembreep'+id+'Presence' ).getValue() == 'remplacepar' ) {
+			$( 'presence_membre_'+id ).writeAttribute('colspan', 1);
+			$( 'CommissionepMembreep'+id+'FonctionpresencesuppleantId' ).writeAttribute( 'disabled', false );
+			$( 'CommissionepMembreep'+id+'FonctionpresencesuppleantId' ).up('td').show();
+			$( 'CommissionepMembreep'+id+'PresencesuppleantId' ).writeAttribute( 'disabled', false );
+			$( 'CommissionepMembreep'+id+'PresencesuppleantId' ).up('td').show();
 		}
 		else {
-			select.up('td').writeAttribute('colspan', 2);
-			select.up('td').next().hide();
+			$( 'presence_membre_'+id ).writeAttribute('colspan', 2);
+			$( 'CommissionepMembreep'+id+'FonctionpresencesuppleantId' ).writeAttribute( 'disabled', 'disabled' );
+			$( 'CommissionepMembreep'+id+'FonctionpresencesuppleantId' ).up('td').hide();
+			$( 'CommissionepMembreep'+id+'PresencesuppleantId' ).writeAttribute( 'disabled', 'disabled' );
+			$( 'CommissionepMembreep'+id+'PresencesuppleantId' ).up('td').hide();
 		}
 	}
 </script>

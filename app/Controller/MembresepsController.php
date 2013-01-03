@@ -172,7 +172,9 @@
 						'Membreep.tel',
 						'Membreep.mail',
 						'Membreep.fonctionmembreep_id',
-						'CommissionepMembreep.reponse'
+						'CommissionepMembreep.reponse',
+						'CommissionepMembreep.fonctionreponsesuppleant_id',
+						'CommissionepMembreep.reponsesuppleant_id'
 					),
 					'joins' => array(
 						array(
@@ -241,10 +243,12 @@
 							$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = null;
 							if ( $reponse['reponse'] == 'remplacepar' ) {
 								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									$existeEnBase['CommissionepMembreep']['fonctionreponsesuppleant_id'] = $reponse['fonctionreponsesuppleant_id'];
 									$existeEnBase['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
 								}
 							}
 							$reponsesMembres[$membreep_id] = $existeEnBase;
+							
 						}
 						else {
 							$nouvelleEntree['CommissionepMembreep']['commissionep_id'] = $commissionep_id;
@@ -253,6 +257,7 @@
 							$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = null;
 							if ( $reponse['reponse'] == 'remplacepar' ) {
 								if ( isset( $reponse['reponsesuppleant_id'] ) && !empty( $reponse['reponsesuppleant_id'] ) ) {
+									$nouvelleEntree['CommissionepMembreep']['fonctionreponsesuppleant_id'] = $reponse['fonctionreponsesuppleant_id'];
 									$nouvelleEntree['CommissionepMembreep']['reponsesuppleant_id'] = $reponse['reponsesuppleant_id'];
 								}
 							}
@@ -279,6 +284,8 @@
 				$this->request->data = array();
 				foreach( $membres as $membre ) {
 					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponse'] = $membre['CommissionepMembreep']['reponse'];
+					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['fonctionreponsesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'];
+					$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponsesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'].'_'.$membre['CommissionepMembreep']['reponsesuppleant_id'];
 				}
 			}
 
@@ -351,16 +358,19 @@
 							)
 						).' )'
 					),
-					'contain' => false
+					'contain' => false,
+					'order' => array( 'Membreep.nom ASC', 'Membreep.prenom ASC' )
 				)
 			);
 
 			$membres_fonction = array();
 			foreach( $listemembres as $membreep ) {
-				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+// 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+			
+				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
-
+// debug($membres_fonction );
 			$this->set('seance_id', $commissionep_id);
 			$this->set('ep_id', $ep_id);
 			$this->_setOptions();
@@ -391,6 +401,7 @@
 						if ( $reponse['presence'] == 'remplacepar' ) {
 							$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = null;
 							if ( isset( $reponse['presencesuppleant_id'] ) && !empty( $reponse['presencesuppleant_id'] ) ) {
+								$existeEnBase['CommissionepMembreep']['fonctionpresencesuppleant_id'] = $reponse['fonctionpresencesuppleant_id'];
 								$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = $reponse['presencesuppleant_id'];
 							}
 						}
@@ -403,6 +414,7 @@
 						if ( $reponse['presence'] == 'remplacepar' ) {
 							$existeEnBase['CommissionepMembreep']['presencesuppleant_id'] = null;
 							if ( isset( $reponse['presencesuppleant_id'] ) && !empty( $reponse['presencesuppleant_id'] ) ) {
+								$nouvelleEntree['CommissionepMembreep']['fonctionpresencesuppleant_id'] = $reponse['fonctionpresencesuppleant_id'];
 								$nouvelleEntree['CommissionepMembreep']['presencesuppleant_id'] = $reponse['presencesuppleant_id'];
 							}
 						}
@@ -478,6 +490,11 @@
 				)
 			);
 
+			foreach( $membres as $membre ) {
+				$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['reponse'] = $membre['CommissionepMembreep']['reponse'];
+				$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['fonctionpresencesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'];
+				$this->request->data['CommissionepMembreep'][$membre['Membreep']['id']]['presencesuppleant_id'] = $membre['CommissionepMembreep']['fonctionreponsesuppleant_id'].'_'.$membre['CommissionepMembreep']['reponsesuppleant_id'];
+			}
 			$this->set( 'membres', $membres );
 
 			$fonctionsmembres = $this->Membreep->Fonctionmembreep->find(
@@ -558,7 +575,8 @@
 
 			$membres_fonction = array();
 			foreach( $listemembres as $membreep ) {
-				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+// 				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id']][$membreep['Membreep']['id']] = implode( ' ', array( $membreep['Membreep']['qual'], $membreep['Membreep']['nom'], $membreep['Membreep']['prenom'] ) );
+				$membres_fonction[$membreep['Membreep']['fonctionmembreep_id'].'_'.$membreep['Membreep']['id']] = $membreep['Membreep']['qual'].' '.$membreep['Membreep']['nom'].' '.$membreep['Membreep']['prenom'];
 			}
 			$this->set( 'membres_fonction', $membres_fonction );
 

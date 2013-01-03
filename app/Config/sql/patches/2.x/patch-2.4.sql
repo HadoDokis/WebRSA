@@ -643,6 +643,15 @@ ALTER TABLE soussujetscers93 ALTER COLUMN isautre SET DEFAULT '0';
 SELECT alter_table_drop_constraint_if_exists( 'public', 'soussujetscers93', 'soussujetscers93_isautre_in_list_chk' );
 ALTER TABLE soussujetscers93 ADD CONSTRAINT soussujetscers93_isautre_in_list_chk CHECK ( cakephp_validate_in_list( isautre, ARRAY['0','1'] ) );
 SELECT add_missing_table_field( 'public', 'cers93_sujetscers93', 'autresoussujet', 'TEXT' );
+
+
+--------------------------------------------------------------------------------
+-- 20130103 : Ajout du choix de la fonction du membre lors de la prise de réponse / présence
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'fonctionreponsesuppleant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_fonctionreponsesuppleant_id_fkey', 'fonctionsmembreseps', 'fonctionreponsesuppleant_id');
+SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'fonctionpresencesuppleant_id', 'INTEGER');
+SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_fonctionpresencesuppleant_id_fkey', 'fonctionsmembreseps', 'fonctionpresencesuppleant_id');
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

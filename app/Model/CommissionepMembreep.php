@@ -27,7 +27,9 @@
 					'suppleant' => array( 'domain' => 'default', 'type' => 'booleannumber' )
 				)
 			),
-			'Formattable'
+			'Formattable' => array(
+				'suffix' => array( 'reponsesuppleant_id', 'presencesuppleant_id' )
+			)
 		);
 
 		public $belongsTo = array(
