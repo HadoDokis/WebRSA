@@ -357,7 +357,7 @@
 					'conditions' => array(
 						'dernierhistoriqueetatspe.informationpe_id = i.id'
 					),
-					'order' => array( 'dernierhistoriqueetatspe.date DESC' ),
+					'order' => array( 'dernierhistoriqueetatspe.date DESC', 'dernierhistoriqueetatspe.id DESC' ),
 					'limit' => 1
 				)
 			);
