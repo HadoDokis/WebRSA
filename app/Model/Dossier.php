@@ -321,11 +321,24 @@
 			}
 
 			// Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
-			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
-				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$joins[] = $this->Foyer->Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) );
-					$conditions[] = array( 'Nonoriente66.id IS NULL' );
+// 			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
+// 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+// 				if( Configure::read( 'Cg.departement' ) == 66 ) {
+// 					$joins[] = $this->Foyer->Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) );
+// 					$conditions[] = array( 'Nonoriente66.id IS NULL' );
+// 				}
+// 			}
+			
+			if( isset( $params['Orientstruct']['exists'] ) && ( $params['Orientstruct']['exists'] != '' ) ) {
+				if( $params['Orientstruct']['exists'] ) {
+					$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) > 0';
+				}
+				else {
+					$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						$joins[] = $this->Foyer->Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) );
+						$conditions[] = array( 'Nonoriente66.id IS NULL' );
+					}
 				}
 			}
 
@@ -338,6 +351,19 @@
 					$conditionsReferent
 				);
 			}
+			
+			// Présence DSP ?
+			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
+			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
+			if( isset( $params['Dsp']['exists'] ) && ( $params['Dsp']['exists'] != '' ) ) {
+				if( $params['Dsp']['exists'] ) {
+					$conditions[] = "( {$sqDspExists} )";
+				}
+				else {
+					$conditions[] = "( ( {$sqDspId} ) IS NULL )";
+				}
+			}
+
 
 			$query = array(
 				'fields' => array(

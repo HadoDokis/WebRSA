@@ -96,6 +96,7 @@
 
 				$referents = $this->Dossier->Foyer->Personne->PersonneReferent->Referent->find( 'list', array( 'order' => array( 'Referent.nom' ) ) );
 				$this->set( compact( 'referents') );
+				$this->set( 'exists', array( '1' => 'Oui', '0' => 'Non' ) );
 			}
 			else if( $this->action == 'edit' ) {
 				$optionsDossier = array(
