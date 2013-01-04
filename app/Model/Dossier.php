@@ -342,25 +342,32 @@
 				}
 			}
 
-			$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
-			if( isset( $referent_id ) && !empty( $referent_id ) ) {
-				$conditionsReferent = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id ).'\'';
-
-				$conditions[] = array(
-					'PersonneReferent.dfdesignation IS NULL',
-					$conditionsReferent
-				);
-			}
-			
-			// Présence DSP ?
-			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
-			$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
-			if( isset( $params['Dsp']['exists'] ) && ( $params['Dsp']['exists'] != '' ) ) {
-				if( $params['Dsp']['exists'] ) {
-					$conditions[] = "( {$sqDspExists} )";
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				//Travailleur social chargé de l'évaluation  
+				// Représente le "Nom du chargé de l'évaluation" lorsque l'on crée une orientation 
+				// via la table proposorientaitonscovs58
+				$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
+				if( isset( $referent_id ) && !empty( $referent_id ) ) {
+					$joins = array_merge(
+						$joins,
+						array(
+							$this->Foyer->Personne->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Foyer->Personne->Dossiercov58->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) )
+						)
+					);
+					$conditions[] = array( 'Propoorientationcov58.referentorientant_id = \''.Sanitize::clean( $referent_id ).'\'' );
 				}
-				else {
-					$conditions[] = "( ( {$sqDspId} ) IS NULL )";
+				
+				// Présence DSP ?
+				$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
+				$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
+				if( isset( $params['Dsp']['exists'] ) && ( $params['Dsp']['exists'] != '' ) ) {
+					if( $params['Dsp']['exists'] ) {
+						$conditions[] = "( {$sqDspExists} )";
+					}
+					else {
+						$conditions[] = "( ( {$sqDspId} ) IS NULL )";
+					}
 				}
 			}
 
