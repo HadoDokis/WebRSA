@@ -101,18 +101,16 @@
 	<fieldset>
 		<legend>Recherche par parcours de l'allocataire</legend>
 		<?php
-			echo $this->Form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
-		?>
-		<?php
-			if( Configure::read( 'Cg.departement' ) != 93 ){
-				$valueSansOrientation = isset( $this->request->data['Orientstruct']['sansorientation'] ) ? $this->request->data['Orientstruct']['sansorientation'] : false;
-				echo $this->Form->input( 'Orientstruct.sansorientation', array( 'label' => 'Personne sans orientation', 'type' => 'checkbox', 'checked' => $valueSansOrientation ) );
-			}
-
 			if( Configure::read( 'Cg.departement' ) == 58 ){
+				echo $this->Form->input( 'Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 				echo $this->Form->input( 'PersonneReferent.referent_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 			}
-
+			
+			if( Configure::read( 'Cg.departement' ) != 93 ){
+				echo $this->Form->input( 'Orientstruct.exists', array( 'label' => 'Possède une orientation ? ', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+			}
+			
+			echo $this->Form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>
 	</fieldset>
 
