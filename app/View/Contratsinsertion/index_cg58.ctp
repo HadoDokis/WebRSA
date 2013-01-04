@@ -44,7 +44,7 @@
 	<?php if( empty( $orientstruct ) ) :?>
 		<p class="error">Cette personne ne possède pas d'orientation. Impossible de créer un CER.</p>
 	<?php elseif( !empty( $bloquageAjoutCER ) ) :?>
-		<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.</p>
+		<p class="error">Cette personne possède actuellement une orientation professionnelle. Impossible de créer un CER.<br /> Une réorientation sociale doit être sollicitée pour pouvoir enregistrer un CER.</p>
 	<?php elseif( empty( $soumisADroitEtDevoir ) ) :?>
 		<p class="error">Cette personne n'est pas soumise à droit et devoir. Impossible de créer un CER.</p>
 	<?php elseif( $nbDemandedemaintienNonfinalisesCovs == 0 ) :?>
