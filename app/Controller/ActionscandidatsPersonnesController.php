@@ -19,7 +19,7 @@
 		public $name = 'ActionscandidatsPersonnes';
 		public $uses = array( 'ActioncandidatPersonne','Option' );
 		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 			'view' => 'ActionscandidatsPersonnes:index',
@@ -695,7 +695,7 @@
 
             // Cache géré dans les modèles
             $options[$this->modelClass] = $this->{$this->modelClass}->allEnumLists();
-            $options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->referentsListe();
+            $options[$this->modelClass]['referent_id'] = $this->InsertionsAllocataires->referents();
             $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );

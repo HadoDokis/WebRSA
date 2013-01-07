@@ -27,7 +27,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Gedooo.Gedooo', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		/**
 		 * Helpers utilisés.
@@ -430,8 +430,8 @@
 			$sujets_ids_valeurs_autres = array_unique( $sujets_ids_valeurs_autres );
 			$sujets_ids_soussujets_autres = array_unique( $sujets_ids_soussujets_autres );
 			$this->set( compact( 'sujets_ids_valeurs_autres', 'sujets_ids_soussujets_autres' ) );
-			// -----------------------------------------------------------------
 
+			// -----------------------------------------------------------------
 
 			$sujetscers93 = $this->Cer93->Sujetcer93->find(
 				'all',
@@ -506,7 +506,7 @@
 			// Options
 			$options = array(
 				'Contratinsertion' => array(
-					'structurereferente_id' => $this->Cer93->Contratinsertion->Structurereferente->listOptions(),
+					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ),
 					'referent_id' => $this->Cer93->Contratinsertion->Referent->listOptions()
 				),
 				'Prestation' => array(

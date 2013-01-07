@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
@@ -56,7 +56,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
+			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->listOptions() );
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
 			$options = $this->Rendezvous->allEnumLists();
@@ -219,7 +219,9 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+//			debug( $dossierMenu );
+			$this->set( compact( 'dossierMenu' ) );
 
 			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
