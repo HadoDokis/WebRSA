@@ -28,7 +28,7 @@
 			'add' => 'Reorientationseps93:edit'
 		);
 
-		public $uses = array( 'Reorientationep93' );
+		public $uses = array( 'Reorientationep93', 'Cohortetransfertpdv93' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -47,12 +47,12 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = $this->Reorientationep93->enums();
-			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
-			$options['Reorientationep93']['structurereferente_id'] = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
-			$options['Reorientationep93']['motifreorientep93_id'] = $this->Reorientationep93->Motifreorientep93->find( 'list' );
-			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->listOptions();
-			$this->set( compact( 'options' ) );
+// 			$options = $this->Reorientationep93->enums();
+// 			$options['Reorientationep93']['typeorient_id'] = $this->Reorientationep93->Typeorient->listOptions();
+// 			$options['Reorientationep93']['structurereferente_id'] = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+// 			$options['Reorientationep93']['motifreorientep93_id'] = $this->Reorientationep93->Motifreorientep93->find( 'list' );
+// 			$options['Reorientationep93']['referent_id'] = $this->Reorientationep93->Referent->listOptions();
+// 			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -197,6 +197,76 @@
 				$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 			}
 
+			//FIXME
+			// Liste des structures référentes par zones géogrpahiques
+			$structuresParZonesGeographiques = $this->Cohortetransfertpdv93->structuresParZonesGeographiques();
+			$this->set( 'structuresParZonesGeographiques', $structuresParZonesGeographiques);
+			
+			// Code insee de l'allocataire
+			$foyerCodeInsee = $this->Reorientationep93->Orientstruct->Personne->find(
+				'first',
+				array(
+					'fields' => array(
+						'Adresse.numcomptt'
+					),
+					'conditions' => array(
+						'Personne.id' => $personne_id
+					),
+					'joins' => array(
+						$this->Reorientationep93->Orientstruct->Personne->join( 'Foyer' ),
+						$this->Reorientationep93->Orientstruct->Personne->Foyer->join( 'Adressefoyer' ),
+						$this->Reorientationep93->Orientstruct->Personne->Foyer->Adressefoyer->join( 'Adresse' )
+					),
+					'recursive' => -1
+				)
+			);
+			
+			// Liste des structures couvertes par le code insee de l'allocataire
+			foreach( $structuresParZonesGeographiques as $typeorientId => $value ) {
+				if( !empty( $value ) ) {
+					foreach( array_keys( $value ) as $key ) {
+						if( preg_match( "/^{$foyerCodeInsee['Adresse']['numcomptt']}_/", $key ) ) {
+							$selectables[$typeorientId] = $key;
+						}
+					}
+				}
+			}
+			$selectables = suffix( $selectables );
+			
+			// Formatage de la liste des structures selon leur type d'orientation
+			foreach( $selectables as $typeorient_id => $structId ) {
+				$structs[] = $typeorient_id.'_'.$structId;
+			}
+			
+			// Construction de la variable structurereferente_id pour sélection dans le formulaire
+			$structureListe = $this->Reorientationep93->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+			foreach( $structureListe as $j => $name ){
+				if( in_array( $j, $structs ) ) {
+					$structs[$j] = $name;
+				}
+			}
+
+			// Liste des options disponibles
+			$options = array(
+				'Reorientationep93' => array(
+					'structurereferente_id' => $structs,
+					'typeorient_id' => $this->Reorientationep93->Typeorient->listOptions(),
+					'motifreorientep93_id' => $this->Reorientationep93->Motifreorientep93->find( 'list' ),
+					'referent_id' => $this->Reorientationep93->Referent->listOptions()
+				)
+			);
+			
+			$options = Set::merge(
+				$this->Reorientationep93->enums(),
+				$options
+			);
+
+			$this->set( compact( 'options' ) );
+			// Fin
+
+
+
+			
 			if( !empty( $this->request->data ) ) {
 				// FIXME: dans les contrôleurs des autres thèmes aussi
 				$success = true;
