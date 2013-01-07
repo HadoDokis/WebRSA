@@ -220,7 +220,6 @@
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
-//			debug( $dossierMenu );
 			$this->set( compact( 'dossierMenu' ) );
 
 			$this->Rendezvous->forceVirtualFields = true;
@@ -254,7 +253,8 @@
 					),
 					'contain' => false,
 					'conditions' => array(
-						'Rendezvous.personne_id' => $personne_id
+						'Rendezvous.personne_id' => $personne_id,
+						WebrsaPermissions::conditionsDate( 'Rendezvous.daterdv', $dossierMenu )
 					),
 					'order' => array(
 						'Rendezvous.daterdv DESC',
