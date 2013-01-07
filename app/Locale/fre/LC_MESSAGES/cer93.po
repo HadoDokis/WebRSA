@@ -36,6 +36,9 @@ msgstr "Modifier le CER"
 msgid "Cers93::impression"
 msgstr "Imprimer le CER"
 
+msgid "Cers93::impressionDecision"
+msgstr "Imprimer la décision"
+
 msgid "Cers93::signature"
 msgstr "Signer le CER"
 
