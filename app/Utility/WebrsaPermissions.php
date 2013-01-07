@@ -147,5 +147,37 @@
 
 			return true;
 		}
+
+		/**
+		 *
+		 * @param type $path
+		 * @param type $dossierMenu
+		 * @return type
+		 */
+		public function conditionsDate( $path, $dossierMenu ) {
+			$conditions = array();
+
+			$filtre_zone_geo = CakeSession::read( 'Auth.User.filtre_zone_geo' );
+
+			if( Configure::read( 'Cg.departement' ) == 93 && $filtre_zone_geo ) {
+				$mesZonesGeographiques = CakeSession::read( 'Auth.Zonegeographique' );
+
+				if( isset( $dossierMenu['Adressefoyer']['01'] ) && in_array( $dossierMenu['Adressefoyer']['01']['codeinsee'], $mesZonesGeographiques ) ) {
+					$conditions[] = array( "{$path} >=" =>  $dossierMenu['Adressefoyer']['01']['ddemm'] );
+				}
+
+				foreach( array( '02', '03' ) as $rang ) {
+					if( isset( $dossierMenu['Adressefoyer'][$rang] ) && in_array( $dossierMenu['Adressefoyer'][$rang]['codeinsee'], $mesZonesGeographiques ) ) {
+						$conditions[] = array( "{$path} BETWEEN '{$dossierMenu['Adressefoyer'][$rang]['ddemm']}' AND '{$dossierMenu['Adressefoyer'][$rang]['dfemm']}'" );
+					}
+				}
+
+				if( !empty( $conditions ) ) {
+					$conditions = array( 'OR' => $conditions );
+				}
+			}
+
+			return $conditions;
+		}
 	}
 ?>
