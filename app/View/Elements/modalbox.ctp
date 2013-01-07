@@ -6,7 +6,14 @@
 				<div class="popup_block">
 					<div class="popup">
 						<a href="#" onclick="$( '<?php echo $modalid;?>' ).hide(); return false;"><?php echo $this->Xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
-						<div id="popup-content1"><?php echo $modalcontent;?></div>
+						<div id="popup-content1">
+							<?php
+								if( !empty( $modalmessage ) ) {
+									echo $this->Html->tag( 'div', $modalmessage, array( 'class' => 'message' ) );
+								}
+								echo $modalcontent;
+							?>
+						</div>
 					</div>
 				</div>
 			</div>

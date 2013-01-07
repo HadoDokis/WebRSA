@@ -133,7 +133,8 @@
 										'autres_ids' => $options['commentairesnormescers93_autres_ids'],
 										'cohorte' => true
 									)
-								)
+								),
+								'modalmessage' => 'Sélectionnez la ou les valeurs et fermez pour enregistrer.'
 							)
 						)
 						.$this->Html->link( 'Commentaire', '#', array( 'onclick' => "\$( 'CheckboxesInputs{$index}' ).show();return false;", 'class' => 'comment' ) ),
