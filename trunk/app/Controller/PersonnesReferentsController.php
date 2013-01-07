@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Locale', 'Xform', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $aucunDroit = array( 'ajaxreferent', 'ajaxreffonct', 'ajaxperm', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
@@ -314,7 +314,7 @@
 			// Cache géré dans les modèles
 			$options = array(
 				'referents' => $this->set( 'referents', $this->PersonneReferent->Referent->listOptions() ),
-				'structuresreferentes' => $this->PersonneReferent->Referent->Structurereferente->listOptions()
+				'structuresreferentes' => $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) )
 			);
 			$this->set( 'options', $options );
 

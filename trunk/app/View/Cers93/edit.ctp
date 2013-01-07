@@ -21,11 +21,12 @@
                     'update' => 'StructurereferenteRef',
                     'url' => Router::url(
                         array(
+							'controller' => $this->request->params['controller'],
                             'action' => 'ajaxstruct',
-                            Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
                         ),
                         true
-                    )
+                    ),
+					'with' => 'Form.Element.serialize( \'ContratinsertionStructurereferenteId\' )'
                 )
             ).';';
             echo $this->Ajax->remoteFunction(
@@ -33,11 +34,12 @@
                     'update' => 'ReferentRef',
                     'url' => Router::url(
                         array(
+							'controller' => $this->request->params['controller'],
                             'action' => 'ajaxref',
-                            Set::extract( $this->request->data, 'Contratinsertion.referent_id' )
                         ),
                         true
-                    )
+                    ),
+					'with' => 'Form.Element.serialize( \'ContratinsertionReferentId\' )'
                 )
             ).';';
         ?>

@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
@@ -46,13 +46,15 @@
 		);
 
 		protected function _setOptions() {
+			$structuresreferentes = $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) );
+
 			$this->set( 'pays', $this->Option->pays() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
 			$this->set( 'referents', $this->Referent->listOptions() );
 			$this->set( 'typesorients', $this->Typeorient->listOptions() );
-			$this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
+			$this->set( 'structs', $structuresreferentes );
 
 			$options = array( );
 			$options = $this->Orientstruct->allEnumLists();
@@ -60,7 +62,7 @@
 
 			//Ajout des structures et référents orientants
 			$this->set( 'refsorientants', $this->Referent->listOptions() );
-			$this->set( 'structsorientantes', $this->Structurereferente->listOptions( array( 'orientation' => 'O' ) ) );
+			$this->set( 'structsorientantes', $structuresreferentes );
 		}
 
 		/**
