@@ -90,7 +90,8 @@
 		 * @return void
 		 */
 		public function saisie() {
-			$this->Workflowscers93->assertUserCi();
+// 			$this->Workflowscers93->assertUserCi();
+			$this->Workflowscers93->assertUserExterne(); //FIXME: accès CPDV + CI
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			$this->_traitercohorteajax( $structurereferente_id, '01signe' );
@@ -235,9 +236,11 @@
 				$cers93 = $this->Contratinsertion->Personne->find( 'all', $querydata );
 				$cers93 = $this->_addCommentairenormecer93( $cers93, $histochoixcer93key );
 
-				if( $key != 0 ) {
-					$cers93[$key] = $cers93[0];
-					unset( $cers93[0] );
+				if( $this->action == 'saisie' ) {
+					if( $key != 0 ) {
+						$cers93[$key] = $cers93[0];
+						unset( $cers93[0] );
+					}
 				}
 
 				$this->set( compact( 'cers93', 'options' ) );
@@ -260,13 +263,20 @@
 			// TODO: différencier CER / CER précédent ?
 			if( $this->action == 'saisie' ) {
 				$querydata['conditions'][] = array(
-					'OR' => array(
-						'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
-						'Contratinsertion.id IS NULL',
-						'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
-						'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
+					array(
+						'OR' => array(
+							'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
+							'Contratinsertion.id IS NULL',
+							'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
+							'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
+						)
 					),
-					'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' )
+					array(
+						'OR' => array(
+							'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' ),
+							'PersonneReferent.structurereferente_id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+						)
+					)
 				);
 			}
 			else if( $this->action == 'avalidercpdv' ) {
@@ -274,7 +284,7 @@
 					'Cer93.positioncer' => '02attdecisioncpdv',
 				);
 			}
-
+			
 			return $querydata;
 		}
 
@@ -571,6 +581,9 @@
 						if( !empty( $cer93['Histochoixcer93etape03']['etape'] ) ) {
 							if( $cer93['Histochoixcer93etape03']['isrejet'] != '1' ) {
 								$validationcpdv = '03attdecisioncg';
+								if( $cer93['Cer93']['positioncer'] == '99rejetecpdv' ) {
+									$validationcpdv = '99rejetecpdv';
+								}
 							}
 							else {
 								$validationcpdv = '99rejetecpdv';
@@ -647,7 +660,7 @@
 		 */
 		public function exportcsv( $etape ) {
 			if( $etape == 'saisie' ) {
-				$this->Workflowscers93->assertUserCi();
+				$this->Workflowscers93->assertUserExterne();
 			}
 			else if( $etape == 'avalidercpdv' ) {
 				$this->Workflowscers93->assertUserCpdv();
@@ -667,6 +680,26 @@
 				null
 			);
 			unset( $querydata['limit'] );
+
+			// TODO: factoriser
+			if( $etape == 'saisie' ) {
+				$querydata['conditions'][] = array(
+					array(
+						'OR' => array(
+							'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
+							'Contratinsertion.id IS NULL',
+							'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
+							'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
+						)
+					),
+					array(
+						'OR' => array(
+							'PersonneReferent.referent_id' => $this->Session->read( 'Auth.User.referent_id' ),
+							'PersonneReferent.structurereferente_id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+						)
+					)
+				);
+			}
 
 			$cers93 = $this->Contratinsertion->Personne->find( 'all', $querydata );
 
