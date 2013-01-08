@@ -78,7 +78,7 @@
 				).' </li>';
 			echo '</ul>';
 
-			echo $this->Xpaginator->paginationBlock( 'Defautinsertionep66', $this->passedArgs );
+			echo $this->Xpaginator->paginationBlock( 'Dossierep', $this->passedArgs );
 
 			echo '<table class="tooltips" style="width: 100%;"><thead>';
 				echo '<tr>';
@@ -140,7 +140,7 @@
 				}
 			echo '</tbody><table>';
 
-			echo $this->Xpaginator->paginationBlock( 'Defautinsertionep66', $this->passedArgs );
+			echo $this->Xpaginator->paginationBlock( 'Dossierep', $this->passedArgs );
 		}
 	}
 ?>
