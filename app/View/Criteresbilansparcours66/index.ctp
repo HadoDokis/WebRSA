@@ -100,7 +100,7 @@
 					<th>'.$this->Xpaginator->sort( __d( 'referent', 'Referent.nom_complet' ), 'Referent.nom_complet_court' ).'</th>
 					<th>'.$this->Xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.proposition' ), 'Bilanparcours66.proposition' ).'</th>
 					<th>'.$this->Xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.positionbilan' ), 'Bilanparcours66.positionbilan' ).'</th>
-					<th>'.$this->Xpaginator->sort( __d( 'bilanparcours66', 'Bilanparcours66.choixparcours' ), 'Bilanparcours66.choixparcours' ).'</th>
+					<th>'.$this->Xpaginator->sort( 'Motif de la saisine', 'Bilanparcours66.choixparcours' ).'</th>
 					<th>Saisine EP</th>
 					<th>Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
