@@ -301,8 +301,8 @@
 			)
 		);
 
-		
-		
+
+
 		public function search( $criteres ) {
 			/// Conditions de base
 			$conditions = array();
@@ -318,7 +318,7 @@
 			if( isset( $criteres['Referent']['id'] ) && !empty( $criteres['Referent']['id'] ) ) {
 				$conditions[] = array( 'Referent.id' => $criteres['Referent']['id'] );
 			}
-			
+
 			// Critère sur la structure référente de l'utilisateur
 			if( isset( $criteres['Referent']['structurereferente_id'] ) && !empty( $criteres['Referent']['structurereferente_id'] ) ) {
 				$conditions[] = array( 'Referent.structurereferente_id' => $criteres['Referent']['structurereferente_id'] );
@@ -330,7 +330,7 @@
 					$this->fields(),
 					$this->Structurereferente->fields(),
 					array(
-						$this->PersonneReferent->sqNbLies( $this, 'Referent.id', 'nb_referents_lies' )
+						$this->PersonneReferent->sqNbLiesActifs( $this, 'Referent.id', 'nb_referents_lies' )
 					)
 				),
 				'order' => array( 'Referent.nom ASC', 'Referent.prenom ASC' ),
@@ -343,8 +343,8 @@
 
 			return $query;
 		}
-		
-		
+
+
 		/**
 		 * Renvoit une liste clé / valeur avec clé qui est l'id de la structure référente underscore l'id du référent
 		 * et la valeur qui est qual, nom, prénom du référent.

@@ -15,14 +15,14 @@
 	 */
 	App::uses('Folder', 'Utility');
 	App::uses('File', 'Utility');
-	
+
 	class ReferentsController extends AppController
 	{
 
 		public $name = 'Referents';
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
 		public $helpers = array( 'Xform', 'Default2', 'Default' );
-		
+
 		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
@@ -57,37 +57,11 @@
 				$queryData['limit'] = 20;
 				$this->paginate = $queryData;
 				$referents = $this->paginate( 'Referent' );
-				
-				$clotureActif = true;
-				foreach( $referents as $referent ){
-					if( !empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] == 0 ) ) {
-						$clotureActif = false;
-					}
-				}
-				$this->set( 'clotureActif', $clotureActif );
+
 				$this->set( 'referents', $referents );
 
 			}
 			$this->_setOptions();
-			/*
-			$referents = $this->Referent->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$this->Referent->fields(),
-						$this->Referent->Structurereferente->fields()
-					),
-					'joins' => array(
-						$this->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
-					),
-					'recursive' => -1
-				)
-			);
-			
-			
-			
-			$this->_setOptions();
-			$this->set('referents', $referents);*/
 		}
 
 		/**
@@ -156,11 +130,11 @@
 				$this->redirect( array( 'controller' => 'referents', 'action' => 'index' ) );
 			}
 		}
-		
+
 		/**
 		*	Clôture en masse des référents
 		*/
-		
+
 	/**
 		 * Formulaire de clôture d'un référent du parcours.
 		 *
@@ -188,16 +162,30 @@
 			// Tentative d'enregistrement du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Referent->begin();
-				
+
 				$datedfdesignation = ( is_array( $this->request->data['Referent']['datecloture'] ) ? date_cakephp_to_sql( $this->request->data['Referent']['datecloture'] ) : $this->request->data['Referent']['datecloture'] );
 
-				$success = $this->Referent->PersonneReferent->updateAll(
-					array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
+				$count = $this->Referent->PersonneReferent->find(
+					'count',
 					array(
-						'"PersonneReferent"."referent_id"' => $id,
-						'PersonneReferent.dfdesignation IS NULL'
+						'conditions' => array(
+							'PersonneReferent.referent_id' => $id,
+							'PersonneReferent.dfdesignation IS NULL'
+						)
 					)
 				);
+
+				$success = true;
+				if( $count > 0 ) {
+					$success = $this->Referent->PersonneReferent->updateAll(
+						array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
+						array(
+							'"PersonneReferent"."referent_id"' => $id,
+							'PersonneReferent.dfdesignation IS NULL'
+						)
+					);
+				}
+
 				if( $success ) {
 					$success = $this->Referent->updateAll(
 						array( 'Referent.datecloture' => '\''.$datedfdesignation.'\'' ),
