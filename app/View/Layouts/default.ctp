@@ -177,7 +177,7 @@
 				?>
 			</div>
 			<div id="pageFooter"<?php if( Configure::read( 'debug' ) > 0 ) { echo ' style="color: black;"'; }?>>
-				webrsa v. <?php echo app_version();?> 2009 - 2012 @ Adullact.
+				webrsa v. <?php echo app_version();?> 2009 - 2013 @ Adullact.
 				<?php
 					if( Configure::read( 'debug' ) > 0 ) {
 						echo '( CG '.Configure::read( 'Cg.departement' );
