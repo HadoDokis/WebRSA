@@ -63,42 +63,43 @@
 
 			if( !empty( $resultset ) ) {
 				foreach( $resultset as $i => $results ) {
-
-					$isArray = true;
-					if( isset( $results['Relanceapre']['id'] ) ) {
-						$results['Relanceapre'] = array( $results['Relanceapre'] );
-						$isArray = false;
-					}
-
-					foreach( $results['Relanceapre'] as $key => $result ) {
-						$conditions = array();
-						if( isset( $result['apre_id'] ) &&  !empty( $result['apre_id'] ) ) {
-							$conditions = array( 'AprePieceapre.apre_id' => $result['apre_id'] );
+					if( isset( $results['Relanceapre'] ) ) {
+						$isArray = true;
+						if( isset( $results['Relanceapre']['id'] ) ) {
+							$results['Relanceapre'] = array( $results['Relanceapre'] );
+							$isArray = false;
 						}
 
-						$piecesPresentes = $this->Apre->AprePieceapre->find(
-							'all',
-							array(
-								'conditions' => $conditions,
-								'recursive' => -1
-							)
-						);
+						foreach( $results['Relanceapre'] as $key => $result ) {
+							$conditions = array();
+							if( isset( $result['apre_id'] ) &&  !empty( $result['apre_id'] ) ) {
+								$conditions = array( 'AprePieceapre.apre_id' => $result['apre_id'] );
+							}
 
-						$conditions = array();
-						$piecesApreIds = Set::extract( $piecesPresentes, '/AprePieceapre/pieceapre_id' );
-						if( !empty( $piecesApreIds ) ) {
-							$conditions = array( 'NOT' => array( 'Pieceapre.id' => $piecesApreIds ) );
+							$piecesPresentes = $this->Apre->AprePieceapre->find(
+								'all',
+								array(
+									'conditions' => $conditions,
+									'recursive' => -1
+								)
+							);
+
+							$conditions = array();
+							$piecesApreIds = Set::extract( $piecesPresentes, '/AprePieceapre/pieceapre_id' );
+							if( !empty( $piecesApreIds ) ) {
+								$conditions = array( 'NOT' => array( 'Pieceapre.id' => $piecesApreIds ) );
+							}
+							$piecesAbsentes = $this->Apre->Pieceapre->find( 'all', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+
+							$results['Relanceapre'][$key]['Piecemanquante'] = Set::classicExtract( $piecesAbsentes, '{n}.Pieceapre' );
 						}
-						$piecesAbsentes = $this->Apre->Pieceapre->find( 'all', array( 'conditions' => $conditions, 'recursive' => -1 ) );
 
-						$results['Relanceapre'][$key]['Piecemanquante'] = Set::classicExtract( $piecesAbsentes, '{n}.Pieceapre' );
+						if( !$isArray ) {
+							$results['Relanceapre'] = $results['Relanceapre'][0];
+						}
+
+						$resultset[$i] = $results;
 					}
-
-					if( !$isArray ) {
-						$results['Relanceapre'] = $results['Relanceapre'][0];
-					}
-
-					$resultset[$i] = $results;
 				}
 			}
 
