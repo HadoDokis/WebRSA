@@ -660,7 +660,13 @@
 					}
 				}
 				elseif ( ( $this->action == 'edit' ) && empty( $nvcontratinsertionId ) ) {
-					$success = $this->Bilanparcours66->save( $this->request->data );
+					$propositionModifie = $this->request->data['Bilanparcours66']['proposition'];
+					if( !in_array( $this->request->data['Bilanparcours66']['proposition'], array( 'aucun' ) ) && ( $proposition != $propositionModifie) ) {
+						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
+					}
+					else {
+						$success = $this->Bilanparcours66->save( $this->request->data );
+					}
 				}
 				elseif ( $this->action == 'add' ) {
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
@@ -679,7 +685,7 @@
 					)
 				);
 
-				if( !empty( $contrat['Contratinsertion'] ) && isset( $this->data['Bilanparcours66']['proposition'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
+				if( !empty( $contrat['Contratinsertion'] ) && isset( $this->request->data['Bilanparcours66']['proposition'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
 					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
 					$success = $this->{$this->modelClass}->Contratinsertion->updateAll(
 						array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),

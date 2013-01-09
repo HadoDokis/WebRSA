@@ -147,16 +147,16 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
-			'duree_engag' => array(
-				array(
-					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-					'message' => 'Champ obligatoire',
-				),
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				)
-			),
+// 			'duree_engag' => array(
+// 				array(
+// 					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
+// 					'message' => 'Champ obligatoire',
+// 				),
+// //				array(
+// //					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
+// //					'message' => 'Champ obligatoire',
+// //				)
+// 			),
 //			'ddreconductoncontrat' => array(
 //				array(
 //					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
@@ -506,6 +506,8 @@
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
 // debug($data);
 
+			// Calcul et mise à jour de la position du bilan
+			$data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
 
 			// Recondution du contrat
 			if( isset( $data[$this->alias]['proposition'] ) && in_array( $data[$this->alias]['proposition'], array( 'traitement', 'aucun' ) ) ){
@@ -713,7 +715,10 @@
 				$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 				$this->create( $data );
 
-				if( $success = $this->validates() ) {
+				$success = $this->validates() && $success;
+
+				if( $success ) {
+
 					$vxOrientstruct = $this->Orientstruct->find(
 						'first',
 						array(
