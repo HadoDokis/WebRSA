@@ -17,7 +17,7 @@
 			).' </li>';
 		?>
 	</ul>
-	
+
 <?php
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
 		$this->Xhtml->image(
@@ -83,8 +83,8 @@
 		</thead>
 		<tbody>
 			<?php foreach( $referents as $referent ):?>
-				<?php 
-// 					$clotureActif = ( empty( $referent['Referent']['datecloture'] ) );
+				<?php
+					$cloturable = ( empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] > 0 ) );
 
 					echo $this->Xhtml->tableCells(
 						array(
@@ -100,7 +100,7 @@
 								'cloture_referent',
 								array( 'controller' => 'referents', 'action' => 'cloturer',
 								$referent['Referent']['id'] ),
-								array( 'enabled' => ( $clotureActif && $this->Permissions->check( 'referents', 'cloturer' ) ) )
+								array( 'enabled' => ( $cloturable && $this->Permissions->check( 'referents', 'cloturer' ) ) )
 							),
 							$this->Default2->button(
 								'edit',

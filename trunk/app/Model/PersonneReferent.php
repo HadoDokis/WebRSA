@@ -192,11 +192,12 @@
 
 			return $saved;
 		}
-		
-		
+
+
 		/**
 		 * Sous-requête permettant de savoir si une entrée existe dans la table personnes_referents
-		 *	pour une entrée de la table referents
+		 * pour une entrée de la table referents, et que la date de fin de désignation du référent
+		 * n'est pas remplie.
 		 *
 		 * @param Model $Model
 		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
@@ -205,7 +206,7 @@
 		 * @param string $modelAlias Si null, utilise l'alias de la class PersonneReferent, sinon la valeur donnée.
 		 * @return string
 		 */
-		public function sqNbLies( Model $Model, $fieldId = 'Referent.id', $fieldName = null, $modelAlias = null ) {
+		public function sqNbLiesActifs( Model $Model, $fieldId = 'Referent.id', $fieldName = null, $modelAlias = null ) {
 			$alias = Inflector::underscore( $this->alias );
 
 			$modelAlias = ( is_null( $modelAlias ) ? $this->alias : $modelAlias );
@@ -217,11 +218,12 @@
 						),
 						'alias' => $alias,
 						'conditions' => array(
-							"{$alias}.referent_id = $fieldId"
+							"{$alias}.referent_id = $fieldId",
+							"{$alias}.dfdesignation IS NULL"
 						)
 					)
 			);
-			
+
 			if( !is_null( $fieldName ) ) {
 				$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
 			}
