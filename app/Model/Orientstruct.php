@@ -965,7 +965,9 @@
 					'conditions' => array(
 						'User.id' => $user_id
 					),
-					'contain' => false
+					'contain' => array(
+						'Serviceinstructeur'
+					)
 				)
 			);
 			$orientation = Set::merge( $orientation, $user );
