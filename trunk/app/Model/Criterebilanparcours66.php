@@ -180,6 +180,7 @@
 					'Bilanparcours66.choixparcours',
 					'Bilanparcours66.proposition',
 					'Bilanparcours66.examenaudition',
+					'Bilanparcours66.examenauditionpe',
 					'Bilanparcours66.maintienorientation',
 					'Bilanparcours66.saisineepparcours',
 					'Bilanparcours66.positionbilan',

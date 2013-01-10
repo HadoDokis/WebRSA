@@ -128,13 +128,16 @@
 				if (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && !empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
 					$motif = Set::classicExtract( $options['examenaudition'], $bilanparcour66['Bilanparcours66']['examenaudition'] );
 				}
-				elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition'])) {
+				elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition']) && ( $bilanparcour66['Bilanparcours66']['proposition'] != 'auditionpe' ) ) {
 					if ($bilanparcour66['Bilanparcours66']['maintienorientation']=='0') {
 						$motif = 'Réorientation';
 					}
 					else {
 						$motif = 'Maintien';
 					}
+				}
+				elseif (empty($bilanparcour66['Bilanparcours66']['choixparcours']) && empty($bilanparcour66['Bilanparcours66']['examenaudition']) && ( $bilanparcour66['Bilanparcours66']['proposition'] == 'auditionpe' ) ) {
+					$motif = Set::classicExtract( $options['examenauditionpe'], $bilanparcour66['Bilanparcours66']['examenauditionpe'] );
 				}
 				else {
 					$motif = Set::classicExtract( $options['choixparcours'], $bilanparcour66['Bilanparcours66']['choixparcours'] );
