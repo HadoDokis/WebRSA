@@ -491,10 +491,15 @@
 				$conditionsTypeorient = array( );
                 $blockCumulCER66 = false;
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-                    // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs dépasse 24 mois
-                    if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) > 24 ){
-                        $blockCumulCER66 = true;
-                    }
+					$this->Contratinsertion->Personne->id = $personne_id;
+					$agePersonne = $this->Contratinsertion->Personne->field( 'age' );
+                    // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs 
+                    // dépasse 24 mois et que l'allocataire a moins de 55ans
+                    if( $agePersonne < Configure::read( 'Tacitereconduction.limiteAge' ) ) {
+						if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) > 24 ){
+							$blockCumulCER66 = true;
+						}
+					}
                     $this->set( 'blockCumulCER66', $blockCumulCER66  );
 
 
