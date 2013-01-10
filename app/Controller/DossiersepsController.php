@@ -181,7 +181,6 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => '1'
 							)
 						),
 						array(
@@ -191,11 +190,12 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Situationdossierrsa.dossier_id = Dossier.id',
-								'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
 							)
 						),
 					),
 					'conditions' => array(
+						'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
+						'Calculdroitrsa.toppersdrodevorsa' => '1',
 						$conditionsAdresses,
 						$listeThemes,
 						$conditionsTime,
@@ -237,7 +237,7 @@
 						.' )',
 					),
 					'limit' => 50,
-					'order' => array( 'Dossierep.created ASC' )
+					'order' => array( 'Dossierep.id ASC' )
 				);
 
 				$options = $this->Dossierep->enums();
@@ -274,6 +274,17 @@
 				$qd['order'] = $queryData['order'];
 
 				$this->Dossierep->{$class}->forceVirtualFields = true;
+
+				// Si l'allocataire a déménagé, si l'état de son dossier a changé, ... mais qu'il a déjà été sélectionné, il faut qu'on le retrouve quand même
+				$qd['conditions'] = array(
+					'OR' => array(
+						array(
+							'Passagecommissionep.dossierep_id = Dossierep.id',
+							'Passagecommissionep.commissionep_id = Commissionep.id',
+						),
+						$qd['conditions']
+					)
+				);
 
 				if( $paginate ) {
 					$this->paginate = $qd;

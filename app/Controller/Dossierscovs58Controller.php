@@ -178,7 +178,6 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
-								'Calculdroitrsa.toppersdrodevorsa' => '1'
 							)
 						),
 						array(
@@ -188,11 +187,12 @@
 							'foreignKey' => false,
 							'conditions' => array(
 								'Situationdossierrsa.dossier_id = Dossier.id',
-								'Situationdossierrsa.etatdosrsa' => $this->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert()
 							)
 						),
 					),
 					'conditions' => array(
+						'Situationdossierrsa.etatdosrsa' => $this->Dossiercov58->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
+						'Calculdroitrsa.toppersdrodevorsa' => '1',
 						$conditionsAdresses,
 						$listeThemes,
 						'Dossiercov58.id NOT IN ('.
@@ -219,7 +219,7 @@
 						'NOT '.$this->Jetons2->sqLocked( 'Dossier' )
 					),
 					'limit' => 50,
-					'order' => array( 'Dossiercov58.created ASC' )
+					'order' => array( 'Dossiercov58.id ASC' )
 				);
 
 				$options['Dossiercov58']['cov58_id'] = $this->Dossiercov58->Passagecov58->Cov58->find(
@@ -255,6 +255,18 @@
 				$qd['order'] = $queryData['order'];
 
 				$this->Dossiercov58->{$class}->forceVirtualFields = true;
+
+				// Si l'allocataire a déménagé, si l'état de son dossier a changé, ... mais qu'il a déjà été sélectionné, il faut qu'on le retrouve quand même
+				$qd['conditions'] = array(
+					'OR' => array(
+						array(
+							'Passagecov58.dossiercov58_id = Dossiercov58.id',
+							'Passagecov58.cov58_id = Cov58.id',
+						),
+						$qd['conditions']
+					)
+				);
+
 				$this->paginate = $qd;
 				$dossiers[$theme] = $this->paginate( $this->Dossiercov58->{$class} );
 				$this->Components->unload( 'ProgressivePaginator' );
