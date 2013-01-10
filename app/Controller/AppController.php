@@ -136,10 +136,8 @@
 		 */
 		protected function _checkHabilitations() {
 			$habilitations = array(
-				'habilitations' => array(
-					'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
-					'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' ),
-				)
+				'date_deb_hab' => $this->Session->read( 'Auth.User.date_deb_hab' ),
+				'date_fin_hab' => $this->Session->read( 'Auth.User.date_fin_hab' )
 			);
 
 			$error = (
@@ -152,7 +150,7 @@
 				throw new DateHabilitationUserException(
 					'Mauvaises dates d\'habilitation de l\'utilisateur',
 					401,
-					$habilitations
+					array( 'habilitations' => $habilitations )
 				);
 			}
 		}
@@ -224,6 +222,7 @@
 			}
 
 			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' );
+			$isLogoutPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' );
 
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (
@@ -233,7 +232,7 @@
 			);
 			$this->set( 'useAlerteFinSession', $useAlerteFinSession );
 
-			if( !$isLoginPage ) {
+			if( !$isLoginPage && !$isLogoutPage ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
 					//le forcer a se connecter
 					$this->redirect( array( 'controller' => 'users', 'action' => 'login' ) );

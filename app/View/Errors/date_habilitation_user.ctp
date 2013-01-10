@@ -6,11 +6,11 @@
 	<tbody>
 		<tr>
 			<th>Date de début d'habilitation</th>
-			<td><?php echo '<b>'.$error->params['habilitations']['date_deb_hab'].'</b>';?></td>
+			<td><?php echo '<b>'.date_short( $error->params['habilitations']['date_deb_hab'] ).'</b>';?></td>
 		</tr>
 		<tr>
 			<th>Date de fin d'habilitation</th>
-			<td><?php echo '<b>'.$error->params['habilitations']['date_fin_hab'].'</b>';?></td>
+			<td><?php echo '<b>'.date_short( $error->params['habilitations']['date_fin_hab'] ).'</b>';?></td>
 		</tr>
 	</tbody>
 </table>
