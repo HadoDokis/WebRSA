@@ -577,6 +577,10 @@
 			'nom_complet_court' => array(
 				'type' => 'string',
 				'postgres' => '( "%s"."nom" || \' \' || "%s"."prenom" )'
+			),
+			'age' => array(
+				'type' => 'integer',
+				'postgres' => '( EXTRACT ( YEAR FROM AGE( "%s"."dtnai" ) ) )'
 			)
 		);
 
