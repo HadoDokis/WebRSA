@@ -44,9 +44,12 @@
 			echo $this->Default->subform(
 				array(
 					'Serviceinstructeur.numdepins' => array( 'label' => ( __d( 'suiviinstruction', 'Suiviinstruction.numdepins' ) ) ),
-					'Serviceinstructeur.typeserins' => array( 'label' => ( __d( 'suiviinstruction', 'Suiviinstruction.typeserins' ) ), 'empty' => true ),
+					'Serviceinstructeur.typeserins' => array( 'options' => $typeserins, 'type' => 'select', 'label' => ( __d( 'suiviinstruction', 'Suiviinstruction.typeserins' ) ), 'empty' => true ),
 					'Serviceinstructeur.numcomins' => array( 'label' => ( __d( 'suiviinstruction', 'Suiviinstruction.numcomins' ) ) ),
 					'Serviceinstructeur.numagrins' => array( 'label' => ( __d( 'suiviinstruction', 'Suiviinstruction.numagrins' ) ), 'maxlength' => 2 ),
+				),
+				array(
+					
 				)
 			);
 		?>
