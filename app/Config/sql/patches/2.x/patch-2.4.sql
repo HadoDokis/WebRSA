@@ -652,6 +652,9 @@ SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'fonction
 SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_fonctionreponsesuppleant_id_fkey', 'fonctionsmembreseps', 'fonctionreponsesuppleant_id');
 SELECT add_missing_table_field ('public', 'commissionseps_membreseps', 'fonctionpresencesuppleant_id', 'INTEGER');
 SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissionseps_membreseps_fonctionpresencesuppleant_id_fkey', 'fonctionsmembreseps', 'fonctionpresencesuppleant_id');
+
+-- SELECT add_missing_table_field ('public', 'histoschoixcers93', 'duree', 'INTEGER');
+-- ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

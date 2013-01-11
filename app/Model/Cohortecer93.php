@@ -316,11 +316,12 @@
 			$formData = array();
 
 			foreach( $datas as $index => $data ) {
+				$duree = ( !empty( $data['Histochoixcer93']['duree'] ) ) ? ( $data['Histochoixcer93']['duree'] ) : $data['Cer93']['duree'];
 				$formData['Histochoixcer93'][$index] = array(
 					'cer93_id' => $data['Histochoixcer93']['cer93_id'],
 					'user_id' => $user_id,
-// 						'commentaire' => $data['Histochoixcer93']['commentaire'],
 					'formeci' => $data['Histochoixcer93']['formeci'],
+					'duree' => $duree,
 					'etape' => $etape,
 					'datechoix' => date( 'Y-m-d' ),
 					'prevalide' => $data['Histochoixcer93']['prevalide'],
