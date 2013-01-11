@@ -35,6 +35,7 @@
 						<th class="action">Forme du CER (CG)</th>
 						<th class="action">Commentaire (CG)</th>
 						<th class="action">Décision CS</th>
+						<th class="action">Durée CER</th>
 						<th class="action">Date de décision</th>
 						<th class="action">Action</th>
 						<th class="action" colspan="2">Détails</th>
@@ -121,6 +122,10 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncs'] ) ? 'error' : null ) )
 						),
 						array(
+							$this->Form->input( "Histochoixcer93.{$index}.duree", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) ),
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['duree'] ) ? 'error' : null ) )
+						),
+						array(
 							$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
 						),
@@ -183,6 +188,10 @@
 				'Histochoixcer93<?php echo $index;?>FormeciS',
 				'Histochoixcer93<?php echo $index;?>FormeciC',
 				'Histochoixcer93<?php echo $index;?>Decisioncs',
+				'Histochoixcer93<?php echo $index;?>Duree3',
+				'Histochoixcer93<?php echo $index;?>Duree6',
+				'Histochoixcer93<?php echo $index;?>Duree9',
+				'Histochoixcer93<?php echo $index;?>Duree12',
 				'Histochoixcer93<?php echo $index;?>DatechoixDay',
 				'Histochoixcer93<?php echo $index;?>DatechoixMonth',
 				'Histochoixcer93<?php echo $index;?>DatechoixYear',
