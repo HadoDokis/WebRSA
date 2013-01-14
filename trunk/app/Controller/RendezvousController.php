@@ -593,10 +593,29 @@
 
 						}
 					}
+					
+					// Recherche du dernier référent actif lié au parcours de l'allocataire
+					$personneReferent = $this->Rendezvous->Personne->PersonneReferent->find(
+						'first',
+						array(
+							'fields' => array( 'PersonneReferent.referent_id' ),
+							'conditions' => array(
+								'PersonneReferent.personne_id' => $personne_id,
+								'PersonneReferent.id IN ( '.$this->Rendezvous->Personne->PersonneReferent->sqDerniere( 'Personne.id', false ).' )'
+							),
+							'contain' => array(
+								'Personne'
+							)
+						)
+					);
+					// On récupère le dernier référent actif et on charge la liste déroulante avec sa valeur
+					if( !empty( $personneReferent ) ) {
+						$this->request->data['Rendezvous']['referent_id'] = $this->request->data['Rendezvous']['structurereferente_id'].'_'.$personneReferent['PersonneReferent']['referent_id'];
+					}
+
 				}
 			}
-//			$this->Rendezvous->commit();
-// debug($this->request->data);
+
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
 			$this->set( 'struct_id', $struct_id );
 
