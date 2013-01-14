@@ -318,7 +318,29 @@
 				}
 			}
 
-			// FIXME: clôturer le référent actuel à la date
+			
+			// On clôture le référent actuel à la date
+			$count = $Orientstruct->Personne->PersonneReferent->find(
+				'count',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $data['Transfertpdv93']['personne_id'],
+						'PersonneReferent.dfdesignation IS NULL'
+					)
+				)
+			);
+			
+			$datedfdesignation = ( is_array( date( 'Y-m-d' ) ) ? date_cakephp_to_sql( date( 'Y-m-d' ) ) : date( 'Y-m-d' ) );
+
+			if( $count > 0 ) {
+				$success = $Orientstruct->Personne->PersonneReferent->updateAll(
+					array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
+					array(
+						'"PersonneReferent"."personne_id"' => $data['Transfertpdv93']['personne_id'],
+						'PersonneReferent.dfdesignation IS NULL'
+					)
+				) && $success;
+			}
 
 			return $success;
 		}
