@@ -83,7 +83,7 @@
 	</li>
 </ul>
 
-<?php if( !empty( $erreursCandidatePassage ) ):?>
+<?php if( !empty( $cers93 ) && !empty( $erreursCandidatePassage ) ):?>
 	<h2>Raisons pour lesquelles le contrat ne peut pas être signalé</h2>
 	<div class="error_message">
 		<?php if( count( $erreursCandidatePassage ) > 1 ):?>
