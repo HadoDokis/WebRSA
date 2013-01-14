@@ -135,13 +135,24 @@
 		 * @param string $field Le champ Personne.id sur lequel faire la sous-requête
 		 * @return string
 		 */
-		public function sqDerniere( $field ) {
+		public function sqDerniere( $field, $cloture = null ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
 			$table = $dbo->fullTableName( $this, false );
+			$conditionCloture = null;
+			if( !is_null( $cloture ) ) {
+				if( $cloture ) {
+					$conditionCloture = "AND {$table}.dfdesignation IS NOT NULL";
+				}
+				else {
+					$conditionCloture = "AND {$table}.dfdesignation IS NULL";
+				}
+				
+			}
 			return "SELECT {$table}.id
 					FROM {$table}
 					WHERE
 						{$table}.personne_id = ".$field."
+						$conditionCloture
 					ORDER BY {$table}.dddesignation DESC
 					LIMIT 1";
 		}
