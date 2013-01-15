@@ -467,4 +467,10 @@
 	 * Permet également d'autoriser la création d'un CER au-delà de la limite des 24 mois
 	 */
 	Configure::write( 'Tacitereconduction.limiteAge', 55 );
+	
+	/**
+	 * Variable contenant un integer (id stocké en base) pour la description du traitement PCG
+	 * devant être pris en compte pour la corbeille PCG
+	 */
+	Configure::write( 'Corbeillepcg.descriptionpdoId', array( '1' ) );
 ?>

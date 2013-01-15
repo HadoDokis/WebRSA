@@ -51,6 +51,15 @@ SELECT add_missing_table_field('public', 'detailsdroitsrsa', 'nbtotpersmajosurfd
 -- Ajout d'une valeur finale pour la déicison du CER Particulier CG66
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'proposdecisionscers66', 'decisionfinale', 'TYPE_NO' );
+
+-------------------------------------------------------------------------------------------------------------
+-- 20130115 : Ajout du booléen permettant de vérifier qu'un fichier est lié au Foyer (Corbeille PCG CG66)
+-------------------------------------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ('public', 'foyers', 'haspiecejointe', 'type_booleannumber');
+ALTER TABLE foyers ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE foyers SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE foyers ALTER COLUMN haspiecejointe SET NOT NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

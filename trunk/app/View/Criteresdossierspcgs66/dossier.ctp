@@ -71,6 +71,8 @@
 		echo $this->Search->etatDossierPCG66( $etatdossierpcg );
 		
 		echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
+		
+		echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille vide ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 
 </fieldset>
@@ -99,6 +101,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nb de propositions de décisions', 'Dossierpcg66.nbpropositions' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Etat du dossier', 'Dossierpcg66.etatdossierpcg' );?></th>
 					<th>Motifs de la personne</th>
+					<th>Nb de fichiers dans la corbeille</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
@@ -162,6 +165,7 @@
 								h( $criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
 								$differentsStatuts,
+								h( $criteredossierpcg66['Fichiermodule']['nb_fichiers_lies'] ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )

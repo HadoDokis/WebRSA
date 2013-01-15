@@ -16,6 +16,14 @@
 	class Foyer extends AppModel
 	{
 		public $name = 'Foyer';
+		
+		public $actsAs = array(
+			'Enumerable' => array(
+				'fields' => array(
+					'haspiecejointe'
+				)
+			)
+		);
 
 		public $virtualFields = array(
 			'enerreur' => array(
@@ -174,6 +182,22 @@
 				'foreignKey' => 'foyer_id',
 				'dependent' => true,
 				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Foyer\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
 				'fields' => '',
 				'order' => '',
 				'limit' => '',
