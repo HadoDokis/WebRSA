@@ -224,9 +224,14 @@
 		);
 
 		// Dossier PCG (CG 66)
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
-			$items['Dossier PCG'] = array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossier['Foyer']['id'] ) );
+		if( Configure::read( 'Cg.departement' ) == 93 ) {
+			$items['PCGs'] = array(
+				'Dossier PCG' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossier['Foyer']['id'] ) ),
+				'Corbeille PCG' => array( 'url' => array( 'controller' => 'foyers', 'action' => 'corbeille', $dossier['Foyer']['id'] ) )
+			);
 		}
+		
+		//FIXME infoscomplementaires
 
 		$items['Synthèse du parcours d\'insertion'] = array( 'url' => array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] ) );
 		$items['Modification Dossier RSA'] = array(

@@ -19,7 +19,6 @@ msgstr ""
 
 
 ###############################################################################
-
 msgid "Foyer.Modecontact.numtel"
 msgstr "N° de téléphone"
 
@@ -37,3 +36,24 @@ msgstr "Alerte composition du foyer ?"
 
 msgid "Foyer.sansprestation"
 msgstr "Personne sans prestation ?"
+
+msgid "Module:Foyers"
+msgstr "Module Foyer"
+
+msgid "Foyers::filelink"
+msgstr "Corbeille PCG"
+
+msgid "Foyer.filelink"
+msgstr "Ajouter un nouveau fichier"
+
+msgid "Foyer::corbeille"
+msgstr "Accueil de la corbeille PCG"
+
+msgid "Foyer.haspiecejointe"
+msgstr "Ajout d'une pièce supplémentaire"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"

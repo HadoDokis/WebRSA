@@ -104,6 +104,16 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Foyer' => array(
+				'className' => 'Foyer',
+				'foreignKey' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Foyer\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => ''
+			),
 			'DspRev' => array(
 				'className' => 'DspRev',
 				'foreignKey' => false,

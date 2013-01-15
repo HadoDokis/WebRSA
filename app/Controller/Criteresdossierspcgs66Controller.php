@@ -49,6 +49,7 @@
 
 			$options = $this->Dossierpcg66->enums();
 			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
+			$this->set( 'exists', array( '1' => 'Oui', '0' => 'Non' ) );
 
 			$options = array_merge(
 				$options,

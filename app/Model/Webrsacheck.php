@@ -256,6 +256,7 @@
 				'Nonoriente66.TypeorientIdSocial' => 'integer',
 				'Nonoriente66.TypeorientIdPrepro' => 'integer',
 				'Contratinsertion.Cg66.Rendezvous' => 'isarray',
+				'Corbeillepcg.descriptionpdoId' => 'isarray'
 			);
 		}
 
