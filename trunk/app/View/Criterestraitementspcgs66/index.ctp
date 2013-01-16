@@ -82,6 +82,7 @@
 				'options' => $options
 			)
 		);
+		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille vide ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
 	<div class="submit noprint">
@@ -111,6 +112,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Annulé ?', 'Traitementpcg66.annule' );?></th>
+					<th>Nb de fichiers dans la corbeille</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
@@ -164,6 +166,7 @@
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.dateecheance' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
+								h( $criteretraitementpcg66['Fichiermodule']['nb_fichiers_lies'] ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteretraitementpcg66, 'Personnepcg66.personne_id' ), Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.id' ) )
