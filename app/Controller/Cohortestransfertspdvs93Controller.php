@@ -255,9 +255,11 @@
 		 * @return void
 		 */
 		public function impression( $id = null ) {
-			$pdf = $this->Transfertpdv93->VxOrientstruct->Personne->Orientstruct->getStoredPdf( $id, 'date_impression' );
-			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
+// 			$pdf = $this->Transfertpdv93->VxOrientstruct->Personne->Orientstruct->getStoredPdf( $id, 'date_impression' );
+// 			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 
+			$pdf = $this->Transfertpdv93->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+			
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'transfertspdvs93_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}
