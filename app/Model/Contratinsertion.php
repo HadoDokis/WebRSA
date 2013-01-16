@@ -1836,6 +1836,7 @@
                     WHERE
                         decision_ci = 'V'
                         AND personne_id = {$personne_id}
+                        AND positioncer <> 'annule'
                         AND contratsinsertion.datevalidation_ci >= (
                             SELECT
                                 orientsstructs.date_valid
