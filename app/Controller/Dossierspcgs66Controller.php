@@ -243,6 +243,29 @@
 					)
 				)
 			);
+			
+			foreach( $dossierspcgs66 as $i => $dossierpcg66 ) {
+				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Situationpdo.libelle'
+						),
+						'conditions' => array(
+							'Personnepcg66.dossierpcg66_id' => $dossierpcg66['Dossierpcg66']['id']
+						),
+						'joins' => array(
+							$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false
+					)
+				);
+
+				$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
+				$listeSituationsPersonnePCG66 = $listeStatuts;
+				$dossierspcgs66[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
+			}
 			$this->set( compact( 'dossierspcgs66' ) );
 			$this->_setOptions();
 			$this->set( 'foyer_id', $foyer_id );

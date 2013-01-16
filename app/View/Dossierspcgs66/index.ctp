@@ -22,6 +22,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 			<th>Date de réception de la PDO</th>
 			<th>Gestionnaire du dossier</th>
 			<th>Etat du dossier PDO</th>
+			<th>Motifs de la personne</th>
 <!-- 					<th>Dossier complet ?</th> -->
 			<th>Décision</th>
 			<th colspan="3" class="action">Actions</th>
@@ -47,6 +48,13 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 				else{
 					$etat = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] );
 				}
+				
+				$differentsStatuts = '';
+				foreach( $dossierpcg66['Personnepcg66']['listemotifs'] as $key => $statut ) {
+					if( !empty( $statut ) ) {
+						$differentsStatuts .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
+					}
+				}
 
 
 
@@ -56,6 +64,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 						h( date_short( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
 						h( Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
 						h( $etat ),
+						$differentsStatuts,
 // 								h( Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.iscomplet' ), $options['Dossierpcg66']['iscomplet'] ) ),
 						h( Set::enum( Set::classicExtract( $dossierpcg66, 'Decisiondossierpcg66.decisionpdo_id' ), $decisionpdo ) ),
 						$this->Xhtml->viewLink(
