@@ -42,6 +42,8 @@
 						'Dossierpcg66.dossierechu' => array(  'label' => 'Dossier échu', 'type' => 'checkbox' )
                     )
                 );
+                
+                echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille vide ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
             ?>
         </fieldset>
 
@@ -79,6 +81,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nb de traitements PCGs', 'Personnepcg66.nbtraitements' );?></th>
 					<th>Types de traitements</th>
 					<th><?php echo $this->Xpaginator->sort( 'Etat du dossier', 'Dossierpcg66.etatdossierpcg' );?></th>
+					<th>Nb de fichiers dans la corbeille</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
@@ -145,6 +148,7 @@
 								h( $criteredossierpcg66['Personnepcg66']['nbtraitements'] ),
 								$traitementspcgs66,
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
+								h( $criteredossierpcg66['Fichiermodule']['nb_fichiers_lies'] ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )

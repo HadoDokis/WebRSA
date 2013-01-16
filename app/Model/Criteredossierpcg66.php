@@ -253,6 +253,18 @@
 			if( isset( $params['Dossierpcg66']['dossierechu'] ) && !empty( $params['Dossierpcg66']['dossierechu'] ) ) {
 				$conditions[] = 'Traitementpcg66.id IN ( '.$Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu( 'Personnepcg66.id' ).' )';
 			}
+			
+			// Corbeille vide ?
+			$sqNbFichierDansCorbeille = '( SELECT count( fichiersmodules.id ) FROM fichiersmodules WHERE fichiersmodules.modele = \'Foyer\' AND fichiersmodules.fk_value = "Foyer"."id" )';
+			
+			if( isset( $params['Dossierpcg66']['exists'] ) && ( $params['Dossierpcg66']['exists'] != '' ) ) {
+				if( $params['Dossierpcg66']['exists'] ) {
+					$conditions[] = "{$sqNbFichierDansCorbeille} = 0";
+				}
+				else {
+					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
+				}
+			}
 
 			
 			$query = array(
@@ -281,7 +293,8 @@
 					'Situationdossierrsa.etatdosrsa',
 					'Dossierpcg66.nbpropositions',
 // 					'Personnepcg66.id',
-					'Personnepcg66.nbtraitements'
+					'Personnepcg66.nbtraitements',
+					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies')
 				),
 				'recursive' => -1,
 				'joins' => array(

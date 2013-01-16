@@ -55,6 +55,7 @@
 // 				$this->Traitementpcg66->Personnepcg66->Traitementpcg66->enums()
 // 			);
 			$this->set( compact( 'options' ) );
+			$this->set( 'exists', array( '1' => 'Oui', '0' => 'Non' ) );
 		}
 
 		/**
