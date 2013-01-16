@@ -265,6 +265,28 @@
 				$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
 				$listeSituationsPersonnePCG66 = $listeStatuts;
 				$dossierspcgs66[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
+				
+				// Liste des décisions avec la date de transmission
+				$decisionsdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->find(
+					'all',
+					array(
+						'conditions' => array(
+							'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66['Dossierpcg66']['id']
+						),
+						'contain' => false
+					)
+				);
+
+				$datetransmission = null;
+				foreach( $decisionsdossierspcgs66 as $decisiondossierpcg66 ){
+					if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
+						$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
+					}
+					else{
+						$datetransmission = null;
+					}
+					$dossierspcgs66[$i]['Dossierpcg66']['datetransmissionfinale'] = $datetransmission;
+				}
 			}
 			$this->set( compact( 'dossierspcgs66' ) );
 			$this->_setOptions();

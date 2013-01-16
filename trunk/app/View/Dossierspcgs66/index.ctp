@@ -34,16 +34,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 // 					debug($dossierpcg66);
 				$etat = null;
 				if( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) == 'transmisop' ){
-// 							foreach( $dossierpcg66['Decisiondossierpcg66'] as $decision => $value  ){
-// 							debug($dossierpcg66);
-// 								if( $value['etatop'] == 'transmis' ){
-							$etat = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ). ' le '.date_short( Set::classicExtract( $dossierpcg66, 'Decisiondossierpcg66.0.datetransmissionop' ) );
-// 									debug($dossierpcg66);
-// 								}
-// 								else{
-// 									$etat = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] );
-// 								}
-// 							}
+					$etat = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ). ' le '.date_short( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.datetransmissionfinale' ) );
 				}
 				else{
 					$etat = Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] );
