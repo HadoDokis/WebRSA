@@ -186,6 +186,7 @@
 					'fields' => array_merge(
 						$this->Dossierep->Passagecommissionep->fields(),
 						$this->Dossierep->Passagecommissionep->Commissionep->fields(),
+						$this->Dossierep->Passagecommissionep->Commissionep->Ep->fields(),
 						$this->Dossierep->fields(),
 						$this->Dossierep->Personne->fields(),
 						$this->Dossierep->Personne->Foyer->fields(),
@@ -196,6 +197,7 @@
 					'joins' => array(
 						$this->Dossierep->Passagecommissionep->join( 'Dossierep' ),
 						$this->Dossierep->Passagecommissionep->join( 'Commissionep' ),
+						$this->Dossierep->Passagecommissionep->Commissionep->join( 'Ep' ),
 						$this->Dossierep->join( 'Personne' ),
 						$this->Dossierep->Personne->join( 'Foyer' ),
 						$this->Dossierep->Personne->Foyer->join( 'Dossier' ),
