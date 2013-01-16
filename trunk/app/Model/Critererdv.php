@@ -193,7 +193,7 @@
 					array(
 						'table'      => 'referents',
 						'alias'      => 'Referent',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Referent.id = Rendezvous.referent_id' )
 					)
