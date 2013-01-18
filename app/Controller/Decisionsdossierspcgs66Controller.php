@@ -543,6 +543,18 @@
 			}
 			else if( $this->action != 'add' ) {
 				$this->request->data = $decisiondossierpcg66;
+				
+				// Récupération des types de RSA sélectionnés
+				$typesrsapcg = $this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->find(
+					'list',
+					array(
+						'fields' => array( "Decisiondossierpcg66Typersapcg66.id", "Decisiondossierpcg66Typersapcg66.typersapcg66_id" ),
+						'conditions' => array(
+							"Decisiondossierpcg66Typersapcg66.decisiondossierpcg66_id" => $decisiondossierpcg66_id
+						)
+					)
+				);
+				$this->request->data['Typersapcg66']['Typersapcg66'] = $typesrsapcg;
 			}
 
 			$personnespcgs66 = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->find(

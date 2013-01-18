@@ -271,33 +271,6 @@
 </table>
 	<?php endif;?>
 
-
-	<?php if( !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ):?>
-	<fieldset>
-		<?php
-
-			$decision = Set::enum( $dossierpcg66['Decisiondefautinsertionep66']['decision'], $options['Decisiondefautinsertionep66']['decision'] );
-			echo $this->Xform->fieldValue( 'Decisiondossierpcg66.decision', $decision );
-// debug($decisiondossierpcg66_decision);
-// debug( $options );
-			$decisiondossierpcg66_decision_traduit = Set::enum( $decisiondossierpcg66_decision, $options['Decisiondossierpcg66']['defautinsertion'] );
-			echo $this->Xform->fieldValue( 'Decisiondossierpcg66.defautinsertion', $decisiondossierpcg66_decision_traduit );
-
-			echo $this->Default2->subform(
-				array(
-					'Decisiondossierpcg66.defautinsertion' => array( 'type' => 'hidden', 'value' => $decisiondossierpcg66_decision	 ),
-					'Decisiondossierpcg66.compofoyerpcg66_id' => array( 'type' => 'select', 'empty' => true, 'options' => $compofoyerpcg66 ),
-					'Decisiondossierpcg66.recidive' => array(  'type' => 'radio' ),
-					'Decisiondossierpcg66.phase' => array( 'type' => 'select', 'empty' => true )
-				),
-				array(
-					'options' => $options
-				)
-			); // TODO
-		?>
-	</fieldset>
-	<?php  endif;?>
-
 	<fieldset id="Propositionpcg" class="invisible"></fieldset>
 
 		<?php
