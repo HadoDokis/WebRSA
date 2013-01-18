@@ -118,7 +118,8 @@
 				)
 			);
 
-			$personne_id = $this->Memo->field( 'personne_id' );
+			$personne_id = $memo['Memo']['personne_id'];
+			$this->set( 'personne_id', $personne_id );
 
 			$dossier_id = $this->Memo->Personne->dossierId( $personne_id );
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
@@ -161,7 +162,7 @@
 			}
 
 			$this->_setOptions();
-			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'memo' ) );
+			$this->set( compact( 'dossier_id', 'fichiers', 'memo' ) );
 		}
 
 		/**
