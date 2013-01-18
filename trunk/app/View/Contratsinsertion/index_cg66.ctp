@@ -42,7 +42,7 @@
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter un CER',
 				array( 'controller' => 'contratsinsertion', 'action' => 'add', $personne_id ),
-				( !$block && !$blockCumulCER66 )
+				( !$block/* && !$blockCumulCER66*/ )
 			).' </li>';
 		?>
 	</ul>
