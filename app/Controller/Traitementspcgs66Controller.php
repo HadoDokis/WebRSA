@@ -607,6 +607,10 @@
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
+			
+			//Liste des traitements non clos appartenant aux dossiers liés à mon Foyer
+			$listeTraitementsNonClos = $this->Traitementpcg66->Personnepcg66->listeTraitementpcg66NonClos( $personne_id, $this->action, $this->request->data );
+			$this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
 
 			$this->_setOptions();
 
