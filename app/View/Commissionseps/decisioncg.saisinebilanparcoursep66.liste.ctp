@@ -8,7 +8,7 @@
 	).' </li>';
 	echo '</ul>';
 
-echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
+echo '<table id="Decisionsaisinebilanparcoursep66">
 		<colgroup />
 		<colgroup />
 		<colgroup />
@@ -30,9 +30,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 				<th colspan="3" rowspan="2">Proposition référent</th>
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="5">Décision coordonnateur/CG</th>
-				<th rowspan="2">Observations</th>
 				<th colspan="2" rowspan="2">Actions</th>
-				<th class="innerTableHeader noprint">Avis EP</th>
 			</tr>
 			<tr>
 				<th>Décision</th>
@@ -53,14 +51,6 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 		$decisionep = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][1];
 		$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
 
-		$innerTable = "<table id=\"innerTableDecisionsaisinebilanparcoursep66{$i}\" class=\"innerTable\">
-			<tbody>
-				<tr>
-					<th>Observations de l'EP</th>
-					<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-				</tr>
-			</tbody>
-		</table>";
 
 		$listeFields = array(
 			implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
@@ -115,10 +105,10 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
 					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
 					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
-					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
+// 					array( Set::classicExtract( $decisioncg, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") ),
 					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 					$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $enabled ) ),
-					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+// 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 				)
 			),
 			array( 'class' => "odd {$multiple}" ),
