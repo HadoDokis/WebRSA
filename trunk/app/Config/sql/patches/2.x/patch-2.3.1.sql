@@ -60,6 +60,15 @@ SELECT add_missing_table_field ('public', 'foyers', 'haspiecejointe', 'type_bool
 ALTER TABLE foyers ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
 UPDATE foyers SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE foyers ALTER COLUMN haspiecejointe SET NOT NULL;
+
+--------------------------------------------------------------------------------
+-- 20130118 : Ajout des fichiers liés au module memos
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_booleannumber' );
+ALTER TABLE memos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE memos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

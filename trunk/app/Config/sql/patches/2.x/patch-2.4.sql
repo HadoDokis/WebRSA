@@ -551,10 +551,10 @@ DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
 CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
 
 
-SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_booleannumber' );
-ALTER TABLE memos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
-UPDATE memos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
-ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
+-- SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_booleannumber' );
+-- ALTER TABLE memos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+-- UPDATE memos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+-- ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
 
 --------------------------------------------------------------------------------
 -- 20121203 : Modification de l'enum pour les positions du CER
