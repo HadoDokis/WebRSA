@@ -530,7 +530,7 @@ ALTER TABLE users ALTER COLUMN type SET NOT NULL;
 -- 20121203 : Ajout d'une valeur finale pour la déicison du CER Particulier CG66
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'proposdecisionscers66', 'decisionfinale', 'TYPE_NO' );
-
+/*
 --------------------------------------------------------------------------------
 -- 20121203 : Ajout d'une table manifestationsbilansparcours66 afin de stocker les
 -- éléments reseignés par l'allocataire suite à un passage en EPL Audition
@@ -548,7 +548,7 @@ CREATE TABLE manifestationsbilansparcours66 (
 COMMENT ON TABLE manifestationsbilansparcours66 IS 'Table pour les manifestations de l''allocataire en lien avec un passage en EPL Audition (CG66)';
 
 DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
-CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
+CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );*/
 
 
 -- SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_booleannumber' );
