@@ -908,6 +908,12 @@
 				'class'=>'noborder invisible'
 			)
 		);
+		
+		//Liste des traitements autre que moi non clos, appartenant à d'autres dossiers
+		if( !empty( $listeTraitementsNonClos ) ) {
+			echo $this->Form->input( 'Traitementpcg66.traitementnonclos', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $listeTraitementsNonClos['Traitementpcg66']['traitementnonclos'], 'empty' => true ) );
+		}
+
 
 		if( !empty( $traitementspcgsouverts ) ) {
 			echo "<table>";

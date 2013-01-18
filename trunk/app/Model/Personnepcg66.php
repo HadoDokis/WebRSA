@@ -201,5 +201,101 @@
 				return null;
 			}
 		}
+		
+			
+		/**
+		*	Liste des traitements non clos liés à n'importe quel dossier du Foyer
+		*	@params	integer (defaut Foyer.id)
+		*	@return array
+		*
+		*/
+		public function listeTraitementpcg66NonClos( $personneId = 'Personne.id', $action, $data = array() ) {
+			$traitementsNonClos = array();
+			
+			$personnespcgs66 = $this->find(
+				'all', 
+				array(
+					'fields' => array(
+						'Personnepcg66.id',
+						'Personnepcg66.dossierpcg66_id',
+					),
+					'conditions' => array(
+						'Personnepcg66.personne_id' => $personneId
+					),
+					'contain' => false
+				)
+			);
+			$listDossierspcgs66 = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.dossierpcg66_id' );
+			$listPersonnespcgs66 = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.id' );
+			
+			$traitementspcgs66 = array();
+			if( !empty( $listDossierspcgs66 ) ) {
+				if( $action == 'edit' ) {
+					$conditions = array(
+						'Traitementpcg66.personnepcg66_id' => $listPersonnespcgs66,
+						'Traitementpcg66.clos' => 'N',
+						'Traitementpcg66.id NOT' => $data['Traitementpcg66']['id']
+					);
+				}
+				else {
+					$conditions = array(
+						'Traitementpcg66.personnepcg66_id' => $listPersonnespcgs66,
+						'Traitementpcg66.clos' => 'N'
+					);
+				}
+				
+// 				$corbeillepcgDescriptionId = Configure::read( 'Corbeillepcg.descriptionpdoId' );
+// 				if( !empty( $corbeillepcgDescriptionId ) ) {
+// 					$conditions['Traitementpcg66.descriptionpdo_id'] = $corbeillepcgDescriptionId;
+// 				}
+				
+				$traitementspcgs66 = $this->Traitementpcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Traitementpcg66.id',
+							'Traitementpcg66.datedepart',
+							'Personnepcg66.dossierpcg66_id',
+							'Personnepcg66.id',
+							'Personnepcg66.personne_id',
+							$this->Personne->sqVirtualField( 'nom_complet' ),
+							'Descriptionpdo.name',
+							'Situationpdo.libelle',
+							'Dossierpcg66.datereceptionpdo',
+							'Typepdo.libelle',
+							$this->Dossierpcg66->User->sqVirtualField( 'nom_complet' )
+						),
+						'conditions' => $conditions,
+						'joins' => array(
+							$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Typepdo', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'User', array( 'type' => 'INNER' ) ),
+							$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'INNER' ) ),
+							$this->Traitementpcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false
+					)
+				);
+
+				if( !empty( $traitementspcgs66 ) ) {
+					foreach( $traitementspcgs66 as $traitementpcg66 ) {
+						$datedepart = $traitementpcg66['Traitementpcg66']['datedepart'];
+						if( !empty( $datedepart ) ) {
+							$date = ', le '.date_short( $datedepart ).'';
+						}
+						else {
+							$date = '';
+						}
+					
+						$traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Typepdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] ).' : '.$traitementpcg66['Personne']['nom_complet'].', '.$traitementpcg66['Situationpdo']['libelle'].$date;
+					}
+				}
+			}
+			
+			return $traitementsNonClos;
+		}
 	}
 ?>
