@@ -1099,7 +1099,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 // 	debug( $decisiontechnicien );
 
 
-	if ( !empty( $decisiontechnicien ) ) {
+	/*if ( !empty( $decisiontechnicien ) ) {
 		echo $this->Xhtml->tag(
 			'p',
 			'DECISION DE LA CGA',
@@ -1127,7 +1127,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			$dateproposition = date_short( $dossierpcg66['Decisiondossierpcg66'][0]['datepropositiontechnicien'] );
 			echo $this->Xform->fieldValue( 'Decisiondossierpcg66.datepropositiontechnicien', $dateproposition );
 		echo '</fieldset>';
-	}
+	}*/
 
 // 	debug($dossierpcg66);
 	$decisionValidation = $dossierpcg66['Decisiondossierpcg66'][0]['validationproposition'];
@@ -1143,13 +1143,9 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale "Commission Audition"</strong></legend>';
 			echo $this->Xhtml->tag(
 				'p',
-				$dossierpcg66['Decisiondossierpcg66'][0]['Decisionpcg66']['name']
+				$dossierpcg66['Decisiondossierpcg66'][0]['Decisionpdo']['libelle']
 			);
-// 			$accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
-// 			echo $this->Xhtml->tag(
-// 				'p',
-// 				"En accord avec l'avis de l'EPL commission Audition : ".$accord
-// 			);
+
 			echo $this->Xhtml->tag(
 				'p',
 				"Commentaire :",
@@ -1159,8 +1155,12 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			);
 			echo $this->Xhtml->tag(
 				'p',
-				$dossierpcg66['Decisiondossierpcg66'][0]['commentairevalidation']
+				$dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien']
 			);
+			/*echo $this->Xhtml->tag(
+				'p',
+				$dossierpcg66['Decisiondossierpcg66'][0]['commentairevalidation']
+			);*/
 			$datevalidation = date_short( $dossierpcg66['Decisiondossierpcg66'][0]['datevalidation'] );
 			echo $this->Xform->fieldValue( 'Decisiondossierpcg66.datevalidation', $datevalidation );
 		echo '</fieldset>';
