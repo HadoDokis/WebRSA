@@ -69,6 +69,26 @@ ALTER TABLE memos ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBE
 UPDATE memos SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE memos ALTER COLUMN haspiecejointe SET NOT NULL;
 
+
+--------------------------------------------------------------------------------
+-- 20121203 : Ajout d'une table manifestationsbilansparcours66 afin de stocker les
+-- éléments reseignés par l'allocataire suite à un passage en EPL Audition
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS manifestationsbilansparcours66 CASCADE;
+CREATE TABLE manifestationsbilansparcours66 (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	bilanparcours66_id 	INTEGER NOT NULL REFERENCES bilansparcours66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	commentaire			TEXT NOT NULL,
+	datemanifestation	DATE NOT NULL,
+	haspiecejointe		TYPE_BOOLEANNUMBER NOT NULL DEFAULT '0',
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE manifestationsbilansparcours66 IS 'Table pour les manifestations de l''allocataire en lien avec un passage en EPL Audition (CG66)';
+
+DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
+CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
