@@ -568,7 +568,8 @@
                         'Decisiondossierpcg66' => array(
                             'order' => array( 'Decisiondossierpcg66.created DESC' ),
                             'conditions' => array(
-                                'Decisiondossierpcg66.validationproposition' => 'O'
+                                'Decisiondossierpcg66.validationproposition' => 'O',
+                                'Decisiondossierpcg66.etatop' => 'transmis'
                             )
                         )
 					)
