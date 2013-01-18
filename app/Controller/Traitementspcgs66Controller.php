@@ -307,18 +307,27 @@
 				$listeTraitements = $this->paginate( $this->Traitementpcg66 );
 
 				$this->set( compact( 'listeTraitements' ) );
-// debug( $listeTraitements );
+				
 				//Liste des liens entre un dossier et un allocataire
 				$personnespcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-						'all', array(
-					'fields' => array( 'id', 'dossierpcg66_id' ),
-					'conditions' => array(
-						'Personnepcg66.personne_id' => $personne_id
-					),
-					'contain' => false
-						)
+					'all',
+					array(
+						'fields' => array( 'id', 'dossierpcg66_id' ),
+						'conditions' => array(
+							'Personnepcg66.personne_id' => $personne_id,
+							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+						),
+						'contain' => false
+					)
 				);
-
+				
+				//On récupère les Ids de la personnePCG 66 liée au dossier PCG
+				$personnespcgs66s_ids = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.id' );
+				foreach( $personnespcgs66s_ids as $value ) {
+					$personnepcg66_id = $value;
+				}
+				$this->set( 'personnepcg66_id', $personnepcg66_id );
+				
 				foreach( $personnespcgs66 as $personnepcg66 ) {
 					$personnepcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.id' );
 
@@ -337,20 +346,20 @@
 					$personnepcg66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find( 'first', $qd_personnepcg66 );
 
 					$this->set( 'personnepcg66', $personnepcg66 );
-					$this->set( 'personnepcg66_id', $personnepcg66_id );
 				}
 			}
 
 			$personnespcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
-					'all', array(
-				'fields' => array(
-					'Personnepcg66.dossierpcg66_id'
-				),
-				'conditions' => array(
-					'Personnepcg66.personne_id' => $personne_id
-				),
-				'contain' => false
-					)
+				'all',
+				array(
+					'fields' => array(
+						'Personnepcg66.dossierpcg66_id'
+					),
+					'conditions' => array(
+						'Personnepcg66.personne_id' => $personne_id
+					),
+					'contain' => false
+				)
 			);
 
 			$listDossierspcgs66 = array( );
@@ -360,21 +369,22 @@
 
 			if( !empty( $listDossierspcgs66 ) ) {
 				$dossierspcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->find(
-						'all', array(
-					'fields' => array( 'Dossierpcg66.id', 'Dossierpcg66.datereceptionpdo', 'Dossierpcg66.user_id', 'Typepdo.libelle' ),
-					'conditions' => array(
-						'Dossierpcg66.id' => $listDossierspcgs66
-					),
-					'joins' => array(
-						array(
-							'table' => 'typespdos',
-							'alias' => 'Typepdo',
-							'type' => 'INNER',
-							'conditions' => array( 'Dossierpcg66.typepdo_id = Typepdo.id' )
-						)
-					),
-					'contain' => false
-						)
+					'all',
+					array(
+						'fields' => array( 'Dossierpcg66.id', 'Dossierpcg66.datereceptionpdo', 'Dossierpcg66.user_id', 'Typepdo.libelle' ),
+						'conditions' => array(
+							'Dossierpcg66.id' => $listDossierspcgs66
+						),
+						'joins' => array(
+							array(
+								'table' => 'typespdos',
+								'alias' => 'Typepdo',
+								'type' => 'INNER',
+								'conditions' => array( 'Dossierpcg66.typepdo_id = Typepdo.id' )
+							)
+						),
+						'contain' => false
+					)
 				);
 			}
 			else {

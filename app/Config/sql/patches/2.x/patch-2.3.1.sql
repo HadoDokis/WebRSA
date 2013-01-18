@@ -89,6 +89,11 @@ COMMENT ON TABLE manifestationsbilansparcours66 IS 'Table pour les manifestation
 DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
 CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
 
+
+--------------------------------------------------------------------------------
+-- 20130118 : Ajout de la date d'envoi du courrier d'un traitement PCG (CG66)
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'traitementspcgs66', 'dateenvoicourrier', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -24,8 +24,8 @@
 		echo '<p class="notice"> Veuillez sélectionner un dossier afin d\'afficher les traitements</p>';
 	}
 	else if( empty( $listeTraitements ) ) {
-		echo '<ul class="actionMenu	"><li>'.$this->Xhtml->addLink(
-			__d( 'Traitementpcg66','Traitementpcg66.add' ),
+		echo '<ul class="actionMenu"><li>'.$this->Xhtml->addLink(
+			__d('Traitementpcg66','Traitementpcg66.add',true),
 			array( 'controller' => 'traitementspcgs66', 'action' => 'add', $personnepcg66_id )
 		).' </li></ul>';
 		echo '<p class="notice"> Aucun traitement présent pour ce dossier</p>';
@@ -53,6 +53,8 @@
 					'Traitementspcgs66::print' => array( 'label' => 'Fiche de calcul', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printFicheCalcul' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printfichecalcul', $dossierMenu ).'\' != \'1\'' ),
 
 					'Traitementspcgs66::printModeleCourrier' => array( 'label' => 'Imprimer courrier', 'url' => array( 'controller' => 'traitementspcgs66', 'action'=>'printModeleCourrier' ), 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'printModeleCourrier', $dossierMenu ).'\' != \'1\'' ),
+						
+					'Traitementspcgs66::envoiCourrier' => array( 'label' => 'Envoi courrier', 'disabled' => 'trim(\'#Traitementpcg66.dateenvoicourrier#\') != \'\' || \'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'courrier\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'envoiCourrier', $dossierMenu ).'\' != \'1\'', 'confirm' => 'Confirmer l\'envoi ?'  ),
 
 					'Traitementspcgs66::reverseDO' => array( 'label' => 'Reverser dans DO', 'condition' => '(\'#Traitementpcg66.reversedo#\' != 1)', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\'', 'confirm' => 'Confirmer la répercussion de la fiche de calcul ?'  ),
 					'Traitementspcgs66::deverseDO' => array( 'label' => 'Déverser de la DO', 'condition' => '(\'#Traitementpcg66.reversedo#\' == 1)', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \'#Traitementpcg66.typetraitement#\' != \'revenu\'', 'confirm' => 'Confirmer la non répercussion de la fiche de calcul ?'  ),
