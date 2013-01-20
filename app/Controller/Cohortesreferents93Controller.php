@@ -73,6 +73,14 @@
 			$this->Workflowscers93->assertUserCpdv();
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
+			// On doit pouvoir abtenir les résultats dès le premier accès à la page
+			if( !isset( $this->request->data['Search'] ) ) {
+				$this->request->data = Set::merge(
+					$this->Filtresdefaut->values(),
+					array( 'Search' => array( 'active' => true ) )
+				);
+			}
+				
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire
 				if( isset( $this->request->data['PersonneReferent'] ) ) {
@@ -117,6 +125,7 @@
 				// INFO: sinon on ne peut pas trier comme on veut
 				$this->PersonneReferent->Personne->virtualFields['order'] = $this->Cohortereferent93->vfPersonneOrder;
 
+				
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortereferent93->search(
 					$structurereferente_id,
