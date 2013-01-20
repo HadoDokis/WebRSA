@@ -328,7 +328,7 @@
 					<th>Métier exercé</th>
 					<th>Secteur d'activité</th>
 					<th>Année de début</th>
-					<th>Durée</th>
+					<th colspan="2">Durée</th>
 					<th>Action</th>
 				</tr>
 			</thead>
@@ -343,7 +343,8 @@
 									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
-									$this->Xform->input( "Expprocer93.{$index}.duree", array( 'type' => 'text', 'label' => false ) ),
+									$this->Xform->input( "Expprocer93.{$index}.nbduree", array( 'type' => 'text', 'label' => false, 'maxlength' => 2 ) ),
+									$this->Xform->input( "Expprocer93.{$index}.typeduree", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true, 'domain' => 'cer93' ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
 								)
 							);
@@ -457,8 +458,18 @@
 		echo $this->Xform->input( 'Cer93.prevu', array( 'domain' => 'cer93', 'type' => 'textarea', 'required' => true ) );
 
 		// HABTM spécial, avec des select liés aux cases à cocher
-		echo '<fieldset><legend>Votre contrat porte sur</legend>';
-		//$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
+		$validationErrorSujetcer93Sujetcer93 = ( isset( $this->validationErrors['Sujetcer93']['Sujetcer93'] ) && !empty( $this->validationErrors['Sujetcer93']['Sujetcer93'] ) );
+		?>
+		<div class="input checkboxes<?php if( $validationErrorSujetcer93Sujetcer93 ) { echo ' error'; }?>">
+		<?php 
+		echo '<fieldset><legend>';
+			echo required( $this->Default2->label( 'Sujetcer93.Sujetcer93', array( 'domain' => 'cer93' ) ) );
+		echo '</legend>'; //<legend>Votre contrat porte sur</legend>
+		
+		if( $validationErrorSujetcer93Sujetcer93 ) {
+			echo "<div class='error-message'>".$this->validationErrors['Sujetcer93']['Sujetcer93']."</div>";
+		}
+		
 		$selectedSujetcer93 = array();
 		if( !empty( $this->request->data['Sujetcer93']['Sujetcer93'] ) ) {
 			$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
@@ -498,7 +509,7 @@
 			if( !empty( $soussujetscers93[$idSujet] ) ) {
 				echo '<ul><li>'; // Niveau 2
 				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
-// debug( $array_key );
+
 				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
 				if( !empty( $interSoussujet ) ) {
 					$autresoussujet = null;
@@ -538,6 +549,7 @@
 		}
 		echo '</ul>';
 		echo '</fieldset>';
+		echo '</div>';
 	?>
 </fieldset>
 <!-- Javascript pour les sujetscers93 -->
@@ -565,6 +577,17 @@
 	document.observe( "dom:loaded", function() {
 		<?php foreach( array_keys( $options['Sujetcer93']['sujetcer93_id'] ) as $key ):?>
 			<?php if( in_array( $key, $sujets_ids_soussujets_autres ) ):?>
+
+			// FIXME : Arnaud
+			observeDisableFieldsOnValue(
+				'Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id',
+				['Sujetcer93Sujetcer93<?php echo $key;?>Valeurparsoussujetcer93Id'],
+				['<?php echo implode( "', '", $autresoussujet_isautre_id );?>', ''],
+				true,
+				true
+			);
+			// FIXME
+			
 			observeDisableFieldsOnValue(
 				'Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id',
 				['Sujetcer93Sujetcer93<?php echo $key;?>Autresoussujet'],
@@ -681,8 +704,14 @@
 			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
 		?></td><td><?php
-			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
+			$fields = $this->Xform->input( 'Expprocer93.%line%.nbduree', array( 'type' => 'text', 'label' => false ) );
+			echo str_replace( "'", "\\'", $fields );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.typeduree', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true ) );
 			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );
+		/*?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
+			echo str_replace( "'", "\\'", preg_replace( '/[[:space:]]+/', ' ', $fields ) );*/
 		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Expprocer93\', %line% );return false;">Supprimer</a></td></tr>';
 	//--><!]]>
 </script>
