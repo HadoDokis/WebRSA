@@ -27,7 +27,8 @@
 						<th>Date de signature</th>
 						<th class="action">Forme du CER</th>
 						<th class="action">Commentaire</th>
-						<th class="action">Actions</th>
+						<th class="action">Décisions</th>
+						<th class="action">Action</th>
 						<th class="action">Détails</th>
 					</tr>
 				</thead>';
