@@ -97,18 +97,7 @@
 					"Histochoixcer93.{$index}.etape" => array( 'type' => 'hidden', 'value' => '03attdecisioncg' ),
 				)
 			)
-			.'<ul><li>'.$this->Html->link(
-				'Imprimer',
-				array(
-					'controller' => 'cers93',
-					'action' => 'impression',
-					$cer93['Contratinsertion']['id']
-				),
-				array(
-					'class' => 'external print'
-				)
-			).'</li><li>'
-			.$this->Ajax->link(
+			.'<ul><li>'.$this->Ajax->link(
 				'Rejeter',
 				array( 'action' => $this->action, 'decision' => '99rejetecpdv' ),
 				array(
@@ -128,6 +117,7 @@
 					'class' => 'transferer cg'
 				)
 			).'</li></ul>',
+			$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ), true, true ),
 			$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
 			array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 		);
