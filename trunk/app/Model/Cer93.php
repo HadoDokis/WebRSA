@@ -291,6 +291,12 @@
 
 			// Sinon, ça pose des problèmes lors du add car les valeurs n'existent pas encore
 			$this->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
+			
+			// Si aucun sujet n'est renseigné, alors on lance un erreur
+			/*if( empty( $data['Sujetcer93']['Sujetcer93'] ) ) {
+				$success = false;
+				$this->invalidate( 'Sujetcer93.Sujetcer93', 'Il est obligatoire de saisir au moins un sujet.' );
+			}*/
 
 			foreach( array( 'Compofoyercer93', 'Diplomecer93', 'Expprocer93' ) as $hasManyModel ) {
 				$this->{$hasManyModel}->unsetValidationRule( 'cer93_id', 'notEmpty' );
@@ -1223,6 +1229,8 @@
 						'Expprocer93.secteuracti_id',
 						'Expprocer93.anneedeb',
 						'Expprocer93.duree',
+						'Expprocer93.nbduree',
+						'Expprocer93.typeduree',
 						'Metierexerce.name',
 						'Secteuracti.name',
 					),
@@ -1408,6 +1416,7 @@
 				$this->Contratinsertion->Personne->Dsp->enums(),
 				$this->enums(),
 				$this->Histochoixcer93->enums(),
+				$this->Expprocer93->enums(),
 				$options
 			);
 			return $options;

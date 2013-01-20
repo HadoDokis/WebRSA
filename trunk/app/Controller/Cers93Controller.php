@@ -546,6 +546,7 @@
 			$options = Set::merge(
 				$this->Cer93->Contratinsertion->Personne->Dsp->enums(),
 				$this->Cer93->enums(),
+				$this->Cer93->Expprocer93->enums(),
 				$options
 			);
 
