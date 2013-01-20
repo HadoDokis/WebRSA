@@ -15,7 +15,7 @@
 <br />
 <div id="tabbedWrapper" class="tabs">
 	<div id="premierelecture">
-		<h2 class="title">Seconde lecture</h2>
+		<h2 class="title">Validation CS</h2>
 		<?php
 
 			echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
