@@ -97,7 +97,26 @@
 						date_short( $cer93['Contratinsertion']['created'] ),
 						date_short( $cer93['Contratinsertion']['dd_ci'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
-						$cer93['Histochoixcer93']['commentaire'],
+// 						$cer93['Histochoixcer93']['commentaire'],
+						array(
+							(
+								isset( $cer93['Commentairenormecer93'] )
+								? $this->element(
+									'modalbox',
+									array(
+										'modalid' => "CheckboxesInputs{$index}",
+										'modalcontent' => $this->Checkboxes->view(
+											$cer93,
+											'Commentairenormecer93.name',
+											'Commentairenormecer93Histochoixcer93.commentaireautre'
+										)
+									)
+								)
+								.$this->Html->link( 'Commentaire', '#', array( 'onclick' => "\$( 'CheckboxesInputs{$index}' ).show();return false;", 'class' => 'comment' ) )
+								: null
+							),
+							array()
+						),
 						// Choix du Responsable
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )

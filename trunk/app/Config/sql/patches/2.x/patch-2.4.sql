@@ -265,6 +265,7 @@ ALTER TABLE cers93 ADD CONSTRAINT cers93_cmu_in_list_chk CHECK ( cakephp_validat
 ALTER TABLE cers93 ADD CONSTRAINT cers93_cmuc_in_list_chk CHECK ( cakephp_validate_in_list( cmuc, ARRAY['oui', 'non', 'encours'] ) );
 SELECT public.alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_nivetu_in_list_chk' );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207', '1208'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_in_list_chk' );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( positioncer, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '99rejetecpdv', '04premierelecture', '05secondelecture', '07attavisep', '99rejete', '99valide'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_formeci_in_list_chk CHECK ( cakephp_validate_in_list( formeci, ARRAY['S', 'C'] ) );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_isemploitrouv_in_list_chk CHECK ( cakephp_validate_in_list( isemploitrouv, ARRAY['N', 'O'] ) );
@@ -352,12 +353,19 @@ CREATE INDEX histoschoixcers93_cer93_id_idx ON histoschoixcers93( cer93_id );
 DROP INDEX IF EXISTS histoschoixcers93_cer93_id_etape_idx;
 CREATE UNIQUE INDEX histoschoixcers93_cer93_id_etape_idx ON histoschoixcers93( cer93_id, etape );
 
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_formeci_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_formeci_in_list_chk CHECK ( cakephp_validate_in_list( formeci, ARRAY['S', 'C'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_etape_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_etape_in_list_chk CHECK ( cakephp_validate_in_list( etape, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg',  '99rejetecpdv','04premierelecture', '05secondelecture', '06attaviscadre', '07attavisep', '99rejete', '99valide'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_prevalide_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_prevalide_in_list_chk CHECK ( cakephp_validate_in_list( prevalide, ARRAY['arelire', 'prevalide'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncs_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_in_list_chk CHECK ( cakephp_validate_in_list( decisioncs, ARRAY['valide', 'aviscadre', 'passageep'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncadre_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_in_list_chk CHECK ( cakephp_validate_in_list( decisioncadre, ARRAY['valide', 'rejete', 'passageep'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_isrejet_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_isrejet_in_list_chk CHECK ( cakephp_validate_in_list( isrejet, ARRAY['0', '1'] ) );
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_duree_in_list_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) ); -- ARNAUD
 
 -------------------------------------------------------------------------------------------------------------
