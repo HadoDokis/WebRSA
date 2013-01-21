@@ -730,10 +730,9 @@
 
 			// Doit-on aller chercher les membres pour cette commission via eps_membreseps ou commissionseps_membreseps ?
 			$isMembreepInCommissionepMembreep = false;
-			if( in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'cree', 'associe' ) ) ) {
-				$count = $this->Commissionep->CommissionepMembreep->find( 'count', array( 'contain' => false, 'conditions' => array( 'CommissionepMembreep.commissionep_id' => $commissionep_id ) ) );
-				$isMembreepInCommissionepMembreep = ( $count != 0 );
-			}
+
+			$count = $this->Commissionep->CommissionepMembreep->find( 'count', array( 'contain' => false, 'conditions' => array( 'CommissionepMembreep.commissionep_id' => $commissionep_id ) ) );
+			$isMembreepInCommissionepMembreep = ( $count != 0 );
 
 			if( $isMembreepInCommissionepMembreep ) {
 				$membresepsseanceseps = $this->Commissionep->find(
