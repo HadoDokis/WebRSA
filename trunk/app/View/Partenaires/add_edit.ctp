@@ -17,7 +17,7 @@
 			'Partenaire.numvoie' => array( 'required' => true ),
 			'Partenaire.typevoie' => array( 'required' => true ),
 			'Partenaire.nomvoie' => array( 'required' => true ),
-			'Partenaire.compladr' => array( 'required' => true ),
+			'Partenaire.compladr',
 			'Partenaire.numtel',
 			'Partenaire.numfax',
 			'Partenaire.email',
