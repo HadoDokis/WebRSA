@@ -28,7 +28,7 @@
 			echo $this->Default2->subform(
 				array(
 					'PersonneReferent.dddesignation' => array( 'type' => 'hidden' ),//Champ nécessaire pour la comparaison de date, sinon n'apparait pas dans $this->request->data
-					'PersonneReferent.dfdesignation'
+					'PersonneReferent.dfdesignation' => array( 'required' => true )
 				),
 				array(
 					'options' => $options,
