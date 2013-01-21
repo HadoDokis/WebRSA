@@ -293,10 +293,10 @@
 			$this->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
 			
 			// Si aucun sujet n'est renseigné, alors on lance un erreur
-			/*if( empty( $data['Sujetcer93']['Sujetcer93'] ) ) {
+			if( empty( $data['Sujetcer93']['Sujetcer93'] ) ) {
 				$success = false;
-				$this->invalidate( 'Sujetcer93.Sujetcer93', 'Il est obligatoire de saisir au moins un sujet.' );
-			}*/
+				$this->Sujetcer93->invalidate( 'Sujetcer93', 'Il est obligatoire de saisir au moins un sujet.' );
+			}
 
 			foreach( array( 'Compofoyercer93', 'Diplomecer93', 'Expprocer93' ) as $hasManyModel ) {
 				$this->{$hasManyModel}->unsetValidationRule( 'cer93_id', 'notEmpty' );

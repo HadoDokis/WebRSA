@@ -464,10 +464,10 @@
 		<?php 
 		echo '<fieldset><legend>';
 			echo required( $this->Default2->label( 'Sujetcer93.Sujetcer93', array( 'domain' => 'cer93' ) ) );
-		echo '</legend>'; //<legend>Votre contrat porte sur</legend>
+		echo '</legend>';
 		
 		if( $validationErrorSujetcer93Sujetcer93 ) {
-			echo "<div class='error-message'>".$this->validationErrors['Sujetcer93']['Sujetcer93']."</div>";
+			echo "<div class='error-message'>".$this->validationErrors['Sujetcer93']['Sujetcer93'][0]."</div>";
 		}
 		
 		$selectedSujetcer93 = array();
