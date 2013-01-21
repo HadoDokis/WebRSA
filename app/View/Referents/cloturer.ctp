@@ -17,7 +17,7 @@
 			'fieldset' => false,
 			'legend' => false,
 			'Referent.id' => array( 'type' => 'hidden' ),
-			'Referent.datecloture' => array( 'type' => 'date', 'dateFormat' => 'DMY' )
+			'Referent.datecloture' => array( 'required' => true, 'type' => 'date', 'dateFormat' => 'DMY' )
 		)
 	);
 ?>

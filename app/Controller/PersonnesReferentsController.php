@@ -361,7 +361,12 @@
 			if( !empty( $this->request->data ) ) {
 				$this->PersonneReferent->begin();
 
-				if( $this->PersonneReferent->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
+				// Ajout d'une règle de validation permettant de vérifier que la date de fin de 
+				// désignation est bien renseignée
+				$this->PersonneReferent->validate['dfdesignation'] = array( 'rule' => array( 'notEmpty' ), 'message' => __( 'Validate::notEmpty' ) ) + $this->PersonneReferent->validate['dfdesignation'];
+
+				$this->PersonneReferent->create( $this->request->data );
+				if( $this->PersonneReferent->save() ) {
 					$this->PersonneReferent->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
