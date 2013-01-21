@@ -174,7 +174,7 @@
 				);
 			}
 			else if( $statut == 'saisie' ){
-				$position = array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete' );
+				$position = array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete', '99rejetecpdv' );
 				$conditions[] = array(
 					'OR' => array(
 						'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(

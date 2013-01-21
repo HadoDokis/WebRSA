@@ -265,7 +265,7 @@
 				$querydata['conditions'][] = array(
 					array(
 						'OR' => array(
-							'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv' ),
+							'Cer93.positioncer' => array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete', '99rejetecpdv' ),
 							'Contratinsertion.id IS NULL',
 							'Contratinsertion.df_ci <= DATE_TRUNC( \'day\', NOW() )',
 							'Contratinsertion.df_ci - INTERVAL \''.Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ).'\' <= DATE_TRUNC( \'day\', NOW() )'
@@ -503,6 +503,9 @@
 					array(),
 					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
+				// Ajout des commentaires fournis par le CPDV bug #6251
+				$cers93 = $this->_addCommentairenormecer93( $cers93, 'Histochoixcer93' );
+
 				$this->set( 'cers93', $cers93 );
 
 				if( !in_array( $this->action, array( 'saisie', 'visualisation' ) ) ) {
