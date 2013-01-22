@@ -1392,3 +1392,27 @@ function serializeTableRow( link ) {
 		)
 	);
 }
+
+/**
+ * Fonction permettant d'éviter qu'un formulaire ne soit envoyé plusieurs fois.
+ * Utilisée notamment pour la connexion.
+ * 
+ * @param formId Le formulaire sur lequel appliquer la fonctionnalité
+ * @param message Le message à afficher au-dessus du formulaire pour tenir l'utilisateur informé.
+ */
+function observeDisableFormOnSubmit( formId, message ) {
+	Event.observe(
+		formId,
+		'submit',
+		function() {
+			if( typeof(message) != 'undefined' ) {
+				var notice = new Element( 'p', { 'class': 'notice' } ).update( message );
+				$( formId ).insert( { 'top' : notice } );
+			}
+
+			$$( 'input[type=submit]' ).each( function( submit ) {
+				$( submit ).disable();
+			} );
+		}
+	);
+}

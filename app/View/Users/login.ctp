@@ -23,16 +23,5 @@
 <?php endif; ?>
 
 <script type="text/javascript">
-	Event.observe(
-		'UserLoginForm',
-		'submit',
-		function() {
-			var notice = new Element( 'p', { 'class': 'notice' } ).update( 'Connexion en cours ...' );
-			$( 'UserLoginForm' ).insert( { 'top' : notice } );
-
-			$$( 'input[type=submit]' ).each( function( submit ) {
-				$( submit ).disable();
-			} );
-		}
-	);
+	observeDisableFormOnSubmit( 'UserLoginForm', 'Connexion en cours ...' );
 </script>
