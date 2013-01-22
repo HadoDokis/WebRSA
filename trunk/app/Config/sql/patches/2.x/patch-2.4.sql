@@ -664,7 +664,7 @@ SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissio
 -- SELECT add_missing_table_field ('public', 'expsproscers93', 'duree', 'INTEGER');
 -- ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
 --------------------------------------------------------------------------------
--- 20130103 : Modification de la colonne duree en 2 parties 
+-- 20130120 : Modification de la colonne duree en 2 parties 
 --	suite à la demande d'améliorations #6268
 --------------------------------------------------------------------------------
 ALTER TABLE expsproscers93 ALTER COLUMN duree DROP NOT NULL;
@@ -676,9 +676,19 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'expsproscers93', 'expsp
 ALTER TABLE expsproscers93 ADD CONSTRAINT expsproscers93_typeduree_in_list_chk CHECK ( cakephp_validate_in_list( typeduree, ARRAY['jour','mois','annee'] ) );
 
 --------------------------------------------------------------------------------
--- 20130103 : Ajout de la
+-- 20130103 : Ajout de la date d'impression de la décision dans la table cers93 
+--	nécessaire pour les écrans 4. Validation CG
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'cers93', 'dateimpressiondecision', 'DATE' );
+
+--------------------------------------------------------------------------------
+-- 20130122: Création d'un index unique sur les transferts PDVs
+--------------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx;
+CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx ON transfertspdvs93( nv_adressefoyer_id, vx_adressefoyer_id );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

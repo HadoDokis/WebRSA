@@ -103,5 +103,7 @@
 		);
 		<?php endforeach;?>
 	} );
+
+	observeDisableFormOnSubmit( 'Cohortestransfertspdvs93Index', 'Enregistrement en cours ...' );
 </script>
 <?php endif;?>
