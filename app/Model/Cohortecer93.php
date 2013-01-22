@@ -54,7 +54,7 @@
 			}
 
 			// Par défaut on affiche le dernier CER dans le tableau des saisies CER
-			if( $statut == 'saisie' ) {
+			if( in_array( $statut, array( 'saisie', 'avalidercpdv' ) ) ) {
 				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
 			}
 
@@ -137,13 +137,13 @@
 					$position = '03attdecisioncg';
 				}
 				else if( $statut == 'validationcs' ) {
-					$position = '04premierelecture';
+					$position = array( '04premierelecture' );
 				}
 				else if( $statut == 'validationcadre' ) {
 					$position = '05secondelecture';
 				}
 
-				$conditions[] = array(
+				$condition = array(
 					'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
 						array_words_replace(
 							array(
@@ -172,6 +172,59 @@
 						)
 					).')'
 				);
+				
+				if( in_array( $statut, array( 'validationcs', 'validationcadre' ) ) ) {
+					$positionsuivante = null;
+					if( $statut == 'validationcs' ) {
+						$positioncer = '99valide';
+						$etape = '05secondelecture';
+					}
+					else if( $statut == 'validationcadre' ) {
+						$positioncer = array( '99valide', '99rejete' );
+						$etape = '06attaviscadre';
+					}
+
+
+					$conditions[] = array(
+						'OR' => array(
+							$condition,
+							array(
+								'Contratinsertion.id IN ('.$Personne->Contratinsertion->sq(
+									array_words_replace(
+										array(
+											'fields' => array(
+												'Contratinsertion.id'
+											),
+											'alias' => 'contratsinsertion',
+											'conditions' => array(
+												'Contratinsertion.personne_id = Personne.id',
+												'Cer93.positioncer' => $positioncer,
+												'Cer93.dateimpressiondecision IS NULL',
+												'Histochoixcer93.etape' => $etape,
+												'Histochoixcer93.id IN ( '.$Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'etape', array(), false ).' )'
+											),
+											'joins' => array(
+												$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' )  ),
+												$Personne->Contratinsertion->Cer93->join( 'Histochoixcer93', array( 'type' => 'INNER' ) )
+											),
+											'order' => array( 'Contratinsertion.dd_ci DESC' ),
+											'limit' => 1
+										),
+										array(
+											'Contratinsertion' => 'contratsinsertion',
+											'Cer93' => 'cers93',
+											'Histochoixcer93' => 'histoschoixcers93',
+										)
+									)
+								).')'
+							)
+						)
+					);
+				}
+				else {
+					$conditions[] = $condition;
+				}
+
 			}
 			else if( $statut == 'saisie' ){
 				$position = array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete', '99rejetecpdv' );
@@ -209,6 +262,7 @@
 					)
 				);
 			}
+
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -268,10 +322,18 @@
 
 			//
 			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
+				$decision_ci = 'E';
+				if( $statut == 'validationcs' ) {
+					$decision_ci = array( 'E', 'V' );
+				}
+				else if( $statut == 'validationcadre' ) {
+					$decision_ci = array( 'E', 'V', 'R' );
+				}
+
 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest(
 					'Histochoixcer93',
 					'modified',
-					array( 'Contratinsertion.decision_ci' => 'E' )
+					array( 'Contratinsertion.decision_ci' => $decision_ci )
 				);
 				$querydata['conditions'][] = $sqDerniereHistochoixcer93Etape;
 
@@ -363,10 +425,10 @@
 
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+			$querydata['conditions'][] = array( 'Histochoixcer93.user_id' => $user_id );
 
 			$Personne = ClassRegistry::init( 'Personne' );
 			$cers93 = $Personne->find( 'all', $querydata );
-			
 
 			$pdfs = array();
 			foreach( $cers93 as $cer93 ) {

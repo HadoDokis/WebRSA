@@ -1435,6 +1435,18 @@
 			$options = $this->optionsView();
 			$data = $this->dataView( $contratinsertion_id );
 
+
+			$dateimpressiondecision = date( 'Y-m-d' );
+
+			if( !empty( $dateimpressiondecision ) ) {
+				$this->updateAll(
+					array( 'Cer93.dateimpressiondecision' => '\''.$dateimpressiondecision.'\'' ),
+					array(
+						'"Cer93"."id"' => $data['Cer93']['id']
+					)
+				);
+			}
+
 			// Choix du modèle de document
 			$decision = $data['Contratinsertion']['decision_ci'];
 

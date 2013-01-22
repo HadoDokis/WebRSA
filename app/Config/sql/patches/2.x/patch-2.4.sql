@@ -674,6 +674,11 @@ SELECT add_missing_table_field ('public', 'expsproscers93', 'typeduree', 'VARCHA
 -- ALTER TABLE expsproscers93 ALTER COLUMN typeduree SET NOT NULL;
 SELECT alter_table_drop_constraint_if_exists( 'public', 'expsproscers93', 'expsproscers93_typeduree_in_list_chk' );
 ALTER TABLE expsproscers93 ADD CONSTRAINT expsproscers93_typeduree_in_list_chk CHECK ( cakephp_validate_in_list( typeduree, ARRAY['jour','mois','annee'] ) );
+
+--------------------------------------------------------------------------------
+-- 20130103 : Ajout de la
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'cers93', 'dateimpressiondecision', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
