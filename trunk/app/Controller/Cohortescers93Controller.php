@@ -66,7 +66,8 @@
 					)
 				)
 			),
-			'Workflowscers93'
+			'Workflowscers93',
+			'Gedooo.Gedooo'
 		);
 
 		/**
@@ -212,6 +213,7 @@
 						$contratinsertion_id = $this->Contratinsertion->Cer93->field( 'contratinsertion_id' );
 						$success = $success && $this->Contratinsertion->updateAll(
 							array(
+								'"Contratinsertion"."rg_ci"' => null, //FIXME
 								'"Contratinsertion"."decision_ci"' => "'R'",
 								'"Contratinsertion"."datedecision"' => "'".date( 'Y-m-d' )."'",
 							),
@@ -339,18 +341,66 @@
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
 					if( !empty( $result[$histochoixcer93key]['id'] ) ) {
+						$conditions = array(
+							'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result[$histochoixcer93key]['id']
+						);
+						
+						$etape = (int)preg_replace( '/^([0-9]+).*$/', '\1', $result[$histochoixcer93key]['etape'] );
+						if( $etape > 3 ) {
+							$conditions = array(
+								'OR' => array(
+									$conditions,
+									array(
+										'Commentairenormecer93Histochoixcer93.histochoixcer93_id IN ('.$this->Contratinsertion->Cer93->Histochoixcer93->sq(
+											array_words_replace(
+												array(
+													'fields' => array(
+														'Histochoixcer93.id'
+													),
+													'alias' => 'histoschoixcers93',
+													'conditions' => array(
+														'Histochoixcer93.cer93_id' => $result['Histochoixcer93']['cer93_id'],
+														'Histochoixcer93.etape' => '03attdecisioncg'
+													),
+													'order' => array( 'Histochoixcer93.created DESC' ),
+													'limit' => 1
+												),
+												array(
+													'Cer93' => 'cers93',
+													'Histochoixcer93' => 'histoschoixcers93',
+												)
+											)
+										).')'
+									)
+								)
+							);
+						}
+
 						$commentaires = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93Histochoixcer93->find(
 							'all',
 							array(
-								'conditions' => array(
-									'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result[$histochoixcer93key]['id']
-								),
+								'conditions' => $conditions,
 								'contain' => array(
-									'Commentairenormecer93'
+									'Commentairenormecer93',
+									'Histochoixcer93' => array(
+										/*'fields' => array(
+											'Histochoixcer93.user_id'
+										),*/
+										'User'
+									)
 								),
 								'order' => array( 'Commentairenormecer93.isautre ASC', 'Commentairenormecer93.name ASC' )
 							)
 						);
+
+						$usersIds = array_unique( Hash::extract( $commentaires, '{n}.Histochoixcer93.user_id' ) );
+						$user_id = ( !empty( $usersIds ) ? $usersIds[0] : null );
+						$user = array( 'User' => array() );
+						if( !empty( $user_id ) ) {
+							$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) ); 
+						}
+						$results[$i]['User'] = $user['User'];
+
 						$results[$i]['Commentairenormecer93'] = Hash::extract( $commentaires, '{n}.Commentairenormecer93' );
 						$results[$i]['Commentairenormecer93Histochoixcer93'] = Hash::extract( $commentaires, '{n}.Commentairenormecer93Histochoixcer93' );
 					}
@@ -505,7 +555,7 @@
 				);
 				// Ajout des commentaires fournis par le CPDV bug #6251
 				$cers93 = $this->_addCommentairenormecer93( $cers93, 'Histochoixcer93' );
-
+// debug($cers93);
 				$this->set( 'cers93', $cers93 );
 
 				if( !in_array( $this->action, array( 'saisie', 'visualisation' ) ) ) {
@@ -745,7 +795,9 @@
 				$page = 1;
 			}
 
-			$pdf = $this->Cohortecer93->getDefaultCohortePdf(
+			$this->Cohortecer93->begin();
+
+			$pdfs = $this->Cohortecer93->getDefaultCohortePdf(
 				$statut,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
@@ -754,10 +806,13 @@
 				$page
 			);
 
-			if( !empty( $pdf ) ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'contratinsertion_decision-%s.pdf', date( 'Y-m-d' ) ) );
+			if( !empty( $pdfs ) ) {
+				$this->Cohortecer93->commit();
+				$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'Cer93' );
+				$this->Gedooo->sendPdfContentToClient( $pdfs, sprintf( 'contratinsertion_decision-%s.pdf', date( 'Y-m-d' ) ) );
 			}
 			else {
+				$this->Cohortecer93->rollback();
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
