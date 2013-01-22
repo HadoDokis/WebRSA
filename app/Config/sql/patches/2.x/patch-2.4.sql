@@ -669,9 +669,9 @@ SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissio
 --------------------------------------------------------------------------------
 ALTER TABLE expsproscers93 ALTER COLUMN duree DROP NOT NULL;
 SELECT add_missing_table_field ('public', 'expsproscers93', 'nbduree', 'NUMERIC(2)');
-ALTER TABLE expsproscers93 ALTER COLUMN nbduree SET NOT NULL;
+-- ALTER TABLE expsproscers93 ALTER COLUMN nbduree SET NOT NULL;
 SELECT add_missing_table_field ('public', 'expsproscers93', 'typeduree', 'VARCHAR(5)');
-ALTER TABLE expsproscers93 ALTER COLUMN typeduree SET NOT NULL;
+-- ALTER TABLE expsproscers93 ALTER COLUMN typeduree SET NOT NULL;
 SELECT alter_table_drop_constraint_if_exists( 'public', 'expsproscers93', 'expsproscers93_typeduree_in_list_chk' );
 ALTER TABLE expsproscers93 ADD CONSTRAINT expsproscers93_typeduree_in_list_chk CHECK ( cakephp_validate_in_list( typeduree, ARRAY['jour','mois','annee'] ) );
 -- *****************************************************************************
