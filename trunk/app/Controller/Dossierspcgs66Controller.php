@@ -188,7 +188,7 @@
 						else{
 							$datetransmission = null;
 						}
-						$this->set( compact( 'datetransmission' ) );
+						$dossierspcgs66[$i]['Dossierpcg66']['datetransmissionfinale'] = $datetransmission;
 					}
 				}
 			}
