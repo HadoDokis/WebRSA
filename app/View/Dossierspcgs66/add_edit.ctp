@@ -78,6 +78,20 @@
 	?>
 </fieldset>
 </fieldset>
+<fieldset>
+	<legend><?php echo $this->Default2->label( 'Dossierpcg66.commentairepiecejointe' );?></legend>
+		<?php
+			echo $this->Default2->subform(
+				array(
+					'Dossierpcg66.commentairepiecejointe' => array( 'label' =>  false, 'type' => 'textarea' )
+				),
+				array(
+					'domain' => $domain,
+					'options' => $options
+				)
+			); 
+		?>
+</fieldset>
 
 <script type="text/javascript">
 document.observe( "dom:loaded", function() {

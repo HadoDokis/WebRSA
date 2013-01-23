@@ -138,3 +138,6 @@ msgstr "Recherche de dossiers PCGs"
 
 msgid "Criteresdossierspcgs66::traitement"
 msgstr "Recherche de traitements PCGs"
+
+msgid "Dossierpcg66.commentairepiecejointe"
+msgstr "Commentaire"
