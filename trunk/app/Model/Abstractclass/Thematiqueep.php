@@ -222,12 +222,14 @@
 					'fields' => array_merge(
 						$this->fields(),
 						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->fields(),
-						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->User->fields() // FIXME: vérifier si toutes les tématiques ont ça
+						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->User->fields(), // FIXME: vérifier si toutes les tématiques ont ça
+						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->User->Serviceinstructeur->fields()
 					),
 					'joins' => array(
 						$this->Dossierep->join( $this->alias ),
 						$this->Dossierep->Passagecommissionep->join( $modeleDecisionName ),
-						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->join( 'User' )
+						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->join( 'User' ),
+						$this->Dossierep->Passagecommissionep->{$modeleDecisionName}->User->join( 'Serviceinstructeur' )
 					),
 					'conditions' => array(
 						"{$modeleDecisionName}.id IN ("
