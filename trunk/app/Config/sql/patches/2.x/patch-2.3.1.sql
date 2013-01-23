@@ -94,6 +94,12 @@ CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestat
 -- 20130118 : Ajout de la date d'envoi du courrier d'un traitement PCG (CG66)
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'traitementspcgs66', 'dateenvoicourrier', 'DATE' );
+
+--------------------------------------------------------------------------------
+-- 20130123 : Ajout d'une zone de commentaire liée aux pièces jointes d'un dossier PCG (CG66)
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'dossierspcgs66', 'commentairepiecejointe', 'TEXT' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
