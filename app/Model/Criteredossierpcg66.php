@@ -117,6 +117,7 @@
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.typepdo_id',
 					'Dossierpcg66.etatdossierpcg',
+					'Dossierpcg66.datetransmission',
 					'Decisiondossierpcg66.datetransmissionop',
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.user_id',
@@ -276,6 +277,8 @@
 					'Dossierpcg66.etatdossierpcg',
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.user_id',
+					'Dossierpcg66.datetransmission',
+					'Decisiondossierpcg66.datetransmissionop',
 					'Dossier.id',
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
@@ -307,7 +310,8 @@
 					$Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) )
+					$Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'contain' => false,

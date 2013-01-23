@@ -152,5 +152,85 @@
 		public function gestionnaire() {
 			$this->_index( 'searchGestionnaire' );
 		}
+		
+		
+		/**
+		 * Export au format CSV des résultats de la recherche des allocataires transférés.
+		 *
+		 * @return void
+		 */
+		public function exportcsv( $searchFunction ) {
+			$data = Xset::bump( $this->request->params['named'], '__' );
+
+			$mesZonesGeographiques = (array)$this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$querydata = $this->Criteredossierpcg66->{$searchFunction}(
+				$data,
+				$mesCodesInsee,
+				$mesZonesGeographiques
+			);
+
+			unset( $querydata['limit'] );
+
+			$results = $this->Dossierpcg66->find(
+				'all',
+				$querydata
+			);
+
+			foreach( $results as $i => $criteredossierpcg66 ) {
+				$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
+
+				$traitementspcgs66 = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Traitementpcg66.typetraitement'
+						),
+						'joins' => array(
+							$this->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
+						),
+						'conditions' => array(
+							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+						),
+						'contain' => false
+					)
+				);
+// 					debug( $traitementspcgs66 );
+				//Liste des différents statuts de la personne
+				$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
+				
+				$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
+				
+				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Situationpdo.libelle'
+						),
+						'conditions' => array(
+							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+						),
+						'joins' => array(
+							$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false
+					)
+				);
+
+				
+				$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
+				$listeSituationsPersonnePCG66 = $listeStatuts;
+				$results[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
+
+				$results[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
+			}
+				
+			$this->_setOptions();
+
+			$this->layout = '';
+			$this->set( compact( 'results') );
+		}
 	}
 ?>
