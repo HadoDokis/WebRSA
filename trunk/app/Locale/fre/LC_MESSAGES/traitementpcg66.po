@@ -46,7 +46,7 @@ msgid "Traitementspcgs66::index"
 msgstr "Liste des traitements pour "
 
 msgid "Traitementspcgs66::add"
-msgstr "Ajout d'un traitement pour "
+msgstr "Ajout d'un traitement"
 
 msgid "Traitementpcg66::add"
 msgstr "Ajouter un traitement"
@@ -58,7 +58,16 @@ msgid "Traitementpcg66::delete"
 msgstr "Supprimer le traitement"
 
 msgid "Traitementspcgs66::edit"
-msgstr "Modification du traitement de "
+msgstr "Modification du traitement"
+
+msgid "Traitementspcgs66::printModeleCourrier"
+msgstr "Impression du courrier"
+
+msgid "Traitementspcgs66::envoiCourrier"
+msgstr "Envoi du courrier"
+
+msgid "Traitementspcgs66::cancel"
+msgstr "Annulation du traitement"
 
 msgid "Traitementspcgs66::view"
 msgstr "Visualisation d'un traitement"

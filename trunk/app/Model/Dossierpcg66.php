@@ -632,5 +632,75 @@
 				return null;
 			}
 		}
+		
+		
+		/**
+		*	Liste des courriers envoyés aux personnes PCG liés au dossier sur lequel on travaille
+		*	@params	integer
+		*	@return array
+		*
+		*/
+		public function listeCourriersEnvoyes( $personneId = 'Personne.id', $data = array() ) {
+			$traitementsNonClos = array();
+			
+			$personnespcgs66 = $this->Personnepcg66->find(
+				'all', 
+				array(
+					'fields' => array(
+						'Personnepcg66.id',
+						'Personnepcg66.dossierpcg66_id',
+					),
+					'conditions' => array(
+						'Personnepcg66.personne_id' => $personneId,
+						'Personnepcg66.dossierpcg66_id' => $data['Dossierpcg66']['id']
+					),
+					'contain' => false
+				)
+			);
+			$infosDossierpcg66 = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.dossierpcg66_id' );
+			$listPersonnespcgs66 = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.id' );
+
+			$traitementspcgs66 = array();
+			if( !empty( $infosDossierpcg66 ) ) {
+				$conditions = array(
+					'Traitementpcg66.personnepcg66_id' => $listPersonnespcgs66,
+					'Traitementpcg66.dateenvoicourrier IS NOT NULL'
+				);
+
+				$traitementspcgs66 = $this->Personnepcg66->Traitementpcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Traitementpcg66.id',
+							'Traitementpcg66.datedepart',
+							'Traitementpcg66.dateenvoicourrier',
+							'Personnepcg66.dossierpcg66_id',
+							'Personnepcg66.id',
+							'Personnepcg66.personne_id',
+							$this->Personnepcg66->Personne->sqVirtualField( 'nom_complet' ),
+							'Descriptionpdo.name',
+							'Situationpdo.libelle',
+							'Dossierpcg66.datereceptionpdo',
+							'Typepdo.libelle',
+							$this->User->sqVirtualField( 'nom_complet' )
+						),
+						'conditions' => $conditions,
+						'joins' => array(
+							$this->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Typepdo', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'User', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->join( 'Personne', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'INNER' ) ),
+							$this->Personnepcg66->Traitementpcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Personnepcg66->Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false
+					)
+				);
+			}
+			
+			return $traitementspcgs66;
+		}
 	}
 ?>

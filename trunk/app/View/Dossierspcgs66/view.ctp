@@ -75,7 +75,37 @@
 	<?php
 		echo "<h2>Pièces jointes</h2>";
 		echo $this->Fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
-?>
+	?>
+	<?php if( !empty( $traitementsCourriersEnvoyes ) ):?>
+			<h2>Courriers envoyés</h2>
+			<table class="tooltips aere">
+				<thead>
+					<tr>
+						<th>Type de traitement</th>
+						<th>Date d'envoi</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						foreach( $traitementsCourriersEnvoyes as $courrierEnvoye ){      
+							echo $this->Xhtml->tableCells(
+								array(
+									h( $courrierEnvoye['Situationpdo']['libelle'] ),
+									h( date_short( $courrierEnvoye['Traitementpcg66']['dateenvoicourrier'] ) ),
+									$this->Xhtml->printLink(
+										'Imprimer',
+										array( 'controller' => 'traitementspcgs66', 'action'=> 'printModeleCourrier', $courrierEnvoye['Traitementpcg66']['id'] ),
+										$this->Permissions->checkDossier( 'traitementspcgs66', 'printModeleCourrier', $dossierMenu )
+									)
+								)
+							);
+						}
+					?>
+				</tbody>
+			</table>
+		<?php endif;?>
+</div>
 <div class="submit">
 	<?php
 		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
