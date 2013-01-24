@@ -636,6 +636,11 @@
 
 				$qd['limit'] = 50;
 
+				$qd['order'] = array(
+					'Personne.nom' => 'asc',
+					'Personne.prenom' => 'asc',
+					'Dossierep.id' => 'asc'
+				);
 
 				// Ajout des tris sur les colonnes des dossiers affectés à une EP
 				$this->paginate = $qd;
@@ -645,63 +650,12 @@
 					$this->Components->unload( 'Search.ProgressivePaginator' );
 					$this->Components->unload( 'Paginator' );
 				}
-// 				$dossiers[$theme] = $this->Commissionep->Passagecommissionep->Dossierep->find( 'all', $qd );
 
 				$countDossiers += count( $dossiers[$theme] );
 			}
 
-
-			$querydata = array(
-				'conditions' => array(
-					'Passagecommissionep.commissionep_id' => $commissionep_id
-				),
-				'contain' => array(
-					'Dossierep' => array(
-						'Personne' => array(
-							'Foyer' => array(
-								'fields' => array(
-									$this->Commissionep->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' )
-								),
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01'
-									),
-									'Adresse'
-								),
-								'Dossier' => array(
-									'fields' => array(
-										'Dossier.matricule'
-									)
-								)
-							)
-						)
-					)
-				)
-			);
-
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$querydata['contain']['Dossierep'] = array_merge(
-					$querydata['contain']['Dossierep'],
-					array(
-						'Nonorientationproep58' => array(
-							'Decisionpropononorientationprocov58' => array(
-								'Passagecov58' => array(
-									'Cov58'
-								)
-							)
-						)
-					)
-				);
-
-				$querydata['contain']['Dossierep']['Personne'] = array_merge(
-						$querydata['contain']['Dossierep']['Personne'], array(
-					'Orientstruct' => array(
-						'order' => array( 'Orientstruct.date_valid DESC' )
-					)
-						)
-				);
-			}
-
+			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
+			$querydata = $this->_setPaginationOrder( $querydata );
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 
@@ -896,7 +850,7 @@
 					)
 			);
 
-			$pdf = $this->Commissionep->getPdfPv( $commissionep_id );
+			$pdf = $this->Commissionep->getPdfPvgetPdfPv( $commissionep_id, null, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
@@ -929,7 +883,7 @@
 					)
 				)
 			);
-			
+
 			$pdfs = array();
 			foreach( Set::extract( '/Membreep/id', $commissionep ) as $participant_id ) {
 				$pdfs[] = $this->Commissionep->getPdfPv( $commissionep_id, $participant_id, $this->Session->read( 'Auth.User.id' ) );
@@ -944,7 +898,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-		
+
 		/**
 		 *
 		 */
@@ -1373,66 +1327,20 @@
 			}
 		}
 
-
 		/**
-		* Export du tableau en CSV de l'écran de synthèse des commissions d'EP CG58
-		*/
-
+		 * Export du tableau en CSV de l'écran de synthèse des commissions d'EP CG58
+		 *
+		 * @param integer $commissionep_id
+		 */
 		public function exportcsv( $commissionep_id = null ) {
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-
-			$querydata = array(
-				'conditions' => array(
-					'Passagecommissionep.commissionep_id' => $commissionep_id
-				),
-				'contain' => array(
-					'Dossierep' => array(
-						'Personne' => array(
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'Adressefoyer.rgadr' => '01'
-									),
-									'Adresse'
-								),
-								'Dossier' => array(
-									'fields' => array(
-										'Dossier.matricule'
-									)
-								)
-							),
-							'Orientstruct' => array(
-								'order' => array( 'Orientstruct.date_valid DESC' )
-							)
-						),
-						'Nonorientationproep58' => array(
-							'Decisionpropononorientationprocov58' => array(
-								'Passagecov58' => array(
-									'Cov58'
-								)
-							)
-						)
-					)
-				)
-			);
-
+			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
+			$querydata = $this->_setPaginationOrder( $querydata );
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 			$this->_setOptions();
 
-// 			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->request->params['named'], '__' ) );
-// 			unset( $dossierseps['limit'] );
-
-// 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );
-// debug($orientsstructs);
-// die();
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'dossierseps' ) );
-
 		}
-
 	}
 ?>

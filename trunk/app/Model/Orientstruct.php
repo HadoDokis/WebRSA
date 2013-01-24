@@ -103,6 +103,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Structureorientante' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structureorientante_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Referent' => array(
 				'className' => 'Referent',
 				'foreignKey' => 'referent_id',

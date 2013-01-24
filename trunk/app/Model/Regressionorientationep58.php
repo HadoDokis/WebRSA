@@ -753,7 +753,19 @@
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 					) && $success;
 
-// 					$success = $this->Structurereferente->Orientstruct->generatePdf( $this->Structurereferente->Orientstruct->id, $dossierep['Regressionorientationep58']['user_id'] ) && $success;
+					$success = $this->Structurereferente->Orientstruct->Personne->PersonneReferent->changeReferentParcours(
+						$dossierep['Dossierep']['personne_id'],
+						$dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
+						array(
+							'PersonneReferent' => array(
+								'personne_id' => $dossierep['Dossierep']['personne_id'],
+								'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
+								'dddesignation' => $dateseance,
+								'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['structurereferente_id'],
+								'user_id' => $dossierep['Regressionorientationep58']['user_id']
+							)
+						)
+					) && $success;
 				}
 			}
 			$this->Structurereferente->Orientstruct->Behaviors->attach( 'StorablePdf' );

@@ -288,5 +288,20 @@
 					__( "{$message}->{$class}" ), 'default', array( 'class' => $class )
 			);
 		}
+
+		/**
+		 * Permet de remplir l'attribut order d'un querydata, en l'absence de
+		 * pagination (pour utiliser sur un simple find), grâce aux paramètres
+		 * de pagination passés dans l'URL.
+		 *
+		 * @param array $querydata
+		 * @return array
+		 */
+		protected function _setPaginationOrder( $querydata ) {
+			if( isset( $this->request->params['named']['sort'] ) && isset( $this->request->params['named']['direction'] ) ) {
+				$querydata['order'] = array( "{$this->request->params['named']['sort']} {$this->request->params['named']['direction']}" );
+			}
+			return $querydata;
+		}
 	}
 ?>

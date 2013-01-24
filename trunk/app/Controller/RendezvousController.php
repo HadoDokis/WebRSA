@@ -219,6 +219,14 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			// Jointure un peu spéciale
+			$joinStatutrdvTyperdv = array(
+				$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' ),
+				$this->Rendezvous->Statutrdv->join( 'StatutrdvTyperdv' ),
+			);
+			$joinStatutrdvTyperdv[0]['conditions'] = array( $joinStatutrdvTyperdv[0]['conditions'],  $joinStatutrdvTyperdv[1]['conditions'] );
+			$joinStatutrdvTyperdv = $joinStatutrdvTyperdv[0];
+
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
@@ -249,7 +257,7 @@
 						$this->Rendezvous->join( 'Statutrdv' ),
 						$this->Rendezvous->join( 'Permanence' ),
 						$this->Rendezvous->join( 'Typerdv' ),
-						$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' )
+						$joinStatutrdvTyperdv
 					),
 					'contain' => false,
 					'conditions' => array(
@@ -593,7 +601,7 @@
 
 						}
 					}
-					
+
 					// Recherche du dernier référent actif lié au parcours de l'allocataire
 					$personneReferent = $this->Rendezvous->Personne->PersonneReferent->find(
 						'first',

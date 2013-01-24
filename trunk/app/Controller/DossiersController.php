@@ -609,16 +609,40 @@
 						$optionsep[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
 					}
 
+					$qdDecisionEp = array(
+						'conditions' => array(
+							"{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
+						),
+						'order' => array( "{$modelDecision}.etape DESC" ),
+						'contain' => false
+					);
+
+					if( ( Configure::read( 'Cg.departement' ) == 58 ) && in_array( $themeEP, array( 'sanctionseps58', 'sanctionsrendezvouseps58' ) ) ) {
+						$qdDecisionEp['fields'] = array_merge(
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->fields(),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->fields(),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->Commissionep->fields(),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->Listesanctionep58->fields(),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->Autrelistesanctionep58->fields()
+						);
+
+						$qdDecisionEp['joins'] = array(
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->join( 'Passagecommissionep' ),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( 'Commissionep' ),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->join( 'Listesanctionep58' ),
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->join( 'Autrelistesanctionep58' ),
+						);
+					}
+
 					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(
 						'first',
-						array(
-							'conditions' => array(
-								"{$modelDecision}.passagecommissionep_id" => $tdossierEp['Passagecommissionep']['id']
-							),
-							'order' => array( "{$modelDecision}.etape DESC" ),
-							'contain' => false
-						)
+						$qdDecisionEp
 					);
+
+					if( ( Configure::read( 'Cg.departement' ) == 58 ) && in_array( $themeEP, array( 'sanctionseps58', 'sanctionsrendezvouseps58' ) ) ) {
+						$sanctionseps58 = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->suivisanctions58( $decisionEP, null );
+						$decisionEP['Sanctionep58'] = $sanctionseps58;
+					}
 				}
 
 				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );

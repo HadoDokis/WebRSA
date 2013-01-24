@@ -90,6 +90,13 @@ echo '<table><thead>
 				'sanction',
 				false
 			);
+
+			$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				if( $F( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision' ) == 'annule' ) {
+					$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision2' ).value = 'annule';
+					$( 'Decisionsanctionrendezvousep58<?php echo $i;?>Decision2' ).simulate('change');
+				}
+			} );
 		<?php endfor;?>
 	});
 </script>

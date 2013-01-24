@@ -23,7 +23,7 @@ SELECT public.alter_enumtype ( 'TYPE_PROPOSITIONBILANPARCOURS', ARRAY['audition'
 -------------------------------------------------------------------------------------------------------------
 
 --Dans les flux Bénéficiaires : ajouter la table aviscgssdompersonnes
-			
+
 DROP TABLE IF EXISTS aviscgssdompersonnes CASCADE;
 CREATE TABLE aviscgssdompersonnes (
 	id 					SERIAL NOT NULL PRIMARY KEY,
@@ -62,6 +62,58 @@ UPDATE foyers SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe 
 ALTER TABLE foyers ALTER COLUMN haspiecejointe SET NOT NULL;
 
 --------------------------------------------------------------------------------
+-- 20130110 - Suppression des colonnes decisionssanctionseps58.regularisation et
+-- et decisionssanctionsrendezvouseps58.regularisation
+--------------------------------------------------------------------------------
+
+-- Table decisionssanctionseps58
+UPDATE decisionssanctionseps58
+	SET
+		arretsanction = CAST( CAST(regularisation AS TEXT) AS type_arretsanctionep58),
+		datearretsanction = DATE_TRUNC( 'day', modified )
+	WHERE
+		arretsanction IS NULL
+		AND regularisation = 'finsanction2';
+
+UPDATE decisionssanctionseps58
+	SET
+		arretsanction = CAST( CAST(regularisation AS TEXT) AS type_arretsanctionep58)
+	WHERE
+		arretsanction IS NULL
+		AND regularisation IN ( 'annulation1', 'annulation2' );
+
+-- Table decisionssanctionsrendezvouseps58
+UPDATE decisionssanctionsrendezvouseps58
+	SET
+		arretsanction = CAST( CAST(regularisation AS TEXT) AS type_arretsanctionep58),
+		datearretsanction = DATE_TRUNC( 'day', modified )
+	WHERE
+		arretsanction IS NULL
+		AND regularisation = 'finsanction2';
+
+UPDATE decisionssanctionsrendezvouseps58
+	SET
+		arretsanction = CAST( CAST(regularisation AS TEXT) AS type_arretsanctionep58)
+	WHERE
+		arretsanction IS NULL
+		AND regularisation IN ( 'annulation1', 'annulation2' );
+
+-- Suppression des colonnes regularisation et du type associé
+ALTER TABLE decisionssanctionseps58 DROP COLUMN regularisation;
+ALTER TABLE decisionssanctionsrendezvouseps58 DROP COLUMN regularisation;
+
+--------------------------------------------------------------------------------
+-- 20130111 - ajout de contraintes NOT NULL aux champs personne_id des tables
+-- creancesalimentaires et prestations, suppression des tuples irrécupérables.
+--------------------------------------------------------------------------------
+
+DELETE FROM creancesalimentaires WHERE personne_id IS NULL;
+ALTER TABLE creancesalimentaires ALTER COLUMN personne_id SET NOT NULL;
+
+DELETE FROM prestations WHERE personne_id IS NULL;
+ALTER TABLE prestations ALTER COLUMN personne_id SET NOT NULL;
+
+--------------------------------------------------------------------------------
 -- 20130118 : Ajout des fichiers liés au module memos
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field('public', 'memos', 'haspiecejointe', 'type_booleannumber' );
@@ -89,11 +141,79 @@ COMMENT ON TABLE manifestationsbilansparcours66 IS 'Table pour les manifestation
 DROP INDEX IF EXISTS manifestationsbilansparcours66_bilanparcours66_id_idx;
 CREATE INDEX manifestationsbilansparcours66_bilanparcours66_id_idx ON manifestationsbilansparcours66( bilanparcours66_id );
 
+--------------------------------------------------------------------------------
+-- 20121218: pour les CG 58 et 66, on a des référents du parcours sans date de
+-- fin alors qu'ils devraient en avoir.
+--------------------------------------------------------------------------------
+
+-- 1°) On a des entrées sans dates de début de désignation
+DELETE FROM personnes_referents WHERE dddesignation IS NULL;
+
+-- 2°) On se prémunit contre cette erreur
+ALTER TABLE personnes_referents ALTER COLUMN dddesignation SET NOT NULL;
+
+-- 3°) On complète les données restantes
+CREATE OR REPLACE FUNCTION public.update_dfdesignation_referents() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_personnes record;
+		v_row_personnes_referents record;
+		v_query text;
+		v_iteration integer;
+		v_dddesignationpcd date;
+	BEGIN
+		FOR v_row_personnes IN
+			SELECT DISTINCT(s.personne_id) FROM (
+				SELECT personnes_referents.personne_id
+					FROM personnes_referents
+					WHERE personnes_referents.dfdesignation IS NULL
+					GROUP BY personnes_referents.personne_id HAVING COUNT(personnes_referents.id) > 1
+				UNION
+				SELECT pr1.personne_id
+					FROM personnes_referents pr1, personnes_referents pr2
+					WHERE pr1.personne_id = pr2.personne_id
+						AND pr1.dddesignation < pr2.dddesignation
+						AND pr1.dfdesignation IS NULL
+			) AS s
+			ORDER BY s.personne_id ASC
+		LOOP
+			v_iteration := 0;
+			RAISE NOTICE  'Correction des dates de fin de désignation de la personne %', v_row_personnes.personne_id;
+			FOR v_row_personnes_referents IN
+				SELECT *
+				FROM personnes_referents
+				WHERE personnes_referents.personne_id = v_row_personnes.personne_id
+				ORDER BY personnes_referents.dddesignation DESC
+			LOOP
+				RAISE NOTICE  '%', v_row_personnes_referents;
+				-- traitement
+				IF v_iteration > 0 AND v_row_personnes_referents.dfdesignation IS NULL THEN
+					v_query := 'UPDATE personnes_referents SET dfdesignation = \'' || v_dddesignationpcd || '\' WHERE id = ' || v_row_personnes_referents.id || ';';
+					RAISE NOTICE  '%', v_query;
+					EXECUTE v_query;
+				END IF;
+				-- traitement
+				v_iteration := v_iteration + 1;
+				v_dddesignationpcd := v_row_personnes_referents.dddesignation;
+			END LOOP;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.update_dfdesignation_referents();
+DROP FUNCTION public.update_dfdesignation_referents();
 
 --------------------------------------------------------------------------------
 -- 20130118 : Ajout de la date d'envoi du courrier d'un traitement PCG (CG66)
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'traitementspcgs66', 'dateenvoicourrier', 'DATE' );
+
+--------------------------------------------------------------------------------
+-- 20130121 : Création d'une contrainte d'unicité des entrées de  la "Gestion
+-- pour passage en commission par objet et type de RDV".
+--------------------------------------------------------------------------------
+CREATE UNIQUE INDEX statutsrdvs_typesrdv_statutrdv_id_typerdv_id_idx ON statutsrdvs_typesrdv(statutrdv_id, typerdv_id);
 
 --------------------------------------------------------------------------------
 -- 20130123 : Ajout d'une zone de commentaire liée aux pièces jointes d'un dossier PCG (CG66)

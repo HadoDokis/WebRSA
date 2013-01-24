@@ -623,6 +623,42 @@
 							</tr>
 						</tbody>
 					</table>
+					<?php
+						if( Configure::read( 'Cg.departement' ) == 58 ) {
+							foreach( array( 'DEM', 'CJT' ) as $role ) {
+								$derniereep = Set::extract( $details, "{$role}.Dossierep.derniere" );
+								$modeledecision = 'Decision'.Inflector::singularize( @$derniereep['Dossierep']['themeep'] );
+								$visualisationSanction = !empty( $derniereep )
+									&& in_array( @$derniereep['Dossierep']['themeep'], array( 'sanctionseps58', 'sanctionsrendezvouseps58' ) )
+									&& ( @$derniereep['Passagecommissionep']['etatdossierep'] == 'traite' )
+									&& (
+										(
+											isset( $derniereep['Sanctionep58'][0][$modeledecision]['sanction'] )
+											&& !empty( $derniereep['Sanctionep58'][0][$modeledecision]['sanction'] )
+										)
+										||
+										(
+											isset( $derniereep['Sanctionep58'][1][$modeledecision]['sanction'] )
+											&& !empty( $derniereep['Sanctionep58'][1][$modeledecision]['sanction'] )
+										)
+									);
+								if( $visualisationSanction ) {
+									echo '<h3>Suivi des sanctions du '.( $role == 'DEM' ? 'demandeur' : 'conjoint' ).'</h3>';
+									echo $this->Default2->index(
+										$derniereep['Sanctionep58'],
+										array(
+											"{$modeledecision}.decision" => array( 'label' => 'Décision', 'type' => 'text' ),
+											"{$modeledecision}.sanction" => array( 'label' => 'Sanction', 'type' => 'text' ),
+											"{$modeledecision}.duree" => array( 'label' => 'Durée (en mois)', 'type' => 'integer' ),
+											"{$modeledecision}.dd" => array( 'label' => 'Date de début', 'type' => 'date' ),
+											"{$modeledecision}.df" => array( 'label' => 'Date de fin', 'type' => 'date' ),
+											"{$modeledecision}.etat" => array( 'label' => 'État', 'type' => 'text' ),
+										)
+									);
+								}
+							}
+						}
+					?>
 				</td>
 			</tr>
 

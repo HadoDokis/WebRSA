@@ -256,7 +256,7 @@
 
 			// Champs à conserver en cas d'annulation ou de report
 			$champsAGarder = array( 'id', 'etape', 'passagecommissionep_id', 'user_id', 'created', 'modified' );
-			$champsAGarderPourNonDecision = Set::merge( $champsAGarder, array( 'decision', 'decisionpcg', 'commentaire', 'raisonnonpassage' ) );
+			$champsAGarderPourNonDecision = Set::merge( $champsAGarder, array( 'decision', 'decisionpcg', 'decision2', 'commentaire', 'raisonnonpassage' ) );
 
 			foreach( $this->themesTraites( $commissionep_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
@@ -579,7 +579,7 @@
 								$dataCg[$modelDecisionName][$i]['etape'] = 'cg';
 							}
 						}
-						
+
 						$containStoredDataCg[$modelDecisionName] = array( 'conditions' => array( 'etape' => 'cg' ) );
 					}
 				}
@@ -594,12 +594,12 @@
 							),
 							'contain' => $containStoredDataCg
 						)
-					);	
+					);
 					unset( $storedDataCg['Passagecommissionep'] );
 
 					$success = $this->finaliser( $commissionep_id, $storedDataCg, 'cg', $user_id ) && $success;
 				}
-				
+
 				// On génère un dossier PCG à partir du niveau EP d'une commission Audition quoi qu'il arrive
 				foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 					$themeTraite = Inflector::tableize( $themeTraite );
@@ -610,7 +610,7 @@
 					}
 				}
 			}
-			
+
 			return $success;
 
 		}
@@ -814,12 +814,14 @@
 			return $return;
 		}
 
-
 		/**
-		*
-		*/
-
-		public function getPdfPv( $commissionep_id, $participant_id = null, $user_id ) {
+		 *
+		 * @param type $commissionep_id
+		 * @param type $participant_id
+		 * @param type $user_id
+		 * @return type
+		 */
+		public function getPdfPv( $commissionep_id, $participant_id, $user_id ) {
 			$commissionep_data = $this->find(
 				'first',
 				array(
@@ -844,14 +846,14 @@
 						'contain' => false
 					)
 				);
-				
+
 				if( !empty( $participant ) ) {
 					$participant['Participant'] = $participant['Membreep'];
 					unset($participant['Membreep']);
 					$commissionep_data = Set::merge( $participant, $commissionep_data );
 				}
 			}
-			
+
 
 			$queryData = array(
 				'fields' => array_merge(
@@ -1331,7 +1333,7 @@
 			);
 
 			$convocation = Set::merge( $commissionep, $membreep );
-			
+
 			$user = $this->Passagecommissionep->User->find(
 				'first',
 				array(
@@ -1501,7 +1503,7 @@
 						$joinDefautinsertionep66['conditions']
 					)
 				);
-	
+
 				$queryData = array(
 					'fields' => array_merge(
 						$this->Passagecommissionep->fields(),
@@ -1929,5 +1931,74 @@
 			);
 		}
 
+		/**
+		 * Retourne le querydata (à utiliser sur le modèle Passagecommissionep)
+		 * permettant d'obtenir la liste des dossiers d'EP à afficher dans la synthèse.
+		 *
+		 * @param integer $commissionep_id L'id technique de la commission d'EP
+		 * @return array
+		 */
+		public function qdSynthese( $commissionep_id ) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->Passagecommissionep->fields(),
+					$this->Passagecommissionep->Dossierep->fields(),
+					$this->Passagecommissionep->Dossierep->Personne->fields(),
+					array(
+						$this->Passagecommissionep->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur' ),
+						'Dossier.matricule'
+					),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->fields(),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields()
+				),
+				'joins' => array(
+					$this->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					'Passagecommissionep.commissionep_id' => $commissionep_id,
+					'Adressefoyer.id IN ('.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+				),
+				'contain' => false,
+				'order' => array(
+					'Personne.nom' => 'asc',
+					'Personne.prenom' => 'asc',
+					'Dossierep.id' => 'asc'
+				),
+			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->join( 'Nonorientationproep58', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Nonorientationproep58->join( 'Decisionpropononorientationprocov58', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Nonorientationproep58->Decisionpropononorientationprocov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
+
+				$sqDerniereorientstruct = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->sqDerniere( 'Personne.id' );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['joins'][] = $this->Passagecommissionep->Dossierep->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+
+				$querydata['conditions'][] = array(
+					'OR' => array(
+						'Orientstruct.id IS NULL',
+						"Orientstruct.id IN ( {$sqDerniereorientstruct} )"
+					)
+				);
+
+				$querydata['fields'] = array_merge(
+					$querydata['fields'],
+					array(
+						'Cov58.datecommission',
+						'Structurereferente.lib_struc',
+						$this->Passagecommissionep->Dossierep->Personne->sqStructureorientante( 'Dossierep.personne_id', 'Structureorientante.lib_struc' )
+					)
+				);
+			}
+
+			return $querydata;
+		}
 	}
 ?>

@@ -232,10 +232,23 @@
 					}
 
 					if( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) {
-						$rgorient = ( $orientstruct['Orientstruct']['rgorient'] > 1 ) ? 'Réorientation' : 'Première orientation';
-					}
-					else {
-						$rgorient = null;
+						if( Configure::read( 'Cg.departement' ) == 58 ) {
+							if( !isset( $orientstructs[$i+1] ) ) {
+								$rgorient = 'Première orientation';
+							}
+							else if( $orientstruct['Orientstruct']['typeorient_id'] != $orientstructs[$i+1]['Orientstruct']['typeorient_id'] ) {
+								$rgorient = 'Réorientation';
+							}
+							else if( $orientstruct['Orientstruct']['typeorient_id'] == Configure::read( 'Typeorient.emploi_id' ) ) {
+								$rgorient = 'Maintien en emploi';
+							}
+							else {
+								$rgorient = 'Maintien en social';
+							}
+						}
+						else {
+							$rgorient = ( $orientstruct['Orientstruct']['rgorient'] > 1 ) ? 'Réorientation' : 'Première orientation';
+						}
 					}
 
 					//Peut-n nimprimer la notif de changement de référent ou non, si 1ère orientation non sinon ok

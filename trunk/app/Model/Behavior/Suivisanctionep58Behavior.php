@@ -38,7 +38,12 @@
 				),
 			);
 
-			$dataDecision = Set::classicExtract( $data, $dataPath );
+			if( !is_null( $dataPath ) ) {
+				$dataDecision = Set::classicExtract( $data, $dataPath );
+			}
+			else {
+				$dataDecision = $data;
+			}
 
 			if( $dataDecision[$model->alias]['decision'] == 'sanction' ) {
 				$return['decision1']['decision'] = 'Sanction 1';

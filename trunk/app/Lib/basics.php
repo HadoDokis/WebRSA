@@ -270,6 +270,13 @@
 		return preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
 	}
 
+	/**
+	*
+	*/
+	function prefix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
+		return preg_replace( '/^([^'.$separator.']+)('.$separator.'.*)$/', '\1', $value );
+	}
+
 	function array_depth( $array ) {
 		$max_depth = 1;
 		foreach ($array as $value) {

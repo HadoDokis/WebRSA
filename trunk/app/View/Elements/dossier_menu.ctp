@@ -62,9 +62,7 @@
 <?php
 	if( isset( $personne_id ) ) {
 		$personneDossier = null;
-
-		$personnesDossier = Set::extract( $dossier, '/Foyer/Personne' );
-		foreach( $personnesDossier as $i => $personne ) {
+		foreach( Set::extract( $dossier, '/Foyer/Personne' ) as $i => $personne ) {
 			if( $personne_id == Set::classicExtract( $personne, 'Personne.id' ) ) {
 				$personneDossier = Set::classicExtract( $personne, 'Personne.qual' ).' '.Set::classicExtract( $personne, 'Personne.nom' ).' '.Set::classicExtract( $personne, 'Personne.prenom' );
 			}
@@ -230,7 +228,7 @@
 				'Corbeille PCG' => array( 'url' => array( 'controller' => 'foyers', 'action' => 'corbeille', $dossier['Foyer']['id'] ) )
 			);
 		}
-		
+
 		//FIXME infoscomplementaires
 
 		$items['Synthèse du parcours d\'insertion'] = array( 'url' => array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] ) );

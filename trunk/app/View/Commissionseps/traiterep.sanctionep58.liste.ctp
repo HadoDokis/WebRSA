@@ -69,13 +69,13 @@ echo '<table><thead>
 			});
 			changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn', 2, 'Decisionsanctionep58<?php echo $i;?>Decision', [ 'Decisionsanctionep58<?php echo $i;?>Listesanctionep58Id' ] );
 
-			
+
 			$( 'Decisionsanctionep58<?php echo $i;?>Decision2' ).observe( 'change', function() {
 				changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn2', 2, 'Decisionsanctionep58<?php echo $i;?>Decision2', [ 'Decisionsanctionep58<?php echo $i;?>Autrelistesanctionep58Id' ] );
 			});
 			changeColspanFormAnnuleReporteEps( 'Decisionsanctionep58<?php echo $i;?>DecisionColumn2', 2, 'Decisionsanctionep58<?php echo $i;?>Decision2', [ 'Decisionsanctionep58<?php echo $i;?>Autrelistesanctionep58Id' ] );
 
-			
+
 			observeDisableFieldsOnValue(
 				'Decisionsanctionep58<?php echo $i;?>Decision',
 				[
@@ -92,6 +92,13 @@ echo '<table><thead>
 				'sanction',
 				false
 			);
+
+			$( 'Decisionsanctionep58<?php echo $i;?>Decision' ).observe( 'change', function() {
+				if( $F( 'Decisionsanctionep58<?php echo $i;?>Decision' ) == 'annule' ) {
+					$( 'Decisionsanctionep58<?php echo $i;?>Decision2' ).value = 'annule';
+					$( 'Decisionsanctionep58<?php echo $i;?>Decision2' ).simulate('change');
+				}
+			} );
 		<?php endfor;?>
 	});
 </script>

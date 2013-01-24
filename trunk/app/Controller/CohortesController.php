@@ -349,9 +349,7 @@
 				)
 			);
 
-			if( !empty( $this->request->params['named']['sort'] ) && !empty( $this->request->params['named']['direction'] ) ) {
-				$queryData['order'] = array( "{$this->request->params['named']['sort']} {$this->request->params['named']['direction']}" );
-			}
+			$queryData = $this->_setPaginationOrder( $queryData );
 
 			$queryData['fields'][] = 'Pdf.cmspath';
 

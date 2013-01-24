@@ -112,9 +112,6 @@
 			}
 
 			// Conditions pour les jointures
-			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-			$conditions['Calculdroitrsa.toppersdrodevorsa'] = '1';
-			$conditions['Situationdossierrsa.etatdosrsa'] = $Personne->Orientstruct->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert();
 			$conditions[] = array(
 				'OR' => array(
 					'Adressefoyer.id IS NULL',
@@ -185,7 +182,7 @@
 				'joins'=>array(
 					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),

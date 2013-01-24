@@ -335,69 +335,40 @@
 								echo '</ul>';
 
 								$actions = array(
-									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'index', '#Dossierep.Personne.id#' ), 'class' => 'external' ),
+									'Dossierseps::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'historiqueseps', 'action' => 'index', '#Personne.id#' ), 'class' => 'external' ),
 								);
-
-// 								$fields = array(
-// 									'Dossierep.Personne.qual',
-// 									'Dossierep.Personne.nom',
-// 									'Dossierep.Personne.prenom'
-// 								);
-//
-// 								if( Configure::read( 'Cg.departement' ) == 93 ) {
-// 									$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', true ) );
-// 									$fields = array_merge(
-// 										$fields,
-// 										array(
-// 											'Dossierep.Personne.id'
-// 										)
-// 									);
-// 								}
-//
-// 								$fields = array_merge(
-// 									$fields,
-// 									array(
-// 										'Dossierep.Personne.dtnai',
-// 										'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-// 										'Dossierep.created',
-// 										'Dossierep.themeep',
-// 										'Passagecommissionep.etatdossierep',
-// 										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' )
-// 									)
-// 								);
-
 
 								if( Configure::read( 'Cg.departement' ) == 93 ){
 									$fields = array(
-										'Dossierep.Personne.qual',
-										'Dossierep.Personne.nom',
-										'Dossierep.Personne.prenom',
-										'Dossierep.Personne.id',
-										'Dossierep.Personne.dtnai',
-										'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+										'Personne.qual',
+										'Personne.nom',
+										'Personne.prenom',
+										'Personne.id',
+										'Personne.dtnai',
+										'Adresse.locaadr',
 										'Dossierep.created',
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
-										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
+										'Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
 									);
 
 									$actions['Dossierseps::fichesynthese'] = array( 'url' => array( 'controller' => 'commissionseps', 'action' => 'fichesynthese',  	Set::classicExtract( $commissionep, 'Commissionep.id' ), '#Dossierep.id#', true ) );
 								}
 								else if( Configure::read( 'Cg.departement' ) == 58 ){
 									$fields = array(
-										'Dossierep.Personne.qual',
-										'Dossierep.Personne.nom',
-										'Dossierep.Personne.prenom',
-										'Dossierep.Personne.Foyer.Dossier.matricule',
-										'Dossierep.Personne.id',
-										'Dossierep.Personne.dtnai',
-										'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
-										'Dossierep.Personne.Orientstruct.0.structurereferente_id',
+										'Personne.qual',
+										'Personne.nom',
+										'Personne.prenom',
+										'Dossier.matricule',
+										'Personne.id',
+										'Personne.dtnai',
+										'Structureorientante.lib_struc' => array( 'type' => 'text' ),
+										'Structurereferente.lib_struc',
 										'Dossierep.created',
 										'Dossierep.themeep',
 										'Passagecommissionep.etatdossierep',
-										'Dossierep.Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' => array( 'label' => 'Proposition validée par la COV le' ),
-										'Dossierep.Personne.Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
+										'Cov58.datecommission' => array( 'label' => 'Proposition validée par la COV le' ),
+										'Foyer.enerreur' => array( 'type' => 'string', 'sort' => false, 'class' => 'foyer_enerreur' )
 									);
 								}
 
@@ -415,12 +386,12 @@
 										),
 									)
 								);
-								
+
 								if( Configure::read( 'Cg.departement' ) == 58 ) {
 									echo '<ul class="actionMenu">';
 										echo '<li>'.$this->Xhtml->exportLink(
 											'Télécharger le tableau',
-											array( 'controller' => 'commissionseps', 'action' => 'exportcsv', Set::classicExtract( $commissionep, 'Commissionep.id' ) ),
+											array( 'controller' => 'commissionseps', 'action' => 'exportcsv' ) + $this->passedArgs,
 											$this->Permissions->check( 'commissionseps', 'exportcsv' )
 										).' </li>';
 									echo '</ul>';

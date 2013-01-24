@@ -417,8 +417,8 @@
 							)
 						)
 					);
-// debug($passagecov58);
-					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
+
+					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ) {
 
 						if( $values['decisioncov'] == 'valide' ){
 							$data[$modelDecisionName][$key]['typeorient_id'] = $passagecov58[$this->alias]['typeorient_id'];
@@ -447,6 +447,20 @@
 								)
 							);
 
+							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+								$passagecov58['Dossiercov58']['personne_id'],
+								$passagecov58[$this->alias]['referent_id'],
+								array(
+									'PersonneReferent' => array(
+										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
+										'referent_id' => $passagecov58[$this->alias]['referent_id'],
+										'dddesignation' => $datevalidation,
+										'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
+										'user_id' => ( isset( $passagecov58[$this->alias]['user_id'] ) ) ? $passagecov58[$this->alias]['user_id'] : null
+									)
+								)
+							) && $success;
+
 							//Validation par la COV donc on déverse le dossier dans la corbeille EP
 							$dossierep = array(
 								'Dossierep' => array(
@@ -470,7 +484,7 @@
 
 
 						}
-						else if( $values['decisioncov'] == 'refuse' ){
+						else if( $values['decisioncov'] == 'refuse' ) {
 							$referent_id = null;
 							if( strstr( $values['referent_id'],  '_' ) !== false ) {
 								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
@@ -502,6 +516,20 @@
 									'user_id' => ( isset( $passagecov58['Propononorientationprocov58']['user_id'] ) ) ? $passagecov58['Propononorientationprocov58']['user_id'] : null
 								)
 							);
+
+							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+								$passagecov58['Dossiercov58']['personne_id'],
+								$data[$modelDecisionName][$key]['referent_id'],
+								array(
+									'PersonneReferent' => array(
+										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
+										'referent_id' => $data[$modelDecisionName][$key]['referent_id'],
+										'dddesignation' => $datevalidation,
+										'structurereferente_id' => $data[$modelDecisionName][$key]['structurereferente_id'],
+										'user_id' =>  ( isset( $passagecov58['Propononorientationprocov58']['user_id'] ) ) ? $passagecov58['Propononorientationprocov58']['user_id'] : null
+									)
+								)
+							) && $success;
 						}
 
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );

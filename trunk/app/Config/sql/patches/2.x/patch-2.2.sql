@@ -761,6 +761,128 @@ ALTER TABLE nonorientes66 ADD CONSTRAINT nonorientees66_dateimpression_origine_c
 -- thématiques de COV (CG 58).
 -------------------------------------------------------------------------------------------------------------
 
+CREATE OR REPLACE FUNCTION public.nettoyage_proposnonorientationsproscovs58_nvorientstruct_id() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_doublon record;
+		v_row_propo record;
+		v_row_orientstruct record;
+		v_row_orientstruct_fixme record;
+		v_query text;
+	BEGIN
+		FOR v_row_doublon IN
+			SELECT DISTINCT nvorientstruct_id
+			FROM proposnonorientationsproscovs58
+			GROUP BY nvorientstruct_id
+			HAVING COUNT(nvorientstruct_id) > 1
+		LOOP
+			CREATE TEMPORARY TABLE omega(position INTEGER, propo_id INTEGER);
+			INSERT INTO omega ( position, propo_id )
+				SELECT row_number() OVER (ORDER BY id ASC), proposnonorientationsproscovs58.id
+					FROM proposnonorientationsproscovs58 WHERE proposnonorientationsproscovs58.nvorientstruct_id = v_row_doublon.nvorientstruct_id;
+
+			FOR v_row_propo IN
+				SELECT DISTINCT dossierscovs58.personne_id
+				FROM proposnonorientationsproscovs58
+					INNER JOIN dossierscovs58 ON ( proposnonorientationsproscovs58.dossiercov58_id = dossierscovs58.id )
+				WHERE proposnonorientationsproscovs58.nvorientstruct_id = v_row_doublon.nvorientstruct_id
+				GROUP BY dossierscovs58.personne_id
+			LOOP
+				FOR v_row_orientstruct IN
+					SELECT *
+					FROM orientsstructs
+					WHERE
+						orientsstructs.personne_id = v_row_propo.personne_id
+						AND orientsstructs.id = v_row_doublon.nvorientstruct_id
+				LOOP
+					FOR v_row_orientstruct_fixme IN
+						SELECT row_number() OVER (ORDER BY orientsstructs.id ASC) AS position, orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = v_row_propo.personne_id
+							AND orientsstructs.statut_orient = v_row_orientstruct.statut_orient
+							AND orientsstructs.date_valid = v_row_orientstruct.date_valid
+							AND orientsstructs.typeorient_id = v_row_orientstruct.typeorient_id
+							AND orientsstructs.structurereferente_id = v_row_orientstruct.structurereferente_id
+						ORDER BY orientsstructs.id ASC
+					LOOP
+						v_query := 'UPDATE proposnonorientationsproscovs58
+							SET nvorientstruct_id = ' || v_row_orientstruct_fixme.id
+							|| ' WHERE id = ( SELECT omega.propo_id FROM omega WHERE position = ' || v_row_orientstruct_fixme.position || ' );';
+						EXECUTE v_query;
+					END LOOP;
+				END LOOP;
+			END LOOP;
+			DROP TABLE omega;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.nettoyage_proposnonorientationsproscovs58_nvorientstruct_id();
+DROP FUNCTION public.nettoyage_proposnonorientationsproscovs58_nvorientstruct_id();
+
+CREATE OR REPLACE FUNCTION public.nettoyage_proposorientationscovs58_nvorientstruct_id() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_doublon record;
+		v_row_propo record;
+		v_row_orientstruct record;
+		v_row_orientstruct_fixme record;
+		v_query text;
+	BEGIN
+		FOR v_row_doublon IN
+			SELECT DISTINCT nvorientstruct_id
+			FROM proposorientationscovs58
+			GROUP BY nvorientstruct_id
+			HAVING COUNT(nvorientstruct_id) > 1
+		LOOP
+			CREATE TEMPORARY TABLE omega(position INTEGER, propo_id INTEGER);
+			INSERT INTO omega ( position, propo_id )
+				SELECT row_number() OVER (ORDER BY id ASC), proposorientationscovs58.id
+					FROM proposorientationscovs58 WHERE proposorientationscovs58.nvorientstruct_id = v_row_doublon.nvorientstruct_id;
+
+			FOR v_row_propo IN
+				SELECT DISTINCT dossierscovs58.personne_id
+				FROM proposorientationscovs58
+					INNER JOIN dossierscovs58 ON ( proposorientationscovs58.dossiercov58_id = dossierscovs58.id )
+				WHERE proposorientationscovs58.nvorientstruct_id = v_row_doublon.nvorientstruct_id
+				GROUP BY dossierscovs58.personne_id
+			LOOP
+				FOR v_row_orientstruct IN
+					SELECT *
+					FROM orientsstructs
+					WHERE
+						orientsstructs.personne_id = v_row_propo.personne_id
+						AND orientsstructs.id = v_row_doublon.nvorientstruct_id
+				LOOP
+					FOR v_row_orientstruct_fixme IN
+						SELECT row_number() OVER (ORDER BY orientsstructs.id ASC) AS position, orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = v_row_propo.personne_id
+							AND orientsstructs.statut_orient = v_row_orientstruct.statut_orient
+							AND orientsstructs.date_valid = v_row_orientstruct.date_valid
+							AND orientsstructs.typeorient_id = v_row_orientstruct.typeorient_id
+							AND orientsstructs.structurereferente_id = v_row_orientstruct.structurereferente_id
+						ORDER BY orientsstructs.id ASC
+					LOOP
+						v_query := 'UPDATE proposorientationscovs58
+							SET nvorientstruct_id = ' || v_row_orientstruct_fixme.id
+							|| ' WHERE id = ( SELECT omega.propo_id FROM omega WHERE position = ' || v_row_orientstruct_fixme.position || ' );';
+						EXECUTE v_query;
+					END LOOP;
+				END LOOP;
+			END LOOP;
+			DROP TABLE omega;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.nettoyage_proposorientationscovs58_nvorientstruct_id();
+DROP FUNCTION public.nettoyage_proposorientationscovs58_nvorientstruct_id();
+
 CREATE UNIQUE INDEX proposcontratsinsertioncovs58_nvcontratinsertion_id_idx ON proposcontratsinsertioncovs58 (nvcontratinsertion_id);
 CREATE UNIQUE INDEX proposorientationscovs58_nvorientstruct_id_idx ON proposorientationscovs58 (nvorientstruct_id);
 CREATE UNIQUE INDEX proposnonorientationsproscovs58_nvorientstruct_id_idx ON proposnonorientationsproscovs58 (nvorientstruct_id);
@@ -1352,4 +1474,4 @@ CREATE UNIQUE INDEX piecesmodelestypescourrierspcgs66_isautrepiece_modeletypecou
 SELECT add_missing_table_field ('public', 'modelestraitementspcgs66', 'autrepiecemanquante', 'TEXT');
 -- *****************************************************************************
 COMMIT;
--- ************************************************************************
+-- *****************************************************************************
