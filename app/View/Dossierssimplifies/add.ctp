@@ -13,8 +13,8 @@
 		observeDisableFieldsOnValue( 'Orientstruct0StatutOrient', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StructureorientanteId', 'Orientstruct0ReferentorientantId' ], 'Non orienté', true );
 		observeDisableFieldsOnValue( 'Orientstruct1StatutOrient', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StructureorientanteId', 'Orientstruct1ReferentorientantId'  ], 'Non orienté', true );
 		// Masquage des champs select si non droit et devoir
-		observeDisableFieldsOnValue( 'Calculdroitrsa0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient', 'Orientstruct0StructureorientanteId', 'Orientstruct0ReferentorientantId' ], 0, true );
-		observeDisableFieldsOnValue( 'Calculdroitrsa1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient', 'Orientstruct1StructureorientanteId', 'Orientstruct1ReferentorientantId'  ], 0, true );
+		observeDisableFieldsOnValue( 'Calculdroitrsa0Toppersdrodevorsa', [ 'Orientstruct0TypeorientId', 'Orientstruct0StructurereferenteId', 'Orientstruct0StatutOrient', 'Orientstruct0StructureorientanteId', 'Orientstruct0ReferentorientantId' ], ['',1], false );
+		observeDisableFieldsOnValue( 'Calculdroitrsa1Toppersdrodevorsa', [ 'Orientstruct1TypeorientId', 'Orientstruct1StructurereferenteId', 'Orientstruct1StatutOrient', 'Orientstruct1StructureorientanteId', 'Orientstruct1ReferentorientantId'  ], ['',1], false );
 	});
 </script>
 
