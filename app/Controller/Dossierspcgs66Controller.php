@@ -585,6 +585,15 @@
 				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'index', $foyer_id ) );
 			}
 
+			
+			//Récupération de la liste des courriers envoyés à l'allocataire:
+			$personnesIds = array();
+			foreach( $dossierpcg66['Personnepcg66'] as $i => $personnepcg66 ) {
+				$personnesIds[] = $personnepcg66['personne_id'];
+			}
+			$traitementsCourriersEnvoyes = $this->Dossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
+			$this->set( compact( 'traitementsCourriersEnvoyes' ) );
+			
 			$this->_setOptions();
 			$this->set( compact( 'dossierpcg66' ) );
 			$this->set( 'foyer_id', $foyer_id );

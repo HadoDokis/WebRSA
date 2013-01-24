@@ -190,11 +190,11 @@
 				);
 			?></li>
 			<li><?php
-				echo $this->Xhtml->exportLink(
-					'Télécharger le tableau',
-					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
-					$this->Permissions->check( 'criteresdossierspcgs66', 'exportcsv' )
-				);
+// 				echo $this->Xhtml->exportLink(
+// 					'Télécharger le tableau',
+// 					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+// 					$this->Permissions->check( 'criteresdossierspcgs66', 'exportcsv' )
+// 				);
 			?></li>
 		</ul>
 	<?php else:?>
