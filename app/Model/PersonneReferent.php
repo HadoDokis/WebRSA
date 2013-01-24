@@ -146,7 +146,7 @@
 				else {
 					$conditionCloture = "AND {$table}.dfdesignation IS NULL";
 				}
-				
+
 			}
 			return "SELECT {$table}.id
 					FROM {$table}
@@ -240,6 +240,72 @@
 			}
 
 			return $sq;
+		}
+
+		/**
+		 * Si je possédais un référent et que l'actuel n'existe pas -> clôture
+		 * Si je possédais un référent et qu'il est différent de l'actuel -> clôture, création
+		 * Si je possédais un référent et qu'il est le même que l'actuel -> rien ne se passe
+		 * Si je ne possédais pas de référent et qu'il y en a un -> création
+		 * Si je ne possédais pas de référent et qu'il n'y en pas -> rien ne se passe
+		 *
+		 * @param integer $personne_id
+		 * @param integer $referent_id
+		 * @param array $personne_referent
+		 * @return boolean
+		 */
+		public function changeReferentParcours( $personne_id, $referent_id, $personne_referent ) {
+			$success = true;
+
+			if( !empty( $personne_referent ) ) {
+				$personne_referent[$this->alias]['structurereferente_id'] = prefix( $personne_referent[$this->alias]['structurereferente_id'] );
+				$personne_referent[$this->alias]['referent_id'] = suffix( $personne_referent[$this->alias]['referent_id'] );
+			}
+
+			$personne_referent_actuel = $this->find(
+				'first',
+				array(
+					'conditions' => array(
+						'PersonneReferent.personne_id' => $personne_id,
+						'PersonneReferent.dfdesignation IS NULL'
+					),
+					'contain' => false
+				)
+			);
+
+			// Si je ne possédais pas de référent et qu'il n'y en pas -> rien ne se passe
+			if( empty( $personne_referent_actuel ) && empty( $personne_referent ) ) {
+				return $success;
+			}
+
+			// Si je possédais un référent et qu'il est le même que l'actuel -> rien ne se passe
+			$referentDejaAssigne = (
+				!empty( $personne_referent_actuel )
+				&& !empty( $personne_referent )
+				&& ( $personne_referent_actuel['PersonneReferent']['structurereferente_id'] == $personne_referent['PersonneReferent']['structurereferente_id'] )
+				&& ( $personne_referent_actuel['PersonneReferent']['referent_id'] == $personne_referent['PersonneReferent']['referent_id'] )
+			);
+			if( $referentDejaAssigne ) {
+				return $success;
+			}
+
+			if( !empty( $personne_referent_actuel ) ) {
+				$dfdesignation = (
+					( isset( $personne_referent['PersonneReferent']['dddesignation'] ) && !empty( $personne_referent['PersonneReferent']['dddesignation'] ) )
+					? $personne_referent['PersonneReferent']['dddesignation']
+					: date( 'Y-m-d' )
+				);
+
+				$this->id = $personne_referent_actuel['PersonneReferent']['id'];
+				$success = $this->saveField( 'dfdesignation', $dfdesignation ) && $success;
+			}
+
+			if( !empty( $referent_id ) ) {
+				$this->create( $personne_referent );
+				return $this->save() && $success;
+			}
+
+			return $success;
 		}
 	}
 ?>

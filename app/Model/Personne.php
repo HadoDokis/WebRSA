@@ -966,5 +966,34 @@
 			);
 		}
 
+		/**
+		 * Retourne une sous-requête permettant de connaître la structure chargée
+		 * de l'évaluation d'un allocataire (CG 58).
+		 *
+		 * @param string $personneIdPath Le chemin désignant le champ personne_id
+		 *	(ex.: Dossiercov58.personne_id)
+		 * @param string $structureFieldPath Le chemin vers l'information de la
+		 *	structure orientante que l'on veut obtenir (ex.: Structureorientante.lib_struc)
+		 * @param boolean $alias Doit-on aliaser la sous-requête ?
+		 * @return string
+		 */
+		public function sqStructureorientante( $personneIdPath, $structureFieldPath, $alias = true ) {
+			list( $personneModelName, $personneFieldName ) = model_field( $personneIdPath );
+			list( $soModelName, $soFieldName ) = model_field( $structureFieldPath );
+
+			$sql = "SELECT
+					structuresreferentes.{$soFieldName}
+				FROM proposorientationscovs58
+					INNER JOIN dossierscovs58 ON ( proposorientationscovs58.dossiercov58_id = dossierscovs58.id )
+					LEFT OUTER JOIN structuresreferentes ON ( proposorientationscovs58.structureorientante_id = structuresreferentes.id )
+				WHERE dossierscovs58.personne_id = \"{$personneModelName}\".\"{$personneFieldName}\"
+				ORDER BY dossierscovs58.created DESC";
+
+			if( $alias ) {
+				return "( {$sql} ) AS \"{$soModelName}__{$soFieldName}\"";
+			}
+
+			return $sql;
+		}
 	}
 ?>

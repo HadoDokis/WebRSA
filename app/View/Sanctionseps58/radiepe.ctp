@@ -14,7 +14,7 @@
 			'Historiqueetatpe.code' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
-			'Serviceinstructeur.lib_service' => array( 'type' => 'text' ),
+			'Structureorientante.lib_struc' => array( 'type' => 'text' ),
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc'
 		);
@@ -29,7 +29,7 @@
 			'Adresse.locaadr',
 			'Historiqueetatpe.motif' => array( 'domain' => 'sanctionep58' ),
 			'Historiqueetatpe.date',
-			'Serviceinstructeur.lib_service',
+			'Structureorientante.lib_struc' => array( 'type' => 'text' ),
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc'
 		);

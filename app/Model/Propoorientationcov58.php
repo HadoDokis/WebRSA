@@ -123,7 +123,21 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Structureorientante' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structureorientante_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referentorientant' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referentorientant_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -480,13 +494,10 @@
 
 		public function saveDecisions( $data ) {
 			$modelDecisionName = 'Decision'.Inflector::underscore( $this->alias );
-
 			$success = true;
+
 			if ( isset( $data[$modelDecisionName] ) && !empty( $data[$modelDecisionName] ) ) {
-
-
 				foreach( $data[$modelDecisionName] as $key => $values ) {
-
 					$passagecov58 = $this->Dossiercov58->Passagecov58->find(
 						'first',
 						array(
@@ -528,26 +539,25 @@
 									'statut_orient' => 'Orienté',
 									'etatorient' => 'decision',
 									'origine' => 'manuelle',
-									'user_id' => $passagecov58['Propoorientationcov58']['user_id']
+									'user_id' => $passagecov58['Propoorientationcov58']['user_id'],
 								)
 							);
 
-							if( !empty( $passagecov58[$this->alias]['referent_id'] ) ){
-								$personne_referent = array(
+							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+								$passagecov58['Dossiercov58']['personne_id'],
+								$passagecov58[$this->alias]['referent_id'],
+								array(
 									'PersonneReferent' => array(
 										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
 										'referent_id' => $passagecov58[$this->alias]['referent_id'],
-										'dddesignation' => date( 'Y-m-d' ),
+										'dddesignation' => $datevalidation,
 										'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
-										'user_id' => $passagecov58['Propoorientationcov58']['user_id']
+										'user_id' => $passagecov58[$this->alias]['user_id']
 									)
-								);
-								$this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->create( $personne_referent );
-								$success = $this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->save() && $success;
-							}
-
+								)
+							) && $success;
 						}
-						else if( $values['decisioncov'] == 'refuse' ){
+						else if( $values['decisioncov'] == 'refuse' ) {
 							$referent_id = null;
 							if( strstr( $values['referent_id'],  '_' ) !== false ) {
 								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
@@ -576,19 +586,19 @@
 								)
 							);
 
-							if( !empty( $passagecov58[$this->alias]['referent_id'] ) ){
-								$personne_referent = array(
+							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+								$passagecov58['Dossiercov58']['personne_id'],
+								$data[$modelDecisionName][$key]['referent_id'],
+								array(
 									'PersonneReferent' => array(
 										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
 										'referent_id' => $data[$modelDecisionName][$key]['referent_id'],
-										'dddesignation' => date( 'Y-m-d' ),
+										'dddesignation' => $datevalidation,
 										'structurereferente_id' => $data[$modelDecisionName][$key]['structurereferente_id'],
-										'user_id' => $passagecov58['Propoorientationcov58']['user_id']
+										'user_id' => $passagecov58[$this->alias]['user_id'],
 									)
-								);
-								$this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->create( $personne_referent );
-								$success = $this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->save() && $success;
-							}
+								)
+							) && $success;
 						}
 
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
@@ -624,7 +634,6 @@
 				}
 
 				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) );
-
 			}
 
 			return $success;

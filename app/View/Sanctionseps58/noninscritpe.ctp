@@ -11,7 +11,7 @@
 			'Personne.dtnai',
 			'Adresse.locaadr',
 			'Typeorient.lib_type_orient' => array( 'type' => 'text' ),
-			'Structurereferente.lib_struc' => array( 'type' => 'text' ),
+			'Structureorientante.lib_struc' => array( 'type' => 'text' ),
 			'Orientstruct.date_valid' => array( 'type' => 'date' ),
 			'Serviceinstructeur.lib_service' => array( 'type' => 'text' )
 		),

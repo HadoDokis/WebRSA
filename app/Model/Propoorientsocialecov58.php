@@ -442,19 +442,19 @@
 								)
 							);
 
-							if( !empty( $passagecov58[$this->alias]['referent_id'] ) ){
-								$personne_referent = array(
+							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+								$passagecov58['Dossiercov58']['personne_id'],
+								$values['referent_id'],
+								array(
 									'PersonneReferent' => array(
 										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-										'referent_id' => $passagecov58[$this->alias]['referent_id'],
-										'dddesignation' => date( 'Y-m-d' ),
-										'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
-										'user_id' => $passagecov58['Propoorientsocialecov58']['user_id']// FIXME
+										'referent_id' => $values['referent_id'],
+										'dddesignation' => $datevalidation,
+										'structurereferente_id' => $values['structurereferente_id'],
+										'user_id' => $passagecov58[$this->alias]['user_id']
 									)
-								);
-								$this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->create( $personne_referent );
-								$success = $this->Dossiercov58->Personne->Orientstruct->Personne->PersonneReferent->save() && $success;
-							}
+								)
+							) && $success;
 
 						}
 						// FIXME: que faire en cas de refus ?

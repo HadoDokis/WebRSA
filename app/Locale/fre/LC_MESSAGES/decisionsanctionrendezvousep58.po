@@ -89,13 +89,13 @@ msgid "ENUM::DECISION2::reporte"
 msgstr "Reporté"
 
 msgid "ENUM::ARRETSANCTION::finsanction1"
-msgstr "Fin de suspension n°1"
+msgstr "Fin de suspension n°1 et annulation sanction n°2"
 
 msgid "ENUM::ARRETSANCTION::finsanction2"
 msgstr "Fin de suspension n°2"
 
 msgid "ENUM::ARRETSANCTION::annulation1"
-msgstr "Annulation sanction n°1"
+msgstr "Annulation sanctions n°1 et n°2"
 
 msgid "ENUM::ARRETSANCTION::annulation2"
 msgstr "Annulation sanction n°2"

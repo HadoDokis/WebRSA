@@ -127,7 +127,7 @@
 
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
 			$this->set( compact( 'personnes' ) );
-			$this->render( $origine ); // FIXME: nom de la vue
+			$this->render( $origine );
 		}
 
 		/**

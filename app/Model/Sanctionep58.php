@@ -289,7 +289,7 @@
 			if ( !empty( $personnesEnSanction ) ) {
 				$queryData['conditions'][] = 'Personne.id NOT IN ( '.$personnesEnSanction.' )';
 			}
-			
+
 			if( $origine == 'radiepe' ) {
 				$queryData['joins'] = array_merge(
 					$queryData['joins'],
@@ -306,14 +306,18 @@
 					)
 				);
 			}
-			
+
 			return $queryData;
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne un querydata (à appliquer sur le modèle Personne) permettant
+		 * de trouver les allocataires orientés en emploi, n'étant pas inscrits
+		 * à PE à la suite de cette orientation et n'étant pas dans la liste des
+		 * radiés.
+		 *
+		 * @return array
+		 */
 		public function qdNonInscrits() {
 			$queryData = $this->_qdSelection( 'noninscritpe' );
 			$qdNonInscrits = ClassRegistry::init( 'Informationpe' )->qdNonInscrits();
@@ -341,6 +345,49 @@
 
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdNonInscrits['conditions'] );
 			$queryData['order'] = $qdNonInscrits['order'];
+
+			// Ajout de la structure chargée de l'évaluation
+			$queryData['fields'][] = 'Structureorientante.lib_struc';
+			$queryData['joins'][] = $this->Dossierep->Personne->Orientstruct->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
+
+			// On ne veut pas des allocataires se trouvant dans la liste des radiés
+			$qdRadies = ClassRegistry::init( 'Informationpe' )->qdRadies();
+			$qdRadies['fields'] = array( 'Personne.id' );
+			$qdRadies['alias'] = 'personnesradiees';
+
+			$qdRadies['joins'][] = $this->Dossierep->Personne->join(
+				'Orientstruct',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'Orientstruct.id IN ('.$this->Dossierep->Personne->Orientstruct->sqDerniere().')',
+						// en emploi
+						'Orientstruct.typeorient_id IN (
+							SELECT t.id
+								FROM typesorients AS t
+								WHERE t.id = '.Configure::read( 'Typeorient.emploi_id' ).'
+						)'
+					)
+				)
+			);
+
+			$qdRadies['conditions'][] = 'Orientstruct.typeorient_id IS NOT NULL';
+			$qdRadies['conditions'][] = 'Orientstruct.date_valid < Historiqueetatpe.date';
+
+			$qdRadies = array_words_replace(
+				$qdRadies,
+				array(
+					'Personne' => 'personnesradiees',
+					'Informationpe' => 'informationsperadiees',
+					'Historiqueetatpe' => 'historiqueetatsperadiees',
+					'Orientstruct' => 'orientsstructsradiees',
+				)
+			);
+			$qdRadies['conditions'][] = 'personnesradiees.id = Personne.id';
+
+			$sqRadies = $this->Dossierep->Personne->sq( $qdRadies );
+
+			$queryData['conditions'][] = "\"Personne\".\"id\" NOT IN ( {$sqRadies} )";
 
 			return $queryData;
 		}
@@ -377,6 +424,14 @@
 			$queryData['joins'] = array_merge( $queryData['joins'] ,$qdRadies['joins'] );
 			$queryData['conditions'] = array_merge( $queryData['conditions'] ,$qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
+
+			// Ajout de la structure chargée de l'évaluation
+			$queryData['fields'][] = 'Structureorientante.lib_struc';
+			$queryData['joins'][] = $this->Dossierep->Personne->Orientstruct->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
+
+			// On s'assure que l'orientation soit effective et que les dates correspondent
+			$queryData['conditions'][] = 'Orientstruct.typeorient_id IS NOT NULL';
+			$queryData['conditions'][] = 'Orientstruct.date_valid < Historiqueetatpe.date';
 
 			return $queryData;
 		}

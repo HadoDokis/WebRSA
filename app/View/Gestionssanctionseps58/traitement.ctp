@@ -169,7 +169,9 @@
 					$fieldDecisionSanction = $this->Xform->input( "Decisionsanctionep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionep58']['id'] ) ).
 						$this->Xform->input( "Decisionsanctionep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionep58']['arretsanction'], 'label' => false, 'empty' => true ) );
 					//Champ permettant de saisir la date de la fin de la sanction
-					$dateFinSanction = $this->Xform->input( "Decisionsanctionep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 )  );
+					$dateFinSanction =
+						$this->Xform->input( "Decisionsanctionep58.{$index}.datearretsanction", array( 'type' => 'hidden', 'value' => '', 'id' => false  ) )
+						.$this->Xform->input( "Decisionsanctionep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 )  );
 					//Champ permettant de saisir le commentaire de fin de la sanction
 					$commentaireFinSanction = $this->Xform->input( "Decisionsanctionep58.{$index}.commentairearretsanction", array( 'label' => false, 'type' => 'textarea' ) );
 				}
@@ -183,10 +185,12 @@
 					$libelleSanction2 = Set::enum( $gestionanctionep58['Decisionsanctionrendezvousep58']['autrelistesanctionep58_id'], $listesanctionseps58 );
 
 					//Champ permettant la modification de la sanction
-					$fieldDecisionSanction = $this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionrendezvousep58']['id'] ) ).
-												$this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionrendezvousep58']['arretsanction'], 'label' => false, 'empty' => true ) );
+					$fieldDecisionSanction = $this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58['Decisionsanctionrendezvousep58']['id'] ) )
+						.$this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options['Decisionsanctionrendezvousep58']['arretsanction'], 'label' => false, 'empty' => true ) );
 					//Champ permettant de saisir la date de la fin de la sanction
-					$dateFinSanction = $this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 ) );
+					$dateFinSanction =
+						$this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.datearretsanction", array( 'type' => 'hidden', 'value' => '', 'id' => false ) )
+						.$this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.datearretsanction", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 3, 'maxYear' => date( 'Y' ) + 3 ) );
 
 					//Champ permettant de saisir le commentaire de fin de la sanction
 					$commentaireFinSanction = $this->Xform->input( "Decisionsanctionrendezvousep58.{$index}.commentairearretsanction", array( 'label' => false, 'type' => 'textarea' ) );
@@ -249,7 +253,7 @@
 						'Decisionsanctionrendezvousep58<?php echo $index;?>DatearretsanctionMonth',
 						'Decisionsanctionrendezvousep58<?php echo $index;?>DatearretsanctionYear'
 					],
-					'',
+					[ '', 'annulation1', 'annulation2' ],
 					true
 				);
 			<?php endif;?>

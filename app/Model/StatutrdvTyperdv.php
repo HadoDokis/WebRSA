@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe StatutrdvTyperdv.
 	 *
@@ -31,13 +31,21 @@
 				'numeric' => array(
 					'rule' => array('numeric'),
 				),
+				'checkUnique' => array(
+					'rule' => array( 'checkUnique', array( 'statutrdv_id', 'typerdv_id' ) ),
+					'message' => 'Ce statut est déjà utilisé avec ce type.'
+				),
 			),
 			'typerdv_id' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 				),
+				'checkUnique' => array(
+					'rule' => array( 'checkUnique', array( 'statutrdv_id', 'typerdv_id' ) ),
+					'message' => 'Ce statut est déjà utilisé avec ce type.'
+				),
 			),
-			'nbavantpassageep' => array(
+			'nbabsenceavantpassagecommission' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
 				),
