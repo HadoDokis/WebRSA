@@ -20,8 +20,8 @@
 				'Orientstruct0StructureorientanteId',
 				'ButtonSubmit'
 			],
-			0,
-			true
+			['',1],
+			false
 		);
 
 	});

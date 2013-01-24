@@ -357,7 +357,7 @@
 					$this->Dossier->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
+					$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $dossier_id ) );
 				}
 				else {
 					$this->Dossier->rollback();
