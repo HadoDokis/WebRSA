@@ -98,6 +98,7 @@
 		echo $this->Form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
 		echo $this->Form->input( 'Contratinsertion.personne_id', array( 'type' => 'hidden', 'value' => Set::classicExtract( $personne, 'Personne.id' ) ) );
+		echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'type' => 'hidden' ) );
 		echo '</div>';
 	}
 ?>
@@ -152,9 +153,9 @@
 		</tr>
 	</table>
 
-	<?php echo $this->Xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false ) );?>
+	<?php echo $this->Xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10 , 'empty' => false ) );?>
 	<?php echo $this->Xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag' ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
-	<?php echo $this->Xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true ) ) ;?>
+	<?php echo $this->Xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10, 'empty' => true ) ) ;?>
 
 </fieldset>
 	<?php echo $this->Xform->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'hidden'  ) ) ;?>
