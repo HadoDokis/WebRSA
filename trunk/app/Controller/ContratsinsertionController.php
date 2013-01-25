@@ -1019,7 +1019,7 @@
 
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 					$this->request->data['Contratinsertion']['forme_ci'] = 'S';
-					$this->request->data['Contratinsertion']['date_validation_ci'] = Set::classicExtract( $this->request->data, 'Contratinsertion.dd_ci' );
+					$this->request->data['Contratinsertion']['datevalidation_ci'] = Set::classicExtract( $this->request->data, 'Contratinsertion.dd_ci' );
 				}
 
 				$contratinsertionRaisonCi = Set::classicExtract( $this->request->data, 'Contratinsertion.raison_ci' );
