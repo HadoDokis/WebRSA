@@ -14,6 +14,7 @@ BEGIN;
 SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'nvcontratinsertion_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'bilansparcours66', 'bilansparcours66_nvcontratinsertion_id_fkey', 'contratsinsertion', 'nvcontratinsertion_id', false );
 
+DROP INDEX IF EXISTS bilansparcours66_nvcontratinsertion_id_idx;
 CREATE UNIQUE INDEX bilansparcours66_nvcontratinsertion_id_idx ON bilansparcours66(nvcontratinsertion_id);
 
 SELECT public.alter_enumtype ( 'TYPE_PROPOSITIONBILANPARCOURS', ARRAY['audition','parcours','traitement','auditionpe','parcourspe','aucun'] );
