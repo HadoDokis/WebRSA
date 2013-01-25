@@ -177,7 +177,7 @@
 						array(
 							'table'      => 'calculsdroitsrsa',
 							'alias'      => 'Calculdroitrsa',
-							'type'       => 'INNER',
+							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
 								'Personne.id = Calculdroitrsa.personne_id',
@@ -186,7 +186,7 @@
 						array(
 							'table'      => 'situationsdossiersrsa',
 							'alias'      => 'Situationdossierrsa',
-							'type'       => 'INNER',
+							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
 							'conditions' => array(
 								'Situationdossierrsa.dossier_id = Dossier.id',
@@ -194,8 +194,6 @@
 						),
 					),
 					'conditions' => array(
-						'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
-						'Calculdroitrsa.toppersdrodevorsa' => '1',
 						$conditionsAdresses,
 						$listeThemes,
 						$conditionsTime,
