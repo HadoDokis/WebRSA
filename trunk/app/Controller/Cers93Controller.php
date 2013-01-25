@@ -283,7 +283,7 @@
 			$disabledLinks = array(
 				'Cers93::add' => empty( $results ) || in_array( $results[0]['Cer93']['positioncer'], array( '99rejetecpdv', '99rejete', '99valide' ) ), //On bloque l'ajout tant que le CER n'est pas validé ou  rejeté
 				'Cers93::edit' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
+				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
 				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
