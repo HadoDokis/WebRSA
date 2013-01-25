@@ -1,6 +1,7 @@
 <?php
-	if( Configure::read( 'debug' ) ) {
+	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
 	}
 ?>
 <h1><?php echo $this->pageTitle = __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte' );?></h1>
@@ -21,10 +22,10 @@
 <?php endif;?>
 <?php
 	// Formulaire
-	echo $this->Xform->create();
-// 	echo $this->Xform->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Form->create();
+// 	echo $this->Form->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
 
-// 	echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
+// 	echo $this->Form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
 		$this->Default2->subform(
@@ -71,7 +72,7 @@
 
 	echo $this->Form->input( 'Search.Relance.numrelance', array( 'legend' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Confirmation passage en EP' ), 'value' => ( isset( $this->request->data['Search']['Relance']['numrelance'] ) ? @$this->request->data['Search']['Relance']['numrelance'] : 1 ) ) );
 
-	echo $this->Xform->end( __( 'Rechercher' ) );
+	echo $this->Form->end( __( 'Rechercher' ) );
 	// Résultats
 	if( isset( $results ) ) {
 		if( empty( $results ) ) {
@@ -86,11 +87,11 @@
 			}
 
 			echo $pagination;
-			echo $this->Xform->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );
+			echo $this->Form->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );
 
 			foreach( Set::flatten( $this->request->data ) as $key => $data ) {
 				if( !preg_match( '/^Relancenonrespectsanctionep93\./', $key ) && !( trim( $data ) == '' ) ) {
-				echo $this->Xform->input( $key, array( 'type' => 'hidden', 'value' => $data ) );
+				echo $this->Form->input( $key, array( 'type' => 'hidden', 'value' => $data ) );
 			}
 		}
 
@@ -154,14 +155,14 @@
 				$row = Set::merge(
 					$row,
 					array(
-						( ( @$this->request->data['Search']['Relance']['numrelance'] > 1 ) ? $this->Xform->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93']['id'] ) ) : '' ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.dossier_id", array( 'type' => 'hidden', 'value' => @$result['Dossier']['id'] ) ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->request->data['Search']['Relance']['numrelance'] ) ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.user_id", array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ) ).
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 5, 'label' => false ) ),
-						$this->Xform->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
+						( ( @$this->request->data['Search']['Relance']['numrelance'] > 1 ) ? $this->Form->input( "Relancenonrespectsanctionep93.{$index}.nonrespectsanctionep93_id", array( 'type' => 'hidden', 'value' => @$result['Nonrespectsanctionep93']['id'] ) ) : '' ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.dossier_id", array( 'type' => 'hidden', 'value' => @$result['Dossier']['id'] ) ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.numrelance", array( 'type' => 'hidden', 'value' => @$this->request->data['Search']['Relance']['numrelance'] ) ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.user_id", array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ) ).
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 5, 'label' => false ) ),
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell' ) )
 					)
 				);
@@ -175,13 +176,13 @@
 			echo '</tbody></table>';
 
 			echo '<div class="selectall">';
-			echo $this->Xform->button( 'Tout relancer', array( 'onclick' => 'checkRadiosBySelector( \'input[type="radio"][value="R"]\' );' ) );
-			echo $this->Xform->button( 'Tout mettre en attente', array( 'onclick' => 'checkRadiosBySelector( \'input[type="radio"][value="E"]\' );' ) );
+			echo $this->Form->button( 'Tout Relancer', array( 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'R', true );" ) );
+			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Relancenonrespectsanctionep93Form' ).getInputs( 'radio' ), 'E', true );" ) );
 			echo '</div>';
 
 			echo $pagination;
-			echo $this->Xform->submit( __( 'Save' ) );
-			echo $this->Xform->end();
+			echo $this->Form->submit( __( 'Save' ) );
+			echo $this->Form->end();
 		}
 	}
 ?>
