@@ -337,7 +337,7 @@
 		</script>
 	<?php endif;?>
 
-	<?php if( $avistechniquemodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) ):?>
+	<?php if( $avistechniquemodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) && ( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) ):?>
 		<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>
 				<?php
 					if( empty( $this->request->data['Decisiondossierpcg66']['useravistechnique_id'] ) ){
@@ -369,7 +369,7 @@
 		</fieldset>
 	<?php endif;?>
 
-	<?php if( $validationmodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) ):?>
+	<?php if( $validationmodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) && ( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) ):?>
 		<fieldset id="propovalid"><legend>Validation de la proposition</legend>
 				<?php
 					echo $this->Default2->subform(
