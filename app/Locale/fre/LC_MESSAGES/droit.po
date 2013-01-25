@@ -67,28 +67,31 @@ msgstr "Suppression d'une action liée à un partenaire"
 ###############################################################################
 
 msgid "Module:ActionscandidatsPersonnes"
-msgstr "Fiches de candidature"
+msgstr "Fiches de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:indexparams"
-msgstr "Paramètrage des fiches de candidature"
+msgstr "Paramètrage des fiches de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:filelink"
-msgstr "Lier un fichier à une fiche de candidature"
+msgstr "Lier un fichier à une fiche de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:index"
-msgstr "Visualisation des fiches de caandidature"
+msgstr "Accès aux fiches de candidature/liaison"
+
+msgid "ActionscandidatsPersonnes:view"
+msgstr "Visualisation des fiches de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:edit"
-msgstr "Ajout/Édition d'une fiche de candidature"
+msgstr "Ajout/Édition d'une fiche de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:delete"
-msgstr "Suppression d'une fiche de candidature"
+msgstr "Suppression d'une fiche de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:printFiche"
-msgstr "Impression d'une fiche de candidature"
+msgstr "Impression d'une fiche de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:cancel"
-msgstr "Annulation d'une fiche de candidature"
+msgstr "Annulation d'une fiche de candidature/liaison"
 
 msgid "ActionscandidatsPersonnes:maillink"
 msgstr "Envoi de mail"

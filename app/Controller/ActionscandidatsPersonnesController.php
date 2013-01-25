@@ -22,7 +22,7 @@
 		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
-			'view' => 'ActionscandidatsPersonnes:index',
+// 			'view' => 'ActionscandidatsPersonnes:index',
 			'add' => 'ActionscandidatsPersonnes:edit'
 		);
 
