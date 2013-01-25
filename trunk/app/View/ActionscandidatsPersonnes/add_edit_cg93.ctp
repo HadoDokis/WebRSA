@@ -52,7 +52,7 @@
 
 		echo $this->Default->subform(
 			array(
-				'ActioncandidatPersonne.motifdemande' => array( 'domain' => $domain )
+				'ActioncandidatPersonne.motifdemande' => array( 'required' => true, 'domain' => $domain )
 			)
 		);
 	?>
