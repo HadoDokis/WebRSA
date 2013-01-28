@@ -167,6 +167,7 @@
 				'departementsnvadresses' => array( '1' => 'Dans le département', '0' => 'Hors du départment' ),
 				'typesorients' => $this->Transfertpdv93->VxOrientstruct->Typeorient->listOptions()
 			);
+			$options  = Set::merge( $options, $this->Transfertpdv93->VxOrientstruct->Personne->Contratinsertion->Cer93->enums() );
 			$this->set( compact( 'options' ) );
 		}
 
