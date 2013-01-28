@@ -28,6 +28,7 @@
 	// TODO: dans la visualisation
 //	echo $this->Form->input( 'Search.Adresse.departement', array( 'label' => 'Département de la nouvelle adresse', 'type' => 'select', 'options' => $options['departementsnvadresses'], 'empty' => true ) );
 
+	echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 	echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );

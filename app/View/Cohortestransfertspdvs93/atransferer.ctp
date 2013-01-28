@@ -22,8 +22,9 @@
 					__d( 'dossier', 'Dossier.numdemrsa' ),
 					__d( 'dossier', 'Dossier.matricule' ),
 					'Adresse actuelle',
-					'Alocataire',
+					'Allocataire',
 					__d( 'prestation', 'Prestation.rolepers' ),
+					'Position CER',
 					'Structure référente source',
 					'Structure référente cible',
 					array( 'Actions' => array( 'colspan' => 2 ) ),
@@ -32,6 +33,7 @@
 			echo '</thead>';
 			echo '<tbody>';
 			foreach( $results as $index => $result ) {
+// 			debug($options);
 				$hidden = $this->Form->inputs(
 					array(
 						'fieldset' => false,
@@ -51,6 +53,7 @@
 						h( "{$result['Adresse']['codepos']} {$result['Adresse']['locaadr']}" ),
 						h( "{$options['qual'][$result['Personne']['qual']]} {$result['Personne']['nom']} {$result['Personne']['prenom']}" ),
 						$options['rolepers'][$result['Prestation']['rolepers']],
+						Set::enum( $result['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						$result['Structurereferente']['lib_struc'],
 						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
 						$this->Form->input( "Transfertpdv93.{$index}.action", array( 'type' => 'radio', 'options' => $options['action'], 'fieldset' => false, 'legend' => false ) ),

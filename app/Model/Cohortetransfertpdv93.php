@@ -68,6 +68,9 @@
 			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
 			// donc on limite au dernier detail de calcul du droit rsa
 			$sqDernierDetailcalculdroitrsa = $Dossier->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+			
+			//Dernier CER en cours pour un allocataire
+			$sqDernierContratinsertion = $Dossier->Foyer->Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
 
 			$conditions = array(
 				'Prestation.natprest' => 'RSA',
@@ -78,6 +81,7 @@
 				'Orientstruct.statut_orient' => 'Orienté',
 				"Orientstruct.id IN ( {$sqDerniereOrientstruct} )",
 				"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )",
+				$sqDernierContratinsertion
 			);
 
 			if( $statut == 'atransferer' ) {
@@ -121,6 +125,7 @@
 					array_words_replace( $Dossier->Foyer->Adressefoyer->Adresse->fields(), array( 'Adresse' => 'VxAdresse' ) ),
 					$Dossier->Foyer->Personne->Calculdroitrsa->fields(),
 					$Dossier->Foyer->Personne->Orientstruct->fields(),
+					$Dossier->Foyer->Personne->Contratinsertion->Cer93->fields(),
 					$Dossier->Foyer->Personne->Prestation->fields(),
 					$Dossier->Foyer->Personne->Orientstruct->Structurereferente->fields(),
 					$Dossier->Foyer->Personne->Orientstruct->Typeorient->fields()
@@ -136,7 +141,9 @@
 					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 					array_words_replace( $Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ), array( 'Adresse' => 'VxAdresse' ) ),
 					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ), // FIXME
+					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
