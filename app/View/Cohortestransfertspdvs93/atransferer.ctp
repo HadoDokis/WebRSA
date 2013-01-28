@@ -26,8 +26,9 @@
 					__d( 'prestation', 'Prestation.rolepers' ),
 					'Position CER',
 					'Structure référente source',
+					'Action',
 					'Structure référente cible',
-					array( 'Actions' => array( 'colspan' => 2 ) ),
+					'Voir'
 				)
 			);
 			echo '</thead>';
@@ -55,8 +56,8 @@
 						$options['rolepers'][$result['Prestation']['rolepers']],
 						Set::enum( $result['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						$result['Structurereferente']['lib_struc'],
-						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
 						$this->Form->input( "Transfertpdv93.{$index}.action", array( 'type' => 'radio', 'options' => $options['action'], 'fieldset' => false, 'legend' => false ) ),
+						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
 						$this->Xhtml->viewLink(
 							'Voir',
 							array( 'controller' => 'dossiers', 'action' => 'view', $result['Dossier']['id'] ),

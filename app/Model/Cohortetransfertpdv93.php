@@ -64,11 +64,11 @@
 					)
 				)
 			);
-			
+
 			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
 			// donc on limite au dernier detail de calcul du droit rsa
 			$sqDernierDetailcalculdroitrsa = $Dossier->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
-			
+
 			//Dernier CER en cours pour un allocataire
 			$sqDernierContratinsertion = $Dossier->Foyer->Personne->sqLatest( 'Contratinsertion', 'dd_ci' );
 
@@ -111,6 +111,14 @@
 
 			if( isset( $search['Orientstruct']['typeorient_id'] ) && trim( $search['Orientstruct']['typeorient_id'] ) != '' ) {
 				$conditions['Orientstruct.typeorient_id'] = $search['Orientstruct']['typeorient_id'];
+			}
+
+			/// Dossiers lockés
+			if( !empty( $lockedDossiers ) ) {
+				if( is_array( $lockedDossiers ) ) {
+					$lockedDossiers = implode( ', ', $lockedDossiers );
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
 			$querydata = array(
@@ -325,7 +333,7 @@
 				}
 			}
 
-			
+
 			// On clôture le référent actuel à la date
 			$count = $Orientstruct->Personne->PersonneReferent->find(
 				'count',
@@ -336,7 +344,7 @@
 					)
 				)
 			);
-			
+
 			$datedfdesignation = ( is_array( date( 'Y-m-d' ) ) ? date_cakephp_to_sql( date( 'Y-m-d' ) ) : date( 'Y-m-d' ) );
 
 			if( $count > 0 ) {

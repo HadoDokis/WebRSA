@@ -128,7 +128,7 @@
 			}
 
 			if( !$this->request->is( 'ajax' ) ) {
-				// On doit pouvoir abtenir les résultats dès le premier accès à la page
+				// On doit pouvoir obtenir les résultats dès le premier accès à la page
 				if( !isset( $this->request->data['Search'] ) ) {
 					$this->request->data = Set::merge(
 						$this->Filtresdefaut->values(),
@@ -286,7 +286,7 @@
 					'Cer93.positioncer' => '02attdecisioncpdv',
 				);
 			}
-			
+
 			return $querydata;
 		}
 
@@ -344,7 +344,7 @@
 						$conditions = array(
 							'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result[$histochoixcer93key]['id']
 						);
-						
+
 						$etape = (int)preg_replace( '/^([0-9]+).*$/', '\1', $result[$histochoixcer93key]['etape'] );
 						if( $etape > 3 ) {
 							$conditions = array(
@@ -397,7 +397,7 @@
 						$user_id = ( !empty( $usersIds ) ? $usersIds[0] : null );
 						$user = array( 'User' => array() );
 						if( !empty( $user_id ) ) {
-							$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) ); 
+							$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) );
 						}
 						$results[$i]['User'] = $user['User'];
 
@@ -478,8 +478,7 @@
 		 */
 		protected function _index( $structurereferente_id ) {
 			if( !empty( $this->request->data ) ) {
-
-					// Traitement du formulaire d'affectation
+				// Traitement du formulaire d'affectation
 				if( ( $this->action != 'saisie' ) && isset( $this->request->data['Histochoixcer93'] ) ) {
 					$dossiers_ids = array_unique( Set::extract( '/Histochoixcer93/dossier_id', $this->request->data ) );
 					$this->Cohortes->get( $dossiers_ids );
@@ -538,7 +537,7 @@
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->request->data['Search'],
-					( ( $this->action != 'saisie' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+					$this->Cohortes->sqLocked( 'Dossier' )
 				);
 
 				if( !empty( $structurereferente_id ) ) {
@@ -555,11 +554,24 @@
 				);
 				// Ajout des commentaires fournis par le CPDV bug #6251
 				$cers93 = $this->_addCommentairenormecer93( $cers93, 'Histochoixcer93' );
-// debug($cers93);
 				$this->set( 'cers93', $cers93 );
 
 				if( !in_array( $this->action, array( 'saisie', 'visualisation' ) ) ) {
-					$this->Cohortes->get( array_unique( Set::extract( '/Dossier/id', $cers93 ) ) );
+					$position = null;
+					if( $this->action == 'premierelecture' ) { // FIXME
+						$position = '03attdecisioncg';
+					}
+					else if( $this->action == 'validationcs' ) {
+						$position = '04premierelecture';
+					}
+					else if( $this->action == 'validationcadre' ) {
+						$position = '05secondelecture';
+					}
+
+					if( !is_null( $position ) ) {
+						$dossiers_ids = Set::extract( $cers93, "/Cer93[positioncer={$position}]/../Dossier/id" );
+						$this->Cohortes->get( $dossiers_ids );
+					}
 
 					// Par défaut, on récupère les informations déjà saisies en individuel
 					if( !isset( $this->request->data['Histochoixcer93'] ) ) {
@@ -778,9 +790,9 @@
 			$this->set( compact( 'options', 'etape', 'cers93' ) );
 			$this->layout = '';
 		}
-		
-		
-			
+
+
+
 		/**
 		 * Imprime en cohorte des décisions sur le CER 93.
 		 * INFO: http://localhost/webrsa/trunk/cers93/printdecision/44327
@@ -816,7 +828,7 @@
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
-			
+
 		}
 	}
 ?>

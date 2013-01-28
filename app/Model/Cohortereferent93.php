@@ -52,12 +52,18 @@
 			),
 		);
 
-		public $vfPersonneOrder = '(
+		public $vfPersonneSituation = '(
 			CASE
 				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NULL ) THEN 0
-				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL ) THEN 1
-				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NULL ) THEN 2
-				ELSE 3
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'00enregistre\' ) THEN 1
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'01signe\' ) THEN 2
+				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NULL ) THEN 3
+				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'01signe\' ) THEN 4
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" <= NOW() ) THEN 5
+				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" > NOW() ) THEN 6
+				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" <= NOW() ) THEN 7
+				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'V\' AND "Contratinsertion"."df_ci" > NOW() ) THEN 8
+				ELSE 9
 			END
 		)';
 
@@ -89,7 +95,7 @@
 				false
 			);
 
-			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
+			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id', false );
 			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'NOT' => array( 'Contratinsertion.decision_ci' => array( 'A', 'R' ) ) ), true );
 
 			$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
@@ -105,17 +111,14 @@
 					'OR' => array(
 						'Contratinsertion.id IS NULL',
 						array(
-// 							'Contratinsertion.structurereferente_id <>' => $structurereferente_id,
-							'Contratinsertion.df_ci <=' => date( 'Y-m-d' ),
+							'Contratinsertion.id IS NOT NULL',
+							'Contratinsertion.decision_ci' => 'V',
+							'Contratinsertion.df_ci <=' => date( 'Y-m-d', strtotime( Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ) ) )
 						),
 						array(
-// 							'Contratinsertion.structurereferente_id' => $structurereferente_id,
-							'Cer93.positioncer' => '00enregistre',
-						),
-						//FIXME bug #6288
-						array(
-// 							'Contratinsertion.structurereferente_id' => $structurereferente_id,
-							'Cer93.positioncer' => '01signe'
+							'Contratinsertion.id IS NOT NULL',
+							'Contratinsertion.decision_ci' => 'E',
+							'Cer93.positioncer' => array( '00enregistre', '01signe' ),
 						),
 					)
 				)
@@ -160,7 +163,7 @@
 // 					$conditions[] = "( ( {$sqDernierContratinsertion} ) IS NULL )";
 // 				}
 // 			}
-			
+
 			/// Présence ou non d'un CER
 			if( isset( $search['Contratinsertion']['exists'] ) && ( $search['Contratinsertion']['exists'] != '' ) ) {
 				if( $search['Contratinsertion']['exists'] ) {
@@ -170,11 +173,19 @@
 					$conditions[] = '( SELECT COUNT(contratsinsertion.id) FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" ) = 0';
 				}
 			}
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
 			$conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
+
+			/// Dossiers lockés
+			if( !empty( $lockedDossiers ) ) {
+				if( is_array( $lockedDossiers ) ) {
+					$lockedDossiers = implode( ', ', $lockedDossiers );
+				}
+				$conditions[] = "NOT {$lockedDossiers}";
+			}
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -194,7 +205,7 @@
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
 						"( {$sqDspExists} ) AS \"Dsp__exists\"", // TODO: mettre dans le modèle,
 						"( \"Contratinsertion\".\"structurereferente_id\" = {$structurereferente_id} ) AS \"Contratinsertion__interne\"",
-						$Personne->sqVirtualField( 'order', true ),
+						$Personne->sqVirtualField( 'situation', true ),
 					)
 				),
 				'contain' => false,
@@ -203,7 +214,15 @@
 					$Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
-					$Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->join(
+						'PersonneReferent',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"PersonneReferent.id IN ( {$sqDernierReferent} )"
+							)
+						)
+					),
 					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
@@ -229,7 +248,7 @@
 				),
 				'conditions' => $conditions,
 				'order' => array(
-					'Personne.order' => 'ASC',
+					'Personne.situation' => 'ASC',
 					'Orientstruct.date_valid ASC',
 					'Personne.nom ASC',
 					'Personne.prenom ASC',

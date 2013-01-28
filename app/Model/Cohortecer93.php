@@ -172,7 +172,7 @@
 						)
 					).')'
 				);
-				
+
 				if( in_array( $statut, array( 'validationcs', 'validationcadre' ) ) ) {
 					$positionsuivante = null;
 					if( $statut == 'validationcs' ) {
@@ -226,7 +226,7 @@
 				}
 
 			}
-			else if( $statut == 'saisie' ){
+			else if( $statut == 'saisie' ) {
 				$position = array( '00enregistre', '01signe', '02attdecisioncpdv', '99rejete', '99rejetecpdv' );
 				$conditions[] = array(
 					'OR' => array(
@@ -263,6 +263,40 @@
 				);
 			}
 
+			/// Dossiers lockés
+			if( !empty( $lockedDossiers ) && ( $statut != 'visualisation' ) ) {
+				if( is_array( $lockedDossiers ) ) {
+					$lockedDossiers = implode( ', ', $lockedDossiers );
+				}
+				if( $statut == 'saisie' ) {
+					$conditions[] = array(
+						'OR' => array(
+							'Cer93.id IS NULL',
+							'NOT' => array( 'Cer93.positioncer' => array( '00enregistre', '01signe' ) ),
+							array(
+								'Cer93.positioncer' => array( '00enregistre', '01signe' ),
+								"NOT {$lockedDossiers}"
+							),
+						)
+					);
+				}
+				else { // FIXME
+					if( $statut == 'validationcs' ) {
+						$conditions[] = array(
+							'OR' => array(
+								'NOT' => array( 'Cer93.positioncer' => array( '04premierelecture' ) ),
+								array(
+									'Cer93.positioncer' => array( '04premierelecture' ),
+									"NOT {$lockedDossiers}"
+								),
+							)
+						);
+					}
+					else {
+						$conditions[] = "NOT {$lockedDossiers}";
+					}
+				}
+			}
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -411,7 +445,7 @@
 
 			return $this->_checkPostgresqlIntervals( $keys );
 		}
-		
+
 		/**
 		 * Retourne le PDF concernant les Décisions CG
 		 *
