@@ -23,7 +23,8 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.Prg' => array( 'actions' => array( 'index' ) )
+			'Search.Prg' => array( 'actions' => array( 'index' ) ),
+			'Workflowscers93' // FIXME
 		);
 
 		/**
@@ -60,11 +61,22 @@
 		 * @return void
 		 */
 		public function index() {
+			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
+			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
+			$conditionStructure = array();
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				if( !is_null( $structurereferente_id ) ) {
+					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
+				}
+			}
+			
 			if( !empty( $this->request->data ) ) {
 				$querydata = $this->Critererdv->search(
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data
+					$this->request->data,
+					$conditionStructure //FIXME
 				);
 
 				$querydata['limit'] = 10;
