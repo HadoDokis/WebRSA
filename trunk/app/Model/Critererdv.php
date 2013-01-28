@@ -30,7 +30,7 @@
 		 * @param array $criteresrdv Critères du formulaire de recherche
 		 * @return string
 		 */
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresrdv ) {
+		public function search( $mesCodesInsee, $filtre_zone_geo, $criteresrdv, $conditionStructure = array() ) { //FIXME Arnaud
 			/// Conditions de base
 			$conditions = array();
 
@@ -85,6 +85,14 @@
 			}
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
+			
+			
+			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
+			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$conditions[] = $conditionStructure;
+			}
+			// Arnaud
 
 			$querydata = array(
 				'fields' => array(

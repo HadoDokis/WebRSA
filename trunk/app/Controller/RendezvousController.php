@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires', 'Workflowscers93' ); // FIXME Arnaud
 
 		public $commeDroit = array(
 			'view' => 'Rendezvous:index',
@@ -230,6 +230,16 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
+			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
+			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
+			$conditionStructure = array();
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				if( !is_null( $structurereferente_id ) ) {
+					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
+				}
+			}
+
 			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
 				'all',
@@ -262,7 +272,8 @@
 					'contain' => false,
 					'conditions' => array(
 						'Rendezvous.personne_id' => $personne_id,
-						WebrsaPermissions::conditionsDate( 'Rendezvous.daterdv', $dossierMenu )
+						WebrsaPermissions::conditionsDate( 'Rendezvous.daterdv', $dossierMenu ),
+						$conditionStructure // FIXME Arnaud
 					),
 					'order' => array(
 						'Rendezvous.daterdv DESC',
