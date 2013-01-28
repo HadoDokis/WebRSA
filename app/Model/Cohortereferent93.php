@@ -77,6 +77,18 @@
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
+
+			$sqOrientstructpcd = $Personne->sqLatest(
+				'Orientstruct',
+				'date_valid',
+				array(
+					'Orientstruct.statut_orient' => 'Orienté',
+					'Orientstruct.date_valid IS NOT NULL',
+					"Orientstruct.id NOT IN ( {$sqDerniereOrientstruct} )",
+				),
+				false
+			);
+
 			$sqDernierReferent = $Personne->PersonneReferent->sqDerniere( 'Personne.id' );
 			$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci', array( 'NOT' => array( 'Contratinsertion.decision_ci' => array( 'A', 'R' ) ) ), true );
 
@@ -93,12 +105,17 @@
 					'OR' => array(
 						'Contratinsertion.id IS NULL',
 						array(
-							'Contratinsertion.structurereferente_id <>' => $structurereferente_id,
+// 							'Contratinsertion.structurereferente_id <>' => $structurereferente_id,
 							'Contratinsertion.df_ci <=' => date( 'Y-m-d' ),
 						),
 						array(
-							'Contratinsertion.structurereferente_id' => $structurereferente_id,
+// 							'Contratinsertion.structurereferente_id' => $structurereferente_id,
 							'Cer93.positioncer' => '00enregistre',
+						),
+						//FIXME bug #6288
+						array(
+// 							'Contratinsertion.structurereferente_id' => $structurereferente_id,
+							'Cer93.positioncer' => '01signe'
 						),
 					)
 				)
@@ -167,6 +184,7 @@
 					$Personne->Contratinsertion->fields(),
 					$Personne->Contratinsertion->Cer93->fields(),
 					$Personne->Orientstruct->fields(),
+					array_words_replace( $Personne->Orientstruct->Structurereferente->fields(), array( 'Orientstruct' => 'Orientstructpcd' ) ),
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
@@ -192,6 +210,22 @@
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					array_words_replace(
+						$Personne->join(
+							'Orientstruct',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'OR' => array(
+										'Orientstruct.id IS NULL',
+										"Orientstruct.id IN ( {$sqOrientstructpcd} )"
+									)
+								)
+							)
+						),
+						array( 'Orientstruct' => 'Orientstructpcd' )
+					),
+					array_words_replace( $Personne->Orientstruct->join( 'Structurereferente' ), array( 'Orientstruct' => 'Orientstructpcd' ) ),
 				),
 				'conditions' => $conditions,
 				'order' => array(

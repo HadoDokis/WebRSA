@@ -91,6 +91,7 @@
 						<th>État CER</th>
 						<th>Date de fin de CER</th>
 						<th>Date d\'affectation</th>
+						<th>Structure référente source</th>
 						<th class="action">Affectation</th>
 						<th class="action">Action</th>
 						<th class="action">Détails</th>
@@ -98,6 +99,7 @@
 				</thead>';
 			echo '<tbody>';
 			foreach( $personnes_referents as $index => $personne_referent ) {
+
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 						<tbody>
 							<tr>
@@ -168,6 +170,7 @@
 						Set::enum( $personne_referent['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						date_short( $personne_referent['Contratinsertion']['df_ci'] ),
 						date_short( $personne_referent['PersonneReferent']['dddesignation'] ),
+						$personne_referent['Structurereferente']['lib_struc'], // FIXME colonne structure référente source bug #6272
 						// Choix du référent
 						array(
 							$this->Form->input( "PersonneReferent.{$index}.id", array( 'type' => 'hidden', 'value' => $personne_referent['PersonneReferent']['id'] ) )
