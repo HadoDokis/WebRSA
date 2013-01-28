@@ -92,8 +92,8 @@
 						<th>Date de fin de CER</th>
 						<th>Date d\'affectation</th>
 						<th>Structure référente source</th>
-						<th class="action">Affectation</th>
 						<th class="action">Action</th>
+						<th class="action">Affectation</th>
 						<th class="action">Détails</th>
 					</tr>
 				</thead>';
@@ -154,6 +154,10 @@
 								<th>CER signé dans la structure</th>
 								<td>'.$this->Xhtml->boolean( $personne_referent['Contratinsertion']['interne'] ).'</td>
 							</tr>
+							<tr>
+								<th>Situation allocataire</th>
+								<td>'.h( Set::enum( $personne_referent['Personne']['situation'], $options['Personne']['situation'] ) ).'</td>
+							</tr>
 						</tbody>
 					</table>';
 
@@ -170,21 +174,21 @@
 						Set::enum( $personne_referent['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						date_short( $personne_referent['Contratinsertion']['df_ci'] ),
 						date_short( $personne_referent['PersonneReferent']['dddesignation'] ),
-						$personne_referent['Structurereferente']['lib_struc'], // FIXME colonne structure référente source bug #6272
+						$personne_referent['Structurereferente']['lib_struc'],
 						// Choix du référent
 						array(
 							$this->Form->input( "PersonneReferent.{$index}.id", array( 'type' => 'hidden', 'value' => $personne_referent['PersonneReferent']['id'] ) )
 							.$this->Form->input( "PersonneReferent.{$index}.dossier_id", array( 'type' => 'hidden', 'value' => $personne_referent['Dossier']['id'] ) )
 							.$this->Form->input( "PersonneReferent.{$index}.personne_id", array( 'type' => 'hidden', 'value' => $personne_referent['Personne']['id'] ) )
 							.$this->Form->input( "PersonneReferent.{$index}.structurereferente_id", array( 'type' => 'hidden', 'value' => $structurereferente_id ) )
-							.$this->Form->input( "PersonneReferent.{$index}.referent_id", array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'select', 'options' => $options['referents'], 'empty' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ) )
-							.$this->Form->input( "PersonneReferent.{$index}.dddesignation", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) ),
-							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['referent_id'] ) ? 'error' : null ) )
+							.$this->Form->input( "PersonneReferent.{$index}.dddesignation", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) )
+							.$this->Form->input( "PersonneReferent.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'] ) ),
+							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Action
 						array(
-							$this->Form->input( "PersonneReferent.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'] ) ),
-							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['action'] ) ? 'error' : null ) )
+							$this->Form->input( "PersonneReferent.{$index}.referent_id", array( 'label' => false, 'div' => false, 'legend' => false, 'type' => 'select', 'options' => $options['referents'], 'empty' => true, 'value' => $personne_referent['PersonneReferent']['referent_id'] ) ),
+							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['referent_id'] ) ? 'error' : null ) )
 						),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'personnes_referents', 'action' => 'index', $personne_referent['Personne']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -195,6 +199,14 @@
 			}
 			echo '</tbody>';
 			echo '</table>';
+
+			$search = Set::flatten( $this->request->data['Search'] );
+			if( !empty( $search ) ) {
+				foreach( $search as $key => $value ) {
+					echo $this->Form->input( "Search.{$key}", array( 'type' => 'hidden', 'value' => $value ) );
+				}
+			}
+
 			echo $this->Xform->submit( 'Validation de la liste' );
 			echo $this->Xform->end();
 

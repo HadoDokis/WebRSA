@@ -184,7 +184,8 @@
 						'Structurereferente'
 					),
 					'order' => array(
-						'PersonneReferent.dddesignation DESC'
+						'PersonneReferent.dddesignation DESC',
+						'PersonneReferent.id DESC',
 					)
 				)
 			);
@@ -361,7 +362,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->PersonneReferent->begin();
 
-				// Ajout d'une règle de validation permettant de vérifier que la date de fin de 
+				// Ajout d'une règle de validation permettant de vérifier que la date de fin de
 				// désignation est bien renseignée
 				$this->PersonneReferent->validate['dfdesignation'] = array( 'rule' => array( 'notEmpty' ), 'message' => __( 'Validate::notEmpty' ) ) + $this->PersonneReferent->validate['dfdesignation'];
 

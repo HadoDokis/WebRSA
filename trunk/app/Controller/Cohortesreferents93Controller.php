@@ -77,10 +77,11 @@
 			if( !isset( $this->request->data['Search'] ) ) {
 				$this->request->data = Set::merge(
 					$this->Filtresdefaut->values(),
-					array( 'Search' => array( 'active' => true ) )
+					array( 'Search' => array( 'active' => true ) ),
+					(array)$this->request->data
 				);
 			}
-				
+
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire
 				if( isset( $this->request->data['PersonneReferent'] ) ) {
@@ -123,9 +124,8 @@
 				}
 
 				// INFO: sinon on ne peut pas trier comme on veut
-				$this->PersonneReferent->Personne->virtualFields['order'] = $this->Cohortereferent93->vfPersonneOrder;
+				$this->PersonneReferent->Personne->virtualFields['situation'] = $this->Cohortereferent93->vfPersonneSituation;
 
-				
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortereferent93->search(
 					$structurereferente_id,
@@ -170,6 +170,20 @@
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'Referent' => array(
 					'designe' => array( '0' => 'Référent non désigné', '1' => 'Référent désigné' )
+				),
+				'Personne' => array(
+					'situation' => array(
+						0 => 'Allocataire non affecté sans CER',
+						1 => 'Allocataire non affecté ayant un CER non-signé',
+						2 => 'Allocataire non affecté ayant un CER signé',
+						3 => 'Allocataire affecté sans CER',
+						4 => 'Allocataire affecté ayant un CER signé',
+						5 => 'Allocataire non affecté ayant un CER terminé',
+						6 => 'Allocataire non affecté ayant un CER se terminant bientôt',
+						7 => 'Allocataire affecté ayant un CER terminé',
+						8 => 'Allocataire affecté ayant un CER se terminant bientôt',
+						9 => '',
+					)
 				)
 			);
 			$options = Set::merge( $options, $this->PersonneReferent->Personne->Contratinsertion->Cer93->enums() );
@@ -189,7 +203,7 @@
 			$data = Xset::bump( $this->request->params['named'], '__' );
 
 			// INFO: sinon on ne peut pas trier comme on veut
-			$this->PersonneReferent->Personne->virtualFields['order'] = $this->Cohortereferent93->vfPersonneOrder;
+			$this->PersonneReferent->Personne->virtualFields['situation'] = $this->Cohortereferent93->vfPersonneSituation;
 
 			$querydata = $this->Cohortereferent93->search(
 				$structurereferente_id,

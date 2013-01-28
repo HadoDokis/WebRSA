@@ -125,7 +125,7 @@
 						(array)$this->Session->read( 'Auth.Zonegeographique' ),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$this->request->data['Search'],
-						( ( $this->action != 'saisie' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null ) // FIXME: saisie
+						( ( $this->action == 'atransferer' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null ) // FIXME: saisie
 					)
 				);
 
@@ -260,7 +260,7 @@
 // 			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 
 			$pdf = $this->Transfertpdv93->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
-			
+
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'transfertspdvs93_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
 			}

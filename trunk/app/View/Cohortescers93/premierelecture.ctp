@@ -1,9 +1,9 @@
 <?php
 	$this->pageTitle = '4. Décision CG - 4.1 Première lecture';
-	
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
-	}	
+	}
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
@@ -17,7 +17,7 @@
 			echo $pagination;
 
 			echo $this->Xform->create( null, array( 'id' => 'Personne' ) );
-			
+
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
@@ -29,11 +29,11 @@
 						<th>Date de début CER</th>
 						<th>Forme du CER (Responsable)</th>
 						<th>Commentaire (Responsable)</th>
+						<th class="action">Action</th>
 						<th class="action">Forme du CER (CG)</th>
 						<th class="action">Commentaire (CG)</th>
 						<th class="action">Décision</th>
 						<th class="action">Date de décision</th>
-						<th class="action">Action</th>
 						<th class="action">Détails</th>
 					</tr>
 				</thead>';
@@ -123,7 +123,11 @@
 							.$this->Form->input( "Histochoixcer93.{$index}.cer93_id", array( 'type' => 'hidden' ) )
 							.$this->Form->input( "Histochoixcer93.{$index}.user_id", array( 'type' => 'hidden' ) )
 							.$this->Form->input( "Histochoixcer93.{$index}.etape", array( 'type' => 'hidden') )
-							.$this->Form->input( "Histochoixcer93.{$index}.formeci", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['formeci'], 'separator' => '<br />' ) ),
+							.$this->Form->input( "Histochoixcer93.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'], 'separator' => '<br />' ) ),
+							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
+						),
+						array(
+							$this->Form->input( "Histochoixcer93.{$index}.formeci", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['formeci'], 'separator' => '<br />' ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['formeci'] ) ? 'error' : null ) )
 						),
 						array(
@@ -137,11 +141,6 @@
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ) ),
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
-						),
-						// Action
-						array(
-							$this->Form->input( "Histochoixcer93.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'], 'separator' => '<br />' ) ),
-							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Détails
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),

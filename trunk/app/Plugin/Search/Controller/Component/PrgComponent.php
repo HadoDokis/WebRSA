@@ -120,7 +120,7 @@
 					$controller->request->data = Set::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
 
 					if( isset( $controller->request->params['named']['sessionKey'] ) ) {
-						$sessionParams = $this->Session->read( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
+						$sessionParams = (array)$this->Session->read( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
 
 						$this->Session->delete( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
 						$controller->request->data = Set::merge( $controller->request->data, $sessionParams );
