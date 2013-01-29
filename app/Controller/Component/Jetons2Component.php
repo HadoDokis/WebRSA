@@ -315,6 +315,54 @@
 		}
 
 		/**
+		 * Retourne une sous-requête permettant de savoir si je suis l'utilisateur
+		 * qui possède un jeton sur le dossier en question.
+		 *
+		 * @param string $modelAlias Alias du modèle pour le champ virtuel
+		 * @param string $fieldName Nom du champ pour le champ virtuel
+		 * @return string
+		 */
+		public function sqLockerIsMe( $modelAlias = 'Dossier', $fieldName = 'locker_is_me' ) {
+			if( Configure::read( 'Jetons2.disabled' ) ) {
+				$sq = "( FALSE )";
+			}
+			else {
+				$sq = $this->Jeton->sq(
+					array(
+						'alias' => 'jetons',
+						'fields' => array(
+							'users.username',
+						),
+						'joins' => array(
+							array_words_replace(
+								$this->Jeton->join( 'User', array( 'LEFT OUTER' ) ),
+								array(
+									'Jeton' => 'jetons',
+									'User' => 'users',
+								)
+							)
+						),
+						'conditions' => array(
+							array(
+								array(
+									'jetons.php_sid' => $this->Session->id(),
+									'jetons.user_id' => $this->Session->read( 'Auth.User.id' )
+								),
+								$this->_conditionsValid()
+							),
+							'jetons.dossier_id = Dossier.id'
+						),
+						'recursive' => -1
+					)
+				);
+			}
+
+			$sq = "( ( {$sq} ) IS NOT NULL ) AS \"{$modelAlias}__{$fieldName}\"";
+
+			return $sq;
+		}
+
+		/**
 		 * Retourne une sous-requête permettant de connaître le moment maximum
 		 * théorique de verrouillage d'un Dossier.
 		 *
@@ -397,6 +445,7 @@
 					'( FALSE ) AS "Dossier__locked"',
 					'( NULL ) AS "Dossier__locking_user"',
 					'( NULL ) AS "Dossier__locked_to"',
+					'( FALSE ) AS "Dossier__locker_is_me"',
 				);
 			}
 			else {
@@ -404,6 +453,7 @@
 					'( "Jeton"."dossier_id" IS NOT NULL ) AS "Dossier__locked"',
 					'"User"."username" AS "Dossier__locking_user"',
 					'( "Jeton"."modified" + INTERVAL \''.readTimeout().' seconds\' ) AS "Dossier__locked_to"',
+					$this->sqLockerIsMe()
 				);
 			}
 

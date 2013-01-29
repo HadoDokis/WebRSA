@@ -31,7 +31,7 @@
 			),
 		);
 
-// 		public $aucunDroit = array( 'menu' );
+ 		public $aucunDroit = array( 'unlock' );
 
 // 		public $commeDroit = array( 'view' => 'Dossiers:index' );
 
@@ -800,6 +800,17 @@
 			$this->layout = '';
 			$this->set( compact( 'headers', 'dossiers' ) );
 			$this->_setOptions();
+		}
+
+		/**
+		 * Permet de supprimer le jeton du dossier pour l'utilisateur courant.
+		 *
+		 * @param integer $id L'id du dossier à déverrouiller.
+		 */
+		public function unlock( $id ) {
+			$this->Jetons2->get( $id );
+			$this->Jetons2->release( $id );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>
