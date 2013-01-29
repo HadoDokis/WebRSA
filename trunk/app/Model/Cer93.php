@@ -1449,12 +1449,24 @@
 
 			// Choix du modèle de document
 			$decision = $data['Contratinsertion']['decision_ci'];
+			// Forme du CER
+			$formeci = $data['Contratinsertion']['forme_ci'];
 
-			if( $decision == 'V' ) {
-				$modeleodt  = "Contratinsertion/cer_valide.odt";
+			if( $formeci == 'S' ) {
+				if( $decision == 'V' ) {
+					$modeleodt  = "Contratinsertion/cer_valide.odt";
+				}
+				else if( in_array( $decision, array( 'R', 'N' ) ) ){
+					$modeleodt  = "Contratinsertion/cer_rejete.odt";
+				}
 			}
-			else if( in_array( $decision, array( 'R', 'N' ) ) ){
-				$modeleodt  = "Contratinsertion/cer_rejete.odt";
+			else {
+				if( $decision == 'V' ) {
+					$modeleodt  = "Contratcomplexeep93/decision_valide.odt";
+				}
+				else if( in_array( $decision, array( 'R', 'N' ) ) ){
+					$modeleodt  = "Contratcomplexeep93/decision_rejete.odt";
+				}
 			}
 
 			return $this->ged( $data, $modeleodt, false, $options );
