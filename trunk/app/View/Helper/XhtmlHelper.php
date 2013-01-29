@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Helper', 'Html' );
+	App::uses( 'ControllerCache', 'Model/Datasource' );
 
 	/**
 	 * La classe XhtmlHelper est une classe d'aide à l'écriture rapide de code
@@ -464,6 +465,36 @@
 				}
 
 				$return = $this->image( 'icons/lock.png', array( 'alt' => '', 'title' => $title ) );
+			}
+
+			return $return;
+		}
+
+		/**
+		 *
+		 * @param array $data Les données du menu du dossier.
+		 * @return string
+		 */
+		public function lockerIsMe( $data ) {
+			$return = null;
+
+			if( $data['Dossier']['locker_is_me'] ) {
+				$isRead = ( ControllerCache::crudMap( Inflector::camelize( $this->request->params['controller'] ), $this->request->params['action'] ) == 'read' );
+
+				if( $isRead ) {
+					$return = $this->link(
+						$this->image( 'icons/key.png', array( 'alt' => '' ) ),
+						array(
+							'controller' => 'dossiers',
+							'action' => 'unlock',
+							$data['Dossier']['id']
+						),
+						array( 'escape' => false, 'title' => 'Déverrouiller le dossier' )
+					);
+				}
+				else {
+					$return = $this->image( 'icons/key_disabled.png', array( 'alt' => '', 'title' => 'Passez sur de la visualisation pour déverrouiller le dossier' ) );
+				}
 			}
 
 			return $return;

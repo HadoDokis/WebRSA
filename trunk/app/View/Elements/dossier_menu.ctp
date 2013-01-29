@@ -52,6 +52,7 @@
 			<?php
 				echo $this->Xhtml->link( 'Dossier RSA '.$dossier['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $dossier['Dossier']['id'] ) )
 				.$this->Xhtml->lockedDossier( $dossier )
+				.$this->Xhtml->lockerIsMe( $dossier )
 				.$this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $dossier )
 				.$this->Gestionanomaliebdd->foyerPersonnesSansPrestation( $dossier );
 			?>
