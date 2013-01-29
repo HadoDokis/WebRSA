@@ -300,6 +300,7 @@
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
@@ -315,6 +316,8 @@
 				$this->Contratinsertion->Cer93->Histochoixcer93->enums()
 			);
 
+			$options['Cer93']['positioncer'] = array_filter_keys( $options['Cer93']['positioncer'], array( '00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '99rejetecpdv', '99rejete'  ), false );
+			
 			// TODO: à factoriser
 			$commentairesnormescers93 = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93->find(
 				'all',
@@ -687,6 +690,7 @@
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
@@ -773,6 +777,7 @@
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'moticlorsa' => $this->Option->moticlorsa(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'referents' => $this->Contratinsertion->Personne->PersonneReferent->Referent->referentsListe( $structurereferente_id ),

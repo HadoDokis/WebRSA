@@ -68,7 +68,7 @@
 						</tr>
 						<tr>
 							<th>Motif de fin de droit</th>
-							<td>'.$cer93['Situationdossierrsa']['moticlorsa'].'</td>
+							<td>'.Set::enum( $cer93['Situationdossierrsa']['moticlorsa'], $options['moticlorsa'] ).'</td>
 						</tr>
 						<tr>
 							<th>Rôle</th>
