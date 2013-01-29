@@ -273,12 +273,12 @@
 					$cells = array(
 						h( $orientstruct['Personne']['nom']),
 						h( $orientstruct['Personne']['prenom'] ),
-						h( date_short( $orientstruct['Orientstruct']['date_propo'] ) ),
+						h( ( $afficheInfoPreorient ) ? date_short( $orientstruct['Orientstruct']['date_propo'] ) : null ),
 						h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
 					);
 
 					if( Configure::read( 'Cg.departement' ) == 93 ) {
-						$cells[] = h( Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) );
+						$cells[] = h( ( $afficheInfoPreorient ) ? Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) : null );
 						$cells[] = h( Set::enum( $orientstruct['Orientstruct']['origine'], $options['origine'] ) );
 					}
 
