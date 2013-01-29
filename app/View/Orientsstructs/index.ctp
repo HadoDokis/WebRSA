@@ -200,9 +200,13 @@
 				<th>Nom</th>
 				<th>Prénom</th>
 				<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
+					<?php if( $this->Session->read( 'Auth.User.type' ) === 'cg' ):?>
 					<th>Date de préOrientation</th>
+					<?php endif;?>
 					<th>Date d'orientation</th>
+					<?php if( $this->Session->read( 'Auth.User.type' ) === 'cg' ):?>
 					<th>PréOrientation</th>
+					<?php endif;?>
 					<th><?php echo __d( 'orientstruct', 'Orientstruct.origine' );?></th>
 					<th>Orientation</th>
 				<?php else:?>
@@ -273,12 +277,18 @@
 					$cells = array(
 						h( $orientstruct['Personne']['nom']),
 						h( $orientstruct['Personne']['prenom'] ),
-						h( ( $afficheInfoPreorient ) ? date_short( $orientstruct['Orientstruct']['date_propo'] ) : null ),
-						h( date_short( $orientstruct['Orientstruct']['date_valid'] ) ),
 					);
 
+					if( Configure::read( 'Cg.departement' ) != 93 || $this->Session->read( 'Auth.User.type' ) === 'cg' ) {
+						$cells[] = h( date_short( $orientstruct['Orientstruct']['date_propo'] ) );
+					}
+
+					$cells[] = h( date_short( $orientstruct['Orientstruct']['date_valid'] ) );
+
 					if( Configure::read( 'Cg.departement' ) == 93 ) {
-						$cells[] = h( ( $afficheInfoPreorient ) ? Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) : null );
+						if( $this->Session->read( 'Auth.User.type' ) === 'cg' ) {
+							$cells[] = h( Set::enum( $orientstruct['Orientstruct']['propo_algo'], $typesorients ) );
+						}
 						$cells[] = h( Set::enum( $orientstruct['Orientstruct']['origine'], $options['origine'] ) );
 					}
 
