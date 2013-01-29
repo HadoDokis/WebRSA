@@ -271,6 +271,25 @@
 
 				$this->set( 'reorientationep93', $reorientationep93 );
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
+			
+				// Récupération de l'utilisateur connecté et envoi de la variable $afficheInfoPreorient 
+				// pour masquer les infos lorsque l'uilsiateur n'est pas de type cg
+				$user_id = $this->Session->read( 'Auth.User.id' );
+				$user = $this->User->find(
+					'first',
+					array(
+						'conditions' => array(
+							'User.id' => $user_id
+						),
+						'contain' => false
+					)
+				);
+				$typeUser = $user['User']['type'];
+				$afficheInfoPreorient = true;
+				if( $typeUser != 'cg' ) {
+					$afficheInfoPreorient = false;
+				}
+				$this->set( compact( 'user', 'afficheInfoPreorient' ) );
 			}
 
 			$this->_setOptions();
@@ -497,10 +516,10 @@
 					}
 
 					if( $saved ) {
-						$this->Orientstruct->commit();
+						$this->Orientstruct->rollback(); //FIXME
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+// 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
 					}
 					else {
 						$this->Orientstruct->rollback();
