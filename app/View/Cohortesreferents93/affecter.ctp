@@ -22,7 +22,7 @@
 	<?php echo $this->Xform->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );?>
 	<fieldset>
 		<legend>Recherche par affectation</legend>
-		<?php echo $this->Form->input( 'Search.Referent.filtrer', array( 'type' => 'checkbox', 'label' => 'Filtrer par référent' ) );?>
+		<?php echo $this->Form->input( 'Search.Referent.filtrer', array( 'type' => 'checkbox', 'label' => 'Filtrer par désignation' ) );?>
 		<fieldset class="invisible" id="SearchFiltreReferent>">
 			<?php
 				echo $this->Form->input( 'Search.Referent.designe', array( 'type' => 'radio', 'options' => $options['Referent']['designe'], 'legend' => false, 'separator' => '<br/>' ) );
@@ -30,6 +30,9 @@
 				echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
 			?>
 		</fieldset>
+		<?php 
+			echo $this->Search->multipleCheckboxChoice( $options['Personne']['situation'], 'Search.Personne.situation' );
+		?>
 	</fieldset>
 	<?php
 		echo $this->Search->blocAllocataire( array(), 'Search' );
@@ -132,7 +135,7 @@
 							</tr>
 							<tr>
 								<th>Motif de fin de droit</th>
-								<td>'.$personne_referent['Situationdossierrsa']['moticlorsa'].'</td>
+								<td>'.Set::enum( $personne_referent['Situationdossierrsa']['moticlorsa'], $options['moticlorsa'] ).'</td>
 							</tr>
 							<tr>
 								<th>Rôle</th>

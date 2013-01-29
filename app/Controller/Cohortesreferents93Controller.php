@@ -162,6 +162,7 @@
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+				'moticlorsa' => $this->Option->moticlorsa(),
 				'typevoie' => $this->Option->typevoie(),
 				'rolepers' => $this->Option->rolepers(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
@@ -173,16 +174,17 @@
 				),
 				'Personne' => array(
 					'situation' => array(
-						0 => 'Allocataire non affecté sans CER',
-						1 => 'Allocataire non affecté ayant un CER non-signé',
-						2 => 'Allocataire non affecté ayant un CER signé',
-						3 => 'Allocataire affecté sans CER',
-						4 => 'Allocataire affecté ayant un CER signé',
-						5 => 'Allocataire non affecté ayant un CER terminé',
-						6 => 'Allocataire non affecté ayant un CER se terminant bientôt',
-						7 => 'Allocataire affecté ayant un CER terminé',
-						8 => 'Allocataire affecté ayant un CER se terminant bientôt',
-						9 => '',
+						1 => 'Allocataire non affecté sans CER',
+						2 => 'Allocataire non affecté ayant un CER non-signé',
+						3 => 'Allocataire non affecté ayant un CER signé',
+						4 => 'Allocataire affecté sans CER',
+						5 => 'Allocataire affecté ayant un CER non-signé',
+						6 => 'Allocataire affecté ayant un CER signé',
+						7 => 'Allocataire non affecté ayant un CER terminé',
+						8 => 'Allocataire non affecté ayant un CER se terminant bientôt',
+						9 => 'Allocataire affecté ayant un CER terminé',
+						10 => 'Allocataire affecté ayant un CER se terminant bientôt',
+						11 => 'Allocataire affecté ayant un CER rejeté (CG ou Responsable)',
 					)
 				)
 			);
