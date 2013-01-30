@@ -367,8 +367,8 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Cer93->Contratinsertion->begin();
 
-				if( $this->Cer93->saveFormulaire( $this->request->data ) ) {
-					$this->Cer93->Contratinsertion->commit();
+				if( $this->Cer93->saveFormulaire( $this->request->data, $this->Session->read( 'Auth.User.type' ) ) ) {
+					$this->Cer93->Contratinsertion->commit(); //FIXME
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
