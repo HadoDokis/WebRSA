@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Covs58Controller.
 	 *
@@ -268,6 +268,8 @@
 			);
 
 			$this->assert( !empty( $cov58 ), 'error404' );
+			// On s'assure que le commission ne soit pas dans un état final
+			$this->assert( !in_array( $cov58['Cov58']['etatcov'], array( 'traite', 'finalise', 'annule', 'reporte' ) ) );
 
 			$dossiers = $this->Cov58->dossiersParListe( $cov58_id );
 

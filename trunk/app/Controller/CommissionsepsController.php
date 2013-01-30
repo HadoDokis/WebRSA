@@ -471,6 +471,8 @@
 			);
 
 			$this->assert( !empty( $commissionep ), 'error404' );
+			// On s'assure que le commission ne soit pas dans un état final
+			$this->assert( !in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'traite', 'annule', 'reporte' ) ) );
 
 			// Etape OK ?
 			$etapePossible = (
