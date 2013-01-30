@@ -286,7 +286,7 @@
 		 * 	@param $data Les données à sauvegarder.
 		 * 	@return boolean
 		 */
-		public function saveFormulaire( $data ) {
+		public function saveFormulaire( $data, $typeUser ) {
 			$success = true;
 
 			// Sinon, ça pose des problèmes lors du add car les valeurs n'existent pas encore
@@ -333,9 +333,10 @@
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
+			
 
 			// Dans le cas d'un ajout de CER, on vérifie s'il faut ajouter un rendez-vous implicite
-			if( $success && empty( $data['Cer93']['id'] ) && Configure::read( 'Contratinsertion.RdvAuto.active' ) === true ) {
+			if( $success && empty( $data['Cer93']['id'] ) && Configure::read( 'Contratinsertion.RdvAuto.active' ) === true && ( $typeUser != 'cg' ) ) {
 				$created = date( 'Y-m-d H:i:s' );
 
 				$querydata = array(
