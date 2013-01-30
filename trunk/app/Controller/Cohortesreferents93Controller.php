@@ -184,7 +184,7 @@
 						8 => 'Allocataire non affecté ayant un CER se terminant bientôt',
 						9 => 'Allocataire affecté ayant un CER terminé',
 						10 => 'Allocataire affecté ayant un CER se terminant bientôt',
-						11 => 'Allocataire affecté ayant un CER rejeté (CG ou Responsable)',
+						11 => 'Allocataire affecté ayant un CER rejeté CG',
 					)
 				)
 			);
