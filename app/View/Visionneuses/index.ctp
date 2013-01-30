@@ -35,7 +35,7 @@
 
 		/// Corps du tableau
 		$rows = array();
-        
+
 		foreach ($visionneuses as $visionneuse){
 			$duree = strtotime(Set::classicExtract( $visionneuse, 'Visionneuse.dtfin' ))-
 			strtotime(Set::classicExtract( $visionneuse, 'Visionneuse.dtdeb' ));
@@ -54,10 +54,10 @@
 				strftime('%H:%M:%S', $duree),
 				$dossier,
 				(0<$rejet)?$this->Xhtml->Link(
-                                    $rejet,                                    
-									array( 'controller' => 'rejet_historique', 'action' => 'affrej',$visionneuse['Visionneuse']['nomfic'] ),
-									$this->Permissions->check( 'Visionneuses', 'affrej' )
-                                ):'0',
+					$rejet,
+					array( 'controller' => 'rejet_historique', 'action' => 'affrej',$visionneuse['Visionneuse']['nomfic'] ),
+					array( 'enabled' => $this->Permissions->check( 'Visionneuses', 'affrej' ) )
+				):'0',
 				Set::classicExtract( $visionneuse, 'Visionneuse.nbinser' ),
 				Set::classicExtract( $visionneuse, 'Visionneuse.nbmaj' ),
 				Set::classicExtract( $visionneuse, 'Visionneuse.perscree' ),
@@ -74,7 +74,7 @@
 		echo $pagination;
 
 		$options = array(
-			'INSTRUCTION' => 'INSTRUCTION', 
+			'INSTRUCTION' => 'INSTRUCTION',
 			'BENEFICIAIRE' => 'BENEFICIAIRE',
 			'FINANCIER' => 'FINANCIER',
 		);
