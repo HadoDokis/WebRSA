@@ -255,7 +255,8 @@
 						/// FORMAT VALUE -> phone, montant, ...
 						else {
 							$model->create( array( $model->alias => array( $field => $value ) ) );
-							$model->Behaviors->trigger( $model, 'beforeValidate', array( 'callbacks' => true ) );
+							// FIXME ....
+//							$model->Behaviors->trigger( 'beforeValidate', array( 'callbacks' => true ) );
 							$value = Set::classicExtract( $model->data, "{$model->name}.{$field}" );
 						}
 
