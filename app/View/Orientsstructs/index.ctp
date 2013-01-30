@@ -235,6 +235,7 @@
 						$isOrient = true;
 					}
 
+					$rgorient = null;
 					if( !empty( $orientstruct['Orientstruct']['rgorient'] ) ) {
 						if( Configure::read( 'Cg.departement' ) == 58 ) {
 							if( !isset( $orientstructs[$i+1] ) ) {
