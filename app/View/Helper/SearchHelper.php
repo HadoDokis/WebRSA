@@ -308,5 +308,41 @@
 				.$content
 			);
 		}
+		
+		/**
+		 * Méthode générique permettant de retourner un ensemble de cases à cocher au sein d'un
+		 * fieldset, activées ou désactivées par une autre case à cocher située au-dessus du fieldset.
+		 *
+		 * Les traductions - "{$path}_choice" pour la case à cocher d'activation/désactivation et
+		 * $path pour le fieldset sont faites dans le fichier de traduction correspondant au nom
+		 * du contrôleur.
+		 *
+		 * @param $options array Les différentes valeurs pour les cases à cocher.
+		 * @param $path string Le chemin au sens formulaire CakePHP
+		 * @return string
+		 */
+		public function multipleCheckboxChoice( $options, $path ) {
+			$fieldsetId = $this->domId( $path );
+
+			$script = $this->_constuctObserve( $this->domId( $path.'_choice' ), $fieldsetId, false );
+			
+			$domain = Inflector::underscore( $this->request->params['controller'] );
+
+			$input = $this->Xform->input( $path.'_choice', array( 'label' => __d( $domain, $path.'_choice' ), 'type' => 'checkbox' ) );
+
+			$cochees = Set::extract( $this->request->data, $path );
+			if( empty( $cochees ) ) {
+				$cochees = array_keys( $options );
+			}
+
+			$input.= $this->Xhtml->tag(
+				'fieldset',
+				$this->Xhtml->tag( 'legend', __d( $domain, $path ) ).
+				$this->Xform->input( $path, array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $options, 'fieldset' => false ) ),
+				array( 'id' => $fieldsetId )
+			);
+
+			return $script.$input;
+		}
 	}
 ?>
