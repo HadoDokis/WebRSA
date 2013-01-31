@@ -4,7 +4,7 @@
 		}
 		else if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ){
 
-			$typefiche = 'liaison';
+			$typefiche = 'prescription';
 		}
 		echo $this->pageTitle = 'Paramétrages pour les fiches de '.$typefiche;
 	?>

@@ -6,7 +6,7 @@
 		$typeFiche = 'de candidature';
 	}
 	else if( Configure::read( 'Cg.departement' ) != 66 ){
-		$typeFiche = 'de liaison';
+		$typeFiche = 'de prescription';
 	}
 ?>
 

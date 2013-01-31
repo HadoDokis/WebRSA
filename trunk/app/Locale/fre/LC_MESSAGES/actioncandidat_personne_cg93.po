@@ -21,31 +21,31 @@ msgstr ""
 ###############################################################################
 
 msgid "ActioncandidatPersonne::delete::confirm"
-msgstr "Voulez-vous supprimer la fiche de candidature ?"
+msgstr "Voulez-vous supprimer la fiche de prescription ?"
 
 msgid "ActionscandidatsPersonnes::add"
-msgstr "Ajout d'une fiche de liaison"
+msgstr "Ajout d'une fiche de prescription"
 
 msgid "ActionscandidatsPersonnes::index"
-msgstr "Fiche de liaison"
+msgstr "Fiche de prescription"
 
 msgid "ActionscandidatsPersonnes::edit"
-msgstr "Modification de la fiche de liaison"
+msgstr "Modification de la fiche de prescription"
 
 msgid "ActioncandidatPersonne::add"
-msgstr "Ajouter une fiche de liaison"
+msgstr "Ajouter une fiche de prescription"
 
 msgid "ActioncandidatPersonne::edit"
-msgstr "Modifier la fiche de liaison"
+msgstr "Modifier la fiche de prescription"
 
 msgid "ActioncandidatPersonne::gedooo"
-msgstr "Imprimer la fiche de liaison"
+msgstr "Imprimer la fiche de prescription"
 
 msgid "ActionscandidatsPersonne::index::empty"
-msgstr "Aucune fiche de liaison présente pour cette personne"
+msgstr "Aucune fiche de prescription présente pour cette personne"
 
 msgid "ActioncandidatPersonne.actioncandidat_id"
-msgstr "Action engagée"
+msgstr "Catégorie d’action prescrite"
 
 msgid "ActioncandidatPersonne.partenaire_id"
 msgstr "Partenaire de l'action"
@@ -60,7 +60,8 @@ msgid "ActioncandidatPersonne.dfaction"
 msgstr "Date de retour de la prescription"
 
 msgid "ActioncandidatPersonne.motifdemande"
-msgstr "Objet ou nature de l'orientation / observations : "
+# msgstr "Objet ou nature de l'orientation / observations : "
+msgstr "Action prescrite et nom du partenaire/prestataire"
 
 msgid "ActioncandidatPersonne.rendezvous_id"
 msgstr "Rendez-vous"
