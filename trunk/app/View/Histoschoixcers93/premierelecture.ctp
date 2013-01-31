@@ -15,6 +15,7 @@
 ?>
 <br />
 <div id="tabbedWrapper" class="tabs">
+	<?php if( !$consultation ):?>
 	<div id="premierelecture">
 		<h2 class="title">Première lecture</h2>
 		<?php
@@ -50,6 +51,7 @@
 			echo $this->Xform->end();
 		?>
 	</div>
+	<?php endif;?>
 	<div id="historique">
 		<h2 class="title">Décisions précédentes</h2>
 			<?php

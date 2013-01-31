@@ -190,7 +190,7 @@
 							array( 'controller' => 'cers93', 'action' => 'impressionDecision', $cer93['Contratinsertion']['id'] ),
 							( $this->Permissions->check( 'cers93', 'impressionDecision' ) && $affichage )
 						),
-						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
+						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'histoschoixcers93', 'action' => 'secondelecture_consultation', $cer93['Contratinsertion']['id'], '#' => 'cerview' ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					)
 				);
