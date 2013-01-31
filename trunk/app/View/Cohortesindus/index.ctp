@@ -44,7 +44,7 @@
 			<?php echo $this->Form->input( 'Cohorteindu.natpfcre', array( 'label' => 'Type d\'indu', 'type' => 'select', 'options' => $natpfcre, 'empty' => true ) );?>
 
 			<?php echo $this->Form->input( 'Cohorteindu.typeparte', array( 'label' => 'Suivi', 'type' => 'select', 'options' => $typeparte, 'empty' => true ) ); ?>
-			<?php echo $this->Form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); ?>
+			<?php /*echo $this->Form->input( 'Cohorteindu.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $sr , 'empty' => true )  ); */?>
 			<?php
 				echo $this->Form->input( 'Cohorteindu.compare', array( 'label' => 'Opérateurs', 'type' => 'select', 'options' => $comparators, 'empty' => true ) );
 				echo $this->Form->input( 'Cohorteindu.mtmoucompta', array( 'label' => 'Montant de l\'indu', 'type' => 'text' ) );

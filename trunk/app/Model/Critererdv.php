@@ -70,7 +70,7 @@
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'Rendezvous.referent_id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			/// Permanence

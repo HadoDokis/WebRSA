@@ -3,6 +3,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 <h1><?php
@@ -51,6 +52,11 @@
 			echo $this->Search->etatdosrsa($etatdosrsa);
 		?>
 	</fieldset>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
+	});
+</script>
 	<fieldset>
 		<legend>Recherche par CER</legend>
 			<?php
@@ -76,7 +82,6 @@
 
 			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 			<?php echo $this->Form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
-			<?php echo $this->Ajax->observeField( 'FiltreStructurereferenteId', array( 'update' => 'FiltreReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) != 66 ) {
 					echo $this->Form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );

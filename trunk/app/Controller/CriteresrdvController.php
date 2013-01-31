@@ -24,7 +24,8 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'Search.Prg' => array( 'actions' => array( 'index' ) ),
-			'Workflowscers93' // FIXME
+			'Workflowscers93',
+			'InsertionsAllocataires'
 		);
 
 		/**
@@ -45,11 +46,14 @@
 		 */
 		protected function _setOptions() {
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
-			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
+// 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
+			
+			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			
 			$typerdv = $this->Rendezvous->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
 			$this->set( 'typerdv', $typerdv );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
-			$this->set( 'referents', $this->Rendezvous->Referent->find( 'list' ) );
+			$this->set( 'referents', $this->Rendezvous->Referent->listOptions() );
 
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
