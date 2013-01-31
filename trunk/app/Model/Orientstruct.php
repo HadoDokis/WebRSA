@@ -1102,6 +1102,9 @@
 				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial) && ( $reponseAllocataire == 'N' ) ) {
 					$modeleodt = 'Orientation/orientationsocialeauto.odt';// INFO = courrier 5
 				}
+				else if( in_array( $typeOrientParentIdPdf, $typesorientsParentidsSocial ) ) {
+					$modeleodt = 'Orientation/orientationsociale.odt';// INFO = courrier 5
+				}
 			}
 
 			$pdf = $this->ged( $data, $modeleodt, false, $options );
