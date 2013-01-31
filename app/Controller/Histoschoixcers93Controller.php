@@ -54,6 +54,7 @@
 			'attdecisioncpdv' => 'create',
 			'aviscadre' => 'create',
 			'premierelecture' => 'create',
+			'premierelecture_consultation' => 'view',
 			'secondelecture' => 'create',
 		);
 
@@ -83,6 +84,17 @@
 		public function premierelecture( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '04premierelecture' );
 		}
+		
+
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function premierelecture_consultation( $contratinsertion_id ) {
+			return $this->_decision( $contratinsertion_id, '04premierelecture', true );
+		}
+
 
 		/**
 		 *
@@ -92,7 +104,15 @@
 		public function secondelecture( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '05secondelecture' );
 		}
-
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function secondelecture_consultation( $contratinsertion_id ) {
+			return $this->_decision( $contratinsertion_id, '05secondelecture', true );
+		}
+		
 		/**
 		 *
 		 * @param integer $contratinsertion_id
@@ -101,7 +121,16 @@
 		public function aviscadre( $contratinsertion_id ) {
 			return $this->_decision( $contratinsertion_id, '06attaviscadre' );
 		}
-
+		
+		/**
+		 *
+		 * @param integer $contratinsertion_id
+		 * @return void
+		 */
+		public function aviscadre_consultation( $contratinsertion_id ) {
+			return $this->_decision( $contratinsertion_id, '06attaviscadre', true );
+		}
+		
 		/**
 		 * FIXME: decision()
 		 *
@@ -110,7 +139,7 @@
 		 * @throws NotFoundException
 		 * @return void
 		 */
-		protected function _decision( $contratinsertion_id, $etape ) {
+		protected function _decision( $contratinsertion_id, $etape, $consultation = false ) {
 			// On s'assure que l'id passé en paramètre existe bien
 			if( empty( $contratinsertion_id ) ) {
 				throw new NotFoundException();
@@ -129,41 +158,44 @@
 				throw new NotFoundException();
 			}
 
-			// Tentative d'acquisition du jeton sur le dossier
-			$this->Jetons2->get( $dossier_id );
+			if( !$consultation ) {
+				// Tentative d'acquisition du jeton sur le dossier
+				$this->Jetons2->get( $dossier_id );
 
-			// Retour à l'index en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'controller' => 'cers93', 'action' => 'index', $personne_id ) );
-			}
-
-			if( !empty( $this->request->data ) ) {
-				$this->Histochoixcer93->begin();
-
-				$saved = $this->Histochoixcer93->saveDecision( $this->request->data );
-
-				if( $saved ) {
-					$this->Histochoixcer93->commit();
+				// Retour à l'index en cas d'annulation
+				if( isset( $this->request->data['Cancel'] ) ) {
 					$this->Jetons2->release( $dossier_id );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'cers93', 'action' => 'index', $personne_id ) );
 				}
-				else {
-					$this->Histochoixcer93->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+
+				if( !empty( $this->request->data ) ) {
+					$this->Histochoixcer93->begin();
+
+					$saved = $this->Histochoixcer93->saveDecision( $this->request->data );
+
+					if( $saved ) {
+						$this->Histochoixcer93->commit();
+						$this->Jetons2->release( $dossier_id );
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'controller' => 'cers93', 'action' => 'index', $personne_id ) );
+					}
+					else {
+						$this->Histochoixcer93->rollback();
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
 				}
 			}
 
 			$contratinsertion = $this->Histochoixcer93->Cer93->dataView( $contratinsertion_id );
 
-
-			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Histochoixcer93->prepareFormData(
-					$contratinsertion,
-					$etape,
-					$this->Session->read( 'Auth.User.id' )
-				);
+			if( !$consultation ) {
+				if( empty( $this->request->data ) ) {
+					$this->request->data = $this->Histochoixcer93->prepareFormData(
+						$contratinsertion,
+						$etape,
+						$this->Session->read( 'Auth.User.id' )
+					);
+				}
 			}
 
 			$commentairesnormescers93 = $this->Histochoixcer93->Commentairenormecer93->find(
@@ -191,7 +223,8 @@
 				$options,
 				$this->Histochoixcer93->Cer93->optionsView()
 			);
-// debug($options);
+
+			$this->set( 'consultation', $consultation );
 			$this->set( 'options', $options );
 
 			$this->set( 'commentairenormecer93_isautre_id', $commentairenormecer93_isautre_id );
@@ -202,6 +235,9 @@
 
 			if( in_array( $this->action, array( 'attdecisioncpdv', 'attdecisioncg' ) ) ) {
 				$this->render( 'decision' );
+			}
+			else {
+				$this->render( preg_replace( '/_consultation$/', '', $this->action ) );
 			}
 		}
 	}

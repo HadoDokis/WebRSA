@@ -143,7 +143,7 @@
 							array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
 						),
 						// Détails
-						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
+						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'histoschoixcers93', 'action' => 'premierelecture_consultation', $cer93['Contratinsertion']['id'], '#' => 'cerview' ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),

@@ -14,42 +14,44 @@
 ?>
 <br />
 <div id="tabbedWrapper" class="tabs">
-	<div id="premierelecture">
-		<h2 class="title">Validation CS</h2>
-		<?php
+	<?php if( !$consultation ):?>
+		<div id="premierelecture">
+			<h2 class="title">Validation CS</h2>
+			<?php
 
-			echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
+				echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
-			// FIXME: affichage du CER et des étapes précédentes de l'historique
+				// FIXME: affichage du CER et des étapes précédentes de l'historique
 
-			echo $this->Xform->inputs(
-				array(
-					'fieldset' => false,
-					'legend' => false,
-					'Histochoixcer93.id' => array( 'type' => 'hidden' ),
-					'Histochoixcer93.cer93_id' => array( 'type' => 'hidden' ),
-					'Histochoixcer93.user_id' => array( 'type' => 'hidden' ),
-					'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
-					'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
-					'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
-					'Histochoixcer93.duree' => array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ),
-					'Histochoixcer93.decisioncs' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncs'], 'empty' => true ),
-					'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
-				)
-			);
-		?>
+				echo $this->Xform->inputs(
+					array(
+						'fieldset' => false,
+						'legend' => false,
+						'Histochoixcer93.id' => array( 'type' => 'hidden' ),
+						'Histochoixcer93.cer93_id' => array( 'type' => 'hidden' ),
+						'Histochoixcer93.user_id' => array( 'type' => 'hidden' ),
+						'Histochoixcer93.formeci' => array( 'type' => 'radio', 'options' => $options['Cer93']['formeci'] ),
+						'Histochoixcer93.commentaire' => array( 'type' => 'textarea' ),
+						'Histochoixcer93.datechoix' => array( 'type' => 'date', 'dateFormat' => 'DMY' ),
+						'Histochoixcer93.duree' => array( 'legend' => 'Ce contrat est proposé pour une durée de ', 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['duree'] ),
+						'Histochoixcer93.decisioncs' => array( 'type' => 'select', 'options' => $options['Histochoixcer93']['decisioncs'], 'empty' => true ),
+						'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
+					)
+				);
+			?>
 
-		<?php
-			echo $this->Html->tag(
-				'div',
-				$this->Xform->button( 'Enregistrer', array( 'type' => 'submit' ) )
-				.$this->Xform->button( 'Annuler', array( 'type' => 'submit', 'name' => 'Cancel' ) ),
-				array( 'class' => 'submit noprint' )
-			);
+			<?php
+				echo $this->Html->tag(
+					'div',
+					$this->Xform->button( 'Enregistrer', array( 'type' => 'submit' ) )
+					.$this->Xform->button( 'Annuler', array( 'type' => 'submit', 'name' => 'Cancel' ) ),
+					array( 'class' => 'submit noprint' )
+				);
 
-			echo $this->Xform->end();
-		?>
-	</div>
+				echo $this->Xform->end();
+			?>
+		</div>
+	<?php endif;?>
 	<div id="historique">
 		<h2 class="title">Décisions précédentes</h2>
 			<?php
@@ -112,15 +114,17 @@
 	</div>
 </div>
 <script type="text/javascript">
-	observeFilterSelectOptionsFromRadioValue(
-		'FormHistochoixcer93',
-		'data[Histochoixcer93][formeci]',
-		'Histochoixcer93Decisioncs',
-		{
-			'S': ['valide', 'aviscadre'],
-			'C': ['aviscadre', 'passageep']
-		}
-	);
+	<?php if( !$consultation ):?>
+		observeFilterSelectOptionsFromRadioValue(
+			'FormHistochoixcer93',
+			'data[Histochoixcer93][formeci]',
+			'Histochoixcer93Decisioncs',
+			{
+				'S': ['valide', 'aviscadre'],
+				'C': ['aviscadre', 'passageep']
+			}
+		);
+	<?php endif;?>
 
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
