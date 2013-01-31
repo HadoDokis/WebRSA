@@ -198,7 +198,7 @@
 
 			/// Référent
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			// Liste des CERs arrivant à échéance -> dont la date de fin est pour le mois en cours

@@ -19,14 +19,15 @@
 
 		public $uses = array( 'Critereentretien', 'Entretien' );
 		public $helpers = array( 'Csv', 'Default2', 'Search' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
 
 		/**
 		 *
 		 */
 		public function _setOptions() {
 			$this->set( 'options',  $this->Entretien->allEnumLists() );
-			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
+// 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
+			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
 		}
 

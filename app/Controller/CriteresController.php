@@ -23,7 +23,7 @@
 
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.Prg' => array( 'actions' => array( 'index' ) )  );
+		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires'  );
 
 		/**
 		*
@@ -53,8 +53,11 @@
 					'Structurereferente.typeorient_id' => $typeorient_id
 				);
 			}
-			$sr = $this->Typeorient->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
-			$this->set( 'sr', $sr );
+// 			$sr = $this->Typeorient->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
+			
+			$this->set( 'sr', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false ) ) );
+			
+// 			$this->set( 'sr', $sr );
 
 			$this->set( 'typeorient', $this->Typeorient->find( 'list' ) );
 
@@ -62,7 +65,8 @@
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
 			$this->set( 'natpf', $this->Option->natpf() );
 
-			$this->set( 'referents', ClassRegistry::init( 'Referent' )->find( 'list', array( 'conditions' => array( 'Referent.actif' => 'O' ) ) ) );
+// 			$this->set( 'referents', ClassRegistry::init( 'Referent' )->find( 'list', array( 'conditions' => array( 'Referent.actif' => 'O' ) ) ) );
+			$this->set( 'referents', ClassRegistry::init( 'Referent' )->listOptions( ) );
 			$this->set( 'options', $this->Orientstruct->enums() );
 
 

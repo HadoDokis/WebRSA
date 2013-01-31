@@ -130,7 +130,7 @@
 
 			// ...
 			if( !empty( $structurereferente_id ) ) {
-				$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( $structurereferente_id, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'Orientstruct.structurereferente_id = \''.Sanitize::clean( suffix( $structurereferente_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			// Recherche sur la structureréférente ayant fait l'orientation
@@ -150,7 +150,7 @@
 			}
 
 			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( $referent_id, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
 			}
 
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );

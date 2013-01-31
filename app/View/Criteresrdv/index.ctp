@@ -3,6 +3,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 
@@ -47,6 +48,11 @@
 			echo $this->Search->etatdosrsa($etatdosrsa);
 		?>
 	</fieldset>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		dependantSelect( 'CritererdvReferentId', 'CritererdvStructurereferenteId' );
+	});
+</script>
 	<fieldset>
 		<legend>Recherche par RDV</legend>
 			<?php echo $this->Form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>

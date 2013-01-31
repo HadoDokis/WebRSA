@@ -20,7 +20,7 @@
 
 		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa' );
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
@@ -28,8 +28,11 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
-			$this->set( 'struct', $struct );
+// 			$struct = ClassRegistry::init( 'Structurereferente' )->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
+// 			$this->set( 'struct', $struct );
+			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referents', $this->Contratinsertion->Referent->listOptions() );
+			
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$personne_suivi = $this->Contratinsertion->find(
 				'list',
@@ -83,38 +86,38 @@
 		 * @param type $structurereferente_id
 		 * @return type
 		 */
-		public function _selectReferents( $structurereferente_id ) {
-			$conditions = array();
-
-			if( !empty( $structurereferente_id ) ) {
-				$conditions['Referent.structurereferente_id'] = $structurereferente_id;
-			}
-
-			$referents = $this->Referent->find(
-				'all',
-				array(
-					'fields' => array( 'Referent.id', 'Referent.nom', 'Referent.prenom' ),
-					'conditions' => $conditions,
-					'recursive' => -1
-				)
-			);
-
-			return $referents;
-		}
-
-		/**
-		 *
-		 */
-		public function ajaxreferent() {
-			Configure::write( 'debug', 2 );
-			$referents = $this->_selectReferents( Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' ) );
-			$options = array( '<option value=""></option>' );
-			foreach( $referents as $referent ) {
-				$options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
-			} ///FIXME: à mettre dans la vue
-			echo implode( '', $options );
-			$this->render( null, 'ajax' );
-		}
+// 		public function _selectReferents( $structurereferente_id ) {
+// 			$conditions = array();
+// 
+// 			if( !empty( $structurereferente_id ) ) {
+// 				$conditions['Referent.structurereferente_id'] = $structurereferente_id;
+// 			}
+// 
+// 			$referents = $this->Referent->find(
+// 				'all',
+// 				array(
+// 					'fields' => array( 'Referent.id', 'Referent.nom', 'Referent.prenom' ),
+// 					'conditions' => $conditions,
+// 					'recursive' => -1
+// 				)
+// 			);
+// 
+// 			return $referents;
+// 		}
+// 
+// 		/**
+// 		 *
+// 		 */
+// 		public function ajaxreferent() {
+// 			Configure::write( 'debug', 2 );
+// 			$referents = $this->_selectReferents( Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' ) );
+// 			$options = array( '<option value=""></option>' );
+// 			foreach( $referents as $referent ) {
+// 				$options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
+// 			} ///FIXME: à mettre dans la vue
+// 			echo implode( '', $options );
+// 			$this->render( null, 'ajax' );
+// 		}
 
 		/**
 		 *
