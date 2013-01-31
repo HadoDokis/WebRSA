@@ -284,7 +284,6 @@
 				array(
 					'conditions' => array(
 						'modele' => 'Passagecommissionep',
-						'modeledoc' => $modeleOdt,
 						'fk_value' => $passagecommissionep_id
 					)
 				)
@@ -320,7 +319,7 @@
 			}
 			return $pdf;
 		}
-		
+
 		/**
 		 *
 		 */

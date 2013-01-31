@@ -221,6 +221,38 @@ CREATE UNIQUE INDEX statutsrdvs_typesrdv_statutrdv_id_typerdv_id_idx ON statutsr
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'dossierspcgs66', 'commentairepiecejointe', 'TEXT' );
 
+--------------------------------------------------------------------------------
+-- 20130131: dédoublonnage de la table pdfs et mise en place d'un index unique
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.nettoyage_doublons_pdfs() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_doublon record;
+		v_query text;
+	BEGIN
+		FOR v_row_doublon IN
+			SELECT
+					modele, fk_value
+				FROM pdfs
+				GROUP BY modele, fk_value
+				HAVING COUNT(*) > 1
+				ORDER BY COUNT(*) DESC, modele ASC, fk_value ASC
+		LOOP
+			v_query := 'DELETE FROM pdfs WHERE modele = ''' || v_row_doublon.modele || ''' AND fk_value = ' || v_row_doublon.fk_value || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.nettoyage_doublons_pdfs();
+DROP FUNCTION public.nettoyage_doublons_pdfs();
+
+DROP INDEX IF EXISTS pdfs_modele_fk_value_idx;
+CREATE UNIQUE INDEX pdfs_modele_fk_value_idx ON pdfs(modele, fk_value);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

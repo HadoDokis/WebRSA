@@ -94,7 +94,6 @@
 					'fields' => array( 'id' ),
 					'conditions' => array(
 						'modele' => $model->alias,
-						'modeledoc' => $modeledoc,
 						'fk_value' => $id
 					)
 				)
