@@ -427,6 +427,9 @@
 					'action' => 'En attente',
 					'dossier_id' => $data['Dossier']['id']
 				);
+				$formData['Cer93'][$index] = array(
+					'id' => $data['Histochoixcer93']['cer93_id'],
+				);
 			}
 
 			return $formData;

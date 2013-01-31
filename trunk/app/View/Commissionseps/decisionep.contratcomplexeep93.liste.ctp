@@ -7,13 +7,14 @@ echo '<table><thead>
 <th rowspan="2">Création du dossier EP</th>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
-<th colspan="3">Avis EP</th>
+<th colspan="4">Avis EP</th>
 <th rowspan="2">Observations</th>
 </tr>
 <tr>
-<th>Décision</th>
-<th>Date de validation</th>
-<th>Observations</th>
+	<th>Décision</th>
+	<th>Date de validation</th>
+	<th>Observations sur le contrat</th>
+	<th>Observations décision</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -33,6 +34,7 @@ echo '<table><thead>
 				array( $options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisionep, "decision" )], array( 'id' => "Decisioncontratcomplexeep93{$i}DecisionColumn" ) ),
 				array( Set::classicExtract( $decisionep, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisionep, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
+				Set::classicExtract( $decisionep, "observationdecision" ),
 				Set::classicExtract( $decisionep, "commentaire" )
 			),
 			array( 'class' => "odd {$multiple}" ),

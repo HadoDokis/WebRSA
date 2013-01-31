@@ -1,20 +1,21 @@
 <?php
 echo '<table><thead>
 <tr>
-<th rowspan="2">Personne</th>
-<th rowspan="2">Nom du demandeur</th>
-<th rowspan="2">Adresse</th>
-<th rowspan="2">Date de naissance</th>
-<th rowspan="2">Création du dossier EP</th>
-<th rowspan="2">Date de début du contrat</th>
-<th rowspan="2">Date de fin du contrat</th>
-<th colspan="3">Avis EP</th>
-<th rowspan="2">Observations</th>
+	<th rowspan="2">Personne</th>
+	<th rowspan="2">Nom du demandeur</th>
+	<th rowspan="2">Adresse</th>
+	<th rowspan="2">Date de naissance</th>
+	<th rowspan="2">Création du dossier EP</th>
+	<th rowspan="2">Date de début du contrat</th>
+	<th rowspan="2">Date de fin du contrat</th>
+	<th colspan="4">Avis EP</th>
+	<th rowspan="2">Observations</th>
 </tr>
 <tr>
-<th>Décision</th>
-<th>Date de validation</th>
-<th>Observations du contrat</th>
+	<th>Décision</th>
+	<th>Date de validation</th>
+	<th>Observations sur le contrat</th>
+	<th>Observations décision</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -47,6 +48,10 @@ echo '<table><thead>
 					$this->Form->input( "Decisioncontratcomplexeep93.{$i}.observ_ci", array( 'type' => 'textarea', /*'div' => false, */'label' => false ) ),
 					( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['observ_ci'] ) ? array( 'class' => 'error' ) : array() )
 				),
+				array(
+					$this->Form->input( "Decisioncontratcomplexeep93.{$i}.observationdecision", array( 'type' => 'textarea', /*'div' => false, */'label' => false ) ),
+					( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['observationdecision'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$this->Form->input( "Decisioncontratcomplexeep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields
 			),
@@ -63,17 +68,25 @@ echo '<table><thead>
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
 				changeColspanFormAnnuleReporteEps(
 					'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn',
-					3,
+					4,
 					'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-					[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ]
+					[
+						'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi',
+						'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay',
+						'Decisioncontratcomplexeep93<?php echo $i;?>Observationdecision'
+					]
 				);
 			} );
 
 			changeColspanFormAnnuleReporteEps(
 				'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn',
-				3,
+				4,
 				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay' ]
+				[
+					'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi',
+					'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay',
+					'Decisioncontratcomplexeep93<?php echo $i;?>Observationdecision'
+				]
 			);
 
 			observeDisableFieldsOnValue(

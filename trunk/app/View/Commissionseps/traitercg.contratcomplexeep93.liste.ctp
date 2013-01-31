@@ -9,15 +9,16 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
-<th colspan="4">Décision CG</th>
+<th colspan="5">Décision CG</th>
 <th rowspan="2">Observations</th>
 <th rowspan="2" class="innerTableHeader noprint">Avis EP</th>
 </tr>
 <tr>
-<th>Décision PCG</th>
-<th>Décision</th>
-<th>Date de validation</th>
-<th>Observations du contrat</th>
+	<th>Décision PCG</th>
+	<th>Décision</th>
+	<th>Date de validation</th>
+	<th>Observations du contrat</th>
+	<th>Observations décision</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -73,6 +74,10 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 					$this->Form->input( "Decisioncontratcomplexeep93.{$i}.observ_ci", array( 'type' => 'textarea', 'label' => false ) ),
 					( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['observ_ci'] ) ? array( 'class' => 'error' ) : array() )
 				),
+				array(
+					$this->Form->input( "Decisioncontratcomplexeep93.{$i}.observationdecision", array( 'type' => 'textarea', /*'div' => false, */'label' => false ) ),
+					( !empty( $this->validationErrors['Decisioncontratcomplexeep93'][$i]['observationdecision'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$this->Form->input( "Decisioncontratcomplexeep93.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
 				$hiddenFields,
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -87,12 +92,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
-			observeDisableFieldsOnValue(
-				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
-				[ 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ],
-				'valide',
-				false
-			);
+			
 
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionpcgEnattente' ).observe( 'click', function() {
 				$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).setValue( 'reporte' );
@@ -100,9 +100,20 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 			} );
 
 			$( 'Decisioncontratcomplexeep93<?php echo $i;?>Decision' ).observe( 'change', function() {
-				changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
+				changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 4, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear', 'Decisioncontratcomplexeep93<?php echo $i;?>Observationdecision' ] );
 			});
-			changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 3, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear' ] );
+			changeColspanFormAnnuleReporteEps( 'Decisioncontratcomplexeep93<?php echo $i;?>DecisionColumn', 4, 'Decisioncontratcomplexeep93<?php echo $i;?>Decision', [ 'Decisioncontratcomplexeep93<?php echo $i;?>ObservCi', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth', 'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear', 'Decisioncontratcomplexeep93<?php echo $i;?>Observationdecision' ] );
+			
+			observeDisableFieldsOnValue(
+				'Decisioncontratcomplexeep93<?php echo $i;?>Decision',
+				[
+					'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiDay',
+					'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiMonth',
+					'Decisioncontratcomplexeep93<?php echo $i;?>DatevalidationCiYear'
+				],
+				'valide',
+				false
+			);
 		<?php endfor;?>
 	});
 </script>

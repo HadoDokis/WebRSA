@@ -171,6 +171,7 @@
 						$formData[$modeleDecisions][$key]['decision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['decision'];
 						$formData[$modeleDecisions][$key]['datevalidation_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['datevalidation_ci'];
 						$formData[$modeleDecisions][$key]['observ_ci'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observ_ci'];
+						$formData[$modeleDecisions][$key]['observationdecision'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['observationdecision'];
 						$formData[$modeleDecisions][$key]['raisonnonpassage'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['raisonnonpassage'];
 						if ( Configure::read( 'Cg.departement' ) != 93 ) {
 							$formData[$modeleDecisions][$key]['commentaire'] = $dossierep['Passagecommissionep'][0][$modeleDecisions][0]['commentaire'];
@@ -240,6 +241,7 @@
 					else if( in_array( $themeData[$key]['Decisioncontratcomplexeep93']['decision'], array( 'annule', 'reporte' ) ) ) {
 						$themeData[$key]['Decisioncontratcomplexeep93']['datevalidation_ci'] = null;
 						$themeData[$key]['Decisioncontratcomplexeep93']['observ_ci'] = null;
+						$themeData[$key]['Decisioncontratcomplexeep93']['observationdecision'] = null;
 					}
 					// FIXME: la même chose pour l'étape 2
 				}
@@ -284,6 +286,7 @@
 						'Dossierep.personne_id',
 						'Decisioncontratcomplexeep93.decision',
 						'Decisioncontratcomplexeep93.observ_ci',
+						'Decisioncontratcomplexeep93.observationdecision',
 						'Decisioncontratcomplexeep93.datevalidation_ci',
 						'Contratcomplexeep93.contratinsertion_id'
 					),

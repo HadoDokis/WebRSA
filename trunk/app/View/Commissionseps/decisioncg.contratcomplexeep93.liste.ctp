@@ -8,7 +8,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <th rowspan="2">Date de début du contrat</th>
 <th rowspan="2">Date de fin du contrat</th>
 <th rowspan="2">Avis EP</th>
-<th colspan="4">Décision CG</th>
+<th colspan="5">Décision CG</th>
 <th rowspan="2">Observations</th>
 <th rowspan="2">Action</th>
 <th rowspan="2" class="innerTableHeader noprint">Avis EP</th>
@@ -18,6 +18,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 <th>Décision</th>
 <th>Date de validation</th>
 <th>Observations du contrat</th>
+<th>Observations décision</th>
 </tr>
 </thead><tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
@@ -57,8 +58,9 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 
 				@$options['Decisioncontratcomplexeep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				array( @$options['Decisioncontratcomplexeep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "" ) ),
-				array( Set::classicExtract( $decisioncg, "datevalidation_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
+				array( $this->Locale->date( __( 'Locale->date' ), Set::classicExtract( $decisioncg, "datevalidation_ci" ) ), array( 'id' => "Decisioncontratcomplexeep93{$i}DatevalidationCi" ) ),
 				array( Set::classicExtract( $decisioncg, "observ_ci" ), array( 'id' => "Decisioncontratcomplexeep93{$i}ObservCi" ) ),
+				Set::classicExtract( $decisionep, "observationdecision" ),
 				Set::classicExtract( $decisioncg, "commentaire" ),
 				$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
