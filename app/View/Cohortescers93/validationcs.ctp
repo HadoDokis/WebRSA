@@ -22,7 +22,7 @@
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
-						<th>N° dossier RSA</th>
+						<th class="action">N° dossier RSA</th>
 						<th>Nom/Prénom</th>
 						<th>N° CAF</th>
 						<th>Commune</th>
@@ -30,14 +30,14 @@
 						<th>Date de début CER</th>
 						<th>Statut du CER</th>
 						<th>Forme du CER (Responsable)</th>
-						<th>Commentaire (Responsable)</th>
 						<th>Prévalidé</th>
 						<th class="action">Action</th>
 						<th class="action">Forme du CER (CG)</th>
-						<th class="action">Commentaire (CG)</th>
+						<th class="action">Commentaire (CG-CS)</th>
 						<th class="action">Décision CS</th>
-						<th class="action">Durée CER</th>
+						<th class="action" style="min-width:6em;">Durée CER</th>
 						<th class="action">Date de décision</th>
+						<th class="action">Observation décision</th>
 						<th class="action" colspan="2">Détails</th>
 					</tr>
 				</thead>';
@@ -99,7 +99,7 @@
 				}
 
 				$cells = array(
-					$cer93['Dossier']['numdemrsa'],
+					$this->Xhtml->link( $cer93['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $cer93['Dossier']['id'] ), array( 'class' => 'external' ) ),// ALAQTASH
 					$cer93['Personne']['nom_complet_court'],
 					$cer93['Dossier']['matricule'],
 					$cer93['Adresse']['locaadr'],
@@ -107,25 +107,6 @@
 					date_short( $cer93['Contratinsertion']['dd_ci'] ),
 					Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 					Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
-					array(
-						(
-							isset( $cer93['Commentairenormecer93'] )
-							? $this->element(
-								'modalbox',
-								array(
-									'modalid' => "CheckboxesInputs{$index}",
-									'modalcontent' => $this->Checkboxes->view(
-										$cer93,
-										'Commentairenormecer93.name',
-										'Commentairenormecer93Histochoixcer93.commentaireautre'
-									)
-								)
-							)
-							.$this->Html->link( 'Commentaire', '#', array( 'onclick' => "\$( 'CheckboxesInputs{$index}' ).show();return false;", 'class' => 'comment' ) ).$emetteurResponsable
-							: null
-						),
-						array()
-					),
 					Set::enum( $cer93['Histochoixcer93']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
 				);
 
@@ -148,7 +129,7 @@
 								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['formeci'] ) ? 'error' : null ) )
 							),
 							array(
-								$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea', 'value' => $cer93['Histochoixcer93']['commentaire'] ) ),
+								$this->Form->input( "Histochoixcer93.{$index}.commentaire", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) ),
 								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['commentaire'] ) ? 'error' : null ) )
 							),
 							array(
@@ -156,12 +137,16 @@
 								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['decisioncs'] ) ? 'error' : null ) )
 							),
 							array(
-								$this->Form->input( "Histochoixcer93.{$index}.duree", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Cer93']['duree'] ) ),
+								$this->Form->input( "Histochoixcer93.{$index}.duree", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['Cer93']['duree'], 'separator' => '<br />' ) ),
 								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['duree'] ) ? 'error' : null ) )
 							),
 							array(
 								$this->Form->input( "Histochoixcer93.{$index}.datechoix", array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false ) ),
 								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['datechoix'] ) ? 'error' : null ) )
+							),
+							array(
+								$this->Form->input( "Histochoixcer93.{$index}.observationdecision", array( 'label' => false, 'legend' => false, 'type' => 'textarea' ) ),
+								array( 'class' => ( isset( $this->validationErrors['Histochoixcer93'][$index]['observationdecision'] ) ? 'error' : null ) )
 							)
 						)
 					);
@@ -171,12 +156,13 @@
 					$cells = array_merge(
 						$cells,
 						array(
+							'',
 							Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
 							$cer93['Histochoixcer93']['commentaire'],
 							Set::enum( $cer93['Histochoixcer93']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),
 							Set::enum( $cer93['Histochoixcer93']['duree'], $options['Cer93']['duree'] ),
 							date_short( $cer93['Histochoixcer93']['datechoix'] ),
-							''
+							$cer93['Cer93']['observationdecision']
 						)
 					);
 				}
@@ -236,6 +222,14 @@
 		// On désactive le select du référent si on ne choisit pas de valider
 		<?php foreach( $cers93 as $index => $cer93 ):?>
 			<?php if( $cer93['Cer93']['positioncer'] == '04premierelecture' ):?>
+							
+				observeDisableFieldsOnValue(
+					'Histochoixcer93<?php echo $index;?>Decisioncs',
+					[ 'Histochoixcer93<?php echo $index;?>Observationdecision' ],
+					[ 'valide' ],
+					false
+				);
+				
 				observeDisableFieldsOnRadioValue(
 					'Personne',
 					'data[Histochoixcer93][<?php echo $index;?>][action]',
@@ -265,6 +259,7 @@
 						'C': ['aviscadre', 'passageep']
 					}
 				);
+
 			<?php endif;?>
 		<?php endforeach;?>
 	} );

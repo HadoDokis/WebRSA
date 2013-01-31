@@ -689,6 +689,14 @@ DROP INDEX IF EXISTS transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx;
 CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx ON transfertspdvs93( nv_adressefoyer_id, vx_adressefoyer_id );
 
 
+
+--------------------------------------------------------------------------------
+-- 20130131 : Ajout du champ pour les observations des courriers de décision des CERs complexe
+--			dans les tables cers93 et histoschoixcers93 lorsque ces derniers sont validés ou rejetés
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'cers93', 'observationdecision', 'TEXT' );
+SELECT add_missing_table_field( 'public', 'histoschoixcers93', 'observationdecision', 'TEXT' );
+SELECT add_missing_table_field( 'public', 'decisionscontratscomplexeseps93', 'observationdecision', 'TEXT' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

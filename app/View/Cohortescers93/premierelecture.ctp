@@ -21,17 +21,16 @@
 			echo '<table id="searchResults" class="tooltips">';
 			echo '<thead>
 					<tr>
-						<th>N° dossier RSA</th>
+						<th class="action">N° dossier RSA</th>
 						<th>Nom/Prénom</th>
 						<th>N° CAF</th>
 						<th>Commune</th>
 						<th>Date d\'envoi CER</th>
 						<th>Date de début CER</th>
 						<th>Forme du CER (Responsable)</th>
-						<th>Commentaire (Responsable)</th>
 						<th class="action">Action</th>
 						<th class="action">Forme du CER (CG)</th>
-						<th class="action">Commentaire (CG)</th>
+						<th class="action">Commentaire (CG-Gestionnaire)</th>
 						<th class="action">Décision</th>
 						<th class="action">Date de décision</th>
 						<th class="action">Détails</th>
@@ -90,33 +89,13 @@
 
 				echo $this->Html->tableCells(
 					array(
-						$cer93['Dossier']['numdemrsa'],
+						$this->Xhtml->link( $cer93['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $cer93['Dossier']['id'] ), array( 'class' => 'external' ) ),
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Dossier']['matricule'],
 						$cer93['Adresse']['locaadr'],
 						date_short( $cer93['Contratinsertion']['created'] ),
 						date_short( $cer93['Contratinsertion']['dd_ci'] ),
 						Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
-// 						$cer93['Histochoixcer93']['commentaire'],
-						array(
-							(
-								isset( $cer93['Commentairenormecer93'] )
-								? $this->element(
-									'modalbox',
-									array(
-										'modalid' => "CheckboxesInputs{$index}",
-										'modalcontent' => $this->Checkboxes->view(
-											$cer93,
-											'Commentairenormecer93.name',
-											'Commentairenormecer93Histochoixcer93.commentaireautre'
-										)
-									)
-								)
-								.$this->Html->link( 'Commentaire', '#', array( 'onclick' => "\$( 'CheckboxesInputs{$index}' ).show();return false;", 'class' => 'comment' ) )
-								: null
-							),
-							array()
-						),
 						// Choix du Responsable
 						array(
 							$this->Form->input( "Histochoixcer93.{$index}.dossier_id", array( 'type' => 'hidden' ) )
