@@ -49,12 +49,17 @@
 		public function search( $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 
+			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
+			// donc on limite au dernier detail de calcul du droit rsa
+			$sqDernierDetailcalculdroitrsa = $Dossier->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+
 			$conditions = array(
 				// FIXME: LEFT OUTER JOIN sur les prestations ?
 				'Prestation.natprest' => 'RSA',
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 				'Adressefoyer.rgadr' => array( '02', '03' ),
 				'Adressefoyer.id = Transfertpdv93.vx_adressefoyer_id',
+				"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )",
 			);
 
 			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
@@ -116,6 +121,8 @@
 				'order' => array( 'Transfertpdv93.created DESC', 'Dossier.numdemrsa ASC', 'Dossier.id ASC', 'Personne.nom ASC', 'Personne.prenom ASC' ),
 				'limit' => 10
 			);
+
+			$querydata['conditions'][] = 'CAST( DATE_PART( \'year\', "Transfertpdv93"."created" ) + 1 || \'-03-31\' AS date ) >= DATE_TRUNC( \'day\', NOW() )';
 
 			return $querydata;
 		}
