@@ -13,7 +13,7 @@
 
 	echo $this->Xhtml->tag(
 		'p',
-		'La fiche de liaison est un document conventionnel partagé qui engage tous les acteurs du PDI',
+		'La fiche de prescription est un document conventionnel partagé qui engage tous les acteurs du PDI',
 		array(
 			'class' => 'remarque'
 		)
@@ -230,7 +230,7 @@
 </fieldset>
 
 <fieldset class="actioncandidat">
-	<legend class="actioncandidat" >Résultats d'orientation</legend>
+	<legend class="actioncandidat" >Effectivité de la prescription</legend>
 	<?php
 		echo $this->Default->subform(
 			array(
@@ -271,7 +271,7 @@
 
 		echo $this->Default->subform(
 			array(
-				'ActioncandidatPersonne.integrationaction' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne souhaite intégrer l\'action' ),
+				'ActioncandidatPersonne.integrationaction' => array( 'type' => 'radio', 'separator' => '<br />',  'legend' => 'La personne a intégré l\'action ?' ),
 				'ActioncandidatPersonne.precisionmotif',
 				'ActioncandidatPersonne.dfaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => true )
 			),

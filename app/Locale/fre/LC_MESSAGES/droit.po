@@ -39,16 +39,16 @@ msgstr "Suppression d'une action"
 ###############################################################################
 
 msgid "Module:Actionscandidats"
-msgstr "Actions pour fiche de candidature/liaison"
+msgstr "Actions pour fiche de candidature/prescription"
 
 msgid "Actionscandidats:index"
-msgstr "Visualisation des actions pour fiche de candidature/liaison"
+msgstr "Visualisation des actions pour fiche de candidature/prescription"
 
 msgid "Actionscandidats:edit"
-msgstr "Ajout/Édition d'une action pour fiche de candidature/liaison"
+msgstr "Ajout/Édition d'une action pour fiche de candidature/prescription"
 
 msgid "Actionscandidats:delete"
-msgstr "Suppression d'une action pour fiche de candidature/liaison"
+msgstr "Suppression d'une action pour fiche de candidature/prescription"
 
 ###############################################################################
 
@@ -67,31 +67,31 @@ msgstr "Suppression d'une action liée à un partenaire"
 ###############################################################################
 
 msgid "Module:ActionscandidatsPersonnes"
-msgstr "Fiches de candidature/liaison"
+msgstr "Fiches de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:indexparams"
-msgstr "Paramètrage des fiches de candidature/liaison"
+msgstr "Paramètrage des fiches de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:filelink"
-msgstr "Lier un fichier à une fiche de candidature/liaison"
+msgstr "Lier un fichier à une fiche de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:index"
-msgstr "Accès aux fiches de candidature/liaison"
+msgstr "Accès aux fiches de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:view"
-msgstr "Visualisation des fiches de candidature/liaison"
+msgstr "Visualisation des fiches de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:edit"
-msgstr "Ajout/Édition d'une fiche de candidature/liaison"
+msgstr "Ajout/Édition d'une fiche de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:delete"
-msgstr "Suppression d'une fiche de candidature/liaison"
+msgstr "Suppression d'une fiche de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:printFiche"
-msgstr "Impression d'une fiche de candidature/liaison"
+msgstr "Impression d'une fiche de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:cancel"
-msgstr "Annulation d'une fiche de candidature/liaison"
+msgstr "Annulation d'une fiche de candidature/prescription"
 
 msgid "ActionscandidatsPersonnes:maillink"
 msgstr "Envoi de mail"

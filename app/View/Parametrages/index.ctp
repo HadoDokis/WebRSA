@@ -116,7 +116,7 @@
 				else if( Configure::read( 'Cg.departement' ) == 93 ){
 					echo $this->Xhtml->tableCells(
 						array(
-							h( 'Fiches de Liaison' ),
+							h( 'Fiches de prescription' ),
 							$this->Xhtml->viewLink(
 								'Voir la table',
 								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' ),
