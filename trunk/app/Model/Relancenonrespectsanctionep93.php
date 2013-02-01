@@ -523,7 +523,7 @@
 					$conditions[] = array( 'Serviceinstructeur.id' => $condition );
 				}
 				else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
-					$conditions[] = array( 'Dossier.matricule' => $condition );
+					$conditions[] = array( 'Dossier.matricule LIKE' => $this->wildcard( "*{$condition}*" ) );
 				}
 				else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
 					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
@@ -863,7 +863,7 @@
 					$conditions['Serviceinstructeur.id'] = $condition;
 				}
 				else if( $field == 'Dossier.matricule' && !empty( $condition ) ) {
-					$conditions['Dossier.matricule'] = $condition;
+					$conditions['Dossier.matricule LIKE'] = $this->wildcard( "*{$condition}*" );
 				}
 				else if( ( $field == 'Dossiercaf.nomtitulaire' || $field == 'Dossiercaf.prenomtitulaire' ) && !empty( $condition ) ) {
 					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
