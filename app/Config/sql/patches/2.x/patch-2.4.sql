@@ -80,7 +80,7 @@ LANGUAGE plpgsql IMMUTABLE;
 COMMENT ON FUNCTION cakephp_validate_inclusive_range( p_check float, p_lower float, p_upper float ) IS
 	'Comme cakephp_validate_range(), mais avec les bornes incluses';
 
-	
+
 --------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) RETURNS bool as
@@ -118,7 +118,7 @@ COMMENT ON FUNCTION public.alter_table_drop_constraint_if_exists( text, text, te
 
 --------------------------------------------------------------------------------
 
-	
+
 -------------------------------------------------------------------------------------
 -- 20121003: nouveau CER pour le CG 93
 -------------------------------------------------------------------------------------
@@ -528,11 +528,18 @@ CREATE INDEX transfertspdvs93_user_id_idx ON transfertspdvs93(user_id);
 SELECT add_missing_table_field( 'public', 'users', 'type', 'VARCHAR(50)' );
 ALTER TABLE users ALTER COLUMN type SET DEFAULT NULL;
 SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_in_list_chk' );
-ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdv', 'externe_ci'] ) );
+ALTER TABLE users ADD CONSTRAINT users_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['cg', 'externe_cpdv', 'externe_secretaire', 'externe_ci'] ) );
 UPDATE users SET type = 'externe_ci' WHERE referent_id IS NOT NULL AND type IS NULL;
 UPDATE users SET type = 'externe_cpdv' WHERE structurereferente_id IS NOT NULL AND type IS NULL;
 UPDATE users SET type = 'cg' WHERE type IS NULL;
 ALTER TABLE users ALTER COLUMN type SET NOT NULL;
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'users', 'users_type_structurereferente_idreferent_id_chk' );
+ALTER TABLE users ADD CONSTRAINT users_type_structurereferente_idreferent_id_chk CHECK (
+	( type = 'cg' AND structurereferente_id IS NULL AND referent_id IS NULL )
+	OR ( type IN ( 'externe_cpdv', 'externe_secretaire' ) AND structurereferente_id IS NOT NULL AND referent_id IS NULL )
+	OR ( type = 'externe_ci' AND structurereferente_id IS NULL AND referent_id IS NOT NULL )
+);
 
 --------------------------------------------------------------------------------
 -- 20121203 : Ajout d'une valeur finale pour la déicison du CER Particulier CG66
@@ -572,7 +579,7 @@ UPDATE contratsinsertion SET positioncer = CAST ( ( CASE WHEN positioncer = 'val
 SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours', 'attvalid', 'annule', 'fincontrat', 'encoursbilan', 'attrenouv', 'perime', 'nonvalid'] );
 
 --------------------------------------------------------------------------------
--- 20121205 : Modification de la table cuis avec ajout d'un enum sur la composition familiale 
+-- 20121205 : Modification de la table cuis avec ajout d'un enum sur la composition familiale
 --------------------------------------------------------------------------------
 -- FIXME
 SELECT add_missing_table_field( 'public', 'cuis', 'compofamiliale', 'VARCHAR(20)' );
@@ -587,7 +594,7 @@ DROP INDEX IF EXISTS cuis_serviceinstructeur_id_idx;
 CREATE INDEX cuis_serviceinstructeur_id_idx ON cuis( serviceinstructeur_id );
 
 --------------------------------------------------------------------------------
--- 20121211 : Création de la table permettant de définir des commentaires 
+-- 20121211 : Création de la table permettant de définir des commentaires
 --				commun aux décisons CI et CPDV
 --------------------------------------------------------------------------------
 
@@ -664,7 +671,7 @@ SELECT add_missing_constraint ('public', 'commissionseps_membreseps', 'commissio
 -- SELECT add_missing_table_field ('public', 'expsproscers93', 'duree', 'INTEGER');
 -- ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY[3, 6, 9, 12] ) );
 --------------------------------------------------------------------------------
--- 20130120 : Modification de la colonne duree en 2 parties 
+-- 20130120 : Modification de la colonne duree en 2 parties
 --	suite à la demande d'améliorations #6268
 --------------------------------------------------------------------------------
 ALTER TABLE expsproscers93 ALTER COLUMN duree DROP NOT NULL;
@@ -676,7 +683,7 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'expsproscers93', 'expsp
 ALTER TABLE expsproscers93 ADD CONSTRAINT expsproscers93_typeduree_in_list_chk CHECK ( cakephp_validate_in_list( typeduree, ARRAY['jour','mois','annee'] ) );
 
 --------------------------------------------------------------------------------
--- 20130103 : Ajout de la date d'impression de la décision dans la table cers93 
+-- 20130103 : Ajout de la date d'impression de la décision dans la table cers93
 --	nécessaire pour les écrans 4. Validation CG
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'cers93', 'dateimpressiondecision', 'DATE' );
@@ -687,8 +694,6 @@ SELECT add_missing_table_field( 'public', 'cers93', 'dateimpressiondecision', 'D
 
 DROP INDEX IF EXISTS transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx;
 CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx ON transfertspdvs93( nv_adressefoyer_id, vx_adressefoyer_id );
-
-
 
 --------------------------------------------------------------------------------
 -- 20130131 : Ajout du champ pour les observations des courriers de décision des CERs complexe
@@ -709,6 +714,7 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_observ
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncadre_observationdecision_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_observationdecision_chk CHECK ( etape <> '06attaviscadre' OR observationdecision IS NULL OR decisioncadre IN ( 'valide', 'rejete' ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
