@@ -224,6 +224,17 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 					$Personne->sqVirtualField( 'situation', false ) => $search['Personne']['situation']
 				);
 			}
+			
+			// Dossier transféré ?
+			if( isset( $search['Dossier']['transfere'] ) && ( $search['Dossier']['transfere'] != '' ) ) {
+				if( $search['Dossier']['transfere'] ) {
+					$conditions[] = 'Orientstructpcd.id IS NOT NULL';
+				}
+				else {
+					$conditions[] = 'Orientstructpcd.id IS NULL';
+				}
+			}
+			
 
 			$querydata = array(
 				'fields' => array_merge(

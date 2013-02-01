@@ -32,6 +32,8 @@
 		</fieldset>
 		<?php 
 			echo $this->Search->multipleCheckboxChoice( $options['Personne']['situation'], 'Search.Personne.situation' );
+					
+			echo $this->Form->input( 'Search.Dossier.transfere', array( 'label' => 'Dossier transféré ?', 'empty' => true, 'options' => $options['exists'] ) );
 		?>
 	</fieldset>
 	<?php
@@ -45,6 +47,7 @@
 // 		echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
 		echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+
 	?>
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
