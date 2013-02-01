@@ -69,7 +69,7 @@
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
-		observeDisableFieldsOnValue( 'UserType', [ 'UserStructurereferenteId' ], 'externe_cpdv', false );
+		observeDisableFieldsOnValue( 'UserType', [ 'UserStructurereferenteId' ], [ 'externe_cpdv', 'externe_secretaire' ], false );
 		observeDisableFieldsOnValue( 'UserType', [ 'UserReferentId' ], 'externe_ci', false );
 	} );
 </script>

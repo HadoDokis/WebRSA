@@ -91,8 +91,8 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserCpdv() {
-			if( $this->Session->read( 'Auth.User.type' ) !== 'externe_cpdv' ) {
-				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable' ), 'flash/error' );
+			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_secretaire' ) ) ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable ou une secrétaire' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
 		}
@@ -128,8 +128,8 @@
 		 * @throws Error403Exception
 		 */
 		public function assertUserExterne() {
-			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_ci' ) ) ) {
-				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable ou un chargé d\'insertion' ), 'flash/error' );
+			if( !in_array( $this->Session->read( 'Auth.User.type' ), array( 'externe_cpdv', 'externe_secretaire', 'externe_ci' ) ) ) {
+				$this->Session->setFlash( sprintf( $this->_assertErrorTemplate, 'un responsable, une secrétaire ou un chargé d\'insertion' ), 'flash/error' );
 				throw new error403Exception( null );
 			}
 		}

@@ -122,7 +122,19 @@
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
-			)
+			),
+			'structurereferente_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'type', true, array( 'externe_cpdv', 'externe_secretaire' ) ),
+					'message' => 'Champ obligatoire'
+				)
+			),
+			'referent_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'type', true, array( 'externe_ci' ) ),
+					'message' => 'Champ obligatoire'
+				)
+			),
 		);
 
 		public $belongsTo = array(

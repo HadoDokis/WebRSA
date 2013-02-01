@@ -249,6 +249,71 @@
 		}
 
 		/**
+		 * Liste des structures référentes groupées par code INSEE.
+		 *
+		 * @return array
+		 */
+		public function structuresParZonesGeographiquesPourTransfertPdv() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$structuresParZonesGeographiques = $this->structuresParZonesGeographiques();
+
+				// Comptage
+				$foos = array();
+				foreach( $structuresParZonesGeographiques as $typeorient_id => $datas ) {
+					foreach( $datas as $key => $label ) {
+						list( $codeinsee, $structurereferente_id ) = explode( '_', $key );
+
+						if( !isset( $foos[$codeinsee][$typeorient_id] ) ) {
+							$foos[$codeinsee][$typeorient_id] = 0;
+						}
+						$foos[$codeinsee][$typeorient_id]++;
+					}
+				}
+
+				// Nouvelle liste d'options
+				// Configure::write( 'Orientstruct.typeorientprincipale', array( 'Socioprofessionnelle' => array( 1 ), 'Social' => array( 2 ), 'Emploi' => array( 3 ) ) );
+				$typesorients = Configure::read( 'Orientstruct.typeorientprincipale' );
+				$pdvsCodeInsee = array();
+				foreach( $foos as $codeinsee => $datas ) {
+
+					$hasSociopro = false;
+					foreach( $typesorients['Socioprofessionnelle'] as $typeorient_sociopro_id ) {
+						if( isset( $datas[$typeorient_sociopro_id] ) && !empty( $datas[$typeorient_sociopro_id] ) ) {
+							$hasSociopro = true;
+						}
+					}
+
+					$pdvsCodeInsee[$codeinsee] = $hasSociopro;
+				}
+
+				$results = array();
+				foreach( $pdvsCodeInsee as $codeinsee => $hasPdv ) {
+					$results[$codeinsee] = $structuresParZonesGeographiques;
+
+					// Si mon code INSEE n'a pas de sociopro, alors les options auront tous les sociopro + tous les emploi
+					if( !$hasPdv ) {
+						foreach( $typesorients['Socioprofessionnelle'] as $typeorient_sociopro_id ) {
+							foreach( $typesorients['Emploi'] as $typeorient_emploi_id ) {
+								$results[$codeinsee][$typeorient_sociopro_id] = array_merge(
+									$results[$codeinsee][$typeorient_sociopro_id],
+									$results[$codeinsee][$typeorient_emploi_id]
+								);
+							}
+						}
+					}
+				}
+
+				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, array( 'Typeorient', 'Structurereferente', 'Zonegeographique' ) );
+			}
+
+			return $results;
+		}
+
+		/**
 		 * TODO: mettre En attente par défaut
 		 *
 		 * @param array $results
@@ -269,20 +334,23 @@
 					$formData['Transfertpdv93'][$index]['action'] = '0';
 
 					$structurereferente_dst_id = null;
-					if( isset( $structuresParZonesGeographiques[$result['Orientstruct']['typeorient_id']] ) ) {
-						$selectables = array();
-						$structures = $structuresParZonesGeographiques[$result['Orientstruct']['typeorient_id']];
 
-						if( !empty( $structures ) ) {
-							foreach( array_keys( $structures ) as $key ) {
-								if( preg_match( "/^{$result['Adresse']['numcomptt']}_/", $key ) ) {
-									$selectables[] = $key;
+					if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcomptt']] ) ) {
+						if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']] ) ) {
+							$selectables = array();
+							$structures = $structuresParZonesGeographiques[$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']];
+
+							if( !empty( $structures ) ) {
+								foreach( array_keys( $structures ) as $key ) {
+									if( preg_match( "/^{$result['Adresse']['numcomptt']}_/", $key ) ) {
+										$selectables[] = $key;
+									}
 								}
 							}
-						}
 
-						if( count( $selectables ) == 1 ) {
-							$structurereferente_dst_id = $selectables[0];
+							if( count( $selectables ) == 1 ) {
+								$structurereferente_dst_id = $selectables[0];
+							}
 						}
 					}
 
@@ -360,6 +428,12 @@
 			return $success;
 		}
 
+		/**
+		 *
+		 * @param array $data
+		 * @param integer $user_id
+		 * @return boolean
+		 */
 		public function saveCohorte( $data, $user_id ) {
 			$success = true;
 
@@ -369,6 +443,37 @@
 				}
 			}
 
+			return $success;
+		}
+
+		/**
+		 * Suppression et regénération du cache.
+		 *
+		 * @return boolean
+		 */
+		protected function _regenerateCache() {
+			// Suppression des éléments du cache.
+			$this->_clearModelCache();
+			$success = true;
+
+			// Regénération des éléments du cache.
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$success = ( $this->structuresParZonesGeographiques() !== false ) && $success;
+				$success = ( $this->structuresParZonesGeographiquesPourTransfertPdv() !== false ) && $success;
+			}
+
+			return $success;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les fonctions vides.
+		 */
+		public function prechargement() {
+			$success = $this->_regenerateCache();
 			return $success;
 		}
 	}

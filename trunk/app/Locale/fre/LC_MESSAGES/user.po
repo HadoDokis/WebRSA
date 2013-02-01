@@ -58,7 +58,10 @@ msgid "ENUM::TYPE::cg"
 msgstr "Conseil général"
 
 msgid "ENUM::TYPE::externe_cpdv"
-msgstr "Externe, chef de Projet de Ville"
+msgstr "Externe, responsable structure référente"
+
+msgid "ENUM::TYPE::externe_secretaire"
+msgstr "Externe, secrétaire structure référente"
 
 msgid "ENUM::TYPE::externe_ci"
-msgstr "Externe, chargé d'insertion"
+msgstr "Externe, référent structure référente"

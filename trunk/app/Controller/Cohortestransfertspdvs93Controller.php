@@ -91,7 +91,7 @@
 		 * @return void
 		 */
 		protected function _index() {
-			$structuresParZonesGeographiques = $this->Cohortetransfertpdv93->structuresParZonesGeographiques();
+			$structuresParZonesGeographiques = $this->Cohortetransfertpdv93->structuresParZonesGeographiquesPourTransfertPdv();
 
 			if( !empty( $this->request->data ) ) {
 				// Traitement des données renvoyées
@@ -163,7 +163,7 @@
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'qual' => $this->Option->qual(),
-				'structuresreferentes' => $this->Cohortetransfertpdv93->structuresParZonesGeographiques(),
+				'structuresreferentes' => $structuresParZonesGeographiques,
 				'departementsnvadresses' => array( '1' => 'Dans le département', '0' => 'Hors du départment' ),
 				'typesorients' => $this->Transfertpdv93->VxOrientstruct->Typeorient->listOptions()
 			);
