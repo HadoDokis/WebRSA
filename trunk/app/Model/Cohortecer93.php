@@ -424,7 +424,7 @@
 					'decisioncs' => $data['Histochoixcer93']['decisioncs'],
 					'decisioncadre' => $data['Histochoixcer93']['decisioncadre'],
 					'isrejet' => $data['Histochoixcer93']['isrejet'],
-					'action' => 'En attente',
+					'action' => 'Desactiver',
 					'dossier_id' => $data['Dossier']['id']
 				);
 				$formData['Cer93'][$index] = array(
