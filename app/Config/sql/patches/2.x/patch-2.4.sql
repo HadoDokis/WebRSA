@@ -697,6 +697,18 @@ CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx O
 SELECT add_missing_table_field( 'public', 'cers93', 'observationdecision', 'TEXT' );
 SELECT add_missing_table_field( 'public', 'histoschoixcers93', 'observationdecision', 'TEXT' );
 SELECT add_missing_table_field( 'public', 'decisionscontratscomplexeseps93', 'observationdecision', 'TEXT' );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'decisionscontratscomplexeseps93', 'decisionscontratscomplexeseps93_decision_observationdecision_chk' );
+ALTER TABLE decisionscontratscomplexeseps93 ADD CONSTRAINT decisionscontratscomplexeseps93_decision_observationdecision_chk CHECK ( observationdecision IS NULL OR decision IN ( 'valide', 'rejete' ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_observationdecision_chk' );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHECK (observationdecision IS NULL OR positioncer IN( '99valide', '99rejete' ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncs_observationdecision_chk' );
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_observationdecision_chk CHECK ( etape <> '05secondelecture' OR observationdecision IS NULL OR decisioncs = 'valide' );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncadre_observationdecision_chk' );
+ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_observationdecision_chk CHECK ( etape <> '06attaviscadre' OR observationdecision IS NULL OR decisioncadre IN ( 'valide', 'rejete' ) );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
