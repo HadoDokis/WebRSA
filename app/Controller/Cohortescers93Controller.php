@@ -297,7 +297,7 @@
 		 */
 		protected function _indexOptions( $structurereferente_id ) {
 			$options = array(
-				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
+				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'moticlorsa' => $this->Option->moticlorsa(),
@@ -491,7 +491,7 @@
 
 					$datas = array();
 					foreach( $this->request->data['Histochoixcer93'] as $i => $tmp ) {
-						if( $tmp['action'] === 'Valider' ) {
+						if( $tmp['action'] === 'Activer' ) {
 							$datas[$i] = array( 'Histochoixcer93' => $tmp );
 						}
 					}
@@ -687,7 +687,7 @@
 
 			// Options
 			$options = array(
-				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
+				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'moticlorsa' => $this->Option->moticlorsa(),
@@ -774,7 +774,7 @@
 
 			// TODO: factoriser ?
 			$options = array(
-				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
+				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'moticlorsa' => $this->Option->moticlorsa(),

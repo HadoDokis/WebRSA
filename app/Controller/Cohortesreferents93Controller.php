@@ -97,7 +97,7 @@
 					if( $this->PersonneReferent->saveAll( $data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 						$this->PersonneReferent->begin();
 
-						$data = Set::extract( '/PersonneReferent[action=Valider]', $this->request->data );
+						$data = Set::extract( '/PersonneReferent[action=Activer]', $this->request->data );
 
 						if( !empty( $data ) && $this->PersonneReferent->saveAll( $data, array( 'validate' => 'first', 'atomic' => false ) ) ) {
 							$this->PersonneReferent->commit();
@@ -150,7 +150,7 @@
 				if( !isset( $this->request->data['PersonneReferent'] ) ) {
 					$this->request->data['PersonneReferent'] = array();
 					foreach( array_keys( $personnes_referents ) as $index ) {
-						$this->request->data['PersonneReferent'][$index] = array( 'action' => 'En attente' );
+						$this->request->data['PersonneReferent'][$index] = array( 'action' => 'Desactiver' );
 					}
 				}
 			}
@@ -159,7 +159,7 @@
 
 			// Options
 			$options = array(
-				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' ),
+				'actions' => array( 'Activer' => 'Activer', 'Desactiver' => 'Désactiver' ),
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'moticlorsa' => $this->Option->moticlorsa(),

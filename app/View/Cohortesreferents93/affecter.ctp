@@ -185,7 +185,7 @@
 							.$this->Form->input( "PersonneReferent.{$index}.personne_id", array( 'type' => 'hidden', 'value' => $personne_referent['Personne']['id'] ) )
 							.$this->Form->input( "PersonneReferent.{$index}.structurereferente_id", array( 'type' => 'hidden', 'value' => $structurereferente_id ) )
 							.$this->Form->input( "PersonneReferent.{$index}.dddesignation", array( 'type' => 'hidden', 'value' => date( 'Y-m-d' ) ) )
-							.$this->Form->input( "PersonneReferent.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'] ) ),
+							.$this->Form->input( "PersonneReferent.{$index}.action", array( 'div' => false, 'legend' => false, 'type' => 'radio', 'options' => $options['actions'], 'separator' => '<br />' ) ),
 							array( 'class' => ( isset( $this->validationErrors['PersonneReferent'][$index]['action'] ) ? 'error' : null ) )
 						),
 						// Action
@@ -214,8 +214,8 @@
 			echo $this->Xform->end();
 
 			echo $pagination;
-			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Valider', true );" ) );
-			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'En attente', true );" ) );
+			echo $this->Form->button( 'Tout Activer', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Activer', true );" ) );
+			echo $this->Form->button( 'Tout Désactiver', array( 'onclick' => "return toutChoisir( $( 'PersonneReferent' ).getInputs( 'radio' ), 'Desactiver', true );" ) );
 		}
 	}
 ?>
@@ -239,7 +239,7 @@
 			'PersonneReferent',
 			'data[PersonneReferent][<?php echo $index;?>][action]',
 			[ 'PersonneReferent<?php echo $index;?>ReferentId' ],
-			[ 'Valider' ],
+			[ 'Activer' ],
 			true
 		);
 		<?php endforeach;?>

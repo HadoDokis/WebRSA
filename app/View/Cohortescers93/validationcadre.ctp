@@ -186,8 +186,8 @@
 			echo $this->Xform->end();
 
 			echo $pagination;
-			echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Valider', true );" ) );
-			echo $this->Form->button( 'Tout mettre En attente', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'En attente', true );" ) );
+			echo $this->Form->button( 'Tout Activer', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Activer', true );" ) );
+			echo $this->Form->button( 'Tout Désactiver', array( 'onclick' => "return toutChoisir( $( 'Personne' ).getInputs( 'radio' ), 'Desactiver', true );" ) );
 
 
 			echo '<ul class="actionMenu"><li>';
@@ -238,7 +238,7 @@
 						'Histochoixcer93<?php echo $index;?>DatechoixYear',
 						'Histochoixcer93<?php echo $index;?>Commentaire'
 					],
-					[ 'Valider' ],
+					[ 'Activer' ],
 					true
 				);
 
