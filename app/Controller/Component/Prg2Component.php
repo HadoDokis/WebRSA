@@ -82,11 +82,11 @@
 		 */
 		public function startup( Controller $controller ) {
 			if( in_array( $controller->action, array_keys( $this->_prgActions ) ) ) { // FIXME: function avec *
-				if( !empty( $controller->request->params['form'] ) ) { // FIXME: dans Prg, on faisait un merge avec $this->request->data juste avant
+				if( !empty( $controller->request->params['form'] ) ) { // FIXME: dans Prg, on faisait un merge avec $controller->request->data juste avant
 					return;
 				}
 
-				if( $this->RequestHandler->isPost() ) {
+				if( $controller->request->is( 'post' ) ) {
 					$params = $controller->request->data;
 
 					if( isset( $this->_prgActions[$controller->action]['filter'] ) ) {
@@ -112,7 +112,7 @@
 					$redirect = Router::url( array_merge( array( 'action' => $controller->action ), $params ), true );
 					$controller->redirect( $redirect );
 				}
-				else if( $this->RequestHandler->isGet() ) {
+				else if( $controller->request->is( 'get' ) ) {
 					if( CAKE_BRANCH == '1.2' ) {
 						$controller->request->data = Xset::bump( $controller->request->params['named'], '__' );
 					}

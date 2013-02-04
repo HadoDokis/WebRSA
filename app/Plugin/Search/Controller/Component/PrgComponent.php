@@ -92,7 +92,7 @@
 					return;
 				}
 
-				if( $this->RequestHandler->isPost() ) {
+				if( $controller->request->is( 'post' ) ) {
 					$params = $controller->request->data;
 
 					if( isset( $this->settings[$controller->action]['filter'] ) ) {
@@ -116,7 +116,7 @@
 					$redirect = Router::url( array_merge( array( 'action' => $controller->action ), $params ), true );
 					$controller->redirect( $redirect );
 				}
-				else if( $this->RequestHandler->isGet() ) {
+				else if( $controller->request->is( 'get' ) ) {
 					$controller->request->data = Set::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
 
 					if( isset( $controller->request->params['named']['sessionKey'] ) ) {
