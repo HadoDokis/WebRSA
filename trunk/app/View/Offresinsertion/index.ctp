@@ -82,7 +82,7 @@
 						</tr>
 						<tr>
 							<th><?php echo $this->Xpaginator->sort( 'Intitulé de l\'action', 'Actioncandidat.name' );?></th>
-							<th><?php echo $this->Xpaginator->sort( 'Code de l\'action', 'Actioncandidat.codeaction' );?></th>
+							<th>Code de l'action</th>
 							<th><?php echo $this->Xpaginator->sort( 'Chargé d\'insertion', 'Chargeinsertion.nom_complet' );?></th>
 							<th><?php echo $this->Xpaginator->sort( 'Secrétaire', 'Secretaire.nom_complet' );?></th>
 							<th><?php echo $this->Xpaginator->sort( 'Ville', 'Actioncandidat.lieuaction' );?></th>

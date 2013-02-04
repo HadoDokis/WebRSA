@@ -18,6 +18,8 @@
 		public $name = 'Offreinsertion';
 
 		public $useTable = false;
+		
+		public $actsAs = array( 'Formattable' );
 
 		/**
 		*
@@ -43,11 +45,11 @@
 				$conditions[] = 'Actioncandidat.id = \''.Sanitize::clean( $actionname, array( 'encode' => false ) ).'\'';
 			}
 			
-			if( is_numeric( $partenaire_id ) ){
+			if( is_numeric( $partenaire_id ) && !empty( $partenaire_id )  ){
 				$conditions[] = 'Partenaire.id = \''.Sanitize::clean( $partenaire_id, array( 'encode' => false ) ).'\'';
 			}
 
-			if( is_numeric( $contact_id ) ){
+			if( is_numeric( $contact_id ) && !empty( $contact_id ) ){
 				$conditions[] = 'Contactpartenaire.id = \''.Sanitize::clean( $contact_id, array( 'encode' => false ) ).'\'';
 			}
 			
@@ -55,7 +57,7 @@
 				$conditions[] = 'Partenaire.codepartenaire = \''.$codepartenaire.'\'';
 			}
 
-			if( is_numeric( $themecode ) ){
+			if( is_numeric( $themecode ) && !empty( $themecode ) ){
 				$conditions[] = 'Actioncandidat.themecode = \''.Sanitize::clean( $themecode, array( 'encode' => false ) ).'\'';
 			}
 			
@@ -71,11 +73,11 @@
 				$conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant, array( 'encode' => false ) ).'\'';
 			}
 						
-			if( isset( $hasfichecandidature ) ){
+			if( isset( $hasfichecandidature ) && !empty( $hasfichecandidature ) ){
 				$conditions[] = 'Actioncandidat.hasfichecandidature = \''.$hasfichecandidature.'\'';
 			}
 						
-			if( isset( $isactive ) ){
+			if( isset( $isactive ) && !empty( $isactive ) ){
 				$conditions[] = 'Actioncandidat.actif = \''.Sanitize::clean( $isactive, array( 'encode' => false )  ).'\'';
 			}
 
