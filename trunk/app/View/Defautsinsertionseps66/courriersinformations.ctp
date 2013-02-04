@@ -29,19 +29,19 @@
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par bénéficiaire' ).
 		$this->Default2->subform(
 			array(
-				'Search.Personne.nom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nom' ), 'required' => false ),
-				'Search.Personne.nomnai' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nomnai' ) ),
-				'Search.Personne.prenom' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.prenom' ), 'required' => false ),
-				'Search.Personne.nir' => array( 'type' => 'text', 'label' => __d( 'personne', 'Personne.nir' ) ),
-				'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'type' => 'text', 'maxlength' => 15 ),
-				'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ), 'type' => 'text', 'maxlength' => 15, 'required' => false ),
+				'Search.Personne.nom' => array(  'label' => __d( 'personne', 'Personne.nom' ), 'required' => false ),
+				'Search.Personne.nomnai' => array(  'label' => __d( 'personne', 'Personne.nomnai' ) ),
+				'Search.Personne.prenom' => array(  'label' => __d( 'personne', 'Personne.prenom' ), 'required' => false ),
+				'Search.Personne.nir' => array(  'label' => __d( 'personne', 'Personne.nir' ) ),
+				'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
+				'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ), 'required' => false ),
 				'Search.Dossier.dernier' => array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier )
 			)
 		)
 	);
 
 	$fields = array(
-		'Search.Adresse.locaadr' => array( 'type' => 'text', 'label' => __d( 'adresse', 'Adresse.locaadr' ), 'required' => false ),
+		'Search.Adresse.locaadr' => array(  'label' => __d( 'adresse', 'Adresse.locaadr' ), 'required' => false ),
 		'Search.Adresse.numcomptt' => array( 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true, 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'required' => false )
 	);
 	if( Configure::read( 'CG.cantons' ) ) {
