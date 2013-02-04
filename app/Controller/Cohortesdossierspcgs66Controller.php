@@ -200,7 +200,7 @@
 					}
 
                     if( !in_array( $statutAffectation, array( 'Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer' ) ) ) {
-						$this->Cohortes->get( array_unique( Set::extract( $cohortedossierpcg66, '{n}.Dossier.id' ) ) );
+						$this->Cohortes->get( Set::extract( $cohortedossierpcg66, '{n}.Dossier.id' ) );
 					}
 
 					$this->set( 'cohortedossierpcg66', $cohortedossierpcg66 );
