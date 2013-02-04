@@ -86,7 +86,7 @@
 								</tr>
 							</tbody>
 						</table>';
-
+// debug( $bilanparcour66 );
 					$nbFichiersLies = 0;
 					$nbFichiersLies = ( isset( $bilanparcour66['Fichiermodule'] ) ? count( $bilanparcour66['Fichiermodule'] ) : 0 );
 
