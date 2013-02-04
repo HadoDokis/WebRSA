@@ -125,7 +125,7 @@
 						$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
 						unset( $this->request->data[$decisionModelTheme] );
 						if( isset( $this->request->data['sessionKey'] ) ) {
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
+							$this->Session->delete( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
 						}
 					}
 					else {

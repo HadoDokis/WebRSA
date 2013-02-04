@@ -145,7 +145,6 @@
                             $this->Cohortes->release( array_unique( Set::extract( $this->request->data, 'Dossierpcg66.{n}.dossier_id' ) ) );
 
 							unset( $this->request->data['Dossierpcg66'] );
-//							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
 						}
 						else {
 							$this->Dossierpcg66->rollback();

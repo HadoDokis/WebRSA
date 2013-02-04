@@ -207,7 +207,7 @@
 						unset( $this->request->data['Orientstruct'], $this->request->data['Nonoriente66'] );
 
 						if( isset( $this->request->data['sessionKey'] ) ) {
-							$this->Session->del( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
+							$this->Session->delete( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
 						}
 					}
 					else {
