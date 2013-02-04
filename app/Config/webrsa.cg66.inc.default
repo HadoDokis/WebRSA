@@ -43,7 +43,7 @@
 		array(
 			'method' => 'cloudooo',
 			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
-			'cloudooo_host' => '192.168.2.35',
+			'cloudooo_host' => 'cloudooo.test.adullact.org',
 			'cloudooo_port' => '8011'
 		)
 	);
@@ -459,15 +459,15 @@
 	 * @default null
 	 */
 	Configure::write( 'Optimisations.useTableDernierdossierallocataire', true );
-	
-	
+
+
 	/**
 	 * Variable contenant un integer (âge de l'allocataire) pour la limite d'âge à atteindre
 	 * pour que la tacite reconduction soit autorisée.
 	 * Permet également d'autoriser la création d'un CER au-delà de la limite des 24 mois
 	 */
 	Configure::write( 'Tacitereconduction.limiteAge', 55 );
-	
+
 	/**
 	 * Variable contenant un integer (id stocké en base) pour la description du traitement PCG
 	 * devant être pris en compte pour la corbeille PCG

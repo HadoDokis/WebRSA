@@ -43,7 +43,7 @@
 		array(
 			'method' => 'cloudooo',
 			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
-			'cloudooo_host' => '192.168.2.35',
+			'cloudooo_host' => 'cloudooo.test.adullact.org',
 			'cloudooo_port' => '8011'
 		)
 	);
