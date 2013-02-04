@@ -982,6 +982,9 @@
 						'"Bilanparcours66"."id"' => $bilan['Bilanparcours66']['id']
 					)
 				);
+				if( $saved ) {
+					$saved = $this->Bilanparcours66->save( $this->request->data ) && $saved;
+				}
 
 				if( $saved ) {
 					$this->Bilanparcours66->commit();
