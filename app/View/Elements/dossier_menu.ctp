@@ -223,7 +223,7 @@
 		);
 
 		// Dossier PCG (CG 66)
-		if( Configure::read( 'Cg.departement' ) == 93 ) {
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			$items['PCGs'] = array(
 				'Dossier PCG' => array( 'url' => array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossier['Foyer']['id'] ) ),
 				'Corbeille PCG' => array( 'url' => array( 'controller' => 'foyers', 'action' => 'corbeille', $dossier['Foyer']['id'] ) )
