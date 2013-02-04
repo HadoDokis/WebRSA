@@ -177,7 +177,7 @@
 					}
 					$this->set( 'motifssortie', $optionsMotifssortie );
 
-                    $this->Cohortes->get( array_unique( Set::extract( $cohortefichecandidature66, '{n}.Dossier.id' ) ) );
+					$this->Cohortes->get( Set::extract( $cohortefichecandidature66, '{n}.Dossier.id' ) );
 					$this->set( 'cohortefichecandidature66', $cohortefichecandidature66 );
 				}
 			}
