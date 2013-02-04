@@ -851,7 +851,7 @@
 					$this->data[$this->alias]['origine'] = null;
 				}
 				else if( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) {
-					if( ( $this->data[$this->alias]['rgorient'] > 1 ) && ( $this->data[$this->alias]['origine'] != 'demenagement' ) ) {
+					if( ( $this->data[$this->alias]['rgorient'] > 1 ) && isset( $this->data[$this->alias]['origine'] ) && ( $this->data[$this->alias]['origine'] != 'demenagement' ) ) {
 						$this->data[$this->alias]['origine'] = 'reorientation';
 					}
 				}
