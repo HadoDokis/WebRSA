@@ -715,6 +715,60 @@ ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncs_observ
 SELECT alter_table_drop_constraint_if_exists( 'public', 'histoschoixcers93', 'histoschoixcers93_decisioncadre_observationdecision_chk' );
 ALTER TABLE histoschoixcers93 ADD CONSTRAINT histoschoixcers93_decisioncadre_observationdecision_chk CHECK ( etape <> '06attaviscadre' OR observationdecision IS NULL OR decisioncadre IN ( 'valide', 'rejete' ) );
 
+--------------------------------------------------------------------------------
+-- 20130204: dédoublonnage et création d'un index unique pour les prestations
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.dedoublonnage_prestations() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_doublon record;
+		v_row_prestation record;
+		v_row_test record;
+		v_query text;
+	BEGIN
+		FOR v_row_doublon IN
+			SELECT
+					personne_id, natprest
+				FROM prestations
+				GROUP BY personne_id, natprest
+				HAVING COUNT(*) > 1
+				ORDER BY COUNT(*) DESC, personne_id ASC, natprest ASC
+		LOOP
+			CREATE TEMPORARY TABLE omega(id INTEGER, personne_id INTEGER, natprest CHARACTER(3));
+
+			INSERT INTO omega ( id, personne_id, natprest )
+				SELECT id, personne_id, natprest
+					FROM prestations
+					WHERE
+						prestations.personne_id = v_row_doublon.personne_id
+						AND prestations.natprest = v_row_doublon.natprest;
+
+			FOR v_row_prestation IN
+				SELECT *
+					FROM omega
+					WHERE omega.id NOT IN (
+						SELECT MAX(id) FROM omega
+					)
+					ORDER BY id ASC
+			LOOP
+				v_query := 'DELETE FROM prestations WHERE id = ' || v_row_prestation.id || ';';
+				RAISE NOTICE  '%', v_query;
+				EXECUTE v_query;
+			END LOOP;
+
+			DROP TABLE omega;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.dedoublonnage_prestations();
+DROP FUNCTION public.dedoublonnage_prestations();
+
+DROP INDEX IF EXISTS prestations_personne_id_natprest_idx;
+CREATE UNIQUE INDEX prestations_personne_id_natprest_idx ON prestations(personne_id, natprest);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
