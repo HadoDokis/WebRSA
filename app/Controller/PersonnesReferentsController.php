@@ -192,7 +192,7 @@
 
 			// Existe-t'il un référent non clôturé ?
 			$dfdesignations = Set::extract( '/PersonneReferent/dfdesignation', $personnes_referents );
-			$ajoutPossible = ( count( $dfdesignations ) == count( Set::filter( $dfdesignations ) ) );
+			$ajoutPossible = ( count( $dfdesignations ) == count( Hash::filter( $dfdesignations ) ) );
 
 			$this->set( 'personnes_referents', $personnes_referents );
 			$this->set( 'personne_id', $personne_id );

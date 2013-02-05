@@ -25,7 +25,7 @@
 
 	function radioBilan( $view, $path, $value, $label ) {
 		$name = 'data['.implode( '][', explode( '.', $path ) ).']';
-		$storedValue = Set::classicExtract( $view->data, $path );
+		$storedValue = Set::classicExtract( $view->request->data, $path );
 		$checked = ( ( $storedValue == $value ) ? 'checked="checked"' : '' );
 		return "<label><input type=\"radio\" id=\"radio{$value}\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
 	}

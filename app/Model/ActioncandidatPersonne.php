@@ -438,7 +438,7 @@
 			);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
-			$options = Set::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
+			$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
 
 
 			$options = Set::merge( $options, $this->enums() );

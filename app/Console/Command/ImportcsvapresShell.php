@@ -205,7 +205,7 @@
 
 				$line = trim( $line );
 				$parts = explode( $this->params['separator'], $line );
-				$cleanedParts = Set::filter( $parts );
+				$cleanedParts = Hash::filter( $parts );
 				$nLignes++;
 
 				if( !empty( $cleanedParts ) ) {
@@ -313,7 +313,7 @@
 									$this->Apre->Personne->unbindModelAll();
 
 									$fields = Set::merge(
-													array_keys( Set::flatten( array( 'Personne' => Set::normalize( array_keys( $this->Apre->Personne->schema() ) ) ) ) ), array_keys( Set::flatten( array( 'Prestation' => Set::normalize( array_keys( $this->Apre->Personne->Prestation->schema() ) ) ) ) )
+													array_keys( Hash::flatten( array( 'Personne' => Set::normalize( array_keys( $this->Apre->Personne->schema() ) ) ) ) ), array_keys( Hash::flatten( array( 'Prestation' => Set::normalize( array_keys( $this->Apre->Personne->Prestation->schema() ) ) ) ) )
 									);
 
 									// Conditions pour le message d'erreur

@@ -192,7 +192,7 @@
 			<li><?php
 // 				echo $this->Xhtml->exportLink(
 // 					'Télécharger le tableau',
-// 					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+// 					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 // 					$this->Permissions->check( 'criteresdossierspcgs66', 'exportcsv' )
 // 				);
 			?></li>

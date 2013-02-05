@@ -87,7 +87,7 @@
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Apre66', $this->passedArgs ); ?>
 <?php echo $pagination;?>
 	<?php
-		foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
@@ -185,14 +185,14 @@
         <li><?php
             echo $this->Xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+                array( 'controller' => 'cohortesvalidationapres66', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 				$this->Permissions->check( 'cohortesvalidationapres66', 'exportcsv' )
             );
         ?></li>
 		<li><?php
             echo $this->Xhtml->printCohorteLink(
 				'Imprimer la cohorte',
-				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action ) + Set::flatten( $this->request->data, '__' ),
+				array( 'controller' => 'cohortesvalidationapres66', 'action' => 'notificationsCohorte', $this->action ) + Hash::flatten( $this->request->data, '__' ),
 				$this->Permissions->check( 'cohortesvalidationapres66', 'notificationsCohorte' )
 			);
         ?></li>

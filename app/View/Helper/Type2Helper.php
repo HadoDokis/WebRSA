@@ -232,7 +232,7 @@
 
 			// If field is of "type enum", translate it -> TODO: only if text / string ?
 			if( Set::check( $params, "options.{$value}" ) ) {
-				$params = Set::insert( array(), "options.{$modelName}.{$fieldName}", $params );
+				$params = Hash::insert( array(), "options.{$modelName}.{$fieldName}", $params );
 			}
 
 			if( Set::check( $params, "options.{$modelName}.{$fieldName}" ) ) {

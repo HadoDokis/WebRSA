@@ -97,7 +97,7 @@
 			$modelName = Inflector::classify( $controllerName );
 
 			if( count( $errors ) > 0 ) {
-				$fields = array_keys( Set::flatten( $errors[0] ) );
+				$fields = array_keys( Hash::flatten( $errors[0] ) );
 			}
 
 			$cohorteParams = array();

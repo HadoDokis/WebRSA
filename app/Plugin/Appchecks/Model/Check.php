@@ -43,7 +43,7 @@
 		 */
 		public function configureKeys() {
 			$Configure = Configure::getInstance();
-			$Configure = Set::flatten( $Configure );
+			$Configure = Hash::flatten( $Configure );
 			return array_keys( $Configure );
 		}
 

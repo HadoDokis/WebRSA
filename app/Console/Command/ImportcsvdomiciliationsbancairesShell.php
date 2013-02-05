@@ -142,7 +142,7 @@
 				if( $this->params['headers'] == 'false' || ( $nLigne != 0 ) ) {
 					$nLignes++;
 					$parts = explode( $this->params['separator'], $line );
-					$cleanedParts = Set::filter( $parts );
+					$cleanedParts = Hash::filter( $parts );
 					if( !empty( $cleanedParts ) ) {
 						$domiciliationsbancaire = array( 'Domiciliationsbancaire' => array( ) );
 
@@ -152,7 +152,7 @@
 							}
 						}
 
-						$cleanedDomiciliationsbancaire = Set::filter( $domiciliationsbancaire['Domiciliationsbancaire'] );
+						$cleanedDomiciliationsbancaire = Hash::filter( $domiciliationsbancaire['Domiciliationsbancaire'] );
 
 						$cleanedDomiciliationsbancaire['codebanque'] = str_pad( $cleanedDomiciliationsbancaire['codebanque'], 5, '0', STR_PAD_LEFT );
 						$cleanedDomiciliationsbancaire['codeagence'] = str_pad( $cleanedDomiciliationsbancaire['codeagence'], 5, '0', STR_PAD_LEFT );

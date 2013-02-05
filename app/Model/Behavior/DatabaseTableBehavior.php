@@ -51,7 +51,7 @@
 				'conditions' => array(),
 			);
 
-			$querydata = Set::merge( $defaults, Set::filter( $querydata ) );
+			$querydata = Set::merge( $defaults, Hash::filter( $querydata ) );
 			if( empty( $querydata['fields'] ) ) {
 				$querydata['fields'] = $dbo->fields( $model );
 			}

@@ -76,7 +76,7 @@
 					'controller' => 'cohortestransfertspdvs93',
 					'action'     => 'impressions',
 				),
-				Set::flatten( $this->request->data )
+				Hash::flatten( $this->request->data )
 			),
 			( $this->Permissions->check( 'cohortestransfertspdvs93', 'impressions' ) && count( $results ) > 0 )
 		);
@@ -84,7 +84,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 			( $this->Permissions->check( 'cohortestransfertspdvs93', 'exportcsv' ) && count( $results ) > 0 )
 		);
 	?></li>

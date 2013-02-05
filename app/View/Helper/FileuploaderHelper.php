@@ -130,7 +130,7 @@
 					$return .= '<td>'.$this->Xhtml->link(
 						'Télécharger',
 						array( 'action' => 'download', $fichier['id'] ),
-						array( 'enabled' => array( 'enabled' => $this->Permissions->checkDossier( $this->request->params['controller'], 'download', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) ) ), )
+						array( 'enabled' => $this->Permissions->checkDossier( $this->request->params['controller'], 'download', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) ), )
 					).'</td>';
 					$return .= '<td>'.$this->Xhtml->link(
 						'Supprimer',

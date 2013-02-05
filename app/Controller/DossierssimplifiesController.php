@@ -230,7 +230,7 @@
 							// Orientation
 							$tOrientstruct = Set::extract( $this->request->data, 'Orientstruct.'.$key );
 							if( !empty( $tOrientstruct ) ) {
-								$tOrientstruct = Set::filter( $tOrientstruct );
+								$tOrientstruct = Hash::filter( $tOrientstruct );
 							}
 
 							if( !empty( $tOrientstruct ) ) {

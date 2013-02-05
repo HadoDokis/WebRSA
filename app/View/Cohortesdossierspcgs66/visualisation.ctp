@@ -96,7 +96,7 @@
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
 <?php echo $pagination;?>
 	<?php
-		foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
@@ -154,7 +154,7 @@
         <li><?php
             echo $this->Xhtml->exportLink(
                 'Télécharger le tableau',
-                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+                array( 'controller' => 'cohortesdossierspcgs66', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 				$this->Permissions->check( 'cohortesdossierspcgs66', 'exportcsv' )
             );
         ?></li>

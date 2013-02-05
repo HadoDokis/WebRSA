@@ -67,7 +67,7 @@
 			$answers = array();
 
 			$items = Set::extract( $dsp, "/{$model}/{$code}" );
-			$libautrdifs = Set::filter( Set::extract( $dsp, "/{$model}/{$libdetails}" ) );
+			$libautrdifs = Hash::filter( Set::extract( $dsp, "/{$model}/{$libdetails}" ) );
 
 			if( !empty( $items ) ) {
 				$ul = array();

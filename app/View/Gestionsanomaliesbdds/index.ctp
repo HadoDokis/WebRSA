@@ -102,7 +102,7 @@
 		else {
 			$pagination = $this->Xpaginator2->paginationBlock( 'Dossier', $this->passedArgs );
 
-			$urlParams = Set::flatten( $this->request->data, '__' );
+			$urlParams = Hash::flatten( $this->request->data, '__' );
 
 			$thead = '<tr>'
 					.'<th>'.$this->Xpaginator2->sort( __d( 'dossier', 'Dossier.numdemrsa' ), 'Dossier.numdemrsa' ).'</th>'

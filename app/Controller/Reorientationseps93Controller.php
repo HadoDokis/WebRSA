@@ -150,7 +150,7 @@
 			);
 			$this->set( compact( 'options' ) );
 
-			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
+			$view = implode( '_', Hash::filter( array( 'index', $searchMode ) ) );
 			$this->render( $view );
 		}
 

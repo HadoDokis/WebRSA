@@ -63,7 +63,7 @@
 
 			$this->Controller = $controller;
 			$this->settings = (array)$settings;
-            
+
             $this->Jetons2->initialize( $controller );
 
 			if( $this->active() ) {
@@ -86,7 +86,7 @@
 		 * @return void
 		 */
 		public function clean() {
-			$this->page = ( isset( $this->Controller->params['named']['page'] ) ? $this->Controller->params['named']['page'] : 1 );
+			$this->page = ( isset( $this->Controller->request->params['named']['page'] ) ? $this->Controller->request->params['named']['page'] : 1 );
 			$sessionKey = $this->sessionKey();
 			$jetons = (array)$this->Session->read( $sessionKey );
 			unset( $jetons[$this->page] );

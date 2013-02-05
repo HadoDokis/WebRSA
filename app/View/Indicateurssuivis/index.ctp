@@ -156,7 +156,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'indicateurssuivis', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'indicateurssuivis', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'indicateurssuivis', 'exportcsv' )
 				);
 			?></li>

@@ -202,7 +202,7 @@
 			$this->Workflowscers93->assertUserCpdv();
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
-			$data = Xset::bump( $this->request->params['named'], '__' );
+			$data = Hash::expand( $this->request->params['named'], '__' );
 
 			// INFO: sinon on ne peut pas trier comme on veut
 			$this->PersonneReferent->Personne->virtualFields['situation'] = $this->Cohortereferent93->vfPersonneSituation;

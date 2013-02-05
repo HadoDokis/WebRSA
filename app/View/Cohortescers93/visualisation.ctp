@@ -160,7 +160,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv', 'visualisation' ) + Set::flatten( $this->request->data, '__' ),
+			array( 'action' => 'exportcsv', 'visualisation' ) + Hash::flatten( $this->request->data, '__' ),
 			( $this->Permissions->check( 'cohortescers93', 'exportcsv' ) && count( $cers93 ) > 0 )
 		);
 	?></li>

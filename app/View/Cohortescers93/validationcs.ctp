@@ -206,7 +206,7 @@
 					'action'     => 'impressionsDecisions',
 					'validationcs'
 				),
-				Set::flatten( $this->request->data )
+				Hash::flatten( $this->request->data )
 			),
 			$this->Permissions->check( 'cohortescers93', 'impressionsDecisions' )
 		);

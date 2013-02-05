@@ -50,7 +50,7 @@
 				$options
 			);
 			$typevoie = $this->Option->typevoie();
-			$options = Set::insert( $options, 'typevoie', $typevoie );
+			$options = Hash::insert( $options, 'typevoie', $typevoie );
 
 			$secteursactivites = $this->Accompagnementcui66->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
 					'list',

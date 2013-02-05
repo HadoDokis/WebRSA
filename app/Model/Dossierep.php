@@ -418,7 +418,7 @@
 					'contain' => false
 				)
 			);
-			$result = Set::flatten( $result );
+			$result = Hash::flatten( $result );
 
 			$errors = array();
 			if( empty( $result ) ) {

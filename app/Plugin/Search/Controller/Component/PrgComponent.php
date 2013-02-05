@@ -103,13 +103,13 @@
 
 						if( !empty( $sessionParams ) ) {
 							unset( $sessionParams['sessionKey'] );
-							$sessionKey = sha1( implode( '/', Set::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
+							$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
 							$this->Session->write( "{$this->name}.{$controller->name}__{$controller->action}.{$sessionKey}", $sessionParams );
 							$params['sessionKey'] = $sessionKey;
 						}
 					}
 
-					$params = Set::flatten( $params, '__' );
+					$params = Hash::flatten( $params, '__' );
 					$params = Set::merge( $controller->request->params['named'], $params );
 					$params = $this->_urlencodeParams( $params );
 
@@ -117,7 +117,7 @@
 					$controller->redirect( $redirect );
 				}
 				else if( $controller->request->is( 'get' ) ) {
-					$controller->request->data = Set::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
+					$controller->request->data = Hash::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
 
 					if( isset( $controller->request->params['named']['sessionKey'] ) ) {
 						$sessionParams = (array)$this->Session->read( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );

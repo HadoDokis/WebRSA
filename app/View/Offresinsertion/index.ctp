@@ -59,7 +59,7 @@
 	<br>
 		<div id="tabbedWrapper" class="tabs">
 			<?php
-				foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+				foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 					echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 				}
 			?>
@@ -109,7 +109,7 @@
 					</thead>
 					<tbody>
 					<?php
-						$urlParams = Set::flatten( $this->request->data, '__' );
+						$urlParams = Hash::flatten( $this->request->data, '__' );
 						foreach( $search as $result ) {
 							echo $this->Xhtml->tableCells(
 								array(
@@ -155,7 +155,7 @@
                     <li><?php
                         echo $this->Xhtml->exportLink(
                             'Télécharger le tableau',
-                            array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+                            array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
                             $this->Permissions->check( 'offresinsertion', 'exportcsv' )
                         );
                     ?></li>

@@ -72,7 +72,7 @@
 			echo '<ul class="actionMenu">';
 				echo '<li>'.$this->Xhtml->link(
 					'Imprimer les courriers d\'information',
-					array( 'controller' => 'defautsinsertionseps66', 'action' => 'printCourriersInformations' ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'defautsinsertionseps66', 'action' => 'printCourriersInformations' ) + Hash::flatten( $this->request->data, '__' ),
 					array( 'class' => 'button print', 'enabled' => $this->Permissions->check( 'defautsinsertionseps66', 'printCourriersInformations' ) ),
 					'Etes-vous sûr de vouloir imprimer les courriers d\'information ?'
 				).' </li>';

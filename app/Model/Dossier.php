@@ -570,7 +570,7 @@
 			// Reformattage pour la vue
 			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
 			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
-				$dossier['Foyer']['Personne'] = Set::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
+				$dossier['Foyer']['Personne'] = Hash::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
 			}
 
 			if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {

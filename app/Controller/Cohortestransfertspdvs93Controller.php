@@ -177,7 +177,7 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$data = Xset::bump( $this->request->params['named'], '__' );
+			$data = Hash::expand( $this->request->params['named'], '__' );
 
 			$querydata = $this->Cohortetransfertpdv93->search(
 				$this->action,
@@ -209,7 +209,7 @@
 		 * @return void
 		 */
 		public function impressions() {
-			$data = Xset::bump( $this->request->params['named'], '__' );
+			$data = Hash::expand( $this->request->params['named'], '__' );
 
 			$querydata = $this->Cohortetransfertpdv93->search(
 				$this->action,

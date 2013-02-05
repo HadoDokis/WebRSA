@@ -258,7 +258,7 @@
 				'Validationapre::notifiees',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
 			$apres = $this->Apre66->find( 'all', $querydata );
@@ -283,7 +283,7 @@
 				"Validationapre::{$statutValidation}",
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				$this->Cohortes->sqLocked( 'Dossier' )
 			);
 			unset( $querydata['limit'] );

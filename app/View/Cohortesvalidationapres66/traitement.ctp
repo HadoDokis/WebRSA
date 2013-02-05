@@ -76,7 +76,7 @@
     <?php if( is_array( $cohortevalidationapre66 ) && count( $cohortevalidationapre66 ) > 0  ):?>
         <?php echo $this->Form->create( 'TraitementApre', array( 'url'=> Router::url( null, true ) ) );?>
 		<?php
-			foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+			foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 				echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 			}
 		?>

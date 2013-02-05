@@ -44,7 +44,7 @@ foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Personne']['dtnai'] ),
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Dossierep']['created'] ),
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Nonorientationproep93']['Orientstruct']['date_valid'] ),
-				implode( ' - ', Set::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'], implode( ' ', Set::filter( array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ) ) ) ) ),
+				implode( ' - ', Hash::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'], implode( ' ', Hash::filter( array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ) ) ) ) ),
 
 				$avisep,
 

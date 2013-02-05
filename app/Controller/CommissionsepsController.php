@@ -192,7 +192,7 @@
 				$options = Set::merge(
 								$options, $this->Commissionep->Passagecommissionep->Dossierep->Saisinebilanparcoursep66->enums()
 				);
-				$options['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->listRadiosOptionsPrincipales( array_values( Set::flatten( Configure::read( 'Orientstruct.typeorientprincipale' ) ) ) );
+				$options['Saisinebilanparcoursep66']['typeorientprincipale_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->listRadiosOptionsPrincipales( array_values( Hash::flatten( Configure::read( 'Orientstruct.typeorientprincipale' ) ) ) );
 				$options['Saisinebilanparcoursep66']['typeorient_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Typeorient->list1Options();
 				$options['Saisinebilanparcoursep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			}
@@ -1267,7 +1267,7 @@
 
 			// INFO: pour le CG 66, on n'a pas de PDF de décision pour toutes les thématiques
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$pdfs = Set::filter( $pdfs );
+				$pdfs = Hash::filter( $pdfs );
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'DecisionsEPsBeneficiaire' );

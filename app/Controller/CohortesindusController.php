@@ -99,7 +99,7 @@
 			$querydata = $this->Cohorteindu->search(
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 			$querydata = $this->_qdAddFilters( $querydata );
 

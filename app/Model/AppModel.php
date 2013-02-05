@@ -220,7 +220,7 @@
 			$return = parent::saveAll( $data, $options );
 
 			if( is_array( $return ) && !empty( $return ) ) {
-				$return = Set::flatten( $return );
+				$return = Hash::flatten( $return );
 				$return = ( array_sum( $return ) == count( $return ) );
 			}
 			else if( is_array( $return ) && empty( $return ) ) {
@@ -252,7 +252,7 @@
 		 */
 		public function saveResultAsBool( $result ) {
 			if( is_array( $result ) ) {
-				foreach( Set::flatten( $result ) as $boolean ) {
+				foreach( Hash::flatten( $result ) as $boolean ) {
 					if( $boolean === false ) {
 						return false;
 					}

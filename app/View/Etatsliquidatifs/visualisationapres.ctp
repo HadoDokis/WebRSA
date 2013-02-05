@@ -103,7 +103,7 @@
 						$this->request->params['pass'][0],
 					),
 					$this->request->params['named'],
-					Set::flatten( $this->request->data, '__' )
+					Hash::flatten( $this->request->data, '__' )
 				)
 			);
 		?></li>

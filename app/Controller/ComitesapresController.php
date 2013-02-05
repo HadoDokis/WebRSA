@@ -221,7 +221,7 @@
 		}
 
 		public function exportcsv() {
-			$querydata = $this->Comiteapre->search( 'Comiteapre::index', Xset::bump( $this->request->params['named'], '__' ) );
+			$querydata = $this->Comiteapre->search( 'Comiteapre::index', Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
 			$comitesapres = $this->Comiteapre->find( 'all', $querydata );
 

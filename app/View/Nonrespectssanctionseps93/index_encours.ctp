@@ -26,7 +26,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' )
 		);
 	?></li>
 </ul>

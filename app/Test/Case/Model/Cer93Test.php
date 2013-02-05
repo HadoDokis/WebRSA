@@ -459,9 +459,9 @@
 			);
 
 			// TODO: en faire une fonction
-			foreach( Set::flatten( $result ) as $path => $value ) {
+			foreach( Hash::flatten( $result ) as $path => $value ) {
 				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
-					$result = Set::remove( $result, $path );
+					$result = Hash::remove( $result, $path );
 				}
 			}
 
@@ -787,9 +787,9 @@
 			);
 
 			// TODO: en faire une fonction
-			foreach( Set::flatten( $result ) as $path => $value ) {
+			foreach( Hash::flatten( $result ) as $path => $value ) {
 				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
-					$result = Set::remove( $result, $path );
+					$result = Hash::remove( $result, $path );
 				}
 			}
 

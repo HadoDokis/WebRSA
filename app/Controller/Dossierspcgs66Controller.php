@@ -91,7 +91,7 @@
 				$options
 			);
 
-			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+			$options = Hash::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
 			$this->set( compact( 'options' ) );
 		}
 

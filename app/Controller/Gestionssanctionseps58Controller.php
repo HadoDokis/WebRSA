@@ -191,7 +191,7 @@
 		public function exportcsv() {
 			$queryData = $this->Gestionsanctionep58->search(
 				'Gestion::visualisation',
-				Xset::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				null
@@ -270,7 +270,7 @@
 				'Gestion::visualisation',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				XSet::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				$page,
 				$this->Session->read( 'Auth.User.id' )
 			);

@@ -49,7 +49,7 @@
 					case 'delete':
 						$varName = $domain;
 						$controller->pageTitle = sprintf(
-								__d( $domain, "{$controller->name}::{$controller->action}" ), Set::classicExtract( Xset::classicExtract( $controller->viewVars, $varName ), "{$model->name}.{$model->displayField}" )
+								__d( $domain, "{$controller->name}::{$controller->action}" ), Set::classicExtract( Set::classicExtract( $controller->viewVars, $varName ), "{$model->name}.{$model->displayField}" )
 						);
 						break;
 					case 'add':
@@ -75,10 +75,12 @@
 		public function search( $operations, $queryData = array( ) ) {
 			$search = Set::extract( $this->Controller->request->data, 'Search' );
 			if( !empty( $search ) ) {
-				$search = Xset::filterDeep( Set::flatten( $search ) );
+				$search = Hash::flatten( (array)$search );
+				$search = Hash::filter( $search );
+				$search = Hash::expand( $search );
 
 				if( !empty( $search ) ) {
-					$search = Set::remove( $search, 'active' );
+					$search = Hash::remove( $search, 'active' );
 					$conditions = $this->_conditions( $search, $operations );
 					$queryData = Set::merge( $queryData, array( $this->Controller->modelClass => array( 'conditions' => $conditions ) ) );
 				}
@@ -101,7 +103,7 @@
 				)
 			);
 
-			$this->Controller->paginate = Xset::merge( $this->Controller->paginate, $queryData );
+			$this->Controller->paginate = Set::merge( $this->Controller->paginate, $queryData );
 			$items = $this->Controller->paginate( $this->Controller->modelClass );
 
 			$varname = Inflector::tableize( $this->Controller->modelClass );
@@ -154,7 +156,7 @@
 		 * @param integer $id L'id technique de l'enregistrement à modifier
 		 */
 		protected function _add_edit( $id = null ) {
-			if( Set::check( $this->Controller->params, 'form.cancel' ) ) {
+			if( Set::check( $this->Controller->request->params, 'form.cancel' ) ) {
 				$this->Controller->Session->setFlash( __( 'Save->cancel' ), 'flash/information' );
 				$this->Controller->redirect( array( 'action' => 'index' ) );
 			}
@@ -175,15 +177,15 @@
 				$this->Controller->set( $varname, $item );
 			}
 
-			if( !empty( $this->Controller->data ) ) {
-				if( Set::classicExtract( $this->Controller->params, "{$this->Controller->action}.operation" ) == 'saveAll' ) {
-					if( $this->Controller->{$this->Controller->modelClass}->saveAll( $this->Controller->data ) ) {
+			if( !empty( $this->Controller->request->data ) ) {
+				if( Set::classicExtract( $this->Controller->request->params, "{$this->Controller->action}.operation" ) == 'saveAll' ) {
+					if( $this->Controller->{$this->Controller->modelClass}->saveAll( $this->Controller->request->data ) ) {
 						$this->Controller->Session->setFlash( __( 'Save->success' ), 'flash/success' );
 						$this->Controller->redirect( array( 'action' => 'index' ) );
 					}
 				}
 				else {
-					$this->Controller->{$this->Controller->modelClass}->create( $this->Controller->data );
+					$this->Controller->{$this->Controller->modelClass}->create( $this->Controller->request->data );
 					if( $this->Controller->{$this->Controller->modelClass}->save() ) {
 						$this->Controller->Session->setFlash( __( 'Save->success' ), 'flash/success' );
 						$this->Controller->redirect( array( 'action' => 'index' ) );
@@ -191,13 +193,13 @@
 				}
 			}
 			else if( $this->Controller->action == 'edit' ) {
-				$this->Controller->data = $item;
+				$this->Controller->request->data = $item;
 
 				// Assign checkboxes
 				if( !empty( $this->Controller->{$this->Controller->modelClass}->hasAndBelongsToMany ) ) {
 					$HABTMModelNames = array_keys( $this->Controller->{$this->Controller->modelClass}->hasAndBelongsToMany );
 					foreach( $HABTMModelNames as $HABTMModelName )
-						$this->Controller->data = Xset::insert( $this->Controller->data, "{$HABTMModelName}.{$HABTMModelName}", Set::extract( $this->Controller->data, "/{$HABTMModelName}/id" ) );
+						$this->Controller->request->data = Hash::insert( $this->Controller->request->data, "{$HABTMModelName}.{$HABTMModelName}", Set::extract( $this->Controller->request->data, "/{$HABTMModelName}/id" ) );
 				}
 			}
 
@@ -243,7 +245,7 @@
 			$conditions = array( );
 
 			/// Reformat values
-			$data = Xset::bump( Set::normalize( $data ) );
+			$data = Hash::expand( Set::normalize( $data ) );
 			if( !empty( $data ) ) {
 				foreach( $data as $model => $params ) {
 					$model = ClassRegistry::init( $model );
@@ -261,7 +263,7 @@
 
 						if( $model->getColumnType( $field ) == 'datetime' ) {
 							$data[] = "{$model->alias}.{$field} BETWEEN '{$value}' AND '".date( 'Y-m-d', strtotime( $value ) + ( 24 * 60 * 60 ) )."'";
-							$data = Set::remove( $data, "{$model->alias}.{$field}" );
+							$data = Hash::remove( $data, "{$model->alias}.{$field}" );
 						}
 						else {
 							$data[$model->alias][$field] = $value;
@@ -271,7 +273,7 @@
 			}
 
 			/// Special operations
-			$operations = Xset::flatten( Set::normalize( $operations ) );
+			$operations = Hash::flatten( Set::normalize( $operations ) );
 			if( !empty( $operations ) ) {
 				foreach( $operations as $path => $operation ) {
 					switch( strtoupper( $operation ) ) {
@@ -287,8 +289,8 @@
 								}
 
 								$conditions[] = "{$path} BETWEEN '{$from}' AND '{$to}'";
-								$data = Set::remove( $data, "{$path}_from" );
-								$data = Set::remove( $data, "{$path}_to" );
+								$data = Hash::remove( $data, "{$path}_from" );
+								$data = Hash::remove( $data, "{$path}_to" );
 							}
 							break;
 						case 'LIKE':
@@ -300,14 +302,14 @@
 								$model = ClassRegistry::init( $model );
 
 								$conditions["{$path} ".( $model->driver() == 'postgres' ? 'ILIKE' : 'LIKE' )] = "%$value%";
-								$data = Set::remove( $data, $path );
+								$data = Hash::remove( $data, $path );
 							}
 							break;
 						default:
 							if( Set::check( $data, $path ) ) {
 								$value = Set::classicExtract( $data, $path );
 								$conditions["{$path} {$operation}"] = $value;
-								$data = Set::remove( $data, $path );
+								$data = Hash::remove( $data, $path );
 							}
 							break;
 					}
@@ -315,9 +317,12 @@
 			}
 
 			/// data that were not in special formatting.
-			$data = Xset::filterDeep( $data );
+			$data = Hash::flatten( (array)$data );
+			$data = Hash::filter( $data );
+			$data = Hash::expand( $data );
+
 			if( !empty( $data ) ) {
-				$data = Xset::flatten( $data );
+				$data = Hash::flatten( $data );
 				foreach( $data as $path => $value ) {
 					$conditions[$path] = $value;
 				}

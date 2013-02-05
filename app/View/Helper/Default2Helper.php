@@ -160,7 +160,7 @@
 			foreach( Set::normalize( $columns ) as $column => $options ) {
 				$label = $this->label( $column, $options );
 
-				if( Set::check( $this->Xpaginator2->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
+				if( Set::check( $this->request->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
 					$thead[] = $this->Xpaginator2->sort( $label, $column, $options );
 				}
 				else {
@@ -572,7 +572,7 @@
 				if( Set::check( $this->request->data, 'Search' ) ) { /// TODO: + page / sort / ...
 					$search = Set::extract( $this->request->data, 'Search' );
 					if( !empty( $search ) ) {
-						$search = Set::flatten( array( 'Search' => $search ) );
+						$search = Hash::flatten( array( 'Search' => $search ) );
 						foreach( $search as $path => $value ) {
 							$return .= '<div>'.$this->Xform->input( $path, array( 'type' => 'hidden', 'id' => null ) ).'</div>';
 						}
@@ -722,7 +722,7 @@
 
 			// Was search data sent ?
 			$data = ( !empty( $this->request->data ) ? array_keys( $this->request->data ) : array() );
-			$data = Xset::bump( Set::normalize( $data ) );
+			$data = Hash::expand( Set::normalize( $data ) );
 			// FIXME: ajouter le bouton pour le déplier
 
 			$return = '';
@@ -887,7 +887,7 @@
 			$secondline = array();
 
 			$group = Set::normalize( $group );
-			$groupedColumns = Set::flatten( $group );
+			$groupedColumns = Hash::flatten( $group );
 
 			foreach( $ths as $position => $th ) {
 				if( in_array( $position, $groupedColumns ) ) {

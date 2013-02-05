@@ -85,7 +85,7 @@
     <?php if( is_array( $cohortedossierpcg66 ) && count( $cohortedossierpcg66 ) > 0  ):?>
         <?php echo $this->Form->create( 'Affectationdossierpcg66', array( 'url'=> Router::url( null, true ) ) );?>
 		<?php
-			foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+			foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 				echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 			}
 		?>

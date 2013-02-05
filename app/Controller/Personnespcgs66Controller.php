@@ -369,7 +369,7 @@
 						);
 
 						$oldrecordsids = array_values( $records );
-						$nouveauxids = Set::filter( Set::extract( "/{$modelelie}", $$tableliee ) );
+						$nouveauxids = Hash::filter( Set::extract( "/{$modelelie}", $$tableliee ) );
 
 						if( empty( $nouveauxids ) ) {
 							$this->Personnepcg66->{$modelelie}->invalidate( $modelelie, 'Merci de cocher au moins une case' );

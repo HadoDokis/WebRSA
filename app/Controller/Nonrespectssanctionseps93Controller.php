@@ -246,7 +246,7 @@
 			);
 			$this->set( compact( 'options' ) );
 
-			$view = implode( '_', Set::filter( array( 'index', $searchMode ) ) );
+			$view = implode( '_', Hash::filter( array( 'index', $searchMode ) ) );
 			$this->render( $view );
 		}
 
@@ -370,7 +370,7 @@
 		*/
 
 		public function exportcsv() {
-			$searchData = Set::classicExtract( Xset::bump( $this->request->params['named'], '__' ), 'Search' );
+			$searchData = Set::classicExtract( Hash::expand( $this->request->params['named'], '__' ), 'Search' );
 			$searchMode = Set::classicExtract( $searchData, 'Nonrespectsanctionep93.mode' );
 
 			$dossiers = $this->Nonrespectsanctionep93->find( 'all', $this->_queryData( $searchData ) );

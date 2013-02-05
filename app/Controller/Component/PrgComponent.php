@@ -53,17 +53,17 @@
 
 				if( !empty( $filter ) ) {
 					$datas = array( $filter => Set::extract( $controller->request->data, $filter ) );
-					$filteredData = Set::filter( $controller->request->data );
-					$sessionKey = sha1( implode( '/', Set::flatten( ( empty( $filteredData ) ? array( ) : $filteredData ), '__' ) ) );
+					$filteredData = Hash::filter( $controller->request->data );
+					$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $filteredData ) ? array( ) : $filteredData ), '__' ) ) );
 				}
 				else {
 					$datas = $controller->request->data;
 				}
 
-				$datas = Set::filter( $datas );
+				$datas = Hash::filter( $datas );
 
 				if( !empty( $datas ) ) {
-					$params = Set::flatten( $datas, '__' );
+					$params = Hash::flatten( $datas, '__' );
 
 					// Real get params
 					if( $this->_realGetParams ) {
@@ -125,7 +125,7 @@
 									(!empty( $datas ) ? $datas : array( ) ), (!empty( $urlParams ) ? $urlParams : array( ) ), (!empty( $sessionParams ) ? $sessionParams : array( ) )
 					);
 
-					$controller->request->data = Xset::bump( $params, '__' );
+					$controller->request->data = Hash::expand( $params, '__' );
 				}
 			}
 		}

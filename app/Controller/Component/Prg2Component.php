@@ -97,7 +97,7 @@
 
 						if( !empty( $sessionParams ) ) {
 							unset( $sessionParams['sessionKey'] );
-							$sessionKey = sha1( implode( '/', Set::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
+							$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
 							$this->Session->write( "Prg.{$controller->name}__{$controller->action}.{$sessionKey}", $sessionParams );
 							$params['sessionKey'] = $sessionKey;
 
@@ -105,7 +105,7 @@
 						}
 					}
 
-					$params = Set::flatten( $params, '__' );
+					$params = Hash::flatten( $params, '__' );
 					$params = Set::merge( $controller->request->params['named'], $params );
 					$params = $this->_urlencodeParams( $params );
 
@@ -114,10 +114,10 @@
 				}
 				else if( $controller->request->is( 'get' ) ) {
 					if( CAKE_BRANCH == '1.2' ) {
-						$controller->request->data = Xset::bump( $controller->request->params['named'], '__' );
+						$controller->request->data = Hash::expand( $controller->request->params['named'], '__' );
 					}
 					else {
-						$controller->request->data = Xset::bump( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
+						$controller->request->data = Hash::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
 					}
 
 					if( isset( $controller->request->params['named']['sessionKey'] ) ) {

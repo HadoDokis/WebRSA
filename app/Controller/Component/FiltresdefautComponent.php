@@ -79,7 +79,7 @@
 		 */
 		public function needsMerge() {
 			return in_array( $this->Controller->action, $this->settings )
-					&& empty( $this->Controller->data );
+					&& empty( $this->Controller->request->data );
 		}
 
 		/**
@@ -103,8 +103,8 @@
 		public function merge() {
 			$filtresdefaut = (array)Configure::read( $this->configureKey() );
 			if( !empty( $filtresdefaut ) ) {
-				$filtresdefaut = Xset::bump( $filtresdefaut, '__' );
-				$this->Controller->data = Set::merge( $filtresdefaut, $this->Controller->data );
+				$filtresdefaut = Hash::expand( $filtresdefaut, '__' );
+				$this->Controller->request->data = Set::merge( $filtresdefaut, $this->Controller->request->data );
 			}
 		}
 

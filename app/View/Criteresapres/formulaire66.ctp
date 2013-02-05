@@ -124,7 +124,7 @@
 <?php if( isset( $apres ) ):?>
 
     <?php
-        $totalCount = Set::classicExtract( $this->Xpaginator->params, 'paging.Apre.count' );
+        $totalCount = Set::classicExtract( $this->request->params, 'paging.Apre.count' );
     ?>
 
 
@@ -220,7 +220,7 @@
              <li><?php
                 echo $this->Xhtml->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Set::flatten( $this->request->data, '__' ),
+                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'criteresapres', 'exportcsv' )
                 );
             ?></li>

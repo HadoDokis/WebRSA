@@ -529,7 +529,7 @@
 				$details['Natureaide'][$model] = count( $aides );
 
 				if( !empty( $aides ) ) {
-					$details['Piecepresente'][$model] = count( Set::filter( Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
+					$details['Piecepresente'][$model] = count( Hash::filter( Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
 					$details['Piecemanquante'][$model] = abs( $nbNormalPieces[$model] - $details['Piecepresente'][$model] );
 
 					if( !empty( $details['Piecemanquante'][$model] ) ) {
@@ -606,7 +606,7 @@
 			}
 
 			if( array_key_exists( $this->name, $this->data ) && array_key_exists( 'referent_id', $this->data[$this->name] ) ) {
-				$this->data = Set::insert( $this->data, "{$this->alias}.referent_id", suffix( Set::extract( $this->data, "{$this->alias}.referent_id" ) ) );
+				$this->data = Hash::insert( $this->data, "{$this->alias}.referent_id", suffix( Set::extract( $this->data, "{$this->alias}.referent_id" ) ) );
 			}
 			return $return;
 		}
@@ -1002,7 +1002,7 @@
 			);
 			if( empty( $contratinsertion ) ) {
 				$fields = $this->Personne->Contratinsertion->fields();
-				$contratinsertion = Xset::bump( Set::normalize( $fields ) );
+				$contratinsertion = Hash::expand( Set::normalize( $fields ) );
 			}
 			$apre = Set::merge( $apre, $contratinsertion );
 

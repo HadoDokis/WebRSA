@@ -126,7 +126,7 @@
 	<?php echo $pagination;?>
 	<?php echo $this->Xform->create( 'Gestionsanctionep58', array( 'url'=> Router::url( null, true ) ) );?>
 	<?php
-		foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
@@ -229,7 +229,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'gestionssanctionseps58', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+					array( 'controller' => 'gestionssanctionseps58', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' )
 				);
 			?></li>
 
@@ -240,7 +240,7 @@
 						array(
 							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions1'
 						),
-						Set::flatten( $this->request->params['named'] )
+						Hash::flatten( $this->request->params['named'] )
 					)
 				);
 
@@ -253,7 +253,7 @@
 						array(
 							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions2'
 						),
-						Set::flatten( $this->request->params['named'] )
+						Hash::flatten( $this->request->params['named'] )
 					)
 				);
 			?></li>

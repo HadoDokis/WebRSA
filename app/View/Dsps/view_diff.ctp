@@ -43,8 +43,8 @@
 							$actValues = Set::extract( "/{$modelRevName}/{$key}", $act );
 							$oldValues = Set::extract( "/{$modelRevName}/{$key}", $old );
 
-							$enPlus = Set::filter( array_diff( $actValues, $oldValues ) );
-							$enMoins = Set::filter( array_diff( $oldValues, $actValues ) );
+							$enPlus = Hash::filter( array_diff( $actValues, $oldValues ) );
+							$enMoins = Hash::filter( array_diff( $oldValues, $actValues ) );
 
 							if( !empty( $enPlus ) || !empty( $enMoins ) ) {
 								$lignes.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', $path )."</td></tr>";

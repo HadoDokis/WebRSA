@@ -37,7 +37,7 @@
 
 			foreach( array( 'Themeapre66', 'Typeaideapre66' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
 			}
 			$this->set( compact( 'options' ) );
 

@@ -61,7 +61,7 @@
 
 
 			$typevoie = $this->Option->typevoie();
-			$options = Set::insert( $options, 'typevoie', $typevoie );
+			$options = Hash::insert( $options, 'typevoie', $typevoie );
 
 			$this->set( compact( 'options', 'dept' ) );
 		}

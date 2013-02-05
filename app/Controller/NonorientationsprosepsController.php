@@ -70,7 +70,7 @@
 					$this->_setFlashResult( 'Save', $success );
 					if ( $success ) {
 						$this->{$this->modelClass}->commit();
-						$this->redirect( Set::merge( array( 'action' => 'index' ), Set::flatten( array( 'Filtre' => $this->request->data['Filtre'] ), '__' ) ) );
+						$this->redirect( Set::merge( array( 'action' => 'index' ), Hash::flatten( array( 'Filtre' => $this->request->data['Filtre'] ), '__' ) ) );
 					}
 					else {
 						$this->{$this->modelClass}->rollback();
@@ -108,7 +108,7 @@
 
 
 
-			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Xset::bump( $this->request->params['named'], '__' ) );
+			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $queryData['limit'] );
 
 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );

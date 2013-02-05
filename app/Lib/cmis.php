@@ -265,7 +265,7 @@
 			}
 
 			try {
-				$crumbs = Set::filter( preg_split( '/\//', $path ) );
+				$crumbs = Hash::filter( preg_split( '/\//', $path ) );
 
 				$prevNode = null;
 				$tmpPath = '';

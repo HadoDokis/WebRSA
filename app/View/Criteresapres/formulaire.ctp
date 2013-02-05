@@ -124,9 +124,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 <!-- Résultats -->
 <?php if( isset( $apres ) ):?>
 
-    <?php
-        $totalCount = Set::classicExtract( $this->Xpaginator->params, 'paging.Apre.count' );
-    ?>
+    <?php $totalCount = Set::classicExtract( $this->request->params, 'paging.Apre.count' ); ?>
     <?php if( !empty( $totalCount ) ):?>
         <?php
             echo sprintf( 'Nombre total d\'APREs: %d, dont %d en attente de décision et %d en attente de traitement', $this->Locale->number( $totalCount ), $this->Locale->number( $attenteDecisionsApres ), $this->Locale->number( $attenteTraitementApres ) );
@@ -227,7 +225,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
              <li><?php
                 echo $this->Xhtml->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Set::flatten( $this->request->data, '__' ),
+                    array( 'controller' => 'criteresapres', 'action' => 'exportcsv', $this->action ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'criteresapres', 'exportcsv' )
                 );
             ?></li>

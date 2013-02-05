@@ -97,14 +97,14 @@
 		 */
 		protected function _exportChampsDisponibles( &$oMainPart, $mainData, $cohorteData, $document ) {
 			//
-			$flatKeys = $this->_flatKeys( array_keys( Set::flatten( $mainData ) ) );
+			$flatKeys = $this->_flatKeys( array_keys( Hash::flatten( $mainData ) ) );
 			//
 			if( !empty( $cohorteData ) ) {
 				foreach( $cohorteData as $prefix => $foo ) {
 					if( isset( $foo[0] ) ) {
 						$flatKeys = array_merge(
 							$flatKeys,
-							$this->_flatKeys( array_keys( Set::flatten( array( $prefix => $foo[0] ) ) ) )
+							$this->_flatKeys( array_keys( Hash::flatten( array( $prefix => $foo[0] ) ) ) )
 						);
 					}
 				}
@@ -187,7 +187,7 @@
 			}
 
 			if( !empty( $mainData ) ) {
-				foreach( Set::flatten( $mainData, '_' ) as $key => $value ) {
+				foreach( Hash::flatten( $mainData, '_' ) as $key => $value ) {
 					$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
 				}
 			}
@@ -219,7 +219,7 @@
 					foreach( $sectionDatas as $sectionData ) {
 						$oDevPart = new GDO_PartType();
 
-						$sectionData = Set::flatten( $sectionData, '_' );
+						$sectionData = Hash::flatten( $sectionData, '_' );
 						foreach( $sectionData as $key => $value ) {
 							$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
 						}

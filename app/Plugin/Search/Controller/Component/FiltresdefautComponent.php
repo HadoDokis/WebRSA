@@ -106,7 +106,7 @@
 		 */
 		public function values() {
 			$key = $this->configureKey();
-			return Set::expand( (array)Configure::read( $key ) );
+			return Hash::expand( (array)Configure::read( $key ) );
 		}
 
 		/**

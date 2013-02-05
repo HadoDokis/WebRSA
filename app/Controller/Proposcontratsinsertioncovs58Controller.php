@@ -390,10 +390,10 @@
 
 
 				if( !empty( $structurereferente_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->Propocontratinsertioncov58->alias}.structurereferente_id", $structurereferente_id );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->Propocontratinsertioncov58->alias}.structurereferente_id", $structurereferente_id );
 				}
 				if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->Propocontratinsertioncov58->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->Propocontratinsertioncov58->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
 				}
 			}
 

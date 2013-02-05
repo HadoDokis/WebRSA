@@ -172,7 +172,7 @@
 		*
 		*/
 		protected function _informationsFoyer( $foyer_id ) {
-			$named = Xset::bump( $this->request->params['named'], '__' );
+			$named = Hash::expand( $this->request->params['named'], '__' );
 
 			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
 			$methode = ( empty( $methode ) ? 'approchante' : $methode );
@@ -217,7 +217,7 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
 
 			// Personnes posant problème au sein du foyer
-			$named = Xset::bump( $this->request->params['named'], '__' );
+			$named = Hash::expand( $this->request->params['named'], '__' );
 			/*$touteerreur = Set::classicExtract( $params, 'Gestionanomaliebdd.touteerreur' );
 			$enerreur = Set::classicExtract( $named, 'Gestionanomaliebdd.enerreur' );
 			$sansprestation = Set::classicExtract( $named, 'Gestionanomaliebdd.sansprestation' );
@@ -279,7 +279,7 @@
 
 			$this->set( compact( 'personnes', 'options', 'methodes', 'problemes', 'foyer' ) );
 
-			/*$named = Xset::bump( $this->request->params['named'], '__' );
+			/*$named = Hash::expand( $this->request->params['named'], '__' );
 			$enerreur = Set::classicExtract( $named, 'Gestionanomaliebdd.enerreur' );
 			$sansprestation = Set::classicExtract( $named, 'Gestionanomaliebdd.sansprestation' );
 			$doublons = Set::classicExtract( $named, 'Gestionanomaliebdd.doublons' );
@@ -429,7 +429,7 @@
 					Set::extract( '/Orientstruct/id', $nonOriente )
 				);
 
-				$ids = Set::filter( $ids );
+				$ids = Hash::filter( $ids );
 
 				if( !empty( $ids ) ) {
 					$success = $modelClass->deleteAll(
@@ -704,7 +704,7 @@
 				if( $uniqueRecordsModel != 'Personne' ) {
 					$pathKeep = "/{$uniqueRecordsModel}/id";
 					$keep = Set::extract( $pathKeep, $data );
-					$keep = Set::filter( $keep );
+					$keep = Hash::filter( $keep );
 
 					if( count( $keep ) > 1 ) {
 						$pathOriginals = "/{$uniqueRecordsModel}/{$uniqueRecordsModel}";
@@ -817,7 +817,7 @@
 			}
 
 			// Fusion des enregistrements liés à la personne sélectionnée
-			$models = array_keys( Set::filter( $data ) );
+			$models = array_keys( Hash::filter( $data ) );
 			foreach( $models as $model ) {
 				if( $model != 'Personne' && !empty( $data[$model]['id'] ) ) {
 					$methodName = "_personnes{$model}Merge";
@@ -960,7 +960,7 @@
 			$dossier_id = $this->Dossier->Foyer->dossierId( $foyer_id );
 			$this->Jetons2->get( $dossier_id );
 
-			$named = Xset::bump( $this->request->params['named'], '__' );
+			$named = Hash::expand( $this->request->params['named'], '__' );
 			$methode = Set::classicExtract( $named, 'Gestionanomaliebdd.methode' );
 			$methode = ( empty( $methode ) ? 'normale' : $methode );
 			$sansprestation = Set::classicExtract( $named, 'Gestionanomaliebdd.sansprestation' );
@@ -1000,7 +1000,7 @@
 			if( !empty( $personnes_id ) ) {
 				$assocConditions = $this->Gestionanomaliesbdd->assocConditions( $this->Dossier->Foyer->Personne );
 				$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
-				$donnees = Set::filter( $donnees );
+				$donnees = Hash::filter( $donnees );
 
 				$fichiersModuleLies = array_merge(
 					$this->_fichiersModuleLies( $donnees ),

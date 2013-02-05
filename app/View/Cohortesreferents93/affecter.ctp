@@ -206,7 +206,7 @@
 			echo '</tbody>';
 			echo '</table>';
 
-			$search = Set::flatten( $this->request->data['Search'] );
+			$search = Hash::flatten( $this->request->data['Search'] );
 			if( !empty( $search ) ) {
 				foreach( $search as $key => $value ) {
 					echo $this->Form->input( "Search.{$key}", array( 'type' => 'hidden', 'value' => $value ) );
@@ -228,7 +228,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 			( $this->Permissions->check( 'cohortescers93', 'exportcsv' ) && count( $personnes_referents ) > 0 )
 		);
 	?></li>
