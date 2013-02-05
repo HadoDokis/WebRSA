@@ -512,7 +512,7 @@
 		 * @param integer $id L'id technique de l'orientation
 		 * @return array
 		 */
-		public function getDataForPdf( $id/*, $user_id*/ ) {
+		public function getDataForPdf( $id, $user_id ) {
 			// TODO: error404/error500 si on ne trouve pas les données
 			$optionModel = ClassRegistry::init( 'Option' );
 			$qual = $optionModel->qual();
@@ -538,11 +538,24 @@
 						),
 						'Typeorient',
 						'Structurereferente',
-						'Referent',
-						'User',
+						'Referent'
 					)
 				)
 			);
+			
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+            $orientstruct = Set::merge( $orientstruct, $user );
+
 
 			if( $orientstruct['Orientstruct']['statut_orient'] != 'Orienté' ) {
 				return false;
