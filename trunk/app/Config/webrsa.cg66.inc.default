@@ -357,34 +357,6 @@
 	Configure::write( 'Chargeinsertion.Secretaire.group_id', array( 16, 7, 12 ) );
 
 	/**
-	 * Configuration du composant Email de CakePHP pour l'envoi de mails.
-	 * Ne pas oublier de configurer le fichier php.ini
-	 *
-	 * @see http://book.cakephp.org/1.2/en/view/481/Sending-A-Message-Using-SMTP
-	 */
-	Configure::write(
-		'Email',
-		array(
-			'smtpOptions' => array(
-				'port'=>'25',
-				'timeout'=>'30',
-				'host' => 'xxxxx.cgxxxx.fr',
-				'username'=>'',
-				'password'=>'',
-				'client' => 'smtp_helo_hostname'
-			)
-		)
-	);
-
-	/**
-	 * Configuration des adresses mails d'expéditeur pour l'envoi de mails concernant
-	 * les pièces manquantes de l'APRE (CG 66).
-	 */
-	Configure::write( 'Apre66.EmailPiecesmanquantes.from', 'emailaprefrom@cgxxxx.fr' );
-	Configure::write( 'Apre66.EmailPiecesmanquantes.replyto', Configure::read( 'Apre66.EmailPiecesmanquantes.from' ) );
-
-
-	/**
 	 * 	Délai pour la détection des CERs non validés et notifiés il y a 1 mois et demi
 	 */
 	Configure::write( 'Criterecer.delaidetectionnonvalidnotifie', '45 days' );
@@ -406,14 +378,6 @@
 	 * dans la gestion des réponses des non orientés 66
 	 */
 	Configure::write( 'Nonoriente66.TypeorientIdPrepro', 5 );
-
-
-	/**
-	 * Configuration des adresses mails d'expéditeur pour l'envoi de mails concernant
-	 * les fiches de candidature (CG 66).
-	 */
-	Configure::write( 'FicheCandidature.Email.from', 'emailaprefrom@cgxxxx.fr' );
-	Configure::write( 'FicheCandidature.Email.replyto', Configure::read( 'FicheCandidature.Email.from' ) );
 
 	/**
 	 * Lorsque l'on enregistre un CER au CG 66, on vérifie si l'allocataire a un dernier rendez-vous
