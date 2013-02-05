@@ -439,13 +439,13 @@
 			// a) Si 1 foyer = 1 personne, montant forfaitaire = F (= 454,63 EUR)
 			if( count( $personnes ) == 1 ) {
 				$mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
-				$montant = array_sum( Set::filter( $mtpersressmenrsa ) );
+				$montant = array_sum( Hash::filter( $mtpersressmenrsa ) );
 				return ( $montant < $F );
 			}
 			// b) Si 1 foyer = 2 personnes, montant forfaitaire = 150% F
 			else if( count( $personnes ) == 2 ) {
 				$mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
-				$montant = array_sum( Set::filter( $mtpersressmenrsa ) );
+				$montant = array_sum( Hash::filter( $mtpersressmenrsa ) );
 				return ( $montant < ( $F * 1.5 ) );
 			}
 			else {
@@ -466,7 +466,7 @@
 					}
 
 					$mtpersressmenrsa = Set::extract( $personnes, '/Calculdroitrsa/mtpersressmenrsa' );
-					$montant += array_sum( Set::filter( $mtpersressmenrsa ) );
+					$montant += array_sum( Hash::filter( $mtpersressmenrsa ) );
 				}
 
 				// c) Si 1 foyer = X personnes de plus de 25 ans + Y personnes de moins de 25 ans et X+Y>2 et Y=<2 , montant forfaitaire = 150% F + 30%F(X-2)

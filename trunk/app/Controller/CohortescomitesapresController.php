@@ -166,7 +166,7 @@
 		 *
 		 */
 		public function exportcsv() {
-			$querydata = $this->Cohortecomiteapre->search( null, Xset::bump( $this->request->params['named'], '__' ) );
+			$querydata = $this->Cohortecomiteapre->search( null, Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
 			$decisionscomites = $this->Comiteapre->find( 'all', $querydata );
 			$this->_setOptions();

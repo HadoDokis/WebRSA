@@ -95,7 +95,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'cohortespdos', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'cohortespdos', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'cohortespdos', 'exportcsv' )
 				);
 			?></li>

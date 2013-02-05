@@ -125,7 +125,7 @@
 			$explodedFkPath = explode( '.', "{$base_path}.{$fk_field}" );
 			$explodedAutresPath = explode( '.', "{$base_path}.{$autre_field}" );
 
-			$checkedIds = Set::filter(
+			$checkedIds = Hash::filter(
 				Set::extract(
 					$this->request->data,
 					$this->_setExtractPath( $explodedFkPath )

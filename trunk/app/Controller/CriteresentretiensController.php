@@ -77,7 +77,7 @@
 			$querydata = $this->Critereentretien->search(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				false
 			);
 

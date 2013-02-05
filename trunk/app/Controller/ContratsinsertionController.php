@@ -1065,11 +1065,11 @@
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
 					$dspStockees = $this->_getDsp( $personne_id );
 					$this->request->data['Dsp'] = Set::merge(
-						isset( $dspStockees['Dsp'] ) ? Set::filter( $dspStockees['Dsp'] ) : array( ),
-						isset( $this->request->data['Dsp'] ) ? Set::filter( $this->request->data['Dsp'] ) : array( )
+						isset( $dspStockees['Dsp'] ) ? Hash::filter( $dspStockees['Dsp'] ) : array( ),
+						isset( $this->request->data['Dsp'] ) ? Hash::filter( $this->request->data['Dsp'] ) : array( )
 					);
 
-					$isDsp = Set::filter( $this->request->data['Dsp'] );
+					$isDsp = Hash::filter( $this->request->data['Dsp'] );
 					if( !empty( $isDsp ) ) {
 						$success = $this->Contratinsertion->Personne->Dsp->save( array( 'Dsp' => $this->request->data['Dsp'] ) ) && $success;
 					}
@@ -1077,7 +1077,7 @@
 
 				// Sauvegarde des numéros de téléphone si ceux-ci ne sont pas présents en amont (CG 66)
 				if( isset( $this->request->data['Personne'] ) ) {
-					$isDataPersonne = Set::filter( $this->request->data['Personne'] );
+					$isDataPersonne = Hash::filter( $this->request->data['Personne'] );
 					if( !empty( $isDataPersonne ) ) {
 						$success = $this->Contratinsertion->Personne->save( array( 'Personne' => $this->request->data['Personne'] ) ) && $success;
 					}
@@ -1094,7 +1094,7 @@
 					}
 
 					if( isset( $this->request->data[$model] ) ) {
-						$is{$model} = Set::filter( $this->request->data[$model] );
+						$is{$model} = Hash::filter( $this->request->data[$model] );
 						if( !empty( $is{$model} ) ) {
 							$Autresavis = Set::extract( $is{$model}, "/{$model}" );
 							$data = array( $model => array( ) );
@@ -1112,7 +1112,7 @@
 
 				// CG 93
 				if( isset( $this->request->data['Actioninsertion'] ) ) {
-					$isActioninsertion = Set::filter( $this->request->data['Actioninsertion'] );
+					$isActioninsertion = Hash::filter( $this->request->data['Actioninsertion'] );
 					$this->{$this->modelClass}->Actioninsertion->set( 'contratinsertion_id', $this->{$this->modelClass}->id );
 
 					if( !empty( $isActioninsertion ) ) {
@@ -1273,11 +1273,11 @@
 				}
 
 				if( !empty( $structurereferente_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->Contratinsertion->alias}.structurereferente_id", $structurereferente_id );
 				}
 
 				if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->Contratinsertion->alias}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
 				}
 			}
 

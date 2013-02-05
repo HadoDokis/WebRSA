@@ -432,24 +432,24 @@
 						if( $Model != 'Fichiermodule' ) {
 							if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
 								foreach( $histos[$i][$Model] as $key1 => $value1 ) {
-									$histos[$i][$Model][$key1] = Set::remove( $histos[$i][$Model][$key1], "id" );
-									$histos[$i][$Model][$key1] = Set::remove( $histos[$i][$Model][$key1], "dsp_rev_id" );
+									$histos[$i][$Model][$key1] = Hash::remove( $histos[$i][$Model][$key1], "id" );
+									$histos[$i][$Model][$key1] = Hash::remove( $histos[$i][$Model][$key1], "dsp_rev_id" );
 								}
 								foreach( $histos[$i + 1][$Model] as $key2 => $value2 ) {
-									$histos[$i + 1][$Model][$key2] = Set::remove( $histos[$i + 1][$Model][$key2], "id" );
-									$histos[$i + 1][$Model][$key2] = Set::remove( $histos[$i + 1][$Model][$key2], "dsp_rev_id" );
+									$histos[$i + 1][$Model][$key2] = Hash::remove( $histos[$i + 1][$Model][$key2], "id" );
+									$histos[$i + 1][$Model][$key2] = Hash::remove( $histos[$i + 1][$Model][$key2], "dsp_rev_id" );
 								}
 							}
 							$diff[$Model] = Set::diff( $histos[$i][$Model], $histos[$i + 1][$Model] );
-							$diff[$Model] = Set::remove( $diff[$Model], 'id' );
+							$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
 							if( isset( $diff[$Model]['created'] ) ) {
-								$diff[$Model] = Set::remove( $diff[$Model], 'created' );
+								$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
 							}
 							if( isset( $diff[$Model]['modified'] ) ) {
-								$diff[$Model] = Set::remove( $diff[$Model], 'modified' );
+								$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
 							}
 							if( isset( $diff[$Model]['haspiecejointe'] ) ) {
-								$diff[$Model] = Set::remove( $diff[$Model], 'haspiecejointe' );
+								$diff[$Model] = Hash::remove( $diff[$Model], 'haspiecejointe' );
 							}
 							if( $Model != 'DspRev' && !empty( $histos[$i][$Model] ) && !empty( $diff[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
 								foreach( $histos[$i][$Model] as $key1 => $value1 ) {
@@ -467,7 +467,7 @@
 					foreach( $diff as $Model => $values ) {
 						$cpt+=count( $values );
 					}
-					$histos[$i] = Set::insert( $histos[$i], 'diff', $cpt );
+					$histos[$i] = Hash::insert( $histos[$i], 'diff', $cpt );
 				}
 			}
 			$histos[count( $histos ) - 1]['diff'] = 0;
@@ -521,8 +521,8 @@
 			}
 
 			$this->request->data['Dsp']['id'] = $dsp_id;
-			$this->request->data = Set::remove( $this->request->data, 'Dsp.created' );
-			$this->request->data = Set::remove( $this->request->data, 'Dsp.modified' );
+			$this->request->data = Hash::remove( $this->request->data, 'Dsp.created' );
+			$this->request->data = Hash::remove( $this->request->data, 'Dsp.modified' );
 
 			$this->edit( $dsprevs['DspRev']['personne_id'], $id );
 		}
@@ -666,8 +666,8 @@
 			foreach( $dsprevact as $Model => $values ) {
 				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
 					foreach( $dsprevact[$Model] as $key1 => $value1 ) {
-						$dsprevact[$Model][$key1] = Set::remove( $dsprevact[$Model][$key1], "id" );
-						$dsprevact[$Model][$key1] = Set::remove( $dsprevact[$Model][$key1], "dsp_rev_id" );
+						$dsprevact[$Model][$key1] = Hash::remove( $dsprevact[$Model][$key1], "id" );
+						$dsprevact[$Model][$key1] = Hash::remove( $dsprevact[$Model][$key1], "dsp_rev_id" );
 					}
 				}
 			}
@@ -676,37 +676,37 @@
 			foreach( $dsprevold as $Model => $values ) {
 				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
 					foreach( $dsprevold[$Model] as $key2 => $value2 ) {
-						$dsprevold[$Model][$key2] = Set::remove( $dsprevold[$Model][$key2], "id" );
-						$dsprevold[$Model][$key2] = Set::remove( $dsprevold[$Model][$key2], "dsp_rev_id" );
+						$dsprevold[$Model][$key2] = Hash::remove( $dsprevold[$Model][$key2], "id" );
+						$dsprevold[$Model][$key2] = Hash::remove( $dsprevold[$Model][$key2], "dsp_rev_id" );
 					}
 				}
 			}
 
 			foreach( $dsprevact as $Model => $values ) {
 				$diff[$Model] = Set::diff( $dsprevact[$Model], $dsprevold[$Model] );
-				$diff[$Model] = Set::remove( $diff[$Model], 'id' );
+				$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
 				if( isset( $diff[$Model]['created'] ) )
-					$diff[$Model] = Set::remove( $diff[$Model], 'created' );
+					$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
 				if( isset( $diff[$Model]['modified'] ) )
-					$diff[$Model] = Set::remove( $diff[$Model], 'modified' );
+					$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
 				if( $Model != 'DspRev' && !empty( $dsprevact[$Model] ) && !empty( $diff[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
 					foreach( $dsprevact[$Model] as $key1 => $value1 ) {
 						foreach( $dsprevold[$Model] as $key2 => $value2 ) {
 							$compare = Set::diff( $value1, $value2 );
 							if( empty( $compare ) && ($key1 != $key2) ) {
-								$diff[$Model] = Set::remove( $diff[$Model], $key1 );
+								$diff[$Model] = Hash::remove( $diff[$Model], $key1 );
 							}
 						}
 					}
 				}
 				if( isset( $diff[$Model]['id'] ) )
-					$diff[$Model] = Set::remove( $diff[$Model], 'id' );
+					$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
 				if( isset( $diff[$Model]['created'] ) )
-					$diff[$Model] = Set::remove( $diff[$Model], 'created' );
+					$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
 				if( isset( $diff[$Model]['modified'] ) )
-					$diff[$Model] = Set::remove( $diff[$Model], 'modified' );
+					$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
 				if( empty( $diff[$Model] ) )
-					$diff = Set::remove( $diff, $Model );
+					$diff = Hash::remove( $diff, $Model );
 			}
 
 			$this->set( 'personne', $this->findPersonne( Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) ) );
@@ -893,7 +893,7 @@
 				// fin hasMany spéciaux
 
 				$dsp_id = Set::classicExtract( $this->request->data, 'Dsp.id' );
-				$this->request->data = Set::filter( $this->request->data );
+				$this->request->data = Hash::filter( $this->request->data );
 
 				$data2 = null;
 
@@ -909,13 +909,13 @@
 							foreach( $data2[$Model."Rev"] as $key => $value ) {
 								if( isset( $data2[$Model."Rev"][$key]['dsp_id'] ) )
 									$data2[$Model."Rev"][$key]['dsp_rev_id'] = $data2[$Model."Rev"][$key]['dsp_id'];
-								$data2 = Set::remove( $data2, $Model."Rev.".$key.".dsp_id" );
-								$data2 = Set::remove( $data2, $Model."Rev.".$key.".id" );
+								$data2 = Hash::remove( $data2, $Model."Rev.".$key.".dsp_id" );
+								$data2 = Hash::remove( $data2, $Model."Rev.".$key.".id" );
 							}
 						}
 					}
 					$data2['DspRev']['dsp_id'] = $this->Dsp->id;
-					$data2 = Set::remove( $data2, 'DspRev.id' );
+					$data2 = Hash::remove( $data2, 'DspRev.id' );
 
 					$this->DspRev->saveAll( $data2, array( 'atomic' => false, 'validate' => 'first' ) );
 
@@ -1009,7 +1009,7 @@
 			$querydata = $this->Dsp->search(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				$this->_wildcardKeys( Xset::bump( $this->request->params['named'], '__' ), $wildcardKeys )
+				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $wildcardKeys )
 			);
 			unset( $querydata['limit'] );
 
@@ -1031,7 +1031,7 @@
 		 */
 		protected function _wildcardKeys( $data, $wildcardKeys ) {
 			$search = array( );
-			foreach( Set::flatten( $data ) as $key => $value ) {
+			foreach( Hash::flatten( $data ) as $key => $value ) {
 				$keyNeedsWildcard = (
 						$wildcardKeys === true
 						|| ( is_array( $wildcardKeys ) && in_array( $key, $wildcardKeys ) )
@@ -1043,7 +1043,7 @@
 					$search[$key] = $value;
 				}
 			}
-			return Xset::bump( $search );
+			return Hash::expand( $search );
 		}
 	}
 ?>

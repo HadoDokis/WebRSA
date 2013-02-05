@@ -104,7 +104,7 @@
 
 	<?php echo $this->Xform->create( 'Nonoriente', array( 'url'=> Router::url( null, true ) ) );?>
 	<?php
-		foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
@@ -171,7 +171,7 @@
 							'action'     => 'impressions'/*,
 							'id' => 'Cohorteoriente'*/
 						),
-						Set::flatten( $this->request->data )
+						Hash::flatten( $this->request->data )
 					)
 				);
 			?></li>

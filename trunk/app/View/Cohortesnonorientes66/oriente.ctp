@@ -119,7 +119,7 @@
 
 	<?php echo $this->Xform->create( 'Nonoriente', array( 'url'=> Router::url( null, true ) ) );?>
 	<?php
-		foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
@@ -195,14 +195,14 @@
 							'controller' => 'cohortesnonorientes66',
 							'action'     => 'impressionsOrientation'
 						),
-						Set::flatten( $this->request->data )
+						Hash::flatten( $this->request->data )
 					)
 				);
 			?></li>
 			<li><?php
 				 echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'cohortesnonorientes66', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'cohortesnonorientes66', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'cohortesnonorientes66', 'exportcsv' )
 				);
 			?></li>

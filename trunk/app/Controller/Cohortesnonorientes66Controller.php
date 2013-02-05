@@ -324,7 +324,7 @@
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->Session->read( 'Auth.User.id' ),
-				XSet::bump( $this->request->params['named'] ),
+				Hash::expand( $this->request->params['named'] ),
 				$page
 			);
 
@@ -367,7 +367,7 @@
 				'Nonoriente::notifaenvoyer',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				XSet::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				$page,
 				$this->Session->read( 'Auth.User.id' )
 			);
@@ -393,7 +393,7 @@
 				'Nonoriente::oriente',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
 			$nonorientes66 = $this->Personne->find( 'all', $querydata );

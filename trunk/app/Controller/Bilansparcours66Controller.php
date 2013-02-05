@@ -60,7 +60,7 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'nationalite', $this->Option->nationalite() );
 
-			$options = Set::insert( $options, 'typevoie', $typevoie );
+			$options = Hash::insert( $options, 'typevoie', $typevoie );
 
 			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
 // 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
@@ -753,7 +753,7 @@
 					}
 				}
 
-				$this->request->data = Set::insert($this->request->data, 'Pe', $this->request->data);
+				$this->request->data = Hash::insert($this->request->data, 'Pe', $this->request->data);
 			}
 
 			if (!isset($this->request->data['Bilanparcours66']['sitfam']) || empty($this->request->data['Bilanparcours66']['sitfam'])) {

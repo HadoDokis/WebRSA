@@ -88,7 +88,7 @@
 		public function formatNull( Model $model, $datas ) {
 			$fields = $this->_fields( $model, 'null', true );
 			if( !empty( $fields ) ) {
-				$results = Set::flatten( $datas );
+				$results = Hash::flatten( $datas );
 
 				$fields = '('.implode( '|', $fields ).')';
 				foreach( $results as $key => $value ) {
@@ -98,7 +98,7 @@
 						}
 					}
 				}
-				return Xset::bump( $results );
+				return Hash::expand( $results );
 			}
 			return $datas;
 		}
@@ -111,7 +111,7 @@
 		public function formatPhone( Model $model, $datas ) {
 			$fields = $this->_fields( $model, 'phone' );
 			if( !empty( $fields ) ) {
-				$results = Set::flatten( $datas );
+				$results = Hash::flatten( $datas );
 
 				$fields = '('.implode( '|', $fields ).')';
 				foreach( $results as $key => $value ) {
@@ -119,7 +119,7 @@
 						$results[$key] = preg_replace( '/[ \.\-]/', '', $value );
 					}
 				}
-				return Xset::bump( $results );
+				return Hash::expand( $results );
 			}
 			return $datas;
 		}
@@ -131,7 +131,7 @@
 		public function formatSuffix( Model $model, $datas ) {
 			$fields = $this->_fields( $model, 'suffix' );
 			if( !empty( $fields ) ) {
-				$results = Set::flatten( $datas );
+				$results = Hash::flatten( $datas );
 
 				$fields = '('.implode( '|', $fields ).')';
 				foreach( $results as $key => $value ) {
@@ -139,7 +139,7 @@
 						$results[$key] = preg_replace( '/^(.*)_([0-9]+)$/', '\2', $value );
 					}
 				}
-				return Xset::bump( $results );
+				return Hash::expand( $results );
 			}
 			return $datas;
 		}
@@ -151,7 +151,7 @@
 		public function formatTrim( Model $model, $datas ) {
 			$fields = $this->_fields( $model, 'trim' );
 			if( !empty( $fields ) ) {
-				$results = Set::flatten( $datas );
+				$results = Hash::flatten( $datas );
 
 				$fields = '('.implode( '|', $fields ).')';
 				foreach( $results as $key => $value ) {
@@ -159,7 +159,7 @@
 						$results[$key] = trim( $value );
 					}
 				}
-				return Xset::bump( $results );
+				return Hash::expand( $results );
 			}
 			return $datas;
 		}
@@ -173,7 +173,7 @@
 		public function formatAmount( Model $model, $datas ) {
 			$fields = $this->_fields( $model, 'amount' );
 			if( !empty( $fields ) ) {
-				$results = Set::flatten( $datas );
+				$results = Hash::flatten( $datas );
 
 				$fields = '('.implode( '|', $fields ).')';
 				foreach( $results as $key => $value ) {
@@ -182,7 +182,7 @@
 						$results[$key] = preg_replace( '/^(.*),([0-9]+)$/', '\1.\2', $value );
 					}
 				}
-				return Xset::bump( $results );
+				return Hash::expand( $results );
 			}
 			return $datas;
 		}

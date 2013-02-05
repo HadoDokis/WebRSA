@@ -47,7 +47,7 @@
 		*/
 
 		public function hasValidationRule( Model $model, $field, $rule ) {
-			$validationRules = Set::flatten( $model->validate );
+			$validationRules = Hash::flatten( $model->validate );
 			foreach( $validationRules as $path => $value ) {
 				if( preg_match( "/^{$field}(\.|\.[0-9]+\.)rule/", $path ) && ( $value == $rule ) ) {
 					return true;
@@ -62,10 +62,10 @@
 
 		public function removeValidationRule( Model $model, $field, $rule ) {
 			$removed = 0;
-			$validationRules = Set::flatten( $model->validate );
+			$validationRules = Hash::flatten( $model->validate );
 			foreach( $validationRules as $path => $value ) {
 				if( preg_match( "/^({$field}(\.|\.[0-9]+\.))rule/", $path, $matches ) && ( $value == $rule ) ) {
-					$model->validate = Set::remove( $model->validate, trim( $matches[1], '.' ) );
+					$model->validate = Hash::remove( $model->validate, trim( $matches[1], '.' ) );
 					// TODO: __backValidation ? / disableValidationRule ?
 				}
 			}
@@ -159,9 +159,9 @@
 		public function cleanup( Model $model ) {
 			if( !empty( $this->_autoAddedPaths ) ) {
 				foreach( $this->_autoAddedPaths as $path ) {
-					$model->validate = Set::remove( $model->validate, $path );
+					$model->validate = Hash::remove( $model->validate, $path );
 				}
-				$model->validate = Set::filter( $model->validate );
+				$model->validate = Hash::filter( $model->validate );
 			}
 		}
 

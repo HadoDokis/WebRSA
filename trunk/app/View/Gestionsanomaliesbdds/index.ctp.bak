@@ -39,7 +39,7 @@
 
 		echo $this->Default2->index(
 			$records,
-			array_keys( Set::flatten( array( $this->Model->alias => Set::normalize( array_keys( $this->Model->schema() ) ) ) ) )
+			array_keys( Hash::flatten( array( $this->Model->alias => Set::normalize( array_keys( $this->Model->schema() ) ) ) ) )
 		);
 	}
 ?>

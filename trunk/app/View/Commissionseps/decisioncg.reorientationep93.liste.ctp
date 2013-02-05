@@ -43,7 +43,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 				$dossierep['Reorientationep93']['Orientstruct']['Structurereferente']['lib_struc'],
 				@$dossierep['Reorientationep93']['Typeorient']['lib_type_orient'],
 				@$dossierep['Reorientationep93']['Structurereferente']['lib_struc'],
-				implode( ' / ', Set::filter( array( @$options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], @$decisionep['raisonnonpassage'] ) ) ),
+				implode( ' / ', Hash::filter( array( @$options['Decisionreorientationep93']['decision'][$decisionep['decision']], @$decisionep['Typeorient']['lib_type_orient'], @$decisionep['Structurereferente']['lib_struc'], @$decisionep['raisonnonpassage'] ) ) ),
 
 				@$options['Decisionreorientationep93']['decisionpcg'][Set::classicExtract( $decisioncg, "decisionpcg" )],
 				array( @$options['Decisionreorientationep93']['decision'][Set::classicExtract( $decisioncg, "decision" )], array( 'id' => "Decisionreorientationep93{$i}DecisionColumn" ) ),

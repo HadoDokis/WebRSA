@@ -740,7 +740,7 @@
 			// TODO: en faire quelque chose ?
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
 
-			$data = Xset::bump( $this->request->params['named'], '__' );
+			$data = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortecer93->search(
 				$etape,
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
@@ -819,7 +819,7 @@
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->Session->read( 'Auth.User.id' ),
-				XSet::bump( $this->request->params['named'] ),
+				Hash::expand( $this->request->params['named'] ),
 				$page
 			);
 

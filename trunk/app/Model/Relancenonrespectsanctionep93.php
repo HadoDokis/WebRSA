@@ -845,8 +845,8 @@
 		*/
 
 		public function qdSearchRelances( $mesCodesInsee, $filtre_zone_geo, $search ) {
-			$search = Set::flatten( $search );
-			$search = Set::filter( $search );
+			$search = Hash::flatten( $search );
+			$search = Hash::filter( $search );
 
 			$conditions = array();
 

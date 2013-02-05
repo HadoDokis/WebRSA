@@ -33,7 +33,7 @@
 			$return = parent::beforeFilter();
 
 			$options = array();
-			$options = Set::insert( $options, 'Partenaire.typevoie', $this->Option->typevoie() );
+			$options = Hash::insert( $options, 'Partenaire.typevoie', $this->Option->typevoie() );
 
 			$this->set( compact( 'options' ) );
 			return $return;

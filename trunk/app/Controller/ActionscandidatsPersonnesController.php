@@ -60,20 +60,20 @@
 		protected function _setOptions() {
 			$options = array( );
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $values );
 			}
 
-			$options = Set::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
-			$options = Set::insert( $options, 'Personne.qual', $this->Option->qual() );
-			$options = Set::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
-			$options = Set::insert( $options, 'Dsp', $this->ActioncandidatPersonne->Personne->Dsp->allEnumLists() );
+			$options = Hash::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
+			$options = Hash::insert( $options, 'Personne.qual', $this->Option->qual() );
+			$options = Hash::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
+			$options = Hash::insert( $options, 'Dsp', $this->ActioncandidatPersonne->Personne->Dsp->allEnumLists() );
 
 			foreach( array( 'Referent' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'recursive' => -1 ) ) );
+				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'recursive' => -1 ) ) );
 			}
 			$field = Inflector::singularize( Inflector::tableize( 'Actioncandidat' ) ).'_id';
-			$options = Set::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{'Actioncandidat'}->find( 'list', array( 'recursive' => -1, 'order' => 'name' ) ) );
+			$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{'Actioncandidat'}->find( 'list', array( 'recursive' => -1, 'order' => 'name' ) ) );
 
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -591,7 +591,7 @@
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->request->data['Personne'] ) ) {
-						$isDataPersonne = Set::filter( $this->request->data['Personne'] );
+						$isDataPersonne = Hash::filter( $this->request->data['Personne'] );
 						if( !empty( $isDataPersonne ) ) {
                             $this->{$this->modelClass}->Personne->create( array( 'Personne' => $this->request->data['Personne'] ) );
 							$success = $this->{$this->modelClass}->Personne->save() && $success;

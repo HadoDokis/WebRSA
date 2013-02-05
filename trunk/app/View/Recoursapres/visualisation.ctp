@@ -108,7 +108,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'recoursapres', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' )
+					array( 'controller' => 'recoursapres', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' )
 				);
 			?></li>
 		</ul>

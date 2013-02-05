@@ -62,7 +62,7 @@
 		protected function _setOptions() {
 			$options = array( );
 			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-				$options = Set::insert( $options, "{$this->modelClass}.{$field}", $values );
+				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $values );
 			}
 			$options[$this->modelClass]['descriptionpdo_id'] = $this->Traitementpcg66->Descriptionpdo->find( 'list' );
 			$options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->find( 'list' );

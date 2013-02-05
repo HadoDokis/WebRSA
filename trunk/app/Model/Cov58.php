@@ -647,8 +647,8 @@
 
 			// Préparation d'un enregistrement vide
 			if( !empty( $dossierscovs58 ) ) {
-				$empty = array_keys( Set::flatten( $dossierscovs58[0] ) );
-				$empty = Xset::bump( Set::normalize( $empty ) );
+				$empty = array_keys( Hash::flatten( $dossierscovs58[0] ) );
+				$empty = Hash::expand( Set::normalize( $empty ) );
 				foreach( $themeClassNames as $themeClassName ) {
 					$empty[$themeClassName]['Typeorient'] = $empty['Typeorient'];
 					$empty[$themeClassName]['Structurereferente'] = $empty['Structurereferente'];

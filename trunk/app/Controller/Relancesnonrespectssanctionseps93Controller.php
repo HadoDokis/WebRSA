@@ -209,7 +209,7 @@
 		 */
 		public function cohorte() {
 			if( !empty( $this->request->data ) ) {
-				$this->request->data = Set::expand( $this->request->data );
+				$this->request->data = Hash::expand( $this->request->data );
 				$search = $this->request->data['Search'];
 
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -247,7 +247,7 @@
 							// On libère les jetons
 							$this->Cohortes->release( $dossiersIds );
 
-							$url = Router::url( Set::merge( array( 'action' => $this->action ), Set::flatten( $this->request->data ) ), true );
+							$url = Router::url( Set::merge( array( 'action' => $this->action ), Hash::flatten( $this->request->data ) ), true );
 							$this->redirect( $url );
 						}
 						else {
@@ -260,8 +260,8 @@
 				}
 
 				/// Moteur de recherche
-				$search = Set::flatten( $search );
-				$search = Set::filter( $search );
+				$search = Hash::flatten( $search );
+				$search = Hash::filter( $search );
 
 				if( $this->request->data['Search']['Relance']['contrat'] == 0 ) {
 					$this->paginate = array(
@@ -352,7 +352,7 @@
 
 				$this->set( compact( 'results' ) );
 
-				if( $this->Relancenonrespectsanctionep93->checkCompareError( Xset::bump( $search ) ) == true ) {
+				if( $this->Relancenonrespectsanctionep93->checkCompareError( Hash::expand( $search ) ) == true ) {
 					$this->Session->setFlash( 'Vos critères de recherche entrent en contradiction avec les critères de base', 'flash/error' );
 				}
 			}
@@ -599,7 +599,7 @@
 			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 
 			$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
@@ -650,7 +650,7 @@
 			$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 
 			$queryData['fields'] = array(

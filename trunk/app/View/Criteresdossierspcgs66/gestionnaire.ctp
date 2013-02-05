@@ -64,7 +64,7 @@
 	<?php if( is_array( $criteresdossierspcgs66 ) && count( $criteresdossierspcgs66 ) > 0  ):?>
 	<?php echo $pagination;?>
 		<?php
-			foreach( Set::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
+			foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 				echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 			}
 		?>
@@ -173,7 +173,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv', 'searchGestionnaire'  ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'criteresdossierspcgs66', 'action' => 'exportcsv', 'searchGestionnaire'  ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'criteresdossierspcgs66', 'exportcsv' )
 				);
 			?></li>

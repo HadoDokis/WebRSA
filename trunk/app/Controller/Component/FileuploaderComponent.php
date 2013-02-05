@@ -104,7 +104,7 @@
                                 'modele' => $this->_colonneModele
                             )
                         );
-                        $oldrecord = ClassRegistry::init( $this->_modeleStockage )->find( 'first', array( 'conditions' => Set::flatten( $oldrecord ) ) );
+                        $oldrecord = ClassRegistry::init( $this->_modeleStockage )->find( 'first', array( 'conditions' => Hash::flatten( $oldrecord ) ) );
 
                         $record = array(
                             "{$this->_modeleStockage}" => array(
@@ -230,8 +230,8 @@
         public function ajaxfileupload() {
             $error = false;
 
-            $dir = $this->dirFichiersModule( $this->controller->params['url']['action'], $this->controller->params['url']['primaryKey'] );
-            $path = $dir.DS.$this->controller->params['url']['qqfile'];
+            $dir = $this->dirFichiersModule( $this->controller->request->query['action'], $this->controller->request->query['primaryKey'] );
+            $path = $dir.DS.$this->controller->request->query['qqfile'];
 
             $old = umask(0);
             @mkdir( $dir, 0777, true );
@@ -262,22 +262,22 @@
 		 *
 		 */
         public function ajaxfiledelete() {
-            $dir = $this->dirFichiersModule( $this->controller->params['pass'][0], $this->controller->params['pass'][1] );
-            $path = $dir.DS.$this->controller->params['pass'][2];
+            $dir = $this->dirFichiersModule( $this->controller->request->params['pass'][0], $this->controller->request->params['pass'][1] );
+            $path = $dir.DS.$this->controller->request->params['pass'][2];
             $error = false;
 
             if( file_exists( $path ) ) {
                 $error = !@unlink( $path );
             }
 
-            if( $this->controller->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
+            if( $this->controller->request->params['pass'][0] == 'edit' ) { // Suppression d'un document se trouvant déjà enregistré -> SSI c'est un edit
                 $record = ClassRegistry::init( $this->_modeleStockage)->find(
                     'first',
                     array(
                         'fields' => array( 'id' ),
                         'conditions' => array(
-                            'fk_value' => $this->controller->params['pass'][1],
-                            'name' => $this->controller->params['pass'][2]
+                            'fk_value' => $this->controller->request->params['pass'][1],
+                            'name' => $this->controller->request->params['pass'][2]
                         )
                     )
                 );
@@ -298,9 +298,9 @@
 		 * @param integer $id
 		 */
         public function fileview( $id ) {
-            $dir = $this->dirFichiersModule( $this->controller->params['pass'][0], $this->controller->params['pass'][1] );
+            $dir = $this->dirFichiersModule( $this->controller->request->params['pass'][0], $this->controller->request->params['pass'][1] );
 
-            $path = $dir.DS.$this->controller->params['pass'][2];
+            $path = $dir.DS.$this->controller->request->params['pass'][2];
 
             $file = array();
 
@@ -312,13 +312,13 @@
                     'length' => filesize( $path )*/
                 );
             }
-            else if( $this->controller->params['pass'][0] == 'edit' ) {
+            else if( $this->controller->request->params['pass'][0] == 'edit' ) {
                 $record = ClassRegistry::init( $this->_modeleStockage)->find(
                     'first',
                     array(
                         'conditions' => array(
-                            'fk_value' => $this->controller->params['pass'][1],
-                            'name' => $this->controller->params['pass'][2]
+                            'fk_value' => $this->controller->request->params['pass'][1],
+                            'name' => $this->controller->request->params['pass'][2]
                         ),
                         'recursive' => -1,
                         'contain' => false

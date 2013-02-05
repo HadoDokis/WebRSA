@@ -615,7 +615,7 @@ $depSplit = substr( $codepos, '0', 2 );
 					$this->validationErrors['Cui']['dureehebdosalarieheure'],
 					$this->validationErrors['Cui']['dureehebdosalarieminute']
 				);
-				$errors = Set::filter( $errors );
+				$errors = Hash::filter( $errors );
 			?>
 			<td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>"><?php echo required( 'Durée hebdomadaire de travail du salarié indiquée sur le contrat de travail' ); ?></td>
 			<td class="dureehebdo noborder<?php echo ( ( $nbErrors == 0 ) ? '' : ' error' );?>">
@@ -916,7 +916,7 @@ $( 'Accompagnementcui66DatefinperiodeDay' ).observe( 'blur', function( event ) {
 					$this->validationErrors['Cui']['dureehebdoretenueheure'],
 					$this->validationErrors['Cui']['dureehebdoretenueminute']
 				);
-				$errors = Set::filter( $errors );
+				$errors = Hash::filter( $errors );
 			?>
 			<td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>"><?php echo required( 'Durée hebdomadaire retenue pour le calcul de l\'aide' ); ?></td>
 			<td class="dureehebdo noborder<?php echo ( ( $nbErrors3 == 0 ) ? '' : ' error' );?>">

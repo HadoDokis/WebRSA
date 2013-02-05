@@ -81,10 +81,10 @@
 		}
 		else {
 			if( !Set::check( $this->request->data, 'Propoorientationcov58.structurereferente_id', '' ) ) {
-				$this->request->data = Set::insert( $this->request->data, 'Propoorientationcov58.structurereferente_id', '' );
+				$this->request->data = Hash::insert( $this->request->data, 'Propoorientationcov58.structurereferente_id', '' );
 			}
 			if( !Set::check( $this->request->data, 'Propoorientationcov58.referent_id', '' ) ) {
-				$this->request->data = Set::insert( $this->request->data, 'Propoorientationcov58.referent_id', '' );
+				$this->request->data = Hash::insert( $this->request->data, 'Propoorientationcov58.referent_id', '' );
 			}
 		}
 

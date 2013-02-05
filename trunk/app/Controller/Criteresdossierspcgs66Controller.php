@@ -102,7 +102,7 @@
 					$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
 
 					$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
-					
+
 					$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
 						'all',
 						array(
@@ -119,7 +119,7 @@
 						)
 					);
 
-					
+
 					$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
 					$listeSituationsPersonnePCG66 = $listeStatuts;
 					$criteresdossierspcgs66[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
@@ -129,9 +129,9 @@
 			}
 			else {
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
-				$this->data = Set::merge( $this->data, $filtresdefaut );
+				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
 			}
-// debug($params);
+
 			$this->_setOptions();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->render( $this->action );
@@ -152,15 +152,15 @@
 		public function gestionnaire() {
 			$this->_index( 'searchGestionnaire' );
 		}
-		
-		
+
+
 		/**
 		 * Export au format CSV des résultats de la recherche des allocataires transférés.
 		 *
 		 * @return void
 		 */
 		public function exportcsv( $searchFunction ) {
-			$data = Xset::bump( $this->request->params['named'], '__' );
+			$data = Hash::expand( $this->request->params['named'], '__' );
 
 			$mesZonesGeographiques = (array)$this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -199,9 +199,9 @@
 // 					debug( $traitementspcgs66 );
 				//Liste des différents statuts de la personne
 				$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
-				
+
 				$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
-				
+
 				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
 					'all',
 					array(
@@ -219,14 +219,14 @@
 					)
 				);
 
-				
+
 				$listeStatuts = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
 				$listeSituationsPersonnePCG66 = $listeStatuts;
 				$results[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
 
 				$results[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
 			}
-				
+
 			$this->_setOptions();
 
 			$this->layout = '';

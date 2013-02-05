@@ -44,7 +44,7 @@
 			$this->set( 'typeservice', $typeservice );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			// Structures référentes
-			$datas = Set::merge( $this->request->data, Xset::bump( $this->request->params['named'], '__' ) );
+			$datas = Set::merge( $this->request->data, Hash::expand( $this->request->params['named'], '__' ) );
 			$typeorient_id = Set::classicExtract( $datas, 'Critere.typeorient_id' );
 			$conditions = array();
 			$conditions = array( 'Structurereferente.actif' => 'O' );
@@ -160,7 +160,7 @@
 			$querydata = $this->Critere->search(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				false
 			);
 

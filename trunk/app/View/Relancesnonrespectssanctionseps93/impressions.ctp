@@ -149,7 +149,7 @@
 		<li><?php
 			echo $this->Xhtml->exportLink(
 				'Télécharger',
-				array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv', implode_assoc( '/', ':', Set::flatten( $this->request->data ) ) ),
+				array( 'controller' => $this->request->params['controller'], 'action' => 'exportcsv', implode_assoc( '/', ':', Hash::flatten( $this->request->data ) ) ),
 				$this->Permissions->check( $this->request->params['controller'], 'exportcsv' )
 			);
 		?></li>
@@ -161,7 +161,7 @@
 					'controller' => $this->request->params['controller'],
 					'action'     => 'impression_cohorte'
 				),
-				Set::flatten( $this->request->data )
+				Hash::flatten( $this->request->data )
 			),
 			$this->Permissions->check( $this->request->params['controller'], 'impression_cohorte' )
 		);

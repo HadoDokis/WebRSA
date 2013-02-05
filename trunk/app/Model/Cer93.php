@@ -733,7 +733,7 @@
 					}
 
 					if( !empty( $data['Sujetcer93'] ) ) {
-						$sousSujetsIds = Set::filter( Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+						$sousSujetsIds = Hash::filter( Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
 						if( !empty( $sousSujetsIds ) ) {
 							$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
 							foreach( $data['Sujetcer93'] as $key => $values ) {
@@ -1047,7 +1047,7 @@
 					'Expprocer93.{n}.cer93_id'
 				);
 				foreach( $keys as $key ) {
-					$formData = Set::remove( $formData, $key );
+					$formData = Hash::remove( $formData, $key );
 				}
 			}
 
@@ -1350,7 +1350,7 @@
 
 			$data['Adresse'] = $data['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 
-			$sousSujetsIds = Set::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+			$sousSujetsIds = Hash::filter( Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
 			if( !empty( $sousSujetsIds ) ) {
 				$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
 				foreach( $data['Cer93']['Sujetcer93'] as $key => $values ) {

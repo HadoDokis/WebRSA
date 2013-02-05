@@ -123,7 +123,7 @@
 			</style>
 		<![endif]-->
 	</head>
-	<?php if( $this->base.'/' == $this->here ): ?>
+	<?php if( $this->request->base.'/' == $this->request->here ): ?>
 		<body class="home">
 	<?php else: ?>
 		<body>

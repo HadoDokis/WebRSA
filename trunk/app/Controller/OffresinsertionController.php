@@ -170,7 +170,7 @@
          */
         public function exportcsv() {
 
-            $queryData = $this->Offreinsertion->search( Xset::bump( $this->request->params['named'], '__' ) );
+            $queryData = $this->Offreinsertion->search( Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $queryData['limit'] );
 
 			$actionscandidat = $this->Actioncandidat->find( 'all', $queryData );

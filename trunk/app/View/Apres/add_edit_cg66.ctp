@@ -356,7 +356,7 @@
             'Fraisdeplacement66.lieuresidence' => Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $typevoie, Set::extract( $personne, 'Adresse.typevoie' ) ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).' '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.locaadr' )
         );
         echo $this->Default->view(
-            Xset::bump( $tmp ),
+            Hash::expand( $tmp ),
             array(
                 'Fraisdeplacement66.lieuresidence'
             ),
@@ -503,7 +503,7 @@
 						'Aideapre66.datemontantaccorde' => Set::classicExtract( $this->request->data, 'Aideapre66.datemontantaccorde' )
 					);
 					echo $this->Default->view(
-						Xset::bump( $tmp ),
+						Hash::expand( $tmp ),
 						array(
 							'Aideapre66.decisionapre',
 							'Aideapre66.montantaccorde' => array( 'type' => 'money' ),

@@ -89,7 +89,7 @@
 			echo $pagination;
 			echo $this->Form->create( null, array( 'id' => 'Relancenonrespectsanctionep93Form' ) );
 
-			foreach( Set::flatten( $this->request->data ) as $key => $data ) {
+			foreach( Hash::flatten( $this->request->data ) as $key => $data ) {
 				if( !preg_match( '/^Relancenonrespectsanctionep93\./', $key ) && !( trim( $data ) == '' ) ) {
 				echo $this->Form->input( $key, array( 'type' => 'hidden', 'value' => $data ) );
 			}

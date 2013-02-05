@@ -164,7 +164,7 @@
 							'action'     => 'cohortegedooo',
 							'id' => 'Cohorteoriente'
 						),
-						Set::flatten( $this->request->data )
+						Hash::flatten( $this->request->data )
 					)
 				);
 			?></li>

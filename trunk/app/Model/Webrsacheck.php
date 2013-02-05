@@ -299,7 +299,7 @@
 		 */
 		/*protected function _existingConfigureKeys() {
 			$configureKeys = array();
-			foreach( Set::flatten( (array)Configure::getInstance() ) as $key => $value ) {
+			foreach( Hash::flatten( (array)Configure::getInstance() ) as $key => $value ) {
 				$configureKeys[] = preg_replace( '/\.[0-9]+$/', '', $key );
 			}
 			$configureKeys = array_unique( $configureKeys );

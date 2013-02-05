@@ -150,7 +150,7 @@
 			<?php
 			// Passage des champs du filtre lorsqu'on renvoie le formulaire du bas
 			if( isset( $this->request->data['Filtre'] ) && is_array( $this->request->data['Filtre'] ) ) {
-				foreach( Set::flatten( $this->request->data['Filtre'] ) as $hiddenfield => $hiddenvalue ) {
+				foreach( Hash::flatten( $this->request->data['Filtre'] ) as $hiddenfield => $hiddenvalue ) {
 					echo '<div>'.$this->Xform->input( "Filtre.$hiddenfield", array( 'type' => 'hidden', 'value' => $hiddenvalue, 'id' => 'FiltreBasDureenonreorientation' ) ).'</div>';
 				}
 			}
@@ -160,7 +160,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'nonorientationsproseps', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+					array( 'controller' => 'nonorientationsproseps', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'nonorientationsproseps', 'exportcsv' )
 				);
 			?></li>

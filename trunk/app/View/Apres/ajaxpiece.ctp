@@ -7,7 +7,7 @@
 			'Typeaideapre66.plafond' => Set::classicExtract( $typeaideapre, 'Typeaideapre66.plafond' )
 		);
 		echo $this->Default->view(
-			Xset::bump( $tmp ),
+			Hash::expand( $tmp ),
 			array(
 				'Typeaideapre66.plafond' => array( 'type' => 'money' )
 			),

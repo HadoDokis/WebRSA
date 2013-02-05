@@ -298,7 +298,7 @@
 		);
 
 		/*
-		* FIXME: le Set::remove est plus propre, non ?
+		* FIXME: le Hash::remove est plus propre, non ?
 		*/
 
 		public function filterOptions( $cg, $options ) {

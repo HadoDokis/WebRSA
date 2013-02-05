@@ -66,7 +66,7 @@
 			);
 
 			$options = $this->Propopdo->allEnumLists();
-			$options = Set::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
+			$options = Hash::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
 			$this->set( compact( 'options' ) );
 		}
 
@@ -139,7 +139,7 @@
 			$querydata = $this->Criterepdo->search(
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 
 			unset( $querydata['limit'] );

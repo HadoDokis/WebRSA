@@ -154,7 +154,7 @@
             <li><?php
                 echo $this->Xhtml->exportLink(
                     'Télécharger le tableau',
-                    array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv' ) + Set::flatten( $this->request->data, '__' ),
+                    array( 'controller' => 'criteresentretiens', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
 					$this->Permissions->check( 'criteresentretiens', 'exportcsv' )
                 );
             ?></li>

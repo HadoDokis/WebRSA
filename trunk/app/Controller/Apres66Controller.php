@@ -718,7 +718,7 @@
 
 				if( !empty( $this->request->data['Fraisdeplacement66'] ) ) {
 
-					$Fraisdeplacement66 = Set::filter( $this->request->data['Fraisdeplacement66'] );
+					$Fraisdeplacement66 = Hash::filter( $this->request->data['Fraisdeplacement66'] );
 					if( !empty( $Fraisdeplacement66 ) ) {
 						$this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->request->data );
 					}
@@ -741,7 +741,7 @@
 
 
 				/*
-				  $Modecontact = Xset::bump( Set::filter( Set::flatten( $this->request->data['Modecontact'] ) ) );
+				  $Modecontact = Hash::expand( Hash::filter( Hash::flatten( $this->request->data['Modecontact'] ) ) );
 				  debug($Modecontact);
 				  die();
 				  if( !empty( $Modecontact ) ){
@@ -761,7 +761,7 @@
 
 
 				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
-				$isDataPersonne = Set::filter( $this->request->data['Personne'] );
+				$isDataPersonne = Hash::filter( $this->request->data['Personne'] );
 				if( !empty( $isDataPersonne ) ) {
 					$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->request->data['Personne'] ) ) && $success;
 				}
@@ -780,15 +780,15 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$this->request->data = $apre;
-				$this->request->data = Set::insert(
+				$this->request->data = Hash::insert(
 								$this->request->data, "{$this->modelClass}.referent_id", Set::extract( $this->request->data, "{$this->modelClass}.structurereferente_id" ).'_'.Set::extract( $this->request->data, "{$this->modelClass}.referent_id" )
 				);
 
 				$typeaideapre66_id = Set::classicExtract( $this->request->data, 'Aideapre66.typeaideapre66_id' );
 				$themeapre66_id = $this->{$this->modelClass}->Aideapre66->Typeaideapre66->field( 'themeapre66_id', array( 'id' => $typeaideapre66_id ) );
 
-				$this->request->data = Set::insert( $this->request->data, 'Aideapre66.themeapre66_id', $themeapre66_id );
-				$this->request->data = Set::insert( $this->request->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
+				$this->request->data = Hash::insert( $this->request->data, 'Aideapre66.themeapre66_id', $themeapre66_id );
+				$this->request->data = Hash::insert( $this->request->data, 'Aideapre66.typeaideapre66_id', "{$themeapre66_id}_{$typeaideapre66_id}" );
 
 				///FIXME: doit faire autrement
 				if( !empty( $this->request->data['Aideapre66']['Fraisdeplacement66'] ) ) {
@@ -819,10 +819,10 @@
 				}
 
 				if( !empty( $structurereferente_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
 				}
 				if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
 				}
 			}
 

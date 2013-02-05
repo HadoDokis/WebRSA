@@ -214,7 +214,7 @@
 
 				$label = $this->label( $column, $options );
 
-				if( Set::check( $this->Xpaginator->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
+				if( Set::check( $this->request->params, 'paging' ) && ( !isset( $options['sort'] ) || $options['sort'] ) ) {
 					$thead[] = $this->Xpaginator->sort( $label, $column );
 				}
 				else {
@@ -582,7 +582,7 @@
 				if( Set::check( $this->request->data, 'Search' ) ) { /// FIXME: + page / sort / ...
 					$search = Set::extract( $this->request->data, 'Search' );
 					if( !empty( $search ) ) {
-						$search = Set::flatten( array( 'Search' => $search ) );
+						$search = Hash::flatten( array( 'Search' => $search ) );
 						foreach( $search as $path => $value ) {
 							$return .= $this->Xform->input( $path, array( 'type' => 'hidden' ) );
 						}
@@ -666,7 +666,7 @@
 				'class' => Set::classicExtract( $formParams, 'class' ),
 				'domain' => Set::classicExtract( $formParams, 'domain' )
 			);
-			$params = Set::filter( $params );
+			$params = Hash::filter( $params );
 			$params = Set::merge(
 				array( 'inputDefaults' => array( 'domain' => $domain ) ),
 				$params
@@ -745,7 +745,7 @@
 			}
 
 			$data = array_keys( $this->request->data );
-			$data = Xset::bump( Set::normalize( $data ) );
+			$data = Hash::expand( Set::normalize( $data ) );
 			if( Set::check( $data, 'Search' ) ) {
 				$params = $this->addClass( $params, 'folded' );
 			}
@@ -921,7 +921,7 @@
 			$secondline = array();
 
 			$group = Set::normalize( $group );
-			$groupedColumns = Set::flatten( $group );
+			$groupedColumns = Hash::flatten( $group );
 
 			foreach( $ths as $position => $th ) {
 				if( in_array( $position, $groupedColumns ) ) {

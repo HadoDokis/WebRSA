@@ -63,7 +63,7 @@
 				if( !isset( $model->Behaviors->Typeable ) ) {
 					$model->Behaviors->attach( 'Typeable' );
 				}
-				$this->_typeInfos = Set::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $model->getTypeInfos( $fieldName ) );
+				$this->_typeInfos = Hash::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $model->getTypeInfos( $fieldName ) );
 			}
 
 			if( !Set::check( $this->_typeInfos, "{$modelName}.{$fieldName}" ) ) {

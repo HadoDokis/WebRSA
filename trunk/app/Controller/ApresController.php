@@ -767,7 +767,7 @@
 			else {
 				if( $this->action == 'edit' ) {
 					$this->request->data = $apre;
-					$this->request->data = Set::insert(
+					$this->request->data = Hash::insert(
 						$this->request->data,
 						'Apre.referent_id',
 						Set::extract( $this->request->data, 'Apre.structurereferente_id' ).'_'.Set::extract( $this->request->data, 'Apre.referent_id' )
@@ -795,10 +795,10 @@
 				}
 
 				if( !empty( $structurereferente_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->modelClass}.structurereferente_id", $structurereferente_id );
 				}
 				if( !empty( $structurereferente_id ) && !empty( $referent_id ) ) {
-					$this->request->data = Set::insert( $this->request->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
+					$this->request->data = Hash::insert( $this->request->data, "{$this->modelClass}.referent_id", preg_replace( '/^_$/', '', "{$structurereferente_id}_{$referent_id}" ) );
 				}
 			}
 

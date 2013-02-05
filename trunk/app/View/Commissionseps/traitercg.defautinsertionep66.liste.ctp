@@ -36,11 +36,11 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 	$hiddenDossiers = array( 'Decisiondefautinsertionep66' => array() );
 
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		if( isset( $this->data['Decisiondefautinsertionep66'][$i]['field_type'] ) && $this->data['Decisiondefautinsertionep66'][$i]['field_type'] == 'hidden' ) {
-			$hiddenDossiers['Decisiondefautinsertionep66'][] = $this->data['Decisiondefautinsertionep66'][$i];
+		if( isset( $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] ) && $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] == 'hidden' ) {
+			$hiddenDossiers['Decisiondefautinsertionep66'][] = $this->request->data['Decisiondefautinsertionep66'][$i];
 		}
 		else {
-			
+
 			$examenaudition = Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenaudition'], $options['Defautinsertionep66']['type'] );
 			if( !empty( $dossierep['Defautinsertionep66']['Bilanparcours66']['examenauditionpe'] ) ){
 				$examenaudition = Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenauditionpe'], $options['Bilanparcours66']['examenauditionpe'] );
@@ -49,7 +49,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 			$multiple = ( count( $dossiersAllocataires[$dossierep['Personne']['id']] ) > 1 ? 'multipleDossiers' : null );
 
 			$decisionep = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][count($dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'])-1];
-			$avisEp = implode( ' - ', Set::filter( array( Set::enum( @$decisionep['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), Set::enum( @$decisionep['decision'], $options['Decisiondefautinsertionep66']['decision'] ), @$listeTypesorients[@$decisionep['typeorient_id']], @$listeStructuresreferentes[@$decisionep['structurereferente_id']], @$listeReferents[@$decisionep['referent_id']] ) ) );
+			$avisEp = implode( ' - ', Hash::filter( array( Set::enum( @$decisionep['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), Set::enum( @$decisionep['decision'], $options['Decisiondefautinsertionep66']['decision'] ), @$listeTypesorients[@$decisionep['typeorient_id']], @$listeStructuresreferentes[@$decisionep['structurereferente_id']], @$listeReferents[@$decisionep['referent_id']] ) ) );
 
 			$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
 				<tbody>
@@ -109,10 +109,10 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 		}
 	}
 	echo '</tbody></table>';
-	
+
 	if( !empty( $hiddenDossiers ) ) {
 		echo '<div>';
-		foreach( Set::flatten( $hiddenDossiers ) as $hiddenField ) {
+		foreach( Hash::flatten( $hiddenDossiers ) as $hiddenField ) {
 			echo $this->Xform->input( $hiddenField, array( 'type' => 'hidden' ) );
 		}
 		echo '</div>';
@@ -139,7 +139,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				],
 				false
 			);
-			
+
 			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
 				if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
 					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
@@ -148,7 +148,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
 				}
 			} );
-			
+
 			if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
 				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
 			}

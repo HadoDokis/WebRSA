@@ -65,13 +65,13 @@
 			echo "\n<pre class=\"cake-debug\">\n";
 
 			if( is_array( $datas ) ) {
-				$datas = Set::flatten( $datas, '_____' );
+				$datas = Hash::flatten( $datas, '_____' );
 
 				foreach( $datas as $key => $value ) {
 					$datas[$key] = __translate( $value );
 				}
 
-				$datas = Xset::bump( $datas, '_____' );
+				$datas = Hash::expand( $datas, '_____' );
 			}
 			else {
 				$datas = __translate( $datas );

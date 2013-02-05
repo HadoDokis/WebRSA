@@ -42,7 +42,7 @@
 			$this->Gestionanomaliebdd->foyerErreursDoublonsPersonnes( $foyer, false ),
 			( $foyer['Dossier']['locked'] ? $this->Xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null ),
 		);
-		$informations = Set::filter( $informations );
+		$informations = Hash::filter( $informations );
 
 		if( !empty( $informations ) ) {
 			echo '<ul>';
@@ -129,7 +129,7 @@
 				$association = $associations[$modelName];
 
 				$modelClass = ClassRegistry::init( $modelName );;
-				$modelFields = array_keys( Set::flatten( array( $modelClass->alias => Set::normalize( array_keys( $modelClass->schema() ) ) ) ) );
+				$modelFields = array_keys( Hash::flatten( array( $modelClass->alias => Set::normalize( array_keys( $modelClass->schema() ) ) ) ) );
 
 				$fields = array(/* "{$modelName}.id", "{$modelName}.personne_id" */);
 				foreach( $modelFields as $modelField ) {

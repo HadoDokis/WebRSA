@@ -31,9 +31,10 @@
 		);
 
 		/**
-		*   Suppression du fichiers préalablement associés à un traitement donné
-		*/
-
+		 * Suppression du fichiers préalablement associés à un traitement donné
+		 *
+		 * @param integer $fichiermodule_id
+		 */
 		public function delete( $fichiermodule_id ) {
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 

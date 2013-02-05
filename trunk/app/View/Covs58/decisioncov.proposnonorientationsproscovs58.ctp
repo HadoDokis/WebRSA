@@ -25,7 +25,7 @@
 					$this->Form->input( "Decisionpropononorientationprocov58.{$i}.passagecov58_id", array( 'type' => 'hidden', 'value' => $dossiercov['Passagecov58'][0]['id'] ) );
 
 		if( !empty( $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent'] ) ){
-			$referent = implode( ' ', Set::filter( array( $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['qual'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['nom'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['prenom'] ) ) );
+			$referent = implode( ' ', Hash::filter( array( $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['qual'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['nom'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Referent']['prenom'] ) ) );
 		}
 		else{
 			$referent = null;
@@ -39,7 +39,7 @@
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$this->Locale->date( __( 'Locale->date' ), $dossiercov[$theme]['datedemande'] ),
-				implode( ' - ', Set::filter( array( $dossiercov['Propononorientationprocov58']['Orientstruct']['Typeorient']['lib_type_orient'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Structurereferente']['lib_struc'], $referent ) ) ),
+				implode( ' - ', Hash::filter( array( $dossiercov['Propononorientationprocov58']['Orientstruct']['Typeorient']['lib_type_orient'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Structurereferente']['lib_struc'], $referent ) ) ),
 
 								array(
 					$this->Form->input( "Decisionpropononorientationprocov58.{$i}.decisioncov", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionpropononorientationprocov58']['decisioncov'] ) ),

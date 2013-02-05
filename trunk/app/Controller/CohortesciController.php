@@ -297,7 +297,7 @@
 				'Decisionci::valides',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' ),
+				Hash::expand( $this->request->params['named'], '__' ),
 				( $this->Cohortes->active() ? $this->Cohorte->sqLocked() : null )
 			);
 			unset( $querydata['limit'] );

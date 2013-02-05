@@ -91,7 +91,7 @@
 			$querydata = $this->Criterecui->search(
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Xset::bump( $this->request->params['named'], '__' )
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );

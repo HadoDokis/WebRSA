@@ -127,7 +127,7 @@
 						}
 
 						// FIXME: en cas de plusieurs passages ?
-						$thematique = array_values( Set::filter( Set::classicExtract( $bilanparcour66, '{s}.Dossierep.themeep' ) ) );
+						$thematique = array_values( Hash::filter( Set::classicExtract( $bilanparcour66, '{s}.Dossierep.themeep' ) ) );
 						$thematique = @$thematique[0];
 
 						if( $thematique == 'saisinesbilansparcourseps66' ) {

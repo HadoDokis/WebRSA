@@ -50,7 +50,7 @@
 	<li><?php
 		echo $this->Xhtml->exportLink(
 			'Télécharger le tableau',
-			array( 'action' => 'exportcsv', 'saisie' ) + Set::flatten( $this->request->data, '__' ),
+			array( 'action' => 'exportcsv', 'saisie' ) + Hash::flatten( $this->request->data, '__' ),
 			( $this->Permissions->check( 'cohortescers93', 'exportcsv' ) && count( $cers93 ) > 0 )
 		);
 	?></li>

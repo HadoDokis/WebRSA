@@ -23,13 +23,13 @@
 
 <?php
 	function paiementfoyerComplet( $paiementfoyer ) {
-		$keys = array_keys( Set::filter( $paiementfoyer ) );
+		$keys = array_keys( Hash::filter( $paiementfoyer ) );
 		$requiredKeys = array( 'titurib', 'nomprenomtiturib', 'etaban', 'guiban', 'numcomptban', 'clerib' );
 		return ( count( $keys ) == count( $requiredKeys ) );
 	}
 
 	function paiementorganismeComplet( $paiementorganisme ) {
-		$filtered = Set::filter( $paiementorganisme );
+		$filtered = Hash::filter( $paiementorganisme );
 		$requiredKeys = array( 'guiban', 'etaban', 'numcomptban', 'clerib' );
 		foreach( $requiredKeys as $requiredKey ) {
 			if( !isset( $filtered[$requiredKey] ) ) {
@@ -41,7 +41,7 @@
 
 	/// Vérification de données manquantes FIXME: déléguer dans le modèle ?
 	$nbrAttentdu = count( Set::extract( $elements, '/Apre' ) );
-	$nbrLibellesDomicialiation = count( Set::filter( Set::extract( $elements, '/Domiciliationbancaire/libelledomiciliation' ) ) );
+	$nbrLibellesDomicialiation = count( Hash::filter( Set::extract( $elements, '/Domiciliationbancaire/libelledomiciliation' ) ) );
 
 	$nbrPaiementsFoyer = 0;
 	foreach( Set::extract( $elements, '{n}.Paiementfoyer' ) as $paiementfoyer ) {

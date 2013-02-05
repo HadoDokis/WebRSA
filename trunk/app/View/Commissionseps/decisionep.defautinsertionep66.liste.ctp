@@ -54,7 +54,7 @@ echo '<table>
 
 				$examenaudition,
 				
-				array( implode( ' / ', Set::filter( array(
+				array( implode( ' / ', Hash::filter( array(
 					$options['Decisiondefautinsertionep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
 					@$options['Decisiondefautinsertionep66']['decisionsup'][Set::classicExtract( $decisionep, "decisionsup" )]
 				) ) ), array( 'id' => "Decisiondefautinsertionep66{$i}DecisionColumn" ) ),

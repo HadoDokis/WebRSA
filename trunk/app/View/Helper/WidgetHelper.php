@@ -25,7 +25,7 @@
 
 			$value = Set::classicExtract( $this->request->data, $fieldName );
 			if( !is_null( $value ) && ( ( is_string( $value ) && !in_array( $value, array( 'O', 'N' ) ) && ( strlen( trim( $value ) ) > 0 ) ) || is_bool( $value ) ) ) {
-				$this->Form->data = Set::insert( $this->Form->data, $fieldName, ( $value ? 'O' : 'N' ) );
+				$this->Form->data = Hash::insert( $this->Form->data, $fieldName, ( $value ? 'O' : 'N' ) );
 			}
 
 			$ret = '<div class="'.$class.'"><fieldset class="boolean">';
