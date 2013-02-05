@@ -619,7 +619,7 @@ ALTER TABLE commentairesnormescers93 ADD CONSTRAINT commentairesnormescers93_isa
 DROP TABLE IF EXISTS commentairesnormescers93_histoschoixcers93 CASCADE;
 CREATE TABLE commentairesnormescers93_histoschoixcers93 (
     id                 					SERIAL NOT NULL PRIMARY KEY,
-    commentairenormecer93_id       	INTEGER NOT NULL REFERENCES cers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    commentairenormecer93_id			INTEGER NOT NULL REFERENCES commentairesnormescers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
     histochoixcer93_id					INTEGER NOT NULL REFERENCES histoschoixcers93(id) ON DELETE CASCADE ON UPDATE CASCADE,
  	commentaireautre					VARCHAR(250) DEFAULT NULL,
     created								TIMESTAMP WITHOUT TIME ZONE,
