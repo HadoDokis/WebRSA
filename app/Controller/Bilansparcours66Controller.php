@@ -975,16 +975,14 @@
 				}
 
 
+				$saved = $this->Bilanparcours66->save( $this->request->data );
 				$saved = $this->{$this->modelClass}->updateAll(
 					array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
 					array(
 						'"Bilanparcours66"."personne_id"' => $bilan['Bilanparcours66']['personne_id'],
 						'"Bilanparcours66"."id"' => $bilan['Bilanparcours66']['id']
 					)
-				);
-				if( $saved ) {
-					$saved = $this->Bilanparcours66->save( $this->request->data ) && $saved;
-				}
+				) && $saved;
 
 				if( $saved ) {
 					$this->Bilanparcours66->commit();

@@ -342,7 +342,7 @@
 		 * @return void
 		 */
 		public function impressionOrientation( $id = null ) {
-			$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id );
+			$pdf = $this->Personne->Orientstruct->getPdfNonoriente66( $id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ){
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientation-%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
@@ -368,7 +368,8 @@
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				XSet::bump( $this->request->params['named'], '__' ),
-				$page
+				$page,
+				$this->Session->read( 'Auth.User.id' )
 			);
 
 
