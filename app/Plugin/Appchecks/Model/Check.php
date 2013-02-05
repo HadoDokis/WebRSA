@@ -12,6 +12,7 @@
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'basics.php' );
 	require_once( APPCHECKS_PLUGIN_DIR.'Lib'.DS.'xvalidation.php' );
 	App::uses( 'Validation', 'Utility' );
+	App::uses( 'CakeEmail', 'Network/Email' );
 
 	/**
 	 * La classe Check fournit des méthodes de vérification de l'environnement
@@ -551,6 +552,86 @@
 			}
 
 			return $results;
+		}
+
+		/**
+		 * Vérification d'une configuration de CakeEmail dans le fichier
+		 * app/Config/email.php.
+		 *
+		 * EmailComponent est déprécié depuis la version 2.0 de CakePHP.
+		 *
+		 * @todo ::transportClass
+		 *
+		 * @param string $name Le nom de la configuration
+		 * @return array
+		 */
+		public function cakeEmailConfig( $name ) {
+			$settingsFile = 'app/Config/email.php';
+			$settingsMailFields = array( 'from', 'replyTo', 'readReceipt', 'returnPath', 'sender', 'to', 'cc', 'bcc' );
+
+			$configure = array();
+			$tests = array();
+
+			try {
+				$Email = new CakeEmail( $name );
+				$settings = $Email->config();
+			} catch( Exception $e ) {
+				$Email = null;
+				$settings = array();
+			}
+
+			if( empty( $settings ) ) {
+				$configure["Présence de la clé {$name} dans le fichier {$settingsFile}"] = array(
+					'success' => false,
+					'message' => "Configuration manquante ou erronée dans le fichier {$settingsFile}",
+				);
+			}
+			else {
+				// La configuration est-elle présente ?
+				$configure[$settingsFile] = array(
+					'success' => true,
+					'message' => null,
+				);
+
+				// Vérification des adresses mail
+				foreach( $settingsMailFields as $emailAddress ) {
+					if( isset( $settings[$emailAddress] ) && !empty( $settings[$emailAddress] ) ) {
+						foreach( (array)$settings[$emailAddress] as $address ) {
+							$success = Validation::email( $address, true );
+
+							$configure["{$emailAddress}.{$address}"] = array(
+								'success' => $success,
+								'message' => ( $success ? null : "L'adresse mail {$address} n'est pas valide" ),
+							);
+						}
+					}
+				}
+
+				// Test de connexion au serveur SMTP
+				if( !is_null( $Email ) && ( isset( $settings['transport'] ) && strtolower( $settings['transport'] ) == 'smtp' ) ) {
+					$tests['Connexion au serveur'] = $this->socket( $settings['host'], $settings['port'] );
+				}
+
+				// Test d'envoi de mail factice
+				$success = false;
+				if( !is_null( $Email ) ) {
+					try {
+						$Email->subject( 'Test' );
+						$Email->to( $Email->from() );
+						$Email->transport( 'Debug' );
+						$result = $Email->send( 'Test' );
+						$success = !empty( $result );
+					} catch( Exception $e ) {
+						$success = false;
+					}
+				}
+				$tests['Envoi factice'] = array(
+					'success' => $success,
+					'message' => ( !empty( $success ) ? null : 'Erreur lors du test d\'envoi de mail factice' )
+				);
+			}
+
+			return array( 'configure' => $configure, 'tests' => $tests );
 		}
 	}
 ?>

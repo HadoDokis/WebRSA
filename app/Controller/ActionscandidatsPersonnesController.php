@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'CakeEmail', 'Network/Email' );
 
 	/**
 	 * La classe ActionscandidatsPersonnesController permet la gestion des fiches
@@ -19,7 +20,7 @@
 		public $name = 'ActionscandidatsPersonnes';
 		public $uses = array( 'ActioncandidatPersonne','Option' );
 		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
-		public $components = array( 'Email', 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 		public $aucunDroit = array( 'ajaxpart', 'ajaxstruct', 'ajaxreferent', 'ajaxreffonct', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 		public $commeDroit = array(
 // 			'view' => 'ActionscandidatsPersonnes:index',
@@ -875,16 +876,28 @@
 				$this->redirect( $this->referer() );
 			}
 
-			$this->Email->reset();
-			$this->Email->smtpOptions = Configure::read( 'Email.smtpOptions' );
-			$this->Email->delivery = 'smtp';
-			$this->Email->from = Configure::read( 'FicheCandidature.Email.from' );
-			$this->Email->replyto = Configure::read( 'FicheCandidature.Email.replyto' );
-			$this->Email->to = $actioncandidat_personne['Referent']['email'];
-			$this->Email->subject = "Fiche de candidature";
-			$mailBody = "Bonjour,\n\nla fiche de candidature de {$actioncandidat_personne['Personne']['qual']} {$actioncandidat_personne['Personne']['nom']} {$actioncandidat_personne['Personne']['prenom']} a été saisie dans WEBRSA.\n\n.";
+			// Envoi du mail
+			$success = true;
+			try {
+				$Email = new CakeEmail( 'fiche_candidature' );
+				if( Configure::read( 'debug' ) == 0 ) {
+					$Email->to( $actioncandidat_personne['Referent']['email'] );
+				}
+				else {
+					$Email->to( $Email->from() );
+				}
+				$Email->subject( 'Fiche de candidature' );
 
-			if( $this->Email->send( $mailBody ) ) {
+				$mailBody = "Bonjour,\n\nla fiche de candidature de {$actioncandidat_personne['Personne']['qual']} {$actioncandidat_personne['Personne']['nom']} {$actioncandidat_personne['Personne']['prenom']} a été saisie dans WEBRSA.";
+				$result = $Email->send( $mailBody );
+
+				$success = !empty( $result ) && $success;
+			} catch( Exception $e ) {
+				$this->log( $e->getMessage(), LOG_ERROR );
+				$success = false;
+			}
+
+			if( $success ) {
 				$this->Session->setFlash( 'Mail envoyé', 'flash/success' );
 			}
 			else {

@@ -96,6 +96,7 @@ function __cleanFilesForRelease() {
 	rm -f "app/Config/database.php.default" >> /dev/null 2>&1
 	mv "app/Config/database.php" "app/Config/database.php.default" >> /dev/null 2>&1
 	mv "app/Config/webrsa.inc" "app/Config/webrsa.inc.default" >> /dev/null 2>&1
+	mv "app/Config/email.php" "app/Config/email.php.default" >> /dev/null 2>&1
 	mv "app/Config/core.php" "app/Config/core.php.default" >> /dev/null 2>&1
 
 	# Passage de tous les modèles .odt du répertoire app/Vendor/modelesodt en .odt7.default

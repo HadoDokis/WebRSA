@@ -272,6 +272,22 @@
 		}
 
 		/**
+		 * Vérifie la configuration des mails.
+		 *
+		 * @return array
+		 */
+		protected function _emails() {
+			$names = $this->Webrsacheck->allEmailConfigs();
+			$results = array();
+
+			foreach( $names as $name ) {
+				$results[$name] = $this->Check->cakeEmailConfig( $name );
+			}
+
+			return array( 'Emails' => $results );
+		}
+
+		/**
 		 * Vérification complète de l'application et envoi des résultats à la vue.
 		 *
 		 * @return void
@@ -289,7 +305,8 @@
 				$this->_cakephp(),
 				$this->_webrsa(),
 				$this->_storedDataErrors(),
-				$this->_services()
+				$this->_services(),
+				$this->_emails()
 			);
 
 			$this->set( 'results', $results );

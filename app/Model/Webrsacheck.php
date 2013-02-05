@@ -234,12 +234,9 @@
 				'Fraisdeplacement66.forfaithebergt' => 'numeric',
 				'Fraisdeplacement66.forfaitrepas' => 'numeric',
 				'Fraisdeplacement66.forfaitvehicule' => 'numeric',
-				'Apre66.EmailPiecesmanquantes.from' => 'string',
-				'Apre66.EmailPiecesmanquantes.replyto' => 'string',
 				'Chargeinsertion.Secretaire.group_id' => 'isarray',
 				'Contratinsertion.Cg66.updateEncoursbilan' => 'string',
 				'Criterecer.delaidetectionnonvalidnotifie' => 'string',
-				'Email.smtpOptions' => 'isarray',
 				'Nonorientationproep66.delaiCreationContrat' => 'integer',
 				'Orientstruct.typeorientprincipale.Emploi' => 'isarray',
 				'Orientstruct.typeorientprincipale.SOCIAL' => 'isarray',
@@ -421,7 +418,7 @@
 		 * @return array
 		 */
 		protected function _serviceCmis() {
-			$connected =Cmis::configured();
+			$connected = Cmis::configured();
 
 			return array(
 				'configure' => array(
@@ -494,6 +491,31 @@
 			Configure::write( 'debug', $debugLevel );
 
 			return $errors;
+		}
+
+		/**
+		 * Liste des clés de configurations de mails pour le CG 66.
+		 *
+		 * @return array
+		 */
+		protected function _allEmailConfigKeys66() {
+			return array( 'apre66_piecesmanquantes', 'fiche_candidature' );
+		}
+
+		/**
+		 * Vérification de la présence des configurations de mails suivant le CG.
+		 *
+		 * @return array
+		 */
+		public function allEmailConfigs() {
+			$method = '_allEmailConfigKeys'.Configure::read( 'Cg.departement' );
+
+			$configs = array();
+			if( method_exists( &$this, $method ) ) {
+				$configs = $this->{$method}();
+			}
+
+			return $configs;
 		}
 	}
 ?>

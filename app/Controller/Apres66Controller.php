@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'CakeEmail', 'Network/Email' );
 
 	/**
 	 * La classe Apres66Controller permet de lister, voir, ajouter, supprimer, ...  des APREs (CG 66).
@@ -19,9 +20,9 @@
 
 		public $uses = array( 'Apre66', 'Aideapre66', 'Pieceaide66', 'Typeaideapre66', 'Themeapre66', 'Option', 'Personne', 'Prestation', 'Pieceaide66Typeaideapre66', 'Adressefoyer', 'Fraisdeplacement66', 'Structurereferente', 'Referent', 'Piececomptable66Typeaideapre66', 'Piececomptable66', 'Foyer' );
 
-		public $helpers = array( 'Default', 'Locale'/*, 'Csv'*/, 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
+		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Email', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
@@ -907,17 +908,27 @@
 				$this->redirect( $this->referer() );
 			}
 
-			$this->Email->reset();
+			$success = true;
+			try {
+				$Email = new CakeEmail( 'apre66_piecesmanquantes' );
+				if( Configure::read( 'debug' ) == 0 ) {
+					$Email->to( $apre['Referent']['email'] );
+				}
+				else {
+					$Email->to( $Email->from() );
+				}
+				$Email->subject( 'Demande d\'Apre' );
 
-			$this->Email->smtpOptions = Configure::read( 'Email.smtpOptions' );
-			$this->Email->delivery = 'smtp';
-			$this->Email->from = Configure::read( 'Apre66.EmailPiecesmanquantes.from' );
-			$this->Email->replyto = Configure::read( 'Apre66.EmailPiecesmanquantes.replyto' );
-			$this->Email->to = $apre['Referent']['email'];
-			$this->Email->subject = "Demande d'Apre";
-			$mailBody = "Bonjour,\n\nle dossier de demande APRE de {$apre['Personne']['qual']} {$apre['Personne']['nom']} {$apre['Personne']['prenom']} ne peut être validé car les fichiers ne sont pas joints dans WEBRSA.\n\nLaurence COSTE.";
+				$mailBody = "Bonjour,\n\nle dossier de demande APRE de {$apre['Personne']['qual']} {$apre['Personne']['nom']} {$apre['Personne']['prenom']} ne peut être validé car les fichiers ne sont pas joints dans WEBRSA.\n\nLaurence COSTE.";
+				$result = $Email->send( $mailBody );
 
-			if( $this->Email->send( $mailBody ) ) {
+				$success = !empty( $result ) && $success;
+			} catch( Exception $e ) {
+				$this->log( $e->getMessage(), LOG_ERROR );
+				$success = false;
+			}
+
+			if( $success ) {
 				$this->Session->setFlash( 'Mail envoyé', 'flash/success' );
 			}
 			else {

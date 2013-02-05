@@ -131,6 +131,22 @@
 			<?php endif;?>
 		<?php endforeach;?>
 	</div>
+	<?php if( !empty( $results['Emails'] ) ): ?>
+	<div id="emails">
+		<h2 class="title">Emails</h2>
+		<?php foreach( $results['Emails'] as $emailName => $emailResults ):?>
+			<h3><?php echo h( $emailName );?></h3>
+			<?php if( !empty( $emailResults['configure'] ) ):?>
+				<h4>Configuration</h4>
+				<?php echo $this->Checks->table( $emailResults['configure'] );?>
+			<?php endif;?>
+			<?php if( !empty( $emailResults['tests'] ) ):?>
+				<h4>Tests</h4>
+				<?php echo $this->Checks->table( $emailResults['tests'] );?>
+			<?php endif;?>
+		<?php endforeach;?>
+	</div>
+	<?php endif;?>
 </div>
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
