@@ -382,10 +382,10 @@
 					}
 
 					if( $saved ) {
-						$this->Orientstruct->rollback();
+						$this->Orientstruct->commit();
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
+						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
 					}
 					else {
 						$this->Orientstruct->rollback();
@@ -497,10 +497,10 @@
 					}
 
 					if( $saved ) {
-						$this->Orientstruct->rollback(); //FIXME
+						$this->Orientstruct->commit();
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
+						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
 					}
 					else {
 						$this->Orientstruct->rollback();
