@@ -681,6 +681,10 @@
 				'OR' => array(
 					'Orientstruct.id IS NULL',
 					'Orientstruct.id IN ( '.$this->Personnepcg66->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' ).' )'
+				),
+				'OR' => array(
+					'Adressefoyer.id IS NULL',
+					'Adressefoyer.id IN ( '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).' )'
 				)
 			);
 
