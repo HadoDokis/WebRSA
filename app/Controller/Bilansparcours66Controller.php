@@ -660,8 +660,14 @@
 					}
 				}
 				elseif ( ( $this->action == 'edit' ) && empty( $nvcontratinsertionId ) ) {
-					$propositionModifie = $this->request->data['Bilanparcours66']['proposition'];
-					if( !in_array( $this->request->data['Bilanparcours66']['proposition'], array( 'aucun' ) ) && ( $proposition != $propositionModifie) ) {
+					if( isset( $this->request->data['Pe']['Bilanparcours66']['proposition'] ) ) {
+						$propositionModifie = $this->request->data['Pe']['Bilanparcours66']['proposition'];
+					}
+					else {
+						$propositionModifie = $this->request->data['Bilanparcours66']['proposition'];
+					}
+					
+					if( !in_array( $propositionModifie, array( 'aucun' ) ) && ( $proposition != $propositionModifie) ) {
 						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 					}
 					else {

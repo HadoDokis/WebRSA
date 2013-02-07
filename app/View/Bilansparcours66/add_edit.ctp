@@ -695,11 +695,15 @@
 	</fieldset>
 
 	<?php
+		if( $this->action == 'edit') {
+			echo $this->Xform->input( 'Pe.Bilanparcours66.proposition', array( 'type' => 'hidden' ) );
+			echo $this->Xform->input( 'Pe.Bilanparcours66.examenauditionpe', array( 'type' => 'hidden' ) );
+		}
 		echo $this->Default2->subform(
 			array(
 				'Pe.Bilanparcours66.textbilanparcours',
 				'Pe.Bilanparcours66.observbenef',
-				'Pe.Bilanparcours66.proposition' => array( 'type' => 'hidden', 'value' => 'parcours' )
+// 				'Pe.Bilanparcours66.proposition' => array( 'type' => 'hidden', 'value' => 'parcours' )
 			),
 			array(
 				'options' => $options

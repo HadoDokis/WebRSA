@@ -257,6 +257,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Typeorient' => array(
+				'className' => 'Typeorient',
+				'foreignKey' => 'typeorient_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
@@ -340,6 +347,21 @@
 
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
+
+			if ( isset( $this->data['Pe']['Bilanparcours66']['id'] ) ) {
+				$id = $this->data['Pe']['Bilanparcours66']['id'];
+				unset( $this->data['Pe']['Bilanparcours66']['id'] );
+			}
+			if ( isset( $this->data['Pe']['Bilanparcours66'] )/* && !empty( $data['Pe']['Bilanparcours66']['datebilan'] )*/ ) {
+				$datape = $this->data['Pe'];
+				unset($this->data['Pe']);
+				$this->data = Set::merge( $this->data, $datape );
+
+				if ( isset( $id ) ) {
+					$this->data['Bilanparcours66']['id'] = $id;
+				}
+			}
+			
 
 			$this->data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
 
