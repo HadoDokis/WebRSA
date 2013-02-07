@@ -1783,7 +1783,7 @@
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$querydata['joins'][] = $this->join( 'Personne', array( 'type' => 'INNER' ) );
-				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) > 55 ) AS "Personne__plus55ans"';
+				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) >= 55 ) AS "Personne__plus55ans"';
 
                 $querydata['joins'][] = $this->join( 'Actioncandidat', array( 'type' => 'LEFT OUTER' ) );
 				$querydata['fields'][] = 'Actioncandidat.name';
