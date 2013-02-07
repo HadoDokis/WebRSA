@@ -57,85 +57,100 @@
 		);
 	?>
 </fieldset>
-<fieldset class="actioncandidat">
-	<legend class="actioncandidat" >Personne orientée / allocataire</legend>
+<fieldset id="infocandidat">
+	<legend><strong>Personne orientée / allocataire</strong></legend>
+	<table class="wide noborder">
+		<tr>
+			<td class="mediumSize noborder">
+				<strong>Statut de la personne : </strong><?php echo Set::extract( $options['Prestation']['rolepers'], Set::extract( $personne, 'Prestation.rolepers' ) ); ?>
+				<br />
+				<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $personne, 'Personne.qual') , $options['Personne']['qual'] ).' '.Set::classicExtract( $personne, 'Personne.nom' );?>
+				<br />
+				<strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
+				<br />
+				<strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
+			</td>
+			<td class="mediumSize noborder">
+				<strong>N° Service instructeur : </strong>
+				<?php
+					$libservice = Set::enum( Set::classicExtract( $personne, 'Suiviinstruction.typeserins' ),  $options['Suiviinstruction']['typeserins'] );
+					if( isset( $libservice ) ) {
+						echo $libservice;
+					}
+					else{
+						echo 'Non renseigné';
+					}
+				?>
+				<br />
+				<strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
+				<br />
+				<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
+				<br />
+				<strong>Inscrit au Pôle emploi</strong>
+				<?php
+					$isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
+					if( $isPoleemploi == 'ANP' )
+						echo 'Oui';
+					else
+						echo 'Non';
+				?>
+				<br />
+				<strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
+				<br />
+				<br />
+				<strong>Chargé d'insertion: </strong><?php echo Set::classicExtract( $personne, 'Referent.nom_complet' );?>
+				<br />
+				<strong>N° de téléphone du chargé d'insertion: </strong><?php echo Set::classicExtract( $personne, 'Referent.numero_poste' );?>
+			</td>
+		</tr>
+		<tr>
+			<td class="mediumSize noborder">
+				<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
+			</td>
+		<tr>
+			<td class="mediumSize noborder">
+				<strong>Tél. fixe : </strong>
+				<?php
+					$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
+					if( !empty( $numtelfixe ) ) {
+						echo Set::extract( $personne, 'Personne.numfixe' );
+					}
+					else{
+						echo $this->Xform->input( 'Personne.numfixe', array( 'label' => false, 'type' => 'text' ) );
+
+					}
+				?>
+			</td>
+			<td class="mediumSize noborder">
+				<strong>Tél. portable : </strong>
+				<?php
+					$numtelport = Set::extract( $personne, 'Personne.numport' );
+					if( !empty( $numtelport ) ) {
+						echo Set::extract( $personne, 'Personne.numport' );
+					}
+					else{
+						echo $this->Xform->input( 'Personne.numport', array( 'label' => false, 'type' => 'text' ) );
+					}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="mediumSize noborder">
+				<strong>Adresse mail : </strong>
+				<?php
+					$email = Set::extract( $personne, 'Personne.email' );
+					if( !empty( $email ) ) {
+						echo Set::extract( $personne, 'Personne.email' );
+					}
+					else{
+						echo $this->Xform->input( 'Personne.email', array( 'label' => false, 'type' => 'text' ) );
+					}
+				?>
+			</td>
+		</tr>
+	</table>
 	<?php
-		///Données propre à la Personne
-		echo $this->Default->view(
-			$personne,
-			array(
-				'Personne.qual',
-				'Personne.nom',
-				'Personne.prenom',
-				'Personne.dtnai'
-			),
-			array(
-				'widget' => 'dl',
-				'class' => 'allocataire infos',
-				'options' => $options
-			)
-		);
-
-		///Données propre à l'adresse de la Personne
-		echo $this->Xhtml->tag(
-			'dl',
-			$this->Xhtml->tag( 'dt', 'Adresse' ).
-			$this->Xhtml->tag(
-				'dd',
-				$this->Default->format( $personne, 'Adresse.numvoie' ).' '.$this->Default->format( $personne, 'Adresse.typevoie', array( 'options' => $options ) ).' '.$this->Default->format( $personne, 'Adresse.nomvoie' ).' '.$this->Default->format( $personne, 'Adresse.codepos' ).' '.$this->Default->format( $personne, 'Adresse.locaadr' )
-			),
-			array(
-				'class' => 'allocataire infos'
-			)
-		);
-
-		///Données propre aux données du foyer de la personne
-		echo $this->Default->view(
-			$personne,
-			array(
-				'Foyer.Modecontact.0.numtel' => array( 'label' => 'N° de téléphone' ),
-				'Foyer.Modecontact.0.adrelec' => array( 'label' => 'Email' ),
-				'Detaildroitrsa.oridemrsa' => array( 'label' => 'Allocataire du ' ),
-				'Foyer.Dossier.matricule' => array( 'label' => 'Numéro allocataire ' )
-			),
-			array(
-				'widget' => 'dl',
-				'class' => 'allocataire infos',
-				'options' => $options
-			)
-		);
-
-		///Données propre au Pole Emploi
-		$isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
-		$isInscrit = 'Non';
-		$idassedic = null;
-		if( $isPoleemploi == 'ANP' ) {
-			$isInscrit = 'Oui';
-			$idassedic = Set::classicExtract( $personne, 'Personne.idassedic' );
-		}
-		else {
-			$isInscrit;
-			$idassedic;
-		}
-
-		echo $this->Xhtml->tag(
-			'dl',
-			$this->Xhtml->tag( 'dt', 'Inscrit au Pole Emploi' ).
-			$this->Xhtml->tag(
-				'dd',
-				$isInscrit
-			).
-			$this->Xhtml->tag( 'dt', ' N° identifiant : ' ).
-			$this->Xhtml->tag(
-				'dd',
-				$idassedic
-			),
-			array(
-				'class' => 'allocataire infos'
-			)
-		);
-
-		///Données propre aux Dsps de la personne
+		/*///Données propre aux Dsps de la personne
 		if( !empty( $dsp ) ) {
 			echo $this->Default->view(
 				$personne,
@@ -195,7 +210,7 @@
 				'Aucun contrat présent pour cette personne',
 				array( 'class' => 'notice' )
 			);
-		}
+		}*/
 	?>
 </fieldset>
 

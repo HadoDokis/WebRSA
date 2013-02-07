@@ -835,6 +835,9 @@
 		 *
 		 */
 		public function newDetailsCi( $personne_id, $user_id = null ) {
+		
+			$sqDernierReferent = $this->PersonneReferent->sqDerniere( 'Personne.id', false );
+		
 			///Recup personne
 			$personne = $this->find(
 				'first',
@@ -870,7 +873,9 @@
 						'Serviceinstructeur.numcomins',
 						'Serviceinstructeur.numagrins',
 						'Suiviinstruction.typeserins',
-						ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"'
+						ClassRegistry::init( 'Detaildroitrsa' )->vfRsaMajore().' AS "Detailcalculdroitrsa__majore"',
+						$this->PersonneReferent->Referent->sqVirtualField( 'nom_complet'),
+						'Referent.numero_poste'
 					),
 					'conditions' => array(
 						'Personne.id' => $personne_id,
@@ -894,6 +899,16 @@
 							'foreignKey' => false,
 							'conditions' => array( 'Suiviinstruction.numdepins = Serviceinstructeur.numdepins AND Suiviinstruction.typeserins = Serviceinstructeur.typeserins AND Suiviinstruction.numcomins = Serviceinstructeur.numcomins AND Suiviinstruction.numagrins = Serviceinstructeur.numagrins' )
 						),
+						$this->join(
+							'PersonneReferent',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									"PersonneReferent.id IN ( {$sqDernierReferent} )"
+								)
+							)
+						),
+						$this->PersonneReferent->join( 'Referent', array( 'type' => 'INNER' ) )
 					),
 					'recursive' => -1
 				)
