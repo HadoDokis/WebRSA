@@ -69,6 +69,8 @@
 				<strong>Prénom : </strong><?php echo Set::classicExtract( $personne, 'Personne.prenom' );?>
 				<br />
 				<strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $personne, 'Personne.dtnai' ) );?>
+				<br />
+				<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
 			</td>
 			<td class="mediumSize noborder">
 				<strong>N° Service instructeur : </strong>
@@ -83,6 +85,8 @@
 				?>
 				<br />
 				<strong>N° demandeur : </strong><?php echo Set::classicExtract( $personne, 'Dossier.numdemrsa' );?>
+				<br />
+				<strong>Bénéficiaire du RSA depuis le (entrée dans le dispositif RSA/RMI): </strong><?php echo date_short( Set::classicExtract( $personne, 'Dossier.dtdemrsa' ) );?>
 				<br />
 				<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
 				<br />
@@ -103,10 +107,6 @@
 				<strong>N° de téléphone du chargé d'insertion: </strong><?php echo Set::classicExtract( $personne, 'Referent.numero_poste' );?>
 			</td>
 		</tr>
-		<tr>
-			<td class="mediumSize noborder">
-				<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
-			</td>
 		<tr>
 			<td class="mediumSize noborder">
 				<strong>Tél. fixe : </strong>
