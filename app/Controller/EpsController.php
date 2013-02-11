@@ -123,13 +123,6 @@
 				if ( $success ) {
 					$this->Ep->create( $this->request->data );
 					$success = $this->Ep->save() && $success;
-
-					if( $success ) {
-						$success = $this->Ep->Commissionep->CommissionepMembreep->updateCommissionsNonValidees(
-							$this->Ep->id,
-							$this->request->data['Membreep']['Membreep']
-						) && $success;
-					}
 				}
 
 				$this->_setFlashResult( 'Save', $success );

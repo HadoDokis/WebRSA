@@ -778,7 +778,9 @@
 					'recursive' => -1
 				)
 			);
-			$personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
+			if( !empty( $contrat ) ) {
+				$personne['Contratinsertion']['dernier'] = $contrat['Contratinsertion'];
+			}
 
 // debug( $personne );
 			/// Récupération du service instructeur

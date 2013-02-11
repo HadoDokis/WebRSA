@@ -158,7 +158,7 @@
 		 * @param array $membreseps_ids Les ids des membres actuels de l'EP
 		 * @return boolean
 		 */
-		public function updateCommissionsNonValidees( $ep_id, $membreseps_ids ) {
+		/*public function updateCommissionsNonValidees( $ep_id, $membreseps_ids ) {
 			$success = true;
 
 			// Commissions non validées pour EP
@@ -225,6 +225,6 @@
 			}
 
 			return $success;
-		}
+		}*/
 	}
 ?>
