@@ -31,6 +31,12 @@
 				)
 			),
 			'Validation.Autovalidate',
+			'ModelesodtConditionnables' => array(
+				93 => array(
+					'Transfertpdv93/mutation_emploi.odt',
+					'Transfertpdv93/mutation_social.odt'
+				)
+			),
 			'Gedooo.Gedooo'
 		);
 
@@ -95,7 +101,12 @@
 		 * @return string
 		 */
 		public function modeleOdt( $data ) {
-			return "Transfertpdv93/transfert.odt";
+			$nv_typeorient_id = $data['NvOrientstruct']['typeorient_id'];
+			$modeleodt = 'Transfertpdv93/mutation_social.odt';
+			if( in_array( $nv_typeorient_id, Configure::read( 'Orientstruct.typeorientprincipale.Emploi' ) ) ) {
+				$modeleodt = 'Transfertpdv93/mutation_emploi.odt';
+			}
+			return $modeleodt;
 		}
 
 		/**
@@ -197,7 +208,9 @@
 					)
 				)
 			);
+
 // debug($data);
+// debug( $modeleodt );
 // die();
 			return $this->ged( $data, $modeleodt, false, $options );
 		}
