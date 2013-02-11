@@ -61,8 +61,9 @@
 						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
 						$this->Xhtml->viewLink(
 							'Voir',
-							array( 'controller' => 'dossiers', 'action' => 'view', $result['Dossier']['id'] ),
+							array( 'controller' => 'cers93', 'action' => 'index', $result['Personne']['id'] ),
 							$this->Permissions->check( 'dossiers', 'view' ),
+							true,
 							true
 						)
 					),
