@@ -289,6 +289,7 @@
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
 							'user_id' => $dossierep['Reorientationep93']['user_id'], // L'utilisateur à l'origine de la demande de réorientation devient l'utilisateur de la nouvelle orientsstruct
+							'origine' => 'reorientation' //FIXME: bug #6327 arnaud
 						)
 					);
 
