@@ -692,117 +692,120 @@
 
 			if( $isMembreepInCommissionepMembreep ) {
 				$membresepsseanceseps = $this->Commissionep->find(
-						'all', array(
-					'fields' => $fields,
-					'conditions' => array(
-						'Commissionep.id' => $commissionep_id
-					),
-					'joins' => array(
-						array(
-							'alias' => 'Ep',
-							'table' => 'eps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Commissionep.ep_id = Ep.id'
-							)
+					'all',
+					array(
+						'fields' => $fields,
+						'conditions' => array(
+							'Commissionep.id' => $commissionep_id
 						),
-						array(
-							'alias' => 'CommissionepMembreep',
-							'table' => 'commissionseps_membreseps',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'CommissionepMembreep.commissionep_id = Commissionep.id',
-							)
+						'joins' => array(
+							array(
+								'alias' => 'Ep',
+								'table' => 'eps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Commissionep.ep_id = Ep.id'
+								)
+							),
+							array(
+								'alias' => 'CommissionepMembreep',
+								'table' => 'commissionseps_membreseps',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'CommissionepMembreep.commissionep_id = Commissionep.id'
+								)
+							),
+							array(
+								'alias' => 'Membreep',
+								'table' => 'membreseps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'CommissionepMembreep.membreep_id = Membreep.id'
+								)
+							),
+							array(
+								'alias' => 'Fonctionmembreep',
+								'table' => 'fonctionsmembreseps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Membreep.fonctionmembreep_id = Fonctionmembreep.id'
+								)
+							),
 						),
-						array(
-							'alias' => 'Membreep',
-							'table' => 'membreseps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'CommissionepMembreep.membreep_id = Membreep.id'
-							)
-						),
-						array(
-							'alias' => 'Fonctionmembreep',
-							'table' => 'fonctionsmembreseps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Membreep.fonctionmembreep_id = Fonctionmembreep.id'
-							)
-						),
-					),
-					'contain' => false
-						)
+						'contain' => false
+					)
 				);
 			}
 			else {
 				$membresepsseanceseps = $this->Commissionep->find(
-						'all', array(
-					'fields' => $fields,
-					'conditions' => array(
-						'Commissionep.id' => $commissionep_id
-					),
-					'joins' => array(
-						array(
-							'alias' => 'Ep',
-							'table' => 'eps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Commissionep.ep_id = Ep.id'
+					'all',
+					array(
+						'fields' => $fields,
+						'conditions' => array(
+							'Commissionep.id' => $commissionep_id
+						),
+						'joins' => array(
+							array(
+								'alias' => 'Ep',
+								'table' => 'eps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Commissionep.ep_id = Ep.id'
+								)
+							),
+							array(
+								'alias' => 'EpMembreep',
+								'table' => 'eps_membreseps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'EpMembreep.ep_id = Ep.id'
+								)
+							),
+							array(
+								'alias' => 'Membreep',
+								'table' => 'membreseps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Membreep.id = EpMembreep.membreep_id'
+								)
+							),
+							array(
+								'alias' => 'Fonctionmembreep',
+								'table' => 'fonctionsmembreseps',
+								'type' => 'INNER',
+								'conditions' => array(
+									'Membreep.fonctionmembreep_id = Fonctionmembreep.id'
+								)
+							),
+							array(
+								'alias' => 'CommissionepMembreep',
+								'table' => 'commissionseps_membreseps',
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'CommissionepMembreep.commissionep_id = Commissionep.id',
+									'CommissionepMembreep.membreep_id = Membreep.id'
+								)
 							)
 						),
-						array(
-							'alias' => 'EpMembreep',
-							'table' => 'eps_membreseps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'EpMembreep.ep_id = Ep.id'
-							)
-						),
-						array(
-							'alias' => 'Membreep',
-							'table' => 'membreseps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Membreep.id = EpMembreep.membreep_id'
-							)
-						),
-						array(
-							'alias' => 'Fonctionmembreep',
-							'table' => 'fonctionsmembreseps',
-							'type' => 'INNER',
-							'conditions' => array(
-								'Membreep.fonctionmembreep_id = Fonctionmembreep.id'
-							)
-						),
-						array(
-							'alias' => 'CommissionepMembreep',
-							'table' => 'commissionseps_membreseps',
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'CommissionepMembreep.commissionep_id = Commissionep.id',
-								'CommissionepMembreep.membreep_id = Membreep.id'
-							)
-						)
-					),
-					'contain' => false
-						)
+						'contain' => false
+					)
 				);
 			}
 
 			$this->set( 'membresepsseanceseps', $membresepsseanceseps );
 
 			$membreseps = $this->Commissionep->CommissionepMembreep->Membreep->find(
-					'all', array(
-				'fields' => array(
-					'Membreep.id',
-					'Membreep.qual',
-					'Membreep.nom',
-					'Membreep.prenom',
-					'Membreep.fonctionmembreep_id'
-				),
-				'conditions' => array(
-					'Membreep.id NOT IN ( '.$this->Commissionep->CommissionepMembreep->Membreep->EpMembreep->sq(
+				'all',
+				array(
+					'fields' => array(
+						'Membreep.id',
+						'Membreep.qual',
+						'Membreep.nom',
+						'Membreep.prenom',
+						'Membreep.fonctionmembreep_id'
+					),
+					'conditions' => array(
+						'Membreep.id NOT IN ( '.$this->Commissionep->CommissionepMembreep->Membreep->EpMembreep->sq(
 							array(
 								'fields' => array(
 									'eps_membreseps.membreep_id'
@@ -812,10 +815,10 @@
 									'eps_membreseps.ep_id' => $commissionep['Commissionep']['ep_id']
 								)
 							)
-					).' )'
-				),
-				'contain' => false
-					)
+						).' )'
+					),
+					'contain' => false
+				)
 			);
 
 			$listemembreseps = array( );
