@@ -35,8 +35,6 @@
 		 * @var array
 		 */
 		public $actsAs = array(
-//			'Validation.Autovalidate',
-//			'Enumerable',
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Gedooo.Gedooo',

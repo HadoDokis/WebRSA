@@ -20,12 +20,7 @@
 		public $displayField = 'username';
 
 		public $actsAs = array(
-			'Enumerable',/* => array(
-				'fields' => array(
-					'isgestionnaire',
-					'sensibilite',
-				)
-			)*/
+			'Enumerable',
 			'Pgsqlcake.PgsqlAutovalidate',
 		);
 

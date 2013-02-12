@@ -33,9 +33,7 @@
 		);
 
 		public $actsAs = array(
-// 			'Autovalidate2',
 			'Pgsqlcake.PgsqlAutovalidate',
-// 			'ValidateTranslate',
 			'Formattable',
 			'Gedooo.Gedooo',
 			'StorablePdf',
