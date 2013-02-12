@@ -893,7 +893,7 @@
 				// fin hasMany spéciaux
 
 				$dsp_id = Set::classicExtract( $this->request->data, 'Dsp.id' );
-				$this->request->data = Hash::filter( $this->request->data );
+				$this->request->data = Hash::filter( (array)$this->request->data );
 
 				$data2 = null;
 

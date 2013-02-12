@@ -576,7 +576,7 @@
 
 			/// Recherche référent à tout prix ....
 			// Premère étape: référent du parcours.
-			$referent = Hash::filter( $orientstruct['Referent'] );
+			$referent = Hash::filter( (array)$orientstruct['Referent'] );
 			if( empty( $referent ) ) {
 				$referent = $this->Personne->Referent->PersonneReferent->find(
 					'first',
@@ -593,7 +593,7 @@
 			}
 
 			// Deuxième étape: premier référent renseigné pour la structure sélectionnée
-			$referent = Hash::filter( $orientstruct['Referent'] );
+			$referent = Hash::filter( (array)$orientstruct['Referent'] );
 			if( empty( $referent ) && !empty( $orientstruct['Structurereferente']['id'] ) ) {
 				$referent = $this->Personne->Referent->find(
 					'first',

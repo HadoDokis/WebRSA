@@ -29,10 +29,10 @@ echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 
 		$avisep = $options['Decisionnonorientationproep93']['decision'][Set::classicExtract( $dossierep, "Passagecommissionep.0.Decisionnonorientationproep93.{$niveau}.decision" )];
 		if ( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'maintienref' ) {
-			$avisep .= ' - '.implode( ' - ', Hash::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'] ) ) );
+			$avisep .= ' - '.implode( ' - ', Hash::filter( (array)array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'] ) ) );
 		}
 		else if ( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['decision'] == 'reorientation' ) {
-			$avisep .= ' - '.implode( ' - ', Hash::filter( array( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Typeorient']['lib_type_orient'], $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Structurereferente']['lib_struc'] ) ) );
+			$avisep .= ' - '.implode( ' - ', Hash::filter( (array)array( $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Typeorient']['lib_type_orient'], $dossierep['Passagecommissionep'][0]['Decisionnonorientationproep93'][$niveau]['Structurereferente']['lib_struc'] ) ) );
 		}
 
 		$hiddenFields = $this->Form->input( "Decisionnonorientationproep93.{$i}.id", array( 'type' => 'hidden' ) ).
@@ -49,7 +49,7 @@ echo '<table id="Decisionnonorientationproep93" class="tooltips"><thead>
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Dossierep']['created'] ),
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Nonorientationproep93']['Orientstruct']['date_valid'] ),
 
-				implode( ' - ', Hash::filter( array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'], implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ) ) ) ),
+				implode( ' - ', Hash::filter( (array)array( $dossierep['Nonorientationproep93']['Orientstruct']['Typeorient']['lib_type_orient'], $dossierep['Nonorientationproep93']['Orientstruct']['Structurereferente']['lib_struc'], implode( ' ', array( @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['qual'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['nom'], @$dossierep['Nonorientationproep93']['Orientstruct']['Referent']['prenom'] ) ) ) ) ),
 
 				$avisep,
 

@@ -53,14 +53,14 @@
 
 				if( !empty( $filter ) ) {
 					$datas = array( $filter => Set::extract( $controller->request->data, $filter ) );
-					$filteredData = Hash::filter( $controller->request->data );
+					$filteredData = Hash::filter( (array)$controller->request->data );
 					$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $filteredData ) ? array( ) : $filteredData ), '__' ) ) );
 				}
 				else {
 					$datas = $controller->request->data;
 				}
 
-				$datas = Hash::filter( $datas );
+				$datas = Hash::filter( (array)$datas );
 
 				if( !empty( $datas ) ) {
 					$params = Hash::flatten( $datas, '__' );

@@ -261,7 +261,7 @@
 
 				/// Moteur de recherche
 				$search = Hash::flatten( $search );
-				$search = Hash::filter( $search );
+				$search = Hash::filter( (array)$search );
 
 				if( $this->request->data['Search']['Relance']['contrat'] == 0 ) {
 					$this->paginate = array(

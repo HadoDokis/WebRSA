@@ -105,7 +105,7 @@
 			foreach( $lines as $line ) {
 				$nLignes++;
 				$parts = explode( ';', $line );
-				$cleanedParts = Hash::filter( $parts );
+				$cleanedParts = Hash::filter( (array)$parts );
 
 				if( !empty( $cleanedParts ) ) {
 					if( $nLignes == 1 ) {
@@ -122,7 +122,7 @@
 							}
 						}
 
-						$cleanedCanton = Hash::filter( $canton['Canton'] );
+						$cleanedCanton = Hash::filter( (array)$canton['Canton'] );
 
 						if( !empty( $cleanedCanton ) ) {
 							// Mise en majuscules et suppression des accents

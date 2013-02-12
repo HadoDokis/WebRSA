@@ -407,7 +407,7 @@
 				}
 
 				if( ( $this->request->data['Cui']['secteur'] == 'CAE' ) && !empty( $this->request->data['Accompagnementcui66'] ) ) {
-					$Accompagnementcui66 = Hash::filter( $this->request->data['Accompagnementcui66'] );
+					$Accompagnementcui66 = Hash::filter( (array)$this->request->data['Accompagnementcui66'] );
 					if( !empty( $Accompagnementcui66 ) ) {
 						$this->{$this->modelClass}->Accompagnementcui66->create( $this->request->data );
 						if( $this->action == 'add' ) {

@@ -666,7 +666,7 @@
 				'class' => Set::classicExtract( $formParams, 'class' ),
 				'domain' => Set::classicExtract( $formParams, 'domain' )
 			);
-			$params = Hash::filter( $params );
+			$params = Hash::filter( (array)$params );
 			$params = Set::merge(
 				array( 'inputDefaults' => array( 'domain' => $domain ) ),
 				$params

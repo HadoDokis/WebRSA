@@ -46,7 +46,7 @@ echo '<table id="Decisioncontratcomplexeep93" class="tooltips"><thead>
 				$this->Locale->date( __( 'Locale->date' ), @$dossierep['Contratcomplexeep93']['Contratinsertion']['df_ci'] ),
 				implode(
 					' - ',
-					Hash::filter(
+					Hash::filter( (array)
 						array(
 							Set::enum( $decisionep['decision'], $options['Decisioncontratcomplexeep93']['decision'] ),
 							$this->Locale->date( 'Locale->date', $decisionep['datevalidation_ci'] ),

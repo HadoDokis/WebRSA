@@ -1270,7 +1270,7 @@
 
 			// INFO: pour le CG 66, on n'a pas de PDF de décision pour toutes les thématiques
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$pdfs = Hash::filter( $pdfs );
+				$pdfs = Hash::filter( (array)$pdfs );
 			}
 
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'DecisionsEPsBeneficiaire' );

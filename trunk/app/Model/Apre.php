@@ -529,7 +529,7 @@
 				$details['Natureaide'][$model] = count( $aides );
 
 				if( !empty( $aides ) ) {
-					$details['Piecepresente'][$model] = count( Hash::filter( Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
+					$details['Piecepresente'][$model] = count( Hash::filter( (array)Set::extract( $aides, '/Piece'.strtolower( $model ) ) ) );
 					$details['Piecemanquante'][$model] = abs( $nbNormalPieces[$model] - $details['Piecepresente'][$model] );
 
 					if( !empty( $details['Piecemanquante'][$model] ) ) {

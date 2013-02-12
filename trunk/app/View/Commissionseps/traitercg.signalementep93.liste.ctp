@@ -60,7 +60,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 				@$dossierep['Personne']['Foyer']['nbenfants'],
 				implode(
 					' - ',
-					Hash::filter(
+					Hash::filter( (array)
 						array(
 							Set::enum( @$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['decision'], $options['Decisionsignalementep93']['decision'] ),
 							@$dossierep['Passagecommissionep'][0]['Decisionsignalementep93'][$indexDecision]['raisonnonpassage']

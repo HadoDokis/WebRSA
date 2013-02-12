@@ -205,7 +205,7 @@
 
 				$line = trim( $line );
 				$parts = explode( $this->params['separator'], $line );
-				$cleanedParts = Hash::filter( $parts );
+				$cleanedParts = Hash::filter( (array)$parts );
 				$nLignes++;
 
 				if( !empty( $cleanedParts ) ) {

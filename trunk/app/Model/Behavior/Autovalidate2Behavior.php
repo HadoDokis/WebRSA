@@ -161,7 +161,7 @@
 				foreach( $this->_autoAddedPaths as $path ) {
 					$model->validate = Hash::remove( $model->validate, $path );
 				}
-				$model->validate = Hash::filter( $model->validate );
+				$model->validate = Hash::filter( (array)$model->validate );
 			}
 		}
 

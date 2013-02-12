@@ -42,7 +42,7 @@
 			$this->Gestionanomaliebdd->foyerErreursDoublonsPersonnes( $foyer, false ),
 			( $foyer['Dossier']['locked'] ? $this->Xhtml->image( 'icons/lock.png', array( 'alt' => '', 'title' => 'Dossier verrouillé' ) ) : null ),
 		);
-		$informations = Hash::filter( $informations );
+		$informations = Hash::filter( (array)$informations );
 
 		if( !empty( $informations ) ) {
 			echo '<ul>';

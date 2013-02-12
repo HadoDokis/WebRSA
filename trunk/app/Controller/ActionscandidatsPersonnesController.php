@@ -591,7 +591,7 @@
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->request->data['Personne'] ) ) {
-						$isDataPersonne = Hash::filter( $this->request->data['Personne'] );
+						$isDataPersonne = Hash::filter( (array)$this->request->data['Personne'] );
 						if( !empty( $isDataPersonne ) ) {
                             $this->{$this->modelClass}->Personne->create( array( 'Personne' => $this->request->data['Personne'] ) );
 							$success = $this->{$this->modelClass}->Personne->save() && $success;

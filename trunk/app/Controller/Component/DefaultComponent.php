@@ -76,7 +76,7 @@
 			$search = Set::extract( $this->Controller->request->data, 'Search' );
 			if( !empty( $search ) ) {
 				$search = Hash::flatten( (array)$search );
-				$search = Hash::filter( $search );
+				$search = Hash::filter( (array)$search );
 				$search = Hash::expand( $search );
 
 				if( !empty( $search ) ) {
@@ -318,7 +318,7 @@
 
 			/// data that were not in special formatting.
 			$data = Hash::flatten( (array)$data );
-			$data = Hash::filter( $data );
+			$data = Hash::filter( (array)$data );
 			$data = Hash::expand( $data );
 
 			if( !empty( $data ) ) {
