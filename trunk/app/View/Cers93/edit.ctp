@@ -158,7 +158,7 @@
 				<br /><?php echo nl2br( Set::classicExtract( $this->request->data, 'Cer93.adresse' ) ).'<br />'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.locaadr' );?>
             </td>
             <td class="mediumSize noborder">
-                <strong>N° Service instructeur : </strong>
+                <!-- <strong>N° Service instructeur : </strong>
                 <?php
 					$libservice = Set::enum( Set::classicExtract( $this->request->data, 'Suiviinstruction.typeserins' ),  $options['Serviceinstructeur']['typeserins'] );
 					if( isset( $libservice ) ) {
@@ -170,15 +170,15 @@
                 ?>
                 <br />
                 <strong>N° demandeur : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.numdemrsa' );?>
-                <br />
+                <br /> -->
                 <strong>Date d'ouverture de droit : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtdemrsa' ) );?>
                 <br />
                 <strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.matricule' );?>
-                <br />
+                <!--<br />
                 <strong>Inscrit au Pôle emploi</strong>
                 <?php echo ( !empty( $this->request->data['Cer93']['identifiantpe'] ) ? 'Oui' : 'Non' );?>
 				<br />
-				<strong>N° identifiant : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.identifiantpe' );?>
+				 <strong>N° identifiant : </strong><?php echo Set::classicExtract( $this->request->data, 'Cer93.identifiantpe' );?> -->
 				<br />
 				 <strong>Situation familiale : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Cer93.sitfam' ), $options['Foyer']['sitfam'] );?>
                 <br />
