@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe Histochoixcer93 ...
@@ -236,7 +237,7 @@
 							'Cer93.positioncer' => '\'99valide\'',
 							'Cer93.duree' => '\''.$data['Histochoixcer93']['duree'].'\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
-							'Cer93.observationdecision' => '\''.$data['Histochoixcer93']['observationdecision'].'\''
+							'Cer93.observationdecision' => '\''.Sanitize::escape( $data['Histochoixcer93']['observationdecision'] ).'\''
 						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
@@ -353,7 +354,7 @@
 							'Cer93.positioncer' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' ).'\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
 							'Cer93.duree' => '\''.$data['Histochoixcer93']['duree'].'\'',
-							'Cer93.observationdecision' => '\''.$data['Histochoixcer93']['observationdecision'].'\'',
+							'Cer93.observationdecision' => '\''.Sanitize::escape( $data['Histochoixcer93']['observationdecision'] ).'\'',
 						),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
