@@ -272,8 +272,7 @@
 					'contain' => false,
 					'conditions' => array(
 						'Rendezvous.personne_id' => $personne_id,
-						WebrsaPermissions::conditionsDate( 'Rendezvous.daterdv', $dossierMenu ),
-						$conditionStructure // FIXME Arnaud
+						$conditionStructure
 					),
 					'order' => array(
 						'Rendezvous.daterdv DESC',
