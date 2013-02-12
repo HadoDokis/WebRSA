@@ -31,12 +31,12 @@ echo '<table><thead>
 				$this->Locale->date( __( 'Locale->datetime' ), Set::classicExtract( $dossierep, 'Nonorientationproep58.Decisionpropononorientationprocov58.Passagecov58.Cov58.datecommission' ) ),
 				implode(
 					' - ',
-					Hash::filter( array(
+					Hash::filter( (array)array(
 						$dossierep['Nonorientationproep58']['Orientstruct']['Typeorient']['lib_type_orient'],
 						$dossierep['Nonorientationproep58']['Orientstruct']['Structurereferente']['lib_struc'],
 						implode(
 							' ',
-							Hash::filter( array(
+							Hash::filter( (array)array(
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['qual'],
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['nom'],
 								@$dossierep['Nonorientationproep58']['Orientstruct']['Referent']['prenom']

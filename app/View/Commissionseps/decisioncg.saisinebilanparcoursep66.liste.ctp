@@ -57,10 +57,10 @@ echo '<table id="Decisionsaisinebilanparcoursep66">
 			implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 			$this->Locale->date( __( 'Locale->date' ), $dossierep['Personne']['dtnai'] ),
 			$this->Locale->date( __( 'Locale->date' ), $dossierep['Dossierep']['created'] ),
-			implode( ' - ', Hash::filter( array(
+			implode( ' - ', Hash::filter( (array)array(
 				@$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Typeorient']['lib_type_orient'],
 				@$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Structurereferente']['lib_struc'],
-				Hash::filter( array(
+				Hash::filter( (array)array(
 					@$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Referent']['qual'],
 					@$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Referent']['nom'],
 					@$dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Referent']['prenom']
@@ -71,7 +71,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66">
 			@$liste_structuresreferentes[Set::classicExtract( $dossierep, "Saisinebilanparcoursep66.structurereferente_id" )]
 		);
 
-		$listeFields[] = implode( ' - ', Hash::filter( array(
+		$listeFields[] = implode( ' - ', Hash::filter( (array)array(
 			@$options['Decisionsaisinebilanparcoursep66']['decision'][Set::classicExtract( $decisionep, "decision" )],
 			@$options['Saisinebilanparcoursep66']['choixparcours'][Set::classicExtract( $decisionep, "choixparcours" )],
 			@$options['Saisinebilanparcoursep66']['maintienorientparcours'][Set::classicExtract( $decisionep, "maintienorientparcours" )],

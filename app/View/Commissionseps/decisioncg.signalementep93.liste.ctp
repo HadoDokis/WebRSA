@@ -57,7 +57,7 @@ echo '<table id="Decisionsignalementep93" class="tooltips"><thead>
 
 				implode(
 					' - ',
-					Hash::filter(
+					Hash::filter( (array)
 						array(
 							Set::enum( @$decisionep['decision'], $options['Decisionsignalementep93']['decision'] ),
 							@$decisionep['raisonnonpassage']

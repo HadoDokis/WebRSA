@@ -83,7 +83,7 @@
 					foreach( $comitesapres as $comiteapre ) {
 
 						$decisionPrise = true;
-						$decision = Hash::filter( Set::extract( $comiteapre, '/Apre/ApreComiteapre/decisioncomite' ) );
+						$decision = Hash::filter( (array)Set::extract( $comiteapre, '/Apre/ApreComiteapre/decisioncomite' ) );
 						if( !empty( $decision ) ) {
 							$decisionPrise = false;
 						}

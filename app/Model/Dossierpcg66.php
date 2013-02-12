@@ -170,7 +170,7 @@
 		*/
 
 		public function etatPcg66( $dossierpcg66 ) {
-			$dossierpcg66 = Hash::expand( Hash::filter( ( $dossierpcg66 ) ) );
+			$dossierpcg66 = Hash::expand( Hash::filter( (array)( $dossierpcg66 ) ) );
 
 			$typepdo_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.typepdo_id' );
 		}

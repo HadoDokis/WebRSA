@@ -429,7 +429,7 @@
 					Set::extract( '/Orientstruct/id', $nonOriente )
 				);
 
-				$ids = Hash::filter( $ids );
+				$ids = Hash::filter( (array)$ids );
 
 				if( !empty( $ids ) ) {
 					$success = $modelClass->deleteAll(
@@ -704,7 +704,7 @@
 				if( $uniqueRecordsModel != 'Personne' ) {
 					$pathKeep = "/{$uniqueRecordsModel}/id";
 					$keep = Set::extract( $pathKeep, $data );
-					$keep = Hash::filter( $keep );
+					$keep = Hash::filter( (array)$keep );
 
 					if( count( $keep ) > 1 ) {
 						$pathOriginals = "/{$uniqueRecordsModel}/{$uniqueRecordsModel}";
@@ -817,7 +817,7 @@
 			}
 
 			// Fusion des enregistrements liés à la personne sélectionnée
-			$models = array_keys( Hash::filter( $data ) );
+			$models = array_keys( Hash::filter( (array)$data ) );
 			foreach( $models as $model ) {
 				if( $model != 'Personne' && !empty( $data[$model]['id'] ) ) {
 					$methodName = "_personnes{$model}Merge";
@@ -1000,7 +1000,7 @@
 			if( !empty( $personnes_id ) ) {
 				$assocConditions = $this->Gestionanomaliesbdd->assocConditions( $this->Dossier->Foyer->Personne );
 				$donnees = $this->_assocData( $this->Dossier->Foyer->Personne, $assocConditions, $personnes_id );
-				$donnees = Hash::filter( $donnees );
+				$donnees = Hash::filter( (array)$donnees );
 
 				$fichiersModuleLies = array_merge(
 					$this->_fichiersModuleLies( $donnees ),

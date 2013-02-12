@@ -718,7 +718,7 @@
 
 				if( !empty( $this->request->data['Fraisdeplacement66'] ) ) {
 
-					$Fraisdeplacement66 = Hash::filter( $this->request->data['Fraisdeplacement66'] );
+					$Fraisdeplacement66 = Hash::filter( (array)$this->request->data['Fraisdeplacement66'] );
 					if( !empty( $Fraisdeplacement66 ) ) {
 						$this->{$this->modelClass}->Aideapre66->Fraisdeplacement66->create( $this->request->data );
 					}
@@ -741,7 +741,7 @@
 
 
 				/*
-				  $Modecontact = Hash::expand( Hash::filter( Hash::flatten( $this->request->data['Modecontact'] ) ) );
+				  $Modecontact = Hash::expand( Hash::filter( (array)Hash::flatten( $this->request->data['Modecontact'] ) ) );
 				  debug($Modecontact);
 				  die();
 				  if( !empty( $Modecontact ) ){
@@ -761,7 +761,7 @@
 
 
 				// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
-				$isDataPersonne = Hash::filter( $this->request->data['Personne'] );
+				$isDataPersonne = Hash::filter( (array)$this->request->data['Personne'] );
 				if( !empty( $isDataPersonne ) ) {
 					$success = $this->{$this->modelClass}->Personne->save( array( 'Personne' => $this->request->data['Personne'] ) ) && $success;
 				}

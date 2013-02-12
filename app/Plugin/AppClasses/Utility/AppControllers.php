@@ -114,9 +114,9 @@
 
 //	App::uses( 'AppControllers', 'AppClasses.Utility' );
 //	AppControllers::init();
-////	debug( Hash::filter( AppControllers::commeDroit() ) );
-////	debug( Hash::filter( AppControllers::aucunDroit() ) );
-////	debug( Hash::filter( AppControllers::crudMap() ) );
+////	debug( Hash::filter( (array)AppControllers::commeDroit() ) );
+////	debug( Hash::filter( (array)AppControllers::aucunDroit() ) );
+////	debug( Hash::filter( (array)AppControllers::crudMap() ) );
 //
 //	debug( AppControllers::isRead( 'DossiersController', 'edit' ) );
 //	debug( AppControllers::isWrite( 'DossiersController', 'edit' ) );

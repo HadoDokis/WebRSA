@@ -75,7 +75,7 @@
 				'conditions' => array(),
 			);
 
-			$queryData = Set::merge( $defaults, Hash::filter( $queryData ) );
+			$queryData = Set::merge( $defaults, Hash::filter( (array)$queryData ) );
 
 			// PostgreSQL CakePHP 1.3.4: order & group OK
 			$queryData['fields'] = $this->_quote( $model, $queryData['fields'] );

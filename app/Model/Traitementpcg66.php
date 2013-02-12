@@ -464,7 +464,7 @@
 							);
 
 							$oldrecordsids = array_values( $records );
-							$nouveauxids = Hash::filter( Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
+							$nouveauxids = Hash::filter( (array)Set::extract( "/{$modelelie}/{$modelelie}", $data ) );
 
 
 							if ( empty( $nouveauxids ) ) {

@@ -266,9 +266,9 @@
 				foreach( array( 'id', 'personne_id' ) as $rField ) {
 					unset( $dsp[$rField] );
 				}
-				$row[] = count( Hash::filter( $dsp ) );
+				$row[] = count( Hash::filter( (array)$dsp ) );
 
-				$Titresejour = Hash::filter( Set::classicExtract( $p, 'Titresejour' ) );
+				$Titresejour = Hash::filter( (array)Set::classicExtract( $p, 'Titresejour' ) );
 				$row[] = ( empty( $Titresejour ) ? 0 : 1 );
 
 				$grossesses = $this->Personne->query( 'SELECT COUNT(*) AS count FROM grossesses WHERE personne_id = '.Set::classicExtract( $p, 'Personne.id' ) );
@@ -276,7 +276,7 @@
 
 				$row[] = count( Set::classicExtract( $p, 'Activite' ) );
 
-				$Avispcgpersonne = Hash::filter( Set::classicExtract( $p, 'Avispcgpersonne' ) );
+				$Avispcgpersonne = Hash::filter( (array)Set::classicExtract( $p, 'Avispcgpersonne' ) );
 				$row[] = ( empty( $Avispcgpersonne ) ? 0 : 1 );
 
 				$return .= $this->Html->tableCells( $row, array( 'class' => 'odd' ), array( 'class' => 'even' ) );

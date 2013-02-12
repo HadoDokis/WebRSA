@@ -76,7 +76,7 @@
 			);
 
 			$success = parent::delete( $id, $cascade );
-			$cmspaths = Hash::filter( Set::extract( $records, "/{$this->alias}/cmspath" ) );
+			$cmspaths = Hash::filter( (array)Set::extract( $records, "/{$this->alias}/cmspath" ) );
 
 			if( $success && !empty( $cmspaths ) ) {
 				foreach( $cmspaths as $cmspath ) {
@@ -100,7 +100,7 @@
 			);
 
 			$success = parent::deleteAll( $conditions, $cascade, $callbacks );
-			$cmspaths = Hash::filter( Set::extract( $records, "/{$this->alias}/cmspath" ) );
+			$cmspaths = Hash::filter( (array)Set::extract( $records, "/{$this->alias}/cmspath" ) );
 
 			if( $success && !empty( $cmspaths ) ) {
 				foreach( $cmspaths as $cmspath ) {

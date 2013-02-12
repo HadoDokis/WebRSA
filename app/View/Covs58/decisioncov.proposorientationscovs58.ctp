@@ -35,7 +35,7 @@
 				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$this->Locale->date( __( 'Locale->date' ), $dossiercov[$theme]['datedemande'] ),
 				Set::enum( Set::classicExtract( $dossiercov, 'Propoorientationcov58.referentorientant_id' ), $referentsorientants ),
-				implode( ' - ', Hash::filter( array( $dossiercov['Propoorientationcov58']['Typeorient']['lib_type_orient'], $dossiercov['Propoorientationcov58']['Structurereferente']['lib_struc'], implode( ' ', Hash::filter( array( @$dossiercov['Propoorientationcov58']['Referent']['qual'], @$dossiercov['Propoorientationcov58']['Referent']['nom'], @$dossiercov['Propoorientationcov58']['Referent']['prenom'] ) ) ) ) ) ),
+				implode( ' - ', Hash::filter( (array)array( $dossiercov['Propoorientationcov58']['Typeorient']['lib_type_orient'], $dossiercov['Propoorientationcov58']['Structurereferente']['lib_struc'], implode( ' ', Hash::filter( (array)array( @$dossiercov['Propoorientationcov58']['Referent']['qual'], @$dossiercov['Propoorientationcov58']['Referent']['nom'], @$dossiercov['Propoorientationcov58']['Referent']['prenom'] ) ) ) ) ) ),
 
 				array(
 					$this->Form->input( "Decisionpropoorientationcov58.{$i}.decisioncov", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionpropoorientationcov58']['decisioncov'] ) ),

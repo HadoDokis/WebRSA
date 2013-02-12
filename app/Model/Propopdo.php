@@ -375,7 +375,7 @@
 		*/
 
 		public function etatPdo( $pdo ) {
-			$pdo = Hash::expand( Hash::filter( $pdo ) );
+			$pdo = Hash::expand( Hash::filter( (array)$pdo ) );
 			$typepdo_id = Set::classicExtract( $pdo, 'Propopdo.typepdo_id' );
 			$decision = Set::classicExtract( $pdo, 'Propopdo.decision' );
 		}
