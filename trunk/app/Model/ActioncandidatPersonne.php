@@ -372,14 +372,14 @@
 					array(
 						'table'      => 'contactspartenaires',
 						'alias'      => 'Contactpartenaire',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Contactpartenaire.id = Actioncandidat.contactpartenaire_id' ),
 					),
 					array(
 						'table'      => 'partenaires',
 						'alias'      => 'Partenaire',
-						'type'       => 'INNER',
+						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Partenaire.id = Contactpartenaire.partenaire_id' ),
 					),
@@ -464,7 +464,7 @@
 			$modeleodt = Set::classicExtract( $actioncandidat, 'Actioncandidat.modele_document' );
 
 //             debug($options);
-             //debug($actioncandidat);exit;
+// debug($actioncandidat);
 // die();
 			return $this->ged( array( $actioncandidat ), "Candidature/{$modeleodt}.odt", true, $options );
 		}
