@@ -236,7 +236,7 @@
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
 				if( !is_null( $structurereferente_id ) ) {
-					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
+					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) ) );
 				}
 			}
 
