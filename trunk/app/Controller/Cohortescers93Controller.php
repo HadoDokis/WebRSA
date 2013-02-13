@@ -661,15 +661,18 @@
 
 						// On masque les commentaires du CG si l'utilisateur n'est pas du CG
 						$commentaireCg = '';
-						if( !empty( $cer93['Histochoixcer93etape04']['etape'] ) ) {
-							if( $authViewCommentaireCg ) {
-								$commentaireCg = $cer93['Histochoixcer93etape04']['commentaire'];
+						$etapes = array( /*'0' => 'etape04',*/ '0' => 'etape05', '1' => 'etape06' );
+						foreach( $etapes as $key => $etape ) {
+							if( !empty( $cer93["Histochoixcer93{$etape}"]['etape'] ) ) {
+								if( $authViewCommentaireCg ) {
+									$commentaireCg = $cer93["Histochoixcer93{$etape}"]['commentaire'];
+								}
+								else {
+									$commentaireCg = '';
+								}
 							}
-							else {
-								$commentaireCg = '';
-							}
+							$cers93[$i]['Histochoixcer93']['commentaire'] = $commentaireCg;
 						}
-						$cers93[$i]['Histochoixcer93etape04']['commentaire'] = $commentaireCg;
 
 						if( in_array( $cer93['Cer93']['positioncer'], array( '99valide', '99rejete' ) ) ) {
 							$commentaireCpdv = '';
