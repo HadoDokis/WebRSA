@@ -58,7 +58,8 @@
 		 * <pre>
 		 * $options = array(
 		 * 	'conditions' => array(),
-		 * 	'optgroup' => false
+		 * 	'optgroup' => false,
+		 *	'ids' => false,
 		 * );
 		 * </pre>
 		 *
@@ -71,7 +72,8 @@
 			$options = Set::merge(
 				array(
 					'conditions' => array(),
-					'optgroup' => false
+					'optgroup' => false,
+					'ids' => false,
 				),
 				$options
 			);
@@ -126,6 +128,11 @@
 							$results[$tmp['Typeorient']['lib_type_orient']] = array();
 						}
 						$results[$tmp['Typeorient']['lib_type_orient']][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
+					}
+				}
+				else if( $options['ids'] ) {
+					foreach( $tmps as $tmp ) {
+						$results[] = $tmp['Structurereferente']['id'];
 					}
 				}
 				// Cas typeorient_id_structurereferente_id
