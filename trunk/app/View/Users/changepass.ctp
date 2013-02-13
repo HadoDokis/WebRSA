@@ -5,16 +5,33 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 ?>
-
 <h1><?php echo $this->pageTitle;?></h1><br />
 
-	<h2 class="title">Informations personnelles</h2>
-	<?php
-		echo $this->Form->create( 'User', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-		echo $this->Form->input( 'User.id', array( 'type' => 'hidden', 'value' => null ) );
-		echo $this->Form->input( 'User.passwd', array( 'label' =>  required( __( 'oldpassword' ) ), 'type' => 'password', 'value' => '' ) );
-		echo $this->Form->input( 'User.newpasswd', array( 'label' =>  required( __( 'newpassword' ) ), 'type' => 'password', 'value' => '' ) );
-		echo $this->Form->input( 'User.confnewpasswd', array( 'label' =>  required( __( 'confnewpassword' ) ), 'type' => 'password', 'value' => '' ) );
-	?>
-<?php echo $this->Form->submit( 'Changer' );?>
-<?php echo $this->Form->end();?>
+<h2 class="title">Informations personnelles</h2>
+<?php
+	echo $this->Form->create( 'User', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->inputs(
+		array(
+			'fieldset' => false,
+			'legend' => false,
+			'User.current_password' => array(
+				'type' => 'password',
+				'value' => '',
+				'label' =>  required( __d( 'users', 'User.current_password' ) )
+			),
+			'User.new_password' => array(
+				'type' => 'password',
+				'value' => '',
+				'label' =>  required( __d( 'users', 'User.new_password' ) )
+			),
+			'User.new_password_confirmation' => array(
+				'type' => 'password',
+				'value' => '',
+				'label' =>  required( __d( 'users', 'User.new_password_confirmation' ) )
+			),
+		)
+	);
+
+	echo $this->Form->submit( 'Changer' );
+	echo $this->Form->end();
+?>

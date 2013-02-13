@@ -552,7 +552,9 @@
 
 			$this->assert( !empty( $userDb ), 'error404' );
 
-			unset( $this->User->validate['passwd'] );
+			if( empty( $this->request->data['User']['passwd'] ) ) {
+				unset( $this->User->validate['passwd'] );
+			}
 
 			if( !empty( $this->request->data ) ) {
 				$this->User->begin();
@@ -652,24 +654,30 @@
 		}
 
 		/**
+		 * Modification du mot de passe de l'utilisateur connecté.
 		 *
+		 * @throws Error500Exception
 		 */
 		public function changepass() {
 			if( !empty( $this->request->data ) ) {
-				if( ($this->User->validatesPassword( $this->request->data )) && ($this->User->validOldPassword( $this->request->data )) ) {
-					$this->User->id = $this->Session->read( 'Auth.User.id' );
-					if( $this->User->saveField( 'password', Security::hash( $this->request->data['User']['confnewpasswd'], null, true ) ) ) {
-						$this->Session->setFlash( 'Votre mot de passe a bien été modifié', 'flash/success' );
-						$this->redirect( '/' );
-					}
-					else
-						$this->Session->setFlash( 'Erreur lors de la saisie des mots de passe.', 'flash/error' );
+				$data = $this->request->data;
+				$data['User']['id'] = $this->Session->read( 'Auth.User.id' );
+
+				if( empty( $data['User']['id'] ) ) {
+					throw new error500Exception( 'Auth.User.id vide' );
 				}
-				else
+
+				$this->User->begin();
+				if( $this->User->changePassword( $data ) ) {
+					$this->User->commit();
+					$this->Session->setFlash( 'Votre mot de passe a bien été modifié', 'flash/success' );
+					$this->redirect( '/' );
+				}
+				else {
+					$this->User->rollback();
 					$this->Session->setFlash( 'Erreur lors de la saisie des mots de passe.', 'flash/error' );
+				}
 			}
-			else
-				$this->request->data['User']['id'] = $this->Session->read( 'Auth.User.id' );
 		}
 
 	}
