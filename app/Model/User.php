@@ -46,19 +46,31 @@
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
+				),
+				array(
+					'rule' => 'passwordStrength'
+				),
+			),
+			'current_password' => array(
+				array(
+					'rule' => 'checkCurrentPassword'
 				)
 			),
-			'newpasswd' => array(
+			'new_password' => array(
 				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+					'rule' => 'passwordStrength'
+				),
+				array(
+					'rule' => array( 'checkIdenticalValues', 'new_password_confirmation' )
 				)
 			),
-			'confnewpasswd' => array(
+			'new_password_confirmation' => array(
 				array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
+					'rule' => 'passwordStrength'
+				),
+				array(
+					'rule' => array( 'checkIdenticalValues', 'new_password' )
+				),
 			),
 			'group_id' => array(
 				array(
@@ -486,15 +498,6 @@
 			return parent::beforeSave( $options );
 		}
 
-		public function validatesPassword($data) {
-			return ((!empty($data['User']['newpasswd'])) && (!empty($data['User']['confnewpasswd'])) && ($data['User']['newpasswd']==$data['User']['confnewpasswd']));
-		}
-
-		public function validOldPassword($data) {
-			$oldPass = $this->find('first',array('conditions'=>array('id'=>$data['User']['id']),'fields'=>array('password'),'recursive'=>-1));
-			return (Security::hash($data['User']['passwd'], null, true)==$oldPass['User']['password']);
-		}
-
 		/**
 		 * Retourne les enregistrements pour lesquels une erreur de paramétrage
 		 * a été détectée.
@@ -530,6 +533,93 @@
 					),
 					'contain' => false,
 				)
+			);
+		}
+
+		/**
+		 * Vérification du mot de passe courant, avec la clé primaire se trouvant
+		 * dans $this->data et le hash par défaut (salted).
+		 *
+		 * @param mixed $check Les valeurs à vérifier.
+		 * @return boolean
+		 */
+		public function checkCurrentPassword( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$result = true;
+			foreach( Set::normalize( $check ) as $value ) {
+				$count = $this->find(
+					'count',
+					array(
+						'conditions' => array(
+							"{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias][$this->primaryKey],
+							"{$this->alias}.password" => Security::hash( $value, null, true ),
+						)
+					)
+				);
+				$result = ( $count == 1 ) && $result;
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Vérification de la force du mot de passe. Il faut au moins 8
+		 * caractères, un caractère spécial et un chiffre.
+		 *
+		 * @link http://edgeward.co.uk/blog/2010/08/cakephp-password-complexity-validation/ Inspiration regexp
+		 *
+		 * @param mixed $check Les valeurs à vérifier.
+		 * @return boolean
+		 */
+		public function passwordStrength( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$result = true;
+			foreach( Set::normalize( $check ) as $value ) {
+				$result = preg_match( '/(?=^.{8,}$)(?=.*\d)(?![.\n])(?=.*\W+).*$/', $value ) && $result;
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Vérification que la valeur du champ soit égale à la valeur de référence.
+		 *
+		 * @param mixed $check Les valeurs à vérifier.
+		 * @param string $referenceField Le nom du champ de référence.
+		 * @return boolean
+		 */
+		public function checkIdenticalValues( $check, $referenceField ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$result = true;
+			foreach( Set::normalize( $check ) as $value ) {
+				$result = ( $value == $this->data[$this->alias][$referenceField] );
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Vérification et mise à jour du mot de passe.
+		 * Les champs attendus sont: id, current_password, new_password et
+		 * new_password_confirmation, sous la clé User.
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function changePassword( array $data ) {
+			$this->create( $data );
+			return $this->validates() && $this->updateAll(
+				array( "{$this->alias}.password" => '\''.Security::hash( $data[$this->alias]['new_password'], null, true ).'\'' ),
+				array( "{$this->alias}.{$this->primaryKey}" => $data[$this->alias][$this->primaryKey] )
 			);
 		}
 	}

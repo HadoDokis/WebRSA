@@ -271,16 +271,20 @@ function __minify() {
 function __svnbackup() {
 	APP_DIR="`readlink -f "$1"`"
 
+	xml="`svn info --xml app | sed ':a;N;$!ba;s/\n/ /g'`"
+	revision="`echo $xml| sed 's/^.*<entry[^>]* revision=\"\([0-9]\+\)\".*$/\1/g'`"
+	project="`echo $xml| sed 's/^.*<root>.*\/\([^\/]\+\)<\/root>.*$/\1/g'`"
+	subfolder="`echo $xml| sed 's/^.*<url>.*\/\([^\/]\+\)\/app<\/url>.*$/\1/g'`"
+
 	NOW=`date +"%Y%m%d-%H%M%S"` # FIXME: M sur 2 chars
-	PATCH_DIR="$APP_DIR/../svnbackup_$NOW"
+	PATCH_DIR="$APP_DIR/../svnbackup-${project}_${subfolder}-r${revision}-${NOW}"
 	PATCH_DIR="`readlink -f "$PATCH_DIR"`"
 
 	mkdir -p "$PATCH_DIR"
-
-	xml="`svn info --xml app | sed ':a;N;$!ba;s/\n/ /g'`"
-	revision="`echo $xml| sed 's/^.*<entry [^>]* revision="\([^"]\+\)">.*$/\1/g'`"
-	project="`echo $xml| sed 's/^.*<root>.*\/\([^\/]\+\)<\/root>.*$/\1/g'`"
-	subfolder="`echo $xml| sed 's/^.*<url>.*\/\([^\/]\+\)\/app<\/url>.*$/\1/g'`"
+	if [[ $? -ne 0 ]] ; then
+		echo "Impossible de créer le répertoire ${PATCH_DIR}"
+		exit 1
+	fi
 
 	(
 		cd "$APP_DIR"
@@ -302,6 +306,11 @@ function __svnbackup() {
 	(
 		cd "$PATCH_DIR"
 		zip -o -r -m "../svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip" app >> "/dev/null" 2>&1
+		if [[ $? -ne 0 ]] ; then
+			echo "Impossible de créer le fichier svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip"
+		else
+			echo "Fichier svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip créé"
+		fi
 		cd ..
 		rmdir "$PATCH_DIR"
 	)
