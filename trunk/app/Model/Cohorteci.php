@@ -262,6 +262,7 @@
 						'Contratinsertion.pers_charg_suivi',
 						'Contratinsertion.observ_ci',
 						'Contratinsertion.datenotification',
+						'Structurereferente.lib_struc',
 						'Dossier.id',
 						'Dossier.numdemrsa',
 						'Dossier.dtdemrsa',
@@ -293,6 +294,13 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Personne.id = Contratinsertion.personne_id' )
+					),
+					array(
+						'table'      => 'structuresreferentes',
+						'alias'      => 'Structurereferente',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array( 'Structurereferente.id = Contratinsertion.structurereferente_id' )
 					),
 					array(
 						'table'      => 'prestations',
