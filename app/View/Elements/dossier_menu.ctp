@@ -118,8 +118,8 @@
 
 				// Droit
 				$subAllocataire['Droit'] = array(
-					'DSP d\'origine' => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
-					( Configure::read( 'Cg.departement' ) == 66 ? 'DSPs mises à jour' : 'DSPs CG' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] ) ),
+					( Configure::read( 'Cg.departement' ) == 93 ? 'DSP' : 'DSP d\'origine' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'view', $personne['id'] ) ),
+					( Configure::read( 'Cg.departement' ) == 66 ? 'DSPs mises à jour' : 'MAJ DSP' ) => array( 'url' => array( 'controller' => 'dsps', 'action' => 'histo', $personne['id'] ) ),
 				);
 
 				if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
