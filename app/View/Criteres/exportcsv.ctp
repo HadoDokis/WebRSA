@@ -74,7 +74,7 @@
 		array_push(
 			$row,
 			date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
-			Set::enum( Set::classicExtract( $orient, 'Orientstruct.structurereferente_id' ), $sr ),
+			Hash::get( $orient, 'Structurereferente.lib_struc' ),
 			Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
 			$toppersdrodevorsa,
 			Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )

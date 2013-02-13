@@ -196,7 +196,7 @@
 								</tr>
 							</tbody>
 						</table>';
-                        
+
                         $adresseCanton = $orient['Adresse']['locaadr']."- \n".$orient['Canton']['canton'];
 
 
@@ -216,7 +216,7 @@
 						array_push(
 							$cells,
 							h( Set::enum( $orient['Orientstruct']['typeorient_id'], $typeorient ) ),
-							h( isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null ),
+							h( $orient['Structurereferente']['lib_struc'] ),
 							h( $orient['Orientstruct']['statut_orient'] ),
 							( is_null( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ? $this->Xhtml->image( 'icons/help.png', array( 'alt' => '' ) ).' Non défini' : $this->Xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ),
 							array(

@@ -63,8 +63,8 @@
 		 * );
 		 * </pre>
 		 *
-		 * @param type $options
-		 * @return type
+		 * @param array $options
+		 * @return array
 		 */
 		public function structuresreferentes( $options = array( ) ) {
 			$Structurereferente = ClassRegistry::init( 'Structurereferente' );
@@ -84,63 +84,78 @@
 			);
 
 			$conditions = Set::merge( $conditions, $options['conditions'] );
+			$serializedConditions = serialize( $conditions );
+			$sessionKey = 'Auth.InsertionsAllocataires.'.sha1( $serializedConditions );
+			$results = $this->Session->read( $sessionKey );
 
-			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
-				$zonesgeographiques_ids = array_keys( $this->Session->read( 'Auth.Zonegeographique' ) );
+			if( is_null( $results ) ) {
+				$results = array();
 
-				$sqStructurereferente = $Structurereferente->StructurereferenteZonegeographique->sq(
+				if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
+					$zonesgeographiques_ids = array_keys( $this->Session->read( 'Auth.Zonegeographique' ) );
+
+					$sqStructurereferente = $Structurereferente->StructurereferenteZonegeographique->sq(
+						array(
+							'alias' => 'structuresreferentes_zonesgeographiques',
+							'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
+							'conditions' => array(
+								'structuresreferentes_zonesgeographiques.zonegeographique_id' => $zonesgeographiques_ids
+							),
+							'contain' => false
+						)
+					);
+					$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
+				}
+
+				$tmps = $Structurereferente->find(
+					'all',
 					array(
-						'alias' => 'structuresreferentes_zonesgeographiques',
-						'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
-						'conditions' => array(
-							'structuresreferentes_zonesgeographiques.zonegeographique_id' => $zonesgeographiques_ids
+						'fields' => array_merge(
+							$Structurereferente->Typeorient->fields(),
+							$Structurereferente->fields()
 						),
-						'contain' => false
+						'joins' => array(
+							$Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+						),
+						'conditions' => $conditions,
+						'contain' => false,
+						'order' => array(
+							'Typeorient.lib_type_orient ASC',
+							'Structurereferente.lib_struc ASC',
+						)
 					)
 				);
-				$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
+
+				if( !empty( $tmps ) ) {
+					foreach( $tmps as $tmp ) {
+						// Cas optgroup, structurereferente_id
+						if( !isset( $results['optgroup'][$tmp['Typeorient']['lib_type_orient']] ) ) {
+							$results['optgroup'][$tmp['Typeorient']['lib_type_orient']] = array();
+						}
+						$results['optgroup'][$tmp['Typeorient']['lib_type_orient']][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
+
+						// Cas seulement les ids
+						$results['ids'][] = $tmp['Structurereferente']['id'];
+
+						// Cas typeorient_id_structurereferente_id
+						$results['normal']["{$tmp['Structurereferente']['typeorient_id']}_{$tmp['Structurereferente']['id']}"] = $tmp['Structurereferente']['lib_struc'];
+					}
+				}
+
+				$this->Session->write( $sessionKey, $results );
 			}
 
-			$tmps = $Structurereferente->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$Structurereferente->Typeorient->fields(),
-						$Structurereferente->fields()
-					),
-					'joins' => array(
-						$Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-					),
-					'conditions' => $conditions,
-					'contain' => false,
-					'order' => array(
-						'Typeorient.lib_type_orient ASC',
-						'Structurereferente.lib_struc ASC',
-					)
-				)
-			);
-
-			if( !empty( $tmps ) ) {
-				// Cas optgroup, structurereferente_id
-				if( $options['optgroup'] ) {
-					foreach( $tmps as $tmp ) {
-						if( !isset( $results[$tmp['Typeorient']['lib_type_orient']] ) ) {
-							$results[$tmp['Typeorient']['lib_type_orient']] = array();
-						}
-						$results[$tmp['Typeorient']['lib_type_orient']][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
-					}
-				}
-				else if( $options['ids'] ) {
-					foreach( $tmps as $tmp ) {
-						$results[] = $tmp['Structurereferente']['id'];
-					}
-				}
-				// Cas typeorient_id_structurereferente_id
-				else {
-					foreach( $tmps as $tmp ) {
-						$results["{$tmp['Structurereferente']['typeorient_id']}_{$tmp['Structurereferente']['id']}"] = $tmp['Structurereferente']['lib_struc'];
-					}
-				}
+			// Cas optgroup, structurereferente_id
+			if( $options['optgroup'] ) {
+				$results = $results['optgroup'];
+			}
+			// Cas où l'on ne veut que les ids des structures référentes
+			else if( $options['ids'] ) {
+				$results = $results['ids'];
+			}
+			// Cas typeorient_id_structurereferente_id
+			else {
+				$results = $results['normal'];
 			}
 
 			return $results;

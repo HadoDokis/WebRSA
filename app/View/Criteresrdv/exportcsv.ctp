@@ -8,7 +8,7 @@
 			Set::extract( $rdv, 'Personne.nom' ).' '.Set::extract( $rdv, 'Personne.prenom'),
 			Set::extract( $rdv, 'Dossier.matricule'  ),
 			Set::extract( $rdv, 'Adresse.locaadr'  ),
-			value( $struct, Set::extract( $rdv, 'Rendezvous.structurereferente_id' ) ),
+			Hash::get( $rdv, 'Structurereferente.lib_struc' ),
 			value( $referents, Set::extract( $rdv, 'Rendezvous.referent_id' ) ),
 			value( $typerdv, Set::extract( $rdv, 'Rendezvous.typerdv_id' ) ),
 			value( $statutrdv, Set::extract( $rdv, 'Rendezvous.statutrdv' ) ),

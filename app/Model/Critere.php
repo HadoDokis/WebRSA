@@ -232,6 +232,7 @@
 					'"Dossier"."numdemrsa"',
 					'"Dossier"."matricule"',
 					'"Dossier"."dtdemrsa"',
+					'"Structurereferente"."lib_struc"',
 					'"Personne"."id"',
 					'"Personne"."nom"',
 					'"Personne"."prenom"',

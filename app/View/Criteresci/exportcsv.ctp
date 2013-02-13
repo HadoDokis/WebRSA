@@ -13,7 +13,7 @@
 			Set::enum( Set::classicExtract( $contrat, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $contrat, 'Personne.nom' ).' '.Set::classicExtract( $contrat, 'Personne.prenom'),
 			$adresse,
 			value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ),
-			value( $struct, Set::classicExtract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
+			Hash::get( $contrat, 'Structurereferente.lib_struc' ),
 			Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.dd_ci' ) ),
 			Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
