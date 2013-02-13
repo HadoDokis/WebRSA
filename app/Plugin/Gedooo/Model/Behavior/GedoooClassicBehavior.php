@@ -188,7 +188,9 @@
 
 			if( !empty( $mainData ) ) {
 				foreach( Hash::flatten( $mainData, '_' ) as $key => $value ) {
-					$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
+					if( !( is_array( $value ) && empty( $value ) ) ) {
+						$oMainPart = $this->_addPartValue( $oMainPart, $key, $value, $options );
+					}
 				}
 			}
 
@@ -221,7 +223,9 @@
 
 						$sectionData = Hash::flatten( $sectionData, '_' );
 						foreach( $sectionData as $key => $value ) {
-							$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
+							if( !( is_array( $value ) && empty( $value ) ) ) {
+								$oDevPart = $this->_addPartValue( $oDevPart, $key, $value, $options );
+							}
 						}
 						$oIteration->addPart( $oDevPart );
 					}
