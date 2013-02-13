@@ -138,7 +138,7 @@
 						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['formeci'], $options['formeci'] ),
-						$cer93['Histochoixcer93etape04']['commentaire'],
+						$cer93['Histochoixcer93']['commentaire'],
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
 						$this->Xhtml->filelink( 'Fichier liés', array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $cer93['Contratinsertion']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
