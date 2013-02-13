@@ -1432,8 +1432,9 @@
 
 		public function getDecisionPdf( $contratinsertion_id, $user_id ) {
 			$options = $this->optionsView();
-			$data = $this->dataView( $contratinsertion_id );
-
+// 			$data = $this->dataView( $contratinsertion_id );
+			$data = $this->getDataForPdf( $contratinsertion_id, $user_id );
+			$data = $data[0];
 
 			$dateimpressiondecision = date( 'Y-m-d' );
 
