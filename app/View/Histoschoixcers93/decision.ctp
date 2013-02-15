@@ -21,7 +21,7 @@
 <br />
 <div id="tabbedWrapper" class="tabs">
 	<div id="decisioncg">
-		<h2 class="title">Décision CG</h2>
+		<h2 class="title"><?php echo $title_for_layout;?></h2>
 		<?php
 
 			echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
