@@ -39,6 +39,7 @@
 					array(
 						'fieldset' => false,
 						'legend' => false,
+						"Transfertpdv93.{$index}.dossier_id" => array( 'type' => 'hidden' ),
 						"Transfertpdv93.{$index}.vx_orientstruct_id" => array( 'type' => 'hidden' ),
 						"Transfertpdv93.{$index}.personne_id" => array( 'type' => 'hidden' ),
 						"Transfertpdv93.{$index}.typeorient_id" => array( 'type' => 'hidden' ),

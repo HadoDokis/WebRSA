@@ -74,7 +74,13 @@
 				foreach( $forbiddenlist as $forbidden ) {
 					$param = str_replace( $forbidden, ' ', $param );
 				}
-				$params[$key] = urlencode( $param );
+
+				if( !is_array( $param ) ) {
+					$params[$key] = urlencode( $param );
+				}
+				else {
+					$params[$key] = $param;
+				}
 			}
 
 			return $params;
