@@ -414,21 +414,45 @@
 		<table class="aere">
 			<thead>
 				<tr>
-					<th>Sujet du CER</th>
-					<th>Sous sujet</th>
+					<th>Thématique du contrat</th>
 					<th>Si autre, commentaire</th>
+					<th>Sous-thématique</th>
+					<th>Si autre sous-thématique, commentaire</th>
+					<th>Valeurs par sous-thématique</th>
+					<th>Si autre valeur par sous-thématique, commentaire</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
 					// Le précédent CER portait sur (liste des cases à cocher)
 					$sujetscers93 = unserialize( $this->request->data['Cer93']['sujetpcd'] );
+
 					foreach( $sujetscers93['Sujetcer93']  as $index => $sujetcer93 ) {
+						$soussujet = '';
+						$commentairesoussujet = '';
+						$valeurparsoussujet = '';
+						$commentairevaleurparsoussujet = '';
+						if( isset( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93'] ) && !empty( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93'] ) ) {
+							$soussujet = $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'];
+							if( !empty( $sujetcer93['Cer93Sujetcer93']['autresoussujet'] ) ) {
+								$commentairesoussujet = $sujetcer93['Cer93Sujetcer93']['autresoussujet'];
+							}
+						}
+						if( isset( $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93'] ) && !empty( $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93'] ) ) {
+							$valeurparsoussujet = $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93']['name'];
+							if( !empty( $sujetcer93['Cer93Sujetcer93']['autrevaleur'] ) ) {
+								$commentairevaleurparsoussujet = $sujetcer93['Cer93Sujetcer93']['autrevaleur'];
+							}
+						}
+						
 						echo $this->Html->tableCells(
 							array(
 								h( $sujetcer93['name'] ),
-								h( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'] ),
-								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] )
+								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] ),
+								h( $soussujet ),
+								h( $commentairesoussujet ),
+								h( $valeurparsoussujet ),
+								h( $commentairevaleurparsoussujet )
 							),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -487,7 +511,7 @@
 			$commentaireautre = null;
 
 			$valeurparsoussujetcer93_id = null;
-
+// debug( $this->request->data['Sujetcer93']['Sujetcer93'] );
 			if( $checked ) {
 				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'] ) ) {
 					$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
@@ -513,7 +537,7 @@
 				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
 				if( !empty( $interSoussujet ) ) {
 					$autresoussujet = null;
-					if( !empty( $array_key ) ) {
+					if( !empty( $array_key ) || ( $array_key == 0 ) ) {
 						if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'] ) ) {
 							$autresoussujet = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autresoussujet'];
 						}
@@ -530,7 +554,7 @@
 					$inter = array_intersect( array_keys( $valeursparsoussujetscers93[$idSujet] ), $autrevaleur_isautre_id );
 					if( !empty( $inter ) ) {
 						$autrevaleur = null;
-						if( !empty( $array_key ) ) {
+						if( !empty( $array_key ) || ( $array_key == 0 ) ) {
 							if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'] ) ) {
 								$autrevaleur = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['autrevaleur'];
 							}
