@@ -388,6 +388,11 @@
 					if( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) {
 						$fields['Contratinsertion.datevalidation_ci'] = '\''.$datechoix.'\'';
 					}
+					
+					// Rejet et rg_ci à null
+					if( $data['Histochoixcer93']['decisioncadre'] == 'rejete' ) {
+						$fields['Contratinsertion.rg_ci'] = null;
+					}
 
 					$success = $this->Cer93->Contratinsertion->updateAll(
 						$fields,
