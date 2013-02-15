@@ -328,9 +328,30 @@
 				}
 			}
 
+			$tmp = $data['Sujetcer93']['Sujetcer93'];
+			unset( $data['Sujetcer93'] );
+
+			foreach( $tmp as $k => $v ) {
+				foreach( array( 'autresoussujet', 'valeurparsoussujetcer93_id' ) as $w ) {
+					if( isset( $v[$w] ) && empty( $v[$w] ) ) {
+						unset( $tmp[$k][$w] );
+					}
+				}
+			}
+
 			$success = $this->saveResultAsBool(
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
+
+			if( $success ) {
+				$tmp = array( 'Sujetcer93' => array( 'Sujetcer93' => $tmp ) );
+				$tmp['Cer93']['id'] = $this->id;
+				$success = $this->saveResultAsBool(
+				$this->saveAll( $tmp, array( 'validate' => 'first', 'atomic' => false, 'deep' => false ) )
+				) && $success;
+				/*$this->create( $tmp );
+				$success = $this->create() && $success;*/
+			}
 			
 
 			// Dans le cas d'un ajout de CER, on vérifie s'il faut ajouter un rendez-vous implicite
@@ -732,6 +753,8 @@
 
 					if( !empty( $data['Sujetcer93'] ) ) {
 						$sousSujetsIds = Hash::filter( (array)Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+						$valeursparSousSujetsIds = Hash::filter( (array)Set::extract( $data, '/Sujetcer93/Cer93Sujetcer93/valeurparsoussujetcer93_id' ) );
+
 						if( !empty( $sousSujetsIds ) ) {
 							$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
 							foreach( $data['Sujetcer93'] as $key => $values ) {
@@ -740,6 +763,19 @@
 								}
 								else {
 									$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => null );
+								}
+
+								if( !empty( $valeursparSousSujetsIds ) ) {
+									// Valeur par sous sujet
+									$valeursparSousSujets = $this->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find( 'list', array( 'conditions' => array( 'Valeurparsoussujetcer93.id' => $valeursparSousSujetsIds ) ) );
+
+									//Valeur par sous s sujet
+									if( isset( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) ) {
+										$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => $valeursparSousSujets[$values['Cer93Sujetcer93']['valeurparsoussujetcer93_id']] );
+									}
+									else {
+										$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => null );
+									}
 								}
 							}
 						}
@@ -1349,14 +1385,29 @@
 			$data['Adresse'] = $data['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 
 			$sousSujetsIds = Hash::filter( (array)Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/soussujetcer93_id' ) );
+			$valeursparSousSujetsIds = Hash::filter( (array)Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/valeurparsoussujetcer93_id' ) );
 			if( !empty( $sousSujetsIds ) ) {
 				$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
+				
 				foreach( $data['Cer93']['Sujetcer93'] as $key => $values ) {
 					if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
 						$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => $sousSujets[$values['Cer93Sujetcer93']['soussujetcer93_id']] );
 					}
 					else {
 						$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => null );
+					}
+
+					if( !empty( $valeursparSousSujetsIds ) ) {
+						// Valeur par sous sujet
+						$valeursparSousSujets = $this->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find( 'list', array( 'conditions' => array( 'Valeurparsoussujetcer93.id' => $valeursparSousSujetsIds ) ) );
+					
+						//Valeur par sous s sujet
+						if( isset( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) ) {
+							$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => $valeursparSousSujets[$values['Cer93Sujetcer93']['valeurparsoussujetcer93_id']] );
+						}
+						else {
+							$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => null );
+						}
 					}
 				}
 			}
