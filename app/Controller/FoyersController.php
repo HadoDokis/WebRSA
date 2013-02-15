@@ -103,7 +103,7 @@
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->params['form']['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $id ) );
+				$this->redirect( array( 'action' => 'corbeille', $id ) );
 			}
 
 			if( !empty( $this->request->data ) ) {
@@ -117,7 +117,7 @@
 					$this->Foyer->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array(  'controller' => 'foyers','action' => 'index', $id ) );
+					$this->redirect( array(  'controller' => 'foyers','action' => 'corbeille', $id ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );

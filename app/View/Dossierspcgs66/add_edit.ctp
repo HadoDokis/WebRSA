@@ -251,22 +251,20 @@ document.observe( "dom:loaded", function() {
 								\'#Decisiondossierpcg66.id#\' != '.$lastDecisionId.'
 								|| (
 									 \''.$etatdossierpcg.'\' == \'transmisop\'
-// 										&& \''.$etatdossierpcg.'\' != \'attval\'
-// 										&& \''.$etatdossierpcg.'\' != \'dossiertraite\'
 								)
-								|| '.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'edit', $dossierMenu ).' != \'1\'
+								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'edit', $dossierMenu ).'\' != \'1\'
 							' )
 						),
 						'Decisionsdossierspcgs66::avistechnique' => array(
 							'disabled' => ( '
 								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| '.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). ' != \'1\'
+								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\'
 							' )
 						),
 						'Decisionsdossierspcgs66::validation' => array(
 							'disabled' => ( '
 								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| '.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). ' != \'1\'
+								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\'
 							' )
 						),
 						'Decisionsdossierspcgs66::print' => array(
