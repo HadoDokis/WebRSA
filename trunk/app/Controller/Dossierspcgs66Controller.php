@@ -241,7 +241,8 @@
 						'Decisiondossierpcg66' => array(
 							'order' => array( 'Decisiondossierpcg66.datetransmissionop DESC' )
 						)
-					)
+					),
+					'order' => array( 'Dossierpcg66.datereceptionpdo DESC', 'Dossierpcg66.id DESC' )
 				)
 			);
 			
