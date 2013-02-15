@@ -180,14 +180,24 @@
 	 * the cake shell command: cake schema create Sessions
 	 *
 	 */
-	Configure::write( 'Session', array(
-		'defaults' => 'php',
-		'timeout' => 240, // Test 4 * 60 minutes
-		'ini' => array(
-			'session.gc_maxlifetime' => 240 * 60
+	$sessionDurationMinutes = 4 * 60; // Test 4 * 60 minutes
+	Configure::write(
+		'Session',
+		array(
+			'defaults' => 'php',
+			'cookie' => 'WebRSA24rc2',
+			'timeout' => $sessionDurationMinutes,
+			'cookieTimeout' => $sessionDurationMinutes,
+			'checkAgent' => false,
+			'autoRegenerate' => false,
+			'ini' => array(
+				'session.cookie_secure' => 0,
+				'session.cookie_lifetime' => 0,
+				'session.cookie_httponly' => 0,
+				'session.gc_maxlifetime' => $sessionDurationMinutes * 60,
+			),
 		)
-	) );
-	ini_set( 'session.gc_maxlifetime', 240 * 60 );
+	);
 
 	/**
 	 * The level of CakePHP security.
@@ -275,6 +285,7 @@
 		'prefix' => $prefix.'cake_core_',
 		'path' => CACHE.'persistent'.DS,
 		'serialize' => ($engine === 'File'),
+		'mask' => 0666,
 		'duration' => $duration
 	) );
 
@@ -287,6 +298,7 @@
 		'prefix' => $prefix.'cake_model_',
 		'path' => CACHE.'models'.DS,
 		'serialize' => ($engine === 'File'),
+		'mask' => 0666,
 		'duration' => $duration
 	) );
 ?>

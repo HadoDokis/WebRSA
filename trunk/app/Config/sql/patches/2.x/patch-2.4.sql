@@ -693,7 +693,8 @@ SELECT add_missing_table_field( 'public', 'cers93', 'dateimpressiondecision', 'D
 --------------------------------------------------------------------------------
 
 DROP INDEX IF EXISTS transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx;
-CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_idx ON transfertspdvs93( nv_adressefoyer_id, vx_adressefoyer_id );
+DROP INDEX IF EXISTS transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_vx_orientstruct_id_idx;
+CREATE UNIQUE INDEX transfertspdvs93_nv_adressefoyer_id_vx_adressefoyer_id_vx_orientstruct_id_idx ON transfertspdvs93( nv_adressefoyer_id, vx_adressefoyer_id, vx_orientstruct_id  );
 
 --------------------------------------------------------------------------------
 -- 20130131 : Ajout du champ pour les observations des courriers de décision des CERs complexe

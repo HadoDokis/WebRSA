@@ -326,6 +326,7 @@
 			if( !empty( $results ) ) {
 				foreach( $results as $index => $result ) {
 					$formData['Transfertpdv93'][$index] = array();
+					$formData['Transfertpdv93'][$index]['dossier_id'] = $result['Dossier']['id'];
 					$formData['Transfertpdv93'][$index]['vx_adressefoyer_id'] = $result['VxAdressefoyer']['id'];
 					$formData['Transfertpdv93'][$index]['nv_adressefoyer_id'] = $result['Adressefoyer']['id'];
 					$formData['Transfertpdv93'][$index]['vx_orientstruct_id'] = $result['Orientstruct']['id'];
