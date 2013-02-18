@@ -21,7 +21,7 @@
 		*/
 		public $uses = array( 'Foyer', 'Option'  );
 		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
-		public $components = array( 'Fileuploader', 'Jetons2' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
 		
@@ -79,6 +79,7 @@
 		 *   Fonction permettant d'accéder à la page pour lier les fichiers à la corbeille du foyer
 		 */
 		public function filelink( $id ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $id ) ) );
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
 			$fichiers = array( );
@@ -101,11 +102,11 @@
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
-			if( isset( $this->request->params['form']['Cancel'] ) ) {
+			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'corbeille', $id ) );
 			}
-
+// debug($this->request);
 			if( !empty( $this->request->data ) ) {
 				$this->Foyer->begin();
 
@@ -117,7 +118,7 @@
 					$this->Foyer->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array(  'controller' => 'foyers','action' => 'corbeille', $id ) );
+					$this->redirect( $this->referer() );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -137,6 +138,8 @@
 		*/
 
 		public function corbeille( $id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $id ) ) );
+			
 			$hasFichierLie = $this->Foyer->find(
 				'first',
 				array(
@@ -276,7 +279,7 @@
 							'Dossierpcg66.id',
 							'Dossierpcg66.datereceptionpdo',
 							'Typepdo.libelle',
-							'User.nom_complet',
+							$this->Foyer->Dossierpcg66->User->sqVirtualField( 'nom_complet' )
 						),
 						'conditions' => array(
 							'Dossierpcg66.id' => $listDossierspcgs66
