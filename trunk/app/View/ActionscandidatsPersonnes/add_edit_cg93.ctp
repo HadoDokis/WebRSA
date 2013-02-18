@@ -31,6 +31,7 @@
 			array(
 				'ActioncandidatPersonne.ddaction' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2, 'empty' => false ),
 				'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
+				'Personne.id' => array( 'value' => $personne_id, 'type' => 'hidden' )
 			),
 			array(
 				'domain' => $domain,

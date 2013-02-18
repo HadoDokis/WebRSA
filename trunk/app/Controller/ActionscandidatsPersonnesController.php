@@ -286,7 +286,7 @@
 			$actioncandidat_id = ( empty( $actioncandidat_id ) && !empty( $dataActioncandidat_id ) ? $dataActioncandidat_id : $actioncandidat_id );
 
 			if( !empty( $actioncandidat_id ) ) {
-				$this->ActioncandidatPersonne->Actioncandidat->forceVirtualFields = true;
+
 				$actioncandidat = $this->ActioncandidatPersonne->Actioncandidat->find(
 					'first',
 					array(
@@ -297,7 +297,9 @@
 							'Contactpartenaire' => array(
 								'Partenaire'
 							),
-							'Fichiermodule'
+							'Fichiermodule' => array( 
+								'fields' => array( 'Fichiermodule.id', 'Fichiermodule.name', 'Fichiermodule.created' )
+							)
 						)
 					)
 				);
