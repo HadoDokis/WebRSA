@@ -20,7 +20,7 @@
 		* @access public
 		*/
 		public $uses = array( 'Foyer', 'Option'  );
-		public $helpers = array( 'Default2', 'Ajax', 'Fileuploader' );
+		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader' );
 		public $components = array( 'Fileuploader', 'Jetons2' );
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
