@@ -1,10 +1,8 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-		echo $this->Javascript->link( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
-
-	echo $this->element( 'dossier_menu', array( 'foyer_id' => $foyer_id ) );
 ?>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
@@ -25,7 +23,6 @@
 	});
 </script>
 
-<div class="with_treemenu">
 	<?php
 		echo $this->Xhtml->tag(
 			'h1',
@@ -78,5 +75,3 @@
 
 		}
 	?>
-</div>
-<div class="clearer"><hr /></div>
