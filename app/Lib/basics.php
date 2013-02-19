@@ -265,17 +265,19 @@
 	/**
 	*
 	*/
-
 	function suffix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
-		return preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
+		$return = preg_replace( '/^(.*'.$separator.')([^'.$separator.']+)$/', '\2', $value );
+		return ( $return != $separator ? $return : null );
 	}
 
 	/**
 	*
 	*/
 	function prefix( $value, $separator = '_' ) { // FIXME: preg_escape separator + erreur si plus d'un caractère
-		return preg_replace( '/^([^'.$separator.']+)('.$separator.'.*)$/', '\1', $value );
+		$return = preg_replace( '/^([^'.$separator.']+)('.$separator.'.*)$/', '\1', $value );
+		return ( $return != $separator ? $return : null );
 	}
+
 
 	function array_depth( $array ) {
 		$max_depth = 1;
