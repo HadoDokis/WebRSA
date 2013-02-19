@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Traitementpdo.
 	 *
@@ -348,7 +348,7 @@
 			if ( isset( $data['Traitementpdo']['traitmentpdoIdClore'] ) && !empty( $data['Traitementpdo']['traitmentpdoIdClore'] ) ) {
 				foreach( $data['Traitementpdo']['traitmentpdoIdClore'] as $id => $clore ) {
 					if ( $clore==1 ) {
-						$success = $this->updateAll(array('Traitementpdo.clos'=>1),array('"Traitementpdo"."id"'=>$id)) && $success;
+						$success = $this->updateAllUnBound(array('Traitementpdo.clos'=>1),array('"Traitementpdo"."id"'=>$id)) && $success;
 					}
 				}
 			}

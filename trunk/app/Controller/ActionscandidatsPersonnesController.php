@@ -176,7 +176,7 @@
 			if( !empty( $this->request->data ) ) {
                 $this->ActioncandidatPersonne->begin();
 
-				$saved = $this->ActioncandidatPersonne->updateAll(
+				$saved = $this->ActioncandidatPersonne->updateAllUnBound(
 					array( 'ActioncandidatPersonne.haspiecejointe' => '\''.$this->request->data['ActioncandidatPersonne']['haspiecejointe'].'\'' ),
 					array( '"ActioncandidatPersonne"."id"' => $id )
 				);
@@ -297,7 +297,7 @@
 							'Contactpartenaire' => array(
 								'Partenaire'
 							),
-							'Fichiermodule' => array( 
+							'Fichiermodule' => array(
 								'fields' => array( 'Fichiermodule.id', 'Fichiermodule.name', 'Fichiermodule.created' )
 							)
 						)
@@ -766,8 +766,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				if( $this->ActioncandidatPersonne->save( $this->request->data ) ) {
-
-					$this->{$this->modelClass}->updateAll(
+					$this->{$this->modelClass}->updateAllUnBound(
                         array( 'ActioncandidatPersonne.positionfiche' => '\'annule\'' ),
                         array(
                             '"ActioncandidatPersonne"."id"' => $id

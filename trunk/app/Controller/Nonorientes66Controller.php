@@ -116,7 +116,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Nonoriente66->begin();
 
-				$saved = $this->Nonoriente66->updateAll(
+				$saved = $this->Nonoriente66->updateAllUnBound(
 					array( 'Nonoriente66.haspiecejointe' => '\''.$this->request->data['Nonoriente66']['haspiecejointe'].'\'' ),
 					array(
 						'"Nonoriente66"."personne_id"' => $personne_id,

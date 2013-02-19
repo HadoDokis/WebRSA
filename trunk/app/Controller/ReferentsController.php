@@ -177,7 +177,7 @@
 
 				$success = true;
 				if( $count > 0 ) {
-					$success = $this->Referent->PersonneReferent->updateAll(
+					$success = $this->Referent->PersonneReferent->updateAllUnBound(
 						array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
 						array(
 							'"PersonneReferent"."referent_id"' => $id,
@@ -187,7 +187,7 @@
 				}
 
 				if( $success ) {
-					$success = $this->Referent->updateAll(
+					$success = $this->Referent->updateAllUnBound(
 						array( 'Referent.datecloture' => '\''.$datedfdesignation.'\'' ),
 						array(
 							'"Referent"."id"' => $id

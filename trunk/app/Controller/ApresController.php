@@ -168,7 +168,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->{$this->modelClass}->begin();
 
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( "{$this->modelClass}.haspiecejointe" => '\''.$this->request->data[$this->modelClass]['haspiecejointe'].'\'' ),
 					array(
 						"{$this->modelClass}.personne_id" => $personne_id,

@@ -199,7 +199,7 @@
 						'action'     => 'impressionsDecisions',
 						'validationcadre'
 					),
-					Hash::flatten( $this->request->data )
+					Hash::flatten( $this->request->data, '__' )
 				),
 				$this->Permissions->check( 'cohortescers93', 'impressionsDecisions' )
 			);
@@ -214,14 +214,14 @@
 		// On désactive le select du référent si on ne choisit pas de valider
 		<?php foreach( $cers93 as $index => $cer93 ):?>
 			<?php if( $cer93['Cer93']['positioncer'] == '05secondelecture' ):?>
-			
+
 				observeDisableFieldsOnValue(
 					'Histochoixcer93<?php echo $index;?>Decisioncadre',
 					[ 'Histochoixcer93<?php echo $index;?>Observationdecision' ],
 					[ 'valide', 'rejete' ],
 					false
 				);
-				
+
 				observeDisableFieldsOnRadioValue(
 					'Personne',
 					'data[Histochoixcer93][<?php echo $index;?>][action]',

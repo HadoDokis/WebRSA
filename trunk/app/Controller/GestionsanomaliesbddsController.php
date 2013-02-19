@@ -510,7 +510,7 @@
 					$recursive = $modelClass->recursive;
 					$modelClass->recursive = -1;
 					// b°) On garde la dernière entrée
-					$success = $modelClass->updateAll(
+					$success = $modelClass->updateAllUnBound(
 						array( "{$modelName}.personne_id" => $personneAgarderId ),
 						array( "{$modelName}.id" => $idAGarder )
 					) && $success;
@@ -536,7 +536,7 @@
 			$recursive = $modelClass->recursive;
 			$modelClass->recursive = -1;
 
-			$success = $modelClass->updateAll(
+			$success = $modelClass->updateAllUnBound(
 				array( "{$modelName}.personne_id" => $personneAgarderId ),
 				array( "{$modelName}.id" => $itemsIds )
 			) && $success;
@@ -544,14 +544,14 @@
 			$success = $modelClass->updateRangsContratsPersonne( $personneAgarderId ) && $success;
 
 			// On ne fait pas attention au retour de la méthode updateAll car il se pourrait que le contrat ne soit pas validé
-			$modelClass->updateAll(
+			$modelClass->updateAllUnBound(
 				array( "{$modelName}.num_contrat" => "'PRE'" ),
 				array( "{$modelName}.personne_id" => $personneAgarderId, "{$modelName}.rg_ci" => 1 )
 			);
 
 			// On ne fait pas attention au retour de la méthode updateAll car il se pourrait que le contrat ne soit pas validé
 			if( count( $itemsIds ) > 1 ) {
-				$modelClass->updateAll(
+				$modelClass->updateAllUnBound(
 					array( "{$modelName}.num_contrat" => "'REN'" ),
 					array( "{$modelName}.personne_id" => $personneAgarderId, "{$modelName}.rg_ci >" => 1 )
 				);
@@ -834,7 +834,7 @@
 						$recursive = $modelClass->recursive;
 						$modelClass->recursive = -1;
 
-						$success = ClassRegistry::init( $model )->updateAll(
+						$success = $modelClass->updateAllUnBound(
 							array( "{$model}.personne_id" => $data['Personne']['garder'] ),
 							array( "{$model}.id" => $data[$model]['id'] )
 						) && $success;

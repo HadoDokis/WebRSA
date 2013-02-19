@@ -292,7 +292,7 @@
 				}
 
 				if( !empty( $donneesAConserverIds ) ) {
-					$success = $this->Informationpe->Historiqueetatpe->updateAll(
+					$success = $this->Informationpe->Historiqueetatpe->updateAllUnBound(
 									array( 'Historiqueetatpe.informationpe_id' => $informationpeIdAGarder ), array( 'Historiqueetatpe.id' => $donneesAConserverIds )
 							) && $success;
 				}
@@ -302,7 +302,7 @@
 						$linkedModelName = Inflector::classify( $foreignKeyToHistoriqueetatpe['From']['table'] ); // FIXME
 						$foreignKeyColumn = $foreignKeyToHistoriqueetatpe['From']['column'];
 						foreach( $donneesASupprimerIds as $oldFkValue => $newFkValue ) {
-							$success = $this->Informationpe->Historiqueetatpe->{$linkedModelName}->updateAll(
+							$success = $this->Informationpe->Historiqueetatpe->{$linkedModelName}->updateAllUnBound(
 											array( "{$linkedModelName}.{$foreignKeyColumn}" => $newFkValue ), array( "{$linkedModelName}.{$foreignKeyColumn}" => $oldFkValue )
 									) && $success;
 						}

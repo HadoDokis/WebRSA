@@ -337,7 +337,7 @@
 			// On sauvagarde la date de notification si ce n'est pas déjà fait.
 			$recursive = $this->recursive;
 			$this->recursive = -1;
-			$this->updateAll(
+			$this->updateAllUnBound(
 				array( 'Apre66.datenotifapre' => date( "'Y-m-d'" ) ),
 				array(
 					'"Apre66"."id"' => $apre_id,

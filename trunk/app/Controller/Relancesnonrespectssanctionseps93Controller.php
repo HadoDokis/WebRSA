@@ -641,7 +641,7 @@
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		public function impression_cohorte() {
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
@@ -687,7 +687,7 @@
 			$pdfs = Set::extract( '/Pdf/document', $contents );
 
 			if( empty( $content['Relancenonrespectsanctionep93']['dateimpression'] ) ) {
-				$this->Relancenonrespectsanctionep93->updateAll(
+				$this->Relancenonrespectsanctionep93->updateAllUnBound(
 					array( 'Relancenonrespectsanctionep93.dateimpression' => date( "'Y-m-d'" ) ),
 					array( '"Relancenonrespectsanctionep93"."id"' => $ids, '"Relancenonrespectsanctionep93"."dateimpression" IS NOT NULL' )
 				);

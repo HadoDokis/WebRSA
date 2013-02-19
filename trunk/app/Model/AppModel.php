@@ -533,5 +533,24 @@
 			parent::afterDelete();
 			$this->_clearModelCache();
 		}
+
+		/**
+		 * By default, updateAll() will automatically join any belongsTo
+		 * association for databases that support joins. To prevent this,
+		 * temporarily unbind the associations.
+		 *
+		 * @see http://book.cakephp.org/2.0/en/models/saving-your-data.html#model-updateall-array-fields-array-conditions
+		 *
+		 * @param array $fields
+		 * @param mixed $conditions
+		 * @return boolean
+		 */
+		public function updateAllUnBound($fields, $conditions = true) {
+			$this->unbindModelAll();
+			$success = parent::updateAll($fields, $conditions );
+			$this->resetAssociations();
+
+			return $success;
+		}
 	}
 ?>

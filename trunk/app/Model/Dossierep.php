@@ -465,7 +465,7 @@
 				return false;
 			}
 
-			$this->Passagecommissionep->updateAll(
+			$this->Passagecommissionep->updateAllUnBound(
 				array( 'Passagecommissionep.impressionconvocation' => "'".date( 'Y-m-d' )."'" ),
 				array(
 					'"Passagecommissionep"."id"' => $passagecommissionep_id,
@@ -476,7 +476,7 @@
 			$pdf = $this->{$theme}->getConvocationBeneficiaireEpPdf( $passagecommissionep_id );
 
 			if( empty( $pdf ) ) {
-				$this->Passagecommissionep->updateAll(
+				$this->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.impressionconvocation' => null ),
 					array(
 						'"Passagecommissionep"."id"' => $passagecommissionep_id,
@@ -506,7 +506,7 @@
 			$pdf = false;
 			if( !empty( $passagecommission ) ) {
 				$theme = Inflector::classify( $passagecommission['Dossierep']['themeep'] );
-				$this->Passagecommissionep->updateAll(
+				$this->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.impressiondecision' => "'".date( 'Y-m-d' )."'" ),
 					array(
 						'"Passagecommissionep"."id"' => $passagecommissionep_id,

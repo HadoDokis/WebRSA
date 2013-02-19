@@ -266,7 +266,7 @@
 				}
 
 				$success = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 						array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ), array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionnonrespectsanctionep93/passagecommissionep_id' ) )
 				);
 
@@ -1140,7 +1140,7 @@
 				if( !empty( $nonrespectssanctionseps93 ) ) {
 					$ids = Set::extract( $nonrespectssanctionseps93, '/Nonrespectsanctionep93/id' );
 
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 									array(
 								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
 								'"Nonrespectsanctionep93"."active"' => '\'0\''
@@ -1219,7 +1219,7 @@
 
 				if( !empty( $dossierep ) ) {
 					$ids = Set::extract( $dossierep, '/Nonrespectsanctionep93/id' );
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 									array(
 								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
 								'"Nonrespectsanctionep93"."active"' => '\'0\'',

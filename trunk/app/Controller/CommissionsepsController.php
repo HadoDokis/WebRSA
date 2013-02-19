@@ -433,7 +433,7 @@
 				$this->Commissionep->create( $commissionep );
 				$success = $this->Commissionep->save() && $success;
 
-				$this->Commissionep->Passagecommissionep->updateAll(
+				$this->Commissionep->Passagecommissionep->updateAllUnBound(
 						array( 'Passagecommissionep.etatdossierep' => '\'reporte\'' ), array(
 					'"Passagecommissionep"."commissionep_id"' => $commissionep_id
 						)

@@ -171,7 +171,7 @@
 							'action'     => 'impressions'/*,
 							'id' => 'Cohorteoriente'*/
 						),
-						Hash::flatten( $this->request->data )
+						Hash::flatten( $this->request->data, '__' )
 					)
 				);
 			?></li>

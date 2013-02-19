@@ -135,7 +135,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Memo->begin();
 
-				$saved = $this->Memo->updateAll(
+				$saved = $this->Memo->updateAllUnBound(
 					array( 'Memo.haspiecejointe' => '\''.$this->request->data['Memo']['haspiecejointe'].'\'' ),
 					array(
 						'"Memo"."personne_id"' => $personne_id,

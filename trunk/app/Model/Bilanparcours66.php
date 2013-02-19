@@ -361,7 +361,7 @@
 					$this->data['Bilanparcours66']['id'] = $id;
 				}
 			}
-			
+
 
 			$this->data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
 
@@ -442,7 +442,7 @@
 				$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids );
 
 				$position = ( ( $modeleThematique == 'Defautinsertionep66' ) ? 'attcga' : 'attct' );
-				$success = $this->updateAll(
+				$success = $this->updateAllUnBound(
 					array( 'Bilanparcours66.positionbilan' => "'{$position}'" ),
 					array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
 				) && $success;
@@ -470,7 +470,7 @@
 
 				if( !empty( $passagescommissionseps_ids_annule ) ) {
 					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_annule );
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
 						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
 					) && $success;
@@ -478,7 +478,7 @@
 
 				if( !empty( $passagescommissionseps_ids_reporte ) ) {
 					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_reporte );
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( 'Bilanparcours66.positionbilan' => '\'ajourne\'' ),
 						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
 					) && $success;
@@ -486,7 +486,7 @@
 
 				if( !empty( $passagescommissionseps_ids_autre ) ) {
 					$bilansparcours66_ids = $this->_bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids_autre );
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( 'Bilanparcours66.positionbilan' => '\'traite\'' ),
 						array( '"Bilanparcours66"."id"' => array_values( $bilansparcours66_ids ) )
 					) && $success;

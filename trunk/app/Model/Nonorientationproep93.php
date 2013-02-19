@@ -191,7 +191,7 @@
 						$success = $this->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-						$success = $this->updateAll(
+						$success = $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						) && $success;

@@ -225,7 +225,7 @@
 				$recursive = $model->recursive;
 				$model->recursive = -1;
 
-				$model->updateAll(
+				$model->updateAllUnBound(
 						array( "{$model->alias}.{$printDateColumn}" => date( "'Y-m-d'" ) ), array(
 					"\"{$model->alias}\".\"{$model->primaryKey}\"" => $id,
 					"\"{$model->alias}\".\"{$printDateColumn}\" IS NULL"

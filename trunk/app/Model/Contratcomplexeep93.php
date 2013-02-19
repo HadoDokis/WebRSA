@@ -247,7 +247,7 @@
 				}
 
 				$success = $this->Dossierep->Passagecommissionep->Decisioncontratcomplexeep93->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisioncontratcomplexeep93/passagecommissionep_id' ) )
 				);
@@ -360,7 +360,7 @@
 					$success = $this->Contratinsertion->save() && $success;
 
 					if( in_array( $dossierep['Decisioncontratcomplexeep93']['decision'], array( 'valide', 'rejete', 'annule' ) ) ) {
-						$success = $this->Contratinsertion->Cer93->updateAll(
+						$success = $this->Contratinsertion->Cer93->updateAllUnBound(
 							array(
 								'Cer93.positioncer' => '\''.Set::enum( @$dossierep['Decisioncontratcomplexeep93']['decision'], $enumCer93 ).'\'',
 							),

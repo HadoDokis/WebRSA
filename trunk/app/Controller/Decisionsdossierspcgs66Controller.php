@@ -179,7 +179,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
 
-				$saved = $this->Decisiondossierpcg66->updateAll(
+				$saved = $this->Decisiondossierpcg66->updateAllUnBound(
 					array( 'Decisiondossierpcg66.haspiecejointe' => '\''.$this->request->data['Decisiondossierpcg66']['haspiecejointe'].'\'' ),
 					array(
 						'"Decisiondossierpcg66"."dossierpcg66_id"' => $dossierpcg66_id,
@@ -507,7 +507,7 @@
 												)
 										) && $saved;
 
-								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAll(
+								$saved = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->updateAllUnBound(
 												array(
 											'Propodecisioncer66.motifficheliaison' => null,
 											'Propodecisioncer66.motifnotifnonvalid' => null
@@ -543,7 +543,7 @@
 			}
 			else if( $this->action != 'add' ) {
 				$this->request->data = $decisiondossierpcg66;
-				
+
 				// Récupération des types de RSA sélectionnés
 				$typesrsapcg = $this->Decisiondossierpcg66->Decisiondossierpcg66Typersapcg66->find(
 					'list',
@@ -744,7 +744,7 @@
 					);
 				}
 
-				$success = $this->Decisiondossierpcg66->Dossierpcg66->updateAll(
+				$success = $this->Decisiondossierpcg66->Dossierpcg66->updateAllUnBound(
 								array( 'Dossierpcg66.etatdossierpcg' => "'{$etatdossierpcg}'" ), array( '"Dossierpcg66"."id"' => $dossierpcg66_id )
 						) && $success;
 			}

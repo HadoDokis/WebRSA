@@ -76,7 +76,7 @@
 					'controller' => 'cohortestransfertspdvs93',
 					'action'     => 'impressions',
 				),
-				Hash::flatten( $this->request->data )
+				Hash::flatten( $this->request->data, '__' )
 			),
 			( $this->Permissions->check( 'cohortestransfertspdvs93', 'impressions' ) && count( $results ) > 0 )
 		);

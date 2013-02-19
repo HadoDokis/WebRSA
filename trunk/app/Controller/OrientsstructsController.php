@@ -150,7 +150,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Orientstruct->begin();
 
-				$saved = $this->Orientstruct->updateAll(
+				$saved = $this->Orientstruct->updateAllUnBound(
 						array( 'Orientstruct.haspiecejointe' => '\''.$this->request->data['Orientstruct']['haspiecejointe'].'\'' ), array(
 					'"Orientstruct"."personne_id"' => $personne_id,
 					'"Orientstruct"."id"' => $id

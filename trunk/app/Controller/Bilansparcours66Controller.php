@@ -186,7 +186,7 @@
 
 				$this->Bilanparcours66->begin();
 
-				$saved = $this->Bilanparcours66->updateAll(
+				$saved = $this->Bilanparcours66->updateAllUnBound(
 					array( 'Bilanparcours66.haspiecejointe' => '\''.$this->request->data['Bilanparcours66']['haspiecejointe'].'\'' ),
 					array(
 						'"Bilanparcours66"."orientstruct_id"' => Set::classicExtract( $bilanparcours66, 'Bilanparcours66.orientstruct_id' ),
@@ -666,7 +666,7 @@
 					else {
 						$propositionModifie = $this->request->data['Bilanparcours66']['proposition'];
 					}
-					
+
 					if( !in_array( $propositionModifie, array( 'aucun' ) ) && ( $proposition != $propositionModifie) ) {
 						$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 					}
@@ -693,7 +693,7 @@
 
 				if( !empty( $contrat['Contratinsertion'] ) && isset( $this->request->data['Bilanparcours66']['proposition'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
 					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
-					$success = $this->{$this->modelClass}->Contratinsertion->updateAll(
+					$success = $this->{$this->modelClass}->Contratinsertion->updateAllUnBound(
 						array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
 						array(
 							'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
@@ -982,7 +982,7 @@
 
 
 				$saved = $this->Bilanparcours66->save( $this->request->data );
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( 'Bilanparcours66.positionbilan' => '\'annule\'' ),
 					array(
 						'"Bilanparcours66"."personne_id"' => $bilan['Bilanparcours66']['personne_id'],

@@ -379,11 +379,12 @@
 			$content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
 
 			$this->Personne->Foyer->Dossier->begin();
-			$success = ( $content !== false ) && $this->Personne->Orientstruct->updateAll(
+
+			$success = ( $content !== false ) && $this->Personne->Orientstruct->updateAllUnBound(
 				array( 'Orientstruct.date_impression' => date( "'Y-m-d'" ) ),
 				array(
-					'"Orientstruct"."id"' => Set::extract( $results, '/Orientstruct/id' ),
-					'"Orientstruct"."date_impression" IS NULL'
+					'Orientstruct.id' => Set::extract( $results, '/Orientstruct/id' ),
+					'Orientstruct.date_impression IS NULL'
 				)
 			);
 

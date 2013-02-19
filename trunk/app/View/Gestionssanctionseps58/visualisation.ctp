@@ -240,7 +240,7 @@
 						array(
 							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions1'
 						),
-						Hash::flatten( $this->request->params['named'] )
+						Hash::flatten( $this->request->params['named'], '__' )
 					)
 				);
 
@@ -253,7 +253,7 @@
 						array(
 							'controller' => 'gestionssanctionseps58', 'action' => 'impressionsSanctions2'
 						),
-						Hash::flatten( $this->request->params['named'] )
+						Hash::flatten( $this->request->params['named'], '__' )
 					)
 				);
 			?></li>

@@ -122,7 +122,7 @@
 							)
 						) && $saved;
 
-						$saved = $this->Propodecisioncer66->updateAll(
+						$saved = $this->Propodecisioncer66->updateAllUnBound(
 							array(
 								'Propodecisioncer66.motifficheliaison' => null,
 								'Propodecisioncer66.motifnotifnonvalid' => null
@@ -138,7 +138,7 @@
 						$dateDecision = date_cakephp_to_sql( $this->request->data['Propodecisioncer66']['datevalidcer'] );
 						if( $this->request->data['Propodecisioncer66']['decisionfinale'] == 'O' ) {
 							if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'O' ) {
-								$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+								$saved = $this->Propodecisioncer66->Contratinsertion->updateAllUnBound(
 									array(
 										'Contratinsertion.decision_ci' => '\'V\'',
 										'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
@@ -152,7 +152,7 @@
 								) && $saved;
 							}
 							else if( $this->request->data['Propodecisioncer66']['isvalidcer'] == 'N' ) {
-								$saved = $this->Propodecisioncer66->Contratinsertion->updateAll(
+								$saved = $this->Propodecisioncer66->Contratinsertion->updateAllUnBound(
 									array(
 										'Contratinsertion.decision_ci' => '\'N\'',
 										'Contratinsertion.datevalidation_ci' => null,
