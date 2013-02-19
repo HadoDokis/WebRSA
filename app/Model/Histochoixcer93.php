@@ -207,7 +207,7 @@
 			$datechoix = ( is_array( $data['Histochoixcer93']['datechoix'] ) ? date_cakephp_to_sql( $data['Histochoixcer93']['datechoix'] ) : $data['Histochoixcer93']['datechoix'] );
 
 			if( $data['Histochoixcer93']['etape'] == '03attdecisioncg' && $data['Histochoixcer93']['isrejet'] ) {
-				$success = $this->Cer93->updateAll(
+				$success = $this->Cer93->updateAllUnBound(
 					array(
 						'Cer93.positioncer' => '\'99rejetecpdv\'',
 						'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
@@ -218,7 +218,7 @@
 				$this->Cer93->id = $data['Histochoixcer93']['cer93_id'];
 				$contratinsertion_id = $this->Cer93->field( 'contratinsertion_id' );
 
-				$success = $this->Cer93->Contratinsertion->updateAll(
+				$success = $this->Cer93->Contratinsertion->updateAllUnBound(
 					array(
 						'Contratinsertion.decision_ci' => '\'R\'',
 						'Contratinsertion.rg_ci' => null,
@@ -231,7 +231,7 @@
 			else if( $data['Histochoixcer93']['etape'] == '05secondelecture' ) {
 				// Validation du contrat en seconde lecture
 				if( $data['Histochoixcer93']['decisioncs'] == 'valide' ) {
-					$success = $this->Cer93->updateAll(
+					$success = $this->Cer93->updateAllUnBound(
 						array(
 							'Cer93.positioncer' => '\'99valide\'',
 							'Cer93.duree' => '\''.$data['Histochoixcer93']['duree'].'\'',
@@ -261,7 +261,7 @@
 						)
 					);
 
-					$success = $this->Cer93->Contratinsertion->updateAll(
+					$success = $this->Cer93->Contratinsertion->updateAllUnBound(
 						array(
 							'Contratinsertion.df_ci' => '\''.strftime( '%Y-%m-%d', strtotime( "{$data['Histochoixcer93']['duree']} months", strtotime( $cer93['Contratinsertion']['dd_ci'] ) )  ).'\'',
 							'Contratinsertion.decision_ci' => '\'V\'',
@@ -322,7 +322,7 @@
 					$this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->create( $contratcomplexeep93 );
 					$success = ( $this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->save() !== false ) && $success;
 
-					$success = $this->Cer93->updateAll(
+					$success = $this->Cer93->updateAllUnBound(
 						array(
 							'Cer93.positioncer' => '\'07attavisep\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
@@ -330,7 +330,7 @@
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
 
-					$success = $this->Cer93->Contratinsertion->updateAll(
+					$success = $this->Cer93->Contratinsertion->updateAllUnBound(
 						array(
 							'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
 						),
@@ -339,7 +339,7 @@
 				}
 				// Avis cadre
 				else {
-					$success = $this->Cer93->updateAll(
+					$success = $this->Cer93->updateAllUnBound(
 						array( 'Cer93.positioncer' => '\'05secondelecture\'' ),
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
@@ -348,7 +348,7 @@
 			else if( $data['Histochoixcer93']['etape'] == '06attaviscadre' ) {
 				// Validation du contrat en seconde lecture
 				if( in_array( $data['Histochoixcer93']['decisioncadre'], array( 'valide', 'rejete' ) ) ) {
-					$success = $this->Cer93->updateAll(
+					$success = $this->Cer93->updateAllUnBound(
 						array(
 							'Cer93.positioncer' => '\''.( ( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) ? '99valide' : '99rejete' ).'\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\'',
@@ -388,13 +388,13 @@
 					if( $data['Histochoixcer93']['decisioncadre'] == 'valide' ) {
 						$fields['Contratinsertion.datevalidation_ci'] = '\''.$datechoix.'\'';
 					}
-					
+
 					// Rejet et rg_ci à null
 					if( $data['Histochoixcer93']['decisioncadre'] == 'rejete' ) {
 						$fields['Contratinsertion.rg_ci'] = null;
 					}
 
-					$success = $this->Cer93->Contratinsertion->updateAll(
+					$success = $this->Cer93->Contratinsertion->updateAllUnBound(
 						$fields,
 						array( '"Contratinsertion"."id"' => $cer93['Cer93']['contratinsertion_id'] )
 					) && $success;
@@ -451,7 +451,7 @@
 					$this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->create( $contratcomplexeep93 );
 					$success = ( $this->Cer93->Contratinsertion->Personne->Dossierep->Contratcomplexeep93->save() !== false ) && $success;
 
-					$success = $this->Cer93->updateAll(
+					$success = $this->Cer93->updateAllUnBound(
 						array(
 							'Cer93.positioncer' => '\'07attavisep\'',
 							'Cer93.formeci' => '\''.$data['Histochoixcer93']['formeci'].'\''
@@ -459,7 +459,7 @@
 						array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 					) && $success;
 
-					$success = $this->Cer93->Contratinsertion->updateAll(
+					$success = $this->Cer93->Contratinsertion->updateAllUnBound(
 						array(
 							'Contratinsertion.forme_ci' => '\''.$data['Histochoixcer93']['formeci'].'\''
 						),
@@ -468,7 +468,7 @@
 				}
 			}
 			else {
-				$success = $this->Cer93->updateAll(
+				$success = $this->Cer93->updateAllUnBound(
 					array( 'Cer93.positioncer' => '\''.$data['Histochoixcer93']['etape'].'\'' ),
 					array( '"Cer93"."id"' => $data['Histochoixcer93']['cer93_id'] )
 				) && $success;

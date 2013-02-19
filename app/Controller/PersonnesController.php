@@ -137,7 +137,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Personne->begin();
 
-				$saved = $this->Personne->updateAll(
+				$saved = $this->Personne->updateAllUnBound(
 					array( 'Personne.haspiecejointe' => '\''.$this->request->data['Personne']['haspiecejointe'].'\'' ),
 					array( '"Personne"."id"' => $id )
 				);

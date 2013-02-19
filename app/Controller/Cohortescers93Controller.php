@@ -196,14 +196,14 @@
 
 				if( $this->action == 'saisie' ) {
 					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
-					$success = $success && $this->Contratinsertion->Cer93->updateAll(
+					$success = $success && $this->Contratinsertion->Cer93->updateAllUnBound(
 						array( '"Cer93"."positioncer"' => "'02attdecisioncpdv'" ),
 						array( '"Cer93"."id"' => $formData[$key]['Histochoixcer93']['cer93_id'] )
 					);
 				}
 				else if( $this->action == 'avalidercpdv' ) {
 					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
-					$success = $success && $this->Contratinsertion->Cer93->updateAll(
+					$success = $success && $this->Contratinsertion->Cer93->updateAllUnBound(
 						array( '"Cer93"."positioncer"' => "'".$this->request->data['decision']."'" ),
 						array( '"Cer93"."id"' => $formData[$key]['Histochoixcer93']['cer93_id'] )
 					);
@@ -211,7 +211,7 @@
 					if( $this->request->data['decision'] == '99rejetecpdv' ) {
 						$this->Contratinsertion->Cer93->id = $formData[$key]['Histochoixcer93']['cer93_id'];
 						$contratinsertion_id = $this->Contratinsertion->Cer93->field( 'contratinsertion_id' );
-						$success = $success && $this->Contratinsertion->updateAll(
+						$success = $success && $this->Contratinsertion->updateAllUnBound(
 							array(
 								'"Contratinsertion"."rg_ci"' => null, //FIXME
 								'"Contratinsertion"."decision_ci"' => "'R'",
@@ -317,7 +317,7 @@
 			);
 
 			$options['Cer93']['positioncer'] = array_filter_keys( $options['Cer93']['positioncer'], array( '00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '99rejetecpdv', '99rejete'  ), false );
-			
+
 			// TODO: à factoriser
 			$commentairesnormescers93 = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93->find(
 				'all',

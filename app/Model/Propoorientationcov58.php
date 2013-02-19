@@ -605,7 +605,7 @@
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-						$success = $this->updateAll(
+						$success = $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
 						) && $success;
@@ -614,19 +614,19 @@
 
 					// Modification etat du dossier passé dans la COV
 					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
-						$this->Dossiercov58->Passagecov58->updateAll(
+						$this->Dossiercov58->Passagecov58->updateAllUnBound(
 							array( 'Passagecov58.etatdossiercov' => '\'traite\'' ),
 							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
 						);
 					}
 					else if( $values['decisioncov'] == 'annule' ){
-						$this->Dossiercov58->Passagecov58->updateAll(
+						$this->Dossiercov58->Passagecov58->updateAllUnBound(
 							array( 'Passagecov58.etatdossiercov' => '\'annule\'' ),
 							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
 						);
 					}
 					else if( $values['decisioncov'] == 'reporte' ){
-						$this->Dossiercov58->Passagecov58->updateAll(
+						$this->Dossiercov58->Passagecov58->updateAllUnBound(
 							array( 'Passagecov58.etatdossiercov' => '\'reporte\'' ),
 							array('"Passagecov58"."id"' => $passagecov58['Passagecov58']['id'] )
 						);

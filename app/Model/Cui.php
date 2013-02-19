@@ -666,7 +666,7 @@
 
 			// Lors de l'ajout d'un nouveau CUI, on passe la position du précédent à fin de contrat, sauf pour les non validés
 			if( !empty( $dernierCui ) && ( $decisionprecedente != 'N' ) && ( $positioncui66Precedent != 'annule' ) ) {
-				$this->updateAll(
+				$this->updateAllUnBound(
 					array( 'Cui.positioncui66' => '\'fincontrat\'' ),
 					array(
 						'"Cui"."personne_id"' => $personne_id,

@@ -542,7 +542,7 @@
 					)
 				)
 			);
-			
+
 			if( !is_null( $user_id ) ) {
 				$user = $this->User->find(
 					'first',
@@ -1048,7 +1048,7 @@
 				);
 
 				if( !empty( $orientationAvecEntreeNonoriente66 )  ) {
-					$success = $this->Nonoriente66->updateAll(
+					$success = $this->Nonoriente66->updateAllUnBound(
 						array( 'Nonoriente66.orientstruct_id' => $orientstruct_id ),
 						array(
 							'"Nonoriente66"."id"' => $orientationAvecEntreeNonoriente66['Nonoriente66']['id']
@@ -1125,7 +1125,7 @@
 			$pdf = $this->ged( $data, $modeleodt, false, $options );
 
 			if( !empty( $pdf ) ) {
-				$this->Nonoriente66->updateAll(
+				$this->Nonoriente66->updateAllUnBound(
 					array( 'Nonoriente66.datenotification' => "'".date( 'Y-m-d' )."'" ),
 					array(
 						'"Nonoriente66"."id"' => $nonoriente66['Nonoriente66']['id']

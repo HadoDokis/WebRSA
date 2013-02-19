@@ -425,7 +425,7 @@
 					$modelDecisionTraite = Inflector::classify( $tableDecisionTraite );
 
 					if( "decision{$niveauDecision}" == $niveauDecisionTheme ) {
-						$this->Passagecommissionep->updateAll(
+						$this->Passagecommissionep->updateAllUnBound(
 							array( 'Passagecommissionep.etatdossierep' => '\'traite\'' ),
 							array(
 								'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
@@ -457,7 +457,7 @@
 
 						$listeDecisions = array( 'annule', 'reporte' );
 						foreach( $listeDecisions as $decision ) {
-							$this->Passagecommissionep->updateAll(
+							$this->Passagecommissionep->updateAllUnBound(
 								array( 'Passagecommissionep.etatdossierep' => "'{$decision}'" ),
 								array(
 									'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
@@ -480,7 +480,7 @@
 						if( $tableDecisionTraite == 'decisionsnonrespectssanctionseps93' || $tableDecisionTraite == 'decisionssignalementseps93' ) {
 							$listeDecisions = array( '1pasavis', '2pasavis' );
 							foreach( $listeDecisions as $decision ) {
-								$this->Passagecommissionep->updateAll(
+								$this->Passagecommissionep->updateAllUnBound(
 									array( 'Passagecommissionep.etatdossierep' => "'reporte'" ),
 									array(
 										'"Passagecommissionep"."commissionep_id"' => $commissionep_id,
@@ -503,7 +503,7 @@
 
 					}
 					elseif( $niveauDecisionTheme == 'decisioncg' && "decision{$niveauDecision}" == 'decisionep' ) {
-						$this->Passagecommissionep->updateAll(
+						$this->Passagecommissionep->updateAllUnBound(
 							array( 'Passagecommissionep.etatdossierep' => '\'decisioncg\'' ),
 							array(
 								'"Passagecommissionep"."commissionep_id"' => $commissionep_id

@@ -207,7 +207,7 @@
 
 			if( !empty( $this->request->data ) ) {
                 $this->Cui->begin();
-				$saved = $this->Cui->updateAll(
+				$saved = $this->Cui->updateAllUnBound(
 					array( 'Cui.haspiecejointe' => '\''.$this->request->data['Cui']['haspiecejointe'].'\'' ),
 					array(
 						'"Cui"."personne_id"' => $personne_id,
@@ -611,7 +611,7 @@
 				$this->Cui->begin();
 
 				$saved = $this->Cui->save( $this->request->data );
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( 'Cui.positioncui66' => '\'annule\'' ),
 					array(
 						'"Cui"."personne_id"' => $cui['Cui']['personne_id'],

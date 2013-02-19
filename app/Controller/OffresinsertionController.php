@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe OffresinsertionController.
 	 *
@@ -18,15 +18,15 @@
 
 		public $name = 'Offresinsertion';
 		public $uses = array( 'Offreinsertion', 'Actioncandidat', 'Contactpartenaire', 'Partenaire', 'Option' );
-		
+
 		public $helpers = array( 'Default2', 'Fileuploader', 'Csv' );
-		
+
 		public $commeDroit = array(
 			'view' => 'Offresinsertion:index'
 		);
-        
+
         public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
-		
+
 		public $components = array(
 			'Search.Prg' => array(
 				'actions' => array(
@@ -37,7 +37,7 @@
                 'colonneModele' => 'Actioncandidat'
             )
 		);
-		
+
 		public function _setOptions() {
 			$options = array();
 			$options = $this->Actioncandidat->enums();
@@ -51,7 +51,7 @@
 			$this->set( compact( 'options', 'listeActions', 'listePartenaires', 'listeContacts', 'typevoie', 'correspondants' ) );
 		}
 
-          
+
 		/**
 		* http://valums.com/ajax-upload/
 		* http://doc.ubuntu-fr.org/modules_php
@@ -92,7 +92,7 @@
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
-        
+
 		public function index() {
 			if( !empty( $this->request->data ) ) {
 				$queryData = $this->Offreinsertion->search( $this->request->data );
@@ -104,13 +104,13 @@
 			}
 			$this->_setOptions();
 		}
-		
+
 		public function view( $actioncandidat_id = null ) {
 			$this->assert( is_numeric( $actioncandidat_id ), 'error404' );
-			
+
             $fichiers = array();
 			$actioncandidat = $this->Actioncandidat->find(
-				'first', 
+				'first',
 				array(
 					'conditions' => array(
 						'Actioncandidat.id' => $actioncandidat_id
@@ -126,17 +126,17 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'offresinsertion', 'action' => 'index' ) );
 			}
-            
+
             if( !empty( $this->request->data ) ) {
 				$this->Actioncandidat->begin();
 
-                $saved = $this->Actioncandidat->updateAll(
+                $saved = $this->Actioncandidat->updateAllUnBound(
 					array( 'Actioncandidat.haspiecejointe' => '\''.$this->request->data['Actioncandidat']['haspiecejointe'].'\'' ),
 					array(
 						'"Actioncandidat"."id"' => $actioncandidat_id
 					)
 				);
-                
+
 				if( $saved ) {
 					// Sauvegarde des fichiers liés à une action
 					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
@@ -159,12 +159,12 @@
 				$fichiers = $this->Fileuploader->fichiers( $actioncandidat['Actioncandidat']['id'] );
 			}
 			$this->Actioncandidat->commit();
-            
-            
+
+
 			$this->_setOptions();
 			$this->set( compact( 'fichiers', 'actioncandidat' ) );
 		}
-        
+
         /**
          * Fonction permettant d'exporter le tableau de résultats au format CSV
          */

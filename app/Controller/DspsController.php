@@ -241,7 +241,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Dsp->begin();
 
-				$saved = $this->DspRev->updateAll(
+				$saved = $this->DspRev->updateAllUnBound(
 						array( 'DspRev.haspiecejointe' => '\''.$this->request->data['DspRev']['haspiecejointe'].'\'' ), array(
 					'"DspRev"."personne_id"' => $personne_id,
 					'"DspRev"."dsp_id"' => $dsp_id,

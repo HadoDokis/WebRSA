@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Dossierpcg66.
 	 *
@@ -571,7 +571,7 @@
 				if( ( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] == 'O' ) && ( ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '0' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '0' ) ) || ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '1' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '1' ) ) ) ) {
 
 					if( $propositiondecision == 'N' ) {
-						$success = $this->Contratinsertion->updateAll(
+						$success = $this->Contratinsertion->updateAllUnBound(
 							array(
 								'Contratinsertion.decision_ci' => "'".$propositiondecision."'",
 								'Contratinsertion.datevalidation_ci' => null,
@@ -584,7 +584,7 @@
 						) && $success;
 					}
 					else {
-						$success = $this->Contratinsertion->updateAll(
+						$success = $this->Contratinsertion->updateAllUnBound(
 							array(
 								'Contratinsertion.decision_ci' => "'".$propositiondecision."'",
 								'Contratinsertion.datevalidation_ci' => "'".$dateDecision."'",
@@ -632,8 +632,8 @@
 				return null;
 			}
 		}
-		
-		
+
+
 		/**
 		*	Liste des courriers envoyés aux personnes PCG liés au dossier sur lequel on travaille
 		*	@params	integer
@@ -642,9 +642,9 @@
 		*/
 		public function listeCourriersEnvoyes( $personneId = 'Personne.id', $data = array() ) {
 			$traitementsNonClos = array();
-			
+
 			$personnespcgs66 = $this->Personnepcg66->find(
-				'all', 
+				'all',
 				array(
 					'fields' => array(
 						'Personnepcg66.id',
@@ -699,7 +699,7 @@
 					)
 				);
 			}
-			
+
 			return $traitementspcgs66;
 		}
 	}

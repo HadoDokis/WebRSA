@@ -420,7 +420,7 @@
 			if ( $success && isset( $data['Traitementpcg66']['traitmentpdoIdClore'] ) && !empty( $data['Traitementpcg66']['traitmentpdoIdClore'] ) ) {
 				foreach( $data['Traitementpcg66']['traitmentpdoIdClore'] as $id => $clore ) {
 					if ( $clore == 'O' ) {
-						$success = $this->updateAll( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $id ) ) && $success;
+						$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $id ) ) && $success;
 					}
 				}
 			}

@@ -180,7 +180,7 @@
 			if( !empty( $this->request->data ) ) {
                 $this->{$this->modelClass}->begin();
 
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 						array( "{$this->modelClass}.haspiecejointe" => '\''.$this->request->data[$this->modelClass]['haspiecejointe'].'\'' ), array(
 					"{$this->modelClass}.personne_id" => $personne_id,
 					"{$this->modelClass}.id" => $id
@@ -973,7 +973,7 @@
 				$this->{$this->modelClass}->begin();
 
 				$saved = $this->{$this->modelClass}->save( $this->request->data );
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( 'Apre66.etatdossierapre' => '\'ANN\'' ),
 					array(
 						'"Apre66"."personne_id"' => $apre['Apre66']['personne_id'],

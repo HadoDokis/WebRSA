@@ -161,7 +161,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Manifestationbilanparcours66->begin();
 
-				$saved = $this->Manifestationbilanparcours66->updateAll(
+				$saved = $this->Manifestationbilanparcours66->updateAllUnBound(
 					array( 'Manifestationbilanparcours66.haspiecejointe' => '\''.$this->request->data['Manifestationbilanparcours66']['haspiecejointe'].'\'' ),
 					array(
 						'"Manifestationbilanparcours66"."bilanparcours66_id"' => $bilanparcours66_id,

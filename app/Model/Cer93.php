@@ -289,7 +289,7 @@
 
 			// Sinon, ça pose des problèmes lors du add car les valeurs n'existent pas encore
 			$this->unsetValidationRule( 'contratinsertion_id', 'notEmpty' );
-			
+
 			// Si aucun sujet n'est renseigné, alors on lance un erreur
 			if( empty( $data['Sujetcer93']['Sujetcer93'] ) ) {
 				$success = false;
@@ -352,7 +352,7 @@
 				/*$this->create( $tmp );
 				$success = $this->create() && $success;*/
 			}
-			
+
 
 			// Dans le cas d'un ajout de CER, on vérifie s'il faut ajouter un rendez-vous implicite
 			if( $success && empty( $data['Cer93']['id'] ) && Configure::read( 'Contratinsertion.RdvAuto.active' ) === true && ( $typeUser != 'cg' ) ) {
@@ -1388,7 +1388,7 @@
 			$valeursparSousSujetsIds = Hash::filter( (array)Set::extract( $data, '/Cer93/Sujetcer93/Cer93Sujetcer93/valeurparsoussujetcer93_id' ) );
 			if( !empty( $sousSujetsIds ) ) {
 				$sousSujets = $this->Sujetcer93->Soussujetcer93->find( 'list', array( 'conditions' => array( 'Soussujetcer93.id' => $sousSujetsIds ) ) );
-				
+
 				foreach( $data['Cer93']['Sujetcer93'] as $key => $values ) {
 					if( isset( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['soussujetcer93_id'] ) ) {
 						$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Soussujetcer93'] = array( 'name' => $sousSujets[$values['Cer93Sujetcer93']['soussujetcer93_id']] );
@@ -1400,7 +1400,7 @@
 					if( !empty( $valeursparSousSujetsIds ) ) {
 						// Valeur par sous sujet
 						$valeursparSousSujets = $this->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find( 'list', array( 'conditions' => array( 'Valeurparsoussujetcer93.id' => $valeursparSousSujetsIds ) ) );
-					
+
 						//Valeur par sous s sujet
 						if( isset( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) ) {
 							$data['Cer93']['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => $valeursparSousSujets[$values['Cer93Sujetcer93']['valeurparsoussujetcer93_id']] );
@@ -1490,7 +1490,7 @@
 			$dateimpressiondecision = date( 'Y-m-d' );
 
 			if( !empty( $dateimpressiondecision ) ) {
-				$this->updateAll(
+				$this->updateAllUnBound(
 					array( 'Cer93.dateimpressiondecision' => '\''.$dateimpressiondecision.'\'' ),
 					array(
 						'"Cer93"."id"' => $data['Cer93']['id']

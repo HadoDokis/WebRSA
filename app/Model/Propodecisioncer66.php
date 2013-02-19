@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Propodecisioncer66.
 	 *
@@ -31,7 +31,7 @@
 			),
 			'Formattable'
 		);
-		
+
 		public $validate = array(
 			'isvalidcer' => array(
 				'notEmpty' => array(
@@ -40,7 +40,7 @@
 				)
 			),
 		);
-		
+
 		public $belongsTo = array(
 			'Contratinsertion' => array(
 				'className' => 'Contratinsertion',
@@ -50,7 +50,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Motifcernonvalid66' => array(
 				'className' => 'Motifcernonvalid66',
@@ -69,14 +69,14 @@
 				'with' => 'Motifcernonvalid66Propodecisioncer66'
 			)
 		);
-		
-		
+
+
 		/**
 		 * BeforeSave
 		 */
 		public function beforeSave( $options = array( ) ) {
 			$return = parent::beforeSave( $options );
-		
+
 			//  MAJ de la position du cER
 			if( !empty( $this->data ) ) {
 
@@ -91,9 +91,9 @@
 						'recursive' => -1
 					)
 				);
-				
+
 // 				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
-// 					$this->Contratinsertion->updateAll(
+// 					$this->Contratinsertion->updateAllUnBound(
 // 						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
 // 						array(
 // 							'"Contratinsertion"."id"' => $contratinsertion_id
@@ -103,7 +103,7 @@
 			}
 			return $return;
 		}
-		
+
 		/**
 		* Sauvegarde des décisions du CER dans la table proposdecisionscers66
 		*

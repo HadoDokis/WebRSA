@@ -261,7 +261,7 @@
 			}
 			else {
 				$success = $this->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsanctionrendezvousep58/passagecommissionep_id' ) )
 				);

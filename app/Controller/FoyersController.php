@@ -24,7 +24,7 @@
 		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
-		
+
 		protected function _setOptions() {
 			$this->set( 'options', $this->Foyer->enums() );
 			$this->set( 'gestionnaire', $this->User->find(
@@ -139,7 +139,7 @@
 
 		public function corbeille( $id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $id ) ) );
-			
+
 			$hasFichierLie = $this->Foyer->find(
 				'first',
 				array(
@@ -153,8 +153,8 @@
 				)
 			);
 			$this->set( compact( 'hasFichierLie' ) );
-			
-			
+
+
 			// Validation du formulaire de la corbeille
 			if( !empty( $this->request->data ) ) {
 				if( isset( $this->request->data['Foyer'] ) ) {
@@ -171,7 +171,7 @@
 						foreach( $datas as $key => $data ) {
 							$fk_value = suffix( $data['Foyer']['traitementpcg66_id'] );
 							if( preg_match( '/^[0-9]+$/', $fk_value ) ) {
-								$saved = $this->Foyer->Fichiermodule->updateAll(
+								$saved = $this->Foyer->Fichiermodule->updateAllUnBound(
 									array(
 										'Fichiermodule.fk_value' => $fk_value,
 										'Fichiermodule.modele' => "'Traitementpcg66'"
@@ -181,8 +181,8 @@
 										'Fichiermodule.modele' => 'Foyer'
 									)
 								) && $saved;
-								
-								$saved = $this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAll(
+
+								$saved = $this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound(
 									array(
 										'Traitementpcg66.haspiecejointe' => "'1'"
 									),
@@ -216,7 +216,7 @@
 					}
 				}
 			}
-			
+
 			$listeCourriers = $this->Foyer->Fichiermodule->find(
 				'all',
 				array(
@@ -246,9 +246,9 @@
 					'contain' => false
 				)
 			);
-			
+
 			$personnespcgs66 = ClassRegistry::init( 'Personnepcg66' )->find(
-				'all', 
+				'all',
 				array(
 					'fields' => array(
 						'Personnepcg66.id',
@@ -268,7 +268,7 @@
 				'Traitementpcg66' => array( 'id' => array() ),
 				'actions' => array( 'Valider' => 'Valider', 'En attente' => 'En attente' )
 			);
-				
+
 			$dossierspcgs66 = array();
 			$traitementspcgs66 = array();
 			if( !empty( $listDossierspcgs66 ) ) {
@@ -296,7 +296,7 @@
 						$options['Dossierpcg66']['id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.date_short( $dossierpcg66['Dossierpcg66']['datereceptionpdo'] ).')'.' géré par '.$dossierpcg66['User']['nom_complet'];
 					}
 				}
-				
+
 				$conditions = array(
 					'Traitementpcg66.personnepcg66_id' => $listPersonnespcgs66,
 					'Traitementpcg66.clos' => 'N'
@@ -305,7 +305,7 @@
 				if( !empty( $corbeillepcgDescriptionId ) ) {
 					$conditions['Traitementpcg66.descriptionpdo_id'] = $corbeillepcgDescriptionId;
 				}
-				
+
 				$traitementspcgs66 = $this->Foyer->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
 					'all',
 					array(
@@ -337,7 +337,7 @@
 					}
 				}
 			}
-			
+
 			$this->_setOptions();
 
 			$this->set( 'options', $options );

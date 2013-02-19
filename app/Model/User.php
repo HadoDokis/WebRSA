@@ -556,7 +556,8 @@
 						'conditions' => array(
 							"{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias][$this->primaryKey],
 							"{$this->alias}.password" => Security::hash( $value, null, true ),
-						)
+						),
+						'contain' => false
 					)
 				);
 				$result = ( $count == 1 ) && $result;
@@ -617,7 +618,7 @@
 		 */
 		public function changePassword( array $data ) {
 			$this->create( $data );
-			return $this->validates() && $this->updateAll(
+			return $this->validates() && $this->updateAllUnBound(
 				array( "{$this->alias}.password" => '\''.Security::hash( $data[$this->alias]['new_password'], null, true ).'\'' ),
 				array( "{$this->alias}.{$this->primaryKey}" => $data[$this->alias][$this->primaryKey] )
 			);

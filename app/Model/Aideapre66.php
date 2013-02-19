@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Aideapre66.
 	 *
@@ -335,7 +335,7 @@
 			$decisionapre = Set::classicExtract( $aideapre, 'Aideapre66.decisionapre');
 
 			if( !empty( $decisionapre ) ){
-				$this->Apre66->updateAll(
+				$this->Apre66->updateAllUnBound(
 					array(
 						'"etatdossierapre"' =>  '\'VAL\'' ,
 						'"isdecision"' =>  '\'O\'',

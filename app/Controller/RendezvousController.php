@@ -169,7 +169,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Rendezvous->begin();
 
-				$saved = $this->Rendezvous->updateAll(
+				$saved = $this->Rendezvous->updateAllUnBound(
 					array( 'Rendezvous.haspiecejointe' => '\''.$this->request->data['Rendezvous']['haspiecejointe'].'\'' ),
 					array(
 						'"Rendezvous"."personne_id"' => $personne_id,

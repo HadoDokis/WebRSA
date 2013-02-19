@@ -120,7 +120,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->PersonneReferent->begin();
 
-				$saved = $this->PersonneReferent->updateAll(
+				$saved = $this->PersonneReferent->updateAllUnBound(
 					array( 'PersonneReferent.haspiecejointe' => '\''.$this->request->data['PersonneReferent']['haspiecejointe'].'\'' ),
 					array(
 						'"PersonneReferent"."personne_id"' => $personne_id,

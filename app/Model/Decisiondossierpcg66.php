@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisiondossierpcg66.
 	 *
@@ -124,8 +124,8 @@
 				'with' => 'Decisiondossierpcg66Typersapcg66'
 			)
 		);
-        
-        
+
+
         public $hasMany = array(
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
@@ -592,7 +592,7 @@
 		*
 		*/
 		public function updateDossierpcg66Dateimpression( $ids ) {
-			return $this->Dossierpcg66->updateAll(
+			return $this->Dossierpcg66->updateAllUnBound(
 				array(
 					'Dossierpcg66.dateimpression' => "'".date( 'Y-m-d' )."'",
 					'Dossierpcg66.etatdossierpcg' => '\'atttransmisop\''

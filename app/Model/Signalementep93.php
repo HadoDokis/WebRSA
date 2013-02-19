@@ -227,7 +227,7 @@
 				}
 
 				$success = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, "/{$modeleDecisions}/passagecommissionep_id" ) )
 				);

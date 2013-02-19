@@ -188,14 +188,14 @@
 					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 					) && $success;
 				}
 
 				if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
-					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAll(
+					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
 						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
 						array(
 							'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
@@ -204,8 +204,7 @@
 					);
 				}
 
-
-				$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAll(
+				$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
 					array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
 					array(
 						'"PersonneReferent"."personne_id"' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
@@ -337,7 +336,7 @@
 				$passagescommissionseps_ids = Set::extract( $themeData, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' );
 
 				// Mise à jour de l'état du passage en commission EP
-				$success = $this->Dossierep->Passagecommissionep->updateAll(
+				$success = $this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => $passagescommissionseps_ids )
 				) && $success;
@@ -698,11 +697,11 @@
 				// Orientation liée au bilan de parcours
 				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->fields() );
 				$datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Orientstruct' );
-				
+
 				// Structure référente liée àl'orientation
 				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Structurereferente->fields() );
 				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Structurereferente' );
-				
+
 
 				/* TODO:
 					$this->alias => array(
@@ -738,7 +737,7 @@
 
 // 				$datas['querydata']['joins'][] = array_words_replace(
 // 					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->join( 'Permanence' ),
-// 					array( 
+// 					array(
 // 						'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
 // 						'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
 // 					)

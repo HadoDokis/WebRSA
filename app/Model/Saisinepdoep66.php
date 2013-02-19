@@ -300,7 +300,7 @@
 			else {
 				$success = $this->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->saveAll( $themeData, array( 'atomic' => false ) );
 
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionsaisinepdoep66/passagecommissionep_id' ) )
 				);
@@ -379,7 +379,7 @@
 		public function saveDecisionUnique( $data, $niveauDecision ) {
 			$success = $this->Dossierep->Passagecommissionep->Decisionsaisinepdoep66->save( $data, array( 'atomic' => false ) );
 
-			$this->Dossierep->Passagecommissionep->updateAll(
+			$this->Dossierep->Passagecommissionep->updateAllUnBound(
 				array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 				array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Saisinepdoep66/dossierep_id' ) )
 			);

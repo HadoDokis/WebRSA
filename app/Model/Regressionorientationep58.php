@@ -355,7 +355,7 @@
 // 				}
 
 				$success = $this->Dossierep->Passagecommissionep->{'Decision'.Inflector::underscore( $this->alias )}->saveAll( $themeData, array( 'atomic' => false ) ) && $success;
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' ) )
 				);
@@ -748,7 +748,7 @@
 					$success = $this->Structurereferente->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Structurereferente->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 					) && $success;

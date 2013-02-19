@@ -195,7 +195,7 @@
 							'controller' => 'cohortesnonorientes66',
 							'action'     => 'impressionsOrientation'
 						),
-						Hash::flatten( $this->request->data )
+						Hash::flatten( $this->request->data, '__' )
 					)
 				);
 			?></li>

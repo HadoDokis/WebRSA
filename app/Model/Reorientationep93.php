@@ -309,7 +309,7 @@
 					$success = $this->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAll(
+					$success = $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 					) && $success;
@@ -327,19 +327,19 @@
 					);
 
 					// Clôture anticipée du dernier CER
-					$this->Orientstruct->Personne->Contratinsertion->updateAll(
+					$this->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
 						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
 						array( 'Contratinsertion.id' => $dernierCerId['Contratinsertion']['id'] )
 					);
 
 					// TODO
-					/*$this->Orientstruct->Personne->Cui->updateAll(
+					/*	$this->Orientstruct->Personne->Cui->updateAllUnBound(
 						array( 'Cui.datefincontrat' => "'".date( 'Y-m-d' )."'" )
 // 						array( '"Cui"."datefincontrat" IS NULL' )
 					) ;*/
 
 					// Fin de désignation du référent de la personne
-					$this->Orientstruct->Personne->PersonneReferent->updateAll(
+					$this->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
 						array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
 						array(
 							'"PersonneReferent"."personne_id"' => $dossierep['Dossierep']['personne_id'],
@@ -440,7 +440,7 @@
 			}
 			else {
 				$success = $this->Dossierep->Passagecommissionep->Decisionreorientationep93->saveAll( $themeData, array( 'atomic' => false ) );
-				$this->Dossierep->Passagecommissionep->updateAll(
+				$this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => Set::extract( $data, '/Decisionreorientationep93/passagecommissionep_id' ) )
 				);

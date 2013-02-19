@@ -71,7 +71,7 @@
 			$sample = $this->Contratinsertion->find( 'first', array( 'conditions' => $conditions, 'contain' => false ) );
 			return (
 					empty( $sample )
-					|| $this->Contratinsertion->updateAll(
+					|| $this->Contratinsertion->updateAllUnBound(
 							$fields, $conditions
 					)
 					);

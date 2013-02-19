@@ -360,7 +360,7 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Contratinsertion->begin();
 
-				$saved = $this->Contratinsertion->updateAll(
+				$saved = $this->Contratinsertion->updateAllUnBound(
 					array( 'Contratinsertion.haspiecejointe' => '\''.$this->request->data['Contratinsertion']['haspiecejointe'].'\'' ),
 					array(
 						'"Contratinsertion"."personne_id"' => $personne_id,
@@ -493,7 +493,7 @@
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$this->Contratinsertion->Personne->id = $personne_id;
 					$agePersonne = $this->Contratinsertion->Personne->field( 'age' );
-                    // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs 
+                    // Blocage du bouton ajouter et affichage d'un message si le cumul des CERs
                     // dépasse 24 mois et que l'allocataire a moins de 55ans
                     if( $agePersonne < Configure::read( 'Tacitereconduction.limiteAge' ) ) {
 						if( $this->Contratinsertion->limiteCumulDureeCER( $personne_id ) > 24 ){
@@ -1569,7 +1569,7 @@
 				$this->Contratinsertion->begin();
 
 				$saved = $this->Contratinsertion->save( $this->request->data );
-				$saved = $this->{$this->modelClass}->updateAll(
+				$saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( 'Contratinsertion.positioncer' => '\'annule\'' ),
 					array(
 						'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
@@ -1723,7 +1723,7 @@
 				$this->Contratinsertion->begin();
 
 				$datenotification = $this->request->data['Contratinsertion']['datenotification'];
-				$saved = $this->Contratinsertion->updateAll(
+				$saved = $this->Contratinsertion->updateAllUnBound(
 						array( 'Contratinsertion.datenotification' => "'{$datenotification['year']}-{$datenotification['month']}-{$datenotification['day']}'" ), array(
 					'"Contratinsertion"."personne_id"' => $personne_id,
 					'"Contratinsertion"."id"' => $id
@@ -1734,7 +1734,7 @@
 					$this->request->data['Contratinsertion']['decision_ci'] = $contratinsertion['Contratinsertion']['decision_ci'];
 					$this->request->data['Contratinsertion']['positioncer'] = $this->Contratinsertion->calculPosition( $this->request->data );
 
-					$saved = $this->Contratinsertion->updateAll(
+					$saved = $this->Contratinsertion->updateAllUnBound(
 						array( 'Contratinsertion.positioncer' => "'".$this->request->data['Contratinsertion']['positioncer']."'" ),
 						array(
 							'"Contratinsertion"."personne_id"' => $personne_id,

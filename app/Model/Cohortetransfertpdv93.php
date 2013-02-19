@@ -417,7 +417,7 @@
 			$datedfdesignation = ( is_array( date( 'Y-m-d' ) ) ? date_cakephp_to_sql( date( 'Y-m-d' ) ) : date( 'Y-m-d' ) );
 
 			if( $count > 0 ) {
-				$success = $Orientstruct->Personne->PersonneReferent->updateAll(
+				$success = $Orientstruct->Personne->PersonneReferent->updateAllUnBound(
 					array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
 					array(
 						'"PersonneReferent"."personne_id"' => $data['Transfertpdv93']['personne_id'],

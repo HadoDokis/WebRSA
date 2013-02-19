@@ -203,7 +203,7 @@
 				$passagescommissionseps_ids = Set::extract( $themeData, '/Decision'.Inflector::underscore( $this->alias ).'/passagecommissionep_id' );
 
 				// Mise à jour de l'état du passage en commission EP
-				$success = $this->Dossierep->Passagecommissionep->updateAll(
+				$success = $this->Dossierep->Passagecommissionep->updateAllUnBound(
 					array( 'Passagecommissionep.etatdossierep' => '\'decision'.$niveauDecision.'\'' ),
 					array( '"Passagecommissionep"."id"' => $passagescommissionseps_ids )
 				) && $success;
@@ -219,9 +219,9 @@
 // 				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
 // 				if( $niveauAvis == 'ep' ){
 // 					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
-// 
+//
 // 					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
-// 
+//
 // 					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
 // 						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
 // 					}
@@ -510,7 +510,7 @@
 						$formData['Decisiondefautinsertionep66'][$key]['typeorient_id'] = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'];
 						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
-						
+
 						if( !in_array( $formData['Decisiondefautinsertionep66'][$key]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
 							$formData['Decisiondefautinsertionep66'][$key]['field_type'] = 'hidden';
 						}
@@ -655,7 +655,7 @@
 						$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-						$success = $this->updateAll(
+						$success = $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						) && $success;
@@ -1042,7 +1042,7 @@
 					)
 				)
 			);
-			
+
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
 				array(
@@ -1058,7 +1058,7 @@
 				),
 				$this->enums()
 			);
-			
+
 			$user = $this->Bilanparcours66->User->find(
 				'first',
 				array(
@@ -1146,7 +1146,7 @@
 			}
 
 			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
-			
+
 			$datas['querydata']['joins'] = array_merge(
 				$datas['querydata']['joins'],
 				array(
@@ -1318,7 +1318,7 @@
 			$conditions = array();
 
 			$date_impression = Set::extract( $params, 'Defautinsertionep66.isimprime' );
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
