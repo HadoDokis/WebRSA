@@ -49,7 +49,7 @@
 						<th>Forme du CER</th>
 						<th>Commentaire du Responsable</th>
 						<th>Date de transfert au CG</th>
-						
+
 						<th>Validation CG (1ère lecture)</th>
 						<th>Validation CS</th>
 						<th>Validation Cadre</th>
@@ -122,6 +122,20 @@
 					$validationcpdv = '';
 				}
 
+				// TODO: on a le même genre de choses dans d'autres vues (secondelecture.ctp)
+				$etape03 = Hash::extract( $cer93, 'Histochoixcer93etape03' );
+				$commentairesEtape03 = '';
+				if( isset( $etape03['id'] ) && isset( $etape03['Commentairenormecer93'] ) && !empty( $etape03['Commentairenormecer93'] ) ) {
+					foreach( $etape03['Commentairenormecer93'] as $key => $commentairenorme ) {
+						$commentaire = $commentairenorme['name'];
+						if( $commentairenorme['isautre'] ) {
+							$commentaire = "{$commentaire}: {$etape03['Commentairenormecer93Histochoixcer93'][$key]['commentaireautre']}";
+						}
+						$commentairesEtape03 .= "<li>{$commentaire}</li>";
+					}
+					$commentairesEtape03 = "<ul>{$commentairesEtape03}</ul>";
+				}
+
 				echo $this->Html->tableCells(
 					array(
 						$cer93['Adresse']['locaadr'],
@@ -132,7 +146,8 @@
 						Set::enum( $cer93['Cer93']['positioncer_avantcg'], $options['Cer93']['positioncer'] ), //Saisie du CER
 						Set::enum( $cer93['Cer93']['validationcpdv'], $options['Cer93']['positioncer'] ), //Validation CPDV
 						Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
-						$cer93['Histochoixcer93etape03']['commentaire'],
+//						$cer93['Histochoixcer93etape03']['commentaire'],
+						$commentairesEtape03,
 						date_short( $cer93['Histochoixcer93etape03']['datechoix'] ),
 						Set::enum( $cer93['Histochoixcer93etape04']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
 						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),

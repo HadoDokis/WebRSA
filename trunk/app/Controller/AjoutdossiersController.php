@@ -416,7 +416,7 @@
 
 				// Fin de la transaction
 				if( $saved ) {
-					$this->Dossier->commit(); //FIXME
+					$this->Dossier->commit();
 // 					if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' )
 					$this->Wizard->resetWizard();
 					$this->redirect( array( 'controller' => 'dossiers', 'action' => 'view', $this->Dossier->id ) );
@@ -424,7 +424,7 @@
 				// Annulation de la transaction
 				else {
 					$this->Dossier->rollback();
-					$this->cakeError( 'error500' ); // FIXME
+					$this->cakeError( 'error500' );
 				}
 			}
 		}

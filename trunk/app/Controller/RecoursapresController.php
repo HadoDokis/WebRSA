@@ -126,7 +126,7 @@
 					break;
 			}
 
-			$this->Dossier->commit(); //FIXME
+			$this->Dossier->commit();
 		}
 
 		/**

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ComitesapresController.
 	 *
@@ -194,7 +194,7 @@
 					$saved = $this->Comiteapre->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
 
 					if( $saved ) {
-						$this->Comiteapre->commit(); // FIXME
+						$this->Comiteapre->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
 						if( !$isRapport ) {
@@ -220,6 +220,9 @@
 			$this->render( 'add_edit' );
 		}
 
+		/**
+		 * 
+		 */
 		public function exportcsv() {
 			$querydata = $this->Comiteapre->search( 'Comiteapre::index', Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
