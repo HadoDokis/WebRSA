@@ -422,7 +422,6 @@
 					$this->request->data = $personnepcg66;
 				}
 			}
-			$this->Personnepcg66->rollback(); //FIXME
 
 			$this->_setOptions();
 
