@@ -113,3 +113,6 @@ msgstr "Forme du contrat"
 
 msgid "Histochoixcer93.user_id"
 msgstr "Émise et rédigée par"
+
+msgid "Histochoixcer93.observationdecision"
+msgstr "Observation sur la décision"

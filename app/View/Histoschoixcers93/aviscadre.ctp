@@ -36,6 +36,7 @@
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 					)
 				);
+				echo $this->Xform->input( 'Histochoixcer93.observationdecision', array( 'type' => 'textarea' ) );
 			?>
 
 			<?php
@@ -123,6 +124,18 @@
 			}
 		);
 	<?php endif;?>
+	
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsOnValue(
+			'Histochoixcer93Decisioncadre',
+			[
+				'Histochoixcer93Observationdecision'
+			],
+			[ 'valide', 'rejete' ],
+			false,
+			true
+		);
+	});
 
 	makeTabbed( 'tabbedWrapper', 2 );
 </script>
