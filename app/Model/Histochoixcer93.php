@@ -199,7 +199,9 @@
 		 * FIXME: plus les états finaux pour Chargé de suivi et avis cadre
 		 */
 		public function saveDecision( $data ) {
-// 			$success = $this->save( $data );
+			if( isset( $data['Commentairenormecer93']['Commentairenormecer93'] ) ) {
+				$data['Commentairenormecer93']['Commentairenormecer93'] = array_values( (array) $data['Commentairenormecer93']['Commentairenormecer93'] );
+			}
 
 			$success = $this->saveResultAsBool( $this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) ) );
 

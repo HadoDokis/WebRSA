@@ -328,7 +328,7 @@
 				}
 			}
 
-			$tmp = $data['Sujetcer93']['Sujetcer93'];
+			$tmp = (array)$data['Sujetcer93']['Sujetcer93'];
 			unset( $data['Sujetcer93'] );
 
 			foreach( $tmp as $k => $v ) {
@@ -1328,8 +1328,7 @@
 				),
 				$this->enums()
 			);
-// debug($data);
-// die();
+
 			return $this->ged( $data, $modeleodt, true, $options );
 		}
 

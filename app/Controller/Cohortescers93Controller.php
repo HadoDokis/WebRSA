@@ -160,9 +160,8 @@
 
 					foreach( $cers93 as $index => $cer93 ) {
 						$requestData['Histochoixcer93'][$index]['formeci'] = $cer93['Histochoixcer93']['formeci'];
-						if( isset( $cer93['Commentairenormecer93Histochoixcer93'] ) && !empty( $cer93['Commentairenormecer93Histochoixcer93'] ) ) {
-							foreach( $cer93['Commentairenormecer93Histochoixcer93'] as $commentaire ) {
-
+						if( isset( $cer93['Histochoixcer93']['Commentairenormecer93Histochoixcer93'] ) && !empty( $cer93['Histochoixcer93']['Commentairenormecer93Histochoixcer93'] ) ) {
+							foreach( $cer93['Histochoixcer93']['Commentairenormecer93Histochoixcer93'] as $commentaire ) {
 								$j = ( $index * $nbCommentairesnormescers93 ) + array_search( $commentaire['commentairenormecer93_id'], $commentairesnormescers93_indexes_ids );
 								$requestData['Commentairenormecer93']['Commentairenormecer93'][$j] = array(
 									'commentairenormecer93_id' => $commentaire['commentairenormecer93_id'],
@@ -193,6 +192,11 @@
 				}
 
 				$this->Contratinsertion->begin();
+					foreach( $formData as $key => $value ) {
+						if( isset( $value['Commentairenormecer93']['Commentairenormecer93'] ) ) {
+							$formData[$key]['Commentairenormecer93']['Commentairenormecer93'] = array_values($value['Commentairenormecer93']['Commentairenormecer93']);
+						}
+					}
 
 				if( $this->action == 'saisie' ) {
 					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
@@ -340,7 +344,7 @@
 		 * @param string $histochoixcer93key
 		 * @return array
 		 */
-		protected function _addCommentairenormecer93( $results, $histochoixcer93key ) {
+		/*protected function _addCommentairenormecer93( $results, $histochoixcer93key ) {
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
 					if( !empty( $result[$histochoixcer93key]['id'] ) ) {
@@ -386,9 +390,9 @@
 								'contain' => array(
 									'Commentairenormecer93',
 									'Histochoixcer93' => array(
-										/*'fields' => array(
-											'Histochoixcer93.user_id'
-										),*/
+//										'fields' => array(
+//											'Histochoixcer93.user_id'
+//										),
 										'User'
 									)
 								),
@@ -406,6 +410,95 @@
 
 						$results[$i]['Commentairenormecer93'] = Hash::extract( $commentaires, '{n}.Commentairenormecer93' );
 						$results[$i]['Commentairenormecer93Histochoixcer93'] = Hash::extract( $commentaires, '{n}.Commentairenormecer93Histochoixcer93' );
+					}
+				}
+			}
+
+			return $results;
+		}*/
+
+		/**
+		 *
+		 * TODO: dans le modèle ?
+		 *
+		 * @param array $results
+		 * @param string $histochoixcer93key
+		 * @return array
+		 */
+		protected function _addCommentairenormecer93( $results ) {
+			if( !empty( $results ) ) {
+				foreach( $results as $i => $result ) {
+					foreach( array( '', 'etape02', 'etape03' ) as $etape ) {
+						$histochoixcer93key = "Histochoixcer93{$etape}";
+
+						if( !empty( $result[$histochoixcer93key]['id'] ) ) {
+							$conditions = array(
+								'Commentairenormecer93Histochoixcer93.histochoixcer93_id' => $result[$histochoixcer93key]['id']
+							);
+
+							$etape = (int)preg_replace( '/^([0-9]+).*$/', '\1', $result[$histochoixcer93key]['etape'] );
+							if( $etape > 3 ) {
+								$conditions = array(
+									'OR' => array(
+										$conditions,
+										array(
+											'Commentairenormecer93Histochoixcer93.histochoixcer93_id IN ('.$this->Contratinsertion->Cer93->Histochoixcer93->sq(
+												array_words_replace(
+													array(
+														'fields' => array(
+															'Histochoixcer93.id'
+														),
+														'alias' => 'histoschoixcers93',
+														'conditions' => array(
+															'Histochoixcer93.cer93_id' => $result['Histochoixcer93']['cer93_id'],
+															'Histochoixcer93.etape' => '03attdecisioncg'
+														),
+														'order' => array( 'Histochoixcer93.created DESC' ),
+														'limit' => 1
+													),
+													array(
+														'Cer93' => 'cers93',
+														'Histochoixcer93' => 'histoschoixcers93',
+													)
+												)
+											).')'
+										)
+									)
+								);
+							}
+
+							$commentaires = $this->Contratinsertion->Cer93->Histochoixcer93->Commentairenormecer93Histochoixcer93->find(
+								'all',
+								array(
+									'conditions' => $conditions,
+									'contain' => array(
+										'Commentairenormecer93',
+										'Histochoixcer93' => array(
+											'User'
+										)
+									),
+									'order' => array( 'Commentairenormecer93.isautre ASC', 'Commentairenormecer93.name ASC' )
+								)
+							);
+
+							$usersIds = array_unique( Hash::extract( $commentaires, '{n}.Histochoixcer93.user_id' ) );
+							$user_id = ( !empty( $usersIds ) ? $usersIds[0] : null );
+							$user = array( 'User' => array() );
+							if( !empty( $user_id ) ) {
+								$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) );
+							}
+
+							$ajout = array(
+								'User' => $user['User'],
+								'Commentairenormecer93' => Hash::extract( $commentaires, '{n}.Commentairenormecer93' ),
+								'Commentairenormecer93Histochoixcer93' => Hash::extract( $commentaires, '{n}.Commentairenormecer93Histochoixcer93' )
+							);
+
+							$results[$i][$histochoixcer93key] = Hash::merge(
+								$results[$i][$histochoixcer93key],
+								$ajout
+							);
+						}
 					}
 				}
 			}
@@ -492,7 +585,15 @@
 					$datas = array();
 					foreach( $this->request->data['Histochoixcer93'] as $i => $tmp ) {
 						if( $tmp['action'] === 'Activer' ) {
-							$datas[$i] = array( 'Histochoixcer93' => $tmp );
+							$item = array(
+								'Histochoixcer93' => $tmp
+							);
+
+							if( isset( $this->request->data['Commentairenormecer93'][$i] ) ) {
+								$item['Commentairenormecer93'] = $this->request->data['Commentairenormecer93'][$i];
+							}
+
+							$datas[$i] = $item;
 						}
 					}
 

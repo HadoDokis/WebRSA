@@ -286,9 +286,11 @@
 				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
 				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				// Début FIXME: SSI l'utilisateur est CG
 				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::secondelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::aviscadre' => '!( in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				// Fin FIXME: SSI l'utilisateur est CG
 				'Signalementseps::add' => '!( (
 					// Contrat validé
 					\'#Contratinsertion.decision_ci#\' == \'V\'
@@ -368,7 +370,7 @@
 				$this->Cer93->Contratinsertion->begin();
 
 				if( $this->Cer93->saveFormulaire( $this->request->data, $this->Session->read( 'Auth.User.type' ) ) ) {
-					$this->Cer93->Contratinsertion->commit(); //FIXME
+					$this->Cer93->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
