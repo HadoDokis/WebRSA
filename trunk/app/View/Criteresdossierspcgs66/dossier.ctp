@@ -72,7 +72,7 @@
 		
 		echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
 		
-		echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille vide ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+		echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 
 </fieldset>

@@ -82,7 +82,7 @@
 				'options' => $options
 			)
 		);
-		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille vide ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
 	<div class="submit noprint">
