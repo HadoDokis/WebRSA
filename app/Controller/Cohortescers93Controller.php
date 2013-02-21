@@ -923,7 +923,7 @@
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->Session->read( 'Auth.User.id' ),
-				Hash::expand( $this->request->params['named'] ),
+				Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' ),
 				$page
 			);
 

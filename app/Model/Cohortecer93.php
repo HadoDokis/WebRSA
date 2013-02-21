@@ -457,11 +457,10 @@
 		 * @return string
 		 */
 		public function getDefaultCohortePdf( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, $page ) {
-
-			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, null );
+			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $search );
 
 			$querydata['limit'] = 100;
-			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
+			$querydata['offset'] = ( ( (int)$page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
 			$querydata['conditions'][] = array( 'Histochoixcer93.user_id' => $user_id );
 
 			$Personne = ClassRegistry::init( 'Personne' );
