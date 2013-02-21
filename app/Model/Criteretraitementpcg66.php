@@ -141,10 +141,10 @@
 			
 			if( isset( $params['Dossierpcg66']['exists'] ) && ( $params['Dossierpcg66']['exists'] != '' ) ) {
 				if( $params['Dossierpcg66']['exists'] ) {
-					$conditions[] = "{$sqNbFichierDansCorbeille} = 0";
+					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
 				}
 				else {
-					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
+					$conditions[] = "{$sqNbFichierDansCorbeille} = 0";
 				}
 			}
 
