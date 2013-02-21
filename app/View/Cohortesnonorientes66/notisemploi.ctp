@@ -130,6 +130,7 @@
         <thead>
             <tr>
                 <th>N° Dossier</th>
+                <th>N° CAF</th>
                 <th>Date de demande</th>
                 <th>Allocataire principal</th>
                 <th>Etat du droit</th>
@@ -151,6 +152,7 @@
 // debug( $cantons );
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
+						h( $cohortenonoriente66['Dossier']['matricule'] ),
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
