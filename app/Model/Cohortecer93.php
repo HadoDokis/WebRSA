@@ -457,7 +457,7 @@
 		 * @return string
 		 */
 		public function getDefaultCohortePdf( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, $page ) {
-			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $search );
+			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $search, null );
 
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( (int)$page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
