@@ -2,7 +2,7 @@
 <fieldset>
     <legend>Service référent désigné par le Département</legend>
     <table class="wide noborder cers93">
-    
+
         <tr>
 			<td class="wide noborder">
 				<table class="wide noborder">
@@ -166,7 +166,7 @@
 									array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 									array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
 								);
-								
+
 							}
 						}
 					?>
@@ -221,7 +221,7 @@
 			echo $this->Xform->fieldValue( 'Cer93.metierexerce_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.metierexerce_id'), $options['Expprocer93']['metierexerce_id'] ) );
 			echo $this->Xform->fieldValue( 'Cer93.dureehebdo', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.dureehebdo'), $options['dureehebdo'] ) );
 			echo $this->Xform->fieldValue( 'Cer93.naturecontrat_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.naturecontrat_id'), $options['Naturecontrat']['naturecontrat_id'] ) );
-			
+
 			if( !empty( $contratinsertion['Cer93']['dureecdd'] ) ) {
 				echo $this->Xform->fieldValue( 'Cer93.dureecdd', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.dureecdd'), $options['dureecdd'] ) );
 			}
@@ -249,8 +249,8 @@
 						echo $this->Html->tableCells(
 							array(
 								h( $sujetcer93['name'] ),
-								h( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'] ),
-								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] )
+								h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ) ),
+								h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' ) )
 							),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -288,8 +288,8 @@
 							echo $this->Html->tableCells(
 								array(
 									h( $sujetcer93['name'] ),
-									h( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'] ),
-									h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] )
+									h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ) ),
+									h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' ) )
 								),
 								array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 								array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
