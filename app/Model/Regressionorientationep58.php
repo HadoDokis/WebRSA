@@ -257,9 +257,11 @@
 			foreach( $datas as $key => $dossierep ) {
 // debug( $dossierep );
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+				
+				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['etape'] == $niveauDecision && !empty( $dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['decision'] ) ) {
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key] = @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0];
 
 					$formData['Decision'.Inflector::underscore( $this->alias )][$key]['referent_id'] = implode(

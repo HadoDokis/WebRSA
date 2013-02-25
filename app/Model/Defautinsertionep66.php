@@ -493,9 +493,11 @@
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decisiondefautinsertionep66'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+				
+				$formData['Decisiondefautinsertionep66'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision  && !empty( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
 					$formData['Decisiondefautinsertionep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'], $formData['Decisiondefautinsertionep66'][$key]['referent_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['typeorient_id'], $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] ) );
