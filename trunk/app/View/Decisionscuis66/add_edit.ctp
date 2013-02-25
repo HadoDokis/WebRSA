@@ -8,7 +8,7 @@
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
-	echo $this->Form->create( 'Decisioncui66',array( 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Decisioncui66',array() );
 ?>
 
 <fieldset><legend>Avis techniques</legend>

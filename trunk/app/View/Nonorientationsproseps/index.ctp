@@ -24,7 +24,7 @@
 	}
 ?>
 
-<?php echo $this->Form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Filtre', array( 'id' => 'Filtre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
 		<?php
 			echo $this->Xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
@@ -66,7 +66,7 @@
 	<?php if( empty( $cohorte ) ):?>
 		<p class="notice"><?php echo 'Aucun allocataire ne correspond à vos critères de recherche.';?>
 	<?php else: ?>
-		<?php /*echo $this->Form->create( 'Nonorientationproep', array( 'url'=> Router::url( null, true ) ) );*/
+		<?php /*echo $this->Form->create( 'Nonorientationproep', array() );*/
 		echo $this->Form->create();?>
 		<?php echo $pagination;?>
 		<table class="tooltips">

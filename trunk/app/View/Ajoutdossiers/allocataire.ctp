@@ -4,7 +4,7 @@
 	}
 ?>
 <?php $this->pageTitle = __d( 'ajoutdossier', "Ajoutdossiers::{$this->action}" );?>
-<?php echo $this->Form->create( 'Ajoutdossiers', array( 'id' => 'SignupForm', 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Ajoutdossiers', array( 'id' => 'SignupForm' ) );?>
 	<h1>Insertion d'une nouvelle demande de RSA</h1>
 	<h2>Étape 1: demandeur RSA</h2>
 

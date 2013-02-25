@@ -14,7 +14,7 @@
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
-		echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform' ) );
 
 		function result( $data, $path, $type, $options = array() ) {
 			$result = Set::classicExtract( $data, $path );

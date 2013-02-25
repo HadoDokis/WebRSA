@@ -15,10 +15,10 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Ressource', array( 'type' => 'post', 'url' => Router::url( null, true )  ));
+		echo $this->Form->create( 'Ressource', array( 'type' => 'post'  ));
 	}
 	else {
-		echo $this->Form->create( 'Ressource', array( 'type' => 'post', 'url' => Router::url( null, true )  ));
+		echo $this->Form->create( 'Ressource', array( 'type' => 'post'  ));
 		echo '<div>';
 		echo $this->Form->input( 'Ressource.id', array( 'type' => 'hidden' ) );
 		echo '</div>';

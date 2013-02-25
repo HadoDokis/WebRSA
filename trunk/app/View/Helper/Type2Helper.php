@@ -18,7 +18,7 @@
 	 */
 	function dataUrl( $data, $params ) {
 		if( !is_string( $params['url'] ) ) {
-			$params['url'] = Router::url( $params['url'], true ); /// TODO ?
+			$params['url'] = Router::url( $params['url'] );
 		}
 		return dataTranslate( $data, $params['url'] );
 	}

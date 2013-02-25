@@ -34,10 +34,10 @@
 
 	<?php
 		if( $this->action == 'add' ) {
-			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post', 'url' => Router::url( null, true ),  'id' => 'Bilan' ) );
+			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post',  'id' => 'Bilan' ) );
 		}
 		else {
-			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Bilan' ) );
+			echo $this->Form->create( 'Bilanparcours66', array( 'type' => 'post', 'id' => 'Bilan' ) );
 			echo '<div>';
 			echo $this->Form->input( 'Bilanparcours66.id', array( 'type' => 'hidden' ) );
 			echo $this->Form->input( 'Pe.Bilanparcours66.id', array( 'type' => 'hidden' ) );

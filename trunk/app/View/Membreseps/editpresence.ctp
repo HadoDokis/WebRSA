@@ -25,7 +25,7 @@
 	}
 ?>
 
-<?php echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editpresence/'.$seance_id ) ); ?>
+<?php echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'url' => array( 'controller' => 'membreseps', 'action' => 'editpresence', $seance_id ) ) ); ?>
 	<div class="aere">
 		<fieldset>
 			<legend>Liste des participants</legend>

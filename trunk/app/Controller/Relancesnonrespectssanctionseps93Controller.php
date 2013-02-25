@@ -247,7 +247,7 @@
 							// On libère les jetons
 							$this->Cohortes->release( $dossiersIds );
 
-							$url = Router::url( Set::merge( array( 'action' => $this->action ), Hash::flatten( $this->request->data ) ), true );
+							$url = Set::merge( array( 'action' => $this->action ), Hash::flatten( $this->request->data ) );
 							$this->redirect( $url );
 						}
 						else {
@@ -680,7 +680,7 @@
 
 			if( $nErrors > 0 ) {
 				$this->Session->setFlash( "Erreur lors de l'impression en cohorte: {$nErrors} documents n'ont pas pu être imprimés. Abandon de l'impression de la cohorte. Demandez à votre administrateur d'exécuter cake/console/cake generationpdfs relancenonrespectsanctionep93", 'flash/error' );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 
 			$ids = Set::extract( '/Relancenonrespectsanctionep93/id', $contents );
@@ -703,7 +703,7 @@
 			else {
 				$this->Relancenonrespectsanctionep93->rollback();
 				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

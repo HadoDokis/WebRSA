@@ -15,7 +15,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
 
@@ -24,7 +24,7 @@
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
@@ -49,7 +49,7 @@ document.observe("dom:loaded", function() {
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'ContratinsertionPartenaire',
-				'url' => Router::url( array( 'action' => 'ajaxaction', Set::extract( $this->request->data, 'Contratinsertion.actioncandidat_id' ) ), true )
+				'url' => array( 'action' => 'ajaxaction', Set::extract( $this->request->data, 'Contratinsertion.actioncandidat_id' ) )
 			)
 		);
 	?>;
@@ -161,24 +161,18 @@ document.observe( "dom:loaded", function() {
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'StructurereferenteRef',
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxstruct',
-						Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
-					),
-					true
+				'url' => array(
+					'action' => 'ajaxstruct',
+					Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
 				)
 			)
 		).';';
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'ReferentRef',
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxref',
-						Set::extract( $this->request->data, 'Contratinsertion.referent_id' )
-					),
-					true
+				'url' => array(
+					'action' => 'ajaxref',
+					Set::extract( $this->request->data, 'Contratinsertion.referent_id' )
 				)
 			)
 		).';';
@@ -509,11 +503,11 @@ document.observe("dom:loaded", function() {
 	<tr>
 		<td class="noborder">
 			<?php echo $this->Xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => 'Nom de l\'organisme de suivi', 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true, 'required' => true ) );?>
-			<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+			<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
 		</td>
 		<td class="noborder">
 			<?php echo $this->Xform->input( 'Contratinsertion.referent_id', array('label' => 'Nom du référent chargé du suivi :', 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
-			<?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+			<?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
 		</td>
 	</tr>
 	<tr>
@@ -568,7 +562,7 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 				<legend><strong>Positionnement éventuel sur l'action d'insertion</strong></legend>
 				<?php
 					echo $this->Form->input( 'Contratinsertion.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );
-					echo $this->Ajax->observeField( 'ContratinsertionActioncandidatId', array( 'update' => 'ContratinsertionPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
+					echo $this->Ajax->observeField( 'ContratinsertionActioncandidatId', array( 'update' => 'ContratinsertionPartenaire', 'url' => array( 'action' => 'ajaxaction' ) ) );
 					echo $this->Xhtml->tag(
 						'div',
 						' ',
@@ -668,7 +662,7 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 					'div',
 					$this->Xhtml->tag( 'span', ( isset( $ReferentNom ) ? $ReferentNom : ' ' ), array( 'id' => 'ReferentNom' ) )
 				);
-				echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) );
+				echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentNom', 'url' => array( 'action' => 'ajaxref' ) ) );
 			?>
 		</td>
 	</tr>

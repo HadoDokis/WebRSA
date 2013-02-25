@@ -15,7 +15,7 @@
 
 	<h1><?php echo $this->pageTitle;?></h1>
 <?php
-	echo $this->Xform->create( 'PersonneReferent', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Xform->create( 'PersonneReferent', array( 'type' => 'post' ) );
 
 	if( $this->action == 'edit' ) {
 		echo '<div>'.$this->Xform->input( 'PersonneReferent.id', array( 'type' => 'hidden' ) ).'</div>';

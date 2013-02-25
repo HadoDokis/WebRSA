@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages des Equipes Pluridisciplinaires';?>
 <h1>Paramétrage des EPs</h1>
 
-<?php echo $this->Form->create( 'NouvellesEPs', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'NouvellesEPs', array() );?>
 	<table >
 		<thead>
 			<tr>

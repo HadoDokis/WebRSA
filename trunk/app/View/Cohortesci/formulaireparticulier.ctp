@@ -19,7 +19,7 @@
 	<h2 class="noprint">Résultats de la recherche</h2>
 <?php echo $pagination;?>
 	<?php if( is_array( $cohorteci ) && count( $cohorteci ) > 0 ):?>
-		<?php echo $this->Form->create( 'GestionContrat', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Form->create( 'GestionContrat', array() );?>
 		<?php
 			echo '<div>';
 			echo $this->Form->input( 'Filtre.date_saisi_ci', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCi2' ) );

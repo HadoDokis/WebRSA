@@ -1,5 +1,5 @@
 <?php $this->pageTitle = 'Paramétrage des participants au Comité de l\'APRE';?>
-<?php echo $this->Form->create( 'Paramsparticipants', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Paramsparticipants', array() );?>
 <div>
 	<h1><?php echo 'Visualisation de la table participant au comité APRE ';?></h1>
 

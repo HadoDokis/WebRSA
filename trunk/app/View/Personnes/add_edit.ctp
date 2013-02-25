@@ -25,10 +25,10 @@
 <h1><?php echo $this->pageTitle;?></h1>
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Personne', array( 'type' => 'post', 'url' => Router::url( null, true ) ));
+		echo $this->Form->create( 'Personne', array( 'type' => 'post' ));
 	}
 	else {
-		echo $this->Form->create( 'Personne', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Personne', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Personne.id', array( 'type' => 'hidden' ) );
 		echo $this->Form->input( 'Prestation.id', array( 'type' => 'hidden', 'div' => 'div' ) );

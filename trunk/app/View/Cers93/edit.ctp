@@ -19,26 +19,20 @@
             echo $this->Ajax->remoteFunction(
                 array(
                     'update' => 'StructurereferenteRef',
-                    'url' => Router::url(
-                        array(
-							'controller' => $this->request->params['controller'],
-                            'action' => 'ajaxstruct',
-                        ),
-                        true
-                    ),
+                    'url' => array(
+						'controller' => $this->request->params['controller'],
+						'action' => 'ajaxstruct',
+					),
 					'with' => 'Form.Element.serialize( \'ContratinsertionStructurereferenteId\' )'
                 )
             ).';';
             echo $this->Ajax->remoteFunction(
                 array(
                     'update' => 'ReferentRef',
-                    'url' => Router::url(
-                        array(
-							'controller' => $this->request->params['controller'],
-                            'action' => 'ajaxref',
-                        ),
-                        true
-                    ),
+                    'url' => array(
+						'controller' => $this->request->params['controller'],
+						'action' => 'ajaxref',
+					),
 					'with' => 'Form.Element.serialize( \'ContratinsertionReferentId\' )'
                 )
             ).';';
@@ -78,11 +72,11 @@
         <tr>
             <td class="noborder">
                 <?php echo $this->Xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.structurereferente_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['structurereferente_id'], /*'selected' => $struct_id,*/ 'empty' => true, 'required' => true ) );?>
-                <?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+                <?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
             </td>
             <td class="noborder">
                 <?php echo $this->Xform->input( 'Contratinsertion.referent_id', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.referent_id' ), 'type' => 'select', 'options' => $options['Contratinsertion']['referent_id'], 'empty' => true, 'selected' => ( isset( $this->request->data['Contratinsertion']['structurereferente_id'] ) && isset( $this->request->data['Contratinsertion']['referent_id'] ) ) ? ( $this->request->data['Contratinsertion']['structurereferente_id'].'_'.suffix( $this->request->data['Contratinsertion']['referent_id'] ) ) : null ) );?>
-                <?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+                <?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
             </td>
         </tr>
         <tr>
@@ -444,7 +438,7 @@
 								$commentairevaleurparsoussujet = $sujetcer93['Cer93Sujetcer93']['autrevaleur'];
 							}
 						}
-						
+
 						echo $this->Html->tableCells(
 							array(
 								h( $sujetcer93['name'] ),
@@ -485,15 +479,15 @@
 		$validationErrorSujetcer93Sujetcer93 = ( isset( $this->validationErrors['Sujetcer93']['Sujetcer93'] ) && !empty( $this->validationErrors['Sujetcer93']['Sujetcer93'] ) );
 		?>
 		<div class="input checkboxes<?php if( $validationErrorSujetcer93Sujetcer93 ) { echo ' error'; }?>">
-		<?php 
+		<?php
 		echo '<fieldset><legend>';
 			echo required( $this->Default2->label( 'Sujetcer93.Sujetcer93', array( 'domain' => 'cer93' ) ) );
 		echo '</legend>';
-		
+
 		if( $validationErrorSujetcer93Sujetcer93 ) {
 			echo "<div class='error-message'>".$this->validationErrors['Sujetcer93']['Sujetcer93'][0]."</div>";
 		}
-		
+
 		$selectedSujetcer93 = array();
 		if( !empty( $this->request->data['Sujetcer93']['Sujetcer93'] ) ) {
 			$selectedSujetcer93 = Set::extract( '/Sujetcer93/Sujetcer93/sujetcer93_id', $this->request->data );
@@ -611,7 +605,7 @@
 				true
 			);
 			// FIXME
-			
+
 			observeDisableFieldsOnValue(
 				'Sujetcer93Sujetcer93<?php echo $key;?>Soussujetcer93Id',
 				['Sujetcer93Sujetcer93<?php echo $key;?>Autresoussujet'],

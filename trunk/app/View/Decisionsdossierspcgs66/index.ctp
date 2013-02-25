@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages des décisions de dossiers PCGs';?>
 <h1><?php echo $this->pageTitle; ?></h1>
 
-<?php echo $this->Form->create( 'DecisionsdossiersPCGs', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'DecisionsdossiersPCGs', array() );?>
 	<table >
 		<thead>
 			<tr>

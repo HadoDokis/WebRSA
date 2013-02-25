@@ -30,7 +30,7 @@
 		).'</li></ul>';
 	}
 
-	echo $this->Xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+	echo $this->Xform->create( 'Critereapre', array( 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire(  );
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );

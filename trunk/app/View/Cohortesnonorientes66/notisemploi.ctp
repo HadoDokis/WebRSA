@@ -118,7 +118,7 @@
         <p class="notice"><?php echo 'Aucun allocataire non orienté.';?></p>
     <?php else:?>
 
-	<?php echo $this->Xform->create( 'Nonoriente', array( 'url'=> Router::url( null, true ) ) );?>
+	<?php echo $this->Xform->create( 'Nonoriente', array() );?>
 	<?php
 		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );

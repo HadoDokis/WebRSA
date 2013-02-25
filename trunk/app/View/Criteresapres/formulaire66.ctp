@@ -43,7 +43,7 @@
 
 
 <?php /*echo $this->Xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );*/
-    echo $this->Xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'critereapreform', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+    echo $this->Xform->create( 'Critereapre', array( 'id' => 'critereapreform', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 
 		<?php
 			echo $this->Search->blocAllocataire(  );

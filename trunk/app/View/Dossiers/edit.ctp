@@ -9,7 +9,7 @@
 
 <fieldset>
 	<?php
-		echo $this->Form->create( 'Dossier', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Dossier', array( 'type' => 'post' ) );
 		echo $this->Form->input( 'Dossier.id', array( 'type' => 'hidden' ) );
 
 		echo $this->Default2->subform(

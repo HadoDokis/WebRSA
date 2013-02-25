@@ -10,7 +10,7 @@
 
 <div class="with_treemenu">
 
-<?php echo $this->Form->create( 'TraitementsPDOs', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'TraitementsPDOs', array() );?>
 	<h1>Liste des traitements</h1>
 
 	<?php if( empty( $notifs ) ):?>

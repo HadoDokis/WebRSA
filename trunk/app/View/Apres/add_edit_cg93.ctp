@@ -88,24 +88,18 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'StructurereferenteRef',
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxstruct',
-							Set::extract( $this->request->data, "{$this->modelClass}.structurereferente_id" )
-						),
-						true
+					'url' => array(
+						'action' => 'ajaxstruct',
+						Set::extract( $this->request->data, "{$this->modelClass}.structurereferente_id" )
 					)
 				)
 			).';';
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'ReferentRef',
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxref',
-							Set::extract( $this->request->data, "{$this->modelClass}.referent_id" )
-						),
-						true
+					'url' => array(
+						'action' => 'ajaxref',
+						Set::extract( $this->request->data, "{$this->modelClass}.referent_id" )
 					)
 				)
 			).';';
@@ -117,7 +111,7 @@
 <h1>Formulaire de demande de l'APRE COMPLÉMENTAIRE</h1>
 <br />
 <?php
-	echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre' ) );
 	$ApreId = Set::classicExtract( $this->request->data, "{$this->modelClass}.id" );
 	if( $this->action == 'edit' ) {
 		echo '<div>';
@@ -304,12 +298,12 @@
 				<td class="noborder">
 					<strong><?php echo required( 'Nom de l\'organisme' ); ?></strong>
 					<?php echo $this->Xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id, 'empty' => true ) );?>
-					<?php echo $this->Ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+					<?php echo $this->Ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
 				</td>
 				<td class="noborder">
 					<strong>Nom du référent</strong>
 					<?php echo $this->Xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'selected' => $struct_id.'_'.$referent_id,'empty' => true ) );?>
-					<?php echo $this->Ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+					<?php echo $this->Ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
 				</td>
 			</tr>
 			<tr>
@@ -339,25 +333,25 @@ document.observe("dom:loaded", function() {
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'FormqualifCoordonnees',
-				'url' => Router::url( array( 'action' => 'ajaxtiersprestaformqualif', Set::extract( $this->request->data, 'Formqualif.tiersprestataireapre_id' ) ), true )
+				'url' => array( 'action' => 'ajaxtiersprestaformqualif', Set::extract( $this->request->data, 'Formqualif.tiersprestataireapre_id' ) )
 			)
 		).';';
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'FormpermfimoCoordonnees',
-				'url' => Router::url( array( 'action' => 'ajaxtiersprestaformpermfimo', Set::extract( $this->request->data, 'Formpermfimo.tiersprestataireapre_id' ) ), true )
+				'url' => array( 'action' => 'ajaxtiersprestaformpermfimo', Set::extract( $this->request->data, 'Formpermfimo.tiersprestataireapre_id' ) )
 			)
 		).';';
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'ActprofAdresseemployeur',
-				'url' => Router::url( array( 'action' => 'ajaxtiersprestaactprof', Set::extract( $this->request->data, 'Actprof.tiersprestataireapre_id' ) ), true )
+				'url' => array( 'action' => 'ajaxtiersprestaactprof', Set::extract( $this->request->data, 'Actprof.tiersprestataireapre_id' ) )
 			)
 		).';';
 		echo $this->Ajax->remoteFunction(
 			array(
 				'update' => 'PermisbAdresseautoecole',
-				'url' => Router::url( array( 'action' => 'ajaxtiersprestapermisb', Set::extract( $this->request->data, 'Permisb.tiersprestataireapre_id' ) ), true )
+				'url' => array( 'action' => 'ajaxtiersprestapermisb', Set::extract( $this->request->data, 'Permisb.tiersprestataireapre_id' ) )
 			)
 		).';';
 	?>
@@ -392,7 +386,7 @@ document.observe("dom:loaded", function() {
 				}
 				echo $this->Xform->input( 'Formqualif.intituleform', array(  'required' => true, 'domain' => 'apre' ) );
 				echo $this->Xform->enum( 'Formqualif.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersFormqualif, 'empty' => true ) );
-				echo $this->Ajax->observeField( 'FormqualifTiersprestataireapreId', array( 'update' => 'FormqualifCoordonnees', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaformqualif' ), true ) ) );
+				echo $this->Ajax->observeField( 'FormqualifTiersprestataireapreId', array( 'update' => 'FormqualifCoordonnees', 'url' => array( 'action' => 'ajaxtiersprestaformqualif' ) ) );
 				echo $this->Xhtml->tag(
 					'div',
 					$this->Xhtml->tag( 'div', ( isset( $FormqualifCoordonnees ) ? $FormqualifCoordonnees : ' ' ), array( 'id' => 'FormqualifCoordonnees' ) ).'<br />'
@@ -429,7 +423,7 @@ document.observe("dom:loaded", function() {
 				}
 				echo $this->Xform->input( 'Formpermfimo.intituleform', array( 'required' => true, 'domain' => 'apre' ) );
 				echo $this->Xform->enum( 'Formpermfimo.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersFormpermfimo, 'empty' => true ) );
-				echo $this->Ajax->observeField( 'FormpermfimoTiersprestataireapreId', array( 'update' => 'FormpermfimoCoordonnees', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaformpermfimo' ), true ) ) );
+				echo $this->Ajax->observeField( 'FormpermfimoTiersprestataireapreId', array( 'update' => 'FormpermfimoCoordonnees', 'url' => array( 'action' => 'ajaxtiersprestaformpermfimo' ) ) );
 				echo $this->Xhtml->tag(
 					'div',
 					$this->Xhtml->tag( 'div', ( isset( $FormpermfimoCoordonnees ) ? $FormpermfimoCoordonnees : ' ' ), array( 'id' => 'FormpermfimoCoordonnees' ) ).'<br />'
@@ -465,7 +459,7 @@ document.observe("dom:loaded", function() {
 					echo $this->Form->input( 'Actprof.id', array( 'type' => 'hidden' ) );
 				}
 				echo $this->Xform->enum( 'Actprof.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersActprof, 'empty' => true ) );
-				echo $this->Ajax->observeField( 'ActprofTiersprestataireapreId', array( 'update' => 'ActprofAdresseemployeur', 'url' => Router::url( array( 'action' => 'ajaxtiersprestaactprof' ), true ) ) );
+				echo $this->Ajax->observeField( 'ActprofTiersprestataireapreId', array( 'update' => 'ActprofAdresseemployeur', 'url' => array( 'action' => 'ajaxtiersprestaactprof' ) ) );
 				echo $this->Xhtml->tag(
 					'div',
 					$this->Xhtml->tag( 'div', ( isset( $ActprofAdresseemployeur ) ? $ActprofAdresseemployeur : ' ' ), array( 'id' => 'ActprofAdresseemployeur' ) ).'<br />'
@@ -505,7 +499,7 @@ document.observe("dom:loaded", function() {
 				}
 
 				echo $this->Xform->enum( 'Permisb.tiersprestataireapre_id', array( 'required' => true, 'domain' => 'apre', 'options' => $tiersPermisb, 'empty' => true ) );
-				echo $this->Ajax->observeField( 'PermisbTiersprestataireapreId', array( 'update' => 'PermisbAdresseautoecole', 'url' => Router::url( array( 'action' => 'ajaxtiersprestapermisb' ), true ) ) );
+				echo $this->Ajax->observeField( 'PermisbTiersprestataireapreId', array( 'update' => 'PermisbAdresseautoecole', 'url' => array( 'action' => 'ajaxtiersprestapermisb' ) ) );
 				echo $this->Xhtml->tag(
 					'div',
 					$this->Xhtml->tag( 'div', ( isset( $PermisbAdresseautoecole ) ? $PermisbAdresseautoecole : ' ' ), array( 'id' => 'PermisbAdresseautoecole' ) ).'<br />'

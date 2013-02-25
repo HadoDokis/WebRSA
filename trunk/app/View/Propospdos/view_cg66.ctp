@@ -19,7 +19,7 @@
 </ul>
 
 <?php
-	echo $this->Form->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Propopdo', array( 'type' => 'post' ) );
 	$etatdossierpdo = Set::enum( $pdo['Propopdo']['etatdossierpdo'], $options['etatdossierpdo'] );
 	$complet = Set::enum( $pdo['Propopdo']['iscomplet'], $options['iscomplet'] );
 	$categoriegeneral = Set::enum( $pdo['Propopdo']['categoriegeneral'], $categoriegeneral );

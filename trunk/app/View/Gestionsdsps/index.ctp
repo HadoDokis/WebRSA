@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages des DSPs';?>
 <h1>Paramétrage des DSPs</h1>
 
-<?php echo $this->Form->create( 'NouvellesDsps', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'NouvellesDsps', array() );?>
 	<table >
 		<thead>
 			<tr>

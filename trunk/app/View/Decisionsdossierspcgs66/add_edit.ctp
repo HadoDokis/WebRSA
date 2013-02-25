@@ -415,7 +415,7 @@
 <?php
 	echo "<div class='submit'>";
 		echo $this->Form->submit('Enregistrer', array('div'=>false));
-		echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/dossierspcgs66/edit/'.$dossierpcg66_id, true )."')" ) );
+		echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) )."')" ) );
 	echo "</div>";
 
 	echo $this->Form->end();
@@ -499,7 +499,7 @@
 	function fieldUpdater() {
 		new Ajax.Updater(
 			'Propositionpcg',
-			'<?php echo Router::url( array( "action" => "ajaxproposition" ), true ) ?>',
+			'<?php echo Router::url( array( "action" => "ajaxproposition" ) ); ?>',
 			{
 				asynchronous:true,
 				evalScripts:true,

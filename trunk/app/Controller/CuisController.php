@@ -225,7 +225,7 @@
 					$this->Cui->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null, true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -550,7 +550,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de contrat unique d\'engagement.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null, true ) );
 			}
 		}
 

@@ -14,7 +14,7 @@
 	).'</li></ul>';
 
 	// Filtre
-	echo $this->Form->create( null, array( 'type' => 'post', 'url' => Router::url( array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'] ), true ), 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Form->create( null, array( 'type' => 'post', 'url' => array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'] ), 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
 
 	echo $this->Form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 

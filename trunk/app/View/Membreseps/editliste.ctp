@@ -20,7 +20,7 @@
 </script>
 
 <h1><?php echo $this->pageTitle;?></h1>
-<?php echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'url' => '/membreseps/editliste/'.$seance_id ) ); ?>
+<?php echo $this->Xform->create( 'Membreep', array( 'type' => 'post', 'url' => array( 'controller' => 'membreseps', 'action' => 'editliste', $seance_id ) ) ); ?>
 	<div class="aere">
 		<fieldset>
 			<legend>Liste des participants</legend>

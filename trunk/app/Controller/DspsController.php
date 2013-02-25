@@ -259,7 +259,7 @@
 					$this->Dsp->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );

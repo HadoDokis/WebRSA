@@ -14,7 +14,7 @@
 		).'</li></ul>';
 	}
 
-	echo $this->Xform->create( 'Cohortecomiteapre', array( 'url'=> Router::url( null, true ), 'id' => 'Cohortecomiteapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( 'Cohortecomiteapre', array( 'id' => 'Cohortecomiteapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );
 ?>
 
 <script type="text/javascript">

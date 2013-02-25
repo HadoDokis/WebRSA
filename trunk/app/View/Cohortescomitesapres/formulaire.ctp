@@ -31,7 +31,7 @@
 
 	<?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
 		<?php echo $pagination;?>
-		<?php echo $this->Xform->create( 'Cohortecomiteapre', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Xform->create( 'Cohortecomiteapre', array() );?>
 
 		<?php
 			$filtre = Set::extract( $this->request->data, 'Cohortecomiteapre' );

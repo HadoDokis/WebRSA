@@ -9,7 +9,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	echo $this->Xform->create( 'Comiteapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Xform->create( 'Comiteapre', array( 'type' => 'post' ) );
 
 	if( $this->action == 'edit' ) {
 		echo '<div>';

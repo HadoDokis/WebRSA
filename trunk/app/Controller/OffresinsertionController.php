@@ -146,7 +146,7 @@
 				if( $saved ) {
 					$this->Actioncandidat->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $actioncandidat_id );

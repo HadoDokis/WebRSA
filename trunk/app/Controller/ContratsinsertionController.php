@@ -378,7 +378,7 @@
 					$this->Contratinsertion->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -1532,7 +1532,7 @@
 				$this->{$this->modelClass}->rollback();
 			}
 
-			$this->redirect( Router::url( $this->referer(), true ) );
+			$this->redirect( $this->referer( null,true ) );
 		}
 
 		/**
@@ -1611,7 +1611,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification du CER pour l\'OP.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -1632,7 +1632,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de liaison', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -1654,7 +1654,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -1677,7 +1677,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'insertion.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -1779,7 +1779,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

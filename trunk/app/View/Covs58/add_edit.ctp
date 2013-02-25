@@ -14,7 +14,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	echo $this->Form->create( 'Cov58', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Cov58', array( 'type' => 'post' ) );
 
 	echo $this->Default2->subform(
 		array(

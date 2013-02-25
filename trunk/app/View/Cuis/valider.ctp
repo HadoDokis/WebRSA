@@ -7,7 +7,7 @@
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
 
-<?php  echo $this->Form->create( 'Cui',array( 'url' => Router::url( null, true ) ) ); ?>
+<?php  echo $this->Form->create( 'Cui',array() ); ?>
 	<fieldset>
 		<?php echo $this->Xform->input( 'Cui.id', array( 'type' => 'hidden'/*, 'value' => $personne_id*/ ) );?>
 		<?php echo $this->Xform->input( 'Cui.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );?>

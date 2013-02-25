@@ -77,7 +77,7 @@
 			else {
 				$this->{$this->modelClass}->rollback();
 			}
-			$this->redirect( Router::url( $this->referer(), true ) );
+			$this->redirect( $this->referer( null,true ) );
 		}
 	}
 

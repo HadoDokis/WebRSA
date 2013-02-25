@@ -51,7 +51,7 @@
 					<script type="text/javascript">
 						// <![CDATA[
 						function addAjaxUploadedFileLinks( elmt ) {
-							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ), true ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
+							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
 							Event.observe( link, \'click\', function(e){
 								Event.stop(e);
 								new Ajax.Request(
@@ -78,7 +78,7 @@
 
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 
-							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ), true ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Voir" );
+							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Voir" );
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 						}
 
@@ -164,14 +164,15 @@
 
 			$permissionForm = $this->Permissions->checkDossier( $this->request->params['controller'], 'ajaxfileupload', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) );
 
-			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId, 'url' => Router::url( null, true ) ) );
+//			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId ) );
+			$return = $this->Form->create( $modelName, array( 'type' => 'post', 'id' => $formId/**/ ) );
 			if( $permissionForm ) {
 				$return .= '<fieldset><legend>'.required( $this->Default2->label( $fieldName ) ).'</legend>';
 				$return .= $this->Form->input( $fieldName, array( 'type' => 'radio', 'options' => $radioOptions, 'legend' => false, 'default' => $haspiecejointeDefault ) );
 				$return .= '<fieldset id="filecontainer-piecejointe" class="noborder invisible">'
 					.$this->create(
 						$fichiers,
-						Router::url( array( 'action' => 'ajaxfileupload' ), true )
+						Router::url( array( 'action' => 'ajaxfileupload' ) )
 					)
 				.'</fieldset></fieldset>
 				<script type="text/javascript">

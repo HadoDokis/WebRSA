@@ -383,7 +383,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'état liquidatif de l\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -412,7 +412,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de la page de l\'état liquidatif des APREs.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 

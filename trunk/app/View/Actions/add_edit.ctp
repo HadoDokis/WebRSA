@@ -8,7 +8,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	echo $this->Form->create( 'Action', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Action', array( 'type' => 'post' ) );
 	if( $this->action == 'edit' ) {
 		echo $this->Form->input( 'Action.id', array( 'type' => 'hidden' ) );
 	}

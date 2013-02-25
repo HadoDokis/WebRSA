@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages des CUIs';?>
 <h1>Paramétrage des CUIs</h1>
 
-<?php echo $this->Form->create( 'Cuis', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Cuis', array() );?>
 	<table >
 		<thead>
 			<tr>

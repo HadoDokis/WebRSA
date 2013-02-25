@@ -35,7 +35,7 @@
 		<?php
 			echo $this->Fileuploader->create(
 				$fichiers,
-				Router::url( array( 'action' => 'ajaxfileupload' ), true )
+				array( 'action' => 'ajaxfileupload' )
 			);
 		?>
 	</fieldset>

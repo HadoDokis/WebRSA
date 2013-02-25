@@ -168,7 +168,7 @@
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 // 					$this->redirect( array(  'controller' => 'orientsstructs','action' => 'index', $personne_id ) );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -541,7 +541,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'orientation.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -568,7 +568,7 @@
 
 			$this->Jetons2->release( $dossier_id );
 
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 
 		/**
@@ -591,7 +591,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

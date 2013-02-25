@@ -17,7 +17,7 @@
 <h1>Modification de la Décision du Comité</h1>
 
 <?php if( isset( $apre['Comiteapre'] ) ):?>
-		<?php echo $this->Xform->create( 'Cohortecomiteapre', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Xform->create( 'Cohortecomiteapre', array() );?>
 		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>

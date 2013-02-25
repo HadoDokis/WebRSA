@@ -109,7 +109,7 @@
 				$redirect_url = $this->Session->read( "Savedfilters.{$this->name}.{$this->action}" );
 				if( !empty( $redirect_url ) ) {
 					$this->Session->delete( "Savedfilters.{$this->name}.{$this->action}" );
-					$this->redirect( Router::url( $redirect_url, true ) );
+					$this->redirect( $redirect_url );
 				}
 			}
 
@@ -134,7 +134,7 @@
 					$this->Nonoriente66->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );

@@ -8,7 +8,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	echo $this->Xform->create( 'Suiviaideapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Xform->create( 'Suiviaideapre', array( 'type' => 'post' ) );
 
 	if( $this->action == 'edit' ) {
 		echo '<div>';

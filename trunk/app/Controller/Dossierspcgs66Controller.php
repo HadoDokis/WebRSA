@@ -162,7 +162,7 @@
 					'first',
 					array(
 						'conditions' => array(
-							'Dossierpcg66.id' => Set::extract( $this->request->params, 'form.dossierpcg66_id' )
+							'Dossierpcg66.id' => Set::extract( $this->request->data, 'dossierpcg66_id' )
 						),
 						'contain' => false
 					)

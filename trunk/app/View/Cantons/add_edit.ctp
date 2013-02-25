@@ -9,7 +9,7 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	echo $this->Form->create( 'Canton', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Canton', array( 'type' => 'post' ) );
 	if( $this->action == 'edit' ) {
 		echo $this->Form->input( 'Canton.id', array( 'type' => 'hidden' ) );
 	}

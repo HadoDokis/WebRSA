@@ -3,7 +3,7 @@
 <h1><?php echo $this->pageTitle;?></h1><br />
 
 <?php
-	echo $this->Form->create( 'User', array( 'type' => 'post', 'url' => Router::url( null, true ), 'autocomplete' => 'off' ) );
+	echo $this->Form->create( 'User', array( 'type' => 'post', 'autocomplete' => 'off' ) );
 
 	if( $this->action == 'add' ) {
 		echo '<div>';

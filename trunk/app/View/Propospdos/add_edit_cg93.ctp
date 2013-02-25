@@ -17,10 +17,10 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post' ) );
 	}
 	else {
-		echo $this->Xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Xform->create( 'Propopdo', array( 'id' => 'propopdoform', 'type' => 'post' ) );
 		echo '<div>';
 			echo $this->Xform->input( 'Propopdo.id', array( 'type' => 'hidden' ) );
 			echo $this->Xform->input( 'Decisionpropopdo.id', array( 'type' => 'hidden' ) );
@@ -90,7 +90,7 @@
 				<?php
 					echo $this->Fileuploader->create(
 						$fichiers,
-						Router::url( array( 'action' => 'ajaxfileupload' ), true )
+						array( 'action' => 'ajaxfileupload' )
 					);
 				?>
 			</fieldset>

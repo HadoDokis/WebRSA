@@ -25,7 +25,7 @@
 
 	<?php if( is_array( $recoursapres ) && count( $recoursapres ) > 0 ):?>
 		<?php echo $pagination;?>
-		<?php echo $this->Xform->create( 'Recoursapre', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Xform->create( 'Recoursapre', array() );?>
 
 		<table id="searchResults" class="tooltips">
 			<thead>

@@ -54,7 +54,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
 ?>
 
 <?php /*echo $this->Xform->create( 'Critereapre', array( 'type' => 'post', 'action' => '/formulaire/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );*/
-    echo $this->Xform->create( 'Critereapre', array( 'url'=> Router::url( null, true ), 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+    echo $this->Xform->create( 'Critereapre', array( 'id' => 'Critereapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire(  );
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );

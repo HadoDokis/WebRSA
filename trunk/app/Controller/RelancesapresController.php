@@ -202,7 +202,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de la relance de l\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 

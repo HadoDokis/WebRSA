@@ -20,12 +20,9 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'ReferentFonction',
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxreffonct',
-							Set::extract( $this->request->data, 'Rendezvous.referent_id' )
-						),
-						true
+					'url' => array(
+						'action' => 'ajaxreffonct',
+						Set::extract( $this->request->data, 'Rendezvous.referent_id' )
 					)
 				)
 			);
@@ -46,18 +43,9 @@
 <h1><?php echo $this->pageTitle;?></h1>
 
 <?php
-	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Rendezvous', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-	}
-	else {
-		echo $this->Form->create( 'Rendezvous', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
-		echo '<div>';
-		echo $this->Form->input( 'Rendezvous.id', array( 'type' => 'hidden' ) );
-		echo '</div>';
-	}
-	echo '<div>';
-	echo $this->Form->input( 'Rendezvous.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) );
-	echo '</div>';
+	echo $this->Form->create( 'Rendezvous', array( 'type' => 'post' ) );
+	echo '<div>'.$this->Form->input( 'Rendezvous.id', array( 'type' => 'hidden' ) ).'</div>';
+	echo '<div>'.$this->Form->input( 'Rendezvous.personne_id', array( 'type' => 'hidden', 'value' => $personne_id ) ).'</div>';
 ?>
 
 <div class="aere">
@@ -66,7 +54,7 @@
 			echo $this->Form->input( 'Rendezvous.structurereferente_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_struct' ) ), 'type' => 'select', 'options' => $struct, 'empty' => true ) );
 			echo $this->Form->input( 'Rendezvous.referent_id', array( 'label' =>  ( 'Nom de l\'agent / du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true/*, 'selected' => $struct_id.'_'.$referent_id */) );
 			///Ajax
-			echo $this->Ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => Router::url( array( 'action' => 'ajaxreffonct' ), true ) ) );
+			echo $this->Ajax->observeField( 'RendezvousReferentId', array( 'update' => 'ReferentFonction', 'url' => array( 'action' => 'ajaxreffonct' ) ) );
 
 			echo $this->Xhtml->tag(
 				'div',

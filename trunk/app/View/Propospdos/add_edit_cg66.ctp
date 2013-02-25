@@ -106,7 +106,7 @@
 	<?php
 		echo $this->Fileuploader->create(
 			$fichiers,
-			Router::url( array( 'action' => 'ajaxfileupload' ), true )
+			array( 'action' => 'ajaxfileupload' )
 		);
 	?>
 </fieldset>
@@ -173,8 +173,8 @@ document.observe( "dom:loaded", function() {
 		);
 
 		/// FIXME: à corriger car pas bon
-		//echo $this->Ajax->observeField( 'PropopdoIscompletCOM', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
-		//echo $this->Ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo', 'url' => Router::url( array( 'action' => 'ajaxetatpdo' ), true ) ) );
+		//echo $this->Ajax->observeField( 'PropopdoIscompletCOM', array( 'update' => 'Etatpdo', 'url' => array( 'action' => 'ajaxetatpdo' ) ) );
+		//echo $this->Ajax->observeField( 'PropopdoIscompletINC', array( 'update' => 'Etatpdo', 'url' => array( 'action' => 'ajaxetatpdo' ) ) );
 
 	?>
 </fieldset>
@@ -258,7 +258,7 @@ document.observe( "dom:loaded", function() {
 </div>
 <div class="submit">
 	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) ); ?>
-	<?php echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/index/'.$personne_id, true )."')" ) ); ?>
+	<?php echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".array( 'controller' => 'propospdos', 'action' => 'index', $personne_id )."')" ) ); ?>
 </div>
 
 <?php echo $this->Xform->end();?>
@@ -277,7 +277,7 @@ document.observe( "dom:loaded", function() {
 	function fieldUpdater() {
 		new Ajax.Updater(
 			'Etatpdo',
-			'<?php echo Router::url( array( "action" => "ajaxetatpdo" ), true ) ?>',
+			'<?php echo array( "action" => "ajaxetatpdo" ) ?>',
 			{
 				asynchronous:true,
 				evalScripts:true,

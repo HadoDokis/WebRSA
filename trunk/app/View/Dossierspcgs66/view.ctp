@@ -3,7 +3,7 @@
 ?>
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Form->create( 'Dossierpcg66', array( 'type' => 'post', 'id' => 'dossierpcg66form', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Dossierpcg66', array( 'type' => 'post', 'id' => 'dossierpcg66form' ) );
 
 	$class = '';
 	if( empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {

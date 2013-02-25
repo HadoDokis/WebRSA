@@ -7,7 +7,7 @@
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
-	<?php echo $this->Form->create( 'Decisiondossierpcg66',array(  'id' => 'transmissionopdossierpcg66form', 'url' => Router::url( null, true ) ) ); ?>
+	<?php echo $this->Form->create( 'Decisiondossierpcg66',array(  'id' => 'transmissionopdossierpcg66form' ) ); ?>
 
 	<fieldset>
 			<?php echo $this->Form->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );?>

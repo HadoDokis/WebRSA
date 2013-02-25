@@ -4,7 +4,7 @@
 
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Form->create( 'Traitementpcg66', array( 'type' => 'post', 'id' => 'traitementpcg66form', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Traitementpcg66', array( 'type' => 'post', 'id' => 'traitementpcg66form' ) );
 		echo $this->Default2->view(
 			$traitementpcg66,
 			array(

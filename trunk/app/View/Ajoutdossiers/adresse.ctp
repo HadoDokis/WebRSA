@@ -4,7 +4,7 @@
 	}
 ?>
 <?php $this->pageTitle = __d( 'ajoutdossier', "Ajoutdossiers::{$this->action}" );?>
-<?php echo $this->Form->create( 'Ajoutdossiers', array( 'id' => 'SignupForm', 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Ajoutdossiers', array( 'id' => 'SignupForm' ) );?>
 	<h1>Insertion d'une nouvelle demande de RSA</h1>
 	<h2>Étape 2: adresse complète</h2>
 
@@ -23,7 +23,7 @@
 	<?php echo $this->Form->input( 'Adresse.canton', array( 'label' =>  __d( 'adresse', 'Adresse.canton', true ) ) );?>
 	<?php echo $this->Form->input( 'Adressefoyer.dtemm', array( 'label' =>  __d( 'adressefoyer', 'Adressefoyer.dtemm', true ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Adressefoyer.typeadr', array( 'label' => required( __d( 'adressefoyer', 'Adressefoyer.typeadr', true ) ), 'type' => 'select', 'options' => $typeadr, 'empty' => true ) );?>
->
+
 	<div class="submit">
 		<?php echo $this->Form->submit( '< Précédent', array( 'name' => 'Previous', 'div'=>false ) );?>
 		<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>

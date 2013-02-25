@@ -302,7 +302,7 @@
 			else {
 				$this->Apre66->rollback();
 				$this->Session->setFlash( 'Impossible de générer les notifications d\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

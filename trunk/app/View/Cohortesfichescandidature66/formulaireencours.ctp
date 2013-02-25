@@ -12,7 +12,7 @@
 <?php echo $pagination;?>
 <?php if( isset( $cohortefichecandidature66 ) ):?>
 	<?php if( is_array( $cohortefichecandidature66 ) && count( $cohortefichecandidature66 ) > 0  ):?>
-		<?php echo $this->Form->create( 'SuiviActioncandidatPersonne', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Form->create( 'SuiviActioncandidatPersonne', array() );?>
 		<?php
 			foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 				echo $this->Form->input( "Search.{$filtre}", array( 'id' => null, 'type' => 'hidden', 'value' => $value ) );
