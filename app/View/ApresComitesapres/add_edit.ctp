@@ -30,7 +30,7 @@
 	<?php if( empty( $apres ) ):?>
 		<p class="notice">Aucune demande d'APRE <?php echo ( Set::classicExtract( $this->request->params, 'named.recours' ) ? 'en Recours ' : '' );?>présente.</p>
 	<?php else:?>
-	<?php echo $this->Xform->create( 'ApreComiteapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
+	<?php echo $this->Xform->create( 'ApreComiteapre', array( 'type' => 'post' ) ); ?>
 		<div class="aere">
 			<fieldset>
 				<legend>APREs à traiter durant le comité</legend>

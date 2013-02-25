@@ -116,7 +116,7 @@
 		<?php echo $this->Form->input( 'Orientstruct.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient' ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
 
 		<?php echo $this->Form->input( 'Orientstruct.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-	<?php /* echo $this->Ajax->observeField( 'OrientstructTypeorientId', array( 'update' => 'OrientstructStructurereferenteId', 'url' => Router::url( array( 'action' => 'ajaxstruc' ), true ) ) );*/ ?>
+	<?php /* echo $this->Ajax->observeField( 'OrientstructTypeorientId', array( 'update' => 'OrientstructStructurereferenteId', 'url' => array( 'action' => 'ajaxstruc' ) ) );*/ ?>
 
 		<?php echo $this->Form->input( 'Orientstruct.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
 		<?php echo $this->Form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>

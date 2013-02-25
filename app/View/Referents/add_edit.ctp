@@ -10,13 +10,13 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Referent', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Referent', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Referent.id', array( 'type' => 'hidden' ) );
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Referent', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Referent', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Referent.id', array( 'type' => 'hidden' ) );
 		echo '</div>';

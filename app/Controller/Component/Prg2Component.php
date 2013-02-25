@@ -109,7 +109,7 @@
 					$params = Set::merge( $controller->request->params['named'], $params );
 					$params = $this->_urlencodeParams( $params );
 
-					$redirect = Router::url( array_merge( array( 'action' => $controller->action ), $params ), true );
+					$redirect = array_merge( array( 'action' => $controller->action ), $params );
 					$controller->redirect( $redirect );
 				}
 				else if( $controller->request->is( 'get' ) ) {

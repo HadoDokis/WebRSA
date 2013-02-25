@@ -71,7 +71,7 @@
 				echo $this->Ajax->remoteFunction(
 					array(
 						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
-						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+						'url' => array( 'action' => 'ajaxpiece' ),
  						'with' => 'Object.extend( Form.serialize( $( \'traitementpcg66form\' ), true ), '.php_associative_array_to_js( $dataModeletraitementpcg66 ).' )',
 						'complete' => 'showAjaxValidationErrors()'
 					)
@@ -94,7 +94,7 @@
 					'Traitementpcg66Typecourrierpcg66Id',
 					array(
 						'update' => 'Typecourrierpcg66Modeletypecourrierpcg66Id',
-						'url' => Router::url( array( 'action' => 'ajaxpiece' ), true ),
+						'url' => array( 'action' => 'ajaxpiece' ),
 						'with' => 'Form.serialize( $(\'traitementpcg66form\') )',
 						'complete' => 'showAjaxValidationErrors()',
 						'evalScripts' => true
@@ -810,7 +810,7 @@
 			<?php
 				echo $this->Fileuploader->create(
 					$fichiers,
-					Router::url( array( 'action' => 'ajaxfileupload' ), true )
+					array( 'action' => 'ajaxfileupload' )
 				);
 			?>
 		</fieldset>

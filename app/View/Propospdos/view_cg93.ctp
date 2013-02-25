@@ -19,7 +19,7 @@
 </ul>
 
 <?php
-	echo $this->Form->create( 'Propopdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Propopdo', array( 'type' => 'post' ) );
 
 	$complet = Set::enum( $pdo['Propopdo']['iscomplet'], $options['iscomplet'] );
 	$origpdo = Set::enum( $pdo['Propopdo']['originepdo_id'], $originepdo );

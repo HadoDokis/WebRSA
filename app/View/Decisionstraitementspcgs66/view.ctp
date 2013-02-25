@@ -2,7 +2,7 @@
 	$this->pageTitle =  __d( 'decisionpersonnepcg66', "Decisionspersonnespcgs66::{$this->action}" );
 
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Form->create( 'Decisionpersonnepcg66', array( 'type' => 'post', 'id' => 'decisionpersonnepcg66form', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Decisionpersonnepcg66', array( 'type' => 'post', 'id' => 'decisionpersonnepcg66form' ) );
 
 	$motif = Set::enum( Set::classicExtract( $decisionpersonnepcg66, 'Decisionpersonnepcg66.personnepcg66_situationpdo_id' ), $personnespcgs66Situationspdos );
 

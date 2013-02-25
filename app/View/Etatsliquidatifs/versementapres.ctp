@@ -51,15 +51,12 @@
 catch(e) {
 	alert( 'Erreur' );
 }",
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxmontant',
-							$this->request->params['pass'][0],
-							Set::classicExtract( $apre, 'Apre.id' ),
-							$i
-						),
-						true
-					)
+					'url' => array(
+						'action' => 'ajaxmontant',
+						$this->request->params['pass'][0],
+						Set::classicExtract( $apre, 'Apre.id' ),
+						$i
+					),
 				)
 			);
 		}

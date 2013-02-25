@@ -73,7 +73,7 @@
 	<?php
 		echo $this->Fileuploader->create(
 			$fichiers,
-			Router::url( array( 'action' => 'ajaxfileupload' ), true )
+			array( 'action' => 'ajaxfileupload' )
 		);
 	?>
 </fieldset>
@@ -89,7 +89,7 @@
 					'domain' => $domain,
 					'options' => $options
 				)
-			); 
+			);
 		?>
 </fieldset>
 
@@ -329,7 +329,7 @@ document.observe( "dom:loaded", function() {
 	function fieldUpdater() {
 		new Ajax.Updater(
 			'Etatpdo',
-			'<?php echo Router::url( array( "action" => "ajaxetatpdo" ), true ) ?>',
+			'<?php echo Router::url( array( "action" => "ajaxetatpdo" ) ); ?>',
 			{
 				asynchronous:true,
 				evalScripts:true,

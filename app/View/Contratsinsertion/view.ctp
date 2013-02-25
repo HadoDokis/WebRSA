@@ -2,7 +2,7 @@
 
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Form->create( 'Contratsinsertionview', array( 'type' => 'post', 'id' => 'contratform', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Contratsinsertionview', array( 'type' => 'post', 'id' => 'contratform' ) );
 
 	$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
 	if ( isset( $contratinsertion['Contratinsertion']['avenant_id'] ) && !empty( $contratinsertion['Contratinsertion']['avenant_id'] ) ) {

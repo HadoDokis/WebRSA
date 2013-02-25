@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages des PDOs';?>
 <h1>Paramétrage des PDOs</h1>
 
-<?php echo $this->Form->create( 'NouvellesPDOs', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'NouvellesPDOs', array() );?>
 	<table >
 		<thead>
 			<tr>

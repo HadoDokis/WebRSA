@@ -125,7 +125,7 @@
 	<?php
 		echo "<div class='submit'>";
 			echo $this->Form->submit('Enregistrer', array('div'=>false));
-			echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/propospdos/edit/'.$propopdo_id, true )."')" ) );
+			echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( array( 'controller' => 'propospdos', 'action' => 'edit', $propopdo_id ) )."')" ) );
 		echo "</div>";
 
 		echo $this->Form->end();

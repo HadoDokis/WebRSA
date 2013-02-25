@@ -27,7 +27,7 @@
 			}
 		}
 
-		echo $this->Form->create( null, array( 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( null, array() );
 		echo '<div>'.$this->Form->input( 'Commissionep.save', array( 'type' => 'hidden', 'value' => true ) ).'</div>';
 
 		foreach( array_keys( $dossiers ) as $theme ) {

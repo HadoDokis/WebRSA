@@ -318,7 +318,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la COV', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -333,7 +333,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le PV de la COV', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -366,7 +366,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de décision de la COV', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

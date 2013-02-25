@@ -250,7 +250,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de décision', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 

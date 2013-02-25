@@ -7,7 +7,7 @@
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
-<?php echo $this->Form->create( 'PersonneReferent',array( 'url' => Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'PersonneReferent',array() );?>
 	<fieldset>
 		<?php
 

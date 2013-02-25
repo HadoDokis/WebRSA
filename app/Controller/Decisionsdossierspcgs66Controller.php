@@ -197,7 +197,7 @@
 					$this->Decisiondossierpcg66->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -642,7 +642,7 @@
 			}
 
 			$this->Session->setFlash( 'Impossible de générer la décision', 'default', array( 'class' => 'error' ) );
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 
 		/**
@@ -750,7 +750,7 @@
 			}
 
 			$this->_setFlashResult( 'Delete', $success );
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 
 		/**

@@ -110,7 +110,7 @@
 			}
 
 			function sessionEnd() {
-				var baseUrl = '<?php echo Router::url( "/users/logout", true ); ?>';
+				var baseUrl = '<?php echo Router::url( array( 'controller' => 'users', 'action' => 'logout' ) ); ?>';
 				location.replace(baseUrl);
 			}
 			<?php endif;?>

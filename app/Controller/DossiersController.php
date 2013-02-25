@@ -810,7 +810,7 @@
 		public function unlock( $id ) {
 			$this->Jetons2->get( $id );
 			$this->Jetons2->release( $id );
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 	}
 ?>

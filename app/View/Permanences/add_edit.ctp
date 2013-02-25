@@ -10,10 +10,10 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Permanence', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Permanence', array( 'type' => 'post' ) );
 	}
 	else {
-		echo $this->Form->create( 'Permanence', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Permanence', array( 'type' => 'post' ) );
 		echo $this->Form->input( 'Permanence.id', array( 'label' => false, 'type' => 'hidden' ) );
 	}
 ?>

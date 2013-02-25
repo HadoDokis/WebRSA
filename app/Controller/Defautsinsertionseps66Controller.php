@@ -135,7 +135,7 @@
 			else {
 				$this->Defautinsertionep66->rollback();
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

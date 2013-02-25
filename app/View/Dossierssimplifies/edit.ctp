@@ -4,7 +4,7 @@
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
-<?php  echo $this->Form->create( 'Dossiersimplifie',array( 'url' => Router::url( null, true ) ) ); ?>
+<?php  echo $this->Form->create( 'Dossiersimplifie',array() ); ?>
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {

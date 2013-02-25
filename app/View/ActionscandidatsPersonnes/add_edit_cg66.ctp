@@ -34,7 +34,7 @@
 			)
 		);
 
-		echo $this->Ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
+		echo $this->Ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => array( 'action' => 'ajaxpart' ) ) );
 
 		echo $this->Xhtml->tag(
 			'div',
@@ -52,7 +52,7 @@
 			)
 		);
 
-		echo $this->Ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => Router::url( array( 'action' => 'ajaxreferent' ), true ) ) );
+		echo $this->Ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPrescripteurReferentId', 'url' => array( 'action' => 'ajaxreferent' ) ) );
 
 	?>
 </fieldset>
@@ -301,7 +301,7 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'ActioncandidatPartenairePartenaireId',
-					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->request->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
+					'url' => array( 'action' => 'ajaxpart', Set::extract( $this->request->data, 'ActioncandidatPersonne.actioncandidat_id' ) )
 				)
 			);
 		?>;
@@ -310,7 +310,7 @@
 				echo $this->Ajax->remoteFunction(
 					array(
 						'update' => 'ActioncandidatPrescripteurReferentId',
-						'url' => Router::url( array( 'action' => 'ajaxreferent', $referentId ), true)
+						'url' => array( 'action' => 'ajaxreferent', $referentId )
 					)
 				);
 			}
@@ -318,7 +318,7 @@
 				echo $this->Ajax->remoteFunction(
 					array(
 						'update' => 'ActioncandidatPrescripteurReferentId',
-						'url' => Router::url( array( 'action' => 'ajaxreferent', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) ), true)
+						'url' => array( 'action' => 'ajaxreferent', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) )
 					)
 				);
 			}

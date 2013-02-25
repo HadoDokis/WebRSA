@@ -10,10 +10,10 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Typeaction', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Typeaction', array( 'type' => 'post' ) );
 	}
 	else {
-		echo $this->Form->create( 'Typeaction', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Typeaction', array( 'type' => 'post' ) );
 		echo $this->Form->input( 'Typeaction.id', array( 'type' => 'hidden' ) );
 	}
 ?>

@@ -74,7 +74,7 @@
 			}
 		?>
 		<p><?php echo sprintf( $formatPagination, $this->Locale->number( $this->request->params['paging']['Personne']['pageCount'] ), $this->Locale->number( $this->request->params['paging']['Personne']['count'] ) );?></p>
-		<?php echo $this->Form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Form->create( 'NouvellesDemandes', array() );?>
 		<?php
 			foreach( Hash::flatten( $filtre ) as $key => $value ) {
 				echo '<div>'.$this->Form->input( $key, array( 'type' => 'hidden', 'value' => $value, 'id' => 'FiltreBas'.Inflector::camelize( str_replace( '.', '_', $key ) ) ) ).'</div>';

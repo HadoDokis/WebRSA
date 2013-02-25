@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages';?>
 <h1>Paramétrage des tables</h1>
 
-<?php echo $this->Form->create( 'NouvellesDemandes', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'NouvellesDemandes', array() );?>
 	<table >
 		<thead>
 			<tr>

@@ -19,7 +19,7 @@
 	}
 
 	document.observe( "dom:loaded", function() {
-		var baseUrl = '<?php echo Router::url( '/', true );?>';
+		var baseUrl = '<?php echo Router::url( '/' );?>';
 		make_treemenus_droits( baseUrl, <?php echo ( Configure::read( 'UI.menu.large' ) ? 'true' : 'false' );?> );
 	} );
 </script>

@@ -93,7 +93,7 @@
     <?php else:?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
 <?php echo $pagination;?>
-<?php echo $this->Form->create( 'Dossierpcg66Atransmettre', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Dossierpcg66Atransmettre', array() );?>
 	<?php
 		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );

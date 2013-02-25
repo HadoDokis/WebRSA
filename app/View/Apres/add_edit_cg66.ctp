@@ -61,25 +61,19 @@
             echo $this->Ajax->remoteFunction(
                 array(
                     'update' => 'StructurereferenteRef',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxstruct',
-                            Set::extract( $this->request->data, "{$this->modelClass}.structurereferente_id" )
-                        ),
-                        true
-                    )
+                    'url' => array(
+						'action' => 'ajaxstruct',
+						Set::extract( $this->request->data, "{$this->modelClass}.structurereferente_id" )
+					)
                 )
             ).';';
             echo $this->Ajax->remoteFunction(
                 array(
                     'update' => 'ReferentRef',
-                    'url' => Router::url(
-                        array(
-                            'action' => 'ajaxref',
-                            Set::extract( $this->request->data, "{$this->modelClass}.referent_id" )
-                        ),
-                        true
-                    )
+                    'url' => array(
+						'action' => 'ajaxref',
+						Set::extract( $this->request->data, "{$this->modelClass}.referent_id" )
+					)
                 )
             ).';';
 
@@ -87,7 +81,7 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'Piece66',
-					'url' => Router::url( array( 'action' => 'ajaxpiece', ( $this->action == 'add' ? null : $this->request->data['Apre66']['id'] ) ), true ),
+					'url' => array( 'action' => 'ajaxpiece', ( $this->action == 'add' ? null : $this->request->data['Apre66']['id'] ) ),
 					'with' => 'Form.serialize( $( \'Apre\' ) )'
 				)
 			).';';
@@ -99,7 +93,7 @@
     <h1>Formulaire de demande de l'APRE</h1>
 	<br />
     <?php
-        echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre', 'url' => Router::url( null, true ) ) );
+        echo $this->Form->create( 'Apre', array( 'type' => 'post', 'id' => 'Apre' ) );
         $ApreId = Set::classicExtract( $this->request->data, "{$this->modelClass}.id" );
         if( $this->action == 'edit' ) {
             echo '<div>';
@@ -205,12 +199,12 @@
                     <td class="noborder">
                         <strong>Nom de l'organisme</strong>
                         <?php echo $this->Xform->input( "{$this->modelClass}.structurereferente_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $structs, 'selected' => $struct_id,  'empty' => true ) );?>
-                        <?php echo $this->Ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+                        <?php echo $this->Ajax->observeField( $this->modelClass.'StructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
                     </td>
                     <td class="noborder">
                         <strong>Nom du référent</strong>
                         <?php echo $this->Xform->input( "{$this->modelClass}.referent_id", array( 'domain' => 'apre', 'label' => false, 'type' => 'select', 'options' => $referents, 'selected' => $struct_id.'_'.$referent_id, 'empty' => true ) );?>
-                        <?php echo $this->Ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+                        <?php echo $this->Ajax->observeField( $this->modelClass.'ReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
                     </td>
                 </tr>
                 <tr>
@@ -273,7 +267,7 @@
         );
 
         $ajaxOptions = array(
-			'url' => Router::url( array( 'action' => 'ajaxpiece', ( $this->action == 'add' ? null : $this->request->data['Apre66']['id'] ) ), true ),
+			'url' => array( 'action' => 'ajaxpiece', ( $this->action == 'add' ? null : $this->request->data['Apre66']['id'] ) ),
 			'update' => 'Piece66',
 			'with' => 'Form.serialize( $( \'Apre\' ) )'
         );

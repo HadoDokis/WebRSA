@@ -351,7 +351,7 @@
 			// Peut-on travailler à cette étape avec cette commission ?
 			if( in_array( $commissionep['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 
 			// Enregistrement des cases cochées / décochées
@@ -584,7 +584,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -623,7 +623,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 	}

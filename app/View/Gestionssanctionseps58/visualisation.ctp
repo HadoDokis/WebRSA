@@ -124,7 +124,7 @@
     <?php else:?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 	<?php echo $pagination;?>
-	<?php echo $this->Xform->create( 'Gestionsanctionep58', array( 'url'=> Router::url( null, true ) ) );?>
+	<?php echo $this->Xform->create( 'Gestionsanctionep58', array() );?>
 	<?php
 		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );

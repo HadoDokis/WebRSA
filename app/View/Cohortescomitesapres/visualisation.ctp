@@ -25,7 +25,7 @@
 	<h2 class="noprint">Résultats de la recherche</h2>
 
 	<?php if( is_array( $comitesapres ) && count( $comitesapres ) > 0 ):?>
-		<?php echo $this->Form->create( 'NotifComite', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Form->create( 'NotifComite', array() );?>
 	<?php echo $pagination;?>
 		<table id="searchResults" class="tooltips">
 			<thead>

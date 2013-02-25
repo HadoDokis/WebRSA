@@ -8,7 +8,7 @@
 
 <h1><?php echo $this->pageTitle;?></h1>
 
-<?php echo $this->Form->create( 'Typeorient', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Typeorient', array( 'type' => 'post' ) );?>
 
 	<fieldset>
 		<?php echo $this->Form->input( 'Typeorient.id', array( 'type' => 'hidden' ) );?>

@@ -10,10 +10,10 @@
 
 	<?php
 		if( $this->action == 'add' ) {
-			echo $this->Xform->create( 'Tiersprestataireapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Xform->create( 'Tiersprestataireapre', array( 'type' => 'post' ) );
 		}
 		else {
-			echo $this->Xform->create( 'Tiersprestataireapre', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Xform->create( 'Tiersprestataireapre', array( 'type' => 'post' ) );
 			echo '<div>';
 			echo $this->Xform->input( 'Tiersprestataireapre.id', array( 'type' => 'hidden' ) );
 			echo '</div>';

@@ -170,7 +170,7 @@
 				$redirect_url = $this->Session->read( "Savedfilters.{$this->name}.{$this->action}" );
 				if( !empty( $redirect_url ) ) {
 					$this->Session->delete( "Savedfilters.{$this->name}.{$this->action}" );
-					$this->redirect( Router::url( $redirect_url, true ) );
+					$this->redirect( $redirect_url );
 				}
 				else {
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
@@ -197,7 +197,7 @@
 					$this->{$this->modelClass}->commit();
                     $this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -856,7 +856,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -876,7 +876,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification d\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -905,7 +905,7 @@
 
 			if( !isset( $apre['Referent']['email'] ) || empty( $apre['Referent']['email'] ) ) {
 				$this->Session->setFlash( "Mail non envoyé: adresse mail du référent ({$apre['Referent']['nom']} {$apre['Referent']['prenom']}) non renseignée.", 'flash/error' );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 
 			$success = true;
@@ -935,7 +935,7 @@
 				$this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
 			}
 
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 
 

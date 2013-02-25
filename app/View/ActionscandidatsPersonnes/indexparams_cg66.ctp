@@ -10,7 +10,7 @@
 	?>
 </h1>
 
-<?php echo $this->Form->create( 'NouvellesFiches', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'NouvellesFiches', array() );?>
 	<table >
 		<thead>
 			<tr>

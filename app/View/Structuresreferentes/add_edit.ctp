@@ -10,14 +10,14 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Structurereferente', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Structurereferente', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Structurereferente.id', array( 'type' => 'hidden' ) );
 		echo $this->Form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Structurereferente', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Structurereferente', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Structurereferente.id', array( 'type' => 'hidden' ) );
 		echo $this->Form->input( 'Zonegeographique.id', array( 'type' => 'hidden' ) );

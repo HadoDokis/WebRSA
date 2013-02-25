@@ -16,7 +16,7 @@
 </h1>
 
 <?php
-	echo $this->Form->create( 'Commissionep', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+	echo $this->Form->create( 'Commissionep', array( 'type' => 'post' ) );
 
 	echo $this->Default->subform(
 		array(

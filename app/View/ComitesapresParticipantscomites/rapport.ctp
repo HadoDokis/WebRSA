@@ -7,7 +7,7 @@
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
 
-<?php echo $this->Xform->create( 'ComiteapreParticipantcomite', array( 'type' => 'post', 'url' => Router::url( null, true ) ) ); ?>
+<?php echo $this->Xform->create( 'ComiteapreParticipantcomite', array( 'type' => 'post' ) ); ?>
 	<div class="aere">
 		<fieldset>
 			<legend>Participants au comité</legend>

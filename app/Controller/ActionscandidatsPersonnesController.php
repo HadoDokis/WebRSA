@@ -191,7 +191,7 @@
 					$this->ActioncandidatPersonne->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( $this->referer() );
+					$this->redirect( $this->referer( null,true ) );
 				}
 				else {
 					$fichiers = $this->Fileuploader->fichiers( $id );
@@ -723,7 +723,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de candidature', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 		}
 
@@ -874,7 +874,7 @@
 
 			if( !isset( $actioncandidat_personne['Actioncandidat']['Contactpartenaire']['email'] ) || empty( $actioncandidat_personne['Actioncandidat']['Contactpartenaire']['email'] ) ) {
 				$this->Session->setFlash( "Mail non envoyé: adresse mail du référent ({$actioncandidat_personne['Actioncandidat']['Contactpartenaire']['nom']} {$actioncandidat_personne['Actioncandidat']['Contactpartenaire']['prenom']}) non renseignée.", 'flash/error' );
-				$this->redirect( $this->referer() );
+				$this->redirect( $this->referer( null,true ) );
 			}
 
 			// Envoi du mail
@@ -905,7 +905,7 @@
 				$this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
 			}
 
-			$this->redirect( $this->referer() );
+			$this->redirect( $this->referer( null,true ) );
 		}
 	}
 ?>

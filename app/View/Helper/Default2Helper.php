@@ -51,7 +51,7 @@
 			$htmlAttributes = array_filter_keys( $htmlAttributes, array( 'enabled', 'label' ), true );
 
 			// TODO: une fonction ?
-			$urlParams = Router::parse( str_replace( $this->request->base, '', Router::url( $url ) ) );
+			$urlParams = Router::parse( preg_replace( '/^'.preg_quote( $this->request->base, '/' ).'/', '', Router::url( $url ) ) );
 			$controllerName = Inflector::camelize( $urlParams['controller'] );
 
 			if( empty( $label ) ) {

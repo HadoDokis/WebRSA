@@ -8,7 +8,7 @@
 		$this->pageTitle = __d( 'ajoutdossiercomplet', "Ajoutdossierscomplets::{$this->action}" )
 	);
 
-	echo $this->Form->create( 'Ajoutdossiercomplet', array( 'id' => 'dossiercomplet', 'url'=> Router::url( null, true ) ) );
+	echo $this->Form->create( 'Ajoutdossiercomplet', array( 'id' => 'dossiercomplet' ) );
 
 	echo '<fieldset><legend>Ajout d\'un nouveau dossier</legend>';
 		//On masque les prestations et on leur met des valeurs par défaut

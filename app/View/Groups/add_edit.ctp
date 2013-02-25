@@ -15,7 +15,7 @@
 		$this->pageTitle = 'Modification du groupe '.$this->request->data['Group']['name'];
 	}
 echo $this->pageTitle;?></h1><br />
-<?php echo $this->Form->create( 'Group', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Group', array( 'type' => 'post' ) );?>
 
 <div id="tabbedWrapper" class="tabs">
 	<div id="infos">

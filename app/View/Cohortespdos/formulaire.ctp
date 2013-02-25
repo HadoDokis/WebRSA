@@ -22,7 +22,7 @@
 <?php if( isset( $cohortepdo ) ):?>
 	<?php if( is_array( $cohortepdo ) && count( $cohortepdo ) > 0 ):?>
 		<?php echo $pagination;?>
-		<?php echo $this->Form->create( 'Cohortepdo', array( 'url'=> Router::url( null, true ) ) );?>
+		<?php echo $this->Form->create( 'Cohortepdo', array() );?>
 		<?php
 			echo '<div>';
 			echo $this->Form->input( 'Cohortepdo.numcomptt', array( 'type' => 'hidden', 'id' => 'CohortepdoNumcomptt2' ) );

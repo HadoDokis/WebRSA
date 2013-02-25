@@ -14,7 +14,7 @@
 			$pagination = $this->Xpaginator2->paginationBlock( 'Dossier', $this->passedArgs );
 			echo $pagination;
 
-			echo $this->Form->create( null, array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Cohortestransfertspdvs93Index' ) );
+			echo $this->Form->create( null, array( 'type' => 'post', 'id' => 'Cohortestransfertspdvs93Index' ) );
 			echo '<table class="cohortestransfertspdvs93 index">';
 			echo '<thead>';
 			echo $this->Html->tableHeaders(

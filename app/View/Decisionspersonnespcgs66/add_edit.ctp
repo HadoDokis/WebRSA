@@ -45,7 +45,7 @@
 <?php
 	echo "<div class='submit'>";
 		echo $this->Form->submit('Enregistrer', array('div'=>false));
-		echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( '/decisionspersonnespcgs66/index/'.$personnepcg66_id, true )."')" ) );
+		echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( array( 'controller' => 'decisionspersonnespcgs66', 'action' => 'index', $personnepcg66_id ) )."')" ) );
 	echo "</div>";
 
 	echo $this->Form->end();

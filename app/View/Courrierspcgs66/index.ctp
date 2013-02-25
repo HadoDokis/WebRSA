@@ -1,7 +1,7 @@
 <?php $this->pageTitle = 'Paramétrages du module de courriers PCGs';?>
 <h1><?php echo $this->pageTitle;?></h1>
 
-<?php echo $this->Form->create( 'Courrierspcgs66', array( 'url'=> Router::url( null, true ) ) );?>
+<?php echo $this->Form->create( 'Courrierspcgs66', array() );?>
 	<table >
 		<thead>
 			<tr>

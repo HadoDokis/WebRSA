@@ -18,10 +18,10 @@
 
 	<?php
 		if( $this->action == 'add' ) {
-			echo $this->Form->create( 'PropopdoTypenotifpdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Form->create( 'PropopdoTypenotifpdo', array( 'type' => 'post' ) );
 		}
 		else {
-			echo $this->Form->create( 'PropopdoTypenotifpdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Form->create( 'PropopdoTypenotifpdo', array( 'type' => 'post' ) );
 			echo '<div>';
 			echo $this->Form->input( 'PropopdoTypenotifpdo.id', array( 'type' => 'hidden' ) );
 			echo '</div>';

@@ -10,7 +10,7 @@
 
 <fieldset>
 	<?php
-		echo $this->Form->create( 'Decisionpcg66', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Decisionpcg66', array( 'type' => 'post' ) );
 
 		echo $this->Default2->subform(
 			array(

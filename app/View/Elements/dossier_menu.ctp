@@ -42,7 +42,7 @@
 				echo $this->Xhtml->link(
 					$this->Xhtml->image( 'icons/bullet_toggle_plus2.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '12px' ) ),
 					'#',
-					array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/', true ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
+					array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/' ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
 					false,
 					false
 				);

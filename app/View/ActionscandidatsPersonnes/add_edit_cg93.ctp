@@ -40,7 +40,7 @@
 		);
 
 		///Ajax pour les données du référent et de l'organisme auquel il est lié
-		echo $this->Ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPersonneStructurereferente', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) );
+		echo $this->Ajax->observeField( 'ActioncandidatPersonneReferentId', array( 'update' => 'ActioncandidatPersonneStructurereferente', 'url' => array( 'action' => 'ajaxstruct' ) ) );
 
 
 		echo $this->Xhtml->tag(
@@ -275,7 +275,7 @@
 		);
 
 		///Ajax pour les données de l'action entreprise et de son partenaire lié
-		echo $this->Ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => Router::url( array( 'action' => 'ajaxpart' ), true ) ) );
+		echo $this->Ajax->observeField( 'ActioncandidatPersonneActioncandidatId', array( 'update' => 'ActioncandidatPartenairePartenaireId', 'url' => array( 'action' => 'ajaxpart' ) ) );
 		echo $this->Xhtml->tag(
 			'div',
 			'<b></b>',
@@ -330,21 +330,21 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'ActioncandidatPartenairePartenaireId',
-					'url' => Router::url( array( 'action' => 'ajaxpart', Set::extract( $this->request->data, 'ActioncandidatPersonne.actioncandidat_id' ) ), true )
+					'url' => array( 'action' => 'ajaxpart', Set::extract( $this->request->data, 'ActioncandidatPersonne.actioncandidat_id' ) )
 				)
 			).';';
 
 // 			echo $this->Ajax->remoteFunction(
 // 				array(
 // 					'update' => 'ActioncandidatPersonneStructurereferente',
-// 					'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) ), true )
+// 					'url' => array( 'action' => 'ajaxstruct', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) )
 // 				)
 // 			).';';
 
 // 			echo $this->Ajax->remoteFunction(
 // 				array(
 // 					'update' => 'StructureData',
-// 					'url' => Router::url( array( 'action' => 'ajaxreffonct', Set::extract( $this->request->data, 'Rendezvous.referent_id' ) ), true )
+// 					'url' => array( 'action' => 'ajaxreffonct', Set::extract( $this->request->data, 'Rendezvous.referent_id' ) )
 // 				)
 // 			).';';
 		?>
@@ -355,7 +355,7 @@
 				echo $this->Ajax->remoteFunction(
 					array(
 						'update' => 'ActioncandidatPersonneStructurereferente',
-						'url' => Router::url( array( 'action' => 'ajaxstruct', $referentId ), true)
+						'url' => array( 'action' => 'ajaxstruct', $referentId )
 					)
 				);
 			}
@@ -364,7 +364,7 @@
 				echo $this->Ajax->remoteFunction(
 					array(
 						'update' => 'ActioncandidatPersonneStructurereferente',
-						'url' => Router::url( array( 'action' => 'ajaxstruct', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) ), true)
+						'url' => array( 'action' => 'ajaxstruct', Set::extract( $this->request->data, 'ActioncandidatPersonne.referent_id' ) )
 					)
 				);
 			}

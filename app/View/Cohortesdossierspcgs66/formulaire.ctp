@@ -83,7 +83,7 @@
 <?php echo $pagination;?>
 <?php if( isset( $cohortedossierpcg66 ) ):?>
     <?php if( is_array( $cohortedossierpcg66 ) && count( $cohortedossierpcg66 ) > 0  ):?>
-        <?php echo $this->Form->create( 'Affectationdossierpcg66', array( 'url'=> Router::url( null, true ) ) );?>
+        <?php echo $this->Form->create( 'Affectationdossierpcg66', array() );?>
 		<?php
 			foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 				echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );

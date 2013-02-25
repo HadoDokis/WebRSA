@@ -11,7 +11,7 @@
                 echo $this->Ajax->remoteFunction(
                     array(
                         'update' => 'EntretienPartenaire',
-                        'url' => Router::url( array( 'action' => 'ajaxaction', Set::extract( $this->request->data, 'Entretien.actioncandidat_id' ) ), true )
+                        'url' => array( 'action' => 'ajaxaction', Set::extract( $this->request->data, 'Entretien.actioncandidat_id' ) )
                     )
                 );
             }
@@ -34,10 +34,10 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Entretien', array( 'type' => 'post', 'url' => Router::url( null, true ),  'id' => 'Bilan' ) );
+		echo $this->Form->create( 'Entretien', array( 'type' => 'post',  'id' => 'Bilan' ) );
 	}
 	else {
-		echo $this->Form->create( 'Entretien', array( 'type' => 'post', 'url' => Router::url( null, true ), 'id' => 'Bilan' ) );
+		echo $this->Form->create( 'Entretien', array( 'type' => 'post', 'id' => 'Bilan' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Entretien.id', array( 'type' => 'hidden' ) );
 		echo '</div>';
@@ -71,7 +71,7 @@
 						<td class="noborder">
 							<?php
 								echo $this->Form->input( 'Entretien.actioncandidat_id', array( 'label' => 'Intitulé de l\'action', 'type' => 'select', 'options' => $actionsSansFiche, 'empty' => true ) );
-								echo $this->Ajax->observeField( 'EntretienActioncandidatId', array( 'update' => 'EntretienPartenaire', 'url' => Router::url( array( 'action' => 'ajaxaction' ), true ) ) );
+								echo $this->Ajax->observeField( 'EntretienActioncandidatId', array( 'update' => 'EntretienPartenaire', 'url' => array( 'action' => 'ajaxaction' ) ) );
 								echo $this->Xhtml->tag(
 									'div',
 									' ',

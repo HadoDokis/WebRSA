@@ -10,7 +10,7 @@
 <br/>
 <div id="tabbedWrapper" class="tabs">
 	<?php
-		echo $this->Form->create( null, array( 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( null, array() );
 		foreach( array_keys( $dossiers ) as $theme ) {
 			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {

@@ -32,13 +32,13 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Orientstruct', array(  'type' => 'post', 'url' => Router::url( null, true )  ));
+		echo $this->Form->create( 'Orientstruct', array(  'type' => 'post'  ));
 		echo '<div>';
 		echo $this->Form->input( 'Orientstruct.id', array( 'type' => 'hidden', 'value' => '' ) );
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Orientstruct', array( 'type' => 'post', 'url' => Router::url( null, true )  ));
+		echo $this->Form->create( 'Orientstruct', array( 'type' => 'post'  ));
 		echo '<div>';
 		echo $this->Form->input( 'Orientstruct.id', array( 'type' => 'hidden' ) );
 		echo '</div>';

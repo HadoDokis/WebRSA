@@ -13,7 +13,7 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Recoursapre' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
-	echo $this->Xform->create( 'Recoursapre', array( 'url'=> Router::url( null, true ), 'id' => 'Recoursapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( 'Recoursapre', array( 'id' => 'Recoursapre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );
 ?>
 
 <script type="text/javascript">

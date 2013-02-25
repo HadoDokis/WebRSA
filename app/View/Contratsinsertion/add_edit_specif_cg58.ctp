@@ -55,24 +55,18 @@
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'StructurereferenteRef',
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxstruct',
-							Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
-						),
-						true
+					'url' => array(
+						'action' => 'ajaxstruct',
+						Set::extract( $this->request->data, 'Contratinsertion.structurereferente_id' )
 					)
 				)
 			).';';
 			echo $this->Ajax->remoteFunction(
 				array(
 					'update' => 'ReferentRef',
-					'url' => Router::url(
-						array(
-							'action' => 'ajaxref',
-							Set::extract( $this->request->data, 'Contratinsertion.referent_id' )
-						),
-						true
+					'url' => array(
+						'action' => 'ajaxref',
+						Set::extract( $this->request->data, 'Contratinsertion.referent_id' )
 					)
 				)
 			).';';
@@ -84,7 +78,7 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Contratinsertion.id', array( 'type' => 'hidden', 'value' => '' ) );
 
@@ -93,7 +87,7 @@
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Contratinsertion', array( 'type' => 'post', 'id' => 'testform' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Contratinsertion.id', array( 'type' => 'hidden' ) );
 
@@ -111,12 +105,12 @@
 			<td class="noborder">
 				<strong>Organisme chargé de l'instruction du dossier :</strong>
 				<?php echo $this->Xform->input( 'Contratinsertion.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structures, 'selected' => $struct_id, 'empty' => true ) );?>
-				<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => Router::url( array( 'action' => 'ajaxstruct' ), true ) ) ); ?>
+				<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
 			</td>
 			<td class="noborder">
 				<strong>Nom du référent unique :</strong>
 				<?php echo $this->Xform->input( 'Contratinsertion.referent_id', array('label' => false, 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
-				<?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => Router::url( array( 'action' => 'ajaxref' ), true ) ) ); ?>
+				<?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
 			</td>
 		</tr>
 		<tr>

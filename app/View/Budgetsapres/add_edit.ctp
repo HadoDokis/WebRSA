@@ -7,7 +7,7 @@
 
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
-	echo $this->Xform->create( 'Budgetapre', array( 'url' => Router::url( null, true ) ) );
+	echo $this->Xform->create( 'Budgetapre', array() );
 
 	if( isset( $this->request->data['Budgetapre']['id'] ) ) {
 		echo $this->Xhtml->tag( 'div', $this->Xform->input( 'Budgetapre.id' ) );

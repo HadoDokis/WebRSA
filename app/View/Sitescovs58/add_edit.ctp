@@ -9,11 +9,11 @@
 	}
 
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Sitecov58', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Sitecov58', array( 'type' => 'post' ) );
 		echo $this->Form->input( 'Sitecov58.id', array( 'type' => 'hidden', 'value' => null ) );
 	}
 	else {
-		echo $this->Form->create( 'Sitecov58', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Sitecov58', array( 'type' => 'post' ) );
 		echo $this->Form->input( 'Sitecov58.id', array( 'type' => 'hidden' ) );
 	}
 

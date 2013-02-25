@@ -26,7 +26,7 @@
 			}
 		}
 
-		echo $this->Form->create( null, array( 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( null, array() );
 
 		foreach( array_keys( $dossiers ) as $theme ) {
 			$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );

@@ -25,13 +25,13 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Propoorientationcov58', array(  'type' => 'post', 'url' => Router::url( null, true )  ) );
+		echo $this->Form->create( 'Propoorientationcov58', array(  'type' => 'post'  ) );
 		echo '<div>';
 		echo $this->Form->input( 'Propoorientationcov58.id', array( 'type' => 'hidden', 'value' => '' ) );
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Propoorientationcov58', array( 'type' => 'post', 'url' => Router::url( null, true )  ) );
+		echo $this->Form->create( 'Propoorientationcov58', array( 'type' => 'post'  ) );
 		echo '<div>';
 		echo $this->Form->input( 'Propoorientationcov58.id', array( 'type' => 'hidden' ) );
 		echo $this->Form->input( 'Propoorientationcov58.dossiercov58_id', array( 'type' => 'hidden' ) );

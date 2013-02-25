@@ -10,13 +10,13 @@
 
 <?php
 	if( $this->action == 'add' ) {
-		echo $this->Form->create( 'Serviceinstructeur', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Serviceinstructeur', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Serviceinstructeur.id', array( 'type' => 'hidden' ) );
 		echo '</div>';
 	}
 	else {
-		echo $this->Form->create( 'Serviceinstructeur', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+		echo $this->Form->create( 'Serviceinstructeur', array( 'type' => 'post' ) );
 		echo '<div>';
 		echo $this->Form->input( 'Serviceinstructeur.id', array( 'type' => 'hidden' ) );
 		echo '</div>';

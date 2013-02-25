@@ -118,7 +118,7 @@
 			)
 		);
 
-		echo $this->Ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => Router::url( array( 'action' => 'ajaxstatutpersonne' ), true ) ) );
+		echo $this->Ajax->observeField( 'TraitementpdoPersonneId', array( 'update' => 'statutPersonne', 'url' => array( 'action' => 'ajaxstatutpersonne' ) ) );
 
 		?><fieldset id="statutPersonne" class="invisible"></fieldset><?php
 ?>
@@ -813,7 +813,7 @@
 		<?php
 			echo $this->Fileuploader->create(
 				$fichiers,
-				Router::url( array( 'action' => 'ajaxfileupload' ), true )
+				array( 'action' => 'ajaxfileupload' )
 			);
 		?>
 	</fieldset>
@@ -913,12 +913,9 @@
 
 		<?php echo $this->Ajax->remoteFunction(
 			array(
-				'url' => Router::url(
-					array(
-						'action' => 'ajaxstatutpersonne',
-						@$this->request->data['Traitementpdo']['personne_id']
-					),
-					true
+				'url' => array(
+					'action' => 'ajaxstatutpersonne',
+					@$this->request->data['Traitementpdo']['personne_id']
 				),
 				'update' => 'statutPersonne'
 			)

@@ -19,7 +19,7 @@
 
 	$formSent = ( isset( $this->request->data['Filtre']['actif'] ) && $this->request->data['Filtre']['actif'] );
 ?>
-<?php echo $this->Form->create( 'Filtre', array( 'url'=> Router::url( null, true ), 'id' => 'Filtre', 'class' => ( $formSent ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Filtre', array( 'id' => 'Filtre', 'class' => ( $formSent ? 'folded' : 'unfolded' ) ) );?>
 	<div><?php echo $this->Form->input( 'Filtre.actif', array( 'type' => 'hidden', 'value' => true ) );?></div>
 	<fieldset>
 		<legend>Recherche par personne</legend>

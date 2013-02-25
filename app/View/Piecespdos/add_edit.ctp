@@ -13,10 +13,10 @@
 
 	<?php
 		if( $this->action == 'add' ) {
-			echo $this->Form->create( 'Piecepdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Form->create( 'Piecepdo', array( 'type' => 'post' ) );
 		}
 		else {
-			echo $this->Form->create( 'Piecepdo', array( 'type' => 'post', 'url' => Router::url( null, true ) ) );
+			echo $this->Form->create( 'Piecepdo', array( 'type' => 'post' ) );
 		}
 	?>
 
