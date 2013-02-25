@@ -19,7 +19,8 @@
 			'Dossierpcg66.orgpayeur',
 			'Serviceinstructeur.lib_service',
 			'Dossierpcg66.iscomplet',
-			'Dossierpcg66.user_id' => array( 'value' => '#User.nom# #User.prenom#' ),
+// 			'Dossierpcg66.user_id' => array( 'value' => '#User.nom# #User.prenom#' ),
+			'User.nom_complet' => array( 'type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)' ),
 			'Dossierpcg66.etatdossierpcg'
 		),
 		array(
