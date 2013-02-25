@@ -1080,12 +1080,15 @@
 			$typestructure = Set::classicExtract( $contratinsertion, 'Structurereferente.typestructure' );
 
 			$user = $this->User->find(
-					'first', array(
-				'conditions' => array(
-					'User.id' => $user_id
-				),
-				'contain' => false
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
 					)
+				)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
 
@@ -1093,7 +1096,8 @@
 				$modeleodt = "Contratinsertion/ficheliaisoncerParticulier.odt";
 			}
 			else {
-				$modeleodt = "Contratinsertion/ficheliaisoncerSimple{$typestructure}.odt";
+// 				$modeleodt = "Contratinsertion/ficheliaisoncerSimple{$typestructure}.odt";
+				$modeleodt = "Contratinsertion/ficheliaisoncerSimplemsp.odt";
 			}
 
 			return $this->ged(
@@ -1111,36 +1115,41 @@
 		public function getPdfNotifbenef( $contratinsertion_id, $user_id ) {
 			$queryData = array(
 				'fields' => array_merge(
-						$this->fields(), $this->Structurereferente->fields(), array(
-					'Referent.qual',
-					'Referent.nom',
-					'Referent.prenom',
-					'Referent.numero_poste',
-					'Referent.email',
-					'Dossier.matricule',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Personne.typedtnai',
-					'Personne.nir',
-					'Personne.idassedic',
-					'Personne.numfixe',
-					'Personne.numport',
-					'Personne.email',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie',
-					'Adresse.compladr',
-					'Adresse.complideadr',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
-					'Adresse.codepos',
-					'Propodecisioncer66.isvalidcer',
-					'Propodecisioncer66.motifficheliaison',
-					'Propodecisioncer66.motifnotifnonvalid',
-					'Propodecisioncer66.nonvalidationparticulier'
-						)
+					$this->fields(),
+					$this->Structurereferente->fields(),
+					array(
+						'( '.$this->Propodecisioncer66->Motifcernonvalid66->vfListeMotifs().' ) AS "Propodecisioncer66__motifscersnonvalids66"',
+					),
+					array(
+						'Referent.qual',
+						'Referent.nom',
+						'Referent.prenom',
+						'Referent.numero_poste',
+						'Referent.email',
+						'Dossier.matricule',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.dtnai',
+						'Personne.typedtnai',
+						'Personne.nir',
+						'Personne.idassedic',
+						'Personne.numfixe',
+						'Personne.numport',
+						'Personne.email',
+						'Adresse.numvoie',
+						'Adresse.typevoie',
+						'Adresse.nomvoie',
+						'Adresse.compladr',
+						'Adresse.complideadr',
+						'Adresse.locaadr',
+						'Adresse.numcomptt',
+						'Adresse.codepos',
+						'Propodecisioncer66.isvalidcer',
+						'Propodecisioncer66.motifficheliaison',
+						'Propodecisioncer66.motifnotifnonvalid',
+						'Propodecisioncer66.nonvalidationparticulier'
+					)
 				),
 				'joins' => array(
 					$this->join( 'Personne' ),
@@ -1177,12 +1186,15 @@
 			$contratinsertion['Contratinsertion']['delairegularisation'] = date( 'Y-m-d', strtotime( '+1 month', strtotime( $datesaisici ) ) );
 
 			$user = $this->User->find(
-					'first', array(
-				'conditions' => array(
-					'User.id' => $user_id
-				),
-				'contain' => false
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
 					)
+				)
 			);
 			$contratinsertion = Set::merge( $contratinsertion, $user );
 
