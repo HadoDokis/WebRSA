@@ -616,8 +616,14 @@
 								<td><?php echo @$detailsEp['DEM']['etatDossierep'];?></td>
 								<td><?php echo @$detailsEp['CJT']['etatDossierep'];?></td>
 							</tr>
+							<?php
+								$avisDecisionEP = 'Avis';
+								if( Configure::read( 'Cg.departement' ) == 93 ){
+									$avisDecisionEP = 'Décision';
+								}
+							?>
 							<tr class="odd">
-								<th>Décision de la commission d'EP</th>
+								<th><?php echo $avisDecisionEP;?> de la commission d'EP</th>
 								<td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
 								<td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
 							</tr>
