@@ -46,8 +46,8 @@
 	<table class="tooltips aere">
 		<thead>
 			<tr>
-				<th>Proposition</th>
-				<th>Date de la proposition</th>
+				<th>Décision</th>
+				<th>Date de la décision</th>
 				<th>Validation</th>
 				<th>Date de validation</th>
 				<th>Commentaire du technicien</th>
