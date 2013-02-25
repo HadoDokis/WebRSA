@@ -362,6 +362,7 @@
 										'Dossier.matricule',
 										'Personne.id',
 										'Personne.dtnai',
+										'Adresse.locaadr',
 										'Structureorientante.lib_struc' => array( 'type' => 'text' ),
 										'Structurereferente.lib_struc',
 										'Dossierep.created',
