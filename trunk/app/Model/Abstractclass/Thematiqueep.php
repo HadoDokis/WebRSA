@@ -364,5 +364,13 @@
 			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
 		}
 
+		/**
+		 * @param array $dossierep
+		 * @return integer
+		 */
+		protected function _prepareFormDataDecisionId( $dossierep ) {
+			return @$dossierep['Passagecommissionep'][0]['Decision'.Inflector::underscore( $this->alias )][0]['id'];
+		}
+
 	}
 ?>

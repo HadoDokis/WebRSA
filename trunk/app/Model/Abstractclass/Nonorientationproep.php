@@ -468,6 +468,7 @@
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
 
+				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On récupère l'orientation en question afin de trouver le typeorient_id, le structurereferente_id et le referent_id s'il existe
 				$orientstruct = $this->Orientstruct->find(

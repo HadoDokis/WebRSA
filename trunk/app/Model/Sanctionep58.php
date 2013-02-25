@@ -544,9 +544,10 @@
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decisionsanctionep58'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
+				$formData['Decisionsanctionep58'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0]['etape'] == $niveauDecision ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0]['etape'] == $niveauDecision  && !empty( $dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0]['decision'] ) ) {
 					$formData['Decisionsanctionep58'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsanctionep58'][0];
 				}
 				// On ajoute les enregistrements de cette étape
