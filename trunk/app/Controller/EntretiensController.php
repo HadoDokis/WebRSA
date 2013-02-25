@@ -229,27 +229,31 @@
 
 			$this->Entretien->forceVirtualFields = true;
 			$entretiens = $this->Entretien->find(
-					'all', array(
-				'fields' => array(
-					'Entretien.id',
-					'Entretien.personne_id',
-					'Entretien.dateentretien',
-					'Entretien.arevoirle',
-					'Entretien.typeentretien',
-					'Structurereferente.lib_struc',
-					'Referent.nom_complet',
-					'Objetentretien.name',
-				),
-				'contain' => array(
-					'Structurereferente',
-					'Referent',
-					'Objetentretien',
-					'Fichiermodule'
-				),
-				'conditions' => array(
-					'Entretien.personne_id' => $personne_id
-				)
+				'all',
+				array(
+					'fields' => array(
+						'Entretien.id',
+						'Entretien.personne_id',
+						'Entretien.dateentretien',
+						'Entretien.arevoirle',
+						'Entretien.typeentretien',
+						'Structurereferente.lib_struc',
+						'Referent.nom_complet',
+						'Objetentretien.name',
+					),
+					'contain' => array(
+						'Structurereferente',
+						'Referent',
+						'Objetentretien',
+						'Fichiermodule'
+					),
+					'conditions' => array(
+						'Entretien.personne_id' => $personne_id
+					),
+					'order' => array(
+						'Entretien.dateentretien DESC', 'Entretien.id DESC'
 					)
+				)
 			);
 			$this->Entretien->forceVirtualFields = false;
 
