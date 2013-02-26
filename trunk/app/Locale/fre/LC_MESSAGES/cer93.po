@@ -21,7 +21,7 @@ msgstr ""
 msgid "Cer93::index::empty"
 msgstr "Cette personne ne possède aucun CER"
 
-msgid "Cer93::delete::confirm"
+msgid "Cers93::delete::confirm"
 msgstr "Confirmer la suppression ?"
 
 msgid "Cers93::view"
