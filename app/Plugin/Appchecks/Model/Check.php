@@ -318,7 +318,7 @@
 
 				if( method_exists( 'Xvalidation', $rule ) ) {
 					$Validator =  Xvalidation::getInstance();
-					$validate = call_user_func_array( array( $Validator, $rule ), Set::merge( array( $testValue ), $ruleParams ) );
+					$validate = call_user_func_array( array( $Validator, $rule ), array_merge( array( $testValue ), $ruleParams ) );
 				}
 				else {
 					$Validator =  'Validation';
