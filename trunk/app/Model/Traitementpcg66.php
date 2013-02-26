@@ -673,7 +673,8 @@
 				$this->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				$this->join( 'Modeletraitementpcg66' ),
-				$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' )
+				$this->Modeletraitementpcg66->join( 'Modeletypecourrierpcg66' ),
+				$this->join( 'Serviceinstructeur' )
 			);
 
 			$conditions = array(
@@ -717,7 +718,8 @@
 						'Dossierpcg66.user_id',
 						'Personne.dtnai',
 						'Personne.nir',
-					)
+					),
+					$this->Serviceinstructeur->fields()
 				),
 				'joins' => $joins,
 				'conditions' => $conditions,
@@ -778,6 +780,15 @@
 					)
 				)
 			);
+			
+			// Dates calculées sur les 3 mois suivants la date de début de prise en compte du courrier
+			$datedebutCourrier = $data['Modeletraitementpcg66']['montantdatedebut'];
+			if( !empty( $datedebutCourrier ) ) {
+				$datedebutCourrier = strtotime( $datedebutCourrier );
+				foreach( array( '0', '1', '2' ) as $i ) {
+					$data['Modeletraitementpcg66']["moisprisencompte$i"] = date("Y-m-d", strtotime("+". $i ." months", $datedebutCourrier));
+				}
+			}
 // debug($piecesmanquantes);
 // debug($data);
 // die();

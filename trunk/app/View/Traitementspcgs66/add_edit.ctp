@@ -843,6 +843,14 @@
 	</script>
 
 	<?php
+		echo $this->Default->subform(
+			array(
+				'Traitementpcg66.serviceinstructeur_id' => array( 'type' => 'select', 'options' => $services, 'empty' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
 		// Liste des motifs concernant la personne
 		echo $this->Default->subform(
 			array(

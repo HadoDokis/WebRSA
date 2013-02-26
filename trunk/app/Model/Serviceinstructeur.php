@@ -172,6 +172,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Traitementpcg66' => array(
+				'className' => 'Traitementpcg66',
+				'foreignKey' => 'serviceinstructeur_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

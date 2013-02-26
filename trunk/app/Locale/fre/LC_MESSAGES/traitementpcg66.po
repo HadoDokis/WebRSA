@@ -491,6 +491,9 @@ msgstr "Motifs concernant la personne"
 msgid "Traitementpcg66.typecourrierpcg66_id"
 msgstr "Type de courrier"
 
+msgid "Traitementpcg66.serviceinstructeur_id"
+msgstr "Service à contacter (insertion)"
+
 ########################################################################
 ## 	Traduction pour la recherche par PDO
 ########################################################################

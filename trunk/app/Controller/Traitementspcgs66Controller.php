@@ -106,6 +106,10 @@
 							)
 					)
 			);
+			
+			// Liste des service instructeurs à contacter pour les traitements PCGs insertion
+			// La liste est : AFIJ, ADRH, MLJ (=Organisme agréé) + MSPs
+			$this->set( 'services', $this->Traitementpcg66->Serviceinstructeur->listOptions( true ) );
 		}
 
 		/**

@@ -253,6 +253,14 @@ DROP FUNCTION public.nettoyage_doublons_pdfs();
 DROP INDEX IF EXISTS pdfs_modele_fk_value_idx;
 CREATE UNIQUE INDEX pdfs_modele_fk_value_idx ON pdfs(modele, fk_value);
 
+
+
+--------------------------------------------------------------------------------
+-- 20130226: ajout d'un champ serviceinstructeur_id dans la table traitementspcgs66 afin
+--	de pouvoir renseigner le service à contacter par le service
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'traitementspcgs66', 'serviceinstructeur_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'traitementspcgs66', 'traitementspcgs66_serviceinstructeur_id_fkey', 'servicesinstructeurs', 'serviceinstructeur_id', false );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
