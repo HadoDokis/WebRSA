@@ -77,15 +77,48 @@
 		*/
 
 		public function checkForRelance( $check ) {
-			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
-				'first',
-				array(
-					'conditions'=>array(
-						'Nonrespectsanctionep93.id'=>$this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
-					),
-					'contain'=>false
-				)
-			);
+			// Est-ce un nouvel enregistrement de relance / de la thématique nonrespectsanctionep ?
+			$id = Hash::get( $this->data, 'Relancenonrespectsanctionep93.id' );
+			if( empty( $id ) && !empty( $this->id ) ) {
+				$id = $this->id;
+			}
+
+			$nonrespectsanctionep93_id = Hash::get( $this->data, 'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' );
+			if( empty( $nonrespectsanctionep93_id ) && !empty( $this->Nonrespectsanctionep93->id ) ) {
+				$nonrespectsanctionep93_id = $this->Nonrespectsanctionep93->id;
+			}
+
+			if( !empty( $nonrespectsanctionep93_id ) ) {
+				$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
+					'first',
+					array(
+						'conditions'=>array(
+							'Nonrespectsanctionep93.id' => $nonrespectsanctionep93_id
+						),
+						'contain'=>false
+					)
+				);
+			}
+			else if( !empty( $id ) ) {
+				$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
+					'first',
+					array(
+						'conditions'=>array(
+							'Relancenonrespectsanctionep93.id' => $id
+						),
+						'joins' => array(
+							$this->Nonrespectsanctionep93->join( $this->alias, array( 'type' => 'INNER' ) )
+						),
+						'contain'=>false
+					)
+				);
+			}
+			else {
+				$nonrespectsanctionep93 = array(
+					'Nonrespectsanctionep93' => $this->Nonrespectsanctionep93->data['Nonrespectsanctionep93']
+				);
+			}
+
 			$possible = true;
 			if ($nonrespectsanctionep93['Nonrespectsanctionep93']['origine']=='orientstruct') {
 				switch($this->data['Relancenonrespectsanctionep93']['numrelance']) {
@@ -109,7 +142,7 @@
 							array(
 								'conditions'=>array(
 									'Relancenonrespectsanctionep93.numrelance' => $this->data['Relancenonrespectsanctionep93']['numrelance']-1,
-									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
+									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $nonrespectsanctionep93_id
 								),
 								'contain'=>false
 							)
@@ -140,7 +173,7 @@
 							array(
 								'conditions'=>array(
 									'Relancenonrespectsanctionep93.numrelance' => 1,
-									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $this->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id']
+									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id' => $nonrespectsanctionep93_id
 								),
 								'contain'=>false
 							)
@@ -154,6 +187,7 @@
 			if ( $dateminrelance >= strtotime( $this->data['Relancenonrespectsanctionep93']['daterelance'] ) ) {
 				$possible = false;
 			}
+
 			return $possible;
 		}
 
