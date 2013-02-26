@@ -28,7 +28,8 @@
 					),
 					'etatorient' => array( 'domain' => 'orientstruct' ),
 					'haspiecejointe' => array( 'domain' => 'orientstruct' ),
-					'origine'
+					'origine',
+					'typenotification'
 				)
 			),
 			'Formattable' => array(
@@ -503,6 +504,15 @@
 		 * @return string
 		 */
 		public function modeleOdt( $data ) {
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$typenotification = $data['Orientstruct']['typenotification'];
+				if( !empty( $typenotification ) && $typenotification == 'systematique' ) {
+					return "Orientation/orientationsystematiquepe.odt";
+				}
+				else {
+					return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
+				}
+			}
 			return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
 		}
 
