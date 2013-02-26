@@ -263,7 +263,7 @@
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $bilanparcours66_id ) );
 			}
