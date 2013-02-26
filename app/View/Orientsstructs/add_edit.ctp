@@ -112,6 +112,10 @@
 		echo $this->Form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true, 'selected' => $selectedDateDemande ) );
 
 		echo $this->Form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ) ) );
+		
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo $this->Form->input( 'Orientstruct.typenotification', array(  'label' =>  'Type de notification', 'options' => $options['typenotification'], 'type' => 'select', 'empty' => false  ) );
+		}
 	?>
 </fieldset>
 

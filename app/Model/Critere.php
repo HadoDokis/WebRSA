@@ -203,6 +203,17 @@
 				)
 			);
 
+			/// Inscrit à PE ?
+			$isinscritpe  = Set::extract( $criteres, 'Critere.isinscritpe' );
+			if( !empty( $isinscritpe ) && in_array( $isinscritpe, array( 'O', 'N' ) ) ) {
+				if( $isinscritpe == 'O' ) {
+					$conditions['Historiqueetatpe.etat'] = 'inscription';
+				}
+				else {
+					$conditions['Historiqueetatpe.etat <>'] = 'inscription';
+				}
+			}
+			
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );

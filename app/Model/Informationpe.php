@@ -13,6 +13,9 @@
 	 *
 	 * @package app.Model
 	 */
+	 
+	App::uses( 'Sanitize', 'Utility' );
+	 
 	class Informationpe extends AppModel
 	{
 		public $name = 'Informationpe';
@@ -291,7 +294,7 @@
 			if( !empty( $personne['Personne']['dtnai'] ) ) {
 				$sqDerniereInformationpe = $this->sqDerniere( 'Personne' );
 				foreach( array( 'nom', 'prenom', 'dtnai', 'nir' ) as $field ) {
-					$sqDerniereInformationpe = str_replace( "\"Personne\".\"{$field}\"", "'{$personne['Personne'][$field]}'", $sqDerniereInformationpe );
+					$sqDerniereInformationpe = str_replace( "\"Personne\".\"{$field}\"", "'".Sanitize::escape( $personne['Personne'][$field] )."'", $sqDerniereInformationpe );
 				}
 				$conditions[] = "Informationpe.id IN ( {$sqDerniereInformationpe} )";
 
