@@ -264,7 +264,6 @@ SELECT add_missing_constraint ( 'public', 'traitementspcgs66', 'traitementspcgs6
 
 CREATE TYPE TYPE_TYPENOTIFICATION AS ENUM ( 'normale', 'systematique' );
 SELECT add_missing_table_field ( 'public', 'orientsstructs', 'typenotification', 'TYPE_TYPENOTIFICATION' );
-ALTER TABLE orientsstructs ALTER COLUMN typenotification SET DEFAULT 'normale';
 UPDATE orientsstructs SET typenotification = 'normale' WHERE typenotification IS NULL;
 
 -- *****************************************************************************
