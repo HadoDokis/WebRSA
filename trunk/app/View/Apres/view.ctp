@@ -18,6 +18,7 @@
 	$justificatif = Set::enum( $apre['Apre']['justificatif'], $options['justificatif'] );
 	$isdecision = Set::enum( $apre['Apre']['isdecision'], $options['isdecision'] );
 	$cessderact = Set::enum( $apre['Apre']['cessderact'], $optionsdsps['cessderact'] );
+	$sect_acti_emp = Set::enum( $apre['Apre']['secteuractivite'], $sect_acti_emp );
 
 	echo $this->Default2->view(
 		$apre,
@@ -41,7 +42,7 @@
 			'Apre.avistechreferent' => array( 'type' => 'text' ),
 			'Apre.etatdossierapre' => array( 'value' => $etatdossierapre ),
 			'Apre.eligibiliteapre' => array( 'value' => $eligibiliteapre ),
-			'Apre.secteuractivite' => array( 'type' => 'text' ),
+			'Apre.secteuractivite' => array( 'type' => 'text', 'value' => $sect_acti_emp ),
 			'Apre.nbenf12' => array( 'type' => 'text' ),
 			'Apre.statutapre' => array( 'value' => $statutapre ),
 			'Apre.justificatif' => array( 'value' => $justificatif ),
