@@ -157,15 +157,14 @@
 						),
 						$this->Xhtml->printLink(
 							'Imprimer la demande APRE',
-							array( 'controller' => 'gedooos', 'action' => 'apre', $apre[$this->modelClass]['id'] ),
+							array( 'controller' => 'apres', 'action' => 'impression', $apre[$this->modelClass]['id'] ),
 							$buttonEnabled,
-							$this->Permissions->checkDossier( 'gedooos', 'apre', $dossierMenu )
+							$this->Permissions->checkDossier( 'apres', 'impression', $dossierMenu )
 						),
 						$this->Xhtml->fileLink(
 							'Fichiers liés',
 							array( 'controller' => 'apres'.Configure::read( 'Apre.suffixe' ), 'action' => 'filelink', $apre[$this->modelClass]['id'] ),
-							$buttonEnabled,
-							$this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink', $dossierMenu )
+							$buttonEnabled && $this->Permissions->checkDossier( 'apres'.Configure::read( 'Apre.suffixe' ), 'filelink', $dossierMenu )
 						),
 						array( $innerTable, array( 'class' => 'innerTableCell' ) )
 					),

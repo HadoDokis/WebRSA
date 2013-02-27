@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'DossiersMenus','Gedooo.Gedooo' );
 
 		public $commeDroit = array(
 			'view' => 'Apres:index'
@@ -529,7 +529,7 @@
 		public function view( $apre_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $apre_id ) ) ) );
 
-			$this->Apre->forceVirtualFields = true;
+// 			$this->Apre->forceVirtualFields = true;
 
 			$apre = $this->Apre->find(
 				'first',
@@ -813,5 +813,28 @@
 			$this->_setOptions();
 			$this->render( 'add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
+		
+		
+		/**
+		 * Génère l'impression d'une APRE 
+		 * On prend la décision de ne pas le stocker.
+		 *
+		 * @param integer $id L'id de l'APRE que l'on veut imprimer.
+		 * @return void
+		 */
+		public function impression( $id = null ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $id ) ) );
+
+			$pdf = $this->Apre->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'apre_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'APRE.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer( null,true ) );
+			}
+		}
+
 	}
 ?>
