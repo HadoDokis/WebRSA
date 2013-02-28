@@ -1258,69 +1258,86 @@
 		 */
 		public function getDataForPdf( $id, $user_id ) {
 			$contratinsertion = $this->find(
-					'first', array(
-				'fields' => array_merge(
-						$this->fields(), $this->Personne->fields(), $this->Referent->fields(), $this->Structurereferente->fields(), $this->Typocontrat->fields(), $this->Zonegeographique->fields(), $this->Personne->Activite->fields(), $this->Personne->Dsp->fields(), $this->Personne->Foyer->fields(), $this->Personne->Prestation->fields(), $this->Personne->Foyer->Dossier->fields(), $this->Personne->Foyer->Modecontact->fields(), $this->Personne->Foyer->Adressefoyer->Adresse->fields(), $this->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
-//						$this->Personne->Foyer->Dossier->Infofinanciere->fields(),
-						$this->Personne->Foyer->Dossier->Situationdossierrsa->fields(), $this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->fields(), array(
-					'( '.$this->Personne->Foyer->Dossier->Detaildroitrsa->vfRsaMajore( '"Dossier"."id"' ).' ) AS "Infofinanciere__rsamaj"'
-						)
-				),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					$this->join( 'Typocontrat', array( 'type' => 'LEFT OUTER' ) ),
-					$this->join( 'Zonegeographique', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$this->Personne->Foyer->join( 'Modecontact', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Personne->Foyer->Dossier->Situationdossierrsa->join( 'Suspensiondroit', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				'contain' => false,
-				'conditions' => array(
-					'Contratinsertion.id' => $id,
-					array(
-						'OR' => array(
-							'Activite.id IS NULL',
-							'Activite.id IN ('
-							.$this->Personne->Activite->sqDerniere( 'Personne.id' )
-							.')',
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Structurereferente->fields(),
+						$this->Structurereferente->Typeorient->fields(),
+						$this->Typocontrat->fields(),
+						$this->Zonegeographique->fields(),
+						$this->Personne->Activite->fields(),
+						$this->Personne->Dsp->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Prestation->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Modecontact->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->fields(),
+						array(
+							'( '.$this->Personne->Foyer->Dossier->Detaildroitrsa->vfRsaMajore( '"Dossier"."id"' ).' ) AS "Infofinanciere__rsamaj"'
 						)
 					),
-					array(
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ('
-							.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
-							.')',
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+						$this->join( 'Typocontrat', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Zonegeographique', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Modecontact', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->Dossier->Situationdossierrsa->join( 'Suspensiondroit', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Contratinsertion.id' => $id,
+						array(
+							'OR' => array(
+								'Activite.id IS NULL',
+								'Activite.id IN ('
+								.$this->Personne->Activite->sqDerniere( 'Personne.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Adressefoyer.id IS NULL',
+								'Adressefoyer.id IN ('
+								.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Dsp.id IS NULL',
+								'Dsp.id IN ('
+								.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' )
+								.')',
+							)
+						),
+						array(
+							'OR' => array(
+								'Suspensiondroit.id IS NULL',
+								'Suspensiondroit.id IN ('
+								.$this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->sqDerniere( 'Situationdossierrsa.id' )
+								.')',
+							)
 						)
 					),
-					array(
-						'OR' => array(
-							'Dsp.id IS NULL',
-							'Dsp.id IN ('
-							.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' )
-							.')',
-						)
-					),
-					array(
-						'OR' => array(
-							'Suspensiondroit.id IS NULL',
-							'Suspensiondroit.id IN ('
-							.$this->Personne->Foyer->Dossier->Situationdossierrsa->Suspensiondroit->sqDerniere( 'Situationdossierrsa.id' )
-							.')',
-						)
-					)
-				),
-					)
+				)
 			);
 
 			// Recherche, traduction et ajout de champs virtuels concernant Autreavissuspension et Autreavisradiation
