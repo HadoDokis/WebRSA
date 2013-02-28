@@ -151,6 +151,18 @@
 						'contain' => false
 					)
 				);
+				
+				$modeletypecourrierpcg66avecDates = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Modeletypecourrierpcg66.typecourrierpcg66_id' => $typecourrierpcg66_id,
+							'Modeletypecourrierpcg66.isdates' => '1'
+						),
+						'fields' => array( 'Modeletypecourrierpcg66.id'),
+						'contain' => false
+					)
+				);
 			}
 
 			// Liste des pièces liées aux modèles de courrier
@@ -197,7 +209,7 @@
 				$this->request->data = Set::merge( $this->request->data, $datas );
 			}
 
-			$this->set( compact( 'modeletypecourrierpcg66', 'modeletypecourrierpcg66avecmontant' ) );
+			$this->set( compact( 'modeletypecourrierpcg66', 'modeletypecourrierpcg66avecmontant', 'modeletypecourrierpcg66avecDates' ) );
 			$this->render( 'ajaxpiece', 'ajax' );
 		}
 
