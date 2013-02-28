@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( APPLIBS.'cmis.php' );
 
 	/**
 	 * La classe Relancesnonrespectssanctionseps93Controller ...
@@ -674,7 +675,7 @@
 				// Gestion des erreurs: si on n'a toujours pas le document
 				if( empty( $contents[$i]['Pdf']['document'] ) ) {
 					$nErrors++;
-					unset( $results[$i] );
+					unset( $contents[$i] );
 				}
 			}
 

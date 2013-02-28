@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::import( 'Behavior', 'Gedooo.Gedooo' );
+	require_once( APPLIBS.'cmis.php' );
 
 	/**
 	 * Classe StorablePdfBehavior, nécessite le plugin Gedooo.

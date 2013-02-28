@@ -7,6 +7,7 @@
 	 * @package app.Model.Abstractclass
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( APPLIBS.'cmis.php' );
 
 	/**
 	 * Classe abstraite contenant les signatures de méthodes qui doivent être
