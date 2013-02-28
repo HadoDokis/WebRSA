@@ -13,6 +13,9 @@
 	 *
 	 * @package app.Model
 	 */
+	 
+	define( 'ORIENTSTRUCT_STORABLE_PDF_ACTIVE', ( Configure::read( 'Cg.departement' ) != 66 ) );
+	 
 	class Orientstruct extends AppModel
 	{
 		public $name = 'Orientstruct';
@@ -41,7 +44,7 @@
 				),
 			),
 			'Gedooo.Gedooo',
-			'StorablePdf',
+			'StorablePdf' => array( 'active' => ORIENTSTRUCT_STORABLE_PDF_ACTIVE ),
 			'ModelesodtConditionnables' => array(
 				66 => array(
 					'Orientation/changement_referent_cgcg.odt',
@@ -1299,6 +1302,51 @@
 			}
 
 			return $querydata;
+		}
+		
+		
+		/**
+		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
+		 * à la méthode ged du behavior Gedooo et le stocke,
+		 *
+		 * @param integer $id Id du CER
+		 * @param integer $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $id, $user_id ) {
+
+			$Option = ClassRegistry::init( 'Option' );
+			$options = Set::merge(
+				array(
+					'Personne' => array(
+						'qual' => $Option->qual(),
+					),
+					'Adresse' => array(
+						'typevoie' => $Option->typevoie(),
+					),
+					'Prestation' => array(
+						'rolepers' => $Option->rolepers(),
+					),
+					'Foyer' => array(
+						'sitfam' => $Option->sitfam(),
+						'typeocclog' => $Option->typeocclog(),
+					),
+					'Type' => array(
+						'voie' => $Option->typevoie(),
+					),
+					'Detaildroitrsa' => array(
+						'oridemrsa' => $Option->oridemrsa(),
+					),
+				),
+				$this->enums()
+			);
+
+			$orientstruct = $this->getDataForPdf( $id, $user_id );
+			$modeledoc = $this->modeleOdt( $orientstruct );
+
+			$pdf = $this->ged( $orientstruct, $modeledoc, false, $options );
+
+			return $pdf;
 		}
 	}
 ?>
