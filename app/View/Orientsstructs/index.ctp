@@ -331,7 +331,6 @@
 								array(
 									'enabled' => (
 										( $this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) == 1 )
-										&& $orientstruct['Orientstruct']['imprime']
 									)
 								)
 							),
