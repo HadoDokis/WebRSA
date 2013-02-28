@@ -43,6 +43,9 @@
 										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantsaisi']
 										)
 									);
+								}
+								
+								if( in_array( $id, $modeletypecourrierpcg66avecDates ) ) {
 									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantdatedebut", array(
 										'label' =>  "Du",
 										'type' => 'date',
