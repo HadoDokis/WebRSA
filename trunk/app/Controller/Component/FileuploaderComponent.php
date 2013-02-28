@@ -9,6 +9,7 @@
 	 */
 	App::uses('Folder', 'Utility');
 	App::uses('File', 'Utility');
+	require_once( APPLIBS.'cmis.php' );
 
 	/**
 	 * La classe FileuploaderComponent permet de gérer les fichiers liés pour
