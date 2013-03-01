@@ -533,15 +533,14 @@
 		public function impression( $id = null ) {
 			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
 
-			
+
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$pdf = $this->Orientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 			else {
 				$pdf = $this->Orientstruct->getStoredPdf( $id, 'date_impression' );
+				$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 			}
-
-			$pdf = ( isset( $pdf['Pdf']['document'] ) ? $pdf['Pdf']['document'] : null );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'orientstruct_%d-%s.pdf', $id, date( 'Y-m-d' ) ) );
