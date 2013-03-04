@@ -1291,12 +1291,34 @@
 				)
 			);
 
+			// Transformation des sujets, ... précédents
+			$sujetscerspcds93 = array();
+			$sujetspcds = Hash::get( $data, 'Cer93.sujetpcd' );
+			if( !empty($sujetspcds) ) {
+				$sujetspcds = unserialize( $sujetspcds );
+				foreach( $sujetspcds['Sujetcer93'] as $i => $sujetcer93pcd ) {
+					$sujetscerspcds93[$i]['Soussujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93']['Soussujetcer93'];
+					unset( $sujetcer93pcd['Cer93Sujetcer93']['Soussujetcer93'] );
+
+					$sujetscerspcds93[$i]['Valeurparsoussujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93']['Valeurparsoussujetcer93'];
+					unset( $sujetcer93pcd['Cer93Sujetcer93']['Valeurparsoussujetcer93'] );
+
+					$sujetscerspcds93[$i]['Cerpcd93Sujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93'];
+					unset( $sujetcer93pcd['Cer93Sujetcer93'] );
+
+					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
+				}
+			}
+				
+// debug($sujetscerspcds93);
+// die();
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
 				'exppro' => $expsproscers93,
 				'diplome' => $diplomescers93,
-				'sujetcer' => $sujetscers93
+				'sujetcer' => $sujetscers93,
+				'sujetcerpcd' => $sujetscerspcds93
 			);
 		}
 
