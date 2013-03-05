@@ -285,7 +285,7 @@
 		'prefix' => $prefix.'cake_core_',
 		'path' => CACHE.'persistent'.DS,
 		'serialize' => ($engine === 'File'),
-		'mask' => 0666,
+		'mask' => 0777,
 		'duration' => $duration
 	) );
 
@@ -298,7 +298,19 @@
 		'prefix' => $prefix.'cake_model_',
 		'path' => CACHE.'models'.DS,
 		'serialize' => ($engine === 'File'),
-		'mask' => 0666,
+		'mask' => 0777,
+		'duration' => $duration
+	) );
+
+	/**
+	 * Configure the cache for views.
+	 */
+	Cache::config( 'views', array(
+		'engine' => $engine,
+		'prefix' => $prefix.'cake_view_',
+		'path' => CACHE.'views'.DS,
+		'serialize' => false,
+		'mask' => 0777,
 		'duration' => $duration
 	) );
 ?>

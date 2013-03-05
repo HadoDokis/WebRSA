@@ -437,4 +437,13 @@
 	 * devant être pris en compte pour la corbeille PCG
 	 */
 	Configure::write( 'Corbeillepcg.descriptionpdoId', array( '1' ) );
+
+	/**
+	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
+	 * clôturée ni expirée ?
+	 *
+	 * @var boolean
+	 * @default null (false)
+	 */
+	Configure::write( 'Utilisateurs.reconnection', true );
 ?>
