@@ -220,7 +220,6 @@
 				'Sanctionep58.nonrespectcer.dureeTolerance' => 'integer',
 				'Selectionradies.conditions' => 'isarray',
 				'Typeorient.emploi_id' => 'integer',
-				'traitementResultatId' => 'integer',
 			);
 		}
 
@@ -264,8 +263,7 @@
 		 * @return array
 		 */
 		protected function _allConfigureKeys93() {
-			return array(
-				'traitementResultatId' => 'integer',
+			$return = array(
 				'Dossierep.nbJoursEntreDeuxPassages' => 'integer',
 				'Filtresdefaut.Cohortes_enattente' => 'isarray',
 				'Filtresdefaut.Cohortes_nouvelles' => 'isarray',
@@ -288,9 +286,19 @@
 				'apache_bin' => 'string',
 				'Cohortescers93.saisie.periodeRenouvellement' => 'string',
 				'Contratinsertion.RdvAuto.active' => 'boolean',
-				'Contratinsertion.RdvAuto.typerdv_id' => 'integer',
-				'Contratinsertion.RdvAuto.statutrdv_id' => 'integer',
 			);
+
+			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
+				$return = Hash::merge(
+					$return,
+					array(
+						'Contratinsertion.RdvAuto.typerdv_id' => 'integer',
+						'Contratinsertion.RdvAuto.statutrdv_id' => 'integer',
+					)
+				);
+			}
+
+			return $return;
 		}
 
 		/**
@@ -517,6 +525,63 @@
 			}
 
 			return $configs;
+		}
+
+		/**
+		 * Retourne les clés de configuration ainsi que le nom du modèle concerné,
+		 * contenant une référence vers une clé primaire d'une table, suivant le
+		 * CG connecté.
+		 *
+		 * @return array
+		 */
+		public function allConfigurePrimaryKeys() {
+			$return = array();
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$return = array(
+					'traitementEnCoursId' => 'Traitementtypepdo',
+					'traitementClosId' => 'Traitementtypepdo',
+					'Typeorient.emploi_id' => 'Typeorient',
+					// TODO: 'Selectionradies.conditions' ?
+				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$return = array(
+					'traitementEnCoursId' => 'Traitementtypepdo',
+					'traitementClosId' => 'Traitementtypepdo',
+					'Orientstruct.typeorientprincipale.SOCIAL' => 'Typeorient',
+					'Orientstruct.typeorientprincipale.Emploi' => 'Typeorient',
+					'Chargeinsertion.Secretaire.group_id' => 'Group',
+					'Nonoriente66.notisemploi.typeorientId' => 'Typeorient',
+					'Nonoriente66.TypeorientIdSocial' => 'Typeorient',
+					'Nonoriente66.TypeorientIdPrepro' => 'Typeorient',
+					// TODO: Contratinsertion.Cg66.Rendezvous ?
+					'Corbeillepcg.descriptionpdoId' => 'Descriptionpdo',
+				);
+
+			}
+			else if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$return = array(
+					'traitementEnCoursId' => 'Traitementtypepdo',
+					'traitementClosId' => 'Traitementtypepdo',
+					'Chargeinsertion.Secretaire.group_id' => 'Group',
+					'Orientstruct.typeorientprincipale.Socioprofessionnelle' => 'Typeorient',
+					'Orientstruct.typeorientprincipale.Social' => 'Typeorient',
+					'Orientstruct.typeorientprincipale.Emploi' => 'Typeorient',
+				);
+
+				if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
+					$return = Hash::merge(
+						$return,
+						array(
+							'Contratinsertion.RdvAuto.typerdv_id' => 'Typerdv',
+							'Contratinsertion.RdvAuto.statutrdv_id' => 'Statutrdv',
+						)
+					);
+				}
+			}
+
+			return $return;
 		}
 	}
 ?>

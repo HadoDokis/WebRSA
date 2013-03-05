@@ -633,5 +633,120 @@
 
 			return array( 'configure' => $configure, 'tests' => $tests );
 		}
+
+		/**
+		 *
+		 * @param string $modelName
+		 * @param string $configureKey
+		 * @return array
+		 */
+		public function configurePrimaryKey( $modelName, $configureKey ) {
+			$primaryKeys = (array)Configure::read( $configureKey );
+			if( empty( $primaryKeys ) ) {
+				return array(
+					'success' => false,
+					'message' => "Aucune clé primaire n'est présente."
+				);
+			}
+
+			$results = array();
+			$Model = ClassRegistry::init( $modelName );
+
+			foreach( $primaryKeys as $primaryKey ) {
+				$querydata = array(
+					'conditions' => array(
+						"{$Model->alias}.{$Model->primaryKey}" => $primaryKey
+					),
+					'contain' => false
+				);
+				$results[$primaryKey] = ( $Model->find( 'count', $querydata ) == 1 );
+			}
+
+			if( !array_search( false, $results, true ) ) {
+				return array(
+					'success' => true,
+					'message' => null
+				);
+			}
+			else {
+				$missing = array();
+				foreach( $results as $primaryKey => $result ) {
+					if( !$result ) {
+						$missing[] = $primaryKey;
+					}
+				}
+				$missing = implode( ', ', $missing );
+				$table = Inflector::tableize( $Model->name );
+				return array(
+					'success' => false,
+					'message' => "Les clés primaires suivantes sont manquantes dans la table {$table}: {$missing}"
+				);
+			}
+		}
+
+		/**
+		 * Effectue des tests d'écriture, de lecture et de suppression du cache,
+		 * pour toutes les configurations définies.
+		 *
+		 * @return array
+		 */
+		public function cachePermissions() {
+			$cacheKeyBase = __CLASS__.'_'.__FUNCTION__;
+			$value = time();
+			$return = array();
+
+			$savedCacheDisable = Configure::read( 'Cache.disable' );
+			Configure::write( 'Cache.disable', false );
+			$savedDebug = Configure::read( 'debug' );
+			Configure::write( 'debug', 0 );
+
+			$configNames = Cache::configured();
+			if( !empty( $configNames ) ) {
+				foreach( $configNames as $configName ) {
+					if( !Cache::isInitialized( $configName ) ) {
+						Cache::config( $configName );
+					}
+
+					$cacheKey = "{$cacheKeyBase}_{$configName}";
+
+					$write = Cache::write( $cacheKey, $value, $configName );
+					$read = ( Cache::read( $cacheKey, $configName ) == $value );
+					$delete = Cache::delete( $cacheKey, $configName );
+
+					$success = ( $write && $read && $delete );
+					$message = null;
+
+					if( !$success ) {
+						$actions = array();
+						if( !$write ) {
+							$actions[] = 'écriture';
+						}
+						if( !$read ) {
+							$actions[] = 'lecture';
+						}
+						if( !$delete ) {
+							$actions[] = 'suppression';
+						}
+						$actions = implode( ', ', $actions );
+						$message = "Problème(s) rencontré(s) pour \"{$configName}\": {$actions}";
+
+						$config = Cache::config( $configName );
+						if( $config['engine'] == 'File' ) {
+							$path = preg_replace( '/^'.preg_quote( APP, '/' ).'/', APP_DIR.DS, $config['settings']['path'] );
+							$message .= "; vérifiez les droits sur le répertoire: {$path}";
+						}
+					}
+
+					$return[$configName] = array(
+						'success' => $success,
+						'message' => $message
+					);
+				}
+			}
+			Configure::write( 'Cache.disable', $savedCacheDisable );
+			Configure::write( 'debug', $savedDebug );
+
+			return $return;
+		}
 	}
 ?>

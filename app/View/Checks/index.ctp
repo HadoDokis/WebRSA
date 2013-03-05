@@ -24,6 +24,8 @@
 				<?php echo $this->Checks->table( $results['Environment']['directories'] );?>
 				<h4>Fichiers</h4>
 				<?php echo $this->Checks->table( $results['Environment']['files'] );?>
+				<h4>Cache</h4>
+				<?php echo $this->Checks->table( $results['Environment']['cache'] );?>
 			</div>
 			<div id="php">
 				<h3 class="title">PHP</h3>
@@ -74,6 +76,10 @@
 								);
 							}
 						?>
+					</div>
+					<div id="webrsa_configure_primary_key">
+						<h4 class="title">Clés primaires dans le webrsa.inc</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure_primary_key'] );?>
 					</div>
 					<?php endif;?>
 				</div>
