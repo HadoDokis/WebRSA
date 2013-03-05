@@ -134,6 +134,7 @@
 						),
 						ROOT.DS
 					),
+					'cache' => $this->Check->cachePermissions()
 				),
 			);
 		}
@@ -214,6 +215,24 @@
 		}
 
 		/**
+		 * Vérification de la présence des enregistrements dont les clés primaires
+		 * sont configurées dans le webrsa.inc.
+		 *
+		 * @return array
+		 */
+		protected function _configurePrimaryKeys() {
+			$return = $this->Webrsacheck->allConfigurePrimaryKeys();
+
+			if( !empty( $return ) ) {
+				foreach( $return as $key => $modelName ) {
+					$return[$key] = $this->Check->configurePrimaryKey( $modelName, $key );
+				}
+			}
+
+			return $return;
+		}
+
+		/**
 		 * Vérifications concernant WebRSA:
 		 *	- la version utilisée
 		 *  - la vérification de paramètres de configuration (Configure::read)
@@ -231,7 +250,8 @@
 						$this->Webrsacheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
 					),
 					'intervals' => $this->Webrsacheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) ),
-					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors()
+					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors(),
+					'configure_primary_key' => $this->_configurePrimaryKeys()
 				)
 			);
 		}
