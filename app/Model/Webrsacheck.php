@@ -205,6 +205,7 @@
 				'traitementClosId' => 'integer',
 				'traitementEnCoursId' => 'integer',
 				'with_parentid' => 'boolean',
+				'Utilisateurs.reconnection' => 'boolean',
 			);
 		}
 

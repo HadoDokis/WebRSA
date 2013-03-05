@@ -310,12 +310,74 @@
 		}
 
 		/**
+		 * Supprime les jetons et l'entrée dans la table connections.
+		 *
+		 * @param integer $user_id
+		 * @param integer $session_id
+		 */
+		protected function _deleteDbEntries( $user_id, $session_id ) {
+			//
+			// FIXME: dans JetonsComponent ou dans le modèle Jeton
+			if( !Configure::read( 'Jetons2.disabled' ) ) {
+				$this->User->Jeton->deleteAll(
+					array(
+						'Jeton.user_id' => $user_id,
+						'Jeton.php_sid' => $session_id
+					)
+				);
+			}
+			$this->User->Connection->deleteAll(
+				array(
+					'Connection.user_id' => $user_id,
+					'Connection.php_sid' => $session_id
+				)
+			);
+		}
+
+		/**
+		 * L'utilisateur est déjà connecté ? On le déconnecte.
+		 *
+		 * @todo
+		 *
+		 * @param type $authUser
+		 * @return boolean
+		 */
+		protected function _cleanPreviousConnection( $authUser ) {
+			$success = true;
+
+			if( $this->User->Connection->find( 'count', array( 'conditions' => array( 'Connection.user_id' => $authUser['User']['id'] ) ) ) > 0 ) {
+				$qd_otherConnections = array(
+					'conditions' => array(
+						'Connection.user_id' => $authUser['User']['id']
+					),
+					'contain' => false
+				);
+
+				$otherConnections = $this->User->Connection->find( 'all', $qd_otherConnections );
+				$connectionIds = (array)Hash::extract( $otherConnections, '{n}.Connection.id' );
+
+				$success = $this->User->Connection->deleteAll( array( 'Connection.id' => $connectionIds ) ) && $success;
+
+				$success = $this->_deleteCachedElements( $authUser ) && $success;
+
+				$sessionIds = (array)Hash::extract( $otherConnections, '{n}.Connection.php_sid' );
+				foreach( $sessionIds as $session_id ) {
+					$session_id = trim( $session_id );
+					$this->_deleteTemporaryFiles( $session_id );
+					$this->_deleteDbEntries( $authUser['User']['id'], $session_id );
+				}
+			}
+
+			return $success;
+		}
+
+		/**
 		 *
 		 */
 		public function login() {
 			if( $this->Auth->login() ) {
 				// Lecture de l'utilisateur authentifié
-				//Si CakePHP est en version >= 2.0 on interroge la base de données plutôt que le composant Auth
+				// Si CakePHP est en version >= 2.0 on interroge la base de données plutôt que le composant Auth
 				$authUser = $this->User->find( 'first', array( 'conditions' => array( 'User.id' => $this->Session->read( 'Auth.User.id' ) ), 'recursive' => -1 ) );
 
 				// Utilisateurs concurrents
@@ -323,10 +385,15 @@
 					$this->User->Connection->begin();
 					// Suppression des connections dépassées
 					$this->User->Connection->deleteAll(
-							array(
-								'Connection.modified <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) )
-							)
+						array(
+							'Connection.modified <' => strftime( '%Y-%m-%d %H:%M:%S', strtotime( '-'.readTimeout().' seconds' ) )
+						)
 					);
+
+					if( Configure::read( 'Utilisateurs.reconnection' ) === true ) {
+						$this->_cleanPreviousConnection( $authUser );
+					}
+
 					if( $this->User->Connection->find( 'count', array( 'conditions' => array( 'Connection.user_id' => $authUser['User']['id'] ) ) ) == 0 ) {
 						$connection = array(
 							'Connection' => array(
@@ -385,7 +452,7 @@
 				$this->_loadStructurereferente();
 
 				// Supprimer la vue cachée du menu
-				$this->_deleteCachedElements();
+				$this->_deleteCachedElements( $authUser );
 
 				$this->redirect( $this->Auth->redirect() );
 			}
@@ -400,27 +467,9 @@
 		public function logout() {
 			if( $user_id = $this->Session->read( 'Auth.User.id' ) ) {
 				if( valid_int( $user_id ) ) {
-					// Supprimer la vue cachée du menu
-					$this->_deleteCachedElements();
-
-					$this->_deleteTemporaryFiles();
-
-					// Supprime les jetons si besoin
-					// FIXME: dans JetonsComponent ou dans le modèle Jeton
-					if( !Configure::read( 'Jetons.disabled' ) ) {
-						$this->User->Jeton->deleteAll(
-								array(
-									'Jeton.user_id' => $user_id,
-									'Jeton.php_sid' => session_id()
-								)
-						);
-					}
-					$this->User->Connection->deleteAll(
-							array(
-								'Connection.user_id' => $user_id,
-								'Connection.php_sid' => session_id() // FIXME, si la session n'est pas gérée par PHP ?
-							)
-					);
+					$this->_deleteCachedElements( array( 'User' => $this->Session->read( 'Auth.User' ) ) );
+					$this->_deleteTemporaryFiles( session_id() );
+					$this->_deleteDbEntries( $user_id, session_id() );
 				}
 			}
 
@@ -434,16 +483,17 @@
 		}
 
 		/**
-		 * Suppression des éléments cachés de l'utilisateur
+		 * Suppression des éléments cachés de l'utilisateur.
 		 *
+		 * @param array $user
 		 * @return boolean
 		 */
-		protected function _deleteCachedElements() {
+		protected function _deleteCachedElements( $user ) {
 			$Folder =  new Folder();
 			$dir = TMP.'cache'.DS.'views';
 			$Folder->cd( $dir );
 
-			$regexp = 'element_'.$this->Session->read( 'Auth.User.username' ).'_.*';
+			$regexp = '.*element_'.$user['User']['username'];
 			$results = $Folder->find( $regexp );
 
 			$success = true;
@@ -460,11 +510,12 @@
 		/**
 		 * Suppression des répertoires temporaires de l'utilisateur.
 		 *
+		 * @param string $session_id
 		 * @return void
 		 */
-		protected function _deleteTemporaryFiles() {
+		protected function _deleteTemporaryFiles( $session_id ) {
 			foreach( array( 'files', 'pdf' ) as $subdir ) {
-				$oFolder = new Folder( TMP.$subdir.DS.session_id(), true, 0777 );
+				$oFolder = new Folder( TMP.$subdir.DS.$session_id, true, 0777 );
 				$oFolder->delete();
 			}
 		}

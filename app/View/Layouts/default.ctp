@@ -153,7 +153,7 @@
 			</div>
 			<?php
 				if( $this->Session->check( 'Auth.User.username' ) ) {
-					echo $this->element( 'menu', array( 'cache' => array ( 'time' => '+1 day', 'key' => $this->Session->read( 'Auth.User.username' ) ) ) );
+					echo $this->element( 'menu', array(), array( 'cache' => array( 'time' => '+1 day', 'key' => $this->Session->read( 'Auth.User.username' ), 'config' => 'views' ) ) );
 					echo $this->element( 'cartouche' );
 				}
 			?>
