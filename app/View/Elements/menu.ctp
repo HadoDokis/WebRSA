@@ -245,9 +245,9 @@
 					'title' => 'Gestion des anomalies de doublons simples au sein d\'un foyer donné',
 				),
 			),
-		),
-		'Visionneuse' => array(
-			'logs' => array( 'url' => array( 'controller' => 'visionneuses', 'action' => 'index' ) ),
+			'Visionneuse' => array(
+				'logs' => array( 'url' => array( 'controller' => 'visionneuses', 'action' => 'index' ) ),
+			),
 		),
 		'Déconnexion '.$this->Session->read( 'Auth.User.username' ) => array(
 			'url' => array( 'controller' => 'users', 'action' => 'logout' )
