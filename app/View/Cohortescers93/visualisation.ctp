@@ -42,7 +42,7 @@
 						<th colspan="4">Etape du Responsable</th>
 
 						<th colspan="5">Etape du CG</th>
-						<th class="action" colspan="2" rowspan="2">Actions</th>
+						<th class="action" rowspan="2">Actions</th>
 					</tr>
 					<tr>
 						<th>Validation Responsable</th>
@@ -155,7 +155,6 @@
 						Set::enum( $cer93['Histochoixcer93etape06']['formeci'], $options['formeci'] ),
 						$cer93['Histochoixcer93']['commentaire'],
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),
-						$this->Xhtml->filelink( 'Fichier liés', array( 'controller' => 'contratsinsertion', 'action' => 'filelink', $cer93['Contratinsertion']['id'] ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
