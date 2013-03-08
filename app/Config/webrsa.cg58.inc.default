@@ -223,12 +223,6 @@
 	Configure::write( 'Optimisations.progressivePaginate', true );
 
 	/**
-	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
-	 */
-	Configure::write( 'traitementEnCoursId', 1 );
-	Configure::write( 'traitementClosId', 2 );
-
-	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
 	Configure::write( 'Traitementpdo.fichecalcul_coefannee1', 34 );

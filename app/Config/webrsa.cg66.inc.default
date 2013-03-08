@@ -224,15 +224,6 @@
 	Configure::write( 'Optimisations.progressivePaginate', true );
 
 	/**
-	 * Variables permettant le déclenchement de passage en EPD d'un dossier via les PDOs
-	 */
-	// Valeur de l'id technique de la table traitementstypespdos dont le libellé représente "En cours"
-	Configure::write( 'traitementEnCoursId', 1 );
-
-	// Valeur de l'id technique de la table traitementstypespdos dont le libellé représente "Traité"
-	Configure::write( 'traitementClosId', 2 );
-
-	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
 	 */
 	Configure::write( 'Traitementpcg66.fichecalcul_coefannee1', 34 );
