@@ -148,7 +148,7 @@
 						Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
 //						$cer93['Histochoixcer93etape03']['commentaire'],
 						$commentairesEtape03,
-						date_short( $cer93['Histochoixcer93etape03']['datechoix'] ),
+						( $validationcpdv == 'Oui' ) ? date_short( $cer93['Histochoixcer93etape03']['datechoix'] ) : '',
 						Set::enum( $cer93['Histochoixcer93etape04']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
 						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),
 						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ),
