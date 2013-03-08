@@ -57,6 +57,7 @@
 
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
 
 		/**
