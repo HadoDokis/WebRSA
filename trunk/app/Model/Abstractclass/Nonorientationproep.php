@@ -275,7 +275,7 @@
 					'Typeorient.lib_type_orient',
 					'Structurereferente.id',
 					'Structurereferente.lib_struc',
-					'Foyer.enerreur',
+					$this->Orientstruct->Personne->Foyer->sqVirtualField( 'enerreur', true ),
 					'Referent.qual',
 					'Referent.nom',
 					'Referent.prenom',
@@ -289,9 +289,9 @@
 					'Adresse.codepos',
 					'Adresse.locaadr',
 					'Contratinsertion.df_ci',
-					'( DATE( NOW() ) - "Contratinsertion"."df_ci" ) AS "Contratinsertion__nbjours"'
+					$this->Orientstruct->Personne->Contratinsertion->sqVirtualField( 'nbjours', true )
 				),
-				'conditions' => $conditions, // TODO
+				'conditions' => $conditions,
 				'joins' => array(
 					$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
 					$this->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
@@ -307,7 +307,7 @@
 					$this->Orientstruct->Personne->join( 'Contratinsertion', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
-				'order' => array( 'Contratinsertion.nbjours DESC' )
+				'order' => array( $this->Orientstruct->Personne->Contratinsertion->sqVirtualField( 'nbjours', false )." DESC" )
 			);
 
 			return $querydata;
