@@ -326,11 +326,13 @@
 						)
 					);
 
-					// Clôture anticipée du dernier CER
-					$this->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
-						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
-						array( 'Contratinsertion.id' => $dernierCerId['Contratinsertion']['id'] )
-					);
+					if( !empty( $dernierCerId ) ) {
+						// Clôture anticipée du dernier CER
+						$this->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
+							array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
+							array( 'Contratinsertion.id' => $dernierCerId['Contratinsertion']['id'] )
+						);
+					}
 
 					// TODO
 					/*	$this->Orientstruct->Personne->Cui->updateAllUnBound(
