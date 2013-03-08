@@ -157,6 +157,7 @@
 			$options = $this->Dsp->filterOptions( $cg, $options );
 // 			debug( $options );
 			$this->set( 'options', $options );
+			$this->set( 'typevoie', ClassRegistry::init( 'Option' )->typevoie() );
 			$this->set( 'cg', $cg );
 
 			return $return;
