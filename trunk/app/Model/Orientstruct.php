@@ -13,9 +13,9 @@
 	 *
 	 * @package app.Model
 	 */
-	 
+
 	define( 'ORIENTSTRUCT_STORABLE_PDF_ACTIVE', ( Configure::read( 'Cg.departement' ) != 66 ) );
-	 
+
 	class Orientstruct extends AppModel
 	{
 		public $name = 'Orientstruct';
@@ -551,7 +551,8 @@
 						),
 						'Typeorient',
 						'Structurereferente',
-						'Referent'
+						'Referent',
+						'User',
 					)
 				)
 			);
@@ -1303,8 +1304,8 @@
 
 			return $querydata;
 		}
-		
-		
+
+
 		/**
 		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo et le stocke,
