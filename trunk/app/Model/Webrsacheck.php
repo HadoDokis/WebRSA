@@ -202,8 +202,6 @@
 				'nom_form_pdo_cg' => array(
 					array( 'rule' => 'inList', array( 'cg58', 'cg66', 'cg93' ) ),
 				),
-				'traitementClosId' => 'integer',
-				'traitementEnCoursId' => 'integer',
 				'with_parentid' => 'boolean',
 				'Utilisateurs.reconnection' => 'boolean',
 			);
@@ -539,16 +537,12 @@
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$return = array(
-					'traitementEnCoursId' => 'Traitementtypepdo',
-					'traitementClosId' => 'Traitementtypepdo',
 					'Typeorient.emploi_id' => 'Typeorient',
 					// TODO: 'Selectionradies.conditions' ?
 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$return = array(
-					'traitementEnCoursId' => 'Traitementtypepdo',
-					'traitementClosId' => 'Traitementtypepdo',
 					'Orientstruct.typeorientprincipale.SOCIAL' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Emploi' => 'Typeorient',
 					'Chargeinsertion.Secretaire.group_id' => 'Group',
@@ -562,8 +556,6 @@
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$return = array(
-					'traitementEnCoursId' => 'Traitementtypepdo',
-					'traitementClosId' => 'Traitementtypepdo',
 					'Chargeinsertion.Secretaire.group_id' => 'Group',
 					'Orientstruct.typeorientprincipale.Socioprofessionnelle' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Social' => 'Typeorient',
