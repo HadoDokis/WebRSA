@@ -320,16 +320,16 @@ msgid "Cui.dureehebdoretenue"
 msgstr "Durée hebdomadaire retenue pour le calcul de l'aide :"
 
 msgid "Cui.tauxfixe"
-msgstr "Taux fixé par l'arrêté du Préfet de région (en %)"
+msgstr "Taux fixé par l'arrêté du Préfet de région (en %%)"
 
 msgid "Cui.tauxprisencharge"
-msgstr "Taux de prise en charge effectif si le Conseil Général fixe un taux supérieur au taux fixé par le Préfet de région (en %)"
+msgstr "Taux de prise en charge effectif si le Conseil Général fixe un taux supérieur au taux fixé par le Préfet de région (en %%)"
 
 msgid "Cui.financementexclusif"
 msgstr "Financement exclusif du Conseil Général"
 
 msgid "Cui.tauxfinancementexclusif"
-msgstr "Si oui, taux (en %)"
+msgstr "Si oui, taux (en %%)"
 
 msgid "Cui.orgapayeur"
 msgstr "Organisme payeur de l'aide du Conseil Général à l'employeur"
