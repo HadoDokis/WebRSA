@@ -411,7 +411,7 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
-					'Foyer.enerreur',
+					$this->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur', true ),
 					'Adresse.locaadr',
 					'Orientstruct.date_valid',
 					'Typeorient.lib_type_orient',

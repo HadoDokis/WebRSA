@@ -688,7 +688,7 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Personne.nir',
-					'Foyer.enerreur',
+					$this->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur', true ),
 					'Orientstruct.id',
 					'Orientstruct.personne_id',
 					'Orientstruct.date_valid',
