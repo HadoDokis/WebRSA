@@ -1168,7 +1168,7 @@
 					$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
 					$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
 					array(
-						$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
+// 						$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
 						'Historiqueetatpe.identifiantpe',
 						'Historiqueetatpe.etat'
 					)
@@ -1215,7 +1215,8 @@
 				$data['Dsp'] = $data['DspRev'];
 				unset( $data['DspRev'], $data['Dsp']['id'], $data['Dsp']['dsp_id'] );
 			}
-			$data = $this->find( 'first', $queryData );
+			$data = $this->find( 'first', $queryData );	
+
 
 			// Liste des informations concernant la composition du foyer
 			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
@@ -1309,9 +1310,7 @@
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
 				}
 			}
-				
-// debug($sujetscerspcds93);
-// die();
+			
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
