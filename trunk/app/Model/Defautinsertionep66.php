@@ -1017,7 +1017,7 @@
 						$this->Bilanparcours66->fields(),
 						$this->Bilanparcours66->Structurereferente->fields(),
 // 						$this->Bilanparcours66->Structurereferente->Permanence->fields(),
-						$this->Bilanparcours66->Serviceinstructeur->fields(),
+// 						$this->Bilanparcours66->Serviceinstructeur->fields(),
 // 						$this->Bilanparcours66->User->fields(),
 						$this->Contratinsertion->fields(),
 						$this->Orientstruct->fields()
@@ -1034,7 +1034,7 @@
 						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 // 						$this->Bilanparcours66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+// 						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
 // 						$this->Bilanparcours66->Structurereferente->join( 'Permanence', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'recursive' => -1,
@@ -1067,7 +1067,7 @@
 					'conditions' => array(
 						'User.id' => $user_id
 					),
-					'contain' => false
+					'contain' => array('Serviceinstructeur')
 				)
 			);
 			$gedooo_data = Set::merge( $gedooo_data, $user );
