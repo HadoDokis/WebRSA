@@ -171,7 +171,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression du recours d\'APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}

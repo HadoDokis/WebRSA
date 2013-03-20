@@ -373,7 +373,7 @@
 
 			if( $nErrors > 0 ) {
 				$this->Session->setFlash( "Erreur lors de l'impression en cohorte: {$nErrors} documents n'ont pas pu être imprimés. Abandon de l'impression de la cohorte. Demandez à votre administrateur d'exécuter cake/console/cake generationpdfs orientsstructs -username <username> (où <username> est l'identifiant de l'utilisateur qui sera utilisé pour la récupération d'informations lors de l'impression)", 'flash/error' );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 			$content = $this->Gedooo->concatPdfs( Set::extract( $results, '/Pdf/document' ), 'orientsstructs' );
@@ -396,7 +396,7 @@
 			else {
 				$this->Personne->Foyer->Dossier->rollback();
 				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

@@ -228,7 +228,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier à destination de l\'élu.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

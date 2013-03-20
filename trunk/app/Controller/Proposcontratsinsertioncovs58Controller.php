@@ -495,7 +495,7 @@
 			else {
 				$this->Propocontratinsertioncov58->rollback();
 			}
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 
 	}

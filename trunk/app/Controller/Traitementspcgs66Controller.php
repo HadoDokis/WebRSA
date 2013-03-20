@@ -892,7 +892,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de calcul', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -912,7 +912,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le modèle de courrier', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

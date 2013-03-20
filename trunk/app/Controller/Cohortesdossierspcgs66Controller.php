@@ -280,7 +280,7 @@
 			else {
 				$this->Dossierpcg66->rollback();
 				$this->Session->setFlash( 'Impossible de générer les décisions des dossiers PCGs.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

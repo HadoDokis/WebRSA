@@ -82,7 +82,7 @@
 			if( in_array( $cov58['Cov58']['etatcov'], array( 'traite', 'finalise' ) ) ) {
 				$this->Jetonsfonctions2->release( $cov58_id );
 				$this->Session->setFlash( 'Impossible d\'attribuer des dossiers à une COV lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 			if( !empty( $this->request->data ) ) {

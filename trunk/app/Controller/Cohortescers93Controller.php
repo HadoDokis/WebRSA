@@ -935,7 +935,7 @@
 			else {
 				$this->Cohortecer93->rollback();
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 		}
