@@ -402,7 +402,7 @@
 
 				if( in_array( $this->request->data['Commissionep']['etatcommissionep'], array( 'decisionep', 'decisioncg', 'annulee' ) ) ) {
 					$this->Session->setFlash( 'Impossible de modifier une commission d\'EP lorsque celle-ci comporte déjà des avis ou des décisions.', 'default', array( 'class' => 'error' ) );
-					$this->redirect( $this->referer( null,true ) );
+					$this->redirect( $this->referer() );
 				}
 			}
 			else if( $this->action == 'add' ) {
@@ -483,7 +483,7 @@
 
 			if( !$etapePossible ) {
 				$this->Session->setFlash( 'Impossible de traiter les dossiers d\'une commission d\'EP à une étape antérieure.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 			if( !empty( $this->request->data ) && !isset( $this->request->data['Valider'] ) ) {
@@ -542,7 +542,7 @@
 
 			if( !$etapePossible ) {
 				$this->Session->setFlash( 'Impossible de finaliser les décisions des dossiers d\'une commission d\'EP à une étape antérieure.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 			if( !$this->Gedooo->check( true, false ) ) {
@@ -837,7 +837,7 @@
 			$this->Commissionep->id = $commissionep_id;
 			$this->Commissionep->saveField( 'etatcommissionep', 'valide' );
 			$this->_setFlashResult( 'Save', true );
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 
 		/**
@@ -862,7 +862,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le PV de la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -900,7 +900,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le PV de la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -935,7 +935,7 @@
 				if( $nombreDossierseps == 0 ) {
 					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir attribué des dossiers.', 'default', array( 'class' => 'error' ) );
 				}
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 
 			$pdf = $this->Commissionep->getPdfOrdreDuJour( $commissionep_id, $this->Session->read( 'Auth.User.id' ) );
@@ -945,7 +945,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'ordre du jour de la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -978,7 +978,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1006,7 +1006,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les invitations pour les participants de cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1022,7 +1022,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1051,7 +1051,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations aux bénéficiaires pour cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1090,7 +1090,7 @@
 				if( $nombreDossierseps == 0 ) {
 					$this->Session->setFlash( 'Impossible d\'imprimer l\'ordre du jour avant d\'avoir attribué des dossiers.', 'default', array( 'class' => 'error' ) );
 				}
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1109,7 +1109,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1145,7 +1145,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les convocations du participant à la commission d\'EP', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1242,7 +1242,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de décision', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1280,7 +1280,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les courriers de décision pour cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1295,7 +1295,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier d\'information', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -1328,7 +1328,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer les fiches de synthèse pour cette commission.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

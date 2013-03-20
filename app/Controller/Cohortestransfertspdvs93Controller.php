@@ -245,7 +245,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Erreur lors de l\'impression en cohorte.', 'flash/error' );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -266,7 +266,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de l\'orientation.', 'flash/error', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}

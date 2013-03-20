@@ -635,7 +635,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier de contrat d\'engagement réciproque.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 
@@ -680,7 +680,7 @@
 				$this->Cer93->Contratinsertion->rollback();
 			}
 
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 
 		/**
@@ -701,7 +701,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 	}

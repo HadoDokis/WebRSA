@@ -372,7 +372,7 @@
 			}
 
 			$this->Jetons2->release( $dossier_id );
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

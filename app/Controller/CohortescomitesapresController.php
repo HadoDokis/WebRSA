@@ -310,7 +310,7 @@
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer l\'impression de la décision du comité APRE.', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer( null,true ) );
+				$this->redirect( $this->referer() );
 			}
 		}
 

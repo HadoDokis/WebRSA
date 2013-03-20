@@ -224,7 +224,7 @@
 			else {
 				$this->Propoorientationcov58->rollback();
 			}
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

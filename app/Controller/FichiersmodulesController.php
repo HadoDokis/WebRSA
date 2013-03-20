@@ -45,7 +45,7 @@
 				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
 
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

@@ -269,7 +269,7 @@
 				$this->{$this->modelClass}->Dossierep->rollback();
 			}
 
-			$this->redirect( $this->referer( null,true ) );
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>
