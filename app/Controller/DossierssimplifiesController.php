@@ -191,7 +191,7 @@
 				if( empty( $t ) ) {
 					unset( $this->request->data['Personne'][1] );
 				}
-				$validates = $this->Personne->saveAll( $this->request->data['Personne'], array( 'validate' => 'only' ) ) & $validates;
+				$validates = $this->Personne->saveAll( $this->request->data['Personne'], array( 'validate' => 'only' ) ) && $validates;
 
 				$validates = $this->Orientstruct->validates() && $validates;
 				$validates = $this->Structurereferente->validates() && $validates;
