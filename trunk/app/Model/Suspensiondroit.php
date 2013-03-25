@@ -36,18 +36,15 @@
 		 * @return string
 		 */
 		public function sqDerniere( $situationdossierrsaId = 'Situationdossierrsa.id' ) {
-			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false );
-
 			return $this->sq(
 				array(
-					'alias' => $table,
-					'fields' => array( "{$table}.id" ),
+					'alias' => 'suspensionsdroits',
+					'fields' => array( "suspensionsdroits.id" ),
 					'contain' => false,
 					'conditions' => array(
-						"{$table}.situationdossierrsa_id = {$situationdossierrsaId}"
+						"suspensionsdroits.situationdossierrsa_id = {$situationdossierrsaId}"
 					),
-					'order' => array( "{$table}.ddsusdrorsa DESC" ),
+					'order' => array( "suspensionsdroits.ddsusdrorsa DESC" ),
 					'limit' => 1
 				)
 			);
