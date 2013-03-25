@@ -300,7 +300,10 @@
 					'Traitementpcg66.dateecheance',
 					'Traitementpcg66.typetraitement',
 					'Traitementpcg66.dateenvoicourrier',
-					'Traitementpcg66.reversedo'
+					'Traitementpcg66.reversedo',
+					'Traitementpcg66.clos',
+					'Traitementpcg66.annule',
+					'Traitementpcg66.motifannulation',
 				),
 				'joins' => array(
 					$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
@@ -411,7 +414,6 @@
 			else {
 				$dossierspcgs66 = array( );
 			}
-
 
 			$this->_setOptions();
 
@@ -699,43 +701,68 @@
 		 */
 		public function cancel( $id ) {
 			$traitementpcg66 = $this->Traitementpcg66->find(
-					'first', array(
-				'fields' => array(
-					'Traitementpcg66.id',
-					'Traitementpcg66.personnepcg66_id',
-					'Personnepcg66.personne_id',
-					'Personnepcg66.dossierpcg66_id'
-				),
-				'conditions' => array(
-					'Traitementpcg66.id' => $id
-				),
-				'contain' => array(
-					'Personnepcg66'
-				)
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->Traitementpcg66->fields(),
+						$this->Traitementpcg66->Personnepcg66->fields(),
+						$this->Traitementpcg66->Personnepcg66->Dossierpcg66->fields()
+					),
+					'conditions' => array(
+						'Traitementpcg66.id' => $id
+					),
+					'recursive' => -1,
+					'joins' => array(
+						$this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+						$this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) )
 					)
+				)
 			);
+// debug($traitementpcg66);
+// die();
 
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
 
-			$this->Traitementpcg66->begin();
-			$traitementpcg66['Traitementpcg66']['clos'] = 'O';
-			$traitementpcg66['Traitementpcg66']['annule'] = 'O';
-			$this->Traitementpcg66->create( $traitementpcg66['Traitementpcg66'] );
-			$success = $this->Traitementpcg66->save();
+			//Gestion des jetons
+			$dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId( $traitementpcg66['Dossierpcg66']['foyer_id'] );
+			$this->Jetons2->get( $dossier_id );
+			
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+			}
 
-			$success = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->updateEtatViaDecisionTraitement( $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) && $success;
+			if( !empty( $this->request->data ) ) {
+				$this->Traitementpcg66->begin();
 
-			if( $success ) {
-				$this->Traitementpcg66->commit();
-				$this->Session->setFlash( 'Le traitement est annulé', 'flash/success' );
+				$saved = $this->Traitementpcg66->save( $this->request->data );
+				$saved = $this->Traitementpcg66->updateAllUnBound(
+					array(
+						'Traitementpcg66.clos' => '\'O\'',
+						'Traitementpcg66.annule' => '\'O\''
+					),
+					array(
+						'"Traitementpcg66"."personnepcg66_id"' => $traitementpcg66['Traitementpcg66']['personnepcg66_id'],
+						'"Traitementpcg66"."id"' => $traitementpcg66['Traitementpcg66']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->Traitementpcg66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+				}
+				else {
+					$this->Traitementpcg66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
 			}
 			else {
-				$this->Traitementpcg66->rollback();
-				$this->Session->setFlash( 'Erreur lors de l\'annulation du traitement', 'flash/error' );
+				$this->request->data = $traitementpcg66;
 			}
-			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
 		}
-
 		/**
 		 *
 		 * @param integer $id

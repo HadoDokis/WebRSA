@@ -227,6 +227,9 @@ document.observe( "dom:loaded", function() {
 			}
 		}
 
+
+
+		
 		echo $this->Xhtml->tag(
 			'fieldset',
 			$this->Xhtml->tag(
@@ -253,36 +256,42 @@ document.observe( "dom:loaded", function() {
 									 \''.$etatdossierpcg.'\' == \'transmisop\'
 								)
 								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'edit', $dossierMenu ).'\' != \'1\'
+								|| ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
 							' )
 						),
 						'Decisionsdossierspcgs66::avistechnique' => array(
 							'disabled' => ( '
 								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\'
+								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
 							' )
 						),
 						'Decisionsdossierspcgs66::validation' => array(
 							'disabled' => ( '
 								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\'
+								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
 							' )
 						),
 						'Decisionsdossierspcgs66::print' => array(
 							'label' => 'Imprimer',
 							'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action'=>'decisionproposition' ),
 							'disabled' => (
-								( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'print', $dossierMenu ) != "1" )
+								'( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'print', $dossierMenu ).'" != "1" ) || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )'
 							)
 						),
 						'Decisionsdossierspcgs66::transmettreop' => array(
 							'label' => 'Transmettre OP',
 							'url' => array(  'controller' => 'decisionsdossierspcgs66', 'action' => 'transmitop' ),
-							'disabled' =>  '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'transmitop', $dossierMenu ).'" != "1" ) || ( "#Decisiondossierpcg66.validationproposition#" == "N" )'
+							'disabled' =>  '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'transmitop', $dossierMenu ).'" != "1" ) || ( "#Decisiondossierpcg66.validationproposition#" == "N" ) || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )'
+						),
+						'Decisionsdossierspcgs66::cancel' => array(
+							'label' => 'Annuler',
+							'url' => array(  'controller' => 'decisionsdossierspcgs66', 'action' => 'cancel' ),
+							'disabled' =>  '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'cancel', $dossierMenu ).'" != "1" ) || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )'
 						),
 						'Decisionsdossierspcgs66::delete' => array(
 							'label' => 'Supprimer',
 							'url' => array(  'controller' => 'decisionsdossierspcgs66', 'action' => 'delete' ),
-							'disabled' =>  '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'delete', $dossierMenu ).'" != "1" )'
+							'disabled' =>  '( "'.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'delete', $dossierMenu ).'" != "1" ) || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )'
 						),
 						'Decisionsdossierspcgs66::filelink' => array(
 							'label' => 'Fichiers liés',
@@ -297,7 +306,8 @@ document.observe( "dom:loaded", function() {
 							 || in_array( $etatdossierpcg, array( 'decisionvalid', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' ) )
 						)
 					),
-					'options' => $options
+					'options' => $options,
+					'tooltip' => array( 'Decisiondossierpcg66.motifannulation' )
 				)
 			)
 		);

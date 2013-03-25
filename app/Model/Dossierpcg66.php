@@ -32,14 +32,12 @@
 		);
 
 		public $actsAs = array(
-			'Autovalidate2',
-			'ValidateTranslate',
+			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
 					'orgpayeur',
 					'iscomplet',
-					'etatdossierpcg',
 					'haspiecejointe',
 					'istransmis'
 				)

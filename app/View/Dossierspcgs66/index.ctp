@@ -15,7 +15,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 <?php endif;?>
 
 <?php if( !empty( $dossierspcgs66 ) ):?>
-<table class="tooltips">
+<table class="tooltips default2" id="searchResults">
 	<thead>
 		<tr>
 			<th>Type de PDO</th>
@@ -25,11 +25,11 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 			<th>Motifs de la personne</th>
 <!-- 					<th>Dossier complet ?</th> -->
 			<th>Décision</th>
-			<th colspan="3" class="action">Actions</th>
+			<th colspan="4" class="action">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach( $dossierspcgs66 as $dossierpcg66 ):?>
+		<?php foreach( $dossierspcgs66 as $index => $dossierpcg66 ):?>
 			<?php
 // 					debug($dossierpcg66);
 				$etat = null;
@@ -48,6 +48,15 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 				}
 
 
+				
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>Raison annulation</th>
+							<td>'.$dossierpcg66['Dossierpcg66']['motifannulation'].'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				echo $this->Xhtml->tableCells(
 					array(
@@ -66,13 +75,19 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Set::classicExtract( $rol
 						$this->Xhtml->editLink(
 							'Éditer le dossier',
 							array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66['Dossierpcg66']['id'] ),
-							$this->Permissions->checkDossier( 'dossierspcgs66', 'edit', $dossierMenu )
+							( $this->Permissions->checkDossier( 'dossierspcgs66', 'edit', $dossierMenu )  && Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) != 'annule' )
+						),
+						$this->Xhtml->cancelLink(
+							'Annuler',
+							array( 'controller' => 'dossierspcgs66', 'action' => 'cancel', $dossierpcg66['Dossierpcg66']['id'] ),
+							( $this->Permissions->checkDossier( 'dossierspcgs66', 'cancel', $dossierMenu ) && Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) != 'annule' )
 						),
 						$this->Xhtml->deleteLink(
-							'Supprimer le dossier',
+							'Etes-vous sûr de vouloir supprimer le dossier',
 							array( 'controller' => 'dossierspcgs66', 'action' => 'delete', $dossierpcg66['Dossierpcg66']['id'] ),
-							$this->Permissions->checkDossier( 'dossierspcgs66', 'delete', $dossierMenu )
-						)
+							( $this->Permissions->checkDossier( 'dossierspcgs66', 'delete', $dossierMenu ) && Set::classicExtract( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) != 'annule' )
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )

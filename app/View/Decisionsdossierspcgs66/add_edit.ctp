@@ -405,7 +405,7 @@
 
 		echo $this->Default2->subform(
 			array(
-				'Decisiondossierpcg66.commentaire' => array( 'label' =>  'Commentaire global : ', 'type' => 'textarea', 'rows' => 3 ),
+				'Decisiondossierpcg66.commentaire' => array( 'label' =>  'Observations : ', 'type' => 'textarea', 'rows' => 3 ),
 			),
 			array(
 				'options' => $options

@@ -84,7 +84,7 @@ msgid "Orientstruct.rgorient"
 msgstr "Rang de l'orientation"
 
 msgid "ENUM::TYPENOTIFICATION::normale"
-msgstr "Orientation normale vers PE"
+msgstr "Notification Normale"
 
 msgid "ENUM::TYPENOTIFICATION::systematique"
-msgstr "Orientation systématique vers PE"
+msgstr "Notification Orientation systématique vers PE"

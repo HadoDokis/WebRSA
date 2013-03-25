@@ -830,5 +830,60 @@
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
+		
+		
+		/**
+		 *
+		 * @param integer $id
+		 */
+		public function cancel( $id ) {
+			$qd_decisiondossierpcg66 = array(
+				'conditions' => array(
+					'Decisiondossierpcg66.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$decisiondossierpcg66 = $this->Decisiondossierpcg66->find( 'first', $qd_decisiondossierpcg66 );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Decisiondossierpcg66->dossierId( $id ) ) ) );
+
+			$dossier_id = $this->Decisiondossierpcg66->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id'] ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Decisiondossierpcg66->begin();
+
+				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
+				$saved = $this->Decisiondossierpcg66->updateAllUnBound(
+					array( 'Decisiondossierpcg66.etatdossierpcg' => '\'annule\'' ),
+					array(
+						'"Decisiondossierpcg66"."dossierpcg66_id"' => $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id'],
+						'"Decisiondossierpcg66"."id"' => $decisiondossierpcg66['Decisiondossierpcg66']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->Decisiondossierpcg66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $decisiondossierpcg66['Decisiondossierpcg66']['dossierpcg66_id'] ) );
+				}
+				else {
+					$this->Decisiondossierpcg66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
+			}
+			else {
+				$this->request->data = $decisiondossierpcg66;
+			}
+		}
 	}
 ?>

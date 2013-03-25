@@ -503,3 +503,6 @@ msgstr "Recherche de traitements PCGs"
 
 msgid "Dossierpcg66.user_id"
 msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
+
+msgid "Traitementpcg66.motifannulation"
+msgstr "Motif d'annulation"
