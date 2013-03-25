@@ -37,6 +37,9 @@ msgstr "Suppression du dossier PCG."
 msgid "Dossierspcgs66::delete::confirm"
 msgstr "Etes-vous sûr de vouloir supprimer le dossier ?"
 
+msgid "Dossierspcgs66::cancel"
+msgstr "Annulation du dossier PCG"
+
 msgid "Dossierpcg66.typepdo_id"
 msgstr "Type de dossier"
 
@@ -130,6 +133,9 @@ msgstr "En attente de transmission à l'OP"
 
 msgid "ENUM::ETATDOSSIERPCG::transmisop"
 msgstr "Dossier traité et transmis à la CAF / MSA"
+
+msgid "ENUM::ETATDOSSIERPCG::annule"
+msgstr "Dossier annulé"
 ########################################################################
 ## 	Traduction pour la recherche par PDO
 ########################################################################
@@ -141,3 +147,6 @@ msgstr "Recherche de traitements PCGs"
 
 msgid "Dossierpcg66.commentairepiecejointe"
 msgstr "Commentaire"
+
+msgid "Dossierpcg66.motifannulation"
+msgstr "Motif d'annulation"

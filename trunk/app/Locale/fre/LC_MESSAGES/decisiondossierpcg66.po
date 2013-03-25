@@ -52,6 +52,8 @@ msgstr "Date de validation de la proposition"
 msgid "Decisiondossierpcg66.commentairepdo"
 msgstr "Proposition"
 
+msgid "Decisionsdossierspcgs66::cancel"
+msgstr "Annulation de la proposition"
 
 msgid "ENUM::VALIDATIONPROPOSITION::N"
 msgstr "Non"
@@ -153,7 +155,7 @@ msgid "Decisiondossierpcg66.datepropositiontechnicien"
 msgstr "Date de la proposition"
 
 msgid "Decisiondossierpcg66.commentairetechnicien"
-msgstr "Commentaire sur la proposition"
+msgstr "Proposition de décision"
 
 msgid "Decisiondossierpcg66.retouravistechnique"
 msgstr "Retour à l'avis technique"
@@ -226,3 +228,6 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "Decisiondossierpcg66.motifannulation"
+msgstr "Motif d'annulation"

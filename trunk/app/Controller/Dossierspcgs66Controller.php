@@ -426,7 +426,9 @@
 							'Decisiondossierpcg66.avistechnique',
 							'Decisiondossierpcg66.commentaireavistechnique',
 							'Decisiondossierpcg66.dateavistechnique',
+							'Decisiondossierpcg66.etatdossierpcg',
 							'Decisiondossierpcg66.validationproposition',
+							'Decisiondossierpcg66.motifannulation',
 							'Decisiondossierpcg66.commentairevalidation',
 							'Decisiondossierpcg66.datevalidation',
 							'Decisionpdo.libelle',
@@ -632,6 +634,64 @@
 			$success = $this->Dossierpcg66->delete( $id );
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'index', $foyer_id ) );
+		}
+	
+		/**
+		 *
+		 * @param integer $id
+		 */
+		public function cancel( $id ) {
+			$qd_dossierpcg66 = array(
+				'conditions' => array(
+					'Dossierpcg66.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$dossierpcg66 = $this->Dossierpcg66->find( 'first', $qd_dossierpcg66 );
+
+			$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
+			$this->set( 'foyer_id', $foyer_id );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'foyer_id' => $foyer_id ) ) );
+
+			$dossier_id = $this->Dossierpcg66->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $foyer_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Dossierpcg66->begin();
+
+				$saved = $this->Dossierpcg66->save( $this->request->data );
+				$saved = $this->Dossierpcg66->updateAllUnBound(
+					array( 'Dossierpcg66.etatdossierpcg' => '\'annule\'' ),
+					array(
+						'"Dossierpcg66"."foyer_id"' => $dossierpcg66['Dossierpcg66']['foyer_id'],
+						'"Dossierpcg66"."id"' => $dossierpcg66['Dossierpcg66']['id']
+					)
+				) && $saved;
+
+				if( $saved ) {
+					$this->Dossierpcg66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $foyer_id ) );
+				}
+				else {
+					$this->Dossierpcg66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+				}
+			}
+			else {
+				$this->request->data = $dossierpcg66;
+			}
+			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
 		}
 	}
 ?>
