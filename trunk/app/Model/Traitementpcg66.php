@@ -298,6 +298,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+			'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(
