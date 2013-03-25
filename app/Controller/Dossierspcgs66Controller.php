@@ -586,13 +586,15 @@
 				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'index', $foyer_id ) );
 			}
 
-			
-			//Récupération de la liste des courriers envoyés à l'allocataire:
-			$personnesIds = array();
-			foreach( $dossierpcg66['Personnepcg66'] as $i => $personnepcg66 ) {
-				$personnesIds[] = $personnepcg66['personne_id'];
+			$traitementsCourriersEnvoyes = array();
+			if( isset( $dossierpcg66['Personnepcg66'] ) && !empty( $dossierpcg66['Personnepcg66'] ) ) {
+				//Récupération de la liste des courriers envoyés à l'allocataire:
+				$personnesIds = array();
+				foreach( $dossierpcg66['Personnepcg66'] as $i => $personnepcg66 ) {
+					$personnesIds[] = $personnepcg66['personne_id'];
+				}
+				$traitementsCourriersEnvoyes = $this->Dossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
 			}
-			$traitementsCourriersEnvoyes = $this->Dossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
 			$this->set( compact( 'traitementsCourriersEnvoyes' ) );
 			
 			$this->_setOptions();

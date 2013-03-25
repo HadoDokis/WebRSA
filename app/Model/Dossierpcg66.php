@@ -565,9 +565,10 @@
 
 // debug($decisiondossierpcg66);
 // die();
-			$dateDecision = $decisiondossierpcg66['Decisiondossierpcg66']['datevalidation'];
-			$propositiondecision = $decisiondossierpcg66['Decisionpdo']['decisioncerparticulier'];
+			
 			if( !empty( $decisiondossierpcg66 ) && isset( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] ) ) {
+				$dateDecision = $decisiondossierpcg66['Decisiondossierpcg66']['datevalidation'];
+				$propositiondecision = $decisiondossierpcg66['Decisionpdo']['decisioncerparticulier'];
 				if( ( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] == 'O' ) && ( ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '0' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '0' ) ) || ( ( $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'] == '1' ) && ( $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'] == '1' ) ) ) ) {
 
 					if( $propositiondecision == 'N' ) {

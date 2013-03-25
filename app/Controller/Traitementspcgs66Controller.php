@@ -299,6 +299,7 @@
 					'Traitementpcg66.daterevision',
 					'Traitementpcg66.dateecheance',
 					'Traitementpcg66.typetraitement',
+					'Traitementpcg66.dateenvoicourrier',
 					'Traitementpcg66.reversedo'
 				),
 				'joins' => array(
@@ -926,5 +927,35 @@
 			$this->Default->delete( $id );
 		}
 
+		/**
+		 *
+		 */
+		public function envoiCourrier( $id ) {
+			$this->Traitementpcg66->begin();
+
+			$traitementpcg66 = $this->Traitementpcg66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Traitementpcg66.id' => $id
+					),
+					'contain' => array(
+						'Personnepcg66'
+					)
+				)
+			);
+			$this->Traitementpcg66->id = $id;
+			$success = $this->Traitementpcg66->saveField( 'dateenvoicourrier', date( 'Y-m-d' ) );
+
+			if( $success ) {
+				$this->Traitementpcg66->commit();
+				$this->Session->setFlash( 'La date d\'envoi du courrier a bien été enregistrée', 'flash/success' );
+			}
+			else {
+				$this->Traitementpcg66->rollback();
+				$this->Session->setFlash( 'Erreur lors de l\'enregistrement de la date', 'flash/error' );
+			}
+			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+		}
 	}
 ?>
