@@ -291,13 +291,17 @@ document.observe( "dom:loaded", function() {
 						)
 					),
 					'add' => array(
-						'Decisiondossierpcg66.add' => array( 'controller'=>'decisionsdossierspcgs66', 'action'=>'add', $dossierpcg66_id ),
-						'disabled' => ( /*$etatdossierpcg != 'attavistech' || */$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != "1" )
+						'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'add', $dossierpcg66_id ),
+						'disabled' => (
+							 $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
+							 || in_array( $etatdossierpcg, array( 'decisionvalid', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' ) )
+						)
 					),
 					'options' => $options
 				)
 			)
 		);
+		
 	?>
 <?php endif;?>
 
