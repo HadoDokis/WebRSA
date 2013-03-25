@@ -492,6 +492,9 @@
 							$url = $actionParams;
 						}
 					}
+					if( !empty( $actions['url'] ) ) {
+						$url = $actions['url'];
+					}
 					if ( empty( $url ) ) {
 						$url = array( 'controller' => $this->request->params['controller'], 'action' => 'add' );
 					}
