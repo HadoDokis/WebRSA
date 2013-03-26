@@ -311,7 +311,7 @@ document.observe( "dom:loaded", function() {
 			<tr>
 				<td class="noborder">
 					<?php
-						echo $this->Xform->input( 'Contratinsertion.num_contrat', array( 'label' => false , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => true, 'value' => $tc ) );
+						echo $this->Xform->input( 'Contratinsertion.num_contrat', array( 'label' => false , 'type' => 'select', 'options' => $options['num_contrat'], 'empty' => false, 'value' => $tc ) );
 					?>
 				</td>
 				<td class="noborder">

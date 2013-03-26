@@ -265,7 +265,8 @@
 					$this->ActioncandidatPersonne->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
 					$this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) )
 				),
-				'contain' => false
+				'contain' => false,
+				'order' => array( 'ActioncandidatPersonne.datesignature DESC' )
 			);
 			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $queryData );
 			$this->set( 'actionscandidats_personnes', $actionscandidats_personnes );
