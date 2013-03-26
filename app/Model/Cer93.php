@@ -1117,7 +1117,7 @@
 				$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
 				$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' )),
-				$this->Contratinsertion->Structurereferente->join( 'Referent', array( 'type' => 'LEFT OUTER' )),
+				$this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
 				$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
@@ -1215,8 +1215,33 @@
 				$data['Dsp'] = $data['DspRev'];
 				unset( $data['DspRev'], $data['Dsp']['id'], $data['Dsp']['dsp_id'] );
 			}
-			$data = $this->find( 'first', $queryData );	
 
+			$data = $this->find( 'first', $queryData );
+
+			// Si on ne trouve pas de référent lié au CER, on va chercher le référent de parcours qui était désigné au moment de la date de validation du CER
+			if( empty( $data['Referent']['id'] ) ) {
+				$referent = $this->Contratinsertion->Personne->PersonneReferent->find(
+					'first',
+					array(
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $data['Personne']['id'],
+							'PersonneReferent.dddesignation <=' => $data['Contratinsertion']['date_saisi_ci'],
+							'OR' => array(
+								'PersonneReferent.dfdesignation IS NULL',
+								'PersonneReferent.dfdesignation >=' => $data['Contratinsertion']['date_saisi_ci'],
+							)
+						),
+						'contain' => array(
+							'Referent'
+						),
+						'order' => array( 'PersonneReferent.dfdesignation ASC' )
+					)
+				);
+
+				if( !empty( $referent ) ) {
+					$data['Referent'] = $referent['Referent'];
+				}
+			}
 
 			// Liste des informations concernant la composition du foyer
 			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
@@ -1310,7 +1335,7 @@
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
 				}
 			}
-			
+
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
