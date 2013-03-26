@@ -12,12 +12,15 @@ BEGIN;
 -- *****************************************************************************
 
 -------------------------------------------------------------------------------------
--- 20130325 : ajout du champ motifannulation à la table dossierspcgs66
+-- 20130325 : ajout du champ motifannulation dans les tables dossierspcgs66, traitementspcgs66 
+--				et decisionsdossierspcgs66
 -------------------------------------------------------------------------------------
 
 SELECT add_missing_table_field( 'public', 'dossierspcgs66', 'motifannulation', 'TEXT' );
 SELECT add_missing_table_field( 'public', 'decisionsdossierspcgs66', 'motifannulation', 'TEXT' );
 SELECT add_missing_table_field( 'public', 'traitementspcgs66', 'motifannulation', 'TEXT' );
+
+-- Modification de létat du dossier avec ajout de l'état annulé
 
 ALTER TABLE dossierspcgs66 ALTER COLUMN etatdossierpcg TYPE VARCHAR(30) USING CAST(etatdossierpcg AS VARCHAR(30));
 ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN etatdossierpcg TYPE VARCHAR(30) USING CAST(etatdossierpcg AS VARCHAR(30));
@@ -29,6 +32,11 @@ ALTER TABLE dossierspcgs66 ADD CONSTRAINT dossierspcgs66_etatdossierpcg_in_list_
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'decisionsdossierspcgs66', 'decisionsdossierspcgs66_etatdossierpcg_in_list_chk' );
 ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_etatdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( etatdossierpcg, ARRAY['attaffect','attinstr','instrencours','attavistech','attval','dossiertraite','decisionvalid','decisionnonvalid','decisionnonvalidretouravis','decisionvalidretouravis','attpj','transmisop','atttransmisop','annule'] ) );
+
+
+SELECT add_missing_table_field( 'public', 'actionscandidats_personnes', 'poursuitesuivicg', 'CHAR(1)' );
+ALTER TABLE actionscandidats_personnes ADD CONSTRAINT actionscandidats_personnes_poursuitesuivicg_in_list_chk CHECK ( cakephp_validate_in_list( poursuitesuivicg, ARRAY['0','1'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

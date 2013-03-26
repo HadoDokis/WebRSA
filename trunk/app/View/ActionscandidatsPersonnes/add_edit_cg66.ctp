@@ -144,7 +144,19 @@
 		</tr>
 	</table>
 </fieldset>
-
+	<fieldset><legend></legend>
+	<?php 
+		echo $this->Default->subform(
+			array(
+				'ActioncandidatPersonne.poursuitesuivicg' => array( 'type' => 'checkbox' , 'label' => 'Poursuite suivi CG' )
+			),
+			array(
+				'domain' => $domain,
+				'options' => $options
+			)
+		);
+	?>
+	</fieldset>
 <fieldset id="motifdemande">
 	<legend><?php echo required( "Motif de la demande (donner des précisions sur le parcours d'insertion et les motifs de la prescription)" ); ?></legend>
 		<?php
@@ -174,6 +186,7 @@
 		);
 	?>
 </fieldset>
+	
 <fieldset id="rdv">
 	<legend>Rendez-vous</legend>
 	<?php
