@@ -18,20 +18,24 @@
 		public $name = 'Partenaire';
 
 		public $displayField = 'libstruc';
+		
+		public $recursive = -1;
 
 		public $actsAs = array(
-			'ValidateTranslate',
+			'Formattable',
+			'Pgsqlcake.PgsqlAutovalidate'
 		);
 
 		public $validate = array(
 			'libstruc' => array(
-				array(
-					'rule' => 'isUnique',
+				'isUnique' => array(
+					'rule' => array( 'isUnique' ),
 					'message' => 'Cette valeur est déjà utilisée'
 				),
-				array(
-					'rule' => array('notEmpty'),
-				),
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'numvoie' => array(
 				array(
@@ -60,7 +64,7 @@
 			),
 		);
 
-		public $hasMany = array(
+		public $hasOne = array(
 			'Contactpartenaire' => array(
 				'className' => 'Contactpartenaire',
 				'foreignKey' => 'partenaire_id',
@@ -95,6 +99,16 @@
 			)
 		);
 		
+		public $belongsTo = array(
+			'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+		);
+		
 		public $virtualFields = array(
 			'adresse' => array(
 				'type'      => 'string',
@@ -102,5 +116,43 @@
 			)
 		);
 
+		
+		/**
+		*	Recherche des partenaires dans le paramétrage de l'application
+		*
+		*/
+		public function search( $criteres ) {
+			/// Conditions de base
+			$conditions = array();
+
+			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			$filtersPartenaires = array();
+			foreach( array( 'libstruc', 'ville', 'codepartenaire' ) as $criterePartenaire ) {
+				if( isset( $criteres['Partenaire'][$criterePartenaire] ) && !empty( $criteres['Partenaire'][$criterePartenaire] ) ) {
+					$conditions[] = 'Partenaire.'.$criterePartenaire.' ILIKE \''.$this->wildcard( $criteres['Partenaire'][$criterePartenaire] ).'\'';
+				}
+			}
+
+			// Critère sur la structure référente de l'utilisateur
+			if( isset( $criteres['Partenaire']['serviceinstructeur_id'] ) && !empty( $criteres['Partenaire']['serviceinstructeur_id'] ) ) {
+				$conditions[] = array( 'Partenaire.serviceinstructeur_id' => $criteres['Partenaire']['serviceinstructeur_id'] );
+			}
+
+
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Serviceinstructeur->fields()
+				),
+				'order' => array( 'Partenaire.libstruc ASC' ),
+				'joins' => array(
+					$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
 	}
 ?>
