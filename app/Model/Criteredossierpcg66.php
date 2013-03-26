@@ -39,6 +39,8 @@
 			/// Critères
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
+			$gestionnaireAvistechnique = Set::extract( $params, 'Decisiondossierpcg66.useravistechnique_id' );
+			$gestionnaireValidation = Set::extract( $params, 'Decisiondossierpcg66.userproposition_id' );
 			$datereceptionpdo = Set::extract( $params, 'Dossierpcg66.datereceptionpdo' );
 			$datereceptionpdo_to = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_to' );
 			$datereceptionpdo_from = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_from' );
@@ -69,6 +71,15 @@
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
+			}
+			
+			// Agent ayant émis l'avis technique
+			if( !empty( $gestionnaireAvistechnique ) ) {
+				$conditions[] = 'Decisiondossierpcg66.useravistechnique_id = \''.Sanitize::clean( $gestionnaireAvistechnique, array( 'encode' => false ) ).'\'';
+			}
+			// Agent ayant émis la validation
+			if( !empty( $gestionnaireValidation ) ) {
+				$conditions[] = 'Decisiondossierpcg66.userproposition_id = \''.Sanitize::clean( $gestionnaireValidation, array( 'encode' => false ) ).'\'';
 			}
 			
 			// Corbeille vide ?
@@ -119,6 +130,8 @@
 					'Dossierpcg66.etatdossierpcg',
 					'Dossierpcg66.datetransmission',
 					'Decisiondossierpcg66.datetransmissionop',
+					'Decisiondossierpcg66.useravistechnique_id',
+					'Decisiondossierpcg66.userproposition_id',
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.user_id',
 					'Dossier.id',

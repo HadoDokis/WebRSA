@@ -231,3 +231,9 @@ msgstr "Oui"
 
 msgid "Decisiondossierpcg66.motifannulation"
 msgstr "Motif d'annulation"
+
+msgid "Decisiondossierpcg66.useravistechnique_id"
+msgstr "Agent ayant émis l'avis technique"
+
+msgid "Decisiondossierpcg66.userproposition_id"
+msgstr "Agent ayant émis la validation"

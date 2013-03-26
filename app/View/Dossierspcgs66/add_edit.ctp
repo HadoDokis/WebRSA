@@ -260,16 +260,16 @@ document.observe( "dom:loaded", function() {
 							' )
 						),
 						'Decisionsdossierspcgs66::avistechnique' => array(
-							'disabled' => ( '
-								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
-							' )
+// 							'disabled' => ( '
+// 								\''.$etatdossierpcg.'\' == \'transmisop\'
+// 								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
+// 							' )
 						),
 						'Decisionsdossierspcgs66::validation' => array(
-							'disabled' => ( '
-								\''.$etatdossierpcg.'\' == \'transmisop\'
-								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
-							' )
+// 							'disabled' => ( '
+// 								\''.$etatdossierpcg.'\' == \'transmisop\'
+// 								|| \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\' || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
+// 							' )
 						),
 						'Decisionsdossierspcgs66::print' => array(
 							'label' => 'Imprimer',
