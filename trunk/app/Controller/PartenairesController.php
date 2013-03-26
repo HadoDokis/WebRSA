@@ -44,22 +44,11 @@
 				),
 				'Adresse' => array(
 					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
-				),
-				'Serviceinstructeur' => array(
-					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
 				)
 			);
 			
-// 			$secteursactivites = $this->Partenaire->Contactpartenaire->Actioncandidat->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
-// 				'list',
-// 				array(
-// 					'contain' => false,
-// 					'order' => array( 'Libsecactderact66Secteur.code' )
-// 				)
-// 			);
-// 			$this->set( 'secteursactivites', $secteursactivites );
-			
-			$options[$this->modelClass]['serviceinstructeur_id'] = $this->Partenaire->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins' => 'S' ) );
+
+// 			$options[$this->modelClass]['serviceinstructeur_id'] = $this->Partenaire->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins' => 'S' ) );
 			
 			if( Configure::read( 'CG.cantons' ) ) {
 				$Canton = ClassRegistry::init( 'Canton' );

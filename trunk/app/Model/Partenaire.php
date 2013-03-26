@@ -99,15 +99,15 @@
 			)
 		);
 		
-		public $belongsTo = array(
-			'Serviceinstructeur' => array(
-				'className' => 'Serviceinstructeur',
-				'foreignKey' => 'serviceinstructeur_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
-		);
+// 		public $belongsTo = array(
+// 			'Serviceinstructeur' => array(
+// 				'className' => 'Serviceinstructeur',
+// 				'foreignKey' => 'serviceinstructeur_id',
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => ''
+// 			)
+// 		);
 		
 		public $virtualFields = array(
 			'adresse' => array(
@@ -134,20 +134,20 @@
 			}
 
 			// Critère sur la structure référente de l'utilisateur
-			if( isset( $criteres['Partenaire']['serviceinstructeur_id'] ) && !empty( $criteres['Partenaire']['serviceinstructeur_id'] ) ) {
-				$conditions[] = array( 'Partenaire.serviceinstructeur_id' => $criteres['Partenaire']['serviceinstructeur_id'] );
-			}
+// 			if( isset( $criteres['Partenaire']['serviceinstructeur_id'] ) && !empty( $criteres['Partenaire']['serviceinstructeur_id'] ) ) {
+// 				$conditions[] = array( 'Partenaire.serviceinstructeur_id' => $criteres['Partenaire']['serviceinstructeur_id'] );
+// 			}
 
 
 			$query = array(
 				'fields' => array_merge(
-					$this->fields(),
-					$this->Serviceinstructeur->fields()
+					$this->fields()/*,
+					$this->Serviceinstructeur->fields()*/
 				),
 				'order' => array( 'Partenaire.libstruc ASC' ),
-				'joins' => array(
-					$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) )
-				),
+// 				'joins' => array(
+// 					$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) )
+// 				),
 				'recursive' => -1,
 				'conditions' => $conditions
 			);
