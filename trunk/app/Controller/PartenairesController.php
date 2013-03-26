@@ -18,26 +18,15 @@
 		public $name = 'Partenaires';
 		public $uses = array( 'Partenaire', 'ActioncandidatPartenaire', 'Option', 'Personne' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
-		public $components = array( 'Default' );
+		public $components = array(
+			'Default',
+			'Search.Prg' => array( 'actions' => array( 'index' ) )
+		);
 
 		public $commeDroit = array(
 			'view' => 'Partenaires:index',
 			'add' => 'Partenaires:edit'
 		);
-
-		/**
-		*
-		*/
-
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
-
-			$options = array();
-			$options = Hash::insert( $options, 'Partenaire.typevoie', $this->Option->typevoie() );
-
-			$this->set( compact( 'options' ) );
-			return $return;
-		}
 
 
 		/**
@@ -46,13 +35,55 @@
 		*   - theme.php
 		*/
 
+		protected function _setOptions() {
+			// Options
+			$options = array();
+			$options = array(
+				'Personne' => array(
+					'qual' => ClassRegistry::init( 'Option' )->qual()
+				),
+				'Adresse' => array(
+					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
+				),
+				'Serviceinstructeur' => array(
+					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()
+				)
+			);
+			
+// 			$secteursactivites = $this->Partenaire->Contactpartenaire->Actioncandidat->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+// 				'list',
+// 				array(
+// 					'contain' => false,
+// 					'order' => array( 'Libsecactderact66Secteur.code' )
+// 				)
+// 			);
+// 			$this->set( 'secteursactivites', $secteursactivites );
+			
+			$options[$this->modelClass]['serviceinstructeur_id'] = $this->Partenaire->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins' => 'S' ) );
+			
+			if( Configure::read( 'CG.cantons' ) ) {
+				$Canton = ClassRegistry::init( 'Canton' );
+				$this->set( 'cantons', $Canton->selectList() );
+			}
+			
+			$options = Set::merge(
+				$this->Partenaire->enums(),
+				$options
+			);
+
+			$this->set( compact( 'options' ) );
+		}
+		
 		public function index() {
 
-			$this->paginate = array( 'limit' => 1000 );
-			$this->set(
-				Inflector::tableize( $this->modelClass ),
-				$this->paginate( $this->modelClass )
-			);
+			if( !empty( $this->request->data ) ) {
+				$queryData = $this->Partenaire->search( $this->request->data );
+				$queryData['limit'] = 20;
+				$this->paginate = $queryData;
+				$partenaires = $this->paginate( 'Partenaire' );
+				$this->set( 'partenaires', $partenaires);
+			}
+			$this->_setOptions();
 		}
 
 		/**
@@ -77,9 +108,48 @@
 		*
 		*/
 
-		protected function _add_edit(){
+		protected function _add_edit( $partenaire_id = null ){
 			$args = func_get_args();
-			$this->Default->{$this->action}( $args );
+			// Retour à la liste en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'partenaires', 'action' => 'index' ) );
+			}
+			
+			
+			if( $this->action == 'edit') {
+				// Vérification du format de la variable
+				if( !$this->Partenaire->exists( $partenaire_id ) ) {
+					throw new NotFoundException();
+				}
+			}
+		
+			// Tentative de sauvegarde du formulaire
+			if( !empty( $this->request->data ) ) {
+				$this->Partenaire->begin();
+				if( $this->Partenaire->saveAll( $this->request->data ) ) {
+					$this->Partenaire->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index' ) );
+				}
+				else {
+					$this->Partenaire->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else if( $this->action == 'edit') {
+				$this->request->data = $this->Partenaire->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Partenaire.id' => $partenaire_id
+						),
+						'contain' => false
+					)
+				);
+			}
+			$this->_setOptions();
+			$this->render( 'add_edit' );
+// 			$this->Default->{$this->action}( $args );
 		}
 
 		/**
