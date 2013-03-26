@@ -112,60 +112,7 @@
 		</fieldset>
 	<?php } ?>
 
-	<script type="text/javascript">
-		document.observe( "dom:loaded", function() {
-			observeDisableFieldsetOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][typetraitement]',
-				$( 'fieldsetficheanalyse' ),
-				'analyse',
-				false,
-				true
-			);
-
-			observeDisableFieldsetOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][typetraitement]',
-				$( 'fichecalcul' ),
-				'revenu',
-				false,
-				true
-			);
-
-			observeDisableFieldsetOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][typetraitement]',
-				$( 'filecontainer-courrier' ),
-				'courrier',
-				false,
-				true
-			);
-
-
-
-			//**//
-			observeDisableFieldsOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][typetraitement]',
-				[ 'Traitementpcg66Dureeecheance' ],
-				'revenu',
-				false,
-				true
-			);
-
-			observeDisableFieldsOnValue(
-				'Traitementpcg66Dureeecheance',
-				[
-					'Traitementpcg66DateecheanceDay',
-					'Traitementpcg66DateecheanceMonth',
-					'Traitementpcg66DateecheanceYear'
-				],
-				'0',
-				true
-			);
-			//
-		} );
-	</script>
+	
 <?php
 		// Début fiche de calcul
 		echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
@@ -989,7 +936,60 @@
 		echo $this->Form->end();
 
 ?>
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsetOnRadioValue(
+			'traitementpcg66form',
+			'data[Traitementpcg66][typetraitement]',
+			$( 'fieldsetficheanalyse' ),
+			'analyse',
+			false,
+			true
+		);
 
+		observeDisableFieldsetOnRadioValue(
+			'traitementpcg66form',
+			'data[Traitementpcg66][typetraitement]',
+			$( 'fichecalcul' ),
+			'revenu',
+			false,
+			true
+		);
+
+		observeDisableFieldsetOnRadioValue(
+			'traitementpcg66form',
+			'data[Traitementpcg66][typetraitement]',
+			$( 'filecontainer-courrier' ),
+			'courrier',
+			false,
+			true
+		);
+
+
+
+		//**//
+		observeDisableFieldsOnRadioValue(
+			'traitementpcg66form',
+			'data[Traitementpcg66][typetraitement]',
+			[ 'Traitementpcg66Dureeecheance' ],
+			'revenu',
+			false,
+			true
+		);
+
+		observeDisableFieldsOnValue(
+			'Traitementpcg66Dureeecheance',
+			[
+				'Traitementpcg66DateecheanceDay',
+				'Traitementpcg66DateecheanceMonth',
+				'Traitementpcg66DateecheanceYear'
+			],
+			'0',
+			true
+		);
+		//
+	} );
+</script>
 <script type="text/javascript">
 	//<![CDATA[
 	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {

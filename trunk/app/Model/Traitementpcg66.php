@@ -516,6 +516,11 @@
 					$success = true;
 				}
 			}
+			
+			// Si aucune date d'échéance, on clôture le traitement automatiquement
+			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) ) {
+				$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
+			}
 
 			return $success;
 		}
