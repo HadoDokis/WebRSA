@@ -99,21 +99,7 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
-				if( Configure::read( 'Cg.departement' ) == 66 ){
-					echo $this->Xhtml->tableCells(
-						array(
-							h( 'Fiches de Candidature' ),
-							$this->Xhtml->viewLink(
-								'Voir la table',
-								array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' ),
-								$this->Permissions->check( 'actionscandidats_personnes', 'indexparams' )
-							)
-						),
-						array( 'class' => 'odd' ),
-						array( 'class' => 'even' )
-					);
-				}
-				else if( Configure::read( 'Cg.departement' ) == 93 ){
+				if( Configure::read( 'Cg.departement' ) == 93 ){
 					echo $this->Xhtml->tableCells(
 						array(
 							h( 'Fiches de prescription' ),

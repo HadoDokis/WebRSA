@@ -172,7 +172,25 @@
 		),
 		'Offre d\'Insertion' => array(
 			'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
-			'url' => array( 'controller' => 'offresinsertion', 'action' => 'index' ),
+			'Paramétrages' => array(
+				'Création des partenaires' => array(
+					'url' => array( 'controller' => 'partenaires', 'action' => 'index' )
+				),
+				'Création des contacts' => array(
+					'url' => array( 'controller' => 'contactspartenaires', 'action' => 'index' )
+				),
+				'Création des actions' => array(
+					'url' => array( 'controller' => 'actionscandidats', 'action' => 'index' )
+				),
+				'Motifs de sortie' => array(
+					'url' => array( 'controller' => 'motifssortie', 'action' => 'index' )
+				)
+			),
+			'Tableau global' => array(
+				'url' => array( 'controller' => 'offresinsertion', 'action' => 'index' )
+			)
+
+// 			'url' => array( 'controller' => 'offresinsertion', 'action' => 'index' ),
 		),
 		'Eq. Pluri.' => array(
 			( Configure::read( 'Cg.departement' ) == 66 ? '1. Gestion des EPs' : '1. Mise en place du dispositif' ) => array(
