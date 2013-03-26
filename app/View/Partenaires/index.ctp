@@ -56,37 +56,39 @@
 <?php echo $this->Xform->end();?>
 
 <?php
-	if( !empty( $partenaires ) ) {
-		echo $this->Default2->index(
-			$partenaires,
-			array(
-				'Partenaire.libstruc',
-				'Partenaire.numtel',
-				'Partenaire.email',
-				'Partenaire.ville'
-			),
-			array(
-				'cohorte' => false,
-				'actions' => array(
-					'Partenaires::edit',
-					'Partenaires::delete',
+	if( !empty( $this->request->data ) ) {
+		if( !empty( $partenaires ) ) {
+			echo $this->Default2->index(
+				$partenaires,
+				array(
+					'Partenaire.libstruc',
+					'Partenaire.numtel',
+					'Partenaire.email',
+					'Partenaire.ville'
 				),
-				'options' => $options
-			)
-		);
-	}
-	else {
-		echo '<p class="notice">Aucun partenaire présent</p>';
+				array(
+					'cohorte' => false,
+					'actions' => array(
+						'Partenaires::edit',
+						'Partenaires::delete',
+					),
+					'options' => $options
+				)
+			);
+		}
+		else {
+			echo '<p class="notice">Aucun partenaire présent</p>';
+		}
 	}
 
-	echo $this->Default->button(
-		'back',
-		array(
-			'controller' => 'actionscandidats_personnes',
-			'action'     => 'indexparams'
-		),
-		array(
-			'id' => 'Back'
-		)
-	);
+// 	echo $this->Default->button(
+// 		'back',
+// 		array(
+// 			'controller' => 'actionscandidats_personnes',
+// 			'action'     => 'indexparams'
+// 		),
+// 		array(
+// 			'id' => 'Back'
+// 		)
+// 	);
 ?>
