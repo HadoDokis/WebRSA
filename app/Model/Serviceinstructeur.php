@@ -159,19 +159,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
-			'Partenaire' => array(
-				'className' => 'Partenaire',
-				'foreignKey' => 'serviceinstructeur_id',
-				'dependent' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+// 			'Partenaire' => array(
+// 				'className' => 'Partenaire',
+// 				'foreignKey' => 'serviceinstructeur_id',
+// 				'dependent' => true,
+// 				'conditions' => '',
+// 				'fields' => '',
+// 				'order' => '',
+// 				'limit' => '',
+// 				'offset' => '',
+// 				'exclusive' => '',
+// 				'finderQuery' => '',
+// 				'counterQuery' => ''
+// 			),
 			'Propopdo' => array(
 				'className' => 'Propopdo',
 				'foreignKey' => 'serviceinstructeur_id',
