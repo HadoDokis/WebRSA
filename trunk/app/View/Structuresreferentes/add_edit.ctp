@@ -61,7 +61,7 @@
 
 <fieldset class="col2">
 	<legend><?php echo required( 'Types d\'orientations' ); ?></legend>
-	<?php echo $this->Xform->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $options, 'empty' => true ) );?>
+	<?php echo $this->Xform->input( 'Structurereferente.typeorient_id', array( 'label' => false, 'type' => 'select' , 'options' => $options['Structurereferente']['typeorient_id'], 'empty' => true ) );?>
 </fieldset>
 
 <fieldset class="col2">
