@@ -24,6 +24,11 @@
 			'recursive' => -1,
 			'order' => array( 'canton ASC' )
 		);
+		
+		public $components = array(
+			'Search.Prg' => array( 'actions' => array( 'index' ) )
+		);
+		
 		public $commeDroit = array(
 			'add' => 'Cantons:edit'
 		);
@@ -31,10 +36,11 @@
 		/**
 		 * 	FIXME: docs
 		 */
-		public function beforeFilter() {
-			$return = parent::beforeFilter();
+		protected function _setOptions() {
+		
+			$this->set( 'zonesgeographiques', $this->Canton->Zonegeographique->find( 'list' ) );
+			$this->set( 'typesvoies', $this->Option->typevoie() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			return $return;
 		}
 
 		/**
@@ -45,7 +51,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
-
+/*
 			$this->paginate = array(
 				'fields' => array(
 					'Canton.id',
@@ -60,7 +66,17 @@
 				)
 			);
 			$cantons = $this->paginate( $this->modelClass );
-			$this->set( compact( 'cantons' ) );
+			$this->set( compact( 'cantons' ) );*/
+			
+			
+			if( !empty( $this->request->data ) ) {
+				$queryData = $this->Canton->search( $this->request->data );
+				$queryData['limit'] = 20;
+				$this->paginate = $queryData;
+				$cantons = $this->paginate( 'Canton' );
+				$this->set( 'cantons', $cantons);
+			}
+			$this->_setOptions();
 		}
 
 		/**
@@ -112,8 +128,7 @@
 				$this->request->data = $canton;
 			}
 
-			$this->set( 'zonesgeographiques', $this->Canton->Zonegeographique->find( 'list' ) );
-			$this->set( 'typesvoies', $this->Option->typevoie() );
+			$this->_setOptions();
 			$this->render( 'add_edit' );
 		}
 

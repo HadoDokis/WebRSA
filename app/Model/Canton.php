@@ -313,5 +313,43 @@
 
 			return $return;
 		}
+		
+		/**
+		*	Recherche des partenaires dans le paramétrage de l'application
+		*
+		*/
+		public function search( $criteres ) {
+			/// Conditions de base
+			$conditions = array();
+
+			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			$filtersCantons = array();
+			foreach( array( 'canton', 'locaadr', 'codepos', 'numcomptt' ) as $critereCanton ) {
+				if( isset( $criteres['Canton'][$critereCanton] ) && !empty( $criteres['Canton'][$critereCanton] ) ) {
+					$conditions[] = 'Canton.'.$critereCanton.' ILIKE \''.$this->wildcard( $criteres['Canton'][$critereCanton] ).'\'';
+				}
+			}
+
+			// Critère sur la structure référente de l'utilisateur
+			if( isset( $criteres['Canton']['zonegeographique_id'] ) && !empty( $criteres['Canton']['zonegeographique_id'] ) ) {
+				$conditions[] = array( 'Canton.zonegeographique_id' => $criteres['Canton']['zonegeographique_id'] );
+			}
+
+
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Zonegeographique->fields()
+				),
+				'order' => array( 'Canton.canton ASC' ),
+				'joins' => array(
+					$this->join( 'Zonegeographique', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
 	}
 ?>
