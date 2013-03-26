@@ -91,14 +91,15 @@
 		}
 
 		echo $this->Default->button(
-		    'back',
-		    array(
-		        'controller' => 'commissionseps',
-		        'action'     => 'arbitragecg'
-		    ),
-		    array(
-		        'id' => 'Back'
-		    )
+			'back',
+			array(
+				'controller' => 'commissionseps',
+				'action'     => 'view',
+				$commissionep['Commissionep']['id']
+			),
+			array(
+				'id' => 'Back'
+			)
 		);
 	?>
 </div>
