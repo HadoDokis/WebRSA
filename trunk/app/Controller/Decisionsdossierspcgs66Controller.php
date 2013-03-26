@@ -95,6 +95,19 @@
 			$listMotifs = $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->Propodecisioncer66->Motifcernonvalid66->find( 'list' );
 			$this->set( compact( 'listMotifs' ) );
 
+			$this->set( 'gestionnaire', $this->User->find(
+					'list',
+					array(
+						'fields' => array(
+							'User.nom_complet'
+						),
+						'conditions' => array(
+							'User.isgestionnaire' => 'O'
+						)
+					)
+				)
+			);
+			
 			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 

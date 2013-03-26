@@ -364,6 +364,10 @@
 								'options' => $options
 							)
 						);
+						
+						if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['avistechnique'] ) ) {
+							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.useravistechnique_id', Set::enum( Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'), $gestionnaire ) );
+						}
 					?>
 				</fieldset>
 		</fieldset>
@@ -395,9 +399,11 @@
 							'options' => $options
 						)
 					);
+						if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] ) ) {
+							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.userproposition_id', Set::enum( Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'), $gestionnaire ) );
+						}
 					?>
 				</fieldset>
-
 		</fieldset>
 	<?php endif;?>
 
