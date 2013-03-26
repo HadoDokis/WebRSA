@@ -81,14 +81,16 @@
 		}
 	}
 
-// 	echo $this->Default->button(
-// 		'back',
-// 		array(
-// 			'controller' => 'actionscandidats_personnes',
-// 			'action'     => 'indexparams'
-// 		),
-// 		array(
-// 			'id' => 'Back'
-// 		)
-// 	);
+	if( Configure::read( 'Cg.departement' ) != 66 ) {
+		echo $this->Default->button(
+			'back',
+			array(
+				'controller' => 'actionscandidats_personnes',
+				'action'     => 'indexparams'
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+	}
 ?>
