@@ -452,7 +452,7 @@
 					'count',
 					array(
 						'conditions' => array(
-							'Dossierpcg66.decisiondefautinsertionep66_id' => $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->id
+							'Dossierpcg66.decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
 						)
 					)
 				);
