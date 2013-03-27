@@ -516,7 +516,7 @@
 					$success = true;
 				}
 			}
-			
+
 			// Si aucune date d'échéance, on clôture le traitement automatiquement
 			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) ) {
 				$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
@@ -709,6 +709,7 @@
 					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
 					$this->Personnepcg66->Personne->Orientstruct->fields(),
 					$this->Personnepcg66->Personne->Orientstruct->Structurereferente->fields(),
+					$this->Personnepcg66->Bilanparcours66->fields(),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
@@ -792,7 +793,7 @@
 					)
 				)
 			);
-			
+
 			// Dates calculées sur les 3 mois suivants la date de début de prise en compte du courrier
 			$datedebutCourrier = $data['Modeletraitementpcg66']['montantdatedebut'];
 			if( !empty( $datedebutCourrier ) ) {
