@@ -66,7 +66,7 @@
 						)
 					WHERE
 						dossiers.dtdemrsa IS NOT NULL
-						AND prestations.rolepers IN ( 'DEM', 'CJT' )
+						AND pr2.rolepers IN ( 'DEM', 'CJT' )
 						AND (
 							(
 								nir_correct13( personnes.nir )
