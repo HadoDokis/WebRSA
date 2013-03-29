@@ -230,8 +230,8 @@
 			);
 		}
 
-		//FIXME infoscomplementaires
-
+		$items['Informations complémentaires'] = array( 'url' => array( 'controller' => 'infoscomplementaires', 'action' => 'view', $dossier['Dossier']['id'] ) );
+		
 		$items['Synthèse du parcours d\'insertion'] = array( 'url' => array( 'controller' => 'suivisinsertion', 'action' => 'index', $dossier['Dossier']['id'] ) );
 		$items['Modification Dossier RSA'] = array(
 			'disabled' => !$this->Permissions->checkDossier( 'dossiers', 'edit', Hash::get( $this->viewVars, 'dossierMenu' ) ),
