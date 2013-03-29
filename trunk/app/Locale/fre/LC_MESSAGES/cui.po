@@ -507,10 +507,10 @@ msgid "ENUM::ASS::O"
 msgstr "Oui"
 
 ####################
-msgid "ENUM::ISINSCRITPE::N"
+msgid "ENUM::ISINSCRITPE::0"
 msgstr "Non"
 
-msgid "ENUM::ISINSCRITPE::O"
+msgid "ENUM::ISINSCRITPE::1"
 msgstr "Oui"
 
 ####################
@@ -782,3 +782,24 @@ msgstr "N° de convention annuelle d'objectifs et de moyens"
 
 msgid "Cui.serviceinstructeur_id"
 msgstr "Maison sociale"
+
+msgid "Cui.montantrsapercu"
+msgstr "Montant du RSA perçu"
+
+msgid "Cui.nbperscharge"
+msgstr "Nombre de personnes à charge"
+
+msgid "Cui.dureeprisecharge"
+msgstr "Durée de prise en charge"
+
+msgid "ENUM::DUREEPRISECHARGE::3"
+msgstr "3 mois"
+
+msgid "ENUM::DUREEPRISECHARGE::6"
+msgstr "6 mois"
+
+msgid "ENUM::DUREEPRISECHARGE::9"
+msgstr "9 mois"
+
+msgid "ENUM::DUREEPRISECHARGE::12"
+msgstr "12 mois"
