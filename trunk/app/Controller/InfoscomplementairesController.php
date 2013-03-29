@@ -132,7 +132,10 @@
 						'order' => 'Creancealimentaire.ddcrealim DESC',
 					)
 				);
-				$personnesFoyer[$index]['Creancealimentaire'] = $tCreancealimentaire['Creancealimentaire'];
+				
+				if( !empty( $tCreancealimentaire ) ) {
+					$personnesFoyer[$index]['Creancealimentaire'] = $tCreancealimentaire['Creancealimentaire'];
+				}
 
 				///Titres séjour
 				$tTitresejour = $this->Titresejour->find(
@@ -145,7 +148,9 @@
 						'recursive' => -1
 					)
 				);
-				$personnesFoyer[$index]['Titresejour'] = $tTitresejour['Titresejour'];
+				if( !empty( $tTitresejour ) ) {
+					$personnesFoyer[$index]['Titresejour'] = $tTitresejour['Titresejour'];
+				}
 
 				///Activités
 				$tActivite = $this->Activite->find(
@@ -158,7 +163,9 @@
 						'recursive' => -1
 					)
 				);
-				$personnesFoyer[$index]['Activite'] = $tActivite['Activite'];
+				if( !empty( $tActivite ) ) {
+					$personnesFoyer[$index]['Activite'] = $tActivite['Activite'];
+				}
 
 				///Allocation au soutien familial
 				$tAllocationsoutienfamilial = $this->Allocationsoutienfamilial->find(
@@ -171,7 +178,9 @@
 						'recursive' => -1
 					)
 				);
-				$personnesFoyer[$index]['Allocationsoutienfamilial'] = $tAllocationsoutienfamilial['Allocationsoutienfamilial'];
+				if( !empty( $tAllocationsoutienfamilial ) ) {
+					$personnesFoyer[$index]['Allocationsoutienfamilial'] = $tAllocationsoutienfamilial['Allocationsoutienfamilial'];
+				}
 
 				$details[$role] = $personnesFoyer[$index];
 			}
