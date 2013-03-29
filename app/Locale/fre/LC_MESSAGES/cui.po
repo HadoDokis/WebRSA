@@ -809,3 +809,15 @@ msgstr "Nom de l'employeur"
 
 msgid "Cui.actioncandidat_id"
 msgstr "Action engagée par l'employeur"
+
+msgid "ENUM::DUREEBENEFAIDE::06"
+msgstr "moins de 6 mois"
+
+msgid "ENUM::DUREEBENEFAIDE::11"
+msgstr "de 6 à 11 mois"
+
+msgid "ENUM::DUREEBENEFAIDE::23"
+msgstr "de 12 à 23 mois"
+
+msgid "ENUM::DUREEBENEFAIDE::24"
+msgstr "24 et plus"
