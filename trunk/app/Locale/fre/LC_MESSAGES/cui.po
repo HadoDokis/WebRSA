@@ -803,3 +803,9 @@ msgstr "9 mois"
 
 msgid "ENUM::DUREEPRISECHARGE::12"
 msgstr "12 mois"
+
+msgid "Cui.partenaire_id"
+msgstr "Nom de l'employeur"
+
+msgid "Cui.actioncandidat_id"
+msgstr "Action engagée par l'employeur"
