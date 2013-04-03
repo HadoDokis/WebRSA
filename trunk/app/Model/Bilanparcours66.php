@@ -177,6 +177,18 @@
 //					'message' => 'Champ obligatoire',
 //				)
 //			)
+			'examenaudition' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'audition' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
+			'examenauditionpe' => array(
+				array(
+					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'auditionpe' ) ),
+					'message' => 'Champ obligatoire',
+				)
+			),
 		);
 
 		public $belongsTo = array(
