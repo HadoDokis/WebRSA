@@ -372,7 +372,6 @@
 			);
 
 			$qdRadies['conditions'][] = 'Orientstruct.typeorient_id IS NOT NULL';
-			$qdRadies['conditions'][] = 'Orientstruct.date_valid < Historiqueetatpe.date';
 
 			$qdRadies = array_words_replace(
 				$qdRadies,
@@ -388,6 +387,11 @@
 			$sqRadies = $this->Dossierep->Personne->sq( $qdRadies );
 
 			$queryData['conditions'][] = "\"Personne\".\"id\" NOT IN ( {$sqRadies} )";
+
+			$conditionsSelection = Configure::read( 'Dossierseps.conditionsSelection' );
+			if( !empty( $conditionsSelection ) ) {
+				$queryData['conditions'][] = $conditionsSelection;
+			}
 
 			return $queryData;
 		}
@@ -429,9 +433,13 @@
 			$queryData['fields'][] = 'Structureorientante.lib_struc';
 			$queryData['joins'][] = $this->Dossierep->Personne->Orientstruct->join( 'Structureorientante', array( 'type' => 'LEFT OUTER' ) );
 
-			// On s'assure que l'orientation soit effective et que les dates correspondent
+			// On s'assure que l'orientation soit effective
 			$queryData['conditions'][] = 'Orientstruct.typeorient_id IS NOT NULL';
-			$queryData['conditions'][] = 'Orientstruct.date_valid < Historiqueetatpe.date';
+
+			$conditionsSelection = Configure::read( 'Dossierseps.conditionsSelection' );
+			if( !empty( $conditionsSelection ) ) {
+				$queryData['conditions'][] = $conditionsSelection;
+			}
 
 			return $queryData;
 		}
