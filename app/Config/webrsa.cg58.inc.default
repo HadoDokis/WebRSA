@@ -414,4 +414,21 @@
 	 * @default null (false)
 	 */
 	Configure::write( 'Utilisateurs.reconnection', true );
+
+	/**
+	 * Conditions supplémentaires utilisées lors de la sélection des dossiers pour
+	 * une commission d'EP (url: /dossierseps/choose/...).
+	 *
+	 * Au CG 58, il faut que les dossiers sélectionnables soient dans un droit
+	 * ouvert et que les allocataires soient soumis à droits et devoirs.
+	 *
+	 * @param array
+	 */
+	Configure::write(
+		'Dossierseps.conditionsSelection',
+		array(
+			'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' ),
+			'Calculdroitrsa.toppersdrodevorsa' => '1',
+		)
+	);
 ?>

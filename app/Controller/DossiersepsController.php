@@ -194,6 +194,7 @@
 						),
 					),
 					'conditions' => array(
+						(array)Configure::read( 'Dossierseps.conditionsSelection' ),
 						$conditionsAdresses,
 						$listeThemes,
 						$conditionsTime,
