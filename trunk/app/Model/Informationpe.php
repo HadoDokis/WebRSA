@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Informationpe.
 	 *
@@ -13,9 +13,9 @@
 	 *
 	 * @package app.Model
 	 */
-	 
+
 	App::uses( 'Sanitize', 'Utility' );
-	 
+
 	class Informationpe extends AppModel
 	{
 		public $name = 'Informationpe';
@@ -197,10 +197,11 @@
 		}
 
 		/**
-		*
-		*/
+		 * TODO: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
+		 *
+		 * @return array
+		 */
 		public function qdNonInscrits() {
-			// FIXME: et qui ne sont pas passés dans une EP pour ce motif depuis au moins 1 mois (?)
 			$queryData['fields'][] = 'Orientstruct.id';
 			$queryData['fields'][] = 'Orientstruct.date_valid';
 			$queryData['fields'][] = 'Typeorient.lib_type_orient';
@@ -227,7 +228,7 @@
 					WHERE
 						personnes.id = Personne.id
 						AND historiqueetatspe.etat = \'inscription\'
-						AND historiqueetatspe.date >= Orientstruct.date_valid
+						'.( Configure::read( 'Cg.departement' ) == 58 ? null : 'AND historiqueetatspe.date >= Orientstruct.date_valid' ).'
 			)';
 
 			$queryData['joins'][] = array(
