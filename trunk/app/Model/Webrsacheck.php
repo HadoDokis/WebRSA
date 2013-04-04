@@ -218,6 +218,7 @@
 				'Sanctionep58.nonrespectcer.dureeTolerance' => 'integer',
 				'Selectionradies.conditions' => 'isarray',
 				'Typeorient.emploi_id' => 'integer',
+				'Dossierseps.conditionsSelection' => 'isarray',
 			);
 		}
 
