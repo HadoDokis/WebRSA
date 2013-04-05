@@ -357,31 +357,33 @@
 								<th>Numéro de demande RSA</th>
 								<td><?php echo Set::extract( 'Dossier.numdemrsa', $details );?></td>
 							</tr>
-							<tr class="even">
-								<th>Montant RSA</th>
-								<td><?php echo $this->Locale->money( Set::extract( 'Detailcalculdroitrsa.0.mtrsavers', $details ) ); ?></td>
-							</tr>
 							<tr class="odd">
-								<th>Date dernier montant</th>
+								<th>Date dernier(s) montant(s)</th>
 								<td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.dtderrsavers', $details ) );?></td>
 							</tr>
+							<?php foreach( $details['Detailcalculdroitrsa'] as $detailcalculdroitrsa ):?>
 							<tr class="even">
-								<th>Motif</th>
-								<td><?php echo value( $natpf, Set::extract( 'Detailcalculdroitrsa.0.natpf', $details ) );?></td>
+								<th>Motif montant</th>
+								<td><?php echo value( $natpf, Set::extract( 'natpf', $detailcalculdroitrsa ) );?></td>
 							</tr>
 							<tr class="odd">
+								<th>Montant RSA</th>
+								<td><?php echo $this->Locale->money( Set::extract( 'mtrsavers', $detailcalculdroitrsa ) ); ?></td>
+							</tr>
+							<?php endforeach;?>
+							<tr class="even">
 								<th>Montant INDUS</th>
 								<td><?php echo $this->Locale->money( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
 							</tr>
-							<tr class="even">
-								<th>Motif</th>
+							<tr class="odd">
+								<th>Motif INDUS</th>
 								<td><?php echo h( Set::extract( 'Creance.motiindu', $details ) );/*FIXME: traduction, manque dans Option*/?></td>
 							</tr>
-							<tr class="odd">
+							<tr class="even">
 								<th>Début du traitement CAF / MSA</th>
 								<td><?php echo $this->Locale->date( 'Date::short', Set::extract( 'DEM.Dossiercaf.ddratdos', $details ) );?></td>
 							</tr>
-							<tr class="even">
+							<tr class="odd">
 								<th>Fin du traitement CAF / MSA</th>
 								<td><?php echo h(  date_short( Set::extract( 'DEM.Dossiercaf.dfratdos', $details ) ) );?></td>
 							</tr>
