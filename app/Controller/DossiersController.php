@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe DetailsdroitsrsaController.
+	 * Code source de la classe DossiersController.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,7 +10,7 @@
 	App::uses( 'Sanitize', 'Utility' );
 
 	/**
-	 * La classe DetailsdroitsrsaController ...
+	 * La classe DossiersController ...
 	 *
 	 * @package app.Controller
 	 */
@@ -235,6 +235,30 @@
 			);
 			$details = Set::merge( $details, $tCreance );
 
+			// Récupération des dernières informations RSA Socle / Activité
+			$sq = $this->Dossier->Detaildroitrsa->sq(
+				array(
+					'alias' => 'detailsdroitsrsa',
+					'fields' => array(
+						'detailscalculsdroitsrsa.dtderrsavers',
+					),
+					'joins' => array(
+						array_words_replace(
+							$this->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
+							array( 'Detaildroitrsa' => 'detailsdroitsrsa', 'Detailcalculdroitrsa' => 'detailscalculsdroitsrsa' )
+						)
+					),
+					'contain' => false,
+					'conditions' => array(
+						'detailsdroitsrsa.dossier_id' => $id
+					),
+					'order' => array(
+						'detailscalculsdroitsrsa.dtderrsavers DESC',
+					),
+					'limit' => 1
+				)
+			);
+
 			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->find(
 				'first',
 				array(
@@ -249,10 +273,9 @@
 								'Detailcalculdroitrsa.dtderrsavers',
 								'Detailcalculdroitrsa.natpf',
 							),
-							'order' => array(
-								'Detailcalculdroitrsa.ddnatdro DESC',
-							),
-							'limit' => 1
+							'conditions' => array(
+								"Detailcalculdroitrsa.dtderrsavers IN ( {$sq} )",
+							)
 						)
 					),
 					'conditions' => array(
