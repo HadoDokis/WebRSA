@@ -821,3 +821,113 @@ msgstr "de 12 à 23 mois"
 
 msgid "ENUM::DUREEBENEFAIDE::24"
 msgstr "24 et plus"
+
+	####################
+msgid "ENUM::ADAPTATION::1"
+msgstr "1"
+
+msgid "ENUM::ADAPTATION::2"
+msgstr "2"
+
+msgid "ENUM::ADAPTATION::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::REMOBILISATION::1"
+msgstr "1"
+
+msgid "ENUM::REMOBILISATION::2"
+msgstr "2"
+
+msgid "ENUM::REMOBILISATION::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::AIDEREPRISE::1"
+msgstr "1"
+
+msgid "ENUM::AIDEREPRISE::2"
+msgstr "2"
+
+msgid "ENUM::AIDEREPRISE::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::ELABOPROJETPRO::1"
+msgstr "1"
+
+msgid "ENUM::ELABOPROJETPRO::2"
+msgstr "2"
+
+msgid "ENUM::ELABOPROJETPRO::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::EVALUATION::1"
+msgstr "1"
+
+msgid "ENUM::EVALUATION::2"
+msgstr "2"
+
+msgid "ENUM::EVALUATION::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::AIDERECHEMPLOI::1"
+msgstr "1"
+
+msgid "ENUM::AIDERECHEMPLOI::2"
+msgstr "2"
+
+msgid "ENUM::AIDERECHEMPLOI::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::REMISENIVEAU::1"
+msgstr "1"
+
+msgid "ENUM::REMISENIVEAU::2"
+msgstr "2"
+
+msgid "ENUM::REMISENIVEAU::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::PREQUALIFICATION::1"
+msgstr "1"
+
+msgid "ENUM::PREQUALIFICATION::2"
+msgstr "2"
+
+msgid "ENUM::PREQUALIFICATION::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::NOUVELLECOMPETENCE::1"
+msgstr "1"
+
+msgid "ENUM::NOUVELLECOMPETENCE::2"
+msgstr "2"
+
+msgid "ENUM::NOUVELLECOMPETENCE::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::FORMQUALIF::1"
+msgstr "1"
+
+msgid "ENUM::FORMQUALIF::2"
+msgstr "2"
+
+msgid "ENUM::FORMQUALIF::3"
+msgstr "3"
+
+	####################
+msgid "ENUM::FORMQUALIF::1"
+msgstr "1"
+
+msgid "ENUM::FORMQUALIF::2"
+msgstr "2"
+
+msgid "ENUM::FORMQUALIF::3"
+msgstr "3"
