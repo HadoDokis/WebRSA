@@ -151,10 +151,12 @@
 					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $gestionsanctionseps58 ) );
 				}
 
-				foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
-					$modelTheme = Inflector::singularize( $theme );
-					$decisionModelTheme = 'Decision'.$modelTheme;
-					$this->request->data[$decisionModelTheme] = Set::classicExtract( $gestionsanctionseps58, "{n}.{$decisionModelTheme}" );
+				if( $this->action == 'traitement' ) {
+					foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
+						$modelTheme = Inflector::singularize( $theme );
+						$decisionModelTheme = 'Decision'.$modelTheme;
+						$this->request->data[$decisionModelTheme] = Set::classicExtract( $gestionsanctionseps58, "{n}.{$decisionModelTheme}" );
+					}
 				}
 
 				$this->set( 'gestionsanctionseps58', $gestionsanctionseps58 );
@@ -189,9 +191,11 @@
 		 * @return void
 		 */
 		public function exportcsv() {
+			$params = Hash::expand( $this->request->params['named'], '__' );
+
 			$queryData = $this->Gestionsanctionep58->search(
 				'Gestion::visualisation',
-				Hash::expand( $this->request->params['named'], '__' ),
+				$params['Search'],
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				null
@@ -259,6 +263,8 @@
 		 * @param integer $id L'id de
 		 */
 		public function _impressionsSanctions( $niveauSanction = null ) {
+			$params = Hash::expand( $this->request->params['named'], '__' );
+
 			// La page sur laquelle nous sommes
 			$page = Set::classicExtract( $this->request->params, 'named.page' );
 			if( ( intval( $page ) != $page ) || $page < 0 ) {
@@ -270,7 +276,7 @@
 				'Gestion::visualisation',
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' ),
+				$params['Search'],
 				$page,
 				$this->Session->read( 'Auth.User.id' )
 			);

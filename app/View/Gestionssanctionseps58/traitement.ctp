@@ -199,7 +199,7 @@
 				$tableCells = array(
 					$this->Xform->input( "Foyer.{$index}.dossier_id", array( 'label' => false, 'type' => 'hidden', 'value' => $gestionanctionep58['Foyer']['dossier_id'] ) ).
 					h( $gestionanctionep58['Personne']['qual'].' '.$gestionanctionep58['Personne']['nom'].' '.$gestionanctionep58['Personne']['prenom'] ),
-					nl2br( h( Set::classicExtract(  $gestionanctionep58, 'Adresse.numvoie' ).' '.Set::classicExtract(  $typevoie, Set::classicExtract( $gestionanctionep58, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.locaadr' ) ) ),
+					nl2br( h( Set::classicExtract(  $gestionanctionep58, 'Adresse.numvoie' ).' '.value(  $typevoie, Set::classicExtract( $gestionanctionep58, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionanctionep58, 'Adresse.locaadr' ) ) ),
 					h( $gestionanctionep58['Ep']['identifiant'] ),
 					h( $gestionanctionep58['Commissionep']['identifiant'] ),
 					h( date_short( $gestionanctionep58['Commissionep']['dateseance'] ) ),
