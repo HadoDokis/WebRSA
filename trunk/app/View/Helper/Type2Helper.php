@@ -310,7 +310,7 @@
 			list( $modelName, $fieldName ) = Xinflector::modelField( $path );
 
 			if( isset( $params['type'] ) ) {
-				if( $params['type'] == 'text' ) {
+				if( $params['type'] == 'text' && isset( $params['length'] ) ) {
 					$params['maxlength'] = $params['length'];
 				}
 			}
