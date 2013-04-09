@@ -499,7 +499,12 @@
 					echo "</div>";
 					echo "<div id='cgMaintienOrientAvecEpChangementRef' class='aere'>";
 						echo $this->Xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
-						echo "Avec changement de référent.";
+						if( @$this->request->data['Bilanparcours66']['nvtypeorient_id'] != $defaultvaluetypeorient_id ) {
+							echo "Avec changement de référent.";
+						}
+						else {
+							echo "Sans changement de référent.";
+						}
 					echo "</div>";
 				?>
 

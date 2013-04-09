@@ -371,10 +371,9 @@
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decisionsaisinebilanparcoursep66'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
-				$formData['Decisionsaisinebilanparcoursep66'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
-
+				
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['etape'] == $niveauDecision && !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] ) ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['etape'] == $niveauDecision  ) {
 					$formData['Decisionsaisinebilanparcoursep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
 					$formData['Decisionsaisinebilanparcoursep66'][$key]['checkcomm'] = !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['commentaire'] );
 					$formData['Decisionsaisinebilanparcoursep66'][$key]['referent_id'] = implode(
