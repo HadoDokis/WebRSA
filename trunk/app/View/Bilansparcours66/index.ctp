@@ -150,7 +150,7 @@
 								else {
 									$decision = $bilanparcour66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision];
 									
-									if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte', 'reorientation' ) ) ) {
+									if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte' ) ) ) {
 										echo $this->Xhtml->tag(
 											'td',
 											__d( 'decisionsaisinebilanparcoursep66', 'ENUM::DECISION::'.$decision['decision'], true ),
@@ -158,14 +158,8 @@
 												'colspan' => 2
 											)
 										);
-										
 									}
-									else {
-										echo '<td colspan="2"></td>'; 
-									}
-									
-									//Décision CG
-									if( $decision['etape'] == 'cg' ) {
+									else { // reorientation
 										echo $this->Xhtml->tag(
 											'td',
 											Set::enum( $decision['typeorient_id'], $typesorients )
@@ -174,30 +168,7 @@
 											'td',
 											Set::enum( $decision['structurereferente_id'], $structuresreferentes )
 										);
-										
 									}
-									else {
-										echo '<td colspan="2"></td>'; 
-									}
-// 									if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte' ) ) ) {
-// 										echo $this->Xhtml->tag(
-// 											'td',
-// 											__d( 'decisionsaisinebilanparcoursep66', 'ENUM::DECISION::'.$decision['decision'] ),
-// 											array(
-// 												'colspan' => 2
-// 											)
-// 										);
-// 									}
-// 									else { // reorientation
-// 										echo $this->Xhtml->tag(
-// 											'td',
-// 											Set::enum( $decision['typeorient_id'], $typesorients )
-// 										);
-// 										echo $this->Xhtml->tag(
-// 											'td',
-// 											Set::enum( $decision['structurereferente_id'], $structuresreferentes )
-// 										);
-// 									}
 								}
 							}
 						}

@@ -300,7 +300,9 @@
 								'fields' => array(
 									'etatdossierep'
 								),
-								'Decisionsaisinebilanparcoursep66'
+								'Decisionsaisinebilanparcoursep66' => array(
+									'order' => 'Decisionsaisinebilanparcoursep66.created ASC'
+								)
 							)
 						)
 					),
