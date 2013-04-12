@@ -32,7 +32,10 @@
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'descriptionpdo', $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find( 'list' ) );
-			$this->set( 'motifpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list' ) );
+			
+			$this->set( 'motifpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => array( 'Situationpdo.libelle ASC' ) ) ) );
+			
+			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 
 			$this->set( 'gestionnaire', $this->User->find(
 					'list',
