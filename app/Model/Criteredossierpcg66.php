@@ -44,6 +44,8 @@
 			$datereceptionpdo = Set::extract( $params, 'Dossierpcg66.datereceptionpdo' );
 			$datereceptionpdo_to = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_to' );
 			$datereceptionpdo_from = Set::extract( $params, 'Dossierpcg66.datereceptionpdo_from' );
+			$typepdo_id = Set::extract( $params, 'Dossierpcg66.typepdo_id' );
+			$orgpayeur = Set::extract( $params, 'Dossierpcg66.orgpayeur' );
 
 			/// Critères sur les PDOs - date de reception de la PDO
 			if( !empty( $datereceptionpdo ) ) {
@@ -71,6 +73,16 @@
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
+			}
+			
+			// Type de la PDO
+			if( !empty( $typepdo_id ) ) {
+				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false )  ).'\'';
+			}
+			
+			// Organisme payeur
+			if( !empty( $orgpayeur ) ) {
+				$conditions[] = 'Dossierpcg66.orgpayeur = \''.Sanitize::clean( $orgpayeur, array( 'encode' => false )  ).'\'';
 			}
 			
 			// Agent ayant émis l'avis technique
@@ -243,6 +255,10 @@
 			$conditions = array();
 			$Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
+
+			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
+			$typepdo_id = Set::extract( $params, 'Dossierpcg66.typepdo_id' );
+			$orgpayeur = Set::extract( $params, 'Dossierpcg66.orgpayeur' );
 			
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
@@ -266,6 +282,20 @@
 			$dossierEchu = Set::extract( $params, 'Dossierpcg66.dossierechu' );
 			if( isset( $params['Dossierpcg66']['dossierechu'] ) && !empty( $params['Dossierpcg66']['dossierechu'] ) ) {
 				$conditions[] = 'Traitementpcg66.id IN ( '.$Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu( 'Personnepcg66.id' ).' )';
+			}
+			
+			// Origine de la PDO
+			if( !empty( $originepdo ) ) {
+				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false )  ).'\'';
+			}
+			// Type de la PDO
+			if( !empty( $typepdo_id ) ) {
+				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false )  ).'\'';
+			}
+			
+			// Organisme payeur
+			if( !empty( $orgpayeur ) ) {
+				$conditions[] = 'Dossierpcg66.orgpayeur = \''.Sanitize::clean( $orgpayeur, array( 'encode' => false )  ).'\'';
 			}
 			
 			// Corbeille vide ?

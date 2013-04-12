@@ -60,7 +60,21 @@
 		echo $this->Default2->subform(
 			array(
 				'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+				'Dossierpcg66.typepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id' ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
+				'Dossierpcg66.orgpayeur' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
 				'Dossierpcg66.user_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true )
+			),
+			array(
+				'options' => $options
+			)
+		);
+		
+		echo $default2->subform(
+			array(
+				'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id', true ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+				'Dossierpcg66.typepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id', true ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
+				'Dossierpcg66.orgpayeur' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur', true ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
+				'Dossierpcg66.user_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id', true ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true )
 			),
 			array(
 				'options' => $options
