@@ -18,6 +18,7 @@ echo '<table>
 				<th colspan="4" rowspan="2">Proposition référent</th>
 				<th colspan="5">Avis EPL</th>
 				<th rowspan="2">Observations</th>
+				<th rowspan="2">Action</th>
 			</tr>
 			<tr>
 				<th>Avis</th>
@@ -86,7 +87,8 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
-				$hiddenFields
+				$hiddenFields,
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )

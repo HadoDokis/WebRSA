@@ -21,6 +21,7 @@ echo '<table id="Decisionsaisinebilanparcoursep66" class="tooltips">
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="5">Décision coordonnateur/CG</th>
 				<th rowspan="2">Observations</th>
+				<th rowspan="2">Action</th>
 				<th class="innerTableHeader noprint">Avis EP</th>
 			</tr>
 
@@ -107,6 +108,7 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),

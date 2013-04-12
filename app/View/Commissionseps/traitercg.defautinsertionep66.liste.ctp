@@ -22,6 +22,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="4">Décision CG</th>
 				<th rowspan="2">Observations</th>
+				<th rowspan="2">Action</th>
 				<th class="innerTableHeader noprint">Avis EP</th>
 			</tr>
 			<tr>
@@ -101,7 +102,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 	// 				array( $this->Form->input( "Decisiondefautinsertionep66.{$i}.raisonnonpassage", array( 'label' => false, 'type' => 'textarea' ) ), array( 'colspan' => '3' ) ),
 					$this->Form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 					$hiddenFields,
-// 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
+					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 				),
 				array( 'class' => "odd {$multiple}" ),
 				array( 'class' => "even {$multiple}" )

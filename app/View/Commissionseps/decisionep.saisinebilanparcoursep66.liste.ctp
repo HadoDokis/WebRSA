@@ -17,6 +17,7 @@ echo '<table>
 				<th rowspan="2">Orientation actuelle</th>
 				<th colspan="3" rowspan="2">Proposition référent</th>
 				<th colspan="4">Avis EPL</th>
+				<th rowspan="2">Action</th>
 			</tr>
 			<tr>
 				<th rowspan="2">Avis</th>
@@ -53,7 +54,7 @@ echo '<table>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisionsaisinebilanparcoursep66{$i}ReferentId" ) ),
-// 				array( Set::classicExtract( $decisionep, "commentaire" ), array( 'id'  => "Decisionsaisinebilanparcoursep66{$i}Commentaire") )
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )
