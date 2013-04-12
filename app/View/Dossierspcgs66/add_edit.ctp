@@ -148,6 +148,7 @@ document.observe( "dom:loaded", function() {
 						<th>Personne concernée</th>
 						<th>Motif(s)</th>
 						<th>Statut(s)</th>
+						<th>Nb de traitements</th>
 						<th colspan="5" class="action">Actions</th>
 					</tr>
 				</thead>
@@ -185,6 +186,7 @@ document.observe( "dom:loaded", function() {
 									h( Set::classicExtract( $personnepcg66, 'Personne.qual' ).' '.Set::classicExtract( $personnepcg66, 'Personne.nom' ).' '.Set::classicExtract( $personnepcg66, 'Personne.prenom' ) ),
 									$differentesSituations,
 									$differentsStatuts,
+									h( $personnepcg66['Personnepcg66']['nbtraitements'] ),
 									$this->Xhtml->viewLink(
 										'Voir la personne concernée',
 										array( 'controller' => 'personnespcgs66', 'action' => 'view', $personnepcg66['Personnepcg66']['id'] ),
