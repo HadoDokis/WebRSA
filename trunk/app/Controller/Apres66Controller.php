@@ -272,41 +272,31 @@
 			$yearMax = $year + Configure::read( 'Apre.periodeMontantMaxComplementaires' ) - 1;
 
 			$apresPourCalculMontant = $this->{$this->modelClass}->find(
-					'all', array(
-				'conditions' => array(
-					"{$this->modelClass}.personne_id" => $personne_id,
-					"{$this->modelClass}.statutapre" => 'C',
-					"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
-// 						"Aideapre66.datedemande >=" => date( 'Y-m-d', strtotime( '-'.Configure::read( "Apre.periodeMontantMaxComplementaires" ).' months' ) )
-				),
-				'contain' => array(
-					'Personne',
-					'Aideapre66'
-				)
+				'all', array(
+					'fields' => array(
+						'SUM( "Aideapre66"."montantaccorde" ) AS "montantaccorde"'
+					),
+					'conditions' => array(
+						"{$this->modelClass}.personne_id" => $personne_id,
+						"{$this->modelClass}.statutapre" => 'C',
+						"Aideapre66.decisionapre" => 'ACC',
+						"Aideapre66.datemontantpropose BETWEEN '{$year}-01-01' AND '{$yearMax}-12-31'",
+						"{$this->modelClass}.etatdossierapre <>" => 'ANN',
+						'Aideapre66.montantaccorde IS NOT NULL'
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->{$this->modelClass}->join( 'Aideapre66', array( 'type' => 'INNER' ) )
 					)
+				)
 			);
-
-			$montantComplementaires = 0;
-
-			foreach( $apresPourCalculMontant as $apre ) {
-				$decision = Set::classicExtract( $apre, 'Aideapre66.decisionapre' );
-				$montantaccorde = Set::classicExtract( $apre, 'Aideapre66.montantaccorde' );
-
-				if( !empty( $decision ) ) {
-					if( $decision == 'ACC' ) {
-						$montantComplementaires += $montantaccorde;
-					}
-				}
-			}
-
-// debug($montantComplementaires );
-
-			if( $montantComplementaires > Configure::read( "Apre.montantMaxComplementaires" ) ) {
+			$this->set( compact( 'apresPourCalculMontant' ) );
+			
+			if( $apresPourCalculMontant[0][0]['montantaccorde'] > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
 			}
 			$this->set( 'apres', $apres );
 			$this->set( 'alerteMontantAides', $alerteMontantAides );
-			$this->set( 'montantComplementaires', $montantComplementaires );
 			$this->_setOptions();
 			$this->render( (CAKE_BRANCH == '1.2' ? '/apres/' : '/Apres/') .'index66' );
 		}

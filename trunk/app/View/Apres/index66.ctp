@@ -20,7 +20,7 @@
 
 <?php if( !empty( $apres ) ):?>
 <?php
-	echo 'Montant accordé à ce jour : '.$montantComplementaires.' €';
+	echo 'Montant accordé à ce jour : '.$apresPourCalculMontant[0][0]['montantaccorde'].' €';
 	if( $alerteMontantAides ) {
 		echo $this->Xhtml->tag(
 			'p',
