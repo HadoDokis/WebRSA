@@ -516,7 +516,31 @@
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
 				$this->request->data = $dossierpcg66;
-				$fichiers = $this->Fileuploader->fichiers( $dossierpcg66['Dossierpcg66']['id'] );
+			}
+			
+			if( $this->action == 'edit' ) {
+				$fichiersEnBase = $this->Dossierpcg66->Fichiermodule->find(
+					'all',
+					array(
+						'fields' => array(
+							'Fichiermodule.id',
+							'Fichiermodule.name',
+							'Fichiermodule.fk_value',
+							'Fichiermodule.modele',
+							'Fichiermodule.cmspath',
+							'Fichiermodule.mime',
+							'Fichiermodule.created',
+							'Fichiermodule.modified',
+						),
+						'conditions' => array(
+							'Fichiermodule.modele' => 'Dossierpcg66',
+							'Fichiermodule.fk_value' => $id,
+						),
+						'contain' => false
+					)
+				);
+				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
+				$this->set( 'fichiersEnBase', $fichiersEnBase );
 			}
 
 			// avistechniquemodifiable, validationmodifiable

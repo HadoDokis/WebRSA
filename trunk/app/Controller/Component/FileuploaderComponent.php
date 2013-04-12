@@ -155,9 +155,9 @@
 		 * @param integer $id
 		 * @return array
 		 */
-        public function fichiers( $id ){
+        public function fichiers( $id, $enBase = true ){
             $fichiers = array();
-            if($this->controller->action == 'edit' ){
+            if( $enBase && ( $this->controller->action == 'edit' ) ){
                 $fichiers = $this->_fichiersEnBase( $id );
             }
             $fichiers = Set::merge( $fichiers, $this->_fichiersSurDisque( $id ) );
