@@ -75,6 +75,12 @@
 			$fichiers,
 			Router::url( array( 'action' => 'ajaxfileupload' ) )
 		);
+		
+		if( !empty( $fichiersEnBase ) ) {
+			echo $fileuploader->results(
+				$fichiersEnBase
+			);
+		}
 	?>
 </fieldset>
 </fieldset>
