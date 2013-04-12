@@ -75,7 +75,7 @@
 
 	}
 
-	if( !empty( $listeTraitements ) ){
+	if( !empty( $personnepcg66 ) ){
 		echo '<div class="aere">';
 		echo $this->Default->button(
 			'backpdo',
