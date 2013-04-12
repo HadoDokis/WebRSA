@@ -130,7 +130,7 @@
                         $this->Form->input( 'Aideapre66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $validationapre['Dossier']['id'] ) ).
                         $this->Form->input( 'Aideapre66.'.$index.'.decisionapre', array( 'label' => false, 'empty' => true, 'type' => 'select', 'options' => $optionsaideapre66['decisionapre'], 'value' => $validationapre['Aideapre66']['decisionapre'] ) ),
 
-                        $this->Form->input( 'Aideapre66.'.$index.'.montantaccorde', array( 'label' => false, 'value' => $validationapre['Aideapre66']['montantaccorde'] ) ),
+                        $this->Form->input( 'Aideapre66.'.$index.'.montantaccorde', array( 'label' => false, 'value' => $validationapre['Aideapre66']['montantpropose'] ) ), //FIXME
 
                         $this->Form->input( 'Aideapre66.'.$index.'.motifrejetequipe', array( 'label' => false, 'rows' => 2, 'value' => $validationapre['Aideapre66']['motifrejetequipe'] ) ),
 
