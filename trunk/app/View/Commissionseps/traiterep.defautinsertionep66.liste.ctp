@@ -20,6 +20,7 @@ echo '<table>
 				<th rowspan="2">Motif saisine</th>
 				<th colspan="4">Avis EPL</th>
 				<th rowspan="2">Observations</th>
+				<th rowspan="2">Action</th>
 			</tr>
 			<tr>
 				<th>Avis</th>
@@ -69,7 +70,8 @@ echo '<table>
 				),
 				$this->Form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) ),
 				$this->Form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
-				$hiddenFields
+				$hiddenFields,
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )

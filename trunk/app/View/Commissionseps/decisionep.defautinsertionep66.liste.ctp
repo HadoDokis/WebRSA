@@ -20,7 +20,7 @@ echo '<table>
 				<th rowspan="2">Structure</th>
 				<th rowspan="2">Motif saisine</th>
 				<th colspan="4">Avis EPL</th>
-				<th rowspan="2">Actions</th>
+				<th rowspan="2">Action</th>
 			</tr>
 			<tr>
 				<th>Avis</th>
@@ -62,9 +62,7 @@ echo '<table>
 				array( @$liste_typesorients[Set::classicExtract( $decisionep, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 				array( @$liste_structuresreferentes[Set::classicExtract( $decisionep, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 				array( @$liste_referents[Set::classicExtract( $decisionep, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-// 				Set::classicExtract( $decisioncg, "libelle" ),
-// 				Set::classicExtract( $decisionep, "commentaire" ),
-				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),
 			array( 'class' => "even {$multiple}" )
