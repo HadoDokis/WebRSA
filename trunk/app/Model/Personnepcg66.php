@@ -290,7 +290,9 @@
 							$date = '';
 						}
 					
-						$traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Typepdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] ).' : '.$traitementpcg66['Personne']['nom_complet'].', '.$traitementpcg66['Situationpdo']['libelle'].$date;
+						$traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] );
+						
+// 						$traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Typepdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] ).' : '.$traitementpcg66['Personne']['nom_complet'].', '.$traitementpcg66['Situationpdo']['libelle'].$date;
 					}
 				}
 			}

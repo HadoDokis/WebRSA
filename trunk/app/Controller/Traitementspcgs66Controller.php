@@ -584,6 +584,19 @@
 				}
 
 				$saved = $this->Traitementpcg66->sauvegardeTraitement( $dataToSave );
+				
+				// Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
+				// que celui auquel je suis lié
+
+				if( $saved && !empty( $dataToSave['Traitementpcg66']['traitementnonclos'] ) ) {
+					$saved = $this->Traitementpcg66->updateAllUnBound( 
+						array( 'Traitementpcg66.clos' => '\'O\'' ),
+						array(
+							'Traitementpcg66.id' => $dataToSave['Traitementpcg66']['traitementnonclos']
+						)
+					) && $saved;
+				} // FIXME
+
 
 				if( $saved ) {
 					// Début sauvegarde des fichiers attachés, en utilisant le Component Fileuploader

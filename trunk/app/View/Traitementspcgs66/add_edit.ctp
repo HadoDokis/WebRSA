@@ -182,7 +182,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 4,
+							'minYear' => date('Y') - 40,
 							'maxYear' => date('Y')
 						)
 					)
@@ -215,7 +215,7 @@
 							'label'=>false,
 							'type'=>'date',
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 4,
+							'minYear' => date('Y') - 10,
 							'maxYear' => date('Y'),
 							'empty' => true,
 							'selected' => $datedebutperiode
@@ -234,7 +234,7 @@
 							'type'=>'date',
 							'selected' => $datefinperiode,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 4,
+							'minYear' => date('Y') - 10,
 							'maxYear' => date('Y') + 4
 						)
 					)
