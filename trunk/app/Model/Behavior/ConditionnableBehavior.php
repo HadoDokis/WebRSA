@@ -31,7 +31,8 @@
 
 			/// Critères sur l'adresse - nom de commune
 			if( isset( $search['Adresse']['locaadr'] ) && !empty( $search['Adresse']['locaadr'] ) ) {
-				$conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::clean( $search['Adresse']['locaadr'], array( 'encode' => false ) )."%'";
+// 				$conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::clean( $search['Adresse']['locaadr'], array( 'encode' => false ) )."%'";
+				$conditions[] = "Adresse.locaadr ILIKE '".$model->wildcard( Sanitize::clean( $search['Adresse']['locaadr'], array( 'encode' => false ) ) )."'";
 			}
 
 			/// Critères sur l'adresse - code insee
