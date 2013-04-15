@@ -625,8 +625,31 @@
 			}
 			else if( $this->action == 'edit' ) {
 				$this->request->data = $traitementpcg66;
-
-				$fichiers = $this->Fileuploader->fichiers( $id );
+			}
+			
+			if( $this->action == 'edit' ) {
+				$fichiersEnBase = $this->Traitementpcg66->Fichiermodule->find(
+					'all',
+					array(
+						'fields' => array(
+							'Fichiermodule.id',
+							'Fichiermodule.name',
+							'Fichiermodule.fk_value',
+							'Fichiermodule.modele',
+							'Fichiermodule.cmspath',
+							'Fichiermodule.mime',
+							'Fichiermodule.created',
+							'Fichiermodule.modified',
+						),
+						'conditions' => array(
+							'Fichiermodule.modele' => 'Traitementpcg66',
+							'Fichiermodule.fk_value' => $id,
+						),
+						'contain' => false
+					)
+				);
+				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
+				$this->set( 'fichiersEnBase', $fichiersEnBase );
 			}
 
 			if( $this->action == 'edit' ) {
