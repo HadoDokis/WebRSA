@@ -565,9 +565,9 @@
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 
-				$nbDemandedemaintienNonfinalisesCovs = 1; //FIXME à vérifier une fois le script SQL mettant à jour les durées d'engagement en place
+				$nbDemandedemaintienNonfinalisesCovs = 0;
 				$cumulCer = $this->Contratinsertion->limiteCumulDureeCER( $personne_id );
-				if( $cumulCer >= 12 ){
+				if( $cumulCer >= 12 ) {
 					// Nombre de dossiers COV de cette thématique qui ne sont pas finalisés (Demande de maintien en social)
 					$demandedemaintien = $this->Contratinsertion->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, 'proposnonorientationsproscovs58' );
 					$nbDemandedemaintienNonfinalisesCovs = $this->Contratinsertion->Personne->Dossiercov58->find( 'count',  $demandedemaintien );
