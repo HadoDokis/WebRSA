@@ -436,7 +436,7 @@
 						),
 						'conditions' => array( 'Contratinsertion.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
 						'contain' => false,
-						'order' => array( 'Contratinsertion.rg_ci DESC' )
+						'order' => array( 'Contratinsertion.date_saisi_ci DESC', 'Contratinsertion.rg_ci DESC', 'Contratinsertion.id DESC' )
 					)
 				);
 				$personnesFoyer[$index]['Contratinsertion'] = ( !empty( $tContratinsertion ) ? $tContratinsertion['Contratinsertion'] : array() );
