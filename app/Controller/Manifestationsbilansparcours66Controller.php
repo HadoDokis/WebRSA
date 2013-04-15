@@ -201,8 +201,20 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Manifestationbilanparcours66->Bilanparcours66->personneId( $bilanparcours66_id ) ) ) );
 
-			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->field( 'personne_id' );
-			$this->set( 'personne_id', $personne_id  );
+			$bilanparcours66 = $this->Manifestationbilanparcours66->Bilanparcours66->find(
+				'first',
+				array(
+					'fields' => array(
+						'Bilanparcours66.personne_id'
+					),
+					'conditions' => array(
+						'Bilanparcours66.id' => $bilanparcours66_id
+					),
+					'contain' => false
+				)
+			);
+			$this->set( 'personne_id', $bilanparcours66['Bilanparcours66']['personne_id']  );
+			
 			$this->set( 'bilanparcours66_id', $bilanparcours66_id );
 
 			$manifestationsbilansparcours66 = $this->Manifestationbilanparcours66->find(
@@ -222,7 +234,7 @@
 			);
 			$this->set( 'manifestationsbilansparcours66', $manifestationsbilansparcours66 );
 			$this->_setOptions();
-			$this->set( 'urlmenu', '/bilansparcours66/index/'.$personne_id );
+			$this->set( 'urlmenu', '/bilansparcours66/index/'.$bilanparcours66['Bilanparcours66']['personne_id'] );
 		}
 
 
