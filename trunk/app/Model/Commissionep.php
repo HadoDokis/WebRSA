@@ -880,7 +880,8 @@
 							'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 						)
 					)
-				)
+				),
+				'order' => array( 'Personne.nom ASC' )
 			);
 
 			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
@@ -1540,7 +1541,8 @@
 								'Adressefoyer.id IN ( '.$this->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 							)
 						)
-					)
+					),
+					'order' => array( 'Structurereferente.lib_struc ASC', 'Personne.nom ASC' )
 				);
 			}
 
