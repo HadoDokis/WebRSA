@@ -355,7 +355,8 @@
 										&& ( $orientstruct['Orientstruct']['rgorient'] == $rgorient_max )
 										&& $last_orientstruct_suppressible
 									)
-								)
+								),
+								true
 							),
 							$this->Default2->button(
 								'filelink',
