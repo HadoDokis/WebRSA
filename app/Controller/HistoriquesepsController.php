@@ -178,8 +178,7 @@
 				array( 'Decision' => Set::classicExtract( $donneesDecision, "{n}" ) )
 			);
 
-			// Si on
-			if( $this->Dossierep->Passagecommissionep->{$modeleDecision}->Behaviors->attached( 'Suivisanctionep58' ) ) {
+			if( method_exists( $this->Dossierep->Passagecommissionep->{$modeleDecision}, 'suivisanctions58' ) ) {
 				$this->set( 'suivisanction58', $this->Dossierep->Passagecommissionep->{$modeleDecision}->suivisanctions58( $passage ) );
 			}
 
