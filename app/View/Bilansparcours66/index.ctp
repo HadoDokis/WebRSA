@@ -324,7 +324,6 @@
 								array(
 									'enabled' => (
 										( $this->Permissions->checkDossier( 'bilansparcours66', 'filelink', $dossierMenu ) == 1 )
-										&& $block
 									)
 								)
 							)
