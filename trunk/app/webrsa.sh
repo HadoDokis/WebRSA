@@ -297,7 +297,6 @@ function __svnbackup() {
 			if [ "$dir" != '.' ] ; then
 				mkdir -p "$PATCH_DIR/app/$dir"
 			fi
-# 			echo "cp \"$file\" \"$PATCH_DIR/app/$dir\""
 			cp -R "$file" "$PATCH_DIR/app/$dir"
 		done
 		IFS=$SAVEIFS
@@ -305,14 +304,16 @@ function __svnbackup() {
 
 	(
 		cd "$PATCH_DIR"
-		zip -o -r -m "../svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip" app >> "/dev/null" 2>&1
+		SVNBACKUP_SUBDIR="`basename "$PATCH_DIR"`"
+
+		zip -o -r -m "../$SVNBACKUP_SUBDIR.zip" app >> "/dev/null" 2>&1
 		if [[ $? -ne 0 ]] ; then
-			echo "Impossible de créer le fichier svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip"
+			echo "Impossible de créer le fichier $SVNBACKUP_SUBDIR.zip"
 		else
-			echo "Fichier svnbackup-${project}_${subfolder}-r${revision}-${NOW}.zip créé"
+			echo "Fichier $SVNBACKUP_SUBDIR.zip créé"
+			cd ..
+			rmdir "$PATCH_DIR"
 		fi
-		cd ..
-		rmdir "$PATCH_DIR"
 	)
 }
 

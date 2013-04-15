@@ -79,7 +79,7 @@
 		 * @return void
 		 */
 		public function traitement() {
-			$this->_index( 'Gestion::traitement' );
+			$this->_index();
 		}
 
 		/**
@@ -88,16 +88,24 @@
 		 * @return void
 		 */
 		public function visualisation() {
-			$this->_index( 'Gestion::visualisation' );
+			$this->_index();
 		}
 
 		/**
-		 * Traitement ou visualisation des sanctions.
-		 *
-		 * @param string $statutSanctionep
+		 * Méthode générique de traitement ou de visualisation des sanctions.
 		 */
-		protected function _index( $statutSanctionep = null ) {
-			$this->assert( !empty( $statutSanctionep ), 'invalidParameter' );
+		protected function _index() {
+			$validationErrors = false;
+
+			// Récupération des noms de modèles de décision et chargement des règles de validation "gestion des sanctions"
+			$decisionsClasses = array();
+			foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
+				$modelTheme = Inflector::singularize( $theme );
+				$decisionModelTheme = 'Decision'.$modelTheme;
+
+				$this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->validate = $this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->validateGestionSanctions;
+				$decisionsClasses[] = $decisionModelTheme;
+			}
 
 			if( !empty( $this->request->data ) ) {
 				$data = $this->request->data;
@@ -109,10 +117,7 @@
 					$success = true;
 					$this->Personne->begin();
 
-					foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
-						$modelTheme = Inflector::singularize( $theme );
-						$decisionModelTheme = 'Decision'.$modelTheme;
-
+					foreach( $decisionsClasses as $decisionModelTheme ) {
 						if( !empty( $this->request->data[$decisionModelTheme] ) ) {
 							$success = $this->Personne->Dossierep->Passagecommissionep->{$decisionModelTheme}->saveAll( $this->request->data[$decisionModelTheme], array( 'validate' => 'first', 'atomic' => false ) ) && $success;
 						}
@@ -131,31 +136,30 @@
 					else {
 						$this->Personne->rollback();
 						$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
+						$validationErrors = true;
 					}
 				}
 
-				$limit = 10;
 				$paginate = $this->Gestionsanctionep58->search(
-					$statutSanctionep,
+					"Gestion::{$this->action}",
 					$this->request->data['Search'],
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					( ( $statutSanctionep == 'Gestion::traitement' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
+					( ( $this->action == 'traitement' ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 				);
-				$paginate['limit'] = $limit;
+				$paginate['limit'] = ( ( $this->action == 'traitement' ) ? 10 : 100 );
 
 				$this->paginate = $paginate;
 				$gestionsanctionseps58 = $this->paginate( 'Personne' );
 
-				if( $statutSanctionep == 'Gestion::traitement' ) {
-					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $gestionsanctionseps58 ) );
-				}
-
 				if( $this->action == 'traitement' ) {
-					foreach( $this->Gestionsanctionep58->themes() as $theme => $intitule ) {
-						$modelTheme = Inflector::singularize( $theme );
-						$decisionModelTheme = 'Decision'.$modelTheme;
-						$this->request->data[$decisionModelTheme] = Set::classicExtract( $gestionsanctionseps58, "{n}.{$decisionModelTheme}" );
+					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $gestionsanctionseps58 ) );
+
+					// Préparation des données du formulaire pour le prochain traitement.
+					if( !$validationErrors ) {
+						$data = $this->Gestionsanctionep58->prepareFormDataTraitement( $gestionsanctionseps58 );
+						$data['Search'] = $this->request->data['Search'];
+						$this->request->data = $data;
 					}
 				}
 
@@ -175,14 +179,7 @@
 			$compteurs = array( 'Ep' => $this->Commissionep->Ep->find( 'count' ) );
 			$this->set( compact( 'compteurs' ) );
 
-			switch( $statutSanctionep ) {
-				case 'Gestion::traitement':
-					$this->render( 'traitement' );
-					break;
-				case 'Gestion::visualisation':
-					$this->render( 'visualisation' );
-					break;
-			}
+			$this->render( $this->action );
 		}
 
 		/**
@@ -205,33 +202,38 @@
 			$gestionssanctionseps58 = $this->Personne->find( 'all', $queryData );
 			$this->_setOptions();
 
-			$this->layout = ''; // FIXME ?
+			$this->layout = '';
 			$this->set( compact( 'gestionssanctionseps58' ) );
 
 		}
 
 
 		/**
-			**Fonction d'impression pour le cas des sanctions 1 du CG58
-			* @param type $contratinsertion_id
-			*
-			*/
+		 * Fonction d'impression pour le cas des sanctions 1 du CG58
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function impressionSanction1 ( $niveauSanction, $passagecommissionep_id, $themeep ) {
 			$this->_impressionSanction( '1', $passagecommissionep_id, $themeep );
 		}
 
-
+		/**
+		 * Fonction d'impression pour le cas des sanctions 2 du CG58
+		 *
+		 * @param integer $contratinsertion_id
+		 */
 		public function impressionSanction2 ( $niveauSanction, $passagecommissionep_id, $themeep ) {
 			$this->_impressionSanction( '2', $passagecommissionep_id, $themeep );
 		}
 
 
 		/**
-		* Impression du courrier de fin de sanction 1.
-		*
-		* @param integer $personne_id
-		* @return void
-		*/
+		 * Impression du courrier de fin de sanction.
+		 *
+		 * @param integer $niveauSanction
+		 * @param integer $passagecommissionep_id
+		 * @param string $themeep
+		 */
 		public function _impressionSanction( $niveauSanction, $passagecommissionep_id, $themeep) {
 			$pdf = $this->Gestionsanctionep58->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $this->Session->read( 'Auth.User.id' ) );
 

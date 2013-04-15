@@ -7,11 +7,10 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Sanitize', 'Utility' );
 
 	/**
-	 * La classe Gestionsanctionep58 fournit un traitement des filtres de recherche
-	 * concernant la gestion des sanctions émises par une EP du CG 58.
+	 * La classe Gestionsanctionep58 fournit un traitement des filtres de
+	 * recherche concernant la gestion des sanctions émises par une EP du CG 58.
 	 *
 	 * @package app.Model
 	 */
@@ -35,13 +34,13 @@
 		);
 
 		/**
-		 * Traitement des critères du moteur de recherche.
+		 * Moteur de recherche de sanctions.
 		 *
 		 * @param string $statutSanctionep
 		 * @param array $criteressanctionseps
 		 * @param array $mesCodesInsee
 		 * @param boolean $filtre_zone_geo
-		 * @param mixed $lockedDossiers
+		 * @param string|array $lockedDossiers
 		 * @return array
 		 */
 		public function search( $statutSanctionep, $criteressanctionseps, $mesCodesInsee, $filtre_zone_geo, $lockedDossiers = null ) {
@@ -129,7 +128,7 @@
 			$conditions['Commissionep.etatcommissionep'] = 'traite';
 			$conditions['Passagecommissionep.etatdossierep'] = 'traite';
 
-			// FIXME -> une des deux thématiques ou les deux
+			// Doit-on traiter seulement une des deux thématiques ou les deux ?
 			if( isset( $criteressanctionseps['Dossierep']['themeep'] ) && !empty( $criteressanctionseps['Dossierep']['themeep'] ) ) {
 				$conditions['Dossierep.themeep'] = $criteressanctionseps['Dossierep']['themeep'];
 			}
@@ -177,7 +176,13 @@
 					$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->fields(),
 					$Personne->Dossierep->Passagecommissionep->Commissionep->fields(),
 					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->fields(),
-					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->fields()
+					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->fields(),
+					array(
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionep58->sqVirtualField( 'impressionfin1' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionep58->sqVirtualField( 'impressionfin2' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->sqVirtualField( 'impressionfin1' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->sqVirtualField( 'impressionfin2' )
+					)
 				),
 				'joins'=>array(
 					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
@@ -204,24 +209,26 @@
 		}
 
 		/**
+		 * Retourne la liste des thèmes d'EP concernant les sanctions au CG 58.
 		 *
+		 * @return array
 		 */
 		public function themes() {
 			return array(
-				'sanctionseps58' => __d( 'dossierep', 'ENUM::THEMEEP::sanctionseps58' ),
-				'sanctionsrendezvouseps58' =>  __d( 'dossierep', 'ENUM::THEMEEP::sanctionsrendezvouseps58' ),
+				'sanctionseps58' => __d( 'dossierep', 'ENUM::THEMEEP::sanctionseps58', true ),
+				'sanctionsrendezvouseps58' =>  __d( 'dossierep', 'ENUM::THEMEEP::sanctionsrendezvouseps58', true ),
 			);
 		}
 
 		/**
-		 * Retourne les données nécessaires à l'impression des courriers des personnes passées en EP pour sanction
-		 * Les données contiennent les informations de la personne
+		 * Retourne le querydata nécessaire à l'impression des courriers d'EP pour
+		 * sanction à destination de l'allocataire.
 		 *
 		 * @param integer $id
 		 * @param integer $user_id
 		 * @return array
 		 */
-		public function getDataForPdf( $passagecommissionep_id ) {
+		public function getQuerydataForPdf( $passagecommissionep_id ) {
 			$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
 			$Personne = ClassRegistry::init( 'Personne' );
 
@@ -238,7 +245,13 @@
 					$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->fields(),
 					$Personne->Dossierep->Passagecommissionep->Commissionep->fields(),
 					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->fields(),
-					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->fields()
+					$Personne->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->fields(),
+					array(
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionep58->sqVirtualField( 'impressionfin1' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionep58->sqVirtualField( 'impressionfin2' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->sqVirtualField( 'impressionfin1' ),
+						$Personne->Dossierep->Passagecommissionep->Decisionsanctionrendezvousep58->sqVirtualField( 'impressionfin2' )
+					)
 				),
 				'joins' => array(
 					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
@@ -269,7 +282,7 @@
 		}
 
 		/**
-		 * Retourne le PDF par défaut généré pour l'impression du courrier de fin de sanciton 1
+		 * Retourne le PDF par défaut généré pour l'impression du courrier de fin de sanciton 1 ou 2.
 		 *
 		 * @param type $id Id de la personne
 		 * @param type $user_id Id de l'utilisateur connecté
@@ -288,9 +301,13 @@
 				)
 			);
 
-			$querydata = $this->getDataForPdf( $passagecommissionep_id );
+			$querydata = $this->getQuerydataForPdf( $passagecommissionep_id );
 
 			$personne = $Personne->find( 'first', $querydata );
+
+			if( empty( $personne ) ) {
+				$this->cakeError( 'error404' );
+			}
 
 			/// Récupération de l'utilisateur
 			$user = ClassRegistry::init( 'User' )->find(
@@ -304,20 +321,15 @@
 			);
 			$personne['User'] = $user['User'];
 
-			if( empty( $personne ) ) {
-				$this->cakeError( 'error404' );
-			}
-
 			$modeleName = Inflector::classify( $themeep );
+			$modeleDecisionName = Inflector::classify( "decisions{$themeep}" );
 
-			if( $niveauSanction == '1' ){
-				$modeleodt = "{$modeleName}/finsanction1.odt";
+			if( !$personne[$modeleDecisionName]["impressionfin{$niveauSanction}"] ) {
+				return null;
 			}
-			else{
-				$modeleodt = "{$modeleName}/finsanction2.odt";
-			}
-// debug($personne);
-// die();
+
+			$modeleodt = "{$modeleName}/finsanction{$niveauSanction}.odt";
+
 			return $this->ged(
 				$personne,
 				$modeleodt,
@@ -328,31 +340,53 @@
 
 
 		/**
-		 * Retourne le PDF concernant le questionnaire de la personne non orientée
+		 * Retourne les PDF de sanction pour la cohorte.
 		 *
-		 * @param string $search
-		 * @param integer $user_id
+		 * @param string $search Les critères de recherche de la cohorte
+		 * @param integer $user_id L'id de l'utilisateur qui fait l'impression
 		 * @return string
 		 */
 		public function getCohortePdfSanction( $niveauSanction, $statutSanctionep, $mesCodesInsee, $filtre_zone_geo, $search, $page, $user_id ) {
-
 			$querydata = $this->search( $statutSanctionep, $search, $mesCodesInsee, $filtre_zone_geo, null );
 
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( $page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
 
 			$Personne = ClassRegistry::init( 'Personne' );
-			$gestionssanctionseps58 = $Personne->find( 'all', $querydata );
-
-			$themeseps = Set::extract( $gestionssanctionseps58, '/Dossierep/themeep' );
+			$cohorte = $Personne->find( 'all', $querydata );
 
 			$pdfs = array();
-			foreach( $themeseps as $i => $themeep ) {
-				$passagecommissionep_id = $gestionssanctionseps58[$i]['Passagecommissionep']['id'];
-				$pdfs[] = $this->getPdfSanction( $niveauSanction, $passagecommissionep_id, $themeep, $user_id );
+			foreach( $cohorte as $result ) {
+				$modeleDecisionName = Inflector::classify( "decisions{$result['Dossierep']['themeep']}" );
+				if( $result[$modeleDecisionName]["impressionfin{$niveauSanction}"] ) {
+					$passagecommissionep_id = $result['Passagecommissionep']['id'];
+					$pdf = $this->getPdfSanction( $niveauSanction, $passagecommissionep_id, $result['Dossierep']['themeep'], $user_id );
+					if( !empty( $pdf ) ) {
+						$pdfs[] = $pdf;
+					}
+				}
 			}
 
 			return $pdfs;
+		}
+
+		/**
+		 * Préparation des données pour le formulaire de traitement.
+		 *
+		 * @param array $datas
+		 * @return array
+		 */
+		public function prepareFormDataTraitement( array $datas ) {
+			$return = array();
+
+			if( !empty( $datas ) ) {
+				foreach( $datas as $i => $data ) {
+					$modeleDecisionName = Inflector::classify( "decisions{$data['Dossierep']['themeep']}" );
+					$return[$modeleDecisionName][$i] = Set::classicExtract( $data, $modeleDecisionName );
+				}
+			}
+
+			return $return;
 		}
 	}
 ?>
