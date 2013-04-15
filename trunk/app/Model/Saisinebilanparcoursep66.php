@@ -702,6 +702,10 @@
 				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Structurereferente->fields() );
 				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Structurereferente' );
 
+				// Référent orientant lié à l'orientation
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Referentorientant->fields() );
+				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Referentorientant' );
+				
 
 				/* TODO:
 					$this->alias => array(
