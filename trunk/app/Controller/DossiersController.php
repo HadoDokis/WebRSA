@@ -235,30 +235,7 @@
 			);
 			$details = Set::merge( $details, $tCreance );
 
-			// Récupération des dernières informations RSA Socle / Activité
-			$sq = $this->Dossier->Detaildroitrsa->sq(
-				array(
-					'alias' => 'detailsdroitsrsa',
-					'fields' => array(
-						'detailscalculsdroitsrsa.dtderrsavers',
-					),
-					'joins' => array(
-						array_words_replace(
-							$this->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
-							array( 'Detaildroitrsa' => 'detailsdroitsrsa', 'Detailcalculdroitrsa' => 'detailscalculsdroitsrsa' )
-						)
-					),
-					'contain' => false,
-					'conditions' => array(
-						'detailsdroitsrsa.dossier_id' => $id
-					),
-					'order' => array(
-						'detailscalculsdroitsrsa.dtderrsavers DESC',
-					),
-					'limit' => 1
-				)
-			);
-
+			// Récupération des informations RSA Socle / Activité
 			$tDetaildroitrsa = $this->Dossier->Detaildroitrsa->find(
 				'first',
 				array(
@@ -273,9 +250,6 @@
 								'Detailcalculdroitrsa.dtderrsavers',
 								'Detailcalculdroitrsa.natpf',
 							),
-							'conditions' => array(
-								"Detailcalculdroitrsa.dtderrsavers IN ( {$sq} )",
-							)
 						)
 					),
 					'conditions' => array(
