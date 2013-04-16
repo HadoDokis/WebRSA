@@ -1604,7 +1604,7 @@
 			$personne_id = $this->Contratinsertion->personneId( $contratinsertion_id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
-			$pdf = $this->Contratinsertion->getNotificationopPdf( $contratinsertion_id );
+			$pdf = $this->Contratinsertion->getNotificationopPdf( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( "contratinsertion_%d_notificationop_%s.pdf", $contratinsertion_id, date( 'Y-m-d' ) ) );
