@@ -1600,9 +1600,10 @@
 		 * Retourne le PDF de notification du CER pour l'OP (CG 66).
 		 *
 		 * @param integer $id L'id du CER pour lequel générer la notification.
+		 * @param integer $user_id L'id de l'utilisateur connecté générant la notification.
 		 * @return string
 		 */
-		public function getNotificationopPdf( $id = null ) {
+		public function getNotificationopPdf( $id = null, $user_id = null ) {
 			$contratinsertion = $this->find(
 					'first', array(
 				'fields' => array_merge(
@@ -1651,6 +1652,19 @@
 			);
 
 			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
+			
+			$user = $this->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+			$contratinsertion = Set::merge( $contratinsertion, $user );
 
 			///Utilisé pour savoir si le contrat est en accord de validation dans le modèle odt
 			if( $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ) {
