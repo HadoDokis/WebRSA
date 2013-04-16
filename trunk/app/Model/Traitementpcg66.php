@@ -709,7 +709,7 @@
 					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
 					$this->Personnepcg66->Personne->Orientstruct->fields(),
 					$this->Personnepcg66->Personne->Orientstruct->Structurereferente->fields(),
-					$this->Personnepcg66->Bilanparcours66->fields(),
+					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
 					array(
 						'Adresse.numvoie',
 						'Adresse.typevoie',
