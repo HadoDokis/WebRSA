@@ -521,6 +521,11 @@
 			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) ) {
 				$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
 			}
+			
+			// Si la date d'échéance vaut 0 (= aucune), on passe la date à NULL
+			if( $success && ( $data['Traitementpcg66']['dureeecheance'] == 0 ) ) {
+				$success = $this->updateAllUnBound( array( 'Traitementpcg66.dateecheance' => NULL ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
+			}
 
 			return $success;
 		}
