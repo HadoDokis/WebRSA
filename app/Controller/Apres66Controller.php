@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'CakeEmail', 'Network/Email' );
+	App::uses( 'WebrsaEmailConfig', 'Utility' );
 
 	/**
 	 * La classe Apres66Controller permet de lister, voir, ajouter, supprimer, ...  des APREs (CG 66).
@@ -291,7 +292,7 @@
 				)
 			);
 			$this->set( compact( 'apresPourCalculMontant' ) );
-			
+
 			if( $apresPourCalculMontant[0][0]['montantaccorde'] > Configure::read( "Apre.montantMaxComplementaires" ) ) {
 				$alerteMontantAides = true;
 			}
@@ -900,18 +901,21 @@
 
 			$success = true;
 			try {
-				$Email = new CakeEmail( 'apre66_piecesmanquantes' );
+				$configName = WebrsaEmailConfig::getName( 'apre66_piecesmanquantes' );
+				$Email = new CakeEmail( $configName );
+
+				// Choix du destinataire suivant le niveau de debug
 				if( Configure::read( 'debug' ) == 0 ) {
 					$Email->to( $apre['Referent']['email'] );
 				}
 				else {
-					$Email->to( $Email->from() );
+					$Email->to( WebrsaEmailConfig::getValue( 'apre66_piecesmanquantes', 'to', $Email->from() ) );
 				}
-				$Email->subject( 'Demande d\'Apre' );
 
+				$Email->subject( WebrsaEmailConfig::getValue( 'apre66_piecesmanquantes', 'subject', 'Demande d\'Apre' ) );
 				$mailBody = "Bonjour,\n\nle dossier de demande APRE de {$apre['Personne']['qual']} {$apre['Personne']['nom']} {$apre['Personne']['prenom']} ne peut être validé car les fichiers ne sont pas joints dans WEBRSA.\n\nLaurence COSTE.";
-				$result = $Email->send( $mailBody );
 
+				$result = $Email->send( $mailBody );
 				$success = !empty( $result ) && $success;
 			} catch( Exception $e ) {
 				$this->log( $e->getMessage(), LOG_ERROR );

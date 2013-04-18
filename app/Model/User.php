@@ -142,6 +142,12 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
+			'email' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'message' => 'Veuillez entrer une adresse mail valide'
+				)
+			),
 		);
 
 		public $belongsTo = array(
