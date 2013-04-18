@@ -518,13 +518,15 @@
 			}
 
 			// Si aucune date d'échéance, on clôture le traitement automatiquement
-			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) ) {
+			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) && $data['Traitementpcg66']['typetraitement'] != 'revenu' ) {
 				$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
 			}
 			
 			// Si la date d'échéance vaut 0 (= aucune), on passe la date à NULL
-			if( $success && ( $data['Traitementpcg66']['dureeecheance'] == 0 ) ) {
-				$success = $this->updateAllUnBound( array( 'Traitementpcg66.dateecheance' => NULL ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
+			if( $success ) {
+				if( ( isset ($data['Traitementpcg66']['dureeecheance'] ) && $data['Traitementpcg66']['dureeecheance'] == 0 && $data['Traitementpcg66']['typetraitement'] != 'revenu' ) || ( isset ($data['Traitementpcg66']['dureefinprisecompte'] ) && $data['Traitementpcg66']['dureefinprisecompte'] == 0 && $data['Traitementpcg66']['typetraitement'] == 'revenu' ) ) {
+					$success = $this->updateAllUnBound( array( 'Traitementpcg66.dateecheance' => NULL ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
+				}
 			}
 
 			return $success;
