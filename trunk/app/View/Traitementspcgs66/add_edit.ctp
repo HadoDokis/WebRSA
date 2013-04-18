@@ -769,31 +769,6 @@
 		</fieldset>
 	</fieldset>
 
-	<script type="text/javascript">
-		document.observe( "dom:loaded", function() {
-			observeDisableFieldsetOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][haspiecejointe]',
-				$( 'filecontainer-piecejointe' ),
-				'1',
-				false,
-				true
-			);
-
-
-			observeDisableFieldsOnRadioValue(
-				'traitementpcg66form',
-				'data[Traitementpcg66][typetraitement]',
-				[
-					'Traitementpcg66DateecheanceDay',
-					'Traitementpcg66DateecheanceMonth',
-					'Traitementpcg66DateecheanceYear'
-				],
-				'revenu',
-				false
-			);
-		} );
-	</script>
 
 	<?php
 		echo $this->Default->subform(
@@ -943,59 +918,82 @@
 
 ?>
 <script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsetOnRadioValue(
-			'traitementpcg66form',
-			'data[Traitementpcg66][typetraitement]',
-			$( 'fieldsetficheanalyse' ),
-			'analyse',
-			false,
-			true
-		);
+		document.observe( "dom:loaded", function() {
+			observeDisableFieldsetOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][haspiecejointe]',
+				$( 'filecontainer-piecejointe' ),
+				'1',
+				false,
+				true
+			);
+			
+			observeDisableFieldsetOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][typetraitement]',
+				$( 'fieldsetficheanalyse' ),
+				'analyse',
+				false,
+				true
+			);
 
-		observeDisableFieldsetOnRadioValue(
-			'traitementpcg66form',
-			'data[Traitementpcg66][typetraitement]',
-			$( 'fichecalcul' ),
-			'revenu',
-			false,
-			true
-		);
+			observeDisableFieldsetOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][typetraitement]',
+				$( 'fichecalcul' ),
+				'revenu',
+				false,
+				true
+			);
 
-		observeDisableFieldsetOnRadioValue(
-			'traitementpcg66form',
-			'data[Traitementpcg66][typetraitement]',
-			$( 'filecontainer-courrier' ),
-			'courrier',
-			false,
-			true
-		);
+			observeDisableFieldsetOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][typetraitement]',
+				$( 'filecontainer-courrier' ),
+				'courrier',
+				false,
+				true
+			);
 
 
+			//**//
+// 			observeDisableFieldsOnRadioValue(
+// 				'traitementpcg66form',
+// 				'data[Traitementpcg66][typetraitement]',
+// 				[ 'Traitementpcg66Dureeecheance' ],
+// 				'revenu',
+// 				false,
+// 				true
+// 			);
 
-		//**//
-		observeDisableFieldsOnRadioValue(
-			'traitementpcg66form',
-			'data[Traitementpcg66][typetraitement]',
-			[ 'Traitementpcg66Dureeecheance' ],
-			'revenu',
-			false,
-			true
-		);
+			
+			observeDisableFieldsOnRadioValue(
+				'traitementpcg66form',
+				'data[Traitementpcg66][typetraitement]',
+				[
+					'Traitementpcg66DateecheanceDay',
+					'Traitementpcg66DateecheanceMonth',
+					'Traitementpcg66DateecheanceYear',
+					'Traitementpcg66Dureeecheance'
+				],
+				'revenu',
+				false
+			);
 
-		observeDisableFieldsOnValue(
-			'Traitementpcg66Dureeecheance',
-			[
-				'Traitementpcg66DateecheanceDay',
-				'Traitementpcg66DateecheanceMonth',
-				'Traitementpcg66DateecheanceYear'
-			],
-			'0',
-			true
-		);
-		//
-	} );
-</script>
+			observeDisableFieldsOnValue(
+				'Traitementpcg66Dureeecheance',
+				[
+					'Traitementpcg66DateecheanceDay',
+					'Traitementpcg66DateecheanceMonth',
+					'Traitementpcg66DateecheanceYear'
+				],
+				['0', '', undefined],
+				true
+			);
+			
+			//
+		} );
+	</script>
 <script type="text/javascript">
 	//<![CDATA[
 	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {
