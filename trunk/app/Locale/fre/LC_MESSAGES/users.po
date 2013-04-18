@@ -18,3 +18,9 @@ msgstr "Nouveau mot de passe"
 
 msgid "User.new_password_confirmation"
 msgstr "Confirmation du nouveau mot de passe"
+
+msgid "User.username"
+msgstr "Identifiant"
+
+msgid "User.email"
+msgstr "Adresse de courriel"

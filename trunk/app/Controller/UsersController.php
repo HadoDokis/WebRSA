@@ -7,8 +7,10 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('Folder', 'Utility');
-	App::uses('File', 'Utility');
+	App::uses( 'Folder', 'Utility' );
+	App::uses( 'File', 'Utility' );
+	App::uses( 'CakeEmail', 'Network/Email' );
+	App::uses( 'WebrsaEmailConfig', 'Utility' );
 
 	/**
 	 * La classe UsersController permet la gestion des utilisateurs.
@@ -23,9 +25,14 @@
 
 		public $helpers = array( 'Xform', 'Default2' );
 
-		public $components = array( 'Menu', 'Dbdroits', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array(
+			'Dbdroits',
+			'Menu',
+			'Password',
+			'Search.Prg' => array( 'actions' => array( 'index' ) )
+		);
 
-		public $aucunDroit = array( 'login', 'logout' );
+		public $aucunDroit = array( 'login', 'logout', 'forgottenpass' );
 
 		public $commeDroit = array(
 			'add' => 'Users:edit'
@@ -731,5 +738,77 @@
 			}
 		}
 
+		/**
+		 *
+		 * @throws NotFoundException
+		 */
+		public function forgottenpass() {
+			if( !Configure::read( 'Password.mail_forgotten' ) ) {
+				throw new NotFoundException();
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$user = $this->User->find(
+					'first',
+					array(
+						'conditions' => array(
+							'User.username' => $this->request->data['User']['username'],
+							'User.email' => $this->request->data['User']['email'],
+						),
+						'contain' => false
+					)
+				);
+
+				if( !empty( $user ) ) {
+					$this->User->begin();
+
+					$password = $this->Password->generate();
+
+					$success = $this->User->updateAllUnBound(
+						array( 'User.password' => '\''.Security::hash( $password, null, true ).'\'' ),
+						array( 'User.id' => $user['User']['id'] )
+					);
+
+					$errorMessage = null;
+
+					if( $success ) {
+                        try {
+							$configName = WebrsaEmailConfig::getName( 'user_generation_mdp' );
+                            $Email = new CakeEmail( $configName );
+
+							// Choix du destinataire suivant le niveau de debug
+							if( Configure::read( 'debug' ) == 0 ) {
+								$Email->to( $user['User']['email'] );
+							}
+							else {
+								$Email->to( WebrsaEmailConfig::getValue( 'user_generation_mdp', 'to', $Email->from() ) );
+							}
+
+							$Email->subject( WebrsaEmailConfig::getValue( 'user_generation_mdp', 'subject', 'WebRSA: changement de mot de passe' ) );
+                            $mailBody = "Bonjour,\nsuite à votre demande, veuillez trouver ci-dessous vos nouveaux identifiants:\nRappel de votre identifiant : {$user['User']['username']}\nVotre nouveau mot de passe : {$password}\n";
+
+                            $result = $Email->send( $mailBody );
+                            $success = !empty( $result ) && $success;
+                        } catch( Exception $e ) {
+                            $this->log( $e->getMessage(), LOG_ERROR );
+                            $success = false;
+                            $errorMessage = 'Impossible d\'envoyer le courriel contenant votre nouveau mot de passe, veuillez contacter votre administrateur.';
+                        }
+                    }
+
+					if( $success ) {
+						$this->User->commit();
+						$this->Session->setFlash( 'Un courriel contenant votre nouveau mot de passe vient de vous être envoyé.', 'flash/success' );
+					}
+					else {
+						$this->User->rollback();
+						$this->Session->setFlash( $errorMessage, 'flash/error' );
+					}
+				}
+				else {
+					$this->Session->setFlash( 'Impossible de trouver ce couple identifiant/adresse de courriel, veuillez contacter votre administrateur.', 'flash/error' );
+				}
+			}
+		}
 	}
 ?>

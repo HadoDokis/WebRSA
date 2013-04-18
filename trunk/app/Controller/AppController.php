@@ -163,7 +163,7 @@
 		 */
 		protected function _updateConnection() {
 			if( Configure::read( 'Utilisateurs.multilogin' ) == false ) {
-				if( !( $this->name == 'Users' && in_array( $this->action, array( 'login', 'logout' ) ) ) ) {
+				if( !( $this->name == 'Users' && in_array( $this->action, array( 'login', 'logout', 'forgottenpass' ) ) ) ) {
 					$connection_id = $this->Connection->field(
 						'id',
 						array(
@@ -223,16 +223,18 @@
 
 			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' );
 			$isLogoutPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' );
+			$isForgottenpass = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/forgottenpass' );
 
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (
 				!$isLoginPage
+				&& !$isForgottenpass
 				&& ( Configure::read( "alerteFinSession" ) )
 				&& ( Configure::read( 'debug' ) == 0 )
 			);
 			$this->set( 'useAlerteFinSession', $useAlerteFinSession );
 
-			if( !$isLoginPage && !$isLogoutPage ) {
+			if( !$isLoginPage && !$isLogoutPage && !$isForgottenpass ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
 					//le forcer a se connecter
 					$this->redirect( array( 'controller' => 'users', 'action' => 'login' ) );

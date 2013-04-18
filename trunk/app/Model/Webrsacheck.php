@@ -502,12 +502,48 @@
 		}
 
 		/**
+		 * Liste des clés de configurations de mails pour le CG 58.
+		 *
+		 * @return array
+		 */
+		protected function _allEmailConfigKeys58() {
+			$return = array();
+
+			if( Configure::read( 'Password.mail_forgotten' ) ) {
+				$return[] = 'user_generation_mdp';
+			}
+
+			return $return;
+		}
+
+		/**
 		 * Liste des clés de configurations de mails pour le CG 66.
 		 *
 		 * @return array
 		 */
 		protected function _allEmailConfigKeys66() {
-			return array( 'apre66_piecesmanquantes', 'fiche_candidature' );
+			$return = array( 'apre66_piecesmanquantes', 'fiche_candidature' );
+
+			if( Configure::read( 'Password.mail_forgotten' ) ) {
+				$return[] = 'user_generation_mdp';
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Liste des clés de configurations de mails pour le CG 93.
+		 *
+		 * @return array
+		 */
+		protected function _allEmailConfigKeys93() {
+			$return = array();
+
+			if( Configure::read( 'Password.mail_forgotten' ) ) {
+				$return[] = 'user_generation_mdp';
+			}
+
+			return $return;
 		}
 
 		/**
@@ -519,7 +555,7 @@
 			$method = '_allEmailConfigKeys'.Configure::read( 'Cg.departement' );
 
 			$configs = array();
-			if( method_exists( &$this, $method ) ) {
+			if( method_exists( $this, $method ) ) {
 				$configs = $this->{$method}();
 			}
 

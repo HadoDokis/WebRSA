@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'CakeEmail', 'Network/Email' );
+	App::uses( 'WebrsaEmailConfig', 'Utility' );
 
 	/**
 	 * La classe ActionscandidatsPersonnesController permet la gestion des fiches
@@ -881,18 +882,21 @@
 			// Envoi du mail
 			$success = true;
 			try {
-				$Email = new CakeEmail( 'fiche_candidature' );
+				$configName = WebrsaEmailConfig::getName( 'fiche_candidature' );
+				$Email = new CakeEmail( $configName );
+
+				// Choix du destinataire suivant le niveau de debug
 				if( Configure::read( 'debug' ) == 0 ) {
 					$Email->to( $actioncandidat_personne['Referent']['email'] );
 				}
 				else {
-					$Email->to( $Email->from() );
+					$Email->to( WebrsaEmailConfig::getValue( 'fiche_candidature', 'to', $Email->from() ) );
 				}
-				$Email->subject( 'Fiche de candidature' );
 
+				$Email->subject( WebrsaEmailConfig::getValue( 'fiche_candidature', 'subject', 'Fiche de candidature' ) );
 				$mailBody = "Bonjour,\n\nla fiche de candidature de {$actioncandidat_personne['Personne']['qual']} {$actioncandidat_personne['Personne']['nom']} {$actioncandidat_personne['Personne']['prenom']} a été saisie dans WEBRSA.";
-				$result = $Email->send( $mailBody );
 
+				$result = $Email->send( $mailBody );
 				$success = !empty( $result ) && $success;
 			} catch( Exception $e ) {
 				$this->log( $e->getMessage(), LOG_ERROR );

@@ -22,6 +22,12 @@
 	<?php echo $this->Form->end(); ?>
 <?php endif; ?>
 
+<?php if( Configure::read( 'Password.mail_forgotten' ) ): ?>
+	<div id="forgottenpass">
+		<?php echo $this->Html->link( 'Mot de passe oublié ?', array( 'controller' => 'users', 'action' => 'forgottenpass' ) );?>
+	</div>
+<?php endif; ?>
+
 <script type="text/javascript">
 	observeDisableFormOnSubmit( 'UserLoginForm', 'Connexion en cours ...' );
 </script>
