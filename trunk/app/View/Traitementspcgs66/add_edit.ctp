@@ -1245,7 +1245,10 @@
 			var mtaidesub = parseFloat($F('Traitementpcg66Mtaidesub').replace(',', '.'));
 
 			if (!isNaN(valuecoefannee1) && !isNaN(valuecoefannee2) && !isNaN(forfait) && forfait!=0)
-				mttotal += Math.round( ( forfait + ( ( forfait + ( forfait * valuecoefannee1 ) ) * valuecoefannee2 ) ) * 100 ) / 100;
+				var X = ( forfait * valuecoefannee1 );
+				var Y = ( ( forfait + X  ) * valuecoefannee2 );
+				mttotal += parseFloat( ( forfait + X + Y ).toFixed( 2 ) );
+				mttotal = ( isNaN( mttotal ) ? 0 : mttotal );
 			if (!isNaN(mtaidesub) && mtaidesub!=0)
 				mttotal += Math.round( mtaidesub * 100 ) / 100;
 		}
