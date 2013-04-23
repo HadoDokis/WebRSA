@@ -47,9 +47,7 @@
 				$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
 			}
 
-			$sql = "INSERT INTO derniersdossiersallocataires (personne_id, dossier_id)
-	SELECT
-			personnes.id AS personne_id,
+			$sqlSelect = "SELECT personnes.id AS personne_id,
 			(
 				SELECT
 						dossiers.id
@@ -91,10 +89,35 @@
 		)
 		WHERE
 			prestations.rolepers IN ( 'DEM', 'CJT' )
-			AND personnes.dtnai IS NOT NULL;";
+			AND personnes.dtnai IS NOT NULL";
+
+			// Le SELECT pour l'INSERT qui sera éventuellement complété pour les allocataires se trouvant dans un dossier sans dtdemrsa
+			$sqlSelectInsert = $sqlSelect;
+
+			// S'il existe des allocataires se trouvant dans des dossiers avec une dtdemrsa à NULL
+			$personnesSansDtdemrsa = $this->Dernierdossierallocataire->query( "SELECT * FROM ( {$sqlSelect} ) AS \"Alias\" WHERE dossier_id IS NULL" );
+			if( !empty( $personnesSansDtdemrsa ) ) {
+				$personnesSansDtdemrsa = Hash::extract( $personnesSansDtdemrsa, '{n}.0.personne_id' );
+
+				$sqlSelectInsert = "{$sqlSelectInsert} AND personnes.id NOT IN ( ".implode( ', ', $personnesSansDtdemrsa )." )";
+			}
 
 			$this->out( 'Population de la table derniersdossiersallocataires' );
+
+			// Insertion des allocataires se trouvant dans un dossier avec une dtdemrsa NOT NULL
+			$sql = "INSERT INTO derniersdossiersallocataires (personne_id, dossier_id) {$sqlSelectInsert} ;";
 			$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+
+			// Insertion des allocataires se trouvant dans un dossier avec une dtdemrsa NULL
+			if( !empty( $personnesSansDtdemrsa ) ) {
+				$sql = "INSERT INTO derniersdossiersallocataires (personne_id, dossier_id)
+					SELECT personnes.id AS personne_id, dossiers.id AS dossier_id
+						FROM personnes
+							INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+							INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+						WHERE personnes.id IN ( ".implode( ', ', $personnesSansDtdemrsa )." );";
+				$success = ( $this->Dernierdossierallocataire->query( $sql ) !== false ) && $success;
+			}
 
 			if( $success ) {
 				$this->Dernierdossierallocataire->commit();
