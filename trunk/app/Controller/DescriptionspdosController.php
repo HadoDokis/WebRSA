@@ -63,15 +63,9 @@
 			$options = $this->_options();
 			$this->set( 'options', $options );
 
-            $this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Descriptionpdo->qdOccurences()
-            );
-            
-            $descriptionspdos = $this->Descriptionpdo->find( 'all', $queryData );
-            
+            $queryData = $this->Descriptionpdo->qdOccurences();
+            $this->paginate = $queryData;
+			$descriptionspdos = $this->paginate( $this->modelClass );
             $this->set( compact( 'descriptionspdos' ) );
 //			$this->Default->search(
 //				$this->request->data

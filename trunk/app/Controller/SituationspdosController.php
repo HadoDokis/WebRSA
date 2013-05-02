@@ -44,13 +44,9 @@
 		*/
 
 		public function index() {
-			$this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Situationpdo->qdOccurences()
-            );
-            $situationspdos = $this->Situationpdo->find( 'all', $queryData );
+			$queryData = $this->Situationpdo->qdOccurences();
+            $this->paginate = $queryData;
+			$situationspdos = $this->paginate( $this->modelClass );
             
             $this->set( compact( 'situationspdos' ) );
 		}

@@ -32,14 +32,9 @@
 		*/
 
 		public function index() {
-			$this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Statutpdo->qdOccurences()
-            );
-            $statutspdos = $this->Statutpdo->find( 'all', $queryData );
-            
+			$queryData = $this->Statutpdo->qdOccurences();
+            $this->paginate = $queryData;
+			$statutspdos = $this->paginate( $this->modelClass );
             $this->set( compact( 'statutspdos' ) );
 		}
 

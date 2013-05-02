@@ -37,14 +37,10 @@
 		*/
 
 		public function index() {
-			$this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Originepdo->qdOccurences()
-            );
-            $originespdos = $this->Originepdo->find( 'all', $queryData );
             
+            $queryData = $this->Originepdo->qdOccurences();
+            $this->paginate = $queryData;
+			$originespdos = $this->paginate( $this->modelClass );
             $this->set( compact( 'originespdos' ) );
 			$this->_setOptions();
 		}
