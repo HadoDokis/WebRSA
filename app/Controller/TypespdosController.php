@@ -35,15 +35,9 @@
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
 
-            $this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Typepdo->qdOccurences()
-            );
-            
-            $typespdos = $this->Typepdo->find( 'all', $queryData );
-            
+            $queryData = $this->Typepdo->qdOccurences();
+            $this->paginate = $queryData;
+			$typespdos = $this->paginate( $this->modelClass );         
             $this->set( compact( 'typespdos' ) );
             
 			$this->_setOptions();

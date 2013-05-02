@@ -36,13 +36,9 @@
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
 
-			$this->paginate['recursive'] = -1;
-			$queryData = $this->paginate( $this->modelClass );
-            $queryData = array_merge(
-                $queryData,
-                $this->Decisionpdo->qdOccurences()
-            );
-            $decisionspdos = $this->Decisionpdo->find( 'all', $queryData );
+			$queryData = $this->Decisionpdo->qdOccurences();
+            $this->paginate = $queryData;
+			$decisionspdos = $this->paginate( $this->modelClass );
             
             $this->set( compact( 'decisionspdos' ) );
 		}
