@@ -37,10 +37,15 @@
 		*/
 
 		public function index() {
-			$this->set(
-				Inflector::tableize( $this->modelClass ),
-				$this->paginate( $this->modelClass )
-			);
+			$this->paginate['recursive'] = -1;
+			$queryData = $this->paginate( $this->modelClass );
+            $queryData = array_merge(
+                $queryData,
+                $this->Originepdo->qdOccurences()
+            );
+            $originespdos = $this->Originepdo->find( 'all', $queryData );
+            
+            $this->set( compact( 'originespdos' ) );
 			$this->_setOptions();
 		}
 

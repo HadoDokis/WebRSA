@@ -13,7 +13,7 @@
         array(
             'actions' => array(
                 'Typescourrierspcgs66::edit',
-                'Typescourrierspcgs66::delete'
+                'Typescourrierspcgs66::delete' => array( 'disabled' => '\'#Typecourrierpcg66.occurences#\'!= "0"' )
             ),
             'add' => 'Typescourrierspcgs66::add'
         )

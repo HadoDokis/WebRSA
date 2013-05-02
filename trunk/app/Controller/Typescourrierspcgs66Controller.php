@@ -35,16 +35,20 @@
 
         public function index() {
 			$queryData = array(
-				'Typecourrierpcg66' => array(
-					'fields' => array(
-						'Typecourrierpcg66.id',
-						'Typecourrierpcg66.name'
-					),
-					'contain' => false,
-					'recursive' => -1,
-					'group' => array(  'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
-					'order' => array( 'Typecourrierpcg66.name ASC' )
-				)
+				'fields' => array(
+                    'Typecourrierpcg66.id',
+                    'Typecourrierpcg66.name',
+                    'COUNT("Traitementpcg66"."id") AS "Typecourrierpcg66__occurences"'
+                ),
+                'contain' => false,
+                'joins' => array(
+                    $this->Typecourrierpcg66->join( 'Traitementpcg66' )
+                ),
+                'recursive' => -1,
+                'limit' => 20,
+                'group' => array(  'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
+                'order' => array( 'Typecourrierpcg66.name ASC' )
+                
 			);
             $this->Default->index( $queryData );
         }
