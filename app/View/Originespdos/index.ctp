@@ -22,7 +22,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'Originespdos::edit',
-				'Originespdos::delete',
+				'Originespdos::delete' => array( 'disabled' => '\'#Originepdo.occurences#\'!= "0"' )
 			),
 			'add' => 'Originespdos::add',
 		)

@@ -67,5 +67,26 @@
 				'with' => 'Personnepcg66Statutpdo'
 			)
 		);
+        
+         /**
+         * Permet de connaître le nombre d'occurences de Personnepcg66 dans 
+         * lesquelles apparaît ce statut PDOs
+         * @return array()
+         */
+        public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Personnepcg66"."id") AS "Statutpdo__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Personnepcg66Statutpdo' ),
+                    $this->Personnepcg66Statutpdo->join( 'Personnepcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Statutpdo.libelle ASC' )
+			);
+		}
 	}
 ?>

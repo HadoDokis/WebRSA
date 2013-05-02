@@ -22,7 +22,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'Situationspdos::edit',
-				'Situationspdos::delete',
+				'Situationspdos::delete' => array( 'disabled' => '\'#Situationpdo.occurences#\'!= "0"' )
 			),
 			'add' => 'Situationspdos::add',
 		)

@@ -62,14 +62,20 @@
 		public function index() {
 			$options = $this->_options();
 			$this->set( 'options', $options );
-			$this->set(
-				Inflector::tableize( $this->modelClass ),
-				$this->paginate( $this->modelClass )
-			);
-			$this->{$this->modelClass}->recursive = -1;
-			$this->Default->search(
-				$this->request->data
-			);
+
+            $this->paginate['recursive'] = -1;
+			$queryData = $this->paginate( $this->modelClass );
+            $queryData = array_merge(
+                $queryData,
+                $this->Descriptionpdo->qdOccurences()
+            );
+            
+            $descriptionspdos = $this->Descriptionpdo->find( 'all', $queryData );
+            
+            $this->set( compact( 'descriptionspdos' ) );
+//			$this->Default->search(
+//				$this->request->data
+//			);
 		}
 
 		/**

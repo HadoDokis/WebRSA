@@ -35,13 +35,17 @@
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
 
-			$typespdos = $this->Typepdo->find(
-				'all',
-				array(
-					'recursive' => -1
-				)
-			);
-			$this->set('typespdos', $typespdos);
+            $this->paginate['recursive'] = -1;
+			$queryData = $this->paginate( $this->modelClass );
+            $queryData = array_merge(
+                $queryData,
+                $this->Typepdo->qdOccurences()
+            );
+            
+            $typespdos = $this->Typepdo->find( 'all', $queryData );
+            
+            $this->set( compact( 'typespdos' ) );
+            
 			$this->_setOptions();
 		}
 

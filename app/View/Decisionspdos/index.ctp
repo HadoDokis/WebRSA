@@ -44,7 +44,7 @@
 						$this->Xhtml->deleteLink(
 							'Supprimer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] ),
-							$this->Permissions->check( 'decisionspdos', 'delete' )
+							$this->Permissions->check( 'decisionspdos', 'delete' ) && ( $decisionpdo['Decisionpdo']['occurences'] == 0 )
 						)
 					);
 				}
@@ -61,7 +61,7 @@
 						$this->Xhtml->deleteLink(
 							'Supprimer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'delete', $decisionpdo['Decisionpdo']['id'] ),
-							$this->Permissions->check( 'decisionspdos', 'delete' )
+							$this->Permissions->check( 'decisionspdos', 'delete' ) && ( $decisionpdo['Decisionpdo']['occurences'] == 0 )
 						)
 					);
 				}

@@ -59,6 +59,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+            'Decisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => 'decisionpdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
 
@@ -98,6 +111,27 @@
 				)
 			);
 			return Set::extract( $items, '/'.$this->alias.'/modele' );
+		}
+        
+        
+        /**
+         * Permet de connaître le nombre d'occurences de Dossierpcg dans 
+         * lesquelles apparaît ce type de PDOs
+         * @return array()
+         */
+        public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Decisiondossierpcg66"."id") AS "Decisionpdo__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Decisiondossierpcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Decisionpdo.id ASC' )
+			);
 		}
 	}
 ?>

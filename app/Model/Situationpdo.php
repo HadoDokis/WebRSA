@@ -106,5 +106,26 @@
 				);
 			return $listeSituation;
 		}
+        
+         /**
+         * Permet de connaître le nombre d'occurences de Personnepcg66 dans 
+         * lesquelles apparaît cette situation PDOs
+         * @return array()
+         */
+        public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Personnepcg66"."id") AS "Situationpdo__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Personnepcg66Situationpdo' ),
+                    $this->Personnepcg66Situationpdo->join( 'Personnepcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Situationpdo.libelle ASC' )
+			);
+		}
 	}
 ?>

@@ -22,7 +22,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'Typespdos::edit',
-				'Typespdos::delete',
+				'Typespdos::delete' => array( 'disabled' => '\'#Typepdo.occurences#\'!= "0"' )
 			),
 			'add' => 'Typespdos::add',
 		)

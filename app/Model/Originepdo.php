@@ -67,5 +67,25 @@
 				'counterQuery' => ''
 			)
 		);
+        
+        /**
+         * Permet de connaître le nombre d'occurences de Traitement PCGs dans 
+         * lesquelles apparaît cette description de Traitements PCGs
+         * @return array() 
+         */
+        public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Dossierpcg66"."id") AS "Originepdo__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Dossierpcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Originepdo.id ASC' )
+			);
+		}
 	}
 ?>

@@ -15,7 +15,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'Statutspdos::edit',
-				'Statutspdos::delete',
+				'Statutspdos::delete' => array( 'disabled' => '\'#Statutpdo.occurences#\'!= "0"' )
 			),
 			'add' => 'Statutspdos::add',
 		)

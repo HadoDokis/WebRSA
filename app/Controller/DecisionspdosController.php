@@ -36,14 +36,15 @@
 				$this->redirect( array( 'controller' => 'pdos', 'action' => 'index' ) );
 			}
 
-			$decisionspdos = $this->Decisionpdo->find(
-				'all',
-				array(
-					'recursive' => -1
-				)
-			);
-
-			$this->set('decisionspdos', $decisionspdos);
+			$this->paginate['recursive'] = -1;
+			$queryData = $this->paginate( $this->modelClass );
+            $queryData = array_merge(
+                $queryData,
+                $this->Decisionpdo->qdOccurences()
+            );
+            $decisionspdos = $this->Decisionpdo->find( 'all', $queryData );
+            
+            $this->set( compact( 'decisionspdos' ) );
 		}
 
 		public function add() {

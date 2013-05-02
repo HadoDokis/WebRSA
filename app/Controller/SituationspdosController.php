@@ -44,11 +44,15 @@
 		*/
 
 		public function index() {
-			$this->set(
-				Inflector::tableize( $this->modelClass ),
-				$this->paginate( $this->modelClass )
-			);
-// 			$this->_setOptions();
+			$this->paginate['recursive'] = -1;
+			$queryData = $this->paginate( $this->modelClass );
+            $queryData = array_merge(
+                $queryData,
+                $this->Situationpdo->qdOccurences()
+            );
+            $situationspdos = $this->Situationpdo->find( 'all', $queryData );
+            
+            $this->set( compact( 'situationspdos' ) );
 		}
 
 		/**

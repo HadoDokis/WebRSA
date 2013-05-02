@@ -19,7 +19,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'descriptionspdos::edit',
-				'descriptionspdos::delete',
+				'descriptionspdos::delete' => array( 'disabled' => '\'#Descriptionpdo.occurences#\'!= "0"' )
 			),
 			'add' => 'descriptionspdos::add',
 			'options' => $options

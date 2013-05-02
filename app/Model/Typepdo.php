@@ -73,5 +73,25 @@
 				'counterQuery' => ''
 			)
 		);
+        
+        /**
+         * Permet de connaître le nombre d'occurences de Dossierpcg dans 
+         * lesquelles apparaît ce type de PDOs
+         * @return array()
+         */
+        public function qdOccurences() {
+			return array(
+				'fields' => array_merge(
+					$this->fields(),
+					array( 'COUNT("Dossierpcg66"."id") AS "Typepdo__occurences"' )
+				),
+				'joins' => array( 
+					$this->join( 'Dossierpcg66' )
+				),
+				'recursive' => -1,
+				'group' => $this->fields(),
+				'order' => array( 'Typepdo.id ASC' )
+			);
+		}
 	}
 ?>
