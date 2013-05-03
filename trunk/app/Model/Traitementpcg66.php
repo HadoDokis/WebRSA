@@ -416,7 +416,7 @@
 
 			$dataTraitementpcg66 = array( 'Traitementpcg66' => $data['Traitementpcg66'] );
 			if( $data['Traitementpcg66']['typetraitement'] == 'revenu' ) {
-				$dataTraitementpcg66['Traitementpcg66']['dateecheance'] = $data['Traitementpcg66']['daterevision'];
+				$dataTraitementpcg66['Traitementpcg66']['dateecheance'] = $data['Traitementpcg66']['datefinprisecompte'];
 			}
 
 			$this->create( $dataTraitementpcg66 );
