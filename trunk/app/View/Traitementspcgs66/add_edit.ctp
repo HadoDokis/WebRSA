@@ -761,7 +761,7 @@
 				);
 				
 				if( !empty( $fichiersEnBase ) ) {
-					echo $fileuploader->results(
+					echo $this->Fileuploader->results(
 						$fichiersEnBase
 					);
 				}
@@ -996,30 +996,29 @@
 	</script>
 <script type="text/javascript">
 	//<![CDATA[
+ 
 	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {
 		var duree = $F( 'Traitementpcg66Duree'+dateDonnee ).split( '.' );
-		var month = duree[0];
-		var day = duree[1];
+
+		var duree_entier = duree[0];
+		var duree_decimales = duree[1];
+
 		if ( $F( 'Traitementpcg66Date'+dateDonnee+'Day' ) != "" && $F( 'Traitementpcg66Date'+dateDonnee+'Month' ) != "" && $F( 'Traitementpcg66Date'+dateDonnee+'Year' ) != "" && $F( 'Traitementpcg66Duree'+dateDonnee ) != "" ) {
-			var dateDepart = new Date( $F( 'Traitementpcg66Date'+dateDonnee+'Year' ), $F( 'Traitementpcg66Date'+dateDonnee+'Month' )-1, $F( 'Traitementpcg66Date'+dateDonnee+'Day' ) );
-			if ( day != undefined ) {
-				if ( operateur == '+' ) {
-					dateDepart.setDate( 15 + dateDepart.getDate() );
-				}
-				else {
-					dateDepart.setDate( 15 - dateDepart.getDate() );
-				}
-			}
-			if ( operateur == '+' ) {
-				month = parseInt( dateDepart.getMonth() ) + parseInt( month );
-			}
-			else {
-				month = parseInt( dateDepart.getMonth() ) - parseInt( month );
-			}
-			dateDepart.setMonth( month );
+			var dateDepart = new Date( $F( 'Traitementpcg66Date'+dateDonnee+'Year' ), $F( 'Traitementpcg66Date'+dateDonnee+'Month' ) - 1, $F( 'Traitementpcg66Date'+dateDonnee+'Day' ) );
+
+            var timestampDepart = dateDepart.getTime();
+            var delai = operateur + parseInt( duree_entier ) + ' months';
+            if ( duree_decimales != undefined ) {
+                delai = delai + ' '  + operateur + '15 days';
+            }
+
+            var timestampArrivee = strtotime( delai, timestampDepart / 1000 )  * 1000;
+            dateDepart = new Date( timestampArrivee );
+            
 			var newday = dateDepart.getDate();
-			var newmonth = dateDepart.getMonth()+1;
+			var newmonth = dateDepart.getMonth() + 1;
 			var newyear = dateDepart.getFullYear();
+
 			$( 'Traitementpcg66Date'+dateAChanger+'Day' ).value = ( newday < 10 ) ? '0' + newday : newday;
 			$( 'Traitementpcg66Date'+dateAChanger+'Month' ).value = ( newmonth < 10 ) ? '0' + newmonth : newmonth;
 			$( 'Traitementpcg66Date'+dateAChanger+'Year' ).value = newyear;
