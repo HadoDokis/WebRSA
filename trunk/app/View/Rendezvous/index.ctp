@@ -26,7 +26,7 @@
 			$dossiercommissionLie = 0;
 		}
 	?>
-<table class="tooltips">
+<table id="listeRendezvous" class="tooltips">
 	<thead>
 		<tr>
 			<th>Nom de la personne</th>
@@ -37,18 +37,29 @@
 			<th>Statut du RDV</th>
 			<th>Date de RDV</th>
 			<th>Heure de RDV</th>
-			<th>Objectif du RDV</th>
-			<th>Commentaires suite au RDV</th>
 			<th colspan="6" class="action">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-			foreach( $rdvs as $rdv ) {
+			foreach( $rdvs as $index => $rdv ) {
 				$lastrdv = true;
 				if( Configure::read( 'Cg.departement' ) != 93 ) {
 					$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
 				}
+
+				$innerTable = '<table id="innerTablelisteRendezvous'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>Objectif du RDV</th>
+							<td>'.h( Set::classicExtract( $rdv, 'Rendezvous.objetrdv' ) ).'</td>
+						</tr>
+						<tr>
+							<th>Commentaires suite au RDV</th>
+							<td>'.h( Set::classicExtract( $rdv, 'Rendezvous.commentairerdv' ) ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				echo $this->Xhtml->tableCells(
 					array(
@@ -60,8 +71,6 @@
 						h( Set::classicExtract( $rdv, 'Statutrdv.libelle' ) ),
 						h( date_short( Set::classicExtract( $rdv, 'Rendezvous.daterdv' ) ) ),
 						h( $this->Locale->date( 'Time::short', Set::classicExtract( $rdv, 'Rendezvous.heurerdv' ) ) ),
-						h( Set::classicExtract( $rdv, 'Rendezvous.objetrdv' ) ),
-						h( Set::classicExtract( $rdv, 'Rendezvous.commentairerdv' ) ),
 						$this->Xhtml->viewLink(
 							'Voir le Rendez-vous',
 							array( 'controller' => 'rendezvous', 'action' => 'view',
@@ -96,7 +105,8 @@
 							$rdv['Rendezvous']['id'] ),
 							( $this->Permissions->checkDossier( 'rendezvous', 'filelink', $dossierMenu )  )
 						),
-						h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nb_fichiers_lies' ).')' )
+						h( '('.Set::classicExtract( $rdv, 'Fichiermodule.nb_fichiers_lies' ).')' ),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
