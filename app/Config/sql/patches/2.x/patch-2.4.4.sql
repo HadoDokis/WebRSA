@@ -14,6 +14,8 @@ BEGIN;
 SELECT add_missing_table_field( 'public', 'users', 'email', 'VARCHAR(250)' );
 ALTER TABLE users ALTER COLUMN email SET DEFAULT NULL;
 
+ALTER TABLE expsproscers93 ALTER COLUMN nbduree TYPE FLOAT;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
