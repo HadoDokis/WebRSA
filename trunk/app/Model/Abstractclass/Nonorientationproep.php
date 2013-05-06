@@ -313,11 +313,16 @@
 			return $querydata;
 		}
 
+		/**
+		 *
+		 * @param array $datas
+		 * @return boolean
+		 */
 		public function saveCohorte( $datas ) {
 			$success = true;
 
 			foreach( $datas['Nonorientationproep'] as $dossier ) {
-				if ( $dossier['passageep'] == 1 ) {
+				if( isset( $dossier['passageep'] ) && $dossier['passageep'] == 1 ) {
 					$dossierep = array(
 						'Dossierep' => array(
 							'personne_id' => $dossier['personne_id'],
@@ -338,7 +343,7 @@
 					$this->create( $nonorientationproep );
 					$success = $this->save() && $success;
 				}
-				else if ( ( Configure::read( 'Cg.departement' ) == 58 ) && $dossier['passagecov'] == 1 ) {
+				else if ( ( Configure::read( 'Cg.departement' ) == 58 ) && isset( $dossier['passagecov'] ) && $dossier['passagecov'] == 1 ) {
 
 					$themecov58 = $this->Orientstruct->Propononorientationprocov58->Dossiercov58->Themecov58->find(
 						'first',
@@ -378,10 +383,8 @@
 					$this->Orientstruct->Propononorientationprocov58->create( $propononorientationprocov58 );
 					$success = $this->Orientstruct->Propononorientationprocov58->save() && $success;
 				}
-// debug( $propononorientationprocov58);
-
 			}
-			return $success; //FIXME
+			return $success;
 		}
 
 		public function qdDossiersParListe( $commissionep_id, $niveauDecision ) {

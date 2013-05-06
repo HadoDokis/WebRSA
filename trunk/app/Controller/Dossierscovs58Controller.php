@@ -46,7 +46,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( Set::extract( '/Foyer/dossier_id', $this->request->data ) );
 				$this->Jetonsfonctions2->release( $cov58_id );
-				$this->redirect( array( 'controller' => 'covs58', 'action' => 'view', $cov58_id ) );
+				$this->redirect( array( 'controller' => 'covs58', 'action' => 'view', $cov58_id, '#' => "dossiers,{$this->request->data['Choose']['theme']}" ) );
 			}
 
 			$cov58 = $this->Dossiercov58->Passagecov58->Cov58->find(
@@ -124,7 +124,7 @@
 					$this->Jetonsfonctions2->release( $cov58_id );
 					$dossiersIds = Set::extract( $this->request->data, '/Foyer/dossier_id' );
 					$this->Jetons2->release( $dossiersIds );
-					$this->redirect( array( 'controller'=>'covs58', 'action'=>'view', $cov58_id, '#dossiers,'.$this->request->data['Choose']['theme'] ) );
+					$this->redirect( array( 'controller'=>'covs58', 'action'=>'view', $cov58_id, '#' => "dossiers,{$this->request->data['Choose']['theme']}" ) );
 				}
 				else {
 					$this->Dossiercov58->rollback();

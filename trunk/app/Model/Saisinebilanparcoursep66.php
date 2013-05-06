@@ -173,6 +173,9 @@
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
 				if ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
+					$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'] ) + 1;
+					$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
+
 					$orientstruct = array(
 						'Orientstruct' => array(
 							'personne_id' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
@@ -181,17 +184,19 @@
 							'date_propo' => date( 'Y-m-d' ),
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
-							'user_id' => $user_id
+							'user_id' => $user_id,
+							'rgorient' => $rgorient,
+							'origine' => $origine,
 						)
 					);
 					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
 					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAllUnBound(
+					$success = $success && $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-					) && $success;
+					);
 				}
 
 				if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
@@ -371,7 +376,7 @@
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decisionsaisinebilanparcoursep66'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
-				
+
 				// On modifie les enregistrements de cette étape
 				if( @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['etape'] == $niveauDecision  ) {
 					$formData['Decisionsaisinebilanparcoursep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0];
@@ -705,7 +710,7 @@
 				// Référent orientant lié à l'orientation
 				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Referentorientant->fields() );
 				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Referentorientant' );
-				
+
 
 				/* TODO:
 					$this->alias => array(

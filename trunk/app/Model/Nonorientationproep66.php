@@ -103,6 +103,10 @@
 					elseif ( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep66'][0]['decision'] == 'reorientation' ) {
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep66']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
+
+						$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
+
 						$orientstruct = array(
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -111,13 +115,16 @@
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
-								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
+								'rgorient' => $rgorient,
+								'origine' => $origine,
 								'etatorient' => 'decision',
 								'user_id' => $dossierep['Nonorientationproep66']['user_id']
 							)
 						);
+
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
+
 						$success = $this->Orientstruct->generatePdf( $this->Orientstruct->id, $dossierep['Nonorientationproep66']['user_id'] ) && $success;
 					}
 				}

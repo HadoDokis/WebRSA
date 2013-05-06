@@ -1396,7 +1396,7 @@ function serializeTableRow( link ) {
 /**
  * Fonction permettant d'éviter qu'un formulaire ne soit envoyé plusieurs fois.
  * Utilisée notamment pour la connexion.
- * 
+ *
  * @param formId Le formulaire sur lequel appliquer la fonctionnalité
  * @param message Le message à afficher au-dessus du formulaire pour tenir l'utilisateur informé.
  */
@@ -1417,9 +1417,63 @@ function observeDisableFormOnSubmit( formId, message ) {
 	);
 }
 
+
+/**
+ * Pour chacun des liens trouvés par le chemin, on remplace la partie signet
+ * (#...) existante par le signet passé en paramètre.
+ *
+ * @param string links Le chemin des liens à modifier
+ * @param string fragment Le signet à utiliser pour la modification
+ * @returns void
+ */
+function replaceUrlFragments( links, fragment ) {
+	$$( links ).each( function( link ) {
+		var href = $(link).readAttribute( 'href' );
+		href = href.replace( /#.*$/, '' ) + fragment;
+		$(link).writeAttribute( 'href', href );
+	} );
+}
+
+/**
+ * Observe l'événement 'onclick' de chacun des liens du premier chemin, qui ne
+ * doivent être composés que de signet (#nomsignet), pour modifier les signets
+ * des liens du second chemin.
+ *
+ * @param string observedPath Le chemin des liens à observer
+ * @param string replacedPath Le chemin des liens pour lesquels modifier le signet
+ * @returns void
+ */
+function observeOnclickUrlFragments( observedPath, replacedPath ) {
+	$$( observedPath ).each( function( observed ) {
+		$(observed).observe(
+			'click',
+			function() {
+				replaceUrlFragments( replacedPath, $(observed).readAttribute( 'href' ) );
+			}
+		);
+	} );
+}
+
+/**
+ * Observe l'événement 'onload' de la page pour modifier les liens du chemin en
+ * fonction de la dernière partie du signet (#dossiers,propononorientationprocov58
+ * donnera #propononorientationprocov58) présent dans l'URL de la page.
+ *
+ * @param string replacedPath Le chemin des liens pour lesquels modifier le signet
+ * @returns void
+ */
+function observeOnloadUrlFragments( replacedPath ) {
+	document.observe( "dom:loaded", function() {
+		if( window.location.href.indexOf( '#' ) !== -1 ) {
+			var fragment = window.location.href.replace( /^.*#/, '#' ).replace( /^.*,([^,]+$)/g, '#$1' );
+			replaceUrlFragments( replacedPath, fragment );
+		}
+	} );
+}
+
 /**
  * Retourne le nombre de jours séparant deux dates.
- * 
+ *
  * @url http://www.htmlgoodies.com/html5/javascript/calculating-the-difference-between-two-dates-in-javascript.html#fbid=WAI_I5iVM_N
  *
  * @param Date date1 La date la plus ancienne
@@ -1436,9 +1490,9 @@ function nbJoursIntervalleDates( date1, date2 ) {
 
 	// Calculate the difference in milliseconds
 	var difference_ms = date2_ms - date1_ms;
-		
+
 	// Convert back to days and return
-	return Math.round(difference_ms/one_day); 
+	return Math.round(difference_ms/one_day);
 }
 
 /**
@@ -1452,7 +1506,7 @@ function nbJoursIntervalleDates( date1, date2 ) {
 function updateFieldFromDatesInterval( date1, date2, fieldId ) {
 	var dateComplete1 = ( $F( date1 + 'Day' ) && $F( date1 + 'Month' ) && $F( date1 + 'Year' ) );
 	var dateComplete2 = ( $F( date2 + 'Day' ) && $F( date2 + 'Month' ) && $F( date2 + 'Year' ) );
-	
+
 	if( dateComplete1 && dateComplete2 ) {
 		var n = nbJoursIntervalleDates(
 			new Date( $F( date1 + 'Year' ), $F( date1 + 'Month' ), $F( date1 + 'Day' ) ),
@@ -1474,9 +1528,9 @@ function updateDateFromDateDuree( date1, duree, date2 ) {
 	var complete = (
 		( $F( date1 + 'Year' ) && $F( date1 + 'Month' ) && $F( date1 + 'Day' ) )
 		&& $F( duree )
-		
+
 	);
-	
+
 	if( complete ) {
 		setDateInterval( date1, date2, $F( duree ), false );
 	}
@@ -1484,134 +1538,134 @@ function updateDateFromDateDuree( date1, duree, date2 ) {
 
 
 // http://phpjs.org/functions/strtotime/
- function strtotime (text, now) {
-     // Convert string representation of date and time to a timestamp
-     //
-     // version: 1109.2015
-     // discuss at: http://phpjs.org/functions/strtotime
-     // +   original by: Caio Ariede (http://caioariede.com)
-     // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-     // +      input by: David
-     // +   improved by: Caio Ariede (http://caioariede.com)
-     // +   improved by: Brett Zamir (http://brett-zamir.me)
-     // +   bugfixed by: Wagner B. Soares
-     // +   bugfixed by: Artur Tchernychev
-     // +   improved by: A. Matías Quezada (http://amatiasq.com)
-     // %        note 1: Examples all have a fixed timestamp to prevent tests to fail because of variable time(zones)
-     // *     example 1: strtotime('+1 day', 1129633200);
-     // *     returns 1: 1129719600
-     // *     example 2: strtotime('+1 week 2 days 4 hours 2 seconds', 1129633200);
-     // *     returns 2: 1130425202
-     // *     example 3: strtotime('last month', 1129633200);
-     // *     returns 3: 1127041200
-     // *     example 4: strtotime('2009-05-04 08:30:00');
-     // *     returns 4: 1241418600
-     if (!text)
-         return null;
+function strtotime (text, now) {
+	// Convert string representation of date and time to a timestamp
+	//
+	// version: 1109.2015
+	// discuss at: http://phpjs.org/functions/strtotime
+	// +   original by: Caio Ariede (http://caioariede.com)
+	// +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	// +      input by: David
+	// +   improved by: Caio Ariede (http://caioariede.com)
+	// +   improved by: Brett Zamir (http://brett-zamir.me)
+	// +   bugfixed by: Wagner B. Soares
+	// +   bugfixed by: Artur Tchernychev
+	// +   improved by: A. Matías Quezada (http://amatiasq.com)
+	// %        note 1: Examples all have a fixed timestamp to prevent tests to fail because of variable time(zones)
+	// *     example 1: strtotime('+1 day', 1129633200);
+	// *     returns 1: 1129719600
+	// *     example 2: strtotime('+1 week 2 days 4 hours 2 seconds', 1129633200);
+	// *     returns 2: 1130425202
+	// *     example 3: strtotime('last month', 1129633200);
+	// *     returns 3: 1127041200
+	// *     example 4: strtotime('2009-05-04 08:30:00');
+	// *     returns 4: 1241418600
+	if (!text)
+		return null;
 
-     // Unecessary spaces
-     text = text.trim()
-         .replace(/\s{2,}/g, ' ')
-         .replace(/[\t\r\n]/g, '')
-         .toLowerCase();
+	// Unecessary spaces
+	text = text.trim()
+		.replace(/\s{2,}/g, ' ')
+		.replace(/[\t\r\n]/g, '')
+		.toLowerCase();
 
-     var parsed;
+	var parsed;
 
-     if (text === 'now')
-         return now === null || isNaN(now) ? new Date().getTime() / 1000 | 0 : now | 0;
-     else if (!isNaN(parse = Date.parse(text)))
-         return parse / 1000 | 0;
-     if (text === 'now')
-         return new Date().getTime() / 1000; // Return seconds, not milli-seconds
-     else if (!isNaN(parsed = Date.parse(text)))
-         return parsed / 1000;
+	if (text === 'now')
+		return now === null || isNaN(now) ? new Date().getTime() / 1000 | 0 : now | 0;
+	else if (!isNaN(parse = Date.parse(text)))
+		return parse / 1000 | 0;
+	if (text === 'now')
+		return new Date().getTime() / 1000; // Return seconds, not milli-seconds
+	else if (!isNaN(parsed = Date.parse(text)))
+		return parsed / 1000;
 
-     var match = text.match(/^(\d{2,4})-(\d{2})-(\d{2})(?:\s(\d{1,2}):(\d{2})(?::\d{2})?)?(?:\.(\d+)?)?$/);
-     if (match) {
-         var year = match[1] >= 0 && match[1] <= 69 ? +match[1] + 2000 : match[1];
-         return new Date(year, parseInt(match[2], 10) - 1, match[3],
-             match[4] || 0, match[5] || 0, match[6] || 0, match[7] || 0) / 1000;
-     }
+	var match = text.match(/^(\d{2,4})-(\d{2})-(\d{2})(?:\s(\d{1,2}):(\d{2})(?::\d{2})?)?(?:\.(\d+)?)?$/);
+	if (match) {
+		var year = match[1] >= 0 && match[1] <= 69 ? +match[1] + 2000 : match[1];
+		return new Date(year, parseInt(match[2], 10) - 1, match[3],
+			match[4] || 0, match[5] || 0, match[6] || 0, match[7] || 0) / 1000;
+	}
 
-     var date = now ? new Date(now * 1000) : new Date();
-     var days = {
-         'sun': 0,
-         'mon': 1,
-         'tue': 2,
-         'wed': 3,
-         'thu': 4,
-         'fri': 5,
-         'sat': 6
-     };
-     var ranges = {
-         'yea': 'FullYear',
-         'mon': 'Month',
-         'day': 'Date',
-         'hou': 'Hours',
-         'min': 'Minutes',
-         'sec': 'Seconds'
-     };
+	var date = now ? new Date(now * 1000) : new Date();
+	var days = {
+		'sun': 0,
+		'mon': 1,
+		'tue': 2,
+		'wed': 3,
+		'thu': 4,
+		'fri': 5,
+		'sat': 6
+	};
+	var ranges = {
+		'yea': 'FullYear',
+		'mon': 'Month',
+		'day': 'Date',
+		'hou': 'Hours',
+		'min': 'Minutes',
+		'sec': 'Seconds'
+	};
 
-     function lastNext(type, range, modifier) {
-         var day = days[range];
+	function lastNext(type, range, modifier) {
+		var day = days[range];
 
-         if (typeof(day) !== 'undefined') {
-             var diff = day - date.getDay();
+		if (typeof(day) !== 'undefined') {
+			var diff = day - date.getDay();
 
-             if (diff === 0)
-                 diff = 7 * modifier;
-             else if (diff > 0 && type === 'last')
-                 diff -= 7;
-             else if (diff < 0 && type === 'next')
-                 diff += 7;
+			if (diff === 0)
+				diff = 7 * modifier;
+			else if (diff > 0 && type === 'last')
+				diff -= 7;
+			else if (diff < 0 && type === 'next')
+				diff += 7;
 
-             date.setDate(date.getDate() + diff);
-         }
-     }
-     function process(val) {
-         var split = val.split(' ');
-         var type = split[0];
-         var range = split[1].substring(0, 3);
-         var typeIsNumber = /\d+/.test(type);
+			date.setDate(date.getDate() + diff);
+		}
+	}
+	function process(val) {
+		var split = val.split(' ');
+		var type = split[0];
+		var range = split[1].substring(0, 3);
+		var typeIsNumber = /\d+/.test(type);
 
-         var ago = split[2] === 'ago';
-         var num = (type === 'last' ? -1 : 1) * (ago ? -1 : 1);
+		var ago = split[2] === 'ago';
+		var num = (type === 'last' ? -1 : 1) * (ago ? -1 : 1);
 
-         if (typeIsNumber)
-             num *= parseInt(type, 10);
+		if (typeIsNumber)
+			num *= parseInt(type, 10);
 
-         if (ranges.hasOwnProperty(range))
-             return date['set' + ranges[range]](date['get' + ranges[range]]() + num);
-         else if (range === 'wee')
-             return date.setDate(date.getDate() + (num * 7));
+		if (ranges.hasOwnProperty(range))
+			return date['set' + ranges[range]](date['get' + ranges[range]]() + num);
+		else if (range === 'wee')
+			return date.setDate(date.getDate() + (num * 7));
 
-         if (type === 'next' || type === 'last')
-             lastNext(type, range, num);
-         else if (!typeIsNumber)
-             return false;
+		if (type === 'next' || type === 'last')
+			lastNext(type, range, num);
+		else if (!typeIsNumber)
+			return false;
 
-         return true;
-     }
+		return true;
+	}
 
-     var regex = '([+-]?\\d+\\s' +
-         '(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
-         '|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
-         '|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday)|(last|next)\\s' +
-         '(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
-         '|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
-         '|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday))(\\sago)?';
+	var regex = '([+-]?\\d+\\s' +
+		'(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
+		'|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
+		'|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday)|(last|next)\\s' +
+		'(years?|months?|weeks?|days?|hours?|min|minutes?|sec|seconds?' +
+		'|sun\\.?|sunday|mon\\.?|monday|tue\\.?|tuesday|wed\\.?|wednesday' +
+		'|thu\\.?|thursday|fri\\.?|friday|sat\\.?|saturday))(\\sago)?';
 
-     match = text.match(new RegExp(regex, 'gi'));
-     if (!match)
-         return false;
+	match = text.match(new RegExp(regex, 'gi'));
+	if (!match)
+		return false;
 
-     for (var i = 0, len = match.length; i < len; i++)
-         if (!process(match[i]))
-             return false;
+	for (var i = 0, len = match.length; i < len; i++)
+		if (!process(match[i]))
+			return false;
 
-     // ECMAScript 5 only
-     //if (!match.every(process))
-     //	return false;
+	// ECMAScript 5 only
+	//if (!match.every(process))
+	//	return false;
 
-     return (date.getTime() / 1000);
- }
+	return (date.getTime() / 1000);
+}

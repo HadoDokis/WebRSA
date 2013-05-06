@@ -421,51 +421,50 @@
 						)
 					);
 
-					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
+					if( $values['decisioncov'] == 'valide' ) {
+						list($datevalidation, $heure) = explode(' ', $passagecov58['Cov58']['datecommission']);
 
-						if( $values['decisioncov'] == 'valide' ) {
-							list($datevalidation, $heure) = explode(' ', $passagecov58['Cov58']['datecommission']);
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
-							$orientstruct = array(
-								'Orientstruct' => array(
+						$orientstruct = array(
+							'Orientstruct' => array(
+								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
+								'typeorient_id' => $values['typeorient_id'],
+								'structurereferente_id' => $values['structurereferente_id'],
+								'referent_id' => $values['referent_id'],
+								'date_propo' => date( 'Y-m-d', strtotime( $passagecov58['Propoorientsocialecov58']['created'] ) ),
+								'date_valid' => $datevalidation,
+								'rgorient' => $rgorient,
+								'statut_orient' => 'Orienté',
+								'etatorient' => 'decision',
+								'origine' => $origine,
+								'user_id' => $passagecov58['Propoorientsocialecov58']['user_id']
+							)
+						);
+
+						$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
+							$passagecov58['Dossiercov58']['personne_id'],
+							$values['referent_id'],
+							array(
+								'PersonneReferent' => array(
 									'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-									'typeorient_id' => $values['typeorient_id'],
-									'structurereferente_id' => $values['structurereferente_id'],
 									'referent_id' => $values['referent_id'],
-									'date_propo' => date( 'Y-m-d', strtotime( $passagecov58['Propoorientsocialecov58']['created'] ) ),
-									'date_valid' => $datevalidation,
-									'rgorient' => $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ),
-									'statut_orient' => 'Orienté',
-									'etatorient' => 'decision',
-									'origine' => 'manuelle',
-									'user_id' => $passagecov58['Propoorientsocialecov58']['user_id']
+									'dddesignation' => $datevalidation,
+									'structurereferente_id' => $values['structurereferente_id'],
+									'user_id' => $passagecov58[$this->alias]['user_id']
 								)
-							);
+							)
+						) && $success;
 
-							$success = $this->Dossiercov58->Personne->PersonneReferent->changeReferentParcours(
-								$passagecov58['Dossiercov58']['personne_id'],
-								$values['referent_id'],
-								array(
-									'PersonneReferent' => array(
-										'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
-										'referent_id' => $values['referent_id'],
-										'dddesignation' => $datevalidation,
-										'structurereferente_id' => $values['structurereferente_id'],
-										'user_id' => $passagecov58[$this->alias]['user_id']
-									)
-								)
-							) && $success;
-
-						}
-						// FIXME: que faire en cas de refus ?
 						$this->Dossiercov58->Personne->Orientstruct->create( $orientstruct );
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $passagecov58[$this->alias]['id'] )
-						) && $success;
+						);
 					}
 
 					// Modification etat du dossier passé dans la COV

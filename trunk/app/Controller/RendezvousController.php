@@ -69,6 +69,8 @@
 		public function ajaxreffonct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
 
+			$referent_id = trim( $referent_id, '_' );
+
 			if( !empty( $referent_id ) ) {
 				$referent_id = suffix( $referent_id );
 			}

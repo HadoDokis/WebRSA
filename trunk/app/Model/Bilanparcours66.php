@@ -638,6 +638,10 @@
 
 					if ( $data['Bilanparcours66']['changementrefsansep'] == 'O' ) {
 						list( $typeorient_id, $structurereferente_id ) = explode( '_', $data['Bilanparcours66']['nvstructurereferente_id'] );
+
+						$rgorient = $this->Orientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
+
 						// Sauvegarde de la nouvelle orientation
 						$orientstruct = array(
 							'Orientstruct' => array(
@@ -648,7 +652,9 @@
 								'date_propo' => date( 'Y-m-d' ),
 								'date_valid' => date( 'Y-m-d' ),
 								'statut_orient' => 'Orienté',
-								'user_id' => $data['Bilanparcours66']['user_id']
+								'user_id' => $data['Bilanparcours66']['user_id'],
+								'rgorient' => $rgorient,
+								'origine' => $origine,
 							)
 						);
 						$this->Orientstruct->create( $orientstruct );

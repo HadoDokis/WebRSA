@@ -29,7 +29,10 @@
 			'hidden' => array( 'Dossierep.id', 'Passagecommissionep.id' ),
 			'paginate' => Inflector::classify( $theme ),
 			'id' => $theme,
-			'labelcohorte' => 'Enregistrer',
+			'labelcohorte' => array(
+				'Enregistrer',
+				'Annuler' => array( 'name' => 'Cancel' ),
+			),
 			'cohortehidden' => array( 'Choose.theme' => array( 'value' => $theme ) ),
 			'trClass' => $trClass,
 		)

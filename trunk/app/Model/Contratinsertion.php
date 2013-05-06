@@ -1652,7 +1652,7 @@
 			);
 
 			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
-			
+
 			$user = $this->User->find(
 				'first',
 				array(
@@ -1954,6 +1954,25 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Retourne le rg_ci maximum pour un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @return integer
+		 */
+		public function rgCiMax( $personne_id ) {
+			return $this->find(
+				'count',
+				array(
+					'conditions' => array(
+						"{$this->alias}.decision_ci" => 'V',
+						"{$this->alias}.personne_id" => $personne_id
+					),
+					'contain' => false
+				)
+			);
 		}
 	}
 ?>

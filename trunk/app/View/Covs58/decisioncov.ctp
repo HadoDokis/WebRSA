@@ -12,7 +12,10 @@
 	<?php
 		echo $this->Form->create( null, array() );
 		foreach( array_keys( $dossiers ) as $theme ) {
-			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
+			$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );
+			$errorClass = ( !empty( $this->validationErrors[$modeleDecision] ) ? 'error' : '' );
+
+			echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
 			if( !empty( $dossiers[$theme]['liste'] ) ) {
 				require_once( 'decisioncov.'.Inflector::tableize( $theme ).'.ctp' );
 			}

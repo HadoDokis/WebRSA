@@ -273,6 +273,7 @@
 		 * @access protected
 		 */
 		public function generateDossierpcg( $commissionep_id, $dateseanceCommission, $etape ) {
+			$dateseanceCommission = preg_replace( '/^(.*) (.*)$/', '\1', $dateseanceCommission );
 
 			$dossierseps = $this->find(
 				'all',
@@ -453,7 +454,8 @@
 					array(
 						'conditions' => array(
 							'Dossierpcg66.decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
-						)
+						),
+						'recursive' => -1
 					)
 				);
 
@@ -493,7 +495,7 @@
 			$formData = array();
 			foreach( $datas as $key => $dossierep ) {
 				$formData['Decisiondefautinsertionep66'][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
-				
+
 				$formData['Decisiondefautinsertionep66'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
@@ -638,8 +640,14 @@
 								$referent_id = $bilanparcours66['Bilanparcours66']['referent_id'];
 							}
 						}
+						else {
+							$referent_id = $orientsstruct['Orientstruct']['referent_id'];
+						}
 
 						// En cas de demande de réorientation, l'EPL Audition va statuer et générer l'orientation
+						$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
+
 						$orientstruct = array(
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -650,7 +658,8 @@
 								'date_valid' => date( 'Y-m-d' ),
 								'statut_orient' => 'Orienté',
 								'user_id' => $user_id,
-								'origine' => 'cohorte'
+								'rgorient' => $rgorient,
+								'origine' => $origine
 							)
 						);
 						$this->Bilanparcours66->Orientstruct->create( $orientstruct );

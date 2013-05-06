@@ -19,6 +19,7 @@
 		public $helpers = array( 'Default', 'Default2', 'Csv', 'Type2' );
 
 		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
+
 		public $components = array( 'Gedooo.Gedooo' );
 
 		/**
@@ -355,6 +356,13 @@
 				$this->redirect( $this->referer() );
 			}
 
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				/*$this->Jetons2->release( Set::extract( '/Foyer/dossier_id', $this->request->data ) );
+				$this->Jetonsfonctions2->release( $cov58_id );*/
+				$this->redirect( array( 'controller' => 'commissionseps', 'action' => 'view', $commissionep_id, '#' => "dossiers,{$this->request->data['Choose']['theme']}" ) );
+			}
+
 			// Enregistrement des cases cochées / décochées
 			if( !empty( $this->request->data ) ) {
 				$ajouts = array();
@@ -391,7 +399,7 @@
 
 				if( $success ) {
 					$this->Dossierep->commit();
-					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#dossiers,'.$this->request->data['Choose']['theme'] ) );
+					$this->redirect( array( 'controller'=>'commissionseps', 'action'=>'view', $commissionep_id, '#' => 'dossiers,'.$this->request->data['Choose']['theme'] ) );
 				}
 				else {
 					$this->Dossierep->rollback();

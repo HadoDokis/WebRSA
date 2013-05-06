@@ -17,7 +17,7 @@
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::ordredujour' ),
 				array( 'controller' => 'covs58', 'action' => 'ordredujour', $cov58['Cov58']['id'] ),
-				$this->Permissions->check( 'covs58', 'ordredujour' )
+				array( 'enabled' => $this->Permissions->check( 'covs58', 'ordredujour' ) )
 			).' </li>';
 		}
 		else {
@@ -28,7 +28,7 @@
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::decisioncov' ),
 				array( 'controller' => 'covs58', 'action' => 'decisioncov', $cov58['Cov58']['id'] ),
-				$this->Permissions->check( 'covs58', 'decisioncov' )
+				array( 'enabled' => $this->Permissions->check( 'covs58', 'decisioncov' ) )
 			).' </li>';
 		}
 		else {
@@ -39,7 +39,7 @@
 			echo '<li>'.$this->Xhtml->link(
 				__d( 'cov58','Covs58::impressionpv' ),
 				array( 'controller' => 'covs58', 'action' => 'impressionpv', $cov58['Cov58']['id'] ),
-				$this->Permissions->check( 'covs58', 'impressionpv' )
+				array( 'enabled' => $this->Permissions->check( 'covs58', 'impressionpv' ) )
 			).' </li>';
 		}
 		else {
@@ -149,4 +149,7 @@
 
 <script type="text/javascript">
 	makeTabbed( 'dossierscovs', 3 );
+
+	observeOnclickUrlFragments( 'ul.ui-tabs-nav li.tab a', '#dossiers ul.actionMenu li a' );
+	observeOnloadUrlFragments( '#dossiers ul.actionMenu li a' );
 </script>

@@ -50,7 +50,7 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 			</tbody>
 		</table>";
 
-		$hiddenFields = 
+		$hiddenFields =
 						$this->Form->input( "Bilanparcours66.{$i}.parenttypeorient_id", array( 'type' => 'hidden', 'value' => $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['Typeorient']['parentid'] ) ).
 						$this->Form->input( "Bilanparcours66.{$i}.oldstructurereferente_id", array( 'type' => 'hidden', 'value' => $dossierep['Saisinebilanparcoursep66']['Bilanparcours66']['Orientstruct']['structurereferente_id'] ) ).
 						$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.id", array( 'type' => 'hidden' ) ).
@@ -108,7 +108,7 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,
-				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
+				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
 				array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 			),
 			array( 'class' => "odd {$multiple}" ),

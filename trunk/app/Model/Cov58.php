@@ -159,6 +159,11 @@
 				$model = Inflector::classify( $theme );
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
 
+				if( isset( $this->Passagecov58->{$modeleDecision}->validateFinalisation ) ) {
+					// TODO: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
+					$this->Passagecov58->{$modeleDecision}->validate = $this->Passagecov58->{$modeleDecision}->validateFinalisation;
+				}
+
 				if( isset( $data[$model] ) || isset( $data[$modeleDecision] ) && !empty( $data[$modeleDecision] ) ) {
 
 					// Mise à NULL de certains champs de décision
