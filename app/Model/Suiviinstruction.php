@@ -85,7 +85,7 @@
 		 */
 		public function sqDerniere($field) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false );
+			$table = $dbo->fullTableName( $this, false, false );
 			return "
 				SELECT {$table}.id
 					FROM {$table}

@@ -420,7 +420,7 @@
 			$dbo = $User->getDataSource( $User->useDbConfig );
 			$querydata['fields'] = Set::merge( $querydata['fields'], $User->fields() );
 			$querydata['joins'][] = array(
-				'table' => $dbo->fullTableName( $User ),
+				'table' => $dbo->fullTableName( $User, true, false ),
 				'alias' => $User->alias,
 				'type' => 'LEFT OUTER',
 				'conditions' => array(

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ApreComiteapre.
 	 *
@@ -129,7 +129,7 @@
 					'fields' => array( 'apres_comitesapres.id' ),
 					'joins' => array(
 						array(
-							'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+							'table' => $dbo->fullTableName( $this->Comiteapre, true, false ),
 							'alias' => 'comitesapres',
 							'type' => 'INNER',
 							'conditions' => array(

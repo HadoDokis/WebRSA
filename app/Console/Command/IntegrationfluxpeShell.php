@@ -329,7 +329,7 @@
 		protected function _initForeignKeysTo() {
 			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.Schema' );
 			$this->_foreignKeysToInformationpe = $this->Informationpe->foreignKeysTo();
-			$tableName = $this->Informationpe->Historiqueetatpe->getDatasource( $this->Informationpe->Historiqueetatpe->useDbConfig )->fullTableName( $this->Informationpe->Historiqueetatpe, false );
+			$tableName = $this->Informationpe->Historiqueetatpe->getDatasource( $this->Informationpe->Historiqueetatpe->useDbConfig )->fullTableName( $this->Informationpe->Historiqueetatpe, false, false );
 
 			foreach( $this->_foreignKeysToInformationpe as $i => $foreignKey ) {
 				if( $foreignKey['From']['table'] == $tableName ) {

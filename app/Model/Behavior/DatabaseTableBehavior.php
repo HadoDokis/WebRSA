@@ -39,7 +39,7 @@
 			}
 
 			$dbo = $model->getDataSource( $model->useDbConfig );
-			$fullTableName = $dbo->fullTableName( $model, true );
+			$fullTableName = $dbo->fullTableName( $model, true, false );
 
 			$defaults = array(
 				'fields' => null,
@@ -169,7 +169,7 @@
 			}
 
 			return array(
-				'table' => $dbo->fullTableName( $model->{$assoc} ),
+				'table' => $dbo->fullTableName( $model->{$assoc}, true, false ),
 				'alias' => $assoc,
 				'type' => isset($assocData['type']) ? $assocData['type'] : 'LEFT',
 				'conditions' => trim(

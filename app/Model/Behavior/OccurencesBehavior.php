@@ -33,7 +33,7 @@
 				if( !empty( $model->{$assocType} ) ) {
 					foreach( $model->{$assocType} as $alias => $assoc ) {
 						$joins[] = array(
-							'table'      => $dbo->fullTableName( $model->{$alias}, false ),
+							'table'      => $dbo->fullTableName( $model->{$alias}, false, false ),
 							'alias'      => $alias,
 							'type'       => 'LEFT OUTER',
 							'foreignKey' => false,
@@ -49,7 +49,7 @@
 			if( !empty( $model->hasAndBelongsToMany ) ) {
 				foreach( $model->hasAndBelongsToMany as $alias => $assoc ) {
 					$joins[] = array(
-						'table'      => $dbo->fullTableName( $model->{$assoc['with']}, false ),
+						'table'      => $dbo->fullTableName( $model->{$assoc['with']}, false, false ),
 						'alias'      => $assoc['with'],
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
@@ -102,7 +102,7 @@
 				if( !empty( $model->{$assocType} ) ) {
 					foreach( $model->{$assocType} as $alias => $assoc ) {
 						if( !in_array( $alias, $blacklist ) ) {
-							$table = $dbo->fullTableName( $model->{$alias}, false );
+							$table = $dbo->fullTableName( $model->{$alias}, false, false );
 							$exists[] = "EXISTS( SELECT {$table}.{$assoc['foreignKey']} FROM {$table} WHERE {$table}.{$assoc['foreignKey']} = {$sq}{$model->alias}{$eq}.{$sq}{$model->primaryKey}{$eq} )";
 						}
 					}
@@ -113,7 +113,7 @@
 			if( !empty( $model->hasAndBelongsToMany ) ) {
 				foreach( $model->hasAndBelongsToMany as $alias => $assoc ) {
 					if( !in_array( $alias, $blacklist ) ) {
-						$table = $dbo->fullTableName( $model->{$assoc['with']}, false );
+						$table = $dbo->fullTableName( $model->{$assoc['with']}, false, false );
 						$exists[] = "EXISTS( SELECT {$table}.{$assoc['foreignKey']} FROM {$table} WHERE {$table}.{$assoc['foreignKey']} = {$sq}{$model->alias}{$eq}.{$sq}{$model->primaryKey}{$eq} )";
 					}
 				}
