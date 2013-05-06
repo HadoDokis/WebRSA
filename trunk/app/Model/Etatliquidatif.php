@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Etatliquidatif.
 	 *
@@ -806,7 +806,7 @@
 								'alias' => 'apres_comitesapres',
 								'joins' => array(
 									array(
-										'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true ),
+										'table' => $dbo->fullTableName( $this->Apre->ApreComiteapre->Comiteapre, true, false ),
 										'alias' => 'comitesapres',
 										'type' => 'INNER',
 										'conditions' => array(
@@ -988,7 +988,7 @@
 						$models = array( 'Formqualif', 'Formpermfimo', 'Permisb', 'Actprof' );
 					}
 					foreach( $models as $aideModel ) {
-						$tableName = $dbo->fullTableName( $this->Apre->{$aideModel}, false );
+						$tableName = $dbo->fullTableName( $this->Apre->{$aideModel}, false, false );
 						$case .= "WHEN EXISTS( SELECT * FROM {$tableName} AS \"{$aideModel}\" WHERE \"Apre\".\"id\" = \"{$aideModel}\".\"apre_id\" ) THEN \"{$aideModel}\".\"{$field}\" ";
 					}
 					$case .= 'ELSE NULL END';
@@ -1003,7 +1003,7 @@
 				// Tiersprestataireapre
 				$TiersprestataireapreModel = ClassRegistry::init( 'Tiersprestataireapre' );
 				$join = array(
-					'table' => $dbo->fullTableName( $TiersprestataireapreModel, true ),
+					'table' => $dbo->fullTableName( $TiersprestataireapreModel, true, false ),
 					'alias' => 'Tiersprestataireapre',
 					'type' => 'LEFT',
 					'conditions' => array()
@@ -1023,7 +1023,7 @@
 				$PaiementfoyerModel = ClassRegistry::init( 'Paiementfoyer' );
 				$sqPaiementfoyerIdPourAllocataire = $PaiementfoyerModel->sqPaiementfoyerIdPourAllocataire( 'Personne.id' );
 				$querydata['joins'][] = array(
-					'table'      => $dbo->fullTableName( $PaiementfoyerModel, true ),
+					'table'      => $dbo->fullTableName( $PaiementfoyerModel, true, false ),
 					'alias'      => 'Paiementfoyer',
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
@@ -1040,7 +1040,7 @@
 				// Données concernant les coordonées bancaires du tiers
 				$DomiciliationbancaireModel = ClassRegistry::init( 'Domiciliationbancaire' );
 				$querydata['joins'][] = array(
-					'table'      => $dbo->fullTableName( $DomiciliationbancaireModel, true ),
+					'table'      => $dbo->fullTableName( $DomiciliationbancaireModel, true, false ),
 					'alias'      => 'Domiciliationbancaire',
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,
@@ -1067,7 +1067,7 @@
 				// Suivi
 				$SuiviaideapretypeaideModel = ClassRegistry::init( 'Suiviaideapretypeaide' );
 				$querydata['joins'][] = array(
-					'table'      => $dbo->fullTableName( $SuiviaideapretypeaideModel, true ),
+					'table'      => $dbo->fullTableName( $SuiviaideapretypeaideModel, true, false ),
 					'alias'      => 'Suiviaideapretypeaide',
 					'type'       => 'LEFT OUTER',
 					'foreignKey' => false,

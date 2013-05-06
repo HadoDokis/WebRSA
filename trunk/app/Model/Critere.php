@@ -213,7 +213,7 @@
 					$conditions['Historiqueetatpe.etat <>'] = 'inscription';
 				}
 			}
-			
+
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );
@@ -273,7 +273,7 @@
 				'recursive' => -1,
 				'joins' => array(
 					array(
-						'table'      => $dbo->fullTableName( ClassRegistry::init( 'Personne' ), false ), /// FIXME: performances -> à faire pour les autres ou pas ?
+						'table'      => $dbo->fullTableName( ClassRegistry::init( 'Personne' ), false, false ), /// FIXME: performances -> à faire pour les autres ou pas ?
 						'alias'      => 'Personne',
 						'type'       => 'INNER',
 						'foreignKey' => false,

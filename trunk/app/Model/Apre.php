@@ -350,7 +350,7 @@
 
 			$case = "CASE \n";
 			foreach( array_keys( $natureAidesApres ) as $aideModel ) {
-				$tableName = $dbo->fullTableName( $this->{$aideModel}, false );
+				$tableName = $dbo->fullTableName( $this->{$aideModel}, false, false );
 				$case .= "WHEN EXISTS( SELECT * FROM {$tableName} AS \"{$aideModel}\" WHERE \"Apre\".\"id\" = \"{$aideModel}\".\"apre_id\" ) THEN '{$aideModel}'\n";
 			}
 			$case .= 'ELSE NULL END';
@@ -789,7 +789,7 @@
 								'fields' => array( 'apres_comitesapres.apre_id' ),
 								'joins' => array(
 									array(
-										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'table' => $dbo->fullTableName( $this->Comiteapre, true, false ),
 										'alias' => 'comitesapres',
 										'type' => 'INNER',
 										'conditions' => array(
@@ -855,7 +855,7 @@
 								'fields' => array( 'apres_comitesapres.apre_id' ),
 								'joins' => array(
 									array(
-										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'table' => $dbo->fullTableName( $this->Comiteapre, true, false ),
 										'alias' => 'comitesapres',
 										'type' => 'INNER',
 										'conditions' => array(
@@ -885,7 +885,7 @@
 								'fields' => array( 'apres_comitesapres.apre_id' ),
 								'joins' => array(
 									array(
-										'table' => $dbo->fullTableName( $this->Comiteapre, true ),
+										'table' => $dbo->fullTableName( $this->Comiteapre, true, false ),
 										'alias' => 'comitesapres',
 										'type' => 'INNER',
 										'conditions' => array(

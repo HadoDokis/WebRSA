@@ -137,7 +137,7 @@
 		 */
 		public function sqDerniere( $field, $cloture = null ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false );
+			$table = $dbo->fullTableName( $this, false, false );
 			$conditionCloture = null;
 			if( !is_null( $cloture ) ) {
 				if( $cloture ) {

@@ -81,7 +81,7 @@
 						WHERE
 							istc.table_catalog = '{$ds->config['database']}'
 							AND istc.table_schema = '{$ds->config['schema']}'
-							AND istc.table_name = '".$ds->fullTableName( $model, false )."'
+							AND istc.table_name = '".$ds->fullTableName( $model, false, false )."'
 							AND istc.constraint_type = 'CHECK'
 							AND istc.constraint_name = '{$constraintName}';";
 			$checks = $model->query( $sql );
@@ -109,7 +109,7 @@
 						pc.conrelid = (
 							SELECT oid FROM pg_catalog.pg_class
 								WHERE
-									relname='".$ds->fullTableName( $model, false )."'
+									relname='".$ds->fullTableName( $model, false, false )."'
 									AND relnamespace = (
 										SELECT oid
 											FROM pg_catalog.pg_namespace
@@ -118,23 +118,6 @@
 						)
 						AND pc.contype = 'c'
 					ORDER BY 1";
-
-			/*$sql = "SELECT
-						istc.constraint_name AS \"Check__name\",
-						iscc.check_clause AS \"Check__clause\"
-					FROM information_schema.check_constraints AS iscc
-						INNER JOIN information_schema.table_constraints AS istc ON (
-							istc.constraint_name = iscc.constraint_name
-						)
-					WHERE
-						istc.table_catalog = '{$ds->config['database']}'
-						AND istc.table_schema = '{$ds->config['schema']}'
-						AND istc.table_name = '".$ds->fullTableName( $model, false )."'
-						AND istc.constraint_type = 'CHECK'
-						AND (
-							istc.constraint_name NOT LIKE '%_not_null'
-							AND iscc.check_clause NOT LIKE '% IS NOT NULL'
-						);";*/
 
 			return $model->query( $sql );
 		}
@@ -160,7 +143,7 @@
 				$conditionsTables = "AND ( {$otherCu}.table_name IN ( '".implode( "', '", $acceptedTables )."' ) ) AND {$cu}.table_name IN ( '".implode( "', '", $acceptedTables )."' )";
 			}
 
-			$table = $ds->fullTableName( $model, false );
+			$table = $ds->fullTableName( $model, false, false );
 
 			$sql = "SELECT
 						tc.constraint_name AS \"Foreignkey__name\",

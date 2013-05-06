@@ -70,7 +70,7 @@
 				'order' => null,
 				'group' => null,
 				'limit' => null,
-				'table' => $dbo->fullTableName( $model, true ),
+				'table' => $dbo->fullTableName( $model, true, false ),
 				'alias' => $model->alias,
 				'conditions' => array(),
 			);
@@ -95,7 +95,7 @@
 					}
 				}
 
-				$join['table'] = $dbo->fullTableName( $join['table'], true );
+				$join['table'] = $dbo->fullTableName( $join['table'], true, false );
 				$queryData['joins'][$key] = $join;
 			}*/
 

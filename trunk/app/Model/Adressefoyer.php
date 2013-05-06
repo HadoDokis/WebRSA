@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Adressefoyer.
 	 *
@@ -80,7 +80,7 @@
 
 		public function sqDerniereRgadr01($field) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false );
+			$table = $dbo->fullTableName( $this, false, false );
 			return "
 				SELECT {$table}.id
 					FROM {$table}

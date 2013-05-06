@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Canton.
 	 *
@@ -200,7 +200,7 @@
 		 */
 		public function joinAdresse( $adresseAlias = 'Adresse', $type = 'LEFT OUTER' ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
-			$fullTableName = $dbo->fullTableName( $this, true );
+			$fullTableName = $dbo->fullTableName( $this, true, false );
 
 			$conditions = array();
 
@@ -286,7 +286,7 @@
 					'limit' => 1
 				)
 			);
-			
+
 			$conditions[] = "Canton.id IN ( {$sq} )";
 
 			return array(
@@ -313,7 +313,7 @@
 
 			return $return;
 		}
-		
+
 		/**
 		*	Recherche des partenaires dans le paramétrage de l'application
 		*
