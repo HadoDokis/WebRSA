@@ -35,7 +35,9 @@
 		 * @var array
 		 */
 		public $actsAs = array(
-			'Formattable',
+			'Formattable' => array(
+				'amount' => array( 'nbduree' )
+			),
 			'Pgsqlcake.PgsqlAutovalidate',
 		);
 
@@ -73,6 +75,19 @@
 				'counterCache' => null
 			)
 		);
-		
+
+		/**
+		 * Règles de validation non déduites.
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'nbduree' => array(
+				'inclusiveRange' => array(
+					'rule' => array( 'inclusiveRange', 0, 1000 ),
+					'message' => 'Veuillez entrer une valeur comprise entre 0 et 1000',
+				)
+			)
+		);
 	}
 ?>

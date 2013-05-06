@@ -337,7 +337,7 @@
 									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
-									$this->Xform->input( "Expprocer93.{$index}.nbduree", array( 'type' => 'text', 'label' => false, 'maxlength' => 2 ) ),
+									$this->Xform->input( "Expprocer93.{$index}.nbduree", array( 'type' => 'text', 'label' => false ) ),
 									$this->Xform->input( "Expprocer93.{$index}.typeduree", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true, 'domain' => 'cer93' ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
 								)
