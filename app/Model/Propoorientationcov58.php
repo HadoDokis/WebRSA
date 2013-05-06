@@ -519,6 +519,8 @@
 					);
 
 					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ){
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						if( $values['decisioncov'] == 'valide' ){
 							$data[$modelDecisionName][$key]['typeorient_id'] = $passagecov58[$this->alias]['typeorient_id'];
@@ -535,10 +537,10 @@
 									'referent_id' => $passagecov58[$this->alias]['referent_id'],
 									'date_propo' => $passagecov58['Propoorientationcov58']['datedemande'],
 									'date_valid' => $datevalidation,
-									'rgorient' => $passagecov58['Propoorientationcov58']['rgorient'],
+									'rgorient' => $rgorient,
 									'statut_orient' => 'Orienté',
 									'etatorient' => 'decision',
-									'origine' => 'manuelle',
+									'origine' => $origine,
 									'user_id' => $passagecov58['Propoorientationcov58']['user_id'],
 								)
 							);
@@ -562,7 +564,7 @@
 							if( strstr( $values['referent_id'],  '_' ) !== false ) {
 								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
 							}
-							list($typeorient_id, $structurereferente_id) = explode('_', $values['structurereferente_id']);
+							@list($typeorient_id, $structurereferente_id) = @explode('_', $values['structurereferente_id']);
 							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
 							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
 							$data[$modelDecisionName][$key]['referent_id'] = $referent_id;
@@ -578,10 +580,10 @@
 									'referent_id' => $data[$modelDecisionName][$key]['referent_id'],
 									'date_propo' => $passagecov58['Propoorientationcov58']['datedemande'],
 									'date_valid' => $datevalidation,
-									'rgorient' => $passagecov58['Propoorientationcov58']['rgorient'],
+									'rgorient' => $rgorient,
 									'statut_orient' => 'Orienté',
 									'etatorient' => 'decision',
-									'origine' => 'manuelle',
+									'origine' => $origine,
 									'user_id' => $passagecov58['Propoorientationcov58']['user_id']
 								)
 							);
@@ -605,10 +607,10 @@
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
-						) && $success;
+						);
 					}
 
 
@@ -633,7 +635,7 @@
 					}
 				}
 
-				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) );
+				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) ) && $success;
 			}
 
 			return $success;

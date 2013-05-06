@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpropononorientationprocov58.
 	 *
@@ -87,10 +87,9 @@
 		// FIXME: dans ce cas, il faudra permettre au champ decision de prendre la valeur NULL
 
 		/**
-		* Les règles de validation qui seront utilisées lors de la validation
-		* en COV des décisions de la thématique
-		*/
-
+		 * Les règles de validation qui seront utilisées lors de la validation
+		 * en COV des décisions de la thématique
+		 */
 		public $validateFinalisation = array(
 			'decisioncov' => array(
 				array(
@@ -99,13 +98,13 @@
 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'accepte' ) ),
+					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'refuse' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'accepte' ) ),
+					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'refuse' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),

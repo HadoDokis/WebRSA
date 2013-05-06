@@ -52,4 +52,11 @@
 
 <script type="text/javascript">
 	makeTabbed( 'tabbedWrapper', 3 );
+
+	// Permet de rester sur le bon onglet lorsqu'on trie sur une colonne
+	$$( '#dossierscovs > div' ).each( function(tab) {
+		$(tab).getElementsBySelector( 'table thead a' ).each( function(link) {
+			$(link).writeAttribute( 'href', $(link).readAttribute( 'href' ) + '#' + $(tab).readAttribute( 'id' ) );
+		} );
+	} );
 </script>

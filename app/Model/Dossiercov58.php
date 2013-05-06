@@ -136,23 +136,20 @@
 			$nbDossierscov = $this->find(
 				'count',
 				array(
-// 					'conditions' => array(
-// 						'Dossiercov58.personne_id' => $personne_id,
-// 						'Cov58.etatcov' => array( 'cree', 'associe' )
-// 					),
 					'conditions' => array(
 						'Dossiercov58.personne_id' => $personne_id,
 						'OR' => array(
 							'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
 							'Passagecov58.etatdossiercov IS NULL'
-						)
+						),
+						"Passagecov58.id IN ( {$this->Passagecov58->sqDernier()} )"
 					),
 					'joins' => array(
 						$this->join( 'Passagecov58' )
 					)
 				)
 			);
-// debug($nbDossierscov);
+
 			$nbPersonnes = $this->Personne->find(
 				'count',
 				array(

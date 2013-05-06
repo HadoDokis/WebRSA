@@ -278,6 +278,8 @@
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
 				if( $dossierep['Decisionreorientationep93']['decision'] == 'accepte' ) {
+					$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+					$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
 
 					// Nouvelle orientation
 					$orientstruct = array(
@@ -289,7 +291,8 @@
 							'date_valid' => date( 'Y-m-d' ),
 							'statut_orient' => 'Orienté',
 							'user_id' => $dossierep['Reorientationep93']['user_id'], // L'utilisateur à l'origine de la demande de réorientation devient l'utilisateur de la nouvelle orientsstruct
-							'origine' => 'reorientation' //FIXME: bug #6327 arnaud
+							'rgorient' => $rgorient,
+							'origine' => $origine,
 						)
 					);
 
@@ -309,10 +312,10 @@
 					$success = $this->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAllUnBound(
+					$success = $success && $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-					) && $success;
+					);
 
 					// Recherche dernier CER
 					$dernierCerId = $this->Orientstruct->Personne->Contratinsertion->find(

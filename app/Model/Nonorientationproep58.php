@@ -132,6 +132,10 @@
 					elseif ( in_array( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep58'][0]['decision'], array( 'reorientation', 'maintienref' ) ) ) {
 						list($date_propo, $heure_propo) = explode( ' ', $dossierep['Nonorientationproep58']['created'] );
 						list($date_valid, $heure_valid) = explode( ' ', $commissionep['Commissionep']['dateseance'] );
+
+						$rgorient = $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
+
 						$orientstruct = array(
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -141,19 +145,21 @@
 								'date_propo' => $date_propo,
 								'date_valid' => $date_valid,
 								'statut_orient' => 'Orienté',
-								'rgorient' => $this->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1,
+								'rgorient' => $rgorient,
+								'origine' => $origine,
 								'etatorient' => 'decision',
 								'user_id' => $dossierep['Nonorientationproep58']['user_id']
 							)
 						);
+
 						$this->Orientstruct->create( $orientstruct );
 						$success = $this->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-						) && $success;
+						);
 
 						$success = $this->Orientstruct->Personne->PersonneReferent->changeReferentParcours(
 							$dossierep['Dossierep']['personne_id'],

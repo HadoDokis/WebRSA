@@ -424,6 +424,8 @@
 						)
 					);
 
+					$rg_ci = $this->Dossiercov58->Personne->Contratinsertion->rgCiMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+					$num_contrat = ( $rg_ci == 1 ? 'PRE' : 'REN' );
 
 					if( $values['decisioncov'] == 'valide' ){
 						$contratinsertion = array(
@@ -431,13 +433,13 @@
 								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
 								'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
 								'referent_id' => $passagecov58[$this->alias]['referent_id'],
-								'num_contrat' => $passagecov58[$this->alias]['num_contrat'],
+								'num_contrat' => $num_contrat,
 								'dd_ci' => $values['dd_ci'],
 								'duree_engag' => $values['duree_engag'],
 								'df_ci' => $values['df_ci'],
 								'forme_ci' => $passagecov58[$this->alias]['forme_ci'],
 								'avisraison_ci' => $passagecov58[$this->alias]['avisraison_ci'],
-								'rg_ci' => $passagecov58[$this->alias]['rg_ci'],
+								'rg_ci' => $rg_ci,
 								'observ_ci' => $values['commentaire'],
 								'date_saisi_ci' => $passagecov58[$this->alias]['datedemande'],
 								'datevalidation_ci' => $values['datevalidation'],
@@ -450,24 +452,24 @@
 						$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Dossiercov58->Personne->Contratinsertion->id ),
 							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
-						) && $success;
+						);
 					}
-					else if( $values['decisioncov'] == 'refuse' ){
+					else if( $values['decisioncov'] == 'refuse' ) {
 						$contratinsertion = array(
 							'Contratinsertion' => array(
 								'personne_id' => $passagecov58['Dossiercov58']['personne_id'],
 								'structurereferente_id' => $passagecov58[$this->alias]['structurereferente_id'],
 								'referent_id' => $passagecov58[$this->alias]['referent_id'],
-								'num_contrat' => $passagecov58[$this->alias]['num_contrat'],
+								'num_contrat' => null,
 								'dd_ci' => $passagecov58[$this->alias]['dd_ci'],
 								'duree_engag' => $passagecov58[$this->alias]['duree_engag'],
 								'df_ci' => $passagecov58[$this->alias]['df_ci'],
 								'forme_ci' => $passagecov58[$this->alias]['forme_ci'],
 								'avisraison_ci' => $passagecov58[$this->alias]['avisraison_ci'],
-								'rg_ci' => $passagecov58[$this->alias]['rg_ci'],
+								'rg_ci' => null,
 								'observ_ci' => $values['commentaire'],
 								'date_saisi_ci' => $passagecov58[$this->alias]['datedemande'],
 								'datevalidation_ci' => $values['datevalidation'],
@@ -480,10 +482,10 @@
 						$success = $this->Dossiercov58->Personne->Contratinsertion->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvcontratinsertion_id\"" => $this->Dossiercov58->Personne->Contratinsertion->id ),
 							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
-						) && $success;
+						);
 					}
 
 					// Modification etat du dossier passé dans la COV
@@ -506,9 +508,8 @@
 						);
 					}
 				}
-// debug($contratinsertion);
-				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) );
 
+				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) ) && $success;
 			}
 
 			return $success;
@@ -724,6 +725,8 @@
 		 * @return array
 		 */
 		public function qdEnCours( $personne_id ) {
+			$sqDernierPassagecov58 = $this->Dossiercov58->Passagecov58->sqDernier();
+
 			$querydata = array(
 				'fields' => array(
 					'Propocontratinsertioncov58.id',
@@ -746,7 +749,13 @@
 					'OR' => array(
 						'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
 						'Passagecov58.etatdossiercov IS NULL'
-					)
+					),
+					array(
+						'OR' => array(
+							"Passagecov58.id IN ( {$sqDernierPassagecov58} )",
+							'Passagecov58.etatdossiercov IS NULL'
+						),
+					),
 				),
 				'joins' => array(
 					$this->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),

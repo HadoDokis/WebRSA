@@ -386,18 +386,16 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
 		public function saveDecisions( $data ) {
 			$modelDecisionName = 'Decision'.Inflector::underscore( $this->alias );
 
 			$success = true;
 			if ( isset( $data[$modelDecisionName] ) && !empty( $data[$modelDecisionName] ) ) {
-
-
 				foreach( $data[$modelDecisionName] as $key => $values ) {
-
 					$passagecov58 = $this->Dossiercov58->Passagecov58->find(
 						'first',
 						array(
@@ -419,6 +417,8 @@
 					);
 
 					if( in_array( $values['decisioncov'], array( 'valide', 'refuse' ) ) ) {
+						$rgorient = $this->Dossiercov58->Personne->Orientstruct->rgorientMax( $passagecov58['Dossiercov58']['personne_id'] ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
 
 						if( $values['decisioncov'] == 'valide' ){
 							$data[$modelDecisionName][$key]['typeorient_id'] = $passagecov58[$this->alias]['typeorient_id'];
@@ -439,10 +439,10 @@
 									'referent_id' => $passagecov58[$this->alias]['referent_id'],
 									'date_propo' => $passagecov58[$this->alias]['datedemande'],
 									'date_valid' => $datevalidation,
-									'rgorient' => $passagecov58[$this->alias]['rgorient'],
+									'rgorient' => $rgorient,
 									'statut_orient' => 'Orienté',
 									'etatorient' => 'decision',
-									'origine' => 'manuelle',
+									'origine' => $origine,
 									'user_id' => ( isset( $passagecov58[$this->alias]['user_id'] ) ) ? $passagecov58[$this->alias]['user_id'] : null
 								)
 							);
@@ -489,7 +489,7 @@
 							if( strstr( $values['referent_id'],  '_' ) !== false ) {
 								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
 							}
-							list($typeorient_id, $structurereferente_id) = explode('_', $values['structurereferente_id']);
+							@list($typeorient_id, $structurereferente_id) = @explode('_', $values['structurereferente_id']);
 							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
 							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
 							$data[$modelDecisionName][$key]['referent_id'] = $referent_id;
@@ -509,10 +509,10 @@
 									'referent_id' => $data[$modelDecisionName][$key]['referent_id'],
 									'date_propo' => $passagecov58['Propononorientationprocov58']['datedemande'],
 									'date_valid' => $datevalidation,
-									'rgorient' => $passagecov58['Propononorientationprocov58']['rgorient'],
+									'rgorient' => $rgorient,
 									'statut_orient' => 'Orienté',
 									'etatorient' => 'decision',
-									'origine' => 'manuelle',
+									'origine' => $origine,
 									'user_id' => ( isset( $passagecov58['Propononorientationprocov58']['user_id'] ) ) ? $passagecov58['Propononorientationprocov58']['user_id'] : null
 								)
 							);
@@ -536,10 +536,10 @@
 						$success = $this->Dossiercov58->Personne->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id du nouveau CER
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Dossiercov58->Personne->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $data[$this->alias][$key] )
-						) && $success;
+						);
 					}
 					else{
 						//Sauvegarde des décisions
@@ -569,6 +569,8 @@
 					}
 				}// Fin du foreach
 			}
+
+			$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false, 'validate' => 'only' ) ) && $success;
 
 			return $success;
 		}

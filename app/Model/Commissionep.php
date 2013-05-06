@@ -377,7 +377,7 @@
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$modeleDecision = Inflector::classify( "decision{$themeTraite}" );
 				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) ) {
-					// FIXME: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
+					// TODO: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
 					$this->Passagecommissionep->{$modeleDecision}->validate = $this->Passagecommissionep->{$modeleDecision}->validateFinalisation;
 				}
 			}

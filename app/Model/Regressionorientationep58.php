@@ -257,7 +257,7 @@
 			foreach( $datas as $key => $dossierep ) {
 // debug( $dossierep );
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['passagecommissionep_id'] = @$datas[$key]['Passagecommissionep'][0]['id'];
-				
+
 				$formData['Decision'.Inflector::underscore( $this->alias )][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
@@ -732,6 +732,9 @@
 			$this->Structurereferente->Orientstruct->Behaviors->detach( 'StorablePdf' );
 			foreach( $dossierseps as $dossierep ) {
 				if ( in_array( $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['decision'], array( 'accepte', 'refuse' ) ) ) {
+					$rgorient = $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
+					$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
+
 					$orientstruct = array(
 						'Orientstruct' => array(
 							'personne_id' => $dossierep['Dossierep']['personne_id'],
@@ -742,7 +745,8 @@
 							'statut_orient' => 'Orienté',
 							'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionregressionorientationep58'][0]['referent_id'],
 							'etatorient' => 'decision',
-							'rgorient' => $this->Structurereferente->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ),
+							'rgorient' => $rgorient,
+							'origine' => $origine,
 							'user_id' => $dossierep['Regressionorientationep58']['user_id']
 						)
 					);
@@ -750,10 +754,10 @@
 					$success = $this->Structurereferente->Orientstruct->save() && $success;
 
 					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $this->updateAllUnBound(
+					$success = $success && $this->updateAllUnBound(
 						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Structurereferente->Orientstruct->id ),
 						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-					) && $success;
+					);
 
 					$success = $this->Structurereferente->Orientstruct->Personne->PersonneReferent->changeReferentParcours(
 						$dossierep['Dossierep']['personne_id'],
