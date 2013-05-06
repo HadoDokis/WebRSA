@@ -217,6 +217,9 @@ msgstr "À la fin de mon contrat"
 msgid "ENUM::POINTPARCOURS::aladate"
 msgstr "À la date du"
 
+msgid "ENUM::POINTPARCOURS::encours"
+msgstr "En cours de parcours"
+
 msgid "Cer93.pourlecomptede"
 msgstr "Pour le compte de"
 
