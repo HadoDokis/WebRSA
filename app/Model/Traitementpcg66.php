@@ -736,6 +736,7 @@
 						'Personne.nom',
 						'Personne.prenom',
 						'Dossierpcg66.user_id',
+						'Dossierpcg66.orgpayeur',
 						'Personne.dtnai',
 						'Personne.nir',
 					),
