@@ -215,13 +215,9 @@
 		 */
 		public function conditionsDetailcalculdroitrsa( Model $model, $conditions, $search ) {
 			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
-				if( is_array( $search['Detailcalculdroitrsa']['natpf'] ) ) {
-					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf IN ( \''.implode( '\', \'', $search['Detailcalculdroitrsa']['natpf'] ).'\' )';
-				}
-				else {
-					$conditionsNatpf = 'detailscalculsdroitsrsa.natpf = \''.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'], array( 'encode' => false ) ).'\'';
-				}
-				$conditions[] = 'Detaildroitrsa.id IN (
+				if( !is_array( $search['Detailcalculdroitrsa']['natpf'] ) ) {
+					if( strstr( $search['Detailcalculdroitrsa']['natpf'], ',' ) === false ) {
+						$condition = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
 										FROM detailscalculsdroitsrsa
 											INNER JOIN detailsdroitsrsa ON (
@@ -229,8 +225,65 @@
 											)
 										WHERE
 											detailsdroitsrsa.dossier_id = Dossier.id
-											AND '.$conditionsNatpf.'
+											AND detailscalculsdroitsrsa.natpf = \''.Sanitize::clean( $search['Detailcalculdroitrsa']['natpf'], array( 'encode' => false ) ).'\'
 								)';
+
+						$conditions[] = $condition;
+					}
+					else {
+						$natspfs = explode( ',', $search['Detailcalculdroitrsa']['natpf'] );
+						foreach( $natspfs as $natpf ) {
+							$conditions = $this->conditionsDetailcalculdroitrsa(
+								$model,
+								$conditions,
+								array(
+									'Detailcalculdroitrsa' => array(
+										'natpf' => $natpf
+									)
+								)
+							);
+						}
+					}
+				}
+				else {
+					$multipleEnd = false;
+					foreach( $search['Detailcalculdroitrsa']['natpf'] as $natpf ) {
+						if( strstr( $natpf, ',' ) !== false ) {
+							$multipleEnd = true;
+						}
+					}
+
+					if( !$multipleEnd ) {
+						$condition = 'Detaildroitrsa.id IN (
+									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
+										FROM detailscalculsdroitsrsa
+											INNER JOIN detailsdroitsrsa ON (
+												detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id
+											)
+										WHERE
+											detailsdroitsrsa.dossier_id = Dossier.id
+											AND detailscalculsdroitsrsa.natpf IN ( \''.implode( '\', \'', $search['Detailcalculdroitrsa']['natpf'] ).'\' )
+								)';
+						$conditions[] = $condition;
+					}
+					else {
+						$conditionsMultiples = array();
+
+						foreach( $search['Detailcalculdroitrsa']['natpf'] as $natpf ) {
+							$conditionsMultiples[] = $this->conditionsDetailcalculdroitrsa(
+								$model,
+								array(),
+								array(
+									'Detailcalculdroitrsa' => array(
+										'natpf' => $natpf
+									)
+								)
+							);
+						}
+
+						$conditions[] = array( 'OR' => $conditionsMultiples );
+					}
+				}
 			}
 
 			return $conditions;
