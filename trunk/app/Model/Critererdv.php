@@ -85,8 +85,8 @@
 			}
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
-			
-			
+
+
 			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
 			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
@@ -117,6 +117,7 @@
 					'Adresse.codepos',
 					'Adresse.locaadr',
 					'Adresse.numcomptt',
+					'Personne.qual',
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.nir',
@@ -131,7 +132,8 @@
 					'Structurereferente.nom_voie',
 					'Structurereferente.code_postal',
 					'Structurereferente.ville',
-					'Prestation.rolepers'
+					'Prestation.rolepers',
+					'Situationdossierrsa.etatdosrsa',
 				),
 				'recursive' => -1,
 				'joins' => array(

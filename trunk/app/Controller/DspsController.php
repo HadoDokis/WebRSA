@@ -19,7 +19,7 @@
 
 		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
 
-		public $uses = array( 'Dsp', 'DspRev' );
+		public $uses = array( 'Dsp', 'DspRev', 'Option' );
 
 		public $components = array(
 			'Jetons2',
@@ -1015,6 +1015,9 @@
 			unset( $querydata['limit'] );
 
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
+
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'qual', $this->Option->qual() );
 
 			$this->layout = '';
 			$this->set( compact( 'dsps' ) );

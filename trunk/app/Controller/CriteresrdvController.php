@@ -47,9 +47,9 @@
 		protected function _setOptions() {
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
 // 			$this->set( 'struct', $this->Rendezvous->Structurereferente->listOptions() );
-			
+
 			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
-			
+
 			$typerdv = $this->Rendezvous->Typerdv->find( 'list', array( 'fields' => array( 'id', 'libelle' ) ) );
 			$this->set( 'typerdv', $typerdv );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->find( 'list' ) );
@@ -58,6 +58,7 @@
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'qual', $this->Option->qual() );
 		}
 
 		/**
@@ -75,7 +76,7 @@
 					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
 				}
 			}
-			
+
 			if( !empty( $this->request->data ) ) {
 				$querydata = $this->Critererdv->search(
 					(array)$this->Session->read( 'Auth.Zonegeographique' ),
