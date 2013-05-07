@@ -211,6 +211,7 @@
 						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
 					),
 					$this->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$this->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					array(
 						'table'      => 'referents',
 						'alias'      => 'Referent',

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Option.
 	 *
@@ -1012,7 +1012,10 @@
 				'RCB' => 'RSA Activité Local (Financement sur fonds Conseil général)',
 				//ajout suite à l'arrivée du RSAJeune
 				'RSJ' => 'RSA socle Jeune (Financement sur fonds Etat)',
-				'RCJ' => 'RSA activité Jeune (Financement sur fonds Etat)'
+				'RCJ' => 'RSA activité Jeune (Financement sur fonds Etat)',
+				// TODO: dans la configuration ?
+				'RSD,RCD' => 'RSA Socle et activité',
+				//'RSJ,RCJ' => 'RSA Jeune Socle et activité',
 			);
 
 			if( empty($natpfDemandees) ) {
