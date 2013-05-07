@@ -397,6 +397,7 @@
 					//
 					'Dossierpcg66.orgpayeur',
 					'Dossierpcg66.id',
+					'Dossierpcg66.etatdossierpcg',
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.serviceinstructeur_id',
 					'User.nom',
@@ -527,15 +528,22 @@
 
 			$typesrsa = $this->Typersapcg66->find( 'list', $querydata );
 
+			
 			if( !empty( $typesrsa ) ) {
 				$data['Decisiondossierpcg66']['Typersapcg66'] .= "\n" .'- '.implode( "\n- ", $typesrsa ).',';
 			}
 
+			$options = array();
+			$options = Set::merge(
+				$this->enums(),
+				$this->Dossierpcg66->enums()
+			);
+			
 			return $this->ged(
 				$data,
 				$this->modeleOdt( $data ),
 				false,
-				array()
+				$options
 			);
 		}
 
