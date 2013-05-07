@@ -3,16 +3,21 @@
 
 	$cells = array(
 		'N° Dossier',
-		'Nom/Prénom allocataire',
+		'Qualité',
+		'Nom',
+		'Prénom',
 		'NIR',
 		'Date de naissance',
 		'N° CAF',
 		'Identifiant Pôle Emploi',
 		'N° Téléphone',
-		'Adresse allocataire',
-		'Complément adresse',
+		'Numéro de voie',
+		'Type de voie',
+		'Nom de voie',
+		'Complément adresse 1',
+		'Complément adresse 2',
 		'Code postal',
-		'Commune de l\'allocataire',
+		'Commune',
         'Canton de l\'allocataire',
 		'Date d\'ouverture de droit',
 		'Etat du droit'
@@ -34,7 +39,7 @@
 	$this->Csv->addRow( $cells );
 
 	foreach( $orients as $orient ) {
-		$toppersdrodevorsa = Set::classicExtract( $orient, 'Calculdroitrsa.toppersdrodevorsa' );
+		$toppersdrodevorsa = Hash::get( $orient, 'Calculdroitrsa.toppersdrodevorsa' );
 		switch( $toppersdrodevorsa ) {
 			case '0':
 				$toppersdrodevorsa = 'Non';
@@ -48,20 +53,25 @@
 		}
 
 		$row = array(
-			Set::classicExtract( $orient, 'Dossier.numdemrsa' ),
-			Set::classicExtract( $orient, 'Personne.nom' ).' '.Set::classicExtract( $orient, 'Personne.prenom'),
-			Set::classicExtract( $orient, 'Personne.nir' ),
-			date_short( Set::classicExtract( $orient, 'Personne.dtnai' ) ),
-			Set::classicExtract( $orient, 'Dossier.matricule' ),
-			Set::classicExtract( $orient, 'Historiqueetatpe.identifiantpe' ),
-			Set::classicExtract( $orient, 'Modecontact.numtel' ),
-			Set::classicExtract( $orient, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $orient, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $orient, 'Adresse.nomvoie' ),
-			Set::classicExtract( $orient, 'Adresse.complideadr' ).' '.Set::classicExtract( $orient, 'Adresse.compladr' ),
-			Set::classicExtract( $orient, 'Adresse.codepos' ),
-			Set::classicExtract( $orient, 'Adresse.locaadr' ),
-            Set::classicExtract( $orient, 'Canton.canton' ),
-			date_short( Set::classicExtract( $orient, 'Dossier.dtdemrsa' ) ),
-			value( $etatdosrsa, Set::classicExtract( $orient, 'Situationdossierrsa.etatdosrsa' ) )
+			Hash::get( $orient, 'Dossier.numdemrsa' ),
+			value( $qual, Hash::get( $orient, 'Personne.qual' ) ),
+			Hash::get( $orient, 'Personne.nom' ),
+			Hash::get( $orient, 'Personne.prenom'),
+			Hash::get( $orient, 'Personne.nir' ),
+			date_short( Hash::get( $orient, 'Personne.dtnai' ) ),
+			Hash::get( $orient, 'Dossier.matricule' ),
+			Hash::get( $orient, 'Historiqueetatpe.identifiantpe' ),
+			Hash::get( $orient, 'Modecontact.numtel' ),
+			Hash::get( $orient, 'Adresse.numvoie' ),
+			value( $typevoie, Hash::get( $orient, 'Adresse.typevoie' ) ),
+			Hash::get( $orient, 'Adresse.nomvoie' ),
+			Hash::get( $orient, 'Adresse.complideadr' ),
+			Hash::get( $orient, 'Adresse.compladr' ),
+			Hash::get( $orient, 'Adresse.codepos' ),
+			Hash::get( $orient, 'Adresse.locaadr' ),
+            Hash::get( $orient, 'Canton.canton' ),
+			date_short( Hash::get( $orient, 'Dossier.dtdemrsa' ) ),
+			value( $etatdosrsa, Hash::get( $orient, 'Situationdossierrsa.etatdosrsa' ) )
 		);
 
 		if( Configure::read( 'Cg.departement' ) == 93 ) {
@@ -73,11 +83,11 @@
 
 		array_push(
 			$row,
-			date_short( Set::classicExtract( $orient, 'Orientstruct.date_valid' ) ),
+			date_short( Hash::get( $orient, 'Orientstruct.date_valid' ) ),
 			Hash::get( $orient, 'Structurereferente.lib_struc' ),
-			Set::classicExtract( $orient, 'Orientstruct.statut_orient' ),
+			Hash::get( $orient, 'Orientstruct.statut_orient' ),
 			$toppersdrodevorsa,
-			Set::enum( Set::classicExtract( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
+			Set::enum( Hash::get( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )
 		);
 		$this->Csv->addRow($row);
 	}
