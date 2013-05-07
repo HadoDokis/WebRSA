@@ -49,8 +49,8 @@
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 			$sqDernierContratinsertion = array();
 
-			if( ( $statut != 'visualisation' ) || ( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) ) {
-				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'rg_ci' );
+			if( isset( $search['Contratinsertion']['dernier'] ) && $search['Contratinsertion']['dernier'] == '1' ) {
+				$sqDernierContratinsertion = $Personne->sqLatest( 'Contratinsertion', 'id' );
 			}
 
 			// Par défaut on affiche le dernier CER dans le tableau des saisies CER
