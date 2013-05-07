@@ -14,7 +14,7 @@
 		<?php echo $this->Xform->input( 'Cui.structurereferente_id', array( 'type' => 'hidden' ) );?>
 
 		<?php echo $this->Xform->input( 'Cui.observcui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.observ_ci' ), 'type' => 'textarea', 'rows' => 6)  ); ?>
-		<?php echo $this->Xform->input( 'Cui.decisioncui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci' ), 'type' => 'select', 'options' => $options['decisioncui'], 'empty' => true ) ); ?>
+		<?php echo $this->Xform->input( 'Cui.decisioncui', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.decision_ci' ), 'type' => 'select', 'options' => $options['Cui']['decisioncui'], 'empty' => true ) ); ?>
 		<?php echo $this->Xform->input( 'Cui.datevalidationcui', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  ); ?>
 	</fieldset>
 <div class="submit">
