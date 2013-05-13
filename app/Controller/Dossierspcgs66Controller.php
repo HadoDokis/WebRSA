@@ -185,12 +185,8 @@
 						if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
 							$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
 						}
-						else{
-							$datetransmission = null;
-						}
-						$this->set( compact( 'datetransmission' ) );
-// 						$dossierspcgs66[$i]['Dossierpcg66']['datetransmissionfinale'] = $datetransmission;
 					}
+                    $this->set( compact( 'datetransmission' ) );
 				}
 			}
 			$etatdossierpcg = $this->Dossierpcg66->etatDossierPcg66( $dataTypepdo_id, $dataUser_id, $dataDecisionpdo_id, $dataAvistech, $dataAvisvalid, $retouravistechnique, $vuavistechnique, /*$iscomplet,*/ $etatdossierpcg );
@@ -283,9 +279,6 @@
 				foreach( $decisionsdossierspcgs66 as $decisiondossierpcg66 ){
 					if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
 						$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
-					}
-					else{
-						$datetransmission = null;
 					}
 					$dossierspcgs66[$i]['Dossierpcg66']['datetransmissionfinale'] = $datetransmission;
 				}
