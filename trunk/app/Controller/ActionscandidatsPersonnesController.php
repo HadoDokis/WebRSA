@@ -531,10 +531,46 @@
             $this->set( 'personne_id', $personne_id );
 
 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
+
+			$detaildroitrsa = $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+						$this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
+					),
+					'conditions' => array(
+						'Detaildroitrsa.dossier_id' => Hash::get( $personne, 'Dossier.id' )
+					),
+					'contain' => false
+				)
+			);
+			$personne = Hash::merge( $personne, $detaildroitrsa );
+
+			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
+				$contratinsertion = $this->{$this->modelClass}->Personne->Contratinsertion->find(
+					'first',
+					array(
+						'fields' => array_merge(
+							$this->{$this->modelClass}->Personne->Contratinsertion->fields(),
+							$this->{$this->modelClass}->Personne->Contratinsertion->Cer93->fields()
+						),
+						'conditions' => array(
+							'Contratinsertion.personne_id' => Hash::get( $personne, 'Personne.id' )
+						),
+						'order' => array(
+							'Contratinsertion.dd_ci DESC'
+						),
+						'contain' => array( 'Cer93' )
+					)
+				);
+				$personne = Hash::merge( $personne, $contratinsertion );
+			}
+
 			$this->set( 'personne', $personne );
 
 			///Nombre d'enfants par foyer
-			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Set::classicExtract( $personne, 'Personne.foyer_id' ) );
+			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Hash::get( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
 
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
@@ -694,6 +730,7 @@
                 $options['Contratinsertion'] = array( 'decision_ci' => $this->Option->decision_ci() );
                 $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );
                 $options['Suiviinstruction'] = array( 'typeserins' => $this->Option->typeserins() );
+				$options = Hash::merge( $options, $this->{$this->modelClass}->Personne->Contratinsertion->Cer93->enums() );
 
 				Cache::write( $cacheKey, $options );
 			}
@@ -791,6 +828,23 @@
 		 * @param integer $id
 		 */
 		public function view( $id ) {
+			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
+				$actioncandidat_personne = $this->ActioncandidatPersonne->getFichecandidatureData( $id );
+
+				if( empty( $actioncandidat_personne ) ) {
+					throw new Error404Exception();
+				}
+
+				$personne_id = $actioncandidat_personne['Personne']['id'];
+				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+				$this->set( 'actionscandidatspersonne', $actioncandidat_personne );
+				$this->set( 'options', $this->ActioncandidatPersonne->getFichecandidatureOptions() );
+
+				$this->render( 'view' );
+			}
+
+			// Pour le CG 66
 			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
 

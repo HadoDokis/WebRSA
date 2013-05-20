@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Detailcalculdroitrsa.
 	 *
@@ -34,8 +34,27 @@
 				'order' => ''
 			)
 		);
-		
-		
+
+		/**
+		 * Champs virtuels.
+		 *
+		 * @var array
+		 */
+		public $virtualFields = array(
+			'natpf_socle' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."natpf" IN ( \'RSD\', \'RSI\', \'RSU\', \'RSB\', \'RSJ\' )'
+			),
+			'natpf_activite' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."natpf" IN ( \'RCD\', \'RCI\', \'RCU\', \'RCB\', \'RCJ\' )'
+			),
+			'natpf_majore' => array(
+				'type'      => 'boolean',
+				'postgres'  => '"%s"."natpf" IN ( \'RSI\', \'RCI\' )'
+			),
+		);
+
 		/**
 		 * Retourne le dernier détail du droit rsa d'un dossier RSA
 		 *
@@ -56,6 +75,40 @@
 					'limit' => 1
 				)
 			);
+		}
+
+		/**
+		 * Champs virtuels pour connaître la nature de la prestation en une fois.
+		 *
+		 * @param string $alias
+		 * @param array $conditions
+		 * @return array
+		 */
+		public function vfsSummary( $alias = null, $conditions = array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' ) ) {
+			$alias = ( is_null( $alias ) ? $this->alias : $alias );
+
+			$vfNatpf = array();
+			foreach( array( 'socle', 'activite', 'majore' ) as $natpf ) {
+				$vfNatpf[$natpf] = $this->sq(
+					array(
+						'fields' => array(
+							"{$this->alias}.{$this->primaryKey}"
+						),
+						'conditions' => array_merge(
+							$conditions,
+							array(
+								$this->sqVirtualfield(
+									"natpf_{$natpf}",
+									false
+								)
+							)
+						)
+					)
+				);
+				$vfNatpf[$natpf] = "( ( {$vfNatpf[$natpf]} ) IS NOT NULL ) AS \"{$alias}__natpf_{$natpf}\"";
+			}
+
+			return $vfNatpf;
 		}
 	}
 ?>

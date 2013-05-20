@@ -286,136 +286,331 @@
 			return $positionfiche;
 		}*/
 
+		/**
+		 * Retourne les options à utiliser pour une fiche de candidature, que ce
+		 * soit pour l'affichage, le formulaire ou l'impression.
+		 *
+		 * @return array
+		 */
+		public function getFichecandidatureOptions() {
+			$Option = ClassRegistry::init( 'Option' );
 
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Chargeinsertion' => array(
+					'qual' => $Option->qual()
+				),
+				'Contactpartenaire' => array(
+					'qual' => $Option->qual()
+				),
+				'Partenaire' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Prestation' => array(
+					'rolepers' => $Option->rolepers()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'StructureChargeinsertion' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
 
+			$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
+
+			$options = Hash::merge( $options, $this->Personne->Contratinsertion->enums() );
+			$options = Hash::merge( $options, $this->Personne->Contratinsertion->Cer93->enums() );
+			$options = Hash::merge( $options, $this->enums() );
+
+			return $options;
+		}
+
+		/**
+		 * Retourne les données d'une fiche de candidataure, que ce soit pour
+		 * l'affichage, le formulaire ou l'impression.
+		 *
+		 * @param integer $actioncandidat_personne_id
+		 * @return array
+		 */
+		public function getFichecandidatureData( $actioncandidat_personne_id ) {
+			$sqDernierChargeinsertion = $this->Personne->PersonneReferent->sqDerniere( 'Personne.id', false );
+			$sqDernierContratinsertion = $this->Personne->sqLatest( 'Contratinsertion', 'dd_ci', array(), true );
+			$sqDernierAdressefoyer = $this->Personne->Foyer->sqLatest( 'Adressefoyer', 'dtemm', array( 'Adressefoyer.rgadr' => '01' ), true );
+
+			$replacements = array(
+				'PersonneReferent' => 'PersonneChargeinsertion',
+				'Referent' => 'Chargeinsertion',
+				'Structurereferente' => 'StructureChargeinsertion',
+			);
+
+			$querydata = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Actioncandidat->fields(),
+//					$this->Actioncandidat->Chargeinsertion->fields(),
+//					$this->Actioncandidat->Chargeinsertion->Structurereferente->fields(),
+					$this->Actioncandidat->Contactpartenaire->fields(),
+					$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+					$this->Actioncandidat->Contratinsertion->fields(),
+					$this->Actioncandidat->Contratinsertion->Cer93->fields(),
+//					$this->Actioncandidat->Referent->fields(),
+//					$this->Actioncandidat->Secretaire->fields(),
+					$this->Motifsortie->fields(),
+					$this->Personne->fields(),
+					$this->Personne->Activite->fields(),
+					$this->Personne->Foyer->fields(),
+					$this->Personne->Foyer->Adressefoyer->fields(),
+					$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$this->Personne->Foyer->Dossier->fields(),
+					$this->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+					$this->Personne->Foyer->Dossier->Suiviinstruction->fields(),
+					$this->Personne->Prestation->fields(),
+					$this->Referent->fields(),
+					array(
+						$this->Referent->sqVirtualField( 'nom_complet' ),
+					),
+					$this->Referent->Structurereferente->fields(),
+					$this->Personne->Prestation->fields(),
+					array_words_replace(
+						$this->Personne->PersonneReferent->fields(),
+						$replacements
+					),
+					array_words_replace(
+						array_merge(
+							$this->Personne->PersonneReferent->Referent->fields(),
+							array(
+								str_replace( 'Referent__', 'Chargeinsertion__', $this->Referent->sqVirtualField( 'nom_complet' ) ),
+							)
+						),
+						$replacements
+					),
+					array_words_replace(
+						$this->Personne->PersonneReferent->Referent->Structurereferente->fields(),
+						$replacements
+					),
+					array(
+						$this->Fichiermodule->sqNbFichiersLies( $this, 'nb_fichiers_lies' ),
+					),
+					$this->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
+				),
+				'joins' => array(
+					$this->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
+					$this->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$this->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Dossier->join( 'Suiviinstruction', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					array_words_replace(
+						$this->Personne->join(
+							'PersonneReferent',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									"PersonneReferent.id IN ( {$sqDernierChargeinsertion} )"
+								)
+							)
+						),
+						$replacements
+					),
+					array_words_replace(
+						$this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$replacements
+					),
+					array_words_replace(
+						$this->Personne->PersonneReferent->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$replacements
+					),
+				),
+				'conditions' => array(
+					'ActioncandidatPersonne.id' => $actioncandidat_personne_id,
+					$sqDernierContratinsertion,
+					$sqDernierAdressefoyer
+				),
+				'recursive' => -1
+			);
+			$actioncandidat_personne = $this->find( 'first', $querydata );
+
+			if( !empty( $actioncandidat_personne ) ) {
+				$fichiersmodules = (array)$this->Fichiermodule->find(
+					'all',
+					array(
+						'fields' => array(
+							'Fichiermodule.id',
+							'Fichiermodule.name',
+							'Fichiermodule.created',
+						),
+						'conditions' => array(
+							'Fichiermodule.modele' => $this->alias,
+							'Fichiermodule.fk_value' => $actioncandidat_personne_id,
+						),
+						'contain' => false
+					)
+				);
+				$fichiersmodules = array( 'Fichiermodule' => Hash::extract( $fichiersmodules, '{n}.Fichiermodule' ) );
+				$actioncandidat_personne = Hash::merge( $actioncandidat_personne, $fichiersmodules );
+				unset( $actioncandidat_personne['Fichiermodule']['nb_fichiers_lies'] );
+
+				// TODO: virtual field
+				if( $actioncandidat_personne['Activite']['act'] === 'ANP' ) {
+					$actioncandidat_personne['Activite']['inscritpe'] = true;
+				}
+				else {
+					$actioncandidat_personne['Activite']['inscritpe'] = false;
+				}
+			}
+
+			return $actioncandidat_personne;
+		}
 
 		/**
 		*
 		*/
 
 		public function getPdfFiche( $actioncandidat_personne_id ) {
-
-
-			$queryData = array(
-				'fields' => array_merge(
-					$this->fields(),
-					$this->Actioncandidat->fields(),
-					$this->Actioncandidat->Contactpartenaire->fields(),
-					$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
-					$this->Personne->fields(),
-					$this->Referent->fields(),
-					$this->Personne->Foyer->fields(),
-					$this->Personne->Foyer->Dossier->fields(),
-					$this->Personne->Foyer->Adressefoyer->fields(),
-					$this->Personne->Foyer->Adressefoyer->Adresse->fields()
-				),
-				'joins' => array(
-					array(
-						'table'      => 'actionscandidats',
-						'alias'      => 'Actioncandidat',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Actioncandidat.id = ActioncandidatPersonne.actioncandidat_id'
+			// TODO: scinder dans les sous-méthodes + nettoyer pour le 66
+			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
+				$actioncandidat = $this->getFichecandidatureData( $actioncandidat_personne_id );
+				$options = $this->getFichecandidatureOptions();
+			}
+			else {
+				$queryData = array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Actioncandidat->fields(),
+						$this->Actioncandidat->Contactpartenaire->fields(),
+						$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Personne->Foyer->fields(),
+						$this->Personne->Foyer->Dossier->fields(),
+						$this->Personne->Foyer->Adressefoyer->fields(),
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+					),
+					'joins' => array(
+						array(
+							'table'      => 'actionscandidats',
+							'alias'      => 'Actioncandidat',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Actioncandidat.id = ActioncandidatPersonne.actioncandidat_id'
+							),
 						),
-					),
-					array(
-						'table'      => 'contactspartenaires',
-						'alias'      => 'Contactpartenaire',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Contactpartenaire.id = Actioncandidat.contactpartenaire_id' ),
-					),
-					array(
-						'table'      => 'partenaires',
-						'alias'      => 'Partenaire',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Partenaire.id = Contactpartenaire.partenaire_id' ),
-					),
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( "ActioncandidatPersonne.personne_id = Personne.id" ),
-					),
-					array(
-						'table'      => 'referents',
-						'alias'      => 'Referent',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Referent.id = ActioncandidatPersonne.referent_id' ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
+						array(
+							'table'      => 'contactspartenaires',
+							'alias'      => 'Contactpartenaire',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Contactpartenaire.id = Actioncandidat.contactpartenaire_id' ),
+						),
+						array(
+							'table'      => 'partenaires',
+							'alias'      => 'Partenaire',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'Partenaire.id = Contactpartenaire.partenaire_id' ),
+						),
+						array(
+							'table'      => 'personnes',
+							'alias'      => 'Personne',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( "ActioncandidatPersonne.personne_id = Personne.id" ),
+						),
+						array(
+							'table'      => 'referents',
+							'alias'      => 'Referent',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Referent.id = ActioncandidatPersonne.referent_id' ),
+						),
+						array(
+							'table'      => 'foyers',
+							'alias'      => 'Foyer',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Personne.foyer_id = Foyer.id' )
+						),
+						array(
+							'table'      => 'dossiers',
+							'alias'      => 'Dossier',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
+						),
+						array(
+							'table'      => 'adressesfoyers',
+							'alias'      => 'Adressefoyer',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Foyer.id = Adressefoyer.foyer_id',
+								'Adressefoyer.id IN (
+									'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
+								)'
+							)
+						),
+						array(
+							'table'      => 'adresses',
+							'alias'      => 'Adresse',
+							'type'       => 'INNER',
+							'foreignKey' => false,
+							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
 						)
 					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					)
-				),
-				'conditions' => array(
-					'ActioncandidatPersonne.id' => $actioncandidat_personne_id
-				),
-				'recursive' => -1
-			);
+					'conditions' => array(
+						'ActioncandidatPersonne.id' => $actioncandidat_personne_id
+					),
+					'recursive' => -1
+				);
 
-			$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
-			$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
+				$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
+				$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
 
 
-			$options = Set::merge( $options, $this->enums() );
+				$options = Set::merge( $options, $this->enums() );
 
 
-			$actioncandidat = $this->find( 'first', $queryData );
-			$referents = $this->Referent->find( 'list' );
-			$motifssortie = ClassRegistry::init( 'Motifsortie' )->find( 'list' );
+				$actioncandidat = $this->find( 'first', $queryData );
+				$referents = $this->Referent->find( 'list' );
+				$motifssortie = ClassRegistry::init( 'Motifsortie' )->find( 'list' );
 
-			$correspondantaction = Set::classicExtract( $actioncandidat, 'Actioncandidat.correspondantaction' );
+				$correspondantaction = Set::classicExtract( $actioncandidat, 'Actioncandidat.correspondantaction' );
 
-			if( !empty( $correspondantaction ) ){
-				$actioncandidat['Actioncandidat']['correspondantaction_nom_complet'] = Set::enum( $actioncandidat['Actioncandidat']['referent_id'],  $referents );
+				if( !empty( $correspondantaction ) ){
+					$actioncandidat['Actioncandidat']['correspondantaction_nom_complet'] = Set::enum( $actioncandidat['Actioncandidat']['referent_id'],  $referents );
+				}
+				$actioncandidat['Actioncandidat']['codeaction'] = Set::classicExtract( $actioncandidat, 'Actioncandidat.themecode' ).' '. Set::classicExtract( $actioncandidat, 'Actioncandidat.codefamille' ).' '.Set::classicExtract( $actioncandidat, 'Actioncandidat.numcodefamille' );
+
+
+
+				$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie );
 			}
-			$actioncandidat['Actioncandidat']['codeaction'] = Set::classicExtract( $actioncandidat, 'Actioncandidat.themecode' ).' '. Set::classicExtract( $actioncandidat, 'Actioncandidat.codefamille' ).' '.Set::classicExtract( $actioncandidat, 'Actioncandidat.numcodefamille' );
 
-
-
-			$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie );
-
-
-			// Nom du modèle devant être généré
-			$modeleodt = Set::classicExtract( $actioncandidat, 'Actioncandidat.modele_document' );
-
-//             debug($options);
-// debug($actioncandidat);
-// die();
+			$modeleodt = Hash::get( $actioncandidat, 'Actioncandidat.modele_document' );
 			return $this->ged( array( $actioncandidat ), "Candidature/{$modeleodt}.odt", true, $options );
 		}
 
