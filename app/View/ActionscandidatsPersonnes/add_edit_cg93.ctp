@@ -149,8 +149,43 @@
 				?>
 			</td>
 		</tr>
+		<tr>
+			<td class="mediumSize noborder" colspan="2">
+				<strong>Bénéficiaire du : </strong>
+				<?php
+					$socle = Hash::get( $personne, 'Detailcalculdroitrsa.natpf_socle' );
+					$activite = Hash::get( $personne, 'Detailcalculdroitrsa.natpf_activite' );
+					$majore = Hash::get( $personne, 'Detailcalculdroitrsa.natpf_majore' );
+
+					echo 'RSA Socle: '.$this->Xhtml->boolean( $socle );
+					echo ', RSA majoré: '.$this->Xhtml->boolean( $majore );
+					echo ', RSA socle + activité: '.$this->Xhtml->boolean( $socle && $activite );
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td class="mediumSize noborder">
+				<strong>Niveau de diplôme et/ou qualification : </strong>
+			</td>
+			<td class="mediumSize noborder">
+				<?php echo value( $options['Cer93']['nivetu'], Hash::get( $personne, 'Cer93.nivetu' ) ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="mediumSize noborder">
+				<strong>Contrat d’engagement réciproque (CER) : </strong>
+				<?php echo value( $options['Cer93']['positioncer'], Hash::get( $personne, 'Cer93.positioncer' ) ); ?>
+			</td>
+			<td class="mediumSize noborder">
+				<strong>Du : </strong>
+				<?php echo date_short( Hash::get( $personne, 'Contratinsertion.dd_ci' ) ); ?>
+				<strong>Au : </strong>
+				<?php echo date_short( Hash::get( $personne, 'Contratinsertion.df_ci' ) ); ?>
+			</td>
+		</tr>
 	</table>
 	<?php
+//		debug( $personne );
 		/*///Données propre aux Dsps de la personne
 		if( !empty( $dsp ) ) {
 			echo $this->Default->view(
