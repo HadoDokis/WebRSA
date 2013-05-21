@@ -139,12 +139,23 @@
 						)
 					);
 
+					$dossier = $this->Jeton->Dossier->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Dossier.id' => $dossier
+							),
+							'recursive' => -1
+						)
+					);
+
 					throw new LockedDossierException(
 						'Dossier verrouillé',
 						401,
 						array(
 							'time' => ( strtotime( $jetonObtenu['modified'] ) + readTimeout() ),
-							'user' => $lockingUser['User']['username']
+							'user' => $lockingUser['User']['username'],
+							'dossier' => $dossier
 						)
 					);
 					return;
