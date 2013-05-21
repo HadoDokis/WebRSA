@@ -33,7 +33,6 @@
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
 
-	echo $this->Form->input( 'Search.VxOrientstruct.structurereferente_id', array( 'label' => 'Structure référente source', 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'] ) );
 	echo $this->Form->input( 'Search.NvOrientstruct.structurereferente_id', array( 'label' => 'Structure référente cible', 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'] ) );
 
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
