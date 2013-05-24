@@ -68,7 +68,7 @@
 				ELSE 12
 			END
 		)';
-		
+
 /*public $vfPersonneSituation = '(
 			CASE
 --				WHEN ( "PersonneReferent"."id" IS NULL AND ( "Contratinsertion"."id" IS NULL OR ( "Contratinsertion"."id" IS NOT NULL AND "Cer93"."positioncer" NOT IN ( \'00enregistre\', \'01signe\' ) ) ) ) THEN 1
@@ -78,7 +78,7 @@ WHEN ( "PersonneReferent"."id" IS NULL AND ( "Contratinsertion"."id" IS NOT NULL
 
 				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'00enregistre\' ) THEN 2
 				WHEN ( "PersonneReferent"."id" IS NULL AND "Contratinsertion"."id" IS NOT NULL AND "Contratinsertion"."decision_ci" = \'E\' AND "Cer93"."positioncer" = \'01signe\' ) THEN 3
-				
+
 WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 
 				WHEN ( "PersonneReferent"."id" IS NOT NULL AND "Contratinsertion"."id" IS NULL ) THEN 4
@@ -136,6 +136,11 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 				array(
 					'OR' => array(
 						'Contratinsertion.id IS NULL',
+						// Les allocataires transférés possédant un CER en cours de validation ou de validité
+						array(
+							'Contratinsertion.id IS NOT NULL',
+							'Orientstructpcd.id IS NOT NULL'
+						),
 						array(
 							'Contratinsertion.id IS NOT NULL',
 							'Contratinsertion.decision_ci' => 'V',
@@ -217,14 +222,14 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 				}
 				$conditions[] = "NOT {$lockedDossiers}";
 			}
-			
+
 			// Filtre sur la situation de l'allocataire
 			if( isset( $search['Personne']['situation'] ) && !empty( $search['Personne']['situation'] ) ) { // FIXME traduction
 				$conditions[] = array(
 					$Personne->sqVirtualField( 'situation', false ) => $search['Personne']['situation']
 				);
 			}
-			
+
 			// Dossier transféré ?
 			if( isset( $search['Dossier']['transfere'] ) && ( $search['Dossier']['transfere'] != '' ) ) {
 				if( $search['Dossier']['transfere'] ) {
@@ -234,7 +239,7 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 					$conditions[] = 'Orientstructpcd.id IS NULL';
 				}
 			}
-			
+
 
 			$querydata = array(
 				'fields' => array_merge(
