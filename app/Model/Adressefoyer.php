@@ -34,6 +34,35 @@
 			)
 		);
 
+		public $hasOne = array(
+			'VxTransfertpdv93' => array(
+				'className' => 'Transfertpdv93',
+				'foreignKey' => 'vx_adressefoyer_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'NvTransfertpdv93' => array(
+				'className' => 'Transfertpdv93',
+				'foreignKey' => 'nv_adressefoyer_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+		);
+
 		//*********************************************************************
 
 		/**

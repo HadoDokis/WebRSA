@@ -26,6 +26,7 @@
 						<th>Commune</th>
 						<th>Date d\'envoi CER</th>
 						<th>Date de début CER</th>
+						<th>Déménagement ?</th>
 						<th>Forme du CER (Responsable)</th>
 						<th class="action">Action</th>
 						<th class="action">Forme du CER (CG)</th>
@@ -100,6 +101,7 @@
 					$cer93['Adresse']['locaadr'],
 					date_short( $cer93['Contratinsertion']['created'] ),
 					date_short( $cer93['Contratinsertion']['dd_ci'] ),
+					$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
 					Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] )
 				);
 

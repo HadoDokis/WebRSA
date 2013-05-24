@@ -308,6 +308,7 @@
 					$Personne->Prestation->fields(),
 					$Personne->Foyer->Dossier->fields(),
 					$Personne->Foyer->Adressefoyer->Adresse->fields(),
+//					$Personne->Foyer->Adressefoyer->NvTransfertpdv93->fields(),
 					$Personne->Rendezvous->fields(),
 					$Personne->PersonneReferent->fields(),
 					$Personne->Foyer->Dossier->Situationdossierrsa->fields(),
@@ -316,6 +317,9 @@
 						$Personne->sqVirtualField( 'nom_complet_court', true ),
 						'Structurereferente.lib_struc',
 						"( {$sqDspExists} ) AS \"Dsp__exists\"" // TODO: mettre dans le modèle
+					),
+					array(
+						$Personne->Foyer->Adressefoyer->NvTransfertpdv93->vfDateAnterieureTransfert( 'NvTransfertpdv93.created', 'Contratinsertion.date_saisi_ci', 'NvTransfertpdv93.encoursvalidation' )
 					)
 				),
 				'contain' => false,
@@ -343,6 +347,7 @@
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Adressefoyer->join( 'NvTransfertpdv93', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				),
 				'conditions' => $conditions,

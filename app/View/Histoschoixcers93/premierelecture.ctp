@@ -19,6 +19,9 @@
 	<div id="premierelecture">
 		<h2 class="title">Première lecture</h2>
 		<?php
+			if( Hash::get( $contratinsertion, 'Personne.Foyer.Adressefoyer.0.NvTransfertpdv93.encoursvalidation' ) ) {
+				echo $this->Html->tag( 'p', 'Le dossier de l\'allocataire a été transféré après la saisie du CER.', array( 'class' => 'notice' ) );
+			}
 
 			echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 

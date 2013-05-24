@@ -28,6 +28,7 @@
 						<th>Commune</th>
 						<th>Date d\'envoi CER</th>
 						<th>Date de début CER</th>
+						<th>Déménagement ?</th>
 						<th>Statut du CER</th>
 						<th>Forme du CER (Responsable)</th>
 						<th>Prévalidé</th>
@@ -105,6 +106,7 @@
 					$cer93['Adresse']['locaadr'],
 					date_short( $cer93['Contratinsertion']['created'] ),
 					date_short( $cer93['Contratinsertion']['dd_ci'] ),
+					$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
 					Set::enum( $cer93['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 					Set::enum( $cer93['Histochoixcer93']['formeci'], $options['formeci'] ),
 					Set::enum( $cer93['Histochoixcer93']['prevalide'], $options['Histochoixcer93']['prevalide'] ),

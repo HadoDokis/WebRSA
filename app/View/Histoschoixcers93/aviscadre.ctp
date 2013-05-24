@@ -17,6 +17,10 @@
 		<div id="aviscadre">
 			<h2 class="title">Avis cadre</h2>
 			<?php
+				if( Hash::get( $contratinsertion, 'Personne.Foyer.Adressefoyer.0.NvTransfertpdv93.encoursvalidation' ) ) {
+					echo $this->Html->tag( 'p', 'Le dossier de l\'allocataire a été transféré après la saisie du CER.', array( 'class' => 'notice' ) );
+				}
+
 				echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
 				// FIXME: affichage du CER et des étapes précédentes de l'historique
@@ -124,7 +128,7 @@
 			}
 		);
 	<?php endif;?>
-	
+
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsOnValue(
 			'Histochoixcer93Decisioncadre',

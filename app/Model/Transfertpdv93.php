@@ -92,7 +92,7 @@
 				'counterCache' => null
 			),
 		);
-		
+
 		/**
 		 * Retourne le chemin relatif du modèle de document à utiliser pour
 		 * l'enregistrement du PDF.
@@ -178,13 +178,13 @@
 				),
 				'contain' => false
 			);
-			
+
 			$data = $this->find( 'first', $queryData );
 // debug($data);
 // die();
 			return $data;
 		}
-		
+
 		/**
 		 * Retourne le PDF par défaut, stocké, ou généré par les appels aux méthodes getDataForPdf, modeleOdt et
 		 * à la méthode ged du behavior Gedooo et le stocke,
@@ -213,6 +213,51 @@
 // debug( $modeleodt );
 // die();
 			return $this->ged( $data, $modeleodt, false, $options );
+		}
+
+		/**
+		 * Retourne un champ virtuel permettant de savoir si la date de transfert
+		 * est postérieure à l'autre date (les deux dates n'étant pas nulles).
+		 *
+		 * @param string $dateTransfertPdvField
+		 * @param string $champAutreDateField
+		 * @param string $champValueField
+		 * @return string
+		 */
+		public function vfDateAnterieureTransfert( $dateTransfertPdvField, $champAutreDateField, $champValueField ) {
+			$dateTransfertPdvField = '"'.implode( '"."', explode( '.', $dateTransfertPdvField ) ).'"';
+			$champAutreDateField = '"'.implode( '"."', explode( '.', $champAutreDateField ) ).'"';
+			$champValueField = implode( '__', explode( '.', $champValueField ) );
+
+			return "( ( {$dateTransfertPdvField} IS NOT NULL ) AND ( {$champAutreDateField} IS NOT NULL ) AND ( DATE_TRUNC( 'day', {$dateTransfertPdvField} ) >= DATE_TRUNC( 'day', {$champAutreDateField} ) ) ) AS \"{$champValueField}\"";
+		}
+
+		/**
+		 * Ajoute un champ virtuel à un jeu de résultats permettant de savoir si
+		 * la date de transfert est postérieure à l'autre date (les deux dates
+		 * n'étant pas nulles).
+		 *
+		 * @param array $data
+		 * @param string $dateTransfertPdvPath
+		 * @param string $champAutreDatePath
+		 * @param string $champValuePath
+		 * @return array
+		 */
+		public function calculVfdateAnterieureTransfert( $data, $dateTransfertPdvPath, $champAutreDatePath, $champValuePath ) {
+			$value = null;
+
+			$dateTransfertPdv = Hash::get( $data, $dateTransfertPdvPath );
+			$champAutreDate = Hash::get( $data, $champAutreDatePath );
+
+			if( !is_null( $dateTransfertPdv ) && !is_null( $champAutreDate ) ) {
+				$dateTransfertPdv = date( 'Y-m-d', strtotime( $dateTransfertPdv ) );
+				$champAutreDate = date( 'Y-m-d', strtotime( $champAutreDate ) );
+				$value = ( strtotime( $champAutreDate ) <= strtotime( $dateTransfertPdv ) );
+			}
+
+			$data = Hash::insert( $data, $champValuePath, $value );
+
+			return $data;
 		}
 	}
 ?>
