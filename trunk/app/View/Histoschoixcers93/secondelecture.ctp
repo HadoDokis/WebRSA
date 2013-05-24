@@ -18,6 +18,9 @@
 		<div id="premierelecture">
 			<h2 class="title">Validation CS</h2>
 			<?php
+				if( Hash::get( $contratinsertion, 'Personne.Foyer.Adressefoyer.0.NvTransfertpdv93.encoursvalidation' ) ) {
+					echo $this->Html->tag( 'p', 'Le dossier de l\'allocataire a été transféré après la saisie du CER.', array( 'class' => 'notice' ) );
+				}
 
 				echo $this->Xform->create( null, array( 'id' => 'FormHistochoixcer93', 'inputDefaults' => array( 'domain' => 'histochoixcer93' ) ) );
 
@@ -38,10 +41,10 @@
 						'Histochoixcer93.etape' => array( 'type' => 'hidden' ),
 					)
 				);
-				
+
 				echo $this->Xform->input( 'Histochoixcer93.observationdecision', array( 'type' => 'textarea' ) );
 			?>
-			
+
 
 			<?php
 				echo $this->Html->tag(
@@ -128,7 +131,7 @@
 			}
 		);
 	<?php endif;?>
-	
+
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsOnValue(
 			'Histochoixcer93Decisioncs',

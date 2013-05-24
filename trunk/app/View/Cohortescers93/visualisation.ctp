@@ -25,6 +25,7 @@
 					<colgroup />
 					<colgroup />
 					<colgroup />
+					<colgroup />
 					<colgroup span="4" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
 					<colgroup span="5" style="border-right: 5px solid #235F7D;border-left: 5px solid #235F7D;" />
 					<colgroup />
@@ -39,6 +40,7 @@
 						<th rowspan="2">Structure référente</th>
 						<th rowspan="2">Référent</th>
 						<th rowspan="2">Saisie du CER</th>
+						<th rowspan="2">Déménagement ?</th>
 						<th colspan="4">Etape du Responsable</th>
 
 						<th colspan="5">Etape du CG</th>
@@ -144,6 +146,7 @@
 						$cer93['Structurereferente']['lib_struc'],
 						$cer93['Referent']['nom_complet'],
 						Set::enum( $cer93['Cer93']['positioncer_avantcg'], $options['Cer93']['positioncer'] ), //Saisie du CER
+						$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
 						Set::enum( $cer93['Cer93']['validationcpdv'], $options['Cer93']['positioncer'] ), //Validation CPDV
 						Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
 //						$cer93['Histochoixcer93etape03']['commentaire'],

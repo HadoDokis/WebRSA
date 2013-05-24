@@ -62,6 +62,7 @@
 			date_short( $cer93['Orientstruct']['date_valid'] ),
 			date_short( $cer93['PersonneReferent']['dddesignation'] ),
 			$cer93['Contratinsertion']['rg_ci'],
+			$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
 			'<ul>'
 				.( !empty( $cer93['Rendezvous']['daterdv'] ) ? '<li>'.date_short( $cer93['Rendezvous']['daterdv'] ).'</li>' : null )
 				.'<li>'.$this->Html->link( 'Prendre RDV', array( 'controller' => 'rendezvous', 'action' => 'add', $cer93['Personne']['id'] ), array( 'class' => 'external rendezvous add' ) ).'</li>'

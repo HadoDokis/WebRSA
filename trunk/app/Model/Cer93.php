@@ -1419,12 +1419,20 @@
 										'Adressefoyer.id IN (
 											'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
 										)'
-									)
+									),
+									'NvTransfertpdv93'
 								)
 							)
 						)
 					)
 				)
+			);
+
+			$data = $this->Contratinsertion->Personne->Foyer->Adressefoyer->NvTransfertpdv93->calculVfdateAnterieureTransfert(
+				$data,
+				'Personne.Foyer.Adressefoyer.0.NvTransfertpdv93.created',
+				'Contratinsertion.date_saisi_ci',
+				'Personne.Foyer.Adressefoyer.0.NvTransfertpdv93.encoursvalidation'
 			);
 
 			$data['Adresse'] = $data['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
