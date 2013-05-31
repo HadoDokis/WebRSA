@@ -855,7 +855,7 @@
 					)
 			);
 
-			$pdf = $this->Commissionep->getPdfPvgetPdfPv( $commissionep_id, null, $this->Session->read( 'Auth.User.id' ) );
+			$pdf = $this->Commissionep->getPdfPv( $commissionep_id, null, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, 'pv.pdf' );
