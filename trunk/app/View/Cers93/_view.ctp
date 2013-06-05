@@ -278,18 +278,35 @@
 				<tr>
 					<th>Sujet du CER</th>
 					<th>Sous sujet</th>
-					<th>Si autre, commentaire</th>
+					<th>Valeur de sous sujet</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
 					if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ) {
+
 						foreach( $contratinsertion['Cer93']['Sujetcer93'] as $index => $sujetcer93 ) {
+                            
+                            $sujet = $sujetcer93['name'];
+                            if( !empty( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] ) ){
+                                $sujet = $sujetcer93['name'].' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' );
+                            }
+                            
+                            $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' );
+                            if( !empty( $sujetcer93['Cer93Sujetcer93']['autresoussujet'] ) ){
+                                $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autresoussujet' );
+                            }
+                            
+                            $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' );
+                            if( !empty( $sujetcer93['Cer93Sujetcer93']['autrevaleur'] ) ){
+                                $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autrevaleur' );
+                            }
+                            
 							echo $this->Html->tableCells(
 								array(
-									h( $sujetcer93['name'] ),
-									h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ) ),
-									h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' ) )
+									h( $sujet ),
+									h( $soussujet ),
+									h( $valeursoussujet )
 								),
 								array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 								array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
