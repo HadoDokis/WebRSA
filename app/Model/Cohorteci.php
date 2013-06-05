@@ -120,7 +120,7 @@
 
 
 			/// Critères sur le CI - dates du CER (date de saisie, date de début, date de fin)
-			foreach( array( 'created', 'dd_ci', 'df_ci' ) as $typeDate ) {
+			foreach( array( 'created', 'dd_ci', 'df_ci', 'datevalidation_ci' ) as $typeDate ) {
 				if( isset( $criteresci['Filtre'][$typeDate] )  ) {
 					if( is_array( $criteresci['Filtre'][$typeDate] ) && !empty( $criteresci['Filtre'][$typeDate]['day'] ) && !empty( $criteresci['Filtre'][$typeDate]['month'] ) && !empty( $criteresci['Filtre'][$typeDate]['year'] ) ) {
 						$conditions["Filtre.{$typeDate}"] = "{$criteresci['Filtre'][$typeDate]['year']}-{$criteresci['Filtre'][$typeDate]['month']}-{$criteresci['Filtre'][$typeDate]['day']}";
@@ -172,12 +172,6 @@
 			// ...
 			if( !empty( $positioncer ) ) {
 				$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer, array( 'encode' => false ) ).'\'';
-			}
-
-			// ...
-			if( !empty( $datevalidation_ci ) && dateComplete( $criteresci, 'Filtre.datevalidation_ci' ) ) {
-				$datevalidation_ci = $datevalidation_ci['year'].'-'.$datevalidation_ci['month'].'-'.$datevalidation_ci['day'];
-				$conditions[] = 'Contratinsertion.datevalidation_ci = \''.$datevalidation_ci.'\'';
 			}
 
 

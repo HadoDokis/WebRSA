@@ -92,7 +92,9 @@
 					echo $this->Form->input( 'Filtre.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
 			?>
-			<?php echo $this->Form->input( 'Filtre.datevalidation_ci', array( 'label' => 'Date de validation du contrat', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  ); ?>
+			<?php 
+                echo $this->Search->date( 'Filtre.datevalidation_ci', 'Date de validation du contrat' );
+            ?>
 
 			<!-- Filtre sur la date de début du CER -->
 			<?php echo $this->Form->input( 'Filtre.dd_ci', array( 'label' => 'Filtrer par date de début du contrat', 'type' => 'checkbox' ) );?>
