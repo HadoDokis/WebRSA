@@ -31,11 +31,13 @@
 								h( $action['Typeaction']['libelle'] ),
 								$this->Xhtml->editLink(
 									'Éditer l\'action',
-									array( 'controller' => 'actions', 'action' => 'edit', $action['Action']['id'] )
+									array( 'controller' => 'actions', 'action' => 'edit', $action['Action']['id'] ),
+									$this->Permissions->check( 'actions', 'delete' )
 								),
 								$this->Xhtml->deleteLink(
 									'Supprimer l\'action',
-									array( 'controller' => 'actions', 'action' => 'delete', $action['Action']['id'] ), $this->Permissions->check( 'actions', 'delete' )
+									array( 'controller' => 'actions', 'action' => 'delete', $action['Action']['id'] ),
+									$this->Permissions->check( 'actions', 'delete' ) && !$action['Action']['occurences']
 								)
 							),
 							array( 'class' => 'odd' ),
