@@ -1566,10 +1566,10 @@
 			}
 			else {
 				if( $decision == 'V' ) {
-					$modeleodt  = "Contratcomplexeep93/decision_valide.odt";
+					$modeleodt  = "Contratinsertion/cer_valide.odt";
 				}
 				else if( in_array( $decision, array( 'R', 'N' ) ) ){
-					$modeleodt  = "Contratcomplexeep93/decision_rejete.odt";
+					$modeleodt  = "Contratinsertion/cer_rejete.odt";
 				}
 			}
 
