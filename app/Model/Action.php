@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Action.
 	 *
@@ -18,6 +18,8 @@
 		public $name = 'Action';
 
 		public $displayField = 'libelle';
+
+		public $order = array( 'Action.libelle ASC' );
 
 		public $validate = array(
 			'code' => array(

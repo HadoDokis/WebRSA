@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ActionsController.
 	 *
@@ -46,9 +46,17 @@
 			$actions = $this->Action->find(
 				'all',
 				array(
-					'contain' => array(
-						'Typeaction'
-					)
+					'fields' => array_merge(
+						$this->Action->fields(),
+						$this->Action->Typeaction->fields(),
+						array(
+							'EXISTS( SELECT "contratsinsertion"."id" FROM contratsinsertion WHERE "contratsinsertion"."engag_object" = "Action"."code" ) AS "Action__occurences"'
+						)
+					),
+					'joins' => array(
+						$this->Action->join( 'Typeaction' )
+					),
+					'contain' => false
 				)
 			);
 
@@ -119,26 +127,35 @@
 		public function delete( $action_id = null ) {
 			// Vérification du format de la variable
 			if( !valid_int( $action_id ) ) {
-				$this->cakeError( 'error404' );
+				throw new NotFoundException();
 			}
 
 			// Recherche de la personne
 			$action = $this->Action->find(
 				'first',
-				array( 'conditions' => array( 'Action.id' => $action_id )
+				array(
+					'conditions' => array( 'Action.id' => $action_id ),
+					'contain' => false
 				)
 			);
 
 			// Mauvais paramètre
-			if( empty( $action_id ) ) {
-				$this->cakeError( 'error404' );
+			if( empty( $action ) ) {
+				throw new NotFoundException();
 			}
 
-			// Tentative de suppression ... FIXME
-			if( $this->Action->deleteAll( array( 'Action.id' => $action_id ), true ) ) {
+			// Tentative de suppression
+			$this->Action->begin();
+			if( $this->Action->delete( $action_id ) ) {
+				$this->Action->commit();
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-				$this->redirect( array( 'controller' => 'actions', 'action' => 'index' ) );
 			}
+			else {
+				$this->Action->rollback();
+				$this->Session->setFlash( 'Erreur lors de la tentative de suppression', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>
