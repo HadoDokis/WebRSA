@@ -25,7 +25,6 @@
 						<th>Nom/Prénom référent</th>
 						<th>Date d\'orientation</th>
 						<th>Date de signature</th>
-						<th>Déménagement ?</th>
 						<th class="action">Forme du CER</th>
 						<th class="action">Commentaire</th>
 						<th class="action">Décisions</th>

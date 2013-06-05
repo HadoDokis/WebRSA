@@ -62,7 +62,6 @@
 			$cer93['Referent']['nom_complet'],
 			date_short( $cer93['Orientstruct']['date_valid'] ),
 			date_short( $cer93['Contratinsertion']['created'] ),
-			$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
 			array( $this->Form->input( "Histochoixcer93.{$index}.formeci", array( 'type' => 'radio', 'options' => $options['formeci'], 'div' => false, 'legend' => false, 'separator' => '<br/>' ) ), array( 'class' => ( isset( $rowValidationErrors['formeci'] ) ? 'error' : null ) ) ),
 			array(
 				$this->element(
