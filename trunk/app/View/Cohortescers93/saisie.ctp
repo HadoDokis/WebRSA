@@ -25,7 +25,6 @@
 						<th>Date d\'orientation</th>
 						<th>Date d\'affectation</th>
 						<th>Rang CER</th>
-						<th>Déménagement ?</th>
 						<th class="action">Dernier RDV</th>
 						<th>Statut CER</th>
 						<th class="action">Forme du CER</th>
