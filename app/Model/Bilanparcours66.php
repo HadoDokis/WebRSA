@@ -1231,7 +1231,7 @@
 							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 						)
 					),
-					$this->Dossierpcg66->sqLatest( 'Decisiondossierpcg66', 'datevalidation', array( 'Decisiondossierpcg66.validationproposition' => 'O' ) )
+					$this->Dossierpcg66->sqLatest( 'Decisiondossierpcg66', 'datevalidation' )
 				);
 
 				// Jointure spéciale sur Dossierep suivant la thématique
