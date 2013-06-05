@@ -1365,10 +1365,20 @@
 			$data = $this->getDataForPdf( $id );
 			$modeleodt = $this->modeleOdt( $data );
 
-			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
-			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
+			if( !empty( $data['Bilanparcours66']['examenaudition'] ) ){
+				$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
+			}
+			if( !empty( $data['Bilanparcours66']['choixparcours'] ) ){
+				$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
+			}
 			// Pour les données de Pôle emploi
-			$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
+			if( !empty( $data['Bilanparcours66']['examenauditionpe'] ) ){
+				$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
+			}
+// 			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
+// 			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
+			// Pour les données de Pôle emploi
+// 			$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options =  Set::merge(
