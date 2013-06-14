@@ -1,5 +1,4 @@
 <?php $this->pageTitle = 'Paramétrage des décisions de PDO';?>
-<?php echo $this->Xform->create( 'Decisionpdo' );?>
 <div>
 	<h1><?php echo 'Visualisation de la table  ';?></h1>
 
@@ -12,8 +11,11 @@
 			).' </li>';
 		?>
 	</ul>
-	<div>
+    <?php $pagination = $this->Xpaginator->paginationBlock( 'Decisionpdo', $this->passedArgs ); ?>
+	
+    <div>
 		<h2>Table Décision de PDO</h2>
+        <?php echo $pagination;?>
 		<table>
 		<thead>
 			<tr>
@@ -76,13 +78,20 @@
 			endforeach;?>
 		</tbody>
 		</table>
+        <?php echo $pagination;?>
+        
 </div>
-</div>
-	<div class="submit">
-		<?php
-			echo $this->Xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-		?>
-	</div>
-
-<div class="clearer"><hr /></div>
-<?php echo $this->Xform->end();?>
+    <?php
+        echo '<div class="aere">';
+		echo $this->Default->button(
+			'back',
+			array(
+				'controller' => 'pdos',
+				'action'     => 'index'
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+		echo '</div>';
+    ?>
