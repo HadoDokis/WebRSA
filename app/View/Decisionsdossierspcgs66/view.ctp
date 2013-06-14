@@ -12,16 +12,24 @@
 				'Decisionpdo.libelle',
 				'Decisiondossierpcg66.commentairetechnicien',
 				'Decisiondossierpcg66.datepropositiontechnicien',
+                'Decisiondossierpcg66.avistechnique',
+                'Decisiondossierpcg66.commentaireavistechnique',
+                'Decisiondossierpcg66.useravistechnique_id' => array( 'type' => 'text', 'value' => Hash::get( $gestionnaire, Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id' ) ) ),
+                'Decisiondossierpcg66.dateavistechnique',
+                'Decisiondossierpcg66.validationproposition',
+                'Decisiondossierpcg66.commentairevalidation',
+                'Decisiondossierpcg66.userproposition_id' => array( 'type' => 'text', 'value' => Hash::get( $gestionnaire, Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id' ) ) ),
 				'Decisiondossierpcg66.datevalidation',
                 'Dossierpcg66.etatdossierpcg',
                 'Orgtransmisdossierpcg66.name' => array( 'label' => 'Transmission à', 'value' => @$orgs ),
-                'Decisiondossierpcg66.0.datetransmissionop'
+                'Decisiondossierpcg66.datetransmissionop'
 			),
 			array(
 				'class' => 'aere',
                 'options' => $options
 			)
 		);
+
         
         if( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) {
             echo $this->Default2->view(
