@@ -1,0 +1,109 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+msgid "Decisionscuis66::decisioncui"
+msgstr "Décision"
+
+msgid "Decisioncui66::add"
+msgstr "Ajout d'une décision"
+
+msgid "Decisioncui66::edit"
+msgstr "Modification d'une décision"
+
+msgid "Decisioncui66::index::empty"
+msgstr "Aucune décision émise"
+
+msgid "Decisionscuis66::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer la décision ?"
+
+msgid "Decisionscuis66::add"
+msgstr "Ajouter une décision"
+
+msgid "Decisionscuis66::edit"
+msgstr "Modifier une décision"
+
+msgid "Decisionscuis66::delete"
+msgstr "Supprimer une décision"
+
+msgid "Decisioncui66.observdecisioncui"
+msgstr "Observations sur la décision"
+
+msgid "Decisioncui66.datedecisioncui"
+msgstr "Date de décision"
+
+msgid "Decisioncui66.decisioncui"
+msgstr "Décision"
+
+msgid "ENUM::DECISIONCUI::elementsup"
+msgstr "En attente d'éléments supplémentaires"
+
+msgid "Decisioncui66.isaviselu"
+msgstr "Avis de l'élu"
+
+msgid "ENUM::NO::O"
+msgstr "Oui"
+
+msgid "ENUM::NO::N"
+msgstr "Non"
+
+msgid "Decisioncui66.isavisreferent"
+msgstr "Avis du référent"
+
+#################################################################################
+# Valeurs des ENUM pour les propositions de décisions du CUI (MNE, élu, référent
+#################################################################################
+msgid "ENUM::DECISIONCUI::enattente"
+msgstr "En attente de décision"
+
+msgid "ENUM::DECISIONCUI::refus"
+msgstr "Refus"
+
+msgid "ENUM::DECISIONCUI::accord"
+msgstr "Accord"
+
+msgid "ENUM::DECISIONCUI::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISIONCUI::sanssuiteemployeur"
+msgstr "Sans suite employeur"
+
+msgid "ENUM::DECISIONCUI::sanssuiteemploye"
+msgstr "Sans suite employé"
+
+msgid "ENUM::DECISIONCUI::sanssuitesalarie"
+msgstr "Sans suite salarié"
+
+msgid "ENUM::DECISIONCUI::denonciation"
+msgstr "Dénonciation prescripteur"
+
+msgid "ENUM::DECISIONCUI::resilie"
+msgstr "Résilié"
+
+msgid "Decisionscuis66::filelink"
+msgstr "Liste des fichiers liés à la Personne"
+
+msgid "Decisioncui66.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"

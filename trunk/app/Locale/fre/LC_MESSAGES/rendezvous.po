@@ -1,0 +1,89 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+
+###############################################################################
+# Rendez-vous
+###############################################################################
+
+msgid "Rendezvous.lib_struct"
+msgstr "Structure référente"
+
+msgid "Rendezvous.modelenotifrdv"
+msgstr "Modèle de notification lié au type de RDV"
+
+msgid "Rendezvous::index"
+msgstr "Rendez-vous"
+
+msgid "Rendezvous::index::empty"
+msgstr "Aucun rendez-vous présent"
+
+msgid "Rendezvous::add"
+msgstr "Ajouter un nouveau rendez-vous"
+
+msgid "Rendezvous::add"
+msgstr "Ajout d'un rendez-vous"
+
+msgid "Rendezvous::edit"
+msgstr "Modification du rendez-vous"
+
+msgid "Rendezvous::print"
+msgstr "Imprimer le rendez-vous"
+
+msgid "Rendezvous::delete"
+msgstr "Supprimer le rendez-vous"
+
+msgid "Rendezvous::delete::confirm"
+msgstr "Etes-vous sûr de vouloir supprimer le rendez-vous?"
+
+msgid "Rendezvous.daterdv"
+msgstr "Date de RDV"
+
+msgid "Rendezvous.heurerdv"
+msgstr "Heure du RDV"
+
+msgid "Rendezvous.objetrdv"
+msgstr "Objectif du RDV"
+
+msgid "Rendezvous.commentairerdv"
+msgstr "Commentaire du RDV"
+
+msgid "Rendezvous.statutrdv"
+msgstr "Statut du RDV"
+
+msgid "Rendezvous.lib_rdv"
+msgstr "Objet du RDV"
+
+msgid "Rendezvous.commentairerdv"
+msgstr "Commentaires suite au RDV"
+
+msgid "Rendezvous::filelink"
+msgstr "Liste des fichiers liés au RDV"
+
+msgid "Rendezvous.haspiecejointe"
+msgstr "Ajouter une pièce jointe"
+
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "Rendezvous.rang"
+msgstr "Rang du rendez-vous"
