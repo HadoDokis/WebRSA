@@ -1,14 +1,11 @@
 <?php
 	$this->pageTitle =  __d( 'dossierpcg66', "Dossierspcgs66::{$this->action}" );
+    if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Form->create( 'Dossierpcg66', array( 'type' => 'post', 'id' => 'dossierpcg66form' ) );
-
-	$class = '';
-	if( empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {
-		$class = 'aere';
-	}
 
 	echo $this->Default2->view(
 		$dossierpcg66,
@@ -21,29 +18,32 @@
 			'Dossierpcg66.iscomplet',
 // 			'Dossierpcg66.user_id' => array( 'value' => '#User.nom# #User.prenom#' ),
 			'User.nom_complet' => array( 'type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)' ),
-			'Dossierpcg66.etatdossierpcg'
+			'Dossierpcg66.etatdossierpcg',
+            'Orgtransmisdossierpcg66.name' => array( 'label' => 'Transmission à', 'value' => @$orgs ),
+            'Decisiondossierpcg66.0.datetransmissionop'
 		),
 		array(
-			'class' => $class,
+			'class' => 'aere',
 			'options' => $options
 		)
 	);
-
-	if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {
-		echo $this->Default2->view(
-			$dossierpcg66,
-			array(
-				'Decisiondossierpcg66.0.datetransmissionop'
-			),
-			array(
-				'class' => 'aere',
-				'options' => $options
-			)
-		);
-	}
+//debug($dossierpcg66);
+//	if( $dossierpcg66['Decisiondossierpcg66'][0]['etatop'] == 'transmis' && !empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {
+//		echo $this->Default2->view(
+//			$dossierpcg66,
+//			array(
+//				'Decisiondossierpcg66.0.datetransmissionop'
+//			),
+//			array(
+//				'class' => 'aere',
+//				'options' => $options
+//			)
+//		);
+//	}
 ?>
 <h2>Décisions du dossier</h2>
 <?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
+    <?php if( $dossierpcg66['Decisiondossierpcg66'][0]['etatop'] == 'transmis' ):?>
 	<table class="tooltips aere">
 		<thead>
 			<tr>
@@ -73,6 +73,10 @@
 	<?php else:?>
 		<p class="notice">Aucune décision émise pour ce dossier</p>
 	<?php endif;?>
+    <?php else:?>
+		<p class="notice">Aucune décision émise pour ce dossier</p>
+	<?php endif;?>
+    
 	<?php
 		echo "<h2>Pièces jointes</h2>";
 		echo $this->Fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
@@ -106,10 +110,20 @@
 				</tbody>
 			</table>
 		<?php endif;?>
+            
+    <?php
+        echo '<div class="aere">';
+		echo $this->Default->button(
+			'back',
+			array(
+				'controller' => 'dossierspcgs66',
+				'action'     => 'index',
+				$dossierpcg66['Dossierpcg66']['foyer_id']
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+		echo '</div>';
+    ?>
 </div>
-<div class="submit">
-	<?php
-		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-	?>
-</div>
-<?php echo $this->Form->end();?>

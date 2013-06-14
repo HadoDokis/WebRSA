@@ -618,10 +618,11 @@
 						'User',
                         'Decisiondossierpcg66' => array(
                             'order' => array( 'Decisiondossierpcg66.created DESC' ),
-                            'conditions' => array(
-                                'Decisiondossierpcg66.validationproposition' => 'O',
-                                'Decisiondossierpcg66.etatop' => 'transmis'
-                            )
+//                            'conditions' => array(
+//                                'Decisiondossierpcg66.validationproposition' => 'O',
+//                                'Decisiondossierpcg66.etatop' => 'transmis'
+//                            ),
+                            'Orgtransmisdossierpcg66'
                         )
 					)
 				)
@@ -646,8 +647,15 @@
 			}
 			$this->set( compact( 'traitementsCourriersEnvoyes' ) );
 			
+           
+            // Liste des organismes auxquels on transmet le dossier
+            if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['Orgtransmisdossierpcg66'] ) ) {
+                $listOrgs = Hash::extract( $dossierpcg66['Decisiondossierpcg66'][0], 'Orgtransmisdossierpcg66.{n}.name' );
+                $orgs = implode( ', ',  $listOrgs );
+            }
+            
 			$this->_setOptions();
-			$this->set( compact( 'dossierpcg66' ) );
+			$this->set( compact( 'dossierpcg66', 'orgs', 'datetransmissionop' ) );
 			$this->set( 'foyer_id', $foyer_id );
 
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );

@@ -54,18 +54,6 @@
 		);
 
 		public $validate = array(
-			'propopdo_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => 'Merci de saisir une valeur numérique'
-				),
-			),
-			'descriptionpdo_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					'message' => 'Merci de saisir une valeur numérique'
-				),
-			),
 			'typecourrierpcg66_id' => array(
 				array(
 					'rule' => array( 'notEmptyIf', 'typetraitement', true, array( 'courrier' ) ),

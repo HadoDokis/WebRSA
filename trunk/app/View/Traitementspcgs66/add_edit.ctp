@@ -789,7 +789,7 @@
 		);
 		echo $this->Default->subform(
 			array(
-				'Traitementpcg66.descriptionpdo_id' => array( 'type' => 'select' )
+				'Traitementpcg66.descriptionpdo_id' => array( 'type' => 'select', 'required' => true )
 			),
 			array(
 				'options' => $options

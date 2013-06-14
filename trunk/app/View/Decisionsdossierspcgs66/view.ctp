@@ -3,7 +3,6 @@
 ?>
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Form->create( 'Decisiondossierpcg66', array( 'type' => 'post', 'id' => 'decisiondossierpcg66form' ) );
 	?>
 
 	<?php
@@ -14,7 +13,9 @@
 				'Decisiondossierpcg66.commentairetechnicien',
 				'Decisiondossierpcg66.datepropositiontechnicien',
 				'Decisiondossierpcg66.datevalidation',
-                'Dossierpcg66.etatdossierpcg'
+                'Dossierpcg66.etatdossierpcg',
+                'Orgtransmisdossierpcg66.name' => array( 'label' => 'Transmission à', 'value' => @$orgs ),
+                'Decisiondossierpcg66.0.datetransmissionop'
 			),
 			array(
 				'class' => 'aere',
@@ -40,10 +41,18 @@
 		echo "<h2>Pièces liées à la décision du dossier</h2>";
 		echo $this->Fileuploader->results( Set::classicExtract( $decisiondossierpcg66, 'Fichiermodule' ) );
 	?>
-<div class="submit">
-	<?php
-
-		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) );
-	?>
-</div>
-<?php echo $this->Form->end();?>
+    <?php
+        echo '<div class="aere">';
+		echo $this->Default->button(
+			'back',
+			array(
+				'controller' => 'dossierspcgs66',
+				'action'     => 'edit',
+				$decisiondossierpcg66['Dossierpcg66']['id']
+			),
+			array(
+				'id' => 'Back'
+			)
+		);
+		echo '</div>';
+    ?>
