@@ -44,6 +44,10 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
                             .' à '.implode( ', ', $orgs )
                             .' le '.date_short( $datetransmissionfinale );
 				}
+                else if( Hash::get( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) == 'atttransmisop' ){
+					$etat = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] )
+                            .' à '.implode( ', ', $orgs );
+				}
 				else{
 					$etat = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] );
 				}

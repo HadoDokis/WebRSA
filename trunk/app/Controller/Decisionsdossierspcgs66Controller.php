@@ -620,11 +620,27 @@
 					break;
 				case 'attval':
 				case 'decisionvalid':
+                    $avistechniquemodifiable = ( $this->action != 'add' );
+					$validationmodifiable = ( $this->action != 'add' );
+					break;
 				case 'decisionnonvalid':
+                    $avistechniquemodifiable = ( $this->action != 'add' );
+					$validationmodifiable = ( $this->action != 'add' );
+					break;
 				case 'decisionnonvalidretouravis':
+                    $avistechniquemodifiable = ( $this->action != 'add' );
+					$validationmodifiable = ( $this->action != 'add' );
+					break;
 				case 'decisionvalidretouravis':
+                    $avistechniquemodifiable = ( $this->action != 'add' );
+					$validationmodifiable = ( $this->action != 'add' );
+					break;
 				case 'attpj':
 				case 'atttransmisop':
+					$avistechniquemodifiable = ( $this->action != 'add' );
+					$validationmodifiable = ( $this->action != 'add' );
+					break;
+                case 'transmisop':
 					$avistechniquemodifiable = ( $this->action != 'add' );
 					$validationmodifiable = ( $this->action != 'add' );
 					break;

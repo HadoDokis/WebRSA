@@ -792,7 +792,7 @@
             $corbeillepcgDescriptionId = Configure::read( 'Corbeillepcg.descriptionpdoId' ); // Traiteement de description courrier à l'allocataire
 			if ( empty( $traitementpcg66['Decisiondossierpcg66']['id'] ) ) {
                 
-                if( in_array( $traitementpcg66['Dossierpcg66']['etatdossierpcg'], array( 'attaffect','attinstr', 'instrencours' ) ) )  {
+                if( in_array( $traitementpcg66['Dossierpcg66']['etatdossierpcg'], array( 'attaffect','attinstr', 'instrencours', 'attinstrattpiece' ) ) )  {
                     if( in_array( $traitementpcg66['Traitementpcg66']['descriptionpdo_id'], $corbeillepcgDescriptionId ) ){
                         $return = $this->updateAllUnBound(
                             array(

@@ -189,7 +189,8 @@
 
 					$datetransmission = null;
 					foreach( $decisionsdossierspcgs66 as $i => $decisiondossierpcg66 ){
-						if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
+//						if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
+						if( in_array( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'], array( 'transmis', 'atransmettre' ) ) ){
 							$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
                             
                             // Liste des organismes auxquels on transmet le dossier
