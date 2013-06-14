@@ -10,16 +10,22 @@
 	<?php echo $this->Form->create( 'Decisiondossierpcg66',array(  'id' => 'transmissionopdossierpcg66form' ) ); ?>
 
 	<fieldset>
-			<?php echo $this->Form->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );?>
-			<?php echo $this->Form->input( 'Decisiondossierpcg66.dossierpcg66_id', array( 'type' => 'hidden', 'value' => $dossierpcg66_id ) );?>
-
-			<?php echo $this->Form->input( 'Decisiondossierpcg66.etatop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.etatop' ), 'legend' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['etatop'] )  ); ?>
+			<?php 
+                echo $this->Form->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );
+                echo $this->Form->input( 'Decisiondossierpcg66.dossierpcg66_id', array( 'type' => 'hidden', 'value' => $dossierpcg66_id ) );
+                echo $this->Form->input( 'Decisiondossierpcg66.etatop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.etatop' ), 'legend' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['etatop'] )  ); 
+            ?>
+            <fieldset><legend><?php echo __d( 'orgtransmisdossierpcg66', 'Orgtransmisdossierpcg66.name' ); ?></legend>
+                
+            <?php
+                echo $this->Form->input( 'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66', array( 'type' => 'select', 'label' => false, 'multiple' => 'checkbox', 'empty' => false, 'options' => $orgstransmisdossierspcgs66 ) );
+            ?>
+            </fieldset>
 
 			<feildset id="etattransmission" class="noborder" >
 				<?php
 					echo $this->Default2->subform(
 						array(
-							'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66' => array( 'type' => 'select', 'label' => __d( 'orgtransmisdossierpcg66', 'Orgtransmisdossierpcg66.name' ), 'multiple' => 'checkbox', 'empty' => false, 'options' => $orgstransmisdossierspcgs66 ),
 							'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 )
 						),
 						array(
