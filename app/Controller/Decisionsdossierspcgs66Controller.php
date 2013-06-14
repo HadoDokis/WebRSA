@@ -711,7 +711,8 @@
 							'Personnepcg66',
 							'Foyer'
 						),
-						'Fichiermodule'
+						'Fichiermodule',
+                        'Orgtransmisdossierpcg66'
 					)
 				)
 			);
@@ -724,9 +725,15 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' ) ) );
 			}
+            
+             // Liste des organismes auxquels on transmet le dossier
+            if( !empty( $decisiondossierpcg66['Orgtransmisdossierpcg66'] ) ) {
+                $listOrgs = Hash::extract( $decisiondossierpcg66, 'Orgtransmisdossierpcg66.{n}.name' );
+                $orgs = implode( ', ',  $listOrgs );
+            }
 
 			$options = $this->Decisiondossierpcg66->enums();
-			$this->set( compact( 'decisiondossierpcg66' ) );
+			$this->set( compact( 'decisiondossierpcg66', 'orgs' ) );
 			$this->_setOptions();
 
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$decisiondossierpcg66['Dossierpcg66']['foyer_id'] );
