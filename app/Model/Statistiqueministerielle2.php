@@ -290,6 +290,15 @@
 			// Conditions sur l'adresse de l'allocataire
 			$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
 
+			// Conditions à ajouter éventuellement dans le webrsa.inc: même si
+			// on s'assure que les allocataires sont soumis à DD, on ne se
+			// préoccupe pas de l'état du dossier. On peut désormais le faire via
+			// cette configuration.
+			$conditions_base = (array)Configure::read( "Statistiqueministerielle2.conditions_base" );
+			if( !empty( $conditions_base ) ) {
+				$conditions = Hash::merge( $conditions_base, $conditions );
+			}
+
 			return array(
 				'joins' => array(
 					$Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
