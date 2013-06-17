@@ -366,7 +366,7 @@
 										AND personnes.dtnai = Personne.dtnai
 									)
 								)
-							ORDER BY dossiers.dtdemrsa DESC
+							ORDER BY dossiers.dtdemrsa DESC, dossiers.id DESC
 							LIMIT 1
 					)';
 				}
