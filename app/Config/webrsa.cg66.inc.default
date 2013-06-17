@@ -548,7 +548,7 @@
      * (unqiue par année et qui devant être changé chaque année)
      * Cui.numconventionobj
 	 */
-    Configure::write( 'Cui.Numeroconvention', '066130000100' );
+    Configure::write( 'Cui.Numeroconvention', '0661300001' );
 
 	/**
 	 * Conditions de base pour le brouillon des statistiques ministérielles.

@@ -230,5 +230,41 @@
 				return null;
 			}
 		}
+
+
+        /**
+         * Sous-requête permettant de savoir si une entrée existe dans la table proposdecisionscuis66 pour une entrée d'une
+         * table d'un autre modèle.
+         *
+         * @param Model $Model
+         * @param string $fieldName Si null, renvoit uniquement la sous-requête,
+         * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
+         * 	modèle).
+         * @param string $modelAlias Si null, utilise l'alias de la class Propodecisioncui66, sinon la valeur donnée.
+         * @return string
+         */
+        public function sqNbPropositions( Model $Model, $fieldName = null, $modelAlias = null ) {
+            $alias = Inflector::underscore( $this->alias );
+
+            $modelAlias = ( is_null( $modelAlias ) ? $this->alias : $modelAlias );
+
+            $sq = $this->sq(
+                array(
+                    'fields' => array(
+                        "COUNT( {$alias}.id )"
+                    ),
+                    'alias' => $alias,
+                    'conditions' => array(
+                        "{$alias}.cui_id = {$Model->alias}.{$Model->primaryKey}"
+                    )
+                )
+            );
+
+            if( !is_null( $fieldName ) ) {
+                $sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
+            }
+
+            return $sq;
+        }
 	}
 ?>

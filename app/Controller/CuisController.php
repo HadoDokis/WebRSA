@@ -362,13 +362,14 @@
 						$this->Cui->Partenaire->fields(),
 						array(
                             'Decisioncui66.id',
-							$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nb_fichiers_lies' )
+							$this->Cui->Fichiermodule->sqNbFichiersLies( $this->Cui, 'nb_fichiers_lies' ),
+                            $this->Cui->Propodecisioncui66->sqNbPropositions( $this->Cui, 'nb_proposition' )
 						)
 					),
 					'conditions' => array(
 						'Cui.personne_id' => $personne_id
 					),
-					'recursive' => -1,
+                    'recursive' => -1,
 					'joins' => array(
 						$this->Cui->join( 'Secteurcui' ),
 						$this->Cui->join( 'Partenaire' ),
@@ -390,8 +391,22 @@
                     $action = 'add';
                 }
                 $cuis[$i]['Cui']['action'] = $action;
+
 			}
- 
+
+            // Est-ce qu'un référent est lié à l'allocataire ?
+            $persreferent = $this->Cui->Personne->PersonneReferent->find(
+                'count',
+                array(
+                    'conditions' => array(
+                        'PersonneReferent.personne_id' => $personne_id,
+                        'PersonneReferent.dfdesignation IS NULL'
+                    ),
+                    'recursive' => -1
+                )
+            );
+            $this->set( compact( 'persreferent' ) );
+
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'cuis' ) );
@@ -419,295 +434,6 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-		/**
-		 * Traitement du formulaire d'ajout ou de modification de CUI.
-		 *
-		 * @param inetger $id Correspond à l'id de la Personne en cas d'ajout, à l'id du Cui en cas de modification.
-		 */
-		/*protected function _add_edit( $id = null ) {
-			$valueAdressebis = null;
-			if( $this->action == 'add' ) {
-				$cui_id = null;
-				$personne_id = $id;
-				$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
-				$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
-				$valueAdressebis = 'N';
-			}
-			else if( $this->action == 'edit' ) {
-				$cui_id = $id;
-				$qd_cui = array(
-					'conditions' => array(
-						'Cui.id' => $cui_id
-					),
-					'fields' => null,
-					'order' => null,
-					'contain' => array(
-						'Partenaire'
-					)
-				);
-				$cui = $this->Cui->find( 'first', $qd_cui );
-
-				$this->assert( !empty( $cui ), 'invalidParameter' );
-				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-				$valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
-			}
-            
-
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-			$dossier_id = $this->Cui->Personne->dossierId( $personne_id );
-			$this->Jetons2->get( $dossier_id );
-
-			// Retour à la liste en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
-
-			$this->set( 'dossier_id', $dossier_id );
-			$this->set( 'valueAdressebis', $valueAdressebis );
-
-
-			$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
-
-            // Date de l'inscription au Pôle Emploi
-            $dateInscritpe = array();
-            if( isset( $personne['Historiqueetatpe'] ) && !empty( $personne['Historiqueetatpe'] ) ){
-                if( $personne['Historiqueetatpe']['etat'] == 'inscription' ){
-                    $dateInscritpe = $personne['Historiqueetatpe']['date'];
-                }
-            }
-            $this->set( compact( 'dateInscritpe' ) );
-			// On récupère l'utilisateur connecté et qui exécute l'action
-			$userConnected = $this->Session->read( 'Auth.User.id' );
-			$this->set( compact( 'userConnected' ) );
-            
-            // On affiche la valeur de la convention annuelle définie en paramétrage
-            $numconventionobj = Configure::read( 'Cui.Numeroconvention' );
-            $this->set( compact( 'numconventionobj' ) );
-
-			// On récupère la valeur du montant rsa perçu au moment de l'enregistrement
-			$tDetaildroitrsa = $this->Cui->Personne->Foyer->Dossier->Detaildroitrsa->find(
-				'first',
-				array(
-					'fields' => array(
-						'Detaildroitrsa.id',
-						'Detaildroitrsa.dossier_id',
-					),
-                    'contain' => array(
-						'Detailcalculdroitrsa' => array(
-							'fields' => array(
-								'Detailcalculdroitrsa.mtrsavers',
-								'Detailcalculdroitrsa.dtderrsavers',
-								'Detailcalculdroitrsa.natpf',
-							),
-						)
-					),
-					'conditions' => array(
-						'Detaildroitrsa.dossier_id' => $dossier_id
-					)
-				)
-			);
-
-			$listeMontant = null;
-            $listeNatureRSA = null;
-			if( !empty( $tDetaildroitrsa ) ) {
-                $listeNatureRSA = serialize( Hash::extract( $tDetaildroitrsa, 'Detailcalculdroitrsa.{n}.natpf' ) );
-                $listeMontant = serialize( Hash::extract( $tDetaildroitrsa, 'Detailcalculdroitrsa.{n}.mtrsavers' ) );
-			}
-            $this->set( compact( 'listeNatureRSA', 'listeMontant' ) );
-
-			// ------------------------------------------------------------------------------------------
-			// Affichage des valeurs non marchnades si le secteur choisi est de type non marchand
-			$valeursSecteurcui = $this->Cui->Secteurcui->find(
-				'all',
-				array(
-					'order' => array( 'Secteurcui.isnonmarchand DESC', 'Secteurcui.name ASC' )
-				)
-			);
-			$secteur_isnonmarchand_id = Hash::extract( $valeursSecteurcui, '{n}.Secteurcui[isnonmarchand=1].id' );
-
-			$secteurscuisForm = array(
-				'Secteurcui' => array(
-					'id' => Set::combine( $valeursSecteurcui, '{n}.Secteurcui.id', '{n}.Secteurcui.name' )
-				)
-			);
-			$this->set( compact( 'secteur_isnonmarchand_id', 'secteurscuisForm' ) );
-			// ------------------------------------------------------------------------------------------
-			 //On affiche les actions inactives en édition mais pas en ajout,
-            // afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
-            $isactive = 'O';
-            if( $this->action == 'edit' ){
-                $isactive = array( 'O', 'N' );
-            }
-            $employeursCui = $this->{$this->modelClass}->Actioncandidat->Partenaire->find(
-				'list',
-				array(
-					'conditions' => array(
-						'Partenaire.iscui' => '1'
-					),
-					'order' => array( 'Partenaire.libstruc ASC' )
-				)
-			);
-
-			$actionsCui = $this->{$this->modelClass}->Actioncandidat->find(
-				'all',
-				array(
-					'fields' => array(
-						'Actioncandidat.id',
-						'Actioncandidat.name',
-						'Actioncandidat.contactpartenaire_id',
-						'Partenaire.id',
-						'Partenaire.libstruc',
-						'Contactpartenaire.partenaire_id',
-						'( "Partenaire"."id" || \'_\'|| "Actioncandidat"."id" ) AS "Actioncandidat__id"',
-						'Actioncandidat.name',
-					),
-					'joins' => array(
-						$this->Cui->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'INNER' ) ),
-						$this->Cui->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'INNER' ) )
-					),
-					'order' => array( 'Actioncandidat.name ASC' )
-				)
-			);
-
-			$valeursactionsparpartenaires = array();
-			foreach( $actionsCui as $action ) {
-				$valeursactionsparpartenaires[$action['Actioncandidat']['id']] = $action['Actioncandidat']['name'];
-			}
-			$this->set( compact( 'valeursactionsparpartenaires', 'employeursCui' ) );
-			// ------------------------------------------------------------------------------------------
-
-			
-			$taux_cgs_cuis = $this->Cui->Secteurcui->Tauxcgcui->find( 'all' );
-			$this->set( compact( 'taux_cgs_cuis' ) );
-
-			$this->set( 'personne', $personne );
-
-			/// Calcul du numéro du contrat d'insertion
-			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-
-			if( !empty( $this->request->data ) ) {
-				$this->{$this->modelClass}->begin();
-
-				if( $this->action == 'add' ) {
-					$this->request->data['Cui']['rangcui'] = $nbCui + 1;
-				}
-
-				$dataCui = $this->request->data['Cui'];
-				//Sauvegarde (création d'un nouveau partenaire si nouvel employeur
-				if( !empty( $this->request->data['Cui']['newemployeur'] ) && ( $this->request->data['Cui']['newemployeur'] == '1' ) && !empty( $this->request->data['Partenaire'] ) ) {
-					$partenaire = Hash::filter( (array)$this->request->data['Partenaire'] );
-					if( !empty( $partenaire ) ) {
-						$this->Cui->Partenaire->create( $this->request->data );
-						$success = $this->Cui->Partenaire->save();
-						$cui['partenaire_id'] = $this->{$this->modelClass}->Partenaire->id;
-					}
-				}
-
-				$this->{$this->modelClass}->create( $dataCui );
-				$success = $this->{$this->modelClass}->save();
-
-				// Nettoyage des Periodes d'immersion
-				$keys = array_keys( $this->Cui->Accompagnementcui66->schema() );
-				$defaults = array_combine( $keys, array_fill( 0, count( $keys ), null ) );
-				unset( $defaults['id'] );
-				unset( $defaults['cui_id'] );
-
-				//Sauvegarde des accompagnements cuis si présents dans la requête
-				if( !empty( $this->request->data['Accompagnementcui66'] ) ) {
-					$this->request->data['Accompagnementcui66'] = Set::merge( $defaults, $this->request->data['Accompagnementcui66'] );
-				}
-
-				if( !empty( $this->request->data['Cui']['isaci'] ) && ( $this->request->data['Cui']['iscae'] == '1' ) && !empty( $this->request->data['Accompagnementcui66'] ) ) {
-					$Accompagnementcui66 = Hash::filter( (array)$this->request->data['Accompagnementcui66'] );
-					if( !empty( $Accompagnementcui66 ) ) {
-						$this->{$this->modelClass}->Accompagnementcui66->create( $this->request->data );
-						if( $this->action == 'add' ) {
-							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID() );
-						}
-						else if( $this->action == 'edit' ) {
-							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', Set::classicExtract( $this->request->data, 'Cui.id' ) );
-						}
-						$success = $this->{$this->modelClass}->Accompagnementcui66->save() && $success;
-					}
-				}
-
-// debug($this->request->data);
-				if( $success ) {
-					$this->{$this->modelClass}->commit();
-					$this->Jetons2->release( $dossier_id );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
-				}
-				else {
-					$this->{$this->modelClass}->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
-			}
-			else {
-				if( $this->action == 'edit' ) {
-					$this->request->data = $cui;
-					if( !empty( $this->request->data['Accompagnementcui66'] ) ) {
-						$this->request->data['Accompagnementcui66'] = $this->request->data['Accompagnementcui66'][0];
-					}
-
-					if( !empty( $cui['Cui']['actioncandidat_id'] ) ) {
-						$this->request->data['Cui']['actioncandidat_id'] = $cui['Cui']['partenaire_id'].'_'.$cui['Cui']['actioncandidat_id'];
-					}
-					$nbCui = $cui['Cui']['rangcui'];
-				}
-			}
-
-
-			if (!isset($this->request->data['Cui']['compofamiliale']) || empty($this->request->data['Cui']['compofamiliale'])) {
-				$compofamiliale = $this->Cui->Personne->Foyer->find(
-					'first',
-					array(
-						'fields' => array(
-							'Foyer.id',
-							'Foyer.sitfam'
-						),
-						'joins' => array(
-							$this->Cui->Personne->Foyer->join( 'Personne', array( 'type' => 'INNER' ) )
-						),
-						'conditions' => array(
-							'Personne.foyer_id = Foyer.id',
-							'Personne.id' => $personne_id
-						),
-						'contain'=>false
-					)
-				);
-				$nbenfant = $this->Cui->Personne->Foyer->nbEnfants($compofamiliale['Foyer']['id']);
-				if (in_array($compofamiliale['Foyer']['sitfam'], array('CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU'))) {
-					if ($nbenfant==0) {
-						$this->request->data['Cui']['compofamiliale']='isole';
-					}
-					else {
-						$this->request->data['Cui']['compofamiliale']='isoleenfant';
-					}
-				}
-				elseif (in_array($compofamiliale['Foyer']['sitfam'], array('MAR', 'PAC', 'RPA', 'RVC', 'VIM'))) {
-					if ($nbenfant==0) {
-						$this->request->data['Cui']['compofamiliale']='couple';
-					}
-					else {
-						$this->request->data['Cui']['compofamiliale']='coupleenfant';
-					}
-				}
-			}
-
-			$this->_setOptions();
-			$this->set( 'nbCui', $nbCui );
-			$this->set( 'personne_id', $personne_id );
-			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
-			$this->render( 'add_edit' );
-		} */
-
-        
-        
-        
-        
         
         /**
 		 * Traitement du formulaire d'ajout ou de modification de CUI.
@@ -715,32 +441,6 @@
 		 * @param inetger $id Correspond à l'id de la Personne en cas d'ajout, à l'id du Cui en cas de modification.
 		 */
 		protected function _add_edit( $id = null ) {
-			/*$valueAdressebis = null;
-			if( $this->action == 'add' ) {
-				$cui_id = null;
-				$personne_id = $id;
-				$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
-				$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
-				$valueAdressebis = 'N';
-			}
-			else if( $this->action == 'edit' ) {
-				$cui_id = $id;
-				$qd_cui = array(
-					'conditions' => array(
-						'Cui.id' => $cui_id
-					),
-					'fields' => null,
-					'order' => null,
-					'contain' => array(
-						'Partenaire'
-					)
-				);
-				$cui = $this->Cui->find( 'first', $qd_cui );
-
-				$this->assert( !empty( $cui ), 'invalidParameter' );
-				$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
-				$valueAdressebis = Set::classicExtract( $cui, 'Cui.isadresse2' );
-			}*/
             
             if( $this->action == 'add' ) {
 				$personne_id = $id;
@@ -762,57 +462,6 @@
 			}
 
 			$this->set( 'dossier_id', $dossier_id );
-//			$this->set( 'valueAdressebis', $valueAdressebis );
-
-
-			/*$personne = $this->{$this->modelClass}->Personne->detailsApre( $personne_id, $this->Session->read( 'Auth.User.id' ) );
-
-            // Date de l'inscription au Pôle Emploi
-            $dateInscritpe = array();
-            if( isset( $personne['Historiqueetatpe'] ) && !empty( $personne['Historiqueetatpe'] ) ){
-                if( $personne['Historiqueetatpe']['etat'] == 'inscription' ){
-                    $dateInscritpe = $personne['Historiqueetatpe']['date'];
-                }
-            }
-            $this->set( compact( 'dateInscritpe' ) );
-			// On récupère l'utilisateur connecté et qui exécute l'action
-			$userConnected = $this->Session->read( 'Auth.User.id' );
-			$this->set( compact( 'userConnected' ) );
-            
-            // On affiche la valeur de la convention annuelle définie en paramétrage
-            $numconventionobj = Configure::read( 'Cui.Numeroconvention' );
-            $this->set( compact( 'numconventionobj' ) );
-
-			// On récupère la valeur du montant rsa perçu au moment de l'enregistrement
-			$tDetaildroitrsa = $this->Cui->Personne->Foyer->Dossier->Detaildroitrsa->find(
-				'first',
-				array(
-					'fields' => array(
-						'Detaildroitrsa.id',
-						'Detaildroitrsa.dossier_id',
-					),
-                    'contain' => array(
-						'Detailcalculdroitrsa' => array(
-							'fields' => array(
-								'Detailcalculdroitrsa.mtrsavers',
-								'Detailcalculdroitrsa.dtderrsavers',
-								'Detailcalculdroitrsa.natpf',
-							),
-						)
-					),
-					'conditions' => array(
-						'Detaildroitrsa.dossier_id' => $dossier_id
-					)
-				)
-			);
-
-			$listeMontant = null;
-            $listeNatureRSA = null;
-			if( !empty( $tDetaildroitrsa ) ) {
-                $listeNatureRSA = serialize( Hash::extract( $tDetaildroitrsa, 'Detailcalculdroitrsa.{n}.natpf' ) );
-                $listeMontant = serialize( Hash::extract( $tDetaildroitrsa, 'Detailcalculdroitrsa.{n}.mtrsavers' ) );
-			}
-            $this->set( compact( 'listeNatureRSA', 'listeMontant' ) );*/
 
 			// ------------------------------------------------------------------------------------------
 			// Affichage des valeurs non marchnades si le secteur choisi est de type non marchand
@@ -945,22 +594,6 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			/*else {
-				if( $this->action == 'edit' ) {
-					$this->request->data = $cui;
-					if( !empty( $this->request->data['Accompagnementcui66'] ) ) {
-						$this->request->data['Accompagnementcui66'] = $this->request->data['Accompagnementcui66'][0];
-					}
-
-					if( !empty( $cui['Cui']['actioncandidat_id'] ) ) {
-						$this->request->data['Cui']['actioncandidat_id'] = $cui['Cui']['partenaire_id'].'_'.$cui['Cui']['actioncandidat_id'];
-					}
-					$nbCui = $cui['Cui']['rangcui'];
-				}
-			}*/
-
-//debug( $this->request->data );
-			
 
             
             if( empty( $this->request->data ) ) {
@@ -1111,7 +744,10 @@
 
 				$saved = $this->Cui->save( $this->request->data );
 				$saved = $this->{$this->modelClass}->updateAllUnBound(
-					array( 'Cui.positioncui66' => '\'annule\'' ),
+					array(
+                        'Cui.positioncui66' => '\'annule\'',
+                        'Cui.decisioncui' => '\'annule\''
+                    ),
 					array(
 						'"Cui"."personne_id"' => $cui['Cui']['personne_id'],
 						'"Cui"."id"' => $cui['Cui']['id']
@@ -1125,8 +761,9 @@
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
-					$this->cui->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/erreur' );
+					$this->Cui->rollback();
+                    debug( $this->Cui->validationErrors);
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 				}
 			}
 			else {

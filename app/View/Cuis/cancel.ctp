@@ -18,7 +18,7 @@
 			"{$modelClassName}.id" => array( 'type' => 'hidden' ),
 			"{$modelClassName}.personne_id" => array( 'type' => 'hidden' ),
 			"{$modelClassName}.positioncui66" => array( 'type' => 'hidden', 'value' => 'annule' ),
-			"{$modelClassName}.decisioncui" => array( 'type' => 'hidden', 'value' => 'C' ),
+			"{$modelClassName}.decisioncui" => array( 'type' => 'hidden', 'value' => 'annule' ),
 			"{$modelClassName}.motifannulation" => array( 'type' => 'textarea' )
 		),
 		array(

@@ -287,17 +287,17 @@
 		/**
 		*   BeforeValidate
 		*/
-		public function beforeValidate( $options = array() ) {
-			$return = parent::beforeValidate( $options );
-
-			foreach( array( 'iscie' ) as $key ) {
-				if( isset( $this->data[$this->name][$key] ) ) {
-					$this->data[$this->name][$key] = Set::enum( $this->data[$this->name][$key], array( '1' => 'O', '0' => 'N' ) );
-				}
-			}
-
-			return $return;
-		}
+//		public function beforeValidate( $options = array() ) {
+//			$return = parent::beforeValidate( $options );
+//
+//			foreach( array( 'iscie' ) as $key ) {
+//				if( isset( $this->data[$this->name][$key] ) ) {
+//					$this->data[$this->name][$key] = Set::enum( $this->data[$this->name][$key], array( '1' => 'O', '0' => 'N' ) );
+//				}
+//			}
+//
+//			return $return;
+//		}
 
 		/**
 		 * Recalcul de la position du CUI avant l'enregistrement (CG 66).
@@ -747,6 +747,7 @@
 		 */
 		public function dataCafAllocataire( $personne_id ) {
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
+            $sqDernierReferent = $this->Personne->PersonneReferent->sqDerniere( 'Personne.id', false );
 
 			$querydataCaf = array(
 				'fields' => array_merge(
@@ -771,7 +772,17 @@
 					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-                    $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+//                    $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) ),
+//                    $this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Personne->join(
+                        'PersonneReferent',
+                        array(
+                            'type' => 'LEFT OUTER',
+                            'conditions' => array(
+                                "PersonneReferent.id IN ( {$sqDernierReferent} )"
+                            )
+                        )
+                    ),
                     $this->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Personne->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) )
 				),
@@ -795,15 +806,15 @@
 							'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
 						)
 					),
-                    array(
-						'OR' => array(
-                            array(
-                                'PersonneReferent.personne_id' =>  $personne_id,
-                                'PersonneReferent.dfdesignation IS NULL'
-                            ),
-							'PersonneReferent.personne_id IS NULL'
-						)
-					)
+//                    array(
+//						'OR' => array(
+//                            array(
+//                                'PersonneReferent.personne_id' =>  $personne_id,
+//                                'PersonneReferent.dfdesignation IS NULL'
+//                            ),
+//							'PersonneReferent.personne_id IS NULL'
+//						)
+//					)
 				),
 				'contain' => false
 			);
@@ -860,7 +871,7 @@
 				)
 			);
 			$dataUser = $this->User->find( 'first', $querydataUser );
- 
+     
 			// On s'assure que l'utilisateur existe
 			if( empty( $dataUser ) ) {
 				throw new InternalErrorException( "Utilisateur non trouvé \"{$user_id}\"" );
