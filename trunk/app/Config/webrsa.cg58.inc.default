@@ -56,7 +56,7 @@
 	Configure::write( 'FULL_BASE_URL', 'http://localhost/webrsa/trunk' );
 
 	Configure::write( 'Cg.departement', 58 );
-	Configure::write( 'Utilisateurs.multilogin', false );
+	Configure::write( 'Utilisateurs.multilogin', true );
 	Configure::write( 'with_parentid', false ); // true = cg66
 	Configure::write( 'nom_form_ci_cg', 'cg58' );
 	Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
@@ -283,7 +283,7 @@
 	 * INFO: depuis le passage en CakePHP 2.x, il faut mettre les valeurs numériques entre apostrophes.
 	 */
 	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', '1' ); // aucune distincton sur le soumis à droit et devoir array( 0,1 )
-	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '2', '3', '4' ) );
+	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '2', '3', '4', '5', '6' ) );
 
 	/**
 	 * Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
@@ -426,7 +426,7 @@
 	 * @default /usr/sbin/apache2
 	 */
 	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
-	
+
 	/**
 	 * Conditions supplémentaires utilisées lors de la sélection des dossiers pour
 	 * une commission d'EP (url: /dossierseps/choose/...).
@@ -439,7 +439,7 @@
 	Configure::write(
 		'Dossierseps.conditionsSelection',
 		array(
-			'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4' ),
+			'Situationdossierrsa.etatdosrsa' => array( 'Z', '2', '3', '4', '5', '6' ),
 			'Calculdroitrsa.toppersdrodevorsa' => '1',
 		)
 	);
@@ -506,6 +506,32 @@
      * Cui.numconventionobj
 	 */
     Configure::write( 'Cui.Numeroconvention', '066130000100' );
+
+	/**
+	 * Conditions de base pour le brouillon des statistiques ministérielles.
+	 * De base (en dur), on s'assure que l'allocataire soit soumis à droits et
+	 * devoirs. Par contre, on ne s'assure pas de l'état du dossier, hors les
+	 * allocataires soumis à droits et devoirs devraient normalement n'être que
+	 * dans des dossiers en états ouverts.
+	 *
+	 * Exemple:
+	 * <pre>
+	 * Configure::write(
+	 * 	'Statistiqueministerielle2.conditions_base',
+	 * 	array(
+	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+	 * 	)
+	 * );
+	 * </pre>
+	 *
+	 * @var array
+	 */
+    Configure::write(
+		'Statistiqueministerielle2.conditions_base',
+		array(
+			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+		)
+	);
 
 	/**
 	 * Conditions pour la partie "Indicateurs d'organismes" des statistiques

@@ -859,6 +859,32 @@
     Configure::write( 'Cui.Numeroconvention', '066130000100' );
 
 	/**
+	 * Conditions de base pour le brouillon des statistiques ministérielles.
+	 * De base (en dur), on s'assure que l'allocataire soit soumis à droits et
+	 * devoirs. Par contre, on ne s'assure pas de l'état du dossier, hors les
+	 * allocataires soumis à droits et devoirs devraient normalement n'être que
+	 * dans des dossiers en états ouverts.
+	 *
+	 * Exemple:
+	 * <pre>
+	 * Configure::write(
+	 * 	'Statistiqueministerielle2.conditions_base',
+	 * 	array(
+	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+	 * 	)
+	 * );
+	 * </pre>
+	 *
+	 * @var array
+	 */
+    Configure::write(
+		'Statistiqueministerielle2.conditions_base',
+		array(
+			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+		)
+	);
+
+	/**
 	 * Conditions pour la partie "Indicateurs d'organismes" des statistiques
 	 * ministérielles.
 	 *

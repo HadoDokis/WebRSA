@@ -474,7 +474,7 @@
 	 * @default null (false)
 	 */
 	Configure::write( 'Utilisateurs.reconnection', true );
-	
+
 	/**
 	 * Lorsque apache est utilisé en mode CGI, les fonctions apache_get_version()
 	 * et apache_get_modules() ne sont pas disponibles. Du coup, on passe par
@@ -486,7 +486,7 @@
 	 * @default /usr/sbin/apache2
 	 */
 	Configure::write( 'apache_bin', '/usr/sbin/apache2' );
-	
+
 	/**
 	 * Configuration de la gestion des mots de passe aléatoires.
 	 *
@@ -551,6 +551,32 @@
     Configure::write( 'Cui.Numeroconvention', '066130000100' );
 
 	/**
+	 * Conditions de base pour le brouillon des statistiques ministérielles.
+	 * De base (en dur), on s'assure que l'allocataire soit soumis à droits et
+	 * devoirs. Par contre, on ne s'assure pas de l'état du dossier, hors les
+	 * allocataires soumis à droits et devoirs devraient normalement n'être que
+	 * dans des dossiers en états ouverts.
+	 *
+	 * Exemple:
+	 * <pre>
+	 * Configure::write(
+	 * 	'Statistiqueministerielle2.conditions_base',
+	 * 	array(
+	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+	 * 	)
+	 * );
+	 * </pre>
+	 *
+	 * @var array
+	 */
+    Configure::write(
+		'Statistiqueministerielle2.conditions_base',
+		array(
+			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
+		)
+	);
+
+	/**
 	 * Conditions pour la partie "Indicateurs d'organismes" des statistiques
 	 * ministérielles.
 	 *
@@ -594,7 +620,9 @@
 		'Statistiqueministerielle2.conditions_indicateurs_organismes',
 		array(
 			// Pôle Emploi (PE)
-			'pole_emploi' => array(),
+			'pole_emploi' => array(
+				'Structurereferentereferent.id' => 23
+			),
 			// Organisme public de placement professionnel autre que PE (maison de l'emploi, PLIE, mission locale, ...)
 			'oppp_autre_pole_emploi' => array(),
 			// Entreprise de travail temporaire, agence privée de placement
@@ -604,7 +632,12 @@
 			// Insertion par l'activité économique (IAE) (uniquement si le référent appartient à l'IAE)
 			'iae' => array(),
 			// Autre organisme de placement professionnel
-			'autre_professionnel' => array(),
+			'autre_professionnel' => array(
+				'Typeorientreferent.id' => 1,
+				'NOT' => array(
+					'Structurereferentereferent.id' => array( 23 )
+				)
+			),
 			// Service du département
 			'service_departement' => array(),
 			// Service du département, dont orientation à dominante professionnelle
