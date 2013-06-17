@@ -510,6 +510,17 @@
 
 			if ( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ) {
 				$etat = 'transmisop';
+
+                //Mise à jour de l'état du bilan de parcours
+                if( !empty( $decisiondossierpcg66['Dossierpcg66']['bilanparcours66_id'] ) ) {
+                    $this->Bilanparcours66->updateAllUnbound(
+                        array( 'Bilanparcours66.positionbilan' => '\'traite\'' ),
+                        array(
+                            '"Bilanparcours66"."positionbilan"' => 'attcga',
+                            '"Bilanparcours66"."id"' => $decisiondossierpcg66['Dossierpcg66']['bilanparcours66_id']
+                        )
+                    );
+                }
 			}
 			else if ( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'atransmettre' ) {
 				$etat = 'atttransmisop';
