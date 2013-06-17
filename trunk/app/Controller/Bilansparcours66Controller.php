@@ -315,7 +315,9 @@
 								'fields' => array(
 									'etatdossierep'
 								),
-								'Decisiondefautinsertionep66'
+								'Decisiondefautinsertionep66' => array(
+                                    'order' => 'Decisiondefautinsertionep66.created ASC'
+                                )
 							)
 						)
 					),

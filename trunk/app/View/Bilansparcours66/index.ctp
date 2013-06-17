@@ -86,7 +86,7 @@
 								</tr>
 							</tbody>
 						</table>';
-// debug( $bilanparcours66 );
+ //debug( $bilanparcours66 );
 					$nbFichiersLies = 0;
 					$nbFichiersLies = ( isset( $bilanparcours66['Fichiermodule'] ) ? count( $bilanparcours66['Fichiermodule'] ) : 0 );
 
@@ -179,13 +179,26 @@
 							// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
 							$iDernierpassage = count( $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'] ) - 1;
 							foreach( array( 0, 1 ) as $niveauDecision ) {
+
 								if( !isset( $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision] ) ) {
-									echo '<td colspan="2"></td>';
+                                    if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
+                                        echo $this->Xhtml->tag(
+                                            'td',
+                                            'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'],
+                                            array(
+                                                'colspan' => 2
+                                            )
+                                        );
+                                    }
+                                    else {
+									    echo '<td colspan="2"></td>';
+                                    }
 								}
 								else {
 									$decision = $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision];
 
 									if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'ep' ) {
+
 										if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && empty( $decision['decisionsup'] ) ) {
 											echo $this->Xhtml->tag(
 												'td',
@@ -194,7 +207,6 @@
 													'colspan' => 2
 												)
 											);
-
 										}
 										else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && !empty( $decision['decisionsup'] ) ) {
 											echo $this->Xhtml->tag(
@@ -219,7 +231,7 @@
 										}
 										else {
 											//TODO: récupérer les décisions émises par le dossier PCG
-                                            if( !empty( $bilanparcours66['Dossierpcg66'] ) ) {
+                                            if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
                                                 echo $this->Xhtml->tag(
                                                     'td',
                                                     'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'],
@@ -233,8 +245,6 @@
                                             }
 										}
 									}
-//                                    else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'cg' ) {
-//                                    }
 									else { // reorientationprofverssoc, reorientationsocversprof
 										echo $this->Xhtml->tag(
 											'td',
@@ -247,12 +257,11 @@
 									}
 								}
 							}
-							//debug( $bilanparcours66['Defautinsertionep66'] );
 						}
 						else { // Sans passage en EP
 							echo '<td colspan="2"></td>'; // Proposition du référent
 							echo '<td colspan="2"></td>'; // Avis de l'EP
-							echo '<td colspan="2"></td>'; // Décision du CG
+    						echo '<td colspan="2"></td>'; // Décision du CG
 						}
 
 						echo $this->Xhtml->tag(

@@ -70,13 +70,6 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-            'Orgtransmisdossierpcg66' => array(
-				'className' => 'Orgtransmisdossierpcg66',
-				'foreignKey' => 'orgtransmisdossierpcg66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
 		);
 
