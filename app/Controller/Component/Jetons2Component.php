@@ -154,7 +154,8 @@
 						401,
 						array(
 							'time' => ( strtotime( $jetonObtenu['modified'] ) + readTimeout() ),
-							'user' => $lockingUser['User']['username'],
+//							'user' => $lockingUser['User']['username'],
+                            'user' => $lockingUser['User']['nom'].' '.$lockingUser['User']['prenom'],
 							'dossier' => $dossier
 						)
 					);
@@ -294,7 +295,7 @@
 					array(
 						'alias' => 'jetons',
 						'fields' => array(
-							'users.username',
+							'users.username'
 						),
 						'joins' => array(
 							array_words_replace(
@@ -462,7 +463,8 @@
 			else {
 				$querydata['fields'] = array(
 					'( "Jeton"."dossier_id" IS NOT NULL ) AS "Dossier__locked"',
-					'"User"."username" AS "Dossier__locking_user"',
+//					'"User"."username" AS "Dossier__locking_user"',
+                    '( "User"."nom" || \' \' || "User"."prenom" ) AS "Dossier__locking_user"',
 					'( "Jeton"."modified" + INTERVAL \''.readTimeout().' seconds\' ) AS "Dossier__locked_to"',
 					$this->sqLockerIsMe()
 				);
