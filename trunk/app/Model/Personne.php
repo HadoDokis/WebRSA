@@ -1021,18 +1021,23 @@
 
 		public function nbMoisAvantFinTitreSejour( $personne_id = null ) {
             $date1 = '"Titresejour"."dftitsej"';
-            $date2 = 'NOW()';
-            $vfNbMoisAvantFin = "EXTRACT( YEAR FROM AGE( {$date1}, {$date2} ) ) * 12 +  EXTRACT( MONTH FROM AGE( {$date1}, {$date2} ) )";
+            $date2 = '"Cui"."datefintitresejour"';
+            $date3 = 'NOW()';
+            $vfNbMoisAvantFin = "EXTRACT( YEAR FROM AGE( {$date1}, {$date3} ) ) * 12 +  EXTRACT( MONTH FROM AGE( {$date1}, {$date3} ) )";
+            $vfNbMoisAvantFinCui = "EXTRACT( YEAR FROM AGE( {$date2}, {$date3} ) ) * 12 +  EXTRACT( MONTH FROM AGE( {$date2}, {$date3} ) )";
 
 			$result = $this->find(
 				'first',
 				array(
 					'fields' => array(
                         'Titresejour.dftitsej',
-						"( {$vfNbMoisAvantFin} ) AS \"Titresejour__nbMoisAvantFin\""
+						"( {$vfNbMoisAvantFin} ) AS \"Titresejour__nbMoisAvantFin\"",
+                        'Cui.datefintitresejour',
+                        "( {$vfNbMoisAvantFinCui} ) AS \"Cui__nbMoisAvantFinCui\"",
 					),
 					'joins' => array(
-						$this->join( 'Titresejour', array( 'type' => 'INNER' ) )
+						$this->join( 'Titresejour', array( 'type' => 'LEFT OUTER' ) ),
+                        $this->join( 'Cui', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'conditions' => array(
 						'Personne.id' => $personne_id
