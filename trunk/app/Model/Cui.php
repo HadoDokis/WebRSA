@@ -476,15 +476,18 @@
 
 			// Mise à jour de la position du CUI
 			if( !empty( $positioncui66 ) ) {
-				if( ( $isavisreferent == '0' ) && ( $isaviselu == '0' ) && $positioncui66 == 'attavismne' ) {
-					$positioncui66 = 'attavisreferent';
-				}
-				else if( ( $isavisreferent == '1' ) && ( $isaviselu == '0' ) && $positioncui66 =='attavisreferent' ) {
-					$positioncui66 = 'attaviselu';
-				}
-				else if( ( $isavisreferent == '1' ) && ( $isaviselu == '1' ) && $positioncui66 =='attaviselu' ) {
+				if( $positioncui66 == 'attavismne' ) {
 					$positioncui66 = 'attdecision';
 				}
+//                if( ( $isavisreferent == '0' ) && ( $isaviselu == '0' ) && $positioncui66 == 'attavismne' ) {
+//					$positioncui66 = 'attdecision';
+//				}
+//				else if( ( $isavisreferent == '1' ) && ( $isaviselu == '0' ) && $positioncui66 =='attavisreferent' ) {
+//					$positioncui66 = 'attaviselu';
+//				}
+//				else if( ( $isavisreferent == '1' ) && ( $isaviselu == '1' ) && $positioncui66 =='attaviselu' ) {
+//					$positioncui66 = 'attdecision';
+//				}
 				else if( ( $positioncui66 =='attdecision' ) ) {
 					$positioncui66 = 'attdecision';
 				}
