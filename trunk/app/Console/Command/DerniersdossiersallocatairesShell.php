@@ -79,7 +79,7 @@
 								AND personnes.dtnai = p2.dtnai
 							)
 						)
-					ORDER BY dossiers.dtdemrsa DESC
+					ORDER BY dossiers.dtdemrsa DESC, dossiers.id DESC
 					LIMIT 1
 			) AS dossier_id
 		FROM personnes
