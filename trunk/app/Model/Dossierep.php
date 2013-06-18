@@ -492,7 +492,7 @@
 		*
 		*/
 
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$passagecommission = $this->Passagecommissionep->find(
 				'first',
 				array(
@@ -513,7 +513,8 @@
 						'"Passagecommissionep"."impressiondecision" IS NULL'
 					)
 				);
-				$pdf = $this->{$theme}->getDecisionPdf( $passagecommissionep_id );
+
+				$pdf = $this->{$theme}->getDecisionPdf( $passagecommissionep_id, $user_id );
 			}
 
 			return $pdf;

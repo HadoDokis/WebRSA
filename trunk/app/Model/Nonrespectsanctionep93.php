@@ -821,7 +821,7 @@
 		 * Ancienne méthode: 15 requêtes (que du contain)
 		 * Nouvelle méthode: 6 requêtes (mélange de joins et de contain)
 		 */
-		public function getDecisionPdf( $passagecommissionep_id ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null ) {
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$datas = Cache::read( $cacheKey );
 
