@@ -731,7 +731,7 @@
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
 		*/
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$modele = $this->alias;
 			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
 

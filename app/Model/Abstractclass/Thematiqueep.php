@@ -51,7 +51,7 @@
 		/**
 		*
 		*/
-		abstract public function getDecisionPdf( $passagecommissionep_id  );
+		abstract public function getDecisionPdf( $passagecommissionep_id, $user_id = null  );
 
 		/**
 		*

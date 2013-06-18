@@ -685,7 +685,7 @@
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
 		*/
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$modele = $this->alias;
 			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
 
@@ -744,24 +744,6 @@
 					);
 				}
 
-// 				$datas['querydata']['joins'][] = array_words_replace(
-// 					$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->join( 'Permanence' ),
-// 					array(
-// 						'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
-// 						'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
-// 					)
-// 				);
-// 				$datas['querydata']['fields'] = array_merge(
-// 					$datas['querydata']['fields'],
-// 					array_words_replace(
-// 						$this->Dossierep->Passagecommissionep->{$modeleDecisions}->Structurereferente->Permanence->fields(),
-// 						array(
-// 							'Structurereferente' => 'Decisionsaisinebilanparcoursep66structurereferente',
-// 							'Permanence' => 'Decisionsaisinebilanparcoursep66permanence'
-// 						)
-// 					)
-// 				);
-
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
@@ -770,6 +752,7 @@
 
 				Cache::write( $cacheKey, $datas );
 			}
+
 
 			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
 			// INFO: permet de ne pas avoir d'erreur avec les virtualFields aliasés
@@ -781,6 +764,21 @@
 			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions] ) || empty( $gedooo_data[$modeleDecisions] ) ) {
 				return false;
 			}
+
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                $user = $this->Dossierep->Passagecommissionep->User->find(
+                    'first',
+                    array(
+                        'conditions' => array(
+                            'User.id' => $user_id
+                        ),
+                        'contain' => array(
+                            'Serviceinstructeur'
+                        )
+                    )
+                );
+                $gedooo_data = Set::merge( $gedooo_data, $user );
+            }
 
 			// Choix du modèle de document
 			$decision = $gedooo_data[$modeleDecisions]['decision'];

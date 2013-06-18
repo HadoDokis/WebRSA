@@ -1317,7 +1317,7 @@
 		* n'est pas sensés imprimer de décision pour la commission.
 		*/
 
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			return '';
 		}
 

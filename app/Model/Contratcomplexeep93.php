@@ -422,7 +422,7 @@
 		* Récupération de la décision suite au passage en commission d'un dossier
 		* d'EP pour un certain niveau de décision.
 		*/
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$datas = Cache::read( $cacheKey );
 

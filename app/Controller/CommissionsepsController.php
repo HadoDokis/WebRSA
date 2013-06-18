@@ -1235,7 +1235,7 @@
 		 * d'un dossier d'EP pour un certain niveau de décision.
 		 */
 		public function impressionDecision( $passagecommissionep_id ) {
-			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id );
+			$pdf = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $pdf ) {
 				$this->Gedooo->sendPdfContentToClient( $pdf, "CourrierDecision-{$passagecommissionep_id}.pdf" );
@@ -1265,7 +1265,7 @@
 
 			$pdfs = array( );
 			foreach( array_keys( $liste ) as $passagecommissionep_id ) {
-				$pdfs[] = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id );
+				$pdfs[] = $this->Commissionep->Passagecommissionep->Dossierep->getDecisionPdf( $passagecommissionep_id, $this->Session->read( 'Auth.User.id' ) );
 			}
 
 			// INFO: pour le CG 66, on n'a pas de PDF de décision pour toutes les thématiques

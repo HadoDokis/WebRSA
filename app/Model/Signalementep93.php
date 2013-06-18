@@ -390,7 +390,7 @@
 		* FIXME: autre
 		*/
 
-		public function getDecisionPdf( $passagecommissionep_id  ) {
+		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
 			$modele = $this->alias;
 			$modeleDecisions = 'Decision'.Inflector::underscore( $modele );
 
