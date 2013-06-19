@@ -49,6 +49,7 @@
 			);
 
 			$options = $this->Traitementpcg66->enums();
+            $this->set( 'natpf', $this->Option->natpf() );
 // 			$etatdossierpcg = $options['Traitementpcg66']['etatdossierpcg'];
 //
 // 			$options = array_merge(

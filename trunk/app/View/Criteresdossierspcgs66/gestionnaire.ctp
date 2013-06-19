@@ -59,6 +59,7 @@
                     )
                 );
                 
+                echo $this->Search->natpf( $natpf );
                 echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
             ?>
         </fieldset>

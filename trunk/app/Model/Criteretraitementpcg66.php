@@ -35,6 +35,7 @@
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+            $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 
 			/// Critères
 			$descriptionpdo = Set::extract( $params, 'Traitementpcg66.descriptionpdo_id' );
@@ -185,7 +186,9 @@
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) )
+					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+                    $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'conditions' => $conditions
 			);

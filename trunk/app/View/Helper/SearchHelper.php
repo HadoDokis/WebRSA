@@ -85,7 +85,7 @@
 
 			$script = $this->_constuctObserve( $this->domId( $path.'_choice' ), $fieldsetId, false );
 
-			$input = $this->Xform->input( $path.'_choice', array( 'label' => 'Filtrer par nature de prestation (RSA Socle)', 'type' => 'checkbox' ) );
+			$input = $this->Xform->input( $path.'_choice', array( 'label' => 'Filtrer par nature de prestation', 'type' => 'checkbox' ) );
 
 			$natpfsCoches = Set::extract( $this->request->data, $path );
 			if( empty( $natpfsCoches ) ) {
