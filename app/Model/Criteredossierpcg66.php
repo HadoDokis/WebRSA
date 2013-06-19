@@ -44,6 +44,8 @@
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+            $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
+
 
 			/// Critères
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
@@ -250,7 +252,9 @@
                             )
                         )
                     ),
-                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'conditions' => $conditions
@@ -381,8 +385,9 @@
 							)
 						)
 					)
-				.' )';	
+				.' )';
 			}
+            $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 			
 			$query = array(
 				'fields' => array(
@@ -427,7 +432,9 @@
 					$Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'contain' => false,

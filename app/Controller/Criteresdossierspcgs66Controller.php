@@ -62,6 +62,7 @@
 				$options,
 				$this->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
+            $this->set( 'natpf', $this->Option->natpf() );
 			$this->set( compact( 'options', 'etatdossierpcg', 'mesCodesInsee' ) );
 		}
 

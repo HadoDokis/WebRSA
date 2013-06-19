@@ -42,6 +42,7 @@
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $this->Search->etatdosrsa($etatdosrsa);
+			echo $this->Search->natpf( $natpf );
 		?>
 	</fieldset>
 <fieldset>
