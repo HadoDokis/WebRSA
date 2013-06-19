@@ -497,10 +497,14 @@
 							);
 						}
 					echo "</div>";
+
 					echo "<div id='cgMaintienOrientAvecEpChangementRef' class='aere'>";
 						if( @$this->request->data['Bilanparcours66']['nvtypeorient_id'] != $defaultvaluetypeorient_id ) {
                             echo $this->Xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'O' ) );
 							echo "Avec changement de référent.";
+						}
+						else if( @$this->request->data['Bilanparcours66']['nvtypeorient_id'] != Set::extract( $this->request->data, 'Orientstruct.Typeorient.id' ) ) {
+                            echo "Avec changement de référent.";
 						}
 						else {
                             echo $this->Xform->input( 'Bilanparcours66.changementrefavecep', array( 'type' => 'hidden', 'value' => 'N' ) );
