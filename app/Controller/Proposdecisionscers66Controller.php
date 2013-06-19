@@ -39,7 +39,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = $this->Propodecisioncer66->allEnumLists();
+			$options = $this->Propodecisioncer66->enums();
 
 
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
