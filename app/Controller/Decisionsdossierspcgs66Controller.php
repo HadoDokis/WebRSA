@@ -107,8 +107,7 @@
 					)
 				)
 			);
-			$orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find( 'list', array( 'order' => array( 'Orgtransmisdossierpcg66.name ASC' ) ) );
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer', 'orgstransmisdossierspcgs66' ) );
+			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
 		}
 
 		/**
@@ -867,6 +866,7 @@
 			}
 			else {
 				$this->request->data = $decisiondossierpcg66;
+
 				// Récupération des types de RSA sélectionnés
 				$orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
 					'list',
@@ -876,16 +876,41 @@
 							"Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id"
 						),
 						'conditions' => array(
-							"Decdospcg66Orgdospcg66.decisiondossierpcg66_id" => $id
+                            "Decdospcg66Orgdospcg66.decisiondossierpcg66_id" => $id
 						)
 					)
 				);
 // 				
 				$this->request->data['Orgtransmisdossierpcg66']['Orgtransmisdossierpcg66'] = $orgstransmisdossierspcgs66;
-
 			}
 
+            // Liste des Ids d'organisme enregistrés en lien avec la décision avant la désactivation de cet organisme
+            $orgsIds = Hash::extract( $this->request->data, 'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66' );
+
+            $conditions = array(
+                'Orgtransmisdossierpcg66.isactif' => '1'
+            );
+            if( !empty( $orgsIds ) ) {
+                $conditions = array(
+                    'OR' => array(
+                        $conditions,
+                       array(
+                           'Orgtransmisdossierpcg66.id' => $orgsIds
+                       )
+                    )
+                );
+            }
+
+            $listeOrgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                'list',
+                array(
+                    'conditions' => $conditions,
+                    'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
+                )
+            );
+
 			$this->_setOptions();
+            $this->set( compact( 'listeOrgstransmisdossierspcgs66' ) );
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
 		}
 

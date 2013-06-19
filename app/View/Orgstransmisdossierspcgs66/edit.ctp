@@ -13,7 +13,11 @@
 	echo $this->Default2->subform(
 		array(
 			'Orgtransmisdossierpcg66.id' => array( 'type' => 'hidden' ),
-			'Orgtransmisdossierpcg66.name' => array( 'required' => true )
+			'Orgtransmisdossierpcg66.name' => array( 'required' => true ),
+			'Orgtransmisdossierpcg66.isactif'
+		),
+		array(
+		    'options' => $options
 		)
 	);
 

@@ -36,6 +36,15 @@
 		);
 
 
+        /**
+         *  Liste des options envoyées à la vue
+         */
+        protected function _setOptions() {
+            $options = array();
+            $options = $this->Orgtransmisdossierpcg66->enums();
+
+            $this->set( compact( 'options' ) );
+        }
 		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
@@ -54,6 +63,7 @@
             $this->paginate = $querydata;
             $orgstransmisdossierspcgs66 = $this->paginate('Orgtransmisdossierpcg66');
             $this->set( compact('orgstransmisdossierspcgs66'));
+            $this->_setOptions();
 		}
 
 		/**
@@ -106,6 +116,7 @@
 				}
 			}
 
+            $this->_setOptions();
 			$this->render( 'edit' );
 		}
 

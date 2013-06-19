@@ -10,14 +10,16 @@
     echo $this->Default2->index(
         $orgstransmisdossierspcgs66,
         array(
-            'Orgtransmisdossierpcg66.name'
+            'Orgtransmisdossierpcg66.name',
+            'Orgtransmisdossierpcg66.isactif'
         ),
         array(
             'actions' => array(
                 'Orgstransmisdossierspcgs66::edit',
                 'Orgstransmisdossierspcgs66::delete' => array( 'disabled' => '\'#Orgtransmisdossierpcg66.occurences#\'!= "0"' )
             ),
-            'add' => 'Orgstransmisdossierspcgs66::add'
+            'add' => 'Orgstransmisdossierspcgs66::add',
+            'options' => $options
         )
     );
     echo $this->Default->button(
