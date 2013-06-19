@@ -35,7 +35,7 @@
 		echo $this->Xform->fieldValue( 'Contratinsertion.duree_engag', $duree );
 		echo $this->Xform->fieldValue( 'Referent.nom_complet', $referent );
 
-		echo $this->Form->input( 'Propodecisioncer66.isvalidcer', array( 'legend' => __d( 'propodecisioncer66', 'Propodecisioncer66.isvalidcer' ), 'type' => 'radio', 'options' => $options['isvalidcer'] ) );
+		echo $this->Form->input( 'Propodecisioncer66.isvalidcer', array( 'legend' => __d( 'propodecisioncer66', 'Propodecisioncer66.isvalidcer' ), 'type' => 'radio', 'options' => $options['Propodecisioncer66']['isvalidcer'] ) );
 		echo $this->Form->input( 'Propodecisioncer66.datevalidcer', array( 'label' => __d( 'propodecisioncer66', 'Propodecisioncer66.datevalidcer' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) );
 	?>
 	<fieldset id="motifcer" class="invisible">
@@ -55,7 +55,7 @@
 			if( $formeContrat == 'C' ) {
 				echo $this->Default2->subform(
 					array(
-						'Propodecisioncer66.nonvalidationparticulier' => array( 'type' => 'radio', 'options' => $options['nonvalidationparticulier'] )
+						'Propodecisioncer66.nonvalidationparticulier' => array( 'type' => 'radio', 'options' => $options['Propodecisioncer66']['nonvalidationparticulier'] )
 					),
 					array(
 						'options' => $options
@@ -69,7 +69,7 @@
 			<?php
 				echo $this->Default2->subform(
 					array(
-						'Propodecisioncer66.decisionfinale' => array( 'type' => 'radio', 'options' => $options['decisionfinale'] )
+						'Propodecisioncer66.decisionfinale' => array( 'type' => 'radio', 'options' => $options['Propodecisioncer66']['decisionfinale'] )
 					),
 					array(
 						'options' => $options

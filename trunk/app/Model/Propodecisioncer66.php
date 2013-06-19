@@ -20,16 +20,10 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate2',
 			'Containable',
-			'Enumerable' => array(
-				'fields' => array(
-					'isvalidcer' => array( 'type' => 'no' ),
-					'nonvalidationparticulier',
-					'decisionfinale'
-				)
-			),
-			'Formattable'
+			'Enumerable',
+			'Formattable',
+            'Pgsqlcake.PgsqlAutovalidate'
 		);
 		
 		public $validate = array(

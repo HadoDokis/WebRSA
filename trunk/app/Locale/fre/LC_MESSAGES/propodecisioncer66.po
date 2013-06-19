@@ -34,12 +34,6 @@ msgstr "Commentaire à reporter sur la fiche de liaison"
 msgid "Propodecisioncer66.motifnotifnonvalid"
 msgstr "Commentaire à reporter sur la notification de non validation"
 
-msgid "ENUM::NO::N"
-msgstr "Non validé"
-
-msgid "ENUM::NO::O"
-msgstr "Validation le"
-
 msgid "Proposdecisionscers66::propositionsimple"
 msgstr "Décision du CER Simple"
 
@@ -55,6 +49,9 @@ msgstr "Reprise de droit"
 msgid "ENUM::NONVALIDATIONPARTICULIER::radiation"
 msgstr "Radiation"
 
+msgid "ENUM::NONVALIDATIONPARTICULIER::etudiant"
+msgstr "Refus ou radiation (étudiant)"
+
 msgid "Propodecisioncer66.decisionfinale"
 msgstr "Décision finale"
 
@@ -63,3 +60,9 @@ msgstr "Non"
 
 msgid "ENUM::DECISIONFINALE::O"
 msgstr "Oui"
+
+msgid "ENUM::ISVALIDCER::O"
+msgstr "Validation le"
+
+msgid "ENUM::ISVALIDCER::N"
+msgstr "Non validé"
