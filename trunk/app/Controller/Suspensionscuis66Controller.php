@@ -19,9 +19,9 @@
 
         public $uses = array( 'Suspensioncui66', 'Option' );
 
-        public $helpers = array( 'Default2', 'Default' );
+        public $helpers = array( 'Default2', 'Fileuploader', 'Default' );
 
-        public $components = array( 'Jetons2', 'Default', 'DossiersMenus' );
+        public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
 
 
 		/**
@@ -36,6 +36,8 @@
 			'edit' => 'update',
 			'index' => 'read',
 		);
+        
+        public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download', 'ajaxetatpdo' );
 
 		/**
 		 *
@@ -48,7 +50,133 @@
 				$this->Suspensioncui66->Cui->enums(),
 				$options
 			);
+             $listeMotifssuspensioncuis66 = $this->Suspensioncui66->Motifsuspensioncui66->find(
+                'list',
+                array(
+                    'order' => array( 'Motifsuspensioncui66.name ASC' )
+                )
+            );
+             $this->set( compact( 'options', 'listeMotifssuspensioncuis66' ) );
+
 			$this->set( 'options', $options );
+		}
+        
+        
+		/**
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 */
+		public function ajaxfileupload() {
+			$this->Fileuploader->ajaxfileupload();
+		}
+
+		/**
+		 * http://valums.com/ajax-upload/
+		 * http://doc.ubuntu-fr.org/modules_php
+		 * increase post_max_size and upload_max_filesize to 10M
+		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * FIXME: traiter les valeurs de retour
+		 */
+		public function ajaxfiledelete() {
+			$this->Fileuploader->ajaxfiledelete();
+		}
+
+		/**
+		 * Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 *
+		 * @param integer $id
+		 */
+		public function fileview( $id ) {
+			$this->Fileuploader->fileview( $id );
+		}
+
+		/**
+		 * Téléchargement des fichiers préalablement associés
+		 *
+		 * @param integer $fichiermodule_id
+		 */
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+        
+        /**
+		 * Fonction permettant d'accéder à la page pour lier les fichiers au CER
+		 *
+		 * @param type $id
+		 */
+		public function filelink( $id ) {
+			$this->assert( valid_int( $id ), 'invalidParameter' );
+
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Suspensioncui66->Cui->dossierId( $id ) ) ) );
+
+			$fichiers = array( );
+			$suspensioncui66 = $this->Suspensioncui66->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Suspensioncui66.id' => $id
+					),
+					'contain' => array(
+						'Fichiermodule' => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						),
+						'Cui'
+					)
+				)
+			);
+
+			$cui_id = $suspensioncui66['Suspensioncui66']['cui_id'];
+            
+            $personne_id = $suspensioncui66['Cui']['personne_id'];
+            
+			$dossier_id = $this->Suspensioncui66->Cui->Personne->dossierId( $personne_id );
+
+			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'suspensionscuis66', 'action' => 'index', $cui_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Suspensioncui66->begin();
+
+				$saved = $this->Suspensioncui66->updateAllUnBound(
+					array( 'Suspensioncui66.haspiecejointe' => '\''.$this->request->data['Suspensioncui66']['haspiecejointe'].'\'' ),
+					array(
+						'"Suspensioncui66"."cui_id"' => $cui_id,
+						'"Suspensioncui66"."id"' => $id
+					)
+				);
+
+				if( $saved ) {
+					// Sauvegarde des fichiers liés à une PDO
+					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
+					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->request->data, "Suspensioncui66.haspiecejointe" ), $id ) && $saved;
+				}
+
+				if( $saved ) {
+					$this->Suspensioncui66->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( $this->referer() );
+				}
+				else {
+					$fichiers = $this->Fileuploader->fichiers( $id );
+					$this->Suspensioncui66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			$this->_setOptions();
+			$this->set( 'dossier_id', $dossier_id);
+			$this->set( compact( 'personne_id', 'fichiers', 'suspensioncui66' ) );
+			$this->set( 'urlmenu', '/suspensionscuis66/index/'.$cui_id );
 		}
 
 		/**
@@ -76,13 +204,25 @@
 			$suspensionscuis66 = $this->Suspensioncui66->find(
 				'all',
 				array(
+                    'fields' => array_merge(
+                        $this->Suspensioncui66->fields(),
+                        array(
+                            $this->Suspensioncui66->Fichiermodule->sqNbFichiersLies( $this->Suspensioncui66, 'nb_fichiers_lies' )
+                        )
+                    ),
 					'conditions' => array(
 						'Suspensioncui66.cui_id' => $cui_id
 					),
-					'recursive' => -1,
-					'contain' => false
+					'contain' => array(
+                        'Motifsuspensioncui66'
+                    )
 				)
 			);
+
+            foreach( $suspensionscuis66 as $i => $suspensioncui66 ) {
+                $listMotifs = Hash::extract( $suspensioncui66, 'Motifsuspensioncui66.{n}.name' );
+                $suspensionscuis66[$i]['Suspensioncui66']['listmotifs'] = $listMotifs;
+            }
 
 			$this->_setOptions();
 			$this->set( 'personne_id', $personne_id );
@@ -130,8 +270,9 @@
 						'conditions' => array(
 							'Suspensioncui66.id' => $suspensioncui66_id
 						),
-						'contain' => false,
-						'recursive' => -1
+						'contain' => array(
+                            'Motifsuspensioncui66'
+                        )
 					)
 				);
 				$this->set( 'decisioncui66', $suspensioncui66 );
@@ -202,7 +343,7 @@
 
 			$this->_setOptions();
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
-			$this->render( 'add_edit' );
+			$this->render( 'edit' );
         }
 
 		/**

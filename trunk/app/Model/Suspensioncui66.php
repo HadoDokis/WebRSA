@@ -20,14 +20,10 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate2',
 			'Containable',
-			'Enumerable' => array(
-				'fields' => array(
-					'decisioncui'
-				)
-			),
-			'Formattable'
+			'Enumerable',
+			'Formattable',
+            'Pgsqlcake.PgsqlAutovalidate'
 		);
 
 		public $belongsTo = array(
@@ -46,7 +42,52 @@
 				'order' => ''
 			)
 		);
+        
+        /**
+         * Associations "Has Many".
+         * @var array
+         */
+        public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Suspensioncui66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+        );
 
+        /**
+         * * Associations "Has And Belongs To Many".
+         * @var array
+         */
+        public $hasAndBelongsToMany = array(
+            'Motifsuspensioncui66' => array(
+                'className' => 'Motifsuspensioncui66',
+                'joinTable' => 'motifssuspensioncuis66_suspensionscuis66',
+                'foreignKey' => 'suspensioncui66_id',
+                'associationForeignKey' => 'motifsuspensioncui66_id',
+                'unique' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'finderQuery' => '',
+                'deleteQuery' => '',
+                'insertQuery' => '',
+                'with' => 'Motifsuspensioncui66Suspensioncui66'
+            )
+        );
 		/**
 		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
 		 *

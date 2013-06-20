@@ -368,6 +368,8 @@
         'rupturecui66' => 'rupturescuis66',
         'motifrupturecui66' => 'motifsrupturescuis66',
         'motifrupturecui66_rupturecui66' => 'motifsrupturescuis66_rupturescuis66',
+        'motifsuspensioncui66_suspensioncui66' => 'motifssuspensioncuis66_suspensionscuis66',
+        'motifsuspensioncui66' => 'motifssuspensioncuis66',
 		'offreinsertion' => 'offresinsertion',
 		'propoorientsocialecov58' => 'proposorientssocialescovs58',
 		'decisionpropoorientsocialecov58' => 'decisionsproposorientssocialescovs58',
