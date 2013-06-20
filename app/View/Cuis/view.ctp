@@ -8,6 +8,29 @@
 ?>
 <?php echo $this->Html->tag( 'h1', $title_for_layout );?>
 
+<?php
+    if( $cui['Cui']['positioncui66'] == 'rupture' ) {
+        echo '<fieldset style="border:solid 2px black; background: #fffee5"><legend>Rupture</legend>';
+        echo $this->Xform->fieldValue( 'Rupturecui66.observation', Hash::get( $cui, 'Rupturecui66.observation') );
+        echo $this->Xform->fieldValue( 'Rupturecui66.daterupturecui', date_short( Hash::get( $cui, 'Rupturecui66.daterupturecui') ) );
+        echo $this->Xform->fieldValue( 'Rupturecui66.dateenregistrementrupture', date_short( Hash::get( $cui, 'Rupturecui66.dateenregistrementrupture') ) );
+
+        if( !empty( $cui['Rupturecui66']['Motifrupturecui66'] ) ) {
+            echo '<fieldset><legend>Motifs de rupture</legend>';
+            $motifs = '';
+            foreach( $cui['Rupturecui66']['Motifrupturecui66'] as $key => $motif ) {
+                if( !empty( $motif ) ) {
+                    $motifs .= '<li>'.$motif['name'].'</li>';
+                }
+            }
+
+            if( !empty( $motifs ) ) {
+                echo "<ul>{$motifs}</ul></fieldset>";
+            }
+        }
+        echo '</fieldset>';
+    }
+?>
 <fieldset><legend></legend>
 	<?php
 		echo $this->Xform->fieldValue( 'Cui.typecui', Set::enum( Hash::get( $cui, 'Cui.typecui'), $options['Cui']['typecui']) );

@@ -695,18 +695,21 @@
 				),
 				'fields' => null,
 				'order' => null,
-				'recursive' => -1
+//				'recursive' => -1,
+                'contain' => array(
+                    'Rupturecui66' => array(
+                        'Motifrupturecui66'
+                    )
+                )
 			);
 			$cui = $this->{$this->modelClass}->find( 'first', $qd_cui );
-			
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $cui['Cui']['personne_id'], $this->Session->read( 'Auth.User.id' ) );
-			$this->set( compact( 'personne' ) );
+			$this->set( compact( 'personne', 'cui' ) );
 			
 			$this->set( 'organismes', $this->Cui->Structurereferente->listeParType( array() ) );
 			
 			
 			$this->_setOptions();
-			$this->Default->view( $id );
 		}
 
         /**

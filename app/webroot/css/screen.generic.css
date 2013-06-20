@@ -1341,6 +1341,13 @@ td.button.manifestation.disabled a, td.action a.manifestation.disabled, td span.
     background-image: url( ../img/icons/user_go_disabled.png );
 }
 
+td.button.rupture a, td.action a.rupture, td span.button.rupture, table.default2 td a.button.rupture {
+    background-image: url( ../img/icons/disconnect.png );
+}
+td.button.rupture.disabled a, td.action a.rupture.disabled, td span.button.rupture.disabled, table.default2 td a.button.rupture.disabled {
+    background-image: url( ../img/icons/disconnect_disabled.png );
+}
+
 ul.actionMenu a.button.printcohorte1, ul.actionMenu a.button.printcohorte2 {
     background-image: url( ../img/icons/printer.png );
 /* 	padding: 5px; */

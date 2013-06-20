@@ -1,21 +1,21 @@
 <?php
 	echo $this->Xhtml->tag(
 		'h1',
-		$this->pageTitle = __d( 'motifsortiecui66', "Motifssortiecuis66::{$this->action}" )
+		$this->pageTitle = __d( 'motifrupturecui66', "Motifsrupturescuis66::{$this->action}" )
 	);
 
 	echo $this->Default2->index(
-		$motifssortiecuis66,
+		$motifsrupturescuis66,
 		array(
-			'Motifsortiecui66.name',
+			'Motifrupturecui66.name',
 		),
 		array(
 			'cohorte' => false,
 			'actions' => array(
-				'Motifssortiecuis66::edit',
-				'Motifssortiecuis66::delete',
+				'Motifsrupturescuis66::edit',
+				'Motifsrupturescuis66::delete',
 			),
-			'add' => 'Motifssortiecuis66::add'
+			'add' => 'Motifsrupturescuis66::add'
 		)
 	);
 

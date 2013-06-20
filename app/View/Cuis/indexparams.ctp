@@ -14,11 +14,11 @@
 
 				echo $this->Xhtml->tableCells(
 					array(
-						h( 'Motifs de sortie' ),
+						h( 'Motifs de rupture' ),
 						$this->Xhtml->viewLink(
 							'Voir la table',
-							array( 'controller' => 'motifssortiecuis66', 'action' => 'index' ),
-							$this->Permissions->check( 'motifssortiecuis66', 'index' )
+							array( 'controller' => 'motifsrupturescuis66', 'action' => 'index' ),
+							$this->Permissions->check( 'motifsrupturescuis66', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

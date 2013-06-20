@@ -293,7 +293,17 @@
 				),
 				'fields' => '',
 				'order' => ''
-			)
+			),
+            'Rupturecui66' => array(
+                'className' => 'Rupturecui66',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Rupturecui66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
+            )
 		);
 
 		/**
