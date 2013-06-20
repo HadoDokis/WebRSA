@@ -61,7 +61,7 @@
 			<th>Décision pour le CUI</th>
             <th>Position du CUI</th>
 			<th>Date de validation</th>
-			<th colspan="11" class="action">Actions</th>
+			<th colspan="12" class="action">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -142,30 +142,44 @@
 								)
 							)
 						),
+                        $this->Default2->button(
+                            'accompagnement',
+                            array( 'controller' => 'accompagnementscuis66', 'action' => 'index',
+                                $cui['Cui']['id'] ),
+                            array(
+                                'label' => 'Accompagnement',
+                                'enabled' => (
+                                    ( $this->Permissions->checkDossier( 'accompagnementscuis66', 'index', $dossierMenu ) == 1 )
+                                    && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+                                )
+                            )
+                        ),
 						$this->Default2->button(
 							'suspension',
 							array( 'controller' => 'suspensionscuis66', 'action' => 'index',
 							$cui['Cui']['id'] ),
 							array(
-								'label' => 'Suspension/Rupture',
+								'label' => 'Suspension',
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'suspensionscuis66', 'index', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 								)
 							)
 						),
-						$this->Default2->button(
-							'accompagnement',
-							array( 'controller' => 'accompagnementscuis66', 'action' => 'index',
-							$cui['Cui']['id'] ),
-							array(
-								'label' => 'Accompagnement',
-								'enabled' => (
-									( $this->Permissions->checkDossier( 'accompagnementscuis66', 'index', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
-								)
-							)
-						),
+                        $this->Default2->button(
+                            'rupture',
+                            array( 'controller' => 'rupturescuis66', 'action' => 'edit',
+                                $cui['Cui']['id'] ),
+                            array(
+                                'label' => 'Rupture',
+                                'enabled' => (
+                                    ( $this->Permissions->checkDossier( 'rupturescuis66', 'edit', $dossierMenu ) == 1 )
+                                    && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+                                    && ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'rupture' )
+
+                                )
+                            )
+                        ),
 						$this->Default2->button(
 							'cancel',
 							array( 'controller' => 'cuis', 'action' => 'cancel',

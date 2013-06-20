@@ -651,21 +651,6 @@ msgstr "RSA financé par le département"
 
 ####################
 
-<!--msgid "ENUM::DECISIONCUI::A"
-msgstr "Ajournement"
-
-msgid "ENUM::DECISIONCUI::V"
-msgstr "Validation à compter du"
-
-msgid "ENUM::DECISIONCUI::R"
-msgstr "Rejet"
-
-msgid "ENUM::DECISIONCUI::E"
-msgstr "En attente"
-
-msgid "ENUM::DECISIONCUI::C"
-msgstr "Annulation"-->
-
 msgid "Cui.nomtiturib"
 msgstr "Nom du titulaire du RIB"
 
@@ -752,6 +737,9 @@ msgstr "Validé et notifié"
 
 msgid "ENUM::POSITIONCUI66::nonvalidnotifie"
 msgstr "Non validé et notifié"
+
+msgid "ENUM::POSITIONCUI66::rupture"
+msgstr "Rupture du contrat"
 
 msgid "Cuis::cancel"
 msgstr "Annuler le CUI"
@@ -1009,6 +997,9 @@ msgstr "Dénonciation prescripteur"
 
 msgid "ENUM::DECISIONCUI::resilie"
 msgstr "Résilié"
+
+msgid "ENUM::DECISIONCUI::rupture"
+msgstr "Rupture"
 
 msgid "Cui.naturersa"
 msgstr "Nature du RSA"
