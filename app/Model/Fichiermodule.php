@@ -303,6 +303,16 @@
                 ),
                 'fields' => '',
                 'order' => ''
+            ),
+            'Suspensioncui66' => array(
+                'className' => 'Suspensioncui66',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Suspensioncui66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
             )
 		);
 

@@ -101,11 +101,60 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_decisioncu
 ALTER TABLE cuis ADD CONSTRAINT cuis_decisioncui_in_list_chk CHECK ( cakephp_validate_in_list( decisioncui, ARRAY['accord','refus','enattente','annule','rupture'] ) );
 
 
-
 ALTER TABLE cuis ALTER COLUMN positioncui66 TYPE VARCHAR(20) USING CAST(positioncui66 AS VARCHAR(20));
 SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_positioncui66_in_list_chk' );
 ALTER TABLE cuis ADD CONSTRAINT cuis_positioncui66_in_list_chk CHECK ( cakephp_validate_in_list( positioncui66, ARRAY['attavismne','attaviselu','attavisreferent','attdecision','encours','annule','fincontrat','attrenouv','perime','nonvalide','valid','validnotifie','nonvalidnotifie','rupture'] ) );
 ALTER TABLE cuis ALTER COLUMN positioncui66 SET NOT NULL;
+
+
+SELECT add_missing_table_field( 'public', 'suspensionscuis66', 'observation', 'TEXT' );
+SELECT add_missing_table_field( 'public', 'suspensionscuis66', 'datedebut', 'DATE' );
+ALTER TABLE suspensionscuis66 ALTER COLUMN datedebut SET NOT NULL;
+SELECT add_missing_table_field( 'public', 'suspensionscuis66', 'datefin', 'DATE' );
+ALTER TABLE suspensionscuis66 ALTER COLUMN datefin SET NOT NULL;
+SELECT add_missing_table_field( 'public', 'suspensionscuis66', 'formatjournee', 'VARCHAR(9)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'suspensionscuis66', 'suspensionscuis66_formatjournee_in_list_chk' );
+ALTER TABLE suspensionscuis66 ADD CONSTRAINT suspensionscuis66_formatjournee_in_list_chk CHECK ( cakephp_validate_in_list( formatjournee, ARRAY['matin','apresmidi','journee'] ) );
+
+-------------------------------------------------------------------------------------
+-- 20130620 : Ajout d'une table de paramétrage pour les motifs de suspensions CUI
+-------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS motifssuspensioncuis66 CASCADE;
+DROP TABLE IF EXISTS motifssuspensioncuis66 CASCADE;
+CREATE TABLE motifssuspensioncuis66(
+  id			SERIAL NOT NULL PRIMARY KEY,
+  name		VARCHAR(250) NOT NULL,
+  created		TIMESTAMP WITHOUT TIME ZONE,
+  modified	TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifssuspensioncuis66 IS 'Liste des motifs de suspension pour les CUIs (CG66)';
+
+DROP INDEX IF EXISTS motifssuspensioncuis66_name_idx;
+CREATE UNIQUE INDEX motifssuspensioncuis66_name_idx ON motifssuspensioncuis66( name );
+
+
+DROP TABLE IF EXISTS motifssuspensioncuis66_suspensionscuis66 CASCADE;
+CREATE TABLE motifssuspensioncuis66_suspensionscuis66 (
+  id                 					SERIAL NOT NULL PRIMARY KEY,
+  motifsuspensioncui66_id			INTEGER NOT NULL REFERENCES motifssuspensioncuis66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  suspensioncui66_id					INTEGER NOT NULL REFERENCES suspensionscuis66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  created								TIMESTAMP WITHOUT TIME ZONE,
+  modified							TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifssuspensioncuis66_suspensionscuis66 IS 'Table de liaison entre les motifs de suspension de cuis et les suspensions de cuis (CG 66)';
+DROP INDEX IF EXISTS motifssuspensioncuis66_suspensionscuis66_motifsuspensioncui66_id_idx;
+CREATE INDEX motifssuspensioncuis66_suspensionscuis66_motifsuspensioncui66_id_idx ON motifssuspensioncuis66_suspensionscuis66(motifsuspensioncui66_id);
+
+DROP INDEX IF EXISTS motifssuspensioncuis66_suspensionscuis66_suspensioncui66_id_idx;
+CREATE INDEX motifssuspensioncuis66_suspensionscuis66_suspensioncui66_id_idx ON motifssuspensioncuis66_suspensionscuis66(suspensioncui66_id);
+
+DROP INDEX IF EXISTS motifssuspensioncuis66_suspensionscuis66_motifsuspensioncui66_id_rupturecui66_id_idx;
+CREATE UNIQUE INDEX motifssuspensioncuis66_suspensionscuis66_motifsuspensioncui66_id_rupturecui66_id_idx ON motifssuspensioncuis66_suspensionscuis66(motifsuspensioncui66_id,suspensioncui66_id);
+
+SELECT add_missing_table_field('public', 'suspensionscuis66', 'haspiecejointe', 'type_booleannumber' );
+ALTER TABLE suspensionscuis66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_BOOLEANNUMBER;
+UPDATE suspensionscuis66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
+ALTER TABLE suspensionscuis66 ALTER COLUMN haspiecejointe SET NOT NULL;
 
 
 -- *****************************************************************************

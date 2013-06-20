@@ -24,6 +24,19 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
+
+                echo $this->Xhtml->tableCells(
+                    array(
+                        h( 'Motifs de suspension' ),
+                        $this->Xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'motifssuspensioncuis66', 'action' => 'index' ),
+                            $this->Permissions->check( 'motifssuspensioncuis66', 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
 				
 				echo $this->Xhtml->tableCells(
 					array(

@@ -39,20 +39,4 @@
             'Rupturecui66' => array(
                 'className' => 'Rupturecui66',
                 'joinTable' => 'motifsrupturescuis66s_rupturescuis66',
-                'foreignKey' => 'motifrupturecui66_id',
-                'associationForeignKey' => 'rupturecui66_id',
-                'unique' => true,
-                'conditions' => '',
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'finderQuery' => '',
-                'deleteQuery' => '',
-                'insertQuery' => '',
-                'with' => 'Motifrupturecui66Rupturecui66'
-            )
-        );
-
-	}
-?>
+                'foreignKey' => 'motifrupturec
