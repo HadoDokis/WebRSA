@@ -699,7 +699,8 @@
                 'contain' => array(
                     'Rupturecui66' => array(
                         'Motifrupturecui66'
-                    )
+                    ),
+                    'Secteurcui'
                 )
 			);
 			$cui = $this->{$this->modelClass}->find( 'first', $qd_cui );
@@ -707,7 +708,45 @@
 			$this->set( compact( 'personne', 'cui' ) );
 			
 			$this->set( 'organismes', $this->Cui->Structurereferente->listeParType( array() ) );
-			
+
+            // Liste des employeurs et liste des actions
+            $employeursCui = $this->{$this->modelClass}->Actioncandidat->Partenaire->find(
+                'list',
+                array(
+                    'conditions' => array(
+                        'Partenaire.iscui' => '1'
+                    ),
+                    'order' => array( 'Partenaire.libstruc ASC' )
+                )
+            );
+
+            $actionsCui = $this->{$this->modelClass}->Actioncandidat->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'Actioncandidat.id',
+                        'Actioncandidat.name',
+                        'Actioncandidat.contactpartenaire_id',
+                        'Partenaire.id',
+                        'Partenaire.libstruc',
+                        'Contactpartenaire.partenaire_id',
+                        '( "Partenaire"."id" || \'_\'|| "Actioncandidat"."id" ) AS "Actioncandidat__id"',
+                        'Actioncandidat.name',
+                    ),
+                    'joins' => array(
+                        $this->Cui->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'INNER' ) ),
+                        $this->Cui->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'INNER' ) )
+                    ),
+                    'order' => array( 'Actioncandidat.name ASC' )
+                )
+            );
+
+            $valeursactionsparpartenaires = array();
+            foreach( $actionsCui as $action ) {
+                $valeursactionsparpartenaires[$action['Actioncandidat']['id']] = $action['Actioncandidat']['name'];
+            }
+            $this->set( compact( 'valeursactionsparpartenaires', 'employeursCui' ) );
+
 			
 			$this->_setOptions();
 		}
