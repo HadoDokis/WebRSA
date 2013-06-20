@@ -573,7 +573,7 @@ msgid "Button::propositioncui"
 msgstr "Avis techniques"
 
 msgid "Button::notifelucui"
-msgstr "Notification élu"
+msgstr "Avis élu"
 
 msgid "Button::decisioncui"
 msgstr "Décisions"

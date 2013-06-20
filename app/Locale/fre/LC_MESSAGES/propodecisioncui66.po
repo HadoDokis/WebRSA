@@ -176,4 +176,4 @@ msgid "Proposdecisionscuis66::email"
 msgstr "Envoyer un mail"
 
 msgid "Proposdecisionscuis66::notifelucui"
-msgstr "Notification à l'élu"
+msgstr "Avis à l'élu"
