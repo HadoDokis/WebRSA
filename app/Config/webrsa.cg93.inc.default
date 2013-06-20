@@ -1058,4 +1058,25 @@
 			'changement_situation_allocataire' => null,
 		)
 	);
+
+	/**
+	 * FIXME: docs/checks/..., s'il y en a plusieurs
+	 * FIXME: documentation
+	 */
+	Configure::write(
+		'Tableausuivipdv93',
+		array(
+			// Tous tableaux: l'id ou les ids des types de rendez-vous ("Individuel", "Collectif") qui seront pris en compte
+			// TODO: après la modification du module RDV
+			'typerdv_id' => array( 1 ),
+			// Tous tableaux: l'id ou les ids des statuts de rendez-vous ("honoré", "non honoré", "prévu") qui seront pris en compte
+			'statutrdv_id' => array( 1 ),
+			// Tableaux 1 B 4: les valeurs des numéros du code famille de l'éction d'insertion
+			'numcodefamille' => array(
+				'acteurs_sociaux' => array( 7 ),
+				'acteurs_sante' => array( 8 ),
+				'acteurs_culture' => array( 9 )
+			)
+		)
+	);
 ?>

@@ -466,7 +466,7 @@
 
 			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( (int)$page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
-			$querydata['conditions'][] = array( 'Histochoixcer93.user_id' => $user_id );
+//			$querydata['conditions'][] = array( 'Histochoixcer93.user_id' => $user_id );
 
 			$Personne = ClassRegistry::init( 'Personne' );
 			$cers93 = $Personne->find( 'all', $querydata );

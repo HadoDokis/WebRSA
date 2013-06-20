@@ -266,6 +266,14 @@
 				'Indicateurs de motifs de réorientation' => array( 'url' => array( 'controller' => 'statistiquesministerielles2', 'action' => 'indicateurs_motifs_reorientation'  ) ),
 			),
 			'Indicateurs de suivi' => array( 'url' => array( 'controller' => 'indicateurssuivis', 'action' => 'index' ) ),
+			'Tableaux FSE' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+				'B. Tableaux de suivi d\'activité' => array(
+					__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b3/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b3' ) ),
+					__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b4/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b4' ) ),
+					__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b5/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b5' ) ),
+				)
+			),
 		),
 		'Administration' => array(
 			'Paramétrages' => array( 'url' => array( 'controller' => 'parametrages', 'action' => 'index'  ) ),

@@ -1,0 +1,139 @@
+# Traductions de tableauxsuivispdvs93.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid "Tableau1b3."
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "Search.annee"
+msgstr "Année d'opération"
+
+msgid "Search.structurereferente_id"
+msgstr "Projet de ville"
+
+msgid "Search.dsps_maj_dans_annee"
+msgstr "Dont les DSP ont été mises à jour dans l'année"
+
+# ------------------------------------------------------------------------------
+
+msgid "Tableau1b5.distinct_personnes_prescription"
+msgstr "Nombre de personnes différentes bénéficiant d'une prescription"
+
+msgid "Tableau1b5.distinct_personnes_action"
+msgstr "Nombre de personnes différentes ayant participé à une action"
+
+msgid "Tableau1b5.beneficiaires_pas_deplaces"
+msgstr "nbre de bénéficiaires qui ne se sont pas déplacés"
+
+msgid "Tableau1b5.nombre_fiches_attente"
+msgstr "nbre de fiches de prescription en attente d'un retour"
+
+# ------------------------------------------------------------------------------
+# Tableau 1 B3
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableau1b3/:heading"
+msgstr "3 - Problématiques des bénéficiaires de l'opération"
+
+# ------------------------------------------------------------------------------
+
+msgid "Tableau1b3.sante"
+msgstr "De santé"
+
+msgid "Tableau1b3.logement"
+msgstr "De logement"
+
+msgid "Tableau1b3.familiales"
+msgstr "Familiale(s)"
+
+msgid "Tableau1b3.modes_gardes"
+msgstr "Modes de garde"
+
+msgid "Tableau1b3.surendettement"
+msgstr "De surendettement"
+
+msgid "Tableau1b3.administratives"
+msgstr "Administrative(s)"
+
+msgid "Tableau1b3.linguistiques"
+msgstr "Linguistique(s)"
+
+msgid "Tableau1b3.mobilisation"
+msgstr "De mobilisation"
+
+msgid "Tableau1b3.qualification_professionnelle"
+msgstr "De qualification professionnelle"
+
+msgid "Tableau1b3.acces_emploi"
+msgstr "D'accés à l'emploi"
+
+msgid "Tableau1b3.autres"
+msgstr "Autres (1)"
+
+# ------------------------------------------------------------------------------
+# Tableau 1 B4
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableau1b4/:heading"
+msgstr "4 - Prescriptions vers les acteurs sociaux, culturels et de sante"
+
+# ------------------------------------------------------------------------------
+
+msgid "Tableau1b4.acteur"
+msgstr "Type d'acteur"
+
+msgid "Tableau1b4.nombre"
+msgstr "Nombre de prescriptions"
+
+msgid "Tableau1b4.nombre_unique"
+msgstr "Nombre de personnes différentes bénéficiant d'une prescription"
+
+msgid "Tableau1b4.acteurs_sociaux"
+msgstr "a. Acteurs Sociaux"
+
+msgid "Tableau1b4.acteurs_sante"
+msgstr "b. Acteurs de la Santé"
+
+msgid "Tableau1b4.acteurs_culture"
+msgstr "c. Acteurs de la culture, des loisirs et des vacances"
+
+# ------------------------------------------------------------------------------
+# Tableau 1 B5
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableau1b5/:heading"
+msgstr "5 - Prescription sur les actions à caractère socio-professionnel et professionnel"
+
+# ------------------------------------------------------------------------------
+
+msgid "Tableau1b5.name"
+msgstr "Prescriptions proposées"
+
+msgid "Tableau1b5.prescription_count"
+msgstr "(1) Nb de prescriptions effectuées "
+
+msgid "Tableau1b5.prescriptions_effectives_count"
+msgstr "Nombre de prescription effectives"
+
+msgid "Tableau1b5.raisons"
+msgstr "Raisons de la non participation"
+
+msgid "Tableau1b5.prescriptions_refus_beneficiaire_count"
+msgstr "Refus du bénéficiaire"
+
+msgid "Tableau1b5.prescriptions_refus_organisme_count"
+msgstr "Refus de l'organisme"
+
+msgid "Tableau1b5.prescriptions_en_attente_count"
+msgstr "En attente"
+
+msgid "Tableau1b5.prescriptions_retenu_count"
+msgstr "Nb de participations à une action"
+
+msgid "Tableau1b5.prescriptions_abandon_count"
+msgstr "Abandon en cours d'action"
