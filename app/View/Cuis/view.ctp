@@ -39,12 +39,36 @@
 
 <fieldset><legend>Secteur</legend>
 	<?php
-		echo $this->Xform->fieldValue( 'Cui.secteur', Set::enum( Hash::get( $cui, 'Cui.secteurcui_id'), $secteurscuis ) );
+//    debug( $cui );
+		echo $this->Xform->fieldValue( 'Secteurcui.name', Hash::get( $cui, 'Secteurcui.name' ) );
 		echo $this->Xform->fieldValue( 'Cui.isaci', Set::enum( Hash::get( $cui, 'Cui.isaci' ), $options['Cui']['isaci'] ) );
+
+        $typeACI = Hash::get( $cui, 'Cui.isaci' );
+        if( $typeACI == 'enaci') {
+            echo $this->Xform->fieldValue( 'Cui.codeagrementcdiae', Hash::get( $cui, 'Cui.codeagrementcdiae'  ) );
+        }
+
+
 		echo $this->Xform->fieldValue( 'Cui.numconvention', $cui['Cui']['numconvention'] );
 		echo $this->Xform->fieldValue( 'Cui.numconventionobj', $cui['Cui']['numconventionobj'] );
 	?>
 </fieldset>
+
+    <fieldset><legend>EMPLOYEUR</legend>
+    <?php
+    $partenaire = Hash::get( $cui, 'Cui.partenaire_id');
+    if( !empty($partenaire) ) {
+        echo $this->Xform->fieldValue( 'Cui.partenaire_id', Set::enum( Hash::get( $cui, 'Cui.partenaire_id'), $employeursCui ) );
+    }
+    else {
+        echo $this->Xform->fieldValue( 'Cui.nomemployeur', $cui['Cui']['nomemployeur'] );
+    }
+
+    echo $this->Xform->fieldValue( 'Cui.actioncandidat_id', Set::enum( Hash::get( $cui, 'Cui.actioncandidat_id'), $valeursactionsparpartenaires ) );
+    ?>
+</fieldset>
+
+
 <?php
 $codepos = Hash::get( $personne, 'Adresse.codepos' );
 $depSplit = substr( $codepos, '0', 2 );
@@ -103,8 +127,45 @@ $depSplit = substr( $codepos, '0', 2 );
 	</table>
 	<?php
 		echo $this->Xform->fieldValue( 'Cui.compofamiliale', Set::enum( Hash::get( $cui, 'Cui.compofamiliale' ), $options['Cui']['compofamiliale']  ) );
-		echo $this->Xform->fieldValue( 'Cui.montantrsapercu', $cui['Cui']['montantrsapercu'] );
-		echo $this->Xform->fieldValue( 'Cui.nbperscharge', Hash::get( $personne, 'Foyer.nbenfants' ), true, 'text' );
+//		echo $this->Xform->fieldValue( 'Cui.montantrsapercu', unserialize( $cui['Cui']['montantrsapercu'] ) );
+
+        $listeMontantAAfficher = null;
+        foreach( unserialize( $cui['Cui']['montantrsapercu'] ) as $key => $montant ) {
+            if( !empty( $montant ) ) {
+                $listeMontantAAfficher .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$montant.' €</li></ul>';
+            }
+        }
+        $listeRSA = null;
+        foreach( unserialize( $cui['Cui']['naturersa'] ) as $key => $nature ) {
+            if( !empty( $nature ) ) {
+                $nature = Set::enum( $nature, $rsaSocle);
+                $listeRSA .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$nature.'</li></ul>';
+            }
+        }
+        ?>
+        <?php if( !empty( $listeRSA ) ):?>
+            <table class="aere tooltips">
+                <thead>
+                <tr>
+                    <th>Nature(s) RSA</th>
+                    <th>Montant(s) RSA</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php echo $this->Xhtml->tableCells(
+                    array(
+                        $listeRSA,
+                        $listeMontantAAfficher
+                    )
+                );
+                ?>
+                </tbody>
+            </table>
+        <?php else:?>
+            <p class="notice">Aucune prestation trouvée</p>
+        <?php endif;?>
+
+    <?php		echo $this->Xform->fieldValue( 'Cui.nbperscharge', Hash::get( $personne, 'Foyer.nbenfants' ), true, 'text' );
 
 	?>
 </fieldset>
@@ -244,7 +305,7 @@ $depSplit = substr( $codepos, '0', 2 );
 	<legend>LA PRISE EN CHARGE (CADRE RÉSERVÉ AU PRESCRIPTEUR)</legend>
 	<?php
 		echo $this->Xform->fieldValue( 'Cui.datedebprisecharge', date_short( Hash::get( $cui, 'Cui.datedebprisecharge' ) ) );
-		echo $this->Xform->fieldValue( 'Cui.dureeprisecharge', Set::enum( Hash::get( $cui, 'Cui.dureeprisecharge' ), $options['Cui']['dureeprisecharge']  ) );
+		echo $this->Xform->fieldValue( 'Cui.dureeprisecharge', Hash::get( $cui, 'Cui.dureeprisecharge' ) );
 		echo $this->Xform->fieldValue( 'Cui.datefinprisecharge', date_short( Hash::get( $cui, 'Cui.datefinprisecharge' ) ) );
 
 		echo $this->Xform->fieldValue( 'Cui.dureehebdoretenueheure', $cui['Cui']['dureehebdoretenueheure'].' H '.$cui['Cui']['dureehebdoretenueminute'] );
@@ -274,6 +335,7 @@ $depSplit = substr( $codepos, '0', 2 );
 	<legend></legend>
 	<?php
 		echo $this->Xform->fieldValue( 'Cui.datecontrat', date_short( Hash::get( $cui, 'Cui.datecontrat' ) ) );
+        echo $this->Xform->fieldValue( 'Cui.datearrivee', date_short( Hash::get( $cui, 'Cui.datearrivee' ) ) );
 	?>
 </fieldset>
 
