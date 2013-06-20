@@ -48,8 +48,6 @@
 		 */
 		public $uses = array( 'Tableausuivipdv93', 'Structurereferente' );
 
-		public $aucunDroit = array( 'tableau1b3', 'tableau1b4', 'tableau1b5' ); // FIXME
-
 		/**
 		 *
 		 * @param integer $user_structurereferente_id
