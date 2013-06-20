@@ -2719,7 +2719,7 @@ msgid "Proposdecisionscuis66:edit"
 msgstr "Modification d'une décision pour le CUI"
 
 msgid "Proposdecisionscuis66:notifelucui"
-msgstr "Impression de la notification pour l'élu"
+msgstr "Impression de l'avis pour l'élu"
 
 msgid "Proposdecisionscuis66:delete"
 msgstr "Suppression d'une décision pour le CUI"
@@ -2727,10 +2727,10 @@ msgstr "Suppression d'une décision pour le CUI"
 ###############################################################################
 
 msgid "Module:Suspensionscuis66"
-msgstr "Suspensions/Ruptures du CUI (CG66)"
+msgstr "Suspensions du CUI (CG66)"
 
 msgid "Suspensionscuis66:index"
-msgstr "Visualisation des suspensions/ruptures"
+msgstr "Visualisation des suspensions"
 
 msgid "Suspensionscuis66:add"
 msgstr "Ajout d'une suspension"
@@ -2740,6 +2740,9 @@ msgstr "Modification d'une suspension"
 
 msgid "Suspensionscuis66:delete"
 msgstr "Suppression d'une suspension"
+
+msgid "Suspensionscuis66:filelink"
+msgstr "Lier un fichier à une suspension de CUI"
 
 ###############################################################################
 
@@ -3048,3 +3051,95 @@ msgid "Orgstransmisdossierspcgs66:delete"
 msgstr "Suppression d'un organisme"
 
 ###############################################################################
+
+msgid "Module:Motifssuspensioncuis66"
+msgstr "CUI (CG66) : paramétrages, motifs de suspension des CUIs"
+
+msgid "Motifssuspensioncuis66:index"
+msgstr "Liste des motifs de suspension"
+
+msgid "Motifssuspensioncuis66:edit"
+msgstr "Ajout/Modification d'un motif de suspension"
+
+msgid "Motifssuspensioncuis66:delete"
+msgstr "Suppression d'un motif de suspension"
+
+
+###############################################################################
+
+msgid "Module:Motifsrupturescuis66"
+msgstr "CUI (CG66) : paramétrages, motifs de rupture des CUIs"
+
+msgid "Motifsrupturescuis66:index"
+msgstr "Liste des motifs de rupture"
+
+msgid "Motifsrupturescuis66:edit"
+msgstr "Ajout/Modification d'un motif de rupture"
+
+msgid "Motifsrupturescuis66:delete"
+msgstr "Suppression d'un motif de rupture"
+
+###############################################################################
+
+msgid "Module:Rupturescuis66"
+msgstr "Ruptures du CUI (CG66)"
+
+msgid "Rupturescuis66:edit"
+msgstr "Ajout/Modification d'une rupture"
+
+###############################################################################
+
+msgid "Module:RejetHistorique"
+msgstr "Rejet historique (CG93)"
+
+msgid "RejetHistorique:affrej"
+msgstr "affrej"
+
+msgid "RejetHistorique:affxml"
+msgstr "affxml"
+
+###############################################################################
+	
+msgid "Module:Questionnairesd1pdvs93"
+msgstr "Module premier rendez-vous (CG93)"
+
+msgid "Questionnairesd1pdvs93:index"
+msgstr "Liste des premiers rendez-vous"
+
+msgid "Questionnairesd1pdvs93:add"
+msgstr "Ajout d'un premier rendez-vous"
+
+msgid "Questionnairesd1pdvs93:edit"
+msgstr "Modification d'un premier rendez-vous"
+
+msgid "Questionnairesd1pdvs93:delete"
+msgstr "Suppression d'un premier rendez-vous"
+
+msgid "Questionnairesd1pdvs93:view"
+msgstr "Visualisation d'un premier rendez-vous"
+
+###############################################################################
+
+msgid "Module:Statistiquesministerielles2"
+msgstr "Nouvelles statistiques ministérielles"
+
+msgid "Statistiquesministerielles2:indicateursOrientations"
+msgstr "Indicateurs d'orientations"
+
+msgid "Statistiquesministerielles2:indicateursOrganismes"
+msgstr "Indicateurs d'organismes"
+
+msgid "Statistiquesministerielles2:indicateursReorientations"
+msgstr "Indicateurs de réorientations"
+
+msgid "Statistiquesministerielles2:indicateursMotifsReorientation"
+msgstr "Indicateurs de motifs de réorientations"
+
+msgid "Statistiquesministerielles2:indicateursCaracteristiquesContrats"
+msgstr "Indicateurs de caractéristiques de contrats"
+
+msgid "Statistiquesministerielles2:indicateursNatureContrats"
+msgstr "Indicateurs de nature de contrats"
+
+msgid "Statistiquesministerielles2:indicateursDelais"
+msgstr "Indicateurs de délais"
