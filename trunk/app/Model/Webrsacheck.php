@@ -289,6 +289,11 @@
 				'apache_bin' => 'string',
 				'Cohortescers93.saisie.periodeRenouvellement' => 'string',
 				'Contratinsertion.RdvAuto.active' => 'boolean',
+				'Tableausuivipdv93.typerdv_id' => 'isarray',
+				'Tableausuivipdv93.statutrdv_id' => 'isarray',
+				'Tableausuivipdv93.numcodefamille.acteurs_sociaux' => 'isarray',
+				'Tableausuivipdv93.numcodefamille.acteurs_sante' => 'isarray',
+				'Tableausuivipdv93.numcodefamille.acteurs_culture' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {

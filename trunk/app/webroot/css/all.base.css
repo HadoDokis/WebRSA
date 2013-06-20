@@ -692,3 +692,13 @@ body.statistiquesministerielles2.indicateurs_caracteristiques_contrats #pageCont
 body.statistiquesministerielles2.indicateurs_caracteristiques_contrats #pageContent table tbody td {
 	width: 20%;
 }
+
+/******************************************************************************/
+
+body.tableauxsuivispdvs93.tableau1b5 #pageContent table tbody td.number {
+	width: 8%;
+}
+
+body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption {
+	caption-side: top;
+}
