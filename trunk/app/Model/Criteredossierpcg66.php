@@ -415,6 +415,33 @@
 					)
 				.' )';
 			}
+            
+             // Organismes auxquels le dossier a été transmis
+            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' );
+			if( !empty( $organismes_id ) ) {
+				$conditions[] = 'Decisiondossierpcg66.id IN ( '.
+					ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
+						array(
+							'alias' => 'decsdospcgs66_orgsdospcgs66',
+							'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ),
+							'contain' => false,
+							'conditions' => array(
+								'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id
+							),
+							'joins' => array(
+								array(
+									'table'      => 'orgstransmisdossierspcgs66',
+									'alias'      => 'orgstransmisdossierspcgs66',
+									'type'       => 'INNER',
+									'foreignKey' => false,
+									'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ),
+								)
+							)
+						)
+					)
+				.' )';	
+			}
+            
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 			
 			$query = array(
