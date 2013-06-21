@@ -63,6 +63,15 @@
 				$this->Dossierpcg66->Personnepcg66->Traitementpcg66->enums()
 			);
             $this->set( 'natpf', $this->Option->natpf() );
+            
+            $this->set( 'listorganismes', $this->Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                    'list',
+                    array(
+                        'condition' =>  array( 'Orgtransmisdossierpcg66.isactif' => '1' ),
+                        'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
+                    )
+                )
+            );
 			$this->set( compact( 'options', 'etatdossierpcg', 'mesCodesInsee' ) );
 		}
 
@@ -217,7 +226,8 @@
 				$mesZonesGeographiques
 			);
 
-			unset( $querydata['limit'] );
+//			unset( $querydata['limit'] );
+            $querydata['limit'] = 10;
 
 			$results = $this->Dossierpcg66->find(
 				'all',
@@ -227,6 +237,7 @@
 			foreach( $results as $i => $criteredossierpcg66 ) {
 				$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
 
+                //Liste des différents traitements de la personne
 				$traitementspcgs66 = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
 					'all',
 					array(
@@ -242,12 +253,10 @@
 						'contain' => false
 					)
 				);
-// 					debug( $traitementspcgs66 );
-				//Liste des différents statuts de la personne
 				$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
+                $results[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
 
-				$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
-
+                //Liste des différentes situations de la personne
 				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
 					'all',
 					array(
@@ -269,12 +278,58 @@
 				$listeMotifs = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
 				$listeSituationsPersonnePCG66 = $listeMotifs;
 				$results[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
+                
+                //Liste des différentes situations de la personne
+				$listeStatutsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
+					'all',
+					array(
+						'fields' => array(
+							'Statutpdo.libelle'
+						),
+						'conditions' => array(
+							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+						),
+						'joins' => array(
+							$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Statutpdo', array( 'type' => 'LEFT OUTER' ) ),
+							$this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->join( 'Statutpdo', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false
+					)
+				);
 
-				$results[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
+
+				$listeStatuts = Set::extract( $listeStatutsPersonnePCG66, '/Statutpdo/libelle' );
+				$listeStatutsPersonnePCG66 = $listeStatuts;
+				$results[$i]['Personnepcg66']['listestatuts'] = $listeStatutsPersonnePCG66;
+
+                
+                // Liste des organismes
+                $decisionsdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->find(
+                    'all',
+                    array(
+                        'fields' => array_merge(
+                            $this->Dossierpcg66->Decisiondossierpcg66->fields()
+                        ),
+                        'conditions' => array(
+                            'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
+                        ),
+                        'contain' => array(
+                            'Orgtransmisdossierpcg66'
+                        )
+                    )
+                );
+
+                $listOrgs = Hash::extract( $decisionsdossierspcgs66, '{n}.Orgtransmisdossierpcg66.{n}.name' );
+				$listOrganismes = $listOrgs;
+				$results[$i]['Decisiondossierpcg66']['listorgs'] = $listOrganismes;
+				
 			}
 
 			$this->_setOptions();
-
+            
+            
+//debug($results);
+//die();
 			$this->layout = '';
 			$this->set( compact( 'results') );
 		}
