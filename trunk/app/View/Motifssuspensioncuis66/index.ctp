@@ -13,7 +13,7 @@ echo $this->Default2->index(
         'cohorte' => false,
         'actions' => array(
             'Motifssuspensioncuis66::edit',
-            'Motifssuspensioncuis66::delete',
+            'Motifssuspensioncuis66::delete' => array( 'disabled' => '\'#Motifsuspensioncui66.occurences#\'!= "0"' )
         ),
         'add' => 'Motifssuspensioncuis66::add'
     )

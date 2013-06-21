@@ -7,6 +7,7 @@
  * @package app.Controller
  * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
  */
+    App::import( 'Behaviors', 'Occurences' );
 
 /**
  * La classe Motifssuspensioncuis66Controller ...
@@ -32,10 +33,19 @@ class Motifssuspensioncuis66Controller extends AppController
      */
 
     public function index() {
-        $this->set(
-            Inflector::tableize( $this->modelClass ),
-            $this->paginate( $this->modelClass )
+        $this->Motifsuspensioncui66->Behaviors->attach( 'Occurences' );
+  
+        $querydata = $this->Motifsuspensioncui66->qdOccurencesExists(
+            array(
+                'fields' => $this->Motifsuspensioncui66->fields(),
+                'order' => array( 'Motifsuspensioncui66.name ASC' )
+            )
         );
+
+        $this->paginate = $querydata;
+        $motifssuspensioncuis66 = $this->paginate('Motifsuspensioncui66');
+        $this->set( compact('motifssuspensioncuis66'));
+
     }
 
     /**

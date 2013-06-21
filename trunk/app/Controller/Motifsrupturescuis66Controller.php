@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
+    App::import( 'Behaviors', 'Occurences' );
 	/**
 	 * La classe Motifsrupturescuis66Controller ...
 	 *
@@ -32,10 +33,18 @@
 		*/
 
 		public function index() {
-			$this->set(
-				Inflector::tableize( $this->modelClass ),
-				$this->paginate( $this->modelClass )
-			);
+			$this->Motifrupturecui66->Behaviors->attach( 'Occurences' );
+  
+            $querydata = $this->Motifrupturecui66->qdOccurencesExists(
+                array(
+                    'fields' => $this->Motifrupturecui66->fields(),
+                    'order' => array( 'Motifrupturecui66.name ASC' )
+                )
+            );
+
+            $this->paginate = $querydata;
+            $motifsrupturescuis66 = $this->paginate('Motifrupturecui66');
+            $this->set( compact('motifsrupturescuis66'));
 		}
 
 		/**
