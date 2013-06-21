@@ -187,6 +187,33 @@
                     }
                 }
             }
+            
+            
+            // Organismes auxquels le dossier a été transmis
+            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' );
+			if( !empty( $organismes_id ) ) {
+				$conditions[] = 'Decisiondossierpcg66.id IN ( '.
+					ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
+						array(
+							'alias' => 'decsdospcgs66_orgsdospcgs66',
+							'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ),
+							'contain' => false,
+							'conditions' => array(
+								'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id
+							),
+							'joins' => array(
+								array(
+									'table'      => 'orgstransmisdossierspcgs66',
+									'alias'      => 'orgstransmisdossierspcgs66',
+									'type'       => 'INNER',
+									'foreignKey' => false,
+									'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ),
+								)
+							)
+						)
+					)
+				.' )';	
+			}
 //debug($conditions);
             
 			$query = array(
@@ -201,6 +228,7 @@
                     'Decisiondossierpcg66.datevalidation',
 					'Decisiondossierpcg66.useravistechnique_id',
 					'Decisiondossierpcg66.userproposition_id',
+                    'Decisiondossierpcg66.etatop',
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.user_id',
 					'Dossier.id',

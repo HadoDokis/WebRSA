@@ -185,7 +185,6 @@
                             )
 						)
 					);
-                    Configure::write('debug',2);
 
 					$datetransmission = null;
 					foreach( $decisionsdossierspcgs66 as $i => $decisiondossierpcg66 ){
