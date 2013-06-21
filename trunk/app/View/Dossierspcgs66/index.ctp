@@ -59,7 +59,6 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
 					}
 				}
 
-
 				
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>

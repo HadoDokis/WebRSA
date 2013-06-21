@@ -1617,3 +1617,9 @@ body.questionnairesd1pdvs93 ul.actions a.add {
 body.questionnairesd1pdvs93 ul.actions span.link.disabled {
 	background-image: url( ../img/icons/add_disabled.png );
 }
+
+body.dossierspcgs66 table#searchResults ul {
+	list-style: disc;
+	margin-left: 1.4em;
+}
+
