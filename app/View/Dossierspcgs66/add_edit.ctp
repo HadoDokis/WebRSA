@@ -148,7 +148,7 @@ document.observe( "dom:loaded", function() {
 		<?php endif;?>
 
 		<?php if( !empty( $personnespcgs66 ) ):?>
-			<table class="tooltips">
+			<table>
 				<thead>
 					<tr>
 						<th>Personne concernée</th>
