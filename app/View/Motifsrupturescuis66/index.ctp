@@ -13,7 +13,7 @@
 			'cohorte' => false,
 			'actions' => array(
 				'Motifsrupturescuis66::edit',
-				'Motifsrupturescuis66::delete',
+				'Motifsrupturescuis66::delete' => array( 'disabled' => '\'#Motifrupturecui66.occurences#\'!= "0"' )
 			),
 			'add' => 'Motifsrupturescuis66::add'
 		)
