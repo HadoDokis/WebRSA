@@ -73,22 +73,53 @@
 					(array)$attributes
 				);
 
+				if( isset( $attributes['text'] ) ) {
+					$text = $attributes['text'];
+				}
+
 				if( !isset( $attributes['title'] ) ) {
 					$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
 					$msgid = ( isset( $attributes['msgid'] ) ? $attributes['msgid'] : $this->_urlMsgid( $url ).':title' );
 					$attributes['title'] = __d( $domain, $msgid );
 				}
-				unset( $attributes['domain'], $attributes['msgid'] );
 
-				$lis[] = $this->DefaultHtml->tag(
-					'li',
-					$this->DefaultHtml->link(
-						$text,
-						$url,
-						$attributes
-					),
-					array( 'class' => 'action' )
-				);
+				$enabled = ( isset( $attributes['enabled'] ) ? $attributes['enabled'] : true );
+
+				unset( $attributes['domain'], $attributes['msgid'], $attributes['enabled'] );
+
+				if( $enabled ) {
+					$lis[] = $this->DefaultHtml->tag(
+						'li',
+						$this->DefaultHtml->link(
+							$text,
+							$url,
+							$attributes
+						),
+						array( 'class' => 'action' )
+					);
+				}
+				else {
+					$classes = Hash::filter(
+						array(
+							$url['plugin'],
+							$url['controller'],
+							$url['action'],
+							'disabled'
+						)
+					);
+
+					$attributes = $this->addClass( $attributes, implode( ' ', $classes ) );
+
+					$lis[] = $this->DefaultHtml->tag(
+						'li',
+						$this->DefaultHtml->tag(
+							'span',
+							$text,
+							$attributes
+						),
+						array( 'class' => 'action' )
+					);
+				}
 			}
 
 			return $this->DefaultHtml->tag( 'ul', implode( $lis ), array( 'class' => 'actions' ) );
@@ -115,7 +146,7 @@
 				return $this->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) );
 			}
 
-			$pagination = $this->pagination( $params );
+			$pagination = $this->pagination( Hash::remove( $params, 'options' ) );
 
 			return $pagination
 				.$this->DefaultTable->index(
@@ -213,7 +244,7 @@
 			$model = ( isset( $params['model'] ) && !empty( $params['model'] ) ? $params['model'] : null );
 			unset( $params['model'] );
 
-			$buttons = ( isset( $params['buttons'] ) && !empty( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
+			$buttons = ( isset( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
 			unset( $params['buttons'] );
 
 			$domain = ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
@@ -247,7 +278,9 @@
 			$return = '';
 			$return .= $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) ); // TODO: 2nd paramètre
 			$return .= $this->DefaultForm->inputs( $inputs );
-			$return .= $this->DefaultForm->buttons( (array)$buttons );
+			if( !empty( $buttons ) ) {
+				$return .= $this->DefaultForm->buttons( (array)$buttons );
+			}
 			$return .= $this->DefaultForm->end();
 
 			return $return;

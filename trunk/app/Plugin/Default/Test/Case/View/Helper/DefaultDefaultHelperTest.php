@@ -184,6 +184,14 @@
 							</li>
 						</ul>';
 			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' => array( 'enabled' => false ) ) );
+			$expected = '<ul class="actions">
+							<li class="action">
+								<span title="/Users/admin_add/:title" class="users add disabled">'.__d( 'users', '/Users/admin_add' ).'</span>
+							</li>
+						</ul>';
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**
