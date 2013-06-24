@@ -293,8 +293,9 @@
 
 				if( !empty( $donneesAConserverIds ) ) {
 					$success = $this->Informationpe->Historiqueetatpe->updateAllUnBound(
-									array( 'Historiqueetatpe.informationpe_id' => $informationpeIdAGarder ), array( 'Historiqueetatpe.id' => $donneesAConserverIds )
-							) && $success;
+						array( 'Historiqueetatpe.informationpe_id' => $informationpeIdAGarder ),
+						array( 'Historiqueetatpe.id' => $donneesAConserverIds )
+					) && $success;
 				}
 
 				if( !empty( $donneesASupprimerIds ) ) {
@@ -303,8 +304,9 @@
 						$foreignKeyColumn = $foreignKeyToHistoriqueetatpe['From']['column'];
 						foreach( $donneesASupprimerIds as $oldFkValue => $newFkValue ) {
 							$success = $this->Informationpe->Historiqueetatpe->{$linkedModelName}->updateAllUnBound(
-											array( "{$linkedModelName}.{$foreignKeyColumn}" => $newFkValue ), array( "{$linkedModelName}.{$foreignKeyColumn}" => $oldFkValue )
-									) && $success;
+								array( "{$linkedModelName}.{$foreignKeyColumn}" => $newFkValue ),
+								array( "{$linkedModelName}.{$foreignKeyColumn}" => $oldFkValue )
+							) && $success;
 						}
 					}
 				}

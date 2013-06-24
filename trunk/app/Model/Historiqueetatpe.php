@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Historiqueetatpe.
 	 *
@@ -53,6 +53,19 @@
 			),
 			'Nonrespectsanctionep93' => array(
 				'className' => 'Nonrespectsanctionep93',
+				'foreignKey' => 'historiqueetatpe_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Nonoriente66' => array(
+				'className' => 'Nonoriente66',
 				'foreignKey' => 'historiqueetatpe_id',
 				'dependent' => true,
 				'conditions' => '',
@@ -136,7 +149,7 @@
 				}
 			}
 		}
-		
+
 		public function sqDernier( $informationpeAlias = 'Informationpe' ) {
 			return "SELECT h.id
 						FROM historiqueetatspe AS h

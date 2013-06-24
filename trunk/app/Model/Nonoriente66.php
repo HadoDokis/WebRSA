@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Nonoriente66.
 	 *
@@ -28,9 +28,9 @@
 		);
 
 		public $belongsTo = array(
-			'Personne' => array(
-				'className' => 'Personne',
-				'foreignKey' => 'personne_id',
+			'Historiqueetatpe' => array(
+				'className' => 'Historiqueetatpe',
+				'foreignKey' => 'historiqueetatpe_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -38,6 +38,13 @@
 			'Orientstruct' => array(
 				'className' => 'Orientstruct',
 				'foreignKey' => 'orientstruct_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Personne' => array(
+				'className' => 'Personne',
+				'foreignKey' => 'personne_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
