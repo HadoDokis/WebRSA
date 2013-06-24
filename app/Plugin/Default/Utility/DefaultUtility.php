@@ -130,12 +130,12 @@
 		 * @param mixed $url
 		 * @return string
 		 */
-		public function toString( $url ) {
+		public static function toString( $url ) {
 			if( !is_array( $url ) ) {
 				$parsed = Router::parse( $url );
 			}
 			else {
-				if( !isset( $this->request ) ) {
+				if( !isset( $this ) || !isset( $this->request ) ) {
 					$request = new CakeRequest();
 				}
 				else {
@@ -198,15 +198,24 @@
 		 *
 		 * @param string $url
 		 */
-		public function toArray( $path ) {
+		public static function toArray( $path ) {
 			$tokens = explode( '/', $path );
 			$plugin = null;
+
 			if( strpos( $tokens[1], '.' ) !== false ) {
 				$controllerTokens = explode( '.', $tokens[1] );
 				$plugin = $controllerTokens[0];
 				unset( $controllerTokens[0] );
 
 				$tokens[1] = implode( '.', $controllerTokens );
+			}
+
+			if( strpos( $tokens[2], '#' ) !== false ) {
+				if( preg_match( '/^([^#]*)#(#[^#]+#.*)$/', $tokens[2], $matches ) ) {
+					$tokens[2] = $matches[1];
+					$tokens[] = "#{$matches[2]}";
+				}
+				// TODO
 			}
 
 			$url = $explodedUrl = array(
@@ -239,6 +248,10 @@
 				if( ( strpos( $value, '#' ) !== false ) && preg_match( '/^([^#]*)#([^#]*)$/', $value, $matches ) ) {
 					$url[$key] = $matches[1];
 					$url['#'] = $matches[2];
+				}
+				if( ( strpos( $value, '#' ) !== false ) && preg_match( '/^#(.*)$/', $value, $matches ) ) {
+					unset( $url[$key] );
+					$url['#'] = $matches[1];
 				}
 			}
 

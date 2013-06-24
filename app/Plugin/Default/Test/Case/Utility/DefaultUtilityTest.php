@@ -152,6 +152,14 @@
 			$result = DefaultUtility::toArray( '/Tests.Foos/admin_bar/666/Search__active:1' );
 			$expected = array( 'plugin' => 'tests','controller' => 'foos', 'prefix' => 'admin', 'admin' => true, 'action' => 'bar', 0 => 666, 'Search__active' => 1 );
 			$this->assertEqual( $result, $expected, $result );
+
+			$result = DefaultUtility::toArray( '/Foos/bar#6' );
+			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => 6 );
+			$this->assertEqual( $result, $expected, $result );
+
+			$result = DefaultUtility::toArray( '/Foos/bar##Model.field#' );
+			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => '#Model.field#' );
+			$this->assertEqual( $result, $expected, $result );
 		}
 	}
 ?>
