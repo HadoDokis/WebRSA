@@ -156,6 +156,39 @@ ALTER TABLE suspensionscuis66 ALTER COLUMN haspiecejointe SET DEFAULT '0'::TYPE_
 UPDATE suspensionscuis66 SET haspiecejointe = '0'::TYPE_BOOLEANNUMBER WHERE haspiecejointe IS NULL;
 ALTER TABLE suspensionscuis66 ALTER COLUMN haspiecejointe SET NOT NULL;
 
+-- -----------------------------------------------------------------------------
+-- Tableaux de suivis PDV 93
+-- -----------------------------------------------------------------------------
+
+-- Ajouter une colonne version (+ année + structurereferente)
+DROP TABLE IF EXISTS tableauxsuivispdvs93 CASCADE;
+CREATE TABLE tableauxsuivispdvs93 (
+	id						SERIAL NOT NULL PRIMARY KEY,
+	name					VARCHAR(255) NOT NULL,
+	annee					INTEGER NOT NULL,
+	structurereferente_id	INTEGER DEFAULT NULL REFERENCES structuresreferentes(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	version					VARCHAR(33) NOT NULL,
+	search					TEXT NOT NULL,
+	results					TEXT NOT NULL,
+	user_id					INTEGER DEFAULT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	created					TIMESTAMP WITHOUT TIME ZONE,
+	modified				TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP INDEX IF EXISTS tableauxsuivispdvs93_name_idx;
+CREATE INDEX tableauxsuivispdvs93_name_idx ON tableauxsuivispdvs93(name);
+
+DROP INDEX IF EXISTS tableauxsuivispdvs93_annee_idx;
+CREATE INDEX tableauxsuivispdvs93_annee_idx ON tableauxsuivispdvs93(annee);
+
+DROP INDEX IF EXISTS tableauxsuivispdvs93_structurereferente_id_idx;
+CREATE INDEX tableauxsuivispdvs93_structurereferente_id_idx ON tableauxsuivispdvs93(structurereferente_id);
+
+DROP INDEX IF EXISTS tableauxsuivispdvs93_version_idx;
+CREATE INDEX tableauxsuivispdvs93_version_idx ON tableauxsuivispdvs93(version);
+
+DROP INDEX IF EXISTS tableauxsuivispdvs93_user_id_idx;
+CREATE INDEX tableauxsuivispdvs93_user_id_idx ON tableauxsuivispdvs93(user_id);
 
 -- *****************************************************************************
 COMMIT;

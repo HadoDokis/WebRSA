@@ -2,6 +2,8 @@
 	/**
 	 * Code source de la classe Tableausuivipdv93.
 	 *
+	 * FIXME: limiter sur les zones géographiques (?)
+	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Model
@@ -24,11 +26,38 @@
 		public $name = 'Tableausuivipdv93';
 
 		/**
-		 * On n'est lié à aucune table pour l'instant.
+		 * Récursivité par défaut de ce modèle.
 		 *
-		 * @var type
+		 * @var integer
 		 */
-		public $useTable = false;
+		public $recursive = -1;
+
+		/**
+		 * Behaviors utilisés.
+		 *
+		 * @var array
+		 */
+		public $actsAs = array(
+			'Validation.Autovalidate',
+			'Formattable',
+		);
+
+		public $belongsTo = array(
+			'Pdv' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null
+			),
+			'Photographe' => array(
+				'className' => 'User',
+				'foreignKey' => 'user_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null
+			),
+		);
 
 		/**
 		 * Problématiques à utiliser dans le tableau 1 B3
@@ -58,6 +87,17 @@
 			'acteurs_sociaux',
 			'acteurs_sante',
 			'acteurs_culture',
+		);
+
+		/**
+		 * Liste des tableaux disponibles
+		 *
+		 * @var array
+		 */
+		public $tableaux = array(
+			'tableau1b3',
+			'tableau1b4',
+			'tableau1b5',
 		);
 
 		/**
@@ -275,7 +315,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		public function tableau1b5totaux( array $search ) {
+		protected function _tableau1b5totaux( array $search ) {
 			$ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
 			$results = array();
 
@@ -576,7 +616,10 @@
 					WHERE false;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_abandon_count' );
 
-			return $results;
+			return array(
+				'totaux' => $this->_tableau1b5totaux( $search ),
+				'results' => $results
+			);
 		}
 
 		/**
@@ -625,6 +668,48 @@
 		 */
 		public function acteurs() {
 			return $this->_listes( 'acteurs', 'Tableau1b4' );
+		}
+
+		/**
+		 *
+		 * @param string $action
+		 * @param array $search
+		 * @param integer $user_id
+		 * @return boolean
+		 */
+		public function historiciser( $action, $search, $user_id = null ) {
+			$results = $this->{$action}( $search );
+
+			$tableausuivipdv93 = array(
+				'Tableausuivipdv93' => array(
+					'name' => $action,
+					'annee' => Hash::get( $search, 'Search.annee' ),
+					'structurereferente_id' => Hash::get( $search, 'Search.structurereferente_id' ),
+					'version' => app_version(),
+					'search' => serialize( $search ),
+					'results' => serialize( $results ),
+					'user_id' => $user_id
+				)
+			);
+
+			// On sauvegarde au maximum une fois par jour les mêmes requêtes et résultats
+			$conditions = Hash::flatten( $tableausuivipdv93 );
+			$conditions["DATE_TRUNC( 'day', \"Tableausuivipdv93\".\"modified\" )"] = date( 'Y-m-d' );
+
+			// A-t'on déjà sauvegardé exactement ce résultat ?
+			$found = $this->find( 'first', array( 'conditions' => $conditions ) );
+
+			// Si c'est le cas, on se contente de le réenregistrer pour qe la date de modifcation soit mise à jour
+			if( !empty( $found ) ) {
+				$tableausuivipdv93 = $found;
+				unset(
+					$tableausuivipdv93['Tableausuivipdv93']['created'],
+					$tableausuivipdv93['Tableausuivipdv93']['modified']
+				);
+			}
+
+			$this->create( $tableausuivipdv93 );
+			return $this->save();
 		}
 	}
 ?>

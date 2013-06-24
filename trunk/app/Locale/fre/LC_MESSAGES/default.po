@@ -584,13 +584,30 @@ msgstr "Décision élu"
 msgid "Button::notifemployeur"
 msgstr "Notification employeur"
 
-###############################################################################
+################################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878
-###############################################################################
+################################################################################
 
 msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
 msgstr "Page %page% sur %pages%, montrant %current% enregistrements parmi %count% au total, à partir de l'enregistrement n° %start% et jusqu'au n° %end%"
+
+msgid "Page {:page} of {:pages}, from {:start} to {:end}"
+msgstr "Page {:page} sur {:pages}, résultats de {:start} à {:end}"
+
+msgid "<< first"
+msgstr "<<"
+
+msgid "< prev"
+msgstr "<"
+
+msgid "next >"
+msgstr ">"
+
+msgid "last >>"
+msgstr ">>"
+
+################################################################################
 
 msgid "Button::impressionSanction1"
 msgstr "Notification fin sanction 1"

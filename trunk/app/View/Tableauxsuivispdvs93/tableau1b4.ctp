@@ -34,5 +34,7 @@
 		$tfoot = $this->Xhtml->tag( 'tfoot', $this->Xhtml->tableCells( $cells ) );
 
 		echo $this->Xhtml->tag( 'table', $thead.$tfoot.$tbody ,array( 'class' => 'wide' ) );
+
+		require_once( dirname( __FILE__ ).DS.'footer.ctp' );
 	}
 ?>

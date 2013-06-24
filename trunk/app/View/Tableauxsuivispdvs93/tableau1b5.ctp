@@ -2,6 +2,9 @@
 	require_once( dirname( __FILE__ ).DS.'search.ctp' );
 
 	if( isset( $results ) ) {
+		$totaux = $results['totaux'];
+		$results = $results['results'];
+
 		$rows = $this->Xhtml->tableCells(
 			array(
 				array(
@@ -94,6 +97,8 @@
 				)
 			);
 			echo $this->Xhtml->tag( 'table', $this->Xhtml->tag( 'caption', 'Motifs pour lesquels la prescription n\'est pas effective' ).$this->Xhtml->tag( 'tbody', $rows ) );
+
+			require_once( dirname( __FILE__ ).DS.'footer.ctp' );
 		}
 	}
 ?>

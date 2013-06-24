@@ -1041,7 +1041,7 @@ ul.actions li {
 	border: 1px solid #235F7D;
 }
 
-ul.actions li a, ul.actionMenu li a.button {
+ul.actions li a, ul.actions li span, ul.actionMenu li a.button {
 	background-repeat: no-repeat;
 	padding-left: 20px;
 	text-decoration: none;
@@ -1057,6 +1057,22 @@ ul.actionMenu span.disabled, span.button.disabled, span.link.disabled {
 
 ul.actions li.add a {
 	background-image: url( ../img/icons/add.png );
+}
+
+ul.actions li.action a.back {
+	background-image: url( ../img/icons/arrow_left.png );
+}
+
+ul.actions li.action span.disabled.back {
+	background-image: url( ../img/icons/arrow_left_disabled.png );
+}
+
+ul.actions li.action a.historiciser {
+	background-image: url( ../img/icons/camera.png );
+}
+
+ul.actions li.action span.historiciser.disabled {
+	background-image: url( ../img/icons/camera_disabled.png );
 }
 
 /**/
