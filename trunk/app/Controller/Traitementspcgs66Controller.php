@@ -424,7 +424,7 @@
 
 			$searchOptions['Personnepcg66']['dossierpcg66_id'] = array( );
 			foreach( $dossierspcgs66 as $dossierpcg66 ) {
-				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.$dossierpcg66['Dossierpcg66']['datereceptionpdo'].')'.' géré par '.Set::enum( $dossierpcg66['Dossierpcg66']['user_id'], $this->viewVars['gestionnaire'] );
+				$searchOptions['Personnepcg66']['dossierpcg66_id'][$dossierpcg66['Dossierpcg66']['id']] = $dossierpcg66['Typepdo']['libelle'].' ('.date_short( $dossierpcg66['Dossierpcg66']['datereceptionpdo'] ).')'.' géré par '.Set::enum( $dossierpcg66['Dossierpcg66']['user_id'], $this->viewVars['gestionnaire'] );
 			}
 			$this->set( 'searchOptions', $searchOptions );
 
