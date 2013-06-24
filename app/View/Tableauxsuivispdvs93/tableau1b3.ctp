@@ -39,5 +39,7 @@
 
 		echo $this->Xhtml->tag( 'table', $thead.$tfoot.$tbody );
 		echo $this->Xhtml->tag( 'p', '(1) : à préciser dans le bilan qualitatif' );
+
+		require_once( dirname( __FILE__ ).DS.'footer.ctp' );
 	}
 ?>

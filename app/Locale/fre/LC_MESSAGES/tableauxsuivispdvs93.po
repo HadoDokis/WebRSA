@@ -19,6 +19,9 @@ msgstr "Projet de ville"
 msgid "Search.dsps_maj_dans_annee"
 msgstr "Dont les DSP ont été mises à jour dans l'année"
 
+msgid "Search.user_id"
+msgstr "Photographe"
+
 # ------------------------------------------------------------------------------
 
 msgid "Tableau1b5.distinct_personnes_prescription"
@@ -137,3 +140,57 @@ msgstr "Nb de participations à une action"
 
 msgid "Tableau1b5.prescriptions_abandon_count"
 msgstr "Abandon en cours d'action"
+
+# ------------------------------------------------------------------------------
+# Recherche
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/index/:heading"
+msgstr "Recherche d'historique de tableaux de suivi PDV"
+
+msgid "Tableausuivipdv93.annee"
+msgstr "Année"
+
+msgid "Pdv.lib_struc"
+msgstr "PDV"
+
+msgid "Tableausuivipdv93.name"
+msgstr "Tableau"
+
+msgid "Tableausuivipdv93.version"
+msgstr "Version"
+
+msgid "Photographe.nom_complet"
+msgstr "Photographe"
+
+msgid "Tableausuivipdv93.created"
+msgstr "Création"
+
+msgid "Tableausuivipdv93.modified"
+msgstr "Modification"
+
+msgid "/Tableauxsuivispdvs93/view"
+msgstr "Voir"
+
+msgid "/Tableauxsuivispdvs93/delete"
+msgstr "Supprimer"
+
+msgid "/Tableauxsuivispdvs93/delete/#Tableausuivipdv93.id# ?"
+msgstr "Réellement supprimer ce résultat ?"
+
+# ------------------------------------------------------------------------------
+# Historicisation
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/historiciser"
+msgstr "Historiciser"
+
+msgid "/Tableauxsuivispdvs93/historiciser/:title"
+msgstr "Historiciser les résultats"
+
+# ------------------------------------------------------------------------------
+# Visualisation
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/view/:heading"
+msgstr "Visualisation du tableau #Tableausuivipdv93.name# pour l'année #Tableausuivipdv93.annee#"
