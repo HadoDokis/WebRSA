@@ -148,20 +148,20 @@
 			)
 		);
 
-// 		public $validate = array(
-// 			'user_id' => array(
-// 				'notEmptyIf' => array(
-// 					'rule' => array( 'notEmptyIf', 'iscomplet', false, array( null ) ),
-// 					'message' => 'Champ obligatoire',
-// 				)
-// 			),
+        public $validate = array(
+ 			'orgpayeur' => array(
+ 				'notEmpty' => array(
+ 					'rule' => 'notEmpty',
+ 					'message' => 'Champ obligatoire',
+ 				)
+ 			),
 // 			'iscomplet' => array(
 // 				'notEmptyIf' => array(
 // 					'rule' => array( 'notEmptyIf', 'user_id', false, array( null ) ),
 // 					'message' => 'Champ obligatoire',
 // 				)
 // 			)
-// 		);
+ 		);
 
 		/**
 		*
