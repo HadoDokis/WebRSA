@@ -89,7 +89,7 @@
 		}
 
         /**
-		 * Export au format CSV des résultats de la recherche des allocataires transférés.
+		 * Export au format CSV des résultats de la recherche des traitements PCGs.
 		 *
 		 * @return void
 		 */
