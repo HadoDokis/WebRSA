@@ -1,13 +1,13 @@
 <?php
 	if( $this->request->action != 'view' ) {
 		$url = Hash::merge(
-			array( 'action' => 'historiciser', $this->action ),
+			array( 'action' => 'historiser', $this->action ),
 			Hash::flatten( $this->request->data )
 		);
 
 		$actions = array(
 			DefaultUtility::toString( $url ) => array(
-				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'historiciser' ),
+				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'historiser' ),
 			)
 		);
 	}

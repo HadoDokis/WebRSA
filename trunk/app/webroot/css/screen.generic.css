@@ -1067,11 +1067,11 @@ ul.actions li.action span.disabled.back {
 	background-image: url( ../img/icons/arrow_left_disabled.png );
 }
 
-ul.actions li.action a.historiciser {
+ul.actions li.action a.historiser {
 	background-image: url( ../img/icons/camera.png );
 }
 
-ul.actions li.action span.historiciser.disabled {
+ul.actions li.action span.historiser.disabled {
 	background-image: url( ../img/icons/camera_disabled.png );
 }
 
