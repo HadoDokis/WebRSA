@@ -60,7 +60,7 @@
 			// Sauvegarde pour le CG
 			$this->out( "Enregistrement des tableaux de suivi CG pour l'année {$search['Search']['annee']}" );
 			foreach( $this->Tableausuivipdv93->tableaux as $tableau ) {
-				$success = $success && $this->Tableausuivipdv93->historiciser( $tableau, $search );
+				$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 			}
 
 			// Sauvegarde par PDV - FIXME: que certaines structures référentes ?
@@ -68,7 +68,7 @@
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
 				foreach( $this->Tableausuivipdv93->tableaux as $tableau ) {
-					$success = $success && $this->Tableausuivipdv93->historiciser( $tableau, $search );
+					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 				}
 			}
 

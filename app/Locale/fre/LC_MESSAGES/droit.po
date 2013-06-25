@@ -3099,7 +3099,7 @@ msgid "RejetHistorique:affxml"
 msgstr "affxml"
 
 ###############################################################################
-	
+
 msgid "Module:Questionnairesd1pdvs93"
 msgstr "Module premier rendez-vous (CG93)"
 
@@ -3143,3 +3143,32 @@ msgstr "Indicateurs de nature de contrats"
 
 msgid "Statistiquesministerielles2:indicateursDelais"
 msgstr "Indicateurs de délais"
+
+###############################################################################
+
+msgid "Module:Tableauxsuivispdvs93"
+msgstr "Module Tableaux de suivis PDV (CG 93)"
+
+msgid "Tableauxsuivispdvs93:tableau1b3"
+msgstr "Tableau de suivi 1B3"
+
+msgid "Tableauxsuivispdvs93:tableau1b4"
+msgstr "Tableau de suivi 1B4"
+
+msgid "Tableauxsuivispdvs93:tableau1b5"
+msgstr "Tableau de suivi 1B5"
+
+msgid "Tableauxsuivispdvs93:tableau1b6"
+msgstr "Tableau de suivi 1B6"
+
+msgid "Tableauxsuivispdvs93:historiser"
+msgstr "Historisation d'un tableau de suivi"
+
+msgid "Tableauxsuivispdvs93:index"
+msgstr "Recherche parmi les tableaux hostorisés"
+
+msgid "Tableauxsuivispdvs93:view"
+msgstr "Visualisation d'un tableau historisé"
+
+msgid "Tableauxsuivispdvs93:delete"
+msgstr "Suppression d'un tableau historisé"

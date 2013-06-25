@@ -256,13 +256,16 @@
 						INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 					WHERE
 						".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-						".str_replace( 'structurereferente_id', 'referents.structurereferente_id', $conditionpdv )."
+						-- dont la date de signature est dans l'année N
+						AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 						AND actionscandidats_personnes.personne_id IN (
 							SELECT DISTINCT personne_id FROM rendezvous
 							WHERE
 								-- avec un RDV honoré durant l'année N
 								EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 								AND ".$this->_conditionStatutRdv()."
+								-- dont la SR du référent de la fiche est la SR du RDV
+								AND referents.structurereferente_id = structurereferente_id
 								{$conditionpdv}
 						)
 					GROUP BY libelle
@@ -278,14 +281,16 @@
 							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- FIXME
-							".str_replace( 'structurereferente_id', 'referents.structurereferente_id', $conditionpdv )."
+							-- dont la date de signature est dans l'année N
+							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							AND actionscandidats_personnes.personne_id IN (
 								SELECT DISTINCT personne_id FROM rendezvous
 								WHERE
 									-- avec un RDV honoré durant l'année N
 									EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 									AND ".$this->_conditionStatutRdv()."
+									-- dont la SR du référent de la fiche est la SR du RDV
+									AND referents.structurereferente_id = structurereferente_id
 									{$conditionpdv}
 							)
 				);";
@@ -336,14 +341,19 @@
 						SELECT COUNT(DISTINCT personne_id)
 							FROM actionscandidats_personnes
 								INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+								INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 							WHERE
-								actionscandidats_personnes.personne_id IN (
+								-- dont la date de signature est dans l'année N
+								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+								AND actionscandidats_personnes.personne_id IN (
 									SELECT DISTINCT personne_id
 									FROM rendezvous
 									WHERE
 										-- avec un RDV honoré durant l'année N
 										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 										AND ".$this->_conditionStatutRdv()."
+										-- dont la SR du référent de la fiche est la SR du RDV
+										AND referents.structurereferente_id = structurereferente_id
 										-- pour la structure referente X
 										{$conditionpdv}
 								)
@@ -352,17 +362,22 @@
 						SELECT COUNT(DISTINCT personne_id)
 							FROM actionscandidats_personnes
 								INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-								WHERE
-									bilanvenu = 'VEN'
-									AND actionscandidats_personnes.personne_id IN (
-										SELECT DISTINCT personne_id
-											FROM rendezvous
-											WHERE
-												-- avec un RDV honoré durant l'année N
-												EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-												AND ".$this->_conditionStatutRdv()."
-												-- pour la structure referente X
-												{$conditionpdv}
+								INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
+							WHERE
+								-- dont la date de signature est dans l'année N
+								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+								AND bilanvenu = 'VEN'
+								AND actionscandidats_personnes.personne_id IN (
+									SELECT DISTINCT personne_id
+										FROM rendezvous
+										WHERE
+											-- avec un RDV honoré durant l'année N
+											EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+											AND ".$this->_conditionStatutRdv()."
+											-- dont la SR du référent de la fiche est la SR du RDV
+											AND referents.structurereferente_id = structurereferente_id
+											-- pour la structure referente X
+											{$conditionpdv}
 									)
 					) AS \"Tableau1b5__distinct_personnes_action\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
@@ -374,17 +389,21 @@
 						(
 							SELECT COUNT(*)
 								FROM actionscandidats_personnes
-								INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
-									actionscandidats_personnes.personne_id IN (
-											SELECT DISTINCT personne_id
-												FROM rendezvous
-												WHERE
-													-- avec un RDV honoré durant l'année N
-													EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-													AND ".$this->_conditionStatutRdv()."
-													-- pour la structure referente X
-													{$conditionpdv}
+									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+									AND actionscandidats_personnes.personne_id IN (
+										SELECT DISTINCT personne_id
+											FROM rendezvous
+											WHERE
+												-- avec un RDV honoré durant l'année N
+												EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+												AND ".$this->_conditionStatutRdv()."
+												-- dont la SR du référent de la fiche est la SR du RDV
+												AND referents.structurereferente_id = structurereferente_id
+												-- pour la structure referente X
+												{$conditionpdv}
 									)
 									AND bilanretenu = 'RET'
 									AND bilanvenu != 'VEN'
@@ -394,14 +413,18 @@
 							SELECT COUNT(*)
 								FROM actionscandidats_personnes
 									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
-									actionscandidats_personnes.personne_id IN (
+									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+									AND actionscandidats_personnes.personne_id IN (
 										SELECT DISTINCT personne_id
 											FROM rendezvous
 											WHERE
 												-- avec un RDV honoré durant l'année N
 												EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 												AND ".$this->_conditionStatutRdv()."
+												-- dont la SR du référent de la fiche est la SR du RDV
+												AND referents.structurereferente_id = structurereferente_id
 												-- pour la structure referente X
 												{$conditionpdv}
 									)
@@ -677,7 +700,7 @@
 		 * @param integer $user_id
 		 * @return boolean
 		 */
-		public function historiciser( $action, $search, $user_id = null ) {
+		public function historiser( $action, $search, $user_id = null ) {
 			$results = $this->{$action}( $search );
 
 			$tableausuivipdv93 = array(

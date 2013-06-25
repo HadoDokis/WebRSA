@@ -30,7 +30,7 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'historiciser' => 'create',
+			'historiser' => 'create',
 			'index' => 'read',
 			'tableau1b3' => 'read',
 			'tableau1b4' => 'read',
@@ -163,11 +163,11 @@
 		 * @param string $action
 		 * @param array $search
 		 */
-		public function historiciser( $action ) {
+		public function historiser( $action ) {
 			$search = $this->_applyStructurereferente( Hash::expand( $this->request->params['named'] ) );
 
 			$this->Tableausuivipdv93->begin();
-			$success = $this->Tableausuivipdv93->historiciser( $action, $search, $this->Session->read( 'Auth.User.id' ) );
+			$success = $this->Tableausuivipdv93->historiser( $action, $search, $this->Session->read( 'Auth.User.id' ) );
 
 			if( $success ) {
 				$this->Tableausuivipdv93->commit();
@@ -182,7 +182,7 @@
 		}
 
 		/**
-		 * Accès à la liste des résultats historicisés.
+		 * Accès à la liste des résultats historisés.
 		 *
 		 * @param string $action
 		 */
@@ -238,10 +238,10 @@
 		}
 
 		/**
-		 * Accès à une version historicisée d'un tableau.
+		 * Accès à une version historisée d'un tableau.
 		 *
 		 * FIXME: vérifier les accès
-		 * TODO: enlever le lien historiciser et ajouter les détails de la capture
+		 * TODO: enlever le lien historiser et ajouter les détails de la capture
 		 *
 		 * @param string $action
 		 */

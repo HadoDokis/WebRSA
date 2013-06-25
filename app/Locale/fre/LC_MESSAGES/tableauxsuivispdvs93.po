@@ -179,14 +179,14 @@ msgid "/Tableauxsuivispdvs93/delete/#Tableausuivipdv93.id# ?"
 msgstr "Réellement supprimer ce résultat ?"
 
 # ------------------------------------------------------------------------------
-# Historicisation
+# Historisation
 # ------------------------------------------------------------------------------
 
-msgid "/Tableauxsuivispdvs93/historiciser"
-msgstr "Historiciser"
+msgid "/Tableauxsuivispdvs93/historiser"
+msgstr "Historiser"
 
-msgid "/Tableauxsuivispdvs93/historiciser/:title"
-msgstr "Historiciser les résultats"
+msgid "/Tableauxsuivispdvs93/historiser/:title"
+msgstr "Historiser les résultats"
 
 # ------------------------------------------------------------------------------
 # Visualisation
