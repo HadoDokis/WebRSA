@@ -812,6 +812,9 @@
 				$this->Contratinsertion->Cer93->enums(),
 				$this->Contratinsertion->Cer93->Histochoixcer93->enums()
 			);
+			$options['Search']['Cer93']['hasdateimpression'] = array( 'I' => 'Imprimé', 'N' => 'Non imprimé' );
+			$options['Search']['Cer93']['limit'] = array_combine( array_range( 100, 1000, 100 ), array_range( 100, 1000, 100 ) );
+			$options['Search']['Cer93']['positioncer'] = array( '99decisioncg' => 'Décision CG', '99valide' => 'Validé CG', '99rejete' => 'Rejeté CG' );
 
 			$this->set( compact( 'options' ) );
 

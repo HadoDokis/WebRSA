@@ -246,3 +246,6 @@ msgstr "Complexe"
 
 msgid "Cer93.prevupcd"
 msgstr "Il a été prévu"
+
+msgid "Cer93.dateimpressiondecision"
+msgstr "Date d'impression du CER"
