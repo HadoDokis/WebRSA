@@ -177,8 +177,8 @@
 		echo $this->Default->subform(
 			array(
 				'ActioncandidatPersonne.mobile' => array( 'type' => 'radio' , 'legend' => 'Etes-vous mobile ?', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-				'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'options' => $options['ActioncandidatPersonne']['naturemobile'], 'empty' => true ),
-				'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
+//				'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'options' => $options['ActioncandidatPersonne']['naturemobile'], 'empty' => true ),
+//				'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
 			),
 			array(
 				'domain' => $domain,
@@ -186,6 +186,21 @@
 			)
 		);
 	?>
+    <fieldset id="sous_mobilite" class="noborder">
+        <legend></legend>
+        <?php
+            echo $this->Default->subform(
+                array(
+                    'ActioncandidatPersonne.naturemobile' => array( 'label' => 'Nature de la mobilité', 'options' => $options['ActioncandidatPersonne']['naturemobile'], 'empty' => true ),
+                    'ActioncandidatPersonne.typemobile'=> array( 'label' => 'Type de mobilité ' ),
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+    </fieldset>
 </fieldset>
 	
 <fieldset id="rdv">
@@ -193,20 +208,7 @@
 	<?php
 		echo $this->Default->subform(
 			array(
-				'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) ),
-				'ActioncandidatPersonne.horairerdvpartenaire' => array(
-					'type' => 'datetime',
-					'label' => 'Rendez-vous fixé le ',
-					'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
-					'timeFormat' => 24,
-					'hourRange' => array( 8, 19 ),
-					'interval' => 5,
-					'empty' => true
-				),
-				'ActioncandidatPersonne.lieurdvpartenaire' => array( 'type' => 'text' , 'label' => 'Lieu du rendez-vous ' ),
-				'ActioncandidatPersonne.personnerdvpartenaire' => array( 'type' => 'text' , 'label' => 'Avec ' )
-// 					'ActioncandidatPersonne.lieurdvpartenaire' => array( 'type' => 'text' , 'label' => 'Lieu du rendez-vous ', 'value' => isset( $this->request->data['ActioncandidatPersonne']['lieurdvpartenaire'] ) ? $this->request->data['ActioncandidatPersonne']['lieurdvpartenaire'] : 'Maurice' ),
-// 					'ActioncandidatPersonne.personnerdvpartenaire' => array( 'type' => 'text' , 'label' => 'Avec ', 'value' => isset( $this->request->data['ActioncandidatPersonne']['personnerdvpartenaire'] ) ? $this->request->data['ActioncandidatPersonne']['personnerdvpartenaire'] : 'Maurice' )
+				'ActioncandidatPersonne.rendezvouspartenaire' => array( 'type' => 'radio' , 'legend' => 'Rendez-vous', 'div' => false, 'options' => array( '0' => 'Non', '1' => 'Oui' ) )
 			),
 			array(
 				'options' => $options,
@@ -214,6 +216,29 @@
 			)
 		);
 	?>
+    <fieldset id="sous_rendezvous" class="noborder">
+        <legend></legend>
+        <?php
+            echo $this->Default->subform(
+                array(
+                    'ActioncandidatPersonne.horairerdvpartenaire' => array(
+                        'type' => 'datetime',
+                        'label' => 'Rendez-vous fixé le ',
+                        'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2,
+                        'timeFormat' => 24,
+                        'hourRange' => array( 8, 19 ),
+                        'interval' => 5,
+                        'empty' => true
+                    ),
+                    'ActioncandidatPersonne.lieurdvpartenaire' => array( 'type' => 'text' , 'label' => 'Lieu du rendez-vous ' )
+                ),
+                array(
+                    'domain' => $domain,
+                    'options' => $options
+                )
+            );
+        ?>
+    </fieldset>
 </fieldset>
 
 <fieldset id="engagement" class="loici">
@@ -338,34 +363,27 @@
 			}
 		?>
 
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][rendezvouspartenaire]',
-			[
-					'ActioncandidatPersonneHorairerdvpartenaireDay',
-					'ActioncandidatPersonneHorairerdvpartenaireMonth',
-					'ActioncandidatPersonneHorairerdvpartenaireYear',
-					'ActioncandidatPersonneHorairerdvpartenaireHour',
-					'ActioncandidatPersonneHorairerdvpartenaireMin',
-					'ActioncandidatPersonneLieurdvpartenaire',
-					'ActioncandidatPersonnePersonnerdvpartenaire'
-			],
-			'1',
-			true
-		);
-
-		observeDisableFieldsOnRadioValue(
-			'candidatureform',
-			'data[ActioncandidatPersonne][mobile]',
-			[
-				'ActioncandidatPersonneTypemobile',
-				'ActioncandidatPersonneNaturemobile'
-			],
-			'1',
-			true
-		);
+        observeDisableFieldsetOnRadioValue(
+            'candidatureform',
+            'data[ActioncandidatPersonne][mobile]',
+            $( 'sous_mobilite' ),
+            '1',
+            false,
+            true
+        );
             
-                   observeDisableFieldsetOnValue(
+        observeDisableFieldsetOnRadioValue(
+            'candidatureform',
+            'data[ActioncandidatPersonne][rendezvouspartenaire]',
+            $( 'sous_rendezvous' ),
+            '1',
+            false,
+            true
+        );
+  
+        // On affiche le la case à cocher poursuite suivi CG si l'ID 
+        // de l'action sélectionnée fait partie des IDs actions paramétrés
+        observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
 			$( 'poursuitesuivi' ),
 			['<?php echo implode( "', '", Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionId" ) );?>'],
@@ -373,16 +391,56 @@
 			true
 		);
 
-		<?php  if( $this->action == 'edit' ):?>
+       // On affiche le fieldset Mobilité uniquement si l'action sélectionnée 
+        // ne fait pas partie des IDs actions paramétrés
+        observeDisableFieldsetOnValue(
+			'ActioncandidatPersonneActioncandidatId',
+			$( 'rdv' ),
+			['<?php echo implode( "', '", array_diff( array_keys( $actionsfiche ), Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionId" ) ) );?>'],
+			false,
+            true
+		);
+  
+   
+        // On affiche le fieldset RDV uniquement si l'action sélectionnée 
+        // ne fait pas partie des IDs actions paramétrés
+        observeDisableFieldsetOnValue(
+			'ActioncandidatPersonneActioncandidatId',
+			$( 'mobilite' ),
+			['<?php echo implode( "', '", array_diff( array_keys( $actionsfiche ), Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionId" ) ) );?>'],
+			false,
+            true
+		);
 
-			/*observeDisableFieldsetOnRadioValue(
-				'candidatureform',
-				'data[ActioncandidatPersonne][bilanvenu]',
-				$( 'blocsortie' ),
-				undefined,
-				false,
-				true
-			);*/
+            
+//		observeDisableFieldsOnRadioValue(
+//			'candidatureform',
+//			'data[ActioncandidatPersonne][rendezvouspartenaire]',
+//			[
+//                'ActioncandidatPersonneHorairerdvpartenaireDay',
+//                'ActioncandidatPersonneHorairerdvpartenaireMonth',
+//                'ActioncandidatPersonneHorairerdvpartenaireYear',
+//                'ActioncandidatPersonneHorairerdvpartenaireHour',
+//                'ActioncandidatPersonneHorairerdvpartenaireMin',
+//                'ActioncandidatPersonneLieurdvpartenaire',
+//                'ActioncandidatPersonnePersonnerdvpartenaire'
+//			],
+//			[undefined,null,''],
+//			false
+//		);
+//
+//		observeDisableFieldsOnRadioValue(
+//			'candidatureform',
+//			'data[ActioncandidatPersonne][mobile]',
+//			[
+//				'ActioncandidatPersonneTypemobile',
+//				'ActioncandidatPersonneNaturemobile'
+//			],
+//			[undefined, null, ''],
+//			false
+//		);
+
+		<?php  if( $this->action == 'edit' ):?>
 
 			observeDisableFieldsetOnRadioValue(
 				'candidatureform',
@@ -392,14 +450,6 @@
 				false,
 				true
 			);
-
-			/*observeDisableFieldsOnRadioValue(
-				'candidatureform',
-				'data[ActioncandidatPersonne][bilanretenu]',
-				[ 'ActioncandidatPersonneIssortie' ],
-				'NRE',
-				false
-			);*/
 
 			observeDisableFieldsetOnRadioValue(
 				'candidatureform',

@@ -628,6 +628,20 @@
                     if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], array( $actionsTypeRegionIds ) ) ){
                         $this->request->data['ActioncandidatPersonne']['poursuitesuivicg'] = '0';
                     }
+                    
+                    // Si aucune case n'est cochée pour les RDVs, on n'enregistre aucune info
+                    if( empty( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] ) ) {
+                        unset( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] );
+                        unset( $this->request->data['ActioncandidatPersonne']['horairerdvpartenaire'] );
+                        unset( $this->request->data['ActioncandidatPersonne']['lieurdvpartenaire'] );
+                    }
+                    
+                    // Si aucune case n'est cochée pour la mobilité, on n'enregistre aucune info
+                    if( empty( $this->request->data['ActioncandidatPersonne']['mobile'] ) ) {
+                        unset( $this->request->data['ActioncandidatPersonne']['mobile'] );
+                        unset( $this->request->data['ActioncandidatPersonne']['naturemobile'] );
+                        unset( $this->request->data['ActioncandidatPersonne']['typemobile'] );
+                    }
                 }    
 
                 
