@@ -123,10 +123,27 @@
 			// Filtre sur la date de signature
 			$conditions = $this->conditionsDates( $conditions, $search, 'Cer93.datesignature' );
 
+			// Mode d'opération
+			$mode_operation = Hash::get( $search, 'Cer93.mode_operation' );
+
 			//Filtre sur la position du CER
-			$positioncer = Set::extract( $search, 'Cer93.positioncer' );
-			if( isset( $search['Cer93']['positioncer'] ) && !empty( $search['Cer93']['positioncer'] ) ) {
-				$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
+			if( $mode_operation == 'traitement' ) {
+				$positioncer = Set::extract( $search, 'Cer93.positioncer' );
+				if( isset( $search['Cer93']['positioncer'] ) && !empty( $search['Cer93']['positioncer'] ) ) {
+					$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
+				}
+			}
+			else {
+				$positioncer = Set::extract( $search, 'Cer93.positioncer' );
+				if( isset( $search['Cer93']['positioncer'] ) && !empty( $search['Cer93']['positioncer'] ) ) {
+					if( $positioncer == '99decisioncg' ) {
+						$positioncer = array( '99valide', '99rejete' );
+					}
+					else {
+						$positioncer = (array)$positioncer;
+					}
+					$conditions[] = '( Cer93.positioncer IN ( \''.implode( '\', \'', $positioncer ).'\' ) )';
+				}
 			}
 
 			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
@@ -264,7 +281,7 @@
 			}
 
 			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) && ( $statut != 'visualisation' ) ) {
+			if( !empty( $lockedDossiers ) && ( $statut != 'visualisation' && ( $mode_operation != 'impression' ) ) ) {
 				if( is_array( $lockedDossiers ) ) {
 					$lockedDossiers = implode( ', ', $lockedDossiers );
 				}
@@ -356,7 +373,7 @@
 					'Personne.nom ASC',
 					'Personne.prenom ASC',
 				),
-				'limit' => 10
+				'limit' => ( ( $mode_operation != 'impression' ) ? 10 : Hash::get( $search, 'Cer93.limit' ) )
 			);
 
 			//
@@ -464,19 +481,15 @@
 		public function getDefaultCohortePdf( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, $page ) {
 			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $search, null );
 
-			$querydata['limit'] = 100;
 			$querydata['offset'] = ( ( (int)$page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
-//			$querydata['conditions'][] = array( 'Histochoixcer93.user_id' => $user_id );
+			$querydata['maxLimit'] = 1001;
 
 			$Personne = ClassRegistry::init( 'Personne' );
 			$cers93 = $Personne->find( 'all', $querydata );
 
 			$pdfs = array();
 			foreach( $cers93 as $cer93 ) {
-				if( in_array( $cer93['Contratinsertion']['decision_ci'], array( 'V', 'R', 'N' ) ) ) {
-					$pdfs[] = $Personne->Contratinsertion->Cer93->getDecisionPdf( $cer93['Cer93']['contratinsertion_id'], $user_id
-					);
-				}
+				$pdfs[] = $Personne->Contratinsertion->Cer93->getDecisionPdf( $cer93['Cer93']['contratinsertion_id'], $user_id );
 			}
 
 			return $pdfs;

@@ -20,7 +20,7 @@
 
 		echo $this->Form->input( 'Search.PersonneReferent.referent_id', array( 'label' => 'Affectation', 'type' => 'select', 'options' => $options['referents'], 'empty' => true ) );
 		echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
-		
+
 		echo $this->Search->blocAllocataire( array(), 'Search' );
 		echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 		echo $this->Form->input( 'Search.Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );
@@ -28,24 +28,40 @@
 		if( $this->action == 'visualisation' ) {
 			echo $this->Form->input( 'Search.Contratinsertion.dernier', array( 'label' => 'Uniquement le dernier CER en cours pour un même allocataire', 'type' => 'checkbox' ) );
 		}
-		echo $this->Search->statutCER93( $options['Cer93']['positioncer'], 'Search.Cer93.positioncer' );
-		
+
+		if( in_array( $this->action, array( 'validationcs', 'validationcadre' ) ) ) {
+			echo '<fieldset><legend>Mode d\'opération</legend>';
+			echo $this->Form->input( 'Search.Cer93.mode_operation', array( 'type' => 'radio', 'options' => array( 'traitement' => 'Traitement', 'impression' => 'Impression' ), 'default' => 'traitement', 'legend' => false ) );
+			// Traitement
+			echo '<div id="SearchCer93PositioncerTraitement">'.$this->Search->statutCER93( $options['Cer93']['positioncer'], 'Search.Cer93.positioncer' ).'</div>';
+			// Impression
+			echo '<div id="SearchCer93PositioncerImpression">';
+			// TODO: envoyer les options depuis le contrôleur
+			echo $this->Form->input( 'Search.Cer93.positioncer', array( 'type' => 'select', 'options' => array( '99decisioncg' => 'Décision CG', '99valide' => 'Validé CG', '99rejete' => 'Rejeté CG' ) ) );
+			echo $this->Form->input( 'Search.Cer93.limit', array( 'type' => 'select', 'options' => array_combine( array_range( 100, 1000, 100 ), array_range( 100, 1000, 100 ) ) ) );
+			echo '</div>';
+			echo '</fieldset>';
+		}
+		else {
+			echo $this->Search->statutCER93( $options['Cer93']['positioncer'], 'Search.Cer93.positioncer' );
+		}
+
 		if( in_array( $this->action, array( 'premierelecture', 'validationcs', 'validationcadre' ) ) ) {
 			echo $this->Search->date( 'Search.Contratinsertion.created' );
 		}
-		
+
 		if( in_array( $this->action, array( 'avalidercpdv', 'premierelecture', 'validationcs', 'validationcadre' ) ) ) {
 			echo $this->Search->date( 'Search.Cer93.datesignature' );
 		}
-		
-		
+
+
 		echo $this->Search->date( 'Search.Orientstruct.date_valid' );
 
 		echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
 
 		echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
-		
-		
+
+
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	?>
 	<div class="submit noprint">
@@ -53,4 +69,27 @@
 		<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
 	</div>
 <?php echo $this->Xform->end();?>
+<?php if( in_array( $this->action, array( 'validationcs', 'validationcadre' ) ) ):?>
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		observeDisableFieldsetOnRadioValue(
+			'Search',
+			'data[Search][Cer93][mode_operation]',
+			$( 'SearchCer93PositioncerTraitement' ),
+			'traitement',
+			true,
+			true
+		);
+
+		observeDisableFieldsetOnRadioValue(
+			'Search',
+			'data[Search][Cer93][mode_operation]',
+			$( 'SearchCer93PositioncerImpression' ),
+			'impression',
+			true,
+			true
+		);
+	} );
+</script>
+<?php endif;?>
 <!-- Fin du filtre-->

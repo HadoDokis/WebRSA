@@ -10,6 +10,8 @@
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
 
 	if( isset( $cers93 ) ) {
+		$mode_impression = ( Hash::get( $this->request->data, 'Search.Cer93.mode_operation' ) == 'impression' );
+
 		if( empty( $cers93 ) ) {
 			echo $this->Xhtml->tag( 'p', 'Aucun résultat', array( 'class' => 'notice' ) );
 		}
@@ -176,7 +178,7 @@
 						$this->Xhtml->printLink(
 							'Décision',
 							array( 'controller' => 'cers93', 'action' => 'impressionDecision', $cer93['Contratinsertion']['id'] ),
-							( $this->Permissions->check( 'cers93', 'impressionDecision' ) && $affichage )
+							( $this->Permissions->check( 'cers93', 'impressionDecision' ) && $affichage && $mode_impression )
 						),
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'histoschoixcers93', 'action' => 'secondelecture_consultation', $cer93['Contratinsertion']['id'], '#' => 'cerview' ), true, true ),
 						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
@@ -208,14 +210,13 @@
 					'action'     => 'impressionsDecisions',
 					'validationcs'
 				),
-				Hash::flatten( $this->request->data, '__' )
+				Hash::flatten( Hash::remove( $this->request->data, 'Histochoixcer93' ), '__' )
 			),
-			$this->Permissions->check( 'cohortescers93', 'impressionsDecisions' )
+			$this->Permissions->check( 'cohortescers93', 'impressionsDecisions' ) && $mode_impression && !empty( $cers93 )
 		);
 		echo '</li></ul>';
 
 	}
-
 ?>
 
 <?php if( isset( $cers93 ) && !empty( $cers93 ) ):?>
