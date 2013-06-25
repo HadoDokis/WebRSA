@@ -287,7 +287,7 @@ document.observe( "dom:loaded", function() {
 					'user_id' : $F('PropopdoUserId'),
 					'complet' : $F('PropopdoIscompletCOM'),
 					'incomplet' : $F('PropopdoIscompletINC'),
-					'propopdo_id' : <?php if (isset($this->request->data['Propopdo']['id'])) { ?> $F('PropopdoId') <?php } else { echo 0; } ?>
+					'propopdo_id' : <?php echo (isset($this->request->data['Propopdo']['id']) ?  "\$F('PropopdoId')" : '0' ); ?>
 				},
 				requestHeaders:['X-Update', 'Etatpdo']
 			}
