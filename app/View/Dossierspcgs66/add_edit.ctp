@@ -148,7 +148,7 @@ document.observe( "dom:loaded", function() {
 		<?php endif;?>
 
 		<?php if( !empty( $personnespcgs66 ) ):?>
-			<table>
+			<table class="tooltips">
 				<thead>
 					<tr>
 						<th>Personne concernée</th>
@@ -370,8 +370,8 @@ document.observe( "dom:loaded", function() {
 				{
 					'typepdo_id' : $F('Dossierpcg66TypepdoId'),
 					'user_id' : ( $('Dossierpcg66UserId') ? $F('Dossierpcg66UserId') : null ),
-					'decisionpdo_id' : <?php if ( isset( $this->request->data['Decisiondossierpcg66']['decisionpdo_id'] ) ) { ?> $F('Decisiondossierpcg66DecisionpdoId') <?php } else { echo 0; } ?>,
-					'dossierpcg66_id' : <?php if ( isset( $this->request->data['Dossierpcg66']['id'] ) ) { ?> $F('Dossierpcg66Id') <?php } else { echo 0; } ?>
+                    'decisionpdo_id' : <?php echo ( isset( $this->request->data['Decisiondossierpcg66']['decisionpdo_id'] ) ? "\$F('Decisiondossierpcg66DecisionpdoId')" : '0' ); ?>,
+					'dossierpcg66_id' : <?php echo ( isset( $this->request->data['Dossierpcg66']['id'] ) ? "\$F('Dossierpcg66Id')" : '0' ); ?>
 				},
 				requestHeaders:['X-Update', 'Etatpdo']
 			}
