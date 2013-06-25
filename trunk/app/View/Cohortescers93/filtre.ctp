@@ -36,9 +36,10 @@
 			echo '<div id="SearchCer93PositioncerTraitement">'.$this->Search->statutCER93( $options['Cer93']['positioncer'], 'Search.Cer93.positioncer' ).'</div>';
 			// Impression
 			echo '<div id="SearchCer93PositioncerImpression">';
-			// TODO: envoyer les options depuis le contrôleur
-			echo $this->Form->input( 'Search.Cer93.positioncer', array( 'type' => 'select', 'options' => array( '99decisioncg' => 'Décision CG', '99valide' => 'Validé CG', '99rejete' => 'Rejeté CG' ) ) );
-			echo $this->Form->input( 'Search.Cer93.limit', array( 'type' => 'select', 'options' => array_combine( array_range( 100, 1000, 100 ), array_range( 100, 1000, 100 ) ) ) );
+			echo $this->Form->input( 'Search.Cer93.positioncer', array( 'type' => 'select', 'label' => 'Statut du CER', 'options' => (array)Hash::get( $options, 'Search.Cer93.positioncer' ) ) );
+			echo $this->Form->input( 'Search.Cer93.limit', array( 'type' => 'select', 'label' => 'Nombre de résultats par page', 'options' => (array)Hash::get( $options, 'Search.Cer93.limit' ) ) );
+			echo $this->Form->input( 'Search.Cer93.hasdateimpression', array( 'label' => 'Filtrer par impression', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Search.Cer93.hasdateimpression' ), 'empty' => true ) );
+			echo $this->Search->date( 'Search.Cer93.dateimpressiondecision' );
 			echo '</div>';
 			echo '</fieldset>';
 		}

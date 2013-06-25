@@ -191,16 +191,38 @@
 				);
 
 				if( in_array( $statut, array( 'validationcs', 'validationcadre' ) ) ) {
-					$positionsuivante = null;
-					if( $statut == 'validationcs' ) {
-						$positioncer = '99valide';
-						$etape = '05secondelecture';
+					if( $mode_operation != 'impression' ) {
+						$positionsuivante = null;
+						if( $statut == 'validationcs' ) {
+							$positioncer = '99valide';
+							$etape = '05secondelecture';
+						}
+						else if( $statut == 'validationcadre' ) {
+							$positioncer = array( '99valide', '99rejete' );
+							$etape = '06attaviscadre';
+						}
 					}
-					else if( $statut == 'validationcadre' ) {
-						$positioncer = array( '99valide', '99rejete' );
-						$etape = '06attaviscadre';
+					else {
+						$etape = array( '05secondelecture', '06attaviscadre' );
 					}
 
+					$conditionDateImpression = 'Cer93.dateimpressiondecision IS NULL';
+					if( $mode_operation == 'impression' ) {
+						// Conditions sur la présence d'une date d'impression
+						$hasDateImpression = Hash::get( $search, 'Cer93.hasdateimpression' );
+						if( empty( $hasDateImpression ) ) {
+							$conditionDateImpression = '1 = 1';
+						}
+						else if( $hasDateImpression == 'I' ) {
+							$conditionDateImpression = 'Cer93.dateimpressiondecision IS NOT NULL';
+						}
+						else {
+							$conditionDateImpression = 'Cer93.dateimpressiondecision IS NULL';
+						}
+
+						// Conditions sur la date d'impression
+						$conditionDateImpression = $this->conditionsDates( (array)$conditionDateImpression, $search, 'Cer93.dateimpressiondecision' );
+					}
 
 					$conditions[] = array(
 						'OR' => array(
@@ -216,7 +238,7 @@
 											'conditions' => array(
 												'Contratinsertion.personne_id = Personne.id',
 												'Cer93.positioncer' => $positioncer,
-												'Cer93.dateimpressiondecision IS NULL',
+												$conditionDateImpression,
 												'Histochoixcer93.etape' => $etape,
 												'Histochoixcer93.id IN ( '.$Personne->Contratinsertion->Cer93->sqLatest( 'Histochoixcer93', 'etape', array(), false ).' )'
 											),
@@ -378,12 +400,18 @@
 
 			//
 			if( !in_array( $statut, array( 'saisie', 'visualisation' ) ) ) {
-				$decision_ci = 'E';
-				if( $statut == 'validationcs' ) {
-					$decision_ci = array( 'E', 'V' );
+				if( $mode_operation != 'impression' ) {
+					$decision_ci = 'E';
+					if( $statut == 'validationcs' ) {
+						$decision_ci = array( 'E', 'V' );
+					}
+					else if( $statut == 'validationcadre' ) {
+						$decision_ci = array( 'E', 'V', 'R' );
+					}
 				}
-				else if( $statut == 'validationcadre' ) {
-					$decision_ci = array( 'E', 'V', 'R' );
+				else {
+					$querydata['conditions']['Histochoixcer93.etape'] = ( $statut == 'validationcs' ? '05secondelecture' : '06attaviscadre' );
+					$decision_ci = array( 'V', 'R' );
 				}
 
 				$sqDerniereHistochoixcer93Etape = $Personne->Contratinsertion->Cer93->sqLatest(

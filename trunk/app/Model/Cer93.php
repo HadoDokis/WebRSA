@@ -42,7 +42,9 @@
 				93 => array(
 					'Contratinsertion/contratinsertion.odt',
 					'Contratinsertion/cer_valide.odt',
-					'Contratinsertion/cer_rejete.odt'
+					'Contratinsertion/cer_rejete.odt',
+					'Contratinsertion/decision_valide.odt',
+					'Contratinsertion/decision_rejete.odt'
 				)
 			)
 		);
