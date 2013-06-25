@@ -88,5 +88,38 @@
 			$this->render( $this->action );
 		}
 
+        /**
+		 * Export au format CSV des résultats de la recherche des allocataires transférés.
+		 *
+		 * @return void
+		 */
+		public function exportcsv() {
+			$data = Hash::expand( $this->request->params['named'], '__' );
+
+			$mesZonesGeographiques = (array)$this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$querydata = $this->Criteretraitementpcg66->search(
+				$data,
+				$mesCodesInsee,
+				$mesZonesGeographiques
+			);
+
+			unset( $querydata['limit'] );
+//            $querydata['limit'] = 10;
+
+			$results = $this->Traitementpcg66->find(
+				'all',
+				$querydata
+			);
+
+			$this->_setOptions();
+            
+//            
+//debug($results);
+//die();
+			$this->layout = '';
+			$this->set( compact( 'results') );
+		}
 	}
 ?>

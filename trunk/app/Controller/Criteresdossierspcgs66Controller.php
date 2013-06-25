@@ -226,8 +226,8 @@
 				$mesZonesGeographiques
 			);
 
-//			unset( $querydata['limit'] );
-            $querydata['limit'] = 10;
+			unset( $querydata['limit'] );
+//            $querydata['limit'] = 10;
 
 			$results = $this->Dossierpcg66->find(
 				'all',
