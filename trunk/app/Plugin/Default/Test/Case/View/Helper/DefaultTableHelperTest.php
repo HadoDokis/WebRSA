@@ -334,7 +334,6 @@
 								<td class="data string ">Foo</td>
 							</tr>
 						</tbody>';
-			echo $expected;
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 	}
