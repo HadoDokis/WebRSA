@@ -648,6 +648,9 @@
 					$querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
 				}
 
+				// TODO: plus proprement, pour toute l'application, avec Configure
+//				$this->Paginator->settings = array( 'limit' => 10, 'maxLimit' => 1001 );
+				$querydata['maxLimit'] = 1001;
 
 				$this->paginate = $querydata;
 				$cers93 = $this->paginate(
