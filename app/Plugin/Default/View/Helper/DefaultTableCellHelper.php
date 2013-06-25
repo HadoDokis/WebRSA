@@ -129,10 +129,6 @@
 		public function input( $path, array $attributes = array() ) {
 			$path = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', DefaultUtility::evaluate( $this->_data, $path ) ) );
 			$type = $this->_type( $path, $attributes );
-			/*if( isset( $attributes['type'] ) ) {
-				debug( $type );
-//				unset( $attributes['type'] );
-			}*/
 
 			return array(
 				$this->DefaultForm->input( $path, DefaultUtility::evaluate( $this->_data, $attributes ) ),

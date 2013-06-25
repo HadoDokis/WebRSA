@@ -10,6 +10,7 @@
 	 */
 	App::uses( 'DefaultUtility', 'Default.Utility' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'Router', 'Routing' );
 
 	/**
 	 * La classe DefaultUtilityTest ...
@@ -17,7 +18,6 @@
 	 * @package Default
 	 * @subpackage Test.Case.Utility
 	 */
-
 	class DefaultUtilityTest extends DefaultAbstractTestCase
 	{
 		/**
@@ -32,6 +32,29 @@
 				'lastname' => 'bar',
 			)
 		);
+
+		/**
+		 * setUp method
+		 *
+		 * @return void
+		 */
+		public function setUp() {
+			parent::setUp();
+
+			$request = new CakeRequest();
+			$request->addParams(
+				array(
+					'action' => 'index',
+					'plugin' => null,
+					'controller' => 'subscribe',
+					'admin' => true
+				)
+			);
+			$request->base = '/magazine';
+			$request->here = '/magazine';
+			$request->webroot = '/magazine/';
+			Router::setRequestInfo( $request );
+		}
 
 		/**
 		 * Test de la méthode DefaultUtility::evaluateString()

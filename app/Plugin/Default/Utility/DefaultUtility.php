@@ -74,7 +74,7 @@
 		 */
 		public static function linkParams( $path, array $htmlAttributes, array $data = array() ) {
  			if( !empty( $data ) ) { // FIXME: il faudrait le faire après, mais ne pas se tromper avec les #content
-				$url = self::toArray( self::evaluate( $data, $path ) );;
+				$url = self::toArray( self::evaluate( $data, $path ) );
 			}
 			else {
 				$url = self::toArray( $path );
@@ -135,20 +135,15 @@
 				$parsed = Router::parse( $url );
 			}
 			else {
-				if( !isset( $this ) || !isset( $this->request ) ) {
-					$request = new CakeRequest();
-				}
-				else {
-					$request = $this->request;
-				}
+				$request = (array)Router::getRequest();
 
 				$parsed = $url;
-				$parsed['plugin'] = isset( $parsed['plugin'] ) ? $parsed['plugin'] : $request->params['plugin'];
-				$parsed['controller'] = isset( $parsed['controller'] ) ? $parsed['controller'] : $request->params['controller'];
-				if( isset( $request->params['prefix'] ) ) {
-					$parsed['prefix'] = isset( $parsed['prefix'] ) ? $parsed['prefix'] : $request->params['prefix'];
+				$parsed['plugin'] = isset( $parsed['plugin'] ) ? $parsed['plugin'] : $request['params']['plugin'];
+				$parsed['controller'] = isset( $parsed['controller'] ) ? $parsed['controller'] : $request['params']['controller'];
+				if( isset( $request['params']['prefix'] ) ) {
+					$parsed['prefix'] = isset( $parsed['prefix'] ) ? $parsed['prefix'] : $request['params']['prefix'];
 				}
-				$parsed['action'] = isset( $parsed['action'] ) ? $parsed['action'] : $request->params['action'];
+				$parsed['action'] = isset( $parsed['action'] ) ? $parsed['action'] : $request['params']['action'];
 
 				// TODO: compléter les autres paramètres si besoin
 				$named = array();
