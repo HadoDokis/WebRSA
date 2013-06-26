@@ -72,7 +72,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Tableausuivipdv93', 'Structurereferente' );
+		public $uses = array( 'Tableausuivipdv93', 'Cohortetransfertpdv93' );
 
 		/**
 		 *
@@ -81,31 +81,26 @@
 		protected function _setOptions( $user_structurereferente_id ) {
 			// TODO: dans le beforeFilter ?
 			$years = array_reverse( range( 2009, date( 'Y' ) ) );
+			$structurereferente_id = $this->Tableausuivipdv93->listePdvs();
+			if( $this->action == 'index' ) {
+				$structurereferente_id = Hash::merge( array( 'NULL' => 'Conseil général' ), $structurereferente_id );
+			}
+
 			$options = array(
 				'Search' => array(
 					'annee' => array_combine( $years, $years ),
-					// TODO: cache + conditions
-					'structurereferente_id' => $this->Tableausuivipdv93->Pdv->find( 'list' ),
-					 // TODO: cache + conditions
-					'user_id' => $this->Tableausuivipdv93->Photographe->find(
-						'list',
-						array(
-							'fields' => array( 'Photographe.id', 'Photographe.nom_complet' ),
-							'contain' => false,
-							'order' => array( 'Photographe.nom_complet' ),
-						)
-					),
+					'structurereferente_id' => $structurereferente_id,
+					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
 				),
 				'problematiques' => $this->Tableausuivipdv93->problematiques(),
 				'acteurs' => $this->Tableausuivipdv93->acteurs(),
 			);
+
 			$userIsCg = empty( $user_structurereferente_id );
 			$this->set( compact( 'options', 'userIsCg' ) );
 		}
 
 		/**
-		 * FIXME: le nom de laa méthode
-		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -188,6 +183,7 @@
 		 */
 		public function index( $action = null ) {
 			$search = $this->_applyStructurereferente( $this->request->data );
+			$vfNomcomplet = $this->Tableausuivipdv93->Photographe->sqVirtualfield( 'nom_complet', false );
 
 			if( !empty( $search ) ) {
 				$querydata = array(
@@ -197,7 +193,7 @@
 						'Pdv.lib_struc',
 						'Tableausuivipdv93.name',
 						'Tableausuivipdv93.version',
-						$this->Tableausuivipdv93->Photographe->sqVirtualfield( 'nom_complet' ),
+						"( CASE WHEN \"Photographe\".\"id\" IS NOT NULL THEN {$vfNomcomplet} ELSE 'Photographie automatique' END ) AS \"Photographe__nom_complet\"",
 						'Tableausuivipdv93.created',
 						'Tableausuivipdv93.modified',
 					),
@@ -223,16 +219,24 @@
 					$querydata['conditions']['Tableausuivipdv93.annee'] = $search['Search']['annee'];
 				}
 				if( !empty( $search['Search']['structurereferente_id'] ) ) {
-					$querydata['conditions']['Tableausuivipdv93.structurereferente_id'] = $search['Search']['structurereferente_id'];
+					if( $search['Search']['structurereferente_id'] == 'NULL' ) {
+						$querydata['conditions'][] = 'Tableausuivipdv93.structurereferente_id IS NULL';
+					}
+					else {
+						$querydata['conditions']['Tableausuivipdv93.structurereferente_id'] = $search['Search']['structurereferente_id'];
+					}
 				}
 				if( !empty( $search['Search']['user_id'] ) ) {
-					$querydata['conditions']['Tableausuivipdv93.user_id'] = $search['Search']['user_id'];
+					if( $search['Search']['user_id'] == 'NULL' ) {
+						$querydata['conditions'][] = 'Tableausuivipdv93.user_id IS NULL';
+					}
+					else {
+						$querydata['conditions']['Tableausuivipdv93.user_id'] = $search['Search']['user_id'];
+					}
 				}
 
-				$this->paginate = array(
-					'Tableausuivipdv93' => $querydata
-				);
-				$tableauxsuivispdvs93 = $this->paginate( 'Tableausuivipdv93' );
+				$this->paginate = array( 'Tableausuivipdv93' => $querydata );
+				$tableauxsuivispdvs93 = $this->paginate( 'Tableausuivipdv93', array(), array(), false );
 				$this->set( compact( 'tableauxsuivispdvs93' ) );
 			}
 		}

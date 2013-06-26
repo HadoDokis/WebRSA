@@ -20,6 +20,7 @@
 			'Search.annee' => array( 'empty' => ( ( $this->action == 'index' ) ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( ( $this->action == 'index' ) ? 'select' : 'hidden' ) ),
+			'Search.rdv_structurereferente' => array( 'type' => ( in_array( $this->request->params['action'], array( 'tableau1b3', 'index' ) ) ? 'hidden' : 'checkbox' ) ),
 			'Search.dsps_maj_dans_annee' => array( 'type' => ( $this->request->params['action'] == 'tableau1b3' ? 'checkbox' : 'hidden' ) ),
 		),
 		array(

@@ -47,12 +47,10 @@
 
 		/**
 		 * Méthode principale.
-		 *
-		 * TODO: des paramètres permettant de spécifier: l'année, le niveau (CG / PDV)
 		 */
 		public function main() {
-			$pdvs = $this->Tableausuivipdv93->Pdv->find( 'list' );
-			$search = array( 'Search' => array( 'annee' => date( 'Y' ) ) );
+			$pdvs = $this->Tableausuivipdv93->listePdvs();
+			$search = array( 'Search' => array( 'annee' => date( 'Y' ), 'rdv_structurereferente' => false ) );
 			$success = true;
 
 			$this->Tableausuivipdv93->begin();
