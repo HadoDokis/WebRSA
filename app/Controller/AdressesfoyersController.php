@@ -187,7 +187,6 @@
 				$this->Adressefoyer->begin();
 
 				if( $this->Adressefoyer->saveAll( $this->request->data, array( 'validate' => 'only' ) ) ) {
-					$this->Adressefoyer->begin();
 
 					if( $this->Adressefoyer->saveAll( $this->request->data, array( 'atomic' => false ) ) ) {
 						$this->Adressefoyer->commit();
