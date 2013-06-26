@@ -139,7 +139,8 @@
 					$_condition['Adresse.typevoie ILIKE'] = $canton['Canton']['typevoie'];
 				}
 				if( !empty( $canton['Canton']['nomvoie'] ) ) {
-					$_condition['Adresse.nomvoie ILIKE'] = $canton['Canton']['nomvoie'];
+                    $_condition['Adresse.nomvoie ILIKE'] = '%'.$canton['Canton']['nomvoie'].'%';
+//					$_condition['Adresse.nomvoie ILIKE'] = $canton['Canton']['nomvoie'];
 				}
 				$_conditions[] = $_condition;
 			}
