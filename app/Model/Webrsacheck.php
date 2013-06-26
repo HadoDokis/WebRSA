@@ -294,6 +294,7 @@
 				'Tableausuivipdv93.numcodefamille.acteurs_sociaux' => 'isarray',
 				'Tableausuivipdv93.numcodefamille.acteurs_sante' => 'isarray',
 				'Tableausuivipdv93.numcodefamille.acteurs_culture' => 'isarray',
+				'Tableausuivipdv93.conditionsPdv' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {

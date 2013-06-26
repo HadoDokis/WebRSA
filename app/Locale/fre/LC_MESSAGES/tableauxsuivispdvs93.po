@@ -1,8 +1,6 @@
 # Traductions de tableauxsuivispdvs93.po
 # @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 #
-msgid "Tableau1b3."
-msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,6 +19,9 @@ msgstr "Dont les DSP ont été mises à jour dans l'année"
 
 msgid "Search.user_id"
 msgstr "Photographe"
+
+msgid "Search.rdv_structurereferente"
+msgstr "Dont le bénéficiaire possède au moins un rendez-vous individuel dans le PDV"
 
 # ------------------------------------------------------------------------------
 

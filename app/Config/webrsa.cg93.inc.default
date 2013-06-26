@@ -1060,8 +1060,7 @@
 	);
 
 	/**
-	 * FIXME: docs/checks/..., s'il y en a plusieurs
-	 * FIXME: documentation
+	 * Configuration du module "Tableaux de suivi d'activité PDV".
 	 */
 	Configure::write(
 		'Tableausuivipdv93',
@@ -1076,6 +1075,16 @@
 				'acteurs_sociaux' => array( 7 ),
 				'acteurs_sante' => array( 8 ),
 				'acteurs_culture' => array( 9 )
+			),
+			// 
+			// Conditions à prendre en compte pour limiter la liste des structures référentes/PDVs
+			// Les modèles disponibles sont: Pdv (alias de Structurereferente) et Typeorient
+			'conditionsPdv' => array(
+				'OR' => array(
+					'Typeorient.id' => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ),
+					'Typeorient.parentid' => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ),
+				),
+				'Pdv.lib_struc LIKE' => '%Projet de Ville%'
 			)
 		)
 	);

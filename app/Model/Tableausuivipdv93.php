@@ -128,6 +128,25 @@
 		}
 
 		/**
+		 * Retourne une condition permettant de limiter les résultats du niveau
+		 * CG aux seuls PDV définis dans la configuration.
+		 *
+		 * @see Tableausuivipdv93::listePdvs()
+		 *
+		 * @param string $field
+		 * @return string
+		 */
+		protected function _conditionStructurereferenteIsPdv( $field = 'structurereferente_id' ) {
+			$ids = array_keys( (array)$this->listePdvs() );
+
+			if( !empty( $ids ) ) {
+				return $field.' IN ( '.implode( ',', $ids ).' )';
+			}
+
+			return '1 = 0';
+		}
+
+		/**
 		 * Volet I problématiques 1-B-3: problématiques des bénéficiaires de
 		 * l'opération.
 		 *
@@ -179,7 +198,7 @@
 				WHEN dsps_revs.id IS NOT NULL AND dsps_revs.nivetu IN ('1206','1207')		THEN 'qualification_professionnelle'
 				WHEN dsps_revs.id IS NOT NULL AND dsps_revs.topengdemarechemploi ='0'		THEN 'acces_emploi'
 				WHEN dsps_revs.id IS NOT NULL AND detailsaccosocindis_revs.nataccosocindi = '0420' THEN 'autres'
-				END AS \"difficultés exprimées par les bénéficiaires\",
+				END AS \"difficultes_exprimees\",
 				COUNT(*)
 			FROM dsps
 				INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
@@ -205,15 +224,53 @@
 				-- pour la structure referente X (éventuellement)
 				{$conditionpdv}
 				{$conditionmaj}
-			GROUP BY \"difficultés exprimées par les bénéficiaires\";";
+				-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+				AND ".$this->_conditionStructurereferenteIsPdv()."
+			GROUP BY \"difficultes_exprimees\";";
 
 			$results = $Dsp->query( $sql );
-			$results = Hash::combine( $results, '{n}.0.difficultés exprimées par les bénéficiaires', '{n}.0.count' );
+			$results = Hash::combine( $results, '{n}.0.difficultes_exprimees', '{n}.0.count' );
 
 			unset( $results[''] );
 			$results['total'] = array_sum( array_values( $results ) );
 
 			return $results;
+		}
+
+		/**
+		 * TODO: case cochée ou pas ?
+		 *
+		 * @param array $search
+		 * @param string $operand
+		 * @return string
+		 */
+		protected function _conditionRendezvousPdv( array $search, $operand ) {
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// S'assure-ton qu'il existe au moins un RDV individuel ?
+			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
+			if( $rdv_structurereferente ) {
+				return "{$operand} actionscandidats_personnes.personne_id IN (
+					SELECT DISTINCT personne_id FROM rendezvous
+					WHERE
+						-- avec un RDV honoré durant l'année N
+						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+						AND ".$this->_conditionStatutRdv()."
+						-- dont la SR du référent de la fiche est la SR du RDV
+						AND referents.structurereferente_id = structurereferente_id
+						{$conditionpdv}
+				)";
+			}
+
+			return null;
 		}
 
 		/**
@@ -258,16 +315,9 @@
 						".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						-- dont la date de signature est dans l'année N
 						AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-						AND actionscandidats_personnes.personne_id IN (
-							SELECT DISTINCT personne_id FROM rendezvous
-							WHERE
-								-- avec un RDV honoré durant l'année N
-								EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-								AND ".$this->_conditionStatutRdv()."
-								-- dont la SR du référent de la fiche est la SR du RDV
-								AND referents.structurereferente_id = structurereferente_id
-								{$conditionpdv}
-						)
+						-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+						AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+						".$this->_conditionRendezvousPdv( $search, 'AND' )."
 					GROUP BY libelle
 				)
 				UNION
@@ -283,16 +333,9 @@
 							".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 							-- dont la date de signature est dans l'année N
 							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							AND actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id FROM rendezvous
-								WHERE
-									-- avec un RDV honoré durant l'année N
-									EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-									AND ".$this->_conditionStatutRdv()."
-									-- dont la SR du référent de la fiche est la SR du RDV
-									AND referents.structurereferente_id = structurereferente_id
-									{$conditionpdv}
-							)
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 				);";
 
 			$results = array();
@@ -345,18 +388,10 @@
 							WHERE
 								-- dont la date de signature est dans l'année N
 								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-								AND actionscandidats_personnes.personne_id IN (
-									SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- dont la SR du référent de la fiche est la SR du RDV
-										AND referents.structurereferente_id = structurereferente_id
-										-- pour la structure referente X
-										{$conditionpdv}
-								)
+								-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+								".$this->_conditionRendezvousPdv( $search, 'AND' )."
+
 					) AS \"Tableau1b5__distinct_personnes_prescription\",
 					(
 						SELECT COUNT(DISTINCT personne_id)
@@ -366,19 +401,11 @@
 							WHERE
 								-- dont la date de signature est dans l'année N
 								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+								-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 								AND bilanvenu = 'VEN'
-								AND actionscandidats_personnes.personne_id IN (
-									SELECT DISTINCT personne_id
-										FROM rendezvous
-										WHERE
-											-- avec un RDV honoré durant l'année N
-											EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-											AND ".$this->_conditionStatutRdv()."
-											-- dont la SR du référent de la fiche est la SR du RDV
-											AND referents.structurereferente_id = structurereferente_id
-											-- pour la structure referente X
-											{$conditionpdv}
-									)
+								".$this->_conditionRendezvousPdv( $search, 'AND' )."
+
 					) AS \"Tableau1b5__distinct_personnes_action\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
 
@@ -393,18 +420,9 @@
 									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
 									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-									AND actionscandidats_personnes.personne_id IN (
-										SELECT DISTINCT personne_id
-											FROM rendezvous
-											WHERE
-												-- avec un RDV honoré durant l'année N
-												EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-												AND ".$this->_conditionStatutRdv()."
-												-- dont la SR du référent de la fiche est la SR du RDV
-												AND referents.structurereferente_id = structurereferente_id
-												-- pour la structure referente X
-												{$conditionpdv}
-									)
+									-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+									AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+									".$this->_conditionRendezvousPdv( $search, 'AND' )."
 									AND bilanretenu = 'RET'
 									AND bilanvenu != 'VEN'
 						) AS \"Tableau1b5__beneficiaires_pas_deplaces\",
@@ -416,18 +434,7 @@
 									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
 									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-									AND actionscandidats_personnes.personne_id IN (
-										SELECT DISTINCT personne_id
-											FROM rendezvous
-											WHERE
-												-- avec un RDV honoré durant l'année N
-												EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-												AND ".$this->_conditionStatutRdv()."
-												-- dont la SR du référent de la fiche est la SR du RDV
-												AND referents.structurereferente_id = structurereferente_id
-												-- pour la structure referente X
-												{$conditionpdv}
-									)
+									".$this->_conditionRendezvousPdv( $search, 'AND' )."
 									AND bilanvenu = 'VEN'
 									AND actionscandidats_personnes.dfaction IS NULL
 						) AS \"Tableau1b5__nombre_fiches_attente\";";
@@ -518,17 +525,12 @@
 							COUNT(*) AS \"Tableausuivipdv93__prescription_count\"
 						FROM actionscandidats_personnes
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
-							actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- pour la structure referente X
-										{$conditionpdv}
-							)
+							'1' = '1'
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
@@ -539,18 +541,12 @@
 							COUNT(*) AS \"Tableausuivipdv93__prescriptions_effectives_count\"
 						FROM actionscandidats_personnes
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							bilanvenu = 'VEN'
-							AND actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- pour la structure referente X
-										{$conditionpdv}
-							)
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
@@ -570,19 +566,13 @@
 							COUNT(*) AS \"Tableausuivipdv93__prescriptions_refus_organisme_count\"
 						FROM actionscandidats_personnes
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							bilanretenu != 'RET'
 							AND bilanvenu != 'VEN'
-							AND actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- pour la structure referente X
-										{$conditionpdv}
-							)
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
@@ -593,18 +583,12 @@
 							COUNT(*) AS \"Tableausuivipdv93__prescriptions_en_attente_count\"
 						FROM actionscandidats_personnes
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							actionscandidats_personnes.ddaction > NOW()
-							AND actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- pour la structure referente X
-										{$conditionpdv}
-							)
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
@@ -615,18 +599,12 @@
 							COUNT(*) AS \"Tableausuivipdv93__prescriptions_retenu_count\"
 						FROM actionscandidats_personnes
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
+							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							bilanretenu = 'RET'
-							AND actionscandidats_personnes.personne_id IN (
-								SELECT DISTINCT personne_id
-									FROM rendezvous
-									WHERE
-										-- avec un RDV honoré durant l'année N
-										EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-										AND ".$this->_conditionStatutRdv()."
-										-- pour la structure referente X
-										{$conditionpdv}
-							)
+							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
+							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
@@ -733,6 +711,53 @@
 
 			$this->create( $tableausuivipdv93 );
 			return $this->save();
+		}
+
+		/**
+		 * Retourne la liste des PDV pour lesquels les tableaux de PDV doivent
+		 * être calculés.
+		 *
+		 * @see Tableausuivipdv93.conditionsPdv dans le webrsa.inc
+		 *
+		 * @return array
+		 */
+		public function listePdvs() {
+			return $this->Pdv->find(
+				'list',
+				array(
+					'contain' => false,
+					'joins' => array(
+						$this->Pdv->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => (array)Configure::read( 'Tableausuivipdv93.conditionsPdv' ),
+					'order' => array( 'Pdv.lib_struc' )
+				)
+			);
+		}
+
+		/**
+		 * Retourne la liste des photographes des tableaux PDV.
+		 *
+		 * @return array
+		 */
+		public function listePhotographes() {
+			$sq = $this->sq( array( 'fields' => array( 'DISTINCT(user_id)' ) ) );
+
+			$list = $this->Photographe->find(
+				'list',
+				array(
+					'fields' => array( 'Photographe.id', 'Photographe.nom_complet' ),
+					'contain' => false,
+					'order' => array( 'Photographe.nom_complet' ),
+					'conditions' => array(
+						"Photographe.id IN ( {$sq} )"
+					)
+				)
+			);
+
+			$list = Hash::merge( array( 'NULL' => 'Photographie automatique' ), $list );
+
+			return $list;
 		}
 	}
 ?>

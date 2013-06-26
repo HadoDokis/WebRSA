@@ -65,9 +65,15 @@
 			foreach( $results as $result ) {
 				$row = array( h( Hash::get( $result, 'Tableau1b5.name' ) ) );
 				foreach( $columns as $column ) {
-					$value = (int)Hash::get( $result, "Tableau1b5.{$column}" );
-					$total[$column] = (int)Hash::get( $total, $column ) + $value;
-					$row[] = array( $this->Locale->number( $value ), array( 'class' => 'number integer' ) );
+					if( in_array( $column, array( 'prescriptions_refus_beneficiaire_count', 'prescriptions_abandon_count' ) ) ) {
+						$value = 'N/C';
+					}
+					else {
+						$value = (int)Hash::get( $result, "Tableau1b5.{$column}" );
+						$total[$column] = (int)Hash::get( $total, $column ) + $value;
+						$this->Locale->number( $value );
+					}
+					$row[] = array( $value, array( 'class' => 'number integer' ) );
 				}
 				$rows[] = $row;
 			}
@@ -76,7 +82,13 @@
 			// thead
 			$rows = array( __d( $domain, 'Total' ) );
 			foreach( $columns as $column ) {
-				$rows[] = array( $this->Locale->number( (int)Hash::get( $total, $column ) ), array( 'class' => 'number integer' ) );
+				if( in_array( $column, array( 'prescriptions_refus_beneficiaire_count', 'prescriptions_abandon_count' ) ) ) {
+					$value = 'N/C';
+				}
+				else {
+					$value = $this->Locale->number( (int)Hash::get( $total, $column ) );
+				}
+				$rows[] = array( $value, array( 'class' => 'number integer' ) );
 			}
 			$tfoot = $this->Xhtml->tag( 'tfoot', $this->Xhtml->tableCells( $rows ) );
 
