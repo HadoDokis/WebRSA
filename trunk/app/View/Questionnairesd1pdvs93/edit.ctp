@@ -76,27 +76,27 @@
 				'options' => $options['Questionnaired1pdv93']['categorie_sociopro'],
 				'empty' => true
 			),
-			'Questionnaired1pdv93.nivetu' => array(
+			'Questionnaired1pdv93.nivetu' => array( // FIXME: visualisation
 				'options' => $options['Questionnaired1pdv93']['nivetu'],
-				'empty' => true
+				'empty' => true,
 			),
-			'Questionnaired1pdv93.autre_caracteristique' => array(
+			'Questionnaired1pdv93.autre_caracteristique' => array( // FIXME: visualisation
 				'options' => $options['Questionnaired1pdv93']['autre_caracteristique'],
 				'empty' => true
 			),
-			'Questionnaired1pdv93.autre_caracteristique_autre',
+			'Questionnaired1pdv93.autre_caracteristique_autre', // FIXME: visualisation/vide
 			'Questionnaired1pdv93.conditions_logement' => array(
 				'options' => $options['Questionnaired1pdv93']['conditions_logement'],
 				'empty' => true
 			),
 			'Questionnaired1pdv93.conditions_logement_autre',
 			'Questionnaired1pdv93.date_validation' => array(
-				'dateFormat' => 'DMY',
+				'type' => 'hidden',
 				'empty' => true
 			),
 		),
 		array(
-			'buttons' => array( 'Save', 'Cancel', 'Validate' )
+			'buttons' => array( 'Validate', 'Cancel' )
 		)
 	);
 ?>

@@ -198,3 +198,14 @@ msgstr "Bénéficiaires RSA majoré"
 
 msgid "Situationallocataire.natpf_activite"
 msgstr "Bénéficiaires RSA activité"
+
+# ==============================================================================
+
+msgid "Dsp.nivetu_obligatoire"
+msgstr "Vous devez renseigner le niveau d'étude de l'allocataire dans les DSP."
+
+msgid "Calculdroitrsa.toppersdrodevorsa_notice"
+msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
+
+msgid "Situationdossierrsa.etatdosrsa_ouverts"
+msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."

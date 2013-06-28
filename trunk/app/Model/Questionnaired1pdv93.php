@@ -76,38 +76,38 @@
 
 		public $validate = array(
 			'inscritpe' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'marche_travail' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'vulnerable' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'diplomes_etrangers' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'categorie_sociopro' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'nivetu' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'autre_caracteristique' => array(
-				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'autre_caracteristique_autre' => array(
@@ -117,7 +117,7 @@
 			),
 			'conditions_logement' => array(
 				'notNullIf' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+					'rule' => array( 'notEmpty' )
 				)
 			),
 			'conditions_logement_autre' => array(
@@ -127,7 +127,7 @@
 			),
 			'date_validation' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notNullIf', 'valide', true, array( '1' ) )
+					'rule' => array( 'notEmpty' )
 				),
 				'checkDateOnceAYear' => array(
 					'rule' => array( 'checkDateOnceAYear', 'personne_id' )
@@ -177,6 +177,7 @@
 		}
 
 		/**
+		 * TODO: changer la signature, on ne modifie plus
 		 *
 		 * @param integer $id
 		 * @param integer $personne_id
@@ -218,6 +219,10 @@
 				foreach( array( 'socle', 'majore', 'activite' ) as $type ) {
 					$formData['Situationallocataire']["natpf_{$type}"] = ( $formData['Situationallocataire']["natpf_{$type}"] ? '1' : '0' );
 				}
+
+				$formData[$this->alias]['date_validation'] = date( 'Y-m-d' );
+				$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
+				$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
 			}
 
 			if( !is_null( $id ) ) {
@@ -250,6 +255,117 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Filtrage des options pour le formulaire: pour les groupes vulnérables,
+		 * on ne garde que "Personnes handicapées (reconnues par la MDPH)" et
+		 * "Autres personnes défavorisées"
+		 *
+		 * @param array $options
+		 * @return array
+		 */
+		public function filterOptions( array $options ) {
+			$options = Hash::remove( $options, "{$this->alias}.vulnerable.migrant" );
+			$options = Hash::remove( $options, "{$this->alias}.vulnerable.minorite" );
+
+			return $options;
+		}
+
+		/**
+		 * Retourne le niveau d'étude d'un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @return string
+		 */
+		public function nivetu( $personne_id ) {
+			$querydata = array(
+				'fields' => array( 'nivetu' ),
+				'contain' => false,
+				'conditions' => array( 'personne_id' => $personne_id ),
+				'order' => array( 'id DESC' ),
+			);
+
+			$nivetu = $this->Personne->Dsp->DspRev->find( 'first', $querydata );
+			$nivetu = Hash::get( $nivetu, 'DspRev.nivetu' );
+
+			if( empty( $nivetu ) ) {
+				$nivetu = $this->Personne->Dsp->find( 'first', $querydata );
+				$nivetu = Hash::get( $nivetu, 'Dsp.nivetu' );
+			}
+
+			return $nivetu;
+		}
+
+		/**
+		 * Retourne la soumission à droits et devoirs d'un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function toppersdrodevorsa( $personne_id ) {
+			$querydata = array(
+				'fields' => array( 'toppersdrodevorsa' ),
+				'contain' => false,
+				'conditions' => array( 'personne_id' => $personne_id )
+			);
+			$calculdroitrsa = $this->Personne->Calculdroitrsa->find( 'first', $querydata );
+			$toppersdrodevorsa = Hash::get( $calculdroitrsa, 'Calculdroitrsa.toppersdrodevorsa' );
+
+			return $toppersdrodevorsa;
+
+		}
+
+		/**
+		 * Retourne la soumission à droits et devoirs d'un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function droitsouverts( $personne_id ) {
+			$querydata = array(
+				'fields' => array( 'Situationdossierrsa.etatdosrsa' ),
+				'contain' => false,
+				'conditions' => array( 'Personne.id' => $personne_id ),
+				'joins' => array(
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+				)
+			);
+
+			$situationdossierrsa = $this->Personne->find( 'first', $querydata );
+			$situationdossierrsa = Hash::get( $situationdossierrsa, 'Situationdossierrsa.etatdosrsa' );
+			$situationdossierrsa = in_array( $situationdossierrsa, (array)Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' ), true );
+
+			return $situationdossierrsa;
+		}
+
+		/**
+		 * Messages à envoyer à l'utilisateur.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function messages( $personne_id ) {
+			$messages = array();
+
+			$nivetu = $this->nivetu( $personne_id );
+			if( empty( $nivetu ) ) {
+				$messages['Dsp.nivetu_obligatoire'] = 'error';
+			}
+
+			$toppersdrodevorsa = $this->toppersdrodevorsa( $personne_id );
+			if( empty( $toppersdrodevorsa ) ) {
+				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
+			}
+
+			$droitsouverts = $this->droitsouverts( $personne_id );
+			if( empty( $droitsouverts ) ) {
+				$messages['Situationdossierrsa.etatdosrsa_ouverts'] = 'notice';
+			}
+
+			return $messages;
 		}
 	}
 ?>
