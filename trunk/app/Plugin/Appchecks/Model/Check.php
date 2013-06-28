@@ -473,8 +473,19 @@
 		public function webservice( $wsdl, $message = "Le WebService n' est pas accessible (%s)" ) {
 			$result = array();
 
+			// TODO: faire une méthode dans le Check
+			$handle = fopen($wsdl,"r");
+			if( !empty($handle) ) {
+				fclose( $handle );
+			}
+			else {
+				$result['success'] = false;
+				$result['message'] = sprintf( $message, "L'URL {$wsdl} n'est pas accessible." );
+				return $result;
+			}
+
 			try {
-				$client = @new SoapClient( $wsdl, array( 'exceptions' => 1 ) );
+				$client = @new SoapClient( $wsdl, array( 'exceptions' => 1 ) ); //FIXME si le wsdl ne répond pas, page blanche !!
 				$result['success'] = true;
 			} catch( Exception $e ) {
 				$result['success'] = false;
