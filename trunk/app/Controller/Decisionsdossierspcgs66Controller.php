@@ -528,15 +528,22 @@
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
 					}
-
+debug($this->request->data);
                     
                     // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
                     // que celui auquel je suis lié
-                    if( $saved && !empty( $this->request->data['Traitementpcg66']['traitementnonclosdecision'] ) ) {
-                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound( 
+                    if( $saved && !empty( $this->request->data['Traitementpcg66']['Traitementpcg66'] ) ) {
+//                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound( 
+//                            array( 'Traitementpcg66.clos' => '\'O\'' ),
+//                            array(
+//                                'Traitementpcg66.id IN' => $this->request->data['Traitementpcg66']['traitementnonclosdecision']
+//                            )
+//                        ) && $saved;
+                        
+                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound( 
                             array( 'Traitementpcg66.clos' => '\'O\'' ),
                             array(
-                                'Traitementpcg66.id' => $this->request->data['Traitementpcg66']['traitementnonclosdecision']
+                                'Traitementpcg66.id IN' => $this->request->data['Traitementpcg66']['Traitementpcg66']
                             )
                         ) && $saved;
                     }

@@ -35,6 +35,7 @@
 		// Liste des types de traitement
 		echo $this->Xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement' ) );
 
+
 	?>
     <script type="text/javascript">
 		function showAjaxValidationErrors() {
@@ -846,7 +847,15 @@
 		
 		//Liste des traitements autre que moi non clos, appartenant à d'autres dossiers
 		if( !empty( $listeTraitementsNonClos ) ) {
-			echo $this->Form->input( 'Traitementpcg66.traitementnonclos', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $listeTraitementsNonClos['Traitementpcg66']['traitementnonclos'], 'empty' => true ) );
+//			echo $this->Form->input( 'Traitementpcg66.traitementnonclos', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $listeTraitementsNonClos['Traitementpcg66']['traitementnonclos'], 'empty' => true ) );
+            echo $this->Default2->subform(
+                array(
+                    'Traitementpcg66.Traitementpcg66' => array( 'type' => 'select', 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listeTraitementsNonClos['Traitementpcg66']['traitementnonclos'] )
+                ),
+                array(
+                    'options' => $options
+                )
+            );
 		}
 
 

@@ -76,7 +76,15 @@
 <?php if( !empty( $listeTraitementsNonClos ) ):?>
     <?php
         foreach( $listeTraitementsNonClos as $traitement ){
-            echo $this->Form->input( 'Traitementpcg66.traitementnonclosdecision', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $traitement['traitementnonclosdecision'], 'empty' => true ) );
+//            echo $this->Form->input( 'Traitementpcg66.traitementnonclosdecision', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $traitement['traitementnonclosdecision'], 'empty' => true ) );
+            echo $this->Default2->subform(
+				array(
+					'Traitementpcg66.Traitementpcg66' => array( 'type' => 'select', 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'multiple' => 'checkbox', 'empty' => false, 'options' => $traitement['traitementnonclosdecision'] )
+				),
+				array(
+					'options' => $options
+				)
+			);
 
         }
     ?>
