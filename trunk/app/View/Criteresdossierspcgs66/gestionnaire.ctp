@@ -37,6 +37,8 @@
                 );
                 echo $this->Search->etatDossierPCG66( $etatdossierpcg );
                 
+                echo $this->Xform->input( 'Decisiondossierocg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
+                
                  echo $this->Default2->subform(
 					array(
 						'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
@@ -59,6 +61,7 @@
                     )
                 );
                 
+                echo $this->Search->natpf( $natpf );
                 echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
             ?>
         </fieldset>
@@ -110,10 +113,16 @@
 
 						$datetransmission = '';
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
-							$datetransmission = ' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
+                            $datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
+                        }
+                        else if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'atttransmisop' ){
+                            $datetransmission = ' à '.$orgs; 
 						}
 
-
+                        // Liste des organismes auxquels on transmet le dossier
+                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
+                        $orgs = implode( ', ', $orgs  );
+                        
 						//Liste des différents traitements PCGs de la personne PCG
 						$traitementspcgs66 = '';
 						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
