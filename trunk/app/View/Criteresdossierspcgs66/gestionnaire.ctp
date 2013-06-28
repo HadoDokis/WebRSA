@@ -37,8 +37,6 @@
                 );
                 echo $this->Search->etatDossierPCG66( $etatdossierpcg );
                 
-                echo $this->Xform->input( 'Decisiondossierocg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
-                
                  echo $this->Default2->subform(
 					array(
 						'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
@@ -61,7 +59,6 @@
                     )
                 );
                 
-                echo $this->Search->natpf( $natpf );
                 echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
             ?>
         </fieldset>
@@ -94,7 +91,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Origine de la PDO', 'Dossierpcg66.originepdo_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Type de dossier', 'Dossierpcg66.typepdo_id' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de réception', 'Dossierpcg66.datereceptionpdo' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nb propo. décisions', 'Dossierpcg66.nbpropositions' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nb traitements', 'Personnepcg66.nbtraitements' );?></th>
@@ -111,24 +108,25 @@
 				<?php
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
 
-                        
-                        // Liste des organismes auxquels on transmet le dossier
-                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
-                        $orgs = implode( ', ', $orgs  );
-
 						$datetransmission = '';
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
-							$datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
+							$datetransmission = ' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
 						}
-                        else if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'atttransmisop' ){
-							$datetransmission = ' à '.$orgs; //FIXME variable mal nommée mais plus simple à mettre en place
-						}
-                        
+
+
 						//Liste des différents traitements PCGs de la personne PCG
 						$traitementspcgs66 = '';
 						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
 							if( !empty( $traitement ) ) {
 								$traitementspcgs66 .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] ).'</li></ul>';
+							}
+						}
+                        
+                        //Liste des différents traitements PCGs de la personne PCG
+						$echeances = '';
+						foreach( $criteredossierpcg66['Dossierpcg66']['dateecheance'] as $key => $echeance ) {
+							if( !empty( $echeance ) ) {
+								$echeances .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.date_short( $echeance ).'</li></ul>';
 							}
 						}
 
@@ -180,14 +178,14 @@
 
 							</tbody>
 						</table>';
-
+//debug( $criteredossierpcg66 );
 						echo $this->Xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $criteredossierpcg66, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.prenom' ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
-								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
+								$echeances,//h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
 								h( $criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( $criteredossierpcg66['Personnepcg66']['nbtraitements'] ),

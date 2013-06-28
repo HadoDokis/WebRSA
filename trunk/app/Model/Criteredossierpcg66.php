@@ -44,8 +44,6 @@
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
-            $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
-
 
 			/// Critères
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
@@ -187,33 +185,6 @@
                     }
                 }
             }
-            
-            
-            // Organismes auxquels le dossier a été transmis
-            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' );
-			if( !empty( $organismes_id ) ) {
-				$conditions[] = 'Decisiondossierpcg66.id IN ( '.
-					ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
-						array(
-							'alias' => 'decsdospcgs66_orgsdospcgs66',
-							'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ),
-							'contain' => false,
-							'conditions' => array(
-								'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id
-							),
-							'joins' => array(
-								array(
-									'table'      => 'orgstransmisdossierspcgs66',
-									'alias'      => 'orgstransmisdossierspcgs66',
-									'type'       => 'INNER',
-									'foreignKey' => false,
-									'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ),
-								)
-							)
-						)
-					)
-				.' )';	
-			}
 //debug($conditions);
             
 			$query = array(
@@ -228,7 +199,6 @@
                     'Decisiondossierpcg66.datevalidation',
 					'Decisiondossierpcg66.useravistechnique_id',
 					'Decisiondossierpcg66.userproposition_id',
-                    'Decisiondossierpcg66.etatop',
 					'Dossierpcg66.originepdo_id',
 					'Dossierpcg66.user_id',
 					'Dossier.id',
@@ -280,9 +250,7 @@
                             )
                         )
                     ),
-                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'conditions' => $conditions
@@ -413,36 +381,8 @@
 							)
 						)
 					)
-				.' )';
-			}
-            
-             // Organismes auxquels le dossier a été transmis
-            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' );
-			if( !empty( $organismes_id ) ) {
-				$conditions[] = 'Decisiondossierpcg66.id IN ( '.
-					ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
-						array(
-							'alias' => 'decsdospcgs66_orgsdospcgs66',
-							'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ),
-							'contain' => false,
-							'conditions' => array(
-								'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id
-							),
-							'joins' => array(
-								array(
-									'table'      => 'orgstransmisdossierspcgs66',
-									'alias'      => 'orgstransmisdossierspcgs66',
-									'type'       => 'INNER',
-									'foreignKey' => false,
-									'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ),
-								)
-							)
-						)
-					)
 				.' )';	
 			}
-            
-            $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 			
 			$query = array(
 				'fields' => array(
@@ -455,6 +395,7 @@
 					'Dossierpcg66.user_id',
 					'Dossierpcg66.datetransmission',
 					'Decisiondossierpcg66.datetransmissionop',
+                    'Traitementpcg66.dateecheance',
                     'Decisionpdo.libelle',
 					'Dossier.id',
 					'Dossier.numdemrsa',
@@ -487,9 +428,7 @@
 					$Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'contain' => false,
