@@ -52,12 +52,13 @@
 			$pdvs = $this->Tableausuivipdv93->listePdvs();
 			$search = array( 'Search' => array( 'annee' => date( 'Y' ), 'rdv_structurereferente' => false ) );
 			$success = true;
+			$tableaux = array_keys( $this->Tableausuivipdv93->tableaux );
 
 			$this->Tableausuivipdv93->begin();
 
 			// Sauvegarde pour le CG
 			$this->out( "Enregistrement des tableaux de suivi CG pour l'année {$search['Search']['annee']}" );
-			foreach( $this->Tableausuivipdv93->tableaux as $tableau ) {
+			foreach( $tableaux as $tableau ) {
 				$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 			}
 
@@ -65,7 +66,7 @@
 			foreach( $pdvs as $pdv_id => $label ) {
 				$search['Search']['structurereferente_id'] = $pdv_id;
 				$this->out( "Enregistrement des tableaux de suivi du PDV {$label} pour l'année {$search['Search']['annee']}" );
-				foreach( $this->Tableausuivipdv93->tableaux as $tableau ) {
+				foreach( $tableaux as $tableau ) {
 					$success = $success && $this->Tableausuivipdv93->historiser( $tableau, $search );
 				}
 			}

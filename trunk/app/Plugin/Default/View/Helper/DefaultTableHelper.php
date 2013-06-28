@@ -103,6 +103,18 @@
 					if( strstr( $path, '[]' ) !== false ) {
 						$path = str_replace( '[]', "[{$i}]", $path );
 					}
+
+					// TODO: que faire dans ces cas-là ?
+					if( strstr( $path, ']' ) !== false ) {
+					}
+					else if( strstr( $path, '/' ) !== false ) {
+					}
+					else if( strstr( $path, '.' ) !== false ) {
+						list( $modelName, $fieldName ) = model_field( $path );
+						if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
+							$attributes['options'] = $params['options'][$modelName][$fieldName];
+						}
+					}
 					$tr[] = $this->DefaultTableCell->auto( $path, (array)$attributes );
 				}
 

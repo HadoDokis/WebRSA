@@ -47,6 +47,7 @@
 			'Search.Prg' => array(
 				'actions' => array(
 					'index',
+					'tableaud1',
 					'tableau1b3',
 					'tableau1b4',
 					'tableau1b5',
@@ -76,6 +77,18 @@
 
 		/**
 		 *
+		 */
+		public function tableaud1() {
+			$search = $this->_applyStructurereferente( $this->request->data );
+
+			if( !empty( $search ) ) {
+				$this->set( 'results', $this->Tableausuivipdv93->tableaud1( $search ) );
+			}
+
+			$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
+		}
+
+		/**
 		 * @param integer $user_structurereferente_id
 		 */
 		protected function _setOptions( $user_structurereferente_id ) {
@@ -91,9 +104,11 @@
 					'annee' => array_combine( $years, $years ),
 					'structurereferente_id' => $structurereferente_id,
 					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
+					'tableau' => $this->Tableausuivipdv93->tableaux,
 				),
 				'problematiques' => $this->Tableausuivipdv93->problematiques(),
 				'acteurs' => $this->Tableausuivipdv93->acteurs(),
+				'Tableausuivipdv93' => array( 'name' => $this->Tableausuivipdv93->tableaux )
 			);
 
 			$userIsCg = empty( $user_structurereferente_id );
@@ -234,6 +249,9 @@
 						$querydata['conditions']['Tableausuivipdv93.user_id'] = $search['Search']['user_id'];
 					}
 				}
+				if( !empty( $search['Search']['tableau'] ) ) {
+					$querydata['conditions']['Tableausuivipdv93.name'] = $search['Search']['tableau'];
+				}
 
 				$this->paginate = array( 'Tableausuivipdv93' => $querydata );
 				$tableauxsuivispdvs93 = $this->paginate( 'Tableausuivipdv93', array(), array(), false );
@@ -261,6 +279,10 @@
 
 			if( empty( $tableausuivipdv93 ) ) {
 				throw new NotFoundException();
+			}
+
+			if( $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) {
+				$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
 			}
 
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );
