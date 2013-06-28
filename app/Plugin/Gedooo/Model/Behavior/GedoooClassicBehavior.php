@@ -271,15 +271,20 @@
 			);
 		}
 
-		public function gedTestPrint( Model $model ) {
-			if( get_class( $this ) == 'GedoooClassicBehavior' ) {
-				$test_print = $this->ged( $model, array( ), GEDOOO_TEST_FILE );
-			}
-			else {
-				$test_print = $this->gedFusion( $model, array( 'foo' => 'bar' ), GEDOOO_TEST_FILE );
-			}
+		public function gedTestPrint( Model $model, array $access ) {
+            if( $access['success'] ) {
+                if( get_class( $this ) == 'GedoooClassicBehavior' ) {
+                    $test_print = $this->ged( $model, array( ), GEDOOO_TEST_FILE );
+                }
+                else {
+                    $test_print = $this->gedFusion( $model, array( 'foo' => 'bar' ), GEDOOO_TEST_FILE );
+                }
 
-			$test_print = !empty( $test_print ) && preg_match( '/^(%PDF\-[0-9]|PK)/m', $test_print );
+                $test_print = !empty( $test_print ) && preg_match( '/^(%PDF\-[0-9]|PK)/m', $test_print );
+            }
+            else {
+                $test_print = false;
+            }
 
 			return array(
 				'success' => $test_print,
@@ -294,10 +299,12 @@
 			App::import( 'Model', 'Appchecks.Check' );
 			$Check = ClassRegistry::init( 'Appchecks.Check' );
 
+            $access = $Check->webservice( GEDOOO_WSDL );
+
 			return array(
-				'Accès au WebService' => $Check->webservice( GEDOOO_WSDL ),
+				'Accès au WebService' => $access,
 				'Présence du modèle de test' => $Check->filePermission( GEDOOO_TEST_FILE ),
-				'Test d\'impression' => $this->gedTestPrint( $model )
+				'Test d\'impression' => $this->gedTestPrint( $model, $access )
 			);
 		}
 
