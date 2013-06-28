@@ -319,9 +319,9 @@ document.observe( "dom:loaded", function() {
 					'add' => array(
 						'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'add', $dossierpcg66_id ),
 						'disabled' => (
-							 $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
-//							 || in_array( $etatdossierpcg, array( 'attavistech', 'attval', 'decisionvalid', 'decisionvalidretouravis', 'attpj', 'transmisop', 'atttransmisop' ) )
-							 || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr' ) )
+                            $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
+                            || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr' ) )
+                            || empty( $personnespcgs66 )
                             
 						)
 					),
