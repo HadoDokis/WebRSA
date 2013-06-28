@@ -190,6 +190,18 @@ CREATE INDEX tableauxsuivispdvs93_version_idx ON tableauxsuivispdvs93(version);
 DROP INDEX IF EXISTS tableauxsuivispdvs93_user_id_idx;
 CREATE INDEX tableauxsuivispdvs93_user_id_idx ON tableauxsuivispdvs93(user_id);
 
+-------------------------------------------------------------------------------------
+-- 20130628 : Modification des valeurs prises par les avis techniques du CUI
+-------------------------------------------------------------------------------------
+SELECT alter_table_drop_constraint_if_exists( 'public', 'proposdecisionscuis66', 'proposdecisionscuis66_propositioncui_in_list_chk' );
+ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositioncui_in_list_chk CHECK ( cakephp_validate_in_list( propositioncui, ARRAY['enattente','accord','refus','reserve'] ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'proposdecisionscuis66', 'proposdecisionscuis66_propositioncuireferent_in_list_chk' );
+ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositioncuireferent_in_list_chk CHECK ( cakephp_validate_in_list( propositioncuireferent, ARRAY['enattente','accord','refus','reserve'] ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'proposdecisionscuis66', 'proposdecisionscuis66_propositioncuielu_in_list_chk' );
+ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositioncuielu_in_list_chk CHECK ( cakephp_validate_in_list( propositioncuielu, ARRAY['enattente','accord','refus','reserve'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

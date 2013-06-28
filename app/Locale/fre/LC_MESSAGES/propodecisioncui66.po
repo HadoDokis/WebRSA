@@ -112,6 +112,9 @@ msgstr "Dénonciation prescripteur"
 msgid "ENUM::PROPOSITIONCUI::resilie"
 msgstr "Résilié"
 
+msgid "ENUM::PROPOSITIONCUI::reserve"
+msgstr "Avis réservé"
+
 msgid "ENUM::PROPOSITIONCUIELU::enattente"
 msgstr "En attente de décision"
 
@@ -120,6 +123,9 @@ msgstr "Refus"
 
 msgid "ENUM::PROPOSITIONCUIELU::accord"
 msgstr "Accord"
+
+msgid "ENUM::PROPOSITIONCUIELU::reserve"
+msgstr "Avis réservé"
 
 msgid "ENUM::PROPOSITIONCUIELU::sanssuiteemployeur"
 msgstr "Sans suite employeur"
@@ -144,6 +150,9 @@ msgstr "Refus"
 
 msgid "ENUM::PROPOSITIONCUIREFERENT::accord"
 msgstr "Accord"
+
+msgid "ENUM::PROPOSITIONCUIREFERENT::reserve"
+msgstr "Avis réservé"
 
 msgid "ENUM::PROPOSITIONCUIREFERENT::sanssuiteemployeur"
 msgstr "Sans suite employeur"

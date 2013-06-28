@@ -29,7 +29,7 @@
 
 			echo $this->Xform->input( 'Propodecisioncui66.structurereferente_id', array( 'type' => 'hidden' ) );
 			echo $this->Xform->input( 'Propodecisioncui66.observcui', array( 'label' => __d( 'propodecisioncui66', 'Propodecisioncui66.observcui' ), 'type' => 'textarea', 'rows' => 6)  );
-			echo $this->Xform->input( 'Propodecisioncui66.propositioncui', array( 'label' => __d( 'propodecisioncui66', 'Propodecisioncui66.propositioncui' ), 'type' => 'select', 'options' => $options['Propodecisioncui66']['propositioncui'], 'empty' => true ) );
+			echo $this->Xform->input( 'Propodecisioncui66.propositioncui', array( 'label' => __d( 'propodecisioncui66', 'Propodecisioncui66.propositioncui' ), 'type' => 'select', 'options' => $options['Propodecisioncui66']['propositioncui'], 'empty' => false ) );
 			echo $this->Xform->input( 'Propodecisioncui66.datepropositioncui', array( 'label' => required( __d( 'propodecisioncui66', 'Propodecisioncui66.datepropositioncui' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => false)  );
 		?>
 </fieldset>
