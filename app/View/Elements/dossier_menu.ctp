@@ -147,7 +147,7 @@
 				}
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
-					$subAllocataire['Accompagnement du parcours']['Liste des premiers rendez-vous'] = array(
+					$subAllocataire['Accompagnement du parcours']['Questionnaires D1'] = array(
 						'url' => array( 'controller' => 'questionnairesd1pdvs93', 'action' => 'index', $personne['id'] )
 					);
 				}

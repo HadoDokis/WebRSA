@@ -35,6 +35,18 @@
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
 				);
+				echo $this->Xhtml->tableCells(
+					array(
+						h( 'Thématiques des RDVs' ),
+						$this->Xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'thematiquesrdvs', 'action' => 'index' ),
+							$this->Permissions->check( 'thematiquesrdvs', 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
 				if( Configure::read( 'Cg.departement' ) == 58 ){
 					echo $this->Xhtml->tableCells(
 						array(

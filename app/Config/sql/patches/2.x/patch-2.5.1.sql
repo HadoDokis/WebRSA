@@ -202,6 +202,29 @@ ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositi
 SELECT alter_table_drop_constraint_if_exists( 'public', 'proposdecisionscuis66', 'proposdecisionscuis66_propositioncuielu_in_list_chk' );
 ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositioncuielu_in_list_chk CHECK ( cakephp_validate_in_list( propositioncuielu, ARRAY['enattente','accord','refus','reserve'] ) );
 
+-------------------------------------------------------------------------------------
+-- 20130628 : Ajout des thématiques de rendez-vous
+-------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS thematiquesrdvs CASCADE;
+CREATE TABLE thematiquesrdvs (
+	id			SERIAL NOT NULL PRIMARY KEY,
+	name		VARCHAR(255) NOT NULL,
+	typerdv_id	INTEGER DEFAULT NULL REFERENCES typesrdv(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	tableliee	VARCHAR(255) DEFAULT NULL,
+	created		TIMESTAMP WITHOUT TIME ZONE,
+	modified	TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP INDEX IF EXISTS thematiquesrdvs_name_idx;
+CREATE INDEX thematiquesrdvs_name_idx ON thematiquesrdvs(name);
+
+DROP INDEX IF EXISTS thematiquesrdvs_typerdv_id_idx;
+CREATE INDEX thematiquesrdvs_typerdv_id_idx ON thematiquesrdvs(typerdv_id);
+
+DROP INDEX IF EXISTS thematiquesrdvs_tableliee_idx;
+CREATE INDEX thematiquesrdvs_tableliee_idx ON thematiquesrdvs(tableliee);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

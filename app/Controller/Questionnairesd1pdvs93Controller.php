@@ -59,6 +59,11 @@
 		public function index( $personne_id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			// Remplit-on les conditions initiales ? / Messages à envoyer à l'utilisateur
+			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
+			$add_enabled = !in_array( 'error', $messages );
+			$this->set( compact( 'messages', 'add_enabled' ) );
+
 			$this->paginate = array(
 				'Questionnaired1pdv93' => array(
 					'fields' => array_merge(
@@ -148,6 +153,11 @@
 				$personne_id = $this->Questionnaired1pdv93->personneId( $id );
 			}
 
+			$nivetu = $this->Questionnaired1pdv93->nivetu( $personne_id );
+			if( empty( $nivetu ) ) {
+				throw new InternalErrorException( 'Niveau d\'étude non renseigné' );
+			}
+
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
 
@@ -158,11 +168,9 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-				if( isset( $this->request->data['Validate'] ) ) {
-					$data = $this->request->data;
-					$data['Questionnaired1pdv93']['valide'] = '1';
-					$this->request->data = $data;
-				}
+				$data = $this->request->data;
+				$data['Questionnaired1pdv93']['valide'] = '1';
+				$this->request->data = $data;
 
 				$this->Questionnaired1pdv93->begin();
 
@@ -218,6 +226,7 @@
 
 			$options = $this->Questionnaired1pdv93->enums();
 			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->findListPersonneId( $personne_id );
+			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 
 			$this->set( compact( 'personne_id', 'options', 'dossierMenu', 'personne' ) );
 			$this->render( 'edit' );
