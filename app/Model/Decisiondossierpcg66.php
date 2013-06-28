@@ -443,7 +443,7 @@
 
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-			$data['Dossierpcg66']['serviceinstructeur_id'] = Set::classicExtract( $services, $data['Dossierpcg66']['serviceinstructeur_id'] );
+			$data['Dossierpcg66']['serviceinstructeur_id'] = Hash::get( $services, $data['Dossierpcg66']['serviceinstructeur_id'] );
 
 			$sections = array();
 			$personnesfoyerpcg = $this->Dossierpcg66->Personnepcg66->find(
@@ -553,7 +553,8 @@
 				$this->enums(),
 				$this->Dossierpcg66->enums()
 			);
-
+//debug($data);
+//die();
 			return $this->ged(
 				$data,
 				$this->modeleOdt( $data ),
