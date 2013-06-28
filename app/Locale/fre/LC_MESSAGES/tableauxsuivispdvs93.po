@@ -20,6 +20,9 @@ msgstr "Dont les DSP ont été mises à jour dans l'année"
 msgid "Search.user_id"
 msgstr "Photographe"
 
+msgid "Search.tableau"
+msgstr "Tableau de bord"
+
 msgid "Search.rdv_structurereferente"
 msgstr "Dont le bénéficiaire possède au moins un rendez-vous individuel dans le PDV"
 
@@ -195,3 +198,55 @@ msgstr "Historiser les résultats"
 
 msgid "/Tableauxsuivispdvs93/view/:heading"
 msgstr "Visualisation du tableau #Tableausuivipdv93.name# pour l'année #Tableausuivipdv93.annee#"
+
+# ------------------------------------------------------------------------------
+# Tableau D1
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableaud1/:heading"
+msgstr "Tableau D1 - Indicateurs de réalisation : caractéristiques des participants"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/sexe"
+msgstr "Ligne 1 - Total participants"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/marche_travail"
+msgstr "Ligne 2 - Statut sur le marché de l'emploi"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/tranche_age"
+msgstr "Ligne 3 - Tranche d'âge"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/vulnerable"
+msgstr "Ligne 4 - Groupes vulnérables"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/nivetu"
+msgstr "Ligne 5 - Niveau d'instruction (dont diplômes étrangers non reconnus en France)"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/categorie_sociopro"
+msgstr "Ligne 6 - Professions et catégories socioprofessionnelles"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/autre_caracteristique"
+msgstr "Ligne 7 - Autres caractéristiques"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/natpf"
+msgstr "Ligne 8 - Type de bénéficiaires"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/nati"
+msgstr "Ligne 9 - Nationalité"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/sitfam"
+msgstr "Ligne 10 - Situation familiale"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/conditions_logement"
+msgstr "Ligne 11 - Condition de logement"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/inscritpe"
+msgstr "Ligne 12 - Inscription Pôle Emploi"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/anciennete_dispositif"
+msgstr "Ligne 13 - Ancienneté dans le dispositif"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/non_scolarise"
+msgstr "Ligne 14 - Non scolarisé"
+
+msgid "/Tableauxsuivispdvs93/tableaud1/diplomes_etrangers"
+msgstr "Ligne 15 - Diplômes étrangers non reconnus en France"

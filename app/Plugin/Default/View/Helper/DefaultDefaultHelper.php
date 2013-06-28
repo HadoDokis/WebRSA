@@ -151,7 +151,8 @@
 			return $pagination
 				.$this->DefaultTable->index(
 					$datas,
-					$fields
+					$fields,
+					$params
 				)
 				.$pagination;
 		}

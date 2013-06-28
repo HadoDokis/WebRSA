@@ -2,8 +2,6 @@
 	/**
 	 * Code source de la classe Tableausuivipdv93.
 	 *
-	 * FIXME: limiter sur les zones géographiques (?)
-	 *
 	 * PHP 5.3
 	 *
 	 * @package app.Model
@@ -38,7 +36,7 @@
 		 * @var array
 		 */
 		public $actsAs = array(
-			'Validation.Autovalidate',
+			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable',
 		);
 
@@ -95,10 +93,602 @@
 		 * @var array
 		 */
 		public $tableaux = array(
-			'tableau1b3',
-			'tableau1b4',
-			'tableau1b5',
+			'tableaud1' => 'D 1',
+			'tableau1b3' => '1 B 3',
+			'tableau1b4' => '1 B 4',
+			'tableau1b5' => '1 B 5',
 		);
+
+		/**
+		 * Liste des tranches d'âges pour le tableau D1
+		 *
+		 * @var array
+		 */
+		public $tranches_ages = array(
+			'0_14' => 'Participants de moins de 15 ans',
+			'15_24' => 'Participants de 15 à 24 ans',
+			'25_44' => 'Participants de 25 à 44 ans',
+			'45_54' => 'Participants de 45 à 54 ans',
+			'55_64' => 'Participants de 55 à 64 ans',
+			'65_999' => 'Participants de 65 ans et plus',
+		);
+
+		/**
+		 * Liste des nationalités.
+		 *
+		 * @var array
+		 */
+		public $natpf = array(
+			'socle' => 'Bénficiaires RSA socle',
+			'majore' => 'Bénéficiaires RSA majoré',
+			'socle_activite' => 'Bénéficiaires  RSA socle+activité',
+		);
+
+		/**
+		 * Liste des nationalités.
+		 *
+		 * @var array
+		 */
+		public $nati = array(
+			'F' => 'Française',
+			'C' => 'Union Européenne',
+			'A' => 'Hors Union Européenne',
+		);
+
+		/**
+		 * Liste des situations familiales.
+		 *
+		 * @var array
+		 */
+		public $sitfam = array(
+			'isole_sans_enfant' => 'Isolé(e) sans enfant(s) à charge',
+			'isole_avec_enfant' => 'Isolé(e) avec enfant(s) à charge',
+			'en_couple_sans_enfant' => 'En couple sans enfant(s) à charge',
+			'en_couple_avec_enfant' => 'En couple avec enfant(s) à charge',
+		);
+
+		/**
+		 * Liste des inscriptions à Pôle Emploi.
+		 *
+		 * @var array
+		 */
+		public $inscritpe = array(
+			'1' => 'Inscrits',
+			'0' => 'Non inscrits',
+		);
+
+		/**
+		 * Liste des catégories d'ancienneté du dispositif pour le tableau D1
+		 *
+		 * @var array
+		 */
+		public $anciennetes_dispositif = array(
+			'0_0' => 'Moins de 1 an',
+			'1_2' => 'De 1 an à moins de 3 ans',
+			'3_5' => 'De 3 ans à moins de 6 ans',
+			'3_8' => 'De 6 ans à moins de 9 ans',
+			'9_999' => 'Plus de 9 ans',
+		);
+
+		/**
+		 * Liste des non scolarisés.
+		 *
+		 * @var array
+		 */
+		public $non_scolarise = array(
+			'1207' => 'Non scolarisé',
+		);
+
+		/**
+		 * Liste des diplômes étrangers non reconnus en France.
+		 *
+		 * @var array
+		 */
+		public $diplomes_etrangers = array(
+			'1' => 'Diplômes étrangers non reconnus en France',
+		);
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Sexe( array $search ) {
+			$fields = array(
+				'"Situationallocataire"."sexe" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1MarcheTravail( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."marche_travail" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.marche_travail', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1TrancheAge( array $search ) {
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			$cases = array();
+			foreach( array_keys( $this->tranches_ages ) as $tranche_age ) {
+				list( $min, $max ) = explode( '_', $tranche_age );
+				$cases[] = 'WHEN EXTRACT( YEAR FROM AGE(TIMESTAMP\''.$annee.'-12-31\', "Situationallocataire"."dtnai" ) ) BETWEEN '.$min.' AND '.$max.' THEN \''.$tranche_age.'\'';
+			}
+
+			$tranche_age = '(
+				CASE
+					'.implode( "\n", $cases ).'
+					ELSE \'NC\'
+				END
+			)';
+
+			$fields = array(
+				$tranche_age.' AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( $tranche_age, 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Vulnerable( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."vulnerable" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.vulnerable', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Nivetu( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."nivetu" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.nivetu', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1CategorieSociopro( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."categorie_sociopro" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.categorie_sociopro', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1AutreCaracteristique( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."autre_caracteristique" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.autre_caracteristique', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Natpf( array $search ) {
+			$natpf = '(
+				CASE
+					WHEN "Situationallocataire"."natpf_socle" = \'1\' THEN \'socle\'
+					WHEN "Situationallocataire"."natpf_majore" = \'1\' THEN \'majore\'
+					WHEN "Situationallocataire"."natpf_socle" = \'1\' AND "Situationallocataire"."natpf_activite" = \'1\' THEN \'socle_activite\'
+					ELSE \'NC\'
+				END
+			)';
+
+			$fields = array(
+				$natpf.' AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( $natpf, 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Nati( array $search ) {
+			$nati = '(
+				CASE
+					WHEN "Situationallocataire"."nati" IS NOT NULL THEN "Situationallocataire"."nati"
+					ELSE \'NC\'
+				END
+			)';
+
+			$fields = array(
+				$nati.' AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Situationallocataire.nati', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Sitfam( array $search ) {
+			$parts = array(
+				'isole' => '"Situationallocataire"."sitfam" IN (\'CEL\', \'DIV\', \'ISO\', \'SEF\', \'SEL\', \'VEU\')',
+				'en_couple' => '"Situationallocataire"."sitfam" IN (\'MAR\', \'PAC\', \'RPA\', \'RVC\', \'RVM\', \'VIM\')',
+				'sans_enfant' => '"Situationallocataire"."nbenfants" = 0',
+				'avec_enfant' => '"Situationallocataire"."nbenfants" > 0',
+			);
+
+			$sitfam = '(
+				CASE
+					WHEN '.$parts['isole'].' AND '.$parts['sans_enfant'].' THEN \'isole_sans_enfant\'
+					WHEN '.$parts['isole'].' AND '.$parts['avec_enfant'].' THEN \'isole_avec_enfant\'
+					WHEN '.$parts['en_couple'].' AND '.$parts['sans_enfant'].' THEN \'en_couple_sans_enfant\'
+					WHEN '.$parts['en_couple'].' AND '.$parts['avec_enfant'].' THEN \'en_couple_avec_enfant\'
+					ELSE \'NC\'
+				END
+			)';
+
+			$fields = array(
+				$sitfam.' AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( $sitfam, 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1ConditionsLogement( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."conditions_logement" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.conditions_logement', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1Inscritpe( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."inscritpe" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.inscritpe', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 * FIXME: est-ce bien sur dtdemrsa ?
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1AncienneteDispositif( array $search ) {
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			$cases = array();
+			foreach( array_keys( $this->anciennetes_dispositif ) as $anciennete_dispositif ) {
+				list( $min, $max ) = explode( '_', $anciennete_dispositif );
+				$cases[] = 'WHEN EXTRACT( YEAR FROM AGE(TIMESTAMP\''.$annee.'-12-31\', "Situationallocataire"."dtdemrsa" ) ) BETWEEN '.$min.' AND '.$max.' THEN \''.$anciennete_dispositif.'\'';
+			}
+
+			$anciennete_dispositif = '(
+				CASE
+					'.implode( "\n", $cases ).'
+					ELSE \'NC\'
+				END
+			)';
+
+			$fields = array(
+				$anciennete_dispositif.' AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( $anciennete_dispositif, 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1NonScolarise( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."nivetu" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.nivetu', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud1DiplomesEtrangers( array $search ) {
+			$fields = array(
+				'"Questionnaired1pdv93"."diplomes_etrangers" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
+					END
+				) AS "sexe"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Questionnaired1pdv93.diplomes_etrangers', 'Situationallocataire.sexe' );
+
+			return array( $fields, $group );
+		}
+
+		/**
+		 *
+		 * @return array
+		 */
+		public function tableaud1Categories() {
+			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+
+			$enums = Hash::merge(
+				$Questionnaired1pdv93->enums(),
+				$Questionnaired1pdv93->Situationallocataire->enums()
+			);
+
+			unset( $enums['Questionnaired1pdv93']['nivetu']['1207'] ); // Les non scolarisés ont une catégorie à part
+
+			$categories = array(
+				'sexe' => array(
+					1 => 'Hommes',
+					2 => 'Femmes',
+				),
+				'marche_travail' => $enums['Questionnaired1pdv93']['marche_travail'],
+				'tranche_age' => $this->tranches_ages,
+				'vulnerable' => $enums['Questionnaired1pdv93']['vulnerable'],
+				'nivetu' => $enums['Questionnaired1pdv93']['nivetu'], // FIXME: nivetu NON 1207
+				'categorie_sociopro' => $enums['Questionnaired1pdv93']['categorie_sociopro'],
+				'autre_caracteristique' => $enums['Questionnaired1pdv93']['autre_caracteristique'],
+				'natpf' => $this->natpf,
+				'nati' => $this->nati,
+				'sitfam' => $this->sitfam,
+				'conditions_logement' =>  $enums['Questionnaired1pdv93']['conditions_logement'],
+				'inscritpe' => $this->inscritpe,
+				'anciennete_dispositif' => $this->anciennetes_dispositif,
+				'non_scolarise' => $this->non_scolarise,
+				'diplomes_etrangers' => $this->diplomes_etrangers,
+			);
+
+			return $categories;
+		}
+
+		/**
+		 * FIXME: filtre sur le PDV
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableaud1( array $search ) {
+			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			$results = array();
+			$categories = array_keys( $this->tableaud1Categories() );
+
+			foreach( $categories as $categorie ) {
+				$method = '_tableaud1'.Inflector::camelize( $categorie );
+
+				list( $fields, $group ) = $this->{$method}( $search );
+
+				$querydata = array(
+					'fields' => $fields,
+					'conditions' => array(
+						'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
+						$conditionpdv
+					),
+					'contain' => false,
+					'joins' => array(
+						$Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+						$Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) )
+					),
+					'group' => $group
+				);
+
+				$lines = $Questionnaired1pdv93->find( 'all', $querydata );
+				if( !empty( $lines ) ) {
+					foreach( $lines as $line ) {
+						$results[$categorie][$line[0]['categorie']]['entrees'][$line[0]['sexe']] = $line[0]['count'];
+					}
+				}
+				else {
+					$results[$categorie]['N/C']['entrees']['homme'] = 0;
+					$results[$categorie]['N/C']['entrees']['femmes'] = 0;
+				}
+			}
+
+			return $results;
+		}
 
 		/**
 		 * TODO: documentation
@@ -552,7 +1142,7 @@
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
 
 			// Requête 3: Raisons de la non participation,
-			// Requête 3.1: Refus du bénéficiaire -> FIXME: la requête n'a pas été fournie
+			// Requête 3.1: Refus du bénéficiaire -> TODO: la requête n'a pas été fournie
 			$sql = "SELECT
 						NULL AS \"Tableausuivipdv93__prescription_name\",
 						NULL AS \"Tableausuivipdv93__prescriptions_refus_beneficiaire_count\"
@@ -609,7 +1199,7 @@
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
 
-			// Requête 4 : Abandon en cours d'action -> FIXME n'a pas été fournie
+			// Requête 4 : Abandon en cours d'action -> TODO: la requête n'a pas été fournie
 			$sql = "SELECT
 						NULL AS \"Tableausuivipdv93__prescription_name\",
 						NULL AS \"Tableausuivipdv93__prescriptions_abandon_count\"

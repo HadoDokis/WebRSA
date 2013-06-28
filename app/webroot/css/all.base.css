@@ -702,3 +702,74 @@ body.tableauxsuivispdvs93.tableau1b5 #pageContent table tbody td.number {
 body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption {
 	caption-side: top;
 }
+
+/**
+ * Tableau D1 (CCG 93)
+ */
+body.tableauxsuivispdvs93.tableaud1 #pageContent h2 {
+	font-weight: bold;
+	font-size: 1em;
+	margin-bottom: 0.5em;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 caption {
+	caption-side: top;
+	text-align: center;
+	background: #235f7d;
+	border: 1px solid #235f7d;
+	color: white;
+	padding: 0.125em 0.25em;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 td {
+	border: 1px solid black;
+	padding: 0.125em 0.25em;
+	background: white;
+	color: black;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 th {
+	font-weight: normal;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 thead tr.main th {
+	border: 0;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody th {
+	text-align: left;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody td {
+	text-align: right;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1.middle caption,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1.middle thead tr.main,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1.last caption,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1.last thead tr.main {
+	display: none;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 thead tr th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody tr.total th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody tr.category th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody tr.category td {
+	background: #235F7D;
+	color: white;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 thead tr.category th {
+	text-align: left;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tfoot th {
+	background: #E6EEF2;
+}
+
+/* Largeur des colonnes */
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody th {
+	width: 33.33%;
+	min-width: 33.33%;
+	max-width: 33.33%;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody td {
+	width: 5.13%;
+	min-width: 5.13%;
+}
