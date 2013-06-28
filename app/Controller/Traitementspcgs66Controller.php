@@ -593,11 +593,18 @@
 				// Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
 				// que celui auquel je suis lié
 
-				if( $saved && !empty( $dataToSave['Traitementpcg66']['traitementnonclos'] ) ) {
-					$saved = $this->Traitementpcg66->updateAllUnBound( 
+				if( $saved && !empty( $dataToSave['Traitementpcg66']['Traitementpcg66'] ) ) {
+//					$saved = $this->Traitementpcg66->updateAllUnBound( 
+//						array( 'Traitementpcg66.clos' => '\'O\'' ),
+//						array(
+//							'Traitementpcg66.id' => $dataToSave['Traitementpcg66']['traitementnonclos']
+//						)
+//					) && $saved;
+                    
+                    $saved = $this->Traitementpcg66->updateAllUnBound( 
 						array( 'Traitementpcg66.clos' => '\'O\'' ),
 						array(
-							'Traitementpcg66.id' => $dataToSave['Traitementpcg66']['traitementnonclos']
+							'Traitementpcg66.id IN' => $dataToSave['Traitementpcg66']['Traitementpcg66']
 						)
 					) && $saved;
 				} // FIXME
