@@ -52,7 +52,7 @@
 						}
 						echo $this->Xhtml->tableCells(
 							array(
-								h( Set::classicExtract( $personnepcg66, 'Personne.qual' ).' '.Set::classicExtract( $personnepcg66, 'Personne.nom' ).' '.Set::classicExtract( $personnepcg66, 'Personne.prenom' ) ),
+								h( Hash::get( $personnepcg66, 'Personne.qual' ).' '.Hash::get( $personnepcg66, 'Personne.nom' ).' '.Hash::get( $personnepcg66, 'Personne.prenom' ) ),
 								$differentesSituations,
 								$differentsStatuts
 							),
@@ -69,7 +69,7 @@
 
 <?php
 	echo "<h2>Pièces liées au dossier</h2>";
-	echo $this->Fileuploader->results( Set::classicExtract( $dossierpcg66, 'Fichiermodule' ) );
+	echo $this->Fileuploader->results( Hash::get( $dossierpcg66, 'Fichiermodule' ) );
 ?>
     
 <?php echo "<h2>Liste des traitements non clos</h2>";?>
@@ -89,7 +89,10 @@
 	<table class="tooltips aere"><caption style="caption-side: top;">Informations concernant la (les) fiche(s) de calcul</caption>
 		<thead>
 			<tr>
+                <th>Personne concernée</th>
 				<th>Régime</th>
+                <th>Chiffre d'affaire Ventes</th>
+                <th>Chiffre d'affaire Services</th>
 				<th>Bénéfice pris en compte</th>
 				<th>Montant des revenus arrêtés à</th>
 				<th>Date de début de période</th>
@@ -110,8 +113,11 @@
 
 				echo $this->Xhtml->tableCells(
 					array(
+                        h( Hash::get( $personnepcg66, 'Personne.qual' ).' '.Hash::get( $personnepcg66, 'Personne.nom' ).' '.Hash::get( $personnepcg66, 'Personne.prenom' ) ),
 						h( Set::enum( $fichecalcul['regime'], $options['Traitementpcg66']['regime'] ) ),
-						h( $this->Locale->money( $montanttotal ) ),
+						h( $this->Locale->money( $fichecalcul['chaffvnt'] ) ),
+                        h( $this->Locale->money( $fichecalcul['chaffsrv'] ) ),
+                        h( $this->Locale->money( $montanttotal ) ),
 						h( $this->Locale->money( $fichecalcul['revenus'] ).' par mois' ),
 						h( date_short( $fichecalcul['dtdebutperiode'] ) ),
 						h( date_short( $fichecalcul['datefinperiode'] ) ),
@@ -146,13 +152,13 @@
 						<?php
 							echo $this->Xhtml->tableCells(
 								array(
-									h( Set::classicExtract( $decision, 'Decisionpdo.libelle' ) ),
-									h( date_short( Set::classicExtract( $decision, 'datepropositiontechnicien' ) ) ),
-									h( Set::enum( Set::classicExtract( $decision, 'avistechnique' ), $options['Decisiondossierpcg66']['validationproposition'] ) ),
-									h( Set::classicExtract( $decision, 'commentaireavistechnique' ) ),
-									h( Set::enum( Set::classicExtract( $decision, 'validationproposition' ), $options['Decisiondossierpcg66']['validationproposition'] ) ),
-									h( Set::classicExtract( $decision, 'commentairevalidation' ) ),
-									h( Set::classicExtract( $decision, 'commentairetechnicien' ) )
+									h( Hash::get( $decision, 'Decisionpdo.libelle' ) ),
+									h( date_short( Hash::get( $decision, 'datepropositiontechnicien' ) ) ),
+									h( Set::enum( Hash::get( $decision, 'avistechnique' ), $options['Decisiondossierpcg66']['validationproposition'] ) ),
+									h( Hash::get( $decision, 'commentaireavistechnique' ) ),
+									h( Set::enum( Hash::get( $decision, 'validationproposition' ), $options['Decisiondossierpcg66']['validationproposition'] ) ),
+									h( Hash::get( $decision, 'commentairevalidation' ) ),
+									h( Hash::get( $decision, 'commentairetechnicien' ) )
 								),
 								array( 'class' => 'odd' ),
 								array( 'class' => 'even' )
@@ -181,15 +187,15 @@
 	</thead>
 	<tbody>
 		<?php
-				$positioncer = Set::enum( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] );
+				$positioncer = Set::enum( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] );
 
 				echo $this->Xhtml->tableCells(
 					array(
-						h( Set::classicExtract( $formeCi, Set::classicExtract( $dossierpcg66, 'Contratinsertion.forme_ci' ) ) ),
-						h( Set::classicExtract( $options['Contratinsertion']['num_contrat'], Set::classicExtract( $dossierpcg66, 'Contratinsertion.num_contrat' ) ) ),
-						h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.dd_ci' ) ) ),
-						h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.df_ci' ) ) ),
-						h( date_short( Set::classicExtract( $dossierpcg66, 'Contratinsertion.date_saisi_ci' ) ) ),
+						h( Hash::get( $formeCi, Hash::get( $dossierpcg66, 'Contratinsertion.forme_ci' ) ) ),
+						h( Hash::get( $options['Contratinsertion']['num_contrat'], Hash::get( $dossierpcg66, 'Contratinsertion.num_contrat' ) ) ),
+						h( date_short( Hash::get( $dossierpcg66, 'Contratinsertion.dd_ci' ) ) ),
+						h( date_short( Hash::get( $dossierpcg66, 'Contratinsertion.df_ci' ) ) ),
+						h( date_short( Hash::get( $dossierpcg66, 'Contratinsertion.date_saisi_ci' ) ) ),
 						h( $positioncer ),
 
 
@@ -211,7 +217,7 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'contratsinsertion', 'ficheliaisoncer', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									&& ( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
 									&& ( !empty( $isvalidcer )  )
 								)
 							)
@@ -223,7 +229,7 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'contratsinsertion', 'notifbenef', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									&& ( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
 									&& ( !empty( $isvalidcer )  )
 								)
 							)
@@ -235,7 +241,7 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'contratsinsertion', 'notificationsop', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									&& ( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
 									&& ( !empty( $isvalidcer ) && ( $isvalidcer != 'N' ) )
 								)
 							)
@@ -247,7 +253,7 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'contratsinsertion', 'impression', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									&& ( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
 								)
 							)
 						),
@@ -259,7 +265,7 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'contratsinsertion', 'notification', $dossierMenu ) == 1 )
-									&& ( Set::classicExtract( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
+									&& ( Hash::get( $dossierpcg66, 'Contratinsertion.positioncer' ) != 'annule' )
 								)
 							)
 						),
@@ -273,7 +279,7 @@
 								)
 							)
 						),
-						h( '('.Set::classicExtract( $dossierpcg66, 'Fichiermodule.nbFichiersLies' ).')' )
+						h( '('.Hash::get( $dossierpcg66, 'Fichiermodule.nbFichiersLies' ).')' )
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
@@ -378,7 +384,7 @@
 						);
 						
 						if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['avistechnique'] ) ) {
-							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.useravistechnique_id', Set::enum( Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'), $gestionnaire ) );
+							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.useravistechnique_id', Set::enum( Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.useravistechnique_id'), $gestionnaire ) );
 						}
 					?>
 				</fieldset>
@@ -412,7 +418,7 @@
 						)
 					);
 						if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'] ) ) {
-							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.userproposition_id', Set::enum( Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'), $gestionnaire ) );
+							echo $this->Xform->fieldValue( 'Decisiondossierpcg66.userproposition_id', Set::enum( Hash::get( $decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'), $gestionnaire ) );
 						}
 					?>
 				</fieldset>
