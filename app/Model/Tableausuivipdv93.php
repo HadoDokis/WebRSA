@@ -97,6 +97,7 @@
 			'tableau1b3' => '1 B 3',
 			'tableau1b4' => '1 B 4',
 			'tableau1b5' => '1 B 5',
+			'tableau1b6' => '1 B 6',
 		);
 
 		/**
@@ -635,7 +636,6 @@
 		}
 
 		/**
-		 * FIXME: filtre sur le PDV
 		 *
 		 * @param array $search
 		 * @return array
@@ -698,7 +698,7 @@
 		 */
 		protected function _conditionStatutRdv( $field = 'statutrdv_id' ) {
 			$values = "'".implode( "', '", (array)Configure::read( 'Tableausuivipdv93.statutrdv_id' ) )."'";
-			return "statutrdv_id IN ( {$values} )";
+			return "{$field} IN ( {$values} )";
 		}
 
 		/**
@@ -808,8 +808,10 @@
 				LEFT OUTER JOIN detailsnatmobs_revs ON (dsps_revs.id = detailsnatmobs_revs.dsp_rev_id)
 				LEFT OUTER JOIN detailsaccosocindis_revs ON (dsps_revs.id = detailsaccosocindis_revs.dsp_rev_id)
 			WHERE
+				-- Dont le type de RDV est individuel
+				rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
 				-- avec un RDV honoré durant l'année N
-				EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+				AND EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 				AND ".$this->_conditionStatutRdv()."
 				-- pour la structure referente X (éventuellement)
 				{$conditionpdv}
@@ -853,6 +855,8 @@
 					WHERE
 						-- avec un RDV honoré durant l'année N
 						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+						-- Dont le type de RDV est individuel
+						rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
 						AND ".$this->_conditionStatutRdv()."
 						-- dont la SR du référent de la fiche est la SR du RDV
 						AND referents.structurereferente_id = structurereferente_id
@@ -1216,13 +1220,138 @@
 		/**
 		 * Tableau 1-B-6: Actions collectives
 		 *
-		 * FIXME: RDV individuel
-		 * FIXME: thématiques
-		 *
 		 * @param array $search
 		 * @return array
 		 */
 		public function tableau1b6( array $search ) {
+			$Thematiquerdv = ClassRegistry::init( array( 'class' => 'Thematiquerdv', 'alias' => 'Tableau1b6' ) );
+
+			// TODO: On obtient la liste des thématiques
+			$cases = array();
+			foreach( (array)Configure::read( 'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' ) as $thematique_id => $theme ) {
+				$cases[] = "WHEN id = {$thematique_id} THEN '{$theme}'";
+			}
+
+			$results = $Thematiquerdv->find(
+				'all',
+				array(
+					'fields' => array(
+						'Tableau1b6.id',
+						'Tableau1b6.name',
+						'( CASE WHEN false THEN NULL '.implode( '', $cases ).' ELSE NULL END ) AS "Tableau1b6__theme"'
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Tableau1b6.typerdv_id' => (array)Configure::read( 'Tableausuivipdv93.Tableau1b6.typerdv_id' )
+					),
+					'order' => array( 'Tableau1b6.name ASC' )
+				)
+			);
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Possède au moins un RDV honoré dans la SR
+			$conditionrdv = null;
+			if( !empty( $pdv_id ) ) {
+				$conditionrdv = "AND rendezvous.personne_id IN (
+									SELECT DISTINCT personne_id FROM rendezvous
+									-- avec un RDV honoré durant l'année N
+								WHERE
+									EXTRACT('YEAR' FROM rendezvous.daterdv) = '{$annee}'
+									AND ".$this->_conditionStatutRdv( 'rendezvous.statutrdv_id' )."
+									-- pour la structure referente X
+									{$conditionpdv}
+						)";
+			}
+
+			// Liste des thématiques collectives
+			$thematiquesrdvs_ids = (array)Hash::extract( $results, '{n}.Tableau1b6.id' );
+			if( empty( $thematiquesrdvs_ids ) ) {
+				$thematiquesrdvs_ids = array( 0 );
+			}
+
+			// --1-- Nbre de personnes invitées ou positionnées : honoré ou prévu
+			$sql = "SELECT
+							thematiquesrdvs.name AS \"Tableau1b6__name\",
+							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes_prevues\"
+						FROM rendezvous
+							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
+							INNER JOIN rendezvous_thematiquesrdvs ON ( rendezvous.id = rendezvous_thematiquesrdvs.rendezvous_id )
+							INNER JOIN thematiquesrdvs ON ( thematiquesrdvs.id = rendezvous_thematiquesrdvs.thematiquerdv_id )
+						WHERE
+							rendezvous_thematiquesrdvs.thematiquerdv_id IN ( ".implode( ',', $thematiquesrdvs_ids )." )
+							AND EXTRACT( 'YEAR' FROM rendezvous.daterdv ) = '{$annee}'
+							AND rendezvous.statutrdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.Tableau1b6.statutrdv_id_prevu_honore' ) )." )
+							{$conditionpdv}
+							{$conditionrdv}
+						GROUP BY
+							thematiquesrdvs.name,
+							rendezvous_thematiquesrdvs.thematiquerdv_id";
+			$results1 = $Thematiquerdv->query( $sql );
+
+			$sql = "SELECT
+							thematiquesrdvs.name AS \"Tableau1b6__name\",
+							COUNT(DISTINCT rendezvous.id) AS \"Tableau1b6__count_seances\",
+							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\"
+						FROM rendezvous
+							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
+							INNER JOIN rendezvous_thematiquesrdvs ON ( rendezvous.id = rendezvous_thematiquesrdvs.rendezvous_id )
+							INNER JOIN thematiquesrdvs ON ( thematiquesrdvs.id = rendezvous_thematiquesrdvs.thematiquerdv_id )
+						WHERE
+							rendezvous_thematiquesrdvs.thematiquerdv_id IN ( ".implode( ',', $thematiquesrdvs_ids )." )
+							AND EXTRACT('YEAR' FROM rendezvous.daterdv) = '{$annee}'
+							AND ".$this->_conditionStatutRdv( 'rendezvous.statutrdv_id' )."
+							{$conditionpdv}
+							{$conditionrdv}
+						GROUP BY
+							thematiquesrdvs.name,
+							rendezvous_thematiquesrdvs.thematiquerdv_id";
+			$results2 = $Thematiquerdv->query( $sql );
+
+			// Formattage des résultats
+			foreach( $results as $key => $result ) {
+				$name = $result['Tableau1b6']['name'];
+				foreach( $results1 as $result1 ) {
+					if( $result1['Tableau1b6']['name'] == $name ) {
+						$value = (int)Hash::get( $result1, 'Tableau1b6.count_personnes_prevues' );
+						if( !isset( $results[$key]['Tableau1b6']['count_personnes_prevues'] ) ) {
+							$results[$key]['Tableau1b6']['count_personnes_prevues'] = 0;
+						}
+						$results[$key]['Tableau1b6']['count_personnes_prevues'] += $value;
+					}
+					else {
+						if( !isset( $results[$key]['Tableau1b6']['count_personnes_prevues'] ) ) {
+							$results[$key]['Tableau1b6']['count_personnes_prevues'] = 0;
+						}
+					}
+				}
+				foreach( $results2 as $result2 ) {
+					foreach( array( 'count_seances', 'count_personnes' ) as $field ) {
+						if( $result2['Tableau1b6']['name'] == $name ) {
+							$value = (int)Hash::get( $result2, "Tableau1b6.{$field}" );
+							if( !isset( $results[$key]['Tableau1b6'][$field] ) ) {
+								$results[$key]['Tableau1b6'][$field] = 0;
+							}
+							$results[$key]['Tableau1b6'][$field] += $value;
+						}
+						else {
+							if( !isset( $results[$key]['Tableau1b6'][$field] ) ) {
+								$results[$key]['Tableau1b6'][$field] = 0;
+							}
+						}
+					}
+				}
+			}
+
+			return $results;
 		}
 
 		/**
@@ -1262,6 +1391,7 @@
 		}
 
 		/**
+		 * Historisation de critères de recherches et de leurs résultats.
 		 *
 		 * @param string $action
 		 * @param array $search

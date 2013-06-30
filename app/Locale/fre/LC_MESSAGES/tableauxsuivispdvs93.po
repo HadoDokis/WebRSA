@@ -250,3 +250,27 @@ msgstr "Ligne 14 - Non scolarisé"
 
 msgid "/Tableauxsuivispdvs93/tableaud1/diplomes_etrangers"
 msgstr "Ligne 15 - Diplômes étrangers non reconnus en France"
+
+# ------------------------------------------------------------------------------
+# Tableau 1 B6
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableau1b6/:heading"
+msgstr "6 - Actions collectives"
+
+# ------------------------------------------------------------------------------
+
+msgid "Tableau1b6.name"
+msgstr "Intitulé (1)"
+
+msgid "Tableau1b6.theme"
+msgstr "Thématique (2)"
+
+msgid "Tableau1b6.count_personnes_prevues"
+msgstr "Nbre de personnes invitées ou positionnées"
+
+msgid "Tableau1b6.count_seances"
+msgstr "Nbre  de séances réalisées dans l'année"
+
+msgid "Tableau1b6.count_personnes"
+msgstr "Nombre de participants (3)"

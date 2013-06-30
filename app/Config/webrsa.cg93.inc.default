@@ -1065,9 +1065,8 @@
 	Configure::write(
 		'Tableausuivipdv93',
 		array(
-			// Tous tableaux: l'id ou les ids des types de rendez-vous ("Individuel", "Collectif") qui seront pris en compte
-			// TODO: après la modification du module RDV
-			'typerdv_id' => array( 1 ),
+			// Tous tableaux: l'id du types de rendez-vous "Individuel" qui sera prise en compte
+			'typerdv_id' => array( 17 ),
 			// Tous tableaux: l'id ou les ids des statuts de rendez-vous ("honoré", "non honoré", "prévu") qui seront pris en compte
 			'statutrdv_id' => array( 1 ),
 			// Tableaux 1 B 4: les valeurs des numéros du code famille de l'éction d'insertion
@@ -1076,7 +1075,7 @@
 				'acteurs_sante' => array( 8 ),
 				'acteurs_culture' => array( 9 )
 			),
-			// 
+			//
 			// Conditions à prendre en compte pour limiter la liste des structures référentes/PDVs
 			// Les modèles disponibles sont: Pdv (alias de Structurereferente) et Typeorient
 			'conditionsPdv' => array(
@@ -1085,6 +1084,27 @@
 					'Typeorient.parentid' => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ),
 				),
 				'Pdv.lib_struc LIKE' => '%Projet de Ville%'
+			),
+			// Paramétrages spéciaux pour le tableau 1 B 6
+			'Tableau1b6' => array(
+				// Rendez-vous collectif
+				'typerdv_id' => array( 16 ),
+				// Statuts prévus et honorés
+				'statutrdv_id_prevu_honore' => array( 1, 2 ),
+				// Les codes thèmes des thématiques de RDV (id de thematiquesrdvs => code)
+				//	E: Emploi (TRE, découverte des métiers, .recherche demploi par internet,...)
+				//	F : Formation (présentations d'actions organisées par des organismes, sensibilisation aux outils informatiques, ...)
+				//	VS : Vie Sociale (soutien administratif, logement, famille, mobilité, ...)
+				//	LCV : Loisirs, Culture, et Vacances (relais cultures du coeur, séjours vacances, ....)
+				//	IRSA : Information dispositif RSA (dispositif RSA uniquement)
+				//	2AD : Autres Accès aux Droits (retraite, CMU, transport, ...)
+				//	S : Santé (prévention, ...)
+				//	3R : Resocialisation, redynamisation, revalorisation (image de soi, ...)
+				//	FM : Forum et manifestation : Piloté ou copiloté par le Projet de ville
+				'map_thematiques_themes' => array(
+					4 => 'E',
+					3 => 'FM',
+				)
 			)
 		)
 	);

@@ -156,14 +156,24 @@
 		}
 
 		/**
-		 * Moteur de recherche pour le tableau 1 B4: Prescriptions vers les acteurs
-		 * sociaux, culturels et de sante
+		 * Moteur de recherche pour le tableau 1 B5
 		 */
 		public function tableau1b5() {
 			$search = $this->_applyStructurereferente( $this->request->data );
 
 			if( !empty( $search ) ) {
 				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5( $search ) );
+			}
+		}
+
+		/**
+		 * Moteur de recherche pour le tableau 1 B6
+		 */
+		public function tableau1b6() {
+			$search = $this->_applyStructurereferente( $this->request->data );
+
+			if( !empty( $search ) ) {
+				$this->set( 'results', $this->Tableausuivipdv93->tableau1b6( $search ) );
 			}
 		}
 
