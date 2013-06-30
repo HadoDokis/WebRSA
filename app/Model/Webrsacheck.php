@@ -610,6 +610,15 @@
 					'Orientstruct.typeorientprincipale.Socioprofessionnelle' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Social' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Emploi' => 'Typeorient',
+					// Tableaux PDV
+					'Tableausuivipdv93.typerdv_id' => 'Typerdv',
+					'Tableausuivipdv93.statutrdv_id' => 'Statutrdv',
+					'Tableausuivipdv93.Tableau1b6.typerdv_id' => 'Typerdv',
+					'Tableausuivipdv93.Tableau1b6.statutrdv_id_prevu_honore' => 'Statutrdv',
+					'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' => array(
+						'modelName' => 'Thematiquerdv',
+						'array_keys' => true
+					),
 				);
 
 				if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
