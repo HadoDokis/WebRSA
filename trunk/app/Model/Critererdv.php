@@ -94,6 +94,36 @@
 			}
 			// Arnaud
 
+			// Recherche par thématique de rendez-vous si nécessaire
+			$thematiquerdv_id = Hash::get( $criteresrdv, 'Critererdv.thematiquerdv_id' );
+			if( !empty( $thematiquerdv_id ) ) {
+				$Rendezvous = ClassRegistry::init( 'Rendezvous' );
+
+				$qd = array(
+					'alias' => 'Thematiquerdv',
+					'fields' => array( 'RendezvousThematiquerdv.rendezvous_id' ),
+					'contain' => false,
+					'joins' => array(
+						$Rendezvous->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'RendezvousThematiquerdv.rendezvous_id = Rendezvous.id',
+						'RendezvousThematiquerdv.thematiquerdv_id' => $thematiquerdv_id,
+					)
+
+				);
+				$qd = array_words_replace(
+					$qd,
+					array(
+						'RendezvousThematiquerdv' => 'rendezvous_thematiquesrdvs',
+						'Thematiquerdv' => 'thematiquesrdvs'
+					)
+				);
+
+				$sq = $Rendezvous->Thematiquerdv->sq( $qd );
+				$conditions[] = "Rendezvous.id IN ( {$sq} )";
+			}
+
 			$querydata = array(
 				'fields' => array(
 					'Rendezvous.id',

@@ -25,6 +25,17 @@
 				<th><?php echo __( 'Type de RDV' );?></th>
 				<td><?php echo Set::classicExtract( $rendezvous, 'Typerdv.libelle' );?></td>
 			</tr>
+			<?php $thematiques = Hash::extract( $rendezvous, 'Thematiquerdv.{n}.name' );?>
+			<?php if( !empty( $thematiques ) ) :?>
+			<tr class="odd">
+				<th><?php echo __d( 'rendezvous', 'Thematiquerdv.name' );?></th>
+				<td><ul><?php
+					foreach( $thematiques as $thematique ) {
+						echo $this->Xhtml->tag( 'li', $thematique );
+					}
+				?></ul></td>
+			</tr>
+			<?php endif;?>
 			<tr class="odd">
 				<th><?php echo __d( 'rendezvous', 'Rendezvous.statutrdv' );?></th>
 				<td><?php echo Set::classicExtract( $rendezvous, 'Statutrdv.libelle' );?></td>

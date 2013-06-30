@@ -87,7 +87,6 @@
 			echo $this->Form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv' ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
 
 			// Thématiques du RDV
-			// FIXME: vérifier sauvegarde, édition, ...
 			if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ) {
 				foreach( $thematiquesrdvs as $typerdv_id => $thematiques ) {
 					$input = $this->Xform->input(

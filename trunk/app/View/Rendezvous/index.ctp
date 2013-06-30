@@ -48,6 +48,16 @@
 					$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
 				}
 
+				// TODO: code en commun avec Criteresrdv
+				$thematiques = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
+				$row = null;
+				if( !empty( $thematiques ) ) {
+					$row = '<tr>
+						<th>'.__d( 'rendezvous', 'Thematiquerdv.name' ).'</th>
+						<td><ul><li>'.implode( 'li', $thematiques ).'</li></ul></td>
+					</tr>';
+				}
+
 				$innerTable = '<table id="innerTablelisteRendezvous'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
@@ -58,6 +68,7 @@
 							<th>Commentaires suite au RDV</th>
 							<td>'.h( Set::classicExtract( $rdv, 'Rendezvous.commentairerdv' ) ).'</td>
 						</tr>
+						'.$row.'
 					</tbody>
 				</table>';
 

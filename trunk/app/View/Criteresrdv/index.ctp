@@ -65,7 +65,31 @@
 			<?php
 				echo $this->Form->input( 'Critererdv.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'empty' => true ) );
 			?>
-			<?php echo $this->Form->input( 'Critererdv.typerdv_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_rdv' ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) ); ?>
+			<?php
+				echo $this->Form->input( 'Critererdv.typerdv_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_rdv' ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
+				// Thématiques du RDV
+				if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ) {
+					foreach( $thematiquesrdvs as $typerdv_id => $thematiques ) {
+						$input = $this->Xform->input(
+							'Critererdv.thematiquerdv_id',
+							array(
+								'type' => 'select',
+								'multiple' => 'checkbox',
+								'options' => $thematiques,
+								'label' => 'Thématiques'
+							)
+						);
+						echo $this->Xhtml->tag(
+							'fieldset',
+							$input,
+							array(
+								'id' => "CritererdvThematiquerdvId{$typerdv_id}",
+								'class' => 'invisible',
+							)
+						);
+					}
+				}
+			?>
 			<?php echo $this->Form->input( 'Critererdv.daterdv', array( 'label' => 'Filtrer par date de RDV', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de Rendez-vous</legend>
@@ -84,6 +108,21 @@
 	</div>
 
 <?php echo $this->Form->end();?>
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		<?php if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ):?>
+			<?php foreach( $thematiquesrdvs as $typerdv_id => $thematiques ):?>
+				observeDisableFieldsetOnValue(
+					'CritererdvTyperdvId',
+					'CritererdvThematiquerdvId<?php echo $typerdv_id;?>', // FIXME
+					[ '<?php echo $typerdv_id;?>' ],
+					false,
+					true
+				);
+			<?php endforeach;?>
+		<?php endif;?>
+	});
+</script>
 
 <!-- Résultats -->
 <?php if( isset( $rdvs ) ):?>
@@ -114,6 +153,16 @@
 					<?php
 						$title = $rdv['Dossier']['numdemrsa'];
 
+						// TODO: code en commun avec Rendezvous
+						$thematiques = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
+						$row = null;
+						if( !empty( $thematiques ) ) {
+							$row = '<tr>
+								<th>'.__d( 'rendezvous', 'Thematiquerdv.name' ).'</th>
+								<td><ul><li>'.implode( 'li', $thematiques ).'</li></ul></td>
+							</tr>';
+						}
+
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 							<!-- <tr>
@@ -136,6 +185,7 @@
 									<th>Rôle</th>
 									<td>'.$rolepers[$rdv['Prestation']['rolepers']].'</td>
 								</tr>
+								'.$row.'
 							</tbody>
 						</table>';
 						echo $this->Xhtml->tableCells(

@@ -428,6 +428,30 @@
 				$this->set( 'dossiercommissionLie', ( $dossierepLie + $dossiercovLie ) );
 			}
 
+			// TODO: si on utilise les thematiquesrdv seulement
+			// TODO: code en commun avec CriteresrdvController
+			if( !empty( $rdvs ) ) {
+				foreach( $rdvs as $key => $rdv ) {
+					$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find(
+						'all',
+						array(
+							'fields' => array(
+								'Thematiquerdv.id',
+								'Thematiquerdv.name',
+							),
+							'contain' => false,
+							'joins' => array(
+								$this->Rendezvous->Thematiquerdv->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+							),
+							'conditions' => array(
+								'RendezvousThematiquerdv.rendezvous_id' => $rdv['Rendezvous']['id']
+							)
+						)
+					);
+					$rdvs[$key]['Thematiquerdv'] = (array)Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv' );
+				}
+			}
+
 			$this->set( compact( 'rdvs' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -463,7 +487,8 @@
 						'Structurereferente',
 						'Permanence',
 						'Statutrdv',
-						'Personne'
+						'Personne',
+						'Thematiquerdv',
 					)
 				)
 			);
