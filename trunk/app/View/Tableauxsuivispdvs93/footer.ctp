@@ -6,14 +6,14 @@
 		);
 
 		$actions = array(
-			DefaultUtility::toString( $url ) => array(
+			DefaultUrl::toString( $url ) => array(
 				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'historiser' ),
 			)
 		);
 	}
 	else {
 		$actions = array(
-			DefaultUtility::toString( $this->request->referer( true ) ) => array(
+			DefaultUrl::toString( $this->request->referer( true ) ) => array(
 				'text' => 'Retour',
 				'msgid' => 'Retour à la page précédente',
 				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'index' ),

@@ -130,59 +130,5 @@
 			);
 			$this->assertEqual( $result, $expected, $result );
 		}
-
-		/**
-		 * Test de la méthode DefaultUtility::toString()
-		 *
-		 * @return void
-		 */
-		public function testToString() {
-			$result = DefaultUtility::toString( array( 'controller' => 'foos', 'action' => 'bar' ) );
-			$expected = '/Foos/bar';
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toString( '/Foos/bar' );
-			$expected = '/Foos/bar';
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toString( array( 'controller' => 'foos', 'action' => 'bar', 'Search__active' => 1 ) );
-			$expected = '/Foos/bar/Search__active:1';
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toString( '/Foos/bar/Search__active:1' );
-			$expected = '/Foos/bar/Search__active:1';
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toString( array( 'plugin' => 'tests','controller' => 'foos', 'prefix' => 'admin', 'admin' => true, 'action' => 'bar', 0 => 666, 'Search__active' => 1 ) );
-			$expected = '/Tests.Foos/admin_bar/666/Search__active:1';
-			$this->assertEqual( $result, $expected, $result );
-		}
-
-		/**
-		 * Test de la méthode DefaultUtility::toArray()
-		 *
-		 * @return void
-		 */
-		public function testToArray() {
-			$result = DefaultUtility::toArray( '/Foos/bar' );
-			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar' );
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toArray( '/Foos/bar/Search__active:1' );
-			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', 'Search__active' => 1 );
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toArray( '/Tests.Foos/admin_bar/666/Search__active:1' );
-			$expected = array( 'plugin' => 'tests','controller' => 'foos', 'prefix' => 'admin', 'admin' => true, 'action' => 'bar', 0 => 666, 'Search__active' => 1 );
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toArray( '/Foos/bar#6' );
-			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => 6 );
-			$this->assertEqual( $result, $expected, $result );
-
-			$result = DefaultUtility::toArray( '/Foos/bar##Model.field#' );
-			$expected = array( 'plugin' => null, 'controller' => 'foos', 'action' => 'bar', '#' => '#Model.field#' );
-			$this->assertEqual( $result, $expected, $result );
-		}
 	}
 ?>

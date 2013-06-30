@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe DefaultUtility.
+	 * Code source de la classe DefaultUrl.
 	 *
 	 * PHP 5.4
 	 *
@@ -9,129 +9,30 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'Router', 'Routing' );
-	App::uses( 'DefaultUrl', 'Default.Utility' );
 
 	/**
-	 * La classe DefaultUtility ...
+	 * La classe DefaultUrl permet de faire aisément des conversions entre
+	 * représentations d'URL.
+	 *
+	 * Il existe 3 représentations d'URL:
+	 *	- un array (comme dans HtmlHelper::link())
+	 *	- un objet CakeRequest
+	 *  - une chaîne de caractères du type: /Plugin.Controllers/prefix_action/param1/named:value/#anchor
 	 *
 	 * @package Default
 	 * @subpackage Utility
 	 */
-	class DefaultUtility
+	class DefaultUrl
 	{
 		/**
-		 * Retourne la chaîne de caractères $string dont les occurences de
-		 * #Model.champ# ont été remplacées par leur valeur extraite depuis $data.
 		 *
-		 * @param array $data
-		 * @param string $string
-		 */
-		public static function evaluateString( array $data, $string ) {
-			if( strpos( $string, '#' ) !== false ) {
-				if( preg_match_all( '/(#[^#]+#)/', $string, $out ) ) {
-					$tokens = $out[0];
-					foreach( array_unique( $tokens ) as $token ) {
-						$token = trim( $token, '#' );
-						$string = str_replace( "#{$token}#", Hash::get( $data, $token ), $string );
-					}
-				}
-			}
-
-			return $string;
-		}
-
-		/**
-		 * Retourne le paramètre $mixed dont les occurences de #Model.champ# ont
-		 * été remplacées par leur valeur extraite depuis $data.
-		 *
-		 * @see Hash::get()
-		 *
-		 * @param array $data
-		 * @param string|array $mixed
-		 * @return string|array
-		 */
-		public static function evaluate( array $data, $mixed ) {
-			if( is_array( $mixed ) ) {
-				$array = array();
-				if( !empty( $mixed ) ) {
-					foreach( $mixed as $key => $value ) {
-						$array[self::evaluateString( $data, $key )] = self::evaluate( $data, $value );
-					}
-				}
-				return $array;
-			}
-
-			return self::evaluateString( $data, $mixed );
-		}
-
-		/**
-		 *
-		 * @todo Vérifier la prise en compte des liens dans les plugins.
-		 *
-		 * @param string $path
-		 * @param array $htmlAttributes
-		 * @param array $data
-		 * @return array
-		 */
-		public static function linkParams( $path, array $htmlAttributes, array $data = array() ) {
- 			if( !empty( $data ) ) { // FIXME: il faudrait le faire après, mais ne pas se tromper avec les #content
-				$url = DefaultUrl::toArray( self::evaluate( $data, $path ) );
-			}
-			else {
-				$url = DefaultUrl::toArray( $path );
-			}
-
-			$controller = Hash::get( $url, 'controller' );
-			$action = Hash::get( $url, 'action' );
-			$plugin = Hash::get( $url, 'plugin' );
-			$prefix = Hash::get( $url, 'prefix' );
-
-			// -----------------------------------------------------------------
-
-			$domain = ( isset( $htmlAttributes['domain'] ) ? $htmlAttributes['domain'] : Inflector::underscore( $controller ) );
-
-			$msgid = '/'
-				.implode(
-					'.',
-					Hash::filter(
-						array(
-							Inflector::camelize( $plugin ),
-							Inflector::camelize( $controller )
-						)
-					)
-				)
-				.'/'.( !empty( $prefix ) ? "{$prefix}_" : null ).$action;
-
-			if( isset( $htmlAttributes['title'] ) && $htmlAttributes['title'] === true ) {
-				$htmlAttributes['title'] = __d( $domain, $path );
-			}
-			if( isset( $htmlAttributes['confirm'] ) && $htmlAttributes['confirm'] === true ) {
-				$htmlAttributes['confirm'] = __d( $domain, "{$path} ?" );
-			}
-
-			$htmlAttributes = self::evaluate( $data, $htmlAttributes );
-
-			return array(
-				__d( $domain, $msgid ),
-				$url,
-				$htmlAttributes
-			);
-		}
-
-		/**
-		 * Retourne une URL "canonique" à partir d'une URL sous forme de string ou
-		 * d'array.
-		 *
-		 * Exemples d'URLs "canoniques":
-		 * <pre>
-		 * /Users/index
-		 * /Test.Users/admin_index/666/Saerch__active:1
-		 * </pre>
-		 *
-		 * @param mixed $url
+		 * @param type $url
 		 * @return string
 		 */
-		/*public static function toString( $url ) {
+		public static function toString( $url ) {
+//			debug( Router::normalize( $url ) ); // '/admin/plugin/controllers/action/param1/named:value##Model.field#'
+//			debug( Router::url( $url ) ); // '/magazine/admin/plugin/controllers/action/param1/named:value##Model.field#'
+
 			if( !is_array( $url ) ) {
 				$parsed = Router::parse( $url );
 			}
@@ -184,17 +85,19 @@
 			}
 
 			if( !empty( $parsed['named'] ) ) {
-				$return .= '/'.str_replace( '=', ':', http_build_query( $parsed['named'], null, '/' ) );
+				$hash = ( isset( $parsed['named']['#'] ) ? "#{$parsed['named']['#']}" : null );
+				unset( $parsed['named']['#'] ); // TODO: utiliser une méthode de la classe router ?
+				$return .= '/'.str_replace( '=', ':', http_build_query( $parsed['named'], null, '/' ) ).$hash;
 			}
 
 			return $return;
-		}*/
+		}
 
 		/**
 		 *
 		 * @param string $url
 		 */
-		/*public static function toArray( $path ) {
+		public static function toArray( $path ) {
 			$tokens = explode( '/', $path );
 			$plugin = null;
 
@@ -252,6 +155,6 @@
 			}
 
 			return $url;
-		}*/
+		}
 	}
 ?>
