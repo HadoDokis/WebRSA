@@ -224,8 +224,13 @@
 			$return = $this->Webrsacheck->allConfigurePrimaryKeys();
 
 			if( !empty( $return ) ) {
-				foreach( $return as $key => $modelName ) {
-					$return[$key] = $this->Check->configurePrimaryKey( $modelName, $key );
+				foreach( $return as $key => $params ) {
+					if( is_string( $params ) ) {
+						$params = array( 'modelName' => $params );
+					}
+					$params = Hash::merge( array( 'array_keys' => false ), $params );
+
+					$return[$key] = $this->Check->configurePrimaryKey( $params['modelName'], $key, $params['array_keys'] );
 				}
 			}
 

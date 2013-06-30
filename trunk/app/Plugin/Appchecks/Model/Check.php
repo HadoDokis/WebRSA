@@ -649,9 +649,10 @@
 		 *
 		 * @param string $modelName
 		 * @param string $configureKey
+		 * @param boolean $array_keys
 		 * @return array
 		 */
-		public function configurePrimaryKey( $modelName, $configureKey ) {
+		public function configurePrimaryKey( $modelName, $configureKey, $array_keys = false ) {
 			$primaryKeys = (array)Configure::read( $configureKey );
 			if( empty( $primaryKeys ) ) {
 				return array(
@@ -662,6 +663,10 @@
 
 			$results = array();
 			$Model = ClassRegistry::init( $modelName );
+
+			if( $array_keys ) {
+				$primaryKeys = array_keys( $primaryKeys );
+			}
 
 			foreach( $primaryKeys as $primaryKey ) {
 				$querydata = array(
