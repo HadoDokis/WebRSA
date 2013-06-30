@@ -273,6 +273,7 @@
 				__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b3/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b3' ) ),
 				__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b4/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b4' ) ),
 				__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b5/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b5' ) ),
+				__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/tableau1b6/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'tableau1b6' ) ),
 			),
 		),
 		'Administration' => array(
@@ -296,6 +297,9 @@
 					'url' => array( 'controller' => 'users', 'action' => 'index' ),
 					'title' => 'Gestion des utilisateurs',
 				),
+			),
+			'Préchargement de l\'application' => array(
+				'url' => array( 'controller' => 'prechargements', 'action' => 'index' ),
 			),
 			'Vérification de l\'application' => array(
 				'url' => array( 'controller' => 'checks', 'action' => 'index' ),

@@ -25,7 +25,20 @@
 	}
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+	}
+
+	$params_rdv_structurereferente = array(
+		'type' => (
+			in_array( $this->request->params['action'], array( 'tableau1b3', 'index', 'tableaud1' ) )
+			|| ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' )
+			? 'hidden'
+			: 'checkbox'
+		)
+	);
+
+	if( $this->request->params['action'] == 'tableau1b6' || ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableau1b6' ) ) {
+		$params_rdv_structurereferente['label'] = 'Dont le bénéficiaire possède au moins un rendez-vous honoré dans le PDV';
 	}
 
 	echo $this->Default3->form(
@@ -34,7 +47,7 @@
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( ( $this->action == 'index' ) ? 'select' : 'hidden' ) ),
 			'Search.tableau' => array( 'empty' => true, 'type' => ( $this->request->params['action'] == 'index' ? 'select' : 'hidden' ) ),
-			'Search.rdv_structurereferente' => array( 'type' => ( in_array( $this->request->params['action'], array( 'tableau1b3', 'index', 'tableaud1' ) ) || ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) ? 'hidden' : 'checkbox' ) ),
+			'Search.rdv_structurereferente' => $params_rdv_structurereferente,
 			'Search.dsps_maj_dans_annee' => array( 'type' => ( $this->request->params['action'] == 'tableau1b3' ? 'checkbox' : 'hidden' ) ),
 		),
 		array(

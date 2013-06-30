@@ -703,6 +703,28 @@ body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption {
 	caption-side: top;
 }
 
+/******************************************************************************/
+
+body.tableauxsuivispdvs93.tableau1b6 #pageContent table.wide thead th,
+body.tableauxsuivispdvs93 #pageContent table.wide.tableau1b6 thead th {
+	width: auto;
+}
+
+body.tableauxsuivispdvs93.tableau1b6 #pageContent table tbody td.name,
+body.tableauxsuivispdvs93 #pageContent table.tableau1b6 tbody td.name {
+	width: 60%;
+}
+
+body.tableauxsuivispdvs93.tableau1b6 #pageContent table tbody td.theme,
+body.tableauxsuivispdvs93 #pageContent table.tableau1b6 tbody td.theme {
+	width: 10%;
+}
+
+body.tableauxsuivispdvs93.tableau1b6 #pageContent table tbody td.number,
+body.tableauxsuivispdvs93 #pageContent table.tableau1b6 tbody td.number {
+	width: 10%;
+}
+
 /**
  * Tableau D1 (CCG 93)
  */

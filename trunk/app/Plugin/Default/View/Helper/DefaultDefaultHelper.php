@@ -262,7 +262,7 @@
 
 			$inputs = array();
 			foreach( Hash::normalize( $fields ) as $field => $fieldParams ) {
-				if( !isset( $fieldParams['label'] ) || !empty( $fieldParams['label'] ) ) {
+				if( !isset( $fieldParams['label'] ) || empty( $fieldParams['label'] ) ) {
 					$fieldParams['label'] = __d( $domain, $field );
 				}
 
