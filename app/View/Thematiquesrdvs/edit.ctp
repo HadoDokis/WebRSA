@@ -10,7 +10,8 @@
 			'Thematiquerdv.id' => array( 'type' => 'hidden' ),
 			'Thematiquerdv.name',
 			'Thematiquerdv.typerdv_id' => array( 'empty' => true ),
-			'Thematiquerdv.tableliee' => array( 'empty' => true ),
+			'Thematiquerdv.statutrdv_id' => array( 'empty' => true ),
+			'Thematiquerdv.linkedmodel' => array( 'empty' => true ),
 		),
 		array(
 			'options' => $options,

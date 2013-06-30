@@ -402,6 +402,7 @@
 		'questionnaired1pdv93' => 'questionnairesd1pdvs93',
 		'tableausuivipdv93' => 'tableauxsuivispdvs93',
 		'thematiquerdv' => 'thematiquesrdvs',
+		'rendezvous_thematiquerdv' => 'rendezvous_thematiquesrdvs',
 	);
 
 	/**

@@ -114,18 +114,6 @@
 					);
 				}
 
-				echo $this->Xhtml->tableCells(
-					array(
-						h( 'Gestion des rendez-vous' ),
-						$this->Xhtml->viewLink(
-							'Voir la table',
-							array( 'controller' => 'gestionsrdvs', 'action' => 'index' ),
-							$this->Permissions->check( 'gestionsrdvs', 'index' )
-						)
-					),
-					array( 'class' => 'odd' ),
-					array( 'class' => 'even' )
-				);
 				if ( Configure::read( 'Cg.departement' ) == 58 ) {
 					echo $this->Xhtml->tableCells(
 						array(
@@ -197,6 +185,18 @@
 							'Voir la table',
 							array( 'controller' => 'referents', 'action' => 'index' ),
 							$this->Permissions->check( 'referents', 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+				echo $this->Xhtml->tableCells(
+					array(
+						h( 'Rendez-vous' ),
+						$this->Xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'gestionsrdvs', 'action' => 'index' ),
+							$this->Permissions->check( 'gestionsrdvs', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

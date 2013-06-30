@@ -30,6 +30,13 @@
 		public $recursive = -1;
 
 		/**
+		 * Tri par défaut.
+		 *
+		 * @var integer
+		 */
+		public $order = array( 'Thematiquerdv.name' );
+
+		/**
 		 * Behaviors utilisés.
 		 *
 		 * @var array
@@ -40,16 +47,38 @@
 		);
 
 		/**
+		 * Associations "Belongs to".
+		 *
+		 * @var array
+		 */
+		public $belongsTo = array(
+			'Statutrdv' => array(
+				'className' => 'Statutrdv',
+				'foreignKey' => 'statutrdv_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Typerdv' => array(
+				'className' => 'Typerdv',
+				'foreignKey' => 'typerdv_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+		);
+
+		/**
 		 * Associations "Has and belongs to many".
 		 *
 		 * @var array
 		 */
 		public $hasAndBelongsToMany = array(
-			/*'' => array(
-				'className' => '',
-				'joinTable' => '',
+			'Rendezvous' => array(
+				'className' => 'Rendezvous',
+				'joinTable' => 'rendezvous_thematiquesrdvs',
 				'foreignKey' => 'thematiquerdv_id',
-				'associationForeignKey' => '_id',
+				'associationForeignKey' => 'rendezvous_id',
 				'unique' => true,
 				'conditions' => null,
 				'fields' => null,
@@ -59,8 +88,57 @@
 				'finderQuery' => null,
 				'deleteQuery' => null,
 				'insertQuery' => null,
-				'with' => null
-			),*/
+				'with' => 'RendezvousThematiquerdv'
+			),
 		);
+
+		/**
+		 * Règles de validation
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'statutrdv_id' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'linkedmodel', false, array( null ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+			'linkedmodel' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'statutrdv_id', false, array( null ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+		);
+
+		/**
+		 * Retourne la liste des modèles liés avec lesquels on peut utiliser la
+		 * fonctionnalité de blocage.
+		 *
+		 * @return array
+		 */
+		public function linkedModels() {
+			if( !$this->Statutrdv->Rendezvous->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
+				$this->Statutrdv->Rendezvous->Behaviors->attach( 'Pgsqlcake.Schema' );
+			}
+
+			$return = array();
+			$domain = Inflector::underscore( $this->alias );
+			$foreignKeys = $this->Statutrdv->Rendezvous->foreignKeysTo();
+
+			if( !empty( $foreignKeys ) ) {
+				foreach( $foreignKeys as $foreignKey ) {
+					$linkedModel = Inflector::classify( $foreignKey['From']['table'] );
+					// TODO: quand ce sera adapté ailleurs
+					$allowed = ( $linkedModel == 'Questionnaired1pdv93' );
+					if( $allowed && !isset( $this->Statutrdv->Rendezvous->hasAndBelongsToMany[$linkedModel] ) ) {
+						$return[$linkedModel] = __d( $domain, "LINKED::{$linkedModel}" );
+					}
+				}
+			}
+
+			return $return;
+		}
 	}
 ?>

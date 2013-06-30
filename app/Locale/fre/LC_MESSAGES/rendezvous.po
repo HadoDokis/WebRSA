@@ -87,3 +87,7 @@ msgstr "Non"
 
 msgid "Rendezvous.rang"
 msgstr "Rang du rendez-vous"
+
+# TODO: dans les traductions de la table de liaison ?
+msgid "Questionnaired1pdv93::missing"
+msgstr "Veuillez remplir un questionnaire D1 pour cet allocataire"

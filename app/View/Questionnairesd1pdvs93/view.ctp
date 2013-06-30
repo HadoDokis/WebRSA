@@ -15,7 +15,6 @@
 			'Questionnaired1pdv93.autre_caracteristique_autre',
 			'Questionnaired1pdv93.conditions_logement',
 			'Questionnaired1pdv93.conditions_logement_autre',
-			'Questionnaired1pdv93.valide' => array( 'type' => 'boolean' ),
 			'Questionnaired1pdv93.date_validation',
 		),
 		array(

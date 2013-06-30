@@ -52,10 +52,7 @@
 			'Situationallocataire.natpf_activite' => array( 'type' => 'hidden' ),
 			'Questionnaired1pdv93.id' => array( 'type' => 'hidden' ),
 			'Questionnaired1pdv93.personne_id' => array( 'type' => 'hidden' ),
-			'Questionnaired1pdv93.rendezvous_id' => array(
-				'options' => $options['Questionnaired1pdv93']['rendezvous_id'],
-				'empty' => true
-			),
+			'Questionnaired1pdv93.rendezvous_id' => array( 'type' => 'hidden' ),
 			'Questionnaired1pdv93.inscritpe' => array(
 				'options' => $options['Questionnaired1pdv93']['inscritpe'],
 				'empty' => true

@@ -52,6 +52,19 @@
 		public $uses = array( 'Questionnaired1pdv93' );
 
 		/**
+		 * Correspondances entre les méthodes publiques correspondant à des
+		 * actions accessibles par URL et le type d'action CRUD.
+		 *
+		 * @var array
+		 */
+		public $crudMap = array(
+			'add' => 'create',
+			'edit' => 'update',
+			'index' => 'read',
+			'view' => 'read',
+		);
+
+		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
 		 * @return void
@@ -168,10 +181,6 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-				$data = $this->request->data;
-				$data['Questionnaired1pdv93']['valide'] = '1';
-				$this->request->data = $data;
-
 				$this->Questionnaired1pdv93->begin();
 
 				$result = $this->Questionnaired1pdv93->saveAssociated(

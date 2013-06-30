@@ -33,7 +33,7 @@
 			'Search.annee' => array( 'empty' => ( ( $this->action == 'index' ) ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( ( $this->action == 'index' ) ? 'select' : 'hidden' ) ),
-			'Search.tableau' => array( 'empty' => true, 'type' => 'select' ),
+			'Search.tableau' => array( 'empty' => true, 'type' => ( $this->request->params['action'] == 'index' ? 'select' : 'hidden' ) ),
 			'Search.rdv_structurereferente' => array( 'type' => ( in_array( $this->request->params['action'], array( 'tableau1b3', 'index', 'tableaud1' ) ) || ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) ? 'hidden' : 'checkbox' ) ),
 			'Search.dsps_maj_dans_annee' => array( 'type' => ( $this->request->params['action'] == 'tableau1b3' ? 'checkbox' : 'hidden' ) ),
 		),

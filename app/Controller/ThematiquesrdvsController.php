@@ -56,11 +56,21 @@
 		public function index() {
 			$this->paginate = array(
 				'Thematiquerdv' => array(
+					'contain' => array(
+						'Statutrdv',
+						'Typerdv',
+					),
 					'limit' => 10
 				)
 			);
-
 			$this->set( 'thematiquesrdvs', $this->paginate() );
+
+			$options = array(
+				'Thematiquerdv' => array(
+					'linkedmodel' => $this->Thematiquerdv->linkedModels()
+				)
+			);
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -79,7 +89,13 @@
 		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
-			if( !empty( $this->request->data ) ) {
+				if( !empty( $this->request->data ) ) {
+
+				// Retour à l'index en cas d'annulation
+				if( isset( $this->request->data['Cancel'] ) ) {
+					$this->redirect( array( 'action' => 'index' ) );
+				}
+
 				$this->Thematiquerdv->begin();
 				$this->Thematiquerdv->create( $this->request->data );
 
@@ -109,29 +125,15 @@
 				}
 			}
 
-			// TODO: dans le modèle
-			if( !$this->Rendezvous->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
-				$this->Rendezvous->Behaviors->attach( 'Pgsqlcake.Schema' );
-			}
-			$fks = array();
-			$tmp = $this->Rendezvous->foreignKeysTo();
-			if( !empty( $tmp ) ) {
-				foreach( $tmp as $fk ) {
-					$linkedModel = Inflector::classify( $fk['From']['table'] );
-					if( !isset( $this->Rendezvous->hasAndBelongsToMany[$linkedModel] ) ) {
-						$fks[] = $linkedModel;
-					}
-				}
-			}
-
 			$options = array(
 				'Thematiquerdv' => array(
-					'typerdv_id' => $this->Rendezvous->Typerdv->find( 'list', array( 'contain' => false, 'order' => array( 'libelle' ) ) ),
-					'tableliee' => $fks
+					'statutrdv_id' => $this->Thematiquerdv->Statutrdv->find( 'list', array( 'contain' => false, 'order' => array( 'libelle' ) ) ),
+					'typerdv_id' => $this->Thematiquerdv->Typerdv->find( 'list', array( 'contain' => false, 'order' => array( 'libelle' ) ) ),
+					'linkedmodel' => $this->Thematiquerdv->linkedModels(),
 				)
 			);
-
 			$this->set( compact( 'options' ) );
+
 			$this->render( 'edit' );
 		}
 
