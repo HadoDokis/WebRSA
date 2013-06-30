@@ -223,6 +223,7 @@
 				$formData[$this->alias]['date_validation'] = date( 'Y-m-d' );
 				$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
 				$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
+				$formData[$this->alias]['rendezvous_id'] = $this->rendezvous( $personne_id );
 			}
 
 			if( !is_null( $id ) ) {
@@ -342,6 +343,44 @@
 		}
 
 		/**
+		 * Retourne l'id du RDV à utiliser dans le questionnaire.
+		 *
+		 * @param integer $personne_id
+		 * @return integer
+		 */
+		public function rendezvous( $personne_id ) {
+			$querydata = array(
+				'conditions' => array(
+					'Thematiquerdv.linkedmodel' => $this->alias
+				)
+			);
+			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'all', $querydata ); // FIXME: une boucle ?
+
+			$with = $this->Rendezvous->hasAndBelongsToMany['Thematiquerdv']['with'];
+			$foo = date( 'Y-m-d' );
+			$querydata = array(
+				'fields' => array(
+					'Rendezvous.id'
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Rendezvous.personne_id' => $personne_id,
+					"DATE_TRUNC( 'YEAR', Rendezvous.daterdv ) = DATE_TRUNC( 'YEAR', TIMESTAMP '{$foo}' )",
+					'Rendezvous.typerdv_id' => Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv.typerdv_id' ),
+					'Thematiquerdv.linkedmodel' => $this->alias
+				),
+				'joins' => array(
+					$this->Rendezvous->join( $with, array( 'type' => 'INNER' ) ),
+					$this->Rendezvous->{$with}->join( 'Thematiquerdv', array( 'type' => 'INNER' ) ),
+				),
+				'order' => array( 'Rendezvous.daterdv ASC' )
+			);
+			$rendezvous = $this->Rendezvous->find( 'first', $querydata );
+
+			return Hash::get( $rendezvous, 'Rendezvous.id' );
+		}
+
+		/**
 		 * Messages à envoyer à l'utilisateur.
 		 *
 		 * @param integer $personne_id
@@ -350,19 +389,25 @@
 		public function messages( $personne_id ) {
 			$messages = array();
 
+			// Qui possède un RDV ...
+			$rendezvous = $this->rendezvous( $personne_id );
+			if( empty( $rendezvous ) ) {
+				$messages['Rendezvous.premierrdv'] = 'error';
+			}
+
 			$nivetu = $this->nivetu( $personne_id );
 			if( empty( $nivetu ) ) {
 				$messages['Dsp.nivetu_obligatoire'] = 'error';
 			}
 
-			$toppersdrodevorsa = $this->toppersdrodevorsa( $personne_id );
-			if( empty( $toppersdrodevorsa ) ) {
-				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
-			}
-
 			$droitsouverts = $this->droitsouverts( $personne_id );
 			if( empty( $droitsouverts ) ) {
 				$messages['Situationdossierrsa.etatdosrsa_ouverts'] = 'notice';
+			}
+
+			$toppersdrodevorsa = $this->toppersdrodevorsa( $personne_id );
+			if( empty( $toppersdrodevorsa ) ) {
+				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
 			}
 
 			return $messages;

@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'DefaultUtility', 'Default.Utility' );
 
 	/**
 	 * La classe Rendezvous ...
@@ -168,6 +169,30 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+		);
+
+		/**
+		 * Associations "Has and belongs to many".
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+			'Thematiquerdv' => array(
+				'className' => 'Thematiquerdv',
+				'joinTable' => 'rendezvous_thematiquesrdvs',
+				'foreignKey' => 'rendezvous_id',
+				'associationForeignKey' => 'thematiquerdv_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'RendezvousThematiquerdv'
 			),
 		);
 
@@ -350,9 +375,11 @@
 		}
 
 		/**
-		* Règle de validation sur le statut du RDV uniquement si pas CG58
-		*/
-
+		 * Règle de validation sur le statut du RDV uniquement si pas CG58.
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
 		public function beforeValidate( $options = array() ) {
 			$return = parent::beforeValidate( $options );
 
@@ -362,7 +389,62 @@
 					'message' => 'Champ obligatoire',
 				);
 
-				$this->validate['statutrdv_id'][] = $rule;
+				$this->validate['statutrdv_id']['notEmpty'] = $rule;
+			}
+
+			// -----------------------------------------------------------------
+			// FIXME: ailleurs + la même année
+			// TODO: configuration si on utilise la fonctionnalité ?
+			$CheckModelName = 'Thematiquerdv';
+			$masterField = 'typerdv_id';
+			$slaveField = 'statutrdv_id';
+			// -----------------------------------------------------------------
+			$checked = Hash::get( $this->data, "{$CheckModelName}.{$CheckModelName}" );
+			if( !empty( $checked ) ) {
+				$querydata = array(
+					'conditions' => array(
+						"{$CheckModelName}.id" => $checked,
+						"{$CheckModelName}.{$masterField}" => Hash::get( $this->data, "{$this->alias}.{$masterField}" ),
+						"{$CheckModelName}.{$slaveField} IS NOT NULL",
+						// TODO: pas la condition ci-dessous (permettra de faire égal ou différent) ?
+						"{$CheckModelName}.{$slaveField}" => Hash::get( $this->data, "{$this->alias}.{$slaveField}" ),
+					)
+				);
+				$checks = $this->{$CheckModelName}->find( 'all', $querydata );
+
+				if( !empty( $checks ) ) {
+					$messages = array();
+
+					foreach( $checks as $check ) {
+						$Model = ClassRegistry::init( $check[$CheckModelName]['linkedmodel'] );
+
+						// TODO: les conditions en paramétrage de la règle de validation
+						$conditions = array(
+							"{$Model->alias}.personne_id" => "#Rendezvous.personne_id#",
+							"DATE_TRUNC( 'YEAR', {$Model->alias}.modified ) = DATE_TRUNC( 'YEAR', TIMESTAMP '#Rendezvous.daterdv#' )",
+						);
+						$conditions = DefaultUtility::evaluate( $this->data, $conditions );
+
+						$querydata = array(
+							'fields' => array(
+								"{$Model->alias}.{$Model->primaryKey}"
+							),
+							'contain' => false,
+							'conditions' => $conditions,
+						);
+						$found = $Model->find( 'first', $querydata );
+
+						if( empty( $found ) ) {
+							$messages[] = __d( Inflector::underscore( $this->alias ), "{$Model->alias}::missing" );
+						}
+					}
+
+					if( !empty( $messages ) ) {
+						// TODO: un ensemble de messages dans la vue ?
+						$this->invalidate( $slaveField, $messages[0] );
+						$return = false;
+					}
+				}
 			}
 
 

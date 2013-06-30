@@ -37,6 +37,18 @@
 				true
 			);
 		<?php endif;?>
+
+		<?php if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ):?>
+			<?php foreach( $thematiquesrdvs as $typerdv_id => $thematiques ):?>
+				observeDisableFieldsetOnValue(
+					'RendezvousTyperdvId',
+					'ThematiquerdvThematiquerdvFieldset<?php echo $typerdv_id;?>',
+					[ '<?php echo $typerdv_id;?>' ],
+					false,
+					true
+				);
+			<?php endforeach;?>
+		<?php endif;?>
 	});
 </script>
 
@@ -73,6 +85,30 @@
 			echo $this->Form->input( 'Rendezvous.permanence_id', array( 'label' => 'Permanence liée à la structure', 'type' => 'select', 'options' => $permanences, 'selected' => $struct_id.'_'.$permanence_id, 'empty' => true ) );
 
 			echo $this->Form->input( 'Rendezvous.typerdv_id', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.lib_rdv' ) ), 'type' => 'select', 'options' => $typerdv, 'empty' => true ) );
+
+			// Thématiques du RDV
+			// FIXME: vérifier sauvegarde, édition, ...
+			if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ) {
+				foreach( $thematiquesrdvs as $typerdv_id => $thematiques ) {
+					$input = $this->Xform->input(
+						'Thematiquerdv.Thematiquerdv',
+						array(
+							'type' => 'select',
+							'multiple' => 'checkbox',
+							'options' => $thematiques,
+							'label' => 'Thématiques'
+						)
+					);
+					echo $this->Xhtml->tag(
+						'fieldset',
+						$input,
+						array(
+							'id' => "ThematiquerdvThematiquerdvFieldset{$typerdv_id}",
+							'class' => 'invisible',
+						)
+					);
+				}
+			}
 
 			if( Configure::read( 'Cg.departement') == 58 ){
 				echo $this->Form->input( 'Rendezvous.statutrdv_id', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.statutrdv' ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );

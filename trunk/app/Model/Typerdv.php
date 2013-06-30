@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Typerdv.
 	 *
@@ -62,7 +62,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Thematiquerdv' => array(
+				'className' => 'Thematiquerdv',
+				'foreignKey' => 'typerdv_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 

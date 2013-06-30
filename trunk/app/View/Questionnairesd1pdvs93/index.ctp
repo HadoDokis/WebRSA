@@ -21,13 +21,9 @@
 		$questionnairesd1pdvs93,
 		array(
 			'Rendezvous.daterdv',
-			'Questionnaired1pdv93.valide' => array( 'type' => 'boolean' ),
 			'Questionnaired1pdv93.date_validation',
 			'/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#' => array(
 				'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'view' )
-			),
-			'/Questionnairesd1pdvs93/edit/#Questionnaired1pdv93.id#' => array(
-				'disabled' => '( "#Questionnaired1pdv93.valide#" == "1" ) || ( "'.$this->Permissions->check( 'Questionnairesd1pdvs93', 'edit' ).'" != "1" )'
 			),
 			'/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id#' => array(
 				'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'delete' )

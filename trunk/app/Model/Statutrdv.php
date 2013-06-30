@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Statutrdv.
 	 *
@@ -47,7 +47,20 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Thematiquerdv' => array(
+				'className' => 'Thematiquerdv',
+				'foreignKey' => 'statutrdv_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

@@ -507,12 +507,12 @@
 			else if( $this->action == 'edit' ) {
 				$rdv_id = $id;
 				$qd_rdv = array(
+					'contain' => array(
+						'Thematiquerdv'
+					),
 					'conditions' => array(
 						'Rendezvous.id' => $rdv_id
 					),
-					'fields' => null,
-					'order' => null,
-					'recursive' => -1
 				);
 				$rdv = $this->Rendezvous->find( 'first', $qd_rdv );
 				$this->assert( !empty( $rdv ), 'invalidParameter' );
@@ -616,7 +616,6 @@
 					if( !empty( $personneReferent ) ) {
 						$this->request->data['Rendezvous']['referent_id'] = $this->request->data['Rendezvous']['structurereferente_id'].'_'.$personneReferent['PersonneReferent']['referent_id'];
 					}
-
 				}
 			}
 
@@ -635,6 +634,10 @@
 			$this->set( 'typerdv', $typerdv );
 
 			$this->_setOptions();
+
+			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
+			$this->set( compact( 'thematiquesrdvs' ) );
+
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/rendezvous/index/'.$personne_id );
 			$this->render( 'add_edit' );

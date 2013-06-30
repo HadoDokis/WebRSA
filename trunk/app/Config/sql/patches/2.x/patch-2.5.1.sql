@@ -206,24 +206,50 @@ ALTER TABLE proposdecisionscuis66 ADD CONSTRAINT proposdecisionscuis66_propositi
 -- 20130628 : Ajout des thématiques de rendez-vous
 -------------------------------------------------------------------------------------
 
+-- TODO: ajouter un champ contrainte (bool) -> statutrdv_id / linkedmodel
 DROP TABLE IF EXISTS thematiquesrdvs CASCADE;
 CREATE TABLE thematiquesrdvs (
-	id			SERIAL NOT NULL PRIMARY KEY,
-	name		VARCHAR(255) NOT NULL,
-	typerdv_id	INTEGER DEFAULT NULL REFERENCES typesrdv(id) ON DELETE SET NULL ON UPDATE CASCADE,
-	tableliee	VARCHAR(255) DEFAULT NULL,
-	created		TIMESTAMP WITHOUT TIME ZONE,
-	modified	TIMESTAMP WITHOUT TIME ZONE
+	id				SERIAL NOT NULL PRIMARY KEY,
+	name			VARCHAR(255) NOT NULL,
+	typerdv_id		INTEGER NOT NULL REFERENCES typesrdv(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	statutrdv_id	INTEGER DEFAULT NULL REFERENCES statutsrdvs(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	-- FIXME: table ou modèle lié, finalement ?
+	linkedmodel		VARCHAR(255) DEFAULT NULL,
+	created			TIMESTAMP WITHOUT TIME ZONE,
+	modified		TIMESTAMP WITHOUT TIME ZONE
 );
 
 DROP INDEX IF EXISTS thematiquesrdvs_name_idx;
 CREATE INDEX thematiquesrdvs_name_idx ON thematiquesrdvs(name);
 
+DROP INDEX IF EXISTS thematiquesrdvs_statutrdv_id_idx;
+CREATE INDEX thematiquesrdvs_statutrdv_id_idx ON thematiquesrdvs(statutrdv_id);
+
 DROP INDEX IF EXISTS thematiquesrdvs_typerdv_id_idx;
 CREATE INDEX thematiquesrdvs_typerdv_id_idx ON thematiquesrdvs(typerdv_id);
 
-DROP INDEX IF EXISTS thematiquesrdvs_tableliee_idx;
-CREATE INDEX thematiquesrdvs_tableliee_idx ON thematiquesrdvs(tableliee);
+DROP INDEX IF EXISTS thematiquesrdvs_linkedmodel_idx;
+CREATE INDEX thematiquesrdvs_linkedmodel_idx ON thematiquesrdvs(linkedmodel);
+
+-- 20130630 : Ajout de la table de liaison avec les rendez-vous
+DROP TABLE IF EXISTS rendezvous_thematiquesrdvs CASCADE;
+CREATE TABLE rendezvous_thematiquesrdvs (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	rendezvous_id		INTEGER DEFAULT NULL REFERENCES rendezvous(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	thematiquerdv_id	INTEGER DEFAULT NULL REFERENCES thematiquesrdvs(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP INDEX IF EXISTS rendezvous_thematiquesrdvs_rendezvous_id_idx;
+CREATE INDEX rendezvous_thematiquesrdvs_rendezvous_id_idx ON rendezvous_thematiquesrdvs(rendezvous_id);
+
+DROP INDEX IF EXISTS rendezvous_thematiquesrdvs_thematiquerdv_id_idx;
+CREATE INDEX rendezvous_thematiquesrdvs_thematiquerdv_id_idx ON rendezvous_thematiquesrdvs(thematiquerdv_id);
+
+DROP INDEX IF EXISTS rendezvous_thematiquesrdvs_rendezvous_id_thematiquerdv_id_idx;
+CREATE UNIQUE INDEX rendezvous_thematiquesrdvs_rendezvous_id_thematiquerdv_id_idx ON rendezvous_thematiquesrdvs(rendezvous_id,thematiquerdv_id);
+
+-- Suppression de la colonne questionnairesd1pdvs93.valide qui ne sert plus à rien
+SELECT alter_table_drop_column_if_exists( 'public', 'questionnairesd1pdvs93', 'valide' );
 
 -- *****************************************************************************
 COMMIT;

@@ -1055,7 +1055,7 @@ ul.actionMenu span.disabled, span.button.disabled, span.link.disabled {
 	background-position: left center;
 }
 
-ul.actions li.add a {
+ul.actions li.add a, ul.actions li a.add {
 	background-image: url( ../img/icons/add.png );
 }
 
@@ -1131,7 +1131,7 @@ ul li a.button.add {
 	background-position: 5px 5px;
 	padding: 0.5em 0.5em 0.5em 2em;
 }
-ul li a.button.add.disabled, span.button.add.disabled{
+ul li a.button.add.disabled, span.button.add.disabled, ul.actions li span.link.add.disabled {
 	background-image: url( ../img/icons/add_disabled.png );
 	background-position: 5px 5px;
 	padding: 0.5em 0.5em 0.5em 2em;

@@ -18,18 +18,21 @@
 
 		public $name = 'Typesrdv';
 		public $uses = array( 'Rendezvous', 'Option', 'Typerdv' );
-		public $helpers = array( 'Xform' );
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Xform'
+		);
 
 		public $commeDroit = array(
 			'add' => 'Typesrdv:edit'
 		);
 
+		/**
+		 * Liste des types de RDV
+		 */
 		public function index() {
-			// Retour à la liste en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'gestionsrdvs', 'action' => 'index' ) );
-			}
-
 			$typesrdv = $this->Typerdv->find(
 				'all',
 				array(

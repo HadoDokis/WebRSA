@@ -209,3 +209,6 @@ msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
 
 msgid "Situationdossierrsa.etatdosrsa_ouverts"
 msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."
+
+msgid "Rendezvous.premierrdv"
+msgstr "Cet allocataire ne possède pas encore de rendez-vous pour remplissage de questionnaire D1 cette année."
