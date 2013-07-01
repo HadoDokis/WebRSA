@@ -18,7 +18,7 @@
 			?>
 		</ul>
 	<?php else :?>
-		<p class="error">Veuillez paramétrer les différents types de secteurs de CUI afin d epouvoir créer un nouveau CUI.</p>
+		<p class="error">Veuillez paramétrer les différents types de secteurs de CUI afin de pouvoir créer un nouveau CUI.</p>
 	<?php endif;?>
 <?php endif;?>
 <?php if( empty( $cuis ) ):?>
