@@ -68,11 +68,10 @@
 		<?php
 			echo $this->Form->input( 'Cui.typecui', array( 'label' => __d( 'cui', 'Cui.typecui' ), 'type' => 'select', 'options' => $options['Cui']['typecui'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.secteurcui_id', array( 'label' => __d( 'cui', 'Cui.secteur' ), 'type' => 'select', 'options' => $secteurscuis, 'empty' => true ) );
+			echo $this->Form->input( 'Cui.isaci', array( 'label' => __d( 'cui', 'Cui.isaci' ), 'type' => 'select', 'options' => $options['Cui']['isaci'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.positioncui66', array( 'label' => __d( 'cui', 'Cui.positioncui66' ), 'type' => 'select', 'options' => $options['Cui']['positioncui66'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.decisioncui', array( 'label' => __d( 'cui', 'Cui.decisioncui' ), 'type' => 'select', 'options' => $options['Cui']['decisioncui'], 'empty' => true ) );
-
-			echo $this->Form->input( 'Cui.isaci', array( 'label' => __d( 'cui', 'Cui.isaci' ), 'type' => 'select', 'options' => $options['Cui']['isaci'], 'empty' => true ) );
-
+            
 			echo $this->Form->input( 'Cui.handicap', array( 'label' => __d( 'cui', 'Cui.handicap' ), 'type' => 'select', 'options' => $options['Cui']['handicap'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.niveauformation', array( 'label' => __d( 'cui', 'Cui.niveauformation' ), 'type' => 'select', 'options' => $options['Cui']['niveauformation'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.compofamiliale', array( 'label' => __d( 'cui', 'Cui.compofamiliale' ), 'type' => 'select', 'options' => $options['Cui']['compofamiliale'], 'empty' => true ) );
