@@ -518,6 +518,22 @@
 
 			$rdv['Rendezvous']['heurerdv'] = date( "H:i", strtotime( $rdv['Rendezvous']['heurerdv'] ) );
 
+			// Utilisation des thématiques de RDV ?
+			$rdv = $this->containThematique( $rdv );
+			$thematiquesrdvs = $rdv['Thematiquerdv'];
+			unset( $rdv['Thematiquerdv'] );
+
+			if( !empty( $thematiquesrdvs ) ) {
+				foreach( $thematiquesrdvs as $key => $values ) {
+					$thematiquesrdvs[$key] = array( 'Thematiquerdv' => $values );
+				}
+			}
+
+			$rdv = array(
+				$rdv,
+				'thematiquesrdvs' => $thematiquesrdvs
+			);
+
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
 				'Adresse' => array(
@@ -542,8 +558,8 @@
 
 			return $this->ged(
 				$rdv,
-				"RDV/{$rdv['Typerdv']['modelenotifrdv']}.odt",
-				false,
+				"RDV/{$rdv[0]['Typerdv']['modelenotifrdv']}.odt",
+				true,
 				$options
 			);
 		}
@@ -721,6 +737,56 @@
 			}
 
 			return $rendezvous;
+		}
+
+		/**
+		 *
+		 * TODO: si on utilise les thematiquesrdv seulement
+		 *
+		 * @param array $results
+		 * @param string $thematiqueAlias -> un array plus complet
+		 * @return array
+		 */
+		public function containThematique( array $results, $thematiqueAlias = 'Thematiquerdv' ) {
+			if( !empty( $results ) ) {
+				// Une liste ou un seul enregistrement ?
+				$find = 'all';
+				if( !is_int( key( $results ) ) ) {
+					$find = 'first';
+					reset( $results );
+					$results = array( $results );
+				}
+				else {
+					reset( $results );
+				}
+
+				foreach( $results as $key => $result ) {
+					$thematiquesrdvs = $this->{$thematiqueAlias}->find(
+						'all',
+						array(
+							'fields' => array(
+								"{$thematiqueAlias}.id",
+								"{$thematiqueAlias}.name",
+							),
+							'contain' => false,
+							'joins' => array(
+								$this->{$thematiqueAlias}->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+							),
+							'conditions' => array(
+								'RendezvousThematiquerdv.rendezvous_id' => $result[$this->alias]['id']
+							)
+						)
+					);
+					$results[$key][$thematiqueAlias] = (array)Hash::extract( $thematiquesrdvs, "{n}.{$thematiqueAlias}" );
+				}
+
+				// Une liste ou un seul enregistrement ?
+				if( $find != 'all' ) {
+					$results = $results[0];
+				}
+			}
+
+			return $results;
 		}
 	}
 ?>

@@ -367,8 +367,17 @@
 						'Rendezvous.typerdv_id' => Configure::read( 'Contratinsertion.RdvAuto.typerdv_id' ),
 						'daterdv' => date( 'Y-m-d', strtotime( $created ) ),
 					),
-					'contain' => false
+					'contain' => false,
 				);
+
+				// Si on utilise la thématique...
+				$useThematiquerdv = $this->Contratinsertion->Personne->Rendezvous->Thematiquerdv->used();
+				if( $useThematiquerdv ) {
+					$querydata['joins'] = array(
+						$this->Contratinsertion->Personne->Rendezvous->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+					);
+					$querydata['conditions']['RendezvousThematiquerdv.thematiquerdv_id'] = Configure::read( 'Contratinsertion.RdvAuto.thematiquerdv_id' );
+				}
 
 				if( $this->Contratinsertion->Personne->Rendezvous->find( 'count', $querydata ) == 0 ) {
 					$rendezvous = array(
@@ -386,6 +395,10 @@
 							'isadomicile' => '0',
 						)
 					);
+
+					if( $useThematiquerdv ) {
+						$rendezvous['Thematiquerdv'] = array( 'Thematiquerdv' => Configure::read( 'Contratinsertion.RdvAuto.thematiquerdv_id' ) );
+					}
 
 					$this->Contratinsertion->Personne->Rendezvous->create( $rendezvous );
 					$success = $this->Contratinsertion->Personne->Rendezvous->save() && $success;
