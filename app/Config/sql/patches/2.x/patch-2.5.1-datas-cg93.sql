@@ -12,8 +12,8 @@ BEGIN;
 -- *****************************************************************************
 
 INSERT INTO typesrdv (libelle, modelenotifrdv, nbabsencesavpassageep, nbabsaveplaudition, motifpassageep) VALUES
-	( 'Collectif', 'collectif.odt', 0, 0, NULL ),
-	( 'Individuel', 'individuel.odt', 0, 0, NULL );
+	( 'Collectif', 'collectif', 0, 0, NULL ),
+	( 'Individuel', 'individuel', 0, 0, NULL );
 
 INSERT INTO thematiquesrdvs ( name, typerdv_id, created, modified )
 	SELECT

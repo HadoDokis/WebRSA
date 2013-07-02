@@ -766,7 +766,7 @@
 
 	/**
 	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
-	 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
+	 * qui concerne la rédaction d'un CER (ex.: "Individuel").
 	 *
 	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
 	 *
@@ -785,6 +785,17 @@
 	 * @default null
 	 */
 	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
+
+	/**
+	 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
+	 * qui concerne la rédaction d'un CER (ex.: "Pour un Contrat d'Engagement Réciproque").
+	 *
+	 * Utilisé pour créer automatiquement un RDV lors de l'enregistrement d'un CER.
+	 *
+	 * @var integer
+	 * @default null
+	 */
+	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', null );
 
 	/**
 	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas

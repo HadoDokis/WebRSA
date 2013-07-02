@@ -94,29 +94,7 @@
 				$this->paginate = array( 'Rendezvous' => $querydata );
 				$rdvs = $this->paginate( 'Rendezvous' );
 
-				// TODO: si on utilise les thematiquesrdv seulement
-				// TODO: code en commun avec RendezvousController
-				if( !empty( $rdvs ) ) {
-					foreach( $rdvs as $key => $rdv ) {
-						$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find(
-							'all',
-							array(
-								'fields' => array(
-									'Thematiquerdv.id',
-									'Thematiquerdv.name',
-								),
-								'contain' => false,
-								'joins' => array(
-									$this->Rendezvous->Thematiquerdv->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
-								),
-								'conditions' => array(
-									'RendezvousThematiquerdv.rendezvous_id' => $rdv['Rendezvous']['id']
-								)
-							)
-						);
-						$rdvs[$key]['Thematiquerdv'] = (array)Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv' );
-					}
-				}
+				$rdvs = $this->Rendezvous->containThematique( $rdvs );
 
 				$this->set( 'rdvs', $rdvs );
 			}
@@ -142,11 +120,14 @@
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$rdvs = $this->Rendezvous->find( 'all', $querydata );
+			$rdvs = $this->Rendezvous->containThematique( $rdvs );
 
 			// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
 			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
+
+			$this->set( 'useThematiques', $this->Rendezvous->Thematiquerdv->used() );
 
 			$this->layout = '';
 			$this->_setOptions();

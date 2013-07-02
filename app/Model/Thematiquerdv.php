@@ -140,5 +140,21 @@
 
 			return $return;
 		}
+
+		/**
+		 * Permet de savoir si on utilise les thématiques de RDV.
+		 *
+		 * @return boolean
+		 */
+		public function used() {
+			$querydata = array(
+				'fields' => array( "{$this->alias}.{$this->primaryKey}" ),
+				'contain' => false,
+				'recursive' => -1
+			);
+			$element = $this->find( 'first', $querydata );
+
+			return ( !empty( $element ) );
+		}
 	}
 ?>

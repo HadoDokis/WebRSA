@@ -306,6 +306,7 @@
 					array(
 						'Contratinsertion.RdvAuto.typerdv_id' => 'integer',
 						'Contratinsertion.RdvAuto.statutrdv_id' => 'integer',
+						'Contratinsertion.RdvAuto.thematiquerdv_id' => 'integer',
 					)
 				);
 			}
@@ -627,6 +628,7 @@
 						array(
 							'Contratinsertion.RdvAuto.typerdv_id' => 'Typerdv',
 							'Contratinsertion.RdvAuto.statutrdv_id' => 'Statutrdv',
+							'Contratinsertion.RdvAuto.thematiquerdv_id' => 'Thematiquerdv',
 						)
 					);
 				}
