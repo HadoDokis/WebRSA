@@ -620,11 +620,11 @@
 				'marche_travail' => $enums['Questionnaired1pdv93']['marche_travail'],
 				'tranche_age' => $this->tranches_ages,
 				'vulnerable' => $enums['Questionnaired1pdv93']['vulnerable'],
-				'nivetu' => $enums['Questionnaired1pdv93']['nivetu'], // FIXME: nivetu NON 1207
+				'nivetu' => $enums['Questionnaired1pdv93']['nivetu'],
 				'categorie_sociopro' => $enums['Questionnaired1pdv93']['categorie_sociopro'],
 				'autre_caracteristique' => $enums['Questionnaired1pdv93']['autre_caracteristique'],
 				'natpf' => $this->natpf,
-				'nati' => $this->nati,
+				'nati' => $this->nati + array( 'NC' => 'Non renseigné' ),
 				'sitfam' => $this->sitfam,
 				'conditions_logement' =>  $enums['Questionnaired1pdv93']['conditions_logement'],
 				'inscritpe' => $this->inscritpe,
