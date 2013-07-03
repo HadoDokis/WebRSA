@@ -376,6 +376,10 @@
 			$result = age( date( 'Y-m-d', strtotime( '-33 year -6 months' ) ) );
 			$expected = 33;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = age( date( 'Y-m-d', strtotime( '1979-01-24' ) ), date( 'Y-m-d', strtotime( '2013-07-02' ) ) );
+			$expected = 34;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 

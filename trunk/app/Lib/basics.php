@@ -559,14 +559,18 @@
 	}
 
 	/**
-	* Calcul l'âge en années à partir de la date de naissance.
-	* @param string $date date de naissance au format yyyy-mm-dd
-	* @return integer âge en années
-	*/
-
-	function age( $date ) {
+	 * Calcul l'âge en années à partir de la date de naissance.
+	 * @param string $date date de naissance au format yyyy-mm-dd
+	 * @return integer âge en années
+	 */
+	function age( $date, $today = null ) {
 		list( $year, $month, $day ) = explode( '-', $date );
-		$today = time();
+		if( is_null( $today ) ) {
+			$today = time();
+		}
+		else {
+			$today = strtotime( $today );
+		}
 		return date( 'Y', $today ) - $year + ( ( ( $month > date( 'm', $today ) ) || ( $month == date( 'm', $today ) && $day > date( 'd', $today ) ) ) ? -1 : 0 );
 	}
 

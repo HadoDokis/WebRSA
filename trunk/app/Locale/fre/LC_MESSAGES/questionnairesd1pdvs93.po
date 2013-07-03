@@ -166,6 +166,9 @@ msgstr ""
 msgid "Situationallocataire.sitfam"
 msgstr ""
 
+msgid "Situationallocataire.sitfam_view"
+msgstr "Situation familiale"
+
 msgid "Situationallocataire.nbenfants"
 msgstr ""
 
@@ -198,6 +201,15 @@ msgstr "Bénéficiaires RSA majoré"
 
 msgid "Situationallocataire.natpf_activite"
 msgstr "Bénéficiaires RSA activité"
+
+msgid "Situationallocataire.natpf_view"
+msgstr "Nature de la prestation"
+
+msgid "Situationallocataire.tranche_age_view"
+msgstr "Tranche d'âge"
+
+msgid "Situationallocataire.anciennete_dispositif_view"
+msgstr "Ancienneté dans le dispositif"
 
 # ==============================================================================
 

@@ -30,11 +30,14 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'delete' => 'delete',
 			'historiser' => 'create',
 			'index' => 'read',
 			'tableau1b3' => 'read',
 			'tableau1b4' => 'read',
 			'tableau1b5' => 'read',
+			'tableau1b6' => 'read',
+			'tableaud1' => 'read',
 			'view' => 'read',
 		);
 
