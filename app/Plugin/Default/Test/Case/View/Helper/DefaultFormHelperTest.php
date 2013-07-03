@@ -10,6 +10,7 @@
 	 */
 	App::uses( 'View', 'View' );
 	App::uses( 'AppHelper', 'View/Helper' );
+	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'DefaultFormHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
 
@@ -39,6 +40,21 @@
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultForm = new DefaultFormHelper( $this->View );
+
+			$this->DefaultForm->request = new CakeRequest( 'contacts/add', false );
+			$this->DefaultForm->request->here = '/contacts/add';
+			$this->DefaultForm->request['action'] = 'add';
+			$this->DefaultForm->request->webroot = '';
+			$this->DefaultForm->request->base = '';
+
+			$this->DefaultForm->request->data = array(
+				'Apple' => array(
+					'id' => 666,
+					'name' => 'Étagère',
+					'category' => 'red',
+					'description' => "Line 1\nLine2",
+				)
+			);
 		}
 
 		/**
@@ -63,6 +79,48 @@
 							<input  name="Cancel" type="submit" value="'.__( 'Cancel' ).'"/>
 							<input  name="Reset" type="submit" value="'.__( 'Reset' ).'"/>
 						</div>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultFormHelper::fieldValue()
+		 *
+		 * @return void
+		 */
+		public function testFieldValue() {
+			$result = $this->DefaultForm->fieldValue( 'Apple.id', array( 'label' => 'Id', 'type' => 'integer' ) );
+			$expected = '<div class="input value integer"><span class="label">Id</span><span class="input">666</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->fieldValue( 'Apple.name', array( 'label' => 'Name' ) );
+			$expected = '<div class="input value"><span class="label">Name</span><span class="input">Étagère</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->fieldValue( 'Apple.category', array( 'label' => 'Category', 'options' => array( 'red' => 'Red apple' ) ) );
+			$expected = '<div class="input value"><span class="label">Category</span><span class="input">Red apple</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->fieldValue( 'Apple.description', array( 'label' => 'Description', 'nl2br' => true ) );
+			$expected = '<div class="input value"><span class="label">Description</span><span class="input">Line 1<br /> Line2</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->fieldValue( 'Apple.name', array( 'label' => 'Id', 'hidden' => true ) );
+			$expected = '<div class="input value"><input type="hidden" name="data[Apple][name]" value="Étagère" id="AppleName"/><span class="label">Id</span><span class="input">Étagère</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultFormHelper::input()
+		 *
+		 * @return void
+		 */
+		public function testInput() {
+			$result = $this->DefaultForm->input( 'Apple.id' );
+			$expected = '<div class="input text"><label for="AppleId">Id</label><input name="data[Apple][id]" type="text" value="666" id="AppleId"/></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->input( 'Apple.id', array( 'view' => true ) );
+			$expected = '<div class="input value"><span class="label">Id</span><span class="input">666</span></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 	}

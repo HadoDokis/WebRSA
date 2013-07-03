@@ -172,5 +172,23 @@
 
 				return $this->Personne->find( 'first', $querydata );
 		}
+
+		/**
+		 * Complète les enums avec certains "enums" de Tableausuivipdv93.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
+
+			$enums[$this->alias]['sitfam_view'] = $Tableausuivipdv93->sitfam;
+			$enums[$this->alias]['anciennete_dispositif'] = $Tableausuivipdv93->anciennetes_dispositif;
+			$enums[$this->alias]['natpf_view'] = $Tableausuivipdv93->natpf;
+			$enums[$this->alias]['tranche_age_view'] = $Tableausuivipdv93->tranches_ages;
+			$enums[$this->alias]['anciennete_dispositif_view'] = $Tableausuivipdv93->anciennetes_dispositif;
+
+			return $enums;
+		}
 	}
 ?>

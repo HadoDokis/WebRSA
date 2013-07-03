@@ -233,7 +233,11 @@
 				)
 			);
 
-			$options = $this->Questionnaired1pdv93->enums();
+			$options = Hash::merge(
+				$this->Questionnaired1pdv93->enums(),
+				$this->Questionnaired1pdv93->Situationallocataire->enums()
+			);
+
 			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->findListPersonneId( $personne_id );
 			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 
@@ -264,6 +268,8 @@
 			if( empty( $questionnaired1pdv93 ) ) {
 				throw new error404Exception();
 			}
+
+			$questionnaired1pdv93 = $this->Questionnaired1pdv93->completeDataForView( $questionnaired1pdv93 );
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $questionnaired1pdv93['Personne']['id'] ) );
 

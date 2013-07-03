@@ -40,5 +40,78 @@
 
 			return $return;
 		}
+
+		/**
+		 * Retourne un élément de formulaire contenant la valeur sous forme de
+		 * texte à partir des données dans $this->request->data.
+		 *
+		 * Les clés suivantes sont prises en compte dans les options:
+		 *	- label(string): spécifie le label si on ne veut pas de la traduction automatique
+		 *	- options(array): permet de traduire la valeur
+		 *	- nl2br(boolean): applique la fonction nl2br sur la valeur
+		 *	- hidden(boolean): ajoute un champ caché en plus de l'affichage
+		 *	- type(string): spécifie la classe du div
+		 *
+		 * @param string $fieldName
+		 * @param array $options
+		 * @return string
+		 */
+		public function fieldValue( $fieldName, array $options = array() ) {
+			// Label
+			if( isset( $options['label'] ) ) {
+				$label = $options['label'];
+			}
+			else {
+				$label = $this->label( $fieldName, null, $options );
+				$label = preg_replace( '/^.*>([^<]*)<.*$/', '\1', $label );
+			}
+			$label = $this->Html->tag( 'span', $label, array( 'class' => 'label' ) );
+
+			// Valeur
+			$value = Hash::get( $this->request->data, $fieldName );
+			if( isset( $options['options'][$value] ) ) {
+				$value = $options['options'][$value];
+			}
+			if( isset( $options['nl2br'] ) && $options['nl2br'] ) {
+				$value = nl2br( $value );
+			}
+			$value = $this->Html->tag( 'span', $value, array( 'class' => 'input' ) );
+
+			// Options
+			$hidden = Hash::get( $options, 'hidden' );
+			$options = $this->addClass( $options, 'input value' );
+			if( isset( $options['type'] ) ) {
+				$options = $this->addClass( $options, $options['type'] );
+				unset( $options['type'] );
+			}
+			unset( $options['options'], $options['label'], $options['hidden'], $options['nl2br'] );
+
+			// Ajout d'un champ caché ?
+			if( $hidden ) {
+				$hidden = $this->input( $fieldName, array( 'type' => 'hidden' ) );
+			}
+			else {
+				$hidden = '';
+			}
+
+			return $this->Html->tag( 'div', $hidden.$label.$value, $options );
+		}
+
+		/**
+		 * Retourn un champ de type input (@see FormHelper) ou une valeur
+		 * (@see fieldValue) si la clé 'view' est à true dans les options.
+		 *
+		 * @param string $fieldName
+		 * @param array $options
+		 * @return string
+		 */
+		public function input( $fieldName, $options = array( ) ) {
+			if( isset( $options['view'] ) && $options['view'] ) {
+				unset( $options['view'] );
+				return $this->fieldValue( $fieldName, $options );
+			}
+
+			return parent::input( $fieldName, $options );
+		}
 	}
 ?>

@@ -120,7 +120,7 @@
 		 * @var array
 		 */
 		public $natpf = array(
-			'socle' => 'Bénficiaires RSA socle',
+			'socle' => 'Bénéficiaires RSA socle',
 			'majore' => 'Bénéficiaires RSA majoré',
 			'socle_activite' => 'Bénéficiaires  RSA socle+activité',
 		);
@@ -372,9 +372,9 @@
 		protected function _tableaud1Natpf( array $search ) {
 			$natpf = '(
 				CASE
+					WHEN "Situationallocataire"."natpf_socle" = \'1\' AND "Situationallocataire"."natpf_activite" = \'1\' THEN \'socle_activite\'
 					WHEN "Situationallocataire"."natpf_socle" = \'1\' THEN \'socle\'
 					WHEN "Situationallocataire"."natpf_majore" = \'1\' THEN \'majore\'
-					WHEN "Situationallocataire"."natpf_socle" = \'1\' AND "Situationallocataire"."natpf_activite" = \'1\' THEN \'socle_activite\'
 					ELSE \'NC\'
 				END
 			)';
@@ -397,6 +397,7 @@
 		}
 
 		/**
+		 * FIXME: Nationalité vide (dans le tableau HTML)
 		 *
 		 * @param array $search
 		 * @return array

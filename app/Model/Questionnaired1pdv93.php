@@ -176,6 +176,62 @@
 			return $result;
 		}
 
+		public function completeDataForView( $data ) {
+			// Calcul de la situation familiale suivant les catégories du tableau D1
+			$sitfam_view = null;
+			$isole = in_array( $data['Situationallocataire']['sitfam'], array( 'CEL', 'DIV', 'ISO', 'SEF', 'SEL', 'VEU' ) );
+			if( $isole ) {
+				$sitfam_view = ( empty( $data['Situationallocataire']['nbenfants'] ) ? 'isole_sans_enfant' : 'isole_avec_enfant' );
+			}
+			else {
+				$sitfam_view = ( empty( $data['Situationallocataire']['nbenfants'] ) ? 'en_couple_sans_enfant' : 'en_couple_avec_enfant' );
+			}
+			$data['Situationallocataire']['sitfam_view'] = $sitfam_view;
+
+			// Calcul de la nature de la prestation suivant les catégories du tableau D1
+			$natpf_view = null;
+			if( $data['Situationallocataire']['natpf_socle'] && $data['Situationallocataire']['natpf_activite'] ) {
+				$natpf_view = 'socle_activite';
+			}
+			else if( $data['Situationallocataire']['natpf_socle'] ) {
+				$natpf_view = 'socle';
+			}
+			else if( $data['Situationallocataire']['natpf_majore'] ) {
+				$natpf_view = 'majore';
+			}
+			$data['Situationallocataire']['natpf_view'] = $natpf_view;
+
+			$date_validation = Hash::get( $data, 'Questionnaired1pdv93.date_validation' );
+
+			// Calcul des tranches d'âge suivant les catégories du tableau D1
+			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
+			$tranches = array_keys( $Tableausuivipdv93->tranches_ages );
+			$tranche_age_view = null;
+			$age = age( $data['Situationallocataire']['dtnai'], $date_validation );
+			foreach( $tranches as $tranche ) {
+				list( $min, $max ) = explode( '_', $tranche );
+				if( $min <= $age && $age <= $max ) {
+					$tranche_age_view = $tranche;
+				}
+			}
+			$data['Situationallocataire']['tranche_age_view'] = $tranche_age_view;
+
+			// Calcul de l'ancienneté dans le dispositif suivant les catégories du tableau D1
+			$Tableausuivipdv93 = ClassRegistry::init( 'Tableausuivipdv93' );
+			$tranches = array_keys( $Tableausuivipdv93->anciennetes_dispositif );
+			$anciennete_dispositif_view = null;
+			$age = age( $data['Situationallocataire']['dtdemrsa'], $date_validation );
+			foreach( $tranches as $tranche ) {
+				list( $min, $max ) = explode( '_', $tranche );
+				if( $min <= $age && $age <= $max ) {
+					$anciennete_dispositif_view = $tranche;
+				}
+			}
+			$data['Situationallocataire']['anciennete_dispositif_view'] = $anciennete_dispositif_view;
+
+			return $data;
+		}
+
 		/**
 		 * TODO: changer la signature, on ne modifie plus
 		 *
@@ -224,6 +280,9 @@
 				$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
 				$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
 				$formData[$this->alias]['rendezvous_id'] = $this->rendezvous( $personne_id );
+
+				// Champs en visualisation uniquement
+				$formData = $this->completeDataForView( $formData );
 			}
 
 			if( !is_null( $id ) ) {
