@@ -654,6 +654,34 @@
 				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
+			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
+			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
+			if( $dd_annee ) {
+				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
+					array(
+						'alias' => 'historiquesdroits',
+						'fields' => array( 'historiquesdroits.personne_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
+							'historiquesdroits.toppersdrodevorsa' => 1,
+							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
+							/*'OR' => array(
+								'EXTRACT( \'YEAR\' FROM historiquesdroits.created )' => $annee, // FIXME
+								'EXTRACT( \'YEAR\' FROM historiquesdroits.modified )' => $annee
+							)*/
+						)
+					)
+				);
+				$conditiondd = array(
+					'OR' => array(
+						$conditiondd,
+						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
+					)
+				);
+			}
+
 			$results = array();
 			$categories = array_keys( $this->tableaud1Categories() );
 
@@ -666,7 +694,8 @@
 					'fields' => $fields,
 					'conditions' => array(
 						'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
-						$conditionpdv
+						$conditionpdv,
+						$conditiondd
 					),
 					'contain' => false,
 					'joins' => array(
@@ -831,7 +860,7 @@
 		}
 
 		/**
-		 * TODO: case cochée ou pas ?
+		 *
 		 *
 		 * @param array $search
 		 * @param string $operand
@@ -1147,7 +1176,7 @@
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
 
 			// Requête 3: Raisons de la non participation,
-			// Requête 3.1: Refus du bénéficiaire -> TODO: la requête n'a pas été fournie
+			// Requête 3.1: Refus du bénéficiaire
 			$sql = "SELECT
 						NULL AS \"Tableausuivipdv93__prescription_name\",
 						NULL AS \"Tableausuivipdv93__prescriptions_refus_beneficiaire_count\"
@@ -1204,7 +1233,7 @@
 						ORDER BY actionscandidats.name;";
 			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
 
-			// Requête 4 : Abandon en cours d'action -> TODO: la requête n'a pas été fournie
+			// Requête 4 : Abandon en cours d'action
 			$sql = "SELECT
 						NULL AS \"Tableausuivipdv93__prescription_name\",
 						NULL AS \"Tableausuivipdv93__prescriptions_abandon_count\"
@@ -1227,7 +1256,6 @@
 		public function tableau1b6( array $search ) {
 			$Thematiquerdv = ClassRegistry::init( array( 'class' => 'Thematiquerdv', 'alias' => 'Tableau1b6' ) );
 
-			// TODO: On obtient la liste des thématiques
 			$cases = array();
 			foreach( (array)Configure::read( 'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' ) as $thematique_id => $theme ) {
 				$cases[] = "WHEN id = {$thematique_id} THEN '{$theme}'";
