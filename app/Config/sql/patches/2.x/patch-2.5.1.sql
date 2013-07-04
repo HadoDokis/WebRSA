@@ -251,6 +251,29 @@ CREATE UNIQUE INDEX rendezvous_thematiquesrdvs_rendezvous_id_thematiquerdv_id_id
 -- Suppression de la colonne questionnairesd1pdvs93.valide qui ne sert plus à rien
 SELECT alter_table_drop_column_if_exists( 'public', 'questionnairesd1pdvs93', 'valide' );
 
+-- -----------------------------------------------------------------------------
+-- 20130903 - Historisation des droits et devoirs et de l'état du droit
+-- -----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS historiquesdroits CASCADE;
+CREATE TABLE historiquesdroits (
+	id					SERIAL NOT NULL PRIMARY KEY,
+	personne_id			INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	toppersdrodevorsa	VARCHAR(1) DEFAULT NULL, -- calculsdroitsrsa.toppersdrodevorsa
+	etatdosrsa			VARCHAR(1) DEFAULT NULL, -- situationsdossiersrsa.etatdosrsa
+	created				TIMESTAMP WITHOUT TIME ZONE,
+	modified			TIMESTAMP WITHOUT TIME ZONE
+);
+
+DROP INDEX IF EXISTS historiquesdroits_personne_id_idx;
+CREATE INDEX historiquesdroits_personne_id_idx ON historiquesdroits( personne_id );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'historiquesdroits', 'historiquesdroits_toppersdrodevorsa_in_list_chk' );
+ALTER TABLE historiquesdroits ADD CONSTRAINT historiquesdroits_toppersdrodevorsa_in_list_chk CHECK ( cakephp_validate_in_list( toppersdrodevorsa, ARRAY['0', '1'] ) );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'historiquesdroits', 'historiquesdroits_etatdosrsa_in_list_chk' );
+ALTER TABLE historiquesdroits ADD CONSTRAINT historiquesdroits_etatdosrsa_in_list_chk CHECK ( cakephp_validate_in_list( etatdosrsa, ARRAY['Z', '0', '1', '2', '3', '4', '5', '6'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

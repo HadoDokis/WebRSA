@@ -403,6 +403,7 @@
 		'tableausuivipdv93' => 'tableauxsuivispdvs93',
 		'thematiquerdv' => 'thematiquesrdvs',
 		'rendezvous_thematiquerdv' => 'rendezvous_thematiquesrdvs',
+		'historiquedroit' => 'historiquesdroits',
 	);
 
 	/**

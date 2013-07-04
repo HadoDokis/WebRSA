@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source de la classe PermissionsShell.
+	 * Fichier source de la classe Tableauxsuivispdvs93Shell.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,8 +10,7 @@
 	App::uses( 'XShell', 'Console/Command' );
 
 	/**
-	 * La classe PermissionsShell permet de réparer et de compléter les tables
-	 * aros et acos.
+	 * La classe Tableauxsuivispdvs93Shell ...
 	 *
 	 * @package app.Console.Command
 	 */

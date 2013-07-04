@@ -517,6 +517,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Historiquedroit' => array(
+				'className' => 'Historiquedroit',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 		public $hasAndBelongsToMany = array(
 			'Actioncandidat' => array(
@@ -837,9 +850,9 @@
 		 *
 		 */
 		public function newDetailsCi( $personne_id, $user_id = null ) {
-		
+
 			$sqDernierReferent = $this->PersonneReferent->sqDerniere( 'Personne.id', false );
-		
+
 			///Recup personne
 			$personne = $this->find(
 				'first',
@@ -1012,7 +1025,7 @@
 
 			return $sql;
 		}
-        
+
         /**
 		 *   Calcul du nombre d emois restant avant la fin du titre de séjour de l'alcoataire
 		 *   @params integer personne_id
