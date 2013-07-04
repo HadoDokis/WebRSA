@@ -886,7 +886,7 @@
 						-- avec un RDV honoré durant l'année N
 						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
 						-- Dont le type de RDV est individuel
-						rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+						AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
 						AND ".$this->_conditionStatutRdv()."
 						-- dont la SR du référent de la fiche est la SR du RDV
 						AND referents.structurereferente_id = structurereferente_id
@@ -1068,7 +1068,7 @@
 		}
 
 		/**
-		 * TOD: nom de la fonction
+		 * TODO: nom de la fonction
 		 *
 		 * @param array $results
 		 * @param string $sql
@@ -1077,7 +1077,8 @@
 		 * @param string $valueKey
 		 * @return array
 		 */
-		protected function _foo( array $results, $sql, $map, $nameKey, $valueKey ) {
+		protected function _tableau1b5Foo( array $results, $sql, $map, $nameKey, $valueKey ) {
+debug( array( $results, $sql, $map, $nameKey, $valueKey ) );
 			$Actioncandidat = ClassRegistry::init( array( 'class' => 'Actioncandidat', 'alias' => 'Tableau1b5' ) );
 			list( $modelName, $fieldName ) = model_field( $valueKey );
 
@@ -1157,7 +1158,7 @@
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
 
 			// Requête 2: nombre de prescription effectives : venu
 			$sql = "SELECT
@@ -1173,7 +1174,7 @@
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
 
 			// Requête 3: Raisons de la non participation,
 			// Requête 3.1: Refus du bénéficiaire
@@ -1182,7 +1183,7 @@
 						NULL AS \"Tableausuivipdv93__prescriptions_refus_beneficiaire_count\"
 					FROM actionscandidats_personnes
 					WHERE false;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_beneficiaire_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_beneficiaire_count' );
 
 			// Requête 3.2: Refus de l'organisme : non retenu + non venu
 			$sql = "SELECT
@@ -1199,7 +1200,7 @@
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
 
 			// Requête 3.3: En attente : ddaction > now ?
 			$sql = "SELECT
@@ -1215,7 +1216,7 @@
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
 
 			// Requête 3.3: En attente : ddaction > now ?
 			$sql = "SELECT
@@ -1231,7 +1232,7 @@
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
 
 			// Requête 4 : Abandon en cours d'action
 			$sql = "SELECT
@@ -1239,7 +1240,7 @@
 						NULL AS \"Tableausuivipdv93__prescriptions_abandon_count\"
 					FROM actionscandidats_personnes
 					WHERE false;";
-			$results = $this->_foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_abandon_count' );
+			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_abandon_count' );
 
 			return array(
 				'totaux' => $this->_tableau1b5totaux( $search ),
