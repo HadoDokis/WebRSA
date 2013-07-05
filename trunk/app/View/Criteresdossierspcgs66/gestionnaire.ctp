@@ -112,6 +112,10 @@
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
 
 						$datetransmission = '';
+                        
+                        // Liste des organismes auxquels on transmet le dossier
+                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
+                        $orgs = implode( ', ', $orgs  );
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
                             $datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
                         }
@@ -119,9 +123,6 @@
                             $datetransmission = ' à '.$orgs; 
 						}
 
-                        // Liste des organismes auxquels on transmet le dossier
-                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
-                        $orgs = implode( ', ', $orgs  );
                         
 						//Liste des différents traitements PCGs de la personne PCG
 						$traitementspcgs66 = '';

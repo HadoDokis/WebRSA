@@ -681,21 +681,21 @@
 			}
 
 			$traitementspcgsouverts = $this->Traitementpcg66->find(
-					'all', array(
-				'conditions' => $conditions,
-				'contain' => array(
-					'Descriptionpdo'
-				),
-				'order' => array( 'Traitementpcg66.dateecheance DESC' )
-					)
+                'all', array(
+                    'conditions' => $conditions,
+                    'contain' => array(
+                        'Descriptionpdo'
+                    ),
+                    'order' => array( 'Traitementpcg66.dateecheance DESC' )
+                )
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
 			
 			//Liste des traitements non clos appartenant aux dossiers liés à mon Foyer
-			$listeTraitementsNonClos = $this->Traitementpcg66->Personnepcg66->listeTraitementpcg66NonClos( $personne_id, $this->action, $this->request->data );
-			$this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
-
+			$listeTraitementsNonClos = $this->Traitementpcg66->Personnepcg66->listeTraitementpcg66NonClos( $personne_id, $this->action, $this->request->data, $traitementspcgsouverts );
+            $this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
+            
 			$this->_setOptions();
 
 			$this->set( compact( 'personne_id', 'dossier_id', 'dossierpcg66_id', 'personnepcg66_id' ) );

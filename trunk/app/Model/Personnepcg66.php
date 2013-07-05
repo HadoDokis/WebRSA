@@ -209,7 +209,7 @@
 		*	@return array
 		*
 		*/
-		public function listeTraitementpcg66NonClos( $personneId = 'Personne.id', $action, $data = array() ) {
+		public function listeTraitementpcg66NonClos( $personneId = 'Personne.id', $action, $data = array(), $traitementspcgsouverts = array() ) {
 			$traitementsNonClos = array();
 			
 			$personnespcgs66 = $this->find(
@@ -244,10 +244,12 @@
 					);
 				}
 				
-// 				$corbeillepcgDescriptionId = Configure::read( 'Corbeillepcg.descriptionpdoId' );
-// 				if( !empty( $corbeillepcgDescriptionId ) ) {
-// 					$conditions['Traitementpcg66.descriptionpdo_id'] = $corbeillepcgDescriptionId;
-// 				}
+                // On enlève les IDs des traitements ouverts déjà pris en compte
+                if( !empty( $traitementspcgsouverts ) ) {
+                    $traitementspcgsouverts = Hash::extract( $traitementspcgsouverts, '{n}.Traitementpcg66.id' );
+                    $conditions[] = array( 'Traitementpcg66.id NOT' => $traitementspcgsouverts );
+                }
+
 				
 				$traitementspcgs66 = $this->Traitementpcg66->find(
 					'all',
