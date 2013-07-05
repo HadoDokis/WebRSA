@@ -22,27 +22,31 @@
 	<p class="error">Cette personne ne possède pas de rSA Socle.</p>
 <?php endif;?>
 
-<?php if( !empty( $alerteTitreSejour ) ):?>
-    <!-- Information présente dans la table titressejour -->
-    <?php if( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] > 0 ):?>
-        <?php if ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] < 12 ):?>
-            <p class="notice">Le titre de séjour de cet allocataire va se terminer dans <?php echo $alerteTitreSejour['Titresejour']['nbMoisAvantFin'];?> mois.</p>
+<?php debug( $alerteTitreSejour); 
+if( !empty( $alerteTitreSejour ) ):?>
+    
+    <?php if( is_null( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] ) && is_null( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] ) ) :?>
+    <?php else:?>
+        <?php if( ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] == 0 ) || ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] == 0 ) ) :?>
+            <p class="notice">Le titre de séjour de cet allocataire va se terminer dans moins d'1 mois.</p>
         <?php endif;?>
-
-    <!-- Information présente dans le formulaire CUI-->
-    <?php elseif( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] > 0 ):?>
-        <?php if ( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] < 12 ):?>
+        <!-- Information présente dans la table titressejour -->
+        <?php if( ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] > 0 ) && ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] < 12 ) ) :?>
+            <p class="notice">Le titre de séjour de cet allocataire va se terminer dans <?php echo $alerteTitreSejour['Titresejour']['nbMoisAvantFin'];?> mois.</p>
+        <!-- Information présente dans le formulaire CUI-->
+        <?php elseif( ( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] > 0 ) && ( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] < 12 ) ) :?>
             <p class="notice">Le titre de séjour de cet allocataire va se terminer dans <?php echo $alerteTitreSejour['Cui']['nbMoisAvantFinCui'];?> mois.</p>
         <?php endif;?>
 
-    <?php elseif( !is_null( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] ) && !is_null( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] ) ):?>
-        <p class="notice">Le titre de séjour de cet allocataire a expiré.</p>
+        <?php if( ( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] < 0 ) || ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] < 0 ) ):?>
+            <p class="notice">Le titre de séjour de cet allocataire a expiré.</p>
+        <?php endif;?>
     <?php endif;?>
 <?php endif;?>
 
     <?php if( empty( $persreferent ) ) :?>
-    		<p class="error">Aucun référent actif n'est lié au parcours de cette personne.</p>
-    	<?php endif;?>
+        <p class="error">Aucun référent actif n'est lié au parcours de cette personne.</p>
+    <?php endif;?>
 
 <?php if( empty( $cuis ) ):?>
 	<p class="notice">Cette personne ne possède pas encore de CUI.</p>

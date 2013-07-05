@@ -537,18 +537,19 @@
 			if( !empty( $this->request->data ) ) {
                 $success = true;
 //debug( $this->request->data );
+                $data = $this->request->data;
                 $this->{$this->modelClass}->begin();
 
 				if( $this->action == 'add' ) {
-					$this->request->data['Cui']['rangcui'] = $nbCui + 1;
+					$data['Cui']['rangcui'] = $nbCui + 1;
 				}
 
-				$dataCui = $this->request->data['Cui'];
+				$dataCui = $data['Cui'];
 				//Sauvegarde (création d'un nouveau partenaire si nouvel employeur
-				if( !empty( $this->request->data['Cui']['newemployeur'] ) && ( $this->request->data['Cui']['newemployeur'] == '1' ) && !empty( $this->request->data['Partenaire'] ) ) {
-					$partenaire = Hash::filter( (array)$this->request->data['Partenaire'] );
+				if( !empty( $data['Cui']['newemployeur'] ) && ( $data['Cui']['newemployeur'] == '1' ) && !empty( $data['Partenaire'] ) ) {
+					$partenaire = Hash::filter( (array)$data['Partenaire'] );
 					if( !empty( $partenaire ) ) {
-						$this->Cui->Partenaire->create( $this->request->data );
+						$this->Cui->Partenaire->create( $data );
 						$success = $this->Cui->Partenaire->save();
 						$dataCui['partenaire_id'] = $this->{$this->modelClass}->Partenaire->id;
 					}
@@ -564,25 +565,25 @@
 				unset( $defaults['cui_id'] );
 
 				//Sauvegarde des accompagnements cuis si présents dans la requête
-				if( !empty( $this->request->data['Accompagnementcui66'] ) ) {
-					$this->request->data['Accompagnementcui66'] = Set::merge( $defaults, $this->request->data['Accompagnementcui66'] );
+				if( !empty( $data['Accompagnementcui66'] ) ) {
+					$data['Accompagnementcui66'] = Set::merge( $defaults, $data['Accompagnementcui66'] );
 				}
 
-				if( !empty( $this->request->data['Cui']['isaci'] ) && ( $this->request->data['Cui']['iscae'] == '1' ) && !empty( $this->request->data['Accompagnementcui66'] ) ) {
-					$Accompagnementcui66 = Hash::filter( (array)$this->request->data['Accompagnementcui66'] );
+				if( !empty( $data['Cui']['isaci'] ) && ( $data['Cui']['iscae'] == '1' ) && !empty( $data['Accompagnementcui66'] ) ) {
+					$Accompagnementcui66 = Hash::filter( (array)$data['Accompagnementcui66'] );
 					if( !empty( $Accompagnementcui66 ) ) {
-						$this->{$this->modelClass}->Accompagnementcui66->create( $this->request->data );
+						$this->{$this->modelClass}->Accompagnementcui66->create( $data );
 						if( $this->action == 'add' ) {
 							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', $this->{$this->modelClass}->getLastInsertID() );
 						}
 						else if( $this->action == 'edit' ) {
-							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', Set::classicExtract( $this->request->data, 'Cui.id' ) );
+							$this->{$this->modelClass}->Accompagnementcui66->set( 'cui_id', Set::classicExtract( $data, 'Cui.id' ) );
 						}
 						$success = $this->{$this->modelClass}->Accompagnementcui66->save() && $success;
 					}
 				}
 
-// debug($this->request->data);
+// debug($data);
 				if( $success ) {
 					$this->{$this->modelClass}->commit();
 					$this->Jetons2->release( $dossier_id );
@@ -595,7 +596,7 @@
 				}
 			}
 
-            
+            $dataCaf = $this->Cui->dataCafAllocataire( $personne_id );
             if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 			}
@@ -603,6 +604,7 @@
 			$this->_setOptions();
 			$this->set( 'nbCui', $nbCui );
 			$this->set( 'personne_id', $personne_id );
+            $this->set( 'dataCaf', $dataCaf );
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( 'add_edit' );
 		}
