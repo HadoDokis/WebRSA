@@ -128,9 +128,26 @@
 			$personne_id = $this->Questionnaired1pdv93->personneId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
+			$querydata = array(
+				'fields' => array(
+					'Situationallocataire.id'
+				),
+				'conditions' => array(
+					'Questionnaired1pdv93.id' => $id
+				),
+				'contain' => array(
+					'Situationallocataire'
+				)
+			);
+
+			$questionnaired1pdv93 = $this->Questionnaired1pdv93->find( 'first', $querydata );
+			if( empty( $questionnaired1pdv93 ) ) {
+				throw new NotFoundException();
+			}
+
 			$this->Questionnaired1pdv93->begin();
 
-			if( $this->Questionnaired1pdv93->delete( $id, true ) ) {
+			if( $this->Questionnaired1pdv93->Situationallocataire->delete( $questionnaired1pdv93['Situationallocataire']['id'], true ) ) {
 				$this->Questionnaired1pdv93->commit();
 				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 			}
