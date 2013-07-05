@@ -45,11 +45,14 @@ msgstr "Modifier un accompagnement"
 msgid "Accompagnementscuis66::delete"
 msgstr "Supprimer un accompagnement"
 
-msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::immersion"
-msgstr "Périodes d'immersion"
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::periode"
+msgstr "Période d'immersion"
 
 msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::formation"
-msgstr "Formations"
+msgstr "Formation"
+
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::bilan"
+msgstr "Bilan"
 
 msgid "Accompagnementcui66.nomentaccueil"
 msgstr "Nom de l'entreprise d'accueil"
