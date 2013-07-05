@@ -72,8 +72,25 @@
 			),
 		);
 
+		/**
+		 * Règles de validation en plus de celles en base.
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'nati' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+		);
+
+		/**
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
 		public function getSituation( $personne_id ) {
-				// FIXME: à bouger dans Situationallocataire
 				$Informationpe = ClassRegistry::init( 'Informationpe' );
 
 				$querydata = array(

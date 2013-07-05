@@ -59,7 +59,6 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
-			'edit' => 'update',
 			'index' => 'read',
 			'view' => 'read',
 		);
@@ -118,16 +117,6 @@
 		}
 
 		/**
-		 * Formulaire d'ajout d'un élémént.
-		 *
-		 * @return void
-		 */
-		public function add() {
-			$args = func_get_args();
-			call_user_func_array( array( $this, 'edit' ), $args );
-		}
-
-		/**
 		 * Suppression d'un questionnaire D1, de la Situationallocataire associée
 		 * et redirection vers l'index.
 		 *
@@ -154,18 +143,11 @@
 		}
 
 		/**
-		 * Formulaire de modification d'un <élément>.
+		 * Formulaire d'ajout d'un élémént.
 		 *
-		 * @throws NotFoundException
+		 * @return void
 		 */
-		public function edit( $id = null ) {
-			if( $this->action == 'add' ) {
-				$personne_id = $id;
-			}
-			else {
-				$personne_id = $this->Questionnaired1pdv93->personneId( $id );
-			}
-
+		public function add( $personne_id ) {
 			$nivetu = $this->Questionnaired1pdv93->nivetu( $personne_id );
 			if( empty( $nivetu ) ) {
 				throw new InternalErrorException( 'Niveau d\'étude non renseigné' );
@@ -202,25 +184,8 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			else if( $this->action == 'edit' ) {
-				$this->request->data = $this->Questionnaired1pdv93->find(
-					'first',
-					array(
-						'conditions' => array(
-							"{$this->modelClass}.id" => $id
-						),
-						'contain' => array(
-							'Situationallocataire'
-						)
-					)
-				);
-
-				if( empty( $this->request->data  ) ) {
-					throw new NotFoundException();
-				}
-			}
 			else {
-				$this->request->data = $this->Questionnaired1pdv93->prepareFormDataAddEdit( null, $personne_id ); // FIXME
+				$this->request->data = $this->Questionnaired1pdv93->prepareFormData( $personne_id );
 			}
 
 			$personne = $this->Questionnaired1pdv93->Personne->find(
@@ -242,7 +207,6 @@
 			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 
 			$this->set( compact( 'personne_id', 'options', 'dossierMenu', 'personne' ) );
-			$this->render( 'edit' );
 		}
 
 		/**
