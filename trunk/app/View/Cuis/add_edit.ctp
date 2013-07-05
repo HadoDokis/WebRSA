@@ -439,7 +439,7 @@
 *   On récupère le code postal et on récupère les 2 premiers chiffres que l'on
 *   compare avec la table Departements nouvellement créée
 */
-$codepos = Set::classicExtract( $this->request->data, 'Adresse.codepos' );
+$codepos = Set::classicExtract( $dataCaf, 'Adresse.codepos' );
 $depSplit = substr( $codepos, '0', 2 );
 ?>
 <fieldset>
@@ -447,45 +447,45 @@ $depSplit = substr( $codepos, '0', 2 );
 	<table class="wide noborder">
 		<tr>
 			<td class="mediumSize noborder">
-				<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Personne.qual'), $qual ).' '.Set::classicExtract( $this->request->data, 'Personne.nom' );?>
+				<strong>Nom : </strong><?php echo Set::enum( Set::classicExtract( $dataCaf, 'Personne.qual'), $qual ).' '.Set::classicExtract( $dataCaf, 'Personne.nom' );?>
 				<br />
-				<?php if(  Set::classicExtract( $this->request->data, 'Personne.qual') != 'MR' ):?>
-					<strong>Pour les femmes, nom patronymique : </strong><?php echo Set::classicExtract( $this->request->data, 'Personne.nomnai' );?>
+				<?php if(  Set::classicExtract( $dataCaf, 'Personne.qual') != 'MR' ):?>
+					<strong>Pour les femmes, nom patronymique : </strong><?php echo Set::classicExtract( $dataCaf, 'Personne.nomnai' );?>
 				<?php endif;?>
 				<br />
 				<strong>Né(e) le : </strong>
 					<?php
-						echo date_short( Set::classicExtract( $this->request->data, 'Personne.dtnai' ) ).' <strong>à</strong>  '.Set::classicExtract( $this->request->data, 'Personne.nomcomnai' );
+						echo date_short( Set::classicExtract( $dataCaf, 'Personne.dtnai' ) ).' <strong>à</strong>  '.Set::classicExtract( $dataCaf, 'Personne.nomcomnai' );
 					?>
 				<br />
 				<strong>Adresse : </strong><br />
 					<?php
-						echo Set::extract( $this->request->data, 'Adresse.numvoie' ).' '.Set::extract( $options['typevoie'], Set::extract( $this->request->data, 'Adresse.typevoie' ) ).' '.Set::extract( $this->request->data, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $this->request->data, 'Adresse.compladr' ).'<br /> '.Set::extract( $this->request->data, 'Adresse.codepos' ).' '.Set::extract( $this->request->data, 'Adresse.locaadr' );
+						echo Set::extract( $dataCaf, 'Adresse.numvoie' ).' '.Set::extract( $options['typevoie'], Set::extract( $dataCaf, 'Adresse.typevoie' ) ).' '.Set::extract( $dataCaf, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.compladr' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.codepos' ).' '.Set::extract( $dataCaf, 'Adresse.locaadr' );
 					?>
 				<br />
 				<!-- Si on n'autorise pas la diffusion de l'email, on n'affiche rien -->
-				<?php if( Set::extract( $this->request->data, 'Foyer.Modecontact.0.autorutiadrelec' ) == 'A' ):?>
-					<strong>Adresse électronique : </strong><?php echo Set::extract( $this->request->data, 'Foyer.Modecontact.0.adrelec' );?>
+				<?php if( Set::extract( $dataCaf, 'Foyer.Modecontact.0.autorutiadrelec' ) == 'A' ):?>
+					<strong>Adresse électronique : </strong><?php echo Set::extract( $dataCaf, 'Foyer.Modecontact.0.adrelec' );?>
 				<?php endif;?>
 			</td>
 			<td class="mediumSize noborder">
-				<strong>Prénoms : </strong><?php echo Set::classicExtract( $this->request->data, 'Personne.prenom' );?>
+				<strong>Prénoms : </strong><?php echo Set::classicExtract( $dataCaf, 'Personne.prenom' );?>
 				<br />
-				<strong>NIR : </strong><?php echo Set::classicExtract( $this->request->data, 'Personne.nir');?>
+				<strong>NIR : </strong><?php echo Set::classicExtract( $dataCaf, 'Personne.nir');?>
 				<br />
 				<strong>Département : </strong><?php echo Set::extract( $depSplit, $dept );?>
 				<br />
-				<strong>Canton : </strong><?php echo Set::extract( $this->request->data, 'Canton.canton' );?>
+				<strong>Canton : </strong><?php echo Set::extract( $dataCaf, 'Canton.canton' );?>
 				<br />
-				<strong>Nationalité : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Personne.nati' ), $nationalite );?>
+				<strong>Nationalité : </strong><?php echo Set::enum( Set::classicExtract( $dataCaf, 'Personne.nati' ), $nationalite );?>
 				<br />
-				<strong>Référent en cours : </strong><?php echo Set::enum( Set::classicExtract( $this->request->data, 'Referent.qual' ), $qual ).' '.Set::classicExtract( $this->request->data, 'Referent.nom' ).' '.Set::classicExtract( $this->request->data, 'Referent.prenom' );?>
+				<strong>Référent en cours : </strong><?php echo Set::enum( Set::classicExtract( $dataCaf, 'Referent.qual' ), $qual ).' '.Set::classicExtract( $dataCaf, 'Referent.nom' ).' '.Set::classicExtract( $dataCaf, 'Referent.prenom' );?>
 				<br />
 				<!-- Si on n'autorise aps la diffusion du téléphone, on n'affiche rien -->
-				<?php if( Set::extract( $this->request->data, 'Foyer.Modecontact.0.autorutitel' ) == 'A' ):?>
-					<strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $this->request->data, 'Foyer.Modecontact.0.numtel' );?>
+				<?php if( Set::extract( $dataCaf, 'Foyer.Modecontact.0.autorutitel' ) == 'A' ):?>
+					<strong>Numéro de téléphone 1 : </strong><?php echo Set::extract( $dataCaf, 'Foyer.Modecontact.0.numtel' );?>
 					<br />
-					<strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $this->request->data, 'Foyer.Modecontact.1.numtel' );?>
+					<strong>Numéro de téléphone 2 : </strong><?php echo Set::extract( $dataCaf, 'Foyer.Modecontact.1.numtel' );?>
 				<?php endif;?>
 			</td>
 		</tr>
@@ -509,7 +509,7 @@ $depSplit = substr( $codepos, '0', 2 );
 				<?php
 					echo $this->Default->subform(
 						array(
-							'Cui.datefintitresejour' => array( 'label' => '<strong>Date de fin de titre de séjour</strong>', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'selected' => Set::classicExtract( $this->request->data, 'Titresejour.dftitsej' ) )
+							'Cui.datefintitresejour' => array( 'label' => '<strong>Date de fin de titre de séjour</strong>', 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'selected' => Set::classicExtract( $dataCaf, 'Titresejour.dftitsej' ) )
 						),
 						array(
 							'domain' => $domain,
@@ -523,7 +523,7 @@ $depSplit = substr( $codepos, '0', 2 );
 			<td class="noborder" colspan="2">
 				<strong>Si bénéficiaire RSA, n° allocataire : </strong>
 				<?php
-					echo Set::classicExtract( $this->request->data, 'Dossier.matricule' ).'  <strong>relève de : </strong> '.Set::classicExtract( $this->request->data, 'Dossier.fonorg' );
+					echo Set::classicExtract( $dataCaf, 'Dossier.matricule' ).'  <strong>relève de : </strong> '.Set::classicExtract( $dataCaf, 'Dossier.fonorg' );
 				?>
 			</td>
 		</tr>
@@ -578,7 +578,7 @@ $depSplit = substr( $codepos, '0', 2 );
     <?php
 //       echo $this->Xform->fieldValue( 'Cui.naturersa', $listeNatureRSA, true, 'text' );
         
-		echo $this->Xform->fieldValue( 'Cui.nbperscharge', Hash::get( $this->request->data, 'Foyer.nbenfants' ), true, 'text' );
+		echo $this->Xform->fieldValue( 'Cui.nbperscharge', Hash::get( $dataCaf, 'Foyer.nbenfants' ), true, 'text' );
 
 	?>
 </fieldset>
