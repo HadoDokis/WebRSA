@@ -857,6 +857,9 @@
                 )
             );
 		}
+        else {
+            echo '<p class="notice">Aucun traitement non clos appartenant à un autre dossier</p>';
+        }
 
 
 		if( !empty( $traitementspcgsouverts ) ) {
