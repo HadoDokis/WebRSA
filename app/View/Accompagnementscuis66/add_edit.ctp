@@ -12,7 +12,7 @@
 		observeDisableFieldsetOnValue(
 			'Accompagnementcui66Typeaccompagnementcui66',
 			$( 'immersion' ),
-			['immersion'],
+			['periode'],
 			false,
 			true
 		);
@@ -25,6 +25,13 @@
 			true
 		);
 
+        observeDisableFieldsetOnValue(
+			'Accompagnementcui66Typeaccompagnementcui66',
+			$( 'bilans' ),
+			['bilan'],
+			false,
+			true
+		);
 
 		dependantSelect( 'Accompagnementcui66MetieraffectationId', 'Accompagnementcui66SecteuraffectationId' );
 		try { $( 'Accompagnementcui66MetieraffectationId' ).onchange(); } catch(id) { }
@@ -130,6 +137,9 @@
 	<p class="notice">En cours de développement .....</p>
 </fieldset>
 
+<fieldset id="bilans" class="invisible">
+	<p class="notice">En cours de développement .....</p>
+</fieldset>
 
 <div class="submit">
 	<?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>

@@ -273,6 +273,13 @@ ALTER TABLE historiquesdroits ADD CONSTRAINT historiquesdroits_toppersdrodevorsa
 SELECT alter_table_drop_constraint_if_exists( 'public', 'historiquesdroits', 'historiquesdroits_etatdosrsa_in_list_chk' );
 ALTER TABLE historiquesdroits ADD CONSTRAINT historiquesdroits_etatdosrsa_in_list_chk CHECK ( cakephp_validate_in_list( etatdosrsa, ARRAY['Z', '0', '1', '2', '3', '4', '5', '6'] ) );
 
+
+-- -----------------------------------------------------------------------------
+-- 20130705 - Transformation de l'enum de la table accompagnementscuis66 par un check in list
+-- -----------------------------------------------------------------------------
+ALTER TABLE accompagnementscuis66 ALTER COLUMN typeaccompagnementcui66 TYPE VARCHAR(9) USING CAST(typeaccompagnementcui66 AS VARCHAR(9));
+SELECT alter_table_drop_constraint_if_exists( 'public', 'accompagnementscuis66', 'accompagnementscuis66_typeaccompagnementcui66_in_list_chk' );
+ALTER TABLE accompagnementscuis66 ADD CONSTRAINT accompagnementscuis66_typeaccompagnementcui66_in_list_chk CHECK ( cakephp_validate_in_list( typeaccompagnementcui66, ARRAY['periode','formation','bilan'] ) );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
