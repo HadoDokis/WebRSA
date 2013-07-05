@@ -251,7 +251,7 @@ CREATE UNIQUE INDEX rendezvous_thematiquesrdvs_rendezvous_id_thematiquerdv_id_id
 SELECT alter_table_drop_column_if_exists( 'public', 'questionnairesd1pdvs93', 'valide' );
 
 -- -----------------------------------------------------------------------------
--- 20130903 - Historisation des droits et devoirs et de l'état du droit
+-- 20130703 - Historisation des droits et devoirs et de l'état du droit
 -- -----------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS historiquesdroits CASCADE;
