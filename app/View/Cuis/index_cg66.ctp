@@ -22,8 +22,7 @@
 	<p class="error">Cette personne ne possède pas de rSA Socle.</p>
 <?php endif;?>
 
-<?php debug( $alerteTitreSejour); 
-if( !empty( $alerteTitreSejour ) ):?>
+<?php if( !empty( $alerteTitreSejour ) ):?>
     
     <?php if( is_null( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] ) && is_null( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] ) ) :?>
     <?php else:?>
