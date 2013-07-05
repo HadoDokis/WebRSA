@@ -115,7 +115,7 @@
 		);
 
 		/**
-		 * Liste des nationalités.
+		 * Liste des natures de prestation.
 		 *
 		 * @var array
 		 */
@@ -167,7 +167,7 @@
 			'0_0' => 'Moins de 1 an',
 			'1_2' => 'De 1 an à moins de 3 ans',
 			'3_5' => 'De 3 ans à moins de 6 ans',
-			'3_8' => 'De 6 ans à moins de 9 ans',
+			'6_8' => 'De 6 ans à moins de 9 ans',
 			'9_999' => 'Plus de 9 ans',
 		);
 
@@ -397,7 +397,6 @@
 		}
 
 		/**
-		 * FIXME: Nationalité vide (dans le tableau HTML)
 		 *
 		 * @param array $search
 		 * @return array
@@ -624,7 +623,7 @@
 				'categorie_sociopro' => $enums['Questionnaired1pdv93']['categorie_sociopro'],
 				'autre_caracteristique' => $enums['Questionnaired1pdv93']['autre_caracteristique'],
 				'natpf' => $this->natpf,
-				'nati' => $this->nati + array( 'NC' => 'Non renseigné' ),
+				'nati' => $this->nati,
 				'sitfam' => $this->sitfam,
 				'conditions_logement' =>  $enums['Questionnaired1pdv93']['conditions_logement'],
 				'inscritpe' => $this->inscritpe,

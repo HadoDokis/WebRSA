@@ -213,7 +213,6 @@ CREATE TABLE thematiquesrdvs (
 	name			VARCHAR(255) NOT NULL,
 	typerdv_id		INTEGER NOT NULL REFERENCES typesrdv(id) ON DELETE SET NULL ON UPDATE CASCADE,
 	statutrdv_id	INTEGER DEFAULT NULL REFERENCES statutsrdvs(id) ON DELETE SET NULL ON UPDATE CASCADE,
-	-- FIXME: table ou modèle lié, finalement ?
 	linkedmodel		VARCHAR(255) DEFAULT NULL,
 	created			TIMESTAMP WITHOUT TIME ZONE,
 	modified		TIMESTAMP WITHOUT TIME ZONE

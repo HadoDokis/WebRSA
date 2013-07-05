@@ -24,9 +24,7 @@
 			'Situationallocataire.rolepers' => array( 'type' => 'hidden' ),
 			'Situationallocataire.toppersdrodevorsa' => array( 'type' => 'hidden' ),
 			'Situationallocataire.nati' => array(
-				'view' => true,
-				'type' => 'text',
-				'hidden' => true,
+				'empty' => true,
 				'options' => $options['Situationallocataire']['nati']
 			),
 			'Situationallocataire.identifiantpe' => array( 'type' => 'hidden' ),
@@ -51,7 +49,8 @@
 			'Situationallocataire.sitfam_view' => array(
 				'options' => $options['Situationallocataire']['sitfam_view'],
 				'view' => true,
-				'type' => 'text'
+				'type' => 'text',
+				'hidden' => true
 			),
 			'Situationallocataire.nbenfants' => array( 'type' => 'hidden' ),
 			'Situationallocataire.dtdemrsa' => array( 'type' => 'hidden' ),
@@ -68,17 +67,20 @@
 			'Situationallocataire.natpf_view' => array(
 				'options' => $options['Situationallocataire']['natpf_view'],
 				'view' => true,
-				'type' => 'text'
+				'type' => 'text',
+				'hidden' => true
 			),
 			'Situationallocataire.tranche_age_view' => array(
 				'options' => $options['Situationallocataire']['tranche_age_view'],
 				'view' => true,
-				'type' => 'text'
+				'type' => 'text',
+				'hidden' => true
 			),
 			'Situationallocataire.anciennete_dispositif_view' => array(
 				'options' => $options['Situationallocataire']['anciennete_dispositif_view'],
 				'view' => true,
-				'type' => 'text'
+				'type' => 'text',
+				'hidden' => true
 			),
 			'Questionnaired1pdv93.id' => array( 'type' => 'hidden' ),
 			'Questionnaired1pdv93.personne_id' => array( 'type' => 'hidden' ),
@@ -116,9 +118,7 @@
 				'hidden' => true
 			),
 			'Questionnaired1pdv93.autre_caracteristique_autre' => array(
-				'view' => true,
-				'hidden' => true,
-				'type' => 'text'
+				'type' => 'hidden'
 			),
 			'Questionnaired1pdv93.conditions_logement' => array(
 				'options' => $options['Questionnaired1pdv93']['conditions_logement'],

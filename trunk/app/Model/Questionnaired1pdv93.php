@@ -74,6 +74,11 @@
 			),
 		);
 
+		/**
+		 * Règles de validation en plus de celles en base.
+		 *
+		 * @var array
+		 */
 		public $validate = array(
 			'inscritpe' => array(
 				'notEmpty' => array(
@@ -176,6 +181,11 @@
 			return $result;
 		}
 
+		/**
+		 *
+		 * @param array $data
+		 * @return array
+		 */
 		public function completeDataForView( $data ) {
 			// Calcul de la situation familiale suivant les catégories du tableau D1
 			$sitfam_view = null;
@@ -233,61 +243,65 @@
 		}
 
 		/**
-		 * TODO: changer la signature, on ne modifie plus
 		 *
-		 * @param integer $id
+		 *
 		 * @param integer $personne_id
 		 * @return array
+		 * @throws NotFoundException
 		 */
-		public function prepareFormDataAddEdit( $id, $personne_id ) {
+		public function prepareFormData( $personne_id ) {
 			$formData = array();
 
-			if( !is_null( $personne_id ) ) {
-				$data = $this->Situationallocataire->getSituation( $personne_id );
-
-				// On complète les données du formulaire
-				$formData[$this->alias]['personne_id'] = $personne_id;
-
-				$formData['Situationallocataire']['personne_id'] = $personne_id;
-				$modelNames = array(
-					'Personne',
-					'Prestation',
-					'Calculdroitrsa',
-					'Historiqueetatpe',
-					'Adresse',
-					'Dossier',
-					'Situationdossierrsa',
-					'Foyer',
-					'Suiviinstruction',
-					'Detailcalculdroitrsa',
-				);
-				foreach( $modelNames as $modelName ) {
-					foreach( $data[$modelName] as $field => $value ) {
-						$formData['Situationallocataire'][$field] = $value;
-					}
-				}
-				$formData['Situationallocataire']['identifiantpe'] = $data['Historiqueetatpe']['identifiantpe'];
-				$formData['Situationallocataire']['datepe'] = $data['Historiqueetatpe']['date'];
-				$formData['Situationallocataire']['etatpe'] = $data['Historiqueetatpe']['etat'];
-				$formData['Situationallocataire']['codepe'] = $data['Historiqueetatpe']['code'];
-				$formData['Situationallocataire']['motifpe'] = $data['Historiqueetatpe']['motif'];
-
-				foreach( array( 'socle', 'majore', 'activite' ) as $type ) {
-					$formData['Situationallocataire']["natpf_{$type}"] = ( $formData['Situationallocataire']["natpf_{$type}"] ? '1' : '0' );
-				}
-
-				$formData[$this->alias]['date_validation'] = date( 'Y-m-d' );
-				$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
-				$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
-				$formData[$this->alias]['rendezvous_id'] = $this->rendezvous( $personne_id );
-
-				// Champs en visualisation uniquement
-				$formData = $this->completeDataForView( $formData );
+			$data = $this->Situationallocataire->getSituation( $personne_id );
+			if( empty( $data ) ) {
+				throw new NotFoundException();
 			}
 
-			if( !is_null( $id ) ) {
-				// TODO
+			// On complète les données du formulaire
+			$formData[$this->alias]['personne_id'] = $personne_id;
+
+			$formData['Situationallocataire']['personne_id'] = $personne_id;
+			$modelNames = array(
+				'Personne',
+				'Prestation',
+				'Calculdroitrsa',
+				'Historiqueetatpe',
+				'Adresse',
+				'Dossier',
+				'Situationdossierrsa',
+				'Foyer',
+				'Suiviinstruction',
+				'Detailcalculdroitrsa',
+			);
+			foreach( $modelNames as $modelName ) {
+				foreach( $data[$modelName] as $field => $value ) {
+					$formData['Situationallocataire'][$field] = $value;
+				}
 			}
+			$formData['Situationallocataire']['identifiantpe'] = $data['Historiqueetatpe']['identifiantpe'];
+			$formData['Situationallocataire']['datepe'] = $data['Historiqueetatpe']['date'];
+			$formData['Situationallocataire']['etatpe'] = $data['Historiqueetatpe']['etat'];
+			$formData['Situationallocataire']['codepe'] = $data['Historiqueetatpe']['code'];
+			$formData['Situationallocataire']['motifpe'] = $data['Historiqueetatpe']['motif'];
+
+			foreach( array( 'socle', 'majore', 'activite' ) as $type ) {
+				$formData['Situationallocataire']["natpf_{$type}"] = ( $formData['Situationallocataire']["natpf_{$type}"] ? '1' : '0' );
+			}
+
+			// Inscrit à Pôle Emploi
+			$inscritpe = Hash::get( $data, 'Historiqueetatpe.etat' );
+			if( !is_null( $inscritpe ) ) {
+				$inscritpe = ( ( $inscritpe == 'inscription' ) ? '1' : '0' );
+			}
+			$formData[$this->alias]['inscritpe'] = $inscritpe;
+
+			$formData[$this->alias]['date_validation'] = date( 'Y-m-d' );
+			$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
+			$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
+			$formData[$this->alias]['rendezvous_id'] = $this->rendezvous( $personne_id );
+
+			// Champs en visualisation uniquement
+			$formData = $this->completeDataForView( $formData );
 
 			return $formData;
 		}
