@@ -145,11 +145,15 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->Site->allEmpty( array( 'phone' => '', 'fax' => null ), 'fax' );
+			$data = array( 'phone' => '', 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->allEmpty( array( 'phone' => '' ), 'fax' );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->Site->allEmpty( array( 'phone' => ' ', 'fax' => null ), 'fax' );
+			$data = array( 'phone' => ' ', 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->allEmpty( array( 'phone' => ' ' ), 'fax' );
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -164,12 +168,60 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->Site->notEmptyIf( array( 'phone' => 'X', 'fax' => null ), 'fax', true, array( null ) );
+			$data = array( 'phone' => 'X', 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->notEmptyIf( array( 'phone' => 'X' ), 'fax', true, array( null ) );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $this->Site->notEmptyIf( array( 'phone' => '', 'fax' => null ), 'fax', true, array( null ) );
+			$data = array( 'phone' => '', 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->notEmptyIf( array( 'phone' => '' ), 'fax', true, array( null ) );
 			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Validation.ExtraValidationRules::notNullIf()
+		 *
+		 * @return void
+		 */
+		public function testNotNullIf() {
+			$result = $this->Site->notNullIf( null, null, null, null );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$data = array( 'phone' => '0606060606', 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->notNullIf(
+				array( 'phone' => '0606060606' ),
+				'fax',
+				true,
+				array( null )
+			);
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$data = array( 'phone' => null, 'fax' => null );
+			$this->Site->create( $data );
+			$result = $this->Site->notNullIf(
+				array( 'phone' => null ),
+				'fax',
+				false,
+				array( null )
+			);
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$data = array( 'phone' => '0606060606', 'fax' => '0404040404' );
+			$this->Site->create( $data );
+			$result = $this->Site->notNullIf(
+				array( 'phone' => '0606060606' ),
+				'fax',
+				true,
+				array( null )
+			);
+			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -237,6 +289,41 @@
 
 			$result = $this->Site->inclusiveRange( array( 'value' => 5 ), 0, 5 );
 			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Validation.ExtraValidationRules::foo
+		 *
+		 * @return void
+		 */
+		public function testFoo() {
+			$result = $this->Site->foo( null, null, null );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->foo( array(), null, null );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$this->Site->create( array( 'Site' => array( 'value' => null, 'othervalue' => null ) ) );
+			$result = $this->Site->foo( array( 'value' => null ), 'othervalue' );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$this->Site->create( array( 'Site' => array( 'value' => true, 'othervalue' => false ) ) );
+			$result = $this->Site->foo( array( 'value' => true ), 'othervalue' );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$this->Site->create( array( 'Site' => array( 'value' => null, 'othervalue' => 5 ) ) );
+			$result = $this->Site->foo( array( 'value' => null ), 'othervalue' );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$this->Site->create( array( 'Site' => array( 'value' => false, 'othervalue' => null ) ) );
+			$result = $this->Site->foo( array( 'value' => false ), 'othervalue' );
+			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}

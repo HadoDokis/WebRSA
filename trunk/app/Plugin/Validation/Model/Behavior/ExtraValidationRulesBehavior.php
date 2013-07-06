@@ -272,5 +272,42 @@
 			}
 			return $return;
 		}
+
+		/**
+		 * Validates that the value of the field and the values of the other
+		 * fields are either all null or all not null.
+		 *
+		 * TODO: renommer en NullPaired et simplifier ?
+		 *
+		 * @todo Classes de validation thématiques: FieldsCoherenceValidationBehavior
+		 * @see allEmpty, notEmptyIf, notNullIf
+		 *
+		 * @param Model $Model
+		 * @param array $check
+		 * @param string|array $otherFields
+		 * @return boolean
+		 */
+		public function foo( Model $Model, $check, $otherFields ) {
+			if( !is_array( $check ) || empty( $otherFields ) ) {
+				return false;
+			}
+
+			$success = true;
+
+			foreach( $check as $field => $value ) {
+				foreach( (array)$otherFields as $otherField ) {
+					if( $success ) {
+						$success = (
+							// Both null
+							( is_null( $value ) && is_null( $Model->data[$Model->alias][$otherField] ) )
+							// Both not null
+							|| ( !is_null( $value ) && !is_null( $Model->data[$Model->alias][$otherField] ) )
+						);
+					}
+				}
+			}
+
+			return $success;
+		}
 	}
 ?>
