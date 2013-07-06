@@ -233,6 +233,21 @@
 							</tr>
 						</tbody>';
 			$this->assertEqualsXhtml( $result, $expected );
+
+			$fields = array(
+				'data[Apple][][id]',
+				'Apple.color',
+			);
+			$result = $this->DefaultTable->tbody( $this->data, $fields, $params + array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) ) );
+			$expected = '<tbody>
+							<tr class="odd">
+								<td class="input integer">
+									<input type="hidden" name="data[Apple][0][id]" id="Apple0Id"/>
+								</td>
+								<td class="data string ">Red</td>
+							</tr>
+						</tbody>';
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**
