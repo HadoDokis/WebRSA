@@ -21,6 +21,27 @@
 	class DefaultUrlTest extends DefaultAbstractTestCase
 	{
 		/**
+		 *
+		 * @param array $requestParams
+		 */
+		protected function _setRequest( array $requestParams = array() ) {
+			$default = array(
+				'plugin' => null,
+				'controller' => 'users',
+				'action' => 'login',
+			);
+
+			$requestParams = Hash::merge( $default, $requestParams );
+
+			Router::reload();
+			$request = new CakeRequest();
+
+			$request->addParams( $requestParams );
+
+			Router::setRequestInfo( $request );
+		}
+
+		/**
 		 * setUp method
 		 *
 		 * @return void
@@ -28,19 +49,7 @@
 		public function setUp() {
 			parent::setUp();
 
-			$request = new CakeRequest();
-			$request->addParams(
-				array(
-					'plugin' => null,
-					'controller' => 'users',
-					'action' => 'login',
-//					'admin' => true
-				)
-			);
-//			$request->base = '/magazine';
-//			$request->here = '/magazine';
-//			$request->webroot = '/magazine/';
-			Router::setRequestInfo( $request );
+			$this->_setRequest();
 		}
 
 		/**
@@ -67,6 +76,27 @@
 			$url = array( 'plugin' => 'plugin', 'controller' => 'controllers', 'action' => 'action', 'prefix' => 'prefix', 0 => 'param1', '#' => 'anchor,subanchor', 'named' => 'value' );
 			$result = DefaultUrl::toString( $url );
 			$expected = '/Plugin.Controllers/prefix_action/param1/named:value#anchor,subanchor';
+			$this->assertEqual( $result, $expected, $result );
+
+			$url = array(
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'index',
+				'prefix' => 'admin',
+				'admin' => true,
+				0 => 'category',
+				'Search__active' => true,
+				'Search__User__username' => 'admin',
+				'#' => 'content',
+			);
+			$result = DefaultUrl::toString( $url );
+			$expected = '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin#content';
+			$this->assertEqual( $result, $expected, $result );
+
+			$url = array( 'action' => 'index', 'prefix' => 'admin', 'admin' => true );
+			$this->_setRequest( $url );
+			$result = DefaultUrl::toString( $url );
+			$expected = '/Users/admin_index';
 			$this->assertEqual( $result, $expected, $result );
 		}
 
@@ -154,6 +184,21 @@
 				0 => 'param1',
 				'named' => 'value',
 				'#' => 'anchor,subanchor'
+			);
+			$this->assertEqual( $result, $expected, $result );
+
+			$url = '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin/#content';
+			$result = DefaultUrl::toArray( $url );
+			$expected = array(
+				'prefix' => 'admin',
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'index',
+				0 => 'category',
+				'admin' => true,
+				'Search__active' => '1',
+				'Search__User__username' => 'admin',
+				'#' => 'content'
 			);
 			$this->assertEqual( $result, $expected, $result );
 		}

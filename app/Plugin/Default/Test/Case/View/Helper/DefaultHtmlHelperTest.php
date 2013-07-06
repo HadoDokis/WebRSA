@@ -69,6 +69,10 @@
 			$expected = '<a href="/admin/default/users/add" class="default users admin_add">Test</a>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			$result = $this->DefaultHtml->link( 'Test', Hash::remove( $url, 'plugin' ) );
+			$expected = '<a href="/admin/users/add" class="users admin_add">Test</a>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
 			$result = $this->DefaultHtml->link( 'Test', $url, array( 'disabled' => true ) );
 			$expected = '<span class="default users admin_add link disabled">Test</span>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );

@@ -75,6 +75,7 @@
 
 				if( isset( $attributes['text'] ) ) {
 					$text = $attributes['text'];
+					unset( $attributes['text'] );
 				}
 
 				if( !isset( $attributes['title'] ) ) {

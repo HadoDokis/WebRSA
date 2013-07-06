@@ -185,6 +185,14 @@
 						</ul>';
 			$this->assertEqualsXhtml( $result, $expected );
 
+			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' => array( 'text' => 'Aut Caesar, aut nihil' ) ) );
+			$expected = '<ul class="actions">
+							<li class="action">
+								<a href="/admin/users/add" title="/Users/admin_add/:title" class="users admin_add">Aut Caesar, aut nihil</a>
+							</li>
+						</ul>';
+			$this->assertEqualsXhtml( $result, $expected );
+
 			$result = $this->DefaultDefault->actions( array( '/Users/admin_add' => array( 'enabled' => false ) ) );
 			$expected = '<ul class="actions">
 							<li class="action">
@@ -386,10 +394,11 @@
 		 */
 		public function testForm() {
 			$fields = array(
-				'Apple.id'
+				'Apple.id',
+				'Apple.color',
 			);
 
-			$params = array();
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
 
 			$result = $this->DefaultDefault->form( $fields, $params );
 			$expected = '<form action="/" novalidate="novalidate" id="Form" method="post" accept-charset="utf-8">
@@ -400,22 +409,19 @@
 								<label for="AppleId">Apple.id</label>
 								<input name="data[Apple][id]" type="text" id="AppleId"/>
 							</div>
+							<div class="input select">
+								<label for="AppleColor">Apple.color</label>
+								<select name="data[Apple][color]" id="AppleColor">
+									<option value="red">Red</option>
+								</select>
+							</div>
 							<div class="submit">
 								<input  name="Save" type="submit" value="Enregistrer"/>
 								<input  name="Cancel" type="submit" value="Annuler"/>
 							</div>
 						</form>';
 
-			$this->assertEquals(
-				$result,
-				preg_replace( "/[[:space:]]*\n[[:space:]]*/m", '', $expected ), // TODO: assertXhtml
-				var_export( $result, true )
-			);
-
-//			$result = $this->DefaultDefault->view( array(), $fields );
-//			$expected = null;
-//			$this->assertEquals( $result, $expected, var_export( $result, true ) );
-
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 	}
 ?>

@@ -25,14 +25,34 @@
 	class DefaultUrl
 	{
 		/**
+		 * Transforme une URL à partir d'un array vers une représentation sous
+		 * forme de chaîne de caractères.
 		 *
-		 * @param type $url
+		 * Il s'agit de la méthode inverse de toArray().
+		 *
+		 * Exemple:
+		 * <pre>
+		 * $expected = array(
+		 * 	'prefix' => 'admin',
+		 * 	'plugin' => 'acl_extras',
+		 * 	'controller' => 'users',
+		 * 	'action' => 'index',
+		 * 	0 => 'category',
+		 * 	'admin' => true,
+		 * 	'Search__active' => '1',
+		 * 	'Search__User__username' => 'admin',
+		 * 	'#' => 'content'
+		 * );
+		 *
+		 * donnera
+		 *
+		 * '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin/#content'
+		 * </pre>
+		 *
+		 * @param string|array $url
 		 * @return string
 		 */
 		public static function toString( $url ) {
-//			debug( Router::normalize( $url ) ); // '/admin/plugin/controllers/action/param1/named:value##Model.field#'
-//			debug( Router::url( $url ) ); // '/magazine/admin/plugin/controllers/action/param1/named:value##Model.field#'
-
 			if( !is_array( $url ) ) {
 				$parsed = Router::parse( $url );
 			}
@@ -40,14 +60,15 @@
 				$request = (array)Router::getRequest();
 
 				$parsed = $url;
-				$parsed['plugin'] = isset( $parsed['plugin'] ) ? $parsed['plugin'] : $request['params']['plugin'];
-				$parsed['controller'] = isset( $parsed['controller'] ) ? $parsed['controller'] : $request['params']['controller'];
+
+				foreach( array( 'plugin', 'controller', 'action' ) as $key ) {
+					$parsed[$key] = isset( $parsed[$key] ) ? $parsed[$key] : $request['params'][$key];
+				}
+
 				if( isset( $request['params']['prefix'] ) ) {
 					$parsed['prefix'] = isset( $parsed['prefix'] ) ? $parsed['prefix'] : $request['params']['prefix'];
 				}
-				$parsed['action'] = isset( $parsed['action'] ) ? $parsed['action'] : $request['params']['action'];
 
-				// TODO: compléter les autres paramètres si besoin
 				$named = array();
 				$pass = array();
 				foreach( $parsed as $key => $value ) {
@@ -86,7 +107,7 @@
 
 			if( !empty( $parsed['named'] ) ) {
 				$hash = ( isset( $parsed['named']['#'] ) ? "#{$parsed['named']['#']}" : null );
-				unset( $parsed['named']['#'] ); // TODO: utiliser une méthode de la classe router ?
+				unset( $parsed['named']['#'] );
 				$return .= '/'.str_replace( '=', ':', http_build_query( $parsed['named'], null, '/' ) ).$hash;
 			}
 
@@ -94,8 +115,31 @@
 		}
 
 		/**
+		 * Transforme une URL à partir d'une de chaîne de caractères vers une
+		 * représentation sous forme d'array.
 		 *
-		 * @param string $url
+		 * Il s'agit de la méthode inverse de toString().
+		 *
+		 * Exemple:
+		 * <pre>
+		 * '/AclExtras.Users/admin_index/category/Search__active:1/Search__User__username:admin/#content'
+		 *
+		 * donnera
+		 *
+		 * array(
+		 *	'plugin' => 'acl_extras',
+		 *	'controller' => 'users',
+		 *	'action' => 'index',
+		 *	'prefix' => 'admin',
+		 *	'admin' => true,
+		 *	0 => 'category',
+		 *	'Search__active' => true,
+		 *	'#' => 'content',
+		 * );
+		 * </pre>
+		 *
+		 * @param string $path
+		 * @return array
 		 */
 		public static function toArray( $path ) {
 			$tokens = explode( '/', $path );
@@ -114,7 +158,6 @@
 					$tokens[2] = $matches[1];
 					$tokens[] = "#{$matches[2]}";
 				}
-				// TODO
 			}
 
 			$url = $explodedUrl = array(
