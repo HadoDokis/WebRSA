@@ -79,6 +79,16 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
+			$result = $this->Site->normalizeValidationRule( array( 'notEmpty' ) );
+			$expected = array(
+				'rule' => array( 'notEmpty' ),
+				'message' => null,
+				'required' => null,
+				'allowEmpty' => null,
+				'on' => null,
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
 			$result = $this->Site->normalizeValidationRule( array( 'rule' => 'alphaNumeric' ) );
 			$expected = array(
 				'rule' => array( 'alphaNumeric' ),
