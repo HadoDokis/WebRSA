@@ -1077,7 +1077,7 @@
 		 * @return array
 		 */
 		protected function _tableau1b5Foo( array $results, $sql, $map, $nameKey, $valueKey ) {
-debug( array( $results, $sql, $map, $nameKey, $valueKey ) );
+//debug( array( $results, $sql, $map, $nameKey, $valueKey ) );
 			$Actioncandidat = ClassRegistry::init( array( 'class' => 'Actioncandidat', 'alias' => 'Tableau1b5' ) );
 			list( $modelName, $fieldName ) = model_field( $valueKey );
 

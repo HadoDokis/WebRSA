@@ -73,7 +73,7 @@
 
 			// Remplit-on les conditions initiales ? / Messages à envoyer à l'utilisateur
 			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
-			$add_enabled = !in_array( 'error', $messages );
+			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
 			$this->set( compact( 'messages', 'add_enabled' ) );
 
 			$this->paginate = array(
@@ -165,9 +165,10 @@
 		 * @return void
 		 */
 		public function add( $personne_id ) {
-			$nivetu = $this->Questionnaired1pdv93->nivetu( $personne_id );
-			if( empty( $nivetu ) ) {
-				throw new InternalErrorException( 'Niveau d\'étude non renseigné' );
+			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
+			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
+			if( !$add_enabled ) {
+				throw new InternalErrorException( "Impossible d'ajouter une formulaire D1 à cet allocataire cette année." );
 			}
 
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );

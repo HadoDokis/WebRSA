@@ -483,7 +483,24 @@
 				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
 			}
 
+			$this->create( array( 'personne_id' => $personne_id ) );
+			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => date( 'Y-m-d' ) ), 'personne_id' );
+			if( $exists ) {
+				$messages['Questionnaired1pdv93.exists'] = 'notice';
+			}
+
 			return $messages;
+		}
+
+		/**
+		 * Permet de savoir si un ajout est possible à partir des messages
+		 * renvoyés par la méthode messages.
+		 *
+		 * @param array $messages
+		 * @return boolean
+		 */
+		public function addEnabled( array $messages ) {
+			return !in_array( 'error', $messages ) && !array_key_exists( 'Questionnaired1pdv93.exists', $messages );
 		}
 	}
 ?>
