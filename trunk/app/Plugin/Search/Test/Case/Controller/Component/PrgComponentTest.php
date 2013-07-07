@@ -118,9 +118,13 @@
 			$this->Controller->Prg->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 			$expected = array(
-				'http://localhost/index/Search__active:1/Search__User__username:john',
+				array(
+					'action' => 'index',
+					'Search__active' => '1',
+					'Search__User__username' => 'john',
+				),
 				null,
-				true
+				true,
 			);
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -209,7 +213,12 @@
 			$sessionKey = $sessionKeys[0];
 
 			$expected = array(
-				"http://localhost/index/Search__active:1/Search__User__username:john/sessionKey:{$sessionKey}",
+				array(
+					'action' => 'index',
+					'Search__active' => '1',
+					'Search__User__username' => 'john',
+					'sessionKey' => $sessionKey,
+				),
 				null,
 				true
 			);

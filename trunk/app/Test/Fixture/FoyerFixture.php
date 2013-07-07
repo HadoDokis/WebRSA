@@ -7,13 +7,14 @@
 	 * @package app.Test.Fixture
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( dirname( __FILE__ ).DS.'cake_app_test_fixture.php' );
 
 	/**
 	 * Classe FoyerFixture.
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class FoyerFixture extends CakeTestFixture
+	class FoyerFixture extends CakeAppTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
@@ -42,6 +43,7 @@
 				'mtestrsa' => null,
 				'raisoctieelectdom' => null,
 				'regagrifam' => null,
+				'haspiecejointe' => '0',
 			),
 			array(
 				'dossier_id' => 2,
@@ -54,6 +56,7 @@
 				'mtestrsa' => null,
 				'raisoctieelectdom' => null,
 				'regagrifam' => null,
+				'haspiecejointe' => '0',
 			),
 		);
 	}
