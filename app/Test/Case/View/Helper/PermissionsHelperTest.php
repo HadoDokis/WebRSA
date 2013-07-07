@@ -117,7 +117,7 @@
 				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
 			}
 
-			$this->Permissions->sessionKey = 'Otherkey.Perms';
+			WebrsaPermissions::$sessionPermissionsKey = 'Otherkey.Perms';
 
 			$result = $this->Permissions->check( 'groups', 'index' );
 			$expected = true;

@@ -108,7 +108,7 @@
 					'limit' => 3
 				)
 			);
-			$expected = 'SELECT "Apple"."id" AS "Apple__id" FROM "public"."apples" AS "Apple" LEFT JOIN "public"."apples" AS "Parentapple" ON ("Apple"."parentapple_id" = "Parentapple"."id")  WHERE "Apple"."modified" > \'2012-10-31\' AND "Apple"."color" = \'red\'    LIMIT 3';
+			$expected = 'SELECT "Apple"."id" AS "Apple__id" FROM "apples" AS "Apple" LEFT JOIN "public"."apples" AS "Parentapple" ON ("Apple"."parentapple_id" = "Parentapple"."id")  WHERE "Apple"."modified" > \'2012-10-31\' AND "Apple"."color" = \'red\'    LIMIT 3';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -124,13 +124,13 @@
 			);
 			$expected = array (
 				array (
-					'table' => '"public"."apples"',
+					'table' => '"apples"',
 					'alias' => 'Parentapple',
 					'type' => 'LEFT',
 					'conditions' => '"Apple"."parentapple_id" = "Parentapple"."id"',
 				),
 				array (
-					'table' => '"public"."apples"',
+					'table' => '"apples"',
 					'alias' => 'Childapple',
 					'type' => 'LEFT',
 					'conditions' => '"Childapple"."apple_id" = "Apple"."id"',
@@ -149,7 +149,7 @@
 				'Parentapple',
 				'modified'
 			);
-			$expected = '( "Parentapple"."id" IS NULL OR "Parentapple"."id" IN ( SELECT "parentapples"."id" AS "parentapples__id" FROM "public"."apples" AS "parentapples"   WHERE "Apple"."parentapple_id" = "parentapples"."id"   ORDER BY "parentapples"."modified" DESC  LIMIT 1 ) )';
+			$expected = '( "Parentapple"."id" IS NULL OR "Parentapple"."id" IN ( SELECT "parentapples"."id" AS "parentapples__id" FROM "apples" AS "parentapples"   WHERE "Apple"."parentapple_id" = "parentapples"."id"   ORDER BY "parentapples"."modified" DESC  LIMIT 1 ) )';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->Apple->sqLatest(
@@ -158,7 +158,7 @@
 				array( 'Parentapple.color' => 'red' ),
 				false
 			);
-			$expected = 'SELECT "parentapples"."id" AS "parentapples__id" FROM "public"."apples" AS "parentapples"   WHERE "Apple"."parentapple_id" = "parentapples"."id" AND "parentapples"."color" = \'red\'   ORDER BY "parentapples"."modified" DESC  LIMIT 1';
+			$expected = 'SELECT "parentapples"."id" AS "parentapples__id" FROM "apples" AS "parentapples"   WHERE "Apple"."parentapple_id" = "parentapples"."id" AND "parentapples"."color" = \'red\'   ORDER BY "parentapples"."modified" DESC  LIMIT 1';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}

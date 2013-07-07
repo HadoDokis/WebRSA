@@ -79,6 +79,7 @@
 				),
 				'Cer93' => array(
 					'id' => 1,
+					'duree' => 3,
 					'Histochoixcer93' => array(
 						array(
 							'id' => '1',
@@ -93,6 +94,7 @@
 							'datechoix' => '2012-10-24',
 							'created' => '2012-10-24 11:44:38',
 							'modified' => '2012-10-24 11:44:38',
+							'Commentairenormecer93' => array(),
 						),
 					),
 				),
@@ -103,6 +105,7 @@
 					'cer93_id' => 1,
 					'user_id' => 1,
 					'etape' => '03attdecisioncg',
+					'duree' => '3',
 					'formeci' => 'S',
 					'commentaire' => 'Commentaire ...',
 				),
@@ -409,7 +412,7 @@
 					'id' => 2,
 					'contratinsertion_id' => 2,
 					'user_id' => 1,
-					'positioncer' => '99rejete',
+					'positioncer' => '99rejetecpdv',
 					'formeci' => 'S',
 				),
 				'Histochoixcer93' => array(
@@ -445,6 +448,7 @@
 					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
+					'duree' => 3,
 					'commentaire' => 'drsg',
 					'datechoix' => array(
 						'day' => '25',
@@ -452,7 +456,8 @@
 						'year' => '2012'
 					),
 					'etape' => '05secondelecture',
-					'decisioncs' => 'valide'
+					'decisioncs' => 'valide',
+					'observationdecision' => null
 				)
 			);
 			$result = $this->Histochoixcer93->saveDecision( $data );
@@ -732,6 +737,7 @@
 					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
+					'duree' => 3,
 					'commentaire' => 'drsg',
 					'datechoix' => array(
 						'day' => '25',
@@ -739,7 +745,8 @@
 						'year' => '2012'
 					),
 					'etape' => '06attaviscadre',
-					'decisioncadre' => 'valide'
+					'decisioncadre' => 'valide',
+					'observationdecision' => null
 				)
 			);
 			$result = $this->Histochoixcer93->saveDecision( $data );
@@ -822,6 +829,8 @@
 					'cer93_id' => '2',
 					'user_id' => '6',
 					'formeci' => 'S',
+					'duree' => 3,
+					'dureepub' => 3,
 					'commentaire' => 'drsg',
 					'datechoix' => array(
 						'day' => '25',
@@ -829,7 +838,8 @@
 						'year' => '2012'
 					),
 					'etape' => '06attaviscadre',
-					'decisioncadre' => 'rejete'
+					'decisioncadre' => 'rejete',
+					'observationdecision' => null
 				)
 			);
 			$result = $this->Histochoixcer93->saveDecision( $data );
@@ -1009,11 +1019,11 @@
 		 */
 		public function testSqDernier() {
 			$result = $this->Histochoixcer93->sqDernier( 'Cer.id' );
-			$expected = 'SELECT public.histoschoixcers93.id
-					FROM public.histoschoixcers93
+			$expected = 'SELECT histoschoixcers93.id
+					FROM histoschoixcers93
 					WHERE
-						public.histoschoixcers93.cer93_id = Cer.id
-					ORDER BY public.histoschoixcers93.modified DESC
+						histoschoixcers93.cer93_id = Cer.id
+					ORDER BY histoschoixcers93.modified DESC
 					LIMIT 1';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

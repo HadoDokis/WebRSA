@@ -54,6 +54,8 @@
 				'sensibilite' => 'O',
 				'structurereferente_id' => 1,
 				'referent_id' => null,
+				'type' => 'cg',
+				'email' => null,
 			),
 		);
 	}
