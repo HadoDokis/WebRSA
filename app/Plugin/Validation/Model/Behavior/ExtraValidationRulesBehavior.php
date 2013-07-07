@@ -14,7 +14,7 @@
 	 *
 	 * Cette classe ajout plusieurs règles de validation.
 	 *
-	 * @fixme: alphaNumeric
+	 * @todo: alphaNumeric
 	 *
 	 * @package Validation
 	 * @subpackage Model.Behavior
@@ -134,8 +134,8 @@
 		 * @param Model $Model
 		 * @param array $check
 		 * @param string $reference
-		 * @param type $condition
-		 * @param type $values
+		 * @param boolean $condition
+		 * @param array $values
 		 * @return boolean
 		 */
 		public function notEmptyIf( Model $Model, $check, $reference, $condition, $values ) {
@@ -162,14 +162,16 @@
 		/**
 		 * Exemple: 'dateentreeemploi' => notNullIf( $check, 'activitebeneficiaire', true, array( 'P' ) )
 		 *
+		 * @todo un paramètre allowNull à notEmptyIf
+		 *
 		 * @param Model $Model
 		 * @param array $check
 		 * @param string $reference
-		 * @param type $condition
-		 * @param type $values
+		 * @param boolean $condition
+		 * @param array $values
 		 * @return boolean
 		 */
-		public function notNullIf( Model $Model, $check, $reference, $condition, $values ) { // FIXME: un paramètre allowNull à notEmptyIf
+		public function notNullIf( Model $Model, $check, $reference, $condition, $values ) {
 			if( !is_array( $check ) ) {
 				return false;
 			}
@@ -191,6 +193,8 @@
 		}
 
 		/**
+		 * Vérifie que la valeur soit supérieure à la valeur de référence si
+		 * celle-ci est supérieure à zéro.
 		 *
 		 * @param Model $Model
 		 * @param array $check
@@ -216,11 +220,13 @@
 		}
 
 		/**
+		 * Compare la date en valeur par-rapport à la date de référence, suivant
+		 * le comparateur.
 		 *
 		 * @param Model $Model
-		 * @param type $check
-		 * @param type $reference
-		 * @param type $comparator
+		 * @param array $check
+		 * @param string $reference
+		 * @param string $comparator Une valeur parmi: >, <, ==, <=, >=
 		 * @return boolean
 		 */
 		public function compareDates( Model $Model, $check, $reference, $comparator ) {
@@ -254,9 +260,9 @@
 		 * $check is a legal finite on this platform
 		 *
 		 * @param Model $Model
-		 * @param type $check Value to check
-		 * @param type $lower Lower limit
-		 * @param type $upper Upper limit
+		 * @param array $check Value to check
+		 * @param mixed $lower Lower limit
+		 * @param mixed $upper Upper limit
 		 * @return boolean
 		 */
 		public function inclusiveRange( Model $Model, $check, $lower = null, $upper = null ) {

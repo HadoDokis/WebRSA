@@ -20,6 +20,8 @@
 	class DefaultFormHelper extends FormHelper
 	{
 		/**
+		 * Retourne une liste de boutons de formulaire, dans le div submit, à
+		 * la mode CakePHP.
 		 *
 		 * @param array $buttons
 		 * @return string

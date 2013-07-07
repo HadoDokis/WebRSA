@@ -423,5 +423,63 @@
 
 			$this->assertEqualsXhtml( $result, $expected );
 		}
+
+		/**
+		 * Test de la méthode DefaultDefaultHelper::subform(()
+		 *
+		 * @return void
+		 */
+		public function testSubform() {
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+			);
+
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subform( $fields, $params );
+			$expected = '<div class="input text">
+							<label for="AppleId">Apple.id</label>
+							<input name="data[Apple][id]" type="text" id="AppleId"/>
+						</div>
+						<div class="input select">
+							<label for="AppleColor">Apple.color</label>
+							<select name="data[Apple][color]" id="AppleColor">
+								<option value="red">Red</option>
+							</select>
+						</div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultDefaultHelper::urlMsgid(()
+		 *
+		 * @return void
+		 */
+		public function testUrlMsgid() {
+			$url = array(
+				'plugin' => null,
+				'controller' => 'users',
+				'action' => 'login',
+			);
+			$result = $this->DefaultDefault->urlMsgid( $url );
+			$expected = '/Users/login/';
+			$this->assertEquals( $result, $expected );
+
+			$url = array(
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'index',
+				'prefix' => 'admin',
+				'admin' => 'true',
+				0 => 'foo',
+				'Search__active' => 1,
+				'#' => 'content'
+			);
+			$result = $this->DefaultDefault->urlMsgid( $url );
+			$expected = '/AclExtras.Users/admin_index/';
+			$this->assertEquals( $result, $expected );
+		}
 	}
 ?>

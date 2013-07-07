@@ -25,9 +25,19 @@
 		 */
 		protected $_cache = array();
 
+		/**
+		 * Permet de savoir si le cache a été modifié.
+		 *
+		 * @var boolean
+		 */
 		protected $_cacheChanged = false;
 
-		protected $_cacheConfig = 'default'; // FIXME: pas d'erreur et pas utilisé si pas défini (ex: 'fast') ?
+		/**
+		 * TODO: pas d'erreur et pas utilisé si pas défini (ex: 'fast') ?
+		 *
+		 * @var string
+		 */
+		protected $_cacheConfig = 'default';
 
 		/**
 		 * Retourne le com de la clé de cache qui sera utilisée par ce helper.
@@ -107,10 +117,17 @@
 		}
 
 		/**
+		 * Retourne une chaîne de caractère à partir de la valeur et de son type.
 		 *
-		 * @param type $value
-		 * @param type $type
-		 * @return type
+		 * Les types pris en compte actuellement sont:
+		 *	- boolean
+		 *	- date
+		 *	- datetime
+		 *	- integer
+		 *
+		 * @param mixed $value
+		 * @param string $type
+		 * @return string
 		 */
 		public function format( $value, $type ) {
 			$return = null;
@@ -141,10 +158,16 @@
 		}
 
 		/**
+		 * Renvoit les attributs de classe pour une valeur et un type donnés.
 		 *
-		 * @param type $value
-		 * @param type $type
-		 * @return type
+		 * Les types pris en compte actuellement sont:
+		 *	- boolean
+		 *	- integer
+		 *	- numeric
+		 *
+		 * @param mixed $value
+		 * @param string $type
+		 * @return array
 		 */
 		public function attributes( $value, $type ) {
 			$attributes = array( 'class' => "data {$type}" );

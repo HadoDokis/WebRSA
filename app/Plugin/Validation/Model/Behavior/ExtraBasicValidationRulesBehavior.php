@@ -118,7 +118,7 @@
 				return ( $Model->find( 'count', $querydata ) == 0 );
 			}
 
-			// B°) On n'a pas tous les fields dans this->data ... FIXME -> throw_error ou réfléchir ?
+			// B°) On n'a pas tous les fields dans this->data ... TODO -> throw_error ou réfléchir ?
 			return false;
 		}
 	}

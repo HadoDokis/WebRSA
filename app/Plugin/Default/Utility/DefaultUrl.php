@@ -92,7 +92,7 @@
 			}
 
 			$parsed['controller'] = Inflector::camelize( $parsed['controller'] );
-			if( !is_null( $parsed['plugin'] ) ) {
+			if( !empty( $parsed['plugin'] ) ) {
 				$parsed['controller'] = Inflector::camelize( $parsed['plugin'] ).'.'.$parsed['controller'];
 			}
 			if( isset( $parsed['prefix'] ) && !empty( $parsed['prefix'] ) && !empty( $parsed[$parsed['prefix']] ) ) {
