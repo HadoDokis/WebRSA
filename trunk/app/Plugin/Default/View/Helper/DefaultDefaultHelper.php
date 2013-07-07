@@ -7,6 +7,7 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'DefaultUrl', 'Default.Utility' );
 	App::uses( 'DefaultUtility', 'Default.Utility' );
 
 	/**
@@ -39,27 +40,46 @@
 		 * @param array $url
 		 * @return string
 		 */
-		protected function _urlMsgid( array $url ) {
-			foreach( array( 'plugin', 'controller', 'action' ) as $key ) {
-				if( !isset( $url[$key] ) ) {
-					$url[$key] = $this->request->params[$key];
-				}
-			}
-
-			// Action prefix ?
-			if( isset( $url['prefix'] ) && !empty( $url['prefix'] ) && isset( $url[$url['prefix']] ) && $url[$url['prefix']] ) {
-				$url['action'] = "{$url['prefix']}_{$url['action']}";
-			}
-
-			return '/'.Inflector::camelize( $url['controller'] ).'/'.$url['action'].'/';
+		public function urlMsgid( array $url ) {
+			return DefaultUtility::msgid( $url ).'/';
 		}
 
 		/**
+		 * Retourne une liste non ordonnée de liens.
+		 *
+		 * On peut spécifier un array en paramètre de chaque action, dont les
+		 * clés peuvent être:
+		 *	- domain: string
+		 *	- title: boolean|string
+		 *	- text: boolean|string
+		 *
+		 * Exemple:
+		 * <pre>
+		 * $actions = array(
+		 *	'/Users/admin_add' => array( 'title' => false, 'text' => 'Ajouter' ),
+		 *	'/Users/admin_permissions',
+		 * );
+		 *
+		 * renverra
+		 *
+		 * <ul class="actions">
+		 *	<li class="action">
+		 *		<a href="/admin/users/add" class="users admin_add">
+		 *			Ajouter
+		 *		</a>
+		 *	</li>
+		 *	<li class="action">
+		 *		<a href="/admin/users/permissions" title="/Users/admin_permissions/:title" class="users admin_permissions">
+		 *			/Users/admin_permissions
+		 *		</a>
+		 *	</li>
+		 * </ul>
+		 * </pre>
 		 *
 		 * @see DefaultUtility::linkParams()
 		 *
-		 * @param array $menu
-		 * @return null
+		 * @param array $actions
+		 * @return string
 		 */
 		public function actions( array $actions ) {
 			if( empty( $actions ) ) {
@@ -68,11 +88,21 @@
 
 			$lis = array();
 			foreach( Hash::normalize( $actions ) as $url => $attributes ) {
+				// TODO: nettoyer
+				/*$url2 = DefaultUrl::toArray( $url );
+				$attributes2 = DefaultUtility::attributes( $url2, (array)$attributes );
+//				$attributes2 = self::evaluate( $data, $attributes2 ); // INFO: on en a besoin ailleurs, ou permettre de le passer dans la méthode actions ?
+				$domain = DefaultUtility::domain( $url2, $attributes2 );
+				$text2 = __d( $domain, DefaultUtility::msgid( $url2 ) );*/
+//debug( array( $text2, $url2, $attributes2 ) );
+
+				//--------------------------------------------------------------
+
 				list( $text, $url, $attributes ) = DefaultUtility::linkParams( // TODO: une méthode action()
 					$url,
 					(array)$attributes
 				);
-
+//debug( array( $text, $url, $attributes ) );
 				if( isset( $attributes['text'] ) ) {
 					$text = $attributes['text'];
 					unset( $attributes['text'] );
@@ -80,7 +110,7 @@
 
 				if( !isset( $attributes['title'] ) ) {
 					$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
-					$msgid = ( isset( $attributes['msgid'] ) ? $attributes['msgid'] : $this->_urlMsgid( $url ).':title' );
+					$msgid = ( isset( $attributes['msgid'] ) ? $attributes['msgid'] : $this->urlMsgid( $url ).':title' );
 					$attributes['title'] = __d( $domain, $msgid );
 				}
 
@@ -217,8 +247,9 @@
 		}
 
 		/**
+		 * Retourne un tableau (vertical) de visualisation.
 		 *
-		 * @param array $datas
+		 * @param array $data
 		 * @param array $fields
 		 * @param array $params
 		 * @return string
@@ -236,7 +267,8 @@
 		}
 
 		/**
-		 * TODO: une fonction subform
+		 * Retourne un formulaire complet, avec bouton 'Save' et 'Cancel' par
+		 * défaut.
 		 *
 		 * @param array $fields
 		 * @param array $params
@@ -249,6 +281,24 @@
 			$buttons = ( isset( $params['buttons'] ) ? $params['buttons'] : array( 'Save', 'Cancel' ) );
 			unset( $params['buttons'] );
 
+			$return = $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) );
+			$return .= $this->subform( $fields, $params );
+			if( !empty( $buttons ) ) {
+				$return .= $this->DefaultForm->buttons( (array)$buttons );
+			}
+			$return .= $this->DefaultForm->end();
+
+			return $return;
+		}
+
+		/**
+		 * Retourne un sous-formulaire.
+		 *
+		 * @param array $fields
+		 * @param array $params
+		 * @return string
+		 */
+		public function subform( array $fields, array $params = array() ) {
 			$domain = ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
 			unset( $params['domain'] );
 
@@ -276,16 +326,7 @@
 			$inputs['legend'] = $legend;
 			$inputs['fieldset'] = $fieldset;
 
-			// TODO: subform false (true)
-			$return = '';
-			$return .= $this->DefaultForm->create( $model, array( 'novalidate' => 'novalidate' ) ); // TODO: 2nd paramètre
-			$return .= $this->DefaultForm->inputs( $inputs );
-			if( !empty( $buttons ) ) {
-				$return .= $this->DefaultForm->buttons( (array)$buttons );
-			}
-			$return .= $this->DefaultForm->end();
-
-			return $return;
+			return $this->DefaultForm->inputs( $inputs );
 		}
 	}
 ?>

@@ -25,6 +25,7 @@
 		 *
 		 * @param array $data
 		 * @param string $string
+		 * @return string
 		 */
 		public static function evaluateString( array $data, $string ) {
 			if( strpos( $string, '#' ) !== false ) {
@@ -65,6 +66,73 @@
 		}
 
 		/**
+		 * Retourn le domaine figurant dans les attributs, ou le domaine par
+		 * défaut venant de l'URL.
+		 *
+		 * @param array $url
+		 * @param array $attributes
+		 * @return string
+		 */
+		public static function domain( array $url, array $attributes = array() ) {
+			if( isset( $attributes['domain'] ) ) {
+				return $attributes['domain'];
+			}
+
+			return Inflector::underscore( $url['controller'] );
+		}
+
+		/**
+		 * Remplace les clés 'title' et 'confirm' des attributs par une traduction
+		 * automatique, suivant le domaine (ou le nom du contrôleur) si celles-ci
+		 * sont à vrai.
+		 *
+		 * @param array $url
+		 * @param array $attributes
+		 * @return array
+		 */
+		public static function attributes( array $url, array $attributes = array() ) {
+			$domain = self::domain( $url, $attributes );
+			$path = DefaultUrl::toString( $url );
+
+			if( isset( $attributes['title'] ) && $attributes['title'] === true ) {
+				$attributes['title'] = __d( $domain, "{$path}/:title" );
+			}
+
+			if( isset( $attributes['confirm'] ) && $attributes['confirm'] === true ) {
+				$attributes['confirm'] = __d( $domain, "{$path} ?" );
+			}
+
+			return $attributes;
+		}
+
+		/**
+		 * Retourne le texte par défaut du lien d'une URL.
+		 *
+		 * @param array $url Une URL complète (@see DafultUrll::toArray())
+		 * @return string
+		 */
+		public static function msgid( array $url ) {
+			$controller = Inflector::camelize( $url['controller'] );
+			$plugin = Hash::get( $url, 'plugin' );
+			if( !empty( $plugin ) ) {
+				$controller = Inflector::camelize( $plugin ).".{$controller}";
+			}
+
+			$action = $url['action'];
+			$prefix = Hash::get( $url, 'prefix' );
+			if( !empty( $prefix ) && isset( $url[$url['prefix']] ) && $url[$url['prefix']] ) {
+				$action = "{$prefix}_{$action}";
+			}
+
+			return "/{$controller}/{$action}";
+		}
+
+		/**
+		 * Une méthode fourre-tout... à remplacer.
+		 *
+		 * @deprecated Remplacé par {@link DefaultUrl::toArray()},
+		 * {@link #attributes()}, {@link #evaluate()}, {@link #domain()},
+		 * {@link #msgid()}.
 		 *
 		 * @param string $path
 		 * @param array $htmlAttributes
@@ -86,7 +154,7 @@
 
 			// -----------------------------------------------------------------
 
-			$domain = ( isset( $htmlAttributes['domain'] ) ? $htmlAttributes['domain'] : Inflector::underscore( $controller ) );
+			$domain = self::domain( $url, $htmlAttributes );
 
 			$msgid = '/'
 				.implode(

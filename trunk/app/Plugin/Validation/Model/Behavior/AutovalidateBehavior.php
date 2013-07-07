@@ -18,6 +18,11 @@
 	 */
 	class AutovalidateBehavior extends ValidateUtilitiesBehavior
 	{
+		/**
+		 * Configuration.
+		 *
+		 * @var array
+		 */
 		public $settings = array();
 
 		/**
@@ -88,7 +93,8 @@
 		 * unique index -> isUnique
 		 *
 		 * @param Model $model
-		 * @param array $fieldParams
+		 * @param string $field
+		 * @param array $indexes
 		 * @return boolean
 		 */
 		protected function _isUniqueField( Model $model, $field, $indexes ) {
@@ -251,8 +257,8 @@
 		/**
 		 * Setup this behavior with the specified configuration settings.
 		 *
-		 * @param object $model Model using this behavior
-		 * @param array $settings Configuration settings for $model
+		 * @param Model $model Model using this behavior
+		 * @param array $config Configuration settings for $model
 		 * @return void
 		 */
 		public function setup( Model $model, $config = array() ) {

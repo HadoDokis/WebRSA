@@ -33,6 +33,13 @@
 			'Default.DefaultHtml',
 		);
 
+		/**
+		 * Contexte de données à utiliser.
+		 *
+		 * @see DefaultTableCellHelper::set()
+		 *
+		 * @var array
+		 */
 		protected $_data = array();
 
 		/**
@@ -44,6 +51,13 @@
 			$this->_data = $data;
 		}
 
+		/**
+		 * Retourne la type de données d'un chemin.
+		 *
+		 * @param string $path
+		 * @param array $attributes
+		 * @return string
+		 */
 		protected function _type( $path, array $attributes ) {
 			if( isset( $attributes['type'] ) ) {
 				return $attributes['type'];
@@ -143,7 +157,7 @@
 		 * - Input: data[User][#User.id#][username]
 		 * - Data: User.id
 		 *
-		 * @param string $path Le chemin
+		 * @param string $path
 		 * @param array $attributes
 		 * @return string
 		 */

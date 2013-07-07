@@ -128,7 +128,119 @@
 					'confirm' => '/AclUtilities.Users/admin_edit/6#content ?',
 				),
 			);
-			$this->assertEqual( $result, $expected, $result );
+			$this->assertEqual( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultUtility::msgid()
+		 *
+		 * @return void
+		 */
+		public function testMsgid() {
+			$url = array(
+				'plugin' => null,
+				'controller' => 'users',
+				'action' => 'index',
+			);
+
+			$result = DefaultUtility::msgid( $url );
+			$expected = '/Users/index';
+			$this->assertEqual( $result, $expected );
+
+			$url = array(
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'view',
+				0 => '1',
+				'prefix' => 'admin',
+				'admin' => true,
+			);
+
+			$result = DefaultUtility::msgid( $url );
+			$expected = '/AclExtras.Users/admin_view';
+			$this->assertEqual( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultUtility::attributes()
+		 *
+		 * @return void
+		 */
+		public function testAttributes() {
+			$url = array(
+				'plugin' => null,
+				'controller' => 'users',
+				'action' => 'view',
+				0 => '#User.id#',
+			);
+
+			$result = DefaultUtility::attributes( $url, array( 'title' => true, 'confirm' => true ) );
+			$expected = array(
+				'title' => '/Users/view/#User.id#/:title',
+				'confirm' => '/Users/view/#User.id# ?'
+			);
+			$this->assertEqual( $result, $expected );
+
+			$url = array(
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'view',
+				0 => '1',
+				'prefix' => 'admin',
+				'admin' => true,
+			);
+
+			$result = DefaultUtility::attributes( $url );
+			$expected = array();
+			$this->assertEqual( $result, $expected );
+
+			$url = array(
+				'plugin' => null,
+				'controller' => 'tableauxsuivispdvs93',
+				'action' => 'tableaud1'
+			);
+
+			$result = DefaultUtility::attributes( $url, array( 'title' => true, 'confirm' => true ) );
+			$expected = array(
+				'title' => '/Tableauxsuivispdvs93/tableaud1/:title', // FIXME ?
+				'confirm' => '/Tableauxsuivispdvs93/tableaud1 ?'
+			);
+			$this->assertEqual( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultUtility::domain()
+		 *
+		 * @return void
+		 */
+		public function testDomain() {
+			$url = array(
+				'plugin' => null,
+				'controller' => 'users',
+				'action' => 'view',
+				0 => '#User.id#',
+			);
+
+			$result = DefaultUtility::domain( $url, array( 'domain' => 'vibrations' ) );
+			$expected = 'vibrations';
+			$this->assertEqual( $result, $expected );
+
+			$result = DefaultUtility::domain( $url );
+			$expected = 'users';
+			$this->assertEqual( $result, $expected );
+
+			$url = array(
+				'plugin' => 'acl_extras',
+				'controller' => 'users',
+				'action' => 'view',
+				0 => '1',
+				'prefix' => 'admin',
+				'admin' => true,
+			);
+
+			$result = DefaultUtility::domain( $url );
+			$expected = 'users';
+			$this->assertEqual( $result, $expected );
 		}
 	}
 ?>

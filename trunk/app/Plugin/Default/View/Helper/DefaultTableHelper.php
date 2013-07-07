@@ -29,6 +29,8 @@
 		);
 
 		/**
+		 * Retourne l'élément thead d'une table pour un ensemble d'enregistrements.
+		 *
 		 * @todo Pouvoir placer des liens dans n'importe quelle colonne, en
 		 * plus de actions.
 		 * @todo Connaître le type de colonnes via le TableCellHelper
@@ -81,6 +83,7 @@
 		}
 
 		/**
+		 * Retourne l'élément tbody d'une table pour un ensemble d'enregistrements.
 		 *
 		 * @param array $datas
 		 * @param array $fields
@@ -125,14 +128,17 @@
 		}
 
 		/**
+		 * Retourne une table complète (thead/tbody) pour un ensemble d'enregistrements.
+		 *
 		 * TODO: traduction des options
 		 *
-		 * @param array $datas
+		 * @param array $data
 		 * @param array $fields
+		 * @param array $params
 		 * @return null
 		 */
-		public function index( array $datas, array $fields, array $params = array() ) { // TODO: $tableAttributes, $tableAttributes['domain']
-			if( empty( $datas ) || empty( $fields ) ) {
+		public function index( array $data, array $fields, array $params = array() ) { // TODO: $tableAttributes, $tableAttributes['domain']
+			if( empty( $data ) || empty( $fields ) ) {
 				return null;
 			}
 
@@ -143,14 +149,16 @@
 			);
 
 			$thead = $this->thead( $fields, $tableParams + $params );
-			$tbody = $this->tbody( $datas, $fields, $tableParams + $params );
+			$tbody = $this->tbody( $data, $fields, $tableParams + $params );
 
 			return $this->DefaultHtml->tag( 'table', $thead.$tbody, array( 'id' => $tableParams['id'], 'class' => $tableParams['class'] ) );
 		}
 
 		/**
+		 * Retourne le tbody une table de détails (verticale) pour un
+		 * enregistrement particulier.
 		 *
-		 * @param array $datas
+		 * @param array $data
 		 * @param array $fields
 		 * @param array $params
 		 * @return string
@@ -183,10 +191,14 @@
 		}
 
 		/**
+		 * Retourne une table de détails (verticale) pour un enregistrement
+		 * particulier.
+		 *
 		 * TODO: traduction des options
 		 *
-		 * @param array $datas
+		 * @param array $data
 		 * @param array $fields
+		 * @param array $params
 		 * @return null
 		 */
 		public function details( array $data, array $fields, array $params = array() ) { // TODO: $tableAttributes, $tableAttributes['domain']

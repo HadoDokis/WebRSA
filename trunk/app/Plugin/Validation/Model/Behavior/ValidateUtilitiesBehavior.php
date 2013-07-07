@@ -204,7 +204,7 @@
 		/**
 		 * Before validate callback, translate validation messages
 		 *
-		 * @param object $model Model using this behavior
+		 * @param Model $model Model using this behavior
 		 * @return boolean True if validate operation should continue, false to abort
 		 */
 		public function beforeValidate( Model $model ) {
