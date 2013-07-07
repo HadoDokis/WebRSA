@@ -219,7 +219,7 @@ CREATE TABLE thematiquesrdvs (
 );
 
 DROP INDEX IF EXISTS thematiquesrdvs_name_idx;
-CREATE INDEX thematiquesrdvs_name_idx ON thematiquesrdvs(name);
+CREATE UNIQUE INDEX thematiquesrdvs_name_idx ON thematiquesrdvs(name);
 
 DROP INDEX IF EXISTS thematiquesrdvs_statutrdv_id_idx;
 CREATE INDEX thematiquesrdvs_statutrdv_id_idx ON thematiquesrdvs(statutrdv_id);
@@ -280,6 +280,17 @@ ALTER TABLE historiquesdroits ADD CONSTRAINT historiquesdroits_etatdosrsa_in_lis
 ALTER TABLE accompagnementscuis66 ALTER COLUMN typeaccompagnementcui66 TYPE VARCHAR(9) USING CAST(typeaccompagnementcui66 AS VARCHAR(9));
 SELECT alter_table_drop_constraint_if_exists( 'public', 'accompagnementscuis66', 'accompagnementscuis66_typeaccompagnementcui66_in_list_chk' );
 ALTER TABLE accompagnementscuis66 ADD CONSTRAINT accompagnementscuis66_typeaccompagnementcui66_in_list_chk CHECK ( cakephp_validate_in_list( typeaccompagnementcui66, ARRAY['periode','formation','bilan'] ) );
+
+-- -----------------------------------------------------------------------------
+-- 20130708 - Suppression des situationsallocataires qui ne sont pas liées à un
+-- questionnairesd1pdvs93.
+-- -----------------------------------------------------------------------------
+
+DELETE FROM situationsallocataires WHERE id NOT IN (
+	SELECT questionnairesd1pdvs93.situationallocataire_id
+		FROM questionnairesd1pdvs93
+);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

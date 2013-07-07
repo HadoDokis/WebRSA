@@ -29,6 +29,9 @@ msgstr "Ajouter un questionnaire D1"
 msgid "Rendezvous.daterdv"
 msgstr "Date du RDV"
 
+msgid "Statutrdv.libelle"
+msgstr "Statut du RDV"
+
 msgid "Questionnaired1pdv93.valide"
 msgstr "Questionnaire validé ?"
 
@@ -42,13 +45,16 @@ msgid "/Questionnairesd1pdvs93/view"
 msgstr "Voir"
 
 msgid "/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#"
-msgstr "Voir le questionnaire D1"
+msgstr "Voir le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
 msgid "/Questionnairesd1pdvs93/delete"
 msgstr "Supprimer"
 
 msgid "/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id#"
-msgstr "Supprimer le questionnaire D1"
+msgstr "Supprimer le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
+
+msgid "/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id# ?"
+msgstr "Réellement supprimer le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom# ?"
 
 # Add/Edit/View
 msgid "Questionnaired1pdv93.rendezvous_id"

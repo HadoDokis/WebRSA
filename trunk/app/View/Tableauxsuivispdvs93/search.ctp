@@ -28,10 +28,16 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
+	if( in_array( $this->request->params['action'], array( 'historiser', 'view' ) ) ) {
+		$tableau = $this->request->pass[0];
+	}
+	else {
+		$tableau = $this->request->params['action'];
+	}
+
 	$params_rdv_structurereferente = array(
 		'type' => (
-			in_array( $this->request->params['action'], array( 'tableau1b3', 'index', 'tableaud1' ) )
-			|| ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' )
+			in_array( $tableau, array( 'tableau1b3', 'index', 'tableaud1' ) )
 			? 'hidden'
 			: 'checkbox'
 		)
@@ -39,8 +45,7 @@
 
 	$params_dsps_maj_dans_annee = array(
 		'type' => (
-			in_array( $this->request->params['action'], array( 'tableau1b3' ) )
-			|| ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableau1b3' )
+			in_array( $tableau, array( 'tableau1b3' ) )
 			? 'checkbox'
 			: 'hidden'
 		)
@@ -48,8 +53,7 @@
 
 	$params_soumis_dd_dans_annee = array(
 		'type' => (
-			in_array( $this->request->params['action'], array( 'tableaud1' ) )
-			|| ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' )
+			in_array( $tableau, array( 'tableaud1' ) )
 			? 'checkbox'
 			: 'hidden'
 		)
@@ -61,17 +65,17 @@
 
 	echo $this->Default3->form(
 		array(
-			'Search.annee' => array( 'empty' => ( ( $this->action == 'index' ) ? true : false ) ),
+			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
-			'Search.user_id' => array( 'empty' => true, 'type' => ( ( $this->action == 'index' ) ? 'select' : 'hidden' ) ),
-			'Search.tableau' => array( 'empty' => true, 'type' => ( $this->request->params['action'] == 'index' ? 'select' : 'hidden' ) ),
+			'Search.user_id' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
+			'Search.tableau' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.rdv_structurereferente' => $params_rdv_structurereferente,
 			'Search.dsps_maj_dans_annee' => $params_dsps_maj_dans_annee,
 			'Search.soumis_dd_dans_annee' => $params_soumis_dd_dans_annee,
 		),
 		array(
 			'options' => $options,
-			'buttons' => ( $this->action == 'view' ? false : array( 'Search' ) )
+			'buttons' => ( in_array( $this->action, array( 'view', 'historiser' ) ) ? false : array( 'Search' ) )
 		)
 	);
 ?>

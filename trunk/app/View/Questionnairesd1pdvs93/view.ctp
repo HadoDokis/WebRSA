@@ -26,17 +26,8 @@
 			'options' => $options
 		)
 	);
+
+	echo $this->DefaultDefault->actions(
+		$this->Default3->DefaultAction->back()
+	);
 ?>
-<p>
-	<?php
-		echo $this->Default->button(
-			'back',
-			array(
-				'controller' => 'questionnairesd1pdvs93',
-				'action' => 'index',
-				$questionnaired1pdv93['Personne']['id']
-			),
-			array( 'id' => 'Back' )
-		);
-	?>
-</p>
