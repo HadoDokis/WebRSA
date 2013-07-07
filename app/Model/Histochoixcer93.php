@@ -137,7 +137,7 @@
 			$intEtape = (int)preg_replace( '/^([0-9]{2}).*$/', '\1', $etape );
 			$intEtapeHistochoixcer93 = 2;
 
-			$nbHistochoixcer93 = count( $contratinsertion['Cer93']['Histochoixcer93'] );
+			$nbHistochoixcer93 = count( array_filter( array_keys( $contratinsertion['Cer93']['Histochoixcer93'] ), 'is_int' ) );
 			if( $nbHistochoixcer93 > 0 ) {
 				$etapeHistochoixcer93 = $contratinsertion['Cer93']['Histochoixcer93'][$nbHistochoixcer93-1]['etape'];
 				$intEtapeHistochoixcer93 = (int)preg_replace( '/^([0-9]{2}).*$/', '\1', $etapeHistochoixcer93 );
