@@ -48,13 +48,13 @@
 					$lastrdv = ( Set::classicExtract( $rdv, 'Rendezvous.id' ) == $lastrdv_id );
 				}
 
-				// TODO: code en commun avec Criteresrdv
+				// TODO: code en commun avec Criteresrdv/index.ctp
 				$thematiques = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
 				$row = null;
 				if( !empty( $thematiques ) ) {
 					$row = '<tr>
 						<th>'.__d( 'rendezvous', 'Thematiquerdv.name' ).'</th>
-						<td><ul><li>'.implode( 'li', $thematiques ).'</li></ul></td>
+						<td><ul><li>'.implode( '</li><li>', $thematiques ).'</li></ul></td>
 					</tr>';
 				}
 
