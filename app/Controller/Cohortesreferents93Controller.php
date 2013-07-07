@@ -123,9 +123,6 @@
 					$this->PersonneReferent->validate = $personneReferentValidate;
 				}
 
-				// INFO: sinon on ne peut pas trier comme on veut
-				$this->PersonneReferent->Personne->virtualFields['situation'] = $this->Cohortereferent93->vfPersonneSituation;
-
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortereferent93->search(
 					$structurereferente_id,
@@ -203,9 +200,6 @@
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId();
 
 			$data = Hash::expand( $this->request->params['named'], '__' );
-
-			// INFO: sinon on ne peut pas trier comme on veut
-			$this->PersonneReferent->Personne->virtualFields['situation'] = $this->Cohortereferent93->vfPersonneSituation;
 
 			$querydata = $this->Cohortereferent93->search(
 				$structurereferente_id,

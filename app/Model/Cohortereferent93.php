@@ -107,6 +107,9 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 		public function search( $structurereferente_id, $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 
+			// INFO: sinon on ne peut pas trier comme on veut
+			$Personne->virtualFields['situation'] = $this->vfPersonneSituation;
+
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 			$sqDerniereOrientstruct = $Personne->Orientstruct->sqDerniere();
 
@@ -225,8 +228,9 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 
 			// Filtre sur la situation de l'allocataire
 			if( isset( $search['Personne']['situation'] ) && !empty( $search['Personne']['situation'] ) ) { // FIXME traduction
+				$vfSituation = $Personne->sqVirtualField( 'situation', false );
 				$conditions[] = array(
-					$Personne->sqVirtualField( 'situation', false ) => $search['Personne']['situation']
+					 "{$vfSituation} IN ( '".implode( "', '", (array)$search['Personne']['situation'] )."' )"
 				);
 			}
 
