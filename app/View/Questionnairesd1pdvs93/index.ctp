@@ -17,15 +17,18 @@
 		}
 	}
 
+	$this->Default3->DefaultPaginator->options( array( 'url' => array( 0 => $personne_id ) ) );
 	echo $this->Default3->index(
 		$questionnairesd1pdvs93,
 		array(
 			'Rendezvous.daterdv',
+			'Statutrdv.libelle',
 			'Questionnaired1pdv93.date_validation',
 			'/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#' => array(
 				'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'view' )
 			),
 			'/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id#' => array(
+				'confirm' => true,
 				'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'delete' )
 			),
 		)

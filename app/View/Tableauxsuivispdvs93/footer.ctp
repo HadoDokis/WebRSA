@@ -12,14 +12,7 @@
 		);
 	}
 	else {
-		$actions = array(
-			DefaultUrl::toString( $this->request->referer( true ) ) => array(
-				'text' => 'Retour',
-				'msgid' => 'Retour à la page précédente',
-				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'index' ),
-				'class' => 'back'
-			)
-		);
+		$actions = $this->Default3->DefaultAction->back();
 	}
 
 	echo $this->DefaultDefault->actions( $actions );

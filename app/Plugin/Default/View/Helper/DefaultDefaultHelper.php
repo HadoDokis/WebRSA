@@ -23,6 +23,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Default.DefaultAction',
 			'Default.DefaultForm',
 			'Default.DefaultHtml',
 			'Default.DefaultPaginator',

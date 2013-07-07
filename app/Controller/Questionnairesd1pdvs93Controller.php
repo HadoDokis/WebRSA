@@ -78,18 +78,20 @@
 
 			$this->paginate = array(
 				'Questionnaired1pdv93' => array(
-					'fields' => array_merge(
-						$this->Questionnaired1pdv93->fields(),
-						$this->Questionnaired1pdv93->Situationallocataire->fields(),
-						$this->Questionnaired1pdv93->Rendezvous->fields(),
-						$this->Questionnaired1pdv93->Rendezvous->Statutrdv->fields(),
-						$this->Questionnaired1pdv93->Rendezvous->Typerdv->fields()
+					'fields' => array(
+						'Personne.id',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Questionnaired1pdv93.id',
+						'Questionnaired1pdv93.date_validation',
+						'Rendezvous.daterdv',
+						'Statutrdv.libelle',
 					),
 					'joins' => array(
-						$this->Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) ),
+						$this->Questionnaired1pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
 						$this->Questionnaired1pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
-						$this->Questionnaired1pdv93->Rendezvous->join( 'Typerdv', array( 'type' => 'INNER' ) ),
 					),
 					'contain' => false,
 					'conditions' => array(
