@@ -23,6 +23,9 @@ msgid "/Questionnairesd1pdvs93/view/:heading"
 msgstr "Questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
 # Index
+msgid "/Questionnairesd1pdvs93/add/:title"
+msgstr "Ajouter un questionnaire D1"
+
 msgid "Rendezvous.daterdv"
 msgstr "Date du RDV"
 
@@ -35,14 +38,17 @@ msgstr "Date de validation"
 msgid "/Questionnairesd1pdvs93/add"
 msgstr "Ajouter"
 
-msgid "/Questionnairesd1pdvs93/edit"
-msgstr "Modifier"
-
 msgid "/Questionnairesd1pdvs93/view"
 msgstr "Voir"
 
+msgid "/Questionnairesd1pdvs93/view/#Questionnaired1pdv93.id#"
+msgstr "Voir le questionnaire D1"
+
 msgid "/Questionnairesd1pdvs93/delete"
 msgstr "Supprimer"
+
+msgid "/Questionnairesd1pdvs93/delete/#Questionnaired1pdv93.id#"
+msgstr "Supprimer le questionnaire D1"
 
 # Add/Edit/View
 msgid "Questionnaired1pdv93.rendezvous_id"
