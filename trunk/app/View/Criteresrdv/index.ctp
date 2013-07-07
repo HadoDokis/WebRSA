@@ -153,13 +153,13 @@
 					<?php
 						$title = $rdv['Dossier']['numdemrsa'];
 
-						// TODO: code en commun avec Rendezvous
+						// TODO: code en commun avec Rendezvous/index.ctp
 						$thematiques = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
 						$row = null;
 						if( !empty( $thematiques ) ) {
 							$row = '<tr>
 								<th>'.__d( 'rendezvous', 'Thematiquerdv.name' ).'</th>
-								<td><ul><li>'.implode( 'li', $thematiques ).'</li></ul></td>
+								<td><ul><li>'.implode( '</li><li>', $thematiques ).'</li></ul></td>
 							</tr>';
 						}
 
