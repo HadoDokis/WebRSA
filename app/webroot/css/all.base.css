@@ -575,14 +575,14 @@ table#personnes tr.highlight td, table#personnes tr.even.highlight td, table.tab
 }
 
 /**
- * Brouillon des statistiques minitérielles (Statistiquesministerielles2)
+ * Brouillon des statistiques minitérielles (Statistiquesministerielles)
  */
-body.statistiquesministerielles2 #pageContent h2 {
+body.statistiquesministerielles #pageContent h2 {
 	font-weight: bold;
 	font-size: 1em;
 	margin-bottom: 0.5em;
 }
-body.statistiquesministerielles2 #pageContent caption {
+body.statistiquesministerielles #pageContent caption {
 	caption-side: top;
 	text-align: center;
 	background: #235f7d;
@@ -590,76 +590,76 @@ body.statistiquesministerielles2 #pageContent caption {
 	color: white;
 	padding: 0.125em 0.25em;
 }
-body.statistiquesministerielles2 #pageContent table {
+body.statistiquesministerielles #pageContent table {
 	border-collapse: collapse;
 	width: 100%;
 	margin: 0;
 }
-body.statistiquesministerielles2 #pageContent th,
-body.statistiquesministerielles2 #pageContent td {
+body.statistiquesministerielles #pageContent th,
+body.statistiquesministerielles #pageContent td {
 	border: 1px solid black;
 	padding: 0.125em 0.25em;
 	background: white;
 	color: black;
 }
-body.statistiquesministerielles2 #pageContent th {
+body.statistiquesministerielles #pageContent th {
 	font-weight: normal;
 }
-body.statistiquesministerielles2 #pageContent thead tr.main th {
+body.statistiquesministerielles #pageContent thead tr.main th {
 	border: 0;
 }
-body.statistiquesministerielles2 #pageContent tbody th,
-body.statistiquesministerielles2 #pageContent tfoot th {
+body.statistiquesministerielles #pageContent tbody th,
+body.statistiquesministerielles #pageContent tfoot th {
 	text-align: left;
 }
-body.statistiquesministerielles2 #pageContent tbody td,
-body.statistiquesministerielles2 #pageContent tfoot td {
+body.statistiquesministerielles #pageContent tbody td,
+body.statistiquesministerielles #pageContent tfoot td {
 	text-align: right;
 }
-body.statistiquesministerielles2 #pageContent table.middle caption,
-body.statistiquesministerielles2 #pageContent table.middle thead tr.main,
-body.statistiquesministerielles2 #pageContent table.last caption,
-body.statistiquesministerielles2 #pageContent table.last thead tr.main { /*TODO: au milieu aussi -> position-first/... ?*/
+body.statistiquesministerielles #pageContent table.middle caption,
+body.statistiquesministerielles #pageContent table.middle thead tr.main,
+body.statistiquesministerielles #pageContent table.last caption,
+body.statistiquesministerielles #pageContent table.last thead tr.main { /*TODO: au milieu aussi -> position-first/... ?*/
 	display: none;
 }
-body.statistiquesministerielles2 #pageContent thead tr th,
-body.statistiquesministerielles2 #pageContent tbody tr.total th {
+body.statistiquesministerielles #pageContent thead tr th,
+body.statistiquesministerielles #pageContent tbody tr.total th {
 	background: #235F7D;
 	color: white;
 }
-body.statistiquesministerielles2 #pageContent thead tr.category th {
+body.statistiquesministerielles #pageContent thead tr.category th {
 	text-align: left;
 }
-body.statistiquesministerielles2 #pageContent tfoot th,
-body.statistiquesministerielles2 #pageContent tfoot td {
+body.statistiquesministerielles #pageContent tfoot th,
+body.statistiquesministerielles #pageContent tfoot td {
 	background: #E6EEF2;
 }
 
 /* Largeur des colonnes: orientations */
-body.statistiquesministerielles2.indicateurs_orientations #pageContent tbody th,
-body.statistiquesministerielles2.indicateurs_orientations #pageContent tfoot th {
+body.statistiquesministerielles.indicateurs_orientations #pageContent tbody th,
+body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot th {
 	width: 33.33%;
 	min-width: 33.33%;
 }
-body.statistiquesministerielles2.indicateurs_orientations #pageContent tbody td,
-body.statistiquesministerielles2.indicateurs_orientations #pageContent tfoot td {
+body.statistiquesministerielles.indicateurs_orientations #pageContent tbody td,
+body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot td {
 	width: 16.67%;
 	min-width: 16.67%;
 }
 
 /* Largeur des colonnes: réorientations */
-body.statistiquesministerielles2.indicateurs_reorientations #pageContent tbody th,
-body.statistiquesministerielles2.indicateurs_reorientations #pageContent tfoot th {
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody th,
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot th {
 	width: 40%;
 	min-width: 40%;
 }
-body.statistiquesministerielles2.indicateurs_reorientations #pageContent tbody td,
-body.statistiquesministerielles2.indicateurs_reorientations #pageContent tfoot td {
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody td,
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot td {
 	width: 20%;
 	min-width: 20%;
 }
 
-body.statistiquesministerielles2.indicateurs_motifs_reorientation #pageContent tbody tr.total th {
+body.statistiquesministerielles.indicateurs_motifs_reorientation #pageContent tbody tr.total th {
 	width: 80%;
 	min-width: 80%;
 }
@@ -680,16 +680,16 @@ body.questionnairesd1pdvs93.view #pageContent table td + td {
 
 /******************************************************************************/
 
-body.statistiquesministerielles2.indicateurs_caracteristiques_contrats #pageContent table {
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table {
 	width: 100%;
 	margin-bottom: 1em;
 }
 
-body.statistiquesministerielles2.indicateurs_caracteristiques_contrats #pageContent table tbody th {
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody th {
 	width: 40%;
 }
 
-body.statistiquesministerielles2.indicateurs_caracteristiques_contrats #pageContent table tbody td {
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody td {
 	width: 20%;
 }
 

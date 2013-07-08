@@ -42,7 +42,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Statistiqueministerielle2', 'Serviceinstructeur' );
+		public $uses = array( 'Statistiqueministerielle', 'Serviceinstructeur' );
 
 		/**
 		 * Envoi des données communes pour les moteurs de recherche.
@@ -62,8 +62,8 @@
 		 */
 		public function indicateurs_orientations() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursOrientations( $this->request->data );
-				$tranches = $this->Statistiqueministerielle2->tranches;
+				$results = $this->Statistiqueministerielle->indicateursOrientations( $this->request->data );
+				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
 			}
@@ -78,8 +78,8 @@
 		 */
 		public function indicateurs_reorientations() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursReorientations( $this->request->data );
-				$tranches = $this->Statistiqueministerielle2->tranches;
+				$results = $this->Statistiqueministerielle->indicateursReorientations( $this->request->data );
+				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
 			}
@@ -94,8 +94,8 @@
 		 */
 		public function indicateurs_motifs_reorientation() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursMotifsReorientation( $this->request->data );
-				$tranches = $this->Statistiqueministerielle2->tranches;
+				$results = $this->Statistiqueministerielle->indicateursMotifsReorientation( $this->request->data );
+				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
 			}
@@ -110,7 +110,7 @@
 		 */
 		public function indicateurs_organismes() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursOrganismes( $this->request->data );
+				$results = $this->Statistiqueministerielle->indicateursOrganismes( $this->request->data );
 
 				$this->set( compact( 'results' ) );
 			}
@@ -125,8 +125,8 @@
 		 */
 		public function indicateurs_delais() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursDelais( $this->request->data );
-				$types_cers = $this->Statistiqueministerielle2->types_cers;
+				$results = $this->Statistiqueministerielle->indicateursDelais( $this->request->data );
+				$types_cers = $this->Statistiqueministerielle->types_cers;
 
 				$this->set( compact( 'results', 'types_cers' ) );
 			}
@@ -141,8 +141,8 @@
 		 */
 		public function indicateurs_caracteristiques_contrats() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle2->indicateursCaracteristiquesContrats( $this->request->data );
-				$durees_cers = array_keys( $this->Statistiqueministerielle2->durees_cers );
+				$results = $this->Statistiqueministerielle->indicateursCaracteristiquesContrats( $this->request->data );
+				$durees_cers = array_keys( $this->Statistiqueministerielle->durees_cers );
 
 				$this->set( compact( 'results', 'durees_cers' ) );
 			}

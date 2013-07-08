@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Statistiqueministerielle2.
+	 * Code source de la classe Statistiqueministerielle.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,18 +9,18 @@
 	 */
 
 	/**
-	 * La classe Statistiqueministerielle2 ...
+	 * La classe Statistiqueministerielle ...
 	 *
 	 * @package app.Model
 	 */
-	class Statistiqueministerielle2 extends AppModel
+	class Statistiqueministerielle extends AppModel
 	{
 		/**
 		 * Nom.
 		 *
 		 * @var string
 		 */
-		public $name = 'Statistiqueministerielle2';
+		public $name = 'Statistiqueministerielle';
 
 		/**
 		 * Ce modèle n'est lié à aucune table.
@@ -294,7 +294,7 @@
 			// on s'assure que les allocataires sont soumis à DD, on ne se
 			// préoccupe pas de l'état du dossier. On peut désormais le faire via
 			// cette configuration.
-			$conditions_base = (array)Configure::read( "Statistiqueministerielle2.conditions_base" );
+			$conditions_base = (array)Configure::read( "Statistiqueministerielle.conditions_base" );
 			if( !empty( $conditions_base ) ) {
 				$conditions = Hash::merge( $conditions_base, $conditions );
 			}
@@ -1059,7 +1059,7 @@
 			$conditionsAutre = array( 'NOT' => array() );
 			$motifs = array( 'orientation_initiale_inadaptee', 'changement_situation_allocataire' );
 			foreach( $motifs as $motif ) {
-				$conditions = (array)Configure::read( "Statistiqueministerielle2.conditions_indicateurs_motifs_reorientation.{$motif}" );
+				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_indicateurs_motifs_reorientation.{$motif}" );
 				if( !empty( $conditions ) ) {
 					$conditionsAutre['NOT'][] = $conditions;
 					$querydataMotif = $querydata;
@@ -1160,7 +1160,7 @@
 				'autres',
 			);
 			foreach( $organismes as $organisme ) {
-				$conditions = (array)Configure::read( "Statistiqueministerielle2.conditions_indicateurs_organismes.{$organisme}" );
+				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_indicateurs_organismes.{$organisme}" );
 				if( !empty( $conditions ) ) {
 					$querydataOrganisme = $querydata;
 					$querydataOrganisme['conditions'][] = $conditions;
@@ -1188,14 +1188,14 @@
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
 
-			$conditions = (array)Configure::read( "Statistiqueministerielle2.conditions_types_cers.{$type_cer}" );
+			$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_types_cers.{$type_cer}" );
 
 			if( $type_cer == 'cer_pro_social' ) {
 				$conditions[] = $this->_conditionsTypeorientSocial( 'Typeorientcer' );
 			}
 			else if( $type_cer == 'cer_pro' ) {
 				$conditions = $this->_conditionsTypeorientEmploi( 'Typeorientcer' );
-				$conditionsPpae = (array)Configure::read( "Statistiqueministerielle2.conditions_types_cers.ppae" );
+				$conditionsPpae = (array)Configure::read( "Statistiqueministerielle.conditions_types_cers.ppae" );
 				if( !empty( $conditionsPpae ) ) {
 					$conditions[] = $conditionsPpae;
 				}
@@ -1364,7 +1364,7 @@
 
 			// Pour chacune des colonnes
 			foreach( Hash::normalize( $categories_cers ) as $categorie_cer => $conditionsCategorie ) {
-				$conditions = (array)Configure::read( "Statistiqueministerielle2.conditions_caracteristiques_contrats.{$categorie_cer}" );
+				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_caracteristiques_contrats.{$categorie_cer}" );
 
 				if( !empty( $conditions ) || !in_array( $categorie_cer, $categories_cers_conditionnees ) ) {
 					$querydataTotal = $querydata;

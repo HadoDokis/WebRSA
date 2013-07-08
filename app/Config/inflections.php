@@ -395,7 +395,7 @@
 		'commentairenormecer93' => 'commentairesnormescers93',
 		'commentairenormecer93_histochoixcer93' => 'commentairesnormescers93_histoschoixcers93',
 		'secteurcui' => 'secteurscuis',
-		'statistiqueministerielle2' => 'statistiquesministerielles2',
+		'statistiqueministerielle' => 'statistiquesministerielles',
 		'raisonsocialepartenairecui66' => 'raisonssocialespartenairescuis66',
 		'tauxcgcui' => 'tauxcgscuis',
 		'situationallocataire' => 'situationsallocataires',

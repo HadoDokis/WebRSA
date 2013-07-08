@@ -560,7 +560,7 @@
 	 * Exemple:
 	 * <pre>
 	 * Configure::write(
-	 * 	'Statistiqueministerielle2.conditions_base',
+	 * 	'Statistiqueministerielle.conditions_base',
 	 * 	array(
 	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
 	 * 	)
@@ -570,7 +570,7 @@
 	 * @var array
 	 */
     Configure::write(
-		'Statistiqueministerielle2.conditions_base',
+		'Statistiqueministerielle.conditions_base',
 		array(
 			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
 		)
@@ -593,7 +593,7 @@
 	 * Exemple:
 	 * <pre>
 	 * Configure::write(
-	 * 	'Statistiqueministerielle2.conditions_indicateurs_organismes',
+	 * 	'Statistiqueministerielle.conditions_indicateurs_organismes',
 	 * 	array(
 	 * 		// Pôle Emploi (PE)
 	 * 		'pole_emploi' => array(
@@ -617,7 +617,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Statistiqueministerielle2.conditions_indicateurs_organismes',
+		'Statistiqueministerielle.conditions_indicateurs_organismes',
 		array(
 			// Pôle Emploi (PE)
 			'pole_emploi' => array(
@@ -667,7 +667,7 @@
 	 * Exemple:
 	 * <pre>
 	 * Configure::write(
-	 * 	'Statistiqueministerielle2.conditions_types_cers',
+	 * 	'Statistiqueministerielle.conditions_types_cers',
 	 * 	array(
 	 * 		// Permet d'indiquer que la structure gère les PPPAE
 	 * 		'ppae' => array(
@@ -680,7 +680,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Statistiqueministerielle2.conditions_types_cers',
+		'Statistiqueministerielle.conditions_types_cers',
 		array(
 			'ppae' => array()
 		)
@@ -700,7 +700,7 @@
 	 * Exemple:
 	 * <pre>
 	 * Configure::write(
-	 * 	'Statistiqueministerielle2.conditions_caracteristiques_contrats',
+	 * 	'Statistiqueministerielle.conditions_caracteristiques_contrats',
 	 * 	array(
 	 *		// Conditions permettant de cibler des contrat d'insertion RMI
 	 * 		'contrat_rmi' => null,
@@ -715,7 +715,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Statistiqueministerielle2.conditions_caracteristiques_contrats',
+		'Statistiqueministerielle.conditions_caracteristiques_contrats',
 		array(
 			'contrat_rmi' => null,
 			'cer_experimental' => null,
@@ -738,7 +738,7 @@
 	 * Exemple:
 	 * <pre>
 	 * Configure::write(
-	 * 	'Statistiqueministerielle2.conditions_indicateurs_motifs_reorientation',
+	 * 	'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
 	 * 	array(
 	 *		// Conditions permettant de cibler des réorientations suite à une orientation initiale inadaptée
 	 * 		'orientation_initiale_inadaptee' => null,
@@ -751,7 +751,7 @@
 	 * @var array
 	 */
 	Configure::write(
-		'Statistiqueministerielle2.conditions_indicateurs_motifs_reorientation',
+		'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
 		array(
 			'orientation_initiale_inadaptee' => null,
 			'changement_situation_allocataire' => null,
