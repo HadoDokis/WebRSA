@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Statistiquesministerielles2Controller.
+	 * Code source de la classe StatistiquesministeriellesController.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,18 +10,18 @@
 	App::uses('AppController', 'Controller');
 
 	/**
-	 * La classe Statistiquesministerielles2Controller ...
+	 * La classe StatistiquesministeriellesController ...
 	 *
 	 * @package app.Controller
 	 */
-	class Statistiquesministerielles2Controller extends AppController
+	class StatistiquesministeriellesController extends AppController
 	{
 		/**
 		 * Nom du contrôleur.
 		 *
 		 * @var string
 		 */
-		public $name = 'Statistiquesministerielles2';
+		public $name = 'Statistiquesministerielles';
 
 		/**
 		 * Components utilisés.
