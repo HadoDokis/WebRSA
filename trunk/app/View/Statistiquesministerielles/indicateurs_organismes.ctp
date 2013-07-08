@@ -22,7 +22,7 @@
 			<?php foreach( array_keys( $results['Indicateurorganisme'] ) as $indicateur ):?>
 				<?php if( !in_array( $indicateur, array( 'total', 'attente_orient' ) ) ):?>
 				<tr>
-					<th> - <?php echo __d( 'statistiquesministerielles2', "Indicateurorganisme.{$indicateur}" );?></th>
+					<th> - <?php echo __d( 'statistiquesministerielles', "Indicateurorganisme.{$indicateur}" );?></th>
 					<td><?php
 						$value = Hash::get( $results, "Indicateurorganisme.{$indicateur}" );
 						if( is_null( $value ) ) {

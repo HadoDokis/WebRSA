@@ -20,7 +20,7 @@
 			</tr>
 			<?php foreach( $types_cers as $type_cer => $delais ):?>
 				<tr>
-					<th><strong><?php echo __d( 'statistiquesministerielles2', "Indicateurdelai.{$type_cer}_delai_moyen" );?></strong></th>
+					<th><strong><?php echo __d( 'statistiquesministerielles', "Indicateurdelai.{$type_cer}_delai_moyen" );?></strong></th>
 					<td><strong><?php
 						$value = Hash::get( $results, "Indicateurdelai.{$type_cer}_delai_moyen" );
 						$value = ( is_null( $value ) ? 'N/A' : $this->Locale->number( $value ) );
@@ -28,7 +28,7 @@
 					?></strong></td>
 				</tr>
 				<tr>
-					<th><?php echo __d( 'statistiquesministerielles2', "Indicateurdelai.{$type_cer}_nombre_moyen" );?></th>
+					<th><?php echo __d( 'statistiquesministerielles', "Indicateurdelai.{$type_cer}_nombre_moyen" );?></th>
 					<td><?php
 						$value = Hash::get( $results, "Indicateurdelai.{$type_cer}_nombre_moyen" );
 						$value = ( is_null( $value ) ? 'N/A' : $this->Locale->number( $value ) );
@@ -36,7 +36,7 @@
 					?></td>
 				</tr>
 				<tr>
-					<th><?php echo __d( 'statistiquesministerielles2', "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_mois" );?></th>
+					<th><?php echo __d( 'statistiquesministerielles', "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_mois" );?></th>
 					<td><?php
 						$value = Hash::get( $results, "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_mois" );
 						$value = ( is_null( $value ) ? 'N/A' : $this->Locale->number( $value ) );
@@ -44,7 +44,7 @@
 					?></td>
 				</tr>
 				<tr>
-					<th><?php echo __d( 'statistiquesministerielles2', "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_{$delais['nbMoisTranche2']}_mois" );?></th>
+					<th><?php echo __d( 'statistiquesministerielles', "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_{$delais['nbMoisTranche2']}_mois" );?></th>
 					<td><?php
 						$value = Hash::get( $results, "Indicateurdelai.{$type_cer}_delai_{$delais['nbMoisTranche1']}_{$delais['nbMoisTranche2']}_mois" );
 						$value = ( is_null( $value ) ? 'N/A' : $this->Locale->number( $value ) );
@@ -52,7 +52,7 @@
 					?></td>
 				</tr>
 				<tr>
-					<th><?php echo __d( 'statistiquesministerielles2', "Indicateurdelai.{$type_cer}_delai_plus_{$delais['nbMoisTranche2']}_mois" );?></th>
+					<th><?php echo __d( 'statistiquesministerielles', "Indicateurdelai.{$type_cer}_delai_plus_{$delais['nbMoisTranche2']}_mois" );?></th>
 					<td><?php
 						$value = Hash::get( $results, "Indicateurdelai.{$type_cer}_delai_plus_{$delais['nbMoisTranche2']}_mois" );
 						$value = ( is_null( $value ) ? 'N/A' : $this->Locale->number( $value ) );

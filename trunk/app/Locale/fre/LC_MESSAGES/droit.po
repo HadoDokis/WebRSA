@@ -2046,32 +2046,6 @@ msgstr "Suppression d'un motif"
 
 ###############################################################################
 
-msgid "Module:Statistiquesministerielles"
-msgstr "Statistiques ministérielles"
-
-msgid "Statistiquesministerielles:indicateursOrientations"
-msgstr "Indicateurs d'orientations"
-
-msgid "Statistiquesministerielles:indicateursOrganismes"
-msgstr "Indicateurs d'organismes"
-
-msgid "Statistiquesministerielles:indicateursReorientations"
-msgstr "Indicateurs de réorientations"
-
-msgid "Statistiquesministerielles:indicateursMotifsReorientation"
-msgstr "Indicateurs de motifs de réorientations"
-
-msgid "Statistiquesministerielles:indicateursCaracteristiquesContrats"
-msgstr "Indicateurs de caractéristiques de contrats"
-
-msgid "Statistiquesministerielles:indicateursNatureContrats"
-msgstr "Indicateurs de nature de contrats"
-
-msgid "Statistiquesministerielles:indicateursDelais"
-msgstr "Indicateurs de délais"
-
-###############################################################################
-
 msgid "Module:Statutsdecisionspdos"
 msgstr "Paramétrage des statuts pour les décisions des PDOs"
 
@@ -3120,28 +3094,28 @@ msgstr "Visualisation d'un premier rendez-vous"
 
 ###############################################################################
 
-msgid "Module:Statistiquesministerielles2"
+msgid "Module:Statistiquesministerielles"
 msgstr "Nouvelles statistiques ministérielles"
 
-msgid "Statistiquesministerielles2:indicateursOrientations"
+msgid "Statistiquesministerielles:indicateursOrientations"
 msgstr "Indicateurs d'orientations"
 
-msgid "Statistiquesministerielles2:indicateursOrganismes"
+msgid "Statistiquesministerielles:indicateursOrganismes"
 msgstr "Indicateurs d'organismes"
 
-msgid "Statistiquesministerielles2:indicateursReorientations"
+msgid "Statistiquesministerielles:indicateursReorientations"
 msgstr "Indicateurs de réorientations"
 
-msgid "Statistiquesministerielles2:indicateursMotifsReorientation"
+msgid "Statistiquesministerielles:indicateursMotifsReorientation"
 msgstr "Indicateurs de motifs de réorientations"
 
-msgid "Statistiquesministerielles2:indicateursCaracteristiquesContrats"
+msgid "Statistiquesministerielles:indicateursCaracteristiquesContrats"
 msgstr "Indicateurs de caractéristiques de contrats"
 
-msgid "Statistiquesministerielles2:indicateursNatureContrats"
+msgid "Statistiquesministerielles:indicateursNatureContrats"
 msgstr "Indicateurs de nature de contrats"
 
-msgid "Statistiquesministerielles2:indicateursDelais"
+msgid "Statistiquesministerielles:indicateursDelais"
 msgstr "Indicateurs de délais"
 
 ###############################################################################

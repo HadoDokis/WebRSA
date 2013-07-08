@@ -18,7 +18,7 @@
 		<tbody>
 			<?php foreach( array( 'contrat_rmi', 'cer_experimental', 'cer' ) as $categorie ):?>
 			<tr>
-				<th><strong><?php echo __d( 'statistiquesministerielles2', "Indicateurcaracteristique.{$categorie}" );?></strong></th>
+				<th><strong><?php echo __d( 'statistiquesministerielles', "Indicateurcaracteristique.{$categorie}" );?></strong></th>
 				<td class="number"><strong><?php
 					$value = Hash::get( $results, "Indicateurcaracteristique.{$categorie}_total" );
 					if( is_null( $value ) ) {
@@ -51,7 +51,7 @@
 
 			<?php foreach( array( 'ppae', 'cer_pro', 'cer_social_pro' ) as $categorie ):?>
 			<tr>
-				<th><?php echo __d( 'statistiquesministerielles2', "Indicateurcaracteristique.{$categorie}" );?></th>
+				<th><?php echo __d( 'statistiquesministerielles', "Indicateurcaracteristique.{$categorie}" );?></th>
 				<td class="number"><?php
 					$value = Hash::get( $results, "Indicateurcaracteristique.{$categorie}_total" );
 					if( is_null( $value ) ) {
@@ -97,14 +97,14 @@
 		<tbody>
 			<?php foreach( array( 'cer_pro', 'cer_social_pro' ) as $categorie ):?>
 				<tr>
-					<th><strong><?php echo __d( 'statistiquesministerielles2', "Indicateurcaracteristique.{$categorie}_rappel" );?></strong></th>
+					<th><strong><?php echo __d( 'statistiquesministerielles', "Indicateurcaracteristique.{$categorie}_rappel" );?></strong></th>
 					<td><strong><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_total" ) );?></strong></td>
 					<td><strong><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_droitsdevoirs" ) );?></strong></td>
 					<td><strong><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_horsdroitsdevoirs" ) );?></strong></td>
 				</tr>
 				<?php foreach( $durees_cers as $duree_cer ):?>
 				<tr>
-					<th><?php echo __d( 'statistiquesministerielles2', "Indicateurcaracteristique.{$categorie}_{$duree_cer}" );?></th>
+					<th><?php echo __d( 'statistiquesministerielles', "Indicateurcaracteristique.{$categorie}_{$duree_cer}" );?></th>
 					<td><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_{$duree_cer}_total" ) );?></strong></td>
 					<td><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_{$duree_cer}_droitsdevoirs" ) );?></strong></td>
 					<td><?php echo $this->Locale->number( Hash::get( $results, "Indicateurcaracteristique.{$categorie}_{$duree_cer}_horsdroitsdevoirs" ) );?></strong></td>

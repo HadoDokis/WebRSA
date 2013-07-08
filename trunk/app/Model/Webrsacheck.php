@@ -205,8 +205,8 @@
 				),
 				'with_parentid' => 'boolean',
 				'Utilisateurs.reconnection' => 'boolean',
-				'Statistiqueministerielle2.conditions_indicateurs_organismes' => 'isarray',
-				'Statistiqueministerielle2.conditions_types_cers' => 'isarray',
+				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
+				'Statistiqueministerielle.conditions_types_cers' => 'isarray',
 			);
 		}
 
