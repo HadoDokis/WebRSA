@@ -1,4 +1,4 @@
-# Traductions de statistiquesministerielles2.po
+# Traductions de statistiquesministerielles.po
 # @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 #
 msgid ""
