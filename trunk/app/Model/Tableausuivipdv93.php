@@ -622,7 +622,7 @@
 				'nivetu' => $enums['Questionnaired1pdv93']['nivetu'],
 				'categorie_sociopro' => $enums['Questionnaired1pdv93']['categorie_sociopro'],
 				'autre_caracteristique' => $enums['Questionnaired1pdv93']['autre_caracteristique'],
-				'natpf' => $this->natpf,
+				'natpf' => $this->natpf + array( 'NC' => 'Non défini' ),
 				'nati' => $this->nati,
 				'sitfam' => $this->sitfam,
 				'conditions_logement' =>  $enums['Questionnaired1pdv93']['conditions_logement'],
