@@ -210,12 +210,6 @@
 			$querydata = $this->_qdAddFilters( $querydata );
 
 			$contrats = $this->Contratinsertion->find( 'all', $querydata );
-// debug($contrats);
-// die();
-			/// Population du select référents liés aux structures
-			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
-			$referents = $this->Referent->referentsListe( $structurereferente_id );
-			$this->set( 'referents', $referents );
 
 			$this->layout = '';
 			$this->set( compact( 'contrats' ) );
