@@ -44,7 +44,7 @@
 			Hash::get( $contrat, 'Adresse.compladr' ),
 			Hash::get( $contrat, 'Adresse.codepos' ),
 			Hash::get( $contrat, 'Adresse.locaadr' ),
-			value( $referents, Hash::get( $contrat, 'PersonneReferent.referent_id' ) ),
+			h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
 			Hash::get( $contrat, 'Structurereferente.lib_struc' ),
 			Set::enum( Hash::get( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
 			date_short( Hash::get( $contrat, 'Contratinsertion.dd_ci' ) ),
