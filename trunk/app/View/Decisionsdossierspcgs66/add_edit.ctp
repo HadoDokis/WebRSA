@@ -336,10 +336,22 @@
 			?>
 		</fieldset>
 		<?php
+            $commentaireTechnicienValue = null;
+            if( isset( $decisiondossierpcg66['Decisiondossierpcg66']['commentairetechnicien'] ) && !empty( $decisiondossierpcg66['Decisiondossierpcg66']['commentairetechnicien'] ) ) {
+                $commentaireTechnicienValue = $decisiondossierpcg66['Decisiondossierpcg66']['commentairetechnicien'];
+            }
+            else if( !empty( $this->request->data ) ) {
+                $commentaireTechnicienValue = $this->request->data['Decisiondossierpcg66']['commentairetechnicien'];
+            }
+            else {
+                $commentaireTechnicienValue = Hash::get( $dossierpcg66, 'Decisiondossierpcg66.0.commentairetechnicien' );
+            }
+            
 			echo $this->Default2->subform(
 				array(
 					'Decisiondossierpcg66.datepropositiontechnicien' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
-					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) : null )
+//					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) : null )
+					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => $commentaireTechnicienValue )
 				),
 				array(
 					'options' => $options

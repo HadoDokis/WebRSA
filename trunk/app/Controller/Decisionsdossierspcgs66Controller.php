@@ -483,7 +483,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
-
+//debug( $this->request->data);
 				if( $this->Decisiondossierpcg66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 					if( !empty( $this->request->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
@@ -528,7 +528,7 @@
 					if( $saved ) {
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
 					}
-debug($this->request->data);
+
                     
                     // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
                     // que celui auquel je suis lié
