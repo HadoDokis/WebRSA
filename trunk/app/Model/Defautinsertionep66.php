@@ -297,6 +297,9 @@
 					'contain' => array(
 						'Dossierep' => array(
 							'Passagecommissionep' => array(
+                                'conditions' => array(
+                                    'Passagecommissionep.commissionep_id' => $commissionep_id
+                                ),
 								'Decisiondefautinsertionep66' => array(
 									'conditions' => array(
 										'Decisiondefautinsertionep66.etape' => $etape
@@ -435,6 +438,8 @@
 						'contain' => false
 					)
 				);
+                
+                $decisiondefautinsertion_id = Hash::get( $dossierep, 'Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.id' );
 
 				$dossierpcg66 = array(
 					'Dossierpcg66' => array(
@@ -445,7 +450,7 @@
 						'datereceptionpdo' => $dateseanceCommission,
 						'haspiecejointe' => 0,
 						'bilanparcours66_id' => $defautinsertionep66['Defautinsertionep66']['bilanparcours66_id'],
-						'decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
+						'decisiondefautinsertionep66_id' => $decisiondefautinsertion_id
 					)
 				);
 
@@ -453,7 +458,7 @@
 					'count',
 					array(
 						'conditions' => array(
-							'Dossierpcg66.decisiondefautinsertionep66_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['id']
+							'Dossierpcg66.decisiondefautinsertionep66_id' => $decisiondefautinsertion_id
 						),
 						'recursive' => -1
 					)
@@ -499,7 +504,7 @@
 //				$formData['Decisiondefautinsertionep66'][$key]['id'] = $this->_prepareFormDataDecisionId( $dossierep );
 
 				// On modifie les enregistrements de cette étape
-				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision  && !empty( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
+				if( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['etape'] == $niveauDecision  /*&& !empty( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] )*/ ) {
 					$formData['Decisiondefautinsertionep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'], $formData['Decisiondefautinsertionep66'][$key]['referent_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['typeorient_id'], $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] ) );
