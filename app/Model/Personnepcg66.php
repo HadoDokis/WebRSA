@@ -230,7 +230,7 @@
 
 			$traitementspcgs66 = array();
 			if( !empty( $listDossierspcgs66 ) ) {
-				if( $action == 'edit' && !empty( $data['Traitementpcg66']) ) {
+				if( $action == 'edit' && isset( $data['Traitementpcg66']['id'] ) && !empty( $data['Traitementpcg66']['id'] ) ) {
 					$conditions = array(
 						'Traitementpcg66.personnepcg66_id' => $listPersonnespcgs66,
 						'Traitementpcg66.clos' => 'N',
