@@ -221,9 +221,15 @@
 									}
 									else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'cg' ) {
 										if( in_array( $decision['decision'], array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ) ) {
+											if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
+                                                $decisionAffichee = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ).' <br /><br />'.'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'];
+                                            }
+                                            else {
+                                                $decisionAffichee = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] );
+                                            }
 											echo $this->Xhtml->tag(
 												'td',
-												__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
+												$decisionAffichee,
 												array(
 													'colspan' => 2
 												)
