@@ -79,7 +79,7 @@
 	 * Voir AppController::_isAdminAction().
 	 * @default false
 	 */
-	Configure::write( 'Admin.unlockall', false );
+	Configure::write( 'Admin.unlockall', true );
 
 	/**
 	 * Montant maximal des apres complémentaires pour une personne au cours
@@ -106,8 +106,8 @@
 	 * Paramètres à renseigner pour les APRE's forfaitaires
 	 * FIXME: doc
 	 */
-	Configure::write( 'Apre.forfaitaire.montantbase', 400 );
-	Configure::write( 'Apre.forfaitaire.montantenfant12', 100 );
+	Configure::write( 'Apre.forfaitaire.montantbase', 250 );
+	Configure::write( 'Apre.forfaitaire.montantenfant12', 60 );
 	Configure::write( 'Apre.forfaitaire.nbenfant12max', 4 );
 
 	/**
@@ -223,6 +223,11 @@
 	Configure::write( 'Optimisations.progressivePaginate', true );
 
 	/**
+	 * Surcharge de la pagination progressive pour les cohorte d'orientations, demandes orientées
+	 */
+	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', false );
+
+	/**
 	 * Surcharge de la pagination progressive pour l'action nouveaux
 	 * du contrôleur Cohortesci.
 	 */
@@ -239,11 +244,6 @@
 	 * du contrôleur Relancesnonrespectssanctionseps93.
 	 */
 	Configure::write( 'Optimisations.Relancesnonrespectssanctionseps93_cohorte.progressivePaginate', false );
-
-	/**
-	 * Surcharge de la pagination progressive pour les cohorte d'orientations, demandes orientées
-	 */
-	Configure::write( 'Optimisations.Cohortes_orientees.progressivePaginate', false );
 
 	/**
 	 * Variables apparaissant dans la fiche de calcul du journal de traitement d'une PDO
@@ -280,7 +280,7 @@
 	 * Nombre de jours entre la date de première relance et
 	 * l'envoi de la seconde relance pour le thème "non respect et sanctions du CG 93"
 	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 40 );
+	Configure::write( 'Nonrespectsanctionep93.relanceOrientstructCer2', 30 );
 
 	/**
 	 * Nombre de jours entre la date de seconde relance et
@@ -298,7 +298,7 @@
 	 * Nombre de jours entre la date de première relance et de
 	 * la seconde relance pour le thème "non respect et sanctions du CG 93"
 	 */
-	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 70 );
+	Configure::write( 'Nonrespectsanctionep93.relanceCerCer2', 30 );
 
 	/**
 	 * Montant de la réduction d'allocation lors d'un premier passage en EP pour
@@ -762,7 +762,7 @@
 	 * @var boolean
 	 * @default null (false)
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.active', false );
+	Configure::write( 'Contratinsertion.RdvAuto.active', true );
 
 	/**
 	 * L'id technique de l'enregistrement de la table typesrdv ("Objet du RDV")
@@ -773,7 +773,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', null );
+	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', 16 );
 
 	/**
 	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
@@ -784,7 +784,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', null );
+	Configure::write( 'Contratinsertion.RdvAuto.statutrdv_id', 1 );
 
 	/**
 	 * L'id technique de l'enregistrement de la table thematiquesrdvs ("Thématique du RDV")
@@ -795,7 +795,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', null );
+	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', 5 );
 
 	/**
 	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
@@ -1077,7 +1077,7 @@
 		'Tableausuivipdv93',
 		array(
 			// Tous tableaux: l'id du types de rendez-vous "Individuel" qui sera prise en compte
-			'typerdv_id' => array( 17 ),
+			'typerdv_id' => array( 16 ),
 			// Tous tableaux: l'id ou les ids des statuts de rendez-vous ("honoré", "non honoré", "prévu") qui seront pris en compte
 			'statutrdv_id' => array( 1 ),
 			// Tableaux 1 B 4: les valeurs des numéros du code famille de l'éction d'insertion
@@ -1099,7 +1099,7 @@
 			// Paramétrages spéciaux pour le tableau 1 B 6
 			'Tableau1b6' => array(
 				// Rendez-vous collectif
-				'typerdv_id' => array( 16 ),
+				'typerdv_id' => array( 15 ),
 				// Statuts prévus et honorés
 				'statutrdv_id_prevu_honore' => array( 1, 2 ),
 				// Les codes thèmes des thématiques de RDV (id de thematiquesrdvs => code)
