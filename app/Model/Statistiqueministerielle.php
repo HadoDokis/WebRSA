@@ -1431,5 +1431,89 @@
 
 			return $results;
 		}
+
+		/**
+		 * Permet de tester toutes les clés de configuration du webrsa.inc pour
+		 * le module "Statistiques ministérielles":
+		 *	- Statistiqueministerielle.conditions_base
+		 *	- Statistiqueministerielle.conditions_indicateurs_organismes
+		 *	- Statistiqueministerielle.conditions_types_cers
+		 *	- Statistiqueministerielle.conditions_caracteristiques_contrats
+		 *	- Statistiqueministerielle.conditions_indicateurs_motifs_reorientation
+		 *
+		 * Pour chacune de ces clés, on retourne un tableau contenant un clé
+		 * 'success' et une clé 'message' qui est remplie lorsqu'on a une erreur
+		 * (il s'agira de l'erreur SQL).
+		 *
+		 * @return array
+		 */
+		public function querydataFragmentsErrors() {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$search = array( 'Search' => array( 'annee' => 2000 ) );
+			$return = array();
+
+			// Statistiqueministerielle.conditions_base
+			try {
+				@$Dossier->find( 'first', $this->_qdBase( $search ) );
+				$message = null;
+			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+			}
+			$return['Statistiqueministerielle.conditions_base'] = array(
+				'success' => is_null( $message ),
+				'message' => $message
+			);
+
+
+			// Statistiqueministerielle.conditions_indicateurs_organismes
+			try {
+				@$this->indicateursOrganismes( $search );
+				$message = null;
+			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+			}
+			$return['Statistiqueministerielle.conditions_indicateurs_organismes'] = array(
+				'success' => is_null( $message ),
+				'message' => $message
+			);
+
+			// Statistiqueministerielle.conditions_types_cers
+			try {
+				@$this->indicateursOrganismes( $search );
+				$message = null;
+			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+			}
+			$return['Statistiqueministerielle.conditions_types_cers'] = array(
+				'success' => is_null( $message ),
+				'message' => $message
+			);
+
+			// Statistiqueministerielle.conditions_caracteristiques_contrats
+			try {
+				@$this->indicateursCaracteristiquesContrats( $search );
+				$message = null;
+			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+			}
+			$return['Statistiqueministerielle.conditions_caracteristiques_contrats'] = array(
+				'success' => is_null( $message ),
+				'message' => $message
+			);
+
+			// Statistiqueministerielle.conditions_indicateurs_motifs_reorientation
+			try {
+				@$this->indicateursMotifsReorientation( $search );
+				$message = null;
+			} catch ( Exception $e ) {
+				$message = $e->getMessage();
+			}
+			$return['Statistiqueministerielle.conditions_indicateurs_motifs_reorientation'] = array(
+				'success' => is_null( $message ),
+				'message' => $message
+			);
+
+			return $return;
+		}
 	}
 ?>
