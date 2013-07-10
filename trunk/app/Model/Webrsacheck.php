@@ -636,5 +636,26 @@
 
 			return $return;
 		}
+
+
+		/**
+		 * Vérifie les fragments de querydata se trouvant en paramétrage dans le
+		 * webrsa.inc pour tous les modèles concernés.
+		 *
+		 * @return array
+		 */
+		public function allQuerydataFragmentsErrors() {
+			$errors = array( );
+			$modelNames = array( 'Statistiqueministerielle' );
+
+			foreach( $modelNames as $modelName ) {
+				$Model = ClassRegistry::init( $modelName );
+
+				$errors[$modelName] = $Model->querydataFragmentsErrors();
+
+			}
+
+			return $errors;
+		}
 	}
 ?>

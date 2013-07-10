@@ -77,11 +77,21 @@
 							}
 						?>
 					</div>
+					<?php endif;?>
+					<div id="webrsa_configure_querydata_fragments">
+						<h4 class="title">Morceaux de querydata dans le webrsa.inc</h4>
+						<?php
+							foreach( $results['Webrsa']['querydata_fragments_errors'] as $modelName => $entries ) {
+								$errorClass = ( !in_array( false, Hash::extract( $entries, '{s}.success' ), true ) ? '' : 'error' );
+								echo "<h5 class=\"title {$errorClass}\">{$modelName}</h5>";
+								echo $this->Checks->table( $entries );
+							}
+						?>
+					</div>
 					<div id="webrsa_configure_primary_key">
 						<h4 class="title">Clés primaires dans le webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_primary_key'] );?>
 					</div>
-					<?php endif;?>
 				</div>
 			</div>
 		</div>

@@ -255,6 +255,7 @@
 						$this->Webrsacheck->allConfigureKeys( Configure::read( 'Cg.departement' ) )
 					),
 					'intervals' => $this->Webrsacheck->checkAllPostgresqlIntervals( Configure::read( 'Cg.departement' ) ),
+					'querydata_fragments_errors' => $this->Webrsacheck->allQuerydataFragmentsErrors(),
 					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors(),
 					'configure_primary_key' => $this->_configurePrimaryKeys()
 				)
