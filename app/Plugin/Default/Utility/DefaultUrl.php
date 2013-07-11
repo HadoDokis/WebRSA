@@ -160,14 +160,11 @@
 				}
 			}
 
-			$url = $explodedUrl = array(
+			$url = array(
 				'plugin' => Inflector::underscore( $plugin ),
 				'controller' => Inflector::underscore( $tokens[1] ),
 				'action' => Inflector::underscore( $tokens[2] ),
 			) + array_slice( $tokens, 3 );
-
-			$controller = $url['controller'];
-			$action = $url['action'];
 
 			// Does action have a prefix ?
 			if( strpos( $url['action'], '_' ) !== false ) {
