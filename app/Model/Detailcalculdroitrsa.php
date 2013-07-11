@@ -105,7 +105,7 @@
 						)
 					)
 				);
-				$vfNatpf[$natpf] = "( ( {$vfNatpf[$natpf]} ) IS NOT NULL ) AS \"{$alias}__natpf_{$natpf}\"";
+				$vfNatpf[$natpf] = "( EXISTS( {$vfNatpf[$natpf]} ) IS NOT NULL ) AS \"{$alias}__natpf_{$natpf}\"";
 			}
 
 			return $vfNatpf;
