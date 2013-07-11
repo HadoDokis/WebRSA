@@ -115,5 +115,61 @@
 
 			return parent::input( $fieldName, $options );
 		}
+
+		/**
+		 * Permet d'ajouter l'astérisque dans une abbr au libellé, lorsqu'un champ
+		 * est obligatoire.
+		 *
+		 * @param string $label
+		 * @param array $options
+		 * @return string
+		 */
+		protected function _required( $label, array $options = array() ) {
+			if( isset( $options['required'] ) && $options['required'] ) {
+				$abbr = $this->Html->tag( 'abbr', '*', array( 'class' => 'required', 'title' => __( 'Validate::notEmpty' ) ) );
+				$label = h( $label )." {$abbr}";
+			}
+
+			return $label;
+		}
+
+		/**
+		 * Ajoute une étoile lorsqu'un champ est obligatoire (clé required à true
+		 * dans les options), en plus de la fonctionnalité de base de
+		 * FormHelper::_inputLabel().
+		 *
+		 * @see DefaultFormHelper::_required()
+		 *
+		 * @param string $fieldName
+		 * @param string $label
+		 * @param array $options Options for the label element.
+		 * @return string Generated label element
+		 */
+		protected function _inputLabel( $fieldName, $label, $options ) {
+			$label = $this->_required( $label, $options );
+			unset( $options['required'] );
+			return parent::_inputLabel( $fieldName, $label, $options );
+		}
+
+		/**
+		 * Ajoute une étoile lorsqu'un champ est obligatoire (clé required à true
+		 * dans les options), en plus de la fonctionnalité de base de
+		 * FormHelper::label().
+		 *
+		 * @see DefaultFormHelper::_required()
+		 *
+		 * @param string $fieldName This should be "Modelname.fieldname"
+		 * @param string $text Text that will appear in the label field.  If
+		 *   $text is left undefined the text will be inflected from the
+		 *   fieldName.
+		 * @param array|string $options An array of HTML attributes, or a string, to be used as a class name.
+		 * @return string The formatted LABEL element
+		 * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#FormHelper::label
+		 */
+		public function label( $fieldName = null, $text = null, $options = array( ) ) {
+			$text = $this->_required( $text, $options );
+			unset( $options['required'] );
+			return parent::label( $fieldName, $text, $options );
+		}
 	}
 ?>

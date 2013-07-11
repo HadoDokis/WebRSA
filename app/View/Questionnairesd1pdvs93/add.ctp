@@ -25,7 +25,8 @@
 			'Situationallocataire.toppersdrodevorsa' => array( 'type' => 'hidden' ),
 			'Situationallocataire.nati' => array(
 				'empty' => true,
-				'options' => $options['Situationallocataire']['nati']
+				'options' => $options['Situationallocataire']['nati'],
+				'required' => true
 			),
 			'Situationallocataire.identifiantpe' => array( 'type' => 'hidden' ),
 			'Situationallocataire.datepe' => array( 'type' => 'hidden' ),
@@ -87,23 +88,28 @@
 			'Questionnaired1pdv93.rendezvous_id' => array( 'type' => 'hidden' ),
 			'Questionnaired1pdv93.inscritpe' => array(
 				'options' => $options['Questionnaired1pdv93']['inscritpe'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
 			'Questionnaired1pdv93.marche_travail' => array(
 				'options' => $options['Questionnaired1pdv93']['marche_travail'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
 			'Questionnaired1pdv93.vulnerable' => array(
 				'options' => $options['Questionnaired1pdv93']['vulnerable'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
 			'Questionnaired1pdv93.diplomes_etrangers' => array(
 				'options' => $options['Questionnaired1pdv93']['diplomes_etrangers'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
 			'Questionnaired1pdv93.categorie_sociopro' => array(
 				'options' => $options['Questionnaired1pdv93']['categorie_sociopro'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
 			'Questionnaired1pdv93.nivetu' => array(
 				'options' => $options['Questionnaired1pdv93']['nivetu'],
@@ -122,9 +128,12 @@
 			),
 			'Questionnaired1pdv93.conditions_logement' => array(
 				'options' => $options['Questionnaired1pdv93']['conditions_logement'],
-				'empty' => true
+				'empty' => true,
+				'required' => true
 			),
-			'Questionnaired1pdv93.conditions_logement_autre',
+			'Questionnaired1pdv93.conditions_logement_autre' => array(
+				'required' => true
+			),
 			'Questionnaired1pdv93.date_validation' => array(
 				'type' => 'hidden',
 				'empty' => true

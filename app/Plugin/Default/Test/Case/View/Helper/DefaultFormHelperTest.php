@@ -119,8 +119,35 @@
 			$expected = '<div class="input text"><label for="AppleId">Id</label><input name="data[Apple][id]" type="text" value="666" id="AppleId"/></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
+			$result = $this->DefaultForm->input( 'Apple.id', array( 'required' => true ) );
+			$expected = '<div class="input text"><label for="AppleId"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][id]" required="1" type="text" value="666" id="AppleId"/></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->input( 'Apple.id', array( 'label' => 'Foo <', 'escape' => false ) );
+			$expected = '<div class="input text"><label for="AppleId">Foo <</label><input name="data[Apple][id]" type="text" value="666" id="AppleId"/></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->input( 'Apple.id', array( 'required' => true, 'label' => 'Foo <' ) );
+			$expected = '<div class="input text"><label for="AppleId">Foo &lt; <abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][id]" required="1" type="text" value="666" id="AppleId"/></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
 			$result = $this->DefaultForm->input( 'Apple.id', array( 'view' => true ) );
 			$expected = '<div class="input value"><span class="label">Id</span><span class="input">666</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultFormHelper::label()
+		 *
+		 * @return void
+		 */
+		public function testLabel() {
+			$result = $this->DefaultForm->label( 'Apple.id' );
+			$expected = '<label for="AppleId">Id</label>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->label( 'Apple.id', null, array( 'required' => true ) );
+			$expected = '<label for="AppleId"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 	}
