@@ -76,6 +76,14 @@
 			$result = $this->DefaultHtml->link( 'Test', $url, array( 'disabled' => true ) );
 			$expected = '<span class="default users admin_add link disabled">Test</span>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			$this->DefaultHtml->request = new CakeRequest( null, false );
+			$this->DefaultHtml->request->addParams( array( 'controller' => 'apples', 'action' => 'index' ) );
+			$result = $this->DefaultHtml->link( 'Test', array( 'action' => 'view', 666 ) );
+			// INFO: ce n'est pas bien configuré, on n'a pas la bonne URL par la fonction link de Cake
+			$expected = '<a href="/view/666" class="apples view">Test</a>';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			unset( $this->DefaultHtml->request );
 		}
 	}
 ?>

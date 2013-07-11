@@ -9,6 +9,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'HtmlHelper', 'View/Helper' );
+	App::uses( 'Router', 'Routing' );
 
 	/**
 	 * La classe DefaultHtmlHelper étend la classe HtmlHelper de CakePHP dans le
@@ -35,28 +36,27 @@
 		public function link( $title, $url = null, $options = array( ), $confirmMessage = false ) {
 			if( is_array( $url ) ) {
 				$tmp = $url;
-				$classes = array( );
 
-				foreach( array( 'plugin', 'controller', 'action' ) as $key ) {
-					if( !isset( $tmp[$key] ) ) {
-						$tmp[$key] = $this->request->params[$key];
+				$default = array(
+					'plugin' => $this->request->params['plugin'],
+					'controller' => $this->request->params['controller'],
+					'action' => $this->request->params['action'],
+				);
+				$tmp = Hash::merge( $default, $tmp );
+
+				// Plugin, controller
+				$options = $this->addClass( $options, $tmp['plugin'] );
+				$options = $this->addClass( $options, $tmp['controller'] );
+
+				// Action + prefix ?
+				$prefix = Hash::get( $url, 'prefix' );
+				if( !is_null( $prefix ) ) {
+					$isPrefix = ( isset( $url[$prefix] ) ? $url[$prefix] : Hash::get( $this->request->params, $prefix ) );
+					if( $isPrefix ) {
+						$tmp['action'] = "{$prefix}_{$tmp['action']}";
 					}
 				}
-
-				// Action prefix ?
-				if( isset( $tmp['prefix'] ) && !empty( $tmp['prefix'] ) && isset( $tmp[$tmp['prefix']] ) && $tmp[$tmp['prefix']] ) {
-					$tmp['action'] = "{$tmp['prefix']}_{$tmp['action']}";
-				}
-
-				$classes = Hash::filter(
-					array(
-						$tmp['plugin'],
-						$tmp['controller'],
-						$tmp['action']
-					)
-				);
-
-				$options = $this->addClass( $options, implode( ' ', $classes ) );
+				$options = $this->addClass( $options, $tmp['action'] );
 			}
 
 			$disabled = ( isset( $options['disabled'] ) ? $options['disabled'] : false );

@@ -85,7 +85,7 @@
 
 			if( $this->_cacheChanged ) {
 				$cacheKey = $this->cacheKey();
-				$cache = Cache::write( $cacheKey, $this->_cache, $this->_cacheConfig );
+				Cache::write( $cacheKey, $this->_cache, $this->_cacheConfig );
 			}
 		}
 

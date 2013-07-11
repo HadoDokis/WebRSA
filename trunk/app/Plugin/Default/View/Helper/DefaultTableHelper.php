@@ -49,8 +49,6 @@
 			$domain = Hash::get( $params, 'domain' );
 			$tableId = Hash::get( $params, 'id' );
 
-			$cacheModelField = array();
-
 			foreach( $fields as $field => $attributes ) {
 				$attributes = (array)$attributes;
 				if( strpos( $field, '/' ) === 0 ) {
@@ -103,9 +101,7 @@
 				$tr = array();
 
 				foreach( $fields as $path => $attributes ) {
-					if( strstr( $path, '[]' ) !== false ) {
-						$path = str_replace( '[]', "[{$i}]", $path );
-					}
+					$path = str_replace( '[]', "[{$i}]", $path );
 
 					// TODO: que faire dans ces cas-là ?
 					if( strstr( $path, ']' ) !== false ) {
@@ -118,6 +114,7 @@
 							$attributes['options'] = $params['options'][$modelName][$fieldName];
 						}
 					}
+
 					$tr[] = $this->DefaultTableCell->auto( $path, (array)$attributes );
 				}
 
