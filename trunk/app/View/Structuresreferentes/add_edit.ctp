@@ -59,6 +59,8 @@
 	<?php echo $this->Form->input( 'Zonegeographique.Zonegeographique', array( 'label' => false, 'multiple' => 'checkbox' , 'options' => $zglist ) );?>
 </fieldset>
 	<?php
+		echo $this->Xform->input( 'Structurereferente.typeorient_id', array( 'label' => required( 'Type d\'orientation' ), 'type' => 'select' , 'options' => $options['Structurereferente']['typeorient_id'], 'empty' => true ) );
+
 		echo $this->Xform->inputs(
 			array(
 				'fieldset' => true,
