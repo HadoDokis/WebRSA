@@ -1046,6 +1046,7 @@
 									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
 									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
+									-- dont la date de signature est dans l'année N
 									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 									-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 									AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
@@ -1061,7 +1062,10 @@
 									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
 									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 								WHERE
+									-- dont la date de signature est dans l'année N
 									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
+									-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
+									AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 									".$this->_conditionRendezvousPdv( $search, 'AND' )."
 									AND bilanvenu = 'VEN'
 									AND actionscandidats_personnes.dfaction IS NULL
@@ -1156,7 +1160,8 @@
 							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
 							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
-							'1' = '1'
+							-- dont la date de signature est dans l'année N
+							EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
@@ -1174,6 +1179,8 @@
 							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							bilanvenu = 'VEN'
+							-- dont la date de signature est dans l'année N
+							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
@@ -1201,6 +1208,8 @@
 						WHERE
 							bilanretenu != 'RET'
 							AND bilanvenu != 'VEN'
+							-- dont la date de signature est dans l'année N
+							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
@@ -1218,6 +1227,8 @@
 							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							actionscandidats_personnes.ddaction > NOW()
+							-- dont la date de signature est dans l'année N
+							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
@@ -1235,6 +1246,8 @@
 							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
 						WHERE
 							bilanretenu = 'RET'
+							-- dont la date de signature est dans l'année N
+							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
