@@ -941,6 +941,7 @@
 						-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 						AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 						".$this->_conditionRendezvousPdv( $search, 'AND' )."
+						{$conditionpdv}
 					GROUP BY libelle
 				)
 				UNION
@@ -959,6 +960,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 				);";
 
 			$results = array();
@@ -1014,6 +1016,7 @@
 								-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 								".$this->_conditionRendezvousPdv( $search, 'AND' )."
+								{$conditionpdv}
 
 					) AS \"Tableau1b5__distinct_personnes_prescription\",
 					(
@@ -1028,6 +1031,7 @@
 								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 								AND bilanvenu = 'VEN'
 								".$this->_conditionRendezvousPdv( $search, 'AND' )."
+								{$conditionpdv}
 
 					) AS \"Tableau1b5__distinct_personnes_action\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
@@ -1048,6 +1052,7 @@
 									".$this->_conditionRendezvousPdv( $search, 'AND' )."
 									AND bilanretenu = 'RET'
 									AND bilanvenu != 'VEN'
+									{$conditionpdv}
 						) AS \"Tableau1b5__beneficiaires_pas_deplaces\",
 						--nbre de fiches de prescription en attente d'un retour : venu + dfaction IS NULL
 						(
@@ -1060,6 +1065,7 @@
 									".$this->_conditionRendezvousPdv( $search, 'AND' )."
 									AND bilanvenu = 'VEN'
 									AND actionscandidats_personnes.dfaction IS NULL
+									{$conditionpdv}
 						) AS \"Tableau1b5__nombre_fiches_attente\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
 
@@ -1077,7 +1083,6 @@
 		 * @return array
 		 */
 		protected function _tableau1b5Foo( array $results, $sql, $map, $nameKey, $valueKey ) {
-//debug( array( $results, $sql, $map, $nameKey, $valueKey ) );
 			$Actioncandidat = ClassRegistry::init( array( 'class' => 'Actioncandidat', 'alias' => 'Tableau1b5' ) );
 			list( $modelName, $fieldName ) = model_field( $valueKey );
 
@@ -1155,6 +1160,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
@@ -1171,6 +1177,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
@@ -1197,6 +1204,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
@@ -1213,6 +1221,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
@@ -1229,6 +1238,7 @@
 							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
+							{$conditionpdv}
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
