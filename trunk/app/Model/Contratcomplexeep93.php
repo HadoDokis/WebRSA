@@ -369,6 +369,7 @@
 
 						if( $dossierep['Decisioncontratcomplexeep93']['decision'] == 'valide' ) {
 							$success = $this->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
+							$success = $this->Contratinsertion->Nonrespectsanctionep93->calculSortieProcedureRelanceParValidationCer( $contratinsertion ) && $success;
 						}
 					}
 				}

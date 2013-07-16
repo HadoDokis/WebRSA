@@ -1102,130 +1102,166 @@
 			if( isset( $contratinsertion['Contratinsertion']['decision_ci'] ) && $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ) {
 				// 1°) Pas encore de dossier d'EP crée -> on sort simplement de la procédure avec un contrat
 				$nonrespectssanctionseps93 = $this->find(
-						'all', array(
-					'fields' => array(
-						'Nonrespectsanctionep93.id'
-					),
-					'joins' => array(
-						$this->join( 'Relancenonrespectsanctionep93' )
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Nonrespectsanctionep93.dossierep_id IS NULL',
-						'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
-						'Nonrespectsanctionep93.active' => '1',
-						'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
-						'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
-						'OR' => array(
-							'Nonrespectsanctionep93.propopdo_id IN (
-									SELECT propospdos.id
-										FROM propospdos
-										WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
-							'Nonrespectsanctionep93.orientstruct_id IN (
-									SELECT orientsstructs.id
-										FROM orientsstructs
-										WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
-							'Nonrespectsanctionep93.contratinsertion_id IN (
-									SELECT contratsinsertion.id
-										FROM contratsinsertion
-										WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
+					'all',
+					array(
+						'fields' => array(
+							'Nonrespectsanctionep93.id'
+						),
+						'joins' => array(
+							$this->join( 'Relancenonrespectsanctionep93', array( 'type' => 'LEFT OUTER' ) )
+						),
+						'contain' => false,
+						'conditions' => array(
+							'Nonrespectsanctionep93.dossierep_id IS NULL',
+							'NOT' => array( 'Nonrespectsanctionep93.sortienvcontrat' => '1', ),
+							'Nonrespectsanctionep93.active' => '1',
+							array(
+								'OR' => array(
+									// Par procédure de relance
+									array(
+										'Relancenonrespectsanctionep93.id IS NOT NULL',
+										'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
+										'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
+									),
+									// Par le shell Nonrespectssanctionseps93
+									array(
+										'Relancenonrespectsanctionep93.id IS NULL',
+										'Nonrespectsanctionep93.rgpassage >' => '1',
+									)
+								)
+							),
+							array(
+								'OR' => array(
+									'Nonrespectsanctionep93.propopdo_id IN (
+											SELECT propospdos.id
+												FROM propospdos
+												WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+									'Nonrespectsanctionep93.orientstruct_id IN (
+											SELECT orientsstructs.id
+												FROM orientsstructs
+												WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+									'Nonrespectsanctionep93.contratinsertion_id IN (
+											SELECT contratsinsertion.id
+												FROM contratsinsertion
+												WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+								)
+							)
 						)
 					)
-						)
 				);
 
 				if( !empty( $nonrespectssanctionseps93 ) ) {
 					$ids = Set::extract( $nonrespectssanctionseps93, '/Nonrespectsanctionep93/id' );
 
 					$success = $this->updateAllUnBound(
-									array(
-								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
-								'"Nonrespectsanctionep93"."active"' => '\'0\''
-									), array( '"Nonrespectsanctionep93"."id"' => $ids )
-							) && $success;
+						array(
+							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
+							'"Nonrespectsanctionep93"."active"' => '\'0\''
+						),
+						array( '"Nonrespectsanctionep93"."id"' => $ids )
+					) && $success;
 				}
 
 				// 2°) On a un dossier d'EP crée, mais celui-ci n'est pas encore attaché à une commission,
 				// ou alors, la commission n'a pas encore été validée (attention: on ne vérifie pas les dates).
 				$dossierep = $this->Dossierep->find(
-						'first', array(
-					'fields' => array(
-						'Dossierep.id',
-						'Passagecommissionep.id',
-						'Nonrespectsanctionep93.id'
-					),
-					'conditions' => array(
-						'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(
-								array(
-									'fields' => array(
-										'passagescommissionseps.dossierep_id'
-									),
-									'alias' => 'passagescommissionseps',
-									'conditions' => array(
-										'dossierseps.themeep' => 'nonrespectssanctionseps93',
-										'dossierseps.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
-										'commissionseps.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' )
-									),
-									'joins' => array(
-										array_words_replace(
-												$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ), array(
-											'Passagecommissionep' => 'passagescommissionseps',
-											'Dossierep' => 'dossierseps',
-												)
+					'first',
+					array(
+						'fields' => array(
+							'Dossierep.id',
+							'Passagecommissionep.id',
+							'Nonrespectsanctionep93.id'
+						),
+						'conditions' => array(
+							'Dossierep.id NOT IN ( '.$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
 										),
-										array_words_replace(
-												$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ), array(
-											'Passagecommissionep' => 'passagescommissionseps',
-											'Commissionep' => 'commissionseps',
-												)
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'dossierseps.themeep' => 'nonrespectssanctionseps93',
+											'dossierseps.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+											'commissionseps.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg', 'traite', 'annule', 'reporte' )
 										),
+										'joins' => array(
+											array_words_replace(
+												$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+												array(
+													'Passagecommissionep' => 'passagescommissionseps',
+													'Dossierep' => 'dossierseps',
+												)
+											),
+											array_words_replace(
+												$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+												array(
+													'Passagecommissionep' => 'passagescommissionseps',
+													'Commissionep' => 'commissionseps',
+												)
+											),
+										),
+									)
+							).' )',
+							'Dossierep.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
+							'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
+							'NOT' => array( 'Nonrespectsanctionep93.sortienvcontrat' => '1', ),
+							'Nonrespectsanctionep93.active' => '1',
+							array(
+								'OR' => array(
+									// Par procédure de relance
+									array(
+										'Relancenonrespectsanctionep93.id IS NOT NULL',
+										'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
+										'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
 									),
+									// Par le shell Nonrespectssanctionseps93
+									array(
+										'Relancenonrespectsanctionep93.id IS NULL',
+										'Nonrespectsanctionep93.rgpassage >' => '1',
+									)
 								)
-						).' )',
-						'Dossierep.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
-						'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
-						'Nonrespectsanctionep93.sortienvcontrat <>' => '1',
-						'Nonrespectsanctionep93.active' => '0',
-						'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
-						'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
-						'OR' => array(
-							'Nonrespectsanctionep93.propopdo_id IN (
-									SELECT propospdos.id
-										FROM propospdos
-										WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
-							'Nonrespectsanctionep93.orientstruct_id IN (
-									SELECT orientsstructs.id
-										FROM orientsstructs
-										WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
-							'Nonrespectsanctionep93.contratinsertion_id IN (
-									SELECT contratsinsertion.id
-										FROM contratsinsertion
-										WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
-								)',
+							),
+							array(
+								'OR' => array(
+									'Nonrespectsanctionep93.propopdo_id IN (
+											SELECT propospdos.id
+												FROM propospdos
+												WHERE propospdos.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+									'Nonrespectsanctionep93.orientstruct_id IN (
+											SELECT orientsstructs.id
+												FROM orientsstructs
+												WHERE orientsstructs.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+									'Nonrespectsanctionep93.contratinsertion_id IN (
+											SELECT contratsinsertion.id
+												FROM contratsinsertion
+												WHERE contratsinsertion.personne_id = \''.$contratinsertion['Contratinsertion']['personne_id'].'\'
+										)',
+								)
+							)
+						),
+						'joins' => array(
+							$this->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
+							$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+							$this->join( 'Relancenonrespectsanctionep93', array( 'type' => 'LEFT OUTER' ) ),
 						)
-					),
-					'joins' => array(
-						$this->Dossierep->join( 'Nonrespectsanctionep93', array( 'type' => 'INNER' ) ),
-						$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Relancenonrespectsanctionep93' ),
 					)
-						)
 				);
 
 				if( !empty( $dossierep ) ) {
 					$ids = Set::extract( $dossierep, '/Nonrespectsanctionep93/id' );
 					$success = $this->updateAllUnBound(
-									array(
-								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
-								'"Nonrespectsanctionep93"."active"' => '\'0\'',
-								'"Nonrespectsanctionep93"."dossierep_id"' => null,
-									), array( '"Nonrespectsanctionep93"."id"' => $ids )
-							) && $success;
+						array(
+							'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'1\'',
+							'"Nonrespectsanctionep93"."active"' => '\'0\'',
+							'"Nonrespectsanctionep93"."dossierep_id"' => null,
+						),
+						array( '"Nonrespectsanctionep93"."id"' => $ids )
+					) && $success;
 
 					if( !empty( $dossierep['Passagecommissionep']['id'] ) ) {
 						$success = $this->Dossierep->Passagecommissionep->delete( $dossierep['Passagecommissionep']['id'] ) && $success;
