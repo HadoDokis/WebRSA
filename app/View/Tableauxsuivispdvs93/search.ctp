@@ -59,10 +59,6 @@
 		)
 	);
 
-	if( $this->request->params['action'] == 'tableau1b6' || ( $this->request->params['action'] == 'view' && $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableau1b6' ) ) {
-		$params_rdv_structurereferente['label'] = 'Dont le bénéficiaire possède au moins un rendez-vous honoré dans le PDV';
-	}
-
 	echo $this->Default3->form(
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),

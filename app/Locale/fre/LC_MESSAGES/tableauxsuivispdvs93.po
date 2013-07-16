@@ -24,7 +24,7 @@ msgid "Search.tableau"
 msgstr "Tableau de bord"
 
 msgid "Search.rdv_structurereferente"
-msgstr "Dont le bénéficiaire possède au moins un rendez-vous individuel dans le PDV"
+msgstr "Dont le bénéficiaire possède au moins un rendez-vous individuel honoré dans l'année"
 
 msgid "Search.soumis_dd_dans_annee"
 msgstr "Soumis à droits et devoirs au moins une fois dans l'année (par opposition à soumis à droits et devoirs au moment du remplissage du formulaire D1)"
