@@ -355,9 +355,46 @@
 		}
 
 		/**
-		* Fonction de recherche des dossiers à relancer
-		*/
+		 * Conditions: que pour le premier passage (le second se fera via le shell)
+		 */
+		protected function _conditionPremierPassage( $alias ) {
+			$origine = Inflector::underscore( $alias );
+			$foreignKey = "{$origine}_id";
 
+			return array(
+				'OR' => array(
+					"{$alias}.id NOT IN (
+						SELECT nonrespectssanctionseps93.{$foreignKey}
+							FROM nonrespectssanctionseps93
+							WHERE
+								nonrespectssanctionseps93.origine = '{$origine}'
+								AND nonrespectssanctionseps93.{$foreignKey} = {$alias}.id
+								AND nonrespectssanctionseps93.rgpassage = '1'
+								AND nonrespectssanctionseps93.active = '0'
+					)",
+					"{$alias}.id IN (
+						SELECT nonrespectssanctionseps93.{$foreignKey}
+							FROM nonrespectssanctionseps93
+							WHERE
+								nonrespectssanctionseps93.origine = '{$origine}'
+								AND nonrespectssanctionseps93.{$foreignKey} = {$alias}.id
+								AND nonrespectssanctionseps93.rgpassage = '1'
+								AND nonrespectssanctionseps93.active = '1'
+								AND nonrespectssanctionseps93.sortienvcontrat = '0'
+					)"
+				)
+			);
+		}
+
+		/**
+		 * Fonction de recherche des dossiers à relancer.
+		 *
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param array $search
+		 * @param mixed $lockedDossiers
+		 * @return array
+		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			unset( $search['page'], $search['sort'], $search['direction'] );
 
@@ -749,6 +786,32 @@
 						break;
 				}
 
+				// Conditions: que pour le premier passage (le second se fera via le shell)
+				$conditions[] = $this->_conditionPremierPassage( 'Orientstruct' );
+				/*$conditions[] = array(
+					'OR' => array(
+						'Orientstruct.id NOT IN (
+							SELECT nonrespectssanctionseps93.orientstruct_id
+								FROM nonrespectssanctionseps93
+								WHERE
+									nonrespectssanctionseps93.origine = \'orientstruct\'
+									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
+									AND nonrespectssanctionseps93.rgpassage = \'1\'
+									AND nonrespectssanctionseps93.active = \'0\'
+						)',
+						'Orientstruct.id IN (
+							SELECT nonrespectssanctionseps93.orientstruct_id
+								FROM nonrespectssanctionseps93
+								WHERE
+									nonrespectssanctionseps93.origine = \'orientstruct\'
+									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
+									AND nonrespectssanctionseps93.rgpassage = \'1\'
+									AND nonrespectssanctionseps93.active = \'1\'
+									AND nonrespectssanctionseps93.sortienvcontrat = \'0\'
+						)'
+					)
+				);*/
+
 				/// FIXME: que les dernières orientations / les derniers contrats
 				$queryData = array(
 					'fields' => $fields,
@@ -858,6 +921,32 @@
 						)';
 						break;
 				}
+
+				// Conditions: que pour le premier passage (le second se fera via le shell)
+				$conditions[] = $this->_conditionPremierPassage( 'Contratinsertion' );
+				/*$conditions[] = array(
+					'OR' => array(
+						'Contratinsertion.id NOT IN (
+							SELECT nonrespectssanctionseps93.contratinsertion_id
+								FROM nonrespectssanctionseps93
+								WHERE
+									nonrespectssanctionseps93.origine = \'contratinsertion\'
+									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
+									AND nonrespectssanctionseps93.rgpassage = \'1\'
+									AND nonrespectssanctionseps93.active = \'0\'
+						)',
+						'Contratinsertion.id IN (
+							SELECT nonrespectssanctionseps93.contratinsertion_id
+								FROM nonrespectssanctionseps93
+								WHERE
+									nonrespectssanctionseps93.origine = \'contratinsertion\'
+									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
+									AND nonrespectssanctionseps93.rgpassage = \'1\'
+									AND nonrespectssanctionseps93.active = \'1\'
+									AND nonrespectssanctionseps93.sortienvcontrat = \'0\'
+						)'
+					)
+				);*/
 
 				$queryData = array(
 					'fields' => $fields,
@@ -1183,6 +1272,7 @@
 										)
 								).' )',
 								'Dossierep.themeep' => 'nonrespectssanctionseps93',
+								'( DATE( NOW() ) - ( CAST( Commissionep.dateseance AS DATE ) ) ) <= '.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' )
 							),
 							'contain' => false,
 							'joins' => array(
@@ -1200,6 +1290,7 @@
 									'foreignKey' => false,
 									'conditions' => array( 'Dossierep.id = Passagecommissionep.dossierep_id' )
 								),
+								$this->Nonrespectsanctionep93->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
 								array(
 									'table'      => 'decisionsnonrespectssanctionseps93',
 									'alias'      => 'Decisionnonrespectsanctionep93',
@@ -1207,7 +1298,6 @@
 									'foreignKey' => false,
 									'conditions' => array(
 										'Passagecommissionep.id = Decisionnonrespectsanctionep93.passagecommissionep_id',
-										'( DATE( NOW() ) - ( CAST( Decisionnonrespectsanctionep93.modified AS DATE ) ) ) <= '.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' )
 									)
 								)
 							)
@@ -1356,6 +1446,16 @@
 							}
 						}
 					}
+				}
+
+				// La personne ne sera plus relancée, son deuxième passage sera créé par le shell
+				$qd = $this->Nonrespectsanctionep93->qdSecondsPassagesCerOrientstruct();
+				// $qd['fields'] = array( 'Dossierep.personne_id' );
+				$qd['conditions']['Dossierep.personne_id'] = $personne_id;
+				$result = $this->Nonrespectsanctionep93->find( 'first', $qd );
+
+				if( !empty( $result ) ) {
+					$erreurs[] = 'Nonrespectsanctionep93.shellSecondPassage';
 				}
 			}
 

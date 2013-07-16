@@ -266,7 +266,7 @@
 	/**
 	 * Nombre de jours entre la date de prise de décision concernant un dossier d'EP
 	 * pour le thème "non respect et sanctions du CG 93" et un nouveau passage en
-	 * procédure de relance pour ce même thème.
+	 * EP pour ce même thème.
 	 */
 	Configure::write( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions', 60 );
 
