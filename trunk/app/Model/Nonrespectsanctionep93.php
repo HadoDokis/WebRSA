@@ -1293,5 +1293,99 @@
 				) > 0
 			);
 		}
+
+		/**
+		 * Retourne un querydata permettant de trouver le dossier d'EP ainsi que
+		 * l'entrée de la table nonrespectssanctionseps93 des allocataires ayant
+		 * eu au maximum un premier passage dont la décision était '1reduction',
+		 * '1maintien', '1pasavis' ou '1delai' (personne orientée sans contrat ou
+		 * personne orientée avec contrat).
+		 *
+		 * Le délai entre la commission d'EP et la date du jour doit être supérieure
+		 * ou égale à la configuration de Nonrespectsanctionep93.relanceDecisionNonRespectSanctions
+		 *
+		 * @return array
+		 */
+		public function qdSecondsPassagesCerOrientstruct() {
+			$querydata = array(
+				'fields' => array(
+					'Dossierep.id',
+					'Dossierep.personne_id',
+					'Dossierep.themeep',
+					'Nonrespectsanctionep93.id',
+					'Nonrespectsanctionep93.orientstruct_id',
+					'Nonrespectsanctionep93.contratinsertion_id',
+					'Nonrespectsanctionep93.origine',
+					'Nonrespectsanctionep93.rgpassage',
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+					$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Passagecommissionep->join( 'Decisionnonrespectsanctionep93', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Calculdroitrsa.toppersdrodevorsa' => '1',
+					'Situationdossierrsa.etatdosrsa' => $this->Dossierep->Personne->Foyer->Dossier->Situationdossierrsa->etatOuvert(),
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'OR' => array(
+						array(
+							'Contratinsertion.id IS NULL',
+							'Orientstruct.id IS NOT NULL',
+							'Orientstruct.statut_orient' => 'Orienté',
+							'Orientstruct.id IN ( '.$this->Dossierep->Personne->Orientstruct->sqDerniere().' )',
+							'Orientstruct.date_impression <= DATE( NOW() )',
+						),
+						array(
+							'Contratinsertion.id IS NOT NULL',
+							'Contratinsertion.id IN ( '.$this->Dossierep->Personne->Contratinsertion->sqDernierContrat( 'Personne.id', false ).' )',
+							'Contratinsertion.df_ci <= DATE( NOW() )'
+						)
+					),
+					'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
+					'Nonrespectsanctionep93.sortienvcontrat' => '0',
+					'Nonrespectsanctionep93.active' => '0',
+					'Nonrespectsanctionep93.rgpassage' => 1,
+					// Dont c'est le dernier pour ce CER/Orientstruct
+					'Nonrespectsanctionep93.id IN (
+						SELECT nonrespectssanctionseps93.id
+							FROM nonrespectssanctionseps93
+							WHERE
+								nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
+								OR nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
+							ORDER BY nonrespectssanctionseps93.rgpassage DESC
+							LIMIT 1
+					)',
+					'Passagecommissionep.id IN ( '.$this->Dossierep->Passagecommissionep->sqDernier().' )',
+					'Commissionep.etatcommissionep' => 'traite',
+					'Decisionnonrespectsanctionep93.etape' => 'cg',
+					'Decisionnonrespectsanctionep93.decision' => array( '1reduction', '1maintien', '1pasavis', '1delai' ),
+					// Un certain temps après ...
+					'( DATE( NOW() ) - INTERVAL \''.Configure::read( 'Nonrespectsanctionep93.relanceDecisionNonRespectSanctions' ).' days\' ) > Commissionep.dateseance',
+					// Qui ne possèdent toujours pas de CER validé suite à ce premier passage
+					// -> FIXME: dans la fiche anomalie, on parle de CER enregistré...
+					'NOT EXISTS(
+						SELECT contratsinsertion.id
+							FROM contratsinsertion
+							WHERE
+								contratsinsertion.personne_id = Personne.id
+								AND contratsinsertion.decision_ci = \'V\'
+								AND contratsinsertion.datevalidation_ci >= Nonrespectsanctionep93.created
+								AND contratsinsertion.datevalidation_ci <= NOW()
+					)'
+				)
+			);
+
+			return $querydata;
+		}
 	}
 ?>

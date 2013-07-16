@@ -204,7 +204,6 @@
 
 			if( $success ) {
 				$this->Historiquedroit->commit();
-//debug( $this->Historiquedroit->getDatasource()->getLog() );
 				$this->out( 'Succès' );
 			}
 			else {

@@ -80,3 +80,6 @@ msgstr "Le délai pour la relance n° 2 pour non contratctualisation n'est pas e
 
 msgid "Erreur.Nonrespectsanctionep93.relanceOrientstructCer3"
 msgstr "Le délai pour la relance n° 3 pour non contratctualisation n'est pas encore dépassé"
+
+msgid "Erreur.Nonrespectsanctionep93.shellSecondPassage"
+msgstr "Cet allocataire sera automatiquement envoyé en EP pour un second passage; aucune action manuelle possible"
