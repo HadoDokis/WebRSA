@@ -52,6 +52,11 @@
 		 * Méthode principale.
 		 */
 		public function main() {
+			if( Configure::read( 'Cg.departement' ) != 93 ) {
+				$this->out( $out = '<error>Ce shell n\'est utilisé que par le CG 93.</error>' );
+				$this->_stop( 1 );
+			}
+
 			$querydata = $this->Nonrespectsanctionep93->qdSecondsPassagesCerOrientstruct();
 			$results = $this->Nonrespectsanctionep93->find( 'all', $querydata );
 
@@ -79,7 +84,7 @@
 								'origine' => $result['Nonrespectsanctionep93']['origine'],
 								'rgpassage' => $result['Nonrespectsanctionep93']['rgpassage'] + 1,
 								'sortienvcontrat' => '0',
-								'active' => '0',
+								'active' => '1',
 								'historiqueetatpe_id' => null,
 							)
 						);
@@ -91,14 +96,17 @@
 				if( $success ) {
 					$this->Nonrespectsanctionep93->commit();
 					$this->out( '<success>'.sprintf( 'Succès pour l\'enregistrement des %s dossiers EP pour la thématique "non respect / sanctions (CG 93)"', count( $results ) ).'</success>' );
+					$this->_stop( 0 );
 				}
 				else {
 					$this->Nonrespectsanctionep93->rollback();
 					$this->out( $out = '<error>'.sprintf( 'Erreur(s) lors de l\'enregistrement des %s dossiers EP pour la thématique "non respect / sanctions (CG 93)"', count( $results ) ).'</error>' );
+					$this->_stop( 2 );
 				}
 			}
 			else {
 				$this->out( '<info>Aucun dossier d\'EP à créer pour la thématique "non respect / sanctions (CG 93)"</info>' );
+				$this->_stop( 0 );
 			}
 		}
 	}
