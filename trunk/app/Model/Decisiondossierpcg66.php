@@ -350,7 +350,7 @@
 					'conditions' => array(
 							'Personne.id = Prestation.personne_id',
 							'Prestation.natprest = \'RSA\'',
-							'Prestation.rolepers IN ( \'DEM\', \'CJT\')'
+//							'Prestation.rolepers IN ( \'DEM\', \'CJT\')'
 						)
 				),
 				array(
@@ -441,10 +441,10 @@
 			$data = $this->find( 'first', $queryData );
 
 
-			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
+			$data['Personne']['qual'] = Set::enum( Hash::get( $data, 'Personne.qual'), $qual );
 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-			$data['Dossierpcg66']['serviceinstructeur_id'] = Hash::get( $services, $data['Dossierpcg66']['serviceinstructeur_id'] );
-
+			$data['Dossierpcg66']['serviceinstructeur_id'] = Set::enum( Hash::get( $data, 'Dossierpcg66.serviceinstructeur_id' ), $services );
+            
 			$sections = array();
 			$personnesfoyerpcg = $this->Dossierpcg66->Personnepcg66->find(
 				'all',
