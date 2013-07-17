@@ -1633,12 +1633,18 @@
 								'Historiqueetatpe.id IS NULL',
 								'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
 							)
-						)
+						),
+                        array(
+                            'OR' => array(
+                                'Passagecommissionep.id IS NULL',
+                                'Passagecommissionep.id IN ('.$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier().' )'
+                            )
+                        )
 					),
 					'joins' => array(
 						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-						$this->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'NvStructurereferente', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'NvTypeorient', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),

@@ -468,7 +468,8 @@
 											)
 										)
 									)
-								).' )'
+								).' )',
+                                'Passagecommissionep.id IN ('.$this->Dossierep->Passagecommissionep->sqDernier().' )'
 							),
 							'contain' => array(
 								'Commissionep',
@@ -477,7 +478,8 @@
                                     'Typeorient',
                                     'Structurereferente',
                                     'Referent'
-								)
+								),
+                                'Dossierep'
 							)
 						)
 					);
@@ -509,13 +511,15 @@
 											)
 										)
 									)
-								).' )'
+								).' )',
+                                'Passagecommissionep.id IN ('.$this->Dossierep->Passagecommissionep->sqDernier().' )'
 							),
 							'contain' => array(
 								'Commissionep',
 								'Decisiondefautinsertionep66' => array(
 									'order' => array( 'Decisiondefautinsertionep66.etape ASC' )
-								)
+								),
+                                'Dossierep'
 							)
 						)
 					);
