@@ -71,11 +71,13 @@
 		);
 
 		/**
-		* Fonction de validation qui vérifie si la date de relance demandée est suffisamment
-		* éloignée de la date d'orientation ou de validation du contrat, ainsi que par-rapport
-		* aux relances précédentes vis-à-vis du paramétrage.
-		*/
-
+		 * Fonction de validation qui vérifie si la date de relance demandée est suffisamment
+		 * éloignée de la date d'orientation ou de validation du contrat, ainsi que par-rapport
+		 * aux relances précédentes vis-à-vis du paramétrage.
+		 *
+		 * @param type $check
+		 * @return boolean
+		 */
 		public function checkForRelance( $check ) {
 			// Est-ce un nouvel enregistrement de relance / de la thématique nonrespectsanctionep ?
 			$id = Hash::get( $this->data, 'Relancenonrespectsanctionep93.id' );
@@ -192,9 +194,12 @@
 		}
 
 		/**
-		* Fonction de sauvegarde de la cohorte
-		*/
-
+		 * Fonction de sauvegarde de la cohorte.
+		 *
+		 * @param array $newdata
+		 * @param array $data
+		 * @return boolean
+		 */
 		public function saveCohorte( $newdata, $data ) {
 			$success = true;
 			$validationErrors = array( $this->alias => array() );
@@ -356,6 +361,9 @@
 
 		/**
 		 * Conditions: que pour le premier passage (le second se fera via le shell)
+		 *
+		 * @param string $alias
+		 * @return array
 		 */
 		protected function _conditionPremierPassage( $alias ) {
 			$origine = Inflector::underscore( $alias );
@@ -788,31 +796,7 @@
 
 				// Conditions: que pour le premier passage (le second se fera via le shell)
 				$conditions[] = $this->_conditionPremierPassage( 'Orientstruct' );
-				/*$conditions[] = array(
-					'OR' => array(
-						'Orientstruct.id NOT IN (
-							SELECT nonrespectssanctionseps93.orientstruct_id
-								FROM nonrespectssanctionseps93
-								WHERE
-									nonrespectssanctionseps93.origine = \'orientstruct\'
-									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
-									AND nonrespectssanctionseps93.rgpassage = \'1\'
-									AND nonrespectssanctionseps93.active = \'0\'
-						)',
-						'Orientstruct.id IN (
-							SELECT nonrespectssanctionseps93.orientstruct_id
-								FROM nonrespectssanctionseps93
-								WHERE
-									nonrespectssanctionseps93.origine = \'orientstruct\'
-									AND nonrespectssanctionseps93.orientstruct_id = Orientstruct.id
-									AND nonrespectssanctionseps93.rgpassage = \'1\'
-									AND nonrespectssanctionseps93.active = \'1\'
-									AND nonrespectssanctionseps93.sortienvcontrat = \'0\'
-						)'
-					)
-				);*/
 
-				/// FIXME: que les dernières orientations / les derniers contrats
 				$queryData = array(
 					'fields' => $fields,
 					'conditions' => $conditions,
@@ -839,6 +823,16 @@
 								FROM typesorients AS t
 								WHERE t.lib_type_orient LIKE \'Emploi%\'
 						)';
+
+				// Qui ne possède pas d'orientation validée plus récente que la date de début du CER
+				$conditions[] = 'NOT EXISTS (
+					SELECT orientsstructs.id
+						FROM orientsstructs
+						WHERE
+							orientsstructs.personne_id = Contratinsertion.personne_id
+							AND orientsstructs.statut_orient = \'Orienté\'
+							AND orientsstructs.date_valid > Contratinsertion.dd_ci
+				)';
 
 				switch( $search['Relance.numrelance'] ) {
 					case 1:
@@ -924,29 +918,6 @@
 
 				// Conditions: que pour le premier passage (le second se fera via le shell)
 				$conditions[] = $this->_conditionPremierPassage( 'Contratinsertion' );
-				/*$conditions[] = array(
-					'OR' => array(
-						'Contratinsertion.id NOT IN (
-							SELECT nonrespectssanctionseps93.contratinsertion_id
-								FROM nonrespectssanctionseps93
-								WHERE
-									nonrespectssanctionseps93.origine = \'contratinsertion\'
-									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
-									AND nonrespectssanctionseps93.rgpassage = \'1\'
-									AND nonrespectssanctionseps93.active = \'0\'
-						)',
-						'Contratinsertion.id IN (
-							SELECT nonrespectssanctionseps93.contratinsertion_id
-								FROM nonrespectssanctionseps93
-								WHERE
-									nonrespectssanctionseps93.origine = \'contratinsertion\'
-									AND nonrespectssanctionseps93.contratinsertion_id = Contratinsertion.id
-									AND nonrespectssanctionseps93.rgpassage = \'1\'
-									AND nonrespectssanctionseps93.active = \'1\'
-									AND nonrespectssanctionseps93.sortienvcontrat = \'0\'
-						)'
-					)
-				);*/
 
 				$queryData = array(
 					'fields' => $fields,
@@ -962,9 +933,13 @@
 		}
 
 		/**
-		* Fonction de recherche des dossiers déjà relancés.
-		*/
-
+		 * Fonction de recherche des dossiers déjà relancés.
+		 *
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param array $search
+		 * @return array
+		 */
 		public function qdSearchRelances( $mesCodesInsee, $filtre_zone_geo, $search ) {
 			$search = Hash::flatten( $search );
 			$search = Hash::filter( (array)$search );
@@ -1172,10 +1147,11 @@
 		}
 
 		/**
-		*
-		*/
-
-		public function checkCompareError($datas) {
+		 *
+		 * @param array $datas
+		 * @return boolean
+		 */
+	   public function checkCompareError( $datas ) {
 			$searchError = false;
 			if( $datas['Relance']['contrat'] == 0 ) {
 				if ( ( @$datas['Relance']['compare0'] == '<' && @$datas['Relance']['nbjours0'] <= Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$datas['Relance']['numrelance'] ) ) || ( @$datas['Relance']['compare0'] == '<=' && @$datas['Relance']['nbjours0'] < Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer'.$datas['Relance']['numrelance'] ) ) )
@@ -1213,7 +1189,6 @@
 		* @return array
 		* @access public
 		*/
-
 		public function erreursPossibiliteAjout( $personne_id ) {
 			$erreurs = $this->Nonrespectsanctionep93->Dossierep->erreursCandidatePassage( $personne_id );
 
@@ -1655,6 +1630,322 @@
 			}
 
 			return null;
+		}
+
+		/**
+		 * Retourne la liste des options venant de EnumerableBehavior, ainsi que
+		 * des champs possédant la règle de validation inList, auxquels on ajoute
+		 * les options pour numrelance.
+		 *
+		 * @return string
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			if( !isset( $enums[$this->alias]['numrelance'] ) ) {
+				$enums[$this->alias]['numrelance'] = array(
+					1 => 'Première relance',
+					2 => 'Confirmation passage en EP'
+				);
+			}
+
+			return $enums;
+		}
+
+		/**
+		 *
+		 * @param integer $personne_id
+		 * @param integer $user_id
+		 * @return array
+		 */
+		/*public function prepareFormDataAdd( $personne_id, $user_id ) {
+			$formData = array();
+
+			$orientstruct = $this->Nonrespectsanctionep93->Orientstruct->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
+							'Orientstruct.statut_orient' => 'Orienté',
+							'Orientstruct.date_valid IS NOT NULL',
+							'Orientstruct.date_impression IS NOT NULL',
+						),
+						'order' => array( 'Orientstruct.date_impression DESC' ),
+						'contain' => false
+					)
+				);
+
+			$contratinsertion = $this->Nonrespectsanctionep93->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id,
+						'Contratinsertion.decision_ci' => 'V',
+						'Contratinsertion.df_ci IS NOT NULL',
+						'Contratinsertion.datevalidation_ci IS NOT NULL',
+
+					),
+					'order' => array( 'Contratinsertion.df_ci DESC' ),
+					'contain' => false
+				)
+			);
+
+			$date_impression = Hash::get( $orientstruct, 'Orientstruct.date_impression' );
+			$datevalidation_ci = Hash::get( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+			if( ( empty( $orientstruct ) && !empty( $contratinsertion ) ) || ( !is_null( $date_impression ) && !is_null( $datevalidation_ci ) && ( strtotime( $date_impression ) < strtotime( $datevalidation_ci ) ) ) ) {
+				$formData['Nonrespectsanctionep93']['orientstruct_id'] = null;
+				$formData['Nonrespectsanctionep93']['contratinsertion_id'] = $contratinsertion['Contratinsertion']['id'];
+				$formData['Nonrespectsanctionep93']['origine'] = 'contratinsertion';
+			}
+			else {
+				$formData['Nonrespectsanctionep93']['orientstruct_id'] = $orientstruct['Orientstruct']['id'];
+				$formData['Nonrespectsanctionep93']['contratinsertion_id'] = null;
+				$formData['Nonrespectsanctionep93']['origine'] = 'orientstruct';
+			}
+
+			// Continue-t'on une série de relances ?
+			$nonrespectsanctionep93 = $this->Nonrespectsanctionep93->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Nonrespectsanctionep93.orientstruct_id' => $formData['Nonrespectsanctionep93']['orientstruct_id'],
+						'Nonrespectsanctionep93.contratinsertion_id' => $formData['Nonrespectsanctionep93']['contratinsertion_id'],
+						'Nonrespectsanctionep93.origine' => $formData['Nonrespectsanctionep93']['origine'],
+					),
+					'contain' => array(
+						'Relancenonrespectsanctionep93'
+					),
+					'order' => array( 'Nonrespectsanctionep93.modified DESC' ),
+				)
+			);
+
+			if( !empty( $nonrespectsanctionep93 ) ) {
+				$internalStateStatus = (
+					count( $nonrespectsanctionep93['Relancenonrespectsanctionep93'] ) == 1
+					&& is_null( $nonrespectsanctionep93['Nonrespectsanctionep93']['dossierep_id'] )
+					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['rgpassage'] == '1'
+					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['sortienvcontrat'] == '0'
+					&& $nonrespectsanctionep93['Nonrespectsanctionep93']['active'] == '1'
+				);
+				if( !$internalStateStatus ) {
+					throw new InternalErrorException();
+				}
+
+				$formData['Nonrespectsanctionep93'] = $nonrespectsanctionep93['Nonrespectsanctionep93'];
+				$formData['Relancenonrespectsanctionep93'] = array(
+					'nonrespectsanctionep93_id' => $nonrespectsanctionep93['Nonrespectsanctionep93']['id'],
+					'numrelance' => 2,
+					'dateimpression' => null,
+					'daterelance' => null,
+					'user_id' => $user_id
+
+				);
+			}
+			else {
+				$formData['Relancenonrespectsanctionep93'] = array(
+					'nonrespectsanctionep93_id' => null,
+					'numrelance' => 1,
+					'dateimpression' => null,
+					'daterelance' => null,
+					'user_id' => $user_id
+				);
+			}
+
+			$formData['Nonrespectsanctionep93']['dossierep_id'] = null;
+			$formData['Nonrespectsanctionep93']['propopdo_id'] = null;
+			$formData['Nonrespectsanctionep93']['historiqueetatpe_id'] = null;
+			$formData['Nonrespectsanctionep93']['rgpassage'] = 1;
+			$formData['Nonrespectsanctionep93']['sortienvcontrat'] = '0';
+			$formData['Nonrespectsanctionep93']['active'] = '1';
+
+			$data = Hash::merge( $nonrespectsanctionep93, $orientstruct, $contratinsertion );
+			$data['Relancenonrespectsanctionep93'] = (array)Hash::get( $data, 'Relancenonrespectsanctionep93.0' );
+
+			$formData['Relancenonrespectsanctionep93']['daterelance_min'] = $this->dateRelanceMinimale(
+				$formData['Nonrespectsanctionep93']['origine'],
+				$formData['Relancenonrespectsanctionep93']['numrelance'],
+				$data
+			);
+
+			return $formData;
+		}*/
+
+		/**
+		 *
+		 * @param integer $personne_id
+		 * @param array $mesCodesInsee
+		 * @param boolean $filtre_zone_geo
+		 * @param mixed $sqLocked
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function getRelance( $personne_id, $mesCodesInsee, $filtre_zone_geo, $sqLocked, $user_id ) {
+			$foos = array(
+				'Contratinsertion' => array(
+					array(
+						'Relance.contrat' => '1',
+						'Relance.numrelance' => '1'
+					),
+					array(
+						'Relance.contrat' => '2',
+						'Relance.numrelance' => '2'
+					),
+				),
+				'Orientstruct' => array(
+					array(
+						'Relance.contrat' => '0',
+						'Relance.numrelance' => '1'
+					),
+					array(
+						'Relance.contrat' => '0',
+						'Relance.numrelance' => '2'
+					),
+				)
+			);
+
+			foreach( $foos as $modelName => $relancesParams ) {
+				foreach( $relancesParams as $relanceParams ) {
+					$querydata = $this->search(
+						$mesCodesInsee,
+						$filtre_zone_geo,
+						$relanceParams,
+						$sqLocked
+					);
+					$querydata['conditions']['Personne.id'] = $personne_id;
+					$results = $this->Nonrespectsanctionep93->{$modelName}->find( 'all', $querydata );
+					if( !empty( $results ) ) {
+						$relanceParams = Hash::expand( $relanceParams );
+						foreach( array_keys( $results ) as $i ) {
+							$results[$i] = Hash::merge( $results[$i], $relanceParams );
+						}
+						return $results;
+					}
+				}
+			}
+
+			return array();
+		}
+
+		/**
+		 * Préparation des données du formulaire de cohortes (pour un premier passage).
+		 *
+		 * Pour savoir si la relance sera la première ou la seconde, pour une
+		 * orientation ou un CER, on regarde les clés ['Relance.contrat'] et
+		 * ['Relance.numrelance'] du paramètre $search, sinon, on regarde pour
+		 * chacun des résultats les clés ['Relance']['contrat'] et
+		 * ['Relance']['numrelance'].
+		 *
+		 * @param array $results
+		 * @param array $search
+		 * @return array
+		 */
+		public function prepareFormData( array $results, array $search = array() ) {
+			if( !empty( $results ) ) {
+				foreach( $results as $i => $result ) {
+					// Si on vient de la cohorte, on doit ajouter des infos
+					if( !empty( $search ) ) {
+						$result['Relance']['contrat'] = $search['Relance.contrat'];
+						$result['Relance']['numrelance'] = $search['Relance.numrelance'];
+					}
+
+					// Orientations non contractualisées
+					if( $result['Relance']['contrat'] == 0 ) {
+						// Calcul de la date de relance minimale
+						if( $result['Relance']['numrelance'] == 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
+									strtotime( $result['Orientstruct']['date_impression'] )
+								)
+							);
+						}
+						else if( $result['Relance']['numrelance'] > 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$result['Relance']['numrelance']}" ) + 1 ).' days',
+									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+								)
+							);
+						}
+
+						$results[$i]['Orientstruct']['nbjours'] = round(
+							( time() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
+						);
+					}
+					// Contrats non renouvelés
+					else {
+						// Calcul de la date de relance minimale
+						if( $result['Relance']['numrelance'] == 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) + 1 ).' days',
+									strtotime( $result['Contratinsertion']['df_ci'] )
+								)
+							);
+						}
+						else if( $result['Relance']['numrelance'] > 1 ) {
+							$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
+								'Y-m-d',
+								strtotime(
+									'+'.( Configure::read( "Nonrespectsanctionep93.relanceCerCer{$result['Relance']['numrelance']}" ) + 1 ).' days',
+									strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
+								)
+							);
+						}
+
+						$results[$i]['Contratinsertion']['nbjours'] = round(
+							( time() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
+						);
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Préparation des données du formulaire d'ajout individuel (pour un premier passage).
+		 *
+		 * Pour savoir si la relance sera la première ou la seconde, pour une
+		 * orientation ou un CER, on regarde les clés ['Relance']['contrat'] et
+		 * ['Relance']['numrelance'].
+		 *
+		 * @param array $result
+		 * @param integer $user_id
+		 * @return array
+		 */
+		public function prepareFormDataAdd( array $result, $user_id ) {
+			$origine = ( Hash::get( $result, 'Relance.contrat' ) ? 'contratinsertion' : 'orientstruct' );
+
+			$formData = array(
+				'Nonrespectsanctionep93' => array(
+					'id' => Hash::get( $result, 'Nonrespectsanctionep93.id' ),
+					'orientstruct_id' => Hash::get( $result, 'Orientstruct.id' ),
+					'contratinsertion_id' => Hash::get( $result, 'Contratinsertion.id' ),
+					'origine' => $origine,
+					'dossierep_id' => null,
+					'propopdo_id' => null,
+					'historiqueetatpe_id' => null,
+					'rgpassage' => 1,
+					'sortienvcontrat' => '0',
+					'active' => '1',
+				),
+				'Relancenonrespectsanctionep93' => array(
+					'id' => null,
+					'nonrespectsanctionep93_id' => null,
+					'numrelance' => Hash::get( $result, 'Relance.numrelance' ),
+					'dateimpression' => null,
+					'daterelance_min' => Hash::get( $result, 'Nonrespectsanctionep93.datemin' ),
+					'daterelance' => null,
+					'user_id' => $user_id,
+				)
+
+			);
+
+			return $formData;
 		}
 	}
 ?>
