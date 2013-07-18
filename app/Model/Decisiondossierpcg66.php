@@ -350,7 +350,7 @@
 					'conditions' => array(
 							'Personne.id = Prestation.personne_id',
 							'Prestation.natprest = \'RSA\'',
-//							'Prestation.rolepers IN ( \'DEM\', \'CJT\')'
+							'Prestation.rolepers IN ( \'DEM\', \'CJT\')'
 						)
 				),
 				array(
@@ -461,7 +461,7 @@
 			);
 
 			$data['Presence'] = array();
-			$data['Presence']['dem'] = $data['Presence']['cjt'] = 0;
+			$data['Presence']['dem'] = $data['Presence']['cjt'] = $data['Presence']['enf'] = 0;
 
 			foreach( $personnesfoyerpcg as $personnefoyerpcg ) {
 				$personnefoyerpcg['Prestation'] = $personnefoyerpcg['Personne']['Prestation'];
