@@ -831,5 +831,52 @@
 //            debug($return);
 			return true;
 		}
+        
+                
+        /*
+         *  Mise à jour de l'état du passage en comission EP du dossier EP pour
+         * un défaut d'inssertion (issu d'une EP Audition)
+         * 
+         * @param integer $decisiondefautinsertionep66_id
+		 * @return array
+         */
+		public function updateEtatPassagecommissionep( $decisiondefautinsertionep66_id ) {
+
+			if( empty( $decisiondefautinsertionep66_id ) ) {
+                return false;
+            }
+
+			$decisiondefautinsertionep66 = $this->Decisiondefautinsertionep66->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->Decisiondefautinsertionep66->fields(),
+                        $this->Decisiondefautinsertionep66->Passagecommissionep->fields()
+                    ),
+                    'conditions' => array(
+                        'Decisiondefautinsertionep66.id' => $decisiondefautinsertionep66_id,
+                        'Passagecommissionep.id IN ('.$this->Decisiondefautinsertionep66->Passagecommissionep->sqDernier().' )'
+                    ),
+                    'joins' => array(
+                        $this->Decisiondefautinsertionep66->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+                        $this->Decisiondefautinsertionep66->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) )
+                    ),
+                    'contain' => false
+                )
+            );
+            
+            $return = true;
+            if( $decisiondefautinsertionep66['Passagecommissionep']['etatdossierep'] != 'traite' ) {
+                $return = $this->Decisiondefautinsertionep66->Passagecommissionep->updateAllUnBound(
+                    array( 'Passagecommissionep.etatdossierep' => '\'traite\'' ),
+                    array(
+                        '"Passagecommissionep"."dossierep_id"' => $decisiondefautinsertionep66['Passagecommissionep']['dossierep_id'],
+                        '"Passagecommissionep"."id"' => $decisiondefautinsertionep66['Passagecommissionep']['id']
+                    )
+                ) && $return;
+            }
+            
+			return $return;
+		}
 	}
 ?>

@@ -340,7 +340,10 @@
 							'Personnepcg66' => array(
 								'Statutpdo',
 								'Situationpdo'
-							)
+							),
+                            'Decisiondefautinsertionep66' => array(
+                                'Passagecommissionep'
+                            )
 						)
 					)
 				);
@@ -500,6 +503,18 @@
 						( ( $this->action == 'add' ) ? $this->Dossierpcg66->id : $id )
 					) && $saved;
 				}
+                
+                // Mise à jour des dossiers d'EP ayant généré un dossier PCG suite à une EP Audition
+                // Uniquement si le dossie PCG est issu d'un EP Audition, que son decisiondefautinsertionep66_id is not null
+                // et que le dossier est dans un état annulé, traité, décision validée ou transmis à un OP
+                if( $saved ) {
+                    if( isset( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ) {
+                        if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
+                            $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+                        }
+                    }
+                }
+
 //debug($this->request->data);
 				if( $saved ) {
 					$this->Dossierpcg66->commit();
