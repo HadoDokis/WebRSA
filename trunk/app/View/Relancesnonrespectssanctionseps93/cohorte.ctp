@@ -70,7 +70,7 @@
 		'</fieldset>';
 	echo '</div></fieldset>';
 
-	echo $this->Form->input( 'Search.Relance.numrelance', array( 'legend' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => array( 1 => 'Première relance', 2 => 'Confirmation passage en EP' ), 'value' => ( isset( $this->request->data['Search']['Relance']['numrelance'] ) ? @$this->request->data['Search']['Relance']['numrelance'] : 1 ) ) );
+	echo $this->Form->input( 'Search.Relance.numrelance', array( 'legend' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => $options['Relancenonrespectsanctionep93']['numrelance'], 'value' => ( isset( $this->request->data['Search']['Relance']['numrelance'] ) ? @$this->request->data['Search']['Relance']['numrelance'] : 1 ) ) );
 
 	echo $this->Form->end( __( 'Rechercher' ) );
 	// Résultats
@@ -99,7 +99,7 @@
 			<thead>
 				<tr>
 					<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>
-					<th>'.$this->Xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th><!-- FIXME -->
+					<th>'.$this->Xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'Nom de commune', 'Adresse.locaadr' ).'</th>
 					<th>'.$this->Xpaginator->sort( __d( 'foyer', 'Foyer.enerreur' ), 'Foyer.enerreur' ).'</th>
@@ -161,7 +161,7 @@
 						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.orientstruct_id", array( 'type' => 'hidden', 'value' => @$result['Orientstruct']['id'] ) ).
 						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.contratinsertion_id", array( 'type' => 'hidden', 'value' => @$result['Contratinsertion']['id'] ) ).
 						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.user_id", array( 'type' => 'hidden', 'value' => $this->Session->read( 'Auth.User.id' ) ) ).
-						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 5, 'label' => false ) ),
+						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.daterelance", array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y', strtotime( $result['Nonrespectsanctionep93']['datemin'] ) ), 'label' => false ) ),
 						$this->Form->input( "Relancenonrespectsanctionep93.{$index}.arelancer", array( 'type' => 'radio', 'options' => array( 'R' => 'Relancer', 'E' => 'En attente' ), 'legend' => false, 'div' => false, 'separator' => '<br />', 'value' => ( isset( $this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] ) ? @$this->request->data['Relancenonrespectsanctionep93'][$index]['arelancer'] : 'E' ) ) ),
 						array( $innerTable, array( 'class' => 'innerTableCell' ) )
 					)

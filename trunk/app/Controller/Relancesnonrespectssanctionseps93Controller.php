@@ -77,6 +77,7 @@
 			);
 			$options = Set::merge(
 				$options,
+				$this->Relancenonrespectsanctionep93->enums(),
 				$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->enums(),
 				$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->enums(),
 				$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->Passagecommissionep->enums()
@@ -206,7 +207,7 @@
 		}
 
 		/**
-		 *
+		 * Formulaire d'ajout de relances en cohorte, pour un premier passage.
 		 */
 		public function cohorte() {
 			if( !empty( $this->request->data ) ) {
@@ -275,37 +276,6 @@
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
-
-					if( !empty( $results ) ) {
-						$dossiersIds = Set::extract( $results, '/Dossier/id' );
-						$this->Cohortes->get( $dossiersIds );
-
-						foreach( $results as $i => $result ) {
-							// Calcul de la date de relance minimale
-							if( $search['Relance.numrelance'] == 1 ) {
-								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-									'Y-m-d',
-									strtotime(
-										'+'.( Configure::read( 'Nonrespectsanctionep93.relanceOrientstructCer1' ) + 1 ).' days',
-										strtotime( $result['Orientstruct']['date_impression'] )
-									)
-								);
-							}
-							else if( $search['Relance.numrelance'] > 1 ) {
-								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-									'Y-m-d',
-									strtotime(
-										'+'.( Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$search['Relance.numrelance']}" ) + 1 ).' days',
-										strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
-									)
-								);
-							}
-
-							$results[$i]['Orientstruct']['nbjours'] = round(
-								( time() - strtotime( $result['Orientstruct']['date_impression'] ) ) / ( 60 * 60 * 24 )
-							);
-						}
-					}
 				}
 				else if( $this->request->data['Search']['Relance']['contrat'] == 1 ) {
 					$this->paginate = array(
@@ -318,39 +288,14 @@
 					);
 
 					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );
-
-					if( !empty( $results ) ) {
-						$dossiersIds = Set::extract( $results, '/Dossier/id' );
-						$this->Cohortes->get( $dossiersIds );
-
-						foreach( $results as $i => $result ) {
-							// Calcul de la date de relance minimale
-							if( $search['Relance.numrelance'] == 1 ) {
-								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-									'Y-m-d',
-									strtotime(
-										'+'.( Configure::read( 'Nonrespectsanctionep93.relanceCerCer1' ) + 1 ).' days',
-										strtotime( $result['Contratinsertion']['df_ci'] )
-									)
-								);
-							}
-							else if( $search['Relance.numrelance'] > 1 ) {
-								$results[$i]['Nonrespectsanctionep93']['datemin'] = date(
-									'Y-m-d',
-									strtotime(
-										'+'.( Configure::read( "Nonrespectsanctionep93.relanceCerCer{$search['Relance.numrelance']}" ) + 1 ).' days',
-										strtotime( $result['Relancenonrespectsanctionep93']['daterelance'] )
-									)
-								);
-							}
-
-							$results[$i]['Contratinsertion']['nbjours'] = round(
-								( time() - strtotime( $result['Contratinsertion']['df_ci'] ) ) / ( 60 * 60 * 24 )
-							);
-						}
-					}
 				};
 
+				if( !empty( $results ) ) {
+					$dossiersIds = Hash::extract( $results, '{n}.Dossier.id' );
+					$this->Cohortes->get( $dossiersIds );
+
+					$results = $this->Relancenonrespectsanctionep93->prepareFormData( $results, $search );
+				}
 				$this->set( compact( 'results' ) );
 
 				if( $this->Relancenonrespectsanctionep93->checkCompareError( Hash::expand( $search ) ) == true ) {
@@ -362,205 +307,107 @@
 		}
 
 		/**
+		 * Formulaire d'ajout de relances en individuel, pour un premier passage.
 		 *
 		 * @param integer $personne_id
 		 * @throws NotFoundException
+		 * @throws InternalErrorException
 		 */
 		public function add( $personne_id ) {
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
 
-			$erreurs = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
-			if( !empty( $erreurs ) ) {
+			// On s'assure que l'id passé en paramètre et le dossier lié existent bien
+			if( empty( $personne_id ) || empty( $dossier_id ) ) {
+				throw new NotFoundException();
+			}
+
+			$erreursAjout = $this->Relancenonrespectsanctionep93->erreursPossibiliteAjout( $personne_id );
+			if( !empty( $erreursAjout ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-			else {
-				$orientstruct = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Orientstruct->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Orientstruct.personne_id' => $personne_id,
-							'Orientstruct.statut_orient' => 'Orienté',
-							'Orientstruct.date_valid IS NOT NULL',
-							'Orientstruct.date_impression IS NOT NULL',
-						),
-						'order' => array( 'Orientstruct.date_impression DESC' ),
-						'contain' => false
-					)
-				);
 
-				$contratinsertion = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Contratinsertion->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Contratinsertion.personne_id' => $personne_id,
-							'Contratinsertion.decision_ci' => 'V',
-							'Contratinsertion.df_ci IS NOT NULL',
-							'Contratinsertion.datevalidation_ci IS NOT NULL',
+			// Tentative d'acquisition du jeton sur le dossier
+			$this->Jetons2->get( $dossier_id );
 
-						),
-						'order' => array( 'Contratinsertion.df_ci DESC' ),
-						'contain' => false
-					)
-				);
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
-				if( ( empty( $orientstruct ) && !empty( $contratinsertion ) ) || ( strtotime( $orientstruct['Orientstruct']['date_impression'] ) < strtotime( $contratinsertion['Contratinsertion']['datevalidation_ci'] ) ) ) {
-					$orientstruct_id = null;
-					$contratinsertion_id = $contratinsertion['Contratinsertion']['id'];
-					$origine = 'contratinsertion';
-				}
-				else {
-					$orientstruct_id = $orientstruct['Orientstruct']['id'];
-					$contratinsertion_id = null;
-					$origine = 'orientstruct';
-				}
+			if( !empty( $this->request->data ) ) {
+				$success = true;
+				$this->Relancenonrespectsanctionep93->begin();
 
-				// Calcul du rang de la relance
-				$relances_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
-					'all',
-					array(
-						'fields' => array(
-							'Nonrespectsanctionep93.id',
-							'Relancenonrespectsanctionep93.daterelance',
+				$nonrespectsanctionep93 = array( 'Nonrespectsanctionep93' => $this->request->data['Nonrespectsanctionep93'] );
+				$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->create( $nonrespectsanctionep93 );
+				$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->save() && $success;
+
+				$relancenonrespectsanctionep93 = array( 'Relancenonrespectsanctionep93' => $this->request->data['Relancenonrespectsanctionep93'] );
+				$relancenonrespectsanctionep93['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id'] = $this->Nonrespectsanctionep93->id;
+				$this->Relancenonrespectsanctionep93->create( $relancenonrespectsanctionep93 );
+				$success = $this->Relancenonrespectsanctionep93->save() && $success;
+
+				// Création du dossier d'EP pour la seconde relance
+				if( Hash::get( $this->request->data, 'Relancenonrespectsanctionep93.numrelance' ) == 2 ) {
+					$dossierep = array(
+						'Dossierep' => array(
+							'personne_id' => $personne_id,
+							'themeep' => 'nonrespectssanctionseps93',
 						),
-						'conditions' => array(
-							'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion_id,
-							'Nonrespectsanctionep93.orientstruct_id' => $orientstruct_id,
-							'Nonrespectsanctionep93.origine' => $origine,
-							'Nonrespectsanctionep93.dossierep_id IS NULL',
-							'Nonrespectsanctionep93.active' => 1,
-						),
-						'joins' => array(
+					);
+					$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->create( $dossierep );
+					$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->save() && $success;
+
+					if( $success ) {
+						$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->updateAllUnBound(
 							array(
-								'table'      => 'relancesnonrespectssanctionseps93',
-								'alias'      => 'Relancenonrespectsanctionep93',
-								'type'       => 'INNER',
-								'foreignKey' => false,
-								'conditions' => array(
-									'Relancenonrespectsanctionep93.nonrespectsanctionep93_id = Nonrespectsanctionep93.id'
-								)
+								'"Nonrespectsanctionep93"."sortienvcontrat"' => '\'0\'',
+								'"Nonrespectsanctionep93"."active"' => '\'0\'',
+								'"Nonrespectsanctionep93"."dossierep_id"' => $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->id,
 							),
-						),
-						'order' => array( 'Relancenonrespectsanctionep93.daterelance DESC' )
-					)
-				);
-				$numrelance_pcd = count( $relances_pcd );
-				$numrelance = ( $numrelance_pcd + 1 );
-
-				$data = Set::merge( ( $origine == 'contratinsertion' ? $contratinsertion : $orientstruct ), @$relances_pcd[0] );
-				$daterelance_min = $this->Relancenonrespectsanctionep93->dateRelanceMinimale( $origine, $numrelance, $data );
-				$this->set( 'daterelance_min', $daterelance_min );
-
-				// Calcul du rang de passage
-				$rgpassage_pcd = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
-					'count',
-					array(
-						'conditions' => array(
-							'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion_id,
-							'Nonrespectsanctionep93.orientstruct_id' => $orientstruct_id,
-							'Nonrespectsanctionep93.origine' => $origine,
-							'Nonrespectsanctionep93.dossierep_id IS NOT NULL',
-							'Nonrespectsanctionep93.active' => 0,
-						)
-					)
-				);
-
-				$nonrespectsanctionep93 = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Nonrespectsanctionep93.contratinsertion_id' => $contratinsertion_id,
-							'Nonrespectsanctionep93.orientstruct_id' => $orientstruct_id,
-							'Nonrespectsanctionep93.origine' => $origine,
-							'Nonrespectsanctionep93.dossierep_id IS NULL',
-							'Nonrespectsanctionep93.active' => 1,
-						)
-					)
-				);
-
-				$this->set( compact( 'origine', 'numrelance' ) );
-
-				// Le dossier auquel appartient la personne
-				$dossier_id = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Contratinsertion->Personne->dossierId( $personne_id );
-
-				// On s'assure que l'id passé en paramètre et le dossier lié existent bien
-				if( empty( $personne_id ) || empty( $dossier_id ) ) {
-					throw new NotFoundException();
+							array( '"Nonrespectsanctionep93"."id"' => $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->id )
+						) && $success;
+					}
 				}
 
-				// Tentative d'acquisition du jeton sur le dossier
-				$this->Jetons2->get( $dossier_id );
-
-				// Retour à l'index en cas d'annulation
-				if( isset( $this->request->data['Cancel'] ) ) {
+				$this->_setFlashResult( 'Save', $success );
+				if( $success ) {
+					$this->Relancenonrespectsanctionep93->commit();
 					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
+				else {
+					$this->Relancenonrespectsanctionep93->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				// On prépare les valeurs par défaut du formulaire; pour cela, on se sert des méthodes existant en cohortes
+				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-				if( !empty( $this->request->data ) ) {
-					if( empty( $this->request->data['Nonrespectsanctionep93']['id'] ) ) {
-						unset( $this->request->data['Nonrespectsanctionep93']['id'] );
-					}
-					if( empty( $this->request->data['Relancenonrespectsanctionep93']['id'] ) ) {
-						unset( $this->request->data['Relancenonrespectsanctionep93']['id'] );
-					}
-					if( !empty( $nonrespectsanctionep93 ) ) {
-						$this->request->data['Nonrespectsanctionep93']['id'] = $nonrespectsanctionep93['Nonrespectsanctionep93']['id'];
-					}
+				$results = $this->Relancenonrespectsanctionep93->getRelance(
+					$personne_id,
+					$mesCodesInsee,
+					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+					$this->Cohortes->sqLocked( 'Dossier' ),
+					$this->Session->read( 'Auth.user.id' )
+				);
 
-					$this->request->data['Nonrespectsanctionep93']['orientstruct_id'] = $orientstruct_id;
-					$this->request->data['Nonrespectsanctionep93']['contratinsertion_id'] = $contratinsertion_id;
-					$this->request->data['Nonrespectsanctionep93']['origine'] = $origine;
-					$this->request->data['Nonrespectsanctionep93']['rgpassage'] = ( $rgpassage_pcd + 1 );
-
-					$this->request->data['Relancenonrespectsanctionep93']['numrelance'] = $numrelance;
-
-					if( $origine == 'contratinsertion' ) {
-						$timediff = Configure::read( "Nonrespectsanctionep93.relanceOrientstructCer{$numrelance}" );
-					}
-					else {
-						$timediff = Configure::read( "Nonrespectsanctionep93.relanceCerCer{$numrelance}" );
-					}
-
-					$this->Relancenonrespectsanctionep93->begin();
-
-					$success = true;
-					if( ( $origine == 'orientstruct' && $this->request->data['Relancenonrespectsanctionep93']['numrelance'] == 3 ) || ( $origine == 'contratinsertion' && $this->request->data['Relancenonrespectsanctionep93']['numrelance'] == 2 ) ) {
-						$dossierep = array(
-							'Dossierep' => array(
-								'personne_id' => $personne_id,
-								'themeep' => 'nonrespectssanctionseps93',
-							),
-						);
-
-						$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->create( $dossierep );
-						$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->save();
-
-						$this->request->data['Nonrespectsanctionep93']['dossierep_id'] = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->Dossierep->id;
-					}
-
-					$this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->create( $this->request->data );
-					$success = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->save() && $success;
-
-					$this->request->data['Relancenonrespectsanctionep93']['nonrespectsanctionep93_id'] = $this->Relancenonrespectsanctionep93->Nonrespectsanctionep93->id;
-
-					$this->Relancenonrespectsanctionep93->create( $this->request->data );
-					$success = $this->Relancenonrespectsanctionep93->save() && $success;
-
-					$this->_setFlashResult( 'Save', $success );
-					if( $success ) {
-						$this->Relancenonrespectsanctionep93->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'action' => 'index', $personne_id ) );
-					}
-					else {
-						$this->Relancenonrespectsanctionep93->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+				if( !empty( $results ) ) {
+					$results = $this->Relancenonrespectsanctionep93->prepareFormData( $results );
+					$this->request->data = $this->Relancenonrespectsanctionep93->prepareFormDataAdd( $results[0], $this->Session->read( 'Auth.User.id' ) );
+				}
+				else {
+					throw new InternalErrorException();
 				}
 			}
 
-			$this->set( 'personne_id', $personne_id );
+			$this->set( compact( 'dossierMenu' ) );
+			$this->_setOptions();
 		}
 
 		/**

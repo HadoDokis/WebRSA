@@ -257,9 +257,12 @@
 		}
 
 		/**
-		* TODO: docs
-		*/
-
+		 *
+		 * @param integer $commissionep_id
+		 * @param string $etape
+		 * @param integer $user_id
+		 * @return boolean
+		 */
 		public function finaliser( $commissionep_id, $etape, $user_id ) {
 			$commissionep = $this->Dossierep->Passagecommissionep->Commissionep->find(
 				'first',

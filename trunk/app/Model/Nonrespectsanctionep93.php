@@ -1099,6 +1099,11 @@
 		public function calculSortieProcedureRelanceParValidationCer( array $contratinsertion ) {
 			$success = true;
 
+			$datevalidation_ci = Hash::get( $contratinsertion, 'Contratinsertion.datevalidation_ci' );
+			if( is_array( $datevalidation_ci ) ) {
+				$datevalidation_ci = "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}";
+			}
+
 			if( isset( $contratinsertion['Contratinsertion']['decision_ci'] ) && $contratinsertion['Contratinsertion']['decision_ci'] == 'V' ) {
 				// 1°) Pas encore de dossier d'EP crée -> on sort simplement de la procédure avec un contrat
 				$nonrespectssanctionseps93 = $this->find(
@@ -1121,7 +1126,7 @@
 									array(
 										'Relancenonrespectsanctionep93.id IS NOT NULL',
 										'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
-										'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
+										'Relancenonrespectsanctionep93.daterelance <=' => $datevalidation_ci,
 									),
 									// Par le shell Nonrespectssanctionseps93
 									array(
@@ -1208,14 +1213,13 @@
 							'Dossierep.personne_id' => $contratinsertion['Contratinsertion']['personne_id'],
 							'Nonrespectsanctionep93.origine' => array( 'orientstruct', 'contratinsertion' ),
 							'NOT' => array( 'Nonrespectsanctionep93.sortienvcontrat' => '1', ),
-							'Nonrespectsanctionep93.active' => '1',
 							array(
 								'OR' => array(
 									// Par procédure de relance
 									array(
 										'Relancenonrespectsanctionep93.id IS NOT NULL',
 										'Relancenonrespectsanctionep93.id IN ( '.$this->Relancenonrespectsanctionep93->sqDerniere( 'Nonrespectsanctionep93.id' ).' )',
-										'Relancenonrespectsanctionep93.daterelance <=' => "{$contratinsertion['Contratinsertion']['datevalidation_ci']['year']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['month']}-{$contratinsertion['Contratinsertion']['datevalidation_ci']['day']}",
+										'Relancenonrespectsanctionep93.daterelance <=' => $datevalidation_ci,
 									),
 									// Par le shell Nonrespectssanctionseps93
 									array(
