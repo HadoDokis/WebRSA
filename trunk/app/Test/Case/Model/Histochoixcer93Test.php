@@ -23,11 +23,17 @@
 		 */
 		public $fixtures = array(
 			'app.Cer93',
+			'app.Commissionep',
 			'app.Contratcomplexeep93',
 			'app.Contratinsertion',
 			'app.Dossierep',
 			'app.Histochoixcer93',
+			'app.Nonrespectsanctionep93',
+			'app.Orientstruct',
+			'app.Passagecommissionep',
 			'app.Personne',
+			'app.Propopdo',
+			'app.Relancenonrespectsanctionep93',
 		);
 
 		/**
