@@ -762,7 +762,7 @@
 			if( !empty( $dependencies ) ) {
 				foreach( $dependencies as $dependency ) {
 					if( isset( $data[$dependency['From']['model']] ) ) {
-						if( !isset( $data[$dependency['To']['model']] ) ) {
+						if( !isset( $data[$dependency['To']['model']] ) && !$dependency['From']['nullable'] ) {
 							$errors[] = sprintf( __d( 'gestionanomaliebdd', "Validation::dependency(%s->%s)" ), $dependency['From']['model'], $dependency['To']['model'] );
 						}
 						else {
