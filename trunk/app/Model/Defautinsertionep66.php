@@ -440,6 +440,7 @@
 				);
                 
                 $decisiondefautinsertion_id = Hash::get( $dossierep, 'Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.id' );
+                $etatdossierep = Hash::get( $dossierep, 'Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.decision' );
 
 				$dossierpcg66 = array(
 					'Dossierpcg66' => array(
@@ -466,7 +467,7 @@
 
 				// Le dossier PCG du foyer de l'allocataire n'existe pas encore
 				// pour ce foyer et cette décision de thématique EP donc on peut le créer
-				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 ) {
+				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 && $etatdossierep != 'reporte' ) {
 					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
 					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;
 				}
