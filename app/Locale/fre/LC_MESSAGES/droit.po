@@ -3075,22 +3075,19 @@ msgstr "affxml"
 ###############################################################################
 
 msgid "Module:Questionnairesd1pdvs93"
-msgstr "Module premier rendez-vous (CG93)"
+msgstr "Module Questionnaire D1 (CG93)"
 
 msgid "Questionnairesd1pdvs93:index"
-msgstr "Liste des premiers rendez-vous"
+msgstr "Questionnaires D1"
 
 msgid "Questionnairesd1pdvs93:add"
-msgstr "Ajout d'un premier rendez-vous"
-
-msgid "Questionnairesd1pdvs93:edit"
-msgstr "Modification d'un premier rendez-vous"
+msgstr "Ajout d'un questionnaire D1"
 
 msgid "Questionnairesd1pdvs93:delete"
-msgstr "Suppression d'un premier rendez-vous"
+msgstr "Suppression d'un questionnaire D1"
 
 msgid "Questionnairesd1pdvs93:view"
-msgstr "Visualisation d'un premier rendez-vous"
+msgstr "Visualisation d'un questionnaire D1"
 
 ###############################################################################
 
