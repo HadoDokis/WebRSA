@@ -273,7 +273,7 @@
 							)
 						)
 					),
-					'order' => array( "{$commissionepAlias}.dateseance DESC" ),
+					'order' => array( "{$commissionepAlias}.dateseance DESC", "{$commissionepAlias}.id DESC" ),
 					'limit' => 1
 				)
 			);

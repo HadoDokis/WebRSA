@@ -263,7 +263,7 @@
 				)
 			);*/
 
-			$this->paginate = array(
+			$querydata = array(
 				'contain' => array(
 					'Personne' => array(
 						'fields' => array( 'qual', 'nom', 'prenom' ),
@@ -299,7 +299,10 @@
 								),
 								'Decisionsaisinebilanparcoursep66' => array(
 									'order' => 'Decisionsaisinebilanparcoursep66.created ASC'
-								)
+								),
+                                'conditions' => array(
+                                    'Passagecommissionep.etatdossierep NOT' => array( 'reporte' )
+                                )
 							)
 						)
 					),
@@ -317,6 +320,9 @@
 								),
 								'Decisiondefautinsertionep66' => array(
                                     'order' => 'Decisiondefautinsertionep66.created ASC'
+                                ),
+                                'conditions' => array(
+                                    'Passagecommissionep.etatdossierep NOT' => array( 'reporte' )
                                 )
 							)
 						)
@@ -326,12 +332,12 @@
 				'conditions' => array(
 					'Bilanparcours66.personne_id' => $personne_id
 				),
-				'limit' => 10,
 				'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
 			);
 
 			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );
-			$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
+
+			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $querydata );
 
 			// INFO: containable ne permet pas de passer dans les virtualFields maison
 			foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
