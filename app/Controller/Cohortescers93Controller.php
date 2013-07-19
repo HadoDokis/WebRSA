@@ -206,6 +206,9 @@
 					);
 				}
 				else if( $this->action == 'avalidercpdv' ) {
+					// Ne pas oublier d'indiquer s'il s'agit ou non d'un rejet lorsqu'on est cohorte
+					$formData[$key]['Histochoixcer93']['isrejet'] = ( ( $this->request->data['decision'] == '99rejetecpdv' ) ? '1' : '0' );
+
 					$success = $this->Contratinsertion->Cer93->Histochoixcer93->saveAll( $formData, array( 'validate' => 'first', 'atomic' => false ) );
 					$success = $success && $this->Contratinsertion->Cer93->updateAllUnBound(
 						array( '"Cer93"."positioncer"' => "'".$this->request->data['decision']."'" ),
