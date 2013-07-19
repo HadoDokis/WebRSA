@@ -1637,7 +1637,10 @@
                         array(
                             'OR' => array(
                                 'Passagecommissionep.id IS NULL',
-                                'Passagecommissionep.id IN ('.$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier().' )'
+                                'Passagecommissionep.id IN ('.$this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier().' )',
+                                'NOT' => array(
+                                    'Passagecommissionep.etatdossierep ' => 'reporte'
+                                )
                             )
                         )
 					),
