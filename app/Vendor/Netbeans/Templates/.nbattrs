@@ -25,6 +25,10 @@
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
     </fileobject>
+    <fileobject name="CakePHP Shell.php">
+        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+        <attr name="template" boolvalue="true"/>
+    </fileobject>
     <fileobject name="CakePHP View.ctp">
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
