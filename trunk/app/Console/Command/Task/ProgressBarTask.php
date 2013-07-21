@@ -128,13 +128,14 @@
 		 * Outputs a single or multiple messages to stdout. If no parameters
 		 * are passed outputs just a newline.
 		 *
-		 * @param mixed $message A string or a an array of strings to output
+		 * @param string|array $message A string or a an array of strings to output
 		 * @param integer $newlines Number of newlines to append
-		 * @return integer Returns the number of bytes returned from writing to stdout.
-		 * @access public
+		 * @param integer $level The message's output level, see above.
+		 * @return integer|boolean Returns the number of bytes returned from writing to stdout.
+		 * @link http://book.cakephp.org/2.0/en/console-and-shells.html#Shell::out
 		 */
-		public function out( $message = null, $newLines = 0 ) {
-			return parent::out( $message, $newLines );
+		public function out( $message = null, $newlines = 1, $level = Shell::NORMAL ) {
+			return parent::out( $message, $newlines, $level );
 		}
 
 		/**

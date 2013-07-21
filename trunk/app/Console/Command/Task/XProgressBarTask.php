@@ -80,10 +80,10 @@
 			$remaining = -1 * round( $rate * ($this->total - $this->done) );
 
 			if( $remaining < 60 ) {
-				return sprintf( '<important>%02d %s</important>', $remaining, __n( 'sec', 'secs', $remaining, true ) );
+				return sprintf( '%02d %s', $remaining, __n( 'sec', 'secs', $remaining, true ) );
 			}
 			else {
-				return sprintf( '<important>%d %s, %02d %s</important>', floor( $remaining / 60 ), __n( 'min', 'mins', floor( $remaining / 60 ), true ), $remaining % 60, __n( 'sec', 'secs', $remaining % 60, true ) );
+				return sprintf( '%d %s, %02d %s', floor( $remaining / 60 ), __n( 'min', 'mins', floor( $remaining / 60 ), true ), $remaining % 60, __n( 'sec', 'secs', $remaining % 60, true ) );
 			}
 		}
 
