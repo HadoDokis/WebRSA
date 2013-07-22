@@ -299,10 +299,7 @@
 								),
 								'Decisionsaisinebilanparcoursep66' => array(
 									'order' => 'Decisionsaisinebilanparcoursep66.created ASC'
-								),
-                                'conditions' => array(
-                                    'Passagecommissionep.etatdossierep NOT' => array( 'reporte' )
-                                )
+								)
 							)
 						)
 					),
@@ -320,9 +317,6 @@
 								),
 								'Decisiondefautinsertionep66' => array(
                                     'order' => 'Decisiondefautinsertionep66.created ASC'
-                                ),
-                                'conditions' => array(
-                                    'Passagecommissionep.etatdossierep NOT' => array( 'reporte' )
                                 )
 							)
 						)
