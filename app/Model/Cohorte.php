@@ -261,26 +261,21 @@
 				$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
 			}
 			else {
-//				if( in_array( $statutOrientation, array( 'Calculables', 'Non calculables' ) ) ) {
-//					$toppersdrodevorsa = Set::classicExtract( $criteres, 'Filtre.toppersdrodevorsa' );
-//					if( $toppersdrodevorsa != '' ) {
-//						if( $toppersdrodevorsa == 'NULL' ) {
-//							$conditions[] = 'Calculdroitrsa.toppersdrodevorsa IS NULL';
-//						}
-//						else {
-//							$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
-//						}
-//					}
-//				}
-//				else {
-					$toppersdrodevorsa = Set::classicExtract( $criteres, 'Filtre.toppersdrodevorsa' );
-					if( isset( $toppersdrodevorsa ) && !empty( $toppersdrodevorsa ) ) {
-						$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
-					}
-//				}
-
 				$conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $criteres );
 			}
+
+			// -----------------------------------------------------------------
+			$toppersdrodevorsa = Hash::get( $criteres, 'Filtre.toppersdrodevorsa' );
+			if( !is_null( $toppersdrodevorsa ) ) {
+				if( $toppersdrodevorsa === 'NULL' ) {
+					$conditions[] = 'Calculdroitrsa.toppersdrodevorsa IS NULL';
+				}
+				else {
+					$conditions['Calculdroitrsa.toppersdrodevorsa'] = $toppersdrodevorsa;
+				}
+			}
+
+			// -----------------------------------------------------------------
 
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
