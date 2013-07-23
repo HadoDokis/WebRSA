@@ -36,7 +36,7 @@
 							</tr>
 							<tr>
 								<th>'.__d( 'adressefoyer', 'Adressefoyer.typeadr' ).'</th>
-								<td>'.h( $typeadr[$adresse['Adressefoyer']['typeadr']] ).'</td>
+								<td>'.h( @$typeadr[$adresse['Adressefoyer']['typeadr']] ).'</td>
 							</tr>
 							<tr>
 								<th>Pays</th>
