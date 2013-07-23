@@ -33,13 +33,11 @@
 		}
 
 		public function index() {
-			$this->Coderomemetierdsp66->forceVirtualFields = true;
 			$this->paginate = array(
 				'fields' => array(
-					'Coderomemetierdsp66.id',
 					'Coderomemetierdsp66.code',
 					'Coderomemetierdsp66.name',
-					'Coderomesecteurdsp66.intitule'
+					$this->Coderomemetierdsp66->Coderomesecteurdsp66->sqVirtualField( 'intitule' )
 				),
 				'contain' => array(
 					'Coderomesecteurdsp66'
