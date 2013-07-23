@@ -3,7 +3,7 @@
 
 	$this->Csv->addRow( array( 'Date de signature de la fiche', 'Nom de la personne', 'N° CAF', 'Nom du prescripteur', 'Action engagée', 'Nom du partenaire', 'Position de la fiche de candidature', 'Date de sortie', 'Motif de sortie', 'Code INSEE', 'Localité' ) );
 
-	foreach( $actionscandidatsPersonnes as $actioncandidat_personne ) {
+	foreach( $actionscandidats_personnes as $actioncandidat_personne ) {
 		$row = array(
 			$this->Locale->date( 'Date::short', Set::classicExtract( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature' ) ),
 			Set::classicExtract( $actioncandidat_personne, 'Personne.nom_complet' ),

@@ -7,9 +7,9 @@
 	echo $this->Default->index(
 		$codesromemetiersdsps66,
 		array(
-			'Coderomemetierdsp66.code',
+            'Coderomemetierdsp66.code',
 			'Coderomemetierdsp66.name',
-			'Coderomesecteurdsp66.intitule' => array( 'domain' => 'coderomemetierdsp66' )
+			'Coderomesecteurdsp66.intitule' => array( 'type' => 'text', 'domain' => 'coderomemetierdsp66' )
 		),
 		array(
 			'cohorte' => false,

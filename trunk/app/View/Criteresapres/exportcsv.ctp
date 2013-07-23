@@ -14,13 +14,13 @@
 		}
 
 		$row = array(
-			Set::classicExtract( $apre, 'Dossier.numdemrsa' ),
-			Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom'),
-			Set::classicExtract( $apre, 'Adresse.locaadr' ),
-			date_short( Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ),
+			Hash::get( $apre, 'Dossier.numdemrsa' ),
+			Hash::get( $apre, 'Personne.nom' ).' '.Hash::get( $apre, 'Personne.prenom'),
+			Hash::get( $apre, 'Adresse.locaadr' ),
+			$this->Locale->date( Hash::get( $apre, 'Apre.datedemandeapre' ) ),
 			( empty( $aidesApre ) ? null : implode( "\n", $aidesApre ) ),
-			Set::classicExtract( $options['typedemandeapre'], Set::classicExtract( $apre, 'Apre.typedemandeapre' ) ),
-			Set::classicExtract( $options['activitebeneficiaire'], Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ) ),
+			value( $options['typedemandeapre'], Hash::get( $apre, 'Apre.typedemandeapre' ) ),
+			value( $options['activitebeneficiaire'], Hash::get( $apre, 'Apre.activitebeneficiaire' ) ),
 		);
 		$this->Csv->addRow($row);
 	}

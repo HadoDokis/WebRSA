@@ -74,26 +74,6 @@
 			unset( $querydata['limit'] );
 			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $querydata );
 
-			foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
-				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
-					' ',
-					array(
-						@$bilansparcours66[$key]['Personne']['qual'],
-						@$bilansparcours66[$key]['Personne']['nom'],
-						@$bilansparcours66[$key]['Personne']['prenom']
-					)
-				);
-				$bilansparcours66[$key]['Referent']['nom_complet'] = implode(
-					' ',
-					array(
-						@$bilansparcours66[$key]['Referent']['qual'],
-						@$bilansparcours66[$key]['Referent']['nom'],
-						@$bilansparcours66[$key]['Referent']['prenom']
-					)
-				);
-
-			}
-
 			$this->_setOptions();
 			$this->layout = ''; // FIXME ?
 			$this->set( compact( 'bilansparcours66' ) );

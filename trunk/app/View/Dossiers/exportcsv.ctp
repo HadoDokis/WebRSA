@@ -1,7 +1,7 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Type d\'orientation', 'Identifiant Pôle Emploi', 'N° CAF' ) );
+	$this->Csv->addRow( array( 'N° Dossier', 'Date de demande', 'NIR', 'Etat du droit', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Identifiant Pôle Emploi', 'N° CAF' ) );
 
 	foreach( $dossiers as $dossier ) {
 		$row = array(
@@ -12,7 +12,6 @@
 			Set::extract( $dossier, 'Personne.nom' ).' '.Set::extract( $dossier, 'Personne.prenom'),
 			date_short( Set::extract( $dossier, 'Personne.dtnai' ) ),
 			Set::extract( $dossier, 'Adresse.locaadr' ),
-			Set::enum( Set::classicExtract( $dossier, 'Orientstruct.typeorient_id' ), $typesorient ),
 			Set::extract( $dossier, 'Personne.idassedic' ),
 			Set::extract( $dossier, 'Dossier.matricule' )
 		);

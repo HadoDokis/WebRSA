@@ -26,13 +26,13 @@
 		}
 
 		$row = array(
-			$this->Locale->date( 'Date::short', Set::classicExtract( $bilanparcours66, 'Bilanparcours66.datebilan' ) ),
-			Set::classicExtract( $bilanparcours66, 'Personne.nom_complet' ),
-			Set::classicExtract( $bilanparcours66, 'Dossier.matricule' ),
-			Set::classicExtract( $bilanparcours66, 'Structurereferente.lib_struc' ),
-			Set::classicExtract( $bilanparcours66, 'Referent.nom_complet' ),
-			Set::classicExtract( $options['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ),
-			Set::enum( Set::classicExtract( $bilanparcours66, 'Bilanparcours66.positionbilan' ), $options['positionbilan'] ),
+			$this->Locale->date( 'Date::short', Hash::get( $bilanparcours66, 'Bilanparcours66.datebilan' ) ),
+			Hash::get( $bilanparcours66, 'Personne.nom_complet' ),
+			Hash::get( $bilanparcours66, 'Dossier.matricule' ),
+			Hash::get( $bilanparcours66, 'Structurereferente.lib_struc' ),
+			Hash::get( $bilanparcours66, 'Referent.nom_complet' ),
+			Hash::get( $options['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ),
+			Set::enum( Hash::get( $bilanparcours66, 'Bilanparcours66.positionbilan' ), $options['positionbilan'] ),
 			$motif,
 			$isSaisine,
 			$bilanparcours66['Adresse']['numcomptt'],
