@@ -241,16 +241,15 @@
 				}
 			}
 
-			$this->Rendezvous->forceVirtualFields = true;
 			$rdvs = $this->Rendezvous->find(
 				'all',
 				array(
 					'fields' => array(
 						'Rendezvous.id',
 						'Rendezvous.personne_id',
-						'Personne.nom_complet',
+                        $this->Rendezvous->Personne->sqVirtualField( 'nom_complet' ),
 						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
+						$this->Rendezvous->Referent->sqVirtualField( 'nom_complet' ),
 						'Permanence.libpermanence',
 						'Typerdv.libelle',
 						'Statutrdv.libelle',
@@ -289,7 +288,6 @@
 				$lastrdv_id = 0;
 			}
 			$this->set( 'lastrdv_id', $lastrdv_id );
-			$this->Rendezvous->forceVirtualFields = false;
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
@@ -438,15 +436,14 @@
 		 *
 		 */
 		public function view( $rendezvous_id = null ) {
-			$this->Rendezvous->forceVirtualFields = true;
 			$rendezvous = $this->Rendezvous->find(
 				'first',
 				array(
 					'fields' => array(
 						'Rendezvous.personne_id',
-						'Personne.nom_complet',
+                        $this->Rendezvous->Personne->sqVirtualField( 'nom_complet' ),
+                        $this->Rendezvous->Referent->sqVirtualField( 'nom_complet' ),
 						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
 						'Referent.fonction',
 						'Permanence.libpermanence',
 						'Typerdv.libelle',

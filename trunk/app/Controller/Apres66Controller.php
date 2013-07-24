@@ -484,8 +484,6 @@
 		public function view66( $apre_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->{$this->modelClass}->personneId( $apre_id ) ) ) );
 
-			$this->Apre66->forceVirtualFields = true;
-
 			$apre = $this->Apre66->find(
 					'first', array(
 				'conditions' => array(
@@ -501,7 +499,6 @@
 			);
 
 			$this->assert( !empty( $apre ), 'invalidParameter' );
-			$this->Apre66->forceVirtualFields = false;
 
 			$this->set( 'apre', $apre );
 // 			debug( $apre );

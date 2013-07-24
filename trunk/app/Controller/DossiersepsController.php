@@ -148,7 +148,7 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
-						'Foyer.enerreur',
+						$this->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur', true ),
 						'Commissionep.dateseance',
 						'Passagecommissionep.id',
 						'Passagecommissionep.commissionep_id',

@@ -51,7 +51,7 @@
 		*
 		*/
 		public function _setOptions() {
-			$options = $this->Dossierpcg66->allEnumLists();
+			$options = $this->Dossierpcg66->enums();
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'serviceinstructeur', $this->Dossierpcg66->Serviceinstructeur->listOptions() );
@@ -74,7 +74,7 @@
 				)
 			);
 
-			$etatdossierpcg = $options['etatdossierpcg'];
+			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
 			$this->set( compact( 'options', 'etatdossierpcg' ) );
 		}
 

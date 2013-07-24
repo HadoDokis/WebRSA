@@ -871,13 +871,12 @@
 			}
 
 			// Pour le CG 66
-			$this->ActioncandidatPersonne->forceVirtualFields = true;
 			$personne_id = $this->ActioncandidatPersonne->field( 'personne_id', array( 'id' => $id ) );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$dossier_id = $this->ActioncandidatPersonne->Personne->dossierId( $personne_id );
-			$this->ActioncandidatPersonne->forceVirtualFields = false;
+
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'personne_id', $personne_id );
 

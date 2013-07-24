@@ -84,8 +84,8 @@
 
 			// Récupération du nom de l'allocataire
 			$personne = $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
-					'first', array(
-				'fields' => array( 'nom_complet' ),
+                'first', array(
+				'fields' => array( $this->Decisionpersonnepcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->sqVirtualField( 'nom_complet' ) ),
 				'conditions' => array(
 					'Personne.id' => $personnepcg66['Personnepcg66']['personne_id']
 				),

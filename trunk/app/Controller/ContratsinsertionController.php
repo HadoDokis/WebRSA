@@ -695,7 +695,6 @@
 		 * @param integer $contratinsertion_id
 		 */
 		public function view( $contratinsertion_id = null ) {
-			$this->Contratinsertion->forceVirtualFields = true;
 
 			$contratinsertion = $this->Contratinsertion->find(
 				'first',
@@ -706,10 +705,10 @@
 						$this->Contratinsertion->Actioninsertion->fields(),
 						$this->Contratinsertion->Propodecisioncer66->fields(),
 						array(
-							'Referent.nom_complet',
+							$this->Contratinsertion->Referent->sqVirtualField( 'nom_complet' ),
 							'Structurereferente.lib_struc',
 							'Typeorient.lib_type_orient',
-							'Personne.nom_complet',
+							$this->Contratinsertion->Personne->sqVirtualField( 'nom_complet' ),
 							$this->Contratinsertion->Propodecisioncer66->Motifcernonvalid66Propodecisioncer66->Motifcernonvalid66->vfListeMotifs( 'Propodecisioncer66.id', '', ', ' ).' AS "Propodecisioncer66__listeMotifs66"'
 						)
 					),
@@ -732,7 +731,6 @@
 				)
 			);
 
-			$this->Contratinsertion->forceVirtualFields = false;
 			$this->assert( !empty( $contratinsertion ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $contratinsertion['Contratinsertion']['personne_id'] ) ) );
@@ -1413,7 +1411,7 @@
 					'Contratinsertion.duree_engag',
 					'Propodecisioncer66.isvalidcer',
 					'Propodecisioncer66.datevalidcer',
-					'Referent.nom_complet'
+					$this->Contratinsertion->Referent->sqVirtualField( 'nom_complet' ),
 				);
 				$contain = array(
 					'Propodecisioncer66',

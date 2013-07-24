@@ -295,7 +295,6 @@
 		public function view( $id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
-			$this->Dsp->forceVirtualFields = true;
 			$dsp = $this->Dsp->find(
 				'first',
 				array(
@@ -329,7 +328,9 @@
 				'conditions' => array(
 					'Personne.id' => $id
 				),
-				'fields' => array( 'Personne.nom_complet'),
+				'fields' => array(
+                    $this->Dsp->Personne->sqVirtualField( 'nom_complet' )
+                ),
 				'order' => null,
 				'recursive' => -1
 			);
@@ -397,7 +398,6 @@
 			);
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
-			$this->DspRev->forceVirtualFields = true;
 			$this->paginate = array(
 				'contain' => array(
 					'Personne',
@@ -532,7 +532,6 @@
 		 *
 		 */
 		public function view_revs( $id = null ) {
-			$this->DspRev->forceVirtualFields = true;
 			$dsprevs = $this->DspRev->find(
                 'first',
                 array(
@@ -595,8 +594,7 @@
 		 *
 		 */
 		public function view_diff( $id = null ) {
-			$this->DspRev->forceVirtualFields = true;
-// 			$dsprevact = $this->DspRev->findById( $id );
+
 			$dsprevact = $this->DspRev->find(
 				'first',
 				array(
@@ -631,35 +629,36 @@
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevact['Personne']['id'] ) ) );
 
 			$dsprevold = $this->DspRev->find(
-					'first', array(
-				'conditions' => array(
-					'DspRev.personne_id' => $dsprevact['DspRev']['personne_id'],
-					'DspRev.created <=' => $dsprevact['DspRev']['created'],
-					'DspRev.id <' => $dsprevact['DspRev']['id']
-				),
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				),
-				'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
-					)
+                'first',
+                array(
+                    'conditions' => array(
+                        'DspRev.personne_id' => $dsprevact['DspRev']['personne_id'],
+                        'DspRev.created <=' => $dsprevact['DspRev']['created'],
+                        'DspRev.id <' => $dsprevact['DspRev']['id']
+                    ),
+                    'contain' => array(
+                        'Personne',
+                        'Libderact66Metier',
+                        'Libsecactderact66Secteur',
+                        'Libactdomi66Metier',
+                        'Libsecactdomi66Secteur',
+                        'Libemploirech66Metier',
+                        'Libsecactrech66Secteur',
+                        'DetaildifsocRev',
+                        'DetailaccosocfamRev',
+                        'DetailaccosocindiRev',
+                        'DetaildifdispRev',
+                        'DetailnatmobRev',
+                        'DetaildiflogRev',
+                        'DetailmoytransRev',
+                        'DetaildifsocproRev',
+                        'DetailprojproRev',
+                        'DetailfreinformRev',
+                        'DetailconfortRev',
+                        'Fichiermodule'
+                    ),
+                    'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
+                )
 			);
 			$this->assert( !empty( $dsprevold ), 'invalidParameter' );
 
@@ -730,7 +729,8 @@
 						'Personne.id',
 						'Personne.qual',
 						'Personne.nom',
-						'Personne.prenom'
+						'Personne.prenom',
+                        $this->Dsp->Personne->sqVirtualField( 'nom_complet' )
 					),
 					'conditions' => array(
 						'Personne.id' => $personne_id
@@ -765,7 +765,7 @@
 			$dsp = null;
 			if( ( ( $this->action == 'edit' || $this->action == 'revertTo' ) ) && !empty( $personne_id ) ) {
 				if( empty( $version_id ) ) {
-					$this->Dsp->forceVirtualFields = true;
+
 					$qd_dsp = array(
 						'conditions' => array(
 							'Dsp.personne_id' => $personne_id
@@ -782,7 +782,6 @@
 					}
 				}
 				else {
-					$this->DspRev->forceVirtualFields = true;
 					$dsprevs = $this->DspRev->find(
 							'first', array(
 						'conditions' => array(
@@ -820,7 +819,7 @@
 				}
 			}
 			else if( ( $this->action == 'add' ) && !empty( $personne_id ) ) {
-				$this->Dsp->forceVirtualFields = true;
+
 				$qd_dsp = array(
 					'conditions' => array(
 						'Personne.id' => $personne_id

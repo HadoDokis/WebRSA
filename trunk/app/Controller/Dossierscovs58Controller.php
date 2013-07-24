@@ -153,7 +153,7 @@
 						'Personne.nom',
 						'Personne.prenom',
 						'Foyer.dossier_id',
-						'Foyer.enerreur',
+						$this->Dossiercov58->Personne->Foyer->sqVirtualField( 'enerreur' ),
 						'Cov58.datecommission',
 						'Passagecov58.id',
 						'Passagecov58.cov58_id',

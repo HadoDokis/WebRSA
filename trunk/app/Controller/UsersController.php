@@ -63,6 +63,7 @@
 						'fields' => array(
 							'Referent.id',
 							'Referent.nom_complet',
+//                            $this->User->Referent->sqVirtualField( 'nom_complet' ),
 							'Structurereferente.lib_struc'
 						),
 						'recursive' => -1,

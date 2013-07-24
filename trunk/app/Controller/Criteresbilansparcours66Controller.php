@@ -50,7 +50,7 @@
 				$queryData = $this->Criterebilanparcours66->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
 				$this->paginate = $queryData;
-				$this->Bilanparcours66->forceVirtualFields = true;
+
 				$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
 
 				$this->set( 'bilansparcours66', $bilansparcours66 );

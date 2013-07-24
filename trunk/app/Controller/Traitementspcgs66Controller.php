@@ -269,7 +269,9 @@
 			$personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find(
                 'first',
                 array(
-                    'fields' => array( 'nom_complet' ),
+                    'fields' => array(
+                        $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->sqVirtualField( 'nom_complet' )
+                    ),
                     'conditions' => array(
                         'Personne.id' => $personne_id
                     ),
@@ -277,6 +279,7 @@
                 )
 			);
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
+
 			$this->set( compact( 'nompersonne' ) );
 			if( !empty( $this->request->data ) ) {
 				$dossierpcgId = $this->request->data['Search']['Personnepcg66']['dossierpcg66_id'];
@@ -547,13 +550,16 @@
 				'conditions' => array(
 					'Personne.id' => $personne_id
 				),
-				'fields' => null,
+				'fields' => array(
+                    $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->sqVirtualField( 'nom_complet' )
+                ),
 				'order' => null,
 				'recursive' => -1
 			);
 			$personne = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Personne->find( 'first', $qd_personne );
 
 			$nompersonne = Set::classicExtract( $personne, 'Personne.nom_complet' );
+
 			$this->set( compact( 'nompersonne' ) );
 
 			//Gestion des jetons

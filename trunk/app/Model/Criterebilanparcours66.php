@@ -170,6 +170,7 @@
 				)
 			);
 
+            $Bilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
 			$query = array(
 				'fields' => array(
 					'Bilanparcours66.id',
