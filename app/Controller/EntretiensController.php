@@ -227,7 +227,6 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
-			$this->Entretien->forceVirtualFields = true;
 			$entretiens = $this->Entretien->find(
 				'all',
 				array(
@@ -238,7 +237,7 @@
 						'Entretien.arevoirle',
 						'Entretien.typeentretien',
 						'Structurereferente.lib_struc',
-						'Referent.nom_complet',
+						$this->Entretien->Referent->sqVirtualField( 'nom_complet' ),
 						'Objetentretien.name',
 					),
 					'contain' => array(
@@ -255,7 +254,6 @@
 					)
 				)
 			);
-			$this->Entretien->forceVirtualFields = false;
 
 			$this->_setOptions();
 
@@ -391,7 +389,6 @@
 		public function view( $id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Entretien->personneId( $id ) ) ) );
 
-			$this->Entretien->forceVirtualFields = true;
 			$qd_entretien = array(
 				'conditions' => array(
 					'Entretien.id' => $id
@@ -400,7 +397,7 @@
 					'Entretien.personne_id',
 					'Entretien.dateentretien',
 					'Structurereferente.lib_struc',
-					'Referent.nom_complet',
+					$this->Entretien->Referent->sqVirtualField( 'nom_complet' ),
 					'Entretien.typeentretien',
 					'Entretien.typerdv_id',
 					'Entretien.commentaireentretien'
@@ -415,7 +412,6 @@
 			);
 			$entretien = $this->Entretien->find( 'first', $qd_entretien );
 
-			$this->Entretien->forceVirtualFields = false;
 			$personne_id = Set::classicExtract( $entretien, 'Entretien.personne_id' );
 
 			// Retour à l'entretien en cas de retour

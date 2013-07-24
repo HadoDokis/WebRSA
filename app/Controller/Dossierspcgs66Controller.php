@@ -350,7 +350,7 @@
 				$this->assert( !empty( $dossierpcg66 ), 'invalidParameter' );
 
 				//Recherche des personnes liées au foyer
-				$this->Dossierpcg66->forceVirtualFields = true;
+
 				$personnespcgs66 = $this->Dossierpcg66->Personnepcg66->find(
 					'all',
 					array(
@@ -365,7 +365,7 @@
 						)
 					)
 				);
-				$this->Dossierpcg66->forceVirtualFields = false;
+
 				$this->set( 'personnespcgs66', $personnespcgs66 );
 				$this->set( 'dossierpcg66_id', $dossierpcg66_id );
 				$foyer_id = $dossierpcg66['Dossierpcg66']['foyer_id'];

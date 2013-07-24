@@ -69,7 +69,7 @@
                 
 //                 echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
 // debug($options);
-                echo $this->Search->multipleCheckboxChoice( $options['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
+                echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
             ?>
         </fieldset>
 

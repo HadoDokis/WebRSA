@@ -38,7 +38,7 @@
 					'list',
 					array(
 						'fields' => array(
-							'User.nom_complet'
+                            'User.nom_complet'
 						),
 						'conditions' => array(
 							'User.isgestionnaire' => 'O'

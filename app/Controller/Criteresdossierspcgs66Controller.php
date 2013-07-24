@@ -95,7 +95,7 @@
 					$mesZonesGeographiques );
 
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
-				$this->Dossierpcg66->forceVirtualFields = true;
+
 				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
 
 				foreach( $criteresdossierspcgs66 as $i => $criteredossierpcg66 ) {

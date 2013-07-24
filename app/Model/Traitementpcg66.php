@@ -772,7 +772,9 @@
 			$gestionnaire['Dossierpcg66'] = $this->User->find(
 				'first',
 				array(
-					'fields' => array( 'User.nom_complet' ),
+					'fields' => array(
+                        $this->User->sqVirtualField( 'nom_complet' )
+                    ),
 					'conditions' => array(
 						'User.id' => $data['Dossierpcg66']['user_id']
 					),

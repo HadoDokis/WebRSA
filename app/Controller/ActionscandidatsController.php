@@ -144,7 +144,6 @@
 		*/
 
 		public function index() {
-			$this->Actioncandidat->forceVirtualFields = true;
 			$this->Actioncandidat->recursive = -1;
 
 			$querydata = array(
@@ -192,11 +191,7 @@
             $this->paginate = $querydata;
             $actionscandidats = $this->paginate( 'Actioncandidat' );
             $this->set( compact('actionscandidats'));
-//            
-//			$this->set(
-//				Inflector::tableize( $this->modelClass ),
-//				$this->paginate( $this->modelClass )
-//			);
+
 			$this->_setOptions();
 		}
 
