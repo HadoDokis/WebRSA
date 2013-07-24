@@ -224,6 +224,7 @@
 			);
 
 			$options['Questionnaired1pdv93']['rendezvous_id'] = $this->Questionnaired1pdv93->Personne->Rendezvous->findListPersonneId( $personne_id );
+			$options['Situationallocataire']['nati'] = ClassRegistry::init( 'Tableausuivipdv93' )->nati;
 			$options = $this->Questionnaired1pdv93->filterOptions( $options );
 
 			$this->set( compact( 'personne_id', 'options', 'dossierMenu', 'personne' ) );
