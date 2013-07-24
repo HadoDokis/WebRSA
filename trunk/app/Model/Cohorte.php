@@ -260,13 +260,15 @@
 				// INFO: nouvelle manière de générer les PDFs
 				$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
 			}
-			else {
+
+			if( Hash::get( $criteres, 'Detailcalculdroitrsa.natpf_choice' ) ) {
 				$conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $criteres );
 			}
 
 			// -----------------------------------------------------------------
+
 			$toppersdrodevorsa = Hash::get( $criteres, 'Filtre.toppersdrodevorsa' );
-			if( !is_null( $toppersdrodevorsa ) ) {
+			if( !is_null( $toppersdrodevorsa ) && ( $toppersdrodevorsa != '' ) ) {
 				if( $toppersdrodevorsa === 'NULL' ) {
 					$conditions[] = 'Calculdroitrsa.toppersdrodevorsa IS NULL';
 				}
