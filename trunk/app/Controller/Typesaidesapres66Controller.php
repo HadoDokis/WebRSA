@@ -95,6 +95,9 @@
 				$this->redirect( array( 'controller' => 'typesaidesapres66', 'action' => 'index' ) );
 			}
 
+			App::import( 'Behaviors', 'Occurences' );
+			$this->Typeaideapre66->Behaviors->attach( 'Occurences' );
+
 			$this->set( 'occurences', $this->Typeaideapre66->occurences() );
 
 			$queryData = array(
