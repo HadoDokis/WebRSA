@@ -23,16 +23,26 @@
 
 		public $validate = array(
 			'libelle' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => 'Cette valeur est déjà utilisée'
+				),
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'modelenotifrdv' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'motifpassageep' => array(
-				'rule' => array( 'notEmptyIf', 'nbabsencesavpassageep', false, array( 0 ) ),
-				'message' => 'Champ obligatoire',
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'nbabsencesavpassageep', false, array( 0 ) ),
+					'message' => 'Champ obligatoire',
+				)
 			)
 		);
 

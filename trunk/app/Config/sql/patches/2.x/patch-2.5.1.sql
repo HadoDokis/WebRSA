@@ -291,6 +291,13 @@ DELETE FROM situationsallocataires WHERE id NOT IN (
 		FROM questionnairesd1pdvs93
 );
 
+-- -----------------------------------------------------------------------------
+-- 20130725 - Ajout d'un index unique sur les intitulés des types de RDV
+-- -----------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS typesrdv_libelle_idx;
+CREATE UNIQUE INDEX typesrdv_libelle_idx ON typesrdv( libelle );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
