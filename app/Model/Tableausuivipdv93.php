@@ -1318,18 +1318,23 @@
 				$conditionpdv = "AND rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
-			// Possède au moins un RDV honoré dans la SR
+			// S'assure-ton qu'il existe au moins un RDV individuel ?
 			$conditionrdv = null;
-			if( !empty( $pdv_id ) ) {
+			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
+			if( $rdv_structurereferente ) {
 				$conditionrdv = "AND rendezvous.personne_id IN (
-									SELECT DISTINCT personne_id FROM rendezvous
-									-- avec un RDV honoré durant l'année N
-								WHERE
-									EXTRACT('YEAR' FROM rendezvous.daterdv) = '{$annee}'
-									AND ".$this->_conditionStatutRdv( 'rendezvous.statutrdv_id' )."
-									-- pour la structure referente X
-									{$conditionpdv}
-						)";
+					SELECT DISTINCT rdvindividuelhonore.personne_id
+						FROM rendezvous AS rdvindividuelhonore
+					WHERE
+						-- avec un RDV honoré durant l'année N
+						EXTRACT('YEAR' FROM rdvindividuelhonore.daterdv) = '{$annee}'
+						-- Dont le type de RDV est individuel
+						AND rdvindividuelhonore.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+						AND rdvindividuelhonore.".$this->_conditionStatutRdv()."
+						-- dont la SR du rendez-vous collectif est la même que celle du RDV individuel
+						AND rendezvous.structurereferente_id = rdvindividuelhonore.structurereferente_id
+						{$conditionpdv}
+				)";
 			}
 
 			// Liste des thématiques collectives
