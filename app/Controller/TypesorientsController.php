@@ -179,6 +179,9 @@
 				$this->cakeError( 'error404' );
 			}
 
+			App::import( 'Behaviors', 'Occurences' );
+			$this->Typeorient->Behaviors->attach( 'Occurences' );
+
 			$occurences = $this->Typeorient->occurences();
 			$nbOccurences = Set::enum( $typeorient['Typeorient']['id'], $occurences );
 			$nbOccurences = ( is_numeric( $nbOccurences ) ? $nbOccurences : 0 );
