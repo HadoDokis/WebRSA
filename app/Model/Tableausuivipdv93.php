@@ -1025,6 +1025,8 @@
 								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 								".$this->_conditionRendezvousPdv( $search, 'AND' )."
 								{$conditionpdv}
+								-- Qui ne se trouvent pas dans la tableau 1B4
+								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 
 					) AS \"Tableau1b5__distinct_personnes_prescription\",
 					(
@@ -1040,6 +1042,8 @@
 								AND bilanvenu = 'VEN'
 								".$this->_conditionRendezvousPdv( $search, 'AND' )."
 								{$conditionpdv}
+								-- Qui ne se trouvent pas dans la tableau 1B4
+								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 
 					) AS \"Tableau1b5__distinct_personnes_action\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
@@ -1062,6 +1066,8 @@
 									AND bilanretenu = 'RET'
 									AND bilanvenu != 'VEN'
 									{$conditionpdv}
+									-- Qui ne se trouvent pas dans la tableau 1B4
+									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						) AS \"Tableau1b5__beneficiaires_pas_deplaces\",
 						--nbre de fiches de prescription en attente d'un retour : venu + dfaction IS NULL
 						(
@@ -1078,6 +1084,8 @@
 									AND bilanvenu = 'VEN'
 									AND actionscandidats_personnes.dfaction IS NULL
 									{$conditionpdv}
+									-- Qui ne se trouvent pas dans la tableau 1B4
+									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						) AS \"Tableau1b5__nombre_fiches_attente\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
 
@@ -1174,6 +1182,8 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Qui ne se trouvent pas dans la tableau 1B4
+							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
@@ -1193,6 +1203,8 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Qui ne se trouvent pas dans la tableau 1B4
+							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
@@ -1222,6 +1234,8 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Qui ne se trouvent pas dans la tableau 1B4
+							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
@@ -1241,6 +1255,8 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Qui ne se trouvent pas dans la tableau 1B4
+							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
@@ -1260,6 +1276,8 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Qui ne se trouvent pas dans la tableau 1B4
+							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
