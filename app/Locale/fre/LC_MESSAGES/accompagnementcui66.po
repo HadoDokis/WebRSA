@@ -45,7 +45,7 @@ msgstr "Modifier un accompagnement"
 msgid "Accompagnementscuis66::delete"
 msgstr "Supprimer un accompagnement"
 
-msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::periode"
+msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::immersion"
 msgstr "Période d'immersion"
 
 msgid "ENUM::TYPEACCOMPAGNEMENTCUI66::formation"
@@ -134,3 +134,12 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "Accompagnementcui66.datedebut"
+msgstr "Date de début"
+
+msgid "Accompagnementcui66.datefin"
+msgstr "Date de fin"
+
+msgid "Accompagnementcui66.datesignature"
+msgstr "Date de signature"

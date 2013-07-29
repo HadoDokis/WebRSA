@@ -131,19 +131,19 @@
 		);
 
 		public $hasMany = array(
-			'Periodeimmersion' => array(
-				'className' => 'Periodeimmersion',
-				'foreignKey' => 'cui_id',
-				'dependent' => false,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
+//			'Periodeimmersion' => array(
+//				'className' => 'Periodeimmersion',
+//				'foreignKey' => 'cui_id',
+//				'dependent' => false,
+//				'conditions' => '',
+//				'fields' => '',
+//				'order' => '',
+//				'limit' => '',
+//				'offset' => '',
+//				'exclusive' => '',
+//				'finderQuery' => '',
+//				'counterQuery' => ''
+//			),
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
 				'foreignKey' => false,

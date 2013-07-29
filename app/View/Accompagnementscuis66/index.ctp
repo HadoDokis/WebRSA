@@ -22,15 +22,15 @@
 	</li>
 </ul>
 <?php
+
 	echo $this->Default2->index(
 		$accompagnementscuis66,
 		array(
 			'Accompagnementcui66.typeaccompagnementcui66',
-			'Accompagnementcui66.datedebperiode',
-			'Accompagnementcui66.datefinperiode',
-			'Accompagnementcui66.nomentaccueil',
-			'Accompagnementcui66.objectifimmersion',
-			'Accompagnementcui66.datesignatureimmersion',
+			'Accompagnementcui66.datedebut' => array( 'type' => 'date' ),
+			'Accompagnementcui66.datefin' => array( 'type' => 'date' ),
+			'Accompagnementcui66.nomentaccueil' => array( 'type' => 'text' ),
+			'Accompagnementcui66.datesignature' => array( 'type' => 'date' ),
 			'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb de fichiers liés', 'type' => 'text' )
 		),
 		array(
@@ -64,6 +64,6 @@
 		array(
 			'id' => 'Back'
 		)
-	);
+	);  
 ?>
 </div>
