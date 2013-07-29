@@ -12,7 +12,7 @@
 		observeDisableFieldsetOnValue(
 			'Accompagnementcui66Typeaccompagnementcui66',
 			$( 'immersion' ),
-			['periode'],
+			['immersion'],
 			false,
 			true
 		);
@@ -33,8 +33,8 @@
 			true
 		);
 
-		dependantSelect( 'Accompagnementcui66MetieraffectationId', 'Accompagnementcui66SecteuraffectationId' );
-		try { $( 'Accompagnementcui66MetieraffectationId' ).onchange(); } catch(id) { }
+		dependantSelect( 'Periodeimmersioncui66MetieraffectationId', 'Periodeimmersioncui66SecteuraffectationId' );
+		try { $( 'Periodeimmersioncui66MetieraffectationId' ).onchange(); } catch(id) { }
 
 	});
 </script>
@@ -62,19 +62,20 @@
 	<fieldset>
 		<legend>L'ENTREPRISE D'ACCUEIL</legend>
 		<?php
+            if( Set::check( $this->request->data, 'Periodeimmersioncui66.id' ) ){
+                echo $this->Xform->input( 'Periodeimmersioncui66.id', array( 'type' => 'hidden' ) );
+            }
 			echo $this->Default->subform(
 				array(
-					'Accompagnementcui66.nomentaccueil' => array( 'required' => true ),
-					'Accompagnementcui66.numvoieentaccueil',
-					'Accompagnementcui66.typevoieentaccueil' => array( 'options' => $options['typevoie'] ),
-					'Accompagnementcui66.nomvoieentaccueil',
-					'Accompagnementcui66.compladrentaccueil',
-					'Accompagnementcui66.codepostalentaccueil',
-					'Accompagnementcui66.villeentaccueil',
-//					'Accompagnementcui66.numtelentaccueil',
-//					'Accompagnementcui66.emailentaccueil',
-					'Accompagnementcui66.activiteentaccueil',
-//					'Accompagnementcui66.siretentaccueil'
+                    'Periodeimmersioncui66.accompagnementcui66_id' => array( 'type' => 'hidden' ),
+					'Periodeimmersioncui66.nomentaccueil' => array( 'required' => true ),
+					'Periodeimmersioncui66.numvoieentaccueil',
+					'Periodeimmersioncui66.typevoieentaccueil' => array( 'options' => $options['typevoie'] ),
+					'Periodeimmersioncui66.nomvoieentaccueil',
+					'Periodeimmersioncui66.compladrentaccueil',
+					'Periodeimmersioncui66.codepostalentaccueil',
+					'Periodeimmersioncui66.villeentaccueil',
+					'Periodeimmersioncui66.activiteentaccueil'
 				),
 				array(
 					'options' => $options
@@ -87,8 +88,8 @@
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Accompagnementcui66.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
-					'Accompagnementcui66.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
+					'Periodeimmersioncui66.datedebperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false ),
+					'Periodeimmersioncui66.datefinperiode' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
 				),
 				array(
 					'options' => $options
@@ -98,16 +99,16 @@
 		<table class="periodeimmersion wide aere noborder">
 			<tr>
 				<td class="noborder mediumSize">Soit un nombre de jours équivalent à </td>
-				<td class="noborder mediumSize" id="Accompagnementcui66Nbjourperiode"></td>
+				<td class="noborder mediumSize" id="Periodeimmersioncui66Nbjourperiode"></td>
 			</tr>
 		</table>
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Accompagnementcui66.secteuraffectation_id' => array( 'empty' => true, 'options' => $secteursactivites ),
-					'Accompagnementcui66.metieraffectation_id' => array( 'empty' => true, 'options' => $options['Coderomemetierdsp66'] ),
-					'Accompagnementcui66.objectifimmersion' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Accompagnementcui66']['objectifimmersion'] ),
-					'Accompagnementcui66.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
+					'Periodeimmersioncui66.secteuraffectation_id' => array( 'empty' => true, 'options' => $secteursactivites ),
+					'Periodeimmersioncui66.metieraffectation_id' => array( 'empty' => true, 'options' => $options['Coderomemetierdsp66'] ),
+					'Periodeimmersioncui66.objectifimmersion' => array( 'required' => true, 'type' => 'radio', 'separator' => '<br />', 'options' => $options['Periodeimmersioncui66']['objectifimmersion'] ),
+					'Periodeimmersioncui66.datesignatureimmersion' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-2, 'maxYear' => date('Y')+2, 'empty' => false )
 				),
 				array(
 					'options' => $options
@@ -119,16 +120,16 @@
 
 	<script type="text/javascript" >
 		document.observe( "dom:loaded", function() {
-			<?php $fields = array( 'Accompagnementcui66Datedebperiode', 'Accompagnementcui66Datefinperiode' ); ?>
+			<?php $fields = array( 'Periodeimmersioncui66Datedebperiode', 'Periodeimmersioncui66Datefinperiode' ); ?>
 			<?php foreach( $fields as $field ):?>
 				<?php foreach( array( 'Day', 'Month', 'Year' ) as $suffix ):?>
 					Event.observe( $( '<?php echo "{$field}{$suffix}";?>' ), 'change', function() {
-						updateFieldFromDatesInterval(  '<?php echo $fields[0];?>', '<?php echo $fields[1];?>', 'Accompagnementcui66Nbjourperiode' );
+						updateFieldFromDatesInterval(  '<?php echo $fields[0];?>', '<?php echo $fields[1];?>', 'Periodeimmersioncui66Nbjourperiode' );
 					} );
 				<?php endforeach;?>
 			<?php endforeach;?>
 			
-			updateFieldFromDatesInterval( 'Accompagnementcui66Datedebperiode', 'Accompagnementcui66Datefinperiode', 'Accompagnementcui66Nbjourperiode' );
+			updateFieldFromDatesInterval( 'Periodeimmersioncui66Datedebperiode', 'Periodeimmersioncui66Datefinperiode', 'Periodeimmersioncui66Nbjourperiode' );
 		} );
 	</script>
 </fieldset>
@@ -138,7 +139,43 @@
 </fieldset>
 
 <fieldset id="bilans" class="invisible">
-	<p class="notice">En cours de développement .....</p>
+    <fieldset>
+        <legend>Bilan d'accompagnement</legend>
+        <?php
+            if( Set::check( $this->request->data, 'Bilancui66.id' ) ){
+                echo $this->Xform->input( 'Bilancui66.id', array( 'type' => 'hidden' ) );
+            }
+        ?>
+        <fieldset>
+            <legend>Période du bilan</legend>
+            <?php
+                echo $this->Default->subform(
+                    array(
+                        'Bilancui66.accompagnementcui66_id' => array( 'type' => 'hidden' ),
+                        'Bilancui66.datedebut' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 ),
+                        'Bilancui66.datefin' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
+        <fieldset class="invisible">
+            <?php
+                echo $this->Default->subform(
+                    array(
+                        'Bilancui66.orgsuivicui66_id' => array( 'options' => $structs, 'empty' => true ),
+                        'Bilancui66.observation',
+                        'Bilancui66.datesignaturebilan' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
+    </fieldset>
 </fieldset>
 
 <div class="submit">

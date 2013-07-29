@@ -142,12 +142,16 @@
 				else {
 					$motif = Set::classicExtract( $options['choixparcours'], $bilanparcour66['Bilanparcours66']['choixparcours'] );
 				}
+                
+                
+
+                
 				echo '<tr>
 					<td>'.h( $bilanparcour66['Dossier']['numdemrsa'] ).'</td>
 					<td>'.h( $this->Locale->date( 'Date::short', $bilanparcour66['Bilanparcours66']['datebilan'] ) ).'</td>
-					<td>'.h( $bilanparcour66['Personne']['qual'].' '.$bilanparcour66['Personne']['nom_complet_court'] ).'</td>
+					<td>'.h( $bilanparcour66['Personne']['nom_complet'] ).'</td>
 					<td>'.h( $bilanparcour66['Structurereferente']['lib_struc'] ).'</td>
-					<td>'.h( $bilanparcour66['Referent']['qual'].' '.$bilanparcour66['Referent']['nom_complet_court'] ).'</td>
+					<td>'.h( $bilanparcour66['Referent']['nom_complet'] ).'</td>
 					<td>'.h( Set::classicExtract( $options['proposition'], $bilanparcour66['Bilanparcours66']['proposition'] ) ).'</td>
 					<td>'.h( Set::enum( Set::classicExtract( $bilanparcour66, 'Bilanparcours66.positionbilan' ),  $options['positionbilan'] ) ).'</td>
 					<td>'.h( $motif ).'</td>'.

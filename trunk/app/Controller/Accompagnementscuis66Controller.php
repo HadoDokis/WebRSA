@@ -54,6 +54,7 @@
 			$this->set( 'qual', $this->Option->qual() );
 			$options = Set::merge(
 				$this->Accompagnementcui66->Cui->enums(),
+                $this->Accompagnementcui66->Periodeimmersioncui66->enums(),
 				$options
 			);
 			$typevoie = $this->Option->typevoie();
@@ -68,7 +69,7 @@
 				);
 			$this->set( 'secteursactivites', $secteursactivites );
 
-			$codesromemetiersdsps66 = $this->Accompagnementcui66->Cui->Personne->	Dsp->Libderact66Metier->find(
+			$codesromemetiersdsps66 = $this->Accompagnementcui66->Cui->Personne->Dsp->Libderact66Metier->find(
 					'all',
 					array(
 						'contain' => false,
@@ -78,6 +79,8 @@
 			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
 				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
 			}
+            
+            $this->set( 'structs', $this->Accompagnementcui66->Cui->Structurereferente->listeParType( array( 'cui' => true ) ) );
 
 			$this->set( 'options', $options );
 		}
@@ -193,6 +196,40 @@
 		}
 		
 		
+           
+        /**
+         * Fonction permettant de créer des champs virtuels pour les colonnes présentes dans le tableau
+         * L'affichage se fera selon le type d'accompagnement sélectionné
+         * 
+         * @return array
+         */
+
+       protected function _virtualDataIndex() {
+           return array(
+               '( CASE
+                   WHEN "Periodeimmersioncui66"."datedebperiode" IS NOT NULL THEN "Periodeimmersioncui66"."datedebperiode"
+                   WHEN "Bilancui66"."datedebut" IS NOT NULL THEN "Bilancui66"."datedebut"
+                   ELSE NULL
+               END ) AS "Accompagnementcui66__datedebut"',
+               '( CASE
+                   WHEN "Periodeimmersioncui66"."datefinperiode" IS NOT NULL THEN "Periodeimmersioncui66"."datefinperiode"
+                   WHEN "Bilancui66"."datefin" IS NOT NULL THEN "Bilancui66"."datefin"
+                   ELSE NULL
+               END ) AS "Accompagnementcui66__datefin"',
+               '( CASE
+                   WHEN "Periodeimmersioncui66"."datesignatureimmersion" IS NOT NULL THEN "Periodeimmersioncui66"."datesignatureimmersion"
+                   WHEN "Bilancui66"."datesignaturebilan" IS NOT NULL THEN "Bilancui66"."datesignaturebilan"
+                   ELSE NULL
+               END ) AS "Accompagnementcui66__datesignature"',
+               '( CASE
+                   WHEN "Periodeimmersioncui66"."nomentaccueil" IS NOT NULL THEN "Periodeimmersioncui66"."nomentaccueil"
+                   WHEN "Orgsuivicui66"."lib_struc" IS NOT NULL THEN "Orgsuivicui66"."lib_struc"
+                   ELSE NULL
+               END ) AS "Accompagnementcui66__nomentaccueil"',
+           );
+       }
+        
+        
 		/**
 		 *
 		 * @param integer $cui_id
@@ -221,14 +258,20 @@
 					'fields' => array_merge(
 						$this->Accompagnementcui66->fields(),
 						array(
-							$this->Accompagnementcui66->Fichiermodule->sqNbFichiersLies( $this->Accompagnementcui66, 'nb_fichiers_lies' )
-						)
+							$this->Accompagnementcui66->Fichiermodule->sqNbFichiersLies( $this->Accompagnementcui66, 'nb_fichiers_lies' )    
+                        ),
+                        $this->_virtualDataIndex()
 					),
 					'conditions' => array(
 						'Accompagnementcui66.cui_id' => $cui_id
 					),
 					'recursive' => -1,
-					'contain' => false
+					'joins' => array(
+                        $this->Accompagnementcui66->join( 'Bilancui66', array( 'type' => 'LEFT OUTER') ),
+                        $this->Accompagnementcui66->join( 'Formationcui66', array( 'type' => 'LEFT OUTER') ),
+                        $this->Accompagnementcui66->join( 'Periodeimmersioncui66', array( 'type' => 'LEFT OUTER') ),
+                        $this->Accompagnementcui66->Bilancui66->join( 'Orgsuivicui66', array( 'type' => 'LEFT OUTER') )
+                    )
 				)
 			);
 
@@ -271,13 +314,25 @@
 				$accompagnementcui66 = $this->Accompagnementcui66->find(
 					'first',
 					array(
+                        'fields' => array_merge(
+                            $this->Accompagnementcui66->fields(),
+                            $this->Accompagnementcui66->Bilancui66->fields(),
+                            $this->Accompagnementcui66->Formationcui66->fields(),
+                            $this->Accompagnementcui66->Periodeimmersioncui66->fields()
+                        ),
 						'conditions' => array(
 							'Accompagnementcui66.id' => $accompagnementcui66_id
 						),
+                        'joins' => array(
+                            $this->Accompagnementcui66->join( 'Bilancui66', array( 'type' => 'LEFT OUTER') ),
+                            $this->Accompagnementcui66->join( 'Formationcui66', array( 'type' => 'LEFT OUTER') ),
+                            $this->Accompagnementcui66->join( 'Periodeimmersioncui66', array( 'type' => 'LEFT OUTER') )
+                        ),
 						'contain' => false,
 						'recursive' => -1
 					)
 				);
+
 				$this->set( 'decisioncui66', $accompagnementcui66 );
 
 				$cui_id = Set::classicExtract( $accompagnementcui66, 'Accompagnementcui66.cui_id' );
@@ -324,28 +379,51 @@
 				$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
 			}
 
-			if ( !empty( $this->request->data ) ) {
+			if ( !empty( $this->request->data ) ) {               
                 $this->Accompagnementcui66->begin();
+                
+                $saved = $this->Accompagnementcui66->save( $this->request->data );                
+                
+                if( $this->request->data['Accompagnementcui66']['typeaccompagnementcui66'] == 'immersion' ) {
+                    $this->request->data['Periodeimmersioncui66']['accompagnementcui66_id'] = $this->Accompagnementcui66->id;
 
-				if( $this->Accompagnementcui66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-					$saved = $this->Accompagnementcui66->save( $this->request->data );
+                    $periodeimmersioncui66['Periodeimmersioncui66'] = $this->request->data['Periodeimmersioncui66'];
+                    $this->Accompagnementcui66->Periodeimmersioncui66->create( $periodeimmersioncui66 );
+                    $saved = $this->Accompagnementcui66->Periodeimmersioncui66->save() && $saved;
+                }
+                elseif($this->request->data['Accompagnementcui66']['typeaccompagnementcui66'] == 'bilan' ) {
+                    $this->request->data['Bilancui66']['accompagnementcui66_id'] = $this->Accompagnementcui66->id;
 
-					if( $saved ) {
-						$this->Accompagnementcui66->commit();
-                        $this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
-					}
-					else {
-						$this->Accompagnementcui66->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+                    $bilancui66['Bilancui66'] = $this->request->data['Bilancui66'];
+                    $this->Accompagnementcui66->Bilancui66->create( $bilancui66 );
+                    $saved = $this->Accompagnementcui66->Bilancui66->save() && $saved;
 
-				}
+                }
+                elseif($this->request->data['Accompagnementcui66']['typeaccompagnementcui66'] == 'formation' ) {
+                    $this->request->data['Formationcui66']['accompagnementcui66_id'] = $this->Accompagnementcui66->id;
+
+                    $formationcui66['Formationcui66'] = $this->request->data['Formationcui66'];
+                    $this->Accompagnementcui66->Formationcui66->create( $formationcui66 );
+                    $saved = $this->Accompagnementcui66->Formationcui66->save() && $saved;
+                }
+
+                if( $saved ) {
+                    $this->Accompagnementcui66->commit();
+                    $this->Jetons2->release( $dossier_id );
+                    $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                    $this->redirect( array( 'controller' => 'accompagnementscuis66', 'action' => 'index', $cui_id ) );
+                }
+                else {
+                    $this->Accompagnementcui66->rollback();
+                    $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+                }
 			}
 			else{
 				if( $this-> action == 'edit' ){
 					$this->request->data = $accompagnementcui66;
+                    if( !empty( $accompagnementcui66['Periodeimmersioncui66']['secteuraffectation_id'] ) && !empty($accompagnementcui66['Periodeimmersioncui66']['metieraffectation_id']) ) {
+                        $this->request->data['Periodeimmersioncui66']['metieraffectation_id'] = $accompagnementcui66['Periodeimmersioncui66']['secteuraffectation_id'].'_'.$accompagnementcui66['Periodeimmersioncui66']['metieraffectation_id'];
+                    }
 				}
 			}
 

@@ -360,6 +360,7 @@
 		'cohortenonoriente66' => 'cohortesnonorientes66',
 		'nonoriente66' => 'nonorientes66',
 		'gestionsanctionep58' => 'gestionssanctionseps58',
+        // CUI CG66
 		'propodecisioncui66' => 'proposdecisionscuis66',
 		'decisioncui66' => 'decisionscuis66',
 		'suspensioncui66' => 'suspensionscuis66',
@@ -370,6 +371,9 @@
         'motifrupturecui66_rupturecui66' => 'motifsrupturescuis66_rupturescuis66',
         'motifsuspensioncui66_suspensioncui66' => 'motifssuspensioncuis66_suspensionscuis66',
         'motifsuspensioncui66' => 'motifssuspensioncuis66',
+        'periodeimmersioncui66' => 'periodesimmersioncuis66',
+        'bilancui66' => 'bilanscuis66',
+        'formationcui66' => 'formationscuis66',
 		'offreinsertion' => 'offresinsertion',
 		'propoorientsocialecov58' => 'proposorientssocialescovs58',
 		'decisionpropoorientsocialecov58' => 'decisionsproposorientssocialescovs58',

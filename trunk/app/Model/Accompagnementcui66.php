@@ -22,7 +22,6 @@
 		public $actsAs = array(
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Containable',
-			'Enumerable',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'prestataire_id', 'metieraffectation_id' ),
 			),
@@ -62,27 +61,48 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+            'Bilancui66' => array(
+				'className' => 'Bilancui66',
+				'foreignKey' => 'accompagnementcui66_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+            'Formationcui66' => array(
+				'className' => 'Formationcui66',
+				'foreignKey' => 'accompagnementcui66_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+            'Periodeimmersioncui66' => array(
+				'className' => 'Periodeimmersioncui66',
+				'foreignKey' => 'accompagnementcui66_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
-		public $validate = array(
-			'typeaccompagnementcui66' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			'nomentaccueil' => array(
-				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'typeaccompagnementcui66', true, array( 'immersion' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
-			'objectifimmersion' => array(
-				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'typeaccompagnementcui66', true, array( 'immersion' ) ),
-					'message' => 'Champ obligatoire',
-				)
-			),
-		);
 
 
 		/**
