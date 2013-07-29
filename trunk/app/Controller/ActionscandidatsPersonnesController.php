@@ -533,22 +533,23 @@
 
 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
-			$detaildroitrsa = $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
-						$this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
-					),
-					'conditions' => array(
-						'Detaildroitrsa.dossier_id' => Hash::get( $personne, 'Dossier.id' )
-					),
-					'contain' => false
-				)
-			);
-			$personne = Hash::merge( $personne, $detaildroitrsa );
+            if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
+                $detaildroitrsa = $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->find(
+                    'first',
+                    array(
+                        'fields' => array_merge(
+                            $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+                            $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
+                        ),
+                        'conditions' => array(
+                            'Detaildroitrsa.dossier_id' => Hash::get( $personne, 'Dossier.id' )
+                        ),
+                        'contain' => false
+                    )
+                );
+                $personne = Hash::merge( $personne, $detaildroitrsa );
 
-			if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
+			
 				$contratinsertion = $this->{$this->modelClass}->Personne->Contratinsertion->find(
 					'first',
 					array(
