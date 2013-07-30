@@ -44,6 +44,7 @@
 				'options' => $options,
 				'id' => $theme,
 				'trClass' => $trClass,
+                'paginate' => 'Dossierep'
 			)
 		);
 	}
