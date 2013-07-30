@@ -37,27 +37,27 @@
 								);
 								
 								if( in_array( $id, $modeletypecourrierpcg66avecmontant ) ) {
-									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantsaisi", array(
+									echo $this->Xform->input( "Modeletraitementpcg66.montantsaisi", array(
 										'label' =>  "Montant calculé",
 										'type' => 'text',
-										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantsaisi']
+										'value' => $this->request->data['Modeletraitementpcg66']['montantsaisi']
 										)
 									);
 								}
 								
 								if( in_array( $id, $modeletypecourrierpcg66avecDates ) ) {
-									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantdatedebut", array(
+									echo $this->Xform->input( "Modeletraitementpcg66.montantdatedebut", array(
 										'label' =>  "Du",
 										'type' => 'date',
 										'dateFormat' => 'DMY',
-										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantdatedebut']
+										'value' => $this->request->data['Modeletraitementpcg66']['montantdatedebut']
 										)
 									);
-									echo $this->Xform->input( "Modeletraitementpcg66.{$id}.montantdatefin", array(
+									echo $this->Xform->input( "Modeletraitementpcg66.montantdatefin", array(
 										'label' =>  "Au",
 										'type' => 'date',
 										'dateFormat' => 'DMY',
-										'value' => $this->request->data['Modeletraitementpcg66'][$id]['montantdatefin']
+										'value' => $this->request->data['Modeletraitementpcg66']['montantdatefin']
 										)
 									);
 								}
