@@ -211,21 +211,25 @@
                '( CASE
                    WHEN "Periodeimmersioncui66"."datedebperiode" IS NOT NULL THEN "Periodeimmersioncui66"."datedebperiode"
                    WHEN "Bilancui66"."datedebut" IS NOT NULL THEN "Bilancui66"."datedebut"
+                   WHEN "Formationcui66"."datedebut" IS NOT NULL THEN "Formationcui66"."datedebut"
                    ELSE NULL
                END ) AS "Accompagnementcui66__datedebut"',
                '( CASE
                    WHEN "Periodeimmersioncui66"."datefinperiode" IS NOT NULL THEN "Periodeimmersioncui66"."datefinperiode"
                    WHEN "Bilancui66"."datefin" IS NOT NULL THEN "Bilancui66"."datefin"
+                   WHEN "Formationcui66"."datefin" IS NOT NULL THEN "Formationcui66"."datefin"
                    ELSE NULL
                END ) AS "Accompagnementcui66__datefin"',
                '( CASE
                    WHEN "Periodeimmersioncui66"."datesignatureimmersion" IS NOT NULL THEN "Periodeimmersioncui66"."datesignatureimmersion"
                    WHEN "Bilancui66"."datesignaturebilan" IS NOT NULL THEN "Bilancui66"."datesignaturebilan"
+                   WHEN "Formationcui66"."datesignatureformation" IS NOT NULL THEN "Formationcui66"."datesignatureformation"
                    ELSE NULL
                END ) AS "Accompagnementcui66__datesignature"',
                '( CASE
                    WHEN "Periodeimmersioncui66"."nomentaccueil" IS NOT NULL THEN "Periodeimmersioncui66"."nomentaccueil"
                    WHEN "Orgsuivicui66"."lib_struc" IS NOT NULL THEN "Orgsuivicui66"."lib_struc"
+                   WHEN "Orgsuivicui66formation"."lib_struc" IS NOT NULL THEN "Orgsuivicui66formation"."lib_struc"
                    ELSE NULL
                END ) AS "Accompagnementcui66__nomentaccueil"',
            );
@@ -272,7 +276,8 @@
                         $this->Accompagnementcui66->join( 'Bilancui66', array( 'type' => 'LEFT OUTER') ),
                         $this->Accompagnementcui66->join( 'Formationcui66', array( 'type' => 'LEFT OUTER') ),
                         $this->Accompagnementcui66->join( 'Periodeimmersioncui66', array( 'type' => 'LEFT OUTER') ),
-                        $this->Accompagnementcui66->Bilancui66->join( 'Orgsuivicui66', array( 'type' => 'LEFT OUTER') )
+                        $this->Accompagnementcui66->Bilancui66->join( 'Orgsuivicui66', array( 'type' => 'LEFT OUTER') ),
+                        $this->Accompagnementcui66->Formationcui66->join( 'Orgsuivicui66formation', array( 'type' => 'LEFT OUTER') ) //FIXME
                     ),
                     'order' => array(
                         'Accompagnementcui66.created DESC, Accompagnementcui66.id DESC'
@@ -438,9 +443,9 @@
                     
                     // Préchargement des infos sur les organismes de suivi du CUI pour le bilan
                     if( !empty( $cui['Cui']['orgsuivi_id'] ) ) {
-                        $this->request->data['Bilancui66']['orgsuivicui66_id'] = $cui['Cui']['orgsuivi_id'];
+                        $this->request->data['Bilancui66']['orgsuivicui66_id'] = $this->request->data['Formationcui66']['orgsuivicui66_id'] = $cui['Cui']['orgsuivi_id'];
                         if( !empty( $cui['Cui']['prestataire_id'] ) ) {
-                            $this->request->data['Bilancui66']['refsuivicui66_id'] = $cui['Cui']['orgsuivi_id'].'_'.$cui['Cui']['prestataire_id'];
+                            $this->request->data['Bilancui66']['refsuivicui66_id'] = $this->request->data['Formationcui66']['refsuivicui66_id'] = $cui['Cui']['orgsuivi_id'].'_'.$cui['Cui']['prestataire_id'];
                         }
                     }
                 }
