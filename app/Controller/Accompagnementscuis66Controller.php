@@ -273,6 +273,9 @@
                         $this->Accompagnementcui66->join( 'Formationcui66', array( 'type' => 'LEFT OUTER') ),
                         $this->Accompagnementcui66->join( 'Periodeimmersioncui66', array( 'type' => 'LEFT OUTER') ),
                         $this->Accompagnementcui66->Bilancui66->join( 'Orgsuivicui66', array( 'type' => 'LEFT OUTER') )
+                    ),
+                    'order' => array(
+                        'Accompagnementcui66.created DESC, Accompagnementcui66.id DESC'
                     )
 				)
 			);
@@ -354,14 +357,13 @@
 				)
 			);
 
-
 			$personne_id = Set::classicExtract( $cui, 'Cui.personne_id' );
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
-
-
+            
+                    
 			// On récupère l'utilisateur connecté et qui exécute l'action
 			$userConnected = $this->Session->read( 'Auth.User.id' );
 			$this->set( compact( 'userConnected' ) );
@@ -394,6 +396,7 @@
                     $saved = $this->Accompagnementcui66->Periodeimmersioncui66->save() && $saved;
                 }
                 elseif($this->request->data['Accompagnementcui66']['typeaccompagnementcui66'] == 'bilan' ) {
+                    
                     $this->request->data['Bilancui66']['accompagnementcui66_id'] = $this->Accompagnementcui66->id;
 
                     $bilancui66['Bilancui66'] = $this->request->data['Bilancui66'];
@@ -431,6 +434,16 @@
                         $this->request->data['Bilancui66']['refsuivicui66_id'] = $accompagnementcui66['Bilancui66']['orgsuivicui66_id'].'_'.$accompagnementcui66['Bilancui66']['refsuivicui66_id'];
                     }
 				}
+                else {
+                    
+                    // Préchargement des infos sur les organismes de suivi du CUI pour le bilan
+                    if( !empty( $cui['Cui']['orgsuivi_id'] ) ) {
+                        $this->request->data['Bilancui66']['orgsuivicui66_id'] = $cui['Cui']['orgsuivi_id'];
+                        if( !empty( $cui['Cui']['prestataire_id'] ) ) {
+                            $this->request->data['Bilancui66']['refsuivicui66_id'] = $cui['Cui']['orgsuivi_id'].'_'.$cui['Cui']['prestataire_id'];
+                        }
+                    }
+                }
 			}
 
 			$this->_setOptions();
