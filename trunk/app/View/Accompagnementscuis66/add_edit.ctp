@@ -138,7 +138,44 @@
 </fieldset>
 
 <fieldset id="formations" class="invisible">
-	<p class="notice">En cours de développement .....</p>
+	<fieldset>
+        <legend>Formations</legend>
+        <?php
+            if( Set::check( $this->request->data, 'Formationcui66.id' ) ){
+                echo $this->Xform->input( 'Formationcui66.id', array( 'type' => 'hidden' ) );
+            }
+        ?>
+        <fieldset>
+            <legend>Période de la formation</legend>
+            <?php
+                echo $this->Default->subform(
+                    array(
+                        'Formationcui66.accompagnementcui66_id' => array( 'type' => 'hidden' ),
+                        'Formationcui66.datedebut' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 ),
+                        'Formationcui66.datefin' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
+        <fieldset class="invisible">
+            <?php
+                echo $this->Default->subform(
+                    array(
+                        'Formationcui66.orgsuivicui66_id' => array( 'options' => $structs, 'empty' => true ),
+                        'Formationcui66.refsuivicui66_id' => array( 'options' => $prestataires, 'empty' => true ),
+                        'Formationcui66.observation',
+                        'Formationcui66.datesignatureformation' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
+        </fieldset>
+    </fieldset>
 </fieldset>
 
 <fieldset id="bilans" class="invisible">
