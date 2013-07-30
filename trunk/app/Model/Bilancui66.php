@@ -20,7 +20,11 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-//			'Formattable',
+			'Formattable' => array(
+                'suffix' => array(
+                    'refsuivicui66_id'
+                )
+            ),
             'Pgsqlcake.PgsqlAutovalidate'
 		);
 
@@ -35,6 +39,13 @@
             'Orgsuivicui66' => array(
 				'className' => 'Structurereferente',
 				'foreignKey' => 'orgsuivicui66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Refsuivicui66' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'refsuivicui66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

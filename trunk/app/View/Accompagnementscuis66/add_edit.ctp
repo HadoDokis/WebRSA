@@ -35,6 +35,9 @@
 
 		dependantSelect( 'Periodeimmersioncui66MetieraffectationId', 'Periodeimmersioncui66SecteuraffectationId' );
 		try { $( 'Periodeimmersioncui66MetieraffectationId' ).onchange(); } catch(id) { }
+        
+        dependantSelect( 'Bilancui66Refsuivicui66Id', 'Bilancui66Orgsuivicui66Id' );
+		try { $( 'Bilancui66Refsuivicui66Id' ).onchange(); } catch(id) { }
 
 	});
 </script>
@@ -166,6 +169,7 @@
                 echo $this->Default->subform(
                     array(
                         'Bilancui66.orgsuivicui66_id' => array( 'options' => $structs, 'empty' => true ),
+                        'Bilancui66.refsuivicui66_id' => array( 'options' => $prestataires, 'empty' => true ),
                         'Bilancui66.observation',
                         'Bilancui66.datesignaturebilan' => array( 'dateFormat' => 'DMY', 'minYear' => date('Y')-10, 'maxYear' => date('Y')+2 )
                     ),
