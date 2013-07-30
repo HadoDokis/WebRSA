@@ -26,6 +26,9 @@ msgid "Bilancui66.datefin"
 msgstr "Date de fin"
 
 msgid "Bilancui66.orgsuivicui66_id"
+msgstr "Organisme de suivi"
+
+msgid "Bilancui66.refsuivicui66_id"
 msgstr "Nom du rédacteur"
 
 msgid "Bilancui66.observation"

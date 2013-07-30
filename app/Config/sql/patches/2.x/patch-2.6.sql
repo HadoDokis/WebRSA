@@ -46,12 +46,17 @@ CREATE TABLE bilanscuis66(
     datefin                     DATE,
     observation                 TEXT,
     orgsuivicui66_id              INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    refsuivicui66_id              INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
     datesignaturebilan          DATE NOT NULL,
 	----------------------------------------------------------------------------
     created                     TIMESTAMP WITHOUT TIME ZONE,
     modified                    TIMESTAMP WITHOUT TIME ZONE
 );
+DROP INDEX IF EXISTS bilanscuis66_orgsuivicui66_id_idx;
+CREATE INDEX bilanscuis66_orgsuivicui66_id_idx ON bilanscuis66( orgsuivicui66_id );
 
+DROP INDEX IF EXISTS bilanscuis66_refsuivicui66_id_idx;
+CREATE INDEX bilanscuis66_refsuivicui66_id_idx ON bilanscuis66( refsuivicui66_id );
 --------------------------------------------------------------------------------
 
 DROP  TABLE IF EXISTS formationscuis66 CASCADE;

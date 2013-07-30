@@ -80,6 +80,8 @@
 				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
 			}
             
+            $this->set( 'prestataires', $this->Accompagnementcui66->Cui->Referent->listOptions() );
+            
             $this->set( 'structs', $this->Accompagnementcui66->Cui->Structurereferente->listeParType( array( 'cui' => true ) ) );
 
 			$this->set( 'options', $options );
@@ -423,6 +425,10 @@
 					$this->request->data = $accompagnementcui66;
                     if( !empty( $accompagnementcui66['Periodeimmersioncui66']['secteuraffectation_id'] ) && !empty($accompagnementcui66['Periodeimmersioncui66']['metieraffectation_id']) ) {
                         $this->request->data['Periodeimmersioncui66']['metieraffectation_id'] = $accompagnementcui66['Periodeimmersioncui66']['secteuraffectation_id'].'_'.$accompagnementcui66['Periodeimmersioncui66']['metieraffectation_id'];
+                    }
+                    
+                    if( !empty( $accompagnementcui66['Bilancui66']['orgsuivicui66_id'] ) && !empty($accompagnementcui66['Bilancui66']['refsuivicui66_id']) ) {
+                        $this->request->data['Bilancui66']['refsuivicui66_id'] = $accompagnementcui66['Bilancui66']['orgsuivicui66_id'].'_'.$accompagnementcui66['Bilancui66']['refsuivicui66_id'];
                     }
 				}
 			}
