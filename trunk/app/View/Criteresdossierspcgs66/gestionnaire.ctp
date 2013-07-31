@@ -37,7 +37,7 @@
                 );
                 echo $this->Search->etatDossierPCG66( $etatdossierpcg );
                 
-                echo $this->Xform->input( 'Decisiondossierocg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
+                echo $this->Xform->input( 'Decisiondossierpcg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
                 
                  echo $this->Default2->subform(
 					array(
@@ -63,6 +63,7 @@
                 
                 echo $this->Search->natpf( $natpf );
                 echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+                echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );
             ?>
         </fieldset>
 
