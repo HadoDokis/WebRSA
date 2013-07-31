@@ -2520,6 +2520,9 @@ msgstr "Recherche par traitements PCGs (CG66)"
 msgid "Criterestraitementspcgs66:index"
 msgstr "Formulaire de recherche par traitements PCGs (CG66)"
 
+msgid "Criterestraitementspcgs66:exportcsv"
+msgstr "Export CSV (CG66)"
+
 ###############################################################################
 
 msgid "Module:Decisionscuis66"
