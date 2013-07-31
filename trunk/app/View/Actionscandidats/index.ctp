@@ -3,7 +3,14 @@
 		'h1',
 		$this->pageTitle = __d( 'actioncandidat', "Actionscandidats::{$this->action}" )
 	);
+            
+    if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+	}
 ?>
+
+
+
 <?php
 	if( isset( $actionscandidats ) ) {
 		$pagination = $this->Xpaginator->paginationBlock( 'Actioncandidat', $this->passedArgs );
@@ -12,9 +19,6 @@
 		$pagination = '';
 	}
 ?>
-<?php if( empty( $actionscandidats ) ):?>
-	<p class="notice">Aucune action présente</p>
-<?php endif;?>
 	<ul class="actionMenu">
 		<?php
 			echo '<li>'.$this->Xhtml->addLink(
@@ -23,6 +27,52 @@
 			).' </li>';
 		?>
 	</ul>
+    <?php
+
+        echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
+            $this->Xhtml->image(
+                'icons/application_form_magnify.png',
+                array( 'alt' => '' )
+            ).' Formulaire',
+            '#',
+            array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+        ).'</li></ul>';
+    ?>
+    <?php echo $this->Xform->create( 'Actioncandidat', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+		<fieldset>
+			<?php echo $this->Xform->input( 'Actioncandidat.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+
+			<legend>Filtrer par Actions</legend>
+			<?php
+				echo $this->Default2->subform(
+					array(
+						'Actioncandidat.name',
+                        'Actioncandidat.themecode',
+                        'Actioncandidat.codefamille',
+                        'Actioncandidat.numcodefamille',
+                        'Actioncandidat.lieuaction',
+                        'Actioncandidat.cantonaction' => array( 'options' => $cantons ),
+                        'Actioncandidat.hasfichecandidature',
+                        'Actioncandidat.actif' => array( 'label' => 'Active ?' )
+					),
+					array(
+						'options' => $options
+					)
+				);
+                echo $this->Search->date( 'Actioncandidat.ddaction');
+                echo $this->Search->date( 'Actioncandidat.dfaction');
+
+			?>
+		</fieldset>
+
+		<div class="submit noprint">
+			<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+			<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
+		</div>
+
+<?php echo $this->Xform->end();?>
+    
+<?php if( !empty( $this->request->data ) ) :?>
 	<?php if( !empty( $actionscandidats ) ):?>
         <?php echo $pagination;?>
 		<table class="tooltips">
@@ -94,7 +144,11 @@
 			</tbody>
 		</table>
     <?php echo $pagination;?>
-	<?php  endif;?>
+
+    <?php else:?>
+        <p class="notice">Aucune action présente</p>
+    <?php endif;?>
+<?php  endif;?>
 
 
 

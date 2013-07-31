@@ -19,7 +19,7 @@
 		public $name = 'Contactspartenaires';
 		public $uses = array( 'Contactpartenaire', 'Partenaire', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
-		public $components = array( 'Default' );
+		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'view' => 'Contactspartenaires:index',
@@ -30,13 +30,11 @@
 		 *
 		 * @return type
 		 */
-		public function beforeFilter() {
-			parent::beforeFilter();
-
+		public function _setOptions() {
 			$options = array();
 			foreach( array( 'Partenaire' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
-				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
+                $options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list', array( 'order' => array( "{$linkedModel}.libstruc ASC" ) ) ) );
 			}
 			$this->set( 'qual', $this->Option->qual() );
 
@@ -51,21 +49,34 @@
 		*/
 
 		public function index() {
-            $this->Contactpartenaire->Behaviors->attach( 'Occurences' );
-            $querydata = $this->Contactpartenaire->qdOccurencesExists(
-                array(
-                    'fields' => array_merge(
-                        $this->Contactpartenaire->fields(),
-                        $this->Contactpartenaire->Partenaire->fields()
-                    ),
-                    'order' => array('Contactpartenaire.nom ASC')
-                )
-            );
-            $this->paginate = $querydata;
-            $contactspartenaires = $this->paginate( 'Contactpartenaire' );
-            $this->set( compact('contactspartenaires'));
-
+//            $this->Contactpartenaire->Behaviors->attach( 'Occurences' );
+//            $querydata = $this->Contactpartenaire->qdOccurencesExists(
+//                array(
+//                    'fields' => array_merge(
+//                        $this->Contactpartenaire->fields(),
+//                        $this->Contactpartenaire->Partenaire->fields()
+//                    ),
+//                    'order' => array('Contactpartenaire.nom ASC')
+//                )
+//            );
+//            $this->paginate = $querydata;
+//            $contactspartenaires = $this->paginate( 'Contactpartenaire' );
+//            $this->_setOptions();
+//            $this->set( compact('contactspartenaires'));
+//
+//		}
+            
+            if( !empty( $this->request->data ) ) {
+                $this->Contactpartenaire->Behaviors->attach( 'Occurences' );
+                $querydata = $this->Contactpartenaire->search( $this->request->data );
+                $querydata = $this->Contactpartenaire->qdOccurencesExists( $querydata );
+                $this->paginate = $querydata;
+                $contactspartenaires = $this->paginate( 'Contactpartenaire' );
+                $this->set( compact('contactspartenaires'));
+			}
+			$this->_setOptions();
 		}
+        
 
 		/**
 		*
@@ -91,6 +102,7 @@
 
 		protected function _add_edit(){
 			$args = func_get_args();
+            $this->_setOptions();
 			$this->Default->{$this->action}( $args );
 		}
 

@@ -81,5 +81,42 @@
 				'postgres'  => '( "%s"."qual" || \' \' || "%s"."nom" || \' \' || "%s"."prenom" )'
 			)
 		);
+        
+        
+        /**
+		*	Recherche des contacts de partenaires dans le paramétrage de l'application
+		*
+		*/
+		public function search( $criteres ) {
+			/// Conditions de base
+			$conditions = array();
+
+			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
+			$filtersContactspartenaires = array();
+			foreach( array( 'nom', 'prenom' ) as $critereContactpartenaire ) {
+				if( isset( $criteres['Contactpartenaire'][$critereContactpartenaire] ) && !empty( $criteres['Contactpartenaire'][$critereContactpartenaire] ) ) {
+					$conditions[] = 'Contactpartenaire.'.$critereContactpartenaire.' ILIKE \''.$this->wildcard( $criteres['Contactpartenaire'][$critereContactpartenaire] ).'\'';
+				}
+			}
+            
+            if( !empty( $criteres['Contactpartenaire']['partenaire_id'] ) ) {
+                $conditions[] = array( 'Partenaire.id' => $criteres['Contactpartenaire']['partenaire_id'] );
+            }
+
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Partenaire->fields()
+				),
+				'order' => array( 'Contactpartenaire.nom ASC', 'Contactpartenaire.prenom ASC' ),
+				'joins' => array(
+					$this->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'recursive' => -1,
+				'conditions' => $conditions
+			);
+
+			return $query;
+		}
 	}
 ?>

@@ -19,7 +19,7 @@
 		public $name = 'Actionscandidats';
 		public $uses = array( 'Actioncandidat', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Theme', 'Default2', 'Fileuploader' );
-		public $components = array( 'Default', 'Fileuploader' );
+		public $components = array( 'Default', 'Fileuploader', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 		
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 
@@ -49,7 +49,7 @@
 				$options['Zonegeographique'] = $this->Actioncandidat->Zonegeographique->find( 'list' );
 				$zonesselected = $this->Actioncandidat->Zonegeographique->find( 'list', array( 'fields' => array( 'id' ) ) );
 				$this->set( compact( 'zonesselected' ) );
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+				
 
 // 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$conditionsChargeinsertionSecretaire = Configure::read( 'Chargeinsertion.Secretaire.group_id' );
@@ -85,6 +85,7 @@
 					);
 // 				}
 			}
+            $this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 
             $motifssortie = $this->Actioncandidat->Motifsortie->find( 'list', array( 'fields' => array( 'Motifsortie.name'  ) ) );
             $this->set( 'motifssortie', $motifssortie );
@@ -146,51 +147,12 @@
 		public function index() {
 			$this->Actioncandidat->recursive = -1;
 
-			$querydata = array(
-				'joins' => array(
-					$this->Actioncandidat->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Actioncandidat->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Actioncandidat->join( 'Chargeinsertion', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Actioncandidat->join( 'Secretaire', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Actioncandidat->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
-				),
-				'fields' => array_merge(
-					$this->Actioncandidat->fields(),
-					$this->Actioncandidat->Contactpartenaire->fields(),
-					$this->Actioncandidat->Contactpartenaire->Partenaire->fields(),
-					$this->Actioncandidat->Chargeinsertion->fields(),
-					$this->Actioncandidat->Secretaire->fields()
-				)
-			);
-
-            
-            $this->Actioncandidat->Behaviors->attach( 'Occurences' );
-            $querydata = $this->Actioncandidat->qdOccurencesExists(
-                $querydata,
-                array(
-                    'Fichiermodule'
-                )
-            );
-            
-            $querydata['fields'] = array_merge(
-                $querydata['fields'],
-                array(
-                    $this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, 'nb_fichiers_lies' ),
-                    $this->Actioncandidat->Referent->sqVirtualField( 'nom_complet' )
-                )
-            );
-            
-            $querydata['group'] = array_merge(
-                $querydata['group'],
-                array(
-                    '( '.$this->Actioncandidat->Fichiermodule->sqNbFichiersLies( $this->Actioncandidat, null ).')',
-                    $this->Actioncandidat->Referent->sqVirtualField( 'nom_complet', false )
-                )
-            );
-
-            $this->paginate = $querydata;
-            $actionscandidats = $this->paginate( 'Actioncandidat' );
-            $this->set( compact('actionscandidats'));
+            if( !empty( $this->request->data ) ) {
+                $querydata = $this->Actioncandidat->search( $this->request->data );
+                $this->paginate = $querydata;
+                $actionscandidats = $this->paginate( 'Actioncandidat' );
+                $this->set( compact('actionscandidats'));
+            }
 
 			$this->_setOptions();
 		}
