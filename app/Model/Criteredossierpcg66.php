@@ -188,7 +188,7 @@
             }
             
             // Organismes auxquels le dossier a été transmis 	 
-            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' ); 	 
+            $organismes_id = Set::extract( $params, 'Decisiondossierpcg66.org_id' ); 	 
             if( !empty( $organismes_id ) ) { 	 
                     $conditions[] = 'Decisiondossierpcg66.id IN ( '. 	 
                             ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq( 	 
@@ -212,6 +212,12 @@
                             ) 	 
                     .' )'; 	 
             }
+            
+            $nbpropo = Hash::get( $params, 'Decisiondossierpcg66.nbproposition' );
+            if( isset($nbpropo) && $nbpropo != '') {
+                $conditions[] = array( $Dossierpcg66->sqVirtualField( 'nbpropositions', false ) => $nbpropo );
+            }
+
 //debug($conditions);
             
 			$query = array(
@@ -415,7 +421,7 @@
 			}
    
             // Organismes auxquels le dossier a été transmis
-            $organismes_id = Set::extract( $params, 'Decisiondossierocg66.org_id' );
+            $organismes_id = Set::extract( $params, 'Decisiondossierpcg66.org_id' );
             if( !empty( $organismes_id ) ) {
                 $conditions[] = 'Decisiondossierpcg66.id IN ( '.
                     ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
@@ -440,6 +446,12 @@
                 .' )';
             }
 
+            $nbpropo = Hash::get( $params, 'Decisiondossierpcg66.nbproposition' );
+            if( isset($nbpropo) && $nbpropo != '' && is_numeric($nbpropo) ) {
+                $conditions[] = array( $Dossierpcg66->sqVirtualField( 'nbpropositions', false ) => $nbpropo );
+            }
+            
+            
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 			$query = array(
 				'fields' => array(
