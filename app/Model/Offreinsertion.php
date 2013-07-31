@@ -38,7 +38,7 @@
 			$codefamille = Set::extract( $params, 'Search.Actioncandidat.codefamille' );
 			$numcodefamille = Set::extract( $params, 'Search.Actioncandidat.numcodefamille' );
 			$correspondant = Set::extract( $params, 'Search.Actioncandidat.referent_id' );
-			$hasfichecandidature = Set::extract( $params, 'Search.Actioncandidat.hasfichecandidature' );
+			$hasfichecandidature = Hash::get( $params, 'Search.Actioncandidat.hasfichecandidature' );
 			$isactive = Set::extract( $params, 'Search.Actioncandidat.actif' );
 
 			if( !empty( $actionname ) ){
@@ -73,7 +73,7 @@
 				$conditions[] = 'Actioncandidat.referent_id = \''.Sanitize::clean( $correspondant, array( 'encode' => false ) ).'\'';
 			}
 						
-			if( isset( $hasfichecandidature ) && !empty( $hasfichecandidature ) ){
+			if( isset( $hasfichecandidature ) && ( $hasfichecandidature != '' ) ){
 				$conditions[] = 'Actioncandidat.hasfichecandidature = \''.$hasfichecandidature.'\'';
 			}
 						

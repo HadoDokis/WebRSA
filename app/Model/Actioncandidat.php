@@ -36,7 +36,8 @@
 						'domain' => 'actioncandidat'
 					),
 				)
-			)
+			),
+            'Conditionnable'
 		);
 
 		public $validate = array(
@@ -411,5 +412,82 @@
 			$success = $this->_regenerateCache();
 			return $success;
 		}
+        
+        
+        public function search( $criteres ) {
+            
+            /// Conditions de base
+			$conditions = array();
+            
+            $hasFiche = Hash::get( $criteres, 'Actioncandidat.hasfichecandidature' );
+            $isactive = Hash::get( $criteres, 'Actioncandidat.actif' );
+
+			// Critères sur l'action
+			foreach( array( 'name', 'lieuaction', 'cantonaction', 'themecode', 'codefamille', 'numcodefamille' ) as $critereAction ) {
+				if( isset( $criteres['Actioncandidat'][$critereAction] ) && !empty( $criteres['Actioncandidat'][$critereAction] ) ) {
+					$conditions[] = 'Actioncandidat.'.$critereAction.' ILIKE \''.$this->wildcard( $criteres['Actioncandidat'][$critereAction] ).'\'';
+				}
+			}
+
+			// Critère sur le fait ou non de posséder une fiche de candidature
+			if( isset( $hasFiche ) && $hasFiche != '' ) {
+                $conditions[] = 'Actioncandidat.hasfichecandidature = \''.$hasFiche.'\'';
+			}
+            
+            // Critère sur le fait ou non d'être active
+            if( isset( $isactive ) && !empty( $isactive ) ){
+				$conditions[] = 'Actioncandidat.actif = \''.Sanitize::clean( $isactive, array( 'encode' => false )  ).'\'';
+			}
+            
+            $conditions = $this->conditionsDates( $conditions, $criteres, 'Actioncandidat.ddaction' );
+            $conditions = $this->conditionsDates( $conditions, $criteres, 'Actioncandidat.dfaction' );
+            
+            
+             $querydata = array(
+                'joins' => array(
+                    $this->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Contactpartenaire->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->join( 'Chargeinsertion', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->join( 'Secretaire', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) )
+                ),
+                'fields' => array_merge(
+                    $this->fields(),
+                    $this->Contactpartenaire->fields(),
+                    $this->Contactpartenaire->Partenaire->fields(),
+                    $this->Chargeinsertion->fields(),
+                    $this->Secretaire->fields()
+                ),
+                 'conditions' => $conditions,
+                 'recursive' => -1
+            );
+
+
+            $this->Behaviors->attach( 'Occurences' );
+            $querydata = $this->qdOccurencesExists(
+                $querydata,
+                array(
+                    'Fichiermodule'
+                )
+            );
+
+            $querydata['fields'] = array_merge(
+                $querydata['fields'],
+                array(
+                    $this->Fichiermodule->sqNbFichiersLies( $this, 'nb_fichiers_lies' ),
+                    $this->Referent->sqVirtualField( 'nom_complet' )
+                )
+            );
+
+            $querydata['group'] = array_merge(
+                $querydata['group'],
+                array(
+                    '( '.$this->Fichiermodule->sqNbFichiersLies( $this, null ).')',
+                    $this->Referent->sqVirtualField( 'nom_complet', false )
+                )
+            );
+
+            return $querydata;
+        }
 	}
 ?>
