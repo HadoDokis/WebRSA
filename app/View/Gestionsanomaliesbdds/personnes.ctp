@@ -87,6 +87,8 @@
 					<th>sexe</th>
 					<th>rgnai</th>
 					<th>nir</th>
+                    <th>idassedic</th>
+                    <th>nomcomnai</th>
 					<th>natprest</th>
 					<th>rolepers</th>
 				</tr>
@@ -109,10 +111,12 @@
 						h( $personne['Personne']['prenom'] ),
 						h( $personne['Personne']['prenom2'] ),
 						h( $personne['Personne']['prenom3'] ),
-						h( $personne['Personne']['dtnai'] ),
+						h( $this->Type2->format( $personne, 'Personne.dtnai' ) ),
 						h( $personne['Personne']['sexe'] ),
 						h( $personne['Personne']['rgnai'] ),
 						h( $personne['Personne']['nir'] ),
+                        h( $personne['Personne']['idassedic'] ),
+                        h( $personne['Personne']['nomcomnai'] ),
 						h( $personne['Prestation']['natprest'] ),
 						h( $personne['Prestation']['rolepers'] ),
 					),
