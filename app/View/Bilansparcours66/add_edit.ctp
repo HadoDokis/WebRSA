@@ -443,8 +443,8 @@
                         }
                     }
                     
+                    echo $this->Xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'O' ) );
                     
-
                     foreach( $options['Bilanparcours66']['orientationpro_id'] as $key => $value ) {
                         echo $this->Xform->input( 'Bilanparcours66.sansep_typeorientprincipale_id', array( 'type' => 'hidden', 'value' => $key ) );
                         
