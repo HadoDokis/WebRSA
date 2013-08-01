@@ -85,6 +85,7 @@
 
 			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
 			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
+			$options['Bilanparcours66']['orientationpro_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['Emploi'] );
 
 			$options['Bilanparcours66']['nvtypeorient_id'] = $this->Typeorient->listOptionsUnderParent();
 			$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );

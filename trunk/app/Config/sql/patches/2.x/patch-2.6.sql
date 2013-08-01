@@ -194,9 +194,19 @@ INSERT INTO periodesimmersioncuis66 ( accompagnementcui66_id, nomentaccueil, num
 		ORDER BY oldaccompagnementscuis66.id
 );
 
- --FIXME: attention au CASCADE, être bien sûr que toutes les odnnées sont bien migrées afin de ne pas supprimer de cui lié !!
+ --FIXME: attention au CASCADE, être bien sûr que toutes les données sont bien migrées afin de ne pas supprimer de cui lié !!
 -- DROP TABLE IF EXISTS oldaccompagnementscuis66 (( CASCADE ));
- --FIXME: attention au CASCADE, être bien sûr que toutes les odnnées sont bien migrées afin de ne pas supprimer de cui lié !!
+ --FIXME: attention au CASCADE, être bien sûr que toutes les données sont bien migrées afin de ne pas supprimer de cui lié !!
+
+--------------------------------------------------------------------------------
+-- 20130801 : Ajout dans le bilan de parcours de choisir si on fait 
+--              un maintien ou une réorientation sans passage en EP
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'bilansparcours66', 'choixsanspassageep', 'VARCHAR(13)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'bilansparcours66', 'bilansparcours66_choixsanspassageep_in_list_chk' );
+ALTER TABLE bilansparcours66 ADD CONSTRAINT bilansparcours66_choixsanspassageep_in_list_chk CHECK ( cakephp_validate_in_list( choixsanspassageep, ARRAY['maintien','reorientation'] ) );
+
+UPDATE bilansparcours66 SET choixsanspassageep='maintien' WHERE choixsanspassageep IS NULL AND proposition='traitement';
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

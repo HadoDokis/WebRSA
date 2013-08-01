@@ -309,10 +309,19 @@
 			echo $this->Xhtml->tag( 'h3', $tmp );
 		?>
 		<fieldset id="traitement" class="invisible">
+            <?php
+                echo $this->Default2->subform(
+                    array(
+                        'Bilanparcours66.choixsanspassageep' => array( 'type' => 'radio', 'required' => true )
+                    ),
+                    array(
+                        'options' => $options
+                    )
+                );
+            ?>
 			<fieldset id="cgOrientationActuelle">
 				<legend>Maintien de l'orientation SOCIALE</legend>
 				<?php
-
 						if ( $this->action == 'edit' ) {
 							$defaultvaluetypeorient_id = $this->request->data['Bilanparcours66']['nvtypeorient_id'];
 							$defaultvaluestructurereferente_id = implode( '_', array( $this->request->data['Bilanparcours66']['nvtypeorient_id'], $this->request->data['Bilanparcours66']['nvstructurereferente_id'] ) );
@@ -405,6 +414,54 @@
 					?>
 				</fieldset>
 			</fieldset>
+            
+            
+            <fieldset id="cgReorientationEmploi">
+                <legend>Réorientation vers PE</legend>
+                <?php
+                    if ( $this->action == 'edit' ) {
+                        $defaultvaluetypeorient_id = $this->request->data['Bilanparcours66']['nvtypeorient_id'];
+                        $defaultvaluestructurereferente_id = implode( '_', array( $this->request->data['Bilanparcours66']['nvtypeorient_id'], $this->request->data['Bilanparcours66']['nvstructurereferente_id'] ) );
+
+                        echo $this->Xhtml->tag(
+                            'p',
+                            'Orientation (au moment de la création du bilan de parcours) : '.Set::extract( $this->request->data, 'Orientstruct.Typeorient.lib_type_orient' )
+                        );
+                    }
+                    else {
+                        if( !empty( $personne['Orientstruct'] ) ) {
+                            $defaultvaluetypeorient_id = ( isset( $personne['Orientstruct'][0]['typeorient_id'] ) ? $personne['Orientstruct'][0]['typeorient_id'] : null );
+                            $defaultvaluestructurereferente_id = implode( '_', array( $personne['Orientstruct'][0]['typeorient_id'], $personne['Orientstruct'][0]['structurereferente_id'] ) );
+
+                            echo $this->Xhtml->tag(
+                                'p',
+                                'Orientation actuelle : '.Set::extract( $personne, 'Orientstruct.0.Typeorient.lib_type_orient' )
+                            );
+                        }
+                        else{
+                            $defaultvaluestructurereferente_id = $defaultvaluetypeorient_id = null;
+                        }
+                    }
+                    
+                    
+
+                    foreach( $options['Bilanparcours66']['orientationpro_id'] as $key => $value ) {
+                        echo $this->Xform->input( 'Bilanparcours66.sansep_typeorientprincipale_id', array( 'type' => 'hidden', 'value' => $key ) );
+                        
+                        echo $this->Default2->subform(
+                            array(
+                                'Bilanparcours66.nvtypeorient_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvtypeorientIdPESansEp', 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key] ),
+                                'Bilanparcours66.nvstructurereferente_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvstructurereferenteIdPESansEp', 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
+                            ),
+                            array(
+                                'options' => $options,
+                                'domain' => $domain
+                            )
+                        );
+                    }
+                ?>
+            </fieldset>
+            
 		</fieldset>
 	</fieldset>
 	<fieldset>
@@ -1645,4 +1702,26 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			disableAndHideFormPart( maintienOrientMemeRefDiv );
 		}
 	}
+    
+    
+    observeDisableFieldsetOnRadioValue(
+        'Bilan',
+        'data[Bilanparcours66][choixsanspassageep]',
+        $( 'cgOrientationActuelle' ),
+        'maintien',
+        false,
+        true
+    );
+    
+    observeDisableFieldsetOnRadioValue(
+        'Bilan',
+        'data[Bilanparcours66][choixsanspassageep]',
+        $( 'cgReorientationEmploi' ),
+        'reorientation',
+        false,
+        true
+    );
+    
+    dependantSelect( 'Bilanparcours66NvstructurereferenteIdPESansEp', 'Bilanparcours66NvtypeorientIdPESansEp' );
+    try { $( 'Bilanparcours66NvstructurereferenteIdPESansEp' ).onchange(); } catch(id) { }
 </script>
