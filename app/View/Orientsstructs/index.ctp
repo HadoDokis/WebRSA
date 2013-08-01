@@ -356,7 +356,8 @@
 										&& $last_orientstruct_suppressible
 									)
 								),
-								true
+                                'Confirmer la suppression ?'
+//								true
 							),
 							$this->Default2->button(
 								'filelink',

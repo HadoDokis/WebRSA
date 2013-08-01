@@ -504,3 +504,12 @@ msgstr "Raison de l'annulation"
 
 msgid "Bilanparcours66.serviceinstructeur_id"
 msgstr "Maison sociale"
+
+msgid "Bilanparcours66.choixsanspassageep"
+msgstr "Choix sans passage en EP"
+
+msgid "ENUM::CHOIXSANSPASSAGEEP::maintien"
+msgstr "Maintien de l'orientation SOCIALE"
+
+msgid "ENUM::CHOIXSANSPASSAGEEP::reorientation"
+msgstr "Réorientation Pôle Emploi"
