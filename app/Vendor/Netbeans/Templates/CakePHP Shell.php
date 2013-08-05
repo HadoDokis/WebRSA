@@ -20,29 +20,32 @@
 	{
 
 		/**
-		 * startup
-		 *
-		 * @return void
+		 * Démarrage du shell
 		 */
 		public function startup() {
+			parent::startup();
 		}
 
 		/**
-		 * Main function Prints out the list of shells.
-		 *
-		 * @return void
+		 * Lignes de bienvenue.
+		 */
+		protected function _welcome() {
+			parent::_welcome();
+		}
+
+		/**
+		 * Méthode principale.
 		 */
 		public function main() {
+			$this->_stop( self::SUCCESS );
 		}
 
 		/**
-		 * get the option parser
-		 *
-		 * @return void
+		 * Paramétrages et aides du shell.
 		 */
 		public function getOptionParser() {
-			$parser = parent::getOptionParser();
-			return $parser;
+			$Parser = parent::getOptionParser();
+			return $Parser;
 		}
 	}
 ?>

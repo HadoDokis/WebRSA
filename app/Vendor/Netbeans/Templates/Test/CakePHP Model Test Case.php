@@ -17,12 +17,10 @@
 	 *
 	 * @package app.Test.Case.Model
 	 */
-<?php
 	class ${name} extends CakeTestCase
 	{
-
 		/**
-		 * Fixtures utilisés par ces tests unitaires.
+		 * Fixtures utilisés.
 		 *
 		 * @var array
 		 */
@@ -30,18 +28,14 @@
 		);
 
 		/**
-		 * Set up the test
-		 *
-		 * @return void
+		 * Préparation du test.
 		 */
 		public function setUp() {
 			parent::setUp();
 		}
 
 		/**
-		 * tearDown method
-		 *
-		 * @return void
+		 * Nettoyage postérieur au test.
 		 */
 		public function tearDown() {
 			parent::tearDown();
@@ -49,10 +43,9 @@
 
 		/**
 		 * Test de la méthode ${class_name(name)?replace("Test", "", "r")}::method()
-		 *
-		 * @return void
 		 */
 		public function testMethod() {
+			$this->markTestIncomplete( 'Ce test n\'a pas encoré été implémenté.' );
 		}
 	}
 ?>

@@ -13,10 +13,6 @@
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
     </fileobject>
-    <fileobject name="CakePHP Fixture.php">
-        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
-        <attr name="template" boolvalue="true"/>
-    </fileobject>
     <fileobject name="CakePHP Helper.php">
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
@@ -26,6 +22,11 @@
         <attr name="template" boolvalue="true"/>
     </fileobject>
     <fileobject name="CakePHP Shell.php">
+        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+        <attr name="template" boolvalue="true"/>
+    </fileobject>
+    <fileobject name="CakePHP Utility.php">
+        <attr name="displayName" stringvalue="CakePHP Utility"/>
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
     </fileobject>

@@ -49,8 +49,6 @@
 
 		/**
 		 * Pagination sur les <élément>s de la table.
-		 *
-		 * @return void
 		 */
 		public function index() {
 			$this->paginate = array(
@@ -65,8 +63,6 @@
 
 		/**
 		 * Formulaire d'ajout d'un élémént.
-		 *
-		 * @return void
 		 */
 		public function add() {
 			$args = func_get_args();

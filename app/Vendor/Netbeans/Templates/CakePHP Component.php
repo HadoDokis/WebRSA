@@ -43,7 +43,6 @@
 		 * Appelée avant Controller::beforeFilter().
 		 *
 		 * @param Controller $controller Controller with components to initialize
-		 * @return void
 		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::initialize
 		 */
 		public function initialize( Controller $controller ) {
@@ -54,7 +53,6 @@
 		 * Called after the Controller::beforeFilter() and before the controller action
 		 *
 		 * @param Controller $controller Controller with components to startup
-		 * @return void
 		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::startup
 		 */
 		public function startup( Controller $controller ) {
@@ -65,7 +63,6 @@
 		 * the view class is loaded, and before Controller::render()
 		 *
 		 * @param Controller $controller Controller with components to beforeRender
-		 * @return void
 		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::beforeRender
 		 */
 		public function beforeRender( Controller $controller ) {
@@ -75,7 +72,6 @@
 		 * Called after Controller::render() and before the output is printed to the browser.
 		 *
 		 * @param Controller $controller Controller with components to shutdown
-		 * @return void
 		 * @link @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::shutdown
 		 */
 		public function shutdown( Controller $controller ) {
