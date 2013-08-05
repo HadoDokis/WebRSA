@@ -22,7 +22,7 @@
 	class ${name} extends CakeTestCase
 	{
 		/**
-		 * Fixtures utilisés par ces tests unitaires.
+		 * Fixtures utilisés.
 		 *
 		 * @var array
 		 */
@@ -31,8 +31,6 @@
 
 		/**
 		 * Préparation du test.
-		 *
-		 * @return void
 		 */
 		public function setUp() {
 			parent::setUp();
@@ -43,8 +41,6 @@
 
 		/**
 		 * Nettoyage postérieur au test.
-		 *
-		 * @return void
 		 */
 		public function tearDown() {
 			parent::tearDown();
@@ -53,13 +49,9 @@
 
 		/**
 		 * Test de la méthode ${class_name(name)?replace("Test", "", "r")}::method()
-		 *
-		 * @return void
 		 */
 		public function testMethod() {
-			$result = $this->${class_name(name)?replace("HelperTest", "", "r")}->method();
-			$expected = null;
-			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+			$this->markTestIncomplete( 'Ce test n\'a pas encoré été implémenté.' );
 		}
 	}
 ?>

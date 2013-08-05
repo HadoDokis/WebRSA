@@ -14,7 +14,7 @@
 	/**
 	 * La classe ${name} ...
 	 *
-	 * @package       app.View.Helper
+	 * @package app.View.Helper
 	 */
 	class ${name} extends AppHelper
 	{
@@ -31,7 +31,6 @@
 		 * Overridden in subclasses.
 		 *
 		 * @param string $viewFile The view file that is going to be rendered
-		 * @return void
 		 */
 		public function beforeRender($viewFile) {
 		}
@@ -43,7 +42,6 @@
 		 * Overridden in subclasses.
 		 *
 		 * @param string $viewFile The view file that was rendered.
-		 * @return void
 		 */
 		public function afterRender($viewFile) {
 		}
@@ -54,7 +52,6 @@
 		 * Overridden in subclasses.
 		 *
 		 * @param string $layoutFile The layout about to be rendered.
-		 * @return void
 		 */
 		public function beforeLayout($layoutFile) {
 		}
@@ -65,7 +62,6 @@
 		 * Overridden in subclasses.
 		 *
 		 * @param string $layoutFile The layout file that was rendered.
-		 * @return void
 		 */
 		public function afterLayout($layoutFile) {
 		}
