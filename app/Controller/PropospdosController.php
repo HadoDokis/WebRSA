@@ -282,6 +282,16 @@
 			$this->Fileuploader->fileview( $id );
 		}
 
+        /**
+		 * Téléchargement des fichiers préalablement associés
+		 *
+		 * @param integer $fichiermodule_id
+		 */
+		public function download( $fichiermodule_id ) {
+			$this->assert( !empty( $fichiermodule_id ), 'error404' );
+			$this->Fileuploader->download( $fichiermodule_id );
+		}
+        
 		/**
 		 *
 		 */
@@ -389,13 +399,17 @@
 
                 $this->request->data['Decisionpropopdo'] = array( $this->request->data['Decisionpropopdo'] );
 //debug($this->request->data);
-				$saved = $this->Propopdo->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
+				$saved = $this->Propopdo->saveResultAsBool( $this->Propopdo->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) );
 				if( $saved ) {
-					// Sauvegarde des fichiers liés à une PDO
-					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
-					$saved = $this->Fileuploader->saveFichiers(
-									$dir, !Set::classicExtract( $this->request->data, "Propopdo.haspiece" ), ( ( $this->action == 'add' ) ? $this->Propopdo->id : $id )
-							) && $saved;
+                    if( $this->request->data['Propopdo']['haspiece'] != '0' ) {
+                        // Sauvegarde des fichiers liés à une PDO
+                        $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
+                        $saved = $this->Fileuploader->saveFichiers(
+                            $dir,
+                            !Set::classicExtract( $this->request->data, "Propopdo.haspiece" ),
+                            ( ( $this->action == 'add' ) ? $this->Propopdo->id : $id )
+                        ) && $saved;
+                    }
 				}
 
 				if( $saved ) {
@@ -413,9 +427,34 @@
 			//Affichage des données
 			elseif( $this->action == 'edit' ) {
 				$this->request->data = $pdo;
-				$fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
+//				$fichiers = $this->Fileuploader->fichiers( $pdo['Propopdo']['id'] );
 
 				$this->set( 'etatdossierpdo', $pdo['Propopdo']['etatdossierpdo'] );
+			}
+
+            if( $this->action == 'edit' ) {
+				$fichiersEnBase = $this->Propopdo->Fichiermodule->find(
+					'all',
+					array(
+						'fields' => array(
+							'Fichiermodule.id',
+							'Fichiermodule.name',
+							'Fichiermodule.fk_value',
+							'Fichiermodule.modele',
+							'Fichiermodule.cmspath',
+							'Fichiermodule.mime',
+							'Fichiermodule.created',
+							'Fichiermodule.modified',
+						),
+						'conditions' => array(
+							'Fichiermodule.modele' => 'Propopdo',
+							'Fichiermodule.fk_value' => $id,
+						),
+						'contain' => false
+					)
+				);
+				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
+				$this->set( 'fichiersEnBase', $fichiersEnBase );
 			}
 
 			$this->set( 'personne_id', $personne_id );
@@ -423,16 +462,6 @@
 			$this->set( 'fichiers', $fichiers );
 			$this->_setOptions();
 			$this->render( 'add_edit_'.Configure::read( 'nom_form_pdo_cg' ) );
-		}
-
-		/**
-		 * Téléchargement des fichiers préalablement associés à un traitement donné
-		 *
-		 * @param type $fichiermodule_id
-		 */
-		public function download( $fichiermodule_id ) {
-			$this->assert( !empty( $fichiermodule_id ), 'error404' );
-			$this->Fileuploader->download( $fichiermodule_id );
 		}
 
 		/**

@@ -55,7 +55,11 @@
 			'haspiece' => array(
 				'rule' => 'notEmpty',
 				'message' => 'Champ obligatoire'
-			)
+			),
+            'structurereferente_id' => array(
+                'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire'
+            )
 		);
 
 		public $belongsTo = array(

@@ -89,9 +89,15 @@
 			<fieldset id="filecontainer-piece" class="noborder invisible">
 				<?php
 					echo $this->Fileuploader->create(
-						$fichiers,
-						array( 'action' => 'ajaxfileupload' )
-					);
+                        $fichiers,
+                        Router::url( array( 'action' => 'ajaxfileupload' ) )
+                    );
+
+                    if( !empty( $fichiersEnBase ) ) {
+                        echo $this->Fileuploader->results(
+                            $fichiersEnBase
+                        );
+                    }
 				?>
 			</fieldset>
 		</fieldset>
