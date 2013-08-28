@@ -138,6 +138,11 @@
 
 				$querydata = $this->_qd( $this->request->data['Search'] );
 
+                if( !empty( $structurereferente_id ) ) {
+                    $querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+                }
+
+
 				$this->paginate = $querydata;
 				$cers93 = $this->paginate(
 					$this->Contratinsertion->Personne,
@@ -850,8 +855,6 @@
 			else if( in_array( $etape, array( 'premierelecture', 'validationcs', 'validationcadre' ) ) ) {
 				$this->Workflowscers93->assertUserCg();
 			}
-			// TODO: en faire quelque chose ?
-			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
 
 			$data = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortecer93->search(
@@ -862,6 +865,11 @@
 				null
 			);
 			unset( $querydata['limit'] );
+
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+            if( !empty( $structurereferente_id ) ) {
+                $querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
+            }
 
 			// TODO: factoriser
 			if( $etape == 'saisie' ) {
