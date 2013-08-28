@@ -301,7 +301,7 @@
 					)
 				);
 			}
-
+//debug($statut);
 			/// Dossiers lockés
 			if( !empty( $lockedDossiers ) && ( $statut != 'visualisation' && ( $mode_operation != 'impression' ) ) ) {
 				if( is_array( $lockedDossiers ) ) {
