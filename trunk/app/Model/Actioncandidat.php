@@ -268,28 +268,28 @@
 
 		public function listePourFicheCandidature( $codelocalite, $isactif, $hasFiche = array() ) {
 			$conditions = array();
-            if( Configure::read( 'Cg.departement') != 66 ) {
+            /*if( Configure::read( 'Cg.departement') != 66 ) {
                 $conditions[] = 'Actioncandidat.id IN (
-							'.$this->ActioncandidatZonegeographique->sq(
-								array(
-									'alias' => 'actionscandidats_zonesgeographiques',
-									'fields' => array( 'actionscandidats_zonesgeographiques.actioncandidat_id' ),
-									'conditions' => array(
-										'actionscandidats_zonesgeographiques.zonegeographique_id IN ('.ClassRegistry::init( 'Canton' )->sq(
-											array(
-												'alias' => 'cantons',
-												'fields' => array( 'cantons.zonegeographique_id' ),
-												'conditions' => array(
-													'cantons.numcomptt' => $codelocalite
-												),
-												'contain' => false
-											)
-										).' )'
-									)
-								)
-							).'
-						)';
-            }
+                        '.$this->ActioncandidatZonegeographique->sq(
+                            array(
+                                'alias' => 'actionscandidats_zonesgeographiques',
+                                'fields' => array( 'actionscandidats_zonesgeographiques.actioncandidat_id' ),
+                                'conditions' => array(
+                                    'actionscandidats_zonesgeographiques.zonegeographique_id IN ('.ClassRegistry::init( 'Canton' )->sq(
+                                        array(
+                                            'alias' => 'cantons',
+                                            'fields' => array( 'cantons.zonegeographique_id' ),
+                                            'conditions' => array(
+                                                'cantons.numcomptt' => $codelocalite
+                                            ),
+                                            'contain' => false
+                                        )
+                                    ).' )'
+                                )
+                            )
+                        ).'
+                    )';
+            }*/
 
             $actionscandidats = $this->find(
 				'list',
