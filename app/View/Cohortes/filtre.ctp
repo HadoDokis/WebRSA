@@ -67,7 +67,7 @@
 				}
 				echo $this->Form->input( 'Filtre.date_valid_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ), $dateValidFromSelected ) );
 
-				echo $this->Form->input( 'Filtre.date_valid_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) );
+				echo $this->Form->input( 'Filtre.date_valid_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) );
 			?>
 		</fieldset>
 		<fieldset>
@@ -84,7 +84,7 @@
 				}
 				echo $this->Form->input( 'Filtre.date_impression_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 5 ), $dateImpressionFromSelected ) );
 
-				echo $this->Form->input( 'Filtre.date_impression_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) );
+				echo $this->Form->input( 'Filtre.date_impression_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 5 ) );
 			?>
 		</fieldset>
 		</fieldset>
@@ -100,7 +100,7 @@
 			}
 			echo $this->Form->input( 'Filtre.dtdemrsa_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120 ), $dtdemrsaFromSelected ) );
 
-			echo $this->Form->input( 'Filtre.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) );
+			echo $this->Form->input( 'Filtre.dtdemrsa_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) );
 		?>
 	</fieldset>
 	<fieldset>

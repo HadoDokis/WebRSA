@@ -77,7 +77,7 @@
 				$dtdemrsa_to = Set::check( $this->request->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->request->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Form->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dtdemrsa_from ) );?>
-			<?php echo $this->Form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
+			<?php echo $this->Form->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5, 'selected' => $dtdemrsa_to ) );?>
 		</fieldset>
 		<?php
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
@@ -91,11 +91,11 @@
 	<?php
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
 		echo $this->Search->blocAllocataire( $trancheage );
-		if( Configure::read( 'Cg.departement' ) == 66 ) {
+// 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset>';
 			echo $this->Xform->input( 'Prestation.rolepers', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $chooserolepers, 'empty' => true ) );
 			echo '</fieldset>';
-		}
+// 		}
 	?>
 
 	<fieldset>

@@ -72,7 +72,7 @@
 						$datebilan_to = Set::check( $this->request->data, 'Bilanparcours66.datebilan_to' ) ? Set::extract( $this->request->data, 'Bilanparcours66.datebilan_to' ) : strtotime( 'now' );
 					?>
 					<?php echo $this->Xform->input( 'Bilanparcours66.datebilan_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_from ) );?>
-					<?php echo $this->Xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
+					<?php echo $this->Xform->input( 'Bilanparcours66.datebilan_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datebilan_to ) );?>
 				</fieldset>
 				<?php
 					echo $this->Form->input( 'Bilanparcours66.hasmanifestation', array( 'label' => 'L\'allocataire s\'est-il manifesté ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );

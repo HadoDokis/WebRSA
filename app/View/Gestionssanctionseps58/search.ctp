@@ -44,7 +44,7 @@
 				$dateseance_to = Set::check( $this->request->data, 'Search.Commissionep.dateseance_to' ) ? Set::extract( $this->request->data, 'Search.Commissionep.datecomite_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Xform->input( 'Search.Commissionep.dateseance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_from ) ); ?>
-			<?php echo $this->Xform->input( 'Search.Commissionep.dateseance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) ); ?>
+			<?php echo $this->Xform->input( 'Search.Commissionep.dateseance_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) ); ?>
 		</fieldset>
 	</fieldset>
 	<?php if( $this->request->action == 'traitement' ): ?>
@@ -69,7 +69,7 @@
 
 				echo $this->Xform->input( 'Search.Dossier.dtdemrsa_from', Set::merge( array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 20 ), $dtdemrsaFromSelected ) );
 
-				echo $this->Xform->input( 'Search.Dossier.dtdemrsa_to', Set::merge( array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20 ), $dtdemrsaToSelected ) );
+				echo $this->Xform->input( 'Search.Dossier.dtdemrsa_to', Set::merge( array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20 ), $dtdemrsaToSelected ) );
 			?>
 		</fieldset>
 		<fieldset>

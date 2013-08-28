@@ -60,7 +60,7 @@
 					$datesignature_to = Set::check( $this->request->data, 'Search.ActioncandidatPersonne.datesignature_to' ) ? Set::extract( $this->request->data, 'Search.Actioncandidat.datesignature_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Xform->input( 'Search.ActioncandidatPersonne.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
-				<?php echo $this->Xform->input( 'Search.ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
+				<?php echo $this->Xform->input( 'Search.ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
 			</fieldset>
 
 	<div class="submit noprint">

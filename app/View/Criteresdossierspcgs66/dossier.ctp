@@ -56,7 +56,7 @@
 				$datereceptionpdo_to = Set::check( $this->request->data, 'Dossierpcg66.datereceptionpdo_to' ) ? Set::extract( $this->request->data, 'Dossierpcg66.datereceptionpdo_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Form->input( 'Dossierpcg66.datereceptionpdo_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datereceptionpdo_from ) );?>
-			<?php echo $this->Form->input( 'Dossierpcg66.datereceptionpdo_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datereceptionpdo_to ) );?>
+			<?php echo $this->Form->input( 'Dossierpcg66.datereceptionpdo_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datereceptionpdo_to ) );?>
 		</fieldset>
 	<?php
 		///Formulaire de recherche pour les PDOs
@@ -95,7 +95,7 @@
             $datevalidation_to = Set::check( $this->request->data, 'Decisiondossierpcg66.datevalidation_to' ) ? Set::extract( $this->request->data, 'Dossierpcg66.datevalidation_to' ) : strtotime( 'now' );
         ?>
         <?php echo $this->Form->input( 'Decisiondossierpcg66.datevalidation_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datevalidation_from ) );?>
-        <?php echo $this->Form->input( 'Decisiondossierpcg66.datevalidation_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datevalidation_to ) );?>
+        <?php echo $this->Form->input( 'Decisiondossierpcg66.datevalidation_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datevalidation_to ) );?>
     </fieldset>
 
     <!-- Par date de transmission à l'OP-->
@@ -107,7 +107,7 @@
             $datetransmissionop_to = Set::check( $this->request->data, 'Decisiondossierpcg66.datetransmissionop_to' ) ? Set::extract( $this->request->data, 'Dossierpcg66.datetransmissionop_to' ) : strtotime( 'now' );
         ?>
         <?php echo $this->Form->input( 'Decisiondossierpcg66.datetransmissionop_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datetransmissionop_from ) );?>
-        <?php echo $this->Form->input( 'Decisiondossierpcg66.datetransmissionop_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datetransmissionop_to ) );?>
+        <?php echo $this->Form->input( 'Decisiondossierpcg66.datetransmissionop_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $datetransmissionop_to ) );?>
     </fieldset>
     <?php echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );?>
 </fieldset>

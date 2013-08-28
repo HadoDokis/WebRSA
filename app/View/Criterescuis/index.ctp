@@ -62,7 +62,7 @@
 				$datecontrat_to = Set::check( $this->request->data, 'Cui.datecontrat_to' ) ? Set::extract( $this->request->data, 'Cui.datecontrat_to' ) : strtotime( 'now' );
 
 				echo $this->Form->input( 'Cui.datecontrat_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );
-				echo $this->Form->input( 'Cui.datecontrat_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
+				echo $this->Form->input( 'Cui.datecontrat_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
 			?>
 		</fieldset>
 		<?php
@@ -86,7 +86,7 @@
 				$datecontrat_to = Set::check( $this->request->data, 'Cui.datefintitresejour_to' ) ? Set::extract( $this->request->data, 'Cui.datefintitresejour_to' ) : strtotime( 'now' );
 
 				echo $this->Form->input( 'Cui.datefintitresejour_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecontrat_from ) );
-				echo $this->Form->input( 'Cui.datefintitresejour_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
+				echo $this->Form->input( 'Cui.datefintitresejour_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5,  'selected' => $datecontrat_to ) );
 			?>
 		</fieldset>
 </fieldset>

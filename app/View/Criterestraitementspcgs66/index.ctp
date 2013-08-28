@@ -56,7 +56,7 @@
 				$dateecheance_to = Set::check( $this->request->data, 'Traitementpcg66.dateecheance_to' ) ? Set::extract( $this->request->data, 'Traitementpcg66.dateecheance_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Form->input( 'Traitementpcg66.dateecheance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'selected' => $dateecheance_from ) );?>
-			<?php echo $this->Form->input( 'Traitementpcg66.dateecheance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $dateecheance_to ) );?>
+			<?php echo $this->Form->input( 'Traitementpcg66.dateecheance_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $dateecheance_to ) );?>
 		</fieldset>
 
 		<?php echo $this->Xform->input( 'Traitementpcg66.daterevision', array( 'label' => 'Filtrer par date de révision du traitement', 'type' => 'checkbox' ) );?>
@@ -67,7 +67,7 @@
 				$daterevision_to = Set::check( $this->request->data, 'Traitementpcg66.daterevision_to' ) ? Set::extract( $this->request->data, 'Traitementpcg66.daterevision_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'selected' => $daterevision_from ) );?>
-			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $daterevision_to ) );?>
+			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $daterevision_to ) );?>
 		</fieldset>
 	<?php
 		///Formulaire de recherche pour les PDOs
