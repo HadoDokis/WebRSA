@@ -743,7 +743,6 @@
                         $data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
                         $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
                     }
-                    //LAALALALALAL
 
 					if( !empty( $this->validationErrors ) ) {
 						debug( $this->validationErrors );
