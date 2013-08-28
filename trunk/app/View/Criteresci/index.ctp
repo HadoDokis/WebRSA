@@ -77,7 +77,7 @@
 					$created_to = Set::check( $this->request->data, 'Filtre.created_to' ) ? Set::extract( $this->request->data, 'Filtre.created_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Form->input( 'Filtre.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.created_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
+				<?php echo $this->Form->input( 'Filtre.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
@@ -105,7 +105,7 @@
 					$dd_ci_to = Set::check( $this->request->data, 'Filtre.dd_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.dd_ci_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Form->input( 'Filtre.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.dd_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
+				<?php echo $this->Form->input( 'Filtre.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
 			</fieldset>
 
 			<!-- Filtre sur la date de fin du CER -->
@@ -117,7 +117,7 @@
 					$df_ci_to = Set::check( $this->request->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Form->input( 'Filtre.df_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.df_ci_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
+				<?php echo $this->Form->input( 'Filtre.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.arriveaecheance', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  ); ?>

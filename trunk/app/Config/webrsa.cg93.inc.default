@@ -540,7 +540,7 @@
 					'date_valid' => false,
 					// Du (inclus)
 					'date_valid_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
-					// Au (exclus)
+					// Au (inclus)
 					'date_valid_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
 				),
 				'Situationdossierrsa' => array(
@@ -567,7 +567,7 @@
 						'dddesignation' => false,
 						// Du (inclus)
 						'dddesignation_from' => date( 'Y-m-d', strtotime( '-1 month' ) ),
-						// Au (exclus)
+						// Au (inclus)
 						'dddesignation_to' => date( 'Y-m-d', strtotime( '+1 day' ) ),
 					),
 					'Pagination' => array(

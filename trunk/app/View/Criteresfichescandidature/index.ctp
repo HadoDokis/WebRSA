@@ -62,7 +62,7 @@
 				$dtdemrsa_to = Set::check( $this->request->data, 'Dossier.dtdemrsa_to' ) ? Set::extract( $this->request->data, 'Dossier.dtdemrsa_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Xform->input( 'Dossier.dtdemrsa_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_from ) );?>
-			<?php echo $this->Xform->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_to ) );?>
+			<?php echo $this->Xform->input( 'Dossier.dtdemrsa_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dtdemrsa_to ) );?>
 		</fieldset>
 
 	</fieldset>
@@ -93,7 +93,7 @@
 				$datesignature_to = Set::check( $this->request->data, 'ActioncandidatPersonne.datesignature_to' ) ? Set::extract( $this->request->data, 'ActioncandidatPersonne.datesignature_to' ) : strtotime( 'now' );
 			?>
 			<?php echo $this->Xform->input( 'ActioncandidatPersonne.datesignature_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_from ) );?>
-			<?php echo $this->Xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
+			<?php echo $this->Xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
 		</fieldset>
 	</fieldset>
 

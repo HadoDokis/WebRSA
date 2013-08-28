@@ -53,7 +53,7 @@
 					$datedecisionpdo_to = Set::check( $this->request->data, 'Search.Propopdo.datedecisionpdo_to' ) ? Set::extract( $this->request->data, 'Search.Propopdo.datedecisionpdo_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Form->input( 'Search.Propopdo.datedecisionpdo_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_from ) );?>
-				<?php echo $this->Form->input( 'Search.Propopdo.datedecisionpdo_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
+				<?php echo $this->Form->input( 'Search.Propopdo.datedecisionpdo_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
 			</fieldset>
 		<?php
 			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );

@@ -84,7 +84,7 @@
                     $datedemandeapre_to = Set::check( $this->request->data, 'Filtre.datedemandeapre_to' ) ? Set::extract( $this->request->data, 'Filtre.datedemandeapre_to' ) : strtotime( 'now' );
                 ?>
                 <?php echo $this->Xform->input( 'Filtre.datedemandeapre_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_from ) );?>
-                <?php echo $this->Xform->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
+                <?php echo $this->Xform->input( 'Filtre.datedemandeapre_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedemandeapre_to ) );?>
             </fieldset>
 
             <?php ?>

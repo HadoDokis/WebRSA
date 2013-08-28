@@ -118,7 +118,7 @@
 					$dateseance_to = Set::check( $this->request->data, 'Commissionep.dateseance_to' ) ? Set::extract( $this->request->data, 'Commissionep.datecomite_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Xform->input( 'Commissionep.dateseance_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_from ) );?>
-				<?php echo $this->Xform->input( 'Commissionep.dateseance_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
+				<?php echo $this->Xform->input( 'Commissionep.dateseance_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $dateseance_to ) );?>
 			</fieldset>
 
 	</fieldset>

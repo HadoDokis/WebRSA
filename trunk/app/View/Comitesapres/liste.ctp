@@ -42,7 +42,7 @@
 					$datecomite_to = Set::check( $this->request->data, 'Comiteapre.datecomite_to' ) ? Set::extract( $this->request->data, 'Comiteapre.datecomite_to' ) : strtotime( 'now' );
 				?>
 				<?php echo $this->Xform->input( 'Comiteapre.datecomite_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_from ) );?>
-				<?php echo $this->Xform->input( 'Comiteapre.datecomite_to', array( 'label' => 'Au (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
+				<?php echo $this->Xform->input( 'Comiteapre.datecomite_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $datecomite_to ) );?>
 			</fieldset>
 
 	</fieldset>
