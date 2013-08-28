@@ -301,7 +301,7 @@
 		echo $this->Default->subform(
 			array(
 				'ActioncandidatPersonne.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-				'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select' )
+				'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actionsfiche )
 			),
 			array(
 				'domain' => $domain,

@@ -575,11 +575,11 @@
 			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Hash::get( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
 
-			///Récupération de la liste des structures référentes liés uniquement à l'APRE
+			///Récupération de la liste des structures référentes 
 			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions();
 			$this->set( 'structs', $structs );
 
-			///Récupération de la liste des référents liés à l'APRE
+			///Récupération de la liste des référents 
 			$referents = $this->ActioncandidatPersonne->Personne->Referent->listOptions();
 			$this->set( 'referents', $referents );
 
