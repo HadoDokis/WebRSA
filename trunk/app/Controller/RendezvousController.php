@@ -613,7 +613,7 @@
 						)
 					);
 					// On récupère le dernier référent actif et on charge la liste déroulante avec sa valeur
-					if( !empty( $personneReferent ) ) {
+					if( !empty($this->request->data) && !empty( $personneReferent ) ) {
 						$this->request->data['Rendezvous']['referent_id'] = $this->request->data['Rendezvous']['structurereferente_id'].'_'.$personneReferent['PersonneReferent']['referent_id'];
 					}
 				}
