@@ -20,7 +20,7 @@
             <tr class="main">
                 <!-- TODO: traductions -->
                 <th rowspan="2"></th>
-                <th title="Nombre de participants prévisionnel">Nombre de participants prévisionnel</th>
+                <th>Nombre de participants prévisionnel</th>
                 <th colspan="3">Report des participants de l'année précédente, le cas échéant</th>
                 <th colspan="3">Entrées enregistrées, au titre de la période d'exécution considérée</th>
                 <th colspan="3">Sorties enregistrées, au titre de la période d'exécution considérée</th>
