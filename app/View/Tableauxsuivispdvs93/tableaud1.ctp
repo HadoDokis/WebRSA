@@ -21,14 +21,14 @@
 				<tr class="main">
 					<!-- TODO: traductions -->
 					<th rowspan="2"></th>
-					<th>Nombre de participants prévisionnel</th>
+					<th title="Nombre de participants prévisionnel">Nb de partic. prévisio.</th>
 					<th colspan="3">Report des participants de l'année précédente, le cas échéant</th>
 					<th colspan="3">Entrées enregistrées, au titre de la période d'exécution considérée</th>
 					<th colspan="3">Sorties enregistrées, au titre de la période d'exécution considérée</th>
 					<th colspan="3">Nombre de participants à l'action au 31/12/<?php echo $annee;?></th>
 				</tr>
 				<tr class="main">
-					<th>total</th>
+					<th>Total</th>
 					<?php for( $i = 0 ; $i < 4 ; $i++ ):?>
 						<th>Total</th>
 						<th>Hommes</th>
