@@ -4,44 +4,44 @@
 	$annee = Hash::get( $this->request->data, 'Search.annee' );
 ?>
 <?php if( isset( $results ) ): ?>
+    <?php
+        if( $index == 0 ) {
+            $class = 'first';
+        }
+        else if( $index + 1 == count( $categories ) ) {
+            $class = 'last';
+        }
+        else {
+            $class = 'middle';
+        }
+    ?>
+    <table class="tableaud1 <?php echo $class;?>">
+        <thead>
+            <tr class="main">
+                <!-- TODO: traductions -->
+                <th rowspan="2"></th>
+                <th title="Nombre de participants prévisionnel">Nombre de participants prévisionnel</th>
+                <th colspan="3">Report des participants de l'année précédente, le cas échéant</th>
+                <th colspan="3">Entrées enregistrées, au titre de la période d'exécution considérée</th>
+                <th colspan="3">Sorties enregistrées, au titre de la période d'exécution considérée</th>
+                <th colspan="3">Nombre de participants à l'action au 31/12/<?php echo $annee;?></th>
+            </tr>
+            <tr class="main">
+                <th>Total</th>
+                <?php for( $i = 0 ; $i < 4 ; $i++ ):?>
+                    <th>Total</th>
+                    <th>Hommes</th>
+                    <th>Femmes</th>
+                <?php endfor;?>
+            </tr>
+        </thead>
+        <tbody>
 	<?php foreach( $categories as $categorie => $foos ):?>
-		<?php
-			if( $index == 0 ) {
-				$class = 'first';
-			}
-			else if( $index + 1 == count( $categories ) ) {
-				$class = 'last';
-			}
-			else {
-				$class = 'middle';
-			}
-		?>
-		<table class="tableaud1 <?php echo $class;?>">
-			<thead>
-				<tr class="main">
-					<!-- TODO: traductions -->
-					<th rowspan="2"></th>
-					<th title="Nombre de participants prévisionnel">Nb de partic. prévisio.</th>
-					<th colspan="3">Report des participants de l'année précédente, le cas échéant</th>
-					<th colspan="3">Entrées enregistrées, au titre de la période d'exécution considérée</th>
-					<th colspan="3">Sorties enregistrées, au titre de la période d'exécution considérée</th>
-					<th colspan="3">Nombre de participants à l'action au 31/12/<?php echo $annee;?></th>
-				</tr>
-				<tr class="main">
-					<th>Total</th>
-					<?php for( $i = 0 ; $i < 4 ; $i++ ):?>
-						<th>Total</th>
-						<th>Hommes</th>
-						<th>Femmes</th>
-					<?php endfor;?>
-				</tr>
-				<?php if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ):?>
-				<tr class="category">
-					<th colspan="14"><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th><!-- FIXME: traduction -->
-				</tr>
-				<?php endif;?>
-			</thead>
-			<tbody>
+            <?php if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ):?>
+            <tr class="category">
+                <th colspan="14"><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th><!-- FIXME: traduction -->
+            </tr>
+            <?php endif;?>
 				<?php foreach( $foos as $key => $label ):?>
 				<!-- Présentation des lignes "Non scolarisé" et "Diplômes étrangers non reconnus en France" -->
 				<?php if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ):?>
@@ -90,9 +90,10 @@
 					<td class="number"><?php echo $this->Locale->number( $lineTotal['femme'] );?></td>
 				</tr>
 				<?php endforeach;?>
+	<?php endforeach;?>
 			</tbody>
 		</table>
 		<?php $index++;?>
-	<?php endforeach;?>
+
 	<?php require_once( dirname( __FILE__ ).DS.'footer.ctp' );?>
 <?php endif;?>
