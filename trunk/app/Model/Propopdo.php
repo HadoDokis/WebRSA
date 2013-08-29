@@ -505,100 +505,39 @@
 		}
 
 		public function getCourrierPdo( $propopdo_id, $user_id ) {
-			$queryData = array(
-				'fields' => array(
-					'Propopdo.id',
-					'Propopdo.personne_id',
-					'Propopdo.typepdo_id',
-					'Propopdo.typenotifpdo_id',
-					'Propopdo.originepdo_id',
-					'Propopdo.datereceptionpdo',
-					'Propopdo.motifpdo',
-					'Propopdo.orgpayeur',
-					'Propopdo.serviceinstructeur_id',
-					'Propopdo.user_id',
-					'Propopdo.categoriegeneral',
-					'Propopdo.iscomplet',
-					'Propopdo.categoriedetail',
-					'Propopdo.etatdossierpdo',
-					'Decisionpropopdo.decisionpdo_id',
-					'Decisionpropopdo.datedecisionpdo',
-					'Decisionpropopdo.commentairepdo',
-					'Decisionpdo.libelle',
-					'Decisionpdo.modeleodt',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.qual',
-					'Foyer.sitfam',
-					'Adresse.numvoie',
-					'Adresse.typevoie',
-					'Adresse.nomvoie',
-					'Adresse.compladr',
-					'Adresse.codepos',
-					'Adresse.locaadr',
-					'Dossier.matricule',
-				),
-				'recursive' => -1,
-				'joins' => array(
-					array(
-						'table'      => 'personnes',
-						'alias'      => 'Personne',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propopdo.personne_id = Personne.id' ),
-					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Personne.foyer_id = Foyer.id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Foyer.id = Adressefoyer.foyer_id',
-							'Adressefoyer.id IN (
-								'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'decisionspropospdos',
-						'alias'      => 'Decisionpropopdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Decisionpropopdo.propopdo_id = Propopdo.id' )
-					),
-					array(
-						'table'      => 'decisionspdos',
-						'alias'      => 'Decisionpdo',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Decisionpdo.id = Decisionpropopdo.decisionpdo_id' )
-					),
-				),
-				'conditions' => array(
-					'Propopdo.id' => $propopdo_id
-				)
-			);
+			
+            $queryData = array(
+                'fields' => array_merge(
+                    $this->fields(),
+                    $this->Personne->fields(),
+                    $this->Personne->Foyer->fields(),
+                    $this->Personne->Foyer->Dossier->fields(),
+                    $this->Personne->Foyer->Adressefoyer->fields(),
+                    $this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+                    $this->Decisionpropopdo->fields(),
+                    $this->Decisionpropopdo->Decisionpdo->fields(),
+                    $this->Structurereferente->fields()
+                ),
+                'joins' => array(
+                    $this->join( 'Personne', array( 'type' => 'INNER' ) ),
+                    $this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+                    $this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+                    $this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->join( 'Decisionpropopdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Decisionpropopdo->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+                ),
+                'conditions' => array(
+                    'Propopdo.id' => $propopdo_id,
+                    'OR' => array(
+                        'Adressefoyer.id IS NULL',
+                        'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                    )
+                ),
+                'contain' => false,
+                'recursive' => -1,
+            );
 
 			$propopdo = $this->find( 'first', $queryData );
 

@@ -401,15 +401,13 @@
 //debug($this->request->data);
 				$saved = $this->Propopdo->saveResultAsBool( $this->Propopdo->saveAssociated( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) ) );
 				if( $saved ) {
-                    if( $this->request->data['Propopdo']['haspiece'] != '0' ) {
-                        // Sauvegarde des fichiers liés à une PDO
-                        $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
-                        $saved = $this->Fileuploader->saveFichiers(
-                            $dir,
-                            !Set::classicExtract( $this->request->data, "Propopdo.haspiece" ),
-                            ( ( $this->action == 'add' ) ? $this->Propopdo->id : $id )
-                        ) && $saved;
-                    }
+                    // Sauvegarde des fichiers liés à une PDO
+                    $dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
+                    $saved = $this->Fileuploader->saveFichiers(
+                        $dir,
+                        !Set::classicExtract( $this->request->data, "Propopdo.haspiece" ),
+                        ( ( $this->action == 'add' ) ? $this->Propopdo->id : $id )
+                    ) && $saved;
 				}
 
 				if( $saved ) {
@@ -457,6 +455,7 @@
 				$this->set( 'fichiersEnBase', $fichiersEnBase );
 			}
 
+            $this->set( 'fichiers', $fichiers );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/propospdos/index/'.$personne_id );
 			$this->set( 'fichiers', $fichiers );
