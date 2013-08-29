@@ -161,7 +161,9 @@
 					<th><?php echo $this->Xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$this->Xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Forme du CER', 'Contratinsertion.forme_ci' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Position du CER', 'Contratinsertion.positioncer' );?></th>
+					<?php if( Configure::read( 'Cg.departement') != 93 ):?>
+                        <th><?php echo $this->Xpaginator->sort( 'Position du CER', 'Contratinsertion.positioncer' );?></th>
+                    <?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Date de fin du contrat', 'Contratinsertion.df_ci' );?></th>
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -220,31 +222,57 @@
 							</tbody>
 						</table>';
 
-						echo $this->Xhtml->tableCells(
-							array(
-								h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
-								h( $contrat['Adresse']['locaadr'] ),
-								h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
-								h( $contrat['Dossier']['matricule'] ),
-								h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
-								h( $contrat['Contratinsertion']['rg_ci'] ),
-								h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
-								h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
-// 								h( Set::enum( $contrat['Contratinsertion']['positioncer'], $numcontrat['positioncer'] ) ),
-								h( $positioncer ),
-								h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ) ),
-								array(
-									$this->Xhtml->viewLink(
-										'Voir le dossier « '.$title.' »',
-										array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
-									),
-									array( 'class' => 'noprint' )
-								),
-								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-							),
-							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-						);
+                        if( Configure::read( 'Cg.departement' ) != 93 ) {
+                            echo $this->Xhtml->tableCells(
+                                array(
+                                    h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
+                                    h( $contrat['Adresse']['locaadr'] ),
+                                    h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
+                                    h( $contrat['Dossier']['matricule'] ),
+                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
+                                    h( $contrat['Contratinsertion']['rg_ci'] ),
+                                    h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+                                    h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
+                                    h( $positioncer ),
+                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ) ),
+                                    array(
+                                        $this->Xhtml->viewLink(
+                                            'Voir le dossier « '.$title.' »',
+                                            array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+                                        ),
+                                        array( 'class' => 'noprint' )
+                                    ),
+                                    array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+                                ),
+                                array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                                array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                            );
+                        }
+                        else {
+                            echo $this->Xhtml->tableCells(
+                                array(
+                                    h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
+                                    h( $contrat['Adresse']['locaadr'] ),
+                                    h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
+                                    h( $contrat['Dossier']['matricule'] ),
+                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
+                                    h( $contrat['Contratinsertion']['rg_ci'] ),
+                                    h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+                                    h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
+                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ) ),
+                                    array(
+                                        $this->Xhtml->viewLink(
+                                            'Voir le dossier « '.$title.' »',
+                                            array( 'controller' => $controller, 'action' => 'index', $contrat['Contratinsertion']['personne_id'] )
+                                        ),
+                                        array( 'class' => 'noprint' )
+                                    ),
+                                    array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+                                ),
+                                array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
+                                array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+                            );
+                        }
 					?>
 				<?php endforeach;?>
 			</tbody>
