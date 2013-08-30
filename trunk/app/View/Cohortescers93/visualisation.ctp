@@ -124,6 +124,13 @@
 					$validationcpdv = '';
 				}
 
+				$emetteurResponsable = array();
+                foreach( array( 'Histochoixcer93etape03', 'Histochoixcer93etape04', 'Histochoixcer93etape05', 'Histochoixcer93etape06' ) as $etape ) {
+                    if( !empty( $cer93[$etape]['User']['nom_complet'] ) ) {
+                        $emetteurResponsable[$etape] = ' (émis par '.$cer93[$etape]['User']['nom_complet'].' )';
+                    }
+                }
+                
 				// TODO: on a le même genre de choses dans d'autres vues (secondelecture.ctp)
 				$etape03 = Hash::extract( $cer93, 'Histochoixcer93etape03' );
 				$commentairesEtape03 = '';
@@ -147,14 +154,14 @@
 						$cer93['Referent']['nom_complet'],
 						Set::enum( $cer93['Cer93']['positioncer_avantcg'], $options['Cer93']['positioncer'] ), //Saisie du CER
 						$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),
-						Set::enum( $cer93['Cer93']['validationcpdv'], $options['Cer93']['positioncer'] ), //Validation CPDV
+						Set::enum( $cer93['Cer93']['validationcpdv'], $options['Cer93']['positioncer'] ).Hash::get( $emetteurResponsable, 'Histochoixcer93etape03' ), //Validation CPDV
 						Set::enum( $cer93['Histochoixcer93etape03']['formeci'], $options['formeci'] ),
 //						$cer93['Histochoixcer93etape03']['commentaire'],
 						$commentairesEtape03,
 						( $validationcpdv == 'Oui' ) ? date_short( $cer93['Histochoixcer93etape03']['datechoix'] ) : '',
-						Set::enum( $cer93['Histochoixcer93etape04']['prevalide'], $options['Histochoixcer93']['prevalide'] ),
-						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ),
-						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ),
+						Set::enum( $cer93['Histochoixcer93etape04']['prevalide'], $options['Histochoixcer93']['prevalide'] ).Hash::get( $emetteurResponsable, 'Histochoixcer93etape04' ),
+						Set::enum( $cer93['Histochoixcer93etape05']['decisioncs'], $options['Histochoixcer93']['decisioncs'] ).Hash::get( $emetteurResponsable, 'Histochoixcer93etape05' ),
+						Set::enum( $cer93['Histochoixcer93etape06']['decisioncadre'], $options['Histochoixcer93']['decisioncadre'] ).Hash::get( $emetteurResponsable, 'Histochoixcer93etape06' ),
 						Set::enum( $cer93['Histochoixcer93etape06']['formeci'], $options['formeci'] ),
 						$cer93['Histochoixcer93']['commentaire'],
 						$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ) ),

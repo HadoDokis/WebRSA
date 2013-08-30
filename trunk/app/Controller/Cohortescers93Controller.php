@@ -436,6 +436,26 @@
 		protected function _addCommentairenormecer93( $results ) {
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
+                    // 1.
+                    foreach( array( '', 'etape02', 'etape03', 'etape04', 'etape05', 'etape06' ) as $etape ) {
+                        $histochoixcer93key = "Histochoixcer93{$etape}";
+
+                        if( !empty( $result[$histochoixcer93key]['id'] ) ) {
+                            $user_id = Hash::get( $result, "{$histochoixcer93key}.user_id" );
+
+                            $user = array( 'User' => array() );
+							if( !empty( $user_id ) ) {
+								$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) );
+							}
+
+							$results[$i][$histochoixcer93key] = Hash::merge(
+								$results[$i][$histochoixcer93key],
+								$user
+							);
+                        }
+                    }
+
+                    // 2.
 					foreach( array( '', 'etape02', 'etape03' ) as $etape ) {
 						$histochoixcer93key = "Histochoixcer93{$etape}";
 
@@ -489,15 +509,15 @@
 								)
 							);
 
-							$usersIds = array_unique( Hash::extract( $commentaires, '{n}.Histochoixcer93.user_id' ) );
-							$user_id = ( !empty( $usersIds ) ? $usersIds[0] : null );
-							$user = array( 'User' => array() );
-							if( !empty( $user_id ) ) {
-								$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) );
-							}
+//							$usersIds = array_unique( Hash::extract( $commentaires, '{n}.Histochoixcer93.user_id' ) );
+//							$user_id = ( !empty( $usersIds ) ? $usersIds[0] : null );
+//							$user = array( 'User' => array() );
+//							if( !empty( $user_id ) ) {
+//								$user = $this->Contratinsertion->User->find( 'first', array( 'conditions' => array( 'User.id' => $user_id ), 'contain' => false, 'fields' => array( 'User.nom_complet' ) ) );
+//							}
 
 							$ajout = array(
-								'User' => $user['User'],
+								//'User' => $user['User'],
 								'Commentairenormecer93' => Hash::extract( $commentaires, '{n}.Commentairenormecer93' ),
 								'Commentairenormecer93Histochoixcer93' => Hash::extract( $commentaires, '{n}.Commentairenormecer93Histochoixcer93' )
 							);
@@ -667,6 +687,7 @@
 					array(),
 					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
+
 				// Ajout des commentaires fournis par le CPDV bug #6251
 				$cers93 = $this->_addCommentairenormecer93( $cers93, 'Histochoixcer93' );
 				$this->set( 'cers93', $cers93 );
