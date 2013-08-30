@@ -32,13 +32,13 @@
 			require_once 'XML/RPC.php'; // INFO: extension pear/pecl ?
 
 			$content = base64_encode( file_get_contents( $fileName ) );
+
 			$fileinfo = pathinfo( $fileName );
-			if( $fileinfo['extension'] == 'pdf' )
-				$fileinfo['extension'] = 'odt';
+			$extension = preg_replace( '/^(odt|pdf).*/', 'odt', $fileinfo['extension'] );
 
 			$params = array(
 				new XML_RPC_Value( $content, 'string' ),
-				new XML_RPC_Value( $fileinfo['extension'], 'string' ),
+				new XML_RPC_Value( $extension, 'string' ),
 				new XML_RPC_Value( $format, 'string' ),
 				new XML_RPC_Value( false, 'boolean' ),
 				new XML_RPC_Value( true, 'boolean' )
@@ -49,8 +49,19 @@
 			$msg = new XML_RPC_Message( 'convertFile', $params );
 			$cli = new XML_RPC_Client( '/', $url );
 			$resp = $cli->send( $msg );
+
+            if( empty( $resp ) ) {
+                $this->log( sprintf( "Erreur dans la réponse du serveur Cloudooo: %s (serveur: %s)", $cli->errstr, $url ), LOG_ERROR );
+                return false;
+            }
+
+            if( empty( $resp->xv ) ) {
+                $this->log( sprintf( "Erreur dans la réponse du serveur Cloudooo: %s (serveur: %s)", $resp->fs, $url ), LOG_ERROR );
+                return false;
+            }
+
 			// FIXME: PHP Notice:  Trying to get property of non-object in /home/cbuffin/www/webrsa/trunk/app/plugins/gedooo/models/behaviors/gedooo_cloudooo.php on line 42
-			return (base64_decode( @$resp->xv->me['string'] ));
+			return base64_decode( @$resp->xv->me['string'] );
 		}
 
 		/**
