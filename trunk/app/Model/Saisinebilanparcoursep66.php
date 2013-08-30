@@ -711,6 +711,9 @@
 				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Referentorientant->fields() );
 				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Referentorientant' );
 
+                // Référent lié au bilan
+                $datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Referent->fields() );
+                $datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Referent' );
 
 				/* TODO:
 					$this->alias => array(
