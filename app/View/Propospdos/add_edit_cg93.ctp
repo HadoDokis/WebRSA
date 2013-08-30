@@ -47,7 +47,7 @@
 
 			echo $this->Xform->input( 'Decisionpropopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
 
-			echo $this->Xform->input( 'Decisionpropopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'text', 'rows' => 3, 'empty' => true ) );
+			echo $this->Xform->input( 'Decisionpropopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'textarea', 'empty' => true ) );
 
 			echo $this->Default->view(
 				$dossier,
