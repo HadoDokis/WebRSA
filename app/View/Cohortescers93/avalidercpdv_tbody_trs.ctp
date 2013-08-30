@@ -97,7 +97,7 @@
 					"Histochoixcer93.{$index}.etape" => array( 'type' => 'hidden', 'value' => '03attdecisioncg' ),
 				)
 			)
-			.'<ul><li>'.$this->Ajax->link(
+			.'<ul class="decisions"><li>'.$this->Ajax->link(
 				'Rejeter',
 				array( 'action' => $this->action, 'decision' => '99rejetecpdv' ),
 				array(
@@ -105,7 +105,8 @@
 					'with' => 'serializeTableRow( $(this) )',
 					'complete' => 'mkTooltipTables();make_external_links();',
 					'class' => 'rejeter'
-				)
+				),
+                'Confirmez-vous le rejet du CER ?'
 			).'</li><li>'
 			.$this->Ajax->link(
 				'Transférer au CG',
@@ -115,7 +116,8 @@
 					'with' => 'serializeTableRow( $(this) )',
 					'complete' => 'mkTooltipTables();make_external_links();',
 					'class' => 'transferer cg'
-				)
+				),
+                'Confirmez-vous le transfert au CG du CER ?'
 			).'</li></ul>',
 			$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ), true, true ),
 			$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'index', $cer93['Personne']['id'] ), true, true ),
