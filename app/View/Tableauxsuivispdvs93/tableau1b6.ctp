@@ -7,7 +7,7 @@
 			$this->Xhtml->tableHeaders(
 				array(
 					__d( $domain, 'Tableau1b6.name' ),
-					__d( $domain, 'Tableau1b6.theme' ),
+//					__d( $domain, 'Tableau1b6.theme' ),
 					__d( $domain, 'Tableau1b6.count_personnes_prevues' ),
 					__d( $domain, 'Tableau1b6.count_seances' ),
 					__d( $domain, 'Tableau1b6.count_personnes' )
@@ -19,7 +19,7 @@
 		foreach( $results as $result ) {
 			$cells[] = array(
 				array( h( Hash::get( $result, 'Tableau1b6.name' ) ), array( 'class' => 'name' ) ),
-				array( h( Hash::get( $result, 'Tableau1b6.theme' ) ), array( 'class' => 'theme' ) ),
+//				array( h( Hash::get( $result, 'Tableau1b6.theme' ) ), array( 'class' => 'theme' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes_prevues" ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_seances" ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes" ) ), array( 'class' => 'integer number' ) )
@@ -30,7 +30,7 @@
 		// Pied du tableau
 		$cells = array(
 			array(
-				array( 'Total', array( 'colspan' => 2 ) ),
+				'Total',
 				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_personnes_prevues' ) ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_seances' ) ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_personnes' ) ) ), array( 'class' => 'integer number' ) )
