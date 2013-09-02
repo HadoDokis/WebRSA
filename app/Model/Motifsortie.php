@@ -35,8 +35,8 @@
          'Actioncandidat' => array(
 				'className' => 'Actioncandidat',
 				'joinTable' => 'actionscandidats_motifssortie',
-				'foreignKey' => 'actioncandidat_id',
-				'associationForeignKey' => 'motifsortie_id',
+				'foreignKey' => 'motifsortie_id',
+				'associationForeignKey' => 'actioncandidat_id',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => '',
