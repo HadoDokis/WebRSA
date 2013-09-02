@@ -56,7 +56,11 @@
 	<fieldset>
 		<legend>Recherche par RDV</legend>
 			<?php echo $this->Form->input( 'Critererdv.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-			<?php echo $this->Form->input( 'Critererdv.statutrdv_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.statutrdv' ), 'type' => 'select' , 'options' => $statutrdv, 'empty' => true ) );?>
+			<?php
+                echo "<fieldset><legend>".__d( 'rendezvous', 'Rendezvous.statutrdv' )."</legend>";
+                echo $this->Form->input( 'Critererdv.statutrdv_id', array( 'label' => false, 'type' => 'select' , 'multiple' => 'checkbox', 'options' => $statutrdv, 'empty' => false ) );
+                echo '</fieldset>';
+            ?>
 			<?php echo $this->Form->input( 'Critererdv.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 
 			<?php echo $this->Form->input( 'Critererdv.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
