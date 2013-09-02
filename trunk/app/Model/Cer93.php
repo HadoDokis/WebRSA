@@ -1350,7 +1350,37 @@
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
 				}
 			}
+            
+            
+            // Récupération du nom de l'utilsiateur ayant émis la première lecture
+			$histopremierelecture = $this->Histochoixcer93->find(
+				'first',
+				array(
+					'fields' => array_merge(
+						$this->Histochoixcer93->fields(),
+                        array(
+                            $this->Histochoixcer93->User->sqVirtualField( 'nom_complet' ),
+                            'User.numtel'
+                        )
+					),
+					'conditions' => array(
+                        'Histochoixcer93.cer93_id' => $data['Cer93']['id'],
+                        'Histochoixcer93.etape' => '04premierelecture'
+                    ),
+					'contain' => array(
+                        'User'
+                    )
+				)
+			);
+            
+            if( !empty( $histopremierelecture ) ) {
+                $userPremierelecture = Hash::get( $histopremierelecture, 'User.nom_complet' );
+                $data['Cer93']['userpremierelecture'] = $userPremierelecture;
+                $data['Cer93']['userpremierelecture_numtel'] = Hash::get( $histopremierelecture, 'User.numtel' );
+            }
 
+//debug( $data );
+//die();
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
