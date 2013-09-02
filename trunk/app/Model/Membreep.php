@@ -13,6 +13,9 @@
 	 *
 	 * @package app.Model
 	 */
+
+    define( 'CHAMP_FACULTATIF', Configure::read( 'Cg.departement' ) != 93 );
+
 	class Membreep extends AppModel
 	{
 		public $name = 'Membreep';
@@ -43,6 +46,41 @@
 					'message' => 'Le numéro de téléphone est composé de 10 chiffres'
 				)
 			),
+            'organisme' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'tel' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'numvoie' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'typevoie' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'nomvoie' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'ville' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			),
+            'codepostal' => array(
+				'rule' => 'notEmpty',
+				'message' => 'Champ obligatoire',
+				'allowEmpty' => CHAMP_FACULTATIF
+			)
 		);
 
 		public $belongsTo = array(
