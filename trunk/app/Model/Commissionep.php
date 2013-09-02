@@ -1323,11 +1323,14 @@
                     ),
 					'conditions' => array(
 						'Membreep.id' => $membreep_id,
-                        'Compositionregroupementep.regroupementep_id' => $commissionep['Ep']['Regroupementep']['id']
+                        'OR' => array(
+                            'Compositionregroupementep.regroupementep_id' => $commissionep['Ep']['Regroupementep']['id'],
+                            'Compositionregroupementep.regroupementep_id IS NULL'
+                        )
 					),
                     'joins' => array(
                         $this->Membreep->join('Fonctionmembreep', array( 'type' => 'INNER' ) ),
-                        $this->Membreep->Fonctionmembreep->join( 'Compositionregroupementep', array( 'type' => 'INNER' ) ),
+                        $this->Membreep->Fonctionmembreep->join( 'Compositionregroupementep', array( 'type' => 'LEFT OUTER' ) ),
                     ),
                     'contain' => false
 				)
@@ -1370,7 +1373,7 @@
                 $modele = 'convocationep_participant.odt';
             }
 
-//debug($modele);
+//debug($convocation);
 //die();
 			return $this->ged(
 				$convocation,
