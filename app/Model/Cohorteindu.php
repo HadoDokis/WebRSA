@@ -117,37 +117,49 @@
 
 			$querydata = array(
 				'fields' => array(
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."matricule"',
-					'"Dossier"."typeparte"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adresse"."numcomptt"',
-					'"Situationdossierrsa"."id"',
-					'"Situationdossierrsa"."etatdosrsa"',
-					'"Prestation"."rolepers"'
+					'Dossier.id',
+					'Dossier.numdemrsa',
+					'Dossier.matricule',
+					'Dossier.typeparte',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Personne.qual',
+					'Personne.nomcomnai',
+					'Adresse.numvoie',
+                    'Adresse.typevoie',
+                    'Adresse.nomvoie',
+                    'Adresse.complideadr',
+                    'Adresse.compladr',
+					'Adresse.codepos',
+                    'Adresse.locaadr',
+					'Adresse.numcomptt',
+					'Situationdossierrsa.id',
+					'Situationdossierrsa.etatdosrsa',
+					'Prestation.rolepers'
 				),
 				'recursive' => -1,
 				'joins' => array(
 					$this->Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$this->Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$this->Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-					$this->Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+					$this->Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$this->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
-				'conditions' => array()
+				'conditions' => array(
+                    array(
+                        'OR' => array(
+                            'Adressefoyer.id IS NULL',
+                            'Adressefoyer.id IN ( '.$this->Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                        )
+                    )
+                )
 			);
 
 			$typesAllocation = array( 'IndusConstates', 'IndusTransferesCG', 'RemisesIndus' );

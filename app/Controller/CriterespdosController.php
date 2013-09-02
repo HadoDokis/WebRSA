@@ -51,6 +51,8 @@
 			$this->set( 'statutdecisionlist', $this->Statutdecisionpdo->find( 'list' ) );
 
 			$this->set( 'rolepers', $this->Option->rolepers() );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'qual', $this->Option->qual() );
 
 			$this->set( 'gestionnaire', $this->User->find(
 					'list',

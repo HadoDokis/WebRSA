@@ -17,7 +17,7 @@
 	{
 		public $name = 'Criteresentretiens';
 
-		public $uses = array( 'Critereentretien', 'Entretien' );
+		public $uses = array( 'Critereentretien', 'Entretien', 'Option' );
 		public $helpers = array( 'Csv', 'Default2', 'Search' );
 		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
 
@@ -29,6 +29,7 @@
 // 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
 			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
+            $this->set( 'typevoie', $this->Option->typevoie() );
 		}
 
 		/**
