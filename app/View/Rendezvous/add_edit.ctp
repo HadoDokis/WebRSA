@@ -119,11 +119,11 @@
 
 			echo $this->Form->input( 'Rendezvous.daterdv', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.daterdv' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=>date('Y')-1 ) );
 
-			echo $this->Xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.heurerdv' ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ) ) );
+			echo $this->Xform->input( 'Rendezvous.heurerdv', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.heurerdv' ) ), 'type' => 'time', 'timeFormat' => '24','minuteInterval'=> 5,  'empty' => true, 'hourRange' => array( 8, 19 ), 'style' => 'margin-bottom: 0.5em;'  ) );
 
-			echo $this->Form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.objetrdv' ) ), 'type' => 'text', 'rows' => 2, 'empty' => true ) );
+			echo $this->Form->input( 'Rendezvous.objetrdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.objetrdv' ) ), 'type' => 'textarea', 'style' => 'margin-bottom: 1.5em;' ) );
 
-			echo $this->Form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.commentairerdv' ) ), 'type' => 'text', 'rows' => 3, 'empty' => true ) );
+			echo $this->Form->input( 'Rendezvous.commentairerdv', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.commentairerdv' ) ), 'type' => 'textarea' ) );
 		?>
 	</fieldset>
 </div>
