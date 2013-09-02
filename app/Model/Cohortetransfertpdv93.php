@@ -121,6 +121,10 @@
 				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
+            // Conditions sur les dates de transfert
+            $conditions = $this->conditionsDates( $conditions, $search, 'Transfertpdv93.created' );
+            
+            
 			$querydata = array(
 				'fields' => array_merge(
 					$Dossier->fields(),

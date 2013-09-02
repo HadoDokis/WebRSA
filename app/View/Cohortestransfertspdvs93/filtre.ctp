@@ -30,6 +30,10 @@
 
 	echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 // 	echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
+    
+    if( $this->action == 'transferes' ) {
+        echo $this->Search->date( 'Search.Transfertpdv93.created', 'Dates de transfert' );
+    }
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
 
