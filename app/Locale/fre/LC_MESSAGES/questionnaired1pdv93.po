@@ -172,3 +172,6 @@ msgstr "Non"
 
 msgid "ENUM::VALIDE::1"
 msgstr "Oui"
+
+msgid "Questionnaired1pdv93::index::empty"
+msgstr "Aucun enregistrement"
