@@ -42,6 +42,7 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+            'Default'
 		);
 
 		/**
@@ -76,32 +77,35 @@
 			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );
 			$this->set( compact( 'messages', 'add_enabled' ) );
 
-			$this->paginate = array(
-				'Questionnaired1pdv93' => array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Questionnaired1pdv93.id',
-						'Questionnaired1pdv93.date_validation',
-						'Rendezvous.daterdv',
-						'Statutrdv.libelle',
-					),
-					'joins' => array(
-						$this->Questionnaired1pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
-						$this->Questionnaired1pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
-					),
-					'contain' => false,
-					'conditions' => array(
-						'Questionnaired1pdv93.personne_id' => $personne_id
-					),
-					'order' => array(
-						'Questionnaired1pdv93.modified DESC'
-					),
-					'limit' => 10
-				)
+			$querydata = array(
+                'fields' => array(
+                    'Personne.id',
+                    'Personne.qual',
+                    'Personne.nom',
+                    'Personne.prenom',
+                    'Questionnaired1pdv93.id',
+                    'Questionnaired1pdv93.date_validation',
+                    'Rendezvous.daterdv',
+                    'Statutrdv.libelle',
+                    'Historiquedroit.etatdosrsa',
+                    'Historiquedroit.toppersdrodevorsa',
+                    'Historiquedroit.created',
+                    'Historiquedroit.modified',
+                ),
+                'joins' => array(
+                    $this->Questionnaired1pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
+                    $this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+                    $this->Questionnaired1pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
+                    $this->Questionnaired1pdv93->Personne->join( 'Historiquedroit', array( 'type' => 'LEFT OUTER', 'conditions' => array( 'Questionnaired1pdv93.created BETWEEN Historiquedroit.created AND Historiquedroit.modified' ) ) ),
+                ),
+                'contain' => false,
+                'conditions' => array(
+                    'Questionnaired1pdv93.personne_id' => $personne_id
+                ),
+                'order' => array(
+                    'Questionnaired1pdv93.modified DESC'
+                ),
+                'limit' => 10
 			);
 
 			$personne = $this->Questionnaired1pdv93->Personne->find(
@@ -114,8 +118,31 @@
 				)
 			);
 
-			$questionnairesd1pdvs93 = $this->paginate( 'Questionnaired1pdv93' );
-			$this->set( compact( 'personne_id', 'questionnairesd1pdvs93', 'personne' ) );
+            $historiquesdroit = $this->Questionnaired1pdv93->Personne->Historiquedroit->find(
+				'all',
+				array(
+					'conditions' => array(
+						'Historiquedroit.personne_id' => $personne_id
+					),
+					'contain' => false
+				)
+			);
+
+			$questionnairesd1pdvs93 = $this->Questionnaired1pdv93->find( 'all', $querydata );
+            
+            $options = Hash::merge(
+				$this->Questionnaired1pdv93->enums(),
+				$this->Questionnaired1pdv93->Situationallocataire->enums()
+			);
+            
+            $optionsHisto = array(
+				'Historiquedroit' => array(
+					'etatdosrsa' => ClassRegistry::init( 'Option' )->etatdosrsa()
+				)
+			);
+			$options = Set::merge( $options, $optionsHisto );
+
+			$this->set( compact( 'personne_id', 'questionnairesd1pdvs93', 'personne', 'historiquesdroit', 'options' ) );
 		}
 
 		/**
