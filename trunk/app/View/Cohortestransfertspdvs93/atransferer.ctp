@@ -4,6 +4,10 @@
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
+    
+    if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+	}
 
 	// Résultats
 	if( isset( $results ) ) {
@@ -74,11 +78,16 @@
 			}
 			echo '</tbody>';
 			echo '</table>';
-
+            
 			echo $this->Form->submit( __( 'Save' ) );
 			echo $this->Form->end();
 
 			echo $pagination;
+
+            // Demande d'amélioration #6475
+            echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '1', true );" ) );
+			echo $this->Form->button( 'Tout Mettre En Attente', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '0', true );" ) );
+            
 		}
 	}
 ?>
