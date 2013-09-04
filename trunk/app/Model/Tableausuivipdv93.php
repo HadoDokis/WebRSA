@@ -1152,7 +1152,10 @@
 						'Tableau1b5.name',
 					),
 					'contain' => false,
-					'order' => array( 'Tableau1b5.name ASC' )
+					'order' => array( 'Tableau1b5.name ASC' ),
+                    'conditions' => array(
+                        'NOT' => array( $this->_conditionNumcodefamille( 'Actioncandidat.numcodefamille' ) )
+                    )
 				)
 			);
 			$map = array_flip( Hash::extract( $results, '{n}.Tableau1b5.name' ) );
