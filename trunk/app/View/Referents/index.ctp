@@ -29,7 +29,7 @@
 	).'</li></ul>';
 ?>
 
-<?php echo $this->Xform->create( 'Referent', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Xform->create( 'Referent', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 		<fieldset>
 			<?php echo $this->Xform->input( 'Referent.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 
@@ -40,8 +40,7 @@
 						'Referent.nom',
 						'Referent.prenom',
 						'Referent.fonction',
-// 						'Referent.id' => array( 'label' => 'Nom du référent', 'options' => $referent ),
-						'Referent.structurereferente_id' => array( 'label' => 'Structure référente liée', 'options' => $options['Referent']['structurereferente_id'] )
+						'Referent.structurereferente_id' => array( 'label' => 'Structure référente liée', 'options' => $options['Referent']['structurereferente_id'], 'type' => ( $this->action == 'index' ? 'select': 'hidden' ) )
 					),
 					array(
 						'options' => $options

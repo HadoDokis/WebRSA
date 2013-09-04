@@ -1835,6 +1835,12 @@ msgstr "Ajout/Édition d'un référent"
 msgid "Referents:delete"
 msgstr "Suppression d'un référent"
 
+msgid "Referents:cloturer"
+msgstr "Clôture des référents"
+
+msgid "Referents:clotureenmasse"
+msgstr "Cohortes de Clôture en masse des référents (CG93)"
+
 ###############################################################################
 
 msgid "Module:Regressionsorientationseps"

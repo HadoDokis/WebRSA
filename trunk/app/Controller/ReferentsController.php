@@ -23,7 +23,7 @@
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
 		public $helpers = array( 'Xform', 'Default2', 'Default' );
 
-		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Workflowscers93' );
 
 		public $commeDroit = array(
 			'add' => 'Referents:edit'
@@ -207,5 +207,28 @@
 				$this->request->data = $referent;
 			}
 		}
+        
+        
+        /**
+         * Fonction de clôture en masse des référents, cloisonnée selon le type de structure
+         * Uniquement pour les CPDV
+         */
+		public function clotureenmasse() {
+			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( true );
+            
+			if( !empty( $this->request->data ) ) {
+				$queryData = $this->Referent->search( $this->request->data );
+				$queryData['limit'] = 20;
+                $queryData['conditions'][] = array( 'Referent.structurereferente_id' => $structurereferente_id );
+				$this->paginate = $queryData;
+				$referents = $this->paginate( 'Referent' );
+
+				$this->set( 'referents', $referents );
+
+			}
+			$this->_setOptions();
+            $this->render( 'index' );
+		}
+
 	}
 ?>
