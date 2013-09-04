@@ -573,9 +573,8 @@
 
 
 		/**
-		* Fonction permettant de récupérer le responsable du dossier (DEM + RSA)
-		* Dans les cas où un dossier possède plusieurs Demandeurs
-		* on s'assure de n'en prendre qu'un seul des 2
+		* Fonction permettant de récupérer les décisions qui ont été uniquement
+        * transmises à l'OP
 		*/
 
 		public function sqDatetransmissionOp( $dossierpcg66Id = 'Dossierpcg66.id' ) {
