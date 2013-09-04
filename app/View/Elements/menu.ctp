@@ -86,6 +86,10 @@
 				'Allocataires à transférer' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'atransferer' ) ),
 				'Allocataires transférés' => array( 'url' => array( 'controller' => 'cohortestransfertspdvs93', 'action' => 'transferes' ) ),
 			),
+            'Clôture référents' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+                'url' => array( 'controller' => 'referents', 'action' => 'clotureenmasse' )
+			),
 		),
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),
