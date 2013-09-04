@@ -276,12 +276,7 @@
                     $Dossierpcg66->join(
                         'Decisiondossierpcg66',
                         array(
-                            'type' => 'LEFT OUTER',
-                            'conditions' => array(
-                                'Decisiondossierpcg66.id IN (
-                                  '.ClassRegistry::init( 'Decisiondossierpcg66' )->sqDatetransmissionOp( 'Dossierpcg66.id' ).'
-                              )'
-                            )
+                            'type' => 'LEFT OUTER'
                         )
                     ),
                     $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
