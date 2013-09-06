@@ -18,6 +18,15 @@
 	 */
 	class ${name} extends AppShell
 	{
+		/**
+		 * La constante à utiliser dans la méthode _stop() en cas de succès.
+		 */
+		const SUCCESS = 0;
+
+		/**
+		 * La constante à utiliser dans la méthode _stop() en cas d'erreur.
+		 */
+		const ERROR = 1;
 
 		/**
 		 * Démarrage du shell
