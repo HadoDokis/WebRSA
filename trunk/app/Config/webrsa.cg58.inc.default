@@ -582,31 +582,42 @@
 			),
 			// Organisme public de placement professionnel autre que PE (maison de l'emploi, PLIE, mission locale, ...)
 			'oppp_autre_pole_emploi' => array(
-				'Structurereferentereferent.id' => array( 23, 24, 25 )
+				'Structurereferentereferent.id' => array( 23, 24, 25, 28, 29, 30 )
 			),
 			// Entreprise de travail temporaire, agence privée de placement
 			'entreprise_travail_temporaire' => array(),
 			// Organisme d'appui à la création et au développement d'entreprise
-			'organisme_creation_developpement_entreprise' => array(),
+			'organisme_creation_developpement_entreprise' => array(
+				'Structurereferentereferent.id' =>  16
+				),
 			// Insertion par l'activité économique (IAE) (uniquement si le référent appartient à l'IAE)
 			'iae' => array(),
 			// Autre organisme de placement professionnel
 			'autre_professionnel' => array(
 				'Typeorientreferent.id' => 1,
 				'NOT' => array(
-					'Structurereferentereferent.id' => array( 2, 23, 24, 25 )
+					'Structurereferentereferent.id' => array( 2, 23, 24, 25, 26, 16, 28, 29, 30  )
 				)
 			),
 			// Service du département
-			'service_departement' => array(),
+			'service_departement' => array(
+				'Structurereferentereferent.id'=> array( 1, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15 )
+				),
 			// Service du département, dont orientation à dominante professionnelle
 			'service_departement_professionnel' => array(),
+
 			// Service du département, dont orientation à dominante sociale
-			'service_departement_social' => array(),
+			'service_departement_social' => array(
+				'Structurereferentereferent.id' => array( 1, 4, 7, 8, 9, 10, 11, 12, 13, 14, 15 )
+				),
 			// CAF, MSA
-			'caf_msa' => array(),
+			'caf_msa' => array(
+				'Structurereferentereferent.id' => array( 3, 26, 27 )
+				),
 			// CCAS, CIAS
-			'ccas_cias' => array(),
+			'ccas_cias' => array(
+				'Structurereferentereferent.id' => array( 6 )
+				),
 			// Autres organismes d'insertion
 			'autres' => array(),
 		)
