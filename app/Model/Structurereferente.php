@@ -34,69 +34,9 @@
 				'phoneFr' => array(
 					'rule' => array( 'phoneFr' ),
 					'allowEmpty' => true,
-					'message' => 'Ce numéro de téléphone n\'est pas valide'
 				)
 			)
 		);
-
-		/*public $validate = array(
-			'lib_struc' => array(
-				array(
-						'rule' => 'notEmpty',
-						'message' => 'Champ obligatoire'
-				),
-				// TODO
-				array(
-						'rule' => 'isUnique',
-						'message' => 'Valeur déjà utilisée'
-				),
-			),
-			'num_voie' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'type_voie' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'nom_voie' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'code_postal' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'ville' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			// TODO
-			'code_insee' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'typeorient_id'=> array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			// TODO
-			'apre' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			// TODO
-			'contratengagement' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
-			),
-			// TODO
-			'numtel' => array(
-				'rule' => 'phoneFr',
-				'allowEmpty' => true,
-				'message' => 'Ce numéro de téléphone n\'est pas valide'
-			)
-		);*/
 
 		public $belongsTo = array(
 			'Typeorient' => array(
@@ -441,7 +381,7 @@
 					$conditions[] = "Structurereferente.{$type} = 'O'";
 				}
 			}
-			
+
 			return $this->find( 'list', array( 'conditions' => $conditions, 'recursive' => -1 ) );
 		}
 
@@ -507,10 +447,10 @@
 			$success = $this->_regenerateCache();
 			return $success;
 		}
-		
-		
-		
-			
+
+
+
+
 		/**
 		*	Recherche des structures dans le paramétrage de l'application
 		*

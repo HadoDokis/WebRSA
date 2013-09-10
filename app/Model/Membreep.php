@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Membreep.
 	 *
@@ -28,58 +28,72 @@
 					'qual'
 				)
 			),
-			'Formattable'
+			'Formattable' => array(
+				'phone' => array( 'tel' )
+			),
+			'Validation.ExtraValidationRules',
 		);
 
 		public $validate = array(
 			'mail' => array(
-				array(
+				'email' => array(
 					'rule' => 'email',
 					'allowEmpty' => true,
 					'message' => 'Le mail n\'est pas valide'
 				)
 			),
-			'tel' => array(
-				array(
-					'rule' => array( 'between', 10, 14 ),
-					'allowEmpty' => true,
-					'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+            'organisme' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
 				)
 			),
-            'organisme' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
-			),
             'tel' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				),
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				),
 			),
             'numvoie' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				)
 			),
             'typevoie' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				)
 			),
             'nomvoie' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				)
 			),
             'ville' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				)
 			),
             'codepostal' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire',
-				'allowEmpty' => CHAMP_FACULTATIF
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF
+				)
 			)
 		);
 
@@ -127,22 +141,22 @@
 				'with' => 'EpMembreep' // TODO
 			),
 		);
-		
-		
+
+
 		public function search( $criteres ) {
 			$conditions = array();
-			
+
 			foreach( array( 'nom', 'prenom', 'ville', 'organisme' ) as $critereMembre ) {
 				if( isset( $criteres['Membreep'][$critereMembre] ) && !empty( $criteres['Membreep'][$critereMembre] ) ) {
 					$conditions[] = 'UPPER(Membreep.'.$critereMembre.') LIKE \''.$this->wildcard( strtoupper( replace_accents( $criteres['Membreep'][$critereMembre] ) ) ).'\'';
 				}
 			}
-			
+
 			if( isset( $criteres['Membreep']['fonctionmembreep_id'] ) && !empty( $criteres['Membreep']['fonctionmembreep_id'] ) ) {
 				$conditions[] = array( 'Membreep.fonctionmembreep_id' => $criteres['Membreep']['fonctionmembreep_id'] );
 			}
-			
-			
+
+
 			$query = array(
 				'fields' => array_merge(
 					$this->fields(),

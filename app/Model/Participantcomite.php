@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Participantcomite.
 	 *
@@ -18,6 +18,14 @@
 		public $name = 'Participantcomite';
 
 		public $order = 'Participantcomite.id ASC';
+
+		public $actsAs = array(
+			'Formattable' => array(
+				'phone' => array( 'numtel' )
+			),
+			'ValidateTranslate',
+			'Validation.ExtraValidationRules',
+		);
 
 		public $hasAndBelongsToMany = array(
 			'Comiteapre' => array(
@@ -40,34 +48,47 @@
 
 		public $validate = array(
 			'nom' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'qual' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'prenom' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'organisme' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'fonction' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'numtel' => array(
-				'rule' => 'phoneFr',
-				'allowEmpty' => true,
-				'message' => 'Veuillez entrer un n° de téléphone français'
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				),
 			),
 			'mail' => array(
-				'rule' => 'email',
-				'allowEmpty' => true,
-				'message' => 'Le mail n\'est pas valide'
+				'email' => array(
+					'rule' => 'email',
+					'allowEmpty' => true,
+					'message' => 'Le mail n\'est pas valide'
+				)
 			)
 		);
 	}

@@ -21,6 +21,10 @@
 
 		public $actsAs = array(
 			'Enumerable',
+			'Formattable' => array(
+				'phone' => array( 'numtel' )
+			),
+			'Validation.ExtraValidationRules',
 			'Pgsqlcake.PgsqlAutovalidate',
 		);
 
@@ -33,21 +37,21 @@
 
 		public $validate = array(
 			'username' => array(
-				array(
+				'isUnique' => array(
 					'rule' => 'isUnique',
 					'message' => 'Cet identifiant est déjà utilisé'
 				),
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'passwd' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
+				'passwordStrength' => array(
 					'rule' => 'passwordStrength'
 				),
 			),
@@ -57,75 +61,75 @@
 				)
 			),
 			'new_password' => array(
-				array(
+				'passwordStrength' => array(
 					'rule' => 'passwordStrength'
 				),
-				array(
+				'checkIdenticalValues' => array(
 					'rule' => array( 'checkIdenticalValues', 'new_password_confirmation' )
 				)
 			),
 			'new_password_confirmation' => array(
-				array(
+				'passwordStrength' => array(
 					'rule' => 'passwordStrength'
 				),
-				array(
+				'checkIdenticalValues' => array(
 					'rule' => array( 'checkIdenticalValues', 'new_password' )
 				),
 			),
 			'group_id' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'serviceinstructeur_id' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'nom' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'prenom' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'numtel' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
-					'rule' => array( 'between', 10, 14 ),
-					'message' => 'Le numéro de téléphone est composé de 10 chiffres'
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
 				)
 			),
 			'date_deb_hab' => array(
-				'notEmpty' => array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
 				)
 			),
 			'date_fin_hab' => array(
-				'notEmpty' => array(
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
 				)
 			),
 			'isgestionnaire' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'sensibilite' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
