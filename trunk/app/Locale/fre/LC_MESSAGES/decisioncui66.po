@@ -81,6 +81,9 @@ msgstr "Accord"
 msgid "ENUM::DECISIONCUI::annule"
 msgstr "Annulé"
 
+msgid "ENUM::DECISIONCUI::rupture"
+msgstr "Rupture"
+
 msgid "ENUM::DECISIONCUI::sanssuiteemployeur"
 msgstr "Sans suite employeur"
 
