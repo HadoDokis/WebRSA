@@ -18,6 +18,8 @@ BEGIN;
 -- On renomme la table accompagnementscuis66 afin de ne rien perdre
 ALTER TABLE accompagnementscuis66 RENAME TO oldaccompagnementscuis66;
 
+ALTER SEQUENCE accompagnementscuis66_id_seq RENAME TO oldaccompagnementscuis66_id_seq;
+
 -- On crée une nouvelle table accompagnementscuis66 avec uniquement les données dont on a besoin
 DROP TABLE IF EXISTS accompagnementscuis66 CASCADE;
 CREATE TABLE accompagnementscuis66(
@@ -207,6 +209,11 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'bilansparcours66', 'bil
 ALTER TABLE bilansparcours66 ADD CONSTRAINT bilansparcours66_choixsanspassageep_in_list_chk CHECK ( cakephp_validate_in_list( choixsanspassageep, ARRAY['maintien','reorientation'] ) );
 
 UPDATE bilansparcours66 SET choixsanspassageep='maintien' WHERE choixsanspassageep IS NULL AND proposition='traitement';
+
+SELECT add_missing_table_field ( 'public', 'cuis', 'created', 'TIMESTAMP WITHOUT TIME ZONE' );
+SELECT add_missing_table_field ( 'public', 'cuis', 'modified', 'TIMESTAMP WITHOUT TIME ZONE' );
+UPDATE cuis SET created = datearrivee WHERE created IS NULL;
+UPDATE cuis SET modified = datearrivee WHERE modified IS NULL;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
