@@ -17,26 +17,34 @@
 	{
 
 		public $name = 'Modecontact';
+
+		public $actsAs = array(
+			'Formattable' => array(
+				'phone' => array( 'numtel' )
+			),
+			'ValidateTranslate',
+			'Validation.ExtraValidationRules',
+		);
+
 		public $validate = array(
-			// Role personne
 			'numtel' => array(
-				array(
-					'rule' => array( 'between', 10, 14 ),
-					'message' => 'Le numéro de téléphone est composé de 10 chiffres',
-					'allowEmpty' => true
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
 				)
 			),
 			'numposte' => array(
-				array(
+				'alphaNumeric' => array(
 					'rule' => 'alphaNumeric',
 					'allowEmpty' => true
 				),
-				array(
+				'between' => array(
 					'rule' => array( 'between', 4, 4 ),
 					'message' => 'Le numéro de poste est composé de 4 chiffres'
 				)
 			)
 		);
+
 		public $belongsTo = array(
 			'Foyer' => array(
 				'className' => 'Foyer',

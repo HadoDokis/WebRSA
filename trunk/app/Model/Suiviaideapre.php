@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Suiviaideapre.
 	 *
@@ -22,7 +22,12 @@
 		public $order = array( 'nom ASC', 'prenom ASC' );
 
 		public $actsAs = array(
-			'SoftDeletable' => array( 'find' => false )
+			'Formattable' => array(
+				'phone' => array( 'numtel' )
+			),
+			'SoftDeletable' => array( 'find' => false ),
+			'ValidateTranslate',
+			'Validation.ExtraValidationRules',
 		);
 
 		public $virtualFields = array(
@@ -34,27 +39,28 @@
 
 		public $validate = array(
 			'numtel' => array(
-				array(
+				'phoneFr' => array(
 					'rule' => 'phoneFr',
 					'allowEmpty' => true,
-					'message' => 'Veuillez entrer un n° de téléphone français'
 				),
 			),
 			'qual' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'nom' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'prenom' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 		);
 

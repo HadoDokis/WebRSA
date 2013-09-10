@@ -87,7 +87,7 @@
 
 					echo $this->Xhtml->tableCells(
 						array(
-							h( $qual[$referent['Referent']['qual']] ),
+							h( value( $qual, $referent['Referent']['qual'] ) ),
 							h( $referent['Referent']['nom'] ),
 							h( $referent['Referent']['prenom'] ),
 							h( $referent['Referent']['fonction'] ),

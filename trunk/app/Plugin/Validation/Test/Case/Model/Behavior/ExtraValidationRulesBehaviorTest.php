@@ -133,6 +133,26 @@
 			$result = $this->Site->phoneFr( array( 'phone' => '04 09 80 15 09' ) );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->phoneFr( array( 'phone' => '3949' ) );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->phoneFr( array( 'phone' => '15' ) );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->phoneFr( array( 'phone' => '112' ) );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->phoneFr( array( 'phone' => '118 718' ) );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = $this->Site->phoneFr( array( 'phone' => '1187189' ) );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**

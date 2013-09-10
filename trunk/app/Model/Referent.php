@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	define( 'CHAMP_FACULTATIF_REFERENT', Configure::read( 'Cg.departement' ) == 58 );
 
 	/**
 	 * La classe Referent s'occupe de la gestion des référents.
@@ -21,12 +22,16 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'Formattable',
 			'Enumerable' => array(
 				'fields' => array(
 					'actif' => array( 'type' => 'no', 'domain' => 'default' )
 				)
-			)
+			),
+			'Formattable' => array(
+				'phone' => array( 'numero_poste' )
+			),
+			'ValidateTranslate',
+			'Validation.ExtraValidationRules',
 		);
 
 		public $order = array( 'Referent.nom ASC', 'Referent.prenom ASC' );
@@ -44,46 +49,48 @@
 
 		public $validate = array(
 			'numero_poste' => array(
-				array(
-					'rule' => 'numeric',
-					'message' => 'Le numéro de téléphone est composé de chiffres',
-					'allowEmpty' => true
-				),
-				array(
-					'rule' => array( 'between', 10, 14 ),
-					'message' => 'Le N° de poste doit être composé de 10 chiffres'
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
 				)
 			),
 			'qual' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
+					'message' => 'Champ obligatoire',
+					'allowEmpty' => CHAMP_FACULTATIF_REFERENT
 				)
 			),
 			'nom' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
 			),
 			'prenom' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'fonction' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 			'email' => array(
-				array(
+				'email' => array(
 					'rule' => 'email',
 					'message' => 'Veuillez entrer une adresse email valide',
 					'allowEmpty' => true
 				)
 			),
 			'structurereferente_id' => array(
-				'rule' => 'notEmpty',
-				'message' => 'Champ obligatoire'
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				)
 			),
 		);
 

@@ -136,7 +136,7 @@ msgid "Validate::email"
 msgstr "Veuillez saisir une adresse de courrier électronique valide"
 
 msgid "Validate::phoneFr"
-msgstr "Veuillez entrer un n° de téléphone français"
+msgstr "Ce numéro de téléphone n'est pas valide"
 
 msgid "Validate::url"
 msgstr "Veuillez entrer une URL valide"

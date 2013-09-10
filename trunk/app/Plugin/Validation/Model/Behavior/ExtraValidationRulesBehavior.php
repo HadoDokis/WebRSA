@@ -87,6 +87,8 @@
 		 * Vérification que la valeur soir celle d'un numéro de téléphone
 		 * français (sur 10 chiffres).
 		 *
+		 * @see http://fr.wikipedia.org/wiki/Plan_de_num%C3%A9rotation_t%C3%A9l%C3%A9phonique_en_France#Indicatif_1
+		 *
 		 * @param Model $Model
 		 * @param array $check
 		 * @return boolean
@@ -96,10 +98,12 @@
 				return false;
 			}
 
+			$pattern = '/^([0-9]{10}|1[0-9]{1,3}|11[0-9]{4}|3[0-9]{3})$/';
+
 			$return = true;
 			foreach( $check as $field => $value ) {
 				$value = preg_replace( array( '/\./', '/ /' ), array(), $value );
-				$return = preg_match( '/^([0-9]{10})$/', $value ) && $return;
+				$return = preg_match( $pattern, $value ) && $return;
 			}
 
 			return $return;
