@@ -125,10 +125,14 @@ class Rupturescuis66Controller extends AppController
             $this->{$this->modelClass}->begin();
             $this->{$this->modelClass}->create( $this->request->data );
 
+            $decisioncui = $cui['Cui']['decisioncui'];
+            if( $decisioncui == 'enattente' ) {
+                $decisioncui = 'rupture';
+            }
             $saved = $this->Rupturecui66->Cui->updateAllUnBound(
                 array(
                     'Cui.positioncui66' => '\'rupture\'',
-                    'Cui.decisioncui' => '\'rupture\'',
+                    'Cui.decisioncui' => "'".$decisioncui."'"
                 ),
                 array(
                     'Cui.id' => $cui_id
