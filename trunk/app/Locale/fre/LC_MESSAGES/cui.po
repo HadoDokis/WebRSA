@@ -290,7 +290,7 @@ msgid "Cui.formqualif"
 msgstr "Formation qualifiante"
 
 msgid "Cui.datecontrat"
-msgstr "Fait le"
+msgstr "Demande faite le"
 
 msgid "Cui.formation"
 msgstr "Formation"
@@ -1005,7 +1005,10 @@ msgid "Cui.naturersa"
 msgstr "Nature du RSA"
 
 msgid "Cui.datearrivee"
-msgstr "Arrivé le"
+msgstr "Demande arrivée le"
+
+msgid "Cui.created"
+msgstr "Demande enregistrée le"
 
 ####################
 msgid "ENUM::DUREEINSCRITPE::06"

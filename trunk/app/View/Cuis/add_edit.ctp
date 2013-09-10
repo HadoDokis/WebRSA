@@ -1189,6 +1189,9 @@ document.observe("dom:loaded", function() {
 							'options' => $options
 						)
 					);
+
+                    $created = ( $this->action == 'add' ? date( 'Y-m-d' ) : $this->request->data['Cui']['created'] );
+                    echo $this->Xform->fieldValue( 'Cui.created', $this->Locale->date( 'Date::lettre', $created ), true, 'text' );
 				?>
 			</td>
 		</tr>
