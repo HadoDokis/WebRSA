@@ -18,7 +18,7 @@
 	/**
 	 * La classe ${name} ...
 	 *
-	 * @package app.Test.Case.Model.Behavior
+	 * @package app.Test.Case.View.Helper
 	 */
 	class ${name} extends CakeTestCase
 	{
