@@ -17,7 +17,7 @@
 			Hash::get( $apre, 'Dossier.numdemrsa' ),
 			Hash::get( $apre, 'Personne.nom' ).' '.Hash::get( $apre, 'Personne.prenom'),
 			Hash::get( $apre, 'Adresse.locaadr' ),
-			$this->Locale->date( Hash::get( $apre, 'Apre.datedemandeapre' ) ),
+			$this->Locale->date( 'Locale->date', Hash::get( $apre, 'Apre.datedemandeapre' ) ),
 			( empty( $aidesApre ) ? null : implode( "\n", $aidesApre ) ),
 			value( $options['typedemandeapre'], Hash::get( $apre, 'Apre.typedemandeapre' ) ),
 			value( $options['activitebeneficiaire'], Hash::get( $apre, 'Apre.activitebeneficiaire' ) ),
