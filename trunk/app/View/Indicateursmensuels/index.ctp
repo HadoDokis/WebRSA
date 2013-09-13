@@ -8,7 +8,7 @@
 <?php
 	echo $this->Form->create( 'Indicateurmensuel', array( 'type' => 'post', 'class' => 'noprint' ) );
 
-	echo $this->Form->input( 'Indicateurmensuel.annee', array( 'label' => __d( 'indicateurmensuel', 'Indicateurmensuel.annee' ), 'type' => 'select', 'empty' => true, 'options' => array_range( date( 'Y' ), date( 'Y' ) - 20 ) ) );
+	echo $this->Form->input( 'Indicateurmensuel.annee', array( 'label' => __d( 'indicateurmensuel', 'Indicateurmensuel.annee' ), 'type' => 'select', 'options' => array_range( date( 'Y' ), date( 'Y' ) - 20 ) ) );
 
 	echo $this->Form->submit( 'Calculer' );
 	echo $this->Form->end();

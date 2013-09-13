@@ -92,6 +92,12 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'options', $this->User->enums() );
 			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list' ) );
+			// TODO: Si 66, que les OA
+			// FIXME: que les actifs
+			$conditions = array();
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$conditions['Structurereferente.typestructure'] = 'oa';
+			}
 			$this->set( 'referents', $this->User->Referent->find(
 					'list',
 					array(
@@ -104,6 +110,7 @@
 						'joins' => array(
 							$this->User->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) )
 						),
+						'conditions' => $conditions,
 						'order' => array(
 							'Structurereferente.lib_struc ASC',
 							'Referent.nom_complet ASC',
@@ -256,6 +263,9 @@
 		 * Ici, on écrase les zones géographiques de l'utilisateur connecté avec
 		 * celles de la structurereferente s'il y a lieu.
 		 *
+		 * Pour le CG 66, si on est référent d'un OA, on va lire et mettre en
+		 * session la structure référente à laquelle le référent est lié.
+		 *
 		 * @return void
 		 */
 		protected function _loadStructurereferente() {
@@ -264,6 +274,7 @@
 				$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
 
 				// Si l'utilisateur est lié à une structure référente via un CI
+				// FIXME: méthode en commun avec le 66, voir plus bas
 				if( !$this->Session->check( 'Auth.Referent' ) ) {
 					if( !empty( $referent_id ) ) {
 						$querydata = array(
@@ -287,6 +298,7 @@
 				}
 
 				// Si l'utilisateur est lié (directement) à une structure référente
+				// TODO: début à factoriser avec le CG 66 ci-dessous
 				if( !$this->Session->check( 'Auth.Structurereferente' ) ) {
 					if( !empty( $structurereferente_id ) ) {
 						$querydata = array(
@@ -314,6 +326,52 @@
 				}
 				else {
 					$this->Session->write( 'Auth.Structurereferente', false );
+				}
+				// TODO: fin à factoriser avec le CG 66 ci-dessous
+			}
+			else if( Configure::read( 'Cg.departement' ) == 66 ) {
+				if( $this->Session->read( 'Auth.User.type' ) == 'externe_ci' ) {
+					$querydata = array(
+						'fields' => array( 'Referent.structurereferente_id' ),
+						'conditions' => array(
+							'Referent.id' => $this->Session->read( 'Auth.User.referent_id' )
+						)
+					);
+					$referent = $this->User->Referent->find( 'first', $querydata );
+					$this->Session->write( 'Auth.User.structurereferente_id', $referent['Referent']['structurereferente_id'] );
+
+					$structurereferente_id = $referent['Referent']['structurereferente_id'];
+					// Si l'utilisateur est lié (directement) à une structure référente
+					// TODO: début à factoriser avec le CG 93 ci-dessus
+					if( !$this->Session->check( 'Auth.Structurereferente' ) ) {
+						if( !empty( $structurereferente_id ) ) {
+							$querydata = array(
+								'conditions' => array(
+									'Structurereferente.id' => $structurereferente_id
+								),
+								'fields' => null,
+								'order' => null,
+								'contain' => array(
+									'Zonegeographique'
+								)
+							);
+							$structurereferente = $this->User->Structurereferente->find( 'first', $querydata );
+
+							// Si la structure référente est limitée au niveau des zones géographiques, on fait de même avec l'utilisateur
+							if( $structurereferente['Structurereferente']['filtre_zone_geo'] ) {
+								$this->Session->write(
+									'Auth.Zonegeographique',
+									Set::combine( $structurereferente, 'Zonegeographique.{n}.id', 'Zonegeographique.{n}.codeinsee' )
+								);
+								$this->Session->write( 'Auth.User.filtre_zone_geo', true );
+							}
+							$this->Session->write( 'Auth.Structurereferente', empty( $structurereferente ) ? false : $structurereferente['Structurereferente'] );
+						}
+					}
+					else {
+						$this->Session->write( 'Auth.Structurereferente', false );
+					}
+					// TODO: fin à factoriser avec le CG 93 ci-dessus
 				}
 			}
 		}

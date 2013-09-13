@@ -47,6 +47,12 @@
 			$this->Controller = $controller;
 		}
 
+		/**
+		 *
+		 * @param array $params
+		 * @return array
+		 * @throws error500Exception
+		 */
 		public function getDossierMenu( $params ) {
 			// Récupération du menu du dossier
 			$dossierMenu = ClassRegistry::init( 'Dossier' )->menu(
@@ -62,8 +68,7 @@
 		}
 
 		/**
-		 *
-		 * FIXME: en fonction des CG lorsqu'on tape dans l'URL
+		 * En fonction des CG lorsqu'on tape dans l'URL
 		 *
 		 * @param mixed $params
 		 * @return array

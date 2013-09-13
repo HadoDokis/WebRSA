@@ -977,6 +977,8 @@
 				);
 
 				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
@@ -1012,6 +1014,8 @@
 				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $wildcardKeys )
 			);
 			unset( $querydata['limit'] );
+
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
 

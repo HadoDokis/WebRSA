@@ -902,21 +902,22 @@
 		 * Retourne la dernière orientation orientée pour une personne.
 		 *
 		 * @param string $personneIdFied
+		 * @param string $alias
 		 * @return string
 		 */
-		public function sqDerniere( $personneIdFied = 'Personne.id' ) {
+		public function sqDerniere( $personneIdFied = 'Personne.id', $alias = 'orientsstructs' ) {
 			return $this->sq(
 				array(
 					'fields' => array(
-						'orientsstructs.id'
+						"{$alias}.id"
 					),
-					'alias' => 'orientsstructs',
+					'alias' => $alias,
 					'conditions' => array(
-						"orientsstructs.personne_id = {$personneIdFied}",
-						'orientsstructs.statut_orient = \'Orienté\'',
-						'orientsstructs.date_valid IS NOT NULL'
+						"{$alias}.personne_id = {$personneIdFied}",
+						"{$alias}.statut_orient = 'Orienté'",
+						"{$alias}.date_valid IS NOT NULL"
 					),
-					'order' => array( 'orientsstructs.date_valid DESC' ),
+					'order' => array( "{$alias}.date_valid DESC" ),
 					'limit' => 1
 				)
 			);

@@ -240,6 +240,7 @@
 						$this->request->data,
 						( in_array( $this->action, array( 'isemploi', 'notisemploi'  ) ) ? $this->Cohortes->sqLocked( 'Dossier' ) : null )
 					);
+					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$paginate['limit'] = $limit;
 
 					$this->paginate = $paginate;
@@ -396,6 +397,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$nonorientes66 = $this->Personne->find( 'all', $querydata );
 
 			$structures = $this->Cohortenonoriente66->structuresAutomatiques();

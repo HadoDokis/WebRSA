@@ -168,7 +168,7 @@
                         $this->request->data,
                         $this->Cohortes->sqLocked( 'Dossier' )
                     );
-
+					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
@@ -235,6 +235,7 @@
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Hash::expand( $this->request->params['named'], '__' )
 			);
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			unset( $querydata['limit'] );
 			$dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );
 
@@ -255,6 +256,7 @@
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Hash::expand( $this->request->params['named'], '__' )
 			);
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			unset( $querydata['limit'] );
 
 			$dossierspcgs66 = $this->Dossierpcg66->find( 'all', $querydata );

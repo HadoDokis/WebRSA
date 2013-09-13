@@ -33,10 +33,10 @@
 			$this->set( 'originepdo', $this->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'descriptionpdo', $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find( 'list' ) );
             $this->set( 'decisionpdo', $this->Dossierpcg66->Decisiondossierpcg66->Decisionpdo->find( 'list' ) );
-			
+
 			$this->set( 'motifpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => array( 'Situationpdo.libelle ASC' ) ) ) );
             $this->set( 'statutpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => array( 'Statutpdo.libelle ASC' ) ) ) );
-			
+
 			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 
 			$this->set( 'gestionnaire', $this->User->find(
@@ -54,16 +54,16 @@
 			);
 
 			$options = $this->Dossierpcg66->enums();
-            
-            $this->set( 'natpf', $this->Option->natpf() ); 	 
-	  	 
-            $this->set( 'listorganismes', $this->Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find( 	 
-                    'list', 	 
-                    array( 	 
-                        'condition' =>  array( 'Orgtransmisdossierpcg66.isactif' => '1' ), 	 
-                        'order' => array( 'Orgtransmisdossierpcg66.name ASC' ) 	 
-                    ) 	 
-                ) 	 
+
+            $this->set( 'natpf', $this->Option->natpf() );
+
+            $this->set( 'listorganismes', $this->Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                    'list',
+                    array(
+                        'condition' =>  array( 'Orgtransmisdossierpcg66.isactif' => '1' ),
+                        'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
+                    )
+                )
             );
 
 			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
@@ -77,9 +77,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param string $searchFunction
+		 */
 		private function _index( $searchFunction ) {
 
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
@@ -97,8 +97,10 @@
 					$mesZonesGeographiques
                 );
                 // -------------------------------------------------------------
-                
+
 				$querydata = $this->_qdAddFilters( $querydata );
+				$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+
                 $querydata['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
                 $progressivePaginate = !Hash::get( $this->request->data, 'Dossierpcg66.paginationNombreTotal' );
 
@@ -113,10 +115,10 @@
 				if( !is_null( $progressivePaginate ) ) {
 					$this->request->data['Dossierpcg66']['paginationNombreTotal'] = !$progressivePaginate;
 				}
-                
+
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
 				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
-                
+
 			}
 
 			$this->_setOptions();
@@ -159,19 +161,14 @@
 			);
 
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
-			$results = $this->Dossierpcg66->find(
-				'all',
-				$querydata
-			);
-
-			
+			$results = $this->Dossierpcg66->find( 'all', $querydata );
 
 			$this->_setOptions();
-//debug($results);
-//die();
+
 			$this->layout = '';
- 
+
             $vflisteseparator = "\n\r-";
 			$this->set( compact( 'results', 'vflisteseparator' ) );
 		}

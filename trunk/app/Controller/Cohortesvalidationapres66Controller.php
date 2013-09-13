@@ -188,6 +188,7 @@
                         $this->Cohortes->sqLocked( 'Dossier' )
                     );
 					$paginate['limit'] = 10;
+					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 
 					$this->paginate = $paginate;
@@ -216,7 +217,7 @@
 						$cohortevalidationapre66[$key]['Aideapre66']['datemontantpropose'] = $value['Aideapre66']['datemontantpropose'];
 
 					}
-                    
+
 					$this->Cohortes->get( Set::extract( $cohortevalidationapre66, '{n}.Dossier.id' ) );
 					$this->set( 'cohortevalidationapre66', $cohortevalidationapre66 );
 
@@ -259,6 +260,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$apres = $this->Apre66->find( 'all', $querydata );
 
 			$this->_setOptions();
@@ -285,6 +287,7 @@
 				$this->Cohortes->sqLocked( 'Dossier' )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$apres = $this->Apre66->find( 'all', $querydata );
 
 			$pdfs = array();

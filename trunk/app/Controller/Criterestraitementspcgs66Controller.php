@@ -76,6 +76,7 @@
 				$paginate = array( 'Traitementpcg66' => $this->Criteretraitementpcg66->search( $this->request->data, $mesCodesInsee,
 					$mesZonesGeographiques ) );
 				$paginate['Traitementpcg66']['limit'] = 10;
+				$paginate['Traitementpcg66']['conditions'][] = WebrsaPermissions::conditionsDossier();
 
                 $paginate['Traitementpcg66']['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
                 
@@ -114,6 +115,7 @@
 				$mesCodesInsee,
 				$mesZonesGeographiques
 			);
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			unset( $querydata['limit'] );
 //            $querydata['limit'] = 10;
@@ -124,8 +126,8 @@
 			);
 
 			$this->_setOptions();
-            
-//            
+
+//
 //debug($results);
 //die();
 			$this->layout = '';
