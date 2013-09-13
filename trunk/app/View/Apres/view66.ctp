@@ -35,7 +35,7 @@
 				'Aideapre66.versement' => array( 'type' => 'text', 'value' => $versement ),
 				'Aideapre66.creancier' => array( 'type' => 'text' ),
 				'Aideapre66.datedemande' => array( 'type' => 'date' ),
-				'Apre.avistechreferent' => array( 'type' => 'text' ),
+				'Apre66.avistechreferent' => array( 'type' => 'text', 'label' => 'Observations du référent' ),
 				'Aideapre66.montantpropose' => array( 'type' => 'text' ),
 				'Aideapre66.datemontantpropose' => array( 'type' => 'date' ),
 				'Aideapre66.decisionapre' => array( 'value' => $decisionapre ),
