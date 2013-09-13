@@ -33,7 +33,7 @@
 	<?php
 
 		// Liste des types de traitement
-		echo $this->Xform->input( 'Traitementpcg66.typetraitement', array( 'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => 'Type de traitement' ) );
+		echo $this->Xform->input( 'Traitementpcg66.typetraitement', array(  'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => required( 'Type de traitement' ) ) );
 
 
 	?>
