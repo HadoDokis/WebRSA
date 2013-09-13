@@ -248,7 +248,13 @@
 					'required' => false,
 					'allowEmpty' => false
 				)
-			)
+			),
+            'typetraitement' => array(
+                array(
+                    'rule' => 'notEmpty',
+                    'message' => 'Champ obligatoire'
+                )
+            )
 		);
 
 		public $belongsTo = array(
