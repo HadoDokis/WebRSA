@@ -121,7 +121,7 @@
 
 				echo $this->Xhtml->tableCells(
 					array(
-                        h( Hash::get( $personnepcg66, 'Personne.qual' ).' '.Hash::get( $personnepcg66, 'Personne.nom' ).' '.Hash::get( $personnepcg66, 'Personne.prenom' ) ),
+                        h( Hash::get( $fichecalcul, 'Personnepcg66.qual' ).' '.Hash::get( $fichecalcul, 'Personnepcg66.nom' ).' '.Hash::get( $fichecalcul, 'Personnepcg66.prenom' ) ),
 						h( Set::enum( $fichecalcul['regime'], $options['Traitementpcg66']['regime'] ) ),
 						h( $this->Locale->money( $fichecalcul['chaffvnt'] ) ),
                         h( $this->Locale->money( $fichecalcul['chaffsrv'] ) ),

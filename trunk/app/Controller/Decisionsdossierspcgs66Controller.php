@@ -582,19 +582,19 @@
 
             //Liste des personne sliées au traitement
 			$personnespcgs66 = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->find(
-					'all', array(
-				'conditions' => array(
-					'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-				),
-				'contain' => array(
-					'Statutpdo',
-					'Situationpdo',
-					'Personne',
-					'Traitementpcg66'
-				)
-					)
+                'all', array(
+                    'conditions' => array(
+                        'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
+                    ),
+                    'contain' => array(
+                        'Statutpdo',
+                        'Situationpdo',
+                        'Personne',
+                        'Traitementpcg66'
+                    )
+                )
 			);
-
+            
 			//Liste des traitements avec une fiche de calcul devant être reporter dans la décision
 			$listeFicheAReporter = array( );
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
@@ -602,14 +602,14 @@
 					foreach( $personnepcg66['Traitementpcg66'] as $traitementpcg66 ) {
 						if( $traitementpcg66['reversedo'] == 1 ) {
 							$listeFicheAReporter[] = $traitementpcg66;
+                            $listeFicheAReporter[$i]['Personnepcg66'] = $personnepcg66['Personne'];
 						}
 					}
 				}
 			}
 			$this->set( compact( 'listeFicheAReporter' ) );
             
-            
-//            debug($dossierpcg66    );
+
             //Liste des traitements non clos appartenant aux dossiers liés à mon Foyer
             $listeTraitementsNonClos = array();
 
