@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
+	define( 'REFERENT_FACULTATIF', Configure::read( 'Cg.departement' ) != 66 );
 
 	/**
 	 * La classe Contratinsertion permet de gérer les CER de manière individuelle.
@@ -215,6 +216,13 @@
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
+				)
+			),
+            'referent_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire',
+                    'allowEmpty' => REFERENT_FACULTATIF
 				)
 			)
 		);

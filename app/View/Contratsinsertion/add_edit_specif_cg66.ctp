@@ -506,7 +506,7 @@ document.observe("dom:loaded", function() {
 			<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'StructurereferenteRef', 'url' => array( 'action' => 'ajaxstruct' ) ) ); ?>
 		</td>
 		<td class="noborder">
-			<?php echo $this->Xform->input( 'Contratinsertion.referent_id', array('label' => 'Nom du référent chargé du suivi :', 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
+			<?php echo $this->Xform->input( 'Contratinsertion.referent_id', array( 'required' => true,  'label' => 'Nom du référent chargé du suivi :', 'type' => 'select', 'options' => $referents, 'empty' => true, 'selected' => $struct_id.'_'.$referent_id ) );?>
 			<?php echo $this->Ajax->observeField( 'ContratinsertionReferentId', array( 'update' => 'ReferentRef', 'url' => array( 'action' => 'ajaxref' ) ) ); ?>
 		</td>
 	</tr>
