@@ -1012,7 +1012,9 @@
 		 *
 		 */
 		public function envoiCourrier( $id ) {
-			$this->Traitementpcg66->begin();
+            $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
+            
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Traitementpcg66->Personnepcg66->Personne->dossierId( $id ) ) ) );
 
 			$traitementpcg66 = $this->Traitementpcg66->find(
 				'first',
@@ -1026,17 +1028,26 @@
 				)
 			);
 			$this->Traitementpcg66->id = $id;
-			$success = $this->Traitementpcg66->saveField( 'dateenvoicourrier', date( 'Y-m-d' ) );
+            
+            // Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+			}
 
-			if( $success ) {
-				$this->Traitementpcg66->commit();
-				$this->Session->setFlash( 'La date d\'envoi du courrier a bien été enregistrée', 'flash/success' );
+			if( !empty( $this->request->data ) ) {
+				$this->Traitementpcg66->begin();
+				$success = $this->Traitementpcg66->saveField( 'dateenvoicourrier', date( 'Y-m-d' ) );
+				if( $success ) {
+					$this->Traitementpcg66->commit();
+					$this->Session->setFlash( 'La date d\'envoi du courrier a bien été enregistrée', 'flash/success' );
+					$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+				}
+				else {
+					$this->Traitementpcg66->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement de la date', 'flash/error' );
+				}
 			}
-			else {
-				$this->Traitementpcg66->rollback();
-				$this->Session->setFlash( 'Erreur lors de l\'enregistrement de la date', 'flash/error' );
-			}
-			$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );
+            $this->set( compact( 'traitementpcg66' ) );
 		}
 	}
 ?>
