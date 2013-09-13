@@ -30,12 +30,29 @@
 
             $Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
 
+            $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+            $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' );
+            
             $conditions = array(
 				array(
-					'OR' => array(
-						'Adressefoyer.id IS NULL',
-						'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-					)
+                    array(
+                        'OR' => array(
+                            'Adressefoyer.id IS NULL',
+                            'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Detailcalculdroitrsa.id IS NULL',
+                            "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Decisiondossierpcg66.id IS NULL',
+                            "Decisiondossierpcg66.id IN ( {$sqDerniereDecisiondossierpcg66} )",
+                        )
+                    )
 				)
 			);
 			/// Filtre zone géographique
@@ -220,9 +237,9 @@
 
 //debug($conditions);
             
-			$query = array(
+			$querydata = array(
 				'fields' => array(
-					'DISTINCT Dossierpcg66.id',
+					'Dossierpcg66.id',
 					'Dossierpcg66.foyer_id',
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.typepdo_id',
@@ -257,7 +274,11 @@
 				'recursive' => -1,
 				'joins' => array(
                     $Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
-                    $Dossierpcg66->join( 'Personnepcg66', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->join( 'Personnepcg66',
+                        array(
+                            'type' => 'LEFT OUTER'
+                        )
+                    ),
                     $Dossierpcg66->Foyer->join(
                         'Personne',
                         array(
@@ -287,7 +308,85 @@
 				'conditions' => $conditions
 			);
 			
-			return $query;
+            
+            
+            // ------------- Récupération de la liste des motifs  ----------
+            $qdLibellesSituationpdo = array(
+                'fields' => array(
+                    'Situationpdo.libelle'
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+                )
+            );
+
+            $vfLibellesSituationpdo = $Dossierpcg66->Personnepcg66->vfListe( $qdLibellesSituationpdo );
+            $querydata['fields'][] = "{$vfLibellesSituationpdo} AS \"Personnepcg66__listemotifs\"";
+
+            // ------------- Récupération de la liste des motifs  ----------
+            $qdLibellesStatutpdo = array(
+                'fields' => array(
+                    'Statutpdo.libelle'
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->join( 'Personnepcg66Statutpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->join( 'Statutpdo', array( 'type' => 'LEFT OUTER' ) )
+                )
+            );
+
+            $vfLibellesStatutpdo = $Dossierpcg66->Personnepcg66->vfListe( $qdLibellesStatutpdo );
+            $querydata['fields'][] = "{$vfLibellesStatutpdo} AS \"Personnepcg66__listestatuts\"";
+
+            // -- Récupération de la liste des traitements et des dates échéance  ---
+
+            $qdTraitementpcg66 = array(
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER'))
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'contain' => false
+            );
+
+            $qdTraitementpcg66Typetraitement = $qdTraitementpcg66;
+            $qdTraitementpcg66Typetraitement['fields'] = array( 'Traitementpcg66.typetraitement', );
+            $vfTraitementpcg66Typetraitement = $Dossierpcg66->Personnepcg66->Traitementpcg66->vfListe( $qdTraitementpcg66Typetraitement );
+            $querydata['fields'][] = "{$vfTraitementpcg66Typetraitement} AS \"Dossierpcg66__listetraitements\"";
+
+            $qdTraitementpcg66Dateecheance = $qdTraitementpcg66;
+            $qdTraitementpcg66Dateecheance['fields'] = array( 'Traitementpcg66.dateecheance', );
+            $vfTraitementpcg66Dateecheance = $Dossierpcg66->Personnepcg66->Traitementpcg66->vfListe( $qdTraitementpcg66Dateecheance );
+            $querydata['fields'][] = "{$vfTraitementpcg66Dateecheance} AS \"Dossierpcg66__dateecheance\"";
+
+            // ----- Récupération de la liste des organismes de décisions -------
+            $qdOrganismes = array(
+                'fields' => array(
+                    'Orgtransmisdossierpcg66.name'
+                ),
+                'conditions' => array(
+                    'Decisiondossierpcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decdospcg66Orgdospcg66' ),
+                    $Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->join( 'Orgtransmisdossierpcg66' )
+                ),
+                'order' => array( 'Decisiondossierpcg66.created DESC' ),
+                'contain' => false
+            );
+            $vfNameOrganisme = $Dossierpcg66->Decisiondossierpcg66->vfListe( $qdOrganismes );
+            $querydata['fields'][] = "{$vfNameOrganisme} AS \"Orgtransmisdossierpcg66__listorgs\"";
+            
+            
+            
+			return $querydata;
 		}
 
 
@@ -312,20 +411,49 @@
 				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
 			}
 			
+            
              // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );
 			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
 				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
             
-			$conditions[] = array(
-				'OR' => array(
-					'Adressefoyer.id IS NULL',
-					'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+            $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+            $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' );
+            $sqDernierTraitementpcg66 = $Dossierpcg66->Personnepcg66->sqLatest( 'Traitementpcg66', 'created', array( true ) );
+            
+            $conditions[] = array(
+				array(
+                    array(
+                        'OR' => array(
+                            'Adressefoyer.id IS NULL',
+                            'Adressefoyer.id IN ( '.$Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Detailcalculdroitrsa.id IS NULL',
+                            "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Decisiondossierpcg66.id IS NULL',
+                            "Decisiondossierpcg66.id IN ( {$sqDerniereDecisiondossierpcg66} )",
+                        )
+                    ),
+                    $sqDernierTraitementpcg66
 				)
 			);
 			$conditions[] = 'Personne.id IN ( '.$Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
 			
+            
+            
+            $conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+            
+            
+            
 			$dossierEchu = Set::extract( $params, 'Dossierpcg66.dossierechu' );
 			if( isset( $params['Dossierpcg66']['dossierechu'] ) && !empty( $params['Dossierpcg66']['dossierechu'] ) ) {
 				$conditions[] = 'Traitementpcg66.id IN ( '.$Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu( 'Personnepcg66.id' ).' )';
@@ -448,9 +576,9 @@
             
             
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
-			$query = array(
+			$querydata = array(
 				'fields' => array(
-					'DISTINCT Dossierpcg66.id',
+					'Dossierpcg66.id',
 					'Dossierpcg66.foyer_id',
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.typepdo_id',
@@ -478,8 +606,6 @@
 					'Adresse.numcomptt',
 					'Situationdossierrsa.etatdosrsa',
 					$Dossierpcg66->sqVirtualField('nbpropositions'),
-// 					'Personnepcg66.id',
-//					'Personnepcg66.nbtraitements',
                     $Dossierpcg66->Personnepcg66->sqVirtualField( 'nbtraitements' ),
 					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies')
 				),
@@ -503,7 +629,83 @@
 				'conditions' => $conditions
 			);
 
-			return $query;
+            
+            
+            // ------------- Récupération de la liste des motifs  ----------
+            $qdLibellesSituationpdo = array(
+                'fields' => array(
+                    'Situationpdo.libelle'
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
+                )
+            );
+
+            $vfLibellesSituationpdo = $Dossierpcg66->Personnepcg66->vfListe( $qdLibellesSituationpdo );
+            $querydata['fields'][] = "{$vfLibellesSituationpdo} AS \"Personnepcg66__listemotifs\"";
+
+            // ------------- Récupération de la liste des motifs  ----------
+            $qdLibellesStatutpdo = array(
+                'fields' => array(
+                    'Statutpdo.libelle'
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->join( 'Personnepcg66Statutpdo', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->join( 'Statutpdo', array( 'type' => 'LEFT OUTER' ) )
+                )
+            );
+
+            $vfLibellesStatutpdo = $Dossierpcg66->Personnepcg66->vfListe( $qdLibellesStatutpdo );
+            $querydata['fields'][] = "{$vfLibellesStatutpdo} AS \"Personnepcg66__listestatuts\"";
+
+            // -- Récupération de la liste des traitements et des dates échéance  ---
+
+            $qdTraitementpcg66 = array(
+                'joins' => array(
+                    $Dossierpcg66->Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER'))
+                ),
+                'conditions' => array(
+                    'Personnepcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'contain' => false
+            );
+
+            $qdTraitementpcg66Typetraitement = $qdTraitementpcg66;
+            $qdTraitementpcg66Typetraitement['fields'] = array( 'Traitementpcg66.typetraitement', );
+            $vfTraitementpcg66Typetraitement = $Dossierpcg66->Personnepcg66->Traitementpcg66->vfListe( $qdTraitementpcg66Typetraitement );
+            $querydata['fields'][] = "{$vfTraitementpcg66Typetraitement} AS \"Dossierpcg66__listetraitements\"";
+
+            $qdTraitementpcg66Dateecheance = $qdTraitementpcg66;
+            $qdTraitementpcg66Dateecheance['fields'] = array( 'Traitementpcg66.dateecheance', );
+            $vfTraitementpcg66Dateecheance = $Dossierpcg66->Personnepcg66->Traitementpcg66->vfListe( $qdTraitementpcg66Dateecheance );
+            $querydata['fields'][] = "{$vfTraitementpcg66Dateecheance} AS \"Dossierpcg66__dateecheance\"";
+
+            // ----- Récupération de la liste des organismes de décisions -------
+            $qdOrganismes = array(
+                'fields' => array(
+                    'Orgtransmisdossierpcg66.name'
+                ),
+                'conditions' => array(
+                    'Decisiondossierpcg66.dossierpcg66_id = Dossierpcg66.id'
+                ),
+                'joins' => array(
+                    $Dossierpcg66->Decisiondossierpcg66->join( 'Decdospcg66Orgdospcg66' ),
+                    $Dossierpcg66->Decisiondossierpcg66->Decdospcg66Orgdospcg66->join( 'Orgtransmisdossierpcg66' )
+                ),
+                'order' => array( 'Decisiondossierpcg66.created DESC' ),
+                'contain' => false
+            );
+            $vfNameOrganisme = $Dossierpcg66->Decisiondossierpcg66->vfListe( $qdOrganismes );
+            $querydata['fields'][] = "{$vfNameOrganisme} AS \"Orgtransmisdossierpcg66__listorgs\"";
+            
+			return $querydata;
 		}
 
 	}

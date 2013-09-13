@@ -805,4 +805,22 @@
 
 		return $data;
 	}
+    
+    
+  
+    /**
+	 *
+	 * Exemple:
+	 * <pre>vfListeToArray( '- CAF' ) </pre>
+	 * donne
+	 * <pre>array( 0 => 'CAF' )</pre>
+	 *
+	 * @param string $liste
+	 * @param string $separator
+	 * @return array
+	 */
+    function vfListeToArray( $liste, $separator = "\n\r-" ) {
+        $liste = trim( $liste, '-' );
+        return Hash::filter( explode( $separator, $liste ) );
+    }
 ?>

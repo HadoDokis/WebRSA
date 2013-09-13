@@ -39,40 +39,35 @@
 
 	foreach( $results as $i => $result ) {
 
-        // Date de transmission du dossier et organismes auxquels cela a été transmis
-		$datetransmission = '';
-		if( $result['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
-			$datetransmission = ' le '.date_short( Hash::get( $result, 'Decisiondossierpcg66.datetransmissionop' ) );
-            $orgs = Hash::get( $result, 'Decisiondossierpcg66.listorgs' );
-            $listorgs = ' à '.implode( ', ',  $orgs );
-		}
+        // Liste des organismes auxquels on transmet le dossier
+        $orgs = vfListeToArray($result['Orgtransmisdossierpcg66']['listorgs']);
+        if( !empty( $orgs ) ) {
+            $orgs = implode( ',', $orgs );
+        }
+        else {
+            $orgs = '';
+        }
 
-		$etatdosrsaValue = Hash::get( $result, 'Situationdossierrsa.etatdosrsa' );
-		$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-		
-		//Liste des différents motifs de la personne
-		$differentsMotifs = '';
-		foreach( $result['Personnepcg66']['listemotifs'] as $key => $motif ) {
-			if( !empty( $motif ) ) {
-				$differentsMotifs .= ". ".$motif."\n";
-			}
-		}
+        $datetransmission = '';
+        if( $result['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
+            $datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $result, 'Decisiondossierpcg66.datetransmissionop' ) );
+        }
+        else if( $result['Dossierpcg66']['etatdossierpcg'] == 'atttransmisop' ){
+            $datetransmission = ' à '.$orgs;
+            
+        }
+
+        $etatdosrsaValue = Set::classicExtract( $result, 'Situationdossierrsa.etatdosrsa' );
+        $etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
         
+        //Liste des différents motifs de la personne
+        $differentsMotifs = $result['Personnepcg66']['listemotifs'];
         //Liste des différents statuts de la personne
-		$differentsStatuts = '';
-		foreach( $result['Personnepcg66']['listestatuts'] as $key => $statut ) {
-			if( !empty( $statut ) ) {
-				$differentsStatuts .= ". ".$statut."\n";
-			}
-		}
-       	
-		//Liste des différents traitements PCGs de la personne PCG
-		$traitementspcgs66 = '';
-		foreach( $result['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
-			if( !empty( $traitement ) ) {
-				$traitementspcgs66 .= '. '.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] )."\n";
-			}
-		}
+        $differentsStatuts = $result['Personnepcg66']['listestatuts'];
+        
+        //Liste des différents traitements de la personne
+        $traitementspcgs66 = $result['Dossierpcg66']['listetraitements'];
+        
 	
 		if( $this->request->params['pass'][0] == 'searchDossier' ) {
 			$row = array(
@@ -84,7 +79,7 @@
 				h( Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
                 h( Hash::get( $result, 'Decisionpdo.libelle' ) ),
 				h( $result['Dossierpcg66']['nbpropositions'] ),
-				Set::enum( Hash::get( $result, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission.$listorgs,
+				Set::enum( Hash::get( $result, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission,
 				$differentsMotifs,
                 $differentsStatuts,
 				h( $result['Fichiermodule']['nb_fichiers_lies'] )

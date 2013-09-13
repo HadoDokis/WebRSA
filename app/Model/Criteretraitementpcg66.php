@@ -134,10 +134,24 @@
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
+            
+            
+            $sqDernierDetailcalculdroitrsa = $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );           
+            
 			$conditions[] = array(
-				'OR' => array(
-					'Adressefoyer.id IS NULL',
-					'Adressefoyer.id IN ( '.$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                array(
+                    array(
+                        'OR' => array(
+                            'Adressefoyer.id IS NULL',
+                            'Adressefoyer.id IN ( '.$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                        )
+                    ),
+                    array(
+                        'OR' => array(
+                            'Detailcalculdroitrsa.id IS NULL',
+                            "Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )"
+                        )
+                    )
 				)
 			);
 			$conditions[] = 'Personne.id IN ( '.$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';

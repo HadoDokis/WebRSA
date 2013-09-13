@@ -26,7 +26,6 @@
 
             <legend>Informations par Gestionnaire</legend>
             <?php
-
                 echo $this->Default2->subform(
                     array(
 						'Dossierpcg66.user_id' => array(  'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'options' => $gestionnaire, 'empty' => true )
@@ -55,18 +54,30 @@
                 echo $this->Form->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ) );
 		
                 
+                
                 echo $this->Default2->subform(
                     array(
 						'Dossierpcg66.dossierechu' => array(  'label' => 'Dossier échu', 'type' => 'checkbox' )
                     )
                 );
                 
+                echo $this->Search->blocAllocataire();
+                
+                echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+                echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+                
+                $valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
+                echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+            
                 echo $this->Search->natpf( $natpf );
                 echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
                 echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );
             ?>
         </fieldset>
-
+ <fieldset>
+    <legend>Comptage des résultats</legend>
+    <?php echo $this->Form->input( 'Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
+</fieldset>
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -105,60 +116,77 @@
 					<th>Motif(s) personne</th>
                     <th>Statut(s) personne</th>
                     <th>Nb de fichiers dans la corbeille</th>
+                    <th class="action noprint">Verrouillé</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
+					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {                       
+                                                
+                        
+                        $orgs = vfListeToArray( $criteredossierpcg66['Orgtransmisdossierpcg66']['listorgs'] );
+                        if( !empty( $orgs ) ) {
+                            $orgs = implode( ',', $orgs );
+                        }
+                        else {
+                            $orgs = '';
+                        }
 
 						$datetransmission = '';
-                        
-                        // Liste des organismes auxquels on transmet le dossier
-                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
-                        $orgs = implode( ', ', $orgs  );
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
-                            $datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
-                        }
+							$datetransmission = ' à '.$orgs.' le '.date_short( Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.datetransmissionop' ) );
+						}
                         else if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'atttransmisop' ){
-                            $datetransmission = ' à '.$orgs; 
-						}
-
-                        
-						//Liste des différents traitements PCGs de la personne PCG
-						$traitementspcgs66 = '';
-						foreach( $criteredossierpcg66['Dossierpcg66']['listetraitements'] as $key => $traitement ) {
-							if( !empty( $traitement ) ) {
-								$traitementspcgs66 .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.Set::enum( $traitement, $options['Traitementpcg66']['typetraitement'] ).'</li></ul>';
-							}
-						}
-                        
-                        //Liste des différents traitements PCGs de la personne PCG
-						$echeances = '';
-						foreach( $criteredossierpcg66['Dossierpcg66']['dateecheance'] as $key => $echeance ) {
-							if( !empty( $echeance ) ) {
-								$echeances .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.date_short( $echeance ).'</li></ul>';
-							}
+							$datetransmission = ' à '.$orgs; //FIXME variable mal nommée mais plus simple à mettre en place
 						}
 
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-                        
-                        
-                        $differentsMotifs = '';
-						foreach( $criteredossierpcg66['Personnepcg66']['listemotifs'] as $key => $motif ) {
-							if( !empty( $motif ) ) {
-								$differentsMotifs .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$motif.'</li></ul>';
-							}
-						}
-                        
-                        $differentsStatuts = '';
-						foreach( $criteredossierpcg66['Personnepcg66']['listestatuts'] as $key => $statut ) {
-							if( !empty( $statut ) ) {
-								$differentsStatuts .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
-							}
-						}
+                      
 
+                        //Liste des différents motifs de la personne PCG
+                        $differentsMotifs  = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listemotifs'] );
+                        if( !empty( $differentsMotifs ) ) {
+                            $differentsMotifs = '<ul><li>'.implode( '</li><li>', $differentsMotifs ).'</li></ul>';
+                        }
+                        else {
+                            $differentsMotifs = '';
+                        }
+                        
+                        //Liste des différents statuts de la personne PCG
+                        $differentsStatuts = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listestatuts'] );
+                        if( !empty( $differentsStatuts ) ) {
+                            $differentsStatuts = '<ul><li>'.implode( '</li><li>', $differentsStatuts ).'</li></ul>';
+                        }
+                        else {
+                            $differentsStatuts = '';
+                        }
+
+                        //Liste des différents traitements PCGs de la personne PCG
+                        $traitementspcgs66 = vfListeToArray( $criteredossierpcg66['Dossierpcg66']['listetraitements'] );
+                        if( !empty( $traitementspcgs66 ) ) {
+                            foreach( $traitementspcgs66 as $i => $traitementpcg66 ) {
+                                $traitementspcgs66[$i] = value( $options['Traitementpcg66']['typetraitement'], $traitementpcg66 );
+                            }
+                            $traitementspcgs66 = '<ul><li>'.implode( '</li><li>', $traitementspcgs66 ).'</li></ul>';
+                        }
+                        else {
+                            $traitementspcgs66 = '';
+                        }
+                        
+                        //Liste des différentes échéances courant
+                        $echeances = vfListeToArray( $criteredossierpcg66['Dossierpcg66']['dateecheance'] );
+                        
+                        if( !empty( $echeances ) ) {
+                            foreach( $echeances as $i => $echeance ) {
+                                $echeances[$i] = date_short( $echeance );
+                            }
+                            $echeances = '<ul><li>'.implode( '</li><li>', $echeances ).'</li></ul>';
+                        }
+                        else {
+                            $echeances = '';
+                        }
 
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
@@ -206,6 +234,15 @@
                                 $differentsMotifs,
                                 $differentsStatuts,
 								h( $criteredossierpcg66['Fichiermodule']['nb_fichiers_lies'] ),
+                                array(
+                                    ( $criteredossierpcg66['Dossier']['locked'] ?
+                                        $this->Xhtml->image(
+                                            'icons/lock.png',
+                                            array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                        ) : null
+                                    ),
+                                    array( 'class' => 'noprint' )
+                                ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )

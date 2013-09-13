@@ -552,5 +552,28 @@
 
 			return $success;
 		}
+        
+		/**
+		 * Les éléments de la liste sont triés et préfixés par une chaîne de caractères.
+         * 
+         * @todo prefix/suffix pour avoir correctement le tiret et les retours à la ligne
+		 *
+		 * @param array $querydata
+		 * @param string $prefix
+		 * @param string $suffix
+		 * @return string
+		 */
+		public function vfListe( array $querydata, $prefix = '\\n\r-', $suffix = '' ) {
+            // FIXME: un seul champ est possible
+            foreach( $querydata['fields'] as $i => $field ) {
+                list( $modelName, $fieldName ) = model_field( $field );
+                $fieldAlias = "{$modelName}__{$fieldName}";
+                $querydata['fields'][$i] = "'{$prefix}' || \"{$modelName}\".\"{$fieldName}\" || '{$suffix}' AS \"{$fieldAlias}\"";
+            }
+
+            $sql = $this->sq( $querydata );
+//			return "TRIM( TRAILING '{$suffix}' FROM ARRAY_TO_STRING( ARRAY( {$sql} ), '' ) )";
+            return "TRIM( BOTH '\n\r' FROM TRIM( TRAILING '{$suffix}' FROM ARRAY_TO_STRING( ARRAY( {$sql} ), '' ) ) )";
+		}
 	}
 ?>

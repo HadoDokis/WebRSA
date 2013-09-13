@@ -28,7 +28,9 @@
 		).'</li></ul>';
 	}
 
-	echo $this->Xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => 'dossier', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => 'dossier', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Dossierpcg66']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );
+    
+    echo $this->Form->input( 'Dossierpcg66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
 ?>
 	<?php
 		echo $this->Search->blocAllocataire();
@@ -111,6 +113,10 @@
     </fieldset>
     <?php echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );?>
 </fieldset>
+ <fieldset>
+    <legend>Comptage des résultats</legend>
+    <?php echo $this->Form->input( 'Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
+</fieldset>
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -139,17 +145,24 @@
 					<th>Motifs de(s) la(es) personne(s)</th>
                     <th>Statuts de(s) la(es) personne(s)</th>
 					<th>Nb de fichiers dans la corbeille</th>
+                    <th class="action noprint">Verrouillé</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
+                
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
 //debug($criteredossierpcg66);
 
                         // Liste des organismes auxquels on transmet le dossier
-                        $orgs =  Set::classicExtract( $criteredossierpcg66, 'Decisiondossierpcg66.organismes' );
-                        $orgs = implode( ', ', $orgs  );
+                        $orgs  = vfListeToArray( $criteredossierpcg66['Orgtransmisdossierpcg66']['listorgs'] );
+                        if( !empty( $orgs ) ) {
+                            $orgs = implode( ',', $orgs );
+                        }
+                        else {
+                            $orgs = '';
+                        }
 
 						$datetransmission = '';
 						if( $criteredossierpcg66['Dossierpcg66']['etatdossierpcg'] == 'transmisop' ){
@@ -161,21 +174,24 @@
 
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-
-						$differentsMotifs = '';
-						foreach( $criteredossierpcg66['Personnepcg66']['listemotifs'] as $key => $motif ) {
-							if( !empty( $motif ) ) {
-								$differentsMotifs .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$motif.'</li></ul>';
-							}
-						}
+                      
+                        $differentsMotifs  = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listemotifs'] );
+                        if( !empty( $differentsMotifs ) ) {
+                            $differentsMotifs = '<ul><li>'.implode( '</li><li>', $differentsMotifs ).'</li></ul>';
+                        }
+                        else {
+                            $differentsMotifs = '';
+                        }
                         
-                        $differentsStatuts = '';
-						foreach( $criteredossierpcg66['Personnepcg66']['listestatuts'] as $key => $statut ) {
-							if( !empty( $statut ) ) {
-								$differentsStatuts .= $this->Xhtml->tag( 'h3', '' ).'<ul><li>'.$statut.'</li></ul>';
-							}
-						}
+                        $differentsStatuts  = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listestatuts'] );
+                        if( !empty( $differentsStatuts ) ) {
+                            $differentsStatuts = '<ul><li>'.implode( '</li><li>', $differentsStatuts ).'</li></ul>';
+                        }
+                        else {
+                            $differentsStatuts = '';
+                        }
 
+                        
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -220,6 +236,15 @@
 								$differentsMotifs,
                                 $differentsStatuts,
 								h( $criteredossierpcg66['Fichiermodule']['nb_fichiers_lies'] ),
+                                array(
+                                    ( $criteredossierpcg66['Dossier']['locked'] ?
+                                        $this->Xhtml->image(
+                                            'icons/lock.png',
+                                            array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                        ) : null
+                                    ),
+                                    array( 'class' => 'noprint' )
+                                ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'dossierspcgs66', 'action' => 'index', Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.foyer_id' ) )
