@@ -58,11 +58,11 @@
 			<?php
                 echo $this->Xhtml->tableCells(
                     array(
-                        h( Set::enum( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'decisionpdo_id' ), $decisionpdo ) ),
-                        h( date_short( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'datepropositiontechnicien' ) ) ),
-                        h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'validationproposition' ) ) ),
-                        h( date_short( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'datevalidation' ) ) ),
-                        h( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'commentairetechnicien' ) )
+                        h( Set::enum( Hash::get( $dossierpcg66['Decisiondossierpcg66'][0], 'decisionpdo_id' ), $decisionpdo ) ),
+                        h( date_short( Hash::get( $dossierpcg66['Decisiondossierpcg66'][0], 'datepropositiontechnicien' ) ) ),
+                        h( value( $options['Decisiondossierpcg66']['validationproposition'], Hash::get( $dossierpcg66['Decisiondossierpcg66'][0], 'validationproposition' ) ) ),
+                        h( date_short( Hash::get( $dossierpcg66['Decisiondossierpcg66'][0], 'datevalidation' ) ) ),
+                        h( Hash::get( $dossierpcg66['Decisiondossierpcg66'][0], 'commentairetechnicien' ) )
                     )
                 );
 			?>

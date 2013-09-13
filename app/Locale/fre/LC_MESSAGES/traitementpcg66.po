@@ -506,3 +506,6 @@ msgstr "Gestionnaire du dossier (instructeur en charge du dossier)"
 
 msgid "Traitementpcg66.motifannulation"
 msgstr "Motif d'annulation"
+
+msgid "Traitementpcg66.dateenvoicourrier"
+msgstr "Date d'envoi du courrier"
