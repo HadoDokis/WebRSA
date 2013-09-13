@@ -19,7 +19,7 @@
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos','Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos','Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		/**
 		*
@@ -77,11 +77,21 @@
 					$mesZonesGeographiques ) );
 				$paginate['Traitementpcg66']['limit'] = 10;
 
+                $paginate['Traitementpcg66']['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
+                
+                $progressivePaginate = !Hash::get( $this->request->data, 'Traitementpcg66.paginationNombreTotal' );
+                
 				$this->paginate = $paginate;
-				$criterestraitementspcgs66 = $this->paginate( 'Traitementpcg66' );
+				$criterestraitementspcgs66 = $this->paginate( 'Traitementpcg66', array(), array(), $progressivePaginate );
 
 				$this->set( compact( 'criterestraitementspcgs66' ) );
 			}
+            else {
+                 $progressivePaginate = $this->_hasProgressivePagination();
+				if( !is_null( $progressivePaginate ) ) {
+					$this->request->data['Traitementpcg66']['paginationNombreTotal'] = !$progressivePaginate;
+				}
+            }
 
 			$this->_setOptions();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );

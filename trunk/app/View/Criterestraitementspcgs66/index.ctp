@@ -27,7 +27,8 @@
 		).'</li></ul>';
 	}
 
-	echo $this->Xform->create( 'Criteretraitementpcg66', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );
+	echo $this->Xform->create( 'Criteretraitementpcg66', array( 'type' => 'post', 'action' => 'index', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Traitementpcg66']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );
+    echo $this->Form->input( 'Traitementpcg66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
 ?>
 <?php
 		echo $this->Search->blocAllocataire();
@@ -87,6 +88,10 @@
 		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
+<fieldset>
+    <legend>Comptage des résultats</legend>
+    <?php echo $this->Form->input( 'Traitementpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
+</fieldset>
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -115,6 +120,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Annulé ?', 'Traitementpcg66.annule' );?></th>
 					<th>Nb de fichiers dans la corbeille</th>
+                    <th class="action noprint">Verrouillé</th>
 					<th class="action">Actions</th>
 				</tr>
 			</thead>
@@ -169,6 +175,15 @@
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
 								h( $criteretraitementpcg66['Fichiermodule']['nb_fichiers_lies'] ),
+                                array(
+                                    ( $criteretraitementpcg66['Dossier']['locked'] ?
+                                        $this->Xhtml->image(
+                                            'icons/lock.png',
+                                            array( 'alt' => '', 'title' => 'Dossier verrouillé' )
+                                        ) : null
+                                    ),
+                                    array( 'class' => 'noprint' )
+                                ),
 								$this->Xhtml->viewLink(
 									'Voir',
 									array( 'controller' => 'traitementspcgs66', 'action' => 'index', Set::classicExtract( $criteretraitementpcg66, 'Personnepcg66.personne_id' ), Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.id' ) )

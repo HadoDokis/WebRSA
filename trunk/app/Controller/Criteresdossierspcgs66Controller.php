@@ -19,7 +19,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ), 'Jetons2' );
 
 		/**
 		*
@@ -91,106 +91,32 @@
 
 			$params = $this->request->data;
 			if( !empty( $params ) ) {
-				$this->paginate = $this->Criteredossierpcg66->{$searchFunction}( $this->request->data, $mesCodesInsee,
-					$mesZonesGeographiques );
+				$querydata = $this->Criteredossierpcg66->{$searchFunction}(
+                    $this->request->data,
+                    $mesCodesInsee,
+					$mesZonesGeographiques
+                );
+                // -------------------------------------------------------------
+                
+				$querydata = $this->_qdAddFilters( $querydata );
+                $querydata['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
+                $progressivePaginate = !Hash::get( $this->request->data, 'Dossierpcg66.paginationNombreTotal' );
 
-				$this->paginate = $this->_qdAddFilters( $this->paginate );
+                $this->paginate = $querydata;
+				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66', array(), array(), $progressivePaginate );
 
-				$criteresdossierspcgs66 = $this->paginate( 'Dossierpcg66' );
-
-				foreach( $criteresdossierspcgs66 as $i => $criteredossierpcg66 ) {
-					$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
-
-					$traitementspcgs66 = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
-						'all',
-						array(
-							'fields' => array(
-								'Traitementpcg66.typetraitement',
-                                'Traitementpcg66.dateecheance'
-							),
-							'joins' => array(
-								$this->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
-							),
-							'conditions' => array(
-								'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-							),
-							'contain' => false
-						)
-					);
-					//Liste des traitemeents liés à la personne
-					$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
-					$criteresdossierspcgs66[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
-                    
-                    //Date d'échéance des traitements
-                    $dateEcheanceTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/dateecheance' );
-					$criteresdossierspcgs66[$i]['Dossierpcg66']['dateecheance'] = $dateEcheanceTraitementspcgs66;
-
-                    // Liste des motifs de la personne (situationpdo)
-					$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
-						'all',
-						array(
-							'fields' => array(
-								'Situationpdo.libelle'
-							),
-							'conditions' => array(
-								'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-							),
-							'joins' => array(
-								$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
-							)
-						)
-					);
-                    $listeMotifs = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
-					$listeSituationsPersonnePCG66 = $listeMotifs;
-					$criteresdossierspcgs66[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
-                    
-                    // Liste des motifs de la personne (situationpdo)
-					$listeStatutsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
-						'all',
-						array(
-							'fields' => array(
-								'Statutpdo.libelle'
-							),
-							'conditions' => array(
-								'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-							),
-							'joins' => array(
-								$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Statutpdo', array( 'type' => 'LEFT OUTER' ) ),
-								$this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->join( 'Statutpdo', array( 'type' => 'LEFT OUTER' ) )
-							)
-						)
-					);
-					$listeStatuts = Set::extract( $listeStatutsPersonnePCG66, '/Statutpdo/libelle' );
-					$listeStatutsPersonnePCG66 = $listeStatuts;
-					$criteresdossierspcgs66[$i]['Personnepcg66']['listestatuts'] = $listeStatutsPersonnePCG66;
-                    
-                    //Liste des organismes auxquels les dossiers sont transmis 
-					$decisionsdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->find(
-                        'all',
-                        array(
-                             'fields' => array_merge(
-                                $this->Dossierpcg66->Decisiondossierpcg66->fields()
-                            ),
-                            'conditions' => array(
-                                'Decisiondossierpcg66.dossierpcg66_id' => $criteredossierpcg66['Dossierpcg66']['id']
-                            ),
-                            'contain' => array(
-                                'Orgtransmisdossierpcg66'
-                            ),
-                            'order' => array( 'Decisiondossierpcg66.created DESC' )
-                        )
-                    );
-
-                    $criteresdossierspcgs66[$i]['Decisiondossierpcg66']['organismes'] = Hash::extract( $decisionsdossierspcgs66, '{n}.Orgtransmisdossierpcg66.{n}.name' );
-                   
-				}
-
-				$this->set( compact( 'criteresdossierspcgs66', 'listeMotifs' ) );
+                $vflisteseparator = "\n\r-";
+				$this->set( compact( 'criteresdossierspcgs66', 'vflisteseparator' ) );
 			}
 			else {
+                $progressivePaginate = $this->_hasProgressivePagination();
+				if( !is_null( $progressivePaginate ) ) {
+					$this->request->data['Dossierpcg66']['paginationNombreTotal'] = !$progressivePaginate;
+				}
+                
 				$filtresdefaut = Configure::read( "Filtresdefaut.{$this->name}_{$this->action}" );
 				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
+                
 			}
 
 			$this->_setOptions();
@@ -239,100 +165,15 @@
 				$querydata
 			);
 
-			foreach( $results as $i => $criteredossierpcg66 ) {
-				$dossierpcg66_id = Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.id' );
-
-				$traitementspcgs66 = $this->Dossierpcg66->Personnepcg66->Traitementpcg66->find(
-					'all',
-					array(
-						'fields' => array(
-							'Traitementpcg66.typetraitement'
-						),
-						'joins' => array(
-							$this->Dossierpcg66->Personnepcg66->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) )
-						),
-						'conditions' => array(
-							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-						),
-						'contain' => false
-					)
-				);
-// 					debug( $traitementspcgs66 );
-				//Liste des différents statuts de la personne
-				$listeTraitementspcgs66 = Set::extract( $traitementspcgs66, '/Traitementpcg66/typetraitement' );
-                $results[$i]['Dossierpcg66']['listetraitements'] = $listeTraitementspcgs66;
-
-				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
-					'all',
-					array(
-						'fields' => array(
-							'Situationpdo.libelle'
-						),
-						'conditions' => array(
-							'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-						),
-						'joins' => array(
-							$this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
-							$this->Dossierpcg66->Personnepcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) )
-						),
-						'contain' => false
-					)
-				);
-
-
-				$listeMotifs = Set::extract( $listeSituationsPersonnePCG66, '/Situationpdo/libelle' );
-				$listeSituationsPersonnePCG66 = $listeMotifs;
-				$results[$i]['Personnepcg66']['listemotifs'] = $listeSituationsPersonnePCG66;
-                
-                //Liste des différentes situations de la personne
-                $listeStatutsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
-                    'all',
-                    array(
-                        'fields' => array(
-                                'Statutpdo.libelle'
-                        ),
-                        'conditions' => array(
-                                'Personnepcg66.dossierpcg66_id' => $dossierpcg66_id
-                        ),
-                        'joins' => array(
-                                $this->Dossierpcg66->Personnepcg66->join( 'Personnepcg66Statutpdo', array( 'type' => 'LEFT OUTER' ) ),
-                                $this->Dossierpcg66->Personnepcg66->Personnepcg66Statutpdo->join( 'Statutpdo', array( 'type' => 'LEFT OUTER' ) )
-                        ),
-                        'contain' => false
-                    )
-                );
-
-
-                $listeStatuts = Set::extract( $listeStatutsPersonnePCG66, '/Statutpdo/libelle' );
-                $listeStatutsPersonnePCG66 = $listeStatuts;
-                $results[$i]['Personnepcg66']['listestatuts'] = $listeStatutsPersonnePCG66;
-
-
-                // Liste des organismes
-                $decisionsdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->find(
-                    'all',
-                    array(
-                        'fields' => array_merge(
-                            $this->Dossierpcg66->Decisiondossierpcg66->fields()
-                        ),
-                        'conditions' => array(
-                            'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66_id
-                        ),
-                        'contain' => array(
-                            'Orgtransmisdossierpcg66'
-                        )
-                    )
-                );
-
-                $listOrgs = Hash::extract( $decisionsdossierspcgs66, '{n}.Orgtransmisdossierpcg66.{n}.name' );
-                $listOrganismes = $listOrgs;
-                $results[$i]['Decisiondossierpcg66']['listorgs'] = $listOrganismes;
-			}
+			
 
 			$this->_setOptions();
-
+//debug($results);
+//die();
 			$this->layout = '';
-			$this->set( compact( 'results') );
+ 
+            $vflisteseparator = "\n\r-";
+			$this->set( compact( 'results', 'vflisteseparator' ) );
 		}
 	}
 ?>

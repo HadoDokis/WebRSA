@@ -635,5 +635,25 @@
 				)
 			);
 		}
+        
+        
+        /**
+		 * Retourne une sous-requête permettant de connaître la dernière décision 
+		 * pour un dossier PCG donné.
+		 *
+		 * @param string $field Le champ Dossierpcg66.id sur lequel faire la sous-requête
+		 * @return string
+		 */
+		public function sqDernier( $field ) {
+			$dbo = $this->getDataSource( $this->useDbConfig );
+			$table = $dbo->fullTableName( $this, false, false );
+			return "SELECT {$table}.id
+					FROM {$table}
+					WHERE
+						{$table}.dossierpcg66_id = ".$field."
+					ORDER BY {$table}.created DESC
+					LIMIT 1";
+		}
+
 	}
 ?>
