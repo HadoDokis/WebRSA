@@ -41,7 +41,7 @@
 //		);
 //	}
 ?>
-<h2>Décisions du dossier</h2>
+<h2>Décision du dossier</h2>
 <?php if( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
     <?php if( $dossierpcg66['Decisiondossierpcg66'][0]['etatop'] == 'transmis' ):?>
 	<table class="tooltips aere">
@@ -56,17 +56,15 @@
 		</thead>
 		<tbody>
 			<?php
-				foreach( $dossierpcg66['Decisiondossierpcg66'] as $decision ){
-					echo $this->Xhtml->tableCells(
-						array(
-							h( Set::enum( Set::classicExtract( $decision, 'decisionpdo_id' ), $decisionpdo ) ),
-							h( date_short( Set::classicExtract( $decision, 'datepropositiontechnicien' ) ) ),
-							h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $decision, 'validationproposition' ) ) ),
-							h( date_short( Set::classicExtract( $decision, 'datevalidation' ) ) ),
-							h( Set::classicExtract( $decision, 'commentairetechnicien' ) )
-						)
-					);
-				}
+                echo $this->Xhtml->tableCells(
+                    array(
+                        h( Set::enum( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'decisionpdo_id' ), $decisionpdo ) ),
+                        h( date_short( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'datepropositiontechnicien' ) ) ),
+                        h( value( $options['Decisiondossierpcg66']['validationproposition'], Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'validationproposition' ) ) ),
+                        h( date_short( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'datevalidation' ) ) ),
+                        h( Set::classicExtract( $dossierpcg66['Decisiondossierpcg66'][0], 'commentairetechnicien' ) )
+                    )
+                );
 			?>
 		</tbody>
 	</table>
