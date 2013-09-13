@@ -43,11 +43,11 @@
 			echo $this->Default2->subform(
 				array(
 					 'Adresse.numvoie',
-					 'Adresse.typevoie' => array( 'type' => 'select', 'options' => $options['typevoie'], 'empty' => true ),
-					 'Adresse.nomvoie',
+					 'Adresse.typevoie' => array( 'required' => true, 'type' => 'select', 'options' => $options['typevoie'], 'empty' => true ),
+					 'Adresse.nomvoie'  => array( 'required' => true ),
 					 'Adresse.complideadr',
-					 'Adresse.codepos',
-					 'Adresse.locaadr',
+					 'Adresse.codepos' => array( 'required' => true),
+					 'Adresse.locaadr' => array( 'required' => true ),
 					 'Adresse.canton'
 				)
 			);
