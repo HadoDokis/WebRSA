@@ -140,6 +140,7 @@
 				);
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$progressivePaginate = !Set::classicExtract( $this->request->data, 'Filtre.paginationNombreTotal' );
 				$this->paginate = $paginate;
@@ -208,6 +209,7 @@
 
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$contrats = $this->Contratinsertion->find( 'all', $querydata );
 

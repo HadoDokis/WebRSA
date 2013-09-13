@@ -644,5 +644,26 @@
 				array( "{$this->alias}.{$this->primaryKey}" => $data[$this->alias][$this->primaryKey] )
 			);
 		}
+
+		/**
+		 * Retourne la liste des enums pour le modèle User.
+		 *
+		 * Lorsque l'on est CG 66, on filtre les valeurs possibles du champ type
+		 * et on change une traduction pour les référents des OA.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			if( isset( $enums[$this->alias]['type'] ) && Configure::read( 'Cg.departement' ) == 66 ) {
+				unset( $enums[$this->alias]['type']['externe_cpdv'] );
+				unset( $enums[$this->alias]['type']['externe_secretaire'] );
+
+				$enums[$this->alias]['type']['externe_ci'] = 'Référent organisme agrée';
+			}
+
+			return $enums;
+		}
 	}
 ?>

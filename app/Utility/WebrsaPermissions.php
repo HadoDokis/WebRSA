@@ -88,7 +88,11 @@
 		 * @return boolean
 		 */
 		protected static function _checkZoneGeographique( $filtre_zone_geo, $codeinsee, $mesZonesGeographiques ) {
-			return ( !$filtre_zone_geo || in_array( $codeinsee, (array)$mesZonesGeographiques, true ) );
+			// Certains CG ont des zones géographiques sur 4 chiffres plus un caractère blanc
+			$codeinsee2 = $codeinsee;
+			$codeinsee2[strlen($codeinsee2)-1] = ' ';
+
+			return ( !$filtre_zone_geo || in_array( $codeinsee, (array)$mesZonesGeographiques, true ) || in_array( $codeinsee2, (array)$mesZonesGeographiques, true ) );
 		}
 
 		/**
@@ -140,6 +144,14 @@
 					}
 				}
 			}
+			// Pour le CG 66 lorsque l'utilisateur connecté est référent dans un OA
+			else if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
+				$structuresreferentesIdsDossier = (array)Hash::filter( (array)Hash::extract( $dossierData, 'Foyer.Personne.{n}.Orientstruct.structurereferente_id' ) );
+				return (
+					in_array( CakeSession::read( 'Auth.User.structurereferente_id' ), $structuresreferentesIdsDossier )
+					&& self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee01, $mesZonesGeographiques )
+				);
+			}
 			// Pour les autres CG, on vérifie si l'utilisateur a le droit d'accéder au dossier par-rapport à sa restriction sur les zones géographiques et au code INSEE actuel du foyer.
 			else if( !self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee01, $mesZonesGeographiques ) ) {
 				return false;
@@ -178,6 +190,52 @@
 			}
 
 			return $conditions;
+		}
+
+		/**
+		 * Retourne une condition supplémentaire sur l'id du Dossier suivant le
+		 * CG et le type d'utilisateur connecté.
+		 *
+		 * @param string $dossierIdField
+		 * @return string
+		 */
+		public function conditionsDossier( $dossierIdField = 'Dossier.id' ) {
+			$return = array();
+
+			if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
+				$Dossier = ClassRegistry::init( 'Dossier' );
+
+				$sqlDerniereOrientstruct = $Dossier->Foyer->Personne->Orientstruct->sqDerniere( 'personnes.id', 'derniersorientations' );
+
+				$querydata = array(
+					'fields' => array( 'foyers.dossier_id' ),
+					'alias' => 'foyers',
+					'recursive' => -1,
+					'joins' => array(
+						array_words_replace(
+							$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+							array( 'Foyer' => 'foyers', 'Personne' => 'personnes' )
+						),
+						array_words_replace(
+							$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
+							array( 'Personne' => 'personnes', 'Orientstruct' => 'orientsstructs' )
+						),
+						array_words_replace(
+							$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+							array( 'Personne' => 'personnes', 'Prestation' => 'prestations' )
+						)
+					),
+					'conditions' => array(
+						"foyers.dossier_id = {$dossierIdField}",
+						"orientsstructs.id IN ( {$sqlDerniereOrientstruct} )",
+						'orientsstructs.structurereferente_id' => CakeSession::read( 'Auth.User.structurereferente_id' ),
+					),
+				);
+
+				$return = array( $dossierIdField.' IN ( '.$Dossier->Foyer->sq( $querydata ).' )' );
+			}
+
+			return $return;
 		}
 	}
 ?>

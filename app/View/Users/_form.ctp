@@ -57,6 +57,14 @@
 		echo $this->Form->input( 'User.referent_id', array( 'label' => 'Référent lié au chargé d\'insertion PDV', 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
 	?>
 </fieldset>
+<?php elseif( Configure::read( 'Cg.departement' ) == 66 ):?>
+<fieldset class="col2">
+	<legend>Type d'utilisateur</legend>
+	<?php
+		echo $this->Form->input( 'User.type', array( 'type' => 'select' , 'options' => $options['User']['type'], 'empty' => true, 'label' => required( __d( 'user', 'User.type' ) ) ) );
+		echo $this->Form->input( 'User.referent_id', array( 'label' => 'Référent lié à l\'OA', 'type' => 'select' , 'options' => $referents, 'empty' => true ) );
+	?>
+</fieldset>
 <?php endif; ?>
 <fieldset class="col2">
 	<legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>

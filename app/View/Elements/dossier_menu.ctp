@@ -58,6 +58,15 @@
 			?>
 		</h2>
 
+<?php
+	if( Configure::read( 'Cg.departement' ) == 66 ) {
+		$typesstructuresreferentes = Hash::extract( $dossierMenu, 'Foyer.Personne.{n}.Structurereferente.typestructure' );
+		if( in_array( 'oa', $typesstructuresreferentes, true ) ) {
+			echo $this->Xhtml->tag( 'p', 'Ce dossier est géré par un organisme agréé', array( 'class' => 'etatDossier structurereferenteOa' ) );
+		}
+	}
+?>
+
 <?php $etatdosrsaValue = Set::classicExtract( $dossier, 'Situationdossierrsa.etatdosrsa' );?>
 
 <?php
@@ -83,7 +92,6 @@
 		}
 	}
 ?>
-
 
 <p class="etatDossier">
 <?php

@@ -237,6 +237,7 @@
 						$filtre,
 						( ( $statutOrientation == 'Orienté' ) ? false : $this->Cohortes->sqLocked() )
 					);
+					$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					if( $statutOrientation == 'Orienté' ) {
 						$queryData['limit'] = 10;
@@ -352,6 +353,8 @@
 			$queryData = $this->_setPaginationOrder( $queryData );
 
 			$queryData['fields'][] = 'Pdf.cmspath';
+
+			$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$results = $this->Personne->find( 'all', $queryData );
 

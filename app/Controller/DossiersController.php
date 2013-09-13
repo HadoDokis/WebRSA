@@ -150,6 +150,8 @@
 				$paginate = $this->_qdAddFilters( $paginate );
 				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+
 				$this->paginate = $paginate;
 				$dossiers = $this->paginate( 'Dossier' );
 
@@ -791,6 +793,7 @@
 			$querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$dossiers = $this->Dossier->find( 'all', $querydata );
 

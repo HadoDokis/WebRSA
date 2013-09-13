@@ -328,7 +328,7 @@
 // 					$conditions[] = array( 'Nonoriente66.id IS NULL' );
 // 				}
 // 			}
-			
+
 			if( isset( $params['Orientstruct']['exists'] ) && ( $params['Orientstruct']['exists'] != '' ) ) {
 				if( $params['Orientstruct']['exists'] ) {
 					$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) > 0';
@@ -343,8 +343,8 @@
 			}
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				//Travailleur social chargé de l'évaluation  
-				// Représente le "Nom du chargé de l'évaluation" lorsque l'on crée une orientation 
+				//Travailleur social chargé de l'évaluation
+				// Représente le "Nom du chargé de l'évaluation" lorsque l'on crée une orientation
 				// via la table proposorientaitonscovs58
 				$referent_id = Set::classicExtract( $params, 'PersonneReferent.referent_id' );
 				if( isset( $referent_id ) && !empty( $referent_id ) ) {
@@ -357,7 +357,7 @@
 					);
 					$conditions[] = array( 'Propoorientationcov58.referentorientant_id = \''.Sanitize::clean( $referent_id ).'\'' );
 				}
-				
+
 				// Présence DSP ?
 				$sqDspId = 'SELECT dsps.id FROM dsps WHERE dsps.personne_id = "Personne"."id" LIMIT 1';
 				$sqDspExists = "( {$sqDspId} ) IS NOT NULL";
@@ -486,30 +486,6 @@
 			}
 			$dossier = $this->find( 'first', $querydata );
 
-			/*$dossier = $this->find(
-				'first',
-				array(
-					'fields' => array(
-						'Dossier.id',
-						'Dossier.matricule',
-						'Dossier.fonorg',
-						'Dossier.numdemrsa',
-						'Foyer.id',
-						$this->Foyer->sqVirtualField( 'enerreur' ),
-						$this->Foyer->sqVirtualField( 'sansprestation' ),
-						'Situationdossierrsa.etatdosrsa',
-						$sqLocked,
-						$sqLocker,
-						$sqLockedTo
-					),
-					'contain' => array(
-						'Foyer',
-						'Situationdossierrsa'
-					),
-					'conditions' => $conditions
-				)
-			);*/
-
 			$adresses = $this->Foyer->Adressefoyer->find(
 				'all',
 				array(
@@ -542,6 +518,10 @@
 			$dossier = Set::merge( $dossier, array( 'Adressefoyer' => $adresses ) );
 
 			// Les personnes du foyer
+			$conditionsDerniereOrientstruct = array(
+				'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )'
+			);
+
 			$personnes = $this->Foyer->Personne->find(
 				'all',
 				array(
@@ -550,15 +530,19 @@
 						'Personne.qual',
 						'Personne.nom',
 						'Personne.prenom',
-						'Prestation.rolepers'
+						'Prestation.rolepers',
+						'Orientstruct.structurereferente_id',
+						'Structurereferente.typestructure',
 					),
 					'conditions' => array(
-						'Personne.foyer_id' => Set::classicExtract( $dossier, 'Foyer.id' ),
-						'Prestation.natprest' => 'RSA'
+						'Personne.foyer_id' => Hash::get( $dossier, 'Foyer.id' ),
 					),
-					'contain' => array(
-						'Prestation'
+					'joins' => array(
+						$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'LEFT' ) ),
+						$this->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER', 'conditions' => $conditionsDerniereOrientstruct ) ),
+						$this->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
 					),
+					'contain' => false,
 					'order' => array(
 						'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
 						'Personne.nom ASC',
@@ -568,9 +552,12 @@
 			);
 
 			// Reformattage pour la vue
-			$dossier['Foyer']['Personne'] = Set::classicExtract( $personnes, '{n}.Personne' );
-			foreach( Set::classicExtract( $personnes, '{n}.Prestation' ) as $i => $prestation ) {
-				$dossier['Foyer']['Personne'] = Hash::insert( $dossier['Foyer']['Personne'], "{$i}.Prestation", $prestation );
+			$dossier['Foyer']['Personne'] = Hash::extract( $personnes, '{n}.Personne' );
+
+			foreach( array( 'Prestation', 'Orientstruct', 'Structurereferente' ) as $modelName ) {
+				foreach( Hash::extract( $personnes, "{n}.{$modelName}" ) as $i => $datas ) {
+					$dossier['Foyer']['Personne'] = Hash::insert( $dossier['Foyer']['Personne'], "{$i}.{$modelName}", $datas );
+				}
 			}
 
 			if( !empty( $params['personne_id'] ) && is_numeric( $params['personne_id'] ) ) {

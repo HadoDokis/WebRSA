@@ -231,6 +231,7 @@
 						$this->request->data,
 						$this->Cohortes->sqLocked( 'Dossier' )
 					);
+					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					$this->paginate = $querydata;
 					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion );
@@ -301,6 +302,7 @@
 				( $this->Cohortes->active() ? $this->Cohorte->sqLocked() : null )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$contrats = $this->Dossier->Foyer->Personne->Contratinsertion->find( 'all', $querydata );
 

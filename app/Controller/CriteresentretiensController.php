@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe CriteresentretiensController.
 	 *
@@ -56,6 +56,7 @@
 				);
 
 				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
@@ -84,6 +85,7 @@
 
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$entretiens = $this->Entretien->find( 'all', $querydata );
 

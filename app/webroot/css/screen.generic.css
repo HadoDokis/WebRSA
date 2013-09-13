@@ -640,6 +640,12 @@ div.clearer hr {
 
 /*****************************************************************************/
 
+p.etatDossier.structurereferenteOa {
+	background-color: #FDF5E7;
+}
+
+/*****************************************************************************/
+
 ul.actionMenu {
     margin: 0.75em 0;
     padding: 0;

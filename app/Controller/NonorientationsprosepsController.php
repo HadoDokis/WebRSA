@@ -87,6 +87,7 @@
 				);
 
 				$paginate['limit'] = 10;
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$this->paginate = $paginate;
 				$this->{$this->modelClass}->Orientstruct->forceVirtualFields = true;
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
@@ -110,6 +111,7 @@
 
 			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $queryData['limit'] );
+			$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );
 // debug($orientsstructs);

@@ -58,6 +58,7 @@
 				$data = $this->request->data;
 				$queryData = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
+				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$this->paginate = $queryData;
 				$actionscandidats_personnes = $this->paginate( $this->ActioncandidatPersonne );
 
@@ -104,6 +105,7 @@
 
 			$querydata = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$actionscandidats_personnes = $this->ActioncandidatPersonne->find( 'all', $querydata );
 
 			foreach( $actionscandidats_personnes as $key => $actioncandidat_personne ) {

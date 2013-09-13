@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Defautsinsertionseps66Controller.
 	 *
@@ -43,6 +43,7 @@
 			if( !empty( $this->request->data ) ) {
 				$queryData = $this->Defautinsertionep66->{$qdName}( $this->request->data, ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() ), $this->Session->read( 'Auth.User.filtre_zone_geo' ) );
 				$queryData['limit'] = 10;
+				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = array( 'Personne' => $queryData );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne );
@@ -86,13 +87,15 @@
 				$search = $this->request->data['Search'];
 
 				if ( !empty( $search ) ) {
-					$this->paginate = array(
+					$querydata = array(
 						'Dossierep' => $this->Defautinsertionep66->search(
 							$mesCodesInsee,
 							$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 							$search
 						)
 					);
+					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+					$this->paginate = $querydata;
 
 					$results = $this->paginate( $this->Defautinsertionep66->Dossierep );
 					$this->set( compact( 'results' ) );
@@ -118,6 +121,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$defautsinsertionseps66 = $this->Defautinsertionep66->Dossierep->find( 'all', $querydata );
 

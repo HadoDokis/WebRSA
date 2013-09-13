@@ -99,6 +99,7 @@
 				);
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = $paginate;
 				$criterescuis = $this->paginate( 'Cui' );
@@ -133,6 +134,7 @@
 			);
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$cuis = $this->Cui->find( 'all', $querydata );
 

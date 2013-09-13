@@ -79,6 +79,7 @@
 				);
 				$paginate['limit'] = 10;
 				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = $paginate;
 				$cohorteindu = $this->paginate( 'Dossier' );
@@ -104,6 +105,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			unset( $querydata['limit'] );
 			$indus = $this->Dossier->find( 'all', $querydata );

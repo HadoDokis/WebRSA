@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Cohortesfichescandidature66Controller.
 	 *
@@ -136,7 +136,7 @@
                         $this->request->data['Search'],
                         $this->Cohortes->sqLocked( 'Dossier' )
                     );
-
+					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
@@ -167,7 +167,7 @@
 							)
 						);
 						$optionsMotifssortie[$key] = $motifssortie;
-						
+
 						if( empty( $value['ActioncandidatPersonne']['sortiele'] ) ) {
 							$cohortefichecandidature66[$key]['ActioncandidatPersonne']['proposition_sortiele'] = date( 'Y-m-d' );
 						}

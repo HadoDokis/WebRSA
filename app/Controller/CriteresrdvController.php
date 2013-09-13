@@ -90,6 +90,7 @@
 
 				$querydata['limit'] = 10;
 				$querydata = $this->_qdAddFilters( $querydata );
+				$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = array( 'Rendezvous' => $querydata );
 				$rdvs = $this->paginate( 'Rendezvous' );
@@ -118,6 +119,7 @@
 
 			unset( $querydata['limit'] );
 			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$rdvs = $this->Rendezvous->find( 'all', $querydata );
 			$rdvs = $this->Rendezvous->containThematique( $rdvs );

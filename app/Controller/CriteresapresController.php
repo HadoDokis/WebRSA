@@ -95,6 +95,7 @@
 					$this->request->data
 				);
 				$paginate = $queryData;
+				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
@@ -199,6 +200,7 @@
 				Hash::expand( $this->request->params['named'], '__' )
 			);
 			unset( $querydata['limit'] );
+			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 			$apres = $this->Apre->find( 'all', $querydata );
 
 			$this->layout = '';
