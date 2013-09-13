@@ -91,13 +91,19 @@
 			$this->set( 'si', $this->User->Serviceinstructeur->find( 'list' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'options', $this->User->enums() );
-			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list' ) );
-			// TODO: Si 66, que les OA
-			// FIXME: que les actifs
-			$conditions = array();
+			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.actif' => 'O' ) ) ) );
+
+			// Obtention de la liste des référents auxquels lier l'utilisateur
+			$conditions = array(
+				'Structurereferente.actif' => 'O',
+				'Referent.actif' => 'O',
+			);
+
+			// Pour le CG 66, on ne veut que les référents appartenants à une structure OA
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$conditions['Structurereferente.typestructure'] = 'oa';
 			}
+
 			$this->set( 'referents', $this->User->Referent->find(
 					'list',
 					array(
