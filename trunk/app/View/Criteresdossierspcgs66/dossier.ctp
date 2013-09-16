@@ -67,12 +67,16 @@
 				'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Dossierpcg66.typepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id' ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
 				'Dossierpcg66.orgpayeur' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
-				'Dossierpcg66.user_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true )
+				'Dossierpcg66.poledossierpcg66_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $polesdossierspcgs66, 'empty' => false )
 			),
 			array(
 				'options' => $options
 			)
 		);
+        
+        echo '<fieldset class="col2 noborder">';
+        echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $gestionnaire, 'empty' => false ) );
+        echo '</fieldset>';
 
 	?>
 	<?php

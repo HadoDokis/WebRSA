@@ -74,6 +74,7 @@
 			$typepdo_id = Set::extract( $params, 'Dossierpcg66.typepdo_id' );
 			$orgpayeur = Set::extract( $params, 'Dossierpcg66.orgpayeur' );
             $decisionpdo_id = Set::extract( $params, 'Decisiondossierpcg66.decisionpdo_id' );
+            $poledossierpcg66_id = Set::extract( $params, 'Dossierpcg66.poledossierpcg66_id' );
 
 			/// Critères sur les PDOs - date de reception de la PDO
 			if( !empty( $datereceptionpdo ) ) {
@@ -100,7 +101,12 @@
 			}
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
+			}
+            
+            // Pôle chargé de la PDO
+			if( !empty( $poledossierpcg66_id ) ) {
+				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
 			}
 			
 			// Type de la PDO
@@ -399,6 +405,7 @@
 			$conditions = array();
 			$Dossierpcg66 = ClassRegistry::init( 'Dossierpcg66' );
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
+			$poledossierpcg66_id = Set::extract( $params, 'Dossierpcg66.poledossierpcg66_id' );
 
 			$originepdo = Set::extract( $params, 'Dossierpcg66.originepdo_id' );
 			$typepdo_id = Set::extract( $params, 'Dossierpcg66.typepdo_id' );
@@ -408,9 +415,13 @@
 			
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
 			}
 			
+            // Pôle chargé de la PDO
+			if( !empty( $poledossierpcg66_id ) ) {
+				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
+			}
             
              // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );

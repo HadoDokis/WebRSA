@@ -47,6 +47,20 @@
 					)
 				)
 			);
+            
+            $this->set( 'polesdossierspcgs66', $this->User->Poledossierpcg66->find(
+					'list',
+					array(
+						'fields' => array(
+							'Poledossierpcg66.name'
+						),
+						'conditions' => array(
+							'Poledossierpcg66.isactif' => '1'
+						),
+                        'order' => array( 'Poledossierpcg66.name ASC', 'Poledossierpcg66.id ASC' )
+					)
+				)
+			);
 
 			$options = $this->Traitementpcg66->enums();
             $this->set( 'natpf', $this->Option->natpf() );
