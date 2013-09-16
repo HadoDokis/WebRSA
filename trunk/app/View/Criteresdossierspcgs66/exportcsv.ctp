@@ -9,7 +9,7 @@
 				'Origine de la PDO',
 				'Type de dossier',
 				'Date de réception',
-				'Gestionnaire',
+				'Pôle / Gestionnaire',
                 'Décision',
 				'Nb de propositions de décisions',
 				'État du dossier',
@@ -27,7 +27,7 @@
 				'Origine de la PDO',
 				'Type de dossier',
 				'Date de réception',
-				'Gestionnaire',
+				'Pôle  / Gestionnaire',
 				'Nb de propositions de décisions',
 				'Nb de traitements PCGs',
 				'Type de traitement',
@@ -68,7 +68,10 @@
         //Liste des différents traitements de la personne
         $traitementspcgs66 = $result['Dossierpcg66']['listetraitements'];
         
-	
+        $pole = isset( $result['Dossierpcg66']['poledossierpcg66_id'] ) ? ( Set::enum( Hash::get( $result, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ).' / ' ) : null;
+
+        $gestionnaires = Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire );
+
 		if( $this->request->params['pass'][0] == 'searchDossier' ) {
 			$row = array(
 				h( Hash::get( $result, 'Dossier.numdemrsa' ) ),
@@ -76,7 +79,7 @@
 				h( Set::enum( Hash::get( $result, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 				h( Set::enum( Hash::get( $result, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 				h( $this->Locale->date( 'Locale->date',  Hash::get( $result, 'Dossierpcg66.datereceptionpdo' ) ) ),
-				h( Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+				h( $pole.$gestionnaires ),
                 h( Hash::get( $result, 'Decisionpdo.libelle' ) ),
 				h( $result['Dossierpcg66']['nbpropositions'] ),
 				Set::enum( Hash::get( $result, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission,

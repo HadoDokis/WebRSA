@@ -67,7 +67,7 @@
 					echo $this->Xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
                 
-                echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
+                echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
             ?>
         </fieldset>
 
@@ -110,6 +110,7 @@
                 <th>Origine du dossier</th>
                 <th>Organisme payeur</th>
                 <th>Service instructeur</th>
+                <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
                 <th>Transmettre</th>
                 <th>Date transmission</th>
@@ -128,6 +129,7 @@
 						h( $dossierpcg66atransmettre['Originepdo']['libelle'] ),
 						h( $dossierpcg66atransmettre['Dossierpcg66']['orgpayeur'] ),
 						h( $dossierpcg66atransmettre['Serviceinstructeur']['lib_service'] ),
+						h( Set::enum( Set::classicExtract( $dossierpcg66atransmettre, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
 						h( Set::enum( Set::classicExtract( $dossierpcg66atransmettre, 'Dossierpcg66.user_id' ), $gestionnaire ) )
 					);
 
