@@ -101,6 +101,7 @@
                 <th>Organisme payeur</th>
                 <th>Service instructeur</th>
                 <th class="action">Sélection</th>
+                <th class="action">Pôle du gestionnaire</th>
                 <th class="action">Gestionnaire</th>
                 <th class="action">Action</th>
             </tr>
@@ -133,7 +134,9 @@
                         $this->Form->input( 'Dossierpcg66.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['typepdo_id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossier']['id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['etatdossierpcg'] ) ).
-                        $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaire, 'value' => $this->request->data['Dossierpcg66'][$index]['user_id'], 'empty' => true ) ),
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.poledossierpcg66_id', array( 'label' => false, 'type' => 'select', 'options' => $polesdossierspcgs66, 'value' => $this->request->data['Dossierpcg66'][$index]['poledossierpcg66_id'], 'empty' => true ) ),
+                        
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaires, 'value' => $this->request->data['Dossierpcg66'][$index]['user_id'], 'empty' => true ) ),
 
                         $this->Xhtml->viewLink(
                             'Voir le dossier « '.$title.' »',
@@ -154,17 +157,26 @@
     <?php echo $pagination;?>
     <?php echo $this->Form->submit( 'Validation de la liste' );?>
 <?php echo $this->Form->end();?>
-<?php /*debug($this->request->data);*/?>
+
+
+<script type="text/javascript">
+document.observe( "dom:loaded", function() {
+    
+} );
+</script>
+
 <script type="text/javascript">
     <?php foreach( $cohortedossierpcg66 as $key => $affectationdossierpcg66 ):?>
 	    observeDisableFieldsOnCheckbox(
 			'Dossierpcg66<?php echo $key;?>Atraiter',
 			[
+                'Dossierpcg66<?php echo $key;?>Poledossierpcg66Id',
 				'Dossierpcg66<?php echo $key;?>UserId'
 			],
 			false
 	    );
 
+        dependantSelect( 'Dossierpcg66<?php echo $key;?>UserId', 'Dossierpcg66<?php echo $key;?>Poledossierpcg66Id' );
     <?php endforeach;?>
 </script>
     <?php else:?>

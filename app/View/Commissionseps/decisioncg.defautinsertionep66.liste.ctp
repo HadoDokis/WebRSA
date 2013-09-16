@@ -22,7 +22,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Motif saisine</th>
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="4">Décision CG</th>
-				<th rowspan="2">Observations</th>
+				<!-- <th rowspan="2">Observations</th> -->
 				<th rowspan="2">Action</th>
 				<th class="innerTableHeader noprint">Avis EP</th>
 			</tr>
@@ -35,7 +35,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 		</thead>
 	<tbody>';
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
-		if( in_array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
+//		if( in_array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
 			
 			$examenaudition = Set::enum( @$dossierep['Defautinsertionep66']['Bilanparcours66']['examenaudition'], $options['Defautinsertionep66']['type'] );
 			if( !empty( $dossierep['Defautinsertionep66']['Bilanparcours66']['examenauditionpe'] ) ){
@@ -47,16 +47,27 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 			$decisionep = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1];
 			$decisioncg = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 
-			$avisEp = implode( ' - ', Hash::filter( (array)array( Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ), Set::enum( @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $options['Decisiondefautinsertionep66']['decision'] ), @$listeTypesorients[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['typeorient_id']], @$listeStructuresreferentes[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['structurereferente_id']], @$listeReferents[@$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['referent_id']] ) ) );
 
-			$innerTable = "<table id=\"innerTableDecisiondefautinsertionep66{$i}\" class=\"innerTable\">
-				<tbody>
-					<tr>
-						<th>Observations de l'EP</th>
-						<td>".Set::classicExtract( $decisionep, "commentaire" )."</td>
-					</tr>
-				</tbody>
-			</table>";
+            //FIXME: si les décision CG ont écrasé les décision EP on les récupère depuis les CGs
+            if( is_null( $decisionep ) ) {
+                $decisionep = $decisioncg;
+            }
+            // Fin du FIXME
+
+            
+			$avisEp = implode(
+                ' - ',
+                Hash::filter(
+                    (array)array(
+                        Set::enum( @$decisionep['decisionsup'], $options['Decisiondefautinsertionep66']['decisionsup'] ),
+                        Set::enum( @$decisionep['decision'], $options['Decisiondefautinsertionep66']['decision'] ),
+                        @$listeTypesorients[@$decisionep['typeorient_id']],
+                        @$listeStructuresreferentes[@$decisionep['structurereferente_id']],
+                        @$listeReferents[@$decisionep['referent_id']]
+                    )
+                )
+            );
+
 
 			echo $this->Xhtml->tableCells(
 				array(
@@ -79,14 +90,13 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 					array( @$liste_typesorients[Set::classicExtract( $decisioncg, "typeorient_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}TypeorientId" ) ),
 					array( @$liste_structuresreferentes[Set::classicExtract( $decisioncg, "structurereferente_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}StructurereferenteId" ) ),
 					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
-					Set::classicExtract( $decisioncg, "commentaire" ),
+//					Set::classicExtract( $decisioncg, "commentaire" ),
 					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
-// 					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 				),
 				array( 'class' => "odd {$multiple}" ),
 				array( 'class' => "even {$multiple}" )
 			);
-		}
+//		}
 	}
 	echo '</tbody></table>';
 ?>

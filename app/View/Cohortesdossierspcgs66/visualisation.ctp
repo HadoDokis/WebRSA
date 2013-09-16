@@ -111,6 +111,7 @@
                 <th>Origine du dossier</th>
                 <th>Organisme payeur</th>
                 <th>Service instructeur</th>
+                <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
                 <th class="action">Action</th>
             </tr>
@@ -118,6 +119,9 @@
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66affecte ):?>
             <?php
+
+                $gestionnaires = Set::enum( Hash::get( $dossierpcg66affecte, 'Dossierpcg66.user_id' ), $gestionnaire );
+        
 				echo $this->Xhtml->tableCells(
 						array(
 							h( $dossierpcg66affecte['Dossier']['numdemrsa'] ),
@@ -128,7 +132,8 @@
 							h( $dossierpcg66affecte['Originepdo']['libelle'] ),
 							h( $dossierpcg66affecte['Dossierpcg66']['orgpayeur'] ),
 							h( $dossierpcg66affecte['Serviceinstructeur']['lib_service'] ),
-							h( Set::enum( Set::classicExtract( $dossierpcg66affecte, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+                            h( Set::enum( Set::classicExtract( $dossierpcg66affecte, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
+							h( $gestionnaires ),
 							$this->Xhtml->viewLink(
 								'Voir le dossier',
 								array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66affecte['Dossierpcg66']['foyer_id'] ),

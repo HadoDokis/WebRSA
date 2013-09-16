@@ -207,6 +207,7 @@
 					'Dossierpcg66.serviceinstructeur_id',
 					'Dossierpcg66.datereceptionpdo',
 					'Dossierpcg66.user_id',
+					'Dossierpcg66.poledossierpcg66_id',
 					'Dossierpcg66.istransmis',
 					'Dossierpcg66.datetransmission',
 					'Originepdo.libelle',

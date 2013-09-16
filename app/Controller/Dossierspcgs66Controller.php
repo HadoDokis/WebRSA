@@ -110,6 +110,20 @@
             $gestionnaires = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
             $this->set( compact( 'gestionnaires' ) );
             
+            $this->set( 'gestionnaire', $this->User->find(
+					'list',
+					array(
+						'fields' => array(
+							'User.nom_complet'
+						),
+						'conditions' => array(
+							'User.isgestionnaire' => 'O'
+						),
+                        'order' => array( 'User.nom ASC', 'User.prenom ASC' )
+					)
+				)
+			);
+            
             $this->set(
                 'polesdossierspcgs66',
                 $this->User->Poledossierpcg66->find(

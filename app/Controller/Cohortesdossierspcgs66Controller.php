@@ -60,7 +60,29 @@
 
 			$this->set( 'qual',  $this->Option->qual() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			$this->set( 'gestionnaire', $this->User->find(
+			
+            $gestionnaires = $this->User->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'User.nom_complet',
+                        '( "Poledossierpcg66"."id" || \'_\'|| "User"."id" ) AS "User__gestionnaire"',
+                    ),
+                    'conditions' => array(
+                        'User.isgestionnaire' => 'O'
+                    ),
+                    'joins' => array(
+                        $this->User->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
+                    ),
+                    'order' => array( 'User.nom ASC', 'User.prenom ASC' ),
+                    'contain' => false
+                )
+            );
+            $gestionnaires = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
+            $this->set( compact( 'gestionnaires' ) );
+
+            
+            $this->set( 'gestionnaire', $this->User->find(
 					'list',
 					array(
 						'fields' => array(
@@ -73,7 +95,21 @@
 					)
 				)
 			);
-
+            
+            $this->set( 'polesdossierspcgs66', $this->User->Poledossierpcg66->find(
+					'list',
+					array(
+						'fields' => array(
+							'Poledossierpcg66.name'
+						),
+						'conditions' => array(
+							'Poledossierpcg66.isactif' => '1'
+						),
+                        'order' => array( 'Poledossierpcg66.name ASC', 'Poledossierpcg66.id ASC' )
+					)
+				)
+			);
+             
 			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
 			$this->set( compact( 'options', 'etatdossierpcg' ) );
 		}
@@ -196,8 +232,12 @@
 								)
 							);
 							$this->request->data['Dossierpcg66'][$i]['user_id'] = @$foyer['Dossierpcg66'][0]['user_id'];
+                            $this->request->data['Dossierpcg66'][$i]['poledossierpcg66_id'] = @$foyer['Dossierpcg66'][0]['poledossierpcg66_id'];
 						}
 					}
+                    else {
+                        
+                    }
 
                     if( !in_array( $statutAffectation, array( 'Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer' ) ) ) {
 						$this->Cohortes->get( Set::extract( $cohortedossierpcg66, '{n}.Dossier.id' ) );

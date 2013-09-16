@@ -110,6 +110,7 @@
                 <th>Origine du dossier</th>
                 <th>Organisme payeur</th>
                 <th>Service instructeur</th>
+                <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
                 <th colspan="2" class="action">Action</th>
             </tr>
@@ -128,6 +129,7 @@
 							h( $dossierpcg66aimprimer['Originepdo']['libelle'] ),
 							h( $dossierpcg66aimprimer['Dossierpcg66']['orgpayeur'] ),
 							h( $dossierpcg66aimprimer['Serviceinstructeur']['lib_service'] ),
+							h( Set::enum( Set::classicExtract( $dossierpcg66aimprimer, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
 							h( Set::enum( Set::classicExtract( $dossierpcg66aimprimer, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
 							$this->Xhtml->viewLink(
 								'Voir le dossier',
