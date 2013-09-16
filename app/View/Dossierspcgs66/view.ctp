@@ -16,7 +16,7 @@
 			'Dossierpcg66.orgpayeur',
 			'Serviceinstructeur.lib_service',
 			'Dossierpcg66.iscomplet',
-// 			'Dossierpcg66.user_id' => array( 'value' => '#User.nom# #User.prenom#' ),
+ 			'Poledossierpcg66.name',
 			'User.nom_complet' => array( 'type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)' ),
 			'Dossierpcg66.etatdossierpcg',
             'Orgtransmisdossierpcg66.name' => array( 'label' => 'Transmission à', 'value' => @$orgs ),
