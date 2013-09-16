@@ -695,7 +695,8 @@
 //                                'Decisiondossierpcg66.etatop' => 'transmis'
 //                            ),
                             'Orgtransmisdossierpcg66'
-                        )
+                        ),
+                        'Poledossierpcg66',
 					)
 				)
 			);
