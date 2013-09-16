@@ -68,7 +68,12 @@
 <?php endif; ?>
 <fieldset class="col2">
 	<legend><?php echo required( 'Est-il gestionnaire, notamment pour les PDOs ? ' );?></legend>
-	<?php echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['isgestionnaire'] ) );?>
+	<?php
+        echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['isgestionnaire'] ) );
+        if( Configure::read( 'Cg.departement' ) == 66 ) {
+            echo $this->Xform->input( 'User.poledossierpcg66_id', array( 'legend' => 'Pôle lié au gestionnaire', 'type' => 'radio', 'options' => $polesdossierspcgs66, 'empty' => false ) );
+        }
+    ?>
 </fieldset>
 <fieldset class="col2">
 	<legend><?php echo required( 'Peut-il accéder aux données sensibles ? ' );?></legend>
@@ -79,5 +84,16 @@
 		observeDisableFieldsetOnCheckbox( 'UserFiltreZoneGeo', 'filtres_zone_geo', false );
 		observeDisableFieldsOnValue( 'UserType', [ 'UserStructurereferenteId' ], [ 'externe_cpdv', 'externe_secretaire' ], false );
 		observeDisableFieldsOnValue( 'UserType', [ 'UserReferentId' ], 'externe_ci', false );
+        
+        <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+            observeDisableFieldsOnRadioValue(
+                'UserEditForm',
+                'data[User][isgestionnaire]',
+                [ 'UserPoledossierpcg66Id_' ],
+                'O',
+                true,
+                true
+            );
+        <?php endif;?>
 	} );
 </script>

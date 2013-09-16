@@ -3,6 +3,8 @@
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Xhtml->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all' ), false );
 		echo $this->Html->script( 'fileuploader.js' );
+        
+        echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
 	$this->pageTitle = 'Dossier PCG';
@@ -10,7 +12,7 @@
 ?>
 
 <?php
-	$charge = Set::enum( Set::classicExtract( $this->request->data, 'Dossierpcg66.user_id' ),  $gestionnaire );
+	$charge = Set::enum( Set::classicExtract( $this->request->data, 'Dossierpcg66.user_id' ),  $gestionnaires );
 
 	if( $this->action == 'add' ) {
 		$title = $this->pageTitle = 'Ajout d\'un dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $qual, Set::classicExtract( $personneDem, 'Personne.qual' ) ).' '.Set::classicExtract( $personneDem, 'Personne.nom' ).' '.Set::classicExtract( $personneDem, 'Personne.prenom' );
@@ -109,6 +111,8 @@ document.observe( "dom:loaded", function() {
 		false,
 		true
 	);
+        
+    dependantSelect( 'Dossierpcg66UserId', 'Dossierpcg66Poledossierpcg66Id' );
 } );
 </script>
 
@@ -117,7 +121,8 @@ document.observe( "dom:loaded", function() {
 		<?php
 			echo $this->Default->subform(
 				array(
-					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id' ) ), 'type' => 'select', 'options' => $gestionnaire )
+                    'Dossierpcg66.poledossierpcg66_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ) ), 'type' => 'select', 'options' => $polesdossierspcgs66, 'empty' => true ),
+					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id' ) ), 'type' => 'select', 'options' => $gestionnaires )
 				),
 				array(
 					'domain' => $domain,

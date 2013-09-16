@@ -157,3 +157,6 @@ msgstr "Commentaire"
 
 msgid "Dossierpcg66.motifannulation"
 msgstr "Motif d'annulation"
+
+msgid "Dossierpcg66.poledossierpcg66_id"
+msgstr "Pôle chargé du dossier"

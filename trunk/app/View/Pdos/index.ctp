@@ -99,6 +99,18 @@
 						array( 'class' => 'odd' ),
 						array( 'class' => 'even' )
 					);
+                    echo $this->Xhtml->tableCells(
+						array(
+							h( 'Pôles chargés des dossiers' ),
+							$this->Xhtml->viewLink(
+								'Voir la table',
+								array( 'controller' => 'polesdossierspcgs66', 'action' => 'index' ),
+								$this->Permissions->check( 'polesdossierspcgs66', 'index' )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
 				}
 				
 				echo $this->Xhtml->tableCells(

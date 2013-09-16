@@ -69,11 +69,13 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
 					</tbody>
 				</table>';
 
+                $pole = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 );
+                $gestionnaire = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.poledossierpcg66_id' ).'_'.Hash::get( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaires);
 				echo $this->Xhtml->tableCells(
 					array(
 						h( Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 						h( date_short( Hash::get( $dossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
-						h( Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+						h( $pole.' / '.$gestionnaire  ),
 						h( $etat ),
 						$differentsStatuts,
 						h( Hash::get( $dossierpcg66, 'Decisiondossierpcg66.0.Decisionpdo.libelle' ) ),

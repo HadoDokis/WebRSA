@@ -73,20 +73,58 @@
 			$this->set( 'serviceinstructeur', $this->Dossierpcg66->Serviceinstructeur->listOptions() );
 			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 
-			$this->set( 'gestionnaire', $this->User->find(
-					'list',
-					array(
-						'fields' => array(
-							'User.nom_complet'
-						),
-						'conditions' => array(
-							'User.isgestionnaire' => 'O'
-						),
-                        'order' => array( 'User.nom ASC', 'User.prenom ASC' )
-					)
-				)
-			);
+//			$this->set( 'gestionnaire', $this->User->find(
+//					'list',
+//					array(
+//						'fields' => array(
+//							'User.nom_complet'
+//						),
+//						'conditions' => array(
+//							'User.isgestionnaire' => 'O'
+//						),
+//                        'order' => array( 'User.nom ASC', 'User.prenom ASC' )
+//					)
+//				)
+//			);
 
+                      
+            
+            
+            $gestionnaires = $this->User->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'User.nom_complet',
+                        '( "Poledossierpcg66"."id" || \'_\'|| "User"."id" ) AS "User__gestionnaire"',
+                    ),
+                    'conditions' => array(
+                        'User.isgestionnaire' => 'O'
+                    ),
+                    'joins' => array(
+                        $this->User->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
+                    ),
+                    'order' => array( 'User.nom ASC', 'User.prenom ASC' ),
+                    'contain' => false
+                )
+            );
+            $gestionnaires = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
+            $this->set( compact( 'gestionnaires' ) );
+            
+            $this->set(
+                'polesdossierspcgs66',
+                $this->User->Poledossierpcg66->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Poledossierpcg66.id',
+                            'Poledossierpcg66.name'
+                        ),
+                        'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
+                        'order' => array( 'Poledossierpcg66.name ASC' ) 
+                    )
+                )
+            );
+            
 			$options = Set::merge(
 				$this->Dossierpcg66->Decisiondossierpcg66->enums(),
 				$options
@@ -556,7 +594,13 @@
 				);
 				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
 				$this->set( 'fichiersEnBase', $fichiersEnBase );
+                
+                
+                $this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66['Dossierpcg66']['user_id'];
 			}
+  
+            
+            
 //debug($this->request->data);
 			// avistechniquemodifiable, validationmodifiable
 			$etatdossierpcg = 'instrencours';
