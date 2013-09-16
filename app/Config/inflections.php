@@ -349,6 +349,7 @@
 		'courrierpcg66' => 'courrierspcgs66',
         'orgtransmisdossierpcg66' => 'orgstransmisdossierspcgs66',
         'decdospcg66_orgdospcg66' => 'decsdospcgs66_orgsdospcgs66',
+        'poledossierpcg66' => 'polesdossierspcgs66',
 		// DSPS cg66
 		'coderomemetierdsp66' => 'codesromemetiersdsps66',
 		'coderomesecteurdsp66' => 'codesromesecteursdsps66',

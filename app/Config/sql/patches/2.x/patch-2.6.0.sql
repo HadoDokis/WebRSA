@@ -214,6 +214,32 @@ SELECT add_missing_table_field ( 'public', 'cuis', 'created', 'TIMESTAMP WITHOUT
 SELECT add_missing_table_field ( 'public', 'cuis', 'modified', 'TIMESTAMP WITHOUT TIME ZONE' );
 UPDATE cuis SET created = datearrivee WHERE created IS NULL;
 UPDATE cuis SET modified = datearrivee WHERE modified IS NULL;
+
+---------------------------------------------------------------------------------------------------------
+-- 20130916: Ajout d'une table de paramétrage pour gérer les Pôles travaillant sur les dossiers PCGS 66
+---------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS polesdossierspcgs66 CASCADE;
+CREATE TABLE polesdossierspcgs66 (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,
+    isactif     VARCHAR(1) NOT NULL DEFAULT '1',
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE polesdossierspcgs66 IS 'Table de paramétrages des Pôles chargés de traiter les dossiers PCGS (CG66)';
+
+DROP INDEX IF EXISTS polesdossierspcgs66_name_idx;
+CREATE INDEX polesdossierspcgs66_name_idx ON polesdossierspcgs66( name );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'polesdossierspcgs66', 'polesdossierspcgs66_isactif_in_list_chk' );
+ALTER TABLE polesdossierspcgs66 ADD CONSTRAINT polesdossierspcgs66_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0', '1'] ) );
+
+SELECT add_missing_table_field ( 'public', 'users', 'poledossierpcg66_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'users', 'users_poledossierpcg66_id_fkey', 'polesdossierspcgs66', 'poledossierpcg66_id', false );
+
+SELECT add_missing_table_field ( 'public', 'dossierspcgs66', 'poledossierpcg66_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'dossierspcgs66', 'dossierspcgs66_poledossierpcg66_id_fkey', 'polesdossierspcgs66', 'poledossierpcg66_id', false );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

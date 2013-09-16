@@ -183,6 +183,13 @@
 				'fields' => '',
 				'order' => ''
 			),
+            'Poledossierpcg66' => array(
+				'className' => 'Poledossierpcg66',
+				'foreignKey' => 'poledossierpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		public $hasMany = array(

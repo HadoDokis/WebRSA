@@ -75,7 +75,7 @@
 							'Referent.nom_complet ASC',
 						)
 					)
-				),
+				)
 			);
 			$this->set( compact( 'options' ) );
 		}
@@ -93,6 +93,20 @@
 			$this->set( 'options', $this->User->enums() );
 			$this->set( 'structuresreferentes', $this->User->Structurereferente->find( 'list', array( 'conditions' => array( 'Structurereferente.actif' => 'O' ) ) ) );
 
+            $this->set(
+                'polesdossierspcgs66',
+                $this->User->Poledossierpcg66->find(
+                    'list',
+                    array(
+                        'fields' => array(
+                            'Poledossierpcg66.id',
+                            'Poledossierpcg66.name'
+                        ),
+                        'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
+                        'order' => array( 'Poledossierpcg66.name ASC' ) 
+                    )
+                )
+            );
 			// Obtention de la liste des référents auxquels lier l'utilisateur
 			$conditions = array(
 				'Structurereferente.actif' => 'O',
@@ -124,6 +138,7 @@
 					)
 				)
 			);
+
 		}
 
 		/**

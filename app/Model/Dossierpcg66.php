@@ -33,7 +33,9 @@
 
 		public $actsAs = array(
 			'Pgsqlcake.PgsqlAutovalidate',
-			'Formattable',
+			'Formattable' => array(
+                'suffix' => array( 'user_id' )
+            ),
 			'Enumerable' => array(
 				'fields' => array(
 					'orgpayeur',
@@ -97,6 +99,13 @@
 			'Bilanparcours66' => array(
 				'className' => 'Bilanparcours66',
 				'foreignKey' => 'bilanparcours66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Poledossierpcg66' => array(
+				'className' => 'Poledossierpcg66',
+				'foreignKey' => 'poledossierpcg66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
