@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Adresse.
 	 *
@@ -87,22 +87,13 @@
 		);
 
 		public function listeCodesInsee() {
-			$queryData = array(
+			$querydata = array(
 				'fields' => array(
 					"DISTINCT {$this->name}.numcomptt",
 					"{$this->name}.locaadr",
 				),
 				'joins' => array(
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Adressefoyer.rgadr = \'01\'',
-							'Adressefoyer.adresse_id = Adresse.id'
-						)
-					)
+					$this->join( 'Adressefoyer', array( 'type' => 'INNER', 'conditions' => array( 'Adressefoyer.rgadr' => '01' ) ) )
 				),
 				'conditions' => array(
 					"{$this->name}.locaadr IS NOT NULL",
@@ -116,16 +107,10 @@
 				),
 				'recursive' => -1
 			);
-			$tResults = $this->find( 'all', $queryData );
 
-			$results = array();
-			foreach( $tResults as $key => $result ) {
-				$locaadr = Set::classicExtract( $result, 'Adresse.locaadr' );
-				$numcomptt = Set::classicExtract( $result, 'Adresse.numcomptt' );
-				$results[$numcomptt] = "$numcomptt $locaadr";
-			}
+			$results = $this->find( 'all', $querydata );
 
-			return $results;
+			return Hash::combine( $results, '{n}.Adresse.numcomptt', array( '%s %s', '{n}.Adresse.numcomptt', '{n}.Adresse.locaadr' ) );
 		}
 	}
 ?>
