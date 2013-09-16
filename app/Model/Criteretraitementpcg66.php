@@ -51,6 +51,7 @@
 
 			// Gestionnaire du dossier gérant le traitement
 			$gestionnaire = Set::extract( $params, 'Dossierpcg66.user_id' );
+			$poledossierpcg66_id = Set::extract( $params, 'Dossierpcg66.poledossierpcg66_id' );
 
 			/// Critères sur les PDOs - date de reception de la PDO
 			if( !empty( $dateecheance ) ) {
@@ -85,11 +86,16 @@
 			if( !empty( $typetraitement ) ) {
 				$conditions[] = 'Traitementpcg66.typetraitement = \''.Sanitize::clean( $typetraitement, array( 'encode' => false ) ).'\'';
 			}
+            
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
-				$conditions[] = 'Dossierpcg66.user_id = \''.Sanitize::clean( $gestionnaire, array( 'encode' => false ) ).'\'';
+				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
 			}
-
+			
+            // Pôle chargé de la PDO
+			if( !empty( $poledossierpcg66_id ) ) {
+				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
+			}
 			// Motif concernant la perosnne du dossier
 			if( !empty( $motifpersonnepcg66_id ) ) {
 				$conditions[] = 'Traitementpcg66.personnepcg66_situationpdo_id IN ( '.

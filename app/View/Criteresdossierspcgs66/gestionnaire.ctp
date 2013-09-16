@@ -28,12 +28,16 @@
             <?php
                 echo $this->Default2->subform(
                     array(
-						'Dossierpcg66.user_id' => array(  'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'options' => $gestionnaire, 'empty' => true )
+                        'Dossierpcg66.poledossierpcg66_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $polesdossierspcgs66, 'empty' => false )
                     ),
                     array(
                         'options' => $options
                     )
-                );
+                );        
+                echo '<fieldset class="col2 noborder">';
+                echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $gestionnaire, 'empty' => false ) );
+                echo '</fieldset>';
+                
                 echo $this->Search->etatDossierPCG66( $etatdossierpcg );
                 
                 echo $this->Xform->input( 'Decisiondossierpcg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );

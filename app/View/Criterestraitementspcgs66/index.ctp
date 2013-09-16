@@ -48,7 +48,21 @@
 	</fieldset>
 <fieldset>
 	<legend>Recherche par traitement</legend>
-		<?php echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'traitementpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );?>
+		<?php 
+//        echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'traitementpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
+    
+            echo $this->Default2->subform(
+                array(
+                    'Dossierpcg66.poledossierpcg66_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $polesdossierspcgs66, 'empty' => false )
+                ),
+                array(
+                    'options' => $options
+                )
+            );        
+            echo '<fieldset class="col2 noborder">';
+            echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $gestionnaire, 'empty' => false ) );
+            echo '</fieldset>';
+        ?>
 		<?php echo $this->Xform->input( 'Traitementpcg66.dateecheance', array( 'label' => 'Filtrer par date d\'échéance du traitement', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date d'échéance du traitement</legend>
