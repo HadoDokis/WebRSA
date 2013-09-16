@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Zonegeographique.
 	 *
@@ -198,14 +198,7 @@
 				)
 			);
 
-			if( !empty( $codes ) ) {
-				$ids = Set::extract( $codes, '/Zonegeographique/codeinsee' );
-				$values = Set::format( $codes, '{0} {1}', array( '{n}.Zonegeographique.codeinsee', '{n}.Zonegeographique.libelle' ) );
-				return array_combine( $ids, $values );
-			}
-			else {
-				return $codes;
-			}
+			return Hash::combine( $codes, '{n}.Zonegeographique.codeinsee', array( '%s %s', '{n}.Zonegeographique.codeinsee', '{n}.Zonegeographique.libelle' ) );
 		}
 	}
 ?>

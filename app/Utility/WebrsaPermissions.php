@@ -88,11 +88,34 @@
 		 * @return boolean
 		 */
 		protected static function _checkZoneGeographique( $filtre_zone_geo, $codeinsee, $mesZonesGeographiques ) {
-			// Certains CG ont des zones géographiques sur 4 chiffres plus un caractère blanc
-			$codeinsee2 = $codeinsee;
-			$codeinsee2[strlen($codeinsee2)-1] = ' ';
+			$return = true;
 
-			return ( !$filtre_zone_geo || in_array( $codeinsee, (array)$mesZonesGeographiques, true ) || in_array( $codeinsee2, (array)$mesZonesGeographiques, true ) );
+			if( $filtre_zone_geo ) {
+				if( Configure::read( 'CG.cantons' ) ) {
+					$Canton = ClassRegistry::init( 'Canton' );
+					$cantons = $Canton->find(
+						'first',
+						array(
+							'fields' => array( 'Canton.id' ),
+							'joins' => array(
+								$Canton->join( 'Zonegeographique' )
+							),
+							'contain' => false,
+							'conditions' => array(
+								'Zonegeographique.codeinsee' => $mesZonesGeographiques,
+								'Canton.numcomptt' => $codeinsee,
+							)
+						)
+					);
+
+					$return = !empty( $cantons );
+				}
+				else {
+					$return = in_array( $codeinsee, (array)$mesZonesGeographiques, true );
+				}
+			}
+
+			return $return;
 		}
 
 		/**
