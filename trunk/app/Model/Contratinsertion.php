@@ -1913,10 +1913,54 @@
                                 ORDER BY orientsstructs.date_valid ASC
                                 LIMIT 1
                         )
+                        AND (
+                            NOT EXISTS(
+                                SELECT bilansparcours66.id
+                                    FROM bilansparcours66
+                                    WHERE 
+                                        bilansparcours66.personne_id = contratsinsertion.personne_id
+                                        AND (
+                                            bilansparcours66.nvcontratinsertion_id IS NOT NULL
+                                            OR (
+                                                EXISTS (
+                                                    SELECT saisinesbilansparcourseps66.bilanparcours66_id
+                                                        FROM saisinesbilansparcourseps66
+                                                        WHERE 
+                                                            bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id
+                                                        ORDER BY saisinesbilansparcourseps66.created DESC
+                                                        LIMIT 1
+                                                )
+                                            )
+                                        )
+                            )
+                            OR (
+                                contratsinsertion.dd_ci >= (
+                                    SELECT bilansparcours66.created
+                                    FROM bilansparcours66
+                                    WHERE 
+                                        bilansparcours66.personne_id = contratsinsertion.personne_id
+                                        AND (
+                                            bilansparcours66.nvcontratinsertion_id IS NOT NULL
+                                            OR (
+                                                EXISTS (
+                                                    SELECT saisinesbilansparcourseps66.bilanparcours66_id
+                                                        FROM saisinesbilansparcourseps66
+                                                        WHERE 
+                                                            bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id
+                                                        ORDER BY saisinesbilansparcourseps66.created DESC
+                                                        LIMIT 1
+                                                )
+                                            )
+                                        )
+                                    ORDER BY bilansparcours66.created DESC
+                                    LIMIT 1
+                                )
+                            )
+                        )
                     GROUP BY contratsinsertion.personne_id;";
 
             $result = $this->query( $sql );
-
+//debug($result);
             return ( isset( $result[0][0]['sum'] ) ? $result[0][0]['sum'] : 0 );
         }
 
