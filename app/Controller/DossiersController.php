@@ -646,6 +646,50 @@
 
 				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
+                
+                
+                // Informationsdu bilan de aprcours et des dossiers PCGs liés
+                if( Configure::read( 'Cg.departement' ) == 66 ) {
+                    $tBilanparcours66 = $this->Dossier->Foyer->Personne->Bilanparcours66->find(
+                       'first',
+                       array(
+                           'contain' => array(
+                               'Personne',
+                               'Dossierpcg66'
+                           ),
+                           'conditions' => array( 'Bilanparcours66.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+                           'order' => array( 'Bilanparcours66.created DESC')
+                       )
+                   );
+                   $personnesFoyer[$index]['Bilanparcours66']['dernier'] = $tBilanparcours66;
+//    debug($details);
+                    if( !empty( $tBilanparcours66 ) ){
+                        $tDossierpcg66 = $this->Dossier->Foyer->Personne->Bilanparcours66->Dossierpcg66->find(
+                            'first',
+                            array(
+                                'conditions' => array(
+                                    'Dossierpcg66.foyer_id' => $details['Foyer']['id'],
+                                    'Dossierpcg66.bilanparcours66_id' => $tBilanparcours66['Bilanparcours66']['id']
+                                ),
+                                'contain' => array(
+                                    'Decisiondossierpcg66' => array(
+                                        'order' => array( 'Decisiondossierpcg66.modified DESC', 'Decisiondossierpcg66.id DESC' ),
+                                        'conditions' => array(
+                                            'Decisiondossierpcg66.validationproposition' => 'O',
+                                            'Decisiondossierpcg66.etatop' => 'transmis'
+                                        ),
+                                        'Decisionpdo'
+                                    )
+                                ),
+                                'order' => array( 'Dossierpcg66.created DESC' )
+                            )
+                        );
+                        $personnesFoyer[$index]['Dossierpcg66']['dernier'] = $tDossierpcg66;
+
+                    }
+                }
+                    
+                    
 				// Utilisation des nouvelles tables de stockage des infos Pôle Emploi
 				$tInfope = $this->Informationpe->derniereInformation($personnesFoyer[$index]);
 				$personnesFoyer[$index]['Informationpe'] = ( !empty( $tInfope ) ? $tInfope['Historiqueetatpe'] : array() );

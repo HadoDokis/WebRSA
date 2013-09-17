@@ -629,6 +629,13 @@
 								<td><?php echo @$detailsEp['DEM']['decisionEp'];?></td>
 								<td><?php echo @$detailsEp['CJT']['decisionEp'];?></td>
 							</tr>
+                            <?php if( Configure::read( 'Cg.departement') == 66 ):?>
+                                <tr class="even">
+                                    <th>Décision CGA</th>
+                                    <td colspan="2"><?php echo @$details['DEM']['Dossierpcg66']['dernier']['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'];?></td>
+                                    <!-- <td><?php /*echo @$details['CJT']['Dossierpcg66']['dernier']['Decisiondossierpcg66'][0]['Decisionpdo']['libelle']; */?></td> -->
+                                </tr>
+                            <?php endif;?>
 						</tbody>
 					</table>
 					<?php
