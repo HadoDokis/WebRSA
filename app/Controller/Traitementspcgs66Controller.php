@@ -1005,6 +1005,33 @@
 		public function delete( $id ) {
 			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
 
+            $traitementpcg66 = $this->Traitementpcg66->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->Traitementpcg66->fields(),
+                        $this->Traitementpcg66->Personnepcg66->fields(),
+                        $this->Traitementpcg66->Personnepcg66->Dossierpcg66->fields()
+                    ),
+                    'conditions' => array(
+                        'Traitementpcg66.id' => $id
+                    ),
+                    'contain' => false,
+                    'joins' => array(
+                        $this->Traitementpcg66->join( 'Personnepcg66', array( 'type' => 'INNER' ) ),
+                        $this->Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
+                    )
+                )
+            );
+            $typetraitementpcg = $traitementpcg66['Traitementpcg66']['typetraitement'];
+            $etatdossierpcg = $traitementpcg66['Dossierpcg66']['etatdossierpcg'];
+            $dossierpcg66_id = $traitementpcg66['Dossierpcg66']['id'];
+            if( $typetraitementpcg == 'documentarrive' && $etatdossierpcg == 'attinstrdocarrive' ) {
+                $this->Traitementpcg66->Personnepcg66->Dossierpcg66->id = $dossierpcg66_id;
+                $this->Traitementpcg66->Personnepcg66->Dossierpcg66->saveField( 'etatdossierpcg', 'attinstrattpiece' );
+            }
+
+
 			$this->Default->delete( $id );
 		}
 
