@@ -32,8 +32,8 @@
 			$options = $this->Structurereferente->enums();
 
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$options['typestructure']['oa'] = 'Structure liée à un PPAE';
-				$options['typestructure']['msp'] = 'Structure débouchant sur CER pro';
+				$options['Structurereferente']['typestructure']['oa'] = 'Structure liée à un PPAE';
+				$options['Structurereferente']['typestructure']['msp'] = 'Structure débouchant sur CER pro';
 			}
 			
 			foreach( array( 'Typeorient' ) as $linkedModel ) {

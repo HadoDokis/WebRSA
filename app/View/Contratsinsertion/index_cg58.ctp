@@ -66,7 +66,7 @@
 		<?php if( $this->Permissions->checkDossier( 'proposcontratsinsertioncovs58', 'add', $dossierMenu ) && $nbdossiersnonfinalisescovs == 0 ):?>
 			<ul class="actionMenu">
 				<?php
-					$block = empty( $orientstruct ) || !empty( $orientstructEmploi );
+					$block = empty( $orientstruct ) || !empty( $bloquageAjoutCER );
 					echo '<li>'.$this->Xhtml->addLink(
 						'Ajouter un CER',
 						array( 'controller' => 'proposcontratsinsertioncovs58', 'action' => 'add', $personne_id ),
