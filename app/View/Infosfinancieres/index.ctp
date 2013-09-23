@@ -27,6 +27,10 @@
 	</tbody>
 </table>
 </fieldset>
+    <?php
+        $pagination = $this->Xpaginator2->paginationBlock( 'Infofinanciere', $this->passedArgs );
+        echo $pagination;
+    ?>
 	<table id="searchResults" class="tooltips">
 		<thead>
 			<tr>
@@ -59,4 +63,5 @@
 			<?php endforeach;?>
 		</tbody>
 	</table>
+    <?php echo $pagination;?>
 <?php endif?>

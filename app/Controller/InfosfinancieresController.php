@@ -45,9 +45,17 @@
 		/**
 		 *
 		 */
-		public function beforeFilter() {
+		/*public function beforeFilter() {
 			ini_set('max_execution_time', 0);
 			parent::beforeFilter();
+			$this->set( 'type_allocation', $this->Option->type_allocation() );
+			$this->set( 'natpfcre', $this->Option->natpfcre() );
+			$this->set( 'typeopecompta', $this->Option->typeopecompta() );
+			$this->set( 'sensopecompta', $this->Option->sensopecompta() );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+		}*/
+
+        protected function _setOptions() {
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
 			$this->set( 'natpfcre', $this->Option->natpfcre() );
 			$this->set( 'typeopecompta', $this->Option->typeopecompta() );
@@ -76,6 +84,7 @@
 
 				$this->Dossier->commit();
 			}
+            $this->_setOptions();
 		}
 
 		/**
@@ -88,23 +97,25 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) ) );
 
-			//Recherche des adresses du foyer
-			$infosfinancieres = $this->Infofinanciere->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$this->Infofinanciere->fields(),
-						array(
-							'Dossier.matricule'
-						)
-					),
-					'conditions' => array( 'Infofinanciere.dossier_id' => $dossier_id ),
-					'contain' => array(
-						'Dossier'
-					)
+            $querydata = array(
+                'fields' => array_merge(
+                    $this->Infofinanciere->fields(),
+                    array(
+                        'Dossier.matricule'
+                    )
+                ),
+                'conditions' => array( 'Infofinanciere.dossier_id' => $dossier_id ),
+                'contain' => array(
+                    'Dossier'
+                ),
+                'order' => array(
+					'Infofinanciere.moismoucompta DESC'
 				)
-			);
-// debug($infosfinancieres);
+            );
+            $this->paginate = $querydata;
+            $infosfinancieres = $this->paginate( 'Infofinanciere' );
+            
+            
 			$qd_foyer = array(
 				'conditions' => array(
 					'Foyer.dossier_id' => $dossier_id
@@ -135,6 +146,7 @@
 
 			$this->set( 'dossier_id', $dossier_id );
 			$this->set( 'infosfinancieres', $infosfinancieres );
+            $this->_setOptions();
 		}
 
 		/**
@@ -191,6 +203,7 @@
 			$this->set( 'dossier_id', $infofinanciere['Infofinanciere']['dossier_id'] );
 			$this->set( 'infofinanciere', $infofinanciere );
 			$this->set( 'urlmenu', '/infosfinancieres/index/'.$foyer['Foyer']['id'] );
+            $this->_setOptions();
 		}
 
 		/**
@@ -205,6 +218,7 @@
 			unset( $options['limit'] );
 			$infos = $this->Infofinanciere->find( 'all', $options );
 
+            $this->_setOptions();
 			$this->layout = ''; // FIXME ?
 			$this->set( compact( 'headers', 'infos' ) );
 		}
