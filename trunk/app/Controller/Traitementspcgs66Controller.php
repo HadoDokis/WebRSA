@@ -1040,8 +1040,6 @@
 		 */
 		public function envoiCourrier( $id ) {
             $this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Traitementpcg66->personneId( $id ) ) );
-            
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Traitementpcg66->Personnepcg66->Personne->dossierId( $id ) ) ) );
 
 			$traitementpcg66 = $this->Traitementpcg66->find(
 				'first',
@@ -1055,6 +1053,7 @@
 				)
 			);
 			$this->Traitementpcg66->id = $id;
+            $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
             
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
