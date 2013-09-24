@@ -160,14 +160,14 @@
 			)
         );
 
-// 		public $validate = array(
-// 			'avistechnique' => array(
-// 				'notEmpty' => array(
-// 					'rule' => 'notEmpty',
-// 					'message' => 'Champ obligatoire'
-// 				)
-// 			)
-// 		);
+ 		public $validate = array(
+ 			'etatop' => array(
+ 				'notEmpty' => array(
+ 					'rule' => 'notEmpty',
+ 					'message' => 'Champ obligatoire'
+ 				)
+ 			)
+ 		);
 
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
