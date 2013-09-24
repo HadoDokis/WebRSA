@@ -13,7 +13,7 @@
 			<?php 
                 echo $this->Form->input( 'Decisiondossierpcg66.id', array( 'type' => 'hidden' ) );
                 echo $this->Form->input( 'Decisiondossierpcg66.dossierpcg66_id', array( 'type' => 'hidden', 'value' => $dossierpcg66_id ) );
-                echo $this->Form->input( 'Decisiondossierpcg66.etatop', array( 'label' => __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.etatop' ), 'legend' => false, 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['etatop'] )  ); 
+                echo $this->Form->input( 'Decisiondossierpcg66.etatop', array(  'div' => false, 'legend' => required( __d( 'decisiondossierpcg66', 'Decisiondossierpcg66.etatop' ) ), 'type' => 'radio', 'options' => $options['Decisiondossierpcg66']['etatop'] )  ); 
             ?>
             <fieldset><legend><?php echo __d( 'orgtransmisdossierpcg66', 'Orgtransmisdossierpcg66.name' ); ?></legend>
                 

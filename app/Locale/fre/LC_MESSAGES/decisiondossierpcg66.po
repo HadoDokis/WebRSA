@@ -237,3 +237,6 @@ msgstr "Agent ayant émis l'avis technique"
 
 msgid "Decisiondossierpcg66.userproposition_id"
 msgstr "Agent ayant émis la validation"
+
+msgid "Decisiondossierpcg66.etatop"
+msgstr "État de transmission"
