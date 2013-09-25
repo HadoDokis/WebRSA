@@ -277,10 +277,12 @@
 					$Dossierpcg66->sqVirtualField( 'nbpropositions' ),
 					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies'),
                     'Decisionpdo.libelle',
+                    $Dossierpcg66->User->sqVirtualField('nom_complet')
 				),
 				'recursive' => -1,
 				'joins' => array(
                     $Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
+                    $Dossierpcg66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->join( 'Personnepcg66',
                         array(
                             'type' => 'LEFT OUTER'
@@ -620,10 +622,12 @@
 					'Situationdossierrsa.etatdosrsa',
 					$Dossierpcg66->sqVirtualField('nbpropositions'),
                     $Dossierpcg66->Personnepcg66->sqVirtualField( 'nbtraitements' ),
-					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies')
+					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies'),
+                    $Dossierpcg66->User->sqVirtualField('nom_complet')
 				),
 				'recursive' => -1,
 				'joins' => array(
+                    $Dossierpcg66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->join( 'Personnepcg66', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->Personnepcg66->join( 'Traitementpcg66', array( 'type' => 'LEFT OUTER' ) ),

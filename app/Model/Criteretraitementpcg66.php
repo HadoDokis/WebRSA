@@ -190,7 +190,8 @@
                     $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->fields(),
                     $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->Situationdossierrsa->fields(),
                     array(
-                        ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies')
+                        ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies'),
+                        $Traitementpcg66->Personnepcg66->Dossierpcg66->User->sqVirtualField('nom_complet')
                     )
 				),
 				'recursive' => -1,
@@ -200,6 +201,7 @@
 					$Traitementpcg66->Personnepcg66Situationpdo->join( 'Situationpdo', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->Personnepcg66->join( 'Dossierpcg66', array( 'type' => 'INNER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
+                    $Traitementpcg66->Personnepcg66->Dossierpcg66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->join( 'Descriptionpdo', array( 'type' => 'LEFT OUTER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),

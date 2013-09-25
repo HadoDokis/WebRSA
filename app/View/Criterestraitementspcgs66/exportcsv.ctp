@@ -23,7 +23,7 @@
         $row = array(
            h( Hash::get( $result, 'Dossier.numdemrsa' ) ),
             h( Set::enum( Hash::get( $result, 'Personne.qual' ), $qual ).' '.Hash::get( $result, 'Personne.nom' ).' '.Hash::get( $result, 'Personne.prenom' ) ),
-            h( Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+            h( Hash::get( $result, 'User.nom_complet' ) ),
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
             h( Hash::get( $result, 'Situationpdo.libelle' ) ),
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),

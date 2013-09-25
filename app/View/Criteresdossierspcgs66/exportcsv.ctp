@@ -70,7 +70,7 @@
         
         $pole = isset( $result['Dossierpcg66']['poledossierpcg66_id'] ) ? ( Set::enum( Hash::get( $result, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ).' / ' ) : null;
 
-        $gestionnaires = Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire );
+        $gestionnaires = Hash::get( $result, 'User.nom_complet' );
 
 		if( $this->request->params['pass'][0] == 'searchDossier' ) {
 			$row = array(
@@ -95,7 +95,7 @@
 				h( Set::enum( Hash::get( $result, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 				h( Set::enum( Hash::get( $result, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 				h( $this->Locale->date( 'Locale->date',  Hash::get( $result, 'Dossierpcg66.datereceptionpdo' ) ) ),
-				h( Set::enum( Hash::get( $result, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+                h( Hash::get( $result, 'User.nom_complet' ) ),
 				h( $result['Dossierpcg66']['nbpropositions'] ),
 				h( $result['Personnepcg66']['nbtraitements'] ),
 				$traitementspcgs66,

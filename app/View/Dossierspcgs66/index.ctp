@@ -71,7 +71,8 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
 
                 $pole = isset( $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'] ) ? ( Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ).' / ' ) : null;
                 
-                $gestionnaires = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire );
+//                $gestionnaires = Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire );
+                $gestionnaires = Hash::get( $dossierpcg66, 'User.nom_complet' );
 				echo $this->Xhtml->tableCells(
 					array(
 						h( Set::enum( Hash::get( $dossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),

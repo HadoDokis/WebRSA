@@ -179,7 +179,8 @@
 							array(
 								h( Set::classicExtract( $criteretraitementpcg66, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.prenom' ) ),
-								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+//								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+                                h( Hash::get( $criteretraitementpcg66, 'User.nom_complet' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
 								h( Set::classicExtract( $criteretraitementpcg66, 'Situationpdo.libelle' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
