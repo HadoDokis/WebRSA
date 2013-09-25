@@ -71,7 +71,9 @@
 	<?php
         echo $this->Xform->input( 'User.isgestionnaire', array( 'legend' => false, 'type' => 'radio', 'options' => $options['User']['isgestionnaire'] ) );
         if( Configure::read( 'Cg.departement' ) == 66 ) {
+            echo '<fieldset id="poledossierpcg66" class="noborder">';
             echo $this->Xform->input( 'User.poledossierpcg66_id', array( 'legend' => 'Pôle lié au gestionnaire', 'type' => 'radio', 'options' => $polesdossierspcgs66, 'empty' => false ) );
+            echo '</fieldset>';
         }
     ?>
 </fieldset>
@@ -86,12 +88,12 @@
 		observeDisableFieldsOnValue( 'UserType', [ 'UserReferentId' ], 'externe_ci', false );
         
         <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
-            observeDisableFieldsOnRadioValue(
+            observeDisableFieldsetOnRadioValue(
                 'UserEditForm',
                 'data[User][isgestionnaire]',
-                [ 'UserPoledossierpcg66Id_' ],
+                $( 'poledossierpcg66' ),
                 'O',
-                true,
+                false,
                 true
             );
         <?php endif;?>
