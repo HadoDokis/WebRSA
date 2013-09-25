@@ -301,7 +301,8 @@
 							'order' => array( 'Decisiondossierpcg66.created DESC' ),
                             'Decisionpdo',
                             'Orgtransmisdossierpcg66'
-						)
+						),
+                        'User'
 					),
 					'order' => array( 'Dossierpcg66.datereceptionpdo DESC', 'Dossierpcg66.id DESC' )
 				)
