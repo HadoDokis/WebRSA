@@ -109,7 +109,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="mediumSize noborder">
+			<td colspan="2" class="mediumSize noborder">
 				<strong>Tél. fixe : </strong>
 				<?php
 					$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
@@ -122,8 +122,10 @@
 					}
 				?>
 			</td>
-			<td class="mediumSize noborder">
-				<strong>Tél. portable : </strong>
+		</tr>
+		<tr>
+			<td colspan="2" class="mediumSize noborder">
+                <strong>Tél. portable : </strong>
 				<?php
 					$numtelport = Set::extract( $personne, 'Personne.numport' );
 					if( !empty( $numtelport ) ) {
