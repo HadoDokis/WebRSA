@@ -16,6 +16,7 @@ BEGIN;
 -- 20130729 : Créationd es nouvelles tables pour la partie Accompagnement du CUI (CG66)
 ----------------------------------------------------------------------------------------
 -- On renomme la table accompagnementscuis66 afin de ne rien perdre
+DROP TABLE IF EXISTS oldaccompagnementscuis66 CASCADE;
 ALTER TABLE accompagnementscuis66 RENAME TO oldaccompagnementscuis66;
 
 ALTER SEQUENCE accompagnementscuis66_id_seq RENAME TO oldaccompagnementscuis66_id_seq;
