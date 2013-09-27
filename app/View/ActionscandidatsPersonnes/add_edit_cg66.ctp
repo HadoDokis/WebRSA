@@ -102,7 +102,7 @@
 				<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $personne, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $personne, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $personne, 'Adresse.codepos' ).' '.Set::classicExtract( $personne, 'Adresse.locaadr' );?>
 			</td>
 		<tr>
-			<td class="mediumSize noborder">
+			<td colsapn="2" class="mediumSize noborder">
 				<strong>Tél. fixe : </strong>
 				<?php
 					$numtelfixe = Set::classicExtract( $personne, 'Personne.numfixe' );
@@ -115,7 +115,9 @@
 					}
 				?>
 			</td>
-			<td class="mediumSize noborder">
+        </tr>
+        <tr>
+			<td colspan="2" class="mediumSize noborder">
 				<strong>Tél. portable : </strong>
 				<?php
 					$numtelport = Set::extract( $personne, 'Personne.numport' );
