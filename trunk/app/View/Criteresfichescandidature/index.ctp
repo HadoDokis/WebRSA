@@ -82,6 +82,18 @@
 					'options' => $options
 				)
 			);
+            
+            echo '<fieldset id="blocregion" class="noborder">';
+            echo $this->Default2->subform(
+				array(
+                    'ActioncandidatPersonne.formationregion' => array( 'label' => 'Nom de la formation', 'type' => 'text' ),
+					'Progfichecandidature66.id' => array( 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 )
+				),
+				array(
+					'options' => $options
+				)
+			); 
+            echo '</fieldset>';
 
 		?>
 

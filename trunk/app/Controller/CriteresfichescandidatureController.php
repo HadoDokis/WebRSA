@@ -34,6 +34,7 @@
 
 
 			$listeactions = $this->ActioncandidatPersonne->Actioncandidat->listActionParPartenaire();
+            $this->set( 'progsfichescandidatures66', $this->ActioncandidatPersonne->Progfichecandidature66->find( 'list', array( 'conditions' => array( 'Progfichecandidature66.isactif' => '1' ) ) ) );
 
 			$this->set( compact( 'actions', 'options', 'partenaires', 'motifssortie', 'listeactions' ) );
 			$this->set( 'referents', $this->ActioncandidatPersonne->Referent->find( 'list', array( 'recursive' => -1 ) ) );

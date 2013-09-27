@@ -24,7 +24,29 @@
 		echo $this->Default->subform(
 			array(
 				'ActioncandidatPersonne.personne_id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
-				'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actionsfiche ),
+				'ActioncandidatPersonne.actioncandidat_id' => array( 'type' => 'select', 'options' => $actionsfiche )
+            ),
+			array(
+				'domain' => $domain,
+				'options' => $options
+			)
+		);
+        
+        echo '<fieldset id="formationregion" class="noborder">';
+        echo $this->Default->subform(
+            array(
+                'Progfichecandidature66.Progfichecandidature66' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 ),
+                'ActioncandidatPersonne.formationregion'
+            ),   
+            array(
+                'options' => $options
+            )
+        );
+        echo '</fieldset>';
+        
+        
+		echo $this->Default->subform(
+			array(
 				'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
 				'Personne.id' => array( 'value' => $personne_id, 'type' => 'hidden' ),
 			),
@@ -442,6 +464,16 @@
 //			false
 //		);
 
+        // On affiche le la case à cocher poursuite suivi CG si l'ID 
+        // de l'action sélectionnée fait partie des IDs actions paramétrés
+        observeDisableFieldsetOnValue(
+			'ActioncandidatPersonneActioncandidatId',
+			$( 'formationregion' ),
+			['<?php echo implode( "', '", Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionId" ) );?>'],
+			false,
+			true
+		);
+            
 		<?php  if( $this->action == 'edit' ):?>
 
 			observeDisableFieldsetOnRadioValue(

@@ -91,6 +91,7 @@
 		'avispcgpersonne' => 'avispcgpersonnes',
 		'budgetapre' => 'budgetsapres',
 		'calculdroitrsa' => 'calculsdroitsrsa',
+        'candidature_prog66' => 'candidatures_progs66', // table de laision entre actionscandidats_personnes et progsfichescandidatures66
 		'cohorteci' => 'cohortesci',
 		'cohortecomiteapre' => 'cohortescomitesapres',
 		'cohorteindu' => 'cohortesindus',
@@ -189,6 +190,7 @@
 		'piecepdo' => 'piecespdos',
 		'piecepermisb' => 'piecespermisb',
 		'prestform' => 'prestsform',
+        'progfichecandidature66' => 'progsfichescandidatures66',
 		'propopdo' => 'propospdos',
 		'propopdo_situationpdo' => 'propospdos_situationspdos',
 		'propopdo_statutdecisionpdo' => 'propospdos_statutsdecisionspdos',

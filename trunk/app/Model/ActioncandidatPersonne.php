@@ -114,6 +114,26 @@
 				'counterQuery' => ''
 			)
 		);
+        
+        
+        public $hasAndBelongsToMany = array(
+            'Progfichecandidature66' => array(
+				'className' => 'Progfichecandidature66',
+				'joinTable' => 'candidatures_progs66',
+				'foreignKey' => 'actioncandidat_personne_id',
+				'associationForeignKey' => 'progfichecandidature66_id',
+				'unique' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'finderQuery' => '',
+				'deleteQuery' => '',
+				'insertQuery' => '',
+				'with' => 'CandidatureProg66'
+			)
+        );
 
 
 

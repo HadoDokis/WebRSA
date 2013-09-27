@@ -357,6 +357,7 @@
 			foreach( $tmp as $key => $value ) {
 				$results[$value['Partenaire']['id'].'_'.$value['Actioncandidat']['id']] = $value['Actioncandidat']['name'];
 			}
+            
 			return $results;
 		}
 
