@@ -621,7 +621,6 @@
 
 			if( !empty( $this->request->data ) ) {
                 $this->ActioncandidatPersonne->begin();
-
                 
                 // Mise à jour de la case à cocher Poursuite suivi CG si l'action n'est pas de type région (CG66)
                 if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -679,6 +678,18 @@
 			else {
 				if( $this->action == 'edit' ) {           
                     $this->request->data = $actioncandidat_personne;
+                    
+                    // Récupération des programmes région si renseignés
+                    $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
+                        'list',
+                        array(
+                            'fields' => array( "CandidatureProg66.id", "CandidatureProg66.progfichecandidature66_id" ),
+                            'conditions' => array(
+                                "CandidatureProg66.actioncandidat_personne_id" => $actioncandidat_personne_id
+                            )
+                        )
+                    );
+                    $this->request->data['Progfichecandidature66']['Progfichecandidature66'] = $progsfichescandidatures66;
 
 					/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
 					$qd_dsp = array(
@@ -768,6 +779,8 @@
             $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
+            
+            $this->set( 'progsfichescandidatures66', $this->ActioncandidatPersonne->Progfichecandidature66->find( 'list', array( 'conditions' => array( 'Progfichecandidature66.isactif' => '1' ) ) ) );
 
 			$this->set( compact( 'options' ) );
 
@@ -920,6 +933,26 @@
 			}
 			$this->set( compact( 'actionscandidatspersonne' ) );
 			$this->_setOptions();
+            
+            //liste des programmes Région sélectionnés
+            // Récupération des programmes région si renseignés
+            $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'Progfichecandidature66.name',
+                        'CandidatureProg66.id',
+                        'CandidatureProg66.progfichecandidature66_id'
+                    ),
+                    'conditions' => array(
+                        'CandidatureProg66.actioncandidat_personne_id' => $id
+                    )
+                )
+            );
+            $progsfichescandidatures66 = (array)Set::extract( $progsfichescandidatures66, '{n}.Progfichecandidature66.name' );
+            $this->set( compact( 'progsfichescandidatures66' ) );
+
+            
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );

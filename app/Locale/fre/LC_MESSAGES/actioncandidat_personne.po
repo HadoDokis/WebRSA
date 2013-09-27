@@ -183,3 +183,6 @@ msgstr "Informations complémentaires"
 
 msgid "ActioncandidatPersonne.motifannulation"
 msgstr "Raison de l'annulation"
+
+msgid "ActioncandidatPersonne.formationregion"
+msgstr "Nom de la formation"

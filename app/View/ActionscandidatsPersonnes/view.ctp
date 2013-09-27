@@ -42,7 +42,7 @@
 				'Actioncandidat.dfaction',
 				'Actioncandidat.nbpostedispo'=> array( 'type'=>'text' ),
 				'Actioncandidat.referent_id' => array('type'=>'text' ),
-				'Actioncandidat.nbposterestant',
+				'Actioncandidat.nbposterestant'=> array( 'type'=>'text' ),
 				'Actioncandidat.codeaction' => array('type'=>'text')
 			),
             array(
@@ -50,20 +50,43 @@
                 'class' => 'aere'
             )
 		);
+
+        
+        if( !empty( $progsfichescandidatures66 ) ) {
+            echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Informations pour les actions Région'));
+            if( !empty( $progsfichescandidatures66 ) ) {
+                $progsfichescandidatures66 = '<ul><li>'.implode( '</li><li>', $progsfichescandidatures66 ).'</li></ul>';
+            }
+            else {
+                $progsfichescandidatures66 = '';
+            }
+            echo $this->Default2->view(
+                $actionscandidatspersonne,
+                array(
+                    'Progfichecandidature66.name' => array( 'label' => 'Nom du (des) programme(s)', 'value' => $progsfichescandidatures66 ),
+                    'ActioncandidatPersonne.formationregion'
+                ),
+                array(
+                    'widget' => 'table',
+                    'class' => 'aere'
+                )
+            );
+        }
+        
 		echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Nom du prescripteur de la fiche' ) );
         echo $this->Default->view(
         	$actionscandidatspersonne,
             array(
-            'Referent.qual',
-            'Referent.nom',
-            'Referent.prenom',
-            'Referent.numero_poste',
-            'Referent.email',
-            'Referent.fonction',
+                'Referent.qual',
+                'Referent.nom',
+                'Referent.prenom',
+                'Referent.numero_poste',
+                'Referent.email',
+                'Referent.fonction',
 			),
 			array(
-			'widget' => 'table',
-			'class' => 'aere'
+                'widget' => 'table',
+                'class' => 'aere'
 			)
 		);
 
