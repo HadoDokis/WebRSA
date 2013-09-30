@@ -87,7 +87,7 @@
             echo $this->Default2->subform(
 				array(
                     'ActioncandidatPersonne.formationregion' => array( 'label' => 'Nom de la formation', 'type' => 'text' ),
-					'Progfichecandidature66.id' => array( 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 )
+					'Progfichecandidature66.id' => array( 'label' => 'Nom du(des) programme(s)', 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 )
 				),
 				array(
 					'options' => $options
