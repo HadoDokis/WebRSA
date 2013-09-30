@@ -53,6 +53,14 @@ CREATE TABLE candidatures_progs66(
 );
 COMMENT ON TABLE candidatures_progs66 IS 'Table de liaison entre les fiches de candidature région et les programmes liés (CG66)';
 
+DROP INDEX IF EXISTS candidatures_progs66_actioncandidat_personne_id_idx;
+CREATE INDEX candidatures_progs66_actioncandidat_personne_id_idx ON candidatures_progs66( actioncandidat_personne_id );
+
+DROP INDEX IF EXISTS candidatures_progs66_progfichecandidature66_id_idx;
+CREATE INDEX candidatures_progs66_progfichecandidature66_id_idx ON candidatures_progs66( progfichecandidature66_id );
+
+DROP INDEX IF EXISTS candidatures_progs66_actioncandidat_personne_id_progfichecandidature66_id_idx;
+CREATE UNIQUE INDEX candidatures_progs66_actioncandidat_personne_id_progfichecandidature66_id_idx ON candidatures_progs66(actioncandidat_personne_id,progfichecandidature66_id);
 
 -- *****************************************************************************
 COMMIT;
