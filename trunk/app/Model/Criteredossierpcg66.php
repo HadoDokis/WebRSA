@@ -277,7 +277,8 @@
 					$Dossierpcg66->sqVirtualField( 'nbpropositions' ),
 					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies'),
                     'Decisionpdo.libelle',
-                    $Dossierpcg66->User->sqVirtualField('nom_complet')
+                    $Dossierpcg66->User->sqVirtualField('nom_complet'),
+                    'Poledossierpcg66.name'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -311,7 +312,8 @@
                     ),
                     $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ), 	 
-                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->join( 'Poledossierpcg66', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'conditions' => $conditions
@@ -623,7 +625,8 @@
 					$Dossierpcg66->sqVirtualField('nbpropositions'),
                     $Dossierpcg66->Personnepcg66->sqVirtualField( 'nbtraitements' ),
 					ClassRegistry::init( 'Fichiermodule' )->sqNbFichiersLies( ClassRegistry::init( 'Foyer' ), 'nb_fichiers_lies'),
-                    $Dossierpcg66->User->sqVirtualField('nom_complet')
+                    $Dossierpcg66->User->sqVirtualField('nom_complet'),
+                    'Poledossierpcg66.name'
 				),
 				'recursive' => -1,
 				'joins' => array(
@@ -639,7 +642,8 @@
 					$Dossierpcg66->join( 'Decisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) )
+                    $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->join( 'Poledossierpcg66', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'contain' => false,
