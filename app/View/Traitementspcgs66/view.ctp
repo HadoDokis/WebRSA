@@ -4,7 +4,23 @@
 
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-		echo $this->Form->create( 'Traitementpcg66', array( 'type' => 'post', 'id' => 'traitementpcg66form' ) );
+        
+        if( ( $traitementpcg66['Traitementpcg66']['annule'] == 'O' ) ){
+
+			echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Raison de l\'annulation'));
+			echo $this->Default->view(
+				$traitementpcg66,
+				array(
+					'Traitementpcg66.motifannulation' => array( 'type' => 'text' )
+				),
+				array(
+					'widget' => 'table',
+					'class' => 'aere'
+				)
+			);
+
+		}
+        
 		echo $this->Default2->view(
 			$traitementpcg66,
 			array(

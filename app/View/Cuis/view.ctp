@@ -30,6 +30,22 @@
         }
         echo '</fieldset>';
     }
+    
+    
+
+    if( ( $cui['Cui']['positioncui66'] == 'annule' ) ){
+        echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Raison de l\'annulation'));
+        echo $this->Default->view(
+            $cui,
+            array(
+                'Cui.motifannulation' => array( 'type' => 'text' )
+            ),
+            array(
+                'widget' => 'table',
+                'class' => 'aere'
+            )
+        );
+    }
 ?>
 <fieldset><legend></legend>
 	<?php
