@@ -241,6 +241,25 @@ SELECT add_missing_constraint ( 'public', 'users', 'users_poledossierpcg66_id_fk
 SELECT add_missing_table_field ( 'public', 'dossierspcgs66', 'poledossierpcg66_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'dossierspcgs66', 'dossierspcgs66_poledossierpcg66_id_fkey', 'polesdossierspcgs66', 'poledossierpcg66_id', false );
 
+
+---------------------------------------------------------------------------------------------------------
+-- 20131001: Script de mise à jour des infos des dossiers PCGs 
+--          une fois les données renseignées dans la table users
+--          FIXME: à mattre à part du patch
+---------------------------------------------------------------------------------------------------------
+
+-- UPDATE dossierspcgs66 
+-- 	SET poledossierpcg66_id = (
+-- 		SELECT users.poledossierpcg66_id 
+-- 			FROM users
+-- 			WHERE
+-- 				users.poledossierpcg66_id IS NOT NULL
+-- 				and users.id = dossierspcgs66.user_id
+-- 	)
+-- 	WHERE
+-- 		dossierspcgs66.poledossierpcg66_id IS NULL
+-- 		AND dossierspcgs66.user_id IS NOT NULL
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

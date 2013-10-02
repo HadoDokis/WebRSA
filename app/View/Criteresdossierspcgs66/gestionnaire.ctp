@@ -191,6 +191,13 @@
                         else {
                             $echeances = '';
                         }
+                        
+                        if( !empty( $criteredossierpcg66['Dossierpcg66']['poledossierpcg66_id'] ) ) {
+                            $infoGestionnaire = Hash::get( $criteredossierpcg66, 'Poledossierpcg66.name' ). ' / '.Hash::get( $criteredossierpcg66, 'User.nom_complet' );
+                        }
+                        else {
+                            $infoGestionnaire = Hash::get( $criteredossierpcg66, 'User.nom_complet' );
+                        }
 
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
@@ -229,7 +236,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 								$echeances,//h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),
-                                h( Hash::get( $criteredossierpcg66, 'User.nom_complet' ) ),
+                                h( $infoGestionnaire ),
 								h( $criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( $criteredossierpcg66['Personnepcg66']['nbtraitements'] ),
 								$traitementspcgs66,

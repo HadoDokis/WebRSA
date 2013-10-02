@@ -195,6 +195,12 @@
                             $differentsStatuts = '';
                         }
 
+                        if( !empty( $criteredossierpcg66['Dossierpcg66']['poledossierpcg66_id'] ) ) {
+                            $infoGestionnaire = Hash::get( $criteredossierpcg66, 'Poledossierpcg66.name' ). ' / '.Hash::get( $criteredossierpcg66, 'User.nom_complet' );
+                        }
+                        else {
+                            $infoGestionnaire = Hash::get( $criteredossierpcg66, 'User.nom_complet' );
+                        }
                         
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
@@ -233,7 +239,7 @@
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
-								h( Hash::get( $criteredossierpcg66, 'User.nom_complet' ) ),
+								h( $infoGestionnaire ),
 								h( @$criteredossierpcg66['Dossierpcg66']['nbpropositions'] ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission ),
                                 h( $criteredossierpcg66['Decisionpdo']['libelle'] ),
