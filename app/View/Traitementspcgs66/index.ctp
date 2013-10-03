@@ -61,7 +61,8 @@
 
 					'Traitementspcgs66::clore' => array( 'disabled' => '\'#Traitementpcg66.clos#\' == \'O\' || \'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'clore', $dossierMenu ).'\' != \'1\'', 'confirm' => 'Confirmer la clôture de ce traitement ?' ),
 
-					'Traitementspcgs66::cancel' => array( 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'cancel', $dossierMenu ).'\' != \'1\'' ),
+					'Traitementspcgs66::cancel' => array( 'label' => 'Annuler', 'condition' => '(\'#Traitementpcg66.annule#\' != \'O\')', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'cancel', $dossierMenu ).'\' != \'1\'' ),
+					'Traitementspcgs66::canceled' => array( 'label' => 'Annulé', 'condition' => '(\'#Traitementpcg66.annule#\' == \'O\')', 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\'' ),
 
 					'Traitementspcgs66::delete' => array( 'disabled' => '\'#Traitementpcg66.annule#\' == \'O\' || \''.$this->Permissions->checkDossier( 'traitementspcgs66', 'delete', $dossierMenu ).'\' != \'1\'', 'confirm' => 'Confirmer la suppression de ce traitement ?' ),
 					///FIXME: à remettre quand on aura la fonction et qu'on saura quoi imprimer
