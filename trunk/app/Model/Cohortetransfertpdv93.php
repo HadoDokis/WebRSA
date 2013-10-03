@@ -123,6 +123,8 @@
 
             // Conditions sur les dates de transfert
             $conditions = $this->conditionsDates( $conditions, $search, 'Transfertpdv93.created' );
+            // Conditions sur les dates de validation de l'orientation 
+            $conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' ); // FIXME : A commenter suite à la demande du BUG #6891 ??
             
             
 			$querydata = array(
