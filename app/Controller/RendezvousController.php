@@ -545,6 +545,20 @@
 				if( $this->Rendezvous->provoquePassageCommission( $this->request->data ) ) {
 					$success = $this->Rendezvous->creePassageCommission( $this->request->data, $this->Session->read( 'Auth.User.id' ) ) && $success;
 				}
+                else if( $this->action == 'edit' && !empty( $rdv ) && Configure::read( 'Cg.departement' ) == 58  ) {
+                    // On regarde le statut du RDV (si ce dernier est modifié)
+                    // On regarde si le statut provoque toujours un passage en commission
+                    $statutProvoquantPassage = $this->Rendezvous->Statutrdv->provoquePassageCommission( $this->request->data['Rendezvous']['statutrdv_id'] );
+//debug( $rdv);
+//debug( empty( $statutProvoquantPassage ));
+//die();
+                    // Si c'est le cas ET qu'un dossier COV existe, on le supprime dans la thématique et dans les dossiers COVs
+                    // FIXME: faire la même chose pour les dossiers EPs ????
+                    if( !empty( $rdv['Propoorientsocialecov58']['dossiercov58_id'] ) && empty( $statutProvoquantPassage ) )  {
+                        $success = $this->Rendezvous->Propoorientsocialecov58->deleteAll( array( 'Propoorientsocialecov58.rendezvous_id' => $rdv_id ) ) && $success;
+                        $success = $this->Rendezvous->Personne->Dossiercov58->delete( $rdv['Propoorientsocialecov58']['dossiercov58_id'] ) && $success;
+                    }
+                }
 
 				// Création du référent si celui-ci est no présent
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
