@@ -13,11 +13,11 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnCheckbox( 'FiltreCreated', $( 'FiltreCreatedFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'ContratinsertionCreated', $( 'ContratinsertionCreatedFromDay' ).up( 'fieldset' ), false );
 
-		observeDisableFieldsetOnCheckbox( 'FiltreDdCi', $( 'FiltreDdCiFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'ContratinsertionDdCi', $( 'ContratinsertionDdCiFromDay' ).up( 'fieldset' ), false );
 
-		observeDisableFieldsetOnCheckbox( 'FiltreDfCi', $( 'FiltreDfCiFromDay' ).up( 'fieldset' ), false );
+		observeDisableFieldsetOnCheckbox( 'ContratinsertionDfCi', $( 'ContratinsertionDfCiFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
 
@@ -69,15 +69,15 @@
 				}
 			?>
 
-			<?php echo $this->Form->input( 'Filtre.created', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Contratinsertion.created', array( 'label' => 'Filtrer par date de saisie du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de saisie du contrat</legend>
 				<?php
-					$created_from = Set::check( $this->request->data, 'Filtre.created_from' ) ? Set::extract( $this->request->data, 'Filtre.created_from' ) : strtotime( '-1 week' );
-					$created_to = Set::check( $this->request->data, 'Filtre.created_to' ) ? Set::extract( $this->request->data, 'Filtre.created_to' ) : strtotime( 'now' );
+					$created_from = Set::check( $this->request->data, 'Contratinsertion.created_from' ) ? Set::extract( $this->request->data, 'Contratinsertion.created_from' ) : strtotime( '-1 week' );
+					$created_to = Set::check( $this->request->data, 'Contratinsertion.created_to' ) ? Set::extract( $this->request->data, 'Contratinsertion.created_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Filtre.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
@@ -93,31 +93,31 @@
 				}
 			?>
 			<?php 
-                echo $this->Search->date( 'Filtre.datevalidation_ci', 'Date de validation du contrat' );
+                echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
             ?>
 
 			<!-- Filtre sur la date de début du CER -->
-			<?php echo $this->Form->input( 'Filtre.dd_ci', array( 'label' => 'Filtrer par date de début du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Contratinsertion.dd_ci', array( 'label' => 'Filtrer par date de début du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de début du contrat</legend>
 				<?php
-					$dd_ci_from = Set::check( $this->request->data, 'Filtre.dd_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.dd_ci_from' ) : strtotime( '-1 week' );
-					$dd_ci_to = Set::check( $this->request->data, 'Filtre.dd_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.dd_ci_to' ) : strtotime( 'now' );
+					$dd_ci_from = Set::check( $this->request->data, 'Contratinsertion.dd_ci_from' ) ? Set::extract( $this->request->data, 'Contratinsertion.dd_ci_from' ) : strtotime( '-1 week' );
+					$dd_ci_to = Set::check( $this->request->data, 'Contratinsertion.dd_ci_to' ) ? Set::extract( $this->request->data, 'Contratinsertion.dd_ci_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Filtre.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $dd_ci_from ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
 			</fieldset>
 
 			<!-- Filtre sur la date de fin du CER -->
-			<?php echo $this->Form->input( 'Filtre.df_ci', array( 'label' => 'Filtrer par date de fin du contrat', 'type' => 'checkbox' ) );?>
+			<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => 'Filtrer par date de fin du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de fin du contrat</legend>
 				<?php
-					$df_ci_from = Set::check( $this->request->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
-					$df_ci_to = Set::check( $this->request->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
+					$df_ci_from = Set::check( $this->request->data, 'Contratinsertion.df_ci_from' ) ? Set::extract( $this->request->data, 'Contratinsertion.df_ci_from' ) : strtotime( '-1 week' );
+					$df_ci_to = Set::check( $this->request->data, 'Contratinsertion.df_ci_to' ) ? Set::extract( $this->request->data, 'Contratinsertion.df_ci_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Filtre.df_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
-				<?php echo $this->Form->input( 'Filtre.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.df_ci_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
+				<?php echo $this->Form->input( 'Contratinsertion.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 			</fieldset>
 
 			<?php echo $this->Form->input( 'Filtre.arriveaecheance', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  ); ?>

@@ -122,7 +122,15 @@
 			}
 
             // Conditions sur les dates de transfert
-            $conditions = $this->conditionsDates( $conditions, $search, 'Transfertpdv93.created' );
+//            $conditions = $this->conditionsDates( $conditions, $search, 'Transfertpdv93.created' );
+            if( isset( $search['Transfertpdv93']['created'] ) && !empty( $search['Transfertpdv93']['created'] )  ) {
+                $valid_from = ( valid_int( $search['Transfertpdv93']['created_from']['year'] ) && valid_int( $search['Transfertpdv93']['created_from']['month'] ) && valid_int( $search['Transfertpdv93']['created_from']['day'] ) );
+                $valid_to = ( valid_int( $search['Transfertpdv93']['created_to']['year'] ) && valid_int( $search['Transfertpdv93']['created_to']['month'] ) && valid_int( $search['Transfertpdv93']['created_to']['day'] ) );
+                if( $valid_from && $valid_to ) {
+                    $conditions[] = 'DATE ( Transfertpdv93.created ) <= \''.implode( '-', array( $search['Transfertpdv93']['created_from']['year'], $search['Transfertpdv93']['created_from']['month'], $search['Transfertpdv93']['created_from']['day'] ) ).'\' AND DATE( Transfertpdv93.created ) >= \''.implode( '-', array( $search['Transfertpdv93']['created_to']['year'], $search['Transfertpdv93']['created_to']['month'], $search['Transfertpdv93']['created_to']['day'] ) ).'\'';
+
+                }
+            }
             // Conditions sur les dates de validation de l'orientation 
             $conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' ); // FIXME : A commenter suite à la demande du BUG #6891 ??
             
