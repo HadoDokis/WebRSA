@@ -3,7 +3,13 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
-
+?>
+<script type="text/javascript">
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsetOnCheckbox( 'SearchTransfertpdv93Created', $( 'SearchTransfertpdv93CreatedFromDay' ).up( 'fieldset' ), false );
+    });
+</script>
+<?php 
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
 		$this->Xhtml->image(
 			'icons/application_form_magnify.png',
@@ -32,7 +38,14 @@
 // 	echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
     
     if( $this->action == 'transferes' ) {
-        echo $this->Search->date( 'Search.Transfertpdv93.created', 'Dates de transfert' );
+//        echo $this->Search->date( 'Search.Transfertpdv93.created', 'Dates de transfert' );
+        echo $this->Form->input( 'Search.Transfertpdv93.created', array( 'label' => 'Filtrer par dates de transfert', 'type' => 'checkbox' ) );
+		echo '<fieldset><legend>Dates de transfert</legend>';
+            $created_from = Set::check( $this->request->data, 'Search.Transfertpdv93.created_from' ) ? Set::extract( $this->request->data, 'Search.Transfertpdv93.created_from' ) : strtotime( '-1 week' );
+            $created_to = Set::check( $this->request->data, 'Search.Transfertpdv93.created_to' ) ? Set::extract( $this->request->data, 'Search.Transfertpdv93.created_to' ) : strtotime( 'now' );
+            echo $this->Form->input( 'Search.Transfertpdv93.created_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $created_from ) );
+            echo $this->Form->input( 'Search.Transfertpdv93.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );
+        echo '</fieldset>';
     }
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
