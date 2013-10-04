@@ -1017,7 +1017,8 @@
 					INNER JOIN dossierscovs58 ON ( proposorientationscovs58.dossiercov58_id = dossierscovs58.id )
 					LEFT OUTER JOIN structuresreferentes ON ( proposorientationscovs58.structureorientante_id = structuresreferentes.id )
 				WHERE dossierscovs58.personne_id = \"{$personneModelName}\".\"{$personneFieldName}\"
-				ORDER BY dossierscovs58.created DESC";
+				ORDER BY dossierscovs58.created DESC
+                LIMIT 1";
 
 			if( $alias ) {
 				return "( {$sql} ) AS \"{$soModelName}__{$soFieldName}\"";
