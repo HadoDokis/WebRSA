@@ -427,7 +427,7 @@
 						$from = $from['year'].'-'.$from['month'].'-'.$from['day'];
 						$to = $to['year'].'-'.$to['month'].'-'.$to['day'];
 
-						$conditions[] = "{$modelName}.{$fieldName} BETWEEN '{$from}' AND '{$to}'";
+						$conditions[] = "DATE( {$modelName}.{$fieldName} ) BETWEEN '{$from}' AND '{$to}'";
 					}
 				}
 			}
