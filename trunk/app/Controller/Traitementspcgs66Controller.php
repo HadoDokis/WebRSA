@@ -772,8 +772,7 @@
 					)
 				)
 			);
-// debug($traitementpcg66);
-// die();
+
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
 
@@ -801,6 +800,15 @@
 						'"Traitementpcg66"."id"' => $traitementpcg66['Traitementpcg66']['id']
 					)
 				) && $saved;
+                
+                 // Remise à jour de l'état du dossier PCG
+                $typetraitementpcg = $traitementpcg66['Traitementpcg66']['typetraitement'];
+                $etatdossierpcg = $traitementpcg66['Dossierpcg66']['etatdossierpcg'];
+                $dossierpcg66_id = $traitementpcg66['Dossierpcg66']['id'];
+                if( $saved && $typetraitementpcg == 'documentarrive' && $etatdossierpcg == 'attinstrdocarrive' ) {
+                    $this->Traitementpcg66->Personnepcg66->Dossierpcg66->id = $dossierpcg66_id;
+                    $this->Traitementpcg66->Personnepcg66->Dossierpcg66->saveField( 'etatdossierpcg', 'attinstrattpiece' ) && $saved;
+                }
 
 				if( $saved ) {
 					$this->Traitementpcg66->commit();
