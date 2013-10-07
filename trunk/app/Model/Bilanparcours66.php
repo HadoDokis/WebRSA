@@ -190,6 +190,12 @@
 					'message' => 'Champ obligatoire',
 				)
 			),
+            'presenceallocataire' => array(
+				array(
+					'rule' => array( 'notEmpty' ),
+					'message' => 'Champ obligatoire',
+				)
+			),
 		);
 
 		public $belongsTo = array(
