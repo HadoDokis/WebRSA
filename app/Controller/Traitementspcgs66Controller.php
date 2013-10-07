@@ -1062,7 +1062,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Traitementpcg66->begin();
-				$success = $this->Traitementpcg66->saveField( 'dateenvoicourrier', date( 'Y-m-d' ) );
+				$success = $this->Traitementpcg66->saveField( 'dateenvoicourrier', $this->request->data['Traitementpcg66']['dateenvoicourrier'] );
 				if( $success ) {
 					$this->Traitementpcg66->commit();
 					$this->Session->setFlash( 'La date d\'envoi du courrier a bien été enregistrée', 'flash/success' );

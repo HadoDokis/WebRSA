@@ -38,6 +38,18 @@
 			)
 		);
 
+        if( $traitementpcg66['Traitementpcg66']['typetraitement'] == 'courrier' ) {
+            echo $this->Default2->view(
+                $traitementpcg66,
+                array(
+                    'Traitementpcg66.dateenvoicourrier'
+                ),
+                array(
+                    'class' => 'aere'
+                )
+            );
+        }
+
 		echo "<h2>Liste de courriers liés au traitement</h2>";
 		if( !empty( $traitementpcg66['Courrierpdo'] ) ){
 			$courriersLies = Set::extract( $traitementpcg66, 'Traitementpcg66/Courrierpdo' );
