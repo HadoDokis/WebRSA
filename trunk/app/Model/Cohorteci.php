@@ -129,17 +129,18 @@
 
 
 			/// Critères sur la date de saisie du CER - champ created
-			foreach( array( 'created' ) as $timestampDate ) {
-				if( isset( $criteresci['Contratinsertion'][$timestampDate] ) && !empty( $criteresci['Contratinsertion'][$timestampDate] ) ) {
-					$valid_from = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) );
-                    $valid_to = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) );
-                    if( $valid_from && $valid_to ) {
-						$conditions[] = 'DATE ( Contratinsertion.created ) <= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) ).'\' AND DATE( Contratinsertion.created ) >= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) ).'\'';
-                        
-					}
-                }
-			}
+//			foreach( array( 'created' ) as $timestampDate ) {
+//				if( isset( $criteresci['Contratinsertion'][$timestampDate] ) && !empty( $criteresci['Contratinsertion'][$timestampDate] ) ) {
+//					$valid_from = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) );
+//                    $valid_to = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) );
+//                    if( $valid_from && $valid_to ) {
+//						$conditions[] = 'DATE ( Contratinsertion.created ) <= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) ).'\' AND DATE( Contratinsertion.created ) >= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) ).'\'';
+//                        
+//					}
+//                }
+//			}
             
+            $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.created' );
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.dd_ci' );
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.df_ci' );
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.datevalidation_ci' );
