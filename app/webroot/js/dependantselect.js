@@ -25,10 +25,10 @@ function dependantSelect( select2Id, select1Id ) {
 	var value2 = $F( select2Id );
 
 	// Nettoyage du texte des options
-	$$('#' + select2Id + ' option').each( function ( option ) {
-		var data = $(option).innerHTML;
-		$(option).update( data.replace( new RegExp( '^.* - ', 'gi' ), '' ) );
-	} );
+//	$$('#' + select2Id + ' option').each( function ( option ) {
+//		var data = $(option).innerHTML;
+//		$(option).update( data.replace( new RegExp( '^.* - ', 'gi' ), '' ) );
+//	} );
 
 	// Sauvegarde
 	if( selects[select2Id] == undefined ) {
