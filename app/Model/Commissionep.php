@@ -38,7 +38,8 @@
 					'%s/ordredujour_participant_93.odt',
 					'%s/fichesynthese.odt',
 				)
-			)
+			),
+            'Conditionnable'
 		);
 
 		public $belongsTo = array(
@@ -147,13 +148,7 @@
 			}
 
 			/// Critères sur le Comité - date du comité
-			if( isset( $criteresseanceep['Commissionep']['dateseance'] ) && !empty( $criteresseanceep['Commissionep']['dateseance'] ) ) {
-				$valid_from = ( valid_int( $criteresseanceep['Commissionep']['dateseance_from']['year'] ) && valid_int( $criteresseanceep['Commissionep']['dateseance_from']['month'] ) && valid_int( $criteresseanceep['Commissionep']['dateseance_from']['day'] ) );
-				$valid_to = ( valid_int( $criteresseanceep['Commissionep']['dateseance_to']['year'] ) && valid_int( $criteresseanceep['Commissionep']['dateseance_to']['month'] ) && valid_int( $criteresseanceep['Commissionep']['dateseance_to']['day'] ) );
-				if( $valid_from && $valid_to ) {
-					$conditions[] = 'Commissionep.dateseance BETWEEN \''.implode( '-', array( $criteresseanceep['Commissionep']['dateseance_from']['year'], $criteresseanceep['Commissionep']['dateseance_from']['month'], $criteresseanceep['Commissionep']['dateseance_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresseanceep['Commissionep']['dateseance_to']['year'], $criteresseanceep['Commissionep']['dateseance_to']['month'], $criteresseanceep['Commissionep']['dateseance_to']['day'] ) ).'\'';
-				}
-			}
+			$conditions = $this->conditionsDates( $conditions, $criteresseanceep, 'Commissionep.dateseance' );
 
 			$query = array(
 // 				'fields' => array(
