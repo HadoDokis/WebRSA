@@ -126,7 +126,7 @@
 								h( Set::enum( $relance['Nonrespectsanctionep93']['origine'], $options['Nonrespectsanctionep93']['origine'] ) ),
 								$this->Locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 								( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
-								$this->Default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir', 'enabled' => $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ) ),
+								$this->Default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir', 'enabled' => $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ), 'target' => 'external' ) ),
 								$this->Default2->button( 'print', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ), array( 'enabled' => ( !empty( $relance['Pdf']['id'] ) && $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ), 'label' => 'Imprimer' ) )
 							),
 							array( 'class' => 'odd' ),

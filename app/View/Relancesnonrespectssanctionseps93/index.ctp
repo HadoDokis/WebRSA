@@ -6,7 +6,7 @@
 			echo '<li>'.$this->Xhtml->addLink(
 				'Ajouter',
 				array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'add', $personne_id ),
-				( $this->Permissions->checkDossier( 'relancesnonrespectssanctionseps93', 'add', $dossierMenu ) && empty( $erreurs ) )
+				( $this->Permissions->checkDossier( 'relancesnonrespectssanctionseps93', 'add', $dossierMenu ) && empty( $erreurs ) && $ajoutPossible )
 			).' </li>';
 		?>
 	</ul>
