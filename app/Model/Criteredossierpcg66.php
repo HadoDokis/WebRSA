@@ -284,11 +284,6 @@
 				'joins' => array(
                     $Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
                     $Dossierpcg66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->join( 'Personnepcg66',
-                        array(
-                            'type' => 'LEFT OUTER'
-                        )
-                    ),
                     $Dossierpcg66->Foyer->join(
                         'Personne',
                         array(
@@ -297,6 +292,14 @@
                                 'Personne.id IN (
                                     '.ClassRegistry::init( 'Personne' )->sqResponsableDossierUnique('Foyer.id').'
                                 )'
+                            )
+                        )
+                    ),
+                    $Dossierpcg66->join( 'Personnepcg66',
+                        array(
+                            'type' => 'LEFT OUTER',
+                            'conditions' => array(
+                                'Personnepcg66.personne_id = Personne.id'
                             )
                         )
                     ),
@@ -632,9 +635,15 @@
 				'joins' => array(
                     $Dossierpcg66->join( 'User', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$Dossierpcg66->join( 'Personnepcg66', array( 'type' => 'LEFT OUTER' ) ),
+                    $Dossierpcg66->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossierpcg66->join( 'Personnepcg66', array(
+                            'type' => 'LEFT OUTER',
+                            'conditions' => array(
+                                'Personnepcg66.personne_id = Personne.id'
+                            )
+                        )
+                    ),
 					$Dossierpcg66->Personnepcg66->join( 'Traitementpcg66', array( 'type' => 'LEFT OUTER' ) ),
-					$Dossierpcg66->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Dossierpcg66->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$Dossierpcg66->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
