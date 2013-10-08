@@ -201,7 +201,19 @@
 					)
 				);
 			}
+            
+            // On s'assure qu'il soit possible de relancer l'allocataire (add)
+            $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+            $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+            $results = $this->Relancenonrespectsanctionep93->getRelance(
+                $personne_id,
+                $mesCodesInsee,
+                $this->Session->read( 'Auth.User.filtre_zone_geo' ),
+                $this->Cohortes->sqLocked( 'Dossier' ),
+                $this->Session->read( 'Auth.user.id' )
+            );
 
+            $this->set( 'ajoutPossible', !empty( $results ) );
 			$this->set( compact( 'relances', 'erreurs', 'personne' ) );
 			$this->set( 'personne_id', $personne_id );
 		}
@@ -396,7 +408,7 @@
 					$this->Cohortes->sqLocked( 'Dossier' ),
 					$this->Session->read( 'Auth.user.id' )
 				);
-
+//debug($results);
 				if( !empty( $results ) ) {
 					$results = $this->Relancenonrespectsanctionep93->prepareFormData( $results );
 					$this->request->data = $this->Relancenonrespectsanctionep93->prepareFormDataAdd( $results[0], $this->Session->read( 'Auth.User.id' ) );
