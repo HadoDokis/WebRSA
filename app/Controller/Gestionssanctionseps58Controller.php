@@ -190,8 +190,11 @@
 		public function exportcsv() {
 			$params = Hash::expand( $this->request->params['named'], '__' );
 
+			//Est-on en traitement ou en visualisation
+            $action = Hash::get( $this->request->params['named'], 'Search__action' );
+
 			$queryData = $this->Gestionsanctionep58->search(
-				'Gestion::visualisation',
+                "Gestion::$action",
 				$params['Search'],
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),

@@ -85,6 +85,18 @@
 		<?php echo $pagination;?>
 		<?php echo $this->Xform->submit( 'Validation de la liste' );?>
 		<?php echo $this->Xform->end();?>
+
+        <ul class="actionMenu">
+			<li><?php
+                $params = $this->request->data;
+                $params = array( 'Search' => $params['Search'] );
+
+				echo $this->Xhtml->exportLink(
+					'Télécharger le tableau',
+					array( 'controller' => 'gestionssanctionseps58', 'action' => 'exportcsv' ) + Hash::flatten( $params, '__' )
+				);
+			?></li>
+		</ul>
 	<?php endif;?>
 <?php endif;?>
 
