@@ -14,7 +14,7 @@
 	 *	'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
 	 *	// Pour Cloudooo
 	 *	'cloudooo_host' => '192.168.2.35',
-	 *	'cloudooo_port' => '8011'
+	 *	'cloudooo_port' => '8012'
 	 * )
 	 */
 
@@ -44,7 +44,7 @@
 			'method' => 'cloudooo',
 			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
 			'cloudooo_host' => 'cloudooo.test.adullact.org',
-			'cloudooo_port' => '8011'
+			'cloudooo_port' => '8012'
 		)
 	);
 
