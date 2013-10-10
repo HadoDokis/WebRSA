@@ -1056,6 +1056,9 @@
 						'Type' => array(
 							'voie' =>  $Option->typevoie(),
 						),
+						'type' => array(
+							'voie' => $Option->typevoie()
+						),
 					)
 				);
 

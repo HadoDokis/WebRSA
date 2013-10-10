@@ -1584,8 +1584,11 @@
 								'sitfam' => $Option->sitfam(),
 								'typeocclog' => $Option->typeocclog(),
 							),
-							'Type' => array( // INFO: Structurereferente.type_voie et Structurereferente.type_voie -> FIXME: ne traduit pas
+							'Type' => array(
 								'voie' => $Option->typevoie(),
+							),
+							'type' => array(
+								'voie' => $Option->typevoie()
 							),
 							'Detaildroitrsa' => array(
 								'oridemrsa' => $Option->oridemrsa(),
@@ -1659,6 +1662,9 @@
 				'Type' => array(
 					'voie' => $Option->typevoie()
 				),
+				'type' => array(
+					'voie' => $Option->typevoie()
+				),
 			);
 
 			$contratinsertion['Contratinsertion']['duree_engag'] = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $Option->duree_engag() );
@@ -1717,6 +1723,9 @@
 					'type_voie' => $Option->typevoie()
 				),
 				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+				'type' => array(
 					'voie' => $Option->typevoie()
 				),
 			);
@@ -1917,7 +1926,7 @@
                             NOT EXISTS(
                                 SELECT bilansparcours66.id
                                     FROM bilansparcours66
-                                    WHERE 
+                                    WHERE
                                         bilansparcours66.personne_id = contratsinsertion.personne_id
                                         AND (
                                             bilansparcours66.nvcontratinsertion_id IS NOT NULL
@@ -1925,7 +1934,7 @@
                                                 EXISTS (
                                                     SELECT saisinesbilansparcourseps66.bilanparcours66_id
                                                         FROM saisinesbilansparcourseps66
-                                                        WHERE 
+                                                        WHERE
                                                             bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id
                                                         ORDER BY saisinesbilansparcourseps66.created DESC
                                                         LIMIT 1
@@ -1937,7 +1946,7 @@
                                 contratsinsertion.dd_ci >= (
                                     SELECT bilansparcours66.created
                                     FROM bilansparcours66
-                                    WHERE 
+                                    WHERE
                                         bilansparcours66.personne_id = contratsinsertion.personne_id
                                         AND (
                                             bilansparcours66.nvcontratinsertion_id IS NOT NULL
@@ -1945,7 +1954,7 @@
                                                 EXISTS (
                                                     SELECT saisinesbilansparcourseps66.bilanparcours66_id
                                                         FROM saisinesbilansparcourseps66
-                                                        WHERE 
+                                                        WHERE
                                                             bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id
                                                         ORDER BY saisinesbilansparcourseps66.created DESC
                                                         LIMIT 1

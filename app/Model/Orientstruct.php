@@ -1345,6 +1345,9 @@
 					'Type' => array(
 						'voie' => $Option->typevoie(),
 					),
+					'type' => array(
+						'voie' => $Option->typevoie()
+					),
 					'Detaildroitrsa' => array(
 						'oridemrsa' => $Option->oridemrsa(),
 					),
