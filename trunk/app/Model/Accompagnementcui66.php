@@ -44,7 +44,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public $hasMany = array(
 			'Fichiermodule' => array(
 				'className' => 'Fichiermodule',
@@ -193,6 +193,9 @@
 					'type_voie' => $Option->typevoie()
 				),
 				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+				'type' => array(
 					'voie' => $Option->typevoie()
 				),
 			);

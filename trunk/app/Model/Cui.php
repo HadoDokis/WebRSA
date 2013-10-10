@@ -239,7 +239,7 @@
 				'counterQuery' => ''
 			)
 		);
-        
+
         public $hasOne = array(
 			'Decisioncui66' => array(
 				'className' => 'Decisioncui66',
@@ -512,7 +512,7 @@
 			return $return;
 		}
 
-        
+
         /**
 		 * Mise à jour de la position du cui selon la décision émise
 		 *
@@ -562,7 +562,7 @@
 			}
 
 			$this->id = $decisioncui66['Cui']['id'];
-            
+
 //			$return = $this->saveField( 'positioncui66', $positioncui66 );
 			$return = $this->updateAllUnBound(
                 array(
@@ -663,6 +663,9 @@
 				'Type' => array(
 					'voie' => $Option->typevoie()
 				),
+				'type' => array(
+					'voie' => $Option->typevoie()
+				),
 			);
 
 			return $this->ged(
@@ -751,8 +754,8 @@
 				return null;
 			}
 		}
-        
-        
+
+
         /**
 		 * Recherche des données CAF liées à l'allocataire dans le cadre du CUI.
 		 *
@@ -849,7 +852,7 @@
 
 			return $dataCaf;
 		}
-        
+
         /**
 		 * Préparation des données du formulaire d'ajout ou de modification d'un
 		 * CUI
@@ -873,7 +876,7 @@
                     'Partenaire'
                 )
             );
-            
+
             // Données de l'utilisateur
 			$querydataUser = array(
 				'conditions' => array(
@@ -887,16 +890,16 @@
 				)
 			);
 			$dataUser = $this->User->find( 'first', $querydataUser );
-     
+
 			// On s'assure que l'utilisateur existe
 			if( empty( $dataUser ) ) {
 				throw new InternalErrorException( "Utilisateur non trouvé \"{$user_id}\"" );
 			}
-            
+
             // On ajoute d'autres données de l'utilisateur connecté
 			// TODO: du coup, on peut faire on delete set null (+la structure ?)
 			$data['Cui']['user_id'] = $user_id;
-            
+
             // Si c'est une modification, on lit l'enregistrement, on actualise
 			// les données et on renvoit.
 			if( !empty( $cui_id ) ) {
@@ -916,7 +919,7 @@
                 if( !empty( $dataCuiActuel['Cui']['actioncandidat_id'] ) ) {
                     $dataCuiActuel['Cui']['actioncandidat_id'] = $dataCuiActuel['Cui']['partenaire_id'].'_'.$dataCuiActuel['Cui']['actioncandidat_id'];
                 }
-                // Métier selon le secteur 
+                // Métier selon le secteur
                 if( !empty( $dataCuiActuel['Cui']['secteuremploipropose_id'] ) ) {
                     $dataCuiActuel['Cui']['metieremploipropose_id'] = $dataCuiActuel['Cui']['secteuremploipropose_id'].'_'.$dataCuiActuel['Cui']['metieremploipropose_id'];
                 }
@@ -935,9 +938,9 @@
 						'rangcui' => null
 					)
 				);
-  
+
 			}
-            
+
             // Remplissage et récupération de la composition familiale
             if (!isset($data['Cui']['compofamiliale']) || empty($data['Cui']['compofamiliale'])) {
 				$compofamiliale = $this->Personne->Foyer->find(
@@ -975,8 +978,8 @@
 					}
 				}
 			}
-            
-            
+
+
             // Date de l'inscription au Pôle Emploi
             $dateInscritpe = array();
             if( isset( $data['Personne']['Historiqueetatpe'] ) && !empty( $data['Personne']['Historiqueetatpe'] ) ){
@@ -986,7 +989,7 @@
             }
             $data['Personne']['dateInscritpe'] = $dateInscritpe;
 //            $this->set( compact( 'dateInscritpe' ) );
-            
+
             // On affiche la valeur de la convention annuelle définie en paramétrage
             $data['Cui']['numconventionobj'] = Configure::read( 'Cui.Numeroconvention' );
 
@@ -1027,7 +1030,7 @@
 
             // Fusion avec les données CAF
 			$data = Set::merge( $data, $dataCaf );
-			
+
 			$data['taux_cgs_cuis'] = $this->Secteurcui->Tauxcgcui->find( 'all' );
 
 			/// Calcul du numéro du contrat d'insertion
