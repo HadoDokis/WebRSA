@@ -60,8 +60,10 @@
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 
-			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
-			$this->set( compact( 'thematiquesrdvs' ) );
+            if( Configure::read( 'Rendezvous.useThematique' ) ) {
+                $thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
+                $this->set( compact( 'thematiquesrdvs' ) );
+            }
 		}
 
 		/**
@@ -95,7 +97,9 @@
 				$this->paginate = array( 'Rendezvous' => $querydata );
 				$rdvs = $this->paginate( 'Rendezvous' );
 
-				$rdvs = $this->Rendezvous->containThematique( $rdvs );
+                if( Configure::read( 'Rendezvous.useThematique' ) ) {
+                    $rdvs = $this->Rendezvous->containThematique( $rdvs );
+                }
 
 				$this->set( 'rdvs', $rdvs );
 			}
@@ -122,14 +126,18 @@
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$rdvs = $this->Rendezvous->find( 'all', $querydata );
-			$rdvs = $this->Rendezvous->containThematique( $rdvs );
+            if( Configure::read( 'Rendezvous.useThematique' ) ) {
+                $rdvs = $this->Rendezvous->containThematique( $rdvs );
+            }
 
 			// Population du select référents liés aux structures
 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
 			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 
-			$this->set( 'useThematiques', $this->Rendezvous->Thematiquerdv->used() );
+            if( Configure::read( 'Rendezvous.useThematique' ) ) {
+                $this->set( 'useThematiques', $this->Rendezvous->Thematiquerdv->used() );
+            }
 
 			$this->layout = '';
 			$this->_setOptions();
