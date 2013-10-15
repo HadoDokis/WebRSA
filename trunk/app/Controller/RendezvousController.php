@@ -649,8 +649,10 @@
 
 			$this->_setOptions();
 
-			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
-			$this->set( compact( 'thematiquesrdvs' ) );
+            if( Configure::read( 'Rendezvous.useThematique' ) ) {
+                $thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'list', array( 'fields' => array( 'Thematiquerdv.id', 'Thematiquerdv.name', 'Thematiquerdv.typerdv_id' ) ) );
+                $this->set( compact( 'thematiquesrdvs' ) );
+            }
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/rendezvous/index/'.$personne_id );

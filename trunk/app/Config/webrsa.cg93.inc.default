@@ -1119,4 +1119,9 @@
 			)
 		)
 	);
+    
+    /**
+	 * Configuration de l'utilisation des thématiques de RDV du module RDV
+	 */
+	Configure::write('Rendezvous.useThematique', true );
 ?>
