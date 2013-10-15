@@ -3189,10 +3189,13 @@ msgstr "Thématiques de RDV (CG93) : paramétrages"
 msgid "Thematiquesrdvs:index"
 msgstr "Liste des thématiques de RDV"
 
+msgid "Thematiquesrdvs:add"
+msgstr "Ajout d'une thématique de RDV"
+
 msgid "Thematiquesrdvs:edit"
-msgstr "Ajout/Modification d'une thématique"
+msgstr "Modification d'une thématique de RDV"
 
 msgid "Thematiquesrdvs:delete"
-msgstr "Suppression d'une thématique"
+msgstr "Suppression d'une thématique de RDV"
 
 ###############################################################################
