@@ -4,7 +4,7 @@
 
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-        
+        echo $this->Form->create( 'Traitementpcg66', array( 'type' => 'post', 'id' => 'traitementpcg66form' ) );
         if( ( $traitementpcg66['Traitementpcg66']['annule'] == 'O' ) ){
 
 			echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Raison de l\'annulation'));

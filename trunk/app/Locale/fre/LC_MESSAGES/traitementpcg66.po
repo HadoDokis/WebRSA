@@ -494,6 +494,9 @@ msgstr "Type de courrier"
 msgid "Traitementpcg66.serviceinstructeur_id"
 msgstr "Service à contacter (insertion)"
 
+msgid "Traitementpcg66.ficheanalyse"
+msgstr "Fiche d'analyse"
+
 ########################################################################
 ## 	Traduction pour la recherche par PDO
 ########################################################################
