@@ -765,4 +765,9 @@
      * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
 	 */
     Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
+    
+    /**
+	 * Configuration de l'utilisation des thématiques de RDV du module RDV
+	 */
+	Configure::write('Rendezvous.useThematique', false );
 ?>

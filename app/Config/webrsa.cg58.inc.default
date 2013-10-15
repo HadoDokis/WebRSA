@@ -727,4 +727,9 @@
 			'changement_situation_allocataire' => null,
 		)
 	);
+    
+    /**
+	 * Configuration de l'utilisation des thématiques de RDV du module RDV
+	 */
+	Configure::write('Rendezvous.useThematique', false );
 ?>

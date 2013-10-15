@@ -3152,3 +3152,47 @@ msgstr "Visualisation d'un tableau historisé"
 
 msgid "Tableauxsuivispdvs93:delete"
 msgstr "Suppression d'un tableau historisé"
+
+###############################################################################
+
+msgid "Module:Polesdossierspcgs66"
+msgstr "Dossier PCG (CG66) : paramétrages, pôles liés aux gestionnaires (PDA/PDU)"
+
+msgid "Polesdossierspcgs66:index"
+msgstr "Liste des pôles affectés au gestionnaire de dossier PCG"
+
+msgid "Polesdossierspcgs66:edit"
+msgstr "Ajout/Modification d'un pôle"
+
+msgid "Polesdossierspcgs66:delete"
+msgstr "Suppression d'un pôle"
+
+###############################################################################
+
+msgid "Module:Progsfichescandidatures66"
+msgstr "Programmes de formation liés aux fiches de candidature (CG66) : paramétrages"
+
+msgid "Progsfichescandidatures66:index"
+msgstr "Liste des programmes liés à une fiche de candidature"
+
+msgid "Progsfichescandidatures66:edit"
+msgstr "Ajout/Modification d'un programme"
+
+msgid "Progsfichescandidatures66:delete"
+msgstr "Suppression d'un programme"
+
+###############################################################################
+
+msgid "Module:Thematiquesrdvs"
+msgstr "Thématiques de RDV (CG93) : paramétrages"
+
+msgid "Thematiquesrdvs:index"
+msgstr "Liste des thématiques de RDV"
+
+msgid "Thematiquesrdvs:edit"
+msgstr "Ajout/Modification d'une thématique"
+
+msgid "Thematiquesrdvs:delete"
+msgstr "Suppression d'une thématique"
+
+###############################################################################

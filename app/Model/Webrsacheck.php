@@ -207,6 +207,7 @@
 				'Utilisateurs.reconnection' => 'boolean',
 				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
 				'Statistiqueministerielle.conditions_types_cers' => 'isarray',
+                'Rendezvous.useThematique' => 'boolean'
 			);
 		}
 
