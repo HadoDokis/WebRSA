@@ -23,7 +23,8 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.Prg' => array( 'actions' => array( 'all', 'eligible' ) )
+			'Search.Prg' => array( 'actions' => array( 'all', 'eligible' ) ),
+            'InsertionsAllocataires'
 		);
 
 		/**
@@ -55,7 +56,8 @@
 			/// Liste des tiers prestataires
 			$this->set( 'tiers', $this->Tiersprestataireapre->find( 'list' ) );
 
-			$this->set( 'structures', $this->Apre->Structurereferente->listeParType( array( 'apre' => true ) ) );
+//			$this->set( 'structures', $this->Apre->Structurereferente->listeParType( array( 'apre' => true ) ) );
+            $this->set( 'structures', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, array( 'conditions' => array( 'apre' => 'O' ) ) ) ) );
 
 			$this->set( 'referents', $this->Apre->Referent->listOptions() );
 		}
