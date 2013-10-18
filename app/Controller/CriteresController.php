@@ -53,21 +53,15 @@
 					'Structurereferente.typeorient_id' => $typeorient_id
 				);
 			}
-// 			$sr = $this->Typeorient->Structurereferente->find( 'list', array( 'fields' => array( 'lib_struc' ), 'conditions' => $conditions ) );
 
 			$this->set( 'sr', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false ) ) );
-
-// 			$this->set( 'sr', $sr );
-
-//			$this->set( 'typeorient', $this->Typeorient->find( 'list' ) );
-            $this->set( 'typeorient', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ) );
+			$this->set( 'typeorient', $this->InsertionsAllocataires->typesorients( /*array( 'conditions' => array( 'Typeorient.actif' => 'O' ) )*/ ) );
 
 			$this->set( 'statuts', $this->Option->statut_orient() );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'qual', $this->Option->qual() );
 
-// 			$this->set( 'referents', ClassRegistry::init( 'Referent' )->find( 'list', array( 'conditions' => array( 'Referent.actif' => 'O' ) ) ) );
 			$this->set( 'referents', ClassRegistry::init( 'Referent' )->listOptions( ) );
 			$this->set( 'options', $this->Orientstruct->enums() );
 
