@@ -74,6 +74,7 @@
 					'conditions' => array(),
 					'optgroup' => false,
 					'ids' => false,
+                    'list' => false
 				),
 				$options
 			);
@@ -106,6 +107,10 @@
 					);
 					$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
 				}
+                else if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+                    $structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
+                    $conditions['Structurereferente.id'] = $structurereferente_id;
+                }
 
 				$tmps = $Structurereferente->find(
 					'all',
@@ -139,6 +144,9 @@
 
 						// Cas typeorient_id_structurereferente_id
 						$results['normal']["{$tmp['Structurereferente']['typeorient_id']}_{$tmp['Structurereferente']['id']}"] = $tmp['Structurereferente']['lib_struc'];
+                        
+                        // Cas du find list
+						$results['list'][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
 					}
 				}
 
@@ -152,6 +160,10 @@
 			// Cas où l'on ne veut que les ids des structures référentes
 			else if( $options['ids'] ) {
 				$results = $results['ids'];
+			}
+			// Cas où l'on veut les libellés des structures référentes
+			else if( $options['list'] ) {
+				$results = $results['list'];
 			}
 			// Cas typeorient_id_structurereferente_id
 			else {

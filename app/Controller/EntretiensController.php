@@ -21,7 +21,7 @@
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
-		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
+		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $commeDroit = array(
 			'view' => 'Entretiens:index',
@@ -63,7 +63,8 @@
 
 			$options[$this->modelClass]['typerdv_id'] = $this->Entretien->Typerdv->find( 'list' );
 			$options[$this->modelClass]['objetentretien_id'] = $this->Entretien->Objetentretien->find( 'list' );
-			$options[$this->modelClass]['structurereferente_id'] = $this->Entretien->Structurereferente->listOptions();
+//			$options[$this->modelClass]['structurereferente_id'] = $this->Entretien->Structurereferente->listOptions();
+            $options[$this->modelClass]['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 
 			$typerdv = $this->Entretien->Rendezvous->Typerdv->find( 'list' );
 			$this->set( compact( 'options', 'typerdv' ) );

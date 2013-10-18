@@ -23,7 +23,7 @@
 
 		public $helpers = array( 'Default', 'Locale', 'Cake1xLegacy.Ajax', 'Xform', 'Xhtml', 'Fileuploader', 'Default2' );
 
-		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'Default', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $commeDroit = array(
 			'view66' => 'Apres66:index',
@@ -622,7 +622,8 @@
 
 
 			///Récupération de la liste des structures référentes liés uniquement à l'APRE
-			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
+//			$structs = $this->Structurereferente->listeParType( array( 'apre' => true ) );
+            $structs = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => false, 'list' => true, 'conditions' => array( 'Structurereferente.apre' => 'O' ) ) );
 			$this->set( 'structs', $structs );
 			///Récupération de la liste des référents liés à l'APRE
 			$referents = $this->Referent->listOptions();
