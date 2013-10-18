@@ -693,7 +693,7 @@
                             unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
                             unset($contratinsertion['Contratinsertion']['datedecision']);
 
-                            $fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire' ); // FIXME: une variable du modèle
+                            $fields = array( 'actions_prev', 'aut_expr_prof', 'emp_trouv', 'sect_acti_emp', 'emp_occupe', 'duree_hebdo_emp', 'nat_cont_trav', 'duree_cdd', 'niveausalaire', 'datenotification' ); // FIXME: une variable du modèle
                             foreach( $fields as $field ) {
                                 unset( $contratinsertion['Contratinsertion'][$field] );
                             }
