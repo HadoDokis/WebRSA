@@ -17,7 +17,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterebilanparcours66', 'Bilanparcours66', 'Option', 'Referent' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -25,7 +25,8 @@
 		*/
 		public function _setOptions() {
 			$this->set( 'options', $this->Bilanparcours66->allEnumLists() );
-			$this->set( 'struct', $this->Bilanparcours66->Referent->Structurereferente->listOptions() );
+//			$this->set( 'struct', $this->Bilanparcours66->Referent->Structurereferente->listOptions() );
+            $this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true) ) );
 			$this->set( 'referents', $this->Bilanparcours66->Referent->listOptions() );
 		}
 
