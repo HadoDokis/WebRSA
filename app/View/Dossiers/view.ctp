@@ -459,7 +459,11 @@
 					</table>
 				</td>
 				<td>
-					<h2>Historique des dossiers RSA</h2>
+                    <?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+                        <h2>Historique des dossiers RSA</h2>
+                    <?php else:?>
+                        <h2>Autres demandes RSA</h2>
+                    <?php endif;?>
 					<table>
 					<?php echo theadPastDossierDEM( 50, 8 );?>
 						<tbody>
