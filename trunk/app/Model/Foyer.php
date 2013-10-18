@@ -479,5 +479,26 @@
 				}
 			}
 		}
+        
+        
+        /**
+         * Fonction retournant le nombre de dossiers PCGs existants pour un foyer donné
+         * 
+         * @param type $foyerId
+         * @return type
+         */
+        public function vfNbDossierPCG66( $foyerId = 'Foyer.id' ) {
+			return $this->Dossierpcg66->sq(
+				array(
+					'fields' => array(
+						'COUNT(dossierspcgs66.id)'
+					),
+					'alias' => 'dossierspcgs66',
+					'conditions' => array(
+						"dossierspcgs66.foyer_id = {$foyerId}"
+					)
+				)
+			);
+        }
 	}
 ?>

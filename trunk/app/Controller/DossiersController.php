@@ -698,15 +698,20 @@
 				$nir13 = trim( $personnesFoyer[$index]['Personne']['nir'] );
 				$nir13 = ( empty( $nir13 ) ? null : substr( $nir13, 0, 13 ) );
 
+                $fields = array(
+                    'DISTINCT Dossier.id',
+                    'Dossier.numdemrsa',
+                    'Dossier.dtdemrsa',
+                    'Situationdossierrsa.etatdosrsa'
+                );
+                if( Configure::read( 'Cg.departement' ) == 66 ) {
+                    $fields = Hash::merge( $fields, '( '.$this->Dossier->Foyer->vfNbDossierPCG66( 'Foyer.id ').' ) AS "Foyer__nbdossierspcgs"' );
+                }
+                
 				$autreNumdemrsaParAllocataire = $this->Dossier->find(
 					'all',
 					array(
-						'fields' => array(
-							'DISTINCT Dossier.id',
-							'Dossier.numdemrsa',
-							'Dossier.dtdemrsa',
-							'Situationdossierrsa.etatdosrsa'
-						),
+						'fields' => $fields,
 						'joins' => array(
 							array(
 								'table'      => 'foyers',
@@ -762,7 +767,8 @@
 						'recursive' => -1
 					)
 				);
-				$personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
+                $personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
+				
 				//Fin Ajout Arnaud
 
 				$details[$role] = $personnesFoyer[$index];

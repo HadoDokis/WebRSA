@@ -10,23 +10,48 @@
 	}
 
 	function theadPastDossierDEM( $pctValue = 10, $pctAction = 8 ) {
-		return '<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th style="width: '.$pctValue.'%;">Demandeur</th>
-					<th style="width: '.$pctAction.'%;">Action</th>
-				</tr>
-			</thead>';
+	
+        if( Configure::read( 'Cg.departement' ) == 66 ) {
+            return '<thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th style="width: '.$pctValue.'%;">Demandeur</th>
+                        <th style="width: 4%;">Dossier PCG</th>
+                        <th style="width: '.$pctAction.'%;">Action</th>
+                    </tr>
+                </thead>';
+        }
+        else {   
+            return '<thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th style="width: '.$pctValue.'%;">Demandeur</th>
+                        <th style="width: '.$pctAction.'%;">Action</th>
+                    </tr>
+                </thead>';
+        }
 	}
 
 	function theadPastDossierCJT( $pctValue = 10, $pctAction = 8 ) {
-		return '<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th style="width: '.$pctValue.'%;">Conjoint</th>
-					<th style="width: '.$pctAction.'%;">Action</th>
-				</tr>
-			</thead>';
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+            return '<thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th style="width: '.$pctValue.'%;">Conjoint</th>
+                        <th style="width: 4%;">Dossier PCG</th>
+                        <th style="width: '.$pctAction.'%;">Action</th>
+                    </tr>
+                </thead>';
+        }
+        else {   
+            return '<thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th style="width: '.$pctValue.'%;">Demandeur</th>
+                        <th style="width: '.$pctAction.'%;">Action</th>
+                    </tr>
+                </thead>';
+        }
 	}
 
 	function linkedValue( $links, $details, $personne, $table, $field ) {
@@ -470,12 +495,16 @@
 
 							<?php
 								$nbdem = count( Set::extract( 'DEM.Dossiermultiple', $details ) );
+                                $colspan = "2";
+                                if( Configure::read( 'Cg.departement' ) == 66  ) {
+                                    $colspan = "3";
+                                }
 								if( $nbdem == 0 ):
 							?>
 							<tr class="odd">
 								<!-- Partie Demandeur-->
 								<th>Autre N° de demande RSA</th>
-								<td colspan="2"><?php
+								<td colspan= <?php echo $colspan;?>><?php
 										echo 'Aucun dossier passé pour le demandeur';
 									?>
 								</td>
@@ -489,6 +518,12 @@
 											echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 										?>
 									</td>
+                                    <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+                                    <td><?php
+											echo Set::extract( 'DEM.Dossiermultiple.'.$iteration.'.Foyer.nbdossierspcgs', $details );
+										?>
+									</td>
+                                    <?php endif;?>
 									<td><?php
 											echo $this->Xhtml->viewLink(
 												'Voir',
@@ -511,7 +546,7 @@
 							<tr class="odd">
 								<!-- Partie Conjoint-->
 								<th>Autre N° de demande RSA</th>
-								<td colspan="2"><?php
+								<td colspan= <?php echo $colspan;?>><?php
 										echo 'Aucun dossier passé pour le conjoint';
 									?>
 								</td>
@@ -525,6 +560,12 @@
 										echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
 									?>
 								</td>
+                                <?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+                                    <td><?php
+											echo Set::extract( 'CJT.Dossiermultiple.'.$iteration.'.Foyer.nbdossierspcgs', $details );
+										?>
+									</td>
+                                    <?php endif;?>
 								<td><?php
 										echo $this->Xhtml->viewLink(
 											'Voir',
