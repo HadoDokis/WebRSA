@@ -709,7 +709,7 @@
 				if( !empty( $contrat['Contratinsertion'] ) && isset( $this->request->data['Bilanparcours66']['proposition'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
 					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
 					$success = $this->{$this->modelClass}->Contratinsertion->updateAllUnBound(
-						array( 'Contratinsertion.positioncer' => '\'attrenouv\'' ),
+						array( 'Contratinsertion.positioncer' => '\'attvalid\'' ),
 						array(
 							'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
 							'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
