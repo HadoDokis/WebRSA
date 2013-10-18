@@ -22,7 +22,7 @@
 
 		public $helpers = array( 'Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Widget' );
 
-		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus' );
+		public $components = array( 'RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
 
 		public $commeDroit = array(
 			'view' => 'Contratsinsertion:index',
@@ -1290,7 +1290,7 @@
 					trigger_error( __( 'Le type orientation principale Emploi n\'est pas bien défini.' ), E_USER_WARNING );
 				}
 
-				$structures = $this->Contratinsertion->Structurereferente->find(
+				/*$structures = $this->Contratinsertion->Structurereferente->find(
 					'list',
 					array(
 						'fields' => array(
@@ -1311,7 +1311,9 @@
 							'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId
 						)
 					)
-				);
+				); */
+                
+                $structures = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'list' => true, 'conditions' => array( 'Structurereferente.actif' => 'O', 'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId ) ) );
 
 				//On affiche les actions inactives en édition mais pas en ajout,
 				// afin de pouvoir gérer les actions n'étant plus prises en compte mais toujours en cours
