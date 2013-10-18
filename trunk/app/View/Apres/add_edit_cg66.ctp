@@ -298,7 +298,7 @@
 
         echo $this->Default->subform(
             array(
-                'Aideapre66.datedemande' => array( 'empty' => false )
+                'Aideapre66.datedemande' => array( 'empty' => false, 'dateFormat' => 'DMY' )
             )
         );
     ?>
@@ -467,7 +467,7 @@
                 array(
                     'Aideapre66.motifrejet',
                     'Aideapre66.montantpropose' => array( 'type' => 'text' ),
-                    'Aideapre66.datemontantpropose' => array( 'empty' => false )
+                    'Aideapre66.datemontantpropose' => array( 'empty' => false, 'dateFormat' => 'DMY' )
                 )
             );
         ?>
