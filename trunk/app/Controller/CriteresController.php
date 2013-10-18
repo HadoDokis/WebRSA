@@ -59,7 +59,8 @@
 
 // 			$this->set( 'sr', $sr );
 
-			$this->set( 'typeorient', $this->Typeorient->find( 'list' ) );
+//			$this->set( 'typeorient', $this->Typeorient->find( 'list' ) );
+            $this->set( 'typeorient', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ) );
 
 			$this->set( 'statuts', $this->Option->statut_orient() );
 			$this->set( 'statuts_contrat', $this->Option->statut_contrat_insertion() );

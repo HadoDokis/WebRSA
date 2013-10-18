@@ -53,6 +53,68 @@
 			$this->Controller = $controller;
 		}
 
+        
+        
+        /**
+		 *
+		 * @param type $options
+		 * @return type
+		 */
+		public function typesorients( $options = array() ) {
+			$Typeorient = ClassRegistry::init( 'Typeorient' );
+
+			$options = Set::merge(
+				array(
+					'conditions' => array(),
+				),
+				$options
+			);
+
+			$conditions = array(
+//				'Typeorient.actif' => 'O'
+			);
+
+			$conditions = Set::merge( $conditions, $options['conditions'] );
+            
+            if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+                $sq = $Typeorient->Structurereferente->sq(
+                   array(
+                       'alias' => 'structuresreferentes',
+                       'fields' => array(
+                           'structuresreferentes.typeorient_id'
+                       ),
+                       'conditions' => array(
+                           'structuresreferentes.id' => $this->Session->read( 'Auth.User.structurereferente_id' )
+                       ),
+                       'contain' => false
+                   )
+               );
+                $conditions[] = "Typeorient.id IN ( {$sq} )";
+            }
+
+			$tmps = $Typeorient->find(
+				'all',
+				array(
+					'fields' => array_merge(
+						$Typeorient->fields()
+					),
+					'conditions' => $conditions,
+					'contain' => false,
+					'order' => array(
+						'Typeorient.lib_type_orient ASC'
+					)
+				)
+			);
+
+			if( !empty( $tmps ) ) {
+                foreach( $tmps as $tmp ) {
+                    $results[$tmp['Typeorient']['id']] = $tmp['Typeorient']['lib_type_orient'];
+                }
+            }
+
+			return $results;
+        }
+        
 		/**
 		 *
 		 * <pre>
