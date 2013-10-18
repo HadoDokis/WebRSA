@@ -524,7 +524,7 @@ msgid "Button::impressionDecision"
 msgstr "Décision"
 
 msgid "Button::ficheliaisoncer"
-msgstr "Fiche de prescription"
+msgstr "Fiche de liaison"
 
 msgid "Button::contratinsertion"
 msgstr "Impression"
