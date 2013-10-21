@@ -17,10 +17,11 @@
 			'Statutrdv.libelle',
 			'Thematiquerdv.linkedmodel',
 			'/Thematiquesrdvs/edit/#Thematiquerdv.id#' => array(
-				'disabled' => !$this->Permissions->check( 'Thematiquesrdvs', 'delete' )
+				'disabled' => !$this->Permissions->check( 'Thematiquesrdvs', 'edit' )
 			),
 			'/Thematiquesrdvs/delete/#Thematiquerdv.id#' => array(
-				'disabled' => !$this->Permissions->check( 'Thematiquesrdvs', 'delete' )
+				'disabled' => !$this->Permissions->check( 'Thematiquesrdvs', 'delete' ),
+				'confirm' => true
 			),
 		),
 		array(

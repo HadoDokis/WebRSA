@@ -24,6 +24,9 @@ msgstr "Modifier"
 msgid "/Thematiquesrdvs/delete"
 msgstr "Supprimer"
 
+msgid "/Thematiquesrdvs/delete/#Thematiquerdv.id# ?"
+msgstr "Supprimer la thématique de rendez-vous « #Thematiquerdv.name# » ?"
+
 msgid "Thematiquerdv.name"
 msgstr "Intitulé"
 
