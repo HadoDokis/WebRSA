@@ -33,6 +33,18 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
+            'motifficheliaison' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'isvalidcer', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
+            'motifnotifnonvalid' => array(
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'isvalidcer', true, array( 'N' ) ),
+					'message' => 'Champ obligatoire',
+				),
+			),
 		);
 		
 		public $belongsTo = array(
