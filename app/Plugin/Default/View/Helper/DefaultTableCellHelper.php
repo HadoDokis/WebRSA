@@ -123,11 +123,18 @@
 				unset( $htmlAttributes['for'] );
 			}
 
+			$confirmMessage = false;
+			if( isset( $htmlAttributes['confirm'] ) && $htmlAttributes['confirm'] !== false ) {
+				$confirmMessage = $htmlAttributes['confirm'];
+			}
+			unset( $htmlAttributes['confirm'] );
+
 			return array(
 				$this->DefaultHtml->link(
 					$text,
 					$url,
-					$htmlAttributes
+					$htmlAttributes,
+					$confirmMessage
 				),
 				array( 'class' => 'action', 'for' => $for )
 			);

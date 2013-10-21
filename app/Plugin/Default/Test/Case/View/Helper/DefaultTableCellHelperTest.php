@@ -113,6 +113,36 @@
 		}
 
 		/**
+		 * Test de la méthode DefaultTableCellHelper::action() avec message de
+		 * confirmation.
+		 *
+		 * @return void
+		 */
+		public function testActionConfirm() {
+			$htmlAttributes = array( 'confirm' => true );
+			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
+			$expected = array(
+				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view" onclick="return confirm(&#039;/Apples/view/6 ?&#039;);">/Apples/view</a>',
+				array(
+					'class' => 'action',
+					'for' => NULL,
+				),
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			$htmlAttributes = array( 'for' => 'ApplesView' );
+			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
+			$expected = array(
+				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				array(
+					'class' => 'action',
+					'for' => 'ApplesView',
+				),
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode DefaultTableCellHelper::input()
 		 *
 		 * @return void
