@@ -49,6 +49,7 @@
 		);
 
 		public $actsAs = array (
+			'Allocatairelie',
 			'ValidateTranslate',
 			'Enumerable' => array(
 				'fields' => array(
@@ -114,8 +115,8 @@
 				'counterQuery' => ''
 			)
 		);
-        
-        
+
+
         public $hasAndBelongsToMany = array(
             'Progfichecandidature66' => array(
 				'className' => 'Progfichecandidature66',
@@ -653,60 +654,6 @@
 				)
 			);
 			return Set::extract( $items, '/'.$this->Actioncandidat->alias.'/modele' );
-		}
-
-		/**
-		 * Retourne l'id du dossier à partir de l'id de l'enregistrement du modèle.
-		 *
-		 * @param integer $actioncandidat_personne_id
-		 * @return integer
-		 */
-		public function dossierId( $actioncandidat_personne_id ) {
-			$querydata = array(
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-                    $this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'ActioncandidatPersonne.id' => $actioncandidat_personne_id
-				),
-				'recursive' => -1
-			);
-
-			$actioncandidat_personne = $this->find( 'first', $querydata );
-
-			if( !empty( $actioncandidat_personne ) ) {
-				return $actioncandidat_personne['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 	}
 ?>

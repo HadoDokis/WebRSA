@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe DspRev.
 	 *
@@ -18,6 +18,7 @@
 		public $name = 'DspRev';
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Enumerable' => array(
 				'fields' => array(
 					'haspiecejointe'
@@ -249,38 +250,6 @@
 			)
 		);
 
-		/**
-		 * Retourne l'id du dossier à partir de l'id d'une DspRev
-		 *
-		 * @param integer $id
-		 * @return integer
-		 */
-		public function dossierId( $id ) {
-			$dsp_rev = $this->find(
-				'first',
-				array(
-					'fields' => array(
-						'Foyer.dossier_id'
-					),
-					'joins' => array(
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => array(
-						'DspRev.id' => $id
-					),
-					'contain' => false
-				)
-			);
-
-			if( !empty( $dsp_rev ) ) {
-				return $dsp_rev['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
-		
 		/**
 		* Permet de récupérer les dernières DSP d'une personne, en attendant l'index unique sur personne_id
 		*/

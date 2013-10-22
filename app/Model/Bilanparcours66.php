@@ -20,6 +20,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
+			'Allocatairelie',
 //			'Autovalidate2',
 //			'ValidateTranslate',
 			'Formattable' => array(
@@ -604,7 +605,7 @@
 						$this->invalidate( 'proposition', 'Vieille orientation répondant aux critères non trouvé.');
 						return false;
 					}
-                    
+
                     if( $data['Bilanparcours66']['choixsanspassageep'] == 'maintien' ) {
 
                         if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
@@ -744,8 +745,8 @@
                         );
                         $this->Orientstruct->create( $orientstruct );
                         $success = $this->Orientstruct->save() && $success;
-                        
-                        
+
+
                         $data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
                         $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
                     }
@@ -1402,7 +1403,7 @@
 		public function getDefaultPdf( $id ) {
 			$data = $this->getDataForPdf( $id );
 			$modeleodt = $this->modeleOdt( $data );
-            
+
             $proposition = Set::classicExtract( $data, 'Bilanparcours66.proposition' );
 
 			if( !empty( $data['Bilanparcours66']['examenaudition'] ) ){
@@ -1419,7 +1420,7 @@
 // 			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
 			// Pour les données de Pôle emploi
 // 			$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
-            
+
             // FIXME: MAJ du champ changement de référent pour l'impression du bilan
             if( $proposition == 'aucun' ) {
                 $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
@@ -1516,40 +1517,6 @@
 			return ( $count == 0 );
 		}
 
-        /**
-		 * Retourne l'id du dossier à partir de l'id du Bilan
-		 *
-		 * @param integer $id
-		 * @return integer
-		 */
-		public function dossierId( $id ) {
-			$bilanparcours66 = $this->find(
-				'first',
-				array(
-					'fields' => array(
-						'Foyer.dossier_id'
-					),
-					'joins' => array(
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => array(
-						'Bilanparcours66.id' => $id
-					),
-					'contain' => false
-				)
-			);
-
-			if( !empty( $bilanparcours66 ) ) {
-				return $bilanparcours66['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
-
-
-
 		/**
 		 * Retourne l'ensemble de données liées au Bilan de parcours en cours
 		 *
@@ -1559,7 +1526,7 @@
 		public function dataView( $bilanparcours66_id ) {
 
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			
+
 
             // Liste des champs par étape de décisions pour le passage en EPL Parcours du bilan
             $fieldsDecisionsaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->fields();
@@ -1575,7 +1542,7 @@
                     'Decisionsaisinebilanparcoursep66' => 'Decisionsaisinebilanparcoursep66cg'
                 )
             );
-            
+
             $fieldsDecisiondefautinsertionep66 = $this->Defautinsertionep66->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields();
             $fieldsDecisiondefautinsertionep66ep = array_words_replace(
                 $fieldsDecisiondefautinsertionep66,
@@ -1589,7 +1556,7 @@
                     'Decisiondefautinsertionep66' => 'Decisiondefautinsertionep66cg'
                 )
             );
-            
+
             // Jointure spéciale sur Dossierep suivant la thématique
             $joinSaisinebilanparcoursep66 = $this->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
             $joinDefautinsertionep66 = $this->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
@@ -1834,31 +1801,6 @@
 			);
 			return $options;
 
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 	}
 ?>

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Calculdroitrsa.
 	 *
@@ -20,6 +20,7 @@
 		protected $_modules = array( 'caf' );
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Formattable'
 		);
 
@@ -46,32 +47,6 @@
 				'order' => ''
 			)
 		);
-
-		/**
-		*
-		*/
-
-		public function dossierId( $calculdroitrsa_id ) {
-			$qd_calculdroitrsa = array(
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Calculdroitrsa.id' => $calculdroitrsa_id
-				),
-				'recursive' => -1
-			);
-			$calculdroitrsa = $this->find('first', $qd_calculdroitrsa);
-
-			if( !empty( $calculdroitrsa ) ) {
-				return $calculdroitrsa['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
 
 		/**
 		*	Fonction retournant un booléen précisant si la personne est soumise à drit et devoir ou non

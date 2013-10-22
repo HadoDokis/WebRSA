@@ -15,9 +15,14 @@
 	 */
 	class Ressource extends AppModel
 	{
-
 		public $name = 'Ressource';
+
 		protected $_modules = array( 'caf' );
+
+		public $actsAs = array(
+			'Allocatairelie',
+		);
+
 		public $validate = array(
 			'ddress' => array(
 				'rule' => 'date',
@@ -28,6 +33,7 @@
 				'message' => 'Veuillez entrer une date valide'
 			)
 		);
+
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -37,6 +43,7 @@
 				'order' => ''
 			)
 		);
+
 		public $hasMany = array(
 			'Ressourcemensuelle' => array(
 				'className' => 'Ressourcemensuelle',
@@ -52,6 +59,7 @@
 				'counterQuery' => ''
 			)
 		);
+
 		public $hasAndBelongsToMany = array(
 			'Ressourcemensuelle' => array(
 				'className' => 'Ressourcemensuelle',
@@ -214,57 +222,6 @@
 			$this->Personne->Foyer->refreshSoumisADroitsEtDevoirs( $thisPersonne['Personne']['foyer_id'] );
 
 			return $return;
-		}
-
-		/**
-		 *
-		 */
-		public function dossierId( $ressource_id ) {
-
-			$qd_ressource = array(
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Ressource.id' => $ressource_id
-				),
-				'recursive' => -1
-			);
-			$ressource = $this->find( 'first', $qd_ressource );
-
-			if( !empty( $ressource ) ) {
-				return $ressource['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 	}
 ?>

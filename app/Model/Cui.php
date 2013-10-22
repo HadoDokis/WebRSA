@@ -19,6 +19,7 @@
 		public $name = 'Cui';
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Enumerable',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'metieraffectation_id', 'metieremploipropose_id', 'actioncandidat_id' ),
@@ -677,38 +678,6 @@
 		}
 
 		/**
-		 * Retourne l'id du dossier à partir de l'id du CUI
-		 *
-		 * @param integer $id
-		 * @return integer
-		 */
-		public function dossierId( $id ) {
-			$cui = $this->find(
-				'first',
-				array(
-					'fields' => array(
-						'Foyer.dossier_id'
-					),
-					'joins' => array(
-						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => array(
-						'Cui.id' => $id
-					),
-					'contain' => false
-				)
-			);
-
-			if( !empty( $cui ) ) {
-				return $cui['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
-
-		/**
 		 * Sous-requête permettant de récupérer le dernier contrat d'un allocataire.
 		 *
 		 * @param string $personneIdFied Le champ où trouver l'id de la personne.
@@ -729,32 +698,6 @@
 				)
 			);
 		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
-		}
-
 
         /**
 		 * Recherche des données CAF liées à l'allocataire dans le cadre du CUI.

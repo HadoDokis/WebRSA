@@ -18,6 +18,7 @@
 		public $name = 'PersonneReferent';
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Formattable' => array(
 				'suffix' => array( 'referent_id' )
 			),
@@ -99,34 +100,6 @@
 				'order' => ''
 			)
 		);
-
-		/**
-		 * Retourne l'id technique du dossier auquel appartient ce référent de parcours.
-		 *
-		 * @param integer $pers_ref_id L'id technique du référent de parcours
-		 * @return integer
-		 */
-		public function dossierId( $pers_ref_id ){
-			$qd_personnereferent = array(
-				'conditions'=> array(
-					'PersonneReferent.id' => $pers_ref_id
-				),
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'recursive' => -1
-			);
-			$persreferent = $this->find('first', $qd_personnereferent);
-
-			if( !empty( $persreferent ) ) {
-				return $persreferent['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
 
 		/**
 		 * Retourne une sous-requête permettant de connaître le dernier référent de parcours pour un
