@@ -1,1 +1,3 @@
-<?php debug( get_defined_vars() );?>
+<?php
+	debug( get_defined_vars() );
+?>
