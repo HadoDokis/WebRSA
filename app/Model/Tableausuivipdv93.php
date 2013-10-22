@@ -58,6 +58,25 @@
 		);
 
 		/**
+		 * Associations "Has many".
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Populationd1d2pdv93' => array(
+				'className' => 'Populationd1d2pdv93',
+				'foreignKey' => 'tableausuivipdv93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
+		);
+
+		/**
 		 * Problématiques à utiliser dans le tableau 1 B3
 		 *
 		 * @var array
@@ -94,6 +113,7 @@
 		 */
 		public $tableaux = array(
 			'tableaud1' => 'D 1',
+			'tableaud2' => 'D 2',
 			'tableau1b3' => '1 B 3',
 			'tableau1b4' => '1 B 4',
 			'tableau1b5' => '1 B 5',

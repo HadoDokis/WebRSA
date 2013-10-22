@@ -12,14 +12,14 @@ BEGIN;
 -- *****************************************************************************
 
 ---------------------------------------------------------------------------------------------------------
--- 20131001: Script de mise à jour des infos des dossiers PCGs 
---          une fois les données renseignées dans les tables 
+-- 20131001: Script de mise à jour des infos des dossiers PCGs
+--          une fois les données renseignées dans les tables
 --          polesdossierspcgs66 et users
 ---------------------------------------------------------------------------------------------------------
 
-UPDATE dossierspcgs66 
+UPDATE dossierspcgs66
 	SET poledossierpcg66_id = (
-		SELECT users.poledossierpcg66_id 
+		SELECT users.poledossierpcg66_id
 			FROM users
 			WHERE
 				users.poledossierpcg66_id IS NOT NULL
@@ -27,7 +27,7 @@ UPDATE dossierspcgs66
 	)
 	WHERE
 		dossierspcgs66.poledossierpcg66_id IS NULL
-		AND dossierspcgs66.user_id IS NOT NULL
+		AND dossierspcgs66.user_id IS NOT NULL;
 
 -- *****************************************************************************
 COMMIT;
