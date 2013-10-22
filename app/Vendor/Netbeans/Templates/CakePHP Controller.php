@@ -48,7 +48,7 @@
 		public $uses = array();
 
 		/**
-		 * Pagination sur les <élément>s de la table.
+		 * Pagination sur les <éléments> de la table.
 		 */
 		public function index() {
 			$this->paginate = array(
@@ -62,7 +62,7 @@
 		}
 
 		/**
-		 * Formulaire d'ajout d'un élémént.
+		 * Formulaire d'ajout d'un <élément>.
 		 */
 		public function add() {
 			$args = func_get_args();
