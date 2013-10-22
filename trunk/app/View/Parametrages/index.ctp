@@ -11,7 +11,22 @@
 		</thead>
 		<tbody>
 			<?php
-				if( Configure::read( 'Cg.departement' ) != 66 ){
+				foreach( $links as $label => $link ) {
+					echo $this->Xhtml->tableCells(
+						array(
+							h( $label ),
+							$this->Xhtml->viewLink(
+								'Voir la table',
+								$link,
+								$this->Permissions->check( $link['controller'], $link['action'] )
+							)
+						),
+						array( 'class' => 'odd' ),
+						array( 'class' => 'even' )
+					);
+				}
+
+				/*if( Configure::read( 'Cg.departement' ) != 66 ){
 					echo $this->Xhtml->tableCells(
 						array(
 							h( 'Actions d\'insertion' ),
@@ -277,7 +292,7 @@
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
-				);
+				);*/
 			?>
 		</tbody>
 	</table>

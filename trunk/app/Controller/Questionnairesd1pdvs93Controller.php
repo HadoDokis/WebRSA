@@ -60,6 +60,7 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
+			'delete' => 'delete',
 			'index' => 'read',
 			'view' => 'read',
 		);
@@ -129,12 +130,12 @@
 			);
 
 			$questionnairesd1pdvs93 = $this->Questionnaired1pdv93->find( 'all', $querydata );
-            
+
             $options = Hash::merge(
 				$this->Questionnaired1pdv93->enums(),
 				$this->Questionnaired1pdv93->Situationallocataire->enums()
 			);
-            
+
             $optionsHisto = array(
 				'Historiquedroit' => array(
 					'etatdosrsa' => ClassRegistry::init( 'Option' )->etatdosrsa()

@@ -1,0 +1,42 @@
+# Traductions de sortiesautresd2pdvs93.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Sortiesautresd2pdvs93/index/:heading"
+msgstr "Motifs de sorties de l'accompagnement « Autres »"
+
+msgid "/Sortiesautresd2pdvs93/add"
+msgstr "Ajouter"
+
+msgid "/Parametrages/modulefse93"
+msgstr "Retour"
+
+# Tableau d'index
+
+msgid "Sortieautred2pdv93.name"
+msgstr "Intitulé"
+
+msgid "/Sortiesautresd2pdvs93/edit"
+msgstr "Modifier"
+
+msgid "/Sortiesautresd2pdvs93/delete"
+msgstr "Supprimer"
+
+msgid "/Sortiesautresd2pdvs93/delete/#Sortieautred2pdv93.id# ?"
+msgstr "Supprimer le motif de sortie « #Sortieautred2pdv93.name# » ?"
+
+# Formulaires
+
+msgid "/Sortiesautresd2pdvs93/add/:heading"
+msgstr "Ajout d'un motif de sortie de l'accompagnement « Autres »"
+
+msgid "/Sortiesautresd2pdvs93/edit/:heading"
+msgstr "Modifiction d'un motif de sortie de l'accompagnement « Autres »"

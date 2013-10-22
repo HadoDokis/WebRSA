@@ -411,6 +411,11 @@
 		'thematiquerdv' => 'thematiquesrdvs',
 		'rendezvous_thematiquerdv' => 'rendezvous_thematiquesrdvs',
 		'historiquedroit' => 'historiquesdroits',
+		// Module FSE, CG 93
+		'sortieautred2pdv93' => 'sortiesautresd2pdvs93',
+		'sortieemploid2pdv93' => 'sortiesemploisd2pdvs93',
+		'questionnaired2pdv93' => 'questionnairesd2pdvs93',
+		'populationd1d2pdv93' => 'populationsd1d2pdvs93',
 	);
 
 	/**
