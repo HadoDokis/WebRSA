@@ -20,6 +20,7 @@
 		public $displayField = 'numeroapre';
 		public $useTable = 'apres';
 		public $actsAs = array(
+			'Allocatairelie',
 			'Enumerable' => array(
 				'fields' => array(
 					'typedemandeapre' => array( 'type' => 'typedemandeapre', 'domain' => 'apre' ),
@@ -211,31 +212,6 @@
 				'counterQuery' => ''
 			)
 		);
-
-		/**
-		 *
-		 */
-		public function dossierId( $apre_id ) {
-			$qd_apre = array(
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Apre66.id' => $apre_id
-				),
-				'recursive' => -1
-			);
-			$apre = $this->find( 'first', $qd_apre );
-
-			if( !empty( $apre ) ) {
-				return $apre['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
 
 		/**
 		 *
@@ -544,31 +520,6 @@
 				true,
 				$options
 			);
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 	}
 ?>

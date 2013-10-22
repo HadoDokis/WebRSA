@@ -21,6 +21,7 @@
 		public $name = 'Orientstruct';
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Enumerable' /*=> array(
 //				'fields' => array(
 //					'accordbenef' => array(
@@ -471,34 +472,6 @@
 						'message' => 'Veuillez choisir un référent orientant',
 					)
 				);
-			}
-		}
-
-		/**
-		 * Retourne l'id technique du dossier auquel appartient cette orientation.
-		 *
-		 * @param integer $orientstruct_id L'id technique de l'orientation
-		 * @return integer
-		 */
-		public function dossierId( $orientstruct_id ) {
-			$qd_orientstruct = array(
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Orientstruct.id' => $orientstruct_id
-				),
-				'recursive' => -1
-			);
-			$orientstruct = $this->find( 'first', $qd_orientstruct );
-
-			if( !empty( $orientstruct ) ) {
-				return $orientstruct['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
 			}
 		}
 

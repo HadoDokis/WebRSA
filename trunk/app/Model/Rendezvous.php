@@ -21,6 +21,7 @@
 		public $displayField = 'libelle';
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Formattable' => array(
 				'suffix' => array( 'referent_id', 'permanence_id' )
 			),
@@ -195,33 +196,6 @@
 				'with' => 'RendezvousThematiquerdv'
 			),
 		);
-
-		/**
-		* Retourne la clé primaire d'un dossier RSA à partir de la clé primaire
-		* d'un rendez-vous.
-		*/
-
-		public function dossierId( $rdv_id ){
-			$qd_rdv = array(
-				'conditions'=> array(
-					'Rendezvous.id' => $rdv_id
-				),
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'recursive' => -1
-			);
-			$rdv = $this->find('first', $qd_rdv);
-
-			if( !empty( $rdv ) ) {
-				return $rdv['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
-		}
 
 		/**
 		* Retourne un booléen selon si un dossier d'EP doit ou non
@@ -661,31 +635,6 @@
 						{$table}.personne_id = ".$field."
 					ORDER BY {$table}.daterdv DESC
 					LIMIT 1";
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 
 		/**

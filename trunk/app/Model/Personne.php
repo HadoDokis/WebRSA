@@ -530,6 +530,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Questionnaired1pdv93' => array(
+				'className' => 'Questionnaired1pdv93',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Questionnaired2pdv93' => array(
+				'className' => 'Questionnaired2pdv93',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 		public $hasAndBelongsToMany = array(
 			'Actioncandidat' => array(

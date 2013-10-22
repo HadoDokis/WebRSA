@@ -20,6 +20,7 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Autovalidate2',
 			'ValidateTranslate',
 			'Formattable' => array( 'suffix' => array( 'categoriedetail' ) )
@@ -178,32 +179,6 @@
 		}
 
 		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
-		}
-		
-			
-		/**
 		*	Liste des traitements non clos liés à n'importe quel dossier du Foyer
 		*	@params	integer (defaut Foyer.id)
 		*	@return array
@@ -211,9 +186,9 @@
 		*/
 		public function listeTraitementpcg66NonClos( $personneId = 'Personne.id', $action, $data = array(), $traitementspcgsouverts = array() ) {
 			$traitementsNonClos = array();
-			
+
 			$personnespcgs66 = $this->find(
-				'all', 
+				'all',
 				array(
 					'fields' => array(
 						'Personnepcg66.id',
@@ -243,14 +218,14 @@
 						'Traitementpcg66.clos' => 'N'
 					);
 				}
-				
+
                 // On enlève les IDs des traitements ouverts déjà pris en compte
                 if( !empty( $traitementspcgsouverts ) ) {
                     $traitementspcgsouverts = Hash::extract( $traitementspcgsouverts, '{n}.Traitementpcg66.id' );
                     $conditions[] = array( 'Traitementpcg66.id NOT' => $traitementspcgsouverts );
                 }
 
-				
+
 				$traitementspcgs66 = $this->Traitementpcg66->find(
 					'all',
 					array(
@@ -295,16 +270,16 @@
 
                         // Variable présente dans le formulaire d'ajout/édition des traitements PCGS
                         $traitementsNonClos['Traitementpcg66']['traitementnonclos']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] );
-                        
+
                         // Variable présente dans le formulaire d'ajout/édition des décisions d'un dossier PCG
 						$traitementsNonClos['Traitementpcg66']['traitementnonclosdecision']["{$traitementpcg66['Traitementpcg66']['id']}"] = $traitementpcg66['Personne']['nom_complet'].' : '.$traitementpcg66['Descriptionpdo']['name'].' - '.$traitementpcg66['Situationpdo']['libelle'].' géré par '.$traitementpcg66['User']['nom_complet'].' du '.date_short( $traitementpcg66['Dossierpcg66']['datereceptionpdo'] );
-						
+
 					}
 				}
 			}
 
 			return $traitementsNonClos;
 		}
-        
+
 	}
 ?>

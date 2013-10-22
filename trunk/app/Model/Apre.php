@@ -26,6 +26,7 @@
 		public $deepAfterFind = true;
 
 		public $actsAs = array(
+			'Allocatairelie',
 			'Enumerable' => array(
 				'fields' => array(
 					'typedemandeapre' => array( 'type' => 'typedemandeapre', 'domain' => 'apre' ),
@@ -433,33 +434,6 @@
 			);
 
 			return $querydata;
-		}
-
-		/**
-		*
-		*/
-
-		public function dossierId( $apre_id ){
-			$qd_apre = array(
-				'conditions' => array(
-					'Apre.id' => $apre_id
-				),
-				'fields' => array( 'Foyer.dossier_id' ),
-				'joins' => array(
-					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) )
-				),
-				'recursive' => -1
-			);
-
-			$apre = $this->find('first', $qd_apre);
-
-			if( !empty( $apre ) ) {
-				return $apre['Foyer']['dossier_id'];
-			}
-			else {
-				return null;
-			}
 		}
 
 		/**
@@ -1073,31 +1047,6 @@
 			}
 
 			return $pdf;
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "{$this->alias}.personne_id" ),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result[$this->alias]['personne_id'];
-			}
-			else {
-				return null;
-			}
 		}
 	}
 ?>
