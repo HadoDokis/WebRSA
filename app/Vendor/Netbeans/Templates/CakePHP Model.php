@@ -19,11 +19,25 @@
 	class ${name} extends AppModel
 	{
 		/**
-		 * Nom.
+		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
 		public $name = '${name}';
+
+		/**
+		 * Récursivité par défaut du modèle.
+		 *
+		 * @var integer
+		 */
+		public $recursive = -1;
+
+		/**
+		 * Behaviors utilisés par le modèle.
+		 *
+		 * @var array
+		 */
+		public $actsAs = array();
 
 		/**
 		 * Associations "Has one".
