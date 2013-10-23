@@ -14,8 +14,8 @@
 		$questionnairesd2pdvs93,
 		array(
 			'Questionnaired2pdv93.situationaccompagnement',
-			'Sortieautred2pdv93.name',
-			'Sortieemploid2pdv93.name',
+			'Sortieaccompagnementd2pdv93.name',
+			'Questionnaired2pdv93.chgmentsituationadmin',
 			'Questionnaired2pdv93.modified',
 			'/Questionnairesd2pdvs93/edit/#Questionnaired2pdv93.id#' => array(
 				'disabled' => !$this->Permissions->check( 'Questionnairesd2pdvs93', 'edit' )

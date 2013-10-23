@@ -99,16 +99,14 @@
 							'Personne.prenom',
 						)
 					),
-					'Sortieautred2pdv93' => array(
+					'Sortieaccompagnementd2pdv93' => array(
 						'fields' => array(
-							'Sortieautred2pdv93.name',
+							'Sortieaccompagnementd2pdv93.name',
 						)
 					),
-					'Sortieemploid2pdv93' => array(
-						'fields' => array(
-							'Sortieemploid2pdv93.name',
-						)
-					),
+				),
+				'order' => array(
+					'Questionnaired2pdv93.modified DESC'
 				)
 			);
 
@@ -185,8 +183,19 @@
 
 			// Options
 			$options = $this->Questionnaired2pdv93->enums();
-			$options['Questionnaired2pdv93']['sortieautred2pdv93_id'] = $this->Questionnaired2pdv93->Sortieautred2pdv93->find( 'list' );
-			$options['Questionnaired2pdv93']['sortieemploid2pdv93_id'] = $this->Questionnaired2pdv93->Sortieemploid2pdv93->find( 'list' );
+			$options['Questionnaired2pdv93']['sortieaccompagnementd2pdv93_id'] = $this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->find(
+				'list',
+				array(
+					'fields' => array(
+						'Sortieaccompagnementd2pdv93.id',
+						'Sortieaccompagnementd2pdv93.name',
+						'Parent.name',
+					),
+					'joins' => array(
+						$this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->join( 'Parent' )
+					)
+				)
+			);
 
 			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu' ) );
 

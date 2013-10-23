@@ -24,3 +24,23 @@ msgstr "Changements de situation"
 
 msgid "ENUM::SITUATIONACCOMPAGNEMENT::maintien"
 msgstr "Maintien dans l'accompagnement"
+
+# ------------------------------------------------------------------------------
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::modif_sitfam"
+msgstr "Modification de la situation familiale"
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::modif_situ_cjt"
+msgstr "Changement de la situation du conjoint"
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::modif_departement"
+msgstr "Changement de département"
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::modif_commune"
+msgstr "Changement de commune"
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::radiation"
+msgstr "Radiation"
+
+msgid "ENUM::CHGMENTSITUATIONADMIN::autres"
+msgstr "Autres"
