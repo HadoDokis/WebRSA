@@ -69,7 +69,7 @@
 		 */
 		public $hasOne = array(
 			'Populationd1d2pdv93' => array(
-				'className' => '',
+				'className' => 'Populationd1d2pdv93',
 				'foreignKey' => 'questionnaired2pdv93_id',
 				'conditions' => null,
 				'fields' => null,
@@ -96,6 +96,15 @@
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Questionnaired1pdv93' => array(
+				'className' => 'Questionnaired1pdv93',
+				'foreignKey' => 'questionnaired1pdv93_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
@@ -149,7 +158,44 @@
 			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
 
 			return Hash::get( $questionnaired1pdv93, 'Rendezvous.structurereferente_id' );
+		}
 
+		/**
+		 * Retourne l'id du questionnaire D1 pour lequel l'allocataire doit encore
+		 * remplir un questionnaire D2 pour l'année en cours.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function questionnairesd1pdv93Id( $personne_id ) {
+			$sq = $this->sq(
+				array(
+					'alias' => 'questionnairesd2pdvs93',
+					'fields' => 'questionnairesd2pdvs93.id',
+					'contain' => false,
+					'conditions' => array(
+						'questionnairesd2pdvs93.personne_id' => $personne_id,
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created )' => date( 'Y' ),
+						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
+					)
+				)
+			);
+
+			$querydata = array(
+				'fields' => array( 'Questionnaired1pdv93.id' ),
+				'contain' => false,
+				'joins' => array(
+					$this->Personne->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Questionnaired1pdv93.personne_id' => $personne_id,
+					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => date( 'Y' ),
+					"NOT EXISTS( {$sq} )",
+				),
+			);
+			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
+
+			return Hash::get( $questionnaired1pdv93, 'Questionnaired1pdv93.id' );
 		}
 
 		/**
@@ -221,6 +267,7 @@
 			else {
 				$formData[$this->alias]['personne_id'] = $personne_id;
 				$formData[$this->alias]['structurereferente_id'] = $this->structurereferenteId( $personne_id );
+				$formData[$this->alias]['questionnaired1pdv93_id'] = $this->questionnairesd1pdv93Id( $personne_id );
 			}
 
 			return $formData;

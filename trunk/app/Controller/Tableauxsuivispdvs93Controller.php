@@ -38,6 +38,7 @@
 			'tableau1b5' => 'read',
 			'tableau1b6' => 'read',
 			'tableaud1' => 'read',
+			'tableaud2' => 'read',
 			'view' => 'read',
 		);
 
@@ -51,6 +52,7 @@
 				'actions' => array(
 					'index',
 					'tableaud1',
+					'tableaud2',
 					'tableau1b3',
 					'tableau1b4',
 					'tableau1b5',
@@ -89,6 +91,19 @@
 			}
 
 			$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
+		}
+
+		/**
+		 *
+		 */
+		public function tableaud2() {
+			$search = $this->_applyStructurereferente( $this->request->data );
+
+			if( !empty( $search ) ) {
+				$this->set( 'results', $this->Tableausuivipdv93->tableaud2( $search ) );
+			}
+
+			$this->set( 'categories', $this->Tableausuivipdv93->tableaud2Categories() );
 		}
 
 		/**

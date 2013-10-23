@@ -85,6 +85,7 @@ DROP TABLE IF EXISTS questionnairesd2pdvs93 CASCADE;
 CREATE TABLE questionnairesd2pdvs93 (
     id								SERIAL NOT NULL PRIMARY KEY,
     personne_id						INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	questionnaired1pdv93_id			INTEGER NOT NULL REFERENCES questionnairesd1pdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE,
     structurereferente_id			INTEGER NOT NULL REFERENCES structuresreferentes(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	situationaccompagnement			VARCHAR(25) NOT NULL,
 	sortieaccompagnementd2pdv93_id	INTEGER DEFAULT NULL REFERENCES sortiesaccompagnementsd2pdvs93(id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -95,6 +96,7 @@ CREATE TABLE questionnairesd2pdvs93 (
 COMMENT ON TABLE questionnairesd2pdvs93 IS 'Réponses au formulaire D2 pour les PDV du CG 93';
 
 CREATE INDEX questionnairesd2pdvs93_personne_id_idx ON questionnairesd2pdvs93( personne_id );
+CREATE INDEX questionnairesd2pdvs93_questionnaired1pdv93_id_idx ON questionnairesd2pdvs93( questionnaired1pdv93_id );
 CREATE INDEX questionnairesd2pdvs93_structurereferente_id_idx ON questionnairesd2pdvs93( structurereferente_id );
 CREATE INDEX questionnairesd2pdvs93_sortieaccompagnementd2pdv93_id_idx ON questionnairesd2pdvs93( sortieaccompagnementd2pdv93_id );
 

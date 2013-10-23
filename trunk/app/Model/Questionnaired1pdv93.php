@@ -90,6 +90,14 @@
 				'order' => null,
 				'dependent' => true
 			),
+			'Questionnaired2pdv93' => array(
+				'className' => 'Questionnaired2pdv93',
+				'foreignKey' => 'questionnaired1pdv93_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'dependent' => true
+			),
 		);
 
 		/**

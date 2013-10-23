@@ -28,10 +28,16 @@ msgstr "Sortie \"changement administratif\""
 msgid "Questionnaired2pdv93.modified"
 msgstr "Dernière modification"
 
---------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------
 
 msgid "Questionnaired1pdv93.missing"
 msgstr "Cet allocataire ne peut pas remplir de formulaire de sortie d'accompagnement."
+
+msgid "Calculdroitrsa.toppersdrodevorsa_notice"
+msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
+
+msgid "Situationdossierrsa.etatdosrsa_ouverts"
+msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."
 
 --------------------------------------------------------------------------------
 
