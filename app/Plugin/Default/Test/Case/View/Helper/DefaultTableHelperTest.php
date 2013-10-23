@@ -190,14 +190,27 @@
 		public function testThead() {
 			$params = array();
 
+			// Sans donnée
 			$result = $this->DefaultTable->thead( array(), $params );
 			$expected = null;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			// Avec le tri
 			$result = $this->DefaultTable->thead( $this->fields, $params );
 			$expected = '<thead>
 							<tr>
 								<th id="ColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
+								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+							</tr>
+						</thead>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// Sans le tri
+			$result = $this->DefaultTable->thead( $this->fields, $params + array( 'sort' => false ) );
+			$expected = '<thead>
+							<tr>
+								<th id="ColumnAppleId">Apple.id</th>
 								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>

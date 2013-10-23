@@ -213,10 +213,12 @@
 			);
 			$params = array();
 
+			// Sans donnée
 			$result = $this->DefaultDefault->index( array(), $fields, $params );
 			$expected = '<p class="notice">Aucun enregistrement</p>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			// Avec le tri
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 2, 7, 21, 40 );
 			$expected = '<div class="pagination">
@@ -251,6 +253,22 @@
 								<span><a href="/index/page:7" rel="last">'.h( __( 'last >>' ) ).'</a></span>
 							</p>
 						</div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// Sans le tri
+			$result = $this->DefaultDefault->index( $this->datas, $fields, $params + array( 'paginate' => false ) );
+			$expected = '<table id="TableApplesIndex" class="apples index">
+							<thead>
+								<tr>
+									<th id="TableApplesIndexColumnAppleId">Apple.id</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="odd">
+									<td class="data integer positive">7</td>
+								</tr>
+							</tbody>
+						</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 
 			$this->_setRequest( $this->requestsParams['page_1_of_1'] );
