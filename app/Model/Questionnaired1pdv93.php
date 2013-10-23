@@ -31,6 +31,7 @@
 			'Allocatairelie',
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate',
+			'Questionnairepdv93',
 		);
 
 		/**
@@ -169,7 +170,7 @@
 			}
 
 			$result = true;
-			foreach( Set::normalize( $check ) as $key => $value ) {
+			foreach( Hash::normalize( $check ) as $key => $value ) {
 				list( $year, ) = explode( '-', $value );
 
 				if( !empty( $year ) ) {
@@ -361,50 +362,6 @@
 			}
 
 			return $nivetu;
-		}
-
-		/**
-		 * Retourne la soumission à droits et devoirs d'un allocataire donné.
-		 *
-		 * @param integer $personne_id
-		 * @return boolean
-		 */
-		public function toppersdrodevorsa( $personne_id ) {
-			$querydata = array(
-				'fields' => array( 'toppersdrodevorsa' ),
-				'contain' => false,
-				'conditions' => array( 'personne_id' => $personne_id )
-			);
-			$calculdroitrsa = $this->Personne->Calculdroitrsa->find( 'first', $querydata );
-			$toppersdrodevorsa = Hash::get( $calculdroitrsa, 'Calculdroitrsa.toppersdrodevorsa' );
-
-			return $toppersdrodevorsa;
-
-		}
-
-		/**
-		 * Retourne la soumission à droits et devoirs d'un allocataire donné.
-		 *
-		 * @param integer $personne_id
-		 * @return boolean
-		 */
-		public function droitsouverts( $personne_id ) {
-			$querydata = array(
-				'fields' => array( 'Situationdossierrsa.etatdosrsa' ),
-				'contain' => false,
-				'conditions' => array( 'Personne.id' => $personne_id ),
-				'joins' => array(
-					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-				)
-			);
-
-			$situationdossierrsa = $this->Personne->find( 'first', $querydata );
-			$situationdossierrsa = Hash::get( $situationdossierrsa, 'Situationdossierrsa.etatdosrsa' );
-			$situationdossierrsa = in_array( $situationdossierrsa, (array)Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' ), true );
-
-			return $situationdossierrsa;
 		}
 
 		/**

@@ -38,6 +38,7 @@
 			'Allocatairelie',
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate',
+			'Questionnairepdv93',
 		);
 
 		/**
@@ -83,8 +84,17 @@
 		 * @var array
 		 */
 		public $belongsTo = array(
+			'Pdv' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structurereferente_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Personne' => array(
-				'className' => '',
+				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
 				'conditions' => null,
 				'type' => null,
@@ -154,11 +164,10 @@
 			// Qui possède un questionnaire D1 sans questionnaire D2 pour l'année en cours
 			$structurereferente_id = $this->structurereferenteId( $personne_id );
 			if( empty( $structurereferente_id ) ) {
-				$messages['Questionnaired1pdv93.exists'] = 'error';
+				$messages['Questionnaired1pdv93.missing'] = 'error';
 			}
 
-			// FIXME: mettre dans un behavior pour grouper le code avec le questionnaire D1
-			/*$droitsouverts = $this->droitsouverts( $personne_id );
+			$droitsouverts = $this->droitsouverts( $personne_id );
 			if( empty( $droitsouverts ) ) {
 				$messages['Situationdossierrsa.etatdosrsa_ouverts'] = 'notice';
 			}
@@ -168,7 +177,7 @@
 				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
 			}
 
-			$this->create( array( 'personne_id' => $personne_id ) );
+			/*$this->create( array( 'personne_id' => $personne_id ) );
 			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => date( 'Y-m-d' ) ), 'personne_id' );
 			if( $exists ) {
 				$messages['Questionnaired2pdv93.exists'] = 'notice';

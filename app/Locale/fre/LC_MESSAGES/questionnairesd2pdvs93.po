@@ -16,6 +16,9 @@ msgstr "Statut de l'accompagnement"
 msgid "Questionnaired2pdv93.sortieaccompagnementd2pdv93_id"
 msgstr "Sortie de l'obligation d'accompagnement"
 
+msgid "Pdv.lib_struc"
+msgstr "Projet de ville"
+
 msgid "Sortieaccompagnementd2pdv93.name"
 msgstr "Sortie de l'obligation d'accompagnement"
 
@@ -24,6 +27,11 @@ msgstr "Sortie \"changement administratif\""
 
 msgid "Questionnaired2pdv93.modified"
 msgstr "Dernière modification"
+
+--------------------------------------------------------------------------------
+
+msgid "Questionnaired1pdv93.missing"
+msgstr "Cet allocataire ne peut pas remplir de formulaire de sortie d'accompagnement."
 
 --------------------------------------------------------------------------------
 

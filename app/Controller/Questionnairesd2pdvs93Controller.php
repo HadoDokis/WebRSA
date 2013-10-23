@@ -104,6 +104,11 @@
 							'Sortieaccompagnementd2pdv93.name',
 						)
 					),
+					'Pdv' => array(
+						'fields' => array(
+							'Pdv.lib_struc',
+						)
+					),
 				),
 				'order' => array(
 					'Questionnaired2pdv93.modified DESC'
@@ -146,16 +151,22 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Questionnaired2pdv93->begin();
-				$this->Questionnaired2pdv93->create( $this->request->data );
+
+				// On désactive des champs dans le formulaire, on ne veut pas garder leurs anciennes valeurs
+				$fields = array_keys( $this->Questionnaired2pdv93->schema(false) );
+				$empty = array_combine( $fields, array_pad( array(), count( $fields ), null ) );
+				$data = Hash::merge( array( 'Questionnaired2pdv93' => $empty ), $this->request->data );
+
+				$this->Questionnaired2pdv93->create( $data );
 
 				if( $this->Questionnaired2pdv93->save() ) {
 					$this->Questionnaired2pdv93->commit();
+					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
 					$this->Questionnaired2pdv93->rollback();
-					//debug( $this->Questionnaired2pdv93->validationErrors );
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
