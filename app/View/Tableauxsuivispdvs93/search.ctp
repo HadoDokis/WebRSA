@@ -37,7 +37,7 @@
 
 	$params_rdv_structurereferente = array(
 		'type' => (
-			in_array( $tableau, array( 'tableau1b3', 'index', 'tableaud1' ) )
+			in_array( $tableau, array( 'tableau1b3', 'index', 'tableaud1', 'tableaud2' ) )
 			? 'hidden'
 			: 'checkbox'
 		)
@@ -59,6 +59,14 @@
 		)
 	);
 
+	$params_soumis_dd_d1_d2 = array(
+		'type' => (
+			in_array( $tableau, array( 'tableaud2' ) )
+			? 'checkbox'
+			: 'hidden'
+		)
+	);
+
 	echo $this->Default3->form(
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
@@ -68,6 +76,7 @@
 			'Search.rdv_structurereferente' => $params_rdv_structurereferente,
 			'Search.dsps_maj_dans_annee' => $params_dsps_maj_dans_annee,
 			'Search.soumis_dd_dans_annee' => $params_soumis_dd_dans_annee,
+			'Search.soumis_dd_d1_d2' => $params_soumis_dd_d1_d2,
 		),
 		array(
 			'options' => $options,

@@ -29,6 +29,9 @@ msgstr "Dont le bénéficiaire possède au moins un rendez-vous individuel honor
 msgid "Search.soumis_dd_dans_annee"
 msgstr "Soumis à droits et devoirs au moins une fois dans l'année (par opposition à soumis à droits et devoirs au moment du remplissage du formulaire D1)"
 
+msgid "Search.soumis_dd_d1_d2"
+msgstr "Soumis à droits et devoirs au moins une fois entre le remplissage du formulaire D1 et le remplissage du formulaire D2"
+
 # ------------------------------------------------------------------------------
 
 msgid "Tableau1b5.distinct_personnes_prescription"
@@ -208,6 +211,9 @@ msgstr "Visualisation du tableau #Tableausuivipdv93.name# pour l'année #Tableau
 
 msgid "/Tableauxsuivispdvs93/tableaud1/:heading"
 msgstr "Tableau D1 - Indicateurs de réalisation : caractéristiques des participants"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/:heading"
+msgstr "Tableau D2 - Situation des participants à l'issue de l'opération"
 
 msgid "/Tableauxsuivispdvs93/tableaud1/sexe"
 msgstr "Ligne 1 - Total participants"
