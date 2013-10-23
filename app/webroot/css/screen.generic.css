@@ -1155,6 +1155,10 @@ td.button.delete a, td.action a.delete, td span.button.delete, table.default2 td
 	background-image: url( ../img/icons/delete.png );
 }
 
+td.button.delete.disabled a, td.action a.delete.disabled, td span.button.delete.disabled, table.default2 td a.button.delete.disabled, td.action span.delete.disabled {
+	background-image: url( ../img/icons/delete_disabled.png );
+}
+
 td.button.cancel a, td.action a.cancel, td span.button.cancel, table.default2 td a.button.cancel {
     background-image: url( ../img/icons/cancel.png );
 }

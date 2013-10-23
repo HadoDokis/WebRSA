@@ -15,13 +15,13 @@
 				'empty' => true,
 				'required' => true
 			),
-			'Questionnaired2pdv93.sortieemploid2pdv93_id' => array(
-				'options' => $options['Questionnaired2pdv93']['sortieemploid2pdv93_id'],
+			'Questionnaired2pdv93.sortieaccompagnementd2pdv93_id' => array(
+				'options' => $options['Questionnaired2pdv93']['sortieaccompagnementd2pdv93_id'],
 				'empty' => true,
 				'required' => true
 			),
-			'Questionnaired2pdv93.sortieautred2pdv93_id' => array(
-				'options' => $options['Questionnaired2pdv93']['sortieautred2pdv93_id'],
+			'Questionnaired2pdv93.chgmentsituationadmin' => array(
+				'options' => $options['Questionnaired2pdv93']['chgmentsituationadmin'],
 				'empty' => true,
 				'required' => true
 			),
@@ -35,8 +35,15 @@
 	document.observe( "dom:loaded", function() {
 		observeDisableFieldsOnValue(
 			'Questionnaired2pdv93Situationaccompagnement',
-			[ 'Questionnaired2pdv93Sortieemploid2pdv93Id', 'Questionnaired2pdv93Sortieautred2pdv93Id' ],
+			[ 'Questionnaired2pdv93Sortieaccompagnementd2pdv93Id' ],
 			[ 'sortie_obligation' ],
+			false,
+			false
+		);
+		observeDisableFieldsOnValue(
+			'Questionnaired2pdv93Situationaccompagnement',
+			[ 'Questionnaired2pdv93Chgmentsituationadmin' ],
+			[ 'changement_situation' ],
 			false,
 			false
 		);

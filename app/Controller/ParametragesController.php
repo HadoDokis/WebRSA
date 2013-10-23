@@ -105,8 +105,7 @@
 
 		public function modulefse93() {
 			$links = array(
-				__d( 'sortiesautresd2pdvs93', '/Sortiesautresd2pdvs93/index/:heading' ) => array( 'controller' => 'sortiesautresd2pdvs93', 'action' => 'index' ),
-				__d( 'sortiesemploisd2pdvs93', '/Sortiesemploisd2pdvs93/index/:heading' ) => array( 'controller' => 'sortiesemploisd2pdvs93', 'action' => 'index' )
+				__d( 'sortiesaccompagnementsd2pdvs93', '/Sortiesaccompagnementsd2pdvs93/index/:heading' ) => array( 'controller' => 'sortiesaccompagnementsd2pdvs93', 'action' => 'index' ),
 			);
 
 			$this->set( compact( 'links' ) );

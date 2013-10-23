@@ -13,11 +13,14 @@ msgstr ""
 msgid "Questionnaired2pdv93.situationaccompagnement"
 msgstr "Statut de l'accompagnement"
 
-msgid "Questionnaired2pdv93.sortieemploid2pdv93_id"
-msgstr "Sortie \"Emploi formation\""
+msgid "Questionnaired2pdv93.sortieaccompagnementd2pdv93_id"
+msgstr "Sortie de l'obligation d'accompagnement"
 
-msgid "Questionnaired2pdv93.sortieautred2pdv93_id"
-msgstr "Sortie \"Autres droits\""
+msgid "Sortieaccompagnementd2pdv93.name"
+msgstr "Sortie de l'obligation d'accompagnement"
+
+msgid "Questionnaired2pdv93.chgmentsituationadmin"
+msgstr "Sortie \"changement administratif\""
 
 msgid "Questionnaired2pdv93.modified"
 msgstr "Dernière modification"
@@ -48,19 +51,19 @@ msgid "/Questionnairesd2pdvs93/view"
 msgstr "Voir"
 
 msgid "/Questionnairesd2pdvs93/view/#Questionnaired2pdv93.id#"
-msgstr "Voir le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
+msgstr "Voir le questionnaire D2 de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
 msgid "/Questionnairesd2pdvs93/edit"
 msgstr "Modifier"
 
 msgid "/Questionnairesd2pdvs93/edit/#Questionnaired2pdv93.id#"
-msgstr "Modifier le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
+msgstr "Modifier le questionnaire D2 de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
 msgid "/Questionnairesd2pdvs93/delete"
 msgstr "Supprimer"
 
 msgid "/Questionnairesd2pdvs93/delete/#Questionnaired2pdv93.id#"
-msgstr "Supprimer le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom#"
+msgstr "Supprimer le questionnaire D2 de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
 msgid "/Questionnairesd2pdvs93/delete/#Questionnaired2pdv93.id# ?"
-msgstr "Réellement supprimer le questionnaire D1 de #Personne.qual# #Personne.nom# #Personne.prenom# ?"
+msgstr "Réellement supprimer le questionnaire D2 de #Personne.qual# #Personne.nom# #Personne.prenom# ?"

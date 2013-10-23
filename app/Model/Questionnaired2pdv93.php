@@ -47,16 +47,15 @@
 		 * @var array
 		 */
 		public $validate = array(
-			// FIXME: nouvelle règle de validation: c'est obligatoire pour l'un OU l'autre
-			'sortieemploid2pdv93_id' => array(
+			'sortieaccompagnementd2pdv93_id' => array(
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'situationaccompagnement', true, array( 'sortie_obligation' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
-			'sortieautred2pdv93_id' => array(
+			'chgmentsituationadmin' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'situationaccompagnement', true, array( 'sortie_obligation' ) ),
+					'rule' => array( 'notEmptyIf', 'situationaccompagnement', true, array( 'changement_situation' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
@@ -93,18 +92,9 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			'Sortieautred2pdv93' => array(
-				'className' => 'Sortieautred2pdv93',
-				'foreignKey' => 'sortieautred2pdv93_id',
-				'conditions' => null,
-				'type' => null,
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),
-			'Sortieemploid2pdv93' => array(
-				'className' => 'Sortieemploid2pdv93',
-				'foreignKey' => 'sortieemploid2pdv93_id',
+			'Sortieaccompagnementd2pdv93' => array(
+				'className' => 'Sortieaccompagnementd2pdv93',
+				'foreignKey' => 'sortieaccompagnementd2pdv93_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
