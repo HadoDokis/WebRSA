@@ -178,7 +178,15 @@
 				return $this->DefaultHtml->tag( 'p', 'Aucun enregistrement', array( 'class' => 'notice' ) );
 			}
 
-			$pagination = $this->pagination( Hash::remove( $params, 'options' ) );
+			$paginate = ( isset( $params['paginate'] ) ? $params['paginate'] : true );
+
+			if( $paginate ) {
+				$pagination = $this->pagination( Hash::remove( $params, 'options' ) );
+			}
+			else {
+				$pagination = null;
+				$params['sort'] = false;
+			}
 
 			return $pagination
 				.$this->DefaultTable->index(

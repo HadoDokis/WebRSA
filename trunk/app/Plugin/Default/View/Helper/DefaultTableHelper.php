@@ -48,6 +48,7 @@
 			$theadTr = array();
 			$domain = Hash::get( $params, 'domain' );
 			$tableId = Hash::get( $params, 'id' );
+			$sort = ( isset( $params['sort'] ) ? $params['sort'] : true );
 
 			foreach( $fields as $field => $attributes ) {
 				$attributes = (array)$attributes;
@@ -65,9 +66,13 @@
 					list( $modelName, $fieldName ) = model_field( $field );
 
 					$for = "{$tableId}Column{$modelName}".Inflector::camelize( $fieldName );
-					$theadTr[] = array(
-						$this->DefaultPaginator->sort( $field, __d( $domain, "{$modelName}.{$fieldName}" ) ) => array( 'id' => $for )
-					);
+
+					$label = __d( $domain, "{$modelName}.{$fieldName}" );
+					if( $sort ) {
+						$label = $this->DefaultPaginator->sort( $field, $label );
+					}
+
+					$theadTr[] = array( $label => array( 'id' => $for ) );
 				}
 				$fields[$field] = $attributes + array( 'for' => $for );
 			}
@@ -142,7 +147,8 @@
 			$tableParams = array(
 				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
 				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",// TODO: addClass
-				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) )
+				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
+				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
 			);
 
 			$thead = $this->thead( $fields, $tableParams + $params );
