@@ -71,16 +71,16 @@
 		</thead>
 		<tbody>
 			<tr class="odd">
-				<th style="width=200px">Structure référente</th>
-				<th style="width=200px">Date d'orientation</th>
-				<th style="width=200px">Date de relance</th>
-				<th style="width=200px">Réalisé</th>
+				<th style="width: 200px">Structure référente</th>
+				<th style="width: 200px">Date d'orientation</th>
+				<th style="width: 200px">Date de relance</th>
+				<th style="width: 200px">Réalisé</th>
 				<th class="action">Action</th>
 
-				<th style="width=200px">Structure référente</th>
-				<th style="width=200px">Date d'orientation</th>
-				<th style="width=200px">Date de relance</th>
-				<th style="width=200px">Réalisé</th>
+				<th style="width: 200px">Structure référente</th>
+				<th style="width: 200px">Date d'orientation</th>
+				<th style="width: 200px">Date de relance</th>
+				<th style="width: 200px">Réalisé</th>
 				<th class="action">Action</th>
 			</tr>
 			<tr>
