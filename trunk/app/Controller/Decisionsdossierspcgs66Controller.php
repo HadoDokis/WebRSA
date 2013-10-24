@@ -599,10 +599,10 @@
 			$listeFicheAReporter = array( );
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
 				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {
-					foreach( $personnepcg66['Traitementpcg66'] as $traitementpcg66 ) {
+					foreach( $personnepcg66['Traitementpcg66'] as $j => $traitementpcg66 ) {
 						if( $traitementpcg66['reversedo'] == 1 ) {
 							$listeFicheAReporter[] = $traitementpcg66;
-                            $listeFicheAReporter[$i]['Personnepcg66'] = $personnepcg66['Personne'];
+                            $listeFicheAReporter[$j]['Personnepcg66'] = $personnepcg66['Personne'];
 						}
 					}
 				}
