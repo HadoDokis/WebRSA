@@ -515,7 +515,8 @@
 						'conditions' => array(
 							'Traitementpcg66.personnepcg66_id' => $personnefoyerpcg['Personnepcg66']['id'],
 							'Traitementpcg66.typetraitement' => 'revenu',
-							'Traitementpcg66.reversedo' => '1'
+							'Traitementpcg66.reversedo' => '1',
+                            'Traitementpcg66.annule' => 'N'
 						),
 						'contain' => false
 					)

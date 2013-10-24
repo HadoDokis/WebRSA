@@ -600,7 +600,7 @@
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
 				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {
 					foreach( $personnepcg66['Traitementpcg66'] as $j => $traitementpcg66 ) {
-						if( $traitementpcg66['reversedo'] == 1 ) {
+						if( $traitementpcg66['reversedo'] == 1 && $traitementpcg66['annule'] != 'O' ) {
 							$listeFicheAReporter[] = $traitementpcg66;
                             $listeFicheAReporter[$j]['Personnepcg66'] = $personnepcg66['Personne'];
 						}
