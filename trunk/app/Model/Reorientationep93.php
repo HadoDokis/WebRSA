@@ -351,6 +351,9 @@
 							'"PersonneReferent"."dfdesignation" IS NULL'
 						)
 					);
+
+					// Si l'allocataire est réorienté et qu'il avait un D1, il sort de l'accompagnement
+					$success = $this->Orientstruct->reorientationEpQuestionnaired2pdv93Auto( $dossierep, 'Decisionreorientationep93', $this->Orientstruct->id ) && $success;
 				}
 			}
 

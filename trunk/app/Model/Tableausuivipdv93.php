@@ -762,11 +762,18 @@
 			);
 			$sortiesaccompagnement = $Questionnaired2pdv93->Sortieaccompagnementd2pdv93->find( 'list', $querydata );
 
+			foreach( $sortiesaccompagnement as $group => $sortiesniveau2 ) {
+				$sortiesaccompagnement[$group] = array();
+				foreach( $sortiesniveau2 as $id => $sortieniveau2 ) {
+					$sortiesaccompagnement[$group][$sortieniveau2] = null;
+				}
+			}
+
 			$enums = $Questionnaired2pdv93->enums();
 
 			$categories = Hash::normalize( array_keys( $enums['Questionnaired2pdv93']['situationaccompagnement'] ) );
 			$categories['sortie_obligation'] = $sortiesaccompagnement;
-			$categories['changement_situation'] = $enums['Questionnaired2pdv93']['chgmentsituationadmin'];
+			$categories['changement_situation'] = Hash::normalize( array_values( $enums['Questionnaired2pdv93']['chgmentsituationadmin'] ) );
 
 			return $categories;
 		}
@@ -801,7 +808,7 @@
 						'conditions' => array(
 							'historiquesdroits.personne_id = Questionnaired2pdv93.personne_id',
 							'historiquesdroits.toppersdrodevorsa' => 1,
-							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."modified" )'
+							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."created" )'
 						)
 					)
 				);
@@ -821,10 +828,10 @@
 					'COUNT("Questionnaired2pdv93"."id") AS "Tableaud2pdv93__nombre"',
 					'COUNT(CASE WHEN ( "Personne"."sexe" = \'1\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__hommes"',
 					'COUNT(CASE WHEN ( "Personne"."sexe" = \'2\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__femmes"',
-					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."modified" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."modified" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
+					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
 				),
 				'conditions' => array(
-					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.modified )' => $annee,
+					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.created )' => $annee,
 					$conditionpdv,
 					$conditiondd
 				),
@@ -841,45 +848,93 @@
 					'Sortieaccompagnementd2pdv93.name',
 				)
 			);
+			// categorie1, categorie2, categorie3, nombre, hommes, femmes, couvertcer
 			$results = $Questionnaired2pdv93->find( 'all', $querydata );
 
-// categorie1, categorie2, categorie3, nombre, hommes, femmes, couvertcer
+			$return = $this->tableaud2Categories();
 
-			/*$categories = array_keys( $this->tableaud2Categories() );
+			// Formattage du tableau de résultats
+			foreach( $results as $result ) {
+				$data = $result['Tableaud2pdv93'];
+				unset( $data['categorie1'], $data['categorie2'], $data['categorie3'] );
 
-			foreach( $categories as $categorie ) {
-				$method = '_tableaud2'.Inflector::camelize( $categorie );
+				// Si on n'a que la catégorie 1
+				if( empty( $result['Tableaud2pdv93']['categorie2'] ) ) {
+					$return[$result['Tableaud2pdv93']['categorie1']] = $data;
+				}
+				// Si on a les catégories 1 et 2
+				else if( empty( $result['Tableaud2pdv93']['categorie3'] ) ) {
+					$return[$result['Tableaud2pdv93']['categorie1']][$result['Tableaud2pdv93']['categorie2']] = $data;
+				}
+				// Si on a les catégories 1, 2 et 3
+				else {
+					$return[$result['Tableaud2pdv93']['categorie1']][$result['Tableaud2pdv93']['categorie2']][$result['Tableaud2pdv93']['categorie3']] = $data;
+				}
+			}
 
-				list( $fields, $group ) = $this->{$method}( $search );
-
-				$querydata = array(
-					'fields' => $fields,
-					'conditions' => array(
-						'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.date_validation )' => $annee,
-						$conditionpdv,
-						$conditiondd
-					),
-					'contain' => false,
-					'joins' => array(
-						$Questionnaired2pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
-						$Questionnaired2pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) )
-					),
-					'group' => $group
+			// Calcul des totaux qui seront utilisés pour le calcul des pourcentages
+			$totaux = array(
+				'nombre' => 0,
+				'hommes' => 0,
+				'femmes' => 0,
+				'cer' => 0
+			);
+			foreach( array_keys( $totaux ) as $key ) {
+				$totaux[$key] = array_sum(
+					Hash::merge(
+						Hash::extract( $return, "{s}.{$key}" ),
+						Hash::extract( $return, "{s}.{s}.{$key}" ),
+						Hash::extract( $return, "{s}.{s}.{s}.{$key}" )
+					)
 				);
+			}
 
-				$lines = $Questionnaired2pdv93->find( 'all', $querydata );
-				if( !empty( $lines ) ) {
-					foreach( $lines as $line ) {
-						$results[$categorie][$line[0]['categorie']]['entrees'][$line[0]['sexe']] = $line[0]['count'];
+			// On complète le tableau
+			$return = Hash::flatten( $return );
+			foreach( $return as $key => $value ) {
+				if( is_null( $value ) ) {
+					$return[$key] = array(
+						'nombre' => 0,
+						'nombre_%' => 0,
+						'hommes' => 0,
+						'hommes_%' => 0,
+						'femmes' => 0,
+						'femmes_%' => 0,
+						'cer' => 0,
+						'cer_%' => 0,
+					);
+				}
+			}
+			$return = Hash::expand( $return );
+
+			// Calcul des pourcentages
+			foreach( $return as $categorie1 => $data1 ) {
+				if( isset( $data1['nombre'] ) ) {
+					foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
+						$return[$categorie1]["{$key}_%"] = $data1[$key] / max( array( $totaux[$key], 1 ) ) * 100;
 					}
 				}
 				else {
-					$results[$categorie]['N/C']['entrees']['homme'] = 0;
-					$results[$categorie]['N/C']['entrees']['femmes'] = 0;
+					foreach( $data1 as $categorie2 => $data2 ) {
+						if( isset( $data2['nombre'] ) ) {
+							foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
+								$return[$categorie1][$categorie2]["{$key}_%"] = $data2[$key] / max( array( $totaux[$key], 1 ) ) * 100;
+							}
+						}
+						else {
+							foreach( $data2 as $categorie3 => $data3 ) {
+								if( isset( $data3['nombre'] ) ) {
+									foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
+										$return[$categorie1][$categorie2][$categorie3]["{$key}_%"] = $data3[$key] / max( array( $totaux[$key], 1 ) ) * 100;
+									}
+								}
+							}
+						}
+					}
 				}
-			}*/
+			}
 
-			return $results;
+			return $return;
 		}
 
 		/**

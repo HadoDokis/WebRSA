@@ -795,3 +795,63 @@ body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody td {
 	width: 5.13%;
 	min-width: 5.13%;
 }
+
+/**
+ * Tableau D2 (CCG 93)
+ */
+body.tableauxsuivispdvs93.tableaud2 #pageContent h2 {
+	font-weight: bold;
+	font-size: 1em;
+	margin-bottom: 0.5em;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 caption {
+	caption-side: top;
+	text-align: center;
+	background: #235f7d;
+	border: 1px solid #235f7d;
+	color: white;
+	padding: 0.125em 0.25em;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 td {
+	border: 1px solid black;
+	padding: 0.125em 0.25em;
+	background: white;
+	color: black;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 th {
+	font-weight: normal;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 thead tr.main th {
+	border: 0;
+}
+/*body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th {
+	text-align: left;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td {
+	text-align: right;
+}*/
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 thead tr th,
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody tr.total th {
+	background: #235F7D;
+	color: white;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.total {
+	background: #E6EEF2;
+}
+
+/* Largeur des colonnes */
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th {
+	width: 20%;
+	min-width: 20%;
+	max-width: 20%;
+}
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td {
+	width: 5%;
+	min-width: 5%;
+}

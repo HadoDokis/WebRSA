@@ -260,13 +260,16 @@
 			$dossierseps = $this->Dossierep->Passagecommissionep->find(
 				'all',
 				array(
-					'fields' => array(
-						'Passagecommissionep.id',
-						'Passagecommissionep.commissionep_id',
-						'Passagecommissionep.dossierep_id',
-						'Passagecommissionep.etatdossierep',
-						'Dossierep.personne_id',
-						"{$modeleDecisions}.decision"
+					'fields' => array_merge(
+						array(
+							'Passagecommissionep.id',
+							'Passagecommissionep.commissionep_id',
+							'Passagecommissionep.dossierep_id',
+							'Passagecommissionep.etatdossierep',
+							'Dossierep.personne_id',
+							"{$modeleDecisions}.decision"
+						),
+						$this->fields()
 					),
 					'conditions' => array(
 						'Passagecommissionep.commissionep_id' => $commissionep_id
@@ -306,15 +309,21 @@
 
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $niveauDecisionFinale == $etape ) {
+				if( $niveauDecisionFinale == "decision{$etape}" ) { // FIXME: patch SQL pour le passif -> $niveauDecisionFinale == $etape
+					// Désactivation des entrées de la thématique
 					$nonrespectsanctionep = array( $this->alias => $dossierep[$this->alias] );
 					$nonrespectsanctionep[$this->alias]['active'] = 0;
-					if( !isset( $dossierep[$modeleDecisions][0]['decision'] ) ) {
+					if( !isset( $dossierep[$modeleDecisions]['decision'] ) ) {
 						$success = false;
 					}
 
-					$this->create( $nonrespectsanctionep ); // TODO: un saveAll ?
+					$this->create( $nonrespectsanctionep );
 					$success = $this->save() && $success;
+
+					// Si l'allocataire est sanctionné et qu'il avait un D1, il sort de l'accompagnement
+					if( in_array( $dossierep[$modeleDecisions]['decision'], array( '1reduction', '2suspensiontotale', '2suspensionpartielle' ) ) ) {
+						$success = $this->Dossierep->Personne->Questionnaired2pdv93->saveAuto( $dossierep['Dossierep']['personne_id'], 'abandon' ) && $success;
+					}
 				}
 			}
 

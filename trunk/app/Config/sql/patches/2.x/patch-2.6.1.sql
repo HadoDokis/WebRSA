@@ -101,7 +101,7 @@ CREATE INDEX questionnairesd2pdvs93_structurereferente_id_idx ON questionnairesd
 CREATE INDEX questionnairesd2pdvs93_sortieaccompagnementd2pdv93_id_idx ON questionnairesd2pdvs93( sortieaccompagnementd2pdv93_id );
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'questionnairesd2pdvs93', 'questionnairesd2pdvs93_situationaccompagnement_in_list_chk' );
-ALTER TABLE questionnairesd2pdvs93 ADD CONSTRAINT questionnairesd2pdvs93_situationaccompagnement_in_list_chk CHECK ( cakephp_validate_in_list( situationaccompagnement, ARRAY['sortie_obligation', 'abandon', 'reorientation', 'changement_situation', 'maintien'] ) );
+ALTER TABLE questionnairesd2pdvs93 ADD CONSTRAINT questionnairesd2pdvs93_situationaccompagnement_in_list_chk CHECK ( cakephp_validate_in_list( situationaccompagnement, ARRAY['maintien', 'sortie_obligation', 'abandon', 'reorientation', 'changement_situation'] ) );
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'questionnairesd2pdvs93', 'questionnairesd2pdvs93_chgmentsituationadmin_in_list_chk' );
 ALTER TABLE questionnairesd2pdvs93 ADD CONSTRAINT questionnairesd2pdvs93_chgmentsituationadmin_in_list_chk CHECK ( cakephp_validate_in_list( chgmentsituationadmin, ARRAY['modif_sitfam', 'modif_situ_cjt', 'modif_departement', 'modif_commune', 'radiation', 'autres'] ) );

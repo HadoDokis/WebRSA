@@ -71,6 +71,7 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+			'Tableaud2'
 		);
 
 		/**

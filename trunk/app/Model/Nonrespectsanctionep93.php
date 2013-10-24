@@ -292,54 +292,58 @@
 			$niveauDecisionFinale = $commissionep['Ep']['Regroupementep'][Inflector::underscore( $this->alias )];
 
 			$dossierseps = $this->Dossierep->Passagecommissionep->find(
-					'all', array(
-				'fields' => array(
-					'Passagecommissionep.id',
-					'Passagecommissionep.commissionep_id',
-					'Passagecommissionep.dossierep_id',
-					'Passagecommissionep.etatdossierep',
-					'Dossierep.personne_id',
-					'Decisionnonrespectsanctionep93.decision'
-				),
-				'conditions' => array(
-					'Passagecommissionep.commissionep_id' => $commissionep_id
-				),
-				'joins' => array(
-					array(
-						'table' => 'dossierseps',
-						'alias' => 'Dossierep',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Passagecommissionep.dossierep_id = Dossierep.id'
-						)
+				'all',
+				array(
+					'fields' => array_merge(
+						array(
+							'Passagecommissionep.id',
+							'Passagecommissionep.commissionep_id',
+							'Passagecommissionep.dossierep_id',
+							'Passagecommissionep.etatdossierep',
+							'Dossierep.personne_id',
+							'Decisionnonrespectsanctionep93.decision'
+						),
+						$this->fields()
 					),
-					array(
-						'table' => 'nonrespectssanctionseps93',
-						'alias' => 'Nonrespectsanctionep93',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
-						)
+					'conditions' => array(
+						'Passagecommissionep.commissionep_id' => $commissionep_id
 					),
-					array(
-						'table' => 'decisionsnonrespectssanctionseps93',
-						'alias' => 'Decisionnonrespectsanctionep93',
-						'type' => 'INNER',
-						'conditions' => array(
-							'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
-							'Decisionnonrespectsanctionep93.etape' => $etape
+					'joins' => array(
+						array(
+							'table' => 'dossierseps',
+							'alias' => 'Dossierep',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Passagecommissionep.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
+							'table' => 'nonrespectssanctionseps93',
+							'alias' => 'Nonrespectsanctionep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Nonrespectsanctionep93.dossierep_id = Dossierep.id'
+							)
+						),
+						array(
+							'table' => 'decisionsnonrespectssanctionseps93',
+							'alias' => 'Decisionnonrespectsanctionep93',
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisionnonrespectsanctionep93.passagecommissionep_id = Passagecommissionep.id',
+								'Decisionnonrespectsanctionep93.etape' => $etape
+							)
 						)
 					)
 				)
-					)
 			);
 
 			$success = true;
 			foreach( $dossierseps as $dossierep ) {
-				if( $niveauDecisionFinale == $etape ) {
+				if( $niveauDecisionFinale == "decision{$etape}" ) { // FIXME: patch SQL pour le passif -> $niveauDecisionFinale == $etape
 					$nonrespectsanctionep93 = array( 'Nonrespectsanctionep93' => $dossierep['Nonrespectsanctionep93'] );
 					$nonrespectsanctionep93['Nonrespectsanctionep93']['active'] = 0;
-					if( !isset( $dossierep['Decisionnonrespectsanctionep93'][0]['decision'] ) ) {
+					if( !isset( $dossierep['Decisionnonrespectsanctionep93']['decision'] ) ) {
 						$success = false;
 					}
 
