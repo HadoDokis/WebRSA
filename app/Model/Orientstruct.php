@@ -1335,5 +1335,48 @@
 
 			return $pdf;
 		}
+
+		/**
+		 * Lorsqu'on crée une nouvelle orientation via les EP (CG 93) et qu'il
+		 * s'agit d'une réelle réorientation (changement de structure référente
+		 * et/ou de type d'orientaion) et que l'allocataire est suivi par un PDV,
+		 * sans questionnaire D2 lié, il faut en créer un de manière automatique
+		 * pour cette réorientation.
+		 *
+		 * @param array $dossierep
+		 * @param string $modeleDecision
+		 * @param integer $nvorientstruct_id
+		 * @return boolean
+		 */
+		public function reorientationEpQuestionnaired2pdv93Auto( $dossierep, $modeleDecision, $nvorientstruct_id ) {
+			$success = true;
+
+			$orientstructPcd = $this->find(
+				'first',
+				array(
+					'contain' => false,
+					'conditions' => array(
+						'Orientstruct.personne_id' => $dossierep['Dossierep']['personne_id'],
+						'Orientstruct.statut_orient' => 'Orienté',
+						'NOT' => array(
+							'Orientstruct.id' => $nvorientstruct_id,
+						)
+					),
+					'order' => array( 'Orientstruct.date_valid DESC' )
+				)
+			);
+
+			$reorientation = (
+				empty( $orientstructPcd )
+				|| $orientstructPcd['Orientstruct']['typeorient_id'] != $dossierep[$modeleDecision]['typeorient_id']
+				|| $orientstructPcd['Orientstruct']['structurereferente_id'] != $dossierep[$modeleDecision]['structurereferente_id']
+			);
+
+			if( $reorientation ) {
+				$success = $this->Personne->Questionnaired2pdv93->saveAuto( $dossierep['Dossierep']['personne_id'], 'reorientation' ) && $success;
+			}
+
+			return $success;
+		}
 	}
 ?>

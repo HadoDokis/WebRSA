@@ -200,6 +200,10 @@
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
 						);
+
+						// Si l'allocataire est réorienté et qu'il avait un D1, il sort de l'accompagnement
+						$dossierep['Decisionnonorientationproep93'] = $dossierep['Dossierep']['Passagecommissionep'][0]['Decisionnonorientationproep93'][0];
+						$success = $this->Orientstruct->reorientationEpQuestionnaired2pdv93Auto( $dossierep, 'Decisionnonorientationproep93', $this->Orientstruct->id ) && $success;
 					}
 				}
 			}

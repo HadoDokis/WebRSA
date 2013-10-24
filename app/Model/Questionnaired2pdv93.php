@@ -273,5 +273,37 @@
 			return $formData;
 		}
 
+		/**
+		 * Enregistrement d'un questionnaire D2 pour une situation d'accompagnement
+		 * et un allocataire donné.
+		 *
+		 * @param integer $personne_id
+		 * @param string $situationaccompagnement
+		 * @return boolean
+		 */
+		public function saveAuto( $personne_id, $situationaccompagnement ) {
+			$success = true;
+
+			$questionnaired1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
+			$structurereferente_id = $this->structurereferenteId( $personne_id );
+
+			if( !empty( $structurereferente_id ) && !empty( $questionnaired1pdv93_id ) ) {
+				$questionnaired2pdv93 = array(
+					'Questionnaired2pdv93' => array(
+						'personne_id' => $personne_id,
+						'questionnaired1pdv93_id' => $questionnaired1pdv93_id,
+						'structurereferente_id' => $structurereferente_id,
+						'situationaccompagnement' => $situationaccompagnement,
+						'sortieaccompagnementd2pdv93_id' => null,
+						'chgmentsituationadmin 	' => null,
+					)
+				);
+
+				$this->create( $questionnaired2pdv93 );
+				$success = $this->save() && $success;
+			}
+
+			return $success;
+		}
 	}
 ?>
