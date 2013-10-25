@@ -656,6 +656,71 @@
 		}
 
 		/**
+		 * Retourne le querydata utilisé pour la tableau D1.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function qdTableaud1( array $search ) {
+			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
+			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
+			if( $dd_annee ) {
+				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
+					array(
+						'alias' => 'historiquesdroits',
+						'fields' => array( 'historiquesdroits.personne_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
+							'historiquesdroits.toppersdrodevorsa' => 1,
+							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
+							/*'OR' => array(
+								'EXTRACT( \'YEAR\' FROM historiquesdroits.created )' => $annee, // FIXME
+								'EXTRACT( \'YEAR\' FROM historiquesdroits.modified )' => $annee
+							)*/
+						)
+					)
+				);
+				$conditiondd = array(
+					'OR' => array(
+						$conditiondd,
+						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
+					)
+				);
+			}
+
+			$querydata = array(
+				'fields' => array(),
+				'conditions' => array(
+					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
+					$conditionpdv,
+					$conditiondd
+				),
+				'contain' => false,
+				'joins' => array(
+					$Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+					$Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) )
+				),
+				'group' => array()
+			);
+
+			return $querydata;
+		}
+
+		/**
 		 *
 		 * @param array $search
 		 * @return array
@@ -704,12 +769,18 @@
 			$results = array();
 			$categories = array_keys( $this->tableaud1Categories() );
 
+			$qdBase = $this->qdTableaud1( $search );
+
 			foreach( $categories as $categorie ) {
 				$method = '_tableaud1'.Inflector::camelize( $categorie );
 
 				list( $fields, $group ) = $this->{$method}( $search );
 
-				$querydata = array(
+				$querydata = $qdBase;
+				$querydata['fields'] = $fields;
+				$querydata['group'] = $group;
+
+				/*$querydata = array(
 					'fields' => $fields,
 					'conditions' => array(
 						'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
@@ -722,7 +793,7 @@
 						$Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) )
 					),
 					'group' => $group
-				);
+				);*/
 
 				$lines = $Questionnaired1pdv93->find( 'all', $querydata );
 				if( !empty( $lines ) ) {
@@ -779,11 +850,12 @@
 		}
 
 		/**
+		 * Retourne le querydata utilisé pour la tableau D2.
 		 *
 		 * @param array $search
 		 * @return array
 		 */
-		public function tableaud2( array $search ) {
+		public function qdTableaud2( array $search ) {
 			$Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
 
 			// Filtre sur l'année
@@ -848,6 +920,84 @@
 					'Sortieaccompagnementd2pdv93.name',
 				)
 			);
+
+			return $querydata;
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableaud2( array $search ) {
+			$Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
+
+			$querydata = $this->qdTableaud2( $search );
+			// Début querydata
+			/*// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Questionnaired2pdv93.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			$conditiondd = null;
+			$dd_d1_d2 = Hash::get( $search, 'Search.soumis_dd_d1_d2' );
+			if( $dd_d1_d2 ) {
+				$sq = $Questionnaired2pdv93->Personne->Historiquedroit->sq(
+					array(
+						'alias' => 'historiquesdroits',
+						'fields' => array( 'historiquesdroits.personne_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'historiquesdroits.personne_id = Questionnaired2pdv93.personne_id',
+							'historiquesdroits.toppersdrodevorsa' => 1,
+							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."created" )'
+						)
+					)
+				);
+				$conditiondd = array(
+					'OR' => array(
+						$conditiondd,
+						"Questionnaired2pdv93.personne_id IN ( {$sq} )"
+					)
+				);
+			}
+
+			$querydata = array(
+				'fields' => array(
+					'"Questionnaired2pdv93"."situationaccompagnement" AS "Tableaud2pdv93__categorie1"',
+					'( CASE WHEN ( "Questionnaired2pdv93"."situationaccompagnement" = \'changement_situation\' ) THEN "Questionnaired2pdv93"."chgmentsituationadmin" WHEN ( "Questionnaired2pdv93"."situationaccompagnement" = \'sortie_obligation\' ) THEN ( SELECT sortiesaccompagnementsd2pdvs93.name FROM sortiesaccompagnementsd2pdvs93 WHERE sortiesaccompagnementsd2pdvs93.id = "Sortieaccompagnementd2pdv93"."parent_id" ) ELSE NULL END ) AS "Tableaud2pdv93__categorie2"',
+					'"Sortieaccompagnementd2pdv93"."name" AS "Tableaud2pdv93__categorie3"',
+					'COUNT("Questionnaired2pdv93"."id") AS "Tableaud2pdv93__nombre"',
+					'COUNT(CASE WHEN ( "Personne"."sexe" = \'1\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__hommes"',
+					'COUNT(CASE WHEN ( "Personne"."sexe" = \'2\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__femmes"',
+					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
+				),
+				'conditions' => array(
+					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.created )' => $annee,
+					$conditionpdv,
+					$conditiondd
+				),
+				'joins' => array(
+					$Questionnaired2pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'contain' => false,
+				'group' => array(
+					'Questionnaired2pdv93.situationaccompagnement',
+					'Questionnaired2pdv93.chgmentsituationadmin',
+					'Sortieaccompagnementd2pdv93.parent_id',
+					'Sortieaccompagnementd2pdv93.name',
+				)
+			);*/
+			// Fin querydata
+
 			// categorie1, categorie2, categorie3, nombre, hommes, femmes, couvertcer
 			$results = $Questionnaired2pdv93->find( 'all', $querydata );
 
@@ -1724,7 +1874,9 @@
 			// A-t'on déjà sauvegardé exactement ce résultat ?
 			$found = $this->find( 'first', array( 'conditions' => $conditions ) );
 
-			// Si c'est le cas, on se contente de le réenregistrer pour qe la date de modifcation soit mise à jour
+			$success = true;
+
+			// Si c'est le cas, on se contente de le réenregistrer pour que la date de modifcation soit mise à jour
 			if( !empty( $found ) ) {
 				$tableausuivipdv93 = $found;
 				unset(
@@ -1734,7 +1886,33 @@
 			}
 
 			$this->create( $tableausuivipdv93 );
-			return $this->save();
+			$success = $this->save() && $success;
+
+			// FIXME: suivant $action, faire deux méthodes protégées
+			// TODO: mise à jour des modified ?
+			if( empty( $found ) && in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+				$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
+				$Modelquestionnaire = ClassRegistry::init( "Questionnaire{$dn}pdv93" );
+
+				$method = "qdTableau{$dn}"; // TODO: qd pour D1
+				$querydata = $this->{$method}( $search );
+
+				$querydata['fields'] = array(
+					"\"Questionnaire{$dn}pdv93\".\"id\" AS \"Populationd1d2pdv93__questionnaire{$dn}pdv93_id\"",
+					"'{$this->id}' AS \"Populationd1d2pdv93__tableausuivipdv93_id\"",
+					"NOW() AS \"Populationd1d2pdv93__created\"",
+					"NOW() AS \"Populationd1d2pdv93__modified\"",
+				);
+				unset( $querydata['group'] );
+				$sq = $Modelquestionnaire->sq( $querydata );
+
+				$Dbo = $this->Populationd1d2pdv93->getDataSource();
+				$table = $Dbo->fullTableName( $this->Populationd1d2pdv93 );
+				$sql = "INSERT INTO {$table} ( questionnaire{$dn}pdv93_id, tableausuivipdv93_id, created, modified ) ( {$sq} );";
+				$success = ( $this->Populationd1d2pdv93->query( $sql ) !== false ) && $success;
+			}
+
+			return $success;
 		}
 
 		/**

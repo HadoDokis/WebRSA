@@ -1652,3 +1652,12 @@ body.dossierspcgs66 table#searchResults ul {
 body.cohortescers93 table#searchResults ul.decisions li {
     padding: 0.25em 0;
 }
+
+/* Cohorte des formulaires de sortie D2 */
+a.questionnairesd2pdvs93.index {
+	background-image: url( ../img/icons/zoom.png );
+}
+
+ul.actions li.action a.cohortesd2pdvs93.index {
+	background-image: url( ../img/icons/application_form_magnify.png );
+}

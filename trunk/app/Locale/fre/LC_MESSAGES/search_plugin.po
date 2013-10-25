@@ -1,0 +1,79 @@
+# Traductions de search_plugin.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "Situationdossierrsa.etatdosrsa_choice"
+msgstr "Filtrer par nature de prestation"
+
+msgid "Situationdossierrsa.etatdosrsa"
+msgstr "Nature de la prestation"
+
+# ------------------------------------------------------------------------------
+
+msgid "Dossier.dtdemrsa_choice"
+msgstr "Filtrer par date de demande"
+
+msgid "Dossier.dtdemrsa"
+msgstr "Date de demande RSA"
+
+msgid "Dossier.dtdemrsa_from"
+msgstr "Du (inclus)"
+
+msgid "Dossier.dtdemrsa_to"
+msgstr "Au (inclus)"
+
+# ==============================================================================
+# Avec le préfixe Search
+# ==============================================================================
+
+msgid "Search.Situationdossierrsa.etatdosrsa_choice"
+msgstr "Filtrer par état du dossier"
+
+msgid "Search.Situationdossierrsa.etatdosrsa"
+msgstr "États du dossier"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Detailcalculdroitrsa.natpf_choice"
+msgstr "Filtrer par nature de prestation"
+
+msgid "Search.Detailcalculdroitrsa.natpf"
+msgstr "Natures de prestation"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Dossier.dtdemrsa_choice"
+msgstr "Filtrer par date de demande"
+
+msgid "Search.Dossier.dtdemrsa"
+msgstr "Date de demande RSA"
+
+msgid "Search.Dossier.dtdemrsa_from"
+msgstr "Du (inclus)"
+
+msgid "Search.Dossier.dtdemrsa_to"
+msgstr "Au (inclus)"
+
+# ------------------------------------------------------------------------------
+
+msgid "Search.Personne.dtnai_choice"
+msgstr "Filtrer par date de naissance"
+
+msgid "Search.Personne.dtnai"
+msgstr "Date de naissance de l'allocataire"
+
+msgid "Search.Personne.dtnai_from"
+msgstr "Du (inclus)"
+
+msgid "Search.Personne.dtnai_to"
+msgstr "Au (inclus)"
+
+# ------------------------------------------------------------------------------

@@ -212,9 +212,6 @@ msgstr "Visualisation du tableau #Tableausuivipdv93.name# pour l'année #Tableau
 msgid "/Tableauxsuivispdvs93/tableaud1/:heading"
 msgstr "Tableau D1 - Indicateurs de réalisation : caractéristiques des participants"
 
-msgid "/Tableauxsuivispdvs93/tableaud2/:heading"
-msgstr "Tableau D2 - Situation des participants à l'issue de l'opération"
-
 msgid "/Tableauxsuivispdvs93/tableaud1/sexe"
 msgstr "Ligne 1 - Total participants"
 
@@ -259,6 +256,52 @@ msgstr "Ligne 14 - Non scolarisé"
 
 msgid "/Tableauxsuivispdvs93/tableaud1/diplomes_etrangers"
 msgstr "Ligne 15 - Diplômes étrangers non reconnus en France"
+
+# ------------------------------------------------------------------------------
+# Tableau D2
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/tableaud2/:heading"
+msgstr "Tableau D2 - Situation des participants à l'issue de l'opération"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/maintien"
+msgstr "Maintien dans l'accompagnement"
+
+msgid "/Tableauxsuivispdvs93/view/maintien"
+msgstr "Maintien dans l'accompagnement"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/sortie_obligation"
+msgstr "Sortie de l'obligation d'accompagnement"
+
+msgid "/Tableauxsuivispdvs93/view/sortie_obligation"
+msgstr "Sortie de l'obligation d'accompagnement"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/abandon"
+msgstr "Abandon"
+
+msgid "/Tableauxsuivispdvs93/view/abandon"
+msgstr "Abandon"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/reorientation"
+msgstr "Réorientation"
+
+msgid "/Tableauxsuivispdvs93/view/reorientation"
+msgstr "Réorientation"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/changement_situation"
+msgstr "Changement de situation administrative"
+
+msgid "/Tableauxsuivispdvs93/view/changement_situation"
+msgstr "Changement de situation administrative"
+
+msgid "/Tableauxsuivispdvs93/tableaud2/total"
+msgstr "Total des sorties \"%s\""
+
+msgid "/Tableauxsuivispdvs93/view/total"
+msgstr "Total des sorties \"%s\""
+
+msgid "SORTIE::changement_situation"
+msgstr "Sortie \"Changement administratif\""
 
 # ------------------------------------------------------------------------------
 # Tableau 1 B6
