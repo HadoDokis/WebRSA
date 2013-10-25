@@ -4,15 +4,17 @@
 	<?php if( empty( $rdvs ) ):?>
 		<p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
 	<?php endif;?>
-	<ul class="actionMenu">
-		<?php
-			echo '<li>'.$this->Xhtml->addLink(
-				'Ajouter un Rendez-vous',
-				array( 'controller' => 'rendezvous', 'action' => 'add', $personne_id ),
-				$this->Permissions->checkDossier( 'rendezvous', 'add', $dossierMenu )
-			).' </li>';
-		?>
-	</ul>
+            <ul class="actionMenu">
+                <?php
+                    echo '<li>'.$this->Xhtml->addLink(
+                        'Ajouter un Rendez-vous',
+                        array( 'controller' => 'rendezvous', 'action' => 'add', $personne_id ),
+                        ( $this->Permissions->checkDossier( 'rendezvous', 'add', $dossierMenu ) && ( $ajoutPossible ) )
+                        
+                    ).' </li>';
+                ?>
+            </ul>
+
 
 <?php if( !empty( $rdvs ) ):?>
 	<?php

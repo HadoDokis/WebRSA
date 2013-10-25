@@ -258,7 +258,8 @@
 						'Rendezvous.objetrdv',
 						'Rendezvous.commentairerdv',
 						'StatutrdvTyperdv.motifpassageep',
-						$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' )
+						$this->Rendezvous->Fichiermodule->sqNbFichiersLies( $this->Rendezvous, 'nb_fichiers_lies' ),
+                        'Rendezvous.statutrdv_id'
 					),
 					'joins' => array(
 						$this->Rendezvous->join( 'Personne' ),
@@ -283,12 +284,22 @@
 
 			if( isset( $rdvs['0']['Rendezvous']['id'] ) && !empty( $rdvs['0']['Rendezvous']['id'] ) ) {
 				$lastrdv_id = $rdvs['0']['Rendezvous']['id'];
+				$statutrdv_id = $rdvs['0']['Rendezvous']['statutrdv_id'];
 			}
 			else {
 				$lastrdv_id = 0;
 			}
 			$this->set( 'lastrdv_id', $lastrdv_id );
 
+            // variable permettant de savoir si on peut ou non ajouter un nouveau RDV
+            $ajoutPossible = true;
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                if( in_array( $statutrdv_id, (array) Configure::read( 'Rendezvous.Ajoutpossible.statutrdv_id' ) ) ) {
+                    $ajoutPossible = false;
+                }
+            }
+            $this->set( compact( 'ajoutPossible' ) );
+            
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
 					'first',
