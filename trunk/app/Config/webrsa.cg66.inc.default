@@ -770,4 +770,17 @@
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
 	 */
 	Configure::write('Rendezvous.useThematique', false );
+    
+    
+    /**
+	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
+	 * qui indique que l'allocataire était présent
+	 *
+	 * Utilisé pour vérifier l'état du RDV et bloquer l'ajout d'un nouveau RDV
+     * si le RDV en cours est à l'état "Prévu"
+	 *
+	 * @var integer
+	 * @default null
+	 */
+	Configure::write( 'Rendezvous.Ajoutpossible.statutrdv_id', 17 );
 ?>

@@ -257,7 +257,8 @@
 				'Nonoriente66.TypeorientIdPrepro' => 'integer',
 				'Contratinsertion.Cg66.Rendezvous' => 'isarray',
 				'Corbeillepcg.descriptionpdoId' => 'isarray',
-                'ActioncandidatPersonne.Actioncandidat.typeregionId' => 'isarray'
+                'ActioncandidatPersonne.Actioncandidat.typeregionId' => 'isarray',
+                'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer'
 			);
 		}
 
@@ -603,6 +604,7 @@
 					'Nonoriente66.TypeorientIdPrepro' => 'Typeorient',
 					// TODO: Contratinsertion.Cg66.Rendezvous ?
 					'Corbeillepcg.descriptionpdoId' => 'Descriptionpdo',
+                    'Rendezvous.Ajoutpossible.statutrdv_id' => 'Statutrdv'
 				);
 
 			}
