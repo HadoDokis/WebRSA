@@ -841,17 +841,32 @@ body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody tr.total th {
 	background: #235F7D;
 	color: white;
 }
-body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.total {
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.total,
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td.number.total {
 	background: #E6EEF2;
 }
 
 /* Largeur des colonnes */
-body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th {
-	width: 20%;
-	min-width: 20%;
-	max-width: 20%;
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.categorie1 {
+	width: 22.5%;
+	min-width: 22.5%;
+	max-width: 22.5%;
 }
-body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td {
+
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.categorie2 {
+	width: 15%;
+	min-width: 15%;
+	max-width: 15%;
+}
+
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody th.categorie3 {
+	width: 22.5%;
+	min-width: 22.5%;
+	max-width: 22.5%;
+}
+
+body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td.number {
 	width: 5%;
 	min-width: 5%;
+	max-width: 5%;
 }

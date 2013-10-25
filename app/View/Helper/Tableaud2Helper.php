@@ -41,26 +41,55 @@
 		 * @param array $data
 		 * @return string
 		 */
-		public function numberCells( array $data ) {
+		public function numberCells( array $data, $class = null ) {
 			$cells = '';
+
+			$class = "number {$class}";
 
 			foreach( $this->columns as $column ) {
 				// Valeur
 				$cells .= $this->Html->tag(
 					'td',
 					$this->Locale->number( Hash::get( $data, $column ) ),
-					array( 'class' => 'number' )
+					array( 'class' => $class )
 				);
 
 				// Pourcentage
 				$cells .= $this->Html->tag(
 					'td',
 					$this->Locale->number( Hash::get( $data, "{$column}_%" ), 2 ),
-					array( 'class' => 'number' )
+					array( 'class' => $class )
 				);
 			}
 
 			return $cells;
+		}
+
+		/**
+		 * Retourne la traduction du libellé, soit le nom du contrôleur en
+		 * CamelCase slash le nom de l'action, slash la catégorie, traduite dans
+		 * le fichier du même nom que le contrôleur.
+		 *
+		 * @param string $categorie
+		 * @return string
+		 */
+		public function categorie1Label( $categorie ) {
+			$domain = $this->request->controller;
+			$msgid = sprintf( '/%s/%s/%s', Inflector::camelize( $this->request->controller ), $this->request->action, $categorie );
+
+			return __d( $domain, $msgid );
+		}
+
+		/**
+		 *
+		 * @param string $categorie
+		 * @return string
+		 */
+		public function totalLabel( $categorie ) { // FIXME
+			$domain = $this->request->controller;
+			$msgid = sprintf( '/%s/%s/total', Inflector::camelize( $this->request->controller ), $this->request->action );
+
+			return sprintf( __d( $domain, $msgid ), $categorie );
 		}
 
 		/**
@@ -73,7 +102,7 @@
 		public function line1Categorie( $categorie, array $results ) {
 			$cells = '';
 
-			$cells .= $this->Html->tag( 'th', $categorie, array( 'colspan' => 3 ) );
+			$cells .= $this->Html->tag( 'th', $this->categorie1Label( $categorie ), array( 'colspan' => 3, 'class' => 'categorie1' ) );
 
 			$cells .= $this->numberCells( $results[$categorie] );
 
@@ -103,10 +132,10 @@
 				$cells = '';
 
 				if( $i == 0 ) {
-					$cells .= $this->Html->tag( 'th', $categorie, array( 'rowspan' => count( Hash::flatten( $categories[$categorie] ) ) + 1 ) );
+					$cells .= $this->Html->tag( 'th', $this->categorie1Label( $categorie ), array( 'rowspan' => count( Hash::flatten( $categories[$categorie] ) ) + 1, 'class' => 'categorie1' ) );
 				}
 
-				$cells .= $this->Html->tag( 'th', $label, array( 'colspan' => 2 ) );
+				$cells .= $this->Html->tag( 'th', $label, array( 'colspan' => 2, 'class' => 'categorie2' ) );
 				$cells .= $this->numberCells( $data );
 
 				foreach( $this->columns as $column ) {
@@ -122,8 +151,8 @@
 			// Total
 			$rows .= $this->Html->tag(
 				'tr',
-				$this->Html->tag( 'th', "Total {$categorie}", array( 'colspan' => 2, 'class' => 'total' ) )
-				.$this->numberCells( $total )
+				$this->Html->tag( 'th', $this->totalLabel( __d( $this->request->controller, "SORTIE::{$categorie}" ) ), array( 'colspan' => 2, 'class' => 'total' ) )
+				.$this->numberCells( $total, 'total' )
 			);
 
 			return $rows;
@@ -156,14 +185,14 @@
 					$cells = '';
 
 					if( $i1 == 0 ) {
-						$cells .= $this->Html->tag( 'th', $categorie, array( 'rowspan' => count( Hash::flatten( $categories[$categorie] ) ) + count( array_keys( $results[$categorie] ) ) ) );
+						$cells .= $this->Html->tag( 'th', $this->categorie1Label( $categorie ), array( 'rowspan' => count( Hash::flatten( $categories[$categorie] ) ) + count( array_keys( $results[$categorie] ) ), 'class' => 'categorie1' ) );
 					}
 
 					if( $i2 == 0 ) {
-						$cells .= $this->Html->tag( 'th', $label1, array( 'rowspan' => count( array_keys( $data1 ) ) ) );
+						$cells .= $this->Html->tag( 'th', $label1, array( 'rowspan' => count( array_keys( $data1 ) ), 'class' => 'categorie2' ) );
 					}
 
-					$cells .= $this->Html->tag( 'th', $label2 );
+					$cells .= $this->Html->tag( 'th', $label2, array( 'class' => 'categorie3' ) );
 					$cells .= $this->numberCells( $data2 );
 
 					foreach( $this->columns as $column ) {
@@ -180,8 +209,8 @@
 				// Total
 				$rows .= $this->Html->tag(
 					'tr',
-					$this->Html->tag( 'th', "Total {$label1}", array( 'class' => 'total', 'colspan' => 2 ) )
-					.$this->numberCells( $total )
+					$this->Html->tag( 'th', $this->totalLabel( $label1 ), array( 'class' => 'total', 'colspan' => 2 ) )
+					.$this->numberCells( $total, 'total' )
 				);
 			}
 

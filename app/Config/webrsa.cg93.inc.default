@@ -1119,9 +1119,30 @@
 			)
 		)
 	);
-    
+
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
 	 */
 	Configure::write('Rendezvous.useThematique', true );
+
+	/**
+	 * Filtres par défaut pour la cohorte de formulaires D2 (CG 93)
+	 */
+	Configure::write(
+		'Filtresdefaut.Cohortesd2pdvs93_index',
+		array(
+			'Search' => array(
+				'Dossier' => array(
+					// Case à cocher "Uniquement la dernière demande RSA pour un même allocataire"
+					'dernier' => true
+				),
+				'Questionnaired1' => array(
+					'annee' => date( 'Y' )
+				),
+				'Questionnaired2' => array(
+					'exists' => false
+				),
+			),
+		)
+	);
 ?>

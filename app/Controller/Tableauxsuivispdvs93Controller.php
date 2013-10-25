@@ -310,8 +310,9 @@
 				throw new NotFoundException();
 			}
 
-			if( $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) {
-				$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
+			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
+				$method = $tableausuivipdv93['Tableausuivipdv93']['name'].'Categories';
+				$this->set( 'categories', $this->Tableausuivipdv93->{$method}() );
 			}
 
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );

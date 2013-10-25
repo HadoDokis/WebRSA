@@ -63,7 +63,7 @@ DROP INDEX IF EXISTS candidatures_progs66_actioncandidat_personne_id_progficheca
 CREATE UNIQUE INDEX candidatures_progs66_actioncandidat_personne_id_progfichecandidature66_id_idx ON candidatures_progs66(actioncandidat_personne_id,progfichecandidature66_id);
 
 -- *****************************************************************************
--- Module FSE, CG 93
+-- 201310022:  Module FSE, CG 93
 -- *****************************************************************************
 
 DROP TABLE IF EXISTS sortiesaccompagnementsd2pdvs93 CASCADE;
