@@ -127,6 +127,7 @@
 					$nbjoursTranslate = str_replace('days','jours', $nbjours);
 
 					echo $this->Form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.$nbjoursTranslate, 'type' => 'checkbox' )  );
+					echo $this->Form->input( 'Contratinsertion.istacitereconduction', array( 'label' => 'Hors tacite reconduction', 'type' => 'checkbox' )  );
 				}
 			?>
 	</fieldset>
