@@ -88,7 +88,9 @@
 			$search = $this->_applyStructurereferente( $this->request->data );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableaud1( $search ) );
+				$results = $this->Tableausuivipdv93->tableaud1( $search );
+				debug( $results );
+				$this->set( compact( 'results' ) );
 			}
 
 			$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
@@ -101,7 +103,8 @@
 			$search = $this->_applyStructurereferente( $this->request->data );
 
 			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableaud2( $search ) );
+				$results = $this->Tableausuivipdv93->tableaud2( $search );
+				$this->set( compact( 'results' ) );
 			}
 
 			$this->set( 'categories', $this->Tableausuivipdv93->tableaud2Categories() );
@@ -202,7 +205,7 @@
 		 * @param integer $id
 		 * @throws NotFoundException
 		 */
-		public function exportcsv( $action, $id ) {
+		public function exportcsvcorpus( $action, $id ) {
 			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
 				throw new NotFoundException();
 			}
@@ -227,10 +230,53 @@
 		}
 
 		/**
-		 * TODO: une méthode dans le modèle
+		 * Export des données d'un tableau D1 ou D2 au format CSV.
 		 *
 		 * @param string $action
-		 * @param array $search
+		 * @param integer $id
+		 * @throws NotFoundException
+		 */
+		public function exportcsvdonnees( $action, $id ) {
+			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+				throw new NotFoundException();
+			}
+
+			$tableausuivipdv93 = $this->Tableausuivipdv93->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Tableausuivipdv93.id' => $id,
+						'Tableausuivipdv93.name' => $action,
+					),
+					'contain' => array(
+						'Pdv'
+					),
+				)
+			);
+
+			if( empty( $tableausuivipdv93 ) ) {
+				throw new NotFoundException();
+			}
+
+			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
+
+			if( $action === 'tableaud1' ) {
+				$categories = $this->Tableausuivipdv93->tableaud1Categories();
+			}
+			else {
+				$categories = $this->Tableausuivipdv93->tableaud2Categories();
+			}
+
+			$this->set( compact( 'results', 'action', 'categories', 'tableausuivipdv93' ) );
+
+			$this->layout = null; // FIXME
+			$this->render( "exportcsvdonnees_{$action}" );
+		}
+
+		/**
+		 * Historisation d'un tableau de résultat.
+		 *
+		 * @param string $action
 		 */
 		public function historiser( $action ) {
 			$search = $this->_applyStructurereferente( Hash::expand( $this->request->params['named'] ) );
