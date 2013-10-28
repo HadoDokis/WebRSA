@@ -1774,13 +1774,21 @@
 
 			$pdf = $this->Contratinsertion->getPdfReconductionCERPlus55Ans( $contratinsertion_id, $this->Session->read( 'Auth.User.id' ) );
 
+            $success = true;
 			if( !empty( $pdf ) ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, "taciteReconductionPlus55ans.pdf" );
+                $success = $this->Contratinsertion->updateAllUnBound(
+                    array( 'Contratinsertion.datetacitereconduction' => date( "'Y-m-d'" ) ),
+                    array(
+                        '"Contratinsertion"."id"' => $contratinsertion_id,
+                        '"Contratinsertion"."datetacitereconduction" IS NULL'
+                    )
+                ) && $success;
+                $this->Gedooo->sendPdfContentToClient( $pdf, "taciteReconductionPlus55ans.pdf" );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la notification du bénéficiaire', 'default', array( 'class' => 'error' ) );
-				$this->redirect( $this->referer() );
 			}
+            $this->redirect( $this->referer() );
 		}
 	}
 ?>
