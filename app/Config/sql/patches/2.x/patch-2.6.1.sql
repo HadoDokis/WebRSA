@@ -135,6 +135,10 @@ ALTER TABLE populationsd1d2pdvs93 ADD CONSTRAINT populationsd1d2pdvs93_qd1_id_qd
 SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_name_in_list_chk' );
 ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_name_in_list_chk CHECK ( cakephp_validate_in_list( name, ARRAY['tableaud1', 'tableaud2', 'tableau1b3', 'tableau1b4', 'tableau1b5', 'tableau1b6'] ) );
 
+----------------------------------------------------------------------------------------
+-- 20131028 : Ajout de la date d'impression de la tacite reconduction (CG66)
+---------------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'contratsinsertion', 'datetacitereconduction', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

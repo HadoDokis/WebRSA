@@ -1702,7 +1702,7 @@
 		}
 
 		/**
-		 * Retourne le PDF de notification du CER pour l'OP (CG 66).
+		 * Retourne le PDF de notification de reconduction du CER pour les allocataires de + 55 ans(CG 66).
 		 *
 		 * @param integer $id L'id du CER pour lequel générer la notification.
 		 * @return string
