@@ -199,13 +199,23 @@ msgid "/Tableauxsuivispdvs93/historiser/:title"
 msgstr "Historiser les résultats"
 
 # ------------------------------------------------------------------------------
-# Export CSV du corpus
+# Exports CSV
 # ------------------------------------------------------------------------------
 
-msgid "/Tableauxsuivispdvs93/exportcsv"
+# Données
+
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees"
+msgstr "Télécharger le tableau"
+
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/:title"
+msgstr "Télécharger le tableau au format CSV"
+
+# Corpus
+
+msgid "/Tableauxsuivispdvs93/exportcsvcorpus"
 msgstr "Télécharger le corpus"
 
-msgid "/Tableauxsuivispdvs93/exportcsv/:title"
+msgid "/Tableauxsuivispdvs93/exportcsvcorpus/:title"
 msgstr "Télécharger le corpus au format CSV"
 
 # ------------------------------------------------------------------------------
@@ -280,10 +290,16 @@ msgstr "Maintien dans l'accompagnement"
 msgid "/Tableauxsuivispdvs93/view/maintien"
 msgstr "Maintien dans l'accompagnement"
 
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/maintien"
+msgstr "Maintien dans l'accompagnement"
+
 msgid "/Tableauxsuivispdvs93/tableaud2/sortie_obligation"
 msgstr "Sortie de l'obligation d'accompagnement"
 
 msgid "/Tableauxsuivispdvs93/view/sortie_obligation"
+msgstr "Sortie de l'obligation d'accompagnement"
+
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/sortie_obligation"
 msgstr "Sortie de l'obligation d'accompagnement"
 
 msgid "/Tableauxsuivispdvs93/tableaud2/abandon"
@@ -292,10 +308,16 @@ msgstr "Abandon"
 msgid "/Tableauxsuivispdvs93/view/abandon"
 msgstr "Abandon"
 
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/abandon"
+msgstr "Abandon"
+
 msgid "/Tableauxsuivispdvs93/tableaud2/reorientation"
 msgstr "Réorientation"
 
 msgid "/Tableauxsuivispdvs93/view/reorientation"
+msgstr "Réorientation"
+
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/reorientation"
 msgstr "Réorientation"
 
 msgid "/Tableauxsuivispdvs93/tableaud2/changement_situation"
@@ -304,10 +326,16 @@ msgstr "Changement de situation administrative"
 msgid "/Tableauxsuivispdvs93/view/changement_situation"
 msgstr "Changement de situation administrative"
 
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/changement_situation"
+msgstr "Changement de situation administrative"
+
 msgid "/Tableauxsuivispdvs93/tableaud2/total"
 msgstr "Total des sorties \"%s\""
 
 msgid "/Tableauxsuivispdvs93/view/total"
+msgstr "Total des sorties \"%s\""
+
+msgid "/Tableauxsuivispdvs93/exportcsvdonnees/total"
 msgstr "Total des sorties \"%s\""
 
 msgid "SORTIE::changement_situation"

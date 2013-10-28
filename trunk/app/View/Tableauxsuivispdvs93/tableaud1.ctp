@@ -36,10 +36,10 @@
             </tr>
         </thead>
         <tbody>
-	<?php foreach( $categories as $categorie => $foos ):?>
+		<?php foreach( $categories as $categorie => $foos ):?>
             <?php if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ):?>
             <tr class="category">
-                <th colspan="14"><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th><!-- FIXME: traduction -->
+                <th colspan="14"><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th>
             </tr>
             <?php endif;?>
 				<?php foreach( $foos as $key => $label ):?>
@@ -53,7 +53,7 @@
 					<?php if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ):?>
 						<th><?php echo __d( 'tableauxsuivispdvs93',  $label );?></th>
 					<?php else: ?>
-						<th><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th><!-- FIXME: traduction -->
+						<th><?php echo __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );?></th>
 					<?php endif; ?>
 					<?php
 						$hasResults = isset( $results[$categorie]['previsionnel'] );
@@ -62,7 +62,7 @@
 					<td class="number"><?php echo ( $hasResults ? $this->Locale->number( $total ) : 'N/C' );?></td>
 					<?php foreach( array( 'report', 'entrees', 'sorties' ) as $colonne ):?> <!-- Envoyer depuis le contrôleur -->
 						<?php
-							// FIXME + noms des variables foos/bar/baz
+							// TODO: noms des variables foos/bar/baz
 							$bar = Hash::extract( $results, "{$categorie}.{s}.{$colonne}" );
 							$baz = Hash::extract( $results, "{$categorie}.{n}.{$colonne}" );
 							$hasResults = !empty( $bar ) || !empty( $baz );
@@ -90,7 +90,7 @@
 					<td class="number"><?php echo $this->Locale->number( $lineTotal['femme'] );?></td>
 				</tr>
 				<?php endforeach;?>
-	<?php endforeach;?>
+			<?php endforeach;?>
 			</tbody>
 		</table>
 		<?php $index++;?>

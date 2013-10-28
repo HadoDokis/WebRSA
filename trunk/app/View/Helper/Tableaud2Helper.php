@@ -21,7 +21,7 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Html', 'Locale' );
+		public $helpers = array( 'Html', 'Locale', 'Csv' );
 
 		/**
 		 * Les colonnes du tableau (sachant que pour chacune d'entre elles, on
@@ -215,6 +215,144 @@
 			}
 
 			return $rows;
+		}
+
+		/**
+		 *
+		 * @param array $data
+		 * @return string
+		 */
+		public function numberCellsCsv( $row, array $data ) {
+			foreach( $this->columns as $column ) {
+				// Valeur
+				$row[] = $this->Locale->number( Hash::get( $data, $column ) );
+
+				// Pourcentage
+				$row[] = $this->Locale->number( Hash::get( $data, "{$column}_%" ), 2 );
+			}
+
+			return $row;
+		}
+
+		/**
+		 * Retourne une partie de tableau CSV lorsqu'on n'a qu'une seule catégorie.
+		 *
+		 * @param string $categorie
+		 * @param array $results
+		 * @return string
+		 */
+		public function line1CategorieCsv( $categorie, array $results ) {
+			$row = array(
+				$this->categorie1Label( $categorie ),
+				null,
+				null,
+			);
+
+			$row = $this->numberCellsCsv( $row, $results[$categorie] );
+
+			$this->Csv->addRow( $row );
+		}
+
+		/**
+		 * Retourne une partie de tableau CSV lorsqu'on a deux catégories.
+		 *
+		 * @todo: sous-totaux
+		 *
+		 * @param string $categorie
+		 * @param array $results
+		 * @param array $categories
+		 * @return string
+		 */
+		public function line2CategorieCsv( $categorie, array $results, array $categories ) {
+			$i = 0;
+
+			$total = array();
+			foreach( $this->columns as $column ) {
+				$total[$column] = $total["{$column}_%"] = 0;
+			}
+
+			foreach( $results[$categorie] as $label => $data ) {
+				$row = array(
+					$this->categorie1Label( $categorie ),
+					$label,
+					null,
+				);
+
+				$row = $this->numberCellsCsv( $row, $data );
+
+				foreach( $this->columns as $column ) {
+					$total[$column] += $data[$column];
+					$total["{$column}_%"] += $data["{$column}_%"];
+				}
+
+				$this->Csv->addRow( $row );
+
+				$i++;
+			}
+
+			// Total
+			$row = array(
+				$this->categorie1Label( $categorie ),
+				$this->totalLabel( __d( $this->request->controller, "SORTIE::{$categorie}" ) ),
+				null
+			);
+			$row = $this->numberCellsCsv( $row, $total );
+
+			$this->Csv->addRow( $row );
+		}
+
+		/**
+		 * Retourne une partie de tableau CSV lorsqu'on a trois catégories.
+		 *
+		 * @todo: sous-totaux
+		 *
+		 * @param string $categorie
+		 * @param array $results
+		 * @param array $categories
+		 * @return string
+		 */
+		public function line3CategorieCsv( $categorie, array $results, array $categories ) {
+			$i1 = 0;
+
+			foreach( $results[$categorie] as $label1 => $data1 ) {
+				$i2 = 0;
+
+				$total = array();
+				foreach( $this->columns as $column ) {
+					$total[$column] = $total["{$column}_%"] = 0;
+				}
+
+
+				foreach( $data1 as $label2 => $data2 ) {
+					$row = array(
+						$this->categorie1Label( $categorie ),
+						$label1,
+						$label2
+					);
+
+					$row = $this->numberCellsCsv( $row, $data2 );
+
+					foreach( $this->columns as $column ) {
+						$total[$column] += $data2[$column];
+						$total["{$column}_%"] += $data2["{$column}_%"];
+					}
+
+					$this->Csv->addRow( $row );
+
+					$i1++;
+					$i2++;
+				}
+
+				// Total
+				$row = array(
+					$this->categorie1Label( $categorie ),
+					$label1,
+					$this->totalLabel( $label1 )
+				);
+				$row = $this->numberCellsCsv( $row, $total );
+
+				$this->Csv->addRow( $row );
+			}
 		}
 	}
 ?>

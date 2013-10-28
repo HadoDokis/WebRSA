@@ -1,9 +1,9 @@
 <?php
-	// FIXME: quand c'est de la visualisation, on montre le formulaire mais l'intitulé sera différent
-	// TODO: cacher le formulaire
-	// TODO: ajouter version pour l'index
 	if( $this->action == 'view' ) {
+		$name = $tableausuivipdv93['Tableausuivipdv93']['name'];
+		$tableausuivipdv93['Tableausuivipdv93']['name'] = strtoupper( preg_replace( '/^tableau/', '', $tableausuivipdv93['Tableausuivipdv93']['name'] ) );
 		echo $this->Default3->titleForLayout( $tableausuivipdv93 );
+		$tableausuivipdv93['Tableausuivipdv93']['name'] = $name;
 	}
 	else {
 		echo $this->Default3->titleForLayout();
