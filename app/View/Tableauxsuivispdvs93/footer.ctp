@@ -15,8 +15,8 @@
 		$actions = $this->Default3->DefaultAction->back();
 
 		// On permet l'export CSV des tableaux D1 et D2
-		if( in_array( $this->request->params['pass'][0], array( 'tableaud1', 'tableaud2' ) ) ) {
-			$url = array( 'action' => 'exportcsv', $this->request->params['pass'][0], $id );
+		if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
+			$url = array( 'action' => 'exportcsv', $tableausuivipdv93['Tableausuivipdv93']['name'], $id );
 
 			$actions[DefaultUrl::toString( $url )] = array(
 				'enabled' => $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ),
