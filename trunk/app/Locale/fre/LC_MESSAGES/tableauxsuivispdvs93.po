@@ -199,6 +199,16 @@ msgid "/Tableauxsuivispdvs93/historiser/:title"
 msgstr "Historiser les résultats"
 
 # ------------------------------------------------------------------------------
+# Export CSV du corpus
+# ------------------------------------------------------------------------------
+
+msgid "/Tableauxsuivispdvs93/exportcsv"
+msgstr "Télécharger le corpus"
+
+msgid "/Tableauxsuivispdvs93/exportcsv/:title"
+msgstr "Télécharger le corpus au format CSV"
+
+# ------------------------------------------------------------------------------
 # Visualisation
 # ------------------------------------------------------------------------------
 

@@ -1,0 +1,78 @@
+<?php
+	$this->Csv->preserveLeadingZerosInExcel = true;
+
+	// TODO
+	$this->Csv->addRow(
+		array(
+			// Suivi
+			__d( 'cohortesd2pdvs93', 'Rendezvous.daterdv' ),
+			__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.created' ),
+			__d( 'cohortesd2pdvs93', 'Structurereferente.lib_struc' ),
+			// Allocataire
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nom' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.prenom' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.dtnai' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sexe' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.rolepers' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.codepos' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.locaadr' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sitfam' ),
+			// Détails du suivi, D1
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.inscritpe' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.marche_travail' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.vulnerable' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.diplomes_etrangers' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.categorie_sociopro' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.nivetu' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.autre_caracteristique_autre' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement' ),
+			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.conditions_logement_autre' ),
+			// Détails du suivi, D2
+			__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.situationaccompagnement' ),
+			__d( 'questionnairesd2pdvs93', 'Sortieaccompagnementd2pdv93.name' ),
+			__d( 'questionnairesd2pdvs93', 'Questionnaired2pdv93.chgmentsituationadmin' ),
+		)
+	);
+
+	if( !empty( $results ) ) {
+		foreach( $results as $result ) {
+			// TODO: traductions
+			$row = array(
+				// Suivi
+				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Rendezvous.daterdv' ) ),
+				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Questionnaired2pdv93.created' ) ),
+				Hash::get( $result, 'Structurereferente.lib_struc' ),
+				// Allocataire
+				Hash::get( $result, 'Situationallocataire.nom' ),
+				Hash::get( $result, 'Situationallocataire.prenom' ),
+				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Situationallocataire.dtnai' ) ),
+				value( $options['Situationallocataire']['sexe'], Hash::get( $result, 'Situationallocataire.sexe' ) ),
+				value( $options['Situationallocataire']['rolepers'], Hash::get( $result, 'Situationallocataire.rolepers' ) ),
+				Hash::get( $result, 'Situationallocataire.codepos' ),
+				Hash::get( $result, 'Situationallocataire.locaadr' ),
+				value( $options['Situationallocataire']['sitfam'], Hash::get( $result, 'Situationallocataire.sitfam' ) ),
+				// Détails du suivi, D1
+				value( $options['Questionnaired1pdv93']['inscritpe'], Hash::get( $result, 'Questionnaired1pdv93.inscritpe' ) ),
+				value( $options['Questionnaired1pdv93']['marche_travail'], Hash::get( $result, 'Questionnaired1pdv93.marche_travail' ) ),
+				value( $options['Questionnaired1pdv93']['vulnerable'], Hash::get( $result, 'Questionnaired1pdv93.vulnerable' ) ),
+				value( $options['Questionnaired1pdv93']['diplomes_etrangers'], Hash::get( $result, 'Questionnaired1pdv93.diplomes_etrangers' ) ),
+				value( $options['Questionnaired1pdv93']['categorie_sociopro'], Hash::get( $result, 'Questionnaired1pdv93.categorie_sociopro' ) ),
+				value( $options['Questionnaired1pdv93']['nivetu'], Hash::get( $result, 'Questionnaired1pdv93.nivetu' ) ),
+				value( $options['Questionnaired1pdv93']['autre_caracteristique'], Hash::get( $result, 'Questionnaired1pdv93.autre_caracteristique' ) ),
+				Hash::get( $result, 'Questionnaired1pdv93.autre_caracteristique_autre' ),
+				value( $options['Questionnaired1pdv93']['conditions_logement'], Hash::get( $result, 'Questionnaired1pdv93.conditions_logement' ) ),
+				Hash::get( $result, 'Questionnaired1pdv93.conditions_logement_autre' ),
+				// Détails du suivi, D2
+				value( $options['Questionnaired2pdv93']['situationaccompagnement'], Hash::get( $result, 'Questionnaired2pdv93.situationaccompagnement' ) ),
+				Hash::get( $result, 'Sortieaccompagnementd2pdv93.name' ),
+				value( $options['Questionnaired2pdv93']['chgmentsituationadmin'], Hash::get( $result, 'Questionnaired2pdv93.chgmentsituationadmin' ) ),
+			);
+
+			$this->Csv->addRow( $row );
+		}
+	}
+
+	Configure::write( 'debug', 0 );
+	echo $this->Csv->render( 'corpus_suivi_fse-'.date( 'Ymd-His' ).'.csv' );
+?>

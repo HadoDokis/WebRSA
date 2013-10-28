@@ -721,6 +721,86 @@
 		}
 
 		/**
+		 * Retourne le querydata nécessaire à l'export CSV du corpus pris en
+		 * compte dans un historique de tableau D1.
+		 *
+		 * @param integer $id La clé primaire du tableau de suivi D1 historisé
+		 * @return array
+		 */
+		public function qdExportcsvCorpusD1( $id ) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->Populationd1d2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields()
+				),
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id,
+					'Tableausuivipdv93.name' => 'tableaud1',
+				),
+				'joins' => array(
+					$this->join( 'Populationd1d2pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationd1d2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationd1d2pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'INNER' ) ),
+				),
+				'order' => array(
+					'Rendezvous.daterdv ASC',
+					'Questionnaired2pdv93.created ASC'
+				)
+			);
+
+			return $querydata;
+		}
+
+		/**
+		 * Retourne le querydata nécessaire à l'export CSV du corpus pris en
+		 * compte dans un historique de tableau D2.
+		 *
+		 * @param integer $id La clé primaire du tableau de suivi D2 historisé
+		 * @return array
+		 */
+		public function qdExportcsvCorpusD2( $id ) {
+			$querydata = array(
+				'fields' => array_merge(
+					$this->Populationd1d2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->fields(),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->Structurereferente->fields()
+				),
+				'conditions' => array(
+					'Tableausuivipdv93.id' => $id,
+					'Tableausuivipdv93.name' => 'tableaud2',
+				),
+				'joins' => array(
+					$this->join( 'Populationd1d2pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationd1d2pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'INNER' ) ),
+					$this->Populationd1d2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'INNER' ) ),
+				),
+				'order' => array(
+					'Rendezvous.daterdv ASC',
+					'Questionnaired2pdv93.created ASC'
+				)
+			);
+
+			return $querydata;
+		}
+
+		/**
 		 *
 		 * @param array $search
 		 * @return array
