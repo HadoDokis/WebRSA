@@ -197,6 +197,36 @@
 		}
 
 		/**
+		 *
+		 * @param string $action
+		 * @param integer $id
+		 * @throws NotFoundException
+		 */
+		public function exportcsv( $action, $id ) {
+			if( !in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
+				throw new NotFoundException();
+			}
+
+			if( $action === 'tableaud1' ) {
+				$querydata = $this->Tableausuivipdv93->qdExportcsvCorpusD1( $id );
+			}
+			else {
+				$querydata = $this->Tableausuivipdv93->qdExportcsvCorpusD2( $id );
+			}
+
+			$results = $this->Tableausuivipdv93->find( 'all', $querydata );
+
+			$options = Hash::merge(
+				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->enums(),
+				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired2pdv93->enums(),
+				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->enums()
+			);
+
+			$this->set( compact( 'results', 'options' ) );
+			$this->layout = null;
+		}
+
+		/**
 		 * TODO: une méthode dans le modèle
 		 *
 		 * @param string $action
@@ -317,7 +347,7 @@
 
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
-			$this->set( compact( 'results', 'tableausuivipdv93' ) );
+			$this->set( compact( 'results', 'tableausuivipdv93', 'id' ) );
 			$this->render( $tableausuivipdv93['Tableausuivipdv93']['name'] );
 		}
 
