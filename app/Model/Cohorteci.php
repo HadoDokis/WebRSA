@@ -240,6 +240,13 @@
 							)
  				)';
 			}
+            
+            // Filtre pour le CG66 afin d'exclure les CERs dont la date de tacite reconduction est non vide
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                $istacitereconduction = Set::extract( $criteresci, 'Contratinsertion.istacitereconduction' );
+                $conditions[] = 'Contratinsertion.datetacitereconduction IS NULL';
+            }
+            
 
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
