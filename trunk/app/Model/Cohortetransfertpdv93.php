@@ -121,12 +121,12 @@
 				$conditions[] = "NOT {$lockedDossiers}";
 			}
 
-            // Conditions sur les dates de validation de l'orientation 
+            // Conditions sur les dates de validation de l'orientation
             $conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
             // Conditions sur les dates de transfert du dossier
             $conditions = $this->conditionsDates( $conditions, $search, 'Transfertpdv93.created' );
-            
-            
+
+
 			$querydata = array(
 				'fields' => array_merge(
 					$Dossier->fields(),
@@ -390,6 +390,7 @@
 			);
 			$Orientstruct->create( $orientstruct );
 			$success = $Orientstruct->save() && $success;
+
 			if( !empty( $Orientstruct->validationErrors ) ) {
 				debug( $Orientstruct->validationErrors );
 			}
@@ -408,6 +409,17 @@
 				}
 			}
 
+			// Si on change de PDV, et que l'allocataire possède un D1 sans D2 dans l'ancien PDV, on enregistre automatiquement un D2
+			if( $data['Transfertpdv93']['vx_orientstruct_id'] !== $data['Transfertpdv93']['nv_orientstruct_id'] ) {
+				$questionnaired1pdv93_id = $Orientstruct->Personne->Questionnaired2pdv93->questionnairesd1pdv93Id( $data['Transfertpdv93']['personne_id'] );
+				if( !empty( $questionnaired1pdv93_id ) ) {
+					$success = $Orientstruct->Personne->Questionnaired2pdv93->saveAuto(
+						$data['Transfertpdv93']['personne_id'],
+						'changement_situation',
+						'modif_commune'
+					) && $success;
+				}
+			}
 
 			// On clôture le référent actuel à la date
 			$count = $Orientstruct->Personne->PersonneReferent->find(
