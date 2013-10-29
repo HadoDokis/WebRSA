@@ -199,6 +199,57 @@
 		}
 
 		/**
+		 * Retourne une sous-requête permettant de trouver les clés primaires des
+		 * allocataires ayant un questionnaire D1 pour l'année en cours qui n'a
+		 * pas encore de questionnaire D2 associé.
+		 *
+		 * @param string $personneIdAlias
+		 * @param integer $year
+		 * @return string
+		 */
+		public function sqQuestionnaired2Necessaire( $personneIdAlias = 'Personne.id', $year = null ) {
+			$sqQ2Q1Id = $this->sq(
+				array(
+					'alias' => 'questionnairesd2pdvs93',
+					'fields' => 'questionnairesd2pdvs93.questionnaired1pdv93_id',
+					'contain' => false,
+					'conditions' => array(
+						"questionnairesd2pdvs93.personne_id = questionnairesd1pdvs93.personne_id",
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created ) = EXTRACT( \'YEAR\' FROM rendezvous.daterdv )',
+					)
+				)
+			);
+
+			$querydata = array(
+				'alias' => 'questionnairesd1pdvs93',
+				'fields' => 'questionnairesd1pdvs93.personne_id',
+				'contain' => false,
+				'joins' => array(
+					$this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"questionnairesd1pdvs93.personne_id = {$personneIdAlias}",
+					"questionnairesd1pdvs93.id NOT IN ( {$sqQ2Q1Id} )"
+				)
+			);
+
+			if( !is_null( $year ) ) {
+				$querydata['conditions']['EXTRACT( \'YEAR\' FROM rendezvous.daterdv )'] = $year;
+			}
+
+			$querydata = array_words_replace(
+				$querydata,
+				array(
+					'Rendezvous' => 'rendezvous',
+					'Questionnaired1pdv93' => 'questionnairesd1pdvs93',
+					'Questionnaired2pdv93' => 'questionnairesd2pdvs93',
+				)
+			);
+
+			return $this->Questionnaired1pdv93->sq( $querydata );
+		}
+
+		/**
 		 * Messages à envoyer à l'utilisateur.
 		 *
 		 * @param integer $personne_id
@@ -279,9 +330,10 @@
 		 *
 		 * @param integer $personne_id
 		 * @param string $situationaccompagnement
+		 * @param string $chgmentsituationadmin
 		 * @return boolean
 		 */
-		public function saveAuto( $personne_id, $situationaccompagnement ) {
+		public function saveAuto( $personne_id, $situationaccompagnement, $chgmentsituationadmin = null ) {
 			$success = true;
 
 			$questionnaired1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
@@ -295,7 +347,7 @@
 						'structurereferente_id' => $structurereferente_id,
 						'situationaccompagnement' => $situationaccompagnement,
 						'sortieaccompagnementd2pdv93_id' => null,
-						'chgmentsituationadmin 	' => null,
+						'chgmentsituationadmin' => $chgmentsituationadmin,
 					)
 				);
 

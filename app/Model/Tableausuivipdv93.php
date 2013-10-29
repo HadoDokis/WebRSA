@@ -533,7 +533,6 @@
 		}
 
 		/**
-		 * FIXME: est-ce bien sur dtdemrsa ?
 		 *
 		 * @param array $search
 		 * @return array
@@ -687,10 +686,6 @@
 							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
 							'historiquesdroits.toppersdrodevorsa' => 1,
 							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
-							/*'OR' => array(
-								'EXTRACT( \'YEAR\' FROM historiquesdroits.created )' => $annee, // FIXME
-								'EXTRACT( \'YEAR\' FROM historiquesdroits.modified )' => $annee
-							)*/
 						)
 					)
 				);
@@ -831,10 +826,6 @@
 							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
 							'historiquesdroits.toppersdrodevorsa' => 1,
 							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
-							/*'OR' => array(
-								'EXTRACT( \'YEAR\' FROM historiquesdroits.created )' => $annee, // FIXME
-								'EXTRACT( \'YEAR\' FROM historiquesdroits.modified )' => $annee
-							)*/
 						)
 					)
 				);
@@ -859,21 +850,6 @@
 				$querydata = $qdBase;
 				$querydata['fields'] = $fields;
 				$querydata['group'] = $group;
-
-				/*$querydata = array(
-					'fields' => $fields,
-					'conditions' => array(
-						'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => $annee,
-						$conditionpdv,
-						$conditiondd
-					),
-					'contain' => false,
-					'joins' => array(
-						$Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
-						$Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) )
-					),
-					'group' => $group
-				);*/
 
 				$lines = $Questionnaired1pdv93->find( 'all', $querydata );
 				if( !empty( $lines ) ) {
@@ -1013,70 +989,6 @@
 			$Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
 
 			$querydata = $this->qdTableaud2( $search );
-			// Début querydata
-			/*// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Questionnaired2pdv93.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
-			$conditiondd = null;
-			$dd_d1_d2 = Hash::get( $search, 'Search.soumis_dd_d1_d2' );
-			if( $dd_d1_d2 ) {
-				$sq = $Questionnaired2pdv93->Personne->Historiquedroit->sq(
-					array(
-						'alias' => 'historiquesdroits',
-						'fields' => array( 'historiquesdroits.personne_id' ),
-						'contain' => false,
-						'conditions' => array(
-							'historiquesdroits.personne_id = Questionnaired2pdv93.personne_id',
-							'historiquesdroits.toppersdrodevorsa' => 1,
-							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."created" )'
-						)
-					)
-				);
-				$conditiondd = array(
-					'OR' => array(
-						$conditiondd,
-						"Questionnaired2pdv93.personne_id IN ( {$sq} )"
-					)
-				);
-			}
-
-			$querydata = array(
-				'fields' => array(
-					'"Questionnaired2pdv93"."situationaccompagnement" AS "Tableaud2pdv93__categorie1"',
-					'( CASE WHEN ( "Questionnaired2pdv93"."situationaccompagnement" = \'changement_situation\' ) THEN "Questionnaired2pdv93"."chgmentsituationadmin" WHEN ( "Questionnaired2pdv93"."situationaccompagnement" = \'sortie_obligation\' ) THEN ( SELECT sortiesaccompagnementsd2pdvs93.name FROM sortiesaccompagnementsd2pdvs93 WHERE sortiesaccompagnementsd2pdvs93.id = "Sortieaccompagnementd2pdv93"."parent_id" ) ELSE NULL END ) AS "Tableaud2pdv93__categorie2"',
-					'"Sortieaccompagnementd2pdv93"."name" AS "Tableaud2pdv93__categorie3"',
-					'COUNT("Questionnaired2pdv93"."id") AS "Tableaud2pdv93__nombre"',
-					'COUNT(CASE WHEN ( "Personne"."sexe" = \'1\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__hommes"',
-					'COUNT(CASE WHEN ( "Personne"."sexe" = \'2\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__femmes"',
-					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
-				),
-				'conditions' => array(
-					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.created )' => $annee,
-					$conditionpdv,
-					$conditiondd
-				),
-				'joins' => array(
-					$Questionnaired2pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
-					$Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				'contain' => false,
-				'group' => array(
-					'Questionnaired2pdv93.situationaccompagnement',
-					'Questionnaired2pdv93.chgmentsituationadmin',
-					'Sortieaccompagnementd2pdv93.parent_id',
-					'Sortieaccompagnementd2pdv93.name',
-				)
-			);*/
-			// Fin querydata
 
 			// categorie1, categorie2, categorie3, nombre, hommes, femmes, couvertcer
 			$results = $Questionnaired2pdv93->find( 'all', $querydata );
@@ -1084,6 +996,8 @@
 			$return = $this->tableaud2Categories();
 
 			// Formattage du tableau de résultats
+			$enums = $Questionnaired2pdv93->enums();
+
 			foreach( $results as $result ) {
 				$data = $result['Tableaud2pdv93'];
 				unset( $data['categorie1'], $data['categorie2'], $data['categorie3'] );
@@ -1094,11 +1008,23 @@
 				}
 				// Si on a les catégories 1 et 2
 				else if( empty( $result['Tableaud2pdv93']['categorie3'] ) ) {
-					$return[$result['Tableaud2pdv93']['categorie1']][$result['Tableaud2pdv93']['categorie2']] = $data;
+					if( isset( $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']] ) ) {
+						$categorie2 = $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']];
+					}
+					else {
+						$categorie2 = $result['Tableaud2pdv93']['categorie2'];
+					}
+					$return[$result['Tableaud2pdv93']['categorie1']][$categorie2] = $data;
 				}
 				// Si on a les catégories 1, 2 et 3
 				else {
-					$return[$result['Tableaud2pdv93']['categorie1']][$result['Tableaud2pdv93']['categorie2']][$result['Tableaud2pdv93']['categorie3']] = $data;
+					if( isset( $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']] ) ) {
+						$categorie2 = $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']];
+					}
+					else {
+						$categorie2 = $result['Tableaud2pdv93']['categorie2'];
+					}
+					$return[$result['Tableaud2pdv93']['categorie1']][$categorie2][$result['Tableaud2pdv93']['categorie3']] = $data;
 				}
 			}
 
@@ -1168,7 +1094,6 @@
 		}
 
 		/**
-		 * TODO: documentation
 		 *
 		 * @param string $field
 		 * @return string
@@ -1179,7 +1104,6 @@
 		}
 
 		/**
-		 * TODO: documentation
 		 *
 		 * @param string $field
 		 * @return string
@@ -1216,8 +1140,6 @@
 		/**
 		 * Volet I problématiques 1-B-3: problématiques des bénéficiaires de
 		 * l'opération.
-		 *
-		 * FIXME: RDV individuel
 		 *
 		 * @param array $search
 		 * @return array
@@ -1356,8 +1278,6 @@
 		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
 		 * culturels et de sante
 		 *
-		 * FIXME: RDV individuel
-		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -1373,9 +1293,6 @@
 			if( !empty( $pdv_id ) ) {
 				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
-
-			// FIXME: le PDV du RDV doit être le même que la SR du référent de la fiche de candidature ?
-			// FIXME: on ne se préoccupe d'aucune date de la fiche de prescription (se baser sur datesignature ?)
 
 			$sql = "
 				(
@@ -1438,8 +1355,6 @@
 		/**
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
-		 *
-		 * FIXME: RDV individuel
 		 *
 		 * @param array $search
 		 * @return array
@@ -1563,7 +1478,7 @@
 					$value = Hash::get( $tmpresult, $valueKey );
 					$index = Hash::get( $map, $name );
 
-					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", $value ); // FIXME: nom du modèle
+					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", $value );
 				}
 			}
 
@@ -1571,7 +1486,7 @@
 				foreach( $keysDiff as $name ) {
 					$index = Hash::get( $map, $name );
 
-					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", 0 ); // FIXME: nom du modèle
+					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", 0 );
 				}
 			}
 
@@ -1581,9 +1496,6 @@
 		/**
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
-		 *
-		 * FIXME: on ne prend pas en compte la date de la prescription ?
-		 * FIXME: RDV individuel
 		 *
 		 * @param array $search
 		 * @return array
@@ -1968,7 +1880,6 @@
 			$this->create( $tableausuivipdv93 );
 			$success = $this->save() && $success;
 
-			// FIXME: suivant $action, faire deux méthodes protégées
 			// TODO: mise à jour des modified ?
 			if( empty( $found ) && in_array( $action, array( 'tableaud1', 'tableaud2' ) ) ) {
 				$dn = ( $action == 'tableaud1' ? 'd1' : 'd2' );
