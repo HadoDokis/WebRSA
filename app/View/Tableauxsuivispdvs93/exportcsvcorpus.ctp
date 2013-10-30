@@ -74,5 +74,5 @@
 	}
 
 	Configure::write( 'debug', 0 );
-	echo $this->Csv->render( 'corpus_suivi_fse-'.date( 'Ymd-His' ).'.csv' );
+	echo $this->Csv->render( $csvfile );
 ?>
