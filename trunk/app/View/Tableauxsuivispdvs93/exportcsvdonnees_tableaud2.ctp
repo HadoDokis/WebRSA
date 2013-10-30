@@ -24,12 +24,5 @@
 	$this->Tableaud2->line2CategorieCsv( 'changement_situation', $results, $categories );
 
 	Configure::write( 'debug', 0 );
-	echo $this->Tableaud2->Csv->render(
-		sprintf(
-			"tableaud2-%s-%d-%s",
-			empty( $tableausuivipdv93['Pdv']['lib_struc'] ) ? 'CG' : $tableausuivipdv93['Pdv']['lib_struc'],
-			$tableausuivipdv93['Tableausuivipdv93']['annee'],
-			date( 'Ymd-His' )
-		).'.csv'
-	);
+	echo $this->Tableaud2->Csv->render( $csvfile );
 ?>

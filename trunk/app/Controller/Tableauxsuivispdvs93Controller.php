@@ -209,6 +209,23 @@
 				throw new NotFoundException();
 			}
 
+			$tableausuivipdv93 = $this->Tableausuivipdv93->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Tableausuivipdv93.id' => $id,
+						'Tableausuivipdv93.name' => $action,
+					),
+					'contain' => array(
+						'Pdv'
+					),
+				)
+			);
+
+			if( empty( $tableausuivipdv93 ) ) {
+				throw new NotFoundException();
+			}
+
 			if( $action === 'tableaud1' ) {
 				$querydata = $this->Tableausuivipdv93->qdExportcsvCorpusD1( $id );
 			}
@@ -224,8 +241,32 @@
 				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->enums()
 			);
 
-			$this->set( compact( 'results', 'options' ) );
+			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
+
+			$this->set( compact( 'results', 'options', 'csvfile' ) );
 			$this->layout = null;
+		}
+
+		/**
+		 * Retourne le nom de fichier utilisé pour un export CSV.
+		 *
+		 * @param string $type
+		 * @param array $tableausuivipdv93
+		 * @return string
+		 */
+		protected function _csvFileName( $type, $tableausuivipdv93 ) {
+			$lieu = ( empty( $tableausuivipdv93['Pdv']['lib_struc'] ) ? 'CG' : $tableausuivipdv93['Pdv']['lib_struc'] );
+			$lieu = preg_replace( '/[^a-z0-9\-_]+/i', '_', $lieu );
+			$lieu = trim( $lieu, '_' );
+
+			return sprintf(
+				"%s-%s-%s-%d-%s",
+				$type,
+				$tableausuivipdv93['Tableausuivipdv93']['name'],
+				$lieu,
+				$tableausuivipdv93['Tableausuivipdv93']['annee'],
+				date( 'Ymd-His' )
+			).'.csv';
 		}
 
 		/**
@@ -266,7 +307,9 @@
 				$categories = $this->Tableausuivipdv93->tableaud2Categories();
 			}
 
-			$this->set( compact( 'results', 'action', 'categories', 'tableausuivipdv93' ) );
+			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
+
+			$this->set( compact( 'results', 'action', 'categories', 'tableausuivipdv93', 'csvfile' ) );
 
 			$this->layout = null; // FIXME
 			$this->render( "exportcsvdonnees_{$action}" );
