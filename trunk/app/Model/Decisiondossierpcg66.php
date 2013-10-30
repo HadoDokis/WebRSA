@@ -431,7 +431,7 @@
 					'Decisiondossierpcg66.avistechnique',
 					'Decisiondossierpcg66.dateavistechnique',
 					'Decisiondossierpcg66.commentaireavistechnique',
-					'Poledossierpcg66.name'
+					'Poledossierpcg66.name',
 					'Decisiondossierpcg66.validationproposition',
 					'Decisiondossierpcg66.datevalidation',
 					'Decisiondossierpcg66.commentairevalidation',
