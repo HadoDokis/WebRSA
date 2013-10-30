@@ -266,6 +266,13 @@
 					'conditions' => array( 'Originepdo.id = Dossierpcg66.originepdo_id' )
 				),
 				array(
+					'table'      => 'polesdossierspcgs66',
+					'alias'      => 'Poledossierpcg66',
+					'type'       => 'LEFT OUTER',
+					'foreignKey' => false,
+					'conditions' => array( 'Poledossierpcg66.id = Dossierpcg66.poledossierpcg66_id' )
+				),
+				array(
 					'table'      => 'personnespcgs66',
 					'alias'      => 'Personnepcg66',
 					'type'       => 'LEFT OUTER',
@@ -424,6 +431,7 @@
 					'Decisiondossierpcg66.avistechnique',
 					'Decisiondossierpcg66.dateavistechnique',
 					'Decisiondossierpcg66.commentaireavistechnique',
+					'Poledossierpcg66.name'
 					'Decisiondossierpcg66.validationproposition',
 					'Decisiondossierpcg66.datevalidation',
 					'Decisiondossierpcg66.commentairevalidation',
