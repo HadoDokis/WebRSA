@@ -44,6 +44,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),

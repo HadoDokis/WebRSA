@@ -69,6 +69,7 @@
 				'Structurereferente.lib_struc',
 				'Questionnaired2pdv93.created' => array( 'type' => 'date' ),
 				// 'Dossier.locked' => array( 'type' => 'boolean', 'sort' => false ),
+				'/Cohortesd2pdvs93/ajaxadd/#Personne.id#' => array( 'onclick' => 'ajax#Personne.id#();return false;', 'class' => 'ajax' ),
 				'/Questionnairesd2pdvs93/index/#Personne.id#' => array( 'class' => 'external' ),
 			),
 			array(
@@ -77,3 +78,36 @@
 		);
 	}
 ?>
+<?php if( isset( $results ) ): ?>
+	<?php
+		echo $this->element(
+			'modalbox',
+			array(
+				'modalid' => 'Questionnaired2pdv93ModalForm',
+				'modalcontent' => null,
+				'modalmessage' => null
+			)
+		);
+	?>
+	<script type="text/javascript">
+	<?php
+		foreach( $results as $result ) {
+			if( empty( $result['Questionnaired2pdv93']['id'] ) ) {
+				$url = array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'add', $result['Personne']['id'] );
+			}
+			else {
+				$url = array( 'controller' => 'questionnairesd2pdvs93', 'action' => 'edit', $result['Questionnaired2pdv93']['id'] );
+			}
+
+			$remoteFunction = $this->Ajax->remoteFunction(
+				array(
+					'url' => $url,
+					'update' => 'popup-content1',
+				)
+			);
+
+			echo "function ajax{$result['Personne']['id']}() { {$remoteFunction}; $( 'Questionnaired2pdv93ModalForm' ).show(); }\n";
+		}
+	?>
+	</script>
+<?php endif; ?>

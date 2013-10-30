@@ -39,6 +39,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Cake1xLegacy.Ajax',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
@@ -143,10 +144,21 @@
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
 
+			$isAjax = ( $this->request->is( 'ajax' ) || Hash::get( $this->request->data, 'Questionnaired2pdv93.isajax' ) );
+
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+
+				if( !$isAjax ) {
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					Configure::write ( 'debug', 0 );
+					header( 'Content-Type: application/json' );
+					echo htmlspecialchars( json_encode( array( 'success' => true, 'cancel' => true ) ), ENT_NOQUOTES );
+					die();
+				}
 			}
 
 			if( !empty( $this->request->data ) ) {
@@ -162,12 +174,23 @@
 				if( $this->Questionnaired2pdv93->save() ) {
 					$this->Questionnaired2pdv93->commit();
 					$this->Jetons2->release( $dossierMenu['Dossier']['id'] );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'action' => 'index', $personne_id ) );
+
+					if( !$isAjax ) {
+						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+						$this->redirect( array( 'action' => 'index', $personne_id ) );
+					}
+					else {
+						Configure::write ( 'debug', 0 );
+						header( 'Content-Type: application/json' );
+						echo htmlspecialchars( json_encode( array( 'success' => true, 'save' => true ) ), ENT_NOQUOTES );
+						die();
+					}
 				}
 				else {
 					$this->Questionnaired2pdv93->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					if( !$isAjax ) {
+						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+					}
 				}
 			}
 			else if( $this->action == 'edit' ) {
@@ -208,7 +231,14 @@
 				)
 			);
 
-			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu' ) );
+			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu', 'isAjax' ) );
+
+			if( $isAjax ) {
+				$this->layout = null;
+				$data = $this->request->data;
+				$data['Questionnaired2pdv93']['isajax'] = true;
+				$this->request->data = $data;
+			}
 
 			$this->render( 'edit' );
 		}
