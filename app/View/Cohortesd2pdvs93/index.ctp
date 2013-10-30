@@ -85,7 +85,8 @@
 			array(
 				'modalid' => 'Questionnaired2pdv93ModalForm',
 				'modalcontent' => null,
-				'modalmessage' => null
+				'modalmessage' => null,
+				'modalclose' => false
 			)
 		);
 	?>
@@ -103,6 +104,7 @@
 				array(
 					'url' => $url,
 					'update' => 'popup-content1',
+					'evalScripts' => true
 				)
 			);
 
