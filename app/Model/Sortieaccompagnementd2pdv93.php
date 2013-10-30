@@ -74,6 +74,17 @@
 				'exclusive' => null,
 				'finderQuery' => null
 			),
+			'Child' => array(
+				'className' => 'Sortieaccompagnementd2pdv93',
+				'foreignKey' => 'parent_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 		);
 	}
 ?>
