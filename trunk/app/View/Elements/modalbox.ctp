@@ -5,7 +5,9 @@
 				<div class="fade" style="z-index: 31"></div>
 				<div class="popup_block">
 					<div class="popup">
+						<?php if( !isset( $modalclose ) || $modalclose ): ?>
 						<a href="#" onclick="$( '<?php echo $modalid;?>' ).hide(); return false;"><?php echo $this->Xhtml->image('icon_close.png', array('class' => 'cntrl', 'alt' => 'close')); ?></a>
+						<?php endif; ?>
 						<div id="popup-content1">
 							<?php
 								if( !empty( $modalmessage ) ) {

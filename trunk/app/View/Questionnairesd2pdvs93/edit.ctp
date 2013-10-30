@@ -75,20 +75,20 @@ catch(e) {
 	}
 ?>
 <script type="text/javascript">
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsOnValue(
-			'Questionnaired2pdv93Situationaccompagnement',
-			[ 'Questionnaired2pdv93Sortieaccompagnementd2pdv93Id' ],
-			[ 'sortie_obligation' ],
-			false,
-			false
-		);
-		observeDisableFieldsOnValue(
-			'Questionnaired2pdv93Situationaccompagnement',
-			[ 'Questionnaired2pdv93Chgmentsituationadmin' ],
-			[ 'changement_situation' ],
-			false,
-			false
-		);
-	} );
+	//<![CDATA[
+	observeDisableFieldsOnValue(
+		'Questionnaired2pdv93Situationaccompagnement',
+		[ 'Questionnaired2pdv93Sortieaccompagnementd2pdv93Id' ],
+		[ 'sortie_obligation' ],
+		false,
+		false
+	);
+	observeDisableFieldsOnValue(
+		'Questionnaired2pdv93Situationaccompagnement',
+		[ 'Questionnaired2pdv93Chgmentsituationadmin' ],
+		[ 'changement_situation' ],
+		false,
+		false
+	);
+	//]]>
 </script>
