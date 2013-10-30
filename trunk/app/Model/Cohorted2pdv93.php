@@ -121,7 +121,7 @@
 				),
 				'conditions' => $conditions,
 				'contain' => false,
-//				'order' => array( 'Adressefoyer.dtemm DESC', 'Dossier.id ASC', 'Personne.nom ASC', 'Personne.prenom ASC' ),
+				'order' => array( 'Questionnaired2pdv93.modified ASC', 'Rendezvous.daterdv ASC' ),
 				'limit' => 10
 			);
 

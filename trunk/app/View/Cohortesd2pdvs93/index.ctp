@@ -23,21 +23,16 @@
 	echo $this->Xform->create( null, array( 'id' => 'Cohortesd2pdvs93IndexForm' ) );
 
 	// Filtres concernant le dossier
-	echo '<fieldset>';
-	echo sprintf( '<legend>%s</legend>', __d( 'cohortesd2pdvs93', 'Search.Dossier' ) );
-	echo $this->Xform->input( 'Search.Dossier.numdemrsa', array( 'domain' => 'cohortesd2pdvs93' ) );
-	echo $this->Xform->input( 'Search.Dossier.matricule', array( 'domain' => 'cohortesd2pdvs93' ) );
-//	echo $this->SearchForm->dependantCheckboxes( 'Search.Situationdossierrsa.etatdosrsa', Hash::get( $options, 'Situationdossierrsa.etatdosrsa' ), $searchFormOptions );
-//	echo $this->SearchForm->dependantCheckboxes( 'Search.Detailcalculdroitrsa.natpf', Hash::get( $options, 'Detailcalculdroitrsa.natpf' ), $searchFormOptions );
-//	echo $this->SearchForm->dependantDateRange( 'Search.Dossier.dtdemrsa', $searchFormOptions );
-	echo '</fieldset>';
+	echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
+
+	echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
 
 	// Filtres concernant l'allocataire
 	echo '<fieldset>';
 	echo sprintf( '<legend>%s</legend>', __d( 'cohortesd2pdvs93', 'Search.Personne' ) );
 	echo $this->Xform->input( 'Search.Dossier.dernier', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
-	echo $this->Xform->input( 'Search.Personne.nom', array( 'domain' => 'cohortesd2pdvs93' ) );
-	echo $this->Xform->input( 'Search.Personne.prenom', array( 'domain' => 'cohortesd2pdvs93' ) );
+	echo $this->Search->blocAllocataire( array(), 'Search' );
+	echo $this->Search->toppersdrodevorsa( $options['Calculdroitrsa']['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 //	echo $this->SearchForm->dependantDateRange( 'Search.Personne.dtnai', $searchFormOptions );
 	echo '</fieldset>';
 
@@ -48,6 +43,8 @@
 	echo $this->Xform->input( 'Search.Rendezvous.structurereferente_id', array( 'options' => $options['Rendezvous']['structurereferente_id'], 'empty' => true, 'domain' => 'cohortesd2pdvs93' ) );
 	echo $this->Xform->input( 'Search.Questionnaired2pdv93.exists', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
 	echo '</fieldset>';
+
+	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 
 	echo $this->Xform->end( 'Search' );
 

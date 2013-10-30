@@ -30,6 +30,7 @@
 		 */
 		public $components = array(
 			'Cohortes',
+			'Gestionzonesgeos',
 			'Search.Filtresdefaut' => array( 'index' ),
 			'Search.Prg' => array(
 				'actions' => array(
@@ -55,15 +56,13 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93' );
+		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option' );
 
 		/**
 		 * Moteur de recherche des questionnaires D2
 		 */
 		public function index() {
 			if( !empty( $this->request->data ) ) {
-				// Traitement des données renvoyées -> TODO
-
 				// Traitement du formulaire de recherche
 				$querydata = array(
 					'Dossier' => $this->Cohorted2pdv93->search(
@@ -88,12 +87,18 @@
 			// Options à envoyer à la vue
 			$years = array_reverse( array_range( 2009, date( 'Y' ) ) );
 			$options = array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => $this->Option->toppersdrodevorsa()
+				),
 				'Questionnaired1' => array(
 					'annee' => array_combine( $years, $years )
 				),
 				'Rendezvous' => array(
 					'structurereferente_id' => $this->Tableausuivipdv93->listePdvs()
 				),
+				'cantons' => $this->Gestionzonesgeos->listeCantons(),
+				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
+				'etatdosrsa' => $this->Option->etatdosrsa(),
 			);
 			$this->set( compact( 'options' ) );
 		}
