@@ -1661,6 +1661,9 @@ a.questionnairesd2pdvs93.index {
 ul.actions li.action a.cohortesd2pdvs93.index {
 	background-image: url( ../img/icons/application_form_magnify.png );
 }
+a.cohortesd2pdvs93.ajaxadd {
+	background-image: url( ../img/icons/application_form.png );
+}
 
 ul.actions li.action a.exportcsv, ul.actions li.action a.exportcsvcorpus, ul.actions li.action a.exportcsvdonnees {
 	background-image: url( ../img/icons/page_white_get.png );

@@ -452,7 +452,7 @@
 			$data['Personne']['qual'] = Set::enum( Hash::get( $data, 'Personne.qual'), $qual );
 			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 			$data['Dossierpcg66']['serviceinstructeur_id'] = Set::enum( Hash::get( $data, 'Dossierpcg66.serviceinstructeur_id' ), $services );
-            
+
 			$sections = array();
 			$personnesfoyerpcg = $this->Dossierpcg66->Personnepcg66->find(
 				'all',
@@ -556,7 +556,7 @@
 			if( !empty( $typesrsa ) ) {
 				$data['Decisiondossierpcg66']['Typersapcg66'] .= "\n" .'- '.implode( "\n- ", $typesrsa ).',';
 			}
-			
+
 			$options = array();
 			$options = Set::merge(
 				$this->enums(),
@@ -644,10 +644,10 @@
 				)
 			);
 		}
-        
-        
+
+
         /**
-		 * Retourne une sous-requête permettant de connaître la dernière décision 
+		 * Retourne une sous-requête permettant de connaître la dernière décision
 		 * pour un dossier PCG donné.
 		 *
 		 * @param string $field Le champ Dossierpcg66.id sur lequel faire la sous-requête

@@ -53,8 +53,11 @@ msgstr "Possédant déjà un formulaire D2 pour l'année de suivi"
 
 # Tableau de résultats
 
+msgid "/Cohortesd2pdvs93/ajaxadd"
+msgstr "Formulaire D2"
+
 msgid "/Questionnairesd2pdvs93/index"
-msgstr "Formulaires D2"
+msgstr "Voir"
 
 msgid "Personne.nir"
 msgstr "NIR"

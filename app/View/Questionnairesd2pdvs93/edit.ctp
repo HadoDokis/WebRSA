@@ -5,12 +5,17 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
 	}
 
-	echo $this->Default3->form(
+	$url = array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'], $this->request->params['pass'][0] );
+
+	echo $this->Default3->DefaultForm->create( 'Questionnaired2pdv93', array( 'novalidate' => 'novalidate', 'url' => $url ) );
+
+	echo $this->Default3->subform(
 		array(
 			'Questionnaired2pdv93.id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.personne_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.structurereferente_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.questionnaired1pdv93_id' => array( 'type' => 'hidden' ),
+			'Questionnaired2pdv93.isajax' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.situationaccompagnement' => array(
 				'options' => $options['Questionnaired2pdv93']['situationaccompagnement'],
 				'empty' => true,
@@ -26,11 +31,48 @@
 				'empty' => true,
 				'required' => true
 			),
-		),
-		array(
-			'buttons' => array( 'Validate', 'Cancel' )
 		)
 	);
+
+	if( $isAjax ) {
+		$onComplete = 'try {
+var json = request.responseText.evalJSON(true);
+if( json.success === true ) { $( \'popup-content1\' ).update(\'\'); $( \'Questionnaired2pdv93ModalForm\' ).hide(); }
+}
+catch(e) {
+	console.log( e );
+}';
+		$submit = $this->Ajax->submit(
+				__( 'Validate' ),
+				array(
+					'url'=> $url,
+					'update' => 'popup-content1',
+					'div' => false,
+					'name' => 'Validate',
+					// INFO: sinon, le premier bouton submit est utilisé, @see https://prototype.lighthouseapp.com/projects/8886/tickets/672-formserialize-and-multiple-submit-buttons
+					'before' => '$$( "input[name=Cancel]" ).each( function( button ) { $(button).disable(); $(button).hide(); } );',
+					'complete' => $onComplete,
+				)
+			)
+			.' '
+			.$this->Ajax->submit(
+				__( 'Cancel' ),
+				array(
+					'url'=> $url,
+					'update' => 'popup-content1',
+					'div' => false,
+					'name' => 'Cancel',
+					// INFO: sinon, le premier bouton submit est utilisé, @see https://prototype.lighthouseapp.com/projects/8886/tickets/672-formserialize-and-multiple-submit-buttons
+					'before' => '$$( "input[name=Validate]" ).each( function( button ) { $(button).disable(); $(button).hide(); } );',
+					'complete' => $onComplete,
+				)
+		);
+
+		echo $this->Html->tag( 'div', $submit, array( 'class' => 'submit' ) );
+	}
+	else {
+		echo $this->Default3->DefaultForm->buttons( array( 'Validate', 'Cancel' ) );
+	}
 ?>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {

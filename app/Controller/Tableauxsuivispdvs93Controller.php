@@ -89,7 +89,6 @@
 
 			if( !empty( $search ) ) {
 				$results = $this->Tableausuivipdv93->tableaud1( $search );
-				debug( $results );
 				$this->set( compact( 'results' ) );
 			}
 
