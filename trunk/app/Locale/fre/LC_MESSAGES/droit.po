@@ -794,7 +794,7 @@ msgstr "Moteur de recherche"
 ###############################################################################
 
 msgid "Module:Criterespdos"
-msgstr "Recherche par PDO (CG93)"
+msgstr "Recherche par PDO (CG 93)"
 
 msgid "Criterespdos:index"
 msgstr "Liste des PDOs"
@@ -1437,7 +1437,7 @@ msgstr "Ajout/Édition d'un mode de contact"
 ###############################################################################
 
 msgid "Module:Motifsreorientseps93"
-msgstr "Motifs de réorientation (EP CG93)"
+msgstr "Motifs de réorientation (EP CG 93)"
 
 msgid "Motifsreorientseps93:index"
 msgstr "Visualisation des motifs de réorientation"
@@ -1475,7 +1475,7 @@ msgstr "Export CSV"
 ###############################################################################
 
 msgid "Module:Nonrespectssanctionseps93"
-msgstr "Non respect et sanction (EP CG93)"
+msgstr "Non respect et sanction (EP CG 93)"
 
 msgid "Nonrespectssanctionseps93:index"
 msgstr "Liste des dossiers pour la thèmatique non respect et sanction"
@@ -1754,7 +1754,7 @@ msgstr "Suppression d'une orientation"
 ###############################################################################
 
 msgid "Module:Propospdos"
-msgstr "PDOs (CG93)"
+msgstr "PDOs (CG 93)"
 
 msgid "Propospdos:indexparams"
 msgstr "Paramétrage des PDOs"
@@ -1839,7 +1839,7 @@ msgid "Referents:cloturer"
 msgstr "Clôture des référents"
 
 msgid "Referents:clotureenmasse"
-msgstr "Cohortes de Clôture en masse des référents (CG93)"
+msgstr "Cohortes de Clôture en masse des référents (CG 93)"
 
 ###############################################################################
 
@@ -1937,7 +1937,7 @@ msgstr "Suppression d'un rendez-vous"
 ###############################################################################
 
 msgid "Module:Reorientationseps93"
-msgstr "Réorientations (CG93)"
+msgstr "Réorientations (CG 93)"
 
 msgid "Reorientationseps93:index"
 msgstr "Visualisation des réorientations"
@@ -2255,7 +2255,7 @@ msgstr "Impression du modèle de courrier du traitement PCG"
 ###############################################################################
 
 msgid "Module:Traitementspdos"
-msgstr "Traitements PDOs (CG93)"
+msgstr "Traitements PDOs (CG 93)"
 
 msgid "Traitementspdos:index"
 msgstr "Visualisation des traitements PDO"
@@ -2272,7 +2272,7 @@ msgstr "Impression du courrier de traitement PDO"
 ###############################################################################
 
 msgid "Module:Traitementstypespdos"
-msgstr "Paramétrage des types de traitements PDOs (CG93)"
+msgstr "Paramétrage des types de traitements PDOs (CG 93)"
 
 msgid "Traitementstypespdos:index"
 msgstr "Visualisation des types de traitements PDO"
@@ -2286,7 +2286,7 @@ msgstr "Suppression d'un type de traitement PDO"
 ###############################################################################
 
 msgid "Module:Typesactions"
-msgstr "Paramétrage des types d'actions d'insertion (CG93)"
+msgstr "Paramétrage des types d'actions d'insertion (CG 93)"
 
 msgid "Typesactions:index"
 msgstr "Visualisation des types d'actions d'insertion"
@@ -3073,7 +3073,7 @@ msgstr "Ajout/Modification d'une rupture"
 ###############################################################################
 
 msgid "Module:RejetHistorique"
-msgstr "Rejet historique (CG93)"
+msgstr "Rejet historique (CG 93)"
 
 msgid "RejetHistorique:affrej"
 msgstr "affrej"
@@ -3084,7 +3084,7 @@ msgstr "affxml"
 ###############################################################################
 
 msgid "Module:Questionnairesd1pdvs93"
-msgstr "Module Questionnaire D1 (CG93)"
+msgstr "Module Questionnaire D1 (CG 93)"
 
 msgid "Questionnairesd1pdvs93:index"
 msgstr "Questionnaires D1"
@@ -3128,6 +3128,18 @@ msgstr "Indicateurs de délais"
 
 msgid "Module:Tableauxsuivispdvs93"
 msgstr "Module Tableaux de suivis PDV (CG 93)"
+
+msgid "Tableauxsuivispdvs93:tableaud1"
+msgstr "Tableau de suivi D1"
+
+msgid "Tableauxsuivispdvs93:tableaud2"
+msgstr "Tableau de suivi D2"
+
+msgid "Tableauxsuivispdvs93:exportcsvcorpus"
+msgstr "Export CSV du corpus pris en compte"
+
+msgid "Tableauxsuivispdvs93:exportcsvdonnees"
+msgstr "Export CSV des données du tableau"
 
 msgid "Tableauxsuivispdvs93:tableau1b3"
 msgstr "Tableau de suivi 1B3"
@@ -3184,7 +3196,7 @@ msgstr "Suppression d'un programme"
 ###############################################################################
 
 msgid "Module:Thematiquesrdvs"
-msgstr "Thématiques de RDV (CG93) : paramétrages"
+msgstr "Thématiques de RDV (CG 93) : paramétrages"
 
 msgid "Thematiquesrdvs:index"
 msgstr "Liste des thématiques de RDV"
@@ -3197,5 +3209,53 @@ msgstr "Modification d'une thématique de RDV"
 
 msgid "Thematiquesrdvs:delete"
 msgstr "Suppression d'une thématique de RDV"
+
+###############################################################################
+
+msgid "Module:Cohortesd2pdvs93"
+msgstr "Module cohorte de formulaires de sortie D2 (CG 93)"
+
+msgid "Cohortesd2pdvs93:index"
+msgstr "Cohorte de formulaires de sortie D2"
+
+###############################################################################
+
+msgid "Module:Questionnairesd2pdvs93"
+msgstr "Module Questionnaire D2 (CG 93)"
+
+msgid "Questionnairesd2pdvs93:index"
+msgstr "Questionnaires D2"
+
+msgid "Questionnairesd2pdvs93:add"
+msgstr "Ajout d'un questionnaire D2"
+
+msgid "Questionnairesd2pdvs93:delete"
+msgstr "Suppression d'un questionnaire D2"
+
+msgid "Questionnairesd2pdvs93:edit"
+msgstr "Modification d'un questionnaire D2"
+
+msgid "Questionnairesd2pdvs93:view"
+msgstr "Visualisation d'un questionnaire D2"
+
+###############################################################################
+
+msgid "Module:Sortiesaccompagnementsd2pdvs93"
+msgstr "Module FSE (CG 93) : paramétrages, sorties de l'accompagnement"
+
+msgid "Sortiesaccompagnementsd2pdvs93:index"
+msgstr "Liste des sorties de l'accompagnement"
+
+msgid "Sortiesaccompagnementsd2pdvs93:add"
+msgstr "Ajout d'une sortie de l'accompagnement"
+
+msgid "Sortiesaccompagnementsd2pdvs93:delete"
+msgstr "Suppression d'une sortie de l'accompagnement"
+
+msgid "Sortiesaccompagnementsd2pdvs93:edit"
+msgstr "Modification d'une sortie de l'accompagnement"
+
+msgid "Sortiesaccompagnementsd2pdvs93:view"
+msgstr "Visualisation d'une sortie de l'accompagnement"
 
 ###############################################################################

@@ -65,7 +65,7 @@
 			'Statutrdv.libelle',
 			'Questionnaired1pdv93.date_validation' => array( 'domain' => 'questionnairesd1pdvs93' ),
             'Historiquedroit.etatdosrsa' => array( 'domain' => 'historiquedroit' ),
-            'Historiquedroit.toppersdrodevorsa' => array( 'domain' => 'historiquedroit' ),
+            'Historiquedroit.toppersdrodevorsa' => array( 'domain' => 'historiquedroit', 'type' => 'boolean' ),
             'Historiquedroit.modified' => array(  'domain' => 'historiquedroit' )
 		),
         array(
