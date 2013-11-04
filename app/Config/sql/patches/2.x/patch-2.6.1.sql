@@ -266,6 +266,11 @@ INSERT INTO questionnairesd2pdvs93 ( personne_id, questionnaired1pdv93_id, struc
 				-- Décision d'EP réorientation
 				(
 					DATE_TRUNC( 'DAY', commissionseps.dateseance ) > rendezvous.daterdv
+					AND (
+						decisionsreorientationseps93.id IS NOT NULL
+						OR decisionsnonorientationsproseps93.id IS NOT NULL
+						OR decisionssignalementseps93.id IS NOT NULL
+					)
 				)
 			);
 
