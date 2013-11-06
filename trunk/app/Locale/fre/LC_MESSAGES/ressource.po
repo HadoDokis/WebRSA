@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-msgid "Ressource."
+msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: \n"
@@ -58,4 +58,4 @@ msgid "Ressource.nbheumentra"
 msgstr "Nombre d'heures mensuelles effectuées "
 
 msgid "Ressource.mtabaneu"
-msgstr "Montant d\'abattement / neutralisation "
+msgstr "Montant d'abattement / neutralisation "

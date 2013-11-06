@@ -45,9 +45,6 @@ msgstr "Type de dossier"
 msgid "Propopdo.decisionpdo_id"
 msgstr "Proposition de décision"
 
-msgid "Propopdo.user_id"
-msgstr "Dossier instruit par"
-
 msgid "Propopdo.datereceptionpdo"
 msgstr "Date de réception de la PDO"
 
@@ -109,7 +106,7 @@ msgid "Propopdo.observationop"
 msgstr "Observations"
 
 msgid "Propopdo.datedecisionop"
-msgstr "Date transimission à l\'OP"
+msgstr "Date transimission à l'OP"
 
 # 'attaffect', 'attinstr', 'instrencours', 'attval', 'attavistech', 'dossiertraite', 'attpj'
 

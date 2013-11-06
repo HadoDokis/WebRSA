@@ -133,9 +133,6 @@ msgstr "Décision émise par le CG"
 
 # Spécifique cg 58
 
-msgid "Regroupementep.nonorientationproep58"
-msgstr "Dossier non réorienté vers le professionnel"
-
 msgid "ENUM::NONORIENTATIONPROEP58::nontraite"
 msgstr "Décision non traitée"
 

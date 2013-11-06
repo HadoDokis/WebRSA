@@ -198,9 +198,6 @@ msgstr "Durée (Heures) "
 msgid "Formqualif.modevalidation"
 msgstr "Mode de validation "
 
-msgid "Formqualif.modevalidation"
-msgstr "Mode de validation "
-
 msgid "Formqualif.coutform"
 msgstr "Coût de la formation "
 
@@ -227,9 +224,6 @@ msgstr "Au "
 
 msgid "Formpermfimo.dureeform"
 msgstr "Durée (Heures) "
-
-msgid "Formpermfimo.modevalidation"
-msgstr "Mode de validation "
 
 msgid "Formpermfimo.modevalidation"
 msgstr "Mode de validation "

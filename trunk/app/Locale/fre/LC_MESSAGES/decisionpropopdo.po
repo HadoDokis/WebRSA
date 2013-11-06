@@ -57,9 +57,6 @@ msgid "ENUM::VALIDATIONDECISION::1"
 msgstr "Oui"
 
 msgid "Decisionspropospdos::add"
-msgstr "Ajout d'une décision"
-
-msgid "Decisionspropospdos::add"
 msgstr "Édition d'une décision"
 
 msgid "Decisionpropopdo.datedecisionpdo"

@@ -43,9 +43,6 @@ msgstr "Si le financeur est le Conseil général, n° de Convention d'objectifs"
 msgid "Cui.datedepot"
 msgstr "Date de dépôt"
 
-msgid "Cui.codeprescripteur"
-msgstr "Code prescripteur"
-
 msgid "Cui.secteur"
 msgstr "Secteur"
 
@@ -96,9 +93,6 @@ msgstr "Canton"
 
 msgid "Cui.secteuractiviteemployeur_id"
 msgstr "Secteur d'activité"
-
-msgid "Cui.isadresse2"
-msgstr "Adresse différente"
 
 msgid "Cui.numvoieemployeur2"
 msgstr "N° de voie"
@@ -750,7 +744,7 @@ msgstr "Raison de l'annulation"
 msgid "Cui.compofamiliale"
 msgstr "Composition du foyer"
 
-msgid "ENUM::COMPOFAMILIALE::couple" 
+msgid "ENUM::COMPOFAMILIALE::couple"
 msgstr "Couple sans enfant"
 
 msgid "ENUM::COMPOFAMILIALE::coupleenfant"
@@ -898,16 +892,6 @@ msgid "ENUM::NOUVELLECOMPETENCE::2"
 msgstr "2"
 
 msgid "ENUM::NOUVELLECOMPETENCE::3"
-msgstr "3"
-
-	####################
-msgid "ENUM::FORMQUALIF::1"
-msgstr "1"
-
-msgid "ENUM::FORMQUALIF::2"
-msgstr "2"
-
-msgid "ENUM::FORMQUALIF::3"
 msgstr "3"
 
 	####################

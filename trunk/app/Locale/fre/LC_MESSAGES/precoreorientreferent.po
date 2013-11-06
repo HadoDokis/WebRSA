@@ -34,9 +34,6 @@ msgstr "Référent"
 msgid "Precoreorientreferent.created"
 msgstr "Date de décision"
 
-msgid "Precoreorientreferent.commentaire"
-msgstr "Commentaire du référent préconisant la réorientation"
-
 msgid "Precoreorientreferent.dtconcertation"
 msgstr "Date"
 

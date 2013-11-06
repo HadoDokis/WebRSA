@@ -72,7 +72,7 @@ msgid "Contratinsertion.actions_prev"
 msgstr "Avez-vous pu réaliser les actions prévues dans votre contrat précédent ? "
 
 msgid "Contratinsertion.obsta_renc"
-msgstr "Si vous n\'avez pas pu les réaliser, quels obstacles avez-vous rencontrés ? "
+msgstr "Si vous n'avez pas pu les réaliser, quels obstacles avez-vous rencontrés ? "
 
 msgid "Contratinsertion.service_soutien"
 msgstr "Le présent contrat a été établi avec le soutien du service: (désignation, adresse, téléphone)"
@@ -84,16 +84,16 @@ msgid "Contratinsertion.objectifs_fixes"
 msgstr "Quels objectifs vous fixez-vous pour les mois à venir"
 
 msgid "Contratinsertion.engag_object"
-msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d\'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d\'emploi,...)"
+msgstr "Que prévoyez-vous de faire pour atteindre ces objectifs (démarches d'insertion dans les domaines de la santé, du logement et de la vie sociale et quotidienne, de la formation, de la recherche d'emploi,...)"
 
 msgid "Contratinsertion.emp_trouv"
 msgstr "Avez-vous trouvé un emploi ? "
 
 msgid "Contratinsertion.sect_acti_emp"
-msgstr "Le secteur d\'activité"
+msgstr "Le secteur d'activité"
 
 msgid "Contratinsertion.emp_occupe"
-msgstr "L\'emploi occupé"
+msgstr "L'emploi occupé"
 
 msgid "Contratinsertion.duree_hebdo_emp"
 msgstr "La durée hebdomadaire de travail"
@@ -102,7 +102,7 @@ msgid "Contratinsertion.nat_cont_trav"
 msgstr "La nature du contrat de travail"
 
 msgid "Contratinsertion.duree_cdd"
-msgstr "S\'il s\'agit d\'un CDD, sa durée"
+msgstr "S'il s'agit d'un CDD, sa durée"
 
 # msgid "Contratinsertion.duree_engag"
 # msgstr "Engagement sur une durée de  (en mois)"

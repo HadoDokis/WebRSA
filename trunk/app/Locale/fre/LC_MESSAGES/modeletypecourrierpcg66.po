@@ -28,9 +28,6 @@ msgstr "Intitulé des modèles de courrier"
 msgid "Modelestypescourrierspcgs66::add"
 msgstr "Ajouter un modèle de courrier"
 
-msgid "Modelestypescourrierspcgs66::edit"
-msgstr "Modifier le modèle"
-
 msgid "Modelestypescourrierspcgs66::delete"
 msgstr "Supprimer le modèle"
 

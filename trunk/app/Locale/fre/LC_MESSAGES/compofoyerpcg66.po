@@ -31,4 +31,4 @@ msgid "Compofoyerpcg66::index::empty"
 msgstr "Aucune composition enregistrée"
 
 msgid "Composfoyerspcgs66::delete::confirm"
-msgstr "Confirmer la suppression ?
+msgstr "Confirmer la suppression ?"

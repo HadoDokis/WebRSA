@@ -22,17 +22,11 @@ msgstr ""
 # Enum Decisionpersonnepcg66.validationdecision
 ###############################################################################
 
-msgid "Decisionstraitementspcgs66::add"
-msgstr "Ajouter une décision"
-
 msgid "Decisiontraitementpcg66::index::empty"
 msgstr "Aucune proposition de décision pour ce traitement"
 
 msgid "Decisionstraitementspcgs66::index"
 msgstr "Propositions de décisions pour le traitement :"
-
-msgid "Decisionstraitementspcgs66::edit"
-msgstr "Editer la proposition"
 
 msgid "Decisionstraitementspcgs66::print"
 msgstr "Imprimer la proposition"

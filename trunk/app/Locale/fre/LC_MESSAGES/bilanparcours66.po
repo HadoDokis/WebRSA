@@ -34,9 +34,6 @@ msgstr "Situation de l'allocataire"
 msgid "Bilanparcours66.bilanparcours"
 msgstr "Bilan du parcours"
 
-msgid "Bilanparcours66.infoscomplementaires"
-msgstr "Informations complémentaires"
-
 msgid "Bilanparcours66.observationsallocataire"
 msgstr "Observations de l'allocataire"
 
@@ -93,9 +90,6 @@ msgstr "Nouveaux objectifs: actions à mettre en place ou à poursuivre"
 
 msgid "Bilanparcours66.proposition"
 msgstr "Type de commission"
-
-msgid "Bilanparcours66.examenaudition"
-msgstr "Maintien / Réorientation"
 
 msgid "Bilanparcours66.choixparcours"
 msgstr "Choix du parcours"

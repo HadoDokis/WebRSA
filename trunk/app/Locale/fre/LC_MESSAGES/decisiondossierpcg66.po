@@ -25,9 +25,6 @@ msgstr ""
 msgid "Dosssierspcgs66::add"
 msgstr "Ajouter une décision"
 
-msgid "Decisionsdossierspcgs66::edit"
-msgstr "Editer la proposition"
-
 msgid "Decisionsdossierspcgs66::print"
 msgstr "Imprimer la proposition"
 
@@ -39,9 +36,6 @@ msgstr "Vue de la proposition de décision"
 
 msgid "Decisionsdossierspcgs66::delete::confirm"
 msgstr "Etes-vous sûr de vouloir supprimer la proposition ?"
-
-msgid "Decisionsdossierspcgs66::filelink"
-msgstr "Lier des fichiers à la décision"
 
 msgid "Decisiondossierpcg66.validationproposition"
 msgstr "Validation de la proposition"

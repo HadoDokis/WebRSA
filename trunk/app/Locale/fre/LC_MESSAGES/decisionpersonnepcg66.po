@@ -31,9 +31,6 @@ msgstr "Aucune proposition de décision pour cet allocataire"
 msgid "Decisionspersonnespcgs66::index"
 msgstr "Propositions de décisions pour "
 
-msgid "Decisionspersonnespcgs66::edit"
-msgstr "Editer la proposition"
-
 msgid "Decisionspersonnespcgs66::print"
 msgstr "Imprimer la proposition"
 
