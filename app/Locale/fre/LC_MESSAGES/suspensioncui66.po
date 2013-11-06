@@ -28,7 +28,6 @@ msgid "Suspensioncui66::edit"
 msgstr "Modification d'une suspension"
 
 msgid "Suspensioncui66::index::empty"
-# msgstr "Aucune suspension définie"
 msgstr "Aucune suspension présente pour ce CUI"
 
 msgid "Suspensionscuis66::delete::confirm"
@@ -42,9 +41,6 @@ msgstr "Modifier une suspension"
 
 msgid "Suspensionscuis66::delete"
 msgstr "Supprimer une suspension"
-
-msgid "Suspensioncui66.observation"
-msgstr "Observations"
 
 msgid "Suspensioncui66.observation"
 msgstr "Observations"

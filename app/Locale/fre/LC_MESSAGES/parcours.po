@@ -32,9 +32,6 @@ msgstr "Refus du parcours"
 msgid "Parcours.motimodparco"
 msgstr "Motif de la modification du parcours"
 
-msgid "Parcours.motimodparco"
-msgstr "Motif de la modification du parcours"
-
 msgid "Parcours.raisocorgdeciorie"
 msgstr "Raison sociale de l'organisme décidant de l'orientation"
 

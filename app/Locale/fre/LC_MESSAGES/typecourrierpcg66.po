@@ -28,9 +28,6 @@ msgstr "Intitulé des types de courrier"
 msgid "Typescourrierspcgs66::add"
 msgstr "Ajouter un type de courrier"
 
-msgid "Typescourrierspcgs66::edit"
-msgstr "Modifier le type"
-
 msgid "Typescourrierspcgs66::delete"
 msgstr "Supprimer le type"
 

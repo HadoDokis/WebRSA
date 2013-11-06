@@ -112,22 +112,18 @@ msgid "ENUM::POSITIONCER::01signe"
 msgstr "Signé"
 
 msgid "ENUM::POSITIONCER::02attdecisioncpdv"
-# msgstr "En attente de décision du Responsable"
 msgstr "Signé et transféré"
 
 msgid "ENUM::POSITIONCER::03attdecisioncg"
-# msgstr "En attente de décision CG"
 msgstr "Validé Responsable"
 
 msgid "ENUM::POSITIONCER::99rejetecpdv"
 msgstr "Rejeté Responsable"
 
 msgid "ENUM::POSITIONCER::04premierelecture"
-# msgstr "Première lecture"
 msgstr "En attente avis CS"
 
 msgid "ENUM::POSITIONCER::05secondelecture"
-# msgstr "Seconde lecture"
 msgstr "En attente avis cadre"
 
 msgid "ENUM::POSITIONCER::06attaviscadre"

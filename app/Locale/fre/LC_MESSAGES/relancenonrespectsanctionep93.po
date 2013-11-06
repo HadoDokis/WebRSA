@@ -26,9 +26,6 @@ msgstr "Dossiers à relancer (EP)"
 msgid "Relancesnonrespectssanctionseps93::impressions"
 msgstr "Dossiers relancés (EP)"
 
-msgid "Relancenonrespectsanctionep93.daterelance"
-msgstr "Date de relance"
-
 msgid "Relancenonrespectsanctionep93.arelancer"
 msgstr "Statut relance"
 

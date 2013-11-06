@@ -28,9 +28,6 @@ msgstr "Intitulé des pièces liées au modèle de courrier"
 msgid "Piecesmodelestypescourrierspcgs66::add"
 msgstr "Ajouter une pièce à un modèle de courrier"
 
-msgid "Piecesmodelestypescourrierspcgs66::edit"
-msgstr "Modifier la pièce"
-
 msgid "Piecesmodelestypescourrierspcgs66::delete"
 msgstr "Supprimer la pièce"
 

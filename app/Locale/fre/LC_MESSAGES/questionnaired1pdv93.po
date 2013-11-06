@@ -31,7 +31,7 @@ msgid "ENUM::MARCHE_TRAVAIL::chomeur_longue_duree"
 msgstr "Chômeurs de longue durée (dernier emploi remontant à plus de 12 mois)"
 
 msgid "ENUM::MARCHE_TRAVAIL::inactif_hors_formation"
-msgstr "Inactifs (hors "en formation") scolaires, retraités "
+msgstr "Inactifs (hors \"en formation\") scolaires, retraités "
 
 msgid "ENUM::MARCHE_TRAVAIL::inactif_en_formation"
 msgstr "Inactifs en formation"

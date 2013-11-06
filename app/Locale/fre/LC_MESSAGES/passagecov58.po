@@ -22,9 +22,6 @@ msgstr ""
 msgid "Passagecov58.chosen"
 msgstr "Sélectionner"
 
-msgid "Passagecov58.etatdossiercov"
-msgstr "Etat du dossier"
-
 msgid "ENUM::ETATDOSSIERCOV::associe"
 msgstr "En cours de traitement"
 

@@ -60,7 +60,6 @@ msgid "ActioncandidatPersonne.dfaction"
 msgstr "Date de retour de la prescription"
 
 msgid "ActioncandidatPersonne.motifdemande"
-# msgstr "Objet ou nature de l'orientation / observations : "
 msgstr "Action prescrite et nom du partenaire/prestataire"
 
 msgid "ActioncandidatPersonne.rendezvous_id"

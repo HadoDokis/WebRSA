@@ -35,9 +35,6 @@ msgid "Rendezvous::index::empty"
 msgstr "Aucun rendez-vous présent"
 
 msgid "Rendezvous::add"
-msgstr "Ajouter un nouveau rendez-vous"
-
-msgid "Rendezvous::add"
 msgstr "Ajout d'un rendez-vous"
 
 msgid "Rendezvous::edit"
@@ -60,9 +57,6 @@ msgstr "Heure du RDV"
 
 msgid "Rendezvous.objetrdv"
 msgstr "Objectif du RDV"
-
-msgid "Rendezvous.commentairerdv"
-msgstr "Commentaire du RDV"
 
 msgid "Rendezvous.statutrdv"
 msgstr "Statut du RDV"

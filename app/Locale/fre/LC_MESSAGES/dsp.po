@@ -374,22 +374,6 @@ msgstr "Autres"
 
 
 ###############################################################################
-# Enum Dsp.natmob
-###############################################################################
-
-msgid "ENUM::NATMOB::2504"
-msgstr "Non"
-
-msgid "ENUM::NATMOB::2501"
-msgstr "Sur la commune"
-
-msgid "ENUM::NATMOB::2502"
-msgstr "Sur le département"
-
-msgid "ENUM::NATMOB::2503"
-msgstr "Sur un autre département"
-
-###############################################################################
 # Enum Dsp.natlog
 ###############################################################################
 
@@ -608,7 +592,6 @@ msgid "Detaildiflog.diflog"
 msgstr "Difficultés logement ?"
 
 msgid "Detaildiflog.libautrdiflog"
-# msgstr "Autres difficultés de logement ? (100 carac. max)"
 msgstr "Veuillez préciser quelles sont les autres situations particulières (100 carac. max)"
 ###############################################################################
 
@@ -813,10 +796,6 @@ msgstr "Salle d'eau"
 
 ###############################################################################
 
-msgid "Dsp::index::empty"
-msgstr "Aucun historique de DSP pour cette personne"
-
-###############################################################################
 msgid "Dsp.statutoccupation"
 msgstr "Statut d'occupation "
 

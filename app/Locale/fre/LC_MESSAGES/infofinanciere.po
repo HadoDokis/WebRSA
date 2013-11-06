@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-msgid "Infofinanciere."
+msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: \n"
@@ -28,7 +28,7 @@ msgid "Infofinanciere.moismoucompta"
 msgstr "Mois du mouvement comptable"
 
 msgid "Infofinanciere.type_allocation"
-msgstr "Type d\'allocation"
+msgstr "Type d'allocation"
 
 msgid "Infofinanciere.natpfcre"
 msgstr "Nature de la prestation pour la créance"
@@ -40,10 +40,10 @@ msgid "Infofinanciere.numintmoucompta"
 msgstr "Numéro interne du mouvement comptable"
 
 msgid "Infofinanciere.typeopecompta"
-msgstr "Type d\'opération comptable"
+msgstr "Type d'opération comptable"
 
 msgid "Infofinanciere.sensopecompta"
-msgstr "Signification/sens de l\'opération comptable"
+msgstr "Signification/sens de l'opération comptable"
 
 msgid "Infofinanciere.mtmoucompta"
 msgstr "Montant du mouvement comptable"

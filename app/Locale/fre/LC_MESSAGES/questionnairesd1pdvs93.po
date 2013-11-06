@@ -163,47 +163,8 @@ msgstr "Code postal"
 msgid "Situationallocataire.locaadr"
 msgstr "Nom de commune"
 
-msgid "Situationallocataire.numdemrsa"
-msgstr ""
-
-msgid "Situationallocataire.matricule"
-msgstr ""
-
-msgid "Situationallocataire.fonorg"
-msgstr ""
-
-msgid "Situationallocataire.etatdosrsa"
-msgstr ""
-
-msgid "Situationallocataire.sitfam"
-msgstr ""
-
 msgid "Situationallocataire.sitfam_view"
 msgstr "Situation familiale"
-
-msgid "Situationallocataire.nbenfants"
-msgstr ""
-
-msgid "Situationallocataire.dtdemrsa"
-msgstr ""
-
-msgid "Situationallocataire.dtdemrmi"
-msgstr ""
-
-msgid "Situationallocataire.statudemrsa"
-msgstr ""
-
-msgid "Situationallocataire.numdepins"
-msgstr ""
-
-msgid "Situationallocataire.typeserins"
-msgstr ""
-
-msgid "Situationallocataire.numcomins"
-msgstr ""
-
-msgid "Situationallocataire.numagrins"
-msgstr ""
 
 msgid "Situationallocataire.natpf_socle"
 msgstr "Bénéficiaires RSA socle"
