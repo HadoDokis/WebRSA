@@ -91,7 +91,7 @@
 			if( !empty( $results ) ) {
 				foreach( $results as $result ) {
 					$success = $this->Dossier->Foyer->Personne->Questionnaired2pdv93->saveAuto(
-						$data['Transfertpdv93']['personne_id'],
+						$result['Personne']['id'],
 						'changement_situation',
 						'modif_departement'
 					) && $success;
