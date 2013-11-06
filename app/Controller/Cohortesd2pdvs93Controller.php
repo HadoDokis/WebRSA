@@ -73,12 +73,16 @@
 					)
 				);
 
+
+				$paginationNombreTotal = Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+				$this->set( 'format', $this->_paginationFormat( $paginationNombreTotal ) );
+
 				$this->paginate = $querydata;
 				$results = $this->paginate(
 					$this->Dossier,
 					array(),
 					array(),
-					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
+					!$paginationNombreTotal
 				);
 
 				$this->set( compact( 'results' ) );
