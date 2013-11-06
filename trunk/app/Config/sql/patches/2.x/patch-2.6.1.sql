@@ -274,6 +274,56 @@ INSERT INTO questionnairesd2pdvs93 ( personne_id, questionnaired1pdv93_id, struc
 				)
 			);
 
+--------------------------------------------------------------------------------
+-- 20131106 : Suppression des doublons dans la table aros
+--	Il faudra impérativement lancer le shell Permissions après la passage du patch:
+--	lib/Cake/Console/cake Permissions
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.dedoublonnage_aros() RETURNS VOID AS
+$$
+	DECLARE
+		v_row_doublon record;
+		v_query text;
+	BEGIN
+		FOR v_row_doublon IN
+			SELECT
+					aros1.id AS aros1_id,
+					aros2.id AS aros2_id
+				FROM aros AS aros1,
+					aros AS aros2
+				WHERE aros1.id < aros2.id
+					AND aros1.model = aros2.model
+					AND aros1.alias = aros2.alias
+					AND aros1.foreign_key = aros2.foreign_key
+				ORDER BY aros1.id, aros2.id
+		LOOP
+			-- Mise à jour
+			v_query := 'UPDATE aros SET parent_id = ' || v_row_doublon.aros1_id || ' WHERE parent_id = ' || v_row_doublon.aros2_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+
+			-- Suppression dans la table aros_acos
+			v_query := 'DELETE FROM aros_acos WHERE aro_id = ' || v_row_doublon.aros2_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+
+			-- Suppression de l'aros surnuméraire
+			v_query := 'DELETE FROM aros WHERE id = ' || v_row_doublon.aros2_id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.dedoublonnage_aros();
+DROP FUNCTION public.dedoublonnage_aros();
+
+-- Prévention, ajout de contraintes d'unicité sur les tables aros et acos
+ALTER TABLE aros ADD CONSTRAINT aros_model_alias_foreign_key_unique_chk UNIQUE ( model, alias, foreign_key );
+ALTER TABLE acos ADD CONSTRAINT acos_alias_unique_chk UNIQUE ( alias );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
