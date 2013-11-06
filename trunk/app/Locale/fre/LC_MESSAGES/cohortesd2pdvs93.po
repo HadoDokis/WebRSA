@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Cohortesd2pdvs93/index/:heading"
-msgstr "Formulaire de sortie D2"
+msgstr "Formulaires de sortie D2 à saisir"
 
 msgid "/Cohortesd2pdvs93/index"
 msgstr "Formulaire"

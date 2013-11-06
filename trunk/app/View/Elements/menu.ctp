@@ -90,7 +90,7 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
                 'url' => array( 'controller' => 'referents', 'action' => 'clotureenmasse' )
 			),
-            'Formulaire de sortie D2' => array(
+            __d( 'cohortesd2pdvs93', '/Cohortesd2pdvs93/index/:heading' ) => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
                 'url' => array( 'controller' => 'cohortesd2pdvs93', 'action' => 'index' )
 			),
