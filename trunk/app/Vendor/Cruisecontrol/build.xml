@@ -33,7 +33,7 @@
 	</target>
 
 	<!-- Vérification de la syntaxe des fichiers .php et .ctp -->
-	<target name="lint">
+	<target name="php-lint">
 		<apply executable="php" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
 			<arg line="-l"/>
 			<fileset
@@ -42,6 +42,26 @@
 				excludes="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
 		</apply>
 	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .po
+		@url http://stackoverflow.com/questions/9880259/detecting-errors-in-po-files
+
+		Lorsque plusieurs traductions du même msgid sont présentes dans un fichier
+		.po, c'est la dernière qui est prise en compte.
+	-->
+	<target name="po-lint">
+		<apply executable="msgfmt" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
+			<arg line="-v"/>
+			<arg line="-C"/>
+			<fileset
+				dir="${dir.cakephp.app}"
+				includes="**/*.po"
+				excludes="**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
+		</apply>
+	</target>
+
+	<target name="lint" depends="php-lint,po-lint"/>
 
 	<!-- Tests untaires -->
 	<target name="unittest" depends="clear,lint">
