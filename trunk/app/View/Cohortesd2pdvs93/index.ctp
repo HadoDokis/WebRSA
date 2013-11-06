@@ -70,7 +70,8 @@
 				'/Questionnairesd2pdvs93/index/#Personne.id#' => array( 'class' => 'external' ),
 			),
 			array(
-				'options' => $options
+				'options' => $options,
+				'format' => $format
 			)
 		);
 	}

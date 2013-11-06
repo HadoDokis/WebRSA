@@ -106,6 +106,28 @@
 		}
 
 		/**
+		 * Retourne le format à utiliser par le PaginatorHelper suivant que l'on
+		 * utilise la pagination progressive ou non.
+		 *
+		 * @param boolean $nombre_total
+		 * @return string
+		 */
+		protected function _paginationFormat( $nombre_total = null ) {
+			if( is_null( $nombre_total ) ) {
+				$nombre_total = !$this->_hasProgressivePagination();
+			}
+
+			if( $nombre_total ) {
+				$format = __( 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' );
+			}
+			else {
+				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
+			}
+
+			return $format;
+		}
+
+		/**
 		 * Permet de rajouter des conditions aux conditions de recherches suivant
 		 * le paramétrage des service référent dont dépend l'utilisateur connecté.
 		 *
