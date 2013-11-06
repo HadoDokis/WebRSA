@@ -3213,10 +3213,10 @@ msgstr "Suppression d'une thématique de RDV"
 ###############################################################################
 
 msgid "Module:Cohortesd2pdvs93"
-msgstr "Module cohorte de formulaires de sortie D2 (CG 93)"
+msgstr "Module cohorte de formulaires de sortie D2 à saisir (CG 93)"
 
 msgid "Cohortesd2pdvs93:index"
-msgstr "Cohorte de formulaires de sortie D2"
+msgstr "Cohorte de formulaires de sortie D2 à saisir"
 
 ###############################################################################
 
