@@ -364,6 +364,7 @@
 					'datenotification' => NULL,
 					'actioncandidat_id' => NULL,
 					'present' => true,
+					'datetacitereconduction' => null,
 				),
 				'Cer93' =>
 				array(
@@ -771,6 +772,7 @@
 					'datenotification' => NULL,
 					'actioncandidat_id' => NULL,
 					'present' => true,
+					'datetacitereconduction' => null,
 				),
 				'Compofoyercer93' =>
 				array(

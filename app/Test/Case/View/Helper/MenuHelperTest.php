@@ -41,6 +41,7 @@
 			$this->View = new View( $controller );
 			$this->Menu = new MenuHelper( $this->View );
 			CakeSession::delete( 'Auth.Permissions' );
+			WebrsaPermissions::$sessionPermissionsKey = 'Auth.Permissions';
 		}
 
 		/**
