@@ -54,6 +54,7 @@
 		<apply executable="msgfmt" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
 			<arg line="-v"/>
 			<arg line="-C"/>
+			<arg line="-o /dev/null"/>
 			<fileset
 				dir="${dir.cakephp.app}"
 				includes="**/*.po"
