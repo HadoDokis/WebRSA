@@ -225,10 +225,10 @@
 		public function numberCellsCsv( $row, array $data ) {
 			foreach( $this->columns as $column ) {
 				// Valeur
-				$row[] = $this->Locale->number( Hash::get( $data, $column ) );
+				$row[] = str_replace( '&nbsp;', '', $this->Locale->number( Hash::get( $data, $column ) ) );
 
 				// Pourcentage
-				$row[] = $this->Locale->number( Hash::get( $data, "{$column}_%" ), 2 );
+				$row[] = str_replace( '&nbsp;', '', $this->Locale->number( Hash::get( $data, "{$column}_%" ), 2 ) );
 			}
 
 			return $row;

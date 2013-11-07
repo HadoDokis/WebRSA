@@ -18,12 +18,14 @@
 			</tr>
 		</thead>
 		<tbody>
-			<!-- TODO: total participants, total sorties => dans le Helper -->
-			<?php echo $this->Tableaud2->line1Categorie( 'maintien', $results );?>
-			<?php echo $this->Tableaud2->line3Categorie( 'sortie_obligation', $results, $categories );?>
-			<?php echo $this->Tableaud2->line1Categorie( 'abandon', $results );?>
-			<?php echo $this->Tableaud2->line1Categorie( 'reorientation', $results );?>
-			<?php echo $this->Tableaud2->line2Categorie( 'changement_situation', $results, $categories );?>
+			<?php
+				echo $this->Tableaud2->line1Categorie( 'totaux', $results );
+				echo $this->Tableaud2->line1Categorie( 'maintien', $results );
+				echo $this->Tableaud2->line3Categorie( 'sortie_obligation', $results, $categories );
+				echo $this->Tableaud2->line1Categorie( 'abandon', $results );
+				echo $this->Tableaud2->line1Categorie( 'reorientation', $results );
+				echo $this->Tableaud2->line2Categorie( 'changement_situation', $results, $categories );
+			?>
 		</tbody>
 	</table>
 

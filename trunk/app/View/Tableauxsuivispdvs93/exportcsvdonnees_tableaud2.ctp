@@ -17,6 +17,7 @@
 		)
 	);
 
+	$this->Tableaud2->line1CategorieCsv( 'totaux', $results );
 	$this->Tableaud2->line1CategorieCsv( 'maintien', $results );
 	$this->Tableaud2->line3CategorieCsv( 'sortie_obligation', $results, $categories );
 	$this->Tableaud2->line1CategorieCsv( 'abandon', $results );

@@ -232,6 +232,37 @@
 		}
 
 		/**
+		 * FIXME: les dates, voir avec D1/D2
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableaud2Total( array $search ) {
+			$cer = 'EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Rendezvous"."personne_id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired1pdv93"."created" ) AND contratsinsertion.df_ci >= \''.date( 'Y-m-d' ).'\' )';
+
+			$fields = array(
+				'"Situationallocataire"."sexe" AS "categorie"',
+				'(
+					CASE
+						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'hommes\'
+						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femmes\'
+					END
+				) AS "sexe"',
+				'(
+					CASE
+						WHEN '.$cer.' THEN 1
+						ELSE 0
+					END
+				) AS "cer"',
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+			);
+
+			$group = array( 'Situationallocataire.sexe', $cer );
+
+			return array( $fields, $group );
+		}
+
+		/**
 		 *
 		 * @param array $search
 		 * @return array
@@ -885,6 +916,10 @@
 				),
 				'conditions' => array(
 					'Sortieaccompagnementd2pdv93.parent_id IS NOT NULL'
+				),
+				'order' => array(
+					'Parent.id ASC',
+					'Sortieaccompagnementd2pdv93.id ASC',
 				)
 			);
 			$sortiesaccompagnement = $Questionnaired2pdv93->Sortieaccompagnementd2pdv93->find( 'list', $querydata );
@@ -1028,24 +1063,63 @@
 				}
 			}
 
-			// Calcul des totaux qui seront utilisés pour le calcul des pourcentages
+			// Total des participants, c'est à dire ceux pris en compte dans la tableau D1
+			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+			$querydata = $this->qdTableaud1( $search );
+
+			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			$conditiondd = null;
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+			$dd_d1_d2 = Hash::get( $search, 'Search.soumis_dd_d1_d2' );
+			if( $dd_d1_d2 ) {
+				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
+					array(
+						'alias' => 'historiquesdroits',
+						'fields' => array( 'historiquesdroits.personne_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
+							'historiquesdroits.toppersdrodevorsa' => 1,
+							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", TIMESTAMP \''.$annee.'-12-31 23:59:59\' )'
+						)
+					)
+				);
+				$conditiondd = array(
+					'OR' => array(
+						$conditiondd,
+						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
+					)
+				);
+			}
+			$querydata['conditions'][] = $conditiondd;
+			list( $fields, $group ) = $this->_tableaud2Total( $search );
+			$querydata['fields'] = $fields;
+			$querydata['group'] = $group;
+			$results = $Questionnaired1pdv93->find( 'all', $querydata );
+
 			$totaux = array(
 				'nombre' => 0,
 				'hommes' => 0,
 				'femmes' => 0,
 				'cer' => 0
 			);
-			foreach( array_keys( $totaux ) as $key ) {
-				$totaux[$key] = array_sum(
-					Hash::merge(
-						Hash::extract( $return, "{s}.{$key}" ),
-						Hash::extract( $return, "{s}.{s}.{$key}" ),
-						Hash::extract( $return, "{s}.{s}.{s}.{$key}" )
-					)
-				);
+			foreach( $results as $result ) {
+				$totaux[$result[0]['sexe']] += $result[0]['count'];
+				if( $result[0]['cer'] ) {
+					$totaux['cer'] += $result[0]['count'];
+				}
 			}
+			$totaux['nombre'] = $totaux['hommes'] + $totaux['femmes'];
+//			debug( $results );
+//			debug( $totaux );
 
-			// On complète le tableau
+
+			$nombre_total = max( array( $totaux['nombre'], 1 ) );
+
+			// Ajout de la ligne de totaux au début du tableau de résultats
+			$return = array( 'totaux' => $totaux ) + $return;
+
+			// On complète le tableau pour les catégories vides
 			$return = Hash::flatten( $return );
 			foreach( $return as $key => $value ) {
 				if( is_null( $value ) ) {
@@ -1067,21 +1141,21 @@
 			foreach( $return as $categorie1 => $data1 ) {
 				if( isset( $data1['nombre'] ) ) {
 					foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
-						$return[$categorie1]["{$key}_%"] = $data1[$key] / max( array( $totaux[$key], 1 ) ) * 100;
+						$return[$categorie1]["{$key}_%"] = $data1[$key] / $nombre_total * 100;
 					}
 				}
 				else {
 					foreach( $data1 as $categorie2 => $data2 ) {
 						if( isset( $data2['nombre'] ) ) {
 							foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
-								$return[$categorie1][$categorie2]["{$key}_%"] = $data2[$key] / max( array( $totaux[$key], 1 ) ) * 100;
+								$return[$categorie1][$categorie2]["{$key}_%"] = $data2[$key] / $nombre_total * 100;
 							}
 						}
 						else {
 							foreach( $data2 as $categorie3 => $data3 ) {
 								if( isset( $data3['nombre'] ) ) {
 									foreach( array( 'nombre', 'hommes', 'femmes', 'cer' ) as $key ) {
-										$return[$categorie1][$categorie2][$categorie3]["{$key}_%"] = $data3[$key] / max( array( $totaux[$key], 1 ) ) * 100;
+										$return[$categorie1][$categorie2][$categorie3]["{$key}_%"] = $data3[$key] / $nombre_total * 100;
 									}
 								}
 							}
