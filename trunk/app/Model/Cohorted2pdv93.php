@@ -38,6 +38,7 @@
 
 		public function search( $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
+			$Personne = ClassRegistry::init( 'Personne' );
 
 			$sqDerniereRgadr01 = $Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 
@@ -72,7 +73,7 @@
 
 			// Année de suivi
 			$annee = Hash::get( $search, 'Questionnaired1pdv93.annee' );
-			$conditions['EXTRACT( \'YEAR\' FROM "Rendezvous"."daterdv" )'] = $annee;
+			$conditions[] = "Rendezvous.daterdv BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'";
 
 			// PDV effectuant le suivi
 			$structurereferente_id = Hash::get( $search, 'Rendezvous.structurereferente_id' );
@@ -89,7 +90,7 @@
 				$conditions[] = 'Questionnaired2pdv93.id IS NULL';
 			}
 
-			$querydata = array(
+			/*$querydata = array(
 				'fields' => array_merge(
 					$Dossier->fields(),
 					$Dossier->Detaildroitrsa->fields(),
@@ -122,6 +123,46 @@
 				'conditions' => $conditions,
 				'contain' => false,
 				'order' => array( 'Questionnaired2pdv93.modified ASC', 'Rendezvous.daterdv ASC' ),
+				'limit' => 10
+			);*/
+
+			$querydata = array(
+				'fields' => array_merge(
+					$Personne->fields(),
+					$Personne->Calculdroitrsa->fields(),
+					$Personne->Prestation->fields(),
+					$Personne->Questionnaired1pdv93->fields(),
+					$Personne->Questionnaired1pdv93->Questionnaired2pdv93->fields(),
+					$Personne->Questionnaired1pdv93->Rendezvous->fields(),
+					$Personne->Questionnaired1pdv93->Rendezvous->Structurereferente->fields(),
+					$Personne->Foyer->Adressefoyer->fields(),
+					$Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$Personne->Foyer->Dossier->fields(),
+					$Personne->Foyer->Dossier->Detaildroitrsa->fields(),
+					$Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->fields()
+				),
+				'joins' => array(
+					$Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$Personne->Questionnaired1pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+					$Personne->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => $conditions,
+				'contain' => false,
+				'order' => array(
+					'Questionnaired2pdv93.modified ASC',
+					'Rendezvous.daterdv ASC',
+					'Questionnaired1pdv93.id ASC',
+				),
 				'limit' => 10
 			);
 
