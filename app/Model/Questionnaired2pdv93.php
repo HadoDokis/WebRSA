@@ -319,6 +319,19 @@
 				$formData[$this->alias]['personne_id'] = $personne_id;
 				$formData[$this->alias]['structurereferente_id'] = $this->structurereferenteId( $personne_id );
 				$formData[$this->alias]['questionnaired1pdv93_id'] = $this->questionnairesd1pdv93Id( $personne_id );
+
+				// Lorsque l'allocataire ne possède pas encore de D2 et est soumis à droits et devoirs, on préremplit en maintien
+				$querydata = array(
+					'fields' => array( 'Calculdroitrsa.toppersdrodevorsa' ),
+					'contain' => false,
+					'conditions' => array(
+						'Calculdroitrsa.personne_id' => $personne_id
+					)
+				);
+				$calculdroitrsa = $this->Personne->Calculdroitrsa->find( 'first', $querydata );
+				if( Hash::get( $calculdroitrsa, 'Calculdroitrsa.toppersdrodevorsa' ) ) {
+					$formData[$this->alias]['situationaccompagnement'] = 'maintien';
+				}
 			}
 
 			return $formData;
