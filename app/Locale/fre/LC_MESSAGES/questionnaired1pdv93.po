@@ -175,3 +175,6 @@ msgstr "Oui"
 
 msgid "Questionnaired1pdv93::index::empty"
 msgstr "Aucun enregistrement"
+
+msgid "Questionnairesd1pdvs93::delete::confirm"
+msgstr "Confirmer la suppression ?"
