@@ -30,8 +30,11 @@ msgstr "Dernière modification"
 
 # ------------------------------------------------------------------------------
 
+msgid "Questionnaired2pdv93.exists"
+msgstr "Un formulaire D2 est déjà enregistré pour l’année en cours."
+
 msgid "Questionnaired1pdv93.missing"
-msgstr "Cet allocataire ne peut pas remplir de formulaire de sortie d'accompagnement."
+msgstr "Cet allocataire ne possède pas de formulaire D1 pour l'année en cours."
 
 msgid "Calculdroitrsa.toppersdrodevorsa_notice"
 msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."

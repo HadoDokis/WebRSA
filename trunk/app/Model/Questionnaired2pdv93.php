@@ -123,7 +123,7 @@
 		);
 
 		/**
-		 * Retourne la structure référente dans laquelle l'allocataire doit encore
+		 * Retourne la structure référente pour laquelle l'allocataire doit encore
 		 * remplir un questionnaire D2 pour l'année en cours.
 		 *
 		 * @param integer $personne_id
@@ -133,11 +133,11 @@
 			$sq = $this->sq(
 				array(
 					'alias' => 'questionnairesd2pdvs93',
-					'fields' => 'questionnairesd2pdvs93.id',
+					'fields' => 'questionnairesd2pdvs93.questionnaired1pdv93_id',
 					'contain' => false,
 					'conditions' => array(
-						'questionnairesd2pdvs93.personne_id' => $personne_id,
-						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created )' => date( 'Y' ),
+						'questionnairesd2pdvs93.personne_id = Questionnaired1pdv93.personne_id',
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created ) = EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )',
 						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
 					)
 				)
@@ -152,9 +152,13 @@
 				'conditions' => array(
 					'Questionnaired1pdv93.personne_id' => $personne_id,
 					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => date( 'Y' ),
-					"NOT EXISTS( {$sq} )",
+					"Questionnaired1pdv93.id NOT IN ( {$sq} )",
 				),
+				'order' => array(
+					'Questionnaired1pdv93.date_validation DESC'
+				)
 			);
+
 			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
 
 			return Hash::get( $questionnaired1pdv93, 'Rendezvous.structurereferente_id' );
@@ -171,7 +175,7 @@
 			$sq = $this->sq(
 				array(
 					'alias' => 'questionnairesd2pdvs93',
-					'fields' => 'questionnairesd2pdvs93.id',
+					'fields' => 'questionnairesd2pdvs93.questionnaired1pdv93_id',
 					'contain' => false,
 					'conditions' => array(
 						'questionnairesd2pdvs93.personne_id' => $personne_id,
@@ -190,8 +194,11 @@
 				'conditions' => array(
 					'Questionnaired1pdv93.personne_id' => $personne_id,
 					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => date( 'Y' ),
-					"NOT EXISTS( {$sq} )",
+					"Questionnaired1pdv93.id NOT IN ( {$sq} )",
 				),
+				'order' => array(
+					'Questionnaired1pdv93.date_validation DESC'
+				)
 			);
 			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
 
@@ -258,10 +265,17 @@
 		public function messages( $personne_id ) {
 			$messages = array();
 
-			// Qui possède un questionnaire D1 sans questionnaire D2 pour l'année en cours
-			$structurereferente_id = $this->structurereferenteId( $personne_id );
-			if( empty( $structurereferente_id ) ) {
-				$messages['Questionnaired1pdv93.missing'] = 'error';
+			$this->create( array( 'personne_id' => $personne_id ) );
+			$exists = !$this->checkDateOnceAYear( array( 'created' => date( 'Y-m-d' ) ), 'personne_id' );
+			if( $exists ) {
+				$messages['Questionnaired2pdv93.exists'] = 'error';
+			}
+			else {
+				// Qui possède un questionnaire D1 sans questionnaire D2 pour l'année en cours
+				$structurereferente_id = $this->structurereferenteId( $personne_id );
+				if( empty( $structurereferente_id ) ) {
+					$messages['Questionnaired1pdv93.missing'] = 'error';
+				}
 			}
 
 			$droitsouverts = $this->droitsouverts( $personne_id );
@@ -274,13 +288,72 @@
 				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
 			}
 
-			/*$this->create( array( 'personne_id' => $personne_id ) );
-			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => date( 'Y-m-d' ) ), 'personne_id' );
-			if( $exists ) {
-				$messages['Questionnaired2pdv93.exists'] = 'notice';
-			}*/
-
 			return $messages;
+		}
+
+		/**
+		 * @param array $check
+		 * @return boolean
+		 */
+		public function checkDateOnceAYear( $check, $group_column ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			$result = true;
+			foreach( Hash::normalize( $check ) as $key => $value ) {
+				list( $year, ) = explode( '-', $value );
+
+				if( !empty( $year ) ) {
+					// Pas encore de questionnaire D1 pour l'année en question
+					$querydata = array( 'contain' => false );
+
+					$personne_id = Hash::get( $this->data, "{$this->alias}.{$group_column}" );
+					$querydata['conditions'] = array(
+						"{$this->alias}.{$group_column}" => $personne_id,
+						"{$this->alias}.{$key} BETWEEN '{$year}-01-01' AND '{$year}-12-31'"
+					);
+
+					$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+					if( !empty( $id ) ) {
+						$querydata['conditions']["{$this->alias}.{$this->primaryKey} <>"] = $id;
+					}
+
+					$count = $this->find( 'count', $querydata );
+
+					if( $count == 0 ) {
+						$result = ( $count == 0 ) && $result;
+					}
+					else {
+						// Tous les D1 ont déjà un D2 correspondant ?
+						$sq = $this->sq(
+							array(
+								'alias' => 'questionnairesd2pdvs93',
+								'fields' => array( 'questionnairesd2pdvs93.questionnaired1pdv93_id' ),
+								'conditions' => array(
+									'questionnairesd2pdvs93.questionnaired1pdv93_id = Questionnaired1pdv93.id',
+									'questionnairesd2pdvs93.personne_id = Questionnaired1pdv93.personne_id',
+								),
+								'contain' => false
+							)
+						);
+
+						$querydata = array(
+							'contain' => false,
+							'conditions' => array(
+								"Questionnaired1pdv93.id NOT IN ( {$sq} )",
+								'Questionnaired1pdv93.personne_id' => $personne_id,
+							),
+						);
+
+						$count = $this->Personne->Questionnaired1pdv93->find( 'count', $querydata );
+
+						$result = ( $count > 0 ) && $result;
+					}
+				}
+			}
+
+			return $result;
 		}
 
 		/**

@@ -182,26 +182,49 @@
 				list( $year, ) = explode( '-', $value );
 
 				if( !empty( $year ) ) {
+					// Pas encore de questionnaire D1 pour l'année en question
+					$querydata = array( 'contain' => false );
+
 					$personne_id = Hash::get( $this->data, "{$this->alias}.{$group_column}" );
-					$conditions = array(
+					$querydata['conditions'] = array(
 						"{$this->alias}.{$group_column}" => $personne_id,
 						"{$this->alias}.{$key} BETWEEN '{$year}-01-01' AND '{$year}-12-31'"
 					);
 
 					$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
 					if( !empty( $id ) ) {
-						$conditions["{$this->alias}.{$this->primaryKey} <>"] = $id;
+						$querydata['conditions']["{$this->alias}.{$this->primaryKey} <>"] = $id;
 					}
 
-					$count = $this->find(
-						'count',
-						array(
-							'contain' => false,
-							'conditions' => $conditions
-						)
-					);
+					$count = $this->find( 'count', $querydata );
 
-					$result = ( $count == 0 ) && $result;
+					if( $count == 0 ) {
+						$result = ( $count == 0 ) && $result;
+					}
+					else {
+						// Tous les D1 ont déjà un D2 correspondant ?
+						$sq = $this->Personne->Questionnaired2pdv93->sq(
+							array(
+								'alias' => 'questionnairesd2pdvs93',
+								'fields' => array( 'questionnairesd2pdvs93.questionnaired1pdv93_id' ),
+								'conditions' => array(
+									'questionnairesd2pdvs93.questionnaired1pdv93_id = Questionnaired1pdv93.id',
+									'questionnairesd2pdvs93.personne_id = Questionnaired1pdv93.personne_id',
+								),
+								'contain' => false
+							)
+						);
+
+						$querydata = array(
+							'contain' => false,
+							'conditions' => array(
+								"Questionnaired1pdv93.id NOT IN ( {$sq} )",
+								'Questionnaired1pdv93.personne_id' => $personne_id,
+							),
+						);
+						$count = $this->find( 'count', $querydata );
+						$result = ( $count == 0 ) && $result;
+					}
 				}
 			}
 			return $result;
@@ -388,6 +411,19 @@
 
 			$with = $this->Rendezvous->hasAndBelongsToMany['Thematiquerdv']['with'];
 			$foo = date( 'Y-m-d' );
+
+			// RDV qui n'est pas déjà utilisé pour le remplissage d'un questionnaire D1
+			$sq = $this->sq(
+				array(
+					'alias' => 'questionnairesd1pdvs93',
+					'fields' => array( 'questionnairesd1pdvs93.rendezvous_id' ),
+					'contain' => false,
+					'conditions' => array(
+						'questionnairesd1pdvs93.rendezvous_id = Rendezvous.id'
+					)
+				)
+			);
+
 			$querydata = array(
 				'fields' => array(
 					'Rendezvous.id'
@@ -397,7 +433,8 @@
 					'Rendezvous.personne_id' => $personne_id,
 					"DATE_TRUNC( 'YEAR', Rendezvous.daterdv ) = DATE_TRUNC( 'YEAR', TIMESTAMP '{$foo}' )",
 					'Rendezvous.typerdv_id' => Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv.typerdv_id' ),
-					'Thematiquerdv.linkedmodel' => $this->alias
+					'Thematiquerdv.linkedmodel' => $this->alias,
+					"Rendezvous.id NOT IN ( {$sq} )"
 				),
 				'joins' => array(
 					$this->Rendezvous->join( $with, array( 'type' => 'INNER' ) ),
