@@ -29,7 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Cohortes',
+			'Cohortes' => array( 'index' ),
 			'Gestionzonesgeos',
 			'Search.Filtresdefaut' => array( 'index' ),
 			'Search.Prg' => array(
@@ -56,7 +56,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option' );
+		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne' );
 
 		/**
 		 * Moteur de recherche des questionnaires D2
@@ -65,25 +65,27 @@
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire de recherche
 				$querydata = array(
-					'Dossier' => $this->Cohorted2pdv93->search(
+					'Personne' => $this->Cohorted2pdv93->search(
 						(array)$this->Session->read( 'Auth.Zonegeographique' ),
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$this->request->data['Search'],
-						null
+						$this->Cohortes->sqLocked( 'Dossier' )
 					)
 				);
-
 
 				$paginationNombreTotal = Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 				$this->set( 'format', $this->_paginationFormat( $paginationNombreTotal ) );
 
 				$this->paginate = $querydata;
 				$results = $this->paginate(
-					$this->Dossier,
+//					$this->Dossier,
+					$this->Personne,
 					array(),
 					array(),
 					!$paginationNombreTotal
 				);
+
+				$this->Cohortes->get( Hash::extract( $results, '{n}.Dossier.id' ) );
 
 				$this->set( compact( 'results' ) );
 			}
@@ -105,6 +107,12 @@
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 			);
 			$this->set( compact( 'options' ) );
+
+			$this->set( 'isAjax', $this->request->is( 'ajax' ) );
+
+			if( $this->request->is( 'ajax' ) ) {
+				$this->layout = null;
+			}
 		}
 	}
 ?>

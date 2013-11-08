@@ -37,7 +37,21 @@
 	if( $isAjax ) {
 		$onComplete = 'try {
 var json = request.responseText.evalJSON(true);
-if( json.success === true ) { $( \'popup-content1\' ).update(\'\'); $( \'Questionnaired2pdv93ModalForm\' ).hide(); }
+	if( json.success === true ) {
+		var ajaxCohorteUrl = document.URL.replace( /^(https{0,1}:\/\/[^\/]+)\/.*$/gi, \'$1\' ) + cohorteUrl;
+		new Ajax.Updater(
+			\'Cohortesd2pdv93IndexAjaxContainer\',
+			ajaxCohorteUrl,
+			{
+				evalScripts: true,
+				onComplete: function( response ) {
+					$( \'Questionnaired2pdv93ModalForm\' ).hide();
+				}
+			}
+		);
+
+		$( \'popup-content1\' ).update(\'\');
+	}
 }
 catch(e) {
 	console.log( e );
