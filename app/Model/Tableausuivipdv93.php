@@ -1038,11 +1038,13 @@
 				unset( $data['categorie1'], $data['categorie2'], $data['categorie3'] );
 
 				// Si on n'a que la catégorie 1
-				if( empty( $result['Tableaud2pdv93']['categorie2'] ) ) {
+//				if( empty( $result['Tableaud2pdv93']['categorie2'] ) ) {
+				if( !is_array( $return[$result['Tableaud2pdv93']['categorie1']] ) ) {
 					$return[$result['Tableaud2pdv93']['categorie1']] = $data;
 				}
 				// Si on a les catégories 1 et 2
-				else if( empty( $result['Tableaud2pdv93']['categorie3'] ) ) {
+//				else if( empty( $result['Tableaud2pdv93']['categorie3'] ) ) {
+				else if( !is_array( $return[$result['Tableaud2pdv93']['categorie1']][$enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']]] ) ) {
 					if( isset( $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']] ) ) {
 						$categorie2 = $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']];
 					}
