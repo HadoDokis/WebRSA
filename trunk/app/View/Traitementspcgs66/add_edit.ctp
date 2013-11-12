@@ -57,11 +57,11 @@
 					if( isset( $this->request->data[$M] ) && !empty( $this->request->data[$M] ) ) {
 						foreach( $this->request->data[$M] as $field => $value ) {
 							if( !is_array( $value ) ) {
-								$dataModeletraitementpcg66["data[{$M}][{$field}]"] = $value;
+								$dataModeletraitementpcg66["data[{$M}][{$field}]"] = js_escape( $value );
 							}
 							else {
 								foreach( $value as $k => $v ) {
-									$dataModeletraitementpcg66["data[{$M}][{$field}][{$k}]"] = $v;
+									$dataModeletraitementpcg66["data[{$M}][{$field}][{$k}]"] = js_escape( $v );
 								}
 							}
 						}
