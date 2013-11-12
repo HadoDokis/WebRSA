@@ -1030,6 +1030,11 @@
 
 			$return = $this->tableaud2Categories();
 
+			$dimensions = array();
+			foreach( array_keys( $return ) as $key ) {
+				$dimensions[$key] = Hash::dimensions( (array)$return[$key] ) + 1;
+			}
+
 			// Formattage du tableau de résultats
 			$enums = $Questionnaired2pdv93->enums();
 
@@ -1039,12 +1044,12 @@
 
 				// Si on n'a que la catégorie 1
 //				if( empty( $result['Tableaud2pdv93']['categorie2'] ) ) {
-				if( !is_array( $return[$result['Tableaud2pdv93']['categorie1']] ) ) {
+				if( $dimensions[$result['Tableaud2pdv93']['categorie1']] == 1 ) {
 					$return[$result['Tableaud2pdv93']['categorie1']] = $data;
 				}
 				// Si on a les catégories 1 et 2
 //				else if( empty( $result['Tableaud2pdv93']['categorie3'] ) ) {
-				else if( !is_array( $return[$result['Tableaud2pdv93']['categorie1']][$enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']]] ) ) {
+				else if( $dimensions[$result['Tableaud2pdv93']['categorie1']] == 2 ) {
 					if( isset( $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']] ) ) {
 						$categorie2 = $enums['Questionnaired2pdv93']['chgmentsituationadmin'][$result['Tableaud2pdv93']['categorie2']];
 					}
