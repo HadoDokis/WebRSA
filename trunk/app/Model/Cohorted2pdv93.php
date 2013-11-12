@@ -51,7 +51,10 @@
 				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
 				'Adressefoyer.rgadr' => '01',
 				"Adressefoyer.id IN ( {$sqDerniereRgadr01} )",
-				"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )",
+				'OR' => array(
+					'Detailcalculdroitrsa.id IS NULL',
+					"Detailcalculdroitrsa.id IN ( {$sqDernierDetailcalculdroitrsa} )",
+				)
 			);
 
 			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
@@ -152,7 +155,7 @@
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-					$Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
 				),
