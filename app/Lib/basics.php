@@ -823,4 +823,26 @@
         $liste = trim( $liste, '-' );
         return Hash::filter( explode( $separator, $liste ) );
     }
+    
+    
+    
+    /**
+     * Echapement des caractères spéciaux en javascript
+     * " => \"
+     * retour à la ligne => \n
+     * Exemple:
+     *
+     * <pre> 
+     *      Bonjour Monsieur "Auzolat"
+     *      vous devez vous présenter ...</pre>
+     * donne
+     * <pre>Bonjour Monsieur \"Auzolat\" \nvous devez vous présenter ...</pre>
+     * @param string $value
+     * @return string
+     */
+    function js_escape( $value ) {
+        $value = str_replace( '"', '\\"', $value );
+        $value = str_replace( array( "\r\n", "\r", "\n" ), "\\n", $value ); 
+        return $value;
+    }
 ?>
