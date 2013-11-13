@@ -519,6 +519,7 @@
 				'all',
 				array(
 					'fields' => array(
+						'Personne.id',
 						'Prestation.rolepers',
                         $this->Dossierpcg66->Foyer->Personne->sqVirtualField('nom_complet')
 					),
@@ -579,7 +580,7 @@
                                 'all',
                                 $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->qdDossiersepsOuverts( $personnesIds)
                             );
-
+                            
                             // Si des dossiers existent encore
                             if( isset($dossierEPEnCours) && !empty( $dossierEPEnCours ) ) {
                                 // On récupère la liste des identifiants de ces dossiers d'EPs
@@ -590,7 +591,8 @@
                                     'all',
                                     array( 
                                         'conditions' => array(
-                                            'Dossierep.id' => $dossiersEpsIds
+                                            'Dossierep.id' => $dossiersEpsIds,
+                                            'Dossierep.themeep' => 'defautsinsertionseps66'
                                         ),
                                         'contain' => array('Passagecommissionep')
                                     )
@@ -611,7 +613,7 @@
 
                             if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
                                 $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
-                            }   
+                            }
                         }
                     }
                 }
