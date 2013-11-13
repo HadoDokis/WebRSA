@@ -299,7 +299,7 @@
                 }
             }
             $this->set( compact( 'ajoutPossible' ) );
-            
+
 			if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossierep = $this->Rendezvous->Personne->Dossierep->find(
 					'first',
@@ -560,10 +560,8 @@
                     // On regarde le statut du RDV (si ce dernier est modifié)
                     // On regarde si le statut provoque toujours un passage en commission
                     $statutProvoquantPassage = $this->Rendezvous->Statutrdv->provoquePassageCommission( $this->request->data['Rendezvous']['statutrdv_id'] );
-//debug( $rdv);
-//debug( empty( $statutProvoquantPassage ));
-//die();
-                    // Si c'est le cas ET qu'un dossier COV existe, on le supprime dans la thématique et dans les dossiers COVs
+
+					// Si c'est le cas ET qu'un dossier COV existe, on le supprime dans la thématique et dans les dossiers COVs
                     // FIXME: faire la même chose pour les dossiers EPs ????
                     if( !empty( $rdv['Propoorientsocialecov58']['dossiercov58_id'] ) && empty( $statutProvoquantPassage ) )  {
                         $success = $this->Rendezvous->Propoorientsocialecov58->deleteAll( array( 'Propoorientsocialecov58.rendezvous_id' => $rdv_id ) ) && $success;
@@ -571,10 +569,23 @@
                     }
                 }
 
-				// Création du référent si celui-ci est no présent
-				if( Configure::read( 'Cg.departement' ) == 93 ) {
+				// Création du référent si celui-ci est non présent
+				if( Configure::read( 'Cg.departement' ) == 93 && $this->action === 'add' ) {
 					if( $success && !empty( $this->request->data['Rendezvous']['referent_id'] ) ) {
-						$success = $this->Rendezvous->Referent->PersonneReferent->referentParModele( $this->request->data, 'Rendezvous', 'daterdv' ) && $success;
+						$personneReferentActuel = $this->Rendezvous->Referent->PersonneReferent->find(
+							'first',
+							array(
+								'conditions' => array(
+									'PersonneReferent.personne_id' => $this->request->data['Rendezvous']['personne_id'],
+									'PersonneReferent.dfdesignation IS NULL',
+								),
+								'contain' => false
+							)
+						);
+
+						if( empty( $personneReferentActuel ) ) {
+							$success = $this->Rendezvous->Referent->PersonneReferent->referentParModele( $this->request->data, 'Rendezvous', 'daterdv' ) && $success;
+						}
 					}
 				}
 
