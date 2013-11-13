@@ -459,7 +459,22 @@
 			// Qui possède un RDV ...
 			$rendezvous = $this->rendezvous( $personne_id );
 			if( empty( $rendezvous ) ) {
-				$messages['Rendezvous.premierrdv'] = 'error';
+				$year = date( 'Y' );
+				$querydata = array(
+					'contain' => false,
+					'conditions' => array(
+						"{$this->alias}.personne_id" => $personne_id,
+						"{$this->alias}.date_validation BETWEEN '{$year}-01-01' AND '{$year}-12-31'"
+					)
+				);
+				$count = $this->find( 'count', $querydata );
+
+				if( $count == 0 ) {
+					$messages['Rendezvous.premierrdv'] = 'error';
+				}
+				else {
+					$messages['Rendezvous.premierrdv_utilisable'] = 'error';
+				}
 			}
 
 			$nivetu = $this->nivetu( $personne_id );
