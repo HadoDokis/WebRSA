@@ -207,8 +207,18 @@
 				'Utilisateurs.reconnection' => 'boolean',
 				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
 				'Statistiqueministerielle.conditions_types_cers' => 'isarray',
-                'Rendezvous.useThematique' => 'boolean'
+                'Rendezvous.useThematique' => 'boolean',
 			);
+
+			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
+			if( !empty( $tmp ) ) {
+				if( is_array( $tmp ) ) {
+					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'isarray';
+				}
+				else {
+					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'integer';
+				}
+			}
 		}
 
 		/**
@@ -634,6 +644,11 @@
 							'Contratinsertion.RdvAuto.thematiquerdv_id' => 'Thematiquerdv',
 						)
 					);
+				}
+
+				$tmp = (array)Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
+				if( !empty( $tmp ) ) {
+					$return['Rendezvous.thematiqueAnnuelleParStructurereferente'] = 'Thematiquerdv';
 				}
 			}
 

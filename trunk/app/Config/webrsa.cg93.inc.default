@@ -1145,4 +1145,16 @@
 			),
 		)
 	);
+
+	/**
+	 * Lorsqu'on utilise les thématiques de RDV, on peut obliger à avoir au maximum
+	 * un RDV d'une des thématiques ci-dessous pour un allocataire donné, dans une
+	 * structure référente donnée, pour une année donnée.
+	 *
+	 * On indique ici les clés primaires des entrées concernées de la table
+	 * thematiquesrdvs.
+	 *
+	 * @var integer|array
+	 */
+	Configure::write( 'Rendezvous.thematiqueAnnuelleParStructurereferente', array( 5 ) );
 ?>

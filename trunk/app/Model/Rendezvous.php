@@ -36,36 +36,142 @@
 
 		public $validate = array(
 			'structurereferente_id' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'typerdv_id' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-			),
-			'daterdv' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				),
-				array(
+				'checkThematiqueAnnuelleParStructurereferente' => array(
+					'rule' => 'checkThematiqueAnnuelleParStructurereferente',
+				),
+			),
+			'typerdv_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+			),
+			'daterdv' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => 'Champ obligatoire'
+				),
+				'date' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez vérifier le format de la date.'
 				),
 			),
 			'heurerdv' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
-				)
+				),
 			),
 			'rang' => array(
 				'integer' => array(
 					'rule' => 'integer',
 					'message' => 'Veuillez entrer un nombre entier',
-				)
+				),
 			),
 		);
+
+		/**
+		 * Règle de validation: on vérifie qu'il n'existe pas d'autre RDV pour
+		 * un allocataire donné dans une structure référente donnée dans l'année
+		 * pour une des thématiques annuelles.
+		 *
+		 * @see Configure::write Rendezvous.useThematique
+		 * @see Configure::write Rendezvous.thematiqueAnnuelleParStructurereferente
+		 *
+		 * @param array $check
+		 * @return boolean
+		 */
+		public function checkThematiqueAnnuelleParStructurereferente( $check ) {
+			if( !is_array( $check ) ) {
+				return false;
+			}
+
+			if( !Configure::read( 'Rendezvous.useThematique' ) ) {
+				return true;
+			}
+
+			$thematiquesAnnuelles = (array)Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
+			if( empty( $thematiquesAnnuelles ) ) {
+				return true;
+			}
+
+			$check = array_values( $check );
+			$structurereferente_id = ( isset( $check[0] ) ? $check[0] : null );
+
+			$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$personne_id = Hash::get( $this->data, "{$this->alias}.personne_id" );
+			$daterdv = Hash::get( $this->data, "{$this->alias}.daterdv" );
+			$values = (array)Hash::extract( $this->data, 'Thematiquerdv.Thematiquerdv' );
+
+			if( empty( $values ) || empty( $daterdv ) || empty( $personne_id ) || empty( $structurereferente_id ) ) {
+				return true;
+			}
+
+			$intersect = array_intersect( $thematiquesAnnuelles, $values );
+			if( empty( $intersect ) ) {
+				return true;
+			}
+
+			$year = date( 'Y', strtotime( $daterdv ) );
+			$sqThematiqueRdv = $this->RendezvousThematiquerdv->sq(
+				array(
+					'alias' => 'rendezvous_thematiquesrdvs',
+					'fields' => array( 'rendezvous_thematiquesrdvs.rendezvous_id' ),
+					'contain' => false,
+					'conditions' => array(
+						'rendezvous_thematiquesrdvs.rendezvous_id = Rendezvous.id',
+						'rendezvous_thematiquesrdvs.thematiquerdv_id' => $intersect,
+					),
+				)
+			);
+
+			$querydata = array(
+				'fields' => array( 'RendezvousThematiquerdv.thematiquerdv_id' ),
+				'conditions' => array(
+					"{$this->alias}.personne_id" => $personne_id,
+					"{$this->alias}.structurereferente_id" => $structurereferente_id,
+					"{$this->alias}.daterdv BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
+					"{$this->alias}.{$this->primaryKey} IN ( {$sqThematiqueRdv} )"
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'RendezvousThematiquerdv', array( 'type' => 'INNER' ) )
+				)
+			);
+
+			if( !empty( $id ) ) {
+				$querydata['conditions']["{$this->alias}.{$this->primaryKey} <>"] = $id;
+			}
+
+			$found = $this->find( 'all', $querydata );
+
+			if( $found ) {
+				$thematiques = $this->Thematiquerdv->find(
+					'list',
+					array(
+						'conditions' => array(
+							'Thematiquerdv.id' => (array)Hash::extract( $found, '{n}.RendezvousThematiquerdv.thematiquerdv_id' )
+						),
+					'contain' => false
+					)
+				);
+
+				if( count( $thematiques ) == 1 ) {
+					$message = 'Il existe déjà un rendez-vous pour la thématique « %s » dans cette structure référente pour l\'année %d.';
+				}
+				else {
+					$message = 'Il existe déjà au moins un rendez-vous pour les thématiques « %s » dans cette structure référente pour l\'année %d.';
+				}
+
+				return sprintf( $message, implode( ' », « ', $thematiques ), $year );
+			}
+
+			return true;
+		}
 
 		public $belongsTo = array(
 			'Personne' => array(
