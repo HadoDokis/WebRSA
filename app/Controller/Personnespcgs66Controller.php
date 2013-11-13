@@ -138,31 +138,22 @@
 
 				if( !empty( $dossierpcg66['Dossierpcg66']['bilanparcours66_id'] ) ) {
 					$personne = $this->Personnepcg66->Dossierpcg66->Bilanparcours66->Orientstruct->Personne->find(
-							'first', array(
-						'fields' => array(
-							'Personne.id',
-							'Bilanparcours66.examenaudition',
-							'Bilanparcours66.examenauditionpe'
-						),
-						'conditions' => array(
-							'Bilanparcours66.id' => $dossierpcg66['Dossierpcg66']['bilanparcours66_id']
-						),
-						'joins' => array(
-							array(
-								'table' => 'orientsstructs',
-								'alias' => 'Orientstruct',
-								'type' => 'INNER',
-								'conditions' => array( 'Orientstruct.personne_id = Personne.id' )
-							),
-							array(
-								'table' => 'bilansparcours66',
-								'alias' => 'Bilanparcours66',
-								'type' => 'INNER',
-								'conditions' => array( 'Bilanparcours66.orientstruct_id = Orientstruct.id' )
-							)
-						),
-						'contain' => false
-							)
+                        'first',
+                        array(
+                            'fields' => array(
+                                'Personne.id',
+                                'Bilanparcours66.examenaudition',
+                                'Bilanparcours66.examenauditionpe'
+                            ),
+                            'conditions' => array(
+                                'Bilanparcours66.id' => $dossierpcg66['Dossierpcg66']['bilanparcours66_id']
+                            ),
+                            'joins' => array(
+                                $this->Personnepcg66->Dossierpcg66->Bilanparcours66->Orientstruct->Personne->join( 'Bilanparcours66' ),
+                                $this->Personnepcg66->Dossierpcg66->Bilanparcours66->Orientstruct->Personne->join( 'Orientstruct', array( 'LEFT OUTER') )
+                            ),
+                            'contain' => false
+                        )
 					);
 
 					if( empty( $dossierpcg66['Personnepcg66'] ) ) {
