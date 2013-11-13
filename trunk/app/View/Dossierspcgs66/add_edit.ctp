@@ -15,18 +15,18 @@
 	$charge = Set::enum( Set::classicExtract( $this->request->data, 'Dossierpcg66.user_id' ),  $gestionnaires );
 
 	if( $this->action == 'add' ) {
-		$title = $this->pageTitle = 'Ajout d\'un dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $qual, Set::classicExtract( $personneDem, 'Personne.qual' ) ).' '.Set::classicExtract( $personneDem, 'Personne.nom' ).' '.Set::classicExtract( $personneDem, 'Personne.prenom' );
+		$title = $this->pageTitle = 'Ajout d\'un dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $personneDem, 'Personne.nom_complet');
 	}
 	else {
 		if( !empty( $charge ) ) {
 			$this->pageTitle = 'Édition du dossier PCG géré par '.$charge;
 
-			$title = 'Édition du dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $qual, Set::classicExtract( $personneDem, 'Personne.qual' ) ).' '.Set::classicExtract( $personneDem, 'Personne.nom' ).' '.Set::classicExtract( $personneDem, 'Personne.prenom' ).'<br />'. 'géré par '.$charge;
+			$title = 'Édition du dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $personneDem, 'Personne.nom_complet').'<br />'. 'géré par '.$charge;
 		}
 		else{
 			$this->pageTitle = 'Édition du dossier PCG';
 
-			$title = 'Édition du dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $qual, Set::classicExtract( $personneDem, 'Personne.qual' ) ).' '.Set::classicExtract( $personneDem, 'Personne.nom' ).' '.Set::classicExtract( $personneDem, 'Personne.prenom' );
+			$title = 'Édition du dossier PCG concernant le '.Set::classicExtract( $rolepers, Set::classicExtract( $personneDem, 'Prestation.rolepers' ) ).' : '.Set::classicExtract( $personneDem, 'Personne.nom_complet');
 		}
 	}
 ?>

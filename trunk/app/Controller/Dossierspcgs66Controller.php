@@ -515,26 +515,25 @@
 			}
 
 
-			$personneDem = $this->Dossierpcg66->Foyer->Personne->find(
-				'first',
+			$personnesFoyer = $this->Dossierpcg66->Foyer->Personne->find(
+				'all',
 				array(
 					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Prestation.rolepers'
+						'Prestation.rolepers',
+                        $this->Dossierpcg66->Foyer->Personne->sqVirtualField('nom_complet')
 					),
 					'conditions' => array(
 						'Personne.foyer_id' => $foyer_id,
-						'Prestation.rolepers' => 'DEM'
+						'Prestation.rolepers' => array( 'DEM', 'CJT' )
 					),
 					'joins' => array(
 						$this->Dossierpcg66->Foyer->Personne->join( 'Prestation' )
 					),
-					'contain' => false
+					'contain' => false,
+                    'order' => array( 'Prestation.rolepers DESC' )
 				)
 			);
+            $personneDem = $personnesFoyer[0];
 			$this->set( compact( 'personneDem' ) );
 
 
@@ -560,10 +559,59 @@
                 // Mise à jour des dossiers d'EP ayant généré un dossier PCG suite à une EP Audition
                 // Uniquement si le dossie PCG est issu d'un EP Audition, que son decisiondefautinsertionep66_id is not null
                 // et que le dossier est dans un état annulé, traité, décision validée ou transmis à un OP
+//                if( $saved ) {
+//                    if( isset( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ) {
+//                        if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
+//                            $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+//                        }
+//                    }
+//                }
                 if( $saved ) {
-                    if( isset( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ) {
-                        if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
-                            $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+                    $etatdossierpcg = $dossierpcg66['Dossierpcg66']['etatdossierpcg'];
+                    // Si nous sommes dans un état final du dossier PCG
+                    if( in_array( $etatdossierpcg, array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
+                        if( isset( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && !empty( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) ) {
+                            //On regarde la liste des personnes du foyer
+                            $personnesIds = Hash::extract( $personneDem, '{n}.Personne.id' );
+                            //On regarde la liste des dossiers d'EPs restants pour la thématique defautsinsertionseps66
+                            // pour ces personnes
+                            $dossierEPEnCours = $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->find(
+                                'all',
+                                $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->qdDossiersepsOuverts( $personnesIds)
+                            );
+
+                            // Si des dossiers existent encore
+                            if( isset($dossierEPEnCours) && !empty( $dossierEPEnCours ) ) {
+                                // On récupère la liste des identifiants de ces dossiers d'EPs
+                                $dossiersEpsIds = Hash::extract( $dossierEPEnCours, '{n}.Dossierep.id' );
+
+                                // On récupère leur passage en commission respectif
+                                $passagesParDossierseps = $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->find(
+                                    'all',
+                                    array( 
+                                        'conditions' => array(
+                                            'Dossierep.id' => $dossiersEpsIds
+                                        ),
+                                        'contain' => array('Passagecommissionep')
+                                    )
+                                );
+                                $passagesIds = Hash::extract( $passagesParDossierseps, '{n}.Passagecommissionep.{n}.id' );
+
+                                // Si des identifiants existent, on met à jour l'état du dossier ep en traité
+                                if( isset( $passagesIds ) && !empty( $passagesIds ) ) {
+                                    $this->Dossierpcg66->Decisiondefautinsertionep66->Passagecommissionep->updateAllUnBound(
+                                        array( 'Passagecommissionep.etatdossierep' => '\'traite\'' ),
+                                        array(
+                                            '"Passagecommissionep"."dossierep_id"' => $dossiersEpsIds,
+                                            '"Passagecommissionep"."id"' => $passagesIds
+                                        )
+                                    );
+                                }
+                            }
+
+                            if( in_array( $dossierpcg66['Dossierpcg66']['etatdossierpcg'], array( 'annule', 'traite', 'decisionvalid', 'transmisop' ) ) ) {
+                                $saved = $this->Dossierpcg66->updateEtatPassagecommissionep( $dossierpcg66['Dossierpcg66']['decisiondefautinsertionep66_id'] ) && $saved;
+                            }   
                         }
                     }
                 }
