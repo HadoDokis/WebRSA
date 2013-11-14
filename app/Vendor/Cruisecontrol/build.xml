@@ -84,7 +84,6 @@
 	-->
 	<target name="css-lint">
 		<apply executable="csslint" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
-			<arg line="--quiet"/>
 			<arg line="--format=compact"/>
 			<arg line="--warnings=display-property-grouping,duplicate-properties,empty-rules,known-properties"/>
 			<fileset dir="${dir.cakephp.app}/webroot/css" includes="**.css"/>
