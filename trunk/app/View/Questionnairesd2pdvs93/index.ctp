@@ -5,7 +5,7 @@
 		array(
 			"/Questionnairesd2pdvs93/add/{$personne['Personne']['id']}" => array(
 				'disabled' => (
-					!$this->Permissions->check( 'Questionnairesd2pdvs93', 'add' )
+					!$this->Permissions->checkDossier( 'Questionnairesd2pdvs93', 'add', $dossierMenu )
 					|| !$add_enabled
 				)
 			),
@@ -28,11 +28,19 @@
 			'Sortieaccompagnementd2pdv93.name',
 			'Questionnaired2pdv93.chgmentsituationadmin',
 			'/Questionnairesd2pdvs93/edit/#Questionnaired2pdv93.id#' => array(
-				'disabled' => !$this->Permissions->check( 'Questionnairesd2pdvs93', 'edit' )
+				'disabled' => '!'.WebrsaPermissions::checkD1D2(
+					'#Pdv.id#',
+					$this->Permissions->check( 'Questionnairesd2pdvs93', 'edit' ),
+					true
+				)
 			),
 			'/Questionnairesd2pdvs93/delete/#Questionnaired2pdv93.id#' => array(
 				'confirm' => true,
-				'disabled' => !$this->Permissions->check( 'Questionnairesd2pdvs93', 'delete' )
+				'disabled' => '!'.WebrsaPermissions::checkD1D2(
+					'#Pdv.id#',
+					$this->Permissions->check( 'Questionnairesd2pdvs93', 'delete' ),
+					true
+				)
 			),
 		),
         array(
