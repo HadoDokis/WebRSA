@@ -62,7 +62,36 @@
 		</apply>
 	</target>
 
-	<target name="lint" depends="php-lint,po-lint"/>
+	<!--
+		Vérification de la syntaxe des fichiers .js
+		@url http://ariya.ofilabs.com/2012/10/javascript-validator-with-esprima.html
+
+		sudo aptitude install nodejs npm
+		sudo npm install -g esprima
+	-->
+	<target name="js-lint">
+		<apply executable="esvalidate" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
+			<fileset dir="${dir.cakephp.app}/webroot/js" includes="**.js"/>
+		</apply>
+	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .css
+		@url https://github.com/stubbornella/csslint/wiki/Command-line-interface
+
+		sudo aptitude install nodejs npm
+		sudo npm install -g csslint
+	-->
+	<target name="css-lint">
+		<apply executable="csslint" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
+			<arg line="--quiet"/>
+			<arg line="--format=compact"/>
+			<arg line="--warnings=display-property-grouping,duplicate-properties,empty-rules,known-properties"/>
+			<fileset dir="${dir.cakephp.app}/webroot/css" includes="**.css"/>
+		</apply>
+	</target>
+
+	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests untaires -->
 	<target name="unittest" depends="clear,lint">
