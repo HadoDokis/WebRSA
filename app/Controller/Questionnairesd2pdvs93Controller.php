@@ -107,6 +107,7 @@
 					),
 					'Pdv' => array(
 						'fields' => array(
+							'Pdv.id',
 							'Pdv.lib_struc',
 						)
 					),
@@ -141,7 +142,28 @@
 				$personne_id = $this->Questionnaired2pdv93->personneId( $id );
 			}
 
-			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			if( $this->action == 'add' ) {
+				$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			}
+			else {
+				$dossierMenu = $this->DossiersMenus->getDossierMenu( array( 'personne_id' => $personne_id ) );
+
+				$questionnaired2pdv93 = $this->Questionnaired2pdv93->find(
+					'first',
+					array(
+						'fields' => array( 'Questionnaired2pdv93.structurereferente_id' ),
+						'conditions' => array(
+							'Questionnaired2pdv93.id' => $id
+						),
+						'contain' => false
+					)
+				);
+				$permission = WebrsaPermissions::checkD1D2( Hash::get( (array)$questionnaired2pdv93, 'Questionnaired2pdv93.structurereferente_id' ) );
+				if( !$permission ) {
+					throw new Error403Exception( null );
+				}
+			}
+
 			$this->Jetons2->get( $dossierMenu['Dossier']['id'] );
 
 			$isAjax = ( $this->request->is( 'ajax' ) || Hash::get( $this->request->data, 'Questionnaired2pdv93.isajax' ) );
@@ -250,11 +272,11 @@
 		 */
 		public function delete( $id ) {
 			$personne_id = $this->Questionnaired2pdv93->personneId( $id );
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$querydata = array(
 				'fields' => array(
-					'Questionnaired2pdv93.id'
+					'Questionnaired2pdv93.id',
+					'Questionnaired2pdv93.structurereferente_id',
 				),
 				'conditions' => array(
 					'Questionnaired2pdv93.id' => $id
@@ -265,6 +287,11 @@
 			$questionnaired2pdv93 = $this->Questionnaired2pdv93->find( 'first', $querydata );
 			if( empty( $questionnaired2pdv93 ) ) {
 				throw new NotFoundException();
+			}
+
+			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired2pdv93, 'Questionnaired2pdv93.structurereferente_id' ) );
+			if( !$permission ) {
+				throw new Error403Exception( null );
 			}
 
 			$this->Questionnaired2pdv93->begin();

@@ -4,7 +4,7 @@
 	echo $this->Default3->actions(
 		array(
 			"/Questionnairesd1pdvs93/add/{$personne_id}" => array(
-				'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'add' )
+				'disabled' => !$this->Permissions->checkDossier( 'Questionnairesd1pdvs93', 'add', $dossierMenu )
 						|| !$add_enabled
 			),
 		)
@@ -58,6 +58,8 @@
 		}
 	}
 
+	$userStructurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
+
 	echo $this->Default2->index(
 		$questionnairesd1pdvs93,
 		array(
@@ -75,7 +77,11 @@
                 ),
                 'Questionnairesd1pdvs93::delete' => array(
                     'confirm' => true,
-                    'disabled' => !$this->Permissions->check( 'Questionnairesd1pdvs93', 'delete' )
+                    'disabled' => '!'.WebrsaPermissions::checkD1D2(
+						'#Structurereferente.id#',
+						$this->Permissions->check( 'Questionnairesd1pdvs93', 'delete' ),
+						true
+					)
                 )
             ),
             'options' => $options

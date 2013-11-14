@@ -260,5 +260,32 @@
 
 			return $return;
 		}
+
+		/**
+		 * Vérifie l'accès en modification et suppression des questionnaires D1
+		 * et D2 du CG 93.
+		 *
+		 * On vérifie si la structure référente à laquelle est attaché l'utilisateur
+		 * (clé Auth.User.structurereferente_id en session) est vide ou correspond
+		 * à la structure référente liée au questionnaire en plus des droits sur
+		 * l'action en elle-même (permissions de l'utilisateur).
+		 *
+		 * @param string|integer $structurereferente_id
+		 * @param boolean $permission
+		 * @param boolean $string Si vrai, retourne une chaîne qui pourra être évaluée
+		 * @return string|boolean
+		 */
+		public function checkD1D2( $structurereferente_id, $permission = true, $string = false ) {
+			$userStructurereferente_id = CakeSession::read( 'Auth.User.structurereferente_id' );
+			$permission = ( $permission ? '1' : '0' );
+
+			$enabled = "( ( strlen( '{$userStructurereferente_id}' ) == 0 || ( '{$userStructurereferente_id}' === '{$structurereferente_id}' ) ) && ( '{$permission}' == '1' ) )";
+
+			if( !$string ) {
+				$enabled = eval( "return {$enabled};" );
+			}
+
+			return $enabled;
+		}
 	}
 ?>

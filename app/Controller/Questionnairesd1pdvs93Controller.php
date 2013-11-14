@@ -87,6 +87,7 @@
                     'Questionnaired1pdv93.id',
                     'Questionnaired1pdv93.date_validation',
                     'Rendezvous.daterdv',
+					'Structurereferente.id',
                     'Statutrdv.libelle',
                     'Historiquedroit.etatdosrsa',
                     'Historiquedroit.toppersdrodevorsa',
@@ -97,6 +98,7 @@
                     $this->Questionnaired1pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
                     $this->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
                     $this->Questionnaired1pdv93->Rendezvous->join( 'Statutrdv', array( 'type' => 'INNER' ) ),
+					$this->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
                     $this->Questionnaired1pdv93->Personne->join( 'Historiquedroit', array( 'type' => 'LEFT OUTER', 'conditions' => array( 'Questionnaired1pdv93.created BETWEEN Historiquedroit.created AND Historiquedroit.modified' ) ) ),
                 ),
                 'contain' => false,
@@ -156,16 +158,17 @@
 		 */
 		public function delete( $id ) {
 			$personne_id = $this->Questionnaired1pdv93->personneId( $id );
-			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$querydata = array(
 				'fields' => array(
+					'Rendezvous.structurereferente_id',
 					'Situationallocataire.id'
 				),
 				'conditions' => array(
 					'Questionnaired1pdv93.id' => $id
 				),
 				'contain' => array(
+					'Rendezvous',
 					'Situationallocataire'
 				)
 			);
@@ -173,6 +176,11 @@
 			$questionnaired1pdv93 = $this->Questionnaired1pdv93->find( 'first', $querydata );
 			if( empty( $questionnaired1pdv93 ) ) {
 				throw new NotFoundException();
+			}
+
+			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired1pdv93, 'Rendezvous.structurereferente_id' ) );
+			if( !$permission ) {
+				throw new Error403Exception( null );
 			}
 
 			$this->Questionnaired1pdv93->begin();
