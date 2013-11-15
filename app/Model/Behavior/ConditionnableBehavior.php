@@ -199,7 +199,7 @@
 		public function conditionsDetailcalculdroitrsa( Model $model, $conditions, $search ) {
 			if( isset( $search['Detailcalculdroitrsa']['natpf'] ) && !empty( $search['Detailcalculdroitrsa']['natpf'] ) ) {
 				if( !is_array( $search['Detailcalculdroitrsa']['natpf'] ) ) {
-					if( strstr( $search['Detailcalculdroitrsa']['natpf'], ',' ) === false ) {
+					if( strstr( $search['Detailcalculdroitrsa']['natpf'], ',' ) === false && strstr( $search['Detailcalculdroitrsa']['natpf'], '-' ) === false ) {
 						$condition = 'Detaildroitrsa.id IN (
 									SELECT detailscalculsdroitsrsa.detaildroitrsa_id
 										FROM detailscalculsdroitsrsa
@@ -212,6 +212,34 @@
 								)';
 
 						$conditions[] = $condition;
+					}
+					// Si -
+					else if( strstr( $search['Detailcalculdroitrsa']['natpf'], '-' ) !== false ) {
+						$natspfs = explode( '-', $search['Detailcalculdroitrsa']['natpf'] );
+						$natpfOui = $natspfs[0];
+						$natpfNon = $natspfs[1];
+
+						$conditions = $this->conditionsDetailcalculdroitrsa(
+							$model,
+							$conditions,
+							array(
+								'Detailcalculdroitrsa' => array(
+									'natpf' => $natpfOui
+								)
+							)
+						);
+
+						$conditionsNon = $this->conditionsDetailcalculdroitrsa(
+							$model,
+							array(),
+							array(
+								'Detailcalculdroitrsa' => array(
+									'natpf' => $natpfNon
+								)
+							)
+						);
+
+						$conditions[] = array( 'NOT' => $conditionsNon );
 					}
 					else {
 						$natspfs = explode( ',', $search['Detailcalculdroitrsa']['natpf'] );

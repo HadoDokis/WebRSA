@@ -1016,6 +1016,8 @@
 				// TODO: dans la configuration ?
 				'RSD,RCD' => 'RSA Socle et activité',
 				//'RSJ,RCJ' => 'RSA Jeune Socle et activité',
+				'RSD-RCD' => 'RSA Socle uniquement',
+				'RCD-RSD' => 'RSA activité uniquement',
 			);
 
 			if( empty($natpfDemandees) ) {
