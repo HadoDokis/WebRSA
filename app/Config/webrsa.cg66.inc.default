@@ -762,9 +762,9 @@
 	 * Paramètre à renseigner pour détecter les actions qui sont de type région
 	 * @default: id de(s) l'action(s) de type région
      * @param array
-     * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
+     * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
 	 */
-    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
+    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
     
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
@@ -783,4 +783,14 @@
 	 * @default null
 	 */
 	Configure::write( 'Rendezvous.Ajoutpossible.statutrdv_id', 17 );
+    
+    
+    
+    /**
+	 * Paramètre à renseigner pour détecter les actions qui sont de type région
+	 * @default: id de(s) l'action(s) de type région
+     * @param array
+     * exemple : Configure::write( 'ActioncandidatPersonne.Partenaire.id', array( '61' ) );
+	 */  
+    Configure::write( 'ActioncandidatPersonne.Partenaire.id', array( '61' ) );
 ?>

@@ -33,6 +33,17 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+    // On affiche le fieldset avec les programmes type région
+    // uniquement si l'ID est celui paramétré dans le webrsa.inc
+    observeDisableFieldsetOnValue(
+        'PartenaireLibstruc',
+        $( 'blocregion' ),
+        ['<?php echo implode( "', '", Configure::read( "ActioncandidatPersonne.Partenaire.id" ) );?>'],
+        false,
+        true
+    );
+        
+        
 		dependantSelect( 'ActioncandidatPersonneActioncandidatId', 'PartenaireLibstruc' );
 	});
 </script>
