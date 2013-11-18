@@ -268,6 +268,7 @@
 				'Contratinsertion.Cg66.Rendezvous' => 'isarray',
 				'Corbeillepcg.descriptionpdoId' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionId' => 'isarray',
+                'ActioncandidatPersonne.Partenaire.id' => 'isarray',
                 'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer'
 			);
 		}
