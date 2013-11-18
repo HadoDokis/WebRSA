@@ -760,6 +760,7 @@
 
     /**
 	 * Paramètre à renseigner pour détecter les actions qui sont de type région
+     *  (utilisé dans le module Fiche de candidature)
 	 * @default: id de(s) l'action(s) de type région
      * @param array
      * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
@@ -787,8 +788,9 @@
     
     
     /**
-	 * Paramètre à renseigner pour détecter les actions qui sont de type région
-	 * @default: id de(s) l'action(s) de type région
+	 * Paramètre à renseigner pour détecter les partenaires d'actions qui sont de type région
+     * (Utilisé dans la recherche par Fiche de candidature)
+	 * @default: id de(s) partenaires de l'action
      * @param array
      * exemple : Configure::write( 'ActioncandidatPersonne.Partenaire.id', array( '61' ) );
 	 */  
