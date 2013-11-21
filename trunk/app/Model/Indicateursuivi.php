@@ -222,10 +222,6 @@
 			$conditions[] = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 			$conditions[] = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 
-			if( isset( $params['Detailcalculdroitrsa']['natpf'] ) && !empty( $params['Detailcalculdroitrsa']['natpf'] ) ) {
-				$conditions[] = "Dossier.id IN ( SELECT detailsdroitsrsa.dossier_id FROM detailsdroitsrsa INNER JOIN detailscalculsdroitsrsa ON detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id WHERE detailscalculsdroitsrsa.natpf ILIKE '%".Sanitize::paranoid( $params['Detailcalculdroitrsa']['natpf'] )."%' )";
-			}
-
 			// Filtre par orientation
 			if( isset($params['Orientstruct']['structurereferente_id']) && !empty($params['Orientstruct']['structurereferente_id']) ) {
 				$structurereferente_id = $params['Orientstruct']['structurereferente_id'];
