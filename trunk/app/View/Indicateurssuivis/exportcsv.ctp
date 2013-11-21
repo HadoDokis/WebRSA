@@ -32,7 +32,7 @@
 			$adresse,
 			$conjoint,
 			date_short( $indicateur['Dossier']['dtdemrsa'] ),
-			$indicateur['Referentorient']['nom_complet'],
+			$indicateur['Referentorientant']['nom_complet'],
 			date_short( $indicateur['Orientstruct']['date_valid']),
 			$indicateur['Orientstruct']['rgorient'],
 			$indicateur['Referentunique']['nom_complet'],
