@@ -64,7 +64,7 @@
 		}
 
 		/**
-		 *   Ajax pour les coordonnées du référent APRE
+		 *   Ajax pour les coordonnées du référent
 		 */
 		public function ajaxreffonct( $referent_id = null ) { // FIXME
 			Configure::write( 'debug', 0 );
