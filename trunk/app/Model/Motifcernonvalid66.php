@@ -45,11 +45,12 @@
 		);
 		
 		/**
-		 * Retourne une sous-requête permettant d'obtenir la liste des pièces liées
-		 * à une aide APRE du 66. Les éléments de la liste sont triés et préfixés par une
+		 * Retourne une sous-requête permettant d'obtenir la liste des motifs 
+         * de non validation de propositions de décisions d'un CER du 66.
+         * Les éléments de la liste sont triés et préfixés par une
 		 * chaîne de caractères.
 		 *
-		 * @param string $aideapre66Id
+		 * @param string $propodecisioncer66Id
 		 * @param string $prefix
 		 * @return string
 		 */
