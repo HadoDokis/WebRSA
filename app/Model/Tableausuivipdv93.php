@@ -1404,7 +1404,7 @@
 						LEFT OUTER JOIN detailsdifsocs_revs ON (dsps_revs.id = detailsdifsocs_revs.dsp_rev_id)
 						LEFT OUTER JOIN detailsdiflogs_revs ON (dsps_revs.id = detailsdiflogs_revs.dsp_rev_id)
 						LEFT OUTER JOIN detailsaccosocfams_revs ON (dsps_revs.id = detailsaccosocfams_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsdifdisps_revs ON (dsps.id = detailsdifdisps_revs.dsp_rev_id)
+						LEFT OUTER JOIN detailsdifdisps_revs ON (dsps_revs.id = detailsdifdisps_revs.dsp_rev_id)
 						LEFT OUTER JOIN detailsnatmobs_revs ON (dsps_revs.id = detailsnatmobs_revs.dsp_rev_id)
 						LEFT OUTER JOIN detailsaccosocindis_revs ON (dsps_revs.id = detailsaccosocindis_revs.dsp_rev_id)
 					WHERE
