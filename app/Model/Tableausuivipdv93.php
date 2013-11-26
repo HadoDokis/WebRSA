@@ -1510,6 +1510,8 @@
 						AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 						".$this->_conditionRendezvousPdv( $search, 'AND' )."
 						{$conditionpdv}
+						-- Dont la fiche de prescription n'a pas été annulée
+						AND actionscandidats_personnes.positionfiche <> 'annule'
 					GROUP BY libelle
 				)
 				UNION
@@ -1529,9 +1531,12 @@
 							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
 							".$this->_conditionRendezvousPdv( $search, 'AND' )."
 							{$conditionpdv}
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 				);";
 
 			$results = array();
+
 			$tmp_results = $ActioncandidatPersonne->query( $sql );
 			if( !empty( $tmp_results ) ) {
 				foreach( $tmp_results as $tmp_result ) {
