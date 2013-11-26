@@ -178,6 +178,9 @@ msgstr "Bénéficiaires RSA activité"
 msgid "Situationallocataire.natpf_view"
 msgstr "Nature de la prestation"
 
+msgid "Situationallocataire.natpf_d1"
+msgstr "Nature de la prestation"
+
 msgid "Situationallocataire.tranche_age_view"
 msgstr "Tranche d'âge"
 

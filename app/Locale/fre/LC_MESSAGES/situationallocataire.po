@@ -676,3 +676,17 @@ msgstr "Zone"
 
 msgid "ENUM::TYPEVOIE::ZUP"
 msgstr "Zone à urbaniser en priorité"
+
+# ------------------------------------------------------------------------------
+
+msgid "ENUM::NATPF_D1::majore"
+msgstr "Bénéficiaires RSA majoré"
+
+msgid "ENUM::NATPF_D1::socle"
+msgstr "Bénéficiaires RSA socle"
+
+msgid "ENUM::NATPF_D1::socle_activite"
+msgstr "Bénéficiaires RSA socle+activité"
+
+msgid "ENUM::NATPF_D1::NC"
+msgstr "Non défini"

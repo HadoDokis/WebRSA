@@ -41,55 +41,52 @@
 		)
 	);
 
-	foreach( $categories as $categorie => $foos ) {
-		if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ) {
-			$this->Csv->addRow( array( __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" ) ) );
-		}
+	foreach( $results as $categorie1 => $data1 ) {
+		// Ligne de premier niveau
+		$row = array(
+			__d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie1}" ),
+			null
+		);
 
-		foreach( $foos as $key => $label ) {
-			$row = array();
-
-			// Présentation des lignes "Non scolarisé" et "Diplômes étrangers non reconnus en France"
-			$lineTotal = array( 'total' => 0, 'homme' => 0, 'femme' => 0 );
-			if( !in_array( $categorie, array( 'non_scolarise', 'diplomes_etrangers' ) ) ) {
-				$row[] = __d( 'tableauxsuivispdvs93',  $label );
+		foreach( $columns as $column ) {
+			$number = $data1[$column];
+			if( is_null( $number ) ) {
+				$row[] = 'N/C';
 			}
 			else {
-				$row[] = __d( 'tableauxsuivispdvs93', "/Tableauxsuivispdvs93/tableaud1/{$categorie}" );
+				$row[] = str_replace( '&nbsp;', '', $this->Locale->number( $number ) );
 			}
+		}
+		$this->Csv->addRow( $row );
 
-			$hasResults = isset( $results[$categorie]['previsionnel'] );
-			$total = (int)Hash::get( $results, "{$categorie}.{$key}.previsionnel" );
+		// Lignes de second niveau ?
+		if( isset( $data1['dont'] ) ) {
+			$i = 0;
+			foreach( $data1['dont'] as $categorie2 => $data2 ) {
+				$row = array();
 
-			$row[] = ( $hasResults ? $this->Locale->number( $total ) : 'N/C' );
-			foreach( array( 'report', 'entrees', 'sorties' ) as $colonne ) {
-				$bar = Hash::extract( $results, "{$categorie}.{s}.{$colonne}" );
-				$baz = Hash::extract( $results, "{$categorie}.{n}.{$colonne}" );
-				$hasResults = !empty( $bar ) || !empty( $baz );
-				$hommes = (int)Hash::get( $results, "{$categorie}.{$key}.{$colonne}.homme" );
-				$femmes = (int)Hash::get( $results, "{$categorie}.{$key}.{$colonne}.femme" );
-				$total = $hommes + $femmes;
-
-				if( $colonne != 'sortie' ) {
-					$lineTotal['total'] += $total;
-					$lineTotal['homme'] += $hommes;
-					$lineTotal['femme'] += $femmes;
+				if( $i === 0 ) {
+					$row[] = 'dont';
 				}
 				else {
-					$lineTotal['total'] -= $total;
-					$lineTotal['homme'] -= $hommes;
-					$lineTotal['femme'] -= $femmes;
+					$row[] = null;
 				}
 
-				$row[] = ( $hasResults ? $this->Locale->number( $total ) : 'N/C' );
-				$row[] = ( $hasResults ? $this->Locale->number( $hommes ) : 'N/C' );
-				$row[] = ( $hasResults ? $this->Locale->number( $femmes ) : 'N/C' );
-			}
-			$row[] = $this->Locale->number( $lineTotal['total'] );
-			$row[] = $this->Locale->number( $lineTotal['homme'] );
-			$row[] = $this->Locale->number( $lineTotal['femme'] );
+				$row[] = $categories[$categorie1][$categorie2];
 
-			$this->Csv->addRow( $row );
+				foreach( $columns as $column ) {
+					$number = $data2[$column];
+					if( is_null( $number ) ) {
+						$row[] = 'N/C';
+					}
+					else {
+						$row[] = str_replace( '&nbsp;', '', $this->Locale->number( $number ) );
+					}
+				}
+				$i++;
+
+				$this->Csv->addRow( $row );
+			}
 		}
 	}
 

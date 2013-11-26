@@ -248,7 +248,7 @@
 			$data['Situationallocataire']['sitfam_view'] = $sitfam_view;
 
 			// Calcul de la nature de la prestation suivant les catégories du tableau D1
-			$natpf_view = null;
+			/*$natpf_view = null;
 			if( $data['Situationallocataire']['natpf_socle'] && $data['Situationallocataire']['natpf_activite'] ) {
 				$natpf_view = 'socle_activite';
 			}
@@ -258,7 +258,7 @@
 			else if( $data['Situationallocataire']['natpf_majore'] ) {
 				$natpf_view = 'majore';
 			}
-			$data['Situationallocataire']['natpf_view'] = $natpf_view;
+			$data['Situationallocataire']['natpf_view'] = $natpf_view;*/
 
 			$date_validation = Hash::get( $data, 'Questionnaired1pdv93.date_validation' );
 
@@ -336,6 +336,8 @@
 			foreach( array( 'socle', 'majore', 'activite' ) as $type ) {
 				$formData['Situationallocataire']["natpf_{$type}"] = ( $formData['Situationallocataire']["natpf_{$type}"] ? '1' : '0' );
 			}
+
+			$formData['Situationallocataire']['natpf_d1'] = $this->Situationallocataire->natpfD1( $formData, true );
 
 			// Inscrit à Pôle Emploi
 			$inscritpe = Hash::get( $data, 'Historiqueetatpe.etat' );

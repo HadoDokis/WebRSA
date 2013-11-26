@@ -40,6 +40,43 @@
 		public $recursive = -1;
 
 		/**
+		 *
+		 * @see Situationallocataire::natpfD1()
+		 *
+		 * @var array
+		 */
+		public $virtualFields = array(
+			'natpf_d1' => array(
+				'type'      => 'string',
+				'postgres'  => '( CASE
+									WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_D1::majore\'
+									WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_D1::socle_activite\'
+									WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_D1::majore\'
+									WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_D1::socle\'
+									WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_D1::majore\'
+									WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_D1::NC\'
+									WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_D1::NC\'
+									WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_D1::NC\'
+									ELSE \'ENUM::NATPF_D1::NC\'
+								END )'
+			)
+		);
+
+		/**
+		 * Les valeurs possibles pour la nature de la prestation (voir le champ
+		 * virtuel natpf_d1.
+		 *
+		 * @var array
+		 */
+		public $natpf_d1 = array(
+			'ENUM::NATPF_D1::majore',
+			'ENUM::NATPF_D1::socle_activite',
+			'ENUM::NATPF_D1::socle',
+			'ENUM::NATPF_D1::activite',
+			'ENUM::NATPF_D1::NC',
+		);
+
+		/**
 		 * Associations "Has one".
 		 *
 		 * @var array
@@ -205,7 +242,62 @@
 			$enums[$this->alias]['tranche_age_view'] = $Tableausuivipdv93->tranches_ages;
 			$enums[$this->alias]['anciennete_dispositif_view'] = $Tableausuivipdv93->anciennetes_dispositif;
 
+			$enums[$this->alias]['natpf_d1'] = array();
+			foreach( $this->natpf_d1 as $natpf_d1 ) {
+				$enums[$this->alias]['natpf_d1'][$natpf_d1] = __d( 'situationallocataire', $natpf_d1 );
+			}
+
 			return $enums;
+		}
+
+		/**
+		 * Retourne la nature de la prestation sous la forme d'une chaîne de
+		 * caractères à partir
+		 *
+		 * @see Situationallocataire::natpf_d1
+		 *
+		 * @param array $data
+		 * @param boolean $translate
+		 * @return string
+		 */
+		public function natpfD1( $data, $translate = false ) {
+			$natpf_d1 = 'ENUM::NATPF_D1::NC';
+
+			$socle = Hash::get( $data, 'Situationallocataire.natpf_socle' );
+			$activite = Hash::get( $data, 'Situationallocataire.natpf_activite' );
+			$majore = Hash::get( $data, 'Situationallocataire.natpf_majore' );
+
+			if( ( $socle == '1' ) && ( $activite == '1' ) && ( $majore == '1' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::majore';
+			}
+			else if( ( $socle == '1' ) && ( $activite == '1' ) && ( $majore == '0' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::socle_activite';
+			}
+			else if( ( $socle == '1' ) && ( $activite == '0' ) && ( $majore == '1' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::majore';
+			}
+			else if( ( $socle == '1' ) && ( $activite == '0' ) && ( $majore == '0' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::socle';
+			}
+			else if( ( $socle == '0' ) && ( $activite == '1' ) && ( $majore == '1' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::majore';
+			}
+			else if( ( $socle == '0' ) && ( $activite == '1' ) && ( $majore == '0' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::NC';
+			}
+			else if( ( $socle == '0' ) && ( $activite == '0' ) && ( $majore == '1' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::NC';
+			}
+			else if( ( $socle == '0' ) && ( $activite == '0' ) && ( $majore == '0' ) ) {
+				$natpf_d1 = 'ENUM::NATPF_D1::NC';
+			}
+
+			if( $translate ) {
+				$natpf_d1 = __d( 'situationallocataire', $natpf_d1 );
+			}
+
+			return $natpf_d1;
+
 		}
 	}
 ?>

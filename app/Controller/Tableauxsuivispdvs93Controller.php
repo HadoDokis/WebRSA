@@ -93,6 +93,7 @@
 			}
 
 			$this->set( 'categories', $this->Tableausuivipdv93->tableaud1Categories() );
+			$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
 		}
 
 		/**
@@ -302,6 +303,7 @@
 
 			if( $action === 'tableaud1' ) {
 				$categories = $this->Tableausuivipdv93->tableaud1Categories();
+				$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
 			}
 			else {
 				$categories = $this->Tableausuivipdv93->tableaud2Categories();
@@ -431,6 +433,9 @@
 			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableaud1', 'tableaud2' ) ) ) {
 				$method = $tableausuivipdv93['Tableausuivipdv93']['name'].'Categories';
 				$this->set( 'categories', $this->Tableausuivipdv93->{$method}() );
+				if( $tableausuivipdv93['Tableausuivipdv93']['name'] == 'tableaud1' ) {
+					$this->set( 'columns', $this->Tableausuivipdv93->columns_d1 );
+				}
 			}
 
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );
