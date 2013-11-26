@@ -210,6 +210,25 @@
 		);
 
 		/**
+		 * Liste des colonnes du tableau D1.
+		 */
+		public $columns_d1 = array(
+			'previsionnel',
+			'reports_total',
+			'reports_homme',
+			'reports_femme',
+			'entrees_total',
+			'entrees_homme',
+			'entrees_femme',
+			'sorties_total',
+			'sorties_homme',
+			'sorties_femme',
+			'participants_total',
+			'participants_homme',
+			'participants_femme',
+		);
+
+		/**
 		 *
 		 * @param array $search
 		 * @return array
@@ -221,9 +240,10 @@
 					CASE
 						WHEN "Situationallocataire"."sexe" = \'1\' THEN \'homme\'
 						WHEN "Situationallocataire"."sexe" = \'2\' THEN \'femme\'
+						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Situationallocataire.sexe' );
@@ -254,7 +274,7 @@
 						ELSE 0
 					END
 				) AS "cer"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Situationallocataire.sexe', $cer );
@@ -277,7 +297,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.marche_travail', 'Situationallocataire.sexe' );
@@ -315,7 +335,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( $tranche_age, 'Situationallocataire.sexe' );
@@ -338,7 +358,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.vulnerable', 'Situationallocataire.sexe' );
@@ -361,7 +381,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.nivetu', 'Situationallocataire.sexe' );
@@ -384,7 +404,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.categorie_sociopro', 'Situationallocataire.sexe' );
@@ -407,7 +427,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.autre_caracteristique', 'Situationallocataire.sexe' );
@@ -421,14 +441,10 @@
 		 * @return array
 		 */
 		protected function _tableaud1Natpf( array $search ) {
-			$natpf = '(
-				CASE
-					WHEN "Situationallocataire"."natpf_socle" = \'1\' AND "Situationallocataire"."natpf_activite" = \'1\' THEN \'socle_activite\'
-					WHEN "Situationallocataire"."natpf_socle" = \'1\' THEN \'socle\'
-					WHEN "Situationallocataire"."natpf_majore" = \'1\' THEN \'majore\'
-					ELSE \'NC\'
-				END
-			)';
+			$Situationallocataire = ClassRegistry::init( 'Situationallocataire' );
+
+			$natpf = $Situationallocataire->virtualFields['natpf_d1'];
+			$natpf = str_replace( 'ENUM::NATPF_D1::', '', $natpf );
 
 			$fields = array(
 				$natpf.' AS "categorie"',
@@ -439,7 +455,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( $natpf, 'Situationallocataire.sexe' );
@@ -469,7 +485,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Situationallocataire.nati', 'Situationallocataire.sexe' );
@@ -509,7 +525,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( $sitfam, 'Situationallocataire.sexe' );
@@ -532,7 +548,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.conditions_logement', 'Situationallocataire.sexe' );
@@ -555,7 +571,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.inscritpe', 'Situationallocataire.sexe' );
@@ -593,7 +609,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( $anciennete_dispositif, 'Situationallocataire.sexe' );
@@ -616,7 +632,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.nivetu', 'Situationallocataire.sexe' );
@@ -639,7 +655,7 @@
 						ELSE \'NC\'
 					END
 				) AS "sexe"',
-				'COUNT( DISTINCT( "Questionnaired1pdv93"."personne_id" ) ) AS "count"'
+				'COUNT( DISTINCT( "Questionnaired1pdv93"."id" ) ) AS "count"'
 			);
 
 			$group = array( 'Questionnaired1pdv93.diplomes_etrangers', 'Situationallocataire.sexe' );
@@ -669,7 +685,7 @@
 				'marche_travail' => $enums['Questionnaired1pdv93']['marche_travail'],
 				'tranche_age' => $this->tranches_ages,
 				'vulnerable' => $enums['Questionnaired1pdv93']['vulnerable'],
-				'nivetu' => $enums['Questionnaired1pdv93']['nivetu'],
+				'nivetu' => array_reverse( $enums['Questionnaired1pdv93']['nivetu'], true ),
 				'categorie_sociopro' => $enums['Questionnaired1pdv93']['categorie_sociopro'],
 				'autre_caracteristique' => $enums['Questionnaired1pdv93']['autre_caracteristique'],
 				'natpf' => $this->natpf + array( 'NC' => 'Non défini' ),
@@ -889,12 +905,110 @@
 					}
 				}
 				else {
-					$results[$categorie]['N/C']['entrees']['homme'] = 0;
-					$results[$categorie]['N/C']['entrees']['femmes'] = 0;
+					$results[$categorie]['NC']['entrees']['homme'] = 0;
+					$results[$categorie]['NC']['entrees']['femme'] = 0;
 				}
 			}
 
-			return $results;
+			$empty = array(
+				'previsionnel' => null,
+				'reports_total' => null,
+				'reports_homme' => null,
+				'reports_femme' => null,
+				'entrees_total' => 0,
+				'entrees_homme' => 0,
+				'entrees_femme' => 0,
+				'sorties_total' => null,
+				'sorties_homme' => null,
+				'sorties_femme' => null,
+				'participants_total' => 0,
+				'participants_homme' => 0,
+				'participants_femme' => 0,
+			);
+
+			$tmp = array_keys( Hash::flatten( $this->tableaud1Categories() ) );
+			$return = Hash::expand( array_fill_keys( $tmp, null ) );
+			foreach( $return as $categorie1 => $data1 ) {
+				$return[$categorie1] = $empty;
+				$return[$categorie1]['dont'] = array();
+
+				foreach( $data1 as $categorie2 => $data2 ) {
+					$return[$categorie1]['dont'][$categorie2] = $empty;
+				}
+			}
+
+			foreach( $results as $categorie1 => $data ) { // $categorie1 = sexe
+//				$return[$categorie1] = $empty;
+//				$return[$categorie1]['dont'] = array();
+
+				foreach( $data as $categorie2 => $data2 ) { // $categorie2 = 1
+					if( !isset( $return[$categorie1]['dont'][$categorie2] ) ) {
+						$return[$categorie1]['dont'][$categorie2] = $empty;
+					}
+
+					if( !( $categorie1 == 'nivetu' && $categorie2 == '1207' ) ) {
+						foreach( $data2['entrees'] as $sexe => $nombre ) {
+							$return[$categorie1]['dont'][$categorie2]["entrees_{$sexe}"] = $nombre;
+							$return[$categorie1]['dont'][$categorie2]["entrees_total"] = (int)$return[$categorie1]['dont'][$categorie2]["entrees_total"] + $nombre;
+
+							$return[$categorie1]["entrees_{$sexe}"] = (int)$return[$categorie1]["entrees_{$sexe}"] + $nombre;
+							$return[$categorie1]["entrees_total"] = (int)$return[$categorie1]["entrees_total"] + $nombre;
+						}
+					}
+				}
+			}
+
+			// Catégories spéciales
+			$return['diplomes_etrangers'] = $return['diplomes_etrangers']['dont']['1'];
+			unset( $return['diplomes_etrangers']['dont'] );
+			// Non scolarisé, 1207
+			$return['non_scolarise'] = $return['non_scolarise']['dont']['1207'];
+			unset( $return['non_scolarise']['dont'] );
+			unset( $return['nivetu']['dont']['1207'] );
+
+			// Calcul des participants
+			foreach( $return as $categorie => $data ) {
+				foreach( array( 'total', 'homme', 'femme' ) as $column ) {
+					$reports = $return[$categorie]["reports_{$column}"];
+					$entrees = $return[$categorie]["entrees_{$column}"];
+					$sorties = $return[$categorie]["sorties_{$column}"];
+
+					if( !is_null( $reports ) || !is_null( $entrees ) || !is_null( $sorties ) ) {
+						$participants = (int)$reports + (int)$entrees - (int)$sorties;
+					}
+					else {
+						$participants = null;
+					}
+
+					$return[$categorie]["participants_{$column}"] = $participants;
+				}
+
+				if( isset( $data['dont'] ) ) {
+					foreach( $data['dont'] as $categorie2 => $data2 ) {
+						foreach( array( 'total', 'homme', 'femme' ) as $column ) {
+							$reports = $return[$categorie]['dont'][$categorie2]["reports_{$column}"];
+							$entrees = $return[$categorie]['dont'][$categorie2]["entrees_{$column}"];
+							$sorties = $return[$categorie]['dont'][$categorie2]["sorties_{$column}"];
+
+							if( !is_null( $reports ) || !is_null( $entrees ) || !is_null( $sorties ) ) {
+								$participants = (int)$reports + (int)$entrees - (int)$sorties;
+							}
+							else {
+								$participants = null;
+							}
+
+							$return[$categorie]['dont'][$categorie2]["participants_{$column}"] = $participants;
+						}
+					}
+				}
+			}
+
+			// Suppression des NC
+			foreach( $return as $categorie => $data ) {
+				unset( $return[$categorie]['dont']['NC'] );
+			}
+
+			return $return;
 		}
 
 		/**

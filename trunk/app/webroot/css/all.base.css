@@ -795,7 +795,10 @@ body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody td {
 	width: 5.13%;
 	min-width: 5.13%;
 }
-
+body.tableauxsuivispdvs93 #pageContent table.tableaud1 tbody th.colonne_dont {
+	width: 0.1%!important;
+	max-width: 0.1%!important;
+}
 /**
  * Tableau D2 (CCG 93)
  */

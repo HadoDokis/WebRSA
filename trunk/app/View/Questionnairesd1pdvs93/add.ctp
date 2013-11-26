@@ -65,8 +65,14 @@
 			'Situationallocataire.natpf_socle' => array( 'type' => 'hidden' ),
 			'Situationallocataire.natpf_majore' => array( 'type' => 'hidden' ),
 			'Situationallocataire.natpf_activite' => array( 'type' => 'hidden' ),
-			'Situationallocataire.natpf_view' => array(
+			/*'Situationallocataire.natpf_view' => array(
 				'options' => $options['Situationallocataire']['natpf_view'],
+				'view' => true,
+				'type' => 'text',
+				'hidden' => true
+			),*/
+			'Situationallocataire.natpf_d1' => array(
+				'options' => $options['Situationallocataire']['natpf_d1'],
 				'view' => true,
 				'type' => 'text',
 				'hidden' => true

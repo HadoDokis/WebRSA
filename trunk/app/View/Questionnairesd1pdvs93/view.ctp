@@ -7,7 +7,8 @@
 		array(
 			'Situationallocataire.sexe',
 			'Situationallocataire.nati',
-			'Situationallocataire.natpf_view',
+//			'Situationallocataire.natpf_view',
+			'Situationallocataire.natpf_d1',
 			'Situationallocataire.tranche_age_view',
 			'Situationallocataire.anciennete_dispositif_view',
 			'Questionnaired1pdv93.inscritpe' => array( 'type' => 'boolean' ),
