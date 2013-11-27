@@ -475,8 +475,6 @@
 
             $this->Jetons2->get( $dossier_id );
 
-			$useDsps = ( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' );
-
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
                 $personne_id = $this->request->data['ActioncandidatPersonne']['personne_id'];
@@ -549,7 +547,7 @@
                 );
                 $personne = Hash::merge( $personne, $detaildroitrsa );
 
-			
+
 				$contratinsertion = $this->{$this->modelClass}->Personne->Contratinsertion->find(
 					'first',
 					array(
@@ -575,25 +573,13 @@
 			$nbEnfants = $this->ActioncandidatPersonne->Personne->Foyer->nbEnfants( Hash::get( $personne, 'Personne.foyer_id' ) );
 			$this->set( 'nbEnfants', $nbEnfants );
 
-			///Récupération de la liste des structures référentes 
+			///Récupération de la liste des structures référentes
 			$structs = $this->ActioncandidatPersonne->Personne->Orientstruct->Structurereferente->listOptions();
 			$this->set( 'structs', $structs );
 
-			///Récupération de la liste des référents 
+			///Récupération de la liste des référents
 			$referents = $this->ActioncandidatPersonne->Personne->Referent->listOptions();
 			$this->set( 'referents', $referents );
-
-			///Données Dsp
-			$qd_dsp = array(
-				'conditions' => array(
-					'Dsp.personne_id' => $personne_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
-			$this->set( compact( 'dsp' ) );
 
 			///Récupération de la liste des actions avec une fiche de candidature
 			$qd_user = array(
@@ -621,38 +607,32 @@
 
 			if( !empty( $this->request->data ) ) {
                 $this->ActioncandidatPersonne->begin();
-                
+
                 // Mise à jour de la case à cocher Poursuite suivi CG si l'action n'est pas de type région (CG66)
                 if( Configure::read( 'Cg.departement' ) == 66 ) {
                     $actionsTypeRegionIds = implode( "', '", Configure::read( 'ActioncandidatPersonne.Actioncandidat.typeregionId' ) );
                     if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], array( $actionsTypeRegionIds ) ) ){
                         $this->request->data['ActioncandidatPersonne']['poursuitesuivicg'] = '0';
                     }
-                    
+
                     // Si aucune case n'est cochée pour les RDVs, on n'enregistre aucune info
                     if( empty( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] ) ) {
                         unset( $this->request->data['ActioncandidatPersonne']['rendezvouspartenaire'] );
                         unset( $this->request->data['ActioncandidatPersonne']['horairerdvpartenaire'] );
                         unset( $this->request->data['ActioncandidatPersonne']['lieurdvpartenaire'] );
                     }
-                    
+
                     // Si aucune case n'est cochée pour la mobilité, on n'enregistre aucune info
                     if( empty( $this->request->data['ActioncandidatPersonne']['mobile'] ) ) {
                         unset( $this->request->data['ActioncandidatPersonne']['mobile'] );
                         unset( $this->request->data['ActioncandidatPersonne']['naturemobile'] );
                         unset( $this->request->data['ActioncandidatPersonne']['typemobile'] );
                     }
-                }    
+                }
 
-                
+
 				if( $this->ActioncandidatPersonne->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
-
-					if( $useDsps ) { ///Récupération des Dsps et sauvegarde
-						$success = $this->ActioncandidatPersonne->Personne->Dsp->saveAll( $this->request->data, array( 'validate' => 'first', 'atomic' => false ) );
-					}
-                    else {
-                        $success = true;
-                    }
+					$success = true;
 
 					// SAuvegarde des numéros ed téléphone si ceux-ci ne sont pas présents en amont
 					if( isset( $this->request->data['Personne'] ) ) {
@@ -676,9 +656,9 @@
 				}
 			}
 			else {
-				if( $this->action == 'edit' ) {           
+				if( $this->action == 'edit' ) {
                     $this->request->data = $actioncandidat_personne;
-                    
+
                     // Récupération des programmes région si renseignés
                     $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
                         'list',
@@ -690,43 +670,6 @@
                         )
                     );
                     $this->request->data['Progfichecandidature66']['Progfichecandidature66'] = $progsfichescandidatures66;
-
-					/// Récupération des données socio pro (notamment Niveau etude) lié au contrat
-					$qd_dsp = array(
-						'conditions' => array(
-							'Dsp.personne_id' => $personne_id
-						),
-						'fields' => null,
-						'order' => null,
-						'recursive' => -1
-					);
-					$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
-
-					if( empty( $dsp ) ) {
-						$dsp = array( 'Dsp' => array( 'personne_id' => $personne_id ) );
-						$this->ActioncandidatPersonne->Personne->Dsp->set( $dsp );
-                        $this->ActioncandidatPersonne->Personne->Dsp->begin();
-						if( $this->ActioncandidatPersonne->Personne->Dsp->save( $dsp ) ) {
-                            $this->ActioncandidatPersonne->Personne->Dsp->commit();
-							$qd_dsp = array(
-								'conditions' => array(
-									'Dsp.personne_id' => $personne_id
-								),
-								'fields' => null,
-								'order' => null,
-								'recursive' => -1
-							);
-							$dsp = $this->ActioncandidatPersonne->Personne->Dsp->find( 'first', $qd_dsp );
-						}
-						else {
-                            $this->ActioncandidatPersonne->Personne->Dsp->rollback();
-							$this->cakeError( 'error500' );
-						}
-						$this->assert( !empty( $dsp ), 'error500' );
-					}
-					$this->request->data['Dsp'] = array( 'id' => $dsp['Dsp']['id'], 'personne_id' => $dsp['Dsp']['personne_id'] );
-					$this->request->data['Dsp']['nivetu'] = ( ( isset( $dsp['Dsp']['nivetu'] ) ) ? $dsp['Dsp']['nivetu'] : null );
-					///Fin des Dsps
 
 					// Liste des motifs de sortie pour le CG66
 					$sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
@@ -751,7 +694,7 @@
 								'order' => array( 'Motifsortie.name ASC')
 							)
 					);
-                         
+
 				}
 			}
 
@@ -779,7 +722,7 @@
             $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
             $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
-            
+
             $this->set( 'progsfichescandidatures66', $this->ActioncandidatPersonne->Progfichecandidature66->find( 'list', array( 'conditions' => array( 'Progfichecandidature66.isactif' => '1' ) ) ) );
 
 			$this->set( compact( 'options' ) );
@@ -933,7 +876,7 @@
 			}
 			$this->set( compact( 'actionscandidatspersonne' ) );
 			$this->_setOptions();
-            
+
             //liste des programmes Région sélectionnés
             // Récupération des programmes région si renseignés
             $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
@@ -952,7 +895,7 @@
             $progsfichescandidatures66 = (array)Set::extract( $progsfichescandidatures66, '{n}.Progfichecandidature66.name' );
             $this->set( compact( 'progsfichescandidatures66' ) );
 
-            
+
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
