@@ -94,3 +94,9 @@ msgstr "Préciser les motifs"
 
 msgid "ActioncandidatPersonne.horairerdvpartenaire"
 msgstr "Rendez-vous fixé le"
+
+msgid "ActionscandidatsPersonnes::cancel"
+msgstr "Annulation"
+
+msgid "ActioncandidatPersonne.motifannulation"
+msgstr "Motif d'annulation"
