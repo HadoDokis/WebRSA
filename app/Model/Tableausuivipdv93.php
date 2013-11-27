@@ -1590,6 +1590,8 @@
 								{$conditionpdv}
 								-- Qui ne se trouvent pas dans la tableau 1B4
 								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+								-- Dont la fiche de prescription n'a pas été annulée
+								AND actionscandidats_personnes.positionfiche <> 'annule'
 
 					) AS \"Tableau1b5__distinct_personnes_prescription\",
 					(
@@ -1607,6 +1609,8 @@
 								{$conditionpdv}
 								-- Qui ne se trouvent pas dans la tableau 1B4
 								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+								-- Dont la fiche de prescription n'a pas été annulée
+								AND actionscandidats_personnes.positionfiche <> 'annule'
 
 					) AS \"Tableau1b5__distinct_personnes_action\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
@@ -1631,6 +1635,8 @@
 									{$conditionpdv}
 									-- Qui ne se trouvent pas dans la tableau 1B4
 									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+									-- Dont la fiche de prescription n'a pas été annulée
+									AND actionscandidats_personnes.positionfiche <> 'annule'
 						) AS \"Tableau1b5__beneficiaires_pas_deplaces\",
 						--nbre de fiches de prescription en attente d'un retour : venu + dfaction IS NULL
 						(
@@ -1649,6 +1655,8 @@
 									{$conditionpdv}
 									-- Qui ne se trouvent pas dans la tableau 1B4
 									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+									-- Dont la fiche de prescription n'a pas été annulée
+									AND actionscandidats_personnes.positionfiche <> 'annule'
 						) AS \"Tableau1b5__nombre_fiches_attente\";";
 			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
 
@@ -1747,6 +1755,8 @@
 							{$conditionpdv}
 							-- Qui ne se trouvent pas dans la tableau 1B4
 							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
@@ -1768,6 +1778,8 @@
 							{$conditionpdv}
 							-- Qui ne se trouvent pas dans la tableau 1B4
 							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
@@ -1799,6 +1811,8 @@
 							{$conditionpdv}
 							-- Qui ne se trouvent pas dans la tableau 1B4
 							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
@@ -1820,6 +1834,8 @@
 							{$conditionpdv}
 							-- Qui ne se trouvent pas dans la tableau 1B4
 							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
@@ -1841,6 +1857,8 @@
 							{$conditionpdv}
 							-- Qui ne se trouvent pas dans la tableau 1B4
 							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
+							-- Dont la fiche de prescription n'a pas été annulée
+							AND actionscandidats_personnes.positionfiche <> 'annule'
 						GROUP BY actionscandidats.name
 						ORDER BY actionscandidats.name;";
 			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
