@@ -75,6 +75,7 @@
 					'foreignKey' => false,
 					'conditions' => array( 'Foyer.dossier_id = Dossier.id' ),
 				),
+				$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				array(
 					'table'      => 'adressesfoyers',
 					'alias'      => 'Adressefoyer',

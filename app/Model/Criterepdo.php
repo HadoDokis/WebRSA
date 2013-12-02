@@ -274,6 +274,7 @@
 			}
 
 			/// Requête
+			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			$querydata = array(
 				'fields' => array(
@@ -374,7 +375,8 @@
 						'type'       => 'INNER',
 						'foreignKey' => false,
 						'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
-					)
+					),
+					$this->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) )
 				),
 				'limit' => 10,
 				'conditions' => $conditions

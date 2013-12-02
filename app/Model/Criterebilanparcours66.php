@@ -68,7 +68,7 @@
 					$conditions[] = 'Bilanparcours66.datebilan BETWEEN \''.implode( '-', array( $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['year'], $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['month'], $criteresbilansparcours66['Bilanparcours66']['datebilan_from']['day'] ) ).'\' AND \''.implode( '-', array( $criteresbilansparcours66['Bilanparcours66']['datebilan_to']['year'], $criteresbilansparcours66['Bilanparcours66']['datebilan_to']['month'], $criteresbilansparcours66['Bilanparcours66']['datebilan_to']['day'] ) ).'\'';
 				}
 			}
-			
+
 			/// Présence de manifestations sur un bilan ?
 			$hasManifestation = Set::extract( $criteresbilansparcours66, 'Bilanparcours66.hasmanifestation' );
 			if( !empty( $hasManifestation ) && in_array( $hasManifestation, array( 'O', 'N' ) ) ) {
@@ -79,6 +79,8 @@
 					$conditions[] = '( SELECT COUNT(manifestationsbilansparcours66.id) FROM manifestationsbilansparcours66 WHERE manifestationsbilansparcours66.bilanparcours66_id = "Bilanparcours66"."id" ) = 0';
 				}
 			}
+
+			$Bilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
 
 			$joins = array(
 				array(
@@ -102,6 +104,7 @@
 					'foreignKey' => false,
 					'conditions' => array( 'Foyer.dossier_id = Dossier.id' )
 				),
+				$Bilanparcours66->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				array(
 					'table'      => 'adressesfoyers',
 					'alias'      => 'Adressefoyer',
@@ -170,7 +173,6 @@
 				)
 			);
 
-            $Bilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
 			$query = array(
 				'fields' => array(
 					'Bilanparcours66.id',
