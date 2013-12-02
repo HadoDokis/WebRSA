@@ -34,8 +34,7 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$etats = Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' );
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $etats ) );
+			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
 
 			$options = Set::merge(
 				$this->Commissionep->Passagecommissionep->Dossierep->enums(),

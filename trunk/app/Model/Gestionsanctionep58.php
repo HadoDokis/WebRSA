@@ -100,6 +100,7 @@
 			$conditions = $this->conditionsAdresse( $conditions, $criteressanctionseps, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsDossier( $conditions, $criteressanctionseps );
 			$conditions = $this->conditionsPersonne( $conditions, $criteressanctionseps );
+			$conditions = $this->conditionsSituationdossierrsa( $conditions, $criteressanctionseps );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteressanctionseps );
 
 			/// Dossiers lockés
