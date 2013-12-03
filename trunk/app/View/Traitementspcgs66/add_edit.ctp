@@ -149,6 +149,7 @@
 				)
 			);
 
+            $numsiret = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.nrmrcs' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.nrmrcs' ) : Hash::get( $this->request->data, 'Traitementpcg66.nrmrcs' );
 			echo $this->Xhtml->tag(
 				'tr',
 				$this->Xhtml->tag(
@@ -157,7 +158,7 @@
 				).
 				$this->Xhtml->tag(
 					'td',
-					$this->Form->input('Traitementpcg66.nrmrcs', array('label'=>false, 'type'=>'text'))
+					$this->Form->input('Traitementpcg66.nrmrcs', array('label'=>false, 'type'=>'text', 'value' => $numsiret))
 				).
 				$this->Xhtml->tag(
 					'td',
@@ -168,6 +169,7 @@
 				)
 			);
 
+            $dtdebutactivite = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.dtdebutactivite' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.dtdebutactivite' ) : Hash::get( $this->request->data, 'Traitementpcg66.dtdebutactivite' );
 			echo $this->Xhtml->tag(
 				'tr',
 				$this->Xhtml->tag(
@@ -183,7 +185,8 @@
 							'empty'=>true,
 							'dateFormat' => 'DMY',
 							'minYear' => date('Y') - 40,
-							'maxYear' => date('Y')
+							'maxYear' => date('Y'),
+                            'selected' => $dtdebutactivite
 						)
 					)
 				).

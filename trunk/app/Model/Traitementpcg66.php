@@ -908,5 +908,44 @@
 				return null;
 			}
 		}
+        
+        
+        /**
+         * Fonction permettant de récupérer les informations de la dernière 
+         *  fiche de calcul parmi les différents traitements PCGs d'une personne
+         * 
+         * @param type $personneId
+         * @param type $action
+         * @param type $data
+         * @return type
+         */
+        public function infoDerniereFicheCalcul( $personneId = 'Personne.id', $action, $data = array() ) {
+
+            if( !empty( $personneId ) ) {
+                $querydata = array(
+                    'fields' => array(
+                        'Traitementpcg66.nrmrcs',
+                        'Traitementpcg66.dtdebutactivite',
+                        'Traitementpcg66.created'
+                    ),
+                    'joins' => array(
+                        $this->Personnepcg66->join( 'Traitementpcg66', array( 'type' => 'INNER' ) )
+                    ),
+                    'contain' => false,
+                    'conditions' => array(
+                        'Personnepcg66.personne_id' => $personneId,
+                        'Traitementpcg66.typetraitement' => 'revenu'
+                    ),
+                    'order' => array( 'Traitementpcg66.created DESC' )
+                );
+                
+				$dataPersonnepcg66 = $this->Personnepcg66->find( 'first', $querydata );
+
+                $data = $dataPersonnepcg66;
+
+            }
+
+            return $data;
+        }
 	}
 ?>
