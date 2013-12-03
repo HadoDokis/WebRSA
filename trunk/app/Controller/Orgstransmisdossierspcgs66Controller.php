@@ -42,8 +42,9 @@
         protected function _setOptions() {
             $options = array();
             $options = $this->Orgtransmisdossierpcg66->enums();
+            $polesdossierspcgs66 = $this->Orgtransmisdossierpcg66->Poledossierpcg66->find( 'list' );
 
-            $this->set( compact( 'options' ) );
+            $this->set( compact( 'options', 'polesdossierspcgs66' ) );
         }
 		/**
 		 * Pagination sur les <élément>s de la table.
@@ -55,7 +56,13 @@
   
             $querydata = $this->Orgtransmisdossierpcg66->qdOccurencesExists(
                 array(
-                    'fields' => $this->Orgtransmisdossierpcg66->fields(),
+                    'fields' => array_merge(
+                        $this->Orgtransmisdossierpcg66->fields(),
+                        $this->Orgtransmisdossierpcg66->Poledossierpcg66->fields()
+                    ),
+                    'joins' => array(
+                        $this->Orgtransmisdossierpcg66->join( 'Poledossierpcg66', array( 'type' => 'LEFT OUTER') )
+                    ),
                     'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
                 )
             );

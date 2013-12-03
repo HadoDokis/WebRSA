@@ -14,6 +14,8 @@
 		array(
 			'Poledossierpcg66.id' => array( 'type' => 'hidden' ),
 			'Poledossierpcg66.name' => array( 'required' => true ),
+			'Poledossierpcg66.originepdo_id' => array( 'options' => $originespdos ),
+			'Poledossierpcg66.typepdo_id' => array( 'options' => $typespdos ),
             'Poledossierpcg66.isactif' => array( 'required' => true, 'type' => 'radio', 'options' => $options['Poledossierpcg66']['isactif'], 'empty' => false )
 		)
 	);

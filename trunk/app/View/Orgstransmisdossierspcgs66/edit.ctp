@@ -14,6 +14,7 @@
 		array(
 			'Orgtransmisdossierpcg66.id' => array( 'type' => 'hidden' ),
 			'Orgtransmisdossierpcg66.name' => array( 'required' => true ),
+			'Orgtransmisdossierpcg66.poledossierpcg66_id' => array( 'options' => $polesdossierspcgs66 ),
 			'Orgtransmisdossierpcg66.isactif'
 		),
 		array(

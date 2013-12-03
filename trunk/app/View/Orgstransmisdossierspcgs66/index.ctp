@@ -11,6 +11,7 @@
         $orgstransmisdossierspcgs66,
         array(
             'Orgtransmisdossierpcg66.name',
+            'Poledossierpcg66.name',
             'Orgtransmisdossierpcg66.isactif'
         ),
         array(

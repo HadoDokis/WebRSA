@@ -65,6 +65,14 @@
 			);
 			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/* , array( 'fields' => array( 'Decisionpdo.name' ) */ );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
+			$orgtransmisdossierpcg66 = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                'list',
+                array(
+                    'conditions' => array(
+                        'Orgtransmisdossierpcg66.isactif' => '1'
+                    )
+                )
+            );
 
 			$forme_ci = array( 'S' => 'Simple', 'C' => 'Particulier' );
 			$compofoyerpcg66 = $this->Decisiondossierpcg66->Compofoyerpcg66->find( 'list' );
@@ -107,7 +115,7 @@
 					)
 				)
 			);
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer' ) );
+			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer', 'orgtransmisdossierpcg66') );
 		}
 
 		/**
@@ -484,6 +492,8 @@
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
 //debug( $this->request->data);
+//debug($dossierpcg66);
+//die();
 				if( $this->Decisiondossierpcg66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
 					$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 					if( !empty( $this->request->data['Decisiondossierpcg66Decisionpersonnepcg66'][0]['decisionpersonnepcg66_id'] ) ) {
@@ -845,6 +855,7 @@
 					'contain' => false
 				)
 			);
+
 			$foyer_id = Set::classicExtract( $dossierpcg66, 'Dossierpcg66.foyer_id' );
 			$this->set( 'foyer_id', $foyer_id );
 
@@ -855,12 +866,16 @@
 			}
 
 			if( !empty( $this->request->data ) ) {
-// 			debug($this->request->data);
+
 				$this->Decisiondossierpcg66->begin();
 				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 				if( $saved ) {
 					
 					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaTransmissionop( $id ) && $saved;
+                    
+                    if( $saved ) {
+                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
+                    }
 
 					$this->Decisiondossierpcg66->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -874,7 +889,7 @@
 			else {
 				$this->request->data = $decisiondossierpcg66;
 
-				// Récupération des types de RSA sélectionnés
+				// Récupération des organismes sélectionnés
 				$orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
 					'list',
 					array(

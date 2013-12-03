@@ -51,3 +51,9 @@ msgstr "Non"
 
 msgid "ENUM::ISACTIF::1"
 msgstr "Oui"
+
+msgid "Poledossierpcg66.originepdo_id"
+msgstr "Origine du dossier PCG liée au pôle"
+
+msgid "Poledossierpcg66.typepdo_id"
+msgstr "Type de dossier PCG généré suite à la transmission de la décision"

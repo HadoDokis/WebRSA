@@ -47,7 +47,14 @@
 		);
 
 		public $belongsTo = array(
-			'Contratinsertion' => array(
+			'Bilanparcours66' => array(
+				'className' => 'Bilanparcours66',
+				'foreignKey' => 'bilanparcours66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Contratinsertion' => array(
 				'className' => 'Contratinsertion',
 				'foreignKey' => 'contratinsertion_id',
 				'conditions' => '',
@@ -61,9 +68,37 @@
 				'fields' => '',
 				'order' => ''
 			),
+            'Dossierpcg66pcd' => array(
+				'className' => 'Dossierpcg66',
+				'foreignKey' => 'dossierpcg66pcd_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 			'Foyer' => array(
 				'className' => 'Foyer',
 				'foreignKey' => 'foyer_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Originepdo' => array(
+				'className' => 'Originepdo',
+				'foreignKey' => 'originepdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Poledossierpcg66' => array(
+				'className' => 'Poledossierpcg66',
+				'foreignKey' => 'poledossierpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+            'Serviceinstructeur' => array(
+				'className' => 'Serviceinstructeur',
+				'foreignKey' => 'serviceinstructeur_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -75,42 +110,30 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Originepdo' => array(
-				'className' => 'Originepdo',
-				'foreignKey' => 'originepdo_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Serviceinstructeur' => array(
-				'className' => 'Serviceinstructeur',
-				'foreignKey' => 'serviceinstructeur_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'User' => array(
+            'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			),
-			'Bilanparcours66' => array(
-				'className' => 'Bilanparcours66',
-				'foreignKey' => 'bilanparcours66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-            'Poledossierpcg66' => array(
-				'className' => 'Poledossierpcg66',
-				'foreignKey' => 'poledossierpcg66_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
 			)
 		);
+        
+        public $hasOne = array(
+			'Dossierpcg66svt' => array(
+				'className' => 'Dossierpcg66',
+				'foreignKey' => 'dossierpcg66pcd_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+        );
 
 		public $hasMany = array(
 			'Decisiondossierpcg66' => array(
@@ -887,5 +910,106 @@
             
 			return $return;
 		}
+        
+        
+        /**
+         * Fonction permettatn la génération automatique d'un dossier PCG
+         * une fois que le dossier PCG initial s'est vu transmis à un organisme
+         * de type PDU-MMR, PDAMGA ou PDU-MJP
+         * @param type $dossierpcg66_id
+         * @return boolean
+         */
+        public function generateDossierPCG66Transmis( $dossierpcg66_id ) {
+
+            if( empty( $dossierpcg66_id ) ) {
+                return false;
+            }
+            
+            $dossierpcg66EnCours = $this->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->fields(),
+                        $this->Decisiondossierpcg66->fields(),
+                        $this->Poledossierpcg66->fields()
+                    ),
+                    'conditions' => array(
+                        'Dossierpcg66.id' => $dossierpcg66_id
+                    ),
+                    'joins' => array(
+                        $this->join( 'Decisiondossierpcg66', array(
+                            'order' => array( 'Decisiondossierpcg66.created DESC' ),
+                            'type' => 'INNER' )
+                        ),
+                        $this->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
+                    ),
+                    'contain' => false
+                )
+            );
+            
+            // Récupération de la liste des organismes auxquels la décision est transmise
+            $orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
+                'all',
+                array(
+                    'fields' => array(
+//                        "Decdospcg66Orgdospcg66.id",
+                        "Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id"
+                    ),
+                    'conditions' => array(
+                        "Decdospcg66Orgdospcg66.decisiondossierpcg66_id" => $dossierpcg66EnCours['Decisiondossierpcg66']['id']
+                    )
+                )
+            );
+            $orgsIds = Hash::extract( $orgstransmisdossierspcgs66, '{n}.Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id' );
+            $organismesConcernes = Configure::read( 'Generationdossierpcg.Orgtransmisdossierpcg66.id' );
+            debug($orgstransmisdossierspcgs66);
+
+            $dossierPCGGenerable = false;
+            foreach( $orgsIds as $key => $value ) {
+                if( in_array( $value, $organismesConcernes ) ){
+                    $dossierPCGGenerable = true;
+                    
+                    $poleOrg = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->Orgtransmisdossierpcg66->find(
+                        'first',
+                        array(
+                            'conditions' => array(
+                                'Orgtransmisdossierpcg66.id' => $value
+                            )
+                        )
+                    );
+                    $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
+                }
+            }
+
+
+//debug($dossierpcg66EnCours);
+
+            $success = true;
+            $nouveauDossierpcg66 = array(
+                'Dossierpcg66' => array(
+                    'foyer_id' => $dossierpcg66EnCours['Dossierpcg66']['foyer_id'],
+                    'originepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['originepdo_id'],
+                    'typepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['typepdo_id'], // FIXME
+                    'orgpayeur' => $dossierpcg66EnCours['Dossierpcg66']['orgpayeur'],
+                    'datereceptionpdo' => $dossierpcg66EnCours['Decisiondossierpcg66']['datevalidation'],
+                    'commentairepiecejointe' => $dossierpcg66EnCours['Decisiondossierpcg66']['infotransmise'],
+                    'haspiecejointe' => 0,
+                    'poledossierpcg66_id' => $poledossierpcg66_id,
+                    'etatdossierpcg' => 'attaffect',
+                    'dossierpcg66pcd_id' => $dossierpcg66EnCours['Dossierpcg66']['id']
+                )
+            );
+
+            $dossierpcg66pcd_id = $dossierpcg66EnCours['Dossierpcg66']['dossierpcg66pcd_id'];
+//debug($nouveauDossierpcg66);
+//die();
+
+            if( $dossierPCGGenerable && empty( $dossierpcg66pcd_id ) ){
+                $this->create( $nouveauDossierpcg66 );
+                $success = $this->save() && $success;
+            }
+
+            return $success;
+        }
 	}
 ?>
