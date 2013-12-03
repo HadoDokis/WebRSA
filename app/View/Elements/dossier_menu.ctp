@@ -60,8 +60,17 @@
 
 <?php
 	if( Configure::read( 'Cg.departement' ) == 66 ) {
-		$typesstructuresreferentes = Hash::extract( $dossierMenu, 'Foyer.Personne.{n}.Structurereferente.typestructure' );
-		if( in_array( 'oa', $typesstructuresreferentes, true ) ) {
+        $isOa = false;
+        $structureNonOAId = (array) Configure::read( 'Nonorganismeagree.Structurereferente.id' );
+        $typestructureByIds = Hash::combine( $dossierMenu, 'Foyer.Personne.{n}.Orientstruct.structurereferente_id', 'Foyer.Personne.{n}.Structurereferente.typestructure' );
+
+        foreach( $typestructureByIds as $srid => $srts ) {
+            if( 'oa' === $srts && !in_array( $srid, $structureNonOAId ) ) {
+                $isOa = true;
+            }
+        }
+        
+        if( $isOa ) {
 			echo $this->Xhtml->tag( 'p', 'Ce dossier est géré par un organisme agréé', array( 'class' => 'etatDossier structurereferenteOa' ) );
 		}
 	}
