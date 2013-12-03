@@ -34,23 +34,19 @@
 
 
         public function index() {
-			$queryData = array(
-				'fields' => array(
-                    'Typecourrierpcg66.id',
-                    'Typecourrierpcg66.name',
-                    'COUNT("Traitementpcg66"."id") AS "Typecourrierpcg66__occurences"'
-                ),
-                'contain' => false,
-                'joins' => array(
-                    $this->Typecourrierpcg66->join( 'Traitementpcg66' )
-                ),
-                'recursive' => -1,
-                'limit' => 20,
-                'group' => array(  'Typecourrierpcg66.id', 'Typecourrierpcg66.name' ),
-                'order' => array( 'Typecourrierpcg66.name ASC' )
-                
-			);
-            $this->Default->index( $queryData );
+            $this->Typecourrierpcg66->Behaviors->attach( 'Occurences' );
+            $querydata = $this->Typecourrierpcg66->qdOccurencesExists(
+                    array(
+                    'fields' => array_merge(
+                        $this->Typecourrierpcg66->fields()
+                    ),
+                    'order' => array( 'Typecourrierpcg66.name ASC' )
+                )
+            );
+            $this->paginate = $querydata;
+			$typescourrierspcgs66 = $this->paginate( 'Typecourrierpcg66' );            
+            
+            $this->set( compact( 'typescourrierspcgs66' ) );
         }
 
         /**
