@@ -50,11 +50,17 @@
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $this->Search->etatdosrsa($etatdosrsa);
+            
+            echo "<fieldset id='referentparcours'><legend>Suivi du parcours</legend>";
+            echo $this->Form->input( 'Structurereferente.id', array( 'label' => 'Structure référente du référent de parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $struct, 'empty' => true ) );
+            echo $this->Form->input( 'PersonneReferent.id', array( 'label' => 'Référent du parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+            echo '</fieldset>';
 		?>
 	</fieldset>
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
+		dependantSelect( 'PersonneReferentId', 'StructurereferenteId' );
 	});
 </script>
 	<fieldset>
