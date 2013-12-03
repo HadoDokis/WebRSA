@@ -28,6 +28,17 @@
 			'Formattable',
 			'Pgsqlcake.PgsqlAutovalidate'
 		);
+        
+        
+        public $belongsTo = array(
+			'Poledossierpcg66' => array(
+				'className' => 'Poledossierpcg66',
+				'foreignKey' => 'poledossierpcg66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			)
+        );
 
         /**
 		 * Associations "Has many".

@@ -23,6 +23,23 @@
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Formattable'
 		);
+        
+        public $belongsTo = array(
+			'Originepdo' => array(
+				'className' => 'Originepdo',
+				'foreignKey' => 'originepdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Typepdo' => array(
+				'className' => 'Typepdo',
+				'foreignKey' => 'typepdo_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+        );
 
 		public $hasMany = array(
 			'User' => array(
@@ -40,6 +57,19 @@
 			),
             'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',
+				'foreignKey' => 'poledossierpcg66_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+            'Orgtransmisdossierpcg66' => array(
+				'className' => 'Orgtransmisdossierpcg66',
 				'foreignKey' => 'poledossierpcg66_id',
 				'dependent' => true,
 				'conditions' => '',

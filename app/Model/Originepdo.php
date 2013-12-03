@@ -65,6 +65,19 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
+			),
+			'Poledossierpcg66' => array(
+				'className' => 'Poledossierpcg66',
+				'foreignKey' => 'originepdo_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 			)
 		);
         

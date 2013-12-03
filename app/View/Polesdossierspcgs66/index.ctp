@@ -10,6 +10,8 @@
         $polesdossierspcgs66,
         array(
             'Poledossierpcg66.name',
+            'Originepdo.libelle' => array( 'label' => __d( 'poledossierpcg66', 'Poledossierpcg66.originepdo_id' ) ),
+            'Typepdo.libelle' => array( 'label' => __d( 'poledossierpcg66', 'Poledossierpcg66.typepdo_id' ) ),
             'Poledossierpcg66.isactif' => array( 'type' => 'boolean' )
         ),
         array(

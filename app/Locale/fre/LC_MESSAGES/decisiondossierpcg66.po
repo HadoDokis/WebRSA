@@ -234,3 +234,6 @@ msgstr "Agent ayant émis la validation"
 
 msgid "Decisiondossierpcg66.etatop"
 msgstr "État de transmission"
+
+msgid "Decisiondossierpcg66.infotransmise"
+msgstr "Commentaire suite à la transmission"

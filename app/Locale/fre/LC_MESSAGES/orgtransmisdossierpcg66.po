@@ -51,3 +51,6 @@ msgstr "Oui"
 
 msgid "ENUM::ISACTIF::0"
 msgstr "Non"
+
+msgid "Orgtransmisdossierpcg66.poledossierpcg66_id"
+msgstr "Pôle auquel l'organisme est rattaché"

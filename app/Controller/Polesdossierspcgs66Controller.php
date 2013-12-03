@@ -31,8 +31,10 @@
         protected function _setOptions() {
             $options = array();
             $options = $this->Poledossierpcg66->enums();
+            $originespdos = $this->Poledossierpcg66->Originepdo->find( 'list' );
+            $typespdos = $this->Poledossierpcg66->Typepdo->find( 'list' );
 
-            $this->set( compact( 'options' ) );
+            $this->set( compact( 'options', 'originespdos', 'typespdos' ) );
         }
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
@@ -42,9 +44,24 @@
 
 		public function index() {
           
-            $querydata = $this->Poledossierpcg66->qdOccurences();
+            $this->Poledossierpcg66->Behaviors->attach( 'Occurences' );
+            $querydata = $this->Poledossierpcg66->qdOccurencesExists(
+                    array(
+                    'fields' => array_merge(
+                        $this->Poledossierpcg66->fields(),
+                        $this->Poledossierpcg66->Originepdo->fields(),
+                        $this->Poledossierpcg66->Typepdo->fields()
+                    ),
+                    'joins' => array(
+                        $this->Poledossierpcg66->join('Originepdo', array( 'type' => 'LEFT OUTER' ) ),
+                        $this->Poledossierpcg66->join('Typepdo', array( 'type' => 'LEFT OUTER' ) ),
+                    ),
+                    'order' => array( 'Poledossierpcg66.name ASC' )
+                )
+            );
             $this->paginate = $querydata;
-			$polesdossierspcgs66 = $this->paginate( $this->modelClass );         
+			$polesdossierspcgs66 = $this->paginate( 'Poledossierpcg66' );            
+            
             $this->set( compact( 'polesdossierspcgs66' ) );
             
 			$this->_setOptions();
