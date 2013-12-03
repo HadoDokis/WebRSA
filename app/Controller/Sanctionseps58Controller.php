@@ -45,16 +45,17 @@
 
 				if( $qdName == 'qdNonInscrits' ) {
 					$modelName = 'Orientstruct';
-					$foreignKey = 'orientstruct_id';
+//					$foreignKey = 'orientstruct_id';
 				}
 				else {
 					$modelName = 'Historiqueetatpe';
-					$foreignKey = 'historiqueetatpe_id';
+//					$foreignKey = 'historiqueetatpe_id';
 				}
 
 				foreach( $this->request->data[$modelName] as $key => $item ) {
 					// La personne était-elle sélectionnée précédemment ?
-					$alreadyChecked = $this->Sanctionep58->Dossierep->find(
+					$dossierep_id = Hash::get( $this->request->data, "Dossierep.{$key}.id" );
+					/*$alreadyChecked = $this->Sanctionep58->Dossierep->find(
 						'first',
 						array(
 							'conditions' => array(
@@ -77,10 +78,10 @@
 								'Sanctionep58'
 							)
 						)
-					);
+					);*/
 
 					// Personnes non cochées que l'on sélectionne
-					if( empty( $alreadyChecked ) && !empty( $item['chosen'] ) ) {
+					if( empty( $dossierep_id ) && !empty( $item['chosen'] ) ) {
 						$dossierep = array(
 							'Dossierep' => array(
 								'themeep' => 'sanctionseps58',
@@ -93,17 +94,22 @@
 						$sanctionep58 = array(
 							'Sanctionep58' => array(
 								'dossierep_id' => $this->Sanctionep58->Dossierep->id,
-								$foreignKey => $item['id'],
+								'orientstruct_id' => $this->request->data['Orientstruct'][$key]['id'],
 								'origine' => $origine
 							)
 						);
+
+						if( $qdName == 'qdRadies' ) {
+							$sanctionep58['Sanctionep58']['historiqueetatpe_id'] = $item['id'];
+						}
 
 						$this->Sanctionep58->create( $sanctionep58 );
 						$success = $this->Sanctionep58->save() && $success;
 					}
 					// Personnes précédemment sélectionnées, que l'on désélectionne
-					else if( !empty( $alreadyChecked ) && empty( $item['chosen'] ) ) {
-						$success = $this->Sanctionep58->Dossierep->delete( $alreadyChecked['Dossierep']['id'], true ) && $success;
+					else if( !empty( $dossierep_id ) && empty( $item['chosen'] ) ) {
+						// FIXME: on supprime des décisions dans les déjà cochés!!
+						$success = $this->Sanctionep58->Dossierep->delete( $dossierep_id, true ) && $success;
 					}
 					// Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
 				}
@@ -123,6 +129,7 @@
 			$this->paginate = array( 'Personne' => $queryData );
 			$personnes = $this->paginate( $this->Sanctionep58->Dossierep->Personne );
 
+			// FIXME: quels sont les sélectionnés!!!
 			$this->request->data = null;
 
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );

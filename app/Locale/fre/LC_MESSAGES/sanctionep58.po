@@ -25,6 +25,9 @@ msgstr ""
 msgid "Historiqueetatpe.chosen"
 msgstr "Sélectionné ?"
 
+msgid "Orientstruct.chosen"
+msgstr "Sélectionné ?"
+
 msgid "Sanctionseps58::selectionradies"
 msgstr "Sélection des allocataires radiés de Pôle Emploi"
 

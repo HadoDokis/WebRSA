@@ -227,13 +227,23 @@
 		 * @return array
 		 */
 		protected function _allConfigureKeys58() {
-			return array(
+			$return = array(
 				'Nonorientationproep58.delaiCreationContrat' => 'integer',
 				'Sanctionep58.nonrespectcer.dureeTolerance' => 'integer',
 				'Selectionradies.conditions' => 'isarray',
 				'Typeorient.emploi_id' => 'integer',
 				'Dossierseps.conditionsSelection' => 'isarray',
 			);
+
+			$structurereferente_id = Configure::read( 'Sanctionseps58.selection.structurereferente_id' );
+			if( is_array( $structurereferente_id ) ) {
+				$return['Sanctionseps58.selection.structurereferente_id'] = 'isarray';
+			}
+			else {
+				$return['Sanctionseps58.selection.structurereferente_id'] = 'integer';
+			}
+
+			return $return;
 		}
 
 		/**
@@ -605,6 +615,7 @@
 				$return = array(
 					'Typeorient.emploi_id' => 'Typeorient',
 					// TODO: 'Selectionradies.conditions' ?
+					'Sanctionseps58.selection.structurereferente_id' => 'Structurereferente',
 				);
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {

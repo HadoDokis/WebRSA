@@ -261,29 +261,7 @@
 						)
 					)
 				),
-				'conditions' => array(
-					'Personne.id NOT IN (
-						SELECT
-								dossierseps.personne_id
-							FROM dossierseps
-							WHERE
-								dossierseps.personne_id = Personne.id
-								AND dossierseps.id NOT IN ( '.
-									$this->Dossierep->Passagecommissionep->sq(
-										array(
-											'fields' => array(
-												'passagescommissionseps.dossierep_id'
-											),
-											'alias' => 'passagescommissionseps',
-											'conditions' => array(
-												'passagescommissionseps.dossierep_id = dossierseps.id',
-												'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
-											)
-										)
-									)
-								.' )
-					)'
-				)
+				'conditions' => array()
 			);
 
 			if ( !empty( $personnesEnSanction ) ) {
@@ -307,7 +285,72 @@
 				);
 			}
 
+			// Ajout de la restriction permettant d'obtenir les allocataires
+			// actuellement orientés Pôle Emploi.
+			$queryData['fields'][] = 'Orientstruct.id';
+			$queryData['conditions'][] = array(
+				'Orientstruct.structurereferente_id' => Configure::read( 'Sanctionseps58.selection.structurereferente_id' )
+			);
+
 			return $queryData;
+		}
+
+		/**
+		 * Complète les querydata qdNonInscrits et qdRadies afin d'obtenir l'id
+		 * du dossier d'EP et de ne pas sélectionner les dossiers d'EP associés à
+		 * une commission.
+		 *
+		 * @param string $chosenAlias
+		 * @param array $querydata
+		 * @return array
+		 */
+		protected function _completeQdSelection( $chosenAlias, array $querydata ) {
+			// Permet d'avoir le chosen ainsi que l'id de Sanctionep58 si le dossier est déjà sélectionné
+			$querydata['joins'][] = $this->Orientstruct->join( 'Sanctionep58', array( 'type' => 'LEFT OUTER' ) );
+			$querydata['joins'][] = $this->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+			$querydata['fields'][] = 'Dossierep.id';
+			$querydata['fields'][] = '( "Dossierep"."id" IS NOT NULL ) AS "'.$chosenAlias.'__chosen"';
+
+			// Dont le dossier d'EP, s'il existe, n'est pas encore attaché à une commission
+			$sqPassagecommissionep = $this->Dossierep->Passagecommissionep->sq(
+				array(
+					'alias' => 'passagescommissionseps',
+					'fields' => array( 'passagescommissionseps.dossierep_id' ),
+					'conditions' => array(
+						'passagescommissionseps.dossierep_id = Dossierep.id'
+					),
+					'contain' => false
+				)
+			);
+			$querydata['conditions'][] = array( "Dossierep.id NOT IN ( {$sqPassagecommissionep} )" );
+
+			// Et qui ne possèdent pas d'autre dossier d'EP non traité
+			$querydata['conditions'][] = array(
+				'Personne.id NOT IN (
+					SELECT
+							dossierseps.personne_id
+						FROM dossierseps
+						WHERE
+							dossierseps.personne_id = Personne.id
+							AND dossierseps.id <> Dossierep.id
+							AND dossierseps.id NOT IN ( '.
+								$this->Dossierep->Passagecommissionep->sq(
+									array(
+										'fields' => array(
+											'passagescommissionseps.dossierep_id'
+										),
+										'alias' => 'passagescommissionseps',
+										'conditions' => array(
+											'passagescommissionseps.dossierep_id = dossierseps.id',
+											'passagescommissionseps.etatdossierep' => array( 'traite', 'annule' )
+										)
+									)
+								)
+							.' )
+				)'
+			);
+
+			return $querydata;
 		}
 
 		/**
@@ -393,6 +436,8 @@
 				$queryData['conditions'][] = $conditionsSelection;
 			}
 
+			$queryData = $this->_completeQdSelection( 'Orientstruct', $queryData );
+
 			return $queryData;
 		}
 
@@ -440,6 +485,8 @@
 			if( !empty( $conditionsSelection ) ) {
 				$queryData['conditions'][] = $conditionsSelection;
 			}
+
+			$queryData = $this->_completeQdSelection( 'Historiqueetatpe', $queryData );
 
 			return $queryData;
 		}
