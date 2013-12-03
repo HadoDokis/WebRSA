@@ -36,6 +36,8 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
+            
+            $conditions = $this->conditionsDates( $conditions, $params, 'Traitementpcg66.created' );
 
 			/// Critères
 			$descriptionpdo = Set::extract( $params, 'Traitementpcg66.descriptionpdo_id' );

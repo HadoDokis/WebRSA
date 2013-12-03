@@ -84,6 +84,11 @@
 			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'selected' => $daterevision_from ) );?>
 			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $daterevision_to ) );?>
 		</fieldset>
+    
+        <?php
+            echo $this->Search->date( 'Traitementpcg66.created', 'Date de création du traitement' );
+            
+        ?>
 	<?php
 		///Formulaire de recherche pour les PDOs
 		echo $this->Default2->subform(
@@ -126,6 +131,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Type de traitement', 'Traitementpcg66.typetraitement' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date du traitement', 'Traitementpcg66.created' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Motif de la situation', 'Situationpdo.libelle' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Description du traitement', 'Traitementpcg66.descriptionpdo_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de réception de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
@@ -182,6 +188,7 @@
 //								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
                                 h( Hash::get( $criteretraitementpcg66, 'User.nom_complet' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
+                                h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.created' ) ) ),
 								h( Set::classicExtract( $criteretraitementpcg66, 'Situationpdo.libelle' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
 								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),

@@ -5,15 +5,16 @@
         array(
             __d( 'dossier', 'Dossier.numdemrsa' ),
             'Allocataire',
-            'Origine de la PDO',
-            'Type de dossier',
-            'Date de réception',
             'Gestionnaire',
-            'Décision',
-            'Nb de propositions de décisions',
-            'État du dossier',
-            'Motif(s) de la personne',
-            'Statut(s) de la personne',
+            'Type de traitement',
+            'Date du traitement',
+            'Motif de la situation',
+            'Description du traitement',
+            'Date de réception de la DO',
+            'Date de révision',
+            'Date d\'échéance',
+            'Traitement clos ?',
+            'Traitement annulé ?',
             'Nb de fichiers dans la corbeille'
         )
     );
@@ -25,6 +26,7 @@
             h( Set::enum( Hash::get( $result, 'Personne.qual' ), $qual ).' '.Hash::get( $result, 'Personne.nom' ).' '.Hash::get( $result, 'Personne.prenom' ) ),
             h( Hash::get( $result, 'User.nom_complet' ) ),
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
+            h( date_short( Hash::get( $result, 'Traitementpcg66.created' ) ) ),
             h( Hash::get( $result, 'Situationpdo.libelle' ) ),
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
             h( $this->Locale->date( 'Locale->date',  Hash::get( $result, 'Dossierpcg66.datereceptionpdo' ) ) ),
