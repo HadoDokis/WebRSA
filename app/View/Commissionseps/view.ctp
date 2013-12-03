@@ -177,13 +177,13 @@
 				echo "<table>";
 				echo $this->Default->thead(
 						array(
-							'Membreep.Fonctionmembreep.name',
-							'Membreep.nom',
-							'Membreep.organisme',
-							'Membreep.tel',
-							'Membreep.mail',
-							'CommissionepMembreep.reponse',
-							'CommissionepMembreep.presence'
+							'Membreep.Fonctionmembreep.name' => array( 'sort' => false ),
+							'Membreep.nom' => array( 'sort' => false ),
+							'Membreep.organisme' => array( 'sort' => false ),
+							'Membreep.tel' => array( 'sort' => false ),
+							'Membreep.mail' => array( 'sort' => false ),
+							'CommissionepMembreep.reponse' => array( 'sort' => false ),
+							'CommissionepMembreep.presence' => array( 'sort' => false )
 						),
 						array(
 							'actions' => array(
