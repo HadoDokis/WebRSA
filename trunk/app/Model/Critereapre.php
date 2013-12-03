@@ -32,7 +32,8 @@
 		 * @return array
 		 */
 		public function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres ) {
-			/// Conditions de base
+			
+            /// Conditions de base
 			$conditions = array( );
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
@@ -179,44 +180,48 @@
 
 			$query = array(
 				'fields' => array(
-					'"Apre"."id"',
-					'"Apre"."personne_id"',
-					'"Apre"."numeroapre"',
-					'"Apre"."typedemandeapre"',
-					'"Apre"."datedemandeapre"',
-					'"Apre"."naturelogement"',
-					'"Apre"."anciennetepoleemploi"',
-					'"Apre"."activitebeneficiaire"',
-					'"Apre"."etatdossierapre"',
-					'"Apre"."dateentreeemploi"',
-					'"Apre"."eligibiliteapre"',
-					'"Apre"."typecontrat"',
-					'"Apre"."statutapre"',
-					'"Apre"."mtforfait"',
-					'"Apre"."isdecision"',
-					'"Apre"."nbenf12"',
-					'"Dossier"."id"',
-					'"Dossier"."numdemrsa"',
-					'"Dossier"."dtdemrsa"',
-					'"Dossier"."matricule"',
-					'"Personne"."id"',
-					'"Personne"."nom"',
-					'"Personne"."prenom"',
-					'"Personne"."dtnai"',
-					'"Personne"."nir"',
-					'"Personne"."qual"',
-					'"Personne"."nomcomnai"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."codepos"',
-					'"Adressefoyer"."rgadr"',
-					'"Adresse"."numcomptt"',
-					'"Aideapre66"."decisionapre"',
-					'"Aideapre66"."datedemande"',
-					'"Apre"."isdecision"',
-					'"Referent"."nom"',
-					'"Referent"."prenom"',
-					'Structurereferente.lib_struc'
-				),
+                    '"Apre"."id"',
+                    '"Apre"."personne_id"',
+                    '"Apre"."numeroapre"',
+                    '"Apre"."typedemandeapre"',
+                    '"Apre"."datedemandeapre"',
+                    '"Apre"."naturelogement"',
+                    '"Apre"."anciennetepoleemploi"',
+                    '"Apre"."activitebeneficiaire"',
+                    '"Apre"."etatdossierapre"',
+                    '"Apre"."dateentreeemploi"',
+                    '"Apre"."eligibiliteapre"',
+                    '"Apre"."typecontrat"',
+                    '"Apre"."statutapre"',
+                    '"Apre"."mtforfait"',
+                    '"Apre"."isdecision"',
+                    '"Apre"."nbenf12"',
+                    '"Dossier"."id"',
+                    '"Dossier"."numdemrsa"',
+                    '"Dossier"."dtdemrsa"',
+                    '"Dossier"."matricule"',
+                    '"Personne"."id"',
+                    '"Personne"."nom"',
+                    '"Personne"."prenom"',
+                    '"Personne"."dtnai"',
+                    '"Personne"."nir"',
+                    '"Personne"."qual"',
+                    '"Personne"."nomcomnai"',
+                    '"Adresse"."locaadr"',
+                    '"Adresse"."codepos"',
+                    '"Adresse"."canton"',
+                    '"Adressefoyer"."rgadr"',
+                    '"Adresse"."numcomptt"',
+                    '"Apre"."isdecision"',
+                    '"Referent"."nom"',
+                    '"Referent"."prenom"',
+                    'Structurereferente.lib_struc',
+                    'Aideapre66.decisionapre',
+                    'Aideapre66.montantaccorde',
+                    'Aideapre66.datedemande',
+                    'Typeaideapre66.name',
+                    'Themeapre66.name'
+                ),
 				'recursive' => -1,
 				'joins' => array(
 					array(
@@ -280,6 +285,24 @@
 						)
 					),
 					array(
+						'table'      => 'typesaidesapres66',
+						'alias'      => 'Typeaideapre66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+								"Typeaideapre66.id = Aideapre66.typeaideapre66_id"
+						)
+					),
+					array(
+						'table'      => 'themesapres66',
+						'alias'      => 'Themeapre66',
+						'type'       => 'LEFT OUTER',
+						'foreignKey' => false,
+						'conditions' => array(
+								"Themeapre66.id = Aideapre66.themeapre66_id"
+						)
+					),
+					array(
 						'table'      => 'structuresreferentes',
 						'alias'      => 'Structurereferente',
 						'type'       => $type,
@@ -325,6 +348,12 @@
 
 				$query['conditions'][] = array( 'or' => $subQueries );
 			}
+            
+  
+            if( Configure::read( 'CG.cantons' )  ) {
+                $query['fields'][] = 'Canton.canton';
+                $query['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();
+            }
 
 			return $query;
 		}
