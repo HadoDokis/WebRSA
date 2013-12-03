@@ -610,8 +610,8 @@
 
                 // Mise à jour de la case à cocher Poursuite suivi CG si l'action n'est pas de type région (CG66)
                 if( Configure::read( 'Cg.departement' ) == 66 ) {
-                    $actionsTypeRegionIds = implode( "', '", Configure::read( 'ActioncandidatPersonne.Actioncandidat.typeregionId' ) );
-                    if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], array( $actionsTypeRegionIds ) ) ){
+                    $actionsTypeRegionIds = Configure::read( 'ActioncandidatPersonne.Actioncandidat.typeregionId' );
+                    if( !in_array( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'], $actionsTypeRegionIds ) ){
                         $this->request->data['ActioncandidatPersonne']['poursuitesuivicg'] = '0';
                     }
 

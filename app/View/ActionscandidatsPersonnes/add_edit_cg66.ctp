@@ -410,7 +410,7 @@
         observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
 			$( 'poursuitesuivi' ),
-			['<?php echo implode( "', '", Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionId" ) );?>'],
+			['<?php echo implode( "', '", Configure::read( "ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId" ) );?>'],
 			false,
 			true
 		);
