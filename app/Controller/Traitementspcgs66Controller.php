@@ -702,6 +702,10 @@
 			$listeTraitementsNonClos = $this->Traitementpcg66->Personnepcg66->listeTraitementpcg66NonClos( $personne_id, $this->action, $this->request->data, $traitementspcgsouverts );
             $this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
             
+            // Récupération et vérification d'une fiche de calcul existante parmi les traitements d'un dossier PCG passé
+            $infoDerniereFicheCalcul = $this->Traitementpcg66->infoDerniereFicheCalcul( $personne_id, $this->action, $this->request->data );
+            $this->set( 'infoDerniereFicheCalcul', $infoDerniereFicheCalcul );
+            
 			$this->_setOptions();
 
 			$this->set( compact( 'personne_id', 'dossier_id', 'dossierpcg66_id', 'personnepcg66_id' ) );
