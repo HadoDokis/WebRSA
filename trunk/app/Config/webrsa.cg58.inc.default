@@ -727,9 +727,31 @@
 			'changement_situation_allocataire' => null,
 		)
 	);
-    
+
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
 	 */
 	Configure::write('Rendezvous.useThematique', false );
+
+	/**
+	 * Permet d'indiquer l'id technique (ou les ids techniques) des enregistrements
+	 * de la table structuresreferentes afin de limiter les résultats des
+	 * recherches "Sélection des allocataires radiés de Pôle Emploi" et "Sélection
+	 * des allocataires non inscrits à Pôle Emploi" aux allocataires actuellement
+	 * orientés Pôle Emploi.
+	 *
+	 * @param integer|array
+	 * @default null
+	 */
+	Configure::write( 'Sanctionseps58.selection.structurereferente_id', 2 );
+	// FIXME: checks
+
+	/**
+	 * Permet d'obtenir le nombre de résultats pour la "Sélection des allocataires
+	 * radiés de Pôle Emploi" et la "Sélection des allocataires non inscrits à
+	 * Pôle Emploi".
+	 *
+	 * @param boolean
+	 */
+	Configure::write( 'Optimisations.Sanctionseps58.progressivePaginate', false );
 ?>

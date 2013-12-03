@@ -42,7 +42,9 @@
 			'cohorte' => true,
 			'hidden' => array(
 				'Personne.id',
-				'Historiqueetatpe.id'
+				'Historiqueetatpe.id',
+				'Orientstruct.id',
+				'Dossierep.id',
 			),
 			'paginate' => 'Personne',
 			'domain' => 'sanctionep58'
