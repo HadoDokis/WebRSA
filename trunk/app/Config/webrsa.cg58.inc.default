@@ -744,7 +744,6 @@
 	 * @default null
 	 */
 	Configure::write( 'Sanctionseps58.selection.structurereferente_id', 2 );
-	// FIXME: checks
 
 	/**
 	 * Permet d'obtenir le nombre de résultats pour la "Sélection des allocataires
