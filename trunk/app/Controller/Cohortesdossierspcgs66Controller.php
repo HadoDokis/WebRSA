@@ -207,8 +207,11 @@
 					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$paginate['limit'] = 10;
 
+                    $progressivePaginate = !Hash::get( $this->request->data, 'Search.Dossierpcg66.paginationNombreTotal' );
+                    
 					$this->paginate = $paginate;
-					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
+                    $cohortedossierpcg66 = $this->paginate( 'Dossierpcg66', array(), array(), $progressivePaginate );
+//					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
 
 					if( empty( $this->request->data['Dossierpcg66'] ) ) {
 						// Si un précédent dossier existe, on récupère le gestionnaire précédent par défaut
@@ -236,7 +239,10 @@
 						}
 					}
                     else {
-                        
+                        $progressivePaginate = $this->_hasProgressivePagination();
+                        if( !is_null( $progressivePaginate ) ) {
+                            $this->request->data['Search']['Dossierpcg66']['paginationNombreTotal'] = !$progressivePaginate;
+                        }
                     }
 
                     if( !in_array( $statutAffectation, array( 'Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer' ) ) ) {

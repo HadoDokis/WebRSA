@@ -68,10 +68,13 @@
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $this->Xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
-                
-//                echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
             ?>
         </fieldset>
+                
+<fieldset>
+    <legend>Comptage des résultats</legend>
+    <?php echo $this->Form->input( 'Search.Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
+</fieldset>
 
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -95,9 +98,9 @@
                 <th>N° Dossier</th>
                 <th>Alloctaire principal</th>
                 <th>Commune de l'allocataire</th>
-                <th>Date de réception DO</th>
+                <th><?php echo $this->Xpaginator->sort( 'Date de réception DO', 'Dossierpcg66.datereceptionpdo' );?></th>
                 <th>Type de dossier</th>
-                <th>Origine du dossier</th>
+                <th><?php echo $this->Xpaginator->sort( 'Origine du dossier', 'Originepdo.libelle' );?></th>
                 <th>Organisme payeur</th>
                 <th>Service instructeur</th>
                 <th class="action">Sélection</th>
