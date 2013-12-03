@@ -467,7 +467,8 @@
 
 				// Le dossier PCG du foyer de l'allocataire n'existe pas encore
 				// pour ce foyer et cette décision de thématique EP donc on peut le créer
-				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 && $etatdossierep != 'reporte' ) {
+//				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 && $etatdossierep != 'reporte' ) {
+				if( $nbDossierPCG66PourDecisiondefautinsertion66 == 0 && !in_array( $etatdossierep, array( 'reporte', 'annule' ) ) ) {
 					$this->Bilanparcours66->Dossierpcg66->create( $dossierpcg66 );
 					$success = $this->Bilanparcours66->Dossierpcg66->save() && $success;
 				}
