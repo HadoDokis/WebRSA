@@ -23,7 +23,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				<th rowspan="2">Avis EPL</th>
 				<th colspan="4">Décision CG</th>
 				<!-- <th rowspan="2">Observations</th> -->
-				<th rowspan="2">Action</th>
+				<th colspan="2" rowspan="2">Actions</th>
 				<th class="innerTableHeader noprint">Avis EP</th>
 			</tr>
 			<tr>
@@ -68,6 +68,8 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
                 )
             );
 
+            $eplAuditionEnEplParcours = $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
+            $enabled = ( $commissionep['Commissionep']['etatcommissionep'] != 'annule' ) && ( $dossierep['Passagecommissionep'][0]['etatdossierep'] != 'annule' ) && ( in_array( $eplAuditionEnEplParcours, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ) );
 
 			echo $this->Xhtml->tableCells(
 				array(
@@ -92,6 +94,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 					array( @$liste_referents[Set::classicExtract( $decisioncg, "referent_id" )], array( 'id' => "Decisiondefautinsertionep66{$i}ReferentId" ) ),
 //					Set::classicExtract( $decisioncg, "commentaire" ),
 					array( $this->Xhtml->link( 'Voir', array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $dossierep['Passagecommissionep'][0]['id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) ),
+                    $this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'commissionseps', 'action' => 'impressionDecision', $dossierep['Passagecommissionep'][0]['id'] ), ( $enabled ) ),
 				),
 				array( 'class' => "odd {$multiple}" ),
 				array( 'class' => "even {$multiple}" )

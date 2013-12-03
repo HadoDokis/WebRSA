@@ -658,6 +658,9 @@
 
 			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
 			$querydata = $this->_setPaginationOrder( $querydata );
+            
+//            debug($querydata);
+//            die();
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 
