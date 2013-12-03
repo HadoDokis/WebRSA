@@ -37,11 +37,14 @@
 			$conditions = array();
 
             $this->Contratinsertion = ClassRegistry::init( 'Contratinsertion' );
+            
             $conditions[] = array(
-				'OR' => array(
-					'Adressefoyer.id IS NULL',
-					'Adressefoyer.id IN ( '.$this->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-				),
+				array( 
+                    'OR' => array(
+                        'Adressefoyer.id IS NULL',
+                        'Adressefoyer.id IN ( '.$this->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+                    )
+                ),
                 'Prestation.rolepers' => array( 'DEM', 'CJT' )
 			);
 
@@ -126,6 +129,8 @@
 			$referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
 			$matricule = Set::extract( $criteresci, 'Filtre.matricule' );
 			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
+			$referentParcours = Set::extract( $criteresci, 'PersonneReferent.id' );
+			$structureParcours = Set::extract( $criteresci, 'Structurereferente.id' );
 
 
 			/// Critères sur la date de saisie du CER - champ created
@@ -250,6 +255,16 @@
             }
             
 
+            /// Structure référente du parcours lié au référent du parcours
+			if( !empty( $structureParcours ) ) {
+				$conditions[] = 'Structurereferente.id = \''.Sanitize::clean( $structureParcours, array( 'encode' => false ) ).'\'';
+			}
+            // Référent du parcours en cours de l'allocataire
+            $sqDernierReferent = $this->Contratinsertion->Personne->PersonneReferent->sqDerniere( 'Personne.id' );
+			if( !empty( $referentParcours ) ) {
+				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( suffix( $referentParcours ), array( 'encode' => false ) ).'\'';
+			}
+            
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
 			$query = array(
@@ -261,7 +276,8 @@
                     $this->Contratinsertion->Personne->Foyer->fields(),
                     $this->Contratinsertion->Personne->Foyer->Dossier->fields(),
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
-                    $this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields()
+                    $this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
+                    $this->Contratinsertion->Personne->PersonneReferent->fields()
                 ),
 				'recursive' => -1,
 				'joins' => array(
@@ -275,7 +291,16 @@
                     $this->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Contratinsertion->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-                    $this->Contratinsertion->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) )
+                    $this->Contratinsertion->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Contratinsertion->Personne->join(
+                        'PersonneReferent',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"PersonneReferent.id IN ( {$sqDernierReferent} )"
+                            )
+                        )
+                    )
 				),
 				'limit' => 10,
 				'order' => 'Contratinsertion.df_ci ASC',
