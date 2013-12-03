@@ -13,7 +13,7 @@
 	 * Classe permettant de connaître la liste des modèles de documents (odt),
 	 * la liste des chemins devant être configurés dans le webrsa.inc et
 	 * qui permet de varifier que les intervalles sont correctement paramétrés
-	 * pour l'installation courante.
+	 * pour l'installation courante.partenaire
 	 *
 	 * @package app.Model
 	 */
@@ -269,7 +269,9 @@
 				'Corbeillepcg.descriptionpdoId' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionId' => 'isarray',
                 'ActioncandidatPersonne.Partenaire.id' => 'isarray',
-                'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer'
+                'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer',
+                'Generationdossierpcg.Orgtransmisdossierpcg66.id' => 'isarray',
+                'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray'
 			);
 		}
 

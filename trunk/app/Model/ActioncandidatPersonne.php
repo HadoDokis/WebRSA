@@ -528,7 +528,10 @@
 						$this->Personne->Foyer->fields(),
 						$this->Personne->Foyer->Dossier->fields(),
 						$this->Personne->Foyer->Adressefoyer->fields(),
-						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+                        array(
+                            $this->Progfichecandidature66->vfListeProgs( 'ActioncandidatPersonne.id', '', ', ' ).' AS "ActioncandidatPersonne__listeProgs66"'
+                        )
 					),
 					'joins' => array(
 						array(

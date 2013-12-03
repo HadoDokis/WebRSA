@@ -763,9 +763,12 @@
      *  (utilisé dans le module Fiche de candidature)
 	 * @default: id de(s) l'action(s) de type région
      * @param array
-     * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
+     * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178', '124' ) );
+     *  178 = Action Région à Moyen Terme,
+     *  124 = Actions Région : Formations API - PRQ - ERI
+     * 
 	 */
-    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
+    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178', '124' ) );
     
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
@@ -795,4 +798,43 @@
      * exemple : Configure::write( 'ActioncandidatPersonne.Partenaire.id', array( '61' ) );
 	 */  
     Configure::write( 'ActioncandidatPersonne.Partenaire.id', array( '61' ) );
+    
+    /**
+	 * Paramètre à renseigner pour détecter les organismes, auxquels les décisions PCG
+     * seront envoyés, qui serviront à générer un dossier PCG de façon automatique
+     * (Utilisé dans le module PCG CG66 )
+     * ex: l'organisme PDA-MGA, PDU-MMR
+	 * @default: id de(s) organismes paramétrés
+     * @param array
+     * exemple : Configure::write( 'Generationdossierpcg.Orgtransmisdossierpcg66.id', array( '4', '6' ) )
+	 */
+    Configure::write( 'Generationdossierpcg.Orgtransmisdossierpcg66.id', array( '4', '6' ) );
+    
+    
+    /**
+     * Paramètre permettant de noter l'identifiant de la structure référente
+     * ne devant pas être considérée comme un organisme agréé pour l'affichage
+     * du message "Ce dossier est géré par un organisme agréé" au niveau du
+     * dossier menu.
+     * Ce paramètre est ajouté car les structures Pôle Emploi sont vues comme des OA
+     * pour la gestion en cohorte des non orientés (inscrits/non inscrits PE) et cela
+     * permet de ne pas générer d'anomalies dans la gestion par listes.
+     * 
+     * @default: id de(s) structure(s) référente(s)
+     * @param: array
+     * exemple: pour Pôle Emploi
+     *  Configure::write( 'Nonorganismeagree.Structurereferente.id', array( '23' ) );
+     */
+    Configure::write( 'Nonorganismeagree.Structurereferente.id', array( '23' ) );
+    
+    
+    /**
+	 * Paramètre à renseigner pour détecter les actions qui sont de type région
+     *  (utilisé dans le module Fiche de candidature) et qui déclenche un suivi CG
+	 * @default: id de(s) l'action(s) de type région
+     * @param array
+     * exemple : Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178' ) );
+     *  178 = Action Région à Moyen Terme
+	 */
+    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId', array( '178' ) );
 ?>
