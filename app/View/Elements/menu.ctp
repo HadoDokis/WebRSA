@@ -128,11 +128,12 @@
 			'Par Dossiers COV' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
 				'url' => array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
-				'Pôle Emploi' => array(
-					'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
-					'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
-				),
 				'Demande de maintien dans le social' => array( 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
+			),
+			'Par Dossiers EP' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
+				'Radiation de Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionradies' ) ),
+				'Non inscription à Pôle Emploi' => array( 'url' => array( 'controller' => 'sanctionseps58', 'action' => 'selectionnoninscrits' ) ),
 			),
 			'Par Bilans de parcours' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
