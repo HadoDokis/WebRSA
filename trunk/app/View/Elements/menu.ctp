@@ -258,8 +258,12 @@
 				'Les CER' => array( 'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'contratsinsertion' ) ),
 			),
 			'Indicateurs mensuels ' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) == 66 ),
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'index' ),
+			),
+			'Indicateurs mensuels ' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
+				'url' => array( 'controller' => 'indicateursmensuels', 'action' => 'indicateurs58' ),
 			),
 			'Statistiques ministérielles' => array(
 				'Indicateurs d\'orientations' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_orientations'  ) ),

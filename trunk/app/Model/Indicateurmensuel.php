@@ -1547,5 +1547,306 @@
 				'Indicateurmensuel.delai_moyen_signature_cer' => $this->_delaiMoyenContractualisation( $search ),
 			);
 		}
+
+
+		/**
+		 * Ajoute des conditions au querydata pour les filtres Search.sitecov58_id
+		 * du tableau de suivi du CG 58.
+		 *
+		 * @param array $querydata
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _qdAddConditions58( array $querydata, array $search ) {
+			$sitecov58_id = Hash::get( $search, 'Search.sitecov58_id' );
+
+			$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+
+			$zonesgeographiques = $Sitecov58->find(
+				'all',
+				array(
+					'fields' => array( 'Zonegeographique.codeinsee' ),
+					'conditions' => array( 'Sitecov58.id' => $sitecov58_id ),
+					'joins' => array(
+						$Sitecov58->join( 'Sitecov58Zonegeographique', array( 'type' => 'INNER' ) ),
+						$Sitecov58->Sitecov58Zonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) )
+					),
+					'contain' => false
+				)
+			);
+			$zonesgeographiques = Hash::extract( $zonesgeographiques, '{n}.Zonegeographique.codeinsee' );
+
+			if( !empty( $zonesgeographiques ) ) {
+				$querydata['conditions'][] = array( 'Adresse.numcomptt' => $zonesgeographiques );
+			}
+
+			return $querydata;
+		}
+
+		/**
+		 * Retourne les résultats du tableau de suivi du CG 58, partie "CAF",
+		 * suivant les filtres envoyés.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function personnescaf58( array $search ) {
+			$year = Hash::get( $search, 'Search.year' );
+
+			// -----------------------------------------------------------------
+			$labels = array( 'total', '0', '1' );
+			$months = array_fill( 1, 12, 0 );
+			$personnescaf58 = array_combine( $labels, array_fill( 0, count( $labels ), $months ) );
+			// -----------------------------------------------------------------
+			$labels = array( 'versable', 'suspendu' );
+			$etatdosrsa = array_combine( $labels, array_fill( 0, count( $labels ), $months ) );
+			// -----------------------------------------------------------------
+			$labels = array( 'socle', 'socle_activite' );
+			$natspfs = array_combine( $labels, array_fill( 0, count( $labels ), $months ) );
+			// -----------------------------------------------------------------
+
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$natpf = $Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary();
+			$natpf = array_words_replace( $natpf, array( 'Detailcalculdroitrsa' => 'detailscalculsdroitsrsa' ) );
+
+			$querydata = array(
+				'fields' => array(
+					'COUNT( DISTINCT( "Personne"."id" ) ) AS "Indicateurcaf__nombre"',
+					'"Situationdossierrsa"."etatdosrsa" AS "Indicateurcaf__etatdosrsa"',
+					'( CASE WHEN "Calculdroitrsa"."toppersdrodevorsa" = \'1\' THEN \'1\' ELSE \'0\' END ) AS "Indicateurcaf__toppersdrodevorsa"',
+					'DATE_PART( \'month\', "Dossier"."dtdemrsa" ) AS "Indicateurcaf__month"',
+					$natpf['socle'],
+					$natpf['activite'],
+				),
+				'joins' => array(
+					$Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) )
+
+				),
+				'conditions' => array(
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					"Dossier.dtdemrsa BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false,
+				'group' => array(
+					'Calculdroitrsa.toppersdrodevorsa',
+					'Situationdossierrsa.etatdosrsa',
+					'DATE_PART( \'month\', "Dossier"."dtdemrsa" )',
+					'Detaildroitrsa.id',
+					preg_replace( '/^(.*) AS (.*)$/', '\1', $natpf['socle'] ),
+					preg_replace( '/^(.*) AS (.*)$/', '\1', $natpf['activite'] ),
+				)
+			);
+
+			$querydata = $this->_qdAddConditions58( $querydata, $search );
+
+			$results = $Personne->find( 'all', $querydata );
+			foreach( $results as $result ) {
+				$toppersdrodevorsa = $result['Indicateurcaf']['toppersdrodevorsa'];
+
+				$personnescaf58[$toppersdrodevorsa][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+				$personnescaf58['total'][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+
+				if( $toppersdrodevorsa ) {
+					// Etat du dossier
+					if( in_array( $result['Indicateurcaf']['etatdosrsa'], array( 2, 3, 4 ) ) ) {
+						if( $result['Indicateurcaf']['etatdosrsa'] == 2 ) {
+							$etatdosrsa['versable'][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+						}
+						else {
+							$etatdosrsa['suspendu'][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+						}
+					}
+
+					// Nature de la prestation
+					if( $result['Detailcalculdroitrsa']['natpf_socle'] && !$result['Detailcalculdroitrsa']['natpf_activite'] ) {
+						$natspfs['socle'][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+					}
+					else if( $result['Detailcalculdroitrsa']['natpf_socle'] && $result['Detailcalculdroitrsa']['natpf_activite'] ) {
+						$natspfs['socle_activite'][$result['Indicateurcaf']['month']] += $result['Indicateurcaf']['nombre'];
+					}
+				}
+			}
+
+			// Ajout du total par ligne
+			foreach( $personnescaf58 as $key => $data ) {
+				$personnescaf58[$key]['total'] = array_sum( $data );
+			}
+
+			foreach( $etatdosrsa as $key => $data ) {
+				$etatdosrsa[$key]['total'] = array_sum( $data );
+			}
+
+			foreach( $natspfs as $key => $data ) {
+				$natspfs[$key]['total'] = array_sum( $data );
+			}
+
+			// Suppression des éléments non désirés
+			unset( $personnescaf58[0] ); // Détails des non SDD
+
+			$personnescaf58 = $personnescaf58 + array( 'total_sdd' => $personnescaf58[1] ) + $natspfs + $etatdosrsa;
+
+			return $personnescaf58;
+		}
+
+		/**
+		 * Retourne les résultats du tableau de suivi du CG 58, partie "COV",
+		 * suivant les filtres envoyés.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function dossierscovs58( array $search ) {
+			$year = Hash::get( $search, 'Search.year' );
+
+			// -----------------------------------------------------------------
+
+			$Dossiercov58 = ClassRegistry::init( 'Dossiercov58' );
+
+			$querydata = array(
+				'fields' => array(
+					'COUNT( DISTINCT( "Dossiercov58"."id" ) ) AS "Indicateurcov__nombre"',
+					'"Dossiercov58"."themecov58" AS "Indicateurcov__theme"',
+					'DATE_PART( \'month\', "Cov58"."datecommission" ) AS "Indicateurcov__month"',
+				),
+				'joins' => array(
+					$Dossiercov58->join( 'Passagecov58', array( 'type' => 'INNER' ) ),
+					$Dossiercov58->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'INNER' ) ),
+					$Dossiercov58->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossiercov58->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossiercov58->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+
+				),
+				'conditions' => array(
+					"Cov58.datecommission BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
+					'Cov58.etatcov' => 'finalise',
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Dossiercov58->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false,
+				'group' => array(
+					'Dossiercov58.themecov58',
+					'DATE_PART( \'month\', "Cov58"."datecommission" )'
+				)
+			);
+
+			$querydata = $this->_qdAddConditions58( $querydata, $search );
+
+			// Résultats vides, par thématique et par mois
+			$enums = $Dossiercov58->enums();
+			$labels = array_keys( $enums['Dossiercov58']['themecov58'] );
+			array_unshift( $labels, 'total' );
+
+			$months = array_fill( 1, 12, 0 );
+
+			$dossierscovs58 = array_combine( $labels, array_fill( 0, count( $labels ), $months ) );
+
+			$results = $Dossiercov58->find( 'all', $querydata );
+			foreach( $results as $result ) {
+				$theme = $result['Indicateurcov']['theme'];
+
+				$dossierscovs58[$theme][$result['Indicateurcov']['month']] += $result['Indicateurcov']['nombre'];
+				$dossierscovs58['total'][$result['Indicateurcov']['month']] += $result['Indicateurcov']['nombre'];
+			}
+
+			// Ajout du total par ligne
+			foreach( $dossierscovs58 as $theme => $datatheme ) {
+				$dossierscovs58[$theme]['total'] = array_sum( $datatheme );
+			}
+
+			return $dossierscovs58;
+		}
+
+		/**
+		 * Retourne les résultats du tableau de suivi du CG 58, partie "EP",
+		 * suivant les filtres envoyés.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function dossierseps58( array $search ) {
+			$year = Hash::get( $search, 'Search.year' );
+
+			// -----------------------------------------------------------------
+
+			$Dossierep = ClassRegistry::init( 'Dossierep' );
+
+			$querydata = array(
+				'fields' => array(
+					'COUNT( DISTINCT( "Dossierep"."id" ) ) AS "Indicateurep__nombre"',
+					'"Dossierep"."themeep" AS "Indicateurep__themeep"',
+					'DATE_PART( \'month\', "Commissionep"."dateseance" ) AS "Indicateurep__month"',
+				),
+				'joins' => array(
+					$Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) ),
+					$Dossierep->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+					$Dossierep->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossierep->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'conditions' => array(
+					"Commissionep.dateseance BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
+					'Commissionep.etatcommissionep' => 'traite',
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ( '.$Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+					)
+				),
+				'contain' => false,
+				'group' => array(
+					'Dossierep.themeep',
+					'DATE_PART( \'month\', "Commissionep"."dateseance" )'
+				)
+			);
+
+			$querydata = $this->_qdAddConditions58( $querydata, $search );
+
+			// Résultats vides, par thématique et par mois
+			$labels = array_keys( $Dossierep->themesCg() );
+			array_unshift( $labels, 'total' );
+
+			foreach( $labels as $i => $label ) {
+				if( strpos( $label, 'sanctions' ) === 0 ) {
+					unset( $labels[$i] );
+				}
+			}
+
+			$labels = array_values( $labels );
+			$labels[] = 'sanctionseps58';
+
+			$months = array_fill( 1, 12, 0 );
+
+			$dossierseps = array_combine( $labels, array_fill( 0, count( $labels ), $months ) );
+
+			$results = $Dossierep->find( 'all', $querydata );
+			foreach( $results as $result ) {
+				$themeep = preg_replace( '/^sanctions(.*)$/', 'sanctionseps58', $result['Indicateurep']['themeep'] );
+
+				$dossierseps[$themeep][$result['Indicateurep']['month']] += $result['Indicateurep']['nombre'];
+				$dossierseps['total'][$result['Indicateurep']['month']] += $result['Indicateurep']['nombre'];
+			}
+
+			// Ajout du total par ligne
+			foreach( $dossierseps as $themeep => $datatheme ) {
+				$dossierseps[$themeep]['total'] = array_sum( $datatheme );
+			}
+
+			return $dossierseps;
+		}
 	}
 ?>
