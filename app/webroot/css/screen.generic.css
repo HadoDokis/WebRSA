@@ -1668,3 +1668,20 @@ a.cohortesd2pdvs93.ajaxadd {
 ul.actions li.action a.exportcsv, ul.actions li.action a.exportcsvcorpus, ul.actions li.action a.exportcsvdonnees {
 	background-image: url( ../img/icons/page_white_get.png );
 }
+
+/* Indictaeurs de suivi du CG 58 */
+body.indicateursmensuels.indicateurs58 tbody th {
+	text-align: right;
+}
+
+body.indicateursmensuels.indicateurs58 tbody tr.total th {
+	text-align: left;
+}
+
+body.indicateursmensuels.indicateurs58 tbody tr.total th.section {
+	vertical-align: middle;
+}
+
+body.indicateursmensuels.indicateurs58 tbody tr.total td {
+	background: #E6EEF2;
+}

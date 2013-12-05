@@ -86,5 +86,32 @@
 			$this->set( 'title_for_layout', 'Les CER' );
 			$this->render( 'nombre_allocataires' ); // FIXME
 		}
+
+		/**
+		 * Indicateurs mensuels du CG 58
+		 */
+		public function indicateurs58() {
+			$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+
+			if( !empty( $this->request->data ) ) {
+				$results = array(
+					'Personnecaf' => $this->Indicateurmensuel->personnescaf58( $this->request->data ),
+					'Dossiercov58' => $this->Indicateurmensuel->dossierscovs58( $this->request->data ),
+					'Dossierep' => $this->Indicateurmensuel->dossierseps58( $this->request->data ),
+				);
+
+				$this->set( compact( 'results' ) );
+			}
+
+			// Options du formulaire de recherche
+			$years = range( date( 'Y' ), 2009, -1 );
+			$options = array(
+				'Search' => array(
+					'year' => array_combine( $years, $years ),
+					'sitecov58_id' => $Sitecov58->find( 'list' )
+				)
+			);
+			$this->set( compact( 'options' ) );
+		}
 	}
 ?>
