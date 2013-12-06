@@ -941,7 +941,7 @@
 			// Affectation à la vue
 			$this->set( 'dsp', $dsp );
 			$this->set( 'personne_id', $dsp['Dsp']['personne_id'] );
-			$this->set( 'urlmenu', '/dsps/histo/'.$dsp['Dsp']['personne_id'] );
+			$this->set( 'urlmenu', ( $this->action === 'edit' ? "/dsps/edit/{$dsp['Dsp']['personne_id']}" : "/dsps/histo/{$dsp['Dsp']['personne_id']}" ) );
 			$this->render( '_add_edit' );
 		}
 
