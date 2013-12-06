@@ -26,14 +26,58 @@
 		public $helpers = array( 'Search' );
 
 		/**
-		 *
+		 * Indicateurs mensuels
 		 */
 		public function index() {
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$this->_index_58();
+			}
+			else {
+				$this->_index_66_93();
+			}
+		}
+
+		/**
+		 * Indicateurs mensuels des CG 66 et 93
+		 */
+		protected function _index_66_93() {
 			$annee = Set::extract( $this->request->data, 'Indicateurmensuel.annee' );
 			if( !empty( $annee ) ) {
 				$indicateurs = $this->Indicateurmensuel->liste( $annee );
 				$this->set( compact( 'indicateurs' ) );
 			}
+
+			$this->render( 'index' );
+		}
+
+
+		/**
+		 * Indicateurs mensuels du CG 58
+		 */
+		protected function _index_58() {
+			$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+
+			if( !empty( $this->request->data ) ) {
+				$results = array(
+					'Personnecaf' => $this->Indicateurmensuel->personnescaf58( $this->request->data ),
+					'Dossiercov58' => $this->Indicateurmensuel->dossierscovs58( $this->request->data ),
+					'Dossierep' => $this->Indicateurmensuel->dossierseps58( $this->request->data ),
+				);
+
+				$this->set( compact( 'results' ) );
+			}
+
+			// Options du formulaire de recherche
+			$years = range( date( 'Y' ), 2009, -1 );
+			$options = array(
+				'Search' => array(
+					'year' => array_combine( $years, $years ),
+					'sitecov58_id' => $Sitecov58->find( 'list' )
+				)
+			);
+			$this->set( compact( 'options' ) );
+
+			$this->render( 'index_58' );
 		}
 
 		/**
@@ -85,33 +129,6 @@
 
 			$this->set( 'title_for_layout', 'Les CER' );
 			$this->render( 'nombre_allocataires' ); // FIXME
-		}
-
-		/**
-		 * Indicateurs mensuels du CG 58
-		 */
-		public function indicateurs58() {
-			$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
-
-			if( !empty( $this->request->data ) ) {
-				$results = array(
-					'Personnecaf' => $this->Indicateurmensuel->personnescaf58( $this->request->data ),
-					'Dossiercov58' => $this->Indicateurmensuel->dossierscovs58( $this->request->data ),
-					'Dossierep' => $this->Indicateurmensuel->dossierseps58( $this->request->data ),
-				);
-
-				$this->set( compact( 'results' ) );
-			}
-
-			// Options du formulaire de recherche
-			$years = range( date( 'Y' ), 2009, -1 );
-			$options = array(
-				'Search' => array(
-					'year' => array_combine( $years, $years ),
-					'sitecov58_id' => $Sitecov58->find( 'list' )
-				)
-			);
-			$this->set( compact( 'options' ) );
 		}
 	}
 ?>

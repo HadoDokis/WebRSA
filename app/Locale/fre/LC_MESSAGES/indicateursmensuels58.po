@@ -54,6 +54,18 @@ msgstr "COV"
 msgid "Dossiercov58.total"
 msgstr "Nombre de dossiers examines en COV"
 
+msgid "Dossiercov58.proposorientationscovs58"
+msgstr "dont propositions d'orientation"
+
+msgid "Dossiercov58.proposcontratsinsertioncovs58"
+msgstr "dont propositions de CER"
+
+msgid "Dossiercov58.proposnonorientationsproscovs58"
+msgstr "dont propositions de maintien dans le social"
+
+msgid "Dossiercov58.proposorientssocialescovs58"
+msgstr "dont orientations sociale de fait"
+
 # ------------------------------------------------------------------------------
 
 msgid "Dossierep"
