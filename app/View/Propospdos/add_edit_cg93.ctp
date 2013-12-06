@@ -66,12 +66,12 @@
 			<tr>
 				<td class="noborder">
 					<?php
-						echo $this->Xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => 'Situation de la PDO', 'multiple' => 'checkbox' , 'options' => $situationlist ) );
+						echo $this->Xform->input( 'Situationpdo.Situationpdo', array( 'type' => 'select', 'label' => ( Configure::read( 'Cg.departement' ) == 58 ? 'Motifs de la PDO' : 'Situation de la PDO' ), 'multiple' => 'checkbox' , 'options' => $situationlist ) );
 					?>
 				</td>
 				<td class="noborder">
 					<?php
-						echo $this->Xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => 'Statut de la PDO', 'multiple' => 'checkbox' , 'options' => $statutlist ) );
+						echo $this->Xform->input( 'Statutpdo.Statutpdo', array( 'type' => 'select', 'label' => ( Configure::read( 'Cg.departement' ) == 58 ? 'Situation du demandeur' : 'Statut de la PDO' ), 'multiple' => 'checkbox' , 'options' => $statutlist ) );
 					?>
 				</td>
 
