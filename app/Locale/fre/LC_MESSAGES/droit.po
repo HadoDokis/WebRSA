@@ -1299,6 +1299,18 @@ msgstr "Indicateurs mensuels"
 msgid "Indicateursmensuels:index"
 msgstr "Indicateurs de suivis mensuels"
 
+msgid "Indicateursmensuels:nombre_allocataires"
+msgstr "(CG 66) Nombre d'allocataires"
+
+msgid "Indicateursmensuels:orientations"
+msgstr "(CG 66) Les orientations"
+
+msgid "Indicateursmensuels:contratsinsertion"
+msgstr "(CG 66) Les CER"
+
+msgid "Indicateursmensuels:indicateurs58"
+msgstr "(CG 58) Indicateurs mensuels"
+
 ###############################################################################
 
 msgid "Module:Indus"
@@ -3101,27 +3113,27 @@ msgstr "Visualisation d'un questionnaire D1"
 ###############################################################################
 
 msgid "Module:Statistiquesministerielles"
-msgstr "Nouvelles statistiques ministérielles"
+msgstr "Statistiques ministérielles"
 
-msgid "Statistiquesministerielles:indicateursOrientations"
+msgid "Statistiquesministerielles:indicateurs_orientations"
 msgstr "Indicateurs d'orientations"
 
-msgid "Statistiquesministerielles:indicateursOrganismes"
+msgid "Statistiquesministerielles:indicateurs_organismes"
 msgstr "Indicateurs d'organismes"
 
-msgid "Statistiquesministerielles:indicateursReorientations"
+msgid "Statistiquesministerielles:indicateurs_reorientations"
 msgstr "Indicateurs de réorientations"
 
-msgid "Statistiquesministerielles:indicateursMotifsReorientation"
+msgid "Statistiquesministerielles:indicateurs_motifs_reorientation"
 msgstr "Indicateurs de motifs de réorientations"
 
-msgid "Statistiquesministerielles:indicateursCaracteristiquesContrats"
+msgid "Statistiquesministerielles:indicateurs_caracteristiques_contrats"
 msgstr "Indicateurs de caractéristiques de contrats"
 
 msgid "Statistiquesministerielles:indicateursNatureContrats"
 msgstr "Indicateurs de nature de contrats"
 
-msgid "Statistiquesministerielles:indicateursDelais"
+msgid "Statistiquesministerielles:indicateurs_delais"
 msgstr "Indicateurs de délais"
 
 ###############################################################################
