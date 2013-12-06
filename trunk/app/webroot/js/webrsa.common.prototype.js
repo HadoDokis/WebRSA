@@ -44,24 +44,41 @@ function make_treemenus( absoluteBaseUrl, large, urlmenu ) {
 		}
 	} );
 
-	var currentUrl = location.href.replace( new RegExp( '(#.*)$' ), '' ).replace( absoluteBaseUrl, '/' );
-	var relBaseUrl = absoluteBaseUrl.replace( new RegExp( '^(http://[^/]+/)' ), '/' );
+	var currentUrl = location.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(http://[^/]+/)' ), '/' ).replace( /#$/, '' );;
+//	var relBaseUrl = absoluteBaseUrl.replace( new RegExp( '^(http://[^/]+/)' ), '/' );
+
+	var menuUl = $$( '.treemenu > ul' )[0];
 
 	$$( '.treemenu a' ).each( function ( elmtA ) {
-		// FIXME: plus propre
-		if( elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/edit/', '/view/' ) || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/add/', '/view/' ) || elmtA.href.replace( absoluteBaseUrl, '/' ) == currentUrl.replace( '/add/', '/index/' ) || ( ( urlmenu != null ) && ( elmtA.href.replace( absoluteBaseUrl, '/' ) == urlmenu ) ) ) {
-			// Montrer tous les ancètres
+		// TODO: plus propre
+		var elmtAUrl = elmtA.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(http://[^/]+/)' ), '/' );
+
+		if(
+			elmtAUrl == currentUrl
+			|| elmtAUrl == currentUrl.replace( '/edit/', '/view/' )
+			|| elmtAUrl == currentUrl.replace( '/add/', '/view/' )
+			|| elmtAUrl == currentUrl.replace( '/add/', '/index/' )
+			|| ( ( urlmenu !== null ) && ( elmtAUrl === urlmenu ) ) ) {
+			$( elmtA ).addClassName( 'selected' );
+
+			var ancestorsDone = false;
 			elmtA.ancestors().each( function ( aAncestor ) {
-				aAncestor.show();
-				if( aAncestor.tagName == 'LI' ) {
-					var toggler = aAncestor.down( 'a.toggler img' );
-					if( toggler != undefined ) {
-						toggler.src = dir + '/bullet_toggle_minus2.png';
-						toggler.alt = 'Réduire';
+				if( aAncestor == menuUl ) {
+					ancestorsDone = true;
+				}
+				else if( !ancestorsDone ) {
+					$( aAncestor ).addClassName( 'selected' );
+					aAncestor.show();
+					if( aAncestor.tagName == 'LI' ) {
+						var toggler = aAncestor.down( 'a.toggler img' );
+						if( toggler != undefined ) {
+							toggler.src = dir + '/bullet_toggle_minus2.png';
+							toggler.alt = 'Réduire';
+						}
 					}
 				}
 			} );
-			$( elmtA ).addClassName( 'selected' );
+
 			// Montrer son descendant direct
 			try {
 				var upLi = elmtA.up( 'li' );
