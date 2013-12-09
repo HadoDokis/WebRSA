@@ -34,7 +34,8 @@
 
 				foreach( Hash::normalize( $buttons ) as  $buttonName => $buttonParams ) {
 					$buttonLabel = ( isset( $buttonParams['label'] ) && !empty( $buttonParams['label'] ) ? $buttonParams['label'] : __( $buttonName ) );
-					$submit .= $this->submit( $buttonLabel, array( 'div' => false, 'name' => $buttonName ) );
+					$buttonType = ( isset( $buttonParams['type'] ) && !empty( $buttonParams['type'] ) ? $buttonParams['type'] : 'submit' );
+					$submit .= $this->submit( $buttonLabel, array( 'div' => false, 'name' => $buttonName, 'type' => $buttonType ) );
 				}
 
 				$return = $this->Html->tag( 'div', $submit, array( 'class' => 'submit' ) );
