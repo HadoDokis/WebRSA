@@ -153,7 +153,8 @@
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = $paginate;
-				$dossiers = $this->paginate( 'Dossier' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$dossiers = $this->paginate( 'Dossier', array(), array(), $progressivePaginate );
 
 				$this->set( 'dossiers', $dossiers );
 			}
@@ -646,8 +647,8 @@
 
 				$personnesFoyer[$index]['Dossierep']['derniere'] = Set::merge( $tdossierEp, $decisionEP );
 
-                
-                
+
+
                 // Informationsdu bilan de aprcours et des dossiers PCGs liés
                 if( Configure::read( 'Cg.departement' ) == 66 ) {
                     $tBilanparcours66 = $this->Dossier->Foyer->Personne->Bilanparcours66->find(
@@ -688,8 +689,8 @@
 
                     }
                 }
-                    
-                    
+
+
 				// Utilisation des nouvelles tables de stockage des infos Pôle Emploi
 				$tInfope = $this->Informationpe->derniereInformation($personnesFoyer[$index]);
 				$personnesFoyer[$index]['Informationpe'] = ( !empty( $tInfope ) ? $tInfope['Historiqueetatpe'] : array() );
@@ -707,7 +708,7 @@
                 if( Configure::read( 'Cg.departement' ) == 66 ) {
                     $fields = Hash::merge( $fields, '( '.$this->Dossier->Foyer->vfNbDossierPCG66( 'Foyer.id ').' ) AS "Foyer__nbdossierspcgs"' );
                 }
-                
+
 				$autreNumdemrsaParAllocataire = $this->Dossier->find(
 					'all',
 					array(
@@ -768,7 +769,7 @@
 					)
 				);
                 $personnesFoyer[$index]['Dossiermultiple'] = $autreNumdemrsaParAllocataire;
-				
+
 				//Fin Ajout Arnaud
 
 				$details[$role] = $personnesFoyer[$index];

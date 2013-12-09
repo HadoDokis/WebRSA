@@ -201,7 +201,7 @@
 					)
 				);
 			}
-            
+
             // On s'assure qu'il soit possible de relancer l'allocataire (add)
             $mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
             $mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -276,6 +276,9 @@
 				/// Moteur de recherche
 				$search = Hash::flatten( $search );
 				$search = Hash::filter( (array)$search );
+				unset( $search['Pagination.nombre_total'] );
+
+				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 
 				if( $this->request->data['Search']['Relance']['contrat'] == 0 ) {
 					$this->paginate = array(
@@ -287,7 +290,7 @@
 						)
 					);
 
-					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct );
+					$results = $this->paginate( $this->Nonrespectsanctionep93->Orientstruct, array(), array(), $progressivePaginate );
 				}
 				else if( $this->request->data['Search']['Relance']['contrat'] == 1 ) {
 					$this->paginate = array(
@@ -299,7 +302,7 @@
 						)
 					);
 
-					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion );
+					$results = $this->paginate( $this->Nonrespectsanctionep93->Contratinsertion, array(), array(), $progressivePaginate );
 				};
 
 				if( !empty( $results ) ) {
@@ -430,10 +433,13 @@
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
+				$search = $this->request->data;
+				unset( $search['Search'] );
+
 				$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
 					$mesCodesInsee,
 					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data
+					$search
 				);
 
 				$queryData['limit'] = 10;
@@ -441,7 +447,8 @@
 				$this->Relancenonrespectsanctionep93->forceVirtualFields = true;
 
 				$this->paginate = $queryData;
-				$relances = $this->paginate( $this->Relancenonrespectsanctionep93 );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+				$relances = $this->paginate( $this->Relancenonrespectsanctionep93, array(), array(), $progressivePaginate );
 
 				$this->set( compact( 'relances' ) );
 			}

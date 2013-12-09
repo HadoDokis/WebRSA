@@ -54,7 +54,8 @@
 
 				$forceVirtualFields = $this->Dossiercov58->forceVirtualFields;
 				$this->Dossiercov58->forceVirtualFields = true;
-				$dossierscovs58 = $this->paginate( $this->Dossiercov58 );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$dossierscovs58 = $this->paginate( $this->Dossiercov58, array(), array(), $progressivePaginate );
 				$this->Dossiercov58->forceVirtualFields = $forceVirtualFields;
 
 				foreach( $dossierscovs58 as $key => $dossiercov58 ) {

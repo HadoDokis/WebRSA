@@ -207,21 +207,23 @@
 				$this->request->data = $referent;
 			}
 		}
-        
-        
+
+
         /**
          * Fonction de clôture en masse des référents, cloisonnée selon le type de structure
          * Uniquement pour les CPDV
          */
 		public function clotureenmasse() {
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( true );
-            
+
 			if( !empty( $this->request->data ) ) {
 				$queryData = $this->Referent->search( $this->request->data );
 				$queryData['limit'] = 20;
                 $queryData['conditions'][] = array( 'Referent.structurereferente_id' => $structurereferente_id );
 				$this->paginate = $queryData;
-				$referents = $this->paginate( 'Referent' );
+
+				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+				$referents = $this->paginate( 'Referent', array(), array(), $progressivePaginate );
 
 				$this->set( 'referents', $referents );
 

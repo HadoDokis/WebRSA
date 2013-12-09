@@ -90,7 +90,8 @@
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$this->paginate = $paginate;
 				$this->{$this->modelClass}->Orientstruct->forceVirtualFields = true;
-				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct, array(), array(), $progressivePaginate );
 			}
 			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
 			$this->_setOptions();

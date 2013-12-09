@@ -90,6 +90,7 @@
 		);
 
 	?>
+	<?php echo $this->Search->paginationNombretotal(); ?>
 <?php echo $this->Xform->end( 'Rechercher' ); ?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Propopdo', $this->passedArgs ); ?>
 
@@ -145,7 +146,7 @@
 								<tr>
 									<th>Rôle</th>
 									<td>'.h( $rolepers[$criterepdo['Prestation']['rolepers']] ).'</td>
-								</tr>								
+								</tr>
 
 							</tbody>
 						</table>';
@@ -193,3 +194,5 @@
 		<p class="notice">Vos critères n'ont retourné aucune PDO.</p>
 	<?php endif?>
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

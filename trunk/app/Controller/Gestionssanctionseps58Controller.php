@@ -108,7 +108,8 @@
 
 			if( !empty( $this->request->data ) ) {
 				$data = $this->request->data;
-				unset( $data['Search'], $data['sessionKey'] );
+
+				unset( $data['Search'], $data['sessionKey'], $data['page'] );
 
 				if( count( $data ) > 0 ) {
 					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $this->request->data ) );
@@ -149,7 +150,12 @@
 				$paginate['limit'] = ( ( $this->action == 'traitement' ) ? 10 : 100 );
 
 				$this->paginate = $paginate;
-				$gestionsanctionseps58 = $this->paginate( 'Personne' );
+				$gestionsanctionseps58 = $this->paginate(
+					'Personne',
+					array(),
+					array(),
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
+				);
 
 				if( $this->action == 'traitement' ) {
 					$this->Cohortes->get( Set::extract( '/Foyer/dossier_id', $gestionsanctionseps58 ) );

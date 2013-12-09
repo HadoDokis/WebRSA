@@ -60,7 +60,8 @@
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
-				$entretiens = $this->paginate( 'Entretien' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$entretiens = $this->paginate( 'Entretien', array(), array(), $progressivePaginate );
 
 				$this->set( 'entretiens', $entretiens );
 			}

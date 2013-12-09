@@ -231,8 +231,6 @@
 						$this->set( 'structuresAutomatiques', $this->Cohortenonoriente66->structuresAutomatiques() );
 					}
 
-					$progressivePaginate = !Set::classicExtract( $this->request->data, 'Search.paginationNombreTotal' );
-
 					$paginate = $this->Cohortenonoriente66->search(
 						$statutNonoriente,
 						(array)$this->Session->read( 'Auth.Zonegeographique' ),
@@ -244,6 +242,7 @@
 					$paginate['limit'] = $limit;
 
 					$this->paginate = $paginate;
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 					$cohortesnonorientes66 = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 					if( in_array( $this->action, array( 'isemploi', 'notisemploi'  ) ) ) {

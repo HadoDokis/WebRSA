@@ -42,8 +42,8 @@
         false,
         true
     );
-        
-        
+
+
 		dependantSelect( 'ActioncandidatPersonneActioncandidatId', 'PartenaireLibstruc' );
 	});
 </script>
@@ -93,7 +93,7 @@
 					'options' => $options
 				)
 			);
-            
+
             echo '<fieldset id="blocregion" class="noborder">';
             echo $this->Default2->subform(
 				array(
@@ -103,7 +103,7 @@
 				array(
 					'options' => $options
 				)
-			); 
+			);
             echo '</fieldset>';
 
 		?>
@@ -119,6 +119,8 @@
 			<?php echo $this->Xform->input( 'ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
 		</fieldset>
 	</fieldset>
+
+	<?php echo $this->Search->paginationNombretotal(); ?>
 
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -190,3 +192,5 @@
 		<?php echo $this->Xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );?>
 	<?php endif;?>
 <?php endif;?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

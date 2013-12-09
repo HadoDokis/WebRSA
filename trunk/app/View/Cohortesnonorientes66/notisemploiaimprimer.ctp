@@ -85,10 +85,11 @@
 				}
             ?>
         </fieldset>
-        <fieldset>
-			<legend>Comptage des résultats</legend>
-			<?php echo $this->Form->input( 'Search.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-		</fieldset>
+
+		<?php
+			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+		?>
 
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>

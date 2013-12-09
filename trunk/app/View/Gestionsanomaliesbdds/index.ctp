@@ -77,6 +77,10 @@
 			'form' => false,
 		)
 	).'</fieldset>';
+
+	echo $this->Search->paginationNombretotal( 'Search.nombre_total' );
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+
 	echo $this->Xform->end( 'Rechercher' );
 
 	if( isset( $results ) ) {

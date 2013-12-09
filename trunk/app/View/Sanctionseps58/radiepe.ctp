@@ -1,6 +1,25 @@
 <h1><?php echo $this->pageTitle = __d( 'sanctionep58', "{$this->name}::{$this->action}" );?></h1>
 
 <?php
+    echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
+        $this->Xhtml->image(
+            'icons/application_form_magnify.png',
+            array( 'alt' => '' )
+        ).' Formulaire',
+        '#',
+        array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
+    ).'</li></ul>';
+?>
+<?php echo $this->Xform->create( 'Sanctionseps58', array( 'id' => 'Search', 'class' => 'folded' ) );?>
+	<?php echo $this->Search->paginationNombretotal(); ?>
+
+    <div class="submit noprint">
+        <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
+    </div>
+
+<?php echo $this->Xform->end();?>
+
+<?php
 	$configureConditions = Configure::read( 'Selectionradies.conditions' );
 	if( !empty( $configureConditions ) ) {
 		$fields = array(
@@ -65,3 +84,5 @@
 		echo $this->Form->button( 'Tout décocher', array( 'onclick' => 'return toutDecocher();' ) );
 
 endif;?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

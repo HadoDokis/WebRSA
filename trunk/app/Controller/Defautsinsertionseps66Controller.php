@@ -46,7 +46,8 @@
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = array( 'Personne' => $queryData );
-				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
 
 			$this->set( compact( 'personnes' ) );
@@ -97,7 +98,8 @@
 					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$this->paginate = $querydata;
 
-					$results = $this->paginate( $this->Defautinsertionep66->Dossierep );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+					$results = $this->paginate( $this->Defautinsertionep66->Dossierep, array(), array(), $progressivePaginate );
 					$this->set( compact( 'results' ) );
 				}
 			}

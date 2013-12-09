@@ -49,6 +49,7 @@
 		echo '</fieldset>';
 
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+		echo $this->Search->observeDisableFormOnSubmit( 'Cohortesd2pdvs93IndexForm' );
 
 		echo $this->Xform->end( 'Search' );
 

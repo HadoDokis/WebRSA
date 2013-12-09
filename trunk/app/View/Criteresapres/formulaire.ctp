@@ -114,6 +114,8 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
             <?php echo $this->Xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
     </fieldset>
 
+	<?php echo $this->Search->paginationNombretotal(); ?>
+
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -237,3 +239,5 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
     <?php endif?>
 
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Critereapre' ); ?>

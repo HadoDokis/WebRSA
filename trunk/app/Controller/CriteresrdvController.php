@@ -95,7 +95,8 @@
 				$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = array( 'Rendezvous' => $querydata );
-				$rdvs = $this->paginate( 'Rendezvous' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$rdvs = $this->paginate( 'Rendezvous', array(), array(), $progressivePaginate );
 
                 if( Configure::read( 'Rendezvous.useThematique' ) ) {
                     $rdvs = $this->Rendezvous->containThematique( $rdvs );

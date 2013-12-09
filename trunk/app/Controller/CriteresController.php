@@ -135,7 +135,8 @@
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
-				$orients = $this->paginate( 'Orientstruct' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$orients = $this->paginate( 'Orientstruct', array(), array(), $progressivePaginate );
 
 				$this->set( 'orients', $orients );
 			}

@@ -222,7 +222,7 @@
 				// Filtre
 				// -----------------------------------------------------------------
 				if( isset( $this->request->data['Filtre'] ) ) {
-					$progressivePaginate = !Set::classicExtract( $this->request->data, 'Filtre.paginationNombreTotal' );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Filtre.paginationNombreTotal' );
 
 					$filtre = $this->request->data;
 					if( Configure::read( 'Cg.departement' ) == 66 && empty( $filtre['Situationdossierrsa']['etatdosrsa_choice'] ) ) {

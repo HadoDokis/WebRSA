@@ -192,7 +192,8 @@
 
 
 					$this->paginate = $paginate;
-					$cohortevalidationapre66 = $this->paginate( 'Apre66' );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+					$cohortevalidationapre66 = $this->paginate( 'Apre66', array(), array(), $progressivePaginate );
 
 					//Pour le lien filelink, sauvegarde de l'URL de la recherche lorsqu'on cliquera sur le bouton "Retour" dans la liste des fichiers liés
 					$this->Session->write( "Savedfilters.Apres66.filelink",

@@ -20,7 +20,7 @@
 
 <?php echo $this->Form->create( 'Defautinsertionep66', array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php echo $this->Form->input( 'Defautinsertionep66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-	
+
 	<?php
 		echo $this->Search->blocAllocataire();
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
@@ -36,7 +36,7 @@
 			echo $this->Search->etatdosrsa($etatdosrsa);
 		?>
 	</fieldset>
-	
+
 	<fieldset>
 		<legend>Recherche par parcours allocataire</legend>
 		<?php if( $this->action == 'selectionradies' ):?>
@@ -45,6 +45,11 @@
 		<?php echo $this->Form->input( 'Orientstruct.date_valid', array( 'label' => 'Mois d\'orientation', 'type' => 'date', 'dateFormat' => 'MY', 'minYear' => date( 'Y' ) - 5, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ) );?>
 
 	</fieldset>
+
+	<?php
+		echo $this->Search->paginationNombretotal();
+		echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+	?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>

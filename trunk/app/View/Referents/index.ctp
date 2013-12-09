@@ -48,7 +48,10 @@
 				);
 			?>
 		</fieldset>
-
+		<?php
+			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+		?>
 		<div class="submit noprint">
 			<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 			<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

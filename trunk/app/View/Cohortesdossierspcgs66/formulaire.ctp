@@ -70,11 +70,11 @@
 				}
             ?>
         </fieldset>
-                
-<fieldset>
-    <legend>Comptage des résultats</legend>
-    <?php echo $this->Form->input( 'Search.Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-</fieldset>
+
+		<?php
+			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+		?>
 
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -138,7 +138,7 @@
                         $this->Form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossier']['id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['etatdossierpcg'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.poledossierpcg66_id', array( 'label' => false, 'type' => 'select', 'options' => $polesdossierspcgs66, 'value' => $this->request->data['Dossierpcg66'][$index]['poledossierpcg66_id'], 'empty' => true ) ),
-                        
+
                         $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaires, 'value' => $this->request->data['Dossierpcg66'][$index]['user_id'], 'empty' => true ) ),
 
                         $this->Xhtml->viewLink(
@@ -164,7 +164,7 @@
 
 <script type="text/javascript">
 document.observe( "dom:loaded", function() {
-    
+
 } );
 </script>
 

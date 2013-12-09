@@ -60,7 +60,7 @@
 
 			$this->set( 'qual',  $this->Option->qual() );
 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
-			
+
             $gestionnaires = $this->User->find(
                 'all',
                 array(
@@ -81,7 +81,7 @@
             $gestionnaires = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
             $this->set( compact( 'gestionnaires' ) );
 
-            
+
             $this->set( 'gestionnaire', $this->User->find(
 					'list',
 					array(
@@ -95,7 +95,7 @@
 					)
 				)
 			);
-            
+
             $this->set( 'polesdossierspcgs66', $this->User->Poledossierpcg66->find(
 					'list',
 					array(
@@ -109,7 +109,7 @@
 					)
 				)
 			);
-             
+
 			$etatdossierpcg = $options['Dossierpcg66']['etatdossierpcg'];
 			$this->set( compact( 'options', 'etatdossierpcg' ) );
 		}
@@ -207,11 +207,9 @@
 					$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 					$paginate['limit'] = 10;
 
-                    $progressivePaginate = !Hash::get( $this->request->data, 'Search.Dossierpcg66.paginationNombreTotal' );
-                    
 					$this->paginate = $paginate;
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
                     $cohortedossierpcg66 = $this->paginate( 'Dossierpcg66', array(), array(), $progressivePaginate );
-//					$cohortedossierpcg66 = $this->paginate( 'Dossierpcg66' );
 
 					if( empty( $this->request->data['Dossierpcg66'] ) ) {
 						// Si un précédent dossier existe, on récupère le gestionnaire précédent par défaut

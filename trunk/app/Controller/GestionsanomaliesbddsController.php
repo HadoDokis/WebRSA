@@ -95,8 +95,8 @@
 
 				// Restrictions 58
 				$this->paginate = $this->_qdAddFilters( $this->paginate );
-
-				$results = $this->paginate( $this->Dossier );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Search.nombre_total' );
+				$results = $this->paginate( $this->Dossier, array(), array(), $progressivePaginate );
 
 				$methode = Set::classicExtract( $search, 'Gestionanomaliebdd.methode' );
 				$sansprestation = Set::classicExtract( $search, 'Gestionanomaliebdd.sansprestation' );

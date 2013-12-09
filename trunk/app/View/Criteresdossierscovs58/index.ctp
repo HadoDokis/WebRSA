@@ -82,6 +82,9 @@
 				<?php echo $this->Xform->input( 'Cov58.datecommission_from', array( 'label' => 'Du', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datecommission_from ) );?>
 				<?php echo $this->Xform->input( 'Cov58.datecommission_to', array( 'label' => 'Au', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datecommission_to ) );?>
 		</fieldset>
+
+	<?php echo $this->Search->paginationNombretotal(); ?>
+
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -130,3 +133,5 @@
         <?php echo $this->Xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );?>
     <?php endif;?>
 <?php endif;?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

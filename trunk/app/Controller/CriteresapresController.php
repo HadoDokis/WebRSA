@@ -101,7 +101,8 @@
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
-				$apres = $this->paginate( 'Apre' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$apres = $this->paginate( 'Apre', array(), array(), $progressivePaginate );
 
 				///
 				unset( $queryData['fields'] );

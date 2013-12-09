@@ -982,7 +982,8 @@
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
-				$dsps = $this->paginate( 'Personne' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$dsps = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 				$this->set( 'dsps', $dsps );
 			}

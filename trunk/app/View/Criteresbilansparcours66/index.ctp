@@ -78,7 +78,8 @@
 					echo $this->Form->input( 'Bilanparcours66.hasmanifestation', array( 'label' => 'L\'allocataire s\'est-il manifesté ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 				?>
 			</fieldset>
-			
+
+	<?php echo $this->Search->paginationNombretotal(); ?>
 
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -142,10 +143,10 @@
 				else {
 					$motif = Set::classicExtract( $options['choixparcours'], $bilanparcour66['Bilanparcours66']['choixparcours'] );
 				}
-                
-                
 
-                
+
+
+
 				echo '<tr>
 					<td>'.h( $bilanparcour66['Dossier']['numdemrsa'] ).'</td>
 					<td>'.h( $this->Locale->date( 'Date::short', $bilanparcour66['Bilanparcours66']['datebilan'] ) ).'</td>
@@ -183,3 +184,5 @@
 		<?php echo $this->Xhtml->tag( 'p', 'Aucun résultat ne correspond aux critères choisis.', array( 'class' => 'notice' ) );?>
 	<?php endif;?>
 <?php endif;?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>
