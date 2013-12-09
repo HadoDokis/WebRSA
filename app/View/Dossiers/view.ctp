@@ -386,16 +386,18 @@
 								<th>Date dernier(s) montant(s)</th>
 								<td><?php echo date_short( Set::extract( 'Detailcalculdroitrsa.0.dtderrsavers', $details ) );?></td>
 							</tr>
-							<?php foreach( $details['Detailcalculdroitrsa'] as $detailcalculdroitrsa ):?>
-							<tr class="even">
-								<th>Motif montant</th>
-								<td><?php echo value( $natpf, Set::extract( 'natpf', $detailcalculdroitrsa ) );?></td>
-							</tr>
-							<tr class="odd">
-								<th>Montant RSA</th>
-								<td><?php echo $this->Locale->money( Set::extract( 'mtrsavers', $detailcalculdroitrsa ) ); ?></td>
-							</tr>
-							<?php endforeach;?>
+							<?php if( isset( $details['Detailcalculdroitrsa'] ) ):?>
+                                <?php foreach( $details['Detailcalculdroitrsa'] as $detailcalculdroitrsa ):?>
+                                <tr class="even">
+                                    <th>Motif montant</th>
+                                    <td><?php echo value( $natpf, Set::extract( 'natpf', $detailcalculdroitrsa ) );?></td>
+                                </tr>
+                                <tr class="odd">
+                                    <th>Montant RSA</th>
+                                    <td><?php echo $this->Locale->money( Set::extract( 'mtrsavers', $detailcalculdroitrsa ) ); ?></td>
+                                </tr>
+                                <?php endforeach;?>
+                            <?php endif;?>
 							<tr class="even">
 								<th>Montant INDUS</th>
 								<td><?php echo $this->Locale->money( Set::extract( 'Infofinanciere.mtmoucompta', $details ) );?></td>
