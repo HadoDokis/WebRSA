@@ -119,6 +119,40 @@
 		}
 
 		/**
+		 * Ajoute des conditions à un querydata suivant les restrictions concernant
+		 * les zones géographiques de l'utilisateur stockées dans la session.
+		 *
+		 * Lorsque l'on utilise les cantons, la restriction se fera à partir de
+		 * ceux-ci.
+		 *
+		 * @see Auth.User.filtre_zone_geo (dans la session)
+		 * @see Auth.Zonegeographique (dans la session)
+		 * @see CG.cantons (Configure)
+		 *
+		 * @param array $querydata
+		 * @return array
+		 */
+		public function qdConditions( array $querydata ) {
+			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
+			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+
+			$filtre_zone_geo = $this->Session->read( 'Auth.User.filtre_zone_geo' );
+
+			if( $filtre_zone_geo ) {
+				// Si on utilise la table des cantons plutôt que la table zonesgeographiques
+				if( Configure::read( 'CG.cantons' ) ) {
+					$querydata['conditions'][] = ClassRegistry::init( 'Canton' )->queryConditionsByZonesgeographiques( array_keys( $mesCodesInsee ) );
+				}
+				else {
+					$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
+					$querydata['conditions'][] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
+				}
+			}
+
+			return $querydata;
+		}
+
+		/**
 		 * The beforeRedirect method is invoked when the controller's redirect method is called but before
 		 * any further action. If this method returns false the controller will not continue on to redirect the
 		 * request.
