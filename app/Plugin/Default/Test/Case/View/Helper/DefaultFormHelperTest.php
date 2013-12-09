@@ -73,12 +73,12 @@
 		 * @return void
 		 */
 		public function testButtons() {
-			$result = $this->DefaultForm->buttons( array( 'Save', 'Cancel', 'Reset' ) );
-			$expected = '<div class="submit">
-							<input  name="Save" type="submit" value="'.__( 'Save' ).'"/>
-							<input  name="Cancel" type="submit" value="'.__( 'Cancel' ).'"/>
-							<input  name="Reset" type="submit" value="'.__( 'Reset' ).'"/>
-						</div>';
+			$result = $this->DefaultForm->buttons( array( 'Save', 'Cancel', 'Reset' => array( 'type' => 'reset' ) ) );
+			$expected = '<div class="submit">'
+							. '<input name="Save" type="submit" value="Enregistrer"/>'
+							. '<input name="Cancel" type="submit" value="Annuler"/>'
+							. '<input name="Reset" type="reset" value="Remise à zéro"/>'
+					. '</div>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
