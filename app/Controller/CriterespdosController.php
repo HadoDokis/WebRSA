@@ -89,7 +89,8 @@
 				$paginate = $this->_qdAddFilters( $paginate );
 
 				$this->paginate = $paginate;
-				$criterespdos = $this->paginate( 'Propopdo' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$criterespdos = $this->paginate( 'Propopdo', array(), array(), $progressivePaginate );
 
 				$this->set( 'criterespdos', $criterespdos );
 			}
@@ -116,7 +117,8 @@
 				$querydata = $this->_qdAddFilters( $querydata );
 
 				$this->paginate = array( 'Personne' => $querydata );
-				$criterespdos = $this->paginate( 'Personne' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$criterespdos = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 				$this->set( 'criterespdos', $criterespdos );
 			}

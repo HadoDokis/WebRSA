@@ -234,7 +234,8 @@
 					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					$this->paginate = $querydata;
-					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Filtre.nombre_total' );
+					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion, array(), array(), $progressivePaginate );
 
 					foreach( $cohorteci as $key => $value ) {
 						$cohorteci[$key]['Contratinsertion']['proposition_decision_ci'] = $value['Contratinsertion']['decision_ci'];

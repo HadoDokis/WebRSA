@@ -22,7 +22,7 @@
 
 <?php
 	// Formulaire
-	echo $this->Xform->create();
+	echo $this->Xform->create( null, array( 'id' => 'Search' ) );
 
 	$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 
@@ -53,7 +53,7 @@
 			$fields
 		)
 	);
-	
+
 	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par courriers' ).
 		$this->Default->subform(
 			array(
@@ -61,6 +61,9 @@
 			)
 		)
 	);
+
+	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
 	echo $this->Xform->end( __( 'Rechercher' ) );
 	// Résultats

@@ -51,6 +51,8 @@
 			?>
 	</fieldset>
 
+	<?php echo $this->Search->paginationNombretotal(); ?>
+
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -153,3 +155,5 @@
 		<p>Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

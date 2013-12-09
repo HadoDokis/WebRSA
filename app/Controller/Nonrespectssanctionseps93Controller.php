@@ -360,7 +360,9 @@
 				$queryData['limit'] = 10;
 
 				$this->paginate = array( 'Personne' => $queryData );
-				$radiespe = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne );
+
+				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
+				$radiespe = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
 			$this->set( compact( 'radiespe' ) );
 		}

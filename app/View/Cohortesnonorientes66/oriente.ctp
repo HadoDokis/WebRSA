@@ -101,10 +101,12 @@
 				echo $this->Xform->input( 'Search.Nonoriente66.datenotification_to', Set::merge( array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 20), $datenotificationToSelected ) );
 			?>
 		</fieldset>
-		<fieldset>
-			<legend>Comptage des résultats</legend>
-			<?php echo $this->Form->input( 'Search.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-		</fieldset>
+
+		<?php
+			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+		?>
+
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

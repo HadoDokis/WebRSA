@@ -105,14 +105,16 @@
 				echo $this->Form->input( 'Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 				echo $this->Form->input( 'PersonneReferent.referent_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 			}
-			
+
 			if( Configure::read( 'Cg.departement' ) != 93 ){
 				echo $this->Form->input( 'Orientstruct.exists', array( 'label' => 'Possède une orientation ? ', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 			}
-			
+
 			echo $this->Form->input( 'Personne.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 		?>
 	</fieldset>
+
+	<?php echo $this->Search->paginationNombretotal(); ?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -264,3 +266,5 @@
 		<p>Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

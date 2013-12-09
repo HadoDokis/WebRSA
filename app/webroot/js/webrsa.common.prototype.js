@@ -1418,17 +1418,19 @@ function serializeTableRow( link ) {
  * @param message Le message à afficher au-dessus du formulaire pour tenir l'utilisateur informé.
  */
 function observeDisableFormOnSubmit( formId, message ) {
+	message = typeof(message) != 'undefined' ? message : null;
+
 	Event.observe(
 		formId,
 		'submit',
 		function() {
-			if( typeof(message) != 'undefined' ) {
+			if( typeof(message) != 'undefined' && message !== null ) {
 				var notice = new Element( 'p', { 'class': 'notice' } ).update( message );
 				$( formId ).insert( { 'top' : notice } );
 			}
 
-			$$( 'input[type=submit]' ).each( function( submit ) {
-				$( submit ).disable();
+			$$( '#' + formId + ' *[type=submit]', '#' + formId + ' *[type=reset]' ).each( function( submit ) {
+				$( submit ).disabled = true;
 			} );
 		}
 	);

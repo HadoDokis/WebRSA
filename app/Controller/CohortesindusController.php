@@ -82,7 +82,8 @@
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = $paginate;
-				$cohorteindu = $this->paginate( 'Dossier' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$cohorteindu = $this->paginate( 'Dossier', array(), array(), $progressivePaginate );
 
 				$this->set( 'cohorteindu', $cohorteindu );
 			}

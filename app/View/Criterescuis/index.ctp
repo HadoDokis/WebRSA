@@ -43,7 +43,7 @@
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $this->Search->etatdosrsa($etatdosrsa);
-			
+
 			echo $this->Search->date( 'Dossier.dtdemrsa' );
 		?>
 		<fieldset>
@@ -71,13 +71,13 @@
 			echo $this->Form->input( 'Cui.isaci', array( 'label' => __d( 'cui', 'Cui.isaci' ), 'type' => 'select', 'options' => $options['Cui']['isaci'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.positioncui66', array( 'label' => __d( 'cui', 'Cui.positioncui66' ), 'type' => 'select', 'options' => $options['Cui']['positioncui66'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.decisioncui', array( 'label' => __d( 'cui', 'Cui.decisioncui' ), 'type' => 'select', 'options' => $options['Cui']['decisioncui'], 'empty' => true ) );
-            
+
 			echo $this->Form->input( 'Cui.handicap', array( 'label' => __d( 'cui', 'Cui.handicap' ), 'type' => 'select', 'options' => $options['Cui']['handicap'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.niveauformation', array( 'label' => __d( 'cui', 'Cui.niveauformation' ), 'type' => 'select', 'options' => $options['Cui']['niveauformation'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.compofamiliale', array( 'label' => __d( 'cui', 'Cui.compofamiliale' ), 'type' => 'select', 'options' => $options['Cui']['compofamiliale'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.partenaire_id', array( 'label' => __d( 'cui', 'Cui.partenaire_id' ), 'options' => $employeursCui, 'empty' => true ) );
 		?>
-    
+
         <?php echo $this->Form->input( 'Cui.datefintitresejour', array( 'label' => 'Filtrer par date de fin de titre de séjour', 'type' => 'checkbox' ) );?>
 		<fieldset>
 			<legend>Date de fin de titre de séjour</legend>
@@ -90,6 +90,8 @@
 			?>
 		</fieldset>
 </fieldset>
+
+	<?php echo $this->Search->paginationNombretotal(); ?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -217,3 +219,5 @@
 
 	});
 </script>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

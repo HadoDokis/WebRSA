@@ -134,10 +134,12 @@
 			echo $this->Search->etatdosrsa($etatdosrsa);
 		}
 	?>
-	<fieldset>
-		<legend>Comptage des résultats</legend>
-		<?php echo $this->Form->input( 'Filtre.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-	</fieldset>
+
+	<?php
+		echo $this->Search->paginationNombretotal( 'Filtre.paginationNombreTotal' );
+		echo $this->Search->observeDisableFormOnSubmit( 'Filtre' );
+	?>
+
 	<div class="submit">
 		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

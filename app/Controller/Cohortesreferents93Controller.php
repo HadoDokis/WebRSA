@@ -137,7 +137,7 @@
 					$this->PersonneReferent->Personne,
 					array(),
 					array(),
-					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 				$this->set( 'personnes_referents', $personnes_referents );
 

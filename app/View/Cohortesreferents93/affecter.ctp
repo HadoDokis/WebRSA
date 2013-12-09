@@ -30,9 +30,9 @@
 				echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
 			?>
 		</fieldset>
-		<?php 
+		<?php
 			echo $this->Search->multipleCheckboxChoice( $options['Personne']['situation'], 'Search.Personne.situation' );
-					
+
 			echo $this->Form->input( 'Search.Dossier.transfere', array( 'label' => 'Dossier transféré ?', 'empty' => true, 'options' => $options['exists'] ) );
 		?>
 	</fieldset>
@@ -47,6 +47,7 @@
 // 		echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
 		echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+		echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
 	?>
 	<div class="submit noprint">

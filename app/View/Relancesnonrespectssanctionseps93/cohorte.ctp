@@ -22,7 +22,7 @@
 <?php endif;?>
 <?php
 	// Formulaire
-	echo $this->Form->create();
+	echo $this->Form->create( null, array( 'id' => 'Search' ) );
 // 	echo $this->Form->create( null, array( 'type' => 'post', 'action' => $this->action, 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) && isset( $this->request->data['Search']['active'] ) ) ? 'folded' : 'unfolded' ) ) );
 
 // 	echo $this->Form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
@@ -71,6 +71,9 @@
 	echo '</div></fieldset>';
 
 	echo $this->Form->input( 'Search.Relance.numrelance', array( 'legend' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => $options['Relancenonrespectsanctionep93']['numrelance'], 'value' => ( isset( $this->request->data['Search']['Relance']['numrelance'] ) ? @$this->request->data['Search']['Relance']['numrelance'] : 1 ) ) );
+
+	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
 	echo $this->Form->end( __( 'Rechercher' ) );
 	// Résultats

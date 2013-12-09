@@ -61,7 +61,8 @@
 				$queryData['limit'] = 10;
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 				$this->paginate = $queryData;
-				$actionscandidats_personnes = $this->paginate( $this->ActioncandidatPersonne );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$actionscandidats_personnes = $this->paginate( $this->ActioncandidatPersonne, array(), array(), $progressivePaginate );
 
 
 

@@ -140,7 +140,8 @@
 					$paginate['limit'] = 10;
 
 					$this->paginate = $paginate;
-					$cohortefichecandidature66 = $this->paginate( 'ActioncandidatPersonne' );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+					$cohortefichecandidature66 = $this->paginate( 'ActioncandidatPersonne', array(), array(), $progressivePaginate );
 
 					$optionsMotifssortie = array();
 					foreach( $cohortefichecandidature66 as $key => $value ) {

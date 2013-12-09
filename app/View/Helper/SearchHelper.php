@@ -351,5 +351,31 @@
 
 			return $script.$input;
 		}
+
+		/**
+		 * Fournit le code javascript permettant de désactiver les boutons de
+		 * soumission d'un formumlaire lors de son envoi afin de ne pas renvoyer
+		 * celui-ci plusieurs fois avant que le reqête n'ait abouti.
+		 *
+		 * @param string $form L'id du formulaire au sens Prototype
+		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
+		 * @return string
+		 */
+		public function observeDisableFormOnSubmit( $form, $message = null ) {
+			if( empty( $message ) ) {
+				$out = "document.observe( 'dom:loaded', function() {
+					observeDisableFormOnSubmit( '{$form}' );
+				} );";
+			}
+			else {
+				$message = str_replace( "'", "\\'", $message );
+
+				$out = "document.observe( 'dom:loaded', function() {
+					observeDisableFormOnSubmit( '{$form}', '{$message}' );
+				} );";
+			}
+
+			return "<script type='text/javascript'>{$out}</script>";
+		}
 	}
 ?>

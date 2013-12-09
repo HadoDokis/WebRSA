@@ -106,6 +106,8 @@
 			</fieldset>
 	</fieldset>
 
+	<?php echo $this->Search->paginationNombretotal(); ?>
+
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
@@ -245,3 +247,5 @@
 	<?php endif?>
 
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

@@ -63,6 +63,7 @@
 			?>
 		</fieldset>
 </fieldset>
+	<?php echo $this->Search->paginationNombretotal(); ?>
 	<?php
 
 		echo $this->Xform->submit( __( 'Search' ) );
@@ -150,4 +151,4 @@
 	<?php endif?>
 <?php endif?>
 
-<!-- *********************************************************************** -->
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

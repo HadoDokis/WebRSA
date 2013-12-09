@@ -148,7 +148,7 @@
 					$this->Contratinsertion->Personne,
 					array(),
 					array(),
-					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 				$cers93 = $this->_addCommentairenormecer93( $cers93, $histochoixcer93key );
 
@@ -685,7 +685,7 @@
 					$this->Contratinsertion->Personne,
 					array(),
 					array(),
-					!Set::classicExtract( $this->request->data, 'Search.Pagination.nombre_total' )
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 
 				// Ajout des commentaires fournis par le CPDV bug #6251

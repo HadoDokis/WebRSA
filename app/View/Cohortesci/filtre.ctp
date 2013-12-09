@@ -87,6 +87,11 @@
 
 	</fieldset>
 
+	<?php
+		echo $this->Search->paginationNombretotal( 'Filtre.nombre_total' );
+		echo $this->Search->observeDisableFormOnSubmit( 'Filtre' );
+	?>
+
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

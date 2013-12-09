@@ -17,7 +17,16 @@
 	{
 		public $helpers = array( 'Default2', 'Csv', 'Search');
 
-		public $components = array( 'Jetons2', 'DossiersMenus' );
+		public $components = array(
+			'Jetons2',
+			'DossiersMenus',
+			'Search.Prg' => array(
+				'actions' => array(
+					'selectionradies' => array( 'filter' => 'Pagination' ),
+					'selectionnoninscrits' => array( 'filter' => 'Pagination' )
+				)
+			)
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -40,9 +49,6 @@
 		 */
 		protected function _selectionPassageSanctionep58( $qdName, $origine ) {
 			if( !empty( $this->request->data ) ) {
-				$success = true;
-				$this->Sanctionep58->begin();
-
 				if( $qdName == 'qdNonInscrits' ) {
 					$modelName = 'Orientstruct';
 //					$foreignKey = 'orientstruct_id';
@@ -52,74 +58,79 @@
 //					$foreignKey = 'historiqueetatpe_id';
 				}
 
-				foreach( $this->request->data[$modelName] as $key => $item ) {
-					// La personne était-elle sélectionnée précédemment ?
-					$dossierep_id = Hash::get( $this->request->data, "Dossierep.{$key}.id" );
-					/*$alreadyChecked = $this->Sanctionep58->Dossierep->find(
-						'first',
-						array(
-							'conditions' => array(
-								'Dossierep.id NOT IN ( '.$this->Sanctionep58->Dossierep->Passagecommissionep->sq(
-									array(
-										'fields' => array(
-											'passagescommissionseps.dossierep_id'
-										),
-										'alias' => 'passagescommissionseps',
-										'conditions' => array(
-											'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'reporte' )
+				if( isset( $this->request->data[$modelName] ) ) {
+					$success = true;
+					$this->Sanctionep58->begin();
+
+					foreach( $this->request->data[$modelName] as $key => $item ) {
+						// La personne était-elle sélectionnée précédemment ?
+						$dossierep_id = Hash::get( $this->request->data, "Dossierep.{$key}.id" );
+						/*$alreadyChecked = $this->Sanctionep58->Dossierep->find(
+							'first',
+							array(
+								'conditions' => array(
+									'Dossierep.id NOT IN ( '.$this->Sanctionep58->Dossierep->Passagecommissionep->sq(
+										array(
+											'fields' => array(
+												'passagescommissionseps.dossierep_id'
+											),
+											'alias' => 'passagescommissionseps',
+											'conditions' => array(
+												'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'reporte' )
+											)
 										)
-									)
-								).' )',
-								'Dossierep.themeep' => 'sanctionseps58',
-								'Dossierep.personne_id' => $this->request->data['Personne'][$key]['id'],
-								'Sanctionep58.origine' => $origine
-							),
-							'contain' => array(
-								'Sanctionep58'
+									).' )',
+									'Dossierep.themeep' => 'sanctionseps58',
+									'Dossierep.personne_id' => $this->request->data['Personne'][$key]['id'],
+									'Sanctionep58.origine' => $origine
+								),
+								'contain' => array(
+									'Sanctionep58'
+								)
 							)
-						)
-					);*/
+						);*/
 
-					// Personnes non cochées que l'on sélectionne
-					if( empty( $dossierep_id ) && !empty( $item['chosen'] ) ) {
-						$dossierep = array(
-							'Dossierep' => array(
-								'themeep' => 'sanctionseps58',
-								'personne_id' => $this->request->data['Personne'][$key]['id']
-							)
-						);
-						$this->Sanctionep58->Dossierep->create( $dossierep );
-						$success = $this->Sanctionep58->Dossierep->save() && $success;
+						// Personnes non cochées que l'on sélectionne
+						if( empty( $dossierep_id ) && !empty( $item['chosen'] ) ) {
+							$dossierep = array(
+								'Dossierep' => array(
+									'themeep' => 'sanctionseps58',
+									'personne_id' => $this->request->data['Personne'][$key]['id']
+								)
+							);
+							$this->Sanctionep58->Dossierep->create( $dossierep );
+							$success = $this->Sanctionep58->Dossierep->save() && $success;
 
-						$sanctionep58 = array(
-							'Sanctionep58' => array(
-								'dossierep_id' => $this->Sanctionep58->Dossierep->id,
-								'orientstruct_id' => $this->request->data['Orientstruct'][$key]['id'],
-								'origine' => $origine
-							)
-						);
+							$sanctionep58 = array(
+								'Sanctionep58' => array(
+									'dossierep_id' => $this->Sanctionep58->Dossierep->id,
+									'orientstruct_id' => $this->request->data['Orientstruct'][$key]['id'],
+									'origine' => $origine
+								)
+							);
 
-						if( $qdName == 'qdRadies' ) {
-							$sanctionep58['Sanctionep58']['historiqueetatpe_id'] = $item['id'];
+							if( $qdName == 'qdRadies' ) {
+								$sanctionep58['Sanctionep58']['historiqueetatpe_id'] = $item['id'];
+							}
+
+							$this->Sanctionep58->create( $sanctionep58 );
+							$success = $this->Sanctionep58->save() && $success;
 						}
-
-						$this->Sanctionep58->create( $sanctionep58 );
-						$success = $this->Sanctionep58->save() && $success;
+						// Personnes précédemment sélectionnées, que l'on désélectionne
+						else if( !empty( $dossierep_id ) && empty( $item['chosen'] ) ) {
+							// FIXME: on supprime des décisions dans les déjà cochés!!
+							$success = $this->Sanctionep58->Dossierep->delete( $dossierep_id, true ) && $success;
+						}
+						// Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
 					}
-					// Personnes précédemment sélectionnées, que l'on désélectionne
-					else if( !empty( $dossierep_id ) && empty( $item['chosen'] ) ) {
-						// FIXME: on supprime des décisions dans les déjà cochés!!
-						$success = $this->Sanctionep58->Dossierep->delete( $dossierep_id, true ) && $success;
-					}
-					// Personnes précédemment sélectionnées, que l'on garde sélectionnées -> rien à faire
-				}
 
-				$this->_setFlashResult( 'Save', $success );
-				if( $success ) {
-					$this->Sanctionep58->commit();
-				}
-				else {
-					$this->Sanctionep58->rollback();
+					$this->_setFlashResult( 'Save', $success );
+					if( $success ) {
+						$this->Sanctionep58->commit();
+					}
+					else {
+						$this->Sanctionep58->rollback();
+					}
 				}
 			}
 
@@ -127,7 +138,8 @@
 			$queryData['limit'] = 10;
 
 			$this->paginate = array( 'Personne' => $queryData );
-			$personnes = $this->paginate( $this->Sanctionep58->Dossierep->Personne );
+			$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+			$personnes = $this->paginate( $this->Sanctionep58->Dossierep->Personne, array(), array(), $progressivePaginate );
 
 			// FIXME: quels sont les sélectionnés!!!
 			$this->request->data = null;

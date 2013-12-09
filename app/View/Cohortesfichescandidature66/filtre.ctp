@@ -63,6 +63,11 @@
 				<?php echo $this->Xform->input( 'Search.ActioncandidatPersonne.datesignature_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 10, 'selected' => $datesignature_to ) );?>
 			</fieldset>
 
+		<?php
+			echo $this->Search->paginationNombretotal();
+			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+		?>
+
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

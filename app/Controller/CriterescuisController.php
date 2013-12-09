@@ -102,7 +102,8 @@
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 				$this->paginate = $paginate;
-				$criterescuis = $this->paginate( 'Cui' );
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$criterescuis = $this->paginate( 'Cui', array(), array(), $progressivePaginate );
 
 				foreach( $criterescuis as $i => $criterecui ) {
 					if( !empty( $criterecui['Partenaire']['libstruc'] ) ) {

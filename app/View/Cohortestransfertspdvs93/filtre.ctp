@@ -9,7 +9,7 @@
         observeDisableFieldsetOnCheckbox( 'SearchTransfertpdv93Created', $( 'SearchTransfertpdv93CreatedFromDay' ).up( 'fieldset' ), false );
     });
 </script>
-<?php 
+<?php
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
 		$this->Xhtml->image(
 			'icons/application_form_magnify.png',
@@ -36,7 +36,7 @@
 
 	echo $this->Search->blocDossier( $options['etatdosrsa'], 'Search' );
 // 	echo $this->Search->etatdosrsa( $options['etatdosrsa'], 'Search.Situationdossierrsa.etatdosrsa' );
-    
+
     if( $this->action == 'transferes' ) {
 //        echo $this->Search->date( 'Search.Transfertpdv93.created', 'Dates de transfert' );
         echo $this->Form->input( 'Search.Transfertpdv93.created', array( 'label' => 'Filtrer par dates de transfert', 'type' => 'checkbox' ) );
@@ -51,6 +51,7 @@
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
 
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 
 	echo $this->Form->submit( __( 'Search' ) );
 	echo $this->Form->end();

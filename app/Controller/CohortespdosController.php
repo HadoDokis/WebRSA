@@ -70,7 +70,7 @@
 					)
 				)
 			);
-			
+
 			$options = array(
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente()),
@@ -110,7 +110,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				if( !empty( $this->request->data['Propopdo'] ) ) {
-				
+
 					$data = Set::extract( '/Propopdo[user_id=/[0-9]+/]', $this->request->data );
 
 					$dossiers_ids = Set::extract(  $data, 'Propopdo.{n}.dossier_id'  );
@@ -141,10 +141,9 @@
 						( $this->Cohortes->active() ? $this->Cohortes->sqLocked() : null )
 					);
 
-					$progressivePaginate = !Set::classicExtract( $this->request->data, 'Search.paginationNombreTotal' );
-					
 					$queryData['limit'] = 10;
 					$this->paginate = array( 'Personne' => $queryData );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 					$cohortepdo = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
 
 					// Obtention des jetons lorsque l'on est en cohortes

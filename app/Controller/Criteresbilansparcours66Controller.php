@@ -51,9 +51,10 @@
 				$queryData = $this->Criterebilanparcours66->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
-				$this->paginate = $queryData;
 
-				$bilansparcours66 = $this->paginate( $this->Bilanparcours66 );
+				$this->paginate = $queryData;
+				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+				$bilansparcours66 = $this->paginate( $this->Bilanparcours66, array(), array(), $progressivePaginate );
 
 				$this->set( 'bilansparcours66', $bilansparcours66 );
 			}

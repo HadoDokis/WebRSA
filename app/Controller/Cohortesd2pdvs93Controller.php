@@ -78,7 +78,6 @@
 
 				$this->paginate = $querydata;
 				$results = $this->paginate(
-//					$this->Dossier,
 					$this->Personne,
 					array(),
 					array(),
