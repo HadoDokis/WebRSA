@@ -3,6 +3,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 
@@ -65,6 +66,7 @@
 		<?php echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );?>
 		<?php echo $this->Form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'empty' => true ) );?>
+		<?php echo $this->Form->input( 'Dossier.anciennete_dispositif', array( 'label' => 'Ancienneté dans le dispositif', 'type' => 'select', 'options' => $anciennete_dispositif, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Serviceinstructeur.id', array( 'label' => __( 'lib_service' ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
 
 		<?php echo $this->Form->input( 'Dossier.fonorg', array( 'label' => 'Organisme émetteur du dossier', 'type' => 'select' , 'options' => $fonorg, 'empty' => true ) );?>
@@ -86,11 +88,12 @@
 		?>
 		<?php echo $this->Search->etatdosrsa($etatdosrsa); ?>
 
+		<?php echo $this->Form->input( 'Foyer.sitfam', array( 'label' => 'Filtrer par situation familiale', 'type' => 'select', 'empty' => true, 'options' => $sitfam ) );?>
 	</fieldset>
 
 	<?php
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
-		echo $this->Search->blocAllocataire( $trancheage );
+		echo $this->Search->blocAllocataire( $trancheage, $sexe );
 // 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset>';
 			echo $this->Xform->input( 'Prestation.rolepers', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $chooserolepers, 'empty' => true ) );
@@ -114,7 +117,10 @@
 		?>
 	</fieldset>
 
-	<?php echo $this->Search->paginationNombretotal(); ?>
+	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->paginationNombretotal();
+	?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>

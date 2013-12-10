@@ -24,7 +24,7 @@
 
 	echo $this->Form->input( 'Search.active', array( 'type' => 'hidden', 'value' => true ) );
 
-	echo $this->Search->blocAllocataire( array(), 'Search' );
+	echo $this->Search->blocAllocataire( array(), array(), 'Search' );
 	echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 
 	echo $this->Search->date( 'Search.Orientstruct.date_valid' ); // FIXME : A commenter suite à la demande du BUG #6891 ??

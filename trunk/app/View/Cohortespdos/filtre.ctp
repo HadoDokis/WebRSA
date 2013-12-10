@@ -31,7 +31,7 @@
 	});
 </script>
 	<?php
-		echo $this->Search->blocAllocataire( array(), 'Search' );
+		echo $this->Search->blocAllocataire( array(), array(), 'Search' );
 		echo $this->Search->blocDossier(   $options['etatdosrsa'], 'Search' );
 		echo $this->Search->blocAdresse( $options['mesCodesInsee'], $options['cantons'], 'Search' );
 	?>
