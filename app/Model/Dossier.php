@@ -293,10 +293,39 @@
 				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 				$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
 				$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Foyer->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' ) ),
+				$this->Foyer->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' ) ),
 				$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) )
+			);
+
+			// Condition sur la nature du logement
+			$natlog = Hash::get( $params, 'Dsp.natlog' );
+			if( !empty( $natlog ) ) {
+				$conditions[] = array(
+					'OR' => array(
+						'Dsp.natlog' => $natlog,
+						'DspRev.natlog' => $natlog,
+					)
+				);
+			}
+
+			// Dernières Dsp
+			$conditions[] = array(
+				array(
+					'OR' => array(
+						'Dsp.id IS NULL',
+						'Dsp.id IN ( '.$this->Foyer->Personne->Dsp->sqDerniereDsp().' )'
+					),
+				),
+				array(
+					'OR' => array(
+						'DspRev.id IS NULL',
+						'DspRev.id IN ( '.$this->Foyer->Personne->DspRev->sqDerniere().' )'
+					),
+				),
 			);
 
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
