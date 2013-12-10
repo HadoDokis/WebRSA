@@ -70,8 +70,11 @@
 			$this->set( 'categorie', $this->Option->categorie() );
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'anciennete_dispositif', $this->Tableausuivipdv93->anciennetes_dispositif );
+
 			$enums = $this->Dossier->Foyer->Personne->Dsp->enums();
+			asort( $enums['Dsp']['natlog'] );
 			$this->set( 'natlog', $enums['Dsp']['natlog'] );
+
 			$this->set(
 				'trancheage',
 				array(
