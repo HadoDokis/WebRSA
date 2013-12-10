@@ -47,7 +47,7 @@
             );
             
 			if ( isset($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) ) {
-				$conditions[] = array('ActioncandidatPersonne.actioncandidat_id'=>$criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']);
+				$conditions[] = array('ActioncandidatPersonne.actioncandidat_id'=>suffix( $criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) );
 			}
 
 			if ( isset($criteresfichescandidature['ActioncandidatPersonne']['referent_id']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['referent_id']) ) {
