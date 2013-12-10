@@ -289,16 +289,31 @@
 			}
 
 			$joins = array(
+				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				$this->join( 'Foyer', array( 'type' => 'INNER' ) ),
+				$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+				$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-				$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
+				$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' ) ),
 				$this->Foyer->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-				$this->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-				$this->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-				$this->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) )
+				$this->Foyer->Personne->join( 'Orientstruct',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array( 'Orientstruct.statut_orient' => 'Orienté' )
+					)
+				),
+				$this->Foyer->Personne->join( 'Prestation', array( 'type' => $typeJointure ) ),
+				$this->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+			);
+
+			// Dernière orientation -> avant 299288
+			$conditions[] = array(
+				'OR' => array(
+					'Orientstruct.id IS NULL',
+					'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )',
+				)
 			);
 
 			// Condition sur la nature du logement
@@ -349,14 +364,6 @@
 			}
 
 			// Personne ne possédant pas d'orientation, ne possédant aucune entrée dans la table orientsstructs
-// 			if( isset( $params['Orientstruct']['sansorientation'] ) && $params['Orientstruct']['sansorientation'] ) {
-// 				$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) = 0';
-// 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-// 					$joins[] = $this->Foyer->Personne->join( 'Nonoriente66', array( 'type' => 'LEFT OUTER' ) );
-// 					$conditions[] = array( 'Nonoriente66.id IS NULL' );
-// 				}
-// 			}
-
 			if( isset( $params['Orientstruct']['exists'] ) && ( $params['Orientstruct']['exists'] != '' ) ) {
 				if( $params['Orientstruct']['exists'] ) {
 					$conditions[] = '( SELECT COUNT(orientsstructs.id) FROM orientsstructs WHERE orientsstructs.personne_id = "Personne"."id" ) > 0';
@@ -424,7 +431,11 @@
 					'Adresse.codepos',
 					'Adresse.locaadr',
 					'Situationdossierrsa.etatdosrsa',
-					'Prestation.rolepers'
+					'Prestation.rolepers',
+					'Personne.sexe',
+					'Dsp.natlog',
+					'DspRev.natlog',
+					'Typeorient.lib_type_orient',
 				),
 				'recursive' => -1,
 				'joins' => $joins,

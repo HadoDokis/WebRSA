@@ -16,12 +16,21 @@
             'Complément adresse 2',
             'Code postal',
             'Commune',
+			'Type d\'orientation',
             'Identifiant Pôle Emploi',
-            'N° CAF'
+            'N° CAF',
+			'Référent',
+			'Sexe',
+			'Conditions de logement',
         )
     );
 
 	foreach( $dossiers as $dossier ) {
+		$dspnatlog = Hash::get( $dossier, 'DspRev.natlog' );
+		if( empty( $natlog ) ) {
+			$dspnatlog = Hash::get( $dossier, 'Dsp.natlog' );
+		}
+
 		$row = array(
 			Hash::get( $dossier, 'Dossier.numdemrsa' ),
 			date_short( Hash::get( $dossier, 'Dossier.dtdemrsa' ) ),
@@ -36,8 +45,12 @@
 			Hash::get( $dossier, 'Adresse.compladr' ),
 			Hash::get( $dossier, 'Adresse.codepos' ),
 			Hash::get( $dossier, 'Adresse.locaadr' ),
+			Hash::get( $dossier, 'Typeorient.lib_type_orient' ),
 			Hash::get( $dossier, 'Personne.idassedic' ),
-			Hash::get( $dossier, 'Dossier.matricule' )
+			Hash::get( $dossier, 'Dossier.matricule' ),
+			Hash::get( $dossier, 'Referentparcours.nom_complet' ),
+			value( $sexe, Hash::get( $dossier, 'Personne.sexe' ) ),
+			value( $natlog, $dspnatlog ),
 		);
 		$this->Csv->addRow($row);
 	}
