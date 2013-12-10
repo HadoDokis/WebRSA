@@ -321,7 +321,11 @@
 			if( !empty( $natlog ) ) {
 				$conditions[] = array(
 					'OR' => array(
-						'Dsp.natlog' => $natlog,
+						array(
+							// On cherche dans les Dsp si pas de Dsp mises à jour
+							'DspRev.id IS NULL',
+							'Dsp.natlog' => $natlog
+						),
 						'DspRev.natlog' => $natlog,
 					)
 				);

@@ -189,7 +189,7 @@
 		 * @param type $dossierMenu
 		 * @return type
 		 */
-		public function conditionsDate( $path, $dossierMenu ) {
+		public static function conditionsDate( $path, $dossierMenu ) {
 			$conditions = array();
 
 			$filtre_zone_geo = CakeSession::read( 'Auth.User.filtre_zone_geo' );
@@ -222,7 +222,7 @@
 		 * @param string $dossierIdField
 		 * @return string
 		 */
-		public function conditionsDossier( $dossierIdField = 'Dossier.id' ) {
+		public static function conditionsDossier( $dossierIdField = 'Dossier.id' ) {
 			$return = array();
 
 			if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
@@ -275,7 +275,7 @@
 		 * @param boolean $string Si vrai, retourne une chaîne qui pourra être évaluée
 		 * @return string|boolean
 		 */
-		public function checkD1D2( $structurereferente_id, $permission = true, $string = false ) {
+		public static function checkD1D2( $structurereferente_id, $permission = true, $string = false ) {
 			$userStructurereferente_id = CakeSession::read( 'Auth.User.structurereferente_id' );
 			$permission = ( $permission ? '1' : '0' );
 
