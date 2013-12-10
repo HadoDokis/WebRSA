@@ -37,7 +37,7 @@
 		?>
 	</fieldset>
 	<?php
-		echo $this->Search->blocAllocataire( array(), 'Search' );
+		echo $this->Search->blocAllocataire( array(), array(), 'Search' );
 		echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 		echo $this->Form->input( 'Search.Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );
 		echo $this->Form->input( 'Search.Contratinsertion.exists', array( 'label' => 'Possède un CER ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );

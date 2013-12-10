@@ -21,7 +21,7 @@
 		echo $this->Form->input( 'Search.PersonneReferent.referent_id', array( 'label' => 'Affectation', 'type' => 'select', 'options' => $options['referents'], 'empty' => true ) );
 		echo $this->Search->date( 'Search.PersonneReferent.dddesignation', 'Date d\'affectation' );
 
-		echo $this->Search->blocAllocataire( array(), 'Search' );
+		echo $this->Search->blocAllocataire( array(), array(), 'Search' );
 		echo $this->Search->toppersdrodevorsa( $options['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 		echo $this->Form->input( 'Search.Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );
 		echo $this->Form->input( 'Search.Contratinsertion.exists', array( 'label' => 'Possède un CER ?', 'type' => 'select', 'options' => $options['exists'], 'empty' => true ) );

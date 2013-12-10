@@ -53,8 +53,8 @@
 			$this->Controller = $controller;
 		}
 
-        
-        
+
+
         /**
 		 *
 		 * @param type $options
@@ -75,7 +75,7 @@
 			);
 
 			$conditions = Set::merge( $conditions, $options['conditions'] );
-            
+
             if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
                 $sq = $Typeorient->Structurereferente->sq(
                    array(
@@ -114,7 +114,7 @@
 
 			return $results;
         }
-        
+
 		/**
 		 *
 		 * <pre>
@@ -206,7 +206,7 @@
 
 						// Cas typeorient_id_structurereferente_id
 						$results['normal']["{$tmp['Structurereferente']['typeorient_id']}_{$tmp['Structurereferente']['id']}"] = $tmp['Structurereferente']['lib_struc'];
-                        
+
                         // Cas du find list
 						$results['list'][$tmp['Structurereferente']['id']] = $tmp['Structurereferente']['lib_struc'];
 					}
@@ -246,6 +246,7 @@
 			$options = Set::merge(
 				array(
 					'conditions' => array(),
+					'prefix' => false,
 				),
 				$options
 			);
@@ -274,29 +275,34 @@
 				$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
 			}
 
-			$tmps = $Referent->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$Referent->Structurereferente->Typeorient->fields(),
-						$Referent->Structurereferente->fields(),
-						$Referent->fields()
-					),
-					'joins' => array(
-						$Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-						$Referent->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => $conditions,
-					'contain' => false,
-					'order' => array(
-						'Referent.nom ASC',
-						'Referent.prenom ASC',
-					)
+			$querydata = array(
+				'fields' => array_merge(
+					$Referent->Structurereferente->Typeorient->fields(),
+					$Referent->Structurereferente->fields(),
+					$Referent->fields()
+				),
+				'joins' => array(
+					$Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+					$Referent->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => $conditions,
+				'contain' => false,
+				'order' => array(
+					'Referent.nom ASC',
+					'Referent.prenom ASC',
 				)
 			);
 
+			$tmps = $Referent->find( 'all', $querydata );
+
 			if( !empty( $tmps ) ) {
-				$ids = Set::extract( $tmps, '/Referent/id' );
+				if( $options['prefix'] ) {
+					$ids = Set::format( $tmps, '{0}_{1}', array( '{n}.Referent.structurereferente_id', '{n}.Referent.id' ) );
+				}
+				else {
+					$ids = Set::extract( $tmps, '/Referent/id' );
+				}
+
 				$values = Set::format( $tmps, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
 				$results = array_combine( $ids, $values );
 			}

@@ -18,13 +18,14 @@
 	{
 		public $name = 'Dossiers';
 
-		public $uses = array( 'Dossier', 'Option', 'Informationpe' );
+		public $uses = array( 'Dossier', 'Option', 'Informationpe', 'Tableausuivipdv93' );
 
 		public $helpers = array( 'Csv' , 'Search', 'Default2', 'Gestionanomaliebdd' );
 
 		public $components = array(
 			'DossiersMenus',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Jetons2',
 			'Search.Prg' => array(
 				'actions' => array( 'index' )
@@ -67,6 +68,8 @@
 			$this->set( 'act', $this->Option->act() );
 			$this->set( 'couvsoc', $this->Option->couvsoc() ); // INFO: pas dans view
 			$this->set( 'categorie', $this->Option->categorie() );
+			$this->set( 'sexe', $this->Option->sexe() );
+			$this->set( 'anciennete_dispositif', $this->Tableausuivipdv93->anciennetes_dispositif );
 			$this->set(
 				'trancheage',
 				array(
@@ -164,6 +167,8 @@
 			}
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
 		}

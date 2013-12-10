@@ -35,7 +35,7 @@
 		echo '<fieldset>';
 		echo sprintf( '<legend>%s</legend>', __d( 'cohortesd2pdvs93', 'Search.Personne' ) );
 		//echo $this->Xform->input( 'Search.Dossier.dernier', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
-		echo $this->Search->blocAllocataire( array(), 'Search' );
+		echo $this->Search->blocAllocataire( array(), array(), 'Search' );
 		echo $this->Search->toppersdrodevorsa( $options['Calculdroitrsa']['toppersdrodevorsa'], 'Search.Calculdroitrsa.toppersdrodevorsa' );
 	//	echo $this->SearchForm->dependantDateRange( 'Search.Personne.dtnai', $searchFormOptions );
 		echo '</fieldset>';

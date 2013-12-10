@@ -280,5 +280,54 @@
 
 			return $success;
 		}
+
+
+		/**
+		 * Complète le querydata avec les jointures, champs (PersonneReferent.referent_id,
+		 * Referentparcours.nom_complet, Structurereferenteparcours.lib_struc) et
+		 * conditions sur la structure référente du référent de parcours et sur
+		 * le référent du parcours actuel de l'allocataire.
+		 *
+		 * @param array $querydata Le querydata à compléter
+		 * @param array $search Les filtres de recherche
+		 *	clés: PersonneReferent.structurereferente_id et PersonneReferent.referent_id
+		 * @return array
+		 */
+		public function completeQdReferentParcours( array $querydata, array $search ) {
+			$replacement = array(
+				'Referent' => 'Referentparcours',
+				'Structurereferente' => 'Structurereferenteparcours',
+			);
+
+			$querydata['joins'][] = $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
+			$querydata['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
+			$querydata['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
+
+			$sqEnCours = $this->sqDerniere( 'Personne.id', null );
+			$querydata['conditions'][] = array(
+				'OR' => array(
+					'PersonneReferent.id IS NULL',
+					"PersonneReferent.id IN ( {$sqEnCours} )"
+				)
+			);
+
+			$querydata['fields'][] = 'PersonneReferent.referent_id';
+			$querydata['fields'][] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
+			$querydata['fields'][] = 'Structurereferenteparcours.lib_struc';
+
+			// Condition sur le référent du parcours
+			$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
+			if( !empty( $referent_id ) ) {
+				$querydata['conditions'][] = array( 'PersonneReferent.referent_id' => $referent_id );
+			}
+
+			// Condition sur la structure référente du référent du parcours
+			$structurereferente_id = suffix( Hash::get( $search, 'PersonneReferent.structurereferente_id' ) );
+			if( !empty( $structurereferente_id ) ) {
+				$querydata['conditions'][] = array( 'Referentparcours.structurereferente_id' => $structurereferente_id );
+			}
+
+			return $querydata;
+		}
 	}
 ?>

@@ -249,8 +249,7 @@
 		 */
 		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
 
-			$conditions = array(
-			);
+			$conditions = array();
 
 			$typeJointure = 'INNER';
 			if( Configure::read( 'Cg.departement' ) != 66) {
@@ -405,7 +404,22 @@
 				'conditions' => $conditions
 			);
 
-			if( isset( $referent_id ) && !empty( $referent_id ) ) {
+			// Référent du parcours -> TODO: à mettre dans PersonneReferent
+			$query = $this->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $params );
+			/*$query['joins'][] = $this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
+			$sqEnCours = $this->Foyer->Personne->PersonneReferent->sqEnCours();
+			$query['conditions'][] = array(
+				'OR' => array(
+					'PersonneReferent.id IS NULL',
+					"PersonneReferent.id IN ( {$sqEnCours} )"
+				)
+			);
+			$referent_id = suffix( Hash::get( $params, 'PersonneReferent.referent_id' ) );
+			if( !empty( $referent_id ) ) {
+				$query['conditions'][] = array( 'PersonneReferent.referent_id' => $referent_id );
+			}*/
+
+			/*if( isset( $referent_id ) && !empty( $referent_id ) ) {
 				$query['joins'][] = $this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
 				$query['fields'] = Set::merge(
 					$query['fields'],
@@ -413,7 +427,7 @@
 						'PersonneReferent.referent_id'
 					)
 				);
-			}
+			}*/
 
 			return $query;
 		}

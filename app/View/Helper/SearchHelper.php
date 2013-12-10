@@ -163,14 +163,16 @@
 		}
 
 		/**
-		 * Retourne une fieldset de recherche par allocataire contenant les champs suivants: Personne.dtnai, Personne.nom,
-		 * Personne.nomnai, Personne.prenom, Personne.nir, Personne.trancheage.
+		 * Retourne une fieldset de recherche par allocataire contenant les champs
+		 * suivants: Personne.dtnai, Personne.nom, Personne.nomnai, Personne.prenom,
+		 * Personne.nir, Personne.sexe, Personne.trancheage.
 		 *
 		 * @param array $trancheage La liste des tranches d'âge à utiliser dans le menu déroulant
+		 * @param array $sexe La liste des sexes à utiliser dans le menu déroulant
 		 * @param string $prefix Le préfixe éventuel (ex.: Search)
 		 * @return string
 		 */
-		public function blocAllocataire( $trancheage = array(), $prefix = null ) {
+		public function blocAllocataire( $trancheage = array(), array $sexe = array(), $prefix = null ) {
 			$prefix = ( !empty( $prefix ) ? "{$prefix}." : null );
 
 			$content = $this->Xform->input( "{$prefix}Personne.dtnai", array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
@@ -178,6 +180,10 @@
 			$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de jeune fille' ) );
 			$content .= $this->Xform->input( "{$prefix}Personne.prenom", array( 'label' => 'Prénom' ) );
 			$content .= $this->Xform->input( "{$prefix}Personne.nir", array( 'label' => 'NIR', 'maxlength' => 15 ) );
+
+			if( !empty( $sexe ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.sexe", array( 'label' => 'Sexe', 'options' => $sexe, 'empty' => true ) );
+			}
 
 			if( !empty( $trancheage ) ) {
 				$content .= $this->Xform->input( "{$prefix}Personne.trancheage", array( 'label' => 'Tranche d\'âge', 'options' => $trancheage, 'empty' => true ) );
@@ -376,6 +382,31 @@
 			}
 
 			return "<script type='text/javascript'>{$out}</script>";
+		}
+
+		/**
+		 * Retourne un fieldset contenant les filtres sur la structure référente
+		 * du référent du parcours ainsi que le référent du parcours (listes
+		 * déroulantes liées).
+		 *
+		 * @param array $structuresreferentesparcours
+		 * @param array $referentsparcours
+		 * @param string $prefix
+		 * @return string
+		 */
+		public function referentParcours( array $structuresreferentesparcours, array $referentsparcours, $prefix = null ) {
+			$prefix = ( !empty( $prefix ) ? "{$prefix}." : null );
+
+			$script = "document.observe( 'dom:loaded', function() {
+				dependantSelect( '".$this->domId( "{$prefix}PersonneReferent.referent_id" )."', '".$this->domId( "{$prefix}PersonneReferent.structurereferente_id" )."' );
+			} );";
+
+			return $this->Xhtml->tag(
+				'fieldset',
+				$this->Xhtml->tag( 'legend', 'Suivi du parcours' )
+				.$this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => 'Structure référente du référent de parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $structuresreferentesparcours, 'empty' => true ) )
+				.$this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => 'Référent du parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $referentsparcours, 'empty' => true ) )
+			).$this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
 		}
 	}
 ?>

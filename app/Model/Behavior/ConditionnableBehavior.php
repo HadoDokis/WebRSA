@@ -103,6 +103,12 @@
 				$conditions[] = array( 'Dossier.fonorg' => $search['Dossier']['fonorg'] );
 			}
 
+			$anciennete_dispositif = Hash::get( $search, 'Dossier.anciennete_dispositif' );
+			if( !empty( $anciennete_dispositif ) ) {
+				list( $min, $max ) = explode( '_', $anciennete_dispositif );
+				$conditions[] = 'EXTRACT( YEAR FROM AGE( NOW(), "Dossier"."dtdemrsa" ) ) BETWEEN '.$min.' AND '.$max;
+			}
+
 			return $conditions;
 		}
 
@@ -115,15 +121,15 @@
 		 * @return array
 		 */
 		public function conditionsFoyer( Model $model, $conditions, $search ) {
-			foreach( array( 'sitfam' ) as $critereFoyer ) {
-				if( isset( $search['Foyer'][$critereFoyer] ) && !empty( $search['Foyer'][$critereFoyer] ) ) {
-					$conditions["Foyer.{$critereFoyer}"] = $search['Foyer'][$critereFoyer];
+			foreach( array( 'sitfam' ) as $critere ) {
+				if( isset( $search['Foyer'][$critere] ) && !empty( $search['Foyer'][$critere] ) ) {
+					$conditions["Foyer.{$critere}"] = $search['Foyer'][$critere];
 				}
 			}
 
-			foreach( array( 'ddsitfam' ) as $critereFoyer ) {
-				if( isset( $search['Foyer'][$critereFoyer] ) && !empty( $search['Foyer'][$critereFoyer]['day'] ) && !empty( $search['Foyer'][$critereFoyer]['month'] ) && !empty( $search['Foyer'][$critereFoyer]['year'] ) ) {
-					$conditions["Foyer.{$critereFoyer}"] = "{$search['Foyer'][$critereFoyer]['year']}-{$search['Foyer'][$critereFoyer]['month']}-{$search['Foyer'][$critereFoyer]['day']}";
+			foreach( array( 'ddsitfam' ) as $critere ) {
+				if( isset( $search['Foyer'][$critere] ) && !empty( $search['Foyer'][$critere]['day'] ) && !empty( $search['Foyer'][$critere]['month'] ) && !empty( $search['Foyer'][$critere]['year'] ) ) {
+					$conditions["Foyer.{$critere}"] = "{$search['Foyer'][$critere]['year']}-{$search['Foyer'][$critere]['month']}-{$search['Foyer'][$critere]['day']}";
 				}
 			}
 
@@ -159,6 +165,12 @@
 			foreach( array( 'nom', 'prenom', 'nomnai', 'nir' ) as $criterePersonne ) {
 				if( isset( $search['Personne'][$criterePersonne] ) && !empty( $search['Personne'][$criterePersonne] ) ) {
 					$conditions[] = 'UPPER(Personne.'.$criterePersonne.') LIKE \''.$model->wildcard( strtoupper( replace_accents( $search['Personne'][$criterePersonne] ) ) ).'\'';
+				}
+			}
+
+			foreach( array( 'sexe' ) as $critere ) {
+				if( isset( $search['Personne'][$critere] ) && !empty( $search['Personne'][$critere] ) ) {
+					$conditions["Personne.{$critere}"] = $search['Personne'][$critere];
 				}
 			}
 
@@ -322,8 +334,9 @@
 		}
 
 		/**
-		 * Combinaison des filtres conditionsDossier, conditionsPersonne, conditionsSituationdossierrsa,
-		 * conditionsDetailcalculdroitrsa et conditionsCalculdroitrsa.
+		 * Combinaison des filtres conditionsDossier, conditionsPersonne, conditionsFoyer,
+		 * conditionsSituationdossierrsa, conditionsDetailcalculdroitrsa et
+		 * conditionsCalculdroitrsa.
 		 *
 		 * @param Model $model
 		 * @param array $conditions
@@ -333,6 +346,7 @@
 		public function conditionsPersonneFoyerDossier( Model $model, $conditions, $search ) {
 			$conditions = $this->conditionsDossier( $model, $conditions, $search );
 			$conditions = $this->conditionsPersonne( $model, $conditions, $search );
+			$conditions = $this->conditionsFoyer( $model, $conditions, $search );
 			$conditions = $this->conditionsSituationdossierrsa( $model, $conditions, $search );
 			$conditions = $this->conditionsDetailcalculdroitrsa( $model, $conditions, $search );
 			$conditions = $this->conditionsCalculdroitrsa( $model, $conditions, $search );
