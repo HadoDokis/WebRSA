@@ -56,7 +56,7 @@
 		observeDisableFieldsetOnCheckbox( 'DossierDtdemrsa', $( 'DossierDtdemrsaFromDay' ).up( 'fieldset' ), false );
 	});
 </script>
-<!-- FIXME le repasser en post ? -->
+
 <?php echo $this->Form->create( 'Dossier', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( $formSent ? 'folded' : 'unfolded' ) ) );?>
 
 	<fieldset>
@@ -96,6 +96,7 @@
 		echo $this->Search->blocAllocataire( $trancheage, $sexe );
 // 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset>';
+			echo $this->Xform->input( 'Dsp.natlog', array( 'label' => 'Conditions de logement', 'type' => 'select', 'empty' => true, 'options' => $natlog ) );
 			echo $this->Xform->input( 'Prestation.rolepers', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $chooserolepers, 'empty' => true ) );
 			echo '</fieldset>';
 // 		}
