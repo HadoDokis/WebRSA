@@ -49,7 +49,7 @@
 			}
 
 			if ( isset($criteresbilansparcours66['Bilanparcours66']['referent_id']) && !empty($criteresbilansparcours66['Bilanparcours66']['referent_id']) ) {
-				$conditions[] = array('Bilanparcours66.referent_id'=>$criteresbilansparcours66['Bilanparcours66']['referent_id']);
+				$conditions[] = array('Bilanparcours66.referent_id'=>suffix($criteresbilansparcours66['Bilanparcours66']['referent_id']));
 			}
 
 			if ( isset($criteresbilansparcours66['Bilanparcours66']['structurereferente_id']) && !empty($criteresbilansparcours66['Bilanparcours66']['structurereferente_id']) ) {
