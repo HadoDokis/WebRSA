@@ -948,41 +948,61 @@
             );
             
             // Récupération de la liste des organismes auxquels la décision est transmise
-            $orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
-                'all',
-                array(
-                    'fields' => array(
-//                        "Decdospcg66Orgdospcg66.id",
-                        "Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id"
-                    ),
-                    'conditions' => array(
-                        "Decdospcg66Orgdospcg66.decisiondossierpcg66_id" => $dossierpcg66EnCours['Decisiondossierpcg66']['id']
-                    )
-                )
-            );
-            $orgsIds = Hash::extract( $orgstransmisdossierspcgs66, '{n}.Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id' );
-            $organismesConcernes = Configure::read( 'Generationdossierpcg.Orgtransmisdossierpcg66.id' );
-            debug($orgstransmisdossierspcgs66);
-
+//            $orgstransmisdossierspcgs66 = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->find(
+//                'all',
+//                array(
+//                    'fields' => array(
+////                        "Decdospcg66Orgdospcg66.id",
+//                        "Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id"
+//                    ),
+//                    'conditions' => array(
+//                        "Decdospcg66Orgdospcg66.decisiondossierpcg66_id" => $dossierpcg66EnCours['Decisiondossierpcg66']['id']
+//                    )
+//                )
+//            );
+//            $orgsIds = Hash::extract( $orgstransmisdossierspcgs66, '{n}.Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id' );
+//            $organismesConcernes = Configure::read( 'Generationdossierpcg.Orgtransmisdossierpcg66.id' );
+//
+//            $dossierPCGGenerable = false;
+//            foreach( $orgsIds as $key => $value ) {
+//                if( in_array( $value, $organismesConcernes ) ){
+//                    $dossierPCGGenerable = true;
+//                    
+//                    $poleOrg = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->Orgtransmisdossierpcg66->find(
+//                        'first',
+//                        array(
+//                            'conditions' => array(
+//                                'Orgtransmisdossierpcg66.id' => $value
+//                            )
+//                        )
+//                    );
+//                    $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
+//                }
+//            }
+            
             $dossierPCGGenerable = false;
-            foreach( $orgsIds as $key => $value ) {
-                if( in_array( $value, $organismesConcernes ) ){
-                    $dossierPCGGenerable = true;
-                    
-                    $poleOrg = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->Orgtransmisdossierpcg66->find(
-                        'first',
-                        array(
-                            'conditions' => array(
-                                'Orgtransmisdossierpcg66.id' => $value
-                            )
-                        )
-                    );
-                    $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
-                }
+            $organismesConcernes = Configure::read( 'Generationdossierpcg.Orgtransmisdossierpcg66.id' );
+            $orgId = $dossierpcg66EnCours['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'];
+            
+            if( !empty( $orgId ) && !empty( $organismesConcernes ) ) {
+                if( in_array( $orgId, $organismesConcernes ) ){
+                   $dossierPCGGenerable = true;
+
+                   $poleOrg = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                       'first',
+                       array(
+                           'conditions' => array(
+                               'Orgtransmisdossierpcg66.id' => $orgId
+                           )
+                       )
+                   );
+                   $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
+               }
             }
-
-
-//debug($dossierpcg66EnCours);
+        
+//debug($poleOrg);
+//debug($poledossierpcg66_id);
+//die();
 
             $success = true;
             $nouveauDossierpcg66 = array(
@@ -1001,8 +1021,6 @@
             );
 
             $dossierpcg66pcd_id = $dossierpcg66EnCours['Dossierpcg66']['dossierpcg66pcd_id'];
-//debug($nouveauDossierpcg66);
-//die();
 
             if( $dossierPCGGenerable && empty( $dossierpcg66pcd_id ) ){
                 $this->create( $nouveauDossierpcg66 );

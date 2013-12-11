@@ -446,7 +446,26 @@
 	<?php endif;?>
 
 	<?php
-
+    
+        echo $this->Default2->subform(
+			array(
+				'Decisiondossierpcg66.orgtransmisdossierpcg66_id' => array( 'label' =>  'Information transmise à : ', 'type' => 'radio', 'empty' => false, 'options' => $orgs )
+			),
+			array(
+				'options' => $options
+			)
+		);
+    ?>
+        <fieldset id="infotransmise"><legend>Commentaire suite à la transmission</legend>
+        <?php
+            echo $this->Default2->subform(
+                array(
+                    'Decisiondossierpcg66.infotransmise' => array( 'type' => 'textarea', 'label' => false )
+                )
+            );
+        ?>
+        </fieldset>    
+    <?php
 		echo $this->Default2->subform(
 			array(
 				'Decisiondossierpcg66.commentaire' => array( 'label' =>  'Observations : ', 'type' => 'textarea', 'rows' => 3 ),
@@ -469,6 +488,18 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+        
+    
+        // on affiche la zone de commentaire si un des boutons radio est coché
+        observeDisableFieldsetOnRadioValue(
+			'decisiondossierpcg66form',
+			'data[Decisiondossierpcg66][orgtransmisdossierpcg66_id]',
+			$( 'infotransmise' ),
+			[<?php echo implode( ', ', array_keys( $orgs ) );?>],
+			false,
+			true
+		);
+            
 	<?php if( $avistechniquemodifiable ):?>
 		observeDisableFieldsetOnRadioValue(
 			'decisiondossierpcg66form',
@@ -512,51 +543,7 @@
 			} );
 		} );
 	<?php endif;?>
+    
 	} );
 
-</script>
-
-<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		[ $('Decisiondossierpcg66Compofoyerpcg66Id'), $('Decisiondossierpcg66RecidiveN'), $('Decisiondossierpcg66RecidiveO'), $('Decisiondossierpcg66Phase') ].each(function(field) {
-			field.observe('change', function(element, value) {
-				fieldUpdater();
-			});
-		});
-
-		fieldUpdater();
-	});
-
-	function radioValue( form, radioName ) {
-		var v = $( form ).getInputs( 'radio', radioName );
-
-		var currentValue = null;
-		$( v ).each( function( radio ) {
-			if( radio.checked ) {
-				currentValue = radio.value;
-			}
-		} );
-
-		return currentValue;
-	}
-
-	function fieldUpdater() {
-		new Ajax.Updater(
-			'Propositionpcg',
-			'<?php echo Router::url( array( "action" => "ajaxproposition" ) ); ?>',
-			{
-				asynchronous:true,
-				evalScripts:true,
-				parameters:
-				{
-					'defautinsertion' : $F('Decisiondossierpcg66Defautinsertion'),
-					'compofoyerpcg66_id' :  $F( 'Decisiondossierpcg66Compofoyerpcg66Id' ),
-					'recidive' : radioValue( 'decisiondossierpcg66form', 'data[Decisiondossierpcg66][recidive]' ),
-					'phase' : $F('Decisiondossierpcg66Phase'),
-					'decisionpcg66_id' : '<?php echo @$this->request->data['Decisiondossierpcg66']['decisionpcg66_id'];?>'
-				},
-				requestHeaders:['X-Update', 'Propositionpcg']
-			}
-		);
-	}
 </script>

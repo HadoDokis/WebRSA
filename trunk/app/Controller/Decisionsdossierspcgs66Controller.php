@@ -115,7 +115,17 @@
 					)
 				)
 			);
-			$this->set( compact( 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer', 'orgtransmisdossierpcg66') );
+            
+            $orgs = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                'list',
+                array(
+                    'conditions' => array(
+                        'Orgtransmisdossierpcg66.poledossierpcg66_id IS NOT NULL'
+                    ),
+                    'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
+                )
+            );
+			$this->set( compact( 'orgs', 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer', 'orgtransmisdossierpcg66') );
 		}
 
 		/**
