@@ -326,6 +326,8 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+            
+
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
 				$dossierpcg66_id = $id;
@@ -414,9 +416,6 @@
 					$decisiondossierpcg66['Motifcernonvalid66']['Motifcernonvalid66'] = $motifceronvalid66;
 				}
 
-
-
-
 				$dossierpcg66_id = Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' );
 				// FIXME: une fonction avec la partie du add ci-dessus
 				$dossierpcg66 = $this->Decisiondossierpcg66->Dossierpcg66->find(
@@ -499,6 +498,16 @@
 
 			$this->Jetons2->get( $dossier_id );
 
+            
+
+
+            // Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$dossier_id = $this->Decisiondossierpcg66->Dossierpcg66->Foyer->dossierId( $foyer_id );
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
+			}
+            
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
 //debug( $this->request->data);
