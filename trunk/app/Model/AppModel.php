@@ -496,6 +496,25 @@
 		}
 
 		/**
+		 * Permet d'obtenir les valeurs d'un enum particulier, avec possibilité
+		 * de tri sur les intitulés.
+		 *
+		 * @param string $field
+		 * @param boolean $sort
+		 * @return array
+		 */
+		public function enum( $field, $sort = false ) {
+			$enums = $this->enums();
+			$values = Hash::get( $enums, "{$this->alias}.{$field}" );
+
+			if( $sort ) {
+				asort( $values );
+			}
+
+			return $values;
+		}
+
+		/**
 		 * Suppression des données du cache.
 		 *
 		 * INFO: on pourrait en faire un behavior / un plugin ?
@@ -552,10 +571,10 @@
 
 			return $success;
 		}
-        
+
 		/**
 		 * Les éléments de la liste sont triés et préfixés par une chaîne de caractères.
-         * 
+         *
          * @todo prefix/suffix pour avoir correctement le tiret et les retours à la ligne
 		 *
 		 * @param array $querydata

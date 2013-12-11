@@ -17,6 +17,7 @@
 			'Complément adresse 2',
 			'Code postal',
 			'Commune',
+			'Type d\'orientation',
 			'Référent',
 			'Service référent',
 			'Type de contrat',
@@ -29,6 +30,16 @@
 	);
 
 	foreach( $contrats as $contrat ) {
+		$lib_type_orient = Hash::get( $contrat, 'Typeorient.lib_type_orient' );
+
+		$duree = Hash::get( $contrat, 'Cer93.duree' );
+		if( empty( $duree ) ) {
+			$duree = Set::enum( Hash::get( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag );
+		}
+		else {
+			$duree = "{$duree} mois";
+		}
+
 		$row = array(
 			Hash::get( $contrat, 'Dossier.numdemrsa' ),
 			Hash::get( $contrat, 'Dossier.matricule' ),
@@ -44,11 +55,12 @@
 			Hash::get( $contrat, 'Adresse.compladr' ),
 			Hash::get( $contrat, 'Adresse.codepos' ),
 			Hash::get( $contrat, 'Adresse.locaadr' ),
-			h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
+			( empty( $lib_type_orient ) ? 'Non orienté' : $lib_type_orient ),
+			@$contrat['Referent']['nom_complet'],
 			Hash::get( $contrat, 'Structurereferente.lib_struc' ),
 			Set::enum( Hash::get( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
 			date_short( Hash::get( $contrat, 'Contratinsertion.dd_ci' ) ),
-			Set::enum( Hash::get( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag_cg93 ),
+			$duree,
 			date_short( Hash::get( $contrat, 'Contratinsertion.df_ci' ) ),
 			value( $decision_ci, Hash::get( $contrat, 'Contratinsertion.decision_ci' ) ).' '.date_short( Hash::get( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
 			Set::enum( Hash::get( $contrat, 'Contratinsertion.actions_prev' ), $action ),

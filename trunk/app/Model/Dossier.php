@@ -184,55 +184,6 @@
 		}
 
 		/**
-		 *
-		 * @param type $zonesGeographiques
-		 * @param type $filtre_zone_geo
-		 * @return type
-		 */
-		/*public function findByZones( $zonesGeographiques = array(), $filtre_zone_geo = true ) {
-			$this->Foyer->unbindModelAll();
-
-			$this->Foyer->bindModel(
-				array(
-					'hasOne'=>array(
-						'Adressefoyer' => array(
-							'foreignKey'    => false,
-							'type'          => 'LEFT',
-							'conditions'    => array(
-								'"Adressefoyer"."foyer_id" = "Foyer"."id"',
-								'"Adressefoyer"."rgadr" = \'01\''
-							)
-						),
-						'Adresse' => array(
-							'foreignKey'    => false,
-							'type'          => 'LEFT',
-							'conditions'    => array(
-								'"Adressefoyer"."adresse_id" = "Adresse"."id"'
-							)
-						)
-					)
-				)
-			);
-
-			if( $filtre_zone_geo ) {
-				$params = array (
-					'conditions' => array(
-						'Adresse.numcomptt' => array_values( $zonesGeographiques )
-					)
-				);
-			}
-			else {
-				$params = array();
-			}
-
-			$foyers = $this->Foyer->find( 'all', $params );
-
-			$return = Set::extract( $foyers, '{n}.Foyer.dossier_id' );
-			return ( !empty( $return ) ? $return : null );
-		}*/
-
-
-		/**
 		 * Retourne un querydata prenant en compte les différents filtres du moteur de recherche.
 		 *
 		 * INFO (pour le CG66): ATTENTION, depuis que la possibilité de créer des dossiers avec un numéro
@@ -242,13 +193,10 @@
 		 * temporaires, avec allocataire sans NIR ou sans date de naissance ne ressortiront pas lors de cette
 		 * recherche -> il faut donc décocher la case pour les voir apparaître
 		 *
-		 * @param array $mesCodesInsee
-		 * @param boolean $filtre_zone_geo
 		 * @param array $params
 		 * @return array
 		 */
-		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
-
+		public function search( $params ) {
 			$conditions = array();
 
 			$typeJointure = 'INNER';
@@ -308,7 +256,7 @@
 				$this->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
 			);
 
-			// Dernière orientation -> avant 299288
+			// Dernière orientation
 			$conditions[] = array(
 				'OR' => array(
 					'Orientstruct.id IS NULL',
@@ -347,7 +295,7 @@
 				),
 			);
 
-			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $params );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
@@ -411,7 +359,7 @@
 			}
 
 
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'Dossier.id',
 					'Dossier.numdemrsa',
@@ -448,32 +396,10 @@
 				'conditions' => $conditions
 			);
 
-			// Référent du parcours -> TODO: à mettre dans PersonneReferent
-			$query = $this->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $params );
-			/*$query['joins'][] = $this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
-			$sqEnCours = $this->Foyer->Personne->PersonneReferent->sqEnCours();
-			$query['conditions'][] = array(
-				'OR' => array(
-					'PersonneReferent.id IS NULL',
-					"PersonneReferent.id IN ( {$sqEnCours} )"
-				)
-			);
-			$referent_id = suffix( Hash::get( $params, 'PersonneReferent.referent_id' ) );
-			if( !empty( $referent_id ) ) {
-				$query['conditions'][] = array( 'PersonneReferent.referent_id' => $referent_id );
-			}*/
+			// Référent du parcours
+			$querydata = $this->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
 
-			/*if( isset( $referent_id ) && !empty( $referent_id ) ) {
-				$query['joins'][] = $this->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
-				$query['fields'] = Set::merge(
-					$query['fields'],
-					array(
-						'PersonneReferent.referent_id'
-					)
-				);
-			}*/
-
-			return $query;
+			return $querydata;
 		}
 
 		/**

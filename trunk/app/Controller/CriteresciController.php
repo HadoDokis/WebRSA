@@ -19,8 +19,14 @@
 		public $name = 'Criteresci';
 
 		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa' );
+
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
+
+		public $components = array(
+			'Gestionzonesgeos',
+			'Search.Prg' => array( 'actions' => array( 'index' ) ),
+			'InsertionsAllocataires'
+		);
 
 		public $aucunDroit = array( 'constReq', 'ajaxreferent' );
 
@@ -49,7 +55,7 @@
 			$this->set( 'natpf', $this->Option->natpf() );
 
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
-			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+			$this->set( 'duree_engag', $this->Option->duree_engag() );
 			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
 
 			$this->set( 'action', $this->Action->find( 'list' ) );
@@ -63,8 +69,7 @@
 			}
 			$this->set( 'forme_ci', $forme_ci );
 
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Situationdossierrsa->etatOuvert()) );
-// 			$this->set( 'etatdossier', $this->Option->etatdosrsa( ) );
+ 			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 
@@ -133,14 +138,14 @@
 			if( !empty( $params ) ) {
 				$paginate = $this->Cohorteci->search(
 					null,
-					$mesCodesInsee,
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data,
-					false
+					$this->request->data
 				);
-				$paginate['limit'] = 10;
-				$paginate = $this->_qdAddFilters( $paginate );
+
+				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
+
+				$paginate['limit'] = 10;
 
 				$progressivePaginate = !Set::classicExtract( $this->request->data, 'Filtre.paginationNombreTotal' );
 				$this->paginate = $paginate;
@@ -182,10 +187,12 @@
 				$referents = array_combine( $ids, $values );
 			}
 
-
-
-
 			$this->set( 'referents', $referents );
+
+			$this->set( 'typesorients', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => true ) ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->_setOptions();
 		}
 
@@ -201,15 +208,14 @@
 
 			$querydata = $this->Cohorteci->search(
 				null,
-				$mesCodesInsee,
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' ),
-				false
+				Hash::expand( $this->request->params['named'], '__' )
 			);
 
-			unset( $querydata['limit'] );
-			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			unset( $querydata['limit'] );
 
 			$contrats = $this->Contratinsertion->find( 'all', $querydata );
 

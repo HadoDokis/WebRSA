@@ -112,6 +112,10 @@
                 }
             }
 
+			if( Hash::get( $options, 'empty' ) ) {
+				$results = array( 0 => 'Non orienté' ) + $results;
+			}
+
 			return $results;
         }
 

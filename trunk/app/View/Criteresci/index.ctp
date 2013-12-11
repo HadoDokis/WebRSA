@@ -32,7 +32,6 @@
 			array( 'escape' => false, 'title' => 'Visibilité formulaire', 'onclick' => "$( 'Search' ).toggle(); return false;" )
 		).'</li></ul>';
 	}
-
 ?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>
 <?php echo $this->Form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Filtre']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );?>
@@ -49,20 +48,21 @@
 
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-			echo $this->Search->etatdosrsa($etatdosrsa);
-            
-            echo "<fieldset id='referentparcours'><legend>Suivi du parcours</legend>";
+			echo $this->Search->etatdosrsa( $etatdosrsa );
+
+			echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+            /*echo "<fieldset id='referentparcours'><legend>Suivi du parcours</legend>";
             echo $this->Form->input( 'Structurereferente.id', array( 'label' => 'Structure référente du référent de parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $struct, 'empty' => true ) );
             echo $this->Form->input( 'PersonneReferent.id', array( 'label' => 'Référent du parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-            echo '</fieldset>';
+            echo '</fieldset>';*/
 		?>
 	</fieldset>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
 		dependantSelect( 'PersonneReferentId', 'StructurereferenteId' );
 	});
-</script>
+</script>-->
 	<fieldset>
 		<legend>Recherche par CER</legend>
 			<?php
@@ -98,7 +98,8 @@
 					echo $this->Form->input( 'Filtre.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
 			?>
-			<?php 
+			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );?>
+			<?php
                 echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
             ?>
 
@@ -126,7 +127,12 @@
 				<?php echo $this->Form->input( 'Contratinsertion.df_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
 			</fieldset>
 
-			<?php echo $this->Form->input( 'Filtre.arriveaecheance', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  ); ?>
+			<?php echo $this->Search->date( 'Contratinsertion.periode_validite', 'Période de validité' );?>
+
+			<?php
+				echo $this->Form->input( 'Filtre.arriveaecheance', array( 'label' => 'Allocataire dont le CER est arrivé à échéance', 'type' => 'checkbox' )  );
+				echo $this->Form->input( 'Filtre.echeanceproche', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  );
+			?>
 
 			<?php if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$nbjours = Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' );
@@ -137,6 +143,7 @@
 				}
 			?>
 	</fieldset>
+	<?php echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );?>
 	<fieldset>
 		<legend>Comptage des résultats</legend>
 		<?php echo $this->Form->input( 'Filtre.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats afin de pouvoir télécharger le tableau (plus lent)', 'type' => 'checkbox' ) );?>
@@ -162,9 +169,15 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Référent lié', 'PersonneReferent.referent_id' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Référent lié', 'Referent.nom_complet' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+					<?php if( Configure::read( 'Cg.departement') == 93 ):?>
+						<th><?php echo $this->Xpaginator->sort( 'Type d\'orientation', 'Typeorient.lib_type_orient' );?></th>
+					<?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Date de saisie du contrat', 'Contratinsertion.created' );?></th>
+					<?php if( Configure::read( 'Cg.departement') == 93 ):?>
+						<th><?php echo $this->Xpaginator->sort( 'Durée du contrat', 'Contratinsertion.duree_engag' );?></th>
+					<?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Rang du contrat', 'Contratinsertion.rg_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' ).$this->Xpaginator->sort( ' ', 'Contratinsertion.datevalidation_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Forme du CER', 'Contratinsertion.forme_ci' );?></th>
@@ -234,7 +247,7 @@
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                     h( $contrat['Adresse']['locaadr'] ),
-                                    h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
+                                    h( @$contrat['Referent']['nom_complet'] ),
                                     h( $contrat['Dossier']['matricule'] ),
                                     h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
                                     h( $contrat['Contratinsertion']['rg_ci'] ),
@@ -256,13 +269,24 @@
                             );
                         }
                         else {
+							$lib_type_orient = Hash::get( $contrat, 'Typeorient.lib_type_orient' );
+							$duree = Hash::get( $contrat, 'Cer93.duree' );
+							if( empty( $duree ) ) {
+								$duree = Set::enum( $contrat['Contratinsertion']['duree_engag'], $duree_engag );
+							}
+							else {
+								$duree = "{$duree} mois";
+							}
+
                             echo $this->Xhtml->tableCells(
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                     h( $contrat['Adresse']['locaadr'] ),
-                                    h( @$contrat['Referent']['qual'].' '.@$contrat['Referent']['nom'].' '.@$contrat['Referent']['prenom'] ),
+                                    h( @$contrat['Referent']['nom_complet'] ),
                                     h( $contrat['Dossier']['matricule'] ),
+									h( empty( $lib_type_orient ) ? 'Non orienté' : $lib_type_orient ),
                                     h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
+									h( $duree ),
                                     h( $contrat['Contratinsertion']['rg_ci'] ),
                                     h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
                                     h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
@@ -306,3 +330,5 @@
 	<?php endif?>
 
 <?php endif?>
+
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

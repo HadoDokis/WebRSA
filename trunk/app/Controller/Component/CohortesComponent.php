@@ -169,6 +169,21 @@
 		}
 
 		/**
+		 * Ajoute des conditions à un querydata afin d'exclure du jeu de résultats
+		 * les dossiers lockés par d'autres utilisateurs.
+		 *
+		 * @param array $querydata
+		 * @param string $dossierAlias
+		 * @return array
+		 */
+		public function qdConditions( array $querydata, $dossierAlias = 'Dossier' ) {
+			// TODO: if this->active() ?
+			$querydata['conditions'][] = "NOT ".$this->sqLocked( $dossierAlias );
+
+			return $querydata;
+		}
+
+		/**
 		 * Called before Controller::redirect().  Allows you to replace the url that will
 		 * be redirected to with a new url. The return of this method can either be an array or a string.
 		 *
