@@ -660,16 +660,16 @@
                     $this->request->data = $actioncandidat_personne;
 
                     // Récupération des programmes région si renseignés
-                    $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
-                        'list',
-                        array(
-                            'fields' => array( "CandidatureProg66.id", "CandidatureProg66.progfichecandidature66_id" ),
-                            'conditions' => array(
-                                "CandidatureProg66.actioncandidat_personne_id" => $actioncandidat_personne_id
-                            )
-                        )
-                    );
-                    $this->request->data['Progfichecandidature66']['Progfichecandidature66'] = $progsfichescandidatures66;
+//                    $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
+//                        'list',
+//                        array(
+//                            'fields' => array( "CandidatureProg66.id", "CandidatureProg66.progfichecandidature66_id" ),
+//                            'conditions' => array(
+//                                "CandidatureProg66.actioncandidat_personne_id" => $actioncandidat_personne_id
+//                            )
+//                        )
+//                    );
+//                    $this->request->data['Progfichecandidature66']['Progfichecandidature66'] = $progsfichescandidatures66;
 
 					// Liste des motifs de sortie pour le CG66
 					$sqMotifsortie = $this->{$this->modelClass}->Actioncandidat->ActioncandidatMotifsortie->sq(
