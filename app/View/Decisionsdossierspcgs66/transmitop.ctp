@@ -26,8 +26,7 @@
 				<?php
 					echo $this->Default2->subform(
 						array(
-							'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
-							'Decisiondossierpcg66.infotransmise' => array( 'type' => 'textarea' )
+							'Decisiondossierpcg66.datetransmissionop' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false )
 						),
 						array(
 							'options' => $options
