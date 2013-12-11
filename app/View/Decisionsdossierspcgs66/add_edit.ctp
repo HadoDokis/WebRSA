@@ -477,11 +477,9 @@
 	?>
 <?php
 	echo "<div class='submit'>";
-		echo $this->Form->submit('Enregistrer', array('div'=>false));
-		echo $this->Form->button( 'Retour', array( 'type' => 'button', 'onclick'=>"location.replace('".Router::url( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) )."')" ) );
+        echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );
+		echo $this->Form->submit( 'Retour', array( 'div' => false, 'name' => 'Cancel' ) );
 	echo "</div>";
-
-	echo $this->Form->end();
 ?>
 
 <?php echo $this->Xform->end();?>
