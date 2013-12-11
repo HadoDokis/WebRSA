@@ -322,7 +322,10 @@
 
 			$typeorient_id = Hash::get( $criteresci, 'Orientstruct.typeorient' );
 			if( !empty( $typeorient_id ) ) {
-				$conditions['Orientstruct.typeorient_id'] = $typeorient_id;
+				$conditions[] = array(
+					'Orientstruct.statut_orient' => 'Orienté',
+					'Orientstruct.typeorient_id' => $typeorient_id
+				);
 			}
 			else if( $typeorient_id != '' && $typeorient_id == 0 ) {
 				$conditions[] = 'Orientstruct.id IS NULL';
