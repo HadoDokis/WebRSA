@@ -26,7 +26,7 @@
 		 * @param array $mesCodesInsee
 		 * @return array
 		 */
-		public function conditionsAdresse( Model $model, $conditions, $search, $filtre_zone_geo, $mesCodesInsee ) {
+		public function conditionsAdresse( Model $model, $conditions, $search, $filtre_zone_geo = false, $mesCodesInsee = array() ) {
 			$CantonModel = ClassRegistry::init( 'Canton' );
 
 			/// Critères sur l'adresse - nom de commune

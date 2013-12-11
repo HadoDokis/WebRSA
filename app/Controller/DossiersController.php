@@ -148,17 +148,14 @@
 		 * @return void
 		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->request->data ) ) {
-				$paginate = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $this->request->data );
-				$paginate = $this->_qdAddFilters( $paginate );
-				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
+				$paginate = $this->Dossier->search( $this->request->data );
 
+				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
+
+				$paginate['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
 
 				$this->paginate = $paginate;
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
@@ -171,7 +168,9 @@
 				$this->request->data = Set::merge( $this->request->data, $filtresdefaut );
 			}
 
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
@@ -848,13 +847,13 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
+			$querydata = $this->Dossier->search( Hash::expand( $this->request->params['named'], '__' ) );
 
-			$querydata = $this->Dossier->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
-			unset( $querydata['limit'] );
-			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			unset( $querydata['limit'] );
 
 			$dossiers = $this->Dossier->find( 'all', $querydata );
 

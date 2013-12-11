@@ -303,7 +303,7 @@
 			$querydata['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 			$querydata['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 
-			$sqEnCours = $this->sqDerniere( 'Personne.id', null );
+			$sqEnCours = $this->sqDerniere( 'Personne.id', false );
 			$querydata['conditions'][] = array(
 				'OR' => array(
 					'PersonneReferent.id IS NULL',

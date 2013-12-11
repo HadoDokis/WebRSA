@@ -72,7 +72,12 @@
 			}
 			$this->set( 'forme_ci', $forme_ci );
 
-			$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Dossier->Situationdossierrsa->etatOuvert()) );
+			if( $this->action == 'valides' ) {
+				$this->set( 'etatdosrsa', $this->Option->etatdosrsa() );
+			}
+			else {
+				$this->set( 'etatdosrsa', $this->Option->etatdosrsa( $this->Dossier->Situationdossierrsa->etatOuvert() ) );
+			}
 		}
 
 		/**
@@ -226,11 +231,12 @@
 				if( in_array( $statutValidation, array( 'Decisionci::nouveaux', 'Decisionci::nouveauxsimple', 'Decisionci::nouveauxparticulier', 'Decisionci::valides' ) ) && !empty( $this->request->data ) ) {
 					$querydata = $this->Cohorteci->search(
 						$statutValidation,
-						(array)$this->Session->read( 'Auth.Zonegeographique' ),
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						$this->request->data,
-						$this->Cohortes->sqLocked( 'Dossier' )
+						( $statutValidation != 'Decisionci::valides' ? $this->Dossier->Situationdossierrsa->etatOuvert() : array() )
 					);
+
+					$querydata = $this->Cohortes->qdConditions( $querydata );
+					$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					$this->paginate = $querydata;
@@ -297,13 +303,15 @@
 		public function exportcsv() {
 			$querydata = $this->Cohorteci->search(
 				'Decisionci::valides',
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Hash::expand( $this->request->params['named'], '__' ),
 				( $this->Cohortes->active() ? $this->Cohorte->sqLocked() : null )
 			);
-			unset( $querydata['limit'] );
+
+			$querydata = $this->Cohortes->qdConditions( $querydata ); // FIXME
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+
+			unset( $querydata['limit'] );
 
 			$contrats = $this->Dossier->Foyer->Personne->Contratinsertion->find( 'all', $querydata );
 
