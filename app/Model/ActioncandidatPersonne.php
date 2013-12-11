@@ -536,9 +536,10 @@
 						$this->Personne->Foyer->Dossier->fields(),
 						$this->Personne->Foyer->Adressefoyer->fields(),
 						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
-                        array(
-                            $this->Progfichecandidature66->vfListeProgs( 'ActioncandidatPersonne.id', '', ', ' ).' AS "ActioncandidatPersonne__listeProgs66"'
-                        )
+                        $this->Progfichecandidature66->fields()
+//                        array(
+//                            $this->Progfichecandidature66->vfListeProgs( 'ActioncandidatPersonne.id', '', ', ' ).' AS "ActioncandidatPersonne__listeProgs66"'
+//                        )
 					),
 					'joins' => array(
 						array(
@@ -610,7 +611,14 @@
 							'type'       => 'INNER',
 							'foreignKey' => false,
 							'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-						)
+						),
+                        array(
+							'table'      => 'progsfichescandidatures66',
+							'alias'      => 'Progfichecandidature66',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( "Progfichecandidature66.id = ActioncandidatPersonne.progfichecandidature66_id" ),
+						),
 					),
 					'conditions' => array(
 						'ActioncandidatPersonne.id' => $actioncandidat_personne_id
