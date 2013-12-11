@@ -105,6 +105,10 @@ DELETE FROM dossierseps WHERE id IN (
 				)
 );
 
+
+-- Ajout du champ;poledossierpcg66_id dans la table orgs TODO
+SELECT add_missing_table_field ( 'public', 'actionscandidats_personnes', 'progfichecandidature66_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'actionscandidats_personnes', 'actionscandidats_personnes_progfichecandidature66_id_fkey', 'progsfichescandidatures66', 'progfichecandidature66_id', false );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

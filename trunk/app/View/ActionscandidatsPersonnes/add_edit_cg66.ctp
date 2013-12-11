@@ -35,7 +35,8 @@
         echo '<fieldset id="formationregion" class="noborder">';
         echo $this->Default->subform(
             array(
-                'Progfichecandidature66.Progfichecandidature66' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 ),
+//                'Progfichecandidature66.Progfichecandidature66' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 ),
+                'ActioncandidatPersonne.progfichecandidature66_id' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'radio', 'empty' => false, 'options' => $progsfichescandidatures66 ),
                 'ActioncandidatPersonne.formationregion'
             ),   
             array(

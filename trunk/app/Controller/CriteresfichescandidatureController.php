@@ -51,12 +51,13 @@
 
 			if( !empty( $this->request->data ) ) {
 
-				if( !empty( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'] )) {
-					$actioncandidatId = suffix( $this->request->data['ActioncandidatPersonne']['actioncandidat_id'] );
-					$this->request->data['ActioncandidatPersonne']['actioncandidat_id'] = $actioncandidatId;
+                $data = $this->request->data;
+				if( !empty( $data['ActioncandidatPersonne']['actioncandidat_id'] )) {
+					$actioncandidatId = suffix( $data['ActioncandidatPersonne']['actioncandidat_id'] );
+					$data['ActioncandidatPersonne']['actioncandidat_id'] = $actioncandidatId;
 				}
 
-				$data = $this->request->data;
+				
 				$queryData = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();

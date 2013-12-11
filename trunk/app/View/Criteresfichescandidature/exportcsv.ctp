@@ -32,7 +32,7 @@
 			Hash::get( $actioncandidat_personne, 'Referent.nom_complet' ),
 			Hash::get( $actioncandidat_personne, 'Actioncandidat.name' ),
 			Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.formationregion' ),
-			$actioncandidat_personne['Progfichecandidature66']['listenoms'],
+			$actioncandidat_personne['Progfichecandidature66']['name'],
 			Hash::get( $actioncandidat_personne, 'Partenaire.libstruc' ),
 			Set::enum( Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ), $options['positionfiche'] ),
 			$this->Locale->date( 'Date::short', Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ),

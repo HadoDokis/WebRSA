@@ -45,6 +45,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Progfichecandidature66' => array(
+				'className' => 'Progfichecandidature66',
+				'foreignKey' => 'progfichecandidature66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
@@ -117,24 +124,24 @@
 		);
 
 
-        public $hasAndBelongsToMany = array(
-            'Progfichecandidature66' => array(
-				'className' => 'Progfichecandidature66',
-				'joinTable' => 'candidatures_progs66',
-				'foreignKey' => 'actioncandidat_personne_id',
-				'associationForeignKey' => 'progfichecandidature66_id',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => '',
-				'with' => 'CandidatureProg66'
-			)
-        );
+//        public $hasAndBelongsToMany = array(
+//            'Progfichecandidature66' => array(
+//				'className' => 'Progfichecandidature66',
+//				'joinTable' => 'candidatures_progs66',
+//				'foreignKey' => 'actioncandidat_personne_id',
+//				'associationForeignKey' => 'progfichecandidature66_id',
+//				'unique' => true,
+//				'conditions' => '',
+//				'fields' => '',
+//				'order' => '',
+//				'limit' => '',
+//				'offset' => '',
+//				'finderQuery' => '',
+//				'deleteQuery' => '',
+//				'insertQuery' => '',
+//				'with' => 'CandidatureProg66'
+//			)
+//        );
 
 
 
