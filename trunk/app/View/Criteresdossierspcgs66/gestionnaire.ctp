@@ -287,3 +287,4 @@
 		<p class="notice">Vos critères n'ont retourné aucune information.</p>
 	<?php endif?>
 <?php endif?>
+<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>
