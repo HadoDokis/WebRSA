@@ -249,11 +249,15 @@
 						'type'       => 'LEFT OUTER',
 						'foreignKey' => false,
 						'conditions' => array( 'Referent.id = Rendezvous.referent_id' )
-					)
+					),
+					$this->Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 				),
 				'order' => array( '"Rendezvous"."daterdv" ASC' ),
 				'conditions' => $conditions
 			);
+
+			// Référent du parcours
+			$querydata = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteresrdv );
 
 			return $querydata;
 		}
