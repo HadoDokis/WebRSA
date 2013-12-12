@@ -926,6 +926,8 @@
                     'fields' => array(
                         'Traitementpcg66.nrmrcs',
                         'Traitementpcg66.dtdebutactivite',
+                        'Traitementpcg66.regime',
+                        'Traitementpcg66.raisonsocial',
                         'Traitementpcg66.created'
                     ),
                     'joins' => array(
