@@ -69,6 +69,15 @@
 			//Ajout des structures et référents orientants
 			$this->set( 'refsorientants', ClassRegistry::init( 'Referent' )->listOptions() );
 			$this->set( 'structsorientantes', ClassRegistry::init( 'Structurereferente' )->listOptions( array( 'orientation' => 'O' ) ) );
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$enums = array();
+				foreach( array_keys( $this->Orientstruct->Personne->Dossierep->themesCg() ) as $tableName ) {
+					$modeleDecision = Inflector::classify( "decisions{$tableName}" );
+					$enums[$modeleDecision] = array( 'decision' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->enum( 'decision' ) );
+				}
+				$this->set( compact( 'enums' ) );
+			}
 		}
 
 		/**
@@ -113,25 +122,21 @@
 		}
 
 		/**
-		*
-		*/
-
+		 * Moteur de recherche par orientation.
+		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
 			if( !empty( $this->request->data ) ) {
+				$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $this->request->data, 'Orientstruct.origine' ) );
+
 				$paginate = $this->Critere->search(
-					$mesCodesInsee,
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->request->data,
-					false
+					$reorientationEp
 				);
 
-				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
+
 				$paginate['limit'] = 10;
 
 				$this->paginate = $paginate;
@@ -139,9 +144,14 @@
 				$orients = $this->paginate( 'Orientstruct', array(), array(), $progressivePaginate );
 
 				$this->set( 'orients', $orients );
+				$this->set( 'reorientationEp', $reorientationEp );
 			}
 
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
 		}
@@ -150,28 +160,25 @@
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
-
-			$this->set( 'typevoie', $this->Option->typevoie() );
+			$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $this->request->data, 'Orientstruct.origine' ) );
 
 			$querydata = $this->Critere->search(
-				$mesCodesInsee,
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Hash::expand( $this->request->params['named'], '__' ),
-				false
+				$reorientationEp
 			);
 
-			unset( $querydata['limit'] );
-
-			$querydata = $this->_qdAddFilters( $querydata );
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			unset( $querydata['limit'] );
 
 			$orients = $this->Orientstruct->find( 'all', $querydata );
 
 			$this->layout = '';
 			$this->_setOptions();
-			$this->set( compact( 'orients' ) );
+			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( compact( 'orients', 'reorientationEp' ) );
 		}
 	}
 ?>

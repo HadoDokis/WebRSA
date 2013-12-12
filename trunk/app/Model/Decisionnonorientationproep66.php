@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisionnonorientationproep66 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionnonorientationproep66 extends AppModel
+	class Decisionnonorientationproep66 extends AbstractDecisionep
 	{
 		public $name = 'Decisionnonorientationproep66';
 

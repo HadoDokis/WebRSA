@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisionregressionorientationep58 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionregressionorientationep58 extends AppModel
+	class Decisionregressionorientationep58 extends AbstractDecisionep
 	{
 		public $name = 'Decisionregressionorientationep58';
 

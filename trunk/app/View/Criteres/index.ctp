@@ -104,7 +104,6 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'OrientstructStructurereferenteId', 'OrientstructTypeorientId' );
-		dependantSelect( 'OrientstructReferentId', 'OrientstructStructurereferenteId' );
 	});
 </script>
 
@@ -117,14 +116,15 @@
 		<?php echo $this->Form->input( 'Orientstruct.typeorient_id', array( 'label' =>  __d( 'structurereferente', 'Structurereferente.lib_type_orient' ), 'type' => 'select' , 'options' => $typeorient, 'empty' => true ) );?>
 
 		<?php echo $this->Form->input( 'Orientstruct.structurereferente_id', array( 'label' => 'Nom de la structure', 'type' => 'select' , 'options' => $sr, 'empty' => true  ) );?>
-	<?php /* echo $this->Ajax->observeField( 'OrientstructTypeorientId', array( 'update' => 'OrientstructStructurereferenteId', 'url' => array( 'action' => 'ajaxstruc' ) ) );*/ ?>
 
-		<?php echo $this->Form->input( 'Orientstruct.referent_id', array( 'label' => 'Nom du référent', 'type' => 'select' , 'options' => $referents, 'empty' => true  ) );?>
 		<?php echo $this->Form->input( 'Orientstruct.statut_orient', array( 'label' => 'Statut de l\'orientation', 'type' => 'select', 'options' => $statuts, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Orientstruct.serviceinstructeur_id', array( 'label' => __( 'lib_service' ), 'type' => 'select' , 'options' => $typeservice, 'empty' => true ) );?>
 	</fieldset>
 
-	<?php echo $this->Search->paginationNombretotal(); ?>
+	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->paginationNombretotal();
+	?>
 
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
@@ -155,6 +155,10 @@
 					<th><?php echo $this->Xpaginator->sort( 'Type d\'orientation', 'Orientstruct.typeorient_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Statut orientation', 'Orientstruct.statut_orient' );?></th>
+					<?php if( $reorientationEp ):?>
+						<th><?php echo $this->Xpaginator->sort( 'Date de passage en EP', 'Commissionep.dateseance' );?></th>
+						<th>Décision EP</th>
+					<?php endif;?>
 					<th><?php echo $this->Xpaginator->sort( 'Soumis à droits et devoirs', 'Calculdroitrsa.toppersdrodevorsa' );?></th>
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -220,7 +224,27 @@
 							$cells,
 							h( Set::enum( $orient['Orientstruct']['typeorient_id'], $typeorient ) ),
 							h( $orient['Structurereferente']['lib_struc'] ),
-							h( $orient['Orientstruct']['statut_orient'] ),
+							h( $orient['Orientstruct']['statut_orient'] )
+						);
+
+						if( $reorientationEp ) {
+							if( !empty( $orient['Dossierep']['themeep'] ) ) {
+								$modeleDecision = 'Decision'.Inflector::underscore( Inflector::classify( $orient['Dossierep']['themeep'] ) );
+								$decision = value( $enums[$modeleDecision]['decision'], Hash::get( $orient, "{$modeleDecision}.decision" ) );
+							}
+							else {
+								$decision = null;
+							}
+
+							array_push(
+								$cells,
+								h( date_short( $orient['Commissionep']['dateseance'] ) ),
+								h( $decision )
+							);
+						}
+
+						array_push(
+							$cells,
 							( is_null( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ? $this->Xhtml->image( 'icons/help.png', array( 'alt' => '' ) ).' Non défini' : $this->Xhtml->boolean( $orient['Calculdroitrsa']['toppersdrodevorsa'] ) ),
 							array(
 								$this->Xhtml->viewLink(

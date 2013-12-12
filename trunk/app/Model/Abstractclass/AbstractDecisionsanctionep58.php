@@ -7,6 +7,7 @@
 	 * @package app.Model.Abstractclass
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe AbstractDecisionsanctionep58 est une classe abstraite pour des
@@ -14,7 +15,7 @@
 	 *
 	 * @package app.Model.Abstractclass
 	 */
-	abstract class AbstractDecisionsanctionep58 extends AppModel
+	abstract class AbstractDecisionsanctionep58 extends AbstractDecisionep
 	{
 
 		public $recursive = -1;

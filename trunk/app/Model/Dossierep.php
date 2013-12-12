@@ -608,5 +608,82 @@
 				)
 			);
 		}
+
+		/**
+		 * On complète le querydata avec les jointures permettant de savoir de
+		 * quelle décision d'EP vient une réorientation, pour le CG connecté.
+		 *
+		 * @param array $querydata
+		 * @return array
+		 */
+		public function completeQdReorientation( array $querydata ) {
+			// Réorientation suite à passage en EP (pour le CG connecté) ?
+			$or = array();
+			$conditionsDossierep = array();
+			$modelesDecision = array();
+			$hasMany = $this->Personne->Orientstruct->hasMany;
+
+			foreach( $hasMany as $aliasName => $params ) {
+				if( preg_match( '/ep'.Configure::read( 'Cg.departement' ).'nv$/', $aliasName ) ) {
+					$modelesDecision[$params['className']] = 'Decision'.Inflector::underscore( $params['className'] );
+
+					$querydata['joins'][] = $this->Personne->Orientstruct->join( $aliasName, array( 'type' => 'LEFT OUTER' ) );
+
+					$or[] = array(
+						'OR' => array(
+							"{$aliasName}.nvorientstruct_id IS NULL",
+							"{$aliasName}.nvorientstruct_id = Orientstruct.id"
+						)
+					);
+
+					$assoc = $this->Personne->Orientstruct->{$aliasName}->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+					$conditionsDossierep[] = $assoc['conditions'];
+				}
+			}
+
+			if( !empty( $or ) ) {
+				$querydata['conditions'][] = array( 'OR' => $or );
+
+				// Jointure avec le dossier EP pour les différentes thématiques
+				$assoc = $this->Personne->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+				$assoc['conditions'] = array( 'OR' => $conditionsDossierep );
+				$querydata['joins'][] = $assoc;
+				$querydata['fields'][] = 'Dossierep.themeep';
+
+				// Recherche du passage en commission
+				$querydata['joins'][] = $this->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) );
+				$sqDernier = $this->Passagecommissionep->sqDernier();
+				$querydata['conditions'][] = array(
+					'OR' => array(
+						'Passagecommissionep.id IS NULL',
+						"Passagecommissionep.id IN ( {$sqDernier} )"
+					)
+				);
+
+				$querydata['joins'][] = $this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['fields'][] = 'Commissionep.dateseance';
+			}
+
+			if( !empty( $modelesDecision ) ) {
+				foreach( $modelesDecision as $modeleThematique => $modeleDecision ) {
+					$querydata['joins'][] = $this->Passagecommissionep->join(
+						$modeleDecision,
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Dossierep.id IS NOT NULL',
+								'Dossierep.themeep' => Inflector::tableize( $modeleThematique )
+							)
+						)
+					);
+					$querydata['conditions'][] = $this->Passagecommissionep->{$modeleDecision}->conditionsDerniere();
+
+					$querydata['fields'][] = "{$modeleDecision}.decision";
+					$querydata['fields'][] = "{$modeleDecision}.etape";
+				}
+			}
+
+			return $querydata;
+		}
 	}
 ?>

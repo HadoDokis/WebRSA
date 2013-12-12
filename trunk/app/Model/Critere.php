@@ -23,20 +23,14 @@
 		public $actsAs = array( 'Conditionnable' );
 
 		/**
-		*
-		*/
-
-		public function search( $mesCodesInsee, $filtre_zone_geo, $criteres, $lockedDossiers ) {
+		 *
+		 * @param array $criteres
+		 * @param boolean $reorientationEp
+		 * @return array
+		 */
+		public function search( $criteres, $reorientationEp = false ) {
 			/// Conditions de base
 			$conditions = array();
-
-			/// Critere zone géographique
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-
-			/// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				$conditions[] = 'Dossier.id NOT IN ( '.implode( ', ', $lockedDossiers ).' )';
-			}
 
 			/// Critères
 			$locaadr = Set::extract( $criteres, 'Adresse.locaadr' );
@@ -47,7 +41,6 @@
 			$typeorient_id = Set::extract( $criteres, 'Orientstruct.typeorient_id' );
 			$structurereferente_id = Set::extract( $criteres, 'Orientstruct.structurereferente_id' );
 			$serviceinstructeur_id = Set::extract( $criteres, 'Orientstruct.serviceinstructeur_id' );
-			$referent_id = Set::extract( $criteres, 'Orientstruct.referent_id' );
 			$dtnai = Set::extract( $criteres, 'Personne.dtnai' );
 			$matricule = Set::extract( $criteres, 'Dossier.matricule' );
 			$identifiantpe = Set::extract( $criteres, 'Historiqueetatpe.identifiantpe' );
@@ -55,8 +48,7 @@
 			$referentorientant_id = Set::extract( $criteres, 'Orientstruct.referentorientant_id' );
 
 
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			$conditions = $this->conditionsAdresse( $conditions, $criteres, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $criteres );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteres );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteres );
 
@@ -149,10 +141,6 @@
 				$conditions[] = 'Serviceinstructeur.id = \''.Sanitize::clean( $serviceinstructeur_id, array( 'encode' => false ) ).'\'';
 			}
 
-			if( !empty( $referent_id ) ) {
-				$conditions[] = 'PersonneReferent.referent_id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
-			}
-
 			$hasContrat  = Set::extract( $criteres, 'Critere.hascontrat' );
 
 			/// Statut contrat engagement reciproque
@@ -214,19 +202,19 @@
 				}
 			}
 
+			// On s'assure d'avoir la dernière adresse de rang 01 ou pas d'adresse du tout
+			$conditions[] = array(
+				'OR' => array(
+					'Adressefoyer.id IS NULL',
+					"Adressefoyer.id IN ( ".ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id')." )"
+				)
+			);
+
 			/// Requête
 			$Situationdossierrsa = ClassRegistry::init( 'Situationdossierrsa' );
 			$dbo = $this->getDataSource( $this->useDbConfig );
 
-
-			// Permet de voir les entrées qui n'ont pas d'adresse si on ne filtre
-			// pas sur les codes INSEE pour l'utilisateur
-			if( $filtre_zone_geo )
-				$type = 'INNER';
-			else
-				$type = 'LEFT OUTER';
-
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"Orientstruct"."id"',
 					'"Orientstruct"."personne_id"',
@@ -372,41 +360,17 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Detaildroitrsa.dossier_id = Dossier.id' )
 					),
-					array(
-						'table'      => 'personnes_referents',
-						'alias'      => 'PersonneReferent',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = PersonneReferent.personne_id',
-							'PersonneReferent.id IN (
-								'.ClassRegistry::init( 'PersonneReferent' )->sqDerniere('PersonneReferent.personne_id').'
-							)'
-						)
-					),
-					array(
-						'table'      => 'referents',
-						'alias'      => 'Referent',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Referent.id = PersonneReferent.referent_id' )
-					),
                     array(
                         'table'      => 'adressesfoyers',
                         'alias'      => 'Adressefoyer',
-                        'type'       => $type,
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
-                        'conditions' => array(
-                            'Foyer.id = Adressefoyer.foyer_id',
-                            'Adressefoyer.id IN (
-                                '.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-                            )'
-                        )
+                        'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id' )
                     ),
                     array(
                         'table'      => 'adresses',
                         'alias'      => 'Adresse',
-                        'type'       => $type,
+                        'type'       => 'LEFT OUTER',
                         'foreignKey' => false,
                         'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
                     ),
@@ -416,28 +380,15 @@
 				'conditions' => $conditions
 			);
 
+			// Réorientation suite à passage en EP (pour le CG connecté) ?
+			if( $reorientationEp ) {
+				$querydata = $Situationdossierrsa->Dossier->Foyer->Personne->Dossierep->completeQdReorientation( $querydata );
+			}
 
-			/*$query['joins'][] = array(
-				'table'      => 'adressesfoyers',
-				'alias'      => 'Adressefoyer',
-				'type'       => $type,
-				'foreignKey' => false,
-				'conditions' => array(
-					'Foyer.id = Adressefoyer.foyer_id',
-					'Adressefoyer.id IN (
-						'.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01('Adressefoyer.foyer_id').'
-					)'
-				)
-			);
-			$query['joins'][] = array(
-                'table'      => 'adresses',
-                'alias'      => 'Adresse',
-                'type'       => $type,
-                'foreignKey' => false,
-                'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-			);*/
+			// Référent du parcours
+			$querydata = $Situationdossierrsa->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteres );
 
-			return $query;
+			return $querydata;
 		}
 	}
 ?>
