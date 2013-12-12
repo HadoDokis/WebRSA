@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionsaisinepdoep66.
 	 *
@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisionsaisinepdoep66 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionsaisinepdoep66 extends AppModel
+	class Decisionsaisinepdoep66 extends AbstractDecisionep
 	{
 		public $name = 'Decisionsaisinepdoep66';
 

@@ -36,6 +36,14 @@
 		'Nature de la prestation'*/
 	);
 
+	if( $reorientationEp ) {
+		array_push(
+			$cells,
+			'Date de passage en EP',
+			'Décision EP'
+		);
+	}
+
 	$this->Csv->addRow( $cells );
 
 	foreach( $orients as $orient ) {
@@ -89,6 +97,23 @@
 			$toppersdrodevorsa/*,
 			Set::enum( Hash::get( $orient, 'Detailcalculdroitrsa.natpf' ), $natpf )*/
 		);
+
+		if( $reorientationEp ) {
+			if( !empty( $orient['Dossierep']['themeep'] ) ) {
+				$modeleDecision = 'Decision'.Inflector::underscore( Inflector::classify( $orient['Dossierep']['themeep'] ) );
+				$decision = value( $enums[$modeleDecision]['decision'], Hash::get( $orient, "{$modeleDecision}.decision" ) );
+			}
+			else {
+				$decision = null;
+			}
+
+			array_push(
+				$row,
+				date_short( $orient['Commissionep']['dateseance'] ),
+				$decision
+			);
+		}
+
 		$this->Csv->addRow($row);
 	}
 

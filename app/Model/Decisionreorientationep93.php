@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionreorientationep93.
 	 *
@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisionreorientationep93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionreorientationep93 extends AppModel
+	class Decisionreorientationep93 extends AbstractDecisionep
 	{
 		public $name = 'Decisionreorientationep93';
 

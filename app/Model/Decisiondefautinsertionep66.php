@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisiondefautinsertionep66.
 	 *
@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisiondefautinsertionep66 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisiondefautinsertionep66 extends AppModel
+	class Decisiondefautinsertionep66 extends AbstractDecisionep
 	{
 		public $name = 'Decisiondefautinsertionep66';
 
@@ -52,7 +53,7 @@
 				'counterQuery' => ''
 			)
 		);
-		
+
 		public $belongsTo = array(
 			'Structurereferente' => array(
 				'className' => 'Structurereferente',

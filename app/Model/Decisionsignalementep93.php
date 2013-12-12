@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractDecisionep', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Decisionsignalementep93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionsignalementep93 extends AppModel
+	class Decisionsignalementep93 extends AbstractDecisionep
 	{
 		public $name = 'Decisionsignalementep93';
 
