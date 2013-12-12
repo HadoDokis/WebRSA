@@ -374,6 +374,28 @@
 			});
 		</script>
 	<?php endif;?>
+        
+    <fieldset id="transmission"><legend>Information transmise à :</legend>    
+        <?php
+            echo $this->Default2->subform(
+                array(
+                    'Decisiondossierpcg66.orgtransmisdossierpcg66_id' => array( 'legend' =>  false, 'type' => 'radio', 'empty' => false, 'options' => $orgs )
+                ),
+                array(
+                    'options' => $options
+                )
+            );
+        ?>
+        <fieldset class="noborder" id="infotransmise"><legend>Commentaire suite à la transmission</legend>
+        <?php
+            echo $this->Default2->subform(
+                array(
+                    'Decisiondossierpcg66.infotransmise' => array( 'type' => 'textarea', 'label' => false )
+                )
+            );
+        ?>
+        </fieldset>
+    </fieldset>
 
 	<?php if( $avistechniquemodifiable && !in_array( $this->action, array( 'add', 'edit' ) ) && ( $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ) || $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ) ) ):?>
 		<fieldset id="avtech"><legend><?php echo 'Avis technique'; ?></legend>
@@ -445,26 +467,7 @@
 		</fieldset>
 	<?php endif;?>
 
-	<?php
-    
-        echo $this->Default2->subform(
-			array(
-				'Decisiondossierpcg66.orgtransmisdossierpcg66_id' => array( 'label' =>  'Information transmise à : ', 'type' => 'radio', 'empty' => false, 'options' => $orgs )
-			),
-			array(
-				'options' => $options
-			)
-		);
-    ?>
-        <fieldset id="infotransmise"><legend>Commentaire suite à la transmission</legend>
-        <?php
-            echo $this->Default2->subform(
-                array(
-                    'Decisiondossierpcg66.infotransmise' => array( 'type' => 'textarea', 'label' => false )
-                )
-            );
-        ?>
-        </fieldset>    
+	 
     <?php
 		echo $this->Default2->subform(
 			array(
