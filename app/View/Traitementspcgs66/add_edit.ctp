@@ -129,6 +129,7 @@
 				)
 			);
 
+            $regime = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.regime' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.regime' ) : Hash::get( $this->request->data, 'Traitementpcg66.regime' );
 			echo $this->Xhtml->tag(
 				'tr',
 				$this->Xhtml->tag(
@@ -137,7 +138,7 @@
 				).
 				$this->Xhtml->tag(
 					'td',
-					$this->Form->input('Traitementpcg66.regime', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpcg66']['regime'], 'empty'=>true))
+					$this->Form->input('Traitementpcg66.regime', array('label'=>false, 'type'=>'select', 'options'=>$options['Traitementpcg66']['regime'], 'empty'=>true, 'value' => $regime))
 				).
 				$this->Xhtml->tag(
 					'td',
@@ -170,6 +171,7 @@
 			);
 
             $dtdebutactivite = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.dtdebutactivite' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.dtdebutactivite' ) : Hash::get( $this->request->data, 'Traitementpcg66.dtdebutactivite' );
+            $raisonsociale = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.raisonsocial' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.raisonsocial' ) : Hash::get( $this->request->data, 'Traitementpcg66.raisonsocial' );
 			echo $this->Xhtml->tag(
 				'tr',
 				$this->Xhtml->tag(
@@ -196,7 +198,7 @@
 				).
 				$this->Xhtml->tag(
 					'td',
-					$this->Form->input('Traitementpcg66.raisonsocial', array('label'=>false, 'type'=>'text'))
+					$this->Form->input('Traitementpcg66.raisonsocial', array('label'=>false, 'type'=>'text', 'value' => $raisonsociale))
 				)
 			);
 
