@@ -924,6 +924,7 @@
             if( empty( $dossierpcg66_id ) ) {
                 return false;
             }
+            $success = true;
             
             $dossierpcg66EnCours = $this->find(
                 'first',
@@ -931,6 +932,7 @@
                     'fields' => array_merge(
                         $this->fields(),
                         $this->Decisiondossierpcg66->fields(),
+                        $this->Decisiondossierpcg66->Orgdecisiondossierpcg66->fields(),
                         $this->Poledossierpcg66->fields()
                     ),
                     'conditions' => array(
@@ -942,6 +944,7 @@
                             'type' => 'INNER' )
                         ),
                         $this->join( 'Poledossierpcg66', array( 'type' => 'INNER' ) ),
+                        $this->Decisiondossierpcg66->join( 'Orgdecisiondossierpcg66', array( 'type' => 'LEFT OUTER' ) )
                     ),
                     'contain' => false
                 )
@@ -979,54 +982,61 @@
 //                    $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
 //                }
 //            }
-            
+//debug($dossierpcg66EnCours);
+//die();
             $dossierPCGGenerable = false;
             $organismesConcernes = Configure::read( 'Generationdossierpcg.Orgtransmisdossierpcg66.id' );
             $orgId = $dossierpcg66EnCours['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'];
             
-            if( !empty( $orgId ) && !empty( $organismesConcernes ) ) {
-                if( in_array( $orgId, $organismesConcernes ) ){
-                   $dossierPCGGenerable = true;
+            // Pôle chargé de traiter le dossier PCG en cours
+            $poledossierpcg66IdDossierpcg66 = $dossierpcg66EnCours['Dossierpcg66']['poledossierpcg66_id'];
+            // Pôle lié à l'organisme auquel on a tranmis l'information (PDA-MGA ou PDU-MMR)
+            $poledossierpcg66IdOrg66 = $dossierpcg66EnCours['Orgdecisiondossierpcg66']['poledossierpcg66_id'];
+            
+            if( !empty( $orgId ) && ( $poledossierpcg66IdDossierpcg66 != $poledossierpcg66IdOrg66 ) ) {
+                if( !empty( $organismesConcernes ) ) {
+                    if( in_array( $orgId, $organismesConcernes ) ){
+                       $dossierPCGGenerable = true;
 
-                   $poleOrg = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
-                       'first',
-                       array(
-                           'conditions' => array(
-                               'Orgtransmisdossierpcg66.id' => $orgId
+                       $poleOrg = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+                           'first',
+                           array(
+                               'conditions' => array(
+                                   'Orgtransmisdossierpcg66.id' => $orgId
+                               )
                            )
-                       )
-                   );
-                   $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
-               }
-            }
+                       );
+                       $poledossierpcg66_id = $poleOrg['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
+                   }
+                }
         
 //debug($poleOrg);
 //debug($poledossierpcg66_id);
 //die();
 
-            $success = true;
-            $nouveauDossierpcg66 = array(
-                'Dossierpcg66' => array(
-                    'foyer_id' => $dossierpcg66EnCours['Dossierpcg66']['foyer_id'],
-                    'originepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['originepdo_id'],
-                    'typepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['typepdo_id'], // FIXME
-                    'orgpayeur' => $dossierpcg66EnCours['Dossierpcg66']['orgpayeur'],
-                    'datereceptionpdo' => $dossierpcg66EnCours['Decisiondossierpcg66']['datevalidation'],
-                    'commentairepiecejointe' => $dossierpcg66EnCours['Decisiondossierpcg66']['infotransmise'],
-                    'haspiecejointe' => 0,
-                    'poledossierpcg66_id' => $poledossierpcg66_id,
-                    'etatdossierpcg' => 'attaffect',
-                    'dossierpcg66pcd_id' => $dossierpcg66EnCours['Dossierpcg66']['id']
-                )
-            );
+                $success = true;
+                $nouveauDossierpcg66 = array(
+                    'Dossierpcg66' => array(
+                        'foyer_id' => $dossierpcg66EnCours['Dossierpcg66']['foyer_id'],
+                        'originepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['originepdo_id'],
+                        'typepdo_id' => $dossierpcg66EnCours['Poledossierpcg66']['typepdo_id'], // FIXME
+                        'orgpayeur' => $dossierpcg66EnCours['Dossierpcg66']['orgpayeur'],
+                        'datereceptionpdo' => $dossierpcg66EnCours['Decisiondossierpcg66']['datevalidation'],
+                        'commentairepiecejointe' => $dossierpcg66EnCours['Decisiondossierpcg66']['infotransmise'],
+                        'haspiecejointe' => 0,
+                        'poledossierpcg66_id' => $poledossierpcg66_id,
+                        'etatdossierpcg' => 'attaffect',
+                        'dossierpcg66pcd_id' => $dossierpcg66EnCours['Dossierpcg66']['id']
+                    )
+                );
 
-            $dossierpcg66pcd_id = $dossierpcg66EnCours['Dossierpcg66']['dossierpcg66pcd_id'];
+                $dossierpcg66pcd_id = $dossierpcg66EnCours['Dossierpcg66']['dossierpcg66pcd_id'];
 
-            if( $dossierPCGGenerable && empty( $dossierpcg66pcd_id ) ){
-                $this->create( $nouveauDossierpcg66 );
-                $success = $this->save() && $success;
+                if( $dossierPCGGenerable && empty( $dossierpcg66pcd_id ) ){
+                    $this->create( $nouveauDossierpcg66 );
+                    $success = $this->save() && $success;
+                }
             }
-
             return $success;
         }
 	}

@@ -62,7 +62,7 @@
 		);
 		
 		public $hasAndBelongsToMany = array(
-			'Decisiondossierpcg66' => array(
+			'Notificationdecisiondossierpcg66' => array(
 				'className' => 'Decisiondossierpcg66',
 				'joinTable' => 'decisionsdossierspcgs66_orgstransmisdossierspcgs66',
 				'foreignKey' => 'orgtransmisdossierpcg66_id',
