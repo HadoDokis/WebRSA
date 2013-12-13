@@ -62,6 +62,7 @@
 		)
 	);
 
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 

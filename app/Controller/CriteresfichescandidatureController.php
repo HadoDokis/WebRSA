@@ -17,7 +17,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterefichecandidature', 'ActioncandidatPersonne'/*, 'Actioncandidat' */, 'Partenaire');
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -57,7 +57,7 @@
 					$data['ActioncandidatPersonne']['actioncandidat_id'] = $actioncandidatId;
 				}
 
-				
+
 				$queryData = $this->Criterefichecandidature->search( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $data );
 				$queryData['limit'] = 10;
 				$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
@@ -94,6 +94,10 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->render( 'index' );
 		}
 

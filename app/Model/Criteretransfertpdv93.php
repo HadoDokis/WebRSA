@@ -124,6 +124,8 @@
 
 			$querydata['conditions'][] = 'CAST( DATE_PART( \'year\', "Transfertpdv93"."created" ) + 1 || \'-03-31\' AS date ) >= DATE_TRUNC( \'day\', NOW() )';
 
+			$querydata = $Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $search );
+
 			return $querydata;
 		}
 	}

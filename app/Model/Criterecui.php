@@ -33,7 +33,7 @@
 		public function search( $mesCodesInsee, $filtre_zone_geo, $criterescuis ) {
 			/// Conditions de base
 			$Cui = ClassRegistry::init( 'Cui' );
-			
+
 			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
 			// donc on limite au dernier detail de calcul du droit rsa
 			$sqDernierDetailcalculdroitrsa = $Cui->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
@@ -53,7 +53,7 @@
 			$conditions = $this->conditionsAdresse( $conditions, $criterescuis, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criterescuis );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criterescuis );
-			
+
 
 			/// Critères
 			$datecontrat = Set::extract( $criterescuis, 'Cui.datecontrat' );
@@ -68,14 +68,14 @@
             $positioncui66 = Set::extract( $criterescuis, 'Cui.positioncui66' );
             $decisioncui = Set::extract( $criterescuis, 'Cui.decisioncui' );
             $employeur_id = Set::extract( $criterescuis, 'Cui.partenaire_id' );
-			
+
 
 			// Origine de la demande
 			if( !empty( $oridemrsa ) ) {
 				$conditions[] = 'Detaildroitrsa.oridemrsa IN ( \''.implode( '\', \'', $oridemrsa ).'\' )';
 			}
 
-			/// Critères sur les dates du CUI - date de saisi du contrat, date de fin de titre de séjour, 
+			/// Critères sur les dates du CUI - date de saisi du contrat, date de fin de titre de séjour,
             foreach( array( 'datecontrat', 'datefintitresejour' ) as $date ) {
                 if( isset( $criterescuis['Cui'][$date] ) && !empty( $criterescuis['Cui'][$date] ) ) {
                     $valid_from = ( valid_int( $criterescuis['Cui']["{$date}_from"]['year'] ) && valid_int( $criterescuis['Cui']["{$date}_from"]['month'] ) && valid_int( $criterescuis['Cui']["{$date}_from"]['day'] ) );
@@ -83,9 +83,9 @@
                     if( $valid_from && $valid_to ) {
                         $conditions[] = 'Cui.'.$date.' BETWEEN \''.implode( '-', array( $criterescuis['Cui']["{$date}_from"]['year'], $criterescuis['Cui']["{$date}_from"]['month'], $criterescuis['Cui']["{$date}_from"]['day'] ) ).'\' AND \''.implode( '-', array( $criterescuis['Cui']["{$date}_to"]['year'], $criterescuis['Cui']["{$date}_to"]['month'], $criterescuis['Cui']["{$date}_to"]['day'] ) ).'\'';
                     }
-                }   
+                }
             }
-			
+
 			// Type de CUI
 			if( !empty( $typecui ) ) {
 				$conditions[] = 'Cui.typecui = \''.Sanitize::clean( $typecui, array( 'encode' => false ) ).'\'';
@@ -95,41 +95,41 @@
 			if( !empty( $secteurcui_id ) ) {
 				$conditions[] = 'Cui.secteurcui_id = \''.Sanitize::clean( $secteurcui_id, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Hors ACI /ACI
 			if( !empty( $isaci ) ) {
 				$conditions[] = 'Cui.isaci = \''.Sanitize::clean( $isaci, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Handicape ?
 			if( !empty( $handicap ) ) {
 				$conditions[] = 'Cui.handicap = \''.Sanitize::clean( $handicap, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Niveau de formation
 			if( !empty( $niveauformation ) ) {
 				$conditions[] = 'Cui.niveauformation = \''.Sanitize::clean( $niveauformation, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Composition du foyer
 			if( !empty( $compofamiliale ) ) {
 				$conditions[] = 'Cui.compofamiliale = \''.Sanitize::clean( $compofamiliale, array( 'encode' => false ) ).'\'';
 			}
-            
+
 			// Position du CUI
 			if( !empty( $positioncui66 ) ) {
 				$conditions[] = 'Cui.positioncui66 = \''.Sanitize::clean( $positioncui66, array( 'encode' => false ) ).'\'';
 			}
-            
+
             // Décision sur CUI
 			if( !empty( $decisioncui ) ) {
 				$conditions[] = 'Cui.decisioncui = \''.Sanitize::clean( $decisioncui, array( 'encode' => false ) ).'\'';
 			}
-			
+
  			// Sur l'employeur (partenaire)
             if( isset( $employeur_id ) && !empty( $employeur_id ) ) {
                 $conditions[] = 'Cui.partenaire_id = \''.Sanitize::clean( $employeur_id, array( 'encode' => false ) ).'\'';
-            }            
+            }
 
 			$query = array(
 				'fields' => array_merge(
@@ -167,6 +167,8 @@
 				'contain' => false,
 				'limit' => 10
 			);
+
+			$query = $Cui->Personne->PersonneReferent->completeQdReferentParcours( $query, $criterescuis );
 
 			return $query;
 		}

@@ -19,7 +19,11 @@
 
 		public $uses = array( 'Critereentretien', 'Entretien', 'Option' );
 		public $helpers = array( 'Csv', 'Default2', 'Search' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
+		public $components = array(
+			'Gestionzonesgeos',
+			'Search.Prg' => array( 'actions' => array( 'index' ) ),
+			'InsertionsAllocataires'
+		);
 
 		/**
 		 *
@@ -68,6 +72,9 @@
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**

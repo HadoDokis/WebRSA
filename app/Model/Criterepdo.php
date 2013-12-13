@@ -180,6 +180,8 @@
 				'conditions' => $conditions
 			);
 
+			$querydata = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criterespdos );
+
 			return $querydata;
 		}
 
@@ -381,6 +383,8 @@
 				'limit' => 10,
 				'conditions' => $conditions
 			);
+
+			$querydata = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criterespdos );
 
 			return $querydata;
 		}

@@ -48,9 +48,9 @@
 	</fieldset>
 <fieldset>
 	<legend>Recherche par traitement</legend>
-		<?php 
+		<?php
 //        echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'traitementpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
-    
+
             echo $this->Default2->subform(
                 array(
                     'Dossierpcg66.poledossierpcg66_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $polesdossierspcgs66, 'empty' => false )
@@ -58,7 +58,7 @@
                 array(
                     'options' => $options
                 )
-            );        
+            );
             echo '<fieldset class="col2 noborder">';
             echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $gestionnaire, 'empty' => false ) );
             echo '</fieldset>';
@@ -84,10 +84,10 @@
 			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'selected' => $daterevision_from ) );?>
 			<?php echo $this->Form->input( 'Traitementpcg66.daterevision_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 5,  'selected' => $daterevision_to ) );?>
 		</fieldset>
-    
+
         <?php
             echo $this->Search->date( 'Traitementpcg66.created', 'Date de création du traitement' );
-            
+
         ?>
 	<?php
 		///Formulaire de recherche pour les PDOs
@@ -107,6 +107,7 @@
 		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
+<?php echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );?>
 <fieldset>
     <legend>Comptage des résultats</legend>
     <?php echo $this->Form->input( 'Traitementpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
@@ -147,7 +148,7 @@
 			<tbody>
 				<?php
 					foreach( $criterestraitementspcgs66 as $index => $criteretraitementpcg66 ) {
- 
+
 						$etatdosrsaValue = Set::classicExtract( $criteretraitementpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
 

@@ -130,6 +130,8 @@
 				'conditions' => $conditions
 			);
 
+			$query = $Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresdossierscovs58 );
+
 			return $query;
 		}
 	}

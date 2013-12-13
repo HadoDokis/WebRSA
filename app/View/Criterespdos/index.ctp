@@ -90,7 +90,10 @@
 		);
 
 	?>
-	<?php echo $this->Search->paginationNombretotal(); ?>
+	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->paginationNombretotal();
+	?>
 <?php echo $this->Xform->end( 'Rechercher' ); ?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Propopdo', $this->passedArgs ); ?>
 

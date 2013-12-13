@@ -56,7 +56,10 @@
 		?>
 	</fieldset>
 
-	<?php echo $this->Search->paginationNombretotal(); ?>
+	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Filtre' );
+		echo $this->Search->paginationNombretotal();
+	?>
 
 	<div class="submit">
 		<?php echo $this->Form->button( 'Filtrer', array( 'type' => 'submit' ) );?>

@@ -36,6 +36,7 @@
                 )
             ),
             'Gestionzonesgeos',
+            'InsertionsAllocataires',
             'Cohortes' => array(
                 'fichesenattente',
                 'fichesencours'
@@ -184,6 +185,9 @@
 			}
 
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutFiche ) {
 				case 'Suivifiche::fichesenattente':

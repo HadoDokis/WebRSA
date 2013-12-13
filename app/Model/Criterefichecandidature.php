@@ -45,7 +45,7 @@
                     )
                 )
             );
-            
+
 			if ( isset($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']) ) {
 				$conditions[] = array('ActioncandidatPersonne.actioncandidat_id'=>suffix($criteresfichescandidature['ActioncandidatPersonne']['actioncandidat_id']));
 			}
@@ -71,20 +71,20 @@
 				}
 			}
 
-            
+
 			if ( isset($criteresfichescandidature['ActioncandidatPersonne']['formationregion']) && !empty($criteresfichescandidature['ActioncandidatPersonne']['formationregion']) ) {
 				$conditions[] = array('ActioncandidatPersonne.formationregion ILIKE \''.$this->wildcard( $criteresfichescandidature['ActioncandidatPersonne']['formationregion'] ).'\'');
 			}
-            
+
 			if ( isset($criteresfichescandidature['Progfichecandidature66']['name']) && !empty($criteresfichescandidature['Progfichecandidature66']['name']) ) {
 				$conditions[] = array('Progfichecandidature66.id ILIKE \''.$this->wildcard( $criteresfichescandidature['ActioncandidatPersonne']['formationregion'] ).'\'');
 			}
-            
+
             $poledossierpcg66_id = Set::extract( $criteresfichescandidature, 'Progfichecandidature66.id' );
             if( !empty( $poledossierpcg66_id ) ){
                 $conditions[] = 'Progfichecandidature66.id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
             }
-            
+
             $joins = array(
                 $ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
                 $ActioncandidatPersonne->join( 'Personne', array( 'type' => 'INNER' ) ),
@@ -124,9 +124,9 @@
 				'order' => array( '"ActioncandidatPersonne"."datesignature" ASC' ),
 				'conditions' => $conditions
 			);
-            
-            
-            
+
+
+
 //            $qdProgsfichescandidatures66 = array(
 //                'fields' => array(
 //                    'Progfichecandidature66.name'
@@ -144,7 +144,9 @@
 //
 //            $vfProgsfichescandidatures66 = $ActioncandidatPersonne->vfListe( $qdProgsfichescandidatures66 );
 //            $query['fields'][] = "{$vfProgsfichescandidatures66} AS \"ActioncandidatPersonne__listenoms\"";
-  
+
+			$query = $ActioncandidatPersonne->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresfichescandidature );
+
 			return $query;
 		}
 	}

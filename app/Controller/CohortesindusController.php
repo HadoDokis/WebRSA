@@ -28,6 +28,7 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.Prg' => array( 'actions' => array( 'index' ) )
 		);
 
@@ -92,6 +93,9 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->set( 'comparators', $comparators );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**

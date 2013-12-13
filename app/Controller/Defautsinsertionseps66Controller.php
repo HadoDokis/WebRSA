@@ -15,7 +15,7 @@
 	 */
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'Gedooo.Gedooo' );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Search' );
 
 		/**
@@ -49,6 +49,9 @@
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
 				$personnes = $this->paginate( $this->Defautinsertionep66->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( compact( 'personnes' ) );
 
@@ -103,6 +106,9 @@
 					$this->set( compact( 'results' ) );
 				}
 			}
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 		}

@@ -203,6 +203,7 @@
 				'conditions' => $conditions
 			);
 
+			$query = $Bilanparcours66->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresbilansparcours66 );
 
 			return $query;
 		}

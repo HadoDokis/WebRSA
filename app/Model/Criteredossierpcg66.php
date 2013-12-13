@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Criteredossierpcg66.
 	 *
@@ -32,7 +32,7 @@
 
             $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
             $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' );
-            
+
             $conditions = array(
 				array(
                     array(
@@ -57,7 +57,7 @@
 			);
 			/// Filtre zone géographique
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			
+
 			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
@@ -93,8 +93,8 @@
 			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
 				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
-			
-			
+
+
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
 				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false ) ).'\'';
@@ -103,22 +103,22 @@
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
 			}
-            
+
             // Pôle chargé de la PDO
 			if( !empty( $poledossierpcg66_id ) ) {
 				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
 			}
-			
+
 			// Type de la PDO
 			if( !empty( $typepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false )  ).'\'';
 			}
-			
+
 			// Organisme payeur
 			if( !empty( $orgpayeur ) ) {
 				$conditions[] = 'Dossierpcg66.orgpayeur = \''.Sanitize::clean( $orgpayeur, array( 'encode' => false )  ).'\'';
 			}
-			
+
 			// Agent ayant émis l'avis technique
 			if( !empty( $gestionnaireAvistechnique ) ) {
 				$conditions[] = 'Decisiondossierpcg66.useravistechnique_id = \''.Sanitize::clean( $gestionnaireAvistechnique, array( 'encode' => false ) ).'\'';
@@ -127,10 +127,10 @@
 			if( !empty( $gestionnaireValidation ) ) {
 				$conditions[] = 'Decisiondossierpcg66.userproposition_id = \''.Sanitize::clean( $gestionnaireValidation, array( 'encode' => false ) ).'\'';
 			}
-			
+
 			// Corbeille vide ?
 			$sqNbFichierDansCorbeille = '( SELECT count( fichiersmodules.id ) FROM fichiersmodules WHERE fichiersmodules.modele = \'Foyer\' AND fichiersmodules.fk_value = "Foyer"."id" )';
-			
+
 			if( isset( $params['Dossierpcg66']['exists'] ) && ( $params['Dossierpcg66']['exists'] != '' ) ) {
 				if( $params['Dossierpcg66']['exists'] ) {
 					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
@@ -139,8 +139,8 @@
 					$conditions[] = "{$sqNbFichierDansCorbeille} = 0";
 				}
 			}
-			
-			
+
+
 			// Motif concernant la personne du dossier
 			$motifpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.situationpdo_id' );
 			if( !empty( $motifpersonnepcg66_id ) ) {
@@ -164,9 +164,9 @@
 							)
 						)
 					)
-				.' )';	
+				.' )';
 			}
-            
+
             // Statut concernant la perosnne du dossier
 			$statutpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.statutpdo_id' );
 			if( !empty( $statutpersonnepcg66_id ) ) {
@@ -190,15 +190,15 @@
 							)
 						)
 					)
-				.' )';	
+				.' )';
 			}
-            
+
             // Décision sur la PDP
 			if( !empty( $decisionpdo_id ) ) {
 				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo_id, array( 'encode' => false )  ).'\'';
 			}
-            
-            
+
+
             /// Critères sur les dates de décisions PCG - date de validation et date de transmission à l'op
 			foreach( array( 'datetransmissionop', 'datevalidation' ) as $dateSelected ) {
                 if( isset( $params['Decisiondossierpcg66'][$dateSelected] ) && !empty( $params['Decisiondossierpcg66'][$dateSelected] ) ) {
@@ -209,40 +209,40 @@
                     }
                 }
             }
-            
-            // Organismes auxquels le dossier a été transmis 	 
-            $organismes_id = Set::extract( $params, 'Decisiondossierpcg66.org_id' ); 	 
-            if( !empty( $organismes_id ) ) { 	 
-                    $conditions[] = 'Decisiondossierpcg66.id IN ( '. 	 
-                            ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq( 	 
-                                    array( 	 
-                                            'alias' => 'decsdospcgs66_orgsdospcgs66', 	 
-                                            'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ), 	 
-                                            'contain' => false, 	 
-                                            'conditions' => array( 	 
-                                                    'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id 	 
-                                            ), 	 
-                                            'joins' => array( 	 
-                                                    array( 	 
-                                                            'table'      => 'orgstransmisdossierspcgs66', 	 
-                                                            'alias'      => 'orgstransmisdossierspcgs66', 	 
-                                                            'type'       => 'INNER', 	 
-                                                            'foreignKey' => false, 	 
-                                                            'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ), 	 
-                                                    ) 	 
-                                            ) 	 
-                                    ) 	 
-                            ) 	 
-                    .' )'; 	 
+
+            // Organismes auxquels le dossier a été transmis
+            $organismes_id = Set::extract( $params, 'Decisiondossierpcg66.org_id' );
+            if( !empty( $organismes_id ) ) {
+                    $conditions[] = 'Decisiondossierpcg66.id IN ( '.
+                            ClassRegistry::init( 'Decdospcg66Orgdospcg66' )->sq(
+                                    array(
+                                            'alias' => 'decsdospcgs66_orgsdospcgs66',
+                                            'fields' => array( 'decsdospcgs66_orgsdospcgs66.decisiondossierpcg66_id' ),
+                                            'contain' => false,
+                                            'conditions' => array(
+                                                    'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id' => $organismes_id
+                                            ),
+                                            'joins' => array(
+                                                    array(
+                                                            'table'      => 'orgstransmisdossierspcgs66',
+                                                            'alias'      => 'orgstransmisdossierspcgs66',
+                                                            'type'       => 'INNER',
+                                                            'foreignKey' => false,
+                                                            'conditions' => array( 'decsdospcgs66_orgsdospcgs66.orgtransmisdossierpcg66_id = orgstransmisdossierspcgs66.id' ),
+                                                    )
+                                            )
+                                    )
+                            )
+                    .' )';
             }
-            
+
             $nbpropo = Hash::get( $params, 'Decisiondossierpcg66.nbproposition' );
             if( isset($nbpropo) && $nbpropo != '') {
                 $conditions[] = array( $Dossierpcg66->sqVirtualField( 'nbpropositions', false ) => $nbpropo );
             }
 
 //debug($conditions);
-            
+
 			$querydata = array(
 				'fields' => array(
 					'Dossierpcg66.id',
@@ -314,16 +314,16 @@
                         )
                     ),
                     $Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
-                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ), 	 
+                    $Dossierpcg66->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
                     $Dossierpcg66->join( 'Poledossierpcg66', array( 'type' => 'LEFT OUTER' ) )
 				),
 				'limit' => 10,
 				'conditions' => $conditions
 			);
-			
-            
-            
+
+
+
             // ------------- Récupération de la liste des motifs  ----------
             $qdLibellesSituationpdo = array(
                 'fields' => array(
@@ -397,14 +397,14 @@
             );
             $vfNameOrganisme = $Dossierpcg66->Decisiondossierpcg66->vfListe( $qdOrganismes );
             $querydata['fields'][] = "{$vfNameOrganisme} AS \"Orgtransmisdossierpcg66__listorgs\"";
-            
-            
-            
+
+			$querydata = $Dossierpcg66->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
+
 			return $querydata;
 		}
 
 
-		
+
 		/**
 		*
 		*/
@@ -419,28 +419,28 @@
 			$typepdo_id = Set::extract( $params, 'Dossierpcg66.typepdo_id' );
 			$orgpayeur = Set::extract( $params, 'Dossierpcg66.orgpayeur' );
             $decisionpdo_id = Set::extract( $params, 'Decisiondossierpcg66.decisionpdo_id' );
-            
-			
+
+
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
 			}
-			
+
             // Pôle chargé de la PDO
 			if( !empty( $poledossierpcg66_id ) ) {
 				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
 			}
-            
+
              // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $params, 'Dossierpcg66.etatdossierpcg' );
 			if( isset( $params['Dossierpcg66']['etatdossierpcg'] ) && !empty( $params['Dossierpcg66']['etatdossierpcg'] ) ) {
 				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
-            
+
             $sqDernierDetailcalculdroitrsa = $Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
             $sqDerniereDecisiondossierpcg66 = $Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' );
             $sqDernierTraitementpcg66 = $Dossierpcg66->Personnepcg66->sqLatest( 'Traitementpcg66', 'created', array( true ) );
-            
+
             $conditions[] = array(
 				array(
                     array(
@@ -465,19 +465,19 @@
 				)
 			);
 			$conditions[] = 'Personne.id IN ( '.$Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
-			
-            
-            
+
+
+
             $conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
-            
-            
-            
+
+
+
 			$dossierEchu = Set::extract( $params, 'Dossierpcg66.dossierechu' );
 			if( isset( $params['Dossierpcg66']['dossierechu'] ) && !empty( $params['Dossierpcg66']['dossierechu'] ) ) {
 				$conditions[] = 'Traitementpcg66.id IN ( '.$Dossierpcg66->Personnepcg66->Traitementpcg66->sqTraitementpcg66Echu( 'Personnepcg66.id' ).' )';
 			}
-			
+
 			// Origine de la PDO
 			if( !empty( $originepdo ) ) {
 				$conditions[] = 'Dossierpcg66.originepdo_id = \''.Sanitize::clean( $originepdo, array( 'encode' => false )  ).'\'';
@@ -486,15 +486,15 @@
 			if( !empty( $typepdo_id ) ) {
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false )  ).'\'';
 			}
-			
+
 			// Organisme payeur
 			if( !empty( $orgpayeur ) ) {
 				$conditions[] = 'Dossierpcg66.orgpayeur = \''.Sanitize::clean( $orgpayeur, array( 'encode' => false )  ).'\'';
 			}
-			
+
 			// Corbeille vide ?
 			$sqNbFichierDansCorbeille = '( SELECT count( fichiersmodules.id ) FROM fichiersmodules WHERE fichiersmodules.modele = \'Foyer\' AND fichiersmodules.fk_value = "Foyer"."id" )';
-			
+
 			if( isset( $params['Dossierpcg66']['exists'] ) && ( $params['Dossierpcg66']['exists'] != '' ) ) {
 				if( $params['Dossierpcg66']['exists'] ) {
 					$conditions[] = "{$sqNbFichierDansCorbeille} = 0";
@@ -503,13 +503,13 @@
 					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
 				}
 			}
-            
+
 			// Décision sur la PCG
 			if( !empty( $decisionpdo_id ) ) {
 				$conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \''.Sanitize::clean( $decisionpdo_id, array( 'encode' => false )  ).'\'';
 			}
 
-            
+
             // Motif concernant la personne du dossier
 			$motifpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.situationpdo_id' );
 			if( !empty( $motifpersonnepcg66_id ) ) {
@@ -533,9 +533,9 @@
 							)
 						)
 					)
-				.' )';	
+				.' )';
 			}
-            
+
             // Statut concernant la perosnne du dossier
 			$statutpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.statutpdo_id' );
 			if( !empty( $statutpersonnepcg66_id ) ) {
@@ -559,9 +559,9 @@
 							)
 						)
 					)
-				.' )';	
+				.' )';
 			}
-   
+
             // Organismes auxquels le dossier a été transmis
             $organismes_id = Set::extract( $params, 'Decisiondossierpcg66.org_id' );
             if( !empty( $organismes_id ) ) {
@@ -592,8 +592,8 @@
             if( isset($nbpropo) && $nbpropo != '' && is_numeric($nbpropo) ) {
                 $conditions[] = array( $Dossierpcg66->sqVirtualField( 'nbpropositions', false ) => $nbpropo );
             }
-            
-            
+
+
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
 			$querydata = array(
 				'fields' => array(
@@ -659,8 +659,8 @@
 				'conditions' => $conditions
 			);
 
-            
-            
+
+
             // ------------- Récupération de la liste des motifs  ----------
             $qdLibellesSituationpdo = array(
                 'fields' => array(
@@ -734,7 +734,9 @@
             );
             $vfNameOrganisme = $Dossierpcg66->Decisiondossierpcg66->vfListe( $qdOrganismes );
             $querydata['fields'][] = "{$vfNameOrganisme} AS \"Orgtransmisdossierpcg66__listorgs\"";
-            
+
+			$querydata = $Dossierpcg66->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
+
 			return $querydata;
 		}
 

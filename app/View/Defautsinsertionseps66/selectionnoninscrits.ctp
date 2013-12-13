@@ -47,6 +47,7 @@
 	</fieldset>
 
 	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
 		echo $this->Search->paginationNombretotal();
 		echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 	?>

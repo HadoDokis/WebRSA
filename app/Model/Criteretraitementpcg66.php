@@ -36,7 +36,7 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
             $conditions = $this->conditionsDetailcalculdroitrsa( $conditions, $params );
-            
+
             $conditions = $this->conditionsDates( $conditions, $params, 'Traitementpcg66.created' );
 
 			/// Critères
@@ -88,12 +88,12 @@
 			if( !empty( $typetraitement ) ) {
 				$conditions[] = 'Traitementpcg66.typetraitement = \''.Sanitize::clean( $typetraitement, array( 'encode' => false ) ).'\'';
 			}
-            
+
 			// Gestionnaire de la PDO
 			if( !empty( $gestionnaire ) ) {
 				$conditions[] = 'Dossierpcg66.user_id IN ( \''.implode( '\', \'', $gestionnaire ).'\' )';
 			}
-			
+
             // Pôle chargé de la PDO
 			if( !empty( $poledossierpcg66_id ) ) {
 				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \''.implode( '\', \'', $poledossierpcg66_id ).'\' )';
@@ -142,10 +142,10 @@
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP
 			$conditions['Prestation.rolepers'] = array( 'DEM', 'CJT' );
-            
-            
-            $sqDernierDetailcalculdroitrsa = $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );           
-            
+
+
+            $sqDernierDetailcalculdroitrsa = $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+
 			$conditions[] = array(
                 array(
                     array(
@@ -163,10 +163,10 @@
 				)
 			);
 			$conditions[] = 'Personne.id IN ( '.$Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Personne->sqResponsableDossierUnique('Foyer.id').' )';
-			
+
 			// Corbeille vide ?
 			$sqNbFichierDansCorbeille = '( SELECT count( fichiersmodules.id ) FROM fichiersmodules WHERE fichiersmodules.modele = \'Foyer\' AND fichiersmodules.fk_value = "Foyer"."id" )';
-			
+
 			if( isset( $params['Dossierpcg66']['exists'] ) && ( $params['Dossierpcg66']['exists'] != '' ) ) {
 				if( $params['Dossierpcg66']['exists'] ) {
 					$conditions[] = "{$sqNbFichierDansCorbeille} > 0";
@@ -216,6 +216,9 @@
 				),
 				'conditions' => $conditions
 			);
+
+			$query = $Traitementpcg66->Personnepcg66->Dossierpcg66->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $params );
+
 			return $query;
 		}
 	}

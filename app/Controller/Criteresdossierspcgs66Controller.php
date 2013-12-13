@@ -19,7 +19,7 @@
 		public $uses = array( 'Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ), 'Jetons2' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'Search.Prg' => array( 'actions' => array( 'dossier', 'gestionnaire' ) ), 'Jetons2' );
 
 		/**
 		*
@@ -52,7 +52,7 @@
 					)
 				)
 			);
-            
+
             $this->set( 'polesdossierspcgs66', $this->User->Poledossierpcg66->find(
 					'list',
 					array(
@@ -137,6 +137,10 @@
 
 			$this->_setOptions();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->render( $this->action );
 		}
 

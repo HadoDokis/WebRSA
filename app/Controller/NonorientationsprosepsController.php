@@ -21,7 +21,7 @@
 
 		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93', 'Nonorientationproep66' );
 
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'InsertionsAllocataires', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -95,6 +95,10 @@
 			}
 			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->set( compact( 'cohorte' ) );
 		}
 

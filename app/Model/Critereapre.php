@@ -32,7 +32,7 @@
 		 * @return array
 		 */
 		public function search( $etatApre, $mesCodesInsee, $filtre_zone_geo, $criteresapres ) {
-			
+
             /// Conditions de base
 			$conditions = array( );
 
@@ -172,7 +172,7 @@
 
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
-			
+
 			$type = 'INNER';
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
 				$type = 'LEFT OUTER';
@@ -348,12 +348,15 @@
 
 				$query['conditions'][] = array( 'or' => $subQueries );
 			}
-            
-  
+
+
             if( Configure::read( 'CG.cantons' )  ) {
                 $query['fields'][] = 'Canton.canton';
                 $query['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();
             }
+
+			// Référent du parcours
+			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresapres );
 
 			return $query;
 		}

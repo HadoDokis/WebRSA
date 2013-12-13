@@ -88,6 +88,7 @@
 	</fieldset>
 
 	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Filtre' );
 		echo $this->Search->paginationNombretotal( 'Filtre.nombre_total' );
 		echo $this->Search->observeDisableFormOnSubmit( 'Filtre' );
 	?>
