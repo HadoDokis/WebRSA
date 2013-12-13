@@ -338,8 +338,12 @@
 			);
 		}
 
-
-		public function search( $mesCodesInsee, $filtre_zone_geo, $params ) {
+		/**
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function search( array $params ) {
 			$conditions[] = array(
 				'OR' => array(
 					'Dsp.id IS NOT NULL',
@@ -347,11 +351,10 @@
 				)
 			);
 
-			$conditions = $this->conditionsAdresse( $conditions, $params, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $params );
 
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
-			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
-			
+
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
 
 			// Secteur d'activité et code métier, texte libre
@@ -386,8 +389,7 @@
 				}
 			}
 
-
-			$query = array(
+			$querydata = array(
 				'fields' => array(
 					'"DspRev"."id"',
 					//
@@ -518,8 +520,89 @@
 				'conditions' => $conditions
 			);
 
+			// Référent du parcours
+			$querydata = $this->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
 
-			return $query;
+			// ----------------------------------------------------------------
+
+			$links = array(
+				'Detaildifsoc.difsoc',
+				'Detailaccosocindi.nataccosocindi',
+				'Detaildifdisp.difdisp',
+			);
+
+			foreach( $links as $link ) {
+				list( $linkedModelName, $linkedFieldName ) = model_field( $link );
+				$fields = array();
+
+				foreach( array( 'Dsp', 'DspRev' ) as $modelName ) {
+					if( $modelName == 'DspRev' ) {
+						$linkedModelName = "{$linkedModelName}Rev";
+					}
+
+					$foreignKey = Inflector::underscore( $modelName ).'_id';
+
+					// Champ virtuel
+					$qdVirtualField = array(
+						'fields' => array( "{$linkedModelName}.{$linkedFieldName}" ),
+						'conditions' => array(
+							"{$linkedModelName}.{$foreignKey} = {$modelName}.id"
+						),
+						'contain' => false
+					);
+
+					$fields[$modelName] = $this->Personne->{$modelName}->{$linkedModelName}->vfListe( $qdVirtualField );
+				}
+
+				$virtualField = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN {$fields['Dsp']} ELSE {$fields['DspRev']} END ) AS \"Donnees__{$linkedFieldName}\"";
+				$querydata['fields'][] = $virtualField;
+
+				// Conditions
+				$value = Hash::get( $params, $link );
+				if( !empty( $value ) ) {
+					list( $linkedModelName, $linkedFieldName ) = model_field( $link );
+
+					// Dsp
+					$tableName = Inflector::tableize( $linkedModelName );
+					$sqDsp = $this->{$linkedModelName}->sq(
+						array(
+							'alias' => $tableName,
+							'fields' => array( "{$tableName}.id" ),
+							'conditions' => array(
+								"{$tableName}.dsp_id = Dsp.id",
+								"{$tableName}.{$linkedFieldName}" => $value,
+							),
+							'contain' => false,
+						)
+					);
+
+					// DspRev
+					$tableName = Inflector::tableize( $linkedModelName ).'_revs';
+					$linkedModelName = "{$linkedModelName}Rev";
+					$sqDspRev = $this->DspRev->{$linkedModelName}->sq(
+						array(
+							'alias' => $tableName,
+							'fields' => array( "{$tableName}.id" ),
+							'conditions' => array(
+								"{$tableName}.dsp_rev_id = DspRev.id",
+								"{$tableName}.{$linkedFieldName}" => $value,
+							),
+							'contain' => false,
+						)
+					);
+
+					$querydata['conditions'][] = array(
+						'OR' => array(
+							"EXISTS( {$sqDsp} )",
+							"EXISTS( {$sqDspRev} )",
+						)
+					);
+				}
+			}
+
+			// -----------------------------------------------------------------
+
+			return $querydata;
 		}
 	}
 ?>
