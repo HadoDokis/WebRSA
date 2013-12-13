@@ -37,6 +37,8 @@ SELECT add_missing_constraint ( 'public', 'orgstransmisdossierspcgs66', 'orgstra
 
 SELECT add_missing_table_field ( 'public', 'dossierspcgs66', 'dossierpcg66pcd_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'dossierspcgs66', 'dossierspcgs66_dossierpcg66pcd_id_fkey', 'dossierspcgs66', 'dossierpcg66pcd_id', false );
+
+DROP INDEX IF EXISTS dossierspcgs66_dossierpcg66pcd_id_idx;
 CREATE UNIQUE INDEX dossierspcgs66_dossierpcg66pcd_id_idx ON dossierspcgs66( dossierpcg66pcd_id );
 
 --==============================================================================
@@ -44,7 +46,7 @@ CREATE UNIQUE INDEX dossierspcgs66_dossierpcg66pcd_id_idx ON dossierspcgs66( dos
 -- l'EP du CG 58
 --==============================================================================
 
-ALTER TABLE sanctionseps58 DROP CONSTRAINT sanctionseps58_orientstruct_id_origine_chk;
+SELECT alter_table_drop_constraint_if_exists( 'public', 'sanctionseps58', 'sanctionseps58_orientstruct_id_origine_chk' );
 
 --------------------------------------------------------------------------------
 -- Mise à jour de sanctionseps58.orientstruct_id car il faut une orientation en emploi
