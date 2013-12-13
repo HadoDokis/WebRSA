@@ -99,3 +99,6 @@ msgstr "Annulation"
 
 msgid "ActioncandidatPersonne.motifannulation"
 msgstr "Raison de l'annulation"
+
+msgid "ActioncandidatPersonne.nomprestataire"
+msgstr "Nom du prestataire"

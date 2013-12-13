@@ -48,6 +48,10 @@
 				?>
 			</td>
 		</tr>
+        <tr>
+			<td class="wide noborder"><strong>Email partenaire/prestataire : </strong></td>
+			<td class="wide noborder"><?php echo Set::classicExtract( $actioncandidat, 'Actioncandidat.emailprestataire' ); ?></td>
+		</tr>  
 	</table>
 </fieldset>
 <script type="text/javascript">

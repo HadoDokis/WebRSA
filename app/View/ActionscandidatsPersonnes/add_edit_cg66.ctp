@@ -37,10 +37,12 @@
             array(
 //                'Progfichecandidature66.Progfichecandidature66' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'select', 'multiple' => 'checkbox', 'empty' => false, 'options' => $progsfichescandidatures66 ),
                 'ActioncandidatPersonne.progfichecandidature66_id' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'radio', 'empty' => false, 'options' => $progsfichescandidatures66 ),
-                'ActioncandidatPersonne.formationregion'
+                'ActioncandidatPersonne.formationregion',
+                'ActioncandidatPersonne.nomprestataire'
             ),   
             array(
-                'options' => $options
+                'options' => $options,
+                'domain' => $domain
             )
         );
         echo '</fieldset>';
