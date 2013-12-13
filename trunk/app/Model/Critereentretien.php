@@ -196,6 +196,8 @@
 				'conditions' => $conditions
 			);
 
+			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresentretiens );
+
 			return $query;
 
 

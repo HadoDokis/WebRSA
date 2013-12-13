@@ -438,7 +438,7 @@
 						'contain' => false
 					)
 				);
-                
+
                 $decisiondefautinsertion_id = Hash::get( $dossierep, 'Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.id' );
                 $etatdossierep = Hash::get( $dossierep, 'Dossierep.Passagecommissionep.0.Decisiondefautinsertionep66.0.decision' );
 
@@ -906,6 +906,8 @@
 			if ( !empty( $identifiantpe ) ) {
 				$queryData['conditions'][] = ClassRegistry::init( 'Historiqueetatpe' )->conditionIdentifiantpe( $identifiantpe );
 			}
+
+			$queryData = $this->Dossierep->Personne->PersonneReferent->completeQdReferentParcours( $queryData, $datas );
 
 
 			return $queryData;
@@ -1419,6 +1421,8 @@
 				),
 				'contain' => false
 			);
+
+			$query = $this->Dossierep->Personne->PersonneReferent->completeQdReferentParcours( $query, $params );
 
 			return $query;
 		}

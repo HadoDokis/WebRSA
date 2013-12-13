@@ -29,7 +29,7 @@
 	}
 
 	echo $this->Xform->create( 'Criteredossierpcg66', array( 'type' => 'post', 'action' => 'dossier', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Dossierpcg66']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );
-    
+
     echo $this->Form->input( 'Dossierpcg66.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
 ?>
 	<?php
@@ -73,7 +73,7 @@
 				'options' => $options
 			)
 		);
-        
+
         echo '<fieldset class="col2 noborder">';
         echo $this->Xform->input( 'Dossierpcg66.user_id', array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.user_id' ), 'type' => 'select', 'multiple' => 'checkbox',  'options' => $gestionnaire, 'empty' => false ) );
         echo '</fieldset>';
@@ -81,12 +81,12 @@
 	?>
 	<?php
 		echo $this->Search->etatDossierPCG66( $etatdossierpcg );
-        
+
         echo $this->Xform->input( 'Decisiondossierpcg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
-		
+
 		echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
         echo $this->Form->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ) );
-		
+
 // 		echo $this->Form->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 		echo $this->Form->input('Decisiondossierpcg66.useravistechnique_id', array( 'label' => 'Agent ayant émis l\'avis technique', 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
 		echo $this->Form->input('Decisiondossierpcg66.userproposition_id', array( 'label' => 'Agent ayant émis la validation', 'type' => 'select', 'options' => $gestionnaire, 'empty' => true ) );
@@ -117,6 +117,7 @@
     </fieldset>
     <?php echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );?>
 </fieldset>
+	<?php echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );?>
  <fieldset>
     <legend>Comptage des résultats</legend>
     <?php echo $this->Form->input( 'Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
@@ -155,7 +156,7 @@
 			</thead>
 			<tbody>
 				<?php
-                
+
 					foreach( $criteresdossierspcgs66 as $index => $criteredossierpcg66 ) {
 //debug($criteredossierpcg66);
 
@@ -178,7 +179,7 @@
 
 						$etatdosrsaValue = Set::classicExtract( $criteredossierpcg66, 'Situationdossierrsa.etatdosrsa' );
 						$etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-                      
+
                         $differentsMotifs  = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listemotifs'] );
                         if( !empty( $differentsMotifs ) ) {
                             $differentsMotifs = '<ul><li>'.implode( '</li><li>', $differentsMotifs ).'</li></ul>';
@@ -186,7 +187,7 @@
                         else {
                             $differentsMotifs = '';
                         }
-                        
+
                         $differentsStatuts  = vfListeToArray( $criteredossierpcg66['Personnepcg66']['listestatuts'] );
                         if( !empty( $differentsStatuts ) ) {
                             $differentsStatuts = '<ul><li>'.implode( '</li><li>', $differentsStatuts ).'</li></ul>';
@@ -201,7 +202,7 @@
                         else {
                             $infoGestionnaire = Hash::get( $criteredossierpcg66, 'User.nom_complet' );
                         }
-                        
+
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>

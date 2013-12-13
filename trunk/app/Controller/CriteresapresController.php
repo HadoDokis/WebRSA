@@ -163,6 +163,9 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->_setOptions();
 
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			switch( $etatApre ) {
 				case 'Critereapre::all':
 					$this->set( 'pageTitle', 'Toutes les APREs' );

@@ -225,6 +225,8 @@
 			$querydata['conditions'] = Set::merge( $querydata['conditions'], '( '.implode( ' OR ', array_unique( $tConditions ) ).' )' );
 			$querydata['conditions'] = Set::merge( $querydata['conditions'], array( 'COALESCE( '.implode( ',', $coalesce ).' ) IS NOT NULL' ) );
 
+			$querydata = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteresindu );
+
 			return $querydata;
 		}
 	}

@@ -23,6 +23,7 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.Prg' => array( 'actions' => array( 'index' ) )
 		);
 
@@ -120,6 +121,9 @@
 			$this->_setOptions();
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**

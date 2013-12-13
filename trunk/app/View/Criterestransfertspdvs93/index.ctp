@@ -35,6 +35,7 @@
 
 	echo $this->Form->input( 'Search.NvOrientstruct.structurereferente_id', array( 'label' => 'Structure référente cible', 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'] ) );
 
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 
 	echo $this->Form->submit( __( 'Search' ) );

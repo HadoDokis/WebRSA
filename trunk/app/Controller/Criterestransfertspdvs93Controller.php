@@ -34,6 +34,7 @@
 			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.Prg' => array(
 				'actions' => array(
 					'index' => array(
@@ -96,6 +97,9 @@
 				'typesorients' => $this->Dossier->Foyer->Personne->Orientstruct->Typeorient->listOptions(),
 			);
 			$this->set( compact( 'options' ) );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 	}
 ?>

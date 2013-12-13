@@ -53,6 +53,7 @@
 			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Cohortes' => array(
 				'apresavalider',
 				'transfert',
@@ -228,6 +229,8 @@
 
 			$this->_setOptions();
 
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutValidation ) {
 				case 'Validationapre::apresavalider':

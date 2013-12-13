@@ -189,6 +189,8 @@
 				'order' => array( 'Personne.nom ASC, Personne.prenom ASC' ),
 			);
 
+			$query = $Apre66->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresapres['Search'] );
+
 			return $query;
 		}
 	}

@@ -310,6 +310,8 @@
 				'order' => array( $this->Orientstruct->Personne->Contratinsertion->sqVirtualField( 'nbjours', false )." DESC" )
 			);
 
+			$querydata = $this->Orientstruct->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $datas['Filtre'] );
+
 			return $querydata;
 		}
 

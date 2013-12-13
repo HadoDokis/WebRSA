@@ -34,6 +34,7 @@
 				)
 			),
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Cohortes' => array(
 				'nouveaux',
 				'nouveauxsimple',
@@ -264,7 +265,7 @@
 					}
 
 					if( $statutValidation != 'Decisionci::valides' ) {
-						$this->Cohortes->get( array_unique( Set::extract( $cohorteci, '{n}.Dossier.id' ) ) );
+						$this->Cohortes->get( array_unique( (array)Set::extract( $cohorteci, '{n}.Dossier.id' ) ) );
 					}
 
 					$this->set( 'cohorteci', $cohorteci );
@@ -278,6 +279,9 @@
 
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutValidation ) {
 				case 'Decisionci::nouveaux':

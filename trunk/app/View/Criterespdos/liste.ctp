@@ -63,8 +63,9 @@
 			?>
 		</fieldset>
 </fieldset>
-	<?php echo $this->Search->paginationNombretotal(); ?>
 	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->paginationNombretotal();
 
 		echo $this->Xform->submit( __( 'Search' ) );
 		echo $this->Xform->end();

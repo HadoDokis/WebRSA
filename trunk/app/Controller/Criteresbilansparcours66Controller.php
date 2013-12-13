@@ -17,7 +17,7 @@
 	{
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 		public $uses = array(  'Criterebilanparcours66', 'Bilanparcours66', 'Option', 'Referent' );
-		public $components = array( 'Gestionzonesgeos', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires' );
 		public $aucunDroit = array( 'exportcsv' );
 
 		/**
@@ -62,6 +62,10 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->render( 'index' );
 		}
 

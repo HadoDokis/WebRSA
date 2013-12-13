@@ -385,7 +385,7 @@
 			);
 
 			// Référent du parcours
-			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteresci );
+			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Filtre']['PersonneReferent'] ) ? $criteresci['Filtre'] : $criteresci ) );
 
 			return $querydata;
 		}

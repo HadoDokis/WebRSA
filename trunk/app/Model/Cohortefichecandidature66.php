@@ -259,6 +259,8 @@
                 'order' => array( 'ActioncandidatPersonne.datesignature ASC' )
 			);
 
+			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresfichescandidature );
+
 			return $query;
 		}
 	}

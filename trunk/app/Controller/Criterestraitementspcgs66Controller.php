@@ -19,7 +19,7 @@
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos','Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires',  'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		/**
 		*
@@ -47,7 +47,7 @@
 					)
 				)
 			);
-            
+
             $this->set( 'polesdossierspcgs66', $this->User->Poledossierpcg66->find(
 					'list',
 					array(
@@ -93,9 +93,9 @@
 				$paginate['Traitementpcg66']['conditions'][] = WebrsaPermissions::conditionsDossier();
 
                 $paginate['Traitementpcg66']['fields'][] = $this->Jetons2->sqLocked( 'Dossier', 'locked' );
-                
+
                 $progressivePaginate = !Hash::get( $this->request->data, 'Traitementpcg66.paginationNombreTotal' );
-                
+
 				$this->paginate = $paginate;
 				$criterestraitementspcgs66 = $this->paginate( 'Traitementpcg66', array(), array(), $progressivePaginate );
 
@@ -110,6 +110,10 @@
 
 			$this->_setOptions();
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'conditions' => array( 'orientation' => 'O' ) ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
 			$this->render( $this->action );
 		}
 
