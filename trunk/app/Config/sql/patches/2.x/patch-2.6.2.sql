@@ -111,6 +111,13 @@ DELETE FROM dossierseps WHERE id IN (
 -- Ajout du champ;progfichecandidature66_id dans la table actionscandidats_personnes
 SELECT add_missing_table_field ( 'public', 'actionscandidats_personnes', 'progfichecandidature66_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'actionscandidats_personnes', 'actionscandidats_personnes_progfichecandidature66_id_fkey', 'progsfichescandidatures66', 'progfichecandidature66_id', false );
+
+----------------------------------------------------------------------------------------
+-- 20131211 : Ajout du champ nom du prestataire dans la table actionscandidats_personnes
+--            Ajout du champ Email du partenaire/prestataire dans la table actionscandidats
+----------------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'actionscandidats_personnes', 'nomprestataire', 'VARCHAR(250)' );
+SELECT add_missing_table_field ( 'public', 'actionscandidats', 'emailprestataire', 'VARCHAR(250)' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -100,6 +100,13 @@
                     'rule' => array( 'notEmptyIf', 'hasfichecandidature', true, array( '1' ) ),
                     'message' => 'Champ obligatoire',
                 ),
+			),
+			'emailprestataire' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'message' => 'Veuillez entrer une adresse mail valide',
+                    'allowEmpty' => true
+				)
 			)
 		);
 

@@ -126,6 +126,7 @@
 						'Actioncandidat.chargeinsertion_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
 						'Actioncandidat.secretaire_id' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
 						'Actioncandidat.contractualisation' => array( 'domain' => 'actioncandidat', 'required' => true, 'type' => 'select'),
+                        'Actioncandidat.emailprestataire' => array( 'domain' => 'actioncandidat' ),
 						'Actioncandidat.lieuaction' => array( 'domain' => 'actioncandidat', 'required' => true ),
 						'Actioncandidat.cantonaction' => array( 'domain' => 'actioncandidat', 'required' => true, 'options' => $cantons )
 					),

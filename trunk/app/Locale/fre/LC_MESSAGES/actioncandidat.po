@@ -149,3 +149,6 @@ msgstr "Non"
 
 msgid "Actioncandidat.contractualisation93"
 msgstr "Contractualisation"
+
+msgid "Actioncandidat.emailprestataire"
+msgstr "Email partenaire/prestataire"
