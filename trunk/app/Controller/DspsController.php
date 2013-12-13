@@ -26,6 +26,7 @@
 			'Default',
 			'Fileuploader',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.Prg' => array(
 				'actions' => array( 'index' )
 			),
@@ -949,12 +950,6 @@
 		 * Recherche par DSPs
 		 */
 		public function index() {
-			$this->Gestionzonesgeos->setCantonsIfConfigured();
-			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
-
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = (!empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array( ) );
-
 			$params = $this->request->data;
 			if( !empty( $params ) ) {
 				$wildcardKeys = array(
@@ -971,13 +966,12 @@
 				);
 
 				$paginate = $this->Dsp->search(
-					$mesCodesInsee,
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 					$this->_wildcardKeys( $this->request->data, $wildcardKeys )
 				);
 
-				$paginate = $this->_qdAddFilters( $paginate );
+				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$paginate = $this->_qdAddFilters( $paginate );
 
 				$paginate['limit'] = 10;
 
@@ -987,15 +981,18 @@
 
 				$this->set( 'dsps', $dsps );
 			}
+
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
-			$mesCodesInsee = (!empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array( ) );
-
 			$wildcardKeys = array(
 				'Personne.nom',
 				'Personne.prenom',
@@ -1010,13 +1007,14 @@
 			);
 
 			$querydata = $this->Dsp->search(
-				$mesCodesInsee,
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $wildcardKeys )
 			);
-			unset( $querydata['limit'] );
 
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$querydata = $this->_qdAddFilters( $querydata );
+
+			unset( $querydata['limit'] );
 
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
 
