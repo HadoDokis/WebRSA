@@ -73,15 +73,12 @@
 					)
 				);
 
-				$paginationNombreTotal = Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
-				$this->set( 'format', $this->_paginationFormat( $paginationNombreTotal ) );
-
 				$this->paginate = $querydata;
 				$results = $this->paginate(
 					$this->Personne,
 					array(),
 					array(),
-					!$paginationNombreTotal
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 
 				$this->Cohortes->get( Hash::extract( $results, '{n}.Dossier.id' ) );

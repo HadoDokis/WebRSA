@@ -104,17 +104,11 @@
 
                 $results = array();
                 foreach( $querydatas as $key => $querydata ) {
-//                    $this->paginate = $querydata;
-//                    $results[$key] = $this->paginate( $this->Actioncandidat );
                     $results[$key] = $this->Actioncandidat->find( 'all', $querydata );
-
-                    // INFO: parce qu'on pagine dans une boucle sur le même modèle
-//					$this->Components->unload( 'Paginator' );
-//					$this->Components->unload( 'Search.ProgressivePaginator' );
                 }
                 $results['actions_par_partenaires'] = $results['partenaires'];
-                
-                
+
+
                 // FIXME: liste des actions par partenaires
                 foreach( $results['actions_par_partenaires'] as $i => $result ) {
                     $partenaire_id = Set::classicExtract( $result, 'Partenaire.id' );
@@ -132,7 +126,7 @@
                             )
                         )
                     );
-                   
+
                     $listeActions = Hash::extract( $partenairesParContacts, '{n}.Actioncandidat.{n}.name' );
 
                     sort($listeActions, SORT_REGULAR);

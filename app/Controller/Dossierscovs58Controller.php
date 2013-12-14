@@ -269,7 +269,7 @@
 
 				$this->paginate = $qd;
 				$dossiers[$theme] = $this->paginate( $this->Dossiercov58->{$class} );
-				$this->Components->unload( 'ProgressivePaginator' );
+				$this->refreshPaginator();
 
 				// INFO: pour avoir le formulaire pré-rempli ... à mettre dans le modèle également ?
 				if( empty( $this->request->data ) ) {

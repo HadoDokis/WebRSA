@@ -350,7 +350,7 @@
 				)
 			);
 
-			$queryData = $this->_setPaginationOrder( $queryData );
+			$queryData = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $queryData );
 
 			$queryData['fields'][] = 'Pdf.cmspath';
 

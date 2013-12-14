@@ -7,7 +7,8 @@
 	 * @package app.View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::import( 'Helper', 'Paginator' );
+	App::uses( 'PaginatorHelper', 'View/Helper' );
+	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
 	/**
 	 * La classe XPaginator2Helper permet la traduction automatique des titres et
@@ -88,29 +89,9 @@
 		 * @return string
 		 */
 		public function paginationBlock( $classname, $urlOptions, $format = 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) {
-			$page = Set::classicExtract( $this->request->params, "paging.{$classname}.page" );
-			$count = Set::classicExtract( $this->request->params, "paging.{$classname}.count" );
-			$limit = Set::classicExtract( $this->request->params, "paging.{$classname}.limit" );
+			$progressivePaginate = SearchProgressivePagination::enabled( $this->request->params['controller'], $this->request->params['action'] );
+			$format = SearchProgressivePagination::paginatorHelperFormat( $this->request, $classname, $format );
 			$options = array( 'model' => $classname );
-
-			$controllerName = Inflector::camelize( $this->request->params['controller'] );
-
-			// Pagination progressive pour ce contrôleur et cette action ?
-			$progressivePaginate = Configure::read( "Optimisations.{$controllerName}_{$this->request->params['action']}.progressivePaginate" );
-
-			// Pagination progressive pour ce contrôleur ?
-			if( is_null( $progressivePaginate ) ) {
-				$progressivePaginate = Configure::read( "Optimisations.{$controllerName}.progressivePaginate" );
-			}
-
-			// Pagination progressive en général ?
-			if( is_null( $progressivePaginate ) ) {
-				$progressivePaginate = Configure::read( 'Optimisations.progressivePaginate' );
-			}
-
-			if( ( $count > ( $limit * $page ) ) && ( $format == 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' ) && $progressivePaginate ) {
-				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
-			}
 
 			$this->options( array( 'url' => $urlOptions ) );
 			$pagination = null;
@@ -127,7 +108,7 @@
 						$this->next( __( '>' ), $options )
 					);
 
-					if( !Configure::read( 'Optimisations.progressivePaginate' ) ) {
+					if( !$progressivePaginate ) {
 						$links[] = $this->last( __( '>>' ), $options );
 					}
 
