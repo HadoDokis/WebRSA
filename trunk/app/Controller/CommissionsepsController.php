@@ -647,20 +647,14 @@
 				// Ajout des tris sur les colonnes des dossiers affectés à une EP
 				$this->paginate = $qd;
 				$dossiers[$theme] = $this->paginate( $this->Commissionep->Passagecommissionep->Dossierep );
-				// INFO: sinon ne fonctionne pas correctement dans une boucle en CakePHP 2.x
-				if( CAKE_BRANCH != '1.2' ) {
-					$this->Components->unload( 'Search.ProgressivePaginator' );
-					$this->Components->unload( 'Paginator' );
-				}
+				$this->refreshPaginator();
 
 				$countDossiers += count( $dossiers[$theme] );
 			}
 
 			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
-			$querydata = $this->_setPaginationOrder( $querydata );
-            
-//            debug($querydata);
-//            die();
+			$querydata = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $querydata );
+
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 
@@ -1342,7 +1336,7 @@
 		 */
 		public function exportcsv( $commissionep_id = null ) {
 			$querydata = $this->Commissionep->qdSynthese( $commissionep_id );
-			$querydata = $this->_setPaginationOrder( $querydata );
+			$querydata = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $querydata );
 			$dossierseps = $this->Commissionep->Passagecommissionep->find( 'all', $querydata );
 
 			$this->_setOptions();

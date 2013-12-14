@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 */
 	App::uses( 'Controller', 'Controller' );
+	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
 	/**
 	 * Classe de base de tous les contrôleurs de l'application.
@@ -82,8 +83,6 @@
 		/**
 		 * Fait-on une pagination standard ou une pagination progressive ?
 		 *
-		 * @see Configure::write( 'Optimisations.progressivePaginate', true )
-		 *
 		 * @param type $object
 		 * @param type $scope
 		 * @param type $whitelist
@@ -91,40 +90,16 @@
 		 * @return type
 		 */
 		public function paginate( $object = null, $scope = array( ), $whitelist = array( ), $progressivePaginate = null ) {
-			if( is_null( $progressivePaginate ) ) {
-				$progressivePaginate = $this->_hasProgressivePagination();
-			}
-
-			Configure::write( "Optimisations.{$this->name}_{$this->action}.progressivePaginate", $progressivePaginate );
-
-			if( $progressivePaginate ) {
-				return $this->Components->load( 'Search.ProgressivePaginator', $this->paginate )->paginate( $object, $scope, $whitelist );
-			}
-			else {
-				return $this->Components->load( 'Paginator', $this->paginate )->paginate( $object, $scope, $whitelist );
-			}
+			return $this->Components->load( 'Search.SearchPaginator', $this->paginate )->paginate( $object, $scope, $whitelist, $progressivePaginate );
 		}
 
 		/**
-		 * Retourne le format à utiliser par le PaginatorHelper suivant que l'on
-		 * utilise la pagination progressive ou non.
-		 *
-		 * @param boolean $nombre_total
-		 * @return string
+		 * Il faut décharger les paginator dans une boucle en CakePHP 2.x sinon
+		 * ça ne fonctionne pas correctement.
 		 */
-		protected function _paginationFormat( $nombre_total = null ) {
-			if( is_null( $nombre_total ) ) {
-				$nombre_total = !$this->_hasProgressivePagination();
-			}
-
-			if( $nombre_total ) {
-				$format = __( 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' );
-			}
-			else {
-				$format = 'Résultats %start% - %end% sur au moins %count% résultats.';
-			}
-
-			return $format;
+		public function refreshPaginator() {
+			$this->Components->unload( 'Search.ProgressivePaginator' );
+			$this->Components->unload( 'Paginator' );
 		}
 
 		/**
@@ -275,31 +250,6 @@
 		}
 
 		/**
-		 * Permet de savoir si la pagination progressive est définie dans le webrsa.inc:
-		 * 	- pour ce contrôleur et cette action
-		 * 	-  pour ce contrôleur
-		 * 	- pour l'ensemble des contrôleurs
-		 *
-		 * @return boolean
-		 */
-		protected function _hasProgressivePagination() {
-			// Pagination progressive pour ce contrôleur et cette action ?
-			$progressivePaginate = Configure::read( "Optimisations.{$this->name}_{$this->action}.progressivePaginate" );
-
-			// Pagination progressive pour ce contrôleur ?
-			if( is_null( $progressivePaginate ) ) {
-				$progressivePaginate = Configure::read( "Optimisations.{$this->name}.progressivePaginate" );
-			}
-
-			// Pagination progressive en général ?
-			if( is_null( $progressivePaginate ) ) {
-				$progressivePaginate = Configure::read( 'Optimisations.progressivePaginate' );
-			}
-
-			return $progressivePaginate;
-		}
-
-		/**
 		 * Fonction utilisataire permettant de mettre en message flash le résultat des actions Save et Delete.
 		 *
 		 * @param string $message
@@ -311,21 +261,6 @@
 			$this->Session->setFlash(
 					__( "{$message}->{$class}" ), 'default', array( 'class' => $class )
 			);
-		}
-
-		/**
-		 * Permet de remplir l'attribut order d'un querydata, en l'absence de
-		 * pagination (pour utiliser sur un simple find), grâce aux paramètres
-		 * de pagination passés dans l'URL.
-		 *
-		 * @param array $querydata
-		 * @return array
-		 */
-		protected function _setPaginationOrder( $querydata ) {
-			if( isset( $this->request->params['named']['sort'] ) && isset( $this->request->params['named']['direction'] ) ) {
-				$querydata['order'] = array( "{$this->request->params['named']['sort']} {$this->request->params['named']['direction']}" );
-			}
-			return $querydata;
 		}
 	}
 ?>
