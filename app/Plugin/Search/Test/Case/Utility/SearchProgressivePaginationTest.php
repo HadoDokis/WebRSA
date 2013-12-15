@@ -7,7 +7,7 @@
 	 * @package Validation
 	 * @subpackage Test.Case.Utility.Validation2Formatters
 	 */
-	App::uses( 'SearchProgressivePagination', 'Utility' );
+	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
 	/**
 	 * SearchProgressivePaginationTest class
@@ -93,6 +93,63 @@
 			SearchProgressivePagination::disable( 'MyControllerName', 'my_action' );
 			$result = SearchProgressivePagination::enabled( 'MyControllerName', 'my_action' );
 			$this->assertEquals( false, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode SearchProgressivePagination::format();
+		 */
+		public function testFormat() {
+			$result = __( SearchProgressivePagination::format( true ) );
+			$this->assertTrue( strstr( $result, ' au moins ' ) !== false );
+
+			$result = __( SearchProgressivePagination::format( false ) );
+			$this->assertFalse( strstr( $result, ' au moins ' ) !== false );
+		}
+
+		/**
+		 * Test de la méthode SearchProgressivePagination::paginatorHelperFormat();
+		 */
+		public function testPaginatorHelperFormat() {
+			$Request = new CakeRequest();
+			$Request->addParams(
+				array(
+					'controller' => 'users',
+					'action' => 'index',
+					'pass' => array( ),
+					'named' => array( ),
+					'paging' => array(
+						'User' => array(
+							'page' => 1,
+							'current' => 1,
+							'count' => 21,
+							'prevPage' => false,
+							'nextPage' => true,
+							'pageCount' => 2,
+							'order' => null,
+							'limit' => 20,
+							'options' => array(
+								'page' => 1,
+								'conditions' => array()
+							),
+							'paramType' => 'named'
+						)
+					)
+				)
+			);
+			$className = 'User';
+
+			// 1. Sans la pagination progressive
+			$result = __( SearchProgressivePagination::paginatorHelperFormat( $Request, $className ) );
+			$this->assertFalse( strstr( $result, ' au moins ' ) !== false );
+
+			// 2. Avec la pagination progressive
+			SearchProgressivePagination::enable();
+			$result = __( SearchProgressivePagination::paginatorHelperFormat( $Request, $className ) );
+			$this->assertTrue( strstr( $result, ' au moins ' ) !== false );
+
+			// 3. Avec un format non reconnu
+			$result = __( SearchProgressivePagination::paginatorHelperFormat( $Request, $className, '%page%' ) );
+			$this->assertEquals( '%page%', $result, var_export( $result, true ) );
 		}
 	}
 ?>
