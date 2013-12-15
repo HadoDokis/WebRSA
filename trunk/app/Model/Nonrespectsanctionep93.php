@@ -624,6 +624,8 @@
 			$queryData['conditions'] = array_merge( $queryData['conditions'], $qdRadies['conditions'] );
 			$queryData['order'] = $qdRadies['order'];
 
+			$queryData = $this->Dossierep->Personne->PersonneReferent->completeQdReferentParcours( $queryData, $datas );
+
 			return $queryData;
 		}
 

@@ -102,7 +102,7 @@
 				$this->set( compact( 'criterestraitementspcgs66' ) );
 			}
             else {
-                 $progressivePaginate = $this->_hasProgressivePagination();
+                 $progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
 				if( !is_null( $progressivePaginate ) ) {
 					$this->request->data['Traitementpcg66']['paginationNombreTotal'] = !$progressivePaginate;
 				}

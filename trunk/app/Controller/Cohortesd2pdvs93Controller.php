@@ -31,6 +31,7 @@
 		public $components = array(
 			'Cohortes' => array( 'index' ),
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Search.Filtresdefaut' => array( 'index' ),
 			'Search.Prg' => array(
 				'actions' => array(
@@ -64,16 +65,12 @@
 		public function index() {
 			if( !empty( $this->request->data ) ) {
 				// Traitement du formulaire de recherche
-				$querydata = array(
-					'Personne' => $this->Cohorted2pdv93->search(
-						(array)$this->Session->read( 'Auth.Zonegeographique' ),
-						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-						$this->request->data['Search'],
-						$this->Cohortes->sqLocked( 'Dossier' )
-					)
-				);
+				$querydata = $this->Cohorted2pdv93->search( $this->request->data['Search'] );
 
-				$this->paginate = $querydata;
+				$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+				$querydata = $this->Cohortes->qdConditions( $querydata );
+
+				$this->paginate = array( 'Personne' => $querydata );
 				$results = $this->paginate(
 					$this->Personne,
 					array(),
@@ -103,6 +100,9 @@
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 			);
 			$this->set( compact( 'options' ) );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->set( 'isAjax', $this->request->is( 'ajax' ) );
 

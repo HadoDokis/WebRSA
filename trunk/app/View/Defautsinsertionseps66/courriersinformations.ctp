@@ -1,6 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 <h1><?php echo $this->pageTitle = __d( 'defautinsertionep66', 'Defautsinsertionseps66::courriersinformations' );?></h1>
@@ -62,7 +63,7 @@
 		)
 	);
 
-	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 

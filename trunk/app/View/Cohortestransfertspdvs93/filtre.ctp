@@ -2,6 +2,7 @@
 	// Filtre
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 <script type="text/javascript">
@@ -50,6 +51,7 @@
 
 	echo $this->Form->input( 'Search.Orientstruct.typeorient_id', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $options['typesorients'] ) );
 
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 

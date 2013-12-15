@@ -260,6 +260,8 @@
 				'order' => array( 'Personne.id ASC' )
 			);
 
+			$query = $Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresnonorientes['Search'] );
+
 			return $query;
 		}
 

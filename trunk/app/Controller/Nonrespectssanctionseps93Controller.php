@@ -16,7 +16,7 @@
 	class Nonrespectssanctionseps93Controller extends AppController
 	{
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ) );
+		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionradies' => array( 'filter' => 'Search' ), 'index' ) ), 'InsertionsAllocataires' );
 
 		/**
 		*
@@ -364,7 +364,10 @@
 				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 				$radiespe = $this->paginate( $this->Nonrespectsanctionep93->Dossierep->Personne, array(), array(), $progressivePaginate );
 			}
+
 			$this->set( compact( 'radiespe' ) );
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**

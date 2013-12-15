@@ -1,6 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 <script type="text/javascript">
@@ -136,6 +137,7 @@
 	?>
 
 	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Filtre' );
 		echo $this->Search->paginationNombretotal( 'Filtre.paginationNombreTotal' );
 		echo $this->Search->observeDisableFormOnSubmit( 'Filtre' );
 	?>

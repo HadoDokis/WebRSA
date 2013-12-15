@@ -40,6 +40,7 @@
 			),
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Cohortes' => array(
 				'enattenteaffectation',
 				'atransmettre'
@@ -159,7 +160,6 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 
 			if( !empty( $this->request->data ) ) {
-// debug($this->request->data);
 				/**
 				*
 				* Sauvegarde
@@ -237,7 +237,7 @@
 						}
 					}
                     else {
-                        $progressivePaginate = $this->_hasProgressivePagination();
+                        $progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
                         if( !is_null( $progressivePaginate ) ) {
                             $this->request->data['Search']['Dossierpcg66']['paginationNombreTotal'] = !$progressivePaginate;
                         }
@@ -252,6 +252,9 @@
 			}
 
 			$this->_setOptions();
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			switch( $statutAffectation ) {
 				case 'Affectationdossierpcg66::enattenteaffectation':

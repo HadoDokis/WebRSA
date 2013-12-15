@@ -188,6 +188,8 @@
 			// FIXME: et qui n'ont pas encore été transférés
 			// FIXME: ici, on a ceux qui sortent du département
 
+			$querydata = $Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $search );
+
 			return $querydata;
 		}
 

@@ -7,6 +7,7 @@
 
 		if( Configure::read( 'debug' ) > 0 ) {
 			echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+			echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 		}
 
 		$searchFormOptions = array( 'domain' => 'search_plugin' );
@@ -48,6 +49,7 @@
 		echo $this->Xform->input( 'Search.Questionnaired2pdv93.exists', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
 		echo '</fieldset>';
 
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 		echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 		echo $this->Search->observeDisableFormOnSubmit( 'Cohortesd2pdvs93IndexForm' );
 

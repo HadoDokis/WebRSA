@@ -1,7 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
-		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 <h1><?php echo $this->pageTitle = __d( 'relancenonrespectsanctionep93', 'Relancesnonrespectssanctionseps93::cohorte' );?></h1>
@@ -72,6 +72,7 @@
 
 	echo $this->Form->input( 'Search.Relance.numrelance', array( 'legend' => 'Type de relance à réaliser', 'type' => 'radio', 'options' => $options['Relancenonrespectsanctionep93']['numrelance'], 'value' => ( isset( $this->request->data['Search']['Relance']['numrelance'] ) ? @$this->request->data['Search']['Relance']['numrelance'] : 1 ) ) );
 
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 	echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 

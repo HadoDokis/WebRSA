@@ -18,7 +18,7 @@
 		public $name = 'Cohortepdo';
 
 		public $useTable = false;
-		
+
 		public $actsAs = array(
 			'Conditionnable'
 		);
@@ -172,6 +172,8 @@
 				'conditions' => $conditions,
 				'order' => array( 'Dossier.dtdemrsa ASC' )
 			);
+
+			$query = $Situationdossierrsa->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criterespdo['Search'] );
 
 			return $query;
 		}

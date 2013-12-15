@@ -36,7 +36,7 @@
 		 */
 		public $actsAs = array( 'Conditionnable' );
 
-		public function search( $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
+		public function search( $search ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$Personne = ClassRegistry::init( 'Personne' );
 
@@ -44,7 +44,7 @@
 
 			// Un dossier possède un seul detail du droit RSA mais ce dernier possède plusieurs details de calcul
 			// donc on limite au dernier detail de calcul du droit rsa
-			$sqDernierDetailcalculdroitrsa = $Dossier->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
+			$sqDernierDetailcalculdroitrsa = $Dossier->Detaildroitrsa->Detailcalculdroitrsa->sqDernier( 'Detaildroitrsa.id' );
 
 			$conditions = array(
 				'Prestation.natprest' => 'RSA',
@@ -57,18 +57,9 @@
 				)
 			);
 
-			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $search );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
-
-
-			// Dossiers lockés
-			if( !empty( $lockedDossiers ) ) {
-				if( is_array( $lockedDossiers ) ) {
-					$lockedDossiers = implode( ', ', $lockedDossiers );
-				}
-				$conditions[] = "NOT {$lockedDossiers}";
-			}
 
 			// -----------------------------------------------------------------
 			// Filtres sur le suivi
@@ -92,42 +83,6 @@
 			else {
 				$conditions[] = 'Questionnaired2pdv93.id IS NULL';
 			}
-
-			/*$querydata = array(
-				'fields' => array_merge(
-					$Dossier->fields(),
-					$Dossier->Detaildroitrsa->fields(),
-					$Dossier->Detaildroitrsa->Detailcalculdroitrsa->fields(),
-					$Dossier->Foyer->Adressefoyer->fields(),
-					$Dossier->Foyer->Personne->fields(),
-					$Dossier->Foyer->Adressefoyer->Adresse->fields(),
-					$Dossier->Foyer->Personne->Calculdroitrsa->fields(),
-					$Dossier->Foyer->Personne->Prestation->fields(),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->fields(),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->Questionnaired2pdv93->fields(),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->Rendezvous->fields(),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->Rendezvous->Structurereferente->fields()
-				),
-				'joins' => array(
-					$Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->join( 'Questionnaired2pdv93', array( 'type' => 'LEFT OUTER' ) ),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-				),
-				'conditions' => $conditions,
-				'contain' => false,
-				'order' => array( 'Questionnaired2pdv93.modified ASC', 'Rendezvous.daterdv ASC' ),
-				'limit' => 10
-			);*/
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -168,6 +123,8 @@
 				),
 				'limit' => 10
 			);
+
+			$querydata = $Personne->PersonneReferent->completeQdReferentParcours( $querydata, $search );
 
 			return $querydata;
 		}

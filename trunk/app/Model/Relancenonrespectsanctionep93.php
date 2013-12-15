@@ -606,7 +606,7 @@
 					$field = preg_replace( '/^Dossiercaf\.(.*)titulaire$/', '\1', $field );
 					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
 				}
-				else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1' ) ) ) {
+				else if( !in_array( $field, array( 'Relance.numrelance', 'Relance.contrat', 'Relance.compare0', 'Relance.compare1', 'Relance.nbjours0', 'Relance.nbjours1', 'PersonneReferent.referent_id', 'PersonneReferent.structurereferente_id' ) ) ) {
 					$conditions[$field] = $condition;
 				}
 			}
@@ -806,6 +806,8 @@
 					'order' => array( 'Orientstruct.date_impression ASC' ),
 				);
 
+				$queryData = ClassRegistry::init( 'PersonneReferent' )->completeQdReferentParcours( $queryData, Hash::expand( $search ) );
+
 				return $queryData;
 			}
 			else {
@@ -928,6 +930,8 @@
 					'order' => array( 'Contratinsertion.df_ci ASC' ),
 				);
 
+				$queryData = ClassRegistry::init( 'PersonneReferent' )->completeQdReferentParcours( $queryData, Hash::expand( $search ) );
+
 				return $queryData;
 			}
 		}
@@ -974,7 +978,7 @@
 
 					$conditions[] = "Relancenonrespectsanctionep93.daterelance BETWEEN '{$daterelance_from}' AND '{$daterelance_to}'";
 				}
-				else if( !in_array( $field, array( 'sort', 'page', 'direction', 'Relance.daterelance' ) ) && !preg_match( '/^Relancenonrespectsanctionep93\.daterelance.*$/', $field ) ) {
+				else if( !in_array( $field, array( 'sort', 'page', 'direction', 'Relance.daterelance' ) ) && !preg_match( '/^Relancenonrespectsanctionep93\.daterelance.*$/', $field ) && !preg_match( '/^Search\./', $field ) ) {
 					$conditions[$field] = $condition;
 				}
 			}
@@ -1144,6 +1148,8 @@
 				'conditions' => $conditions,
 				'contain' => false
 			);
+
+			$queryData = ClassRegistry::init( 'PersonneReferent' )->completeQdReferentParcours( $queryData, (array)Hash::get( Hash::expand( $search ), 'Search' ) );
 
 			return $queryData;
 		}

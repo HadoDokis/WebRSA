@@ -35,14 +35,11 @@
 		 * Retourne un querydata résultant du traitement du formulaire de recherche des cohortes de référent
 		 * du parcours.
 		 *
-		 * @param type $statut
-		 * @param array $mesCodesInsee La liste des codes INSEE à laquelle est lié l'utilisateur
-		 * @param boolean $filtre_zone_geo L'utilisateur est-il limité au niveau des zones géographiques ?
+		 * @param string $statut
 		 * @param array $search Critères du formulaire de recherche
-		 * @param mixed $lockedDossiers
 		 * @return array
 		 */
-		public function search( $statut, $mesCodesInsee, $filtre_zone_geo, $search, $lockedDossiers ) {
+		public function search( $statut, $search ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 
 			$sqDerniereRgadr01 = $Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
@@ -114,7 +111,7 @@
 				}
 			}
 
-			$conditions = $this->conditionsAdresse( $conditions, $search, $filtre_zone_geo, $mesCodesInsee );
+			$conditions = $this->conditionsAdresse( $conditions, $search );
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $search );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $search );
 			$conditions = $this->conditionsDates( $conditions, $search, 'Orientstruct.date_valid' );
@@ -507,8 +504,8 @@
 		 * @param integer $user_id
 		 * @return string
 		 */
-		public function getDefaultCohortePdf( $statut, $mesCodesInsee, $filtre_zone_geo, $user_id, $search, $page ) {
-			$querydata = $this->search( $statut, $mesCodesInsee, $filtre_zone_geo, $search, null );
+		public function getDefaultCohortePdf( $statut, $user_id, $search, $page ) {
+			$querydata = $this->search( $statut, $search );
 
 			$querydata['offset'] = ( ( (int)$page ) <= 1 ? 0 : ( $querydata['limit'] * ( $page - 1 ) ) );
 			$querydata['maxLimit'] = 1001;
