@@ -156,7 +156,7 @@
 			}
 			else {
 				// Valeurs par défaut des filtres
-				$progressivePaginate = $this->_hasProgressivePagination();
+				$progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
 				if( !is_null( $progressivePaginate ) ) {
 					$this->request->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
 				}

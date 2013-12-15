@@ -39,7 +39,8 @@
 				'nouvelles',
 				'enattente'
 			),
-			'Gestionzonesgeos'
+			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 		);
 
 		public $paginate = array( 'limit' => 20 );
@@ -261,7 +262,7 @@
 			}
 			else {
 				// Valeurs par défaut des filtres
-				$progressivePaginate = $this->_hasProgressivePagination();
+				$progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
 				if( !is_null( $progressivePaginate ) ) {
 					$this->request->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
 				}
@@ -291,6 +292,8 @@
 			}
 			$this->set( 'modeles', $modeles );
 
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			// On n'utilise pas le même layout suivant l'action.
 			switch( $statutOrientation ) {

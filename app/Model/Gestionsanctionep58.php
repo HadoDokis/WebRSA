@@ -206,6 +206,8 @@
 				'conditions' => $conditions
 			);
 
+			$query = $Personne->PersonneReferent->completeQdReferentParcours( $query, $criteressanctionseps );
+
 			return $query;
 		}
 

@@ -26,6 +26,7 @@
 				)
 			),
 			'Gedooo.Gedooo',
+			'InsertionsAllocataires',
 			'Cohortes' => array( 'cohorte' ),
 			'Jetons2',
 			'DossiersMenus'
@@ -319,6 +320,8 @@
 			}
 
 			$this->_setOptions();
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**
@@ -434,7 +437,7 @@
 				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 				$search = $this->request->data;
-				unset( $search['Search'] );
+				unset( $search['Search']['Pagination'] );
 
 				$queryData = $this->Relancenonrespectsanctionep93->qdSearchRelances(
 					$mesCodesInsee,
@@ -454,6 +457,8 @@
 			}
 
 			$this->_setOptions();
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 		}
 
 		/**

@@ -619,6 +619,9 @@
 				'recursive' => -1,
 			);
 
+			$queryData = ClassRegistry::init( 'PersonneReferent' )->completeQdReferentParcours( $queryData, $criteres['Filtre'] );
+
+
 			return $queryData;
 		}
 

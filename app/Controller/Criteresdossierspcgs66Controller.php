@@ -125,7 +125,7 @@
 				$this->set( compact( 'criteresdossierspcgs66', 'vflisteseparator' ) );
 			}
 			else {
-                $progressivePaginate = $this->_hasProgressivePagination();
+                $progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
 				if( !is_null( $progressivePaginate ) ) {
 					$this->request->data['Dossierpcg66']['paginationNombreTotal'] = !$progressivePaginate;
 				}

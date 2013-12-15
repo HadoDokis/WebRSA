@@ -268,11 +268,11 @@
 		protected function _qd( $search = array() ) {
 			$querydata = $this->Cohortecer93->search(
 				$this->action,
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				$search,
-				$this->Cohortes->sqLocked( 'Dossier' )
+				$search
 			);
+
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+			$querydata = $this->Cohortes->qdConditions( $querydata );
 
 			// TODO: différencier CER / CER précédent ?
 			if( $this->action == 'saisie' ) {
@@ -666,11 +666,11 @@
 				// Traitement du formulaire de recherche
 				$querydata = $this->Cohortecer93->search(
 					$this->action,
-					(array)$this->Session->read( 'Auth.Zonegeographique' ),
-					$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-					$this->request->data['Search'],
-					$this->Cohortes->sqLocked( 'Dossier' )
+					$this->request->data['Search']
 				);
+
+				$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+				$querydata = $this->Cohortes->qdConditions( $querydata );
 
 				if( !empty( $structurereferente_id ) ) {
 					$querydata['conditions']['Referent.structurereferente_id'] = $structurereferente_id;
@@ -880,11 +880,11 @@
 			$data = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Cohortecer93->search(
 				$etape,
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				$data['Search'],
-				null
+				$data['Search']
 			);
+
+			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
+
 			unset( $querydata['limit'] );
 
 			$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
@@ -958,8 +958,6 @@
 
 			$pdfs = $this->Cohortecer93->getDefaultCohortePdf(
 				$statut,
-				(array)$this->Session->read( 'Auth.Zonegeographique' ),
-				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				$this->Session->read( 'Auth.User.id' ),
 				Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' ),
 				$page

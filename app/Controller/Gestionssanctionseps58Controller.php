@@ -22,6 +22,7 @@
 		public $components = array(
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
+			'InsertionsAllocataires',
 			'Cohortes' => array(
 				'traitement'
 			),
@@ -180,6 +181,9 @@
 			$this->_setOptions();
 			$this->set( 'cantons', $this->Gestionzonesgeos->listeCantons() );
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$compteurs = array( 'Ep' => $this->Commissionep->Ep->find( 'count' ) );
 			$this->set( compact( 'compteurs' ) );

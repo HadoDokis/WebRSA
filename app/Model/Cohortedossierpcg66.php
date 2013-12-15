@@ -235,6 +235,8 @@
 				'conditions' => $conditions
 			);
 
+			$query = $this->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $query, $criteresdossierspcgs66['Search'] );
+
 			return $query;
 		}
 	}

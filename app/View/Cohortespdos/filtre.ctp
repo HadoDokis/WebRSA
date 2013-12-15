@@ -1,6 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
 
@@ -56,6 +57,7 @@
 				<?php echo $this->Form->input( 'Search.Propopdo.datedecisionpdo_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120, 'selected' => $datedecisionpdo_to ) );?>
 			</fieldset>
 		<?php
+			echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
 			echo $this->Search->paginationNombretotal( 'Search.Pagination.nombre_total' );
 			echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 		?>
