@@ -23,7 +23,7 @@
 		public $uses = array( 'Referent', 'Structurereferente', 'Option' );
 		public $helpers = array( 'Xform', 'Default2', 'Default' );
 
-		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Workflowscers93' );
+		public $components = array( 'Default', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Workflowscers93' );
 
 		public $commeDroit = array(
 			'add' => 'Referents:edit'

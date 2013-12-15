@@ -21,7 +21,7 @@
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
 		public $components = array(
 			'Default',
-			'Search.Prg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
 
 		public $commeDroit = array(

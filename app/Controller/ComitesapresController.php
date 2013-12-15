@@ -19,7 +19,7 @@
 		public $name = 'Comitesapres';
 		public $uses = array( 'Apre', 'Option', 'Personne', 'Comiteapre', 'Dossier'/* , 'ComiteapreParticipantcomite' */, 'Participantcomite', 'Apre', 'Referent' );
 		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml' );
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index', 'liste' ) ) );
+		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index', 'liste' ) ) );
 		public $commeDroit = array(
 			'view' => 'Comitesapres:index',
 			'add' => 'Comitesapres:edit'

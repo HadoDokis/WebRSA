@@ -19,7 +19,7 @@
 		public $name = 'Contactspartenaires';
 		public $uses = array( 'Contactpartenaire', 'Partenaire', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Default2', 'Theme' );
-		public $components = array( 'Default', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Default', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
 
 		public $commeDroit = array(
 			'view' => 'Contactspartenaires:index',

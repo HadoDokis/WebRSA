@@ -19,7 +19,7 @@
 		public $uses = array( 'Criteretraitementpcg66', 'Traitementpcg66', 'Option' );
 		public $helpers = array( 'Default', 'Default2', 'Locale', 'Csv', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires',  'Search.Prg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
+		public $components = array( 'Gestionzonesgeos', 'InsertionsAllocataires',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'Jetons2' );
 
 		/**
 		*

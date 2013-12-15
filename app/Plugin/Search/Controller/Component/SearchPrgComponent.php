@@ -1,7 +1,7 @@
 <?php
 	// FIXME: dans /cohortesnonorientes66/isemploi, on n'a pas la clé Search.Situationdossierrsa.etatdosrsa_choice mais Situationdossierrsa.etatdosrsa_choice dans le formulaire
 	/**
-	 * Code source de la classe PrgComponent.
+	 * Code source de la classe SearchPrgComponent.
 	 *
 	 * PHP 5.3
 	 *
@@ -11,13 +11,13 @@
 	 */
 
 	/**
-	 * La classe PrgComponent gère le POST/redirect/GET pour certaines actions du
+	 * La classe SearchPrgComponent gère le POST/redirect/GET pour certaines actions du
 	 * contrôleur, avec la possibilité de filtrer les parties du POST à mettre
 	 * dans l'URL ou dans la Session.
 	 *
 	 * <pre>
 	 * public $components = array(
-	 * 	'Search.Prg' => array(
+	 * 	'Search.SearchPrg' => array(
 	 * 		'actions' => array( 'index' => array( 'filter' => 'Search' ) ),
 	 *	)
 	 * );
@@ -26,14 +26,14 @@
 	 * @package Search
 	 * @subpackage Controller.Component
 	 */
-	class PrgComponent extends Component
+	class SearchPrgComponent extends Component
 	{
 		/**
 		 * Nom du component.
 		 *
 		 * @var string
 		 */
-		public $name = 'Prg';
+		public $name = 'SearchPrg';
 
 		/**
 		 * Contrôleur utilisant ce component.

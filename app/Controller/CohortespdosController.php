@@ -34,7 +34,7 @@
 				'avisdemande',
 				'valide'
 			),
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'avisdemande' => array(
 						'filter' => 'Search'

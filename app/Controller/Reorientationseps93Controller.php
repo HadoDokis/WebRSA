@@ -22,7 +22,7 @@
 			'DossiersMenus',
 			'InsertionsAllocataires',
 			'Jetons2',
-			'Search.Prg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
 
 		public $commeDroit = array(

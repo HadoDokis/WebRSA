@@ -26,7 +26,7 @@
 		);
 		
 		public $components = array(
-			'Search.Prg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
 		
 		public $commeDroit = array(

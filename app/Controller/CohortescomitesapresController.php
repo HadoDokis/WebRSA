@@ -42,7 +42,7 @@
 		 *
 		 * @var array
 		 */
-		public $components = array( 'Gedooo.Gedooo', 'Search.Prg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
+		public $components = array( 'Gedooo.Gedooo', 'Search.SearchPrg' => array( 'actions' => array( 'aviscomite', 'notificationscomite' ) ) );
 
 		/**
 		 *

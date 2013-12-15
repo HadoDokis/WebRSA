@@ -30,7 +30,7 @@
 		public $helpers = array( 'Csv', 'Default2', 'Locale', 'Search' );
 
 		public $components = array(
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'enattenteaffectation' => array( 'filter' => 'Search' ),
 					'affectes' => array( 'filter' => 'Search' ),

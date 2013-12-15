@@ -33,7 +33,7 @@
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
 			'Search.Filtresdefaut' => array( 'index' ),
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index' => array( 'filter' => 'Search' ),
 				)

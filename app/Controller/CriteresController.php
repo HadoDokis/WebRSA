@@ -23,7 +23,7 @@
 
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
 
-		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.Prg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires'  );
+		public $components = array( 'Gestionzonesgeos', 'RequestHandler',  'Search.SearchPrg' => array( 'actions' => array( 'index' ) ), 'InsertionsAllocataires'  );
 
 		/**
 		*

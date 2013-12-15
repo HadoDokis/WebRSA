@@ -18,7 +18,7 @@
 
 		public $helpers = array( 'Default', 'Default2', 'Csv' );
 		public $uses = array( 'Commissionep', 'Option' );
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
+		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'index', 'creationmodification', 'attributiondossiers', 'arbitrageep', 'arbitragecg', 'recherche', 'decisions' ) ), 'Gedooo.Gedooo' );
 		public $commeDroit = array(
 			'edit' => 'Commissionseps:add',
 			'view' => 'Commissionseps:recherche'

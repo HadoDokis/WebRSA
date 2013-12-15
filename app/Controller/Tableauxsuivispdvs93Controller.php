@@ -48,7 +48,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'index',
 					'tableaud1',

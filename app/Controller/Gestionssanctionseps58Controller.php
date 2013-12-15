@@ -26,7 +26,7 @@
 			'Cohortes' => array(
 				'traitement'
 			),
-			'Search.Prg' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
+			'Search.SearchPrg' => array( 'actions' => array( 'traitement' => array( 'filter' => 'Search' ), 'visualisation' ) ),
 		);
 
 		/**
@@ -131,7 +131,7 @@
 						$this->Session->setFlash( 'Enregistrement effectué.', 'flash/success' );
 						unset( $this->request->data[$decisionModelTheme] );
 						if( isset( $this->request->data['sessionKey'] ) ) {
-							$this->Session->delete( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
+							$this->Session->delete( "{$this->SearchPrg->name}.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
 						}
 					}
 					else {

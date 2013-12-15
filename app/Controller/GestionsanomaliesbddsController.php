@@ -22,7 +22,7 @@
 		public $components = array(
 			'Gestionanomaliesbdd',
 			'Gestionzonesgeos',
-			'Search.Prg' => array( 'actions' => array( 'index' ) ),
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) ),
 			'Jetons2',
 			'DossiersMenus'
 		);

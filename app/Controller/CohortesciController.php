@@ -25,7 +25,7 @@
 		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search', 'Default2' );
 
 		public $components = array(
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'valides',
 					'nouveaux' => array( 'filter' => 'Filtre' ),

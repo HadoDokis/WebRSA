@@ -37,7 +37,7 @@
 			'Gedooo.Gedooo',
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'isemploi' => array( 'filter' => 'Search' ),
 					'notisemploi' => array( 'filter' => 'Search' ),
@@ -208,7 +208,7 @@
 						unset( $this->request->data['Orientstruct'], $this->request->data['Nonoriente66'] );
 
 						if( isset( $this->request->data['sessionKey'] ) ) {
-							$this->Session->delete( "Prg.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
+							$this->Session->delete( "{$this->SearchPrg->name}.{$this->name}__{$this->action}.{$this->request->data['sessionKey']}" );
 						}
 					}
 					else {

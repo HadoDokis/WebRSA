@@ -20,7 +20,7 @@
 		public $components = array(
 			'Jetons2',
 			'DossiersMenus',
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'selectionradies' => array( 'filter' => 'Pagination' ),
 					'selectionnoninscrits' => array( 'filter' => 'Pagination' )

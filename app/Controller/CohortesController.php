@@ -34,7 +34,7 @@
 
 		public $components = array(
 			'Gedooo.Gedooo',
-			'Search.Prg' => array( 'actions' => 'orientees' ),
+			'Search.SearchPrg' => array( 'actions' => 'orientees' ),
 			'Cohortes'  => array(
 				'nouvelles',
 				'enattente'
