@@ -30,7 +30,7 @@
 			'Dbdroits',
 			'Menu',
 			'Password',
-			'Search.Prg' => array( 'actions' => array( 'index' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
 
 		public $aucunDroit = array( 'login', 'logout', 'forgottenpass' );

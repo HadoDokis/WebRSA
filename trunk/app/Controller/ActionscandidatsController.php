@@ -19,7 +19,7 @@
 		public $name = 'Actionscandidats';
 		public $uses = array( 'Actioncandidat', 'Option' );
 		public $helpers = array( 'Xform', 'Default', 'Theme', 'Default2', 'Fileuploader' );
-		public $components = array( 'Default', 'Fileuploader', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'Default', 'Fileuploader', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
 		
 		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
 

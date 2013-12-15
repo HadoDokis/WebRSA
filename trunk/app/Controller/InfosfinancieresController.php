@@ -24,7 +24,7 @@
 		public $components = array(
 			'DossiersMenus',
 			'Jetons2',
-			'Search.Prg' => array( 'actions' => array( 'indexdossier' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'indexdossier' ) )
 		);
 
 		public $commeDroit = array( 'view' => 'Infosfinancieres:index' );

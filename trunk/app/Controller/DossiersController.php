@@ -27,7 +27,7 @@
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
 			'Jetons2',
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array( 'index' )
 			),
 		);

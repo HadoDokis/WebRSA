@@ -44,7 +44,7 @@
 				'visualisation'
 			),
 			'Gestionzonesgeos',
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array(
 					'saisie' => array(
 						'filter' => 'Search'

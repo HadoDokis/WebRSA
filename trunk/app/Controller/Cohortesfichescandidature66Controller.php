@@ -29,7 +29,7 @@
 		public $helpers = array( 'Default2' );
 
 		public $components = array(
-            'Search.Prg' => array(
+            'Search.SearchPrg' => array(
                 'actions' => array(
                     'fichesenattente' => array( 'filter' => 'Search' ),
                     'fichesencours' => array( 'filter' => 'Search' )

@@ -23,7 +23,7 @@
 
 		public $components = array(
 			'Gestionzonesgeos',
-			'Search.Prg' => array( 'actions' => array( 'all', 'eligible' ) ),
+			'Search.SearchPrg' => array( 'actions' => array( 'all', 'eligible' ) ),
             'InsertionsAllocataires'
 		);
 

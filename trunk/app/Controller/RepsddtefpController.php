@@ -21,14 +21,14 @@
 		public $helpers = array( 'Xform', 'Paginator', 'Locale', 'Xpaginator', 'Csv' );
 		public $aucunDroit = array( 'exportcsv' );
 
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'suivicontrole' ) ) );
+		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'suivicontrole' ) ) );
 
 		/**
 		*
 		*/
 
 //		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Search.Prg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
+//			$this->components = Set::merge( $this->components, array( 'Search.SearchPrg' => array( 'actions' => array( 'suivicontrole' ) ) ) );
 //			parent::__construct();
 //		}
 

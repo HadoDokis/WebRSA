@@ -26,7 +26,7 @@
 		public $components = array(
 			'Gestionzonesgeos',
 			'InsertionsAllocataires',
-			'Search.Prg' => array( 'actions' => array( 'index', 'nouvelles' ) )
+			'Search.SearchPrg' => array( 'actions' => array( 'index', 'nouvelles' ) )
 		);
 
 		/**

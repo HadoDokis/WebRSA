@@ -20,7 +20,7 @@
 
 		public $uses = array( 'Canton', 'Dossier', 'Recoursapre', 'Foyer', 'Adresse', 'Comiteapre', 'Personne', 'ApreComiteapre', 'Apre', 'Option', 'Adressefoyer' );
 
-		public $components = array( 'Gestionzonesgeos', 'Gedooo.Gedooo', 'Search.Prg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
+		public $components = array( 'Gestionzonesgeos', 'Gedooo.Gedooo', 'Search.SearchPrg' => array( 'actions' => array( 'demande', 'visualisation' ) ) );
 
 		public $helpers = array( 'Locale', 'Csv', 'Xform', 'Xhtml', 'Search' );
 

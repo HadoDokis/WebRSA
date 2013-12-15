@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Fichier source de la classe PrgComponentTest
+	 * Fichier source de la classe SearchPrgComponentTest
 	 *
 	 * PHP 5.3
 	 * @package Search
@@ -8,26 +8,26 @@
 	 */
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'RequestHandlerComponent', 'Controller/Component' );
-	App::uses( 'PrgComponent', 'Controller/Component' );
+	App::uses( 'SearchPrgComponent', 'Controller/Component' );
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
 
 	/**
-	 * PrgTestController class
+	 * SearchPrgTestController class
 	 *
 	 * @package Search
 	 * @subpackage Test.Case.Controller.Component
 	 */
-	class PrgTestController extends Controller
+	class SearchPrgTestController extends Controller
 	{
 
 		/**
 		 * name property
 		 *
-		 * @var string 'PrgTest'
+		 * @var string 'SearchPrgTest'
 		 */
-		public $name = 'PrgTest';
+		public $name = 'SearchPrgTest';
 
 		/**
 		 * uses property
@@ -42,7 +42,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Search.Prg' => array(
+			'Search.SearchPrg' => array(
 				'actions' => array( 'index' => array( 'filter' => 'Search' ) ),
 			)
 		);
@@ -63,26 +63,26 @@
 
 	}
 	/**
-	 * PrgTest class
+	 * SearchPrgTest class
 	 *
 	 * @package       app.Plugin.Search.Test.Case.Controller.Component
 	 */
-	class PrgComponentTest extends CakeTestCase
+	class SearchPrgComponentTest extends CakeTestCase
 	{
 
 		/**
 		 * Controller property
 		 *
-		 * @var PrgTestController
+		 * @var SearchPrgTestController
 		 */
 		public $Controller;
 
 		/**
 		 * name property
 		 *
-		 * @var string 'Prg'
+		 * @var string 'SearchPrg'
 		 */
-		public $name = 'Prg';
+		public $name = 'SearchPrg';
 
 		/**
 		 * setUp method
@@ -94,9 +94,9 @@
 
 			$request = new CakeRequest( 'prgs/index', false );
 			$request->addParams(array( 'controller' => 'prgs', 'action' => 'index' ) );
-			$this->Controller = new PrgTestController( $request );
+			$this->Controller = new SearchPrgTestController( $request );
 			$this->Controller->Components->init( $this->Controller );
-			$this->Controller->Prg->initialize( $this->Controller );
+			$this->Controller->SearchPrg->initialize( $this->Controller );
 		}
 
 		/**
@@ -115,7 +115,7 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->Prg->startup( $this->Controller );
+			$this->Controller->SearchPrg->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 			$expected = array(
 				array(
@@ -149,7 +149,7 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->Prg->startup( $this->Controller );
+			$this->Controller->SearchPrg->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 			$expected = null;
 
@@ -167,7 +167,7 @@
 				'Search__active' => '1',
 				'Search__User__username' => 'john'
 			);
-			$this->Controller->Prg->startup( $this->Controller );
+			$this->Controller->SearchPrg->startup( $this->Controller );
 			$result = $this->Controller->data;
 			$expected = array(
 				'Search' => array(
@@ -204,12 +204,12 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->Prg->startup( $this->Controller );
+			$this->Controller->SearchPrg->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 
-			$Prg = $this->Controller->Prg;
-			$prgSessionKey = "{$Prg->name}.{$this->Controller->name}__{$this->Controller->action}";
-			$sessionKeys = array_keys( $Prg->Session->read( $prgSessionKey ) );
+			$SearchPrg = $this->Controller->SearchPrg;
+			$prgSessionKey = "{$SearchPrg->name}.{$this->Controller->name}__{$this->Controller->action}";
+			$sessionKeys = array_keys( $SearchPrg->Session->read( $prgSessionKey ) );
 			$sessionKey = $sessionKeys[0];
 
 			$expected = array(
@@ -225,7 +225,7 @@
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = $Prg->Session->read( "{$prgSessionKey}.{$sessionKey}" );
+			$result = $SearchPrg->Session->read( "{$prgSessionKey}.{$sessionKey}" );
 			$expected = array(
 				'Orientstruct' => array(
 					'foo' => 'bar'
@@ -246,9 +246,9 @@
 			}
 
 			$_SERVER['REQUEST_METHOD'] = 'GET';
-			$prgSessionKey = "{$this->Controller->Prg->name}.{$this->Controller->name}__{$this->Controller->action}";
+			$prgSessionKey = "{$this->Controller->SearchPrg->name}.{$this->Controller->name}__{$this->Controller->action}";
 			$sessionKey = '62cdb7020ff920e5aa642c3d4066950dd1f01f4d';
-			$this->Controller->Prg->Session->write( "{$prgSessionKey}.{$sessionKey}", array( 'Foo' => 'bar' ) );
+			$this->Controller->SearchPrg->Session->write( "{$prgSessionKey}.{$sessionKey}", array( 'Foo' => 'bar' ) );
 
 			$this->Controller->request->params['named'] = array(
 				'Search__active' => '1',
@@ -256,7 +256,7 @@
 				'sessionKey' => $sessionKey
 			);
 
-			$this->Controller->Prg->startup( $this->Controller );
+			$this->Controller->SearchPrg->startup( $this->Controller );
 			$result = $this->Controller->data;
 			$expected = array(
 				'Search' => array(

@@ -21,7 +21,7 @@
 
 		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93', 'Nonorientationproep66' );
 
-		public $components = array( 'InsertionsAllocataires', 'Search.Prg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array( 'InsertionsAllocataires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -47,7 +47,7 @@
 		*/
 
 //		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Search.Prg' => array( 'actions' => array( 'index' ) ) ) );
+//			$this->components = Set::merge( $this->components, array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) ) );
 //			parent::__construct();
 //		}
 

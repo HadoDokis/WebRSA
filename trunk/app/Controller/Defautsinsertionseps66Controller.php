@@ -15,7 +15,7 @@
 	 */
 	class Defautsinsertionseps66Controller extends AppController
 	{
-		public $components = array( 'Search.Prg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
+		public $components = array( 'Search.SearchPrg' => array( 'actions' => array( 'selectionnoninscrits', 'selectionradies', 'courriersinformations' ) ), 'Gestionzonesgeos', 'InsertionsAllocataires', 'Gedooo.Gedooo' );
 		public $helpers = array( 'Default2', 'Search' );
 
 		/**
