@@ -54,7 +54,7 @@
 			}
 			else {
 				SearchProgressivePagination::disable( $Controller->name, $Controller->action );
-				return$this->_Collection->load( 'Paginator', $Controller->paginate )->paginate( $object, $scope, $whitelist );
+				return $this->_Collection->load( 'Paginator', $Controller->paginate )->paginate( $object, $scope, $whitelist );
 			}
 		}
 
