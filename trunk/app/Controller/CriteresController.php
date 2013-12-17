@@ -126,7 +126,7 @@
 		 */
 		public function index() {
 			if( !empty( $this->request->data ) ) {
-				$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $this->request->data, 'Orientstruct.origine' ) );
+				$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $this->request->data, 'Orientstruct.origine' ) == 'reorientation' );
 
 				$paginate = $this->Critere->search(
 					$this->request->data,
@@ -160,10 +160,11 @@
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $this->request->data, 'Orientstruct.origine' ) );
+			$search = Hash::expand( $this->request->params['named'], '__' );
+			$reorientationEp = ( Configure::read( 'Cg.departement' ) == 93 && Hash::get( $search, 'Orientstruct.origine' ) == 'reorientation' );
 
 			$querydata = $this->Critere->search(
-				Hash::expand( $this->request->params['named'], '__' ),
+				$search,
 				$reorientationEp
 			);
 
