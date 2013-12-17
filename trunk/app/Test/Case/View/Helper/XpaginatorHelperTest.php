@@ -94,7 +94,7 @@
 		public function testPaginationBlock() {
 			Configure::write( 'Optimisations.Articles_index.progressivePaginate', false );
 			$result = $this->Xpaginator->paginationBlock( 'Article', array() );
-			$expected = '<p class="pagination counter">Résultats 21 à 40 sur un total de 62.</p><p class="pagination links"><span><a href="/index/page:1" rel="first">&lt;&lt;</a></span> <span class="prev">&lt;</span> <span><a href="/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/index/page:3">3</a></span> | <span><a href="/index/page:4">4</a></span> | <span><a href="/index/page:5">5</a></span> | <span><a href="/index/page:6">6</a></span> | <span><a href="/index/page:7">7</a></span> <span class="next"><a href="/index/page:3" rel="next">&gt;</a></span> <span><a href="/index/page:7" rel="last">&gt;&gt;</a></span></p>';
+			$expected = '<p class="pagination counter">Page 2 sur 7, montrant 9 enregistrements parmi 62 au total, à partir de l\'enregistrement n° 21 et jusqu\'au n° 40</p><p class="pagination links"><span><a href="/index/page:1" rel="first">&lt;&lt;</a></span> <span class="prev">&lt;</span> <span><a href="/index/page:1">1</a></span> | <span class="current">2</span> | <span><a href="/index/page:3">3</a></span> | <span><a href="/index/page:4">4</a></span> | <span><a href="/index/page:5">5</a></span> | <span><a href="/index/page:6">6</a></span> | <span><a href="/index/page:7">7</a></span> <span class="next"><a href="/index/page:3" rel="next">&gt;</a></span> <span><a href="/index/page:7" rel="last">&gt;&gt;</a></span></p>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			Configure::write( 'Optimisations.Articles_index.progressivePaginate', true );
