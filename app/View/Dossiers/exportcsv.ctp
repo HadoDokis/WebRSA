@@ -19,7 +19,8 @@
 			'Type d\'orientation',
             'Identifiant Pôle Emploi',
             'N° CAF',
-			'Référent',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 			'Sexe',
 			'Conditions de logement',
         )
@@ -48,6 +49,7 @@
 			Hash::get( $dossier, 'Typeorient.lib_type_orient' ),
 			Hash::get( $dossier, 'Personne.idassedic' ),
 			Hash::get( $dossier, 'Dossier.matricule' ),
+			Hash::get( $dossier, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $dossier, 'Referentparcours.nom_complet' ),
 			value( $sexe, Hash::get( $dossier, 'Personne.sexe' ) ),
 			value( $natlog, $dspnatlog ),
