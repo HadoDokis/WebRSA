@@ -78,11 +78,10 @@
                 echo $this->Xform->input( 'Decisiondossierpcg66.nbproposition', array( 'label' => 'Nombre de propositions de décision') );
             ?>
         </fieldset>
-	<?php echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );?>
- <fieldset>
-    <legend>Comptage des résultats</legend>
-    <?php echo $this->Form->input( 'Dossierpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-</fieldset>
+	<?php
+		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+		echo $this->Search->paginationNombretotal( 'Dossierpcg66.paginationNombreTotal' );
+	?>
     <div class="submit noprint">
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
         <?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

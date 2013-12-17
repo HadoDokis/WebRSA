@@ -143,12 +143,10 @@
 				}
 			?>
 	</fieldset>
-	<?php echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );?>
-	<fieldset>
-		<legend>Comptage des résultats</legend>
-		<?php echo $this->Form->input( 'Filtre.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats afin de pouvoir télécharger le tableau (plus lent)', 'type' => 'checkbox' ) );?>
-	</fieldset>
-
+	<?php
+		echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
+		echo $this->Search->paginationNombretotal( 'Filtre.paginationNombreTotal' );
+	?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
