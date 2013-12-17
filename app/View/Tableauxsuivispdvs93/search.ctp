@@ -53,15 +53,7 @@
 
 	$params_soumis_dd_dans_annee = array(
 		'type' => (
-			in_array( $tableau, array( 'tableaud1' ) )
-			? 'checkbox'
-			: 'hidden'
-		)
-	);
-
-	$params_soumis_dd_d1_d2 = array(
-		'type' => (
-			in_array( $tableau, array( 'tableaud2' ) )
+			in_array( $tableau, array( 'tableaud1', 'tableaud2' ) )
 			? 'checkbox'
 			: 'hidden'
 		)
@@ -76,7 +68,6 @@
 			'Search.rdv_structurereferente' => $params_rdv_structurereferente,
 			'Search.dsps_maj_dans_annee' => $params_dsps_maj_dans_annee,
 			'Search.soumis_dd_dans_annee' => $params_soumis_dd_dans_annee,
-			'Search.soumis_dd_d1_d2' => $params_soumis_dd_d1_d2,
 		),
 		array(
 			'options' => $options,

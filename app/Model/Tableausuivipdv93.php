@@ -720,7 +720,7 @@
 				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
-			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			/*// Soumis à droits et devoirs / au moins soumis une fois durant l'année
 			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
 			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
 			if( $dd_annee ) {
@@ -742,7 +742,9 @@
 						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
 					)
 				);
-			}
+			}*/
+
+			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 
 			$querydata = array(
 				'fields' => array(),
@@ -842,6 +844,39 @@
 			return $querydata;
 		}
 
+		protected function _conditionTableauxD1D2SoumisDD( array $search ) {
+			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
+			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
+
+			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
+			if( $dd_annee ) {
+				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
+					array(
+						'alias' => 'historiquesdroits',
+						'fields' => array( 'historiquesdroits.personne_id' ),
+						'contain' => false,
+						'conditions' => array(
+							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
+							'historiquesdroits.toppersdrodevorsa' => 1,
+							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
+						)
+					)
+				);
+
+				$conditiondd = array(
+					'OR' => array(
+						$conditiondd,
+						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
+					)
+				);
+			}
+
+			return $conditiondd;
+		}
+
 		/**
 		 *
 		 * @param array $search
@@ -860,29 +895,7 @@
 				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
-			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
-			$conditiondd = 'Situationallocataire.toppersdrodevorsa = \'1\'';
-			$dd_annee = Hash::get( $search, 'Search.soumis_dd_dans_annee' );
-			if( $dd_annee ) {
-				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
-					array(
-						'alias' => 'historiquesdroits',
-						'fields' => array( 'historiquesdroits.personne_id' ),
-						'contain' => false,
-						'conditions' => array(
-							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
-							'historiquesdroits.toppersdrodevorsa' => 1,
-							"( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( DATE '{$annee}-01-01', DATE '{$annee}-12-31' )"
-						)
-					)
-				);
-				$conditiondd = array(
-					'OR' => array(
-						$conditiondd,
-						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
-					)
-				);
-			}
+			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 
 			$results = array();
 			$categories = array_keys( $this->tableaud1Categories() );
@@ -1073,29 +1086,7 @@
 				$conditionpdv = "Questionnaired2pdv93.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
-			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
-			$conditiondd = null;
-			$dd_d1_d2 = Hash::get( $search, 'Search.soumis_dd_d1_d2' );
-			if( $dd_d1_d2 ) {
-				$sq = $Questionnaired2pdv93->Personne->Historiquedroit->sq(
-					array(
-						'alias' => 'historiquesdroits',
-						'fields' => array( 'historiquesdroits.personne_id' ),
-						'contain' => false,
-						'conditions' => array(
-							'historiquesdroits.personne_id = Questionnaired2pdv93.personne_id',
-							'historiquesdroits.toppersdrodevorsa' => 1,
-							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."date_validation" )'
-						)
-					)
-				);
-				$conditiondd = array(
-					'OR' => array(
-						$conditiondd,
-						"Questionnaired2pdv93.personne_id IN ( {$sq} )"
-					)
-				);
-			}
+			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 
 			$querydata = array(
 				'fields' => array(
@@ -1116,6 +1107,7 @@
 					$Questionnaired2pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
 					$Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$Questionnaired2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
 				'group' => array(
@@ -1188,31 +1180,9 @@
 			$Questionnaired1pdv93 = ClassRegistry::init( 'Questionnaired1pdv93' );
 			$querydata = $this->qdTableaud1( $search );
 
-			// Soumis à droits et devoirs / au moins soumis une fois durant l'année
-			$conditiondd = null;
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-			$dd_d1_d2 = Hash::get( $search, 'Search.soumis_dd_d1_d2' );
-			if( $dd_d1_d2 ) {
-				$sq = $Questionnaired1pdv93->Personne->Historiquedroit->sq(
-					array(
-						'alias' => 'historiquesdroits',
-						'fields' => array( 'historiquesdroits.personne_id' ),
-						'contain' => false,
-						'conditions' => array(
-							'historiquesdroits.personne_id = Questionnaired1pdv93.personne_id',
-							'historiquesdroits.toppersdrodevorsa' => 1,
-							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", TIMESTAMP \''.$annee.'-12-31 23:59:59\' )'
-						)
-					)
-				);
-				$conditiondd = array(
-					'OR' => array(
-						$conditiondd,
-						"Questionnaired1pdv93.personne_id IN ( {$sq} )"
-					)
-				);
-			}
+			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
 			$querydata['conditions'][] = $conditiondd;
+
 			list( $fields, $group ) = $this->_tableaud2Total( $search );
 			$querydata['fields'] = $fields;
 			$querydata['group'] = $group;
@@ -1231,9 +1201,6 @@
 				}
 			}
 			$totaux['nombre'] = $totaux['hommes'] + $totaux['femmes'];
-//			debug( $results );
-//			debug( $totaux );
-
 
 			$nombre_total = max( array( $totaux['nombre'], 1 ) );
 
