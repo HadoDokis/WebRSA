@@ -107,11 +107,10 @@
 		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
-<?php echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );?>
-<fieldset>
-    <legend>Comptage des résultats</legend>
-    <?php echo $this->Form->input( 'Traitementpcg66.paginationNombreTotal', array( 'label' => 'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) );?>
-</fieldset>
+<?php
+	echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
+	echo $this->Search->paginationNombretotal( 'Traitementpcg66.paginationNombreTotal' );
+?>
 	<div class="submit noprint">
 		<?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Xform->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>

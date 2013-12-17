@@ -242,7 +242,7 @@
 			return $this->Xhtml->tag(
 				'fieldset',
 				$this->Xhtml->tag( 'legend', 'Comptage des résultats' )
-				.$this->Xform->input( $path, array( 'label' =>  'Obtenir le nombre total de résultats (plus lent)', 'type' => 'checkbox' ) )
+				.$this->Xform->input( $path, array( 'label' =>  __d( 'search_plugin', 'Pagination.nombre_total' ), 'type' => 'checkbox' ) )
 			);
 		}
 
@@ -404,8 +404,8 @@
 			return $this->Xhtml->tag(
 				'fieldset',
 				$this->Xhtml->tag( 'legend', 'Suivi du parcours' )
-				.$this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => 'Structure référente du référent de parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $structuresreferentesparcours, 'empty' => true ) )
-				.$this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => 'Référent du parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $referentsparcours, 'empty' => true ) )
+				.$this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => $structuresreferentesparcours, 'empty' => true ) )
+				.$this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => $referentsparcours, 'empty' => true ) )
 			).$this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
 		}
 	}

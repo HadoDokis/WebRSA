@@ -163,7 +163,7 @@
 						$title = $dossier['Dossier']['numdemrsa'];
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
-							<tr>
+								<tr>
 									<th>Numéro CAF</th>
 									<td>'.$dossier['Dossier']['matricule'].'</td>
 								</tr>
@@ -171,15 +171,21 @@
 									<th>Date de naissance</th>
 									<td>'.date_short( $dossier['Personne']['dtnai'] ).'</td>
 								</tr>
-
 								<tr>
 									<th>Code INSEE</th>
 									<td>'.$dossier['Adresse']['numcomptt'].'</td>
 								</tr>
-
 								<tr>
 									<th>Rôle</th>
 									<td>'.Set::enum( Set::classicExtract( $dossier, 'Prestation.rolepers' ), $rolepers ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $dossier, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $dossier, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>
 						</table>';
