@@ -6,7 +6,7 @@
 		array(
 			// Suivi
 			__d( 'cohortesd2pdvs93', 'Rendezvous.daterdv' ),
-			__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.created' ),
+			__d( 'cohortesd2pdvs93', 'Questionnaired2pdv93.date_validation' ),
 			__d( 'cohortesd2pdvs93', 'Structurereferente.lib_struc' ),
 			// Allocataire
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nom' ),
@@ -41,7 +41,7 @@
 			$row = array(
 				// Suivi
 				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Rendezvous.daterdv' ) ),
-				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Questionnaired2pdv93.created' ) ),
+				$this->Locale->date( __( 'Date::short' ), Hash::get( $result, 'Questionnaired2pdv93.date_validation' ) ),
 				Hash::get( $result, 'Structurereferente.lib_struc' ),
 				// Allocataire
 				Hash::get( $result, 'Situationallocataire.nom' ),

@@ -113,7 +113,7 @@
 					),
 				),
 				'order' => array(
-					'Questionnaired2pdv93.modified DESC'
+					'Questionnaired2pdv93.date_validation DESC'
 				)
 			);
 

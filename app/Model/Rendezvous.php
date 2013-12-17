@@ -501,7 +501,7 @@
 						// TODO: les conditions en paramétrage de la règle de validation
 						$conditions = array(
 							"{$Model->alias}.personne_id" => "#Rendezvous.personne_id#",
-							"DATE_TRUNC( 'YEAR', {$Model->alias}.modified ) = DATE_TRUNC( 'YEAR', TIMESTAMP '#Rendezvous.daterdv#' )",
+							"DATE_TRUNC( 'YEAR', {$Model->alias}.date_validation ) = DATE_TRUNC( 'YEAR', TIMESTAMP '#Rendezvous.daterdv#' )",
 						);
 						$conditions = DefaultUtility::evaluate( $this->data, $conditions );
 

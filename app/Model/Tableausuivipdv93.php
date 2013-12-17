@@ -258,7 +258,7 @@
 		 * @return array
 		 */
 		protected function _tableaud2Total( array $search ) {
-			$cer = 'EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Rendezvous"."personne_id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired1pdv93"."created" ) AND contratsinsertion.df_ci >= \''.date( 'Y-m-d' ).'\' )';
+			$cer = 'EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Rendezvous"."personne_id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired1pdv93"."date_validation" ) AND contratsinsertion.df_ci >= \''.date( 'Y-m-d' ).'\' )';
 
 			$fields = array(
 				'"Situationallocataire"."sexe" AS "categorie"',
@@ -795,7 +795,7 @@
 				),
 				'order' => array(
 					'Rendezvous.daterdv ASC',
-					'Questionnaired2pdv93.created ASC'
+					'Questionnaired2pdv93.date_validation ASC'
 				)
 			);
 
@@ -835,7 +835,7 @@
 				),
 				'order' => array(
 					'Rendezvous.daterdv ASC',
-					'Questionnaired2pdv93.created ASC'
+					'Questionnaired2pdv93.date_validation ASC'
 				)
 			);
 
@@ -1085,7 +1085,7 @@
 						'conditions' => array(
 							'historiquesdroits.personne_id = Questionnaired2pdv93.personne_id',
 							'historiquesdroits.toppersdrodevorsa' => 1,
-							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."created" )'
+							'( historiquesdroits.created, historiquesdroits.modified ) OVERLAPS ( "Questionnaired1pdv93"."date_validation", "Questionnaired2pdv93"."date_validation" )'
 						)
 					)
 				);
@@ -1105,10 +1105,10 @@
 					'COUNT("Questionnaired2pdv93"."id") AS "Tableaud2pdv93__nombre"',
 					'COUNT(CASE WHEN ( "Personne"."sexe" = \'1\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__hommes"',
 					'COUNT(CASE WHEN ( "Personne"."sexe" = \'2\' ) THEN "Questionnaired2pdv93"."id" ELSE NULL END) AS "Tableaud2pdv93__femmes"',
-					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."created" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
+					'COUNT(CASE WHEN ( EXISTS( SELECT contratsinsertion.id FROM contratsinsertion WHERE contratsinsertion.personne_id = "Personne"."id" AND contratsinsertion.decision_ci = \'V\' AND contratsinsertion.dd_ci <= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."date_validation" ) AND contratsinsertion.df_ci >= DATE_TRUNC( \'day\', "Questionnaired2pdv93"."date_validation" ) ) ) THEN 1 ELSE NULL END ) AS "Tableaud2pdv93__cer"',
 				),
 				'conditions' => array(
-					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.created )' => $annee,
+					'EXTRACT( \'YEAR\' FROM Questionnaired2pdv93.date_validation )' => $annee,
 					$conditionpdv,
 					$conditiondd
 				),

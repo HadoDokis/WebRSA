@@ -16,6 +16,7 @@
 			'Questionnaired2pdv93.structurereferente_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.questionnaired1pdv93_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.isajax' => array( 'type' => 'hidden' ),
+			'Questionnaired2pdv93.date_validation' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.situationaccompagnement' => array(
 				'options' => $options['Questionnaired2pdv93']['situationaccompagnement'],
 				'empty' => true,
