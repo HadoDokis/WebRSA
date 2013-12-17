@@ -83,5 +83,8 @@ msgstr "PDV"
 msgid "Questionnaired2pdv93.created"
 msgstr "Date sortie"
 
+msgid "Questionnaired2pdv93.date_validation"
+msgstr "Date sortie"
+
 msgid "Dossier.locked"
 msgstr "Dossier verrouillé ?"
