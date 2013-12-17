@@ -346,10 +346,10 @@
 			}
 			$formData[$this->alias]['inscritpe'] = $inscritpe;
 
-			$formData[$this->alias]['date_validation'] = date( 'Y-m-d' );
 			$formData[$this->alias]['nivetu'] = $this->nivetu( $personne_id );
 			$formData[$this->alias]['autre_caracteristique'] = 'beneficiaire_minimas';
 			$formData[$this->alias]['rendezvous_id'] = $this->rendezvous( $personne_id );
+			$formData[$this->alias]['date_validation'] = $this->_dateValidation( $formData[$this->alias]['rendezvous_id'] );
 
 			// Champs en visualisation uniquement
 			$formData = $this->completeDataForView( $formData );
@@ -412,7 +412,6 @@
 			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'all', $querydata ); // FIXME: une boucle ?
 
 			$with = $this->Rendezvous->hasAndBelongsToMany['Thematiquerdv']['with'];
-			$foo = date( 'Y-m-d' );
 
 			// RDV qui n'est pas déjà utilisé pour le remplissage d'un questionnaire D1
 			$sq = $this->sq(
@@ -433,7 +432,6 @@
 				'contain' => false,
 				'conditions' => array(
 					'Rendezvous.personne_id' => $personne_id,
-					"DATE_TRUNC( 'YEAR', Rendezvous.daterdv ) = DATE_TRUNC( 'YEAR', TIMESTAMP '{$foo}' )",
 					'Rendezvous.typerdv_id' => Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv.typerdv_id' ),
 					'Thematiquerdv.linkedmodel' => $this->alias,
 					"Rendezvous.id NOT IN ( {$sq} )"
@@ -447,6 +445,41 @@
 			$rendezvous = $this->Rendezvous->find( 'first', $querydata );
 
 			return Hash::get( $rendezvous, 'Rendezvous.id' );
+		}
+
+		/**
+		 * Si la date de rendez-vous est sur une année différente, on prend la
+		 * date de RDV comme date de validation, sinon la date du jour.
+		 *
+		 * @param integer $rendezvous_id
+		 * @return string
+		 */
+		protected function _dateValidation( $rendezvous_id ) {
+			$date_validation = date( 'Y-m-d' );
+
+			if( !empty( $rendezvous_id ) ) {
+				$querydata = array(
+					'fields' => array(
+						'Rendezvous.daterdv'
+					),
+					'conditions' => array(
+						'Rendezvous.id' => $rendezvous_id
+					),
+					'contain' => false,
+					'order' => array(
+						'Rendezvous.daterdv ASC'
+					),
+				);
+
+				$rendezvous = $this->Rendezvous->find( 'first', $querydata );
+				if( !empty( $rendezvous ) ) {
+					if( date( 'Y', strtotime( $rendezvous['Rendezvous']['daterdv'] ) ) != date( 'Y' ) ) {
+						$date_validation = $rendezvous['Rendezvous']['daterdv'];
+					}
+				}
+			}
+
+			return $date_validation;
 		}
 
 		/**
@@ -494,8 +527,10 @@
 				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
 			}
 
+			$date_validation = $this->_dateValidation( $rendezvous );
+
 			$this->create( array( 'personne_id' => $personne_id ) );
-			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => date( 'Y-m-d' ) ), 'personne_id' );
+			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id' );
 			if( $exists ) {
 				$messages['Questionnaired1pdv93.exists'] = 'notice';
 			}

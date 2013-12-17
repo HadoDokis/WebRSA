@@ -137,7 +137,7 @@
 					'contain' => false,
 					'conditions' => array(
 						'questionnairesd2pdvs93.personne_id = Questionnaired1pdv93.personne_id',
-						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created ) = EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )',
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation ) = EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )',
 						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
 					)
 				)
@@ -151,7 +151,6 @@
 				),
 				'conditions' => array(
 					'Questionnaired1pdv93.personne_id' => $personne_id,
-					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => date( 'Y' ),
 					"Questionnaired1pdv93.id NOT IN ( {$sq} )",
 				),
 				'order' => array(
@@ -166,7 +165,7 @@
 
 		/**
 		 * Retourne l'id du questionnaire D1 pour lequel l'allocataire doit encore
-		 * remplir un questionnaire D2 pour l'année en cours.
+		 * remplir un questionnaire D2 (pour l'année en cours).
 		 *
 		 * @param integer $personne_id
 		 * @return boolean
@@ -179,7 +178,7 @@
 					'contain' => false,
 					'conditions' => array(
 						'questionnairesd2pdvs93.personne_id' => $personne_id,
-						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created )' => date( 'Y' ),
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation ) = EXTRACT( \'YEAR\' FROM Rendezvous.daterdv )',
 						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
 					)
 				)
@@ -193,7 +192,7 @@
 				),
 				'conditions' => array(
 					'Questionnaired1pdv93.personne_id' => $personne_id,
-					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )' => date( 'Y' ),
+					'EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation ) = EXTRACT( \'YEAR\' FROM Rendezvous.daterdv )',
 					"Questionnaired1pdv93.id NOT IN ( {$sq} )",
 				),
 				'order' => array(
@@ -222,7 +221,7 @@
 					'contain' => false,
 					'conditions' => array(
 						"questionnairesd2pdvs93.personne_id = questionnairesd1pdvs93.personne_id",
-						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.created ) = EXTRACT( \'YEAR\' FROM rendezvous.daterdv )',
+						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation ) = EXTRACT( \'YEAR\' FROM rendezvous.daterdv )',
 					)
 				)
 			);
@@ -265,8 +264,15 @@
 		public function messages( $personne_id ) {
 			$messages = array();
 
+			// Rechercher le D1 pour obtenir une date de validation logique
+			$date_validation = date( 'Y-m-d' );
+			$questionnairesd1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
+			if( !empty( $questionnairesd1pdv93_id ) ) {
+				$date_validation = $this->_dateValidation( $questionnaired1pdv93_id );
+			}
+
 			$this->create( array( 'personne_id' => $personne_id ) );
-			$exists = !$this->checkDateOnceAYear( array( 'created' => date( 'Y-m-d' ) ), 'personne_id' );
+			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id' );
 			if( $exists ) {
 				$messages['Questionnaired2pdv93.exists'] = 'error';
 			}
@@ -368,6 +374,35 @@
 		}
 
 		/**
+		 * Lorsque l'allocataire possède un D1 sur l'année N-1, on force la
+		 * date_validation au 31/12/N-1, sinon on prend la date du jour.
+		 *
+		 * @param integer $rendezvous_id
+		 * @return string
+		 */
+		protected function _dateValidation( $questionnaired1pdv93_id ) {
+			$querydata = array(
+				'fields' => array( 'Questionnaired1pdv93.date_validation' ),
+				'contain' => false,
+				'conditions' => array(
+					'Questionnaired1pdv93.id' => $questionnaired1pdv93_id
+				)
+			);
+			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
+
+			$date_validation = Hash::get( $questionnaired1pdv93, 'Questionnaired1pdv93.date_validation' );
+			$year_validation = date( 'Y', strtotime( $date_validation ) );
+			if( $year_validation < date( 'Y' ) ) {
+				$date_validation = "{$year_validation}-12-31";
+			}
+			else {
+				$date_validation = date( 'Y-m-d' );
+			}
+
+			return $date_validation;
+		}
+
+		/**
 		 *
 		 *
 		 * @param integer $personne_id
@@ -392,6 +427,26 @@
 				$formData[$this->alias]['personne_id'] = $personne_id;
 				$formData[$this->alias]['structurereferente_id'] = $this->structurereferenteId( $personne_id );
 				$formData[$this->alias]['questionnaired1pdv93_id'] = $this->questionnairesd1pdv93Id( $personne_id );
+
+				/*// Lorsque l'allocataire possède un D1 sur l'année N-1, on force la date_validation au 31/12/N-1, sinon on prend la date du jour
+				$querydata = array(
+					'fields' => array( 'Questionnaired1pdv93.date_validation' ),
+					'contain' => false,
+					'conditions' => array(
+						'Questionnaired1pdv93.id' => $formData[$this->alias]['questionnaired1pdv93_id']
+					)
+				);
+				$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
+
+				$date_validation = Hash::get( $questionnaired1pdv93, 'Questionnaired1pdv93.date_validation' );
+				$year_validation = date( 'Y', strtotime( $date_validation ) );
+				if( $year_validation < date( 'Y' ) ) {
+					$date_validation = "{$year_validation}-12-31";
+				}
+				else {
+					$date_validation = date( 'Y-m-d' );
+				}*/
+				$formData[$this->alias]['date_validation'] = $this->_dateValidation( $formData[$this->alias]['questionnaired1pdv93_id'] );
 
 				// Lorsque l'allocataire ne possède pas encore de D2 et est soumis à droits et devoirs, on préremplit en maintien
 				$querydata = array(
@@ -434,6 +489,7 @@
 						'situationaccompagnement' => $situationaccompagnement,
 						'sortieaccompagnementd2pdv93_id' => null,
 						'chgmentsituationadmin' => $chgmentsituationadmin,
+						'date_validation' => $this->_dateValidation( $questionnaired1pdv93_id ),
 					)
 				);
 

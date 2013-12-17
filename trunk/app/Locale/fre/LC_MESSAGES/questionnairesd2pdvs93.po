@@ -28,6 +28,9 @@ msgstr "Sortie \"changement administratif\""
 msgid "Questionnaired2pdv93.modified"
 msgstr "Dernière modification"
 
+msgid "Questionnaired2pdv93.date_validation"
+msgstr "Date validation"
+
 # ------------------------------------------------------------------------------
 
 msgid "Questionnaired2pdv93.exists"

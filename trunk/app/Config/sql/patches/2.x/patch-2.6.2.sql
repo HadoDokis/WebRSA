@@ -120,6 +120,15 @@ SELECT add_missing_constraint ( 'public', 'actionscandidats_personnes', 'actions
 ----------------------------------------------------------------------------------------
 SELECT add_missing_table_field ( 'public', 'actionscandidats_personnes', 'nomprestataire', 'VARCHAR(250)' );
 SELECT add_missing_table_field ( 'public', 'actionscandidats', 'emailprestataire', 'VARCHAR(250)' );
+
+--------------------------------------------------------------------------------
+-- 20131217 : Ajout du champ date_validation dans la table questionnairesd2pdvs93
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'questionnairesd2pdvs93', 'date_validation', 'DATE' );
+
+UPDATE questionnairesd2pdvs93 SET date_validation = DATE_TRUNC( 'day', created );
+ALTER TABLE questionnairesd2pdvs93 ALTER COLUMN date_validation SET NOT NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

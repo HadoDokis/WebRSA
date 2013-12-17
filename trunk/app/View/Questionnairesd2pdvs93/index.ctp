@@ -23,6 +23,7 @@
 		$questionnairesd2pdvs93,
 		array(
 			'Pdv.lib_struc',
+			'Questionnaired2pdv93.date_validation',
 			'Questionnaired2pdv93.modified',
 			'Questionnaired2pdv93.situationaccompagnement',
 			'Sortieaccompagnementd2pdv93.name',
