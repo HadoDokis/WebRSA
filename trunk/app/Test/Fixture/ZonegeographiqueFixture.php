@@ -31,6 +31,18 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'codeinsee' => '93001',
+				'libelle' => 'AUBERVILLIERS',
+			),
+			array(
+				'codeinsee' => '93008',
+				'libelle' => 'BOBIGNY',
+			),
+			array(
+				'codeinsee' => '93010',
+				'libelle' => 'BONDY',
+			),
 		);
 
 	}
