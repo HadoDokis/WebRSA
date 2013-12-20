@@ -247,7 +247,7 @@
                                     h( $contrat['Adresse']['locaadr'] ),
                                     h( @$contrat['Referent']['nom_complet'] ),
                                     h( $contrat['Dossier']['matricule'] ),
-                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
+                                    h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),
                                     h( $contrat['Contratinsertion']['rg_ci'] ),
                                     h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
                                     h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
