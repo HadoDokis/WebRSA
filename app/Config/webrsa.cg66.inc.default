@@ -768,7 +768,7 @@
      *  124 = Actions Région : Formations API - PRQ - ERI
      * 
 	 */
-    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '178', '124' ) );
+    Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionId', array( '124' ) );
     
     /**
 	 * Configuration de l'utilisation des thématiques de RDV du module RDV
