@@ -46,16 +46,25 @@
 					array(
 						'Dossierpcg66.originepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 						'Dossierpcg66.typepdo_id' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id' ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
-						'Dossierpcg66.orgpayeur' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
-                        'Decisiondossierpcg66.decisionpdo_id' => array( 'label' => 'Décision', 'type' => 'select', 'options' => $decisionpdo, 'empty' => true )
+						'Dossierpcg66.orgpayeur' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true )
 					),
 					array(
 						'options' => $options
 					)
 				);
+                 
+                echo '<fieldset class="col2 noborder">';
+                echo $this->Xform->input( 'Decisiondossierpcg66.decisionpdo_id', array( 'label' => 'Décision', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $decisionpdo, 'empty' => false ) );
+                echo '</fieldset>';
 
-                echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
-                echo $this->Form->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ) );
+                echo '<fieldset class="col2 noborder">';
+                echo $this->Xform->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $motifpersonnepcg66, 'empty' => false ) );
+                echo '</fieldset>';
+                echo '<fieldset class="col2 noborder">';
+                echo $this->Xform->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutpersonnepcg66, 'empty' => false ) );
+                echo '</fieldset>';
+//                echo $this->Form->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'options' => $motifpersonnepcg66, 'empty' => true ) );
+//                echo $this->Form->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut concernant la personne', 'type' => 'select', 'options' => $statutpersonnepcg66, 'empty' => true ) );
 
 
 
