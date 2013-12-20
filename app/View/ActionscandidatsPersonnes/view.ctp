@@ -52,19 +52,15 @@
 		);
 
         
-        if( !empty( $progsfichescandidatures66 ) ) {
+        if( !empty( $actionscandidatspersonne['ActioncandidatPersonne']['progfichecandidature66_id'] ) ) {
             echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Informations pour les actions Région'));
-            if( !empty( $progsfichescandidatures66 ) ) {
-                $progsfichescandidatures66 = '<ul><li>'.implode( '</li><li>', $progsfichescandidatures66 ).'</li></ul>';
-            }
-            else {
-                $progsfichescandidatures66 = '';
-            }
+
             echo $this->Default2->view(
                 $actionscandidatspersonne,
                 array(
-                    'Progfichecandidature66.name' => array( 'label' => 'Nom du (des) programme(s)', 'value' => $progsfichescandidatures66 ),
-                    'ActioncandidatPersonne.formationregion'
+                    'Progfichecandidature66.name' => array( 'label' => 'Nom du (des) programme(s)'),
+                    'ActioncandidatPersonne.formationregion',
+                    'ActioncandidatPersonne.nomprestataire' => array( 'label' => 'Nom du prestataire')
                 ),
                 array(
                     'widget' => 'table',

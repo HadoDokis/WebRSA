@@ -847,6 +847,7 @@
 						$this->ActioncandidatPersonne->Personne->fields(),
 						$this->ActioncandidatPersonne->Referent->fields(),
 						$this->ActioncandidatPersonne->fields(),
+						$this->ActioncandidatPersonne->Progfichecandidature66->fields(),
 						array(
 							$this->ActioncandidatPersonne->Fichiermodule->sqNbFichiersLies( $this->ActioncandidatPersonne, 'nb_fichiers_lies', 'ActioncandidatPersonne' )
 						)
@@ -858,7 +859,8 @@
 						$this->ActioncandidatPersonne->join( 'Actioncandidat', array( 'type' => 'INNER' ) ),
 						$this->ActioncandidatPersonne->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->ActioncandidatPersonne->join( 'Motifsortie', array( 'type' => 'LEFT OUTER' ) ),
-						$this->ActioncandidatPersonne->join( 'Personne', array( 'type' => 'INNER' ) )
+						$this->ActioncandidatPersonne->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->ActioncandidatPersonne->join( 'Progfichecandidature66', array( 'type' => 'LEFT OUTER' ) )
 					),
 					'contain' => false
 				)
@@ -879,21 +881,21 @@
 
             //liste des programmes Région sélectionnés
             // Récupération des programmes région si renseignés
-            $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
-                'all',
-                array(
-                    'fields' => array(
-                        'Progfichecandidature66.name',
-                        'CandidatureProg66.id',
-                        'CandidatureProg66.progfichecandidature66_id'
-                    ),
-                    'conditions' => array(
-                        'CandidatureProg66.actioncandidat_personne_id' => $id
-                    )
-                )
-            );
-            $progsfichescandidatures66 = (array)Set::extract( $progsfichescandidatures66, '{n}.Progfichecandidature66.name' );
-            $this->set( compact( 'progsfichescandidatures66' ) );
+//            $progsfichescandidatures66 = $this->ActioncandidatPersonne->CandidatureProg66->find(
+//                'all',
+//                array(
+//                    'fields' => array(
+//                        'Progfichecandidature66.name',
+//                        'CandidatureProg66.id',
+//                        'CandidatureProg66.progfichecandidature66_id'
+//                    ),
+//                    'conditions' => array(
+//                        'CandidatureProg66.actioncandidat_personne_id' => $id
+//                    )
+//                )
+//            );
+//            $progsfichescandidatures66 = (array)Set::extract( $progsfichescandidatures66, '{n}.Progfichecandidature66.name' );
+//            $this->set( compact( 'progsfichescandidatures66' ) );
 
 
 			// Retour à la liste en cas d'annulation
