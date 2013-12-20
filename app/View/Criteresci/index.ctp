@@ -317,7 +317,7 @@
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
 					array( 'controller' => 'criteresci', 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
-					( $this->Permissions->check( 'criteresci', 'exportcsv' ) && $this->request->data['Filtre']['paginationNombreTotal'])
+					( $this->Permissions->check( 'criteresci', 'exportcsv' ) )
 				);
 			?></li>
 		</ul>
