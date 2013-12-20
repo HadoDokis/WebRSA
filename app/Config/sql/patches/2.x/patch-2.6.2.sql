@@ -129,6 +129,11 @@ SELECT add_missing_table_field ( 'public', 'questionnairesd2pdvs93', 'date_valid
 UPDATE questionnairesd2pdvs93 SET date_validation = DATE_TRUNC( 'day', created );
 ALTER TABLE questionnairesd2pdvs93 ALTER COLUMN date_validation SET NOT NULL;
 
+--------------------------------------------------------------------------------
+-- 20131220 : Modification du champ libelle de la table typespdos 30 -> 150
+--------------------------------------------------------------------------------
+ALTER TABLE typespdos ALTER COLUMN libelle TYPE VARCHAR(150) USING CAST(libelle AS VARCHAR(150));
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
