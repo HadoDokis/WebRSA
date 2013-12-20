@@ -73,13 +73,8 @@
 										<td>'.$contratinsertion['Contratinsertion']['motifannulation'].'</td>
 									</tr>
                                     <tr>
-										<th>Positionnement sur l\'action</th>
-										<td>'.$contratinsertion['Actioncandidat']['name'].'</td>
-									</tr>
-
-                                    <tr>
-										<th>Action(s) en cours</th>
-										<td>'.( empty( $listesActions ) ? null :'<ul><li>'.implode( '</li><li>', $listesActions ).'</li></ul>' ).'</td>
+										<th>Durée du CER</th>
+										<td>'.value( $duree_engag_cg66, $contratinsertion['Contratinsertion']['duree_engag'] ).'</td>
 									</tr>
 								</tbody>
 							</table>';

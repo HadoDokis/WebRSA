@@ -72,7 +72,8 @@
 			$options = $this->Contratinsertion->allEnumLists();
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier' ) ) ) {
-				$options = array_merge( $this->Contratinsertion->Propodecisioncer66->enums(), $options );
+				$this->set( 'duree_engag_cg66', $this->Option->duree_engag_cg66() );
+                $options = array_merge( $this->Contratinsertion->Propodecisioncer66->enums(), $options );
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
 				$forme_ci = array( );
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
