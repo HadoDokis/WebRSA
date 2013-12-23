@@ -9,10 +9,12 @@
 	echo $this->Default2->index(
 		$statutspdos,
 		array(
-			'Statutpdo.libelle'
+			'Statutpdo.libelle',
+			'Statutpdo.isactif'
 		),
 		array(
 			'cohorte' => false,
+            'options' => $options,
 			'actions' => array(
 				'Statutspdos::edit',
 				'Statutspdos::delete' => array( 'disabled' => '\'#Statutpdo.occurences#\'!= "0"' )

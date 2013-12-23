@@ -27,6 +27,7 @@
 				<?php if( Configure::read( 'Cg.departement' ) == 93  ) :?>
 					<th>Modèle de document lié</th>
 				<?php endif;?>
+                <th>Actif ?</th>
 				<th colspan="2" class="action">Actions</th>
 			</tr>
 		</thead>
@@ -38,6 +39,7 @@
 						h( $decisionpdo['Decisionpdo']['libelle'] ),
 						( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
 						( $decisionpdo['Decisionpdo']['cerparticulier'] == 'N' ) ? 'Non' : 'Oui',
+						( $decisionpdo['Decisionpdo']['isactif'] == '0' ) ? 'Non' : 'Oui',
 						$this->Xhtml->editLink(
 							'Éditer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] ),
@@ -55,6 +57,7 @@
 						h( $decisionpdo['Decisionpdo']['libelle'] ),
 						( $decisionpdo['Decisionpdo']['clos'] == 'N' ) ? 'Non' : 'Oui',
 						h( $decisionpdo['Decisionpdo']['modeleodt'] ),
+                        ( $decisionpdo['Decisionpdo']['isactif'] == '0' ) ? 'Non' : 'Oui',
 						$this->Xhtml->editLink(
 							'Éditer la décision de PDO ',
 							array( 'controller' => 'decisionspdos', 'action' => 'edit', $decisionpdo['Decisionpdo']['id'] ),

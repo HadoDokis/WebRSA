@@ -51,5 +51,12 @@ msgstr "Confirmer la suppression ?"
 msgid "Situationpdo.declencheepd"
 msgstr "Déclenche une EPD ?"
 
+msgid "Situationpdo.isactif"
+msgstr "Actif ?"
 
+msgid "ENUM::ISACTIF::1"
+msgstr "Oui"
+
+msgid "ENUM::ISACTIF::0"
+msgstr "Non"
 ###############################################################################

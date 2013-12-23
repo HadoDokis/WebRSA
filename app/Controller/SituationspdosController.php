@@ -25,29 +25,22 @@
 			'add' => 'Situationspdos:edit'
 		);
 
-// 		protected function _setOptions() {
-// 			$modelelist = $this->Situationpdo->Modeletypecourrierpcg66->find(
-// 				'list',
-// 				array(
-// 					'fields' => array(
-// 						'Modeletypecourrierpcg66.id',
-// 						'Modeletypecourrierpcg66.name'
-// 					)
-// 				)
-// 			);
-// 			$this->set( 'modelelist', $modelelist );
-// 		}
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
 		*   - theme.php
 		*/
 
+         protected function _setOptions() {
+			$options = $this->Situationpdo->enums();
+			$this->set( compact( 'options' ) );
+		}
+        
 		public function index() {
 			$queryData = $this->Situationpdo->qdOccurences();
             $this->paginate = $queryData;
 			$situationspdos = $this->paginate( $this->modelClass );
-            
+            $this->_setOptions();
             $this->set( compact( 'situationspdos' ) );
 		}
 
@@ -75,7 +68,7 @@
 
 		protected function _add_edit(){
 			$args = func_get_args();
-// 			$this->_setOptions();
+ 			$this->_setOptions();
 			$this->Default->{$this->action}( $args );
 		}
 

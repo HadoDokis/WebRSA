@@ -15,8 +15,12 @@
 	echo $this->Default2->subform(
 		array(
 			'Situationpdo.id' => array( 'type' => 'hidden' ),
-			'Situationpdo.libelle' => array( 'required' => true )
-		)
+			'Situationpdo.libelle' => array( 'required' => true ),
+            'Situationpdo.isactif' => array( 'type' => 'radio', 'empty' => false )
+		),
+        array(
+            'options' => $options
+        )
 	);
 ?>
 

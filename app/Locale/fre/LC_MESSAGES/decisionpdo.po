@@ -48,3 +48,12 @@ msgstr "Décision en lien avec la validation d'un CER"
 
 msgid "Decisionpdo.modeleodt"
 msgstr "Modèle de document lié"
+
+msgid "Decisionpdo.isactif"
+msgstr "Actif ?"
+
+msgid "ENUM::ISACTIF::1"
+msgstr "Oui"
+
+msgid "ENUM::ISACTIF::0"
+msgstr "Non"
