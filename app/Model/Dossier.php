@@ -517,6 +517,7 @@
 						'Prestation.rolepers',
 						'Orientstruct.structurereferente_id',
 						'Structurereferente.typestructure',
+                        $this->Foyer->Personne->Memo->sqNbMemosLies($this, 'Personne.id', 'nb_memos_lies' )
 					),
 					'conditions' => array(
 						'Personne.foyer_id' => Hash::get( $dossier, 'Foyer.id' ),
@@ -538,7 +539,7 @@
 			// Reformattage pour la vue
 			$dossier['Foyer']['Personne'] = Hash::extract( $personnes, '{n}.Personne' );
 
-			foreach( array( 'Prestation', 'Orientstruct', 'Structurereferente' ) as $modelName ) {
+			foreach( array( 'Prestation', 'Orientstruct', 'Structurereferente', 'Memo' ) as $modelName ) {
 				foreach( Hash::extract( $personnes, "{n}.{$modelName}" ) as $i => $datas ) {
 					$dossier['Foyer']['Personne'] = Hash::insert( $dossier['Foyer']['Personne'], "{$i}.{$modelName}", $datas );
 				}
