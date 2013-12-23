@@ -106,6 +106,8 @@
                     <th>'.$this->Xpaginator->sort( __d( 'dossiercov58', 'Dossiercov58.themecov58_id' ), 'Dossiercov58.themecov58_id' ).'</th>
 					<th>'.$this->Xpaginator->sort( __d( 'cov58', 'Cov58.datecommission' ), 'Cov58.datecommission' ).'</th>
                     <th>'.$this->Xpaginator->sort( __d( 'passagecov58', 'Passagecov58.etatdossiercov' ), 'Passagecov58.etatdossiercov').'</th>
+                    <th>'.$this->Xpaginator->sort( __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'Structurereferenteparcours.lib_struc').'</th>
+                    <th>'.$this->Xpaginator->sort( __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'Referentparcours.nom_complet').'</th>
                     <th>Action</th>
                 </tr></thead><tbody>';
 
@@ -115,8 +117,10 @@
                         <td>'.h( $dossiercov58['Personne']['nom_complet'] ).'</td>
                         <td>'.__d( 'dossiercov58',  'ENUM::THEMECOV::'.$themes[$dossiercov58['Dossiercov58']['themecov58_id']] ).'</td>
                         <td>'.h( date('d-m-Y à h:i', strtotime($dossiercov58['Cov58']['datecommission'])) ).'</td>
-                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Passagecov58.etatdossiercov' ),  $options['etatdossiercov'] ) ).
-                        '<td>'.$this->Xhtml->link( 'Voir', array( 'controller' => 'personnes', 'action' => 'view', $dossiercov58['Personne']['id'] ) ).'</td>
+                        <td>'.h( Set::enum( Set::classicExtract( $dossiercov58, 'Passagecov58.etatdossiercov' ),  $options['etatdossiercov'] ) ).'</td>
+						<td>'.h( Hash::get( $dossiercov58, 'Structurereferenteparcours.lib_struc' ) ).'</td>
+						<td>'.h( Hash::get( $dossiercov58, 'Referentparcours.nom_complet' ) ).'</td>
+                        <td>'.$this->Xhtml->link( 'Voir', array( 'controller' => 'personnes', 'action' => 'view', $dossiercov58['Personne']['id'] ) ).'</td>
                     </tr>';
                 }
             echo '</tbody></table>';

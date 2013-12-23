@@ -15,7 +15,9 @@
             'Date d\'échéance',
             'Traitement clos ?',
             'Traitement annulé ?',
-            'Nb de fichiers dans la corbeille'
+            'Nb de fichiers dans la corbeille',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
 
@@ -35,11 +37,13 @@
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
             h( Set::enum( Hash::get( $result, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),
             h( $result['Fichiermodule']['nb_fichiers_lies'] ),
+			Hash::get( $result, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $result, 'Referentparcours.nom_complet' ),
         );
         $this->Csv->addRow( $row );
     }
 
-    
+
 
 	Configure::write( 'debug', 0 );
 	echo $this->Csv->render( "{$this->request->params['controller']}_{$this->request->params['action']}_".date( 'Ymd-His' ).'.csv' );

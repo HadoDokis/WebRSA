@@ -116,6 +116,14 @@
 									<th>Rôle</th>
 									<td>'.$rolepers[$indu['Prestation']['rolepers']].'</td>
 								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $indu, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $indu, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 							$title = $indu['Dossier']['numdemrsa'];

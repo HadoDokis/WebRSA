@@ -1,7 +1,22 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° dossier RSA', 'Nom allocataire', 'Prénom allocataire', 'Date de naissance', 'Commune de l\'allocataire', 'Date de validation de l\'orientation', 'Nb de jours depuis la fin du contrat lié', 'Type d\'orientation', 'Structure référente', 'Référent' ) );
+	$this->Csv->addRow(
+		array(
+			'N° dossier RSA',
+			'Nom allocataire',
+			'Prénom allocataire',
+			'Date de naissance',
+			'Commune de l\'allocataire',
+			'Date de validation de l\'orientation',
+			'Nb de jours depuis la fin du contrat lié',
+			'Type d\'orientation',
+			'Structure référente',
+			'Référent',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $orientsstructs as $orientstruct ) {
 
@@ -15,7 +30,9 @@
 			Set::classicExtract( $orientstruct, 'Contratinsertion.nbjours'),
 			Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient'),
 			Set::classicExtract( $orientstruct, 'Structurereferente.lib_struc'),
-			Set::classicExtract( $orientstruct, 'Referent.nom').' '.Set::classicExtract( $orientstruct, 'Referent.prenom')
+			Set::classicExtract( $orientstruct, 'Referent.nom').' '.Set::classicExtract( $orientstruct, 'Referent.prenom'),
+			Hash::get( $orientstruct, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $orientstruct, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

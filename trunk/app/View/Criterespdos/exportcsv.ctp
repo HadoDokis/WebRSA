@@ -16,7 +16,9 @@
             'Proposition de décision',
             'Motif PDO',
             'Date de proposition de décision',
-            'Gestionnaire'
+            'Gestionnaire',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
 // debug($pdos);
@@ -36,7 +38,9 @@
 			Set::enum( Hash::get( $pdo, 'Decisionpropopdo.decisionpdo_id' ), $decisionpdo ),
 			Set::enum( Hash::get( $pdo, 'Propopdo.motifpdo' ), $motifpdo ),
 			$this->Locale->date( 'Date::short', Hash::get( $pdo, 'Decisionpropopdo.datedecisionpdo' ) ),
-			Set::enum( Hash::get( $pdo, 'Propopdo.user_id' ), $gestionnaire )
+			Set::enum( Hash::get( $pdo, 'Propopdo.user_id' ), $gestionnaire ),
+			Hash::get( $pdo, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $pdo, 'Referentparcours.nom_complet' ),
 		);
 
 		$this->Csv->addRow($row);

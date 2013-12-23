@@ -146,6 +146,14 @@
                                 <th>Commune</th>
                                 <td>'.h( $validationapre['Adresse']['locaadr'] ).'</td>
                             </tr>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+								<td>'.Hash::get( $validationapre, 'Structurereferenteparcours.lib_struc' ).'</td>
+							</tr>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+								<td>'.Hash::get( $validationapre, 'Referentparcours.nom_complet' ).'</td>
+							</tr>
                         </tbody>
                     </table>';
                     $title = $validationapre['Dossier']['numdemrsa'];

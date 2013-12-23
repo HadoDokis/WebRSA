@@ -15,7 +15,9 @@
 			'Nbre jours depuis orientation',
 			'Statut EP',
 			'Date de relance',
-			'Rang de relance'
+			'Rang de relance',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -41,7 +43,9 @@
 			h( $relance['Orientstruct']['nbjours'] ),
 			h( $etatdossierep ),
 			$this->Locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
-			( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" )
+			( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
+			Hash::get( $relance, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $relance, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow( $row );
 	}

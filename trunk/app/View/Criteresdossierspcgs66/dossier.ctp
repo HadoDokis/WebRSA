@@ -1,6 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
 	$domain = 'dossierpcg66';
@@ -80,9 +81,9 @@
 
 	?>
 	<?php
-    
+
 		echo $this->Search->etatDossierPCG66( $etatdossierpcg );
-        
+
 
         echo $this->Xform->input( 'Decisiondossierpcg66.org_id', array( 'label' => 'Organismes auxquels sont transmis les dossiers', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listorganismes, 'empty' => false ) );
 
@@ -236,7 +237,14 @@
 									<th>N° CAF</th>
 									<td>'.h( $criteredossierpcg66['Dossier']['matricule'] ).'</td>
 								</tr>
-
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $criteredossierpcg66, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $criteredossierpcg66, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 

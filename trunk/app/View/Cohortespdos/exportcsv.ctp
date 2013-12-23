@@ -1,7 +1,23 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° demande RSA', 'Date demande RSA', 'Nom/Prénom allocataire', 'Date de naissance', 'Commune', 'Type de PDO', 'Date de soumission PDO', 'Décision PDO', 'Motif PDO', 'Commentaires PDO', 'Gestionnaire' ) );
+	$this->Csv->addRow(
+		array(
+			'N° demande RSA',
+			'Date demande RSA',
+			'Nom/Prénom allocataire',
+			'Date de naissance',
+			'Commune',
+			'Type de PDO',
+			'Date de soumission PDO',
+			'Décision PDO',
+			'Motif PDO',
+			'Commentaires PDO',
+			'Gestionnaire',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $pdos as $pdo ) {
 		$row = array(
@@ -15,7 +31,9 @@
 			Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ),
 			Set::enum( Set::classicExtract( $pdo, 'Propopdo.motifpdo' ), $motifpdo ),
 			Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ),
-			Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) )
+			Set::classicExtract( $gestionnaire, Set::classicExtract( $pdo, 'Propopdo.user_id' ) ),
+			Hash::get( $pdo, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $pdo, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

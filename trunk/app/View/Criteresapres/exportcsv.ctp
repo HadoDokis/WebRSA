@@ -2,7 +2,19 @@
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
     if( Configure::read( 'Cg.departement') == 93 ) {
-        $this->Csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Date de demande d\'APRE', 'Nature de l\'aide', 'Type de demande APRE', 'Activité du bénéficiaire' ) );
+        $this->Csv->addRow(
+			array(
+				'N° Dossier',
+				'Nom/Prénom allocataire',
+				'Commune de l\'allocataire',
+				'Date de demande d\'APRE',
+				'Nature de l\'aide',
+				'Type de demande APRE',
+				'Activité du bénéficiaire',
+				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+			)
+		);
     }
     else {
         $this->Csv->addRow(
@@ -16,7 +28,9 @@
                 'Etat du dossier APRE',
                 'Décision',
                 'Montant accordé',
-                'Canton'
+                'Canton',
+				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
             )
         );
     }
@@ -32,7 +46,7 @@
                 }
             }
 
-        
+
             $row = array(
                 Hash::get( $apre, 'Dossier.numdemrsa' ),
                 Hash::get( $apre, 'Personne.nom' ).' '.Hash::get( $apre, 'Personne.prenom'),
@@ -41,6 +55,8 @@
                 ( empty( $aidesApre ) ? null : implode( "\n", $aidesApre ) ),
                 value( $options['typedemandeapre'], Hash::get( $apre, 'Apre.typedemandeapre' ) ),
                 value( $options['activitebeneficiaire'], Hash::get( $apre, 'Apre.activitebeneficiaire' ) ),
+				Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $apre, 'Referentparcours.nom_complet' ),
             );
         }
         else {
@@ -54,9 +70,12 @@
                 value( $options['etatdossierapre'], Hash::get( $apre, 'Apre.etatdossierapre' ) ),
                 value( $options['decisionapre'], Hash::get( $apre, 'Aideapre66.decisionapre' ) ),
                 Hash::get( $apre, 'Aideapre66.montantaccorde' ),
-                Hash::get( $apre, 'Canton.canton' )
+                Hash::get( $apre, 'Canton.canton' ),
+				Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $apre, 'Referentparcours.nom_complet' ),
             );
         }
+
 		$this->Csv->addRow($row);
 	}
 

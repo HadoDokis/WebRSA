@@ -24,6 +24,8 @@
 		'Code métier recherché',
 		'Secteur activité recherché',
 		'Activité recherchée',
+		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 	);
 
 	if( Configure::read( 'Cg.departement' ) == 93 ) {
@@ -65,7 +67,9 @@
                 Set::enum( $dsp['Donnees']['libsecactrech66_secteur_id'], $options['Coderomesecteurdsp66'] ),
                 @$options['Coderomemetierdsp66'][$key2],
                 $dsp['Donnees']['libsecactrech'],
-                $dsp['Donnees']['libemploirech']
+                $dsp['Donnees']['libemploirech'],
+				Hash::get( $dsp, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $dsp, 'Referentparcours.nom_complet' ),
             );
 
 			if( Configure::read( 'Cg.departement' ) == 93 ) {

@@ -55,7 +55,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php 
+				<?php
 					$controller = 'contratsinsertion';
 					if( Configure::read( 'Cg.departement' ) == 93 ) {
 						$controller = 'cers93';
@@ -91,6 +91,14 @@
 								<tr>
 									<th>État du dossier</th>
 									<td>'.h( $etatdosrsa[$contrat['Situationdossierrsa']['etatdosrsa']] ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $contrat, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
 							</tbody>
 						</table>';

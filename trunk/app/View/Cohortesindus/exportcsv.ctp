@@ -18,7 +18,9 @@
             'Date indus',
             'Montant initial de l\'indu',
             'Montant transféré CG',
-            'Remise CG'
+            'Remise CG',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
 
@@ -40,6 +42,8 @@
 			$this->Locale->money( $indu[0]['mt_indus_constate'] ),
 			$this->Locale->money( $indu[0]['mt_indus_transferes_c_g'] ),
 			$this->Locale->money( $indu[0]['mt_remises_indus'] ),
+			Hash::get( $indu, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $indu, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

@@ -147,6 +147,14 @@
 									<th>État du dossier</th>
 									<td>'.h( value( $etatdosrsa, $personne['Situationdossierrsa']['etatdosrsa'] ) ).'</td>
 								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $personne, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $personne, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 						$typeorient_id = Set::extract( $this->request->data, 'Orientstruct.'.$index.'.typeorient_id' );

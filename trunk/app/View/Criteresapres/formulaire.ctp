@@ -180,6 +180,14 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                     <th>NIR</th>
                                     <td>'.$apre['Personne']['nir'].'</td>
                                 </tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $apre, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
                             </tbody>
                         </table>';
 

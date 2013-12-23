@@ -201,6 +201,14 @@
 									<th>Rôle</th>
 									<td>'.Set::enum( $orient['Prestation']['rolepers'], $rolepers ).'</td>
 								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $orient, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $orient, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 

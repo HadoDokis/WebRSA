@@ -16,6 +16,8 @@
 			'Décision',
 			'Montant réduction',
 			'Durée sursis',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -34,6 +36,8 @@
 			Set::enum( Set::extract( $dossier, 'Decisionnonrespectsanctionep93.decision' ), $options['Decisionnonrespectsanctionep93']['decision'] ),
 			Set::extract( $dossier, 'Decisionnonrespectsanctionep93.montantreduction' ),
 			Set::extract( $dossier, 'Decisionnonrespectsanctionep93.dureesursis' ),
+			Hash::get( $dossier, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $dossier, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

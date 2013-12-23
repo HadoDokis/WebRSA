@@ -1,6 +1,7 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
 	$domain = 'traitementpcg66';
@@ -94,11 +95,11 @@
         echo '<fieldset class="col2 noborder">';
         echo $this->Xform->input( 'Traitementpcg66.situationpdo_id', array( 'label' => 'Motif concernant la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $motifpersonnepcg66, 'empty' => false ) );
         echo '</fieldset>';
-        
+
         echo '<fieldset class="col2 noborder">';
         echo $this->Xform->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut de la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutpersonnepcg66, 'empty' => false ) );
         echo '</fieldset>';
-        
+
 		echo $this->Default2->subform(
 			array(
 				'Traitementpcg66.descriptionpdo_id' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.descriptionpdo_id' ), 'type' => 'select', 'options' => $descriptionpdo, 'empty' => true ),
@@ -183,7 +184,14 @@
 									<th>N° CAF</th>
 									<td>'.h( $criteretraitementpcg66['Dossier']['matricule'] ).'</td>
 								</tr>
-
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $criteretraitementpcg66, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $criteretraitementpcg66, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 

@@ -16,16 +16,18 @@
             'Date de sortie',
             'Motif de sortie',
             'Code INSEE',
-            'Localité'
+            'Localité',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
-    
-    
+
+
 
 //debug( $actionscandidats_personnes );
 //die();
 	foreach( $actionscandidats_personnes as $actioncandidat_personne ) {
-        
+
 		$row = array(
 			$this->Locale->date( 'Date::short', Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.datesignature' ) ),
 			Hash::get( $actioncandidat_personne, 'Personne.nom_complet' ),
@@ -41,6 +43,8 @@
 			Set::enum( Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie ),
 			$actioncandidat_personne['Adresse']['numcomptt'],
 			$actioncandidat_personne['Adresse']['locaadr'],
+			Hash::get( $actioncandidat_personne, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $actioncandidat_personne, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

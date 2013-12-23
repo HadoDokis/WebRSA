@@ -20,7 +20,9 @@
 		'Commune',
         'Canton de l\'allocataire',
 		'Date d\'ouverture de droit',
-		'Etat du droit'
+		'Etat du droit',
+		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 	);
 
 	if( Configure::read( 'Cg.departement' ) == 93 ) {
@@ -79,7 +81,9 @@
 			Hash::get( $orient, 'Adresse.locaadr' ),
             Hash::get( $orient, 'Canton.canton' ),
 			date_short( Hash::get( $orient, 'Dossier.dtdemrsa' ) ),
-			value( $etatdosrsa, Hash::get( $orient, 'Situationdossierrsa.etatdosrsa' ) )
+			value( $etatdosrsa, Hash::get( $orient, 'Situationdossierrsa.etatdosrsa' ) ),
+			Hash::get( $orient, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $orient, 'Referentparcours.nom_complet' ),
 		);
 
 		if( Configure::read( 'Cg.departement' ) == 93 ) {
