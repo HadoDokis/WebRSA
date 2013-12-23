@@ -351,7 +351,8 @@
 				array(
 					'Decisiondossierpcg66.datepropositiontechnicien' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false ),
 //					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => isset( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) ? ( $dossierpcg66['Decisiondossierpcg66'][0]['commentairetechnicien'] ) : null )
-					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => $commentaireTechnicienValue )
+					'Decisiondossierpcg66.commentairetechnicien' => array( 'value' => $commentaireTechnicienValue ),
+					'Decisiondossierpcg66.instrencours' => array( 'type' => 'checkbox' )
 				),
 				array(
 					'options' => $options

@@ -35,7 +35,8 @@
 					'recidive',
 					'phase',
 					'defautinsertion',
-                    'haspiecejointe'
+                    'haspiecejointe',
+                    'instrencours'
 				)
 			),
 			'Gedooo.Gedooo',
@@ -186,7 +187,7 @@
 			if( Configure::read( 'nom_form_pdo_cg' ) == 'cg66' ) {
 				$validationdecision = Set::extract( $this->data, 'Decisionpropopdo.validationdecision' );
 
-				$etat = 'instrencours';
+				$etat = 'attinstr';
 
 				if ( !is_numeric( $validationdecision ) )
 					$etat = 'attval';

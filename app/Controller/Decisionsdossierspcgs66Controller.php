@@ -519,7 +519,8 @@
             
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
-//debug( $this->request->data);
+
+
 //debug($dossierpcg66);
 //die();
 				if( $this->Decisiondossierpcg66->saveAll( $this->request->data, array( 'validate' => 'only', 'atomic' => false ) ) ) {
@@ -830,16 +831,17 @@
 				$validationavis = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.validationproposition' );
 				$retouravistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.retouravistechnique' );
 				$vuavistechnique = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.vuavistechnique' );
+				$instrencours = Set::classicExtract( $dernieredecision, 'Decisiondossierpcg66.instrencours' );
 
 
-				$etatdossierpcg = 'instrencours';
+				$etatdossierpcg = 'attinstr';
 				// Quel est l'état actuel du dossier ?
 				if( empty( $dernieredecision ) ) {
 					$etatdossierpcg = 'attinstr';
 				}
 				else {
 					$etatdossierpcg = $this->Decisiondossierpcg66->Dossierpcg66->etatDossierPcg66(
-							$typepdo_id, $user_id, $decisionpdoId, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, $etatdossierpcg
+							$typepdo_id, $user_id, $decisionpdoId, $instrencours, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, $etatdossierpcg
 					);
 				}
 

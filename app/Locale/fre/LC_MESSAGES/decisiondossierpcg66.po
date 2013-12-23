@@ -237,3 +237,6 @@ msgstr "État de transmission"
 
 msgid "Decisiondossierpcg66.infotransmise"
 msgstr "Commentaire suite à la transmission"
+
+msgid "Decisiondossierpcg66.instrencours"
+msgstr "Instruction en cours (DO non terminée)"
