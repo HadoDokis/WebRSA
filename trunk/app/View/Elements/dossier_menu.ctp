@@ -130,7 +130,8 @@
 
 			if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) {
 				if( Configure::read( 'Cg.departement' ) == '66' ) {
-					$subAllocataire['Mémos'] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
+                    $count = $personne['Memo']['nb_memos_lies'];
+					$subAllocataire["Mémos ({$count})"] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
 				}
 
 				// Droit
