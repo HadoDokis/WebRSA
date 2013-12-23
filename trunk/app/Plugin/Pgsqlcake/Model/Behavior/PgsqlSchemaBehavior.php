@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe SchemaBehavior.
+	 * Code source de la classe PgsqlSchemaBehavior.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,14 +10,26 @@
 	 */
 
 	/**
-	 * La classe SchemaBehavior fournit des méthodes pour interroger des
+	 * La classe PgsqlSchemaBehavior fournit des méthodes pour interroger des
 	 * propriétés propres à Postgresql à partir des classes de modèles.
 	 *
 	 * @package Pgsqlcake
 	 * @subpackage Model.Behavior
 	 */
-	class SchemaBehavior extends ModelBehavior
+	class PgsqlSchemaBehavior extends ModelBehavior
 	{
+		/**
+		 * Retourne le nom du driver utilisé par la source de données du modèle
+		 * (postgres, mysql, mysqli, ...).
+		 *
+		 * @param Model $model
+		 * @return string
+		 */
+		protected function _driver( Model $model ) {
+			$datasource = $model->getDataSource()->config['datasource'];
+			return strtolower( str_replace( 'Database/', '', $datasource ) );
+		}
+
 		/**
 		* Setup this behavior with the specified configuration settings.
 		* Ne fonctionne qu'avec PostgreSQL
@@ -27,7 +39,7 @@
 		* @access public
 		*/
 		public function setup( Model $model, $settings = array() ) {
-			$driver = $model->driver();
+			$driver = $this->_driver( $model );
 			if( $driver != 'postgres' ) {
 				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).' ), __CLASS__, $driver, $model->alias ), E_USER_WARNING );
 			}

@@ -87,7 +87,7 @@
 			}
 
 			// Utilisation de SchemaBehavior situé dans le plugin Pgsqlcake
-			$Model->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$Model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 
 			// Liste des clés étrangères définies depuis la table concernée vers d'autres tables
 			$foreignKeys = $Model->foreignKeysFrom();
@@ -128,7 +128,7 @@
 
 
 			// Utilisation de SchemaBehavior situé dans le plugin Pgsqlcake
-			$Model->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$Model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 
 			// Liste des fonctions postgresql disponibles, propres à WebRSA, dans le schéma utilisé par la connexion (public)
 			$functions = $Model->pgFunctions( array(), array( "namespace.nspname = '{$ds->config['schema']}'" ) );

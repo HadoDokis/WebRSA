@@ -172,7 +172,7 @@
 		 * @access protected
 		 */
 		protected function _postgresql() {
-			$this->User->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->User->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			$version = $this->User->pgVersion();
 			$shortversion = preg_replace( '/^([0-9]+\.[0-9]+).*/', '\1', $version ); // FIXME: avec un paramètre dans Schema::pgVersion
 

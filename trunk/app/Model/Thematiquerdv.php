@@ -119,8 +119,8 @@
 		 * @return array
 		 */
 		public function linkedModels() {
-			if( !$this->Statutrdv->Rendezvous->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
-				$this->Statutrdv->Rendezvous->Behaviors->attach( 'Pgsqlcake.Schema' );
+			if( !$this->Statutrdv->Rendezvous->Behaviors->attached( 'Pgsqlcake.PgsqlSchema' ) ) {
+				$this->Statutrdv->Rendezvous->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			}
 
 			$return = array();

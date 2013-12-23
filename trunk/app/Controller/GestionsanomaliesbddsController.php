@@ -48,7 +48,7 @@
 		*/
 		protected function _methodes() {
 			$methodes = array( /*'stricte' => 'Stricte',*/ 'normale' => 'Normale' );
-			$this->Dossier->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->Dossier->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			$pg_functions = $this->Dossier->pgFunctions( 'difference' );
 			if( !empty( $pg_functions ) ) {
 				$methodes['approchante'] = 'Approchante';
@@ -66,7 +66,7 @@
 
 			$foreignKeysTo = Cache::read( $cacheKey );
 			if( $foreignKeysTo === false ) {
-				$model->Behaviors->attach( 'Pgsqlcake.Schema' );
+				$model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 				$foreignKeysTo = $model->foreignKeysTo();
 				Cache::write( $cacheKey, $foreignKeysTo );
 			}
@@ -875,7 +875,7 @@
 				sort( $linkedModels );
 
 				foreach( $linkedModels as $linkedModel ) {
-					$mainModel->{$linkedModel}->Behaviors->attach( 'Pgsqlcake.Schema' );
+					$mainModel->{$linkedModel}->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 					$foreignKeysTo = $mainModel->{$linkedModel}->foreignKeysTo();
 					if( !empty( $foreignKeysTo ) ){
 						foreach( $foreignKeysTo as $foreignKeyTo ) {
@@ -895,7 +895,7 @@
 							}
 						}
 					}
-					$mainModel->{$linkedModel}->Behaviors->detach( 'Pgsqlcake.Schema' );
+					$mainModel->{$linkedModel}->Behaviors->detach( 'Pgsqlcake.PgsqlSchema' );
 				}
 				Cache::write( $cacheKey, $dependencies );
 			}
