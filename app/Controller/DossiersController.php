@@ -399,16 +399,19 @@
 							'Referent.id',
 							'Referent.qual',
 							'Referent.nom',
-							'Referent.prenom'
+							'Referent.prenom',
+							'Structurereferente.lib_struc'
 						),
 						'contain' => array(
-							'Referent'
+							'Referent',
+                            'Structurereferente'
 						),
 						'conditions' => array( 'PersonneReferent.personne_id' => $personnesFoyer[$index]['Personne']['id'], 'PersonneReferent.dfdesignation IS NULL' ),
 						'order' => array( 'PersonneReferent.dddesignation DESC' )
 					)
 				);
 				$personnesFoyer[$index]['Referent'] = ( !empty( $tPersReferent ) ? $tPersReferent['Referent'] : array() );
+				$personnesFoyer[$index]['Structurereferente'] = ( !empty( $tPersReferent ) ? $tPersReferent['Structurereferente'] : array() );
 
 				$tContratinsertion = $this->Dossier->Foyer->Personne->Contratinsertion->find(
 					'first',

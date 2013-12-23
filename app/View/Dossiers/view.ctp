@@ -147,6 +147,47 @@
 							<?php endif;?>
 						</tbody>
 					</table>
+                    <h2>Suivi du parcours</h2>
+                    <table>
+                        <?php
+                            $rowCnt = 0;
+                            echo thead( 10 );
+                        ?>
+                        <tbody>
+                            <tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+                                <th>Structure référente en cours</th>
+                                <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
+                                <td><?php
+                                    if( !empty( $details[$rolepers] ) ) {
+                                        $struct = Set::extract( "{$rolepers}.Structurereferente", $details );
+                                        if( empty( $struct ) ) {
+                                            echo 'Aucune structure référente active';
+                                        }
+                                        else {
+                                            echo implode( ' ', array( Set::classicExtract( $struct, 'lib_struc' ) ) );
+                                        }
+                                    }
+                                ?></td>
+                                <?php endforeach;?>
+                            </tr>
+                            <tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+                                <th>Référent en cours</th>
+                                <?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
+                                <td><?php
+                                    if( !empty( $details[$rolepers] ) ) {
+                                        $referent = Set::extract( "{$rolepers}.Referent", $details );
+                                        if( empty( $referent ) && isset( $details[$rolepers] ) ) {
+                                            echo 'Aucun référent actif';
+                                        }
+                                        else {
+                                            echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
+                                        }
+                                    }
+                                ?></td>
+                                <?php endforeach;?>
+                            </tr>
+                        </tbody>
+                    </table>
 				</td>
 				<td>
 					<h2>Orientation</h2>
@@ -206,22 +247,6 @@
 								<th>Rang de l'orientation</th>
 								<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
 								<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
-							</tr>
-							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
-								<th>Référent en cours</th>
-								<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ):?>
-								<td><?php
-									if( !empty( $details[$rolepers] ) ) {
-										$referent = Set::extract( "{$rolepers}.Referent", $details );
-										if( empty( $referent ) ) {
-											echo 'Aucun référent actif';
-										}
-										else {
-											echo implode( ' ', array( Set::classicExtract( $referent, 'qual' ), Set::classicExtract( $referent, 'nom' ), Set::classicExtract( $referent, 'prenom' ) ) );
-										}
-									}
-								?></td>
-								<?php endforeach;?>
 							</tr>
 						</tbody>
 					</table>
