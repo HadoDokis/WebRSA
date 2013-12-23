@@ -119,12 +119,25 @@
                 <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
                 <th colspan="2" class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66aimprimer ):?>
             <?php
-// debug($dossierpcg66aimprimer);
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $dossierpcg66aimprimer, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $dossierpcg66aimprimer, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
 				echo $this->Xhtml->tableCells(
 						array(
 							h( $dossierpcg66aimprimer['Dossier']['numdemrsa'] ),
@@ -147,6 +160,7 @@
 								array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'decisionproposition', $dossierpcg66aimprimer['Decisiondossierpcg66']['id'], 'save' => true ),
 								$this->Permissions->check( 'dossierspcgs66', 'print' )
 							),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 						),
 						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )

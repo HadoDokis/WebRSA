@@ -128,7 +128,7 @@
 	?>
 	<?php $pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 	<?php echo $pagination;?>
-    <table id="searchResults">
+    <table id="searchResults" class="tooltips">
         <thead>
             <tr>
                 <th>N° Dossier</th>
@@ -140,11 +140,24 @@
 				<th>Orientation effective</th>
 				<th>Alerte composition du foyer ?</th>
 				<th class="action" colspan="4">Actions</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				$nbFichiersLies = 0;
 				$nbFichiersLies = $cohortenonoriente66['Orientstruct']['nbfichiers'];
@@ -177,7 +190,8 @@
 							),
 							$this->Permissions->check( 'orientsstructs', 'filelink' )
 						),
-						h( '('.$nbFichiersLies.')' )
+						h( '('.$nbFichiersLies.')' ),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 					echo $this->Xhtml->tableCells(

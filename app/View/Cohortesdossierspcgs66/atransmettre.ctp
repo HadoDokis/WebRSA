@@ -121,11 +121,25 @@
                 <th>Transmettre</th>
                 <th>Date transmission</th>
                 <th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66atransmettre ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $dossierpcg66atransmettre, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $dossierpcg66atransmettre, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
 					$array1 = array(
 						h( $dossierpcg66atransmettre['Dossier']['numdemrsa'] ),
 						h( $dossierpcg66atransmettre['Personne']['nom'].' '.$dossierpcg66atransmettre['Personne']['prenom'] ),
@@ -151,7 +165,8 @@
 							'Voir le dossier',
 							array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66atransmettre['Dossierpcg66']['foyer_id'] ),
 							$this->Permissions->check( 'dossierspcgs66', 'index' )
-						)
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 					echo $this->Xhtml->tableCells(

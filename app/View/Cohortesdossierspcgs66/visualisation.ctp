@@ -120,11 +120,24 @@
                 <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
                 <th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66affecte ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $dossierpcg66affecte, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $dossierpcg66affecte, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
                 $gestionnaires = Set::enum( Hash::get( $dossierpcg66affecte, 'Dossierpcg66.user_id' ), $gestionnaire );
 
@@ -144,7 +157,8 @@
 								'Voir le dossier',
 								array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66affecte['Dossierpcg66']['foyer_id'] ),
 								$this->Permissions->check( 'dossierspcgs66', 'index' )
-							)
+							),
+							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 						),
 						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )

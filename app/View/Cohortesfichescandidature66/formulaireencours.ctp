@@ -35,11 +35,24 @@
 				<th>Motif de sortie</th>
 				<th>Date de sortie</th>
 				<th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach( $cohortefichecandidature66 as $index => $ficheenattente ):?>
 			<?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $ficheenattente, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $ficheenattente, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 					$title = $ficheenattente['Dossier']['numdemrsa'];
 
@@ -75,7 +88,8 @@
 						$this->Xhtml->viewLink(
 							'Voir le contrat « '.$title.' »',
 							array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $ficheenattente['ActioncandidatPersonne']['personne_id'] )
-						)
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 					echo $this->Xhtml->tableCells(

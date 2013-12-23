@@ -110,7 +110,7 @@
 	?>
 	<?php $pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 	<?php echo $pagination;?>
-    <table id="searchResults">
+    <table id="searchResults" class="tooltips">
         <thead>
             <tr>
                 <th>N° Dossier</th>
@@ -122,11 +122,24 @@
 				<th>Orientation effective</th>
 				<th>Alerte composition du foyer ?</th>
 				<th class="action" colspan="2">Actions</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
@@ -146,8 +159,8 @@
 							'Imprimer le courrier d\'orientation',
 							array( 'controller' => 'cohortesnonorientes66', 'action' => 'impressionOrientation', $cohortenonoriente66['Orientstruct']['id'] ),
 							$this->Permissions->check( 'cohortesnonorientes66', 'impressionOrientation' )
-						)
-
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 					echo $this->Xhtml->tableCells(
