@@ -8,7 +8,6 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'LinkedRecordsBehavior', 'Model/Behavior' );
-	require_once CORE_TEST_CASES . DS . 'Model' . DS . 'models.php';
 
 	/**
 	 * La classe LinkedRecordsBehaviorTest réalise les tests unitaires de la
@@ -19,11 +18,11 @@
 	class LinkedRecordsBehaviorTest extends CakeTestCase
 	{
 		/**
-		 * Modèle User utilisé par ce test.
+		 * Modèle Foyer utilisé par ce test.
 		 *
 		 * @var Model
 		 */
-		public $User = null;
+		public $Foyer = null;
 
 		/**
 		 * Fixtures utilisés.
@@ -31,8 +30,9 @@
 		 * @var array
 		 */
 		public $fixtures = array(
-			'core.User',
-			'core.Article',
+			'app.Foyer',
+			'app.Personne',
+			'app.Prestation',
 		);
 
 		/**
@@ -40,19 +40,19 @@
 		 */
 		public function setUp() {
 			parent::setUp();
-			$this->User = ClassRegistry::init( 'User' );
-			$this->User->Behaviors->attach( 'DatabaseTable' );
-			$this->User->bindModel( array( 'hasMany' => array( 'Article' ) ), false );
+			$this->Foyer = ClassRegistry::init( 'Foyer' );
+			$this->Foyer->Behaviors->attach( 'DatabaseTable' );
+			$this->Foyer->bindModel( array( 'hasMany' => array( 'Personne' ) ), false );
 
-			$this->User->Article->Behaviors->attach( 'DatabaseTable' );
-			$this->User->Behaviors->attach( 'LinkedRecords' );
+			$this->Foyer->Personne->Behaviors->attach( 'DatabaseTable' );
+			$this->Foyer->Behaviors->attach( 'LinkedRecords' );
 		}
 
 		/**
 		 * Nettoyage postérieur au test.
 		 */
 		public function tearDown() {
-			unset( $this->User );
+			unset( $this->Foyer );
 			parent::tearDown();
 		}
 
@@ -60,8 +60,8 @@
 		 * Test de la méthode LinkedRecordsBehavior::linkedRecordVirtualFieldName()
 		 */
 		public function testLinkedRecordVirtualFieldName() {
-			$result = $this->User->linkedRecordVirtualFieldName( 'Article' );
-			$expected = 'has_article';
+			$result = $this->Foyer->linkedRecordVirtualFieldName( 'Personne' );
+			$expected = 'has_personne';
 			$this->assertEquals( $expected, $result );
 		}
 
@@ -70,16 +70,16 @@
 		 */
 		public function testLinkedRecordVirtualField() {
 			// Sans argument particulier
-			$result = $this->User->linkedRecordVirtualField( 'Article' );
-			$expected = 'EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles"   WHERE "articles"."user_id" = "User"."id"    )';
+			$result = $this->Foyer->linkedRecordVirtualField( 'Personne' );
+			$expected = 'EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes"   WHERE "personnes"."foyer_id" = "Foyer"."id"    )';
 			$this->assertEquals( $expected, $result );
 
 			// Avec une condition supplémentaire
 			$querydata = array(
-				'conditions' => array( 'Article.name' => 'article1' )
+				'conditions' => array( 'Personne.name' => 'article1' )
 			);
-			$result = $this->User->linkedRecordVirtualField( 'Article', $querydata );
-			$expected = 'EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles"   WHERE "articles"."name" = \'article1\' AND "articles"."user_id" = "User"."id"    )';
+			$result = $this->Foyer->linkedRecordVirtualField( 'Personne', $querydata );
+			$expected = 'EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes"   WHERE "personnes"."name" = \'article1\' AND "personnes"."foyer_id" = "Foyer"."id"    )';
 			$this->assertEquals( $expected, $result );
 		}
 
@@ -91,12 +91,12 @@
 			$querydata = array(
 				'contain' => false,
 				'joins' => array(
-					$this->User->Article->join( 'Comment', array( 'type' => 'INNER' ) )
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) )
 				),
-				'conditions' => array( 'Article.name' => 'article1' ),
+				'conditions' => array( 'Personne.nom' => 'Buffin' ),
 			);
-			$result = $this->User->linkedRecordVirtualField( 'Article', $querydata );
-			$expected = 'EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles" INNER JOIN "public"."comments" AS "comments" ON ("comments"."article_id" = "articles"."id")  WHERE "articles"."name" = \'article1\' AND "articles"."user_id" = "User"."id"    )';
+			$result = $this->Foyer->linkedRecordVirtualField( 'Personne', $querydata );
+			$expected = 'EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes" INNER JOIN "public"."prestations" AS "prestations" ON ("prestations"."personne_id" = "personnes"."id" AND "prestations"."natprest" = \'RSA\')  WHERE "personnes"."nom" = \'Buffin\' AND "personnes"."foyer_id" = "Foyer"."id"    )';
 			$this->assertEquals( $expected, $result );
 		}
 
@@ -106,27 +106,27 @@
 		public function testLinkedRecordsCompleteQuerydata() {
 			$querydata = array(
 				'fields' => array(
-					'User.id',
-					'User.name',
+					'Foyer.id',
+					'Foyer.name',
 				),
 				'conditions' => array(
-					'User.id >' => 10
+					'Foyer.id >' => 10
 				),
 				'contain' => false,
-				'order' => array( 'User.id DESC' )
+				'order' => array( 'Foyer.id DESC' )
 			);
-			$result = $this->User->linkedRecordsCompleteQuerydata( $querydata, 'Article' );
+			$result = $this->Foyer->linkedRecordsCompleteQuerydata( $querydata, 'Personne' );
 			$expected = array(
 				'fields' => array(
-					'User.id',
-					'User.name',
-					'( EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles"   WHERE "articles"."user_id" = "User"."id"    ) ) AS "User__has_article"'
+					'Foyer.id',
+					'Foyer.name',
+					'( EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes"   WHERE "personnes"."foyer_id" = "Foyer"."id"    ) ) AS "Foyer__has_personne"'
 				),
 				'conditions' => array(
-					'User.id >' => 10
+					'Foyer.id >' => 10
 				),
 				'contain' => false,
-				'order' => array( 'User.id DESC' )
+				'order' => array( 'Foyer.id DESC' )
 			);
 			$this->assertEquals( $expected, $result );
 		}
@@ -136,27 +136,27 @@
 		 */
 		public function testLinkedRecordsLoadVirtualFields() {
 			// 1. Pour un modèle lié, sans rien de particulier
-			$this->User->virtualFields = array();
-			$this->User->linkedRecordsLoadVirtualFields( 'Article' );
-			$result = $this->User->virtualFields;
+			$this->Foyer->virtualFields = array();
+			$this->Foyer->linkedRecordsLoadVirtualFields( 'Personne' );
+			$result = $this->Foyer->virtualFields;
 			$expected = array(
-				'has_article' => 'EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles"   WHERE "articles"."user_id" = "User"."id"    )'
+				'has_personne' => 'EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes"   WHERE "personnes"."foyer_id" = "Foyer"."id"    )'
 			);
 			$this->assertEquals( $expected, $result );
 
 			// 2. Pour un modèle lié, avec une condition et une jointure
-			$this->User->virtualFields = array();
+			$this->Foyer->virtualFields = array();
 			$querydata = array(
 				'contain' => false,
 				'joins' => array(
-					$this->User->Article->join( 'Comment', array( 'type' => 'INNER' ) )
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) )
 				),
-				'conditions' => array( 'Article.name' => 'article1' ),
+				'conditions' => array( 'Personne.nom' => 'Buffin' ),
 			);
-			$this->User->linkedRecordsLoadVirtualFields( array( 'Article' => $querydata ) );
-			$result = $this->User->virtualFields;
+			$this->Foyer->linkedRecordsLoadVirtualFields( array( 'Personne' => $querydata ) );
+			$result = $this->Foyer->virtualFields;
 			$expected = array(
-				'has_article' => 'EXISTS( SELECT "articles"."id" AS "articles__id" FROM "articles" AS "articles" INNER JOIN "public"."comments" AS "comments" ON ("comments"."article_id" = "articles"."id")  WHERE "articles"."name" = \'article1\' AND "articles"."user_id" = "User"."id"    )'
+				'has_personne' => 'EXISTS( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes" INNER JOIN "public"."prestations" AS "prestations" ON ("prestations"."personne_id" = "personnes"."id" AND "prestations"."natprest" = \'RSA\')  WHERE "personnes"."nom" = \'Buffin\' AND "personnes"."foyer_id" = "Foyer"."id"    )'
 			);
 			$this->assertEquals( $expected, $result );
 		}
