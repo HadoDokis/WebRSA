@@ -144,6 +144,8 @@
 			$cuis = $this->Cui->find( 'all', $querydata );
 
 			$this->_setOptions();
+			$this->set( 'typevoie', $this->Option->typevoie() );
+
 			$this->layout = '';
 			$this->set( compact( 'cuis' ) );
 		}
