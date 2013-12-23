@@ -119,14 +119,20 @@
 			);
             
             $orgs = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
-                'list',
+                'all',
                 array(
+                    'fields' => array(
+                        '( "Orgtransmisdossierpcg66"."poledossierpcg66_id" || \'_\' || "Orgtransmisdossierpcg66"."id" ) AS "Orgtransmisdossierpcg66__id"',
+                        'Orgtransmisdossierpcg66.name'
+                    ),
                     'conditions' => array(
                         'Orgtransmisdossierpcg66.poledossierpcg66_id IS NOT NULL'
                     ),
                     'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
                 )
             );
+            $orgs = Hash::combine( $orgs, '{n}.Orgtransmisdossierpcg66.id', '{n}.Orgtransmisdossierpcg66.name' );
+
 			$this->set( compact( 'orgs', 'options', 'listdecisionpdo', 'typersapcg66', 'compofoyerpcg66', 'forme_ci', 'listdecisionpcgCer', 'idsDecisionNonValidCer', 'orgtransmisdossierpcg66') );
 		}
 
@@ -382,6 +388,7 @@
 						'order' => array( 'Decisiondossierpcg66.created DESC' ),
 						'contain' => array(
 							'Typersapcg66',
+							'Orgdecisiondossierpcg66',
 							'Dossierpcg66' => array(
 								'Contratinsertion' => array(
 									'Propodecisioncer66' => array(
@@ -609,6 +616,10 @@
 					)
 				);
 				$this->request->data['Typersapcg66']['Typersapcg66'] = $typesrsapcg;
+                
+                if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] ) ) {
+                    $this->request->data['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] = $decisiondossierpcg66['Orgdecisiondossierpcg66']['poledossierpcg66_id'].'_'.$decisiondossierpcg66['Orgdecisiondossierpcg66']['id'];
+                }
 			}
 
             //Liste des personne sliées au traitement

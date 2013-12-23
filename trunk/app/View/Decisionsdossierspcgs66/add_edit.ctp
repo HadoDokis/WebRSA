@@ -490,13 +490,21 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
         
+        var v = $( 'decisiondossierpcg66form' ).getInputs( 'radio', 'data[Decisiondossierpcg66][orgtransmisdossierpcg66_id]' );
+        var poleSelectionneId = '<?php echo $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'];?>';
+        
+        $( v ).each( function( radio ) {
+            if( $(radio).value.match( new RegExp( '^' + poleSelectionneId + '_' ) ) ){
+                $(radio).disabled = true;
+            }
+        } );
     
         // on affiche la zone de commentaire si un des boutons radio est coché
         observeDisableFieldsetOnRadioValue(
 			'decisiondossierpcg66form',
 			'data[Decisiondossierpcg66][orgtransmisdossierpcg66_id]',
 			$( 'infotransmise' ),
-			[<?php echo implode( ', ', array_keys( $orgs ) );?>],
+			['<?php echo implode( '\', \'', array_keys( $orgs ) );?>'],
 			false,
 			true
 		);

@@ -21,7 +21,11 @@
 
 		public $actsAs = array(
 			'Pgsqlcake.PgsqlAutovalidate',
-			'Formattable',
+			'Formattable' => array(
+                'suffix' => array(
+                    'orgtransmisdossierpcg66_id'
+                )
+            ),
 			'Enumerable' => array(
 				'fields' => array(
 					'avistechnique',
