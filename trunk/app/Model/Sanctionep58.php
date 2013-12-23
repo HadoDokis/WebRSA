@@ -350,6 +350,8 @@
 				)'
 			);
 
+			$querydata = $this->Dossierep->Personne->PersonneReferent->completeQdReferentParcours( $querydata, array() );
+
 			return $querydata;
 		}
 

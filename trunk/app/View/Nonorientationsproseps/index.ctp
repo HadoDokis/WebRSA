@@ -72,7 +72,7 @@
 		<?php /*echo $this->Form->create( 'Nonorientationproep', array() );*/
 		echo $this->Form->create();?>
 		<?php echo $pagination;?>
-		<table class="tooltips">
+		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° de dossier', 'Dossier.numdemrsa' );?></th>
@@ -94,12 +94,25 @@
 					<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 						<th>Action</th>
 					<?php endif;?>
+					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach( $cohorte as $key => $orientstruct ):?>
 					<?php
-// debug($orientstruct);
+						$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
+							<tbody>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $orientstruct, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $orientstruct, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
+							</tbody>
+						</table>';
+
 						// FIXME: date ouverture de droits -> voir flux instruction
 						echo "<tr>";
 							echo $this->Xhtml->tag( 'td', $orientstruct['Dossier']['numdemrsa'] );
@@ -132,6 +145,7 @@
 									$this->Form->input( 'Nonorientationproep.'.$key.'.passageep', array( 'class' => 'enabled passageep', 'type' => 'checkbox', 'label' => false ) )
 								);
 							}
+
 							if( Configure::read( 'Cg.departement' ) == 66 ){
 								echo $this->Xhtml->tag(
 									'td',
@@ -143,6 +157,8 @@
 									)
 								);
 							}
+
+							echo $this->Xhtml->tag( 'td', $innerTable, array( 'class' => 'innerTableCell noprint' ) );
 						echo "</tr>";
 					?>
 				<?php endforeach;?>
