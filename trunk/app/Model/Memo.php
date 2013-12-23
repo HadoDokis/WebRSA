@@ -62,7 +62,7 @@
 		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
 		 * 	sinon renvoit la sous-requête aliasée pour un champ (avec l'alias du
 		 * 	modèle).
-		 * @param string $modelAlias Si null, utilise l'alias de la class Fichiermodule, sinon la valeur donnée.
+		 * @param string $modelAlias Si null, utilise l'alias de la class Memo, sinon la valeur donnée.
 		 * @return string
 		 */
 		public function sqNbMemosLies( Model $Model, $fieldId = 'Personne.id', $fieldName = null, $modelAlias = null ) {
