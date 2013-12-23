@@ -110,7 +110,7 @@
 		 * 	2°) quels sont les champs _id qui n'ont pas de fk ou pas de relation
 		 * 	3°) quels sont les modèles qui devraient avoir une table et qui n'en ont pas
 		 * 	4°) quelles sont les tables qui n'ont pas de modèles
-		 * 	5°) intégrer les autres classes typiquement postgres dans le plugin (Pgsqlcake.Schema)
+		 * 	5°) intégrer les autres classes typiquement postgres dans le plugin (Pgsqlcake.PgsqlSchema)
 		 */
 		protected function _check( $modelName ) {
 
@@ -119,7 +119,7 @@
 			$this->output[] = "Analyse du modèle ".$modelName;
 
 			$model = ClassRegistry::init( $modelName );
-			$model->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			$foreignKeysTo = $model->foreignKeysTo();
 			$foreignKeysFrom = $model->foreignKeysFrom();
 

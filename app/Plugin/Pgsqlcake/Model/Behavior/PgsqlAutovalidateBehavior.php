@@ -64,12 +64,24 @@
 		}
 
 		/**
+		 * Retourne le nom du driver utilisé par la source de données du modèle
+		 * (postgres, mysql, mysqli, ...).
+		 *
+		 * @param Model $model
+		 * @return string
+		 */
+		protected function _driver( Model $model ) {
+			$datasource = $model->getDataSource()->config['datasource'];
+			return strtolower( str_replace( 'Database/', '', $datasource ) );
+		}
+
+		/**
 		 *
 		 * @param Model $model
 		 * @param type $config
 		 */
 		public function setup( Model $model, $config = array() ) {
-			if( $model->driver() == 'postgres' ) {
+			if( $this->_driver( $model ) == 'postgres' ) {
 				$this->defaultConfig['rules']['pgsql_constraints'] = true;
 			}
 

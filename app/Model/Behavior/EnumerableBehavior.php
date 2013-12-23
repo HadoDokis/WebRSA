@@ -218,13 +218,25 @@
 		}
 
 		/**
+		 * Retourne le nom du driver utilisé par la source de données du modèle
+		 * (postgres, mysql, mysqli, ...).
+		 *
+		 * @param Model $model
+		 * @return string
+		 */
+		protected function _driver( Model $model ) {
+			$datasource = $model->getDataSource()->config['datasource'];
+			return strtolower( str_replace( 'Database/', '', $datasource ) );
+		}
+
+		/**
 		 * Retourne tous les enums d'un modèle. Fonctionne avec les drivers mysql, mysqi, postgres.
 		 *
 		 * @param Model $model
 		 * @return array
 		 */
 		protected function _readEnums( Model $model ) {
-			$driver = $model->driver();
+			$driver = $this->_driver( $model );
 			switch( $driver ) {
 				case 'postgres':
 					$options = $this->_postgresEnums( $model );

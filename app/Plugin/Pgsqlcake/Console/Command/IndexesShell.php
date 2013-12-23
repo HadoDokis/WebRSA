@@ -40,7 +40,7 @@
 			$indexes = $this->connection->index( $Model );
 			$indexes = Set::classicExtract( $indexes, '{s}.column' );
 
-			/* $Model->Behaviors->attach( 'Pgsqlcake.Schema' );
+			/* $Model->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			  $fkPresentes = $Model->foreignKeysFrom();
 			  $offsets = Set::extract( $fkPresentes, '/From/column' ); */
 

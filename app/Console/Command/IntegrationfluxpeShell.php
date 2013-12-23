@@ -329,7 +329,7 @@
 		 * @returrn void
 		 */
 		protected function _initForeignKeysTo() {
-			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->Informationpe->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			$this->_foreignKeysToInformationpe = $this->Informationpe->foreignKeysTo();
 			$tableName = $this->Informationpe->Historiqueetatpe->getDatasource( $this->Informationpe->Historiqueetatpe->useDbConfig )->fullTableName( $this->Informationpe->Historiqueetatpe, false, false );
 
@@ -339,7 +339,7 @@
 				}
 			}
 
-			$this->Informationpe->Historiqueetatpe->Behaviors->attach( 'Pgsqlcake.Schema' );
+			$this->Informationpe->Historiqueetatpe->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			$this->_foreignKeysToHistoriqueetatpe = $this->Informationpe->Historiqueetatpe->foreignKeysTo();
 		}
 

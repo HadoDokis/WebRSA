@@ -327,8 +327,8 @@
 		 * @return array
 		 */
 		protected function _checkPostgresqlIntervals( $keys, $asBoolean = false ) {
-			if( !$this->Behaviors->attached( 'Pgsqlcake.Schema' ) ) {
-				$this->Behaviors->attach( 'Pgsqlcake.Schema' );
+			if( !$this->Behaviors->attached( 'Pgsqlcake.PgsqlSchema' ) ) {
+				$this->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
 			}
 
 			$keys = (array)$keys;
