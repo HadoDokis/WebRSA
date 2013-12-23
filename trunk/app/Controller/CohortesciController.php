@@ -308,7 +308,7 @@
 			$querydata = $this->Cohorteci->search(
 				'Decisionci::valides',
 				Hash::expand( $this->request->params['named'], '__' ),
-				( $this->Cohortes->active() ? $this->Cohorte->sqLocked() : null )
+				array()
 			);
 
 			$querydata = $this->Cohortes->qdConditions( $querydata ); // FIXME
