@@ -244,19 +244,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 
-		observeDisableFieldsetOnCheckbox(
-			'Bilanparcours66Bilanparcoursinsertion',
-			'BilanparcoursinsertionCheckbox',
-			false,
-			true
-		);
-
-		observeDisableFieldsetOnCheckbox(
-			'Bilanparcours66Motifep',
-			'motifsaisine',
-			false,
-			true
-		);
+       
 	} );
 </script>
 	<?php
@@ -443,22 +431,27 @@
                         }
                     }
                     
-                    echo $this->Xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'O' ) );
                     
-                    foreach( $options['Bilanparcours66']['orientationpro_id'] as $key => $value ) {
-                        echo $this->Xform->input( 'Bilanparcours66.sansep_typeorientprincipale_id', array( 'type' => 'hidden', 'value' => $key ) );
-                        
-                        echo $this->Default2->subform(
-                            array(
-                                'Bilanparcours66.nvtypeorient_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvtypeorientIdPESansEp', 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key] ),
-                                'Bilanparcours66.nvstructurereferente_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvstructurereferenteIdPESansEp', 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
-                            ),
-                            array(
-                                'options' => $options,
-                                'domain' => $domain
-                            )
-                        );
-                    }
+                    echo "<div id='cgReorientationPESansEpChangementRef' class='aere'>";
+						echo $this->Xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'O' ) );
+
+                        foreach( $options['Bilanparcours66']['orientationpro_id'] as $key => $value ) {
+                            echo $this->Xform->input( 'Bilanparcours66.sansep_typeorientprincipale_id', array( 'type' => 'hidden', 'value' => $key ) );
+
+                            echo $this->Default2->subform(
+                                array(
+                                    'Bilanparcours66.nvtypeorient_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvtypeorientIdPESansEp', 'options' => $options['Bilanparcours66']['nvtypeorient_id'][$key] ),
+                                    'Bilanparcours66.nvstructurereferente_id' => array( 'required'=> true, 'id' => 'Bilanparcours66NvstructurereferenteIdPESansEp', 'options' => $options['Bilanparcours66']['nvstructurereferente_id'], 'value' => $defaultvaluestructurereferente_id )
+                                ),
+                                array(
+                                    'options' => $options,
+                                    'domain' => $domain
+                                )
+                            );
+                        }
+                    echo "Avec changement de référent.";
+
+                    echo "</div>";
                 ?>
             </fieldset>
             
@@ -1312,7 +1305,8 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsetOnRadioValue(
+     
+        observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][typeformulaire]',
 			$( 'bilanparcourscg' ),
@@ -1330,7 +1324,6 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			true
 		);
 
-
 		['traitement', 'parcours', 'audition' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
 				'Bilan',
@@ -1342,16 +1335,6 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			);
 		} );
 
-        observeDisableFieldsetOnRadioValue(
-			'Bilan',
-			'data[Pe][Bilanparcours66][proposition]',
-			$( 'peParcours' ),
-			'parcours',
-			false,
-			true
-		);
-
-
         ['auditionpe', 'parcourspe' ].each( function( proposition ) {
 			observeDisableFieldsetOnRadioValue(
 				'Bilan',
@@ -1362,6 +1345,48 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				true
 			);
 		} );
+            
+      observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][choixsanspassageep]',
+            $( 'cgOrientationActuelle' ),
+            'maintien',
+            false,
+            true
+        );
+
+        observeDisableFieldsetOnRadioValue(
+            'Bilan',
+            'data[Bilanparcours66][choixsanspassageep]',
+            $( 'cgReorientationEmploi' ),
+            'reorientation',
+            false,
+            true
+        );
+        
+		observeDisableFieldsetOnCheckbox(
+			'Bilanparcours66Bilanparcoursinsertion',
+			'BilanparcoursinsertionCheckbox',
+			false,
+			true
+		);
+
+		observeDisableFieldsetOnCheckbox(
+			'Bilanparcours66Motifep',
+			'motifsaisine',
+			false,
+			true
+		);
+
+        observeDisableFieldsetOnRadioValue(
+			'Bilan',
+			'data[Pe][Bilanparcours66][proposition]',
+			$( 'peParcours' ),
+			'parcours',
+			false,
+			true
+		);
+
 
 		$( 'Bilan' ).getInputs( 'radio', 'data[Bilanparcours66][sansep_typeorientprincipale_id]' ).each( function ( observeRadio ) {
 			$( observeRadio ).observe( 'change', function(event) {
@@ -1373,6 +1398,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		disableAndHideFormPart( 'cgContratReconduitSansEp' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpChangementRef' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpMemeRef' );
+		
 
 		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
 			dependantSelect( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>' );
@@ -1509,7 +1535,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
         // ---------------------------------------------------------------------
 
 		<?php if ( isset( $passagecommissionep ) && !empty( $passagecommissionep ) ) { ?>
-			['traitement', 'parcours', 'audition', 'auditionpe' ].each( function( proposition ) {
+			['traitement', 'parcours', 'audition', 'auditionpe', 'radioaucun'].each( function( proposition ) {
 				$( proposition ).up().getElementsBySelector( 'input', 'select' ).each( function( elmt ) {
 					$( elmt ).writeAttribute('disabled', 'disabled');
 				} );
@@ -1702,26 +1728,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 			disableAndHideFormPart( maintienOrientMemeRefDiv );
 		}
 	}
-    
-    
-    observeDisableFieldsetOnRadioValue(
-        'Bilan',
-        'data[Bilanparcours66][choixsanspassageep]',
-        $( 'cgOrientationActuelle' ),
-        'maintien',
-        false,
-        true
-    );
-    
-    observeDisableFieldsetOnRadioValue(
-        'Bilan',
-        'data[Bilanparcours66][choixsanspassageep]',
-        $( 'cgReorientationEmploi' ),
-        'reorientation',
-        false,
-        true
-    );
-    
+
     dependantSelect( 'Bilanparcours66NvstructurereferenteIdPESansEp', 'Bilanparcours66NvtypeorientIdPESansEp' );
     try { $( 'Bilanparcours66NvstructurereferenteIdPESansEp' ).onchange(); } catch(id) { }
 </script>
