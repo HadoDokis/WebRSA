@@ -1,7 +1,23 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'Nom allocataire', 'Commune allocataire', 'Identifiant EP', 'Identifiant commission', 'Date de la commission', 'Thématique', 'Sanction 1', 'Sanction 2', 'Modification de la sanction', 'Date fin de sanction', 'Commentaire' ) );
+	$this->Csv->addRow(
+		array(
+			'Nom allocataire',
+			'Commune allocataire',
+			'Identifiant EP',
+			'Identifiant commission',
+			'Date de la commission',
+			'Thématique',
+			'Sanction 1',
+			'Sanction 2',
+			'Modification de la sanction',
+			'Date fin de sanction',
+			'Commentaire',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $gestionssanctionseps58 as $gestionsanctionep58 ) {
 		$modeleDecision = Inflector::classify( "decisions{$gestionsanctionep58['Dossierep']['themeep']}" );
@@ -28,7 +44,9 @@
 			$decisionSanction2."\n".$libelleSanction2,
 			$fieldDecisionSanction,
 			$dateFinSanction,
-			$commentaireFinSanction
+			$commentaireFinSanction,
+			Hash::get( $gestionsanctionep58, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $gestionsanctionep58, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

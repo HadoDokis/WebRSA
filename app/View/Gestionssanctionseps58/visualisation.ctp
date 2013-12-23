@@ -14,7 +14,7 @@
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-    <table id="searchResults" class="default2">
+    <table id="searchResults" class="tooltips default2">
         <thead>
             <tr>
                 <th>Allocataire</th>
@@ -29,11 +29,25 @@
 				<th>Date fin de sanction</th>
 				<th>Commentaire</th>
 				<th colspan="3">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $gestionanctionep58, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $gestionanctionep58, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
 				$modeleDecision = Inflector::classify( "decisions{$gestionanctionep58['Dossierep']['themeep']}" );
 
 				$tableCells = array(
@@ -96,7 +110,8 @@
 									( $this->Permissions->check( 'gestionssanctionseps58', 'impressionSanction2' ) == 1 )
 									&& $gestionanctionep58[$modeleDecision]['impressionfin2']
 							)
-						)
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 					echo $this->Xhtml->tableCells(

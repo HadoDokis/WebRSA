@@ -14,7 +14,7 @@
 			echo $this->Xform->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
 		}
 	?>
-<table id="searchResults">
+<table id="searchResults" class="tooltips">
         <thead>
             <tr>
                 <th>Allocataire</th>
@@ -29,11 +29,25 @@
 				<th class="action">Date fin de sanction</th>
 				<th class="action">Commentaire</th>
 				<th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
 			<?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
 			<?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $gestionanctionep58, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $gestionanctionep58, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
 				$modeleDecision = Inflector::classify( "decisions{$gestionanctionep58['Dossierep']['themeep']}" );
 
 				// Type de sanction
@@ -70,7 +84,8 @@
 						'Voir le dossier',
 						array( 'controller' => 'historiqueseps', 'action' => 'view_passage', $gestionanctionep58['Passagecommissionep']['id'] ),
 						$this->Permissions->check( 'historiqueseps', 'view_passage' )
-					)
+					),
+					array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 				);
 
 				echo $this->Xhtml->tableCells(

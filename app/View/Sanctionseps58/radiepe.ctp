@@ -66,7 +66,11 @@
 				'Dossierep.id',
 			),
 			'paginate' => 'Personne',
-			'domain' => 'sanctionep58'
+			'domain' => 'sanctionep58',
+			'tooltip' => array(
+				'Structurereferenteparcours.lib_struc' => array( 'type' => 'text', 'domain' => 'search_plugin' ),
+				'Referentparcours.nom_complet' => array( 'type' => 'text', 'domain' => 'search_plugin' )
+			)
 		)
 	);
 ?>
