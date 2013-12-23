@@ -161,6 +161,14 @@ SELECT alter_table_drop_constraint_if_exists( 'public', 'situationspdos', 'situa
 ALTER TABLE situationspdos ADD CONSTRAINT situationspdos_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
 UPDATE situationspdos SET isactif = '1' WHERE isactif IS NULL;
 ALTER TABLE situationspdos ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
+
+-------------------------------------------------------------------------------------
+-- 20131223 : Ajout d'une valeur instrencours pour l'état du dossier PCG
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'decisionsdossierspcgs66', 'instrencours', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'decisionsdossierspcgs66', 'decisionsdossierspcgs66_instrencours_in_list_chk' );
+ALTER TABLE decisionsdossierspcgs66 ADD CONSTRAINT decisionsdossierspcgs66_instrencours_in_list_chk CHECK ( cakephp_validate_in_list( instrencours, ARRAY['0','1'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

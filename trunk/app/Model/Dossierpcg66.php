@@ -219,11 +219,12 @@
 				$etatdossierpcg = Set::extract( $this->data, 'Dossierpcg66.etatdossierpcg' );
 				$retouravistechnique = Set::extract( $this->data, 'Decisiondossierpcg66.retouravistechnique' );
 				$vuavistechnique = Set::extract( $this->data, 'Decisiondossierpcg66.vuavistechnique' );
+				$instrencours = Set::extract( $this->data, 'Decisiondossierpcg66.instrencours' );
 				$decisionpdo_id = null;
 				$avistechnique = null;
 				$validationavis = null;
 
-				$this->data['Dossierpcg66']['etatdossierpcg'] = $this->etatDossierPcg66( $typepdo_id, $user_id, $decisionpdoId, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, /*$iscomplet,*/ $etatdossierpcg );
+				$this->data['Dossierpcg66']['etatdossierpcg'] = $this->etatDossierPcg66( $typepdo_id, $user_id, $decisionpdoId, $instrencours, $avistechnique, $validationavis, $retouravistechnique, $vuavistechnique, /*$iscomplet,*/ $etatdossierpcg );
 // 				debug($this->data);
 // 				die();
 			}
@@ -235,8 +236,8 @@
 		* Function qui retourne l'état du dossierpcg66 dont les différents champs nécessaires à son calcul sont passés en paramètres
 		**/
 
-		public function etatDossierPcg66( $typepdo_id = null, $user_id = null, $decisionpdoId = null, $avistechnique = null, $validationavis = null, $retouravistechnique = null, $vuavistechnique = null,/*$iscomplet = null,*/ $etatdossierpcg = null ) {
-			$etat = 'instrencours';
+		public function etatDossierPcg66( $typepdo_id = null, $user_id = null, $decisionpdoId = null, $instrencours = null, $avistechnique = null, $validationavis = null, $retouravistechnique = null, $vuavistechnique = null,/*$iscomplet = null,*/ $etatdossierpcg = null ) {
+			$etat = '';
 
 			if ( !empty($typepdo_id) && empty($user_id) ) {
 				$etat = 'attaffect';
@@ -244,28 +245,31 @@
 			elseif ( !empty($typepdo_id) && !empty($user_id) && $etatdossierpcg == 'attaffect' ) {
 				$etat = 'attinstr';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty($avistechnique) ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && !empty( $instrencours )  && empty($avistechnique) ) {
+				$etat = 'instrencours';
+			}
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty( $instrencours ) && empty($avistechnique) ) {
 				$etat = 'attavistech';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && !empty($avistechnique) && empty( $validationavis ) ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty( $instrencours ) && !empty($avistechnique) && empty( $validationavis ) ) {
 				$etat = 'attval';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '0' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '0' ) {
 				$etat = 'decisionnonvalid';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '1' && $vuavistechnique == '0' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '1' && $vuavistechnique == '0' ) {
 				$etat = 'decisionnonvalidretouravis';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '1' && $vuavistechnique == '1' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($decisionpdoId) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'N' && $retouravistechnique == '1' && $vuavistechnique == '1' ) {
 				$etat = 'decisionnonvalid';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '1' && $vuavistechnique == '0' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '1' && $vuavistechnique == '0' ) {
 				$etat = 'decisionvalidretouravis';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '1' && $vuavistechnique == '1' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '1' && $vuavistechnique == '1' ) {
 				$etat = 'decisionvalid';
 			}
-			elseif ( !empty($typepdo_id) && !empty($user_id) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '0' && $vuavistechnique == '0' ) {
+			elseif ( !empty($typepdo_id) && !empty($user_id) && empty( $instrencours ) && !empty($avistechnique) && !empty($validationavis) && $validationavis == 'O' && $retouravistechnique == '0' && $vuavistechnique == '0' ) {
 				$etat = 'decisionvalid';
 			}
 			elseif( !empty( $etatdossierpcg ) ) {
@@ -444,7 +448,7 @@
 				$etat = 'attavistech';
 			}
 			else {
-				$etat = 'instrencours';
+				$etat = 'attinstr';
 			}
 
 			$this->id = $dossierpcg66_id;
@@ -510,7 +514,7 @@
 
 // debug( $decisiondossierpcg66 );
 // die();
-			$etat = $this->etatDossierPcg66( $decisiondossierpcg66['Dossierpcg66']['typepdo_id'], $decisiondossierpcg66['Dossierpcg66']['user_id'], $decisiondossierpcg66['Decisiondossierpcg66']['decisionpdo_id'], $decisiondossierpcg66['Decisiondossierpcg66']['avistechnique'], $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'], $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'], $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'],/*, $decisiondossierpcg66['Dossierpcg66']['iscomplet']*/ $decisiondossierpcg66['Dossierpcg66']['etatdossierpcg'] );
+			$etat = $this->etatDossierPcg66( $decisiondossierpcg66['Dossierpcg66']['typepdo_id'], $decisiondossierpcg66['Dossierpcg66']['user_id'], $decisiondossierpcg66['Decisiondossierpcg66']['decisionpdo_id'], $decisiondossierpcg66['Decisiondossierpcg66']['instrencours'], $decisiondossierpcg66['Decisiondossierpcg66']['avistechnique'], $decisiondossierpcg66['Decisiondossierpcg66']['validationproposition'], $decisiondossierpcg66['Decisiondossierpcg66']['retouravistechnique'], $decisiondossierpcg66['Decisiondossierpcg66']['vuavistechnique'],/*, $decisiondossierpcg66['Dossierpcg66']['iscomplet']*/ $decisiondossierpcg66['Dossierpcg66']['etatdossierpcg'] );
 // debug($etat);
 // die();
 			$this->id = $decisiondossierpcg66['Dossierpcg66']['id'];

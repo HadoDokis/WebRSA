@@ -167,11 +167,12 @@
 			$typepdo_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.typepdo_id' );
 			$user_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.user_id' );
 			$avistechnique = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.avistechnique' );
+			$instrencours = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.instrencours' );
 			$validationavis = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.validationproposition' );
 			$iscomplet = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.iscomplet' );
 			$dossierpcg66_id = Set::classicExtract( $decisionpersonnepcg66, 'Personnepcg66Situationpdo.Personnepcg66.Dossierpcg66.id' );
 
-			$etat = $this->Dossierpcg66->etatDossierPcg66( $typepdo_id, $user_id, $decisionpdo_id, $avistechnique, $validationavis, $iscomplet, $dossierpcg66_id );
+			$etat = $this->Dossierpcg66->etatDossierPcg66( $typepdo_id, $user_id, $decisionpdo_id, $instrencours, $avistechnique, $validationavis, $iscomplet, $dossierpcg66_id );
 
 			$return = $this->saveField( 'etatdossierpcg', $etat );
 

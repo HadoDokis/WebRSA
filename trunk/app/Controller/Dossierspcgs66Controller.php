@@ -206,6 +206,7 @@
 			$dataComplet = Set::extract( $this->request->params, 'form.complet' );
 			$dataDecisionpdo_id = Set::extract( $this->request->params, 'form.decisionpdo_id' );
 
+			$dataInstrencours = null;
 			$dataAvistech = null;
 			$dataAvisvalid = null;
 			$etatdossierpcg = null;
@@ -252,7 +253,7 @@
                     $this->set( compact( 'datetransmission', 'orgs' ) );
 				}
 			}
-			$etatdossierpcg = $this->Dossierpcg66->etatDossierPcg66( $dataTypepdo_id, $dataUser_id, $dataDecisionpdo_id, $dataAvistech, $dataAvisvalid, $retouravistechnique, $vuavistechnique, /*$iscomplet,*/ $etatdossierpcg );
+			$etatdossierpcg = $this->Dossierpcg66->etatDossierPcg66( $dataTypepdo_id, $dataUser_id, $dataDecisionpdo_id, $dataInstrencours, $dataAvistech, $dataAvisvalid, $retouravistechnique, $vuavistechnique, /*$iscomplet,*/ $etatdossierpcg );
 
 			$this->Dossierpcg66->etatPcg66( $this->request->data );
 			$this->set( compact( 'etatdossierpcg' ) );
@@ -668,7 +669,7 @@
             
 //debug($this->request->data);
 			// avistechniquemodifiable, validationmodifiable
-			$etatdossierpcg = 'instrencours';
+			$etatdossierpcg = '';
 			if( isset( $dossierpcg66 ) ) {
 				$etatdossierpcg = $dossierpcg66['Dossierpcg66']['etatdossierpcg'];
 			}
@@ -688,14 +689,15 @@
                 )
             );
 
-            if( !empty( $dossierpcg66Pcd ) && in_array( $etatdossierpcg, array( 'instrencours', 'attaffect' ) ) ) {
-                $this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66Pcd['Dossierpcg66']['user_id'];
+            if( !empty( $dossierpcg66Pcd ) && in_array( $etatdossierpcg, array( '', 'attaffect' ) ) ) {
+                $this->request->data['Dossierpcg66']['poledossierpcg66_id'] = $dossierpcg66Pcd['Dossierpcg66']['poledossierpcg66_id'];
+                $this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66Pcd['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66Pcd['Dossierpcg66']['user_id'];
                 $this->request->data['Dossierpcg66']['etatdossierpcg'] = 'attinstr';
                 $gestionnairemodifiable = true;
             }
             
 			switch( $etatdossierpcg ) {
-				case 'instrencours':
+				case '':
 					$gestionnairemodifiable = $gestionnairemodifiable;
                     break;
 				case 'attaffect':
