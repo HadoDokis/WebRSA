@@ -1,7 +1,20 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire',  'Commune de l\'allocataire', 'Date de demande d\'APRE', 'Eligibilité', 'Etat du dossier APRE', 'Date de relance', 'Date du comité examen' ) );
+	$this->Csv->addRow(
+		array(
+			'N° Dossier',
+			'Nom/Prénom allocataire',
+			'Commune de l\'allocataire',
+			'Date de demande d\'APRE',
+			'Eligibilité',
+			'Etat du dossier APRE',
+			'Date de relance',
+			'Date du comité examen',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $apres as $apre ) {
 
@@ -22,7 +35,10 @@
 			Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Relanceapre.daterelance' ) ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Comiteapre.datecomite' ) ),
+			Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $apre, 'Referentparcours.nom_complet' ),
 		);
+
 		$this->Csv->addRow($row);
 	}
 

@@ -11,7 +11,9 @@
 			'Décision',
 			'Montant accordé',
 			'Motif du rejet',
-			'Date de la décision'
+			'Date de la décision',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -25,7 +27,9 @@
 			Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ),
 			Set::classicExtract( $apre, 'Aideapre66.montantaccorde' ),
 			Set::classicExtract( $apre, 'Aideapre66.motifrejetequipe' ),
-			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Aideapre66.datemontantaccorde' ) )
+			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Aideapre66.datemontantaccorde' ) ),
+			Hash::get( $apre, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $apre, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

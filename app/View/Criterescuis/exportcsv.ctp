@@ -16,7 +16,9 @@
             'Secteur',
             'Hors ACI/ ACI',
             'Date début contrat',
-            'Position du CUI'
+            'Position du CUI',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
 
@@ -36,11 +38,13 @@
 			Set::enum( Hash::get( $cui, 'Cui.secteurcui_id' ), $secteurscuis ),
             Set::enum( Hash::get( $cui, 'Cui.isaci' ), $options['Cui']['isaci'] ),
 			$this->Locale->date( 'Date::short', Hash::get( $cui, 'Cui.datecontrat' ) ),
-            Set::enum( Hash::get( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] )
+            Set::enum( Hash::get( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] ),
+			Hash::get( $cui, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $cui, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}
-    
+
     $this->Csv->addRow(array( 'Nombre total de résultats = '.count( $cuis ) ) );
 
 	Configure::write( 'debug', 0 );

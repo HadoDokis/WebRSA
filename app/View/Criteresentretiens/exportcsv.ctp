@@ -17,7 +17,9 @@
             'Référent',
             'Type d\'entretien',
             'Objet de l\'entretien',
-            'A revoir le'
+            'A revoir le',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
         )
     );
 
@@ -37,7 +39,9 @@
 			Set::classicExtract( $entretien, 'Referent.qual' ).' '.Set::classicExtract( $entretien, 'Referent.nom').' '.Set::classicExtract( $entretien, 'Referent.prenom'),
 			Set::enum( Set::classicExtract( $entretien, 'Entretien.typeentretien' ), $options['typeentretien'] ),
 			Set::classicExtract( $entretien, 'Objetentretien.name' ),
-			$this->Locale->date( "Date::miniLettre", Set::classicExtract( $entretien, 'Entretien.arevoirle' ) )
+			$this->Locale->date( "Date::miniLettre", Set::classicExtract( $entretien, 'Entretien.arevoirle' ) ),
+			Hash::get( $entretien, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $entretien, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

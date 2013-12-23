@@ -158,6 +158,14 @@
 							<th>Localité</th>
 							<td>'.$actioncandidat_personne['Adresse']['locaadr'].'</td>
 						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $actioncandidat_personne, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $actioncandidat_personne, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
 					</tbody>
 				</table>';
 

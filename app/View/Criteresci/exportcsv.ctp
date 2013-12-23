@@ -25,7 +25,9 @@
 			'Durée',
 			'Date fin contrat',
 			'Décision et date validation',
-			'Action prévue'
+			'Action prévue',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -64,7 +66,10 @@
 			date_short( Hash::get( $contrat, 'Contratinsertion.df_ci' ) ),
 			value( $decision_ci, Hash::get( $contrat, 'Contratinsertion.decision_ci' ) ).' '.date_short( Hash::get( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
 			Set::enum( Hash::get( $contrat, 'Contratinsertion.actions_prev' ), $action ),
+			Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
 		);
+
 		$this->Csv->addRow($row);
 	}
 

@@ -78,6 +78,14 @@
 								<th>Position</th>
 								<td>'.h( $contrat['Contratinsertion']['positioncer'] ).'</td>
 							</tr>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+								<td>'.Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ).'</td>
+							</tr>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+								<td>'.Hash::get( $contrat, 'Referentparcours.nom_complet' ).'</td>
+							</tr>
 						</tbody>
 					</table>';
 

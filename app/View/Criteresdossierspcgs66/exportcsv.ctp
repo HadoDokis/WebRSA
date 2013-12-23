@@ -15,7 +15,9 @@
 				'État du dossier',
 				'Motif(s) de la personne',
                 'Statut(s) de la personne',
-				'Nb de fichiers dans la corbeille'
+				'Nb de fichiers dans la corbeille',
+				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 			)
 		);
 	}
@@ -32,7 +34,9 @@
 				'Nb de traitements PCGs',
 				'Type de traitement',
 				'État du dossier',
-				'Nb de fichiers dans la corbeille'
+				'Nb de fichiers dans la corbeille',
+				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 			)
 		);
 	}
@@ -54,20 +58,20 @@
         }
         else if( $result['Dossierpcg66']['etatdossierpcg'] == 'atttransmisop' ){
             $datetransmission = ' à '.$orgs;
-            
+
         }
 
         $etatdosrsaValue = Set::classicExtract( $result, 'Situationdossierrsa.etatdosrsa' );
         $etatDossierRSA = isset( $etatdosrsa[$etatdosrsaValue] ) ? $etatdosrsa[$etatdosrsaValue] : 'Non défini';
-        
+
         //Liste des différents motifs de la personne
         $differentsMotifs = $result['Personnepcg66']['listemotifs'];
         //Liste des différents statuts de la personne
         $differentsStatuts = $result['Personnepcg66']['listestatuts'];
-        
+
         //Liste des différents traitements de la personne
         $traitementspcgs66 = $result['Dossierpcg66']['listetraitements'];
-        
+
         $pole = isset( $result['Dossierpcg66']['poledossierpcg66_id'] ) ? ( Set::enum( Hash::get( $result, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ).' / ' ) : null;
 
         $gestionnaires = Hash::get( $result, 'User.nom_complet' );
@@ -85,7 +89,9 @@
 				Set::enum( Hash::get( $result, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission,
 				$differentsMotifs,
                 $differentsStatuts,
-				h( $result['Fichiermodule']['nb_fichiers_lies'] )
+				h( $result['Fichiermodule']['nb_fichiers_lies'] ),
+				Hash::get( $result, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $result, 'Referentparcours.nom_complet' ),
 			);
 		}
 		else {
@@ -100,7 +106,9 @@
 				h( $result['Personnepcg66']['nbtraitements'] ),
 				$traitementspcgs66,
 				Set::enum( Hash::get( $result, 'Dossierpcg66.etatdossierpcg' ), $options['Dossierpcg66']['etatdossierpcg'] ).$datetransmission,
-				h( $result['Fichiermodule']['nb_fichiers_lies'] )
+				h( $result['Fichiermodule']['nb_fichiers_lies'] ),
+				Hash::get( $result, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $result, 'Referentparcours.nom_complet' ),
 			);
 		}
 		$this->Csv->addRow( $row );

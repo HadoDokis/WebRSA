@@ -1,7 +1,23 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° Dossier', 'Nom/Prénom allocataire', 'Commune de l\'allocataire', 'Référent', 'Service référent', 'Type de contrat', 'Date début contrat', 'Durée', 'Date fin contrat', 'Décision et date validation', 'Action prévue'  ) );
+	$this->Csv->addRow(
+		array(
+			'N° Dossier',
+			'Nom/Prénom allocataire',
+			'Commune de l\'allocataire',
+			'Référent',
+			'Service référent',
+			'Type de contrat',
+			'Date début contrat',
+			'Durée',
+			'Date fin contrat',
+			'Décision et date validation',
+			'Action prévue',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $contrats as $contrat ) {
 
@@ -17,6 +33,8 @@
 			$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.df_ci' ) ),
 			Set::classicExtract( $decision_ci, Set::classicExtract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::classicExtract( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
 			Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.actions_prev' ), $action ),
+			Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

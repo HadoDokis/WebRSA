@@ -28,6 +28,8 @@
 				'Objectif du RDV',
 				'Commentaire suite RDV',
 				'Etat du droit',
+				__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+				__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 			)
 		)
 	);
@@ -61,6 +63,8 @@
 				Hash::get( $rdv, 'Rendezvous.objetrdv' ),
 				Hash::get( $rdv, 'Rendezvous.commentairerdv' ),
 				value( $etatdosrsa, Hash::get( $rdv, 'Situationdossierrsa.etatdosrsa' ) ),
+				Hash::get( $rdv, 'Structurereferenteparcours.lib_struc' ),
+				Hash::get( $rdv, 'Referentparcours.nom_complet' ),
 			)
 		);
 		$this->Csv->addRow($row);

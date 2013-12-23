@@ -86,6 +86,14 @@
 									<th>Code postal</th>
 									<td>'.h( $pdo['Adresse']['codepos'] ).'</td>
 								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $pdo, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $pdo, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
 							</tbody>
 						</table>';
 						$title = $pdo['Dossier']['numdemrsa'];

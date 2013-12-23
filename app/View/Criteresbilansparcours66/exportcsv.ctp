@@ -1,7 +1,23 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'Date du bilan de parcours', 'Nom de la personne', 'N° CAF', 'Type de structure', 'Nom du prescripteur', 'Type de commission', 'Position du bilan', 'Choix du parcours', 'Saisine EP', 'Code INSEE', 'Localité' ) );
+	$this->Csv->addRow(
+		array(
+			'Date du bilan de parcours',
+			'Nom de la personne',
+			'N° CAF',
+			'Type de structure',
+			'Nom du prescripteur',
+			'Type de commission',
+			'Position du bilan',
+			'Choix du parcours',
+			'Saisine EP',
+			'Code INSEE',
+			'Localité',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		)
+	);
 
 	foreach( $bilansparcours66 as $bilanparcours66 ) {
 		$isSaisine = 'Non';
@@ -36,7 +52,9 @@
 			$motif,
 			$isSaisine,
 			$bilanparcours66['Adresse']['numcomptt'],
-			$bilanparcours66['Adresse']['locaadr']
+			$bilanparcours66['Adresse']['locaadr'],
+			Hash::get( $bilanparcours66, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $bilanparcours66, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}
