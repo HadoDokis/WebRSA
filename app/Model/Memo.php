@@ -55,8 +55,8 @@
         
         
         /**
-		 * Sous-requête permettant de savoir si une entrée existe dans la table memos 
-         * pour une entrée d'une table d'un autre modèle.
+		 * Sous-requête permettant de connaître le nombre de Mémos existants
+         * pour un allocataire donné
 		 *
 		 * @param Model $Model
 		 * @param string $fieldName Si null, renvoit uniquement la sous-reqête,
