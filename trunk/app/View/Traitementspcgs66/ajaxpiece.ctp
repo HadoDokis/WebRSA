@@ -68,6 +68,7 @@
 							echo '</div>';
 						}
 						echo '</div>';
+                        debug($modeletypecourrierpcg66);
 					?>
 				</td>
 			</tr>
@@ -80,15 +81,18 @@
 <?php endif;?>
 <script type="text/javascript">
 	//<![CDATA[
-	<?php foreach( array_keys( $modeletypecourrierpcg66 ) as $id ) :?>
-		observeDisableFieldsetOnRadioValue(
-			'traitementpcg66form',
-			'data[Modeletraitementpcg66][modeletypecourrierpcg66_id]',
-			$( 'detailsmodelelie<?php echo $id;?>' ),
-			'<?php echo $id;?>',
-			false,
-			true
-		);
-	<?php endforeach;?>
+	<?php
+        if( isset($modeletypecourrierpcg66) ) :?>
+            <?php foreach( array_keys( $modeletypecourrierpcg66 ) as $id ) :?>
+                observeDisableFieldsetOnRadioValue(
+                    'traitementpcg66form',
+                    'data[Modeletraitementpcg66][modeletypecourrierpcg66_id]',
+                    $( 'detailsmodelelie<?php echo $id;?>' ),
+                    '<?php echo $id;?>',
+                    false,
+                    true
+                );
+            <?php endforeach;?>
+        <?php endif;?>
 	//]]>
 </script>
