@@ -110,7 +110,7 @@
 	?>
 	<?php $pagination = $this->Xpaginator->paginationBlock( 'Personne', $this->passedArgs ); ?>
 	<?php echo $pagination;?>
-    <table id="searchResults">
+    <table id="searchResults" class="tooltips">
         <thead>
             <tr>
                 <th>N° Dossier</th>
@@ -125,13 +125,25 @@
 				<th class="action">Structure référente</th>
 				<th class="action">Date d'orientation</th>
 				<th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortesnonorientes66 as $index => $cohortenonoriente66 ):?>
             <?php
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $cohortenonoriente66, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
-//             debug($typeorient_id);
 				$tableCells = array(
 						h( $cohortenonoriente66['Dossier']['numdemrsa'] ),
 						h( $cohortenonoriente66['Dossier']['matricule'] ),
@@ -162,8 +174,8 @@
 							'Voir le dossier',
 							array( 'controller' => 'dossiers', 'action' => 'view', $cohortenonoriente66['Dossier']['id'] ),
 							$this->Permissions->check( 'dossiers', 'view' )
-						)
-
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					);
 
 

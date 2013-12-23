@@ -3,7 +3,27 @@
 
 	$this->Csv->addRow(
 		array(
-			'N° Caf (Matricule)', 'NIR', 'Genre', 'Nom', 'Prénom', 'Date de naissance', 'Nombre d\'enfants', 'Ville', 'Canton', 'MSP', 'Date de demande', 'Date d\'envoi du courrier avec questionnaire', 'Réponse ?', 'Date de l\'orientation', 'Orientation', 'Structure référente', 'Etat Pôle Emploi', 'Date de l\'état Pôle Emploi', 'Fichier lié ?'
+			'N° Caf (Matricule)',
+			'NIR',
+			'Genre',
+			'Nom',
+			'Prénom',
+			'Date de naissance',
+			'Nombre d\'enfants',
+			'Ville',
+			'Canton',
+			'MSP',
+			'Date de demande',
+			'Date d\'envoi du courrier avec questionnaire',
+			'Réponse ?',
+			'Date de l\'orientation',
+			'Orientation',
+			'Structure référente',
+			'Etat Pôle Emploi',
+			'Date de l\'état Pôle Emploi',
+			'Fichier lié ?',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -32,6 +52,8 @@
 			$etatHistoriqueetatpe,
 			Set::classicExtract( $nonoriente66, 'Historiqueetatpe.date' ),
 			!empty( $nonoriente66['Nonoriente66']['nbfichiers'] ) ? 'Oui' : 'Non',
+			Hash::get( $nonoriente66, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $nonoriente66, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

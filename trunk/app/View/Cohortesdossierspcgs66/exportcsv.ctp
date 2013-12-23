@@ -11,7 +11,9 @@
 			'Origine du dossier',
 			'Organisme payeur',
 			'Service instructeur',
-			'Gestionnaire'
+			'Gestionnaire',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -25,7 +27,9 @@
 			$dossierpcg66['Originepdo']['libelle'],
 			$dossierpcg66['Dossierpcg66']['orgpayeur'],
 			$dossierpcg66['Serviceinstructeur']['lib_service'],
-			Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire )
+			Set::enum( Set::classicExtract( $dossierpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ),
+			Hash::get( $dossierpcg66, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $dossierpcg66, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow($row);
 	}

@@ -108,12 +108,25 @@
                 <th class="action">Pôle du gestionnaire</th>
                 <th class="action">Gestionnaire</th>
                 <th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $affectationdossierpcg66 ):?>
             <?php
-// debug($affectationdossierpcg66);
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $affectationdossierpcg66, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $affectationdossierpcg66, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
                     $title = $affectationdossierpcg66['Dossier']['numdemrsa'];
 
                     $array1 = array(
@@ -146,7 +159,8 @@
                             'Voir le dossier « '.$title.' »',
                             array( 'controller' => 'dossierspcgs66', 'action' => 'index', $affectationdossierpcg66['Dossierpcg66']['foyer_id'] ),
                             $this->Permissions->check( 'dossierspcgs66', 'index' )
-                        )
+                        ),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                     );
 
                     echo $this->Xhtml->tableCells(

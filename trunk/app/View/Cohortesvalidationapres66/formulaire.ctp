@@ -104,13 +104,26 @@
                 <th>Motif du rejet</th>
                 <th>Date de la décision</th>
                 <th class="action">Action</th>
+				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
         <?php foreach( $cohortevalidationapre66 as $index => $validationapre ):?>
             <?php
-// debug($validationapre);
-                    $title = $validationapre['Dossier']['numdemrsa'];
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $validationapre, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $validationapre, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
+				$title = $validationapre['Dossier']['numdemrsa'];
 
                     $array1 = array(
 						h( $validationapre['Apre66']['numeroapre'] ),
@@ -147,8 +160,8 @@
                             'Voir le contrat « '.$title.' »',
                             array( 'controller' => 'apres66', 'action' => 'index', $validationapre['Apre66']['personne_id'] ),
                             $this->Permissions->check( 'apres66', 'index' )
-                        )/*,
-                        array( $innerTable, array( 'class' => 'innerTableCell' ) )*/
+                        ),
+                        array( $innerTable, array( 'class' => 'innerTableCell' ) )
                     );
 
                     echo $this->Xhtml->tableCells(

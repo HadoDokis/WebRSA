@@ -78,7 +78,11 @@
 				'actions' => array(
 					'Orientsstructs::index' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'add', '#Personne.id#', 'Bilanparcours66__examenauditionpe:'.$actionbp ) )
 				),
-				'options' => array('Situationdossierrsa'=>array('etatdosrsa'=> $etatdosrsa))
+				'options' => array('Situationdossierrsa'=>array('etatdosrsa'=> $etatdosrsa)),
+				'tooltip' => array(
+					'Structurereferenteparcours.lib_struc' => array( 'type' => 'text', 'domain' => 'search_plugin' ),
+					'Referentparcours.nom_complet' => array( 'type' => 'text', 'domain' => 'search_plugin' )
+				)
 			)
 		);
 	}
