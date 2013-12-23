@@ -47,8 +47,8 @@
 		protected function _setOptions() {
 			$options = array( );
 
-			$this->set( 'statutlist', $this->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => 'Statutpdo.libelle ASC' ) ) );
-			$this->set( 'situationlist', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => 'Situationpdo.libelle ASC' ) ) );
+			$this->set( 'statutlist', $this->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => 'Statutpdo.libelle ASC', 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) ) );
+			$this->set( 'situationlist', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => 'Situationpdo.libelle ASC', 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) ) );
 			$this->set( compact( 'options' ) );
 
 			$this->set( 'gestionnaire', $this->User->find(

@@ -25,6 +25,11 @@
 			'add' => 'Statutspdos:edit'
 		);
 
+        protected function _setOptions() {
+			$options = $this->Statutpdo->enums();
+			$this->set( compact( 'options' ) );
+		}
+
 		/**
 		*   Ajout à la suite de l'utilisation des nouveaux helpers
 		*   - default.php
@@ -35,6 +40,7 @@
 			$queryData = $this->Statutpdo->qdOccurences();
             $this->paginate = $queryData;
 			$statutspdos = $this->paginate( $this->modelClass );
+            $this->_setOptions();
             $this->set( compact( 'statutspdos' ) );
 		}
 
@@ -62,6 +68,7 @@
 
 		protected function _add_edit(){
 			$args = func_get_args();
+            $this->_setOptions();
 			$this->Default->{$this->action}( $args );
 		}
 

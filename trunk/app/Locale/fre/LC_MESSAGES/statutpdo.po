@@ -43,4 +43,12 @@ msgid "Statutspdos::delete::confirm"
 msgstr "Confirmer la suppression ?"
 
 
+msgid "Statutpdo.isactif"
+msgstr "Actif ?"
+
+msgid "ENUM::ISACTIF::1"
+msgstr "Oui"
+
+msgid "ENUM::ISACTIF::0"
+msgstr "Non"
 ###############################################################################

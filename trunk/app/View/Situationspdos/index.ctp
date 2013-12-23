@@ -7,7 +7,8 @@
 
 <?php
 	$fields = array(
-		'Situationpdo.libelle'
+		'Situationpdo.libelle',
+		'Situationpdo.isactif'
 	);
 
 // 	if ( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -25,6 +26,7 @@
 				'Situationspdos::delete' => array( 'disabled' => '\'#Situationpdo.occurences#\'!= "0"' )
 			),
 			'add' => 'Situationspdos::add',
+            'options' => $options
 		)
 	);
 

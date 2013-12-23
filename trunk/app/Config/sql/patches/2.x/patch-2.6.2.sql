@@ -134,6 +134,33 @@ ALTER TABLE questionnairesd2pdvs93 ALTER COLUMN date_validation SET NOT NULL;
 --------------------------------------------------------------------------------
 ALTER TABLE typespdos ALTER COLUMN libelle TYPE VARCHAR(150) USING CAST(libelle AS VARCHAR(150));
 
+
+-------------------------------------------------------------------------------------
+-- 20131223 : Ajout d'un champ isactif pour masquer les decisions pdos n'étant plus actives
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'decisionspdos', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'decisionspdos', 'decisionspdos_isactif_in_list_chk' );
+ALTER TABLE decisionspdos ADD CONSTRAINT decisionspdos_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE decisionspdos SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE decisionspdos ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
+
+-------------------------------------------------------------------------------------
+-- 20131223 : Ajout d'un champ isactif pour masquer les decisions pdos n'étant plus actives
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'statutspdos', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'statutspdos', 'statutspdos_isactif_in_list_chk' );
+ALTER TABLE statutspdos ADD CONSTRAINT statutspdos_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE statutspdos SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE statutspdos ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
+
+-------------------------------------------------------------------------------------
+-- 20131223 : Ajout d'un champ isactif pour masquer les decisions pdos n'étant plus actives
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'situationspdos', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'situationspdos', 'situationspdos_isactif_in_list_chk' );
+ALTER TABLE situationspdos ADD CONSTRAINT situationspdos_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE situationspdos SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE situationspdos ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

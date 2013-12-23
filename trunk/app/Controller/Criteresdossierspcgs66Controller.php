@@ -32,10 +32,10 @@
 			$this->set( 'typepdo', $this->Dossierpcg66->Typepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Dossierpcg66->Originepdo->find( 'list' ) );
 			$this->set( 'descriptionpdo', $this->Dossierpcg66->Personnepcg66->Traitementpcg66->Descriptionpdo->find( 'list' ) );
-            $this->set( 'decisionpdo', $this->Dossierpcg66->Decisiondossierpcg66->Decisionpdo->find( 'list' ) );
+            $this->set( 'decisionpdo', $this->Dossierpcg66->Decisiondossierpcg66->Decisionpdo->find( 'list', array( 'conditions' => array( 'Decisionpdo.isactif' => '1')) ) );
 
-			$this->set( 'motifpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => array( 'Situationpdo.libelle ASC' ) ) ) );
-            $this->set( 'statutpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => array( 'Statutpdo.libelle ASC' ) ) ) );
+			$this->set( 'motifpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Situationpdo->find( 'list', array( 'order' => array( 'Situationpdo.libelle ASC' ), 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) ) );
+            $this->set( 'statutpersonnepcg66', $this->Dossierpcg66->Personnepcg66->Statutpdo->find( 'list', array( 'order' => array( 'Statutpdo.libelle ASC' ), 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) ) );
 
 			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 

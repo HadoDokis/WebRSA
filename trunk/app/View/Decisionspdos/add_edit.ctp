@@ -24,7 +24,8 @@
 
 		$fields = array(
 			'Decisionpdo.libelle',
-			'Decisionpdo.clos' => array( 'type' => 'radio' )
+			'Decisionpdo.clos' => array( 'type' => 'radio' ),
+            'Decisionpdo.isactif' => array( 'type' => 'radio' )
 		);
 
 		if ( Configure::read( 'Cg.departement' ) == 66 ) {

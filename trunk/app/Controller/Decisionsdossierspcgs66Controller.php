@@ -63,7 +63,7 @@
 			$options = array_merge(
 				$options, $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->Decisiontraitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Decisiondefautinsertionep66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->enums(), $this->Decisiondossierpcg66->Dossierpcg66->Contratinsertion->enums()
 			);
-			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list'/* , array( 'fields' => array( 'Decisionpdo.name' ) */ );
+			$listdecisionpdo = $this->Decisiondossierpcg66->Decisionpdo->find( 'list', array( 'conditions' => array( 'Decisionpdo.isactif' => '1' ) ) );
 			$typersapcg66 = $this->Decisiondossierpcg66->Typersapcg66->find( 'list' );
 			$orgtransmisdossierpcg66 = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
                 'list',
@@ -82,10 +82,12 @@
                     'fields' => array(
                         'Decisionpdo.id',
                         'Decisionpdo.libelle',
-                        'Decisionpdo.decisioncerparticulier'
+                        'Decisionpdo.decisioncerparticulier',
+                        'Decisionpdo.isactif'
                     ),
                     'conditions' => array(
-                        'Decisionpdo.cerparticulier' => 'O'
+                        'Decisionpdo.cerparticulier' => 'O',
+                        'Decisionpdo.isactif' => '1'
                     ),
                     'contain' => false
                 )

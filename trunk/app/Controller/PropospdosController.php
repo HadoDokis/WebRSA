@@ -65,8 +65,8 @@
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 			$this->set( 'typetraitement', $this->Propopdo->Traitementpdo->Traitementtypepdo->find( 'list' ) );
 			$this->set( 'originepdo', $this->Originepdo->find( 'list' ) );
-			$this->set( 'statutlist', $this->Statutpdo->find( 'list' ) );
-			$this->set( 'situationlist', $this->Situationpdo->find( 'list' ) );
+			$this->set( 'statutlist', $this->Statutpdo->find( 'list', array( 'conditions' => array( 'Statutpdo.isactif' => '1' ) ) ) );
+			$this->set( 'situationlist', $this->Situationpdo->find( 'list', array( 'conditions' => array( 'Situationpdo.isactif' => '1' ) ) ) );
 			$this->set( 'serviceinstructeur', $this->Propopdo->Serviceinstructeur->listOptions() );
 			$this->set( 'orgpayeur', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
 			$this->set( 'gestionnaire', $this->User->find(

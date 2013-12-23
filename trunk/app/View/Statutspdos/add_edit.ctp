@@ -11,13 +11,15 @@
 <?php
 	echo $this->Default->form(
 		array(
-			'Statutpdo.libelle' => array( 'type' => 'text' )
+			'Statutpdo.libelle' => array( 'type' => 'text' ),
+			'Statutpdo.isactif' => array( 'type' => 'radio', 'empty' => false )
 		),
 		array(
 			'actions' => array(
 				'Statutpdo.save',
 				'Statutpdo.cancel'
-			)
+			),
+            'options' => $options
 		)
 	);
 ?>

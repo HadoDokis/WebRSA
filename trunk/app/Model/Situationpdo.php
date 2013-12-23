@@ -26,7 +26,8 @@
 		);
 
 		public $actsAs = array(
-			'ValidateTranslate'
+			'ValidateTranslate',
+            'Pgsqlcake.PgsqlAutovalidate'
 		);
 
 		public $hasAndBelongsToMany = array(

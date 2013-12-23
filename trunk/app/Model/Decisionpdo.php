@@ -22,7 +22,8 @@
 		public $order = 'Decisionpdo.id ASC';
 
 		public $actsAs = array(
-			'Autovalidate2',
+//			'Autovalidate2',
+            'Pgsqlcake.PgsqlAutovalidate',
 			'Enumerable' => array(
 				'fields' => array(
 					'clos',
