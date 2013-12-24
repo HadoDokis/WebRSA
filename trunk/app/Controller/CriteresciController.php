@@ -85,44 +85,6 @@
 			);
 		}
 
-		/**
-		 * Ajax pour lien référent - structure référente
-		 *
-		 * @param type $structurereferente_id
-		 * @return type
-		 */
-// 		public function _selectReferents( $structurereferente_id ) {
-// 			$conditions = array();
-//
-// 			if( !empty( $structurereferente_id ) ) {
-// 				$conditions['Referent.structurereferente_id'] = $structurereferente_id;
-// 			}
-//
-// 			$referents = $this->Referent->find(
-// 				'all',
-// 				array(
-// 					'fields' => array( 'Referent.id', 'Referent.nom', 'Referent.prenom' ),
-// 					'conditions' => $conditions,
-// 					'recursive' => -1
-// 				)
-// 			);
-//
-// 			return $referents;
-// 		}
-//
-// 		/**
-// 		 *
-// 		 */
-// 		public function ajaxreferent() {
-// 			Configure::write( 'debug', 2 );
-// 			$referents = $this->_selectReferents( Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' ) );
-// 			$options = array( '<option value=""></option>' );
-// 			foreach( $referents as $referent ) {
-// 				$options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
-// 			} ///FIXME: à mettre dans la vue
-// 			echo implode( '', $options );
-// 			$this->render( null, 'ajax' );
-// 		}
 
 		/**
 		 *
@@ -147,7 +109,7 @@
 
 				$paginate['limit'] = 10;
 
-				$progressivePaginate = !Set::classicExtract( $this->request->data, 'Filtre.paginationNombreTotal' );
+				$progressivePaginate = !Set::classicExtract( $this->request->data, 'Contratinsertion.paginationNombreTotal' );
 				$this->paginate = $paginate;
 
 				$contrats = $this->paginate( 'Contratinsertion', array(), array(), $progressivePaginate  );
@@ -158,7 +120,7 @@
 				// Valeurs par défaut des filtres
 				$progressivePaginate = SearchProgressivePagination::enabled( $this->name, $this->action );
 				if( !is_null( $progressivePaginate ) ) {
-					$this->request->data['Filtre']['paginationNombreTotal'] = !$progressivePaginate;
+					$this->request->data['Contratinsertion']['paginationNombreTotal'] = !$progressivePaginate;
 				}
 			}
 
@@ -166,10 +128,10 @@
 
 			/// Population du select référents liés aux structures
 			$conditions = array();
-			$structurereferente_id = Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' );
+			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
 
 			if( !empty( $structurereferente_id ) ) {
-				$conditions['Referent.structurereferente_id'] = Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' );
+				$conditions['Referent.structurereferente_id'] = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
 			}
 
 			$referents = $this->Referent->find(

@@ -28,9 +28,9 @@
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'valides',
-					'nouveaux' => array( 'filter' => 'Filtre' ),
-					'nouveauxsimple' => array( 'filter' => 'Filtre' ),
-					'nouveauxparticulier' => array( 'filter' => 'Filtre' )
+					'nouveaux' => array( 'filter' => 'Contratinsertion' ),
+					'nouveauxsimple' => array( 'filter' => 'Contratinsertion' ),
+					'nouveauxparticulier' => array( 'filter' => 'Contratinsertion' )
 				)
 			),
 			'Gestionzonesgeos',
@@ -143,7 +143,7 @@
 		 */
 		public function ajaxreferent() {
 			Configure::write( 'debug', 0 );
-			$referents = $this->_selectReferents( Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' ) );
+			$referents = $this->_selectReferents( Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' ) );
 			$options = array( '<option value=""></option>' );
 			foreach( $referents as $referent ) {
 				$options[] = '<option value="'.$referent['Referent']['id'].'">'.$referent['Referent']['nom'].' '.$referent['Referent']['prenom'].'</option>';
@@ -241,7 +241,7 @@
 					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					$this->paginate = $querydata;
-					$progressivePaginate = !Hash::get( $this->request->data, 'Filtre.nombre_total' );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Contratinsertion.nombre_total' );
 					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion, array(), array(), $progressivePaginate );
 
 					foreach( $cohorteci as $key => $value ) {
@@ -273,7 +273,7 @@
 			}
 
 			// Population du select référents liés aux structures
-			$structurereferente_id = Set::classicExtract( $this->request->data, 'Filtre.structurereferente_id' );
+			$structurereferente_id = Set::classicExtract( $this->request->data, 'Contratinsertion.structurereferente_id' );
 			$referents = $this->Dossier->Foyer->Personne->Contratinsertion->Referent->referentsListe( $structurereferente_id );
 			$this->set( 'referents', $referents );
 

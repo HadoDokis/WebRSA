@@ -104,21 +104,21 @@
 			}
 
 			/// Critères
-// 			$created = Set::extract( $criteresci, 'Filtre.created' );
-			$decision_ci = Set::extract( $criteresci, 'Filtre.decision_ci' );
-			$datevalidation_ci = Set::extract( $criteresci, 'Filtre.datevalidation_ci' );
-			$dd_ci = Set::extract( $criteresci, 'Filtre.dd_ci' );
-			$df_ci = Set::extract( $criteresci, 'Filtre.df_ci' );
-			$locaadr = Set::extract( $criteresci, 'Filtre.locaadr' );
-			$numcomptt = Set::extract( $criteresci, 'Filtre.numcomptt' );
-			$nir = Set::extract( $criteresci, 'Filtre.nir' );
-			$natpf = Set::extract( $criteresci, 'Filtre.natpf' );
-			$personne_suivi = Set::extract( $criteresci, 'Filtre.pers_charg_suivi' );
-			$forme_ci = Set::extract( $criteresci, 'Filtre.forme_ci' );
-			$structurereferente_id = Set::extract( $criteresci, 'Filtre.structurereferente_id' );
-			$referent_id = Set::extract( $criteresci, 'Filtre.referent_id' );
-			$matricule = Set::extract( $criteresci, 'Filtre.matricule' );
-			$positioncer = Set::extract( $criteresci, 'Filtre.positioncer' );
+// 			$created = Set::extract( $criteresci, 'Contratinsertion.created' );
+			$decision_ci = Set::extract( $criteresci, 'Contratinsertion.decision_ci' );
+			$datevalidation_ci = Set::extract( $criteresci, 'Contratinsertion.datevalidation_ci' );
+			$dd_ci = Set::extract( $criteresci, 'Contratinsertion.dd_ci' );
+			$df_ci = Set::extract( $criteresci, 'Contratinsertion.df_ci' );
+			$locaadr = Set::extract( $criteresci, 'Contratinsertion.locaadr' );
+			$numcomptt = Set::extract( $criteresci, 'Contratinsertion.numcomptt' );
+			$nir = Set::extract( $criteresci, 'Contratinsertion.nir' );
+			$natpf = Set::extract( $criteresci, 'Contratinsertion.natpf' );
+			$personne_suivi = Set::extract( $criteresci, 'Contratinsertion.pers_charg_suivi' );
+			$forme_ci = Set::extract( $criteresci, 'Contratinsertion.forme_ci' );
+			$structurereferente_id = Set::extract( $criteresci, 'Contratinsertion.structurereferente_id' );
+			$referent_id = Set::extract( $criteresci, 'Contratinsertion.referent_id' );
+			$matricule = Set::extract( $criteresci, 'Contratinsertion.matricule' );
+			$positioncer = Set::extract( $criteresci, 'Contratinsertion.positioncer' );
 //			$referentParcours = Set::extract( $criteresci, 'PersonneReferent.id' );
 //			$structureParcours = Set::extract( $criteresci, 'Structurereferente.id' );
 
@@ -201,7 +201,7 @@
 				$conditions[] = 'Referent.id = \''.Sanitize::clean( suffix( $referent_id ), array( 'encode' => false ) ).'\'';
 			}
 
-			// Filtrer par durée du CER
+			// Contratinsertionr par durée du CER
 			$duree_engag = Hash::get( $criteresci, 'Contratinsertion.duree_engag' );
 			if( !empty( $duree_engag ) ) {
 				if( Configure::read( 'Cg.departement' ) != 93 ) {
@@ -243,7 +243,7 @@
 			}
 
 			// Liste des CERs arrivant à échéance -> dont la date de fin est pour le mois en cours
-			$echeanceproche = Hash::get( $criteresci, 'Filtre.echeanceproche' );
+			$echeanceproche = Hash::get( $criteresci, 'Contratinsertion.echeanceproche' );
 			if( $echeanceproche ) {
 				$conditions[] = 'Contratinsertion.id IN (
 					SELECT
@@ -257,7 +257,7 @@
 			}
 
 			// Liste des CERs échus -> dont la date de fin est au plus tard la date du jour
-			$arriveaecheance = Hash::get( $criteresci, 'Filtre.arriveaecheance' );
+			$arriveaecheance = Hash::get( $criteresci, 'Contratinsertion.arriveaecheance' );
 			if( $arriveaecheance ) {
 				$conditions[] = 'Contratinsertion.id IN (
 					SELECT
@@ -271,7 +271,7 @@
 
 
 			// Pour le CG66 : filtre permettant de retourner les CERs non validés et notifiés il y a 1 mois et demi
-			if( isset( $criteresci['Filtre']['notifienouveaux'] ) && !empty( $criteresci['Filtre']['notifienouveaux'] ) ) {
+			if( isset( $criteresci['Contratinsertion']['notifienouveaux'] ) && !empty( $criteresci['Contratinsertion']['notifienouveaux'] ) ) {
 				$conditions[] = 'Contratinsertion.id IN (
 					SELECT
 						contratsinsertion.id
@@ -291,7 +291,7 @@
  				)';
 			}
 
-            // Filtre pour le CG66 afin d'exclure les CERs dont la date de tacite reconduction est non vide
+            // Contratinsertion pour le CG66 afin d'exclure les CERs dont la date de tacite reconduction est non vide
             if( Configure::read( 'Cg.departement' ) == 66 ) {
                 $istacitereconduction = Set::extract( $criteresci, 'Contratinsertion.istacitereconduction' );
                 if( isset( $istacitereconduction ) && !empty( $istacitereconduction ) ) {
@@ -385,7 +385,7 @@
 			);
 
 			// Référent du parcours
-			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Filtre']['PersonneReferent'] ) ? $criteresci['Filtre'] : $criteresci ) );
+			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Contratinsertion']['PersonneReferent'] ) ? $criteresci['Contratinsertion'] : $criteresci ) );
 
 			return $querydata;
 		}

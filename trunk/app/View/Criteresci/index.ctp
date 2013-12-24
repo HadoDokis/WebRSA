@@ -34,7 +34,7 @@
 	}
 ?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Contratinsertion', $this->passedArgs );?>
-<?php echo $this->Form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Filtre']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Critereci', array( 'type' => 'post', 'action' => '/index/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data['Contratinsertion']['recherche'] ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
 		echo $this->Search->blocAllocataire( $trancheage );
 		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
@@ -51,27 +51,18 @@
 			echo $this->Search->etatdosrsa( $etatdosrsa );
 
 			echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
-            /*echo "<fieldset id='referentparcours'><legend>Suivi du parcours</legend>";
-            echo $this->Form->input( 'Structurereferente.id', array( 'label' => 'Structure référente du référent de parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $struct, 'empty' => true ) );
-            echo $this->Form->input( 'PersonneReferent.id', array( 'label' => 'Référent du parcours (en cours) de l\'allocataire', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
-            echo '</fieldset>';*/
 		?>
 	</fieldset>
-<!--<script type="text/javascript">
-	document.observe("dom:loaded", function() {
-		dependantSelect( 'FiltreReferentId', 'FiltreStructurereferenteId' );
-		dependantSelect( 'PersonneReferentId', 'StructurereferenteId' );
-	});
-</script>-->
+
 	<fieldset>
 		<legend>Recherche par CER</legend>
 			<?php
 				$valueContratinsertionDernier = isset( $this->request->data['Contratinsertion']['dernier'] ) ? $this->request->data['Contratinsertion']['dernier'] : false;
 				echo $this->Form->input( 'Contratinsertion.dernier', array( 'label' => 'Uniquement le dernier contrat d\'insertion pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueContratinsertionDernier ) );
 			?>
-			<?php echo $this->Form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+			<?php echo $this->Form->input( 'Contratinsertion.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 			<?php if(Configure::read( 'Cg.departement' ) != 58 ){
-					echo $this->Form->input( 'Filtre.forme_ci', array(  'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'div' => false, ) );
+					echo $this->Form->input( 'Contratinsertion.forme_ci', array(  'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'div' => false, ) );
 				}
 			?>
 
@@ -86,16 +77,16 @@
 				<?php echo $this->Form->input( 'Contratinsertion.created_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $created_to ) );?>
 			</fieldset>
 
-			<?php echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
-			<?php echo $this->Form->input( 'Filtre.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) != 66 ) {
-					echo $this->Form->input( 'Filtre.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
+					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
 				}
 			?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					echo $this->Form->input( 'Filtre.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
+					echo $this->Form->input( 'Contratinsertion.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
 			?>
 			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );?>
@@ -103,7 +94,7 @@
                 echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
             ?>
 
-			<!-- Filtre sur la date de début du CER -->
+			<!-- Contratinsertion sur la date de début du CER -->
 			<?php echo $this->Form->input( 'Contratinsertion.dd_ci', array( 'label' => 'Filtrer par date de début du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de début du contrat</legend>
@@ -115,8 +106,8 @@
 				<?php echo $this->Form->input( 'Contratinsertion.dd_ci_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $dd_ci_to ) );?>
 			</fieldset>
 
-			<!-- Filtre sur la date de fin du CER -->
-			<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => 'Filtrer par date de fin du contrat', 'type' => 'checkbox' ) );?>
+			<!-- Contratinsertion sur la date de fin du CER -->
+			<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => 'Contratinsertionr par date de fin du contrat', 'type' => 'checkbox' ) );?>
 			<fieldset>
 				<legend>Date de fin du contrat</legend>
 				<?php
@@ -130,22 +121,22 @@
 			<?php echo $this->Search->date( 'Contratinsertion.periode_validite', 'Période de validité' );?>
 
 			<?php
-				echo $this->Form->input( 'Filtre.arriveaecheance', array( 'label' => 'Allocataire dont le CER est arrivé à échéance', 'type' => 'checkbox' )  );
-				echo $this->Form->input( 'Filtre.echeanceproche', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  );
+				echo $this->Form->input( 'Contratinsertion.arriveaecheance', array( 'label' => 'Allocataire dont le CER est arrivé à échéance', 'type' => 'checkbox' )  );
+				echo $this->Form->input( 'Contratinsertion.echeanceproche', array( 'label' => 'CER arrivant à échéance (par défaut, se terminant sous 1 mois)', 'type' => 'checkbox' )  );
 			?>
 
 			<?php if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$nbjours = Configure::read( 'Criterecer.delaidetectionnonvalidnotifie' );
 					$nbjoursTranslate = str_replace('days','jours', $nbjours);
 
-					echo $this->Form->input( 'Filtre.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.$nbjoursTranslate, 'type' => 'checkbox' )  );
+					echo $this->Form->input( 'Contratinsertion.notifienonvalide', array( 'label' => 'CER non validé et notifié il y a '.$nbjoursTranslate, 'type' => 'checkbox' )  );
 					echo $this->Form->input( 'Contratinsertion.istacitereconduction', array( 'label' => 'Hors tacite reconduction', 'type' => 'checkbox' )  );
 				}
 			?>
 	</fieldset>
 	<?php
 		echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
-		echo $this->Search->paginationNombretotal( 'Filtre.paginationNombreTotal' );
+		echo $this->Search->paginationNombretotal( 'Contratinsertion.paginationNombreTotal' );
 	?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
