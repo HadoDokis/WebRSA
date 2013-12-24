@@ -80,9 +80,7 @@
 			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php
-				if( Configure::read( 'Cg.departement' ) != 66 ) {
-					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
-				}
+                echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
 			?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
