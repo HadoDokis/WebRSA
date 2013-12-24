@@ -84,7 +84,7 @@
 			$pagination = $this->Xpaginator->paginationBlock( 'Relancenonrespectsanctionep93', $this->passedArgs );
 			echo $pagination;
 		?>
-		<table class="default2">
+		<table  id="searchResults" class="tooltips default2">
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' );?></th>
@@ -102,11 +102,12 @@
 					<th><?php echo $this->Xpaginator->sort( 'Date de relance', 'Relancenonrespectsanctionep93.daterelance' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Rang de relance', 'Relancenonrespectsanctionep93.numrelance' );?></th>
 					<th colspan="2">Actions</th>
+					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-					foreach( $relances as $relance ) {
+					foreach( $relances as $index => $relance ) {
 						$etatdossierep = $relance['Passagecommissionep']['etatdossierep'];
 						if( empty( $etatdossierep ) && !empty( $relance['Dossierep']['id'] ) ) {
 							$etatdossierep = 'En attente';
@@ -114,6 +115,19 @@
 						else {
 							$etatdossierep = Set::enum( $relance['Passagecommissionep']['etatdossierep'], $options['Passagecommissionep']['etatdossierep'] );
 						}
+
+						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+							<tbody>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+									<td>'.Hash::get( $relance, 'Structurereferenteparcours.lib_struc' ).'</td>
+								</tr>
+								<tr>
+									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+									<td>'.Hash::get( $relance, 'Referentparcours.nom_complet' ).'</td>
+								</tr>
+							</tbody>
+						</table>';
 
 						echo $this->Xhtml->tableCells(
 							array(
@@ -132,7 +146,8 @@
 								$this->Locale->date( 'Locale->date', $relance['Relancenonrespectsanctionep93']['daterelance'] ),
 								( ( $relance['Relancenonrespectsanctionep93']['numrelance'] < 2 ) ? '1ère relance' : "{$relance['Relancenonrespectsanctionep93']['numrelance']}ème relance" ),
 								$this->Default2->button( 'view', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'index', $relance['Personne']['id'] ), array( 'label' => 'Voir', 'enabled' => $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ), 'target' => 'external' ) ),
-								$this->Default2->button( 'print', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ), array( 'enabled' => ( !empty( $relance['Pdf']['id'] ) && $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ), 'label' => 'Imprimer' ) )
+								$this->Default2->button( 'print', array( 'controller' => 'relancesnonrespectssanctionseps93', 'action' => 'impression', $relance['Relancenonrespectsanctionep93']['id'] ), array( 'enabled' => ( !empty( $relance['Pdf']['id'] ) && $this->Permissions->check( 'relancesnonrespectssanctionseps93', 'index' ) ), 'label' => 'Imprimer' ) ),
+								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							),
 							array( 'class' => 'odd' ),
 							array( 'class' => 'even' )

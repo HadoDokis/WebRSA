@@ -4,7 +4,7 @@
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	require_once( dirname( __FILE__ ).DS.'filtre.ctp' );
-    
+
     if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->script( array( 'prototype.event.simulate.js' ) );
 	}
@@ -19,7 +19,7 @@
 			echo $pagination;
 
 			echo $this->Form->create( null, array( 'type' => 'post', 'id' => 'Cohortestransfertspdvs93Index' ) );
-			echo '<table class="cohortestransfertspdvs93 index">';
+			echo '<table id="searchResults" class="cohortestransfertspdvs93 index tooltips">';
 			echo '<thead>';
 			echo $this->Html->tableHeaders(
 				array(
@@ -32,13 +32,14 @@
 					'Structure référente source',
 					'Action',
 					'Structure référente cible',
-					'Voir'
+					'Voir',
+					array( 'Informations complémentaires' => array( 'class' => 'innerTableHeader noprint' ) )
 				)
 			);
 			echo '</thead>';
 			echo '<tbody>';
 			foreach( $results as $index => $result ) {
-// 			debug($options);
+
 				$hidden = $this->Form->inputs(
 					array(
 						'fieldset' => false,
@@ -51,6 +52,19 @@
 						"Transfertpdv93.{$index}.nv_adressefoyer_id" => array( 'type' => 'hidden' ),
 					)
 				);
+
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $result, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $result, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
 
 				echo $this->Html->tableCells(
 					array(
@@ -70,7 +84,8 @@
 							$this->Permissions->check( 'dossiers', 'view' ),
 							true,
 							true
-						)
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
@@ -78,7 +93,7 @@
 			}
 			echo '</tbody>';
 			echo '</table>';
-            
+
 			echo $this->Form->submit( __( 'Save' ) );
 			echo $this->Form->end();
 
@@ -87,7 +102,7 @@
             // Demande d'amélioration #6475
             echo $this->Form->button( 'Tout Valider', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '1', true );" ) );
 			echo $this->Form->button( 'Tout Mettre En Attente', array( 'onclick' => "return toutChoisir( $( 'Cohortestransfertspdvs93Index' ).getInputs( 'radio' ), '0', true );" ) );
-            
+
 		}
 	}
 ?>

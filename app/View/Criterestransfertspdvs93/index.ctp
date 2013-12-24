@@ -50,7 +50,7 @@
 			$pagination = $this->Xpaginator2->paginationBlock( 'Dossier', $this->passedArgs );
 			echo $pagination;
 
-			echo '<table class="cohortestransfertspdvs93 transferes">';
+			echo '<table id="searchResults" class="cohortestransfertspdvs93 transferes tooltips">';
 			echo '<thead>';
 			echo $this->Html->tableHeaders(
 				array(
@@ -63,11 +63,25 @@
 					'Structure référente source',
 					'Structure référente cible',
 					'Actions',
+					array( 'Informations complémentaires' => array( 'class' => 'innerTableHeader noprint' ) )
 				)
 			);
 			echo '</thead>';
 			echo '<tbody>';
 			foreach( $results as $index => $result ) {
+				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+					<tbody>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $result, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $result, 'Referentparcours.nom_complet' ).'</td>
+						</tr>
+					</tbody>
+				</table>';
+
 				echo $this->Html->tableCells(
 					array(
 						h( $result['Dossier']['numdemrsa'] ),
@@ -83,7 +97,8 @@
 							array( 'controller' => 'dossiers', 'action' => 'view', $result['Dossier']['id'] ),
 							$this->Permissions->check( 'dossiers', 'view' ),
 							true
-						)
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
