@@ -77,7 +77,11 @@
 				),
 				'paginate' => 'Personne',
 				'domain' => 'nonrespectsanctionep93',
-				'labelcohorte' => 'Enregistrer'
+				'labelcohorte' => 'Enregistrer',
+				'tooltip' => array(
+					'Structurereferenteparcours.lib_struc' => array( 'type' => 'text', 'domain' => 'search_plugin', 'model' => 'Structurereferente' ),
+					'Referentparcours.nom_complet' => array( 'type' => 'text', 'domain' => 'search_plugin', 'model' => 'Referent' )
+				)
 			)
 		);
 	}

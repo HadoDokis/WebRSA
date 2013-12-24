@@ -85,7 +85,7 @@
 
 			echo $this->Xpaginator->paginationBlock( 'Dossierep', $this->passedArgs );
 
-			echo '<table class="tooltips" style="width: 100%;"><thead>';
+			echo '<table id="searchResults" class="tooltips" style="width: 100%;"><thead>';
 				echo '<tr>';
 					echo '<th>'.$this->Xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>';
@@ -95,9 +95,23 @@
 					echo '<th>'.$this->Xpaginator->sort( 'Commune', 'Adresse.locaadr' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Date de création du dossier d\'EP', 'Dossierep.created' ).'</th>';
 					echo '<th>Action</th>';
+					echo '<th class="innerTableHeader noprint">Informations complémentaires</th>';
 				echo '</tr>';
 			echo '</thead><tbody>';
-				foreach( $results as $result ) {
+				foreach( $results as $index => $result ) {
+					$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+						<tbody>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+								<td>'.Hash::get( $result, 'Structurereferenteparcours.lib_struc' ).'</td>
+							</tr>
+							<tr>
+								<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+								<td>'.Hash::get( $result, 'Referentparcours.nom_complet' ).'</td>
+							</tr>
+						</tbody>
+					</table>';
+
 					echo '<tr>';
 						echo $this->Xhtml->tag(
 							'td',
@@ -140,6 +154,11 @@
 									'disabled' => !$this->Permissions->check( 'dossierseps', 'courrierInformation' )
 								)
 							)
+						);
+						echo $this->Xhtml->tag(
+							'td',
+							$innerTable,
+							array( 'class' => 'innerTableCell noprint' )
 						);
 					echo '</tr>';
 				}

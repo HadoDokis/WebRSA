@@ -11,6 +11,8 @@
 			'Date de transfert',
 			'Structure référente source',
 			'Structure référente cible',
+			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
 
@@ -24,6 +26,8 @@
 			$this->Locale->date( __( 'Date::short' ), $result['Transfertpdv93']['created'] ),
 			$result['VxStructurereferente']['lib_struc'],
 			$result['Structurereferente']['lib_struc'],
+			Hash::get( $result, 'Structurereferenteparcours.lib_struc' ),
+			Hash::get( $result, 'Referentparcours.nom_complet' ),
 		);
 		$this->Csv->addRow( $row );
 	}
