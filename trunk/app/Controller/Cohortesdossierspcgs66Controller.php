@@ -275,9 +275,10 @@
 		/**
 		 * Export du tableau en CSV
 		 */
-		public function exportcsv() {
+		public function exportcsv( $action ) {
+
 			$querydata = $this->Cohortedossierpcg66->search(
-				'Affectationdossierpcg66::affectes',
+				"Affectationdossierpcg66::{$action}",
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 				Hash::expand( $this->request->params['named'], '__' )
