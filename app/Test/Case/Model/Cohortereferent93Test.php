@@ -451,6 +451,7 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'Cg.departement', 93 );
 			$this->Cohortereferent93 = ClassRegistry::init( 'Cohortereferent93' );
 		}
 
@@ -483,6 +484,8 @@
 			$result = recursive_key_value_preg_replace( $result, $regexes );
 			$expected = recursive_key_value_preg_replace( $this->_querydatas['affecter'], $regexes );
 			$expected['conditions'][3]['OR'][2]['Contratinsertion.df_ci <='] = date( 'Y-m-d', strtotime( Configure::read( 'Cohortescers93.saisie.periodeRenouvellement' ) ) );
+
+			unset( $result['fields'], $expected['fields'] );
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

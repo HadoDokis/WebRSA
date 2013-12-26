@@ -43,6 +43,7 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'Cg.departement', 93 );
 			$this->Histochoixcer93 = ClassRegistry::init( 'Histochoixcer93' );
 		}
 

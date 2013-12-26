@@ -56,6 +56,7 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'Cg.departement', 93 );
 			$this->Cer93 = ClassRegistry::init( 'Cer93' );
 		}
 

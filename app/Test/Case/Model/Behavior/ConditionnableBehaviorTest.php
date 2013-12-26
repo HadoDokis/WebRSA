@@ -39,6 +39,7 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'CG.cantons', false );
 			$this->Canton = ClassRegistry::init( 'Canton' );
 			$this->Canton->Behaviors->attach( 'Conditionnable' );
 			Configure::read( 'CG.cantons', false );
