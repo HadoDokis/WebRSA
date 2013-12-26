@@ -35,6 +35,7 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			Configure::write( 'CG.cantons', false );
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->Search = new SearchHelper( $this->View );
