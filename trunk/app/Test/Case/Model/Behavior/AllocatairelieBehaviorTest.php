@@ -18,6 +18,18 @@
 	class AllocatairelieBehaviorTest extends CakeTestCase
 	{
 		/**
+		 *
+		 * @var Cer93
+		 */
+		public $Cer93 = null;
+
+		/**
+		 *
+		 * @var Questionnaired2pdv93
+		 */
+		public $Questionnaired2pdv93 = null;
+
+		/**
 		 * Fixtures utilisés.
 		 *
 		 * @var array
@@ -27,22 +39,32 @@
 			'app.Foyer',
 			'app.Personne',
 			'app.Questionnaired2pdv93',
+			'app.Contratinsertion',
+			'app.Cer93',
 		);
 
 		/**
-		 * Préparation du test.
+		 * Préparation du test pour le modèle Questionnaired2pdv93.
 		 */
-		public function setUp() {
-			parent::setUp();
+		protected function _setupQuestionnaired2pdv93() {
 			$this->Questionnaired2pdv93 = ClassRegistry::init( 'Questionnaired2pdv93' );
 			$this->Questionnaired2pdv93->Behaviors->attach( 'Allocatairelie' );
+		}
+
+		/**
+		 * Préparation du test pour le modèle Cer93.
+		 */
+		protected function _setupCer93() {
+			$this->Cer93 = ClassRegistry::init( 'Cer93' );
+			$this->Cer93->Behaviors->attach( 'Allocatairelie', array( 'joins' => array( 'Contratinsertion' ) ) );
 		}
 
 		/**
 		 * Nettoyage postérieur au test.
 		 */
 		public function tearDown() {
-			unset( $this->Questionnaired2pdv93 );
+			unset( $this->Cer93, $this->Questionnaired2pdv93 );
+			ClassRegistry::flush();
 			parent::tearDown();
 		}
 
@@ -50,6 +72,8 @@
 		 * Test de la méthode AllocatairelieBehavior::personneId()
 		 */
 		public function testPersonneId() {
+			$this->_setupQuestionnaired2pdv93();
+
 			$result = $this->Questionnaired2pdv93->personneId( 1 );
 			$expected = 1;
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
@@ -63,10 +87,33 @@
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
+
+		/**
+		 * Test de la méthode AllocatairelieBehavior::personneId() lorsque des
+		 * jointures ont été définies dans la configuration.
+		 */
+		public function testPersonneIdJoins() {
+			$this->_setupCer93();
+
+			$result = $this->Cer93->personneId( 1 );
+			$expected = 2;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			$result = $this->Cer93->personneId( 2 );
+			$expected = 1;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			$result = $this->Cer93->personneId( 6661 );
+			$expected = null;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
 		/**
 		 * Test de la méthode AllocatairelieBehavior::dossierId()
 		 */
 		public function testDossierId() {
+			$this->_setupQuestionnaired2pdv93();
+
 			$result = $this->Questionnaired2pdv93->dossierId( 1 );
 			$expected = 1;
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
@@ -76,6 +123,26 @@
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			$result = $this->Questionnaired2pdv93->dossierId( 6661 );
+			$expected = null;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode AllocatairelieBehavior::dossierId() lorsque des
+		 * jointures ont été définies dans la configuration.
+		 */
+		public function testDossierIdJoins() {
+			$this->_setupCer93();
+
+			$result = $this->Cer93->dossierId( 1 );
+			$expected = 2;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			$result = $this->Cer93->dossierId( 2 );
+			$expected = 1;
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			$result = $this->Cer93->dossierId( 6661 );
 			$expected = null;
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
