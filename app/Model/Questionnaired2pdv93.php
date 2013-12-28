@@ -266,8 +266,8 @@
 
 			// Rechercher le D1 pour obtenir une date de validation logique
 			$date_validation = date( 'Y-m-d' );
-			$questionnairesd1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
-			if( !empty( $questionnairesd1pdv93_id ) ) {
+			$questionnaired1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
+			if( !empty( $questionnaired1pdv93_id ) ) {
 				$date_validation = $this->_dateValidation( $questionnaired1pdv93_id );
 			}
 
