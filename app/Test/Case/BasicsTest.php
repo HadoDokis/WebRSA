@@ -39,9 +39,15 @@
 	class BasicsTest extends CakeTestCase
 	{
 		/**
+		 * Test de la fonction app_version().
+		 */
+		public function testAppVersion() {
+			$result = app_version();
+			$this->assertPattern( '/^[0-9]+\.[0-9]+/', $result );
+		}
+
+		/**
 		 * Test de la fonction array_filter_keys().
-		 *
-		 * @return void
 		 */
 		public function testArrayFilterKeys() {
 			$array = array( 'foo' => 1, 'bar' => 2 );
@@ -57,8 +63,6 @@
 
 		/**
 		 * Test de la fonction recursive_key_value_preg_replace().
-		 *
-		 * @return void
 		 */
 		public function testRecursiveKeyValuePregReplace() {
 			$array = array( 'foo' => 1, 'bar' => 'foo', 'baz' => array( 'foo' => 'foo' ) );
@@ -70,8 +74,6 @@
 
 		/**
 		 * Test de la fonction strallpos().
-		 *
-		 * @return void
 		 */
 		public function testStrallpos() {
 			$string = 'Les chaussettes de l\'archiduchesse sont-elles sèches, archi-sèches ?';
@@ -83,6 +85,13 @@
 			$result = strallpos( $string, 'sse' );
 			$expected = array( 8, 31 );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la fonction strallpos() avec une erreur.
+		 */
+		public function testStrallposError() {
+			$string = 'Les chaussettes de l\'archiduchesse sont-elles sèches, archi-sèches ?';
 
 			$this->expectError( 'PHPUnit_Framework_Error_Warning' );
 			strallpos( $string, 'sse', ( strlen( $string ) + 1 ) );
@@ -90,8 +99,6 @@
 
 		/**
 		 * Test de la fonction model_field().
-		 *
-		 * @return void
 		 */
 		public function testModelField() {
 			$result = model_field( 'Foo.bar' );
@@ -101,15 +108,26 @@
 			$result = model_field( 'Foo.Bar.baz' );
 			$expected = array( 'Bar', 'baz' );
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 
+		/**
+		 * Test de la fonction model_field() avec une erreur.
+		 */
+		public function testModelFieldWithError1() {
+			$result = @model_field( 'Foo' );
+			$this->assertEqual( $result, null, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la fonction model_field() avec une erreur.
+		 */
+		public function testModelFieldWithError2() {
 			$this->expectError( 'PHPUnit_Framework_Error_Warning' );
 			model_field( 'Foo' );
 		}
 
 		/**
 		 * Test de la fonction byteSize().
-		 *
-		 * @return void
 		 */
 		public function testByteSize() {
 			$result = byteSize( 1024 );
@@ -127,8 +145,6 @@
 
 		/**
 		 * Test de la fonction valid_int().
-		 *
-		 * @return void
 		 */
 		public function testValidInt() {
 			$result = valid_int( 1024 );
@@ -150,19 +166,23 @@
 
 		/**
 		 * Test de la fonction date_short().
-		 *
-		 * @return void
 		 */
 		public function testDateShort() {
 			$result = date_short( '2012-01-02' );
 			$expected = '02/01/2012';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = date_short( '2012-02-28 11:05:33' );
+			$expected = '28/02/2012';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = date_short( null );
+			$expected = null;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
 		 * Test de la fonction required().
-		 *
-		 * @return void
 		 */
 		public function testRequired() {
 			$result = required( 'Foo' );
@@ -170,12 +190,25 @@
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
-		// TODO: cake_version, readTimeout
+		/**
+		 * Test de la fonction readTimeout().
+		 */
+		public function testReadTimeout() {
+			$saved = Configure::read( 'Session.save' );
+
+			Configure::write( 'Session.save', null );
+			$result = readTimeout();
+			$this->assertPattern( '/^[0-9]+$/', (string)$result );
+
+			Configure::write( 'Session.save', 'cake' );
+			$result = readTimeout();
+			$this->assertPattern( '/^[0-9]+$/', (string)$result );
+
+			Configure::write( 'Session.save', $saved );
+		}
 
 		/**
 		 * Test de la fonction sec2hms().
-		 *
-		 * @return void
 		 */
 		public function testSec2hms() {
 			$result = sec2hms( 12 );
@@ -197,8 +230,6 @@
 
 		/**
 		 * Test de la fonction suffix().
-		 *
-		 * @return void
 		 */
 		public function testSuffix() {
 			$result = suffix( '11_4' );
@@ -208,12 +239,39 @@
 			$result = suffix( '11_4.2', '.' );
 			$expected = 2;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = suffix( '11+4', '+' );
+			$expected = '4';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = suffix( '12+-+5', '+-+' );
+			$expected = '5';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la fonction prefix().
+		 */
+		public function testPrefix() {
+			$result = prefix( '11_4' );
+			$expected = 11;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = prefix( '11_4.2', '.' );
+			$expected = '11_4';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = prefix( '11+4', '+' );
+			$expected = '11';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = prefix( '12+-+5', '+-+' );
+			$expected = '12';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
 		 * Test de la fonction array_depth().
-		 *
-		 * @return void
 		 */
 		public function testArrayDepth() {
 			$result = array_depth( array( array( null ) ) );
@@ -223,8 +281,6 @@
 
 		/**
 		 * Test de la fonction dateComplete().
-		 *
-		 * @return void
 		 */
 		public function testDateComplete() {
 			$data = array( 'User' => array( 'birthday' => array( 'hour' => 10, 'minute' => 20, 'second' => 30 ) ) );
@@ -240,8 +296,6 @@
 
 		/**
 		 * Test de la fonction implode_assoc().
-		 *
-		 * @return void
 		 */
 		public function testImplodeAssoc() {
 			$data = array( 'foo' => 'bar', 'bar' => 'baz', 'baz' => null );
@@ -261,21 +315,20 @@
 
 		/**
 		 * Test de la fonction array_avg().
-		 *
-		 * @return void
 		 */
 		public function testArrayAvg() {
 			$data = array( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
-
 			$result = array_avg( $data );
 			$expected = 5;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = array_avg( array() );
+			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
 		 * Test de la fonction array_range().
-		 *
-		 * @return void
 		 */
 		public function testArrayRange() {
 			$result = array_range( 2, 3 );
@@ -289,20 +342,21 @@
 
 		/**
 		 * Test de la fonction array_intersects().
-		 *
-		 * @return void
 		 */
 		public function testArrayIntersects() {
 			$haystack = array( 1, 2, 4 );
+
 			$result = array_intersects( array( 1, 2, 3 ), $haystack );
 			$expected = array( 1, 2 );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = array_intersects( array( 3, 5 ), $haystack );
+			$expected = array();
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**
 		 * Test de la fonction array_filter_values().
-		 *
-		 * @return void
 		 */
 		public function testArrayFilterValues() {
 			$data = array( 'foo' => 'bar', 'bar' => 'baz', 'baz' => null );
@@ -318,8 +372,6 @@
 
 		/**
 		 * Test de la fonction get_this_class_methods().
-		 *
-		 * @return void
 		 */
 		public function testGetThisClassMethods() {
 			$result = get_this_class_methods( 'ParentClass' );
@@ -333,8 +385,6 @@
 
 		/**
 		 * Test de la fonction array_any_key_exists().
-		 *
-		 * @return void
 		 */
 		public function testArrayAnyKeyExists() {
 			$data = array( 'foo' => 'bar', 'bar' => 'baz', 'baz' => null );
@@ -350,8 +400,6 @@
 
 		/**
 		 * Test de la fonction nullify_empty_values().
-		 *
-		 * @return void
 		 */
 		public function testNullifyEmptyValues() {
 			$result = nullify_empty_values( array( 'foo' => ' ', 'bar' => '', 'baz' => null ) );
@@ -365,8 +413,6 @@
 
 		/**
 		 * Test de la fonction age().
-		 *
-		 * @return void
 		 */
 		public function testAge() {
 			$result = age( date( 'Y-m-d', strtotime( '-1 year' ) ) );
@@ -382,11 +428,8 @@
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
-
 		/**
 		 * Test de la fonction cle_nir().
-		 *
-		 * @return void
 		 */
 		 public function testCleNir() {
 			$result = cle_nir( '179012A001234' );
@@ -396,15 +439,26 @@
 			$result = cle_nir( '179012B001234' );
 			$expected = '01';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
 
+		/**
+		 * Test de la fonction cle_nir() avec une erreur.
+		 */
+		 public function testCleNirError1() {
 			$this->expectError( 'PHPUnit_Framework_Error_Warning' );
 			$result = cle_nir( 'B79012B001234' );
 		 }
 
 		/**
+		 * Test de la fonction cle_nir() avec une erreur.
+		 */
+		 public function testCleNirError2() {
+			$this->expectError( 'PHPUnit_Framework_Error_Warning' );
+			$result = cle_nir( '179013400123456' );
+		 }
+
+		/**
 		 * Test de la fonction valid_nir().
-		 *
-		 * @return void
 		 */
 		 public function testValidNir() {
 			$result = valid_nir( '179012A00123471' );
@@ -418,8 +472,6 @@
 
 		/**
 		 * Test de la fonction array_words_replace().
-		 *
-		 * @return void
 		 */
 		 public function testArrayWordsReplace() {
 			$result = array_words_replace(
@@ -432,8 +484,6 @@
 
 		/**
 		 * Test de la fonction php_associative_array_to_js().
-		 *
-		 * @return void
 		 */
 		 public function testPhpAssociativeArrayToJs() {
 			 $data = array( 'Foo.id' => array( 'Bar' => 1 ), 'Foobar' => array( 'Foo.bar = Bar.foo' ) );
@@ -442,12 +492,45 @@
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }
 
-		 // TODO: apache_version
+		/**
+		 * Test de la fonction apache_bin().
+		 */
+		 public function testApacheBin() {
+			 $saved = Configure::read( 'apache_bin' );
+
+			 $result = apache_bin();
+			 $this->assertPattern( '/^\/[^\/]+/', $result );
+
+			 Configure::write( 'apache_bin', null );
+			 $result = apache_bin();
+			 $this->assertPattern( '/^\/[^\/]+/', $result );
+
+			 Configure::write( 'apache_bin', $saved );
+		 }
+
+		/**
+		 * Test de la fonction apache_version().
+		 */
+		 public function testApacheVersion() {
+			 $result = apache_version();
+			 $this->assertPattern( '/^[0-9]+\.[0-9]+/', $result );
+		 }
+
+		/**
+		 * Test de la fonction apache_modules().
+		 */
+		 public function testApacheModules() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
+			 $result = (array)apache_modules();
+			 $intersect = array_intersect( $result, array( 'mod_expires', 'mod_php5', 'mod_rewrite' ) );
+			 $this->assertTrue( !empty( $intersect ) );
+		 }
 
 		/**
 		 * Test de la fonction date_cakephp_to_sql().
-		 *
-		 * @return void
 		 */
 		 public function testDateCakephpToSql() {
 			$result = date_cakephp_to_sql( array( 'year' => '1979', 'month' => '01', 'day' => '24' ) );
@@ -461,8 +544,6 @@
 
 		/**
 		 * Test de la fonction full_array_diff().
-		 *
-		 * @return void
 		 */
 		 public function testFullArrayDiff() {
 			$a1 = array( 'foo', 'bar' );
@@ -484,8 +565,6 @@
 
 		/**
 		 * Test de la fonction value().
-		 *
-		 * @return void
 		 */
 		 public function testValue() {
 			$result = value( array( 'foo' => 'bar', 'bar' => 'baz' ), 'bar' );
@@ -499,8 +578,6 @@
 
 		/**
 		 * Test de la fonction replace_accents().
-		 *
-		 * @return void
 		 */
 		 public function testReplaceAccents() {
 			$result = replace_accents( 'Âéï' );
@@ -510,8 +587,6 @@
 
 		/**
 		 * Test de la fonction validRib().
-		 *
-		 * @return void
 		 */
 		 public function testValidRib() {
 			$result = validRib( '20041', '01005', '0500013M026', '06' );
@@ -520,6 +595,24 @@
 
 			$result = validRib( '00000', '0000000000', '0000000000', '97' );
 			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
+		 * Test de la fonction vfListeToArray().
+		 */
+		 public function testVfListeToArray() {
+			$result =  vfListeToArray( "- CAF\n\r- MSA" );
+			$expected = array( ' CAF', ' MSA' );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
+		 * Test de la fonction js_escape().
+		 */
+		 public function testJsEscape() {
+			$result =  js_escape( "Bonjour Monsieur \"Auzolat\"\nvous devez vous présenter ..." );
+			$expected = 'Bonjour Monsieur \\"Auzolat\\"\\nvous devez vous présenter ...';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }
 	}
