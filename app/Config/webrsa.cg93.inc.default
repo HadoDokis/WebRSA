@@ -773,7 +773,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', 16 );
+	Configure::write( 'Contratinsertion.RdvAuto.typerdv_id', 15 );
 
 	/**
 	 * L'id technique de l'enregistrement de la table statutsrdvs ("Statut du RDV")
@@ -1077,7 +1077,7 @@
 		'Tableausuivipdv93',
 		array(
 			// Tous tableaux: l'id du types de rendez-vous "Individuel" qui sera prise en compte
-			'typerdv_id' => array( 16 ),
+			'typerdv_id' => array( 15 ),
 			// Tous tableaux: l'id ou les ids des statuts de rendez-vous ("honoré", "non honoré", "prévu") qui seront pris en compte
 			'statutrdv_id' => array( 1 ),
 			// Tableaux 1 B 4: les valeurs des numéros du code famille de l'éction d'insertion
@@ -1099,7 +1099,7 @@
 			// Paramétrages spéciaux pour le tableau 1 B 6
 			'Tableau1b6' => array(
 				// Rendez-vous collectif
-				'typerdv_id' => array( 15 ),
+				'typerdv_id' => array( 14 ),
 				// Statuts prévus et honorés
 				'statutrdv_id_prevu_honore' => array( 1, 2 ),
 				// Les codes thèmes des thématiques de RDV (id de thematiquesrdvs => code)
