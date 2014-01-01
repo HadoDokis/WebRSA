@@ -32,7 +32,7 @@
 		 */
 		protected function _listTables() {
 			$tables = $this->Connection->query( 'SELECT table_name as name FROM INFORMATION_SCHEMA.tables WHERE table_schema = \'public\' ORDER BY name ASC;' );
-			return Set::extract( $tables, '{n}.0.name' );
+			return Hash::extract( $tables, '{n}.0.name' );
 		}
 
 		/**
@@ -44,35 +44,36 @@
 			$uninitialized = array();
 			$nonprechargements = array();
 			$prechargements = array();
-			$tables = $missing = $this->_listTables();
+			$missing = $this->_listTables();
 
-			$models = App::objects( 'model' );
-			foreach( $models as $model ) {
-				App::import( 'Model', $model );
+			$modelNameNames = App::objects( 'model' );
+			foreach( $modelNameNames as $modelName ) {
+				App::import( 'Model', $modelName );
 
 				$init = true;
-				$attributes = get_class_vars( $model );
+				$attributes = get_class_vars( $modelName );
 
 				if( $attributes['useDbConfig'] != 'default' ) {
 					$init = false;
 				}
 
 				if( $init ) {
-					$initialized[] = $model;
-					$modelClass = ClassRegistry::init( $model );
-					$prechargement = $modelClass->prechargement();
-					if( $prechargement === false ) {
-						$nonprechargements[] = $modelClass->alias;
+					$initialized[] = $modelName;
+					$Model = ClassRegistry::init( $modelName );
+
+					$result = $Model->prechargement();
+					if( $result === false ) {
+						$nonprechargements[] = $Model->alias;
 					}
-					else if( $prechargement !== null ) {
-						$prechargements[] = $modelClass->alias;
+					else if( $result !== null ) {
+						$prechargements[] = $Model->alias;
 					}
 				}
 				else {
-					$uninitialized[] = $model;
+					$uninitialized[] = $modelName;
 				}
 
-				$key = array_search( Inflector::tableize( $model ), $missing );
+				$key = array_search( Inflector::tableize( $modelName ), $missing );
 				if( $key !== false ) {
 					unset( $missing[$key] );
 				}
@@ -80,15 +81,14 @@
 
 			$this->set( compact( 'initialized', 'uninitialized', 'missing', 'prechargements', 'nonprechargements' ) );
 
-			$messagesDir = APP.'Locale/fre/LC_MESSAGES/';
-
-			$folder = new Folder( false, false, 0777 );
-			$folder->cd( $messagesDir );
-			$files = $folder->find('.+\.po$');
+			// Domaines
 			$domaines = array();
 
-			foreach( $files as $file ) {
-				$domain = preg_replace( '/\.po$/', '', $file );
+			$messagesDir = APP.'Locale/fre/LC_MESSAGES/';
+			$Folder = new Folder( $messagesDir, false, 0777 );
+
+			foreach( $Folder->find('.+\.po$') as $fileName ) {
+				$domain = preg_replace( '/\.po$/', '', $fileName );
 				if( $domain != 'default' ) {
 					__d( $domain, 'Foo::bar' );
 				}

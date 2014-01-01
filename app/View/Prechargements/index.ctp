@@ -1,78 +1,82 @@
-<h1>Préchargement du cache</h1>
-
-<h2>Modèles</h2>
-
-<h3>Modèles initialisés (<?php echo count($initialized);?>)</h3>
-
-<ol>
+<h1><?php echo $this->pageTitle = 'Préchargement du cache'; ?></h1>
+<br />
 <?php
-	sort( $initialized );
+	$models = array(
+		'initialized' => array(
+			'title' => 'Modèles initialisés',
+			'elmts' => $initialized
+		),
+		'prechargements' => array(
+			'title' => 'Modèles préchargés',
+			'elmts' => $prechargements
+		),
+		'nonprechargements' => array(
+			'title' => 'Erreur(s) de préchargement',
+			'elmts' => $nonprechargements
+		),
+		'uninitialized' => array(
+			'title' => 'Modèles non initialisés',
+			'elmts' => $uninitialized
+		),
+		'missing' => array(
+			'title' => 'Tables sans modèle lié',
+			'elmts' => $missing
+		),
+	);
+?>
+<div id="tabbedWrapper" class="tabs">
+	<div id="models">
+		<h2 class="title">Modèles</h2>
+		<div id="tabbedWrapperModels" class="tabs">
+			<?php foreach( $models as $modelId => $model ): ?>
+			<div id="<?php echo $modelId;?>">
+				<h3 class="title"><?php echo h( $model['title'] );?> (<?php echo count($model['elmts']);?>)</h3>
+				<ol>
+				<?php
+					sort( $model['elmts'] );
 
-	foreach( $initialized as $model ) {
-		echo '<li>'.$model.'</li>';
+					foreach( $model['elmts'] as $elmt ) {
+						echo '<li>'.$elmt.'</li>';
+					}
+				?>
+				</ol>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<div id="domains">
+		<h2 class="title">Traductions (<?php echo count($domaines);?>)</h2>
+			<ol>
+			<?php
+				sort( $domaines );
+
+				foreach( $domaines as $elmt ) {
+					echo '<li>'.$elmt.'</li>';
+				}
+			?>
+			</ol>
+	</div>
+</div>
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->script( 'prototype.livepipe.js' );
+		echo $this->Html->script( 'prototype.tabs.js' );
 	}
 ?>
-</ol>
-
-<h3>Modèles préchargés (<?php echo count($prechargements);?>)</h3>
-<ol>
+<script type="text/javascript">
+	makeTabbed( 'tabbedWrapper', 2 );
+	makeTabbed( 'tabbedWrapperModels', 3 );
+	makeErrorTabs();
+</script>
 <?php
-	sort( $prechargements );
-
-	foreach( $prechargements as $model ) {
-		echo '<li>'.$model.'</li>';
-	}
+	echo $this->Default->button(
+		'back',
+		array(
+			'controller' => 'parametrages',
+			'action'     => 'index'
+		),
+		array(
+			'id' => 'Back'
+		)
+	);
 ?>
-</ol>
-
-
-<h3>Erreur durant le préchargement du modèle (<?php echo count($nonprechargements);?>)</h3>
-<?php if( !empty($nonprechargements ) ):?>
-<ol>
-<?php
-	sort( $nonprechargements );
-
-	foreach( $nonprechargements as $model ) {
-		echo '<li>'.$model.'</li>';
-	}
-?>
-</ol>
-<?php else:?>
-<p class="success">Tous les préchargements des modèles ont réussi.</p>
-<?php endif;?>
-
-<h3>Modèles non initialisés (<?php echo count($uninitialized);?>)</h3>
-
-<ol>
-<?php
-	sort( $uninitialized );
-
-	foreach( $uninitialized as $model ) {
-		echo '<li>'.$model.'</li>';
-	}
-?>
-</ol>
-
-<h3>Tables sans modèle lié (<?php echo count($missing);?>)</h3>
-
-<ol>
-<?php
-	sort( $missing );
-
-	foreach( $missing as $model ) {
-		echo '<li>'.$model.'</li>';
-	}
-?>
-</ol>
-
-<h2>Traductions</h2>
-
-<ol>
-<?php
-	sort( $domaines );
-
-	foreach( $domaines as $domaine ) {
-		echo '<li>'.$domaine.'</li>';
-	}
-?>
-</ol>
