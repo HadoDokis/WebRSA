@@ -46,8 +46,8 @@
 			$prechargements = array();
 			$missing = $this->_listTables();
 
-			$modelNameNames = App::objects( 'model' );
-			foreach( $modelNameNames as $modelName ) {
+			$modelNames = App::objects( 'model' );
+			foreach( $modelNames as $modelName ) {
 				App::import( 'Model', $modelName );
 
 				$init = true;
