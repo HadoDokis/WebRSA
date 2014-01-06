@@ -4,23 +4,28 @@
 	$models = array(
 		'initialized' => array(
 			'title' => 'Modèles initialisés',
-			'elmts' => $initialized
+			'elmts' => $initialized,
+			'class' => null,
 		),
 		'prechargements' => array(
 			'title' => 'Modèles préchargés',
-			'elmts' => $prechargements
+			'elmts' => $prechargements,
+			'class' => null,
 		),
 		'nonprechargements' => array(
 			'title' => 'Erreur(s) de préchargement',
-			'elmts' => $nonprechargements
+			'elmts' => $nonprechargements,
+			'class' => ( !empty( $nonprechargements ) ? 'error' : null ),
 		),
 		'uninitialized' => array(
 			'title' => 'Modèles non initialisés',
-			'elmts' => $uninitialized
+			'elmts' => $uninitialized,
+			'class' => null,
 		),
 		'missing' => array(
 			'title' => 'Tables sans modèle lié',
-			'elmts' => $missing
+			'elmts' => $missing,
+			'class' => null,
 		),
 	);
 ?>
@@ -30,7 +35,7 @@
 		<div id="tabbedWrapperModels" class="tabs">
 			<?php foreach( $models as $modelId => $model ): ?>
 			<div id="<?php echo $modelId;?>">
-				<h3 class="title"><?php echo h( $model['title'] );?> (<?php echo count($model['elmts']);?>)</h3>
+				<h3 class="title <?php echo $model['class'];?>"><?php echo h( $model['title'] );?> (<?php echo count($model['elmts']);?>)</h3>
 				<ol>
 				<?php
 					sort( $model['elmts'] );
