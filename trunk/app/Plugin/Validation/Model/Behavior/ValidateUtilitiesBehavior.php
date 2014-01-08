@@ -133,6 +133,10 @@
 				}
 			}
 
+			if( strtolower( $rule['rule'][0] ) == 'inlist' ) {
+				$params = implode( ', ', $params );
+			}
+
 			if( isset( $rule['domain'] ) ) {
 				$domain = $rule['domain'];
 			}
