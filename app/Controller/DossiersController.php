@@ -88,11 +88,11 @@
 
 			// à intégrer à la fonction view pour ne pas avoir d'énormes variables
 			if( $this->action == 'view' ) {
-				$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
+				$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
 				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->enums() );
-				$this->set( 'etatpe', $this->Informationpe->Historiqueetatpe->allEnumLists() );
-				$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
-				$this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
+				$this->set( 'etatpe', (array)Hash::get( $this->Informationpe->Historiqueetatpe->enums(), 'Historiqueetatpe' ) );
+				$this->set( 'relance', (array)Hash::get( $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->enums(), 'Nonrespectsanctionep93' ) );
+				$this->set( 'dossierep', (array)Hash::get( $this->Dossier->Foyer->Personne->Dossierep->enums(), 'Dossierep' ) );
 				$this->set( 'options', $this->Dossier->Foyer->Personne->Orientstruct->enums() );
 			}
 			else if( $this->action == 'exportcsv' ) {
@@ -387,9 +387,7 @@
 				)
 			);
 
-			$optionsep = array(
-				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
-			);
+			$optionsep = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->enums();
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
 				$tPersReferent = $this->Dossier->Foyer->Personne->PersonneReferent->find(
@@ -618,7 +616,10 @@
 					$modelDecision = 'Decision'.Inflector::singularize( $themeEP );
 
 					if( !isset( $optionsep[$modelDecision] ) ) {
-						$optionsep[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
+						$optionsep = Hash::merge(
+							$optionsep,
+							$this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->enums()
+						);
 					}
 
 					$qdDecisionEp = array(

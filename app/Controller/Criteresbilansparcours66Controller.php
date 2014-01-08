@@ -24,8 +24,7 @@
 		*
 		*/
 		public function _setOptions() {
-			$this->set( 'options', $this->Bilanparcours66->allEnumLists() );
-//			$this->set( 'struct', $this->Bilanparcours66->Referent->Structurereferente->listOptions() );
+			$this->set( 'options', (array)Hash::get( $this->Bilanparcours66->enums(), 'Bilanparcours66' ) );
             $this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true) ) );
 			$this->set( 'referents', $this->Bilanparcours66->Referent->listOptions() );
 		}

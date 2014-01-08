@@ -30,8 +30,10 @@
 		 * ** ****************************************************************** */
 		protected function _setOptions() {
 			$this->set( 'referent', $this->Referent->find( 'list' ) );
-			$options = $this->Comiteapre->ApreComiteapre->allEnumLists();
-			$options = Set::merge( $options, $this->Comiteapre->ComiteapreParticipantcomite->allEnumLists() );
+			$options = Hash::merge(
+				(array)Hash::get( $this->Comiteapre->ApreComiteapre->enums(), 'ApreComiteapre' ),
+				(array)Hash::get( $this->Comiteapre->ComiteapreParticipantcomite->enums(), 'ComiteapreParticipantcomite' )
+			);
 			$this->set( 'options', $options );
 		}
 
@@ -221,7 +223,7 @@
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		public function exportcsv() {
 			$querydata = $this->Comiteapre->search( 'Comiteapre::index', Hash::expand( $this->request->params['named'], '__' ) );

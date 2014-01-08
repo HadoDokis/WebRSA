@@ -26,7 +26,7 @@
 
 
 		public function _setOptions() {
-			$options = $this->Typeorient->allEnumLists();
+			$options = (array)Hash::get( $this->Typeorient->enums(), 'Typeorient' );
 			$this->set( compact( 'options' ) );
 		}
 

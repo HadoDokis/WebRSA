@@ -29,7 +29,7 @@
 		 *
 		 */
 		public function _setOptions() {
-			$this->set( 'options',  $this->Entretien->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->Entretien->enums(), 'Entretien' ) );
 // 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
 			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referents', $this->Entretien->Referent->listOptions() );

@@ -47,8 +47,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = $this->Propocontratinsertioncov58->allEnumLists();
-			$this->set( 'options', $options );
+			$this->set( 'options', (array)Hash::get( $this->Propocontratinsertioncov58->enums(), 'Propocontratinsertioncov58' ) );
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider' ) ) ) {
 				$this->set( 'decision_ci', $this->Option->decision_ci() );

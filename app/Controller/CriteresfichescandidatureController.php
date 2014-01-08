@@ -25,11 +25,11 @@
 		*/
 		public function _setOptions() {
 			$options = array();
-			$optionsactions = $this->ActioncandidatPersonne->Actioncandidat->allEnumLists();
+			$optionsactions = (array)Hash::get( $this->ActioncandidatPersonne->Actioncandidat->enums(), 'Actioncandidat' );
 			$actions = $this->ActioncandidatPersonne->Actioncandidat->find( 'list', array( 'fields' => array( 'name' ), 'order' => array( 'Actioncandidat.name ASC' ) ) );
 			$partenaires = $this->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ), 'order' => array( 'Partenaire.libstruc ASC' ) ) );
 			$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list', array( 'fields' => array( 'name' ) ) );
-			$options = $this->ActioncandidatPersonne->allEnumLists();
+			$options = (array)Hash::get( $this->ActioncandidatPersonne->enums(), 'ActioncandidatPersonne' );
 			$options = Set::merge( $options, $optionsactions );
 
 

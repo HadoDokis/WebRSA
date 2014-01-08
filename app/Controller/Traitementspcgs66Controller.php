@@ -60,12 +60,8 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = array( );
-//			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-//				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $values );
-//			}
-            $options = Set::merge( $options, $this->Traitementpcg66->enums() );
-            
+			$options = $this->Traitementpcg66->enums();
+
 			$options[$this->modelClass]['descriptionpdo_id'] = $this->Traitementpcg66->Descriptionpdo->find( 'list' );
 			$options[$this->modelClass]['situationpdo_id'] = $this->Traitementpcg66->Personnepcg66Situationpdo->Situationpdo->find( 'list' );
 // 			$options[$this->modelClass]['traitementtypepdo_id'] = $this->Traitementpcg66->Traitementtypepdo->find( 'list' );
@@ -108,7 +104,7 @@
 							)
 					)
 			);
-			
+
 			// Liste des service instructeurs à contacter pour les traitements PCGs insertion
 			// La liste est : AFIJ, ADRH, MLJ (=Organisme agréé) + MSPs
 			$this->set( 'services', $this->Traitementpcg66->Serviceinstructeur->listOptions( true ) );
@@ -153,7 +149,7 @@
 						'contain' => false
 					)
 				);
-				
+
 				$modeletypecourrierpcg66avecDates = $this->Traitementpcg66->Typecourrierpcg66->Modeletypecourrierpcg66->find(
 					'list',
 					array(
@@ -339,7 +335,7 @@
 				$listeTraitements = $this->paginate( $this->Traitementpcg66 );
 
 				$this->set( compact( 'listeTraitements' ) );
-				
+
 				//Liste des liens entre un dossier et un allocataire
 				$personnespcgs66 = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->find(
 					'all',
@@ -352,14 +348,14 @@
 						'contain' => false
 					)
 				);
-				
+
 				//On récupère les Ids de la personnePCG 66 liée au dossier PCG
 				$personnespcgs66s_ids = (array)Set::extract( $personnespcgs66, '{n}.Personnepcg66.id' );
 				foreach( $personnespcgs66s_ids as $value ) {
 					$personnepcg66_id = $value;
 				}
 				$this->set( 'personnepcg66_id', $personnepcg66_id );
-				
+
 				foreach( $personnespcgs66 as $personnepcg66 ) {
 					$personnepcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.id' );
 
@@ -583,7 +579,7 @@
 					if( !empty( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantsaisi'] ) ) {
 						$dataToSave['Modeletraitementpcg66']['montantsaisi'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantsaisi'];
 					}
-					
+
 					if( !empty( $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatedebut'] ) ) {
 
 						$dataToSave['Modeletraitementpcg66']['montantdatedebut'] = $dataToSave['Modeletraitementpcg66'][$dataToSave['Modeletraitementpcg66']['modeletypecourrierpcg66_id']]['montantdatedebut'];
@@ -595,19 +591,19 @@
 				}
 
 				$saved = $this->Traitementpcg66->sauvegardeTraitement( $dataToSave );
-				
-				// Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
+
+				// Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier
 				// que celui auquel je suis lié
 
 				if( $saved && !empty( $dataToSave['Traitementpcg66']['Traitementpcg66'] ) ) {
-//					$saved = $this->Traitementpcg66->updateAllUnBound( 
+//					$saved = $this->Traitementpcg66->updateAllUnBound(
 //						array( 'Traitementpcg66.clos' => '\'O\'' ),
 //						array(
 //							'Traitementpcg66.id' => $dataToSave['Traitementpcg66']['traitementnonclos']
 //						)
 //					) && $saved;
-                    
-                    $saved = $this->Traitementpcg66->updateAllUnBound( 
+
+                    $saved = $this->Traitementpcg66->updateAllUnBound(
 						array( 'Traitementpcg66.clos' => '\'O\'' ),
 						array(
 							'Traitementpcg66.id IN' => $dataToSave['Traitementpcg66']['Traitementpcg66']
@@ -644,7 +640,7 @@
 			else if( $this->action == 'edit' ) {
 				$this->request->data = $traitementpcg66;
 			}
-			
+
 			if( $this->action == 'edit' ) {
 				$fichiersEnBase = $this->Traitementpcg66->Fichiermodule->find(
 					'all',
@@ -697,15 +693,15 @@
 			);
 
 			$this->set( compact( 'traitementspcgsouverts', 'fichiers' ) );
-			
+
 			//Liste des traitements non clos appartenant aux dossiers liés à mon Foyer
 			$listeTraitementsNonClos = $this->Traitementpcg66->Personnepcg66->listeTraitementpcg66NonClos( $personne_id, $this->action, $this->request->data, $traitementspcgsouverts );
             $this->set( 'listeTraitementsNonClos', $listeTraitementsNonClos );
-            
+
             // Récupération et vérification d'une fiche de calcul existante parmi les traitements d'un dossier PCG passé
             $infoDerniereFicheCalcul = $this->Traitementpcg66->infoDerniereFicheCalcul( $personne_id, $this->action, $this->request->data );
             $this->set( 'infoDerniereFicheCalcul', $infoDerniereFicheCalcul );
-            
+
 			$this->_setOptions();
 
 			$this->set( compact( 'personne_id', 'dossier_id', 'dossierpcg66_id', 'personnepcg66_id' ) );
@@ -783,7 +779,7 @@
 			//Gestion des jetons
 			$dossier_id = $this->Traitementpcg66->Personnepcg66Situationpdo->Personnepcg66->Dossierpcg66->Foyer->dossierId( $traitementpcg66['Dossierpcg66']['foyer_id'] );
 			$this->Jetons2->get( $dossier_id );
-			
+
 			// Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
@@ -804,7 +800,7 @@
 						'"Traitementpcg66"."id"' => $traitementpcg66['Traitementpcg66']['id']
 					)
 				) && $saved;
-                
+
                  // Remise à jour de l'état du dossier PCG
                 $typetraitementpcg = $traitementpcg66['Traitementpcg66']['typetraitement'];
                 $etatdossierpcg = $traitementpcg66['Dossierpcg66']['etatdossierpcg'];
@@ -1066,7 +1062,7 @@
 			);
 			$this->Traitementpcg66->id = $id;
             $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $traitementpcg66['Personnepcg66']['personne_id'] ) ) );
-            
+
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'traitementspcgs66', 'action' => 'index', $traitementpcg66['Personnepcg66']['personne_id'], $traitementpcg66['Personnepcg66']['dossierpcg66_id'] ) );

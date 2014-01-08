@@ -56,7 +56,7 @@
 
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$this->set( 'duree_engag', $this->Option->duree_engag() );
-			$this->set( 'numcontrat', $this->Contratinsertion->allEnumLists() );
+			$this->set( 'numcontrat', (array)Hash::get( $this->Contratinsertion->enums(), 'Contratinsertion' ) );
 
 			$this->set( 'action', $this->Action->find( 'list' ) );
 

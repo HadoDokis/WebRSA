@@ -43,8 +43,7 @@
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
-			$options = $this->Apre->allEnumLists();
-			$this->set( 'options', $options );
+			$this->set( 'options', (array)Hash::get( $this->Apre->enums(), 'Apre' ) );
 			$this->set( 'sect_acti_emp', $this->Option->sect_acti_emp() );
 
 			$this->set( 'quinzaine', $this->Option->quinzaine() );

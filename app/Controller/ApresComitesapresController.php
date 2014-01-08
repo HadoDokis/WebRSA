@@ -33,7 +33,7 @@
 
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
-			$options = $this->ApreComiteapre->allEnumLists();
+			$options = (array)Hash::get( $this->ApreComiteapre->enums(), 'ApreComiteapre' );
 			$this->set( 'options', $options );
 			return $return;
 		}

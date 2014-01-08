@@ -59,15 +59,12 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = array( );
-			foreach( $this->{$this->modelClass}->allEnumLists() as $field => $values ) {
-				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $values );
-			}
+			$options = $this->{$this->modelClass}->enums();
 
 			$options = Hash::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
 			$options = Hash::insert( $options, 'Personne.qual', $this->Option->qual() );
 			$options = Hash::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
-			$options = Hash::insert( $options, 'Dsp', $this->ActioncandidatPersonne->Personne->Dsp->allEnumLists() );
+			$options = Hash::merge( $options, $this->ActioncandidatPersonne->Personne->Dsp->enums() );
 
 			foreach( array( 'Referent' ) as $linkedModel ) {
 				$field = Inflector::singularize( Inflector::tableize( $linkedModel ) ).'_id';
@@ -717,11 +714,11 @@
 			}
 
             // Cache géré dans les modèles
-            $options[$this->modelClass] = $this->{$this->modelClass}->allEnumLists();
+			$options = Hash::merge( $options, $this->{$this->modelClass}->enums() );
             $options[$this->modelClass]['referent_id'] = $this->InsertionsAllocataires->referents();
             $options[$this->modelClass]['motifsortie_id'] = $this->{$this->modelClass}->Motifsortie->listOptions();
             $options[$this->modelClass]['actioncandidat_id'] = $this->{$this->modelClass}->Actioncandidat->listOptions();
-            $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enumList( 'nivetu' );
+            $options['Dsp']['nivetu'] = $this->ActioncandidatPersonne->Personne->Dsp->enum( 'nivetu' );
 
             $this->set( 'progsfichescandidatures66', $this->ActioncandidatPersonne->Progfichecandidature66->find( 'list', array( 'conditions' => array( 'Progfichecandidature66.isactif' => '1' ) ) ) );
 

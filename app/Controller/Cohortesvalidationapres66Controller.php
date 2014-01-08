@@ -66,10 +66,10 @@
 		*
 		*/
 		public function _setOptions() {
-			$this->set( 'options',  $this->Apre66->allEnumLists() );
+			$this->set( 'options',  (array)Hash::get( $this->Apre66->enums(), 'Apre66' ) );
 
 			$this->set( 'qual',  $this->Option->qual() );
-			$this->set( 'optionsaideapre66',  $this->Aideapre66->allEnumLists() );
+			$this->set( 'optionsaideapre66',  (array)Hash::get( $this->Aideapre66->enums(), 'Aideapre66' ) );
 			$this->set( 'referents',  $this->Apre->Referent->find( 'list' ) );
 			$this->set( 'themes', $this->Apre66->Aideapre66->Themeapre66->find( 'list' ) );
 			$this->set( 'typesaides', $this->Apre66->Aideapre66->Typeaideapre66->listOptions() );

@@ -33,7 +33,7 @@
 		 *
 		 */
 		protected function _options() {
-			$options = $this->Decisionpropopdo->allEnumLists();
+			$options = (array)Hash::get( $this->Decisionpropopdo->enums(), 'Decisionpropopdo' );
 
 			$this->set( 'decisionpdo', $this->Decisionpropopdo->Decisionpdo->find( 'list' ) );
 

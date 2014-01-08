@@ -356,7 +356,7 @@
 				),
 			);
 
-			$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
+			$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enum( 'natmob' ) );
 
 			$options = Hash::merge( $options, $this->Personne->Contratinsertion->enums() );
 			$options = Hash::merge( $options, $this->Personne->Contratinsertion->Cer93->enums() );
@@ -627,7 +627,7 @@
 				);
 
 				$options = array( 'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ) );
-				$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enumList( 'natmob' ) );
+				$options = Hash::insert( $options, 'ActioncandidatPersonne.naturemobile', $this->Personne->Dsp->Detailnatmob->enum( 'natmob' ) );
 
 
 				$options = Set::merge( $options, $this->enums() );

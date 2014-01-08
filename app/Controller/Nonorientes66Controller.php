@@ -32,7 +32,7 @@
 		);
 
 		public function _setOptions() {
-			$this->set( 'options',  $this->Nonoriente66->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->Nonoriente66->enums(), 'Nonoriente66' ) );
 		}
 		/**
 		* http://valums.com/ajax-upload/

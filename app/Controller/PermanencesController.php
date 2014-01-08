@@ -27,7 +27,7 @@
 		protected function _setOptions() {
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'sr', $this->Structurereferente->find( 'list' ) );
-			$this->set( 'options', $this->Permanence->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->Permanence->enums(), 'Permanence' ) );
 		}
 
 		public function index() {

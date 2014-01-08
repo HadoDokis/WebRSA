@@ -30,7 +30,7 @@
 			$this->set( 'motifpdo', $this->Option->motifpdo() );
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
 
-			$options = $this->Propopdo->allEnumLists();
+			$options = (array)Hash::get( $this->Propopdo->enums(), 'Propopdo' );
 
 			// Ajout des enums pour les thématiques du CG uniquement
 			foreach( $this->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->themes() as $theme ) {
@@ -554,11 +554,11 @@
 			// FIXME: plus générique
 			$decisions = array(
 				// CG 66
-				'Defautinsertionep66' => $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enumList( 'decision' ),
-				'Saisinebilanparcoursep66' => $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enumList( 'decision' ),
+				'Defautinsertionep66' => $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enum( 'decision' ),
+				'Saisinebilanparcoursep66' => $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enum( 'decision' ),
 				// CG 93
-				'Nonrespectsanctionep93' => $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enumList( 'decision' ),
-				'Reorientationep93' => $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enumList( 'decision' )
+				'Nonrespectsanctionep93' => $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enum( 'decision' ),
+				'Reorientationep93' => $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enum( 'decision' )
 			);
 			$this->set( compact( 'decisions' ) );
 			$this->set( 'options', $this->Dossierep->enums() );

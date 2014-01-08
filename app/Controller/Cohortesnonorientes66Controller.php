@@ -54,7 +54,7 @@
 		 * @return void
 		 */
 		public function _setOptions() {
-			$this->set( 'options',  $this->Personne->allEnumLists() );
+			$this->set( 'options',  (array)Hash::get( $this->Personne->enums(), 'Personne' ) );
 			$this->set( 'orgpayeur', array('CAF'=>'CAF', 'MSA'=>'MSA') );
 
 
@@ -96,7 +96,7 @@
 			$this->set( 'structuresReferentes', $this->Personne->Orientstruct->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
 
 			$Historiqueetatpe = ClassRegistry::init( 'Historiqueetatpe' );
-			$this->set( 'historiqueetatpe', $Historiqueetatpe->allEnumLists() );
+			$this->set( 'historiqueetatpe', (array)Hash::get( $Historiqueetatpe->enums(), 'Historiqueetatpe' ) );
 
 			$User = ClassRegistry::init( 'User' );
 			$this->set( 'gestionnaire', $User->find(
@@ -112,10 +112,10 @@
 				)
 			);
 
-			$optionsOrientstruct = $this->Personne->Orientstruct->allEnumLists();
+			$optionsOrientstruct = (array)Hash::get( $this->Personne->Orientstruct->enums(), 'Orientstruct' );
 			$this->set( compact( 'optionsOrientstruct') );
 
-			$this->set( 'options', $this->Personne->Orientstruct->Nonoriente66->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->Personne->Orientstruct->Nonoriente66->enums(), 'Nonoriente66' ) );
 		}
 
 		/**

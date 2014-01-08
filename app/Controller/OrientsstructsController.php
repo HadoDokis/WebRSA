@@ -56,8 +56,6 @@
 			$this->set( 'typesorients', $this->Typeorient->listOptions() );
 			$this->set( 'structs', $structuresreferentes );
 
-			$options = array( );
-//			$options = $this->Orientstruct->allEnumLists();
             $options = $this->Orientstruct->enums();
 			$this->set( compact( 'options' ) );
 
