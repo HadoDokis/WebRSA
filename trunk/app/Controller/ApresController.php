@@ -61,16 +61,11 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$options = $this->Apre->allEnumLists();
-			$this->set( 'options', $options );
-			$optionsacts = $this->Actprof->allEnumLists();
-			$this->set( 'optionsacts', $optionsacts );
-			$optionsdsps = $this->Dsp->allEnumLists();
-			$this->set( 'optionsdsps', $optionsdsps );
-			$optionslogts = $this->Amenaglogt->allEnumLists();
-			$this->set( 'optionslogts', $optionslogts );
-			$optionscrea = $this->Acccreaentr->allEnumLists();
-			$this->set( 'optionscrea', $optionscrea );
+			$this->set( 'options', (array)Hash::get( $this->Apre->enums(), 'Apre' ) );
+			$this->set( 'optionsacts', (array)Hash::get( $this->Actprof->enums(), 'Actprof' ) );
+			$this->set( 'optionsdsps', (array)Hash::get( $this->Dsp->enums(), 'Dsp' ) );
+			$this->set( 'optionslogts', (array)Hash::get( $this->Amenaglogt->enums(), 'Amenaglogt' ) );
+			$this->set( 'optionscrea', (array)Hash::get( $this->Acccreaentr->enums(), 'Acccreaentr' ) );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
@@ -79,8 +74,7 @@
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'typeservice', ClassRegistry::init( 'Serviceinstructeur' )->find( 'first' ) );
 
-			$optionsaprecomite = $this->ApreComiteapre->allEnumLists();
-			$this->set( 'optionsaprecomite', $optionsaprecomite );
+			$this->set( 'optionsaprecomite', (array)Hash::get( $this->ApreComiteapre->enums(), 'ApreComiteapre' ) );
 
 			/// Pièces liées à l'APRE
 			$piecesapre = $this->Apre->Pieceapre->find( 'list' );
@@ -811,10 +805,10 @@
 			$this->_setOptions();
 			$this->render( 'add_edit_'.Configure::read( 'nom_form_apre_cg' ) );
 		}
-		
-		
+
+
 		/**
-		 * Génère l'impression d'une APRE 
+		 * Génère l'impression d'une APRE
 		 * On prend la décision de ne pas le stocker.
 		 *
 		 * @param integer $id L'id de l'APRE que l'on veut imprimer.

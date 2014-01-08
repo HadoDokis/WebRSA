@@ -255,6 +255,8 @@
 		/**
 		 * 	Fetches the enum type options for a specific field
 		 *
+		 * @deprecated 2.7.0
+		 *
 		 * @param string $field
 		 * @return void
 		 * @access public
@@ -266,6 +268,8 @@
 
 		/**
 		 * Fetches the enum translated list for a field
+		 *
+		 * @deprecated 2.7.0 / Utiliser $Model->enum( 'field' ) à la place
 		 */
 		public function enumList( Model $model, $field ) {
 			$options = array( );
@@ -286,7 +290,9 @@
 		}
 
 		/**
-		 * 	Fetches the enum lists for all the $enumFields of the model
+		 * Fetches the enum lists for all the $enumFields of the model
+		 *
+		 * @deprecated 2.7.0 / Utiliser (array)Hash::get( $Model->enums( $Model->alias ) ) à la place
 		 */
 		public function allEnumLists( Model $model ) {
 			$options = array( );

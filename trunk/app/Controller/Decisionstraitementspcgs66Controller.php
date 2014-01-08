@@ -44,8 +44,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = array();
-			$options['Decisiontraitementpcg66'] = $this->Decisiontraitementpcg66->allEnumLists();
+			$options = $this->Decisiontraitementpcg66->enums();
 			$this->set( compact( 'options' ) );
 		}
 

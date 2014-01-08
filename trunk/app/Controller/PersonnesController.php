@@ -60,7 +60,7 @@
 			$this->set( 'sexe', $this->Option->sexe() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
 			$this->set( 'natfingro', $this->Option->natfingro() );
-			$this->set( 'options', $this->Personne->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->Personne->enums(), 'Personne' ) );
 		}
 
 		/**

@@ -45,8 +45,7 @@
 		 */
 		public function beforeFilter() {
 			parent::beforeFilter();
-			$options = $this->Relanceapre->allEnumLists();
-			$this->set( 'options', $options );
+			$this->set( 'options', (array)Hash::get( $this->Relanceapre->enums(), 'Relanceapre' ) );
 			$piecesapre = $this->Apre->Pieceapre->find( 'list' );
 			$this->set( 'piecesapre', $piecesapre );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );

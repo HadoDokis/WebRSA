@@ -81,7 +81,7 @@
 					)
 			);
 
-			$options = $this->Propopdo->allEnumLists();
+			$options = (array)Hash::get( $this->Propopdo->enums(), 'Propopdo' );
 			$options = Hash::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
 			$this->set( 'structs', $this->Propopdo->Structurereferente->listeParType( array( 'pdo' => true ) ) );
 			$this->set( compact( 'options' ) );
@@ -291,7 +291,7 @@
 			$this->assert( !empty( $fichiermodule_id ), 'error404' );
 			$this->Fileuploader->download( $fichiermodule_id );
 		}
-        
+
 		/**
 		 *
 		 */

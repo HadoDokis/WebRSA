@@ -43,9 +43,10 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$options = $this->Apre->allEnumLists();
-// 			$optionsaides = $this->Apre->Aideapre66->allEnumLists();
-			$options = Set::merge( $options, $this->Apre66->Aideapre66->allEnumLists() );
+			$options = Hash::merge(
+				(array)Hash::get( $this->Apre->enums(), 'Apre' ),
+				(array)Hash::get( $this->Apre66->Aideapre66->enums(), 'Aideapre66' )
+			);
 			$this->set( 'options', $options );
 			$this->set( 'natureAidesApres', $this->Option->natureAidesApres() );
 			$this->set( 'printed', $this->Option->printed() );

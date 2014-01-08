@@ -68,7 +68,7 @@
 				)
 			);
 
-			$options = $this->Propopdo->allEnumLists();
+			$options = (array)Hash::get( $this->Propopdo->enums(), 'Propopdo' );
 			$options = Hash::insert( $options, 'Suiviinstruction.typeserins', $this->Option->typeserins() );
 			$this->set( compact( 'options' ) );
 		}

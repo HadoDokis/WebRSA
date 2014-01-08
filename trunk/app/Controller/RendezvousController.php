@@ -59,8 +59,7 @@
 			$this->set( 'struct', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'permanences', $this->Rendezvous->Permanence->listOptions() );
 			$this->set( 'statutrdv', $this->Rendezvous->Statutrdv->find( 'list' ) );
-			$options = $this->Rendezvous->allEnumLists();
-			$this->set( 'options', $options );
+			$this->set( 'options', (array)Hash::get( $this->Rendezvous->enums(), 'Rendezvous' ) );
 		}
 
 		/**

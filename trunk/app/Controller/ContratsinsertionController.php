@@ -69,11 +69,11 @@
 		 * @return void
 		 */
 		protected function _setOptions() {
-			$options = $this->Contratinsertion->allEnumLists();
+			$options = $this->Contratinsertion->enums();
 
 			if( in_array( $this->action, array( 'index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier' ) ) ) {
 				$this->set( 'duree_engag_cg66', $this->Option->duree_engag_cg66() );
-                $options = array_merge( $this->Contratinsertion->Propodecisioncer66->enums(), $options );
+                $options = array_merge( $options, $this->Contratinsertion->Propodecisioncer66->enums() );
 				$this->set( 'decision_ci', $this->Option->decision_ci() );
 				$forme_ci = array( );
 				if( Configure::read( 'nom_form_ci_cg' ) == 'cg93' ) {
@@ -110,8 +110,8 @@
 
 				$this->set( 'typevoie', $this->Option->typevoie() );
 				$this->set( 'fonction_pers', $this->Option->fonction_pers() );
-				$this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enumList( 'nivetu' ) );
-				$this->set( 'nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enumList( 'nivdipmaxobt' ) );
+				$this->set( 'nivetus', $this->Contratinsertion->Personne->Dsp->enum( 'nivetu' ) );
+				$this->set( 'nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enum( 'nivdipmaxobt' ) );
 				$this->set( 'typeserins', $this->Option->typeserins() );
 
 				$this->set( 'lib_action', $this->Option->lib_action() );
@@ -123,15 +123,15 @@
 				$this->set( 'emp_trouv', array( 'N' => 'Non', 'O' => 'Oui' ) );
 				$this->set( 'zoneprivilegie', ClassRegistry::init( 'Zonegeographique' )->find( 'list' ) );
 				$this->set( 'actions', $this->Contratinsertion->Action->grouplist( 'prest' ) );
-				$optionsautreavissuspension = $this->Contratinsertion->Autreavissuspension->allEnumLists();
-				$optionsautreavisradiation = $this->Contratinsertion->Autreavisradiation->allEnumLists();
-				$this->set( 'fiches', $this->Contratinsertion->Personne->ActioncandidatPersonne->Actioncandidat->allEnumLists() );
+				$this->set( 'fiches', (array)Hash::get( $this->Contratinsertion->Personne->ActioncandidatPersonne->Actioncandidat->enums(), 'Actioncandidat' ) );
 
-				$options = array_merge( $options, $optionsautreavissuspension );
-				$options = array_merge( $options, $optionsautreavisradiation );
+				$options = array_merge(
+					$options,
+					(array)Hash::get( $this->Contratinsertion->Autreavissuspension->enums(), 'Autreavissuspension' ),
+					(array)Hash::get( $this->Contratinsertion->Autreavisradiation->enums(), 'Autreavisradiation' ),
+					$options['Contratinsertion']
+				);
 			}
-
-			$options = array_merge( $this->Contratinsertion->enums(), $options );
 
 			$this->set( 'options', $options );
 		}
@@ -1313,7 +1313,7 @@
 						)
 					)
 				); */
-                
+
                 $structures = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true, 'list' => true, 'conditions' => array( 'Structurereferente.actif' => 'O', 'Typeorient.parentid <>' => $typeOrientPrincipaleEmploiId ) ) );
 
 				//On affiche les actions inactives en édition mais pas en ajout,

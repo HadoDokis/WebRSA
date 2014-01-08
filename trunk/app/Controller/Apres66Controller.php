@@ -62,8 +62,7 @@
 		 *
 		 */
 		protected function _setOptions() {
-			$options = $this->{$this->modelClass}->allEnumLists();
-
+			$options = (array)Hash::get( $this->{$this->modelClass}->enums(), $this->modelClass );
 			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 			$this->set( 'sitfam', $this->Option->sitfam() );
@@ -74,7 +73,7 @@
 			$this->set( 'themes', $this->Themeapre66->find( 'list' ) );
 			$this->set( 'nomsTypeaide', $this->Typeaideapre66->find( 'list' ) );
 
-			$options = Set::merge( $options, $this->{$this->modelClass}->Aideapre66->allEnumLists() );
+			$options = Hash::merge( $options, (array)Hash::get( $this->{$this->modelClass}->Aideapre66->enums(), 'Aideapre66' ) );
 
 			$this->set( 'options', $options );
 			$pieceadmin = $this->Pieceaide66->find(
@@ -259,7 +258,7 @@
                 )
 			);
 			$this->set( 'apres', $apres );
- 
+
 			$referents = $this->Referent->find( 'list' );
 			$this->set( 'referents', $referents );
 
@@ -970,7 +969,7 @@
 				$this->{$this->modelClass}->begin();
 
 				$saved = $this->{$this->modelClass}->save( $this->request->data );
-				
+
                 $saved = $this->Aideapre66->updateAllUnBound(
 					array(
                         'Aideapre66.montantaccorde' => NULL,
@@ -982,7 +981,7 @@
 						'"Aideapre66"."id"' => $apre['Aideapre66']['id']
 					)
 				) && $saved;
-                
+
                 $saved = $this->{$this->modelClass}->updateAllUnBound(
 					array( 'Apre66.etatdossierapre' => '\'ANN\'' ),
 					array(

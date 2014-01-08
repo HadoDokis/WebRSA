@@ -37,8 +37,8 @@
 		public function beforeFilter() {
 			parent::beforeFilter();
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
-			$this->set( 'relance', $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->allEnumLists() );
-			$this->set( 'dossierep', $this->Dossier->Foyer->Personne->Dossierep->allEnumLists() );
+			$this->set( 'relance', (array)Hash::get( $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->enums(), 'Nonrespectsanctionep93' ) );
+			$this->set( 'dossierep', (array)Hash::get( $this->Dossier->Foyer->Personne->Dossierep->enums(), 'Dossierep' ) );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 		}
 
@@ -108,9 +108,7 @@
 
 			$this->set( compact( 'personnesFoyer' ) );
 
-			$options = array(
-				'Passagecommissionep' => $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->allEnumLists()
-			);
+			$options = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->enums();
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
 			foreach( $roles as $index => $role ) {
 				// Contrat insertion lié à la personne
@@ -235,7 +233,7 @@
 					$modelDecision = 'Decision'.Inflector::singularize( $themeEP );
 
 					if( !isset( $options[$modelDecision] ) ) {
-						$options[$modelDecision] = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->allEnumLists();
+						$options = Hash::merge( $options, $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->enums() );
 					}
 
 					$decisionEP = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modelDecision}->find(

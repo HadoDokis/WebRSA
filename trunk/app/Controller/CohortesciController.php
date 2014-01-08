@@ -60,7 +60,7 @@
 			$this->set( 'struct', $struct );
 			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 
-			$this->set( 'numcontrat', $this->Dossier->Foyer->Personne->Contratinsertion->allEnumLists() );
+			$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
 
 			$this->set( 'rolepers', $this->Option->rolepers() );
 

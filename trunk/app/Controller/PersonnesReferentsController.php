@@ -147,7 +147,7 @@
 				}
 			}
 
-			$this->set( 'options', $this->PersonneReferent->allEnumLists() );
+			$this->set( 'options', (array)Hash::get( $this->PersonneReferent->enums(), 'PersonneReferent' ) );
 			$this->set( 'urlmenu', '/personnes_referents/index/'.$personne_id );
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'personne_referent' ) );
 		}

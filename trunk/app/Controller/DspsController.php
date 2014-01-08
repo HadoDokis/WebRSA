@@ -222,7 +222,7 @@
 				)
 			);
 
-			$optionsrevs = $this->DspRev->allEnumLists();
+			$optionsrevs = (array)Hash::get( $this->DspRev->enums(), 'DspRev' );
 
 			$personne_id = $dsprev['DspRev']['personne_id'];
 			$dsp_id = $dsprev['DspRev']['dsp_id'];

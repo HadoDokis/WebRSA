@@ -47,10 +47,9 @@
 		*
 		*/
 		public function _setOptions() {
-// 			$motifssortie = $this->ActioncandidatPersonne->Motifsortie->find( 'list' );
-			$options = Set::merge(
-				$this->ActioncandidatPersonne->allEnumLists(),
-				$this->ActioncandidatPersonne->Actioncandidat->allEnumLists()
+			$options = Hash::merge(
+				(array)Hash::get( $this->ActioncandidatPersonne->enums(), 'ActioncandidatPersonne' ),
+				(array)Hash::get( $this->ActioncandidatPersonne->Actioncandidat->enums(), 'Actioncandidat' )
 			);
 			$options['actions'] = $this->ActioncandidatPersonne->Actioncandidat->find( 'list', array( 'fields' => array( 'name' ),'order' => array( 'Actioncandidat.name ASC' )   ) );
 			$options['partenaires'] = $this->ActioncandidatPersonne->Actioncandidat->Contactpartenaire->Partenaire->find( 'list', array( 'fields' => array( 'libstruc' ), 'order' => array( 'Partenaire.libstruc ASC' ) ) );

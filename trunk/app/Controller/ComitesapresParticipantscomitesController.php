@@ -29,8 +29,7 @@
 
 		protected function _setOptions() {
 			$this->set( 'participants', $this->Participantcomite->find( 'all' ) );
-			$options = $this->ComiteapreParticipantcomite->allEnumLists();
-			$this->set( 'options', $options );
+			$this->set( 'options', (array)Hash::get( $this->ComiteapreParticipantcomite->enums(), 'ComiteapreParticipantcomite' ) );
 		}
 
 		/** ********************************************************************
