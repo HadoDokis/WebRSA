@@ -45,7 +45,10 @@
 			$annule = Set::extract( $params, 'Traitementpcg66.annule' );
 			$motifpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.situationpdo_id' );
 			$statutpersonnepcg66_id = Set::extract( $params, 'Traitementpcg66.statutpdo_id' );
-            $typetraitement = Set::extract( $params, 'Traitementpcg66.typetraitement' );
+                        $typetraitement = Set::extract( $params, 'Traitementpcg66.typetraitement' );
+                        $regime = Set::extract( $params, 'Traitementpcg66.regime' );
+                        $saisonnier = Set::extract( $params, 'Traitementpcg66.saisonnier' );
+                        $numrm = Set::extract( $params, 'Traitementpcg66.nrmrcs' );
 
 			$dateecheance = Set::extract( $params, 'Traitementpcg66.dateecheance' );
 			$dateecheance_to = Set::extract( $params, 'Traitementpcg66.dateecheance_to' );
@@ -138,6 +141,19 @@
 						)
 					)
 				.' )';
+			}
+                        
+                        // Régime de la fiche de calcul
+			if( !empty( $regime ) ) {
+				$conditions[] = 'Traitementpcg66.regime = \''.Sanitize::clean( $regime, array( 'encode' => false ) ).'\'';
+			}
+                        // Aloocataire saisonnier ou non
+			if( !empty( $saisonnier ) ) {
+				$conditions[] = 'Traitementpcg66.saisonnier = \''.Sanitize::clean( $saisonnier, array( 'encode' => false ) ).'\'';
+			}
+                        // Numéro RM
+			if( !empty( $numrm ) ) {
+				$conditions[] = 'Traitementpcg66.nrmrcs = \''.Sanitize::clean( $numrm, array( 'encode' => false ) ).'\'';
 			}
 
 			// Conditions de base pour qu'un allocataire puisse passer en EP

@@ -100,18 +100,21 @@
         echo $this->Xform->input( 'Traitementpcg66.statutpdo_id', array( 'label' => 'Statut de la personne', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $statutpersonnepcg66, 'empty' => false ) );
         echo '</fieldset>';
 
-		echo $this->Default2->subform(
-			array(
-				'Traitementpcg66.descriptionpdo_id' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.descriptionpdo_id' ), 'type' => 'select', 'options' => $descriptionpdo, 'empty' => true ),
+        echo $this->Default2->subform(
+            array(
+                'Traitementpcg66.descriptionpdo_id' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.descriptionpdo_id' ), 'type' => 'select', 'options' => $descriptionpdo, 'empty' => true ),
                 'Traitementpcg66.typetraitement' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.typetraitement' ), 'type' => 'select', 'options' => $options['Traitementpcg66']['typetraitement'], 'empty' => true ),
-				'Traitementpcg66.clos' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.clos' ), 'type' => 'select', 'options' => $options['Traitementpcg66']['clos'], 'empty' => true ),
-				'Traitementpcg66.annule' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.annule' ), 'type' => 'select', 'options' => $options['Traitementpcg66']['annule'], 'empty' => true )
-			),
-			array(
-				'options' => $options
-			)
-		);
-		echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
+                'Traitementpcg66.clos' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.clos' ), 'type' => 'select', 'options' => $options['Traitementpcg66']['clos'], 'empty' => true ),
+                'Traitementpcg66.annule' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.annule' ), 'type' => 'select', 'options' => $options['Traitementpcg66']['annule'], 'empty' => true ),
+                'Traitementpcg66.regime' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.regime' ) ),
+                'Traitementpcg66.saisonnier' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.saisonnier' ) ),
+                'Traitementpcg66.nrmrcs' => array( 'label' => __d( 'traitementpcg66', 'Traitementpcg66.nrmrcs' ) )
+            ),
+            array(
+                    'options' => $options
+            )
+        );
+        echo $this->Xform->input('Dossierpcg66.exists', array( 'label' => 'Corbeille pleine ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 	?>
 </fieldset>
 <?php

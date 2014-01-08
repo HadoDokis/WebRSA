@@ -509,3 +509,9 @@ msgstr "Motif d'annulation"
 
 msgid "Traitementpcg66.dateenvoicourrier"
 msgstr "Date d'envoi du courrier"
+
+msgid "ENUM::SAISONNIER::0"
+msgstr "Non"
+
+msgid "ENUM::SAISONNIER::1"
+msgstr "Oui"
