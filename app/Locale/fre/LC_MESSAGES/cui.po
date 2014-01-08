@@ -1022,3 +1022,11 @@ msgstr "Non"
 
 msgid "ENUM::FORMATIONINTERNE::1"
 msgstr "Oui"
+
+####################
+
+msgid "ENUM::FORMATIONEXTERNE::0"
+msgstr "Non"
+
+msgid "ENUM::FORMATIONEXTERNE::1"
+msgstr "Oui"

@@ -177,22 +177,22 @@
 						'options' => $options
 					)
 				);
-				
+
 			?>
 		</fieldset>
 		<?php
 			echo $this->Default2->subform(
 				array(
 					'Cui.numconvention',
-					'Cui.numconventionobj' => array( 'type' => 'hidden', 'value' => array( isset( $this->request->data['Cui']['numconventionobj'] ) ? $this->request->data['Cui']['numconventionobj'] : null ) )
+					'Cui.numconventionobj' => array( 'type' => 'hidden', 'value' => ( isset( $this->request->data['Cui']['numconventionobj'] ) ? $this->request->data['Cui']['numconventionobj'] : null ) )
 				),
 				array(
 					'options' => $options
 				)
 			);
-            
+
             echo $this->Xform->fieldValue( 'Cui.numconventionobj', $this->request->data['Cui']['numconventionobj'], true, 'text' );
-			
+
 		?>
 	</fieldset>
 </div>
@@ -214,7 +214,7 @@
 			false,
 			true
 		);
-		
+
 		observeDisableFieldsetOnValue(
 			'CuiSecteurcuiId',
 			$( 'iscie' ),
@@ -222,7 +222,7 @@
 			false,
 			true
 		);
-		
+
 		//on masque le code d'agréement sauf pour le CAE -> ACI
 		observeDisableFieldsetOnValue(
 			'CuiIsaci',
@@ -231,7 +231,7 @@
 			false,
 			true
 		);
-		
+
 		observeDisableFieldsetOnValue(
 			'CuiTypecui',
 			$( 'aidecg' ),
@@ -242,13 +242,13 @@
 	} );
 //]]>
 </script>
-		
+
 <!--**************************************** Partie EMPLOYEUR *********************************************** -->
 <script type="text/javascript">
 	//Sélection de l'employeur et de l'action liée à cet employeur
 	document.observe("dom:loaded", function() {
 		dependantSelect( 'CuiActioncandidatId', 'CuiPartenaireId' );
-		
+
 		observeDisableFieldsetOnValue(
 			'CuiNewemployeur',
 			$( 'newemployeur' ),
@@ -256,7 +256,7 @@
 			false,
 			true
 		);
-		
+
 		observeDisableFieldsetOnValue(
 			'CuiNewemployeur',
 			$( 'employeur' ),
@@ -264,7 +264,7 @@
 			true,
 			true
 		);
-		
+
 		<?php
 			echo $this->Ajax->remoteFunction(
 				array(
@@ -299,7 +299,7 @@
 			//Partie ajax pour afficher l'employeur + action sélectionnée
 			echo $this->Ajax->observeField( 'CuiPartenaireId', array( 'update' => 'CuiEmployeur', 'url' => Router::url( array( 'action' => 'ajaxemployeur' ), true ), 'with' => 'Form.serialize( $( \'cuiform\' ) )' ) );
 			echo $this->Ajax->observeField( 'CuiActioncandidatId', array( 'update' => 'CuiEmployeur', 'url' => Router::url( array( 'action' => 'ajaxemployeur' ), true ), 'with' => 'Form.serialize( $( \'cuiform\' ) )' ) );
-			
+
 			echo $this->Xhtml->tag(
 				'div',
 				' ',
@@ -307,7 +307,7 @@
 					'id' => 'CuiEmployeur'
 				)
 			);
-			
+
 
 		?>
 	</fieldset>
@@ -341,7 +341,7 @@
 									)
 								);
 							}
-							
+
 							echo $this->Default2->subform(
 								array(
 									'Partenaire.ville' => array( 'required' => true ),
@@ -415,7 +415,7 @@
 			</tr>
 		</table>
 	</fieldset>
-	
+
 	<fieldset id="iscie" class="invisible">
 		<?php
 			echo $this->Xhtml->tag( 'p', 'Si CIE, je déclare sur l\'honneur être à jour des versements de mes cotisations et contributions sociales, que cette embauche ne résulte pas du licenciement d\'un salarié en CDI, ne pas avoir procédé à un licenciement pour motif économique au cours des 6 derniers mois ou pour une raison autre que la faute grave' );
@@ -538,7 +538,7 @@ $depSplit = substr( $codepos, '0', 2 );
 				'options' => $options
 			)
 		);
-		
+
         $listeMontantAAfficher = null;
         foreach( unserialize( $this->request->data['Cui']['montantrsapercu'] ) as $key => $montant ) {
             if( !empty( $montant ) ) {
@@ -574,10 +574,10 @@ $depSplit = substr( $codepos, '0', 2 );
     <?php else:?>
     <p class="notice">Aucune prestation trouvée</p>
     <?php endif;?>
-        
+
     <?php
 //       echo $this->Xform->fieldValue( 'Cui.naturersa', $listeNatureRSA, true, 'text' );
-        
+
 		echo $this->Xform->fieldValue( 'Cui.nbperscharge', Hash::get( $dataCaf, 'Foyer.nbenfants' ), true, 'text' );
 
 	?>
@@ -608,7 +608,7 @@ $depSplit = substr( $codepos, '0', 2 );
 			else{
 				$isInscrit = '0';
 			}
-			
+
 			echo $this->Default->subform(
 				array(
 					'Cui.isinscritpe' => array( 'domain' => 'cui', 'type' => 'select', 'options' => $options['Cui']['isinscritpe'], 'empty' => true, 'selected' => $isInscrit )
@@ -618,7 +618,7 @@ $depSplit = substr( $codepos, '0', 2 );
 					'options' => $options
 				)
 			);
-            
+
             echo $this->Default->subform(
 				array(
 					'Cui.dateinscritpe' => array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date('Y'), 'minYear' => date( 'Y' ) - 50, 'selected' => isset( $this->request->data['Cui']['dateinscritpe'] ) ? $this->request->data['Cui']['dateinscritpe'] : null  )
@@ -628,7 +628,7 @@ $depSplit = substr( $codepos, '0', 2 );
 					'options' => $options
 				)
 			);
-            
+
             echo $this->Default->subform(
 				array(
 					'Cui.identifiantpe' => array( 'value' => isset( $this->request->data['Cui']['identifiantpe'] ) ? $this->request->data['Cui']['identifiantpe'] : $dernierIdentifiantpe  )
@@ -734,7 +734,7 @@ document.observe("dom:loaded", function() {
 				'options' => $options
 			)
 		);
-		
+
 		echo $this->Default->subform(
 			array(
 				'Cui.dateembauche' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3 ),
@@ -744,7 +744,7 @@ document.observe("dom:loaded", function() {
 				'options' => $options
 			)
 		);
-		
+
 		echo '<fieldset id="iscdd" class="noborder" style="padding:0 0em;">';
 			echo $this->Default->subform(
 				array(
@@ -766,7 +766,7 @@ document.observe("dom:loaded", function() {
 			);
 		echo '</fieldset>';
 	?>
-	
+
 
 	<?php
 		if( empty( $options['Coderomemetierdsp66'] ) ) {
@@ -1005,7 +1005,7 @@ document.observe("dom:loaded", function() {
 			)
 		);
 		echo $this->Xhtml->tag( 'em','(identique à la date d\'embauche si convention initiale)' );
-		
+
 		echo $this->Default->subform(
 			array(
 				'Cui.datefinprisecharge' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'empty' => true )
@@ -1212,7 +1212,7 @@ document.observe("dom:loaded", function() {
 		<?php $isNonMarchand = ( in_array( $t['Tauxcgcui']['secteurcui_id'], $secteur_isnonmarchand_id ) ? 1 : 0 );?>
 		taux.push( {
 			'type': '<?php echo $t['Tauxcgcui']['typecui'];?>',
-			'nonmarchand': '<?php echo $isNonMarchand;?>', 
+			'nonmarchand': '<?php echo $isNonMarchand;?>',
 			'aci': '<?php echo $t['Tauxcgcui']['isaci'];?>',
 			'nominal': '<?php echo $t['Tauxcgcui']['tauxnominal'];?>'
 		} );
@@ -1226,7 +1226,7 @@ document.observe("dom:loaded", function() {
 		if( $F( fieldType ) == 'cui' && isNonMarchand ) {
 			calculable = calculable && $F( fieldIsAci );
 		}
-		
+
 		if( !calculable ) {
 			return;
 		}
@@ -1274,10 +1274,10 @@ document.observe("dom:loaded", function() {
 				Event.observe( $( '<?php echo $t['duree'];?>' ), 'change', function() {
 					updateDateFromDateDuree(  '<?php echo $debut;?>', '<?php echo $t['duree'];?>', '<?php echo $t['fin'];?>' );
 				} );
-				
+
 				updateDateFromDateDuree(  '<?php echo $debut;?>', '<?php echo $t['duree'];?>', '<?php echo $t['fin'];?>' );
 			<?php endforeach;?>
-			
+
 		} );
 
-	</script>	
+	</script>
