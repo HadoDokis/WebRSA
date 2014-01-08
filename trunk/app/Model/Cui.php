@@ -20,7 +20,6 @@
 
 		public $actsAs = array(
 			'Allocatairelie',
-			'Enumerable',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id', 'metieraffectation_id', 'metieremploipropose_id', 'actioncandidat_id' ),
 			),
@@ -668,6 +667,8 @@
 					'voie' => $Option->typevoie()
 				),
 			);
+
+			$options = Hash::merge( $options, (array)$this->enums() );
 
 			return $this->ged(
 				$cui,

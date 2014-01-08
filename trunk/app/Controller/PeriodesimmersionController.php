@@ -51,9 +51,8 @@
 		 */
 		protected function _setOptions() {
 			$options = array( );
-//			$options = $this->Periodeimmersion->allEnumLists();
-			$optionscui = $this->Cui->allEnumLists();
-			$options = Set::merge( $optionscui, $options );
+			$optionscui = $this->Cui->enums();
+			$options = Set::merge( $optionscui['Cui'], $options );
 			$typevoie = $this->Option->typevoie();
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'qual', $this->Option->qual() );
@@ -241,7 +240,6 @@
 
 			$qual = $this->Option->qual();
 			$typevoie = $this->Option->typevoie();
-//			$options = $this->{$this->modelClass}->allEnumLists();
 			$options = array();
 
 			$periodeimmersion = $this->{$this->modelClass}->find(
