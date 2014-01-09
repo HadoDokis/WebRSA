@@ -18,6 +18,8 @@
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDdCi', $( 'ContratinsertionDdCiFromDay' ).up( 'fieldset' ), false );
 
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDfCi', $( 'ContratinsertionDfCiFromDay' ).up( 'fieldset' ), false );
+                
+                dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
 	});
 </script>
 
