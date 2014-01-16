@@ -110,7 +110,7 @@
 				'order' => array( 'Group.name ASC' )
 			);
 			$groups = $this->Group->find( 'list', $querydata );
-			array_unshift( $groups, null );
+			$groups = array( 0 => null ) + $groups;
 			$this->set( compact( 'groups' ) );
 
 			$this->render( 'add_edit' );
@@ -209,7 +209,7 @@
 				'order' => array( 'Group.name ASC' )
 			);
 			$groups = $this->Group->find( 'list', $querydata );
-			array_unshift( $groups, null );
+			$groups = array( 0 => null ) + $groups;
 			$this->set( compact( 'groups' ) );
 
 			$this->render( 'add_edit' );
