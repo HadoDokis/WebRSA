@@ -259,7 +259,7 @@
 				$this->Manifestationbilanparcours66->id = $id;
 				$bilanparcours66_id = $this->Manifestationbilanparcours66->field( 'bilanparcours66_id' );
 			}
-			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->field( 'personne_id' );
+			$personne_id = $this->Manifestationbilanparcours66->Bilanparcours66->personneId( $bilanparcours66_id );
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			// Le dossier auquel appartient la personne
