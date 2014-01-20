@@ -306,5 +306,33 @@
 				return null;
 			}
 		}
+
+		/**
+		 * Permet de rechercher et de supprimer les courriers de décisions stockés
+		 * dans la table pdfs.
+		 */
+		public function afterDelete() {
+			$Pdf = ClassRegistry::init( 'Pdf' );
+			$query = array(
+				'fields' => array( 'Pdf.id' ),
+				'contain' => false,
+				'conditions' => array(
+					'Pdf.modele' => $this->alias,
+					'Pdf.fk_value' => $this->id
+				)
+			);
+			$stored = $Pdf->find( 'all', $query );
+			if( !empty( $stored ) ) {
+				$ids = Hash::extract( $stored, '{n}.Pdf.id' );
+				$success = $Pdf->deleteAll( array( 'Pdf.id' => $ids ) );
+
+				if( $success !== true ) {
+					$message = sprintf( 'Impossible de supprimer les entrées %s de la table pdfs.', implode( ',', $ids ) );
+					throw new InternalErrorException( $message );
+				}
+			}
+
+			parent::afterDelete();
+		}
 	}
 ?>

@@ -22,14 +22,15 @@
 		public $actsAs = array(
 			'Allocatairelie',
 			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable',
+			'Conditionnable',
 			'Enumerable' => array(
 				'fields' => array(
 					'etapedossierep',
 					'themeep',
 				)
-			)
+			),
+			'Formattable',
+			'ValidateTranslate',
 		);
 
 		public $belongsTo = array(
@@ -684,6 +685,175 @@
 			}
 
 			return $querydata;
+		}
+
+		/**
+		 * Permet de lister les dossiers d'EP pouvant être supprimés, c'est-à-dire
+		 * qui soit:
+		 *   - ne sont pas attachés à une commission
+		 *   - soit sont attachés à une commission qui n'a pas encore débuté
+		 *   - soit sont attachés à une (des) commission(s) terminée(s) et comportant
+		 *     une décision de report ou d'annulation.
+		 *
+		 * @param array $search La liste des filtres venant du moteur de recherche
+		 * @return array
+		 */
+		public function searchAdministration( array $search ) {
+			$this->forceVirtualFields = true;
+			$this->virtualFields['nb_passages_commission'] = $this->Passagecommissionep->sq(
+				array(
+					'alias' => 'passagescommissionseps',
+					'fields' => array( 'COUNT(passagescommissionseps.id)' ),
+					'contain' => false,
+					'conditions' => array(
+						'passagescommissionseps.dossierep_id = Dossierep.id'
+					)
+				)
+			);
+
+			$query = array(
+				'fields' => array(
+					'Dossierep.id',
+					'Commissionep.id',
+					'Passagecommissionep.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Commissionep.dateseance',
+					'Commissionep.etatcommissionep',
+					'Dossierep.created',
+					'Dossierep.themeep',
+					'Dossierep.nb_passages_commission',
+				),
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecommissionep->Commissionep->join( 'Ep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					array(
+						'OR' => array(
+							'Adressefoyer.id IS NULL',
+							'Adressefoyer.id IN ( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+						)
+					),
+					array(
+						'OR' => array(
+							'Passagecommissionep.id IS NULL',
+							'Passagecommissionep.id IN ('.$this->Passagecommissionep->sqDernier().' )'
+						)
+					),
+				),
+				'contain' => false,
+				'limit' => 10
+			);
+
+			// On peut supprimer des dossiers qui ne sont pas encore attaché à une
+			// commission, ou attachés à une commission qui n'a pas encore débuté
+			// ou qui a été menée à terme (traitée, annulée, reportée).
+			$query['conditions'][] = array(
+				'OR' => array(
+					'Commissionep.id IS NULL',
+					'NOT' => array(
+						'Commissionep.etatcommissionep' => array( 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg' )
+					)
+				)
+			);
+
+			$case = '';
+			$themes = array_keys( $this->themesCg() );
+			$conditions = array();
+
+			foreach( $themes as $theme ) {
+				$tableNameDecision = "decisions{$theme}";
+				$modelNameDecision = Inflector::classify( $tableNameDecision );
+
+				$sqlDerniereDecicion = $this->Passagecommissionep->{$modelNameDecision}->sq(
+					array(
+						'alias' => $tableNameDecision,
+						'fields' => array( "{$tableNameDecision}.id" ),
+						'contain' => false,
+						'conditions' => array(
+							"{$tableNameDecision}.passagecommissionep_id = Passagecommissionep.id"
+						),
+						'order' => array( "{$tableNameDecision}.etape DESC" ),
+						'limit' => 1
+					)
+				);
+
+				$query['joins'][] = $this->Passagecommissionep->join(
+					$modelNameDecision,
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							"{$modelNameDecision}.id IN ( {$sqlDerniereDecicion} )"
+						)
+					)
+				);
+
+				$case .= " WHEN \"{$modelNameDecision}\".\"decision\" IS NOT NULL THEN \"{$modelNameDecision}\".\"decision\"::TEXT ";
+
+				$conditions[] = array(
+					'OR' => array(
+						"{$modelNameDecision}.decision IS NULL",
+						"{$modelNameDecision}.decision" => array( 'annule', 'reporte' ),
+					)
+				);
+			}
+
+			$query['fields'][] = "( CASE {$case} ELSE NULL END ) AS \"Decisionthematique__decision\"";
+
+			$query['conditions'][] = $conditions;
+
+			$query['conditions'] = $this->conditionsAdresse( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
+
+			// Filtres de recherche spécifiques aux EPs
+
+			// 1. Filtrer par EP
+			$regroupementep_id = Hash::get( $search, 'Ep.regroupementep_id' );
+			if( !empty( $regroupementep_id ) ) {
+				$query['conditions']['Ep.regroupementep_id'] = $regroupementep_id;
+			}
+
+			$name = Hash::get( $search, 'Ep.name' );
+			if( !empty( $name ) ) {
+				$query['conditions']['Ep.name'] = $name;
+			}
+
+			$identifiant = Hash::get( $search, 'Ep.identifiant' );
+			if( !empty( $identifiant ) ) {
+				$query['conditions']['Ep.identifiant'] = $identifiant;
+			}
+
+			// 2. Filtrer par commission d'EP
+			$name = Hash::get( $search, 'Commissionep.name' );
+			if( !empty( $name ) ) {
+				$query['conditions']['Commissionep.name'] = $name;
+			}
+
+			$identifiant = Hash::get( $search, 'Commissionep.identifiant' );
+			if( !empty( $identifiant ) ) {
+				$query['conditions']['Commissionep.identifiant'] = $identifiant;
+			}
+
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Commissionep.dateseance' );
+
+			// 3. Filtrer par dossier d'EP
+			$themeep = Hash::get( $search, 'Dossierep.themeep' );
+			if( !empty( $themeep ) ) {
+				$query['conditions']['Dossierep.themeep'] = $themeep;
+			}
+
+			$query = $this->Personne->PersonneReferent->completeQdReferentParcours( $query, $search );
+
+			return $query;
 		}
 	}
 ?>
