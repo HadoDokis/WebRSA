@@ -293,6 +293,9 @@
 					'title' => 'Gestion des anomalies de doublons simples au sein d\'un foyer donné',
 				),
 			),
+			__d( 'droit', 'Dossierseps:administration' ) => array(
+				'url' => array( 'controller' => 'dossierseps', 'action' => 'administration'  ),
+			),
 			'Habilitations' => array(
 				'Groupes' => array(
 					'url' => array( 'controller' => 'groups', 'action' => 'index' ),

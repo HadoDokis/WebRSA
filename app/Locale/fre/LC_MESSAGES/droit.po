@@ -1034,6 +1034,13 @@ msgstr "Impression des courriers d'information"
 
 msgid "Dossierseps:exportcsv"
 msgstr "Export CSV des dossiers affectés"
+
+msgid "Dossierseps:administration"
+msgstr "Gestion des dossiers d'EP suppressibles"
+
+msgid "Dossierseps:delete"
+msgstr "Suppression d'un dossier d'EP"
+
 ###############################################################################
 
 msgid "Module:Dossierspcgs66"

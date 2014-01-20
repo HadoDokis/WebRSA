@@ -16,16 +16,39 @@
 	 */
 	class DossiersepsController extends AppController
 	{
-		public $helpers = array( 'Default', 'Default2', 'Csv', 'Type2' );
+		public $helpers = array(
+			'Default',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Csv',
+			'Type2'
+		);
 
 		public $uses = array( 'Option', 'Dossierep', 'Decisionpdo', 'Propopdo' );
 
-		public $components = array( 'Gedooo.Gedooo' );
+		public $components = array(
+			'DossiersMenus',
+			'Gedooo.Gedooo',
+			'Gestionzonesgeos',
+			'InsertionsAllocataires',
+			'Jetons2',
+			'Search.Filtresdefaut' => array(
+				'administration',
+			),
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'administration' => array(
+						'filter' => 'Search'
+					),
+				)
+			),
+		);
 
 		/**
-		* FIXME: evite les droits
-		*/
-
+		 * FIXME: evite les droits
+		 */
 		protected function _setOptions() {
 			$this->set( 'motifpdo', $this->Option->motifpdo() );
 			$this->set( 'decisionpdo', $this->Decisionpdo->find( 'list' ) );
@@ -630,6 +653,100 @@
 				$this->Session->setFlash( 'Impossible de générer les courriers d\'information pour cette commission.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		 * Permet de lister les dossiers d'EP pouvant être supprimés.
+		 *
+		 * @see Dossierep::searchAdministration()
+		 */
+		public function administration() {
+			if( !empty( $this->request->data ) ) {
+				$query = $this->Dossierep->searchAdministration( $this->request->data['Search'] );
+				$lockedField = $this->Jetons2->sqLocked( 'Dossier' );
+				$this->Dossierep->Personne->Foyer->Dossier->virtualFields['locked'] = $lockedField;
+				$query['fields'][] = "( {$lockedField} ) AS \"Dossier__locked\"";
+
+				$this->paginate = array( 'Dossierep' => $query );
+
+				$results = $this->paginate(
+					$this->Dossierep,
+					array(),
+					array(),
+					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
+				);
+				$this->set( compact( 'results' ) );
+			}
+
+			// -----------------------------------------------------------------
+
+			$this->Gestionzonesgeos->setCantonsIfConfigured();
+			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
+
+			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
+			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
+			$options = Hash::merge(
+				$this->Dossierep->enums(),
+				$this->Dossierep->Passagecommissionep->Commissionep->enums()
+			);
+
+			$options['Dossierep']['themeep'] = $this->Dossierep->themesCg();
+			$options['Ep']['regroupementep_id'] = $this->Dossierep->Passagecommissionep->Commissionep->Ep->Regroupementep->find( 'list' );
+
+			$themes = array_keys( $options['Dossierep']['themeep'] );
+			foreach( $themes as $theme ) {
+				$tableNameDecision = "decisions{$theme}";
+				$modelNameDecision = Inflector::classify( $tableNameDecision );
+
+				$optionsDecision = $this->Dossierep->Passagecommissionep->{$modelNameDecision}->enums();
+				$options = Hash::merge( $options, array( 'Decisionthematique' => $optionsDecision[$modelNameDecision] ) );
+			}
+
+			$this->set( compact( 'options' ) );
+		}
+
+		/**
+		 * Suppression d'un dossier d'EP lorsque c'est possible.
+		 *
+		 * @see Dossierep::searchAdministration()
+		 *
+		 * @param integer $id Clé primaire de l'enregistrement de dossiers à supprimer.
+		 * @param type $id
+		 * @throws LogicException
+		 */
+		public function delete( $id ) {
+			// On vérifie que le dossier remplisse bien les critères pour être supprimé
+			$query = $this->Dossierep->searchAdministration( array() );
+			$query['conditions']['Dossierep.id'] = $id;
+			$result = $this->Dossierep->find( 'all', $query );
+
+			if( count( $result ) != 1 ) {
+				$message = sprintf( "Erreur lors de la tentative de suppression du dossier d'EP d'id %d", $id );
+				throw new LogicException( $message );
+			}
+
+			// Tentative d'acquisition du jeton sur le dossier
+			$dossier_id = $this->Dossierep->dossierId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
+
+			$this->Jetons2->get( $dossier_id );
+
+			// Tentative de suppression du dossier d'EP et des enregistrements liés
+			$this->Dossierep->begin();
+			$success = $this->Dossierep->delete( $id );
+
+			if( $success ) {
+				$this->Dossierep->commit();
+				$this->Jetons2->release( $dossier_id );
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
+			}
+			else {
+				$this->Dossierep->rollback();
+				$this->Session->setFlash( 'Suppression impossible', 'flash/error' );
+			}
+
+			$this->redirect( $this->referer() );
 		}
 	}
 ?>

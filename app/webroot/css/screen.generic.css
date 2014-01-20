@@ -1685,3 +1685,27 @@ body.indicateursmensuels.index tbody tr.total th.section {
 body.indicateursmensuels.index tbody tr.total td {
 	background: #E6EEF2;
 }
+
+/* Liste des dossiers d'EP pouvant être supprimés' */
+
+body.dossierseps.administration a.historiqueseps.view_passage {
+    background-image: url("../img/icons/zoom.png");
+}
+
+body.dossierseps.administration span.historiqueseps.view_passage, body.dossierseps.index span.commissionseps.view.disabled {
+    background-image: url("../img/icons/zoom_disabled.png");
+}
+
+td.data.boolean {
+	background-repeat: no-repeat;
+	background-position: left center;
+	padding-left: 20px;
+}
+
+td.data.boolean.true {
+	background-image: url( ../img/icons/tick.png );
+}
+
+td.data.boolean.false {
+	background-image: url( ../img/icons/cross.png );
+}
