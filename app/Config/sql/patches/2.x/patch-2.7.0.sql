@@ -169,6 +169,76 @@ SELECT public.table_defaultvalues_enumtypes_to_varchar( 'public', 'cuis' );
 
 SELECT public.alter_enumtype( 'TYPE_DECISIONNONORIENTATIONPROEP66', ARRAY['reorientation','maintienref','annule','reporte'] );
 
+--------------------------------------------------------------------------------
+-- 20140121: Création des nouvelles tables intégrant les nouveaux Codes ROME
+--------------------------------------------------------------------------------
+DROP TABLE IF EXISTS codesfamillesromev3 CASCADE;
+CREATE TABLE codesfamillesromev3 (
+    id          SERIAL NOT NULL PRIMARY KEY,
+    code        VARCHAR(1) NOT NULL,
+    name        VARCHAR(150) NOT NULL,
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE codesfamillesromev3 IS 'Codes ROME V3 - Codes familles';
+
+DROP INDEX IF EXISTS codesfamillesromev3_name_idx;
+CREATE INDEX codesfamillesromev3_name_idx ON codesfamillesromev3( name );
+DROP INDEX IF EXISTS codesfamillesromev3_code_idx;
+CREATE INDEX codesfamillesromev3_code_idx ON codesfamillesromev3( code );
+
+DROP TABLE IF EXISTS codesdomainesprosromev3 CASCADE;
+CREATE TABLE codesdomainesprosromev3 (
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    codefamilleromev3_id          INTEGER NOT NULL REFERENCES codesfamillesromev3(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    code                        VARCHAR(2) NOT NULL,
+    name                        VARCHAR(150) NOT NULL,
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE codesdomainesprosromev3 IS 'Codes ROME V3 - Domaines professionnels';
+
+DROP INDEX IF EXISTS codesdomainesprosromev3_name_idx;
+CREATE INDEX codesdomainesprosromev3_name_idx ON codesdomainesprosromev3( name );
+DROP INDEX IF EXISTS codesdomainesprosromev3_code_idx;
+CREATE INDEX codesdomainesprosromev3_code_idx ON codesdomainesprosromev3( code );
+DROP INDEX IF EXISTS codesdomainesprosromev3_codefamilleromev3_id_idx;
+CREATE INDEX codesdomainesprosromev3_codefamilleromev3_id_idx ON codesdomainesprosromev3( codefamilleromev3_id );
+
+DROP TABLE IF EXISTS codesmetiersromev3 CASCADE;
+CREATE TABLE codesmetiersromev3 (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    codedomaineproromev3_id          INTEGER NOT NULL REFERENCES codesdomainesprosromev3(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    code                            VARCHAR(2) NOT NULL,
+    name                            VARCHAR(150) NOT NULL,
+    created                         TIMESTAMP WITHOUT TIME ZONE,
+    modified                        TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE codesmetiersromev3 IS 'Codes ROME V3 - Codes métiers';
+
+DROP INDEX IF EXISTS codesmetiersromev3_name_idx;
+CREATE INDEX codesmetiersromev3_name_idx ON codesmetiersromev3( name );
+DROP INDEX IF EXISTS codesmetiersromev3_code_idx;
+CREATE INDEX codesmetiersromev3_code_idx ON codesmetiersromev3( code );
+DROP INDEX IF EXISTS codesmetiersromev3_codedomaineprorome_id_idx;
+CREATE INDEX codesmetiersromev3_codedomaineproromev3_id_idx ON codesmetiersromev3( codedomaineproromev3_id );
+
+DROP TABLE IF EXISTS codesappellationsromev3 CASCADE;
+CREATE TABLE codesappellationsromev3 (
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    codemetierromev3_id               INTEGER NOT NULL REFERENCES codesmetiersromev3(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    name                            VARCHAR(150) NOT NULL,
+    created                         TIMESTAMP WITHOUT TIME ZONE,
+    modified                        TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE codesappellationsromev3 IS 'Codes ROME V3 - Codes appellations métiers';
+
+DROP INDEX IF EXISTS codesappellationsromev3_name_idx;
+CREATE INDEX codesappellationsromev3_name_idx ON codesappellationsromev3( name );
+DROP INDEX IF EXISTS codesappellationsromev3_codemetierrome_id_idx;
+CREATE INDEX codesappellationsromev3_codemetierromev3_id_idx ON codesappellationsromev3( codemetierromev3_id );
+
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

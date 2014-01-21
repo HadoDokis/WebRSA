@@ -3275,3 +3275,49 @@ msgid "Sortiesaccompagnementsd2pdvs93:view"
 msgstr "Visualisation d'une sortie de l'accompagnement"
 
 ###############################################################################
+############ Nouveaux Codes ROME V3 (21/01/2014) ##############################
+###############################################################################
+msgid "Module:Codesromev3"
+msgstr "Codes ROME V3 - Paramétrages des différentes tables"
+
+msgid "Codesromev3:index"
+msgstr "Accès aux paramétrages"
+
+
+msgid "Module:Codesfamillesromev3"
+msgstr "Codes ROME V3 - Paramétrages des codes familles"
+
+msgid "Codesfamillesromev3:index"
+msgstr "Codes ROME V3 - Visualisation des paramétrages des codes familles"
+
+msgid "Codesfamillesromev3:edit"
+msgstr "Ajout/Édition d'un code famille"
+
+msgid "Codesfamillesromev3:delete"
+msgstr "Suppression d'un code famille"
+
+
+msgid "Module:Codesdomainesprosromev3"
+msgstr "Codes ROME V3 - Paramétrages des domaines"
+
+msgid "Codesdomainesprosromev3:index"
+msgstr "Codes ROME V3 - Visualisation des paramétrages des domaines"
+
+msgid "Codesdomainesprosromev3:edit"
+msgstr "Ajout/Édition d'un domaine"
+
+msgid "Codesdomainesprosromev3:delete"
+msgstr "Suppression d'un domaine"
+
+
+msgid "Module:Codesmetiersromev3"
+msgstr "Codes ROME V3 - Paramétrages des codes métiers"
+
+msgid "Codesmetiersromev3:index"
+msgstr "Codes ROME V3 - Visualisation des paramétrages des codes métiers"
+
+msgid "Codesmetiersromev3:edit"
+msgstr "Ajout/Édition d'un code métier"
+
+msgid "Codesmetiersromev3:delete"
+msgstr "Suppression d'un code métier"
