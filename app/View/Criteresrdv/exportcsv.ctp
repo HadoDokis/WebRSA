@@ -2,7 +2,7 @@
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
 	$this->Csv->addRow(
-		Hash::merge(
+		array_merge(
 			array(
 				'Qualité',
 				'Nom',
@@ -37,7 +37,7 @@
 	foreach( $rdvs as $rdv ) {
 		$thematiquesrdvs = Hash::extract( $rdv, 'Thematiquerdv.{n}.name' );
 
-		$row = Hash::merge(
+		$row = array_merge(
 			array(
 				value( $qual, Hash::get( $rdv, 'Personne.qual' ) ),
 				Hash::get( $rdv, 'Personne.nom' ),
@@ -55,7 +55,7 @@
 				value( $qual, Hash::get( $rdv, 'Referent.qual' ) ).' '.Hash::get( $rdv, 'Referent.nom' ).' '.Hash::get( $rdv, 'Referent.prenom' ),
 				value( $typerdv, Hash::get( $rdv, 'Rendezvous.typerdv_id' ) ),
 			),
-			( $useThematiques ? ( !empty( $thematiquesrdvs ) ? '- '.implode( "\n- ", $thematiquesrdvs ) : '' ) : array() ),
+			( $useThematiques ? array( !empty( $thematiquesrdvs ) ? '- '.implode( "\n- ", $thematiquesrdvs ) : '' ) : array() ),
 			array(
 				value( $statutrdv, Hash::get( $rdv, 'Rendezvous.statutrdv_id' ) ),
 				date_short( $rdv['Rendezvous']['daterdv'] ),
