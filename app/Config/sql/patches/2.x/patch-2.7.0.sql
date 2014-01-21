@@ -162,6 +162,13 @@ COMMENT ON FUNCTION public.table_defaultvalues_enumtypes_to_varchar( p_schema TE
 SELECT public.table_enumtypes_to_validate_in_list( 'public', 'cuis' );
 SELECT public.table_defaultvalues_enumtypes_to_varchar( 'public', 'cuis' );
 
+--------------------------------------------------------------------------------
+-- 20130121: ajout des valeurs 'annule' et 'reporte' à la décision de la thématique
+-- d'EP nonorientationsproseps66.
+--------------------------------------------------------------------------------
+
+SELECT public.alter_enumtype( 'TYPE_DECISIONNONORIENTATIONPROEP66', ARRAY['reorientation','maintienref','annule','reporte'] );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
