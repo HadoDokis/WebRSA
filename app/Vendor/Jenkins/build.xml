@@ -49,6 +49,8 @@
 
 		Lorsque plusieurs traductions du même msgid sont présentes dans un fichier
 		.po, c'est la dernière qui est prise en compte.
+                
+                sudo aptitude install gettext
 	-->
 	<target name="po-lint">
 		<apply executable="msgfmt" dir="${dir.cakephp.app}" failonerror="on" logerror="on">
