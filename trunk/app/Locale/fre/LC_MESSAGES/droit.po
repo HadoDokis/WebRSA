@@ -3278,7 +3278,7 @@ msgstr "Visualisation d'une sortie de l'accompagnement"
 ############ Nouveaux Codes ROME V3 (21/01/2014) ##############################
 ###############################################################################
 msgid "Module:Codesromev3"
-msgstr "Codes ROME V3 - Paramétrages des différentes tables"
+msgstr "Codes ROME V3 - Paramétrages"
 
 msgid "Codesromev3:index"
 msgstr "Accès aux paramétrages"
@@ -3321,3 +3321,16 @@ msgstr "Ajout/Édition d'un code métier"
 
 msgid "Codesmetiersromev3:delete"
 msgstr "Suppression d'un code métier"
+
+
+msgid "Module:Codesappellationsromev3"
+msgstr "Codes ROME V3 - Paramétrages des appellations métiers"
+
+msgid "Codesappellationsromev3:index"
+msgstr "Codes ROME V3 - Visualisation des paramétrages des appellations métiers"
+
+msgid "Codesappellationsromev3:edit"
+msgstr "Ajout/Édition d'une appellation métier"
+
+msgid "Codesappellationsromev3:delete"
+msgstr "Suppression d'une appellation métier"
