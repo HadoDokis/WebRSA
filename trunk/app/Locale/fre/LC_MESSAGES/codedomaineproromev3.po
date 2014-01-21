@@ -1,0 +1,31 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid "Codesdomainesprosromev3::index"
+msgstr "Paramétrage des domaines"
+
+msgid "Codesdomainesprosromev3::add"
+msgstr "Ajouter un domaine"
+
+msgid "Codesdomainesprosromev3::edit"
+msgstr "Modifier un domaine"
+
+msgid "Codesdomainesprosromev3::delete"
+msgstr "Supprimer un domaine"
+
+msgid "Codedomaineproromev3::index::empty"
+msgstr "Aucun domaine présent"
+
+msgid "Codedomaineproromev3.code"
+msgstr "Code du domaine"
+
+msgid "Codedomaineproromev3.name"
+msgstr "Intitulé du domaine"
+
+msgid "Codesdomainesprosromev3::delete::confirm"
+msgstr "Confirmez-vous la suppression ?"
+
+msgid "Codedomaineproromev3.codefamilleromev3_id"
+msgstr "Code famille lié"

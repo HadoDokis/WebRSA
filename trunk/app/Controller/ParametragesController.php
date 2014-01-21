@@ -50,6 +50,7 @@
 					? array( 'controller' => 'cers93', 'action' => 'indexparams' )
 					: null
 				,
+                                'Codes ROME V3' => array( 'controller' => 'codesromev3', 'action' => 'index' ),
 				'CUIs' => array( 'controller' => 'cuis', 'action' => 'indexparams' ),
 				'DSPs' => array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
