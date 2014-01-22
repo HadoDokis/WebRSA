@@ -299,17 +299,17 @@
 				'Structurereferente' => 'Structurereferenteparcours',
 			);
 
-			$querydata['joins'][] = $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER' ) );
-			$querydata['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
-			$querydata['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
-
 			$sqEnCours = $this->sqDerniere( 'Personne.id', false );
-			$querydata['conditions'][] = array(
+			$conditions = array(
 				'OR' => array(
 					'PersonneReferent.id IS NULL',
 					"PersonneReferent.id IN ( {$sqEnCours} )"
 				)
 			);
+
+			$querydata['joins'][] = $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER', 'conditions' => $conditions ) );
+			$querydata['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
+			$querydata['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 
 			$querydata['fields'][] = 'PersonneReferent.referent_id';
 			$querydata['fields'][] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
