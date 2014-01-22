@@ -45,3 +45,15 @@ msgstr "Commentaire"
 
 msgid "Decisionsaisinepdoep66.raisonnonpassage"
 msgstr "Raison de non passage"
+
+msgid "ENUM::ETAPE::ep"
+msgstr "Etape EP"
+
+msgid "ENUM::ETAPE::cg"
+msgstr "Etape CG"
+
+msgid "ENUM::NONADMIS::CAN"
+msgstr "Conditions d'admission non remplies"
+
+msgid "ENUM::NONADMIS::RSP"
+msgstr "Ressources > au plafond"

@@ -19,26 +19,29 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::DIFLOG::1001"
+msgstr "Aucune difficulté de logement"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::DIFLOG::1002"
+msgstr "Impayés de loyer ou de remboursement"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::DIFLOG::1003"
+msgstr "Problèmes financiers"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::DIFLOG::1004"
+msgstr "Logement insalubre ou Indécent"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
+msgid "ENUM::DIFLOG::1005"
+msgstr "Logement géographiquement isolé ou absence de transport collectif"
 
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
+msgid "ENUM::DIFLOG::1006"
+msgstr "Fin de bail, expulsion"
 
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
+msgid "ENUM::DIFLOG::1007"
+msgstr "Logement surpeuplé"
 
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::DIFLOG::1008"
+msgstr "Eloignement entre le lieu de résidence et le lieu de travail"
+
+msgid "ENUM::DIFLOG::1009"
+msgstr "Autres situations particulières"

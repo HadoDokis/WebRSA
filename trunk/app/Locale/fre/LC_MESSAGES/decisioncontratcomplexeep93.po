@@ -51,3 +51,9 @@ msgstr "Commentaire"
 
 msgid "Decisioncontratcomplexeep93.raisonnonpassage"
 msgstr "Raison de non passage"
+
+msgid "ENUM::ETAPE::ep"
+msgstr "Etape EP"
+
+msgid "ENUM::ETAPE::cg"
+msgstr "Etape CG"

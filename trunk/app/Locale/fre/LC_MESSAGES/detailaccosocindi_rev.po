@@ -17,28 +17,20 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::NATACCOSOCINDI::0416"
+msgstr "Santé"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::NATACCOSOCINDI::0417"
+msgstr "Emploi"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::NATACCOSOCINDI::0418"
+msgstr "Insertion professionnelle"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::NATACCOSOCINDI::0419"
+msgstr "Formation"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::NATACCOSOCINDI::0420"
+msgstr "Autres"

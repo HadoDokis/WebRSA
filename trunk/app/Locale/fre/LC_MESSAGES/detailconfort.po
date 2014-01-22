@@ -17,28 +17,20 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "Detailconfort.confort"
+msgstr "Confort :"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::CONFORT::2401"
+msgstr "Electricité"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::CONFORT::2402"
+msgstr "Eau courante"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::CONFORT::2403"
+msgstr "WC"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::CONFORT::2404"
+msgstr "Salle d'eau"

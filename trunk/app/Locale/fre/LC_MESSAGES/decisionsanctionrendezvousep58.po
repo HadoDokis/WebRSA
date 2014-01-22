@@ -99,3 +99,9 @@ msgstr "Annulation sanctions n°1 et n°2"
 
 msgid "ENUM::ARRETSANCTION::annulation2"
 msgstr "Annulation sanction n°2"
+
+msgid "ENUM::ETAPE::ep"
+msgstr "Etape EP"
+
+msgid "ENUM::ETAPE::cg"
+msgstr "Etape CG"

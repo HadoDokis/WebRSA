@@ -124,3 +124,30 @@ msgstr "Réorientation du professionnel vers le social"
 
 msgid "ENUM::DECISIONREPONSEEP::reorientationsocversprof"
 msgstr "Réorientation du social vers le professionnel"
+
+msgid "ENUM::DECISIONREPONSEEP::annule"
+msgstr "Annulé"
+
+msgid "ENUM::DECISIONREPONSEEP::reporte"
+msgstr "Reporté"
+
+msgid "ENUM::ETATDOSSIERPDO::attaffect"
+msgstr "En attente d'affectation"
+
+msgid "ENUM::ETATDOSSIERPDO::attinstr"
+msgstr "En attente d'instruction"
+
+msgid "ENUM::ETATDOSSIERPDO::instrencours"
+msgstr "Instruction en cours"
+
+msgid "ENUM::ETATDOSSIERPDO::attval"
+msgstr "En attente de validation de la proposition"
+
+msgid "ENUM::ETATDOSSIERPDO::attavistech"
+msgstr "En attente d'avis technique"
+
+msgid "ENUM::ETATDOSSIERPDO::dossiertraite"
+msgstr "Dossier traité"
+
+msgid "ENUM::ETATDOSSIERPDO::attpj"
+msgstr "Dossier traité mais en attente de pièces"

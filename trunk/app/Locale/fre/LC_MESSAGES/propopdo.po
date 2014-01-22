@@ -137,6 +137,12 @@ msgstr "Service instructeur"
 msgid "Propopdo.orgpayeur"
 msgstr "Organisme payeur"
 
+msgid "ENUM::ORGPAYEUR::CAF"
+msgstr "CAF"
+
+msgid "ENUM::ORGPAYEUR::MSA"
+msgstr "MSA"
+
 msgid "Propopdo.etatdossierpdo"
 msgstr "Etat du dossier"
 

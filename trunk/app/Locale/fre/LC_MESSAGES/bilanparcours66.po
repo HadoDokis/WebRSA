@@ -103,6 +103,9 @@ msgstr "Sociale"
 msgid "ENUM::MAINTIENORIENTSANSEP::prepro"
 msgstr "Prépro"
 
+msgid "ENUM::MAINTIENORIENTSANSEP::pro"
+msgstr "Professionnel"
+
 msgid "Bilanparcours66.changementrefsansep"
 msgstr "Changement de référent"
 
@@ -203,6 +206,9 @@ msgstr "Social"
 msgid "ENUM::MAINTIENORIENTAVISEP::prepro"
 msgstr "Prépro"
 
+msgid "ENUM::MAINTIENORIENTAVISEP::pro"
+msgstr "Professionnel"
+
 msgid "ENUM::MAINTIENORIENTPARCOURS::pro"
 msgstr "Professionnel"
 
@@ -223,6 +229,9 @@ msgstr "Réorientation du SOCIAL vers le PROFESSIONNEL"
 
 msgid "ENUM::REORIENTATIONEPLOCALE::PS"
 msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
+
+msgid "ENUM::REORIENTATIONEPLOCALE::PP"
+msgstr "Réorientation vers le PROFESSIONNEL"
 
 msgid "Bilanparcours66.typeeplocale"
 msgstr "Type d'EP locale"

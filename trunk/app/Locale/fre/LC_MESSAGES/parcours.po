@@ -104,10 +104,10 @@ msgstr "Parcours social"
 # Enum Parcours.motimodparco
 ###############################################################################
 
-msgid "ENUM::NATPARCOMOD::CL"
+msgid "ENUM::MOTIMODPARCO::CL"
 msgstr "Critère local"
 
-msgid "ENUM::NATPARCOMOD::EA"
+msgid "ENUM::MOTIMODPARCO::EA"
 msgstr "Entretien approfondi"
 
 ###############################################################################

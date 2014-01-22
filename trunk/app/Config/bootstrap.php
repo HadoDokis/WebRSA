@@ -146,6 +146,12 @@
 			'uninflected' => $uninflectedPlural
 		)
 	);
+	Inflector::rules(
+		'singular',
+		array(
+			'uninflected' => $uninflectedPlural
+		)
+	);
 
 	/**
 	 * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call

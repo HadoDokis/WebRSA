@@ -248,6 +248,12 @@ msgstr "Délai avant échéance"
 msgid "Traitementpdo.dureefinperiode"
 msgstr "Délai avant révision"
 
+msgid "ENUM::DUREEDEPART::0"
+msgstr "0 mois"
+
+msgid "ENUM::DUREEDEPART::0.5"
+msgstr "0,5 mois"
+
 msgid "ENUM::DUREEDEPART::1"
 msgstr "1 mois"
 
@@ -317,6 +323,12 @@ msgstr "11,5 mois"
 msgid "ENUM::DUREEDEPART::12"
 msgstr "12 mois"
 
+
+msgid "ENUM::DUREEFINPERIODE::0"
+msgstr "0 mois"
+
+msgid "ENUM::DUREEFINPERIODE::0.5"
+msgstr "0,5 mois"
 
 msgid "ENUM::DUREEFINPERIODE::1"
 msgstr "1 mois"

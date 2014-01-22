@@ -16,29 +16,28 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::FREINFORM::2301"
+msgstr "Coûts"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::FREINFORM::2302"
+msgstr "Raisons familiales"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::FREINFORM::2303"
+msgstr "Réticence vis à vis système scolaire"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::FREINFORM::2304"
+msgstr "Mobilité"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
+msgid "ENUM::FREINFORM::2305"
+msgstr "Santé"
 
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
+msgid "ENUM::FREINFORM::2306"
+msgstr "Illétrisme"
 
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
+msgid "ENUM::FREINFORM::2307"
+msgstr "Pas d'offre"
 
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::FREINFORM::2308"
+msgstr "Age"

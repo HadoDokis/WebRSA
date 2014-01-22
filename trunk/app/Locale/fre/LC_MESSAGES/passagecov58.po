@@ -22,6 +22,9 @@ msgstr ""
 msgid "Passagecov58.chosen"
 msgstr "Sélectionner"
 
+msgid "ENUM::ETATDOSSIERCOV::cree"
+msgstr "Créé"
+
 msgid "ENUM::ETATDOSSIERCOV::associe"
 msgstr "En cours de traitement"
 

@@ -74,3 +74,9 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "ENUM::TYPESUSPENSIONCUI66::absence"
+msgstr "Absence"
+
+msgid "ENUM::TYPESUSPENSIONCUI66::arret"
+msgstr "Arrêt"
