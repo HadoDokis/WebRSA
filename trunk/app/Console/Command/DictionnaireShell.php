@@ -32,21 +32,24 @@
 				'limit' => array(
 					'short' => 'L',
 					'help' => 'Limite sur le nombre de tables à traiter.',
-					'default' => 10
+					'default' => 0
 				),
 				'module' => array(
 					'short' => 'm',
-//					'help' => 'Nom du module à traiter.',
 					'help' => 'le nom du module à traiter, pour limiter le dictionnaire aux tables de ce module uniquement.',
 					'default' => '',
 					'choices' => array( 'apres', 'eps', '' )
 				),
 				'schema' => array(
 					'short' => 's',
-//					'help' => 'Le schema à traiter.',
 					'help' => 'le nom d\'un schéma pour limiter le dictionnaire aux tables de ce schéma uniquement',
 					'default' => 'public'
-				)
+				),
+				'table' => array(
+					'short' => 't',
+					'help' => 'le nom d\'une table pour limiter le dictionnaire à cette table uniquement',
+					'default' => null
+				),
 			);
 			$parser->addOptions( $options );
 			return $parser;
@@ -54,9 +57,16 @@
 
 		protected function _showParams() {
 			parent::_showParams();
-			$this->out( '<info>Nombre de table à traiter</info> : <important>'.$this->params['limit'].'</important>' );
-			$this->out( '<info>Nom du module</info> : <important>'.$this->params['module'].'</important>' );
+			if( !empty( $this->params['limit'] ) ) {
+				$this->out( '<info>Nombre de table à traiter</info> : <important>'.$this->params['limit'].'</important>' );
+			}
+			if( !empty( $this->params['module'] ) ) {
+				$this->out( '<info>Nom du module</info> : <important>'.$this->params['module'].'</important>' );
+			}
 			$this->out( '<info>Schéma</info> : <important>'.$this->params['schema'].'</important>' );
+			if( !empty( $this->params['table'] ) ) {
+				$this->out( '<info>Table</info> : <important>'.$this->params['table'].'</important>' );
+			}
 		}
 
 		/**
@@ -122,9 +132,9 @@
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
 							".( empty( $this->params['module'] ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->params['module']}(93){0,1}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->params['module']}(93){0,1}_.*$' )\n" )."
+							".( empty( $this->params['table'] ) ? "" : "AND ( information_schema.tables.table_name = '{$this->params['table']}' )\n" )."
 							ORDER BY table_name ASC".
 						( empty( $this->params['limit'] ) ? null : " LIMIT {$this->params['limit']}" ).";";
-
 
 				$tables = $this->connection->query( $sql );
 				$schemas[$i]['Table'] = Set::classicExtract( $tables, '{n}.Table' );
