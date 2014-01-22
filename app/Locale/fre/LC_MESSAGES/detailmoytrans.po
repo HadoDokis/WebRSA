@@ -17,28 +17,37 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
+###############################################################################
+# Detailsmoytrans
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::MOYTRANS::2001"
+msgstr "Transport en commun"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::MOYTRANS::2002"
+msgstr "Véhicule personnel"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::MOYTRANS::2003"
+msgstr "Voiture"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::MOYTRANS::2004"
+msgstr "Moto"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
+msgid "ENUM::MOYTRANS::2005"
+msgstr "Mobylette"
 
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
+msgid "ENUM::MOYTRANS::2006"
+msgstr "Vélo"
 
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
+msgid "ENUM::MOYTRANS::2007"
+msgstr "Covoiturage"
 
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::MOYTRANS::2008"
+msgstr "Autre"
+
+msgid "Detailmoytrans.moytrans"
+msgstr "Quel moyen de transport ?"
+
+msgid "Detailmoytrans.libautrmoytrans"
+msgstr "Merci d'indiquer le(s) autre(s) moyen(s) de transport (100 carac. max) :"

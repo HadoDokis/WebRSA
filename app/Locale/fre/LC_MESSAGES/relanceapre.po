@@ -17,28 +17,21 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
 ###############################################################################
+# Enum Apre.etatdossierapre
+###############################################################################
+msgid "ENUM::ETATDOSSIERAPRE::COM"
+msgstr "Complet"
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::ETATDOSSIERAPRE::INC"
+msgstr "Incomplet"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::ETATDOSSIERAPRE::VAL"
+msgstr "Validée"
 
-msgid "ENUM::DECISIONCOV::annule"
+msgid "ENUM::ETATDOSSIERAPRE::TRA"
+msgstr "Traitée"
+
+msgid "ENUM::ETATDOSSIERAPRE::ANN"
 msgstr "Annulé"
-
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
-
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"

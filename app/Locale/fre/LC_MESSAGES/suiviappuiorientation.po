@@ -18,27 +18,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
+# Enum Suiviappuiorientation.sitperssocpro
+###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::SITPERSSOCPRO::AF"
+msgstr "Recueil des données socio-professionnelles à faire"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::SITPERSSOCPRO::EF"
+msgstr "Recueil des données socio-professionnelles effectué"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
-
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
-
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::SITPERSSOCPRO::RE"
+msgstr "Recueil des données socio-professionnelles refusé"

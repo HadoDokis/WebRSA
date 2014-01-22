@@ -87,3 +87,15 @@ msgstr "Dossier créé le"
 
 msgid "Propoorientationcov58.referentorientant_id"
 msgstr "Nom du chargé de l'évaluation"
+
+msgid "ENUM::THEMECOV58::proposorientationscovs58"
+msgstr "Proposition d'orientation"
+
+msgid "ENUM::THEMECOV58::proposcontratsinsertioncovs58"
+msgstr "Proposition de CER"
+
+msgid "ENUM::THEMECOV58::proposnonorientationsproscovs58"
+msgstr "Proposition de maintien dans le social"
+
+msgid "ENUM::THEMECOV58::proposorientssocialescovs58"
+msgstr "Proposition d'orientation sociale de fait"

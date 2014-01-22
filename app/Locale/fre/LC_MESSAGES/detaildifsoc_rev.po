@@ -16,29 +16,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::DIFSOC::0401"
+msgstr "Aucune difficulté"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::DIFSOC::0402"
+msgstr "Santé"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::DIFSOC::0403"
+msgstr "Reconnaissance de la qualité de travailleur handicapé"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
+msgid "ENUM::DIFSOC::0404"
+msgstr "Lecture, écriture ou compréhension du français"
 
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
+msgid "ENUM::DIFSOC::0405"
+msgstr "Démarches et formalités administratives"
 
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
+msgid "ENUM::DIFSOC::0406"
+msgstr "Endettement"
 
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::DIFSOC::0407"
+msgstr "Autres"

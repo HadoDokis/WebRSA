@@ -30,3 +30,15 @@ msgstr "Annulé"
 
 msgid "ENUM::DECISIONCOV::reporte"
 msgstr "Reporté"
+
+msgid "ENUM::ETAPECOV::cree"
+msgstr "Créé"
+
+msgid "ENUM::ETAPECOV::traitement"
+msgstr "En cours de traitement"
+
+msgid "ENUM::ETAPECOV::ajourne"
+msgstr "Ajourné"
+
+msgid "ENUM::ETAPECOV::finalise"
+msgstr "Finalisé"

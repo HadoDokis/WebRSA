@@ -17,28 +17,16 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
+###############################################################################
+# Enum ComiteapreParticipantcomite.presence
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::PRESENCE::PRE"
+msgstr "Présent"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::PRESENCE::ABS"
+msgstr "Absent"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
-
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
-
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::PRESENCE::EXC"
+msgstr "Excusé"

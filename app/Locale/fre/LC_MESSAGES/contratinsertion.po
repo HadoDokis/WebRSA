@@ -195,6 +195,12 @@ msgstr "Insertion Sociale"
 msgid "ENUM::INSERTION::EMP"
 msgstr "Insertion Professionnelle"
 
+msgid "ENUM::TYPEINSERTION::SOC"
+msgstr "Insertion Sociale"
+
+msgid "ENUM::TYPEINSERTION::EMP"
+msgstr "Insertion Professionnelle"
+
 msgid "ENUM::AUTREAVISRADIATION::END"
 msgstr "Eléments non déclarés"
 

@@ -17,28 +17,15 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
+
 ###############################################################################
+# Enum Actprof.typecontratact
+###############################################################################
+msgid "ENUM::TYPECONTRATACT::CI"
+msgstr "CI-RMA"
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::TYPECONTRATACT::CA"
+msgstr "Contrat d'Avenir"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
-
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
-
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
-
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::TYPECONTRATACT::SA"
+msgstr "Salarié en SIAE"

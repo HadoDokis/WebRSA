@@ -19,26 +19,14 @@ msgstr ""
 
 ###############################################################################
 
-msgid "ENUM::DECISIONCOV::valide"
-msgstr "Validé"
+msgid "ENUM::NATMOB::2504"
+msgstr "Non"
 
-msgid "ENUM::DECISIONCOV::refuse"
-msgstr "Refusé"
+msgid "ENUM::NATMOB::2501"
+msgstr "Sur la commune"
 
-msgid "ENUM::DECISIONCOV::annule"
-msgstr "Annulé"
+msgid "ENUM::NATMOB::2502"
+msgstr "Sur le département"
 
-msgid "ENUM::DECISIONCOV::reporte"
-msgstr "Reporté"
-
-msgid "ENUM::ETAPECOV::cree"
-msgstr "Créé"
-
-msgid "ENUM::ETAPECOV::traitement"
-msgstr "En cours de traitement"
-
-msgid "ENUM::ETAPECOV::ajourne"
-msgstr "Ajourné"
-
-msgid "ENUM::ETAPECOV::finalise"
-msgstr "Finalisé"
+msgid "ENUM::NATMOB::2503"
+msgstr "Sur un autre département"

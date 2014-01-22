@@ -36,3 +36,9 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "ENUM::ORIGINE::isemploi"
+msgstr "En emploi"
+
+msgid "ENUM::ORIGINE::notisemploi"
+msgstr "Hors emploi"
