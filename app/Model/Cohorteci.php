@@ -383,6 +383,11 @@
 				'order' => 'Contratinsertion.df_ci ASC',
 				'conditions' => $conditions
 			);
+                        
+                        if( Configure::read( 'CG.cantons' )  ) {
+                            $querydata['fields'][] = 'Canton.canton';
+                            $querydata['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();
+                        }
 
 			// Référent du parcours
 			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Contratinsertion']['PersonneReferent'] ) ? $criteresci['Contratinsertion'] : $criteresci ) );
