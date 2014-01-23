@@ -179,7 +179,7 @@
 						'table' => '"personnes_referents"',
 						'alias' => 'PersonneReferent',
 						'type' => 'LEFT OUTER',
-						'conditions' => '"PersonneReferent"."personne_id" = "Personne"."id"',
+						'conditions' => '"PersonneReferent"."personne_id" = "Personne"."id" AND (("PersonneReferent"."id" IS NULL) OR ("PersonneReferent"."id" IN ( SELECT "personnes_referents"."id" FROM personnes_referents WHERE "personnes_referents"."personne_id" = "Personne"."id" AND "personnes_referents"."dfdesignation" IS NULL ORDER BY "personnes_referents"."dddesignation" DESC LIMIT 1 )))'
 					),
 					14 => array(
 						'table' => '"referents"',
@@ -216,13 +216,7 @@
 							),
 						),
 					),
-					1 => '',
-					2 => array(
-						'OR' => array(
-							0 => 'PersonneReferent.id IS NULL',
-							1 => 'PersonneReferent.id IN ( SELECT personnes_referents.id FROM personnes_referents WHERE personnes_referents.personne_id = Personne.id AND personnes_referents.dfdesignation IS NULL ORDER BY personnes_referents.dddesignation DESC LIMIT 1 )',
-						),
-					),
+					1 => ''
 				),
 			),
 			'searchGestionnaire' => array(
@@ -359,7 +353,7 @@
 						'table' => '"personnes_referents"',
 						'alias' => 'PersonneReferent',
 						'type' => 'LEFT OUTER',
-						'conditions' => '"PersonneReferent"."personne_id" = "Personne"."id"',
+						'conditions' => '"PersonneReferent"."personne_id" = "Personne"."id" AND (("PersonneReferent"."id" IS NULL) OR ("PersonneReferent"."id" IN ( SELECT "personnes_referents"."id" FROM personnes_referents WHERE "personnes_referents"."personne_id" = "Personne"."id" AND "personnes_referents"."dfdesignation" IS NULL ORDER BY "personnes_referents"."dddesignation" DESC LIMIT 1 )))',
 					),
 					15 => array(
 						'table' => '"referents"',
@@ -401,12 +395,6 @@
 						),
 					),
 					1 => 'Personne.id IN ( SELECT "personnes"."id" AS "personnes__id" FROM "personnes" AS "personnes" LEFT JOIN "public"."prestations" AS "prestations" ON ("prestations"."personne_id" = "personnes"."id" AND "prestations"."natprest" = \'RSA\') WHERE "personnes"."foyer_id" = "Foyer"."id" AND "prestations"."rolepers" = \'DEM\' LIMIT 1 )',
-					2 => array(
-						'OR' => array(
-							0 => 'PersonneReferent.id IS NULL',
-							1 => 'PersonneReferent.id IN ( SELECT personnes_referents.id FROM personnes_referents WHERE personnes_referents.personne_id = Personne.id AND personnes_referents.dfdesignation IS NULL ORDER BY personnes_referents.dddesignation DESC LIMIT 1 )',
-						),
-					),
 				),
 			)
 		);
