@@ -82,7 +82,7 @@
 			if( !empty( $statut_orient ) ) {
 				$conditions[] = 'Orientstruct.statut_orient = \''.Sanitize::clean( $statut_orient, array( 'encode' => false ) ).'\'';
 				// INFO: nouvelle manière de générer les PDFs
-				if( $statut_orient == 'Orienté' ) {
+				if( $statut_orient == 'Orienté' && Configure::read( 'Cg.departement' ) != 66 ) {
 					$conditions[] = 'Orientstruct.id IN ( SELECT pdfs.fk_value FROM pdfs WHERE modele = \'Orientstruct\' )';
 				}
 			}
