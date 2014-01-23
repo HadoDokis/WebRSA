@@ -1,6 +1,11 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+        $canton = '';
+        if( Configure::read('Cg.departement') == 66 ) {
+            $canton = 'Canton';
+        }
+        
 	$this->Csv->addRow(
 		array(
 			'N° Dossier',
@@ -69,6 +74,14 @@
 			Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
 		);
+                if( Configure::read('Cg.departement') == 66 ) {
+                    $row = array_merge(
+                        $row,
+                        array(
+                            Hash::get($contrat, 'Canton.canton'),
+                        )
+                    );
+                }
 
 		$this->Csv->addRow($row);
 	}
