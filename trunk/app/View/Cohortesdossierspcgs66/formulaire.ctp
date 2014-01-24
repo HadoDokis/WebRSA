@@ -47,8 +47,8 @@
 
                 echo $this->Default2->subform(
                     array(
-						'Search.Originepdo.libelle' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
-						'Search.Dossierpcg66.serviceinstructeur_id' => array(  'label' => 'Service instructeur', 'options' => $serviceinstructeur, 'empty' => true ),
+                        'Search.Originepdo.libelle' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
+                        'Search.Dossierpcg66.serviceinstructeur_id' => array(  'label' => 'Service instructeur', 'options' => $serviceinstructeur, 'empty' => true ),
                         'Search.Typepdo.libelle' => array( 'label' => __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id' ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
                         'Search.Dossierpcg66.orgpayeur' => array( 'label' =>  __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
                         'Search.Personne.nom' => array( 'label' => __d( 'personne', 'Personne.nom' ) ),
@@ -57,17 +57,17 @@
                         'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ) ),
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ) ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+                        'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
+                        'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
                     ),
                     array(
                         'options' => $options
                     )
                 );
 
-				if( Configure::read( 'CG.cantons' ) ) {
-					echo $this->Xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-				}
+                if( Configure::read( 'CG.cantons' ) ) {
+                        echo $this->Xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
+                }
             ?>
         </fieldset>
 
@@ -114,18 +114,18 @@
         <tbody>
         <?php foreach( $cohortedossierpcg66 as $index => $affectationdossierpcg66 ):?>
             <?php
-				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
-					<tbody>
-						<tr>
-							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
-							<td>'.Hash::get( $affectationdossierpcg66, 'Structurereferenteparcours.lib_struc' ).'</td>
-						</tr>
-						<tr>
-							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
-							<td>'.Hash::get( $affectationdossierpcg66, 'Referentparcours.nom_complet' ).'</td>
-						</tr>
-					</tbody>
-				</table>';
+                $innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
+                    <tbody>
+                            <tr>
+                                <th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+                                <td>'.Hash::get( $affectationdossierpcg66, 'Structurereferenteparcours.lib_struc' ).'</td>
+                            </tr>
+                            <tr>
+                                <th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+                                <td>'.Hash::get( $affectationdossierpcg66, 'Referentparcours.nom_complet' ).'</td>
+                            </tr>
+                    </tbody>
+                </table>';
 
                     $title = $affectationdossierpcg66['Dossier']['numdemrsa'];
 
@@ -143,7 +143,7 @@
                     $checked = @$this->request->data['Dossierpcg66'][$index]['atraiter'];
 
                     $array2 = array(
-						$this->Form->input( 'Dossierpcg66.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'checked' => !empty( $checked ) ) ),
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'checked' => !empty( $checked ) ) ),
 
                         $this->Form->input( 'Dossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['foyer_id'] ) ).
@@ -151,16 +151,16 @@
                         $this->Form->input( 'Dossierpcg66.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['typepdo_id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossier']['id'] ) ).
                         $this->Form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => $affectationdossierpcg66['Dossierpcg66']['etatdossierpcg'] ) ).
-                        $this->Form->input( 'Dossierpcg66.'.$index.'.poledossierpcg66_id', array( 'label' => false, 'type' => 'select', 'options' => $polesdossierspcgs66, 'value' => $this->request->data['Dossierpcg66'][$index]['poledossierpcg66_id'], 'empty' => true ) ),
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.poledossierpcg66_id', array( 'label' => false, 'type' => 'select', 'options' => $polesdossierspcgs66, 'empty' => true ) ),
 
-                        $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaires, 'value' => $this->request->data['Dossierpcg66'][$index]['user_id'], 'empty' => true ) ),
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaires, 'empty' => true ) ),
 
                         $this->Xhtml->viewLink(
                             'Voir le dossier « '.$title.' »',
                             array( 'controller' => 'dossierspcgs66', 'action' => 'index', $affectationdossierpcg66['Dossierpcg66']['foyer_id'] ),
                             $this->Permissions->check( 'dossierspcgs66', 'index' )
                         ),
-						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+                        array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
                     );
 
                     echo $this->Xhtml->tableCells(
@@ -176,7 +176,6 @@
     <?php echo $this->Form->submit( 'Validation de la liste' );?>
 <?php echo $this->Form->end();?>
 
-
 <script type="text/javascript">
 document.observe( "dom:loaded", function() {
 
@@ -185,14 +184,14 @@ document.observe( "dom:loaded", function() {
 
 <script type="text/javascript">
     <?php foreach( $cohortedossierpcg66 as $key => $affectationdossierpcg66 ):?>
-	    observeDisableFieldsOnCheckbox(
-			'Dossierpcg66<?php echo $key;?>Atraiter',
-			[
+        observeDisableFieldsOnCheckbox(
+            'Dossierpcg66<?php echo $key;?>Atraiter',
+            [
                 'Dossierpcg66<?php echo $key;?>Poledossierpcg66Id',
-				'Dossierpcg66<?php echo $key;?>UserId'
-			],
-			false
-	    );
+                'Dossierpcg66<?php echo $key;?>UserId'
+            ],
+            false
+        );
 
         dependantSelect( 'Dossierpcg66<?php echo $key;?>UserId', 'Dossierpcg66<?php echo $key;?>Poledossierpcg66Id' );
     <?php endforeach;?>
