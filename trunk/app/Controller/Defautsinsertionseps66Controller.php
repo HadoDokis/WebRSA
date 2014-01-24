@@ -120,13 +120,14 @@
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
 			if( Configure::read( 'CG.cantons' ) ) {
-				$this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
+                            $this->set( 'cantons', ClassRegistry::init( 'Canton' )->selectList() );
 			}
 
+                        $data = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Defautinsertionep66->search(
 				$mesCodesInsee,
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' )
+				$data['Search']
 			);
 			unset( $querydata['limit'] );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
@@ -141,7 +142,7 @@
 			$pdfs = $this->Gedooo->concatPdfs( $pdfs, 'CourriersInformation' );
 
 			if( $pdfs ) {
-				$this->Defautinsertionep66->commit();
+				$this->Defautinsertionep66->commit(); //FIXME
 				$this->Gedooo->sendPdfContentToClient( $pdfs, 'CourriersInformation.pdf' );
 			}
 			else {
