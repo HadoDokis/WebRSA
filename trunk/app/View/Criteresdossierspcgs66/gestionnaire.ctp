@@ -117,7 +117,7 @@
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Nom de la personne concernée', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Origine de la PDO', 'Dossierpcg66.originepdo_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Type de dossier', 'Dossierpcg66.typepdo_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
@@ -209,6 +209,13 @@
                             $infoGestionnaire = Hash::get( $criteredossierpcg66, 'User.nom_complet' );
                         }
 
+                        $personnesConcernees = Hash::extract( $criteredossierpcg66, 'Personneconcernee.{n}.Personne.nom_complet' );
+                        if( !empty($personnesConcernees) ){
+                            $personnesConcernees = '<ul><li>' . implode('</li><li>', $personnesConcernees) . '</li></ul>';
+                        }
+                        else {
+                            $personnesConcernees = '';
+                        }
 						$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -249,7 +256,7 @@
 						echo $this->Xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $criteredossierpcg66, 'Dossier.numdemrsa' ) ),
-								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteredossierpcg66, 'Personne.prenom' ) ),
+								$personnesConcernees,
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.originepdo_id' ), $originepdo ) ),
 								h( Set::enum( Set::classicExtract( $criteredossierpcg66, 'Dossierpcg66.typepdo_id' ), $typepdo ) ),
 								$echeances,//h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteredossierpcg66, 'Traitementpcg66.dateecheance' ) ) ),

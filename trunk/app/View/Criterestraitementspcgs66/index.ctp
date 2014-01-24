@@ -138,7 +138,7 @@
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Nom du demandeur', 'Personne.nom' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Nom de la personne concernée', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Type de traitement', 'Traitementpcg66.typetraitement' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date du traitement', 'Traitementpcg66.created' );?></th>
