@@ -144,8 +144,8 @@
 					<th><?php echo $this->Xpaginator->sort( 'Date du traitement', 'Traitementpcg66.created' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Motif de la situation', 'Situationpdo.libelle' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Description du traitement', 'Traitementpcg66.descriptionpdo_id' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de réception de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de révision', 'Traitementpcg66.daterevision' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de création de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de réception', 'Traitementpcg66.datereception' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Annulé ?', 'Traitementpcg66.annule' );?></th>
@@ -209,7 +209,7 @@
 								h( Set::classicExtract( $criteretraitementpcg66, 'Situationpdo.libelle' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
 								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
-								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.daterevision' ) ) ),
+								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.datereception' ) ) ),
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.dateecheance' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.annule' ), $options['Traitementpcg66']['annule'] ) ),

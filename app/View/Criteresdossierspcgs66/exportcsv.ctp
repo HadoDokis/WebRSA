@@ -8,7 +8,7 @@
 				'Allocataire',
 				'Origine de la PDO',
 				'Type de dossier',
-				'Date de réception',
+				'Date de création de la DO',
 				'Pôle / Gestionnaire',
                 'Décision',
 				'Nb de propositions de décisions',
