@@ -366,6 +366,7 @@
 					'actioncandidat_id' => NULL,
 					'present' => true,
 					'datetacitereconduction' => null,
+					'niv_etude' => '',
 				),
 				'Cer93' =>
 				array(
@@ -774,6 +775,7 @@
 					'actioncandidat_id' => NULL,
 					'present' => true,
 					'datetacitereconduction' => null,
+					'niv_etude' => '',
 				),
 				'Compofoyercer93' =>
 				array(
