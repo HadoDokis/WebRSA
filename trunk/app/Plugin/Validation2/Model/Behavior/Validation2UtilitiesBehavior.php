@@ -80,11 +80,9 @@
 		/**
 		 * -> array( 'rule' => array( 'XXXXXXX'[, ...] ) )
 		 *
-		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-		 *
 		 * @param Model $Model
-		 * @param type $rule
-		 * @return type
+		 * @param string|array $rule
+		 * @return array
 		 */
 		public function normalizeValidationRule( Model $Model, $rule ) {
 			if( !is_array( $rule ) ) {
@@ -145,7 +143,7 @@
 				$domain = $this->settings[$Model->alias]['domain'];
 			}
 
-			return call_user_func_array( 'sprintf', Hash::merge( array( __d( $domain, $message ) ),  $params ) );
+			return call_user_func_array( 'sprintf', Hash::merge( array( __d( $domain, $message ) ), $params ) );
 		}
 
 		/**

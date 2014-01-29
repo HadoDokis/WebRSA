@@ -8,7 +8,7 @@
 	 * @subpackage Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	require_once( dirname( __FILE__ ).DS.'..'.DS.'..'.DS.'Lib'.DS.'basics.php' );
+	require_once dirname( __FILE__ ).DS.'..'.DS.'..'.DS.'Lib'.DS.'basics.php';
 
 	/**
 	 * La classe Validation2FormattableBehavior permet d'appliquer des méthodes
@@ -138,7 +138,7 @@
 		 * @param Model $Model
 		 * @return array
 		 */
-		protected function _typeByField( Model $Model ) {
+		protected function _getTypeByField( Model $Model ) {
 			$schema = $Model->schema();
 			$fields = array_keys( $schema );
 			$types = Hash::extract( $schema, '{s}.type' );
@@ -216,7 +216,7 @@
 		 * @param Model $Model
 		 * @return array
 		 */
-		protected function _regexes( Model $Model ) {
+		protected function _getRegexes( Model $Model ) {
 			$regexes = array();
 
 			foreach( $this->settings[$Model->alias] as $fullClassName => $params ) {
@@ -247,9 +247,9 @@
 
 				$cache = Cache::read( $cacheKey );
 				if( $cache === false ) {
-					$this->_typeByField[$Model->alias] = $this->_typeByField( $Model );
+					$this->_typeByField[$Model->alias] = $this->_getTypeByField( $Model );
 					$this->_fieldsByType[$Model->alias] = groupKeysByValues( $this->_typeByField[$Model->alias] );
-					$this->_regexes[$Model->alias] = $this->_regexes( $Model );
+					$this->_regexes[$Model->alias] = $this->_getRegexes( $Model );
 
 					$cache = array(
 						'fields' => $this->_typeByField[$Model->alias],
@@ -270,10 +270,10 @@
 		/**
 		 * Application d'un formattage d'une classe à une valeur.
 		 *
-		 * @param type $fullClassName
-		 * @param type $formatter
-		 * @param type $value
-		 * @return type
+		 * @param string $fullClassName
+		 * @param string $formatter
+		 * @param mixed $value
+		 * @return mixed
 		 * @throws MissingUtilityException
 		 */
 		protected function _formatField( $fullClassName, $formatter, $value ) {
@@ -301,8 +301,8 @@
 		 * current model
 		 *
 		 * @param Model $Model
-		 * @param type $data
-		 * @return type
+		 * @param array $data
+		 * @return array
 		 */
 		public function doFormatting( Model $Model, $data ) {
 			$this->_loadCache( $Model );

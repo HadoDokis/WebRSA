@@ -18,8 +18,6 @@
 		/**
 		 * Permet de s'assurer qu'une valeur soit un nombre entier.
 		 *
-		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-		 *
 		 * @param Model $Model
 		 * @param mixed $check
 		 * @return boolean
@@ -39,8 +37,6 @@
 
 		/**
 		 * Permet de s'assurer qu'une valeur soit un booléen.
-		 *
-		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 		 *
 		 * @param Model $Model
 		 * @param mixed $check
