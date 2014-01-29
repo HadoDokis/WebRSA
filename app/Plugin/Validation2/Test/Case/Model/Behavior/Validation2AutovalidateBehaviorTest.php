@@ -147,6 +147,8 @@
 		 * Test de la méthode Validation2AutovalidateBehavior::beforeValidate() du
 		 * plugin Validation2.
 		 *
+		 * @medium
+		 * 
 		 * @return void
 		 */
 		public function testBeforeValidate() {

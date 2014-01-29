@@ -7,7 +7,6 @@
 	 * @package Validation2
 	 * @subpackage Test.Case.Lib
 	 */
-//	require_once( dirname( __FILE__ ).DS.'..'.DS.'..'.DS.'..'.DS.'Lib'.DS.'basics.php' );
 	CakePlugin::load( 'Validation2', array( 'bootstrap' => true ) );
 
 	/**
