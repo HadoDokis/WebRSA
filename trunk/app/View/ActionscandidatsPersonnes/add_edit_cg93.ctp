@@ -91,16 +91,20 @@
 				<br />
 				<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
 				<br />
-				<strong>Inscrit au Pôle emploi</strong>
 				<?php
-					$isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
-					if( $isPoleemploi == 'ANP' )
-						echo 'Oui';
-					else
-						echo 'Non';
+					if( Hash::get( $personne, 'Historiqueetatpe.etat' ) == 'inscription' ) {
+						$inscritPe = 'Oui';
+						$identifiantPe = Hash::get( $personne, 'Historiqueetatpe.identifiantpe' );
+					}
+					else {
+						$inscritPe = 'Non';
+						$identifiantPe = null;
+					}
 				?>
+				<strong>Inscrit au Pôle emploi</strong>
+				<?php echo h( $inscritPe );?>
 				<br />
-				<strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
+				<strong>N° identifiant : </strong><?php echo h( $identifiantPe );?>
 				<br />
 				<br />
 				<strong>Chargé d'insertion: </strong><?php echo Set::classicExtract( $personne, 'Referent.nom_complet' );?>

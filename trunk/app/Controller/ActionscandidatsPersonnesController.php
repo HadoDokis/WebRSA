@@ -528,6 +528,11 @@
 
 			$personne = $this->{$this->modelClass}->Personne->newDetailsCi( $personne_id, $this->Session->read( 'Auth.User.id' ) );
 
+			// Récupération des dernières informations Pôle Emploi
+			$derniereInformationPe = ClassRegistry::init( 'Informationpe' )->derniereInformation( $personne );
+			$derniereInformationPe = (array)Hash::get( $derniereInformationPe, 'Historiqueetatpe.0' );
+			$personne = Hash::merge( $personne, array( 'Historiqueetatpe' => $derniereInformationPe ) );
+
             if( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ) {
                 $detaildroitrsa = $this->{$this->modelClass}->Personne->Foyer->Dossier->Detaildroitrsa->find(
                     'first',

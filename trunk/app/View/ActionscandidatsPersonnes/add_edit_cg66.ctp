@@ -31,7 +31,7 @@
 				'options' => $options
 			)
 		);
-        
+
         echo '<fieldset id="formationregion" class="noborder">';
         echo $this->Default->subform(
             array(
@@ -39,15 +39,15 @@
                 'ActioncandidatPersonne.progfichecandidature66_id' => array( 'label' => __d( 'progfichecandidature66', 'Progfichecandidature66.name' ), 'type' => 'radio', 'empty' => false, 'options' => $progsfichescandidatures66 ),
                 'ActioncandidatPersonne.formationregion',
                 'ActioncandidatPersonne.nomprestataire'
-            ),   
+            ),
             array(
                 'options' => $options,
                 'domain' => $domain
             )
         );
         echo '</fieldset>';
-        
-        
+
+
 		echo $this->Default->subform(
 			array(
 				'ActioncandidatPersonne.referent_id' => array( 'value' => $referentId ),
@@ -110,16 +110,20 @@
 				<br />
 				<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
 				<br />
-				<strong>Inscrit au Pôle emploi</strong>
 				<?php
-					$isPoleemploi = Set::classicExtract( $personne, 'Activite.act' );
-					if( $isPoleemploi == 'ANP' )
-						echo 'Oui';
-					else
-						echo 'Non';
+					if( Hash::get( $personne, 'Historiqueetatpe.etat' ) == 'inscription' ) {
+						$inscritPe = 'Oui';
+						$identifiantPe = Hash::get( $personne, 'Historiqueetatpe.identifiantpe' );
+					}
+					else {
+						$inscritPe = 'Non';
+						$identifiantPe = null;
+					}
 				?>
+				<strong>Inscrit au Pôle emploi</strong>
+				<?php echo h( $inscritPe );?>
 				<br />
-				<strong>N° identifiant : </strong><?php echo Set::classicExtract( $personne, 'Personne.idassedic' );?>
+				<strong>N° identifiant : </strong><?php echo h( $identifiantPe );?>
 			</td>
 		</tr>
 		<tr>
@@ -173,7 +177,7 @@
 </fieldset>
 
 	<fieldset id="poursuitesuivi"><legend></legend>
-	<?php 
+	<?php
 		echo $this->Default->subform(
 			array(
 				'ActioncandidatPersonne.poursuitesuivicg' => array( 'type' => 'checkbox' , 'label' => 'Poursuite suivi CG' )
@@ -229,7 +233,7 @@
         ?>
     </fieldset>
 </fieldset>
-	
+
 <fieldset id="rdv">
 	<legend>Rendez-vous</legend>
 	<?php
@@ -398,7 +402,7 @@
             false,
             true
         );
-            
+
         observeDisableFieldsetOnRadioValue(
             'candidatureform',
             'data[ActioncandidatPersonne][rendezvouspartenaire]',
@@ -407,8 +411,8 @@
             false,
             true
         );
-  
-        // On affiche le la case à cocher poursuite suivi CG si l'ID 
+
+        // On affiche le la case à cocher poursuite suivi CG si l'ID
         // de l'action sélectionnée fait partie des IDs actions paramétrés
         observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
@@ -418,7 +422,7 @@
 			true
 		);
 
-       // On affiche le fieldset Mobilité uniquement si l'action sélectionnée 
+       // On affiche le fieldset Mobilité uniquement si l'action sélectionnée
         // ne fait pas partie des IDs actions paramétrés
         observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
@@ -427,9 +431,9 @@
 			false,
             true
 		);
-  
-   
-        // On affiche le fieldset RDV uniquement si l'action sélectionnée 
+
+
+        // On affiche le fieldset RDV uniquement si l'action sélectionnée
         // ne fait pas partie des IDs actions paramétrés
         observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
@@ -439,7 +443,7 @@
             true
 		);
 
-            
+
 //		observeDisableFieldsOnRadioValue(
 //			'candidatureform',
 //			'data[ActioncandidatPersonne][rendezvouspartenaire]',
@@ -467,7 +471,7 @@
 //			false
 //		);
 
-        // On affiche le la case à cocher poursuite suivi CG si l'ID 
+        // On affiche le la case à cocher poursuite suivi CG si l'ID
         // de l'action sélectionnée fait partie des IDs actions paramétrés
         observeDisableFieldsetOnValue(
 			'ActioncandidatPersonneActioncandidatId',
@@ -476,7 +480,7 @@
 			false,
 			true
 		);
-            
+
 		<?php  if( $this->action == 'edit' ):?>
 
 			observeDisableFieldsetOnRadioValue(
@@ -520,7 +524,7 @@
 
 
 
- 
+
 	} );
 </script>
 <!--/************************************************************************/ -->
