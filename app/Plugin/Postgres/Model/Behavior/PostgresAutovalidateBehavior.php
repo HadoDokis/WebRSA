@@ -18,6 +18,8 @@
 	 * Ces contraintes doivent porter un nom commençant par cakephp_validate_
 	 * pour être automatiquement ajoutées aux contraintes du modèle.
 	 *
+	 * @see Pgsqlcake.PgsqlAutovalidateBehavior (sera dépréciée par cette classe-ci)
+	 *
 	 * @package Postgres
 	 * @subpackage Model.Behavior
 	 */
@@ -40,30 +42,18 @@
 			$this->_checkRules[$Model->alias] = Cache::read( $cacheKey );
 
 			if( $this->_checkRules[$Model->alias] === false ) {
-				$Dbo = $Model->getDataSource();
-
-				$sql = "SELECT
-								istc.table_catalog,
-								istc.table_schema,
-								istc.table_name,
-								istc.constraint_name,
-								iscc.check_clause
-							FROM information_schema.check_constraints AS iscc
-								INNER JOIN information_schema.table_constraints AS istc ON (
-									istc.constraint_name = iscc.constraint_name
-								)
-							WHERE
-								istc.table_catalog = '{$Dbo->config['database']}'
-								AND istc.table_schema = '{$Dbo->config['schema']}'
-								AND istc.table_name = '".$Dbo->fullTableName( $Model, false, false )."'
-								AND istc.constraint_type = 'CHECK'
-								AND iscc.check_clause ~ 'cakephp_validate_.*(.*)';";
-
-				$checks = $Model->query( $sql );
+				if( !$Model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+					$Model->Behaviors->attach( 'Postgres.PostgresTable' );
+				}
+				$checks = $Model->getPostgresCheckConstraints();
 
 				$this->_checkRules[$Model->alias] = array();
 				foreach( $checks as $check ) {
-					$this->_checkRules[$Model->alias] = $this->_addGuessedPostgresConstraint( $Model, $this->_checkRules[$Model->alias], $check[0]['check_clause'] );
+					$this->_checkRules[$Model->alias] = $this->_addGuessedPostgresConstraint(
+						$Model,
+						$this->_checkRules[$Model->alias],
+						$check['Constraint']['clause']
+					);
 				}
 
 				Cache::write( $cacheKey, $this->_checkRules[$Model->alias] );
@@ -77,7 +67,8 @@
 		 * @param array $config La configuration à appliquer
 		 */
 		public function setup( Model $Model, $config = array() ) {
-			if( Hash::get( $Model->getDataSource()->config, 'datasource' ) === 'Database/Postgres' ) {
+			$datasourceName = Hash::get( $Model->getDataSource()->config, 'datasource' );
+			if( stristr( $datasourceName, 'Postgres' ) !== false ) {
 				$this->defaultConfig['rules']['postgres_constraints'] = true;
 			}
 
@@ -119,10 +110,6 @@
 
 			if( isset( $parameters['params'] ) ) {
 				if( preg_match( '/^ARRAY\[(.*)\]$/', $parameters['params'], $matches ) ) {
-//					if( preg_match_all( '/\'([^\']+)\'/U', $matches[1], $values ) ) {
-//						$params = array( $values[1] );
-//					}
-//					else
 					if( preg_match_all( '/([^, ]+)/', $matches[1], $values ) ) {
 						$params = array( $values[1] );
 					}
@@ -140,44 +127,6 @@
 
 			return $params;
 		}
-
-		/**
-		 * Complète les $règles avec les règles déduites des contraintes postgresql.
-		 *
-		 * @param Model $Model
-		 * @param array $rules
-		 * @param string $code
-		 * @return array
-		 */
-		/*protected function _addGuessedPostgresConstraint( Model $Model, array $rules, $code ) {
-			// INFO: IIF the check is "xx()" or "xx() AND xx()" etc.
-			// Remove extra parenthesis
-			$code = preg_replace( '/^( *\(+ *)? *(.+) *(?(1) *\)+ *)$/', '\2', $code );
-			// Transform '.*'::text
-			$code = preg_replace( '/\'([^\']+)\'::[^,\)\]]+/', '\1', $code );
-			// Transform (0)::numeric
-			$code = preg_replace( '/\(([^\(\)]+)\)::[^,\)\]]+/', '\1', $code );
-			// Transform NULL::character varying
-			$code = preg_replace( '/NULL::[^,\)]+/', 'NULL', $code );
-
-			if( preg_match_all( '/cakephp_validate_.*\((\(.+\).*|.+)\)/U', $code, $matches, PREG_PATTERN_ORDER ) ) {
-				foreach( $matches[0] as $rule ) {
-					// INFO: '.*'::text and (0)::numeric are tramsformed above
-					// if( preg_match( '/^cakephp_validate_(?<function>[^\(]+)\((?<field>\(.*\)::\w+|\w+)(, *(?<params>.*)){0,1}\)$/', $rule, $parameters ) ) {
-					if( preg_match( '/^cakephp_validate_(?<function>[^\(]+)\((?<field>\(.*\)|\w+)(, *(?<params>.*)){0,1}\)$/', $rule, $parameters ) ) {
-						$ruleName = Inflector::camelize( $parameters['function'] );
-						$ruleName[0] = strtolower( $ruleName[0] );
-
-						$field = trim( $parameters['field'] );
-						$params = $this->_extractPostgresParams( $parameters );
-
-						$rules[$field][$ruleName] = $this->normalizeValidationRule( $Model, array( 'rule' => array_merge( array( $ruleName ), $params ), 'allowEmpty' => true ) );
-					}
-				}
-			}
-
-			return $rules;
-		}*/
 
 		/**
 		 * Complète les $règles avec les règles déduites des contraintes postgresql.
