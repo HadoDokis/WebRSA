@@ -649,6 +649,25 @@
 				$actioncandidat['ActioncandidatPersonne']['motifsortie_id'] = Set::enum( Set::classicExtract( $actioncandidat, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie );
 			}
 
+			// Récupération des dernières informations Pôle Emploi
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			$derniereInformationPe = $Informationpe->derniereInformation( $actioncandidat );
+			$derniereInformationPe = (array)Hash::get( $derniereInformationPe, 'Historiqueetatpe.0' );
+			if( empty( $derniereInformationPe ) ) {
+				$derniereInformationPe = Hash::normalize( array_keys( $Informationpe->Historiqueetatpe->schema() ) );
+			}
+			$actioncandidat = Hash::merge( $actioncandidat, array( 'Historiqueetatpe' => $derniereInformationPe ) );
+
+			$options = Hash::merge(
+				$options,
+				$Informationpe->Historiqueetatpe->enums(), // Informationpe.etat
+				array(
+					'Historiqueetatpe' => array(
+						'code' => ClassRegistry::init( 'Option' )->categorie()
+					)
+				)
+			);
+
 			$modeleodt = Hash::get( $actioncandidat, 'Actioncandidat.modele_document' );
 			return $this->ged( array( $actioncandidat ), "Candidature/{$modeleodt}.odt", true, $options );
 		}
