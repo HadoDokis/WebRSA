@@ -19,9 +19,9 @@
 	{
 		/**
 		 *
-		 * @var AppModel
+		 * @var Model
 		 */
-		public $Site = null;
+		public $User = null;
 
 		/**
 		 * Fixtures utilisés par ces tests unitaires.
@@ -29,46 +29,41 @@
 		 * @var array
 		 */
 		public $fixtures = array(
-			'plugin.Postgres.PostgresSite',
+			'plugin.Postgres.PostgresGroup',
+			'plugin.Postgres.PostgresUser',
 		);
 
 		/**
 		 * Préparation du test.
 		 *
 		 * INFO: ne pas utiliser parent::setUp();
-		 *
-		 * @return void
 		 */
 		public function setUp() {
-			$this->Site = ClassRegistry::init(
+			$this->User = ClassRegistry::init(
 				array(
-					'class' => 'Postgres.PostgresSite',
-					'alias' => 'Site',
-					'table' => 'postgres_sites'
+					'class' => 'Postgres.PostgresUser',
+					'alias' => 'User',
+					'ds' => 'test',
 				)
 			);
-			$this->Site->Behaviors->attach( 'Postgres.PostgresAutovalidate' );
+			$this->User->Behaviors->attach( 'Postgres.PostgresAutovalidate' );
 		}
 
 		/**
 		 * Nettoyage postérieur au test.
-		 *
-		 * @return void
 		 */
 		public function tearDown() {
-			unset( $this->Site );
+			unset( $this->User );
 			parent::tearDown();
 		}
 
 		/**
 		 * Test de la méthode PostgresAutovalidateBehavior::setup()
-		 *
-		 * @return void
 		 */
 		public function testSetup() {
-			$result = Hash::get( $this->Site->validate, 'status.inList' );
+			$result = Hash::get( $this->User->validate, 'active.inList' );
 			$expected = array(
-				'rule' => array( 'inList', array( 'spam', 'ham' ) ),
+				'rule' => array( 'inList', array( '0', '1' ) ),
 				'message' => null,
 				'required' => null,
 				'allowEmpty' => true,
@@ -76,9 +71,9 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = Hash::get( $this->Site->validate, 'price.inclusiveRange' );
+			$result = Hash::get( $this->User->validate, 'popularity.inclusiveRange' );
 			$expected = array(
-				'rule' => array( 'inclusiveRange', '0', '999' ),
+				'rule' => array( 'inclusiveRange', '0', '10' ),
 				'message' => null,
 				'required' => null,
 				'allowEmpty' => true,
@@ -86,9 +81,9 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$result = Hash::get( $this->Site->validate, 'price.range' );
+			$result = Hash::get( $this->User->validate, 'phone.phone' );
 			$expected = array(
-				'rule' => array( 'range', '-1', '1000' ),
+				'rule' => array( 'phone', null, 'fr' ),
 				'message' => null,
 				'required' => null,
 				'allowEmpty' => true,

@@ -48,22 +48,21 @@
 		 * Ajoute les contraintes de CHECK à la table lors de l'initialisation.
 		 *
 		 * @param DataSource $db
-		 * @return type
+		 * @return boolean
+		 * @throws PDOException
 		 */
 		public function create( $db ) {
-			$success = parent::create( $db );
+			if( !parent::create( $db ) ) {
+				return false;
+			}
+
+			$success = true;
 
 			if( $this->inits == 0 ) {
 				if( !empty( $this->constraints ) ) {
-					foreach( $this->constraints as $constraintName => $constraintCheckClause ) {
-						try {
-							$sql = "ALTER TABLE {$this->table} ADD CONSTRAINT {$constraintName} CHECK ( {$constraintCheckClause} );";
-							$db->query( $sql );
-						}
-						catch( Exception $e ) {
-							debug( $e->getMessage() );
-							return false;
-						}
+					foreach( $this->constraints as $constraintName => $constraintCheck ) {
+						$sql = "ALTER TABLE {$this->table} ADD CONSTRAINT {$constraintName} CHECK ( {$constraintCheck} );";
+						$success = $success && ( $db->query( $sql ) !== false );
 					}
 				}
 

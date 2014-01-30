@@ -21,8 +21,6 @@
 	{
 		/**
 		 * Test suite with all test case files.
-		 *
-		 * @return void
 		 */
 		public static function suite() {
 			$suite = new CakeTestSuite( 'All Postgres tests' );
