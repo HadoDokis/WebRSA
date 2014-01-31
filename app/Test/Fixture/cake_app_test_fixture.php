@@ -24,23 +24,6 @@
 		public $_masterTableTypes = array();
 
 		/**
-		 * Retourne le nom du driver utilisé (postgres, mysql, ...)
-		 *
-		 * @param object $ds
-		 * @return string
-		 */
-		protected function _driver( $ds ) {
-			if( isset( $ds->config['datasource'] ) ) {
-				$driver = $ds->config['datasource'];
-			}
-			else if( isset( $ds->config['driver'] ) ) {
-				$driver = $ds->config['driver'];
-			}
-
-			return strtolower( str_replace( 'Database/', '', $driver ) );
-		}
-
-		/**
 		 * À partir du nom du type, on vérifie s'il existe déjà dans le base de test ou non.
 		 * S'il existe ou s'il n'a aucunes valeurs la fonction se termine.
 		 * S'il n'existe pas, on va rechercher ses valeurs et on le crée.
@@ -149,7 +132,7 @@
 			//$this->log( "CREATE TABLE {$this->table};", LOG_DEBUG);
 			$return = parent::create( $db );
 
-			if( $this->_driver( $db ) == 'postgres' ) {
+			if( $db instanceof Postgres ) {
 				$this->testDb = $db;
 				$this->testDbPrefix = $db->config['prefix'];
 
@@ -190,7 +173,7 @@
 			//$this->log( "DROP TABLE {$this->table};", LOG_DEBUG);
 			$return = parent::drop( $db );
 
-			if( $this->_driver( $db ) == 'postgres' ) {
+			if( $db instanceof Postgres ) {
 				$this->testDb = $db;
 				$this->testDbPrefix = $db->config['prefix'];
 

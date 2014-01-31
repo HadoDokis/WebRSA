@@ -409,16 +409,17 @@
 		 * @return string
 		 */
 		public function driver() {
-			$ds = $this->getDataSource();
+			$Dbo = $this->getDataSource();
 
-			if( isset( $ds->config['datasource'] ) ) {
-				$driver = $ds->config['datasource'];
-			}
-			else if( isset( $ds->config['driver'] ) ) {
-				$driver = $ds->config['driver'];
+			$class = get_class( $Dbo );
+			$parent_class = get_parent_class( $class );
+
+			while( !empty( $parent_class ) && ( $parent_class != 'DboSource' ) ) {
+				$class = $parent_class;
+				$parent_class = get_parent_class( $parent_class );
 			}
 
-			return strtolower( str_replace( 'Database/', '', $driver ) );
+			return strtolower( $class );
 		}
 
 		/**
