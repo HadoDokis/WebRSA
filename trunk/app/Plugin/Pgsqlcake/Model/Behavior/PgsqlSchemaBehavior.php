@@ -19,18 +19,6 @@
 	class PgsqlSchemaBehavior extends ModelBehavior
 	{
 		/**
-		 * Retourne le nom du driver utilisé par la source de données du modèle
-		 * (postgres, mysql, mysqli, ...).
-		 *
-		 * @param Model $model
-		 * @return string
-		 */
-		protected function _driver( Model $model ) {
-			$datasource = $model->getDataSource()->config['datasource'];
-			return strtolower( str_replace( 'Database/', '', $datasource ) );
-		}
-
-		/**
 		* Setup this behavior with the specified configuration settings.
 		* Ne fonctionne qu'avec PostgreSQL
 		*
@@ -39,8 +27,7 @@
 		* @access public
 		*/
 		public function setup( Model $model, $settings = array() ) {
-			$driver = $this->_driver( $model );
-			if( $driver != 'postgres' ) {
+			if( !( $model->getDataSource() instanceof Postgres ) ) {
 				trigger_error( sprintf( __( '%s: driver (%s) non supporté pour le modèle (%s).' ), __CLASS__, $driver, $model->alias ), E_USER_WARNING );
 			}
 		}

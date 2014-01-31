@@ -93,7 +93,7 @@
 				return;
 			}
 
-			if( stristr( $this->Dbo->config['datasource'], 'Postgres' ) === false ) {
+			if( !( $this->Dbo instanceof Postgres ) ) {
 				$this->err( "La connexion {$connection} n'utilise pas le driver postgres" );
 				$this->_stop( self::ERROR );
 				return;

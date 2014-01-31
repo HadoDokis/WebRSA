@@ -224,10 +224,10 @@
 		 * @param Model $model
 		 * @return string
 		 */
-		protected function _driver( Model $model ) {
+		/*protected function _driver( Model $model ) {
 			$datasource = $model->getDataSource()->config['datasource'];
 			return strtolower( str_replace( 'Database/', '', $datasource ) );
-		}
+		}*/
 
 		/**
 		 * Retourne tous les enums d'un modèle. Fonctionne avec les drivers mysql, mysqi, postgres.
@@ -236,17 +236,16 @@
 		 * @return array
 		 */
 		protected function _readEnums( Model $model ) {
-			$driver = $this->_driver( $model );
-			switch( $driver ) {
-				case 'postgres':
-					$options = $this->_postgresEnums( $model );
-					break;
-				case 'mysql':
-				case 'mysqli':
-					$options = $this->_mysqlEnums( $model );
-					break;
-				default:
-					trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.' ), $driver ), E_USER_WARNING );
+			$Dbo = $model->getDataSource();
+
+			if( $Dbo instanceof Mysql ) {
+				$options = $this->_mysqlEnums( $model );
+			}
+			if( $Dbo instanceof Postgres ) {
+				$options = $this->_postgresEnums( $model );
+			}
+			else {
+				trigger_error( sprintf( __( 'SQL driver (%s) not supported in enumerable behavior.' ), $Dbo->config['datasource'] ), E_USER_WARNING );
 			}
 
 			return $options;

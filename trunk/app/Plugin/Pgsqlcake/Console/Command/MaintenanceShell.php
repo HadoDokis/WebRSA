@@ -61,7 +61,7 @@
 				$this->_stop( 1 );
 			}
 
-			if( $this->connection->config['datasource'] != 'Database/Postgres' ) {
+			if( !( $this->connection instanceof Postgres ) ) {
 				$this->err( "La connexion {$this->params['connection']} n'utilise pas le driver postgres" );
 				$this->_stop( 1 );
 			}

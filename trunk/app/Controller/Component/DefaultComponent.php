@@ -327,7 +327,7 @@
 
 								$model = ClassRegistry::init( $model );
 
-								$conditions["{$path} ".( $model->driver() == 'postgres' ? 'ILIKE' : 'LIKE' )] = "%$value%";
+								$conditions["{$path} ".( $model->getDataSource() instanceof Postgres ? 'ILIKE' : 'LIKE' )] = "%$value%";
 								$data = Hash::remove( $data, $path );
 							}
 							break;
