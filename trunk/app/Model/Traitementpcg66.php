@@ -420,6 +420,10 @@
 			if( $data['Traitementpcg66']['typetraitement'] == 'revenu' ) {
 				$dataTraitementpcg66['Traitementpcg66']['dateecheance'] = $data['Traitementpcg66']['daterevision'];
 			}
+			else {
+				unset( $dataTraitementpcg66['Traitementpcg66']['chaffvnt'] );
+				unset( $dataTraitementpcg66['Traitementpcg66']['chaffsrv'] );
+			}
 
 			$this->create( $dataTraitementpcg66 );
 			$success = $this->save() && $success;
@@ -523,7 +527,7 @@
 			if( $success && !isset( $data['Traitementpcg66']['dateecheance'] ) && $data['Traitementpcg66']['typetraitement'] != 'revenu' ) {
 				$success = $this->updateAllUnBound( array( 'Traitementpcg66.clos' => '\'O\'' ), array( '"Traitementpcg66"."id"' => $this->id ) ) && $success;
 			}
-			
+
 			// Si la date d'échéance vaut 0 (= aucune), on passe la date à NULL
 			if( $success ) {
 				if( ( isset ($data['Traitementpcg66']['dureeecheance'] ) && $data['Traitementpcg66']['dureeecheance'] == 0 && $data['Traitementpcg66']['typetraitement'] != 'revenu' ) || ( isset ($data['Traitementpcg66']['dureefinprisecompte'] ) && $data['Traitementpcg66']['dureefinprisecompte'] == 0 && $data['Traitementpcg66']['typetraitement'] == 'revenu' ) ) {
@@ -540,7 +544,7 @@
                     $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
 				}
             }
-            
+
 			return $success;
 		}
 
@@ -908,12 +912,12 @@
 				return null;
 			}
 		}
-        
-        
+
+
         /**
-         * Fonction permettant de récupérer les informations de la dernière 
+         * Fonction permettant de récupérer les informations de la dernière
          *  fiche de calcul parmi les différents traitements PCGs d'une personne
-         * 
+         *
          * @param type $personneId
          * @param type $action
          * @param type $data
@@ -940,7 +944,7 @@
                     ),
                     'order' => array( 'Traitementpcg66.created DESC' )
                 );
-                
+
 				$dataPersonnepcg66 = $this->Personnepcg66->find( 'first', $querydata );
 
                 $data = $dataPersonnepcg66;
