@@ -7,7 +7,7 @@
 &lt;/div&gt;</description>
   <logRotator class="hudson.tasks.LogRotator">
     <daysToKeep>-1</daysToKeep>
-    <numToKeep>1</numToKeep>
+    <numToKeep>2</numToKeep>
     <artifactDaysToKeep>-1</artifactDaysToKeep>
     <artifactNumToKeep>-1</artifactNumToKeep>
   </logRotator>
@@ -20,11 +20,11 @@
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
-  <customWorkspace>/home/cbuffin/projets/htdocs/adullact/webrsa/WebRSA-trunk</customWorkspace>
+  <customWorkspace>/home/cbuffin/www/webrsa/WebRSA-trunk</customWorkspace>
   <builders>
     <hudson.tasks.Ant plugin="ant@1.2">
-      <targets></targets>
-      <buildFile>/home/cbuffin/projets/htdocs/adullact/webrsa/WebRSA-trunk/app/Plugin/Postgres/Vendor/Jenkins/build.xml</buildFile>
+      <targets>quality</targets>
+      <buildFile>app/Plugin/Postgres/Vendor/Jenkins/build.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
@@ -107,6 +107,23 @@
       <latestOnly>false</latestOnly>
       <allowEmptyArchive>false</allowEmptyArchive>
     </hudson.tasks.ArtifactArchiver>
+    <hudson.tasks.junit.JUnitResultArchiver>
+      <testResults>app/tmp/build/logs/phpunit.xml</testResults>
+      <keepLongStdio>false</keepLongStdio>
+      <testDataPublishers/>
+    </hudson.tasks.junit.JUnitResultArchiver>
+    <org.jenkinsci.plugins.cloverphp.CloverPHPPublisher plugin="cloverphp@0.3.3">
+      <publishHtmlReport>true</publishHtmlReport>
+      <reportDir>app/tmp/build/coverage</reportDir>
+      <xmlLocation>app/tmp/build/logs/phpunit.coverage.xml</xmlLocation>
+      <disableArchiving>true</disableArchiving>
+      <healthyTarget>
+        <methodCoverage>70</methodCoverage>
+        <statementCoverage>80</statementCoverage>
+      </healthyTarget>
+      <unhealthyTarget/>
+      <failingTarget/>
+    </org.jenkinsci.plugins.cloverphp.CloverPHPPublisher>
     <hudson.plugins.plot.PlotPublisher plugin="plot@1.5">
       <plots>
         <hudson.plugins.plot.Plot>

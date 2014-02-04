@@ -153,7 +153,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text[]',
+						'arguments' => 'text, text, boolean',
 					),
 				),
 				8 =>
@@ -163,7 +163,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text, boolean',
+						'arguments' => 'text, text, boolean, text',
 					),
 				),
 				9 =>
@@ -173,7 +173,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text[], boolean',
+						'arguments' => 'text, text[]',
 					),
 				),
 				10 =>
@@ -183,7 +183,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text, boolean, text',
+						'arguments' => 'text, text[], boolean',
 					),
 				),
 				11 =>
@@ -401,22 +401,12 @@
 					'Function' =>
 					array(
 						'schema' => 'public',
-						'name' => 'cakephp_validate_range',
-						'result' => 'boolean',
-						'arguments' => 'double precision, double precision, double precision',
-					),
-				),
-				33 =>
-				array(
-					'Function' =>
-					array(
-						'schema' => 'public',
 						'name' => 'cakephp_validate_ssn',
 						'result' => 'boolean',
 						'arguments' => 'text, text, text',
 					),
 				),
-				34 =>
+				33 =>
 				array(
 					'Function' =>
 					array(
@@ -519,6 +509,8 @@
 
 		/**
 		 * Test de la méthode PostgresPostgres::getPostgresCheckConstraints()
+		 *
+		 * @medium
 		 */
 		public function testGetPostgresCheckConstraints() {
 			$result = $this->Dbo->getPostgresCheckConstraints();
