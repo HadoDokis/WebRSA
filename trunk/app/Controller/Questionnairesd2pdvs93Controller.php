@@ -248,7 +248,7 @@
 						'Parent.name',
 					),
 					'joins' => array(
-						$this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->join( 'Parent' )
+						$this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->join( 'Parent', array( 'type' => 'INNER' ) )
 					)
 				)
 			);
