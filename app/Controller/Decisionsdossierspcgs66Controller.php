@@ -117,7 +117,7 @@
 					)
 				)
 			);
-            
+
             $orgs = $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
                 'all',
                 array(
@@ -334,7 +334,7 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
-            
+
 
 			// Récupération des id afférents
 			if( $this->action == 'add' ) {
@@ -507,7 +507,7 @@
 
 			$this->Jetons2->get( $dossier_id );
 
-            
+
 
 
             // Retour à la liste en cas d'annulation
@@ -516,7 +516,7 @@
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
 			}
-            
+
 			if( !empty( $this->request->data ) ) {
 				$this->Decisiondossierpcg66->begin();
 
@@ -568,21 +568,14 @@
 						$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaDecisionFoyer( $this->Decisiondossierpcg66->id ) && $saved;
 					}
 
-                    
-                    // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier 
+
+                    // Clôture des traitements PCGs non clôturés, appartenant même à un autre dossier
                     // que celui auquel je suis lié
                     if( $saved && !empty( $this->request->data['Traitementpcg66']['Traitementpcg66'] ) ) {
-//                        $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound( 
-//                            array( 'Traitementpcg66.clos' => '\'O\'' ),
-//                            array(
-//                                'Traitementpcg66.id IN' => $this->request->data['Traitementpcg66']['traitementnonclosdecision']
-//                            )
-//                        ) && $saved;
-                        
-                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound( 
+                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->Personnepcg66->Traitementpcg66->updateAllUnBound(
                             array( 'Traitementpcg66.clos' => '\'O\'' ),
                             array(
-                                'Traitementpcg66.id IN' => $this->request->data['Traitementpcg66']['Traitementpcg66']
+                                'Traitementpcg66.id' => $this->request->data['Traitementpcg66']['Traitementpcg66']
                             )
                         ) && $saved;
                     }
@@ -617,7 +610,7 @@
 					)
 				);
 				$this->request->data['Typersapcg66']['Typersapcg66'] = $typesrsapcg;
-                
+
                 if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] ) ) {
                     $this->request->data['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] = $decisiondossierpcg66['Orgdecisiondossierpcg66']['poledossierpcg66_id'].'_'.$decisiondossierpcg66['Orgdecisiondossierpcg66']['id'];
                 }
@@ -637,7 +630,7 @@
                     )
                 )
 			);
-            
+
 			//Liste des traitements avec une fiche de calcul devant être reporter dans la décision
 			$listeFicheAReporter = array( );
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
@@ -651,7 +644,7 @@
 				}
 			}
 			$this->set( compact( 'listeFicheAReporter' ) );
-            
+
 
             //Liste des traitements non clos appartenant aux dossiers liés à mon Foyer
             $listeTraitementsNonClos = array();
@@ -774,7 +767,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', Set::classicExtract( $decisiondossierpcg66, 'Decisiondossierpcg66.dossierpcg66_id' ) ) );
 			}
-            
+
              // Liste des organismes auxquels on transmet le dossier
             if( !empty( $decisiondossierpcg66['Orgtransmisdossierpcg66'] ) ) {
                 $listOrgs = Hash::extract( $decisiondossierpcg66, 'Orgtransmisdossierpcg66.{n}.name' );
@@ -904,9 +897,9 @@
 				$this->Decisiondossierpcg66->begin();
 				$saved = $this->Decisiondossierpcg66->save( $this->request->data );
 				if( $saved ) {
-					
+
 					$saved = $this->Decisiondossierpcg66->Dossierpcg66->updateEtatViaTransmissionop( $id ) && $saved;
-                    
+
                     if( $saved ) {
                         $saved = $this->Decisiondossierpcg66->Dossierpcg66->generateDossierPCG66Transmis( $dossierpcg66_id ) && $saved;
                     }
@@ -936,7 +929,7 @@
 						)
 					)
 				);
-// 				
+//
 				$this->request->data['Orgtransmisdossierpcg66']['Orgtransmisdossierpcg66'] = $orgstransmisdossierspcgs66;
 			}
 
@@ -990,8 +983,8 @@
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
-		
-		
+
+
 		/**
 		 *
 		 * @param integer $id
