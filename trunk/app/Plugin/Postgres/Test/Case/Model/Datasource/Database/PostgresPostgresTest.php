@@ -153,7 +153,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text, boolean',
+						'arguments' => 'text, text[]',
 					),
 				),
 				8 =>
@@ -163,7 +163,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text, boolean, text',
+						'arguments' => 'text, text, boolean',
 					),
 				),
 				9 =>
@@ -173,7 +173,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text[]',
+						'arguments' => 'text, text[], boolean',
 					),
 				),
 				10 =>
@@ -183,7 +183,7 @@
 						'schema' => 'public',
 						'name' => 'cakephp_validate_cc',
 						'result' => 'boolean',
-						'arguments' => 'text, text[], boolean',
+						'arguments' => 'text, text, boolean, text',
 					),
 				),
 				11 =>
@@ -425,7 +425,7 @@
 						'result' => 'boolean',
 						'arguments' => 'text',
 					),
-				)
+				),
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
@@ -452,7 +452,9 @@
 				'message' => '7: ERROR:  invalid input syntax for type interval: "4 DBY 1 MONTH"',
 				'value' => 'SELECT NOW() + interval \'4 DBY 1 MONTH\'',
 			);
-			$expected['message'] = ( strpos( $result['message'], $expected['message'] ) === 0 ? $result['message'] : $expected['message'] );
+			if( preg_match( '/ERR(O|EU)R.*interval.*4 DBY 1 MONTH/', $result['message'] ) ) {
+				$expected['message'] = $result['message'];
+			}
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
@@ -478,7 +480,9 @@
 				'success' => false,
 				'message' => '7: ERROR:  invalid input syntax for type interval: "4 DBY 1 MONTH"'
 			);
-			$expected['message'] = ( strpos( $result['message'], $expected['message'] ) === 0 ? $result['message'] : $expected['message'] );
+			if( preg_match( '/ERR(O|EU)R.*interval.*4 DBY 1 MONTH/', $result['message'] ) ) {
+				$expected['message'] = $result['message'];
+			}
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
