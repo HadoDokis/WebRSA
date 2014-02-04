@@ -12,7 +12,7 @@
 	<property name="ignorelist" value="*/Config/sql/*,*/Test/*,*/Vendor/*" />
 
 	<!-- Build -->
-	<target name="build-codereports" depends="clean,lint,phpunit,phploc,phpdoc,phpcs,phpmd,pdepend,phpcpd,phpcb"/>
+	<target name="quality" depends="clean,lint,phpunit,phploc,phpdoc,phpcs,phpmd,pdepend,phpcpd,phpcb"/>
 	<target name="build" depends="clean,lint,phpunit"/>
 
 	<!-- Nettoyage du répertoire tmp de CakePHP -->
