@@ -201,10 +201,10 @@
 		}
 
 		/**
-		 * Test de la méthode PostgresTableBehavior::loadAllPostgresForeignKeys()
+		 * Test de la méthode PostgresTableBehavior::getAllPostgresForeignKeys()
 		 */
-		public function testLoadAllPostgresForeignKeys() {
-			$result = $this->User->loadAllPostgresForeignKeys();
+		public function testGetAllPostgresForeignKeys() {
+			$result = $this->User->getAllPostgresForeignKeys();
 			$expected = array(
 				'postgres_users' => array(
 					'from' => array(

@@ -103,7 +103,7 @@
 		 * @param Model $Model
 		 * @return array
 		 */
-		public function loadAllPostgresForeignKeys( Model $Model ) {
+		public function getAllPostgresForeignKeys( Model $Model ) {
 			$Dbo = $Model->getDataSource();
 
 			$conditions = array(
@@ -151,7 +151,7 @@
 
 				$foreignKeys = $Dbo->getPostgresForeignKeys( $conditions );
 				$return = $this->_queryResultsTo( $foreignKeys );
-				$return = $return[$tableName];
+				$return = (array)Hash::get( $return, $tableName );
 				Cache::write( $cacheKey, $return );
 			}
 
