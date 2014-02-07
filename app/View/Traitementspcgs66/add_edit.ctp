@@ -112,7 +112,7 @@
 		</fieldset>
 	<?php } ?>
 
-	
+
 <?php
 		// Début fiche de calcul
 		echo "<fieldset id='fichecalcul' class='noborder invisible'><table>";
@@ -129,7 +129,15 @@
 				)
 			);
 
-            $regime = Set::check( $infoDerniereFicheCalcul, 'Traitementpcg66.regime' ) ? Set::extract( $infoDerniereFicheCalcul, 'Traitementpcg66.regime' ) : Hash::get( $this->request->data, 'Traitementpcg66.regime' );
+			// Si on modifie ou que l'on revient sur le formulaire
+			if( !empty( $this->request->data ) ) {
+				$regime = Hash::get( $this->request->data, 'Traitementpcg66.regime' );
+			}
+			// Sinon, on prend la valeur dans la dernière fiche de calcul enregistrée
+			else {
+				$regime = Hash::get( $infoDerniereFicheCalcul, 'Traitementpcg66.regime' );
+			}
+
 			echo $this->Xhtml->tag(
 				'tr',
 				$this->Xhtml->tag(
@@ -764,7 +772,7 @@
 					$fichiers,
 					Router::url( array( 'action' => 'ajaxfileupload' ) )
 				);
-				
+
 				if( !empty( $fichiersEnBase ) ) {
 					echo $this->Fileuploader->results(
 						$fichiersEnBase
@@ -849,7 +857,7 @@
 				'class'=>'noborder invisible'
 			)
 		);
-		
+
 		//Liste des traitements autre que moi non clos, appartenant à d'autres dossiers
 		if( !empty( $listeTraitementsNonClos ) ) {
 //			echo $this->Form->input( 'Traitementpcg66.traitementnonclos', array( 'label' => 'Traitement d\'un autre dossier à clôturer ?', 'type' => 'select', 'options' => $listeTraitementsNonClos['Traitementpcg66']['traitementnonclos'], 'empty' => true ) );
@@ -943,7 +951,7 @@
 				false,
 				true
 			);
-			
+
 			observeDisableFieldsetOnRadioValue(
 				'traitementpcg66form',
 				'data[Traitementpcg66][typetraitement]',
@@ -982,7 +990,7 @@
 // 				true
 // 			);
 
-			
+
 			observeDisableFieldsOnRadioValue(
 				'traitementpcg66form',
 				'data[Traitementpcg66][typetraitement]',
@@ -1006,13 +1014,13 @@
 				['0', '', undefined],
 				true
 			);
-			
+
 			//
 		} );
 	</script>
 <script type="text/javascript">
 	//<![CDATA[
- 
+
 	function checkDatesToExpiration( dateDonnee, dateAChanger, operateur ) {
 		var duree = $F( 'Traitementpcg66Duree'+dateDonnee ).split( '.' );
 
@@ -1030,7 +1038,7 @@
 
             var timestampArrivee = strtotime( delai, timestampDepart / 1000 )  * 1000;
             dateDepart = new Date( timestampArrivee );
-            
+
 			var newday = dateDepart.getDate();
 			var newmonth = dateDepart.getMonth() + 1;
 			var newyear = dateDepart.getFullYear();

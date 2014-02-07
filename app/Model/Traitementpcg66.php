@@ -417,12 +417,10 @@
 			}
 
 			$dataTraitementpcg66 = array( 'Traitementpcg66' => $data['Traitementpcg66'] );
+
+			// Si le type de traitement est "Fiche de calcul"
 			if( $data['Traitementpcg66']['typetraitement'] == 'revenu' ) {
 				$dataTraitementpcg66['Traitementpcg66']['dateecheance'] = $data['Traitementpcg66']['daterevision'];
-			}
-			else {
-				unset( $dataTraitementpcg66['Traitementpcg66']['chaffvnt'] );
-				unset( $dataTraitementpcg66['Traitementpcg66']['chaffsrv'] );
 			}
 
 			$this->create( $dataTraitementpcg66 );
@@ -953,5 +951,50 @@
 
             return $data;
         }
+
+		/**
+		 * Nettoyage des données en fonction du type de traitement, et si le type
+		 * de traitement est "Fiche de calcul", en fonction du régime.
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeValidate( $options = array() ) {
+			$return = parent::beforeValidate( $options );
+
+			// Si le type de traitement est "Fiche de calcul"
+			if( Hash::get( $this->data, "{$this->alias}.typetraitement" ) == 'revenu' ) {
+				// Suppression des règles de validation des champs chaffvnt, chaffsrv, benefoudef; mise à null des champs lorsque c'est nécessaire en fonction du régime
+				$regime = Hash::get( $this->data, "{$this->alias}.regime" );
+				// Si 'fagri', on n'en garde aucun
+				if( $regime == 'fagri' ) {
+					unset( $this->validate['chaffvnt'], $this->validate['chaffsrv'], $this->validate['benefoudef'] );
+					$this->data[$this->alias]['chaffvnt'] = null;
+					$this->data[$this->alias]['chaffsrv'] = null;
+					$this->data[$this->alias]['benefoudef'] = null;
+				}
+				// Si 'ragri' ou 'reel', on garde tout (chaffvnt, chaffsrv, benefoudef)
+				// Si 'microbic' ou 'microbicauto', on garde chaffvnt, chaffsrv
+				else if( in_array( $regime, array( 'microbic', 'microbicauto' ) ) ) {
+					unset( $this->validate['benefoudef'] );
+					$this->data[$this->alias]['benefoudef'] = null;
+				}
+				// Si 'microbnc', on garde chaffsrv
+				else if( $regime == 'microbnc' ) {
+					unset( $this->validate['chaffvnt'], $this->validate['benefoudef'] );
+					$this->data[$this->alias]['chaffvnt'] = null;
+					$this->data[$this->alias]['benefoudef'] = null;
+				}
+			}
+			// Si le type de traitement est autre que "Fiche de calcul"
+			else {
+				unset( $this->validate['chaffvnt'], $this->validate['chaffsrv'], $this->validate['benefoudef'] );
+				$this->data[$this->alias]['chaffvnt'] = null;
+				$this->data[$this->alias]['chaffsrv'] = null;
+				$this->data[$this->alias]['benefoudef'] = null;
+			}
+
+			return $return;
+		}
 	}
 ?>
