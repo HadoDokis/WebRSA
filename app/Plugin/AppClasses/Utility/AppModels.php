@@ -1,4 +1,7 @@
 <?php
+	/**
+	 * @deprecated
+	 */
 	class AppModels
 	{
 		protected static $_instance = null;

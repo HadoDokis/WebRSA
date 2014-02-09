@@ -63,7 +63,7 @@
 		/**
 		 * Test de la méthode DefaultTableCellHelper::data()
 		 *
-		 * @return void
+		 * @medium
 		 */
 		public function testData() {
 			$htmlAttributes = array();
