@@ -19,9 +19,11 @@
 	abstract class SearchProgressivePagination
 	{
 		/**
+		 * Retourne le nom de la clé sous laquelle la configuration pour la pagination
+		 * progressive est stockée.
 		 *
-		 * @param string $controller
-		 * @param string $action
+		 * @param string $controller Le nom du contrôleur
+		 * @param string $action Le nom de l'action
 		 * @return string
 		 */
 		public static function configureKey( $controller = null, $action = null ) {
@@ -40,6 +42,7 @@
 		}
 
 		/**
+		 * Permet de savoir si la pagination progressive est activée.
 		 *
 		 * @see Xpaginator(2)Helper::paginationBlock(), AppController::_hasSearchProgressivePagination()
 		 *
@@ -51,8 +54,9 @@
 			$progressivePaginate = null;
 
 			// Pagination progressive pour ce contrôleur et cette action ?
-			if( !is_null( $controller ) && !is_null( $action ) )
-			$progressivePaginate = Configure::read( self::configureKey( $controller, $action ) );
+			if( !is_null( $controller ) && !is_null( $action ) ) {
+				$progressivePaginate = Configure::read( self::configureKey( $controller, $action ) );
+			}
 
 			// Pagination progressive pour ce contrôleur ?
 			if( is_null( $progressivePaginate ) && !is_null( $controller ) ) {
@@ -68,6 +72,7 @@
 		}
 
 		/**
+		 * Active la pagination progressive.
 		 *
 		 * @param string $controller
 		 * @param string $action
@@ -78,6 +83,8 @@
 		}
 
 		/**
+		 * Désactive la pagination progressive.
+		 *
 		 * @param string $controller
 		 * @param string $action
 		 */
@@ -91,8 +98,8 @@
 		 * et pour un nom de modèle donné.
 		 *
 		 * @param CakeRequest $request
-		 * @param type $classname
-		 * @param type $format
+		 * @param string $classname
+		 * @param string $format
 		 * @return string
 		 */
 		public static function paginatorHelperFormat( CakeRequest $request, $classname, $format = 'Results %start% - %end% out of %count%.' ) {
@@ -100,7 +107,7 @@
 			$count = Hash::get( $request->params, "paging.{$classname}.count" );
 			$limit = Hash::get( $request->params, "paging.{$classname}.limit" );
 
-			$progressivePaginate = SearchProgressivePagination::enabled( $request->params['controller'], $request->params['action'] );
+			$progressivePaginate = self::enabled( $request->params['controller'], $request->params['action'] );
 
 			$longFormats = array(
 				'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%',

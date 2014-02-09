@@ -67,6 +67,7 @@
 		 * FIXME: ne fonctionne pas bien
 		 *
 		 * @param array $params
+		 * @param array $forbiddenlist
 		 * @return array
 		 */
 		protected function _urlencodeParams( $params, $forbiddenlist = array( '?', '/', ':', '&' ) ) {
