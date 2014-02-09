@@ -1,5 +1,7 @@
 <?php
-	// TODO: mettre en cache
+	/**
+	 * @deprecated
+	 */
 	class AppControllers
 	{
 		protected static $_init = false;

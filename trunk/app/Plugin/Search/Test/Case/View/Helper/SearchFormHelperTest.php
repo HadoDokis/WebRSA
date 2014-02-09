@@ -63,6 +63,8 @@
 
 		/**
 		 * Test de la méthode SearchFormHelper::dependantCheckboxes()
+		 *
+		 * @medium
 		 */
 		public function testDependantCheckboxes() {
 			$this->Controller->request->addParams(

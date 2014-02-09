@@ -24,15 +24,9 @@
 		 * @return void
 		 */
 		public static function suite() {
-			$suite = new CakeTestSuite( 'All tests' );
-			$suite->addTestDirectoryRecursive( TESTS.DS.'Case'.DS );
-
-			// FIXME: tous les plugins ?
-			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Appchecks'.DS.'Test'.DS.'Case'.DS );
-			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Search'.DS.'Test'.DS.'Case'.DS );
-			$suite->addTestDirectoryRecursive( APP.DS.'Plugin'.DS.'Validation'.DS.'Test'.DS.'Case'.DS );
-
-			return $suite;
+			$Suite = new CakeTestSuite( 'All tests' );
+			$Suite->addTestDirectoryRecursive( TESTS.DS.'Case'.DS );
+			return $Suite;
 		}
 	}
 ?>
