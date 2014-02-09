@@ -33,13 +33,13 @@
 		public $components = array( );
 
 		/**
-		 * Fait-on une pagination standard ou une pagination progressive ?
+		 * Pagination standard ou progressive.
 		 *
-		 * @param type $object
-		 * @param type $scope
-		 * @param type $whitelist
-		 * @param type $progressivePaginate
-		 * @return type
+		 * @param array|string|Model $object
+		 * @param array $scope
+		 * @param array $whitelist
+		 * @param boolean $progressivePaginate Permet de forcer la pagination progressive
+		 * @return array
 		 */
 		public function paginate( $object = null, $scope = array( ), $whitelist = array( ), $progressivePaginate = null ) {
 			$Controller = $this->_Collection->getController();

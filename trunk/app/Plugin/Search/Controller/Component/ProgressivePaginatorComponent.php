@@ -27,10 +27,10 @@
 		 *
 		 * @see CakePHP 2.2.2
 		 *
-		 * @param type $object
-		 * @param type $options
-		 * @param type $whitelist
-		 * @return null
+		 * @param Model $object
+		 * @param array $options
+		 * @param array $whitelist
+		 * @return array
 		 */
 		public function validateSort( $object, $options, $whitelist = array( ) ) {
 			if( isset( $options['sort'] ) ) {
@@ -86,10 +86,10 @@
 		 *
 		 * @see CakePHP 2.2.2
 		 *
-		 * @param type $object
-		 * @param type $scope
-		 * @param type $whitelist
-		 * @return type
+		 * @param array|string|Model $object
+		 * @param array $scope
+		 * @param array $whitelist
+		 * @return array
 		 * @throws MissingModelException
 		 */
 		public function paginate( $object = null, $scope = array( ), $whitelist = array( ) ) {
@@ -144,7 +144,7 @@
 			if( intval( $page ) < 1 ) {
 				$page = 1;
 			}
-			$page = $options['page'] = (int) $page;
+			$page = $options['page'] = (int)$page;
 
 			if( $object->hasMethod( 'paginate' ) ) {
 				$results = $object->paginate(
@@ -204,7 +204,8 @@
 				$this->Controller->request['paging'] = array( );
 			}
 			$this->Controller->request['paging'] = array_merge(
-					(array) $this->Controller->request['paging'], array( $object->alias => $paging )
+					(array)$this->Controller->request['paging'],
+					array( $object->alias => $paging )
 			);
 
 			if(

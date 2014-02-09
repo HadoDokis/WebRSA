@@ -31,12 +31,12 @@
 		 *
 		 * @param string $observeId
 		 * @param string $updateId
-		 * @param boolean $up
+		 * @param boolean $goUp
 		 * @return string
 		 */
-		protected function _constuctObserve( $observeId, $updateId, $up = true ) {
-			$up = $up ? ".up( 'fieldset' )" : '';
-			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$up}, false ); } );";
+		protected function _constuctObserve( $observeId, $updateId, $goUp = true ) {
+			$goUp = $goUp ? ".up( 'fieldset' )" : '';
+			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$goUp}, false ); } );";
 
 			return $this->Html->scriptBlock( $out );
 		}

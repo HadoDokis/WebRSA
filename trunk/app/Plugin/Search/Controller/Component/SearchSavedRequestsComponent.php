@@ -106,7 +106,7 @@
 		 *
 		 * @param string $controllerName
 		 * @param string $actionName
-		 * @return type
+		 * @return boolean
 		 */
 		public function check( $controllerName, $actionName ) {
 			$sessionKey = $this->sessionKey( $controllerName, $actionName );
