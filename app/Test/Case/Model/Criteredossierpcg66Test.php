@@ -417,6 +417,8 @@
 
 		/**
 		 * Test de la méthode Criteredossierpcg66::searchDossier().
+		 *
+		 * @medium
 		 */
 		public function testSearchDossier() {
 			$result = $this->Criteredossierpcg66->searchDossier(
