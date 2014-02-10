@@ -17,6 +17,7 @@
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.codepos' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.locaadr' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sitfam' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.matricule' ),
 			// Détails du suivi, D1
 			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.inscritpe' ),
 			__d( 'questionnairesd1pdvs93', 'Questionnaired1pdv93.marche_travail' ),
@@ -52,6 +53,7 @@
 				Hash::get( $result, 'Situationallocataire.codepos' ),
 				Hash::get( $result, 'Situationallocataire.locaadr' ),
 				value( $options['Situationallocataire']['sitfam'], Hash::get( $result, 'Situationallocataire.sitfam' ) ),
+				'='.Hash::get( $result, 'Situationallocataire.matricule' ),
 				// Détails du suivi, D1
 				value( $options['Questionnaired1pdv93']['inscritpe'], Hash::get( $result, 'Questionnaired1pdv93.inscritpe' ) ),
 				value( $options['Questionnaired1pdv93']['marche_travail'], Hash::get( $result, 'Questionnaired1pdv93.marche_travail' ) ),
