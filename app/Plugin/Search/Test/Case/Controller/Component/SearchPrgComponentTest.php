@@ -12,6 +12,7 @@
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
+	App::uses( 'CakeSession', 'Model/Datasource' );
 
 	/**
 	 * SearchPrgTestController class
@@ -85,6 +86,36 @@
 		public $name = 'SearchPrg';
 
 		/**
+		 * Sauvegarde de la session.
+		 *
+		 * @var array
+		 */
+		protected static $_sessionBackup;
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			self::$_sessionBackup = Configure::read( 'Session' );
+			Configure::write( 'Session', array(
+				'defaults' => 'php',
+				'timeout' => 100,
+				'cookie' => 'test'
+			) );
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			Configure::write( 'Session', self::$_sessionBackup );
+		}
+
+		/**
 		 * setUp method
 		 *
 		 * @return void
@@ -97,6 +128,20 @@
 			$this->Controller = new SearchPrgTestController( $request );
 			$this->Controller->Components->init( $this->Controller );
 			$this->Controller->SearchPrg->initialize( $this->Controller );
+
+			session_id( 'll5e1483na37s0jcljdpdd9ll5' );
+			CakeSession::start();
+			$_SESSION = array();
+		}
+
+		/**
+		 * tearDown method
+		 *
+		 * @return void
+		 */
+		public function tearDown() {
+			$_SESSION = array();
+			parent::tearDown();
 		}
 
 		/**
@@ -187,10 +232,6 @@
 		 * @return void
 		 */
 		public function testPostRedirectFilter() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$_SERVER['REQUEST_METHOD'] = 'POST';
 			$data = array(
 				'Search' => array(
@@ -241,10 +282,6 @@
 		 * @return void
 		 */
 		public function testGetFilter() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$_SERVER['REQUEST_METHOD'] = 'GET';
 			$prgSessionKey = "{$this->Controller->SearchPrg->name}.{$this->Controller->name}__{$this->Controller->action}";
 			$sessionKey = '62cdb7020ff920e5aa642c3d4066950dd1f01f4d';

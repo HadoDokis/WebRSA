@@ -12,6 +12,7 @@
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
+	App::uses( 'CakeSession', 'Model/Datasource' );
 
 	/**
 	 * SearchSavedRequestsTestController class
@@ -90,6 +91,36 @@
 		public $name = 'SearchSavedRequests';
 
 		/**
+		 * Sauvegarde de la session.
+		 *
+		 * @var array
+		 */
+		protected static $_sessionBackup;
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			self::$_sessionBackup = Configure::read( 'Session' );
+			Configure::write( 'Session', array(
+				'defaults' => 'php',
+				'timeout' => 100,
+				'cookie' => 'test'
+			) );
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			Configure::write( 'Session', self::$_sessionBackup );
+		}
+
+		/**
 		 * setUp method
 		 *
 		 * @return void
@@ -102,6 +133,20 @@
 			$this->Controller = new SearchSavedRequestsTestController( $request );
 			$this->Controller->Components->init( $this->Controller );
 			$this->Controller->SearchSavedRequests->initialize( $this->Controller );
+
+			session_id( 'll5e1483na37s0jcljdpdd9ll5' );
+			CakeSession::start();
+			$_SESSION = array();
+		}
+
+		/**
+		 * tearDown method
+		 *
+		 * @return void
+		 */
+		public function tearDown() {
+			$_SESSION = array();
+			parent::tearDown();
 		}
 
 		/**
@@ -122,10 +167,6 @@
 		 * Test de la méthode SearchSavedRequestsComponent::write()
 		 */
 		public function testWrite() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$url = array(
 				'plugin' => null,
 				'controller' => 'searches',
@@ -152,10 +193,6 @@
 		 * Test de la méthode SearchSavedRequestsComponent::read()
 		 */
 		public function testRead() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$url = array(
 				'plugin' => null,
 				'controller' => 'searches',
@@ -180,10 +217,6 @@
 		 * Test de la méthode SearchSavedRequestsComponent::check()
 		 */
 		public function testCheck() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$url = array(
 				'plugin' => null,
 				'controller' => 'searches',
@@ -203,10 +236,6 @@
 		 * Test de la méthode SearchSavedRequestsComponent::delete()
 		 */
 		public function testDelete() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$url = array(
 				'plugin' => null,
 				'controller' => 'searches',
@@ -234,10 +263,6 @@
 		 * Test de la méthode SearchSavedRequestsComponent::redirect()
 		 */
 		public function testRedirect() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$url = array(
 				'plugin' => null,
 				'controller' => 'searches',

@@ -8,6 +8,7 @@
 	 * @subpackage Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
 	/**
 	 * La classe SearchPaginatorComponent fournit des méthodes utilitaires de
