@@ -163,6 +163,12 @@ msgstr "Code postal"
 msgid "Situationallocataire.locaadr"
 msgstr "Nom de commune"
 
+msgid "Situationallocataire.matricule"
+msgstr "N° CAF"
+
+msgid "Situationallocataire.sitfam"
+msgstr "Situation familiale"
+
 msgid "Situationallocataire.sitfam_view"
 msgstr "Situation familiale"
 
