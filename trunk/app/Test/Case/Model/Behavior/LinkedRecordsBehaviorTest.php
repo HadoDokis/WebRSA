@@ -58,6 +58,8 @@
 
 		/**
 		 * Test de la méthode LinkedRecordsBehavior::linkedRecordVirtualFieldName()
+                 * 
+                 * @medium
 		 */
 		public function testLinkedRecordVirtualFieldName() {
 			$result = $this->Foyer->linkedRecordVirtualFieldName( 'Personne' );
