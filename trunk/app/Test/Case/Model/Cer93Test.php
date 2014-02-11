@@ -366,7 +366,6 @@
 					'actioncandidat_id' => NULL,
 					'present' => true,
 					'datetacitereconduction' => null,
-					'niv_etude' => '',
 				),
 				'Cer93' =>
 				array(
@@ -505,7 +504,7 @@
 
 			// TODO: en faire une fonction
 			foreach( Hash::flatten( $result ) as $path => $value ) {
-				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
+				if( preg_match( '/\.(created|modified|nbjours|niv_etude)/', $path ) ) {
 					$result = Hash::remove( $result, $path );
 				}
 			}
@@ -775,7 +774,6 @@
 					'actioncandidat_id' => NULL,
 					'present' => true,
 					'datetacitereconduction' => null,
-					'niv_etude' => '',
 				),
 				'Compofoyercer93' =>
 				array(
@@ -856,7 +854,7 @@
 
 			// TODO: en faire une fonction
 			foreach( Hash::flatten( $result ) as $path => $value ) {
-				if( preg_match( '/\.(created|modified|nbjours)/', $path ) ) {
+				if( preg_match( '/\.(created|modified|nbjours|niv_etude)/', $path ) ) {
 					$result = Hash::remove( $result, $path );
 				}
 			}
