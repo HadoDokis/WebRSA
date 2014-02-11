@@ -130,7 +130,7 @@
 			@see http://www.phpdoc.org/
 			@see http://daringfireball.net/projects/markdown/syntax
 	-->
-	<target name="phpdoc" depends="lint">
+	<target name="phpdoc" depends="clear,lint">
 		<exec executable="phpdoc" dir="${dir.cakephp.app}" failonerror="false" logerror="on">
 			<arg line="--title '${ant.project.name}'
 				-t ${dir.ant.build}/api
@@ -140,7 +140,7 @@
 	</target>
 
 	<!-- Checkstyle -->
-	<target name="phpcs" depends="lint">
+	<target name="phpcs" depends="clear,lint">
 		<exec executable="phpcs"
 			  dir="${dir.cakephp.app}"
 			  output="${dir.ant.logs}/checkstyle.xml"
@@ -156,7 +156,7 @@
 	</target>
 
 	<!-- Mess detector, avant: arg line=". xml codesize" -->
-	<target name="phpmd" depends="lint">
+	<target name="phpmd" depends="clear,lint">
 		<exec executable="phpmd"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
@@ -169,7 +169,7 @@
 	</target>
 
 	<!-- Dépendences -->
-	<target name="pdepend" depends="lint">
+	<target name="pdepend" depends="clear,lint">
 		<exec executable="pdepend"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
@@ -187,7 +187,7 @@
 		-exclude webroot/test.php
 		-exclude webroot/index.php
 	-->
-	<target name="phpcpd" depends="lint">
+	<target name="phpcpd" depends="clear,lint">
 		<exec executable="phpcpd"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
@@ -200,7 +200,7 @@
 	</target>
 
 	<!-- Code browser -->
-	<target name="phpcb" depends="lint">
+	<target name="phpcb" depends="clear,lint">
 		<exec executable="phpcb"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
