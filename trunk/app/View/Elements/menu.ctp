@@ -292,6 +292,10 @@
 					'url' => array( 'controller' => 'gestionsanomaliesbdds', 'action' => 'index'  ),
 					'title' => 'Gestion des anomalies de doublons simples au sein d\'un foyer donné',
 				),
+				'Doublons complexes' => array(
+					'url' => array( 'controller' => 'gestionsdoublons', 'action' => 'index'  ),
+					'title' => 'Gestion des anomalies de doublons complexes au sein de foyers différents',
+				),
 			),
 			__d( 'droit', 'Dossierseps:administration' ) => array(
 				'url' => array( 'controller' => 'dossierseps', 'action' => 'administration'  ),

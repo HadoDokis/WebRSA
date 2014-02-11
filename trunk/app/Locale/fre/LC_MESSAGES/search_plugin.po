@@ -64,6 +64,9 @@ msgstr "Au (inclus)"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Personne"
+msgstr "Recherche par allocataire"
+
 msgid "Search.Personne.dtnai_choice"
 msgstr "Filtrer par date de naissance"
 

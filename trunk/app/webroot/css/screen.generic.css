@@ -1709,3 +1709,25 @@ td.data.boolean.true {
 td.data.boolean.false {
 	background-image: url( ../img/icons/cross.png );
 }
+
+/* Gestion des doublons complexes */
+
+ul.actions li.action a.gestionsdoublons.index {
+	background-image: url( ../img/icons/application_form_magnify.png );
+}
+
+body.gestionsdoublons.index td .personnes.index {
+    background-image: url("../img/icons/zoom.png");
+}
+
+body.gestionsdoublons.index td .personnes.index.disabled {
+    background-image: url("../img/icons/zoom_disabled.png");
+}
+
+body.gestionsdoublons.index td .gestionsdoublons.fusion {
+    background-image: url("../img/icons/application_double.png");
+}
+
+body.gestionsdoublons.index td .gestionsdoublons.fusion.disabled {
+    background-image: url("../img/icons/application_double_disabled.png");
+}
