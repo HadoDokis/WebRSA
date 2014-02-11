@@ -239,6 +239,7 @@ DROP INDEX IF EXISTS codesappellationsromev3_codemetierrome_id_idx;
 CREATE INDEX codesappellationsromev3_codemetierromev3_id_idx ON codesappellationsromev3( codemetierromev3_id );
 
 
+ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN infotransmise TYPE TEXT;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
