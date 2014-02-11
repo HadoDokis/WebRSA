@@ -1157,4 +1157,13 @@
 	 * @var integer|array
 	 */
 	Configure::write( 'Rendezvous.thematiqueAnnuelleParStructurereferente', array( 5 ) );
+
+	/**
+	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
+	 * dans la gestion des doublons complexes.
+	 *
+	 * @param array
+	 * @default array( 'Z' )
+	 */
+	Configure::write( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa', array( 'Z' ) );
 ?>

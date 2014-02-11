@@ -422,6 +422,7 @@ $irregularPlural = array(
     'questionnaired2pdv93' => 'questionnairesd2pdvs93',
     'populationd1d2pdv93' => 'populationsd1d2pdvs93',
     'cohorted2pdv93' => 'cohortesd2pdvs93',
+    'gestiondoublon' => 'gestionsdoublons',
 );
 
 /**

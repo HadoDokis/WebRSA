@@ -837,4 +837,13 @@
      *  178 = Action Région à Moyen Terme
 	 */
     Configure::write( 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId', array( '178' ) );
+
+	/**
+	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
+	 * dans la gestion des doublons complexes.
+	 *
+	 * @param array
+	 * @default array( 'Z' )
+	 */
+	Configure::write( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa', array( 'Z' ) );
 ?>
