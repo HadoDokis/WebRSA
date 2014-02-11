@@ -91,6 +91,8 @@
 		/**
 		 * Test de la méthode AllocatairelieBehavior::personneId() lorsque des
 		 * jointures ont été définies dans la configuration.
+                 * 
+                 * @medium
 		 */
 		public function testPersonneIdJoins() {
 			$this->_setupCer93();
@@ -130,6 +132,8 @@
 		/**
 		 * Test de la méthode AllocatairelieBehavior::dossierId() lorsque des
 		 * jointures ont été définies dans la configuration.
+                 * 
+                 * @medium
 		 */
 		public function testDossierIdJoins() {
 			$this->_setupCer93();
