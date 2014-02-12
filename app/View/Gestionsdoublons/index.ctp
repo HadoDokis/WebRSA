@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Gestion des doublons complexes';
+	$this->pageTitle = __d( 'droit', 'Gestionsdoublons:index' );
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
@@ -41,6 +41,8 @@
 	echo $this->Search->observeDisableFormOnSubmit( 'CohortesDossier2pdvs93IndexForm' );
 
 	echo $this->Xform->end( 'Search' );
+
+	echo $this->Search->observeDisableFormOnSubmit( 'GestionsdoublonsIndexForm' );
 
 	// Résultats
 	if( isset( $results ) ) {

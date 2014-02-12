@@ -1225,13 +1225,24 @@ msgid "Module:Gestionsanomaliesbdds"
 msgstr "Gestion des anomalies"
 
 msgid "Gestionsanomaliesbdds:index"
-msgstr "Recherche des anomalies de perosnnes par foyer"
+msgstr "Recherche des anomalies de personnes par foyer"
 
 msgid "Gestionsanomaliesbdds:foyer"
 msgstr "Accès aux anomalies par foyer"
 
 msgid "Gestionsanomaliesbdds:personnes"
 msgstr "Correction des anomalies par personne"
+
+###############################################################################
+
+msgid "Module:Gestionsdoublons"
+msgstr "Gestion des doublons complexes"
+
+msgid "Gestionsdoublons:index"
+msgstr "Recherche des doublons complexes"
+
+msgid "Gestionsdoublons:fusion"
+msgstr "Fusion des doublons complexes"
 
 ###############################################################################
 

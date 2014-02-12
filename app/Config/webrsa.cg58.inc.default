@@ -758,8 +758,26 @@
 	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
 	 * dans la gestion des doublons complexes.
 	 *
+	 * Par défaut, on cherche à fusionner les dossiers créés dans l'application
+	 * avec les dossiers envoyer par les flux CAF.
+	 *
 	 * @param array
 	 * @default array( 'Z' )
 	 */
 	Configure::write( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa', array( 'Z' ) );
+
+	/**
+	 * Filtres par défaut du moteur de recherche des doublons complexes.
+	 */
+	Configure::write(
+		'Filtresdefaut.Gestionsdoublons_index',
+		array(
+			'Search' => array(
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => true,
+					'etatdosrsa' => array( '0', '1', '2', '3', '4', '5', '6' ),
+				)
+			)
+		)
+	);
 ?>
