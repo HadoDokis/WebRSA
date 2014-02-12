@@ -1,24 +1,40 @@
 <?php
-	$this->pageTitle = 'Fusion des doublons complexes';
+	$this->pageTitle = __d( 'droit', 'Gestionsdoublons:fusion' );
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 ?>
+
 <?php if( !empty( $fichiersModuleLies ) ): ?>
 	<div class="errorslist">
-	Impossible de procéder à la fusion des enregistrements liés aux foyers en doublons car des fichiers liés à ces enregistrements existent:
-	<ul>
-		<?php
-			foreach( $fichiersModuleLies as $fichier ) {
-				$controller = Inflector::tableize( $fichier['Fichiermodule']['modele'] );
-				echo "<li>".$this->Xhtml->link(
-					$fichier['Fichiermodule']['modele'],
-					array( 'controller' => $controller, 'action' => 'filelink', $fichier['Fichiermodule']['fk_value'] ),
-					array( 'class' => 'external' )
-				)."</li>";
-			}
-		?>
-	</ul>
+		Impossible de procéder à la fusion des enregistrements liés aux foyers en doublons car des fichiers liés à ces enregistrements existent:
+		<ul>
+			<?php
+				foreach( $fichiersModuleLies as $fichier ) {
+					$controller = Inflector::tableize( $fichier['Fichiermodule']['modele'] );
+					echo "<li>".$this->Xhtml->link(
+						$fichier['Fichiermodule']['modele'],
+						array( 'controller' => $controller, 'action' => 'filelink', $fichier['Fichiermodule']['fk_value'] ),
+						array( 'class' => 'external' )
+					)."</li>";
+				}
+			?>
+		</ul>
 	</div>
-<?php else: ?>
+<?php endif;?>
+
+<?php if( isset( $errors ) && !empty( $errors ) ): ?>
+	<div class="errorslist">
+		Impossible de procéder à la fusion des enregistrements:
+		<ul>
+			<?php
+				foreach( $errors as $error ) {
+					echo "<li>".h( $error )."</li>";
+				}
+			?>
+		</ul>
+	</div>
+<?php endif;?>
+
+<?php if( empty( $fichiersModuleLies ) ): ?>
 	<noscript>
 		<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
 	</noscript>

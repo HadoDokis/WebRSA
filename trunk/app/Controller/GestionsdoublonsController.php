@@ -37,6 +37,7 @@
 					'index' => array( 'filter' => 'Search' ),
 				)
 			),
+			'Search.SearchSavedRequests',
 		);
 
 		/**
@@ -81,6 +82,12 @@
 				$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 
 				$results = $this->paginate( 'Foyer', array(), array(), $progressivePaginate );
+
+				$this->SearchSavedRequests->write(
+					Inflector::underscore( $this->name ),
+					$this->action,
+					$this->request->params
+			);
 
 				$this->set( compact( 'results' ) );
 			}
@@ -165,14 +172,40 @@
 			$fichiersModuleLies = $this->Gestiondoublon->fichiersModuleLies( $resultsFichiersLies, '/%s/id' );
 			$this->set( compact( 'fichiersModuleLies' ) );
 
-
 			if( !empty( $this->request->data ) ) {
 				if( isset( $this->request->data['Cancel'] ) ) {
 					$this->Jetons2->release( $dossier1_id );
 					$this->Jetons2->release( $dossier2_id );
+
+					$this->SearchSavedRequests->redirect(
+						Inflector::underscore( $this->name ),
+						'index',
+						array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index' )
+					);
 				}
 				else {
-					$success = $this->Gestiondoublon->fusionComplexe( $foyer1_id, $foyer2_id, $results, $this->request->data );
+					// On vérifie que l'on garde bien un foyer et au moins un allocataire
+					$errors = array();
+
+					$foyer = Hash::get( $this->request->data, 'Foyer.id' );
+					$personnes = Hash::get( $this->request->data, 'Personne.id' );
+
+					if( empty( $foyer ) ) {
+						$errors[] = 'Veuillez sélectionner un foyer dans lequel fusionner les données';
+					}
+					if( empty( $personnes ) ) {
+						$errors[] = 'Veuillez sélectionner au moins une personne';
+					}
+
+					$this->set( compact( 'errors' ) );
+
+					// Tentative d'enregistrement s'il y a lieu
+					if( empty( $errors ) ) {
+						$success = $this->Gestiondoublon->fusionComplexe( $foyer1_id, $foyer2_id, $results, $this->request->data );
+					}
+					else {
+						$success = false;
+					}
 
 					if( $success ) {
 						$this->Foyer->commit();
