@@ -20,7 +20,7 @@
 				'Référent',
 				'Objet du RDV',
 			),
-			( $useThematiques ? array( 'Thématiques du RDV' ) : array() ),
+			( ( isset( $useThematiques ) && $useThematiques ) ? array( 'Thématiques du RDV' ) : array() ),
 			array(
 				'Statut du RDV',
 				'Date du RDV',
@@ -55,7 +55,7 @@
 				value( $qual, Hash::get( $rdv, 'Referent.qual' ) ).' '.Hash::get( $rdv, 'Referent.nom' ).' '.Hash::get( $rdv, 'Referent.prenom' ),
 				value( $typerdv, Hash::get( $rdv, 'Rendezvous.typerdv_id' ) ),
 			),
-			( $useThematiques ? array( !empty( $thematiquesrdvs ) ? '- '.implode( "\n- ", $thematiquesrdvs ) : '' ) : array() ),
+			( ( isset( $useThematiques ) && $useThematiques ) ? array( !empty( $thematiquesrdvs ) ? '- '.implode( "\n- ", $thematiquesrdvs ) : '' ) : array() ),
 			array(
 				value( $statutrdv, Hash::get( $rdv, 'Rendezvous.statutrdv_id' ) ),
 				date_short( $rdv['Rendezvous']['daterdv'] ),

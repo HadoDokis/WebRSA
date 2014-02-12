@@ -116,30 +116,44 @@
 		}
 
 		/**
-		 * Moteur de recherche par nouvelles PDOs.
+		 * Export CSV des RDVs.
 		 *
 		 * @return void
 		 */
 		public function exportcsv() {
+		
+			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
+			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
+			$conditionStructure = array();
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$structurereferente_id = $this->Workflowscers93->getUserStructurereferenteId( false );
+				if( !is_null( $structurereferente_id ) ) {
+					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
+				}
+			}
+			
+			$datas = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Critererdv->search(
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),
 				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
-				Hash::expand( $this->request->params['named'], '__' )
+				$datas,
+				$conditionStructure
 			);
 
-			unset( $querydata['limit'] );
+			unset( $querydata['limit'] ); //FIXME
 			$querydata = $this->_qdAddFilters( $querydata );
 			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 			$rdvs = $this->Rendezvous->find( 'all', $querydata );
+
             if( Configure::read( 'Rendezvous.useThematique' ) ) {
                 $rdvs = $this->Rendezvous->containThematique( $rdvs );
             }
 
 			// Population du select référents liés aux structures
-			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
-			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
-			$this->set( 'referents', $referents );
+// 			$structurereferente_id = Set::classicExtract( $this->request->data, 'Critererdv.structurereferente_id' );
+// 			$referents = $this->Rendezvous->Referent->referentsListe( $structurereferente_id );
+// 			$this->set( 'referents', $referents );
 
             if( Configure::read( 'Rendezvous.useThematique' ) ) {
                 $this->set( 'useThematiques', $this->Rendezvous->Thematiquerdv->used() );
