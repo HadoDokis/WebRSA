@@ -626,19 +626,22 @@
                         'Statutpdo',
                         'Situationpdo',
                         'Personne',
-                        'Traitementpcg66'
+                        'Traitementpcg66' => array(
+							'Personnepcg66' => array(
+								'Personne'
+							)
+						)
                     )
                 )
 			);
 
-			//Liste des traitements avec une fiche de calcul devant être reporter dans la décision
+			//Liste des traitements avec une fiche de calcul devant être reportée dans la décision
 			$listeFicheAReporter = array( );
 			foreach( $personnespcgs66 as $i => $personnepcg66 ) {
 				if( !empty( $personnepcg66['Traitementpcg66'] ) ) {
 					foreach( $personnepcg66['Traitementpcg66'] as $j => $traitementpcg66 ) {
-						if( $traitementpcg66['reversedo'] == 1 && $traitementpcg66['annule'] != 'O' ) {
+						if( $traitementpcg66['reversedo'] == 1 && $traitementpcg66['annule'] != 'O' && $traitementpcg66['typetraitement'] == 'revenu'  ) {
 							$listeFicheAReporter[] = $traitementpcg66;
-                            $listeFicheAReporter[$j]['Personnepcg66'] = $personnepcg66['Personne'];
 						}
 					}
 				}

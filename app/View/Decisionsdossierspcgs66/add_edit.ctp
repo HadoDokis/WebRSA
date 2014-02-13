@@ -111,25 +111,25 @@
 		<tbody>
 		<?php
 			foreach( $listeFicheAReporter as $i => $fichecalcul ){
-
-				if( $fichecalcul['regime'] == 'microbic' ) {
-					$montanttotal = $fichecalcul['benefpriscompte'];
+				$regime = Hash::get( $fichecalcul, 'regime' );
+				if( $regime == 'microbic' ) {
+					$montanttotal = Hash::get( $fichecalcul, 'benefpriscompte' );
 				}
 				else{
-					$montanttotal = $fichecalcul['mnttotalpriscompte'];
+					$montanttotal = Hash::get( $fichecalcul, 'mnttotalpriscompte' );
 				}
 
 				echo $this->Xhtml->tableCells(
 					array(
-                        h( Hash::get( $fichecalcul, 'Personnepcg66.qual' ).' '.Hash::get( $fichecalcul, 'Personnepcg66.nom' ).' '.Hash::get( $fichecalcul, 'Personnepcg66.prenom' ) ),
-						h( Set::enum( $fichecalcul['regime'], $options['Traitementpcg66']['regime'] ) ),
-						h( $this->Locale->money( $fichecalcul['chaffvnt'] ) ),
-                        h( $this->Locale->money( $fichecalcul['chaffsrv'] ) ),
+                        h( Hash::get( $fichecalcul, 'Personnepcg66.Personne.nom_complet' ) ),
+						h( Set::enum( Hash::get( $fichecalcul, 'regime' ), $options['Traitementpcg66']['regime'] ) ),
+						h( $this->Locale->money( Hash::get( $fichecalcul, 'chaffvnt' ) ) ),
+                        h( $this->Locale->money( Hash::get( $fichecalcul, 'chaffsrv' ) ) ),
                         h( $this->Locale->money( $montanttotal ) ),
-						h( $this->Locale->money( $fichecalcul['revenus'] ).' par mois' ),
-						h( date_short( $fichecalcul['dtdebutperiode'] ) ),
-						h( date_short( $fichecalcul['datefinperiode'] ) ),
-						h( date_short( $fichecalcul['daterevision'] ) )
+						h( $this->Locale->money( Hash::get( $fichecalcul, 'revenus' ) ).' par mois' ),
+						h( date_short( Hash::get( $fichecalcul, 'dtdebutperiode' ) ) ),
+						h( date_short( Hash::get( $fichecalcul, 'datefinperiode' ) ) ),
+						h( date_short( Hash::get( $fichecalcul, 'daterevision' ) ) )
 					),
 					array( 'class' => 'odd' ),
 					array( 'class' => 'even' )
