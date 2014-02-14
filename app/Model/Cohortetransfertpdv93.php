@@ -390,8 +390,12 @@
 					'origine' => 'demenagement', // FIXME: changer le beforeSave de orientstruct
 				)
 			);
+
+			// Info: il faut que le transfert soit créé pour que le bon PDF d'orientation soit généré
+			$Orientstruct->Behaviors->disable( 'StorablePdf' );
 			$Orientstruct->create( $orientstruct );
 			$success = $Orientstruct->save() && $success;
+			$Orientstruct->Behaviors->enable( 'StorablePdf' );
 
 			if( !empty( $Orientstruct->validationErrors ) ) {
 				debug( $Orientstruct->validationErrors );
@@ -409,6 +413,11 @@
 				if( !empty( $Transfertpdv93->validationErrors ) ) {
 					debug( $Transfertpdv93->validationErrors );
 				}
+			}
+
+			// Maintenant que les données du transfert ont été enregistrées, on peut générer le bon PDF d'orientation
+			if( $success ) {
+				$success = $Orientstruct->generatePdf( $Orientstruct->id ) && $success;
 			}
 
 			// Si on change de PDV, et que l'allocataire possède un D1 sans D2 dans l'ancien PDV, on enregistre automatiquement un D2

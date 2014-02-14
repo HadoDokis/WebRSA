@@ -43,8 +43,12 @@
 		echo $this->Form->input( 'Orientstruct.id', array( 'type' => 'hidden' ) );
 		echo '</div>';
 	}
+
+	// On s'assure de ne pas perdre l'origine si on est en modification
 	echo '<div>';
-	echo $this->Form->input( 'Orientstruct.origine', array( 'type' => 'hidden', 'value' => 'manuelle' ) );
+	$origine = Hash::get( $this->request->data, 'Orientstruct.origine' );
+	$origine = ( empty( $origine ) ? 'manuelle' : $origine );
+	echo $this->Form->input( 'Orientstruct.origine', array( 'type' => 'hidden', 'value' => $origine ) );
 	echo '</div>';
 
 	$typeorient_id = null;
@@ -112,7 +116,7 @@
 		echo $this->Form->input( 'Orientstruct.date_propo', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_propo' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ), 'empty' => true, 'selected' => $selectedDateDemande ) );
 
 		echo $this->Form->input( 'Orientstruct.date_valid', array(  'label' =>  required( __d( 'contratinsertion', 'Contratinsertion.date_valid' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 3, 'minYear' => ( date( 'Y' ) - 10 ) ) );
-		
+
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo $this->Form->input( 'Orientstruct.typenotification', array(  'label' =>  'Type de notification', 'options' => $options['Orientstruct']['typenotification'], 'type' => 'select', 'empty' => false  ) );
 		}
