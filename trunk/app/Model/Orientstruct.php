@@ -482,19 +482,32 @@
 		 * @return string
 		 */
 		public function modeleOdt( $data ) {
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$typenotification = $data['Orientstruct']['typenotification'];
-				if( !empty( $typenotification ) && $typenotification == 'systematique' ) {
-					return "Orientation/orientationsystematiquepe.odt";
-				}
-                else if( !empty( $typenotification ) && $typenotification == 'dejainscritpe' ) {
-					return "Orientation/orientationpedefait.odt";
-				}
-				else {
-					return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
-				}
+			// Au CG 93, lorsqu'une orientation fait suite à un déménagement, il
+			// faut imprimer le courrier de transfert PDV
+			$isDemenagement = false;
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$isDemenagement = ( Hash::get( $data, 'NvOrientstruct.origine' ) === 'demenagement' );
 			}
-			return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
+
+			if( $isDemenagement ) {
+				return ClassRegistry::init( 'Transfertpdv93' )->modeleOdt( $data );
+			}
+			else {
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$typenotification = $data['Orientstruct']['typenotification'];
+					if( !empty( $typenotification ) && $typenotification == 'systematique' ) {
+						return "Orientation/orientationsystematiquepe.odt";
+					}
+					else if( !empty( $typenotification ) && $typenotification == 'dejainscritpe' ) {
+						return "Orientation/orientationpedefait.odt";
+					}
+					else {
+						return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
+					}
+				}
+				return "Orientation/{$data['Typeorient']['modele_notif']}.odt";
+			}
 		}
 
 		/**
@@ -504,104 +517,145 @@
 		 * @return array
 		 */
 		public function getDataForPdf( $id, $user_id = null ) {
-			// TODO: error404/error500 si on ne trouve pas les données
-			$optionModel = ClassRegistry::init( 'Option' );
-			$qual = $optionModel->qual();
-			$typevoie = $optionModel->typevoie();
+			// Au CG 93, lorsqu'une orientation fait suite à un déménagement, il
+			// faut imprimer le courrier de transfert PDV
+			$isDemenagement = false;
 
-			$orientstruct = $this->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.id' => $id
-					),
-					'contain' => array(
-						'Personne' => array(
-							'Foyer' => array(
-								'Adressefoyer' => array(
-									'conditions' => array(
-										'rgadr' => '01'
-									),
-									'Adresse'
-								),
-								'Dossier'
-							),
-						),
-						'Typeorient',
-						'Structurereferente',
-						'Referent',
-						'User',
-					)
-				)
-			);
-
-			if( !is_null( $user_id ) ) {
-				$user = $this->User->find(
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$demenagement = $this->find(
 					'first',
 					array(
-						'conditions' => array(
-							'User.id' => $user_id
+						'fields' => array(
+							"{$this->alias}.{$this->primaryKey}"
 						),
-						'contain' => array(
-							'Serviceinstructeur'
+						'contain' => false,
+						'conditions' => array(
+							"{$this->alias}.{$this->primaryKey}" => $id,
+							"{$this->alias}.origine" => 'demenagement'
 						)
 					)
 				);
-				$orientstruct = Set::merge( $orientstruct, $user );
+
+				$isDemenagement = !empty( $demenagement );
 			}
 
+			if( $isDemenagement ) {
+				$Transfertpdv93 = ClassRegistry::init( 'Transfertpdv93' );
+				$orientstruct = $Transfertpdv93->getDataForPdf( $id, $user_id );
 
-			if( $orientstruct['Orientstruct']['statut_orient'] != 'Orienté' ) {
-				return false;
+				// Traduction car elles sont faites directement dans les données pour les orientsstructs
+				$options = $Transfertpdv93->getPdfOptions();
+				foreach( $options as $modelAlias => $modelOptions ) {
+					foreach( $modelOptions as $fieldName => $fieldOptions ) {
+						if( isset( $orientstruct[$modelAlias][$fieldName] ) ) {
+							$orientstruct[$modelAlias][$fieldName] = Set::enum(
+								$orientstruct[$modelAlias][$fieldName],
+								$options[$modelAlias][$fieldName]
+							);
+						}
+					}
+				}
 			}
+			else {
+				// TODO: error404/error500 si on ne trouve pas les données
+				$Option = ClassRegistry::init( 'Option' );
+				$qual = $Option->qual();
+				$typevoie = $Option->typevoie();
 
-			$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
-			if( isset( $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'] ) ){
-				$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
-				unset( $orientstruct['Personne']['Foyer'] );
+				$orientstruct = $this->find(
+					'first',
+					array(
+						'conditions' => array(
+							'Orientstruct.id' => $id
+						),
+						'contain' => array(
+							'Personne' => array(
+								'Foyer' => array(
+									'Adressefoyer' => array(
+										'conditions' => array(
+											'rgadr' => '01'
+										),
+										'Adresse'
+									),
+									'Dossier'
+								),
+							),
+							'Typeorient',
+							'Structurereferente',
+							'Referent',
+							'User',
+						)
+					)
+				);
+
+				if( !is_null( $user_id ) ) {
+					$user = $this->User->find(
+						'first',
+						array(
+							'conditions' => array(
+								'User.id' => $user_id
+							),
+							'contain' => array(
+								'Serviceinstructeur'
+							)
+						)
+					);
+					$orientstruct = Set::merge( $orientstruct, $user );
+				}
+
+
+				if( $orientstruct['Orientstruct']['statut_orient'] != 'Orienté' ) {
+					return false;
+				}
+
+				$orientstruct['Dossier'] = $orientstruct['Personne']['Foyer']['Dossier'];
+				if( isset( $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'] ) ){
+					$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
+					unset( $orientstruct['Personne']['Foyer'] );
+					if( Configure::read( 'Cg.departement' ) != 66 ) {
+						$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+					}
+				}
+
 				if( Configure::read( 'Cg.departement' ) != 66 ) {
-					$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
+					$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
+					$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
 				}
-			}
-
-			if( Configure::read( 'Cg.departement' ) != 66 ) {
-				$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
-				$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
-			}
 
 
-			/// Recherche référent à tout prix ....
-			// Premère étape: référent du parcours.
-			$referent = Hash::filter( (array)$orientstruct['Referent'] );
-			if( empty( $referent ) ) {
-				$referent = $this->Personne->Referent->PersonneReferent->find(
-					'first',
-					array(
-						'conditions' => array(
-							'PersonneReferent.personne_id' => $orientstruct['Personne']['id']
-						),
-						'recursive' => -1
-					)
-				);
-				if( !empty( $referent ) ) {
-					$orientstruct['Referent'] = $referent['PersonneReferent'];
+				/// Recherche référent à tout prix ....
+				// Premère étape: référent du parcours.
+				$referent = Hash::filter( (array)$orientstruct['Referent'] );
+				if( empty( $referent ) ) {
+					$referent = $this->Personne->Referent->PersonneReferent->find(
+						'first',
+						array(
+							'conditions' => array(
+								'PersonneReferent.personne_id' => $orientstruct['Personne']['id']
+							),
+							'recursive' => -1
+						)
+					);
+					if( !empty( $referent ) ) {
+						$orientstruct['Referent'] = $referent['PersonneReferent'];
+					}
 				}
-			}
 
-			// Deuxième étape: premier référent renseigné pour la structure sélectionnée
-			$referent = Hash::filter( (array)$orientstruct['Referent'] );
-			if( empty( $referent ) && !empty( $orientstruct['Structurereferente']['id'] ) ) {
-				$referent = $this->Personne->Referent->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
-						),
-						'recursive' => -1
-					)
-				);
-				if( !empty( $referent ) ) {
-					$orientstruct['Referent'] = $referent['Referent'];
+				// Deuxième étape: premier référent renseigné pour la structure sélectionnée
+				$referent = Hash::filter( (array)$orientstruct['Referent'] );
+				if( empty( $referent ) && !empty( $orientstruct['Structurereferente']['id'] ) ) {
+					$referent = $this->Personne->Referent->find(
+						'first',
+						array(
+							'conditions' => array(
+								'Referent.structurereferente_id' => $orientstruct['Structurereferente']['id']
+							),
+							'recursive' => -1
+						)
+					);
+					if( !empty( $referent ) ) {
+						$orientstruct['Referent'] = $referent['Referent'];
+					}
 				}
 			}
 
