@@ -224,9 +224,15 @@
 					'Personne' => array(
 						'qual' => $qual
 					),
+					'Structurereferente' => array(
+						'type_voie' => $typevoie
+					),
 					'VxStructurereferente' => array(
 						'type_voie' => $typevoie
-					)
+					),
+					'type' => array(
+						'voie' => $typevoie,
+					),
 				)
 			);
 
