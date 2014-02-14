@@ -197,22 +197,40 @@
 			$data = $this->getDataForPdf( $nvorientstruct_id, $user_id );
 			$modeleodt = $this->modeleOdt( $data );
 
+			$options =  $this->getPdfOptions();
+
+			return $this->ged( $data, $modeleodt, false, $options );
+		}
+
+		/**
+		 * Retourne les options pour les traductions du PDF.
+		 *
+		 * @return array
+		 */
+		public function getPdfOptions() {
 			$Option = ClassRegistry::init( 'Option' );
+
+			$qual = $Option->qual();
+			$typevoie = $Option->typevoie();
+
 			$options =  Set::merge(
 				array(
-					'Personne' => array(
-						'qual' => $Option->qual()
-					),
 					'Adresse' => array(
-						'typevoie' => $Option->typevoie()
+						'typevoie' => $typevoie
+					),
+					'NvStructurereferente' => array(
+						'type_voie' => $typevoie
+					),
+					'Personne' => array(
+						'qual' => $qual
+					),
+					'VxStructurereferente' => array(
+						'type_voie' => $typevoie
 					)
 				)
 			);
 
-// debug($data);
-// debug( $modeleodt );
-// die();
-			return $this->ged( $data, $modeleodt, false, $options );
+			return $options;
 		}
 
 		/**
