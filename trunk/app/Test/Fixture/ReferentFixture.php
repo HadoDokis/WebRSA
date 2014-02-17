@@ -32,6 +32,28 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'structurereferente_id' => 1,
+				'nom' => 'Dupont',
+				'prenom' => 'Martin',
+				'numero_poste' => '0123455678',
+				'email' => 'martin.dupont@moncg.fr',
+				'qual' => 'MR',
+				'fonction' => 'Référent',
+				'actif' => 'O',
+				'datecloture' => null,
+			),
+			array(
+				'structurereferente_id' => 1,
+				'nom' => 'Claude',
+				'prenom' => 'Dupont',
+				'numero_poste' => '0123455678',
+				'email' => 'claude.martin@moncg.fr',
+				'qual' => 'MR',
+				'fonction' => 'Référent',
+				'actif' => 'N',
+				'datecloture' => null,
+			),
 		);
 
 	}

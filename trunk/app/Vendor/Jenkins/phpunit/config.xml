@@ -10,10 +10,12 @@
 			<directory>../../..</directory>
 			<exclude>
 				<directory>../../../Config</directory>
+				<directory>../../../Doc</directory>
 				<directory>../../../Test</directory>
 				<directory>../../../Plugin</directory>
 				<directory>../../../Vendor</directory>
 				<directory>../../../webroot</directory>
+				<file>../../../index.php</file>
 			</exclude>
 		</whitelist>
 	</filter>

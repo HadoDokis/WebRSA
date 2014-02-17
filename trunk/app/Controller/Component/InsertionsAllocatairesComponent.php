@@ -22,13 +22,6 @@
 		public $name = 'InsertionsAllocataires';
 
 		/**
-		 * Contrôleur utilisant ce component.
-		 *
-		 * @var Controller
-		 */
-		public $Controller = null;
-
-		/**
 		 * Paramètres de ce component
 		 *
 		 * @var array
@@ -43,19 +36,22 @@
 		public $components = array( 'Session' );
 
 		/**
-		 * Appelée avant Controller::beforeFilter().
+		 * Retourne la clé de session pour une méthode et un querydata donnés.
 		 *
-		 * @param Controller $controller Controller with components to initialize
-		 * @return void
-		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::initialize
+		 * @param string $method
+		 * @param array $query
+		 * @return string
 		 */
-		public function initialize( Controller $controller ) {
-			$this->Controller = $controller;
+		public function sessionKey( $method, array $query ) {
+			$queryHash = sha1( serialize( $query ) );
+			$sessionKey = "Auth.{$this->name}.{$method}.{$queryHash}";
+			return $sessionKey;
 		}
 
-
-
         /**
+		 * Retourne la liste des types d'oriention.
+		 *
+		 * Mise en cache dans la session de l'utilisateur.
 		 *
 		 * @param type $options
 		 * @return type
@@ -92,25 +88,31 @@
                 $conditions[] = "Typeorient.id IN ( {$sq} )";
             }
 
-			$tmps = $Typeorient->find(
-				'all',
-				array(
-					'fields' => array_merge(
-						$Typeorient->fields()
-					),
-					'conditions' => $conditions,
-					'contain' => false,
-					'order' => array(
-						'Typeorient.lib_type_orient ASC'
-					)
+			$query = array(
+				'fields' => $Typeorient->fields(),
+				'conditions' => $conditions,
+				'contain' => false,
+				'order' => array(
+					'Typeorient.lib_type_orient ASC'
 				)
 			);
 
-			if( !empty( $tmps ) ) {
-                foreach( $tmps as $tmp ) {
-                    $results[$tmp['Typeorient']['id']] = $tmp['Typeorient']['lib_type_orient'];
-                }
-            }
+			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$results = $this->Session->read( $sessionKey );
+
+			if( $results === null ) {
+				$results = array();
+
+				$tmps = $Typeorient->find( 'all', $query );
+
+				if( !empty( $tmps ) ) {
+					foreach( $tmps as $tmp ) {
+						$results[$tmp['Typeorient']['id']] = $tmp['Typeorient']['lib_type_orient'];
+					}
+				}
+
+				$this->Session->write( $sessionKey, $results );
+			}
 
 			if( Hash::get( $options, 'empty' ) ) {
 				$results = array( 0 => 'Non orienté' ) + $results;
@@ -120,6 +122,10 @@
         }
 
 		/**
+		 * Retourne la liste des structures référentes actives (pour un dependant
+		 * select avec le type d'orientation) liées à un type d'oientation actif.
+		 *
+		 * Mise en cache dans la session de l'utilisateur.
 		 *
 		 * <pre>
 		 * $options = array(
@@ -151,51 +157,50 @@
 			);
 
 			$conditions = Set::merge( $conditions, $options['conditions'] );
-			$serializedConditions = serialize( $conditions );
-			$sessionKey = 'Auth.InsertionsAllocataires.'.sha1( $serializedConditions );
-			$results = $this->Session->read( $sessionKey );
 
-			if( is_null( $results ) ) {
-				$results = array();
+			if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
+				$zonesgeographiques_ids = array_keys( $this->Session->read( 'Auth.Zonegeographique' ) );
 
-				if( ( Configure::read( 'Cg.departement' ) == 93 ) && $this->Session->read( 'Auth.User.filtre_zone_geo' ) !== false ) {
-					$zonesgeographiques_ids = array_keys( $this->Session->read( 'Auth.Zonegeographique' ) );
-
-					$sqStructurereferente = $Structurereferente->StructurereferenteZonegeographique->sq(
-						array(
-							'alias' => 'structuresreferentes_zonesgeographiques',
-							'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
-							'conditions' => array(
-								'structuresreferentes_zonesgeographiques.zonegeographique_id' => $zonesgeographiques_ids
-							),
-							'contain' => false
-						)
-					);
-					$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
-				}
-                else if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
-                    $structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-                    $conditions['Structurereferente.id'] = $structurereferente_id;
-                }
-
-				$tmps = $Structurereferente->find(
-					'all',
+				$sqStructurereferente = $Structurereferente->StructurereferenteZonegeographique->sq(
 					array(
-						'fields' => array_merge(
-							$Structurereferente->Typeorient->fields(),
-							$Structurereferente->fields()
+						'alias' => 'structuresreferentes_zonesgeographiques',
+						'fields' => array( 'structuresreferentes_zonesgeographiques.structurereferente_id' ),
+						'conditions' => array(
+							'structuresreferentes_zonesgeographiques.zonegeographique_id' => $zonesgeographiques_ids
 						),
-						'joins' => array(
-							$Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
-						),
-						'conditions' => $conditions,
-						'contain' => false,
-						'order' => array(
-							'Typeorient.lib_type_orient ASC',
-							'Structurereferente.lib_struc ASC',
-						)
+						'contain' => false
 					)
 				);
+				$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
+			}
+			else if( ( Configure::read( 'Cg.departement' ) == 66 ) && $this->Session->read( 'Auth.User.type' ) === 'externe_ci' ) {
+				$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
+				$conditions['Structurereferente.id'] = $structurereferente_id;
+			}
+
+			$query = array(
+				'fields' => array_merge(
+					$Structurereferente->Typeorient->fields(),
+					$Structurereferente->fields()
+				),
+				'joins' => array(
+					$Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => $conditions,
+				'contain' => false,
+				'order' => array(
+					'Typeorient.lib_type_orient ASC',
+					'Structurereferente.lib_struc ASC',
+				)
+			);
+
+			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$results = $this->Session->read( $sessionKey );
+
+			if( $results === null ) {
+				$results = array();
+
+				$tmps = $Structurereferente->find( 'all', $query );
 
 				if( !empty( $tmps ) ) {
 					foreach( $tmps as $tmp ) {
@@ -219,30 +224,37 @@
 				$this->Session->write( $sessionKey, $results );
 			}
 
-			// Cas optgroup, structurereferente_id
-			if( $options['optgroup'] ) {
-				$results = $results['optgroup'];
-			}
-			// Cas où l'on ne veut que les ids des structures référentes
-			else if( $options['ids'] ) {
-				$results = $results['ids'];
-			}
-			// Cas où l'on veut les libellés des structures référentes
-			else if( $options['list'] ) {
-				$results = $results['list'];
-			}
-			// Cas typeorient_id_structurereferente_id
-			else {
-				$results = $results['normal'];
+			if( !empty( $results ) ) {
+				// Cas optgroup, structurereferente_id
+				if( $options['optgroup'] ) {
+					$results = $results['optgroup'];
+				}
+				// Cas où l'on ne veut que les ids des structures référentes
+				else if( $options['ids'] ) {
+					$results = $results['ids'];
+				}
+				// Cas où l'on veut les libellés des structures référentes
+				else if( $options['list'] ) {
+					$results = $results['list'];
+				}
+				// Cas typeorient_id_structurereferente_id
+				else {
+					$results = $results['normal'];
+				}
 			}
 
 			return $results;
 		}
 
 		/**
+		 * Retourne la liste des référents actifs (pour un dependant select avec
+		 * la structure référente) liés à une structure référente active, liée à
+		 * un type d'oientation actif.
 		 *
-		 * @param type $options
-		 * @return type
+		 * Mise en cache dans la session de l'utilisateur.
+		 *
+		 * @param array $options
+		 * @return array
 		 */
 		public function referents( $options = array() ) {
 			$Referent = ClassRegistry::init( 'Referent' );
@@ -279,7 +291,7 @@
 				$conditions[] = "Structurereferente.id IN ( {$sqStructurereferente} )";
 			}
 
-			$querydata = array(
+			$query = array(
 				'fields' => array_merge(
 					$Referent->Structurereferente->Typeorient->fields(),
 					$Referent->Structurereferente->fields(),
@@ -297,18 +309,37 @@
 				)
 			);
 
-			$tmps = $Referent->find( 'all', $querydata );
+			$sessionKey = $this->sessionKey( __FUNCTION__, $query );
+			$results = $this->Session->read( $sessionKey );
 
-			if( !empty( $tmps ) ) {
+			if( $results === null ) {
+				$results = array();
+
+				$tmps = $Referent->find( 'all', $query );
+
+				if( !empty( $tmps ) ) {
+					$idsPrefix = Set::format( $tmps, '{0}_{1}', array( '{n}.Referent.structurereferente_id', '{n}.Referent.id' ) );
+					$idsNormal = Set::extract( $tmps, '/Referent/id' );
+					$values = Set::format( $tmps, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
+
+					$results = array(
+						'prefix' => array_combine( $idsPrefix, $values ),
+						'normal' => array_combine( $idsNormal, $values ),
+					);
+				}
+
+				$this->Session->write( $sessionKey, $results );
+			}
+
+			if( !empty( $results ) ) {
+				// Cas prefix
 				if( $options['prefix'] ) {
-					$ids = Set::format( $tmps, '{0}_{1}', array( '{n}.Referent.structurereferente_id', '{n}.Referent.id' ) );
+					$results = $results['prefix'];
 				}
+				// Cas typeorient_id_structurereferente_id
 				else {
-					$ids = Set::extract( $tmps, '/Referent/id' );
+					$results = $results['normal'];
 				}
-
-				$values = Set::format( $tmps, '{0} {1} {2}', array( '{n}.Referent.qual', '{n}.Referent.nom', '{n}.Referent.prenom' ) );
-				$results = array_combine( $ids, $values );
 			}
 
 			return $results;
