@@ -151,7 +151,7 @@
 				if( $this->Behaviors->attached( 'Enumerable' ) ) {
 					$datas['options'] = $this->enums();
 				}
-				$datas['options'] = Set::merge(
+				$datas['options'] = Hash::merge(
 					$datas['options'],
 					array(
 						'Adresse' => array(
@@ -160,7 +160,9 @@
 						'Personne' => array(
 							'qual' => ClassRegistry::init( 'Option' )->qual()
 						)
-					)
+					),
+					$this->Dossierep->enums(),
+					$this->Dossierep->Passagecommissionep->enums()
 				);
 
 				Cache::write( $cacheKey, $datas );
