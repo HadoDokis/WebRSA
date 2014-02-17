@@ -9,14 +9,26 @@
 	 */
 
 	/**
-	 * La classe Option ...
+	 * La classe Option possède des méthodes permettant d'obtenir les "enums",
+	 * c'est-à-dire un array avec en clé la valeur stockée en base et en valeur
+	 * une traduction, pour différents champs de la base de données.
 	 *
 	 * @package app.Model
 	 */
 	class Option extends AppModel
 	{
+		/**
+		 * Nom de la classe.
+		 *
+		 * @var string
+		 */
 		public $name = 'Option';
 
+		/**
+		 * Cette classe n'est pas liée à une table de la base de données.
+		 *
+		 * @var boolean
+		 */
 		public $useTable = false;
 
 		/**
