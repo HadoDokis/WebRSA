@@ -19,6 +19,11 @@
 
 		public $useTable = false;
 
+		/**
+		 * Enums pour le champ detailsressourcesmensuelles.abaneu
+		 *
+		 * @return array
+		 */
 		public function abaneu() {
 			return array(
 				'A' => 'Abattement',
@@ -26,6 +31,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dsps.accosocfam
+		 *	- dsps_revs.accosocfam
+		 *
+		 * @return array
+		 */
 		public function accosocfam() {
 			return array(
 				'O' => 'Oui',
@@ -34,6 +46,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ activites.act
+		 *
+		 * @return array
+		 */
 		public function act() {
 			return array(
 				'AAP' => 'Activité en atelier protégé',
@@ -131,6 +148,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.acteti
+		 *
+		 * @return array
+		 */
 		public function acteti() {
 			return array(
 				'C' => 'Commerçant',
@@ -140,6 +162,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ identificationsflux.applieme
+		 *
+		 * @return array
+		 */
 		public function applieme() {
 			return array(
 				'CRI' => 'Cristal Cnaf',
@@ -154,6 +181,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ modescontact.autorutiadrelec
+		 *
+		 * @return array
+		 */
 		public function autorutiadrelec() {
 			return array(
 				'A' => 'Accord d\'utilisation',
@@ -162,6 +194,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ modescontact.autorutitel
+		 *
+		 * @return array
+		 */
 		public function autorutitel() {
 			return array(
 				'A' => 'Accord d\'utilisation',
@@ -170,6 +207,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ condsadmins.aviscondadmrsa
+		 *
+		 * @return array
+		 */
 		public function aviscondadmrsa() {
 			return array(
 				'D' => 'Avis demandé au CG',
@@ -178,6 +220,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ derogations.avisdero
+		 *
+		 * @return array
+		 */
 		public function avisdero() {
 			return array(
 				'D' => 'Avis demandé au CG',
@@ -187,6 +234,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ avispcgdroitsrsa.avisdestpairsa
+		 *
+		 * @return array
+		 */
 		public function avisdestpairsa() {
 			return array(
 				'D' => 'Avis demandé au CG',
@@ -195,6 +247,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.aviseqpluri
+		 *
+		 * @return array
+		 */
 		public function aviseqpluri() {
 			return array(
 				'R' => 'Réorientation',
@@ -202,6 +259,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.avisraison_ci
+		 *
+		 * @return array
+		 */
 		public function avisraison_ci() {
 			return array(
 				'D' => 'Défaut de conclusion',
@@ -267,6 +329,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.decision_ci
+		 *
+		 * @return array
+		 */
 		public function decision_ci() {
 			if( Configure::read( 'Cg.departement' ) != 93 ){
 				return array(
@@ -285,6 +352,13 @@
 			}
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dsps.demarlog
+		 *	- dsps_revs.demarlog
+		 *
+		 * @return array
+		 */
 		public function demarlog() {
 			return array(
 				'1101' => 'Accès à un logement',
@@ -333,6 +407,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dsps.duractdomi
+		 *	- dsps_revs.duractdomi
+		 *
+		 * @return array
+		 */
 		public function duractdomi() {
 			return array(
 				'2104' => 'Moins d\'un an',
@@ -342,11 +423,28 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- bilansparcours66.duree_engag
+		 *	- contratsinsertion.duree_engag
+		 *	- proposcontratsinsertioncovs58.duree_engag
+		 *	- decisionsproposcontratsinsertioncovs58.duree_engag
+		 *
+		 * @return array
+		 */
 		public function duree_engag() {
 			$function = 'duree_engag_cg'.Configure::read( 'Cg.departement' );
 			return $this->{$function}();
 		}
 
+		/**
+		 * Enums pour les champs du CG 58
+		 *	- contratsinsertion.duree_engag
+		 *	- proposcontratsinsertioncovs58.duree_engag
+		 *	- decisionsproposcontratsinsertioncovs58.duree_engag
+		 *
+		 * @return array
+		 */
 		public function duree_engag_cg58() {
 			return array(
 				'1' => '3 mois',
@@ -358,6 +456,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs du CG 66
+		 *	- bilansparcours66.duree_engag
+		 *	- contratsinsertion.duree_engag
+		 *
+		 * @return array
+		 */
 		public function duree_engag_cg66() {
 			return array(
 				'1' => '3 mois',
@@ -367,6 +472,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.duree_engag du CG 93
+		 *
+		 * @return array
+		 */
 		public function duree_engag_cg93() {
 			return array(
 				'1' => '3 mois',
@@ -378,6 +488,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.duree_cdd
+		 *
+		 * @return array
+		 */
 		public function duree_cdd(){
 			return array(
 				'DT1' => 'Temps plein',
@@ -386,6 +501,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.duree_hebdo_emp
+		 *
+		 * @return array
+		 */
 		public function duree_hebdo_emp(){
 			return array(
 				'DHT1' => 'Moins de 35h',
@@ -402,6 +522,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.engproccrealim
+		 *
+		 * @return array
+		 */
 		public function engproccrealim(){
 			return array(
 				'O' => 'Procédure engagée',
@@ -410,6 +535,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.emp_occupe
+		 *
+		 * @return array
+		 */
 		public function emp_occupe(){
 			return array(
 				'10' => 'Agriculteurs (salariés de leur exploitation)',
@@ -444,6 +574,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.etatcrealim
+		 *
+		 * @return array
+		 */
 		public function etatcrealim() {
 			return array(
 				'SA' => 'Sanction appliquée',
@@ -465,8 +600,14 @@
 		}
 
 		/**
+		 * Enums pour les champs
+		 *	- historiquesdroits.etatdosrsa
+		 *	- situationsallocataires.etatdosrsa
+		 *	- situationsdossiersrsa.etatdosrsa
+		 *
 		 * Retourne la liste des états de dossier.
 		 * Peut-être filtré par une liste de clés d'états de dossier.
+		 *
 		 * @param array $etatsDemandes
 		 * @return array liste des états à afficher.
 		 * @example $this->Option->etatdosrsa( $this->Situationdossierrsa->etatAttente() )
@@ -498,8 +639,11 @@
 			}
 		}
 
-
-
+		/**
+		 * Enums pour le champ suivisinstruction.suiirsa
+		 *
+		 * @return array
+		 */
 		public function suiirsa() {
 			return array(
 				'01' => 'Données administratives',
@@ -512,6 +656,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ evenements.fg
+		 *
+		 * @return array
+		 */
 		public function fg() {
 			return array(
 				'SUS' => 'suspension',
@@ -553,6 +702,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- cers93.formeci
+		 *	- histoschoixcers93.formeci
+		 *
+		 * @return array
+		 */
 		public function formeci() {
 			return array(
 				'S' => 'Simple',
@@ -560,6 +716,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- contratsinsertion.forme_ci
+		 *	- proposcontratsinsertioncovs58.forme_ci
+		 *
+		 * @return array
+		 */
 		public function forme_ci() {
 			if( Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
 				return array( 'S' => 'Simple', 'C' => 'Particulier' );
@@ -568,6 +731,13 @@
 			return array( 'S' => 'Simple', 'C' => 'Complexe' );
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dsps.hispro
+		 *	- dsps_revs.hispro
+		 *
+		 * @return array
+		 */
 		public function hispro() {
 			return array(
 				'1901' => 'Vous avez toujours travaillé',
@@ -577,6 +747,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ actionsinsertion.lib_action
+		 *
+		 * @return array
+		 */
 		public function lib_action() {
 			return array(
 				'A' => 'Aide',
@@ -591,6 +766,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ modescontact.matetel
+		 *
+		 * @return array
+		 */
 		public function matetel() {
 			return array(
 				'FAX' => 'Fax seul',
@@ -599,6 +779,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ situationsdossiersrsa.moticlorsa
+		 *
+		 * @return array
+		 */
 		public function moticlorsa() {
 			return array(
 				'PCG' => 'Cloture suite décision du Président du Conseil général',
@@ -609,6 +794,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.motidiscrealim
+		 *
+		 * @return array
+		 */
 		public function motidiscrealim() {
 			return array(
 				'AVA' => 'Avantage en nature autre que le logement',
@@ -619,6 +809,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- decisionssaisinespdoseps66.motifpdo
+		 *	- propospdos.motifpdo
+		 *
+		 * @return array
+		 */
 		public function motifpdo() { ///FIXME: ajout pour les PDO mais à voir
 			return array(
 				'E' => 'En attente de justificatif',
@@ -648,6 +845,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ suspensionsdroits.motisusdrorsa
+		 *
+		 * @return array
+		 */
 		public function motisusdrorsa() {
 			return array(
 				'DA' => 'Suspension Dossier => Situation de famille',
@@ -680,6 +882,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ suspensionsversements.motisusversrsa
+		 *
+		 * @return array
+		 */
 		public function motisusversrsa() {
 			return array(
 				'01' => 'Ressources trop élévées',
@@ -706,6 +913,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.nat_cont_trav
+		 *
+		 * @return array
+		 */
 		public function nat_cont_trav(){
 			return array(
 				'TCT1' => 'Travailleur indépendant',
@@ -728,6 +940,14 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- cers93.natlog
+		 *	- dsps.natlog
+		 *	- dsps_revs.natlog
+		 *
+		 * @return array
+		 */
 		public function natlog() {
 			return array(
 				'0901' => 'Logement autonome : habitat individuel',
@@ -746,6 +966,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ infosfinancieres.natpfcre
+		 *
+		 * @return array
+		 */
 		public function natpfcre( $type = null ) {
 			$natindu = array(
 				'totsocl' => array(
@@ -865,6 +1090,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ detailsressourcesmensuelles.natress
+		 *
+		 * @return array
+		 */
 		public function natress() {
 			return array(
 				'000' => 'Ressources nulles',
@@ -960,6 +1190,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ grossesses.natfingro
+		 *
+		 * @return array
+		 */
 		public function natfingro() {
 			return array(
 				'D' => 'Départ de madame du foyer',
@@ -971,7 +1206,13 @@
 			);
 		}
 
-		//Ajout suite à l'arrivée du RSAJeune
+		/**
+		 * Enums pour le champ suspensionsdroits.natgroupfsus
+		 *
+		 * Ajout suite à l'arrivée du RSAJeune
+		 *
+		 * @return array
+		 */
 		public function natgroupfsus() {
 			return array(
 				'RSA' => 'RSA socle+activité',
@@ -999,8 +1240,12 @@
 // 			);
 // 		}
 
+		/**
+		 * Enums pour le champ detailscalculsdroitsrsa.natpf
+		 *
+		 * @return array
+		 */
 		public function natpf( $natpfDemandees =array() ) {
-
 			$natpfs = array(
 				'RSD' => 'RSA Socle (Financement sur fonds Conseil général)',
 				'RSI' => 'RSA Socle majoré (Financement sur fonds Conseil général)',
@@ -1034,8 +1279,11 @@
 			}
 		}
 
-
-
+		/**
+		 * Enums pour le champ modescontact.nattel
+		 *
+		 * @return array
+		 */
 		public function nattel(){
 			return array(
 				'D' => 'Domicile',
@@ -1056,6 +1304,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ dossiers.numorg
+		 *
+		 * @return array
+		 */
 		public function numorg() {
 			return array(
 			'011' => 'CAF DE BOURG EN BRESSE',
@@ -1195,6 +1448,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ detailsdroitsrsa.oridemrsa
+		 *
+		 * @return array
+		 */
 		public function oridemrsa() {
 			return array(
 				'DEM' => 'Le droit au Rsa fait suite à une demande de RSA',
@@ -1203,6 +1461,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.orioblalim
+		 *
+		 * @return array
+		 */
 		public function orioblalim() {
 			return array(
 				'CJT' => 'Obligation ex-conjoint',
@@ -1210,6 +1473,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ allocationssoutienfamilial.parassoasf
+		 *
+		 * @return array
+		 */
 		public function parassoasf() {
 			return array(
 				'P' => 'Père',
@@ -1217,6 +1485,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ adresses.pays
+		 *
+		 * @return array
+		 */
 		public function pays() {
 			return array(
 				'FRA' => 'France',
@@ -1224,6 +1497,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ activites.paysact
+		 *
+		 * @return array
+		 */
 		public function paysact() {
 			return array(
 				'FRA' => 'France',
@@ -1235,6 +1513,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ personnes.pieecpres
+		 *
+		 * @return array
+		 */
 		public function pieecpres() {
 			return array(
 				'E' => 'Pièce d\'état civil',
@@ -1250,6 +1533,21 @@
 			);
 		}
 
+
+		/**
+		 * Enums pour les champs
+		 *	- cers93.qual
+		 *	- composfoyerscers93.qual
+		 *	- contactspartenaires.qual
+		 *	- membreseps.qual
+		 *	- participantscomites.qual
+		 *	- personnes.qual
+		 *	- referents.qual
+		 *	- situationsallocataires.qual
+		 *	- suivisaidesapres.qual
+		 *
+		 * @return array
+		 */
 		public function qual() {
 			return array(
 				'MME' => 'Madame',
@@ -1266,6 +1564,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.raison_ci
+		 *
+		 * @return array
+		 */
 		public function raison_ci() {
 			return array(
 				'S' => 'Suspension',
@@ -1273,6 +1576,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ activites.reg
+		 *
+		 * @return array
+		 */
 		public function reg() {
 			return array(
 				'AA' => 'ARTISTE/AUTEUR/COMPOSITEUR',
@@ -1299,6 +1607,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ infosagricoles.regfisagri
+		 *
+		 * @return array
+		 */
 		public function regfisagri() {
 			return array(
 				'F' => 'Montant forfaitaire',
@@ -1306,6 +1619,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.regfiseti
+		 *
+		 * @return array
+		 */
 		public function regfiseti() {
 			return array(
 				'R' => 'Réel',
@@ -1314,6 +1632,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.regfisetia1
+		 *
+		 * @return array
+		 */
 		public function regfisetia1() {
 			return array(
 				'R' => 'Réel',
@@ -1322,6 +1645,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ adressesfoyers.rgadr
+		 *
+		 * @return array
+		 */
 		public function rgadr() {
 			return array(
 				'01' => 'Dernière adresse',
@@ -1330,6 +1658,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ prestations.rolepers
+		 *
+		 * @return array
+		 */
 		public function rolepers( ) {
 			return array(
 				'DEM' => 'Demandeur du RSA',
@@ -1340,6 +1673,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ contratsinsertion.sect_acti_emp
+		 *
+		 * @return array
+		 */
 		public function sect_acti_emp() {
 			return array(
 				'A' => 'Agriculture, sylviculture et pêche',
@@ -1366,6 +1704,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ infosfinancieres.sensopecompta
+		 *
+		 * @return array
+		 */
 		public function sensopecompta() {
 			return array(
 				'AJ' => 'Ajout du montant dans l\'acompte',
@@ -1373,6 +1716,14 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- histoaprecomplementaires.sexe
+		 *	- personnes.sexe
+		 *	- situationsallocataires.sexe
+		 *
+		 * @return array
+		 */
 		public function sexe() {
 			return array(
 				'1' => 'Homme',
@@ -1380,6 +1731,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ allocationssoutienfamilial.sitasf
+		 *
+		 * @return array
+		 */
 		public function sitasf(){
 			return array(
 				'DC' => 'HORS D\'ETAT',
@@ -1394,6 +1750,16 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- bilansparcours66.sitfam
+		 *	- cers93.sitfam
+		 *	- contratsinsertion.sitfam
+		 *	- foyers.sitfam
+		 *	- situationsallocataires.sitfam
+		 *
+		 * @return array
+		 */
 		public function sitfam(){
 			return array(
 				'ABA' => 'Disparu (jugement d\'absence)',
@@ -1412,6 +1778,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ detailscalculsdroitsrsa.sousnatpf
+		 *
+		 * @return array
+		 */
 		public function sousnatpf() {
 			return array(
 				'RSDN1' => 'RSA Socle -25 avec enfants à charge ou grossesse',
@@ -1443,6 +1814,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dsps.soutdemarsoc
+		 *	- dsps_revs.soutdemarsoc
+		 *
+		 * @return array
+		 */
 		public function soutdemarsoc() {
 			return array(
 				'O' => 'Oui',
@@ -1451,6 +1829,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- dossiers.statudemrsa
+		 *	- situationsallocataires.statudemrsa
+		 *
+		 * @return array
+		 */
 		public function statudemrsa() {
 			return array(
 				'N' => 'Non allocataire',
@@ -1471,6 +1856,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ orientsstructs.statut_orient
+		 *
+		 * @return array
+		 */
 		public function statut_orient() {
 			return array(
 				'Non orienté' => 'Non orienté',
@@ -1488,6 +1878,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ orientsstructs.statutrelance
+		 *
+		 * @return array
+		 */
 		public function statutrelance() {
 			return array(
 				'R' => 'Relancé',
@@ -1495,6 +1890,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topaccre
+		 *
+		 * @return array
+		 */
 		public function topaccre() {
 			return array(
 				'1' => 'Bénéficiaire de l`ACCRE',
@@ -1502,6 +1902,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topbeneti
+		 *
+		 * @return array
+		 */
 		public function topbeneti() {
 			return array(
 				'1' => 'Présence d\'un bénéfice',
@@ -1509,6 +1914,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.topdemdisproccrealim
+		 *
+		 * @return array
+		 */
 		public function topdemdisproccrealim() {
 			return array(
 				'1' => 'Demande de dispense',
@@ -1516,6 +1926,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topcreaentre
+		 *
+		 * @return array
+		 */
 		public function topcreaentre() {
 			return array(
 				'1' => 'Créateur d\'entreprise',
@@ -1523,6 +1938,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topempl1ax
+		 *
+		 * @return array
+		 */
 		public function topempl1ax() {
 			return array(
 				'1' => 'Emploie 1 ou plusieurs salariés',
@@ -1530,6 +1950,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topevoreveti
+		 *
+		 * @return array
+		 */
 		public function topevoreveti() {
 			return array(
 				'1' => 'Evolution des revenus',
@@ -1537,6 +1962,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ detailsdroitsrsa.topfoydrodevorsa
+		 *
+		 * @return array
+		 */
 		public function topfoydrodevorsa() {
 			return array(
 				'1' => 'le foyer est soumis à Droits et devoirs (le montant des ressources d\'acitivtés (MTRESSMENRSA) pris en compte pour le rSa est inférieur  au montant du revenu minimum garanti  rSa (MTREVMINGARASA)',
@@ -1544,6 +1974,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.topjugpa
+		 *
+		 * @return array
+		 */
 		public function topjugpa() {
 			return array(
 				'1' => 'Jugement fixant une pension alimentaire',
@@ -1551,6 +1986,14 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- calculsdroitsrsa.toppersdrodevorsa
+		 *	- historiquesdroits.toppersdrodevorsa
+		 *	- situationsallocataires.toppersdrodevorsa
+		 *
+		 * @return array
+		 */
 		public function toppersdrodevorsa( $nullEnLettre = false ) {
 			return array(
 				( $nullEnLettre ? 'NULL' : '' ) => 'Non défini',
@@ -1559,6 +2002,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topressevaeti
+		 *
+		 * @return array
+		 */
 		public function topressevaeti() {
 			return array(
 				'1' => 'Ressources à évaluer',
@@ -1566,6 +2014,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ detailsdroitsrsa.topsansdomfixe
+		 *
+		 * @return array
+		 */
 		public function topsansdomfixe() {
 			return array(
 				'0' => 'Domicile fixe',
@@ -1573,6 +2026,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topsansempl
+		 *
+		 * @return array
+		 */
 		public function topsansempl() {
 			return array(
 				'1' => 'Sans employés',
@@ -1580,6 +2038,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ informationseti.topstag1ax
+		 *
+		 * @return array
+		 */
 		public function topstag1ax() {
 			return array(
 				'1' => 'Emploie 1 ou plusieurs stagiaires',
@@ -1587,6 +2050,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ infosfinancieres.type_allocation
+		 *
+		 * @return array
+		 */
 		public function type_allocation() {
 			return array(
 				'AllocationsComptabilisees' => 'Allocations comptabilisées',
@@ -1598,6 +2066,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ derogations.typedero
+		 *
+		 * @return array
+		 */
 		public function typedero() {
 			return array(
 				'AGE' => 'Dérogation sur les conditions d\'age',
@@ -1607,6 +2080,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ adressesfoyers.typeadr
+		 *
+		 * @return array
+		 */
 		public function typeadr() {
 			return array(
 				'D' => 'Définitive',
@@ -1615,6 +2093,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ personnes.typedtnai
+		 *
+		 * @return array
+		 */
 		public function typedtnai() {
 			return array(
 				'J' => 'Jour inconnu',
@@ -1640,6 +2123,13 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- contratsinsertion.typeocclog
+		 *	- foyers.typeocclog
+		 *
+		 * @return array
+		 */
 		public function typeocclog() {
 			return array(
 				'ACC' => 'Proprietaire avec charges de remboursement',
@@ -1666,6 +2156,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ infosfinancieres.typeopecompta
+		 *
+		 * @return array
+		 */
 		public function typeopecompta() {
 			return array(
 				/*AllocCompta*/
@@ -1699,6 +2194,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ rattachements.typepar
+		 *
+		 * @return array
+		 */
 		public function typepar(){
 			return array(
 				'ADP' => 'Adoption simple',
@@ -1717,6 +2217,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ dossiers.typeparte
+		 *
+		 * @return array
+		 */
 		public function typeparte() {
 			return array(
 				'CG' => 'Conseil Général', // Code identification partenaire = n° de département sur 3 positions
@@ -1727,6 +2232,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ avispcgdroitsrsa.typeperstie
+		 *
+		 * @return array
+		 */
 		public function typeperstie() {
 			return array(
 				'P' => 'S\'il s\'agit d\'un tiers personne physique',
@@ -1734,6 +2244,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ adresses.typeres
+		 *
+		 * @return array
+		 */
 		public function typeres() {
 			return array(
 				'E' => 'Election de domicile',
@@ -1741,6 +2256,14 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- servicesinstructeurs.typeserins
+		 *	- situationsallocataires.typeserins
+		 *	- suivisinstruction.typeserins
+		 *
+		 * @return array
+		 */
 		public function typeserins() {
 			return array(
 				'' => 'Non renseigné',
@@ -1755,6 +2278,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ totalisationsacomptes.type_totalisation
+		 *
+		 * @return array
+		 */
 		public function type_totalisation() {
 			return array(
 				'TotalAllocationsComptabilisees' => 'Total des allocations comptabilisees',
@@ -1766,6 +2294,21 @@
 			);
 		}
 
+		/**
+		 * Enums pour les champs
+		 *	- adresses.typevoie
+		 *	- cantons.typevoie
+		 *	- membreseps.typevoie
+		 *	- orientations.typevoie
+		 *	- parcours.typevoie
+		 *	- partenaires.typevoie
+		 *	- permanences.typevoie
+		 *	- situationsallocataires.typevoie
+		 *	- tiersprestatairesapres.typevoie
+		 *	- users.typevoie
+		 *
+		 * @return array
+		 */
 		public function typevoie(){
 			return array(
 				'ABE' => 'Abbaye',
@@ -1949,6 +2492,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ aidesdirectes.typo_aide
+		 *
+		 * @return array
+		 */
 		public function typo_aide() {
 			return array(
 				'1' => 'Insertion sociale',
@@ -1957,6 +2505,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ creancesalimentaires.verspa
+		 *
+		 * @return array
+		 */
 		public function verspa() {
 			return array(
 				'N' => 'Pas de versement d\'une PA',
@@ -1965,6 +2518,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ dossiers.fonorgcedmut
+		 *
+		 * @return array
+		 */
 		public function fonorgcedmut() {
 			return array(
 				'CAF' => 'Demande gérée par la CAF',
@@ -1973,6 +2531,11 @@
 			);
 		}
 
+		/**
+		 * Enums pour le champ dossiers.fonorgprenmut
+		 *
+		 * @return array
+		 */
 		public function fonorgprenmut() {
 			return $this->fonorgcedmut();
 		}
