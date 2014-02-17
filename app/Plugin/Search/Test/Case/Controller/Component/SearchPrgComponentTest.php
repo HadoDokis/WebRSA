@@ -8,11 +8,31 @@
 	 */
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'RequestHandlerComponent', 'Controller/Component' );
-	App::uses( 'SearchPrgComponent', 'Controller/Component' );
+	App::uses( 'SearchPrgComponent', 'Search.Controller/Component' );
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
 	App::uses( 'CakeSession', 'Model/Datasource' );
+
+	class SearchPrg2Component extends SearchPrgComponent
+	{
+		/**
+		 * Nom du component.
+		 *
+		 * @var string
+		 */
+		public $name = 'SearchPrg2';
+
+		/**
+		 *
+		 * @param array $params
+		 * @param array $forbiddenlist
+		 * @return array
+		 */
+		public function urlencodeParams( $params, $forbiddenlist = array( '?', '/', ':', '&' ) ) {
+			return parent::_urlencodeParams( $params, $forbiddenlist );
+		}
+	}
 
 	/**
 	 * SearchPrgTestController class
@@ -43,7 +63,7 @@
 		 * @var array
 		 */
 		public $components = array(
-			'Search.SearchPrg' => array(
+			'SearchPrg2' => array(
 				'actions' => array( 'index' => array( 'filter' => 'Search' ) ),
 			)
 		);
@@ -63,6 +83,7 @@
 		}
 
 	}
+
 	/**
 	 * SearchPrgTest class
 	 *
@@ -94,8 +115,6 @@
 
 		/**
 		 * test case startup
-		 *
-		 * @return void
 		 */
 		public static function setupBeforeClass() {
 			self::$_sessionBackup = Configure::read( 'Session' );
@@ -108,8 +127,6 @@
 
 		/**
 		 * cleanup after test case.
-		 *
-		 * @return void
 		 */
 		public static function teardownAfterClass() {
 			Configure::write( 'Session', self::$_sessionBackup );
@@ -117,8 +134,6 @@
 
 		/**
 		 * setUp method
-		 *
-		 * @return void
 		 */
 		public function setUp() {
 			parent::setUp();
@@ -127,7 +142,7 @@
 			$request->addParams(array( 'controller' => 'prgs', 'action' => 'index' ) );
 			$this->Controller = new SearchPrgTestController( $request );
 			$this->Controller->Components->init( $this->Controller );
-			$this->Controller->SearchPrg->initialize( $this->Controller );
+			$this->Controller->SearchPrg2->initialize( $this->Controller );
 
 			session_id( 'll5e1483na37s0jcljdpdd9ll5' );
 			CakeSession::start();
@@ -136,8 +151,6 @@
 
 		/**
 		 * tearDown method
-		 *
-		 * @return void
 		 */
 		public function tearDown() {
 			$_SESSION = array();
@@ -145,9 +158,8 @@
 		}
 
 		/**
-		 * testRedirect method
-		 *
-		 * @return void
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en POST.
 		 */
 		public function testPostRedirect() {
 			$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -160,7 +172,7 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->SearchPrg->startup( $this->Controller );
+			$this->Controller->SearchPrg2->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 			$expected = array(
 				array(
@@ -176,9 +188,8 @@
 		}
 
 		/**
-		 * testRedirect method
-		 *
-		 * @return void
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en POST.
 		 */
 		public function testPostRedirectWithFormParams() {
 			$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -194,7 +205,7 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->SearchPrg->startup( $this->Controller );
+			$this->Controller->SearchPrg2->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 			$expected = null;
 
@@ -202,9 +213,8 @@
 		}
 
 		/**
-		 * testGetPostParams method
-		 *
-		 * @return void
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en GET.
 		 */
 		public function testGetPostParams() {
 			$_SERVER['REQUEST_METHOD'] = 'GET';
@@ -212,7 +222,7 @@
 				'Search__active' => '1',
 				'Search__User__username' => 'john'
 			);
-			$this->Controller->SearchPrg->startup( $this->Controller );
+			$this->Controller->SearchPrg2->startup( $this->Controller );
 			$result = $this->Controller->data;
 			$expected = array(
 				'Search' => array(
@@ -226,10 +236,8 @@
 		}
 
 		/**
-		 * TODO: passe dans un navigateur, pas en console.
-		 * testRedirect method
-		 *
-		 * @return void
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en POST.
 		 */
 		public function testPostRedirectFilter() {
 			$_SERVER['REQUEST_METHOD'] = 'POST';
@@ -245,10 +253,10 @@
 				)
 			);
 			$this->Controller->data = $data;
-			$this->Controller->SearchPrg->startup( $this->Controller );
+			$this->Controller->SearchPrg2->startup( $this->Controller );
 			$result = $this->Controller->redirected;
 
-			$SearchPrg = $this->Controller->SearchPrg;
+			$SearchPrg = $this->Controller->SearchPrg2;
 			$prgSessionKey = "{$SearchPrg->name}.{$this->Controller->name}__{$this->Controller->action}";
 			$sessionKeys = array_keys( $SearchPrg->Session->read( $prgSessionKey ) );
 			$sessionKey = $sessionKeys[0];
@@ -276,16 +284,14 @@
 		}
 
 		/**
-		 * TODO: passe dans un navigateur, pas en console.
-		 * testRedirect method
-		 *
-		 * @return void
+		 * Test de la méthode SearchPrgComponent::startup() lorsque la requête
+		 * est envoyée en GET.
 		 */
 		public function testGetFilter() {
 			$_SERVER['REQUEST_METHOD'] = 'GET';
-			$prgSessionKey = "{$this->Controller->SearchPrg->name}.{$this->Controller->name}__{$this->Controller->action}";
+			$prgSessionKey = "{$this->Controller->SearchPrg2->name}.{$this->Controller->name}__{$this->Controller->action}";
 			$sessionKey = '62cdb7020ff920e5aa642c3d4066950dd1f01f4d';
-			$this->Controller->SearchPrg->Session->write( "{$prgSessionKey}.{$sessionKey}", array( 'Foo' => 'bar' ) );
+			$this->Controller->SearchPrg2->Session->write( "{$prgSessionKey}.{$sessionKey}", array( 'Foo' => 'bar' ) );
 
 			$this->Controller->request->params['named'] = array(
 				'Search__active' => '1',
@@ -293,7 +299,7 @@
 				'sessionKey' => $sessionKey
 			);
 
-			$this->Controller->SearchPrg->startup( $this->Controller );
+			$this->Controller->SearchPrg2->startup( $this->Controller );
 			$result = $this->Controller->data;
 			$expected = array(
 				'Search' => array(
@@ -304,6 +310,23 @@
 				),
 				'sessionKey' => $sessionKey,
 				'Foo' => 'bar'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode SearchPrgComponent::_urlencodeParams()
+		 */
+		public function testUrlencodeParams() {
+			$params = array(
+				'foo' => 'bar ?/:&',
+				'bar' => array( 'baz ?/:&' )
+			);
+
+			$result = $this->Controller->SearchPrg2->urlencodeParams( $params );
+			$expected = array (
+				'foo' => 'bar+++++',
+				'bar' => array ( 'baz     ' ),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

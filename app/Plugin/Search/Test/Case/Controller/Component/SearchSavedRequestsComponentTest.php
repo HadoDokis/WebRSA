@@ -14,6 +14,47 @@
 	App::uses( 'Router', 'Routing' );
 	App::uses( 'CakeSession', 'Model/Datasource' );
 
+	class CakeTestSession extends CakeSession
+	{
+		/**
+		 * Un identifiant de session utilisé uniquement pour les tests unitaires.
+		 *
+		 * @var string
+		 */
+		public static $testSessionId = '00000000000000000000000000';
+
+		/**
+		 * Permet de démarrer une session également en console.
+		 *
+		 * On change les droits sur le fichier de session géré par PHP.
+		 * Comme ça, dans le navigateur et en console, les droits sont bons.
+		 * Ou alors, lancer la console en tant qu'apache ? Sinon, ça peut casser...
+		 *
+		 * @return boolean True if session was started
+		 */
+		public static function start() {
+			session_id( self::$testSessionId );
+
+			$file = ini_get('session.save_path').DS.'sess_'.self::$testSessionId;
+			if( file_exists( $file ) && is_writable( $file ) ) {
+				chmod( $file, 0770 );
+			}
+
+			$return = parent::start();
+			$_SESSION = array();
+
+			return $return;
+		}
+
+		/**
+		 * Permet de supprimer les données de la session.
+		 */
+		public static function destroy() {
+			$_SESSION = array();
+//			parent::destroy();
+		}
+	}
+
 	/**
 	 * SearchSavedRequestsTestController class
 	 *
@@ -134,9 +175,7 @@
 			$this->Controller->Components->init( $this->Controller );
 			$this->Controller->SearchSavedRequests->initialize( $this->Controller );
 
-			session_id( 'll5e1483na37s0jcljdpdd9ll5' );
-			CakeSession::start();
-			$_SESSION = array();
+			CakeTestSession::start();
 		}
 
 		/**
@@ -145,7 +184,7 @@
 		 * @return void
 		 */
 		public function tearDown() {
-			$_SESSION = array();
+			CakeTestSession::destroy();
 			parent::tearDown();
 		}
 
