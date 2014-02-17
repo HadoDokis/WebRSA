@@ -21,6 +21,25 @@ DELETE FROM pdfs
 			WHERE orientsstructs.origine = 'demenagement'
 	);
 
+-- 20140214: Suite à la correction du ticket #4196, il faut supprimer les courriers
+-- de relance pour non respect sanction suite à (nouveau) CER non renouvelé stockés
+-- dans la table pdfs
+DELETE FROM pdfs
+	WHERE pdfs.modele = 'Relancenonrespectsanctionep93'
+	AND fk_value IN (
+		SELECT relancesnonrespectssanctionseps93.id
+			FROM relancesnonrespectssanctionseps93
+				INNER JOIN nonrespectssanctionseps93 ON (
+					nonrespectssanctionseps93.id = relancesnonrespectssanctionseps93.nonrespectsanctionep93_id
+				)
+				INNER JOIN contratsinsertion ON (
+					nonrespectssanctionseps93.contratinsertion_id = contratsinsertion.id
+				)
+			WHERE
+				nonrespectssanctionseps93.origine = 'contratinsertion'
+				AND contratsinsertion.duree_engag IS NULL
+	);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -1529,6 +1529,7 @@
 								'Personne' => $qdPersonne
 							),
 							'Contratinsertion' => array(
+								'Cer93',
 								'Structurereferente',
 								'Personne' => $qdPersonne
 							),
@@ -1560,6 +1561,20 @@
 				return null;
 			}
 
+			// Traduction des enums du modèle Cer93
+			$options = $this->Nonrespectsanctionep93->Contratinsertion->Cer93->enums();
+			foreach( $options as $modelName => $modelOptions ) {
+				foreach( $modelOptions as $fieldName => $fieldOptions ) {
+					if( isset( $data['Nonrespectsanctionep93']['Contratinsertion'][$modelName][$fieldName] ) ) {
+						$data['Nonrespectsanctionep93']['Contratinsertion'][$modelName][$fieldName] = value(
+							$options[$modelName][$fieldName],
+							$data['Nonrespectsanctionep93']['Contratinsertion'][$modelName][$fieldName]
+						);
+					}
+				}
+			}
+
+			// Traduction des autres "enums"
 			$data['Nonrespectsanctionep93']['Personne']['qual'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['qual'], $qual );
 			$data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'], $typevoie );
 
