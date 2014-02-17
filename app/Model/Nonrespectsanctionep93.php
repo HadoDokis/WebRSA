@@ -640,48 +640,6 @@
 
 			if( $datas === false ) {
 				$datas = $this->_qdConvocationBeneficiaireEpPdf();
-
-				/* // Querydata
-				  $datas['querydata'] = array(
-				  'fields' => array_merge(
-				  $this->Dossierep->Passagecommissionep->fields(),
-				  $this->Dossierep->Passagecommissionep->Commissionep->fields(),
-				  $this->Dossierep->Passagecommissionep->User->fields(),
-				  $this->Dossierep->Passagecommissionep->Dossierep->fields(),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->fields(),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->fields(),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Dossier->fields(),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->Adresse->fields(),
-				  $this->fields()
-				  ),
-				  'joins' => array(
-				  $this->Dossierep->Passagecommissionep->join( 'Dossierep' ),
-				  $this->Dossierep->Passagecommissionep->join( 'Commissionep' ),
-				  $this->Dossierep->Passagecommissionep->join( 'User' ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->join( $this->alias ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->join( 'Personne' ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->join( 'Foyer' ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Dossier' ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->join( 'Adressefoyer' ),
-				  $this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->join( 'Adresse' )
-				  ),
-				  'conditions' => array(
-				  'Adressefoyer.id IN ('
-				  .$this->Dossierep->Passagecommissionep->Dossierep->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' )
-				  .')'
-				  ),
-				  );
-
-				  // Options
-				  $datas['options'] = array(
-				  'Adresse' => array(
-				  'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
-				  ),
-				  'Personne' => array(
-				  'qual' => ClassRegistry::init( 'Option' )->qual()
-				  )
-				  ); */
-
 				Cache::write( $cacheKey, $datas );
 			}
 
@@ -732,7 +690,7 @@
 						'Decisionnonrespectsanctionep93.etape DESC'
 					),
 					'contain' => false
-						)
+					)
 				);
 			}
 			$ancienneDecision = ( isset( $ancienPassage['Decisionnonrespectsanctionep93']['decision'] ) ? $ancienPassage['Decisionnonrespectsanctionep93']['decision'] : null );
@@ -806,18 +764,28 @@
 					else { // 1reduction,1maintien,2suspensiontotale,2suspensionpartielle,2maintien,annule
 						$modeleOdt = "{$this->alias}/convocationep_beneficiaire_2eme_passage.odt";
 					}
-
-					$gedooo_data['Decisionprecedente'] = $ancienPassage['Decisionnonrespectsanctionep93'];
-					$gedooo_data['Decisionprecedente']['impressiondecision'] = $ancienPassage['Passagecommissionep']['impressiondecision'];
-
-					$datas['options'] = Set::merge( $datas['options'], ClassRegistry::init( 'Decisionnonrespectsanctionep93' )->enums() );
-					$datas['options']['Decisionprecedente'] = $datas['options']['Decisionnonrespectsanctionep93'];
 				}
 			}
 
-			return $this->ged(
-							$gedooo_data, $modeleOdt, false, $datas['options']
+			$gedooo_data = Hash::merge(
+				$gedooo_data,
+				array_words_replace(
+					(array)$ancienPassage,
+					array(
+						'Decisionnonrespectsanctionep93' => 'Decisionprecedente',
+						'Passagecommissionep' => 'Passagecommissionepprecedent',
+					)
+				)
 			);
+
+			$datas['options'] = Hash::merge(
+				$datas['options'],
+				$this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums()
+			);
+			$datas['options']['Decisionprecedente'] = $datas['options']['Decisionnonrespectsanctionep93'];
+			$datas['options']['Passagecommissionepprecedent'] = $datas['options']['Passagecommissionep'];
+
+			return $this->ged( $gedooo_data, $modeleOdt, false, $datas['options'] );
 		}
 
 		/**
