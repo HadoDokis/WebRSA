@@ -8,7 +8,7 @@
 	 */
 	App::uses( 'Controller', 'Controller' );
 	App::uses( 'RequestHandlerComponent', 'Controller/Component' );
-	App::uses( 'SearchSavedRequestsComponent', 'Controller/Component' );
+	App::uses( 'SearchSavedRequestsComponent', 'Search.Controller/Component' );
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
