@@ -839,6 +839,7 @@
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
 				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options'] = Hash::merge( $datas['options'], $this->Contratinsertion->Cer93->enums() );
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -852,29 +853,31 @@
 
 			// Ajout d'informations propres à la thématique
 			$gedooo_data_complementaires = $this->find(
-					'first', array(
-				'contain' => array(
-					'Relancenonrespectsanctionep93',
-					'Orientstruct' => array(
-						'Typeorient',
-						'Structurereferente'
+				'first',
+				array(
+					'contain' => array(
+						'Relancenonrespectsanctionep93',
+						'Orientstruct' => array(
+							'Typeorient',
+							'Structurereferente'
+						),
+						'Contratinsertion' => array(
+							'Structurereferente' => array(
+								'Typeorient'
+							),
+							'Cer93'
+						),
+						'Propopdo' => array(
+							'Structurereferente' => array(
+								'Typeorient'
+							)
+						),
+						'Historiqueetatpe',
 					),
-					'Contratinsertion' => array(
-						'Structurereferente' => array(
-							'Typeorient'
-						)
-					),
-					'Propopdo' => array(
-						'Structurereferente' => array(
-							'Typeorient'
-						)
-					),
-					'Historiqueetatpe',
-				),
-				'conditions' => array(
-					"{$this->alias}.id" => $gedooo_data[$this->alias]['id']
-				)
+					'conditions' => array(
+						"{$this->alias}.id" => $gedooo_data[$this->alias]['id']
 					)
+				)
 			);
 
 			$gedooo_data = Set::merge( $gedooo_data, $gedooo_data_complementaires );
