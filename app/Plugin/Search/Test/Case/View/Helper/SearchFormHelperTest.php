@@ -78,13 +78,13 @@
 			$options = array( '2' => 'Ouvert', '6' => 'Clos' );
 
 			$result = $this->SearchForm->dependantCheckboxes( 'Search.Dossier.etatdosrsa', $options );
-			$expected = '<div class="input checkbox"><input type="hidden" name="data[Search][Dossier][etatdosrsa_choice]" id="SearchDossierEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Search][Dossier][etatdosrsa_choice]"  value="1" id="SearchDossierEtatdosrsaChoice"/><label for="SearchDossierEtatdosrsaChoice">Search.Dossier.etatdosrsa_choice</label></div><fieldset id="SearchDossierEtatdosrsa"><legend>Search.Dossier.etatdosrsa</legend><div class="input select"><input type="hidden" name="data[Search][Dossier][etatdosrsa]" value="" id="SearchDossierEtatdosrsa"/>
+			$expected = '<div class="input checkbox"><input type="hidden" name="data[Search][Dossier][etatdosrsa_choice]" id="SearchDossierEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Search][Dossier][etatdosrsa_choice]"  value="1" id="SearchDossierEtatdosrsaChoice"/><label for="SearchDossierEtatdosrsaChoice">Search.Dossier.etatdosrsa_choice</label></div><fieldset id="SearchDossierEtatdosrsaFieldset"><legend>Search.Dossier.etatdosrsa</legend><div class="input select"><input type="hidden" name="data[Search][Dossier][etatdosrsa]" value="" id="SearchDossierEtatdosrsa"/>
 
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="2" id="SearchDossierEtatdosrsa2" /><label for="SearchDossierEtatdosrsa2">Ouvert</label></div>
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="6" id="SearchDossierEtatdosrsa6" /><label for="SearchDossierEtatdosrsa6">Clos</label></div>
 </div></fieldset><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', $( \'SearchDossierEtatdosrsa\' ), false ); } );
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierEtatdosrsaChoice\', $( \'SearchDossierEtatdosrsaFieldset\' ), false ); } );
 //]]>
 </script>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
