@@ -60,7 +60,7 @@
 		 */
 		public function dependantCheckboxes( $path, $options ) {
 			$domain = Inflector::underscore( $this->request->params['controller'] );
-			$fieldsetId = $this->domId( $path );
+			$fieldsetId = $this->domId( "{$path}_fieldset" );
 			$choicePath = "{$path}_choice";
 
 			$input = $this->Form->input(
