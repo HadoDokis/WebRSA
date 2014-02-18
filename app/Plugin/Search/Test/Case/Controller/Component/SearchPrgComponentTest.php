@@ -12,7 +12,8 @@
 	App::uses( 'CakeRequest', 'Network' );
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
-	App::uses( 'CakeSession', 'Model/Datasource' );
+
+	require_once dirname( __FILE__ ). DS.'..'. DS.'..'.DS.'cake_test_session.php';
 
 	class SearchPrg2Component extends SearchPrgComponent
 	{
@@ -144,16 +145,14 @@
 			$this->Controller->Components->init( $this->Controller );
 			$this->Controller->SearchPrg2->initialize( $this->Controller );
 
-			session_id( 'll5e1483na37s0jcljdpdd9ll5' );
-			CakeSession::start();
-			$_SESSION = array();
+			CakeTestSession::start();
 		}
 
 		/**
 		 * tearDown method
 		 */
 		public function tearDown() {
-			$_SESSION = array();
+			CakeTestSession::destroy();
 			parent::tearDown();
 		}
 
