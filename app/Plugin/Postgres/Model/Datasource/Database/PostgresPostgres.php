@@ -43,7 +43,7 @@
 		 * @param array $conditions Conditions supplémentaires éventuelles.
 		 * @return array
 		 */
-		public function getPostgresFunctions( array $conditions ) {
+		public function getPostgresFunctions( array $conditions = array() ) {
 			$sql = "SELECT
 						pg_namespace.nspname AS \"Function__schema\",
 						pg_proc.proname AS \"Function__name\",
