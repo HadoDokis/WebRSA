@@ -10,7 +10,8 @@
 	 */
 
 	/**
-	 * La classe SearchFormHelper ...
+	 * La classe SearchFormHelper fournit des méthodes génériques pour des éléments
+	 * de formulaires. Utilise la librairire javascript prototype.js.
 	 *
 	 * @package Search
 	 * @subpackage View.Helper
@@ -25,9 +26,36 @@
 		public $helpers = array( 'Form', 'Html' );
 
 		/**
-		 * Retourne le code javascript permettant d'activer ou de désactiver le fieldset contentant les cases à
-		 * cocher (états du dossier, natures de la prestation, ...) suivant la valeur de la case à cocher
-		 * "parente" ("choice").
+		 * Fournit le code javascript permettant de désactiver les boutons de
+		 * soumission d'un formumlaire lors de son envoi afin de ne pas renvoyer
+		 * celui-ci plusieurs fois avant que le reqête n'ait abouti.
+		 *
+		 * @param string $form L'id du formulaire au sens Prototype
+		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
+		 * @return string
+		 */
+		public function observeDisableFormOnSubmit( $form, $message = null ) {
+			if( empty( $message ) ) {
+				$out = "document.observe( 'dom:loaded', function() {
+					observeDisableFormOnSubmit( '{$form}' );
+				} );";
+			}
+			else {
+				$message = str_replace( "'", "\\'", $message );
+
+				$out = "document.observe( 'dom:loaded', function() {
+					observeDisableFormOnSubmit( '{$form}', '{$message}' );
+				} );";
+			}
+
+			return "<script type='text/javascript'>{$out}</script>";
+		}
+
+		/**
+		 * Retourne le code javascript permettant d'activer ou de désactiver le
+		 * fieldset contentant les cases à cocher (états du dossier, natures de
+		 * la prestation, ...) suivant la valeur de la case à cocher "parente"
+		 * ("choice").
 		 *
 		 * @param string $observeId
 		 * @param string $updateId
@@ -54,11 +82,11 @@
 		 * echo $this->SearchForm->dependantCheckboxes( 'Situationdossierrsa.etatdosrsa', $etatdosrsa );
 		 * @see SearchHelper
 		 *
-		 * @param $path string Le chemin au sens formulaire CakePHP
-		 * @param $options array Les différentes valeurs pour les cases à cocher.
+		 * @param string $path
+		 * @param array $options
 		 * @return string
 		 */
-		public function dependantCheckboxes( $path, $options ) {
+		public function dependantCheckboxes( $path, array $options = array() ) {
 			$domain = Inflector::underscore( $this->request->params['controller'] );
 			$fieldsetId = $this->domId( "{$path}_fieldset" );
 			$choicePath = "{$path}_choice";
@@ -90,6 +118,39 @@
 			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false );
 
 			return $input.$script;
+		}
+
+		/**
+		 * Méthode générique permettant de filtrer sur une plage de dates.
+		 *
+		 * @todo Options: dateFormat, maxYear, minYear, ...
+		 *
+		 * @param string $path
+		 * @param string $fieldLabel
+		 * @return string
+		 */
+		public function dateRange( $path, $fieldLabel = null ) {
+			$fieldsetId = $this->domId( $path ).'_from_to';
+
+			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false );
+
+			list( $model, $field ) = model_field( $path);
+			$domain = Inflector::underscore( $model );
+			if( empty( $fieldLabel ) ) {
+				$fieldLabel = __d( $domain, "{$model}.{$field}" );
+			}
+
+			$input = $this->Form->input( $path, array( 'label' => 'Filtrer par '.lcfirst( $fieldLabel ), 'type' => 'checkbox' ) );
+
+			$input .= $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', $fieldLabel )
+				.$this->Form->input( $path.'_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'default' => strtotime( '-1 week' ) ) )
+				.$this->Form->input( $path.'_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) ),
+				array( 'id' => $fieldsetId )
+			);
+
+			return $script.$input;
 		}
 	}
 ?>
