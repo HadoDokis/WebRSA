@@ -148,15 +148,16 @@
 		 * plugin Validation2.
 		 *
 		 * @medium
-		 * 
+		 *
 		 * @return void
 		 */
 		public function testBeforeValidate() {
 			$validate = $this->validate;
 			foreach( $validate as $field => $rules ) {
 				foreach( $rules as $ruleName => $rule ) {
-					// TODO: args
-					$validate[$field][$ruleName]['message'] = __( "Validation2::{$ruleName}" );
+					$params = array_values( array_slice( $rule['rule'], 1 ) );
+					$domain = Hash::get( $this->Site->Behaviors->Validation2Autovalidate->settings, "{$this->Site->alias}.domain" );
+					$validate[$field][$ruleName]['message'] = call_user_func_array( 'sprintf', Hash::merge( array( __d( 'default', "Validate::{$ruleName}" ) ), $params ) );
 				}
 			}
 

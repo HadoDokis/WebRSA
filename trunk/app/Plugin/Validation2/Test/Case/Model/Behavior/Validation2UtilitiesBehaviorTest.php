@@ -114,19 +114,19 @@
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( 'notEmpty' );
-			$expected = __( 'Validation2::notEmpty' );
+			$expected = __( 'Validate::notEmpty' );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'between', 2, 5 ) );
-			$expected = sprintf( __( 'Validation2::between' ), array( 2, 5 ) );
+			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'between', array( 2, 5 ) ) );
-			$expected = sprintf( __( 'Validation2::between' ), array( 2, 5 ) );
+			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->Site->defaultValidationRuleMessage( array( 'rule' => array( 'between', array( 2, 5 ) ), 'domain' => 'default' ) );
-			$expected = sprintf( __( 'Validation2::between' ), array( 2, 5 ) );
+			$expected = sprintf( __( 'Validate::between' ), array( 2, 5 ) );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -249,7 +249,7 @@
 				'id' => array(
 					'notEmpty' => array(
 						'rule' => array( 'notEmpty', ),
-						'message' => __( 'Validation2::notEmpty' ),
+						'message' => __( 'Validate::notEmpty' ),
 						'required' => NULL,
 						'allowEmpty' => NULL,
 						'on' => NULL,

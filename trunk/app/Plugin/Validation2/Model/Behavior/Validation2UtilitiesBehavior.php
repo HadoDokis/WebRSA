@@ -121,7 +121,8 @@
 				return null;
 			}
 
-			$message = "Validation2::{$rule['rule'][0]}";
+			//$message = "Validation2::{$rule['rule'][0]}";
+			$message = "Validate::{$rule['rule'][0]}";
 
 			$params = array();
 			if( count( $rule['rule'] ) > 1 ) {
