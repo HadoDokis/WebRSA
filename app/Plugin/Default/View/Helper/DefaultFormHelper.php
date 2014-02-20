@@ -151,6 +151,11 @@
 		 * @return string Generated label element
 		 */
 		protected function _inputLabel( $fieldName, $label, $options ) {
+			if( !isset( $options['required'] ) ) {
+				list( $modelKey, $fieldKey ) = model_field( $fieldName );
+				$options['required'] = ( $this->_introspectModel( $modelKey, 'validates', $fieldKey ) !== null );
+			}
+
 			$label = $this->_required( $label, $options );
 			unset( $options['required'] );
 			return parent::_inputLabel( $fieldName, $label, $options );
