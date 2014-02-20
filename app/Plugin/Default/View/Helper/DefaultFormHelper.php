@@ -114,6 +114,10 @@
 				return $this->fieldValue( $fieldName, $options );
 			}
 
+			if( ( Hash::get( $options, 'type' ) == 'hidden' ) && Hash::check( $options, 'options' ) ) {
+				unset( $options['options'] );
+			}
+
 			return parent::input( $fieldName, $options );
 		}
 
