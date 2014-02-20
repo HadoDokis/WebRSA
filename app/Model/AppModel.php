@@ -595,5 +595,54 @@
 //			return "TRIM( TRAILING '{$suffix}' FROM ARRAY_TO_STRING( ARRAY( {$sql} ), '' ) )";
             return "TRIM( BOTH '\n\r' FROM TRIM( TRAILING '{$suffix}' FROM ARRAY_TO_STRING( ARRAY( {$sql} ), '' ) ) )";
 		}
+
+		/**
+		 *
+		 * @fixme le mettre ailleurs ... et ne pas oublier de lier éventuellement d'autres modèles
+		 *
+		 * @param string $prefixKeyField
+		 * @param string $suffixKeyField
+		 * @param string $displayField
+		 * @param array $conditions
+		 * @param array $modelNames
+		 * @return array
+		 */
+		public function findListPrefixed( $prefixKeyField, $suffixKeyField, $displayField, array $conditions = array(), array $modelNames = array() ) {
+			$query = array(
+				'fields' => array(
+					"{$this->alias}.{$prefixKeyField}",
+					"{$this->alias}.{$suffixKeyField}",
+					"{$this->alias}.{$displayField}"
+				),
+				'order' => array(
+					"{$this->alias}.{$prefixKeyField}",
+					"{$this->alias}.{$suffixKeyField}",
+					"{$this->alias}.{$displayField}"
+				),
+				'contain' => false,
+				'conditions' => $conditions
+			);
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $query ) );
+			$results = Cache::read( $cacheKey );
+
+			if( $results === false ) {
+				$results = $this->find( 'all', $query );
+
+				$results = Hash::combine(
+					$results,
+					array( '%s_%s', "{n}.{$this->alias}.{$prefixKeyField}", "{n}.{$this->alias}.{$suffixKeyField}" ),
+					"{n}.{$this->alias}.{$displayField}"
+				);
+
+				$modelNames[] = $this->name;
+				$modelNames = array_unique( $modelNames );
+
+				Cache::write( $cacheKey, $results );
+				ModelCache::write( $cacheKey, $modelNames );
+			}
+
+			return $results;
+		}
 	}
 ?>

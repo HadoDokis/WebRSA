@@ -90,6 +90,14 @@
 				'order' => null,
 				'dependent' => true
 			),
+			'Ficheprescription93' => array(
+				'className' => 'Ficheprescription93',
+				'foreignKey' => 'situationallocataire_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'dependent' => true
+			),
 		);
 
 		/**
@@ -133,6 +141,7 @@
 				$querydata = array(
 					'fields' => array_merge(
 						array(
+							'Personne.id',
 							'Personne.qual',
 							'Personne.nom',
 							'Personne.prenom',
@@ -225,6 +234,50 @@
 				);
 
 				return $this->Personne->find( 'first', $querydata );
+		}
+
+		// FIXME: nom de fonction... l'utiliser ailleurs ?
+		// @see Questionnaired1pdv93::prepareFormData()
+		public function foo( array $data ) {
+			$return = array();
+
+			$schema = array_keys( $this->schema() );
+
+			$return['Situationallocataire']['personne_id'] = $data['Personne']['id'];
+
+			$modelNames = array(
+				'Personne',
+				'Prestation',
+				'Calculdroitrsa',
+				'Historiqueetatpe',
+				'Adresse',
+				'Dossier',
+				'Situationdossierrsa',
+				'Foyer',
+				'Suiviinstruction',
+				'Detailcalculdroitrsa',
+			);
+
+			foreach( $modelNames as $modelName ) {
+				foreach( $data[$modelName] as $field => $value ) {
+					if( !in_array( $field, array( 'id', 'personne_id', 'created', 'modified' ) ) && in_array( $field, $schema ) ) {
+						$return['Situationallocataire'][$field] = $value;
+					}
+				}
+			}
+			$return['Situationallocataire']['identifiantpe'] = $data['Historiqueetatpe']['identifiantpe'];
+			$return['Situationallocataire']['datepe'] = $data['Historiqueetatpe']['date'];
+			$return['Situationallocataire']['etatpe'] = $data['Historiqueetatpe']['etat'];
+			$return['Situationallocataire']['codepe'] = $data['Historiqueetatpe']['code'];
+			$return['Situationallocataire']['motifpe'] = $data['Historiqueetatpe']['motif'];
+
+			foreach( array( 'socle', 'majore', 'activite' ) as $type ) {
+				$return['Situationallocataire']["natpf_{$type}"] = ( $return['Situationallocataire']["natpf_{$type}"] ? '1' : '0' );
+			}
+
+			$return['Situationallocataire']['natpf_d1'] = $this->natpfD1( $return, true );
+
+			return $return;
 		}
 
 		/**

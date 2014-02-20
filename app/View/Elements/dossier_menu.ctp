@@ -69,7 +69,7 @@
                 $isOa = true;
             }
         }
-        
+
         if( $isOa ) {
 			echo $this->Xhtml->tag( 'p', 'Ce dossier est géré par un organisme agréé', array( 'class' => 'etatDossier structurereferenteOa' ) );
 		}
@@ -200,6 +200,10 @@
 					'url' => '#',
 					( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ? 'Fiche de prescription' : 'Fiche de candidature' ) => array(
 						'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+					),
+					'Fiche de prescription (nouveau)' => array(
+						'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'index', $personne['id'] ),
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 )
 					)
 				);
 

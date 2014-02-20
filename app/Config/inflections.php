@@ -423,6 +423,14 @@ $irregularPlural = array(
     'populationd1d2pdv93' => 'populationsd1d2pdvs93',
     'cohorted2pdv93' => 'cohortesd2pdvs93',
     'gestiondoublon' => 'gestionsdoublons',
+	// Module Fiche de prescription - CG93
+	'thematiquefp93' => 'thematiquesfps93',
+	'categoriefp93' => 'categoriesfps93',
+	'filierefp93' => 'filieresfps93',
+	'prestatairefp93' => 'prestatairesfps93',
+	'actionfp93' => 'actionsfps93',
+	'ficheprescription93' => 'fichesprescriptions93',
+	'instantanedonneesfp93' => 'instantanesdonneesfps93',
 );
 
 /**

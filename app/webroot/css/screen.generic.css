@@ -1319,7 +1319,7 @@ td.button.impression a, td.action a.impression, td span.button.impression, table
     background-image: url( ../img/icons/printer.png );
 }
 
-td.button.impression.disabled a, td.action a.impression.disabled, td span.button.impression.disabled, table.default2 td a.button.impression.disabled {
+td.button.impression.disabled a, td.action a.impression.disabled, td.action span.link.impression.disabled, td span.button.impression.disabled, table.default2 td a.button.impression.disabled {
     background-image: url( ../img/icons/printer_disabled.png );
 }
 

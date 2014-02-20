@@ -1,0 +1,109 @@
+# Traductions de fichesprescriptions93.po
+# @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Fichesprescriptions/search"
+msgstr "Formulaire"
+
+# ------------------------------------------------------------------------------
+
+msgid "Calculdroitrsa.toppersdrodevorsa_notice"
+msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
+
+msgid "Situationdossierrsa.etatdosrsa_ouverts"
+msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."
+
+msgid "/Fichesprescriptions93/index/:heading"
+msgstr "Fiches de prescription de l'allocataire"
+
+msgid "Ficheprescription93.created"
+msgstr "Date d'enregistrement"
+
+msgid "Thematiquefp93.type"
+msgstr "Type"
+
+msgid "Thematiquefp93.name"
+msgstr "Thématique"
+
+msgid "Categoriefp93.name"
+msgstr "Catégorie d'action prescrite"
+
+msgid "Ficheprescription93.dd_action"
+msgstr "Date de début de l'action"
+
+msgid "Ficheprescription93.df_action"
+msgstr "Date de fin de l'action"
+
+msgid "Ficheprescription93.statut"
+msgstr "Statut"
+
+msgid "/Fichesprescriptions93/add"
+msgstr "Ajouter"
+
+msgid "/Fichesprescriptions93/view"
+msgstr "Voir"
+
+msgid "/Fichesprescriptions93/edit"
+msgstr "Modifier"
+
+msgid "/Fichesprescriptions93/cancel"
+msgstr "Annuler"
+
+msgid "/Fichesprescriptions93/impression"
+msgstr "Imprimer"
+
+################################################################################
+# Formulaire d'ajout / de modification
+################################################################################
+
+msgid "Ficheprescription93.Prescripteur"
+msgstr "Prescripteur/Référent"
+
+msgid "Ficheprescription93.structurereferente_id"
+msgstr "Structure du référent"
+
+msgid "Ficheprescription93.referent_id"
+msgstr "Nom du référent"
+
+msgid "Ficheprescription93.objet"
+msgstr "Objet ou nature de la prescription / observations / intitulé de l'action"
+
+################################################################################
+
+msgid "/Fichesprescriptions93/add/:heading"
+msgstr "Ajout d'une fiche de prescription"
+
+msgid "/Fichesprescriptions93/edit/:heading"
+msgstr "Modification d'une fiche de prescription"
+
+msgid "Ficheprescription93.Prestataire"
+msgstr "Prestataire/Partenaire"
+
+msgid "Ficheprescription93.rdvprestataire_date"
+msgstr "Rendez-vous fixé le"
+
+msgid "Ficheprescription93.rdvprestataire_personne"
+msgstr "Avec"
+
+msgid "Categoriefp93.thematiquefp93_id"
+msgstr "Thématique"
+
+msgid "Filierefp93.categoriefp93_id"
+msgstr "Catégorie"
+
+msgid "Actionfp93.filierefp93_id"
+msgstr "Filière"
+
+msgid "Actionfp93.prestatairefp93_id"
+msgstr "Nom du prestataire"
+
+msgid "Ficheprescription93.actionfp93_id"
+msgstr "Intitulé"

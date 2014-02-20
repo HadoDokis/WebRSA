@@ -3345,3 +3345,22 @@ msgstr "Ajout/Édition d'une appellation métier"
 
 msgid "Codesappellationsromev3:delete"
 msgstr "Suppression d'une appellation métier"
+
+###############################################################################
+# Fiche de prescription (CG 93)
+###############################################################################
+
+msgid "Module:Fichesprescriptions93"
+msgstr "Module fiche de prescription (CG 93)"
+
+msgid "Fichesprescriptions93:search"
+msgstr "Recherche des fiches de prescription"
+
+msgid "Fichesprescriptions93:index"
+msgstr "Liste des fiches de prescription de l'allocataire"
+
+msgid "Fichesprescriptions93:add"
+msgstr "Ajout d'une fiche de prescription"
+
+msgid "Fichesprescriptions93:edit"
+msgstr "Modification d'une fiche de prescription"

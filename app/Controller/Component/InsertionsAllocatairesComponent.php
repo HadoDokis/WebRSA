@@ -11,6 +11,8 @@
 	/**
 	 * La classe InsertionsAllocatairesComponent ...
 	 *
+	 * @todo ajouter un paramètre 'disabled' => true|false|null
+	 *
 	 * @package app.Controller.Component
 	 */
 	class InsertionsAllocatairesComponent extends Component
