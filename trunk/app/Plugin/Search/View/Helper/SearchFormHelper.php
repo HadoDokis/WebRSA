@@ -70,6 +70,29 @@
 		}
 
 		/**
+		 * Retourne le code javascript permettant de faire dépendre des input
+		 * select non-multiples entre eux, suivant le principe suivant: on prend
+		 * le suffixe de la valeur du maître et elle doit correspondre au préfixe
+		 * de la valeur de l'esclave.
+		 *
+		 * @param array $fields En clé le champ maître, en valeur le champ esclave
+		 * @return string
+		 */
+		public function jsObserveDependantSelect( array $fields ) {
+			$script = '';
+
+			foreach( $fields as $masterField => $slaveField ) {
+				$masterField = $this->domId( $masterField );
+				$slaveField = $this->domId( $slaveField );
+				$script .= "dependantSelect( '{$slaveField}', '{$masterField}' );\n";
+			}
+
+			$script = "document.observe( \"dom:loaded\", function() {\n{$script}} );";
+
+			return $this->Html->scriptBlock( $script );
+		}
+
+		/**
 		 * Méthode générique permettant de retourner un ensemble de cases à cocher au sein d'un
 		 * fieldset, activées ou désactivées par une autre case à cocher située au-dessus du fieldset.
 		 *
