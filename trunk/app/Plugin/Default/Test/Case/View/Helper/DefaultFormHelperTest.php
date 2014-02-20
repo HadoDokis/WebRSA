@@ -136,6 +136,18 @@
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
+
+		/**
+		 * Test de la méthode DefaultFormHelper::input() pour un champ caché.
+		 *
+		 * @return void
+		 */
+		public function testInputHidden() {
+			$result = $this->DefaultForm->input( 'Apple.id', array( 'type' => 'hidden', 'options' => array( 1, 2 ) ) );
+			$expected = '<input type="hidden" name="data[Apple][id]" value="666" id="AppleId"/>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
 		/**
 		 * Test de la méthode DefaultFormHelper::label()
 		 *
