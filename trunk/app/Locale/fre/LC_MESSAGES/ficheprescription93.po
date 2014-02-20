@@ -1,0 +1,26 @@
+# Traductions de ficheprescription93.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "ENUM::STATUT::01_renseignee"
+msgstr "Renseignée"
+
+msgid "ENUM::STATUT::02_signee"
+msgstr "Signée"
+
+msgid "ENUM::STATUT::03_transmise_partenaire"
+msgstr "Transmise partenaire"
+
+msgid "ENUM::STATUT::04_effectivite_renseignee"
+msgstr "Effectivité renseignée"
+
+msgid "ENUM::STATUT::05_suivi_renseigne"
+msgstr "Suivi renseigné"

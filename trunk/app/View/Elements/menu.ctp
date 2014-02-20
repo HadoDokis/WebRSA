@@ -152,6 +152,10 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 			),
+			'Par fiches de prescription' => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search'  )
+			),
 		),
 		'APRE' => array(
 			'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),

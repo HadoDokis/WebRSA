@@ -240,6 +240,148 @@ CREATE INDEX codesappellationsromev3_codemetierromev3_id_idx ON codesappellation
 
 
 ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN infotransmise TYPE TEXT;
+
+-- *****************************************************************************
+-- Fiche de prescription - CG 93
+-- lib/Cake/Console/cake Graphviz.GraphvizMpd -t "/(^personnes$|^referents$|^fichesprescriptions93$|fps93$|^situationsallocataires$|^structuresreferentes$)/" && dot -K fdp -T png -o ./graphviz_mpd.png ./graphviz_mpd.dot && gwenview ./graphviz_mpd.png > /dev/null 2>&1
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS thematiquesfps93 CASCADE;
+CREATE TABLE thematiquesfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+	type		VARCHAR(10) NOT NULL,
+    name		VARCHAR(250) NOT NULL,
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE thematiquesfps93 IS 'Thématiques pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX thematiquesfps93_type_name_idx ON thematiquesfps93( type, name );
+
+ALTER TABLE thematiquesfps93 ADD CONSTRAINT thematiquesfps93_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['pdi','horspdi'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS categoriesfps93 CASCADE;
+CREATE TABLE categoriesfps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+	thematiquefp93_id	INTEGER NOT NULL REFERENCES thematiquesfps93(id),
+    name				VARCHAR(250) NOT NULL,
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE categoriesfps93 IS 'Catégories pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX categoriesfps93_thematiquefp93_id_name_idx ON categoriesfps93( thematiquefp93_id, name );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS filieresfps93 CASCADE;
+CREATE TABLE filieresfps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+	categoriefp93_id	INTEGER NOT NULL REFERENCES categoriesfps93(id),
+    name				VARCHAR(250) NOT NULL,
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE filieresfps93 IS 'Filières pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX filieresfps93_categoriefp93_id_name_idx ON filieresfps93( categoriefp93_id, name );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS prestatairesfps93 CASCADE;
+CREATE TABLE prestatairesfps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+    name				VARCHAR(250) NOT NULL,
+	-- TODO: mettre le reste des champs
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE prestatairesfps93 IS 'Prestataires pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX prestatairesfps93_name_idx ON prestatairesfps93( name );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS actionsfps93 CASCADE;
+CREATE TABLE actionsfps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+	filierefp93_id		INTEGER NOT NULL REFERENCES filieresfps93(id),
+	prestatairefp93_id	INTEGER NOT NULL REFERENCES prestatairesfps93(id),
+    name				VARCHAR(250) NOT NULL,
+    numconvention		VARCHAR(250) DEFAULT NULL,
+	annee				INTEGER NOT NULL,
+	actif				CHAR(1) NOT NULL,
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE actionsfps93 IS 'Actions pour la fiche de prescription - CG 93';
+
+CREATE INDEX actionsfps93_filierefp93_id_idx ON actionsfps93( filierefp93_id );
+CREATE INDEX actionsfps93_prestatairefp93_id_idx ON actionsfps93( prestatairefp93_id );
+CREATE UNIQUE INDEX actionsfps93_filierefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, name, annee ) WHERE actif = '1';
+
+ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+-- TODO: adresses pour les différentes tables
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS fichesprescriptions93 CASCADE;
+CREATE TABLE fichesprescriptions93 (
+    id						SERIAL NOT NULL PRIMARY KEY,
+    personne_id				INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	statut					VARCHAR(30) NOT NULL,
+	-- Bloc "Prescripteur/Référent"
+    referent_id				INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    objet					TEXT DEFAULT NULL,
+	-- Bloc "Prestataire/Partenaire" (FIXME: DEFAULT NULL / NOT NULL ?)
+	rdvprestataire_date		TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
+	rdvprestataire_personne	TEXT DEFAULT NULL,
+    actionfp93_id			INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dd_action				DATE DEFAULT NULL,
+	df_action				DATE DEFAULT NULL,
+	duree_action			INTEGER DEFAULT NULL,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+    modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE fichesprescriptions93 IS 'Fiche de prescription - CG 93';
+
+CREATE INDEX fichesprescriptions93_personne_id_idx ON fichesprescriptions93( personne_id );
+CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( referent_id );
+CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
+
+-- TODO: 99_annulee ?
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01_renseignee', '02_signee', '03_transmise_partenaire', '04_effectivite_renseignee', '05_suivi_renseigne'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS instantanesdonneesfps93 CASCADE;
+CREATE TABLE instantanesdonneesfps93 (
+    id						SERIAL NOT NULL PRIMARY KEY,
+    ficheprescription93_id	INTEGER NOT NULL REFERENCES fichesprescriptions93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- Partie "Bloc Prescripteur / Référent"
+	referent_fonction		VARCHAR(30) NOT NULL,
+	structure_name			VARCHAR(100) NOT NULL,
+	structure_num_voie		VARCHAR(15) NOT NULL,
+	structure_type_voie 	VARCHAR(6) NOT NULL,
+	structure_nom_voie		VARCHAR(50) NOT NULL,
+	structure_code_postal	CHAR(5) NOT NULL,
+	structure_ville			VARCHAR(45) NOT NULL,
+	structure_tel			VARCHAR(10),
+	structure_fax			VARCHAR(10),
+	referent_email			VARCHAR(78),
+	-- Partie "Bénéficiaire"
+	situationallocataire_id	INTEGER NOT NULL REFERENCES situationsallocataires(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+    modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE instantanesdonneesfps93 IS '"Instantané" de certaines données pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX instantanesdonneesfps93_ficheprescription93_id_idx ON instantanesdonneesfps93( ficheprescription93_id );
+CREATE UNIQUE INDEX instantanesdonneesfps93_situationallocataire_id_idx ON instantanesdonneesfps93( situationallocataire_id );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
