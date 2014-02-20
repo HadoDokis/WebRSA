@@ -83,7 +83,7 @@
 		 *
 		 * @var boolean
 		 */
-		protected $_cacheLoaded = false;
+		protected $_cacheLoaded = array();
 
 		/**
 		 * Liste des objets formatteurs.
@@ -241,7 +241,7 @@
 		 * @param boolean $force
 		 */
 		protected function _loadCache( Model $Model, $force = false ) {
-			if( !$this->_cacheLoaded || $force ) {
+			if( !Hash::get( $this->_cacheLoaded, $Model->alias ) || $force ) {
 				$cacheKey = array( $Model->useDbConfig, __CLASS__, $Model->alias, __FUNCTION__ );
 				$cacheKey = cacheKey( $cacheKey );
 
@@ -263,7 +263,7 @@
 				$this->_fieldsByType[$Model->alias] = $cache['types'];
 				$this->_regexes[$Model->alias] = $cache['regexes'];
 
-				$this->_cacheLoaded = true;
+				$this->_cacheLoaded[$Model->alias] = true;
 			}
 		}
 
