@@ -1325,9 +1325,98 @@
 		* d'EP pour un certain niveau de décision. On revoie la chaîne vide car on
 		* n'est pas sensés imprimer de décision pour la commission.
 		*/
-
+// 		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
+// 			return '';
+// 		}
 		public function getDecisionPdf( $passagecommissionep_id, $user_id = null  ) {
-			return '';
+			$modele = $this->alias;
+			$modeleDecisions = 'Decision'.Inflector::underscore( $this->alias );
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$datas = Cache::read( $cacheKey );
+
+			if( $datas === false ) {
+				$datas['querydata'] = $this->_qdDecisionPdf();
+
+				// Bilan de parcours
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->fields() );
+				$datas['querydata']['joins'][] = $this->join( 'Bilanparcours66' );
+
+				// Orientation liée au bilan de parcours
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->fields() );
+				$datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Orientstruct' );
+
+				// Structure référente liée àl'orientation
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Structurereferente->fields() );
+				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Structurereferente' );
+
+				// Référent orientant lié à l'orientation
+				$datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Orientstruct->Referentorientant->fields() );
+				$datas['querydata']['joins'][] = $this->Bilanparcours66->Orientstruct->join( 'Referentorientant' );
+
+                // Référent lié au bilan
+                $datas['querydata']['fields'] = array_merge( $datas['querydata']['fields'], $this->Bilanparcours66->Referent->fields() );
+                $datas['querydata']['joins'][] = $this->Bilanparcours66->join( 'Referent' );
+
+				// Jointures et champs décisions
+				$modelesProposes = array(
+					'Typeorient' => "{$modeleDecisions}typeorient",
+					'Structurereferente' => "{$modeleDecisions}structurereferente",
+					'Referent' => "{$modeleDecisions}referent"
+				);
+
+				foreach( $modelesProposes as $modelePropose => $modeleProposeAliase ) {
+					$replacement = array( $modelePropose => $modeleProposeAliase );
+
+					$datas['querydata']['joins'][] = array_words_replace( $this->Dossierep->Passagecommissionep->{$modeleDecisions}->join( $modelePropose ), $replacement );
+					$datas['querydata']['fields'] = array_merge(
+						$datas['querydata']['fields'],
+						array_words_replace(
+							$this->Dossierep->Passagecommissionep->{$modeleDecisions}->{$modelePropose}->fields(),
+							$replacement
+						)
+					);
+				}
+
+				// Traductions
+				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
+				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
+				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
+				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+
+				Cache::write( $cacheKey, $datas );
+			}
+
+
+			$datas['querydata']['conditions']['Passagecommissionep.id'] = $passagecommissionep_id;
+			// INFO: permet de ne pas avoir d'erreur avec les virtualFields aliasés
+			$virtualFields = $this->Dossierep->Passagecommissionep->virtualFields;
+			$this->Dossierep->Passagecommissionep->virtualFields = array();
+			$gedooo_data = $this->Dossierep->Passagecommissionep->find( 'first', $datas['querydata'] );
+			$this->Dossierep->Passagecommissionep->virtualFields = $virtualFields;
+
+			if( empty( $gedooo_data ) || !isset( $gedooo_data[$modeleDecisions] ) || empty( $gedooo_data[$modeleDecisions] ) ) {
+				return false;
+			}
+
+			$user = $this->Dossierep->Passagecommissionep->User->find(
+				'first',
+				array(
+					'conditions' => array(
+						'User.id' => $user_id
+					),
+					'contain' => array(
+						'Serviceinstructeur'
+					)
+				)
+			);
+			$gedooo_data = Set::merge( $gedooo_data, $user );
+// debug($gedooo_data);
+// die();
+			// Choix du modèle de document
+			$modeleOdt = "{$this->alias}/decision_reorientation.odt";
+
+			return $this->_getOrCreateDecisionPdf( $passagecommissionep_id, $gedooo_data, $modeleOdt, $datas['options'] );
 		}
 
 		/**
