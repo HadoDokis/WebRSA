@@ -275,8 +275,8 @@
 							</tr>
 							<tr class="odd">
 								<th><?php echo __d( 'personne', 'Personne.dtnai' );?></th>
-								<td><?php echo date_short( Set::extract( 'DEM.Personne.dtnai', $details ) );?></td>
-								<td><?php echo date_short( Set::extract( 'CJT.Personne.dtnai', $details ) );?></td>
+								<td><?php echo date_short( Set::extract( 'DEM.Personne.dtnai', $details ) ).' ('.age( ( Set::extract( 'DEM.Personne.dtnai', $details ) ) ).' ans)';?></td>
+								<td><?php echo date_short( Set::extract( 'CJT.Personne.dtnai', $details ) ).' ('.age( ( Set::extract( 'CJT.Personne.dtnai', $details ) ) ).' ans)';?></td>
 							</tr>
 							<tr class="even">
 								<th><?php echo __d( 'foyer', 'Foyer.sitfam' );?></th>
@@ -335,6 +335,11 @@
 									</tr>
 								<?php endif;?>
 							<?php endif;?>
+							<tr class="odd">
+								<th>NIR</th>
+								<td><?php echo h( Set::extract( 'DEM.Personne.nir', $details ) );?></td>
+								<td><?php echo h( Set::extract( 'CJT.Personne.nir', $details ) );?></td>
+							</tr>
 						</tbody>
 					</table>
 				</td>
