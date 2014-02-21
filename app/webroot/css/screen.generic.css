@@ -1731,3 +1731,7 @@ body.gestionsdoublons.index td .gestionsdoublons.fusion {
 body.gestionsdoublons.index td .gestionsdoublons.fusion.disabled {
     background-image: url("../img/icons/application_double_disabled.png");
 }
+
+ul.actions li.action a.fichesprescriptions93.search {
+	background-image: url( ../img/icons/application_form_magnify.png );
+}

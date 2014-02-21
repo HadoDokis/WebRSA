@@ -88,7 +88,7 @@
 			);
 			$options = array( '2' => 'Ouvert', '6' => 'Clos' );
 
-			$result = $this->SearchForm->dependantCheckboxes( 'Search.Dossier.etatdosrsa', $options );
+			$result = $this->SearchForm->dependantCheckboxes( 'Search.Dossier.etatdosrsa', array( 'options' => $options ) );
 			$expected = '<div class="input checkbox"><input type="hidden" name="data[Search][Dossier][etatdosrsa_choice]" id="SearchDossierEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Search][Dossier][etatdosrsa_choice]"  value="1" id="SearchDossierEtatdosrsaChoice"/><label for="SearchDossierEtatdosrsaChoice">Search.Dossier.etatdosrsa_choice</label></div><fieldset id="SearchDossierEtatdosrsaFieldset"><legend>Search.Dossier.etatdosrsa</legend><div class="input select"><input type="hidden" name="data[Search][Dossier][etatdosrsa]" value="" id="SearchDossierEtatdosrsa"/>
 
 <div class="checkbox"><input type="checkbox" name="data[Search][Dossier][etatdosrsa][]" value="2" id="SearchDossierEtatdosrsa2" /><label for="SearchDossierEtatdosrsa2">Ouvert</label></div>
@@ -130,7 +130,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 //<![CDATA[
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchAppleDate\', $( \'SearchAppleDate_from_to\' ), false ); } );
 //]]>
-</script><div class="input checkbox"><input type="hidden" name="data[Search][Apple][date]" id="SearchAppleDate_" value="0"/><input type="checkbox" name="data[Search][Apple][date]"  value="1" id="SearchAppleDate"/><label for="SearchAppleDate">Filtrer par apple.date</label></div><fieldset id="SearchAppleDate_from_to"><legend>Apple.date</legend><div class="input date"><label for="SearchAppleDateFromDay">Du (inclus)</label><select name="data[Search][Apple][date_from][day]" id="SearchAppleDateFromDay">
+</script><div class="input checkbox"><input type="hidden" name="data[Search][Apple][date]" id="SearchAppleDate_" value="0"/><input type="checkbox" name="data[Search][Apple][date]"  value="1" id="SearchAppleDate"/><label for="SearchAppleDate">Filtrer par search.Apple.date</label></div><fieldset id="SearchAppleDate_from_to"><legend>Search.Apple.date</legend><div class="input date"><label for="SearchAppleDateFromDay">Du (inclus)</label><select name="data[Search][Apple][date_from][day]" id="SearchAppleDateFromDay">
 '.$daysFrom.'
 </select>-<select name="data[Search][Apple][date_from][month]" id="SearchAppleDateFromMonth">
 '.$monthsFrom.'

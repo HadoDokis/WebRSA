@@ -18,6 +18,23 @@ msgstr "Nature de la prestation"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Dossier"
+msgstr "Recherche par dossier"
+
+msgid "Search.Adresse"
+msgstr "Recherche par adresse"
+
+msgid "Search.Referentparcours"
+msgstr "Suivi du parcours"
+
+msgid "Search.Pagination"
+msgstr "Comptage des résultats"
+
+msgid "Search.Pagination.nombre_total"
+msgstr "Obtenir le nombre total de résultats (plus lent)"
+
+# ------------------------------------------------------------------------------
+
 msgid "Dossier.dtdemrsa_choice"
 msgstr "Filtrer par date de demande"
 
