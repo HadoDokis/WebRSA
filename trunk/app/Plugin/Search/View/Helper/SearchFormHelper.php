@@ -106,25 +106,32 @@
 		 * @see SearchHelper
 		 *
 		 * @param string $path
-		 * @param array $options
+		 * @param array $params
 		 * @return string
 		 */
-		public function dependantCheckboxes( $path, array $options = array() ) {
-			$domain = Inflector::underscore( $this->request->params['controller'] );
+		public function dependantCheckboxes( $path, array $params = array() ) {
+			$default = array(
+				'domain' => 'search_plugin',
+				'options' => array()
+			);
+			$params = $params + $default;
+
+			$options = $params['options'];
+
 			$fieldsetId = $this->domId( "{$path}_fieldset" );
 			$choicePath = "{$path}_choice";
 
 			$input = $this->Form->input(
 				$choicePath,
 				array(
-					'label' => __d( $domain, $choicePath ),
+					'label' => __d( $params['domain'], $choicePath ),
 					'type' => 'checkbox'
 				)
 			);
 
 			$input .= $this->Html->tag(
 				'fieldset',
-				$this->Html->tag( 'legend', __d( $domain, $path ) )
+				$this->Html->tag( 'legend', __d( $params['domain'], $path ) )
 				.$this->Form->input(
 					$path,
 					array(
@@ -149,25 +156,31 @@
 		 * @todo Options: dateFormat, maxYear, minYear, ...
 		 *
 		 * @param string $path
-		 * @param string $fieldLabel
+		 * @param array $params
 		 * @return string
 		 */
-		public function dateRange( $path, $fieldLabel = null ) {
+		public function dateRange( $path, array $params = array() ) {
+			$default = array(
+				'domain' => 'search_plugin',
+				'options' => array(),
+				'legend' => null,
+			);
+			$params = $params + $default;
+
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
 			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false );
 
-			list( $model, $field ) = model_field( $path);
-			$domain = Inflector::underscore( $model );
-			if( empty( $fieldLabel ) ) {
-				$fieldLabel = __d( $domain, "{$model}.{$field}" );
+			$legend = Hash::get( $params, 'legend' );
+			if( $legend === null ) {
+				$legend = __d( $params['domain'], $path );
 			}
 
-			$input = $this->Form->input( $path, array( 'label' => 'Filtrer par '.lcfirst( $fieldLabel ), 'type' => 'checkbox' ) );
+			$input = $this->Form->input( $path, array( 'label' => 'Filtrer par '.lcfirst( $legend ), 'type' => 'checkbox' ) );
 
 			$input .= $this->Html->tag(
 				'fieldset',
-				$this->Html->tag( 'legend', $fieldLabel )
+				$this->Html->tag( 'legend', $legend )
 				.$this->Form->input( $path.'_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'default' => strtotime( '-1 week' ) ) )
 				.$this->Form->input( $path.'_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 5, 'minYear' => date( 'Y' ) - 120 ) ),
 				array( 'id' => $fieldsetId )

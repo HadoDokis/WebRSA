@@ -54,7 +54,11 @@
 			$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => 'Numéro CAF' ) );
 			$content .= $this->SearchForm->dateRange( "{$prefix}Dossier.dtdemrsa" );
 			if( Hash::check( $options, 'Situationdossierrsa.etatdosrsa' ) ) {
-				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", (array)Hash::get( $options, 'Situationdossierrsa.etatdosrsa' ) );
+				$dependantCheckboxesParams = array(
+					'options' => (array)Hash::get( $options, 'Situationdossierrsa.etatdosrsa' ),
+					'domain' => 'search_plugin',
+				);
+				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", $dependantCheckboxesParams );
 			}
 			$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
 

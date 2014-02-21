@@ -1,4 +1,6 @@
 <?php
+	echo $this->Default3->titleForLayout();
+
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
@@ -6,7 +8,7 @@
 
 	echo $this->Default3->actions(
 		array(
-			'/Fichesprescriptions/search/#toggleform' => array(
+			'/Fichesprescriptions93/search/#toggleform' => array(
 				'onclick' => '$(\'Fichesprescriptions93SearchForm\').toggle(); return false;'
 			),
 		)
@@ -20,14 +22,14 @@
 
 	// Début spécificités fiche de prescription
 	echo '<fieldset><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
-	echo $this->Xform->input( 'Search.Thematiquefp93.type', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Thematiquefp93.type' ), 'empty' => true ) );
-	echo $this->Xform->input( 'Search.Categoriefp93.thematiquefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Categoriefp93.thematiquefp93_id' ), 'empty' => true ) );
-	echo $this->Xform->input( 'Search.Filierefp93.categoriefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Filierefp93.categoriefp93_id' ), 'empty' => true ) );
-	echo $this->Xform->input( 'Search.Actionfp93.filierefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.filierefp93_id' ), 'empty' => true ) );
-	echo $this->Xform->input( 'Search.Actionfp93.prestatairefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.prestatairefp93_id' ), 'empty' => true ) );
-	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.actionfp93_id' ), 'empty' => true ) );
-	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date' );
-	echo $this->Xform->input( 'Search.Ficheprescription93.statut', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.statut' ), 'empty' => true ) );
+	echo $this->Xform->input( 'Search.Thematiquefp93.type', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Thematiquefp93.type' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Categoriefp93.thematiquefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Categoriefp93.thematiquefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Filierefp93.categoriefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Filierefp93.categoriefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Actionfp93.filierefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.filierefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Actionfp93.prestatairefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.prestatairefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.actionfp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.statut', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.statut' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo '</fieldset>';
 	// Fin spécificités fiche de prescription
 
