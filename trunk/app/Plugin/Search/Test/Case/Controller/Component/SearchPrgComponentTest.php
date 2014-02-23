@@ -108,29 +108,17 @@
 		public $name = 'SearchPrg';
 
 		/**
-		 * Sauvegarde de la session.
-		 *
-		 * @var array
-		 */
-		protected static $_sessionBackup;
-
-		/**
 		 * test case startup
 		 */
 		public static function setupBeforeClass() {
-			self::$_sessionBackup = Configure::read( 'Session' );
-			Configure::write( 'Session', array(
-				'defaults' => 'php',
-				'timeout' => 100,
-				'cookie' => 'test'
-			) );
+			CakeTestSession::setupBeforeClass();
 		}
 
 		/**
 		 * cleanup after test case.
 		 */
 		public static function teardownAfterClass() {
-			Configure::write( 'Session', self::$_sessionBackup );
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**

@@ -17,6 +17,14 @@
 	 */
 	class CakeTestSession extends CakeSession
 	{
+
+		/**
+		 * Sauvegarde de la session.
+		 *
+		 * @var array
+		 */
+		protected static $_sessionBackup;
+
 		/**
 		 * Un identifiant de session utilisé uniquement pour les tests unitaires.
 		 *
@@ -53,6 +61,33 @@
 		public static function destroy() {
 			$_SESSION = array();
 //			parent::destroy();
+		}
+
+		/**
+		 * A utiliser dans CakeTestCase::setupBeforeClass()
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			self::$_sessionBackup = Configure::read( 'Session' );
+			Configure::write( 'Session', array(
+				'defaults' => 'php',
+				'timeout' => 100,
+				'cookie' => 'test'
+			) );
+		}
+
+		/**
+		 * A utiliser dans CakeTestCase::teardownAfterClass()
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			$file = ini_get('session.save_path').DS.'sess_'.self::$testSessionId;
+			if( file_exists( $file ) && is_writable( $file ) ) {
+				unlink( $file );
+			}
+			Configure::write( 'Session', self::$_sessionBackup );
 		}
 	}
 ?>
