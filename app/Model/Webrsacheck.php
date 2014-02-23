@@ -344,14 +344,27 @@
 		 *
 		 * @return array
 		 */
-		/*protected function _existingConfigureKeys() {
-			$configureKeys = array();
-			foreach( Hash::flatten( (array)Configure::getInstance() ) as $key => $value ) {
-				$configureKeys[] = preg_replace( '/\.[0-9]+$/', '', $key );
+		/*protected function _existingConfigureKeys( $core = false ) {
+			$existing = array();
+			foreach( Hash::flatten( (array)Configure::read() ) as $key => $value ) {
+				$existing[] = preg_replace( '/\.[0-9]+$/', '', $key );
 			}
-			$configureKeys = array_unique( $configureKeys );
-			sort( $configureKeys );
-			return $configureKeys;
+			$existing = array_unique( $existing );
+			sort( $existing );
+
+			// On enlève les clés du coeur de Cake
+			if( $core === false ) {
+				$remove = array( 'Acl', 'App', 'Cache', 'Cake', 'Config', 'Dispatcher', 'Error', 'Exception', 'Security', 'Session' );
+				$removeRegexp = '/^(('.implode( '\.|', $remove ).')\.|debug$)/';
+				foreach( $existing as $key => $value ) {
+					if( preg_match( $removeRegexp, $value ) ) {
+						unset( $existing[$key] );
+					}
+				}
+				$existing = array_values( $existing );
+			}
+
+			return $existing;
 		}*/
 
 		/**
@@ -364,19 +377,10 @@
 		 * @return array
 		 */
 		public function allConfigureKeys( $departement ) {
-			$configure = $this->_allConfigureKeysCommon();
+			$method = '_allConfigureKeys'.Configure::read( 'Cg.departement' );
 
-			switch( $departement ) {
-				case 58:
-					$configure = Set::merge( $configure, $this->_allConfigureKeys58() );
-					break;
-				case 66:
-					$configure = Set::merge( $configure, $this->_allConfigureKeys66() );
-					break;
-				case 93:
-					$configure = Set::merge( $configure, $this->_allConfigureKeys93() );
-					break;
-			}
+			$configure = method_exists( $this, $method ) ? $this->{$method}() : array();
+			$configure = Hash::merge( $this->_allConfigureKeysCommon(), $configure );
 
 			uksort( $configure, 'strnatcasecmp' );
 
@@ -498,6 +502,9 @@
 
 		/**
 		 *
+		 * @see Webrsacheck::querydataFragmentsErrors()
+		 * @see Allocataire::testSearchConditions()
+		 *
 		 * @return array
 		 */
 		public function allSqRechercheErrors() {
@@ -593,10 +600,7 @@
 		public function allEmailConfigs() {
 			$method = '_allEmailConfigKeys'.Configure::read( 'Cg.departement' );
 
-			$configs = array();
-			if( method_exists( $this, $method ) ) {
-				$configs = $this->{$method}();
-			}
+			$configs = method_exists( $this, $method ) ? $this->{$method}() : array();
 
 			return $configs;
 		}
@@ -674,6 +678,8 @@
 		 * Vérifie les fragments de querydata se trouvant en paramétrage dans le
 		 * webrsa.inc pour tous les modèles concernés.
 		 *
+		 * @see Webrsacheck::allSqRechercheErrors()
+		 *
 		 * @return array
 		 */
 		public function allQuerydataFragmentsErrors() {
@@ -688,6 +694,79 @@
 			}
 
 			return $errors;
+		}
+
+		/**
+		 * Vérifie la présence de l'ensemble des fonctions de la librairie
+		 * PostgreSQL fuzzystrmatch.
+		 *
+		 * @return array
+		 */
+		public function checkPostgresFuzzystrmatchFunctions() {
+			$Dbo = ClassRegistry::init( 'User' )->getDataSource();
+
+			$version = $Dbo->getPostgresVersion();
+			$shortversion = preg_replace( '/^([0-9]+\.[0-9]+).*/', '\1', $version );
+
+			$functions = array(
+				'levenshtein',
+				'metaphone',
+				'soundex',
+				'text_soundex',
+				'difference',
+				'dmetaphone',
+				'dmetaphone_alt',
+				'cakephp_validate_in_list'
+			);
+			$conditions = array(
+				'pg_proc.proname IN ( \''.implode( '\', \'', $functions ).'\' )'
+			);
+			$results = $Dbo->getPostgresFunctions( $conditions );
+			$results = array_unique( Hash::extract( $results, '{n}.Function.name' ) );
+
+			$missing = array_diff( $functions, $results );
+			if( empty( $missing ) ) {
+				$check = array(
+					'success' => true,
+					'message' => null
+				);
+			}
+			else {
+				$check = array(
+					'success' => false,
+					'message' => sprintf(
+						"Problème avec les fonctions fuzzystrmatch (les fonctions suivantes sont manquantes: %s)<br/>Sous Ubuntu, il vous faut vérifier que le paquet postgresql-contrib-%s est bien installé. <br />Une fois fait, dans une console postgresql, en tant qu'administrateur, tapez: <code>\i /usr/share/postgresql/%s/contrib/fuzzystrmatch.sql</code>",
+						implode( ', ', $missing ),
+						$shortversion,
+						$shortversion
+					)
+				);
+			}
+
+			return $check;
+		}
+
+		/**
+		 * Vérifie si la date du serveur PostgreSQL correspond à la date du serveur Web.
+		 * La tolérance est de moins d'une minute.
+		 *
+		 * Permet de déprécier PgsqlSchemaBehavior::pgCheckTimeDifference().
+		 *
+		 * @return array
+		 */
+		public function checkPostgresTimeDifference() {
+			$Dbo = ClassRegistry::init( 'User' )->getDataSource();
+
+			$message = 'Différence de date entre le serveur Web et le serveur de base de données trop importante.';
+
+			$sqlAge = 'AGE( DATE_TRUNC( \'second\', localtimestamp ), \''.date( 'Y-m-d H:i:s' ).'\' )';
+			$sqlAgeSuccess = "{$sqlAge} < '1 min'";
+			$sql = "SELECT
+						{$sqlAge} as value,
+						$sqlAgeSuccess AS success,
+						( CASE WHEN {$sqlAgeSuccess} THEN NULL ELSE '{$message}' END ) AS message;";
+			$result = $Dbo->query( $sql );
+			return $result[0][0];
 		}
 	}
 ?>

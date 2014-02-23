@@ -172,26 +172,13 @@
 		 * @access protected
 		 */
 		protected function _postgresql() {
-			$this->User->Behaviors->attach( 'Pgsqlcake.PgsqlSchema' );
-			$version = $this->User->pgVersion();
-			$shortversion = preg_replace( '/^([0-9]+\.[0-9]+).*/', '\1', $version ); // FIXME: avec un paramètre dans Schema::pgVersion
+			$Dbo = $this->User->getDataSource();
 
 			return array(
 				'Postgresql' => array(
-					'Version' => $this->Check->version( 'PostgreSQL', $version, '8.3' ),
-					'Fuzzystrmatch' => $this->User->pgHasFunctions(
-						array(
-							'levenshtein',
-							'metaphone',
-							'soundex',
-							'text_soundex',
-							'difference',
-							'dmetaphone',
-							'dmetaphone_alt'
-						),
-						"Problème avec les fonctions fuzzystrmatch (les fonctions suivantes sont manquantes: %s)<br/>Sous Ubuntu, il vous faut vérifier que le paquet postgresql-contrib-{$shortversion} est bien installé. <br />Une fois fait, dans une console postgresql, en tant qu'administrateur, tapez: <code>\i /usr/share/postgresql/{$shortversion}/contrib/fuzzystrmatch.sql</code>"
-					),
-					'Date' => $this->User->pgCheckTimeDifference()
+					'Version' => $this->Check->version( 'PostgreSQL', $Dbo->getPostgresVersion(), '8.3' ),
+					'Fuzzystrmatch' => $this->Webrsacheck->checkPostgresFuzzystrmatchFunctions(),
+					'Date' => $this->Webrsacheck->checkPostgresTimeDifference()
 				)
 			);
 		}

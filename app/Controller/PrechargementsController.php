@@ -17,7 +17,7 @@
 	 */
 	class PrechargementsController extends AppController
 	{
-		public $uses = array( 'Connection' );
+		public $uses = array( 'Connection'/*, 'Prechargement'*/ );
 
 		/**
 		 *
@@ -36,7 +36,9 @@
 		}
 
 		/**
+		 * Préchargement de l'application.
 		 *
+		 * @todo Utiliser Prechargement->preloadCache()
 		 */
 		public function index() {
 			// Modèles
