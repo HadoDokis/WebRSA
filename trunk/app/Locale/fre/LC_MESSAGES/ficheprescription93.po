@@ -10,17 +10,17 @@ msgstr ""
 
 # ==============================================================================
 
-msgid "ENUM::STATUT::01_renseignee"
+msgid "ENUM::STATUT::01renseignee"
 msgstr "Renseignée"
 
-msgid "ENUM::STATUT::02_signee"
+msgid "ENUM::STATUT::02signee"
 msgstr "Signée"
 
-msgid "ENUM::STATUT::03_transmise_partenaire"
+msgid "ENUM::STATUT::03transmise_partenaire"
 msgstr "Transmise partenaire"
 
-msgid "ENUM::STATUT::04_effectivite_renseignee"
+msgid "ENUM::STATUT::04effectivite_renseignee"
 msgstr "Effectivité renseignée"
 
-msgid "ENUM::STATUT::05_suivi_renseigne"
+msgid "ENUM::STATUT::05suivi_renseigne"
 msgstr "Suivi renseigné"

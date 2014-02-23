@@ -50,10 +50,8 @@
 			$results,
 			array(
 				'Dossier.matricule',
-				'Personne.nom',
-				'Personne.prenom',
+				'Personne.nom_complet',
 				'Adresse.locaadr',
-				'Ficheprescription93.id',
 				'Ficheprescription93.statut',
 				'Actionfp93.name',
 				'Dossier.locked' => array( 'type' => 'boolean' ),

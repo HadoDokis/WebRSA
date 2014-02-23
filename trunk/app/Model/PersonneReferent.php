@@ -324,7 +324,7 @@
 		 *	clés: PersonneReferent.structurereferente_id et PersonneReferent.referent_id
 		 * @return array
 		 */
-		public function completeSearchReferentParcours( array $query, array $search = array() ) {
+		public function completeSearchConditionsReferentParcours( array $query, array $search = array() ) {
 			// Condition sur le référent du parcours
 			$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
 			if( !empty( $referent_id ) ) {
@@ -348,7 +348,7 @@
 		 * le référent du parcours actuel de l'allocataire.
 		 *
 		 * @see PersonneReferent::completeSearchQueryReferentParcours()
-		 * @see PersonneReferent::completeSearchReferentParcours()
+		 * @see PersonneReferent::completeSearchConditionsReferentParcours()
 		 *
 		 * @param array $query Le querydata à compléter
 		 * @param array $search Les filtres de recherche
@@ -357,7 +357,7 @@
 		 */
 		public function completeQdReferentParcours( array $query, array $search ) {
 			$query = $this->completeSearchQueryReferentParcours( $query );
-			$query = $this->completeSearchReferentParcours( $query, $search );
+			$query = $this->completeSearchConditionsReferentParcours( $query, $search );
 
 			return $query;
 		}

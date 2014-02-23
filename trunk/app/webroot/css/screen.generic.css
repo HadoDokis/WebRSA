@@ -1735,3 +1735,15 @@ body.gestionsdoublons.index td .gestionsdoublons.fusion.disabled {
 ul.actions li.action a.fichesprescriptions93.search {
 	background-image: url( ../img/icons/application_form_magnify.png );
 }
+
+body.fichesprescriptions93.search td.action a.index {
+	background-image: url("../img/icons/zoom.png");
+}
+
+body.fichesprescriptions93.search td.data.boolean.true {
+	background-image: url("../img/icons/lock.png");
+}
+
+body.fichesprescriptions93.search td.data.boolean.false {
+	background-image: none;
+}

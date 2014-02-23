@@ -15,6 +15,9 @@ msgstr ""
 msgid "/Fichesprescriptions93/search"
 msgstr "Formulaire"
 
+msgid "/Fichesprescriptions93/search/:title"
+msgstr "Visibilité formulaire"
+
 msgid "/Fichesprescriptions93/search/:heading"
 msgstr "Recherche par fiches de prescription"
 
@@ -46,6 +49,29 @@ msgstr "Date de rendez-vous"
 
 msgid "Search.Ficheprescription93.statut"
 msgstr "Statut"
+
+# ------------------------------------------------------------------------------
+
+msgid "Dossier.matricule"
+msgstr "N° CAF"
+
+msgid "Personne.nom_complet"
+msgstr "Allocataire"
+
+msgid "Adresse.locaadr"
+msgstr "Commune"
+
+msgid "Actionfp93.name"
+msgstr "Intitulé"
+
+msgid "Dossier.locked"
+msgstr "Verrouillé"
+
+msgid "/Fichesprescriptions93/index"
+msgstr "Voir"
+
+msgid "/Fichesprescriptions93/index/#Personne.id#"
+msgstr "Voir les fiches de prescription de #Personne.nom_complet#"
 
 # ------------------------------------------------------------------------------
 

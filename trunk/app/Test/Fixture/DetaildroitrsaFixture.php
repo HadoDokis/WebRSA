@@ -29,7 +29,34 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'dossier_id' => 1,
+				'topsansdomfixe' => false,
+				'nbenfautcha' => null,
+				'oridemrsa' => null,
+				'dtoridemrsa' => null,
+				'topfoydrodevorsa' => null,
+				'ddelecal' => null,
+				'dfelecal' => null,
+				'mtrevminigararsa' => null,
+				'mtpentrsa' => null,
+				'mtlocalrsa' => null,
+				'mtrevgararsa' => null,
+				'mtpfrsa' => null,
+				'mtalrsa' => null,
+				'mtressmenrsa' => null,
+				'mtsanoblalimrsa' => null,
+				'mtredhosrsa' => null,
+				'mtredcgrsa' => null,
+				'mtcumintegrsa' => null,
+				'mtabaneursa' => null,
+				'mttotdrorsa' => null,
+				'surfagridom' => null,
+				'ddsurfagridom' => null,
+				'surfagridompla' => null,
+				'nbtotaidefamsurfdom' => null,
+				'nbtotpersmajosurfdom' => null,
+			)
 		);
-
 	}
 ?>

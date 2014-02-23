@@ -340,9 +340,9 @@ CREATE TABLE fichesprescriptions93 (
 	rdvprestataire_date		TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
 	rdvprestataire_personne	TEXT DEFAULT NULL,
     actionfp93_id			INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	dd_action				DATE DEFAULT NULL,
-	df_action				DATE DEFAULT NULL,
-	duree_action			INTEGER DEFAULT NULL,
+	dd_action				DATE DEFAULT NULL, -- FIXME: NOT NULL
+	df_action				DATE DEFAULT NULL, -- FIXME: NOT NULL
+	duree_action			INTEGER DEFAULT NULL, -- FIXME: NOT NULL
     created					TIMESTAMP WITHOUT TIME ZONE,
     modified				TIMESTAMP WITHOUT TIME ZONE
 );
@@ -352,8 +352,8 @@ CREATE INDEX fichesprescriptions93_personne_id_idx ON fichesprescriptions93( per
 CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( referent_id );
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 
--- TODO: 99_annulee ?
-ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01_renseignee', '02_signee', '03_transmise_partenaire', '04_effectivite_renseignee', '05_suivi_renseigne'] ) );
+-- TODO: 99annulee ?
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne'] ) );
 
 --------------------------------------------------------------------------------
 

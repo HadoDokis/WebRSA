@@ -31,6 +31,14 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'dossier_id' => 1,
+				'etatdosrsa' => '2',
+				'dtrefursa' => null,
+				'moticlorsa' => null,
+				'dtclorsa' => null,
+				'motirefursa' => null
+			)
 		);
 
 	}
