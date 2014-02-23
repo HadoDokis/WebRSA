@@ -90,13 +90,6 @@
 		public $name = 'InsertionsAllocataires';
 
 		/**
-		 * Sauvegarde de la session.
-		 *
-		 * @var array
-		 */
-		protected static $_sessionBackup;
-
-		/**
 		 * Fixtures utilisées dans ce test unitaire.
 		 *
 		 * @var array
@@ -115,12 +108,7 @@
 		 * @return void
 		 */
 		public static function setupBeforeClass() {
-			self::$_sessionBackup = Configure::read( 'Session' );
-			Configure::write( 'Session', array(
-				'defaults' => 'php',
-				'timeout' => 100,
-				'cookie' => 'test'
-			) );
+			CakeTestSession::setupBeforeClass();
 		}
 
 		/**
@@ -129,7 +117,7 @@
 		 * @return void
 		 */
 		public static function teardownAfterClass() {
-			Configure::write( 'Session', self::$_sessionBackup );
+			CakeTestSession::teardownAfterClass();
 		}
 
 		/**

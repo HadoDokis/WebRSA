@@ -206,7 +206,7 @@
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.app}
-				-E /\/(app\/(Lib|Model|Vendor|Plugin)|lib|Test)\//
+				-E /\/(app\/(Doc|Plugin|Test|tmp|Vendor|webroot|index\.php)|lib)\//
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />
