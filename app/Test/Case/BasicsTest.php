@@ -415,6 +415,10 @@
 		 * Test de la fonction age().
 		 */
 		public function testAge() {
+			$result = age( null );
+			$expected = null;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
 			$result = age( date( 'Y-m-d', strtotime( '-1 year' ) ) );
 			$expected = 1;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
