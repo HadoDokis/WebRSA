@@ -281,19 +281,15 @@
 			return $success;
 		}
 
-
 		/**
 		 * Complète le querydata avec les jointures, champs (PersonneReferent.referent_id,
-		 * Referentparcours.nom_complet, Structurereferenteparcours.lib_struc) et
-		 * conditions sur la structure référente du référent de parcours et sur
-		 * le référent du parcours actuel de l'allocataire.
+		 * Referentparcours.nom_complet, Structurereferenteparcours.lib_struc avec
+		 * les données concernant le référent du parcours actuel de l'allocataire.
 		 *
-		 * @param array $querydata Le querydata à compléter
-		 * @param array $search Les filtres de recherche
-		 *	clés: PersonneReferent.structurereferente_id et PersonneReferent.referent_id
+		 * @param array $query Le querydata à compléter
 		 * @return array
 		 */
-		public function completeQdReferentParcours( array $querydata, array $search ) {
+		public function completeSearchQueryReferentParcours( array $query ) {
 			$replacement = array(
 				'Referent' => 'Referentparcours',
 				'Structurereferente' => 'Structurereferenteparcours',
@@ -307,27 +303,63 @@
 				)
 			);
 
-			$querydata['joins'][] = $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER', 'conditions' => $conditions ) );
-			$querydata['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
-			$querydata['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
+			$query['joins'][] = $this->Personne->join( 'PersonneReferent', array( 'type' => 'LEFT OUTER', 'conditions' => $conditions ) );
+			$query['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
+			$query['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 
-			$querydata['fields'][] = 'PersonneReferent.referent_id';
-			$querydata['fields'][] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
-			$querydata['fields'][] = 'Structurereferenteparcours.lib_struc';
+			$query['fields'][] = 'PersonneReferent.referent_id';
+			$query['fields'][] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
+			$query['fields'][] = 'Structurereferenteparcours.lib_struc';
 
+			return $query;
+		}
+
+		/**
+		 * Complète le querydata avec les conditions sur la structure référente
+		 * du référent de parcours et sur le référent du parcours actuel de
+		 * l'allocataire.
+		 *
+		 * @param array $query Le querydata à compléter
+		 * @param array $search Les filtres de recherche
+		 *	clés: PersonneReferent.structurereferente_id et PersonneReferent.referent_id
+		 * @return array
+		 */
+		public function completeSearchReferentParcours( array $query, array $search = array() ) {
 			// Condition sur le référent du parcours
 			$referent_id = suffix( Hash::get( $search, 'PersonneReferent.referent_id' ) );
 			if( !empty( $referent_id ) ) {
-				$querydata['conditions'][] = array( 'PersonneReferent.referent_id' => $referent_id );
+				$query['conditions'][] = array( 'PersonneReferent.referent_id' => $referent_id );
 			}
 
 			// Condition sur la structure référente du référent du parcours
 			$structurereferente_id = suffix( Hash::get( $search, 'PersonneReferent.structurereferente_id' ) );
 			if( !empty( $structurereferente_id ) ) {
-				$querydata['conditions'][] = array( 'Referentparcours.structurereferente_id' => $structurereferente_id );
+				$query['conditions'][] = array( 'Referentparcours.structurereferente_id' => $structurereferente_id );
 			}
 
-			return $querydata;
+			return $query;
+		}
+
+
+		/**
+		 * Complète le querydata avec les jointures, champs (PersonneReferent.referent_id,
+		 * Referentparcours.nom_complet, Structurereferenteparcours.lib_struc) et
+		 * conditions sur la structure référente du référent de parcours et sur
+		 * le référent du parcours actuel de l'allocataire.
+		 *
+		 * @see PersonneReferent::completeSearchQueryReferentParcours()
+		 * @see PersonneReferent::completeSearchReferentParcours()
+		 *
+		 * @param array $query Le querydata à compléter
+		 * @param array $search Les filtres de recherche
+		 *	clés: PersonneReferent.structurereferente_id et PersonneReferent.referent_id
+		 * @return array
+		 */
+		public function completeQdReferentParcours( array $query, array $search ) {
+			$query = $this->completeSearchQueryReferentParcours( $query );
+			$query = $this->completeSearchReferentParcours( $query, $search );
+
+			return $query;
 		}
 	}
 ?>
