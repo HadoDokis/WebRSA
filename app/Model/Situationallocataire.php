@@ -90,8 +90,8 @@
 				'order' => null,
 				'dependent' => true
 			),
-			'Ficheprescription93' => array(
-				'className' => 'Ficheprescription93',
+			'Instantanedonneesfp93' => array(
+				'className' => 'Instantanedonneesfp93',
 				'foreignKey' => 'situationallocataire_id',
 				'conditions' => null,
 				'fields' => null,

@@ -9,7 +9,8 @@
 	 */
 
 	/**
-	 * La classe Allocataire ...
+	 * La classe Allocataire comporte des méthodes de base pour les recherches,
+	 * les formaulaires, les exportcsv, .. liées à des allocataires du RSA.
 	 *
 	 * @package app.Model
 	 */
@@ -95,12 +96,30 @@
 					)
 				);
 
-				// FIXME: les jointures sur le référent du parcours devraient se faire ici.
-				// ... ou créer deux sous-méthodes à PersonneReferent::completeQdReferentParcours ?
+				$query = $Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
 
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
 			}
+
+			return $query;
+		}
+
+		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			$query['conditions'] = $this->conditionsAdresse( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
+
+			$Personne = ClassRegistry::init( 'Personne' );
+			$query = $Personne->PersonneReferent->completeSearchConditionsReferentParcours( $query, $search );
 
 			return $query;
 		}
@@ -114,13 +133,7 @@
 		public function search( array $search = array() ) {
 			$query = $this->searchQuery();
 
-			$query['conditions'] = $this->conditionsAdresse( $query['conditions'], $search );
-			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
-			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
-
-			// FIXME: seules les conditions sur le référent du parcours devraient se faire ici.
-			// ... ou créer deux sous-méthodes à PersonneReferent::completeQdReferentParcours ?
-			$query = $Personne->PersonneReferent->completeQdReferentParcours( $query, $search );
+			$query = $this->searchConditions( $query, $search );
 
 			return $query;
 		}
@@ -185,6 +198,48 @@
 			);
 
 			return $options;
+		}
+
+		/**
+		 * Permet de test l'ajout de conditions supplémentaires à la requête de
+		 * base.
+		 *
+		 * @param string|array $conditions
+		 * @return array
+		 */
+		public function testSearchConditions( $conditions = null ) {
+			$query = $this->searchQuery();
+			$query['conditions'][] = $conditions;
+
+			$Personne = ClassRegistry::init( 'Personne' );
+			try {
+				$Personne->find( 'first', $query );
+				$return = array(
+					'success' => true,
+					'message' => null,
+					'sql' => $Personne->sq( $query )
+				);
+			} catch( PDOException $Exception ) {
+				$return = array(
+					'success' => false,
+					'message' => $Exception->getMessage(),
+					'sql' => $Personne->sq( $query )
+				);
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->searchQuery();
+			return !empty( $query );
 		}
 	}
 ?>

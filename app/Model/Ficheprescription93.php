@@ -111,6 +111,11 @@
 		);
 
 		/**
+		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
+		 *
+		 * @todo Si on faisait le find sur le modèle Ficheprescription93 (voir
+		 * comment faire les jointures ici), ça irait peut-être plus vite (pour
+		 * les personnes possédant une fiche de prescription uniquement).
 		 *
 		 * @return array
 		 */
@@ -135,14 +140,52 @@
 
 				// Ajout des jointures supplémentaires
 				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Personne->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Personne->Ficheprescription93->Actionfp93->join( 'Filierefp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Personne->Ficheprescription93->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Personne->Ficheprescription93->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $this->Actionfp93->join( 'Filierefp93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'LEFT OUTER' ) );
 
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
 			}
+
+			return $query;
+		}
+
+		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			// 1. On complète les conditions de base de l'allocataire
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			$query = $Allocataire->searchConditions( $query, $search );
+
+			// 2. Ajout des filtres supplémentaires concernant l'action de la fiche de precription:
+			//	 type de thématique, thématique, catégorie, filière, prestataire, action
+			$paths = array( 'Thematiquefp93.type','Categoriefp93.thematiquefp93_id','Filierefp93.categoriefp93_id','Actionfp93.filierefp93_id', 'Actionfp93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
+			foreach( $paths as $path ) {
+				$value = suffix( Hash::get( $search, $path ) );
+				if( !empty( $value ) ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			// 3. La même sans ne prendre que le suffixe
+			$paths = array( 'Ficheprescription93.statut' );
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( !empty( $value ) ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			// 4. Plages de dates
+			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Ficheprescription93.rdvprestataire_date' );
 
 			return $query;
 		}
@@ -157,26 +200,7 @@
 		public function search( array $search = array() ) {
 			$query = $this->searchQuery();
 
-			// 1. Ajout des filtres supplémentaires concernant l'action: type de thématique, thématique, catégorie, filière, prestataire, action
-			$paths = array( 'Thematiquefp93.type','Categoriefp93.thematiquefp93_id','Filierefp93.categoriefp93_id','Actionfp93.filierefp93_id', 'Actionfp93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
-			foreach( $paths as $path ) {
-				$value = suffix( Hash::get( $search, $path ) );
-				if( !empty( $value ) ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			// 2. La même sans ne prendre que le suffixe
-			$paths = array( 'Ficheprescription93.statut' );
-			foreach( $paths as $path ) {
-				$value = Hash::get( $search, $path );
-				if( !empty( $value ) ) {
-					$query['conditions'][$path] = $value;
-				}
-			}
-
-			// 3. Plages de dates
-			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Ficheprescription93.rdvprestataire_date' );
+			$query = $this->searchConditions( $query, $search );
 
 			return $query;
 		}
@@ -185,13 +209,21 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
+		 * @param boolean $allocataireOptions
+		 * @param boolean $findLists
 		 * @return array
 		 */
-		public function options( $findLists = false ) {
-			$Allocataire = ClassRegistry::init( 'Allocataire' );
+		public function options( $allocataireOptions = true, $findLists = false ) {
+			$options = array();
+
+			if( $allocataireOptions ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+
+				$options = $Allocataire->options();
+			}
 
 			$options = Hash::merge(
-				$Allocataire->options(),
+				$options,
 				$this->enums(),
 				$this->Actionfp93->enums(),
 				$this->Actionfp93->Filierefp93->enums(),
@@ -238,6 +270,7 @@
 		}
 
 		/**
+		 * Préparation des données du formulaire d'ajout / de modification.
 		 *
 		 * @param integer $personne_id
 		 * @param integer $id
@@ -245,14 +278,13 @@
 		 * @throws InternalErrorException
 		 */
 		public function prepareFormDataAddEdit( $personne_id, $id = null ) {
-			// Pour l'état 01_renseignee
+			// Pour l'état 01renseignee
 			if( $id === null ) {
 				$return = $this->Instantanedonneesfp93->Situationallocataire->getSituation( $personne_id );
 				$return = $this->Instantanedonneesfp93->Situationallocataire->foo( $return );
 
 				$return[$this->alias]['personne_id'] = $personne_id;
-				$return[$this->alias]['statut'] = '01_renseignee';
-//				$return['Instantanedonneesfp93']['...'] = $personne_id;
+				$return[$this->alias]['statut'] = '01renseignee';
 			}
 			else {
 				$query = array(
@@ -281,7 +313,7 @@
 				);
 				$data = $this->find( 'first', $query );
 
-				if( empty( $data ) || ( $data[$this->alias]['statut'] !== '01_renseignee' ) ) {
+				if( empty( $data ) || ( $data[$this->alias]['statut'] !== '01renseignee' ) ) {
 					throw new InternalErrorException();
 				}
 
@@ -304,13 +336,13 @@
 		}
 
 		/**
-		 * Tentative de sauvegarde du formulaire de fiche de prescription.
+		 * Tentative de sauvegarde du formulaire d'ajout / de modification.
 		 *
 		 * @param array $data
 		 * @return boolean
 		 */
 		public function saveAddEdit( array $data ) {
-			// Pour l'état 01_renseignee
+			// Pour l'état 01renseignee
 			$unneeded = array( 'Validate', 'Thematiquefp93', 'Categoriefp93', 'Filierefp93', 'Actionfp93' );
 			foreach( $unneeded as $modelName ) {
 				unset( $data[$modelName] );
@@ -382,6 +414,7 @@
 
 			$instantanedonneesfp93 = array();
 			if( !empty( $referent ) ) {
+				// TODO: pour l'état 01renseignee seulement
 				$instantanedonneesfp93 = array(
 					'Instantanedonneesfp93' => array(
 						'referent_fonction' => $referent['Referent']['fonction'],
@@ -477,6 +510,19 @@
 			}
 
 			return $messages;
+		}
+
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->searchQuery();
+			return !empty( $query );
 		}
 	}
 ?>

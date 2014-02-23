@@ -32,6 +32,13 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'personne_id' => 1,
+				'mtpersressmenrsa' => null,
+				'mtpersabaneursa' => null,
+				'toppersdrodevorsa' => '1',
+				'toppersentdrodevorsa' => null
+			)
 		);
 
 	}

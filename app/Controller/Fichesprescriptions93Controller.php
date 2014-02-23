@@ -3,12 +3,41 @@
 	 * Code source de la classe Fichesprescriptions93Controller.
 	 *
 	 * @package app.Controller
-	 * @license Expression license is undefined on line 11, column 23 in Templates/CakePHP/CakePHP Controller.php.
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses('AppController', 'Controller');
+	App::uses( 'AppController', 'Controller' );
+
+	/**
+	 * @todo Nettoyer ces filtres par défaut (pour les tests)
+	 */
+	Configure::write(
+		'Filtresdefaut.Fichesprescriptions93_search',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Ficheprescription93' => array(
+					'statut' => '01renseignee'
+				),
+				'Pagination' => array(
+					'nombre_total' => true
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
 
 	/**
 	 * La classe Fichesprescriptions93Controller ...
+	 *
+	 * @todo exportcsv
 	 *
 	 * @package app.Controller
 	 */
@@ -83,8 +112,7 @@
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
 					'Dossier.matricule',
-					'Personne.nom',
-					'Personne.prenom',
+					'Personne.nom_complet',
 					'Prestation.rolepers',
 					'Adresse.locaadr',
 					'Ficheprescription93.id',
@@ -99,10 +127,18 @@
 				$this->set( compact( 'results' ) );
 			}
 
-			$options = $this->Ficheprescription93->options( true );
+			$options = Hash::merge(
+				$this->Allocataires->options(),
+				$this->Ficheprescription93->options( false, true )
+			);
 			$this->set( compact( 'options' ) );
 		}
 
+		/**
+		 * Liste des fiches de presciptions d'un allocataire.
+		 *
+		 * @param integer $personne_id
+		 */
 		public function index( $personne_id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
@@ -156,6 +192,7 @@
 		}
 
 		/**
+		 * Formulaire d'ajout de fiche de prescription.
 		 *
 		 * @param integer $personne_id L'id de la Personne à laquelle on veut ajouter une fiche
 		 */
@@ -165,6 +202,7 @@
 		}
 
 		/**
+		 * Formulaire de modification de fiche de prescription.
 		 *
 		 * @param integer $id L'id de la fiche que l'on veut modifier
 		 */
@@ -174,7 +212,7 @@
 		}
 
 		/**
-		 * Méthode générique d'ajout et de modification de fiche.
+		 * Méthode générique d'ajout et de modification de fiche de prescription.
 		 *
 		 * @param integer $id L'id de la personne (add) ou de la fiche (edit)
 		 */
@@ -213,7 +251,7 @@
 				$this->request->data = $this->Ficheprescription93->prepareFormDataAddEdit( $personne_id, $id );
 			}
 
-			$options = $this->Ficheprescription93->options( true );
+			$options = $this->Ficheprescription93->options( false, true );
 
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
