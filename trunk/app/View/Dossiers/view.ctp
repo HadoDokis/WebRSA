@@ -10,7 +10,7 @@
 	}
 
 	function theadPastDossierDEM( $pctValue = 10, $pctAction = 8 ) {
-	
+
         if( Configure::read( 'Cg.departement' ) == 66 ) {
             return '<thead>
                     <tr>
@@ -21,7 +21,7 @@
                     </tr>
                 </thead>';
         }
-        else {   
+        else {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -43,7 +43,7 @@
                     </tr>
                 </thead>';
         }
-        else {   
+        else {
             return '<thead>
                     <tr>
                         <th>&nbsp;</th>
@@ -276,7 +276,11 @@
 							<tr class="odd">
 								<th><?php echo __d( 'personne', 'Personne.dtnai' );?></th>
 								<td><?php echo date_short( Set::extract( 'DEM.Personne.dtnai', $details ) ).' ('.age( ( Set::extract( 'DEM.Personne.dtnai', $details ) ) ).' ans)';?></td>
-								<td><?php echo date_short( Set::extract( 'CJT.Personne.dtnai', $details ) ).' ('.age( ( Set::extract( 'CJT.Personne.dtnai', $details ) ) ).' ans)';?></td>
+								<td>
+									<?php if( Hash::check( $details, 'CJT.Personne.dtnai' ) ):?>
+										<?php echo date_short( Set::extract( 'CJT.Personne.dtnai', $details ) ).' ('.age( ( Set::extract( 'CJT.Personne.dtnai', $details ) ) ).' ans)';?>
+									<?php endif;?>
+								</td>
 							</tr>
 							<tr class="even">
 								<th><?php echo __d( 'foyer', 'Foyer.sitfam' );?></th>

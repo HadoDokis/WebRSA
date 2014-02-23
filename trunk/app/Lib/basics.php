@@ -707,6 +707,10 @@
 	 * @return integer
 	 */
 	function age( $date, $today = null ) {
+		if( empty( $date ) ) {
+			return null;
+		}
+
 		list( $year, $month, $day ) = explode( '-', $date );
 		if( is_null( $today ) ) {
 			$today = time();
