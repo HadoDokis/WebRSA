@@ -3364,3 +3364,6 @@ msgstr "Ajout d'une fiche de prescription"
 
 msgid "Fichesprescriptions93:edit"
 msgstr "Modification d'une fiche de prescription"
+
+msgid "Fichesprescriptions93:impression"
+msgstr "Impression d'une fiche de prescription"

@@ -469,15 +469,14 @@
 				$data['Instantanedonneesfp93']['situationallocataire_id'] = $this->Instantanedonneesfp93->Situationallocataire->id;
 				$this->Instantanedonneesfp93->create( $data );
 				$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
-			}
 
-			// FIXME: nati vide au départ pour 531873
-			$hiddenErrors = Hash::merge(
-				$this->Instantanedonneesfp93->validationErrors,
-				$this->Instantanedonneesfp93->Situationallocataire->validationErrors
-			);
-			if( !empty( $hiddenErrors ) ) {
-				debug( $hiddenErrors );
+				if( !$success ) { // FIXME: nati vide au départ pour 531873
+					$hiddenErrors = array(
+						'Instantanedonneesfp93' => $this->Instantanedonneesfp93->validationErrors,
+						'Situationallocataire' => $this->Instantanedonneesfp93->Situationallocataire->validationErrors
+					);
+					debug( $hiddenErrors );
+				}
 			}
 
 			return $success;
@@ -506,6 +505,7 @@
 			$query = array(
 				'fields' => array(
 					'Calculdroitrsa.toppersdrodevorsa',
+					'Personne.nati',
 					'Situationdossierrsa.etatdosrsa',
 				),
 				'contain' => false,
@@ -519,6 +519,7 @@
 					'Personne.id' => $personne_id
 				)
 			);
+
 			$result = $this->Personne->find( 'first', $query );
 
 			$toppersdrodevorsa = Hash::get( $result, 'Calculdroitrsa.toppersdrodevorsa' );
@@ -529,6 +530,11 @@
 			$etatdosrsa = Hash::get( $result, 'Situationdossierrsa.etatdosrsa' );
 			if( !in_array( $etatdosrsa, (array)Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' ), true ) ) {
 				$messages['Situationdossierrsa.etatdosrsa_ouverts'] = 'notice';
+			}
+
+			$nati = Hash::get( $result, 'Personne.nati' );
+			if( empty( $nati ) ) {
+				$messages['Personne.nati_inconnue'] = 'error';
 			}
 
 			return $messages;

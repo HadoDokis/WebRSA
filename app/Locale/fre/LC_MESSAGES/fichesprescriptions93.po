@@ -84,6 +84,9 @@ msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
 msgid "Situationdossierrsa.etatdosrsa_ouverts"
 msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."
 
+msgid "Personne.nati_inconnue"
+msgstr "La nationalité de cet allocataire n'est actuellement pas connue."
+
 msgid "/Fichesprescriptions93/index/:heading"
 msgstr "Fiches de prescription de l'allocataire"
 
@@ -117,11 +120,17 @@ msgstr "Voir"
 msgid "/Fichesprescriptions93/edit"
 msgstr "Modifier"
 
+msgid "/Fichesprescriptions93/edit/#Ficheprescription93.id#"
+msgstr "Modifier la fiche de prescription"
+
 msgid "/Fichesprescriptions93/cancel"
 msgstr "Annuler"
 
 msgid "/Fichesprescriptions93/impression"
 msgstr "Imprimer"
+
+msgid "/Fichesprescriptions93/impression/#Ficheprescription93.id#"
+msgstr "Imprimer la fiche de prescription"
 
 ################################################################################
 # Formulaire d'ajout / de modification

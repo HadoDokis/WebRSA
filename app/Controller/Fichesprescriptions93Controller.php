@@ -97,6 +97,8 @@
 			'add' => 'create',
 			'edit' => 'update',
 			'index' => 'read',
+			'impression' => 'read',
+			'exportcsv' => 'read',
 			'search' => 'read',
 		);
 
@@ -177,11 +179,11 @@
 			// champs virtuels "disabled" pour les actions...
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
-					$etape = (int)substr( $result['Ficheprescription93']['statut'], 0, 2 );
-					$droit = ( ( $etape >= 2 ) ? '1' : '0' );
-					// TODO: De quelle manière ?
-					$results[$i]['Fichesprescriptions93']['impression'] = $droit;
-					$results[$i]['/Fichesprescriptions93/impression/#Ficheprescription93.id#'] = $droit;
+					$impression = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) >= 2 );
+					$results[$i]['/Fichesprescriptions93/impression'] = $impression;
+
+					$edit = !isset( $messages['Personne.nati_inconnue'] );
+					$results[$i]['/Fichesprescriptions93/edit'] = $edit;
 				}
 			}
 			// Fin dans le modèle (?), ajout des permissions sur les différentes actions
@@ -258,6 +260,18 @@
 
 			$this->set( compact( 'options', 'personne_id', 'dossierMenu' ) );
 			$this->render( 'add_edit' );
+		}
+
+		/**
+		 * @todo
+		 */
+		public function exportcsv() {
+		}
+
+		/**
+		 * @todo
+		 */
+		public function impression() {
 		}
 	}
 ?>
