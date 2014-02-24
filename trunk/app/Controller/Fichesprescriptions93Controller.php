@@ -21,7 +21,7 @@
 					'dernier' => '1',
 				),
 				'Ficheprescription93' => array(
-					'statut' => '01renseignee'
+					'exists' => '1'
 				),
 				'Pagination' => array(
 					'nombre_total' => true
