@@ -125,6 +125,15 @@ msgstr "Opération annulée"
 # Validate
 ###############################################################################
 
+msgid "Validate::date"
+msgstr "Veuillez entrer une date valide"
+
+msgid "Validate::time"
+msgstr "Veuillez entrer une heure valide"
+
+msgid "Validate::datetime"
+msgstr "Veuillez entrer une date et une heure valide"
+
 msgid "Validate::notEmpty"
 msgstr "Champ obligatoire"
 

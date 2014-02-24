@@ -110,9 +110,33 @@
 					'on' => null
 				)
 			),
-			'birthtime' => array( ),
-			'created' => array( ),
-			'updated' => array( )
+			'birthtime' => array(
+				'time' => array(
+					'rule' => array( 'time' ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => true,
+					'on' => null,
+				)
+			),
+			'created' => array(
+				'datetime' => array(
+					'rule' => array( 'datetime' ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => true,
+					'on' => null,
+				)
+			),
+			'updated' => array(
+				'datetime' => array(
+					'rule' => array( 'datetime' ),
+					'message' => null,
+					'required' => null,
+					'allowEmpty' => true,
+					'on' => null,
+				)
+			),
 		);
 
 		/**
