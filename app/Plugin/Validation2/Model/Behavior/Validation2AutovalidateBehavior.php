@@ -38,6 +38,8 @@
 				'integer' => true,
 				'numeric' => true,
 				'date' => true,
+				'datetime' => true,
+				'time' => true,
 				'isUnique' => true,
 			),
 			'domain' => 'default',
@@ -114,6 +116,28 @@
 		}
 
 		/**
+		 * datetime -> datetime
+		 *
+		 * @param Model $Model
+		 * @param array $fieldParams
+		 * @return boolean
+		 */
+		protected function _isDatetimeField( Model $Model, $fieldParams ) {
+			return ( $this->settings[$Model->alias]['rules']['datetime'] && $fieldParams['type'] == 'datetime' );
+		}
+
+		/**
+		 * time -> time
+		 *
+		 * @param Model $Model
+		 * @param array $fieldParams
+		 * @return boolean
+		 */
+		protected function _isTimeField( Model $Model, $fieldParams ) {
+			return ( $this->settings[$Model->alias]['rules']['time'] && $fieldParams['type'] == 'time' );
+		}
+
+		/**
 		 * Déduction des règles de validation pour un champ d'un modèle donné.
 		 *
 		 * @param Model $Model
@@ -140,18 +164,25 @@
 				$rules[$rule['rule'][0]] = $rule;
 			}
 
+			// Par type de champ
 			if( $this->_isIntegerField( $Model, $params ) ) {
 				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'integer', 'allowEmpty' => true ) );
 				$rules[$rule['rule'][0]] = $rule;
 			}
-
-			if( $this->_isNumericField( $Model, $params ) ) {
+			else if( $this->_isNumericField( $Model, $params ) ) {
 				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
 				$rules[$rule['rule'][0]] = $rule;
 			}
-
-			if( $this->_isDateField( $Model, $params ) ) {
+			else if( $this->_isDateField( $Model, $params ) ) {
 				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'date', 'allowEmpty' => true ) );
+				$rules[$rule['rule'][0]] = $rule;
+			}
+			else if( $this->_isDatetimeField( $Model, $params ) ) {
+				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'datetime', 'allowEmpty' => true ) );
+				$rules[$rule['rule'][0]] = $rule;
+			}
+			else if( $this->_isTimeField( $Model, $params ) ) {
+				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'time', 'allowEmpty' => true ) );
 				$rules[$rule['rule'][0]] = $rule;
 			}
 
