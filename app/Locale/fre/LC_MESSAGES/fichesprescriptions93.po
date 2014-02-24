@@ -26,6 +26,9 @@ msgstr "Recherche par fiches de prescription"
 msgid "Search.Ficheprescription93"
 msgstr "Recherche par fiche de prescription"
 
+msgid "Search.Ficheprescription93.exists"
+msgstr "Possède une fiche de prescription"
+
 msgid "Search.Thematiquefp93.type"
 msgstr "Type de prescription"
 

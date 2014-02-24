@@ -108,9 +108,9 @@
 			unset( $result['sql'] );
 			$expected = array (
 				'success' => false,
-				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERROR:  column "foo" does not exist
-LINE 15: ...e_id" = "Structurereferenteparcours"."id")  WHERE Foo   ORDE...
-                                                              ^',
+				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERREUR:  la colonne « foo » n\'existe pas
+LIGNE 15 : ...e_id" = "Structurereferenteparcours"."id")  WHERE Foo   ORDE...
+                                                                ^',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -134,9 +134,9 @@ LINE 15: ...e_id" = "Structurereferenteparcours"."id")  WHERE Foo   ORDE...
 			unset( $result['sql'] );
 			$expected = array (
 				'success' => false,
-				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERROR:  column "Foo" does not exist
-LINE 15: ...e_id" = "Structurereferenteparcours"."id")  WHERE "Foo" = 6 ...
-                                                              ^',
+				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERREUR:  la colonne « Foo » n\'existe pas
+LIGNE 15 : ...e_id" = "Structurereferenteparcours"."id")  WHERE "Foo" = 6 ...
+                                                                ^',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 

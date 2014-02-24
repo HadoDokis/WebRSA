@@ -99,13 +99,15 @@
 			'dd_action' => array(
 				'compareDates' => array(
 					'rule' => array( 'compareDates', 'df_action', '<' ),
-					'message' => 'La date de début d\'action doit être strictement inférieure à la date de fin d\'action'
+					'message' => 'La date de début d\'action doit être strictement inférieure à la date de fin d\'action',
+					'allowEmpty' => true
 				)
 			),
 			'df_action' => array(
 				'compareDates' => array(
 					'rule' => array( 'compareDates', 'dd_action', '>' ),
-					'message' => 'La date de fin d\'action doit être strictement supérieure à la date de début d\'action'
+					'message' => 'La date de fin d\'action doit être strictement supérieure à la date de début d\'action',
+					'allowEmpty' => true
 				)
 			),
 		);
@@ -164,6 +166,16 @@
 			// 1. On complète les conditions de base de l'allocataire
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
 			$query = $Allocataire->searchConditions( $query, $search );
+
+			$ficheprescription93Exists = Hash::get( $search, 'Ficheprescription93.exists' );
+			if( $ficheprescription93Exists !== null ) {
+				if( $ficheprescription93Exists ) {
+					$query['conditions'][] = 'Ficheprescription93.id IS NOT NULL';
+				}
+				else {
+					$query['conditions'][] = 'Ficheprescription93.id IS NULL';
+				}
+			}
 
 			// 2. Ajout des filtres supplémentaires concernant l'action de la fiche de precription:
 			//	 type de thématique, thématique, catégorie, filière, prestataire, action
@@ -225,6 +237,7 @@
 			$options = Hash::merge(
 				$options,
 				$this->enums(),
+				array( 'Ficheprescription93' => array( 'exists' => array( '0' => 'Non', '1' => 'Oui' ) ) ),
 				$this->Actionfp93->enums(),
 				$this->Actionfp93->Filierefp93->enums(),
 				$this->Actionfp93->Filierefp93->Categoriefp93->enums(),
@@ -285,6 +298,13 @@
 
 				$return[$this->alias]['personne_id'] = $personne_id;
 				$return[$this->alias]['statut'] = '01renseignee';
+
+				// Référent du parcours actuel
+				$referentparcours = $this->Personne->PersonneReferent->referentParcoursActuel( $personne_id );
+				if( !empty( $referentparcours ) ) {
+					$return[$this->alias]['structurereferente_id'] = $referentparcours['Referent']['structurereferente_id'];
+					$return[$this->alias]['referent_id'] = "{$referentparcours['Referent']['structurereferente_id']}_{$referentparcours['Referent']['id']}";
+				}
 			}
 			else {
 				$query = array(
@@ -441,13 +461,15 @@
 			$this->create( $data );
 			$success = ( $this->save() !== false );
 
-			$this->Instantanedonneesfp93->Situationallocataire->create( $data );
-			$success = ( $this->Instantanedonneesfp93->Situationallocataire->save() !== false ) && $success;
+			if( $success ) {
+				$this->Instantanedonneesfp93->Situationallocataire->create( $data );
+				$success = ( $this->Instantanedonneesfp93->Situationallocataire->save() !== false ) && $success;
 
-			$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
-			$data['Instantanedonneesfp93']['situationallocataire_id'] = $this->Instantanedonneesfp93->Situationallocataire->id;
-			$this->Instantanedonneesfp93->create( $data );
-			$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
+				$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
+				$data['Instantanedonneesfp93']['situationallocataire_id'] = $this->Instantanedonneesfp93->Situationallocataire->id;
+				$this->Instantanedonneesfp93->create( $data );
+				$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
+			}
 
 			// FIXME: nati vide au départ pour 531873
 			$hiddenErrors = Hash::merge(

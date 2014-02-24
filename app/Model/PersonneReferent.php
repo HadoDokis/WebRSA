@@ -361,5 +361,45 @@
 
 			return $query;
 		}
+
+		/**
+		 * Retourne les informations du référent de parcours actuel de l'allocataire.
+		 *
+		 * Les modèles utilisés dans la requête sont: PersonneReferent, Referent
+		 * et Structurereferente.
+		 *
+		 * @param integer $personne_id L'id technique de la personne
+		 * @param array $fields Les champs à retourner
+		 *	Par défaut, les champs Referent.id et Referent.structurereferente_id
+		 * @return array
+		 */
+		public function referentParcoursActuel( $personne_id, array $fields = array() ) {
+			if( empty( $fields ) ) {
+				$fields = array(
+					'Referent.id',
+					'Referent.structurereferente_id',
+				);
+			}
+
+			$query = array(
+				'fields' => $fields,
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$this->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'PersonneReferent.personne_id' => $personne_id,
+					'PersonneReferent.dfdesignation IS NULL',
+					'Referent.actif' => 'O',
+					'Structurereferente.actif' => 'O',
+				),
+				'order' => array(
+					'PersonneReferent.dddesignation DESC'
+				)
+			);
+
+			return $this->find( 'first', $query );
+		}
 	}
 ?>
