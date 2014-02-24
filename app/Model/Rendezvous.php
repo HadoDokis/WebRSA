@@ -135,7 +135,9 @@
 					"{$this->alias}.personne_id" => $personne_id,
 					"{$this->alias}.structurereferente_id" => $structurereferente_id,
 					"{$this->alias}.daterdv BETWEEN '{$year}-01-01' AND '{$year}-12-31'",
-					"{$this->alias}.{$this->primaryKey} IN ( {$sqThematiqueRdv} )"
+					"{$this->alias}.{$this->primaryKey} IN ( {$sqThematiqueRdv} )",
+					// Qui est dans un état permettant ou ayant permis d'ajouter un QD1
+					"{$this->alias}.statutrdv_id" => (array)Configure::read( 'Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id' ),
 				),
 				'contain' => false,
 				'joins' => array(

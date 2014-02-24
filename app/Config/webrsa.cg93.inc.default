@@ -1158,6 +1158,27 @@
 	 */
 	Configure::write( 'Rendezvous.thematiqueAnnuelleParStructurereferente', array( 5 ) );
 
+
+	/**
+	 * L'id technique du statut de RDV permettant d'ajouter un questionnaire D1
+	 * (normalement, le statut "prévu").
+	 *
+	 * @todo qui ne se trouve pas dans un état "final" -> FIXME: Configure::read()
+	 * @todo dans les règles de validation du RDV (on peut créer un RDV dès lors que le précédent n'a pas été honoré)
+	 * @todo si le RDV précédent n'a pas été honoré, on ne peut pas ajouter de RDV "premier RDV"
+	 *
+	 * @var integer|array
+	 */
+	Configure::write( 'Questionnaired1pdv93.rendezvous.statutrdv_id', array( '2' ) );
+
+	/**
+	 * Les id techniques de statuts de RDV permettant ou ayant permis d'ajouter
+	 * un questionnaire D1 (normalement, les statuts "honoré" et "prévu")
+	 *
+	 * @var integer|array
+	 */
+	Configure::write( 'Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id', array( '1', '2' ) );
+
 	/**
 	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
 	 * dans la gestion des doublons complexes.
