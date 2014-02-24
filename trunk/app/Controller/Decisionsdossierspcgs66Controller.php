@@ -388,7 +388,7 @@
 						'order' => array( 'Decisiondossierpcg66.created DESC' ),
 						'contain' => array(
 							'Typersapcg66',
-							'Orgdecisiondossierpcg66',
+							'Orgtransmisdossierpcg66',
 							'Dossierpcg66' => array(
 								'Contratinsertion' => array(
 									'Propodecisioncer66' => array(
@@ -612,7 +612,7 @@
 				$this->request->data['Typersapcg66']['Typersapcg66'] = $typesrsapcg;
 
                 if( !empty( $decisiondossierpcg66['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] ) ) {
-                    $this->request->data['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] = $decisiondossierpcg66['Orgdecisiondossierpcg66']['poledossierpcg66_id'].'_'.$decisiondossierpcg66['Orgdecisiondossierpcg66']['id'];
+                    $this->request->data['Decisiondossierpcg66']['orgtransmisdossierpcg66_id'] = $decisiondossierpcg66['Orgtransmisdossierpcg66']['poledossierpcg66_id'].'_'.$decisiondossierpcg66['Orgtransmisdossierpcg66']['id'];
                 }
 			}
 
@@ -757,7 +757,8 @@
 							'Foyer'
 						),
 						'Fichiermodule',
-                        'Orgtransmisdossierpcg66'
+                        'Orgtransmisdossierpcg66',
+                        'Notificationdecisiondossierpcg66'
 					)
 				)
 			);
@@ -772,8 +773,8 @@
 			}
 
              // Liste des organismes auxquels on transmet le dossier
-            if( !empty( $decisiondossierpcg66['Orgtransmisdossierpcg66'] ) ) {
-                $listOrgs = Hash::extract( $decisiondossierpcg66, 'Orgtransmisdossierpcg66.{n}.name' );
+            if( !empty( $decisiondossierpcg66['Notificationdecisiondossierpcg66'] ) ) {
+                $listOrgs = Hash::extract( $decisiondossierpcg66, 'Notificationdecisiondossierpcg66.{n}.name' );
                 $orgs = implode( ', ',  $listOrgs );
             }
 
@@ -865,7 +866,7 @@
 					'Decisiondossierpcg66.id' => $id
 				),
 				'contain' => array(
-					'Orgtransmisdossierpcg66'
+					'Notificationdecisiondossierpcg66'
 				),
 				'fields' => null,
 				'order' => null,
@@ -933,11 +934,11 @@
 					)
 				);
 //
-				$this->request->data['Orgtransmisdossierpcg66']['Orgtransmisdossierpcg66'] = $orgstransmisdossierspcgs66;
+				$this->request->data['Notificationdecisiondossierpcg66']['Notificationdecisiondossierpcg66'] = $orgstransmisdossierspcgs66;
 			}
 
             // Liste des Ids d'organisme enregistrés en lien avec la décision avant la désactivation de cet organisme
-            $orgsIds = Hash::extract( $this->request->data, 'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66' );
+            $orgsIds = Hash::extract( $this->request->data, 'Notificationdecisiondossierpcg66.Notificationdecisiondossierpcg66' );
 
             $conditions = array(
                 'Orgtransmisdossierpcg66.isactif' => '1'

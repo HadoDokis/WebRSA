@@ -76,7 +76,7 @@
 				'fields' => '',
 				'order' => ''
 			),
-			'Orgdecisiondossierpcg66' => array(
+			'Orgtransmisdossierpcg66' => array(
 				'className' => 'Orgtransmisdossierpcg66',
 				'foreignKey' => 'orgtransmisdossierpcg66_id',
 				'conditions' => '',
@@ -134,7 +134,7 @@
 				'insertQuery' => '',
 				'with' => 'Decisiondossierpcg66Typersapcg66'
 			),
-			'Orgtransmisdossierpcg66' => array(
+			'Notificationdecisiondossierpcg66' => array(
 				'className' => 'Orgtransmisdossierpcg66',
 				'joinTable' => 'decisionsdossierspcgs66_orgstransmisdossierspcgs66',
 				'foreignKey' => 'decisiondossierpcg66_id',

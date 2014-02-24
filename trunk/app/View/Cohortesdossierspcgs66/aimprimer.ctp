@@ -68,7 +68,13 @@
 				}
 
 //                 echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
-                echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
+				echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 	'Search.Dossierpcg66.etatdossierpcg' );
+                
+				echo '<fieldset class="col2 noborder">';
+				echo $this->Xform->input('Search.Dossierpcg66.user_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.user_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $gestionnaire, 'empty' => false));
+				echo '</fieldset>';
+				
+				echo $this->Search->date( 'Search.Dossierpcg66.dateaffectation' );
             ?>
         </fieldset>
 
@@ -118,6 +124,7 @@
                 <th>Service instructeur</th>
                 <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
+                <th>Date d'affectation</th>
                 <th colspan="2" class="action">Action</th>
 				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
@@ -150,6 +157,7 @@
 							h( $dossierpcg66aimprimer['Serviceinstructeur']['lib_service'] ),
 							h( Set::enum( Set::classicExtract( $dossierpcg66aimprimer, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
 							h( Set::enum( Set::classicExtract( $dossierpcg66aimprimer, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+							h( date_short( $dossierpcg66aimprimer['Dossierpcg66']['dateaffectation'] ) ),
 							$this->Xhtml->viewLink(
 								'Voir le dossier',
 								array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66aimprimer['Dossierpcg66']['foyer_id'] ),

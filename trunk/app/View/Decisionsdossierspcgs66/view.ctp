@@ -24,7 +24,7 @@ echo $this->Xhtml->tag('h1', $this->pageTitle);
             'Decisiondossierpcg66.userproposition_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'))),
             'Decisiondossierpcg66.datevalidation',
             'Dossierpcg66.etatdossierpcg',
-            'Orgtransmisdossierpcg66.name' => array('label' => 'Transmission à', 'value' => implode( ' ,', $orgs)),
+            'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => implode( ' ,', $orgs)),
             'Decisiondossierpcg66.datetransmissionop'
         ),
         array(

@@ -1,5 +1,5 @@
 <?php
-	$this->pageTitle = 'Dossiers PCGs affectés';
+	$this->pageTitle = 'Dossiers PCGs en attente de transmission';
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
@@ -24,7 +24,7 @@
 	});
 </script>
 
-<?php echo $this->Xform->create( 'Cohortedossierpcg66', array( 'type' => 'post', 'action' => 'affectes', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Xform->create( 'Cohortedossierpcg66', array( 'type' => 'post', 'action' => 'attentetransmission', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 
 
         <fieldset>
@@ -67,8 +67,6 @@
 					echo $this->Xform->input( 'Search.Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 				}
 
-//                 echo $this->Search->etatDossierPCG66( $etatdossierpcg, 'Search' );
-// debug($options);
                 echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
                 
                 echo '<fieldset class="col2 noborder">';
@@ -96,17 +94,18 @@
     <?php if( empty( $cohortedossierpcg66 ) ):?>
         <?php
             switch( $this->action ) {
-                case 'affectes':
+                case 'attentetransmission':
                     $message = 'Aucun Dossier PCG ne correspond à vos critères.';
                     break;
                 default:
-                    $message = 'Aucun Dossier PCG affecté n\'a été trouvé.';
+                    $message = 'Aucun Dossier PCG en attente de transmission n\'a été trouvé.';
             }
         ?>
         <p class="notice"><?php echo $message;?></p>
     <?php else:?>
 <?php $pagination = $this->Xpaginator->paginationBlock( 'Dossierpcg66', $this->passedArgs ); ?>
 <?php echo $pagination;?>
+<?php echo $this->Form->create( 'Dossierpcg66Attentetransmission', array() );?>
 	<?php
 		foreach( Hash::flatten( $this->request->data['Search'] ) as $filtre => $value  ) {
 			echo $this->Form->input( "Search.{$filtre}", array( 'type' => 'hidden', 'value' => $value ) );
@@ -125,58 +124,74 @@
                 <th>Service instructeur</th>
                 <th>Pôle du gestionnaire</th>
                 <th>Gestionnaire</th>
-                <th>Date d'affectation</th>
+                <th class="action">En attente</th>
+                <th class="action">Organismes</th>
                 <th class="action">Action</th>
 				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
         </thead>
         <tbody>
-        <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66affecte ):?>
+        <?php foreach( $cohortedossierpcg66 as $index => $dossierpcg66atransmettre ):?>
             <?php
+//             debug($dossierpcg66atransmettre);
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 					<tbody>
 						<tr>
 							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
-							<td>'.Hash::get( $dossierpcg66affecte, 'Structurereferenteparcours.lib_struc' ).'</td>
+							<td>'.Hash::get( $dossierpcg66atransmettre, 'Structurereferenteparcours.lib_struc' ).'</td>
 						</tr>
 						<tr>
 							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
-							<td>'.Hash::get( $dossierpcg66affecte, 'Referentparcours.nom_complet' ).'</td>
+							<td>'.Hash::get( $dossierpcg66atransmettre, 'Referentparcours.nom_complet' ).'</td>
 						</tr>
 					</tbody>
 				</table>';
 
-                $gestionnaires = Set::enum( Hash::get( $dossierpcg66affecte, 'Dossierpcg66.user_id' ), $gestionnaire );
-
-				echo $this->Xhtml->tableCells(
-						array(
-							h( $dossierpcg66affecte['Dossier']['numdemrsa'] ),
-							h( $dossierpcg66affecte['Personne']['nom'].' '.$dossierpcg66affecte['Personne']['prenom'] ),
-							h( $dossierpcg66affecte['Adresse']['locaadr'] ),
-							h( date_short( $dossierpcg66affecte['Dossierpcg66']['datereceptionpdo'] ) ),
-							h( $dossierpcg66affecte['Typepdo']['libelle'] ),
-							h( $dossierpcg66affecte['Originepdo']['libelle'] ),
-							h( $dossierpcg66affecte['Dossierpcg66']['orgpayeur'] ),
-							h( $dossierpcg66affecte['Serviceinstructeur']['lib_service'] ),
-                            h( Set::enum( Set::classicExtract( $dossierpcg66affecte, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
-							h( $gestionnaires ),
-							h( date_short( $dossierpcg66affecte['Dossierpcg66']['dateaffectation'] ) ),
-							$this->Xhtml->viewLink(
-								'Voir le dossier',
-								array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66affecte['Dossierpcg66']['foyer_id'] ),
-								$this->Permissions->check( 'dossierspcgs66', 'index' )
-							),
-							array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-						),
-						array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-						array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+					$array1 = array(
+						h( $dossierpcg66atransmettre['Dossier']['numdemrsa'] ),
+						h( $dossierpcg66atransmettre['Personne']['nom'].' '.$dossierpcg66atransmettre['Personne']['prenom'] ),
+						h( $dossierpcg66atransmettre['Adresse']['locaadr'] ),
+						h( date_short( $dossierpcg66atransmettre['Dossierpcg66']['datereceptionpdo'] ) ),
+						h( $dossierpcg66atransmettre['Typepdo']['libelle'] ),
+						h( $dossierpcg66atransmettre['Originepdo']['libelle'] ),
+						h( $dossierpcg66atransmettre['Dossierpcg66']['orgpayeur'] ),
+						h( $dossierpcg66atransmettre['Serviceinstructeur']['lib_service'] ),
+						h( Set::enum( Set::classicExtract( $dossierpcg66atransmettre, 'Dossierpcg66.poledossierpcg66_id' ), $polesdossierspcgs66 ) ),
+						h( Set::enum( Set::classicExtract( $dossierpcg66atransmettre, 'Dossierpcg66.user_id' ), $gestionnaire ) )
 					);
+
+					$array2 = array(
+						$this->Form->input( 'Dossierpcg66.'.$index.'.istransmis', array( 'label' => false, 'type' => 'checkbox', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['istransmis']  ) ).
+						$this->Form->input( 'Dossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['id'] ) ).
+						$this->Form->input( 'Dossierpcg66.'.$index.'.foyer_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['foyer_id'] ) ).
+						$this->Form->input( 'Dossierpcg66.'.$index.'.typepdo_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['typepdo_id'] ) ).
+						$this->Form->input( 'Dossierpcg66.'.$index.'.etatdossierpcg', array( 'label' => false, 'type' => 'hidden', 'value' => 'atttransmisop' ) ).
+						$this->Form->input( 'Dossierpcg66.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossier']['id'] ) ),
+						$this->Form->input( 'Decisiondossierpcg66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Decisiondossierpcg66']['id'] ) ).
+// 						$this->Form->input( 'Decisiondossierpcg66.'.$index.'.dossierpcg66_id', array( 'label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['id'] ) ).
+						$this->Form->input( 'Decisiondossierpcg66.'.$index.'.etatop', array( 'label' => false, 'type' => 'hidden', 'value' => 'atransmettre' ) ).
+						$this->Form->input( 'Notificationdecisiondossierpcg66.'.$index.'.Notificationdecisiondossierpcg66', array( 'label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listeOrgstransmisdossierspcgs66, 'empty' => false ) ),
+						$this->Xhtml->viewLink(
+							'Voir le dossier',
+							array( 'controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66atransmettre['Dossierpcg66']['foyer_id'] ),
+							$this->Permissions->check( 'dossierspcgs66', 'index' )
+						),
+						array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+					);
+
+					echo $this->Xhtml->tableCells(
+                        Set::merge( $array1, $array2 ),
+                        array( 'class' => 'odd' ),
+                        array( 'class' => 'even' )
+                    );
                 ?>
             <?php endforeach;?>
         </tbody>
     </table>
 
     <?php echo $pagination;?>
+        <?php echo $this->Form->submit( 'Validation de la liste' );?>
+<?php echo $this->Form->end();?>
     <ul class="actionMenu">
         <li><?php
             echo $this->Xhtml->printLinkJs(
@@ -195,3 +210,17 @@
 <?php endif?>
 
 <?php endif?>
+<script type="text/javascript">
+	document.observe( "dom:loaded", function() {
+		<?php foreach( array_keys( $cohortedossierpcg66 ) as $index ):?>
+		observeDisableFieldsOnValue(
+			'Dossierpcg66<?php echo $index;?>Istransmis',
+			[
+				'Notificationdecisiondossierpcg66<?php echo $index;?>Notificationdecisiondossierpcg66'
+			],
+			'1',
+			false
+		);
+		<?php endforeach;?>
+	} );
+</script>

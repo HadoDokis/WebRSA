@@ -33,6 +33,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
                 'enattenteaffectation' => array('filter' => 'Search'),
                 'affectes' => array('filter' => 'Search'),
                 'aimprimer' => array('filter' => 'Search'),
+                'attentetransmission' => array('filter' => 'Search'),
                 'atransmettre' => array('filter' => 'Search')
             )
         ),
@@ -41,6 +42,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
         'InsertionsAllocataires',
         'Cohortes' => array(
             'enattenteaffectation',
+            'attentetransmission',
             'atransmettre'
         )
     );
@@ -129,6 +131,12 @@ class Cohortesdossierspcgs66Controller extends AppController {
     public function aimprimer() {
         $this->_index('Affectationdossierpcg66::aimprimer');
     }
+    /**
+     *
+     */
+    public function attentetransmission() {
+        $this->_index('Affectationdossierpcg66::attentetransmission');
+    }
 
     /**
      *
@@ -155,32 +163,70 @@ class Cohortesdossierspcgs66Controller extends AppController {
             // On a renvoyé  le formulaire de la cohorte
             if (!empty($this->request->data['Dossierpcg66'])) {
                 $this->Cohortes->get(array_unique(Set::extract($this->request->data, 'Dossierpcg66.{n}.dossier_id')));
+                
+                $this->Dossierpcg66->begin();
+                $success = true;
 
-                $valid = $this->Dossierpcg66->saveAll($this->request->data['Dossierpcg66'], array('validate' => 'only', 'atomic' => false));
+              if( $this->action == 'attentetransmission' ) {
+					foreach( $this->request->data['Dossierpcg66'] as $index => $dossierpcg66 ) {
+						if( Hash::get( $dossierpcg66, 'istransmis' ) ) {
+							$notificationsdecisionsdossierspcgs66 = array(
+								'Decisiondossierpcg66' => array( 'id' => Hash::get( $this->request->data, "Decisiondossierpcg66.{$index}.id" ) ),
+								'Notificationdecisiondossierpcg66' => (array)Hash::get( $this->request->data, "Notificationdecisiondossierpcg66.{$index}" )
+							);
 
-                if ($valid) {
-                    $this->Dossierpcg66->begin();
-                    $saved = $this->Dossierpcg66->saveAll($this->request->data['Dossierpcg66'], array('validate' => 'first', 'atomic' => false));
+							$this->Dossierpcg66->create( array( 'Dossierpcg66' => $dossierpcg66 ) );
+							$success = $this->Dossierpcg66->save() && $success;
 
-                    if ($saved) {
-                        $this->Dossierpcg66->commit();
-                        $this->Session->setFlash('Enregistrement effectué.', 'flash/success');
-                        $this->Cohortes->release(array_unique(Set::extract($this->request->data, 'Dossierpcg66.{n}.dossier_id')));
+							$success = $this->Dossierpcg66->Decisiondossierpcg66->saveAssociated( $notificationsdecisionsdossierspcgs66, array( 'atomic' => false, 'validate' => 'first'  ) ) && $success;
 
-                        unset($this->request->data['Dossierpcg66']);
-                    } else {
-                        $this->Dossierpcg66->rollback();
-                        $this->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/error');
-                    }
+							$success = $this->Dossierpcg66->Decisiondossierpcg66->updateAllUnbound(
+								array( 'Decisiondossierpcg66.etatop' => "'".Hash::get( $this->request->data, "Decisiondossierpcg66.{$index}.etatop" )."'" ),
+								array( 'Decisiondossierpcg66.id' => Hash::get( $this->request->data, "Decisiondossierpcg66.{$index}.id" ) )
+							);
+							
+							 if ($success) {
+								$this->Dossierpcg66->commit();
+								$this->Session->setFlash('Enregistrement effectué.', 'flash/success');
+								$this->Cohortes->release(array_unique(Set::extract($this->request->data, 'Dossierpcg66.{n}.dossier_id')));
+
+								unset($this->request->data['Dossierpcg66']);
+								unset($this->request->data['Notificationdecisiondossierpcg66']);
+							} else {
+								$this->Dossierpcg66->rollback();
+								$this->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/error');
+							}
+						}
+					}
+				}
+				else {
+					$valid = $this->Dossierpcg66->saveAll($this->request->data['Dossierpcg66'], array('validate' => 'only', 'atomic' => false));
+
+					if ($valid) {
+						$saved = $this->Dossierpcg66->saveAll($this->request->data['Dossierpcg66'], array('validate' => 'first', 'atomic' => false));
+
+						if ($saved) {
+							$this->Dossierpcg66->commit();
+							$this->Session->setFlash('Enregistrement effectué.', 'flash/success');
+							$this->Cohortes->release(array_unique(Set::extract($this->request->data, 'Dossierpcg66.{n}.dossier_id')));
+
+							unset($this->request->data['Dossierpcg66']);
+						} else {
+							$this->Dossierpcg66->rollback();
+							$this->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/error');
+						}
+					}
                 }
             }
-
+            
+            
+            
             /**
              *
              * Filtrage
              *
              */
-            if (( $statutAffectation == 'Affectationdossierpcg66::enattenteaffectation' ) || ( $statutAffectation == 'Affectationdossierpcg66::affectes' ) || ( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) || ( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) && !empty($this->request->data)) {
+            if (( $statutAffectation == 'Affectationdossierpcg66::enattenteaffectation' ) || ( $statutAffectation == 'Affectationdossierpcg66::affectes' ) || ( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) || ( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) || ( $statutAffectation == 'Affectationdossierpcg66::attentetransmission' ) && !empty($this->request->data)) {
                 $paginate = $this->Cohortedossierpcg66->search(
                         $statutAffectation, (array) $this->Session->read('Auth.Zonegeographique'), $this->Session->read('Auth.User.filtre_zone_geo'), $this->request->data, $this->Cohortes->sqLocked('Dossier')
                 );
@@ -232,11 +278,36 @@ class Cohortesdossierspcgs66Controller extends AppController {
                 if (!in_array($statutAffectation, array('Affectationdossierpcg66::affectes', 'Affectationdossierpcg66::aimprimer'))) {
                     $this->Cohortes->get(Set::extract($cohortedossierpcg66, '{n}.Dossier.id'));
                 }
-
+// debug($cohortedossierpcg66);
                 $this->set('cohortedossierpcg66', $cohortedossierpcg66);
             }
         }
 
+        
+        
+        $orgsIds = Hash::extract( $this->request->data, 'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66' );
+		$conditions = array(
+			'Orgtransmisdossierpcg66.isactif' => '1'
+		);
+		if( !empty( $orgsIds ) ) {
+			$conditions = array(
+				'OR' => array(
+					$conditions,
+					array(
+						'Orgtransmisdossierpcg66.id' => $orgsIds
+					)
+				)
+			);
+		}
+		$listeOrgstransmisdossierspcgs66 = $this->Dossierpcg66->Decisiondossierpcg66->Orgtransmisdossierpcg66->find(
+			'list',
+			array(
+				'conditions' => $conditions,
+				'order' => array( 'Orgtransmisdossierpcg66.name ASC' )
+			)
+		);
+		$this->set( compact( 'listeOrgstransmisdossierspcgs66') );
+        
         $this->_setOptions();
 
         $this->set('structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true)));
@@ -251,6 +322,9 @@ class Cohortesdossierspcgs66Controller extends AppController {
                 break;
             case 'Affectationdossierpcg66::aimprimer':
                 $this->render('aimprimer');
+                break;
+            case 'Affectationdossierpcg66::attentetransmission':
+                $this->render('attentetransmission');
                 break;
             case 'Affectationdossierpcg66::atransmettre':
                 $this->render('atransmettre');

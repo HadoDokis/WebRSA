@@ -40,7 +40,10 @@
 					$conditions[] = 'Dossierpcg66.etatdossierpcg = \'attinstr\' ';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::aimprimer' ) {
-					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\', \'atttransmisop\' ) ) AND ( Dossierpcg66.dateimpression IS NULL  )';
+					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\' ) ) AND ( Dossierpcg66.dateimpression IS NULL  )';
+				}
+				else if( $statutAffectation == 'Affectationdossierpcg66::attentetransmission' ) {
+					$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \'decisionvalid\' ) ) AND ( Decisiondossierpcg66.dossierpcg66_id IS NOT NULL ) AND ( Decisiondossierpcg66.validationproposition = \'O\') AND ( Dossierpcg66.etatdossierpcg NOT IN ( \'transmisop\' ) ) ';
 				}
 				else if( $statutAffectation == 'Affectationdossierpcg66::atransmettre' ) {
 					$conditions[] = '( Dossierpcg66.etatdossierpcg = \'atttransmisop\' ) AND ( Dossierpcg66.dateimpression IS NOT NULL  ) AND ( Dossierpcg66.istransmis = \'0\' )';
@@ -60,12 +63,14 @@
 			$serviceinstructeur_id = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.serviceinstructeur_id' );
 			$typepdo_id = Set::extract( $criteresdossierspcgs66, 'Search.Typepdo.libelle' );
 			$orgpayeur = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.orgpayeur' );
+			$gestionnaire = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.user_id' );
 
 
 			$conditions = $this->conditionsAdresse( $conditions, $criteresdossierspcgs66['Search'], $filtre_zone_geo, $mesCodesInsee );
 			$conditions = $this->conditionsDossier( $conditions, $criteresdossierspcgs66['Search'] );
 			$conditions = $this->conditionsPersonne( $conditions, $criteresdossierspcgs66['Search'] );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresdossierspcgs66['Search'] );
+			$conditions = $this->conditionsDates($conditions, $criteresdossierspcgs66['Search'], 'Dossierpcg66.dateaffectation');
 
 
 			/// Critères sur la date de signature de la fiche de candidature
@@ -94,6 +99,12 @@
 				$conditions[] = 'Dossierpcg66.typepdo_id = \''.Sanitize::clean( $typepdo_id, array( 'encode' => false ) ).'\'';
 			}
 
+			// Gestionnaire de la PDO
+			if (!empty($gestionnaire)) {
+				$conditions[] = 'Dossierpcg66.user_id IN ( \'' . implode('\', \'', $gestionnaire) . '\' )';
+			}
+
+        
             // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.etatdossierpcg' );
 			if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) ) {
@@ -210,6 +221,7 @@
 					'Dossierpcg66.poledossierpcg66_id',
 					'Dossierpcg66.istransmis',
 					'Dossierpcg66.datetransmission',
+					'Dossierpcg66.dateaffectation',
 					'Originepdo.libelle',
 					'Typepdo.libelle',
 					'Serviceinstructeur.lib_service',

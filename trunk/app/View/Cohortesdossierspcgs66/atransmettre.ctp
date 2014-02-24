@@ -68,6 +68,12 @@
 				}
 
                 echo $this->Search->multipleCheckboxChoice( $options['Dossierpcg66']['etatdossierpcg'], 'Search.Dossierpcg66.etatdossierpcg' );
+                
+                echo '<fieldset class="col2 noborder">';
+				echo $this->Xform->input('Search.Dossierpcg66.user_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.user_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $gestionnaire, 'empty' => false));
+				echo '</fieldset>';
+				
+				echo $this->Search->date( 'Search.Dossierpcg66.dateaffectation' );
             ?>
         </fieldset>
 

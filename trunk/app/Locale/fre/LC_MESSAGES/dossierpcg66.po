@@ -160,3 +160,6 @@ msgstr "Motif d'annulation"
 
 msgid "Dossierpcg66.poledossierpcg66_id"
 msgstr "Pôle chargé du dossier"
+
+msgid "Dossierpcg66.dateaffectation"
+msgstr "Date d'affectation"

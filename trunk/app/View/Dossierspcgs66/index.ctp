@@ -36,7 +36,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
                 $datetransmissionfinale = !empty( $dates ) ?  $dates[0] : null;
 
                 // Liste des organismes auxquels on transmet le dossier
-                $orgs =  array_values( Hash::filter( Hash::extract( $dossierpcg66, 'Decisiondossierpcg66.{n}.Orgtransmisdossierpcg66.{n}.name' ) ) );
+                $orgs =  array_values( Hash::filter( Hash::extract( $dossierpcg66, 'Decisiondossierpcg66.{n}.Notificationdecisiondossierpcg66.{n}.name' ) ) );
 
 				$etat = null;
 				if( Hash::get( $dossierpcg66, 'Dossierpcg66.etatdossierpcg' ) == 'transmisop' ){

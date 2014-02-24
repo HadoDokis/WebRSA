@@ -18,7 +18,7 @@
             <fieldset><legend><?php echo __d( 'orgtransmisdossierpcg66', 'Orgtransmisdossierpcg66.name' ); ?></legend>
                 
             <?php
-                echo $this->Form->input( 'Orgtransmisdossierpcg66.Orgtransmisdossierpcg66', array( 'type' => 'select', 'label' => false, 'multiple' => 'checkbox', 'empty' => false, 'options' => $listeOrgstransmisdossierspcgs66 ) );
+                echo $this->Form->input( 'Notificationdecisiondossierpcg66.Notificationdecisiondossierpcg66', array( 'type' => 'select', 'label' => false, 'multiple' => 'checkbox', 'empty' => false, 'options' => $listeOrgstransmisdossierspcgs66 ) );
             ?>
             </fieldset>
 
