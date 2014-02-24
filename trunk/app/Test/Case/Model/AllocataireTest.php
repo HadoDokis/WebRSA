@@ -108,9 +108,7 @@
 			unset( $result['sql'] );
 			$expected = array (
 				'success' => false,
-				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERREUR:  la colonne « foo » n\'existe pas
-LIGNE 15 : ...e_id" = "Structurereferenteparcours"."id")  WHERE Foo   ORDE...
-                                                                ^',
+				'message' => preg_match( '/^SQLSTATE\[42703\]: Undefined column: 7.*foo/', $result['message'] ) ? $result['message'] : null,
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -134,9 +132,7 @@ LIGNE 15 : ...e_id" = "Structurereferenteparcours"."id")  WHERE Foo   ORDE...
 			unset( $result['sql'] );
 			$expected = array (
 				'success' => false,
-				'message' => 'SQLSTATE[42703]: Undefined column: 7 ERREUR:  la colonne « Foo » n\'existe pas
-LIGNE 15 : ...e_id" = "Structurereferenteparcours"."id")  WHERE "Foo" = 6 ...
-                                                                ^',
+				'message' => preg_match( '/^SQLSTATE\[42703\]: Undefined column: 7.*Foo/', $result['message'] ) ? $result['message'] : null,
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 

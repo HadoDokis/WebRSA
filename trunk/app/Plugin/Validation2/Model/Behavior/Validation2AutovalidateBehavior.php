@@ -69,30 +69,6 @@
 		}
 
 		/**
-		 * integer -> integer
-		 *
-		 * @see Validation2AutovalidateBehavior::integer
-		 *
-		 * @param Model $Model
-		 * @param array $fieldParams
-		 * @return boolean
-		 */
-		protected function _isIntegerField( Model $Model, $fieldParams ) {
-			return ( $this->settings[$Model->alias]['rules']['integer'] && $fieldParams['type'] == 'integer' );
-		}
-
-		/**
-		 * float -> numeric
-		 *
-		 * @param Model $Model
-		 * @param array $fieldParams
-		 * @return boolean
-		 */
-		protected function _isNumericField( Model $Model, $fieldParams ) {
-			return ( $this->settings[$Model->alias]['rules']['numeric'] && $fieldParams['type'] == 'float' );
-		}
-
-		/**
 		 * unique index -> isUnique
 		 *
 		 * @param Model $Model
@@ -105,36 +81,29 @@
 		}
 
 		/**
+		 * integer -> integer
 		 * date -> date
-		 *
-		 * @param Model $Model
-		 * @param array $fieldParams
-		 * @return boolean
-		 */
-		protected function _isDateField( Model $Model, $fieldParams ) {
-			return ( $this->settings[$Model->alias]['rules']['date'] && $fieldParams['type'] == 'date' );
-		}
-
-		/**
+		 * time -> time
 		 * datetime -> datetime
 		 *
 		 * @param Model $Model
+		 * @param string $type
 		 * @param array $fieldParams
 		 * @return boolean
 		 */
-		protected function _isDatetimeField( Model $Model, $fieldParams ) {
-			return ( $this->settings[$Model->alias]['rules']['datetime'] && $fieldParams['type'] == 'datetime' );
+		protected function _isTypeField( Model $Model, $type, $fieldParams ) {
+			return ( $this->settings[$Model->alias]['rules'][$type] && $fieldParams['type'] == $type );
 		}
 
 		/**
-		 * time -> time
+		 * float -> numeric
 		 *
 		 * @param Model $Model
 		 * @param array $fieldParams
 		 * @return boolean
 		 */
-		protected function _isTimeField( Model $Model, $fieldParams ) {
-			return ( $this->settings[$Model->alias]['rules']['time'] && $fieldParams['type'] == 'time' );
+		protected function _isNumericField( Model $Model, $fieldParams ) {
+			return ( $this->settings[$Model->alias]['rules']['numeric'] && $fieldParams['type'] == 'float' );
 		}
 
 		/**
@@ -165,24 +134,12 @@
 			}
 
 			// Par type de champ
-			if( $this->_isIntegerField( $Model, $params ) ) {
-				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'integer', 'allowEmpty' => true ) );
-				$rules[$rule['rule'][0]] = $rule;
-			}
-			else if( $this->_isNumericField( $Model, $params ) ) {
+			if( $this->_isNumericField( $Model, $params ) ) {
 				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'numeric', 'allowEmpty' => true ) );
 				$rules[$rule['rule'][0]] = $rule;
 			}
-			else if( $this->_isDateField( $Model, $params ) ) {
-				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'date', 'allowEmpty' => true ) );
-				$rules[$rule['rule'][0]] = $rule;
-			}
-			else if( $this->_isDatetimeField( $Model, $params ) ) {
-				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'datetime', 'allowEmpty' => true ) );
-				$rules[$rule['rule'][0]] = $rule;
-			}
-			else if( $this->_isTimeField( $Model, $params ) ) {
-				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => 'time', 'allowEmpty' => true ) );
+			else if( in_array( $params['type'], array( 'integer', 'date', 'datetime', 'time' ) ) && $this->_isTypeField( $Model, $params['type'], $params ) ) {
+				$rule = $this->normalizeValidationRule( $Model, array( 'rule' => $params['type'], 'allowEmpty' => true ) );
 				$rules[$rule['rule'][0]] = $rule;
 			}
 
