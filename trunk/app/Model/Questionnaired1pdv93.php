@@ -399,6 +399,7 @@
 
 		/**
 		 * Retourne l'id du RDV à utiliser dans le questionnaire.
+		 * Il s'agit d'un "premier RDV" à l'état "Prévu"
 		 *
 		 * @param integer $personne_id
 		 * @return integer
@@ -409,7 +410,7 @@
 					'Thematiquerdv.linkedmodel' => $this->alias
 				)
 			);
-			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'all', $querydata ); // FIXME: une boucle ?
+			$thematiquesrdvs = $this->Rendezvous->Thematiquerdv->find( 'all', $querydata );
 
 			$with = $this->Rendezvous->hasAndBelongsToMany['Thematiquerdv']['with'];
 
@@ -434,7 +435,8 @@
 					'Rendezvous.personne_id' => $personne_id,
 					'Rendezvous.typerdv_id' => Hash::extract( $thematiquesrdvs, '{n}.Thematiquerdv.typerdv_id' ),
 					'Thematiquerdv.linkedmodel' => $this->alias,
-					"Rendezvous.id NOT IN ( {$sq} )"
+					"Rendezvous.id NOT IN ( {$sq} )",
+					'Rendezvous.statutrdv_id' => (array)Configure::read( 'Questionnaired1pdv93.rendezvous.statutrdv_id' ),
 				),
 				'joins' => array(
 					$this->Rendezvous->join( $with, array( 'type' => 'INNER' ) ),
