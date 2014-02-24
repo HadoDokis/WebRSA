@@ -234,7 +234,8 @@
 								'Decisiondossierpcg66.dossierpcg66_id' => $dossierpcg66['Dossierpcg66']['id']
 							),
 							'contain' => array(
-                                'Orgtransmisdossierpcg66'
+                                'Orgtransmisdossierpcg66',
+                                'Notificationdecisiondossierpcg66'
                             )
 						)
 					);
@@ -246,7 +247,7 @@
 							$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
                             
                             // Liste des organismes auxquels on transmet le dossier
-                            $listOrgs = Hash::extract( $decisiondossierpcg66, 'Orgtransmisdossierpcg66.{n}.name' );
+                            $listOrgs = Hash::extract( $decisiondossierpcg66, 'Notificationdecisiondossierpcg66.{n}.name' );
                             $orgs = implode( ', ',  $listOrgs );
 						}
 					}
@@ -301,7 +302,8 @@
 						'Decisiondossierpcg66' => array(
 							'order' => array( 'Decisiondossierpcg66.created DESC' ),
                             'Decisionpdo',
-                            'Orgtransmisdossierpcg66'
+                            'Orgtransmisdossierpcg66',
+                            'Notificationdecisiondossierpcg66'
 						),
                         'User'
 					),
@@ -309,7 +311,6 @@
 				)
 			);
             
-			
 			foreach( $dossierspcgs66 as $i => $dossierpcg66 ) {
 				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
 					'all',
@@ -747,7 +748,7 @@
 //                                'Decisiondossierpcg66.validationproposition' => 'O',
 //                                'Decisiondossierpcg66.etatop' => 'transmis'
 //                            ),
-                            'Orgtransmisdossierpcg66'
+                            'Notificationdecisiondossierpcg66'
                         ),
                         'Poledossierpcg66',
 					)
@@ -775,8 +776,8 @@
 			
            
             // Liste des organismes auxquels on transmet le dossier
-            if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['Orgtransmisdossierpcg66'] ) ) {
-                $listOrgs = Hash::extract( $dossierpcg66['Decisiondossierpcg66'][0], 'Orgtransmisdossierpcg66.{n}.name' );
+            if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['Notificationdecisiondossierpcg66'] ) ) {
+                $listOrgs = Hash::extract( $dossierpcg66['Decisiondossierpcg66'][0], 'Notificationdecisiondossierpcg66.{n}.name' );
                 $orgs = implode( ', ',  $listOrgs );
             }
             

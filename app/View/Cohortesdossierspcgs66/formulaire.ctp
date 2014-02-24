@@ -107,6 +107,7 @@
                 <th class="action">Sélection</th>
                 <th class="action">Pôle du gestionnaire</th>
                 <th class="action">Gestionnaire</th>
+                <th class="action">Date d'affectation</th>
                 <th class="action">Action</th>
 				<th class="innerTableHeader noprint">Informations complémentaires</th>
             </tr>
@@ -154,6 +155,8 @@
                         $this->Form->input( 'Dossierpcg66.'.$index.'.poledossierpcg66_id', array( 'label' => false, 'type' => 'select', 'options' => $polesdossierspcgs66, 'empty' => true ) ),
 
                         $this->Form->input( 'Dossierpcg66.'.$index.'.user_id', array( 'label' => false, 'type' => 'select', 'options' => $gestionnaires, 'empty' => true ) ),
+                        
+                        $this->Form->input( 'Dossierpcg66.'.$index.'.dateaffectation', array( 'label' => false, 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false, 'maxYear' => date('Y') + 2 ) ),
 
                         $this->Xhtml->viewLink(
                             'Voir le dossier « '.$title.' »',
@@ -188,7 +191,10 @@ document.observe( "dom:loaded", function() {
             'Dossierpcg66<?php echo $key;?>Atraiter',
             [
                 'Dossierpcg66<?php echo $key;?>Poledossierpcg66Id',
-                'Dossierpcg66<?php echo $key;?>UserId'
+                'Dossierpcg66<?php echo $key;?>UserId',
+                'Dossierpcg66<?php echo $key;?>DateaffectationYear',
+                'Dossierpcg66<?php echo $key;?>DateaffectationMonth',
+                'Dossierpcg66<?php echo $key;?>DateaffectationDay'
             ],
             false
         );

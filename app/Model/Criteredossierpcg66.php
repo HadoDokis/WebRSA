@@ -154,6 +154,8 @@ class Criteredossierpcg66 extends AppModel {
         $conditions = $this->conditionsDernierDossierAllocataire($conditions, $params);
         $conditions = $this->conditionsDetailcalculdroitrsa($conditions, $params);
 
+        $conditions = $this->conditionsDates($conditions, $params, 'Dossierpcg66.dateaffectation');
+        
         /// Critères
         $originepdo = Set::extract($params, 'Dossierpcg66.originepdo_id');
         $gestionnaire = Set::extract($params, 'Dossierpcg66.user_id');
@@ -339,6 +341,7 @@ class Criteredossierpcg66 extends AppModel {
                 'Dossierpcg66.typepdo_id',
                 'Dossierpcg66.etatdossierpcg',
                 'Dossierpcg66.datetransmission',
+                'Dossierpcg66.dateaffectation',
                 'Dossierpcg66.poledossierpcg66_id',
                 'Decisiondossierpcg66.datetransmissionop',
                 'Decisiondossierpcg66.datevalidation',
@@ -482,6 +485,7 @@ class Criteredossierpcg66 extends AppModel {
         $conditions = $this->conditionsPersonneFoyerDossier($conditions, $params);
         $conditions = $this->conditionsDernierDossierAllocataire($conditions, $params);
 
+        $conditions = $this->conditionsDates($conditions, $params, 'Dossierpcg66.dateaffectation');
 
 
         $dossierEchu = Set::extract($params, 'Dossierpcg66.dossierechu');
@@ -614,6 +618,7 @@ class Criteredossierpcg66 extends AppModel {
                 'Dossierpcg66.etatdossierpcg',
                 'Dossierpcg66.originepdo_id',
                 'Dossierpcg66.user_id',
+                'Dossierpcg66.dateaffectation',
                 'Dossierpcg66.datetransmission',
                 'Dossierpcg66.poledossierpcg66_id',
                 'Decisiondossierpcg66.datetransmissionop',

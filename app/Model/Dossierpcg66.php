@@ -864,7 +864,7 @@ class Dossierpcg66 extends AppModel {
         $dossierpcg66EnCours = $this->find(
                 'first', array(
             'fields' => array_merge(
-                    $this->fields(), $this->Decisiondossierpcg66->fields(), $this->Decisiondossierpcg66->Orgdecisiondossierpcg66->fields(), $this->Poledossierpcg66->fields()
+                    $this->fields(), $this->Decisiondossierpcg66->fields(), $this->Decisiondossierpcg66->Orgtransmisdossierpcg66->fields(), $this->Poledossierpcg66->fields()
             ),
             'conditions' => array(
                 'Dossierpcg66.id' => $dossierpcg66_id
@@ -875,7 +875,7 @@ class Dossierpcg66 extends AppModel {
                     'type' => 'INNER')
                 ),
                 $this->join('Poledossierpcg66', array('type' => 'INNER')),
-                $this->Decisiondossierpcg66->join('Orgdecisiondossierpcg66', array('type' => 'LEFT OUTER'))
+                $this->Decisiondossierpcg66->join('Orgtransmisdossierpcg66', array('type' => 'LEFT OUTER'))
             ),
             'contain' => false
                 )
@@ -922,7 +922,7 @@ class Dossierpcg66 extends AppModel {
         // Pôle chargé de traiter le dossier PCG en cours
         $poledossierpcg66IdDossierpcg66 = $dossierpcg66EnCours['Dossierpcg66']['poledossierpcg66_id'];
         // Pôle lié à l'organisme auquel on a tranmis l'information (PDA-MGA ou PDU-MMR)
-        $poledossierpcg66IdOrg66 = $dossierpcg66EnCours['Orgdecisiondossierpcg66']['poledossierpcg66_id'];
+        $poledossierpcg66IdOrg66 = $dossierpcg66EnCours['Orgtransmisdossierpcg66']['poledossierpcg66_id'];
 
         if (!empty($orgId) && ( $poledossierpcg66IdDossierpcg66 != $poledossierpcg66IdOrg66 )) {
             if (!empty($organismesConcernes)) {

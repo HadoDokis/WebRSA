@@ -8,22 +8,24 @@ if (Configure::read('debug') > 0) {
 echo $this->Xhtml->tag('h1', $this->pageTitle);
 
 echo $this->Default2->view(
-        $dossierpcg66, array(
-    'Dossierpcg66.datereceptionpdo',
-    'Typepdo.libelle',
-    'Originepdo.libelle',
-    'Dossierpcg66.orgpayeur',
-    'Serviceinstructeur.lib_service',
-    'Dossierpcg66.iscomplet',
-    'Poledossierpcg66.name',
-    'User.nom_complet' => array('type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)'),
-    'Dossierpcg66.etatdossierpcg',
-    'Orgtransmisdossierpcg66.name' => array('label' => 'Transmission à', 'value' => @$orgs),
-    'Decisiondossierpcg66.0.datetransmissionop'
-        ), array(
-    'class' => 'aere',
-    'options' => $options
-        )
+	$dossierpcg66,
+	array(
+		'Dossierpcg66.datereceptionpdo',
+		'Typepdo.libelle',
+		'Originepdo.libelle',
+		'Dossierpcg66.orgpayeur',
+		'Serviceinstructeur.lib_service',
+		'Dossierpcg66.iscomplet',
+		'Poledossierpcg66.name',
+		'User.nom_complet' => array('type' => 'text', 'label' => 'Gestionnaire du dossier (technicien en charge du dossier)'),
+		'Dossierpcg66.etatdossierpcg',
+		'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => @$orgs),
+		'Decisiondossierpcg66.0.datetransmissionop'
+	),
+	array(
+		'class' => 'aere',
+		'options' => $options
+	)
 );
 //debug($dossierpcg66);
 //	if( $dossierpcg66['Decisiondossierpcg66'][0]['etatop'] == 'transmis' && !empty( $dossierpcg66['Decisiondossierpcg66'][0]['datetransmissionop'] ) ) {

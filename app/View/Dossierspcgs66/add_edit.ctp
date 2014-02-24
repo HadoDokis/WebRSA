@@ -122,7 +122,8 @@ document.observe( "dom:loaded", function() {
 			echo $this->Default->subform(
 				array(
                     'Dossierpcg66.poledossierpcg66_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ) ), 'type' => 'select', 'options' => $polesdossierspcgs66, 'empty' => true ),
-					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id' ) ), 'type' => 'select', 'options' => $gestionnaires )
+					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id' ) ), 'type' => 'select', 'options' => $gestionnaires ),
+					'Dossierpcg66.dateaffectation' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.dateaffectation' ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => false, 'maxYear' => date( 'Y' ) + 2 ),
 				),
 				array(
 					'domain' => $domain,

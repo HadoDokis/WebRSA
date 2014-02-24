@@ -36,6 +36,7 @@ class Criteretraitementpcg66 extends AppModel {
         $conditions = $this->conditionsDetailcalculdroitrsa($conditions, $params);
 
         $conditions = $this->conditionsDates($conditions, $params, 'Traitementpcg66.created');
+        $conditions = $this->conditionsDates($conditions, $params, 'Dossierpcg66.dateaffectation');
 
         /// Critères
         $descriptionpdo = Set::extract($params, 'Traitementpcg66.descriptionpdo_id');

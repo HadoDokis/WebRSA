@@ -382,6 +382,10 @@ COMMENT ON TABLE instantanesdonneesfps93 IS '"Instantané" de certaines données
 CREATE UNIQUE INDEX instantanesdonneesfps93_ficheprescription93_id_idx ON instantanesdonneesfps93( ficheprescription93_id );
 CREATE UNIQUE INDEX instantanesdonneesfps93_situationallocataire_id_idx ON instantanesdonneesfps93( situationallocataire_id );
 
+--------------------------------------------------------------------------------
+-- 20140221: Ajout de la date d'affectation du gestionnaire au dossier PCG (CG66)
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'dossierspcgs66', 'dateaffectation', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -73,6 +73,8 @@ echo $this->Search->natpf($natpf);
         echo '<fieldset class="col2 noborder">';
         echo $this->Xform->input('Dossierpcg66.user_id', array('label' => __d('dossierpcg66', 'Dossierpcg66.user_id'), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $gestionnaire, 'empty' => false));
         echo '</fieldset>';
+        
+        echo $this->Search->date( 'Dossierpcg66.dateaffectation' );
         ?>
     <?php
     echo $this->Search->etatDossierPCG66($etatdossierpcg);

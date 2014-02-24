@@ -1747,3 +1747,7 @@ body.fichesprescriptions93.search td.data.boolean.true {
 body.fichesprescriptions93.search td.data.boolean.false {
 	background-image: none;
 }
+
+td div.input label{
+	width: auto;
+}
