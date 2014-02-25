@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.View.Helper
+	 * @package Default
+	 * @subpackage View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'DefaultUrl', 'Default.Utility' );
@@ -13,7 +14,8 @@
 	 * La classe DefaultActionHelper fournit des actions à utiliser avec la méthode
 	 * DefaultDefaultHelper::actions().
 	 *
-	 * @package       app.View.Helper
+	 * @package Default
+	 * @subpackage View.Helper
 	 */
 	class DefaultActionHelper extends AppHelper
 	{
