@@ -263,9 +263,35 @@
 		}
 
 		/**
-		 * @todo
+		 * Export CSV des résultats de la recherche.
 		 */
 		public function exportcsv() {
+			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+
+			$query = $this->Ficheprescription93->search( $search );
+
+			$query['fields'] = array(
+				'Personne.id',
+				'Dossier.numdemrsa',
+				'Dossier.dtdemrsa',
+				'Dossier.matricule',
+				'Personne.nom_complet',
+				'Prestation.rolepers',
+				'Adresse.locaadr',
+				'Ficheprescription93.id',
+				'Ficheprescription93.statut',
+				'Actionfp93.name',
+			);
+
+			$query = $this->Allocataires->completeSearchQuery( $query );
+
+			// TODO: le sort
+			$results = $this->Ficheprescription93->Personne->find( 'all', $query );
+
+			$options = $this->Ficheprescription93->options();
+
+			$this->set( compact( 'results', 'options' ) );
+			$this->layout = null;
 		}
 
 		/**

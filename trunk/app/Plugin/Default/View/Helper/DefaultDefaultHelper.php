@@ -24,6 +24,7 @@
 		 */
 		public $helpers = array(
 			'Default.DefaultAction',
+			'Default.DefaultCsv',
 			'Default.DefaultForm',
 			'Default.DefaultHtml',
 			'Default.DefaultPaginator',
@@ -336,6 +337,18 @@
 			$inputs['fieldset'] = $fieldset;
 
 			return $this->DefaultForm->inputs( $inputs );
+		}
+
+		/**
+		 * Effectue l'export CSV des données.
+		 *
+		 * @param array $data
+		 * @param array $fields
+		 * @param array $params
+		 * @return string
+		 */
+		public function csv( array $data, array $fields, array $params = array() ) {
+			return $this->DefaultCsv->render( $data, $fields, $params );
 		}
 	}
 ?>
