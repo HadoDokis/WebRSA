@@ -18,6 +18,11 @@
 		public $name = 'Typecourrierpcg66';
 
 		public $order = 'Typecourrierpcg66.name ASC';
+                
+                public $actsAs = array(
+                    'Postgres.PostgresAutovalidate',
+                    'Validation2.Validation2Formattable',
+                );
 
 		public $validate = array(
 			'name' => array(

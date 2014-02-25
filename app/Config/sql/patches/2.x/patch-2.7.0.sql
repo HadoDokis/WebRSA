@@ -386,6 +386,27 @@ CREATE UNIQUE INDEX instantanesdonneesfps93_situationallocataire_id_idx ON insta
 -- 20140221: Ajout de la date d'affectation du gestionnaire au dossier PCG (CG66)
 --------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'dossierspcgs66', 'dateaffectation', 'DATE' );
+
+-------------------------------------------------------------------------------------
+-- 20140225 : Ajout d'un champ isactif pour masquer les infos du modules courriers des dossiers PCGs (CG66)
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'typescourrierspcgs66', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'typescourrierspcgs66', 'typescourrierspcgs66_isactif_in_list_chk' );
+ALTER TABLE typescourrierspcgs66 ADD CONSTRAINT typescourrierspcgs66_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE typescourrierspcgs66 SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE typescourrierspcgs66 ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
+
+SELECT add_missing_table_field( 'public', 'modelestypescourrierspcgs66', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'modelestypescourrierspcgs66', 'modelestypescourrierspcgs66_isactif_in_list_chk' );
+ALTER TABLE modelestypescourrierspcgs66 ADD CONSTRAINT modelestypescourrierspcgs66_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE modelestypescourrierspcgs66 SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE modelestypescourrierspcgs66 ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
+
+SELECT add_missing_table_field( 'public', 'piecesmodelestypescourrierspcgs66', 'isactif', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'piecesmodelestypescourrierspcgs66', 'piecesmodelestypescourrierspcgs66_isactif_in_list_chk' );
+ALTER TABLE piecesmodelestypescourrierspcgs66 ADD CONSTRAINT piecesmodelestypescourrierspcgs66_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0','1'] ) );
+UPDATE piecesmodelestypescourrierspcgs66 SET isactif = '1' WHERE isactif IS NULL;
+ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

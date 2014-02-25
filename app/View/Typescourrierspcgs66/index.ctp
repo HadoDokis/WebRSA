@@ -8,7 +8,8 @@
     echo $this->Default2->index(
         $typescourrierspcgs66,
         array(
-            'Typecourrierpcg66.name'
+            'Typecourrierpcg66.name',
+            'Typecourrierpcg66.isactif' => array( 'type' => 'boolean' )
         ),
         array(
             'actions' => array(

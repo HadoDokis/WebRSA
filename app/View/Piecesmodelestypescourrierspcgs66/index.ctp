@@ -10,15 +10,15 @@
         array(
             'Piecemodeletypecourrierpcg66.name',
             'Modeletypecourrierpcg66.name',
-            'Piecemodeletypecourrierpcg66.isautrepiece'
+            'Piecemodeletypecourrierpcg66.isautrepiece' => array( 'type' => 'boolean' ),
+            'Piecemodeletypecourrierpcg66.isactif' => array( 'type' => 'boolean' )
         ),
         array(
             'actions' => array(
                 'Piecesmodelestypescourrierspcgs66::edit',
                 'Piecesmodelestypescourrierspcgs66::delete' => array( 'disabled' => '\'#Piecemodeletypecourrierpcg66.occurences#\' != "0"')
             ),
-            'add' => 'Piecesmodelestypescourrierspcgs66::add',
-			'options' => $options
+            'add' => 'Piecesmodelestypescourrierspcgs66::add'
         )
     );
 
