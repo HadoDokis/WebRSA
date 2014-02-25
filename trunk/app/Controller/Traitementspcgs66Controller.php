@@ -316,7 +316,7 @@ class Traitementspcgs66Controller extends AppController {
             ),
             'contain' => false,
             'order' => array(
-                'Traitementpcg66.datedepart DESC',
+                'Traitementpcg66.created DESC',
                 'Traitementpcg66.id DESC'
             )
         );

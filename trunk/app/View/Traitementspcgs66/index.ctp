@@ -42,7 +42,8 @@
 				'Traitementpcg66.datereception',
 				'Traitementpcg66.daterevision',
 				'Traitementpcg66.dateecheance',
-				'Traitementpcg66.typetraitement'
+				'Traitementpcg66.typetraitement',
+				'Traitementpcg66.dateenvoicourrier'
 			),
 			array(
 				'actions' => array(
