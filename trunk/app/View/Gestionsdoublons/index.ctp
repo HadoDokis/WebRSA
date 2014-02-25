@@ -46,6 +46,9 @@
 
 	// Résultats
 	if( isset( $results ) ) {
+                $this->Default3->DefaultPaginator->options(
+                    array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+		);
 		$index = $this->Default3->index(
 			$results,
 			array(
