@@ -11,16 +11,16 @@
             'Modeletypecourrierpcg66.name',
             'Typecourrierpcg66.name',
             'Modeletypecourrierpcg66.modeleodt',
-            'Modeletypecourrierpcg66.ismontant',
-            'Modeletypecourrierpcg66.isdates'
+            'Modeletypecourrierpcg66.ismontant' => array( 'type' => 'boolean' ),
+            'Modeletypecourrierpcg66.isdates' => array( 'type' => 'boolean' ),
+            'Modeletypecourrierpcg66.isactif'  => array( 'type' => 'boolean' )
         ),
         array(
             'actions' => array(
                 'Modelestypescourrierspcgs66::edit',
                 'Modelestypescourrierspcgs66::delete' => array( 'disabled' => '\'#Modeletypecourrierpcg66.occurences#\' != "0"')
             ),
-            'add' => 'Modelestypescourrierspcgs66::add',
-            'options' => $options
+            'add' => 'Modelestypescourrierspcgs66::add'
         )
     );
     

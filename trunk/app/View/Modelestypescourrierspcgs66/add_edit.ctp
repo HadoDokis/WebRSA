@@ -17,7 +17,8 @@
 			'Modeletypecourrierpcg66.typecourrierpcg66_id' => array( 'required' => true, 'type' => 'select', 'options' => $options['Modeletypecourrierpcg66']['typecourrierpcg66_id'], 'empty' => true ),
 			'Modeletypecourrierpcg66.modeleodt' => array( 'required' => true ),
 			'Modeletypecourrierpcg66.ismontant' => array( 'required' => true, 'type' => 'select', 'options' => $options['Modeletypecourrierpcg66']['ismontant'], 'empty' => true ),
-			'Modeletypecourrierpcg66.isdates' => array( 'required' => true, 'type' => 'select', 'options' => $options['Modeletypecourrierpcg66']['isdates'], 'empty' => true )
+			'Modeletypecourrierpcg66.isdates' => array( 'required' => true, 'type' => 'select', 'options' => $options['Modeletypecourrierpcg66']['isdates'], 'empty' => true ),
+			'Modeletypecourrierpcg66.isactif' => array( 'required' => true, 'type' => 'select', 'options' => $options['Modeletypecourrierpcg66']['isactif'], 'empty' => true )
 		),
                 array(
                     'options' => $options

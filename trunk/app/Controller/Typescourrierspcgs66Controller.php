@@ -19,19 +19,24 @@
 
         public $helpers = array( 'Default2' );
 
-		/**
-		 * Components utilisés par ce contrôleur.
-		 *
-		 * @var array
-		 */
-		public $components = array( 'Default' );
+        /**
+         * Components utilisés par ce contrôleur.
+         *
+         * @var array
+         */
+        public $components = array( 'Default' );
 
-		public $commeDroit = array(
-			'view' => 'Typescourrierspcgs66:index',
-			'add' => 'Typescourrierspcgs66:edit'
-		);
+        public $commeDroit = array(
+                'view' => 'Typescourrierspcgs66:index',
+                'add' => 'Typescourrierspcgs66:edit'
+        );
 
 
+        protected function _setOptions() {
+            $options = array();
+            $options = $this->Typecourrierpcg66->enums();
+            $this->set( compact('options'));
+        }
 
         public function index() {
             $this->Typecourrierpcg66->Behaviors->attach( 'Occurences' );
@@ -46,6 +51,7 @@
             $this->paginate = $querydata;
 			$typescourrierspcgs66 = $this->paginate( 'Typecourrierpcg66' );            
             
+            $this->_setOptions();
             $this->set( compact( 'typescourrierspcgs66' ) );
         }
 
@@ -74,6 +80,7 @@
         protected function _add_edit(){
             $args = func_get_args();
 
+            $this->_setOptions();
             $this->Default->{$this->action}( $args );
         }
 

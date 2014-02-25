@@ -51,3 +51,13 @@ msgstr "Oui"
 
 msgid "ENUM::ISAUTREPIECE::0"
 msgstr "Non"
+
+
+msgid "Piecemodeletypecourrierpcg66.isactif"
+msgstr "Actif ?"
+
+msgid "ENUM::ISACTIF::1"
+msgstr "Oui"
+
+msgid "ENUM::ISACTIF::0"
+msgstr "Non"

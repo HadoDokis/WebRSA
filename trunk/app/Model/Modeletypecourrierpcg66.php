@@ -25,7 +25,9 @@
 					'ismontant',
 					'isdates'
 				)
-			)
+			),
+                    'Postgres.PostgresAutovalidate',
+                    'Validation2.Validation2Formattable',
 		);
 
 

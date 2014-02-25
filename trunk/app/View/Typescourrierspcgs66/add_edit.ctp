@@ -13,8 +13,12 @@
 	echo $this->Default2->subform(
 		array(
 			'Typecourrierpcg66.id' => array( 'type' => 'hidden' ),
-			'Typecourrierpcg66.name' => array( 'required' => true )
-		)
+			'Typecourrierpcg66.name' => array( 'required' => true ),
+			'Typecourrierpcg66.isactif' => array( 'required' => true )
+		),
+                array(
+                    'options' => $options
+                )
 	);
 
 	echo $this->Xform->end( 'Save' );

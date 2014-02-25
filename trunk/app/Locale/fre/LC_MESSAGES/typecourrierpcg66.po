@@ -39,3 +39,12 @@ msgstr "Type de courrier"
 
 msgid "Typescourrierspcgs66::delete::confirm"
 msgstr "Confirmer la suppression ?"
+
+msgid "Typecourrierpcg66.isactif"
+msgstr "Actif ?"
+
+msgid "ENUM::ISACTIF::1"
+msgstr "Oui"
+
+msgid "ENUM::ISACTIF::0"
+msgstr "Non"
