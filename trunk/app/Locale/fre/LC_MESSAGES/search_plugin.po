@@ -73,6 +73,12 @@ msgstr "Filtrer par date de demande"
 msgid "Search.Dossier.dtdemrsa"
 msgstr "Date de demande RSA"
 
+msgid "Filtre.Dossier.dtdemrsa_choice"
+msgstr "Filtrer par date de demande"
+
+msgid "Filtre.Dossier.dtdemrsa"
+msgstr "Date de demande RSA"
+
 msgid "Search.Dossier.dtdemrsa_from"
 msgstr "Du (inclus)"
 

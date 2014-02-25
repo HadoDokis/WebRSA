@@ -192,6 +192,28 @@
 	</table>
 <?php endif;?>
 
+<?php if( Configure::read( 'Cg.departement' ) == 58 && isset( $propononorientationprocov58 ) && !empty( $propononorientationprocov58 ) ):?>
+	<h2>Proposition de maintien dans le social en étude par la COV</h2>
+	<table class="aere">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Date de la demande</th>
+				<th>État du dossier de COV</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?php echo h( $propononorientationprocov58['Personne']['nom'] );?></td>
+				<td><?php echo h( $propononorientationprocov58['Personne']['prenom'] );?></td>
+				<td><?php echo $this->Locale->date( __( 'Date::short' ), $propononorientationprocov58['Dossiercov58']['created'] );?></td>
+				<td><?php echo h( Set::enum( $propononorientationprocov58['Passagecov58']['etatdossiercov'], $optionsdossierseps['Passagecommissionep']['etatdossierep'] ) );?></td>
+			</tr>
+		</tbody>
+	</table>
+<?php endif;?>
+
 <?php if( !empty( $orientstructs ) ):?>
 	<h2>Orientations effectives</h2>
 	<table class="tooltips default2">

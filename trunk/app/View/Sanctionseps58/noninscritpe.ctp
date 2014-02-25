@@ -1,6 +1,6 @@
 <h1><?php echo $this->pageTitle = __d( 'sanctionep58', "{$this->name}::{$this->action}" );?></h1>
 
-<?php
+<!--<?php
     echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
         $this->Xhtml->image(
             'icons/application_form_magnify.png',
@@ -17,7 +17,33 @@
         <?php echo $this->Xform->button( 'Rechercher', array( 'type' => 'submit' ) );?>
     </div>
 
-<?php echo $this->Xform->end();?>
+<?php echo $this->Xform->end();?>-->
+
+<?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
+	}
+
+	echo $this->Default3->actions(
+		array(
+			'/Sanctionseps58/selectionnoninscrits/#toggleform' => array(
+				'onclick' => '$(\'Sanctionseps58SelectionnoninscritsForm\').toggle(); return false;'
+			),
+		)
+	);
+
+	echo $this->Xform->create( 'Search', array( 'id' => 'Sanctionseps58SelectionnoninscritsForm' ) );
+
+	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
+	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
+	echo $this->Allocataires->blocAllocataire( array( 'options' => $options ) );
+	echo $this->Allocataires->blocReferentparcours( array( 'options' => $options ) );
+	echo $this->Allocataires->blocPagination( array( 'options' => $options ) );
+	echo $this->Allocataires->blocScript( array( 'options' => $options ) );
+
+	echo $this->Xform->end( 'Search' );
+?>
 
 <?php
 	echo $this->Default2->index(
@@ -56,7 +82,7 @@
 			<li><?php
 				echo $this->Xhtml->exportLink(
 					'Télécharger le tableau',
-					array( 'controller' => 'sanctionseps58', 'action' => 'exportcsv', 'qdNonInscrits' )
+					array( 'controller' => 'sanctionseps58', 'action' => 'exportcsv', 'qdNonInscrits' ) + Hash::flatten( array( 'Search' => (array)Hash::get( $this->request->data, 'Search' ) ), '__' )
 				);
 			?></li>
 		</ul>
@@ -66,4 +92,5 @@
 
 endif;?>
 
-<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>
+<!--<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>-->
+<?php echo $this->Html->scriptBlock( "document.observe( 'dom:loaded', function() { \$('Sanctionseps58SelectionnoninscritsForm').hide(); } );" );?>

@@ -674,6 +674,54 @@
 			);
 		}
 
+		/**
+		 * Retourne un querydata permettant de trouver les propositions d'orientations en cours de
+		 * traitement par une COV pour un allocataire donné.
+		 *
+		 * @todo A factoriser avec les autres thématiques (Propoorientsocialecov58, ...).
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function qdEnCours( $personne_id ) {
+			$sqDernierPassagecov58 = $this->Dossiercov58->Passagecov58->sqDernier();
 
+			return array(
+				'fields' => array(
+					"{$this->alias}.id",
+					"{$this->alias}.dossiercov58_id",
+					"Dossiercov58.created",
+					'Dossiercov58.personne_id',
+					'Dossiercov58.themecov58',
+					'Passagecov58.etatdossiercov',
+					'Personne.id',
+					'Personne.nom',
+					'Personne.prenom'
+				),
+				'conditions' => array(
+					'Dossiercov58.personne_id' => $personne_id,
+					'Themecov58.name' => Inflector::tableize( $this->alias ),
+					array(
+						'OR' => array(
+							'Passagecov58.etatdossiercov NOT' => array( 'traite', 'annule' ),
+							'Passagecov58.etatdossiercov IS NULL'
+						),
+					),
+					array(
+						'OR' => array(
+							"Passagecov58.id IN ( {$sqDernierPassagecov58} )",
+							'Passagecov58.etatdossiercov IS NULL'
+						),
+					),
+				),
+				'joins' => array(
+					$this->join( 'Dossiercov58', array( 'type' => 'INNER' ) ),
+					$this->Dossiercov58->join( 'Themecov58', array( 'type' => 'INNER' ) ),
+					$this->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->join( 'Personne', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false,
+			);
+		}
 	}
 ?>

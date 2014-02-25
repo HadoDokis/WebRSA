@@ -240,6 +240,13 @@
 					$qdPropoorientsocialecov58EnCours
 				);
 
+				// Proposition de maintien en social au CG 58
+				$query = $this->Orientstruct->Personne->Dossiercov58->Propononorientationprocov58->qdEnCours( $personne_id );
+				$propononorientationprocov58 = $this->Orientstruct->Personne->Dossiercov58->Propononorientationprocov58->find(
+					'first',
+					$query
+				);
+
 				if( $rgorient_max <= 1 ) {
 					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id )
 						&& $this->Orientstruct->ajoutPossible( $personne_id );
@@ -252,7 +259,7 @@
 					$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
 				}
 
-				$this->set( compact( 'regressionorientaionep58', 'propoorientsocialecov58' ) );
+				$this->set( compact( 'regressionorientaionep58', 'propoorientsocialecov58', 'propononorientationprocov58' ) );
 				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
