@@ -609,7 +609,7 @@
 
 				$return .= $this->Xform->end();
 
-				$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ) : null );
+				$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ) : null );
 				$return = $css.$return;
 			}
 
@@ -690,7 +690,7 @@
 			$return .= $this->Xhtml->tag( 'div', implode( ' ', $buttons ), array( 'class' => 'submit' ) );
 			$return .= $this->Xform->end();
 
-			$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ) : null );
+			$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ) : null );
 			return $css.$return;
 		}
 
@@ -753,7 +753,7 @@
 				$return .= $this->Xform->end();
 			}
 
-			$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false ) : null );
+			$css = ( Configure::read( 'debug' ) > 0 ? $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) ) : null );
 			return $css.$return;
 		}
 

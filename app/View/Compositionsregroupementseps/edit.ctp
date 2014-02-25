@@ -2,7 +2,7 @@
 	$this->pageTitle = "Gestion de la composition du regroupement d'E.P. : {$this->request->data['Regroupementep']['name']}.";
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 ?>
 

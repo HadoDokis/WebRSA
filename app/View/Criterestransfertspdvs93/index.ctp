@@ -5,7 +5,7 @@
 
 	// Filtre
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
 	echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(

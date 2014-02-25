@@ -2,7 +2,7 @@
 	$this->pageTitle = 'Synthèse du parcours d\'insertion';
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
 	$cerControllerName = ( ( Configure::read( 'Cg.departement' ) == 93 ) ? 'cers93' : 'contratsinsertion' );

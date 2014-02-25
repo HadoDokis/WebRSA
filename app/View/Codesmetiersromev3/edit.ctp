@@ -4,7 +4,7 @@ $title_for_layout = ( ( $this->action == 'add' ) ? 'Ajout d\'un code métier' : 
 $this->set('title_for_layout', $title_for_layout);
 
 if (Configure::read('debug') > 0) {
-    echo $this->Html->css(array('all.form'), 'stylesheet', array('media' => 'all'), false);
+    echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 }
 
 

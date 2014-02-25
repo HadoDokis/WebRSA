@@ -1,10 +1,10 @@
 <?php
 $this->pageTitle = 'Dossiers PCGs à transmettre';
 
-if (Configure::read('debug') > 0) {
-    echo $this->Xhtml->css(array('all.form'), 'stylesheet', array('media' => 'all'), false);
-    echo $this->Html->script(array('prototype.event.simulate.js', 'dependantselect.js'));
-}
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+	}
 ?>
 <h1><?php echo $this->pageTitle; ?></h1>
 
@@ -161,12 +161,12 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 $this->Form->input('Dossierpcg66.' . $index . '.typepdo_id', array('label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossierpcg66']['typepdo_id'])) .
                 $this->Form->input('Dossierpcg66.' . $index . '.etatdossierpcg', array('label' => false, 'type' => 'hidden', 'value' => 'transmisop')) .
                 $this->Form->input('Dossierpcg66.' . $index . '.dossier_id', array('label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Dossier']['id'])),
-                
+
                 $this->Form->input('Decisiondossierpcg66.' . $index . '.id', array('label' => false, 'type' => 'hidden', 'value' => $dossierpcg66atransmettre['Decisiondossierpcg66']['id'])) .
                 $this->Form->input('Decisiondossierpcg66.' . $index . '.etatop', array('label' => false, 'type' => 'hidden', 'value' => 'transmis')) .
                 $this->Form->input('Notificationdecisiondossierpcg66.' . $index . '.Notificationdecisiondossierpcg66', array('label' => false, 'type' => 'select', 'multiple' => 'checkbox', 'options' => $listeOrgstransmisdossierspcgs66, 'empty' => false)),
-                
-                
+
+
                 $this->Form->input('Decisiondossierpcg66.' . $index . '.datetransmissionop', array('label' => false, 'type' => 'date', 'selected' => $dossierpcg66atransmettre['Decisiondossierpcg66']['datetransmissionop'], 'dateFormat' => 'DMY')),
                 $this->Xhtml->viewLink(
                         'Voir le dossier', array('controller' => 'dossierspcgs66', 'action' => 'index', $dossierpcg66atransmettre['Dossierpcg66']['foyer_id']), $this->Permissions->check('dossierspcgs66', 'index')
