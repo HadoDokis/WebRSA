@@ -27,6 +27,24 @@
 		);
 
 		/**
+		 * Permet de savoir si un champ doit être affiché ou non, suivant les
+		 * champs présents dans l'attribut 'skip' des paramètres.
+		 *
+		 * Utilisé dans les méthodes blocDossier(), blocAdresse() et blocAllocataire().
+		 *
+		 * @param string $path
+		 * @param array $params
+		 * @return boolean
+		 */
+		protected function _isSkipped( $path, array $params = array() ) {
+			if( isset( $params['skip'] ) && in_array( $path, (array)$params['skip'] ) ) {
+				return true;
+			}
+
+			return false;
+		}
+
+		/**
 		 * Retourne une groupe de filtres par dossier contenant les champs:
 		 *	- Dossier.numdemrsa
 		 *	- Dossier.matricule
@@ -42,7 +60,9 @@
 				'prefix' => 'Search',
 				'domain' => 'search_plugin',
 				'options' => array(),
-				'fieldset' => true
+				'fieldset' => true,
+				// TODO: documenter, tests
+				'skip' => array(),
 			);
 
 			$params = $params + $default;
@@ -50,17 +70,31 @@
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$content = $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
-			$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => 'Numéro CAF' ) );
-			$content .= $this->SearchForm->dateRange( "{$prefix}Dossier.dtdemrsa" );
-			if( Hash::check( $options, 'Situationdossierrsa.etatdosrsa' ) ) {
+			$content = '';
+
+			if( !$this->_isSkipped( "{$prefix}Dossier.numdemrsa", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Dossier.matricule", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => 'Numéro CAF' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Dossier.dtdemrsa", $params ) ) {
+				$content .= $this->SearchForm->dateRange( "{$prefix}Dossier.dtdemrsa" );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Situationdossierrsa.etatdosrsa", $params ) && Hash::check( $options, 'Situationdossierrsa.etatdosrsa' ) ) {
 				$dependantCheckboxesParams = array(
 					'options' => (array)Hash::get( $options, 'Situationdossierrsa.etatdosrsa' ),
 					'domain' => 'search_plugin',
 				);
 				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", $dependantCheckboxesParams );
 			}
-			$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
+
+			if( !$this->_isSkipped( "{$prefix}Situationdossierrsa.etatdosrsa", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
+			}
 
 			if( !$params['fieldset'] ) {
 				return $content;
@@ -97,11 +131,21 @@
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-            $content = $this->Xform->input( "{$prefix}Adresse.nomvoie", array( 'label' => 'Nom de voie de l\'allocataire ', 'type' => 'text' ) );
-			$content .= $this->Xform->input( "{$prefix}Adresse.locaadr", array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
-			$content .= $this->Xform->input( "{$prefix}Adresse.numcomptt", array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Adresse.numcomptt' ), 'empty' => true ) );
+			$content = '';
 
-			if( Configure::read( 'CG.cantons' ) && Hash::check( $options, 'Canton.canton' ) ) {
+			if( !$this->_isSkipped( "{$prefix}Adresse.nomvoie", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Adresse.nomvoie", array( 'label' => 'Nom de voie de l\'allocataire ', 'type' => 'text' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Adresse.locaadr", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Adresse.locaadr", array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Adresse.numcomptt", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Adresse.numcomptt", array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Adresse.numcomptt' ), 'empty' => true ) );
+			}
+
+			if( Configure::read( 'CG.cantons' ) && Hash::check( $options, 'Canton.canton' ) && !$this->_isSkipped( "{$prefix}Canton.canton", $params ) ) {
 				$content .= $this->Xform->input( "{$prefix}Canton.canton", array( 'label' => 'Canton', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Canton.canton' ), 'empty' => true ) );
 			}
 
@@ -144,18 +188,39 @@
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$content = $this->Xform->input( "{$prefix}Personne.dtnai", array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
-			$content .= $this->Xform->input( "{$prefix}Personne.nom", array( 'label' => 'Nom' ) );
-			$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de jeune fille' ) );
-			$content .= $this->Xform->input( "{$prefix}Personne.prenom", array( 'label' => 'Prénom' ) );
-			$content .= $this->Xform->input( "{$prefix}Personne.nir", array( 'label' => 'NIR', 'maxlength' => 15 ) );
-			if( Hash::check( $options, 'Personne.sexe' ) ) {
+			$content = '';
+
+			if( !$this->_isSkipped( "{$prefix}Personne.dtnai", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.dtnai", array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Personne.nom", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.nom", array( 'label' => 'Nom' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Personne.nomnai", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de jeune fille' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Personne.prenom", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.prenom", array( 'label' => 'Prénom' ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Personne.nir", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Personne.nir", array( 'label' => 'NIR', 'maxlength' => 15 ) );
+			}
+
+			if( !$this->_isSkipped( "{$prefix}Personne.sexe", $params ) && Hash::check( $options, 'Personne.sexe' ) ) {
 				$content .= $this->Xform->input( "{$prefix}Personne.sexe", array( 'label' => 'Sexe', 'options' => (array)Hash::get( $options, 'Personne.sexe' ), 'empty' => true ) );
 			}
-			if( Hash::check( $options, 'Personne.trancheage' ) ) {
+
+			if( !$this->_isSkipped( "{$prefix}Personne.trancheage", $params ) && Hash::check( $options, 'Personne.trancheage' ) ) {
 				$content .= $this->Xform->input( "{$prefix}Personne.trancheage", array( 'label' => 'Tranche d\'âge', 'options' => (array)Hash::get( $options, 'Personne.trancheage' ), 'empty' => true ) );
 			}
-			$content .= $this->Xform->input( "{$prefix}Calculdroitrsa.toppersdrodevorsa", array( 'label' => 'Personne soumise à droits et devoirs ?', 'options' => (array)Hash::get( $options, 'Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
+
+			if( !$this->_isSkipped( "{$prefix}Calculdroitrsa.toppersdrodevorsa", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Calculdroitrsa.toppersdrodevorsa", array( 'label' => 'Personne soumise à droits et devoirs ?', 'options' => (array)Hash::get( $options, 'Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
+			}
 
 			if( !$params['fieldset'] ) {
 				return $content;
