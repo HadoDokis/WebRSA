@@ -44,14 +44,14 @@ function make_treemenus( absoluteBaseUrl, large, urlmenu ) {
 		}
 	} );
 
-	var currentUrl = location.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(http://[^/]+/)' ), '/' ).replace( /#$/, '' );;
-//	var relBaseUrl = absoluteBaseUrl.replace( new RegExp( '^(http://[^/]+/)' ), '/' );
+	var currentUrl = location.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(https{0,1}://[^/]+/)' ), '/' ).replace( /#$/, '' );;
+//	var relBaseUrl = absoluteBaseUrl.replace( new RegExp( '^(https{0,1}://[^/]+/)' ), '/' );
 
 	var menuUl = $$( '.treemenu > ul' )[0];
 
 	$$( '.treemenu a' ).each( function ( elmtA ) {
 		// TODO: plus propre
-		var elmtAUrl = elmtA.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(http://[^/]+/)' ), '/' );
+		var elmtAUrl = elmtA.href.replace( absoluteBaseUrl, '/' ).replace( new RegExp( '^(https{0,1}://[^/]+/)' ), '/' );
 
 		if(
 			elmtAUrl == currentUrl
