@@ -92,7 +92,7 @@
 				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", $dependantCheckboxesParams );
 			}
 
-			if( !$this->_isSkipped( "{$prefix}Situationdossierrsa.etatdosrsa", $params ) ) {
+			if( !$this->_isSkipped( "{$prefix}Dossier.dernier", $params ) ) {
 				$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
 			}
 
