@@ -35,9 +35,23 @@
 
 	echo $this->Xform->create( 'Search', array( 'id' => 'Sanctionseps58SelectionnoninscritsForm' ) );
 
-	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
+	echo $this->Allocataires->blocDossier(
+		array(
+			'options' => $options,
+			'skip' => array(
+				'Search.Situationdossierrsa.etatdosrsa',
+			)
+		)
+	);
 	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
-	echo $this->Allocataires->blocAllocataire( array( 'options' => $options ) );
+	echo $this->Allocataires->blocAllocataire(
+		array(
+			'options' => $options,
+			'skip' => array(
+				'Search.Calculdroitrsa.toppersdrodevorsa',
+			)
+		)
+	);
 	echo $this->Allocataires->blocReferentparcours( array( 'options' => $options ) );
 	echo $this->Allocataires->blocPagination( array( 'options' => $options ) );
 	echo $this->Allocataires->blocScript( array( 'options' => $options ) );
