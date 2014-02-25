@@ -1,6 +1,6 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( 'popup.css', null, array(), false );
+		echo $this->Html->css( array( 'popup' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 ?>
 

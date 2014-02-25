@@ -43,7 +43,7 @@
 
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( 'prototype.livepipe.js' );
 		echo $this->Html->script( 'prototype.tabs.js' );
 	}

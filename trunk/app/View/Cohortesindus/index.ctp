@@ -2,7 +2,7 @@
 	$this->pageTitle = 'Gestion des indus';
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 ?>
 <h1>Recherche par Indus</h1>

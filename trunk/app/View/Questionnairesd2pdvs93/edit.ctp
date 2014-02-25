@@ -2,7 +2,7 @@
 	echo $this->Default3->titleForLayout( $personne );
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
 	$url = array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'], $this->request->params['pass'][0] );

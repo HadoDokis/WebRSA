@@ -2,7 +2,7 @@
 	$this->pageTitle = 'Paramètres financiers pour la gestion de l\'APRE';
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
 
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
