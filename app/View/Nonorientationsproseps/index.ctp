@@ -1,6 +1,6 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Xhtml->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all' ), false );
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 ?>
@@ -23,21 +23,21 @@
 
 <?php echo $this->Form->create( 'Filtre', array( 'id' => 'Filtre', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
-		<?php
-			echo $this->Xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );
-		?>
-
 		<legend><?php  echo __d( 'nonorientationproep', 'Nonorientationsproseps'.Configure::read( 'Cg.departement' ).'::legend' );?></legend>
-		<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+		<?php echo $this->Xform->input( 'Filtre.index', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
+
 		<?php
-			$df_ci_from = Set::check( $this->request->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
-			$df_ci_to = Set::check( $this->request->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$df_ci_from = Set::check( $this->request->data, 'Filtre.df_ci_from' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_from' ) : strtotime( '-1 week' );
+				$df_ci_to = Set::check( $this->request->data, 'Filtre.df_ci_to' ) ? Set::extract( $this->request->data, 'Filtre.df_ci_to' ) : strtotime( 'now' );
+
+				echo $this->Form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );
+				echo $this->Form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );
+			}
 		?>
-		<?php echo $this->Form->input( 'Filtre.df_ci_from', array( 'label' => 'Le (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $df_ci_from ) );?>
-		<?php echo $this->Form->input( 'Filtre.df_ci_to', array( 'label' => 'Et le (exclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120,  'maxYear' => date( 'Y' ) + 5, 'selected' => $df_ci_to ) );?>
-		<?php endif;?>
 
 		<?php echo $this->Form->input( 'Filtre.Dossier.dernier', array( 'label' => false, 'type' => 'hidden', 'value' => 1 ) );?>
+
 		<?php
 			$nbmoispardefaut = array();
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -55,6 +55,30 @@
 
 	<?php
 		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Filtre' );
+
+		if( Configure::read( 'Cg.departement' ) == 58 ) {
+			echo $this->Allocataires->blocDossier(
+				array(
+					'options' => $options,
+					'prefix' => 'Filtre',
+					'skip' => array(
+						'Filtre.Situationdossierrsa.etatdosrsa',
+						'Filtre.Dossier.dernier'
+					)
+				)
+			);
+			echo $this->Allocataires->blocAdresse( array( 'options' => $options, 'prefix' => 'Filtre' ) );
+			echo $this->Allocataires->blocAllocataire(
+				array(
+					'options' => $options,
+					'prefix' => 'Filtre',
+					'skip' => array(
+						'Filtre.Calculdroitrsa.toppersdrodevorsa',
+					)
+				)
+			);
+		}
+
 		echo $this->Search->paginationNombretotal();
 	?>
 

@@ -1,0 +1,23 @@
+# Traductions de sanctionseps58.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Sanctionseps58/selectionnoninscrits"
+msgstr "Formulaire"
+
+msgid "/Sanctionseps58/selectionnoninscrits/:title"
+msgstr "Visibilité du formulaire"
+
+msgid "/Sanctionseps58/selectionradies"
+msgstr "Formulaire"
+
+msgid "/Sanctionseps58/selectionradies/:title"
+msgstr "Visibilité du formulaire"

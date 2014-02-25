@@ -15,18 +15,45 @@
 	 */
 	class Sanctionseps58Controller extends AppController
 	{
-		public $helpers = array( 'Default2', 'Csv', 'Search');
+		/**
+		 * Helpers utilisés dans ce contrôleur.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Allocataires',
+			'Csv',
+			'Default2',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Search'
+		);
 
+		/**
+		 * Coponents utilisés.
+		 *
+		 * @var array
+		 */
 		public $components = array(
+			'Allocataires',
 			'Jetons2',
 			'DossiersMenus',
+			'Search.Filtresdefaut' => array( 'selectionradies', 'selectionnoninscrits' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
-					'selectionradies' => array( 'filter' => 'Pagination' ),
-					'selectionnoninscrits' => array( 'filter' => 'Pagination' )
+					'selectionradies' => array( 'filter' => 'Search' ),
+					'selectionnoninscrits' => array( 'filter' => 'Search' )
 				)
 			)
 		);
+
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Sanctionep58' );
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -49,13 +76,13 @@
 		 */
 		protected function _selectionPassageSanctionep58( $qdName, $origine ) {
 			if( !empty( $this->request->data ) ) {
+				$savedRequestData = $this->request->data;
+
 				if( $qdName == 'qdNonInscrits' ) {
 					$modelName = 'Orientstruct';
-//					$foreignKey = 'orientstruct_id';
 				}
 				else {
 					$modelName = 'Historiqueetatpe';
-//					$foreignKey = 'historiqueetatpe_id';
 				}
 
 				if( isset( $this->request->data[$modelName] ) ) {
@@ -65,30 +92,6 @@
 					foreach( $this->request->data[$modelName] as $key => $item ) {
 						// La personne était-elle sélectionnée précédemment ?
 						$dossierep_id = Hash::get( $this->request->data, "Dossierep.{$key}.id" );
-						/*$alreadyChecked = $this->Sanctionep58->Dossierep->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Dossierep.id NOT IN ( '.$this->Sanctionep58->Dossierep->Passagecommissionep->sq(
-										array(
-											'fields' => array(
-												'passagescommissionseps.dossierep_id'
-											),
-											'alias' => 'passagescommissionseps',
-											'conditions' => array(
-												'passagescommissionseps.etatdossierep' => array( 'associe', 'decisionep', 'decisioncg', 'reporte' )
-											)
-										)
-									).' )',
-									'Dossierep.themeep' => 'sanctionseps58',
-									'Dossierep.personne_id' => $this->request->data['Personne'][$key]['id'],
-									'Sanctionep58.origine' => $origine
-								),
-								'contain' => array(
-									'Sanctionep58'
-								)
-							)
-						);*/
 
 						// Personnes non cochées que l'on sélectionne
 						if( empty( $dossierep_id ) && !empty( $item['chosen'] ) ) {
@@ -137,13 +140,22 @@
 			$queryData = $this->Sanctionep58->{$qdName}();
 			$queryData['limit'] = 10;
 
+			$queryData = $this->Allocataires->completeSearchQuery( $queryData );
+			$queryData = ClassRegistry::init( 'Allocataire' )->searchConditions( $queryData, (array)Hash::get( $this->request->data, 'Search' ) );
+
 			$this->paginate = array( 'Personne' => $queryData );
-			$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+			$progressivePaginate = !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' );
 			$personnes = $this->paginate( $this->Sanctionep58->Dossierep->Personne, array(), array(), $progressivePaginate );
 
 			// FIXME: quels sont les sélectionnés!!!
-			$this->request->data = null;
+			if( isset( $savedRequestData ) ) {
+				$this->request->data = array( 'Search' => (array)Hash::get( $savedRequestData, 'Search' ) );
+			}
+			else {
+				$this->request->data = null;
+			}
 
+			$this->set( 'options', $this->Allocataires->options() );
 			$this->set( 'etatdosrsa', ClassRegistry::init('Option')->etatdosrsa( ClassRegistry::init('Situationdossierrsa')->etatOuvert()) );
 			$this->set( compact( 'personnes' ) );
 			$this->render( $origine );
@@ -260,7 +272,6 @@
 		 * @param string $qdName
 		 */
 		public function exportcsv( $qdName ) {
-
 			$nameTableauCsv = null;
 			if( $qdName == 'qdNonInscrits' ){
 				$nameTableauCsv = 'noninscrits';
@@ -269,15 +280,20 @@
 				$nameTableauCsv = 'radies';
 			}
 
-
 			$queryData = $this->Sanctionep58->{$qdName}();
 
-			$this->paginate = array( 'Personne' => $queryData );
+			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+
+			$queryData = $this->Allocataires->completeSearchQuery( $queryData );
+			$queryData = ClassRegistry::init( 'Allocataire' )->searchConditions( $queryData, $search );
+
 			$personnes = $this->Sanctionep58->Dossierep->Personne->find( 'all', $queryData );
 
-			$this->layout = ''; // FIXME ?
+			$options = $this->Allocataires->options();
 
-			$this->set( compact( 'personnes', 'nameTableauCsv' ) );
+			$this->layout = null;
+
+			$this->set( compact( 'options', 'personnes', 'nameTableauCsv' ) );
 		}
 	}
 ?>

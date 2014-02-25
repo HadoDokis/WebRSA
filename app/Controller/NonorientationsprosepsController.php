@@ -17,11 +17,20 @@
 	class NonorientationsprosepsController extends AppController
 	{
 
-		public $helpers = array( 'Default2', 'Xpaginator', 'Csv' );
+		public $helpers = array(
+			'Allocataires',
+			'Csv',
+			'Default2',
+			'Xpaginator',
+		);
 
 		public $uses = array( 'Nonorientationproep58', 'Nonorientationproep93', 'Nonorientationproep66' );
 
-		public $components = array( 'InsertionsAllocataires', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
+		public $components = array(
+			'Allocataires',
+			'InsertionsAllocataires',
+			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
+		);
 
 		public function beforeFilter() {
 			ini_set('max_execution_time', 0);
@@ -41,15 +50,6 @@
 				$this->set( 'cantons', $this->Canton->selectList() );
 			}
 		}
-
-		/**
-		*
-		*/
-
-//		public function __construct() {
-//			$this->components = Set::merge( $this->components, array( 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) ) );
-//			parent::__construct();
-//		}
 
 		/**
 		*
@@ -87,14 +87,24 @@
 				);
 
 				$paginate['limit'] = 10;
+
 				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
+
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					$filtre = (array)Hash::get( $this->request->data, 'Filtre' );
+					$paginate = $this->Allocataires->completeSearchQuery( $paginate );
+					$paginate = ClassRegistry::init( 'Allocataire' )->searchConditions( $paginate, $filtre );
+				}
+
 				$this->paginate = $paginate;
 				$this->{$this->modelClass}->Orientstruct->forceVirtualFields = true;
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
+
 				$cohorte = $this->paginate( $this->{$this->modelClass}->Orientstruct, array(), array(), $progressivePaginate );
 			}
 			$this->set( 'nbmoisnonreorientation', array( 0 => 'Aujourd\'hui', 6 => '6 mois', 12 => '12 mois', 24 => '24 mois' ) );
 			$this->_setOptions();
+			$this->set( 'options', $this->Allocataires->options() );
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
@@ -106,26 +116,28 @@
 		/**
 		* Export du tableau en CSV
 		*/
-
 		public function exportcsv() {
-
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 			$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
+			$named = Hash::expand( $this->request->params['named'], '__' );
 
-
-			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), Hash::expand( $this->request->params['named'], '__' ) );
-			unset( $queryData['limit'] );
+			$queryData = $this->{$this->modelClass}->searchNonReoriente( $mesCodesInsee, $this->Session->read( 'Auth.User.filtre_zone_geo' ), $named );
 			$queryData['conditions'][] = WebrsaPermissions::conditionsDossier();
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$filtre = (array)Hash::get( $named, 'Filtre' );
+				$queryData = $this->Allocataires->completeSearchQuery( $queryData );
+				$queryData = ClassRegistry::init( 'Allocataire' )->searchConditions( $queryData, $filtre );
+			}
+
+			unset( $queryData['limit'] );
+
 			$orientsstructs = $this->{$this->modelClass}->Orientstruct->find( 'all', $queryData );
-// debug($orientsstructs);
-// die();
-			$this->layout = ''; // FIXME ?
+
+			$this->layout = null;
 			$this->set( compact( 'orientsstructs' ) );
 
 		}
-
 	}
-
 ?>
