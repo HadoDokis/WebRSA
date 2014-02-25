@@ -95,13 +95,13 @@
 
 						$datenotif = Set::classicExtract( $contratinsertion, 'Contratinsertion.datenotification' );
 						if( empty( $datenotif ) ) {
-							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
+							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] );
 						}
 						else if( !empty( $datenotif ) && in_array( $position, array( 'nonvalid', 'encours' ) ) ){
-							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] ).' le '.date_short( $datenotif );
+							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] ).' le '.date_short( $datenotif );
 						}
 						else {
-							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['positioncer'] );
+							$positioncer = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.positioncer' ), $options['Contratinsertion']['positioncer'] );
 						}
 
 						// Blocage du CER si la proposition de décision est émise (Validé ou Non)
@@ -113,7 +113,7 @@
 						echo $this->Xhtml->tableCells(
 							array(
 								h( Set::classicExtract( $forme_ci, Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ) ) ),
-								h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ), $options['num_contrat'] ) ),
+								h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ), $options['Contratinsertion']['num_contrat'] ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.dd_ci' ) ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.df_ci' ) ) ),
 								h( date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci' ) ) ),
