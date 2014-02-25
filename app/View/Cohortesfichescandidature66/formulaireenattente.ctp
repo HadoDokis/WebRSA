@@ -122,4 +122,3 @@
 		<p class="notice">Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
 <?php endif?>
-

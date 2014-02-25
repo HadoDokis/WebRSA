@@ -64,6 +64,7 @@
 			$typepdo_id = Set::extract( $criteresdossierspcgs66, 'Search.Typepdo.libelle' );
 			$orgpayeur = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.orgpayeur' );
 			$gestionnaire = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.user_id' );
+			$poledossierpcg66_id = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.poledossierpcg66_id' );
 
 
 			$conditions = $this->conditionsAdresse( $conditions, $criteresdossierspcgs66['Search'], $filtre_zone_geo, $mesCodesInsee );
@@ -111,6 +112,11 @@
 				$conditions[] = '( Dossierpcg66.etatdossierpcg IN ( \''.implode( '\', \'', $etatdossierpcg ).'\' ) )';
 			}
 
+			// Pôle chargé du dossier PCG
+			if( !empty( $poledossierpcg66_id ) ) {
+				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \'' . implode('\', \'', $poledossierpcg66_id) . '\' )';
+			}
+                        
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
@@ -241,6 +247,7 @@
 					'Adressefoyer.rgadr',
 					'Adresse.numcomptt',
 					'Decisiondossierpcg66.id',
+					'Decisiondossierpcg66.datetransmissionop',
 				),
 				'joins' => $joins,
 				'contain' => false,
