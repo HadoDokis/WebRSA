@@ -140,14 +140,14 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de la personne concernée', 'Personne.nom' );?></th>
+                                        <th><?php echo $this->Xpaginator->sort( 'Date de création de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Dossierpcg66.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Type de traitement', 'Traitementpcg66.typetraitement' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date du traitement', 'Traitementpcg66.created' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de création du traitement', 'Traitementpcg66.created' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Motif de la situation', 'Situationpdo.libelle' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Description du traitement', 'Traitementpcg66.descriptionpdo_id' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de création de la DO', 'Dossierpcg66.datereceptionpdo' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date de réception', 'Traitementpcg66.datereception' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Date d\'échéance', 'Traitementpcg66.dateecheance' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date de réception du traitement', 'Traitementpcg66.datereception' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Date d\'échéance du traitement', 'Traitementpcg66.dateecheance' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Clos ?', 'Traitementpcg66.clos' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Annulé ?', 'Traitementpcg66.annule' );?></th>
 					<th>Nb de fichiers dans la corbeille</th>
@@ -203,13 +203,12 @@
 							array(
 								h( Set::classicExtract( $criteretraitementpcg66, 'Dossier.numdemrsa' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.nom' ).' '.Set::classicExtract( $criteretraitementpcg66, 'Personne.prenom' ) ),
-//								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.user_id' ), $gestionnaire ) ),
+								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
                                 h( Hash::get( $criteretraitementpcg66, 'User.nom_complet' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.typetraitement' ), $options['Traitementpcg66']['typetraitement'] ) ),
                                 h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.created' ) ) ),
 								h( Set::classicExtract( $criteretraitementpcg66, 'Situationpdo.libelle' ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.descriptionpdo_id' ), $descriptionpdo ) ),
-								h( $this->Locale->date( 'Locale->date',  Set::classicExtract( $criteretraitementpcg66, 'Dossierpcg66.datereceptionpdo' ) ) ),
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.datereception' ) ) ),
 								h( date_short( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.dateecheance' ) ) ),
 								h( Set::enum( Set::classicExtract( $criteretraitementpcg66, 'Traitementpcg66.clos' ), $options['Traitementpcg66']['clos'] ) ),
