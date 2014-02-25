@@ -178,6 +178,7 @@
 
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'orientstruct' ) );
 			$this->_setOptions();
+			$this->set( 'urlmenu', '/orientsstructs/index/'.$personne_id );
 		}
 
 		/**
