@@ -1692,8 +1692,16 @@ body.dossierseps.administration a.historiqueseps.view_passage {
     background-image: url("../img/icons/zoom.png");
 }
 
-body.dossierseps.administration span.historiqueseps.view_passage, body.dossierseps.index span.commissionseps.view.disabled {
+body.dossierseps.administration span.historiqueseps.view_passage, body.dossierseps.administration span.commissionseps.view.disabled {
     background-image: url("../img/icons/zoom_disabled.png");
+}
+
+body.dossierseps.administration a.dossierseps.deletepassage {
+    background-image: url("../img/icons/delete.png");
+}
+
+body.dossierseps.administration span.dossierseps.deletepassage.disabled {
+    background-image: url("../img/icons/delete_disabled.png");
 }
 
 td.data.boolean {
