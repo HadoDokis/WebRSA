@@ -169,6 +169,9 @@
 					array( 'rule' => 'string', 'allowEmpty' => true ),
 				),
 				'FULL_BASE_URL' => 'url',
+				'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array( // TODO: inList
+					array( 'rule' => 'isarray' ),
+				),
 				'Jetons2.disabled' => 'boolean',
 				'Optimisations.progressivePaginate' => 'boolean',
 				'Optimisations.useTableDernierdossierallocataire' => array(
@@ -281,6 +284,7 @@
                 'ActioncandidatPersonne.Partenaire.id' => 'isarray',
                 'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer',
                 'Generationdossierpcg.Orgtransmisdossierpcg66.id' => 'isarray',
+				'Nonorganismeagree.Structurereferente.id' => 'isarray',
                 'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray'
 			);
 		}
@@ -340,11 +344,37 @@
 		}
 
 		/**
+		 * Supprime les valeurs corespondant à des clés de configuration.
+		 *
+		 * @param array $configure
+		 * @param array $remove Si remove est vide, les clés correspondent à celles du coeur de Cake
+		 * @return array
+		 */
+		protected function _removeConfigureKeys( array $configure, array $remove = array() ) {
+			if( empty( $remove ) ) {
+				$remove = array( 'Acl', 'App', 'Cache', 'Cake', 'Config', 'Dispatcher', 'Error', 'Exception', 'Security', 'Session' );
+			}
+
+			$removeRegexp = '/^(('.implode( '|', $remove ).')\.|debug$)/';
+
+			foreach( $configure as $key => $value ) {
+
+				if( preg_match( $removeRegexp, $value ) ) {
+					unset( $configure[$key] );
+				}
+			}
+
+			$configure = array_values( $configure );
+
+			return $configure;
+		}
+
+		/**
 		 * Retourne les clés de configuration actuellement utilisées.
 		 *
 		 * @return array
 		 */
-		/*protected function _existingConfigureKeys( $core = false ) {
+		protected function _existingConfigureKeys( $core = false ) {
 			$existing = array();
 			foreach( Hash::flatten( (array)Configure::read() ) as $key => $value ) {
 				$existing[] = preg_replace( '/\.[0-9]+$/', '', $key );
@@ -354,18 +384,26 @@
 
 			// On enlève les clés du coeur de Cake
 			if( $core === false ) {
-				$remove = array( 'Acl', 'App', 'Cache', 'Cake', 'Config', 'Dispatcher', 'Error', 'Exception', 'Security', 'Session' );
-				$removeRegexp = '/^(('.implode( '\.|', $remove ).')\.|debug$)/';
-				foreach( $existing as $key => $value ) {
-					if( preg_match( $removeRegexp, $value ) ) {
-						unset( $existing[$key] );
-					}
-				}
-				$existing = array_values( $existing );
+				$existing = $this->_removeConfigureKeys( $existing );
 			}
 
 			return $existing;
-		}*/
+		}
+
+		protected function _configureKeysDiff() {
+			$existing = $this->_existingConfigureKeys();
+			$expected = array_keys( $this->allConfigureKeys( Configure::read( 'Cg.departement' ) ) );
+
+			$remove = array( 'Cmis', 'Filtresdefaut', 'Optimisations', 'Password' );
+			$existing = $this->_removeConfigureKeys( $existing, $remove );
+			$expected = $this->_removeConfigureKeys( $expected, $remove );
+
+			debug( array_diff( $expected, $existing ) ); // Vérifiées mais non existantes
+			debug( array_diff( $existing, $expected ) ); // Existantes mais non vérifiées
+			// debug( $existing );
+			// debug( $expected );
+			// $this->_configureKeysDiff();
+		}
 
 		/**
 		 * Retourne la liste des chemins devant être configurés, suivant le département.
@@ -632,7 +670,12 @@
 					'Nonoriente66.TypeorientIdPrepro' => 'Typeorient',
 					// TODO: Contratinsertion.Cg66.Rendezvous ?
 					'Corbeillepcg.descriptionpdoId' => 'Descriptionpdo',
-                    'Rendezvous.Ajoutpossible.statutrdv_id' => 'Statutrdv'
+                    'Rendezvous.Ajoutpossible.statutrdv_id' => 'Statutrdv',
+					'Generationdossierpcg.Orgtransmisdossierpcg66.id' => 'Orgtransmisdossierpcg66',
+					'Nonorganismeagree.Structurereferente.id' => 'Structurereferente',
+					'ActioncandidatPersonne.Partenaire.id' => 'Partenaire',
+					'ActioncandidatPersonne.Actioncandidat.typeregionId' => 'Actioncandidat',
+					'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'Actioncandidat',
 				);
 
 			}
@@ -642,6 +685,7 @@
 					'Orientstruct.typeorientprincipale.Socioprofessionnelle' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Social' => 'Typeorient',
 					'Orientstruct.typeorientprincipale.Emploi' => 'Typeorient',
+					'Questionnaired1pdv93.rendezvous.statutrdv_id' => 'Statutrdv',
 					// Tableaux PDV
 					'Tableausuivipdv93.typerdv_id' => 'Typerdv',
 					'Tableausuivipdv93.statutrdv_id' => 'Statutrdv',
@@ -662,6 +706,11 @@
 							'Contratinsertion.RdvAuto.thematiquerdv_id' => 'Thematiquerdv',
 						)
 					);
+				}
+
+				$tmp = (array)Configure::read( 'Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id' );
+				if( !empty( $tmp ) ) {
+					$return['Rendezvous.checkThematiqueAnnuelleParStructurereferente.statutrdv_id'] = 'Statutrdv';
 				}
 
 				$tmp = (array)Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

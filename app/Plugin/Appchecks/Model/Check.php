@@ -509,7 +509,7 @@
 			$timeout=10;
 			Set_Time_Limit(0);  //Time for script to run .. not sure how it works with 0 but you need it
 //			Ignore_User_Abort(True); //this will force the script running at the end
-			$handle = fsockopen( $hostname, $port, $errno, $errstr, $timeout );
+			$handle = @fsockopen( $hostname, $port, $errno, $errstr, $timeout );
 			$result = array(
 				'success' => !empty( $handle )
 			);
