@@ -62,7 +62,7 @@
 			if( empty( $etatsCoches ) ) {
 				$etatsCoches = array_keys( $etatdosrsa );
 			}
-
+			// TODO: voir hiddenField pour éviter que lorsqu'on ne coche que "Non défini", on se retrouve avec "Nlle demande cochée"
 			$input.= $this->Xhtml->tag(
 				'fieldset',
 				$this->Xhtml->tag( 'legend', 'État du dossier RSA' ).

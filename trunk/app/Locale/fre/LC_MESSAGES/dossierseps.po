@@ -73,11 +73,29 @@ msgstr "Thématique du dossier d'EP"
 msgid "/Historiqueseps/view_passage"
 msgstr "Voir le dernier passage"
 
+msgid "/Historiqueseps/view_passage/#Passagecommissionep.id#"
+msgstr "Voir le dernier passage"
+
 msgid "/Commissionseps/view"
+msgstr "Voir la dernière commission"
+
+msgid "/Commissionseps/view/#Commissionep.id#"
 msgstr "Voir la dernière commission"
 
 msgid "/Dossierseps/delete"
 msgstr "Supprimer le dossier"
 
+msgid "/Dossierseps/delete/#Dossierep.id#"
+msgstr "Supprimer le dossier d'EP"
+
 msgid "/Dossierseps/delete/#Dossierep.id# ?"
 msgstr "Réellement supprimer le dossier d'EP ?"
+
+msgid "/Dossierseps/deletepassage"
+msgstr "Supprimer le dernier passage"
+
+msgid "/Dossierseps/deletepassage/#Passagecommissionep.id#"
+msgstr "Supprimer le dernier passage en commission d'EP"
+
+msgid "/Dossierseps/deletepassage/#Passagecommissionep.id# ?"
+msgstr "Réellement supprimer le dernier passage en commission d'EP ?"

@@ -75,6 +75,10 @@
 					'disabled' => '( \'#Dossier.locked#\' || !\''.$this->Permissions->check( 'Dossierseps', 'delete' ).'\' )',
 					'confirm' => true
 				),
+				'/Dossierseps/deletepassage/#Passagecommissionep.id#' => array(
+					'disabled' => '( !\'#Passagecommissionep.id#\' || \'#Dossier.locked#\' || !\''.$this->Permissions->check( 'Dossierseps', 'deletepassage' ).'\' )',
+					'confirm' => true
+				),
 			),
 			array(
 				'options' => $options,
