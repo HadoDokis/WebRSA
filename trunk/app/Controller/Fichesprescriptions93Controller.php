@@ -258,7 +258,9 @@
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
 
-			$this->set( compact( 'options', 'personne_id', 'dossierMenu' ) );
+			$urlmenu = "/fichesprescriptions93/index/{$personne_id}";
+
+			$this->set( compact( 'options', 'personne_id', 'dossierMenu', 'urlmenu' ) );
 			$this->render( 'add_edit' );
 		}
 
