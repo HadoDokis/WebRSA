@@ -58,6 +58,15 @@ msgstr "Statut"
 msgid "Dossier.matricule"
 msgstr "N° CAF"
 
+msgid "Dossier.numdemrsa"
+msgstr "N° de dossier"
+
+msgid "Dossier.dtdemrsa"
+msgstr "Date de demande"
+
+msgid "Prestation.rolepers"
+msgstr "Rôle de l'allocataire"
+
 msgid "Personne.nom_complet"
 msgstr "Allocataire"
 
