@@ -22,7 +22,10 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Csv' );
+		public $helpers = array(
+			'Csv',
+			'Default.DefaultData',
+		);
 
 		/**
 		 * Effectue le rendu CSV.
@@ -52,6 +55,13 @@
 
 			$fields = Hash::normalize( $fields );
 
+			// Recherche des types de données
+			$types = array();
+			foreach( $fields as $path => $attributes ) {
+				$types[$path] = ( isset( $attributes['type'] ) ? $attributes['type'] : $this->DefaultData->type( $path ) );
+			}
+
+			// En-têtes du tableau
 			if( $params['headers'] ) {
 				$row = array();
 
@@ -62,12 +72,15 @@
 				$this->Csv->addRow( $row );
 			}
 
+			// Corps du tableau
 			if( !empty( $datas ) ) {
 				foreach( $datas as $i => $data ) {
 					$row = array();
 
 					foreach( $fields as $path => $attributes ) {
 						$value = Hash::get( $data, $path );
+
+						$value = $this->DefaultData->format( $value, $types[$path] );
 
 						if( $value !== null && Hash::check( $params, "options.{$path}.{$value}" ) ) {
 							$value = Hash::get( $params, "options.{$path}.{$value}" );
