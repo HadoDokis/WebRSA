@@ -357,5 +357,278 @@
 			return $query;
 		}
 
+		/**
+		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
+		 *
+		 * @todo Si on faisait le find sur le modèle Ficheprescription93 (voir
+		 * comment faire les jointures ici), ça irait peut-être plus vite (pour
+		 * les personnes possédant une fiche de prescription uniquement).
+		 *
+		 * @return array
+		 */
+		public function searchQuery() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+
+				$query = $Allocataire->searchQuery();
+
+				$Personne = ClassRegistry::init( 'Personne' );
+
+				// 1. La personne est le demandeur
+				$query['conditions']['Prestation.rolepers'] = 'DEM';
+				$query['fields'][] = 'Personne.nom_complet';
+
+				// 2. Ajout des jointures sur le conjoint
+				$replacements = array(
+					'Personne' => 'Conjoint',
+					'Prestation' => 'Prestationcjt',
+				);
+
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					array_words_replace(
+						$Personne->fields(),
+						$replacements
+					)
+				);
+
+				$sq = $Personne->Prestation->sq(
+					array(
+						'alias' => 'prestationscjt',
+						'fields' => array( 'prestationscjt.personne_id' ),
+						'conditions' => array(
+							'prestationscjt.natprest' => 'RSA',
+							'prestationscjt.rolepers' => 'CJT'
+						)
+					)
+				);
+
+				$query['joins'][] = array_words_replace(
+					$Personne->Foyer->join( 'Personne', array( 'type' => 'LEFT OUTER', 'conditions' => array( "Personne.id IN ( {$sq} )" ) ) ),
+					$replacements
+				);
+
+				$query['fields'][] = str_replace( 'Personne', 'Conjoint', $Personne->sqVirtualField( 'nom_complet' ) );
+				$query['fields'][] = str_replace( 'Personne', 'Conjoint', $Personne->sqVirtualField( 'nom_complet_court' ) );
+
+				// 3. Ajout des jointures sur la dernière orientation
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Orientstruct->fields()
+				);
+				$query['joins'][] = $Personne->join(
+					'Orientstruct',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Orientstruct.id IN ( '.$Personne->Orientstruct->sqDerniere().' )',
+						)
+					)
+				);
+
+				// 4. Ajout des jointures sur le dernier CER
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Contratinsertion->fields()
+				);
+				$query['joins'][] = $Personne->join(
+					'Contratinsertion',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Contratinsertion.id IN ( '.$Personne->Contratinsertion->sqDernierContrat( 'Personne.id', true ).' )',
+						)
+					)
+				);
+
+				// 5. Ajout des jointures sur le référent orientant
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Orientstruct->Propoorientationcov58nv->Referentorientant->fields()
+				);
+				$query['joins'][] = $Personne->Orientstruct->join( 'Propoorientationcov58nv', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $Personne->Orientstruct->Propoorientationcov58nv->join( 'Referentorientant', array( 'type' => 'LEFT OUTER' ) );
+				$query['fields'][] = $Personne->Orientstruct->Propoorientationcov58nv->Referentorientant->sqVirtualField( 'nom_complet' );
+
+				// 6. Dernière information Pôle Emploi
+				$Informationpe = ClassRegistry::init( 'Informationpe' );
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Informationpe->fields()
+				);
+				$query['joins'][] = $Informationpe->joinPersonneInformationpe();
+
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Informationpe->Historiqueetatpe->fields()
+				);
+				$query['joins'][] = $Informationpe->Historiqueetatpe->joinInformationpeHistoriqueetatpe();
+
+				// 7. Ajout des jointures sur le dernier passage en EP et son dossier d'EP
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Dossierep->fields()
+				);
+				$query['joins'][] = $Personne->join(
+					'Dossierep',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Dossierep.id IN ( '.$Personne->Dossierep->sqDernierPassagePersonne( 'Personne.id' ).' )',
+						)
+					)
+				);
+
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Dossierep->Passagecommissionep->fields()
+				);
+				$query['joins'][] = $Personne->Dossierep->join(
+					'Passagecommissionep',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Passagecommissionep.id IN ( '.$Personne->Dossierep->Passagecommissionep->sqDernier().' )',
+						)
+					)
+				);
+
+				$query['fields'] = Hash::merge(
+					$query['fields'],
+					$Personne->Dossierep->Passagecommissionep->Commissionep->fields()
+				);
+				$query['joins'][] = $Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) );
+
+				$query['order'] = 'Personne.nom_complet_court';
+
+				// Enregistrement dans le cache
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		public function searchConditions( array $query, array $search ) {
+			// 1. On complète les conditions de base de l'allocataire
+			$Allocataire = ClassRegistry::init( 'Allocataire' );
+			$query = $Allocataire->searchConditions( $query, $search );
+
+			// 2. Conditions sur le référent orientant
+			$paths = array( 'Referentorientant.structurereferente_id', 'Referentorientant.id' );
+			foreach( $paths as $path ) {
+				$value = suffix( Hash::get( $search, $path ) );
+				if( !empty( $value ) ) {
+					$query['conditions'][$path] = $value;
+				}
+			}
+
+			// 3. Condition sur le site COV
+			// TODO: à mettre dans ConditionnableBehavior::conditionsAdresse()
+			$sitecov58_id = Hash::get( $search, 'Sitecov58.id' );
+			if( !empty( $sitecov58_id ) ) {
+				$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+				$sq = $Sitecov58->Sitecov58Zonegeographique->sq(
+					array(
+						'alias' => 'sitescovs58_zonesgeographiques',
+						'fields' => 'zonesgeographiques.codeinsee',
+						'contain' => false,
+						'joins' => array(
+							array_words_replace(
+								$Sitecov58->Sitecov58Zonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) ),
+								array(
+									'Sitecov58Zonegeographique' => 'sitescovs58_zonesgeographiques',
+									'Zonegeographique' => 'zonesgeographiques'
+								)
+							)
+						),
+						'conditions' => array(
+							'sitescovs58_zonesgeographiques.sitecov58_id' => $sitecov58_id
+						)
+					)
+				);
+
+				$query['conditions'][] = "Adresse.numcomptt IN ( {$sq} )";
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Retourne un querydata suivant les filtres renvoyés par le moteur de
+		 * recherche.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function search58( array $search = array() ) {
+			$query = $this->searchQuery();
+
+			$query = $this->searchConditions( $query, $search );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param boolean $allocataireOptions
+		 * @param boolean $findLists
+		 * @return array
+		 */
+		public function options( $allocataireOptions = true, $findLists = false ) {
+			$options = array();
+
+			if( $allocataireOptions ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+
+				$options = $Allocataire->options();
+			}
+
+			$Personne = ClassRegistry::init( 'Personne' );
+
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			$options = Hash::merge(
+				$options,
+				$Personne->Dossierep->enums(),
+				$Informationpe->Historiqueetatpe->enums()
+			);
+
+			if( $findLists ) {
+				$options = Hash::merge(
+					$options,
+					array(
+						'Sitecov58' => array(
+							'id' => $Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->find( 'list' )
+						)
+					)
+				);
+			}
+
+			return $options;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->searchQuery();
+			return !empty( $query );
+		}
 	}
 ?>

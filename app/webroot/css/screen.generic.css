@@ -1761,6 +1761,6 @@ td div.input label{
 }
 
 /* Recherche par Dossiers EPs (CG 58) */
-ul.actions li.action a.sanctionseps58.selectionnoninscrits, ul.actions li.action a.sanctionseps58.selectionradies {
+ul.actions li.action a.sanctionseps58.selectionnoninscrits, ul.actions li.action a.sanctionseps58.selectionradies, ul.actions li.action a.indicateurssuivis.search {
 	background-image: url( ../img/icons/application_form_magnify.png );
 }

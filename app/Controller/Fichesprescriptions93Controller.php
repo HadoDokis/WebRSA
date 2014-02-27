@@ -8,33 +8,6 @@
 	App::uses( 'AppController', 'Controller' );
 
 	/**
-	 * @todo Nettoyer ces filtres par défaut (pour les tests)
-	 */
-	Configure::write(
-		'Filtresdefaut.Fichesprescriptions93_search',
-		array(
-			'Search' => array(
-				'Calculdroitrsa' => array(
-					'toppersdrodevorsa' => '1'
-				),
-				'Dossier' => array(
-					'dernier' => '1',
-				),
-				'Ficheprescription93' => array(
-					'exists' => '1'
-				),
-				'Pagination' => array(
-					'nombre_total' => true
-				),
-				'Situationdossierrsa' => array(
-					'etatdosrsa_choice' => '1',
-					'etatdosrsa' => array( '2', '3', '4' )
-				)
-			)
-		)
-	);
-
-	/**
 	 * La classe Fichesprescriptions93Controller ...
 	 *
 	 * @todo exportcsv
@@ -285,9 +258,10 @@
 				'Actionfp93.name',
 			);
 
-			$query = $this->Allocataires->completeSearchQuery( $query );
+			$query = $this->Allocataires->completeSearchQuery( $query, false );
 
-			// TODO: le sort
+			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
+
 			$results = $this->Ficheprescription93->Personne->find( 'all', $query );
 
 			$options = $this->Ficheprescription93->options();
