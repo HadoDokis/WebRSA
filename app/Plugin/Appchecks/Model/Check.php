@@ -310,26 +310,42 @@
 					if( stripos( $testValue, ' ' ) !== false ) {
 						$testValue = str_replace( ' ', '%20', $testValue );
 					}
+					if( stripos( $testValue, 'http://localhost/' ) !== false ) {
+						$testValue = str_replace( 'http://localhost/', 'http://127.0.0.1/', $testValue );
+					}
 				}
 
 				if( isset( $ruleParams['rule'] ) ) {
 					$ruleParams = $ruleParams['rule'];
 				}
 
-				if( method_exists( 'Xvalidation', $rule ) ) {
-					$Validator =  Xvalidation::getInstance();
-					$validate = call_user_func_array( array( $Validator, $rule ), array_merge( array( $testValue ), $ruleParams ) );
-				}
-				else {
+				if( method_exists( 'Validation', $rule ) ) {
 					$Validator =  'Validation';
 					$testRuleParams = $ruleParams;
 
-					if( $testRuleParams[0] == $rule ) {
+					if( isset( $testRuleParams[0] ) && $testRuleParams[0] == $rule ) {
 						$testRuleParams[0] = $testValue;
+					}
+					else {
+						array_unshift( $testRuleParams, $testValue );
 					}
 
 					$validate = call_user_func_array( array( $Validator, $rule ), $testRuleParams );
 				}
+				else if( method_exists( 'Xvalidation', $rule ) ) {
+					$Validator =  Xvalidation::getInstance();
+					$validate = call_user_func_array( array( $Validator, $rule ), array_merge( array( $testValue ), $ruleParams ) );
+				}
+//				else {
+//					$Validator =  'Validation';
+//					$testRuleParams = $ruleParams;
+//
+//					if( $testRuleParams[0] == $rule ) {
+//						$testRuleParams[0] = $testValue;
+//					}
+//
+//					$validate = call_user_func_array( array( $Validator, $rule ), $testRuleParams );
+//				}
 
 				if( !( $allowEmpty && empty( $value ) ) && ( is_null( $value ) || !$validate ) ) {
 					$message = "Validate::{$rule}";

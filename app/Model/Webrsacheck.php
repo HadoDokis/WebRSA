@@ -169,8 +169,9 @@
 					array( 'rule' => 'string', 'allowEmpty' => true ),
 				),
 				'FULL_BASE_URL' => 'url',
-				'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array( // TODO: inList
+				'Gestiondoublon.Situationdossierrsa2.etatdosrsa' => array(
 					array( 'rule' => 'isarray' ),
+					// array( 'rule' => 'inList', array( 'Z', 1, 2, 3, 4, 5, 6 ) ), // TODO: inList
 				),
 				'Jetons2.disabled' => 'boolean',
 				'Optimisations.progressivePaginate' => 'boolean',
