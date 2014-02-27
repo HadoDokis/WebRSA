@@ -110,16 +110,19 @@
 								h( Set::enum( $result['Historiqueetatpe']['etat'], $options['Historiqueetatpe']['etat'] ).' '.date_short( $result['Historiqueetatpe']['date'] ) ),
 								h( date_short( $result['Commissionep']['dateseance'] ) ),
 								h( !empty( $result['Dossierep']['themeep'] ) ? Set::classicExtract( $options['Dossierep']['themeep'], $result['Dossierep']['themeep'] ) : null ),
-								$this->Xhtml->link(
-									'Voir',
-									array(
-										'controller' => 'dossiers',
-										'action' => 'view',
-										$result['Dossier']['id']
+								array(
+									$this->Xhtml->link(
+										'Voir',
+										array(
+											'controller' => 'dossiers',
+											'action' => 'view',
+											$result['Dossier']['id']
+										),
+										array(
+											'class' => 'external dossiers view'
+										)
 									),
-									array(
-										'class' => 'external'
-									)
+									array( 'class' => 'action' )
 								)
 							),
 							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
