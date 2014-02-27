@@ -2610,8 +2610,14 @@ msgstr "Indicateur de suivi des référents"
 msgid "Indicateurssuivis:index"
 msgstr "Tableau de visualisation des indicateurs de suivi"
 
+msgid "Indicateurssuivis:search"
+msgstr "Tableau de visualisation des indicateurs de suivi (nouveau)"
+
 msgid "Indicateurssuivis:exportcsv"
 msgstr "Export CSV"
+
+msgid "Indicateurssuivis:exportcsv_search"
+msgstr "Export CSV (nouveau)"
 
 ###############################################################################
 

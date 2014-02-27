@@ -92,6 +92,14 @@
 				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", $dependantCheckboxesParams );
 			}
 
+			if( !$this->_isSkipped( "{$prefix}Detailcalculdroitrsa.natpf", $params ) && Hash::check( $options, 'Detailcalculdroitrsa.natpf' ) ) {
+				$dependantCheckboxesParams = array(
+					'options' => (array)Hash::get( $options, 'Detailcalculdroitrsa.natpf' ),
+					'domain' => 'search_plugin',
+				);
+				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Detailcalculdroitrsa.natpf", $dependantCheckboxesParams );
+			}
+
 			if( !$this->_isSkipped( "{$prefix}Dossier.dernier", $params ) ) {
 				$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
 			}
@@ -113,6 +121,7 @@
 		 *	- Adresse.nomvoie
 		 *	- Adresse.locaadr
 		 *	- Adresse.numcomptt
+		 *	- Sitecov58.name
 		 *	- Canton.canton
 		 *
 		 * @param array $params
@@ -147,6 +156,10 @@
 
 			if( Configure::read( 'CG.cantons' ) && Hash::check( $options, 'Canton.canton' ) && !$this->_isSkipped( "{$prefix}Canton.canton", $params ) ) {
 				$content .= $this->Xform->input( "{$prefix}Canton.canton", array( 'label' => 'Canton', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Canton.canton' ), 'empty' => true ) );
+			}
+
+			if( Configure::read( 'Cg.departement' ) == 58 && Hash::check( $options, 'Sitecov58.id' ) && !$this->_isSkipped( "{$prefix}Sitecov58.id", $params ) ) {
+				$content .= $this->Xform->input( "{$prefix}Sitecov58.id", array( 'label' => 'Site COV', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Sitecov58.id' ), 'empty' => true ) );
 			}
 
 			if( !$params['fieldset'] ) {

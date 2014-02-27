@@ -16,9 +16,51 @@
 	class IndicateurssuivisController extends AppController
 	{
 		public $name = 'Indicateurssuivis';
-		public $helpers = array( 'Xform', 'Xhtml', 'Default2', 'Search', 'Csv' );
-		public $uses = array('Dossier','Option','Structurereferente','Referent', 'Indicateursuivi', 'Dossierep', 'Foyer', 'Personne', 'Informationpe');
-		public $components = array( 'Gestionzonesgeos', 'Search.SearchPrg' => array( 'actions' => array( 'index' ) ) );
+
+		public $helpers = array(
+			'Xform',
+			'Xhtml',
+			'Default2',
+			'Search',
+			'Csv',
+			'Allocataires',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+		);
+
+		public $uses = array(
+			'Allocataire',
+			'Dossier',
+			'Option',
+			'Structurereferente',
+			'Referent',
+			'Indicateursuivi',
+			'Dossierep',
+			'Foyer',
+			'Personne',
+			'Informationpe'
+		);
+
+		public $components = array(
+			'Allocataires',
+			'Gestionzonesgeos',
+			'Search.Filtresdefaut' => array(
+				'index',
+				'search'
+			),
+			'Search.SearchPrg' => array(
+				'actions' => array(
+					'index',
+					'search' => array( 'filter' => 'Search' ),
+				)
+			),
+		);
+
+		public $commeDroit = array(
+			'search' => 'Indicateurssuivis:index',
+			'exportcsv_search' => 'Indicateurssuivis:exportcsv',
+		);
 
 		protected function _setOptions() {
 			$natpfsSocle = Configure::read( 'Detailcalculdroitrsa.natpf.socle' );
@@ -66,6 +108,48 @@
 				$this->set('indicateurs', $indicateurs);
 			}
 
+		}
+
+		/**
+		 * Moteur de recherche par suivi de l'allocataire
+		 */
+		public function search() {
+			if( Hash::check( $this->request->data, 'Search' ) ) {
+				$query = $this->Indicateursuivi->search58( $this->request->data['Search'] );
+
+				$query = $this->Allocataires->completeSearchQuery( $query );
+
+				$this->Personne->forceVirtualFields = true;
+				$results = $this->Allocataires->paginate( $query );
+
+				$this->set( compact( 'results' ) );
+			}
+
+			$options = $this->Allocataires->options();
+			$options = Hash::merge( $options, $this->Indicateursuivi->options( false, true ) );
+			$this->set( compact( 'options' ) );
+		}
+
+		/**
+		 * Export CSV des résultats du moteur de recherche par suivi de l'allocataire
+		 */
+		public function exportcsv_search() {
+			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+
+			$query = $this->Indicateursuivi->search58( $search );
+
+			$query = $this->Allocataires->completeSearchQuery( $query, true );
+			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
+
+			$this->Personne->forceVirtualFields = true;
+			$results = $this->Personne->find( 'all', $query );
+
+			$options = $this->Allocataires->options();
+			$options = Hash::merge( $options, $this->Indicateursuivi->options( false ) );
+			$this->set( compact( 'options' ) );
+
+			$this->set( compact( 'results', 'options' ) );
+			$this->layout = null;
 		}
 
 

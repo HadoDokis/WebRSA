@@ -59,7 +59,7 @@
 	Configure::write( 'Utilisateurs.multilogin', true );
 	Configure::write( 'with_parentid', false ); // true = cg66
 	Configure::write( 'nom_form_ci_cg', 'cg58' );
-	Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
+	Configure::write( 'CG.cantons', true ); // false = cg93, true = cg66
 	Configure::write( 'Zonesegeographiques.CodesInsee', true );
 	//Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
 
@@ -780,4 +780,29 @@
 			)
 		)
 	);
+
+	/**
+	 * Filtres par défaut des indicateurs de suivi
+	 */
+	Configure::write(
+		'Filtresdefaut.Indicateurssuivis_search',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Pagination' => array(
+					'nombre_total' => true
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( 'Z', '2', '3', '4' )
+				)
+			)
+		)
+	);
+
 ?>

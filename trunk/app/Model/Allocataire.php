@@ -160,6 +160,9 @@
 				'Calculdroitrsa' => array(
 					'toppersdrodevorsa' => $Option->toppersdrodevorsa(true),
 				),
+				'Detailcalculdroitrsa' => array(
+					'natpf' => $Option->natpf(),
+				),
 				'Detaildroitrsa' => array(
 					'oridemrsa' => $Option->oridemrsa(),
 					'topfoydrodevorsa' => $Option->topfoydrodevorsa(),

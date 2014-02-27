@@ -1205,4 +1205,31 @@
 			)
 		)
 	);
+
+	/**
+	 * Filtres par défaut de la recherche par fiche de prescription.
+	 */
+	Configure::write(
+		'Filtresdefaut.Fichesprescriptions93_search',
+		array(
+			'Search' => array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => '1'
+				),
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Ficheprescription93' => array(
+					'exists' => '1'
+				),
+				'Pagination' => array(
+					'nombre_total' => true
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
 ?>
