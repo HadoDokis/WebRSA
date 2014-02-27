@@ -2,6 +2,8 @@
 	/**
 	 * Fichier source de la classe CakeTestSession.
 	 *
+	 * @see Search.Test.Case.cate_test_session
+	 *
 	 * PHP 5.3
 	 * @package app.Test.Case
 	 */
