@@ -135,6 +135,7 @@
 
 			$options['Adresse']['numcomptt'] = $this->Gestionzonesgeos->listeCodesInsee();
 			$options['Canton']['canton'] = $this->Gestionzonesgeos->listeCantons();
+			$options['Sitecov58']['id'] = $this->Gestionzonesgeos->listeSitescovs58(); // FIXME: à mettre dans le modèle Allocataire ?
 
 			$options['PersonneReferent']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['PersonneReferent']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
