@@ -175,11 +175,3 @@
 		<p>Vos critères n'ont retourné aucun résultat.</p>
 	<?php endif?>
 <?php endif?>
-
-
-
-
-
-
-
-

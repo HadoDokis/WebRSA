@@ -47,7 +47,7 @@
 					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 				)
 			);
-			
+
 			$secteursactivites = $this->Partenaire->Contactpartenaire->Actioncandidat->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
 				'list',
 				array(
@@ -56,20 +56,20 @@
 				)
 			);
 			$this->set( 'secteursactivites', $secteursactivites );
-			
-			$options[$this->modelClass]['raisonsocialepartenairecui66_id'] = $this->Partenaire->Raisonsocialepartenairecui66->find( 
+
+			$options[$this->modelClass]['raisonsocialepartenairecui66_id'] = $this->Partenaire->Raisonsocialepartenairecui66->find(
 				'list',
 				array(
 					'contain' => false,
 					'order' => array( 'Raisonsocialepartenairecui66.name DESC' )
 				)
 			);
-			
+
 			if( Configure::read( 'CG.cantons' ) ) {
 				$Canton = ClassRegistry::init( 'Canton' );
 				$this->set( 'cantons', $Canton->selectList() );
 			}
-			
+
 			$options = Set::merge(
 				$this->Partenaire->enums(),
 				$options
@@ -77,7 +77,7 @@
 
 			$this->set( compact( 'options' ) );
 		}
-		
+
 		public function index() {
 
 			if( !empty( $this->request->data ) ) {
@@ -119,15 +119,15 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'partenaires', 'action' => 'index' ) );
 			}
-			
-			
+
+
 			if( $this->action == 'edit') {
 				// Vérification du format de la variable
 				if( !$this->Partenaire->exists( $partenaire_id ) ) {
 					throw new NotFoundException();
 				}
 			}
-		
+
 			// Tentative de sauvegarde du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Partenaire->begin();

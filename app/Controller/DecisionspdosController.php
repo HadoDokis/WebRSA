@@ -39,7 +39,7 @@
 			$queryData = $this->Decisionpdo->qdOccurences();
             $this->paginate = $queryData;
 			$decisionspdos = $this->paginate( $this->modelClass );
-            
+
             $this->set( compact( 'decisionspdos' ) );
 		}
 

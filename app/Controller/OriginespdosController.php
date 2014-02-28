@@ -37,7 +37,7 @@
 		*/
 
 		public function index() {
-            
+
             $queryData = $this->Originepdo->qdOccurences();
             $this->paginate = $queryData;
 			$originespdos = $this->paginate( $this->modelClass );
