@@ -49,6 +49,9 @@
                 $this->Default3->DefaultPaginator->options(
                     array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
 		);
+
+		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
+
 		$index = $this->Default3->index(
 			$results,
 			array(
@@ -79,7 +82,8 @@
 				)
 			),
 			array(
-				'options' => $options
+				'options' => $options,
+				'format' => __( SearchProgressivePagination::format( !Hash::get( $this->request->data, 'Search.Pagination.nombre_total' ) ) )
 			)
 		);
 
