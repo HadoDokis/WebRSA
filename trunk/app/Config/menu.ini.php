@@ -4,13 +4,13 @@
  *
  *	$menuVar = array(
  *		'menuClass'' => str|array(str),		classe du menu
- *		'itemTag' => str|array(str),		defaut = 'li', nom de la balise des éléments du menu
- *		'currentItem' => str|array(str),	nom de la classe utilisée pour l'élément courant du menu
- *		'items' => array(					liste des éléments du menu
- *			str => array(					nom affiché de l'élément du menu
+ *		'itemTag' => str|array(str),		defaut = 'li', nom de la balise des Ã©lÃ©ments du menu
+ *		'currentItem' => str|array(str),	nom de la classe utilisÃ©e pour l'Ã©lÃ©ment courant du menu
+ *		'items' => array(					liste des Ã©lÃ©ments du menu
+ *			str => array(					nom affichÃ© de l'Ã©lÃ©ment du menu
  *				'link' => str,				lien cake du style /nomContoleur/index
  *				'title' => str,				infobulle
- *				'subMenu' => array()		sous-menu qui a la même structure que le menu
+ *				'subMenu' => array()		sous-menu qui a la mÃªme structure que le menu
  *			)
  *		)
  *	)
