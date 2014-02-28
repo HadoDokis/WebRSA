@@ -533,34 +533,6 @@
 				}
 			}
 
-			// 3. Condition sur le site COV
-			// TODO: à mettre dans ConditionnableBehavior::conditionsAdresse()
-			$sitecov58_id = Hash::get( $search, 'Sitecov58.id' );
-			if( !empty( $sitecov58_id ) ) {
-				$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
-				$sq = $Sitecov58->Sitecov58Zonegeographique->sq(
-					array(
-						'alias' => 'sitescovs58_zonesgeographiques',
-						'fields' => 'zonesgeographiques.codeinsee',
-						'contain' => false,
-						'joins' => array(
-							array_words_replace(
-								$Sitecov58->Sitecov58Zonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) ),
-								array(
-									'Sitecov58Zonegeographique' => 'sitescovs58_zonesgeographiques',
-									'Zonegeographique' => 'zonesgeographiques'
-								)
-							)
-						),
-						'conditions' => array(
-							'sitescovs58_zonesgeographiques.sitecov58_id' => $sitecov58_id
-						)
-					)
-				);
-
-				$query['conditions'][] = "Adresse.numcomptt IN ( {$sq} )";
-			}
-
 			return $query;
 		}
 
@@ -584,10 +556,9 @@
 		 * aux impressions, ...
 		 *
 		 * @param boolean $allocataireOptions
-		 * @param boolean $findLists
 		 * @return array
 		 */
-		public function options( $allocataireOptions = true, $findLists = false ) {
+		public function options( $allocataireOptions = true ) {
 			$options = array();
 
 			if( $allocataireOptions ) {
@@ -604,17 +575,6 @@
 				$Personne->Dossierep->enums(),
 				$Informationpe->Historiqueetatpe->enums()
 			);
-
-			if( $findLists ) {
-				$options = Hash::merge(
-					$options,
-					array(
-						'Sitecov58' => array(
-							'id' => $Personne->Dossiercov58->Passagecov58->Cov58->Sitecov58->find( 'list' )
-						)
-					)
-				);
-			}
 
 			return $options;
 		}

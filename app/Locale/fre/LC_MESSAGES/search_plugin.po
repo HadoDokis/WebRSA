@@ -65,6 +65,12 @@ msgstr "Filtrer par nature de prestation"
 msgid "Search.Detailcalculdroitrsa.natpf"
 msgstr "Natures de prestation"
 
+msgid "Filtre.Detailcalculdroitrsa.natpf_choice"
+msgstr "Filtrer par nature de prestation"
+
+msgid "Filtre.Detailcalculdroitrsa.natpf"
+msgstr "Natures de prestation"
+
 # ------------------------------------------------------------------------------
 
 msgid "Search.Dossier.dtdemrsa_choice"

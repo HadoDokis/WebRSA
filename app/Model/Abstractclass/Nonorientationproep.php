@@ -301,6 +301,7 @@
 					$this->Orientstruct->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					$this->Orientstruct->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 					$this->Orientstruct->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					$this->Orientstruct->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Orientstruct->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 					$this->Orientstruct->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ),
 					$this->Orientstruct->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),

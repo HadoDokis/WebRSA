@@ -55,6 +55,37 @@
 				}
 			}
 
+			// Critère sur le site COV (CG 58)
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$sitecov58_id = Hash::get( $search, 'Sitecov58.id' );
+
+				if( !empty( $sitecov58_id ) ) {
+					$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+
+					$sq = $Sitecov58->Sitecov58Zonegeographique->sq(
+						array(
+							'alias' => 'sitescovs58_zonesgeographiques',
+							'fields' => 'zonesgeographiques.codeinsee',
+							'contain' => false,
+							'joins' => array(
+								array_words_replace(
+									$Sitecov58->Sitecov58Zonegeographique->join( 'Zonegeographique', array( 'type' => 'INNER' ) ),
+									array(
+										'Sitecov58Zonegeographique' => 'sitescovs58_zonesgeographiques',
+										'Zonegeographique' => 'zonesgeographiques'
+									)
+								)
+							),
+							'conditions' => array(
+								'sitescovs58_zonesgeographiques.sitecov58_id' => $sitecov58_id
+							)
+						)
+					);
+
+					$conditions[] = "Adresse.numcomptt IN ( {$sq} )";
+				}
+			}
+
 			/// Filtre zone géographique de l'utilisateur
 			if( $filtre_zone_geo ) {
 				// Si on utilise la table des cantons plutôt que la table zonesgeographiques

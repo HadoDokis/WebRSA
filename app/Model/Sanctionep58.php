@@ -204,6 +204,7 @@
 						'foreignKey' => false,
 						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
 					),//Ajout Arnaud
+					$Situationdossierrsa->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 					array(
 						'table'      => 'suivisinstruction',
 						'alias'      => 'Suiviinstruction',

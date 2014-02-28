@@ -90,8 +90,8 @@
 					$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 					$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
 
-					$cantonModel = ClassRegistry::init( 'Canton' );
-					$cantons = $cantonModel->selectList(
+					$Canton = ClassRegistry::init( 'Canton' );
+					$cantons = $Canton->selectList(
 						$this->Session->read( 'Auth.User.filtre_zone_geo' ),
 						array_keys( $mesCodesInsee )
 					);
@@ -104,6 +104,37 @@
 			}
 
 			return $cantons;
+		}
+
+		/**
+		 * Retourn la liste des sites COV si la variable Cg.departement vaut 58
+		 * dans le webrsa.inc. Cette liste est stockée dans la session de
+		 * l'utilisateur.
+		 *
+		 * Si les sites COV ne sont pas utilisés, un array vide sera retourné.
+		 *
+		 * @fixme Dans Allocataire::options() ?
+		 *
+		 * @return array
+		 */
+		public function listeSitescovs58() {
+			$sitescovs58 = array();
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$sessionKey = 'Cache.sitescovs58';
+
+				if ( !$this->Session->check( $sessionKey ) ) {
+					$Sitecov58 = ClassRegistry::init( 'Sitecov58' );
+					$sitescovs58 = $Sitecov58->find( 'list' );
+
+					$this->Session->write( $sessionKey, $sitescovs58 );
+				}
+				else {
+					$sitescovs58 = $this->Session->read( $sessionKey );
+				}
+			}
+
+			return $sitescovs58;
 		}
 
 		/**
