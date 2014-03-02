@@ -5,8 +5,7 @@
 			'Dossier.matricule', //'Numero CAF/MSA',
 			'Personne.nom_complet', //'Nom / Prénom du demandeur',
 			'Personne.dtnai', //'Date de naissance du demandeur',
-			//'Adresse',
-			'Adresse.numvoie',
+			'Adresse.numvoie', //'Adresse'
 			'Adresse.typevoie',
 			'Adresse.nomvoie',
 			'Adresse.complideadr',
@@ -15,7 +14,7 @@
 			'Adresse.locaadr',
 			'Conjoint.nom_complet', //'Nom / Prénom du conjoint',
 			'Dossier.dtdemrsa', //'Date ouverture de droits',
-			// TODO //'Ref. charge de l\'evaluation',
+			'Referentorientant.nom_complet',// TODO //'Ref. charge de l\'evaluation',
 			'Orientstruct.date_valid', //'Date orientation (COV)',
 			'Orientstruct.rgorient', //'Rang orientation (COV)',
 			'Referentparcours.nom_complet', //'Referent unique',
