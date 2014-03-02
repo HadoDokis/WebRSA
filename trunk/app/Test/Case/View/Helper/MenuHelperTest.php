@@ -15,6 +15,8 @@
 	App::uses( 'PermissionsHelper', 'View/Helper' );
 	App::uses( 'SessionHelper', 'View/Helper' );
 
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
+
 	/**
 	 * Classe MenuHelperTest.
 	 *
@@ -30,6 +32,25 @@
 		public $fixtures = array(
 		);
 
+
+		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
+		}
+
 		/**
 		 * Préparation du test.
 		 *
@@ -40,7 +61,9 @@
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->Menu = new MenuHelper( $this->View );
-			CakeSession::delete( 'Auth.Permissions' );
+
+			CakeTestSession::start();
+			CakeTestSession::delete( 'Auth.Permissions' );
 			WebrsaPermissions::$sessionPermissionsKey = 'Auth.Permissions';
 		}
 
@@ -64,11 +87,7 @@
 		 * @return void
 		 */
 		public function testMake() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
-			CakeSession::write(
+			CakeTestSession::write(
 				'Auth.Permissions',
 				array(
 					'Apples:index' => true,
@@ -103,11 +122,7 @@
 		 * @return void
 		 */
 		public function testMake2() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
-			CakeSession::write(
+			CakeTestSession::write(
 				'Auth.Permissions',
 				array(
 					'Apples:index' => true,

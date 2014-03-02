@@ -14,6 +14,8 @@
 	App::uses( 'PermissionsHelper', 'View/Helper' );
 	App::uses( 'SessionHelper', 'View/Helper' );
 
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
+
 	/**
 	 * Classe PermissionsHelperTest.
 	 *
@@ -30,6 +32,24 @@
 		);
 
 		/**
+		 * test case startup
+		 *
+		 * @return void
+		 */
+		public static function setupBeforeClass() {
+			CakeTestSession::setupBeforeClass();
+		}
+
+		/**
+		 * cleanup after test case.
+		 *
+		 * @return void
+		 */
+		public static function teardownAfterClass() {
+			CakeTestSession::teardownAfterClass();
+		}
+
+		/**
 		 * Préparation du test.
 		 *
 		 * @return void
@@ -40,11 +60,7 @@
 			$this->View = new View( $controller );
 			$this->Permissions = new PermissionsHelper( $this->View );
 
-			CakeSession::start();
-
-			if (!CakeSession::started()) {
-				CakeSession::start();
-			}
+			CakeTestSession::start();
 
 			$_SESSION = array(
 				'Auth' => array(
@@ -81,10 +97,6 @@
 		 * @return void
 		 */
 		public function testCheck() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			$result = $this->Permissions->check( 'users', 'index' );
 			$expected = true;
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
@@ -113,10 +125,6 @@
 		 * @return void
 		 */
 		public function testCheckWithCustomSessionKey() {
-			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
-				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
-			}
-
 			WebrsaPermissions::$sessionPermissionsKey = 'Otherkey.Perms';
 
 			$result = $this->Permissions->check( 'groups', 'index' );

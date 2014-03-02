@@ -13,7 +13,7 @@
 	App::uses( 'CakeResponse', 'Network' );
 	App::uses( 'Router', 'Routing' );
 
-	require_once dirname( __FILE__ ). DS.'..'. DS.'..'.DS.'cake_test_session.php';
+	App::uses( 'CakeTestSession', 'CakeTest.Model/Datasource' );
 
 	/**
 	 * SearchSavedRequestsTestController class

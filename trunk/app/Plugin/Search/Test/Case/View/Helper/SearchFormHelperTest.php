@@ -13,7 +13,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'SearchFormHelper', 'Search.View/Helper' );
 
-	require_once dirname( __FILE__ ). DS.'..'. DS.'..'.DS.'cake_test_select_options.php';
+	App::uses( 'CakeTestSelectOptions', 'CakeTest.View/Helper' );
 
 	/**
 	 * La classe SearchFormHelperTest ...

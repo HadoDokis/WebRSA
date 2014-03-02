@@ -62,7 +62,7 @@
 		 * @param boolean $goUp
 		 * @return string
 		 */
-		protected function _constuctObserve( $observeId, $updateId, $goUp = true ) {
+		protected function _constuctObserve( $observeId, $updateId, $goUp = true ) { // TODO: paramètre pour cacher le fieldset
 			$goUp = $goUp ? ".up( 'fieldset' )" : '';
 			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$goUp}, false ); } );";
 

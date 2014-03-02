@@ -12,7 +12,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'AllocatairesHelper', 'View/Helper' );
 
-	require_once dirname( __FILE__ ). DS.'..'. DS.'..'.DS.'cake_test_select_options.php';
+	App::uses( 'CakeTestSelectOptions', 'CakeTest.View/Helper' );
 
 	/**
 	 * Classe AllocatairesHelperTest.
@@ -65,25 +65,7 @@
 		 * Test de la méthode AllocatairesHelper::blocDossier()
 		 */
 		public function testBlocDossier() {
-			$timestampFrom = strtotime( '-1 week' );
-			$timestampTo = strtotime( 'now' );
-
-			$thisYearFrom = date( 'Y', $timestampFrom );
-			$thisYearTo = date( 'Y', $timestampTo );
-			$yearsFrom = CakeTestSelectOptions::years( $thisYearFrom, $thisYearFrom - 120, $thisYearFrom );
-			$yearsTo = CakeTestSelectOptions::years( $thisYearTo + 5, $thisYearTo - 120, $thisYearTo );
-
-			$thisMonthFrom = date( 'm', $timestampFrom );
-			$thisMonthTo = date( 'm', $timestampTo );
-			$monthsFrom = CakeTestSelectOptions::months( $thisMonthFrom );
-			$monthsTo = CakeTestSelectOptions::months( $thisMonthTo );
-
-			$thisDayFrom = date( 'd', $timestampFrom );
-			$thisDayTo = date( 'd', $timestampTo );
-			$daysFrom = CakeTestSelectOptions::days( $thisDayFrom );
-			$daysTo = CakeTestSelectOptions::days( $thisDayTo );
-
-			// -----------------------------------------------------------------
+			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array() );
 			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">Numéro CAF</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><script type="text/javascript">
@@ -91,17 +73,17 @@
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', $( \'SearchDossierDtdemrsa_from_to\' ), false ); } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
-'.$daysFrom.'
+'.$options['From']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][month]" id="SearchDossierDtdemrsaFromMonth">
-'.$monthsFrom.'
+'.$options['From']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][year]" id="SearchDossierDtdemrsaFromYear">
-'.$yearsFrom.'
+'.$options['From']['years'].'
 </select></div><div class="input date"><label for="SearchDossierDtdemrsaToDay">Au (inclus)</label><select name="data[Search][Dossier][dtdemrsa_to][day]" id="SearchDossierDtdemrsaToDay">
-'.$daysTo.'
+'.$options['To']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][month]" id="SearchDossierDtdemrsaToMonth">
-'.$monthsTo.'
+'.$options['To']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][year]" id="SearchDossierDtdemrsaToYear">
-'.$yearsTo.'
+'.$options['To']['years'].'
 </select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
@@ -110,25 +92,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode AllocatairesHelper::blocDossier() sans fieldset.
 		 */
 		public function testBlocDossierNoFieldset() {
-			$timestampFrom = strtotime( '-1 week' );
-			$timestampTo = strtotime( 'now' );
-
-			$thisYearFrom = date( 'Y', $timestampFrom );
-			$thisYearTo = date( 'Y', $timestampTo );
-			$yearsFrom = CakeTestSelectOptions::years( $thisYearFrom, $thisYearFrom - 120, $thisYearFrom );
-			$yearsTo = CakeTestSelectOptions::years( $thisYearTo + 5, $thisYearTo - 120, $thisYearTo );
-
-			$thisMonthFrom = date( 'm', $timestampFrom );
-			$thisMonthTo = date( 'm', $timestampTo );
-			$monthsFrom = CakeTestSelectOptions::months( $thisMonthFrom );
-			$monthsTo = CakeTestSelectOptions::months( $thisMonthTo );
-
-			$thisDayFrom = date( 'd', $timestampFrom );
-			$thisDayTo = date( 'd', $timestampTo );
-			$daysFrom = CakeTestSelectOptions::days( $thisDayFrom );
-			$daysTo = CakeTestSelectOptions::days( $thisDayTo );
-
-			// -----------------------------------------------------------------
+			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$result = $this->Allocataires->blocDossier( array( 'fieldset' => false ) );
 			$expected = '<div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">Numéro CAF</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><script type="text/javascript">
@@ -136,17 +100,17 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', $( \'SearchDossierDtdemrsa_from_to\' ), false ); } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
-'.$daysFrom.'
+'.$options['From']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][month]" id="SearchDossierDtdemrsaFromMonth">
-'.$monthsFrom.'
+'.$options['From']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][year]" id="SearchDossierDtdemrsaFromYear">
-'.$yearsFrom.'
+'.$options['From']['years'].'
 </select></div><div class="input date"><label for="SearchDossierDtdemrsaToDay">Au (inclus)</label><select name="data[Search][Dossier][dtdemrsa_to][day]" id="SearchDossierDtdemrsaToDay">
-'.$daysTo.'
+'.$options['To']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][month]" id="SearchDossierDtdemrsaToMonth">
-'.$monthsTo.'
+'.$options['To']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][year]" id="SearchDossierDtdemrsaToYear">
-'.$yearsTo.'
+'.$options['To']['years'].'
 </select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
@@ -156,25 +120,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * pour l'etatdosrsa et la natpf.
 		 */
 		public function testBlocDossierOptions() {
-			$timestampFrom = strtotime( '-1 week' );
-			$timestampTo = strtotime( 'now' );
-
-			$thisYearFrom = date( 'Y', $timestampFrom );
-			$thisYearTo = date( 'Y', $timestampTo );
-			$yearsFrom = CakeTestSelectOptions::years( $thisYearFrom, $thisYearFrom - 120, $thisYearFrom );
-			$yearsTo = CakeTestSelectOptions::years( $thisYearTo + 5, $thisYearTo - 120, $thisYearTo );
-
-			$thisMonthFrom = date( 'm', $timestampFrom );
-			$thisMonthTo = date( 'm', $timestampTo );
-			$monthsFrom = CakeTestSelectOptions::months( $thisMonthFrom );
-			$monthsTo = CakeTestSelectOptions::months( $thisMonthTo );
-
-			$thisDayFrom = date( 'd', $timestampFrom );
-			$thisDayTo = date( 'd', $timestampTo );
-			$daysFrom = CakeTestSelectOptions::days( $thisDayFrom );
-			$daysTo = CakeTestSelectOptions::days( $thisDayTo );
-
-			// -----------------------------------------------------------------
+			$options = CakeTestSelectOptions::ymdRange( '-1 week', 'now' );
 
 			$params = array(
 				'options' => array(
@@ -199,17 +145,17 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchDossierDtdemrsa\', $( \'SearchDossierDtdemrsa_from_to\' ), false ); } );
 //]]>
 </script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dtdemrsa]" id="SearchDossierDtdemrsa_" value="0"/><input type="checkbox" name="data[Search][Dossier][dtdemrsa]"  value="1" id="SearchDossierDtdemrsa"/><label for="SearchDossierDtdemrsa">Filtrer par date de demande RSA</label></div><fieldset id="SearchDossierDtdemrsa_from_to"><legend>Date de demande RSA</legend><div class="input date"><label for="SearchDossierDtdemrsaFromDay">Du (inclus)</label><select name="data[Search][Dossier][dtdemrsa_from][day]" id="SearchDossierDtdemrsaFromDay">
-'.$daysFrom.'
+'.$options['From']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][month]" id="SearchDossierDtdemrsaFromMonth">
-'.$monthsFrom.'
+'.$options['From']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_from][year]" id="SearchDossierDtdemrsaFromYear">
-'.$yearsFrom.'
+'.$options['From']['years'].'
 </select></div><div class="input date"><label for="SearchDossierDtdemrsaToDay">Au (inclus)</label><select name="data[Search][Dossier][dtdemrsa_to][day]" id="SearchDossierDtdemrsaToDay">
-'.$daysTo.'
+'.$options['To']['days'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][month]" id="SearchDossierDtdemrsaToMonth">
-'.$monthsTo.'
+'.$options['To']['months'].'
 </select>-<select name="data[Search][Dossier][dtdemrsa_to][year]" id="SearchDossierDtdemrsaToYear">
-'.$yearsTo.'
+'.$options['To']['years'].'
 </select></div></fieldset><div class="input checkbox"><input type="hidden" name="data[Search][Situationdossierrsa][etatdosrsa_choice]" id="SearchSituationdossierrsaEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Search][Situationdossierrsa][etatdosrsa_choice]"  value="1" id="SearchSituationdossierrsaEtatdosrsaChoice"/><label for="SearchSituationdossierrsaEtatdosrsaChoice">Filtrer par état du dossier</label></div><fieldset id="SearchSituationdossierrsaEtatdosrsaFieldset"><legend>États du dossier</legend><div class="input select required"><input type="hidden" name="data[Search][Situationdossierrsa][etatdosrsa]" value="" id="SearchSituationdossierrsaEtatdosrsa"/>
 
 <div class="checkbox"><input type="checkbox" name="data[Search][Situationdossierrsa][etatdosrsa][]" value="Z" id="SearchSituationdossierrsaEtatdosrsaZ" /><label for="SearchSituationdossierrsaEtatdosrsaZ">Non défini</label></div>
