@@ -60,11 +60,12 @@
 		 * @param string $observeId
 		 * @param string $updateId
 		 * @param boolean $goUp
+		 * @param boolean $hide
 		 * @return string
 		 */
-		protected function _constuctObserve( $observeId, $updateId, $goUp = true ) { // TODO: paramètre pour cacher le fieldset
+		protected function _constuctObserve( $observeId, $updateId, $goUp = true, $hide = false ) { // TODO: paramètre pour cacher le fieldset
 			$goUp = $goUp ? ".up( 'fieldset' )" : '';
-			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$goUp}, false ); } );";
+			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$goUp}, false, ".( $hide ? 'true' : 'false' )." ); } );";
 
 			return $this->Html->scriptBlock( $out );
 		}
@@ -112,7 +113,8 @@
 		public function dependantCheckboxes( $path, array $params = array() ) {
 			$default = array(
 				'domain' => 'search_plugin',
-				'options' => array()
+				'options' => array(),
+				'hide' => false,
 			);
 			$params = $params + $default;
 
@@ -145,7 +147,7 @@
 				array( 'id' => $fieldsetId )
 			);
 
-			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false );
+			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false, $params['hide'] );
 
 			return $input.$script;
 		}
@@ -164,12 +166,13 @@
 				'domain' => 'search_plugin',
 				'options' => array(),
 				'legend' => null,
+				'hide' => false
 			);
 			$params = $params + $default;
 
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
-			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false );
+			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false, $params['hide'] );
 
 			$legend = Hash::get( $params, 'legend' );
 			if( $legend === null ) {
