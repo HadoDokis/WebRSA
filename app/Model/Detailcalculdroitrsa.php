@@ -36,24 +36,36 @@
 		);
 
 		/**
-		 * Champs virtuels.
+		 * Les catégories de natures de prestations.
+		 *
+		 * Servira à remplir les $virtualFields dans le constructeur.
+		 *
+		 * @todo RSA jeune
 		 *
 		 * @var array
 		 */
-		public $virtualFields = array(
-			'natpf_socle' => array(
-				'type'      => 'boolean',
-				'postgres'  => '"%s"."natpf" IN ( \'RSD\', \'RSI\', \'RSU\', \'RSB\', \'RSJ\' )'
-			),
-			'natpf_activite' => array(
-				'type'      => 'boolean',
-				'postgres'  => '"%s"."natpf" IN ( \'RCD\', \'RCI\', \'RCU\', \'RCB\', \'RCJ\' )'
-			),
-			'natpf_majore' => array(
-				'type'      => 'boolean',
-				'postgres'  => '"%s"."natpf" IN ( \'RSI\', \'RCI\' )'
-			),
+		public $categoriesNatspfs = array(
+			'activite' => array( 'RCD', 'RCI', 'RCU', 'RCB', 'RCJ' ),
+			//'jeune' => array( 'RCJ', 'RSJ' ),
+			'majore' => array( 'RSI', 'RCI' ),
+			'socle' => array( 'RSD', 'RSI', 'RSU', 'RSB', 'RSJ' ),
 		);
+
+		/**
+		 * Surcharge du constructeur permettant de remplir les champs virtuels
+		 * natpf_{$categorie} qui sont des catégories de natures de prestations.
+		 *
+		 * @param integer|string|array $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			foreach( $this->categoriesNatspfs as $categorie => $natpfs ) {
+				$this->virtualFields["natpf_{$categorie}"] = "\"{$this->alias}\".\"natpf\" IN ( '".implode( "', '", $natpfs )."' )";
+			}
+		}
 
 		/**
 		 * Retourne le dernier détail du droit rsa d'un dossier RSA
@@ -87,9 +99,9 @@
 		public function vfsSummary( $alias = null, $conditions = array( 'Detailcalculdroitrsa.detaildroitrsa_id = Detaildroitrsa.id' ) ) {
 			$alias = ( is_null( $alias ) ? $this->alias : $alias );
 
-			$vfNatpf = array();
-			foreach( array( 'socle', 'activite', 'majore' ) as $natpf ) {
-				$vfNatpf[$natpf] = $this->sq(
+			$return = array();
+			foreach( $this->categoriesNatspfs as $categorie => $natspfs ) {
+				$return[$categorie] = $this->sq(
 					array(
 						'fields' => array(
 							"{$this->alias}.{$this->primaryKey}"
@@ -97,18 +109,15 @@
 						'conditions' => array_merge(
 							$conditions,
 							array(
-								$this->sqVirtualfield(
-									"natpf_{$natpf}",
-									false
-								)
+								"{$this->alias}.natpf" => $natspfs
 							)
 						)
 					)
 				);
-				$vfNatpf[$natpf] = "( EXISTS( {$vfNatpf[$natpf]} ) ) AS \"{$alias}__natpf_{$natpf}\"";
+				$return[$categorie] = "( EXISTS( {$return[$categorie]} ) ) AS \"{$alias}__natpf_{$categorie}\"";
 			}
 
-			return $vfNatpf;
+			return $return;
 		}
 	}
 ?>

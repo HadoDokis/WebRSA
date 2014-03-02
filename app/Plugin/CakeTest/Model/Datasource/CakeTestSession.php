@@ -2,10 +2,9 @@
 	/**
 	 * Fichier source de la classe CakeTestSession.
 	 *
-	 * @see Search.Test.Case.cate_test_session
-	 *
 	 * PHP 5.3
-	 * @package app.Test.Case
+	 * @package CakeTest
+	 * @subpackage Model/Datasource
 	 */
 	App::uses( 'CakeSession', 'Model/Datasource' );
 
@@ -13,8 +12,8 @@
 	 * La classe CakeTestSession permet de manipuler une session CakePHP pour les
 	 * tests en console.
 	 *
-	 * @package Search
-	 * @package app.Test.Case
+	 * @package CakeTest
+	 * @subpackage Model/Datasource
 	 */
 	class CakeTestSession extends CakeSession
 	{
