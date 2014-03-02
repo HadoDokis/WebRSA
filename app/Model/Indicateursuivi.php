@@ -548,6 +548,34 @@
 
 			$query = $this->searchConditions( $query, $search );
 
+			$Personne = ClassRegistry::init( 'Personne' );
+			$query['fields'] = array(
+				'Dossier.id',
+				'Dossier.matricule',
+				'Personne.nom_complet',
+				'Personne.dtnai',
+				'Adresse.numvoie',
+				'Adresse.typevoie',
+				'Adresse.nomvoie',
+				'Adresse.complideadr',
+				'Adresse.compladr',
+				'Adresse.codepos',
+				'Adresse.locaadr',
+				str_replace( 'Personne', 'Conjoint', $Personne->sqVirtualField( 'nom_complet' ) ),
+				'Dossier.dtdemrsa', //'Date ouverture de droits',
+				$Personne->Dossiercov58->Propoorientationcov58->Referentorientant->sqVirtualField( 'nom_complet' ),
+				'Orientstruct.date_valid', //'Date orientation (COV)',
+				'Orientstruct.rgorient', //'Rang orientation (COV)',
+				str_replace( 'Referent', 'Referentparcours', $Personne->PersonneReferent->Referent->sqVirtualField( 'nom_complet' ) ),
+				'Contratinsertion.dd_ci', //'Date debut (CER)',
+				'Contratinsertion.df_ci', //'Date fin (CER)',
+				'Contratinsertion.rg_ci', //'Rang (CER)',
+				'Historiqueetatpe.etat', //'Dernier état Pole Emploi',
+				'Historiqueetatpe.date', //'Date inscription Pole Emploi',
+				'Commissionep.dateseance', //'Date (EP)',
+				'Dossierep.themeep', //'Motif (EP)'
+			);
+
 			return $query;
 		}
 
