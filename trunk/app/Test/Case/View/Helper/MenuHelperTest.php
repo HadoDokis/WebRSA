@@ -35,8 +35,6 @@
 
 		/**
 		 * test case startup
-		 *
-		 * @return void
 		 */
 		public static function setupBeforeClass() {
 			CakeTestSession::setupBeforeClass();
@@ -44,8 +42,6 @@
 
 		/**
 		 * cleanup after test case.
-		 *
-		 * @return void
 		 */
 		public static function teardownAfterClass() {
 			CakeTestSession::teardownAfterClass();
@@ -53,8 +49,6 @@
 
 		/**
 		 * Préparation du test.
-		 *
-		 * @return void
 		 */
 		public function setUp() {
 			parent::setUp();
@@ -69,8 +63,6 @@
 
 		/**
 		 * Nettoyage postérieur au test.
-		 *
-		 * @return void
 		 */
 		public function tearDown() {
 			parent::tearDown();
@@ -84,7 +76,7 @@
 		 * pas avoir de bons résultats à cause de attributs $commeDroit et
 		 * $aucunDroit.
 		 *
-		 * @return void
+		 * @medium
 		 */
 		public function testMake() {
 			CakeTestSession::write(
@@ -119,7 +111,7 @@
 		 * pas avoir de bons résultats à cause de attributs $commeDroit et
 		 * $aucunDroit.
 		 *
-		 * @return void
+		 * @medium
 		 */
 		public function testMake2() {
 			CakeTestSession::write(
