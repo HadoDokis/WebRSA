@@ -95,6 +95,23 @@
 			if( Hash::check( $this->request->data, 'Search' ) ) {
 				$query = $this->Allocataire->search( $this->request->data['Search'] );
 
+				// Test en LEFT JOIN
+				/*$joins = array(
+					'Calculdroitrsa' => 'LEFT OUTER',
+					'Foyer' => 'INNER',
+					'Prestation' => 'LEFT OUTER',
+					'Adressefoyer' => 'LEFT OUTER',
+					'Dossier' => 'INNER',
+					'Adresse' => 'LEFT OUTER',
+					'Situationdossierrsa' => 'LEFT OUTER',
+					'Detaildroitrsa' => 'LEFT OUTER',
+					'PersonneReferent' => 'LEFT OUTER',
+					'Referentparcours' => 'LEFT OUTER',
+					'Structurereferenteparcours' => 'LEFT OUTER'
+				);
+				$query = $this->Allocataire->searchQuery( $joins );
+				$query = $this->Allocataire->searchConditions( $query, $this->request->data['Search'] );*/
+
 				$query['fields'] = array(
 					'Personne.id',
 					'Dossier.numdemrsa',

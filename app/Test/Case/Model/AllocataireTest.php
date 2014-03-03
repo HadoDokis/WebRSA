@@ -76,6 +76,52 @@
 		}
 
 		/**
+		 * Test des joins de la méthode Allocataire::searchQuery().
+		 */
+		public function testSearchQueryJoins() {
+			// 1. Sans paramètre
+			$result = $this->Allocataire->searchQuery();
+			$result = Hash::combine( $result, 'joins.{n}.alias', 'joins.{n}.type' );
+			$expected = array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec paramètre
+			$joins = array(
+				'Adressefoyer' => 'LEFT OUTER',
+				'Adresse' => 'LEFT OUTER',
+				'Prestation' => 'LEFT OUTER',
+			);
+			$result = $this->Allocataire->searchQuery( $joins );
+			$result = Hash::combine( $result, 'joins.{n}.alias', 'joins.{n}.type' );
+			$expected = array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'LEFT OUTER',
+				'Adressefoyer' => 'LEFT OUTER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'LEFT OUTER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+				'PersonneReferent' => 'LEFT OUTER',
+				'Referentparcours' => 'LEFT OUTER',
+				'Structurereferenteparcours' => 'LEFT OUTER'
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode Allocataire::search().
 		 */
 		public function testSearch() {
