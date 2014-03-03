@@ -41,12 +41,24 @@
 
 		/**
 		 *
+		 * @param array $types Le nom du modèle => le type de jointure
 		 * @return array
 		 */
-		public function searchQuery() {
+		public function searchQuery( array $types = array() ) {
 			$Personne = ClassRegistry::init( 'Personne' );
 
-			$cacheKey = Inflector::underscore( $Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$types += array(
+				'Calculdroitrsa' => 'LEFT OUTER',
+				'Foyer' => 'INNER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Dossier' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'Detaildroitrsa' => 'INNER',
+			);
+
+			$cacheKey = Inflector::underscore( $Personne->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
@@ -63,12 +75,12 @@
 						$Personne->Foyer->Dossier->Detaildroitrsa->fields()
 					),
 					'joins' => array(
-						$Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-						$Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$Personne->join( 'Calculdroitrsa', array( 'type' => $types['Calculdroitrsa'] ) ),
+						$Personne->join( 'Foyer', array( 'type' => $types['Foyer'] ) ),
 						$Personne->join(
 							'Prestation',
 							array(
-								'type' => 'INNER',
+								'type' => $types['Prestation'],
 								'conditions' => array(
 									'Prestation.rolepers' => array( 'DEM', 'CJT' )
 								)
@@ -77,16 +89,16 @@
 						$Personne->Foyer->join(
 							'Adressefoyer',
 							array(
-								'type' => 'INNER',
+								'type' => $types['Adressefoyer'],
 								'conditions' => array(
 									'Adressefoyer.id IN( '.$Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 								)
 							)
 						),
-						$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-						$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-						$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
+						$Personne->Foyer->join( 'Dossier', array( 'type' => $types['Dossier'] ) ),
+						$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => $types['Adresse'] ) ),
+						$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => $types['Situationdossierrsa'] ) ),
+						$Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => $types['Detaildroitrsa'] ) ),
 					),
 					'contain' => false,
 					'conditions' => array(),
