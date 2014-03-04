@@ -29,6 +29,9 @@ msgstr "Recherche par fiche de prescription"
 msgid "Search.Ficheprescription93.exists"
 msgstr "Possède une fiche de prescription"
 
+msgid "Search.Actionfp93.numconvention"
+msgstr "Numéro de convention"
+
 msgid "Search.Thematiquefp93.type"
 msgstr "Type de prescription"
 
@@ -176,6 +179,9 @@ msgstr "Rendez-vous fixé le"
 
 msgid "Ficheprescription93.rdvprestataire_personne"
 msgstr "Avec"
+
+msgid "Ficheprescription93.numconvention"
+msgstr "Numéro de convention"
 
 msgid "Categoriefp93.thematiquefp93_id"
 msgstr "Thématique"

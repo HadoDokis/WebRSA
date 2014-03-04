@@ -241,6 +241,21 @@ CREATE INDEX codesappellationsromev3_codemetierromev3_id_idx ON codesappellation
 
 ALTER TABLE decisionsdossierspcgs66 ALTER COLUMN infotransmise TYPE TEXT;
 
+-- -----------------------------------------------------------------------------
+-- Règlde validation CakePHP alphaNumeric ( string|array $check )
+-- -----------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION cakephp_validate_alpha_numeric( p_check text ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN p_check IS NULL OR ( p_check ~ E'^[^[:punct:]|[:blank:]|[:space:]|[:cntrl:]]+$'  );
+	END;
+$$
+LANGUAGE plpgsql IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_alpha_numeric( p_check text ) IS
+	'@see http://api.cakephp.org/2.2/class-Validation.html#_alphaNumeric';
+
 -- *****************************************************************************
 -- Fiche de prescription - CG 93
 -- lib/Cake/Console/cake Graphviz.GraphvizMpd -t "/(^personnes$|^referents$|^fichesprescriptions93$|fps93$|^situationsallocataires$|^structuresreferentes$)/" && dot -K fdp -T png -o ./graphviz_mpd.png ./graphviz_mpd.dot && gwenview ./graphviz_mpd.png > /dev/null 2>&1
@@ -320,9 +335,11 @@ COMMENT ON TABLE actionsfps93 IS 'Actions pour la fiche de prescription - CG 93'
 
 CREATE INDEX actionsfps93_filierefp93_id_idx ON actionsfps93( filierefp93_id );
 CREATE INDEX actionsfps93_prestatairefp93_id_idx ON actionsfps93( prestatairefp93_id );
-CREATE UNIQUE INDEX actionsfps93_filierefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, name, annee ) WHERE actif = '1';
+CREATE INDEX actionsfps93_upper_numconvention_idx ON actionsfps93( UPPER( numconvention ) );
+CREATE UNIQUE INDEX actionsfps93_filierefp93_id_prestatairefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, prestatairefp93_id, name, annee ) WHERE actif = '1';
 
 ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_numconvention_alpha_numeric_chk CHECK ( cakephp_validate_alpha_numeric( numconvention ) );
 
 --------------------------------------------------------------------------------
 -- TODO: adresses pour les différentes tables
