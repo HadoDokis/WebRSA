@@ -196,6 +196,12 @@
 				}
 			}
 
+			// 4. Recherche par numéro de convention
+			$value = suffix( Hash::get( $search, 'Actionfp93.numconvention' ) );
+			if( !empty( $value ) ) {
+				$query['conditions']['UPPER( Actionfp93.numconvention ) LIKE'] = strtoupper( $value ).'%';
+			}
+
 			// 4. Plages de dates
 			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Ficheprescription93.rdvprestataire_date' );
 
@@ -312,6 +318,7 @@
 						$this->fields(),
 						array(
 							'Referent.structurereferente_id',
+							'Actionfp93.numconvention',
 							'Actionfp93.filierefp93_id',
 							'Actionfp93.prestatairefp93_id',
 							'Filierefp93.categoriefp93_id',
@@ -341,6 +348,8 @@
 
 				$return['Ficheprescription93']['structurereferente_id'] = $data['Referent']['structurereferente_id'];
 				$return['Ficheprescription93']['referent_id'] = "{$data['Referent']['structurereferente_id']}_{$data[$this->alias]['referent_id']}";
+
+				$return[$this->alias]['numconvention'] = $data['Actionfp93']['numconvention'];
 
 				$return[$this->alias]['actionfp93_id'] = "{$data['Actionfp93']['filierefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
 				$return['Actionfp93']['filierefp93_id'] = "{$data['Filierefp93']['categoriefp93_id']}_{$data['Actionfp93']['filierefp93_id']}";

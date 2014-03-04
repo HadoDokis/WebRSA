@@ -47,6 +47,7 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Ajax2',
 			'Allocataires',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
@@ -74,6 +75,22 @@
 			'exportcsv' => 'read',
 			'search' => 'read',
 		);
+
+		public $commeDroit = array(
+			'ajax_ficheprescription93_numconvention' => 'Fichesprescriptions93:index'
+		);
+
+		/**
+		 * Ajax permettant le pré-remplissage de la fiche de prescription à
+		 * partir du numéro de convention.
+		 */
+		public function ajax_ficheprescription93_numconvention() {
+			$json = $this->Ficheprescription93->Actionfp93->jsonNumconvention( $this->request->data );
+
+			$this->set( compact( 'json' ) );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
+		}
 
 		/**
 		 * Moteur de recherche des fiches de prescription.

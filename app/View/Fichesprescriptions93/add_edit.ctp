@@ -41,6 +41,7 @@
 			array(
 				'Ficheprescription93.rdvprestataire_date' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.rdvprestataire_personne' => array( 'type' => 'text' ),
+				'Ficheprescription93.numconvention' => array( 'type' => 'text' ),
 				'Thematiquefp93.type' => array( 'empty' => true ),
 				'Categoriefp93.thematiquefp93_id' => array( 'empty' => true ),
 				'Filierefp93.categoriefp93_id' => array( 'empty' => true ),
@@ -72,6 +73,14 @@
 			'Filierefp93.categoriefp93_id' => 'Actionfp93.filierefp93_id',
 			'Actionfp93.filierefp93_id' => 'Actionfp93.prestatairefp93_id',
 			'Actionfp93.prestatairefp93_id' => 'Ficheprescription93.actionfp93_id',
+		)
+	);
+?>
+<?php
+	echo $this->Ajax2->autocomplete(
+		'Ficheprescription93.numconvention',
+		array(
+			'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
 		)
 	);
 ?>
