@@ -227,7 +227,8 @@
 			foreach( $this->_lines as $i => $line ) {
 				$validationErrors = array();
 
-				if( empty( trim( $line ) ) ) {
+				$trimmed = trim( $line );
+				if( empty( $trimmed ) ) {
 					unset( $this->_lines[$i] );
 				}
 				else {
