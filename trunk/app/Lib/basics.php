@@ -995,4 +995,30 @@
 		$value = str_replace( array( "\r\n", "\r", "\n" ), "\\n", $value );
 		return $value;
 	}
+
+	/**
+	 * Enlève la valeur de l'array autant de fois qu'elle s'y trouve.
+	 *
+	 * @param array $array
+	 * @param mixed $value La valeur à rechercher
+	 * @param boolean $strict Pour prendre les types en compte
+	 * @param boolean $reorder true pour réordonner (via array_values)
+	 * @return int Le nombre d'éléments enlevés à l'array
+	 */
+	function array_remove( array &$array, $value, $strict = false, $reorder = false ) {
+		$removed = 0;
+
+		$key = array_search( $value, $array, $strict );
+		while( $key !== false ) {
+			unset( $array[$key] );
+			$removed++;
+			$key = array_search( $value, $array, $strict );
+		}
+
+		if( $reorder ) {
+			$array = array_values( $array );
+		}
+
+		return $removed;
+	}
 ?>

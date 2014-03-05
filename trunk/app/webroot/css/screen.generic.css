@@ -1792,3 +1792,7 @@ body.fichesprescriptions93 div.ajax.select ul li {
 	margin: 0;
 	border-bottom: 1px solid silver;
 }
+
+body.search ul.actions li.action a.search {
+	background-image: url("../img/icons/application_form_magnify.png");
+}

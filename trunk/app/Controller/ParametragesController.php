@@ -55,7 +55,7 @@
 				'DSPs' => array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
 				'Fiches de prescription' => ( Configure::read( 'Cg.departement' ) == 93 )
-					? array( 'controller' => 'actionscandidats_personnes', 'action' => 'indexparams' )
+					? array( 'controller' => 'parametrages', 'action' => 'fichesprescriptions93' )
 					: null
 				,
 				'Liste des sanctions' => ( Configure::read( 'Cg.departement' ) == 58 )
@@ -110,6 +110,18 @@
 			);
 
 			$this->set( compact( 'links' ) );
+		}
+
+		public function fichesprescriptions93() {
+			$links = array(
+				__d( 'cataloguespdisfps93', '/Cataloguespdisfps93/search/:heading' ) => array( 'controller' => 'cataloguespdisfps93', 'action' => 'search' ),
+			);
+			foreach( array( 'Thematiquefp93', 'Categoriefp93', 'Filierefp93', 'Actionfp93', 'Prestatairefp93' ) as $modelName ) {
+				$links[__d( 'cataloguespdisfps93', "/Cataloguespdisfps93/index/{$modelName}/:heading" )] = array( 'controller' => 'cataloguespdisfps93', 'action' => 'index', $modelName );
+			}
+
+			$this->set( compact( 'links' ) );
+			$this->render( 'modulefse93' );
 		}
 	}
 

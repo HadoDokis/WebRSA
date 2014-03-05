@@ -431,6 +431,7 @@ $irregularPlural = array(
 	'actionfp93' => 'actionsfps93',
 	'ficheprescription93' => 'fichesprescriptions93',
 	'instantanedonneesfp93' => 'instantanesdonneesfps93',
+	'cataloguepdifp93' => 'cataloguespdisfps93',
 );
 
 /**

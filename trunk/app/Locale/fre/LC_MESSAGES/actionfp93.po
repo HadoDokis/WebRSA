@@ -1,4 +1,4 @@
-# Traductions de parametrages.po
+# Traductions de actionfp93.po
 # @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 #
 msgid ""
@@ -10,14 +10,8 @@ msgstr ""
 
 # ==============================================================================
 
-msgid "/Parametrages/modulefse93/:heading"
-msgstr "Paramétrages du module FSE"
+msgid "ENUM::ACTIF::0"
+msgstr "Inactif"
 
-msgid "/Parametrages/index"
-msgstr "Retour"
-
-msgid "/Parametrages/index/:title"
-msgstr "Retour au paramétrage"
-
-msgid "/Parametrages/fichesprescriptions93/:heading"
-msgstr "Paramétrages du module fiche de prescription"
+msgid "ENUM::ACTIF::1"
+msgstr "Actif"
