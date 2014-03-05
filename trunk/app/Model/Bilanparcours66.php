@@ -729,11 +729,22 @@
                                 $this->invalidate( 'dfreconductoncontrat', 'Champ obligatoire' );
                                 return false;
                             }
+
+                            // Test correction FIXME
+                            // Si les 24 mois sont dépassés mais que l'on confirme la volonté 
+                            // de renouveler un CER depuis le bilan de parcours, alors on passe
+                            // la valeur du champ cumulduree à celle de la durée choisie
+                            if( $nbCumulDureeCER66 > 24 && !empty( $dureeEngagReconductionCER ) ) {
+                                $contratinsertion['Contratinsertion']['cumulduree'] = $dureeEngagReconductionCER;
+                            }
+                            // Fin test correction FIXME
                             
-                            if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 ){
+                            
+                            if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 && $contratinsertion['Contratinsertion']['cumulduree'] > 24 ){
                                 $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
                                 return false;
                             }
+
                             $this->Contratinsertion->create( $contratinsertion );
                             $success = $this->Contratinsertion->save() && $success;
 

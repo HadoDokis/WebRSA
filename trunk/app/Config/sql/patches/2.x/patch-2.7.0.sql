@@ -427,6 +427,13 @@ ALTER TABLE piecesmodelestypescourrierspcgs66 ADD CONSTRAINT piecesmodelestypesc
 UPDATE piecesmodelestypescourrierspcgs66 SET isactif = '1' WHERE isactif IS NULL;
 ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN isactif SET DEFAULT '1'::VARCHAR(1);
 ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN isactif SET NOT NULL;
+
+-------------------------------------------------------------------------------------
+-- 20140225 : Ajout d'un champ pour stocker le cumul des durées des CERs
+-- respectant la requête limitecumulCER présente dans le modèle Contratinsertion.php
+-------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'contratsinsertion', 'cumulduree', 'INTEGER' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
