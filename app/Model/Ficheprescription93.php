@@ -168,7 +168,7 @@
 			$query = $Allocataire->searchConditions( $query, $search );
 
 			$ficheprescription93Exists = Hash::get( $search, 'Ficheprescription93.exists' );
-			if( $ficheprescription93Exists !== null ) {
+			if( !in_array( $ficheprescription93Exists, array( null, '' ), true ) ) {
 				if( $ficheprescription93Exists ) {
 					$query['conditions'][] = 'Ficheprescription93.id IS NOT NULL';
 				}
