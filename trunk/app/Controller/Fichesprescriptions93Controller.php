@@ -115,7 +115,34 @@
 
 				$query = $this->Allocataires->completeSearchQuery( $query );
 
-				$results = $this->Allocataires->paginate( $query );
+				// Optimisation méthode 1: on attaque fichesprescriptions93 en premier lieu
+				// TODO: ne pas oublier de faire de même dans l'export CSV
+				// TODO: permettre la valeur vide/null dans les options
+				if( Hash::get( $this->request->data, 'Search.Ficheprescription93.exists' ) ) {
+					// TODO: à faire dans la vue, de manière implicite dans searchConditions() ou search() appellerait searchOptimisations() ?
+					foreach( $query['joins'] as $i => $join ) {
+						if( $join['alias'] == 'Ficheprescription93' ) {
+							unset( $query['joins'][$i] );
+							array_unshift( $query['joins'], $this->Ficheprescription93->join( 'Personne', array( 'type' => 'INNER' ) ) );
+						}
+					}
+					$this->Ficheprescription93->forceVirtualFields = true;
+					$results = $this->Allocataires->paginate( $query, 'Ficheprescription93' );
+				}
+				// Optimisation méthode 2: on fait un INNER JOIN (ça ne change rien)
+				/*if( Hash::get( $this->request->data, 'Search.Ficheprescription93.exists' ) ) {
+					foreach( $query['joins'] as $i => $join ) {
+						if( $join['alias'] == 'Ficheprescription93' ) {
+							$query['joins'][$i]['type'] = 'INNER';
+//							unset( $query['joins'][$i] );
+//							array_unshift( $query['joins'], $this->Ficheprescription93->join( 'Personne', array( 'type' => 'INNER' ) ) );
+						}
+					}
+					$results = $this->Allocataires->paginate( $query );
+				}*/
+				else {
+					$results = $this->Allocataires->paginate( $query );
+				}
 
 				$this->set( compact( 'results' ) );
 			}
