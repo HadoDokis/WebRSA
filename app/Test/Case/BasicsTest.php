@@ -619,5 +619,38 @@
 			$expected = 'Bonjour Monsieur \\"Auzolat\\"\\nvous devez vous présenter ...';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		 }
+
+		 /**
+		  * Test de la fonction array_remove()
+		  */
+		 public function testArrayRemove() {
+			 // 1. Pas de paramètre supplémentaire
+			 $array = array( 1, 2, '3', '4', 5 );
+			 array_remove( $array, 4 );
+
+			 $expected = array( 0 => 1, 1 => 2, 2 => 3, 4 => 5 );
+			 $this->assertEqual( $array, $expected, var_export( $array, true ) );
+
+			 // 2. Paramètre strict
+			 $array = array( 1, 2, '3', '4', 5 );
+			 array_remove( $array, 4, true );
+
+			 $expected = array( 1, 2, '3', '4', 5 );
+			 $this->assertEqual( $array, $expected, var_export( $array, true ) );
+
+			 // 3. Paramètre strict
+			 $array = array( 1, 2, '3', 4, 5 );
+			 array_remove( $array, 4, true );
+
+			 $expected = array( 0 => 1, 1 => 2, 2 => 3, 4 => 5 );
+			 $this->assertEqual( $array, $expected, var_export( $array, true ) );
+
+			 // 4. Paramètre reorder
+			 $array = array( 1, 2, '3', 4, 5 );
+			 array_remove( $array, 4, false, true );
+
+			 $expected = array( 1, 2, 3, 5 );
+			 $this->assertEqual( $array, $expected, var_export( $array, true ) );
+		}
 	}
 ?>

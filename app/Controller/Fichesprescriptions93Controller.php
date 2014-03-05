@@ -52,6 +52,7 @@
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
+			'Search.SearchForm',
 		);
 
 		/**

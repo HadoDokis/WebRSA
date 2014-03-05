@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe ImportcsvCataloguePdi93Shell.
+	 * Code source de la classe ImportcsvCataloguespdisfps93Shell.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,7 +9,7 @@
 	 */
 
 	/**
-	 * La classe ImportcsvCataloguePdi93Shell permet d'importer le catalogue PDI
+	 * La classe ImportcsvCataloguespdisfps93Shell permet d'importer le catalogue PDI
 	 * pour le module fiches de rpescriptions du CG 93.
 	 *
 	 * @todo  Tel_Action	 Adresse Action	 CP Action	 Commune Action
@@ -17,7 +17,7 @@
 	 *
 	 * @package app.Console.Command
 	 */
-	class ImportcsvCataloguePdi93Shell extends AppShell
+	class ImportcsvCataloguespdisfps93Shell extends AppShell
 	{
 		/**
 		 * La constante à utiliser dans la méthode _stop() en cas de succès.
@@ -34,7 +34,7 @@
 		 *
 		 * @var string
 		 */
-		public $name = 'ImportcsvCataloguePdi93';
+		public $name = 'ImportcsvCataloguespdisfps93';
 
 		/**
 		 * Le fichier CSV.

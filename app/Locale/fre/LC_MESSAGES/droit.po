@@ -3373,3 +3373,21 @@ msgstr "Modification d'une fiche de prescription"
 
 msgid "Fichesprescriptions93:impression"
 msgstr "Impression d'une fiche de prescription"
+
+msgid "Module:Cataloguespdisfps93"
+msgstr "Paramétrage du référentiel pour fiches de prescription (CG 93)"
+
+msgid "Cataloguespdisfps93:search"
+msgstr "Tableau de suivi du référentiel pour fiches de prescription"
+
+msgid "Cataloguespdisfps93:index"
+msgstr "Liste des éléments"
+
+msgid "Cataloguespdisfps93:add"
+msgstr "Ajout d'un élément"
+
+msgid "Cataloguespdisfps93:edit"
+msgstr "Modification d'un élément"
+
+msgid "Cataloguespdisfps93:delete"
+msgstr "Suppression d'un élément"
