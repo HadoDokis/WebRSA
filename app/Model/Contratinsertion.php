@@ -1855,12 +1855,12 @@
             $case = implode( ' ', $case );
             $case = "CASE {$case} ELSE 0 END";
 
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-			}
-			else if( Configure::read( 'Cg.departement' ) == 58 ) {
-				$emploi = (array)Configure::read( 'Typeorient.emploi_id' );
-			}
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                    $emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
+            }
+            else if( Configure::read( 'Cg.departement' ) == 58 ) {
+                    $emploi = (array)Configure::read( 'Typeorient.emploi_id' );
+            }
             $emploi = '('.implode( ',', $emploi ).')';
 
             $sql = "SELECT SUM( {$case} ) AS \"sum\"
@@ -1938,7 +1938,6 @@
                     GROUP BY contratsinsertion.personne_id;";
 
             $result = $this->query( $sql );
-//debug($result);
             return ( isset( $result[0][0]['sum'] ) ? $result[0][0]['sum'] : 0 );
         }
 
