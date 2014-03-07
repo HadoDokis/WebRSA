@@ -195,6 +195,17 @@
 							)
 						),
 						$this->Default2->button(
+							'delete',
+							array( 'controller' => 'cuis', 'action' => 'delete',
+							$cui['Cui']['id'] ),
+							array(
+								'enabled' => (
+									( $this->Permissions->checkDossier( 'cuis', 'delete', $dossierMenu ) == 1 )
+								),
+                                'confirm' => 'Confirmer la suppression ?'
+							)
+						),
+						$this->Default2->button(
 							'filelink',
 							array( 'controller' => 'cuis', 'action' => 'filelink',
 							$cui['Cui']['id'] ),
