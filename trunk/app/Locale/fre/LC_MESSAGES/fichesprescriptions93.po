@@ -162,6 +162,53 @@ msgstr "Objet ou nature de la prescription / observations / intitulé de l'actio
 
 ################################################################################
 
+msgid "Ficheprescription93.Beneficiaire"
+msgstr "Bénéficiaire"
+
+msgid "Situationallocataire.qual"
+msgstr "Civilité"
+
+msgid "Situationallocataire.nom"
+msgstr "Nom"
+
+msgid "Situationallocataire.prenom"
+msgstr "Prénom"
+
+msgid "Situationallocataire.dtnai"
+msgstr "Date de naissance"
+
+msgid "Instantanedonneesfp93.benef_tel_fixe"
+msgstr "Téléphone"
+
+msgid "Instantanedonneesfp93.benef_tel_port"
+msgstr "Portable"
+
+msgid "Instantanedonneesfp93.benef_email"
+msgstr "Mail"
+
+msgid "Situationallocataire.natpf"
+msgstr "Bénéficiaire du"
+
+msgid "Situationallocataire.matricule"
+msgstr "Numéro CAF"
+
+msgid "Situationallocataire.inscritpe"
+msgstr "Inscrit au Pôle Emploi"
+
+msgid "Situationallocataire.identifiantpe"
+msgstr "N° d'identifiant"
+
+msgid "Instantanedonneesfp93.benef_nivetu"
+msgstr "Niveau de diplôme et/ou de qualification"
+
+msgid "Instantanedonneesfp93.benef_dip_ce"
+msgstr "Diplôme obtenu"
+
+msgid "Instantanedonneesfp93.benef_positioncer"
+msgstr "Contrat d'engagement réciproque (CER)"
+
+################################################################################
+
 msgid "/Fichesprescriptions93/add/:title"
 msgstr "Ajouter une fiche de prescription"
 

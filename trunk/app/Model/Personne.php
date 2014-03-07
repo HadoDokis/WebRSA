@@ -8,9 +8,10 @@
 	 */
 	class Personne extends AppModel
 	{
-
 		public $name = 'Personne';
+
 		public $displayField = 'nom_complet';
+
 		public $actsAs = array(
 			'ValidateTranslate',
 			'Enumerable' => array(
@@ -18,8 +19,11 @@
 					'haspiecejointe'
 				)
 			),
-			'Formattable'
+			'Formattable' => array(
+				'phone' => array( 'numfixe', 'numport' )
+			),
 		);
+
 		public $validate = array(
 			// Qualité
 			'qual' => array( array( 'rule' => 'notEmpty' ) ),
@@ -58,7 +62,26 @@
 					'message' => 'Veuillez entrer une valeur numérique.',
 					'allowEmpty' => true
 				)
-			)
+			),
+			'numfixe' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
+			'numport' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
+			'email' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'allowEmpty' => true
+				)
+			),
+
 		);
 		public $belongsTo = array(
 			'Foyer' => array(

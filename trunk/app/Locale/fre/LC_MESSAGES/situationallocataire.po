@@ -690,3 +690,28 @@ msgstr "Bénéficiaires RSA socle+activité"
 
 msgid "ENUM::NATPF_D1::NC"
 msgstr "Non défini"
+
+# ------------------------------------------------------------------------------
+
+msgid "ENUM::NATPF_FP::socle_majore_activite"
+msgstr "RSA socle majoré + activité"
+
+msgid "ENUM::NATPF_FP::socle_activite"
+msgstr "RSA socle + activité"
+
+msgid "ENUM::NATPF_FP::socle_majore"
+msgstr "RSA socle majoré"
+
+msgid "ENUM::NATPF_FP::socle"
+msgstr "RSA socle"
+
+msgid "ENUM::NATPF_FP::NC"
+msgstr "Non défini"
+
+# ------------------------------------------------------------------------------
+
+msgid "ENUM::INSCRITPE::0"
+msgstr "Non"
+
+msgid "ENUM::INSCRITPE::1"
+msgstr "Oui"

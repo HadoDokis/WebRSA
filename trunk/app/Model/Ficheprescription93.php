@@ -247,7 +247,9 @@
 				$this->Actionfp93->enums(),
 				$this->Actionfp93->Filierefp93->enums(),
 				$this->Actionfp93->Filierefp93->Categoriefp93->enums(),
-				$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->enums()
+				$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
+				$this->Instantanedonneesfp93->enums(),
+				$this->Instantanedonneesfp93->Situationallocataire->enums()
 			);
 
 			if( $findLists ) {
@@ -361,6 +363,110 @@
 				$return[$this->alias]['actionfp93_id'] = "{$return['Actionfp93']['prestatairefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
 			}
 
+			// N° de tel, fax et email allocataire + données socio-professionnelles + état du dernier CER
+			$Informationpe = ClassRegistry::init( 'Informationpe' );
+			$query = array(
+				'fields' => array(
+					'Personne.id',
+					'Personne.numfixe',
+					'Personne.numport',
+					'Personne.email',
+					'Dsp.nivetu',
+					'DspRev.nivetu',
+					'Cer93.positioncer',
+					'Historiqueetatpe.identifiantpe',
+					'Historiqueetatpe.etat'
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Personne->join(
+						'Dsp',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+							)
+						)
+					),
+					$this->Personne->join(
+						'DspRev',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
+							)
+						)
+					),
+					$this->Personne->join(
+						'Contratinsertion',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Contratinsertion.id IN ( '.$this->Personne->Contratinsertion->sqDernierContrat().' )'
+							)
+						)
+					),
+					$this->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
+					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
+					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+			);
+			$return = Hash::merge(
+				$return,
+				(array)$this->Personne->find( 'first', $query )
+			);
+
+			// Niveau d'étude
+			$nivetu = Hash::get( $return, 'DspRev.nivetu' );
+			if( $nivetu === null ) {
+				$nivetu = Hash::get( $return, 'Dsp.nivetu' );
+			}
+			$return['Instantanedonneesfp93']['benef_nivetu'] = $nivetu;
+
+			// FIXME: que dans le cas d'un ajout ?
+			// FIXME: le dernier non annulé ?
+			// Position du dernier CER
+			$positioncer = Hash::get( $return, 'Cer93.positioncer' );
+			if( !empty( $positioncer ) ) {
+				switch( $positioncer ) {
+					case '99valide':
+						$positioncer = 'valide';
+						break;
+					case '04premierelecture':
+					case '05secondelecture':
+					case '07attavisep':
+						$positioncer = 'validationcg';
+						break;
+					case '00enregistre':
+					case '01signe':
+					case '02attdecisioncpdv':
+					case '03attdecisioncg':
+						$positioncer = 'validationpdv';
+						break;
+				}
+			}
+			$return['Instantanedonneesfp93']['benef_positioncer'] = $positioncer;
+
+			// Nature de prestation
+			$activite = Hash::get( $return, 'Situationallocataire.natpf_activite' );
+			$majore = Hash::get( $return, 'Situationallocataire.natpf_majore' );
+			$socle = Hash::get( $return, 'Situationallocataire.natpf_socle' );
+			if( $socle && !$activite && !$majore ) {
+				$return['Situationallocataire']['natpf'] = 'socle';
+			}
+			else if( $socle && !$activite && $majore ) {
+				$return['Situationallocataire']['natpf'] = 'socle_majore';
+			}
+			else if( $socle && $activite && !$majore ) {
+				$return['Situationallocataire']['natpf'] = 'socle_activite';
+			}
+			else if( $socle && $activite && $majore ) {
+				$return['Situationallocataire']['natpf'] = 'socle_majore_activite';
+			}
+
 			return $return;
 		}
 
@@ -429,7 +535,7 @@
 						'Structurereferente.code_postal',
 						'Structurereferente.ville',
 						'Structurereferente.numtel',
-						// 'Structurereferente.fax', // TODO
+						'Structurereferente.numfax',
 					),
 					'contain' => false,
 					'joins' => array(
@@ -454,7 +560,7 @@
 						'structure_code_postal' => $referent['Structurereferente']['code_postal'],
 						'structure_ville' => $referent['Structurereferente']['ville'],
 						'structure_tel' => $referent['Structurereferente']['numtel'],
-						//'structure_fax' => $referent['Structurereferente']['fax'], // TODO
+						'structure_fax' => $referent['Structurereferente']['numfax'],
 						'referent_email' => $referent['Referent']['email'],
 					)
 				);
@@ -469,6 +575,130 @@
 
 			$this->create( $data );
 			$success = ( $this->save() !== false );
+
+			// Enregistrement des informations de contact de l'allocataire
+			/*$query = array(
+				'contain' => false,
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				),
+			);
+			$personne = $this->Personne->find( 'first', $query );
+			foreach( array( 'numfixe', 'numport', 'email' ) as $field ) {
+				$personne['Personne'][$field] = $data['Personne'][$field];
+			}
+			$this->Personne->create( $personne );
+			$success = ( $this->Personne->save() !== false ) && $success;*/
+
+			// Données socio-professionnelles
+			// TODO: à factoriser dans les Dsp... à faire pour plusieurs champs
+			// Tests:
+			// /fichesprescriptions93/add/349942 -> Dsp, DspRev, tables liées
+			// /fichesprescriptions93/add/819022 -> Dsp, tables liées
+			// /fichesprescriptions93/add/316225 -> rien
+			$nivetu = Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' );
+			$query = array(
+				'fields' => array(
+					'Dsp.id',
+					'Dsp.nivetu',
+					'DspRev.id',
+					'DspRev.nivetu',
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Personne->join(
+						'Dsp',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+							)
+						)
+					),
+					$this->Personne->join(
+						'DspRev',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
+							)
+						)
+					),
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				)
+			);
+			$oldRecord = $this->Personne->find( 'first', $query );
+
+			$newRecord = array();
+			$newModelName = null;
+
+			if( !empty( $oldRecord['DspRev']['id'] ) ) {
+				if( $oldRecord['DspRev']['nivetu'] !== $nivetu ) {
+					$oldModelName = 'DspRev';
+					$newModelName = 'DspRev';
+					$linkedSuffix = '';
+				}
+			}
+			// Pas de DspRev mais une Dsp
+			else if( !empty( $oldRecord['Dsp']['id'] ) ) {
+				if( $oldRecord['Dsp']['nivetu'] !== $nivetu ) {
+					$oldModelName = 'Dsp';
+					$newModelName = 'DspRev';
+					$linkedSuffix = 'Rev';
+				}
+			}
+			else if( !empty( $nivetu ) ) {
+				$oldModelName = 'Dsp';
+				$newModelName = 'Dsp';
+				$linkedSuffix = '';
+			}
+
+			if( $newModelName !== null ) {
+				// Début
+				$removePaths = array(
+					"{$oldModelName}.id",
+					"{$oldModelName}.created",
+					"{$oldModelName}.modified",
+				);
+				$replacements = array( 'Dsp' => 'DspRev' );
+
+				$query = array(
+					'contain' => array(),
+					'conditions' => array(
+						"{$oldModelName}.id" => $oldRecord[$oldModelName]['id']
+					)
+				);
+				foreach( $this->Personne->{$oldModelName}->hasMany as $alias => $params ) {
+					if( strstr( $alias, 'Detail' ) !== false ) {
+						$query['contain'][] = $alias;
+
+						$removePaths[] = "{$alias}.{n}.id";
+						$removePaths[] = "{$alias}.{n}.{$params['foreignKey']}";
+
+						$replacements[$alias] = "{$alias}{$linkedSuffix}";
+					}
+				}
+				$newRecord = $this->Personne->{$oldModelName}->find( 'first', $query );
+
+				foreach( $removePaths as $removePath ) {
+					$newRecord = Hash::remove( $newRecord, $removePath );
+				}
+
+				$newRecord = array_words_replace( $newRecord, $replacements );
+				$newRecord[$newModelName]['personne_id'] = $personne_id;
+				$newRecord[$newModelName]['dsp_id'] = Hash::get( $oldRecord, 'Dsp.id' );
+				$newRecord[$newModelName]['nivetu'] = $nivetu;
+
+				$success = $this->saveResultAsBool(
+					$this->Personne->{$newModelName}->saveAll(
+						$newRecord,
+						array( 'atomic' => false, 'deep' => true )
+					)
+				) && $success;
+			}
+			// Fin
 
 			if( $success ) {
 				$this->Instantanedonneesfp93->Situationallocataire->create( $data );

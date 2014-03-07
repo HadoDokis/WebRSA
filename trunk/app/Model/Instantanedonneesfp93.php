@@ -33,8 +33,41 @@
 		 * @var array
 		 */
 		public $actsAs = array(
+			'Formattable' => array(
+				'null' => false,
+				'trim' => false,
+				'phone' => array( 'benef_tel_fixe', 'benef_tel_port' ),
+				'suffix' => false,
+				'amount' => false,
+			),
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
+		);
+
+		/**
+		 * Règles de validation
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'benef_tel_fixe' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
+			'benef_tel_port' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
+			'benef_email' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'allowEmpty' => true
+				)
+			),
 		);
 
 		/**

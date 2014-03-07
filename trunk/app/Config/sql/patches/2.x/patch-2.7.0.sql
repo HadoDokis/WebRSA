@@ -257,6 +257,12 @@ COMMENT ON FUNCTION cakephp_validate_alpha_numeric( p_check text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_alphaNumeric';
 
 -- *****************************************************************************
+-- 20140307: ajout du fax pour la structure référente
+-- *****************************************************************************
+SELECT add_missing_table_field( 'public', 'structuresreferentes', 'numfax', 'VARCHAR(20)' );
+ALTER TABLE structuresreferentes ALTER COLUMN numfax SET DEFAULT NULL;
+
+-- *****************************************************************************
 -- Fiche de prescription - CG 93
 -- lib/Cake/Console/cake Graphviz.GraphvizMpd -t "/(^personnes$|^referents$|^fichesprescriptions93$|fps93$|^situationsallocataires$|^structuresreferentes$)/" && dot -K fdp -T png -o ./graphviz_mpd.png ./graphviz_mpd.dot && gwenview ./graphviz_mpd.png > /dev/null 2>&1
 -- *****************************************************************************
@@ -369,7 +375,6 @@ CREATE INDEX fichesprescriptions93_personne_id_idx ON fichesprescriptions93( per
 CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( referent_id );
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 
--- TODO: 99annulee ?
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne'] ) );
 
 --------------------------------------------------------------------------------
@@ -386,10 +391,16 @@ CREATE TABLE instantanesdonneesfps93 (
 	structure_nom_voie		VARCHAR(50) NOT NULL,
 	structure_code_postal	CHAR(5) NOT NULL,
 	structure_ville			VARCHAR(45) NOT NULL,
-	structure_tel			VARCHAR(10),
-	structure_fax			VARCHAR(10),
-	referent_email			VARCHAR(78),
+	structure_tel			VARCHAR(10) DEFAULT NULL,
+	structure_fax			VARCHAR(10) DEFAULT NULL,
+	referent_email			VARCHAR(78) DEFAULT NULL,
 	-- Partie "Bénéficiaire"
+	benef_tel_fixe			VARCHAR(14) DEFAULT NULL,
+	benef_tel_port			VARCHAR(14) DEFAULT NULL,
+	benef_email				VARCHAR(100) DEFAULT NULL,
+	benef_nivetu			VARCHAR(4) DEFAULT NULL,
+	benef_dip_ce			VARCHAR(1) DEFAULT NULL,
+	benef_positioncer		VARCHAR(13) DEFAULT NULL,
 	situationallocataire_id	INTEGER NOT NULL REFERENCES situationsallocataires(id) ON DELETE CASCADE ON UPDATE CASCADE,
     created					TIMESTAMP WITHOUT TIME ZONE,
     modified				TIMESTAMP WITHOUT TIME ZONE
@@ -398,6 +409,10 @@ COMMENT ON TABLE instantanesdonneesfps93 IS '"Instantané" de certaines données
 
 CREATE UNIQUE INDEX instantanesdonneesfps93_ficheprescription93_id_idx ON instantanesdonneesfps93( ficheprescription93_id );
 CREATE UNIQUE INDEX instantanesdonneesfps93_situationallocataire_id_idx ON instantanesdonneesfps93( situationallocataire_id );
+
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( benef_nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_dip_ce_in_list_chk CHECK ( cakephp_validate_in_list( benef_dip_ce, ARRAY['0', '1'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( benef_positioncer, ARRAY['validationpdv', 'validationcg', 'valide'] ) );
 
 --------------------------------------------------------------------------------
 -- 20140221: Ajout de la date d'affectation du gestionnaire au dossier PCG (CG66)
