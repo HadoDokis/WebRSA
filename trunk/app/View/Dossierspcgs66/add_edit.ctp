@@ -326,7 +326,7 @@ document.observe( "dom:loaded", function() {
 						'url' => array( 'controller' => 'decisionsdossierspcgs66', 'action' => 'add', $dossierpcg66_id ),
 						'disabled' => (
                             $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
-                            || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr' ) )
+                            || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr', 'arevoir' ) )
                             || empty( $personnespcgs66 )
                             
 						)

@@ -542,6 +542,15 @@
                     $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
 				}
             }
+            
+            
+            /**/
+            if( $success ) {
+				if( ( $data['Traitementpcg66']['typetraitement'] == 'dossierarevoir' ) ) {
+                    $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
+				}
+            }
+            
 
 			return $success;
 		}
