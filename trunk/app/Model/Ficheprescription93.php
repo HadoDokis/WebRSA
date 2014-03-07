@@ -90,6 +90,31 @@
 			),
 		);
 
+
+		/**
+		 * Associations "Has and belongs to many".
+		 *
+		 * @var array
+		 */
+		public $hasAndBelongsToMany = array(
+			'Modtransmfp93' => array(
+				'className' => 'Modtransmfp93',
+				'joinTable' => 'fichesprescriptions93_modstransmsfps93',
+				'foreignKey' => 'ficheprescription93_id',
+				'associationForeignKey' => 'modtransmfp93_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'Ficheprescription93Modtransmfp93'
+			),
+		);
+
 		/**
 		 * Règles de validation.
 		 *
@@ -258,9 +283,10 @@
 					array( 'Categoriefp93' => array( 'thematiquefp93_id' => $this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->findListPrefixed( 'type', 'id', 'name' ) ) ),
 					array( 'Filierefp93' => array( 'categoriefp93_id' => $this->Actionfp93->Filierefp93->Categoriefp93->findListPrefixed( 'thematiquefp93_id', 'id', 'name' ) ) ),
 					array( 'Actionfp93' => array( 'filierefp93_id' => $this->Actionfp93->Filierefp93->findListPrefixed( 'categoriefp93_id', 'id', 'name' ) ) ),
-					array( 'Actionfp93' => array( 'prestatairefp93_id' => $this->Actionfp93->Prestatairefp93->findListPrefixed2() ) )//,
+					array( 'Actionfp93' => array( 'prestatairefp93_id' => $this->Actionfp93->Prestatairefp93->findListPrefixed2() ) ),
 					// TODO: voir ci-dessous
 					// array( 'Ficheprescription93' => array( 'actionfp93_id' => $this->Actionfp93->findListPrefixed( 'filierefp93_id', 'id', 'name' ) ) )
+					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) )
 				);
 
 				// Test Ficheprescription93.actionfp93_id
