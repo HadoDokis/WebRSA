@@ -434,6 +434,14 @@ ALTER TABLE piecesmodelestypescourrierspcgs66 ALTER COLUMN isactif SET NOT NULL;
 -------------------------------------------------------------------------------------
 SELECT add_missing_table_field( 'public', 'contratsinsertion', 'cumulduree', 'INTEGER' );
 
+
+-------------------------------------------------------------------------------------
+-- 20140307 : Ajout d'un état supplémentaire pour les dossiers PCGs (dossier à revoir)
+-------------------------------------------------------------------------------------
+-- Un dossier ne possède pas d'état PCG dossierpcg66_id = 4634 en base CG66
+-- UPDATE dossierspcgs66 SET etatdossierpcg = 'transmisop' WHERE id = '4634'; 
+SELECT alter_table_drop_constraint_if_exists( 'public', 'dossierspcgs66', 'dossierspcgs66_etatdossierpcg_in_list_chk' );
+ALTER TABLE dossierspcgs66 ADD CONSTRAINT dossierspcgs66_etatdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( etatdossierpcg, ARRAY['attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'transmisop', 'atttransmisop', 'annule', 'attinstrattpiece', 'attinstrdocarrive','arevoir'] ) );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -753,26 +753,27 @@ class Dossierpcg66 extends AppModel {
      * */
     public function updateEtatDossierViaTraitement($traitementpcg66_id) {
         $traitementpcg66 = $this->Personnepcg66->Traitementpcg66->find(
-                'first', array(
-            'fields' => array_merge(
-                    $this->Personnepcg66->Traitementpcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->Decisiondossierpcg66->fields()
-            ),
-            'conditions' => array(
-                'Traitementpcg66.id' => $traitementpcg66_id
-            ),
-            'joins' => array(
-                $this->Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
-                $this->Personnepcg66->Traitementpcg66->Personnepcg66->join('Dossierpcg66', array('type' => 'INNER')),
-                $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT OUTER'))
-            ),
-            'recursive' => -1
-                )
+            'first',
+            array(
+                'fields' => array_merge(
+                        $this->Personnepcg66->Traitementpcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->fields(), $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->Decisiondossierpcg66->fields()
+                ),
+                'conditions' => array(
+                    'Traitementpcg66.id' => $traitementpcg66_id
+                ),
+                'joins' => array(
+                    $this->Personnepcg66->Traitementpcg66->join('Personnepcg66', array('type' => 'INNER')),
+                    $this->Personnepcg66->Traitementpcg66->Personnepcg66->join('Dossierpcg66', array('type' => 'INNER')),
+                    $this->Personnepcg66->Traitementpcg66->Personnepcg66->Dossierpcg66->join('Decisiondossierpcg66', array('type' => 'LEFT OUTER'))
+                ),
+                'recursive' => -1
+            )
         );
 
         // A l'enregistrement du traitement, 
         //  le traitement est non clos
         //  le traitement n'est pas annulé
-        //  le type de traitement est document arrivé
+        //  le type de traitement est dossier à revoir
         // aucune décision n'a été émise
         $corbeillepcgDescriptionId = Configure::read('Corbeillepcg.descriptionpdoId'); // Traiteement de description courrier à l'allocataire
         if (empty($traitementpcg66['Decisiondossierpcg66']['id'])) {
@@ -796,6 +797,16 @@ class Dossierpcg66 extends AppModel {
                     );
                 }
 
+                if ($traitementpcg66['Traitementpcg66']['typetraitement'] == 'dossierarevoir') {
+                    $return = $this->updateAllUnBound(
+                        array(
+                            'Dossierpcg66.etatdossierpcg' => '\'arevoir\''
+                        ),
+                        array(
+                            '"Dossierpcg66"."id"' => $traitementpcg66['Dossierpcg66']['id']
+                        )
+                    );
+                }
                 return $return;
             }
         }

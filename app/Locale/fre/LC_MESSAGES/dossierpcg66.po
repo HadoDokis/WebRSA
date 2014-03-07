@@ -143,6 +143,8 @@ msgstr "En attente d'instruction - Document arrivé"
 msgid "ENUM::ETATDOSSIERPCG::attinstrattpiece"
 msgstr "Instruction en cours - Attente de pièces"
 
+msgid "ENUM::ETATDOSSIERPCG::arevoir"
+msgstr "Dossier à revoir"
 ########################################################################
 ## 	Traduction pour la recherche par PDO
 ########################################################################
