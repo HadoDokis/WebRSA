@@ -1796,3 +1796,17 @@ body.fichesprescriptions93 div.ajax.select ul li {
 body.search ul.actions li.action a.search {
 	background-image: url("../img/icons/application_form_magnify.png");
 }
+
+/* Coordonnées du prescripteur de la fiche de prescription 93 */
+
+body.fichesprescriptions93.add #coordonnees_prescripteur, body.fichesprescriptions93.edit #coordonnees_prescripteur {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+body.fichesprescriptions93.add #coordonnees_prescripteur th, body.fichesprescriptions93.edit #coordonnees_prescripteur th {
+	width: 48%;
+	color: black;
+	background: transparent;
+	border: 0;
+}

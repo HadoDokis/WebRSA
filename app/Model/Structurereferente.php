@@ -23,7 +23,7 @@
 
 		public $actsAs = array(
 			'Formattable' => array(
-				'phone' => array( 'numtel' )
+				'phone' => array( 'numtel', 'numfax' )
 			),
 			'Pgsqlcake.PgsqlAutovalidate',
 			'Validation.ExtraValidationRules',
@@ -35,7 +35,13 @@
 					'rule' => array( 'phoneFr' ),
 					'allowEmpty' => true,
 				)
-			)
+			),
+			'numfax' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
 		);
 
 		public $belongsTo = array(

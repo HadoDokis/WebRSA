@@ -328,6 +328,7 @@
 				'Tableausuivipdv93.Tableau1b6.typerdv_id' => 'isarray',
 				'Tableausuivipdv93.Tableau1b6.statutrdv_id_prevu_honore' => 'isarray',
 				'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' => 'isarray',
+				'Cataloguepdifp93.urls' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {

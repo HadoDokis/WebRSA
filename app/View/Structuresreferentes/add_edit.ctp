@@ -34,6 +34,7 @@
 	<?php echo $this->Form->input( 'Structurereferente.ville', array( 'label' => required( __( 'ville' ) ), 'type' => 'text' ) );?>
 	<?php echo $this->Form->input( 'Structurereferente.code_insee', array( 'label' => required( __( 'code_insee' ) ), 'type' => 'text', 'maxlength' => 5 ) );?>
 	<?php echo $this->Form->input( 'Structurereferente.numtel', array( 'label' => __( 'numtel' ), 'type' => 'text', 'maxlength' => 19 ) );?>
+	<?php echo $this->Form->input( 'Structurereferente.numfax', array( 'label' => __( 'numfax' ), 'type' => 'text', 'maxlength' => 19 ) );?>
 </fieldset>
 <div><?php echo $this->Form->input( 'Structurereferente.filtre_zone_geo', array( 'label' => 'Restreindre les zones géographiques', 'type' => 'checkbox' ) );?></div>
 

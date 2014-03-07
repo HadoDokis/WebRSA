@@ -69,6 +69,8 @@
 		 * @var array
 		 */
 		public $crudMap = array(
+			'ajax_ficheprescription93_numconvention' => 'read',
+			'ajax_prescripteur' => 'read',
 			'add' => 'create',
 			'edit' => 'update',
 			'index' => 'read',
@@ -78,7 +80,8 @@
 		);
 
 		public $commeDroit = array(
-			'ajax_ficheprescription93_numconvention' => 'Fichesprescriptions93:index'
+			'ajax_ficheprescription93_numconvention' => 'Fichesprescriptions93:index',
+			'ajax_prescripteur' => 'Fichesprescriptions93:index',
 		);
 
 		/**
@@ -91,6 +94,52 @@
 			$this->set( compact( 'json' ) );
 			$this->layout = 'ajax';
 			$this->render( '/Elements/json' );
+		}
+
+		/**
+		 * Ajax permettant de récupérer les coordonnées du prescripteur ou de sa
+		 * structure.
+		 */
+		public function ajax_prescripteur() {
+			$structurereferente_id = Hash::get( $this->request->data, 'structurereferente_id' );
+			$referent_id = suffix( Hash::get( $this->request->data, 'referent_id' ) );
+
+			$result = array();
+			if( !empty( $structurereferente_id ) ) {
+				$query = array(
+					'fields' => array(
+						'Structurereferente.num_voie',
+						'Structurereferente.type_voie',
+						'Structurereferente.nom_voie',
+						'Structurereferente.code_postal',
+						'Structurereferente.ville',
+						'Structurereferente.numtel',
+						//'Structurereferente.numfax', // FIXME
+					),
+					'contain' => false,
+					'joins' => array(),
+					'conditions' => array(
+						'Structurereferente.id' => $structurereferente_id,
+					)
+				);
+
+				if( !empty( $referent_id ) ) {
+					$query['fields'][] = 'Referent.email';
+					$query['joins'][] = $this->Ficheprescription93->Referent->Structurereferente->join( 'Referent', array( 'type' => 'INNER' ) );
+					$query['conditions']['Referent.id'] = $referent_id;
+				}
+
+				$result = $this->Ficheprescription93->Referent->Structurereferente->find( 'first', $query );
+			}
+
+			$options = array(
+				'Structurereferente' => array(
+					'type_voie' => ClassRegistry::init( 'Option' )->typevoie()
+				)
+			);
+
+			$this->set( compact( 'result', 'options' ) );
+			$this->layout = 'ajax';
 		}
 
 		/**

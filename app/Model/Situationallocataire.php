@@ -59,7 +59,28 @@
 									WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_D1::NC\'
 									ELSE \'ENUM::NATPF_D1::NC\'
 								END )'
-			)
+			),
+			'natpf_fp' => array(
+				'type'      => 'string',
+				'postgres'  => '( CASE
+					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::socle_majore_activite\'
+					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::socle_activite\'
+					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::socle_majore\'
+					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::socle\'
+					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::NC\'
+					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::NC\'
+					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::NC\'
+					WHEN ( "%s"."natpf_socle" = \'0\' AND "%s"."natpf_activite" = \'0\' AND "%s"."natpf_majore" = \'0\' ) THEN \'ENUM::NATPF_FP::NC\'
+					ELSE \'ENUM::NATPF_FP::NC\'
+				END )'
+			),
+			'inscritpe' => array(
+				'type'      => 'string',
+				'postgres'  => '( CASE
+					WHEN ( "%s"."etatpe" = \'inscription\' ) THEN \'1\'
+					ELSE \'0\'
+				END )'
+			),
 		);
 
 		/**
@@ -74,6 +95,20 @@
 			'ENUM::NATPF_D1::socle',
 			'ENUM::NATPF_D1::activite',
 			'ENUM::NATPF_D1::NC',
+		);
+
+		/**
+		 * Les valeurs possibles pour la nature de la prestation (voir le champ
+		 * virtuel natpf_fp.
+		 *
+		 * @var array
+		 */
+		public $natpf_fp = array(
+			'ENUM::NATPF_FP::socle_majore_activite',
+			'ENUM::NATPF_FP::socle_activite',
+			'ENUM::NATPF_FP::socle_majore',
+			'ENUM::NATPF_FP::socle',
+			'ENUM::NATPF_FP::NC',
 		);
 
 		/**
@@ -277,6 +312,8 @@
 
 			$return['Situationallocataire']['natpf_d1'] = $this->natpfD1( $return, true );
 
+			$return['Situationallocataire']['inscritpe'] = ( $return['Situationallocataire']['etatpe'] == 'inscription' ? '1' : '0' );
+
 			return $return;
 		}
 
@@ -299,6 +336,17 @@
 			foreach( $this->natpf_d1 as $natpf_d1 ) {
 				$enums[$this->alias]['natpf_d1'][$natpf_d1] = __d( 'situationallocataire', $natpf_d1 );
 			}
+
+			$enums[$this->alias]['natpf_fp'] = array();
+			foreach( $this->natpf_fp as $natpf_fp ) {
+				$value = str_replace( 'ENUM::NATPF_FP::', '', $natpf_fp );
+				$enums[$this->alias]['natpf_fp'][$value] = __d( 'situationallocataire', $natpf_fp );
+			}
+
+			$enums[$this->alias]['inscritpe'] = array(
+				'0' => __d( 'situationallocataire', 'ENUM::INSCRITPE::0' ),
+				'1' => __d( 'situationallocataire', 'ENUM::INSCRITPE::1' ),
+			);
 
 			return $enums;
 		}
