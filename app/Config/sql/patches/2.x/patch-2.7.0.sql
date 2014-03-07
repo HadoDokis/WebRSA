@@ -324,6 +324,8 @@ COMMENT ON TABLE prestatairesfps93 IS 'Prestataires pour la fiche de prescriptio
 CREATE UNIQUE INDEX prestatairesfps93_name_idx ON prestatairesfps93( name );
 
 --------------------------------------------------------------------------------
+-- TODO: adressesprestatairesfps93 + autres adresses ?
+--------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS actionsfps93 CASCADE;
 CREATE TABLE actionsfps93 (
@@ -348,26 +350,44 @@ ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_actif_in_list_chk CHECK ( c
 ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_numconvention_alpha_numeric_chk CHECK ( cakephp_validate_alpha_numeric( numconvention ) );
 
 --------------------------------------------------------------------------------
--- TODO: adresses pour les différentes tables
---------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS fichesprescriptions93 CASCADE;
 CREATE TABLE fichesprescriptions93 (
-    id						SERIAL NOT NULL PRIMARY KEY,
-    personne_id				INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	statut					VARCHAR(30) NOT NULL,
+    id							SERIAL NOT NULL PRIMARY KEY,
+    personne_id					INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	statut						VARCHAR(30) NOT NULL,
 	-- Bloc "Prescripteur/Référent"
-    referent_id				INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    objet					TEXT DEFAULT NULL,
-	-- Bloc "Prestataire/Partenaire" (FIXME: DEFAULT NULL / NOT NULL ?)
-	rdvprestataire_date		TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
-	rdvprestataire_personne	TEXT DEFAULT NULL,
-    actionfp93_id			INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	dd_action				DATE DEFAULT NULL, -- FIXME: NOT NULL
-	df_action				DATE DEFAULT NULL, -- FIXME: NOT NULL
-	duree_action			INTEGER DEFAULT NULL, -- FIXME: NOT NULL
-    created					TIMESTAMP WITHOUT TIME ZONE,
-    modified				TIMESTAMP WITHOUT TIME ZONE
+    referent_id					INTEGER NOT NULL REFERENCES referents(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    objet						TEXT DEFAULT NULL,
+	-- Bloc "Prestataire/Partenaire"
+	rdvprestataire_date			TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
+	rdvprestataire_personne		TEXT DEFAULT NULL,
+    actionfp93_id				INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	dd_action					DATE DEFAULT NULL, -- FIXME: NOT NULL
+	df_action					DATE DEFAULT NULL, -- FIXME: NOT NULL
+	duree_action				INTEGER DEFAULT NULL, -- FIXME: NOT NULL
+	-- Bloc "Engagement"
+	date_signature				DATE DEFAULT NULL,
+	-- Bloc "Modalités de transmission"
+	date_transmission			DATE DEFAULT NULL,
+	-- Bloc "Résultat de l'effectivité de la prescription"
+	date_retour					DATE DEFAULT NULL,
+	benef_retour_presente		VARCHAR(6) DEFAULT NULL,
+	retour_nom_partenaire		TEXT DEFAULT NULL,
+	date_signature_partenaire	DATE DEFAULT NULL,
+	-- Bloc "Suivi de l'action"
+	personne_recue				VARCHAR(1) DEFAULT NULL,
+	-- TODO: motif + autre
+	personne_retenue			VARCHAR(1) DEFAULT NULL,
+	-- TODO: motif + autre
+	personne_souhaite_integrer	VARCHAR(1) DEFAULT NULL,
+	-- TODO: motif + autre
+	personne_a_integre			VARCHAR(1) DEFAULT NULL,
+	-- TODO: motif + autre
+	date_bilan_mi_parcours		DATE DEFAULT NULL,
+	date_bilan_final			DATE DEFAULT NULL,
+    created						TIMESTAMP WITHOUT TIME ZONE,
+    modified					TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE fichesprescriptions93 IS 'Fiche de prescription - CG 93';
 
@@ -376,6 +396,40 @@ CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( ref
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_benef_retour_presente_in_list_chk CHECK ( cakephp_validate_in_list( benef_retour_presente, ARRAY['oui', 'non', 'excuse'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_recue_in_list_chk CHECK ( cakephp_validate_in_list( personne_recue, ARRAY['0', '1'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_retenue_in_list_chk CHECK ( cakephp_validate_in_list( personne_retenue, ARRAY['0', '1'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_souhaite_integrer_in_list_chk CHECK ( cakephp_validate_in_list( personne_souhaite_integrer, ARRAY['0', '1'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_a_integre_in_list_chk CHECK ( cakephp_validate_in_list( personne_a_integre, ARRAY['0', '1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS modstransmsfps93 CASCADE;
+CREATE TABLE modstransmsfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+    name		VARCHAR(250) NOT NULL,
+    created		TIMESTAMP WITHOUT TIME ZONE,
+    modified	TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE modstransmsfps93 IS 'Paramétrage des modalités de transmission pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX modstransmsfps93_name_idx ON modstransmsfps93( name );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS fichesprescriptions93_modstransmsfps93 CASCADE;
+CREATE TABLE fichesprescriptions93_modstransmsfps93 (
+    id						SERIAL NOT NULL PRIMARY KEY,
+	ficheprescription93_id	INTEGER NOT NULL REFERENCES fichesprescriptions93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	modtransmfp93_id		INTEGER NOT NULL REFERENCES modstransmsfps93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+    created		TIMESTAMP WITHOUT TIME ZONE,
+    modified	TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE fichesprescriptions93_modstransmsfps93 IS 'Modalités de transmission pour la fiche de prescription - CG 93';
+
+CREATE INDEX fichesprescriptions93_modstransmsfps93_ficheprescription93_id_idx ON fichesprescriptions93_modstransmsfps93( ficheprescription93_id );
+CREATE INDEX fichesprescriptions93_modstransmsfps93_modtransmfp93_id_idx ON fichesprescriptions93_modstransmsfps93( modtransmfp93_id );
+CREATE UNIQUE INDEX fichesprescriptions93_modstransmsfps93_ficheprescription93_id_modtransmfp93_id_idx ON fichesprescriptions93_modstransmsfps93( ficheprescription93_id, modtransmfp93_id );
 
 --------------------------------------------------------------------------------
 
@@ -454,7 +508,7 @@ SELECT add_missing_table_field( 'public', 'contratsinsertion', 'cumulduree', 'IN
 -- 20140307 : Ajout d'un état supplémentaire pour les dossiers PCGs (dossier à revoir)
 -------------------------------------------------------------------------------------
 -- Un dossier ne possède pas d'état PCG dossierpcg66_id = 4634 en base CG66
--- UPDATE dossierspcgs66 SET etatdossierpcg = 'transmisop' WHERE id = '4634'; 
+-- UPDATE dossierspcgs66 SET etatdossierpcg = 'transmisop' WHERE id = '4634';
 SELECT alter_table_drop_constraint_if_exists( 'public', 'dossierspcgs66', 'dossierspcgs66_etatdossierpcg_in_list_chk' );
 ALTER TABLE dossierspcgs66 ADD CONSTRAINT dossierspcgs66_etatdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( etatdossierpcg, ARRAY['attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'transmisop', 'atttransmisop', 'annule', 'attinstrattpiece', 'attinstrdocarrive','arevoir'] ) );
 -- *****************************************************************************

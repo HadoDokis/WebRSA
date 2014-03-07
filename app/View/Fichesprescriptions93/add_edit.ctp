@@ -138,6 +138,72 @@
 		)
 	);
 
+	// Cadre "Engagement"
+	echo $this->Html->tag(
+		'fieldset',
+		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Engagement' ) )
+		.$this->Html->tag( 'p', __d( $this->request->params['controller'], 'Ficheprescription93.texte_engagement' ) )
+		.$this->Default3->subform(
+			array(
+				'Ficheprescription93.date_signature' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+			),
+			array(
+				'options' => $options,
+			)
+		)
+	);
+
+	// Cadre "Modalités de transmission"
+	echo $this->Html->tag(
+		'fieldset',
+		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Transmission' ) )
+		.$this->Default3->subform(
+			array(
+				'Ficheprescription93.date_transmission' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+				'Modtransmfp93.Modtransmfp93' => array( 'multiple' => 'checkbox' ),
+			),
+			array(
+				'options' => $options,
+			)
+		)
+	);
+
+	// Cadre "Résultat de l'effectivité de la prescription"
+	echo $this->Html->tag(
+		'fieldset',
+		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Effectivite' ) )
+		.$this->Default3->subform(
+			array(
+				'Ficheprescription93.date_retour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+				'Ficheprescription93.retour_nom_partenaire' => array( 'type' => 'text' ),
+				'Ficheprescription93.benef_retour_presente' => array( 'empty' => true ),
+				'Ficheprescription93.date_signature_partenaire' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+			),
+			array(
+				'options' => $options,
+			)
+		)
+	);
+
+	// Cadre "Suivi de l'action"
+	echo $this->Html->tag(
+		'fieldset',
+		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Suivi' ) )
+		.$this->Default3->subform(
+			array(
+				'Ficheprescription93.personne_recue' => array( 'empty' => true ),
+				'Ficheprescription93.personne_retenue' => array( 'empty' => true ),
+				'Ficheprescription93.personne_souhaite_integrer' => array( 'empty' => true ),
+				'Ficheprescription93.personne_a_integre' => array( 'empty' => true ),
+				'Ficheprescription93.date_bilan_mi_parcours' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+				'Ficheprescription93.date_bilan_final' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+			),
+			array(
+				'options' => $options,
+			)
+		)
+	);
+
 	echo $this->Default3->DefaultForm->buttons( array( 'Validate', 'Cancel' ) );
 	echo $this->Default3->DefaultForm->end();
 ?>

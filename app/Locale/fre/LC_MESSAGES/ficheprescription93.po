@@ -24,3 +24,46 @@ msgstr "Effectivité renseignée"
 
 msgid "ENUM::STATUT::05suivi_renseigne"
 msgstr "Suivi renseigné"
+
+# ==============================================================================
+
+msgid "ENUM::BENEF_RETOUR_PRESENTE::oui"
+msgstr "Oui"
+
+msgid "ENUM::BENEF_RETOUR_PRESENTE::non"
+msgstr "Non"
+
+msgid "ENUM::BENEF_RETOUR_PRESENTE::excuse"
+msgstr "S'est excusée"
+
+# ==============================================================================
+
+msgid "ENUM::PERSONNE_RECUE::0"
+msgstr "Non"
+
+msgid "ENUM::PERSONNE_RECUE::1"
+msgstr "Oui"
+
+# ==============================================================================
+
+msgid "ENUM::PERSONNE_RETENUE::0"
+msgstr "Non"
+
+msgid "ENUM::PERSONNE_RETENUE::1"
+msgstr "Oui"
+
+# ==============================================================================
+
+msgid "ENUM::PERSONNE_SOUHAITE_INTEGRER::0"
+msgstr "Non"
+
+msgid "ENUM::PERSONNE_SOUHAITE_INTEGRER::1"
+msgstr "Oui"
+
+# ==============================================================================
+
+msgid "ENUM::PERSONNE_A_INTEGRE::0"
+msgstr "Non"
+
+msgid "ENUM::PERSONNE_A_INTEGRE::1"
+msgstr "Oui"
