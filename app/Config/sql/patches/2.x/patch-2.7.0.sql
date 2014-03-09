@@ -324,7 +324,23 @@ COMMENT ON TABLE prestatairesfps93 IS 'Prestataires pour la fiche de prescriptio
 CREATE UNIQUE INDEX prestatairesfps93_name_idx ON prestatairesfps93( name );
 
 --------------------------------------------------------------------------------
--- TODO: adressesprestatairesfps93 + autres adresses ?
+
+DROP TABLE IF EXISTS adressesprestatairesfps93 CASCADE;
+CREATE TABLE adressesprestatairesfps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+	prestatairefp93_id	INTEGER NOT NULL REFERENCES prestatairesfps93( id ) ON DELETE CASCADE ON UPDATE CASCADE,
+	adresse				TEXT NOT NULL,
+	codepos				VARCHAR(5) NOT NULL,
+	localite			VARCHAR(250) NOT NULL,
+	tel					VARCHAR(10) DEFAULT NULL,
+	fax					VARCHAR(10) DEFAULT NULL,
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE adressesprestatairesfps93 IS 'Adresses des prestataires pour la fiche de prescription - CG 93';
+
+CREATE INDEX adressesprestatairesfps93_prestatairefp93_id_idx ON adressesprestatairesfps93( prestatairefp93_id );
+
 --------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS actionsfps93 CASCADE;
@@ -351,6 +367,70 @@ ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_numconvention_alpha_numeric
 
 --------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS motifsnonreceptionsfps93 CASCADE;
+CREATE TABLE motifsnonreceptionsfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+    name		VARCHAR(250) NOT NULL,
+    autre		VARCHAR(1) NOT NULL DEFAULT '0',
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifsnonreceptionsfps93 IS 'Motifs de non réception pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX motifsnonreceptionsfps93_name_idx ON motifsnonreceptionsfps93( name );
+
+ALTER TABLE motifsnonreceptionsfps93 ADD CONSTRAINT motifsnonreceptionsfps93_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS motifsnonretenuesfps93 CASCADE;
+CREATE TABLE motifsnonretenuesfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+    name		VARCHAR(250) NOT NULL,
+    autre		VARCHAR(1) NOT NULL DEFAULT '0',
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifsnonretenuesfps93 IS 'Motifs de non réception pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX motifsnonretenuesfps93_name_idx ON motifsnonretenuesfps93( name );
+
+ALTER TABLE motifsnonretenuesfps93 ADD CONSTRAINT motifsnonretenuesfps93_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS motifsnonsouhaitsfps93 CASCADE;
+CREATE TABLE motifsnonsouhaitsfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+    name		VARCHAR(250) NOT NULL,
+    autre		VARCHAR(1) NOT NULL DEFAULT '0',
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifsnonsouhaitsfps93 IS 'Motifs de non souhait d\'intégration pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX motifsnonsouhaitsfps93_name_idx ON motifsnonsouhaitsfps93( name );
+
+ALTER TABLE motifsnonsouhaitsfps93 ADD CONSTRAINT motifsnonsouhaitsfps93_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS motifsnonintegrationsfps93 CASCADE;
+CREATE TABLE motifsnonintegrationsfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+    name		VARCHAR(250) NOT NULL,
+    autre		VARCHAR(1) NOT NULL DEFAULT '0',
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    modified    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE motifsnonintegrationsfps93 IS 'Motifs de non intégration pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX motifsnonintegrationsfps93_name_idx ON motifsnonintegrationsfps93( name );
+
+ALTER TABLE motifsnonintegrationsfps93 ADD CONSTRAINT motifsnonintegrationsfps93_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+
 DROP TABLE IF EXISTS fichesprescriptions93 CASCADE;
 CREATE TABLE fichesprescriptions93 (
     id							SERIAL NOT NULL PRIMARY KEY,
@@ -363,9 +443,10 @@ CREATE TABLE fichesprescriptions93 (
 	rdvprestataire_date			TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
 	rdvprestataire_personne		TEXT DEFAULT NULL,
     actionfp93_id				INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	dd_action					DATE DEFAULT NULL, -- FIXME: NOT NULL
-	df_action					DATE DEFAULT NULL, -- FIXME: NOT NULL
-	duree_action				INTEGER DEFAULT NULL, -- FIXME: NOT NULL
+	-- TODO: adresseprestatairefp93_id
+	dd_action					DATE DEFAULT NULL,
+	df_action					DATE DEFAULT NULL,
+	duree_action				INTEGER DEFAULT NULL,
 	-- Bloc "Engagement"
 	date_signature				DATE DEFAULT NULL,
 	-- Bloc "Modalités de transmission"
@@ -377,13 +458,22 @@ CREATE TABLE fichesprescriptions93 (
 	date_signature_partenaire	DATE DEFAULT NULL,
 	-- Bloc "Suivi de l'action"
 	personne_recue				VARCHAR(1) DEFAULT NULL,
-	-- TODO: motif + autre
+	motifnonreceptionfp93_id	INTEGER DEFAULT NULL REFERENCES motifsnonreceptionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_nonrecue_autre		VARCHAR(250) DEFAULT NULL,
+
 	personne_retenue			VARCHAR(1) DEFAULT NULL,
-	-- TODO: motif + autre
+	motifnonretenuefp93_id		INTEGER DEFAULT NULL REFERENCES motifsnonretenuesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_nonretenue_autre	VARCHAR(250) DEFAULT NULL,
+
 	personne_souhaite_integrer	VARCHAR(1) DEFAULT NULL,
-	-- TODO: motif + autre
+	motifnonsouhaitfp93_id		INTEGER DEFAULT NULL REFERENCES motifsnonsouhaitsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_nonsouhaite_autre	VARCHAR(250) DEFAULT NULL,
+
 	personne_a_integre			VARCHAR(1) DEFAULT NULL,
-	-- TODO: motif + autre
+	personne_date_integration	DATE DEFAULT NULL,
+	motifnonintegrationfp93_id	INTEGER DEFAULT NULL REFERENCES motifsnonintegrationsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_nonintegre_autre	VARCHAR(250) DEFAULT NULL,
+
 	date_bilan_mi_parcours		DATE DEFAULT NULL,
 	date_bilan_final			DATE DEFAULT NULL,
     created						TIMESTAMP WITHOUT TIME ZONE,

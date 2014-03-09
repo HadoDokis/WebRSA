@@ -42,8 +42,16 @@ function dependantSelect( select2Id, select1Id ) {
 		selects[select2Id]['options'].push( option.innerHTML );
 	} );
 
+	// INFO: original
+//	var pattern = '^[^_]+_';
+//	var replacement = '';
+
+	// Là, on est certain de ne prendre que le suffixe
+	var pattern = '^(.*_){0,1}([^_]+)$';
+	var replacement = '$2';
+
 	// Vidage de la liste
-	var select1ValueRegexp = new RegExp( '^' + $F( select1Id ).replace( new RegExp( '^[^_]+_', 'gi' ), '' ) + '_', 'gi' );
+	var select1ValueRegexp = new RegExp( '^' + $F( select1Id ).replace( new RegExp( pattern, 'gi' ), replacement ) + '_', 'gi' );
 	$$('#' + select2Id + ' option').each( function ( option ) {
 		if( ( $(option).value != '' ) && ( ( $(option).value != '' ) && ( $( option ).value.match( select1ValueRegexp ) == null ) ) )
 		$(option).remove();
@@ -56,12 +64,14 @@ function dependantSelect( select2Id, select1Id ) {
 		} );
 
 		// INFO: pour les select dépendants en cascade
-		var select1IdValue = $( select1Id ).value.replace( new RegExp( '^[^_]+_', 'gi' ), '' );
-		var select1IdRegexp = new RegExp( '^' + select1IdValue + '_' );
+		var select1IdValue = $( select1Id ).value.replace( new RegExp( pattern, 'gi' ), replacement );
+		if( select1IdValue !== '' ) {
+			var select1IdRegexp = new RegExp( '^' + select1IdValue + '_' );
 
-		for( var i = 0 ; i < selects[select2Id]['values'].length ; i++ ) {
-			if( selects[select2Id]['values'][i] == '' || selects[select2Id]['values'][i].match( select1IdRegexp, "g" ) ) {
-				$(select2Id).insert( new Element( 'option', { 'value': selects[select2Id]['values'][i] } ).update( selects[select2Id]['options'][i] ) );
+			for( var i = 0 ; i < selects[select2Id]['values'].length ; i++ ) {
+				if( selects[select2Id]['values'][i] == '' || selects[select2Id]['values'][i].match( select1IdRegexp, "g" ) ) {
+					$(select2Id).insert( new Element( 'option', { 'value': selects[select2Id]['values'][i] } ).update( selects[select2Id]['options'][i] ) );
+				}
 			}
 		}
 

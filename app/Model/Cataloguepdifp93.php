@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Cataloguepdifp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Cataloguepdifp93 extends AppModel
+	class Cataloguepdifp93 extends AbstractSearch
 	{
 		/**
 		 * Nom du modèle.
@@ -28,6 +29,25 @@
 		 * @var boolean
 		 */
 		public $useTable = false;
+
+		/**
+		 * Liste des modèles disponibles dans le paramétrage.
+		 *
+		 * @var array
+		 */
+		public $modelesParametrages = array(
+			'Thematiquefp93',
+			'Categoriefp93',
+			'Filierefp93',
+			'Actionfp93',
+			'Prestatairefp93',
+			'Modtransmfp93',
+			'Adresseprestatairefp93',
+			'Motifnonreceptionfp93',
+			'Motifnonretenuefp93',
+			'Motifnonsouhaitfp93',
+			'Motifnonintegrationfp93'
+		);
 
 		/**
 		 *
@@ -112,6 +132,7 @@
 				'Filierefp93.name',
 				'Prestatairefp93.name',
 				'Actionfp93.name',
+				'Actionfp93.numconvention',
 			);
 			foreach( $paths as $path ) {
 				$value = trim( Hash::get( $search, $path ) );
@@ -124,21 +145,10 @@
 		}
 
 		/**
-		 * Moteur de recherche de base.
-		 *
-		 * @return array
-		 */
-		public function search( array $search = array() ) {
-			$query = $this->searchQuery();
-
-			$query = $this->searchConditions( $query, $search );
-
-			return $query;
-		}
-
-		/**
 		 * Retourne les options nécessaires au formulaire de recherche, aux
 		 * impressions, ...
+		 *
+		 * @todo @param array $params = array()
 		 *
 		 * @return array
 		 */

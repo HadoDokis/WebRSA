@@ -360,9 +360,7 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
-		 * @todo Si on faisait le find sur le modèle Ficheprescription93 (voir
-		 * comment faire les jointures ici), ça irait peut-être plus vite (pour
-		 * les personnes possédant une fiche de prescription uniquement).
+		 * @todo AbstractSearch
 		 *
 		 * @return array
 		 */
@@ -540,6 +538,8 @@
 		 * Retourne un querydata suivant les filtres renvoyés par le moteur de
 		 * recherche.
 		 *
+		 * @todo AbstractSearch
+		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -582,6 +582,8 @@
 		/**
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
+		 *
+		 * array $params = array( 'allocataire' => true )
 		 *
 		 * @param boolean $allocataireOptions
 		 * @return array

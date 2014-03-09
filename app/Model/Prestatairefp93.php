@@ -54,6 +54,17 @@
 				'exclusive' => null,
 				'finderQuery' => null
 			),
+			'Adresseprestatairefp93' => array(
+				'className' => 'Adresseprestatairefp93',
+				'foreignKey' => 'prestatairefp93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 		);
 
 		/**

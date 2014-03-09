@@ -47,6 +47,24 @@ INSERT INTO modstransmsfps93 ( name, created, modified ) VALUES
 	( 'courrier postal', NOW(), NOW() ),
 	( 'par mail', NOW(), NOW() );
 
+INSERT INTO motifsnonreceptionsfps93 ( name, autre, created, modified ) VALUES
+	( 'Motif de non réception n°1', '0', NOW(), NOW() ),
+	( 'Motif de non réception n°2', '1', NOW(), NOW() );
+
+INSERT INTO motifsnonretenuesfps93 ( name, autre, created, modified ) VALUES
+	( 'l\'allocataire n\'a pas réussi les tests', '0', NOW(), NOW() ),
+	( 'pas de place disponible', '0', NOW(), NOW() ),
+	( 'en file d\'attente', '0', NOW(), NOW() ),
+	( 'autre', '1', NOW(), NOW() );
+
+INSERT INTO motifsnonsouhaitsfps93 ( name, autre, created, modified ) VALUES
+	( 'Motif de non souhait n°1', '0', NOW(), NOW() ),
+	( 'Motif de non souhait n°2', '1', NOW(), NOW() );
+
+INSERT INTO motifsnonintegrationsfps93 ( name, autre, created, modified ) VALUES
+	( 'Motif de non intégration n°1', '0', NOW(), NOW() ),
+	( 'Motif de non intégration n°2', '1', NOW(), NOW() );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

@@ -93,6 +93,36 @@
 			return $this->Html->scriptBlock( $script );
 		}
 
+		public function observeDisableFieldsOnValue( $master, $slaves, $values, $condition, $toggleVisibility = false ) {
+			$master = $this->domId( $master );
+
+			$slaves = (array)$slaves;
+			foreach( $slaves as $i => $slave ) {
+				$slaves[$i] = $this->domId( $slave );
+			}
+			$slaves = "[ '".implode( "', '", $slaves )."' ]";
+
+			$values = (array)$values;
+			foreach( $values as $i => $value ) {
+				if( $value === null ) {
+					$value = 'undefined';
+				}
+				else {
+					$value = "'{$value}'";
+				}
+				$values[$i] = $value;
+			}
+			$values = "[ ".implode( ", ", $values )." ]";
+
+			$condition = ( $condition ? 'true' : 'false' );
+
+			$toggleVisibility = ( $toggleVisibility ? 'true' : 'false' );
+
+			$script = "observeDisableFieldsOnValue( '{$master}', {$slaves}, {$values}, {$condition}, {$toggleVisibility} );\n";
+
+			return $this->Html->scriptBlock( "document.observe( \"dom:loaded\", function() {\n{$script}} );" );
+		}
+
 		/**
 		 * Méthode générique permettant de retourner un ensemble de cases à cocher au sein d'un
 		 * fieldset, activées ou désactivées par une autre case à cocher située au-dessus du fieldset.

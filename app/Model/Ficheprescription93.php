@@ -5,13 +5,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Ficheprescription93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Ficheprescription93 extends AppModel
+	class Ficheprescription93 extends AbstractSearch
 	{
 		/**
 		 * Nom du modèle.
@@ -66,6 +67,42 @@
 				'foreignKey' => 'actionfp93_id',
 				'conditions' => null,
 				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Motifnonintegrationfp93' => array(
+				'className' => 'Motifnonintegrationfp93',
+				'foreignKey' => 'motifnonintegrationfp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Motifnonreceptionfp93' => array(
+				'className' => 'Motifnonreceptionfp93',
+				'foreignKey' => 'motifnonreceptionfp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Motifnonretenuefp93' => array(
+				'className' => 'Motifnonretenuefp93',
+				'foreignKey' => 'motifnonretenuefp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Motifnonsouhaitfp93' => array(
+				'className' => 'Motifnonsouhaitfp93',
+				'foreignKey' => 'motifnonsouhaitfp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
@@ -140,14 +177,19 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
-		 * @todo Si on faisait le find sur le modèle Ficheprescription93 (voir
-		 * comment faire les jointures ici), ça irait peut-être plus vite (pour
-		 * les personnes possédant une fiche de prescription uniquement).
-		 *
+		 * @param array $types Le nom du modèle => le type de jointure
 		 * @return array
 		 */
-		public function searchQuery() {
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+		public function searchQuery( array $types = array() ) {
+			$types += array(
+				'Ficheprescription93' => 'LEFT OUTER',
+				'Actionfp93' => 'LEFT OUTER',
+				'Filierefp93' => 'LEFT OUTER',
+				'Categoriefp93' => 'LEFT OUTER',
+				'Thematiquefp93' => 'LEFT OUTER',
+			);
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
@@ -166,11 +208,11 @@
 				);
 
 				// Ajout des jointures supplémentaires
-				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Actionfp93->join( 'Filierefp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'LEFT OUTER' ) );
-				$query['joins'][] = $this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'LEFT OUTER' ) );
+				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => $types['Ficheprescription93'] ) );
+				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) );
+				$query['joins'][] = $this->Actionfp93->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
+				$query['joins'][] = $this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
+				$query['joins'][] = $this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
 
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
@@ -213,10 +255,16 @@
 			}
 
 			// 3. La même sans ne prendre que le suffixe
-			$paths = array( 'Ficheprescription93.statut' );
+			$paths = array(
+				'Ficheprescription93.statut',
+				'Ficheprescription93.benef_retour_presente',
+				'Ficheprescription93.personne_recue',
+				'Ficheprescription93.personne_retenue',
+				'Ficheprescription93.personne_a_integre',
+			);
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
-				if( !empty( $value ) ) {
+				if( !in_array( $value, array( null, '' ), true ) ) {
 					$query['conditions'][$path] = $value;
 				}
 			}
@@ -227,23 +275,26 @@
 				$query['conditions']['UPPER( Actionfp93.numconvention ) LIKE'] = strtoupper( $value ).'%';
 			}
 
-			// 4. Plages de dates
-			$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, 'Ficheprescription93.rdvprestataire_date' );
+			// 5. Plages de dates
+			$paths = array( 'Ficheprescription93.rdvprestataire_date', 'Ficheprescription93.date_transmission', 'Ficheprescription93.date_retour', 'Ficheprescription93.df_action' );
+			foreach( $paths as $path ) {
+				$query['conditions'] = $this->conditionsDates( $query['conditions'], $search, $path );
+			}
 
-			return $query;
-		}
-
-		/**
-		 * Retourne un querydata suivant les filtres renvoyés par le moteur de
-		 * recherche.
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		public function search( array $search = array() ) {
-			$query = $this->searchQuery();
-
-			$query = $this->searchConditions( $query, $search );
+			// 6. Possède certaines dates
+			$paths = array( 'Ficheprescription93.has_date_bilan_mi_parcours', 'Ficheprescription93.has_date_bilan_final' );
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( !in_array( $value, array( null, '' ), true ) ) {
+					$path = str_replace( '.has_', '.', $path );
+					if( $value ) {
+						$query['conditions'][] = "{$path} IS NOT NULL";
+					}
+					else {
+						$query['conditions'][] = "{$path} IS NULL";
+					}
+				}
+			}
 
 			return $query;
 		}
@@ -251,6 +302,9 @@
 		/**
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
+		 *
+		 * @todo @param array( 'allocataire' => true, 'find' => false )
+		 * @todo actif
 		 *
 		 * @param boolean $allocataireOptions
 		 * @param boolean $findLists
@@ -288,6 +342,21 @@
 					// array( 'Ficheprescription93' => array( 'actionfp93_id' => $this->Actionfp93->findListPrefixed( 'filierefp93_id', 'id', 'name' ) ) )
 					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) )
 				);
+
+				// Valeurs "Autre" pour les motifs ...
+				foreach( array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93' ) as $motifName ) {
+					$foreignKey = Inflector::underscore( $motifName ).'_id';
+
+					$options[$this->alias][$foreignKey] = $this->{$motifName}->find( 'list' );
+
+					$query = array(
+						'fields' => array( "{$motifName}.id" ),
+						'conditions' => array(
+							"{$motifName}.autre" => '1'
+						)
+					);
+					$options['Autre'][$this->alias][$foreignKey] = $this->{$motifName}->find( 'list', $query );
+				}
 
 				// Test Ficheprescription93.actionfp93_id
 				$conditions = array();

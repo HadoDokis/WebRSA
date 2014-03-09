@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Modtransmfp93.
+	 * Code source de la classe Motifnonsouhaitfp93.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,19 +9,18 @@
 	 */
 
 	/**
-	 * La classe Modtransmfp93 contient les modalités de transmission de la fiche
-	 * de prescription du CG 93.
+	 * La classe Motifnonsouhaitfp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Modtransmfp93 extends AppModel
+	class Motifnonsouhaitfp93 extends AppModel
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'Modtransmfp93';
+		public $name = 'Motifnonsouhaitfp93';
 
 		/**
 		 * Récursivité par défaut du modèle.
@@ -41,26 +40,21 @@
 		);
 
 		/**
-		 * Associations "Has and belongs to many".
+		 * Associations "Has many".
 		 *
 		 * @var array
 		 */
-		public $hasAndBelongsToMany = array(
+		public $hasMany = array(
 			'Ficheprescription93' => array(
 				'className' => 'Ficheprescription93',
-				'joinTable' => 'fichesprescriptions93_modstransmsfps93',
-				'foreignKey' => 'modtransmfp93_id',
-				'associationForeignKey' => 'ficheprescription93_id',
-				'unique' => true,
+				'foreignKey' => 'motifnonsouhaitfp93_id',
 				'conditions' => null,
-				'fields' => null,
 				'order' => null,
 				'limit' => null,
 				'offset' => null,
-				'finderQuery' => null,
-				'deleteQuery' => null,
-				'insertQuery' => null,
-				'with' => 'Ficheprescription93Modtransmfp93'
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
 			),
 		);
 	}

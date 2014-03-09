@@ -192,9 +192,22 @@
 		.$this->Default3->subform(
 			array(
 				'Ficheprescription93.personne_recue' => array( 'empty' => true ),
+				'Ficheprescription93.motifnonreceptionfp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.personne_nonrecue_autre',
+
 				'Ficheprescription93.personne_retenue' => array( 'empty' => true ),
+				'Ficheprescription93.motifnonretenuefp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.personne_nonretenue_autre',
+
 				'Ficheprescription93.personne_souhaite_integrer' => array( 'empty' => true ),
+				'Ficheprescription93.motifnonsouhaitfp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.personne_nonsouhaite_autre',
+
 				'Ficheprescription93.personne_a_integre' => array( 'empty' => true ),
+				'Ficheprescription93.personne_date_integration' => array( 'dateFormat' => 'DMY' ),
+				'Ficheprescription93.motifnonintegrationfp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.personne_nonintegre_autre',
+
 				'Ficheprescription93.date_bilan_mi_parcours' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.date_bilan_final' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 			),
@@ -218,8 +231,106 @@
 			'Actionfp93.prestatairefp93_id' => 'Ficheprescription93.actionfp93_id',
 		)
 	);
-?>
-<?php
+
+	// Personne reçue
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.personne_recue',
+		array(
+			'Ficheprescription93.motifnonreceptionfp93_id',
+			'Ficheprescription93.personne_nonrecue_autre'
+		),
+		array( '', '1' ),
+		true
+	);
+
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.motifnonreceptionfp93_id',
+		array(
+			'Ficheprescription93.personne_nonrecue_autre'
+		),
+		(array)Hash::get( $options, 'Autre.Ficheprescription93.motifnonreceptionfp93_id' ),
+		false
+	);
+
+	// Personne retenue
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.personne_retenue',
+		array(
+			'Ficheprescription93.motifnonretenuefp93_id',
+			'Ficheprescription93.personne_nonretenue_autre',
+		),
+		array( '', '1' ),
+		true
+	);
+
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.motifnonretenuefp93_id',
+		array(
+			'Ficheprescription93.personne_nonretenue_autre'
+		),
+		(array)Hash::get( $options, 'Autre.Ficheprescription93.motifnonretenuefp93_id' ),
+		false
+	);
+
+	// Personne souhaite intégrer
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.personne_souhaite_integrer',
+		array(
+			'Ficheprescription93.motifnonsouhaitfp93_id',
+			'Ficheprescription93.personne_nonsouhaite_autre',
+		),
+		array( '', '1' ),
+		true
+	);
+
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.motifnonsouhaitfp93_id',
+		array(
+			'Ficheprescription93.personne_nonsouhaite_autre'
+		),
+		(array)Hash::get( $options, 'Autre.Ficheprescription93.motifnonsouhaitfp93_id' ),
+		false
+	);
+
+	// Personne a intégré
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.personne_a_integre',
+		array(
+			'Ficheprescription93.motifnonintegrationfp93_id',
+			'Ficheprescription93.personne_nonintegre_autre',
+		),
+		array( '', '1' ),
+		true
+	);
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.personne_a_integre',
+		array(
+			'Ficheprescription93.personne_date_integration.day',
+			'Ficheprescription93.personne_date_integration.month',
+			'Ficheprescription93.personne_date_integration.year',
+		),
+		array( '', '0' ),
+		true
+	);
+
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.motifnonintegrationfp93_id',
+		array(
+			'Ficheprescription93.personne_date_integration',
+		),
+		(array)Hash::get( $options, 'Autre.Ficheprescription93.motifnonintegrationfp93_id' ),
+		false
+	);
+
+	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+		'Ficheprescription93.motifnonintegrationfp93_id',
+		array(
+			'Ficheprescription93.personne_nonintegre_autre'
+		),
+		(array)Hash::get( $options, 'Autre.Ficheprescription93.motifnonintegrationfp93_id' ),
+		false
+	);
+
 	echo $this->Ajax2->autocomplete(
 		'Ficheprescription93.numconvention',
 		array(
@@ -258,4 +369,3 @@
 	} );
 //]]>
 </script>
-<?php debug( $this->request->data );?>

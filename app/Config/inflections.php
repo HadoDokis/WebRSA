@@ -434,6 +434,11 @@ $irregularPlural = array(
 	'cataloguepdifp93' => 'cataloguespdisfps93',
 	'modtransmfp93' => 'modstransmsfps93',
 	'ficheprescription93_modtransmfp93' => 'fichesprescriptions93_modstransmsfps93',
+	'adresseprestatairefp93' => 'adressesprestatairesfps93',
+	'motifnonreceptionfp93' => 'motifsnonreceptionsfps93',
+	'motifnonretenuefp93' => 'motifsnonretenuesfps93',
+	'motifnonsouhaitfp93' => 'motifsnonsouhaitsfps93',
+	'motifnonintegrationfp93' => 'motifsnonintegrationsfps93',
 );
 
 /**
