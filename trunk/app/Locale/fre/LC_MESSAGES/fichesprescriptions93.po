@@ -56,6 +56,33 @@ msgstr "Date de rendez-vous"
 msgid "Search.Ficheprescription93.statut"
 msgstr "Statut"
 
+msgid "Search.Ficheprescription93.date_transmission"
+msgstr "Date de transmission"
+
+msgid "Search.Ficheprescription93.date_retour"
+msgstr "Date de réception"
+
+msgid "Search.Ficheprescription93.df_action"
+msgstr "Date de fin de formation"
+
+msgid "Search.Ficheprescription93.benef_retour_presente"
+msgstr "L'allocataire s'est présenté"
+
+msgid "Search.Ficheprescription93.personne_recue"
+msgstr "L'allocataire a été reçu"
+
+msgid "Search.Ficheprescription93.personne_retenue"
+msgstr "L'allocataire a été retenu"
+
+msgid "Search.Ficheprescription93.personne_a_integre"
+msgstr "L'allocataire a intégré l'action"
+
+msgid "Search.Ficheprescription93.has_date_bilan_mi_parcours"
+msgstr "Date du bilan à mi-parcours renseignée"
+
+msgid "Search.Ficheprescription93.has_date_bilan_final"
+msgstr "Date du bilan final renseignée"
+
 # ------------------------------------------------------------------------------
 
 msgid "Dossier.matricule"
@@ -276,10 +303,10 @@ msgid "Ficheprescription93.date_retour"
 msgstr "Date de retour de la fiche au prescripteur ou au référent"
 
 msgid "Ficheprescription93.retour_nom_partenaire"
-msgstr "La personne s'est présentée"
+msgstr "Nom du partenaire qui a reçu l'allocataire"
 
 msgid "Ficheprescription93.benef_retour_presente"
-msgstr "Nom du partenaire qui a reçu l'allocataire"
+msgstr "La personne s'est présentée"
 
 msgid "Ficheprescription93.date_signature_partenaire"
 msgstr "Signé par le partenaire le"
@@ -292,14 +319,41 @@ msgstr "Suivi de l'action"
 msgid "Ficheprescription93.personne_recue"
 msgstr "La personne a été reçue en entretien"
 
+msgid "Ficheprescription93.motifnonreceptionfp93_id"
+msgstr "Motif"
+
+msgid "Ficheprescription93.personne_nonrecue_autre"
+msgstr "Si autre, préciser"
+
 msgid "Ficheprescription93.personne_retenue"
 msgstr "La personne a été retenue par la structure"
+
+msgid "Ficheprescription93.motifnonretenuefp93_id"
+msgstr "Motif"
+
+msgid "Ficheprescription93.personne_nonretenue_autre"
+msgstr "Si autre, préciser"
 
 msgid "Ficheprescription93.personne_souhaite_integrer"
 msgstr "La personne souhaite intégrer l'action"
 
+msgid "Ficheprescription93.motifnonsouhaitfp93_id"
+msgstr "Motif"
+
+msgid "Ficheprescription93.personne_nonsouhaite_autre"
+msgstr "Si autre, préciser"
+
 msgid "Ficheprescription93.personne_a_integre"
 msgstr "L'allocataire a intégré l'action"
+
+msgid "Ficheprescription93.personne_date_integration"
+msgstr "Date"
+
+msgid "Ficheprescription93.motifnonintegrationfp93_id"
+msgstr "Motif"
+
+msgid "Ficheprescription93.personne_nonintegre_autre"
+msgstr "Si autre, préciser"
 
 msgid "Ficheprescription93.date_bilan_mi_parcours"
 msgstr "Date du bilan à mi-parcours"

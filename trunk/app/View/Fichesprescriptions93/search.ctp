@@ -30,8 +30,29 @@
 	echo $this->Xform->input( 'Search.Actionfp93.filierefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.filierefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Actionfp93.prestatairefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.prestatairefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.actionfp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_transmission', array( 'domain' => 'fichesprescriptions93' ) );
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_retour', array( 'domain' => 'fichesprescriptions93' ) );
+
 	echo $this->Xform->input( 'Search.Ficheprescription93.statut', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.statut' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+
+	// TODO: effectivité oui/non
+	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.df_action', array( 'domain' => 'fichesprescriptions93' ) );
+
+	$paths = array(
+		'Ficheprescription93.benef_retour_presente',
+		'Ficheprescription93.personne_recue',
+		'Ficheprescription93.personne_retenue',
+		'Ficheprescription93.personne_a_integre',
+	);
+	foreach( $paths as $path ) {
+		echo $this->Xform->input( "Search.{$path}", array( 'type' => 'select', 'options' => (array)Hash::get( $options, $path ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
+	}
+
+	echo $this->Xform->input( 'Search.Ficheprescription93.has_date_bilan_mi_parcours', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.has_date_bilan_final', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
+
 	echo '</fieldset>';
 	// Fin spécificités fiche de prescription
 

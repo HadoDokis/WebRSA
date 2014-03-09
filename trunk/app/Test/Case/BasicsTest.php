@@ -516,6 +516,10 @@
 		 * Test de la fonction apache_version().
 		 */
 		 public function testApacheVersion() {
+			if( defined( 'CAKEPHP_SHELL' ) && CAKEPHP_SHELL ) {
+				$this->markTestSkipped( 'Ce test ne peux être exécuté que dans un navigateur.' );
+			}
+
 			 $result = apache_version();
 			 $this->assertPattern( '/^[0-9]+\.[0-9]+/', $result );
 		 }

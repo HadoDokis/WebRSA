@@ -114,7 +114,7 @@
 						'Structurereferente.code_postal',
 						'Structurereferente.ville',
 						'Structurereferente.numtel',
-						//'Structurereferente.numfax', // FIXME
+						'Structurereferente.numfax',
 					),
 					'contain' => false,
 					'joins' => array(),

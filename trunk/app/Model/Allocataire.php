@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Allocataire comporte des méthodes de base pour les recherches,
@@ -14,7 +15,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Allocataire extends AppModel
+	class Allocataire extends AbstractSearch
 	{
 		/**
 		 * Nom du modèle.
@@ -40,6 +41,7 @@
 		);
 
 		/**
+		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
 		 * @param array $types Le nom du modèle => le type de jointure
 		 * @return array
@@ -137,26 +139,13 @@
 		}
 
 		/**
-		 * Moteur de recherche de base, avec la searchQuery d'Allocataire et les
-		 * conditions de base sur la personne, son foyer, son dossier, ....
-		 *
-		 * @return array
-		 */
-		public function search( array $search = array() ) {
-			$query = $this->searchQuery();
-
-			$query = $this->searchConditions( $query, $search );
-
-			return $query;
-		}
-
-		/**
 		 * Retourne les options nécessaires au formulaire de recherche, aux
 		 * impressions, ...
 		 *
+		 * @param array $params
 		 * @return array
 		 */
-		public function options() {
+		public function options( array $params = array() ) {
 			$Option = ClassRegistry::init( 'Option' );
 
 			$options = array(

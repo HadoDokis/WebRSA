@@ -116,7 +116,7 @@
 			$links = array(
 				__d( 'cataloguespdisfps93', '/Cataloguespdisfps93/search/:heading' ) => array( 'controller' => 'cataloguespdisfps93', 'action' => 'search' ),
 			);
-			foreach( array( 'Thematiquefp93', 'Categoriefp93', 'Filierefp93', 'Actionfp93', 'Prestatairefp93' ) as $modelName ) {
+			foreach( ClassRegistry::init( 'Cataloguepdifp93' )->modelesParametrages as $modelName ) {
 				$links[__d( 'cataloguespdisfps93', "/Cataloguespdisfps93/index/{$modelName}/:heading" )] = array( 'controller' => 'cataloguespdisfps93', 'action' => 'index', $modelName );
 			}
 

@@ -12,7 +12,7 @@
 	 * La classe ImportcsvCataloguespdisfps93Shell permet d'importer le catalogue PDI
 	 * pour le module fiches de rpescriptions du CG 93.
 	 *
-	 * @todo  Tel_Action	 Adresse Action	 CP Action	 Commune Action
+	 * @todo  Adresseprestatairefp93
 	 * @todo XProgressbar
 	 *
 	 * @package app.Console.Command
@@ -333,6 +333,30 @@
 							}
 						}
 						// Fin prestataire
+
+						// Début Adresseprestatairefp93
+						if( empty( $validationErrors ) ) {
+							$conditions = array(
+								'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id,
+								'Adresseprestatairefp93.adresse' => $record[$headers['adresse action']],
+								'Adresseprestatairefp93.codepos' => $record[$headers['cp action']],
+								'Adresseprestatairefp93.localite' => $record[$headers['commune action']],
+								'Adresseprestatairefp93.tel' => $record[$headers['tel_action']],
+							);
+							$query = array(
+								'fields' => array( 'Adresseprestatairefp93.id' ),
+								'conditions' => $conditions
+							);
+							$adresseprestatairefp93 = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+							if( empty( $adresseprestatairefp93 ) ) {
+								$adresseprestatairefp93 = Hash::expand( $conditions );
+								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->create( $adresseprestatairefp93 );
+								if( !$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->save() ) {
+									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Adresseprestatairefp93' => $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->validationErrors ) ) );
+								}
+							}
+						}
+						// Fin Adresseprestatairefp93
 
 						// Début action
 						if( empty( $validationErrors ) ) {

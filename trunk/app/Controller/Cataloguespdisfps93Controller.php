@@ -51,8 +51,6 @@
 			'Search.SearchForm',
 		);
 
-		public $modelNames = array( 'Thematiquefp93', 'Categoriefp93', 'Filierefp93', 'Actionfp93', 'Prestatairefp93' );
-
 		/**
 		 * Modèles utilisés.
 		 *
@@ -98,7 +96,7 @@
 		 * @throws Error404Exception
 		 */
 		public function index( $modelName ) {
-			if( !in_array( $modelName, $this->modelNames ) ) {
+			if( !in_array( $modelName, $this->Cataloguepdifp93->modelesParametrages ) ) {
 				throw new Error404Exception();
 			}
 
@@ -151,7 +149,7 @@
 		}
 
 		protected function _add_edit( $modelName, $id = null ) {
-			if( !in_array( $modelName, $this->modelNames ) ) {
+			if( !in_array( $modelName, $this->Cataloguepdifp93->modelesParametrages ) ) {
 				throw new Error404Exception();
 			}
 
@@ -229,7 +227,7 @@
 		}
 
 		public function delete( $modelName, $id ) {
-			if( !in_array( $modelName, $this->modelNames ) ) {
+			if( !in_array( $modelName, $this->Cataloguepdifp93->modelesParametrages ) ) {
 				throw new Error404Exception();
 			}
 
