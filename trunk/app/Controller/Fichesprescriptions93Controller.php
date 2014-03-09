@@ -365,9 +365,24 @@
 		}
 
 		/**
-		 * @todo
+		 * Imprime une fiche de prescription.
+		 *
+		 * @param integer $ficheprescription93_id
+		 * @return void
 		 */
-		public function impression() {
+		public function impression( $ficheprescription93_id = null ) {
+			$personne_id = $this->Ficheprescription93->personneId( $ficheprescription93_id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$pdf = $this->Ficheprescription93->getDefaultPdf( $ficheprescription93_id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$ficheprescription93_id}_nouveau.pdf" );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer la fiche de prescription.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 	}
 ?>
