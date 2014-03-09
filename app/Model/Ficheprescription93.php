@@ -36,6 +36,12 @@
 		public $actsAs = array(
 			'Allocatairelie',
 			'Conditionnable',
+			'Gedooo.Gedooo',
+			'ModelesodtConditionnables' => array(
+				93 => array(
+					'Ficheprescription93/ficheprescription.odt',
+				)
+			),
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
@@ -327,8 +333,7 @@
 				$this->Actionfp93->Filierefp93->enums(),
 				$this->Actionfp93->Filierefp93->Categoriefp93->enums(),
 				$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
-				$this->Instantanedonneesfp93->enums(),
-				$this->Instantanedonneesfp93->Situationallocataire->enums()
+				$this->Instantanedonneesfp93->enums()
 			);
 
 			if( $findLists ) {
@@ -394,10 +399,9 @@
 		 * @throws InternalErrorException
 		 */
 		public function prepareFormDataAddEdit( $personne_id, $id = null ) {
-			// Pour l'état 01renseignee
+			// A la création
 			if( $id === null ) {
-				$return = $this->Instantanedonneesfp93->Situationallocataire->getSituation( $personne_id );
-				$return = $this->Instantanedonneesfp93->Situationallocataire->foo( $return );
+				$return = $this->Instantanedonneesfp93->getInstantane( $personne_id );
 
 				$return[$this->alias]['personne_id'] = $personne_id;
 				$return[$this->alias]['statut'] = '01renseignee';
@@ -413,7 +417,9 @@
 				$query = array(
 					'fields' => Hash::merge(
 						$this->fields(),
+						$this->Instantanedonneesfp93->fields(),
 						array(
+							$this->Instantanedonneesfp93->sqVirtualField( 'benef_natpf' ),
 							'Referent.structurereferente_id',
 							'Actionfp93.numconvention',
 							'Actionfp93.filierefp93_id',
@@ -425,8 +431,9 @@
 					),
 					'contain' => false,
 					'joins' => array(
-						$this->join( 'Referent' ),
 						$this->join( 'Actionfp93' ),
+						$this->join( 'Instantanedonneesfp93' ),
+						$this->join( 'Referent' ),
 						$this->Actionfp93->join( 'Filierefp93' ),
 						$this->Actionfp93->Filierefp93->join( 'Categoriefp93' ),
 						$this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
@@ -437,10 +444,23 @@
 				);
 				$data = $this->find( 'first', $query );
 
-				if( empty( $data ) || ( $data[$this->alias]['statut'] !== '01renseignee' ) ) {
+				if( empty( $data ) ) {
 					throw new InternalErrorException();
 				}
 
+				// Récupération des modes de transmissions
+				$query = array(
+					'fields' => array(
+						'Ficheprescription93Modtransmfp93.id',
+						'Ficheprescription93Modtransmfp93.modtransmfp93_id',
+					),
+					'conditions' => array(
+						'Ficheprescription93Modtransmfp93.ficheprescription93_id' => $id
+					)
+				);
+				$data['Modtransmfp93']['Modtransmfp93'] = (array)$this->Ficheprescription93Modtransmfp93->find( 'list', $query );
+
+				// Fin de la Récupération des données
 				$return = $data;
 
 				$return['Ficheprescription93']['structurereferente_id'] = $data['Referent']['structurereferente_id'];
@@ -456,110 +476,6 @@
 				// FIXME: Actionfp93.prestatairefp93_id -> à vérifier
 				$return['Actionfp93']['prestatairefp93_id'] = "{$data['Actionfp93']['filierefp93_id']}_{$data['Actionfp93']['prestatairefp93_id']}";
 				$return[$this->alias]['actionfp93_id'] = "{$return['Actionfp93']['prestatairefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
-			}
-
-			// N° de tel, fax et email allocataire + données socio-professionnelles + état du dernier CER
-			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			$query = array(
-				'fields' => array(
-					'Personne.id',
-					'Personne.numfixe',
-					'Personne.numport',
-					'Personne.email',
-					'Dsp.nivetu',
-					'DspRev.nivetu',
-					'Cer93.positioncer',
-					'Historiqueetatpe.identifiantpe',
-					'Historiqueetatpe.etat'
-				),
-				'contain' => false,
-				'joins' => array(
-					$this->Personne->join(
-						'Dsp',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
-							)
-						)
-					),
-					$this->Personne->join(
-						'DspRev',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
-							)
-						)
-					),
-					$this->Personne->join(
-						'Contratinsertion',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Contratinsertion.id IN ( '.$this->Personne->Contratinsertion->sqDernierContrat().' )'
-							)
-						)
-					),
-					$this->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
-					$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-					$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-				),
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-			);
-			$return = Hash::merge(
-				$return,
-				(array)$this->Personne->find( 'first', $query )
-			);
-
-			// Niveau d'étude
-			$nivetu = Hash::get( $return, 'DspRev.nivetu' );
-			if( $nivetu === null ) {
-				$nivetu = Hash::get( $return, 'Dsp.nivetu' );
-			}
-			$return['Instantanedonneesfp93']['benef_nivetu'] = $nivetu;
-
-			// FIXME: que dans le cas d'un ajout ?
-			// FIXME: le dernier non annulé ?
-			// Position du dernier CER
-			$positioncer = Hash::get( $return, 'Cer93.positioncer' );
-			if( !empty( $positioncer ) ) {
-				switch( $positioncer ) {
-					case '99valide':
-						$positioncer = 'valide';
-						break;
-					case '04premierelecture':
-					case '05secondelecture':
-					case '07attavisep':
-						$positioncer = 'validationcg';
-						break;
-					case '00enregistre':
-					case '01signe':
-					case '02attdecisioncpdv':
-					case '03attdecisioncg':
-						$positioncer = 'validationpdv';
-						break;
-				}
-			}
-			$return['Instantanedonneesfp93']['benef_positioncer'] = $positioncer;
-
-			// Nature de prestation
-			$activite = Hash::get( $return, 'Situationallocataire.natpf_activite' );
-			$majore = Hash::get( $return, 'Situationallocataire.natpf_majore' );
-			$socle = Hash::get( $return, 'Situationallocataire.natpf_socle' );
-			if( $socle && !$activite && !$majore ) {
-				$return['Situationallocataire']['natpf'] = 'socle';
-			}
-			else if( $socle && !$activite && $majore ) {
-				$return['Situationallocataire']['natpf'] = 'socle_majore';
-			}
-			else if( $socle && $activite && !$majore ) {
-				$return['Situationallocataire']['natpf'] = 'socle_activite';
-			}
-			else if( $socle && $activite && $majore ) {
-				$return['Situationallocataire']['natpf'] = 'socle_majore_activite';
 			}
 
 			return $return;
@@ -589,15 +505,11 @@
 					array(
 						'fields' => Hash::merge(
 							$this->fields(),
-							array(
-								'Instantanedonneesfp93.id',
-								'Situationallocataire.id',
-							)
+							$this->Instantanedonneesfp93->fields()
 						),
 						'contain' => false,
 						'joins' => array(
-							$this->join( 'Instantanedonneesfp93' ),
-							$this->Instantanedonneesfp93->join( 'Situationallocataire' )
+							$this->join( 'Instantanedonneesfp93' )
 						),
 						'conditions' => array(
 							"{$this->alias}.id" => $id
@@ -610,10 +522,54 @@
 
 			$data = Hash::merge( $ficheprescription, $data );
 
-			// Début Situationallocataire ...
-			$situationallocataire = $this->Instantanedonneesfp93->Situationallocataire->getSituation( $personne_id );
-			$situationallocataire = $this->Instantanedonneesfp93->Situationallocataire->foo( $situationallocataire );
-			// Fin Situationallocataire
+			// Certains champs sont désactivés via javascript et ne sont pas renvoyés
+			$value = Hash::get( $data, 'Ficheprescription93.personne_recue' );
+			if( $value !== '0' ) {
+				$data['Ficheprescription93']['motifnonreceptionfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
+			}
+
+			$value = Hash::get( $data, 'Ficheprescription93.personne_retenue' );
+			if( $value !== '1' ) {
+				$data['Ficheprescription93']['motifnonretenuefp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonretenue_autre'] = null;
+			}
+
+			$value = Hash::get( $data, 'Ficheprescription93.personne_souhaite_integrer' );
+			if( $value !== '1' ) {
+				$data['Ficheprescription93']['motifnonsouhaitfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonsouhaite_autre'] = null;
+			}
+
+			$value = Hash::get( $data, 'Ficheprescription93.personne_a_integre' );
+			if( $value === '' ) {
+				$data['Ficheprescription93']['personne_date_integration'] = null;
+				$data['Ficheprescription93']['motifnonintegrationfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
+			}
+			else if( $value === '0' ) {
+				$data['Ficheprescription93']['personne_date_integration'] = null;
+			}
+			else if( $value === '1' ) {
+				$data['Ficheprescription93']['motifnonintegrationfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
+			}
+
+			// Modification de l'état suivant les données
+			$statut = '01renseignee';
+			if( dateComplete(  $data, 'Ficheprescription93.date_signature' ) ) {
+				$statut = '02signee';
+			}
+			if( $statut == '02signee' && dateComplete(  $data, 'Ficheprescription93.date_transmission' ) ) {
+				$statut = '03transmise_partenaire';
+			}
+			if( $statut == '03transmise_partenaire' && dateComplete(  $data, 'Ficheprescription93.date_retour' ) ) {
+				$statut = '04effectivite_renseignee';
+			}
+			if( $statut == '04effectivite_renseignee' && Hash::get(  $data, 'Ficheprescription93.personne_recue' ) != '' ) {
+				$statut = '05suivi_renseigne';
+			}
+			$data[$this->alias]['statut'] = $statut;
 
 			// Début Instantanedonnees93 ...
 			$referent_id = suffix( Hash::get( $data, "{$this->alias}.referent_id" ) );
@@ -642,55 +598,36 @@
 				)
 			);
 
-			$instantanedonneesfp93 = array();
+			if( $data[$this->alias]['statut'] == '01renseignee' || empty( $id ) ) {
+				$instantanedonneesfp93 = $this->Instantanedonneesfp93->getInstantane( $personne_id );
+				$data = Hash::merge( $instantanedonneesfp93, $data );
+			}
+
 			if( !empty( $referent ) ) {
-				// TODO: pour l'état 01renseignee seulement
-				$instantanedonneesfp93 = array(
-					'Instantanedonneesfp93' => array(
-						'referent_fonction' => $referent['Referent']['fonction'],
-						'structure_name' => $referent['Structurereferente']['lib_struc'],
-						'structure_num_voie' => $referent['Structurereferente']['num_voie'],
-						'structure_type_voie' => $referent['Structurereferente']['type_voie'],
-						'structure_nom_voie' => $referent['Structurereferente']['nom_voie'],
-						'structure_code_postal' => $referent['Structurereferente']['code_postal'],
-						'structure_ville' => $referent['Structurereferente']['ville'],
-						'structure_tel' => $referent['Structurereferente']['numtel'],
-						'structure_fax' => $referent['Structurereferente']['numfax'],
-						'referent_email' => $referent['Referent']['email'],
+				$data = Hash::merge(
+					$data,
+						array(
+						'Instantanedonneesfp93' => array(
+							'referent_fonction' => $referent['Referent']['fonction'],
+							'structure_name' => $referent['Structurereferente']['lib_struc'],
+							'structure_num_voie' => $referent['Structurereferente']['num_voie'],
+							'structure_type_voie' => $referent['Structurereferente']['type_voie'],
+							'structure_nom_voie' => $referent['Structurereferente']['nom_voie'],
+							'structure_code_postal' => $referent['Structurereferente']['code_postal'],
+							'structure_ville' => $referent['Structurereferente']['ville'],
+							'structure_tel' => $referent['Structurereferente']['numtel'],
+							'structure_fax' => $referent['Structurereferente']['numfax'],
+							'referent_email' => $referent['Referent']['email'],
+						)
 					)
 				);
 			}
 			// Fin Instantanedonnees93
 
-			$data = Hash::merge(
-				$data,
-				$situationallocataire,
-				$instantanedonneesfp93
-			);
-
+			// Sauvegarde de la fiche
 			$this->create( $data );
 			$success = ( $this->save() !== false );
 
-			// Enregistrement des informations de contact de l'allocataire
-			/*$query = array(
-				'contain' => false,
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				),
-			);
-			$personne = $this->Personne->find( 'first', $query );
-			foreach( array( 'numfixe', 'numport', 'email' ) as $field ) {
-				$personne['Personne'][$field] = $data['Personne'][$field];
-			}
-			$this->Personne->create( $personne );
-			$success = ( $this->Personne->save() !== false ) && $success;*/
-
-			// Données socio-professionnelles
-			// TODO: à factoriser dans les Dsp... à faire pour plusieurs champs
-			// Tests:
-			// /fichesprescriptions93/add/349942 -> Dsp, DspRev, tables liées
-			// /fichesprescriptions93/add/819022 -> Dsp, tables liées
-			// /fichesprescriptions93/add/316225 -> rien
 			$nivetu = Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' );
 			$query = array(
 				'fields' => array(
@@ -795,20 +732,17 @@
 			}
 			// Fin
 
-			if( $success ) {
-				$this->Instantanedonneesfp93->Situationallocataire->create( $data );
-				$success = ( $this->Instantanedonneesfp93->Situationallocataire->save() !== false ) && $success;
+			// Instantané données
+			$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
+			$this->Instantanedonneesfp93->create( $data );
+			$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
 
-				$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
-				$data['Instantanedonneesfp93']['situationallocataire_id'] = $this->Instantanedonneesfp93->Situationallocataire->id;
-				$this->Instantanedonneesfp93->create( $data );
-				$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
-
-				if( !$success ) { // FIXME: nati vide au départ pour 531873
-					$hiddenErrors = array(
-						'Instantanedonneesfp93' => $this->Instantanedonneesfp93->validationErrors,
-						'Situationallocataire' => $this->Instantanedonneesfp93->Situationallocataire->validationErrors
-					);
+			if( !$success ) {
+				$hiddenErrors = array(
+					'Instantanedonneesfp93' => $this->Instantanedonneesfp93->validationErrors
+				);
+				unset( $hiddenErrors['Instantanedonneesfp93']['ficheprescription93_id'] );
+				if( !empty( $hiddenErrors ) ) {
 					debug( $hiddenErrors );
 				}
 			}
@@ -839,7 +773,6 @@
 			$query = array(
 				'fields' => array(
 					'Calculdroitrsa.toppersdrodevorsa',
-					'Personne.nati',
 					'Situationdossierrsa.etatdosrsa',
 				),
 				'contain' => false,
@@ -858,22 +791,124 @@
 
 			$toppersdrodevorsa = Hash::get( $result, 'Calculdroitrsa.toppersdrodevorsa' );
 			if( empty( $toppersdrodevorsa ) ) {
-				$messages['Calculdroitrsa.toppersdrodevorsa_notice'] = 'notice';
+				$messages['Instantanedonneesfp93.benef_toppersdrodevorsa_notice'] = 'notice';
 			}
 
 			$etatdosrsa = Hash::get( $result, 'Situationdossierrsa.etatdosrsa' );
 			if( !in_array( $etatdosrsa, (array)Configure::read( 'Situationdossierrsa.etatdosrsa.ouvert' ), true ) ) {
-				$messages['Situationdossierrsa.etatdosrsa_ouverts'] = 'notice';
-			}
-
-			$nati = Hash::get( $result, 'Personne.nati' );
-			if( empty( $nati ) ) {
-				$messages['Personne.nati_inconnue'] = 'error';
+				$messages['Instantanedonneesfp93.benef_etatdosrsa_ouverts'] = 'notice';
 			}
 
 			return $messages;
 		}
 
+		/**
+		 * Récupération des informations pour l'impression.
+		 *
+		 * @param integer $ficheprescription93_id
+		 * @param integer $user_id
+		 * @return array
+		 * @throws NotFoundException
+		 */
+		public function getDataForPdf( $ficheprescription93_id, $user_id = null ) {
+			$data = $this->find(
+				'first',
+				array(
+					'fields' => Hash::merge(
+						$this->fields(),
+						$this->Instantanedonneesfp93->fields(),
+						$this->Referent->fields(),
+						$this->Actionfp93->fields(),
+						$this->Actionfp93->Filierefp93->fields(),
+						$this->Actionfp93->Prestatairefp93->fields(),
+						$this->Actionfp93->Filierefp93->Categoriefp93->fields(),
+						$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->fields()
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
+						$this->join( 'Instantanedonneesfp93', array( 'type' => 'INNER' ) ),
+						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'INNER' ) ),
+						$this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+						$this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						"{$this->alias}.id" => $ficheprescription93_id
+					)
+				)
+			);
+
+			if( empty( $data ) ) {
+				throw new NotFoundException();
+			}
+
+			if( !empty( $user_id ) ) {
+				$User = ClassRegistry::init( 'User' );
+				$user = $User->find(
+					'first',
+					array(
+						'fields' => $User->fields(),
+						'contain' => false,
+						'conditions' => array(
+							'User.id' => $user_id
+						)
+					)
+				);
+				unset( $user['User']['password'] );
+
+				$data = Hash::merge( $data, $user );
+			}
+
+			return $data;
+		}
+
+		/**
+		 * Retourne le chemin relatif du modèle de document à utiliser pour
+		 * l'enregistrement du PDF.
+		 *
+		 * @param array $data
+		 * @return string
+		 */
+		public function modeleOdt( $data ) {
+			return 'Ficheprescription93/ficheprescription.odt';
+		}
+
+		/**
+		 * Retourne le PDF par défaut généré par les appels aux méthodes
+		 * getDataForPdf, modeleOdt, options et à la méthode ged du behavior
+		 * Gedooo,
+		 *
+		 * @param integer $id Id de la fiche de prescription
+		 * @param integer $user_id Id de l'utilisateur connecté
+		 * @return string
+		 */
+		public function getDefaultPdf( $ficheprescription93_id, $user_id = null ) {
+			$data = $this->getDataForPdf( $ficheprescription93_id, $user_id );
+			$modeleodt = $this->modeleOdt( $data );
+			$options = $this->options();
+
+			// TODO: un paramètre à options()
+			$options = Hash::merge(
+				$options,
+				array(
+					'Instantanedonnees93' => array(
+						'benef_typevoie' => $options['Adresse']['typevoie'],
+						'benef_qual' => $options['Personne']['qual'],
+						'structure_type_voie' => $options['Adresse']['typevoie'],
+					),
+					'Referent' => array(
+						'qual' => $options['Personne']['qual']
+					),
+					'Type' => array(
+						'voie' => $options['Adresse']['typevoie']
+					)
+				)
+			);
+
+			return $this->ged( $data, $modeleodt, true, $options );
+		}
 
 		/**
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.

@@ -60,7 +60,7 @@
 									ELSE \'ENUM::NATPF_D1::NC\'
 								END )'
 			),
-			'natpf_fp' => array(
+			/*'natpf_fp' => array(
 				'type'      => 'string',
 				'postgres'  => '( CASE
 					WHEN ( "%s"."natpf_socle" = \'1\' AND "%s"."natpf_activite" = \'1\' AND "%s"."natpf_majore" = \'1\' ) THEN \'ENUM::NATPF_FP::socle_majore_activite\'
@@ -80,7 +80,7 @@
 					WHEN ( "%s"."etatpe" = \'inscription\' ) THEN \'1\'
 					ELSE \'0\'
 				END )'
-			),
+			),*/
 		);
 
 		/**
@@ -103,13 +103,13 @@
 		 *
 		 * @var array
 		 */
-		public $natpf_fp = array(
+		/*public $natpf_fp = array(
 			'ENUM::NATPF_FP::socle_majore_activite',
 			'ENUM::NATPF_FP::socle_activite',
 			'ENUM::NATPF_FP::socle_majore',
 			'ENUM::NATPF_FP::socle',
 			'ENUM::NATPF_FP::NC',
-		);
+		);*/
 
 		/**
 		 * Associations "Has one".
@@ -119,14 +119,6 @@
 		public $hasOne = array(
 			'Questionnaired1pdv93' => array(
 				'className' => 'Questionnaired1pdv93',
-				'foreignKey' => 'situationallocataire_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => true
-			),
-			'Instantanedonneesfp93' => array(
-				'className' => 'Instantanedonneesfp93',
 				'foreignKey' => 'situationallocataire_id',
 				'conditions' => null,
 				'fields' => null,

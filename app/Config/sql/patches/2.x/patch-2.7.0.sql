@@ -522,6 +522,39 @@ CREATE INDEX fichesprescriptions93_modstransmsfps93_modtransmfp93_id_idx ON fich
 CREATE UNIQUE INDEX fichesprescriptions93_modstransmsfps93_ficheprescription93_id_modtransmfp93_id_idx ON fichesprescriptions93_modstransmsfps93( ficheprescription93_id, modtransmfp93_id );
 
 --------------------------------------------------------------------------------
+-- Situationallocataire.qual
+-- Situationallocataire.nom
+-- Situationallocataire.prenom
+-- Situationallocataire.dtnai
+-- Situationallocataire.<adresse>
+-- Situationallocataire.natpf_fp
+-- Situationallocataire.matricule
+/*
+    -- 2°) a°) Adresse (de rang 01) de l'allocataire
+    numvoie             VARCHAR(6) DEFAULT NULL,     -- adresses.numvoie
+    typevoie            VARCHAR(4) DEFAULT NULL,     -- adresses.typevoie
+    nomvoie             VARCHAR(25) DEFAULT NULL,    -- adresses.nomvoie
+    complideadr         VARCHAR(38) DEFAULT NULL,    -- adresses.complideadr
+    compladr            VARCHAR(26) DEFAULT NULL,    -- adresses.compladr
+    numcomptt           VARCHAR(5) DEFAULT NULL,     -- adresses.numcomptt
+    numcomrat           VARCHAR(5) DEFAULT NULL,     -- adresses.numcomrat
+    codepos             VARCHAR(5) DEFAULT NULL,     -- adresses.codepos
+    locaadr             VARCHAR(26) DEFAULT NULL,     -- adresses.locaadr
+    -- 2°) b°) Dossier, foyer, situation du dossier de l'allocataire
+    numdemrsa           VARCHAR(11) DEFAULT NULL,    -- dossiers.numdemrsa
+    matricule           VARCHAR(15) DEFAULT NULL,    -- dossiers.matricule
+    -- 2°) c°) Autres indirectement liés au dossier / foyer de l'allocataire
+    natpf_socle         VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
+    natpf_majore        VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
+    natpf_activite      VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
+*/
+-- Situationallocataire.inscritpe
+-- Situationallocataire.identifiantpe
+/*
+	identifiantpe       VARCHAR(11) DEFAULT NULL,    -- historiqueetatspe.identifiantpe
+	etatpe              VARCHAR(15) DEFAULT NULL,    -- historiqueetatspe.etat
+*/
+--------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS instantanesdonneesfps93 CASCADE;
 CREATE TABLE instantanesdonneesfps93 (
@@ -539,24 +572,49 @@ CREATE TABLE instantanesdonneesfps93 (
 	structure_fax			VARCHAR(10) DEFAULT NULL,
 	referent_email			VARCHAR(78) DEFAULT NULL,
 	-- Partie "Bénéficiaire"
+    benef_qual				VARCHAR(3) DEFAULT NULL,
+    benef_nom				VARCHAR(50) DEFAULT NULL,
+    benef_prenom			VARCHAR(50) DEFAULT NULL,
+    benef_dtnai				DATE DEFAULT NULL,
+    benef_numvoie			VARCHAR(6) DEFAULT NULL,
+    benef_typevoie			VARCHAR(4) DEFAULT NULL,
+    benef_nomvoie			VARCHAR(25) DEFAULT NULL,
+    benef_complideadr		VARCHAR(38) DEFAULT NULL,
+    benef_compladr			VARCHAR(26) DEFAULT NULL,
+    benef_numcomptt			VARCHAR(5) DEFAULT NULL,
+    benef_numcomrat			VARCHAR(5) DEFAULT NULL,
+    benef_codepos			VARCHAR(5) DEFAULT NULL,
+    benef_locaadr			VARCHAR(26) DEFAULT NULL,
 	benef_tel_fixe			VARCHAR(14) DEFAULT NULL,
 	benef_tel_port			VARCHAR(14) DEFAULT NULL,
 	benef_email				VARCHAR(100) DEFAULT NULL,
+	benef_identifiantpe     VARCHAR(11) DEFAULT NULL,
+	benef_inscritpe         VARCHAR(1) DEFAULT NULL,
+    benef_matricule			VARCHAR(15) DEFAULT NULL,
+    benef_natpf_socle		VARCHAR(1) DEFAULT NULL,
+    benef_natpf_majore		VARCHAR(1) DEFAULT NULL,
+    benef_natpf_activite	VARCHAR(1) DEFAULT NULL,
 	benef_nivetu			VARCHAR(4) DEFAULT NULL,
 	benef_dip_ce			VARCHAR(1) DEFAULT NULL,
+	benef_etatdosrsa        VARCHAR(1) DEFAULT NULL,     -- situationsdossiersrsa.etatdosrsa
+	benef_toppersdrodevorsa VARCHAR(1) DEFAULT NULL,     -- calculsdroitsrsa.toppersdrodevorsa
 	benef_positioncer		VARCHAR(13) DEFAULT NULL,
-	situationallocataire_id	INTEGER NOT NULL REFERENCES situationsallocataires(id) ON DELETE CASCADE ON UPDATE CASCADE,
     created					TIMESTAMP WITHOUT TIME ZONE,
     modified				TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE instantanesdonneesfps93 IS '"Instantané" de certaines données pour la fiche de prescription - CG 93';
 
 CREATE UNIQUE INDEX instantanesdonneesfps93_ficheprescription93_id_idx ON instantanesdonneesfps93( ficheprescription93_id );
-CREATE UNIQUE INDEX instantanesdonneesfps93_situationallocataire_id_idx ON instantanesdonneesfps93( situationallocataire_id );
 
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_natpf_socle_in_list_chk CHECK ( cakephp_validate_in_list( benef_natpf_socle, ARRAY['0', '1'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_natpf_majore_in_list_chk CHECK ( cakephp_validate_in_list( benef_natpf_majore, ARRAY['0', '1'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_natpf_activite_in_list_chk CHECK ( cakephp_validate_in_list( benef_natpf_activite, ARRAY['0', '1'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( benef_nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_dip_ce_in_list_chk CHECK ( cakephp_validate_in_list( benef_dip_ce, ARRAY['0', '1'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_inscritpe_in_list_chk CHECK ( cakephp_validate_in_list( benef_inscritpe, ARRAY['0', '1'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( benef_positioncer, ARRAY['validationpdv', 'validationcg', 'valide'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_etatdosrsa_in_list_chk CHECK ( cakephp_validate_in_list( benef_etatdosrsa, ARRAY['Z', '0', '1', '2', '3', '4', '5', '6'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_toppersdrodevorsa_in_list_chk CHECK ( cakephp_validate_in_list( benef_toppersdrodevorsa, ARRAY['0', '1'] ) );
 
 --------------------------------------------------------------------------------
 -- 20140221: Ajout de la date d'affectation du gestionnaire au dossier PCG (CG66)

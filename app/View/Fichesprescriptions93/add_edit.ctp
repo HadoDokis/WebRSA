@@ -45,22 +45,22 @@
 		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Beneficiaire' ) )
 		.$this->Default3->subform(
 			array(
-				'Situationallocataire.qual' => array(
+				'Instantanedonneesfp93.benef_qual' => array(
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,
 				),
-				'Situationallocataire.nom' => array(
+				'Instantanedonneesfp93.benef_nom' => array(
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,
 				),
-				'Situationallocataire.prenom' => array(
+				'Instantanedonneesfp93.benef_prenom' => array(
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,
 				),
-				'Situationallocataire.dtnai' => array(
+				'Instantanedonneesfp93.benef_dtnai' => array(
 					'view' => true,
 					'type' => 'date', // FIXME
 					'hidden' => true,
@@ -69,26 +69,27 @@
 				'Instantanedonneesfp93.benef_tel_fixe',
 				'Instantanedonneesfp93.benef_tel_port',
 				'Instantanedonneesfp93.benef_email',
-				'Situationallocataire.natpf' => array(
+				'Instantanedonneesfp93.benef_natpf' => array(
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,
-					'options' => $options['Situationallocataire']['natpf_fp']
+					'options' => $options['Instantanedonneesfp93']['benef_natpf'],
+					'hidden' => false,
 				),
-				'Situationallocataire.matricule' => array(
+				'Instantanedonneesfp93.benef_matricule' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => true,
+					'hidden' => false,
 				),
-				'Situationallocataire.inscritpe' => array(
+				'Instantanedonneesfp93.benef_inscritpe' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => true,
+					'hidden' => false,
 				),
-				'Situationallocataire.identifiantpe' => array(
+				'Instantanedonneesfp93.benef_identifiantpe' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => true,
+					'hidden' => false,
 				),
 				'Instantanedonneesfp93.benef_nivetu' => array( 'empty' => true ),
 				'Instantanedonneesfp93.benef_dip_ce' => array( 'empty' => true ),

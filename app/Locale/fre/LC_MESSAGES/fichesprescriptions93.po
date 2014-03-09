@@ -117,14 +117,11 @@ msgstr "Voir les fiches de prescription de #Personne.nom_complet#"
 
 # ------------------------------------------------------------------------------
 
-msgid "Calculdroitrsa.toppersdrodevorsa_notice"
+msgid "Instantanedonneesfp93.benef_toppersdrodevorsa_notice"
 msgstr "Cet allocataire n'est actuellement pas soumis à droits et devoirs."
 
-msgid "Situationdossierrsa.etatdosrsa_ouverts"
+msgid "Instantanedonneesfp93.benef_etatdosrsa_ouverts"
 msgstr "Cet allocataire n'est actuellement pas dans un dossier en état ouvert."
-
-msgid "Personne.nati_inconnue"
-msgstr "La nationalité de cet allocataire n'est actuellement pas connue."
 
 msgid "/Fichesprescriptions93/index/:heading"
 msgstr "Fiches de prescription de l'allocataire"
@@ -192,16 +189,16 @@ msgstr "Objet ou nature de la prescription / observations / intitulé de l'actio
 msgid "Ficheprescription93.Beneficiaire"
 msgstr "Bénéficiaire"
 
-msgid "Situationallocataire.qual"
+msgid "Instantanedonneesfp93.benef_qual"
 msgstr "Civilité"
 
-msgid "Situationallocataire.nom"
+msgid "Instantanedonneesfp93.benef_nom"
 msgstr "Nom"
 
-msgid "Situationallocataire.prenom"
+msgid "Instantanedonneesfp93.benef_prenom"
 msgstr "Prénom"
 
-msgid "Situationallocataire.dtnai"
+msgid "Instantanedonneesfp93.benef_dtnai"
 msgstr "Date de naissance"
 
 msgid "Instantanedonneesfp93.benef_tel_fixe"
@@ -213,16 +210,16 @@ msgstr "Portable"
 msgid "Instantanedonneesfp93.benef_email"
 msgstr "Mail"
 
-msgid "Situationallocataire.natpf"
+msgid "Instantanedonneesfp93.benef_natpf"
 msgstr "Bénéficiaire du"
 
-msgid "Situationallocataire.matricule"
+msgid "Instantanedonneesfp93.benef_matricule"
 msgstr "Numéro CAF"
 
-msgid "Situationallocataire.inscritpe"
+msgid "Instantanedonneesfp93.benef_inscritpe"
 msgstr "Inscrit au Pôle Emploi"
 
-msgid "Situationallocataire.identifiantpe"
+msgid "Instantanedonneesfp93.benef_identifiantpe"
 msgstr "N° d'identifiant"
 
 msgid "Instantanedonneesfp93.benef_nivetu"
