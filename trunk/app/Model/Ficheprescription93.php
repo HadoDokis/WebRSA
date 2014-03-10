@@ -183,7 +183,7 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
-		 * @param array $types Le nom du modèle => le type de jointure
+		 * @param array $types Les types de jointure alias => type
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
@@ -201,7 +201,7 @@
 			if( $query === false ) {
 				$Allocataire = ClassRegistry::init( 'Allocataire' );
 
-				$query = $Allocataire->searchQuery();
+				$query = $Allocataire->searchQuery( $types );
 
 				// Ajout des champs supplémentaires
 				$query['fields'] = Hash::merge(
@@ -309,17 +309,16 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
-		 * @todo @param array( 'allocataire' => true, 'find' => false )
 		 * @todo actif
 		 *
-		 * @param boolean $allocataireOptions
-		 * @param boolean $findLists
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false )
 		 * @return array
 		 */
-		public function options( $allocataireOptions = true, $findLists = false ) {
+		public function options( array $params = array() ) {
 			$options = array();
+			$params = $params + array( 'allocataire' => true, 'find' => false );
 
-			if( $allocataireOptions ) {
+			if( Hash::get( $params, 'allocataire' ) ) {
 				$Allocataire = ClassRegistry::init( 'Allocataire' );
 
 				$options = $Allocataire->options();
@@ -336,7 +335,7 @@
 				$this->Instantanedonneesfp93->enums()
 			);
 
-			if( $findLists ) {
+			if( Hash::get( $params, 'find' ) ) {
 				$options = Hash::merge(
 					$options,
 					array( 'Categoriefp93' => array( 'thematiquefp93_id' => $this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->findListPrefixed( 'type', 'id', 'name' ) ) ),
@@ -908,18 +907,6 @@
 			);
 
 			return $this->ged( $data, $modeleodt, true, $options );
-		}
-
-		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les méthodes qui ne font rien.
-		 */
-		public function prechargement() {
-			$query = $this->searchQuery();
-			return !empty( $query );
 		}
 	}
 ?>

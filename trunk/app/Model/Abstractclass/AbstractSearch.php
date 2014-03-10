@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe AbstractSearch.
+	 * Code source de l'interface ISearch et de la classe AbstractSearch.
 	 *
 	 * PHP 5.3
 	 *
@@ -47,11 +47,12 @@
 		 * @param array $params
 		 * @return array
 		 */
-//		 public function options( array $params = array() );
+		 public function options( array $params = array() );
 	}
 
 	/**
-	 * La classe AbstractSearch ...
+	 * La classe AbstractSearch contient des méthodes de base à utiliser dans les
+	 * classes de moteurs de recherche.
 	 *
 	 * @package app.Model.Abstractclass
 	 */
@@ -60,14 +61,28 @@
 		/**
 		 * Moteur de recherche de base.
 		 *
+		 * @param array $search Les valeurs du filtre de recherche
+		 * @param array $types Les types de jointure alias => type
 		 * @return array
 		 */
-		public function search( array $search = array() ) {
-			$query = $this->searchQuery();
+		public function search( array $search = array(), array $types = array() ) {
+			$query = $this->searchQuery( $types );
 
 			$query = $this->searchConditions( $query, $search );
 
 			return $query;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->searchQuery();
+			return !empty( $query );
 		}
 	}
 ?>

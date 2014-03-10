@@ -126,7 +126,7 @@
 			}
 
 			$options = $this->Allocataires->options();
-			$options = Hash::merge( $options, $this->Indicateursuivi->options( false, true ) );
+			$options = Hash::merge( $options, $this->Indicateursuivi->options( array( 'allocataire' => false ) ) );
 			$this->set( compact( 'options' ) );
 		}
 
@@ -145,7 +145,7 @@
 			$results = $this->Personne->find( 'all', $query );
 
 			$options = $this->Allocataires->options();
-			$options = Hash::merge( $options, $this->Indicateursuivi->options( false ) );
+			$options = Hash::merge( $options, $this->Indicateursuivi->options( array( 'allocataire' => false ) ) );
 			$this->set( compact( 'options' ) );
 
 			$this->set( compact( 'results', 'options' ) );
