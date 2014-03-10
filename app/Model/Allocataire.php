@@ -43,7 +43,7 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
-		 * @param array $types Le nom du modèle => le type de jointure
+		 * @param array $types Les types de jointure alias => type
 		 * @return array
 		 */
 		public function searchQuery( array $types = array() ) {
@@ -232,18 +232,6 @@
 			}
 
 			return $return;
-		}
-
-		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les méthodes qui ne font rien.
-		 */
-		public function prechargement() {
-			$query = $this->searchQuery();
-			return !empty( $query );
 		}
 	}
 ?>

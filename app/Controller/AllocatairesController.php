@@ -109,8 +109,7 @@
 					'Referentparcours' => 'LEFT OUTER',
 					'Structurereferenteparcours' => 'LEFT OUTER'
 				);
-				$query = $this->Allocataire->searchQuery( $joins );
-				$query = $this->Allocataire->searchConditions( $query, $this->request->data['Search'] );*/
+				$query = $this->Allocataire->search( $this->request->data['Search'], $joins );*/
 
 				$query['fields'] = array(
 					'Personne.id',

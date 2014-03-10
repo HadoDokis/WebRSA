@@ -360,18 +360,19 @@
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche.
 		 *
-		 * @todo AbstractSearch
+		 * @fixme $type n'est pas utilisé
 		 *
+		 * @param array $types Les types de jointure alias => type
 		 * @return array
 		 */
-		public function searchQuery() {
+		public function searchQuery( array $types = array() ) {
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
 				$Allocataire = ClassRegistry::init( 'Allocataire' );
 
-				$query = $Allocataire->searchQuery();
+				$query = $Allocataire->searchQuery( $types );
 
 				$Personne = ClassRegistry::init( 'Personne' );
 
@@ -543,10 +544,10 @@
 		 * @param array $search
 		 * @return array
 		 */
-		public function search58( array $search = array() ) {
-			$query = $this->searchQuery();
-
+		public function search58( array $search = array(), array $types = array() ) {
+			$query = $this->searchQuery( $types );
 			$query = $this->searchConditions( $query, $search );
+
 
 			$Personne = ClassRegistry::init( 'Personne' );
 			$query['fields'] = array(
@@ -583,15 +584,14 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
-		 * array $params = array( 'allocataire' => true )
-		 *
-		 * @param boolean $allocataireOptions
+		 * @param array $params <=> array( 'allocataire' => true )
 		 * @return array
 		 */
-		public function options( $allocataireOptions = true ) {
+		public function options( array $params = array() ) {
 			$options = array();
+			$params = $params + array( 'allocataire' => true );
 
-			if( $allocataireOptions ) {
+			if( Hash::get( $params, 'allocataire' ) ) {
 				$Allocataire = ClassRegistry::init( 'Allocataire' );
 
 				$options = $Allocataire->options();
@@ -607,18 +607,6 @@
 			);
 
 			return $options;
-		}
-
-		/**
-		 * Exécute les différentes méthods du modèle permettant la mise en cache.
-		 * Utilisé au préchargement de l'application (/prechargements/index).
-		 *
-		 * @return boolean true en cas de succès, false en cas d'erreur,
-		 * 	null pour les méthodes qui ne font rien.
-		 */
-		public function prechargement() {
-			$query = $this->searchQuery();
-			return !empty( $query );
 		}
 	}
 ?>

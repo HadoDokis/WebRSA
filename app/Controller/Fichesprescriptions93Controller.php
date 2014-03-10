@@ -198,7 +198,7 @@
 
 			$options = Hash::merge(
 				$this->Allocataires->options(),
-				$this->Ficheprescription93->options( false, true )
+				$this->Ficheprescription93->options( array( 'allocataire' => false, 'find' => true ) )
 			);
 			$this->set( compact( 'options' ) );
 		}
@@ -320,7 +320,7 @@
 				$this->request->data = $this->Ficheprescription93->prepareFormDataAddEdit( $personne_id, $id );
 			}
 
-			$options = $this->Ficheprescription93->options( false, true );
+			$options = $this->Ficheprescription93->options( array( 'allocataire' => false, 'find' => true ) );
 
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );

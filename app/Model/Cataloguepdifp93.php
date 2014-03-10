@@ -148,11 +148,10 @@
 		 * Retourne les options nécessaires au formulaire de recherche, aux
 		 * impressions, ...
 		 *
-		 * @todo @param array $params = array()
-		 *
+		 * @param array $params
 		 * @return array
 		 */
-		public function options() {
+		public function options( array $params = array() ) {
 			$Thematiquefp93 = ClassRegistry::init( 'Thematiquefp93' );
 
 			$options = Hash::merge(
