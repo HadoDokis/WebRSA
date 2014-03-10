@@ -586,7 +586,7 @@
 					$titleLine = "{$headers}\n";
 				}
 				$output = $titleLine.implode( "\n", $this->_rejects )."\n";
-				$outfile = LOGS.$this->name.'_rejets-'.date( 'Ymd-His' ).'.log';
+				$outfile = LOGS.$this->name."_rejets_{$this->args[0]}_".date( 'Ymd-His' ).'_'.str_replace( ' ', '_', $this->csv->name() ).'.log.csv';
 				file_put_contents( $outfile, $output );
 				$this->out[] = "<info>Le fichier de rejets se trouve dans {$outfile}</info>";
 			}
