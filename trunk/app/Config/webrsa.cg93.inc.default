@@ -1223,7 +1223,7 @@
 					'exists' => '1'
 				),
 				'Pagination' => array(
-					'nombre_total' => true
+					'nombre_total' => false
 				),
 				'Situationdossierrsa' => array(
 					'etatdosrsa_choice' => '1',
