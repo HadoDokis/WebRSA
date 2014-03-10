@@ -30,6 +30,8 @@
 		 * soumission d'un formumlaire lors de son envoi afin de ne pas renvoyer
 		 * celui-ci plusieurs fois avant que le reqête n'ait abouti.
 		 *
+		 * @deprecated See SearchPrototypeHelper::observeDisableFormOnSubmit()
+		 *
 		 * @param string $form L'id du formulaire au sens Prototype
 		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
 		 * @return string
@@ -57,6 +59,8 @@
 		 * la prestation, ...) suivant la valeur de la case à cocher "parente"
 		 * ("choice").
 		 *
+		 * @deprecated See SearchPrototypeHelper::observeDisableFieldsetOnCheckbox()
+		 *
 		 * @param string $observeId
 		 * @param string $updateId
 		 * @param boolean $goUp
@@ -76,6 +80,8 @@
 		 * le suffixe de la valeur du maître et elle doit correspondre au préfixe
 		 * de la valeur de l'esclave.
 		 *
+		 * @deprecated See SearchPrototypeHelper::observeDependantSelect()
+		 *
 		 * @param array $fields En clé le champ maître, en valeur le champ esclave
 		 * @return string
 		 */
@@ -93,6 +99,19 @@
 			return $this->Html->scriptBlock( $script );
 		}
 
+		/**
+		 * Permet de désactiver et éventuellement de masquer un ensemble de champs
+		 * suivant la valeur d'un champ maître.
+		 *
+		 * @deprecated See SearchPrototypeHelper::observeDependantSelect()
+		 *
+		 * @param string $master Le chemin CakePHP du champ maître
+		 * @param string|array $slaves Les chemins CakePHP des champs à désactiver
+		 * @param mixed $values Les valeurs à prendre en compte pour le champ maître
+		 * @param boolean $condition true pour désactiver lorsque le champ maître a une des valeurs, false sinon
+		 * @param boolean $hide true pour en plus cacher les champs esclaves lorsqu'ils sont désactivés
+		 * @return string
+		 */
 		public function observeDisableFieldsOnValue( $master, $slaves, $values, $condition, $toggleVisibility = false ) {
 			$master = $this->domId( $master );
 
