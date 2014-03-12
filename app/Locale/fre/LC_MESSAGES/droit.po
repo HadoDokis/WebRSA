@@ -2998,6 +2998,17 @@ msgstr "Moteur de recherche"
 
 ###############################################################################
 
+msgid "Module:Demenagementshorsdpts"
+msgstr "Recherche par allocataires ayant déménagé hors du département"
+
+msgid "Demenagementshorsdpts:search"
+msgstr "Moteur de recherche"
+
+msgid "Demenagementshorsdpts:exportcsv"
+msgstr "Export CSV"
+
+###############################################################################
+
 msgid "Module:Foyers"
 msgstr "Corbeille PCG (CG66)"
 

@@ -153,6 +153,9 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
 			),
+			'Par allocataires ayant quitté le département' => array(
+				'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search'  )
+			),
 			'Par fiches de prescription' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'search'  )

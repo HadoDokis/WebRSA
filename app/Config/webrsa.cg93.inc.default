@@ -1247,4 +1247,25 @@
 			'Consultation INSER\'ECO93' => 'http://www.insereco.com/',
 		)
 	);
+
+	/**
+	 * Filtres par défaut de la recherche par allocataires ayant quitté le département
+	 */
+	Configure::write(
+		'Filtresdefaut.Demenagementshorsdpts_search',
+		array(
+			'Search' => array(
+				'Dossier' => array(
+					'dernier' => '1',
+				),
+				'Pagination' => array(
+					'nombre_total' => false
+				),
+				'Situationdossierrsa' => array(
+					'etatdosrsa_choice' => '1',
+					'etatdosrsa' => array( '2', '3', '4' )
+				)
+			)
+		)
+	);
 ?>

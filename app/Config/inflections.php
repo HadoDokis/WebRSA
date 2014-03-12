@@ -439,6 +439,7 @@ $irregularPlural = array(
 	'motifnonretenuefp93' => 'motifsnonretenuesfps93',
 	'motifnonsouhaitfp93' => 'motifsnonsouhaitsfps93',
 	'motifnonintegrationfp93' => 'motifsnonintegrationsfps93',
+	'demenagementhorsdpt' => 'demenagementshorsdpts',
 );
 
 /**
