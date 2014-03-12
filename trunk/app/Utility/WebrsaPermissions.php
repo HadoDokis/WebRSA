@@ -149,12 +149,42 @@
 			$codeinsee02 = Hash::get( $dossierData, 'Adressefoyer.02.codeinsee' );
 			$codeinsee03 = Hash::get( $dossierData, 'Adressefoyer.03.codeinsee' );
 
+			$departement = Configure::read( 'Cg.departement' );
+
 			// Pour le CG 93
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
+			if( $departement == 93 ) {
 				$isCrudRead = ( ControllerCache::crudMap( $controllerName, $actionName ) == 'read' );
 
+				// Si l'utilisateur est un externe
+				$externe = ( strpos( CakeSession::read( 'Auth.User.type' ), 'externe_' ) === 0 );
+				$horsDepartement = (
+					( substr( $codeinsee01, 0, 2 ) != $departement )
+					&& (
+						( substr( $codeinsee02, 0, 2 ) == $departement )
+						|| ( substr( $codeinsee03, 0, 2 ) == $departement )
+					)
+				);
+
+				// Si l'allocataire a déménagé du département et que l'utilisateur est un externe
+				if( $externe && $horsDepartement ) {
+					$dtemm01 = Hash::get( $dossierData, 'Adressefoyer.01.dtemm' );
+					$dtemm02 = Hash::get( $dossierData, 'Adressefoyer.02.dtemm' );
+
+					return (
+						(
+							self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee02, $mesZonesGeographiques )
+							&& $dtemm01 !== null
+							&& ( strtotime( ( substr( $dtemm01, 0, 4 ) + 1 ).'-03-31' ) >= strtotime( date( 'Y-m-d' ) ) )
+						)
+						|| (
+							self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee03, $mesZonesGeographiques )
+							&& $dtemm01 !== null
+							&& ( strtotime( ( substr( $dtemm02, 0, 4 ) + 1 ).'-03-31' ) >= strtotime( date( 'Y-m-d' ) ) )
+						)
+					);
+				}
 				// on vérifie si l'utilisateur a le droit d'accéder au dossier par-rapport à sa restriction sur les zones géographiques et au code INSEE actuel du foyer
-				if( !self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee01, $mesZonesGeographiques ) ) {
+				else if( !self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee01, $mesZonesGeographiques ) ) {
 					$accesCodeinsee02 = self::_checkZoneGeographique( $filtre_zone_geo, $codeinsee02, $mesZonesGeographiques )
 						&& $isCrudRead;
 
@@ -168,7 +198,7 @@
 				}
 			}
 			// Pour le CG 66 lorsque l'utilisateur connecté est référent dans un OA
-			else if( Configure::read( 'Cg.departement' ) == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
+			else if( $departement == 66 && CakeSession::read( 'Auth.User.type' ) == 'externe_ci' ) {
 				$structuresreferentesIdsDossier = (array)Hash::filter( (array)Hash::extract( $dossierData, 'Foyer.Personne.{n}.Orientstruct.structurereferente_id' ) );
 				return (
 					in_array( CakeSession::read( 'Auth.User.structurereferente_id' ), $structuresreferentesIdsDossier )
