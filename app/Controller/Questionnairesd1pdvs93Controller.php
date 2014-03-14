@@ -129,7 +129,8 @@
 					'conditions' => array(
 						'Historiquedroit.personne_id' => $personne_id
 					),
-					'contain' => false
+					'contain' => false,
+					'order' => array( 'Historiquedroit.created ASC' )
 				)
 			);
 

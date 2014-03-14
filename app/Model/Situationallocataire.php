@@ -103,13 +103,13 @@
 		 *
 		 * @var array
 		 */
-		/*public $natpf_fp = array(
+		public $natpf_fp = array(
 			'ENUM::NATPF_FP::socle_majore_activite',
 			'ENUM::NATPF_FP::socle_activite',
 			'ENUM::NATPF_FP::socle_majore',
 			'ENUM::NATPF_FP::socle',
 			'ENUM::NATPF_FP::NC',
-		);*/
+		);
 
 		/**
 		 * Associations "Has one".

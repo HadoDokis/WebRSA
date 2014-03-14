@@ -27,19 +27,19 @@
         <?php
             $listeEtat = null;
             $listeSoumis = null;
-            $dateModif = null;
+            $dateChangement = null;
 
             foreach( $historiquesdroit as $key => $histo ) {
                 if( !empty( $histo ) ) {
                     $listeEtat = value( $options['Situationallocataire']['etatdosrsa'], $histo['Historiquedroit']['etatdosrsa'] );
                     @$listeSoumis = value( $options['Situationallocataire']['toppersdrodevorsa'], $histo['Historiquedroit']['toppersdrodevorsa'] );
-                    $dateModif = $histo['Historiquedroit']['modified'];
+                    $dateChangement = $histo['Historiquedroit']['created'];
 
                     echo $this->Xhtml->tableCells(
 						array(
                             h( $listeEtat ),
                             h( @$listeSoumis ),
-                            h( $this->Locale->date( 'Datetime::full', $dateModif ) )
+                            h( $this->Locale->date( 'Datetime::full', $dateChangement ) )
                         )
                     );
                 }
