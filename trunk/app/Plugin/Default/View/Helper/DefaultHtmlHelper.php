@@ -62,6 +62,8 @@
 			$disabled = ( isset( $options['disabled'] ) ? $options['disabled'] : false );
 			unset( $options['disabled'] );
 
+			unset( $options['domain'] );
+
 			if( !$disabled ) {
 				return parent::link( $title, $url, $options, $confirmMessage );
 			}

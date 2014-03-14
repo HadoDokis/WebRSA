@@ -241,7 +241,7 @@
 									</div>
 								</td>
 								<td class="action">
-									<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 								</td>
 							</tr>
 						</tbody>';
@@ -294,7 +294,7 @@
 										</div>
 									</td>
 									<td class="action">
-										<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>
+										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
 									</td>
 								</tr>
 							</tbody>

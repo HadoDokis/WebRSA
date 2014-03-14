@@ -92,7 +92,7 @@
 			$htmlAttributes = array();
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => NULL,
@@ -103,7 +103,7 @@
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => 'ApplesView',
@@ -122,7 +122,7 @@
 			$htmlAttributes = array( 'confirm' => true );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view" onclick="return confirm(&#039;/Apples/view/6 ?&#039;);">/Apples/view</a>',
+				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view" onclick="return confirm(&#039;/Apples/view/6 ?&#039;);">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => NULL,
@@ -133,7 +133,7 @@
 			$htmlAttributes = array( 'for' => 'ApplesView' );
 			$result = $this->DefaultTableCell->action( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => 'ApplesView',
@@ -176,7 +176,7 @@
 
 			$result = $this->DefaultTableCell->auto( '/Apples/view/#Apple.id#', $htmlAttributes );
 			$expected = array(
-				'<a href="/apples/view/6" domain="" title="/Apples/view/6" class="apples view">/Apples/view</a>',
+				'<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>',
 				array(
 					'class' => 'action',
 					'for' => NULL,
