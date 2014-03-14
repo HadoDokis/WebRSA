@@ -165,6 +165,8 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'PersonneReferent' );
+
 			$personnes_referents = $this->PersonneReferent->find(
 				'all',
 				array(

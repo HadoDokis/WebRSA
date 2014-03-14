@@ -3,6 +3,7 @@
 	$this->modelClass = Inflector::classify( $this->request->params['controller'] );
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 
 		<?php if( empty( $apres ) ):?>
 			<p class="notice">Cette personne ne possède pas encore d'APRE.</p>

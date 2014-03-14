@@ -3,6 +3,7 @@
 		'h1',
 		$this->pageTitle = __d( 'entretien', "Entretiens::{$this->action}" )
 	);
+	echo $this->element( 'ancien_dossier' );
 ?>
 <br />
 	<div id="tabbedWrapper" class="tabs">

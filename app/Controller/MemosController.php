@@ -175,6 +175,8 @@
 			$nbrPersonnes = $this->Memo->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'contain' => false ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Memo' );
+
 			$memos = $this->Memo->find(
 				'all',
 				array(

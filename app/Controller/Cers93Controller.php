@@ -212,6 +212,8 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Contratinsertion' );
+
 			$querydata = array(
 				'fields' => array(
 					$this->Cer93->Contratinsertion->Fichiermodule->sqNbFichiersLies( $this->Cer93->Contratinsertion, 'nb_fichiers_lies' ),

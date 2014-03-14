@@ -785,6 +785,11 @@
 
 				//Fin Ajout Arnaud
 
+				// Anciens dossiers de l'allocataire ?
+				if( Configure::read( 'AncienAllocataire.enabled' ) ) {
+					$personnesFoyer[$index]['AncienDossier'] = $this->Dossier->Foyer->Personne->getAnciensDossiers( $personnesFoyer[$index]['Personne']['id'] );
+				}
+
 				$details[$role] = $personnesFoyer[$index];
 			}
 

@@ -8,6 +8,7 @@
 ?>
 
 <h1><?php  echo $this->pageTitle;?></h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 <?php if( $blockCumulCER66 ):?>
     <p class="error">Cet allocataire dépasse les 24 mois de contractualisation dans une orientation SOCIALE. Vous devez donc proposer un bilan pour passage en EPL.</p>
 <?php endif;?>

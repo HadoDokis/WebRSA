@@ -6,6 +6,7 @@
 	}
 ?>
 <?php echo $this->Xhtml->tag( 'h1', $this->pageTitle );?>
+<?php echo $this->element( 'ancien_dossier' );?>
 
 <?php if( $this->Permissions->checkDossier( 'cuis', 'add', $dossierMenu ) ):?>
 	<?php if( !empty( $secteurscuis ) ):?>

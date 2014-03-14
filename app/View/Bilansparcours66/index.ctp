@@ -49,6 +49,7 @@
 	<h1><?php echo $this->pageTitle;?></h1>
 
 		<?php
+			echo $this->element( 'ancien_dossier' );
 
 			echo "<ul class='actions'><li class='add'>";
 				echo $this->Default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
@@ -149,7 +150,7 @@
 								}
 								else {
 									$decision = $bilanparcours66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision];
-									
+
 									if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte' ) ) ) {
 										echo $this->Xhtml->tag(
 											'td',

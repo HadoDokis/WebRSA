@@ -296,6 +296,8 @@
 		public function view( $id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
 
+			$this->_setEntriesAncienDossier( $id, 'Dsp' );
+
 			$dsp = $this->Dsp->find(
 				'first',
 				array(
@@ -567,6 +569,8 @@
             $this->set( compact( 'personne' ) );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['DspRev']['personne_id'] ) ) );
+
+			$this->_setEntriesAncienDossier( $dsprevs['DspRev']['personne_id'], 'DspRev' );
 
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {

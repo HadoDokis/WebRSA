@@ -73,6 +73,8 @@
 		public function index( $personne_id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Questionnaired1pdv93' );
+
 			// Remplit-on les conditions initiales ? / Messages à envoyer à l'utilisateur
 			$messages = $this->Questionnaired1pdv93->messages( $personne_id );
 			$add_enabled = $this->Questionnaired1pdv93->addEnabled( $messages );

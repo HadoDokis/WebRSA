@@ -3,6 +3,8 @@
 <h1>Orientation</h1>
 
 <?php
+	echo $this->element( 'ancien_dossier' );
+
 	if ( empty( $orientstructs ) ) {
 		echo '<p class="notice">Cette personne ne possède pas encore d\'orientation.</p>';
 	}

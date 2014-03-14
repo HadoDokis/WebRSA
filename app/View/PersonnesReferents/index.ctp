@@ -1,6 +1,7 @@
 <?php  $this->pageTitle = 'Référents liés à la personne';?>
 
 <h1>Référents</h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 	<?php if( empty( $personnes_referents ) ):?>
 		<p class="notice">Cette personne ne possède pas encore de référents.</p>
 		<ul class="actionMenu">

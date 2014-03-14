@@ -262,5 +262,21 @@
 					__( "{$message}->{$class}" ), 'default', array( 'class' => $class )
 			);
 		}
+
+		/**
+		 * Lorsque la configuration de AncienAllocataire.enabled est à true, envoie
+		 * la liste des dossiers dans lesquels l'allocataire est à présent sans
+		 * prestation mais pour lesquels au moins un enregistrement du modèle existe.
+		 *
+		 * @param integer $personne_id
+		 * @param string $modelAlias
+		 */
+		protected function _setEntriesAncienDossier( $personne_id, $modelAlias ) {
+			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
+				$this->helpers['Default3'] = array( 'className' => 'Default.DefaultDefault' );
+				$entriesAncienDossier = ClassRegistry::init( 'Personne' )->getEntriesAnciensDossiers( $personne_id, $modelAlias );
+				$this->set( compact( 'entriesAncienDossier' ) );
+			}
+		}
 	}
 ?>

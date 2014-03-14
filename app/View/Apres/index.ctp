@@ -3,6 +3,7 @@
     $this->modelClass = Inflector::classify( $this->request->params['controller'] );
 ?>
 <h1><?php echo $this->pageTitle;?></h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 
 		<!-- <?php /*if( empty( $apres ) ):*/?>
 			<p class="error">Cette personne ne possède pas encore d'APRE forfaitaire, il n'est donc pas possible de créer une APRE Complémentaire.</p>

@@ -52,7 +52,7 @@
 		 *
 		 */
 		protected function _setOptions( $options = array() ) {
-            
+
 			$options = Hash::merge( $options, $this->Bilanparcours66->enums() );
 			$typevoie = $this->Option->typevoie();
 			$this->set( 'rolepers', $this->Option->rolepers() );
@@ -263,6 +263,8 @@
 					'conditions' => $conditions
 				)
 			);*/
+
+			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
 
 			$querydata = array(
 				'contain' => array(

@@ -520,6 +520,7 @@
 					</table>
 				</td>
 				<td>
+					<!-- Anciens dossiers dans lesquels la personne a toujours une prestation -->
                     <?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
                         <h2>Historique des dossiers RSA</h2>
                     <?php else:?>
@@ -614,6 +615,102 @@
 							<?php endif;?>
 						</tbody>
 					</table>
+					<?php if( Configure::read( 'AncienAllocataire.enabled' ) ): ?>
+						<!-- Anciens dossiers dans lesquels la personne n'a plus de prestation -->
+						<?php if( Configure::read( 'Cg.departement' ) != 66 ):?>
+							<h2>Historique des dossiers RSA sans prestation</h2>
+						<?php else:?>
+							<h2>Autres demandes RSA sans prestation</h2>
+						<?php endif;?>
+						<table>
+						<?php echo theadPastDossierDEM( 50, 8 );?>
+							<tbody>
+								<?php
+									$nbdem = count( Set::extract( 'DEM.AncienDossier', $details ) );
+									$colspan = "2";
+									if( Configure::read( 'Cg.departement' ) == 66  ) {
+										$colspan = "3";
+									}
+									if( $nbdem == 0 ):
+								?>
+								<tr class="odd">
+									<!-- Partie Demandeur-->
+									<th>Autre N° de demande RSA</th>
+									<td colspan= <?php echo $colspan;?>><?php
+											echo 'Aucun dossier passé pour le demandeur';
+										?>
+									</td>
+								</tr>
+								<?php else:?>
+								<?php for( $iteration = 0; $iteration <= $nbdem-1; $iteration++ ):?>
+									<tr class="odd">
+										<!-- Partie Demandeur-->
+										<th>Autre N° de demande RSA</th>
+										<td><?php
+												echo Set::extract( 'DEM.AncienDossier.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'DEM.AncienDossier.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'DEM.AncienDossier.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
+											?>
+										</td>
+										<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+										<td><?php
+												echo Set::extract( 'DEM.AncienDossier.'.$iteration.'.Foyer.nbdossierspcgs', $details );
+											?>
+										</td>
+										<?php endif;?>
+										<td><?php
+												echo $this->Xhtml->viewLink(
+													'Voir',
+													array( 'controller' => 'dossiers', 'action' => 'view', Set::extract( 'DEM.AncienDossier.'.$iteration.'.Dossier.id', $details) )
+												);
+											?>
+										</td>
+									</tr>
+									<?php endfor;?>
+									<?php endif;?>
+								</tbody>
+							</table>
+							<table>
+							<?php echo theadPastDossierCJT( 50, 8 );?>
+							<tbody>
+								<?php
+									$nbcjt = count( Set::extract( 'CJT.AncienDossier', $details ) );
+									if( $nbcjt == 0 ):
+								?>
+								<tr class="odd">
+									<!-- Partie Conjoint-->
+									<th>Autre N° de demande RSA</th>
+									<td colspan= <?php echo $colspan;?>><?php
+											echo 'Aucun dossier passé pour le conjoint';
+										?>
+									</td>
+								</tr>
+								<?php else:?>
+								<?php for( $iteration = 0; $iteration <= $nbcjt-1; $iteration++ ):?>
+								<tr class="odd">
+									<!-- Partie Conjoint-->
+									<th>Autre N° de demande RSA</th>
+									<td><?php
+											echo Set::extract( 'CJT.AncienDossier.'.$iteration.'.Dossier.numdemrsa', $details ).' en date du '.date_short( Set::extract( 'CJT.AncienDossier.'.$iteration.'.Dossier.dtdemrsa', $details ) ).' avec un état à '.value( $etatdosrsa, Set::extract( 'CJT.AncienDossier.'.$iteration.'.Situationdossierrsa.etatdosrsa', $details ) );
+										?>
+									</td>
+									<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
+										<td><?php
+												echo Set::extract( 'CJT.AncienDossier.'.$iteration.'.Foyer.nbdossierspcgs', $details );
+											?>
+										</td>
+										<?php endif;?>
+									<td><?php
+											echo $this->Xhtml->viewLink(
+												'Voir',
+												array( 'controller' => 'dossiers', 'action' => 'view', Set::extract( 'CJT.AncienDossier.'.$iteration.'.Dossier.id', $details) )
+											);
+										?>
+									</td>
+								</tr>
+								<?php endfor;?>
+								<?php endif;?>
+							</tbody>
+						</table>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<!-- Partie passage en EP-->

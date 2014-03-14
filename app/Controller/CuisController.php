@@ -129,7 +129,7 @@
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
 
-			$options[$this->modelClass]['raisonsocialepartenairecui66_id'] = $this->Cui->Partenaire->Raisonsocialepartenairecui66->find( 
+			$options[$this->modelClass]['raisonsocialepartenairecui66_id'] = $this->Cui->Partenaire->Raisonsocialepartenairecui66->find(
 				'list',
 				array(
 					'contain' => false,
@@ -148,7 +148,7 @@
 			$this->set( compact( 'options' ) );
 		}
 
-		
+
 		/**
 		 * Ajax pour les partenaires fournissant les actions
 		 *
@@ -345,10 +345,12 @@
 			$nbrPersonnes = $this->Cui->Personne->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ), 'recursive' => -1 ) );
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Cui' );
+
 			// Précondition: La personne est-elle bien en Rsa Socle ?
 			$alerteRsaSocle = $this->Cui->_prepare( $personne_id );
 			$this->set( 'alerteRsaSocle', $alerteRsaSocle );
-            
+
             // Alerte à afficher si le titre de séjour se termine bientôt
             $alerteTitreSejour = $this->Cui->Personne->nbMoisAvantFinTitreSejour($personne_id);
             $this->set( 'alerteTitreSejour', $alerteTitreSejour );
@@ -383,7 +385,7 @@
 				if( !empty( $cui['Partenaire']['libstruc'] ) ) {
 					$cuis[$i]['Cui']['nomemployeur'] = $cui['Partenaire']['libstruc'];
 				}
-                
+
                 if( !is_null( $cui['Decisioncui66']['id'] ) ) {
                     $action = 'decisioncui';
                 }
@@ -434,14 +436,14 @@
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
-        
+
         /**
 		 * Traitement du formulaire d'ajout ou de modification de CUI.
 		 *
 		 * @param inetger $id Correspond à l'id de la Personne en cas d'ajout, à l'id du Cui en cas de modification.
 		 */
 		protected function _add_edit( $id = null ) {
-            
+
             if( $this->action == 'add' ) {
 				$personne_id = $id;
 			}
@@ -524,16 +526,16 @@
 			$this->set( compact( 'valeursactionsparpartenaires', 'employeursCui' ) );
 			// ------------------------------------------------------------------------------------------
 
-			
+
 			$taux_cgs_cuis = $this->Cui->Secteurcui->Tauxcgcui->find( 'all' );
 			$this->set( compact( 'taux_cgs_cuis' ) );
 
 //			$this->set( 'personne', $personne );
 
 			/// Calcul du numéro du contrat d'insertion
-			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) ); 
+			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
 
-            
+
 			if( !empty( $this->request->data ) ) {
                 $success = true;
 //debug( $this->request->data );
@@ -600,7 +602,7 @@
             if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 			}
-            
+
 			$this->_setOptions();
 			$this->set( 'nbCui', $nbCui );
 			$this->set( 'personne_id', $personne_id );
@@ -608,9 +610,9 @@
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 			$this->render( 'add_edit' );
 		}
-        
-        
-        
+
+
+
 		/**
 		 * Formulaire de validation d'un CUI.
 		 *
@@ -708,7 +710,7 @@
 			$cui = $this->{$this->modelClass}->find( 'first', $qd_cui );
 			$personne = $this->{$this->modelClass}->Personne->detailsApre( $cui['Cui']['personne_id'], $this->Session->read( 'Auth.User.id' ) );
 			$this->set( compact( 'personne', 'cui' ) );
-			
+
 			$this->set( 'organismes', $this->Cui->Structurereferente->listeParType( array() ) );
 
             // Liste des employeurs et liste des actions
@@ -749,7 +751,7 @@
             }
             $this->set( compact( 'valeursactionsparpartenaires', 'employeursCui' ) );
 
-			
+
 			$this->_setOptions();
 		}
 

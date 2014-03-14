@@ -457,6 +457,8 @@ class ContratsinsertionController extends AppController {
 
         $this->set('dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu(array('personne_id' => $personne_id)));
 
+		$this->_setEntriesAncienDossier( $personne_id, 'Contratinsertion' );
+
         // Pour les CGs 58  et 66, on veut avoir assez bien d'informations en plus
         if (Configure::read('Cg.departement') != 93) {
             // Recherche de la dernière orientation en cours pour l'allocataire

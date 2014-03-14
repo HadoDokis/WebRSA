@@ -219,6 +219,8 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Rendezvous' );
+
 			// Jointure un peu spéciale
 			$joinStatutrdvTyperdv = array(
 				$this->Rendezvous->Typerdv->join( 'StatutrdvTyperdv' ),
