@@ -35,12 +35,11 @@
 ?>
 
 <div class="treemenu">
-
 		<h2 >
 			<?php if( Configure::read( 'UI.menu.large' ) ):?>
 			<?php
 				echo $this->Xhtml->link(
-					$this->Xhtml->image( 'icons/bullet_toggle_plus2.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'width' => '12px' ) ),
+					$this->Xhtml->image( 'icons/bullet_toggle_plus2.png', array( 'alt' => '', 'title' => 'Étendre le menu ', 'style' => 'width: 12px;' ) ),
 					'#',
 					array( 'onclick' => 'treeMenuExpandsAll( \''.Router::url( '/' ).'\' ); return false;', 'id' => 'treemenuToggleLink' ),
 					false,
@@ -128,7 +127,9 @@
 		foreach( $dossier['Foyer']['Personne'] as $personne ) {
 			$subAllocataire = array( 'url' => array( 'controller' => 'personnes', 'action' => 'view', $personne['id'] ) );
 
-			if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' ) {
+			$ancienAllocataire = ( Configure::read( 'AncienAllocataire.enabled' ) && Hash::get( $personne, 'ancienallocataire' ) );
+
+			if( $personne['Prestation']['rolepers'] == 'DEM' || $personne['Prestation']['rolepers'] == 'CJT' || $ancienAllocataire ) {
 				if( Configure::read( 'Cg.departement' ) == '66' ) {
                     $count = $personne['Memo']['nb_memos_lies'];
 					$subAllocataire["Mémos ({$count})"] = array( 'url' => array( 'controller' => 'memos', 'action' => 'index', $personne['id'] ) );
