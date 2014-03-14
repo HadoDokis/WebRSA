@@ -211,6 +211,8 @@
 		public function index( $personne_id ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Ficheprescription93' );
+
 			$messages = $this->Ficheprescription93->messages( $personne_id );
 			$addEnabled = $this->Ficheprescription93->addEnabled( $messages );
 

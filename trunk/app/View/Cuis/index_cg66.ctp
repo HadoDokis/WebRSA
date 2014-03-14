@@ -7,6 +7,7 @@
 ?>
 
 <?php echo $this->Xhtml->tag( 'h1', $this->pageTitle );?>
+<?php echo $this->element( 'ancien_dossier' );?>
 
 <?php if( $this->Permissions->checkDossier( 'cuis', 'add', $dossierMenu ) ):?>
 	<ul class="actionMenu">
@@ -23,7 +24,7 @@
 <?php endif;?>
 
 <?php if( !empty( $alerteTitreSejour ) ):?>
-    
+
     <?php if( is_null( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] ) && is_null( $alerteTitreSejour['Cui']['nbMoisAvantFinCui'] ) ) :?>
     <?php else:?>
         <?php if( ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] == 0 ) || ( $alerteTitreSejour['Titresejour']['nbMoisAvantFin'] == 0 ) ) :?>

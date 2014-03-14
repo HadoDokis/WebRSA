@@ -16,6 +16,8 @@
 		'h1',
 		$this->pageTitle = __d( $domain, "ActionscandidatsPersonnes::{$this->action}" )
 	);
+
+	echo $this->element( 'ancien_dossier' );
 ?>
 
 <?php

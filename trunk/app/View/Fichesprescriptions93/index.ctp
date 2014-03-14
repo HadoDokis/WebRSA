@@ -2,6 +2,8 @@
 	// TODO: bouton add, ...
 	echo $this->Default3->titleForLayout();
 
+	echo $this->element( 'ancien_dossier' );
+
 	echo $this->Default3->actions(
 		array(
 			"/Fichesprescriptions93/add/{$personne_id}" => array(

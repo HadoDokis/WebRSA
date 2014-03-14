@@ -885,4 +885,28 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet de parcourir les détails des allocataires n'ayant pas de prestation
+	 * RSA dans le menu du dossier.
+	 *
+	 * Permet également d'obtenir la liste des dossiers dans lesquels l'allocataire
+	 * ne possède plus de prestation RSA mais pour lesquels il existe des enregistrements
+	 * dans les tables métier de chacun des modules impactés.
+	 *
+	 * Permet également de voir dans la page de résumé du dossier les autres dossiers
+	 * dans lesquels se trouve l'allocataire avec des enregistrements dans les
+	 * tables métiers et pas de prestation.
+	 *
+	 * Les tables concernées sont: actionscandidats_personnes, apres, bilansparcours66,
+	 * contratsinsertion, cuis, dsps, dsps_revs, entretiens, fichesprescriptions93,
+	 * memos, orientsstructs, personnes_referents, propospdos, questionnairesd1pdvs93,
+	 * questionnairesd2pdvs93, rendezvous.
+	 *
+	 * ATTENTION: impacte les performances de l'application.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'AncienAllocataire.enabled', true );
 ?>

@@ -248,6 +248,8 @@
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 			$this->set( 'personne', $personne );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Apre' );
+
 			$apres = $this->{$this->modelClass}->find(
                 'all',
                 array(

@@ -3,6 +3,7 @@
 	$this->set( 'title_for_layout', $title_for_layout );
 ?>
 <?php echo $this->Html->tag( 'h1', $title_for_layout );?>
+<?php echo $this->element( 'ancien_dossier' );?>
 
 <?php if( !empty( $signalementseps93 ) ):?>
 	<h2>Signalements pour non respect du contrat</h2>

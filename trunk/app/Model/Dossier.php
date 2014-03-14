@@ -506,35 +506,39 @@
 				'Orientstruct.id IN ( '.$this->Foyer->Personne->Orientstruct->sqDerniere().' )'
 			);
 
-			$personnes = $this->Foyer->Personne->find(
-				'all',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Prestation.rolepers',
-						'Orientstruct.structurereferente_id',
-						'Structurereferente.typestructure',
-                        $this->Foyer->Personne->Memo->sqNbMemosLies($this, 'Personne.id', 'nb_memos_lies' )
-					),
-					'conditions' => array(
-						'Personne.foyer_id' => Hash::get( $dossier, 'Foyer.id' ),
-					),
-					'joins' => array(
-						$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'LEFT' ) ),
-						$this->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER', 'conditions' => $conditionsDerniereOrientstruct ) ),
-						$this->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-					),
-					'contain' => false,
-					'order' => array(
-						'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
-						'Personne.nom ASC',
-						'Personne.prenom ASC'
-					)
+			$query = array(
+				'fields' => array(
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Prestation.rolepers',
+					'Orientstruct.structurereferente_id',
+					'Structurereferente.typestructure',
+					$this->Foyer->Personne->Memo->sqNbMemosLies($this, 'Personne.id', 'nb_memos_lies' )
+				),
+				'conditions' => array(
+					'Personne.foyer_id' => Hash::get( $dossier, 'Foyer.id' ),
+				),
+				'joins' => array(
+					$this->Foyer->Personne->join( 'Prestation', array( 'type' => 'LEFT' ) ),
+					$this->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER', 'conditions' => $conditionsDerniereOrientstruct ) ),
+					$this->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'contain' => false,
+				'order' => array(
+					'( CASE WHEN Prestation.rolepers = \'DEM\' THEN 0 WHEN Prestation.rolepers = \'CJT\' THEN 1 WHEN Prestation.rolepers = \'ENF\' THEN 2 ELSE 3 END ) ASC',
+					'Personne.nom ASC',
+					'Personne.prenom ASC'
 				)
 			);
+
+			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
+				$sqAncienAllocataire = $this->Foyer->Personne->sqAncienAllocataire();
+				$query['fields'][] = "( \"Prestation\".\"id\" IS NULL AND {$sqAncienAllocataire} ) AS \"Personne__ancienallocataire\"";
+			}
+
+			$personnes = $this->Foyer->Personne->find( 'all', $query );
 
 			// Reformattage pour la vue
 			$dossier['Foyer']['Personne'] = Hash::extract( $personnes, '{n}.Personne' );

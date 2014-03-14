@@ -9,6 +9,7 @@
 	}
 ?>
 <h1 class="aere"><?php  echo 'CER  ';?></h1>
+	<?php echo $this->element( 'ancien_dossier' );?>
 	<?php if( isset( $sanctionseps58 ) && !empty( $sanctionseps58 ) ):?>
 		<h2>Signalements pour non respect du contrat</h2>
 		<table class="tooltips">

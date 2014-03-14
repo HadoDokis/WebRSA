@@ -1,6 +1,8 @@
 <?php $this->pageTitle = 'Rendez-vous de la personne'; ?>
 
 <h1>Rendez-vous</h1>
+<?php echo $this->element( 'ancien_dossier' );?>
+
 	<?php if( empty( $rdvs ) ):?>
 		<p class="notice">Cette personne ne possède pas encore de rendez-vous.</p>
 	<?php endif;?>
@@ -10,7 +12,7 @@
                         'Ajouter un Rendez-vous',
                         array( 'controller' => 'rendezvous', 'action' => 'add', $personne_id ),
                         ( $this->Permissions->checkDossier( 'rendezvous', 'add', $dossierMenu ) && ( $ajoutPossible ) )
-                        
+
                     ).' </li>';
                 ?>
             </ul>

@@ -190,7 +190,10 @@
 			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
 
 			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->set( 'dossierMenu', $dossierMenu );
+
+			$this->_setEntriesAncienDossier( $personne_id, 'Orientstruct' );
 
 			$querydata = $this->Orientstruct->qdIndex( $personne_id );
 			$orientstructs = $this->Orientstruct->find( 'all', $querydata );

@@ -660,6 +660,34 @@
 		);
 
 		/**
+		 * Liste des alias de modèles pour lesquels on prend en compte les
+		 * anciens dossiers dans lesquels l'allocataire n'a plus de prestation.
+		 *
+		 *
+		 * INFO: on ne prend en compte ni Dossiercov58, ni Dossierep.
+		 *
+		 * @var array
+		 */
+		public $anciensDossiersModelNames = array(
+			'ActioncandidatPersonne',
+			'Apre',
+			'Bilanparcours66',
+			'Contratinsertion',
+			'Cui',
+			'Dsp',
+			'DspRev',
+			'Entretien',
+			'Ficheprescription93',
+			'Memo',
+			'Orientstruct',
+			'PersonneReferent',
+			'Propopdo',
+			'Questionnaired1pdv93',
+			'Questionnaired2pdv93',
+			'Rendezvous',
+		);
+
+		/**
 		 *
 		 * @param array $options
 		 * @return mixed
@@ -1123,6 +1151,264 @@
 			);
 
             return $result;
+		}
+
+		/**
+		 * Retourne la condition permettant de savoir qu'il existe au moins un
+		 * enregistrement d'une des tables métiers lié à "Personne"."id" alors
+		 * que celle-ci se trouve sans prestation dans un dossier.
+		 *
+		 * @return string
+		 */
+		public function sqAncienAllocataire() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$condition = Cache::read( $cacheKey );
+
+			if( $condition === false ) {
+				if( !$this->Behaviors->attached( 'LinkedRecords' ) ) {
+					$this->Behaviors->attach( 'LinkedRecords' );
+				}
+
+				$savedVirtualFields = $this->virtualFields;
+				$this->linkedRecordsLoadVirtualFields( $this->anciensDossiersModelNames );
+
+				$virtualFields = array();
+				foreach( $this->virtualFields as $fieldName => $fieldCondition ) {
+					if( strpos( $fieldName, 'has_' ) === 0 ) {
+						$virtualFields[] = $fieldCondition;
+					}
+				}
+
+				$this->virtualFields = $savedVirtualFields;
+
+				$condition = $this->getDatasource()->conditions( array( 'OR' => $virtualFields ), true, false, $this );
+
+				Cache::write( $cacheKey, $condition );
+			}
+
+			return $condition;
+		}
+
+		/**
+		 * Permet d'obtenir un querydata ou les résultats du querydata des
+		 * anciens dossiers de la personne, dans lesquels celle-ci n'a plus de
+		 * prestation mais possède toujours des enregistrements du modèle.
+		 *
+		 * @param integer $personne_id L'id de la personne
+		 * @param string $modelAlias L'alias du modèle
+		 * @param boolean $asQuery true pour obtenir le querydata, false pour obtenir les résultats
+		 * @param integer $differenceThreshold
+		 * @return array
+		 */
+		public function getEntriesAnciensDossiers( $personne_id, $modelAlias, $asQuery = false, $differenceThreshold = 4 ) {
+			if( !$this->Behaviors->attached( 'LinkedRecords' ) ) {
+				$this->Behaviors->attach( 'LinkedRecords' );
+			}
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ )."_{$modelAlias}_{$differenceThreshold}";
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$replacements = array( 'Personne' => 'Personne2' );
+				$virtualField = $this->linkedRecordVirtualField( $modelAlias );
+				$virtualField = preg_replace( '/^EXISTS\( SELECT (.*) AS (.*) FROM /', '( SELECT COUNT( \1 ) FROM ', $virtualField );
+				$virtualField = str_replace( '"Personne"."id"', '"Personne2"."id"', $virtualField );
+
+				$aliasedVirtualField = $virtualField.' AS "Personne__records"';
+
+				$conditionsJoinPersonne2 = array(
+					'Personne.id <> Personne2.id',
+					'Personne.foyer_id <> Personne2.foyer_id',
+					'OR' => array(
+						array(
+							'nir_correct13(Personne.nir)',
+							'nir_correct13(Personne2.nir)',
+							'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne2.nir ) FROM 1 FOR 13 )',
+							'Personne.dtnai = Personne2.dtnai'
+						),
+						array(
+							'UPPER(Personne.nom) = UPPER(Personne2.nom)',
+							'UPPER(Personne.prenom) = UPPER(Personne2.prenom)',
+							'Personne.dtnai = Personne2.dtnai'
+						),
+					)
+				);
+
+				$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
+				if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), 'success' ) ) {
+					$conditionsJoinPersonne2[] = array(
+						'difference(Personne.nom, Personne2.nom) >=' => $differenceThreshold,
+						'difference(Personne.prenom, Personne2.prenom) >=' => $differenceThreshold,
+						'Personne.dtnai = Personne2.dtnai'
+					);
+				}
+
+				$query = array(
+					'fields' => array(
+						'Personne2.id',
+						'Dossier.id',
+						'Dossier.numdemrsa',
+						'Dossier.matricule',
+						'Dossier.dtdemrsa',
+						$aliasedVirtualField
+					),
+					'contain' => false,
+					'joins' => array(
+						array(
+							'table' => '"personnes"',
+							'alias' => 'Personne2',
+							'type' => 'INNER',
+							'conditions' => $conditionsJoinPersonne2
+						),
+						array_words_replace( $this->join( 'Foyer', array( 'type' => 'INNER' ) ), $replacements ),
+						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'NOT EXISTS( SELECT prestations.id FROM prestations WHERE prestations.personne_id = Personne2.id )',
+						"{$virtualField} >" => 0
+					),
+					'order' => array(
+						'Dossier.dtdemrsa DESC'
+					)
+				);
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			$query['conditions']['Personne.id'] = $personne_id;
+
+			if( $asQuery ) {
+				return $query;
+			}
+
+			return $this->find( 'all', $query );
+		}
+
+		/**
+		 *
+		 * @param integer $personne_id
+		 * @param boolean $asQuery
+		 * @param integer $differenceThreshold
+		 * @return array
+		 */
+		public function getAnciensDossiers( $personne_id, $asQuery = false, $differenceThreshold = 4 ) {
+			if( !$this->Behaviors->attached( 'LinkedRecords' ) ) {
+				$this->Behaviors->attach( 'LinkedRecords' );
+			}
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ )."_{$differenceThreshold}";
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$replacements = array( 'Personne' => 'Personne2' );
+
+				$virtualFields = array();
+				foreach( $this->anciensDossiersModelNames as $modelName ) {
+					$virtualField = $this->linkedRecordVirtualField( $modelName );
+					$virtualFields[] = str_replace( '"Personne"."id"', '"Personne2"."id"', $virtualField );
+				}
+
+				$conditionsJoinPersonne2 = array(
+					'Personne.id <> Personne2.id',
+					'Personne.foyer_id <> Personne2.foyer_id',
+					'OR' => array(
+						array(
+							'nir_correct13(Personne.nir)',
+							'nir_correct13(Personne2.nir)',
+							'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne2.nir ) FROM 1 FOR 13 )',
+							'Personne.dtnai = Personne2.dtnai'
+						),
+						array(
+							'UPPER(Personne.nom) = UPPER(Personne2.nom)',
+							'UPPER(Personne.prenom) = UPPER(Personne2.prenom)',
+							'Personne.dtnai = Personne2.dtnai'
+						),
+					)
+				);
+
+				$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
+				if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), 'success' ) ) {
+					$conditionsJoinPersonne2[] = array(
+						'difference(Personne.nom, Personne2.nom) >=' => $differenceThreshold,
+						'difference(Personne.prenom, Personne2.prenom) >=' => $differenceThreshold,
+						'Personne.dtnai = Personne2.dtnai'
+					);
+				}
+
+				$query = array(
+					'fields' => array(
+						'Personne2.id',
+						'Dossier.id',
+						'Dossier.numdemrsa',
+						'Dossier.matricule',
+						'Dossier.dtdemrsa',
+						'Situationdossierrsa.etatdosrsa'
+					),
+					'contain' => false,
+					'joins' => array(
+						array(
+							'table' => '"personnes"',
+							'alias' => 'Personne2',
+							'type' => 'INNER',
+							'conditions' => $conditionsJoinPersonne2
+						),
+						array_words_replace( $this->join( 'Foyer', array( 'type' => 'INNER' ) ), $replacements ),
+						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'NOT EXISTS( SELECT prestations.id FROM prestations WHERE prestations.personne_id = Personne2.id )',
+						'OR' => $virtualFields
+					),
+					'order' => array(
+						'Dossier.dtdemrsa DESC'
+					)
+				);
+
+                if( Configure::read( 'Cg.departement' ) == 66 ) {
+                    $query['fields'][] = '( '.$this->Foyer->vfNbDossierPCG66( 'Foyer.id ').' ) AS "Foyer__nbdossierspcgs"';
+                }
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			$query['conditions']['Personne.id'] = $personne_id;
+
+			if( $asQuery ) {
+				return $query;
+			}
+
+			return $this->find( 'all', $query );
+		}
+
+		/**
+		 * Préchargement du cache du modèle.
+		 */
+		public function prechargement() {
+			$success = parent::prechargement();
+
+			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
+				$success = ( $success !== false );
+
+				$linked = Hash::merge(
+					array_keys( $this->hasMany ),
+					array_keys( $this->hasOne ),
+					Hash::extract( $this->hasAndBelongsToMany, '{s}.with' )
+				);
+
+				foreach( $linked as $modelAlias ) {
+					$query = $this->getEntriesAnciensDossiers( null, $modelAlias, true );
+					$success = !empty( $query ) && $success;
+				}
+
+				$query = $this->getAnciensDossiers( null, true );
+				$success = !empty( $query ) && $success;
+
+				$condition = $this->sqAncienAllocataire();
+				$success = !empty( $condition ) && $success;
+			}
+
+			return $success;
 		}
 	}
 ?>

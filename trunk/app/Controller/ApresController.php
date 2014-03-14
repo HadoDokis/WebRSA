@@ -224,6 +224,8 @@
 			$this->assert( !empty( $personne ), 'invalidParameter' );
 			$this->set( 'personne', $personne );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Apre' );
+
 			$apres = $this->Apre->find( 'all', array( 'conditions' => array( 'Apre.personne_id' => $personne_id ), 'order' => 'Apre.datedemandeapre DESC' ) );
 			$this->set( 'apres', $apres );
 

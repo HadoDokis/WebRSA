@@ -217,6 +217,8 @@
 			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
 			$this->set( 'dossier_id', $dossier_id );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'ActioncandidatPersonne' );
+
 			//Vérification de la présence d'une orientation ou d'un référent pour cet allocataire
 			$referentLie = $this->ActioncandidatPersonne->Personne->PersonneReferent->find(
 				'count',

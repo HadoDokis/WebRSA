@@ -228,6 +228,8 @@
 			);
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Entretien' );
+
 			$entretiens = $this->Entretien->find(
 				'all',
 				array(

@@ -13,6 +13,7 @@
 <div class="tab_histo_dsp">
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+		echo $this->element( 'ancien_dossier' );
 
 		if (!empty($histos[0]['DspRev'])) {
 			echo "<table><thead>";

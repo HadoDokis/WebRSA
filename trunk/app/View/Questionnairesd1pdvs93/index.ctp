@@ -1,6 +1,8 @@
 <?php
 	echo $this->Default3->titleForLayout( $personne );
 
+	echo $this->element( 'ancien_dossier' );
+
 	echo $this->Default3->actions(
 		array(
 			"/Questionnairesd1pdvs93/add/{$personne_id}" => array(

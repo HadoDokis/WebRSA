@@ -12,6 +12,7 @@
 ?>
 
 <h1><?php echo $this->pageTitle;?></h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 <h2>Détails PDO</h2>
 
 <?php if( $this->Permissions->checkDossier( 'propospdos', 'add', $dossierMenu ) ):?>

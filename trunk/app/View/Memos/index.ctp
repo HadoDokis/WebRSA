@@ -1,6 +1,7 @@
 <?php  $this->pageTitle = 'Mémos concernant la personne';?>
 
 <h1>Mémos</h1>
+<?php echo $this->element( 'ancien_dossier' );?>
 <ul class="actionMenu">
 	<li><?php
 			echo $this->Xhtml->addLink(

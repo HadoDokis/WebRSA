@@ -10,7 +10,7 @@
 	}
 ?>
 <h1><?php  echo 'CER  ';?></h1>
-
+<?php echo $this->element( 'ancien_dossier' );?>
 <?php if( empty( $contratsinsertion ) ):?>
 	<p class="notice">Cette personne ne possède pas encore de CER.</p>
 <?php endif;?>

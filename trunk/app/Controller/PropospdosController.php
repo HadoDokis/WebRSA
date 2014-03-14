@@ -176,6 +176,8 @@
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
+			$this->_setEntriesAncienDossier( $personne_id, 'Propopdo' );
+
 			$conditions = array( 'Propopdo.personne_id' => $personne_id );
 
 			/// Récupération des listes des PDO

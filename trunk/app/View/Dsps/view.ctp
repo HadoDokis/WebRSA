@@ -13,6 +13,7 @@
 <div id="dsps">
 	<?php
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
+		echo $this->element( 'ancien_dossier' );
 
 		echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform' ) );
 
