@@ -96,6 +96,10 @@
 			$expected = '<div class="input value"><span class="label">Name</span><span class="input">Étagère</span></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
+			$result = $this->DefaultForm->fieldValue( 'Apple.foo', array( 'label' => 'Name' ) );
+			$expected = '<div class="input value"><span class="label">Name</span><span class="input"> </span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
 			$result = $this->DefaultForm->fieldValue( 'Apple.category', array( 'label' => 'Category', 'options' => array( 'red' => 'Red apple' ) ) );
 			$expected = '<div class="input value"><span class="label">Category</span><span class="input">Red apple</span></div>';
 			$this->assertEqualsXhtml( $result, $expected );

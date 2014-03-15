@@ -78,6 +78,12 @@
 			if( isset( $options['nl2br'] ) && $options['nl2br'] ) {
 				$value = nl2br( $value );
 			}
+
+			// Permet d'avoir la fin de tag
+			if( $value === null ) {
+				$value = ' ';
+			}
+
 			$value = $this->Html->tag( 'span', $value, array( 'class' => 'input' ) );
 
 			// Options
