@@ -1,8 +1,13 @@
 <?php
 	/**
-	 * Fichier source de la classe Personne.
+	 * Code source de la classe Personne.
 	 *
-	 * PHP 5.3
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Personne ...
 	 *
 	 * @package app.Model
 	 */
@@ -1216,33 +1221,6 @@
 
 				$aliasedVirtualField = $virtualField.' AS "Personne__records"';
 
-				$conditionsJoinPersonne2 = array(
-					'Personne.id <> Personne2.id',
-					'Personne.foyer_id <> Personne2.foyer_id',
-					'OR' => array(
-						array(
-							'nir_correct13(Personne.nir)',
-							'nir_correct13(Personne2.nir)',
-							'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne2.nir ) FROM 1 FOR 13 )',
-							'Personne.dtnai = Personne2.dtnai'
-						),
-						array(
-							'UPPER(Personne.nom) = UPPER(Personne2.nom)',
-							'UPPER(Personne.prenom) = UPPER(Personne2.prenom)',
-							'Personne.dtnai = Personne2.dtnai'
-						),
-					)
-				);
-
-				$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
-				if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), 'success' ) ) {
-					$conditionsJoinPersonne2[] = array(
-						'difference(Personne.nom, Personne2.nom) >=' => $differenceThreshold,
-						'difference(Personne.prenom, Personne2.prenom) >=' => $differenceThreshold,
-						'Personne.dtnai = Personne2.dtnai'
-					);
-				}
-
 				$query = array(
 					'fields' => array(
 						'Personne2.id',
@@ -1258,7 +1236,7 @@
 							'table' => '"personnes"',
 							'alias' => 'Personne2',
 							'type' => 'INNER',
-							'conditions' => $conditionsJoinPersonne2
+							'conditions' => $this->conditionsRapprochementPersonne1Personne2( 'Personne', 'Personne2', false )
 						),
 						array_words_replace( $this->join( 'Foyer', array( 'type' => 'INNER' ) ), $replacements ),
 						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
@@ -1285,6 +1263,55 @@
 		}
 
 		/**
+		 * Retourne un array de conditions permettant de voir si les 2 personnes
+		 * sont les mêmes, au sein d'un même foyer ou non.
+		 *
+		 * Pour faire le rapprochement, on se base soit:
+		 *	- sur les NIR (13) et la date de naissance
+		 *  - sur nom, prénom et date de naissance
+		 *	- sur de faibles différences de nom et prénom, plus la date de naissance,
+		 *		si la librairie fuzzystrmatch de PostgreSQL est installée.
+		 *
+		 * @param string $personne1Alias
+		 * @param string $personne2Alias
+		 * @param boolean $memeFoyer
+		 * @param integer $differenceThreshold
+		 * @return array
+		 */
+		public function conditionsRapprochementPersonne1Personne2( $personne1Alias = 'Personne1', $personne2Alias = 'Personne2', $memeFoyer = false, $differenceThreshold = 4 ) {
+			$memeFoyer = ( $memeFoyer ? '=' : '<>' );
+
+			$conditions = array(
+				"{$personne1Alias}.id <> {$personne2Alias}.id",
+				"{$personne1Alias}.foyer_id {$memeFoyer} {$personne2Alias}.foyer_id",
+				"OR" => array(
+					array(
+						"nir_correct13({$personne1Alias}.nir)",
+						"nir_correct13({$personne2Alias}.nir)",
+						"SUBSTRING( TRIM( BOTH ' ' FROM {$personne1Alias}.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM {$personne2Alias}.nir ) FROM 1 FOR 13 )",
+						"{$personne1Alias}.dtnai = {$personne2Alias}.dtnai"
+					),
+					array(
+						"UPPER({$personne1Alias}.nom) = UPPER({$personne2Alias}.nom)",
+						"UPPER({$personne1Alias}.prenom) = UPPER({$personne2Alias}.prenom)",
+						"{$personne1Alias}.dtnai = {$personne2Alias}.dtnai"
+					),
+				)
+			);
+
+			$Webrsacheck = ClassRegistry::init( "Webrsacheck" );
+			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
+				$conditions['OR'][] = array(
+					"difference({$personne1Alias}.nom, {$personne2Alias}.nom) >=" => $differenceThreshold,
+					"difference({$personne1Alias}.prenom, {$personne2Alias}.prenom) >=" => $differenceThreshold,
+					"{$personne1Alias}.dtnai = {$personne2Alias}.dtnai"
+				);
+			}
+
+			return $conditions;
+		}
+
+		/**
 		 *
 		 * @param integer $personne_id
 		 * @param boolean $asQuery
@@ -1308,33 +1335,6 @@
 					$virtualFields[] = str_replace( '"Personne"."id"', '"Personne2"."id"', $virtualField );
 				}
 
-				$conditionsJoinPersonne2 = array(
-					'Personne.id <> Personne2.id',
-					'Personne.foyer_id <> Personne2.foyer_id',
-					'OR' => array(
-						array(
-							'nir_correct13(Personne.nir)',
-							'nir_correct13(Personne2.nir)',
-							'SUBSTRING( TRIM( BOTH \' \' FROM Personne.nir ) FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH \' \' FROM Personne2.nir ) FROM 1 FOR 13 )',
-							'Personne.dtnai = Personne2.dtnai'
-						),
-						array(
-							'UPPER(Personne.nom) = UPPER(Personne2.nom)',
-							'UPPER(Personne.prenom) = UPPER(Personne2.prenom)',
-							'Personne.dtnai = Personne2.dtnai'
-						),
-					)
-				);
-
-				$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
-				if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), 'success' ) ) {
-					$conditionsJoinPersonne2[] = array(
-						'difference(Personne.nom, Personne2.nom) >=' => $differenceThreshold,
-						'difference(Personne.prenom, Personne2.prenom) >=' => $differenceThreshold,
-						'Personne.dtnai = Personne2.dtnai'
-					);
-				}
-
 				$query = array(
 					'fields' => array(
 						'Personne2.id',
@@ -1350,7 +1350,7 @@
 							'table' => '"personnes"',
 							'alias' => 'Personne2',
 							'type' => 'INNER',
-							'conditions' => $conditionsJoinPersonne2
+							'conditions' => $this->conditionsRapprochementPersonne1Personne2( 'Personne', 'Personne2', false )
 						),
 						array_words_replace( $this->join( 'Foyer', array( 'type' => 'INNER' ) ), $replacements ),
 						$this->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
