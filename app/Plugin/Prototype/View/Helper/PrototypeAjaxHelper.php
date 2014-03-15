@@ -10,8 +10,8 @@
 	 */
 
 	/**
-	 * La classe PrototypeAjaxHelper fournit des méthodes Ajax de haut niveau au moyen
-	 * de la librairie javascript prototypejs.
+	 * La classe PrototypeAjaxHelper fournit des méthodes Ajax de haut niveau au
+	 * moyen de la librairie javascript prototypejs.
 	 *
 	 * @package Prototype
 	 * @subpackage View.Helper
@@ -190,7 +190,7 @@ Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
 		 * Ajoute le contenu dans le buffer si useBuffer est à true, sinon retourne
 		 * le script dans une fonction déclenchée au chargement de la page.
 		 *
-		 * @param string $layoutFile The layout about to be rendered.
+		 * @param string $script Le code javascript à ajouter.
 		 */
 		public function render( $script ) {
 			if( $this->useBuffer ) {

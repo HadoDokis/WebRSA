@@ -10,8 +10,9 @@
 	 */
 
 	/**
-	 * La classe PrototypeObserverHelper encapsule des fonctions javascript pour
-	 * la librairie Prototypejs.
+	 * La classe PrototypeObserverHelper fournit des méthodes de haut niveau pour
+	 * observer des changements de valeurs de champs de formulaires au moyen de la
+	 * librairie javascript prototypejs.
 	 *
 	 * @package Prototype
 	 * @subpackage View.Helper
@@ -166,6 +167,17 @@
 			return $this->render( $script );
 		}
 
+		/**
+		 * Permet de désactiver et éventuellement de masquer un fieldset suivant
+		 * la valeur d'un champ maître.
+		 *
+		 * @param string $master Le chemin CakePHP du champ maître
+		 * @param string $slave Les chemins CakePHP du fieldset
+		 * @param mixed $values Les valeurs à prendre en compte pour le champ maître
+		 * @param boolean $condition true pour désactiver lorsque le champ maître a une des valeurs, false sinon
+		 * @param boolean $hide true pour en plus cacher le fieldset lorsqu'il est désactivé
+		 * @return string
+		 */
 		public function disableFieldsetOnValue( $master, $slave, $values, $condition, $hide = false ) {
 			$master = $this->domId( $master );
 
@@ -193,7 +205,7 @@
 		 * Ajoute le contenu dans le buffer si useBuffer est à true, sinon retourne
 		 * le script dans une fonction déclenchée au chargement de la page.
 		 *
-		 * @param string $layoutFile The layout about to be rendered.
+		 * @param string $script Le code javascript à ajouter.
 		 */
 		public function render( $script ) {
 			if( $this->useBuffer ) {
