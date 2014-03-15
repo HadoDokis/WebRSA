@@ -24,7 +24,10 @@
 
 		public $uses = array( 'User', 'Option' );
 
-		public $helpers = array( 'Xform', 'Default2' );
+		public $helpers = array(
+			'Xform',
+			'Default2',
+		);
 
 		public $components = array(
 			'Dbdroits',
@@ -103,7 +106,7 @@
                             'Poledossierpcg66.name'
                         ),
                         'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
-                        'order' => array( 'Poledossierpcg66.name ASC' ) 
+                        'order' => array( 'Poledossierpcg66.name ASC' )
                     )
                 )
             );

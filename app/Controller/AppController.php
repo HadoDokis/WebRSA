@@ -28,7 +28,20 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Xhtml', 'Form', 'Permissions', 'Locale', 'Default', 'Xpaginator', 'Gestionanomaliebdd', 'Menu' );
+		public $helpers = array(
+			'Xhtml',
+			'Form',
+			'Permissions',
+			'Locale',
+			'Default',
+			'Xpaginator',
+			'Gestionanomaliebdd',
+			'Menu',
+			'Observer' => array(
+				'className' => 'Prototype.PrototypeObserver',
+				'useBuffer' => false
+			)
+		);
 
 		/**
 		 * Modèles utilisés

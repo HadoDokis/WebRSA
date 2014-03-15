@@ -33,7 +33,7 @@
 
 	echo $this->Xform->end( 'Search' );
 
-	echo $this->Allocataires->SearchForm->jsObserveDependantSelect(
+	echo $this->Observer->dependantSelect(
 		array(
 			'Search.Referentorientant.structurereferente_id' => 'Search.Referentorientant.id',
 		)

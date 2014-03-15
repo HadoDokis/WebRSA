@@ -189,6 +189,9 @@
 				(CakePHP v. <?php echo Configure::version();?>)
 			</div>
 		</div>
-		<?php echo $this->element( 'sql_dump' ); ?>
+		<?php
+			echo $this->fetch( 'scriptBottom' );
+			echo $this->element( 'sql_dump' );
+		?>
 	</body>
 </html>

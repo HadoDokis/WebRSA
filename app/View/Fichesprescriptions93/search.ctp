@@ -22,7 +22,7 @@
 
 	// Début spécificités fiche de prescription
 	echo $this->Xform->input( 'Search.Ficheprescription93.exists', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
-	echo '<fieldset id="specificites_fichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
+	echo '<fieldset id="SpecificitesFichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
 	echo $this->Xform->input( 'Search.Actionfp93.numconvention', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Thematiquefp93.type', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Thematiquefp93.type' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Categoriefp93.thematiquefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Categoriefp93.thematiquefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
@@ -102,7 +102,7 @@
 <?php endif;?>
 
 <?php
-	echo $this->Allocataires->SearchForm->jsObserveDependantSelect(
+	echo $this->Observer->dependantSelect(
 		array(
 			'Search.Thematiquefp93.type' => 'Search.Categoriefp93.thematiquefp93_id',
 			'Search.Categoriefp93.thematiquefp93_id' => 'Search.Filierefp93.categoriefp93_id',
@@ -119,17 +119,12 @@
 			'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
 		)
 	);
+
+	echo $this->Observer->disableFieldsetOnValue(
+		'Search.Ficheprescription93.exists',
+		'SpecificitesFichesprescriptions93',
+		'1',
+		true,
+		true
+	);
 ?>
-<script type="text/javascript">
-//<![CDATA[
-	document.observe( "dom:loaded", function() {
-		observeDisableFieldsetOnValue(
-			'<?php echo $this->Allocataires->domId( 'Search.Ficheprescription93.exists' );?>',
-			$( 'specificites_fichesprescriptions93' ),
-			['1'],
-			true,
-			true
-		);
-	} );
-//]]>
-</script>

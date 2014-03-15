@@ -23,14 +23,20 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Form', 'Html' );
+		public $helpers = array(
+			'Form',
+			'Html',
+			'Prototype.PrototypeObserver' => array(
+				'useBuffer' => false
+			)
+		);
 
 		/**
 		 * Fournit le code javascript permettant de désactiver les boutons de
 		 * soumission d'un formumlaire lors de son envoi afin de ne pas renvoyer
 		 * celui-ci plusieurs fois avant que le reqête n'ait abouti.
 		 *
-		 * @deprecated See SearchPrototypeHelper::observeDisableFormOnSubmit()
+		 * @deprecated See PrototypeObserverHelper::disableFormOnSubmit()
 		 *
 		 * @param string $form L'id du formulaire au sens Prototype
 		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
@@ -59,7 +65,7 @@
 		 * la prestation, ...) suivant la valeur de la case à cocher "parente"
 		 * ("choice").
 		 *
-		 * @deprecated See SearchPrototypeHelper::observeDisableFieldsetOnCheckbox()
+		 * @deprecated See PrototypeObserverHelper::disableFieldsetOnCheckbox()
 		 *
 		 * @param string $observeId
 		 * @param string $updateId
@@ -67,12 +73,12 @@
 		 * @param boolean $hide
 		 * @return string
 		 */
-		protected function _constuctObserve( $observeId, $updateId, $goUp = true, $hide = false ) { // TODO: paramètre pour cacher le fieldset
+		/*protected function _constuctObserve( $observeId, $updateId, $goUp = true, $hide = false ) { // TODO: paramètre pour cacher le fieldset
 			$goUp = $goUp ? ".up( 'fieldset' )" : '';
 			$out = "document.observe( 'dom:loaded', function() { observeDisableFieldsetOnCheckbox( '{$observeId}', $( '{$updateId}' ){$goUp}, false, ".( $hide ? 'true' : 'false' )." ); } );";
 
 			return $this->Html->scriptBlock( $out );
-		}
+		}*/
 
 		/**
 		 * Retourne le code javascript permettant de faire dépendre des input
@@ -80,12 +86,13 @@
 		 * le suffixe de la valeur du maître et elle doit correspondre au préfixe
 		 * de la valeur de l'esclave.
 		 *
-		 * @deprecated See SearchPrototypeHelper::observeDependantSelect()
+		 * @deprecated See PrototypeObserverHelper::dependantSelect()
+		 * @unused - unittest
 		 *
 		 * @param array $fields En clé le champ maître, en valeur le champ esclave
 		 * @return string
 		 */
-		public function jsObserveDependantSelect( array $fields ) {
+		/*public function jsObserveDependantSelect( array $fields ) {
 			$script = '';
 
 			foreach( $fields as $masterField => $slaveField ) {
@@ -97,13 +104,14 @@
 			$script = "document.observe( \"dom:loaded\", function() {\n{$script}} );";
 
 			return $this->Html->scriptBlock( $script );
-		}
+		}*/
 
 		/**
 		 * Permet de désactiver et éventuellement de masquer un ensemble de champs
 		 * suivant la valeur d'un champ maître.
 		 *
-		 * @deprecated See SearchPrototypeHelper::observeDependantSelect()
+		 * @deprecated See PrototypeObserverHelper::dependantSelect()
+		 * @unused
 		 *
 		 * @param string $master Le chemin CakePHP du champ maître
 		 * @param string|array $slaves Les chemins CakePHP des champs à désactiver
@@ -112,7 +120,7 @@
 		 * @param boolean $hide true pour en plus cacher les champs esclaves lorsqu'ils sont désactivés
 		 * @return string
 		 */
-		public function observeDisableFieldsOnValue( $master, $slaves, $values, $condition, $toggleVisibility = false ) {
+		/*public function observeDisableFieldsOnValue( $master, $slaves, $values, $condition, $toggleVisibility = false ) {
 			$master = $this->domId( $master );
 
 			$slaves = (array)$slaves;
@@ -140,7 +148,7 @@
 			$script = "observeDisableFieldsOnValue( '{$master}', {$slaves}, {$values}, {$condition}, {$toggleVisibility} );\n";
 
 			return $this->Html->scriptBlock( "document.observe( \"dom:loaded\", function() {\n{$script}} );" );
-		}
+		}*/
 
 		/**
 		 * Méthode générique permettant de retourner un ensemble de cases à cocher au sein d'un
@@ -196,7 +204,8 @@
 				array( 'id' => $fieldsetId )
 			);
 
-			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false, $params['hide'] );
+			$script = $this->PrototypeObserver->disableFieldsetOnCheckbox( $choicePath, $fieldsetId, false, $params['hide'] );
+//			$script = $this->_constuctObserve( $this->domId( $choicePath ), $fieldsetId, false, $params['hide'] );
 
 			return $input.$script;
 		}
@@ -221,7 +230,8 @@
 
 			$fieldsetId = $this->domId( $path ).'_from_to';
 
-			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false, $params['hide'] );
+			$script = $this->PrototypeObserver->disableFieldsetOnCheckbox( $path, $fieldsetId, false, $params['hide'] );
+//			$script = $this->_constuctObserve( $this->domId( $path ), $fieldsetId, false, $params['hide'] );
 
 			$legend = Hash::get( $params, 'legend' );
 			if( $legend === null ) {
