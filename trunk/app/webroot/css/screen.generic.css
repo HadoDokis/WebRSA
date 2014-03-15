@@ -1799,12 +1799,12 @@ body.search ul.actions li.action a.search {
 
 /* Coordonnées du prescripteur de la fiche de prescription 93 */
 
-body.fichesprescriptions93.add #coordonnees_prescripteur, body.fichesprescriptions93.edit #coordonnees_prescripteur {
+body.fichesprescriptions93.add #CoordonneesPrescripteur, body.fichesprescriptions93.edit #CoordonneesPrescripteur {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
 
-body.fichesprescriptions93.add #coordonnees_prescripteur th, body.fichesprescriptions93.edit #coordonnees_prescripteur th {
+body.fichesprescriptions93.add #CoordonneesPrescripteur th, body.fichesprescriptions93.edit #CoordonneesPrescripteur th {
 	width: 48%;
 	color: black;
 	background: transparent;

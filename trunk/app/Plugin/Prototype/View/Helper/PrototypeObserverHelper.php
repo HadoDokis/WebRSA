@@ -1,22 +1,22 @@
 <?php
 	/**
-	 * Code source de la classe SearchPrototypeHelper.
+	 * Code source de la classe PrototypeObserverHelper.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package Search
+	 * @package Prototype
 	 * @subpackage View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 
 	/**
-	 * La classe SearchPrototypeHelper encapsule des fonctions javascript pour
+	 * La classe PrototypeObserverHelper encapsule des fonctions javascript pour
 	 * la librairie Prototypejs.
 	 *
-	 * @package Search
+	 * @package Prototype
 	 * @subpackage View.Helper
 	 */
-	class SearchPrototypeHelper extends AppHelper
+	class PrototypeObserverHelper extends AppHelper
 	{
 		/**
 		 * Helpers utilisés.
@@ -24,6 +24,45 @@
 		 * @var array
 		 */
 		public $helpers = array( 'Html' );
+
+		/**
+		 * Le contenu du buffer.
+		 *
+		 * @var string
+		 */
+		public $script = '';
+
+		/**
+		 * Le nom du bloc qui contiendra le buffer.
+		 *
+		 * @var string
+		 */
+		public $block = 'scriptBottom';
+
+		/**
+		 * Permet de spécifier si on utilise le buffer ou si on retourne le
+		 * bout de code javascript directement.
+		 *
+		 * @var boolean
+		 */
+		public $useBuffer = true;
+
+		/**
+		 * Surcharge du constructeur avec possibilité de choisir les paramètres
+		 * block et useBuffer.
+		 *
+		 * @param View $View
+		 * @param array $settings
+		 */
+		public function __construct( View $View, $settings = array( ) ) {
+			parent::__construct( $View, $settings );
+			$settings = $settings + array(
+				'block' => 'scriptBottom',
+				'useBuffer' => true
+			);
+			$this->block = $settings['block'];
+			$this->useBuffer = $settings['useBuffer'];
+		}
 
 		/**
 		 * Fournit le code javascript permettant de désactiver les boutons de
@@ -34,7 +73,7 @@
 		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
 		 * @return string
 		 */
-		public function observeDisableFormOnSubmit( $form, $message = null ) {
+		public function disableFormOnSubmit( $form, $message = null ) {
 			if( empty( $message ) ) {
 				$script = "observeDisableFormOnSubmit( '{$form}' );";
 			}
@@ -42,9 +81,8 @@
 				$message = str_replace( "'", "\\'", $message );
 				$script = "observeDisableFormOnSubmit( '{$form}', '{$message}' );";
 			}
-			$script = "document.observe( 'dom:loaded', function() { {$script} } );";
 
-			return $this->Html->scriptBlock( $script );
+			return $this->render( $script );
 		}
 
 		/**
@@ -57,15 +95,14 @@
 		 * @param boolean $hide true pour en plus cacher le fieldset lorsqu'il est désactivé
 		 * @return array
 		 */
-		public function observeDisableFieldsetOnCheckbox( $master, $slave, $condition = false, $hide = false ) {
+		public function disableFieldsetOnCheckbox( $master, $slave, $condition = false, $hide = false ) {
 			$master = $this->domId( $master );
 			$condition = ( $condition ? 'true' : 'false' );
 			$hide = ( $hide ? 'true' : 'false' );
 
 			$script = "observeDisableFieldsetOnCheckbox( '{$master}', '{$slave}', {$condition}, {$hide} );";
-			$script = "document.observe( 'dom:loaded', function() { {$script} } );";
 
-			return $this->Html->scriptBlock( $script );
+			return $this->render( $script );
 		}
 
 		/**
@@ -77,7 +114,7 @@
 		 * @param array $fields En clé le champ maître au sens CakePHP, en valeur le champ esclave au sens CakePHP.
 		 * @return string
 		 */
-		public function observeDependantSelect( array $fields ) {
+		public function dependantSelect( array $fields ) {
 			$script = '';
 
 			foreach( $fields as $masterField => $slaveField ) {
@@ -86,9 +123,7 @@
 				$script .= "dependantSelect( '{$slaveField}', '{$masterField}' );\n";
 			}
 
-			$script = "document.observe( \"dom:loaded\", function() { {$script} } );";
-
-			return $this->Html->scriptBlock( $script );
+			return $this->render( $script );
 		}
 
 		/**
@@ -102,7 +137,7 @@
 		 * @param boolean $hide true pour en plus cacher les champs esclaves lorsqu'ils sont désactivés
 		 * @return string
 		 */
-		public function observeDisableFieldsOnValue( $master, $slaves, $values, $condition, $hide = false ) {
+		public function disableFieldsOnValue( $master, $slaves, $values, $condition, $hide = false ) {
 			$master = $this->domId( $master );
 
 			$slaves = (array)$slaves;
@@ -127,10 +162,61 @@
 
 			$hide = ( $hide ? 'true' : 'false' );
 
-			$script = "observeDisableFieldsOnValue( '{$master}', {$slaves}, {$values}, {$condition}, {$hide} );\n";
-			$script = "document.observe( \"dom:loaded\", function() { {$script} } );";
+			$script = "observeDisableFieldsOnValue( '{$master}', {$slaves}, {$values}, {$condition}, {$hide} );";
+			return $this->render( $script );
+		}
 
-			return $this->Html->scriptBlock( $script );
+		public function disableFieldsetOnValue( $master, $slave, $values, $condition, $hide = false ) {
+			$master = $this->domId( $master );
+
+			$values = (array)$values;
+			foreach( $values as $i => $value ) {
+				if( $value === null ) {
+					$value = 'undefined';
+				}
+				else {
+					$value = "'{$value}'";
+				}
+				$values[$i] = $value;
+			}
+			$values = "[ ".implode( ", ", $values )." ]";
+
+			$condition = ( $condition ? 'true' : 'false' );
+
+			$hide = ( $hide ? 'true' : 'false' );
+
+			$script = "observeDisableFieldsetOnValue( '{$master}', {$slave}, {$values}, {$condition}, {$hide} );";
+			return $this->render( $script );
+		}
+
+		/**
+		 * Ajoute le contenu dans le buffer si useBuffer est à true, sinon retourne
+		 * le script dans une fonction déclenchée au chargement de la page.
+		 *
+		 * @param string $layoutFile The layout about to be rendered.
+		 */
+		public function render( $script ) {
+			if( $this->useBuffer ) {
+				$this->script = "{$this->script}\n{$script}";
+			}
+			else {
+				return $this->Html->scriptBlock( "document.observe( 'dom:loaded', function() { {$script} } );" );
+			}
+		}
+
+		/**
+		 * Ajoute le contenu du buffer dans une fonction déclenchée au chargement
+		 * de la page, dans le block scriptBottom (par défaut), si useBuffer est
+		 * à true;
+		 *
+		 * @param string $layoutFile The layout about to be rendered.
+		 */
+		public function beforeLayout( $layoutFile ) {
+			parent::beforeLayout( $layoutFile );
+
+			if( $this->useBuffer ) {
+				$this->Html->scriptBlock( "document.observe( 'dom:loaded', function() {{$this->script}\n} );", array( 'block' => $this->block ) );
+			}
 		}
 	}
 ?>

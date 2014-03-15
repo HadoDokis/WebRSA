@@ -47,7 +47,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
-			'Ajax2',
+			'Ajax2' => array(
+				'className' => 'Prototype.PrototypeAjax',
+				'useBuffer' => false
+			),
 			'Allocataires',
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
@@ -101,8 +104,8 @@
 		 * structure.
 		 */
 		public function ajax_prescripteur() {
-			$structurereferente_id = Hash::get( $this->request->data, 'structurereferente_id' );
-			$referent_id = suffix( Hash::get( $this->request->data, 'referent_id' ) );
+			$structurereferente_id = Hash::get( $this->request->data, 'Ficheprescription93.structurereferente_id' );
+			$referent_id = suffix( Hash::get( $this->request->data, 'Ficheprescription93.referent_id' ) );
 
 			$result = array();
 			if( !empty( $structurereferente_id ) ) {

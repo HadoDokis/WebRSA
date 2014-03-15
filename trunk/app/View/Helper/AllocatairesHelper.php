@@ -7,7 +7,11 @@
 	 */
 
 	/**
-	 * La classe AllocatairesHelper ...
+	 * La classe AllocatairesHelper fournit des blocs de champs pour construire
+	 * des moteurs de recherche concernant les allocataires du RSA.
+	 *
+	 * Chaque méthode accepte une clé 'skip' dans les paramètres, permettant de
+	 * ne pas obtenir un ou plusieurs champs du bloc.
 	 *
 	 * @todo Attention aux traductions (domaine allocataires ?)
 	 *
@@ -24,6 +28,19 @@
 			'Search.SearchForm',
 			'Xform',
 			'Xhtml',
+		);
+
+		/**
+		 * Les paramètres par défaut utilisés dans chacune des méthodes.
+		 *
+		 * @var array
+		 */
+		public $default = array(
+			'prefix' => 'Search',
+			'domain' => 'search_plugin',
+			'options' => array(),
+			'fieldset' => true,
+			'skip' => array(),
 		);
 
 		/**
@@ -56,16 +73,7 @@
 		 * @return string
 		 */
 		public function blocDossier( array $params = array() ) {
-			$default = array(
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
-				'options' => array(),
-				'fieldset' => true,
-				// TODO: documenter, tests
-				'skip' => array(),
-			);
-
-			$params = $params + $default;
+			$params = $params + $this->default;
 			$options = $params['options'];
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
@@ -128,14 +136,7 @@
 		 * @return string
 		 */
 		public function blocAdresse( array $params = array() ) {
-			$default = array(
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
-				'options' => array(),
-				'fieldset' => true
-			);
-
-			$params = $params + $default;
+			$params = $params + $this->default;
 			$options = $params['options'];
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
@@ -189,14 +190,7 @@
 		 * @return string
 		 */
 		public function blocAllocataire( array $params = array() ) {
-			$default = array(
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
-				'options' => array(),
-				'fieldset' => true
-			);
-
-			$params = $params + $default;
+			$params = $params + $this->default;
 			$options = $params['options'];
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
@@ -256,14 +250,7 @@
 		 * @return string
 		 */
 		public function blocReferentparcours( array $params = array() ) {
-			$default = array(
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
-				'options' => array(),
-				'fieldset' => true
-			);
-
-			$params = $params + $default;
+			$params = $params + $this->default;
 			$options = $params['options'];
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
@@ -296,15 +283,7 @@
 		 * @return string
 		 */
 		public function blocPagination( array $params = array() ) {
-			$default = array(
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
-				'options' => array(),
-				'fieldset' => true
-			);
-
-			$params = $params + $default;
-			$options = $params['options'];
+			$params = $params + $this->default;
 
 			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 

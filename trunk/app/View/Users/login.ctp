@@ -28,6 +28,4 @@
 	</div>
 <?php endif; ?>
 
-<script type="text/javascript">
-	observeDisableFormOnSubmit( 'UserLoginForm', 'Connexion en cours ...' );
-</script>
+<?php echo $this->Observer->disableFormOnSubmit( 'UserLoginForm', 'Connexion en cours ...' ); ?>

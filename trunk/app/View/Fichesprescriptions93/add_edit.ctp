@@ -28,7 +28,7 @@
 				'options' => $options,
 			)
 		)
-		.$this->Html->tag( 'div', ' ', array( 'id' => 'coordonnees_prescripteur' ) )
+		.$this->Html->tag( 'div', ' ', array( 'id' => 'CoordonneesPrescripteur' ) )
 		.$this->Default3->subform(
 			array(
 				'Ficheprescription93.objet',
@@ -222,7 +222,7 @@
 	echo $this->Default3->DefaultForm->end();
 ?>
 <?php
-	echo $this->Allocataires->SearchForm->jsObserveDependantSelect(
+	echo $this->Observer->dependantSelect(
 		array(
 			'Ficheprescription93.structurereferente_id' => 'Ficheprescription93.referent_id',
 			'Thematiquefp93.type' => 'Categoriefp93.thematiquefp93_id',
@@ -234,7 +234,7 @@
 	);
 
 	// Personne reçue
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.personne_recue',
 		array(
 			'Ficheprescription93.motifnonreceptionfp93_id',
@@ -244,7 +244,7 @@
 		true
 	);
 
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonreceptionfp93_id',
 		array(
 			'Ficheprescription93.personne_nonrecue_autre'
@@ -254,7 +254,7 @@
 	);
 
 	// Personne retenue
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.personne_retenue',
 		array(
 			'Ficheprescription93.motifnonretenuefp93_id',
@@ -264,7 +264,7 @@
 		true
 	);
 
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonretenuefp93_id',
 		array(
 			'Ficheprescription93.personne_nonretenue_autre'
@@ -274,7 +274,7 @@
 	);
 
 	// Personne souhaite intégrer
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.personne_souhaite_integrer',
 		array(
 			'Ficheprescription93.motifnonsouhaitfp93_id',
@@ -284,7 +284,7 @@
 		true
 	);
 
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonsouhaitfp93_id',
 		array(
 			'Ficheprescription93.personne_nonsouhaite_autre'
@@ -294,7 +294,7 @@
 	);
 
 	// Personne a intégré
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.personne_a_integre',
 		array(
 			'Ficheprescription93.motifnonintegrationfp93_id',
@@ -303,7 +303,7 @@
 		array( '', '1' ),
 		true
 	);
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.personne_a_integre',
 		array(
 			'Ficheprescription93.personne_date_integration.day',
@@ -314,7 +314,7 @@
 		true
 	);
 
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonintegrationfp93_id',
 		array(
 			'Ficheprescription93.personne_date_integration',
@@ -323,7 +323,7 @@
 		false
 	);
 
-	echo $this->Allocataires->SearchForm->observeDisableFieldsOnValue(
+	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonintegrationfp93_id',
 		array(
 			'Ficheprescription93.personne_nonintegre_autre'
@@ -338,35 +338,13 @@
 			'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
 		)
 	);
+
+	echo $this->Ajax2->updateDivOnFieldsChange(
+		'CoordonneesPrescripteur',
+		array( 'action' => 'ajax_prescripteur' ),
+		array(
+			'Ficheprescription93.structurereferente_id',
+			'Ficheprescription93.referent_id',
+		)
+	);
 ?>
-<script type="text/javascript">
-//<![CDATA[
-	function updateAjaxPrescripteur() {
-		new Ajax.Updater(
-			'coordonnees_prescripteur',
-			'<?php echo Router::url( array( 'action' => 'ajax_prescripteur' ) ); ?>',
-			{
-				asynchronous: true,
-				evalScripts: true,
-				parameters:
-				{
-					'structurereferente_id' : $F( 'Ficheprescription93StructurereferenteId' ),
-					'referent_id' : $F('Ficheprescription93ReferentId')
-				}
-			}
-		);
-	}
-
-	Event.observe( $( 'Ficheprescription93StructurereferenteId' ), 'change', function() {
-		updateAjaxPrescripteur();
-	} );
-
-	Event.observe( $( 'Ficheprescription93ReferentId' ), 'change', function() {
-		updateAjaxPrescripteur();
-	} );
-
-	document.observe( "dom:loaded", function() {
-		updateAjaxPrescripteur();
-	} );
-//]]>
-</script>
