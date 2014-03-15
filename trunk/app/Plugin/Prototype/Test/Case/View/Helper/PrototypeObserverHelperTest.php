@@ -142,12 +142,13 @@ dependantSelect( \'SearchUserRegion\', \'SearchUserCountry\' );
 					'Ficheprescription93.personne_date_integration.month',
 					'Ficheprescription93.personne_date_integration.year',
 				),
-				array( '', '0' ),
+				array( null, '', '0' ),
 				true
 			);
+
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsOnValue( \'Ficheprescription93PersonneAIntegre\', [ \'Ficheprescription93PersonneDateIntegrationDay\', \'Ficheprescription93PersonneDateIntegrationMonth\', \'Ficheprescription93PersonneDateIntegrationYear\' ], [ \'\', \'0\' ], true, false ); } );
+document.observe( \'dom:loaded\', function() { observeDisableFieldsOnValue( \'Ficheprescription93PersonneAIntegre\', [ \'Ficheprescription93PersonneDateIntegrationDay\', \'Ficheprescription93PersonneDateIntegrationMonth\', \'Ficheprescription93PersonneDateIntegrationYear\' ], [ undefined, \'\', \'0\' ], true, false ); } );
 //]]>
 </script>';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -160,13 +161,13 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsOnValue( \'Fi
 			$result = $this->Observer->disableFieldsetOnValue(
 				'Search.Ficheprescription93.exists',
 				'SpecificitesFichesprescriptions93',
-				'1',
+				array( null, '1' ),
 				true,
 				true
 			);
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', SpecificitesFichesprescriptions93, [ \'1\' ], true, true ); } );
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', SpecificitesFichesprescriptions93, [ undefined, \'1\' ], true, true ); } );
 //]]>
 </script>';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );

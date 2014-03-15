@@ -49,7 +49,7 @@
 		 *
 		 * @var PrototypeAjax
 		 */
-		public $Observer = null;
+		public $Ajax = null;
 
 		/**
 		 * Préparation du test.
@@ -64,26 +64,12 @@
 		}
 
 		/**
-		 * Nettoyage postérieur au test.
+		 * Contient les résultats attendus par fonction pour éviter le copier/coller.
+		 *
+		 * @var array
 		 */
-		public function tearDown() {
-			parent::tearDown();
-			unset( $this->Controller, $this->View, $this->Ajax );
-		}
-
-		/**
-		 * Test de la méthode PrototypeAjaxHelper::autocomplete()
-		 */
-		public function testAutocomplete() {
-			$result = $this->Ajax->autocomplete(
-				'Ficheprescription93.numconvention',
-				array(
-					'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
-				)
-			);
-			$expected = '<script type="text/javascript">
-//<![CDATA[
-$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );
+		public $results = array(
+			'autocomplete' => '$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );
 Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function() {
 	new Ajax.Request(
 		\'/ajax_ficheprescription93_numconvention\',
@@ -129,9 +115,46 @@ Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function() 
 			}
 		}
 	);
-} );
+} );',
+			'updateDivOnFieldsChange' => 'function updateDivOnFieldsChangeCoordonneesPrescripteur() {
+		new Ajax.Updater(
+			\'CoordonneesPrescripteur\',
+			\'/ajax_prescripteur\',
+			{
+				asynchronous: true,
+				evalScripts: true,
+				parameters: { \'data[Ficheprescription93][structurereferente_id]\': $F( \'Ficheprescription93StructurereferenteId\' ),\'data[Ficheprescription93][referent_id]\': $F( \'Ficheprescription93ReferentId\' ) }
+			}
+		);
+	}
+	document.observe( \'dom:loaded\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );
+Event.observe( $( \'Ficheprescription93StructurereferenteId\' ), \'change\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );
+Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );'
+		);
+
+		/**
+		 * Nettoyage postérieur au test.
+		 */
+		public function tearDown() {
+			parent::tearDown();
+			unset( $this->Controller, $this->View, $this->Ajax );
+		}
+
+		/**
+		 * Test de la méthode PrototypeAjaxHelper::autocomplete()
+		 */
+		public function testAutocomplete() {
+			$result = $this->Ajax->autocomplete(
+				'Ficheprescription93.numconvention',
+				array(
+					'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
+				)
+			);
+			$expected = "<script type=\"text/javascript\">
+//<![CDATA[
+{$this->results['autocomplete']}
 //]]>
-</script>';
+</script>";
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -147,24 +170,48 @@ Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function() 
 					'Ficheprescription93.referent_id',
 				)
 			);
-			$expected = '<script type="text/javascript">
+
+			$expected = "<script type=\"text/javascript\">
 //<![CDATA[
-function updateDivOnFieldsChangeCoordonneesPrescripteur() {
-		new Ajax.Updater(
-			\'CoordonneesPrescripteur\',
-			\'/ajax_prescripteur\',
-			{
-				asynchronous: true,
-				evalScripts: true,
-				parameters: { \'data[Ficheprescription93][structurereferente_id]\': $F( \'Ficheprescription93StructurereferenteId\' ),\'data[Ficheprescription93][referent_id]\': $F( \'Ficheprescription93ReferentId\' ) }
-			}
-		);
-	}
-	document.observe( \'dom:loaded\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );
-Event.observe( $( \'Ficheprescription93StructurereferenteId\' ), \'change\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );
-Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { updateDivOnFieldsChangeCoordonneesPrescripteur(); } );
+{$this->results['updateDivOnFieldsChange']}
 //]]>
-</script>';
+</script>";
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de différentes méthodes avec utilisation du buffer pour alimenter
+		 * scriptBottom.
+		 */
+		public function testUseBuffer() {
+			$this->Ajax->useBuffer = true;
+
+			$result = $this->Ajax->autocomplete(
+				'Ficheprescription93.numconvention',
+				array(
+					'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
+				)
+			);
+			$this->assertEqual( $result, null, var_export( $result, true ) );
+
+			$result = $this->Ajax->updateDivOnFieldsChange(
+				'CoordonneesPrescripteur',
+				array( 'action' => 'ajax_prescripteur' ),
+				array(
+					'Ficheprescription93.structurereferente_id',
+					'Ficheprescription93.referent_id',
+				)
+			);
+			$this->assertEqual( $result, null, var_export( $result, true ) );
+
+			$this->Ajax->beforeLayout( 'Foos/index.ctp' );
+			$result = $this->View->fetch( 'scriptBottom' );
+			$expected = "<script type=\"text/javascript\">
+//<![CDATA[
+\n{$this->results['autocomplete']}\n{$this->results['updateDivOnFieldsChange']}
+//]]>
+</script>";
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
