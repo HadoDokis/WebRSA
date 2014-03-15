@@ -397,7 +397,7 @@
 						0 => 'DEM',
 						1 => 'CJT',
 					),
-					0 => 'Adressefoyer.id IN ( SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = Foyer.id AND adressesfoyers.rgadr = \'01\' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 )',
+					0 => 'Adressefoyer.id IN ( SELECT "adressesfoyers"."id" AS "adressesfoyers__id" FROM "adressesfoyers" AS "adressesfoyers" WHERE "adressesfoyers"."foyer_id" = "Foyer"."id" AND "adressesfoyers"."rgadr" = \'01\' ORDER BY "adressesfoyers"."dtemm" DESC LIMIT 1 )',
 					1 => 'Orientstruct.id IN ( SELECT "orientsstructs"."id" AS "orientsstructs__id" FROM "orientsstructs" AS "orientsstructs" WHERE "orientsstructs"."personne_id" = "Personne"."id" AND "orientsstructs"."statut_orient" = \'Orienté\' AND "orientsstructs"."date_valid" IS NOT NULL ORDER BY "orientsstructs"."date_valid" DESC LIMIT 1 )',
 					'Orientstruct.structurereferente_id' => 'affecter',
 					2 => '( "Contratinsertion"."id" IS NULL OR "Contratinsertion"."id" IN ( SELECT "contratsinsertion"."id" AS "contratsinsertion__id" FROM "contratsinsertion" AS "contratsinsertion" WHERE "contratsinsertion"."personne_id" = "Personne"."id" ORDER BY "contratsinsertion"."created" DESC LIMIT 1 ) )',

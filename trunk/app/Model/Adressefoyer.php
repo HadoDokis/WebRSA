@@ -15,14 +15,25 @@
 	 */
 	class Adressefoyer extends AppModel
 	{
+		/**
+		 * Nom du modèle.
+		 *
+		 * @var string
+		 */
 		public $name = 'Adressefoyer';
-		public $order = array( '"Adressefoyer"."rgadr" ASC' );
-
-		//*********************************************************************
 
 		/**
-			Associations
-		*/
+		 * Tri par défaut des enregistrements.
+		 *
+		 * @var array
+		 */
+		public $order = array( '"Adressefoyer"."rgadr" ASC' );
+
+		/**
+		 * Relations belongsTo
+		 *
+		 * @var array
+		 */
 		public $belongsTo = array(
 			'Adresse' => array(
 				'className'     => 'Adresse',
@@ -34,6 +45,11 @@
 			)
 		);
 
+		/**
+		 * Relations hasOne
+		 *
+		 * @var array
+		 */
 		public $hasOne = array(
 			'VxTransfertpdv93' => array(
 				'className' => 'Transfertpdv93',
@@ -63,11 +79,11 @@
 			),
 		);
 
-		//*********************************************************************
-
 		/**
-			Validation ... TODO
-		*/
+		 * Règles de validation.
+		 *
+		 * @var array
+		 */
 		public $validate = array(
 			'rgadr' => array(
 				'rule' => 'notEmpty',
@@ -79,8 +95,12 @@
 			),
 		);
 
-		//*********************************************************************
-
+		/**
+		 * Retourne l'id d'un Dossier à partir de l'id d'une Adressefoyer.
+		 *
+		 * @param integer $adressefoyer_id
+		 * @return integer
+		 */
 		public function dossierId( $adressefoyer_id ) {
 			$qd_adressefoyer = array(
 				'fields' => array( 'Foyer.dossier_id' ),
@@ -103,34 +123,42 @@
 		}
 
 		/**
-		* Foyers avec plusieurs adressesfoyers.rgadr = 01
-		* donc on s'assure de n'en prendre qu'un seul dont la dtemm est la plus récente
-		*/
+		 * Foyers avec plusieurs adressesfoyers.rgadr = 01
+		 * donc on s'assure de n'en prendre qu'un seul dont la dtemm est la plus récente
+		 *
+		 * @param string $field (ex.: Foyer.id)
+		 * @return string
+		 */
+		public function sqDerniereRgadr01( $field ) {
+			$alias = $this->getDataSource()->fullTableName( $this, false, false );
 
-		public function sqDerniereRgadr01($field) {
-			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false, false );
-			return "
-				SELECT {$table}.id
-					FROM {$table}
-					WHERE
-						{$table}.foyer_id = ".$field."
-						AND {$table}.rgadr = '01'
-					ORDER BY {$table}.dtemm DESC
-					LIMIT 1
-			";
+			$query = array(
+				'alias' => $alias,
+				'fields' => array( "{$alias}.{$this->primaryKey}" ),
+				'contain' => false,
+				'conditions' => array(
+					"{$alias}.foyer_id = {$field}",
+					"{$alias}.rgadr" => '01',
+				),
+				'order' => "{$alias}.dtemm DESC",
+				'limit' => 1,
+
+			);
+
+			return $this->sq( $query );
 		}
 
 		/**
-		*   Fonction permettant de modifier le rang des adresses d'un foyer:
-		*       - Les adresses de rang 01 passent en rang 02
-		*       - Les adresses de rang 02 passent en rang 03
-		*       - Les adresses de rang 03 sont supprimées
-		*       - Les nouvelles adresses sont insérées avec un rang 01
-		*/
-
-
-		public function saveNouvelleAdresse( $datas ){
+		 *   Fonction permettant de modifier le rang des adresses d'un foyer:
+		 *       - Les adresses de rang 01 passent en rang 02
+		 *       - Les adresses de rang 02 passent en rang 03
+		 *       - Les adresses de rang 03 sont supprimées
+		 *       - Les nouvelles adresses sont insérées avec un rang 01
+		 *
+		 * @param array $datas
+		 * @return boolean
+		 */
+		public function saveNouvelleAdresse( $datas ) {
 			$foyer_id = $datas['Adressefoyer']['foyer_id'];
 
 			$success = $this->deleteAll(

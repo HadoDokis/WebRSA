@@ -201,7 +201,7 @@
 						array(
 							'OR' => array(
 								'Adressefoyer.id IS NULL',
-								'Adressefoyer.id IN ( SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = Foyer.id AND adressesfoyers.rgadr = \'01\' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 )',
+								'Adressefoyer.id IN ( SELECT "adressesfoyers"."id" AS "adressesfoyers__id" FROM "adressesfoyers" AS "adressesfoyers" WHERE "adressesfoyers"."foyer_id" = "Foyer"."id" AND "adressesfoyers"."rgadr" = \'01\' ORDER BY "adressesfoyers"."dtemm" DESC LIMIT 1 )'
 							),
 						),
 						array(
@@ -378,7 +378,7 @@
 							array(
 								'OR' => array(
 									'Adressefoyer.id IS NULL',
-									'Adressefoyer.id IN ( SELECT adressesfoyers.id FROM adressesfoyers WHERE adressesfoyers.foyer_id = Foyer.id AND adressesfoyers.rgadr = \'01\' ORDER BY adressesfoyers.dtemm DESC LIMIT 1 )',
+									'Adressefoyer.id IN ( SELECT "adressesfoyers"."id" AS "adressesfoyers__id" FROM "adressesfoyers" AS "adressesfoyers" WHERE "adressesfoyers"."foyer_id" = "Foyer"."id" AND "adressesfoyers"."rgadr" = \'01\' ORDER BY "adressesfoyers"."dtemm" DESC LIMIT 1 )',
 								),
 							),
 							array(

@@ -736,11 +736,12 @@
 			$this->Instantanedonneesfp93->create( $data );
 			$success = ( $this->Instantanedonneesfp93->save() !== false ) && $success;
 
-			if( !$success ) {
+			if( !$success && empty( $this->validationErrors ) ) {
 				$hiddenErrors = array(
 					'Instantanedonneesfp93' => $this->Instantanedonneesfp93->validationErrors
 				);
 				unset( $hiddenErrors['Instantanedonneesfp93']['ficheprescription93_id'] );
+
 				if( !empty( $hiddenErrors ) ) {
 					debug( $hiddenErrors );
 				}
