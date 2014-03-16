@@ -123,7 +123,7 @@
 	echo $this->Observer->disableFieldsetOnValue(
 		'Search.Ficheprescription93.exists',
 		'SpecificitesFichesprescriptions93',
-		'1',
+		array( null, '1' ),
 		true,
 		true
 	);

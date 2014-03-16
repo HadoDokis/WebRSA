@@ -164,6 +164,14 @@
 		 * @var array
 		 */
 		public $validate = array(
+			// Champ virtuel pour le formulaire d'ajout / modification
+			'structurereferente_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
 			'dd_action' => array(
 				'compareDates' => array(
 					'rule' => array( 'compareDates', 'df_action', '<' ),

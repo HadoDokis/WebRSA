@@ -21,7 +21,7 @@
 		$this->Html->tag( 'legend', __d( $this->request->params['controller'], 'Ficheprescription93.Prescripteur' ) )
 		.$this->Default3->subform(
 			array(
-				'Ficheprescription93.structurereferente_id' => array( 'empty' => true, 'required' => true ),
+				'Ficheprescription93.structurereferente_id' => array( 'empty' => true ),
 				'Ficheprescription93.referent_id' => array( 'empty' => true ),
 			),
 			array(
@@ -110,7 +110,9 @@
 	foreach( (array)Configure::read( 'Cataloguepdifp93.urls' ) as $text => $url ) {
 		$links .= $this->Html->tag( 'li', $this->Html->link( $text, $url, array( 'class' => 'external' ) ) );
 	}
-	$links = $this->Html->tag( 'ul', $links );
+	if( !empty( $links ) ) {
+		$links = $this->Html->tag( 'ul', $links );
+	}
 
 	// Cadre prestataire / partenaire
 	echo $this->Html->tag(
@@ -240,7 +242,7 @@
 			'Ficheprescription93.motifnonreceptionfp93_id',
 			'Ficheprescription93.personne_nonrecue_autre'
 		),
-		array( '', '1' ),
+		array( null, '', '1' ),
 		true
 	);
 
@@ -260,7 +262,7 @@
 			'Ficheprescription93.motifnonretenuefp93_id',
 			'Ficheprescription93.personne_nonretenue_autre',
 		),
-		array( '', '1' ),
+		array( null, '', '1' ),
 		true
 	);
 
@@ -280,7 +282,7 @@
 			'Ficheprescription93.motifnonsouhaitfp93_id',
 			'Ficheprescription93.personne_nonsouhaite_autre',
 		),
-		array( '', '1' ),
+		array( null, '', '1' ),
 		true
 	);
 
@@ -300,7 +302,7 @@
 			'Ficheprescription93.motifnonintegrationfp93_id',
 			'Ficheprescription93.personne_nonintegre_autre',
 		),
-		array( '', '1' ),
+		array( null, '', '1' ),
 		true
 	);
 	echo $this->Observer->disableFieldsOnValue(
@@ -310,7 +312,7 @@
 			'Ficheprescription93.personne_date_integration.month',
 			'Ficheprescription93.personne_date_integration.year',
 		),
-		array( '', '0' ),
+		array( null, '', '0' ),
 		true
 	);
 

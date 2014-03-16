@@ -88,50 +88,55 @@
 			$domId = Inflector::camelize( str_replace( '.', '_', $path ) );
 			$value = Hash::get( $data, $path );
 
-			$query = array(
-				'fields' => array(
-					'UPPER( "Actionfp93"."numconvention" ) AS "Actionfp93__numconvention"',
-					'( UPPER( "Actionfp93"."numconvention" ) || \': \' || "Actionfp93"."name" ) AS "Actionfp93__name"',
-					'Actionfp93.id',
-					'Actionfp93.prestatairefp93_id',
-					'Actionfp93.filierefp93_id',
-					'Filierefp93.categoriefp93_id',
-					'Categoriefp93.thematiquefp93_id',
-					'Thematiquefp93.type',
-				),
-				'joins' => array(
-					$this->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-					$this->join( 'Prestatairefp93', array( 'type' => 'INNER' ) ),
-					$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
-					$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
-				),
-				'conditions' => array(
-					'UPPER( "Actionfp93"."numconvention" ) LIKE' => '%'.strtoupper( $value ).'%'
-				),
-				'order' => array(
-					'Actionfp93.numconvention ASC'
-				)
-			);
+			if( empty( $value ) ) {
+				return array();
+			}
+			else {
+				$query = array(
+					'fields' => array(
+						'UPPER( "Actionfp93"."numconvention" ) AS "Actionfp93__numconvention"',
+						'( UPPER( "Actionfp93"."numconvention" ) || \': \' || "Actionfp93"."name" ) AS "Actionfp93__name"',
+						'Actionfp93.id',
+						'Actionfp93.prestatairefp93_id',
+						'Actionfp93.filierefp93_id',
+						'Filierefp93.categoriefp93_id',
+						'Categoriefp93.thematiquefp93_id',
+						'Thematiquefp93.type',
+					),
+					'joins' => array(
+						$this->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+						$this->join( 'Prestatairefp93', array( 'type' => 'INNER' ) ),
+						$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'UPPER( "Actionfp93"."numconvention" ) LIKE' => '%'.strtoupper( $value ).'%'
+					),
+					'order' => array(
+						'Actionfp93.numconvention ASC'
+					)
+				);
 
-			$results = $this->find( 'all', $query );
-$this->log( var_export( $results, true ), LOG_DEBUG );
-			$return = array();
-			if( !empty( $results ) ) {
-				foreach( $results as $result ) {
-					$return[] = array(
-						'name' => $result['Actionfp93']['name'],
-						"{$domId}" => $result['Actionfp93']['numconvention'],
-						// -----------------------------------------------------
-						'values' => array(
-							"{$prefix}Thematiquefp93Type" => $result['Thematiquefp93']['type'],
-							"{$prefix}Categoriefp93Thematiquefp93Id" => "{$result['Thematiquefp93']['type']}_{$result['Categoriefp93']['thematiquefp93_id']}",
-							"{$prefix}Filierefp93Categoriefp93Id" => "{$result['Categoriefp93']['thematiquefp93_id']}_{$result['Filierefp93']['categoriefp93_id']}",
-							"{$prefix}Actionfp93Filierefp93Id" => "{$result['Filierefp93']['categoriefp93_id']}_{$result['Actionfp93']['filierefp93_id']}",
-							"{$prefix}Actionfp93Prestatairefp93Id" => "{$result['Actionfp93']['filierefp93_id']}_{$result['Actionfp93']['prestatairefp93_id']}",
-							// FIXME
-							"{$prefix}Ficheprescription93Actionfp93Id" => "{$result['Actionfp93']['filierefp93_id']}_{$result['Actionfp93']['prestatairefp93_id']}_{$result['Actionfp93']['id']}",
-						)
-					);
+				$results = $this->find( 'all', $query );
+
+				$return = array();
+				if( !empty( $results ) ) {
+					foreach( $results as $result ) {
+						$return[] = array(
+							'name' => $result['Actionfp93']['name'],
+							"{$domId}" => $result['Actionfp93']['numconvention'],
+							// -----------------------------------------------------
+							'values' => array(
+								"{$prefix}Thematiquefp93Type" => $result['Thematiquefp93']['type'],
+								"{$prefix}Categoriefp93Thematiquefp93Id" => "{$result['Thematiquefp93']['type']}_{$result['Categoriefp93']['thematiquefp93_id']}",
+								"{$prefix}Filierefp93Categoriefp93Id" => "{$result['Categoriefp93']['thematiquefp93_id']}_{$result['Filierefp93']['categoriefp93_id']}",
+								"{$prefix}Actionfp93Filierefp93Id" => "{$result['Filierefp93']['categoriefp93_id']}_{$result['Actionfp93']['filierefp93_id']}",
+								"{$prefix}Actionfp93Prestatairefp93Id" => "{$result['Actionfp93']['filierefp93_id']}_{$result['Actionfp93']['prestatairefp93_id']}",
+								// FIXME
+								"{$prefix}Ficheprescription93Actionfp93Id" => "{$result['Actionfp93']['filierefp93_id']}_{$result['Actionfp93']['prestatairefp93_id']}_{$result['Actionfp93']['id']}",
+							)
+						);
+					}
 				}
 			}
 
