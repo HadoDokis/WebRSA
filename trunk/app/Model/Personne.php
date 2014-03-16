@@ -1383,6 +1383,8 @@
 
 		/**
 		 * Préchargement du cache du modèle.
+		 *
+		 * @see Configure AncienAllocataire.enabled
 		 */
 		public function prechargement() {
 			$success = parent::prechargement();
@@ -1390,13 +1392,7 @@
 			if( Configure::read( 'AncienAllocataire.enabled' ) ) {
 				$success = ( $success !== false );
 
-				$linked = Hash::merge(
-					array_keys( $this->hasMany ),
-					array_keys( $this->hasOne ),
-					Hash::extract( $this->hasAndBelongsToMany, '{s}.with' )
-				);
-
-				foreach( $linked as $modelAlias ) {
+				foreach( $this->anciensDossiersModelNames as $modelAlias ) {
 					$query = $this->getEntriesAnciensDossiers( null, $modelAlias, true );
 					$success = !empty( $query ) && $success;
 				}

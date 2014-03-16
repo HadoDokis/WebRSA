@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe ApreFixture.
+	 * Code source de la classe ActioncandidatPersonneFixture.
 	 *
 	 * PHP 5.3
 	 *
@@ -10,11 +10,11 @@
 	require_once( dirname( __FILE__ ).DS.'cake_app_test_fixture.php' );
 
 	/**
-	 * Classe ApreFixture.
+	 * La classe ActioncandidatPersonneFixture ...
 	 *
 	 * @package app.Test.Fixture
 	 */
-	class ApreFixture extends CakeAppTestFixture
+	class ActioncandidatPersonneFixture extends CakeAppTestFixture
 	{
 		/**
 		 * On importe la définition de la table, pas les enregistrements.
@@ -22,7 +22,7 @@
 		 * @var array
 		 */
 		public $import = array(
-			'model' => 'Apre',
+			'model' => 'ActioncandidatPersonne',
 			'records' => false
 		);
 
