@@ -42,6 +42,18 @@
 		);
 
 		/**
+		 * Surcharge du constructeur avec possibilité de choisir les paramètres
+		 * par défaut.
+		 *
+		 * @param View $View
+		 * @param array $settings
+		 */
+		public function __construct( View $View, $settings = array( ) ) {
+			parent::__construct( $View, $settings );
+			$this->default = $settings + $this->default;
+		}
+
+		/**
 		 * Permet de savoir si un champ doit être affiché ou non, suivant les
 		 * champs présents dans l'attribut 'skip' des paramètres.
 		 *
@@ -60,6 +72,98 @@
 		}
 
 		/**
+		 * Retourne le contenu, éventuellement entouré d'un fieldset (suivant la
+		 * valeur de la clé fieldset dans les paramètres) dont la légende
+		 * sera traduite dans le domaine spécifié par la clé domaine des paramètres.
+		 *
+		 * @param string $legend L texte de la légende du fieldset
+		 * @param string $content Le contenu
+		 * @param array $params Les paramètres
+		 * @return string
+		 */
+		protected function _fieldset( $legend, $content, array $params = array() ) {
+			if( !$params['fieldset'] ) {
+				return $content;
+			}
+			else {
+				return $this->Xhtml->tag(
+					'fieldset',
+					$this->Xhtml->tag( 'legend', __d( $params['domain'], $legend ) )
+					.$content
+				);
+			}
+
+			return $content;
+		}
+
+		/**
+		 * Retourne le résultat de Xform::input() si le champ ne se trouve pas
+		 * dans la clé skip des paramètres.
+		 *
+		 * @param string $path Le chemin préfixé du champ
+		 * @param array $params Les paramètres de l'appel à la méthode blocXXX()
+		 * @param array $inputParams Les paramètres spécifiques à l'input
+		 * @return string
+		 */
+		protected function _input( $path, array $params, array $inputParams = array() ) {
+			if( !$this->_isSkipped( $path, $params ) ) {
+				if( !isset( $inputParams['domain'] ) ) {
+					$inputParams['domain'] = $params['domain'];
+				}
+
+				if( !isset( $inputParams['label'] ) ) {
+					$inputParams['label'] = __d( $params['domain'], $path );
+				}
+
+				return $this->Xform->input( $path, $inputParams );
+			}
+
+			return null;
+		}
+
+		/**
+		 * Retourne le résultat de SearchForm::dependantCheckboxes() si le champ
+		 * ne se trouve pas dans la clé skip des paramètres.
+		 *
+		 * @param string $path Le chemin préfixé du champ
+		 * @param array $params La clé skip est utilisée
+		 * @param array $inputParams Les clés domain et options sont utilisées
+		 * @return string
+		 */
+		protected function _dependantCheckboxes( $path, array $params, array $inputParams = array() ) {
+			if( !$this->_isSkipped( $path, $params ) ) {
+				if( !isset( $inputParams['domain'] ) ) {
+					$inputParams['domain'] = $params['domain'];
+				}
+
+				return $this->SearchForm->dependantCheckboxes( $path, $inputParams );
+			}
+
+			return null;
+		}
+
+		/**
+		 * Retourne le résultat de SearchForm::dateRange() si le champ
+		 * ne se trouve pas dans la clé skip des paramètres.
+		 *
+		 * @param string $path Le chemin préfixé du champ
+		 * @param array $params La clé skip est utilisée, domain est copiée
+		 * @param array $inputParams Les clés domain et options sont utilisées
+		 * @return string
+		 */
+		protected function _dateRange( $path, array $params, array $inputParams = array() ) {
+			if( !$this->_isSkipped( $path, $params ) ) {
+				if( !isset( $inputParams['domain'] ) ) {
+					$inputParams['domain'] = $params['domain'];
+				}
+
+				return $this->SearchForm->dateRange( $path, $inputParams );
+			}
+
+			return null;
+		}
+
+		/**
 		 * Retourne une groupe de filtres par dossier contenant les champs:
 		 *	- Dossier.numdemrsa
 		 *	- Dossier.matricule
@@ -72,54 +176,23 @@
 		 */
 		public function blocDossier( array $params = array() ) {
 			$params = $params + $this->default;
-			$options = $params['options'];
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$content = $this->_input( "{$params['prefix']}Dossier.numdemrsa", $params );
+			$content .= $this->_input( "{$params['prefix']}Dossier.matricule", $params );
+			$content .= $this->_dateRange( "{$params['prefix']}Dossier.dtdemrsa", $params );
 
-			$content = '';
-
-			if( !$this->_isSkipped( "{$prefix}Dossier.numdemrsa", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Dossier.numdemrsa", array( 'label' => 'Numéro de dossier RSA' ) );
+			if( Hash::check( $params, 'options.Situationdossierrsa.etatdosrsa' ) ) {
+				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Situationdossierrsa.etatdosrsa", $params, array( 'options' => (array)Hash::get( $params, 'options.Situationdossierrsa.etatdosrsa' ) ) );
 			}
 
-			if( !$this->_isSkipped( "{$prefix}Dossier.matricule", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Dossier.matricule", array( 'label' => 'Numéro CAF' ) );
+			if( Hash::check( $params, 'options.Detailcalculdroitrsa.natpf' ) ) {
+				$content .= $this->_dependantCheckboxes( "{$params['prefix']}Detailcalculdroitrsa.natpf", $params, array( 'options' => (array)Hash::get( $params, 'options.Detailcalculdroitrsa.natpf' ) ) );
 			}
 
-			if( !$this->_isSkipped( "{$prefix}Dossier.dtdemrsa", $params ) ) {
-				$content .= $this->SearchForm->dateRange( "{$prefix}Dossier.dtdemrsa" );
-			}
+			$content .= $this->_input( "{$params['prefix']}Dossier.dernier", $params, array( 'type' => 'checkbox' ) );
 
-			if( !$this->_isSkipped( "{$prefix}Situationdossierrsa.etatdosrsa", $params ) && Hash::check( $options, 'Situationdossierrsa.etatdosrsa' ) ) {
-				$dependantCheckboxesParams = array(
-					'options' => (array)Hash::get( $options, 'Situationdossierrsa.etatdosrsa' ),
-					'domain' => 'search_plugin',
-				);
-				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Situationdossierrsa.etatdosrsa", $dependantCheckboxesParams );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Detailcalculdroitrsa.natpf", $params ) && Hash::check( $options, 'Detailcalculdroitrsa.natpf' ) ) {
-				$dependantCheckboxesParams = array(
-					'options' => (array)Hash::get( $options, 'Detailcalculdroitrsa.natpf' ),
-					'domain' => 'search_plugin',
-				);
-				$content .= $this->SearchForm->dependantCheckboxes( "{$prefix}Detailcalculdroitrsa.natpf", $dependantCheckboxesParams );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Dossier.dernier", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Dossier.dernier", array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox' ) );
-			}
-
-			if( !$params['fieldset'] ) {
-				return $content;
-			}
-			else {
-				return $this->Xhtml->tag(
-					'fieldset',
-					$this->Xhtml->tag( 'legend', __d( $params['domain'], 'Search.Dossier' ) )
-					.$content
-				);
-			}
+			return $this->_fieldset( 'Search.Dossier', $content, $params );
 		}
 
 		/**
@@ -127,50 +200,29 @@
 		 *	- Adresse.nomvoie
 		 *	- Adresse.locaadr
 		 *	- Adresse.numcomptt
-		 *	- Sitecov58.name
 		 *	- Canton.canton
+		 *	- Sitecov58.name
 		 *
 		 * @param array $params
 		 * @return string
 		 */
 		public function blocAdresse( array $params = array() ) {
 			$params = $params + $this->default;
-			$options = $params['options'];
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$content = $this->_input( "{$params['prefix']}Adresse.nomvoie", $params, array( 'type' => 'text' ) );
+			$content .= $this->_input( "{$params['prefix']}Adresse.locaadr", $params, array( 'type' => 'text' ) );
+			$content .= $this->_input( "{$params['prefix']}Adresse.numcomptt", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcomptt' ), 'empty' => true ) );
 
-			$content = '';
-
-			if( !$this->_isSkipped( "{$prefix}Adresse.nomvoie", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Adresse.nomvoie", array( 'label' => 'Nom de voie de l\'allocataire ', 'type' => 'text' ) );
+			if( Configure::read( 'CG.cantons' ) ) {
+				$content .= $this->_input( "{$params['prefix']}Canton.canton", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Canton.canton' ), 'empty' => true ) );
 			}
 
-			if( !$this->_isSkipped( "{$prefix}Adresse.locaadr", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Adresse.locaadr", array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$content .= $this->_input( "{$params['prefix']}Sitecov58.id", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Sitecov58.id' ), 'empty' => true ) );
 			}
 
-			if( !$this->_isSkipped( "{$prefix}Adresse.numcomptt", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Adresse.numcomptt", array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Adresse.numcomptt' ), 'empty' => true ) );
-			}
-
-			if( Configure::read( 'CG.cantons' ) && Hash::check( $options, 'Canton.canton' ) && !$this->_isSkipped( "{$prefix}Canton.canton", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Canton.canton", array( 'label' => 'Canton', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Canton.canton' ), 'empty' => true ) );
-			}
-
-			if( Configure::read( 'Cg.departement' ) == 58 && Hash::check( $options, 'Sitecov58.id' ) && !$this->_isSkipped( "{$prefix}Sitecov58.id", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Sitecov58.id", array( 'label' => 'Site COV', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Sitecov58.id' ), 'empty' => true ) );
-			}
-
-			if( !$params['fieldset'] ) {
-				return $content;
-			}
-			else {
-				return $this->Xhtml->tag(
-					'fieldset',
-					$this->Xhtml->tag( 'legend', __d( $params['domain'], 'Search.Adresse' ) )
-					.$content
-				);
-			}
+			return $this->_fieldset( 'Search.Adresse', $content, $params );
 		}
 
 		/**
@@ -189,54 +241,18 @@
 		 */
 		public function blocAllocataire( array $params = array() ) {
 			$params = $params + $this->default;
-			$options = $params['options'];
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$content = $this->_input( "{$params['prefix']}Personne.dtnai", $params, array( 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
+			$content .= $this->_input( "{$params['prefix']}Personne.nom", $params );
+			$content .= $this->_input( "{$params['prefix']}Personne.nomnai", $params );
+			$content .= $this->_input( "{$params['prefix']}Personne.prenom", $params );
+			$content .= $this->_input( "{$params['prefix']}Personne.nir", $params, array( 'maxlength' => 15 ) );
+			$content .= $this->_input( "{$params['prefix']}Personne.sexe", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.sexe' ), 'empty' => true ) );
+			$content .= $this->_input( "{$params['prefix']}Personne.trancheage", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.trancheage' ), 'empty' => true ) );
+			$content .= $this->_input( "{$params['prefix']}Calculdroitrsa.toppersdrodevorsa", $params, array( 'options' => (array)Hash::get( $params, 'options.Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
 
-			$content = '';
-
-			if( !$this->_isSkipped( "{$prefix}Personne.dtnai", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.dtnai", array( 'label' => 'Date de naissance', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'empty' => true ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.nom", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.nom", array( 'label' => 'Nom' ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.nomnai", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.nomnai", array( 'label' => 'Nom de jeune fille' ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.prenom", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.prenom", array( 'label' => 'Prénom' ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.nir", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.nir", array( 'label' => 'NIR', 'maxlength' => 15 ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.sexe", $params ) && Hash::check( $options, 'Personne.sexe' ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.sexe", array( 'label' => 'Sexe', 'options' => (array)Hash::get( $options, 'Personne.sexe' ), 'empty' => true ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Personne.trancheage", $params ) && Hash::check( $options, 'Personne.trancheage' ) ) {
-				$content .= $this->Xform->input( "{$prefix}Personne.trancheage", array( 'label' => 'Tranche d\'âge', 'options' => (array)Hash::get( $options, 'Personne.trancheage' ), 'empty' => true ) );
-			}
-
-			if( !$this->_isSkipped( "{$prefix}Calculdroitrsa.toppersdrodevorsa", $params ) ) {
-				$content .= $this->Xform->input( "{$prefix}Calculdroitrsa.toppersdrodevorsa", array( 'label' => 'Personne soumise à droits et devoirs ?', 'options' => (array)Hash::get( $options, 'Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
-			}
-
-			if( !$params['fieldset'] ) {
-				return $content;
-			}
-			else {
-				return $this->Xhtml->tag(
-					'fieldset',
-					$this->Xhtml->tag( 'legend', __d( $params['domain'], 'Search.Personne' ) )
-					.$content
-				);
-			}
+			return $this->_fieldset( 'Search.Personne', $content, $params );
 		}
 
 		/**
@@ -249,28 +265,17 @@
 		 */
 		public function blocReferentparcours( array $params = array() ) {
 			$params = $params + $this->default;
-			$options = $params['options'];
-
-			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
 			$script = "document.observe( 'dom:loaded', function() {
-				dependantSelect( '".$this->domId( "{$prefix}PersonneReferent.referent_id" )."', '".$this->domId( "{$prefix}PersonneReferent.structurereferente_id" )."' );
+				dependantSelect( '".$this->domId( "{$params['prefix']}PersonneReferent.referent_id" )."', '".$this->domId( "{$params['prefix']}PersonneReferent.structurereferente_id" )."' );
 			} );";
 
-			$content = $this->Xform->input( "{$prefix}PersonneReferent.structurereferente_id", array( 'label' => __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => (array)Hash::get( $options, 'PersonneReferent.structurereferente_id' ), 'empty' => true ) );
-			$content .= $this->Xform->input( "{$prefix}PersonneReferent.referent_id", array( 'label' => __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => (array)Hash::get( $options, 'PersonneReferent.referent_id' ), 'empty' => true ) );
+			$content = $this->Xform->input( "{$params['prefix']}PersonneReferent.structurereferente_id", array( 'label' => __d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.structurereferente_id' ), 'empty' => true ) );
+			$content .= $this->Xform->input( "{$params['prefix']}PersonneReferent.referent_id", array( 'label' => __d( 'search_plugin', 'Referentparcours.nom_complet' ), 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.PersonneReferent.referent_id' ), 'empty' => true ) );
 			$content .= $this->Xhtml->scriptBlock( $script, array( 'inline' => true, 'safe' => false ) );
 
-			if( !$params['fieldset'] ) {
-				return $content;
-			}
-			else {
-				return $this->Xhtml->tag(
-					'fieldset',
-					$this->Xhtml->tag( 'legend', __d( $params['domain'], 'Search.Referentparcours' ) )
-					.$content
-				);
-			}
+			return $this->_fieldset( 'Search.Referentparcours', $content, $params );
 		}
 
 		/**
@@ -282,21 +287,11 @@
 		 */
 		public function blocPagination( array $params = array() ) {
 			$params = $params + $this->default;
+			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
-			$prefix = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
+			$content = $this->Xform->input( "{$params['prefix']}Pagination.nombre_total", array( 'label' =>  __d( $params['domain'], 'Search.Pagination.nombre_total' ), 'type' => 'checkbox' ) );
 
-			$content = $this->Xform->input( "{$prefix}Pagination.nombre_total", array( 'label' =>  __d( $params['domain'], 'Search.Pagination.nombre_total' ), 'type' => 'checkbox' ) );
-
-			if( !$params['fieldset'] ) {
-				return $content;
-			}
-			else {
-				return $this->Xhtml->tag(
-					'fieldset',
-					$this->Xhtml->tag( 'legend', __d( $params['domain'], 'Search.Pagination' ) )
-					.$content
-				);
-			}
+			return $this->_fieldset( 'Search.Pagination', $content, $params );
 		}
 
 		/**
@@ -310,8 +305,8 @@
 		public function blocScript( array $params = array() ) {
 			$default = array(
 				'id' => Inflector::camelize( "{$this->request->params['controller']}_{$this->request->params['action']}_form" ),
-				'prefix' => 'Search',
-				'domain' => 'search_plugin',
+				'prefix' => $this->default['prefix'],
+				'domain' => $this->default['domain'],
 			);
 
 			$params = $params + $default;

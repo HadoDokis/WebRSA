@@ -106,7 +106,8 @@
 		 * Effectue la pagination sur le modèle Personne, progressive ou non,
 		 * ajoute les restrictions liées à l'utilisateur connecté.
 		 *
-		 * @param array $query
+		 * @param array $query Le querydata à paginer
+		 * @param string $className Le nom de la classe sur laquelle paginer
 		 * @return array
 		 */
 		public function paginate( array $query, $className = 'Personne' ) {
@@ -135,7 +136,7 @@
 
 			$options['Adresse']['numcomptt'] = $this->Gestionzonesgeos->listeCodesInsee();
 			$options['Canton']['canton'] = $this->Gestionzonesgeos->listeCantons();
-			$options['Sitecov58']['id'] = $this->Gestionzonesgeos->listeSitescovs58(); // FIXME: à mettre dans le modèle Allocataire ?
+			$options['Sitecov58']['id'] = $this->Gestionzonesgeos->listeSitescovs58();
 
 			$options['PersonneReferent']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['PersonneReferent']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
