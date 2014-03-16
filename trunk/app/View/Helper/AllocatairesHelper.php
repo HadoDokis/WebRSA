@@ -13,8 +13,6 @@
 	 * Chaque méthode accepte une clé 'skip' dans les paramètres, permettant de
 	 * ne pas obtenir un ou plusieurs champs du bloc.
 	 *
-	 * @todo Attention aux traductions (domaine allocataires ?)
-	 *
 	 * @package app.View.Helper
 	 */
 	class AllocatairesHelper extends AppHelper
