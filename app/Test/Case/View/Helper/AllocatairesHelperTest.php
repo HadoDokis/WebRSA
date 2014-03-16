@@ -254,9 +254,13 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 						'id' => array( 1 => 'Bords de Loire' )
 					),
 				),
+				'fieldset' => false
 			);
+
+			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAdresse( $params );
-			$expected = '<fieldset><legend>Recherche par adresse</legend><div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseLocaadr">Commune de l\'allocataire </label><input name="data[Search][Adresse][locaadr]" type="text" id="SearchAdresseLocaadr"/></div><div class="input select required"><label for="SearchAdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcomptt]" id="SearchAdresseNumcomptt">
+
+			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseLocaadr">Commune de l\'allocataire </label><input name="data[Search][Adresse][locaadr]" type="text" id="SearchAdresseLocaadr"/></div><div class="input select required"><label for="SearchAdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcomptt]" id="SearchAdresseNumcomptt">
 <option value=""></option>
 <option value="58000">Nevers</option>
 </select></div><div class="input select required"><label for="SearchCantonCanton">Canton</label><select name="data[Search][Canton][canton]" id="SearchCantonCanton">
@@ -265,7 +269,15 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 </select></div><div class="input select"><label for="SearchSitecov58Id">Site COV</label><select name="data[Search][Sitecov58][id]" id="SearchSitecov58Id">
 <option value=""></option>
 <option value="1">Bords de Loire</option>
-</select></div></fieldset>';
+</select></div>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec le fieldset
+			unset( $params['fieldset'] );
+			$result = $this->Allocataires->blocAdresse( $params );
+
+			$expected = '<fieldset><legend>Recherche par adresse</legend>'.$expected.'</fieldset>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
@@ -314,9 +326,13 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 						),
 					),
 				),
+				'fieldset' => false
 			);
+
+			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAllocataire( $params );
-			$expected = '<fieldset><legend>Recherche par allocataire</legend><div class="input date required"><label for="SearchPersonneDtnaiDay">Date de naissance</label><select name="data[Search][Personne][dtnai][day]" id="SearchPersonneDtnaiDay">
+
+			$expected = '<div class="input date required"><label for="SearchPersonneDtnaiDay">Date de naissance</label><select name="data[Search][Personne][dtnai][day]" id="SearchPersonneDtnaiDay">
 <option value=""></option>
 '.$days.'
 </select>-<select name="data[Search][Personne][dtnai][month]" id="SearchPersonneDtnaiMonth">
@@ -341,7 +357,16 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <option value="NULL">Non défini</option>
 <option value="1">Oui</option>
 <option value="0">Non</option>
-</select></div></fieldset>';
+</select></div>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec le fieldset
+			unset( $params['fieldset'] );
+			$result = $this->Allocataires->blocAllocataire( $params );
+
+			$expected = '<fieldset><legend>Recherche par allocataire</legend>'.$expected.'</fieldset>';
+
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -359,11 +384,13 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 							'1_1' => 'M. Emploi Paul'
 						),
 					)
-				)
+				),
+				'fieldset' => false
 			);
 
+			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocReferentparcours( $params );
-			$expected = '<fieldset><legend>Suivi du parcours</legend><div class="input select"><label for="SearchPersonneReferentStructurereferenteId">Structure du parcours</label><select name="data[Search][PersonneReferent][structurereferente_id]" id="SearchPersonneReferentStructurereferenteId">
+			$expected = '<div class="input select"><label for="SearchPersonneReferentStructurereferenteId">Structure du parcours</label><select name="data[Search][PersonneReferent][structurereferente_id]" id="SearchPersonneReferentStructurereferenteId">
 <option value=""></option>
 <option value="1">Pôle Emploi</option>
 </select></div><div class="input select required"><label for="SearchPersonneReferentReferentId">Référent du parcours</label><select name="data[Search][PersonneReferent][referent_id]" id="SearchPersonneReferentReferentId">
@@ -371,7 +398,14 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 <option value="1_1">M. Emploi Paul</option>
 </select></div><script type="text/javascript">document.observe( \'dom:loaded\', function() {
 				dependantSelect( \'SearchPersonneReferentReferentId\', \'SearchPersonneReferentStructurereferenteId\' );
-			} );</script></fieldset>';
+			} );</script>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec le fieldset
+			unset( $params['fieldset'] );
+			$result = $this->Allocataires->blocReferentparcours( $params );
+			$expected = '<fieldset><legend>Suivi du parcours</legend>'.$expected.'</fieldset>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
@@ -380,8 +414,17 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		 * Test de la méthode Allocataires::blocPagination();
 		 */
 		public function testBlocPagination() {
+			// 1. Sans le fieldset
+			$result = $this->Allocataires->blocPagination( array( 'fieldset' => false ) );
+
+			$expected = '<div class="input checkbox"><input type="hidden" name="data[Search][Pagination][nombre_total]" id="SearchPaginationNombreTotal_" value="0"/><input type="checkbox" name="data[Search][Pagination][nombre_total]"  value="1" id="SearchPaginationNombreTotal"/><label for="SearchPaginationNombreTotal">Obtenir le nombre total de résultats (plus lent)</label></div>';
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec le fieldset
 			$result = $this->Allocataires->blocPagination();
-			$expected = '<fieldset><legend>Comptage des résultats</legend><div class="input checkbox"><input type="hidden" name="data[Search][Pagination][nombre_total]" id="SearchPaginationNombreTotal_" value="0"/><input type="checkbox" name="data[Search][Pagination][nombre_total]"  value="1" id="SearchPaginationNombreTotal"/><label for="SearchPaginationNombreTotal">Obtenir le nombre total de résultats (plus lent)</label></div></fieldset>';
+
+			$expected = '<fieldset><legend>Comptage des résultats</legend>'.$expected.'</fieldset>';
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
