@@ -177,8 +177,9 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 		}
 
 		/**
-		 * Test de la méthode AllocatairesHelper::blocDossier() en ne faisant pas
-		 * la plage de date de dtdemrsa.
+		 * Test de la méthode AllocatairesHelper::blocDossier() en retirant
+		 * Dossier.numdemrsa, Dossier.dtdemrsa, Situationdossierrsa.etatdosrsa et
+		 * Detailcalculdroitrsa.natpf (car il n'est pas dans les options).
 		 */
 		public function testBlocDossierSkip() {
 			$params = array(
@@ -188,19 +189,14 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 					)
 				),
 				'skip' => array(
-					'Search.Dossier.dtdemrsa'
+					'Search.Dossier.numdemrsa',
+					'Search.Dossier.dtdemrsa',
+					'Search.Situationdossierrsa.etatdosrsa',
 				)
 			);
 
 			$result = $this->Allocataires->blocDossier( $params );
-			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text required"><label for="SearchDossierNumdemrsa">Numéro de dossier RSA</label><input name="data[Search][Dossier][numdemrsa]" maxlength="11" type="text" id="SearchDossierNumdemrsa"/></div><div class="input text"><label for="SearchDossierMatricule">Numéro CAF</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Situationdossierrsa][etatdosrsa_choice]" id="SearchSituationdossierrsaEtatdosrsaChoice_" value="0"/><input type="checkbox" name="data[Search][Situationdossierrsa][etatdosrsa_choice]"  value="1" id="SearchSituationdossierrsaEtatdosrsaChoice"/><label for="SearchSituationdossierrsaEtatdosrsaChoice">Filtrer par état du dossier</label></div><fieldset id="SearchSituationdossierrsaEtatdosrsaFieldset"><legend>États du dossier</legend><div class="input select required"><input type="hidden" name="data[Search][Situationdossierrsa][etatdosrsa]" value="" id="SearchSituationdossierrsaEtatdosrsa"/>
-
-<div class="checkbox"><input type="checkbox" name="data[Search][Situationdossierrsa][etatdosrsa][]" value="Z" id="SearchSituationdossierrsaEtatdosrsaZ" /><label for="SearchSituationdossierrsaEtatdosrsaZ">Non défini</label></div>
-</div></fieldset><script type="text/javascript">
-//<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox( \'SearchSituationdossierrsaEtatdosrsaChoice\', \'SearchSituationdossierrsaEtatdosrsaFieldset\', false, false ); } );
-//]]>
-</script><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
+			$expected = '<fieldset><legend>Recherche par dossier</legend><div class="input text"><label for="SearchDossierMatricule">Numéro CAF</label><input name="data[Search][Dossier][matricule]" maxlength="15" type="text" id="SearchDossierMatricule"/></div><div class="input checkbox"><input type="hidden" name="data[Search][Dossier][dernier]" id="SearchDossierDernier_" value="0"/><input type="checkbox" name="data[Search][Dossier][dernier]"  value="1" id="SearchDossierDernier"/><label for="SearchDossierDernier">Uniquement la dernière demande RSA pour un même allocataire</label></div></fieldset>';
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -260,7 +256,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAdresse( $params );
 
-			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire </label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseLocaadr">Commune de l\'allocataire </label><input name="data[Search][Adresse][locaadr]" type="text" id="SearchAdresseLocaadr"/></div><div class="input select required"><label for="SearchAdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcomptt]" id="SearchAdresseNumcomptt">
+			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire</label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseLocaadr">Commune de l\'allocataire</label><input name="data[Search][Adresse][locaadr]" type="text" id="SearchAdresseLocaadr"/></div><div class="input select required"><label for="SearchAdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcomptt]" id="SearchAdresseNumcomptt">
 <option value=""></option>
 <option value="58000">Nevers</option>
 </select></div><div class="input select required"><label for="SearchCantonCanton">Canton</label><select name="data[Search][Canton][canton]" id="SearchCantonCanton">

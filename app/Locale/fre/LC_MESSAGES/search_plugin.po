@@ -73,6 +73,15 @@ msgstr "Natures de prestation"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Dossier.numdemrsa"
+msgstr "Numéro de dossier RSA"
+
+msgid "Search.Dossier.matricule"
+msgstr "Numéro CAF"
+
+msgid "Search.Dossier.dernier"
+msgstr "Uniquement la dernière demande RSA pour un même allocataire"
+
 msgid "Search.Dossier.dtdemrsa_choice"
 msgstr "Filtrer par date de demande"
 
@@ -93,6 +102,23 @@ msgstr "Au (inclus)"
 
 # ------------------------------------------------------------------------------
 
+msgid "Search.Adresse.nomvoie"
+msgstr "Nom de voie de l'allocataire"
+
+msgid "Search.Adresse.locaadr"
+msgstr "Commune de l'allocataire"
+
+msgid "Search.Adresse.numcomptt"
+msgstr "Numéro de commune au sens INSEE"
+
+msgid "Search.Canton.canton"
+msgstr "Canton"
+
+msgid "Search.Sitecov58.id"
+msgstr "Site COV"
+
+# ------------------------------------------------------------------------------
+
 msgid "Search.Personne"
 msgstr "Recherche par allocataire"
 
@@ -100,13 +126,34 @@ msgid "Search.Personne.dtnai_choice"
 msgstr "Filtrer par date de naissance"
 
 msgid "Search.Personne.dtnai"
-msgstr "Date de naissance de l'allocataire"
+msgstr "Date de naissance"
 
 msgid "Search.Personne.dtnai_from"
 msgstr "Du (inclus)"
 
 msgid "Search.Personne.dtnai_to"
 msgstr "Au (inclus)"
+
+msgid "Search.Personne.nom"
+msgstr "Nom"
+
+msgid "Search.Personne.nomnai"
+msgstr "Nom de jeune fille"
+
+msgid "Search.Personne.prenom"
+msgstr "Prénom"
+
+msgid "Search.Personne.nir"
+msgstr "NIR"
+
+msgid "Search.Personne.sexe"
+msgstr "Sexe"
+
+msgid "Search.Personne.trancheage"
+msgstr "Tranche d'âge"
+
+msgid "Search.Calculdroitrsa.toppersdrodevorsa"
+msgstr "Personne soumise à droits et devoirs ?"
 
 # ------------------------------------------------------------------------------
 
