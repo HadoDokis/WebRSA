@@ -123,6 +123,8 @@
 
 		/**
 		 * Test de la méthode Allocataire::search().
+		 *
+		 * @medium
 		 */
 		public function testSearch() {
 			$query = $this->Allocataire->search();

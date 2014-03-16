@@ -145,6 +145,7 @@
 				'Admin.unlockall' => 'boolean',
 				'AjoutOrientationPossible.situationetatdosrsa' => 'isarray',
 				'AjoutOrientationPossible.toppersdrodevorsa' => 'string',
+				'AncienAllocataire.enabled' => 'boolean',
 				'Apre.forfaitaire.montantbase' => 'numeric',
 				'Apre.forfaitaire.montantenfant12' => 'numeric',
 				'Apre.forfaitaire.nbenfant12max' => 'integer',
