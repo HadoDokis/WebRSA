@@ -51,6 +51,7 @@
 				'Apple' => array(
 					'id' => 666,
 					'name' => 'Étagère',
+					'date' => '2014-03-17',
 					'category' => 'red',
 					'description' => "Line 1\nLine2",
 				)
@@ -98,6 +99,10 @@
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.foo', array( 'label' => 'Name' ) );
 			$expected = '<div class="input value"><span class="label">Name</span><span class="input"> </span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->fieldValue( 'Apple.date', array( 'label' => 'Date', 'type' => 'date' ) );
+			$expected = '<div class="input value date"><span class="label">Date</span><span class="input">17/03/2014</span></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
 			$result = $this->DefaultForm->fieldValue( 'Apple.category', array( 'label' => 'Category', 'options' => array( 'red' => 'Red apple' ) ) );
