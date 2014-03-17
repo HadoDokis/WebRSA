@@ -87,6 +87,33 @@
 		}
 
 		/**
+		 * Permet de désactiver et éventuellement de masquer un ensemble de champs
+		 * suivant qu'une case à cocher est cochée ou non.
+		 *
+		 * @param string $master Le chemin CakePHP de la case à cocher
+		 * @param string|array $slaves Les id des champs
+		 * @param boolean $condition true pour désactiver lorsque la case est cochée, false sinon
+		 * @param boolean $hide true pour en plus cacher les champs lorsqu'ils sont désactivés
+		 * @return array
+		 */
+		public function disableFieldsOnCheckbox( $master, $slaves, $condition = false, $hide = false ) {
+			$master = $this->domId( $master );
+
+			$slaves = (array)$slaves;
+			foreach( $slaves as $i => $slave ) {
+				$slaves[$i] = $this->domId( $slave );
+			}
+			$slaves = "[ '".implode( "', '", $slaves )."' ]";
+
+			$condition = ( $condition ? 'true' : 'false' );
+			$hide = ( $hide ? 'true' : 'false' );
+
+			$script = "observeDisableFieldsOnCheckbox( '{$master}', {$slaves}, {$condition}, {$hide} );";
+
+			return $this->render( $script );
+		}
+
+		/**
 		 * Permet de désactiver et éventuellement de masquer un fieldset suivant
 		 * qu'une case à cocher est cochée ou non.
 		 *

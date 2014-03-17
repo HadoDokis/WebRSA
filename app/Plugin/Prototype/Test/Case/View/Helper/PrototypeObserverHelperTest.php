@@ -97,10 +97,28 @@ document.observe( \'dom:loaded\', function() { observeDisableFormOnSubmit( \'Use
 		}
 
 		/**
+		 * Test de la méthode PrototypeObserverHelper::disableFieldsOnCheckbox()
+		 */
+		public function testDisableFieldsOnCheckbox() {
+			// 1. Sans message
+			$result = $this->Observer->disableFieldsOnCheckbox(
+				'Documentbeneffp93.Documentbeneffp93.4',
+				'Ficheprescription93.documentbeneffp93_autre',
+				false,
+				false
+			);
+			$expected = '<script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsOnCheckbox( \'Documentbeneffp93Documentbeneffp934\', [ \'Ficheprescription93Documentbeneffp93Autre\' ], false, false ); } );
+//]]>
+</script>';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode PrototypeObserverHelper::disableFieldsetOnCheckbox()
 		 */
 		public function testDisableFieldsetOnCheckbox() {
-			// 1. Sans message
 			$result = $this->Observer->disableFieldsetOnCheckbox( 'Search.User.birthday', 'SearchUserBirthdayRange' );
 			$expected = '<script type="text/javascript">
 //<![CDATA[
