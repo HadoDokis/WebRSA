@@ -537,7 +537,10 @@
 			$modelClass->recursive = -1;
 
 			$success = $modelClass->updateAllUnBound(
-				array( "{$modelName}.personne_id" => $personneAgarderId ),
+				array(
+					"{$modelName}.personne_id" => $personneAgarderId,
+					"{$modelName}.rg_ci" => null,
+				),
 				array( "{$modelName}.id" => $itemsIds )
 			) && $success;
 
