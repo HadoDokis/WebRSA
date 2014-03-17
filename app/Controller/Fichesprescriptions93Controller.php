@@ -80,6 +80,7 @@
 			'impression' => 'read',
 			'exportcsv' => 'read',
 			'search' => 'read',
+			'cancel' => 'update',
 		);
 
 		public $commeDroit = array(
@@ -128,6 +129,7 @@
 
 				if( !empty( $referent_id ) ) {
 					$query['fields'][] = 'Referent.email';
+					$query['fields'][] = 'Referent.fonction';
 					$query['joins'][] = $this->Ficheprescription93->Referent->Structurereferente->join( 'Referent', array( 'type' => 'INNER' ) );
 					$query['conditions']['Referent.id'] = $referent_id;
 				}
@@ -254,8 +256,11 @@
 					$impression = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) >= 2 );
 					$results[$i]['/Fichesprescriptions93/impression'] = $impression;
 
-					$edit = !isset( $messages['Personne.nati_inconnue'] );
+					$edit = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) != 99 );
 					$results[$i]['/Fichesprescriptions93/edit'] = $edit;
+
+					$cancel = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) != 99 );
+					$results[$i]['/Fichesprescriptions93/cancel'] = $cancel;
 				}
 			}
 			// Fin dans le modèle (?), ajout des permissions sur les différentes actions
@@ -325,7 +330,7 @@
 				$this->request->data = $this->Ficheprescription93->prepareFormDataAddEdit( $personne_id, $id );
 			}
 
-			$options = $this->Ficheprescription93->options( array( 'allocataire' => false, 'find' => true ) );
+			$options = $this->Ficheprescription93->options( array( 'allocataire' => true, 'find' => true ) );
 
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
@@ -388,6 +393,69 @@
 				$this->Session->setFlash( 'Impossible de générer la fiche de prescription.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		 * Formulaire d'annulation d'un fiche de prescription.
+		 *
+		 * @param integer $id
+		 */
+		public function cancel( $id = null ) {
+			$query = array(
+				'conditions' => array(
+					'Ficheprescription93.id' => $id
+				),
+				'fields' => null,
+				'order' => null,
+				'recursive' => -1
+			);
+			$ficheprescription93 = $this->Ficheprescription93->find( 'first', $query );
+
+			$personne_id = Hash::get( $ficheprescription93, 'Ficheprescription93.personne_id' );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+			// Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			// On transforme les champs date_annulation et motif_annulation en champs obligatoires
+			$notEmpty = array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'allowEmpty' => false,
+					'required' => true
+				)
+			);
+			foreach( array( 'date_annulation', 'motif_annulation' ) as $field ) {
+				$this->Ficheprescription93->validate[$field] = Hash::merge(
+					$notEmpty,
+					$this->Ficheprescription93->validate[$field]
+				);
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Ficheprescription93->begin();
+
+				$ficheprescription93['Ficheprescription93']['statut'] = '99annulee';
+				$ficheprescription93['Ficheprescription93']['date_annulation'] = Hash::get( $this->request->data, 'Ficheprescription93.date_annulation' );
+				$ficheprescription93['Ficheprescription93']['motif_annulation'] = Hash::get( $this->request->data, 'Ficheprescription93.motif_annulation' );
+				$this->Ficheprescription93->create( $ficheprescription93 );
+
+				if( $this->Ficheprescription93->save() ) {
+					$this->Ficheprescription93->commit();
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Ficheprescription93->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				$this->request->data = $ficheprescription93;
+			}
+			$this->set( 'urlmenu', '/fichesprescriptions93/index/'.$personne_id );
 		}
 	}
 ?>

@@ -56,6 +56,9 @@ msgstr "Date de rendez-vous"
 msgid "Search.Ficheprescription93.statut"
 msgstr "Statut"
 
+msgid "Search.Ficheprescription93.has_date_retour"
+msgstr "Effectivité"
+
 msgid "Search.Ficheprescription93.date_transmission"
 msgstr "Date de transmission"
 
@@ -144,6 +147,12 @@ msgstr "Date de début de l'action"
 msgid "Ficheprescription93.df_action"
 msgstr "Date de fin de l'action"
 
+msgid "Documentbeneffp93.Documentbeneffp93"
+msgstr "Le bénéficiaire est invité à se munir de"
+
+msgid "Ficheprescription93.documentbeneffp93_autre"
+msgstr "Autres, précisez"
+
 msgid "Ficheprescription93.statut"
 msgstr "Statut"
 
@@ -161,6 +170,9 @@ msgstr "Modifier la fiche de prescription"
 
 msgid "/Fichesprescriptions93/cancel"
 msgstr "Annuler"
+
+msgid "/Fichesprescriptions93/cancel/#Ficheprescription93.id#"
+msgstr "Annuler la fiche de prescription"
 
 msgid "/Fichesprescriptions93/impression"
 msgstr "Imprimer"
@@ -200,6 +212,15 @@ msgstr "Prénom"
 
 msgid "Instantanedonneesfp93.benef_dtnai"
 msgstr "Date de naissance"
+
+msgid "Instantanedonneesfp93.benef_adresse"
+msgstr "Adresse"
+
+msgid "Instantanedonneesfp93.benef_codepos"
+msgstr "Code postal"
+
+msgid "Instantanedonneesfp93.benef_locaadr"
+msgstr "Ville"
 
 msgid "Instantanedonneesfp93.benef_tel_fixe"
 msgstr "Téléphone"
@@ -241,6 +262,9 @@ msgstr "Ajout d'une fiche de prescription"
 
 msgid "/Fichesprescriptions93/edit/:heading"
 msgstr "Modification d'une fiche de prescription"
+
+msgid "/Fichesprescriptions93/cancel/:heading"
+msgstr "Annulation d'une fiche de prescription"
 
 msgid "Ficheprescription93.Prestataire"
 msgstr "Prestataire/Partenaire"
@@ -357,3 +381,11 @@ msgstr "Date du bilan à mi-parcours"
 
 msgid "Ficheprescription93.date_bilan_final"
 msgstr "Date du bilan final"
+
+################################################################################
+
+msgid "Ficheprescription93.date_annulation"
+msgstr "Date d'annulation"
+
+msgid "Ficheprescription93.motif_annulation"
+msgstr "Motif"

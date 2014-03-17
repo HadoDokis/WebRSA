@@ -30,12 +30,12 @@
 			'Ficheprescription93.dd_action',
 			'Ficheprescription93.df_action',
 			'Ficheprescription93.statut',
-			// TODO: les droits
-//			'/Fichesprescriptions93/view/#Ficheprescription93.id#',
 			'/Fichesprescriptions93/edit/#Ficheprescription93.id#' => array(
 				'disabled' => '!( "#/Fichesprescriptions93/edit#" && "'.$this->Permissions->checkDossier( 'Fichesprescriptions93', 'edit', $dossierMenu ).'" )'
 			),
-//			'/Fichesprescriptions93/cancel/#Ficheprescription93.id#',
+			'/Fichesprescriptions93/cancel/#Ficheprescription93.id#' => array(
+				'disabled' => '!( "#/Fichesprescriptions93/cancel#" && "'.$this->Permissions->checkDossier( 'Fichesprescriptions93', 'cancel', $dossierMenu ).'" )'
+			),
 			'/Fichesprescriptions93/impression/#Ficheprescription93.id#' => array(
 				'disabled' => '!( "#/Fichesprescriptions93/impression#" && "'.$this->Permissions->checkDossier( 'Fichesprescriptions93', 'impression', $dossierMenu ).'" )'
 			),

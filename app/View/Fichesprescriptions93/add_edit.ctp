@@ -49,6 +49,7 @@
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,
+					'options' =>(array) Hash::get( $options ,'Personne.qual' )
 				),
 				'Instantanedonneesfp93.benef_nom' => array(
 					'view' => true,
@@ -62,7 +63,22 @@
 				),
 				'Instantanedonneesfp93.benef_dtnai' => array(
 					'view' => true,
-					'type' => 'date', // FIXME
+					'type' => 'date',
+					'hidden' => true,
+				),
+				'Instantanedonneesfp93.benef_adresse' => array(
+					'view' => true,
+					'type' => 'text',
+					'hidden' => true,
+				),
+				'Instantanedonneesfp93.benef_codepos' => array(
+					'view' => true,
+					'type' => 'text',
+					'hidden' => true,
+				),
+				'Instantanedonneesfp93.benef_locaadr' => array(
+					'view' => true,
+					'type' => 'text',
 					'hidden' => true,
 				),
 				// TODO: adresse
@@ -74,22 +90,22 @@
 					'type' => 'text',
 					'hidden' => true,
 					'options' => $options['Instantanedonneesfp93']['benef_natpf'],
-					'hidden' => false,
+					'hidden' => true,
 				),
 				'Instantanedonneesfp93.benef_matricule' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => false,
+					'hidden' => true,
 				),
 				'Instantanedonneesfp93.benef_inscritpe' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => false,
+					'hidden' => true,
 				),
 				'Instantanedonneesfp93.benef_identifiantpe' => array(
 					'view' => true,
 					'type' => 'text',
-					'hidden' => false,
+					'hidden' => true,
 				),
 				'Instantanedonneesfp93.benef_nivetu' => array( 'empty' => true ),
 				'Instantanedonneesfp93.benef_dip_ce' => array( 'empty' => true ),
@@ -133,7 +149,9 @@
 				'Ficheprescription93.statut' => array( 'type' => 'hidden' ), // FIXME ?
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
-				// TODO: duree_action
+				// TODO: duree_action,
+				'Documentbeneffp93.Documentbeneffp93' => array( 'multiple' => 'checkbox' ),
+				'Ficheprescription93.documentbeneffp93_autre',
 			),
 			array(
 				'options' => $options,
@@ -224,6 +242,16 @@
 	echo $this->Default3->DefaultForm->end();
 ?>
 <?php
+	// Le bénéficiaire est invité à se munir de...
+	foreach( (array)Hash::get( $options, 'Autre.Ficheprescription93.documentbeneffp93_id' ) as $documentbeneffp93_id ) {
+		echo $this->Observer->disableFieldsOnCheckbox(
+			"Documentbeneffp93.Documentbeneffp93.{$documentbeneffp93_id}",
+			'Ficheprescription93.documentbeneffp93_autre',
+			false,
+			false
+		);
+	}
+
 	echo $this->Observer->dependantSelect(
 		array(
 			'Ficheprescription93.structurereferente_id' => 'Ficheprescription93.referent_id',

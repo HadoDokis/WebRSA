@@ -3385,6 +3385,9 @@ msgstr "Modification d'une fiche de prescription"
 msgid "Fichesprescriptions93:impression"
 msgstr "Impression d'une fiche de prescription"
 
+msgid "Fichesprescriptions93:cancel"
+msgstr "Annulation d'une fiche de prescription"
+
 msgid "Module:Cataloguespdisfps93"
 msgstr "Paramétrage du référentiel pour fiches de prescription (CG 93)"
 

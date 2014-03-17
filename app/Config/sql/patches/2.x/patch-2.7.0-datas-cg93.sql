@@ -65,6 +65,12 @@ INSERT INTO motifsnonintegrationsfps93 ( name, autre, created, modified ) VALUES
 	( 'Motif de non intégration n°1', '0', NOW(), NOW() ),
 	( 'Motif de non intégration n°2', '1', NOW(), NOW() );
 
+INSERT INTO documentsbenefsfps93 ( name, autre, created, modified ) VALUES
+	( 'CER', '0', NOW(), NOW() ),
+	( 'Notification CAF', '0', NOW(), NOW() ),
+	( 'CV', '0', NOW(), NOW() ),
+	( 'Autre', '1', NOW(), NOW() );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
