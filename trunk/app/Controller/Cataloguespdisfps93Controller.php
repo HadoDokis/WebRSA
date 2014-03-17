@@ -90,7 +90,7 @@
 		}
 
 		/**
-		 * Liste des enregistrements d'un modèle.
+		 * Liste des enregistrements.
 		 *
 		 * @param string $modelName
 		 * @throws Error404Exception
@@ -133,21 +133,47 @@
 
 			$results = $this->paginate( $Model, array(), $fields, false );
 
+			// A-t'on des enregistrements liés ?
+			$Model->Behaviors->attach( 'Occurences' );
+			$occurences = $Model->occurencesExists();
+			foreach( $results as $i => $result ) {
+				$primaryKey = Hash::get( $result, "{$Model->alias}.{$Model->primaryKey}" );
+				$results[$i][$Model->alias]['occurences'] = ( Hash::get( $occurences, $primaryKey ) ? '1' : '0' );
+			}
+
 			$options = $Model->enums();
 
 			$this->set( compact( 'modelName', 'results', 'fields', 'options' ) );
 		}
 
+		/**
+		 * Formulaire d'ajout
+		 *
+		 * @param string $modelName
+		 */
 		public function add( $modelName ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 * Formulaire de modification
+		 *
+		 * @param string $modelName
+		 * @param integer $id
+		 */
 		public function edit( $modelName, $id ) {
 			$args = func_get_args();
 			call_user_func_array( array( $this, '_add_edit' ), $args );
 		}
 
+		/**
+		 * Formulaire d'ajout / de modification
+		 *
+		 * @param string $modelName
+		 * @param integer $id
+		 * @throws Error404Exception
+		 */
 		protected function _add_edit( $modelName, $id = null ) {
 			if( !in_array( $modelName, $this->Cataloguepdifp93->modelesParametrages ) ) {
 				throw new Error404Exception();
@@ -226,12 +252,26 @@
 			$this->render( 'add_edit' );
 		}
 
+		/**
+		 * Tentative de suppression d'un enregistrement
+		 *
+		 * @param string $modelName
+		 * @param integer $id
+		 * @throws Error404Exception
+		 * @throws Error500Exception
+		 */
 		public function delete( $modelName, $id ) {
 			if( !in_array( $modelName, $this->Cataloguepdifp93->modelesParametrages ) ) {
 				throw new Error404Exception();
 			}
 
 			$Model = ClassRegistry::init( $modelName );
+
+			$Model->Behaviors->attach( 'Occurences' );
+			$occurences = $Model->occurencesExists();
+			if( Hash::get( $occurences, $id ) ) {
+				throw new Error500Exception( null );
+			}
 
 			$Model->begin();
 			if( $Model->delete( $id ) ) {
