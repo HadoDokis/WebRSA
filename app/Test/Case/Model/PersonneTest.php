@@ -175,6 +175,16 @@
 					),
 				),
 			);
+
+			$Webrsacheck = ClassRegistry::init( 'Webrsacheck' );
+			if( Hash::get( $Webrsacheck->checkPostgresFuzzystrmatchFunctions(), "success" ) ) {
+				$expected['OR'][] = array(
+					'difference(Allocataire1.nom, Allocataire2.nom) >= 4',
+					'difference(Allocataire1.prenom, Allocataire2.prenom) >= 4',
+					'Allocataire1.dtnai = Allocataire2.dtnai'
+				);
+			}
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
