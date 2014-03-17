@@ -20,6 +20,16 @@
 	class DefaultFormHelper extends FormHelper
 	{
 		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Default.DefaultData',
+			'Html',
+		);
+
+		/**
 		 * Retourne une liste de boutons de formulaire, dans le div submit, à
 		 * la mode CakePHP.
 		 *
@@ -77,6 +87,10 @@
 			}
 			if( isset( $options['nl2br'] ) && $options['nl2br'] ) {
 				$value = nl2br( $value );
+			}
+
+			if( isset( $options['type'] ) && $options['type'] !== 'text' ) {
+				$value = $this->DefaultData->format( $value, $options['type'] );
 			}
 
 			// Permet d'avoir la fin de tag
