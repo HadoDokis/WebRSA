@@ -447,6 +447,7 @@ CREATE TABLE fichesprescriptions93 (
 	dd_action					DATE DEFAULT NULL,
 	df_action					DATE DEFAULT NULL,
 	duree_action				INTEGER DEFAULT NULL,
+	documentbeneffp93_autre		VARCHAR(250) DEFAULT NULL,
 	-- Bloc "Engagement"
 	date_signature				DATE DEFAULT NULL,
 	-- Bloc "Modalités de transmission"
@@ -476,6 +477,10 @@ CREATE TABLE fichesprescriptions93 (
 
 	date_bilan_mi_parcours		DATE DEFAULT NULL,
 	date_bilan_final			DATE DEFAULT NULL,
+
+	motif_annulation			TEXT DEFAULT NULL,
+	date_annulation				DATE DEFAULT NULL,
+
     created						TIMESTAMP WITHOUT TIME ZONE,
     modified					TIMESTAMP WITHOUT TIME ZONE
 );
@@ -485,7 +490,7 @@ CREATE INDEX fichesprescriptions93_personne_id_idx ON fichesprescriptions93( per
 CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( referent_id );
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 
-ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne'] ) );
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne', '99annulee'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_benef_retour_presente_in_list_chk CHECK ( cakephp_validate_in_list( benef_retour_presente, ARRAY['oui', 'non', 'excuse'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_recue_in_list_chk CHECK ( cakephp_validate_in_list( personne_recue, ARRAY['0', '1'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_retenue_in_list_chk CHECK ( cakephp_validate_in_list( personne_retenue, ARRAY['0', '1'] ) );
@@ -512,8 +517,8 @@ CREATE TABLE fichesprescriptions93_modstransmsfps93 (
     id						SERIAL NOT NULL PRIMARY KEY,
 	ficheprescription93_id	INTEGER NOT NULL REFERENCES fichesprescriptions93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
 	modtransmfp93_id		INTEGER NOT NULL REFERENCES modstransmsfps93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
-    created		TIMESTAMP WITHOUT TIME ZONE,
-    modified	TIMESTAMP WITHOUT TIME ZONE
+    created					TIMESTAMP WITHOUT TIME ZONE,
+    modified				TIMESTAMP WITHOUT TIME ZONE
 );
 COMMENT ON TABLE fichesprescriptions93_modstransmsfps93 IS 'Modalités de transmission pour la fiche de prescription - CG 93';
 
@@ -521,39 +526,6 @@ CREATE INDEX fichesprescriptions93_modstransmsfps93_ficheprescription93_id_idx O
 CREATE INDEX fichesprescriptions93_modstransmsfps93_modtransmfp93_id_idx ON fichesprescriptions93_modstransmsfps93( modtransmfp93_id );
 CREATE UNIQUE INDEX fichesprescriptions93_modstransmsfps93_ficheprescription93_id_modtransmfp93_id_idx ON fichesprescriptions93_modstransmsfps93( ficheprescription93_id, modtransmfp93_id );
 
---------------------------------------------------------------------------------
--- Situationallocataire.qual
--- Situationallocataire.nom
--- Situationallocataire.prenom
--- Situationallocataire.dtnai
--- Situationallocataire.<adresse>
--- Situationallocataire.natpf_fp
--- Situationallocataire.matricule
-/*
-    -- 2°) a°) Adresse (de rang 01) de l'allocataire
-    numvoie             VARCHAR(6) DEFAULT NULL,     -- adresses.numvoie
-    typevoie            VARCHAR(4) DEFAULT NULL,     -- adresses.typevoie
-    nomvoie             VARCHAR(25) DEFAULT NULL,    -- adresses.nomvoie
-    complideadr         VARCHAR(38) DEFAULT NULL,    -- adresses.complideadr
-    compladr            VARCHAR(26) DEFAULT NULL,    -- adresses.compladr
-    numcomptt           VARCHAR(5) DEFAULT NULL,     -- adresses.numcomptt
-    numcomrat           VARCHAR(5) DEFAULT NULL,     -- adresses.numcomrat
-    codepos             VARCHAR(5) DEFAULT NULL,     -- adresses.codepos
-    locaadr             VARCHAR(26) DEFAULT NULL,     -- adresses.locaadr
-    -- 2°) b°) Dossier, foyer, situation du dossier de l'allocataire
-    numdemrsa           VARCHAR(11) DEFAULT NULL,    -- dossiers.numdemrsa
-    matricule           VARCHAR(15) DEFAULT NULL,    -- dossiers.matricule
-    -- 2°) c°) Autres indirectement liés au dossier / foyer de l'allocataire
-    natpf_socle         VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
-    natpf_majore        VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
-    natpf_activite      VARCHAR(1) DEFAULT NULL,     -- detailscalculsdroitsrsa.natpf IN ...
-*/
--- Situationallocataire.inscritpe
--- Situationallocataire.identifiantpe
-/*
-	identifiantpe       VARCHAR(11) DEFAULT NULL,    -- historiqueetatspe.identifiantpe
-	etatpe              VARCHAR(15) DEFAULT NULL,    -- historiqueetatspe.etat
-*/
 --------------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS instantanesdonneesfps93 CASCADE;
@@ -596,8 +568,8 @@ CREATE TABLE instantanesdonneesfps93 (
     benef_natpf_activite	VARCHAR(1) DEFAULT NULL,
 	benef_nivetu			VARCHAR(4) DEFAULT NULL,
 	benef_dip_ce			VARCHAR(1) DEFAULT NULL,
-	benef_etatdosrsa        VARCHAR(1) DEFAULT NULL,     -- situationsdossiersrsa.etatdosrsa
-	benef_toppersdrodevorsa VARCHAR(1) DEFAULT NULL,     -- calculsdroitsrsa.toppersdrodevorsa
+	benef_etatdosrsa        VARCHAR(1) DEFAULT NULL,
+	benef_toppersdrodevorsa VARCHAR(1) DEFAULT NULL,
 	benef_positioncer		VARCHAR(13) DEFAULT NULL,
     created					TIMESTAMP WITHOUT TIME ZONE,
     modified				TIMESTAMP WITHOUT TIME ZONE
@@ -612,9 +584,41 @@ ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( benef_nivetu, ARRAY['1201', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_dip_ce_in_list_chk CHECK ( cakephp_validate_in_list( benef_dip_ce, ARRAY['0', '1'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_inscritpe_in_list_chk CHECK ( cakephp_validate_in_list( benef_inscritpe, ARRAY['0', '1'] ) );
-ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( benef_positioncer, ARRAY['validationpdv', 'validationcg', 'valide'] ) );
+ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( benef_positioncer, ARRAY['validationpdv', 'validationcg', 'valide', 'aucun'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_etatdosrsa_in_list_chk CHECK ( cakephp_validate_in_list( benef_etatdosrsa, ARRAY['Z', '0', '1', '2', '3', '4', '5', '6'] ) );
 ALTER TABLE instantanesdonneesfps93 ADD CONSTRAINT instantanesdonneesfps93_benef_toppersdrodevorsa_in_list_chk CHECK ( cakephp_validate_in_list( benef_toppersdrodevorsa, ARRAY['0', '1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS documentsbenefsfps93 CASCADE;
+CREATE TABLE documentsbenefsfps93 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+	name		VARCHAR(250) NOT NULL,
+	autre		VARCHAR(1) NOT NULL DEFAULT '0',
+    created		TIMESTAMP WITHOUT TIME ZONE,
+    modified	TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE documentsbenefsfps93 IS 'Liste des documents dont le bénéficiaire est invité à se munir pour la fiche de prescription - CG 93';
+
+CREATE UNIQUE INDEX documentsbenefsfps93_name_idx ON documentsbenefsfps93( name );
+
+ALTER TABLE documentsbenefsfps93 ADD CONSTRAINT documentsbenefsfps93_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY['0','1'] ) );
+
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS documentsbenefsfps93_fichesprescriptions93 CASCADE;
+CREATE TABLE documentsbenefsfps93_fichesprescriptions93 (
+    id						SERIAL NOT NULL PRIMARY KEY,
+	documentbeneffp93_id	INTEGER NOT NULL REFERENCES documentsbenefsfps93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+	ficheprescription93_id	INTEGER NOT NULL REFERENCES fichesprescriptions93( id ) ON UPDATE CASCADE ON DELETE CASCADE,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+    modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE documentsbenefsfps93_fichesprescriptions93 IS 'Documents dont le bénéficiaire est invité à se munir pour la fiche de prescription - CG 93';
+
+CREATE INDEX documentsbenefsfps93_fichesprescriptions93_fp93_id_idx ON documentsbenefsfps93_fichesprescriptions93( ficheprescription93_id );
+CREATE INDEX documentsbenefsfps93_fichesprescriptions93_documentbeneffp93_id_idx ON documentsbenefsfps93_fichesprescriptions93( documentbeneffp93_id );
+CREATE UNIQUE INDEX documentsbenefsfps93_fichesprescriptions93_fp93_id_documentbeneffp93_id_idx ON documentsbenefsfps93_fichesprescriptions93( ficheprescription93_id, documentbeneffp93_id );
 
 --------------------------------------------------------------------------------
 -- 20140221: Ajout de la date d'affectation du gestionnaire au dossier PCG (CG66)

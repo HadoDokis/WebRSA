@@ -140,6 +140,22 @@
 		 * @var array
 		 */
 		public $hasAndBelongsToMany = array(
+			'Documentbeneffp93' => array(
+				'className' => 'Documentbeneffp93',
+				'joinTable' => 'documentsbenefsfps93_fichesprescriptions93',
+				'foreignKey' => 'ficheprescription93_id',
+				'associationForeignKey' => 'documentbeneffp93_id',
+				'unique' => true,
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'finderQuery' => null,
+				'deleteQuery' => null,
+				'insertQuery' => null,
+				'with' => 'Documentbeneffp93Ficheprescription93'
+			),
 			'Modtransmfp93' => array(
 				'className' => 'Modtransmfp93',
 				'joinTable' => 'fichesprescriptions93_modstransmsfps93',
@@ -296,7 +312,7 @@
 			}
 
 			// 6. Possède certaines dates
-			$paths = array( 'Ficheprescription93.has_date_bilan_mi_parcours', 'Ficheprescription93.has_date_bilan_final' );
+			$paths = array( 'Ficheprescription93.has_date_bilan_mi_parcours', 'Ficheprescription93.has_date_bilan_final', 'Ficheprescription93.has_date_retour' );
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
 				if( !in_array( $value, array( null, '' ), true ) ) {
@@ -352,11 +368,12 @@
 					array( 'Actionfp93' => array( 'prestatairefp93_id' => $this->Actionfp93->Prestatairefp93->findListPrefixed2() ) ),
 					// TODO: voir ci-dessous
 					// array( 'Ficheprescription93' => array( 'actionfp93_id' => $this->Actionfp93->findListPrefixed( 'filierefp93_id', 'id', 'name' ) ) )
-					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) )
+					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) ),
+					array( 'Documentbeneffp93' => array( 'Documentbeneffp93' => $this->Documentbeneffp93->find( 'list' ) ) )
 				);
 
 				// Valeurs "Autre" pour les motifs ...
-				foreach( array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93' ) as $motifName ) {
+				foreach( array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' ) as $motifName ) {
 					$foreignKey = Inflector::underscore( $motifName ).'_id';
 
 					$options[$this->alias][$foreignKey] = $this->{$motifName}->find( 'list' );
@@ -451,7 +468,7 @@
 				);
 				$data = $this->find( 'first', $query );
 
-				if( empty( $data ) ) {
+				if( empty( $data ) || $data[$this->alias]['statut'] == '99annulee' ) {
 					throw new InternalErrorException();
 				}
 
@@ -466,6 +483,18 @@
 					)
 				);
 				$data['Modtransmfp93']['Modtransmfp93'] = (array)$this->Ficheprescription93Modtransmfp93->find( 'list', $query );
+
+				// Récupération des documents dont le bénéficiaire est invité à se munir
+				$query = array(
+					'fields' => array(
+						'Documentbeneffp93Ficheprescription93.id',
+						'Documentbeneffp93Ficheprescription93.documentbeneffp93_id',
+					),
+					'conditions' => array(
+						'Documentbeneffp93Ficheprescription93.ficheprescription93_id' => $id
+					)
+				);
+				$data['Documentbeneffp93']['Documentbeneffp93'] = (array)$this->Documentbeneffp93Ficheprescription93->find( 'list', $query );
 
 				// Fin de la Récupération des données
 				$return = $data;
@@ -484,6 +513,14 @@
 				$return['Actionfp93']['prestatairefp93_id'] = "{$data['Actionfp93']['filierefp93_id']}_{$data['Actionfp93']['prestatairefp93_id']}";
 				$return[$this->alias]['actionfp93_id'] = "{$return['Actionfp93']['prestatairefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
 			}
+
+			// Formattage de l'adresse
+			$return['Instantanedonneesfp93']['benef_adresse'] =
+				$return['Instantanedonneesfp93']['benef_numvoie']
+				.' '.value( ClassRegistry::init( 'Option' )->typevoie(), $return['Instantanedonneesfp93']['benef_typevoie'] )
+				.' '.$return['Instantanedonneesfp93']['benef_nomvoie']
+				.( !empty( $return['Instantanedonneesfp93']['benef_complideadr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_complideadr'] : '' )
+				.( !empty( $return['Instantanedonneesfp93']['benef_compladr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_compladr'] : '' );
 
 			return $return;
 		}

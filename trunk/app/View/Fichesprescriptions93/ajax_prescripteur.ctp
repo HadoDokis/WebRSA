@@ -1,6 +1,10 @@
 <?php if( !empty( $result ) ):?>
 <table class="wide noborder">
 	<tr>
+		<th>Fonction</th>
+		<td class="wide noborder"><?php echo Hash::get( $result, 'Referent.fonction');?></td>
+	</tr>
+	<tr>
 		<th>Adresse</th>
 		<td class="wide noborder"><?php echo Hash::get( $result, 'Structurereferente.num_voie').' '.Set::enum( Hash::get( $result, 'Structurereferente.type_voie'), $options['Structurereferente']['type_voie'] ).' '.Hash::get( $result, 'Structurereferente.nom_voie').'<br /> '.Hash::get( $result, 'Structurereferente.code_postal').' '.Hash::get( $result, 'Structurereferente.ville');?></td>
 	</tr>

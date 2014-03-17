@@ -1162,7 +1162,7 @@ td.button.delete.disabled a, td.action a.delete.disabled, td span.button.delete.
 td.button.cancel a, td.action a.cancel, td span.button.cancel, table.default2 td a.button.cancel {
     background-image: url( ../img/icons/cancel.png );
 }
-td.button.cancel.disabled a, td.action a.cancel.disabled, td span.button.cancel.disabled, table.default2 td a.button.cancel.disabled {
+td.button.cancel.disabled a, td.action a.cancel.disabled, td span.cancel.disabled, td span.button.cancel.disabled, table.default2 td a.button.cancel.disabled {
     background-image: url( ../img/icons/cancel_disabled.png );
 }
 

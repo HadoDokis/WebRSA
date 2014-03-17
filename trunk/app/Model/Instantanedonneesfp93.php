@@ -268,6 +268,9 @@
 							break;
 					}
 				}
+				else {
+					$positioncer = 'aucun';
+				}
 				$return[$this->alias]['benef_positioncer'] = $positioncer;
 
 				// Nature de prestation

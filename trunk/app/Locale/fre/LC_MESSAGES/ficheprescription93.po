@@ -25,6 +25,9 @@ msgstr "Effectivité renseignée"
 msgid "ENUM::STATUT::05suivi_renseigne"
 msgstr "Suivi renseigné"
 
+msgid "ENUM::STATUT::99annulee"
+msgstr "Annulée"
+
 # ==============================================================================
 
 msgid "ENUM::BENEF_RETOUR_PRESENTE::oui"

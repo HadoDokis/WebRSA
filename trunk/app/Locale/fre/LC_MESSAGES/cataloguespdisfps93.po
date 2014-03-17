@@ -48,6 +48,9 @@ msgstr "Motifs de non souhait d'intégration"
 msgid "/Cataloguespdisfps93/index/Motifnonintegrationfp93/:heading"
 msgstr "Motifs de non intégration"
 
+msgid "/Cataloguespdisfps93/index/Documentbeneffp93/:heading"
+msgstr "Documents dont le bénéficiaire est invité à se munir"
+
 # ==============================================================================
 # Moteur de recherche
 # ==============================================================================
@@ -372,3 +375,32 @@ msgstr "Supprimer le motif de non intégration « #Motifnonintegrationfp93.name#
 
 msgid "/Cataloguespdisfps93/delete/Motifnonintegrationfp93/#Motifnonintegrationfp93.id# ?"
 msgstr "Réellement supprimer le motif de non intégration « #Motifnonintegrationfp93.name# » ?"
+
+# ------------------------------------------------------------------------------
+
+msgid "Documentbeneffp93.name"
+msgstr "Document"
+
+msgid "Documentbeneffp93.autre"
+msgstr "Valeur de type autre"
+
+msgid "Documentbeneffp93.created"
+msgstr "Créé"
+
+msgid "Documentbeneffp93.modified"
+msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Documentbeneffp93/:heading"
+msgstr "Ajout d'un document dont le bénéficiaire est invité à se munir"
+
+msgid "/Cataloguespdisfps93/edit/Documentbeneffp93/:heading"
+msgstr "Modification d'un document dont le bénéficiaire est invité à se munir"
+
+msgid "/Cataloguespdisfps93/edit/Documentbeneffp93/#Documentbeneffp93.id#"
+msgstr "Modifier le document dont le bénéficiaire est invité à se munir « #Documentbeneffp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Documentbeneffp93/#Documentbeneffp93.id#"
+msgstr "Supprimer le document dont le bénéficiaire est invité à se munir « #Documentbeneffp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Documentbeneffp93/#Documentbeneffp93.id# ?"
+msgstr "Réellement supprimer le document dont le bénéficiaire est invité à se munir « #Documentbeneffp93.name# » ?"

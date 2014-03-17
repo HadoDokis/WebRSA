@@ -54,6 +54,9 @@ msgstr "En cours de  validation par le CG"
 msgid "ENUM::BENEF_POSITIONCER::valide"
 msgstr "Validé"
 
+msgid "ENUM::BENEF_POSITIONCER::aucun"
+msgstr "Aucun contrat"
+
 # ------------------------------------------------------------------------------
 
 msgid "ENUM::BENEF_NATPF::socle_majore_activite"

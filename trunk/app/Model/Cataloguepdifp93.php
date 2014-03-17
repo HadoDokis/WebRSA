@@ -46,7 +46,8 @@
 			'Motifnonreceptionfp93',
 			'Motifnonretenuefp93',
 			'Motifnonsouhaitfp93',
-			'Motifnonintegrationfp93'
+			'Motifnonintegrationfp93',
+			'Documentbeneffp93'
 		);
 
 		/**
