@@ -11,7 +11,7 @@
 		'disabled' => !$this->Permissions->check( 'Cataloguespdisfps93', 'edit' )
 	);
 	$fields["/Cataloguespdisfps93/delete/{$modelName}/#{$modelName}.id#"] = array(
-		'disabled' => !$this->Permissions->check( 'Cataloguespdisfps93', 'delete' ),
+		'disabled' => "( '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguespdisfps93', 'delete' )."' )",
 		'confirm' => true
 	);
 
