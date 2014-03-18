@@ -356,19 +356,57 @@
 				'Dossier.matricule',
 				'Personne.nom_complet',
 				'Prestation.rolepers',
-				'Adresse.locaadr',
 				'Ficheprescription93.id',
 				'Ficheprescription93.statut',
+				'Referent.nom_complet',
+				'Adresse.numvoie',
+				'Adresse.typevoie',
+				'Adresse.nomvoie',
+				'Adresse.complideadr',
+				'Adresse.compladr',
+				'Adresse.lieudist',
+				'Adresse.numcomrat',
+				'Adresse.numcomptt',
+				'Adresse.codepos',
+				'Adresse.locaadr',
+				'Ficheprescription93.rdvprestataire_date',
+				'Actionfp93.numconvention',
+				'Thematiquefp93.type',
+				'Thematiquefp93.name',
+				'Categoriefp93.name',
+				'Filierefp93.name',
+				'Prestatairefp93.name',
 				'Actionfp93.name',
+				'Ficheprescription93.dd_action',
+				'Ficheprescription93.df_action',
+				'Ficheprescription93.date_signature',
+				'Ficheprescription93.date_transmission',
+				'Ficheprescription93.date_retour',
+				'Ficheprescription93.personne_recue',
+				'Ficheprescription93.motifnonreceptionfp93_id',
+				'Ficheprescription93.personne_nonrecue_autre',
+				'Ficheprescription93.personne_retenue',
+				'Ficheprescription93.motifnonretenuefp93_id',
+				'Ficheprescription93.personne_nonretenue_autre',
+				'Ficheprescription93.personne_souhaite_integrer',
+				'Ficheprescription93.motifnonsouhaitfp93_id',
+				'Ficheprescription93.personne_nonsouhaite_autre',
+				'Ficheprescription93.personne_a_integre',
+				'Ficheprescription93.personne_date_integration',
+				'Ficheprescription93.motifnonintegrationfp93_id',
+				'Ficheprescription93.personne_nonintegre_autre',
+				'Ficheprescription93.date_bilan_mi_parcours',
+				'Ficheprescription93.date_bilan_final',
 			);
 
 			$query = $this->Allocataires->completeSearchQuery( $query, false );
 
 			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
 
+			$this->Ficheprescription93->Personne->forceVirtualFields = true;
 			$results = $this->Ficheprescription93->Personne->find( 'all', $query );
 
-			$options = $this->Ficheprescription93->options();
+			$options = $this->Ficheprescription93->options( array( 'find' => true ) );
 
 			$this->set( compact( 'results', 'options' ) );
 			$this->layout = null;

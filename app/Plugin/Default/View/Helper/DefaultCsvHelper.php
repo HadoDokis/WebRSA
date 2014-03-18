@@ -66,7 +66,8 @@
 				$row = array();
 
 				foreach( $fields as $path => $attributes ) {
-					$row[] = __d( $params['domain'], $path );
+					$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : $params['domain'] );
+					$row[] = __d( $domain, $path );
 				}
 
 				$this->Csv->addRow( $row );

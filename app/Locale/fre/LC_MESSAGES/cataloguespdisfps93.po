@@ -71,7 +71,7 @@ msgid "Search.Thematiquefp93.name"
 msgstr "Thématique"
 
 msgid "Search.Filierefp93.name"
-msgstr "Catégorie d'action"
+msgstr "Filière"
 
 msgid "Search.Prestatairefp93.name"
 msgstr "Prestataire"
@@ -99,7 +99,7 @@ msgid "Thematiquefp93.name"
 msgstr "Thématique"
 
 msgid "Filierefp93.name"
-msgstr "Catégorie d'action"
+msgstr "Filière"
 
 msgid "Prestatairefp93.name"
 msgstr "Prestataire"

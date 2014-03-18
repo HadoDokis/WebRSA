@@ -213,7 +213,9 @@
 		public function searchQuery( array $types = array() ) {
 			$types += array(
 				'Ficheprescription93' => 'LEFT OUTER',
+				'Referent' => 'LEFT OUTER',
 				'Actionfp93' => 'LEFT OUTER',
+				'Prestatairefp93' => 'LEFT OUTER',
 				'Filierefp93' => 'LEFT OUTER',
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
@@ -232,7 +234,9 @@
 					$query['fields'],
 					$this->fields(),
 					$this->Actionfp93->fields(),
+					$this->Referent->fields(),
 					$this->Actionfp93->Filierefp93->fields(),
+					$this->Actionfp93->Prestatairefp93->fields(),
 					$this->Actionfp93->Filierefp93->Categoriefp93->fields(),
 					$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->fields()
 				);
@@ -240,7 +244,9 @@
 				// Ajout des jointures supplémentaires
 				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => $types['Ficheprescription93'] ) );
 				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) );
+				$query['joins'][] = $this->join( 'Referent', array( 'type' => $types['Referent'] ) );
 				$query['joins'][] = $this->Actionfp93->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
+				$query['joins'][] = $this->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
 				$query['joins'][] = $this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
 				$query['joins'][] = $this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
 
@@ -373,6 +379,7 @@
 				);
 
 				// Valeurs "Autre" pour les motifs ...
+				// TODO: permettre d'avoir les valeurs autre sans tout le find list
 				foreach( array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' ) as $motifName ) {
 					$foreignKey = Inflector::underscore( $motifName ).'_id';
 
@@ -567,21 +574,33 @@
 			$data = Hash::merge( $ficheprescription, $data );
 
 			// Certains champs sont désactivés via javascript et ne sont pas renvoyés
+			// FIXME: nettoyage autres suivant les valeurs
+			$autres = Hash::get( $this->options( array( 'find' => true ) ), 'Autre.Ficheprescription93' );
+
 			$value = Hash::get( $data, 'Ficheprescription93.personne_recue' );
 			if( $value !== '0' ) {
 				$data['Ficheprescription93']['motifnonreceptionfp93_id'] = null;
 				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
 			}
+			else if( !in_array( $data['Ficheprescription93']['motifnonreceptionfp93_id'], $autres['motifnonreceptionfp93_id'] ) ) {
+				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
+			}
 
 			$value = Hash::get( $data, 'Ficheprescription93.personne_retenue' );
-			if( $value !== '1' ) {
+			if( $value !== '0' ) {
 				$data['Ficheprescription93']['motifnonretenuefp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonretenue_autre'] = null;
+			}
+			else if( !in_array( $data['Ficheprescription93']['motifnonretenuefp93_id'], $autres['motifnonretenuefp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonretenue_autre'] = null;
 			}
 
 			$value = Hash::get( $data, 'Ficheprescription93.personne_souhaite_integrer' );
-			if( $value !== '1' ) {
+			if( $value !== '0' ) {
 				$data['Ficheprescription93']['motifnonsouhaitfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonsouhaite_autre'] = null;
+			}
+			else if( !in_array( $data['Ficheprescription93']['motifnonsouhaitfp93_id'], $autres['motifnonsouhaitfp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonsouhaite_autre'] = null;
 			}
 
@@ -596,6 +615,9 @@
 			}
 			else if( $value === '1' ) {
 				$data['Ficheprescription93']['motifnonintegrationfp93_id'] = null;
+				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
+			}
+			else if( $value === '1' && !in_array( $data['Ficheprescription93']['motifnonintegrationfp93_id'], $autres['motifnonintegrationfp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
 			}
 
