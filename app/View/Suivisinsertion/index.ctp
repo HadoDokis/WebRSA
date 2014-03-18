@@ -342,56 +342,103 @@
 			</tr>
 		</tbody>
 	</table>
-	<!-- Etape 6 : Affichage des Actions d'insertion engagées -->
-	<h2>Etape 6: Actions d'insertion engagées</h2>
-	<table>
-		<thead>
-			<tr class="odd">
-				<th colspan="4">Parcours Demandeur</th>
-				<th colspan="4">Parcours Conjoint</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="odd">
-				<th>Actions engagées</th>
-				<th>Date dernière action</th>
-				<th>Réalisé</th>
-				<th class="action">Action</th>
+	<?php if( Configure::read( 'Cg.departement' ) != 93 ): ?>
+		<!-- Etape 6 : Affichage des Actions d'insertion engagées -->
+		<h2>Etape 6: Actions d'insertion engagées</h2>
+		<table>
+			<thead>
+				<tr class="odd">
+					<th colspan="4">Parcours Demandeur</th>
+					<th colspan="4">Parcours Conjoint</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="odd">
+					<th>Actions engagées</th>
+					<th>Date dernière action</th>
+					<th>Réalisé</th>
+					<th class="action">Action</th>
 
-				<th>Actions engagées</th>
-				<th>Date dernière action</th>
-				<th>Réalisé</th>
-				<th class="action">Action</th>
-			</tr>
-			<tr>
-				<td><?php echo count( Set::extract( 'DEM.Actioninsertion', $details ) );?></td>
-				<td><?php echo date_short( Set::extract( 'DEM.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
-				<td><?php echo $this->Xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
-				<td><?php
-					if( !empty( $details['DEM']['Contratinsertion'] ) ){
-						echo $this->Xhtml->viewLink(
-							'Voir les actions d\'insertion',
-							array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'DEM.Contratinsertion.id', $details ) ),
-							$this->Permissions->checkDossier( 'actionsinsertion', 'index', $dossierMenu )
-						);
-					}
-				?></td>
+					<th>Actions engagées</th>
+					<th>Date dernière action</th>
+					<th>Réalisé</th>
+					<th class="action">Action</th>
+				</tr>
+				<tr>
+					<td><?php echo count( Set::extract( 'DEM.Actioninsertion', $details ) );?></td>
+					<td><?php echo date_short( Set::extract( 'DEM.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
+					<td><?php echo $this->Xhtml->boolean( !empty( $details['DEM']['Contratinsertion']['datevalidation_ci'] ) );?></td>
+					<td><?php
+						if( !empty( $details['DEM']['Contratinsertion'] ) ){
+							echo $this->Xhtml->viewLink(
+								'Voir les actions d\'insertion',
+								array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'DEM.Contratinsertion.id', $details ) ),
+								$this->Permissions->checkDossier( 'actionsinsertion', 'index', $dossierMenu )
+							);
+						}
+					?></td>
 
-				<td><?php echo count( Set::extract( 'CJT.Actioninsertion', $details ) );?></td>
-				<td><?php echo date_short( Set::extract( 'CJT.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
-				<td><?php echo $this->Xhtml->boolean( !empty( $details['CJT']['Actioninsertion']['dd_action'] ) );?></td>
-				<td><?php
-					if( !empty( $details['CJT']['Contratinsertion'] ) ){
-						echo $this->Xhtml->viewLink(
-							'Voir les actions d\'insertion',
-							array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'CJT.Contratinsertion.id', $details ) ),
-							$this->Permissions->checkDossier( 'actionsinsertion', 'index', $dossierMenu )
-						);
-					}
-				?></td>
-			</tr>
-		</tbody>
-	</table>
+					<td><?php echo count( Set::extract( 'CJT.Actioninsertion', $details ) );?></td>
+					<td><?php echo date_short( Set::extract( 'CJT.Actioninsertion.0.Actioninsertion.dd_action', $details ) );?></td>
+					<td><?php echo $this->Xhtml->boolean( !empty( $details['CJT']['Actioninsertion']['dd_action'] ) );?></td>
+					<td><?php
+						if( !empty( $details['CJT']['Contratinsertion'] ) ){
+							echo $this->Xhtml->viewLink(
+								'Voir les actions d\'insertion',
+								array( 'controller' => 'actionsinsertion', 'action' => 'index', Set::extract( 'CJT.Contratinsertion.id', $details ) ),
+								$this->Permissions->checkDossier( 'actionsinsertion', 'index', $dossierMenu )
+							);
+						}
+					?></td>
+				</tr>
+			</tbody>
+		</table>
+	<?php endif; ?>
+
+	<?php if( Configure::read( 'Cg.departement' ) == 93 ): ?>
+		<h2>Etape 6: Actions prescrites</h2>
+		<table>
+			<thead>
+				<tr class="odd">
+					<th colspan="5">Parcours Demandeur</th>
+					<th colspan="5">Parcours Conjoint</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="odd">
+					<th>Dernière action prescrite</th>
+					<th>Date d'effectivité</th>
+					<th>A participé</th>
+					<th>Catégorie d'action</th>
+					<th class="action">Action</th>
+
+					<th>Dernière action prescrite</th>
+					<th>Date d'effectivité</th>
+					<th>A participé</th>
+					<th>Catégorie d'action</th>
+					<th class="action">Action</th>
+				</tr>
+				<tr>
+					<?php foreach( array( 'DEM', 'CJT' ) as $rolepers ): ?>
+						<td><?php echo Hash::get( $details, "{$rolepers}.Ficheprescription93.Actionfp93.name" );?></td>
+						<td><?php echo date_short( Hash::get( $details, "{$rolepers}.Ficheprescription93.Ficheprescription93.date_retour" ) );?></td>
+						<td><?php echo $this->Xhtml->boolean( Hash::get( $details, "{$rolepers}.Ficheprescription93.Ficheprescription93.personne_a_integre" ) );?></td>
+						<td><?php echo Hash::get( $details, "{$rolepers}.Ficheprescription93.Categoriefp93.name" );?></td>
+						<td><?php
+							$personne_id = Hash::get( $details, "{$rolepers}.Ficheprescription93.Ficheprescription93.personne_id" );
+						if( !empty( $personne_id ) ){
+							echo $this->Xhtml->viewLink(
+								'Voir la fiche de prescription',
+								array( 'controller' => 'fichesprescriptions93', 'action' => 'index', $personne_id ),
+								$this->Permissions->checkDossier( 'fichesprescriptions93', 'index', $dossierMenu )
+							);
+						}
+					?></td>
+					<?php endforeach; ?>
+				</tr>
+			</tbody>
+		</table>
+	<?php endif; ?>
 
 	<!-- Etape 7 : Affichage des bilans de fin de Contrat d'insertion -->
 	<h2>Etape 7: Bilan de fin de Contrats ( CER / CUI )</h2>
