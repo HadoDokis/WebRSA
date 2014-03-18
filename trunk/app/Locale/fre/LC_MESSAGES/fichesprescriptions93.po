@@ -193,6 +193,9 @@ msgstr "Structure du référent"
 msgid "Ficheprescription93.referent_id"
 msgstr "Nom du référent"
 
+msgid "Referent.nom_complet"
+msgstr "Nom du référent"
+
 msgid "Ficheprescription93.objet"
 msgstr "Objet ou nature de la prescription / observations / intitulé de l'action"
 

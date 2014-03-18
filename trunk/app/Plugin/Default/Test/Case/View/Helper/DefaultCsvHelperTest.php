@@ -106,6 +106,33 @@
 		}
 
 		/**
+		 * Test de la méthode DefaultCsvHelper::render() avec des valeurs null
+		 */
+		public function testRenderNullValues() {
+			$apples = $this->Apple->find( 'all' );
+
+			$result = $this->DefaultCsv->render(
+				$apples,
+				array(
+					'Apple.id',
+					'Apple.color',
+					'Apple.unknown_field',
+					'Apple.created',
+				)
+			);
+			$expected = 'Apple.id,Apple.color,Apple.unknown_field,Apple.created
+1,"Red 1",,"22/11/2006 à 10:38:58"
+2,"Bright Red 1",,"22/11/2006 à 10:43:13"
+3,"blue green",,"25/12/2006 à 05:13:36"
+4,"Blue Green",,"25/12/2006 à 05:23:36"
+5,Green,,"25/12/2006 à 05:24:06"
+6,"My new appleOrange",,"25/12/2006 à 05:29:39"
+7,"Some wierd color",,"25/12/2006 à 05:34:21"
+';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode DefaultCsvHelper::render() avec des options pour
 		 * les traductions.
 		 */
