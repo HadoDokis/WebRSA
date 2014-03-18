@@ -233,7 +233,7 @@
 		 *	- Personne.prenom
 		 *	- Personne.nir
 		 *	- Personne.sexe
-		 *	- Personne.trancheage
+		 *	- Personne.trancheage (si les options sont renseignées)
 		 *	- Calculdroitrsa.toppersdrodevorsa
 		 *
 		 * @param array $params
@@ -249,7 +249,9 @@
 			$content .= $this->_input( "{$params['prefix']}Personne.prenom", $params );
 			$content .= $this->_input( "{$params['prefix']}Personne.nir", $params, array( 'maxlength' => 15 ) );
 			$content .= $this->_input( "{$params['prefix']}Personne.sexe", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.sexe' ), 'empty' => true ) );
-			$content .= $this->_input( "{$params['prefix']}Personne.trancheage", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.trancheage' ), 'empty' => true ) );
+			if( Hash::check( $params, 'options.Personne.trancheage' ) ) {
+				$content .= $this->_input( "{$params['prefix']}Personne.trancheage", $params, array( 'options' => (array)Hash::get( $params, 'options.Personne.trancheage' ), 'empty' => true ) );
+			}
 			$content .= $this->_input( "{$params['prefix']}Calculdroitrsa.toppersdrodevorsa", $params, array( 'options' => (array)Hash::get( $params, 'options.Calculdroitrsa.toppersdrodevorsa' ), 'empty' => true ) );
 
 			return $this->_fieldset( 'Search.Personne', $content, $params );

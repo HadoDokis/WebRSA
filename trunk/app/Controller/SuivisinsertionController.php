@@ -143,6 +143,33 @@
 				}
 				$personnesFoyer[$index]['Actioninsertion'] = ( isset( $tActioninsertion['Actioninsertion'] ) ? $tActioninsertion['Actioninsertion'] : array() );
 
+				// Actions insertions engagées par la personne (nouveau, CG 93)
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					$personnesFoyer[$index]['Ficheprescription93'] = $this->Dossier->Foyer->Personne->Ficheprescription93->find(
+						'first',
+						array(
+							'fields' => array(
+								'Ficheprescription93.id',
+								'Ficheprescription93.personne_id',
+								'Ficheprescription93.date_retour',
+								'Ficheprescription93.personne_a_integre',
+								'Actionfp93.name',
+								'Categoriefp93.name',
+							),
+							'joins' => array(
+								$this->Dossier->Foyer->Personne->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+								$this->Dossier->Foyer->Personne->Ficheprescription93->Actionfp93->join( 'Filierefp93', array( 'type' => 'LEFT OUTER' ) ),
+								$this->Dossier->Foyer->Personne->Ficheprescription93->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'LEFT OUTER' ) ),
+							),
+							'contain' => false,
+							'conditions' => array(
+								'Ficheprescription93.personne_id' => $personnesFoyer[$index]['Personne']['id']
+							),
+							'order' => 'Ficheprescription93.date_retour DESC'
+						)
+					);
+				}
+
 				// Premier Rendez-vous
 				$tRendezvous = $this->Rendezvous->find(
 						'first', array(

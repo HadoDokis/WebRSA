@@ -341,12 +341,14 @@
 		 *
 		 * @todo actif
 		 *
-		 * @param array $params <=> array( 'allocataire' => true, 'find' => false )
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false )
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
 			$options = array();
-			$params = $params + array( 'allocataire' => true, 'find' => false );
+			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false );
+
+			$motifsNames = array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' );
 
 			if( Hash::get( $params, 'allocataire' ) ) {
 				$Allocataire = ClassRegistry::init( 'Allocataire' );
@@ -378,20 +380,10 @@
 					array( 'Documentbeneffp93' => array( 'Documentbeneffp93' => $this->Documentbeneffp93->find( 'list' ) ) )
 				);
 
-				// Valeurs "Autre" pour les motifs ...
-				// TODO: permettre d'avoir les valeurs autre sans tout le find list
-				foreach( array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' ) as $motifName ) {
+				foreach( $motifsNames as $motifName ) {
 					$foreignKey = Inflector::underscore( $motifName ).'_id';
 
 					$options[$this->alias][$foreignKey] = $this->{$motifName}->find( 'list' );
-
-					$query = array(
-						'fields' => array( "{$motifName}.id" ),
-						'conditions' => array(
-							"{$motifName}.autre" => '1'
-						)
-					);
-					$options['Autre'][$this->alias][$foreignKey] = $this->{$motifName}->find( 'list', $query );
 				}
 
 				// Test Ficheprescription93.actionfp93_id
@@ -416,6 +408,21 @@
 					array( '%s_%s_%s', "{n}.Actionfp93.filierefp93_id", "{n}.Actionfp93.prestatairefp93_id", '{n}.Actionfp93.id' ),
 					"{n}.Actionfp93.name"
 				);
+			}
+
+			// Valeurs "Autre" pour les motifs ...
+			if( Hash::get( $params, 'autre' ) ) {
+				foreach( $motifsNames as $motifName ) {
+					$foreignKey = Inflector::underscore( $motifName ).'_id';
+
+					$query = array(
+						'fields' => array( "{$motifName}.id" ),
+						'conditions' => array(
+							"{$motifName}.autre" => '1'
+						)
+					);
+					$options['Autre'][$this->alias][$foreignKey] = $this->{$motifName}->find( 'list', $query );
+				}
 			}
 
 			return $options;
@@ -574,15 +581,14 @@
 			$data = Hash::merge( $ficheprescription, $data );
 
 			// Certains champs sont désactivés via javascript et ne sont pas renvoyés
-			// FIXME: nettoyage autres suivant les valeurs
-			$autres = Hash::get( $this->options( array( 'find' => true ) ), 'Autre.Ficheprescription93' );
+			$autres = Hash::get( $this->options( array( 'allocataire' => false, 'find' => false, 'autre' => true ) ), 'Autre' );
 
 			$value = Hash::get( $data, 'Ficheprescription93.personne_recue' );
 			if( $value !== '0' ) {
 				$data['Ficheprescription93']['motifnonreceptionfp93_id'] = null;
 				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
 			}
-			else if( !in_array( $data['Ficheprescription93']['motifnonreceptionfp93_id'], $autres['motifnonreceptionfp93_id'] ) ) {
+			else if( !in_array( $data['Ficheprescription93']['motifnonreceptionfp93_id'], $autres['Ficheprescription93']['motifnonreceptionfp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
 			}
 
@@ -591,7 +597,7 @@
 				$data['Ficheprescription93']['motifnonretenuefp93_id'] = null;
 				$data['Ficheprescription93']['personne_nonretenue_autre'] = null;
 			}
-			else if( !in_array( $data['Ficheprescription93']['motifnonretenuefp93_id'], $autres['motifnonretenuefp93_id'] ) ) {
+			else if( !in_array( $data['Ficheprescription93']['motifnonretenuefp93_id'], $autres['Ficheprescription93']['motifnonretenuefp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonretenue_autre'] = null;
 			}
 
@@ -600,7 +606,7 @@
 				$data['Ficheprescription93']['motifnonsouhaitfp93_id'] = null;
 				$data['Ficheprescription93']['personne_nonsouhaite_autre'] = null;
 			}
-			else if( !in_array( $data['Ficheprescription93']['motifnonsouhaitfp93_id'], $autres['motifnonsouhaitfp93_id'] ) ) {
+			else if( !in_array( $data['Ficheprescription93']['motifnonsouhaitfp93_id'], $autres['Ficheprescription93']['motifnonsouhaitfp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonsouhaite_autre'] = null;
 			}
 
@@ -617,8 +623,14 @@
 				$data['Ficheprescription93']['motifnonintegrationfp93_id'] = null;
 				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
 			}
-			else if( $value === '1' && !in_array( $data['Ficheprescription93']['motifnonintegrationfp93_id'], $autres['motifnonintegrationfp93_id'] ) ) {
+			else if( $value === '1' && !in_array( $data['Ficheprescription93']['motifnonintegrationfp93_id'], $autres['Ficheprescription93']['motifnonintegrationfp93_id'] ) ) {
 				$data['Ficheprescription93']['personne_nonintegre_autre'] = null;
+			}
+
+			// Cases à cocher "Le bénéficiaire est invité à se munir de"
+			$values = (array)Hash::get( $data, 'Documentbeneffp93.Documentbeneffp93' );
+			if( count( array_intersect( $values, $autres['Ficheprescription93']['documentbeneffp93_id'] ) ) == 0 ) {
+				$data['Ficheprescription93']['documentbeneffp93_autre'] = null;
 			}
 
 			// Modification de l'état suivant les données
@@ -954,7 +966,7 @@
 		public function getDefaultPdf( $ficheprescription93_id, $user_id = null ) {
 			$data = $this->getDataForPdf( $ficheprescription93_id, $user_id );
 			$modeleodt = $this->modeleOdt( $data );
-			$options = $this->options();
+			$options = $this->options( array( 'allocataire' => true ) );
 
 			// TODO: un paramètre à options()
 			$options = Hash::merge(
