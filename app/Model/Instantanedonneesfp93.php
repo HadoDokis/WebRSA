@@ -132,6 +132,44 @@
 		public function getInstantane( $personne_id ) {
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 
+			$vfPositioncer = '( CASE
+				WHEN EXISTS(
+						SELECT contratsinsertion.id
+						FROM contratsinsertion
+						WHERE contratsinsertion.personne_id = "Personne"."id"
+							AND contratsinsertion.decision_ci = \'V\'
+							AND contratsinsertion.dd_ci <= NOW()
+							AND contratsinsertion.df_ci >= NOW()
+					)
+					THEN \'valide\'
+				WHEN EXISTS(
+						SELECT contratsinsertion.id
+						FROM contratsinsertion
+						WHERE contratsinsertion.personne_id = "Personne"."id"
+							AND contratsinsertion.decision_ci = \'V\'
+							AND contratsinsertion.dd_ci > NOW()
+					)
+					THEN \'valide\'
+				WHEN EXISTS(
+						SELECT contratsinsertion.id
+						FROM contratsinsertion
+							INNER JOIN cers93 ON ( cers93.contratinsertion_id = contratsinsertion.id )
+						WHERE contratsinsertion.personne_id = "Personne"."id"
+							AND cers93.positioncer IN ( \'00enregistre\', \'01signe\', \'02attdecisioncpdv\' )
+					)
+					THEN \'validationpdv\'
+				WHEN EXISTS(
+						SELECT contratsinsertion.id
+						FROM contratsinsertion
+							INNER JOIN cers93 ON ( cers93.contratinsertion_id = contratsinsertion.id )
+						WHERE contratsinsertion.personne_id = "Personne"."id"
+							AND cers93.positioncer IN ( \'03attdecisioncg\', \'04premierelecture\', \'05secondelecture\', \'07attavisep\' )
+					)
+					THEN \'validationcg\'
+				ELSE \'aucun\'
+				END
+			) AS "Cer93__positioncer"';
+
 			$querydata = array(
 				'fields' => array_merge(
 					array(
@@ -144,7 +182,6 @@
 						'Personne.email',
 						'Dsp.nivetu',
 						'DspRev.nivetu',
-						'Cer93.positioncer',
 						'Historiqueetatpe.identifiantpe',
 						'Historiqueetatpe.etat',
 						'Adresse.numvoie',
@@ -159,6 +196,7 @@
 						'Dossier.matricule',
 						'Situationdossierrsa.etatdosrsa',
 						'Calculdroitrsa.toppersdrodevorsa',
+						$vfPositioncer
 					),
 					$this->Ficheprescription93->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
 				),
@@ -185,16 +223,6 @@
 							)
 						)
 					),
-					$this->Ficheprescription93->Personne->join(
-						'Contratinsertion',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Contratinsertion.id IN ( '.$this->Ficheprescription93->Personne->Contratinsertion->sqDernierContrat().' )'
-							)
-						)
-					),
-					$this->Ficheprescription93->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
@@ -246,32 +274,7 @@
 				}
 				$return[$this->alias]['benef_nivetu'] = $nivetu;
 
-				// FIXME: que dans le cas d'un ajout ?
-				// FIXME: le dernier non annulé ?
-				// Position du dernier CER
-				$positioncer = Hash::get( $return, 'Cer93.positioncer' );
-				if( !empty( $positioncer ) ) {
-					switch( $positioncer ) {
-						case '99valide':
-							$positioncer = 'valide';
-							break;
-						case '04premierelecture':
-						case '05secondelecture':
-						case '07attavisep':
-							$positioncer = 'validationcg';
-							break;
-						case '00enregistre':
-						case '01signe':
-						case '02attdecisioncpdv':
-						case '03attdecisioncg':
-							$positioncer = 'validationpdv';
-							break;
-					}
-				}
-				else {
-					$positioncer = 'aucun';
-				}
-				$return[$this->alias]['benef_positioncer'] = $positioncer;
+				$return[$this->alias]['benef_positioncer'] = Hash::get( $result, 'Cer93.positioncer' );
 
 				// Nature de prestation
 				foreach( array( 'benef_natpf_activite', 'benef_natpf_majore', 'benef_natpf_socle' ) as $field ) {
