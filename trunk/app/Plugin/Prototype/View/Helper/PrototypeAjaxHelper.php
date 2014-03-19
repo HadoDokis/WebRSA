@@ -109,28 +109,37 @@ Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
 				var json = response.responseText.evalJSON();
 
 				if( $(json).length > 0 ) {
-					var ajaxSelect = new Element( 'ul' );
+					if( $( json ).length == 1 && ( $( json ).first().name === null ) ) {
+						var result = $( json ).first();
+						for( field in result.values ) {
+							$( field ).value = '';
+							$( field ).simulate( 'change' );
+						}
+					}
+					else {
+						var ajaxSelect = new Element( 'ul' );
 
-					$( json ).each( function ( result ) {
-						var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result['name'] );
+						$( json ).each( function ( result ) {
+							var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result['name'] );
 
-						$( a ).observe( 'click', function( event ) {
-							for( field in result.values ) {
-								$( field ).value = result['values'][field];
-								$( field ).simulate( 'change' );
-							}
+							$( a ).observe( 'click', function( event ) {
+								for( field in result.values ) {
+									$( field ).value = result['values'][field];
+									$( field ).simulate( 'change' );
+								}
 
-							$( '{$domIdMaster}' ).value = result['{$domIdMaster}'];
+								$( '{$domIdMaster}' ).value = result['{$domIdMaster}'];
 
-							$( '{$params['domIdSelect']}' ).remove();
+								$( '{$params['domIdSelect']}' ).remove();
 
-							return false;
+								return false;
+							} );
+
+							$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
 						} );
 
-						$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
-					} );
-
-					$( '{$domIdMaster}' ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { id: '{$params['domIdSelect']}', class: 'ajax select' } ) }  );
+						$( '{$domIdMaster}' ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { id: '{$params['domIdSelect']}', class: 'ajax select' } ) }  );
+					}
 				}
 			}
 		}
