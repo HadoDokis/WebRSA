@@ -89,28 +89,37 @@ Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function() 
 				var json = response.responseText.evalJSON();
 
 				if( $(json).length > 0 ) {
-					var ajaxSelect = new Element( \'ul\' );
+					if( $( json ).length == 1 && ( $( json ).first().name === null ) ) {
+						var result = $( json ).first();
+						for( field in result.values ) {
+							$( field ).value = \'\';
+							$( field ).simulate( \'change\' );
+						}
+					}
+					else {
+						var ajaxSelect = new Element( \'ul\' );
 
-					$( json ).each( function ( result ) {
-						var a = new Element( \'a\', { href: \'#\', onclick: \'return false;\' } ).update( result[\'name\'] );
+						$( json ).each( function ( result ) {
+							var a = new Element( \'a\', { href: \'#\', onclick: \'return false;\' } ).update( result[\'name\'] );
 
-						$( a ).observe( \'click\', function( event ) {
-							for( field in result.values ) {
-								$( field ).value = result[\'values\'][field];
-								$( field ).simulate( \'change\' );
-							}
+							$( a ).observe( \'click\', function( event ) {
+								for( field in result.values ) {
+									$( field ).value = result[\'values\'][field];
+									$( field ).simulate( \'change\' );
+								}
 
-							$( \'Ficheprescription93Numconvention\' ).value = result[\'Ficheprescription93Numconvention\'];
+								$( \'Ficheprescription93Numconvention\' ).value = result[\'Ficheprescription93Numconvention\'];
 
-							$( \'ajaxSelect\' ).remove();
+								$( \'ajaxSelect\' ).remove();
 
-							return false;
+								return false;
+							} );
+
+							$( ajaxSelect ).insert( { bottom: $( a ).wrap( \'li\' ) } );
 						} );
 
-						$( ajaxSelect ).insert( { bottom: $( a ).wrap( \'li\' ) } );
-					} );
-
-					$( \'Ficheprescription93Numconvention\' ).up( \'div\' ).insert(  { after: $( ajaxSelect ).wrap( \'div\', { id: \'ajaxSelect\', class: \'ajax select\' } ) }  );
+						$( \'Ficheprescription93Numconvention\' ).up( \'div\' ).insert(  { after: $( ajaxSelect ).wrap( \'div\', { id: \'ajaxSelect\', class: \'ajax select\' } ) }  );
+					}
 				}
 			}
 		}

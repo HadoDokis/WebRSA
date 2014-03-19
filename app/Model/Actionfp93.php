@@ -89,7 +89,21 @@
 			$value = Hash::get( $data, $path );
 
 			if( empty( $value ) ) {
-				return array();
+				return array(
+					array(
+						'name' => null,
+						"{$domId}" => null,
+						// -----------------------------------------------------
+						'values' => array(
+							"{$prefix}Thematiquefp93Type" => null,
+							"{$prefix}Categoriefp93Thematiquefp93Id" => null,
+							"{$prefix}Filierefp93Categoriefp93Id" => null,
+							"{$prefix}Actionfp93Filierefp93Id" => null,
+							"{$prefix}Actionfp93Prestatairefp93Id" => null,
+							"{$prefix}Ficheprescription93Actionfp93Id" => null,
+						)
+					)
+				);
 			}
 			else {
 				$query = array(
