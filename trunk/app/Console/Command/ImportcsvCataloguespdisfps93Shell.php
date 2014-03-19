@@ -65,6 +65,13 @@
 		protected $_headers = array();
 
 		/**
+		 * Contient les erreurs de validation d'une ligne traitée.
+		 *
+		 * @var array
+		 */
+		protected $_validationErrors = array();
+
+		/**
 		 * Ligne d'en-tête par défaut.
 		 *
 		 * @var array
@@ -217,6 +224,50 @@
 		}
 
 		/**
+		 * Recherche l'enregistrement répondant aux conditions. Si celui-ci existe,
+		 * sa clé primaire est renvoyée; sinon, on tente d'enregistrer les données.
+		 *
+		 * En cas de succès, la clé primaire du nouvel enregistrement est retournée,
+		 * sinon on peuple l'attribut $_validationErrors
+		 *
+		 * @param AppModel $Model
+		 * @param array $conditions
+		 * @return integer
+		 */
+		protected function _createOrUpdate( AppModel $Model, array $conditions ) {
+			$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
+
+			$primaryKeyField = "{$Model->alias}.{$Model->primaryKey}";
+
+			$query = array(
+				'fields' => array( $primaryKeyField ),
+				'conditions' => $conditions
+			);
+
+			$record = $Model->find( 'first', $query );
+
+			if( empty( $record ) ) {
+				$record = Hash::expand( $conditions );
+				$Model->create( $record );
+
+				if( !$Model->save() ) {
+					$this->_validationErrors = Hash::merge(
+						$this->_validationErrors,
+						Hash::flatten( array( $Model->alias => $Model->validationErrors ) )
+					);
+
+					return null;
+				}
+				else {
+					return $Model->{$Model->primaryKey};
+				}
+			}
+			else {
+				return Hash::get( $record, $primaryKeyField );
+			}
+		}
+
+		/**
 		 * Méthode principale.
 		 */
 		public function main() {
@@ -225,7 +276,7 @@
 			$headers = array_flip( $this->_defaultHeaders );
 
 			foreach( $this->_lines as $i => $line ) {
-				$validationErrors = array();
+				$this->_validationErrors = array();
 
 				$trimmed = trim( $line );
 				if( empty( $trimmed ) ) {
@@ -242,100 +293,56 @@
 							'Thematiquefp93.type' => 'pdi',
 							'Thematiquefp93.name' => $record[$headers['thematique']],
 						);
-						$query = array(
-							'fields' => array( 'Thematiquefp93.id' ),
-							'conditions' => $conditions
+
+						$thematiquefp93_id = $this->_createOrUpdate(
+							$this->Thematiquefp93,
+							$conditions
 						);
-						$thematiquefp93 = $this->Thematiquefp93->find( 'first', $query );
-						if( empty( $thematiquefp93 ) ) {
-							$thematiquefp93 = Hash::expand( $conditions );
-							$this->Thematiquefp93->create( $thematiquefp93 );
-							if( !$this->Thematiquefp93->save() ) {
-								$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Thematiquefp93' => $this->Thematiquefp93->validationErrors ) ) );
-							}
-							$thematiquefp93_id = $this->Thematiquefp93->id;
-						}
-						else {
-							$thematiquefp93_id = Hash::get( $thematiquefp93, 'Thematiquefp93.id' );
-						}
 						// Fin thématique
 
 						// Début catégorie
-						if( empty( $validationErrors ) ) {
+						if( empty( $this->_validationErrors ) ) {
 							$conditions = array(
 								'Categoriefp93.thematiquefp93_id' => $thematiquefp93_id,
 								'Categoriefp93.name' => $record[$headers['categorie action']],
 							);
-							$query = array(
-								'fields' => array( 'Categoriefp93.id' ),
-								'conditions' => $conditions
+
+							$categoriefp93_id = $this->_createOrUpdate(
+								$this->Thematiquefp93->Categoriefp93,
+								$conditions
 							);
-							$categoriefp93 = $this->Thematiquefp93->Categoriefp93->find( 'first', $query );
-							if( empty( $categoriefp93 ) ) {
-								$categoriefp93 = Hash::expand( $conditions );
-								$this->Thematiquefp93->Categoriefp93->create( $categoriefp93 );
-								if( !$this->Thematiquefp93->Categoriefp93->save() ) {
-									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Categoriefp93' => $this->Thematiquefp93->Categoriefp93->validationErrors ) ) );
-								}
-								$categoriefp93_id = $this->Thematiquefp93->Categoriefp93->id;
-							}
-							else {
-								$categoriefp93_id = Hash::get( $categoriefp93, 'Categoriefp93.id' );
-							}
 						}
 						// Fin catégorie
 
 						// Début filière
-						if( empty( $validationErrors ) ) {
+						if( empty( $this->_validationErrors ) ) {
 							$conditions = array(
 								'Filierefp93.categoriefp93_id' => $categoriefp93_id,
 								'Filierefp93.name' => $record[$headers['filiere']],
 							);
-							$query = array(
-								'fields' => array( 'Filierefp93.id' ),
-								'conditions' => $conditions
+
+							$filierefp93_id = $this->_createOrUpdate(
+								$this->Thematiquefp93->Categoriefp93->Filierefp93,
+								$conditions
 							);
-							$filierefp93 = $this->Thematiquefp93->Categoriefp93->Filierefp93->find( 'first', $query );
-							if( empty( $filierefp93 ) ) {
-								$filierefp93 = Hash::expand( $conditions );
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->create( $filierefp93 );
-								if( !$this->Thematiquefp93->Categoriefp93->Filierefp93->save() ) {
-									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Filierefp93' => $this->Thematiquefp93->Categoriefp93->Filierefp93->validationErrors ) ) );
-								}
-								$filierefp93_id = $this->Thematiquefp93->Categoriefp93->Filierefp93->id;
-							}
-							else {
-								$filierefp93_id = Hash::get( $filierefp93, 'Filierefp93.id' );
-							}
 						}
 						// Fin filière
 
 						// Début prestataire
-						if( empty( $validationErrors ) ) {
+						if( empty( $this->_validationErrors ) ) {
 							$conditions = array(
 								'Prestatairefp93.name' => $record[$headers['prestataire']],
 							);
-							$query = array(
-								'fields' => array( 'Prestatairefp93.id' ),
-								'conditions' => $conditions
+
+							$prestatairefp93_id = $this->_createOrUpdate(
+								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93,
+								$conditions
 							);
-							$prestatairefp93 = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->find( 'first', $query );
-							if( empty( $prestatairefp93 ) ) {
-								$prestatairefp93 = Hash::expand( $conditions );
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->create( $prestatairefp93 );
-								if( !$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->save() ) {
-									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Prestatairefp93' => $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->validationErrors ) ) );
-								}
-								$prestatairefp93_id = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->id;
-							}
-							else {
-								$prestatairefp93_id = Hash::get( $prestatairefp93, 'Prestatairefp93.id' );
-							}
 						}
 						// Fin prestataire
 
 						// Début Adresseprestatairefp93
-						if( empty( $validationErrors ) ) {
+						if( empty( $this->_validationErrors ) ) {
 							$conditions = array(
 								'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id,
 								'Adresseprestatairefp93.adresse' => $record[$headers['adresse action']],
@@ -343,23 +350,16 @@
 								'Adresseprestatairefp93.localite' => $record[$headers['commune action']],
 								'Adresseprestatairefp93.tel' => $record[$headers['tel_action']],
 							);
-							$query = array(
-								'fields' => array( 'Adresseprestatairefp93.id' ),
-								'conditions' => $conditions
+
+							$adresseprestatairefp93_id = $this->_createOrUpdate(
+								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93,
+								$conditions
 							);
-							$adresseprestatairefp93 = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
-							if( empty( $adresseprestatairefp93 ) ) {
-								$adresseprestatairefp93 = Hash::expand( $conditions );
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->create( $adresseprestatairefp93 );
-								if( !$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->save() ) {
-									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Adresseprestatairefp93' => $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->validationErrors ) ) );
-								}
-							}
 						}
 						// Fin Adresseprestatairefp93
 
 						// Début action
-						if( empty( $validationErrors ) ) {
+						if( empty( $this->_validationErrors ) ) {
 							$conditions = array(
 								'Actionfp93.filierefp93_id' => $filierefp93_id,
 								'Actionfp93.prestatairefp93_id' => $prestatairefp93_id,
@@ -368,29 +368,18 @@
 								'Actionfp93.annee' => $this->params['annee'],
 								'Actionfp93.actif' => '1', // FIXME
 							);
-							$query = array(
-								'fields' => array( 'Actionfp93.id' ),
-								'conditions' => $conditions
+
+							$actionfp93_id = $this->_createOrUpdate(
+								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93,
+								$conditions
 							);
-							$actionfp93 = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->find( 'first', $query );
-							if( empty( $actionfp93 ) ) {
-								$actionfp93 = Hash::expand( $conditions );
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->create( $actionfp93 );
-								if( !$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->save() ) {
-									$validationErrors = Hash::merge( $validationErrors, Hash::flatten( array( 'Actionfp93' => $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->validationErrors ) ) );
-								}
-								$actionfp93_id = $this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->id;
-							}
-							else {
-								$actionfp93_id = Hash::get( $actionfp93, 'Actionfp93.id' );
-							}
 						}
 						// Fin action
 
-						if( !empty( $validationErrors ) ) {
+						if( !empty( $this->_validationErrors ) ) {
 							$this->Thematiquefp93->rollback();
-							$key = key( $validationErrors );
-							$value = $validationErrors[$key];
+							$key = key( $this->_validationErrors );
+							$value = $this->_validationErrors[$key];
 							$this->_rejects[] = "{$line}{$this->params['separator']}{$this->params['delimiter']}".str_replace( $this->params['delimiter'], "\\{$this->params['delimiter']}", "{$key} => {$value}" ).$this->params['delimiter'];
 						}
 						else {
