@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "/Demenagementshorsdpts/search/:heading"
-msgstr "Recherche par allocataires ayant quitté le département"
+msgstr "Recherche par allocataires sortants, hors département"
 
 msgid "/Demenagementshorsdpts/search"
 msgstr "Formulaire"

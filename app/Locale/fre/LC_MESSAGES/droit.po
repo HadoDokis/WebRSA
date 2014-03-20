@@ -2991,18 +2991,18 @@ msgstr "Suppression d'un commentaire normé"
 ###############################################################################
 
 msgid "Module:Criterestransfertspdvs93"
-msgstr "Recherche par allocataires transférés (CG 93)"
+msgstr "Recherche par allocataires sortants, intra-département (CG 93)"
 
 msgid "Criterestransfertspdvs93:index"
-msgstr "Moteur de recherche"
+msgstr "Moteur de recherche des allocataires sortants, intra-département"
 
 ###############################################################################
 
 msgid "Module:Demenagementshorsdpts"
-msgstr "Recherche par allocataires ayant déménagé hors du département"
+msgstr "Recherche par allocataires sortants, hors département"
 
 msgid "Demenagementshorsdpts:search"
-msgstr "Moteur de recherche"
+msgstr "Moteur de recherche par allocataires sortants, hors département"
 
 msgid "Demenagementshorsdpts:exportcsv"
 msgstr "Export CSV"
