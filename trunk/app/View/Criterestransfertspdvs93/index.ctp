@@ -1,5 +1,5 @@
 <?php
-	$title_for_layout = 'Recherche par allocataires transférés';
+	$title_for_layout = 'Recherche par allocataires sortants, intra-département';
 	$this->set( compact( 'title_for_layout' ) );
 	echo $this->Html->tag( 'h1', $title_for_layout );
 

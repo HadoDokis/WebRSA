@@ -149,12 +149,14 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 66 ),
 				'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index'  )
 			),
-			'Par allocataires transférés' => array(
-				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
-				'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
-			),
-			'Par allocataires ayant quitté le département' => array(
-				'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search'  )
+			'Par allocataires sortants' => array(
+				'Intra-département' => array(
+					'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+					'url' => array( 'controller' => 'criterestransfertspdvs93', 'action' => 'index'  )
+				),
+				'Hors département' => array(
+					'url' => array( 'controller' => 'demenagementshorsdpts', 'action' => 'search'  )
+				),
 			),
 			'Par fiches de prescription' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
