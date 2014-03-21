@@ -447,7 +447,7 @@ CREATE TABLE fichesprescriptions93 (
 	dd_action					DATE DEFAULT NULL,
 	df_action					DATE DEFAULT NULL,
 	duree_action				INTEGER DEFAULT NULL,
-	documentbeneffp93_autre		VARCHAR(250) DEFAULT NULL,
+	documentbeneffp93_autre		TEXT DEFAULT NULL,
 	-- Bloc "Engagement"
 	date_signature				DATE DEFAULT NULL,
 	-- Bloc "Modalités de transmission"
@@ -460,20 +460,20 @@ CREATE TABLE fichesprescriptions93 (
 	-- Bloc "Suivi de l'action"
 	personne_recue				VARCHAR(1) DEFAULT NULL,
 	motifnonreceptionfp93_id	INTEGER DEFAULT NULL REFERENCES motifsnonreceptionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	personne_nonrecue_autre		VARCHAR(250) DEFAULT NULL,
+	personne_nonrecue_autre		TEXT DEFAULT NULL,
 
 	personne_retenue			VARCHAR(1) DEFAULT NULL,
 	motifnonretenuefp93_id		INTEGER DEFAULT NULL REFERENCES motifsnonretenuesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	personne_nonretenue_autre	VARCHAR(250) DEFAULT NULL,
+	personne_nonretenue_autre	TEXT DEFAULT NULL,
 
 	personne_souhaite_integrer	VARCHAR(1) DEFAULT NULL,
 	motifnonsouhaitfp93_id		INTEGER DEFAULT NULL REFERENCES motifsnonsouhaitsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	personne_nonsouhaite_autre	VARCHAR(250) DEFAULT NULL,
+	personne_nonsouhaite_autre	TEXT DEFAULT NULL,
 
 	personne_a_integre			VARCHAR(1) DEFAULT NULL,
 	personne_date_integration	DATE DEFAULT NULL,
 	motifnonintegrationfp93_id	INTEGER DEFAULT NULL REFERENCES motifsnonintegrationsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	personne_nonintegre_autre	VARCHAR(250) DEFAULT NULL,
+	personne_nonintegre_autre	TEXT DEFAULT NULL,
 
 	date_bilan_mi_parcours		DATE DEFAULT NULL,
 	date_bilan_final			DATE DEFAULT NULL,

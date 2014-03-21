@@ -252,7 +252,7 @@
 		);
 	}
 
-	echo $this->Observer->dependantSelect(
+	/*echo $this->Observer->dependantSelect(
 		array(
 			'Ficheprescription93.structurereferente_id' => 'Ficheprescription93.referent_id',
 			'Thematiquefp93.type' => 'Categoriefp93.thematiquefp93_id',
@@ -261,7 +261,7 @@
 			'Actionfp93.filierefp93_id' => 'Actionfp93.prestatairefp93_id',
 			'Actionfp93.prestatairefp93_id' => 'Ficheprescription93.actionfp93_id',
 		)
-	);
+	);*/
 
 	// Personne reçue
 	echo $this->Observer->disableFieldsOnValue(
@@ -378,3 +378,77 @@
 		)
 	);
 ?>
+<script type="text/javascript">
+//<![CDATA[
+	// TODO: mettre en fonction Ajax et mettre dans le moteur de recherche
+	// TODO: gérer le autocomplete
+	function foo( changed ) {
+		new Ajax.Request(
+			'/webrsa/WebRSA-trunk/fichesprescriptions93/ajax_action', // TODO: url en paramètre
+			{
+				method: 'post',
+				parameters: {
+					'data[Field][changed]': changed,
+					// Valeurs renvoyées
+					'data[Ficheprescription93][numconvention]': $F( 'Ficheprescription93Numconvention' ),
+					'data[Thematiquefp93][type]': $F( 'Thematiquefp93Type' ),
+					'data[Categoriefp93][thematiquefp93_id]': $F( 'Categoriefp93Thematiquefp93Id' ),
+					'data[Filierefp93][categoriefp93_id]': $F( 'Filierefp93Categoriefp93Id' ),
+					'data[Actionfp93][filierefp93_id]': $F( 'Actionfp93Filierefp93Id' ),
+					'data[Actionfp93][prestatairefp93_id]': $F( 'Actionfp93Prestatairefp93Id' ),
+					'data[Ficheprescription93][actionfp93_id]': $F( 'Ficheprescription93Actionfp93Id' ),
+				},
+				onSuccess: function( response ) {
+					var json = response.responseText.evalJSON();
+
+					if( json.success ) {
+						// Pour chacun des champs
+						for( path in json.fields ) {
+							var field = json.fields[path];
+
+							$( field['id'] ).value = field['value'];
+
+							if( field['type'] == 'select' ) {
+								var select = new Element( 'select' );
+								$( select ).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
+
+								// Options
+								if( typeof field['options'] == 'object' ) {
+									for( primaryKey in field['options'] ) {
+										var option = Element( 'option', { 'value': primaryKey } ).update( field['options'][primaryKey] );
+										$( select ).insert( { bottom: option } );
+									}
+								}
+
+								$( field['id'] ).update( $( select ).innerHTML );
+							}
+						}
+					}
+					else {
+						// TODO -> une erreur à afficher proprement
+					}
+				}
+			}
+		);
+	}
+
+	// TODO: désactiver l'autre
+	// Event.observe( $( 'Ficheprescription93Numconvention' ), 'change', function() { foo( 'Ficheprescription93.numconvention' ) } );
+	Event.observe( $( 'Thematiquefp93Type' ), 'change', function() { foo( 'Thematiquefp93.type' ) } );
+	Event.observe( $( 'Categoriefp93Thematiquefp93Id' ), 'change', function() { foo( 'Categoriefp93.thematiquefp93_id' ) } );
+	Event.observe( $( 'Filierefp93Categoriefp93Id' ), 'change', function() { foo( 'Filierefp93.categoriefp93_id' ) } );
+	Event.observe( $( 'Actionfp93Filierefp93Id' ), 'change', function() { foo( 'Actionfp93.filierefp93_id' ) } );
+	Event.observe( $( 'Actionfp93Prestatairefp93Id' ), 'change', function() { foo( 'Actionfp93.prestatairefp93_id' ) } );
+	Event.observe( $( 'Ficheprescription93Actionfp93Id' ), 'change', function() { foo( 'Ficheprescription93.actionfp93_id' ) } );
+
+	// TODO: en cas d'edit, voir les valeurs du formulaire
+	/*document.observe( 'dom:loaded', function() {
+		foo( 'Thematiquefp93.type' );
+		foo( 'Categoriefp93.thematiquefp93_id' );
+		foo( 'Filierefp93.categoriefp93_id' );
+		foo( 'Actionfp93.filierefp93_id' );
+		foo( 'Actionfp93.prestatairefp93_id' );
+		foo( 'Ficheprescription93.actionfp93_id' );
+	} );*/
+//]]>
+</script>
