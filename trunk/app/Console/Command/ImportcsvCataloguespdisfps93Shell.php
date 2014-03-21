@@ -433,12 +433,12 @@
 					'default' => ','
 				),
 				'delimiter' => array(
-					'short' => 's',
+					'short' => 'd',
 					'help' => 'le caractère utilisé comme délimiteur de champ',
 					'default' => '"'
 				),
 				'annee' => array(
-					'short' => 's',
+					'short' => 'a',
 					'help' => 'l\'année de conventionnement des actions contenues dans le fichier CSV',
 					'default' => date( 'Y' )
 				),

@@ -86,6 +86,7 @@
 		public $commeDroit = array(
 			'ajax_ficheprescription93_numconvention' => 'Fichesprescriptions93:index',
 			'ajax_prescripteur' => 'Fichesprescriptions93:index',
+			'ajax_action' => 'Fichesprescriptions93:index',
 		);
 
 		/**
@@ -145,6 +146,18 @@
 
 			$this->set( compact( 'result', 'options' ) );
 			$this->layout = 'ajax';
+		}
+
+		/**
+		 * Ajax permettant le pré-remplissage des champs liés à l'action, en
+		 * cascade.
+		 */
+		public function ajax_action() {
+			$json = ClassRegistry::init( 'Cataloguepdifp93' )->jsonDependantSelect( $this->request->data );
+
+			$this->set( compact( 'json' ) );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
 		}
 
 		/**
