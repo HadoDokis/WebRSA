@@ -72,7 +72,7 @@
 		 * @var array
 		 */
 		public $crudMap = array(
-			'ajax_ficheprescription93_numconvention' => 'read',
+			'ajax_action' => 'read',
 			'ajax_prescripteur' => 'read',
 			'add' => 'create',
 			'edit' => 'update',
@@ -83,23 +83,15 @@
 			'cancel' => 'update',
 		);
 
+		/**
+		 * Au nioveau des droits, on traitera les actions Ajax comme l'index.
+		 *
+		 * @var array
+		 */
 		public $commeDroit = array(
-			'ajax_ficheprescription93_numconvention' => 'Fichesprescriptions93:index',
 			'ajax_prescripteur' => 'Fichesprescriptions93:index',
 			'ajax_action' => 'Fichesprescriptions93:index',
 		);
-
-		/**
-		 * Ajax permettant le pré-remplissage de la fiche de prescription à
-		 * partir du numéro de convention.
-		 */
-		public function ajax_ficheprescription93_numconvention() {
-			$json = $this->Ficheprescription93->Actionfp93->jsonNumconvention( $this->request->data );
-
-			$this->set( compact( 'json' ) );
-			$this->layout = 'ajax';
-			$this->render( '/Elements/json' );
-		}
 
 		/**
 		 * Ajax permettant de récupérer les coordonnées du prescripteur ou de sa
@@ -153,7 +145,7 @@
 		 * cascade.
 		 */
 		public function ajax_action() {
-			$json = ClassRegistry::init( 'Cataloguepdifp93' )->jsonDependantSelect( $this->request->data );
+			$json = $this->Components->load( 'AjaxFichesprescriptions93' )->ajaxAction( $this->request->data );
 
 			$this->set( compact( 'json' ) );
 			$this->layout = 'ajax';

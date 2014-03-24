@@ -29,22 +29,22 @@ msgstr "Recherche par fiche de prescription"
 msgid "Search.Ficheprescription93.exists"
 msgstr "Possède une fiche de prescription"
 
-msgid "Search.Actionfp93.numconvention"
+msgid "Search.Ficheprescription93.numconvention"
 msgstr "Numéro de convention"
 
-msgid "Search.Thematiquefp93.type"
+msgid "Search.Ficheprescription93.typethematiquefp93_id"
 msgstr "Type de prescription"
 
-msgid "Search.Categoriefp93.thematiquefp93_id"
+msgid "Search.Ficheprescription93.thematiquefp93_id"
 msgstr "Thématique"
 
-msgid "Search.Filierefp93.categoriefp93_id"
+msgid "Search.Ficheprescription93.categoriefp93_id"
 msgstr "Catégorie"
 
-msgid "Search.Actionfp93.filierefp93_id"
+msgid "Search.Ficheprescription93.filierefp93_id"
 msgstr "Filière"
 
-msgid "Search.Actionfp93.prestatairefp93_id"
+msgid "Search.Ficheprescription93.prestatairefp93_id"
 msgstr "Prestataire"
 
 msgid "Search.Ficheprescription93.actionfp93_id"
@@ -281,16 +281,19 @@ msgstr "Avec"
 msgid "Ficheprescription93.numconvention"
 msgstr "Numéro de convention"
 
-msgid "Categoriefp93.thematiquefp93_id"
+msgid "Ficheprescription93.typethematiquefp93_id"
+msgstr "Type"
+
+msgid "Ficheprescription93.thematiquefp93_id"
 msgstr "Thématique"
 
-msgid "Filierefp93.categoriefp93_id"
+msgid "Ficheprescription93.categoriefp93_id"
 msgstr "Catégorie"
 
-msgid "Actionfp93.filierefp93_id"
+msgid "Ficheprescription93.filierefp93_id"
 msgstr "Filière"
 
-msgid "Actionfp93.prestatairefp93_id"
+msgid "Ficheprescription93.prestatairefp93_id"
 msgstr "Nom du prestataire"
 
 msgid "Ficheprescription93.actionfp93_id"

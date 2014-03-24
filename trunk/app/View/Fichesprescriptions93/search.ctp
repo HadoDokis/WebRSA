@@ -23,13 +23,13 @@
 	// Début spécificités fiche de prescription
 	echo $this->Xform->input( 'Search.Ficheprescription93.exists', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.exists' ), 'domain' => 'fichesprescriptions93', 'empty' => true ) );
 	echo '<fieldset id="SpecificitesFichesprescriptions93"><legend>'.__d( 'fichesprescriptions93', 'Search.Ficheprescription93' ).'</legend>';
-	echo $this->Xform->input( 'Search.Actionfp93.numconvention', array( 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Thematiquefp93.type', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Thematiquefp93.type' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Categoriefp93.thematiquefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Categoriefp93.thematiquefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Filierefp93.categoriefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Filierefp93.categoriefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Actionfp93.filierefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.filierefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Actionfp93.prestatairefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Actionfp93.prestatairefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
-	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.actionfp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.numconvention', array( 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.typethematiquefp93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.typethematiquefp93_id' ), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.thematiquefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.categoriefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.filierefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.prestatairefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_transmission', array( 'domain' => 'fichesprescriptions93' ) );
@@ -103,7 +103,7 @@
 <?php endif;?>
 
 <?php
-	echo $this->Observer->dependantSelect(
+	/*echo $this->Observer->dependantSelect(
 		array(
 			'Search.Thematiquefp93.type' => 'Search.Categoriefp93.thematiquefp93_id',
 			'Search.Categoriefp93.thematiquefp93_id' => 'Search.Filierefp93.categoriefp93_id',
@@ -111,13 +111,37 @@
 			'Search.Actionfp93.filierefp93_id' => 'Search.Actionfp93.prestatairefp93_id',
 			'Search.Actionfp93.prestatairefp93_id' => 'Search.Ficheprescription93.actionfp93_id',
 		)
-	);
+	);*/
 
-	echo $this->Ajax2->autocomplete(
+	/*echo $this->Ajax2->autocomplete(
 		'Search.Actionfp93.numconvention',
 		array(
 			'prefix' => 'Search',
 			'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
+		)
+	);*/
+
+	echo $this->Ajax2->observeFields(
+		array(
+			'Search.Ficheprescription93.numconvention',
+			'Search.Ficheprescription93.typethematiquefp93_id',
+			'Search.Ficheprescription93.thematiquefp93_id',
+			'Search.Ficheprescription93.categoriefp93_id',
+			'Search.Ficheprescription93.filierefp93_id',
+			'Search.Ficheprescription93.prestatairefp93_id',
+			'Search.Ficheprescription93.actionfp93_id',
+		),
+		array(
+			'url' => array( 'action' => 'ajax_action' ),
+			'prefix' => 'Search'
+		)
+	);
+
+	echo $this->Ajax2->autocomplete2(
+		'Search.Ficheprescription93.numconvention',
+		array(
+			'url' => array( 'action' => 'ajax_action' ),
+			'prefix' => 'Search'
 		)
 	);
 

@@ -196,6 +196,83 @@ Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
 		}
 
 		/**
+		 * Permet d'observer la modification de l'un des champs et le chargement
+		 * de la page.
+		 *
+		 * @param string|array $fields
+		 * @param array $params
+		 * @return string
+		 */
+		public function observeFields( $fields, array $params = array() ) {
+			$default = array(
+				'prefix' => null,
+				'url' => Router::url(),
+				'event' => 'change',
+				'onload' => true,
+			);
+			$params += $default;
+			$fields = (array)$fields;
+			$script = '';
+
+			$ajaxParams = array( "'data[prefix]': '{$params['prefix']}'" );
+			foreach( $fields as $field ) {
+				$dataPath = 'data['.str_replace( '.', '][', $field ).']';
+				$domId = $this->domId( $field );
+				$ajaxParams[] = "'{$dataPath}': \$F( '{$domId}' )";
+			}
+
+			$url = Router::url( $params['url'] );
+			foreach( $fields as $field ) {
+				$domId = $this->domId( $field );
+				$parameters = $ajaxParams;
+				array_unshift( $parameters, "'data[Field][changed]': '{$field}'" );
+				$parameters = '{ '.implode( ', ', $parameters ).' }';
+				$script .= "Event.observe( \$( '{$domId}' ), '{$params['event']}', function(event) { ajaxObserveField( event, '{$url}', {$parameters} ) } );\n";
+			}
+
+			// Partie dom::loaded
+			if( $params['onload'] ) {
+				$domLoadedParameters = array( "'data[prefix]': '{$params['prefix']}'" );
+				foreach( $fields as $field ) {
+					$dataPath = 'data['.str_replace( '.', '][', $field ).']';
+					$value = "'".str_replace( "'", "\\'", Hash::get( $this->request->data, $field ) )."'";
+					$domLoadedParameters[] = "'{$dataPath}': {$value}";
+				}
+				$domLoadedParameters = '{ '.implode( ', ', $domLoadedParameters ).' }';
+				$script .= "document.observe( 'dom:loaded', function(event) { ajaxObserveField( event, '{$url}', {$domLoadedParameters} ); } );\n";
+			}
+
+			return $this->render( $script );
+		}
+
+		public function autocomplete2( $fields, array $params = array() ) {
+			$default = array(
+				'prefix' => null,
+				'url' => Router::url(),
+				'event' => 'keyup',
+			);
+			$params += $default;
+			$fields = (array)$fields;
+			$script = '';
+
+			$url = Router::url( $params['url'] );
+			foreach( $fields as $field ) {
+				$domId = $this->domId( $field );
+				$dataPath = 'data['.str_replace( '.', '][', $field ).']';
+				$parameters = array(
+					"'data[prefix]': '{$params['prefix']}'",
+					"'data[Field][changed]': '{$field}'",
+					"'{$dataPath}': \$F( '{$domId}' )"
+				);
+				$parameters = '{ '.implode( ', ', $parameters ).' }';
+				$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );\n";
+				$script .= "Event.observe( \$( '{$domId}' ), '{$params['event']}', function(event) { ajaxObserveField( event, '{$url}', {$parameters} ) } );\n";
+			}
+
+			return $this->render( $script );
+		}
+
+		/**
 		 * Ajoute le contenu dans le buffer si useBuffer est à true, sinon retourne
 		 * le script dans une fonction déclenchée au chargement de la page.
 		 *

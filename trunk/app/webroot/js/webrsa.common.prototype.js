@@ -1689,3 +1689,87 @@ function updateDateFromDateDuree( date1, duree, date2 ) {
 
      return (date.getTime() / 1000);
  }
+
+/**
+ *
+ * @param Event event
+ * @param string url
+ * @param array parameters
+ * @returns {undefined}
+ */
+function ajaxObserveField( event, url, parameters ) {
+	parameters['data[Event][type]'] = $(event).type;
+	parameters['data[Event][input_name]'] = $( event.currentTarget ).name;
+
+	new Ajax.Request(
+		url,
+		{
+			method: 'post',
+			parameters: parameters,
+			onSuccess: function( response ) {
+				var json = response.responseText.evalJSON(true);
+
+				if( json.success ) {
+					for( path in json.fields ) {
+						var field = json.fields[path];
+
+						if( $(field).type == 'select' ) {
+							var select = new Element( 'select' );
+							$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
+
+							var options = $(field).options;
+							if( $(options) != [] ) {
+								$(options).each( function( result ) {
+									var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
+									$(select).insert( { bottom: option } );
+								} );
+							}
+
+							$($(field).id).update( $(select).innerHTML );
+						}
+//						else if( $(field).type == 'text' ) {
+//						}
+						else if( $(field).type == 'ajax_select' ) {
+
+							var domIdSelect = $(field).id + 'AjaxSelect';
+							var oldAjaxSelect = $( domIdSelect );
+							if( oldAjaxSelect ) {
+								$( oldAjaxSelect ).remove();
+							}
+
+							var ajaxSelect = new Element( 'ul' );
+
+							$($(field).options).each( function ( result ) {
+								var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
+
+								$( a ).observe( 'click', function( event ) {
+									$( domIdSelect ).remove();
+
+									var params = {
+										id: $(field).id,
+										name: parameters['data[Event][input_name]'],
+										value: $(result).id,
+										prefix: $(field).prefix
+									};
+
+									ajaxObserveField( event, url, params );
+
+									return false;
+								} );
+
+								$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
+							} );
+
+							$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
+						}
+
+						$($(field).id).value = $(field).value;
+					}
+				}
+//				else {
+					// TODO -> une erreur à afficher proprement
+//				}
+			}
+		}
+	);
+}

@@ -180,7 +180,7 @@
 		 * @var array
 		 */
 		public $validate = array(
-			// Champ virtuel pour le formulaire d'ajout / modification
+			// Début champs virtuels pour le formulaire d'ajout / modification
 			'structurereferente_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -188,6 +188,49 @@
 					'allowEmpty' => false
 				)
 			),
+			'typethematiquefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'thematiquefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'categoriefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'filierefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'prestatairefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'actionfp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			// Fin champs virtuels pour le formulaire d'ajout / modification
 			'dd_action' => array(
 				'compareDates' => array(
 					'rule' => array( 'compareDates', 'df_action', '<' ),
@@ -376,6 +419,7 @@
 					array( 'Actionfp93' => array( 'prestatairefp93_id' => $this->Actionfp93->Prestatairefp93->findListPrefixed2() ) ),*/
 					// TODO: voir ci-dessous
 					// array( 'Ficheprescription93' => array( 'actionfp93_id' => $this->Actionfp93->findListPrefixed( 'filierefp93_id', 'id', 'name' ) ) )
+					array( 'Ficheprescription93' => array( 'typethematiquefp93_id' => $options['Thematiquefp93']['type'] ) ),
 					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) ),
 					array( 'Documentbeneffp93' => array( 'Documentbeneffp93' => $this->Documentbeneffp93->find( 'list' ) ) )
 				);
@@ -513,19 +557,17 @@
 				// Fin de la Récupération des données
 				$return = $data;
 
-				$return['Ficheprescription93']['structurereferente_id'] = $data['Referent']['structurereferente_id'];
-				$return['Ficheprescription93']['referent_id'] = "{$data['Referent']['structurereferente_id']}_{$data[$this->alias]['referent_id']}";
+				$return[$this->alias]['structurereferente_id'] = $data['Referent']['structurereferente_id'];
+				$return[$this->alias]['referent_id'] = "{$data['Referent']['structurereferente_id']}_{$data[$this->alias]['referent_id']}";
 
 				$return[$this->alias]['numconvention'] = $data['Actionfp93']['numconvention'];
 
-				$return[$this->alias]['actionfp93_id'] = "{$data['Actionfp93']['filierefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
-				$return['Actionfp93']['filierefp93_id'] = "{$data['Filierefp93']['categoriefp93_id']}_{$data['Actionfp93']['filierefp93_id']}";
-				$return['Filierefp93']['categoriefp93_id'] = "{$data['Categoriefp93']['thematiquefp93_id']}_{$data['Filierefp93']['categoriefp93_id']}";
-				$return['Categoriefp93']['thematiquefp93_id'] = "{$data['Thematiquefp93']['type']}_{$data['Categoriefp93']['thematiquefp93_id']}";
-
-				// FIXME: Actionfp93.prestatairefp93_id -> à vérifier
-				$return['Actionfp93']['prestatairefp93_id'] = "{$data['Actionfp93']['filierefp93_id']}_{$data['Actionfp93']['prestatairefp93_id']}";
-				$return[$this->alias]['actionfp93_id'] = "{$return['Actionfp93']['prestatairefp93_id']}_{$data[$this->alias]['actionfp93_id']}";
+				$return[$this->alias]['actionfp93_id'] = $data[$this->alias]['actionfp93_id'];
+				$return[$this->alias]['prestatairefp93_id'] = $data['Actionfp93']['prestatairefp93_id'];
+				$return[$this->alias]['filierefp93_id'] = $data['Actionfp93']['filierefp93_id'];
+				$return[$this->alias]['categoriefp93_id'] = $data['Filierefp93']['categoriefp93_id'];
+				$return[$this->alias]['thematiquefp93_id'] = $data['Categoriefp93']['thematiquefp93_id'];
+				$return[$this->alias]['typethematiquefp93_id'] = $data['Thematiquefp93']['type'];
 			}
 
 			// Formattage de l'adresse
