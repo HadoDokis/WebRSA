@@ -1737,30 +1737,32 @@ function ajaxObserveField( event, url, parameters ) {
 								$( oldAjaxSelect ).remove();
 							}
 
-							var ajaxSelect = new Element( 'ul' );
+							if( $($(field).options).length > 0 ) {
+								var ajaxSelect = new Element( 'ul' );
 
-							$($(field).options).each( function ( result ) {
-								var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
+								$($(field).options).each( function ( result ) {
+									var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
 
-								$( a ).observe( 'click', function( event ) {
-									$( domIdSelect ).remove();
+									$( a ).observe( 'click', function( event ) {
+										$( domIdSelect ).remove();
 
-									var params = {
-										id: $(field).id,
-										name: parameters['data[Event][input_name]'],
-										value: $(result).id,
-										prefix: $(field).prefix
-									};
+										var params = {
+											id: $(field).id,
+											name: parameters['data[Event][input_name]'],
+											value: $(result).id,
+											prefix: $(field).prefix
+										};
 
-									ajaxObserveField( event, url, params );
+										ajaxObserveField( event, url, params );
 
-									return false;
+										return false;
+									} );
+
+									$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
 								} );
 
-								$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
-							} );
-
-							$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
+								$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
+							}
 						}
 
 						$($(field).id).value = $(field).value;

@@ -318,17 +318,44 @@
 					'Actionfp93.numconvention ASC'
 				)
 			);
+
+			if( trim( $value ) == '' ) {
+				$query['conditions'] = '1 = 2';
+			}
+
 			$results = $Actionfp93->find( 'all', $query );
 
-			$fields = array(
-				'Ficheprescription93.numconvention' => array(
-					'id' => "{$prefix}Ficheprescription93Numconvention",
-					'value' => $value,
-					'type' => 'ajax_select',
-					'prefix' => $prefix,
-					'options' => Hash::extract( $results, '{n}.Actionfp93' )
-				)
+			$fields = array();
+
+			if( trim( $value ) == '' ) {
+				foreach( array_keys( $this->fields ) as $field ) {
+					$fields[$field] = array(
+						'id' => Inflector::camelize( str_replace( '.', '_', "{$prefix}{$field}" ) ),
+						'value' => null,
+						'type' => 'select',
+						'prefix' => $prefix,
+						'options' => array()
+					);
+				}
+
+				// Cas particulier du premier élément de la liste
+				$types = ClassRegistry::init( 'Thematiquefp93' )->enum( 'type' );
+				$options = array();
+				foreach( $types as $id => $name ) {
+					$options[] = compact( 'id', 'name' );
+				}
+				$fields['Ficheprescription93.typethematiquefp93_id']['options'] = $options;
+			}
+
+			$fields['Ficheprescription93.numconvention'] = array(
+				'id' => "{$prefix}Ficheprescription93Numconvention",
+				'value' => $value,
+				'type' => 'ajax_select',
+				'prefix' => $prefix,
+				'options' => Hash::extract( $results, '{n}.Actionfp93' )
 			);
+
+//			array_keys( $this->fields );
 
 			return array( 'success' => true, 'fields' => $fields );
 		}

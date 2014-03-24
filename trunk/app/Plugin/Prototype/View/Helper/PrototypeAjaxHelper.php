@@ -245,6 +245,15 @@ Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
 			return $this->render( $script );
 		}
 
+		/**
+		 * Retourne le code javascript permettant de transformer un champ de type
+		 * input text en champ de type complétion automatique, avec une liste
+		 * déroulante "ul".
+		 *
+		 * @param string|array $fields
+		 * @param array $params
+		 * @return string
+		 */
 		public function autocomplete2( $fields, array $params = array() ) {
 			$default = array(
 				'prefix' => null,
