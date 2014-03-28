@@ -1690,87 +1690,195 @@ function updateDateFromDateDuree( date1, duree, date2 ) {
      return (date.getTime() / 1000);
  }
 
+// -----------------------------------------------------------------------------
+// Fonctions "AjaxAction" utilisées par la méthode PrototypeAjaxHelper::observe()
+// -----------------------------------------------------------------------------
+
 /**
+ * Permet de récupérer les valeurs de certains champs de formulaire dont les
+ * id (au sens HTML) se trouvent dans l'Array parameters.fields.
  *
- * @param Event event
- * @param string url
- * @param array parameters
- * @returns {undefined}
+ * On peut forcer des valeurs qui ne sont pas encore remplies dans le formulaire
+ * (par exemple au chargement de la page) dès lors que l'Array parameters.values
+ * contient des id en "clé" et les valeurs à forcer en "valeur".
+ *
+ * Attributs de l'objet parameters:
+ * {{{
+ *	- full (boolean): permet de choisir sous quel format les paramètres post seront envoyés)
+ *	- fields (Array): une liste d'id (HTML) de champs à envoyer
+ *	- values (objet): une liste d'attributs id (HTML) / valeur à forcer pour les champs à envoyer
+ * }}}
+ *
+ * @param object parameters
+ * @returns object
  */
-function ajaxObserveField( event, url, parameters ) {
-	parameters['data[Event][type]'] = $(event).type;
-	parameters['data[Event][input_name]'] = $( event.currentTarget ).name;
+function cake_data(parameters) {
+	var fields = parameters.fields;
+	var data = {};
+
+	parameters.fields.each( function(input) {
+		if( typeof parameters.full !== 'undefined' && parameters.full ) {
+			data[$(input).name] = {
+				'domId': $(input).id,
+				'name': $(input).name,
+				'type': $(input).type,
+				'value': $F(input)
+			};
+		}
+		else {
+			data[$(input).name] = $F(input);
+		}
+	} );
+
+	// Possède-t'on des valeurs "forcées"
+	if( typeof parameters.values === 'object' ) {
+		for( domId in parameters.values ) {
+			var value = parameters.values[domId];
+
+			if( typeof parameters.full !== 'undefined' && parameters.full ) {
+				data[$(domId).name]['value'] = value;
+			}
+			else {
+				data[$(domId).name] = value;
+			}
+		};
+	}
+
+	return data;
+}
+
+/**
+ * La méthode de callback (par défaut) lancée par le onSuccess de l'appel
+ * Ajax.Request de la fonction ajax_action.
+ *
+ * Attributs de l'objet parameters:
+ * {{{
+ *	- url (string): l'URL qui a été utilisée lors de l'appel Ajax post
+ *	- data[Target][name] (string): dans le cas de l'événement click, l'attribut name du champ texte ayant servi au champ "autocomplete"
+ * }}}
+ *
+ * @param object response
+ * @param object parameters
+ * @returns void
+ */
+function ajax_action_on_success(response, parameters) {
+	var json = response.responseText.evalJSON(true);
+
+	if( json.success ) {
+		for( path in json.fields ) {
+			var field = json.fields[path];
+
+			if( $(field).type == 'select' ) {
+				var select = new Element( 'select' );
+				$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
+
+				var options = $(field).options;
+				if( $(options) != [] ) {
+					$(options).each( function( result ) {
+						var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
+						$(select).insert( { bottom: option } );
+					} );
+				}
+
+				$($(field).id).update( $(select).innerHTML );
+			}
+			else if( $(field).type == 'ajax_select' ) {
+
+				var domIdSelect = $(field).id + 'AjaxSelect';
+				var oldAjaxSelect = $( domIdSelect );
+				if( oldAjaxSelect ) {
+					$( oldAjaxSelect ).remove();
+				}
+
+				if( $($(field).options).length > 0 ) {
+					var ajaxSelect = new Element( 'ul' );
+
+					$($(field).options).each( function ( result ) {
+						var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
+
+						$( a ).observe( 'click', function( event ) {
+							$( domIdSelect ).remove();
+
+							var params = {
+								'data[Event][type]': 'click',
+								'data[id]': $(field).id,
+								'data[name]': parameters['data[Target][name]'],
+								'data[value]': $(result).id,
+								'data[prefix]': $(field).prefix
+							};
+
+							new Ajax.Request(
+								parameters.url,
+								{
+									method: 'post',
+									parameters: params,
+									onSuccess: function( response ) {
+										ajax_action_on_success( response, params );
+									}
+								}
+							);
+
+							return false;
+						} );
+
+						$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
+					} );
+
+					$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
+				}
+			}
+
+			$($(field).id).value = $(field).value;
+		}
+	}
+}
+
+/**
+ * Effectue un appel Ajax post "à la mode CakePHP" (grâce à la méthode cake_data())
+ * suite au déclenchement d'un événement.
+ *
+ * Attributs de l'objet parameters:
+ * {{{
+ *	- url (string): l'URL (relative ou absolue) à appeler en Ajax.
+ *	- prefix (string): le préfixe utilisé dans les id et name (HTML) des champs
+ *	- full (boolean): permet de choisir sous quel format les paramètres post seront envoyés (@see cake_data())
+ *	- fields (Array): une liste d'id (HTML) de champs à envoyer
+ *	- values (objet): une liste d'attributs id (HTML) / valeur à forcer pour les champs à envoyer
+ * }}}
+ *
+ * En cas de succès de Ajax.Request, la fonction de rappel ajax_action_on_success()
+ * sera appelée.
+ *
+ * Les paramètres post ajoutés par la méthode sont:
+ * {{{
+ *	- data[Event][type]: le type d'événement (dataavailable, keyup, keydown, change, ...)
+ *	- data[Target][domId]: l'id (HTML) de l'élément qui a déclenché l'événement (non rempli lorsque l'événement dataavailable)
+ *	- data[Target][name]: le name (HTML) de l'élément qui a déclenché l'événement (non rempli lorsque l'événement dataavailable)
+ * }}}
+ *
+ * @param Event event L'événement qui a déclenché l'appel à la fonction.
+ * @param object parameters
+ * @returns void
+ */
+function ajax_action(event, parameters) {
+	var postParams = cake_data( parameters );
+
+	postParams['data[prefix]'] = parameters.prefix;
+
+	postParams['data[Event][type]'] = $(event).type;
+
+	var element = $(event).element(); // Dans les cas du change et du keyup
+	postParams['data[Target][domId]'] = $(element).id;
+	postParams['data[Target][name]'] = $(element).name;
 
 	new Ajax.Request(
-		url,
+		parameters.url,
 		{
 			method: 'post',
-			parameters: parameters,
+			parameters: postParams,
 			onSuccess: function( response ) {
-				var json = response.responseText.evalJSON(true);
-
-				if( json.success ) {
-					for( path in json.fields ) {
-						var field = json.fields[path];
-
-						if( $(field).type == 'select' ) {
-							var select = new Element( 'select' );
-							$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
-
-							var options = $(field).options;
-							if( $(options) != [] ) {
-								$(options).each( function( result ) {
-									var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
-									$(select).insert( { bottom: option } );
-								} );
-							}
-
-							$($(field).id).update( $(select).innerHTML );
-						}
-//						else if( $(field).type == 'text' ) {
-//						}
-						else if( $(field).type == 'ajax_select' ) {
-
-							var domIdSelect = $(field).id + 'AjaxSelect';
-							var oldAjaxSelect = $( domIdSelect );
-							if( oldAjaxSelect ) {
-								$( oldAjaxSelect ).remove();
-							}
-
-							if( $($(field).options).length > 0 ) {
-								var ajaxSelect = new Element( 'ul' );
-
-								$($(field).options).each( function ( result ) {
-									var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
-
-									$( a ).observe( 'click', function( event ) {
-										$( domIdSelect ).remove();
-
-										var params = {
-											id: $(field).id,
-											name: parameters['data[Event][input_name]'],
-											value: $(result).id,
-											prefix: $(field).prefix
-										};
-
-										ajaxObserveField( event, url, params );
-
-										return false;
-									} );
-
-									$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
-								} );
-
-								$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
-							}
-						}
-
-						$($(field).id).value = $(field).value;
-					}
-				}
-//				else {
-					// TODO -> une erreur à afficher proprement
-//				}
+				postParams.url = parameters.url;
+				ajax_action_on_success( response, postParams );
 			}
 		}
 	);
