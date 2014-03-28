@@ -321,9 +321,6 @@
 					'title' => 'Gestion des utilisateurs',
 				),
 			),
-			'Préchargement de l\'application' => array(
-				'url' => array( 'controller' => 'prechargements', 'action' => 'index' ),
-			),
 			'Vérification de l\'application' => array(
 				'url' => array( 'controller' => 'checks', 'action' => 'index' ),
 			),
