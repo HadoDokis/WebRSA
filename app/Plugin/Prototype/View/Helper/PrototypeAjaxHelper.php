@@ -65,92 +65,6 @@
 		}
 
 		/**
-		 * Retourne le code javascript permettant de transformer un champ de type
-		 * input text en champ de type complétion automatique, avec une liste
-		 * déroulante "ul".
-		 *
-		 * Pour chaque résultat envoyé en json, on regardera:
-		 *	- le champ 'name' pour remplir le texte de la liste déroulante
-		 *	- le champ correspondant au domId de $path pour y mettre la valeur en cas de sélection
-		 *	- les valeurs contenues dans l'array 'values' (domId => valeur) pour remplir le formulaire
-		 *
-		 * @param string $path
-		 * @param array $params
-		 * @return string
-		 */
-		public function autocomplete( $path, array $params = array() ) {
-			$params += array(
-				'prefix' => null,
-				'url' => null,
-				'domIdSelect' => 'ajaxSelect'
-			);
-			$params['url'] = Router::url( $params['url'] );
-
-			$dataNameMaster = 'data['.implode( '][', explode( '.', $path ) ).']';
-			$domIdMaster = $this->Html->domId( $path );
-
-			$script = "$( '{$domIdMaster}' ).writeAttribute( 'autocomplete', 'off' );
-Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
-	new Ajax.Request(
-		'{$params['url']}',
-		{
-			method: 'post',
-			parameters: {
-				'data[path]': '{$path}',
-				'data[prefix]': '{$params['prefix']}',
-				'{$dataNameMaster}': \$F( '{$domIdMaster}' )
-			},
-			onSuccess: function( response ) {
-				var oldAjaxSelect = $( '{$params['domIdSelect']}' );
-				if( oldAjaxSelect ) {
-					$( oldAjaxSelect ).remove();
-				}
-
-				var json = response.responseText.evalJSON();
-
-				if( $(json).length > 0 ) {
-					if( $( json ).length == 1 && ( $( json ).first().name === null ) ) {
-						var result = $( json ).first();
-						for( field in result.values ) {
-							$( field ).value = '';
-							$( field ).simulate( 'change' );
-						}
-					}
-					else {
-						var ajaxSelect = new Element( 'ul' );
-
-						$( json ).each( function ( result ) {
-							var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result['name'] );
-
-							$( a ).observe( 'click', function( event ) {
-								for( field in result.values ) {
-									$( field ).value = result['values'][field];
-									$( field ).simulate( 'change' );
-								}
-
-								$( '{$domIdMaster}' ).value = result['{$domIdMaster}'];
-
-								$( '{$params['domIdSelect']}' ).remove();
-
-								return false;
-							} );
-
-							$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
-						} );
-
-						$( '{$domIdMaster}' ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { id: '{$params['domIdSelect']}', class: 'ajax select' } ) }  );
-					}
-				}
-			}
-		}
-	);
-} );";
-
-			return $this->Html->script( array( 'prototype.event.simulate.js' ), array( 'inline' => false ) )
-					.$this->render( $script );
-		}
-
-		/**
 		 * Met à jour via ajax une div au chargement de la page, ainsi que lors
 		 * d'une mise à jour de l'un des champs.
 		 *
@@ -196,86 +110,55 @@ Event.observe( $( '{$domIdMaster}' ), 'keyup', function() {
 		}
 
 		/**
-		 * Permet d'observer la modification de l'un des champs et le chargement
-		 * de la page.
 		 *
-		 * @param string|array $fields
+		 *
+		 * @param type $fields
 		 * @param array $params
-		 * @return string
+		 * @return type
 		 */
-		public function observeFields( $fields, array $params = array() ) {
+		public function observe( $fields, array $params = array() ) {
 			$default = array(
 				'prefix' => null,
 				'url' => Router::url(),
-				'event' => 'change',
 				'onload' => true,
 			);
 			$params += $default;
-			$fields = (array)$fields;
-			$script = '';
+			$fields = Hash::normalize( (array)$fields );
 
-			$ajaxParams = array( "'data[prefix]': '{$params['prefix']}'" );
-			foreach( $fields as $field ) {
-				$dataPath = 'data['.str_replace( '.', '][', $field ).']';
-				$domId = $this->domId( $field );
-				$ajaxParams[] = "'{$dataPath}': \$F( '{$domId}' )";
-			}
-
+			// Les paramètres
 			$url = Router::url( $params['url'] );
-			foreach( $fields as $field ) {
-				$domId = $this->domId( $field );
-				$parameters = $ajaxParams;
-				array_unshift( $parameters, "'data[Field][changed]': '{$field}'" );
-				$parameters = '{ '.implode( ', ', $parameters ).' }';
-				$script .= "Event.observe( \$( '{$domId}' ), '{$params['event']}', function(event) { ajaxObserveField( event, '{$url}', {$parameters} ) } );\n";
+			$domIds = array();
+			foreach( array_keys( $fields ) as $path ) {
+				$domIds[] = $this->domId( $path );
 			}
+			$script = "var ajax_parameters = { 'url': '{$url}', 'prefix': '{$params['prefix']}', 'fields': [ '".implode( "', '", $domIds )."' ] };\n";
 
-			// Partie dom::loaded
-			if( $params['onload'] ) {
-				$domLoadedParameters = array( "'data[prefix]': '{$params['prefix']}'" );
-				foreach( $fields as $field ) {
-					$dataPath = 'data['.str_replace( '.', '][', $field ).']';
-					$value = "'".str_replace( "'", "\\'", Hash::get( $this->request->data, $field ) )."'";
-					$domLoadedParameters[] = "'{$dataPath}': {$value}";
+			// Les Event.observe()
+			foreach( $fields as $path => $value ) {
+				$domId = $this->domId( $path );
+
+				$event = Hash::get( (array)$value, 'event' );
+				$event = ( $event === null ? 'change' : $event );
+
+				if( in_array( $event, array( 'keyup', 'keydown' ) ) ) {
+					$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );";
 				}
-				$domLoadedParameters = '{ '.implode( ', ', $domLoadedParameters ).' }';
-				$script .= "document.observe( 'dom:loaded', function(event) { ajaxObserveField( event, '{$url}', {$domLoadedParameters} ); } );\n";
+
+				$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { ajax_action( event, ajax_parameters ); } );\n";
 			}
 
-			return $this->render( $script );
-		}
+			// onLoad ?
+			if( $params['onload'] ) {
+				$values = array();
+				foreach( array_keys( $fields ) as $path ) {
+					$domId = $this->domId( $path );
+					$value = str_replace( "'", "\\'", Hash::get( $this->request->data, $path ) );
+					$values[] = "'{$domId}': '{$value}'";
+				}
 
-		/**
-		 * Retourne le code javascript permettant de transformer un champ de type
-		 * input text en champ de type complétion automatique, avec une liste
-		 * déroulante "ul".
-		 *
-		 * @param string|array $fields
-		 * @param array $params
-		 * @return string
-		 */
-		public function autocomplete2( $fields, array $params = array() ) {
-			$default = array(
-				'prefix' => null,
-				'url' => Router::url(),
-				'event' => 'keyup',
-			);
-			$params += $default;
-			$fields = (array)$fields;
-			$script = '';
-
-			$url = Router::url( $params['url'] );
-			foreach( $fields as $field ) {
-				$domId = $this->domId( $field );
-				$dataPath = 'data['.str_replace( '.', '][', $field ).']';
-				$parameters = array(
-					"'data[prefix]': '{$params['prefix']}'",
-					"'data[Field][changed]': '{$field}'",
-					"'{$dataPath}': \$F( '{$domId}' )"
-				);
-				$parameters = '{ '.implode( ', ', $parameters ).' }';
-				$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );\n";
-				$script .= "Event.observe( \$( '{$domId}' ), '{$params['event']}', function(event) { ajaxObserveField( event, '{$url}', {$parameters} ) } );\n";
+				$script .= "var ajax_onload_parameters =  Object.clone( ajax_parameters );
+				ajax_onload_parameters['values'] = { ".implode( ", ", $values )." };
+				document.observe( 'dom:loaded', function(event) { ajax_action( event, ajax_onload_parameters ); } );\n";
 			}
 
 			return $this->render( $script );

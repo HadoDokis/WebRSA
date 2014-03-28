@@ -366,9 +366,9 @@
 		)
 	);
 
-	echo $this->Ajax2->observeFields(
+	echo $this->Ajax2->observe(
 		array(
-			'Ficheprescription93.numconvention',
+			'Ficheprescription93.numconvention' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.typethematiquefp93_id',
 			'Ficheprescription93.thematiquefp93_id',
 			'Ficheprescription93.categoriefp93_id',
@@ -377,14 +377,8 @@
 			'Ficheprescription93.actionfp93_id',
 		),
 		array(
-			'url' => array( 'action' => 'ajax_action' )
-		)
-	);
-
-	echo $this->Ajax2->autocomplete2(
-		'Ficheprescription93.numconvention',
-		array(
-			'url' => array( 'action' => 'ajax_action' )
+			'url' => array( 'action' => 'ajax_action' ),
+			'onload' => !empty( $this->request->data )
 		)
 	);
 ?>

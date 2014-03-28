@@ -150,24 +150,6 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 		}
 
 		/**
-		 * Test de la méthode PrototypeAjaxHelper::autocomplete()
-		 */
-		public function testAutocomplete() {
-			$result = $this->Ajax->autocomplete(
-				'Ficheprescription93.numconvention',
-				array(
-					'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
-				)
-			);
-			$expected = "<script type=\"text/javascript\">
-//<![CDATA[
-{$this->results['autocomplete']}
-//]]>
-</script>";
-			$this->assertEqual( $result, $expected, var_export( $result, true ) );
-		}
-
-		/**
 		 * Test de la méthode PrototypeAjaxHelper::updateDivOnFieldsChange()
 		 */
 		public function testUpdateDivOnFieldsChange() {
@@ -195,14 +177,6 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 		public function testUseBuffer() {
 			$this->Ajax->useBuffer = true;
 
-			$result = $this->Ajax->autocomplete(
-				'Ficheprescription93.numconvention',
-				array(
-					'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
-				)
-			);
-			$this->assertEqual( $result, null, var_export( $result, true ) );
-
 			$result = $this->Ajax->updateDivOnFieldsChange(
 				'CoordonneesPrescripteur',
 				array( 'action' => 'ajax_prescripteur' ),
@@ -217,7 +191,7 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 			$result = $this->View->fetch( 'scriptBottom' );
 			$expected = "<script type=\"text/javascript\">
 //<![CDATA[
-\n{$this->results['autocomplete']}\n{$this->results['updateDivOnFieldsChange']}
+\n{$this->results['updateDivOnFieldsChange']}
 //]]>
 </script>";
 

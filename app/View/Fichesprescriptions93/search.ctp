@@ -103,27 +103,17 @@
 <?php endif;?>
 
 <?php
-	/*echo $this->Observer->dependantSelect(
-		array(
-			'Search.Thematiquefp93.type' => 'Search.Categoriefp93.thematiquefp93_id',
-			'Search.Categoriefp93.thematiquefp93_id' => 'Search.Filierefp93.categoriefp93_id',
-			'Search.Filierefp93.categoriefp93_id' => 'Search.Actionfp93.filierefp93_id',
-			'Search.Actionfp93.filierefp93_id' => 'Search.Actionfp93.prestatairefp93_id',
-			'Search.Actionfp93.prestatairefp93_id' => 'Search.Ficheprescription93.actionfp93_id',
-		)
-	);*/
+	echo $this->Observer->disableFieldsetOnValue(
+		'Search.Ficheprescription93.exists',
+		'SpecificitesFichesprescriptions93',
+		array( null, '1' ),
+		true,
+		true
+	);
 
-	/*echo $this->Ajax2->autocomplete(
-		'Search.Actionfp93.numconvention',
+	echo $this->Ajax2->observe(
 		array(
-			'prefix' => 'Search',
-			'url' => array( 'action' => 'ajax_ficheprescription93_numconvention' )
-		)
-	);*/
-
-	echo $this->Ajax2->observeFields(
-		array(
-			'Search.Ficheprescription93.numconvention',
+			'Search.Ficheprescription93.numconvention' => array( 'event' => 'keyup' ),
 			'Search.Ficheprescription93.typethematiquefp93_id',
 			'Search.Ficheprescription93.thematiquefp93_id',
 			'Search.Ficheprescription93.categoriefp93_id',
@@ -133,23 +123,8 @@
 		),
 		array(
 			'url' => array( 'action' => 'ajax_action' ),
-			'prefix' => 'Search'
+			'prefix' => 'Search',
+			'onload' => !empty( $this->request->data )
 		)
-	);
-
-	echo $this->Ajax2->autocomplete2(
-		'Search.Ficheprescription93.numconvention',
-		array(
-			'url' => array( 'action' => 'ajax_action' ),
-			'prefix' => 'Search'
-		)
-	);
-
-	echo $this->Observer->disableFieldsetOnValue(
-		'Search.Ficheprescription93.exists',
-		'SpecificitesFichesprescriptions93',
-		array( null, '1' ),
-		true,
-		true
 	);
 ?>

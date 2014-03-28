@@ -7,13 +7,14 @@
 	 * @package app.Controller.Component
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AjaxComponent', 'Controller/Component' );
 
 	/**
 	 * La classe AjaxFichesprescriptions93Component ...
 	 *
 	 * @package app.Controller.Component
 	 */
-	class AjaxFichesprescriptions93Component extends Component
+	class AjaxFichesprescriptions93Component extends AjaxComponent
 	{
 		/**
 		 * Contrôleur utilisant ce component.
@@ -46,34 +47,6 @@
 			'Ficheprescription93.numconvention' => 'Ficheprescription93.numconvention',
 		);
 
-//		public function debug( $variable ) {
-//			$this->log( var_export( $variable, true ), LOG_DEBUG );
-//		}
-
-		/**
-		 * Permet de préfixer ce qui sera retourné par l'appel Ajax s'il y a lieu.
-		 *
-		 * @param string $prefix
-		 * @param array $result
-		 * @return array
-		 */
-		protected function _prefixAjaxResult( $prefix, array $result ) {
-			if( !empty( $result ) && !empty( $prefix ) ) {
-				$return = array();
-				foreach( $result as $key => $params ) {
-					if( isset( $params['id'] ) ) {
-						$params['id'] = "{$prefix}{$params['id']}";
-					}
-					$return["{$prefix}{$key}"] = $params;
-				}
-			}
-			else {
-				$return = $result;
-			}
-
-			return $return;
-		}
-
 		/**
 		 * Traite l'événement Ajax d'un champ de formulaire ayant changé.
 		 *
@@ -81,28 +54,17 @@
 		 * @return array
 		 */
 		public function ajaxOnChange( array $data ) {
-			$fields = array();
-
-			$prefix = Hash::get( $data, 'prefix' );
-			if( !empty( $prefix ) ) {
-				$prefixed = Hash::get( $data, $prefix );
-				unset( $data[$prefix] );
-				$data = Hash::merge( $prefixed, $data );
-				$data['Field']['changed'] = preg_replace( "/^{$prefix}\./", "", $data['Field']['changed'] );
-				$data['Event']['input_name'] = preg_replace( "/^data\[{$prefix}\]/", "data", $data['Event']['input_name'] );
-			}
-
-			$eventType = Hash::get( $data, 'Event.type' );
-			$eventInputname = Hash::get( $data, 'Event.input_name' );
-
-			$path = preg_replace( '/^data\[(.*)\]$/', '\1', str_replace( '][', '.', $eventInputname ) );
-			$value = Hash::get( $data, $path );
+			$data = $this->unprefixAjaxRequest( $data );
+			$data['Target']['path'] = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['Target']['name'] ) );
+//$this->debug( $data['Target']['path'] );
+			$value = Hash::get( $data, $data['Target']['path'] );
 
 			// Suivant le niveau, on supprime les clés précédentes pour ne pas remettre à zéro
 			$paths = array_keys( $this->fields );
-			$current = array_search( $path, $paths );
+			$current = array_search( $data['Target']['path'], $paths );
 			$invertedPaths = array_flip( $paths );
 
+			$fields = array();
 			for( $i = $current + 1 ; $i < count($paths) ; $i++ ) {
 				$fields[$paths[$i]] = array(
 					'id' => Inflector::camelize( str_replace( '.', '_', $paths[$i] ) ),
@@ -113,7 +75,7 @@
 			}
 
 			$fields['Ficheprescription93.numconvention']['type'] = 'text';
-			if( 'Ficheprescription93.numconvention' !== $path ) {
+			if( 'Ficheprescription93.numconvention' !== $data['Target']['path'] ) {
 				$fields['Ficheprescription93.numconvention']['value'] = null;
 			}
 
@@ -200,7 +162,7 @@
 			}
 
 			// Si on a un préfixe, on l'ajoute à ce que l'on retourne
-			$fields = $this->_prefixAjaxResult( $prefix, $fields );
+			$fields = $this->prefixAjaxResult( $data['prefix'], $fields );
 
 			return array( 'success' => true, 'fields' => $fields );
 		}
@@ -215,13 +177,7 @@
 		 */
 		public function ajaxOnLoad( array $data ) {
 			$return = array();
-
-			$prefix = Hash::get( $data, 'prefix' );
-			if( !empty( $prefix ) ) {
-				$prefixed = (array)Hash::get( $data, $prefix );
-				unset( $data[$prefix] );
-				$data = Hash::merge( $prefixed, $data );
-			}
+			$data = $this->unprefixAjaxRequest( $data );
 
 			$fieldKeys = array_keys( $this->fields );
 			foreach( $this->fields as $path => $field ) {
@@ -283,9 +239,7 @@
 				$return[$path] = $elmt;
 			}
 
-			// Si on a un préfixe, on l'ajoue à ce que l'on retourne -> TODO: factoriser
-			$prefix = Hash::get( $data, 'prefix' );
-			$return = $this->_prefixAjaxResult( $prefix, $return );
+			$return = $this->prefixAjaxResult( $data['prefix'], $return );
 
 			return array( 'success' => true, 'fields' => $return );
 		}
@@ -296,10 +250,10 @@
 		 * @return array
 		 */
 		public function ajaxOnKeyup( array $data ) {
-			$inputName = Hash::get( $data, 'Event.input_name' );
-			$path = preg_replace( '/^data\[(.*)\]$/', '\1', str_replace( '][', '.', $inputName ) );
-			$value = Hash::get( $data, $path );
-			$prefix = $data['prefix'];
+			$data = $this->unprefixAjaxRequest( $data );
+			$data['Target']['path'] = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['Target']['name'] ) );
+//$this->debug( $data['Target']['path'] );
+			$value = Hash::get( $data, $data['Target']['path'] );
 
 			$Actionfp93 = ClassRegistry::init( 'Actionfp93' );
 
@@ -330,10 +284,10 @@
 			if( trim( $value ) == '' ) {
 				foreach( array_keys( $this->fields ) as $field ) {
 					$fields[$field] = array(
-						'id' => Inflector::camelize( str_replace( '.', '_', "{$prefix}{$field}" ) ),
+						'id' => Inflector::camelize( str_replace( '.', '_', "{$data['prefix']}{$field}" ) ),
 						'value' => null,
 						'type' => 'select',
-						'prefix' => $prefix,
+						'prefix' => $data['prefix'],
 						'options' => array()
 					);
 				}
@@ -348,14 +302,12 @@
 			}
 
 			$fields['Ficheprescription93.numconvention'] = array(
-				'id' => "{$prefix}Ficheprescription93Numconvention",
+				'id' => "{$data['prefix']}Ficheprescription93Numconvention",
 				'value' => $value,
 				'type' => 'ajax_select',
-				'prefix' => $prefix,
+				'prefix' => $data['prefix'],
 				'options' => Hash::extract( $results, '{n}.Actionfp93' )
 			);
-
-//			array_keys( $this->fields );
 
 			return array( 'success' => true, 'fields' => $fields );
 		}
@@ -368,6 +320,8 @@
 		 * @return array
 		 */
 		public function ajaxOnClick( array $data ) {
+			$data = $this->unprefixAjaxRequest( $data );
+
 			$Actionfp93 = ClassRegistry::init( 'Actionfp93' );
 
 			$query = array(
@@ -394,66 +348,13 @@
 			$result = $Actionfp93->find( 'first', $query );
 			// TODO: if empty...
 
-			$result['prefix'] = Hash::get( $data, 'prefix' );
+			$prefix = Hash::get( $data, 'prefix' );
+			if( !empty( $prefix ) ) {
+				$result = array( $prefix => $result );
+			}
+			$result['prefix'] = $prefix;
+
 			return $this->ajaxOnLoad( $result );
-		}
-
-		/**
-		 * Traite l'événement Ajax.
-		 *
-		 * @param array $data
-		 * @return array
-		 * @throws InternalErrorException
-		 */
-		public function ajaxAction( array $data ) {
-			$type = Hash::get( $data, 'Event.type' );
-
-			if( $type == 'dataavailable' ) {
-				$return = $this->ajaxOnLoad( $data );
-			}
-			else if( $type == 'change' ) {
-				$return = $this->ajaxOnChange( $data );
-			}
-			else if( $type == 'keyup' ) {
-				$return = $this->ajaxOnKeyup( $data );
-			}
-			else if( $type == 'click' ) {
-				$return = $this->ajaxOnClick( $data );
-			}
-			else {
-				throw new InternalErrorException();
-			}
-
-			return $return;
-		}
-
-		/**
-		 * Retourne une liste d'enregistrements, sans le nom du modèle, triés par
-		 * displayField et complétés par la query passée en paramètres.
-		 *
-		 * @param string $modelName
-		 * @param array $query
-		 * @return array
-		 */
-		public function ajaxOptions( $modelName, array $query = array() ) {
-			$Model = ClassRegistry::init( $modelName );
-
-			$query = Hash::merge(
-				$query,
-				array(
-					'fields' => array(
-						"{$Model->alias}.{$Model->primaryKey}",
-						"{$Model->alias}.{$Model->displayField}"
-					),
-					'conditions' => array()
-				)
-			);
-			$query['group'] = $query['fields'];
-			$query['order'] = "{$Model->alias}.{$Model->displayField}";
-
-			$results = $Model->find( 'all', $query );
-
-			return Hash::extract( (array)$results, "{n}.{$Model->alias}" );
 		}
 	}
 ?>
