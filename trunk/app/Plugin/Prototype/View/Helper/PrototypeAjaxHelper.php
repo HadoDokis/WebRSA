@@ -68,6 +68,8 @@
 		 * Met à jour via ajax une div au chargement de la page, ainsi que lors
 		 * d'une mise à jour de l'un des champs.
 		 *
+		 * Utilisé une seule fois dans app/View/Fichesprescriptions93/add_edit.ctp
+		 *
 		 * @param string $update
 		 * @param string|array $url
 		 * @param string|array $fields
@@ -110,11 +112,17 @@
 		}
 
 		/**
+		 * Permet d'obsverver des champs de formulaires, avec les paramètres
+		 * suivants:
+		 * {{{
+		 *	- prefix: prévient le serveur qu'un préfixe sera à prendre en compte (ex.: Search)
+		 *	- url: l'URL à appeler pour l'action ajax
+		 *	- onload: si l'état des champs (dans this->request->data) doit être envoyé au chargement de la page
+		 * }}}
 		 *
-		 *
-		 * @param type $fields
-		 * @param array $params
-		 * @return type
+		 * @param string|array $fields Les id (HTML) des champs à observer
+		 * @param array $params Les paramètres dont les clés sont décrites ci-dessus
+		 * @return string
 		 */
 		public function observe( $fields, array $params = array() ) {
 			$default = array(
