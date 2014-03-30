@@ -2,10 +2,6 @@
 	/**
 	 * Code source de la classe FiltresdefautComponent.
 	 *
-	 * TODO: la fonctionnalité est déjà utilisée (hors component) dans les
-	 *	contrôleurs dossiers et cohortes.
-	 * TODO: à généraliser
-	 *
 	 * PHP 5.3
 	 *
 	 * @package Search
