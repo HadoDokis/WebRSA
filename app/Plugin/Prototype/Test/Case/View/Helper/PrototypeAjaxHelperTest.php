@@ -69,62 +69,6 @@
 		 * @var array
 		 */
 		public $results = array(
-			'autocomplete' => '$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );
-Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function() {
-	new Ajax.Request(
-		\'/ajax_ficheprescription93_numconvention\',
-		{
-			method: \'post\',
-			parameters: {
-				\'data[path]\': \'Ficheprescription93.numconvention\',
-				\'data[prefix]\': \'\',
-				\'data[Ficheprescription93][numconvention]\': $F( \'Ficheprescription93Numconvention\' )
-			},
-			onSuccess: function( response ) {
-				var oldAjaxSelect = $( \'ajaxSelect\' );
-				if( oldAjaxSelect ) {
-					$( oldAjaxSelect ).remove();
-				}
-
-				var json = response.responseText.evalJSON();
-
-				if( $(json).length > 0 ) {
-					if( $( json ).length == 1 && ( $( json ).first().name === null ) ) {
-						var result = $( json ).first();
-						for( field in result.values ) {
-							$( field ).value = \'\';
-							$( field ).simulate( \'change\' );
-						}
-					}
-					else {
-						var ajaxSelect = new Element( \'ul\' );
-
-						$( json ).each( function ( result ) {
-							var a = new Element( \'a\', { href: \'#\', onclick: \'return false;\' } ).update( result[\'name\'] );
-
-							$( a ).observe( \'click\', function( event ) {
-								for( field in result.values ) {
-									$( field ).value = result[\'values\'][field];
-									$( field ).simulate( \'change\' );
-								}
-
-								$( \'Ficheprescription93Numconvention\' ).value = result[\'Ficheprescription93Numconvention\'];
-
-								$( \'ajaxSelect\' ).remove();
-
-								return false;
-							} );
-
-							$( ajaxSelect ).insert( { bottom: $( a ).wrap( \'li\' ) } );
-						} );
-
-						$( \'Ficheprescription93Numconvention\' ).up( \'div\' ).insert(  { after: $( ajaxSelect ).wrap( \'div\', { id: \'ajaxSelect\', class: \'ajax select\' } ) }  );
-					}
-				}
-			}
-		}
-	);
-} );',
 			'updateDivOnFieldsChange' => 'function updateDivOnFieldsChangeCoordonneesPrescripteur() {
 		new Ajax.Updater(
 			\'CoordonneesPrescripteur\',
@@ -167,6 +111,34 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 {$this->results['updateDivOnFieldsChange']}
 //]]>
 </script>";
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode PrototypeAjaxHelper::observe()
+		 */
+		public function testObserve() {
+			$result = $this->Ajax->observe(
+				array(
+					'Ficheprescription93.numconvention' => array( 'event' => 'keyup' ),
+					'Ficheprescription93.typethematiquefp93_id',
+				),
+				array(
+					'url' => array( 'action' => 'ajax_action' )
+				)
+			);
+
+			$expected = '<script type="text/javascript">
+//<![CDATA[
+var ajax_parameters = { \'url\': \'/ajax_action\', \'prefix\': \'\', \'fields\': [ \'Ficheprescription93Numconvention\', \'Ficheprescription93Typethematiquefp93Id\' ] };
+$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters ); } );
+Event.observe( $( \'Ficheprescription93Typethematiquefp93Id\' ), \'change\', function(event) { ajax_action( event, ajax_parameters ); } );
+var ajax_onload_parameters =  Object.clone( ajax_parameters );
+				ajax_onload_parameters[\'values\'] = { \'Ficheprescription93Numconvention\': \'\', \'Ficheprescription93Typethematiquefp93Id\': \'\' };
+				document.observe( \'dom:loaded\', function(event) { ajax_action( event, ajax_onload_parameters ); } );
+
+//]]>
+</script>';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
