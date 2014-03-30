@@ -1,5 +1,4 @@
 <?php
-	// FIXME: dans /cohortesnonorientes66/isemploi, on n'a pas la clé Search.Situationdossierrsa.etatdosrsa_choice mais Situationdossierrsa.etatdosrsa_choice dans le formulaire
 	/**
 	 * Code source de la classe SearchPrgComponent.
 	 *
@@ -37,13 +36,6 @@
 		public $name = 'SearchPrg';
 
 		/**
-		 * Contrôleur utilisant ce component.
-		 *
-		 * @var Controller
-		 */
-		public $controller = null;
-
-		/**
 		 * Components utilisés par ce component-ci.
 		 *
 		 * @var array
@@ -58,14 +50,15 @@
 		 * @return void
 		 */
 		public function initialize( Controller $controller ) {
-			$this->controller = $controller;
+			parent::initialize( $controller );
 
-			$this->settings = ( isset( $this->settings['actions'] ) ? (array)$this->settings['actions'] : array() );
-			$this->settings = Set::normalize( $this->settings );
+			if( isset( $this->settings['actions'] ) ) {
+				$this->settings = Hash::normalize( (array)$this->settings['actions'] );
+			}
 		}
 
 		/**
-		 * FIXME: ne fonctionne pas bien
+		 * Permet de supprimer certains caractères pour la redirection.
 		 *
 		 * @param array $params
 		 * @param array $forbiddenlist
@@ -89,50 +82,83 @@
 		}
 
 		/**
+		 * Permet de savoir si une action doit être effectuée.
+		 *
+		 * @return boolean
+		 */
+		public function hasWork() {
+			$Controller = $this->_Collection->getController();
+
+			return (
+				empty( $Controller->request->params['form'] )
+				&& in_array( $Controller->action, array_keys( $this->settings ) )
+			);
+		}
+
+		/**
+		 * Lorsque l'on est appelé en POST, on stocke certaines données en session,
+		 * puis on transforme les données POST en données GET et on redirige.
+		 */
+		protected function _postStartup() {
+			$Controller = $this->_Collection->getController();
+
+			$params = $Controller->request->data;
+
+			if( isset( $this->settings[$Controller->action]['filter'] ) ) {
+				$key = $this->settings[$Controller->action]['filter'];
+				$sessionParams = $params;
+				$params = array( $key => ( isset( $params[$key] ) ? $params[$key] : array( ) ) );
+				unset( $sessionParams[$key] );
+
+				if( !empty( $sessionParams ) ) {
+					unset( $sessionParams['sessionKey'] );
+					$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
+					$this->Session->write( "{$this->name}.{$Controller->name}__{$Controller->action}.{$sessionKey}", $sessionParams );
+					$params['sessionKey'] = $sessionKey;
+				}
+			}
+
+			$params = Hash::flatten( $params, '__' );
+			$params = Hash::merge( $Controller->request->params['named'], $params );
+			$params = $this->_urlencodeParams( $params );
+
+			$redirect = array_merge( array( 'action' => $Controller->action ), $params );
+			$Controller->redirect( $redirect );
+		}
+
+		/**
+		 * Lorsque la page est appelée en GET, on ajoute les paramètres GET/CakePHP
+		 * et les données se trouvant éventuellement dans sessionKey (la variable
+		 * sessionKey est supprimée).
+		 */
+		protected function _getStartup() {
+			$Controller = $this->_Collection->getController();
+
+			$Controller->request->data = Hash::expand( array_map( 'urldecode', $Controller->request->params['named'] ), '__' );
+
+			if( isset( $Controller->request->params['named']['sessionKey'] ) ) {
+				$sessionParams = (array)$this->Session->read( "{$this->name}.{$Controller->name}__{$Controller->action}.{$Controller->request->params['named']['sessionKey']}" );
+
+				$this->Session->delete( "{$this->name}.{$Controller->name}__{$Controller->action}.{$Controller->request->params['named']['sessionKey']}" );
+				$Controller->request->data = Hash::merge( $Controller->request->data, $sessionParams );
+			}
+		}
+
+		/**
 		 * Called after the Controller::beforeFilter() and before the controller action
 		 *
 		 * @param Controller $controller Controller with components to startup
 		 * @return void
 		 */
 		public function startup( Controller $controller ) {
-			if( in_array( $controller->action, array_keys( $this->settings ) ) ) {
-				if( !empty( $controller->request->params['form'] ) ) {
-					return;
-				}
+			parent::startup( $controller );
 
+			if( $this->hasWork() ) {
 				if( $controller->request->is( 'post' ) ) {
-					$params = $controller->request->data;
-
-					if( isset( $this->settings[$controller->action]['filter'] ) ) {
-						$key = $this->settings[$controller->action]['filter'];
-						$sessionParams = $params;
-						$params = array( $key => ( isset( $params[$key] ) ? $params[$key] : array( ) ) );
-						unset( $sessionParams[$key] );
-
-						if( !empty( $sessionParams ) ) {
-							unset( $sessionParams['sessionKey'] );
-							$sessionKey = sha1( implode( '/', Hash::flatten( ( empty( $sessionParams ) ? array( ) : $sessionParams ), '__' ) ) );
-							$this->Session->write( "{$this->name}.{$controller->name}__{$controller->action}.{$sessionKey}", $sessionParams );
-							$params['sessionKey'] = $sessionKey;
-						}
-					}
-
-					$params = Hash::flatten( $params, '__' );
-					$params = Set::merge( $controller->request->params['named'], $params );
-					$params = $this->_urlencodeParams( $params );
-
-					$redirect = array_merge( array( 'action' => $controller->action ), $params );
-					$controller->redirect( $redirect );
+					$this->_postStartup();
 				}
 				else if( $controller->request->is( 'get' ) ) {
-					$controller->request->data = Hash::expand( array_map( 'urldecode', $controller->request->params['named'] ), '__' );
-
-					if( isset( $controller->request->params['named']['sessionKey'] ) ) {
-						$sessionParams = (array)$this->Session->read( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
-
-						$this->Session->delete( "{$this->name}.{$controller->name}__{$controller->action}.{$controller->request->params['named']['sessionKey']}" );
-						$controller->request->data = Set::merge( $controller->request->data, $sessionParams );
-					}
+					$this->_getStartup();
 				}
 			}
 		}
