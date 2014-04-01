@@ -170,14 +170,23 @@
 			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $criteresci );
 			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $criteresci );
 
-			// ...
-			if( !empty( $decision_ci ) ) {
-				$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci, array( 'encode' => false ) ).'\'';
+			// Statut du contrat
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$positioncer = Hash::get( $criteresci, 'Cer93.positioncer' );
+				if( !empty( $positioncer ) ) {
+					$conditions['Cer93.positioncer'] = $positioncer;
+				}
 			}
+			else {
+				$decision_ci = Set::extract( $criteresci, 'Contratinsertion.decision_ci' );
+				if( !empty( $decision_ci ) ) {
+					$conditions[] = 'Contratinsertion.decision_ci = \''.Sanitize::clean( $decision_ci, array( 'encode' => false ) ).'\'';
+				}
 
-			// ...
-			if( !empty( $positioncer ) ) {
-				$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer, array( 'encode' => false ) ).'\'';
+				// ...
+				if( !empty( $positioncer ) ) {
+					$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer, array( 'encode' => false ) ).'\'';
+				}
 			}
 
 
@@ -344,13 +353,14 @@
                     $this->Contratinsertion->Personne->PersonneReferent->fields(),
 					array(
 						'Cer93.duree',
+						'Cer93.positioncer',
 						'Typeorient.lib_type_orient',
 						$this->Contratinsertion->Referent->sqVirtualField( 'nom_complet' )
 					)
                 ),
 				'recursive' => -1,
 				'joins' => array(
-                    $this->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
+                    $this->Contratinsertion->join( 'Cer93', array( 'type' => ( Configure::read( 'Cg.departement' ) == 93 ? 'INNER' : 'LEFT OUTER' ) ) ),
                     $this->Contratinsertion->join( 'Personne', array( 'type' => 'INNER' ) ),
                     $this->Contratinsertion->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
                     $this->Contratinsertion->join( 'Propodecisioncer66', array( 'type' => 'LEFT OUTER' ) ),
@@ -383,7 +393,7 @@
 				'order' => 'Contratinsertion.df_ci ASC',
 				'conditions' => $conditions
 			);
-                        
+
                         if( Configure::read( 'CG.cantons' )  ) {
                             $querydata['fields'][] = 'Canton.canton';
                             $querydata['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();

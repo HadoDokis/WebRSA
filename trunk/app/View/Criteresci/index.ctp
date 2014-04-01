@@ -18,7 +18,7 @@
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDdCi', $( 'ContratinsertionDdCiFromDay' ).up( 'fieldset' ), false );
 
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDfCi', $( 'ContratinsertionDfCiFromDay' ).up( 'fieldset' ), false );
-                
+
                 dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
 	});
 </script>
@@ -82,7 +82,12 @@
 			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
 			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
 			<?php
-                echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					echo $this->Form->input( 'Cer93.positioncer', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93.positioncer' ), 'empty' => true ) );
+				}
+				else {
+					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
+				}
 			?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -275,7 +280,7 @@
 								$duree = "{$duree} mois";
 							}
 
-                            echo $this->Xhtml->tableCells(
+							echo $this->Xhtml->tableCells(
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
                                     h( $contrat['Adresse']['locaadr'] ),
@@ -285,7 +290,14 @@
                                     h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.created' ) ) ),
 									h( $duree ),
                                     h( $contrat['Contratinsertion']['rg_ci'] ),
-                                    h( Set::extract( $decision_ci, Set::extract( $contrat, 'Contratinsertion.decision_ci' ) ).' '.$this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.datevalidation_ci' ) ) ),//date_short($contrat['Contratinsertion']['datevalidation_ci']) ),
+                                    h(
+										Hash::get( $options['Cer93']['positioncer'], Hash::get( $contrat, 'Cer93.positioncer' ) )
+										.(
+											Hash::get( $contrat, 'Contratinsertion.decision_ci' ) == 'V'
+											? ' '.$this->Locale->date( 'Date::short', Hash::get( $contrat, 'Contratinsertion.datedecision' ) )
+											: ''
+										)
+									),
                                     h( Set::enum( $contrat['Contratinsertion']['forme_ci'], $forme_ci ) ),
                                     h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.df_ci' ) ) ),
                                     array(
