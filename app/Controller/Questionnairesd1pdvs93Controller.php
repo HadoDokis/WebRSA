@@ -90,6 +90,7 @@
                     'Questionnaired1pdv93.date_validation',
                     'Rendezvous.daterdv',
 					'Structurereferente.id',
+					'Structurereferente.lib_struc',
                     'Statutrdv.libelle',
                     'Historiquedroit.etatdosrsa',
                     'Historiquedroit.toppersdrodevorsa',

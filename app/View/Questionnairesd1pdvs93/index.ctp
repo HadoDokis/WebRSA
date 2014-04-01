@@ -65,6 +65,7 @@
 	echo $this->Default2->index(
 		$questionnairesd1pdvs93,
 		array(
+			'Structurereferente.lib_struc' => array( 'domain' => 'questionnairesd1pdvs93' ),
 			'Rendezvous.daterdv',
 			'Statutrdv.libelle',
 			'Questionnaired1pdv93.date_validation' => array( 'domain' => 'questionnairesd1pdvs93' ),
