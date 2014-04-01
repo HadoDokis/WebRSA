@@ -156,6 +156,9 @@
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
+			$options = (array)Hash::get( $this->viewVars, 'options' );
+			$options = Hash::merge( $options, $this->Contratinsertion->Cer93->enums() );
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -184,6 +187,9 @@
 			$this->layout = '';
 			$this->set( compact( 'contrats' ) );
 			$this->_setOptions();
+			$options = (array)Hash::get( $this->viewVars, 'options' );
+			$options = Hash::merge( $options, $this->Contratinsertion->Cer93->enums() );
+			$this->set( compact( 'options' ) );
 		}
 	}
 ?>

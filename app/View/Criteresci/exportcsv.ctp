@@ -5,7 +5,7 @@
         if( Configure::read('Cg.departement') == 66 ) {
             $canton = 'Canton';
         }
-        
+
 	$this->Csv->addRow(
 		array(
 			'N° Dossier',
@@ -47,6 +47,18 @@
 			$duree = "{$duree} mois";
 		}
 
+		if( Configure::read( 'Cg.departement' ) == 93 ) {
+			$decision = Hash::get( $options['Cer93']['positioncer'], Hash::get( $contrat, 'Cer93.positioncer' ) )
+			.(
+				Hash::get( $contrat, 'Contratinsertion.decision_ci' ) == 'V'
+				? ' '.$this->Locale->date( 'Date::short', Hash::get( $contrat, 'Contratinsertion.datedecision' ) )
+				: ''
+			);
+		}
+		else {
+			$decision = value( $decision_ci, Hash::get( $contrat, 'Contratinsertion.decision_ci' ) ).' '.date_short( Hash::get( $contrat, 'Contratinsertion.datevalidation_ci' ) );
+		}
+
 		$row = array(
 			Hash::get( $contrat, 'Dossier.numdemrsa' ),
 			Hash::get( $contrat, 'Dossier.matricule' ),
@@ -69,7 +81,7 @@
 			date_short( Hash::get( $contrat, 'Contratinsertion.dd_ci' ) ),
 			$duree,
 			date_short( Hash::get( $contrat, 'Contratinsertion.df_ci' ) ),
-			value( $decision_ci, Hash::get( $contrat, 'Contratinsertion.decision_ci' ) ).' '.date_short( Hash::get( $contrat, 'Contratinsertion.datevalidation_ci' ) ),
+			$decision,
 			Set::enum( Hash::get( $contrat, 'Contratinsertion.actions_prev' ), $action ),
 			Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
