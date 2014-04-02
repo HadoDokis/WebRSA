@@ -44,7 +44,7 @@
 		}
 
 		//Ajout d'une distinction entre avis et décisions pour le CG66 vs les autres
-		
+
 // 		if( Configure::read( 'Cg.departement' ) == 66 ){
 // 			$avisdecisions = 'avis';
 // 		}
@@ -76,7 +76,7 @@
 				array(
 					'controller' => 'commissionseps',
 					'action'     => 'view',
-					$commissionep['Commissionep']['id'] 
+					$commissionep['Commissionep']['id']
 				),
 				array(
 					'id' => 'Back'
@@ -102,6 +102,12 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->script( 'prototype.livepipe.js' );
 		echo $this->Html->script( 'prototype.tabs.js' );
+
+		$validationErrors = $this->validationErrors;
+		$validationErrors = Hash::filter( $validationErrors );
+		if( !empty( $validationErrors ) ) {
+			debug( $validationErrors );
+		}
 	}
 ?>
 

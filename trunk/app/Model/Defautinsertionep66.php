@@ -93,6 +93,16 @@
 		);
 
 		/**
+		 * Liste des décisions qui nécessitent un passage en EPL parcours.
+		 *
+		 * @var array
+		 */
+		public $decisionsEplParcours = array(
+			'reorientationsocversprof',
+			'reorientationprofverssoc'
+		);
+
+		/**
 		*
 		*/
 		public function containQueryData() {
@@ -128,7 +138,7 @@
 				return array();
 			}
 
-			return array(
+			$query = array(
 				'conditions' => array(
 					'Dossierep.themeep' => Inflector::tableize( $this->alias ),
 					'Dossierep.id IN ( '.$this->Dossierep->Passagecommissionep->sq(
@@ -179,8 +189,25 @@
 							'order' => array( 'Decisiondefautinsertionep66.etape DESC' )
 						)
 					)
+				),
+				// On trie pour avoir les dossiers non cachés (suite à la transformation en EPL parcours) en premier lieu
+				'order' => array(
+					'( CASE
+						WHEN (
+							SELECT decisionsdefautsinsertionseps66.decision
+								FROM decisionsdefautsinsertionseps66
+									INNER JOIN passagescommissionseps ON (
+										passagescommissionseps.id = decisionsdefautsinsertionseps66.passagecommissionep_id
+										AND decisionsdefautsinsertionseps66.etape = \'ep\'
+										AND passagescommissionseps.dossierep_id = Dossierep.id
+									)
+							) NOT IN ( \''.implode( "', '", $this->decisionsEplParcours ).'\' ) THEN 1
+						ELSE 0
+					END )'
 				)
 			);
+
+			return $query;
 		}
 
 		/**
@@ -510,6 +537,10 @@
 					$formData['Decisiondefautinsertionep66'][$key] = @$dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0];
 					$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'], $formData['Decisiondefautinsertionep66'][$key]['referent_id'] ) );
 					$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $formData['Decisiondefautinsertionep66'][$key]['typeorient_id'], $formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] ) );
+
+					if( $niveauDecision == 'cg' && !in_array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][1]['decision'], $this->decisionsEplParcours ) ) {
+						$formData['Decisiondefautinsertionep66'][$key]['field_type'] = 'hidden';
+					}
 				}
 				// On ajoute les enregistrements de cette étape
 				else {
@@ -522,12 +553,20 @@
 						$formData['Decisiondefautinsertionep66'][$key]['referent_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ) );
 						$formData['Decisiondefautinsertionep66'][$key]['structurereferente_id'] = implode( '_', array( $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'], $dossierep['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ) );
 
-						if( !in_array( $formData['Decisiondefautinsertionep66'][$key]['decision'], array( 'reorientationsocversprof', 'reorientationprofverssoc' ) ) ) {
+						if( !in_array( $formData['Decisiondefautinsertionep66'][$key]['decision'], $this->decisionsEplParcours ) ) {
 							$formData['Decisiondefautinsertionep66'][$key]['field_type'] = 'hidden';
 						}
 
 					}
 				}
+
+				// On nettoie les enregistements ne contenant que l'underscore
+				foreach( array( 'referent_id', 'structurereferente_id' ) as $fieldName ) {
+					if( $formData['Decisiondefautinsertionep66'][$key][$fieldName] == '_' ) {
+						$formData['Decisiondefautinsertionep66'][$key][$fieldName] = null;
+					}
+				}
+
 			}
 			return $formData;
 		}
@@ -600,7 +639,7 @@
 					$defautinsertionep66['Defautinsertionep66']['decision'] = @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
 
 					// Si réorientation, alors passage en EP Parcours "Réorientation ou maintien d'orientation"
-					if( $defautinsertionep66['Defautinsertionep66']['decision'] == 'reorientationprofverssoc' || $defautinsertionep66['Defautinsertionep66']['decision'] == 'reorientationsocversprof' ) {
+					if( in_array( $defautinsertionep66['Defautinsertionep66']['decision'], $this->decisionsEplParcours ) ) {
 						$oBilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
 
 						$orientsstruct = $oBilanparcours66->Orientstruct->find(
@@ -1539,7 +1578,7 @@
 									array(
 										'type' => 'INNER',
 										'conditions' => array(
-											'Decisiondefautinsertionep66.decision' => array( 'reorientationsocversprof', 'reorientationprofverssoc' )
+											'Decisiondefautinsertionep66.decision' => $this->decisionsEplParcours
 										)
 									)
 								),
