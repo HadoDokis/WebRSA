@@ -1920,7 +1920,6 @@
 						WHERE
 							rendezvous_thematiquesrdvs.thematiquerdv_id IN ( ".implode( ',', $thematiquesrdvs_ids )." )
 							AND EXTRACT( 'YEAR' FROM rendezvous.daterdv ) = '{$annee}'
-							AND rendezvous.statutrdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.Tableau1b6.statutrdv_id_prevu_honore' ) )." )
 							{$conditionpdv}
 							{$conditionrdv}
 						GROUP BY
