@@ -38,7 +38,10 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 
 	foreach( $dossiers[$theme]['liste'] as $i => $dossierep ) {
 		if( isset( $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] ) && $this->request->data['Decisiondefautinsertionep66'][$i]['field_type'] == 'hidden' ) {
-			$hiddenDossiers['Decisiondefautinsertionep66'][] = $this->request->data['Decisiondefautinsertionep66'][$i];
+			$this->request->data['Decisiondefautinsertionep66'][$i]['etape'] = 'cg';
+			$this->request->data['Decisiondefautinsertionep66'][$i]['user_id'] = $this->Session->read( 'Auth.User.id' );
+
+			$hiddenDossiers['Decisiondefautinsertionep66'][$i] = $this->request->data['Decisiondefautinsertionep66'][$i];
 		}
 		else {
 
@@ -113,8 +116,10 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 
 	if( !empty( $hiddenDossiers ) ) {
 		echo '<div>';
-		foreach( Hash::flatten( $hiddenDossiers ) as $hiddenField ) {
-			echo $this->Xform->input( $hiddenField, array( 'type' => 'hidden' ) );
+		foreach( $hiddenDossiers['Decisiondefautinsertionep66'] as $i => $hiddenDossier ) {
+			foreach( $hiddenDossier as $field => $value ) {
+				echo $this->Xform->input( "Decisiondefautinsertionep66.{$i}.{$field}", array( 'type' => 'hidden' ) );
+			}
 		}
 		echo '</div>';
 	}

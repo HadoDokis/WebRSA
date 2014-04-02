@@ -71,6 +71,12 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->script( 'prototype.livepipe.js' );
 		echo $this->Html->script( 'prototype.tabs.js' );
+
+		$validationErrors = $this->validationErrors;
+		$validationErrors = Hash::filter( $validationErrors );
+		if( !empty( $validationErrors ) ) {
+			debug( $validationErrors );
+		}
 	}
 ?>
 
