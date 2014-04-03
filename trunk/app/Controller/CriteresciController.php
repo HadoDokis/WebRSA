@@ -156,8 +156,14 @@
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
 			$this->_setOptions();
+
 			$options = (array)Hash::get( $this->viewVars, 'options' );
-			$options = Hash::merge( $options, $this->Contratinsertion->Cer93->enums() );
+			// Ajout des éléments de listes déroulantes propres au CG 93
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$options = Hash::merge( $options, $this->Contratinsertion->Cer93->enums() );
+				$options['Expprocer93']['metierexerce_id'] = $this->Contratinsertion->Cer93->Expprocer93->Metierexerce->find( 'list' );
+				$options['Expprocer93']['secteuracti_id'] = $this->Contratinsertion->Cer93->Expprocer93->Secteuracti->find( 'list' );
+			}
 			$this->set( compact( 'options' ) );
 		}
 

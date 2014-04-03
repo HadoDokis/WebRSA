@@ -320,7 +320,6 @@
 			$this->set( 'cers93', $results );
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'disabledLinks', $disabledLinks );
-			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
 		/**
@@ -557,8 +556,8 @@
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
+			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
 			$this->render( 'edit' );
-			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
 		}
 
 		/**
@@ -616,7 +615,7 @@
 			}
 
 			$this->set( 'personne_id', $personne_id );
-			$this->set( 'urlmenu', '/contratsinsertion/index/'.$personne_id );
+			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
 		}
 
 		/**
@@ -656,6 +655,7 @@
 
 			$this->set( 'options', $this->Cer93->optionsView() );
 			$this->set( 'contratinsertion', $this->Cer93->dataView( $contratinsertion_id ) );
+			$this->set( 'urlmenu', '/cers93/index/'.$personne_id );
 		}
 
 		/**

@@ -176,6 +176,27 @@
 				if( !empty( $positioncer ) ) {
 					$conditions['Cer93.positioncer'] = $positioncer;
 				}
+
+				// Filtres par expériences professionnelles significatives: métier exercé et secteur d'activité
+				foreach( array( 'metierexerce_id', 'secteuracti_id' ) as $field ) {
+					$value = Hash::get( $criteresci, "Expprocer93.{$field}" );
+					if( !empty( $value ) ) {
+						$alias = 'expsproscers93';
+						$sql = $this->Contratinsertion->Cer93->Expprocer93->sq(
+							array(
+								'alias' => $alias,
+								'fields' => array( "{$alias}.id" ),
+								'contain' => false,
+								'conditions' => array(
+									"{$alias}.cer93_id = Cer93.id",
+									"{$alias}.{$field}" => $value
+								),
+								'limit' => 1
+							)
+						);
+						$conditions[] = "EXISTS( {$sql} )";
+					}
+				}
 			}
 			else {
 				$decision_ci = Set::extract( $criteresci, 'Contratinsertion.decision_ci' );
