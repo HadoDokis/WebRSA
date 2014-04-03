@@ -88,14 +88,22 @@
 				else {
 					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
 				}
-			?>
-			<?php
+
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					echo $this->Form->input( 'Contratinsertion.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
-			?>
-			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );?>
-			<?php
+
+				echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
+
+				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					echo $this->Html->tag(
+						'fieldset',
+						$this->Html->tag( 'legend', 'Filtrer par expérience professionnelle significative' )
+						.$this->Form->input( 'Expprocer93.metierexerce_id', array( 'label' => 'Métier exercé', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true ) )
+						.$this->Form->input( 'Expprocer93.secteuracti_id', array( 'label' => 'Secteur d\'activité', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true ) )
+					);
+				}
+
                 echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
             ?>
 
