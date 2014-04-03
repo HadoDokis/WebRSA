@@ -240,21 +240,7 @@
 			);
 
 			// Options
-			$options = $this->Questionnaired2pdv93->enums();
-			$options['Questionnaired2pdv93']['sortieaccompagnementd2pdv93_id'] = $this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->find(
-				'list',
-				array(
-					'fields' => array(
-						'Sortieaccompagnementd2pdv93.id',
-						'Sortieaccompagnementd2pdv93.name',
-						'Parent.name',
-					),
-					'joins' => array(
-						$this->Questionnaired2pdv93->Sortieaccompagnementd2pdv93->join( 'Parent', array( 'type' => 'INNER' ) )
-					)
-				)
-			);
-
+			$options = $this->Questionnaired2pdv93->options( array( 'find' => true ) );
 			$this->set( compact( 'personne_id', 'personne', 'options', 'dossierMenu', 'isAjax' ) );
 
 			if( $isAjax ) {

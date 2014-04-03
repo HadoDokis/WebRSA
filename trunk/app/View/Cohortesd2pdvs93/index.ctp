@@ -47,6 +47,16 @@
 		echo $this->Xform->input( 'Search.Questionnaired1pdv93.annee', array( 'options' => $options['Questionnaired1']['annee'], 'domain' => 'cohortesd2pdvs93' ) );
 		echo $this->Xform->input( 'Search.Rendezvous.structurereferente_id', array( 'options' => $options['Rendezvous']['structurereferente_id'], 'empty' => true, 'domain' => 'cohortesd2pdvs93' ) );
 		echo $this->Xform->input( 'Search.Questionnaired2pdv93.exists', array( 'type' => 'checkbox', 'domain' => 'cohortesd2pdvs93' ) );
+
+		echo $this->Html->tag(
+			'fieldset',
+			$this->Html->tag( 'legend', __d( 'cohortesd2pdvs93', 'Search.ReponsesQuestionnaired2pdv93' ) )
+			.$this->Xform->input( 'Search.Questionnaired2pdv93.situationaccompagnement', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Questionnaired2pdv93.situationaccompagnement' ), 'domain' => 'cohortesd2pdvs93', 'empty' => true ) )
+			.$this->Xform->input( 'Search.Questionnaired2pdv93.sortieaccompagnementd2pdv93_id', array( 'type' => 'hidden', 'id' => false, 'value' => '' ) )
+			.$this->Xform->input( 'Search.Questionnaired2pdv93.sortieaccompagnementd2pdv93_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Questionnaired2pdv93.sortieaccompagnementd2pdv93_id' ), 'domain' => 'cohortesd2pdvs93', 'empty' => true ) )
+			.$this->Xform->input( 'Search.Questionnaired2pdv93.chgmentsituationadmin', array( 'type' => 'hidden', 'id' => false, 'value' => '' ) )
+			.$this->Xform->input( 'Search.Questionnaired2pdv93.chgmentsituationadmin', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Questionnaired2pdv93.chgmentsituationadmin' ), 'domain' => 'cohortesd2pdvs93', 'empty' => true ) )
+		);
 		echo '</fieldset>';
 
 		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
@@ -127,6 +137,20 @@
 		if( $isAjax ) {
 			$out = "\$('Cohortesd2pdvs93IndexForm').hide();";
 			echo $this->Html->scriptBlock( $out );
+		}
+		else {
+			echo $this->Observer->disableFieldsOnValue(
+				'Search.Questionnaired2pdv93.situationaccompagnement',
+				'Search.Questionnaired2pdv93.sortieaccompagnementd2pdv93_id',
+				array( 'sortie_obligation' ),
+				false
+			);
+			echo $this->Observer->disableFieldsOnValue(
+				'Search.Questionnaired2pdv93.situationaccompagnement',
+				'Search.Questionnaired2pdv93.chgmentsituationadmin',
+				array( 'changement_situation' ),
+				false
+			);
 		}
 	?>
 </div>

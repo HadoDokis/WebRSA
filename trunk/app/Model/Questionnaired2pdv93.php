@@ -499,5 +499,36 @@
 
 			return $success;
 		}
+
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche de la
+		 * cohorte et au formulaire d'ajout / modification,
+		 *
+		 * @param array $params <=> array( 'find' => false )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			$params = $params + array( 'find' => false );
+
+			$options = $this->enums();
+			if( Hash::get( $params, 'find' ) ) {
+				$options['Questionnaired2pdv93']['sortieaccompagnementd2pdv93_id'] = $this->Sortieaccompagnementd2pdv93->find(
+					'list',
+					array(
+						'fields' => array(
+							'Sortieaccompagnementd2pdv93.id',
+							'Sortieaccompagnementd2pdv93.name',
+							'Parent.name',
+						),
+						'joins' => array(
+							$this->Sortieaccompagnementd2pdv93->join( 'Parent', array( 'type' => 'INNER' ) )
+						)
+					)
+				);
+			}
+
+			return $options;
+		}
 	}
 ?>

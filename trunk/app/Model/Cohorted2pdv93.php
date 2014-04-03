@@ -84,6 +84,16 @@
 				$conditions[] = 'Questionnaired2pdv93.id IS NULL';
 			}
 
+			// Filtrer par réponses au questionnaire D2
+			$fields = array( 'situationaccompagnement', 'sortieaccompagnementd2pdv93_id', 'chgmentsituationadmin' );
+			foreach( $fields as $field ) {
+				$path = "Questionnaired2pdv93.{$field}";
+				$value = Hash::get( $search, $path );
+				if( !empty( $value ) ) {
+					$conditions[$path] = $value;
+				}
+			}
+
 			$querydata = array(
 				'fields' => array_merge(
 					$Personne->fields(),
