@@ -51,6 +51,18 @@ msgstr "PDV effectuant le suivi"
 msgid "Search.Questionnaired2pdv93.exists"
 msgstr "Possédant déjà un formulaire D2 pour l'année de suivi"
 
+msgid "Search.ReponsesQuestionnaired2pdv93"
+msgstr "Filtrer par réponses au questionnaire D2"
+
+msgid "Search.Questionnaired2pdv93.situationaccompagnement"
+msgstr "Statut de l'accompagnement"
+
+msgid "Search.Questionnaired2pdv93.sortieaccompagnementd2pdv93_id"
+msgstr "Sortie de l'obligation d'accompagnement"
+
+msgid "Search.Questionnaired2pdv93.chgmentsituationadmin"
+msgstr "Sortie \"changement administratif\""
+
 # Tableau de résultats
 
 msgid "/Cohortesd2pdvs93/ajaxadd"

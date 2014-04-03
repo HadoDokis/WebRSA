@@ -57,7 +57,7 @@
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne' );
+		public $uses = array( 'Cohorted2pdv93', 'Dossier', 'Tableausuivipdv93', 'Option', 'Personne', 'Questionnaired2pdv93' );
 
 		/**
 		 * Moteur de recherche des questionnaires D2
@@ -98,6 +98,10 @@
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
+			);
+			$options = Hash::merge(
+				$options,
+				$this->Questionnaired2pdv93->options( array( 'find' => true ) )
 			);
 			$this->set( compact( 'options' ) );
 
