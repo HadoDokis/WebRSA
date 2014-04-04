@@ -30,7 +30,7 @@
 			'core.Apple' // TODO: détacher tous les behaviors si possible, ce qui permettra d'éviter required="required"
 		);
 
-		public $requestsParams = array(
+		public static $requestsParams = array(
 			'page_1_of_1' => array(
 				'paging' => array(
 					'Apple' => array(
@@ -163,7 +163,7 @@
 			$this->View = new View( $controller );
 			$this->DefaultTable = new DefaultTableHelper( $this->View );
 
-			$this->_setRequest( $this->requestsParams['page_2_of_7'] );
+			$this->_setRequest( self::$requestsParams['page_2_of_7'] );
 		}
 
 		/**
