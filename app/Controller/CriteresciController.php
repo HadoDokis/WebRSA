@@ -160,7 +160,11 @@
 			$options = (array)Hash::get( $this->viewVars, 'options' );
 			// Ajout des éléments de listes déroulantes propres au CG 93
 			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$options = Hash::merge( $options, $this->Contratinsertion->Cer93->enums() );
+				$options = Hash::merge(
+					$options,
+					$this->Contratinsertion->Cer93->enums(),
+					$this->Contratinsertion->Cer93->options( array( 'autre' => true, 'find' => true ) )
+				);
 				$options['Expprocer93']['metierexerce_id'] = $this->Contratinsertion->Cer93->Expprocer93->Metierexerce->find( 'list' );
 				$options['Expprocer93']['secteuracti_id'] = $this->Contratinsertion->Cer93->Expprocer93->Secteuracti->find( 'list' );
 			}

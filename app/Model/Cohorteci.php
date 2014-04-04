@@ -210,6 +210,40 @@
 				}
 			}
 
+			// Filtrer par "Votre contrat porte sur"
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$sujetcer93_id = Hash::get( $criteresci, 'Cer93Sujetcer93.sujetcer93_id' );
+				if( !empty( $sujetcer93_id ) ) {
+					// Sujet du CER
+					$alias = 'cers93_sujetscers93';
+					$subQuery = array(
+						'alias' => $alias,
+						'fields' => array( "{$alias}.id" ),
+						'contain' => false,
+						'conditions' => array(
+							"{$alias}.cer93_id = Cer93.id",
+							"{$alias}.sujetcer93_id" => $sujetcer93_id
+						),
+						'limit' => 1
+					);
+
+					// Sous-sujet du CER
+					$soussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.soussujetcer93_id' ) );
+					if( !empty( $soussujetcer93_id ) ) {
+						$subQuery['conditions']["{$alias}.soussujetcer93_id"] = $soussujetcer93_id;
+					}
+
+					// Valeur par sous-sujet du CER
+					$valeurparsoussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ) );
+					if( !empty( $valeurparsoussujetcer93_id ) ) {
+						$subQuery['conditions']["{$alias}.valeurparsoussujetcer93_id"] = $valeurparsoussujetcer93_id;
+					}
+
+					$sql = $this->Contratinsertion->Cer93->Cer93Sujetcer93->sq( $subQuery );
+
+					$conditions[] = "EXISTS( {$sql} )";
+				}
+			}
 
 			// Personne chargée du suiv
 			if( !empty( $personne_suivi ) ) {
