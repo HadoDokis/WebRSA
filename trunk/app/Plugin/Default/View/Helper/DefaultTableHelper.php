@@ -130,9 +130,24 @@
 		}
 
 		/**
-		 * Retourne une table complète (thead/tbody) pour un ensemble d'enregistrements.
+		 * Retourne les paramètres à utiliser pour une table.
 		 *
-		 * TODO: traduction des options
+		 * @todo traduction des options
+		 *
+		 * @param array $params
+		 * @return type
+		 */
+		public function tableParams( array $params = array() ) {
+			return array(
+				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
+				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",// TODO: addClass
+				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
+				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
+			);
+		}
+
+		/**
+		 * Retourne une table complète (thead/tbody) pour un ensemble d'enregistrements.
 		 *
 		 * @param array $data
 		 * @param array $fields
@@ -144,12 +159,7 @@
 				return null;
 			}
 
-			$tableParams = array(
-				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
-				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",// TODO: addClass
-				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
-				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
-			);
+			$tableParams = $this->tableParams( $params );
 
 			$thead = $this->thead( $fields, $tableParams + $params );
 			$tbody = $this->tbody( $data, $fields, $tableParams + $params );
@@ -197,8 +207,6 @@
 		 * Retourne une table de détails (verticale) pour un enregistrement
 		 * particulier.
 		 *
-		 * TODO: traduction des options
-		 *
 		 * @param array $data
 		 * @param array $fields
 		 * @param array $params
@@ -209,11 +217,7 @@
 				return null;
 			}
 
-			$tableParams = array(
-				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
-				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",// TODO: addClass
-				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) )
-			);
+			$tableParams = $this->tableParams( $params );
 
 			$tbody = $this->detailsTbody( $data, $fields, $tableParams + $params );
 

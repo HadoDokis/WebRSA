@@ -12,6 +12,7 @@
 	App::uses( 'AppHelper', 'View/Helper' );
 	App::uses( 'DefaultDefaultHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'DefaultTableHelperTest', 'Default.Test/Case/View/Helper' );
 
 	/**
 	 * La classe DefaultDefaultHelperTest ...
@@ -43,93 +44,6 @@
 			)
 		);
 
-		public $requestsParams = array(
-			'page_1_of_1' => array(
-				'paging' => array(
-					'Apple' => array(
-						'page' => 1,
-						'current' => 9,
-						'count' => 19,
-						'prevPage' => false,
-						'nextPage' => false,
-						'pageCount' => 1,
-						'order' => null,
-						'limit' => 20,
-						'options' => array(
-							'page' => 1,
-							'conditions' => array( )
-						),
-						'paramType' => 'named'
-					)
-				),
-				'controller' => 'apples',
-				'action' => 'index',
-			),
-			'page_1_of_2' => array(
-				'paging' => array(
-					'Apple' => array(
-						'page' => 1,
-						'current' => 9,
-						'count' => 21,
-						'prevPage' => false,
-						'nextPage' => true,
-						'pageCount' => 2,
-						'order' => null,
-						'limit' => 20,
-						'options' => array(
-							'page' => 1,
-							'conditions' => array( )
-						),
-						'paramType' => 'named'
-					)
-				),
-				'controller' => 'apples',
-				'action' => 'index',
-			),
-			'page_2_of_2' => array(
-				'paging' => array(
-					'Apple' => array(
-						'page' => 2,
-						'current' => 21,
-						'count' => 21,
-						'prevPage' => true,
-						'nextPage' => false,
-						'pageCount' => 2,
-						'order' => null,
-						'limit' => 20,
-						'options' => array(
-							'page' => 2,
-							'conditions' => array( )
-						),
-						'paramType' => 'named'
-					)
-				),
-				'controller' => 'apples',
-				'action' => 'index',
-			),
-			'page_2_of_7' => array(
-				'paging' => array(
-					'Apple' => array(
-						'page' => 2,
-						'current' => 9,
-						'count' => 62,
-						'prevPage' => false,
-						'nextPage' => true,
-						'pageCount' => 7,
-						'order' => null,
-						'limit' => 20,
-						'options' => array(
-							'page' => 1,
-							'conditions' => array( )
-						),
-						'paramType' => 'named'
-					)
-				),
-				'controller' => 'apples',
-				'action' => 'index',
-			),
-		);
-
 		/**
 		 *
 		 * @param array $requestParams
@@ -154,7 +68,7 @@
 			$this->View = new View( $controller );
 			$this->DefaultDefault = new DefaultDefaultHelper( $this->View );
 
-			$this->_setRequest( $this->requestsParams['page_2_of_7'] );
+			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_7'] );
 		}
 
 		/**
@@ -271,7 +185,7 @@
 						</table>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$this->_setRequest( $this->requestsParams['page_1_of_1'] );
+			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_1_of_1'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 1, 1, 1, 19 );
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );
 			$expected = '<div class="pagination">
@@ -296,7 +210,7 @@
 						</div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$this->_setRequest( $this->requestsParams['page_1_of_2'] );
+			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_1_of_2'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 1, 2, 1, 20 );
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );
 			$expected = '<div class="pagination">
@@ -336,7 +250,7 @@
 
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$this->_setRequest( $this->requestsParams['page_2_of_2'] );
+			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_2'] );
 			$expectedCounter = sprintf( preg_replace( '/\{[^\}]+\}/', '%d', __( 'Page {:page} of {:pages}, from {:start} to {:end}' ) ), 2, 2, 21, 21 );
 			$result = $this->DefaultDefault->index( $this->datas, $fields, $params );
 			$expected = '<div class="pagination">
