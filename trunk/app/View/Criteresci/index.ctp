@@ -102,6 +102,14 @@
 						.$this->Form->input( 'Expprocer93.metierexerce_id', array( 'label' => 'Métier exercé', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true ) )
 						.$this->Form->input( 'Expprocer93.secteuracti_id', array( 'label' => 'Secteur d\'activité', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true ) )
 					);
+
+					echo $this->Html->tag(
+						'fieldset',
+						$this->Html->tag( 'legend', 'Filtrer par ce sur quoi le contrat porte' )
+						.$this->Form->input( 'Cer93Sujetcer93.sujetcer93_id', array( 'label' => 'Sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.sujetcer93_id' ), 'empty' => true ) )
+						.$this->Form->input( 'Cer93Sujetcer93.soussujetcer93_id', array( 'label' => 'Sous sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.soussujetcer93_id' ), 'empty' => true ) )
+						.$this->Form->input( 'Cer93Sujetcer93.valeurparsoussujetcer93_id', array( 'label' => 'Valeur par sous sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ), 'empty' => true ) )
+					);
 				}
 
                 echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
@@ -348,4 +356,15 @@
 
 <?php endif?>
 
-<?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>
+<?php
+	if( Configure::read( 'Cg.departement' ) == 93 ) {
+		echo $this->Observer->dependantSelect(
+			array(
+				'Cer93Sujetcer93.sujetcer93_id' => 'Cer93Sujetcer93.soussujetcer93_id',
+				'Cer93Sujetcer93.soussujetcer93_id' => 'Cer93Sujetcer93.valeurparsoussujetcer93_id',
+			)
+		);
+	}
+
+	echo $this->Search->observeDisableFormOnSubmit( 'Search' );
+?>

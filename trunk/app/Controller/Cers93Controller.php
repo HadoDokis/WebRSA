@@ -396,7 +396,8 @@
 			$naturecontratDuree = Set::extract( '/Naturecontrat/id', $naturecontratDuree );
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
 
-			// -----------------------------------------------------------------
+			// =================================================================
+
 			$listeSujets = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
@@ -494,7 +495,6 @@
 			$this->set( 'autrevaleur_isautre_id', $autrevaleur_isautre_id );
 			$this->set( 'valeursparsoussujetscers93', $valeursparsoussujetscers93 );
 
-
 			// Liste des valeurs possédant un champ texte dans Soussujetscers93
 			$valeursSoussujet = $this->Cer93->Sujetcer93->Soussujetcer93->find(
 				'all',
@@ -505,6 +505,8 @@
 			$autresoussujet_isautre_id = Hash::extract( $valeursSoussujet, '{n}.Soussujetcer93[isautre=1].id' );
 // 			$autresoussujet_isautre_id = Hash::format( $autresoussujet_isautre_id, array( '{n}.sujetcer93_id', '{n}.id' ), '%%d' );
 			$this->set( 'autresoussujet_isautre_id', $autresoussujet_isautre_id );
+
+			// =================================================================
 
 			// Options
 			$options = array(

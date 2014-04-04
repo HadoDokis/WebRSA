@@ -1350,8 +1350,8 @@
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
 				}
 			}
-            
-            
+
+
             // Récupération du nom de l'utilsiateur ayant émis la première lecture
 			$histopremierelecture = $this->Histochoixcer93->find(
 				'first',
@@ -1372,7 +1372,7 @@
                     )
 				)
 			);
-            
+
             if( !empty( $histopremierelecture ) ) {
                 $userPremierelecture = Hash::get( $histopremierelecture, 'User.nom_complet' );
                 $data['Cer93']['userpremierelecture'] = $userPremierelecture;
@@ -1680,6 +1680,78 @@
 			else {
 				return null;
 			}
+		}
+
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche
+		 *
+		 * @param array $params <=> array( 'find' => false, 'autre' => false )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			$params = $params + array( 'find' => false, 'autre' => false );
+
+			$foreignKeyPrev = null;
+			foreach( array( 'Sujetcer93', 'Soussujetcer93', 'Valeurparsoussujetcer93' ) as $modelName ) {
+				$Model = ClassRegistry::init( $modelName );
+
+				// Find list normal
+				if( Hash::get( $params, 'find' ) ) {
+					$query = array(
+						'fields' => array(
+							"{$Model->alias}.{$Model->primaryKey}",
+							"{$Model->alias}.{$Model->displayField}"
+						),
+						'order' => array(
+							"{$Model->alias}.name ASC"
+						)
+					);
+
+					if( !empty( $foreignKeyPrev ) ) {
+						array_unshift( $query['order'], "{$Model->alias}.{$foreignKeyPrev} ASC" );
+						$query['fields'] = array(
+							"{$Model->alias}.{$Model->primaryKey}",
+							"{$Model->alias}.{$Model->displayField}",
+							"{$Model->alias}.{$foreignKeyPrev}",
+						);
+					}
+
+					$results = (array)$Model->find( 'all', $query );
+
+					if( !empty( $foreignKeyPrev ) ) {
+						$results = Hash::combine(
+							$results,
+							array( '%s_%s', "{n}.{$Model->alias}.{$foreignKeyPrev}", "{n}.{$Model->alias}.{$Model->primaryKey}" ),
+							"{n}.{$Model->alias}.{$Model->displayField}"
+						);
+					}
+					else {
+						$results = Hash::combine(
+							$results,
+							"{n}.{$Model->alias}.{$Model->primaryKey}",
+							"{n}.{$Model->alias}.{$Model->displayField}"
+						);
+					}
+
+					$options['Cer93Sujetcer93'][Inflector::underscore( $Model->alias ).'_id'] = $results;
+				}
+
+				// Valeurs "Autre"
+				if( Hash::get( $params, 'autre' ) ) {
+					$query = array(
+						'conditions' => array(
+							"{$Model->alias}.isautre" => 1
+						)
+					);
+					$options['Autre']['Cer93Sujetcer93'][Inflector::underscore( $Model->alias ).'_id'] = array_keys( (array)$Model->find( 'list', $query ) );
+				}
+
+				//
+				$foreignKeyPrev = Inflector::underscore( $Model->alias ).'_id';
+			}
+
+			return $options;
 		}
 	}
 ?>
