@@ -33,7 +33,7 @@
 		protected $_cacheChanged = false;
 
 		/**
-		 * TODO: pas d'erreur et pas utilisé si pas défini (ex: 'fast') ?
+		 * INFO: pas d'erreur et pas utilisé si pas défini (ex: 'fast') ?
 		 *
 		 * @var string
 		 */
@@ -134,11 +134,9 @@
 
 			if( !is_null( $value ) ) {
 				switch( $type ) {
-					// TODO: traduction
 					case 'boolean':
-						$return = ( empty( $value ) ? 'Non' : 'Oui' );
+						$return = ( empty( $value ) ? __( 'No' ) : __( 'Yes' ) );
 						break;
-					// TODO: _formatDatetime( $value )
 					case 'date':
 						$return = strftime( '%d/%m/%Y', strtotime( $value ) );
 						break;
@@ -172,7 +170,6 @@
 		public function attributes( $value, $type ) {
 			$attributes = array( 'class' => "data {$type}" );
 
-			// TODO: le faire dans une sous-classe
 			if( $value === null ) {
 				$this->addClass( $attributes, 'null' );
 			}

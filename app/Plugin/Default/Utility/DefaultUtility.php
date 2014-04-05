@@ -141,7 +141,7 @@
 		 */
 		public static function linkParams( $path, array $htmlAttributes, array $data = array() ) {
 			$url = $path;
-			// TODO: il faudrait le faire après, mais ne pas se tromper avec les #content
+
  			if( !empty( $data ) ) {
 				$url = self::evaluate( $data, $url );
 			}

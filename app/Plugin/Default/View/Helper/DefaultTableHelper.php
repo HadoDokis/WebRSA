@@ -29,11 +29,42 @@
 		);
 
 		/**
-		 * Retourne l'élément thead d'une table pour un ensemble d'enregistrements.
+		 * Permet de savoir si un champ est sous la forme /Controller/action,
+		 * ce qui signifie un lien.
 		 *
-		 * @todo Pouvoir placer des liens dans n'importe quelle colonne, en
-		 * plus de actions.
-		 * @todo Connaître le type de colonnes via le TableCellHelper
+		 * @param string $field
+		 * @return boolean
+		 */
+		protected function _isUrlField( $field ) {
+			return ( strpos( $field, '/' ) === 0 );
+		}
+
+		/**
+		 * Permet de savoir si un champ est sous la forme data[Model][field],
+		 * ce qui signifie un champ de formulaire.
+		 *
+		 * @param string $field
+		 * @return boolean
+		 */
+		protected function _isInputField( $field ) {
+			return ( strpos( $field, 'data[' ) === 0 );
+		}
+
+		/**
+		 * Permet de savoir si un champ est sous la forme Model.field, ce qui
+		 * signifie de l'affichage formaté.
+		 *
+		 * @param string $field
+		 * @return boolean
+		 */
+		protected function _isDataField( $field ) {
+			return ( strstr( $field, '.' ) !== false )
+				&& !$this->_isUrlField( $field )
+				&& !$this->_isInputField( $field );
+		}
+
+		/**
+		 * Retourne l'élément thead d'une table pour un ensemble d'enregistrements.
 		 *
 		 * @param array $fields
 		 * @param array $params
@@ -52,16 +83,16 @@
 
 			foreach( $fields as $field => $attributes ) {
 				$attributes = (array)$attributes;
-				if( strpos( $field, '/' ) === 0 ) {
+				if( $this->_isUrlField( $field ) ) {
 					$for = "{$tableId}ColumnActions";
 				}
-				else if( strpos( $field, 'data[' ) === 0 ) {
+				else if( $this->_isInputField( $field ) ) {
 					$for = "{$tableId}ColumnInput{$field}";
 					$theadTr[] = array(
 						__d( $domain, $field ) => array( 'id' => $for )
 					);
 				}
-				else {
+				else if( $this->_isDataField( $field ) ) {
 					// INFO: la mise en cache n'a pas de sens ici
 					list( $modelName, $fieldName ) = model_field( $field );
 
@@ -108,12 +139,7 @@
 				foreach( $fields as $path => $attributes ) {
 					$path = str_replace( '[]', "[{$i}]", $path );
 
-					// TODO: que faire dans ces cas-là ?
-					if( strstr( $path, ']' ) !== false ) {
-					}
-					else if( strstr( $path, '/' ) !== false ) {
-					}
-					else if( strstr( $path, '.' ) !== false ) {
+					if( $this->_isDataField( $path ) ) {
 						list( $modelName, $fieldName ) = model_field( $path );
 						if( !isset( $attributes['options'] ) && isset( $params['options'][$modelName][$fieldName] ) ) {
 							$attributes['options'] = $params['options'][$modelName][$fieldName];
@@ -132,15 +158,13 @@
 		/**
 		 * Retourne les paramètres à utiliser pour une table.
 		 *
-		 * @todo traduction des options
-		 *
 		 * @param array $params
-		 * @return type
+		 * @return array
 		 */
 		public function tableParams( array $params = array() ) {
 			return array(
 				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
-				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",// TODO: addClass
+				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",
 				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
 				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
 			);
@@ -154,7 +178,7 @@
 		 * @param array $params
 		 * @return null
 		 */
-		public function index( array $data, array $fields, array $params = array() ) { // TODO: $tableAttributes, $tableAttributes['domain']
+		public function index( array $data, array $fields, array $params = array() ) {
 			if( empty( $data ) || empty( $fields ) ) {
 				return null;
 			}
@@ -212,7 +236,7 @@
 		 * @param array $params
 		 * @return null
 		 */
-		public function details( array $data, array $fields, array $params = array() ) { // TODO: $tableAttributes, $tableAttributes['domain']
+		public function details( array $data, array $fields, array $params = array() ) {
 			if( empty( $data ) || empty( $fields ) ) {
 				return null;
 			}

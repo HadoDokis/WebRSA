@@ -13,6 +13,7 @@
 	App::uses( 'DefaultDefaultHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
 	App::uses( 'DefaultTableHelperTest', 'Default.Test/Case/View/Helper' );
+	require_once dirname( __FILE__ ).DS.'DefaultCsvHelperTest.php';
 
 	/**
 	 * La classe DefaultDefaultHelperTest ...
@@ -64,9 +65,13 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+
+			$this->Apple = ClassRegistry::init( 'Apple' );
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultDefault = new DefaultDefaultHelper( $this->View );
+			$this->DefaultDefault->DefaultCsv->Csv = new CsvTestHelper( $this->View );
 
 			$this->_setRequest( DefaultTableHelperTest::$requestsParams['page_2_of_7'] );
 		}
@@ -337,10 +342,7 @@
 							<div style="display:none;">
 								<input type="hidden" name="_method" value="POST"/>
 							</div>
-							<div class="input text">
-								<label for="AppleId">Apple.id</label>
-								<input name="data[Apple][id]" type="text" id="AppleId"/>
-							</div>
+							<input type="hidden" name="data[Apple][id]" id="AppleId"/>
 							<div class="input select">
 								<label for="AppleColor">Apple.color</label>
 								<select name="data[Apple][color]" id="AppleColor">
@@ -370,10 +372,7 @@
 			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
 
 			$result = $this->DefaultDefault->subform( $fields, $params );
-			$expected = '<div class="input text">
-							<label for="AppleId">Apple.id</label>
-							<input name="data[Apple][id]" type="text" id="AppleId"/>
-						</div>
+			$expected = '<input type="hidden" name="data[Apple][id]" id="AppleId"/>
 						<div class="input select">
 							<label for="AppleColor">Apple.color</label>
 							<select name="data[Apple][color]" id="AppleColor">
@@ -385,33 +384,26 @@
 		}
 
 		/**
-		 * Test de la méthode DefaultDefaultHelper::urlMsgid(()
-		 *
-		 * @return void
+		 * Test de la méthode DefaultCsvHelper::render()
 		 */
-		public function testUrlMsgid() {
-			$url = array(
-				'plugin' => null,
-				'controller' => 'users',
-				'action' => 'login',
-			);
-			$result = $this->DefaultDefault->urlMsgid( $url );
-			$expected = '/Users/login/';
-			$this->assertEquals( $result, $expected );
+		public function testRender() {
+			$apples = $this->Apple->find( 'all', array( 'limit' => 1 ) );
 
-			$url = array(
-				'plugin' => 'acl_extras',
-				'controller' => 'users',
-				'action' => 'index',
-				'prefix' => 'admin',
-				'admin' => 'true',
-				0 => 'foo',
-				'Search__active' => 1,
-				'#' => 'content'
+			$result = $this->DefaultDefault->csv(
+				$apples,
+				array(
+					'Apple.id',
+					'Apple.color',
+					'Apple.date',
+					'Apple.created',
+					'Apple.mytime',
+				)
 			);
-			$result = $this->DefaultDefault->urlMsgid( $url );
-			$expected = '/AclExtras.Users/admin_index/';
-			$this->assertEquals( $result, $expected );
+
+			$expected = 'Apple.id,Apple.color,Apple.date,Apple.created,Apple.mytime
+1,"Red 1",04/01/1951,"22/11/2006 à 10:38:58",22:57:17
+';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>

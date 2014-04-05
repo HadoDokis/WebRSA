@@ -104,11 +104,11 @@
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->DefaultData->format( true, 'boolean' );
-			$expected = 'Oui';
+			$expected = __( 'Yes' );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->DefaultData->format( false, 'boolean' );
-			$expected = 'Non';
+			$expected = __( 'No' );
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
 			$result = $this->DefaultData->format( '2013-06-01', 'date' );
@@ -148,6 +148,37 @@
 
 			$result = $this->DefaultData->attributes( false, 'boolean' );
 			$expected = array( 'class' => 'data boolean false' );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test du cache via les méthodes DefaultDataHelper::cacheKey(),
+		 *  DefaultDataHelper::beforeRender() et DefaultDataHelper::afterLayout().
+		 */
+		public function testAfterLayout() {
+			Configure::write( 'Cache.disable', false );
+
+			$this->DefaultData->type( 'Apple.color' );
+
+			$layoutFile = APP.'View/Layouts/default.ctp';
+			$this->DefaultData->afterLayout( $layoutFile );
+
+			$viewFile = APP.'View/Cataloguespdisfps93/add_edit.ctp';
+			$this->DefaultData->beforeRender( $viewFile );
+
+			$result = Cache::read( $this->DefaultData->cacheKey() );
+			$expected = array(
+				'Apple' => array(
+					'id' => 'integer',
+					'apple_id' => 'integer',
+					'color' => 'string',
+					'name' => 'string',
+					'created' => 'datetime',
+					'date' => 'date',
+					'modified' => 'datetime',
+					'mytime' => 'time'
+				)
+			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}

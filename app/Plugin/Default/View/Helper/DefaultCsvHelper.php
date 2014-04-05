@@ -28,10 +28,52 @@
 		);
 
 		/**
-		 * Effectue le rendu CSV.
+		 * Ajout d'un champ d'en-tête avec la traduction des noms des champs en
+		 * fonction, soit de la clé "domain" de l'attribut d'un field, soit de la
+		 * même clé des paramètres généraux.
 		 *
-		 * @todo Méthode trop complexe
-		 * @todo Type de champ...
+		 * @param array $fields
+		 * @param array $params Les paramètres généraux
+		 */
+		protected function _addHeaderRow( array $fields, array $params ) {
+			$row = array();
+
+			foreach( $fields as $path => $attributes ) {
+				$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : $params['domain'] );
+				$row[] = __d( $domain, $path );
+			}
+
+			$this->Csv->addRow( $row );
+		}
+
+		/**
+		 * Ajout d'un champ d'enregistrements, suivant le type de champs et la
+		 * traducton possible par les options des paramètres généraux ou plus
+		 * spécifiquement des attributs des champs.
+		 *
+		 * @param array $fields
+		 * @param array $params Les paramètres généraux
+		 */
+		protected function _addBodyRow( array $data, array $fields, array $types, array $params ) {
+			$row = array();
+
+			foreach( array_keys( $fields ) as $path ) {
+				$value = Hash::get( $data, $path );
+
+				$value = $this->DefaultData->format( $value, $types[$path] );
+
+				if( $value !== null && Hash::check( $params, "options.{$path}.{$value}" ) ) {
+					$value = Hash::get( $params, "options.{$path}.{$value}" );
+				}
+
+				$row[] = $value;
+			}
+
+			$this->Csv->addRow( $row );
+		}
+
+		/**
+		 * Effectue le rendu CSV.
 		 *
 		 * @param array $datas
 		 * @param array $fields
@@ -63,34 +105,13 @@
 
 			// En-têtes du tableau
 			if( $params['headers'] ) {
-				$row = array();
-
-				foreach( $fields as $path => $attributes ) {
-					$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : $params['domain'] );
-					$row[] = __d( $domain, $path );
-				}
-
-				$this->Csv->addRow( $row );
+				$this->_addHeaderRow( $fields, $params );
 			}
 
 			// Corps du tableau
 			if( !empty( $datas ) ) {
-				foreach( $datas as $i => $data ) {
-					$row = array();
-
-					foreach( $fields as $path => $attributes ) {
-						$value = Hash::get( $data, $path );
-
-						$value = $this->DefaultData->format( $value, $types[$path] );
-
-						if( $value !== null && Hash::check( $params, "options.{$path}.{$value}" ) ) {
-							$value = Hash::get( $params, "options.{$path}.{$value}" );
-						}
-
-						$row[] = $value;
-					}
-
-					$this->Csv->addRow( $row );
+				foreach( $datas as $data ) {
+					$this->_addBodyRow( $data, $fields, $types, $params );
 				}
 			}
 

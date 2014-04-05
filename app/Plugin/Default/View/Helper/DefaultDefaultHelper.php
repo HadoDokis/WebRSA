@@ -4,7 +4,8 @@
 	 *
 	 * PHP 5.4
 	 *
-	 * @package app.View.Helper
+	 * @package Default
+	 * @subpackage View.Helper
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'DefaultUrl', 'Default.Utility' );
@@ -13,7 +14,8 @@
 	/**
 	 * La classe DefaultDefaultHelper ...
 	 *
-	 * @package       app.View.Helper
+	 * @package Default
+	 * @subpackage View.Helper
 	 */
 	class DefaultDefaultHelper extends AppHelper
 	{
@@ -32,18 +34,53 @@
 		);
 
 		/**
-		 * TODO:
-		 *	- scinder
-		 *		* compléter l'URL
-		 *		* msgid(+suffix/type:title)
-		 *	- bien formater plugin
-		 *	- remplacer dans les Helpers où c'est nécessaire
+		 * Retourne une action de la liste d'actions générées par la méthode actions().
 		 *
-		 * @param array $url
-		 * @return string
+		 * @param string $url
+		 * @param array $attributes
 		 */
-		public function urlMsgid( array $url ) {
-			return DefaultUtility::msgid( $url ).'/';
+		protected function _action( $url, $attributes ) {
+			list( $text, $url, $attributes ) = DefaultUtility::linkParams(
+				$url,
+				(array)$attributes
+			);
+
+			if( !isset( $attributes['title'] ) ) {
+				$attributes += array(
+					'domain' => Inflector::underscore( $this->request->params['controller'] ),
+					'msgid' => DefaultUtility::msgid( $url ).'/:title'
+				);
+
+				$attributes['title'] = __d( $attributes['domain'], $attributes['msgid'] );
+			}
+			unset( $attributes['domain'], $attributes['msgid'] );
+
+			if( isset( $attributes['text'] ) ) {
+				$text = $attributes['text'];
+				unset( $attributes['text'] );
+			}
+
+			$enabled = ( isset( $attributes['enabled'] ) ? $attributes['enabled'] : true );
+			unset( $attributes['enabled'] );
+
+			if( $enabled ) {
+				$content = $this->DefaultHtml->link( $text, $url, $attributes );
+			}
+			else {
+				$classes = Hash::filter(
+					array(
+						$url['plugin'],
+						$url['controller'],
+						$url['action'],
+						'disabled'
+					)
+				);
+				$attributes = $this->addClass( $attributes, implode( ' ', $classes ) );
+
+				$content = $this->DefaultHtml->tag( 'span', $text, $attributes );
+			}
+
+			return $this->DefaultHtml->tag( 'li', $content, array( 'class' => 'action' ) );
 		}
 
 		/**
@@ -90,69 +127,7 @@
 
 			$lis = array();
 			foreach( Hash::normalize( $actions ) as $url => $attributes ) {
-				// TODO: nettoyer
-				/*$url2 = DefaultUrl::toArray( $url );
-				$attributes2 = DefaultUtility::attributes( $url2, (array)$attributes );
-//				$attributes2 = self::evaluate( $data, $attributes2 ); // INFO: on en a besoin ailleurs, ou permettre de le passer dans la méthode actions ?
-				$domain = DefaultUtility::domain( $url2, $attributes2 );
-				$text2 = __d( $domain, DefaultUtility::msgid( $url2 ) );*/
-//debug( array( $text2, $url2, $attributes2 ) );
-
-				//--------------------------------------------------------------
-
-				list( $text, $url, $attributes ) = DefaultUtility::linkParams( // TODO: une méthode action()
-					$url,
-					(array)$attributes
-				);
-//debug( array( $text, $url, $attributes ) );
-				if( isset( $attributes['text'] ) ) {
-					$text = $attributes['text'];
-					unset( $attributes['text'] );
-				}
-
-				if( !isset( $attributes['title'] ) ) {
-					$domain = ( isset( $attributes['domain'] ) ? $attributes['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
-					$msgid = ( isset( $attributes['msgid'] ) ? $attributes['msgid'] : $this->urlMsgid( $url ).':title' );
-					$attributes['title'] = __d( $domain, $msgid );
-				}
-
-				$enabled = ( isset( $attributes['enabled'] ) ? $attributes['enabled'] : true );
-
-				unset( $attributes['domain'], $attributes['msgid'], $attributes['enabled'] );
-
-				if( $enabled ) {
-					$lis[] = $this->DefaultHtml->tag(
-						'li',
-						$this->DefaultHtml->link(
-							$text,
-							$url,
-							$attributes
-						),
-						array( 'class' => 'action' )
-					);
-				}
-				else {
-					$classes = Hash::filter(
-						array(
-							$url['plugin'],
-							$url['controller'],
-							$url['action'],
-							'disabled'
-						)
-					);
-
-					$attributes = $this->addClass( $attributes, implode( ' ', $classes ) );
-
-					$lis[] = $this->DefaultHtml->tag(
-						'li',
-						$this->DefaultHtml->tag(
-							'span',
-							$text,
-							$attributes
-						),
-						array( 'class' => 'action' )
-					);
-				}
+				$lis[] = $this->_action( $url, $attributes );
 			}
 
 			return $this->DefaultHtml->tag( 'ul', implode( $lis ), array( 'class' => 'actions' ) );
@@ -161,13 +136,6 @@
 		/**
 		 * Retourne un tableau entouré de liens de pagination si des données sont
 		 * présentes, un message d'avertissement sinon.
-		 *
-		 * @todo un méthode pour que array_keys( Hash::normalize( $fields ) )
-		 *	donne le nombre de cellules de chaque type, le nombre de cellules
-		 *	d'action à la fin du tableau (@see DefaultTableHelper::thead)
-		 *	et si des cellules de formulaires sont présentes, ajouter un formulaire
-		 *	autour de ce qui est retourné.
-		 * @todo ajouter le tableau tooltip
 		 *
 		 * @param array $datas
 		 * @param array $fields
@@ -309,32 +277,27 @@
 		 * @return string
 		 */
 		public function subform( array $fields, array $params = array() ) {
-			$domain = ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) );
-			unset( $params['domain'] );
-
-			$legend = ( isset( $params['legend'] ) ? $params['legend'] : false );
-			unset( $params['legend'] );
-
-			$fieldset = ( isset( $params['fieldset'] ) ? $params['fieldset'] : false );
-			unset( $params['fieldset'] );
-
-			$options = ( isset( $params['options'] ) ? $params['options'] : array() );
-			unset( $params['options'] );
+			$params += array(
+				'domain' => Inflector::underscore( $this->request->params['controller'] ),
+				'legend' => false,
+				'fieldset' => false,
+				'options' => array()
+			);
 
 			$inputs = array();
 			foreach( Hash::normalize( $fields ) as $field => $fieldParams ) {
 				if( !isset( $fieldParams['label'] ) || empty( $fieldParams['label'] ) ) {
-					$fieldParams['label'] = __d( $domain, $field );
+					$fieldParams['label'] = __d( $params['domain'], $field );
 				}
 
-				if( !isset( $fieldParams['options'] ) && Hash::check( $options, $field ) ) {
-					$fieldParams['options'] = Hash::get( $options, $field );
+				if( !isset( $fieldParams['options'] ) && Hash::check( $params['options'], $field ) ) {
+					$fieldParams['options'] = Hash::get( $params['options'], $field );
 				}
 
 				$inputs[$field] = (array)$fieldParams;
 			}
-			$inputs['legend'] = $legend;
-			$inputs['fieldset'] = $fieldset;
+			$inputs['legend'] = $params['legend'];
+			$inputs['fieldset'] = $params['fieldset'];
 
 			return $this->DefaultForm->inputs( $inputs );
 		}
