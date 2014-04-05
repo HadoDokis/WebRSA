@@ -39,6 +39,11 @@
 		 */
 		public function back( $referer = null, array $params = array() ) {
 			$referer = ( !is_null( $referer ) ? $referer : $this->request->referer( true ) );
+			$slashes = substr_count( $referer, '/' );
+			if( $referer != '/' && $slashes == 1 ) {
+				$referer = "{$referer}/index";
+			}
+
 			$enabled = ( !empty( $referer ) && ( $referer != '/' ) );
 
 			if( $enabled ) {

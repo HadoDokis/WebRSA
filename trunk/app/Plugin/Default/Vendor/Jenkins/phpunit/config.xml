@@ -9,6 +9,8 @@
 		<whitelist>
 			<directory>../../..</directory>
 			<exclude>
+				<file>../../../Config/bootstrap.php</file>
+				<file>../../../Lib/basics.php</file>
 				<directory>../../../Test</directory>
 			</exclude>
 		</whitelist>

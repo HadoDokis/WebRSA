@@ -36,15 +36,66 @@
 	</target>
 
 	<!-- Vérification de la syntaxe des fichiers .php et .ctp -->
-	<target name="lint">
+	<target name="php-lint">
 		<apply executable="php" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
 			<arg line="-l"/>
 			<fileset
 				dir="${dir.cakephp.plugin}"
 				includes="**/*.php,**/*.ctp"
-				excludes="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
+				excludes="" />
 		</apply>
 	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .po
+		@url http://stackoverflow.com/questions/9880259/detecting-errors-in-po-files
+
+		Lorsque plusieurs traductions du même msgid sont présentes dans un fichier
+		.po, c'est la dernière qui est prise en compte.
+
+                sudo aptitude install gettext
+	-->
+	<target name="po-lint">
+		<apply executable="msgfmt" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="-v"/>
+			<arg line="-C"/>
+			<arg line="-o /dev/null"/>
+			<fileset
+				dir="${dir.cakephp.plugin}"
+				includes="Locale/**/*.po"
+				excludes="" />
+		</apply>
+	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .js
+		@url http://ariya.ofilabs.com/2012/10/javascript-validator-with-esprima.html
+
+		sudo aptitude install nodejs nodejs-legacy npm
+		sudo npm install -g esprima
+	-->
+	<target name="js-lint">
+		<apply executable="esvalidate" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<fileset dir="${dir.cakephp.plugin}" includes="webroot/**/**.js"/>
+		</apply>
+	</target>
+
+	<!--
+		Vérification de la syntaxe des fichiers .css
+		@url https://github.com/stubbornella/csslint/wiki/Command-line-interface
+
+		sudo aptitude install nodejs nodejs-legacy npm
+		sudo npm install -g csslint
+	-->
+	<target name="css-lint">
+		<apply executable="csslint" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
+			<arg line="--format=compact"/>
+			<arg line="--warnings=display-property-grouping,duplicate-properties,empty-rules,known-properties"/>
+			<fileset dir="${dir.cakephp.plugin}" includes="webroot/**/**.css"/>
+		</apply>
+	</target>
+
+	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests untaires -->
 	<target name="phpunit" depends="clean,lint">
@@ -156,7 +207,7 @@
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.plugin}
-				-E /\/(app\/(Lib|Model|Vendor|Plugin\/(Gedooo|Pgsqlcake|Validation))|lib|Test)\//
+				-E /\/(app\/(Lib|Model|Vendor|Plugin\/(Gedooo|Pgsqlcake|Validation)))\//
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />

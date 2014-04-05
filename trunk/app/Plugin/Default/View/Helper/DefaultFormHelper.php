@@ -82,10 +82,12 @@
 
 			// Valeur
 			$value = Hash::get( $this->request->data, $fieldName );
+
 			if( isset( $options['options'][$value] ) ) {
 				$value = $options['options'][$value];
 			}
-			if( isset( $options['nl2br'] ) && $options['nl2br'] ) {
+
+			if( Hash::get( $options, 'nl2br' ) ) {
 				$value = nl2br( $value );
 			}
 
@@ -100,22 +102,21 @@
 
 			$value = $this->Html->tag( 'span', $value, array( 'class' => 'input' ) );
 
-			// Options
-			$hidden = Hash::get( $options, 'hidden' );
-			$options = $this->addClass( $options, 'input value' );
-			if( isset( $options['type'] ) ) {
-				$options = $this->addClass( $options, $options['type'] );
-				unset( $options['type'] );
-			}
-			unset( $options['options'], $options['label'], $options['hidden'], $options['nl2br'] );
-
 			// Ajout d'un champ caché ?
+			$hidden = Hash::get( $options, 'hidden' );
 			if( $hidden ) {
 				$hidden = $this->input( $fieldName, array( 'type' => 'hidden' ) );
 			}
 			else {
 				$hidden = '';
 			}
+
+			// Options
+			$options = $this->addClass( $options, 'input value' );
+			if( isset( $options['type'] ) ) {
+				$options = $this->addClass( $options, $options['type'] );
+			}
+			unset( $options['options'], $options['label'], $options['hidden'], $options['nl2br'], $options['type'] );
 
 			return $this->Html->tag( 'div', $hidden.$label.$value, $options );
 		}
@@ -134,7 +135,8 @@
 				return $this->fieldValue( $fieldName, $options );
 			}
 
-			if( ( Hash::get( $options, 'type' ) == 'hidden' ) && Hash::check( $options, 'options' ) ) {
+			// Pas d'option pour les champs cachés, sinon ce sera transformé en attribut
+			if( Hash::get( $options, 'type' ) == 'hidden' ) {
 				unset( $options['options'] );
 			}
 

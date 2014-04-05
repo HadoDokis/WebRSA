@@ -25,6 +25,48 @@
 	class DefaultUrl
 	{
 		/**
+		 * Permet d'obtenir une url sous la forme d'un array avec les clés suivante:
+		 * prefix, plugin, controller, action, <prefix>, named, pass.
+		 *
+		 * @param string|array $url
+		 * @return array
+		 */
+		public static function parse( $url ) {
+			if( !is_array( $url ) ) {
+				$parsed = Router::parse( $url );
+			}
+			else {
+				$request = (array)Router::getRequest();
+
+				$parsed = $url + array(
+					'plugin' => $request['params']['plugin'],
+					'controller' => $request['params']['controller'],
+					'action' => $request['params']['action'],
+					'prefix' => Hash::get( $request, 'params.prefix' )
+				);
+
+				$named = array();
+				$pass = array();
+				foreach( $parsed as $key => $value ) {
+					if( !is_string( $key ) || !in_array( $key, array( 'controller', 'action', 'prefix', 'plugin' ) ) ) {
+						if( is_integer( $key ) ) {
+							$pass[] = $value;
+							unset( $parsed[$key] );
+						}
+						else if( !isset( $parsed['prefix'] ) || $parsed['prefix'] != $key ) {
+							$named[$key] = $value;
+							unset( $parsed[$key] );
+						}
+					}
+				}
+				$parsed['named'] = $named;
+				$parsed['pass'] = $pass;
+			}
+
+			return $parsed;
+		}
+
+		/**
 		 * Transforme une URL à partir d'un array vers une représentation sous
 		 * forme de chaîne de caractères.
 		 *
@@ -53,39 +95,7 @@
 		 * @return string
 		 */
 		public static function toString( $url ) {
-			if( !is_array( $url ) ) {
-				$parsed = Router::parse( $url );
-			}
-			else {
-				$request = (array)Router::getRequest();
-
-				$parsed = $url;
-
-				foreach( array( 'plugin', 'controller', 'action' ) as $key ) {
-					$parsed[$key] = isset( $parsed[$key] ) ? $parsed[$key] : $request['params'][$key];
-				}
-
-				if( isset( $request['params']['prefix'] ) ) {
-					$parsed['prefix'] = isset( $parsed['prefix'] ) ? $parsed['prefix'] : $request['params']['prefix'];
-				}
-
-				$named = array();
-				$pass = array();
-				foreach( $parsed as $key => $value ) {
-					if( !is_string( $key ) || !in_array( $key, array( 'controller', 'action', 'prefix', 'plugin' ) ) ) {
-						if( is_integer( $key ) ) {
-							$pass[] = $value;
-							unset( $parsed[$key] );
-						}
-						else if( !isset( $parsed['prefix'] ) || $parsed['prefix'] != $key ) {
-							$named[$key] = $value;
-							unset( $parsed[$key] );
-						}
-					}
-				}
-				$parsed['named'] = $named;
-				$parsed['pass'] = $pass;
-			}
+			$parsed = self::parse( $url );
 
 			if( empty( $parsed ) ) {
 				return $url;
@@ -112,6 +122,64 @@
 			}
 
 			return $return;
+		}
+
+		/**
+		 * Les actions sont-elles préfixées avec une valeur figurant dans
+		 * Routing.prefixes ? Si c'est le cas, les clés prefix et action de l'url
+		 * sont modifiées.
+		 *
+		 * @param array $url
+		 * @return array
+		 */
+		protected static function _prefixSplit( array $url ) {
+			$strpos = strpos( $url['action'], '_' );
+			if( $strpos !== false ) {
+				$url['prefix'] = substr( $url['action'], 0, $strpos );
+
+				if( in_array( $url['prefix'], (array)Configure::read( 'Routing.prefixes' ) ) ) {
+					$url['action'] = substr( $url['action'], $strpos + 1 );
+					$url[$url['prefix']] = true;
+				}
+				else {
+					unset( $url['prefix'] );
+				}
+			}
+
+			return $url;
+		}
+
+		/**
+		 * Transforme les paramètres nommés de CakePHP ( ex. array( 'Foo:bar' )
+		 * devient ( 'Foo' => 'bar' ) ) et le cas spécial de clé hash
+		 * (ex. array( '#' => 'content' ) ).
+		 *
+		 * @param array $url
+		 * @return array
+		 */
+		protected static function _extractNamedAndHash( array $url ) {
+			foreach( $url as $key => $value ) {
+				// CakePHP named parameters
+				if( is_numeric( $key ) && preg_match( '/^([^:]*):(.*)$/', $value, $matches ) ) {
+					unset( $url[$key] );
+					$url[$matches[1]] = $matches[2];
+				}
+
+				// Traitement d'un hash dans les valeurs, ex: array( 0 => '6#content' ) => array( 0 => '6', #' => 'content' )
+				if( strpos( $value, '#' ) !== false ) {
+					if( preg_match( '/^([^#]*)#([^#]*)$/', $value, $matches ) ) {
+						$url[$key] = $matches[1];
+						$url['#'] = $matches[2];
+					}
+
+					if( preg_match( '/^#(.*)$/', $value, $matches ) ) {
+						unset( $url[$key] );
+						$url['#'] = $matches[1];
+					}
+				}
+			}
+
+			return $url;
 		}
 
 		/**
@@ -143,15 +211,7 @@
 		 */
 		public static function toArray( $path ) {
 			$tokens = explode( '/', $path );
-			$plugin = null;
-
-			if( strpos( $tokens[1], '.' ) !== false ) {
-				$controllerTokens = explode( '.', $tokens[1] );
-				$plugin = $controllerTokens[0];
-				unset( $controllerTokens[0] );
-
-				$tokens[1] = implode( '.', $controllerTokens );
-			}
+			list( $plugin, $controller ) = pluginSplit( $tokens[1] );
 
 			if( strpos( $tokens[2], '#' ) !== false ) {
 				if( preg_match( '/^([^#]*)#(#[^#]+#.*)$/', $tokens[2], $matches ) ) {
@@ -162,37 +222,12 @@
 
 			$url = array(
 				'plugin' => Inflector::underscore( $plugin ),
-				'controller' => Inflector::underscore( $tokens[1] ),
+				'controller' => Inflector::underscore( $controller ),
 				'action' => Inflector::underscore( $tokens[2] ),
 			) + array_slice( $tokens, 3 );
 
-			// Does action have a prefix ?
-			if( strpos( $url['action'], '_' ) !== false ) {
-				$actionTokens = explode( '_', $url['action'] );
-				if( in_array( $actionTokens[0], (array)Configure::read( 'Routing.prefixes' ) ) ) {
-					$url['prefix'] = $actionTokens[0];
-					$url[$actionTokens[0]] = true;
-					unset( $actionTokens[0] );
-					$url['action'] = implode( '_', $actionTokens );
-				}
-			}
-
-			foreach( $url as $key => $value ) {
-				// CakePHP named parameters
-				if( is_numeric( $key ) && ( strpos( $value, ':' ) !== false ) && preg_match( '/^([^:]*):(.*)$/', $value, $matches ) ) {
-					unset( $url[$key] );
-					$url[$matches[1]] = $matches[2];
-				}
-				// Traitement d'un hash dans les valeurs, ex: array( 0 => '6#content' ) => array( 0 => '6', #' => 'content' )
-				if( ( strpos( $value, '#' ) !== false ) && preg_match( '/^([^#]*)#([^#]*)$/', $value, $matches ) ) {
-					$url[$key] = $matches[1];
-					$url['#'] = $matches[2];
-				}
-				if( ( strpos( $value, '#' ) !== false ) && preg_match( '/^#(.*)$/', $value, $matches ) ) {
-					unset( $url[$key] );
-					$url['#'] = $matches[1];
-				}
-			}
+			$url = self::_prefixSplit( $url );
+			$url = self::_extractNamedAndHash( $url );
 
 			return $url;
 		}
