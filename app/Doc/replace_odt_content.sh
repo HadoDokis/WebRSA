@@ -47,7 +47,7 @@ sed_regexes=( \
 	"s/Aideapre66_montantaccorde/aideapre66_montantaccorde/g" \
 )
 
-sedodt "app/vendors/modelesodt/APRE/accordaide.odt" "${sed_regexes[@]}"
+# sedodt "app/vendors/modelesodt/APRE/accordaide.odt" "${sed_regexes[@]}"
 
 # ------------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ sed_regexes=( \
 	"s/Aideapre66_motifrejetequipe/aideapre66_motifrejetequipe/g" \
 )
 
-sedodt "app/vendors/modelesodt/APRE/refusaide.odt" "${sed_regexes[@]}"
+# sedodt "app/vendors/modelesodt/APRE/refusaide.odt" "${sed_regexes[@]}"
 
 # ------------------------------------------------------------------------------
 
@@ -71,6 +71,15 @@ sed_regexes=( \
 	"s/aideapre66_typeaideapre66_/typeaideapre66_/g" \
 )
 
-sedodt "app/vendors/modelesodt/APRE/apre66.odt" "${sed_regexes[@]}"
+# sedodt "app/vendors/modelesodt/APRE/apre66.odt" "${sed_regexes[@]}"
+
+# ------------------------------------------------------------------------------
+
+sed_regexes=( \
+	"s/structurereferente/structureactuelle/g" \
+)
+
+sedodt "app/Vendor/modelesodt/PDO/pdo_etudiant.odt" "${sed_regexes[@]}"
+sedodt "app/Vendor/modelesodt/PDO/pdo_insertion.odt" "${sed_regexes[@]}"
 
 # ------------------------------------------------------------------------------
