@@ -504,8 +504,28 @@
 			return $return;
 		}
 
+		/**
+		 * Retourne le courrier d'une PDO.
+		 *
+		 * @param integer $propopdo_id
+		 * @param integer $user_id
+		 * @return string
+		 */
 		public function getCourrierPdo( $propopdo_id, $user_id ) {
+			$Option = ClassRegistry::init( 'Option' );
 
+			// Options pour les traductions
+			$options = array(
+				'Adresse' => array(
+					'typevoie' => $Option->typevoie()
+				),
+				'Foyer' => array(
+					'sitfam' => $Option->sitfam()
+				),
+			);
+			$options = Hash::merge( $options, $this->enums() );
+
+			// Lecture des données de la PDO
             $queryData = array(
                 'fields' => array_merge(
                     $this->fields(),
@@ -541,6 +561,7 @@
 
 			$propopdo = $this->find( 'first', $queryData );
 
+			// Lecture des données de l'utilisateur
 			$user = $this->User->find(
 				'first',
 				array(
@@ -550,11 +571,43 @@
 					'contain' => false
 				)
 			);
-			$propopdo = Set::merge( $propopdo, $user );
+			$propopdo = Hash::merge( $propopdo, $user );
 
-			$modeleodt = Set::classicExtract( $propopdo, 'Decisionpdo.modeleodt' );
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				// Lecture des données de la structure référente liée à la dernière orientation
+				$sqDerniereOrientstruct = $this->Personne->Orientstruct->sqDerniere( 'Orientstruct.personne_id' );
+				$query = array(
+					'fields' => $this->Personne->Orientstruct->Structurereferente->fields(),
+					'contain' => false,
+					'joins' => array(
+						$this->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Orientstruct.personne_id' => $propopdo['Propopdo']['personne_id'],
+						"Orientstruct.id IN ( {$sqDerniereOrientstruct} )",
+					),
+				);
 
-			$options['Foyer']['sitfam'] = ClassRegistry::init( 'Option' )->sitfam();
+				$structureactuelle = array_words_replace(
+					$this->Personne->Orientstruct->find( 'first', $query ),
+					array( 'Structurereferente' => 'Structureactuelle' )
+				);
+
+				if( empty( $structureactuelle ) ) {
+					$structureactuelle = array(
+						'Structureactuelle' => Set::normalize(
+							array_keys( $this->Personne->Orientstruct->Structurereferente->schema() )
+						)
+					);
+				}
+
+				$propopdo = Hash::merge( $propopdo, $structureactuelle );
+
+				$options['type']['voie'] = $Option->typevoie();
+			}
+
+			// Choix du modèle de document et génération du courrier
+			$modeleodt = Hash::get( $propopdo, 'Decisionpdo.modeleodt' );
 
 			return $this->ged(
 				$propopdo,
