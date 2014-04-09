@@ -84,6 +84,17 @@
 				}
 			}
 
+			// Filtre par type d'orientation (qui devrait être la même entre VxOrientstruct et NvOrientstruct)
+			$typeorient_id = Hash::get( $search, 'Orientstruct.typeorient_id' );
+			if( !empty( $typeorient_id ) ) {
+				$conditions[] = array(
+					'OR' => array(
+						'VxOrientstruct.typeorient_id' => $typeorient_id,
+						'NvOrientstruct.typeorient_id' => $typeorient_id,
+					)
+				);
+			}
+
 			$querydata = array(
 				'fields' => array_merge(
 					$Dossier->fields(),
