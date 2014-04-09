@@ -85,7 +85,7 @@
 						array(
 							'type' => $types["Adressefoyer{$rgadr}"],
 							'conditions' => array(
-								'Adressefoyer.id IN( '.$Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+								'Adressefoyer.id IN ( '.$Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
 							)
 						)
 					);
@@ -182,7 +182,7 @@
 			$Allocataire = ClassRegistry::init( 'Allocataire' );
 
 			// 1.1 Astuce, les conditions sur l'adresse doivent s'appliquer aux adresses de rang 2 et 3
-			$conditions = $query['conditions'];
+			$conditions = (array)Hash::get( $query, 'conditions' );
 			$query['conditions'] = array();
 			$query = $Allocataire->searchConditions( $query, $search );
 			$query = $this->searchConditionsAdressesRang0203( $query, $conditions );
