@@ -656,7 +656,8 @@
 			),
 			'nom_complet_court' => array(
 				'type' => 'string',
-				'postgres' => '( "%s"."nom" || \' \' || "%s"."prenom" )'
+				//'postgres' => '( "%s"."nom" || \' \' || "%s"."prenom" )'
+				'postgres' => '( COALESCE( "%s"."nom", \'\' ) || \' \' || COALESCE( "%s"."prenom", \'\' ) )'
 			),
 			'age' => array(
 				'type' => 'integer',

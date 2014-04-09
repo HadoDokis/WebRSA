@@ -104,10 +104,6 @@
 					),
 					'contain' => false,
 					'conditions' => array(),
-					'order' => array(
-						'Personne.nom ASC',
-						'Personne.prenom ASC',
-					)
 				);
 
 				$query = $Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );

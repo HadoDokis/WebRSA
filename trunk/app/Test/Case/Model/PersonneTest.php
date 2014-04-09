@@ -30,6 +30,7 @@
 			'app.Dsp',
 			'app.DspRev',
 			'app.Dossier',
+			'app.Dossierpcg66',
 			'app.Entretien',
 			'app.Ficheprescription93',
 			'app.Foyer',
@@ -203,6 +204,7 @@
 					'Dossier.matricule',
 					'Dossier.dtdemrsa',
 					'Situationdossierrsa.etatdosrsa',
+					'( SELECT COUNT("dossierspcgs66"."id") FROM "dossierspcgs66" AS "dossierspcgs66"   WHERE "dossierspcgs66"."foyer_id" = "Foyer"."id"     ) AS "Foyer__nbdossierspcgs"',
 				),
 				'contain' => false,
 				'joins' => array(

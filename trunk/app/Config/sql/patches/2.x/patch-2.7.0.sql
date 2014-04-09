@@ -663,6 +663,14 @@ SELECT add_missing_table_field( 'public', 'contratsinsertion', 'cumulduree', 'IN
 -- UPDATE dossierspcgs66 SET etatdossierpcg = 'transmisop' WHERE id = '4634';
 SELECT alter_table_drop_constraint_if_exists( 'public', 'dossierspcgs66', 'dossierspcgs66_etatdossierpcg_in_list_chk' );
 ALTER TABLE dossierspcgs66 ADD CONSTRAINT dossierspcgs66_etatdossierpcg_in_list_chk CHECK ( cakephp_validate_in_list( etatdossierpcg, ARRAY['attaffect', 'attinstr', 'instrencours', 'attavistech', 'attval', 'decisionvalid', 'decisionnonvalid', 'decisionnonvalidretouravis', 'decisionvalidretouravis', 'transmisop', 'atttransmisop', 'annule', 'attinstrattpiece', 'attinstrdocarrive','arevoir'] ) );
+
+-------------------------------------------------------------------------------------
+-- 20140408: création d'un index sur la concaténation du nom et du prénom de l'allocataire
+-------------------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS personnes_nom_complet_court_idx;
+CREATE INDEX personnes_nom_complet_court_idx ON personnes( ( COALESCE( nom, '' ) || ' ' || COALESCE( prenom, '' ) ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
