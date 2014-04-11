@@ -176,27 +176,6 @@
 				if( !empty( $positioncer ) ) {
 					$conditions['Cer93.positioncer'] = $positioncer;
 				}
-
-				// Filtres par expériences professionnelles significatives: métier exercé et secteur d'activité
-				foreach( array( 'metierexerce_id', 'secteuracti_id' ) as $field ) {
-					$value = Hash::get( $criteresci, "Expprocer93.{$field}" );
-					if( !empty( $value ) ) {
-						$alias = 'expsproscers93';
-						$sql = $this->Contratinsertion->Cer93->Expprocer93->sq(
-							array(
-								'alias' => $alias,
-								'fields' => array( "{$alias}.id" ),
-								'contain' => false,
-								'conditions' => array(
-									"{$alias}.cer93_id = Cer93.id",
-									"{$alias}.{$field}" => $value
-								),
-								'limit' => 1
-							)
-						);
-						$conditions[] = "EXISTS( {$sql} )";
-					}
-				}
 			}
 			else {
 				$decision_ci = Set::extract( $criteresci, 'Contratinsertion.decision_ci' );
@@ -207,41 +186,6 @@
 				// ...
 				if( !empty( $positioncer ) ) {
 					$conditions[] = 'Contratinsertion.positioncer = \''.Sanitize::clean( $positioncer, array( 'encode' => false ) ).'\'';
-				}
-			}
-
-			// Filtrer par "Votre contrat porte sur"
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$sujetcer93_id = Hash::get( $criteresci, 'Cer93Sujetcer93.sujetcer93_id' );
-				if( !empty( $sujetcer93_id ) ) {
-					// Sujet du CER
-					$alias = 'cers93_sujetscers93';
-					$subQuery = array(
-						'alias' => $alias,
-						'fields' => array( "{$alias}.id" ),
-						'contain' => false,
-						'conditions' => array(
-							"{$alias}.cer93_id = Cer93.id",
-							"{$alias}.sujetcer93_id" => $sujetcer93_id
-						),
-						'limit' => 1
-					);
-
-					// Sous-sujet du CER
-					$soussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.soussujetcer93_id' ) );
-					if( !empty( $soussujetcer93_id ) ) {
-						$subQuery['conditions']["{$alias}.soussujetcer93_id"] = $soussujetcer93_id;
-					}
-
-					// Valeur par sous-sujet du CER
-					$valeurparsoussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ) );
-					if( !empty( $valeurparsoussujetcer93_id ) ) {
-						$subQuery['conditions']["{$alias}.valeurparsoussujetcer93_id"] = $valeurparsoussujetcer93_id;
-					}
-
-					$sql = $this->Contratinsertion->Cer93->Cer93Sujetcer93->sq( $subQuery );
-
-					$conditions[] = "EXISTS( {$sql} )";
 				}
 			}
 
@@ -456,6 +400,88 @@
 
 			// Référent du parcours
 			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Contratinsertion']['PersonneReferent'] ) ? $criteresci['Contratinsertion'] : $criteresci ) );
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				// Filtres par expériences professionnelles significatives: métier exercé et secteur d'activité
+				// On veut les valeurs SSI elles ont été sélectionnées par le filtre
+				$metierexerce_id = Hash::get( $criteresci, 'Expprocer93.metierexerce_id' );
+				$secteuracti_id = Hash::get( $criteresci, 'Expprocer93.secteuracti_id' );
+
+				if( !empty( $metierexerce_id ) || !empty( $secteuracti_id ) ) {
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Expprocer93', array( 'type' => 'INNER' ) );
+					$querydata['fields'][] = 'Metierexerce.name';
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) );
+					$querydata['fields'][] = 'Secteuracti.name';
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) );
+
+					$conditions = array( 'expsproscers93.cer93_id = Cer93.id' );
+
+					if( !empty( $metierexerce_id ) ) {
+						$conditions['expsproscers93.metierexerce_id'] = $metierexerce_id;
+					}
+					if( !empty( $secteuracti_id ) ) {
+						$conditions['expsproscers93.secteuracti_id'] = $secteuracti_id;
+					}
+
+					// On veut éviter d'avoir des doublons de lignes de résultats
+					$sql = $this->Contratinsertion->Cer93->Expprocer93->sq(
+						array(
+							'alias' => 'expsproscers93',
+							'fields' => array( 'expsproscers93.id' ),
+							'contain' => false,
+							'conditions' => $conditions,
+							'limit' => 1
+						)
+					);
+					$querydata['conditions'][] = "Expprocer93.id IN ( {$sql} )";
+				}
+
+				// Filtrer par "Votre contrat porte sur"
+				// On veut les valeurs SSI elles ont été sélectionnées par le filtre
+				$sujetcer93_id = Hash::get( $criteresci, 'Cer93Sujetcer93.sujetcer93_id' );
+				$soussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.soussujetcer93_id' ) );
+				$valeurparsoussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ) );
+
+				if( !empty( $sujetcer93_id ) || !empty( $soussujetcer93_id ) || !empty( $valeurparsoussujetcer93_id ) ) {
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Cer93Sujetcer93', array( 'type' => 'INNER' ) );
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->Cer93Sujetcer93->join( 'Sujetcer93', array( 'type' => 'LEFT OUTER' ) );
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->Cer93Sujetcer93->join( 'Soussujetcer93', array( 'type' => 'LEFT OUTER' ) );
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->Cer93Sujetcer93->join( 'Valeurparsoussujetcer93', array( 'type' => 'LEFT OUTER' ) );
+
+					$querydata['fields'] = array_merge(
+						$querydata['fields'],
+						array(
+							'Cer93Sujetcer93.commentaireautre',
+							'Cer93Sujetcer93.autrevaleur',
+							'Cer93Sujetcer93.autresoussujet',
+							'Sujetcer93.name',
+							'Soussujetcer93.name',
+							'Valeurparsoussujetcer93.name',
+						)
+					);
+
+					$conditions = array( 'cers93_sujetscers93.cer93_id = Cer93.id' );
+
+					foreach( array( 'sujetcer93_id', 'soussujetcer93_id', 'valeurparsoussujetcer93_id' ) as $field ) {
+						$value = $$field;
+						if( !empty( $value ) ) {
+							$conditions["cers93_sujetscers93.{$field}"] = $value;
+						}
+					}
+
+					// On veut éviter d'avoir des doublons de lignes de résultats
+					$sql = $this->Contratinsertion->Cer93->Cer93Sujetcer93->sq(
+						array(
+							'alias' => 'cers93_sujetscers93',
+							'fields' => array( 'cers93_sujetscers93.id' ),
+							'contain' => false,
+							'conditions' => $conditions,
+							'limit' => 1
+						)
+					);
+					$querydata['conditions'][] = "Cer93Sujetcer93.id IN ( {$sql} )";
+				}
+			}
 
 			return $querydata;
 		}
