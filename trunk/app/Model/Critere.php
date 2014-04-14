@@ -388,6 +388,20 @@
 			// Référent du parcours
 			$querydata = $Situationdossierrsa->Dossier->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $criteres );
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$Personne = ClassRegistry::init( 'Personne' );
+				$querydata['fields'][] = 'Activite.act';
+				$querydata['joins'][] = $Personne->join(
+					'Activite',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Activite.id IN ( '.$Personne->Activite->sqDerniere().' )'
+						),
+					)
+				);
+			}
+
 			return $querydata;
 		}
 	}

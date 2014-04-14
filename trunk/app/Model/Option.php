@@ -64,7 +64,7 @@
 		 * @return array
 		 */
 		public function act() {
-			return array(
+			$acts = array(
 				'AAP' => 'Activité en atelier protégé',
 				'ABA' => 'Chômeur-alloc de base',
 				'ABS' => 'Absent du foyer',
@@ -158,6 +158,10 @@
 				'TSA' => 'Travailleur saisonnier',
 				'VRP' => 'Voyageur représentant placier'
 			);
+
+			asort( $acts, SORT_NATURAL | SORT_FLAG_CASE );
+
+			return $acts;
 		}
 
 		/**

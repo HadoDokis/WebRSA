@@ -396,6 +396,19 @@
 				'conditions' => $conditions
 			);
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$querydata['fields'][] = 'Activite.act';
+				$querydata['joins'][] = $this->Foyer->Personne->join(
+					'Activite',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Activite.id IN ( '.$this->Foyer->Personne->Activite->sqDerniere().' )'
+						),
+					)
+				);
+			}
+
 			// Référent du parcours
 			$querydata = $this->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
 

@@ -78,6 +78,8 @@
 				}
 				$this->set( compact( 'enums' ) );
 			}
+
+			$this->set( 'act', $this->Option->act() );
 		}
 
 		/**

@@ -1,6 +1,7 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+	// En-têtes
 	$cells = array(
 		'N° Dossier',
 		'Qualité',
@@ -46,8 +47,13 @@
 		);
 	}
 
+	if( Configure::read( 'Cg.departement' ) == 58 ) {
+		$cells[] = 'Code activité';
+	}
+
 	$this->Csv->addRow( $cells );
 
+	// Résultats
 	foreach( $orients as $orient ) {
 		$toppersdrodevorsa = Hash::get( $orient, 'Calculdroitrsa.toppersdrodevorsa' );
 		switch( $toppersdrodevorsa ) {
@@ -116,6 +122,11 @@
 				date_short( $orient['Commissionep']['dateseance'] ),
 				$decision
 			);
+		}
+
+
+		if( Configure::read( 'Cg.departement' ) == 58 ) {
+			$row[] = value( $act, Hash::get( $orient, 'Activite.act' ) );
 		}
 
 		$this->Csv->addRow($row);
