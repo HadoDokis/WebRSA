@@ -98,6 +98,9 @@
 			echo '<fieldset>';
 			echo $this->Xform->input( 'Dsp.natlog', array( 'label' => 'Conditions de logement', 'type' => 'select', 'empty' => true, 'options' => $natlog ) );
 			echo $this->Xform->input( 'Prestation.rolepers', array( 'label' => 'Rôle de la personne ?', 'type' => 'select', 'options' => $chooserolepers, 'empty' => true ) );
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				echo $this->Xform->input( 'Activite.act', array( 'label' => 'Code activité', 'type' => 'select', 'empty' => true, 'options' => $act ) );
+			}
 			echo '</fieldset>';
 // 		}
 	?>
@@ -161,6 +164,15 @@
 				<?php foreach( $dossiers as $index => $dossier ):?>
 					<?php
 						$title = $dossier['Dossier']['numdemrsa'];
+
+						$activite = '';
+						if( Configure::read( 'Cg.departement' ) == 58 ) {
+							$activite = '<tr>
+								<th>Code activité</th>
+								<td>'.value( $act, Hash::get( $dossier, 'Activite.act' ) ).'</td>
+							</tr>';
+						}
+
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -187,6 +199,7 @@
 									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $dossier, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
+								'.$activite.'
 							</tbody>
 						</table>';
 

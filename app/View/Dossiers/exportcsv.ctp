@@ -1,31 +1,37 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow(
-        array(
-            'N° Dossier',
-            'Date de demande',
-            'NIR',
-            'Etat du droit',
-            'Nom/Prénom allocataire',
-            'Date de naissance',
-            'Numéro de voie',
-            'Type de voie',
-            'Nom de voie',
-            'Complément adresse 1',
-            'Complément adresse 2',
-            'Code postal',
-            'Commune',
-			'Type d\'orientation',
-            'Identifiant Pôle Emploi',
-            'N° CAF',
-			__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
-			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
-			'Sexe',
-			'Conditions de logement',
-        )
-    );
+	// En-têtes
+	$row = array(
+		'N° Dossier',
+		'Date de demande',
+		'NIR',
+		'Etat du droit',
+		'Nom/Prénom allocataire',
+		'Date de naissance',
+		'Numéro de voie',
+		'Type de voie',
+		'Nom de voie',
+		'Complément adresse 1',
+		'Complément adresse 2',
+		'Code postal',
+		'Commune',
+		'Type d\'orientation',
+		'Identifiant Pôle Emploi',
+		'N° CAF',
+		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
+		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
+		'Sexe',
+		'Conditions de logement',
+	);
 
+	if( Configure::read( 'Cg.departement' ) == 58 ) {
+		$row[] = 'Code activité';
+	}
+
+	$this->Csv->addRow( $row );
+
+	// Résultats
 	foreach( $dossiers as $dossier ) {
 		$dspnatlog = Hash::get( $dossier, 'DspRev.natlog' );
 		if( empty( $natlog ) ) {
@@ -54,6 +60,11 @@
 			value( $sexe, Hash::get( $dossier, 'Personne.sexe' ) ),
 			value( $natlog, $dspnatlog ),
 		);
+
+		if( Configure::read( 'Cg.departement' ) == 58 ) {
+			$row[] = value( $act, Hash::get( $dossier, 'Activite.act' ) );
+		}
+
 		$this->Csv->addRow($row);
 	}
 	Configure::write( 'debug', 0 );

@@ -228,6 +228,12 @@
 				}
 			}
 
+			// Filtre par code activité
+			$value = Hash::get( $search, 'Activite.act' );
+			if( !empty( $value ) ) {
+				$conditions['Activite.act'] = $value;
+			}
+
 			return $conditions;
 		}
 

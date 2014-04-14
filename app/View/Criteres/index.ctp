@@ -67,6 +67,9 @@
 			echo $this->Form->input( 'Critere.hascontrat', array( 'label' => 'Possède un CER ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $this->Form->input( 'Critere.hasreferent', array( 'label' => 'Possède un référent ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
 			echo $this->Form->input( 'Critere.isinscritpe', array( 'label' => 'Inscrit au Pôle Emploi ? ', 'type' => 'select', 'options' => array( 'O' => 'Oui', 'N' => 'Non'), 'empty' => true ) );
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				echo $this->Xform->input( 'Activite.act', array( 'label' => 'Code activité', 'type' => 'select', 'empty' => true, 'options' => $act ) );
+			}
 		?>
 	</fieldset>
 	<fieldset>
@@ -167,6 +170,14 @@
 			<tbody>
 				<?php foreach( $orients as $index => $orient ):?>
 					<?php
+						$activite = '';
+						if( Configure::read( 'Cg.departement' ) == 58 ) {
+							$activite = '<tr>
+								<th>Code activité</th>
+								<td>'.value( $act, Hash::get( $orient, 'Activite.act' ) ).'</td>
+							</tr>';
+						}
+
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
@@ -209,6 +220,7 @@
 									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $orient, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
+								'.$activite.'
 							</tbody>
 						</table>';
 
