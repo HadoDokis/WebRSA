@@ -25,6 +25,7 @@
                 <th>Thématique</th>
 				<th>Sanction 1</th>
 				<th>Sanction 2</th>
+				<th>Date prévisionnelle de radiation</th>
 				<th>Modification de la sanction</th>
 				<th>Date fin de sanction</th>
 				<th>Commentaire</th>
@@ -33,6 +34,7 @@
             </tr>
         </thead>
         <tbody>
+		<?php $datePrevisionnelleRadiationInterval = Configure::read( 'Decisionsanctionep58.datePrevisionnelleRadiation' );?>
         <?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
             <?php
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
@@ -49,6 +51,9 @@
 				</table>';
 
 				$modeleDecision = Inflector::classify( "decisions{$gestionanctionep58['Dossierep']['themeep']}" );
+
+				// Date prévisionnelle de radiation
+				$datePrevisionnelleRadiation = date( 'd/m/Y', strtotime( $datePrevisionnelleRadiationInterval, strtotime( Hash::get( $gestionanctionep58, 'Commissionep.dateseance' ) ) ) );
 
 				$tableCells = array(
 						h( $gestionanctionep58['Personne']['qual'].' '.$gestionanctionep58['Personne']['nom'].' '.$gestionanctionep58['Personne']['prenom'] ),
@@ -79,6 +84,7 @@
 								$listesanctionseps58
 							)
 						),
+						h( $datePrevisionnelleRadiation ),
 						Set::enum(
 							$gestionanctionep58[$modeleDecision]['arretsanction'],
 							$options[$modeleDecision]['arretsanction']

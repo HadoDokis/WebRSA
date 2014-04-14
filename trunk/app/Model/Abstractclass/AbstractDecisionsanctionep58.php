@@ -269,5 +269,19 @@
 
 			return $return;
 		}
+
+		/**
+		 * Retourne la liste des clés de configuration pour lesquelles il faut
+		 * vérifier la syntaxe de l'intervalle PostgreSQL.
+		 *
+		 * @return array
+		 */
+		public function checkPostgresqlIntervals() {
+			$keys = array(
+				'Decisionsanctionep58.datePrevisionnelleRadiation'
+			);
+
+			return $this->_checkPostgresqlIntervals( $keys );
+		}
 	}
 ?>

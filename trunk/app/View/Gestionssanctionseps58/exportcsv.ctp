@@ -1,6 +1,7 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
+	// En-tête
 	$this->Csv->addRow(
 		array(
 			'Nom allocataire',
@@ -11,6 +12,7 @@
 			'Thématique',
 			'Sanction 1',
 			'Sanction 2',
+			'Date prévisionnelle de radiation',
 			'Modification de la sanction',
 			'Date fin de sanction',
 			'Commentaire',
@@ -18,6 +20,9 @@
 			__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		)
 	);
+
+	// Résultats
+	$datePrevisionnelleRadiationInterval = Configure::read( 'Decisionsanctionep58.datePrevisionnelleRadiation' );
 
 	foreach( $gestionssanctionseps58 as $gestionsanctionep58 ) {
 		$modeleDecision = Inflector::classify( "decisions{$gestionsanctionep58['Dossierep']['themeep']}" );
@@ -28,6 +33,8 @@
 		// Libellé de la sanction
 		$libelleSanction1 = Set::enum( $gestionsanctionep58[$modeleDecision]['listesanctionep58_id'], $listesanctionseps58 );
 		$libelleSanction2 = Set::enum( $gestionsanctionep58[$modeleDecision]['autrelistesanctionep58_id'], $listesanctionseps58 );
+
+		$datePrevisionnelleRadiation = date( 'd/m/Y', strtotime( $datePrevisionnelleRadiationInterval, strtotime( Hash::get( $gestionsanctionep58, 'Commissionep.dateseance' ) ) ) );
 
 		$fieldDecisionSanction = Set::enum( $gestionsanctionep58[$modeleDecision]['arretsanction'], $options[$modeleDecision]['arretsanction'] );
 		$dateFinSanction = date_short( $gestionsanctionep58[$modeleDecision]['datearretsanction'] );
@@ -42,6 +49,7 @@
 			Set::classicExtract( $options['Dossierep']['themeep'], ( $gestionsanctionep58['Dossierep']['themeep'] ) ),
 			$decisionSanction1."\n".$libelleSanction1,
 			$decisionSanction2."\n".$libelleSanction2,
+			$datePrevisionnelleRadiation,
 			$fieldDecisionSanction,
 			$dateFinSanction,
 			$commentaireFinSanction,
