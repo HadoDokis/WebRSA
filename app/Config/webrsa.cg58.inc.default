@@ -849,4 +849,18 @@
 	 * @default null
 	 */
 	Configure::write( 'AncienAllocataire.enabled', false );
+
+	/**
+	 * Intervalle entre la date de la commission pour une des thématiques de
+	 * sanctions des EP du CG 58 et la date prévisionnelle de radiation du RSA.
+	 *
+	 * Utilisé dans les écrans
+	 *	- « Eq. Pluri. » → « 5. Gestion des sanctions » → « Gestion des sanctions »
+	 *	- « Eq. Pluri. » → « 5. Gestion des sanctions » → « Visualisation des sanctions »
+	 *	- Menu du dossier RSA → sous-menu demandeur ou conjoint → « Accompagnement du parcours » → « Historique des EPs » → lien « Passage »
+	 *
+	 * @var string
+	 * @default null
+	 */
+	Configure::write( 'Decisionsanctionep58.datePrevisionnelleRadiation', '8 months' );
 ?>

@@ -219,16 +219,30 @@
 						)
 					);
 
+					// Date prévisionnelle de radiation
+					$datePrevisionnelleRadiationInterval = Configure::read( 'Decisionsanctionep58.datePrevisionnelleRadiation' );
+					$datePrevisionnelleRadiation = date( 'Y-m-d', strtotime( $datePrevisionnelleRadiationInterval, strtotime( Hash::get( $passage, 'Commissionep.dateseance' ) ) ) );
+
+					$fields = array(
+						"{$modeleDecision}.date_previsionnelle_radiation" => array(
+							'value' => $datePrevisionnelleRadiation,
+							'type' => 'date',
+							'label' => 'Date prévisionnelle de radiation',
+						),
+					);
+
 					if( !empty( $passage['Decision'][$i][$modeleDecision]['commentairearretsanction'] ) ){
-						echo $this->Default2->view(
-							$passage['Decision'][$i],
-							"{$modeleDecision}.commentairearretsanction",
-							array(
-								'options' => $options,
-								'class' => 'aere'
-							)
-						);
+						$fields[] = "{$modeleDecision}.commentairearretsanction";
 					}
+
+					echo $this->Default2->view(
+						$passage['Decision'][$i],
+						$fields,
+						array(
+							'options' => $options,
+							'class' => 'aere'
+						)
+					);
 				}
 			}
 		}

@@ -25,6 +25,7 @@
                 <th>Thématique</th>
 				<th>Sanction 1</th>
 				<th>Sanction 2</th>
+				<th>Date prévisionnelle de radiation</th>
 				<th class="action">Modification de la sanction</th>
 				<th class="action">Date fin de sanction</th>
 				<th class="action">Commentaire</th>
@@ -33,6 +34,7 @@
             </tr>
         </thead>
         <tbody>
+			<?php $datePrevisionnelleRadiationInterval = Configure::read( 'Decisionsanctionep58.datePrevisionnelleRadiation' );?>
 			<?php foreach( $gestionsanctionseps58 as $index => $gestionanctionep58 ):?>
 			<?php
 				$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
@@ -57,6 +59,9 @@
 				$libelleSanction1 = Set::enum( $gestionanctionep58[$modeleDecision]['listesanctionep58_id'], $listesanctionseps58 );
 				$libelleSanction2 = Set::enum( $gestionanctionep58[$modeleDecision]['autrelistesanctionep58_id'], $listesanctionseps58 );
 
+				// Date prévisionnelle de radiation
+				$datePrevisionnelleRadiation = date( 'd/m/Y', strtotime( $datePrevisionnelleRadiationInterval, strtotime( Hash::get( $gestionanctionep58, 'Commissionep.dateseance' ) ) ) );
+
 				//Champ permettant la modification de la sanction
 				$fieldDecisionSanction = $this->Xform->input( "{$modeleDecision}.{$index}.id", array( 'type' => 'hidden', 'value' => $gestionanctionep58[$modeleDecision]['id'] ) ).
 					$this->Xform->input( "{$modeleDecision}.{$index}.arretsanction", array( 'type' => 'select', 'options' => $options[$modeleDecision]['arretsanction'], 'label' => false, 'empty' => true ) );
@@ -77,6 +82,7 @@
 					h( Set::classicExtract( $options['Dossierep']['themeep'], ( $gestionanctionep58['Dossierep']['themeep'] ) ) ),
 					nl2br( $decisionSanction1."\n".$libelleSanction1 ),
 					nl2br( $decisionSanction2."\n".$libelleSanction2 ),
+					h( $datePrevisionnelleRadiation ),
 					$fieldDecisionSanction,
 					$dateFinSanction,
 					$commentaireFinSanction,
