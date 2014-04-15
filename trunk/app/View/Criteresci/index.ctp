@@ -155,10 +155,16 @@
 				}
 			?>
 	</fieldset>
-	<?php
-		echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
-		echo $this->Search->paginationNombretotal( 'Contratinsertion.paginationNombreTotal' );
-	?>
+	<fieldset>
+		<legend>Filtrer par dernière orientation</legend>
+		<?php
+			echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				echo $this->Form->input( 'TypeorientAExclure.id', array( 'label' => 'Type d\'orientation à exclure', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $typesorientsNiveau0 )  );
+			}
+		?>
+	</fieldset>
+	<?php echo $this->Search->paginationNombretotal( 'Contratinsertion.paginationNombreTotal' );?>
 	<div class="submit noprint">
 		<?php echo $this->Form->button( 'Rechercher', array( 'type' => 'submit' ) );?>
 		<?php echo $this->Form->button( 'Réinitialiser', array( 'type' => 'reset' ) );?>
