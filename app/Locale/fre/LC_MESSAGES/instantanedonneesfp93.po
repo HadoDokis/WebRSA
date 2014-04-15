@@ -38,10 +38,10 @@ msgstr "Niveau VII : jamais scolarisé"
 # ==============================================================================
 
 msgid "ENUM::BENEF_DIP_CE::0"
-msgstr "Hors CE"
+msgstr "Hors Union européenne"
 
 msgid "ENUM::BENEF_DIP_CE::1"
-msgstr "CE"
+msgstr "Union européenne"
 
 # ==============================================================================
 

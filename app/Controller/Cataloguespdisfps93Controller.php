@@ -75,7 +75,7 @@
 					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
 				);
 
-				$this->SearchSavedRequests->write( // FIXME
+				$this->SearchSavedRequests->write(
 					Inflector::underscore( $this->name ),
 					$this->action,
 					$this->request->params
@@ -183,11 +183,18 @@
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->SearchSavedRequests->redirect(
-					Inflector::underscore( $this->name ),
-					'search',
-					array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName )
-				);
+				$url = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
+
+				if( in_array( $modelName, $this->Cataloguepdifp93->modelesCatalogue ) ) {
+					$this->SearchSavedRequests->redirect(
+						Inflector::underscore( $this->name ),
+						'search',
+						$url
+					);
+				}
+				else {
+					$this->redirect( $url );
+				}
 			}
 
 			if( !empty( $this->request->data ) ) {
@@ -196,12 +203,19 @@
 				if( $Model->save() ) {
 					$Model->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					// $this->redirect( array( 'action' => 'index', $modelName ) );
-					$this->SearchSavedRequests->redirect( // FIXME
-						Inflector::underscore( $this->name ),
-						'search',
-						array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName )
-					);
+
+					$url = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
+
+					if( in_array( $modelName, $this->Cataloguepdifp93->modelesCatalogue ) ) {
+						$this->SearchSavedRequests->redirect(
+							Inflector::underscore( $this->name ),
+							'search',
+							$url
+						);
+					}
+					else {
+						$this->redirect( $url );
+					}
 				}
 				else {
 					$Model->rollback();

@@ -108,6 +108,7 @@
 					'hidden' => true,
 				),
 				'Instantanedonneesfp93.benef_nivetu' => array( 'empty' => true ),
+				'Instantanedonneesfp93.benef_dernier_dip',
 				'Instantanedonneesfp93.benef_dip_ce' => array( 'empty' => true ),
 				'Instantanedonneesfp93.benef_positioncer' => array(
 					'view' => true,
