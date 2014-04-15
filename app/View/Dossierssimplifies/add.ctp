@@ -47,6 +47,7 @@
 			<div><?php echo $this->Form->input( 'Personne.0.id', array( 'label' => required( __( 'id' ) ),  'type' => 'hidden') );?></div>
 			<?php echo $this->Form->input( 'Personne.0.qual', array( 'label' => required( __d( 'personne', 'Personne.qual' ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
 			<?php echo $this->Form->input( 'Personne.0.nom', array( 'label' => required( __d( 'personne', 'Personne.nom' ) ) ) );?>
+			<?php echo $this->Form->input( 'Personne.0.nomnai', array( 'label' => __d( 'personne', 'Personne.nomnai' ) ) );?>
 			<?php echo $this->Form->input( 'Personne.0.prenom', array( 'label' => required( __d( 'personne', 'Personne.prenom' ) ) ) );?>
 			<?php echo $this->Form->input( 'Personne.0.nir', array( 'label' => ( __d( 'personne', 'Personne.nir' ) ) ) );?>
 			<?php echo $this->Form->input( 'Personne.0.dtnai', array( 'label' => required( __d( 'personne', 'Personne.dtnai' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
@@ -79,6 +80,7 @@
 			<div><?php  echo $this->Form->input( 'Personne.1.id', array( 'label' => required( __( 'id' ) ), 'type' => 'hidden') );?></div>
 			<?php echo $this->Form->input( 'Personne.1.qual', array( 'label' =>  __d( 'personne', 'Personne.qual' ) , 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
 			<?php echo $this->Form->input( 'Personne.1.nom', array( 'label' =>  __d( 'personne', 'Personne.nom' )  ) );?>
+			<?php echo $this->Form->input( 'Personne.1.nomnai', array( 'label' =>  __d( 'personne', 'Personne.nomnai' )  ) );?>
 			<?php echo $this->Form->input( 'Personne.1.prenom', array( 'label' =>  __d( 'personne', 'Personne.prenom' ) ) );?>
 			<?php echo $this->Form->input( 'Personne.1.nir', array( 'label' =>  __d( 'personne', 'Personne.nir' ) ) );?>
 			<?php echo $this->Form->input( 'Personne.1.dtnai', array( 'label' =>  __d( 'personne', 'Personne.dtnai' ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
@@ -113,4 +115,18 @@
 			true
 	    );
     </script>
+	<?php
+		echo $this->Observer->disableFieldsOnValue(
+			'Personne.0.qual',
+			'Personne.0.nomnai',
+			'MME',
+			false
+		);
+		echo $this->Observer->disableFieldsOnValue(
+			'Personne.1.qual',
+			'Personne.1.nomnai',
+			'MME',
+			false
+		);
+	?>
 <div class="clearer"><hr /></div>
