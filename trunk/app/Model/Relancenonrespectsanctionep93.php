@@ -1578,6 +1578,37 @@
 			$data['Nonrespectsanctionep93']['Personne']['qual'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['qual'], $qual );
 			$data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'], $typevoie );
 
+			// On va chercher la dernière orientation de l'allocataire pour l'ajouter aux données
+			$sqDerniere = $this->Nonrespectsanctionep93->Orientstruct->sqDerniere( 'Orientstruct.personne_id' );
+			$query = array(
+				'fields' => array_merge(
+					$this->Nonrespectsanctionep93->Orientstruct->fields(),
+					$this->Nonrespectsanctionep93->Orientstruct->Typeorient->fields(),
+					$this->Nonrespectsanctionep93->Orientstruct->Structurereferente->fields()
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Nonrespectsanctionep93->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+					$this->Nonrespectsanctionep93->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Orientstruct.personne_id' => $data['Nonrespectsanctionep93']['Personne']['id'],
+					"Orientstruct.id IN ( {$sqDerniere} )"
+				)
+			);
+			$orientstruct = $this->Nonrespectsanctionep93->Orientstruct->find( 'first', $query );
+			$orientstruct = array_words_replace(
+				$orientstruct,
+				array(
+					'Orientstruct' => 'Orientstructactuelle',
+					'Typeorient' => 'Typeorientactuel',
+					'Structurereferente' => 'Structurereferenteactuelle',
+				)
+			);
+			$orientstruct['Structurereferenteactuelle']['type_voie'] = value( $typevoie, Hash::get( $orientstruct, 'Structurereferenteactuelle.type_voie' ) );
+
+			$data = Hash::merge( $data, $orientstruct );
+
 			return $data;
 		}
 
