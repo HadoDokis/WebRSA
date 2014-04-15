@@ -195,6 +195,7 @@
 		 * @medium
 		 */
 		public function testGetAnciensDossiers() {
+			Configure::write( 'Cg.departement', 66 );
 			$result = $this->Personne->getAnciensDossiers( 6, true );
 			$expected = array(
 				'fields' => array(
