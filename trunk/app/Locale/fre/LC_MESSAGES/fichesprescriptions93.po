@@ -151,7 +151,7 @@ msgid "Documentbeneffp93.Documentbeneffp93"
 msgstr "Le bénéficiaire est invité à se munir de"
 
 msgid "Ficheprescription93.documentbeneffp93_autre"
-msgstr "Autres, précisez"
+msgstr "Si autre, précisez"
 
 msgid "Ficheprescription93.statut"
 msgstr "Statut"
@@ -197,7 +197,7 @@ msgid "Referent.nom_complet"
 msgstr "Nom du référent"
 
 msgid "Ficheprescription93.objet"
-msgstr "Objet ou nature de la prescription / observations / intitulé de l'action"
+msgstr "Motif de la prescription"
 
 ################################################################################
 
@@ -249,8 +249,11 @@ msgstr "N° d'identifiant"
 msgid "Instantanedonneesfp93.benef_nivetu"
 msgstr "Niveau de diplôme et/ou de qualification"
 
+msgid "Instantanedonneesfp93.benef_dernier_dip"
+msgstr "Dernier diplôme obtenu"
+
 msgid "Instantanedonneesfp93.benef_dip_ce"
-msgstr "Diplôme obtenu"
+msgstr "Lieu d'obtention"
 
 msgid "Instantanedonneesfp93.benef_positioncer"
 msgstr "Contrat d'engagement réciproque (CER)"
@@ -324,7 +327,7 @@ msgstr "Modalités de transmission"
 ################################################################################
 
 msgid "Ficheprescription93.Effectivite"
-msgstr "Résultat de l'effectivité de la prescription"
+msgstr "Effectivité de la prescription"
 
 msgid "Ficheprescription93.date_retour"
 msgstr "Date de retour de la fiche au prescripteur ou au référent"

@@ -50,6 +50,20 @@
 			'Documentbeneffp93'
 		);
 
+		/**
+		 * Liste des modèles disponibles dans le paramétrage directement liés au
+		 * catalogue.
+		 *
+		 * @var array
+		 */
+		public $modelesCatalogue = array(
+			'Thematiquefp93',
+			'Categoriefp93',
+			'Filierefp93',
+			'Actionfp93',
+			'Prestatairefp93',
+		);
+
 		public $virtualFieldsActionfp93Tree = array(
 			'Ficheprescription93.typethematiquefp93_id' => 'Thematiquefp93.type',
 			'Ficheprescription93.thematiquefp93_id' => 'Thematiquefp93.id',

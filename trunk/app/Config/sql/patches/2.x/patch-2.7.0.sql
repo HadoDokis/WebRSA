@@ -567,6 +567,7 @@ CREATE TABLE instantanesdonneesfps93 (
     benef_natpf_majore		VARCHAR(1) DEFAULT NULL,
     benef_natpf_activite	VARCHAR(1) DEFAULT NULL,
 	benef_nivetu			VARCHAR(4) DEFAULT NULL,
+	benef_dernier_dip		VARCHAR(250) DEFAULT NULL,
 	benef_dip_ce			VARCHAR(1) DEFAULT NULL,
 	benef_etatdosrsa        VARCHAR(1) DEFAULT NULL,
 	benef_toppersdrodevorsa VARCHAR(1) DEFAULT NULL,

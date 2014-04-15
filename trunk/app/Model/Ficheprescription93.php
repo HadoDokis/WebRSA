@@ -231,6 +231,13 @@
 				)
 			),
 			// Fin champs virtuels pour le formulaire d'ajout / modification
+			'objet' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
 			'dd_action' => array(
 				'compareDates' => array(
 					'rule' => array( 'compareDates', 'df_action', '<' ),
