@@ -53,6 +53,7 @@
 	<div><?php echo $this->Form->input( 'Personne.id', array( 'label' => required( __( 'id' ) ), 'value' => $personne_id , 'type' => 'hidden') );?></div>
 	<?php echo $this->Form->input( 'Personne.qual', array( 'label' => required( __d( 'personne', 'Personne.qual' ) ), 'type' => 'select', 'options' => $qual, 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Personne.nom', array( 'label' => required( __d( 'personne', 'Personne.nom' ) ) ) );?>
+	<?php echo $this->Form->input( 'Personne.nomnai', array( 'label' => __d( 'personne', 'Personne.nomnai' ) ) );?>
 	<?php echo $this->Form->input( 'Personne.prenom', array( 'label' => required( __d( 'personne', 'Personne.prenom' ) ) ) );?>
 	<?php echo $this->Form->input( 'Personne.nir', array( 'label' =>  __d( 'personne', 'Personne.nir' ) ) );?>
 	<?php echo $this->Form->input( 'Personne.dtnai', array( 'label' => required( __d( 'personne', 'Personne.dtnai' ) ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>
@@ -84,3 +85,11 @@
 	<?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
 </div>
 <?php echo $this->Form->end();?>
+<?php
+	echo $this->Observer->disableFieldsOnValue(
+		'Personne.qual',
+		'Personne.nomnai',
+		'MME',
+		false
+	);
+?>
