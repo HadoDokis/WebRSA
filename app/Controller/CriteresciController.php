@@ -151,6 +151,11 @@
 
 			$this->set( 'referents', $referents );
 
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$typesorientsNiveau0 = $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O', 'Typeorient.parentid IS NULL' ), 'empty' => false ) );
+				$this->set( compact( 'typesorientsNiveau0' ) );
+			}
+
 			$this->set( 'typesorients', $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ), 'empty' => true ) ) );
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );

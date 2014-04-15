@@ -483,6 +483,27 @@
 				}
 			}
 
+			// Doit-on exclure un type d'orientation ?
+			$value = Hash::get( $criteresci, 'TypeorientAExclure.id' );
+			if( !empty( $value ) ) {
+				$querydata['conditions'][] = array(
+					'OR' => array(
+						array(
+							'Typeorient.parentid IS NULL',
+							'NOT' => array(
+								'Typeorient.id' => $value
+							)
+						),
+						array(
+							'Typeorient.parentid IS NOT NULL',
+							'NOT' => array(
+								'Typeorient.parentid' => $value
+							)
+						),
+					)
+				);
+			}
+
 			return $querydata;
 		}
 	}
