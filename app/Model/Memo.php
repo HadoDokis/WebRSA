@@ -17,6 +17,13 @@
 	{
 		public $name = 'Memo';
 
+		/**
+		 * Tri par défaut des mémos.
+		 *
+		 * @var array
+		 */
+		public $order = array( 'Memo.created DESC' );
+
 		public $actsAs = array(
 			'Allocatairelie',
 			'Validation.Autovalidate',
@@ -52,8 +59,8 @@
 				'counterQuery' => ''
 			)
 		);
-        
-        
+
+
         /**
 		 * Sous-requête permettant de connaître le nombre de Mémos existants
          * pour un allocataire donné
