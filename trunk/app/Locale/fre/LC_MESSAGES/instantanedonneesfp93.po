@@ -60,7 +60,7 @@ msgstr "Aucun contrat"
 # ------------------------------------------------------------------------------
 
 msgid "ENUM::BENEF_NATPF::socle_majore_activite"
-msgstr "RSA socle majoré + activité"
+msgstr "RSA socle + activité majoré"
 
 msgid "ENUM::BENEF_NATPF::socle_activite"
 msgstr "RSA socle + activité"
@@ -70,6 +70,12 @@ msgstr "RSA socle majoré"
 
 msgid "ENUM::BENEF_NATPF::socle"
 msgstr "RSA socle"
+
+msgid "ENUM::BENEF_NATPF::activite_majore"
+msgstr "RSA activité majoré"
+
+msgid "ENUM::BENEF_NATPF::activite"
+msgstr "RSA activité"
 
 msgid "ENUM::BENEF_NATPF::NC"
 msgstr "Non défini"

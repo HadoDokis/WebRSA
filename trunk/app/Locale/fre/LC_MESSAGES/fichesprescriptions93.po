@@ -130,7 +130,10 @@ msgid "/Fichesprescriptions93/index/:heading"
 msgstr "Fiches de prescription de l'allocataire"
 
 msgid "Ficheprescription93.created"
-msgstr "Date d'enregistrement"
+msgstr "Date de création"
+
+msgid "Ficheprescription93.modified"
+msgstr "Date de dernière modification"
 
 msgid "Thematiquefp93.type"
 msgstr "Type"
@@ -237,6 +240,9 @@ msgstr "Mail"
 msgid "Instantanedonneesfp93.benef_natpf"
 msgstr "Bénéficiaire du"
 
+msgid "Instantanedonneesfp93.benef_natpf_3mois"
+msgstr "Statut du RSA 3 mois avant la création de la fiche"
+
 msgid "Instantanedonneesfp93.benef_matricule"
 msgstr "Numéro CAF"
 
@@ -257,6 +263,12 @@ msgstr "Lieu d'obtention"
 
 msgid "Instantanedonneesfp93.benef_positioncer"
 msgstr "Contrat d'engagement réciproque (CER)"
+
+msgid "Instantanedonneesfp93.benef_dd_ci"
+msgstr "Date de début du CER"
+
+msgid "Instantanedonneesfp93.benef_df_ci"
+msgstr "Date de fin du CER"
 
 ################################################################################
 

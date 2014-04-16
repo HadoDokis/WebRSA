@@ -71,39 +71,44 @@
 		);
 
 		/**
+		 * Les valeurs possibles et leurs conditions pour la nature de la prestation.
 		 *
-		 * @see Situationallocataire::natpfD1()
-		 *
-		 * @var array
-		 */
-		public $virtualFields = array(
-			'benef_natpf' => array(
-				'type'      => 'string',
-				'postgres'  => '( CASE
-					WHEN ( "%s"."benef_natpf_socle" = \'1\' AND "%s"."benef_natpf_activite" = \'1\' AND "%s"."benef_natpf_majore" = \'1\' ) THEN \'socle_majore_activite\'
-					WHEN ( "%s"."benef_natpf_socle" = \'1\' AND "%s"."benef_natpf_activite" = \'1\' AND "%s"."benef_natpf_majore" = \'0\' ) THEN \'socle_activite\'
-					WHEN ( "%s"."benef_natpf_socle" = \'1\' AND "%s"."benef_natpf_activite" = \'0\' AND "%s"."benef_natpf_majore" = \'1\' ) THEN \'socle_majore\'
-					WHEN ( "%s"."benef_natpf_socle" = \'1\' AND "%s"."benef_natpf_activite" = \'0\' AND "%s"."benef_natpf_majore" = \'0\' ) THEN \'socle\'
-					WHEN ( "%s"."benef_natpf_socle" = \'0\' AND "%s"."benef_natpf_activite" = \'1\' AND "%s"."benef_natpf_majore" = \'1\' ) THEN \'NC\'
-					WHEN ( "%s"."benef_natpf_socle" = \'0\' AND "%s"."benef_natpf_activite" = \'1\' AND "%s"."benef_natpf_majore" = \'0\' ) THEN \'NC\'
-					WHEN ( "%s"."benef_natpf_socle" = \'0\' AND "%s"."benef_natpf_activite" = \'0\' AND "%s"."benef_natpf_majore" = \'1\' ) THEN \'NC\'
-					WHEN ( "%s"."benef_natpf_socle" = \'0\' AND "%s"."benef_natpf_activite" = \'0\' AND "%s"."benef_natpf_majore" = \'0\' ) THEN \'NC\'
-					ELSE \'NC\'
-				END )'
-			),
-		);
-
-		/**
-		 * Les valeurs possibles pour la nature de la prestation (voir le champ
-		 * virtuel benef_natpf.
+		 * @see __construct()
+		 * @see getInstantane()
 		 *
 		 * @var array
 		 */
 		public $benef_natpf = array(
-			'socle_majore_activite',
-			'socle_activite',
-			'socle_majore',
-			'socle',
+			'socle_majore_activite' => array(
+				'benef_natpf_socle' => '1',
+				'benef_natpf_activite' => '1',
+				'benef_natpf_majore' => '1',
+			),
+			'socle_activite' => array(
+				'benef_natpf_socle' => '1',
+				'benef_natpf_activite' => '1',
+				'benef_natpf_majore' => '0',
+			),
+			'socle_majore' => array(
+				'benef_natpf_socle' => '1',
+				'benef_natpf_activite' => '0',
+				'benef_natpf_majore' => '1',
+			),
+			'socle' => array(
+				'benef_natpf_socle' => '1',
+				'benef_natpf_activite' => '0',
+				'benef_natpf_majore' => '0',
+			),
+			'activite_majore' => array(
+				'benef_natpf_socle' => '0',
+				'benef_natpf_activite' => '1',
+				'benef_natpf_majore' => '1',
+			),
+			'activite' => array(
+				'benef_natpf_socle' => '0',
+				'benef_natpf_activite' => '1',
+				'benef_natpf_majore' => '0',
+			),
 			'NC',
 		);
 
@@ -125,6 +130,56 @@
 		);
 
 		/**
+		 * Surcharge du constructeur de manière à créer le champ virtuel benef_natpf
+		 * à partir des valeurs possibles et des conditions de l'attribut benef_natpf.
+		 *
+		 * @param integer|string|array $id
+		 * @param string $table
+		 * @param string $ds
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			// Construction du champ virtuel benef_natpf
+			$cases = array();
+			foreach( Hash::normalize( $this->benef_natpf ) as $value => $conditions ) {
+				if( is_array( $conditions ) && !empty( $conditions ) ) {
+					$when = array();
+					foreach( $conditions as $field => $fieldValue ) {
+						$when[] = "\"{$this->alias}\".\"{$field}\" = '{$fieldValue}'";
+					}
+					$cases[] = "WHEN ( ".implode( ' AND ', $when )." ) THEN '{$value}'";
+				}
+			}
+			$this->virtualFields['benef_natpf'] = '( CASE '.implode( "\n", $cases ).' ELSE \'NC\' END )';
+		}
+
+		/**
+		 * Retourne la nature de prestation à partir des champs benef_natpf_socle,
+		 * benef_natpf_activite, benef_natpf_majore ainsi que des valeurs possibles
+		 * et des conditions de l'attribut benef_natpf.
+		 *
+		 * @param array $record
+		 * @return string
+		 */
+		public function getBenefNatpf( array $record ) {
+			$current = array(
+				'benef_natpf_socle' => Hash::get( $record, "{$this->alias}.benef_natpf_socle" ),
+				'benef_natpf_activite' => Hash::get( $record, "{$this->alias}.benef_natpf_activite" ),
+				'benef_natpf_majore' => Hash::get( $record, "{$this->alias}.benef_natpf_majore" ),
+			);
+
+			foreach( $this->benef_natpf as $benef_natpf => $conditions ) {
+				if( $conditions === $current ) {
+					return $benef_natpf;
+				}
+			}
+
+			return 'NC';
+		}
+
+		/**
+		 * Récupère un instantané des données pour une personne donnée.
 		 *
 		 * @param integer $personne_id
 		 * @return array
@@ -132,43 +187,39 @@
 		public function getInstantane( $personne_id ) {
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 
-			$vfPositioncer = '( CASE
-				WHEN EXISTS(
-						SELECT contratsinsertion.id
-						FROM contratsinsertion
-						WHERE contratsinsertion.personne_id = "Personne"."id"
-							AND contratsinsertion.decision_ci = \'V\'
-							AND contratsinsertion.dd_ci <= NOW()
-							AND contratsinsertion.df_ci >= NOW()
-					)
-					THEN \'valide\'
-				WHEN EXISTS(
-						SELECT contratsinsertion.id
-						FROM contratsinsertion
-						WHERE contratsinsertion.personne_id = "Personne"."id"
-							AND contratsinsertion.decision_ci = \'V\'
-							AND contratsinsertion.dd_ci > NOW()
-					)
-					THEN \'valide\'
-				WHEN EXISTS(
-						SELECT contratsinsertion.id
-						FROM contratsinsertion
-							INNER JOIN cers93 ON ( cers93.contratinsertion_id = contratsinsertion.id )
-						WHERE contratsinsertion.personne_id = "Personne"."id"
-							AND cers93.positioncer IN ( \'00enregistre\', \'01signe\', \'02attdecisioncpdv\' )
-					)
-					THEN \'validationpdv\'
-				WHEN EXISTS(
-						SELECT contratsinsertion.id
-						FROM contratsinsertion
-							INNER JOIN cers93 ON ( cers93.contratinsertion_id = contratsinsertion.id )
-						WHERE contratsinsertion.personne_id = "Personne"."id"
-							AND cers93.positioncer IN ( \'03attdecisioncg\', \'04premierelecture\', \'05secondelecture\', \'07attavisep\' )
-					)
-					THEN \'validationcg\'
-				ELSE \'aucun\'
-				END
-			) AS "Cer93__positioncer"';
+			$vfPositioncer = "( CASE
+				WHEN \"Contratinsertion\".\"decision_ci\" = 'V' THEN 'valide'
+				WHEN \"Cer93\".\"positioncer\" IN ( '00enregistre', '01signe', '02attdecisioncpdv' ) THEN 'validationpdv'
+				WHEN \"Cer93\".\"positioncer\" IN ( '03attdecisioncg', '04premierelecture', '05secondelecture', '07attavisep' ) THEN 'validationcg'
+				ELSE 'aucun'
+			END )  AS \"Cer93__positioncer\"";
+
+			$sqContratinsertion = $this->Ficheprescription93->Personne->Contratinsertion->sq(
+				array(
+					'fields' => array(
+						'contratsinsertion.id'
+					),
+					'alias' => 'contratsinsertion',
+					'conditions' => array(
+						'contratsinsertion.personne_id = Personne.id',
+						'OR' => array(
+							'contratsinsertion.decision_ci' => 'E',
+							array(
+								'contratsinsertion.decision_ci' => 'V',
+								'OR' => array(
+									array(
+										'contratsinsertion.dd_ci <= NOW()',
+										'contratsinsertion.df_ci >= NOW()'
+									),
+									'contratsinsertion.dd_ci > NOW()'
+								)
+							)
+						)
+					),
+					'order' => array( 'contratsinsertion.dd_ci DESC' ),
+					'limit' => 1
+				)
+			);
 
 			$querydata = array(
 				'fields' => array_merge(
@@ -196,6 +247,8 @@
 						'Dossier.matricule',
 						'Situationdossierrsa.etatdosrsa',
 						'Calculdroitrsa.toppersdrodevorsa',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
 						$vfPositioncer
 					),
 					$this->Ficheprescription93->Personne->Foyer->Dossier->Detaildroitrsa->Detailcalculdroitrsa->vfsSummary()
@@ -204,7 +257,15 @@
 				'joins' => array(
 					$this->Ficheprescription93->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
 					$this->Ficheprescription93->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
-					$this->Ficheprescription93->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Ficheprescription93->Personne->join(
+						'Contratinsertion',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								"Contratinsertion.id IN ( {$sqContratinsertion} )"
+							)
+						)
+					),
 					$this->Ficheprescription93->Personne->join(
 						'Dsp',
 						array(
@@ -223,6 +284,8 @@
 							)
 						)
 					),
+					$this->Ficheprescription93->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Ficheprescription93->Personne->Contratinsertion->join( 'Cer93', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 					$this->Ficheprescription93->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
@@ -258,7 +321,7 @@
 
 			$return = array();
 			if( !empty( $result ) ) {
-				foreach( array( 'Personne', 'Adresse', 'Dossier', 'Detailcalculdroitrsa', 'Situationdossierrsa', 'Calculdroitrsa' ) as $modelName ) {
+				foreach( array( 'Personne', 'Adresse', 'Dossier', 'Detailcalculdroitrsa', 'Situationdossierrsa', 'Calculdroitrsa', 'Contratinsertion', 'Cer93' ) as $modelName ) {
 					foreach( $result[$modelName] as $field => $value ) {
 						$return[$this->alias]["benef_{$field}"] = $value;
 					}
@@ -276,27 +339,11 @@
 
 				$return[$this->alias]['benef_positioncer'] = Hash::get( $result, 'Cer93.positioncer' );
 
-				// Nature de prestation
 				foreach( array( 'benef_natpf_activite', 'benef_natpf_majore', 'benef_natpf_socle' ) as $field ) {
 					$return[$this->alias][$field] = ( $return[$this->alias][$field] ? '1' : '0' );
 				}
 
-				$activite = Hash::get( $return, "{$this->alias}.benef_natpf_activite" );
-				$majore = Hash::get( $return, "{$this->alias}.benef_natpf_majore" );
-				$socle = Hash::get( $return, "{$this->alias}.benef_natpf_socle" );
-
-				if( $socle && !$activite && !$majore ) {
-					$return[$this->alias]['benef_natpf'] = 'socle';
-				}
-				else if( $socle && !$activite && $majore ) {
-					$return[$this->alias]['benef_natpf'] = 'socle_majore';
-				}
-				else if( $socle && $activite && !$majore ) {
-					$return[$this->alias]['benef_natpf'] = 'socle_activite';
-				}
-				else if( $socle && $activite && $majore ) {
-					$return[$this->alias]['benef_natpf'] = 'socle_majore_activite';
-				}
+				$return[$this->alias]['benef_natpf'] = $this->getBenefNatpf( $return );
 			}
 
 			return $return;
@@ -311,7 +358,7 @@
 			$enums = parent::enums();
 
 			$enums[$this->alias]['benef_natpf'] = array();
-			foreach( $this->benef_natpf as $natpf ) {
+			foreach( array_keys( Hash::normalize( $this->benef_natpf ) ) as $natpf ) {
 				$enums[$this->alias]['benef_natpf'][$natpf] = __d( 'instantanedonneesfp93', "ENUM::BENEF_NATPF::{$natpf}" );
 			}
 
