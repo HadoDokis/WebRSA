@@ -230,6 +230,7 @@
 				'fields' => array(
 					'Ficheprescription93.id',
 					'Ficheprescription93.created',
+					'Ficheprescription93.modified',
 					'Thematiquefp93.type',
 					'Thematiquefp93.name',
 					'Categoriefp93.name',

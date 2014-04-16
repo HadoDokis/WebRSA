@@ -92,6 +92,10 @@
 					'options' => $options['Instantanedonneesfp93']['benef_natpf'],
 					'hidden' => true,
 				),
+				'Instantanedonneesfp93.benef_natpf_3mois' => array(
+					'empty' => true,
+					'options' => $options['Instantanedonneesfp93']['benef_natpf'],
+				),
 				'Instantanedonneesfp93.benef_matricule' => array(
 					'view' => true,
 					'type' => 'text',
@@ -113,6 +117,16 @@
 				'Instantanedonneesfp93.benef_positioncer' => array(
 					'view' => true,
 					'type' => 'text',
+					'hidden' => true,
+				),
+				'Instantanedonneesfp93.benef_dd_ci' => array(
+					'view' => true,
+					'type' => 'date',
+					'hidden' => true,
+				),
+				'Instantanedonneesfp93.benef_df_ci' => array(
+					'view' => true,
+					'type' => 'date',
 					'hidden' => true,
 				),
 			),

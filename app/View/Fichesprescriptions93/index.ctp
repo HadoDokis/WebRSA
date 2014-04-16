@@ -24,6 +24,7 @@
 		$results,
 		array(
 			'Ficheprescription93.created' => array( 'type' => 'date' ),
+			'Ficheprescription93.modified' => array( 'type' => 'date' ),
 			'Thematiquefp93.type',
 			'Thematiquefp93.name',
 			'Categoriefp93.name',

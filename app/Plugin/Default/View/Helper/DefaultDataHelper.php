@@ -132,6 +132,10 @@
 		public function format( $value, $type ) {
 			$return = null;
 
+			if( $value === '' ) {
+				$value = null;
+			}
+
 			if( !is_null( $value ) ) {
 				switch( $type ) {
 					case 'boolean':
