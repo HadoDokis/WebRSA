@@ -174,6 +174,8 @@ WHEN ( "Instantanedonneesfp93"."benef_natpf_socle" = \'0\' AND "Instantanedonnee
 
 		/**
 		 * Test de la méthode Instantanedonneesfp93::getInstantane()
+		 *
+		 * @medium
 		 */
 		public function testGetInstantane() {
 			$result = $this->Instantanedonneesfp93->getInstantane( 1 );

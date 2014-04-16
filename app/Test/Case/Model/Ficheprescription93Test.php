@@ -81,6 +81,8 @@
 
 		/**
 		 * Test de la méthode Ficheprescription93::search()
+		 *
+		 * @medium
 		 */
 		public function testSearch() {
 			$result = $this->Ficheprescription93->search();
@@ -143,6 +145,8 @@
 
 		/**
 		 * Test de la méthode Ficheprescription93::options()
+		 *
+		 * @medium
 		 */
 		public function testOptions() {
 			$options = $this->Ficheprescription93->options( array( 'find' => true, 'autre' => true ) );
@@ -215,6 +219,8 @@
 
 		/**
 		 * Test de la méthode Ficheprescription93::prepareFormDataAddEdit()
+		 *
+		 * @medium
 		 */
 		public function testPrepareFormDataAddEdit() {
 			$result = $this->Ficheprescription93->prepareFormDataAddEdit( 1 );
