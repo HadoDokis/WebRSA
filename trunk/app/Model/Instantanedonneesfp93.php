@@ -130,18 +130,16 @@
 		);
 
 		/**
-		 * Surcharge du constructeur de manière à créer le champ virtuel benef_natpf
-		 * à partir des valeurs possibles et des conditions de l'attribut benef_natpf.
+		 * Retourne la sous-requête du champ virtuel benef_natpf à partir des valeurs
+		 * possibles et des conditions de l'attribut benef_natpf.
 		 *
-		 * @param integer|string|array $id
-		 * @param string $table
-		 * @param string $ds
+		 * @see $benef_natpf
+		 *
+		 * @return string
 		 */
-		public function __construct( $id = false, $table = null, $ds = null ) {
-			parent::__construct( $id, $table, $ds );
-
-			// Construction du champ virtuel benef_natpf
+		public function getVirtualFieldBenefNatpf() {
 			$cases = array();
+
 			foreach( Hash::normalize( $this->benef_natpf ) as $value => $conditions ) {
 				if( is_array( $conditions ) && !empty( $conditions ) ) {
 					$when = array();
@@ -151,7 +149,21 @@
 					$cases[] = "WHEN ( ".implode( ' AND ', $when )." ) THEN '{$value}'";
 				}
 			}
-			$this->virtualFields['benef_natpf'] = '( CASE '.implode( "\n", $cases ).' ELSE \'NC\' END )';
+
+			return '( CASE '.implode( "\n", $cases ).' ELSE \'NC\' END )';
+		}
+
+		/**
+		 * Surcharge du constructeur de manière à créer le champ virtuel benef_natpf.
+		 *
+		 * @param integer|string|array $id
+		 * @param string $table
+		 * @param string $ds
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			$this->virtualFields['benef_natpf'] = $this->getVirtualFieldBenefNatpf();
 		}
 
 		/**
