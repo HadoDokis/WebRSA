@@ -214,19 +214,7 @@
 					'alias' => 'contratsinsertion',
 					'conditions' => array(
 						'contratsinsertion.personne_id = Personne.id',
-						'OR' => array(
-							'contratsinsertion.decision_ci' => 'E',
-							array(
-								'contratsinsertion.decision_ci' => 'V',
-								'OR' => array(
-									array(
-										'contratsinsertion.dd_ci <= NOW()',
-										'contratsinsertion.df_ci >= NOW()'
-									),
-									'contratsinsertion.dd_ci > NOW()'
-								)
-							)
-						)
+						'contratsinsertion.decision_ci' => array( 'E', 'V' ),
 					),
 					'order' => array( 'contratsinsertion.dd_ci DESC' ),
 					'limit' => 1
