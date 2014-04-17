@@ -200,6 +200,7 @@
 										passagescommissionseps.id = decisionsdefautsinsertionseps66.passagecommissionep_id
 										AND decisionsdefautsinsertionseps66.etape = \'ep\'
 										AND passagescommissionseps.dossierep_id = Dossierep.id
+										AND passagescommissionseps.commissionep_id = \''.$commissionep_id.'\'
 									)
 							) NOT IN ( \''.implode( "', '", $this->decisionsEplParcours ).'\' ) THEN 1
 						ELSE 0
