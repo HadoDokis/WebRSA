@@ -139,10 +139,12 @@ msgid "/Parametrages/fichesprescriptions93/:title"
 msgstr "Retour au paramétrage du module fiches de prescription"
 
 # ------------------------------------------------------------------------------
-# FIXME: action = intitulé?
 
 msgid "/Cataloguespdisfps93/edit/Actionfp93/#Actionfp93.id#"
 msgstr "Modifier l'action « #Actionfp93.name# »"
+
+msgid "/Cataloguespdisfps93/add/Actionfp93/:heading"
+msgstr "Ajout d'un intitulé"
 
 msgid "/Cataloguespdisfps93/edit/Actionfp93/:heading"
 msgstr "Modification d'une action"
@@ -175,6 +177,12 @@ msgid "Filierefp93.modified"
 msgstr "Modifié"
 
 # ------------------------------------------------------------------------------
+
+msgid "Actionfp93.filierefp93_id"
+msgstr "Filière"
+
+msgid "Actionfp93.prestatairefp93_id"
+msgstr "Prestataire"
 
 msgid "Actionfp93.numconvention"
 msgstr "N° de convention"
