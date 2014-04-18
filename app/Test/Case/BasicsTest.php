@@ -594,6 +594,24 @@
 		 }
 
 		/**
+		 * Test de la fonction noaccents_upper().
+		 */
+		 public function testNoaccentsUpper() {
+			$result = noaccents_upper( 'Âéï' );
+			$expected = 'AEI';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
+		 * Test de la fonction domId().
+		 */
+		 public function testDomId() {
+			$result = domId( 'Foo.bar_id' );
+			$expected = 'FooBarId';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
 		 * Test de la fonction validRib().
 		 */
 		 public function testValidRib() {

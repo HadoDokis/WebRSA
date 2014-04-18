@@ -157,11 +157,16 @@
 				'Ficheprescription93.numconvention' => array( 'type' => 'text' ),
 				'Ficheprescription93.typethematiquefp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.thematiquefp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.thematiquefp93',
 				'Ficheprescription93.categoriefp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.categoriefp93',
 				'Ficheprescription93.filierefp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.filierefp93',
 				'Ficheprescription93.prestatairefp93_id' => array( 'empty' => true ),
+				'Ficheprescription93.prestatairefp93',
 				'Ficheprescription93.actionfp93_id' => array( 'empty' => true ),
-				'Ficheprescription93.statut' => array( 'type' => 'hidden' ), // FIXME ?
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.statut' => array( 'type' => 'hidden' ),
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				// TODO: duree_action,
@@ -257,6 +262,37 @@
 	echo $this->Default3->DefaultForm->end();
 ?>
 <?php
+	// Catalogue PDI
+	echo $this->Observer->disableFieldsOnValue(
+		'Ficheprescription93.typethematiquefp93_id',
+		array(
+			'Ficheprescription93.thematiquefp93',
+			'Ficheprescription93.categoriefp93',
+			'Ficheprescription93.filierefp93',
+			'Ficheprescription93.prestatairefp93',
+			'Ficheprescription93.actionfp93',
+		),
+		array( null, '', 'pdi' ),
+		true,
+		true
+	);
+
+	// Catalogue Hors PDI
+	echo $this->Observer->disableFieldsOnValue(
+		'Ficheprescription93.typethematiquefp93_id',
+		array(
+			'Ficheprescription93.numconvention',
+			'Ficheprescription93.thematiquefp93_id',
+			'Ficheprescription93.categoriefp93_id',
+			'Ficheprescription93.filierefp93_id',
+			'Ficheprescription93.prestatairefp93_id',
+			'Ficheprescription93.actionfp93_id',
+		),
+		array( 'horspdi' ),
+		true,
+		true
+	);
+
 	// Le bénéficiaire est invité à se munir de...
 	foreach( (array)Hash::get( $options, 'Autre.Ficheprescription93.documentbeneffp93_id' ) as $documentbeneffp93_id ) {
 		echo $this->Observer->disableFieldsOnCheckbox(
@@ -386,10 +422,15 @@
 			'Ficheprescription93.numconvention' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.typethematiquefp93_id',
 			'Ficheprescription93.thematiquefp93_id',
+			'Ficheprescription93.thematiquefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.categoriefp93_id',
+			'Ficheprescription93.categoriefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.filierefp93_id',
+			'Ficheprescription93.filierefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.prestatairefp93_id',
+			'Ficheprescription93.prestatairefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.actionfp93_id',
+			'Ficheprescription93.actionfp93' => array( 'event' => 'keyup' ),
 		),
 		array(
 			'url' => array( 'action' => 'ajax_action' ),

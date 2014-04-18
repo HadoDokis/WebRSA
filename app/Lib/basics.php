@@ -659,6 +659,29 @@
 	}
 
 	/**
+	 * Remplace les caractères accentués par des caractères non accentués et met
+	 * en majuscules dans une chaîne de caractères.
+	 *
+	 * @see replace_accents
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	function noaccents_upper( $string ) {
+		return strtoupper( replace_accents( $string ) );
+	}
+
+	/**
+	 * Equivalent de la méthode AppHelper::domId()
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	function domId( $path ) {
+		return Inflector::camelize( str_replace( '.', '_', $path ) );
+	}
+
+	/**
 	 * Retourne true pour un RIB bien formé, false pour un RIB mal formé.
 	 *
 	 * @see http://fr.wikipedia.org/wiki/Cl%C3%A9_RIB#Algorithme_de_calcul_qui_fonctionne_avec_des_entiers_32_bits

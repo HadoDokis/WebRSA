@@ -33,6 +33,7 @@
 		 * @var array
 		 */
 		public $actsAs = array(
+			'Cataloguepdifp93',
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable' => array(
 				'Validation2.Validation2DefaultFormatter' => array(
