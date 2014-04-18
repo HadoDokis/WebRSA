@@ -202,7 +202,21 @@
 					'allowEmpty' => false
 				)
 			),
+			'thematiquefp93' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
 			'categoriefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'categoriefp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
 					'message' => null,
@@ -216,6 +230,13 @@
 					'allowEmpty' => false
 				)
 			),
+			'filierefp93' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
 			'prestatairefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -223,7 +244,21 @@
 					'allowEmpty' => false
 				)
 			),
+			'prestatairefp93' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
 			'actionfp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => null,
+					'allowEmpty' => false
+				)
+			),
+			'actionfp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
 					'message' => null,
@@ -511,10 +546,15 @@
 							$this->Instantanedonneesfp93->sqVirtualField( 'benef_natpf' ),
 							'Referent.structurereferente_id',
 							'Actionfp93.numconvention',
+							'"Actionfp93"."name" AS "Ficheprescription93__actionfp93"',
 							'Actionfp93.filierefp93_id',
+							'"Filierefp93"."name" AS "Ficheprescription93__filierefp93"',
 							'Actionfp93.prestatairefp93_id',
+							'"Prestatairefp93"."name" AS "Ficheprescription93__prestatairefp93"',
 							'Filierefp93.categoriefp93_id',
+							'"Categoriefp93"."name" AS "Ficheprescription93__categoriefp93"',
 							'Categoriefp93.thematiquefp93_id',
+							'"Thematiquefp93"."name" AS "Ficheprescription93__thematiquefp93"',
 							'Thematiquefp93.type',
 						)
 					),
@@ -524,6 +564,7 @@
 						$this->join( 'Instantanedonneesfp93' ),
 						$this->join( 'Referent' ),
 						$this->Actionfp93->join( 'Filierefp93' ),
+						$this->Actionfp93->join( 'Prestatairefp93' ),
 						$this->Actionfp93->Filierefp93->join( 'Categoriefp93' ),
 						$this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
 					),
@@ -750,6 +791,60 @@
 				);
 			}
 			// Fin Instantanedonnees93
+
+			// Différenciation action PDI / Hors PDI
+			// TODO: factoriser
+			$typethematiquefp93_id = Hash::get( $data, "{$this->alias}.typethematiquefp93_id" );
+			if( $typethematiquefp93_id === 'horspdi' ) {
+				$conditions = array(
+					'Thematiquefp93' => array(
+						'type' => 'horspdi',
+						'name' => Hash::get( $data, "{$this->alias}.thematiquefp93" ),
+					)
+				);
+				$thematiquefp93_id = $this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->createOrUpdate( $conditions );
+				if( !empty( $thematiquefp93_id ) ) {
+					$conditions = array(
+						'Categoriefp93' => array(
+							'thematiquefp93_id' => $thematiquefp93_id,
+							'name' => Hash::get( $data, "{$this->alias}.categoriefp93" ),
+						)
+					);
+					$categoriefp93_id = $this->Actionfp93->Filierefp93->Categoriefp93->createOrUpdate( $conditions );
+					if( !empty( $categoriefp93_id ) ) {
+						$conditions = array(
+							'Filierefp93' => array(
+								'categoriefp93_id' => $categoriefp93_id,
+								'name' => Hash::get( $data, "{$this->alias}.filierefp93" ),
+							)
+						);
+						$filierefp93_id = $this->Actionfp93->Filierefp93->createOrUpdate( $conditions );
+						if( !empty( $filierefp93_id ) ) {
+							$conditions = array(
+								'Prestatairefp93' => array(
+									'name' => Hash::get( $data, "{$this->alias}.prestatairefp93" ),
+								)
+							);
+							$prestatairefp93_id = $this->Actionfp93->Prestatairefp93->createOrUpdate( $conditions );
+							if( !empty( $prestatairefp93_id ) ) {
+								$conditions = array(
+									'Actionfp93' => array(
+										'filierefp93_id' => $filierefp93_id,
+										'prestatairefp93_id' => $prestatairefp93_id,
+										'annee' => date( 'Y' ), // FIXME: lorsqu'on modifie, il se pourrait que l'année ne soit pas celle en cours
+										'actif' => '1',
+										'name' => Hash::get( $data, "{$this->alias}.actionfp93" ),
+									)
+								);
+								$actionfp93_id = $this->Actionfp93->createOrUpdate( $conditions );
+								if( !empty( $actionfp93_id ) ) {
+									$data[$this->alias]['actionfp93_id'] = $actionfp93_id;
+								}
+							}
+						}
+					}
+				}
+			}
 
 			// Sauvegarde de la fiche
 			$this->create( $data );

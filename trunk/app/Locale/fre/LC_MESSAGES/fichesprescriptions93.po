@@ -302,16 +302,31 @@ msgstr "Type"
 msgid "Ficheprescription93.thematiquefp93_id"
 msgstr "Thématique"
 
+msgid "Ficheprescription93.thematiquefp93"
+msgstr "Thématique"
+
 msgid "Ficheprescription93.categoriefp93_id"
+msgstr "Catégorie"
+
+msgid "Ficheprescription93.categoriefp93"
 msgstr "Catégorie"
 
 msgid "Ficheprescription93.filierefp93_id"
 msgstr "Filière"
 
+msgid "Ficheprescription93.filierefp93"
+msgstr "Filière"
+
 msgid "Ficheprescription93.prestatairefp93_id"
 msgstr "Nom du prestataire"
 
+msgid "Ficheprescription93.prestatairefp93"
+msgstr "Nom du prestataire"
+
 msgid "Ficheprescription93.actionfp93_id"
+msgstr "Intitulé"
+
+msgid "Ficheprescription93.actionfp93"
 msgstr "Intitulé"
 
 ################################################################################

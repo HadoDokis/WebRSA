@@ -256,6 +256,22 @@ LANGUAGE plpgsql IMMUTABLE;
 COMMENT ON FUNCTION cakephp_validate_alpha_numeric( p_check text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_alphaNumeric';
 
+-- INFO: voir http://postgresql.developpez.com/sources/?page=chaines
+CREATE OR REPLACE FUNCTION "public"."noaccents_upper" (text) RETURNS text AS
+$body$
+	DECLARE
+		st text;
+
+	BEGIN
+		-- On transforme les caractèes accentués et on passe en majuscule
+		st:=translate($1,'aàäâeéèêëiïîoôöuùûücçñAÀÄÂEÉÈÊËIÏÎOÔÖUÙÛÜCÇÑ','AAAAEEEEEIIIOOOUUUUCCNAAAAEEEEEIIIOOOUUUUCCN');
+		st:=upper(st);
+
+		return st;
+	END;
+$body$
+LANGUAGE 'plpgsql' IMMUTABLE RETURNS NULL ON NULL INPUT SECURITY INVOKER;
+
 -- *****************************************************************************
 -- 20140307: ajout du fax pour la structure référente
 -- *****************************************************************************
@@ -277,7 +293,7 @@ CREATE TABLE thematiquesfps93 (
 );
 COMMENT ON TABLE thematiquesfps93 IS 'Thématiques pour la fiche de prescription - CG 93';
 
-CREATE UNIQUE INDEX thematiquesfps93_type_name_idx ON thematiquesfps93( type, name );
+CREATE UNIQUE INDEX thematiquesfps93_type_name_idx ON thematiquesfps93( type, NOACCENTS_UPPER( name ) );
 
 ALTER TABLE thematiquesfps93 ADD CONSTRAINT thematiquesfps93_type_in_list_chk CHECK ( cakephp_validate_in_list( type, ARRAY['pdi','horspdi'] ) );
 
@@ -293,7 +309,7 @@ CREATE TABLE categoriesfps93 (
 );
 COMMENT ON TABLE categoriesfps93 IS 'Catégories pour la fiche de prescription - CG 93';
 
-CREATE UNIQUE INDEX categoriesfps93_thematiquefp93_id_name_idx ON categoriesfps93( thematiquefp93_id, name );
+CREATE UNIQUE INDEX categoriesfps93_thematiquefp93_id_name_idx ON categoriesfps93( thematiquefp93_id, NOACCENTS_UPPER( name ) );
 
 --------------------------------------------------------------------------------
 
@@ -307,7 +323,7 @@ CREATE TABLE filieresfps93 (
 );
 COMMENT ON TABLE filieresfps93 IS 'Filières pour la fiche de prescription - CG 93';
 
-CREATE UNIQUE INDEX filieresfps93_categoriefp93_id_name_idx ON filieresfps93( categoriefp93_id, name );
+CREATE UNIQUE INDEX filieresfps93_categoriefp93_id_name_idx ON filieresfps93( categoriefp93_id, NOACCENTS_UPPER( name ) );
 
 --------------------------------------------------------------------------------
 
@@ -321,7 +337,7 @@ CREATE TABLE prestatairesfps93 (
 );
 COMMENT ON TABLE prestatairesfps93 IS 'Prestataires pour la fiche de prescription - CG 93';
 
-CREATE UNIQUE INDEX prestatairesfps93_name_idx ON prestatairesfps93( name );
+CREATE UNIQUE INDEX prestatairesfps93_name_idx ON prestatairesfps93( NOACCENTS_UPPER( name ) );
 
 --------------------------------------------------------------------------------
 
@@ -360,7 +376,7 @@ COMMENT ON TABLE actionsfps93 IS 'Actions pour la fiche de prescription - CG 93'
 CREATE INDEX actionsfps93_filierefp93_id_idx ON actionsfps93( filierefp93_id );
 CREATE INDEX actionsfps93_prestatairefp93_id_idx ON actionsfps93( prestatairefp93_id );
 CREATE INDEX actionsfps93_upper_numconvention_idx ON actionsfps93( UPPER( numconvention ) );
-CREATE UNIQUE INDEX actionsfps93_filierefp93_id_prestatairefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, prestatairefp93_id, name, annee ) WHERE actif = '1';
+CREATE UNIQUE INDEX actionsfps93_filierefp93_id_prestatairefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, prestatairefp93_id, NOACCENTS_UPPER( name ), annee ) WHERE actif = '1';
 
 ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
 ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_numconvention_alpha_numeric_chk CHECK ( cakephp_validate_alpha_numeric( numconvention ) );
