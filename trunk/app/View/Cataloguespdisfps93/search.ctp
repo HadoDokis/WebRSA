@@ -55,6 +55,7 @@
 		);
 
 		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
+		$modelName = 'Actionfp93';
 
 		echo $this->Default3->index(
 			$results,
@@ -66,8 +67,12 @@
 				'Actionfp93.annee' => array( 'type' => 'text' ),
 				'Actionfp93.name',
 				'Actionfp93.actif',
-				'/Cataloguespdisfps93/edit/Actionfp93/#Actionfp93.id#' => array(
+				"/Cataloguespdisfps93/edit/{$modelName}/#{$modelName}.id#" => array(
 					'disabled' => !$this->Permissions->check( 'Cataloguespdisfps93', 'edit' )
+				),
+				"/Cataloguespdisfps93/delete/{$modelName}/#{$modelName}.id#" => array(
+					'disabled' => "( '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguespdisfps93', 'delete' )."' )",
+					'confirm' => true
 				),
 			),
 			array(
@@ -86,4 +91,8 @@
 			),
 		)
 	);
+
+	if( !empty( $results ) ) {
+		debug($results);
+	}
 ?>

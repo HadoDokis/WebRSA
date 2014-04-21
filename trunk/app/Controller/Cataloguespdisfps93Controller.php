@@ -101,34 +101,41 @@
 			}
 
 			$Model = ClassRegistry::init( $modelName );
-
-			// Début factorisation pour formulaire
-			$fields = array_keys( $Model->schema() );
-			array_remove( $fields, 'id' );
-			foreach( $fields as $i => $field ) {
-				$fields[$i] = "{$Model->alias}.{$field}";
+			if( $Model->Behaviors->attached( 'Cataloguepdifp93' ) ) {
+				$query = $Model->searchQuery();
+				$query['fields'] = Hash::merge( $query['fields'], $Model->fields() );
 			}
-
-			$query = array(
-				'joins' => array(),
-				'order' => array( "{$Model->alias}.{$Model->displayField} ASC" ),
-				'limit' => 10
-			);
-
-			if( !empty( $Model->belongsTo ) ) {
-				foreach( $Model->belongsTo as $alias => $params ) {
-					array_remove( $fields, "{$Model->alias}.{$params['foreignKey']}" );
-
-					$OtherModel = $Model->{$alias};
-					array_unshift( $fields, "{$alias}.{$OtherModel->displayField}" );
-					$query['joins'][] = $Model->join( $alias, array( 'type' => 'INNER' ) );
+			else {
+				// Début factorisation pour formulaire
+				$fields = array_keys( $Model->schema() );
+				foreach( $fields as $i => $field ) {
+					$fields[$i] = "{$Model->alias}.{$field}";
 				}
+
+				$query = array(
+					'fields' => $fields,
+					'joins' => array(),
+					'order' => array( "{$Model->alias}.{$Model->displayField} ASC" ),
+					'limit' => 10
+				);
+
+				if( !empty( $Model->belongsTo ) ) {
+					foreach( $Model->belongsTo as $alias => $params ) {
+						array_remove( $query['fields'], "{$Model->alias}.{$params['foreignKey']}" );
+
+						$OtherModel = $Model->{$alias};
+						array_unshift( $query['fields'], "{$alias}.{$OtherModel->displayField}" );
+						$query['joins'][] = $Model->join( $alias, array( 'type' => 'INNER' ) );
+					}
+				}
+				// Fin factorisation pour formulaire
+
+				$query['fields'] = $fields;
+				$query['fields'][] = "{$Model->alias}.{$Model->primaryKey}";
 			}
-			// Fin factorisation pour formulaire
+			$query['fields'] = array_unique($query['fields']);
 
-			$query['fields'] = $fields;
-			$query['fields'][] = "{$Model->alias}.{$Model->primaryKey}";
-
+			$fields = $query['fields'];
 			$this->paginate = array( $Model->alias => $query );
 
 			$results = $this->paginate( $Model, array(), $fields, false );
@@ -141,7 +148,15 @@
 				$results[$i][$Model->alias]['occurences'] = ( Hash::get( $occurences, $primaryKey ) ? '1' : '0' );
 			}
 
-			$options = $Model->enums();
+//			$options = $Model->enums();
+			$options = $this->Cataloguepdifp93->options();
+
+			foreach( $fields as $key => $field ) {
+				list( $modelName, $fieldName ) = model_field( $field );
+				if( $fieldName === 'id' || preg_match( '/_id$/', $fieldName ) ) {
+					unset( $fields[$key] );
+				}
+			}
 
 			$this->set( compact( 'modelName', 'results', 'fields', 'options' ) );
 		}
