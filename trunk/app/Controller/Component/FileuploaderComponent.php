@@ -252,6 +252,13 @@
             stream_copy_to_stream( $temp, $target );
             fclose( $target );
 
+			// Affichage d'une alerte si le nom de fichier existe déjà
+			$fichiersEnBase = $this->_fichiersEnBase( $this->controller->request->query['primaryKey'] );
+			$fileName = basename( $path );
+			if( in_array( $fileName, $fichiersEnBase ) ) {
+				$error = "Le fichier « {$fileName} » existe déjà pour cet enregistrement.\nDans l'état actuel des choses, l'enregistrement écrasera la version précédente.\n\nVous pouvez aussi supprimer le fichier temporaire (dans la partie supérieure de la page) et le renommer sur votre poste avant de l'envoyer à nouveau pour éviter de perdre des données.";
+			}
+
             Configure::write( 'debug', 0 );
             $this->controller->layout = false;
             echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
