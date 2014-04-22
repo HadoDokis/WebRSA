@@ -959,14 +959,12 @@
 						$return[$categorie1]['dont'][$categorie2] = $empty;
 					}
 
-					if( !( $categorie1 == 'nivetu' && $categorie2 == '1207' ) ) {
-						foreach( $data2['entrees'] as $sexe => $nombre ) {
-							$return[$categorie1]['dont'][$categorie2]["entrees_{$sexe}"] = $nombre;
-							$return[$categorie1]['dont'][$categorie2]["entrees_total"] = (int)$return[$categorie1]['dont'][$categorie2]["entrees_total"] + $nombre;
+					foreach( $data2['entrees'] as $sexe => $nombre ) {
+						$return[$categorie1]['dont'][$categorie2]["entrees_{$sexe}"] = $nombre;
+						$return[$categorie1]['dont'][$categorie2]["entrees_total"] = (int)$return[$categorie1]['dont'][$categorie2]["entrees_total"] + $nombre;
 
-							$return[$categorie1]["entrees_{$sexe}"] = (int)$return[$categorie1]["entrees_{$sexe}"] + $nombre;
-							$return[$categorie1]["entrees_total"] = (int)$return[$categorie1]["entrees_total"] + $nombre;
-						}
+						$return[$categorie1]["entrees_{$sexe}"] = (int)$return[$categorie1]["entrees_{$sexe}"] + $nombre;
+						$return[$categorie1]["entrees_total"] = (int)$return[$categorie1]["entrees_total"] + $nombre;
 					}
 				}
 			}
@@ -974,8 +972,16 @@
 			// Catégories spéciales
 			$return['diplomes_etrangers'] = $return['diplomes_etrangers']['dont']['1'];
 			unset( $return['diplomes_etrangers']['dont'] );
+
 			// Non scolarisé, 1207
+			// Il faut en plus les comptabiliser dans la ligne 5, sous l'intitulé 1206
 			$return['non_scolarise'] = $return['non_scolarise']['dont']['1207'];
+			foreach( $return['non_scolarise'] as $key => $value ) {
+				if( $return['nivetu']['dont']['1206'][$key] !== null || $value !== null  ) {
+					$return['nivetu']['dont']['1206'][$key] = (int)$return['nivetu']['dont']['1206'][$key] + $value;
+				}
+			}
+
 			unset( $return['non_scolarise']['dont'] );
 			unset( $return['nivetu']['dont']['1207'] );
 

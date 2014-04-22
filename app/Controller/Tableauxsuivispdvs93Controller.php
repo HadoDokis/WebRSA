@@ -241,6 +241,8 @@
 				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired2pdv93->enums(),
 				$this->Tableausuivipdv93->Populationd1d2pdv93->Questionnaired1pdv93->Situationallocataire->enums()
 			);
+			// INFO: pour que l'intitulé des 1207 ne soit pas "Non scolarisé" mais "Niveau VI (6e à 4e ou formation préprofessionnelle de 1 an et non scolarisé)"
+			$options['Questionnaired1pdv93']['nivetu'][1207] = $options['Questionnaired1pdv93']['nivetu'][1206];
 
 			$csvfile = $this->_csvFileName( $this->action, $tableausuivipdv93 );
 
