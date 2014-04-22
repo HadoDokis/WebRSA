@@ -235,22 +235,10 @@
 		 * @return integer
 		 */
 		protected function _createOrUpdate( AppModel $Model, array $conditions ) {
-			$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
+			if( $Model->Behaviors->attached( 'Cataloguepdifp93' ) ) {
+				$id = $Model->createOrUpdate( $conditions );
 
-			$primaryKeyField = "{$Model->alias}.{$Model->primaryKey}";
-
-			$query = array(
-				'fields' => array( $primaryKeyField ),
-				'conditions' => $conditions
-			);
-
-			$record = $Model->find( 'first', $query );
-
-			if( empty( $record ) ) {
-				$record = Hash::expand( $conditions );
-				$Model->create( $record );
-
-				if( !$Model->save() ) {
+				if( empty( $id ) ) {
 					$this->_validationErrors = Hash::merge(
 						$this->_validationErrors,
 						Hash::flatten( array( $Model->alias => $Model->validationErrors ) )
@@ -258,12 +246,40 @@
 
 					return null;
 				}
-				else {
-					return $Model->{$Model->primaryKey};
-				}
+
+				return $id;
 			}
 			else {
-				return Hash::get( $record, $primaryKeyField );
+				$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
+
+				$primaryKeyField = "{$Model->alias}.{$Model->primaryKey}";
+
+				$query = array(
+					'fields' => array( $primaryKeyField ),
+					'conditions' => $conditions
+				);
+
+				$record = $Model->find( 'first', $query );
+
+				if( empty( $record ) ) {
+					$record = Hash::expand( $conditions );
+					$Model->create( $record );
+
+					if( !$Model->save() ) {
+						$this->_validationErrors = Hash::merge(
+							$this->_validationErrors,
+							Hash::flatten( array( $Model->alias => $Model->validationErrors ) )
+						);
+
+						return null;
+					}
+					else {
+						return $Model->{$Model->primaryKey};
+					}
+				}
+				else {
+					return Hash::get( $record, $primaryKeyField );
+				}
 			}
 		}
 
