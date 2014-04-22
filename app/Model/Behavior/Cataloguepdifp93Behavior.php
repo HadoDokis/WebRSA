@@ -108,10 +108,16 @@
 
 			// On cherche un intitulé approchant à la casse et aux accents près
 			foreach( $query['conditions'] as $path => $value ) {
-				if( !is_numeric( $value ) ) {
+				if( $value !== null ) {
+					if( !is_numeric( $value ) ) {
+						unset( $query['conditions'][$path] );
+						list( $m, $f ) = model_field( $path );
+						$query['conditions']["NOACCENTS_UPPER( \"{$m}\".\"{$f}\" )"] = noaccents_upper( $value );
+					}
+				}
+				else {
 					unset( $query['conditions'][$path] );
-					list( $m, $f ) = model_field( $path );
-					$query['conditions']["NOACCENTS_UPPER( \"{$m}\".\"{$f}\" )"] = noaccents_upper( $value );
+					$query['conditions'][] = "{$path} IS NULL";
 				}
 			}
 
