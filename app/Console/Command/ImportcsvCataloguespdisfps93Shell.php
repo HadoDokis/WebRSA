@@ -81,9 +81,9 @@
 			'categorie action', // Categoriefp93.name
 			'numero convention action',
 			'prestataire',
-			'intitulé d\'action',
+			'intitule d action',
 			'filiere',
-			'tel_action',
+			'tel action',
 			'adresse action',
 			'cp action',
 			'commune action'
@@ -125,6 +125,16 @@
 		 */
 		public function startup() {
 			parent::startup();
+
+			$whoami = exec( 'whoami' );
+			$accepted = array( 'apache', 'www-data', 'httpd' );
+
+			if( !in_array( $whoami, $accepted ) ) {
+				$this->error(
+					sprintf( 'Mauvais utilisateur (%s), veuillez exécuter ce shell en tant que: %s', $whoami, implode( ', ', $accepted ) ),
+					'<info>Exemple:</info> sudo -u apache lib/Cake/Console/cake ImportcsvCataloguespdisfps93'
+				);
+			}
 
 			// 1°) Si on n'est pas le CG 93, on ne peut pas utiliser ce shell
 			if( Configure::read( 'Cg.departement' ) != 93 ) {
@@ -179,6 +189,9 @@
 			// 3.3°) Traitement de la ligne d'en-tête
 			if( $this->params['headers'] ) {
 				$this->_headers = explode( $this->params['separator'], strtolower( trim( $this->_lines[0] ) ) );
+				foreach( $this->_headers as $key => $value ) {
+					$this->_headers[$key] = preg_replace( '/[^a-zA-Z0-9]+/', ' ', replace_accents( $value ) );
+				}
 			}
 			else {
 				$this->_headers = $this->_defaultHeaders;
@@ -364,7 +377,7 @@
 								'Adresseprestatairefp93.adresse' => $record[$headers['adresse action']],
 								'Adresseprestatairefp93.codepos' => $record[$headers['cp action']],
 								'Adresseprestatairefp93.localite' => $record[$headers['commune action']],
-								'Adresseprestatairefp93.tel' => $record[$headers['tel_action']],
+								'Adresseprestatairefp93.tel' => $record[$headers['tel action']],
 							);
 
 							$adresseprestatairefp93_id = $this->_createOrUpdate(
@@ -380,7 +393,7 @@
 								'Actionfp93.filierefp93_id' => $filierefp93_id,
 								'Actionfp93.prestatairefp93_id' => $prestatairefp93_id,
 								'Actionfp93.numconvention' => $record[$headers['numero convention action']],
-								'Actionfp93.name' => $record[$headers['intitulé d\'action']],
+								'Actionfp93.name' => $record[$headers['intitule d action']],
 								'Actionfp93.annee' => $this->params['annee'],
 								'Actionfp93.actif' => '1', // FIXME
 							);
