@@ -674,5 +674,78 @@
 			 $expected = array( 1, 2, 3, 5 );
 			 $this->assertEqual( $array, $expected, var_export( $array, true ) );
 		}
+
+		/**
+		 * Test de la fonction trim_mixed()
+		 */
+		public function testTrimMixed() {
+			// 1. Avec une chaîne de caractères
+			$string = ' "Foo, bar" ';
+			$result = trim_mixed( $string );
+			$expected = 'Foo, bar';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Avec un array à une dimension
+			$array = array(
+				0 => "\tBaz",
+				'foo' => ' "Foo, bar" '
+			);
+			$result = trim_mixed( $array );
+			$expected = array(
+				0 => 'Baz',
+				'foo' => 'Foo, bar',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 3. Avec un array à plusieurs dimensions
+			$array = array(
+				0 => "\tBaz",
+				'foo' => ' "Foo, bar" ',
+				1 => array(
+					2 => ' "Bar" ',
+				)
+			);
+			$result = trim_mixed( $array );
+			$expected = array(
+				0 => 'Baz',
+				'foo' => 'Foo, bar',
+				1 => array(
+					2 => 'Bar',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la fonction parse_csv_line()()
+		 */
+		public function testParseCsvLine() {
+			// 1. Séparateur et délimiteur par défaut
+			$line = '"Prescription professionnelle","Accompagnement a la creation d activite",,"ADIE   Association pour le Droit a l Initiative Economique   ","Micro credit professionnel, Pret d honneur, Accompagnement a la creation d entreprise","Metiers divers","0149331833","113   115 rue Daniele Casanova","93200","Saint   Denis"';
+			$result = parse_csv_line( $line );
+			$expected = array(
+				'Prescription professionnelle',
+				'Accompagnement a la creation d activite',
+				NULL,
+				'ADIE   Association pour le Droit a l Initiative Economique',
+				'Micro credit professionnel, Pret d honneur, Accompagnement a la creation d entreprise',
+				'Metiers divers',
+				'0149331833',
+				'113   115 rue Daniele Casanova',
+				'93200',
+				'Saint   Denis',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Séparateur et délimiteur spécifiés
+			$line = "Foo;' Bar; ';'\'Baz'";
+			$result = parse_csv_line( $line, ';', '\'' );
+			$expected = array(
+				'Foo',
+				'Bar;',
+				'\\\'Baz',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>

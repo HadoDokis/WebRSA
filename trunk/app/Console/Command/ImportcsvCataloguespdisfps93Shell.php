@@ -97,30 +97,6 @@
 		public $uses = array( 'Thematiquefp93' );
 
 		/**
-		 * Fonction utilitaire de trim (espaces, doubles quotes) pour un chaîne
-		 * ou un array, de façon récursive.
-		 *
-		 * @todo: dans une classe utilitaire
-		 *
-		 * @param array|string $mixed
-		 * @return array|string
-		 */
-		protected function _trim( $mixed ) {
-			$charlist = " \t\n\r\0\x0B\"";
-
-			if( is_array( $mixed ) ) {
-				foreach( $mixed as $key => $value ) {
-					$mixed[$key] = trim( $value, $charlist );
-				}
-			}
-			else {
-				$mixed = trim( $mixed, $charlist );
-			}
-
-			return $mixed;
-		}
-
-		/**
 		 * Démarrage du shell
 		 */
 		public function startup() {
@@ -196,7 +172,7 @@
 			else {
 				$this->_headers = $this->_defaultHeaders;
 			}
-			$this->_headers = $this->_trim( $this->_headers );
+			$this->_headers = trim_mixed( $this->_headers );
 
 			// 3.4°) Scission des lignes du catalogue et de la ligne d'en-tête
 			if( $this->params['headers'] ) {
@@ -216,24 +192,6 @@
 				$this->out( '<info>Aucune action PDI présente dans ce fichier</info>', 1, Shell::QUIET );
 				$this->_stop( self::SUCCESS );
 			}
-		}
-
-		/**
-		 *
-		 * @param string $line
-		 * @return array
-		 */
-		protected function _normalizeLine( $line ) {
-			$return = array();
-
-			$return = $this->_trim( explode( $this->params['separator'], $line ) );
-			foreach( $return as $i => $value ) {
-				if( trim( $value ) == '' ) {
-					$return[$i] = null;
-				}
-			}
-
-			return $return;
 		}
 
 		/**
@@ -312,7 +270,7 @@
 					unset( $this->_lines[$i] );
 				}
 				else {
-					$record = $this->_normalizeLine( $line );
+					$record = parse_csv_line( $line, $this->params['separator'], $this->params['delimiter'] );
 
 					if( count( $record ) == $expectedCount ) {
 						$this->Thematiquefp93->begin();
@@ -429,7 +387,7 @@
 				$titleLine = "";
 				if( $this->params['headers'] == 'true' ) {
 					$headers = $this->params['delimiter'].implode( "{$this->params['delimiter']}{$this->params['separator']}{$this->params['delimiter']}", $this->_headers ).$this->params['delimiter'];
-					$headers = "{$headers};\"Erreur\"";
+					$headers = "{$headers}{$this->params['separator']}{$this->params['delimiter']}Erreur{$this->params['delimiter']}";
 					$titleLine = "{$headers}\n";
 				}
 				$output = $titleLine.implode( "\n", $this->_rejects )."\n";
