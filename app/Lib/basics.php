@@ -1044,4 +1044,50 @@
 
 		return $removed;
 	}
+
+	/**
+	 * Fonction utilitaire de trim (espaces, doubles quotes) pour une chaîne
+	 * ou un array, de façon récursive.
+	 *
+	 * @param mixed $mixed
+	 * @param string $charlist
+	 * @return mixed
+	 */
+	function trim_mixed( $mixed, $charlist = " \t\n\r\0\x0B\"" ) {
+		if( is_array( $mixed ) ) {
+			foreach( $mixed as $key => $value ) {
+				$mixed[$key] = trim_mixed( $value, $charlist );
+			}
+		}
+		else {
+			$mixed = trim( $mixed, $charlist );
+		}
+
+		return $mixed;
+	}
+
+	/**
+	 * Permet de transformer une ligne de CSV en array, en faisant attention au
+	 * délimiteur et au séparateur et en nettoyant les enregistrements (trim,
+	 * transformation en valeur null des champs vides).
+	 *
+	 * @param string $line
+	 * @param string $separator
+	 * @param string $delimiter
+	 * @return array
+	 */
+	function parse_csv_line( $line, $separator = ',', $delimiter = '"' ) {
+		$return = array();
+
+		$exploded = str_getcsv( $line, $separator, $delimiter );
+
+		$return = trim_mixed( $exploded );
+		foreach( $return as $i => $value ) {
+			if( $value === '' ) {
+				$return[$i] = null;
+			}
+		}
+
+		return $return;
+	}
 ?>
