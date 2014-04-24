@@ -96,6 +96,7 @@
 					'fields' => array(
 						'Thematiquefp93.type',
 						'Thematiquefp93.name',
+						'Categoriefp93.name',
 						'Filierefp93.name',
 						'Prestatairefp93.name',
 						'Actionfp93.id',
@@ -154,6 +155,7 @@
 			$paths = array(
 				'Thematiquefp93.name',
 				'Filierefp93.name',
+				'Categoriefp93.name',
 				'Prestatairefp93.name',
 				'Actionfp93.name',
 				'Actionfp93.numconvention',

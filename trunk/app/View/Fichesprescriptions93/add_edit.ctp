@@ -166,10 +166,24 @@
 				'Ficheprescription93.prestatairefp93',
 				'Ficheprescription93.actionfp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.prestatairefp93_adresse',
+				'Ficheprescription93.prestatairefp93_codepos',
+				'Ficheprescription93.prestatairefp93_localite',
+				'Ficheprescription93.prestatairefp93_tel' => array( 'maxlength' => 14 ),
+				'Ficheprescription93.prestatairefp93_fax' => array( 'maxlength' => 14 ),
+				'Ficheprescription93.prestatairefp93_email',
+			),
+			array(
+				'options' => $options,
+			)
+		)
+		.$this->Html->tag( 'div', ' ', array( 'id' => 'CoordonneesPrestataire' ) )
+		.$this->Default3->subform(
+			array(
 				'Ficheprescription93.statut' => array( 'type' => 'hidden' ),
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
-				// TODO: duree_action,
+				'Ficheprescription93.duree_action',
 				'Documentbeneffp93.Documentbeneffp93' => array( 'multiple' => 'checkbox' ),
 				'Ficheprescription93.documentbeneffp93_autre',
 			),
@@ -271,6 +285,12 @@
 			'Ficheprescription93.filierefp93',
 			'Ficheprescription93.prestatairefp93',
 			'Ficheprescription93.actionfp93',
+			'Ficheprescription93.prestatairefp93_adresse',
+			'Ficheprescription93.prestatairefp93_codepos',
+			'Ficheprescription93.prestatairefp93_localite',
+			'Ficheprescription93.prestatairefp93_tel',
+			'Ficheprescription93.prestatairefp93_fax',
+			'Ficheprescription93.prestatairefp93_email',
 		),
 		array( null, '', 'pdi' ),
 		true,
@@ -428,13 +448,22 @@
 			'Ficheprescription93.filierefp93_id',
 			'Ficheprescription93.filierefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.prestatairefp93_id',
-			'Ficheprescription93.prestatairefp93' => array( 'event' => 'keyup' ),
+			// 'Ficheprescription93.prestatairefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.actionfp93_id',
-			'Ficheprescription93.actionfp93' => array( 'event' => 'keyup' ),
+			// 'Ficheprescription93.actionfp93' => array( 'event' => 'keyup' ),
 		),
 		array(
 			'url' => array( 'action' => 'ajax_action' ),
 			'onload' => !empty( $this->request->data )
+		)
+	);
+
+	// FIXME: ne fonctionne pas au chargement de la page
+	echo $this->Ajax2->updateDivOnFieldsChange(
+		'CoordonneesPrestataire',
+		array( 'action' => 'ajax_prestataire' ),
+		array(
+			'Ficheprescription93.prestatairefp93_id',
 		)
 	);
 ?>

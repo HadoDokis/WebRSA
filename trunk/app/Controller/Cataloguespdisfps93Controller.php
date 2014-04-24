@@ -124,7 +124,7 @@
 						array_remove( $query['fields'], "{$Model->alias}.{$params['foreignKey']}" );
 
 						$OtherModel = $Model->{$alias};
-						array_unshift( $query['fields'], "{$alias}.{$OtherModel->displayField}" );
+						array_unshift( $fields, "{$alias}.{$OtherModel->displayField}" );
 						$query['joins'][] = $Model->join( $alias, array( 'type' => 'INNER' ) );
 					}
 				}

@@ -50,7 +50,7 @@
 				)
 			);*/
 
-			if( $Model->alias !== 'Prestatairefp93' ) {
+			if( !in_array( $Model->alias, array( 'Prestatairefp93', 'Adresseprestatairefp93' ) ) ) {
 				if( !in_array( 'Thematiquefp93.type', $query['fields'] ) ) {
 					array_unshift( $query['fields'], 'Thematiquefp93.type' );
 				}
@@ -98,6 +98,10 @@
 		 */
 		public function createOrUpdate( Model $Model, array $conditions ) {
 			$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
+			// Remplacement des espaces multiples par un espace simple
+			foreach( $conditions as $key => $value ) {
+				$conditions[$key] = preg_replace( '/ +/', ' ', $value );
+			}
 
 			$primaryKeyField = "{$Model->alias}.{$Model->primaryKey}";
 
@@ -108,7 +112,7 @@
 
 			// On cherche un intitulé approchant à la casse et aux accents près
 			foreach( $query['conditions'] as $path => $value ) {
-				if( $value !== null ) {
+				if( $value !== null && $value !== '' ) {
 					if( !is_numeric( $value ) ) {
 						unset( $query['conditions'][$path] );
 						list( $m, $f ) = model_field( $path );
