@@ -123,12 +123,10 @@
 				),
 				'Ficheprescription93' => array(
 					'exists' => '1',
+					'typethematiquefp93_id' => 'pdi',
 					'statut' => '03transmise_partenaire',
 					'has_date_bilan_final' => '1',
-				),
-				'Thematiquefp93' => array(
-					'type' => 'pdi'
-				),
+				)
 			);
 			$result = $this->Ficheprescription93->searchConditions( $query, $search );
 			$expected = array(
