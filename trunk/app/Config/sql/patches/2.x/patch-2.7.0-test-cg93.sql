@@ -81,10 +81,9 @@ $$
 LANGUAGE 'sql';
 
 -- 2939
--- TODO: documentsbenefsfps93_fichesprescriptions93
+-- TODO: documentsbenefsfps93_fichesprescriptions93, documentbeneffp93_autre
 -- TODO: instantanesdonneesfps93
 
--- Idée: intégrer temporairement l'id de la table actionscandidats_personnes
 SELECT add_missing_table_field( 'public', 'fichesprescriptions93', 'actioncandidat_personne_id', 'INTEGER' );
 
 INSERT INTO fichesprescriptions93 (
@@ -98,7 +97,7 @@ INSERT INTO fichesprescriptions93 (
 	actionfp93_id,
 	actionfp93,
 	prestatairefp93_id,
-	documentbeneffp93_autre, -- TODO
+	documentbeneffp93_autre,
 	date_signature,
 	date_transmission,
 	date_retour,
@@ -310,10 +309,6 @@ SELECT
 DROP FUNCTION select_filierefp93_id( TEXT, TEXT, TEXT, TEXT );
 DROP FUNCTION select_actionfp93_id( TEXT, TEXT, TEXT, TEXT, TEXT );
 
--- cers93.matricule
--- dossiers.matricule
--- situationsallocataires.matricule
-
 INSERT INTO instantanesdonneesfps93 (
 	ficheprescription93_id,
 	referent_fonction,
@@ -330,21 +325,21 @@ INSERT INTO instantanesdonneesfps93 (
 	benef_nom,
 	benef_prenom,
 	benef_dtnai,
--- benef_numvoie,
--- benef_typevoie,
--- benef_nomvoie,
--- benef_complideadr,
--- benef_compladr,
--- benef_numcomptt,
--- benef_numcomrat,
--- benef_codepos,
--- benef_locaadr,
+	benef_numvoie,
+	benef_typevoie,
+	benef_nomvoie,
+	benef_complideadr,
+	benef_compladr,
+	benef_numcomptt,
+	benef_numcomrat,
+	benef_codepos,
+	benef_locaadr,
 	benef_tel_fixe,
 	benef_tel_port,
 	benef_email,
--- benef_identifiantpe,
--- benef_inscritpe,
--- benef_matricule,
+	benef_identifiantpe,
+	benef_inscritpe,
+	benef_matricule,
 	benef_natpf_socle,
 	benef_natpf_majore,
 	benef_natpf_activite,
@@ -375,24 +370,21 @@ SELECT
 		personnes.nom,
 		personnes.prenom,
 		personnes.dtnai,
-		-- ATTENTION aux dates d'emménagement
-		-- benef_numvoie,
-		-- benef_typevoie,
-		-- benef_nomvoie,
-		-- benef_complideadr,
-		-- benef_compladr,
-		-- benef_numcomptt,
-		-- benef_numcomrat,
-		-- benef_codepos,
-		-- benef_locaadr,
+		adresses.numvoie AS benef_numvoie,
+		adresses.typevoie AS benef_typevoie,
+		adresses.nomvoie AS benef_nomvoie,
+		adresses.complideadr AS benef_complideadr,
+		adresses.compladr AS benef_compladr,
+		adresses.numcomptt AS benef_numcomptt,
+		adresses.numcomrat AS benef_numcomrat,
+		adresses.codepos AS benef_codepos,
+		adresses.locaadr AS benef_locaadr,
 		personnes.numfixe,
 		personnes.numport,
 		personnes.email,
-		-- ATTENTION aux dates
-		-- benef_identifiantpe,
-		-- benef_inscritpe,
-		-- ATTENTION aux dates
-		-- benef_matricule,
+		historiqueetatspe.identifiantpe AS benef_identifiantpe,
+		( CASE WHEN historiqueetatspe.etat = 'inscription' THEN '1' ELSE '0' END ) AS benef_inscritpe,
+		dossiers.matricule AS benef_matricule,
 		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_socle,
 		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END ) AS benef_natpf_majore,
 		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_activite,
@@ -438,38 +430,217 @@ SELECT
 			)
 		)
 		LEFT OUTER JOIN cers93 ON ( cers93.contratinsertion_id = contratsinsertion.id )
-	WHERE fichesprescriptions93.actioncandidat_personne_id IS NOT NULL;
+		LEFT OUTER JOIN informationspe ON (
+			(
+				(
+					informationspe.nir IS NOT NULL
+					AND  SUBSTRING( informationspe.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 )
+					AND  informationspe.dtnai = personnes.dtnai
+				)
+				OR
+				(
+					personnes.nom IS NOT NULL
+					AND  personnes.prenom IS NOT NULL
+					AND  personnes.dtnai IS NOT NULL
+					AND  TRIM( BOTH ' ' FROM informationspe.nom ) = TRIM( BOTH ' ' FROM personnes.nom )
+					AND  TRIM( BOTH ' ' FROM informationspe.prenom ) = TRIM( BOTH ' ' FROM personnes.prenom )
+					AND  informationspe.dtnai = personnes.dtnai
+				)
+			)
+			AND informationspe.id IN (
+				SELECT derniereinformationspe.i__id FROM (
+					SELECT i.id AS i__id, h.date AS h__date
+						FROM informationspe AS i
+							INNER JOIN historiqueetatspe AS h ON (h.informationpe_id = i.id)
+						WHERE
+						(
+							(
+								(
+									(i.nir IS NOT NULL)
+									AND  (personnes.nir IS NOT NULL)
+									AND  (TRIM( BOTH ' ' FROM i.nir ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.nir ) <> '')
+									AND  (SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( personnes.nir FROM 1 FOR 13 ))
+									AND  (i.dtnai = personnes.dtnai)
+								)
+							)
+							OR
+							(
+								(
+									(i.nom IS NOT NULL)
+									AND  (personnes.nom IS NOT NULL)
+									AND  (i.prenom IS NOT NULL)
+									AND  (personnes.prenom IS NOT NULL)
+									AND  (TRIM( BOTH ' ' FROM i.nom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM i.prenom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.nom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.prenom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM i.nom ) = personnes.nom)
+									AND  (TRIM( BOTH ' ' FROM i.prenom ) = personnes.prenom)
+									AND  (i.dtnai = personnes.dtnai)
+								)
+							)
+						)
+						AND h.id IN (
+							SELECT dernierhistoriqueetatspe.id AS dernierhistoriqueetatspe__id
+							FROM historiqueetatspe AS dernierhistoriqueetatspe
+							WHERE
+								dernierhistoriqueetatspe.informationpe_id = i.id
+								-- Avant la date de création de la fiche de prescription
+								AND dernierhistoriqueetatspe.date <= fichesprescriptions93.created
+							ORDER BY dernierhistoriqueetatspe.date DESC, dernierhistoriqueetatspe.id DESC
+							LIMIT 1
+						)
+				) AS derniereinformationspe
+				ORDER BY derniereinformationspe.h__date DESC
+				LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN historiqueetatspe ON (
+			historiqueetatspe.informationpe_id = informationspe.id
+			AND historiqueetatspe.id IN (
+				SELECT h.id
+					FROM historiqueetatspe AS h
+					WHERE h.informationpe_id = informationspe.id
+					ORDER BY h.date DESC
+					LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN adressesfoyers ON (
+			adressesfoyers.foyer_id = foyers.id
+			AND adressesfoyers.id IN (
+				SELECT af.id
+					FROM adressesfoyers AS af
+					WHERE
+						af.foyer_id = foyers.id
+						-- Avant la date de création de la fiche de prescription
+						AND af.dtemm <= fichesprescriptions93.created
+						ORDER BY af.dtemm DESC
+					LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN adresses ON ( adressesfoyers.adresse_id = adresses.id )
+	WHERE
+		fichesprescriptions93.actioncandidat_personne_id IS NOT NULL;
 
 -- ALTER TABLE fichesprescriptions93 DROP COLUMN actioncandidat_personne_id;
 
---
-/*SELECT
-		historiqueetatspe.identifiantpe,
-		historiqueetatspe.etat
+/*
+SELECT
+		historiqueetatspe.identifiantpe AS benef_identifiantpe,
+		( CASE WHEN historiqueetatspe.etat = 'inscription' THEN '1' ELSE '0' END ) AS benef_inscritpe,
+		historiqueetatspe.date
 	FROM personnes
 		LEFT OUTER JOIN informationspe ON (
-			((((informationspe.nir IS NOT NULL)  AND  (SUBSTRING( informationspe.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 ))  AND  (informationspe.dtnai = personnes.dtnai))) OR (((personnes.nom IS NOT NULL)  AND  (personnes.prenom IS NOT NULL)  AND  (personnes.dtnai IS NOT NULL)  AND  (TRIM( BOTH ' ' FROM informationspe.nom ) = TRIM( BOTH ' ' FROM personnes.nom ))  AND  (TRIM( BOTH ' ' FROM informationspe.prenom ) = TRIM( BOTH ' ' FROM personnes.prenom ))  AND  (informationspe.dtnai = personnes.dtnai))))
-		)
-		LEFT OUTER JOIN historiqueetatspe ON (historiqueetatspe.informationpe_id = informationspe.id)
-	WHERE (
-			(informationspe.id IS NULL)
-			OR (
-				informationspe.id IN( SELECT derniereinformationspe.i__id FROM ( SELECT i.id AS i__id, h.date AS h__date FROM informationspe AS i INNER JOIN historiqueetatspe AS h ON (h.informationpe_id = i.id)  WHERE ((((i.nir IS NOT NULL)  AND  (personnes.nir IS NOT NULL)  AND  (TRIM( BOTH ' ' FROM i.nir ) <> '')  AND  (TRIM( BOTH ' ' FROM personnes.nir ) <> '')  AND  (SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( personnes.nir FROM 1 FOR 13 ))  AND  (i.dtnai = personnes.dtnai))) OR (((i.nom IS NOT NULL)  AND  (personnes.nom IS NOT NULL)  AND  (i.prenom IS NOT NULL)  AND  (personnes.prenom IS NOT NULL)  AND  (TRIM( BOTH ' ' FROM i.nom ) <> '')  AND  (TRIM( BOTH ' ' FROM i.prenom ) <> '')  AND  (TRIM( BOTH ' ' FROM personnes.nom ) <> '')  AND  (TRIM( BOTH ' ' FROM personnes.prenom ) <> '')  AND  (TRIM( BOTH ' ' FROM i.nom ) = personnes.nom)  AND  (TRIM( BOTH ' ' FROM i.prenom ) = personnes.prenom)  AND  (i.dtnai = personnes.dtnai)))) AND h.id IN ( SELECT dernierhistoriqueetatspe.id AS dernierhistoriqueetatspe__id FROM historiqueetatspe AS dernierhistoriqueetatspe   WHERE dernierhistoriqueetatspe.informationpe_id = i.id   ORDER BY dernierhistoriqueetatspe.date DESC, dernierhistoriqueetatspe.id DESC  LIMIT 1 )    ) AS derniereinformationspe ORDER BY derniereinformationspe.h__date DESC LIMIT 1 )
+			(
+				(
+					informationspe.nir IS NOT NULL
+					AND  SUBSTRING( informationspe.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 )
+					AND  informationspe.dtnai = personnes.dtnai
 				)
-		) AND (
-			( historiqueetatspe.id IS NULL )
-			OR (
-				historiqueetatspe.id IN (
-					SELECT
-							h.id
-						FROM historiqueetatspe AS h
-						WHERE h.informationpe_id = informationspe.id
-						ORDER BY h.date DESC
-						LIMIT 1
+				OR
+				(
+					personnes.nom IS NOT NULL
+					AND  personnes.prenom IS NOT NULL
+					AND  personnes.dtnai IS NOT NULL
+					AND  TRIM( BOTH ' ' FROM informationspe.nom ) = TRIM( BOTH ' ' FROM personnes.nom )
+					AND  TRIM( BOTH ' ' FROM informationspe.prenom ) = TRIM( BOTH ' ' FROM personnes.prenom )
+					AND  informationspe.dtnai = personnes.dtnai
 				)
 			)
-		);*/
+			AND informationspe.id IN (
+				SELECT derniereinformationspe.i__id FROM (
+					SELECT i.id AS i__id, h.date AS h__date
+						FROM informationspe AS i
+							INNER JOIN historiqueetatspe AS h ON (h.informationpe_id = i.id)
+						WHERE
+						(
+							(
+								(
+									(i.nir IS NOT NULL)
+									AND  (personnes.nir IS NOT NULL)
+									AND  (TRIM( BOTH ' ' FROM i.nir ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.nir ) <> '')
+									AND  (SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( personnes.nir FROM 1 FOR 13 ))
+									AND  (i.dtnai = personnes.dtnai)
+								)
+							)
+							OR
+							(
+								(
+									(i.nom IS NOT NULL)
+									AND  (personnes.nom IS NOT NULL)
+									AND  (i.prenom IS NOT NULL)
+									AND  (personnes.prenom IS NOT NULL)
+									AND  (TRIM( BOTH ' ' FROM i.nom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM i.prenom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.nom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM personnes.prenom ) <> '')
+									AND  (TRIM( BOTH ' ' FROM i.nom ) = personnes.nom)
+									AND  (TRIM( BOTH ' ' FROM i.prenom ) = personnes.prenom)
+									AND  (i.dtnai = personnes.dtnai)
+								)
+							)
+						)
+						AND h.id IN (
+							SELECT dernierhistoriqueetatspe.id AS dernierhistoriqueetatspe__id
+							FROM historiqueetatspe AS dernierhistoriqueetatspe
+							WHERE
+								dernierhistoriqueetatspe.informationpe_id = i.id
+								-- Avant la date de création de la fiche de prescription
+-- 								AND dernierhistoriqueetatspe.date <= fichesprescriptions93.created
+							ORDER BY dernierhistoriqueetatspe.date DESC, dernierhistoriqueetatspe.id DESC
+							LIMIT 1
+						)
+				) AS derniereinformationspe
+				ORDER BY derniereinformationspe.h__date DESC
+				LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN historiqueetatspe ON (
+			historiqueetatspe.informationpe_id = informationspe.id
+			AND historiqueetatspe.id IN (
+				SELECT h.id
+					FROM historiqueetatspe AS h
+					WHERE h.informationpe_id = informationspe.id
+					ORDER BY h.date DESC
+					LIMIT 1
+			)
+		)
+	WHERE
+		-- Test
+		historiqueetatspe.identifiantpe IS NOT NULL;
+*/
 
+/*
+SELECT
+		adresses.numvoie AS benef_numvoie,
+		adresses.typevoie AS benef_typevoie,
+		adresses.nomvoie AS benef_nomvoie,
+		adresses.complideadr AS benef_complideadr,
+		adresses.compladr AS benef_compladr,
+		adresses.numcomptt AS benef_numcomptt,
+		adresses.numcomrat AS benef_numcomrat,
+		adresses.codepos AS benef_codepos,
+		adresses.locaadr AS benef_locaadr
+	FROM foyers
+		LEFT OUTER JOIN adressesfoyers ON (
+			adressesfoyers.foyer_id = foyers.id
+			AND adressesfoyers.id IN (
+				SELECT af.id
+					FROM adressesfoyers AS af
+					WHERE
+						af.foyer_id = foyers.id
+						-- Avant la date de création de la fiche de prescription
+						AND af.dtemm <= fichesprescriptions93.created
+						ORDER BY af.dtemm DESC
+					LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN adresses ON ( adressesfoyers.adresse_id = adresses.id )
+	-- Test
+	LIMIT 10;
+*/
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
