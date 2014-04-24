@@ -20,6 +20,7 @@
 		array(
 			'Search.Thematiquefp93.type' => array( 'required' => false, 'empty' => true ),
 			'Search.Thematiquefp93.name' => array( 'required' => false ),
+			'Search.Categoriefp93.name' => array( 'required' => false ),
 			'Search.Filierefp93.name' => array( 'required' => false ),
 			'Search.Prestatairefp93.name' => array( 'required' => false ),
 			'Search.Actionfp93.name' => array( 'required' => false ),
@@ -62,6 +63,7 @@
 			array(
 				'Thematiquefp93.type',
 				'Thematiquefp93.name',
+				'Categoriefp93.name',
 				'Filierefp93.name',
 				'Prestatairefp93.name',
 				'Actionfp93.annee' => array( 'type' => 'text' ),

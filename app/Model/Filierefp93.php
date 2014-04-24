@@ -72,6 +72,17 @@
 				'exclusive' => null,
 				'finderQuery' => null
 			),
+			'Ficheprescription93' => array(
+				'className' => 'Ficheprescription93',
+				'foreignKey' => 'filierefp93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 		);
 	}
 ?>

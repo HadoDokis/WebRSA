@@ -70,6 +70,9 @@ msgstr "Type"
 msgid "Search.Thematiquefp93.name"
 msgstr "Thématique"
 
+msgid "Search.Categoriefp93.name"
+msgstr "Catégorie"
+
 msgid "Search.Filierefp93.name"
 msgstr "Filière"
 
@@ -252,6 +255,9 @@ msgstr "Téléphone"
 
 msgid "Adresseprestatairefp93.fax"
 msgstr "Fax"
+
+msgid "Adresseprestatairefp93.email"
+msgstr "Email"
 
 msgid "Adresseprestatairefp93.created"
 msgstr "Créé"

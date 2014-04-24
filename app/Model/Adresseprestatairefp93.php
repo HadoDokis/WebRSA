@@ -35,6 +35,7 @@
 		 * @var array
 		 */
 		public $actsAs = array(
+			'Cataloguepdifp93',
 			'Formattable' => array(
 				'phone' => array( 'tel', 'fax' )
 			),
@@ -57,6 +58,12 @@
 			'fax' => array(
 				'phoneFr' => array(
 					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				)
+			),
+			'email' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
 					'allowEmpty' => true,
 				)
 			),

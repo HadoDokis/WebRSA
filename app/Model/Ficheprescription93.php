@@ -29,6 +29,21 @@
 		public $recursive = -1;
 
 		/**
+		 * Correspondance entre les champs virtuels de l'action et les champ réels.
+		 *
+		 * @var array
+		 */
+		public $correspondances = array(
+			'Ficheprescription93.typethematiquefp93_id' => 'Thematiquefp93.type',
+			'Ficheprescription93.thematiquefp93_id' => 'Thematiquefp93.id',
+			'Ficheprescription93.categoriefp93_id' => 'Categoriefp93.id',
+			'Ficheprescription93.filierefp93_id' => 'Filierefp93.id',
+			'Ficheprescription93.prestatairefp93_id' => 'Prestatairefp93.id',
+			'Ficheprescription93.actionfp93_id' => 'Actionfp93.id',
+			'Ficheprescription93.numconvention' => 'Ficheprescription93.numconvention',
+		);
+
+		/**
 		 * Behaviors utilisés par le modèle.
 		 *
 		 * @var array
@@ -36,6 +51,9 @@
 		public $actsAs = array(
 			'Allocatairelie',
 			'Conditionnable',
+			'Formattable' => array(
+				'phone' => array( 'prestatairefp93_tel', 'prestatairefp93_fax' )
+			),
 			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
 				93 => array(
@@ -71,6 +89,15 @@
 			'Actionfp93' => array(
 				'className' => 'Actionfp93',
 				'foreignKey' => 'actionfp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Filierefp93' => array(
+				'className' => 'Filierefp93',
+				'foreignKey' => 'filierefp93_id',
 				'conditions' => null,
 				'type' => 'INNER',
 				'fields' => null,
@@ -116,6 +143,15 @@
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Prestatairefp93' => array(
+				'className' => 'Prestatairefp93',
+				'foreignKey' => 'prestatairefp93_id',
 				'conditions' => null,
 				'type' => 'INNER',
 				'fields' => null,
@@ -240,30 +276,62 @@
 			'prestatairefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
+					'message' => null
 				)
 			),
 			'prestatairefp93' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
+					'message' => null
 				)
 			),
 			'actionfp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'pdi' ) ),
+					'message' => null
 				)
 			),
 			'actionfp93' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
+					'message' => null
 				)
+			),
+			'prestatairefp93_adresse' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
+					'message' => null
+				)
+			),
+			'prestatairefp93_codepos' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
+					'message' => null
+				)
+			),
+			'prestatairefp93_localite' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
+					'message' => null
+				)
+			),
+			'prestatairefp93_tel' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				),
+			),
+			'prestatairefp93_fax' => array(
+				'phoneFr' => array(
+					'rule' => array( 'phoneFr' ),
+					'allowEmpty' => true,
+				),
+			),
+			'prestatairefp93_email' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'allowEmpty' => true,
+				),
 			),
 			// Fin champs virtuels pour le formulaire d'ajout / modification
 			'objet' => array(
@@ -320,20 +388,20 @@
 					$this->fields(),
 					$this->Actionfp93->fields(),
 					$this->Referent->fields(),
-					$this->Actionfp93->Filierefp93->fields(),
+					$this->Filierefp93->fields(),
 					$this->Actionfp93->Prestatairefp93->fields(),
-					$this->Actionfp93->Filierefp93->Categoriefp93->fields(),
-					$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->fields()
+					$this->Filierefp93->Categoriefp93->fields(),
+					$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
 				);
 
 				// Ajout des jointures supplémentaires
 				$query['joins'][] = $this->Personne->join( 'Ficheprescription93', array( 'type' => $types['Ficheprescription93'] ) );
 				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) );
 				$query['joins'][] = $this->join( 'Referent', array( 'type' => $types['Referent'] ) );
-				$query['joins'][] = $this->Actionfp93->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
+				$query['joins'][] = $this->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
 				$query['joins'][] = $this->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
-				$query['joins'][] = $this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
-				$query['joins'][] = $this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
+				$query['joins'][] = $this->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
+				$query['joins'][] = $this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
 
 				// Enregistrement dans le cache
 				Cache::write( $cacheKey, $query );
@@ -366,12 +434,17 @@
 			}
 
 			// 2. Ajout des filtres supplémentaires concernant l'action de la fiche de precription:
-			//	 type de thématique, thématique, catégorie, filière, prestataire, action
-			$paths = array( 'Thematiquefp93.type','Categoriefp93.thematiquefp93_id','Filierefp93.categoriefp93_id','Actionfp93.filierefp93_id', 'Actionfp93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
+			$paths = array( 'Ficheprescription93.typethematiquefp93_id', 'Ficheprescription93.thematiquefp93_id', 'Ficheprescription93.categoriefp93_id', 'Ficheprescription93.filierefp93_id', 'Ficheprescription93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
 			foreach( $paths as $path ) {
-				$value = suffix( Hash::get( $search, $path ) );
+				$value = Hash::get( $search, $path );
 				if( !empty( $value ) ) {
-					$query['conditions'][$path] = $value;
+					if( isset( $this->correspondances[$path] ) ) {
+						$correspondance = $this->correspondances[$path];
+					}
+					else {
+						$correspondance = $path;
+					}
+					$query['conditions'][$correspondance] = $value;
 				}
 			}
 
@@ -446,21 +519,15 @@
 				$this->enums(),
 				array( 'Ficheprescription93' => array( 'exists' => array( '0' => 'Non', '1' => 'Oui' ) ) ),
 				$this->Actionfp93->enums(),
-				$this->Actionfp93->Filierefp93->enums(),
-				$this->Actionfp93->Filierefp93->Categoriefp93->enums(),
-				$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
+				$this->Filierefp93->enums(),
+				$this->Filierefp93->Categoriefp93->enums(),
+				$this->Filierefp93->Categoriefp93->Thematiquefp93->enums(),
 				$this->Instantanedonneesfp93->enums()
 			);
 
 			if( Hash::get( $params, 'find' ) ) {
 				$options = Hash::merge(
 					$options,
-					/*array( 'Categoriefp93' => array( 'thematiquefp93_id' => $this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->findListPrefixed( 'type', 'id', 'name' ) ) ),
-					array( 'Filierefp93' => array( 'categoriefp93_id' => $this->Actionfp93->Filierefp93->Categoriefp93->findListPrefixed( 'thematiquefp93_id', 'id', 'name' ) ) ),
-					array( 'Actionfp93' => array( 'filierefp93_id' => $this->Actionfp93->Filierefp93->findListPrefixed( 'categoriefp93_id', 'id', 'name' ) ) ),
-					array( 'Actionfp93' => array( 'prestatairefp93_id' => $this->Actionfp93->Prestatairefp93->findListPrefixed2() ) ),*/
-					// TODO: voir ci-dessous
-					// array( 'Ficheprescription93' => array( 'actionfp93_id' => $this->Actionfp93->findListPrefixed( 'filierefp93_id', 'id', 'name' ) ) )
 					array( 'Ficheprescription93' => array( 'typethematiquefp93_id' => $options['Thematiquefp93']['type'] ) ),
 					array( 'Modtransmfp93' => array( 'Modtransmfp93' => $this->Modtransmfp93->find( 'list' ) ) ),
 					array( 'Documentbeneffp93' => array( 'Documentbeneffp93' => $this->Documentbeneffp93->find( 'list' ) ) )
@@ -471,29 +538,6 @@
 
 					$options[$this->alias][$foreignKey] = $this->{$motifName}->find( 'list' );
 				}
-
-				// Test Ficheprescription93.actionfp93_id
-				/*$conditions = array();
-				$query = array(
-					'fields' => array(
-						'Actionfp93.id',
-						'Actionfp93.filierefp93_id',
-						'Actionfp93.prestatairefp93_id',
-						'Actionfp93.name',
-					),
-					'contain' => false,
-					'conditions' => $conditions,
-					'order' => array(
-						'Actionfp93.name ASC'
-					)
-				);
-				$results = $this->Actionfp93->find( 'all', $query );
-
-				$options['Ficheprescription93']['actionfp93_id'] = Hash::combine(
-					$results,
-					array( '%s_%s_%s', "{n}.Actionfp93.filierefp93_id", "{n}.Actionfp93.prestatairefp93_id", '{n}.Actionfp93.id' ),
-					"{n}.Actionfp93.name"
-				);*/
 			}
 
 			// Valeurs "Autre" pour les motifs ...
@@ -546,15 +590,13 @@
 							$this->Instantanedonneesfp93->sqVirtualField( 'benef_natpf' ),
 							'Referent.structurereferente_id',
 							'Actionfp93.numconvention',
-							'"Actionfp93"."name" AS "Ficheprescription93__actionfp93"',
 							'Actionfp93.filierefp93_id',
-							'"Filierefp93"."name" AS "Ficheprescription93__filierefp93"',
+							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Filierefp93"."name" ELSE NULL END ) AS "Ficheprescription93__filierefp93"',
 							'Actionfp93.prestatairefp93_id',
-							'"Prestatairefp93"."name" AS "Ficheprescription93__prestatairefp93"',
 							'Filierefp93.categoriefp93_id',
-							'"Categoriefp93"."name" AS "Ficheprescription93__categoriefp93"',
+							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Categoriefp93"."name" ELSE NULL END ) AS "Ficheprescription93__categoriefp93"',
 							'Categoriefp93.thematiquefp93_id',
-							'"Thematiquefp93"."name" AS "Ficheprescription93__thematiquefp93"',
+							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Thematiquefp93"."name" ELSE NULL END ) AS "Ficheprescription93__thematiquefp93"',
 							'Thematiquefp93.type',
 						)
 					),
@@ -563,16 +605,17 @@
 						$this->join( 'Actionfp93' ),
 						$this->join( 'Instantanedonneesfp93' ),
 						$this->join( 'Referent' ),
-						$this->Actionfp93->join( 'Filierefp93' ),
+						$this->join( 'Filierefp93' ),
 						$this->Actionfp93->join( 'Prestatairefp93' ),
-						$this->Actionfp93->Filierefp93->join( 'Categoriefp93' ),
-						$this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
+						$this->Filierefp93->join( 'Categoriefp93' ),
+						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
 					),
 					'conditions' => array(
 						"{$this->alias}.id" => $id
 					)
 				);
 				$data = $this->find( 'first', $query );
+// debug( $data[$this->alias] );
 
 				if( empty( $data ) || $data[$this->alias]['statut'] == '99annulee' ) {
 					throw new InternalErrorException();
@@ -792,6 +835,7 @@
 			}
 			// Fin Instantanedonnees93
 
+			$success = true;
 			// Différenciation action PDI / Hors PDI
 			// TODO: factoriser
 			$typethematiquefp93_id = Hash::get( $data, "{$this->alias}.typethematiquefp93_id" );
@@ -802,53 +846,80 @@
 						'name' => Hash::get( $data, "{$this->alias}.thematiquefp93" ),
 					)
 				);
-				$thematiquefp93_id = $this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->createOrUpdate( $conditions );
-				if( !empty( $thematiquefp93_id ) ) {
+				$thematiquefp93_id = $this->Filierefp93->Categoriefp93->Thematiquefp93->createOrUpdate( $conditions );
+				$success = $success && !empty( $thematiquefp93_id );
+				if( $success ) {
 					$conditions = array(
 						'Categoriefp93' => array(
 							'thematiquefp93_id' => $thematiquefp93_id,
 							'name' => Hash::get( $data, "{$this->alias}.categoriefp93" ),
 						)
 					);
-					$categoriefp93_id = $this->Actionfp93->Filierefp93->Categoriefp93->createOrUpdate( $conditions );
-					if( !empty( $categoriefp93_id ) ) {
+					$categoriefp93_id = $this->Filierefp93->Categoriefp93->createOrUpdate( $conditions );
+					$success = $success && !empty( $categoriefp93_id );
+					if( $success ) {
 						$conditions = array(
 							'Filierefp93' => array(
 								'categoriefp93_id' => $categoriefp93_id,
 								'name' => Hash::get( $data, "{$this->alias}.filierefp93" ),
 							)
 						);
-						$filierefp93_id = $this->Actionfp93->Filierefp93->createOrUpdate( $conditions );
-						if( !empty( $filierefp93_id ) ) {
+						$filierefp93_id = $this->Filierefp93->createOrUpdate( $conditions );
+						$success = $success && !empty( $filierefp93_id );
+						if( $success ) {
+							$data[$this->alias]['filierefp93_id'] = $filierefp93_id;
 							$conditions = array(
 								'Prestatairefp93' => array(
 									'name' => Hash::get( $data, "{$this->alias}.prestatairefp93" ),
 								)
 							);
 							$prestatairefp93_id = $this->Actionfp93->Prestatairefp93->createOrUpdate( $conditions );
-							if( !empty( $prestatairefp93_id ) ) {
+							$success = $success && !empty( $prestatairefp93_id );
+							if( $success ) {
+								$data[$this->alias]['prestatairefp93_id'] = $prestatairefp93_id;
 								$conditions = array(
-									'Actionfp93' => array(
-										'filierefp93_id' => $filierefp93_id,
+									'Adresseprestatairefp93' => array(
 										'prestatairefp93_id' => $prestatairefp93_id,
-										'annee' => date( 'Y' ), // FIXME: lorsqu'on modifie, il se pourrait que l'année ne soit pas celle en cours
-										'actif' => '1',
-										'name' => Hash::get( $data, "{$this->alias}.actionfp93" ),
+										'adresse' => Hash::get( $data, "{$this->alias}.prestatairefp93_adresse" ),
+										'codepos' => Hash::get( $data, "{$this->alias}.prestatairefp93_codepos" ),
+										'localite' => Hash::get( $data, "{$this->alias}.prestatairefp93_localite" ),
+										'tel' => Hash::get( $data, "{$this->alias}.prestatairefp93_tel" ),
+										'fax' => Hash::get( $data, "{$this->alias}.prestatairefp93_fax" ),
+										'email' => Hash::get( $data, "{$this->alias}.prestatairefp93_email" ),
 									)
 								);
-								$actionfp93_id = $this->Actionfp93->createOrUpdate( $conditions );
-								if( !empty( $actionfp93_id ) ) {
-									$data[$this->alias]['actionfp93_id'] = $actionfp93_id;
-								}
+								$adresseprestatairefp93_id = $this->Actionfp93->Prestatairefp93->Adresseprestatairefp93->createOrUpdate( $conditions );
+								$success = $success && !empty( $adresseprestatairefp93_id );
 							}
 						}
 					}
 				}
 			}
 
+			if( $typethematiquefp93_id === 'pdi' ) {
+				$data = Hash::merge(
+					$data,
+					array(
+						$this->alias => array(
+							'actionfp93' => null,
+						)
+					)
+				);
+			}
+			else {
+				$data = Hash::merge(
+					$data,
+					array(
+						$this->alias => array(
+							'actionfp93_id' => null,
+						)
+					)
+				);
+			}
+
 			// Sauvegarde de la fiche
 			$this->create( $data );
-			$success = ( $this->save() !== false );
+			$success = ( $this->save() !== false ) && $success;
 
 			$nivetu = Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' );
 			$query = array(
@@ -1042,10 +1113,10 @@
 						$this->Instantanedonneesfp93->fields(),
 						$this->Referent->fields(),
 						$this->Actionfp93->fields(),
-						$this->Actionfp93->Filierefp93->fields(),
+						$this->Filierefp93->fields(),
 						$this->Actionfp93->Prestatairefp93->fields(),
-						$this->Actionfp93->Filierefp93->Categoriefp93->fields(),
-						$this->Actionfp93->Filierefp93->Categoriefp93->Thematiquefp93->fields()
+						$this->Filierefp93->Categoriefp93->fields(),
+						$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
 					),
 					'contain' => false,
 					'joins' => array(
@@ -1054,8 +1125,8 @@
 						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
 						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'INNER' ) ),
-						$this->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
-						$this->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+						$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 					),
 					'conditions' => array(
 						"{$this->alias}.id" => $ficheprescription93_id

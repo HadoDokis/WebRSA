@@ -74,6 +74,7 @@
 		public $crudMap = array(
 			'ajax_action' => 'read',
 			'ajax_prescripteur' => 'read',
+			'ajax_prestataire' => 'read',
 			'add' => 'create',
 			'edit' => 'update',
 			'index' => 'read',
@@ -141,6 +142,31 @@
 		}
 
 		/**
+		 * Ajax permettant de récupérer les coordonnées du prescripteur ou de sa
+		 * structure.
+		 */
+		public function ajax_prestataire() {
+			$prestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.prestatairefp93_id' );
+
+			$result = array();
+			if( !empty( $prestatairefp93_id ) ) {
+				$query = array(
+					'fields' => $this->Ficheprescription93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->fields(),
+					'contain' => false,
+					'joins' => array(),
+					'conditions' => array(
+						'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id,
+					)
+				);
+
+				$result = $this->Ficheprescription93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+			}
+
+			$this->set( compact( 'result' ) );
+			$this->layout = 'ajax';
+		}
+
+		/**
 		 * Ajax permettant le pré-remplissage des champs liés à l'action, en
 		 * cascade.
 		 */
@@ -169,16 +195,13 @@
 					'Adresse.locaadr',
 					'Ficheprescription93.id',
 					'Ficheprescription93.statut',
-					'Actionfp93.name',
+					'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Ficheprescription93"."actionfp93" ELSE "Actionfp93"."name" END ) AS "Actionfp93__name"',
 				);
 
 				$query = $this->Allocataires->completeSearchQuery( $query );
 
-				// Optimisation méthode 1: on attaque fichesprescriptions93 en premier lieu
-				// TODO: ne pas oublier de faire de même dans l'export CSV
-				// TODO: permettre la valeur vide/null dans les options
+				// Optimisation: on attaque fichesprescriptions93 en premier lieu
 				if( Hash::get( $this->request->data, 'Search.Ficheprescription93.exists' ) ) {
-					// TODO: à faire dans la vue, de manière implicite dans searchConditions() ou search() appellerait searchOptimisations() ?
 					foreach( $query['joins'] as $i => $join ) {
 						if( $join['alias'] == 'Ficheprescription93' ) {
 							unset( $query['joins'][$i] );
@@ -188,17 +211,6 @@
 					$this->Ficheprescription93->forceVirtualFields = true;
 					$results = $this->Allocataires->paginate( $query, 'Ficheprescription93' );
 				}
-				// Optimisation méthode 2: on fait un INNER JOIN (ça ne change rien)
-				/*if( Hash::get( $this->request->data, 'Search.Ficheprescription93.exists' ) ) {
-					foreach( $query['joins'] as $i => $join ) {
-						if( $join['alias'] == 'Ficheprescription93' ) {
-							$query['joins'][$i]['type'] = 'INNER';
-//							unset( $query['joins'][$i] );
-//							array_unshift( $query['joins'], $this->Ficheprescription93->join( 'Personne', array( 'type' => 'INNER' ) ) );
-						}
-					}
-					$results = $this->Allocataires->paginate( $query );
-				}*/
 				else {
 					$results = $this->Allocataires->paginate( $query );
 				}
@@ -243,10 +255,10 @@
 				),
 				'contain' => false,
 				'joins' => array(
-					$this->Ficheprescription93->join( 'Actionfp93' ),
-					$this->Ficheprescription93->Actionfp93->join( 'Filierefp93' ),
-					$this->Ficheprescription93->Actionfp93->Filierefp93->join( 'Categoriefp93' ),
-					$this->Ficheprescription93->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93' )
+					$this->Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Ficheprescription93->join( 'Filierefp93' ),
+					$this->Ficheprescription93->Filierefp93->join( 'Categoriefp93' ),
+					$this->Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93' )
 				),
 				'order' => array(
 					'Ficheprescription93.created DESC'
@@ -382,7 +394,7 @@
 				'Categoriefp93.name',
 				'Filierefp93.name',
 				'Prestatairefp93.name',
-				'Actionfp93.name',
+				'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Ficheprescription93"."actionfp93" ELSE "Actionfp93"."name" END ) AS "Actionfp93__name"',
 				'Ficheprescription93.dd_action',
 				'Ficheprescription93.df_action',
 				'Ficheprescription93.date_signature',

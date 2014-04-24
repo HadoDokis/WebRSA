@@ -350,6 +350,7 @@ CREATE TABLE adressesprestatairesfps93 (
 	localite			VARCHAR(250) NOT NULL,
 	tel					VARCHAR(10) DEFAULT NULL,
 	fax					VARCHAR(10) DEFAULT NULL,
+	email				VARCHAR(100) DEFAULT NULL,
     created				TIMESTAMP WITHOUT TIME ZONE,
     modified			TIMESTAMP WITHOUT TIME ZONE
 );
@@ -367,6 +368,7 @@ CREATE TABLE actionsfps93 (
     name				VARCHAR(250) NOT NULL,
     numconvention		VARCHAR(250) DEFAULT NULL,
 	annee				INTEGER NOT NULL,
+	duree				VARCHAR(100) DEFAULT NULL,
 	actif				CHAR(1) NOT NULL,
     created				TIMESTAMP WITHOUT TIME ZONE,
     modified			TIMESTAMP WITHOUT TIME ZONE
@@ -458,11 +460,15 @@ CREATE TABLE fichesprescriptions93 (
 	-- Bloc "Prestataire/Partenaire"
 	rdvprestataire_date			TIMESTAMP WITHOUT TIME ZONE DEFAULT NULL,
 	rdvprestataire_personne		TEXT DEFAULT NULL,
-    actionfp93_id				INTEGER NOT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	-- TODO: adresseprestatairefp93_id
+    filierefp93_id				INTEGER NOT NULL REFERENCES filieresfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    actionfp93_id				INTEGER DEFAULT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- Pour le catalogue Hors PDI, on stocke l'intitulé dans la fiche
+    actionfp93					VARCHAR(250) DEFAULT NULL,
+	-- TODO: adresseprestatairefp93_id, prestatairefp93_id
+	prestatairefp93_id			INTEGER NOT NULL REFERENCES prestatairesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	dd_action					DATE DEFAULT NULL,
 	df_action					DATE DEFAULT NULL,
-	duree_action				INTEGER DEFAULT NULL,
+	duree_action				VARCHAR(100) DEFAULT NULL,
 	documentbeneffp93_autre		TEXT DEFAULT NULL,
 	-- Bloc "Engagement"
 	date_signature				DATE DEFAULT NULL,
@@ -504,7 +510,10 @@ COMMENT ON TABLE fichesprescriptions93 IS 'Fiche de prescription - CG 93';
 
 CREATE INDEX fichesprescriptions93_personne_id_idx ON fichesprescriptions93( personne_id );
 CREATE INDEX fichesprescriptions93_referent_id_idx ON fichesprescriptions93( referent_id );
+CREATE INDEX fichesprescriptions93_filierefp93_id_idx ON fichesprescriptions93( filierefp93_id );
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
+CREATE INDEX fichesprescriptions93_actionfp93_idx ON fichesprescriptions93( actionfp93 );
+CREATE INDEX fichesprescriptions93_prestatairefp93_id_idx ON fichesprescriptions93( prestatairefp93_id );
 
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne', '99annulee'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_benef_retour_presente_in_list_chk CHECK ( cakephp_validate_in_list( benef_retour_presente, ARRAY['oui', 'non', 'excuse'] ) );

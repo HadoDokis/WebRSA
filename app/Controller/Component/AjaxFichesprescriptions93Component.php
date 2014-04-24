@@ -37,15 +37,23 @@
 		 */
 		public $components = array( );
 
-		public $fields = array(
-			'Ficheprescription93.typethematiquefp93_id' => 'Thematiquefp93.type',
-			'Ficheprescription93.thematiquefp93_id' => 'Thematiquefp93.id',
-			'Ficheprescription93.categoriefp93_id' => 'Categoriefp93.id',
-			'Ficheprescription93.filierefp93_id' => 'Filierefp93.id',
-			'Ficheprescription93.prestatairefp93_id' => 'Prestatairefp93.id',
-			'Ficheprescription93.actionfp93_id' => 'Actionfp93.id',
-			'Ficheprescription93.numconvention' => 'Ficheprescription93.numconvention',
-		);
+		/**
+		 * Lazy loading du modèle de fiche de prescription.
+		 *
+		 * @param string $name
+		 * @return mixed
+		 */
+		public function __get( $name ) {
+			if( $name === 'Ficheprescription93' ) {
+				$this->Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+				return $this->Ficheprescription93;
+			}
+			if( isset( $this->{$name} ) ) {
+				return $this->{$name};
+			}
+
+			return parent::__get( $name );
+		}
 
 		/**
 		 * Traite l'événement Ajax d'un champ de formulaire ayant changé.
@@ -60,7 +68,7 @@
 			$value = Hash::get( $data, $data['Target']['path'] );
 
 			// Suivant le niveau, on supprime les clés précédentes pour ne pas remettre à zéro
-			$paths = array_keys( $this->fields );
+			$paths = array_keys( $this->Ficheprescription93->correspondances );
 			$current = array_search( $data['Target']['path'], $paths );
 			$invertedPaths = array_flip( $paths );
 
@@ -179,8 +187,8 @@
 			$return = array();
 			$data = $this->unprefixAjaxRequest( $data );
 
-			$fieldKeys = array_keys( $this->fields );
-			foreach( $this->fields as $path => $field ) {
+			$fieldKeys = array_keys( $this->Ficheprescription93->correspondances );
+			foreach( $this->Ficheprescription93->correspondances as $path => $field ) {
 				$pathOffset = array_search( $path, $fieldKeys );
 
 				if( $pathOffset === false ) {
@@ -217,7 +225,7 @@
 				}
 				else if( $path != 'Ficheprescription93.numconvention' ) { // TODO: la convention n'est pas gérée
 					$parentPath = $fieldKeys[$pathOffset-1];
-					$parentField = $this->fields[$parentPath];
+					$parentField = $this->Ficheprescription93->correspondances[$parentPath];
 
 					list( $modelName, $fieldName ) = model_field( $field );
 					list( $parentModelName, $parentFieldName ) = model_field( $parentField );
@@ -282,7 +290,7 @@
 				$fields = array();
 
 				if( trim( $value ) == '' ) {
-					foreach( array_keys( $this->fields ) as $field ) {
+					foreach( array_keys( $this->Ficheprescription93->correspondances ) as $field ) {
 						$fields[$field] = array(
 							'id' => Inflector::camelize( str_replace( '.', '_', "{$data['prefix']}{$field}" ) ),
 							'value' => null,
@@ -313,8 +321,8 @@
 			else {
 				$pdiField = "{$data['Target']['path']}_id";
 
-				if( isset( $this->fields[$pdiField] ) && $pdiField !== 'Ficheprescription93.actionfp93_id' ) {
-					list( $modelName, $fieldName ) = model_field( $this->fields[$pdiField] );
+				if( isset( $this->Ficheprescription93->correspondances[$pdiField] ) && $pdiField !== 'Ficheprescription93.actionfp93_id' ) {
+					list( $modelName, $fieldName ) = model_field( $this->Ficheprescription93->correspondances[$pdiField] );
 					$Model = ClassRegistry::init( $modelName );
 
 					$conditions = array(
@@ -433,8 +441,8 @@
 			else {
 				$pdiField = "{$path}_id";
 
-				if( isset( $this->fields[$pdiField] ) ) {
-					list( $modelName, $fieldName ) = model_field( $this->fields[$pdiField] );
+				if( isset( $this->Ficheprescription93->correspondances[$pdiField] ) ) {
+					list( $modelName, $fieldName ) = model_field( $this->Ficheprescription93->correspondances[$pdiField] );
 
 					$Model = ClassRegistry::init( $modelName );
 					$displayField = "{$Model->alias}.{$Model->displayField}";
@@ -458,7 +466,7 @@
 
 					// On met à vide les champs qui dépendent de nous
 					$delete = false;
-					foreach( array_keys( $this->fields ) as $key ) {
+					foreach( array_keys( $this->Ficheprescription93->correspondances ) as $key ) {
 						if( !$delete ) {
 							$delete = ( $pdiField === $key );
 						}

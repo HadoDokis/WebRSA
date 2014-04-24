@@ -329,6 +329,25 @@ msgstr "Intitulé"
 msgid "Ficheprescription93.actionfp93"
 msgstr "Intitulé"
 
+msgid "Ficheprescription93.prestatairefp93_adresse"
+msgstr "Adresse"
+
+msgid "Ficheprescription93.prestatairefp93_codepos"
+msgstr "Code postal"
+
+msgid "Ficheprescription93.prestatairefp93_localite"
+msgstr "Ville"
+
+msgid "Ficheprescription93.prestatairefp93_tel"
+msgstr "Téléphone"
+
+msgid "Ficheprescription93.prestatairefp93_fax"
+msgstr "Fax"
+
+msgid "Ficheprescription93.prestatairefp93_email"
+msgstr "Mail"
+
+
 ################################################################################
 
 msgid "Ficheprescription93.texte_engagement"
