@@ -19,6 +19,16 @@
 	 */
 	class DictionnaireShell extends XShell
 	{
+		/**
+		 * Les expressions régulières à utiliser pour les différents modules.
+		 *
+		 * @var array
+		 */
+		public $modules = array(
+			'apres' => '(.*apres([0-9]{2}){0,1}_.*$|.*apres([0-9]{2}){0,1}$)',
+			'eps' => '(.*eps([0-9]{2}){0,1}_.*$|.*eps([0-9]{2}){0,1}$)',
+			'fichesprescriptions93' => '(.*fichesprescriptions93_.*$|.*fichesprescriptions93$|.*fps93_.*$|.*fps93$)',
+		);
 
 		/**
 		 *
@@ -26,8 +36,9 @@
 		 */
 		public function getOptionParser() {
 			$parser = parent::getOptionParser();
-//			$parser->description( 'Shell de génération de dictionnaire de données pour PostgreSQL' );
+
 			$parser->description( 'Ce script se charge de générer un fichier dictionnaire.html dans lequel se trouvent toutes les tables présentes en base de données avec la liste de leur champ, nom, valeur, traduction, …' );
+
 			$options = array(
 				'limit' => array(
 					'short' => 'L',
@@ -38,7 +49,7 @@
 					'short' => 'm',
 					'help' => 'le nom du module à traiter, pour limiter le dictionnaire aux tables de ce module uniquement.',
 					'default' => '',
-					'choices' => array( 'apres', 'eps', '' )
+					'choices' => Hash::merge( array_keys( $this->modules ), array( '' ) )
 				),
 				'schema' => array(
 					'short' => 's',
@@ -118,20 +129,18 @@
 			}
 
 			foreach( $schemas as $i => $schema ) {
-// 				$sql = "SELECT
-// 								information_schema.tables.table_name AS \"Table__name\",
-// 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
-// 							FROM information_schema.tables
-// 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
-// 							".( empty( $this->params['module'] ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->params['module']}[0-9]{0,2}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->params['module']}[0-9]{0,2}_.*$' )\n" )."
-// 							ORDER BY table_name ASC".
-// 							( empty( $this->params['limit'] ) ? null : " LIMIT {$this->params['limit']}"  ).";";
+				$conditionsModule = null;
+				if( !empty( $this->params['module'] ) ) {
+					$regexp = $this->modules[$this->params['module']];
+					$conditionsModule = "AND ( information_schema.tables.table_name ~ '{$regexp}' )";
+				}
+
 				$sql = "SELECT
 								information_schema.tables.table_name AS \"Table__name\",
 								( select obj_description(oid) from pg_class where relname = information_schema.tables.table_name LIMIT 1 ) AS \"Table__comment\"
 							FROM information_schema.tables
 							WHERE information_schema.tables.table_schema = '{$schema['Schema']['name']}'
-							".( empty( $this->params['module'] ) ? "" : "AND ( information_schema.tables.table_name ~ '.*{$this->params['module']}(93){0,1}$' ) OR ( information_schema.tables.table_name ~ '.*{$this->params['module']}(93){0,1}_.*$' )\n" )."
+							{$conditionsModule}
 							".( empty( $this->params['table'] ) ? "" : "AND ( information_schema.tables.table_name = '{$this->params['table']}' )\n" )."
 							ORDER BY table_name ASC".
 						( empty( $this->params['limit'] ) ? null : " LIMIT {$this->params['limit']}" ).";";
@@ -149,8 +158,8 @@
 				foreach( $schemas[$i]['Table'] as $j => $table ) {
 					$this->XProgressBar->next( 1, "<info>Lecture de la table {$schema['Schema']['name']}.{$table['name']}</info>" );
 
-					// FIXME: foreign key
-					// FIXME: traductions enum
+					// TODO: foreign key
+					// TODO: traductions enum
 					$sql = "SELECT
 									information_schema.columns.column_name AS \"Column__name\",
 									( CASE WHEN information_schema.columns.data_type = 'USER-DEFINED' THEN UPPER( information_schema.columns.udt_name ) ELSE UPPER( information_schema.columns.data_type ) END ) AS \"Column__type\",
