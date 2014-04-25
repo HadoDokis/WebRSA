@@ -3,7 +3,10 @@
 
 	echo $this->Default3->actions(
 		array(
-			"/Cataloguespdisfps93/add/{$modelName}"
+			"/Cataloguespdisfps93/add/{$modelName}" => array(
+				'title' => __d( 'cataloguespdisfps93', "/Cataloguespdisfps93/add/{$modelName}/:title" ),
+				'disabled' => !$this->Permissions->check( 'Cataloguespdisfps93', 'add' ),
+			)
 		)
 	);
 

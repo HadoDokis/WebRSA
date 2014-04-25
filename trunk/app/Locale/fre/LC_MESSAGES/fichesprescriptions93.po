@@ -150,6 +150,9 @@ msgstr "Date de début de l'action"
 msgid "Ficheprescription93.df_action"
 msgstr "Date de fin de l'action"
 
+msgid "Ficheprescription93.duree_action"
+msgstr "Durée de l'action"
+
 msgid "Documentbeneffp93.Documentbeneffp93"
 msgstr "Le bénéficiaire est invité à se munir de"
 
