@@ -93,8 +93,4 @@
 			),
 		)
 	);
-
-	if( !empty( $results ) ) {
-		debug($results);
-	}
 ?>

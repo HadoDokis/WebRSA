@@ -9,51 +9,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 # ==============================================================================
-# Paramétrage
+# Moteur de recherche
 # ==============================================================================
 
 msgid "/Cataloguespdisfps93/search/:heading"
 msgstr "Tableau de suivi du référentiel"
-
-msgid "/Cataloguespdisfps93/index/Thematiquefp93/:heading"
-msgstr "Thématiques"
-
-msgid "/Cataloguespdisfps93/index/Categoriefp93/:heading"
-msgstr "Catégories d'action"
-
-msgid "/Cataloguespdisfps93/index/Filierefp93/:heading"
-msgstr "Filières"
-
-msgid "/Cataloguespdisfps93/index/Actionfp93/:heading"
-msgstr "Intitulés"
-
-msgid "/Cataloguespdisfps93/index/Prestatairefp93/:heading"
-msgstr "Prestataires"
-
-msgid "/Cataloguespdisfps93/index/Adresseprestatairefp93/:heading"
-msgstr "Adresses des prestataires"
-
-msgid "/Cataloguespdisfps93/index/Modtransmfp93/:heading"
-msgstr "Modalités de transmission"
-
-msgid "/Cataloguespdisfps93/index/Motifnonreceptionfp93/:heading"
-msgstr "Motifs de non réception"
-
-msgid "/Cataloguespdisfps93/index/Motifnonretenuefp93/:heading"
-msgstr "Motifs de non rétention par la structure"
-
-msgid "/Cataloguespdisfps93/index/Motifnonsouhaitfp93/:heading"
-msgstr "Motifs de non souhait d'intégration"
-
-msgid "/Cataloguespdisfps93/index/Motifnonintegrationfp93/:heading"
-msgstr "Motifs de non intégration"
-
-msgid "/Cataloguespdisfps93/index/Documentbeneffp93/:heading"
-msgstr "Documents dont le bénéficiaire est invité à se munir"
-
-# ==============================================================================
-# Moteur de recherche
-# ==============================================================================
 
 msgid "/Cataloguespdisfps93/search"
 msgstr "Formulaire"
@@ -110,6 +70,9 @@ msgstr "Prestataire"
 msgid "Actionfp93.annee"
 msgstr "Année de conventionnement"
 
+msgid "Actionfp93.duree"
+msgstr "Durée"
+
 msgid "Actionfp93.name"
 msgstr "Intitulé"
 
@@ -143,6 +106,12 @@ msgstr "Retour au paramétrage du module fiches de prescription"
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Actionfp93/:heading"
+msgstr "Intitulés"
+
+msgid "/Cataloguespdisfps93/add/Actionfp93/:title"
+msgstr "Ajouter un intitulé"
+
 msgid "/Cataloguespdisfps93/edit/Actionfp93/#Actionfp93.id#"
 msgstr "Modifier l'intitulé « #Actionfp93.name# »"
 
@@ -160,30 +129,96 @@ msgstr "Modification d'un intitulé"
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Thematiquefp93/:heading"
+msgstr "Thématiques"
+
 msgid "Thematiquefp93.created"
-msgstr "Créé"
+msgstr "Créée"
 
 msgid "Thematiquefp93.modified"
-msgstr "Modifié"
+msgstr "Modifiée"
+
+msgid "/Cataloguespdisfps93/add/Thematiquefp93/:title"
+msgstr "Ajouter une thématique"
+
+msgid "/Cataloguespdisfps93/add/Thematiquefp93/:heading"
+msgstr "Ajout d'une thématique"
+
+msgid "/Cataloguespdisfps93/edit/Thematiquefp93/:heading"
+msgstr "Modification d'une thématique"
+
+msgid "/Cataloguespdisfps93/edit/Thematiquefp93/#Thematiquefp93.id#"
+msgstr "Modifier la thématique « #Thematiquefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Thematiquefp93/#Thematiquefp93.id#"
+msgstr "Supprimer la thématique « #Thematiquefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Thematiquefp93/#Thematiquefp93.id# ?"
+msgstr "Réellement supprimer la thématique « #Thematiquefp93.name# » ?"
 
 # ------------------------------------------------------------------------------
+
+msgid "/Cataloguespdisfps93/index/Categoriefp93/:heading"
+msgstr "Catégories d'action"
 
 msgid "Categoriefp93.name"
 msgstr "Catégorie d'action"
 
 msgid "Categoriefp93.created"
-msgstr "Créé"
+msgstr "Créée"
 
 msgid "Categoriefp93.modified"
-msgstr "Modifié"
+msgstr "Modifiée"
+
+msgid "/Cataloguespdisfps93/add/Categoriefp93/:title"
+msgstr "Ajouter une catégorie"
+
+msgid "/Cataloguespdisfps93/add/Categoriefp93/:heading"
+msgstr "Ajout d'une catégorie"
+
+msgid "/Cataloguespdisfps93/edit/Categoriefp93/:heading"
+msgstr "Modification d'une catégorie"
+
+msgid "/Cataloguespdisfps93/edit/Categoriefp93/#Categoriefp93.id#"
+msgstr "Modifier la catégorie « #Categoriefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Categoriefp93/#Categoriefp93.id#"
+msgstr "Supprimer la catégorie « #Categoriefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Categoriefp93/#Categoriefp93.id# ?"
+msgstr "Réellement supprimer la catégorie « #Categoriefp93.name# » ?"
 
 # ------------------------------------------------------------------------------
+
+msgid "/Cataloguespdisfps93/index/Filierefp93/:heading"
+msgstr "Filières"
+
+msgid "Filierefp93.categoriefp93_id"
+msgstr "Catégorie d'action"
 
 msgid "Filierefp93.created"
 msgstr "Créé"
 
 msgid "Filierefp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Filierefp93/:title"
+msgstr "Ajouter une filière"
+
+msgid "/Cataloguespdisfps93/add/Filierefp93/:heading"
+msgstr "Ajout d'une filière"
+
+msgid "/Cataloguespdisfps93/edit/Filierefp93/:heading"
+msgstr "Modification d'une filière"
+
+msgid "/Cataloguespdisfps93/edit/Filierefp93/#Filierefp93.id#"
+msgstr "Modifier la filière « #Filierefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Filierefp93/#Filierefp93.id#"
+msgstr "Supprimer la filière « #Filierefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Filierefp93/#Filierefp93.id# ?"
+msgstr "Réellement supprimer la filière « #Filierefp93.name# » ?"
 
 # ------------------------------------------------------------------------------
 
@@ -204,13 +239,37 @@ msgstr "Modifié"
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Prestatairefp93/:heading"
+msgstr "Prestataires"
+
 msgid "Prestatairefp93.created"
 msgstr "Créé"
 
 msgid "Prestatairefp93.modified"
 msgstr "Modifié"
 
+msgid "/Cataloguespdisfps93/add/Prestatairefp93/:title"
+msgstr "Ajouter un prestataire"
+
+msgid "/Cataloguespdisfps93/add/Prestatairefp93/:heading"
+msgstr "Ajout d'un prestataire"
+
+msgid "/Cataloguespdisfps93/edit/Prestatairefp93/:heading"
+msgstr "Modification d'un prestataire"
+
+msgid "/Cataloguespdisfps93/edit/Prestatairefp93/#Prestatairefp93.id#"
+msgstr "Modifier le prestataire « #Prestatairefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Prestatairefp93/#Prestatairefp93.id#"
+msgstr "Supprimer le prestataire « #Prestatairefp93.name# »"
+
+msgid "/Cataloguespdisfps93/delete/Prestatairefp93/#Prestatairefp93.id# ?"
+msgstr "Réellement supprimer le prestataire « #Prestatairefp93.name# » ?"
+
 # ------------------------------------------------------------------------------
+
+msgid "/Cataloguespdisfps93/index/Modtransmfp93/:heading"
+msgstr "Modalités de transmission"
 
 msgid "Modtransmfp93.name"
 msgstr "Modalité de transmission"
@@ -221,22 +280,28 @@ msgstr "Créé"
 msgid "Modtransmfp93.modified"
 msgstr "Modifié"
 
+msgid "/Cataloguespdisfps93/add/Modtransmfp93/:title"
+msgstr "Ajouter une modalité de transmission"
+
 msgid "/Cataloguespdisfps93/add/Modtransmfp93/:heading"
-msgstr "Ajout d'une adresse d'un prestataire"
+msgstr "Ajout d'une modalité de transmission"
 
 msgid "/Cataloguespdisfps93/edit/Modtransmfp93/:heading"
-msgstr "Modification d'une adresse d'un prestataire"
+msgstr "Modification d'une modalité de transmission"
 
 msgid "/Cataloguespdisfps93/edit/Modtransmfp93/#Modtransmfp93.id#"
-msgstr "Modifier l'adresse d'un prestataire « #Modtransmfp93.name# »"
+msgstr "Modifier la modalité de transmission « #Modtransmfp93.name# »"
 
 msgid "/Cataloguespdisfps93/delete/Modtransmfp93/#Modtransmfp93.id#"
-msgstr "Supprimer l'adresse d'un prestataire « #Modtransmfp93.name# »"
+msgstr "Supprimer la modalité de transmission « #Modtransmfp93.name# »"
 
 msgid "/Cataloguespdisfps93/delete/Modtransmfp93/#Modtransmfp93.id# ?"
-msgstr "Réellement supprimer l'adresse d'un prestataire « #Modtransmfp93.name# » ?"
+msgstr "Réellement supprimer la modalité de transmission « #Modtransmfp93.name# » ?"
 
 # ------------------------------------------------------------------------------
+
+msgid "/Cataloguespdisfps93/index/Adresseprestatairefp93/:heading"
+msgstr "Adresses des prestataires"
 
 msgid "Adresseprestatairefp93.prestatairefp93_id"
 msgstr "Prestataire"
@@ -265,6 +330,9 @@ msgstr "Créé"
 msgid "Adresseprestatairefp93.modified"
 msgstr "Modifié"
 
+msgid "/Cataloguespdisfps93/add/Adresseprestatairefp93/:title"
+msgstr "Ajouter une adresse d'un prestataire"
+
 msgid "/Cataloguespdisfps93/add/Adresseprestatairefp93/:heading"
 msgstr "Ajout d'une adresse d'un prestataire"
 
@@ -282,6 +350,9 @@ msgstr "Réellement supprimer l'adresse d'un prestataire « #Adresseprestatairef
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Motifnonreceptionfp93/:heading"
+msgstr "Motifs de non réception"
+
 msgid "Motifnonreceptionfp93.name"
 msgstr "Motif"
 
@@ -293,6 +364,9 @@ msgstr "Créé"
 
 msgid "Motifnonreceptionfp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Motifnonreceptionfp93/:title"
+msgstr "Ajouter un motif de non réception"
 
 msgid "/Cataloguespdisfps93/add/Motifnonreceptionfp93/:heading"
 msgstr "Ajout d'un motif de non réception"
@@ -311,6 +385,9 @@ msgstr "Réellement supprimer le motif de non réception « #Motifnonreceptionfp
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Motifnonretenuefp93/:heading"
+msgstr "Motifs de non rétention par la structure"
+
 msgid "Motifnonretenuefp93.name"
 msgstr "Motif"
 
@@ -322,6 +399,9 @@ msgstr "Créé"
 
 msgid "Motifnonretenuefp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Motifnonretenuefp93/:title"
+msgstr "Ajouter un motif de non rétention par la structure"
 
 msgid "/Cataloguespdisfps93/add/Motifnonretenuefp93/:heading"
 msgstr "Ajout d'un motif de non rétention par la structure"
@@ -340,6 +420,9 @@ msgstr "Réellement supprimer le motif de non rétention par la structure « #Mo
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Motifnonsouhaitfp93/:heading"
+msgstr "Motifs de non souhait d'intégration"
+
 msgid "Motifnonsouhaitfp93.name"
 msgstr "Motif"
 
@@ -351,6 +434,9 @@ msgstr "Créé"
 
 msgid "Motifnonsouhaitfp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Motifnonsouhaitfp93/:title"
+msgstr "Ajouter un motif de non souhait d'intégration"
 
 msgid "/Cataloguespdisfps93/add/Motifnonsouhaitfp93/:heading"
 msgstr "Ajout d'un motif de non souhait d'intégration"
@@ -369,6 +455,9 @@ msgstr "Réellement supprimer le motif de non souhait d'intégration « #Motifno
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Motifnonintegrationfp93/:heading"
+msgstr "Motifs de non intégration"
+
 msgid "Motifnonintegrationfp93.name"
 msgstr "Motif"
 
@@ -380,6 +469,9 @@ msgstr "Créé"
 
 msgid "Motifnonintegrationfp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Motifnonintegrationfp93/:title"
+msgstr "Ajouter un motif de non intégration"
 
 msgid "/Cataloguespdisfps93/add/Motifnonintegrationfp93/:heading"
 msgstr "Ajout d'un motif de non intégration"
@@ -398,6 +490,9 @@ msgstr "Réellement supprimer le motif de non intégration « #Motifnonintegrati
 
 # ------------------------------------------------------------------------------
 
+msgid "/Cataloguespdisfps93/index/Documentbeneffp93/:heading"
+msgstr "Documents dont le bénéficiaire est invité à se munir"
+
 msgid "Documentbeneffp93.name"
 msgstr "Document"
 
@@ -409,6 +504,9 @@ msgstr "Créé"
 
 msgid "Documentbeneffp93.modified"
 msgstr "Modifié"
+
+msgid "/Cataloguespdisfps93/add/Documentbeneffp93/:title"
+msgstr "Ajouter un document dont le bénéficiaire est invité à se munir"
 
 msgid "/Cataloguespdisfps93/add/Documentbeneffp93/:heading"
 msgstr "Ajout d'un document dont le bénéficiaire est invité à se munir"
