@@ -177,7 +177,7 @@
 		 */
 		public function conditionsSituationdossierrsa( Model $model, $conditions, $search ) {
 			$etatdossier = Set::extract( $search, 'Situationdossierrsa.etatdosrsa' );
-			if( isset( $search['Situationdossierrsa']['etatdosrsa'] ) && !empty( $search['Situationdossierrsa']['etatdosrsa'] ) ) {
+			if( ( Hash::get( $search, 'Situationdossierrsa.etatdosrsa_choice' ) !== '0' ) && isset( $search['Situationdossierrsa']['etatdosrsa'] ) && !empty( $search['Situationdossierrsa']['etatdosrsa'] ) ) {
 				$conditions[] = '( Situationdossierrsa.etatdosrsa IN ( \''.implode( '\', \'', $etatdossier ).'\' ) )';
 			}
 
