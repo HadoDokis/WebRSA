@@ -372,6 +372,8 @@
 				'Filierefp93' => 'LEFT OUTER',
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
+				'Detaildroitrsa' => 'LEFT OUTER',
+				'Prestation' => 'LEFT OUTER',
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );

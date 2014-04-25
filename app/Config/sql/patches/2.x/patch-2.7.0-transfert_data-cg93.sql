@@ -11,7 +11,7 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
--- FIXME: A passer après l'import du shell de 2013
+-- INFO: A passer après l'import du shell de 2013
 -- Insertion du catalogue Hors PDI de 2013
 INSERT INTO thematiquesfps93 ( type, name, created, modified ) VALUES
 	( 'horspdi', 'Prescription professionnelle', NOW(), NOW() ),
@@ -80,9 +80,7 @@ $$
 $$
 LANGUAGE 'sql';
 
--- 2939
--- TODO: documentsbenefsfps93_fichesprescriptions93, documentbeneffp93_autre
--- TODO: instantanesdonneesfps93
+-- INSERT 0 2940
 
 SELECT add_missing_table_field( 'public', 'fichesprescriptions93', 'actioncandidat_personne_id', 'INTEGER' );
 
@@ -285,10 +283,10 @@ SELECT
 			END
 		) AS actionfp93,
 		( SELECT prestatairesfps93.id FROM prestatairesfps93 WHERE prestatairesfps93.name = 'Non defini' LIMIT 1 ) AS prestatairefp93_id,
-		actionscandidats_personnes.autrepiece,
-		actionscandidats_personnes.datesignature,
-		actionscandidats_personnes.ddaction,
-		actionscandidats_personnes.dfaction,
+		actionscandidats_personnes.autrepiece AS documentbeneffp93_autre,
+		actionscandidats_personnes.datesignature AS date_signature,
+		actionscandidats_personnes.ddaction AS date_transmission,
+		actionscandidats_personnes.dfaction AS date_retour,
 		( CASE WHEN actionscandidats_personnes.bilanvenu = 'VEN' THEN 'oui' WHEN actionscandidats_personnes.bilanvenu = 'NVE' THEN 'non' ELSE NULL END ),
 		actionscandidats_personnes.personnerecu,
 		( CASE WHEN actionscandidats_personnes.bilanrecu = 'O' THEN '1' WHEN actionscandidats_personnes.bilanrecu = 'N' THEN '0' ELSE NULL END ),
@@ -343,11 +341,9 @@ INSERT INTO instantanesdonneesfps93 (
 	benef_natpf_socle,
 	benef_natpf_majore,
 	benef_natpf_activite,
--- benef_nivetu,
--- benef_dernier_dip,
--- benef_dip_ce,
--- benef_etatdosrsa, --historiquesdroits
--- benef_toppersdrodevorsa, --historiquesdroits
+	benef_nivetu,
+	benef_etatdosrsa,
+	benef_toppersdrodevorsa,
 	benef_dd_ci,
 	benef_df_ci,
 	benef_positioncer,
@@ -370,31 +366,108 @@ SELECT
 		personnes.nom,
 		personnes.prenom,
 		personnes.dtnai,
-		adresses.numvoie AS benef_numvoie,
-		adresses.typevoie AS benef_typevoie,
-		adresses.nomvoie AS benef_nomvoie,
-		adresses.complideadr AS benef_complideadr,
-		adresses.compladr AS benef_compladr,
-		adresses.numcomptt AS benef_numcomptt,
-		adresses.numcomrat AS benef_numcomrat,
-		adresses.codepos AS benef_codepos,
-		adresses.locaadr AS benef_locaadr,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numvoie
+				ELSE adresses.numvoie
+			END
+		) AS benef_numvoie,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.typevoie
+				ELSE adresses.typevoie
+			END
+		) AS benef_typevoie,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.nomvoie
+				ELSE adresses.nomvoie
+			END
+		) AS benef_nomvoie,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.complideadr
+				ELSE adresses.complideadr
+			END
+		) AS benef_complideadr,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.compladr
+				ELSE adresses.compladr
+			END
+		) AS benef_compladr,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numcomptt
+				ELSE adresses.numcomptt
+			END
+		) AS benef_numcomptt,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numcomrat
+				ELSE adresses.numcomrat
+			END
+		) AS benef_numcomrat,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.codepos
+				ELSE adresses.codepos
+			END
+		) AS benef_codepos,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.locaadr
+				ELSE adresses.locaadr
+			END
+		) AS benef_locaadr,
 		personnes.numfixe,
 		personnes.numport,
 		personnes.email,
 		historiqueetatspe.identifiantpe AS benef_identifiantpe,
 		( CASE WHEN historiqueetatspe.etat = 'inscription' THEN '1' ELSE '0' END ) AS benef_inscritpe,
-		dossiers.matricule AS benef_matricule,
-		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_socle,
-		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END ) AS benef_natpf_majore,
-		( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_activite,
-		-- ATTENTION aux dates
-		-- benef_nivetu,
-		-- benef_dernier_dip,
-		-- benef_dip_ce,
-		-- ATTENTION aux dates
-		-- benef_etatdosrsa,
-		-- benef_toppersdrodevorsa,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.matricule
+				ELSE dossiers.matricule
+			END
+		) AS benef_matricule,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_socle
+				ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END )
+			END
+		) AS benef_natpf_socle,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_majore
+				ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END )
+			END
+		) AS benef_natpf_majore,
+		(
+			CASE
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_activite
+				ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END )
+			END
+		) AS benef_natpf_activite,
+		(
+			CASE
+				WHEN dsps_revs.id IS NOT NULL THEN dsps_revs.nivetu
+				WHEN dsps.id IS NOT NULL THEN dsps.nivetu
+				else null
+			END
+		) AS benef_nivetu,
+		(
+			CASE
+				WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.etatdosrsa
+				ELSE situationsdossiersrsa.etatdosrsa
+			END
+		) AS benef_etatdosrsa,
+		(
+			CASE
+				WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.toppersdrodevorsa
+				ELSE calculsdroitsrsa.toppersdrodevorsa::TEXT
+			END
+		) AS benef_toppersdrodevorsa,
 		contratsinsertion.dd_ci,
 		contratsinsertion.df_ci,
 		(
@@ -414,7 +487,20 @@ SELECT
 		INNER JOIN personnes ON ( fichesprescriptions93.personne_id = personnes.id )
 		INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
 		INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
-		INNER JOIN detailsdroitsrsa ON ( dossiers.id = detailsdroitsrsa.dossier_id )
+		LEFT OUTER JOIN detailsdroitsrsa ON ( dossiers.id = detailsdroitsrsa.dossier_id )
+		LEFT OUTER JOIN situationsallocataires ON (
+			situationsallocataires.personne_id = personnes.id
+			AND situationsallocataires.id IN (
+				SELECT dernierssituationsallocataires.id
+					FROM situationsallocataires AS dernierssituationsallocataires
+					WHERE
+						dernierssituationsallocataires.personne_id = personnes.id
+						-- Avant la date de création de la fiche de prescription
+						AND dernierssituationsallocataires.modified <= fichesprescriptions93.created
+					ORDER BY dernierssituationsallocataires.modified DESC
+					LIMIT 1
+			)
+		)
 		LEFT OUTER JOIN contratsinsertion ON (
 			contratsinsertion.personne_id = personnes.id
 			AND contratsinsertion.id IN (
@@ -520,10 +606,96 @@ SELECT
 			)
 		)
 		LEFT OUTER JOIN adresses ON ( adressesfoyers.adresse_id = adresses.id )
+		LEFT OUTER JOIN dsps ON (
+			dsps.personne_id = personnes.id
+			AND dsps.id IN (
+				SELECT dernieresdsps.id
+					FROM dsps AS dernieresdsps
+					WHERE dernieresdsps.personne_id = personnes.id
+					ORDER BY dernieresdsps.id DESC
+					LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN dsps_revs ON (
+			dsps_revs.personne_id = personnes.id
+			AND dsps_revs.id IN (
+				SELECT dernieresdsps_revs.id
+					FROM dsps_revs AS dernieresdsps_revs
+					WHERE
+						dernieresdsps_revs.personne_id = personnes.id
+						-- Avant la date de création de la fiche de prescription
+						AND dernieresdsps_revs.modified <= fichesprescriptions93.created
+					ORDER BY dernieresdsps_revs.modified DESC
+					LIMIT 1
+			)
+		)
+		LEFT OUTER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_id = dossiers.id )
+		LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+		LEFT OUTER JOIN historiquesdroits ON (
+			historiquesdroits.personne_id = personnes.id
+			AND historiquesdroits.id IN (
+				SELECT derniershistoriquesdroits.id
+					FROM historiquesdroits AS derniershistoriquesdroits
+					WHERE
+						derniershistoriquesdroits.personne_id = personnes.id
+						-- Avant la date de création de la fiche de prescription
+						AND derniershistoriquesdroits.created <= fichesprescriptions93.created
+					ORDER BY derniershistoriquesdroits.modified DESC
+					LIMIT 1
+			)
+		)
 	WHERE
-		fichesprescriptions93.actioncandidat_personne_id IS NOT NULL;
+		fichesprescriptions93.actioncandidat_personne_id IS NOT NULL
+;
 
--- ALTER TABLE fichesprescriptions93 DROP COLUMN actioncandidat_personne_id;
+INSERT INTO documentsbenefsfps93_fichesprescriptions93
+(
+	documentbeneffp93_id,
+	ficheprescription93_id,
+	created,
+	modified
+)
+SELECT
+		(
+			CASE
+				WHEN actionscandidats_personnes.pieceallocataire = 'CER' THEN (
+					SELECT documentsbenefsfps93.id
+						FROM documentsbenefsfps93
+						WHERE documentsbenefsfps93.name = 'CER'
+						LIMIT 1
+				)
+				WHEN actionscandidats_personnes.pieceallocataire = 'NCA' THEN (
+					SELECT documentsbenefsfps93.id
+						FROM documentsbenefsfps93
+						WHERE documentsbenefsfps93.name = 'Notification CAF'
+						LIMIT 1
+				)
+				WHEN actionscandidats_personnes.pieceallocataire = 'CV' THEN (
+					SELECT documentsbenefsfps93.id
+						FROM documentsbenefsfps93
+						WHERE documentsbenefsfps93.name = 'CV'
+						LIMIT 1
+				)
+				WHEN actionscandidats_personnes.pieceallocataire = 'AUT' THEN (
+					SELECT documentsbenefsfps93.id
+						FROM documentsbenefsfps93
+						WHERE documentsbenefsfps93.name = 'Autre'
+						LIMIT 1
+				)
+				ELSE NULL
+			END
+		) AS documentbeneffp93_id,
+		fichesprescriptions93.id AS ficheprescription93_id,
+		fichesprescriptions93.created AS created,
+		fichesprescriptions93.modified AS modified
+	FROM fichesprescriptions93
+		INNER JOIN actionscandidats_personnes ON ( fichesprescriptions93.actioncandidat_personne_id = actionscandidats_personnes.id )
+WHERE
+	fichesprescriptions93.actioncandidat_personne_id IS NOT NULL
+	AND actionscandidats_personnes.pieceallocataire IS NOT NULL;
+
+
+ALTER TABLE fichesprescriptions93 DROP COLUMN actioncandidat_personne_id;
 
 /*
 SELECT
@@ -641,6 +813,132 @@ SELECT
 	-- Test
 	LIMIT 10;
 */
+
+/*
+	SELECT
+			(
+				CASE
+					WHEN dsps_revs.id IS NOT NULL THEN dsps_revs.nivetu
+					WHEN dsps.id IS NOT NULL THEN dsps.nivetu
+					else null
+				END
+			) AS benef_nivetu,
+			dsps.*,
+			dsps_revs.*
+		FROM personnes
+			LEFT OUTER JOIN dsps ON (
+				dsps.personne_id = personnes.id
+				AND dsps.id IN (
+					SELECT dernieresdsps.id
+						FROM dsps AS dernieresdsps
+						WHERE dernieresdsps.personne_id = personnes.id
+						ORDER BY dernieresdsps.id DESC
+						LIMIT 1
+				)
+			)
+			LEFT OUTER JOIN dsps_revs ON (
+				dsps_revs.personne_id = personnes.id
+				AND dsps_revs.id IN (
+					SELECT dernieresdsps_revs.id
+						FROM dsps_revs AS dernieresdsps_revs
+						WHERE dernieresdsps_revs.personne_id = personnes.id
+						ORDER BY dernieresdsps_revs.modified DESC
+						LIMIT 1
+				)
+			)
+		WHERE
+			personnes.id IN (
+				SELECT fichesprescriptions93.personne_id
+					FROM fichesprescriptions93
+					WHERE fichesprescriptions93.personne_id = personnes.id
+			)
+		LIMIT 1
+*/
+
+-- benef_etatdosrsa, --historiquesdroits
+-- benef_toppersdrodevorsa, --historiquesdroits
+/*
+	SELECT
+			(
+				CASE
+					WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.etatdosrsa
+					ELSE situationsdossiersrsa.etatdosrsa
+				END
+			) AS benef_etatdosrsa,
+			(
+				CASE
+					WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.toppersdrodevorsa
+					ELSE calculsdroitsrsa.toppersdrodevorsa::TEXT
+				END
+			) AS benef_toppersdrodevorsa,
+			historiquesdroits.*,
+			fichesprescriptions93.created
+		FROM personnes
+			INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+			INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+			INNER JOIN fichesprescriptions93 ON ( fichesprescriptions93.personne_id = personnes.id )
+			LEFT OUTER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_id = dossiers.id )
+			LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
+			LEFT OUTER JOIN historiquesdroits ON (
+				historiquesdroits.personne_id = personnes.id
+				AND historiquesdroits.id IN (
+					SELECT derniershistoriquesdroits.id
+						FROM historiquesdroits AS derniershistoriquesdroits
+						WHERE
+							derniershistoriquesdroits.personne_id = personnes.id
+							-- Avant la date de création de la fiche de prescription
+							AND derniershistoriquesdroits.created <= fichesprescriptions93.created
+						ORDER BY derniershistoriquesdroits.modified DESC
+						LIMIT 1
+				)
+			)
+*/
+
+/*
+	SELECT
+			(
+				CASE
+					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_socle
+					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END )
+				END
+			) AS benef_natpf_socle,
+			(
+				CASE
+					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_majore
+					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END )
+				END
+			) AS benef_natpf_majore,
+			(
+				CASE
+					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_activite
+					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END )
+				END
+			) AS benef_natpf_activite,
+			situationsallocataires.*,
+			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_socle,
+			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END ) AS benef_natpf_majore,
+			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_activite,
+			fichesprescriptions93.created
+		FROM personnes
+			INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+			INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+			INNER JOIN fichesprescriptions93 ON ( fichesprescriptions93.personne_id = personnes.id )
+			LEFT OUTER JOIN detailsdroitsrsa ON ( dossiers.id = detailsdroitsrsa.dossier_id )
+			LEFT OUTER JOIN situationsallocataires ON (
+				situationsallocataires.personne_id = personnes.id
+				AND situationsallocataires.id IN (
+					SELECT dernierssituationsallocataires.id
+						FROM situationsallocataires AS dernierssituationsallocataires
+						WHERE
+							dernierssituationsallocataires.personne_id = personnes.id
+							-- Avant la date de création de la fiche de prescription
+							AND dernierssituationsallocataires.modified <= fichesprescriptions93.created
+						ORDER BY dernierssituationsallocataires.modified DESC
+						LIMIT 1
+				)
+			)
+*/
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
