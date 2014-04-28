@@ -36,7 +36,7 @@
 	</target>
 
 	<!-- Vérification de la syntaxe des fichiers .php et .ctp -->
-	<target name="lint">
+	<target name="php-lint">
 		<apply executable="php" dir="${dir.cakephp.plugin}" failonerror="on" logerror="on">
 			<arg line="-l"/>
 			<fileset
@@ -44,6 +44,22 @@
 				includes="**/*.php,**/*.ctp"
 				excludes="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
 		</apply>
+	</target>
+
+	<target name="lint" depends="php-lint,sql-lint"/>
+
+	<!--
+		Vérification de la syntaxe des fichiers SQL par le parseur de PostgreSQL
+
+		sudo apt-get install python-pip
+		sudo apt-get install libecpg-dev
+		sudo pip install pgsanity
+	-->
+	<target name="sql-lint">
+		<exec executable="bash" failonerror="on" logerror="on">
+		  <arg value="-c"/>
+		  <arg value="find ${dir.cakephp.plugin} -name '*.sql' | xargs pgsanity"/>
+		</exec>
 	</target>
 
 	<!-- Tests untaires -->
