@@ -40,7 +40,7 @@ CREATE OR REPLACE FUNCTION cakephp_validate_in_list( integer, integer[] ) RETURN
 $$
 	SELECT $1 IS NULL OR ( ARRAY[CAST($1 AS TEXT)] <@ CAST($2 AS TEXT[]) );
 $$
-LANGUAGE sql IMMUTABLE;
+LANGUAGE 'sql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_in_list( integer, integer[] ) IS
 	'@see http://api.cakephp.org/class/validation#method-ValidationinList';
@@ -58,7 +58,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_range( p_check float, p_lower float, p_upper float ) IS
 	'@see http://api.cakephp.org/class/validation#method-Validationrange';
@@ -75,7 +75,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_inclusive_range( p_check float, p_lower float, p_upper float ) IS
 	'Comme cakephp_validate_range(), mais avec les bornes incluses';
@@ -111,7 +111,7 @@ $$
 		END IF;
 	END;
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 COMMENT ON FUNCTION public.alter_table_drop_constraint_if_exists( text, text, text ) IS
 	'Équivalent de la fonctionnalité ALTER TABLE <table> DROP CONSTRAINT <name> disponible à partir de PostgreSQl 9.1';
@@ -762,7 +762,7 @@ $$
 		END LOOP;
 	END;
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 SELECT public.dedoublonnage_prestations();
 DROP FUNCTION public.dedoublonnage_prestations();

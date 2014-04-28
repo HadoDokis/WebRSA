@@ -52,9 +52,9 @@ INSERT INTO motifsnonreceptionsfps93 ( name, autre, created, modified ) VALUES
 	( 'Autre', '1', NOW(), NOW() );
 
 INSERT INTO motifsnonretenuesfps93 ( name, autre, created, modified ) VALUES
-	( 'l\'allocataire n\'a pas réussi les tests', '0', NOW(), NOW() ),
+	( 'l''allocataire n''a pas réussi les tests', '0', NOW(), NOW() ),
 	( 'pas de place disponible', '0', NOW(), NOW() ),
-	( 'en file d\'attente', '0', NOW(), NOW() ),
+	( 'en file d''attente', '0', NOW(), NOW() ),
 	( 'autre', '1', NOW(), NOW() );
 
 INSERT INTO motifsnonsouhaitsfps93 ( name, autre, created, modified ) VALUES

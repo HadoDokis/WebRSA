@@ -17,14 +17,14 @@ INSERT INTO secteursactis ( name ) VALUES
 	( 'Agriculture, sylviculture et pêche' ),
 	( 'Industries extractives' ),
 	( 'Industrie manufacturière' ),
-	( 'Production et distribution d\'électricité, de gaz, de vapeur et d\'air conditionné' ),
-	( 'Production et distribution d\'eau ; assainissement, gestion des déchets et dépollution' ),
+	( 'Production et distribution d''électricité, de gaz, de vapeur et d''air conditionné' ),
+	( 'Production et distribution d''eau ; assainissement, gestion des déchets et dépollution' ),
 	( 'Construction' ),
-	( 'Commerce ; réparation d\'automobiles et de motocycles' ),
+	( 'Commerce ; réparation d''automobiles et de motocycles' ),
 	( 'Transports et entreposage' ),
 	( 'Hébergement et restauration' ),
 	( 'Information et communication' ),
-	( 'Activités financières et d\'assurance' ),
+	( 'Activités financières et d''assurance' ),
 	( 'Activités immobilières' ),
 	( 'Activités spécialisées, scientifiques et techniques' ),
 	( 'Activités de services administratifs et de soutien' ),
@@ -33,20 +33,20 @@ INSERT INTO secteursactis ( name ) VALUES
 	( 'Santé humaine et action sociale' ),
 	( 'Arts, spectacles et activités récréatives' ),
 	( 'Autres activités de services' ),
-	( 'Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre' ),
+	( 'Activités des ménages en tant qu''employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre' ),
 	( 'Activités extra-territoriales' );
 
 INSERT INTO metiersexerces ( name ) VALUES
 	( 'Agriculteurs (salariés de leur exploitation)' ),
 	( 'Artisans (salariés de leur entreprise)' ),
 	( 'Commerçants et assimilés (salariés de leur entreprise)' ),
-	( 'Chefs d\'entreprise de 10 salariés ou plus (salariés de leur entreprise)' ),
+	( 'Chefs d''entreprise de 10 salariés ou plus (salariés de leur entreprise)' ),
 	( 'Professions libérales (exercées sous statut de salarié)' ),
 	( 'Cadres de la fonction publique' ),
 	( 'Professeurs, professions scientifiques' ),
-	( 'Professions de l\'information, des arts et des spectacles' ),
-	( 'Cadres administratifs et commerciaux d\'entreprises' ),
-	( 'Ingénieurs et cadres techniques d\'entreprises' ),
+	( 'Professions de l''information, des arts et des spectacles' ),
+	( 'Cadres administratifs et commerciaux d''entreprises' ),
+	( 'Ingénieurs et cadres techniques d''entreprises' ),
 	( 'Professeurs des écoles, instituteurs et professions assimilées' ),
 	( 'Professions intermédiaires de la santé et du travail social' ),
 	( 'Clergé, religieux' ),
@@ -56,7 +56,7 @@ INSERT INTO metiersexerces ( name ) VALUES
 	( 'Contremaîtres, agents de maîtrise (maîtrise administrative exclue)' ),
 	( 'Employés civils et agents de service de la fonction publique' ),
 	( 'Agents de surveillance' ),
-	( 'Employés administratifs d\'entreprise' ),
+	( 'Employés administratifs d''entreprise' ),
 	( 'Employés de commerce' ),
 	( 'Personnels des services directs aux particuliers' ),
 	( 'Ouvriers qualifiés de type industriel' ),
@@ -73,9 +73,9 @@ INSERT INTO naturescontrats ( name, isduree ) VALUES
 	( 'CDD', '1' ),
 	( 'Contrat de travail temporaire (Intérim)', '0' ),
 	( 'Contrat de professionnalisation', '0' ),
-	( 'Contrat d\'apprentissage', '0' ),
+	( 'Contrat d''apprentissage', '0' ),
 	( 'Contrat Initiative Emploi (CIE)', '0' ),
-	( 'Contrat d\'Accompagnement dans l\'Emploi (CAE)', '0' ),
+	( 'Contrat d''Accompagnement dans l''Emploi (CAE)', '0' ),
 	( 'Chèque Emploi Service Universel (CESU)', '0' );
 
 INSERT INTO cers93( contratinsertion_id, user_id, matricule, dtdemrsa, qual, nom, nomnai, prenom, dtnai, adresse, codepos, locaadr, sitfam, numdemrsa, rolepers, positioncer, formeci, datesignature, isemploitrouv, secteuracti_id, metierexerce_id, dureehebdo, naturecontrat_id, dureecdd, prevu, observpro, structureutilisateur, nomutilisateur )
@@ -229,7 +229,7 @@ SELECT
 							WHEN adresses.typevoie = 'POUR' THEN 'Pourtour'
 							WHEN adresses.typevoie = 'PRE' THEN 'Pré'
 							WHEN adresses.typevoie = 'PROM' THEN 'Promenade'
-							WHEN adresses.typevoie = 'PRQ' THEN 'Presqu\'île'
+							WHEN adresses.typevoie = 'PRQ' THEN 'Presqu''île'
 							WHEN adresses.typevoie = 'PRT' THEN 'Petite route'
 							WHEN adresses.typevoie = 'PRV' THEN 'Parvis'
 							WHEN adresses.typevoie = 'PSTY' THEN 'Peristyle'
@@ -269,8 +269,8 @@ SELECT
 							WHEN adresses.typevoie = 'VOI' THEN 'Voie'
 							WHEN adresses.typevoie = 'VTE' THEN 'Vieille route'
 							WHEN adresses.typevoie = 'ZA' THEN 'Zone artisanale'
-							WHEN adresses.typevoie = 'ZAC' THEN 'Zone d\'aménagement concerte'
-							WHEN adresses.typevoie = 'ZAD' THEN 'Zone d\'aménagement différé'
+							WHEN adresses.typevoie = 'ZAC' THEN 'Zone d''aménagement concerte'
+							WHEN adresses.typevoie = 'ZAD' THEN 'Zone d''aménagement différé'
 							WHEN adresses.typevoie = 'ZI' THEN 'Zone industrielle'
 							WHEN adresses.typevoie = 'ZONE' THEN 'Zone'
 							WHEN adresses.typevoie = 'ZUP' THEN 'Zone à urbaniser en priorité'
@@ -318,14 +318,14 @@ SELECT
 				WHEN sect_acti_emp = 'A' THEN ( SELECT id FROM secteursactis WHERE name = 'Agriculture, sylviculture et pêche' )
 				WHEN sect_acti_emp = 'B' THEN ( SELECT id FROM secteursactis WHERE name = 'Industries extractives' )
 				WHEN sect_acti_emp = 'C' THEN ( SELECT id FROM secteursactis WHERE name = 'Industrie manufacturière' )
-				WHEN sect_acti_emp = 'D' THEN ( SELECT id FROM secteursactis WHERE name = 'Production et distribution d\'électricité, de gaz, de vapeur et d\'air conditionné' )
-				WHEN sect_acti_emp = 'E' THEN ( SELECT id FROM secteursactis WHERE name = 'Production et distribution d\'eau ; assainissement, gestion des déchets et dépollution' )
+				WHEN sect_acti_emp = 'D' THEN ( SELECT id FROM secteursactis WHERE name = 'Production et distribution d''électricité, de gaz, de vapeur et d''air conditionné' )
+				WHEN sect_acti_emp = 'E' THEN ( SELECT id FROM secteursactis WHERE name = 'Production et distribution d''eau ; assainissement, gestion des déchets et dépollution' )
 				WHEN sect_acti_emp = 'F' THEN ( SELECT id FROM secteursactis WHERE name = 'Construction' )
-				WHEN sect_acti_emp = 'G' THEN ( SELECT id FROM secteursactis WHERE name = 'Commerce ; réparation d\'automobiles et de motocycles' )
+				WHEN sect_acti_emp = 'G' THEN ( SELECT id FROM secteursactis WHERE name = 'Commerce ; réparation d''automobiles et de motocycles' )
 				WHEN sect_acti_emp = 'H' THEN ( SELECT id FROM secteursactis WHERE name = 'Transports et entreposage' )
 				WHEN sect_acti_emp = 'I' THEN ( SELECT id FROM secteursactis WHERE name = 'Hébergement et restauration' )
 				WHEN sect_acti_emp = 'J' THEN ( SELECT id FROM secteursactis WHERE name = 'Information et communication' )
-				WHEN sect_acti_emp = 'K' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités financières et d\'assurance' )
+				WHEN sect_acti_emp = 'K' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités financières et d''assurance' )
 				WHEN sect_acti_emp = 'L' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités immobilières' )
 				WHEN sect_acti_emp = 'M' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités spécialisées, scientifiques et techniques' )
 				WHEN sect_acti_emp = 'N' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités de services administratifs et de soutien' )
@@ -334,7 +334,7 @@ SELECT
 				WHEN sect_acti_emp = 'Q' THEN ( SELECT id FROM secteursactis WHERE name = 'Santé humaine et action sociale' )
 				WHEN sect_acti_emp = 'R' THEN ( SELECT id FROM secteursactis WHERE name = 'Arts, spectacles et activités récréatives' )
 				WHEN sect_acti_emp = 'S' THEN ( SELECT id FROM secteursactis WHERE name = 'Autres activités de services' )
-				WHEN sect_acti_emp = 'T' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités des ménages en tant qu\'employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre' )
+				WHEN sect_acti_emp = 'T' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités des ménages en tant qu''employeurs; activités indifférenciées des ménages en tant que producteurs de biens et services pour usage propre' )
 				WHEN sect_acti_emp = 'U' THEN ( SELECT id FROM secteursactis WHERE name = 'Activités extra-territoriales' )
 				ELSE NULL
 			END
@@ -344,13 +344,13 @@ SELECT
 				WHEN emp_occupe = '10' THEN ( SELECT id FROM metiersexerces WHERE name = 'Agriculteurs (salariés de leur exploitation)' )
 				WHEN emp_occupe = '21' THEN ( SELECT id FROM metiersexerces WHERE name = 'Artisans (salariés de leur entreprise)' )
 				WHEN emp_occupe = '22' THEN ( SELECT id FROM metiersexerces WHERE name = 'Commerçants et assimilés (salariés de leur entreprise)' )
-				WHEN emp_occupe = '23' THEN ( SELECT id FROM metiersexerces WHERE name = 'Chefs d\'entreprise de 10 salariés ou plus (salariés de leur entreprise)' )
+				WHEN emp_occupe = '23' THEN ( SELECT id FROM metiersexerces WHERE name = 'Chefs d''entreprise de 10 salariés ou plus (salariés de leur entreprise)' )
 				WHEN emp_occupe = '31' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professions libérales (exercées sous statut de salarié)' )
 				WHEN emp_occupe = '33' THEN ( SELECT id FROM metiersexerces WHERE name = 'Cadres de la fonction publique' )
 				WHEN emp_occupe = '34' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professeurs, professions scientifiques' )
-				WHEN emp_occupe = '35' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professions de l\'information, des arts et des spectacles' )
-				WHEN emp_occupe = '37' THEN ( SELECT id FROM metiersexerces WHERE name = 'Cadres administratifs et commerciaux d\'entreprises' )
-				WHEN emp_occupe = '38' THEN ( SELECT id FROM metiersexerces WHERE name = 'Ingénieurs et cadres techniques d\'entreprises' )
+				WHEN emp_occupe = '35' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professions de l''information, des arts et des spectacles' )
+				WHEN emp_occupe = '37' THEN ( SELECT id FROM metiersexerces WHERE name = 'Cadres administratifs et commerciaux d''entreprises' )
+				WHEN emp_occupe = '38' THEN ( SELECT id FROM metiersexerces WHERE name = 'Ingénieurs et cadres techniques d''entreprises' )
 				WHEN emp_occupe = '42' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professeurs des écoles, instituteurs et professions assimilées' )
 				WHEN emp_occupe = '43' THEN ( SELECT id FROM metiersexerces WHERE name = 'Professions intermédiaires de la santé et du travail social' )
 				WHEN emp_occupe = '44' THEN ( SELECT id FROM metiersexerces WHERE name = 'Clergé, religieux' )
@@ -360,7 +360,7 @@ SELECT
 				WHEN emp_occupe = '48' THEN ( SELECT id FROM metiersexerces WHERE name = 'Contremaîtres, agents de maîtrise (maîtrise administrative exclue)' )
 				WHEN emp_occupe = '52' THEN ( SELECT id FROM metiersexerces WHERE name = 'Employés civils et agents de service de la fonction publique' )
 				WHEN emp_occupe = '53' THEN ( SELECT id FROM metiersexerces WHERE name = 'Agents de surveillance' )
-				WHEN emp_occupe = '54' THEN ( SELECT id FROM metiersexerces WHERE name = 'Employés administratifs d\'entreprise' )
+				WHEN emp_occupe = '54' THEN ( SELECT id FROM metiersexerces WHERE name = 'Employés administratifs d''entreprise' )
 				WHEN emp_occupe = '55' THEN ( SELECT id FROM metiersexerces WHERE name = 'Employés de commerce' )
 				WHEN emp_occupe = '56' THEN ( SELECT id FROM metiersexerces WHERE name = 'Personnels des services directs aux particuliers' )
 				WHEN emp_occupe = '62' THEN ( SELECT id FROM metiersexerces WHERE name = 'Ouvriers qualifiés de type industriel' )
@@ -388,9 +388,9 @@ SELECT
 				WHEN nat_cont_trav = 'TCT3' THEN ( SELECT id FROM naturescontrats WHERE name = 'CDD' )
 				WHEN nat_cont_trav = 'TCT4' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat de travail temporaire (Intérim)' )
 				WHEN nat_cont_trav = 'TCT5' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat de professionnalisation' )
-				WHEN nat_cont_trav = 'TCT6' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat d\'apprentissage' )
+				WHEN nat_cont_trav = 'TCT6' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat d''apprentissage' )
 				WHEN nat_cont_trav = 'TCT7' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat Initiative Emploi (CIE)' )
-				WHEN nat_cont_trav = 'TCT8' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat d\'Accompagnement dans l\'Emploi (CAE)' )
+				WHEN nat_cont_trav = 'TCT8' THEN ( SELECT id FROM naturescontrats WHERE name = 'Contrat d''Accompagnement dans l''Emploi (CAE)' )
 				WHEN nat_cont_trav = 'TCT9' THEN ( SELECT id FROM naturescontrats WHERE name = 'Chèque Emploi Service Universel (CESU)' )
 				ELSE NULL
 			END
