@@ -863,7 +863,7 @@ SELECT
 		AND cakephp_validate_email('abc_efg@domain.com')= true
 		AND cakephp_validate_email('raw@test.ra.ru')= true
 		AND cakephp_validate_email('abc-efg@domain-hyphened.com')= true
-		AND cakephp_validate_email('p.o\'malley@domain.com')= true
+		AND cakephp_validate_email('p.o''malley@domain.com')= true
 		AND cakephp_validate_email('abc+efg@domain.com')= true
 		AND cakephp_validate_email('abc&efg@domain.com')= true
 		AND cakephp_validate_email('abc.efg@12345.com')= true
@@ -918,7 +918,7 @@ SELECT
 		AND cakephp_validate_email('abc efg@example.com')= false
 		AND cakephp_validate_email('abc,efg@example.com')= false
 		AND cakephp_validate_email('abc@sub,example.com')= false
-		AND cakephp_validate_email('abc@sub\'example.com')= false
+		AND cakephp_validate_email('abc@sub''example.com')= false
 		AND cakephp_validate_email('abc@sub/example.com')= false
 		AND cakephp_validate_email('abc@yahoo!.com')= false
 		AND cakephp_validate_email('Nyrée.surname@example.com')= false

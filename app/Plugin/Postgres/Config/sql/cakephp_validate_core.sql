@@ -32,7 +32,7 @@ BEGIN;
 
 CREATE OR REPLACE FUNCTION create_plpgsql_language () RETURNS TEXT AS
 $$
-		CREATE LANGUAGE plpgsql;
+		CREATE LANGUAGE 'plpgsql';
 		SELECT 'language plpgsql created'::TEXT;
 $$
 LANGUAGE 'sql';
@@ -84,7 +84,7 @@ $$
 		RETURN p_check IS NULL OR ( p_check ~ E'^[^[:punct:]|[:blank:]|[:space:]|[:cntrl:]]+$'  );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_alpha_numeric( p_check text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_alphaNumeric';
@@ -99,7 +99,7 @@ $$
 		RETURN p_check IS NULL OR ( LENGTH( p_check ) >= p_min AND LENGTH( p_check ) <= p_max  );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_between( text, integer, integer ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_between';
@@ -114,7 +114,7 @@ $$
 		RETURN p_check IS NULL OR ( p_check ~ E'^[[:blank:]\n\r]*$'  );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_blank( text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_blank';
@@ -184,7 +184,7 @@ $$
 		RETURN cakephp_validate_luhn( $1, false );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 -- cc ( string|array $check , string|array $type = 'fast' , boolean $deep = false , string $regex = null )
@@ -279,7 +279,7 @@ $$
 		RETURN v_return;
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_cc( text, text[], boolean, text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_cc';
@@ -292,7 +292,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY[$2], $3, $4 );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
@@ -302,7 +302,7 @@ $$
 		RETURN cakephp_validate_cc( $1, $2, $3, NULL );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
@@ -312,7 +312,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY[$2], $3, NULL );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
@@ -322,7 +322,7 @@ $$
 		RETURN cakephp_validate_cc( $1, $2, $3, NULL );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
@@ -332,7 +332,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY[$2], $3, NULL );
 	END
 $$
-LANGUAGE plpgsql;
+LANGUAGE 'plpgsql';
 
 -- -----------------------------------------------------------------------------
 
@@ -342,7 +342,7 @@ $$
 		RETURN cakephp_validate_cc( $1, $2, false, NULL );
 	END
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -352,7 +352,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY[$2], false, NULL );
 	END
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -362,7 +362,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY[p_type], false, NULL );
 	END
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -372,7 +372,7 @@ $$
 		RETURN cakephp_validate_cc( $1, ARRAY['fast'], false, NULL );
 	END
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- comparison ( string|array $check1 , string $operator = null , integer $check2 = null )
@@ -396,7 +396,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_comparison( p_check1 float,p_operator text,p_check2 float ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_comparison';
@@ -442,7 +442,7 @@ $$
 		END IF;
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_decimal( p_check float, p_places integer, p_regex text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_decimal';
@@ -455,7 +455,7 @@ $$
 		RETURN cakephp_validate_decimal( p_check, p_places, NULL );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -465,7 +465,7 @@ $$
 		RETURN cakephp_validate_decimal( p_check, NULL, NULL );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- email ( string $check , boolean $deep = false , string $regex = null )
@@ -483,7 +483,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_email( p_check text, p_deep boolean, p_regex text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_email';
@@ -494,7 +494,7 @@ $$
 		RETURN cakephp_validate_email( p_check, p_deep, null );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -504,7 +504,7 @@ $$
 		RETURN cakephp_validate_email( p_check, false, null );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- equalTo ( mixed $check , mixed $comparedTo )
@@ -526,7 +526,7 @@ $$
 		RETURN p_check IS NULL OR ( ARRAY[CAST(p_check AS TEXT)] <@ CAST(p_list AS TEXT[]) );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_in_list( text, text[] ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_inList';
@@ -538,7 +538,7 @@ CREATE OR REPLACE FUNCTION cakephp_validate_in_list( integer, integer[] ) RETURN
 $$
 	SELECT $1 IS NULL OR ( ARRAY[CAST($1 AS TEXT)] <@ CAST($2 AS TEXT[]) );
 $$
-LANGUAGE sql IMMUTABLE;
+LANGUAGE 'sql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- ip ( string $check , string $type = 'both' )  -> _ipv4, _ipv6
@@ -550,7 +550,7 @@ $$
 		RETURN p_check IS NULL OR p_check ~ E'^(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])$';
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION cakephp_validate__ipv6( p_check text ) RETURNS boolean AS
 $$
@@ -558,7 +558,7 @@ $$
 		RETURN p_check IS NULL OR p_check ~ E'^((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}(:|((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})|(:[0-9A-Fa-f]{1,4})))|(([0-9A-Fa-f]{1,4}:){5}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){4}(:[0-9A-Fa-f]{1,4}){0,1}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}){0,2}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){0,3}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)(:[0-9A-Fa-f]{1,4}){0,4}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(:(:[0-9A-Fa-f]{1,4}){0,5}((:((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})){3})))(%.+)?$';
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION cakephp_validate_ip( p_check text, p_type text ) RETURNS boolean AS
 $$
@@ -583,7 +583,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_ip( p_check text, p_type text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_ip';
@@ -594,7 +594,7 @@ $$
 		RETURN cakephp_validate_ip( p_check, 'both' );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- maxLength ( string $check , integer $max )
@@ -606,7 +606,7 @@ $$
 		RETURN p_check IS NULL OR ( LENGTH( p_check ) <= p_max );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_max_length( p_check text,p_max integer ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_maxLength';
@@ -626,7 +626,7 @@ $$
 		RETURN p_check IS NULL OR ( LENGTH( p_check ) >= p_min );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_min_length( text, integer ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_minLength';
@@ -656,7 +656,7 @@ $$
 		RETURN p_check IS NULL OR NOT ( p_check ~ E'^[[:blank:]\n\r]*$'  );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_not_empty( p_check text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_notEmpty';
@@ -691,7 +691,7 @@ $$
 				)
 			);
 	END;
-$$ LANGUAGE plpgsql IMMUTABLE;
+$$ LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_phone( p_phone text, p_regex text, p_country text ) IS
 	E'@see http://api.cakephp.org/2.2/class-Validation.html#_phone\nCustom country France (fr) added.';
@@ -704,7 +704,7 @@ $$
 		RETURN cakephp_validate_phone( p_phone, p_regex, 'all' );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 
@@ -714,7 +714,7 @@ $$
 		RETURN cakephp_validate_phone( p_phone, null, 'all' );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- postal ( string|array $check , string $regex = null , string $country = 'us' )
@@ -762,7 +762,7 @@ $$
 			);
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country text ) IS
 	E'@see http://api.cakephp.org/2.2/class-Validation.html#_ssn\nCustom country France (fr) added.\n@see http://fr.wikipedia.org/wiki/Num%C3%A9ro_de_s%C3%A9curit%C3%A9_sociale_en_France#Signification_des_chiffres_du_NIR';
@@ -788,7 +788,7 @@ COMMENT ON FUNCTION cakephp_validate_ssn( p_ssn text, p_regex text, p_country te
 -- -----------------------------------------------------------------------------
 
 -- -----------------------------------------------------------------------------
--- uuid ( string $check ) 
+-- uuid ( string $check )
 -- -----------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION cakephp_validate_uuid( p_check text ) RETURNS boolean AS
@@ -797,7 +797,7 @@ $$
 		RETURN p_check IS NULL OR ( LOWER( p_check ) ~ E'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$' );
 	END;
 $$
-LANGUAGE plpgsql IMMUTABLE;
+LANGUAGE 'plpgsql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_uuid( p_check text ) IS
 	'@see http://api.cakephp.org/2.2/class-Validation.html#_uuid';
