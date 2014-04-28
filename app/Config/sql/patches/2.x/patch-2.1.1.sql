@@ -24,7 +24,7 @@ CREATE OR REPLACE FUNCTION cakephp_validate_in_list( text, text[] ) RETURNS bool
 $$
 	SELECT $1 IS NULL OR ( ARRAY[CAST($1 AS TEXT)] <@ CAST($2 AS TEXT[]) );
 $$
-LANGUAGE sql IMMUTABLE;
+LANGUAGE 'sql' IMMUTABLE;
 
 COMMENT ON FUNCTION cakephp_validate_in_list( text, text[] ) IS
 	'@see http://api.cakephp.org/class/validation#method-ValidationinList';

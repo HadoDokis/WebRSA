@@ -58,7 +58,8 @@ SELECT
 		AND nir_correct( p2.nir )
 		AND p1.nir = p2.nir
 		AND pr1.rolepers = pr2.rolepers
--- 	LIMIT 10;
+-- 	LIMIT 10
+;
 
 -- -----------------------------------------------------------------------------
 -- FIXME: - des foyers on changé d'état et on a une copie plus récente d'un foyer

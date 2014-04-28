@@ -91,7 +91,7 @@ SELECT
 		)
 		AND historiqueetatspe.etat = 'radiation'
 		AND historiqueetatspe.date >= orientsstructs.date_valid
-	LIMIT 10
+	LIMIT 10;
 
 --
 

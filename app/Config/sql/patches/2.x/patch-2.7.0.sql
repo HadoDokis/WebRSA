@@ -78,7 +78,7 @@ $$
 			EXECUTE v_altercolumn_query;
 
 			-- 3°) Ajout de la contrainte cakephp_calidate_in_list()
-			v_inlist_query := 'ALTER TABLE ' || p_schema || '.' || p_table || ' ADD CONSTRAINT ' || p_table || '_' || p_field || '_in_list_chk CHECK ( cakephp_validate_in_list( ' || p_field || ', ARRAY[\'' || ARRAY_TO_STRING( v_enum_row.enum, '\', \'' ) || '\'] ) );';
+			v_inlist_query := 'ALTER TABLE ' || p_schema || '.' || p_table || ' ADD CONSTRAINT ' || p_table || '_' || p_field || '_in_list_chk CHECK ( cakephp_validate_in_list( ' || p_field || ', ARRAY[''' || ARRAY_TO_STRING( v_enum_row.enum, ''', ''' ) || '''] ) );';
 			EXECUTE v_inlist_query;
 
 			-- 4°) Changement du type de la valeur par défaut
@@ -425,7 +425,7 @@ CREATE TABLE motifsnonsouhaitsfps93 (
     created     TIMESTAMP WITHOUT TIME ZONE,
     modified    TIMESTAMP WITHOUT TIME ZONE
 );
-COMMENT ON TABLE motifsnonsouhaitsfps93 IS 'Motifs de non souhait d\'intégration pour la fiche de prescription - CG 93';
+COMMENT ON TABLE motifsnonsouhaitsfps93 IS 'Motifs de non souhait d''intégration pour la fiche de prescription - CG 93';
 
 CREATE UNIQUE INDEX motifsnonsouhaitsfps93_name_idx ON motifsnonsouhaitsfps93( name );
 
