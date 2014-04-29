@@ -1,6 +1,9 @@
 <?php
 	echo $this->Default3->titleForLayout( $memo );
 
+	// Formatage du texte du mémo
+	$memo['Memo']['name'] = nl2br( Hash::get( $memo, 'Memo.name' ) );
+
 	echo $this->Default3->view(
 		$memo,
 		array(
@@ -9,10 +12,7 @@
 			'Memo.name',
 			'Memo.created',
 			'Memo.modified',
-		)/*,
-		array(
-			'options' => $options
-		)*/
+		)
 	);
 
 	echo $this->DefaultDefault->actions(

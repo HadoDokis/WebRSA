@@ -16,6 +16,18 @@
 	</li>
 </ul>
 <?php
+	// Formatage des textes de mémos pour la liste
+	if( !empty( $memos ) ) {
+		$names = Hash::extract( $memos, '{n}.Memo.name' );
+
+		foreach( $names as $key => $value ) {
+			$value = String::truncate( $value, 250 );
+			$value = nl2br( $value );
+
+			$memos[$key]['Memo']['name'] = $value;
+		}
+	}
+
 	echo $this->Default2->index(
 		$memos,
 		array(
