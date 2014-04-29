@@ -881,12 +881,9 @@ body.memos.view #pageContent table {
 
 body.memos.view #pageContent table td {
 	width: 16em;
+	max-width: 16em;
 }
 
 body.memos.view #pageContent table td.data {
 	width: auto;
-}
-
-body.memos.view #pageContent table td.data.text {
-	white-space: pre;
 }
