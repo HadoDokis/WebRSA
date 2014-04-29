@@ -36,6 +36,9 @@ msgstr "Aucun mémo présent pour cette personne"
 msgid "Memos::delete"
 msgstr "Supprimer le mémo"
 
+msgid "Memos::view"
+msgstr "Voir le mémo"
+
 msgid "Memos::edit"
 msgstr "Modifier le mémo"
 
