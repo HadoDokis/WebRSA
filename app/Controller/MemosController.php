@@ -19,12 +19,21 @@
 
 		public $uses = array( 'Memo', 'Option', 'Personne' );
 
-		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array(
+			'Locale',
+			'Xform',
+			'Default2',
+			'Fileuploader',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			)
+		);
 
 		public $components = array( 'Jetons2', 'Default', 'Fileuploader', 'DossiersMenus' );
 
 		public $commeDroit = array(
-			'add' => 'Memos:edit'
+			'add' => 'Memos:edit',
+			'view' => 'Memos:index',
 		);
 
 		public $aucunDroit = array( 'ajaxfiledelete', 'ajaxfileupload', 'fileview', 'download' );
@@ -272,6 +281,47 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'urlmenu', '/memos/index/'.$personne_id );
 			$this->render( 'add_edit' );
+		}
+
+		/**
+		 * Visualisation d'un mémo.
+		 *
+		 * @param integer $id
+		 * @throws NotFoundException
+		 */
+		public function view( $id ) {
+			$personne_id = $this->Memo->personneId( $id );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+			$query = array(
+				'fields' => array_merge(
+					$this->Memo->fields(),
+					array(
+						'Personne.nom_complet',
+						'Dossier.matricule'
+					)
+				),
+				'joins' => array(
+					$this->Memo->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Memo->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$this->Memo->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Memo.id' => $id,
+				),
+			);
+
+			$this->Memo->forceVirtualFields = true;
+			$memo = $this->Memo->find( 'first', $query );
+
+			if( empty( $memo ) ) {
+				throw new NotFoundException();
+			}
+
+			$this->set( 'urlmenu', '/memos/index/'.$personne_id );
+
+			$this->set( compact( 'memo' ) );
 		}
 
 		/**

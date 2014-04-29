@@ -873,3 +873,20 @@ body.tableauxsuivispdvs93 #pageContent table.tableaud2 tbody td.number {
 	min-width: 5%;
 	max-width: 5%;
 }
+
+/* Visualisation des mémos */
+body.memos.view #pageContent table {
+	width: 100%;
+}
+
+body.memos.view #pageContent table td {
+	width: 16em;
+}
+
+body.memos.view #pageContent table td.data {
+	width: auto;
+}
+
+body.memos.view #pageContent table td.data.text {
+	white-space: pre;
+}

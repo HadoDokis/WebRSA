@@ -27,6 +27,9 @@
 		array(
 			'cohorte' => false,
 			'actions' => array(
+				'Memos::view' => array(
+					'disabled' => !$this->Permissions->checkDossier( 'memos', 'view', $dossierMenu )
+				),
 				'Memos::edit' => array(
 					'disabled' => !$this->Permissions->checkDossier( 'memos', 'edit', $dossierMenu )
 				),
