@@ -1812,7 +1812,3 @@ body.fichesprescriptions93.add #CoordonneesPrestataire th, body.fichesprescripti
 	background: transparent;
 	border: 0;
 }
-
-ul.actions a.back {
-	display: none;
-}
