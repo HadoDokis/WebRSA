@@ -9,7 +9,13 @@
 		$num = 'Avenant';
 	}
 	else{
-		$num = Set::enum( $contratinsertion['Contratinsertion']['num_contrat'], $options['num_contrat'] );
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			$num = $contratinsertion['Contratinsertion']['num_contrat_66'];
+			$num = Set::enum( $num, $options['num_contrat_66'] );
+		}
+		else {
+			$num = Set::enum( $contratinsertion['Contratinsertion']['num_contrat'], $options['num_contrat'] );
+		}
 	}
 	$duree = Set::enum( $contratinsertion['Contratinsertion']['duree_engag'], $$duree_engag );
 	$forme = Set::enum( $contratinsertion['Contratinsertion']['forme_ci'], $forme_ci );

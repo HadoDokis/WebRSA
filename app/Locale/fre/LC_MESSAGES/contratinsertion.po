@@ -183,6 +183,15 @@ msgstr "Premier contrat"
 msgid "ENUM::NUM_CONTRAT::REN"
 msgstr "Renouvellement"
 
+msgid "ENUM::NUM_CONTRAT_66::PRE"
+msgstr "Premier contrat"
+
+msgid "ENUM::NUM_CONTRAT_66::REN"
+msgstr "Renouvellement"
+
+msgid "ENUM::NUM_CONTRAT_66::REN_TACITE"
+msgstr "Renouvellement par tacite reconduction"
+
 msgid "Contratinsertion.num_contrat"
 msgstr "Type de contrat"
 

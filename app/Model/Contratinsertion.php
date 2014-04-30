@@ -1742,6 +1742,38 @@
 		}
 
 		/**
+		 * Surcharge du constructeur avec ajout du champ virtuel num_contrat_66
+		 * lorsqu'il s'agit d'un renouvellement et que l'allocataire avait plus
+		 * de 55 ans à la date de début du CER (CG 66).
+		 *
+		 * @param integer|string|array $id Set this ID for this model on startup, can also be an array of options, see above.
+		 * @param string $table Name of database table to use.
+		 * @param string $ds DataSource connection name.
+		 */
+		public function __construct( $id = false, $table = null, $ds = null ) {
+			parent::__construct( $id, $table, $ds );
+
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$sql = $this->Personne->sq(
+					array(
+						'alias' => 'propriocer',
+						'fields' => array( 'propriocer.dtnai' ),
+						'contain' => false,
+						'conditions' => array( "propriocer.id = {$this->alias}.personne_id" ),
+						'limit' => 1
+					)
+				);
+
+				$this->virtualFields['num_contrat_66'] = '(
+					CASE
+						WHEN ( "'.$this->alias.'"."num_contrat" = \'REN\' AND EXTRACT( YEAR FROM AGE( "'.$this->alias.'"."dd_ci", ( '.$sql.' ) ) ) >= 55 ) THEN \'REN_TACITE\'
+						ELSE "'.$this->alias.'"."num_contrat"::text
+					END
+				)';
+			}
+		}
+
+		/**
 		 * Retourne un querydata permettant de connaître la liste des CER d'un allocataire, en fonction du CG
 		 * (Configure::read( 'Cg.departement' )).
 		 *
@@ -1816,6 +1848,7 @@
 			else if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$querydata['joins'][] = $this->join( 'Personne', array( 'type' => 'INNER' ) );
 				$querydata['fields'][] = '( ( EXTRACT ( YEAR FROM AGE( "Personne"."dtnai" ) ) ) >= 55 ) AS "Personne__plus55ans"';
+				$querydata['fields'][] = 'Contratinsertion.num_contrat_66';
 
                 $querydata['joins'][] = $this->join( 'Actioncandidat', array( 'type' => 'LEFT OUTER' ) );
 				$querydata['fields'][] = 'Actioncandidat.name';
@@ -1979,6 +2012,28 @@
 					'contain' => false
 				)
 			);
+		}
+
+		/**
+		 * Surcharge de la méthode enums() afin d'ajouter la valeur virtuelle
+		 * "Renouvellement par tacite reconduction" pour le champ num_contrat
+		 * pour le CG 66.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$options = parent::enums();
+
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$options[$this->alias]['num_contrat_66'] = $options[$this->alias]['num_contrat'];
+
+				$options[$this->alias]['num_contrat_66']['REN_TACITE'] = __d(
+					Inflector::underscore( $this->name ),
+					'ENUM::NUM_CONTRAT_66::REN_TACITE'
+				);
+			}
+
+			return $options;
 		}
 	}
 ?>
