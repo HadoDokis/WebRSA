@@ -143,6 +143,19 @@
 				}
 			}
 
+			foreach( array( 'fields' ) as $bool ) {
+				if( $this->params[$bool] == 'true' ) {
+					$this->params[$bool] = true;
+				}
+				else if( $this->params[$bool] == 'false' ) {
+					$this->params[$bool] = false;
+				}
+
+				if( !is_bool( $this->params[$bool] ) ) {
+					$this->error( "Le paramètre {$bool} n'est pas correct \"{$this->params[$bool]}\" (valeurs possibles: true et false)" );
+				}
+			}
+
 			$models = App::objects( 'models');
 			sort( $models );
 
@@ -181,8 +194,18 @@
 		 */
 		protected function _graphvizFormatTable( $modelName ) {
 			$tableName = Inflector::tableize( $modelName );
+			$label = $tableName;
 
-			$return = "\t\"{$tableName}\" [label=\"{$tableName}\", shape=record];\n";
+			if( !empty( $this->params['fields'] ) ) {
+				$schema = ClassRegistry::init( $modelName )->schema();
+				$fields = array();
+				foreach( $schema as $fieldName => $fieldParams ) {
+					$fields[] = "{$fieldName}: {$fieldParams['type']}";
+				}
+				$label = '{'.$label.'|'.implode( '\l', $fields ).'\l}';
+			}
+
+			$return = "\t\"{$tableName}\" [label=\"{$label}\", shape=record];\n";
 
 			return $return;
 		}
@@ -372,9 +395,9 @@
 		 * @link http://book.cakephp.org/2.0/en/console-and-shells.html#Shell::getOptionParser
 		 */
 		public function getOptionParser() {
-			$parser = parent::getOptionParser();
+			$Parser = parent::getOptionParser();
 
-			$parser->description( "Ce shell ..." );
+			$Parser->description( "Ce shell ..." );
 
 			$options = array(
 				'connection' => array(
@@ -387,10 +410,16 @@
 					'help' => 'Permet de préciser, au moyen d\'une expression régulière, la liste des tables à prendre en compte.',
 					'default' => null
 				),
+				'fields' => array(
+					'short' => 'f',
+					'help' => 'Permet de spécifier si on veut la liste des champs ainsi que leur type',
+					'choices' => array( 'true', 'false' ),
+					'default' => 'false'
+				),
 			);
-			$parser->addOptions( $options );
+			$Parser->addOptions( $options );
 
-			return $parser;
+			return $Parser;
 		}
 	}
 ?>
