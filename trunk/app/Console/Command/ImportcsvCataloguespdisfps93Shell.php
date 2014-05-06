@@ -12,9 +12,6 @@
 	 * La classe ImportcsvCataloguespdisfps93Shell permet d'importer le catalogue PDI
 	 * pour le module fiches de rpescriptions du CG 93.
 	 *
-	 * @todo  Adresseprestatairefp93
-	 * @todo XProgressbar
-	 *
 	 * @package app.Console.Command
 	 */
 	class ImportcsvCataloguespdisfps93Shell extends AppShell
@@ -86,7 +83,8 @@
 			'tel action',
 			'adresse action',
 			'cp action',
-			'commune action'
+			'commune action',
+			'duree action'
 		);
 
 		/**
@@ -353,7 +351,8 @@
 								'Actionfp93.numconvention' => $record[$headers['numero convention action']],
 								'Actionfp93.name' => $record[$headers['intitule d action']],
 								'Actionfp93.annee' => $this->params['annee'],
-								'Actionfp93.actif' => '1', // FIXME
+								'Actionfp93.duree' => $record[$headers['duree action']],
+								'Actionfp93.actif' => '1',
 							);
 
 							$actionfp93_id = $this->_createOrUpdate(
