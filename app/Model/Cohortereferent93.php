@@ -237,10 +237,12 @@ WHEN ( "PersonneReferent"."id" IS NULL ) THEN 1
 			// Dossier transféré ?
 			if( isset( $search['Dossier']['transfere'] ) && ( $search['Dossier']['transfere'] != '' ) ) {
 				if( $search['Dossier']['transfere'] ) {
-					$conditions[] = 'Orientstructpcd.id IS NOT NULL';
+					$conditions['Orientstruct.origine'] = 'demenagement';
 				}
 				else {
-					$conditions[] = 'Orientstructpcd.id IS NULL';
+					$conditions[] = array(
+						'NOT' => array( 'Orientstruct.origine' => 'demenagement' ),
+					);
 				}
 			}
 
