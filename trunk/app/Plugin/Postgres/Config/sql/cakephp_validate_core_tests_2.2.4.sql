@@ -1100,17 +1100,15 @@ SELECT
 -- 		AND cakephp_validate_in_list('2', ARRAY[1, 2, 3], false)= true
 	AS testInList;
 
-/*
 	SELECT
 		cakephp_validate_range(20, 100, 1)= false
 		AND cakephp_validate_range(20, 1, 100)= true
 		AND cakephp_validate_range(.5, 1, 100)= false
 		AND cakephp_validate_range(.5, 0, 100)= true
-		AND cakephp_validate_range(5)= true
+-- 		AND cakephp_validate_range(5)= true
 		AND cakephp_validate_range(-5, -10, 1)= true
-		AND cakephp_validate_range('word')= false
+-- 		AND cakephp_validate_range('word')= false
 	AS testRange;
-*/
 
 
 

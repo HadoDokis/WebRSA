@@ -111,7 +111,7 @@
 				'SELECT setval(\'postgres_users_id_seq\', max(id)) FROM postgres_users;',
 				'COMMIT',
 				'VACUUM ANALYZE;',
-				'REINDEX DATABASE testunit;'
+				"REINDEX DATABASE {$this->Shell->Dbo->config['database']};"
 			);
 			$this->assertEqual( $result, $expected );
 		}
@@ -131,7 +131,7 @@
 
 			$result = Hash::extract( $this->Shell->Dbo->getLog( false, false ), 'log.{n}.query' );
 			$expected = array(
-				'REINDEX DATABASE testunit;'
+				"REINDEX DATABASE {$this->Shell->Dbo->config['database']};"
 			);
 			$this->assertEqual( $result, $expected );
 		}

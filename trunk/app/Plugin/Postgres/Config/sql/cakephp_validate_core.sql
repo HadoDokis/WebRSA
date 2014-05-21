@@ -723,8 +723,24 @@ LANGUAGE 'plpgsql' IMMUTABLE;
 
 -- -----------------------------------------------------------------------------
 -- range ( string $check , integer $lower = null , integer $upper = null )
--- TODO
 -- -----------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION cakephp_validate_range( p_check float, p_lower float, p_upper float ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN p_check IS NULL
+			OR p_lower IS NULL
+			OR p_upper IS NULL
+			OR(
+				p_check > p_lower
+				AND p_check < p_upper
+			);
+	END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_range( p_check float, p_lower float, p_upper float ) IS
+	'@see http://api.cakephp.org/class/validation#method-Validationrange';
 
 -- -----------------------------------------------------------------------------
 -- ssn ( string|array $check , string $regex = null , string $country = null )
