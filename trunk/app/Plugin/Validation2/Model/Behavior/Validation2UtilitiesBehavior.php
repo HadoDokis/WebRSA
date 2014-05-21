@@ -209,10 +209,11 @@
 		 * Before validate callback, translate validation messages
 		 *
 		 * @param Model $Model Model using this behavior
+		 * @param array $options
 		 * @return boolean True if validate operation should continue, false to abort
 		 */
-		public function beforeValidate( Model $Model ) {
-			$success = parent::beforeValidate( $Model );
+		public function beforeValidate( Model $Model, $options = array() ) {
+			$success = parent::beforeValidate( $Model, $options );
 
 			if( $this->settings[$Model->alias]['translate'] ) {
 				if( is_array( $Model->validate ) && !empty( $Model->validate ) ) {

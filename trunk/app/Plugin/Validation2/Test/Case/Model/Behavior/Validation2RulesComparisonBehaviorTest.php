@@ -24,7 +24,7 @@
 		 * @var array
 		 */
 		public $fixtures = array(
-			'app.site'
+			'plugin.Validation2.Validation2Site'
 		);
 
 		/**
@@ -32,7 +32,13 @@
 		 */
 		public function setUp() {
 			parent::setUp();
-			$this->Site = ClassRegistry::init( 'Site' );
+			$this->Site = ClassRegistry::init(
+				array(
+					'class' => 'Validation2.Validation2Site',
+					'alias' => 'Site',
+					'ds' => 'test',
+				)
+			);
 			$this->Site->Behaviors->attach( 'Validation2.Validation2RulesComparison' );
 		}
 
@@ -158,13 +164,13 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$this->Site->create( array( 'phone' => 1, 'fax' => 1 ) );
-			$result = $this->Site->greaterThanIfNotZero( array( 'phone' => 1 ), 'fax' );
+			$this->Site->create( array( 'value' => 1, 'reference' => 1 ) );
+			$result = $this->Site->greaterThanIfNotZero( array( 'value' => 1 ), 'reference' );
 			$expected = true;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$this->Site->create( array( 'phone' => 1, 'fax' => 2 ) );
-			$result = $this->Site->greaterThanIfNotZero( array( 'phone' => 1 ), 'fax' );
+			$this->Site->create( array( 'value' => 1, 'reference' => 2 ) );
+			$result = $this->Site->greaterThanIfNotZero( array( 'value' => 1 ), 'reference' );
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -257,7 +263,7 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$data = array( 'name' => 'gwoo', 'birthday' => null );
+			$data = array( 'name' => 'CakePHP', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), null );
@@ -268,7 +274,7 @@
 			$expected = false;
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			$data = array( 'id' => 1, 'name' => 'gwoo', 'birthday' => null );
+			$data = array( 'id' => 1, 'name' => 'CakePHP', 'birthday' => null );
 			$this->Site->create( $data );
 
 			$result = $this->Site->checkUnique( array( 'name' => $data['name'] ), array( 'name', 'birthday' ) );
