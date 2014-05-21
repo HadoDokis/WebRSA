@@ -140,7 +140,7 @@
 			$check = array_values( $check );
 			$check_value = Hash::get( $check, '0' );
 
-			$reference_value = Hash::get( $Model->data, "{$Model->name}.{$reference}" );
+			$reference_value = Hash::get( $Model->data, "{$Model->alias}.{$reference}" );
 
 			return ( ( $check_value > 0 ) && !( $check_value < $reference_value ) );
 		}

@@ -183,10 +183,11 @@
 		 * will allow you to make the validation fail.
 		 *
 		 * @param Model $Model Model using this behavior
+		 * @param array $options
 		 * @return mixed False or null will abort the operation. Any other result will continue.
 		 */
-		public function beforeValidate( Model $Model ) {
-			$return = parent::beforeValidate( $Model );
+		public function beforeValidate( Model $Model, $options = array() ) {
+			$return = parent::beforeValidate( $Model, $options );
 
 			$args = func_get_args();
 			$return = $this->_lazyTriggerBehaviors( $Model, __FUNCTION__, $args ) && $return;
@@ -199,10 +200,11 @@
 		 * will abort the save operation.
 		 *
 		 * @param Model $Model Model using this behavior
+		 * @param array $options
 		 * @return mixed False if the operation should abort. Any other result will continue.
 		 */
-		public function beforeSave( Model $Model ) {
-			$return = parent::beforeSave( $Model );
+		public function beforeSave( Model $Model, $options = array() ) {
+			$return = parent::beforeSave( $Model, $options );
 
 			$args = func_get_args();
 			$return = $this->_lazyTriggerBehaviors( $Model, __FUNCTION__, $args ) && $return;

@@ -328,10 +328,11 @@
 		 * Formatte les champs avant la validation.
 		 *
 		 * @param Model $Model
+		 * @param array $options
 		 * @return boolean
 		 */
-		public function beforeValidate( Model $Model ) {
-			$return = parent::beforeValidate( $Model );
+		public function beforeValidate( Model $Model, $options = array() ) {
+			$return = parent::beforeValidate( $Model, $options );
 			$Model->data = $this->doFormatting( $Model, $Model->data );
 
 			return $return;
@@ -341,10 +342,11 @@
 		 * Formatte les champs avant l'enregistrement.
 		 *
 		 * @param Model $Model
+		 * @param array $options
 		 * @return boolean
 		 */
-		public function beforeSave( Model $Model ) {
-			$return = parent::beforeSave( $Model );
+		public function beforeSave( Model $Model, $options = array() ) {
+			$return = parent::beforeSave( $Model, $options );
 			$Model->data = $this->doFormatting( $Model, $Model->data );
 
 			return $return;
