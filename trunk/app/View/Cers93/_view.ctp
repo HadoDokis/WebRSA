@@ -139,7 +139,7 @@
 <fieldset>
 	<legend>Formation et expérience</legend>
 	<?php
-		echo $this->Xform->fieldValue( 'Cer93.nivetu', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.nivetu' ), $options['Cer93']['nivetu'] ) );
+		echo $this->Xform->fieldValue( 'Cer93.nivetu', value( $options['Cer93']['nivetu'], Hash::get( $contratinsertion, 'Cer93.nivetu' ) ) );
 	?>
 
 <table class="wide aere noborder">
@@ -286,22 +286,22 @@
 					if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ) {
 
 						foreach( $contratinsertion['Cer93']['Sujetcer93'] as $index => $sujetcer93 ) {
-                            
+
                             $sujet = $sujetcer93['name'];
                             if( !empty( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] ) ){
                                 $sujet = $sujetcer93['name'].' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' );
                             }
-                            
+
                             $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' );
                             if( !empty( $sujetcer93['Cer93Sujetcer93']['autresoussujet'] ) ){
                                 $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autresoussujet' );
                             }
-                            
+
                             $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' );
                             if( !empty( $sujetcer93['Cer93Sujetcer93']['autrevaleur'] ) ){
                                 $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autrevaleur' );
                             }
-                            
+
 							echo $this->Html->tableCells(
 								array(
 									h( $sujet ),
