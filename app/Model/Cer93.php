@@ -806,6 +806,11 @@
 
 					// RG CER précédent, puis RG DSP
 					$data['Cer93']['nivetu'] = $dataCaf['Dsp']['nivetu'];
+
+					// Si le niveau d'étude vient des DSP, alors le niveau 1201 doit être rempli manuellement car il est scindé dans les DSP
+					if( $data['Cer93']['nivetu'] === '1201' ) {
+						$data['Cer93']['nivetu'] = null;
+					}
 				}
 			}
 

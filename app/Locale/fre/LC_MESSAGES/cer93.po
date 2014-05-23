@@ -81,28 +81,28 @@ msgstr "Non"
 msgid "ENUM::INSCRITPE::1"
 msgstr "Oui"
 
-msgid "ENUM::NIVETU::1201"
+msgid "ENUM::NIVETU::1201a"
 msgstr "Niveau I : niveau de formation BAC +5"
 
-msgid "ENUM::NIVETU::1202"
+msgid "ENUM::NIVETU::1201b"
 msgstr "Niveau II : niveau de formation BAC +4 BAC +3"
 
-msgid "ENUM::NIVETU::1203"
+msgid "ENUM::NIVETU::1202"
 msgstr "Niveau III : niveau de formation BAC +2"
 
-msgid "ENUM::NIVETU::1204"
+msgid "ENUM::NIVETU::1203"
 msgstr "Niveau IV : sortie des classes de l'enseignement secondaire"
 
-msgid "ENUM::NIVETU::1205"
+msgid "ENUM::NIVETU::1204"
 msgstr "Niveau V : sortie de dernière année de CAP, BEP ou équivalent avec ou sans diplôme"
 
-msgid "ENUM::NIVETU::1206"
+msgid "ENUM::NIVETU::1205"
 msgstr "Niveau Vbis : sortie de 3ème générale, de 4ème et 3ème technologique"
 
-msgid "ENUM::NIVETU::1207"
+msgid "ENUM::NIVETU::1206"
 msgstr "Niveau VI : sortie du premier cycle de l'enseignement secondaire"
 
-msgid "ENUM::NIVETU::1208"
+msgid "ENUM::NIVETU::1207"
 msgstr "Niveau VII : jamais scolarisé"
 
 msgid "ENUM::POSITIONCER::00enregistre"
