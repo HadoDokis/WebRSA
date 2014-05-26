@@ -33,7 +33,6 @@
 		public $records = array(
 			array(
 				'personne_id' => 1,
-				'structurereferente_id' => 1,
 				'situationaccompagnement' => 'maintien',
 				'questionnaired1pdv93_id' => 1,
 				'sortieaccompagnementd2pdv93_id' => null,
@@ -43,7 +42,6 @@
 			),
 			array(
 				'personne_id' => 2,
-				'structurereferente_id' => 1,
 				'situationaccompagnement' => 'maintien',
 				'questionnaired1pdv93_id' => 2,
 				'sortieaccompagnementd2pdv93_id' => null,
@@ -53,7 +51,6 @@
 			),
 			array(
 				'personne_id' => 3,
-				'structurereferente_id' => 1,
 				'situationaccompagnement' => 'maintien',
 				'questionnaired1pdv93_id' => 3,
 				'sortieaccompagnementd2pdv93_id' => null,
