@@ -13,7 +13,6 @@
 		array(
 			'Questionnaired2pdv93.id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.personne_id' => array( 'type' => 'hidden' ),
-			'Questionnaired2pdv93.structurereferente_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.questionnaired1pdv93_id' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.isajax' => array( 'type' => 'hidden' ),
 			'Questionnaired2pdv93.date_validation' => array( 'type' => 'hidden' ),

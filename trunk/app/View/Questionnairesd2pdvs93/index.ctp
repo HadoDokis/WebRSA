@@ -24,7 +24,7 @@
 	echo $this->Default3->index(
 		$questionnairesd2pdvs93,
 		array(
-			'Pdv.lib_struc',
+			'Structurereferente.lib_struc',
 			'Questionnaired2pdv93.date_validation',
 			'Questionnaired2pdv93.modified',
 			'Questionnaired2pdv93.situationaccompagnement',
@@ -32,7 +32,7 @@
 			'Questionnaired2pdv93.chgmentsituationadmin',
 			'/Questionnairesd2pdvs93/edit/#Questionnaired2pdv93.id#' => array(
 				'disabled' => '!'.WebrsaPermissions::checkD1D2(
-					'#Pdv.id#',
+					'#Structurereferente.id#',
 					$this->Permissions->check( 'Questionnairesd2pdvs93', 'edit' ),
 					true
 				)
@@ -40,7 +40,7 @@
 			'/Questionnairesd2pdvs93/delete/#Questionnaired2pdv93.id#' => array(
 				'confirm' => true,
 				'disabled' => '!'.WebrsaPermissions::checkD1D2(
-					'#Pdv.id#',
+					'#Structurereferente.id#',
 					$this->Permissions->check( 'Questionnairesd2pdvs93', 'delete' ),
 					true
 				)
