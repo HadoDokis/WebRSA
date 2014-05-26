@@ -220,6 +220,9 @@
 			if( !empty( $questionnaired1pdv93_id ) ) {
 				$date_validation = $this->_dateValidation( $questionnaired1pdv93_id );
 			}
+			else {
+				 $messages['Questionnaired1pdv93.missing'] = 'error';
+			}
 
 			$this->create( array( 'personne_id' => $personne_id ) );
 			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id' );
