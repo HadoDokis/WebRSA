@@ -25,6 +25,9 @@ UPDATE cers93 SET nivetu = '1206' WHERE nivetu = '1207';
 UPDATE cers93 SET nivetu = '1207' WHERE nivetu = '1208';
 ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_validate_in_list( nivetu, ARRAY['1201a', '1201b', '1202', '1203', '1204', '1205', '1206', '1207'] ) );
 
+-- 20140526: correction, à présent, la structure référente du questionnaire D2 sera celle stockée dans le RDV lié au D1 (lui-même lié au D2)
+ALTER TABLE questionnairesd2pdvs93 DROP COLUMN structurereferente_id;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

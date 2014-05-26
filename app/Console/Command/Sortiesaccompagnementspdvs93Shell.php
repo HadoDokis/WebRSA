@@ -55,7 +55,7 @@
 			// Dernière adresse de rang 01
 			$sqDerniereRgadr01 = $this->Dossier->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' );
 
-			// Allocataires ayant un D2 sans D1
+			// Allocataires ayant un D1 sans D2
 			$sq = $this->Dossier->Foyer->Personne->Questionnaired2pdv93->sqQuestionnaired2Necessaire( 'Personne.id', date( 'Y' ) );
 
 			$querydata = array(

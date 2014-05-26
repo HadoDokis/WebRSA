@@ -84,15 +84,6 @@
 		 * @var array
 		 */
 		public $belongsTo = array(
-			'Pdv' => array(
-				'className' => 'Structurereferente',
-				'foreignKey' => 'structurereferente_id',
-				'conditions' => null,
-				'type' => null,
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',
@@ -123,47 +114,6 @@
 		);
 
 		/**
-		 * Retourne la structure référente pour laquelle l'allocataire doit encore
-		 * remplir un questionnaire D2 pour l'année en cours.
-		 *
-		 * @param integer $personne_id
-		 * @return boolean
-		 */
-		public function structurereferenteId( $personne_id ) {
-			$sq = $this->sq(
-				array(
-					'alias' => 'questionnairesd2pdvs93',
-					'fields' => 'questionnairesd2pdvs93.questionnaired1pdv93_id',
-					'contain' => false,
-					'conditions' => array(
-						'questionnairesd2pdvs93.personne_id = Questionnaired1pdv93.personne_id',
-						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation ) = EXTRACT( \'YEAR\' FROM Questionnaired1pdv93.date_validation )',
-						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
-					)
-				)
-			);
-
-			$querydata = array(
-				'fields' => array( 'Rendezvous.structurereferente_id' ),
-				'contain' => false,
-				'joins' => array(
-					$this->Personne->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					'Questionnaired1pdv93.personne_id' => $personne_id,
-					"Questionnaired1pdv93.id NOT IN ( {$sq} )",
-				),
-				'order' => array(
-					'Questionnaired1pdv93.date_validation DESC'
-				)
-			);
-
-			$questionnaired1pdv93 = $this->Personne->Questionnaired1pdv93->find( 'first', $querydata );
-
-			return Hash::get( $questionnaired1pdv93, 'Rendezvous.structurereferente_id' );
-		}
-
-		/**
 		 * Retourne l'id du questionnaire D1 pour lequel l'allocataire doit encore
 		 * remplir un questionnaire D2 (pour l'année en cours).
 		 *
@@ -179,7 +129,7 @@
 					'conditions' => array(
 						'questionnairesd2pdvs93.personne_id' => $personne_id,
 						'EXTRACT( \'YEAR\' FROM questionnairesd2pdvs93.date_validation ) = EXTRACT( \'YEAR\' FROM Rendezvous.daterdv )',
-						'questionnairesd2pdvs93.structurereferente_id = Rendezvous.structurereferente_id'
+						'questionnairesd2pdvs93.questionnaired1pdv93_id = Questionnaired1pdv93.id'
 					)
 				)
 			);
@@ -275,13 +225,6 @@
 			$exists = !$this->checkDateOnceAYear( array( 'date_validation' => $date_validation ), 'personne_id' );
 			if( $exists ) {
 				$messages['Questionnaired2pdv93.exists'] = 'error';
-			}
-			else {
-				// Qui possède un questionnaire D1 sans questionnaire D2 pour l'année en cours
-				$structurereferente_id = $this->structurereferenteId( $personne_id );
-				if( empty( $structurereferente_id ) ) {
-					$messages['Questionnaired1pdv93.missing'] = 'error';
-				}
 			}
 
 			$droitsouverts = $this->droitsouverts( $personne_id );
@@ -425,7 +368,6 @@
 			}
 			else {
 				$formData[$this->alias]['personne_id'] = $personne_id;
-				$formData[$this->alias]['structurereferente_id'] = $this->structurereferenteId( $personne_id );
 				$formData[$this->alias]['questionnaired1pdv93_id'] = $this->questionnairesd1pdv93Id( $personne_id );
 
 				/*// Lorsque l'allocataire possède un D1 sur l'année N-1, on force la date_validation au 31/12/N-1, sinon on prend la date du jour
@@ -478,14 +420,12 @@
 			$success = true;
 
 			$questionnaired1pdv93_id = $this->questionnairesd1pdv93Id( $personne_id );
-			$structurereferente_id = $this->structurereferenteId( $personne_id );
 
-			if( !empty( $structurereferente_id ) && !empty( $questionnaired1pdv93_id ) ) {
+			if( !empty( $questionnaired1pdv93_id ) ) {
 				$questionnaired2pdv93 = array(
 					'Questionnaired2pdv93' => array(
 						'personne_id' => $personne_id,
 						'questionnaired1pdv93_id' => $questionnaired1pdv93_id,
-						'structurereferente_id' => $structurereferente_id,
 						'situationaccompagnement' => $situationaccompagnement,
 						'sortieaccompagnementd2pdv93_id' => null,
 						'chgmentsituationadmin' => $chgmentsituationadmin,

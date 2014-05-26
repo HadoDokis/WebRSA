@@ -91,28 +91,26 @@
 
 			// Liste des questionnaires D2 de l'allocataire
 			$querydata = array(
+				'fields' => array_merge(
+					$this->Questionnaired2pdv93->fields(),
+					array(
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Sortieaccompagnementd2pdv93.name',
+						'Structurereferente.id',
+						'Structurereferente.lib_struc',
+					)
+				),
 				'conditions' => array(
 					'Questionnaired2pdv93.personne_id' => $personne_id,
 				),
-				'contain' => array(
-					'Personne' => array(
-						'fields' => array(
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom',
-						)
-					),
-					'Sortieaccompagnementd2pdv93' => array(
-						'fields' => array(
-							'Sortieaccompagnementd2pdv93.name',
-						)
-					),
-					'Pdv' => array(
-						'fields' => array(
-							'Pdv.id',
-							'Pdv.lib_struc',
-						)
-					),
+				'joins' => array(
+					$this->Questionnaired2pdv93->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$this->Questionnaired2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
+					$this->Questionnaired2pdv93->Questionnaired1pdv93->Rendezvous->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
 				),
 				'order' => array(
 					'Questionnaired2pdv93.date_validation DESC'
@@ -153,14 +151,19 @@
 				$questionnaired2pdv93 = $this->Questionnaired2pdv93->find(
 					'first',
 					array(
-						'fields' => array( 'Questionnaired2pdv93.structurereferente_id' ),
+						'fields' => array( 'Rendezvous.structurereferente_id' ),
 						'conditions' => array(
 							'Questionnaired2pdv93.id' => $id
 						),
-						'contain' => false
+						'contain' => false,
+						'joins' => array(
+							$this->Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+							$this->Questionnaired2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) )
+						)
 					)
 				);
-				$permission = WebrsaPermissions::checkD1D2( Hash::get( (array)$questionnaired2pdv93, 'Questionnaired2pdv93.structurereferente_id' ) );
+				$permission = WebrsaPermissions::checkD1D2( Hash::get( (array)$questionnaired2pdv93, 'Rendezvous.structurereferente_id' ) );
+
 				if( !$permission ) {
 					throw new Error403Exception( null );
 				}
@@ -264,12 +267,16 @@
 			$querydata = array(
 				'fields' => array(
 					'Questionnaired2pdv93.id',
-					'Questionnaired2pdv93.structurereferente_id',
+					'Rendezvous.structurereferente_id',
 				),
 				'conditions' => array(
 					'Questionnaired2pdv93.id' => $id
 				),
-				'contain' => false
+				'contain' => false,
+				'joins' => array(
+					$this->Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
+					$this->Questionnaired2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) )
+				)
 			);
 
 			$questionnaired2pdv93 = $this->Questionnaired2pdv93->find( 'first', $querydata );
@@ -277,7 +284,7 @@
 				throw new NotFoundException();
 			}
 
-			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired2pdv93, 'Questionnaired2pdv93.structurereferente_id' ) );
+			$permission = WebrsaPermissions::checkD1D2( Hash::get( $questionnaired2pdv93, 'Rendezvous.structurereferente_id' ) );
 			if( !$permission ) {
 				throw new Error403Exception( null );
 			}

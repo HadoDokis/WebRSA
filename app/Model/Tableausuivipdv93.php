@@ -1089,7 +1089,7 @@
 			$conditionpdv = null;
 			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
 			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "Questionnaired2pdv93.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+				$conditionpdv = "Rendezvous.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
 			}
 
 			$conditiondd = $this->_conditionTableauxD1D2SoumisDD( $search );
@@ -1114,6 +1114,7 @@
 					$Questionnaired2pdv93->join( 'Questionnaired1pdv93', array( 'type' => 'INNER' ) ),
 					$Questionnaired2pdv93->join( 'Sortieaccompagnementd2pdv93', array( 'type' => 'LEFT OUTER' ) ),
 					$Questionnaired2pdv93->Questionnaired1pdv93->join( 'Situationallocataire', array( 'type' => 'INNER' ) ),
+					$Questionnaired2pdv93->Questionnaired1pdv93->join( 'Rendezvous', array( 'type' => 'INNER' ) ),
 				),
 				'contain' => false,
 				'group' => array(
