@@ -40,10 +40,10 @@
     <script type="text/javascript">
 		function showAjaxValidationErrors() {
 			<?php if( isset( $this->validationErrors['Modeletraitementpcg66'] ) ) :?>
-				<?php foreach( $this->validationErrors['Modeletraitementpcg66'] as $field => $error ):?>
+				<?php foreach( $this->validationErrors['Modeletraitementpcg66'] as $field => $errors ):?>
 					var div = $( '<?php echo Inflector::camelize( "Modeletraitementpcg66_{$field}" );?>' );
 					$( div ).addClassName( 'error' );
-					var errorMessage = new Element( 'div', { 'class': 'error-message' } ).update( '<?php echo $error;?>' );
+					var errorMessage = new Element( 'div', { 'class': 'error-message' } ).update( '<?php echo $errors[0];?>' );
 					$( div ).insert( { 'bottom' : errorMessage } );
 				<?php endforeach;?>
 			<?php endif;?>
