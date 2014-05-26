@@ -438,12 +438,14 @@
 
 			// Sauvegarde des modèles liés au courrier pour un traitement donné
 			if( $success && $data['Traitementpcg66']['typetraitement'] == 'courrier' ) {
+				$modeletypecourrierpcg66_id = Hash::get( $data, 'Modeletraitementpcg66.modeletypecourrierpcg66_id' );
+
 				// Liste des pièces par modèle de courrier
 				$listesPieces = $this->Typecourrierpcg66->Modeletypecourrierpcg66->Piecemodeletypecourrierpcg66->find(
 					'list',
 					array(
 						'conditions' => array(
-							'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $data['Modeletraitementpcg66']['modeletypecourrierpcg66_id']
+							'Piecemodeletypecourrierpcg66.modeletypecourrierpcg66_id' => $modeletypecourrierpcg66_id
 						),
 						'contain' => false
 					)
@@ -517,7 +519,7 @@
 					}
 				}
 				else {
-					$success = true;
+					$success = !empty( $modeletypecourrierpcg66_id );
 				}
 			}
 
@@ -542,15 +544,15 @@
                     $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
 				}
             }
-            
-            
+
+
             /**/
             if( $success ) {
 				if( ( $data['Traitementpcg66']['typetraitement'] == 'dossierarevoir' ) ) {
                     $success = $this->Personnepcg66->Dossierpcg66->updateEtatDossierViaTraitement( $this->id ) && $success;
 				}
             }
-            
+
 
 			return $success;
 		}
