@@ -236,25 +236,6 @@
 					array( '"Passagecommissionep"."id"' => $passagescommissionseps_ids )
 				) && $success;
 
-				// Mise à jour de la position du bilan de parcours
-				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
-
-
-// debug($data);
-
-				// INFO: On ne crée un dossier PCG qu'après la validation au niveau EP
-				// Aucune action ne se fait à ce niveau par le CG
-// 				$niveauAvis = $data['Decisiondefautinsertionep66'][0]['etape'];
-// 				if( $niveauAvis == 'ep' ){
-// 					$commissionep_id = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.id' );
-//
-// 					$dateseanceCommission = Set::classicExtract( $this->_commissionepIdParPassagecommissionId( $passagescommissionseps_ids ), 'Commissionep.dateseance' );
-//
-// 					if( !empty( $commissionep_id ) && !empty( $dateseanceCommission ) ) {
-// 						$success = $this->_generateDossierpcg( $commissionep_id, $dateseanceCommission, 'ep' ) && $success;
-// 					}
-// 				}
-
 				return $success;
 			}
 		}
@@ -629,8 +610,9 @@
 				)
 			);
 
-
 			$success = true;
+			$themeData = array();
+
 			foreach( $dossierseps as $i => $dossierep ) {
 				if( $niveauDecisionFinale == "decision{$etape}" ) {
 					$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
@@ -725,7 +707,16 @@
 					$this->create( $defautinsertionep66 );
 					$success = $this->save() && $success;
 				}
+
+				$themeData[] = array( 'Decisiondefautinsertionep66' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0] );
 			}
+
+			// Mise à jour de la position du bilan de parcours
+			if( !empty( $themeData ) ) {
+				$passagescommissionseps_ids = Hash::extract( $themeData, '{n}.Decisiondefautinsertionep66.passagecommissionep_id' );
+				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $etape, $passagescommissionseps_ids ) && $success;
+			}
+
 			return $success;
 		}
 

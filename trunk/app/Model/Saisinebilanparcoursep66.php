@@ -168,9 +168,9 @@
 				trigger_error( __( 'Le type orientation principale Emploi n\'est pas bien défini.' ), E_USER_WARNING );
 			}
 
-
-
 			$success = true;
+			$themeData = array();
+
 			foreach( $dossierseps as $dossierep ) {
 				if ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
 					$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'] ) + 1;
@@ -230,6 +230,14 @@
 					$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->create( $referent );
 					$success = $this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->save() && $success;
 				}
+
+				$themeData[] = array( 'Decisionsaisinebilanparcoursep66' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0] );
+			}
+
+			// Mise à jour de la position du bilan de parcours
+			if( !empty( $themeData ) ) {
+				$passagescommissionseps_ids = Hash::extract( $themeData, '{n}.Decisionsaisinebilanparcoursep66.passagecommissionep_id' );
+				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $etape, $passagescommissionseps_ids ) && $success;
 			}
 
 			return $success;
@@ -346,8 +354,6 @@
 					array( '"Passagecommissionep"."id"' => $passagescommissionseps_ids )
 				) && $success;
 
-				// Mise à jour de la position du bilan de parcours
-				$success = $this->Bilanparcours66->updatePositionBilanDecisionsEp( $this->name, $themeData, $niveauDecision, $passagescommissionseps_ids ) && $success;
 				return $success;
 			}
 		}
