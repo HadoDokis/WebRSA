@@ -1054,6 +1054,7 @@
             $this->_setOptions($this->Bilanparcours66->optionsView());
 //            $this->set( 'options',$this->Bilanparcours66->optionsView() );
 			$this->set( 'bilanparcours66', $this->Bilanparcours66->dataView( $bilanparcours66_id ) );
+			$this->set( 'urlmenu', "/bilansparcours66/index/{$personne_id}" );
 		}
 	}
 ?>
