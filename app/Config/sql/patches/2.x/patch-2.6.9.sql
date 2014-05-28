@@ -28,6 +28,57 @@ ALTER TABLE cers93 ADD CONSTRAINT cers93_nivetu_in_list_chk CHECK ( cakephp_vali
 -- 20140526: correction, à présent, la structure référente du questionnaire D2 sera celle stockée dans le RDV lié au D1 (lui-même lié au D2)
 ALTER TABLE questionnairesd2pdvs93 DROP COLUMN structurereferente_id;
 
+-- 20140528: correction, certaines decisions de saisines de bilans de parcours au niveau cg sont sans décision au niveau ep.
+INSERT INTO decisionssaisinesbilansparcourseps66 ( etape, decision, typeorient_id, structurereferente_id, commentaire, created, modified, referent_id, passagecommissionep_id, raisonnonpassage, maintienorientparcours, changementrefparcours, reorientation, typeorientprincipale_id, user_id )
+	SELECT
+			'ep' AS etape,
+			decisioncg.decision,
+			decisioncg.typeorient_id,
+			decisioncg.structurereferente_id,
+			decisioncg.commentaire,
+			( decisioncg.created - interval '10 minutes' ) AS created,
+			( decisioncg.modified - interval '10 minutes' ) AS modified,
+			decisioncg.referent_id,
+			decisioncg.passagecommissionep_id,
+			decisioncg.raisonnonpassage,
+			decisioncg.maintienorientparcours,
+			decisioncg.changementrefparcours,
+			decisioncg.reorientation,
+			decisioncg.typeorientprincipale_id,
+			decisioncg.user_id
+		FROM decisionssaisinesbilansparcourseps66 AS decisioncg
+		WHERE
+			decisioncg.etape = 'cg'
+			AND decisioncg.passagecommissionep_id NOT IN (
+				SELECT decisionep.passagecommissionep_id
+					FROM decisionssaisinesbilansparcourseps66 AS decisionep
+					WHERE
+						decisionep.etape = 'ep'
+						AND decisioncg.passagecommissionep_id = decisionep.passagecommissionep_id
+			);
+
+-- 20140528: correction: mise à jour des positions du bilan en 'traite' lorsque le dossier d'EP associé a été traité au niveau CG
+UPDATE bilansparcours66
+	SET positionbilan = 'traite'
+	WHERE id IN (
+		SELECT
+				bilansparcours66.id
+			FROM
+				saisinesbilansparcourseps66
+				INNER JOIN dossierseps ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
+				INNER JOIN passagescommissionseps ON (
+					dossierseps.id = passagescommissionseps.dossierep_id
+					AND passagescommissionseps.etatdossierep IN ( 'traite', 'annule', 'reporte' )
+				)
+				INNER JOIN decisionssaisinesbilansparcourseps66 ON (
+					decisionssaisinesbilansparcourseps66.passagecommissionep_id = passagescommissionseps.id
+					AND decisionssaisinesbilansparcourseps66.etape = 'cg'
+				)
+				INNER JOIN bilansparcours66 ON ( bilansparcours66.id = saisinesbilansparcourseps66.bilanparcours66_id )
+			WHERE
+				( decisionssaisinesbilansparcourseps66.decision IN ( 'maintien', 'reorientation' ) AND bilansparcours66.positionbilan <> 'traite' )
+		);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
