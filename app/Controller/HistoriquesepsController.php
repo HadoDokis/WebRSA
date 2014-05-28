@@ -110,7 +110,8 @@
 		public function view_passage( $passagecommssionep_id ) {
 			$this->assert( valid_int( $passagecommssionep_id ), 'error404' );
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id ) ) ) );
+			$personne_id = $this->Dossierep->Passagecommissionep->personneId( $passagecommssionep_id );
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$passage = $this->Dossierep->Passagecommissionep->find(
 				'first',
@@ -186,6 +187,7 @@
 			// Fin factorisation
 
 			$this->set( compact( 'modeleTheme', 'modeleDecision', 'passage' ) );
+			$this->set( 'urlmenu', "/historiqueseps/index/{$personne_id}" );
 		}
 	}
 ?>
