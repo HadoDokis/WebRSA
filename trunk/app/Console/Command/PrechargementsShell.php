@@ -17,16 +17,6 @@
 	class PrechargementsShell extends AppShell
 	{
 		/**
-		 * La constante à utiliser dans la méthode _stop() en cas de succès.
-		 */
-		const SUCCESS = 0;
-
-		/**
-		 * La constante à utiliser dans la méthode _stop() en cas d'erreur.
-		 */
-		const ERROR = 1;
-
-		/**
 		 * Tâches utilisées par ce shell.
 		 *
 		 * @var array
@@ -39,23 +29,6 @@
 		 * @var array
 		 */
 		public $uses = array( 'Prechargement' );
-
-		/**
-		 * Démarrage: lignes de bienvenue et vérifications.
-		 */
-		public function startup() {
-			parent::startup();
-
-			$whoami = exec( 'whoami' );
-			$accepted = array( 'apache', 'www-data', 'httpd' );
-
-			if( !in_array( $whoami, $accepted ) ) {
-				$this->error(
-					sprintf( 'Mauvais utilisateur (%s), veuillez exécuter ce shell en tant que: %s', $whoami, implode( ', ', $accepted ) ),
-					'<info>Exemple:</info> sudo -u apache lib/Cake/Console/cake Prechargements'
-				);
-			}
-		}
 
 		/**
 		 *

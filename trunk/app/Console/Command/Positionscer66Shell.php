@@ -42,26 +42,17 @@
 		public $Contratinsertion;
 
 		/**
-		 * Vérification du CG
-		 */
-		public function initialize() {
-			if( Configure::read( 'Cg.departement' ) != 66 ) {
-				$this->err( 'Ce shell n\'est utile qu\'au CG 66.' );
-				$this->_stop( 0 );
-			}
-			parent::initialize();
-		}
-
-		/**
 		 *
 		 */
 		public function startup() {
+			parent::startup();
+			$this->checkDepartement( 66 );
+
 			$result = $this->Contratinsertion->checkConfigUpdateEncoursbilanCg66();
 			if( $result !== true ) {
 				$this->err( "Mauvaise configuration de Contratinsertion.Cg66.updateEncoursbilan dans le fichier webrsa.inc\n{$check}" );
 				$this->_stop( 0 );
 			}
-			parent::startup();
 		}
 
 		/**
@@ -144,7 +135,7 @@
 
 			return $this->_update( array( 'Contratinsertion.positioncer' => "'perimebilanarealiser'" ), $conditions );
 		}
-        
+
 		/**
 		 *
 		 */
