@@ -133,13 +133,16 @@
 				if( $Model->useTable !== false ) {
 					$this->_dispatchEvent( 'preloadModel.postgresForeignKeys', $modelName );
 
-					if( !$Model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
-						$Model->Behaviors->attach( 'Postgres.PostgresTable' );
+					try {
+						if( !$Model->Behaviors->attached( 'Postgres.PostgresTable' ) ) {
+							$Model->Behaviors->attach( 'Postgres.PostgresTable' );
+						}
+
+						$foreignKeys = $Model->getPostgresForeignKeys();
+						$return['foreignKeys'] = count( $foreignKeys );
+					} catch( Exception $Exception ) {
+						$return['foreignKeys'] = null;
 					}
-
-					$foreignKeys = $Model->getPostgresForeignKeys();
-
-					$return['foreignKeys'] = count( $foreignKeys );
 				}
 			}
 
