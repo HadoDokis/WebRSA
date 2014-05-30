@@ -18,16 +18,6 @@
 	class Sortiesaccompagnementspdvs93Shell extends AppShell
 	{
 		/**
-		 * La constante à utiliser dans la méthode _stop() en cas de succès.
-		 */
-		const SUCCESS = 0;
-
-		/**
-		 * La constante à utiliser dans la méthode _stop() en cas d'erreur.
-		 */
-		const ERROR = 1;
-
-		/**
 		 * Les modèles utilisés par ce shell.
 		 *
 		 * @var array
@@ -35,17 +25,13 @@
 		public $uses = array( 'Dossier', 'Cohortetransfertpdv93' );
 
 		/**
-		 * Démarrage du shell
+		 * Surcharge de la méthode startup pour vérifier que le département soit
+		 * uniquement le 93.
 		 */
 		public function startup() {
 			parent::startup();
-		}
 
-		/**
-		 * Lignes de bienvenue.
-		 */
-		protected function _welcome() {
-			parent::_welcome();
+			$this->checkDepartement( 93 );
 		}
 
 		/**

@@ -329,6 +329,7 @@
 				}
 			}
 
+			$message = $this->stderr->styleText( $message );
 			$message = '<error>'.$message.'</error>';
 
 			if( $this->_iconvEncoding['output_encoding'] == 'ISO-8859-1' )

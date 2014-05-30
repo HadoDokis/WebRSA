@@ -49,14 +49,19 @@
 		}
 
 		/**
+		 * Surcharge de la méthode startup pour vérifier que le département soit
+		 * uniquement le 93.
+		 */
+		public function startup() {
+			parent::startup();
+
+			$this->checkDepartement( 93 );
+		}
+
+		/**
 		 * Méthode principale.
 		 */
 		public function main() {
-			if( Configure::read( 'Cg.departement' ) != 93 ) {
-				$this->out( $out = '<error>Ce shell n\'est utilisé que par le CG 93.</error>' );
-				$this->_stop( 1 );
-			}
-
 			$querydata = $this->Nonrespectsanctionep93->qdSecondsPassagesCerOrientstruct();
 			$results = $this->Nonrespectsanctionep93->find( 'all', $querydata );
 

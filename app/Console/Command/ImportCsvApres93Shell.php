@@ -23,16 +23,6 @@
 	class ImportCsvApres93Shell extends AppShell
 	{
 		/**
-		 * Code de sortie en cas d'erreur.
-		 */
-		const ERROR = 1;
-
-		/**
-		 * Code de sortie en cas de succès.
-		 */
-		const SUCCESS = 0;
-
-		/**
 		 * Le fichier CSV.
 		 *
 		 * @var File
@@ -368,9 +358,7 @@
 			parent::startup();
 
 			// 1°) Si on n'est pas le CG 93, on ne peut pas utiliser ce shell
-			if( Configure::read( 'Cg.departement' ) != 93 ) {
-				$this->error( "Ce shell est réservé au CG 93" );
-			}
+			$this->checkDepartement( 93 );
 
 			// 2°) Vérification du format des paramètres hors fichier CSV
 			if( !is_string( $this->params['separator'] ) ) {

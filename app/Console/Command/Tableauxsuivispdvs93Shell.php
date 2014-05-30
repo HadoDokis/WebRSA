@@ -45,6 +45,16 @@
 		}
 
 		/**
+		 * Surcharge de la méthode startup pour vérifier que le département soit
+		 * uniquement le 93.
+		 */
+		public function startup() {
+			parent::startup();
+
+			$this->checkDepartement( 93 );
+		}
+
+		/**
 		 * Méthode principale.
 		 */
 		public function main() {
