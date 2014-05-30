@@ -7,6 +7,7 @@
 	 * @package app.Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'CsvAbstractImporterShell', 'Csv.Console/Command/Abstract' );
 
 	/**
 	 * La classe ImportcsvCataloguespdisfps93Shell permet d'importer le catalogue PDI
@@ -14,432 +15,468 @@
 	 *
 	 * @package app.Console.Command
 	 */
-	class ImportcsvCataloguespdisfps93Shell extends AppShell
+	class ImportcsvCataloguespdisfps93Shell extends CsvAbstractImporterShell
 	{
 		/**
-		 * La constante à utiliser dans la méthode _stop() en cas de succès.
-		 */
-		const SUCCESS = 0;
-
-		/**
-		 * La constante à utiliser dans la méthode _stop() en cas d'erreur.
-		 */
-		const ERROR = 1;
-
-		/**
-		 * Nom du shell
-		 *
-		 * @var string
-		 */
-		public $name = 'ImportcsvCataloguespdisfps93';
-
-		/**
-		 * Le fichier CSV.
-		 *
-		 * @var File
-		 */
-		protected $_Csv = null;
-
-		/**
-		 * Stockage des lignes rejetées
+		 * Les modèles utilisés par ce shell.
 		 *
 		 * @var array
 		 */
-		protected $_rejects = array();
+		public $uses = array( 'Thematiquefp93', 'Categoriefp93', 'Filierefp93', 'Prestatairefp93', 'Adresseprestatairefp93', 'Actionfp93' );
 
 		/**
-		 * Stockage des lignes du fichier.
+		 * Les tâches utilisées par ce shell.
 		 *
 		 * @var array
 		 */
-		protected $_lines = array();
+		public $tasks = array( 'XProgressBar' );
 
 		/**
-		 * Ligne d'en-tête du fichier.
-		 *
-		 * @var array
-		 */
-		protected $_headers = array();
-
-		/**
-		 * Contient les erreurs de validation d'une ligne traitée.
-		 *
-		 * @var array
-		 */
-		protected $_validationErrors = array();
-
-		/**
-		 * Ligne d'en-tête par défaut.
+		 * Les en-têtes par défaut tels qu'ils sont attendus.
 		 *
 		 * @var array
 		 */
 		protected $_defaultHeaders = array(
-			'thematique', // Thematiquefp93.name (Thematiquefp93.type pdi implicite)
-			'categorie action', // Categoriefp93.name
-			'numero convention action',
-			'prestataire',
-			'intitule d action',
-			'filiere',
-			'tel action',
-			'adresse action',
-			'cp action',
-			'commune action',
-			'duree action'
+			'Thematique',
+			'Categorie Action',
+			'Numero Convention Action',
+			'Prestataire',
+			'Intitulé d\'Action',
+			'Filiere',
+			'Tel_Action',
+			'Adresse Action',
+			'CP Action',
+			'Commune Action',
+			'Duree Action',
+			'Annee'
 		);
 
 		/**
-		 * Modèles utilisés par ce shell.
+		 * Tableau de correspondances entre les en-têtes et des chemins de
+		 * modèles CakePHP.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Thematiquefp93' );
+		protected $_correspondances = array(
+			'Thematiquefp93.name',
+			'Categoriefp93.name',
+			'Actionfp93.numconvention',
+			'Prestatairefp93.name',
+			'Actionfp93.name',
+			'Filierefp93.name',
+			'Adresseprestatairefp93.tel',
+			'Adresseprestatairefp93.adresse',
+			'Adresseprestatairefp93.codepos',
+			'Adresseprestatairefp93.localite',
+			'Actionfp93.duree',
+			'Actionfp93.annee'
+		);
 
 		/**
-		 * Démarrage du shell
+		 * Nettoyage et normalisation de la ligne d'en-tête.
+		 *
+		 * @param array $headers
+		 * @return array
+		 */
+		public function processHeaders( array $headers ) {
+			foreach( $headers as $key => $value ) {
+				$headers[$key] = preg_replace( '/[\W_ ]+/', ' ', noaccents_upper( trim( $value ) ) );
+			}
+
+			return $headers;
+		}
+
+		/**
+		 * Nettoyage des valeurs des champs (suppression des espaces excédentaires)
+		 * et transformation des clés via les correspondances.
+		 *
+		 * @param array $row
+		 * @return array
+		 */
+		public function normalizeRow( array $row ) {
+			$new = array();
+
+			foreach( $row as $key => $value ) {
+				if( isset( $this->_correspondances[$key] ) ) {
+					$new = Hash::insert(
+						$new,
+						$this->_correspondances[$key],
+						trim( preg_replace( '/[ ]+/', ' ', $value ) )
+					);
+				}
+			}
+
+			return $new;
+		}
+
+		/**
+		 * Recherche de la thématique, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processThematiquefp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Thematiquefp93.id' ),
+				'conditions' => array(
+					'Thematiquefp93.type' => 'pdi',
+					'Thematiquefp93.name' => Hash::get( $row, 'Thematiquefp93.name' ) // TODO: normaliser
+				)
+			);
+
+			$thematiquefp93 = $this->Thematiquefp93->find( 'first', $query );
+
+			if( !empty( $thematiquefp93 ) ) {
+				$thematiquefp93_id = Hash::get( $thematiquefp93, 'Thematiquefp93.id' );
+			}
+			else {
+				$data = array(
+					'Thematiquefp93' => array(
+						'type' => 'pdi',
+						'name' => Hash::get( $row, 'Thematiquefp93.name' )
+					)
+				);
+				$this->Thematiquefp93->create( $data );
+				if( $this->Thematiquefp93->save() ) {
+					$thematiquefp93_id = $this->Thematiquefp93->id;
+				}
+				else {
+					$thematiquefp93_id = null;
+				}
+			}
+
+			return $thematiquefp93_id;
+		}
+
+		/**
+		 * Recherche de la thématique, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processCategoriefp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Categoriefp93.id' ),
+				'conditions' => array(
+					'Categoriefp93.thematiquefp93_id' => Hash::get( $row, 'Thematiquefp93.id' ),
+					'Categoriefp93.name' => Hash::get( $row, 'Categoriefp93.name' ) // TODO: normaliser
+				)
+			);
+
+			$categoriefp93 = $this->Categoriefp93->find( 'first', $query );
+
+			if( !empty( $categoriefp93 ) ) {
+				$categoriefp93_id = Hash::get( $categoriefp93, 'Categoriefp93.id' );
+			}
+			else {
+				$data = array(
+					'Categoriefp93' => array(
+						'thematiquefp93_id' => Hash::get( $row, 'Thematiquefp93.id' ),
+						'name' => Hash::get( $row, 'Categoriefp93.name' )
+					)
+				);
+				$this->Categoriefp93->create( $data );
+				if( $this->Categoriefp93->save() ) {
+					$categoriefp93_id = $this->Categoriefp93->id;
+				}
+				else {
+					$categoriefp93_id = null;
+				}
+			}
+
+			return $categoriefp93_id;
+		}
+
+		/**
+		 * Recherche de la filière, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processFilierefp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Filierefp93.id' ),
+				'conditions' => array(
+					'Filierefp93.categoriefp93_id' => Hash::get( $row, 'Categoriefp93.id' ),
+					'Filierefp93.name' => Hash::get( $row, 'Filierefp93.name' ) // TODO: normaliser
+				)
+			);
+
+			$filierefp93 = $this->Filierefp93->find( 'first', $query );
+
+			if( !empty( $filierefp93 ) ) {
+				$filierefp93_id = Hash::get( $filierefp93, 'Filierefp93.id' );
+			}
+			else {
+				$data = array(
+					'Filierefp93' => array(
+						'categoriefp93_id' => Hash::get( $row, 'Categoriefp93.id' ),
+						'name' => Hash::get( $row, 'Filierefp93.name' )
+					)
+				);
+				$this->Filierefp93->create( $data );
+				if( $this->Filierefp93->save() ) {
+					$filierefp93_id = $this->Filierefp93->id;
+				}
+				else {
+					$filierefp93_id = null;
+				}
+			}
+
+			return $filierefp93_id;
+		}
+
+		/**
+		 * Recherche du prestataire, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processPrestatairefp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Prestatairefp93.id' ),
+				'conditions' => array(
+					'Prestatairefp93.name' => Hash::get( $row, 'Prestatairefp93.name' ) // TODO: normaliser
+				)
+			);
+
+			$prestatairefp93 = $this->Prestatairefp93->find( 'first', $query );
+
+			if( !empty( $prestatairefp93 ) ) {
+				$prestatairefp93_id = Hash::get( $prestatairefp93, 'Prestatairefp93.id' );
+			}
+			else {
+				$data = array(
+					'Prestatairefp93' => array(
+						'name' => Hash::get( $row, 'Prestatairefp93.name' )
+					)
+				);
+				$this->Prestatairefp93->create( $data );
+				if( $this->Prestatairefp93->save() ) {
+					$prestatairefp93_id = $this->Prestatairefp93->id;
+				}
+				else {
+					$prestatairefp93_id = null;
+				}
+			}
+
+			return $prestatairefp93_id;
+		}
+
+		/**
+		 * Recherche de l'adresse du prestataire, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processAdresseprestatairefp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Adresseprestatairefp93.id' ),
+				'conditions' => array(
+					// TODO: normaliser, etc...
+					'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $row, 'Prestatairefp93.id' ),
+					'Adresseprestatairefp93.adresse' => Hash::get( $row, 'Adresseprestatairefp93.adresse' ),
+					'Adresseprestatairefp93.codepos' => Hash::get( $row, 'Adresseprestatairefp93.codepos' ),
+					'Adresseprestatairefp93.localite' => Hash::get( $row, 'Adresseprestatairefp93.localite' ),
+					'Adresseprestatairefp93.tel' => Hash::get( $row, 'Adresseprestatairefp93.tel' )
+				)
+			);
+
+			$adresseadresseprestatairefp93 = $this->Adresseprestatairefp93->find( 'first', $query );
+
+			if( !empty( $adresseprestatairefp93 ) ) {
+				$adresseprestatairefp93_id = Hash::get( $adresseprestatairefp93, 'Adresseprestatairefp93.id' );
+			}
+			else {
+				$data = array(
+					'Adresseprestatairefp93' => array(
+						'prestatairefp93_id' => Hash::get( $row, 'Prestatairefp93.id' ),
+						'adresse' => Hash::get( $row, 'Adresseprestatairefp93.adresse' ),
+						'codepos' => Hash::get( $row, 'Adresseprestatairefp93.codepos' ),
+						'localite' => Hash::get( $row, 'Adresseprestatairefp93.localite' ),
+						'tel' => Hash::get( $row, 'Adresseprestatairefp93.tel' )
+					)
+				);
+				$this->Adresseprestatairefp93->create( $data );
+				if( $this->Adresseprestatairefp93->save() ) {
+					$adresseprestatairefp93_id = $this->Adresseprestatairefp93->id;
+				}
+				else {
+					$adresseprestatairefp93_id = null;
+				}
+			}
+
+			return $adresseprestatairefp93_id;
+		}
+
+		/**
+		 * Recherche de l'action, insertion si besoin
+		 *
+		 * @param array $row
+		 * @return integer
+		 */
+		public function processActionfp93( array $row ) {
+			$query = array(
+				'fields' => array( 'Actionfp93.id' ),
+				'conditions' => array(
+					 // TODO: normaliser
+					'Actionfp93.filierefp93_id' => Hash::get( $row, 'Filierefp93.id' ),
+					'Actionfp93.prestatairefp93_id' => Hash::get( $row, 'Prestatairefp93.id' ),
+					'Actionfp93.numconvention' => Hash::get( $row, 'Actionfp93.numconvention' ),
+					'Actionfp93.name' => Hash::get( $row, 'Actionfp93.name' ),
+					'Actionfp93.duree' => Hash::get( $row, 'Actionfp93.duree' ),
+					'Actionfp93.annee' => Hash::get( $row, 'Actionfp93.annee' )
+				)
+			);
+
+			$actionfp93 = $this->Actionfp93->find( 'first', $query );
+
+			if( !empty( $actionfp93 ) ) {
+				$actionfp93_id = Hash::get( $actionfp93, 'Actionfp93.id' );
+			}
+			else {
+				$data = array(
+					'Actionfp93' => array(
+						'filierefp93_id' => Hash::get( $row, 'Filierefp93.id' ),
+						'prestatairefp93_id' => Hash::get( $row, 'Prestatairefp93.id' ),
+						'numconvention' => Hash::get( $row, 'Actionfp93.numconvention' ),
+						'name' => Hash::get( $row, 'Actionfp93.name' ),
+						'duree' => Hash::get( $row, 'Actionfp93.duree' ),
+						'annee' => Hash::get( $row, 'Actionfp93.annee' ),
+						'actif' => '1'
+					)
+				);
+				$this->Actionfp93->create( $data );
+				if( $this->Actionfp93->save() ) {
+					$actionfp93_id = $this->Actionfp93->id;
+				}
+				else {
+					$actionfp93_id = null;
+				}
+			}
+
+			return $actionfp93_id;
+		}
+
+		/**
+		 * Traitement d'une ligne de données du fichier CSV.
+		 *
+		 * @param array $row
+		 * @return boolean
+		 */
+		public function processRow( array $row ) {
+			if( empty( $row ) ) {
+				$this->empty[] = $row;
+				return false;
+			}
+
+			$data = $this->normalizeRow( $row );
+
+			// Formatage des données de la ligne
+			$path = 'Actionfp93.numconvention';
+			$data = Hash::insert( $data, $path, strtoupper( Hash::get( $data, $path ) ) );
+
+			$query = array(
+				'fields' => array( 'Actionfp93.id' ),
+				'conditions' => array(
+					'Actionfp93.numconvention' => Hash::get( $data, 'Actionfp93.numconvention' )
+				),
+			);
+
+			$found = $this->Actionfp93->find( 'first', $query );
+			if( !empty( $found ) ) {
+				$this->rejectRow( $row, $this->Actionfp93, 'N° de convention d\'action déjà présent' );
+				return false;
+			}
+
+			// Traitement de la thématique
+			$thematiquefp93_id = $this->processThematiquefp93( $data );
+			if( $thematiquefp93_id === null ) {
+				$this->rejectRow( $row, $this->Thematiquefp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Thematiquefp93.id', $thematiquefp93_id );
+
+			// Traitement de la catégorie
+			$categoriefp93_id = $this->processCategoriefp93( $data );
+			if( $categoriefp93_id === null ) {
+				$this->rejectRow( $row, $this->Categoriefp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Categoriefp93.id', $categoriefp93_id );
+
+			// Traitement de la filière
+			$filierefp93_id = $this->processFilierefp93( $data );
+			if( $filierefp93_id === null ) {
+				$this->rejectRow( $row, $this->Filierefp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Filierefp93.id', $filierefp93_id );
+
+			// Traitement du prestataire
+			$prestatairefp93_id = $this->processPrestatairefp93( $data );
+			if( $prestatairefp93_id === null ) {
+				$this->rejectRow( $row, $this->Prestatairefp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Prestatairefp93.id', $prestatairefp93_id );
+
+			// Traitement de l'adresse du prestataire
+			$adresseprestatairefp93_id = $this->processAdresseprestatairefp93( $data );
+			if( $adresseprestatairefp93_id === null ) {
+				$this->rejectRow( $row, $this->Adresseprestatairefp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Adresseprestatairefp93.id', $adresseprestatairefp93_id );
+
+			// Traitement de l'action
+			$actionfp93_id = $this->processActionfp93( $data );
+			if( $actionfp93_id === null ) {
+				$this->rejectRow( $row, $this->Actionfp93 );
+				return false;
+			}
+			$data = Hash::insert( $data, 'Actionfp93.id', $actionfp93_id );
+
+			return true;
+		}
+
+		/**
+		 * Surcharge de la méthode startup pour vérifier que le département soit
+		 * uniquement le 93.
 		 */
 		public function startup() {
 			parent::startup();
 
-			$whoami = exec( 'whoami' );
-			$accepted = array( 'apache', 'www-data', 'httpd' );
-
-			if( !in_array( $whoami, $accepted ) ) {
-				$this->error(
-					sprintf( 'Mauvais utilisateur (%s), veuillez exécuter ce shell en tant que: %s', $whoami, implode( ', ', $accepted ) ),
-					'<info>Exemple:</info> sudo -u apache lib/Cake/Console/cake ImportcsvCataloguespdisfps93'
-				);
-			}
-
-			// 1°) Si on n'est pas le CG 93, on ne peut pas utiliser ce shell
-			if( Configure::read( 'Cg.departement' ) != 93 ) {
-				$this->error( "Ce shell est réservé au CG 93" );
-			}
-
-			// 2°) Vérification du format des paramètres hors fichier CSV
-			if( !is_string( $this->params['separator'] ) ) {
-				$this->error( "Le séparateur \"{$this->params['separator']}\" n'est pas correct, n'oubliez pas d'échapper le caractère (par exemple: \";\" plutôt que ;)" );
-			}
-
-			if( !is_numeric( $this->params['annee'] ) || (int)$this->params['annee'] != $this->params['annee'] ) {
-				$this->error( "L'année \"{$this->params['annee']}\" n'est pas correcte." );
-			}
-
-			foreach( array( 'headers' ) as $bool ) {
-				if( $this->params[$bool] == 'true' ) {
-					$this->params[$bool] = true;
-				}
-				else if( $this->params[$bool] == 'false' ) {
-					$this->params[$bool] = false;
-				}
-
-				if( !is_bool( $this->params[$bool] ) ) {
-					$this->error( "Le paramètre {$bool} n'est pas correct \"{$this->params[$bool]}\" (valeurs possibles: true et false)" );
-				}
-			}
-
-			// 3°) Lecture du fichier CSV
-			$this->_Csv = new File( Hash::get( $this->args, '0' ) );
-
-			// 3.1°) Vérifications concernant le fichier CSV.
-			if( !$this->_Csv->exists() ) {
-				$this->error( "Le fichier \"{$this->_Csv->pwd()}\" n'existe pas." );
-			}
-			else if( !$this->_Csv->readable() ) {
-				$this->error( "Le fichier \"{$this->_Csv->pwd()}\" n'est pas lisible." );
-			}
-			else if( $this->_Csv->size() == 0 ) {
-				$this->error( "Le fichier \"{$this->_Csv->pwd()}\" est vide." );
-			}
-
-			// 3.2°) Lecture en ré-encodage éventuel du fichier CSV
-			mb_detect_order( array( 'UTF-8', 'ISO-8859-1', 'ASCII' ) );
-			$csvLines = $this->_Csv->read();
-			$encoding = mb_detect_encoding( $csvLines );
-			if( $encoding != 'UTF-8' ) {
-				$csvLines = mb_convert_encoding( $csvLines, 'UTF-8', $encoding );
-			}
-			$this->_lines = explode( "\n", $csvLines );
-
-			// 3.3°) Traitement de la ligne d'en-tête
-			if( $this->params['headers'] ) {
-				$this->_headers = explode( $this->params['separator'], strtolower( trim( $this->_lines[0] ) ) );
-				foreach( $this->_headers as $key => $value ) {
-					$this->_headers[$key] = preg_replace( '/[^a-zA-Z0-9]+/', ' ', replace_accents( $value ) );
-				}
-			}
-			else {
-				$this->_headers = $this->_defaultHeaders;
-			}
-			$this->_headers = trim_mixed( $this->_headers );
-
-			// 3.4°) Scission des lignes du catalogue et de la ligne d'en-tête
-			if( $this->params['headers'] ) {
-				$this->_lines = array_slice( $this->_lines, 1 );
-			}
-
-			// 4°) Vérifications
-			// 4.1°) Vérification de la ligne d'en-tête
-			$diff = array_diff( $this->_defaultHeaders, $this->_headers );
-			if( !empty( $diff ) ) {
-				$this->err( sprintf( "En-têtes de colonnes manquants: %s", implode( ',', $diff ) ), 1, Shell::QUIET );
-				$this->_stop( self::ERROR );
-			}
-
-			// 4.2°) Si on n'a aucune action PDI
-			if( empty( $this->_lines ) ) {
-				$this->out( '<info>Aucune action PDI présente dans ce fichier</info>', 1, Shell::QUIET );
-				$this->_stop( self::SUCCESS );
-			}
+			$this->checkDepartement( 93 );
 		}
 
 		/**
-		 * Recherche l'enregistrement répondant aux conditions. Si celui-ci existe,
-		 * sa clé primaire est renvoyée; sinon, on tente d'enregistrer les données.
-		 *
-		 * En cas de succès, la clé primaire du nouvel enregistrement est retournée,
-		 * sinon on peuple l'attribut $_validationErrors
-		 *
-		 * @param AppModel $Model
-		 * @param array $conditions
-		 * @return integer
-		 */
-		protected function _createOrUpdate( AppModel $Model, array $conditions ) {
-			if( $Model->Behaviors->attached( 'Cataloguepdifp93' ) ) {
-				$id = $Model->createOrUpdate( $conditions );
-
-				if( empty( $id ) ) {
-					$this->_validationErrors = Hash::merge(
-						$this->_validationErrors,
-						Hash::flatten( array( $Model->alias => $Model->validationErrors ) )
-					);
-
-					return null;
-				}
-
-				return $id;
-			}
-			else {
-				$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
-
-				$primaryKeyField = "{$Model->alias}.{$Model->primaryKey}";
-
-				$query = array(
-					'fields' => array( $primaryKeyField ),
-					'conditions' => $conditions
-				);
-
-				$record = $Model->find( 'first', $query );
-
-				if( empty( $record ) ) {
-					$record = Hash::expand( $conditions );
-					$Model->create( $record );
-
-					if( !$Model->save() ) {
-						$this->_validationErrors = Hash::merge(
-							$this->_validationErrors,
-							Hash::flatten( array( $Model->alias => $Model->validationErrors ) )
-						);
-
-						return null;
-					}
-					else {
-						return $Model->{$Model->primaryKey};
-					}
-				}
-				else {
-					return Hash::get( $record, $primaryKeyField );
-				}
-			}
-		}
-
-		/**
-		 * Méthode principale.
+		 * Méthode principale, traitement du fichier CSV.
 		 */
 		public function main() {
-			$expectedCount = count( $this->_headers );
-			$nbTraitees = 0;
-			$headers = array_flip( $this->_defaultHeaders );
+			$success = true;
+			$count = $this->_Csv->count();
 
-			foreach( $this->_lines as $i => $line ) {
-				$this->_validationErrors = array();
+			$this->XProgressBar->start( $count );
 
-				$trimmed = trim( $line );
-				if( empty( $trimmed ) ) {
-					unset( $this->_lines[$i] );
-				}
-				else {
-					$record = parse_csv_line( $line, $this->params['separator'], $this->params['delimiter'] );
+			foreach( $this->_Csv as $row ) {
+				if( !empty( $row ) ) {
+					$this->Actionfp93->begin();
 
-					if( count( $record ) == $expectedCount ) {
-						$this->Thematiquefp93->begin();
-
-						// Début thématique
-						$conditions = array(
-							'Thematiquefp93.type' => 'pdi',
-							'Thematiquefp93.name' => $record[$headers['thematique']],
-						);
-
-						$thematiquefp93_id = $this->_createOrUpdate(
-							$this->Thematiquefp93,
-							$conditions
-						);
-						// Fin thématique
-
-						// Début catégorie
-						if( empty( $this->_validationErrors ) ) {
-							$conditions = array(
-								'Categoriefp93.thematiquefp93_id' => $thematiquefp93_id,
-								'Categoriefp93.name' => $record[$headers['categorie action']],
-							);
-
-							$categoriefp93_id = $this->_createOrUpdate(
-								$this->Thematiquefp93->Categoriefp93,
-								$conditions
-							);
-						}
-						// Fin catégorie
-
-						// Début filière
-						if( empty( $this->_validationErrors ) ) {
-							$conditions = array(
-								'Filierefp93.categoriefp93_id' => $categoriefp93_id,
-								'Filierefp93.name' => $record[$headers['filiere']],
-							);
-
-							$filierefp93_id = $this->_createOrUpdate(
-								$this->Thematiquefp93->Categoriefp93->Filierefp93,
-								$conditions
-							);
-						}
-						// Fin filière
-
-						// Début prestataire
-						if( empty( $this->_validationErrors ) ) {
-							$conditions = array(
-								'Prestatairefp93.name' => $record[$headers['prestataire']],
-							);
-
-							$prestatairefp93_id = $this->_createOrUpdate(
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93,
-								$conditions
-							);
-						}
-						// Fin prestataire
-
-						// Début Adresseprestatairefp93
-						if( empty( $this->_validationErrors ) ) {
-							$conditions = array(
-								'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id,
-								'Adresseprestatairefp93.adresse' => $record[$headers['adresse action']],
-								'Adresseprestatairefp93.codepos' => $record[$headers['cp action']],
-								'Adresseprestatairefp93.localite' => $record[$headers['commune action']],
-								'Adresseprestatairefp93.tel' => $record[$headers['tel action']],
-							);
-
-							$adresseprestatairefp93_id = $this->_createOrUpdate(
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->Adresseprestatairefp93,
-								$conditions
-							);
-						}
-						// Fin Adresseprestatairefp93
-
-						// Début action
-						if( empty( $this->_validationErrors ) ) {
-							$conditions = array(
-								'Actionfp93.filierefp93_id' => $filierefp93_id,
-								'Actionfp93.prestatairefp93_id' => $prestatairefp93_id,
-								'Actionfp93.numconvention' => $record[$headers['numero convention action']],
-								'Actionfp93.name' => $record[$headers['intitule d action']],
-								'Actionfp93.annee' => $this->params['annee'],
-								'Actionfp93.duree' => $record[$headers['duree action']],
-								'Actionfp93.actif' => '1',
-							);
-
-							$actionfp93_id = $this->_createOrUpdate(
-								$this->Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93,
-								$conditions
-							);
-						}
-						// Fin action
-
-						if( !empty( $this->_validationErrors ) ) {
-							$this->Thematiquefp93->rollback();
-							$key = key( $this->_validationErrors );
-							$value = $this->_validationErrors[$key];
-							$this->_rejects[] = "{$line}{$this->params['separator']}{$this->params['delimiter']}".str_replace( $this->params['delimiter'], "\\{$this->params['delimiter']}", "{$key} => {$value}" ).$this->params['delimiter'];
-						}
-						else {
-							$nbTraitees++;
-							$this->Thematiquefp93->commit();
-						}
+					if( $this->processRow( $row ) === false ) {
+						$this->Actionfp93->rollback();
 					}
 					else {
-						$this->_rejects[] = "{$line}{$this->params['separator']}{$this->params['delimiter']}".sprintf( "Nombre de champs de la ligne erroné: %d au lieu des %d attendus", count( $record ), $expectedCount ).$this->params['delimiter'];
+						$this->Actionfp93->commit();
 					}
 				}
-			}
-
-			$this->out( sprintf( "Traitement du fichier %s: %d lignes à traiter, %d lignes traitées, %d lignes rejetées", $this->_Csv->pwd(), count( $this->_lines ), $nbTraitees, count( $this->_rejects ) ) );
-
-			// A-t'on des lignes rejetées à exporter dans un fichier CSV ?
-			if( !empty( $this->_rejects ) ) {
-				$titleLine = "";
-				if( $this->params['headers'] == 'true' ) {
-					$headers = $this->params['delimiter'].implode( "{$this->params['delimiter']}{$this->params['separator']}{$this->params['delimiter']}", $this->_headers ).$this->params['delimiter'];
-					$headers = "{$headers}{$this->params['separator']}{$this->params['delimiter']}Erreur{$this->params['delimiter']}";
-					$titleLine = "{$headers}\n";
+				else {
+					$this->empty[] = $row;
 				}
-				$output = $titleLine.implode( "\n", $this->_rejects )."\n";
-				$outfile = LOGS.$this->name.'_rejets-'.date( 'Ymd-His' ).'.csv';
-				file_put_contents( $outfile, $output );
-				$this->out( "<info>Le fichier de rejets se trouve dans {$outfile}</info>" );
+				$this->XProgressBar->next();
 			}
 
-			$this->_stop( self::SUCCESS );
-		}
-
-		/**
-		 * Paramétrages et aides du shell.
-		 */
-		public function getOptionParser() {
-			$Parser = parent::getOptionParser();
-
-			$Parser->description( "Ce script permet d'importer, via des fichiers .csv, le catalogue PDI pour la fiche de prescription. (CG 93)" );
-
-			$options = array(
-				'headers' => array(
-					'short' => 'H',
-					'help' => 'précise si le fichier à importer commence par une colonne d\'en-tête ou s\'il commence directement par des données à intégrées',
-					'choices' => array( 'true', 'false' ),
-					'default' => 'true'
-				),
-				'separator' => array(
-					'short' => 's',
-					'help' => 'le caractère utilisé comme séparateur',
-					'default' => ','
-				),
-				'delimiter' => array(
-					'short' => 'd',
-					'help' => 'le caractère utilisé comme délimiteur de champ',
-					'default' => '"'
-				),
-				'annee' => array(
-					'short' => 'a',
-					'help' => 'l\'année de conventionnement des actions contenues dans le fichier CSV',
-					'default' => date( 'Y' )
-				),
-			);
-			$Parser->addOptions( $options );
-
-			$args = array(
-				'csv' => array(
-					'help' => 'chemin et nom du fichier à importer',
-					'required' => true
-				)
-			);
-			$Parser->addArguments( $args );
-
-			return $Parser;
+			$this->epilog();
 		}
 	}
 ?>
