@@ -66,7 +66,7 @@
 		 * @large
 		 */
 //		public function testHelp() {
-//			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 0 );
+//			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
 //
 //			$this->Shell->params['help'] = true;
 //			$this->Shell->startup();
@@ -78,7 +78,7 @@
 		 * @large
 		 */
 		public function testStartup() {
-			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 1 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 1 );
 
 			$this->Shell->params['connection'] = 'foo';
 			$this->Shell->startup();
@@ -90,7 +90,7 @@
 		 * @large
 		 */
 		public function testAll() {
-			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -122,7 +122,7 @@
 		 * @large
 		 */
 		public function testReindex() {
-			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -142,7 +142,7 @@
 		 * @large
 		 */
 		public function testSequences() {
-			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );
@@ -164,7 +164,7 @@
 		 * @large
 		 */
 		public function testVacuum() {
-			$this->Shell->expects( $this->once() )->method( '_stop' )->with( 0 );
+			$this->Shell->expects( $this->any() )->method( '_stop' )->with( 0 );
 
 			$this->Shell->startup();
 			$this->Shell->Dbo->getLog( false, true );

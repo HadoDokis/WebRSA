@@ -17,7 +17,7 @@
 	/**
 	 * InsertionsAllocatairesTestController class
 	 *
-	 * @package app.Case.Controller.Component
+	 * @package app.Test.Case.Controller.Component
 	 */
 	class InsertionsAllocatairesTestController extends Controller
 	{
