@@ -145,12 +145,14 @@
 		 * Vérification de la ligne d'en-tête.
 		 */
 		public function checkHeaders() {
-			$missing = array_diff( $this->_defaultHeaders, $this->_headers );
+			$defaultHeaders = $this->processHeaders( $this->_defaultHeaders );
+
+			$missing = array_diff( $defaultHeaders, $this->_headers );
 			if( !empty( $missing ) ) {
 				$this->error( sprintf( "En-têtes de colonnes manquants: %s", implode( ',', $missing ) ) );
 			}
 
-			$found = array_diff( $this->_headers, $this->_defaultHeaders );
+			$found = array_diff( $this->_headers, $defaultHeaders );
 			if( !empty( $found ) ) {
 				$msgstr = 'En-têtes de colonnes supplémentaires: %s';
 				$this->out( sprintf( __d( 'cake_console', '<success>Warning:</success> %s', sprintf( $msgstr, implode( ',', $found ) ) ) ) );
@@ -161,8 +163,6 @@
 		 * Lecture de la ligne d'en-tête.
 		 */
 		public function parseHeaders() {
-			$this->_defaultHeaders = $this->processHeaders( $this->_defaultHeaders );
-
 			if( $this->params['headers'] ) {
 				$this->_headers = $this->processHeaders( $this->_Csv->headers() );
 			}
@@ -243,6 +243,14 @@
 		}
 
 		/**
+		 * Traitement d'une ligne de données du fichier CSV.
+		 *
+		 * @param array $row
+		 * @return boolean
+		 */
+		abstract public function processRow( array $row );
+
+		/**
 		 * Epilogue du traitement du fichier CSV, écriture des rejets.
 		 */
 		public function epilog() {
@@ -280,19 +288,32 @@
 					'delimiter' => $this->params['delimiter'],
 					'headers' => $this->params['headers']
 				);
+
 				$this->_Csv = new CsvFileReader( $path, $params );
+
+				$this->parseHeaders();
+				$this->checkHeaders();
+
+				// Fin du traitement si on n'a aucune ligne à traiter
+				if( $this->_Csv->count() === 0 ) {
+					$this->out( '<info>Aucune ligne à traiter</info>' );
+					$this->_stop( self::SUCCESS );
+				}
 			} catch( RuntimeException $Exception ) {
 				$this->error( $Exception->getMessage() );
 			}
+		}
 
-			$this->parseHeaders();
-			$this->checkHeaders();
 
-			// Fin du traitement si on n'a aucune ligne à traiter
-			if( $this->_Csv->count() === 0 ) {
-				$this->out( '<info>Aucune ligne à traiter</info>' );
-				$this->_stop( self::SUCCESS );
+		/**
+		 * Méthode principale, traitement du fichier CSV.
+		 */
+		public function main() {
+			foreach( $this->_Csv as $row ) {
+				$this->processRow( $row );
 			}
+
+			$this->epilog();
 		}
 
 		/**
