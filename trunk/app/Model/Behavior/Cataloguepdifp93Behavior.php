@@ -11,8 +11,6 @@
 	/**
 	 * La classe Cataloguepdifp93Behavior ...
 	 *
-	 * FIXME: c'est un copié/collé/adapté de ImportcsvCataloguespdisfps93Shell::_createOrUpdate()
-	 *
 	 * @package app.Model.Behavior
 	 */
 	class Cataloguepdifp93Behavior extends ModelBehavior
@@ -30,7 +28,7 @@
 			);
 
 			if( !empty( $Model->belongsTo ) ) {
-				foreach( $Model->belongsTo as $alias => $params ) {
+				foreach( array_keys( $Model->belongsTo ) as $alias ) {
 					$Parent = $Model->{$alias};
 
 					$query = $this->searchQuery( $Parent, $query );
@@ -92,6 +90,8 @@
 		 *
 		 * En cas de succès, la clé primaire du nouvel enregistrement est retournée.
 		 *
+		 * @deprecated
+		 *
 		 * @param Model $Model
 		 * @param array $conditions
 		 * @return integer
@@ -143,5 +143,63 @@
 			}
 		}
 
+		/**
+		 * Recherche de l'enregistrement sinon insertion, avec complément de
+		 * données si besoin et retourne la vlauer de la clé primaire ou null.
+		 *
+		 * @param Model $Model
+		 * @param array $conditions
+		 * @param array $complement
+		 * @return integer
+		 */
+		public function getInsertedPrimaryKey( Model $Model, array $conditions, array $complement = array() ) {
+			$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
+
+			$modelPrimaryKey = "{$Model->alias}.{$Model->primaryKey}";
+
+			$query = array(
+				'fields' => array( $modelPrimaryKey ),
+				'conditions' => $conditions
+			);
+
+			// Début copie ci-dessus.
+			// On cherche un intitulé approchant à la casse et aux accents près
+			foreach( $query['conditions'] as $path => $value ) {
+				if( $value !== null && $value !== '' ) {
+					if( !is_numeric( $value ) ) {
+						unset( $query['conditions'][$path] );
+						list( $m, $f ) = model_field( $path );
+						$query['conditions']["NOACCENTS_UPPER( \"{$m}\".\"{$f}\" )"] = noaccents_upper( $value );
+					}
+				}
+				else {
+					unset( $query['conditions'][$path] );
+					$query['conditions'][] = "{$path} IS NULL";
+				}
+			}
+			// Fin copie ci-dessus.
+
+			$record = $Model->find( 'first', $query );
+
+			if( !empty( $record ) ) {
+				$primaryKey = Hash::get( $record, $modelPrimaryKey );
+			}
+			else {
+				$data = Hash::merge(
+					Hash::expand( $conditions ),
+					Hash::expand( $complement )
+				);
+
+				$Model->create( $data );
+				if( $Model->save() ) {
+					$primaryKey = $Model->{$Model->primaryKey};
+				}
+				else {
+					$primaryKey = null;
+				}
+			}
+
+			return $primaryKey;
+		}
 	}
 ?>

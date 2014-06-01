@@ -108,8 +108,7 @@
 		</apply>
 	</target>
 
-	<!--<target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/>-->
-	<target name="lint" depends="php-lint,po-lint,js-lint,css-lint"/>
+	<target name="lint" depends="php-lint,sql-lint,po-lint,js-lint,css-lint"/>
 
 	<!-- Tests untaires -->
 	<target name="phpunit" depends="clear,lint">
