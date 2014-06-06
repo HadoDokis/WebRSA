@@ -442,6 +442,7 @@ $irregularPlural = array(
 	'documentbeneffp93' => 'documentsbenefsfps93',
 	'documentbeneffp93_ficheprescription93' => 'documentsbenefsfps93_fichesprescriptions93',
 	'demenagementhorsdpt' => 'demenagementshorsdpts',
+	'prestatairehorspdifp93' => 'prestataireshorspdifps93',
 );
 
 /**

@@ -6,6 +6,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AbstractSearch', 'Model/Abstractclass' );
+	App::uses( 'Sanitize', 'Utility' );
 
 	/**
 	 * La classe Ficheprescription93 ...
@@ -153,7 +154,16 @@
 				'className' => 'Prestatairefp93',
 				'foreignKey' => 'prestatairefp93_id',
 				'conditions' => null,
-				'type' => 'INNER',
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Prestatairehorspdifp93' => array(
+				'className' => 'Prestatairehorspdifp93',
+				'foreignKey' => 'prestatairehorspdifp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
@@ -238,13 +248,13 @@
 					'allowEmpty' => false
 				)
 			),
-			'thematiquefp93' => array(
+			/*'thematiquefp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
 					'message' => null,
 					'allowEmpty' => false
 				)
-			),
+			),*/
 			'categoriefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -252,13 +262,13 @@
 					'allowEmpty' => false
 				)
 			),
-			'categoriefp93' => array(
+			/*'categoriefp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
 					'message' => null,
 					'allowEmpty' => false
 				)
-			),
+			),*/
 			'filierefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -266,25 +276,31 @@
 					'allowEmpty' => false
 				)
 			),
-			'filierefp93' => array(
+			/*'filierefp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
 					'message' => null,
 					'allowEmpty' => false
 				)
-			),
+			),*/
 			'prestatairefp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
+					'rule' => array( 'notEmptyIf', 'prestatairehorspdifp93_id', true, array( NULL, '' ) ),
 					'message' => null
 				)
 			),
-			'prestatairefp93' => array(
+			'prestatairehorspdifp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmptyIf', 'prestatairefp93_id', true, array( NULL, '' ) ),
+					'message' => null
+				)
+			),
+			/*'prestatairefp93' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
 					'message' => null
 				)
-			),
+			),*/
 			'actionfp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'pdi' ) ),
@@ -297,7 +313,7 @@
 					'message' => null
 				)
 			),
-			'prestatairefp93_adresse' => array(
+			/*'prestatairefp93_adresse' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
 					'message' => null
@@ -332,7 +348,7 @@
 					'rule' => array( 'email' ),
 					'allowEmpty' => true,
 				),
-			),
+			),*/
 			// Fin champs virtuels pour le formulaire d'ajout / modification
 			'objet' => array(
 				'notEmpty' => array(
@@ -370,6 +386,7 @@
 				'Actionfp93' => 'LEFT OUTER',
 				'Prestatairefp93' => 'LEFT OUTER',
 				'Filierefp93' => 'LEFT OUTER',
+				'Prestatairehorspdifp93' => 'LEFT OUTER',
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'LEFT OUTER',
@@ -391,6 +408,7 @@
 					$this->Actionfp93->fields(),
 					$this->Referent->fields(),
 					$this->Filierefp93->fields(),
+					$this->Prestatairehorspdifp93->fields(),
 					$this->Actionfp93->Prestatairefp93->fields(),
 					$this->Filierefp93->Categoriefp93->fields(),
 					$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
@@ -401,6 +419,7 @@
 				$query['joins'][] = $this->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) );
 				$query['joins'][] = $this->join( 'Referent', array( 'type' => $types['Referent'] ) );
 				$query['joins'][] = $this->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
+				$query['joins'][] = $this->join( 'Prestatairehorspdifp93', array( 'type' => $types['Prestatairehorspdifp93'] ) );
 				$query['joins'][] = $this->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
 				$query['joins'][] = $this->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
 				$query['joins'][] = $this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
@@ -435,7 +454,7 @@
 				}
 			}
 
-			// 2. Ajout des filtres supplémentaires concernant l'action de la fiche de precription:
+			// 2.1 Ajout des filtres supplémentaires concernant l'action et le prestataire de la fiche de precription:
 			$paths = array( 'Ficheprescription93.typethematiquefp93_id', 'Ficheprescription93.thematiquefp93_id', 'Ficheprescription93.categoriefp93_id', 'Ficheprescription93.filierefp93_id', 'Ficheprescription93.prestatairefp93_id', 'Ficheprescription93.actionfp93_id' );
 			foreach( $paths as $path ) {
 				$value = Hash::get( $search, $path );
@@ -447,6 +466,15 @@
 						$correspondance = $path;
 					}
 					$query['conditions'][$correspondance] = $value;
+				}
+			}
+
+			// 2.2 Ajout des filtres supplémentaires concernant l'action et le prestataire hors pdi de la fiche de precription:
+			$paths = array( 'Ficheprescription93.actionfp93', 'Prestatairehorspdifp93.name' );
+			foreach( $paths as $path ) {
+				$value = Hash::get( $search, $path );
+				if( !empty( $value ) ) {
+					$query['conditions']["UPPER( {$path} ) LIKE"] = '%'.noaccents_upper( Sanitize::clean( $value, array( 'encode' => false ) ) ).'%';
 				}
 			}
 
@@ -588,27 +616,26 @@
 					'fields' => Hash::merge(
 						$this->fields(),
 						$this->Instantanedonneesfp93->fields(),
+						$this->Prestatairehorspdifp93->fields(),
 						array(
 							$this->Instantanedonneesfp93->sqVirtualField( 'benef_natpf' ),
 							'Referent.structurereferente_id',
 							'Actionfp93.numconvention',
 							'Actionfp93.filierefp93_id',
-							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Filierefp93"."name" ELSE NULL END ) AS "Ficheprescription93__filierefp93"',
 							'Actionfp93.prestatairefp93_id',
 							'Filierefp93.categoriefp93_id',
-							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Categoriefp93"."name" ELSE NULL END ) AS "Ficheprescription93__categoriefp93"',
 							'Categoriefp93.thematiquefp93_id',
-							'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Thematiquefp93"."name" ELSE NULL END ) AS "Ficheprescription93__thematiquefp93"',
 							'Thematiquefp93.type',
 						)
 					),
 					'contain' => false,
 					'joins' => array(
-						$this->join( 'Actionfp93' ),
+						$this->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Instantanedonneesfp93' ),
+						$this->join( 'Prestatairehorspdifp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Referent' ),
 						$this->join( 'Filierefp93' ),
-						$this->Actionfp93->join( 'Prestatairefp93' ),
+						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Filierefp93->join( 'Categoriefp93' ),
 						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
 					),
@@ -617,7 +644,6 @@
 					)
 				);
 				$data = $this->find( 'first', $query );
-// debug( $data[$this->alias] );
 
 				if( empty( $data ) || $data[$this->alias]['statut'] == '99annulee' ) {
 					throw new InternalErrorException();
@@ -657,10 +683,11 @@
 
 				$return[$this->alias]['actionfp93_id'] = $data[$this->alias]['actionfp93_id'];
 				$return[$this->alias]['prestatairefp93_id'] = $data['Actionfp93']['prestatairefp93_id'];
-				$return[$this->alias]['filierefp93_id'] = $data['Actionfp93']['filierefp93_id'];
 				$return[$this->alias]['categoriefp93_id'] = $data['Filierefp93']['categoriefp93_id'];
 				$return[$this->alias]['thematiquefp93_id'] = $data['Categoriefp93']['thematiquefp93_id'];
 				$return[$this->alias]['typethematiquefp93_id'] = $data['Thematiquefp93']['type'];
+
+				$return[$this->alias]['rdvprestataire_adresse_check'] = ( trim( (string)$data[$this->alias]['rdvprestataire_adresse'] ) !== '' );
 			}
 
 			// Formattage de l'adresse
@@ -714,6 +741,12 @@
 			}
 
 			$data = Hash::merge( $ficheprescription, $data );
+
+			// Case à cocher "Adresse du lieu de RDV"
+			$rdvprestataire_adresse_check = Hash::get( $data, "{$this->alias}.rdvprestataire_adresse_check" );
+			if( in_array( $rdvprestataire_adresse_check, array( '0', 0, null ), true ) ) {
+				$data[$this->alias]['rdvprestataire_adresse'] = null;
+			}
 
 			// Certains champs sont désactivés via javascript et ne sont pas renvoyés
 			$autres = Hash::get( $this->options( array( 'allocataire' => false, 'find' => false, 'autre' => true ) ), 'Autre' );
@@ -839,64 +872,8 @@
 
 			$success = true;
 			// Différenciation action PDI / Hors PDI
-			// TODO: factoriser
 			$typethematiquefp93_id = Hash::get( $data, "{$this->alias}.typethematiquefp93_id" );
-			if( $typethematiquefp93_id === 'horspdi' ) {
-				$conditions = array(
-					'Thematiquefp93' => array(
-						'type' => 'horspdi',
-						'name' => Hash::get( $data, "{$this->alias}.thematiquefp93" ),
-					)
-				);
-				$thematiquefp93_id = $this->Filierefp93->Categoriefp93->Thematiquefp93->createOrUpdate( $conditions );
-				$success = $success && !empty( $thematiquefp93_id );
-				if( $success ) {
-					$conditions = array(
-						'Categoriefp93' => array(
-							'thematiquefp93_id' => $thematiquefp93_id,
-							'name' => Hash::get( $data, "{$this->alias}.categoriefp93" ),
-						)
-					);
-					$categoriefp93_id = $this->Filierefp93->Categoriefp93->createOrUpdate( $conditions );
-					$success = $success && !empty( $categoriefp93_id );
-					if( $success ) {
-						$conditions = array(
-							'Filierefp93' => array(
-								'categoriefp93_id' => $categoriefp93_id,
-								'name' => Hash::get( $data, "{$this->alias}.filierefp93" ),
-							)
-						);
-						$filierefp93_id = $this->Filierefp93->createOrUpdate( $conditions );
-						$success = $success && !empty( $filierefp93_id );
-						if( $success ) {
-							$data[$this->alias]['filierefp93_id'] = $filierefp93_id;
-							$conditions = array(
-								'Prestatairefp93' => array(
-									'name' => Hash::get( $data, "{$this->alias}.prestatairefp93" ),
-								)
-							);
-							$prestatairefp93_id = $this->Actionfp93->Prestatairefp93->createOrUpdate( $conditions );
-							$success = $success && !empty( $prestatairefp93_id );
-							if( $success ) {
-								$data[$this->alias]['prestatairefp93_id'] = $prestatairefp93_id;
-								$conditions = array(
-									'Adresseprestatairefp93' => array(
-										'prestatairefp93_id' => $prestatairefp93_id,
-										'adresse' => Hash::get( $data, "{$this->alias}.prestatairefp93_adresse" ),
-										'codepos' => Hash::get( $data, "{$this->alias}.prestatairefp93_codepos" ),
-										'localite' => Hash::get( $data, "{$this->alias}.prestatairefp93_localite" ),
-										'tel' => Hash::get( $data, "{$this->alias}.prestatairefp93_tel" ),
-										'fax' => Hash::get( $data, "{$this->alias}.prestatairefp93_fax" ),
-										'email' => Hash::get( $data, "{$this->alias}.prestatairefp93_email" ),
-									)
-								);
-								$adresseprestatairefp93_id = $this->Actionfp93->Prestatairefp93->Adresseprestatairefp93->createOrUpdate( $conditions );
-								$success = $success && !empty( $adresseprestatairefp93_id );
-							}
-						}
-					}
-				}
-			}
+			$prestatairehorspdifp93_id = Hash::get( $data, 'Prestatairehorspdifp93.id' );
 
 			if( $typethematiquefp93_id === 'pdi' ) {
 				$data = Hash::merge(
@@ -904,6 +881,7 @@
 					array(
 						$this->alias => array(
 							'actionfp93' => null,
+							'prestatairehorspdifp93_id' => null,
 						)
 					)
 				);
@@ -914,15 +892,40 @@
 					array(
 						$this->alias => array(
 							'actionfp93_id' => null,
+							'prestatairefp93_id' => null,
 						)
 					)
 				);
+			}
+
+			if( $typethematiquefp93_id === 'pdi' && $prestatairehorspdifp93_id !== null ) {
+				$data[$this->alias]['prestatairehorspdifp93_id'] = null;
+			}
+			else if( $typethematiquefp93_id === 'horspdi' ) {
+				$this->Prestatairehorspdifp93->create( $data );
+				$success = ( $this->Prestatairehorspdifp93->save() !== false ) && $success;
+				$data[$this->alias]['prestatairehorspdifp93_id'] = $this->Prestatairehorspdifp93->id;
 			}
 
 			// Sauvegarde de la fiche
 			$this->create( $data );
 			$success = ( $this->save() !== false ) && $success;
 
+			// Si on est PDI mais qu'on était hors PDI avant, il faut supprimer l'enregistrement de la table Prestatairehorspdifp93
+			if( $typethematiquefp93_id === 'pdi' && !in_array( $prestatairehorspdifp93_id, array( null, '' ), true ) ) {
+				$success = $this->Prestatairehorspdifp93->delete( $prestatairehorspdifp93_id ) && $success;
+			}
+
+			$dspData = array(
+				'Dsp' => array(
+					'nivetu' => Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' )
+				)
+			);
+			$success = $this->Personne->Dsp->updateDerniereDsp( $personne_id, $dspData ) && $success;
+
+			/*
+			// Ce bloc est déprécié par l'appel à la méthode Dsp::xxx(), voir ci-dessus.
+			// Début "mise à jour des Dsp"
 			$nivetu = Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' );
 			$query = array(
 				'fields' => array(
@@ -1025,7 +1028,9 @@
 					)
 				) && $success;
 			}
+			// Fin "mise à jour des Dsp"
 			// Fin
+			*/
 
 			// Instantané données
 			$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
@@ -1112,9 +1117,9 @@
 				array(
 					'fields' => Hash::merge(
 						$this->fields(),
+						$this->Actionfp93->fields(),
 						$this->Instantanedonneesfp93->fields(),
 						$this->Referent->fields(),
-						$this->Actionfp93->fields(),
 						$this->Filierefp93->fields(),
 						$this->Actionfp93->Prestatairefp93->fields(),
 						$this->Filierefp93->Categoriefp93->fields(),
@@ -1122,11 +1127,11 @@
 					),
 					'contain' => false,
 					'joins' => array(
-						$this->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
+						$this->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Instantanedonneesfp93', array( 'type' => 'INNER' ) ),
 						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
 						$this->Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'INNER' ) ),
+						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 					),

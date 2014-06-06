@@ -49,6 +49,7 @@
 			'app.Personne',
 			'app.PersonneReferent',
 			'app.Prestatairefp93',
+			'app.Prestatairehorspdifp93',
 			'app.Prestation',
 			'app.Referent',
 			'app.Situationdossierrsa',
@@ -106,6 +107,7 @@
 				'Prestatairefp93' => 'LEFT OUTER',
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
+				'Prestatairehorspdifp93' => 'LEFT OUTER',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

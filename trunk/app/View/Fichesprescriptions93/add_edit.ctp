@@ -12,6 +12,7 @@
 		array(
 			'Ficheprescription93.id' => array( 'type' => 'hidden' ),
 			'Ficheprescription93.personne_id' => array( 'type' => 'hidden' ),
+			'Ficheprescription93.action' => array( 'type' => 'hidden', 'value' => $this->request->params['action'] ),
 		)
 	);
 
@@ -157,29 +158,40 @@
 				'Ficheprescription93.numconvention' => array( 'type' => 'text' ),
 				'Ficheprescription93.typethematiquefp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.thematiquefp93_id' => array( 'empty' => true ),
-				'Ficheprescription93.thematiquefp93',
 				'Ficheprescription93.categoriefp93_id' => array( 'empty' => true ),
-				'Ficheprescription93.categoriefp93',
 				'Ficheprescription93.filierefp93_id' => array( 'empty' => true ),
-				'Ficheprescription93.filierefp93',
 				'Ficheprescription93.prestatairefp93_id' => array( 'empty' => true ),
-				'Ficheprescription93.prestatairefp93',
 				'Ficheprescription93.actionfp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.actionfp93',
-				'Ficheprescription93.prestatairefp93_adresse',
-				'Ficheprescription93.prestatairefp93_codepos',
-				'Ficheprescription93.prestatairefp93_localite',
-				'Ficheprescription93.prestatairefp93_tel' => array( 'maxlength' => 14 ),
-				'Ficheprescription93.prestatairefp93_fax' => array( 'maxlength' => 14 ),
-				'Ficheprescription93.prestatairefp93_email',
 			),
 			array(
 				'options' => $options,
 			)
 		)
+		// FIXME: suivant la valeur de typethematiquefp93_id
+		.$this->Default3->subform(
+			array(
+				'Ficheprescription93.selection_prestataire' => array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.selection_prestataire' ), 'empty' => true ),
+				'Ficheprescription93.selection_adresse_prestataire' => array( 'type' => 'select', 'options' => array(), 'empty' => true ),
+				'Prestatairehorspdifp93.id',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel' => array( 'maxlength' => 14 ),
+				'Prestatairehorspdifp93.fax' => array( 'maxlength' => 14 ),
+				'Prestatairehorspdifp93.email',
+			),
+			array(
+				'options' => $options,
+			)
+		)
+		// FIXME: suivant la valeur de typethematiquefp93_id
 		.$this->Html->tag( 'div', ' ', array( 'id' => 'CoordonneesPrestataire' ) )
 		.$this->Default3->subform(
 			array(
+				'Ficheprescription93.rdvprestataire_adresse_check' => array( 'type' => 'checkbox' ),
+				'Ficheprescription93.rdvprestataire_adresse',
 				'Ficheprescription93.statut' => array( 'type' => 'hidden' ),
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
@@ -280,17 +292,17 @@
 	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.typethematiquefp93_id',
 		array(
-			'Ficheprescription93.thematiquefp93',
-			'Ficheprescription93.categoriefp93',
-			'Ficheprescription93.filierefp93',
-			'Ficheprescription93.prestatairefp93',
+			'Ficheprescription93.prestatairehorspdifp93_id',
 			'Ficheprescription93.actionfp93',
-			'Ficheprescription93.prestatairefp93_adresse',
-			'Ficheprescription93.prestatairefp93_codepos',
-			'Ficheprescription93.prestatairefp93_localite',
-			'Ficheprescription93.prestatairefp93_tel',
-			'Ficheprescription93.prestatairefp93_fax',
-			'Ficheprescription93.prestatairefp93_email',
+			'Ficheprescription93.selection_prestataire',
+			'Ficheprescription93.selection_adresse_prestataire',
+			'Prestatairehorspdifp93.name',
+			'Prestatairehorspdifp93.adresse',
+			'Prestatairehorspdifp93.codepos',
+			'Prestatairehorspdifp93.localite',
+			'Prestatairehorspdifp93.tel',
+			'Prestatairehorspdifp93.fax',
+			'Prestatairehorspdifp93.email',
 		),
 		array( null, '', 'pdi' ),
 		true,
@@ -302,9 +314,6 @@
 		'Ficheprescription93.typethematiquefp93_id',
 		array(
 			'Ficheprescription93.numconvention',
-			'Ficheprescription93.thematiquefp93_id',
-			'Ficheprescription93.categoriefp93_id',
-			'Ficheprescription93.filierefp93_id',
 			'Ficheprescription93.prestatairefp93_id',
 			'Ficheprescription93.actionfp93_id',
 		),
@@ -442,18 +451,26 @@
 			'Ficheprescription93.numconvention' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.typethematiquefp93_id',
 			'Ficheprescription93.thematiquefp93_id',
-			'Ficheprescription93.thematiquefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.categoriefp93_id',
-			'Ficheprescription93.categoriefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.filierefp93_id',
-			'Ficheprescription93.filierefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.prestatairefp93_id',
-			// 'Ficheprescription93.prestatairefp93' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.actionfp93_id',
-			// 'Ficheprescription93.actionfp93' => array( 'event' => 'keyup' ),
+			'Ficheprescription93.action',
+			'Ficheprescription93.id',
 		),
 		array(
 			'url' => array( 'action' => 'ajax_action' ),
+			'onload' => !empty( $this->request->data )
+		)
+	);
+
+	echo $this->Ajax2->observe(
+		array(
+			'Ficheprescription93.selection_prestataire',
+			'Ficheprescription93.selection_adresse_prestataire',
+		),
+		array(
+			'url' => array( 'action' => 'ajax_prestataire_horspdi' ),
 			'onload' => !empty( $this->request->data )
 		)
 	);
@@ -465,5 +482,14 @@
 		array(
 			'Ficheprescription93.prestatairefp93_id',
 		)
+	);
+
+	echo $this->Observer->disableFieldsOnCheckbox(
+		'Ficheprescription93.rdvprestataire_adresse_check',
+		array(
+			'Ficheprescription93.rdvprestataire_adresse'
+		),
+		false,
+		true
 	);
 ?>

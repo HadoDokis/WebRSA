@@ -73,5 +73,35 @@
 				'finderQuery' => null
 			),
 		);
+
+		/**
+		 * Retourne une condition qui est en fait une sous-requête, avec les
+		 * jointures nécessaires pour atteindre le modèle Actionfp93, et comprenant
+		 * les conditions passées en paramètre.
+		 *
+		 * @param array $conditions Les conditions à appliquer sur le modèle Actionfp93
+		 * @return string
+		 */
+		public function getActionfp93Condition( array $conditions ) {
+			$conditions[] = "Filierefp93.categoriefp93_id = {$this->alias}.{$this->primaryKey}";
+
+			$query = array(
+				'alias' => 'Filierefp93',
+				'fields' => array( 'Filierefp93.categoriefp93_id' ),
+				'joins' => array(
+					$this->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => $conditions
+			);
+
+			$replacements = array(
+				'Filierefp93' => 'filieresfps93',
+				'Actionfp93' => 'actionsfps93',
+			);
+
+			$sql = $this->Filierefp93->sq( array_words_replace( $query, $replacements ) );
+
+			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+		}
 	}
 ?>

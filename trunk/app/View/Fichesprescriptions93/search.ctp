@@ -30,6 +30,7 @@
 	echo $this->Xform->input( 'Search.Ficheprescription93.filierefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Ficheprescription93.prestatairefp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
 	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93_id', array( 'type' => 'select', 'options' => array(), 'empty' => true, 'domain' => 'fichesprescriptions93' ) );
+	echo $this->Xform->input( 'Search.Ficheprescription93.actionfp93', array( 'type' => 'text', 'domain' => 'fichesprescriptions93' ) );
 
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.rdvprestataire_date', array( 'domain' => 'fichesprescriptions93' ) );
 	echo $this->SearchForm->dateRange( 'Search.Ficheprescription93.date_transmission', array( 'domain' => 'fichesprescriptions93' ) );
@@ -107,6 +108,31 @@
 		'Search.Ficheprescription93.exists',
 		'SpecificitesFichesprescriptions93',
 		array( null, '1' ),
+		true,
+		true
+	);
+
+	// Catalogue PDI
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.Ficheprescription93.typethematiquefp93_id',
+		array(
+			'Search.Ficheprescription93.prestatairehorspdifp93_id',
+			'Search.Ficheprescription93.actionfp93',
+		),
+		array( null, '', 'pdi' ),
+		true,
+		true
+	);
+
+	// Catalogue Hors PDI
+	echo $this->Observer->disableFieldsOnValue(
+		'Search.Ficheprescription93.typethematiquefp93_id',
+		array(
+			'Search.Ficheprescription93.numconvention',
+			'Search.Ficheprescription93.prestatairefp93_id',
+			'Search.Ficheprescription93.actionfp93_id',
+		),
+		array( 'horspdi' ),
 		true,
 		true
 	);

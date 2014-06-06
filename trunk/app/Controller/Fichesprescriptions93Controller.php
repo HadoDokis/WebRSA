@@ -75,6 +75,7 @@
 			'ajax_action' => 'read',
 			'ajax_prescripteur' => 'read',
 			'ajax_prestataire' => 'read',
+			'ajax_prestataire_horspdi' => 'read',
 			'add' => 'create',
 			'edit' => 'update',
 			'index' => 'read',
@@ -92,6 +93,8 @@
 		public $commeDroit = array(
 			'ajax_prescripteur' => 'Fichesprescriptions93:index',
 			'ajax_action' => 'Fichesprescriptions93:index',
+			'ajax_prestataire' => 'Fichesprescriptions93:index',
+			'ajax_prestataire_horspdi' => 'Fichesprescriptions93:index',
 		);
 
 		/**
@@ -164,6 +167,89 @@
 
 			$this->set( compact( 'result' ) );
 			$this->layout = 'ajax';
+		}
+
+		/**
+		 * @fixme quand c'est vide, tout remettre à blanc
+		 * @fixme quand on revoit la page et qu'il y avait des erreurs, on perd la liste des adresses
+		 */
+		public function ajax_prestataire_horspdi() {
+			$prestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.selection_prestataire' );
+			$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.selection_adresse_prestataire' );
+
+			// Initialisation du json retourné
+			$json = array(
+				'success' => true,
+				'fields' => array(
+					'Prestatairehorspdifp93.name' => array(
+						'id' => domId( 'Prestatairehorspdifp93.name' ),
+						'value' => null,
+						'type' => 'text'
+					),
+					'Ficheprescription93.selection_adresse_prestataire' => array(
+						'id' => domId( 'Ficheprescription93.selection_adresse_prestataire' ),
+						'value' => null,
+						'type' => 'select',
+						'options' => array()
+					)
+				)
+			);
+
+			$adressePaths = array( 'adresse', 'codepos', 'localite', 'tel', 'fax', 'email'	);
+			foreach( $adressePaths as $adressePath ) {
+				$adressePath = "Prestatairehorspdifp93.{$adressePath}";
+				$json['fields'][$adressePath] = array(
+					'id' => domId( $adressePath ),
+					'value' => null,
+					'type' => 'text'
+				);
+			}
+
+			// Sélection de l'adresse d'un prestataire, remplissage des champs du prestataire hors PDI
+			if( !empty( $adresseprestatairefp93_id ) ) {
+				$query = array(
+					'conditions' => array(
+						'Adresseprestatairefp93.id' => $adresseprestatairefp93_id
+					)
+				);
+				$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+
+				foreach( $adressePaths as $adressePath ) {
+					$fromPath = "Adresseprestatairefp93.{$adressePath}";
+					$toPath = "Prestatairehorspdifp93.{$adressePath}";
+					$json['fields'][$toPath]['value'] = Hash::get( $result, $fromPath );
+				}
+			}
+
+			// Lorsque l'on connaît le prestataire, on remplit son nom et la liste des adresses
+			if( !empty( $prestatairefp93_id ) ) {
+				$query = array(
+					'conditions' => array(
+						'Prestatairefp93.id' => $prestatairefp93_id
+					),
+					'contain' => array(
+						'Adresseprestatairefp93'
+					)
+				);
+				$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
+
+				// Nom du prestataire
+				$json['fields']['Prestatairehorspdifp93.name']['value'] = Hash::get( $result, 'Prestatairefp93.name' );
+
+				// Recherche de la liste des adresses liées à ce prestataire
+				$adresses = array();
+				foreach( (array)Hash::get( $result, 'Adresseprestatairefp93' ) as $adresse ) {
+					$adresses[] = array(
+						'id' => $adresse['id'],
+						'name' => "{$adresse['adresse']}, {$adresse['codepos']} {$adresse['localite']}"
+					);
+				}
+				$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $adresses;
+			}
+
+			$this->set( compact( 'json' ) );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
 		}
 
 		/**
@@ -352,6 +438,9 @@
 
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
+
+			// Liste des prestataires pour permettre le pré-remplissage de l'adresse hors PDI
+			$options['Ficheprescription93']['selection_prestataire'] = $this->Ficheprescription93->Prestatairefp93->find( 'list' );
 
 			$urlmenu = "/fichesprescriptions93/index/{$personne_id}";
 

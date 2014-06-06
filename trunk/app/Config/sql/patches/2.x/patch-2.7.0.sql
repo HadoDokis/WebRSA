@@ -366,7 +366,7 @@ CREATE TABLE actionsfps93 (
 	filierefp93_id		INTEGER NOT NULL REFERENCES filieresfps93(id),
 	prestatairefp93_id	INTEGER NOT NULL REFERENCES prestatairesfps93(id),
     name				VARCHAR(250) NOT NULL,
-    numconvention		VARCHAR(250) DEFAULT NULL,
+    numconvention		VARCHAR(250) NOT NULL,
 	annee				INTEGER NOT NULL,
 	duree				VARCHAR(100) DEFAULT NULL,
 	actif				CHAR(1) NOT NULL,
@@ -377,7 +377,7 @@ COMMENT ON TABLE actionsfps93 IS 'Actions pour la fiche de prescription - CG 93'
 
 CREATE INDEX actionsfps93_filierefp93_id_idx ON actionsfps93( filierefp93_id );
 CREATE INDEX actionsfps93_prestatairefp93_id_idx ON actionsfps93( prestatairefp93_id );
-CREATE INDEX actionsfps93_upper_numconvention_idx ON actionsfps93( UPPER( numconvention ) );
+CREATE UNIQUE INDEX actionsfps93_upper_numconvention_idx ON actionsfps93( UPPER( numconvention ) );
 CREATE UNIQUE INDEX actionsfps93_filierefp93_id_prestatairefp93_id_name_annee_actif_idx ON actionsfps93( filierefp93_id, prestatairefp93_id, NOACCENTS_UPPER( name ), annee ) WHERE actif = '1';
 
 ALTER TABLE actionsfps93 ADD CONSTRAINT actionsfps93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
@@ -449,6 +449,25 @@ ALTER TABLE motifsnonintegrationsfps93 ADD CONSTRAINT motifsnonintegrationsfps93
 
 --------------------------------------------------------------------------------
 
+DROP TABLE IF EXISTS prestataireshorspdifps93 CASCADE;
+CREATE TABLE prestataireshorspdifps93 (
+    id					SERIAL NOT NULL PRIMARY KEY,
+	name				VARCHAR(250) NOT NULL,
+	adresse				TEXT NOT NULL,
+	codepos				VARCHAR(5) NOT NULL,
+	localite			VARCHAR(250) NOT NULL,
+	tel					VARCHAR(10) DEFAULT NULL,
+	fax					VARCHAR(10) DEFAULT NULL,
+	email				VARCHAR(100) DEFAULT NULL,
+    created				TIMESTAMP WITHOUT TIME ZONE,
+    modified			TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE prestataireshorspdifps93 IS 'Prestataires hors PDI pour la fiche de prescription - CG 93';
+
+CREATE INDEX prestataireshorspdifps93_name_idx ON prestataireshorspdifps93( name );
+
+--------------------------------------------------------------------------------
+
 DROP TABLE IF EXISTS fichesprescriptions93 CASCADE;
 CREATE TABLE fichesprescriptions93 (
     id							SERIAL NOT NULL PRIMARY KEY,
@@ -464,8 +483,10 @@ CREATE TABLE fichesprescriptions93 (
     actionfp93_id				INTEGER DEFAULT NULL REFERENCES actionsfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	-- Pour le catalogue Hors PDI, on stocke l'intitulé dans la fiche
     actionfp93					VARCHAR(250) DEFAULT NULL,
-	-- TODO: adresseprestatairefp93_id, prestatairefp93_id
-	prestatairefp93_id			INTEGER NOT NULL REFERENCES prestatairesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	-- Prestataire PDI ou Hors PDI
+	prestatairefp93_id			INTEGER DEFAULT NULL REFERENCES prestatairesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	prestatairehorspdifp93_id	INTEGER DEFAULT NULL REFERENCES prestataireshorspdifps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	rdvprestataire_adresse		TEXT DEFAULT NULL,
 	dd_action					DATE DEFAULT NULL,
 	df_action					DATE DEFAULT NULL,
 	duree_action				VARCHAR(100) DEFAULT NULL,
@@ -514,6 +535,7 @@ CREATE INDEX fichesprescriptions93_filierefp93_id_idx ON fichesprescriptions93( 
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 CREATE INDEX fichesprescriptions93_actionfp93_idx ON fichesprescriptions93( actionfp93 );
 CREATE INDEX fichesprescriptions93_prestatairefp93_id_idx ON fichesprescriptions93( prestatairefp93_id );
+CREATE UNIQUE INDEX fichesprescriptions93_prestatairehorspdifp93_id_idx ON fichesprescriptions93( prestatairehorspdifp93_id );
 
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne', '99annulee'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_benef_retour_presente_in_list_chk CHECK ( cakephp_validate_in_list( benef_retour_presente, ARRAY['oui', 'non', 'excuse'] ) );
@@ -521,6 +543,11 @@ ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_retenue_in_list_chk CHECK ( cakephp_validate_in_list( personne_retenue, ARRAY['0', '1'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_souhaite_integrer_in_list_chk CHECK ( cakephp_validate_in_list( personne_souhaite_integrer, ARRAY['0', '1'] ) );
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_personne_a_integre_in_list_chk CHECK ( cakephp_validate_in_list( personne_a_integre, ARRAY['0', '1'] ) );
+
+ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_prestatairefp93_id_or_prestatairehorspdifp93_id_isnull_chk CHECK(
+	( prestatairefp93_id IS NULL AND prestatairehorspdifp93_id IS NOT NULL )
+	OR ( prestatairefp93_id IS NOT NULL AND prestatairehorspdifp93_id IS NULL )
+);
 
 --------------------------------------------------------------------------------
 

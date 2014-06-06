@@ -87,6 +87,24 @@
 				$fields['Ficheprescription93.numconvention']['value'] = null;
 			}
 
+			$conditionsActionfp93 = array();
+			$typethematiquefp93_id = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
+			$action = Hash::get( $data, 'Ficheprescription93.action' );
+			// TODO: SSI PDI ET formulaire add_edit
+			if( $typethematiquefp93_id === 'pdi' ) {
+				if( $action === 'add' ) {
+					$conditionsActionfp93 = array(
+						'Actionfp93.actif' => '1'
+					);
+				}
+				/*else if( $action === 'edit' ) {
+					$conditionsActionfp93 = array(
+						'Actionfp93.actif' => '1'
+					);
+				}
+				$this->log( var_export( $data, true ), LOG_DEBUG );*/
+			}
+
 			if( !empty( $value ) ) {
 				// On sélectionne le type
 				if( $current == $invertedPaths['Ficheprescription93.typethematiquefp93_id'] ) {
@@ -95,6 +113,11 @@
 							'Thematiquefp93.type' => Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' )
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = ClassRegistry::init( 'Thematiquefp93' )->getActionfp93Condition( $conditionsActionfp93 );
+					}
+
 					$fields['Ficheprescription93.thematiquefp93_id']['options'] = $this->ajaxOptions( 'Thematiquefp93', $query );
 				}
 
@@ -105,8 +128,14 @@
 							'Categoriefp93.thematiquefp93_id' => Hash::get( $data, 'Ficheprescription93.thematiquefp93_id' )
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = ClassRegistry::init( 'Categoriefp93' )->getActionfp93Condition( $conditionsActionfp93 );
+					}
+
 					$fields['Ficheprescription93.categoriefp93_id']['options'] = $this->ajaxOptions( 'Categoriefp93', $query );
 				}
+
 				// On sélectionne la catégorie
 				if( $current == $invertedPaths['Ficheprescription93.categoriefp93_id'] ) {
 					$query = array(
@@ -114,8 +143,14 @@
 							'Filierefp93.categoriefp93_id' => Hash::get( $data, 'Ficheprescription93.categoriefp93_id' )
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = ClassRegistry::init( 'Filierefp93' )->getActionfp93Condition( $conditionsActionfp93 );
+					}
+
 					$fields['Ficheprescription93.filierefp93_id']['options'] = $this->ajaxOptions( 'Filierefp93', $query );
 				}
+
 				// On sélectionne la filière
 				if( $current == $invertedPaths['Ficheprescription93.filierefp93_id'] ) {
 					$query = array(
@@ -123,6 +158,11 @@
 							'Actionfp93.filierefp93_id' => Hash::get( $data, 'Ficheprescription93.filierefp93_id' )
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = $conditionsActionfp93;
+					}
+
 					$fields['Ficheprescription93.actionfp93_id']['options'] = $this->ajaxOptions( 'Actionfp93', $query );
 
 					$query = array(
@@ -136,8 +176,14 @@
 							'Actionfp93.filierefp93_id' => Hash::get( $data, 'Ficheprescription93.filierefp93_id' )
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = ClassRegistry::init( 'Prestatairefp93' )->getActionfp93Condition( $conditionsActionfp93 );
+					}
+
 					$fields['Ficheprescription93.prestatairefp93_id']['options'] = $this->ajaxOptions( 'Prestatairefp93', $query );
 				}
+
 				// On sélectionne le prestataire
 				// TODO
 				if( $current == $invertedPaths['Ficheprescription93.prestatairefp93_id'] ) {
@@ -147,8 +193,14 @@
 							'Actionfp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' ),
 						)
 					);
+
+					if( !empty( $conditionsActionfp93 ) ) {
+						$query['conditions'][] = $conditionsActionfp93;
+					}
+
 					$fields['Ficheprescription93.actionfp93_id']['options'] = $this->ajaxOptions( 'Actionfp93', $query );
 				}
+
 				// On sélectionne l'action
 				if( $current == $invertedPaths['Ficheprescription93.actionfp93_id'] ) {
 					$result = ClassRegistry::init( 'Actionfp93' )->find(
@@ -157,6 +209,7 @@
 							'field' => array(
 								'Actionfp93.prestatairefp93_id',
 								'Actionfp93.numconvention',
+								'Actionfp93.duree',
 							),
 							'conditions' => array(
 								'Actionfp93.id' => Hash::get( $data, 'Ficheprescription93.actionfp93_id' )
@@ -166,6 +219,7 @@
 
 					$fields['Ficheprescription93.numconvention']['value'] = Hash::get( $result, 'Actionfp93.numconvention' );
 					$fields['Ficheprescription93.prestatairefp93_id']['value'] = Hash::get( $result, 'Actionfp93.prestatairefp93_id' );
+					$fields['Ficheprescription93.duree_action']['value'] = Hash::get( $result, 'Actionfp93.prestatairefp93_id' );
 				}
 			}
 
@@ -186,6 +240,8 @@
 		public function ajaxOnLoad( array $data ) {
 			$return = array();
 			$data = $this->unprefixAjaxRequest( $data );
+
+			$typethematiquefp93_id = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
 
 			$fieldKeys = array_keys( $this->Ficheprescription93->correspondances );
 			foreach( $this->Ficheprescription93->correspondances as $path => $field ) {
@@ -223,25 +279,28 @@
 
 					$elmt['options'] = $this->ajaxOptions( 'Prestatairefp93', $query );
 				}
-				else if( $path != 'Ficheprescription93.numconvention' ) { // TODO: la convention n'est pas gérée
+				else if( $path !== 'Ficheprescription93.numconvention' ) { // TODO: la convention n'est pas gérée
 					$parentPath = $fieldKeys[$pathOffset-1];
 					$parentField = $this->Ficheprescription93->correspondances[$parentPath];
 
 					list( $modelName, $fieldName ) = model_field( $field );
 					list( $parentModelName, $parentFieldName ) = model_field( $parentField );
-					$query = array(
-						'conditions' => array(
-							$parentField => Hash::get( $data, $parentPath )
-						)
-					);
 
-					if( $parentModelName !== $modelName ) {
-						$query['joins'] = array(
-							ClassRegistry::init( $modelName )->join( $parentModelName, array( 'type' => 'INNER' ) )
+					if( !( $typethematiquefp93_id === 'horspdi' && in_array( $parentModelName, array( 'Prestatairefp93' ) ) ) ) {
+						$query = array(
+							'conditions' => array(
+								$parentField => Hash::get( $data, $parentPath )
+							)
 						);
-					}
 
-					$elmt['options'] = $this->ajaxOptions( $modelName, $query );
+						if( $parentModelName !== $modelName ) {
+							$query['joins'] = array(
+								ClassRegistry::init( $modelName )->join( $parentModelName, array( 'type' => 'INNER' ) )
+							);
+						}
+
+						$elmt['options'] = $this->ajaxOptions( $modelName, $query );
+					}
 				}
 
 				$return[$path] = $elmt;
@@ -274,7 +333,8 @@
 						'OR' => array(
 							'NOACCENTS_UPPER( "Actionfp93"."numconvention" ) LIKE' => '%'.noaccents_upper( $value ).'%',
 							'NOACCENTS_UPPER( "Actionfp93"."name" ) LIKE' => '%'.noaccents_upper( $value ).'%',
-						)
+						),
+						'Actionfp93.actif' => '1' // FIXME: si c'est un add
 					),
 					'order' => array(
 						'Actionfp93.numconvention ASC'
@@ -316,77 +376,6 @@
 					'prefix' => $data['prefix'],
 					'options' => Hash::extract( $results, '{n}.Actionfp93' )
 				);
-			}
-			// Catalogue Hors PDI
-			else {
-				$pdiField = "{$data['Target']['path']}_id";
-
-				if( isset( $this->Ficheprescription93->correspondances[$pdiField] ) && $pdiField !== 'Ficheprescription93.actionfp93_id' ) {
-					list( $modelName, $fieldName ) = model_field( $this->Ficheprescription93->correspondances[$pdiField] );
-					$Model = ClassRegistry::init( $modelName );
-
-					$conditions = array(
-						"NOACCENTS_UPPER( \"{$Model->alias}\".\"{$Model->displayField}\" ) LIKE" => noaccents_upper( $value ).'%',
-					);
-
-					$joins = array();
-
-					// Ajout de conditions avec les valeurs précédentes
-					if( $data['Target']['path'] === 'Ficheprescription93.thematiquefp93' ) {
-						$conditions['Thematiquefp93.type'] = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
-					}
-					else if( $data['Target']['path'] === 'Ficheprescription93.categoriefp93' ) {
-						$joins[] = $Model->join( 'Thematiquefp93', array( 'type' => 'INNER' ) );
-						$conditions['Thematiquefp93.type'] = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
-						$conditions['NOACCENTS_UPPER( "Thematiquefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.thematiquefp93' ) );
-					}
-					else if( $data['Target']['path'] === 'Ficheprescription93.filierefp93' ) {
-						$joins[] = $Model->join( 'Categoriefp93', array( 'type' => 'INNER' ) );
-						$joins[] = $Model->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) );
-						$conditions['Thematiquefp93.type'] = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
-						$conditions['NOACCENTS_UPPER( "Categoriefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.categoriefp93' ) );
-						$conditions['NOACCENTS_UPPER( "Thematiquefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.thematiquefp93' ) );
-					}
-					else if( $data['Target']['path'] === 'Ficheprescription93.prestatairefp93' ) {
-						$joins[] = $Model->join( 'Actionfp93', array( 'type' => 'INNER' ) );
-						$joins[] = $Model->Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) );
-						$joins[] = $Model->Actionfp93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) );
-						$joins[] = $Model->Actionfp93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) );
-						$conditions['Thematiquefp93.type'] = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
-						$conditions['NOACCENTS_UPPER( "Filierefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.filierefp93' ) );
-						$conditions['NOACCENTS_UPPER( "Categoriefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.categoriefp93' ) );
-						$conditions['NOACCENTS_UPPER( "Thematiquefp93"."name" )'] = noaccents_upper( Hash::get( $data, 'Ficheprescription93.thematiquefp93' ) );
-					}
-
-					$query = array(
-						'fields' => array(
-							"{$Model->alias}.{$Model->primaryKey}",
-							"{$Model->alias}.{$Model->displayField}",
-						),
-						'conditions' => $conditions,
-						'joins' => $joins,
-						'order' => array(
-							"{$Model->alias}.{$Model->displayField} ASC"
-						),
-						'group' => array(
-							"{$Model->alias}.{$Model->primaryKey}",
-							"{$Model->alias}.{$Model->displayField}",
-						),
-					);
-
-					$results = $Model->find( 'all', $query );
-
-					$fields[$data['Target']['path']] = array(
-						'id' => domId( "{$data['prefix']}{$data['Target']['path']}" ),
-						'value' => $value,
-						'type' => 'ajax_select',
-						'prefix' => $data['prefix'],
-						'options' => Hash::extract( $results, "{n}.{$Model->alias}" )
-					);
-				}
-				else {
-					$fields = array();
-				}
 			}
 
 			return array( 'success' => true, 'fields' => $fields );

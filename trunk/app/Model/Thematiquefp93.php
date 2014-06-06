@@ -60,5 +60,37 @@
 				'finderQuery' => null
 			),
 		);
+
+		/**
+		 * Retourne une condition qui est en fait une sous-requête, avec les
+		 * jointures nécessaires pour atteindre le modèle Actionfp93, et comprenant
+		 * les conditions passées en paramètre.
+		 *
+		 * @param array $conditions Les conditions à appliquer sur le modèle Actionfp93
+		 * @return string
+		 */
+		public function getActionfp93Condition( array $conditions ) {
+			$conditions[] = "Categoriefp93.thematiquefp93_id = {$this->alias}.{$this->primaryKey}";
+
+			$query = array(
+				'alias' => 'Categoriefp93',
+				'fields' => array( 'Categoriefp93.thematiquefp93_id' ),
+				'joins' => array(
+					$this->Categoriefp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+					$this->Categoriefp93->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => $conditions
+			);
+
+			$replacements = array(
+				'Categoriefp93' => 'categoriesfps93',
+				'Filierefp93' => 'filieresfps93',
+				'Actionfp93' => 'actionsfps93',
+			);
+
+			$sql = $this->Categoriefp93->sq( array_words_replace( $query, $replacements ) );
+
+			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+		}
 	}
 ?>

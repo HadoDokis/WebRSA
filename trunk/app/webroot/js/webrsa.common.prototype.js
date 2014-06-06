@@ -319,27 +319,41 @@ function disableFieldsOnCheckbox( cbId, fieldsIds, condition, toggleVisibility )
 		if( field != null ) {
 			if( checked != condition ) {
 				field.enable();
-                                //ajout
-                                if( toggleVisibility ) {
-                                        field.show();
-                                }
-                                //fin ajout
-				if( input = field.up( 'div.input' ) )
-					input.removeClassName( 'disabled' );
-				else if( input = field.up( 'div.checkbox' ) )
-					input.removeClassName( 'disabled' );
+				//ajout
+				if( toggleVisibility ) {
+					field.show();
+				}
+				//fin ajout
+				var div = field.up( 'div.input' );
+				if( !div ) {
+					field.up( 'div.checkbox' );
+				}
+
+				if( div ) {
+					div.removeClassName( 'disabled' );
+					if( toggleVisibility ) {
+						div.show();
+					}
+				}
 			}
 			else {
 				field.disable();
-                                //ajout
-                                if( toggleVisibility ) {
-                                    field.hide();
-                                }
-                                //fin ajout
-				if( input = field.up( 'div.input' ) )
-					input.addClassName( 'disabled' );
-				else if( input = field.up( 'div.checkbox' ) )
-					input.addClassName( 'disabled' );
+				//ajout
+				if( toggleVisibility ) {
+					field.hide();
+				}
+				//fin ajout
+				var div = field.up( 'div.input' );
+				if( !div ) {
+					field.up( 'div.checkbox' );
+				}
+
+				if( div ) {
+					div.addClassName( 'disabled' );
+					if( toggleVisibility ) {
+						div.hide();
+					}
+				}
 			}
 		}
 	} );

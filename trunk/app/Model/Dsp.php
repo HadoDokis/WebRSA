@@ -1,11 +1,27 @@
 <?php
+	/**
+	 * Code source de la classe Dsp.
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
 	// FIXME: possible de faire plus "proprement" qu'avec des define ?
 	define( 'ANNOBTNIVDIPMAX_MIN_YEAR', ( date( 'Y' ) - 100 ) );
 	define( 'ANNOBTNIVDIPMAX_MAX_YEAR', date( 'Y' ) );
 	define( 'ANNOBTNIVDIPMAX_MESSAGE', 'Veuillez entrer une année comprise entre '.ANNOBTNIVDIPMAX_MIN_YEAR.' et '.ANNOBTNIVDIPMAX_MAX_YEAR.' .' );
 
+	/**
+	 * La classe Dsp ...
+	 *
+	 * @package app.Model
+	 */
 	class Dsp extends AppModel
 	{
+		/**
+		 * Nom du modèle.
+		 *
+		 * @var string
+		 */
 		public $name = 'Dsp';
 
 		protected $_modules = array( 'caf' );
@@ -235,6 +251,11 @@
 			)
 		);
 
+		/**
+		 * Behaviors utilisés par le modèle.
+		 *
+		 * @var array
+		 */
 		public $actsAs = array(
 			'Conditionnable',
 			'Autovalidate2',
@@ -603,6 +624,162 @@
 			// -----------------------------------------------------------------
 
 			return $querydata;
+		}
+
+		/**
+		 * Tentative de sauvegarde de certains champs des Dsp, soit par la création
+		 * d'une Dsp (si l'allocataire ne possède ni Dsp, ni DspRev), soit par
+		 * création d'une DspRev avec reprise des données de la Dsp (s'il ne
+		 * possédait aucune DspRev), soit par création d'une nouvelle version des
+		 * DspRev avec reprise des données de la dernière DspRev (s'il existait
+		 * déjà une DspRev).
+		 *
+		 * Si on n'envoie que des données null ou chaîne vide, on n'essairea pas
+		 * d'enregistrer des données mais la méthode retournera true.
+		 *
+		 * @param integer $personne_id
+		 * @param array $data ATTENTION: le nom de modèle sera toujours Dsp
+		 * @return boolean
+		 */
+		public function updateDerniereDsp( $personne_id, array $data ) {
+			$fields = array_keys( (array)Hash::get( $data, 'Dsp' ) );
+			$success = true;
+
+			$query = array(
+				'fields' => array(
+					'Dsp.id',
+					'DspRev.id',
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Personne->join(
+						'Dsp',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
+							)
+						)
+					),
+					$this->Personne->join(
+						'DspRev',
+						array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
+							)
+						)
+					),
+				),
+				'conditions' => array(
+					'Personne.id' => $personne_id
+				)
+			);
+
+			foreach( $fields as $field ) {
+				$query['fields'][] = "Dsp.{$field}";
+				$query['fields'][] = "DspRev.{$field}";
+			}
+
+			$oldRecord = $this->Personne->find( 'first', $query );
+
+			$newRecord = array();
+			$newModelName = null;
+
+			// Si on a des DspRev
+			if( !empty( $oldRecord['DspRev']['id'] ) ) {
+				// Si on a des différences dans les données
+				$equal = true;
+				foreach( $fields as $field ) {
+					$equal = ( $oldRecord['DspRev'][$field] == $data['Dsp'][$field] ) && $equal;
+				}
+				if( !$equal ) {
+					$oldModelName = 'DspRev';
+					$newModelName = 'DspRev';
+					$linkedSuffix = '';
+				}
+			}
+			// Pas de DspRev mais une Dsp
+			else if( !empty( $oldRecord['Dsp']['id'] ) ) {
+				// Si on a des différences dans les données
+				$equal = true;
+				foreach( $fields as $field ) {
+					$equal = ( $oldRecord['Dsp'][$field] == $data['Dsp'][$field] ) && $equal;
+				}
+				if( !$equal ) {
+					$oldModelName = 'Dsp';
+					$newModelName = 'DspRev';
+					$linkedSuffix = 'Rev';
+				}
+			}
+			// S'il faut créer un enregistrement de Dsp parce que l'on a des données non vides
+			else {
+				$allNull = true;
+				foreach( $fields as $field ) {
+					$allNull = empty( $data['Dsp'][$field] ) && $allNull;
+				}
+				if( !$allNull ) {
+					$oldModelName = 'Dsp';
+					$newModelName = 'Dsp';
+					$linkedSuffix = '';
+				}
+			}
+
+			if( $newModelName !== null ) {
+				// Début
+				$removePaths = array(
+					"{$oldModelName}.id",
+					"{$oldModelName}.created",
+					"{$oldModelName}.modified",
+				);
+				$replacements = array( 'Dsp' => 'DspRev' );
+
+				$query = array(
+					'contain' => array(),
+					'conditions' => array(
+						"{$oldModelName}.id" => $oldRecord[$oldModelName]['id']
+					)
+				);
+
+				// Modèles liés aux modèle Dsp/DspRev
+				foreach( $this->Personne->{$oldModelName}->hasMany as $alias => $params ) {
+					if( strstr( $alias, 'Detail' ) !== false ) {
+						$query['contain'][] = $alias;
+
+						$removePaths[] = "{$alias}.{n}.id";
+						$removePaths[] = "{$alias}.{n}.{$params['foreignKey']}";
+
+						$replacements[$alias] = "{$alias}{$linkedSuffix}";
+					}
+				}
+				$newRecord = $this->Personne->{$oldModelName}->find( 'first', $query );
+
+				foreach( $removePaths as $removePath ) {
+					$newRecord = Hash::remove( $newRecord, $removePath );
+				}
+
+				$newRecord = array_words_replace( $newRecord, $replacements );
+				$newRecord[$newModelName]['personne_id'] = $personne_id;
+				$newRecord[$newModelName]['dsp_id'] = Hash::get( $oldRecord, 'Dsp.id' );
+
+				foreach( $fields as $field ) {
+					$newRecord[$newModelName][$field] = Hash::get( $data, "Dsp.{$field}" );
+				}
+
+				// Pour les DspRev, le champ haspiecejointe est obligatoire
+				if( $newModelName === 'DspRev' && !isset( $newRecord[$newModelName]['haspiecejointe'] ) ) {
+					$newRecord[$newModelName]['haspiecejointe'] = '0';
+				}
+
+				$success = $this->saveResultAsBool(
+					$this->Personne->{$newModelName}->saveAll(
+						$newRecord,
+						array( 'atomic' => false, 'deep' => true )
+					)
+				) && $success;
+			}
+
+			return $success;
 		}
 	}
 ?>
