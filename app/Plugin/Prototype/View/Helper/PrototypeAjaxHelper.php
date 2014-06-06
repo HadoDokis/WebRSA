@@ -133,13 +133,16 @@
 			$params += $default;
 			$fields = Hash::normalize( (array)$fields );
 
+			$md5 = md5( serialize( $fields ) );
+			$parametersName = "ajax_parameters_{$md5}";
+
 			// Les paramètres
 			$url = Router::url( $params['url'] );
 			$domIds = array();
 			foreach( array_keys( $fields ) as $path ) {
 				$domIds[] = $this->domId( $path );
 			}
-			$script = "var ajax_parameters = { 'url': '{$url}', 'prefix': '{$params['prefix']}', 'fields': [ '".implode( "', '", $domIds )."' ] };\n";
+			$script = "var {$parametersName} = { 'url': '{$url}', 'prefix': '{$params['prefix']}', 'fields': [ '".implode( "', '", $domIds )."' ] };\n";
 
 			// Les Event.observe()
 			foreach( $fields as $path => $value ) {
@@ -152,7 +155,7 @@
 					$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );";
 				}
 
-				$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { ajax_action( event, ajax_parameters ); } );\n";
+				$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { ajax_action( event, {$parametersName} ); } );\n";
 			}
 
 			// onLoad ?
@@ -163,10 +166,11 @@
 					$value = str_replace( "'", "\\'", Hash::get( $this->request->data, $path ) );
 					$values[] = "'{$domId}': '{$value}'";
 				}
+				$onloadParametersName = "ajax_onload_parameters_{$md5}";
 
-				$script .= "var ajax_onload_parameters =  Object.clone( ajax_parameters );
-				ajax_onload_parameters['values'] = { ".implode( ", ", $values )." };
-				document.observe( 'dom:loaded', function(event) { ajax_action( event, ajax_onload_parameters ); } );\n";
+				$script .= "var {$onloadParametersName} =  Object.clone( {$parametersName} );
+				{$onloadParametersName}['values'] = { ".implode( ", ", $values )." };
+				document.observe( 'dom:loaded', function(event) { ajax_action( event, {$onloadParametersName} ); } );\n";
 			}
 
 			return $this->render( $script );
