@@ -50,6 +50,9 @@ msgstr "Prestataire"
 msgid "Search.Ficheprescription93.actionfp93_id"
 msgstr "Intitulé"
 
+msgid "Search.Ficheprescription93.actionfp93"
+msgstr "Intitulé"
+
 msgid "Search.Ficheprescription93.rdvprestataire_date"
 msgstr "Date de rendez-vous"
 
@@ -158,6 +161,12 @@ msgstr "Le bénéficiaire est invité à se munir de"
 
 msgid "Ficheprescription93.documentbeneffp93_autre"
 msgstr "Si autre, précisez"
+
+msgid "Ficheprescription93.rdvprestataire_adresse_check"
+msgstr "Adresse du lieu de rendez-vous si différente de l'adresse rapatriée"
+
+msgid "Ficheprescription93.rdvprestataire_adresse"
+msgstr "Adresse du lieu de rendez-vous"
 
 msgid "Ficheprescription93.statut"
 msgstr "Statut"
@@ -439,6 +448,35 @@ msgstr "Date du bilan à mi-parcours"
 
 msgid "Ficheprescription93.date_bilan_final"
 msgstr "Date du bilan final"
+
+################################################################################
+
+msgid "Ficheprescription93.selection_prestataire"
+msgstr "Prestataire (pour pré-remplissage)"
+
+msgid "Ficheprescription93.selection_adresse_prestataire"
+msgstr "Adresse du prestataire (pour pré-remplissage)"
+
+msgid "Prestatairehorspdifp93.name"
+msgstr "Prestataire"
+
+msgid "Prestatairehorspdifp93.adresse"
+msgstr "Adresse"
+
+msgid "Prestatairehorspdifp93.codepos"
+msgstr "Code postal"
+
+msgid "Prestatairehorspdifp93.localite"
+msgstr "Localité"
+
+msgid "Prestatairehorspdifp93.tel"
+msgstr "Téléphone"
+
+msgid "Prestatairehorspdifp93.fax"
+msgstr "Fax"
+
+msgid "Prestatairehorspdifp93.email"
+msgstr "Email"
 
 ################################################################################
 

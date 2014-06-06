@@ -11,41 +11,121 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
--- INFO: A passer après l'import du shell de 2013
--- Insertion du catalogue Hors PDI de 2013
+/*
+SELECT
+		actionscandidats.name,
+		'93XXX' || REGEXP_REPLACE( EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction )::TEXT, '^..(..)$', E'\\1' ) || REGEXP_REPLACE( actionscandidats.name, '^(..).*$', E'000\\1' ) AS "Numero Convention Action",
+		EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction ) AS "Annee"
+	FROM actionscandidats_personnes
+		INNER JOIN actionscandidats ON ( actionscandidats_personnes.actioncandidat_id = actionscandidats.id )
+	GROUP BY EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction ), actionscandidats.name, '93XXX' || REGEXP_REPLACE( EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction )::TEXT, '^..(..)$', E'\\1' ) || REGEXP_REPLACE( actionscandidats.name, '^(..).*$', E'000\\1' )
+	ORDER BY EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction ), actionscandidats.name;
+*/
+
+INSERT INTO prestatairesfps93 ( name, created, modified ) VALUES
+	( 'Non définie', NOW(), NOW() );
+
+-- Fonction utilitaire.
+CREATE OR REPLACE FUNCTION select_prestatairefp93_id( TEXT ) RETURNS INT AS
+$$
+	SELECT
+			prestatairesfps93.id
+		FROM prestatairesfps93
+		WHERE
+			NOACCENTS_UPPER( prestatairesfps93.name ) = NOACCENTS_UPPER( $1 )
+		LIMIT 1
+$$
+LANGUAGE 'sql';
+
+INSERT INTO adressesprestatairesfps93 ( prestatairefp93_id, adresse, codepos, localite, tel, fax, email, created, modified ) VALUES
+	( ( SELECT id FROM prestatairesfps93 WHERE name = 'Non définie' LIMIT 1 ), 'Non définie', '00000', 'Non définie', NULL, NULL, NULL, NOW(), NOW() );
+
 INSERT INTO thematiquesfps93 ( type, name, created, modified ) VALUES
+	( 'pdi', 'Prescription professionnelle', NOW(), NOW() ),
 	( 'horspdi', 'Prescription professionnelle', NOW(), NOW() ),
+	( 'pdi', 'Prescription socioprofessionnelle', NOW(), NOW() ),
 	( 'horspdi', 'Prescription socioprofessionnelle', NOW(), NOW() ),
 	( 'horspdi', 'Prescription Pôle Emploi', NOW(), NOW() ),
 	( 'horspdi', 'Prescription sociale', NOW(), NOW() ),
+	( 'pdi', 'Prescription vers les acteurs de la santé', NOW(), NOW() ),
+	( 'pdi', 'Prescription culture loisirs vacances', NOW(), NOW() ),
 	( 'horspdi', 'Autres', NOW(), NOW() );
 
-INSERT INTO categoriesfps93 ( thematiquefp93_id, name, created, modified ) VALUES
-	-- Prescription professionnelle hors PDI
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription professionnelle' LIMIT 1 ), 'Non définie', NOW(), NOW() ),
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription professionnelle' LIMIT 1 ), 'maison de l’emploi ou SE autre que PE', NOW(), NOW() ),
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription professionnelle' LIMIT 1 ), 'Plie', NOW(), NOW() ),
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription professionnelle' LIMIT 1 ), 'Formation de Droit Commun Région, AFPA, ...)', NOW(), NOW() ),
-	-- Prescription socioprofessionnelle hors PDI
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription socioprofessionnelle' LIMIT 1 ), 'Non définie', NOW(), NOW() ),
-	-- Prescription Pôle Emploi hors PDI
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription Pôle Emploi' LIMIT 1 ), 'Prestation pôle emploi', NOW(), NOW() ),
-	-- Prescription sociale hors PDI
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Prescription sociale' LIMIT 1 ), 'Prestation sociale', NOW(), NOW() ),
-	-- Autres hors PDI
-	( ( SELECT id FROM thematiquesfps93 WHERE type = 'horspdi' AND name = 'Autres' LIMIT 1 ), 'Non définie', NOW(), NOW() );
-
-INSERT INTO filieresfps93 ( categoriefp93_id, name, created, modified )
+-- Fonction utilitaire.
+CREATE OR REPLACE FUNCTION select_thematiquefp93_id( TEXT, TEXT ) RETURNS INT AS
+$$
 	SELECT
-			categoriesfps93.id AS categoriefp93_id,
-			'Non définie' AS name,
-			NOW() AS created,
-			NOW() AS modified
-		FROM categoriesfps93
-			INNER JOIN thematiquesfps93 ON ( categoriesfps93.thematiquefp93_id = thematiquesfps93.id )
-		WHERE thematiquesfps93.type = 'horspdi';
+			thematiquesfps93.id
+		FROM thematiquesfps93
+		WHERE
+			NOACCENTS_UPPER( thematiquesfps93.type ) = NOACCENTS_UPPER( $1 )
+			AND NOACCENTS_UPPER( thematiquesfps93.name ) = NOACCENTS_UPPER( $2 )
+		LIMIT 1
+$$
+LANGUAGE 'sql';
 
--- Fonctions utilitaires
+INSERT INTO categoriesfps93 ( thematiquefp93_id, name, created, modified ) VALUES
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'Non définie', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'formation pré-qualifiante', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'formation qualifiante', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'SIAE / Entreprise d insertion', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'Action du CUCS', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'Accompagnement à la création d''activité', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription professionnelle' ), 'FDIF/APRE', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription professionnelle' ), 'Non définie', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription professionnelle' ), 'maison de l’emploi ou SE autre que PE', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription professionnelle' ), 'Plie', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription professionnelle' ), 'Formation de Droit Commun Région, AFPA, …', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription socioprofessionnelle' ), 'Non définie', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription socioprofessionnelle' ), 'Action du CUCS', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription socioprofessionnelle' ), 'Remise à niveau', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription socioprofessionnelle' ), 'linguistique', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription socioprofessionnelle' ), 'Non définie', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription Pôle Emploi' ), 'Prestation pôle emploi', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Prescription sociale' ), 'Prestation sociale', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription vers les acteurs de la santé' ), 'Accompagnement santé', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'pdi', 'Prescription culture loisirs vacances' ), 'Projet loisirs vacances', NOW(), NOW() ),
+	( select_thematiquefp93_id( 'horspdi', 'Autres' ), 'Non définie', NOW(), NOW() );
+
+-- Fonction utilitaire.
+CREATE OR REPLACE FUNCTION select_categoriefp93_id( TEXT, TEXT, TEXT ) RETURNS INT AS
+$$
+	SELECT
+			categoriesfps93.id
+		FROM thematiquesfps93
+			INNER JOIN categoriesfps93 ON ( categoriesfps93.thematiquefp93_id = thematiquesfps93.id )
+		WHERE
+			NOACCENTS_UPPER( thematiquesfps93.type ) = NOACCENTS_UPPER( $1 )
+			AND NOACCENTS_UPPER( thematiquesfps93.name ) = NOACCENTS_UPPER( $2 )
+			AND NOACCENTS_UPPER( categoriesfps93.name ) = NOACCENTS_UPPER( $3 )
+		LIMIT 1
+$$
+LANGUAGE 'sql';
+
+INSERT INTO filieresfps93 ( categoriefp93_id, name, created, modified ) VALUES
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription professionnelle', 'Non définie' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription professionnelle', 'maison de l’emploi ou SE autre que PE' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription professionnelle', 'Plie' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription professionnelle', 'Formation de Droit Commun Région, AFPA, …' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription socioprofessionnelle', 'Non définie' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription Pôle Emploi', 'Prestation pôle emploi' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Prescription sociale', 'Prestation sociale' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances' ), 'Non définie', NOW(), NOW() ),
+	( select_categoriefp93_id( 'horspdi', 'Autres', 'Non définie' ), 'Non définie', NOW(), NOW() );
+
+-- Fonction utilitaire.
 CREATE OR REPLACE FUNCTION select_filierefp93_id( TEXT, TEXT, TEXT, TEXT ) RETURNS INT AS
 $$
 	SELECT
@@ -62,26 +142,92 @@ $$
 $$
 LANGUAGE 'sql';
 
-CREATE OR REPLACE FUNCTION select_actionfp93_id( TEXT, TEXT, TEXT, TEXT, TEXT ) RETURNS INT AS
+INSERT INTO actionsfps93 ( filierefp93_id, prestatairefp93_id, name, numconvention, annee, duree, actif, created, modified ) VALUES
+	-- 2012
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200010', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200011', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200012', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200013', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200014', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200015', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200016', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200030', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200031', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200032', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200033', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200070', 2012, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200080', 2012, NULL, '0', NOW(), NOW() ),
+	-- 2013
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300010', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300011', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300012', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300013', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300014', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300015', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300016', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300030', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300031', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300032', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300033', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300070', 2013, NULL, '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300080', 2013, NULL, '0', NOW(), NOW() ),
+	-- 2014
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400010', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400011', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400012', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400013', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400014', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400015', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400016', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400030', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400031', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400032', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400033', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400070', 2014, NULL, '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400080', 2014, NULL, '1', NOW(), NOW() );
+
+-- Fonction utilitaire
+CREATE OR REPLACE FUNCTION select_actionfp93_id( TEXT ) RETURNS INT AS
 $$
 	SELECT
 			actionsfps93.id
 		FROM actionsfps93
-			INNER JOIN filieresfps93 ON ( filieresfps93.id = actionsfps93.filierefp93_id )
-			INNER JOIN categoriesfps93 ON ( categoriesfps93.id = filieresfps93.categoriefp93_id )
-			INNER JOIN thematiquesfps93 ON ( thematiquesfps93.id = categoriesfps93.thematiquefp93_id )
 		WHERE
-			NOACCENTS_UPPER( thematiquesfps93.type ) = NOACCENTS_UPPER( $1 )
-			AND NOACCENTS_UPPER( thematiquesfps93.name ) = NOACCENTS_UPPER( $2 )
-			AND NOACCENTS_UPPER( categoriesfps93.name ) = NOACCENTS_UPPER( $3 )
-			AND NOACCENTS_UPPER( filieresfps93.name ) = NOACCENTS_UPPER( $4 )
-			AND NOACCENTS_UPPER( actionsfps93.name ) = NOACCENTS_UPPER( $5 )
+			NOACCENTS_UPPER( actionsfps93.numconvention ) = NOACCENTS_UPPER( $1 )
 		LIMIT 1
 $$
 LANGUAGE 'sql';
 
--- INSERT 0 2940
+-- Fonction utilitaire
+CREATE OR REPLACE FUNCTION select_actionfp93_name_pdi( TEXT ) RETURNS BOOLEAN AS
+$$
+	SELECT SUBSTRING( $1 FROM 1 FOR 2 ) IN ( '10', '11', '12', '13', '14', '15', '16', '30', '31', '32', '33', '70', '80' )
+$$
+LANGUAGE 'sql';
 
+-- Fonction utilitaire
+CREATE OR REPLACE FUNCTION select_actionfp93_name_horspdi( TEXT ) RETURNS BOOLEAN AS
+$$
+	SELECT SUBSTRING( $1 FROM 1 FOR 2 ) IN ( '20', '21', '22', '23', '40', '50', '60', '90' )
+$$
+LANGUAGE 'sql';
+
+-- Insertion des prestataires hors PDI
+SELECT add_missing_table_field( 'public', 'prestataireshorspdifps93', 'actioncandidat_personne_id', 'INTEGER' );
+INSERT INTO prestataireshorspdifps93 ( name, adresse, codepos, localite, created, modified, actioncandidat_personne_id )
+	SELECT
+			'Non définie' AS name,
+			'Non définie' AS adresse,
+			'00000' AS codepos,
+			'Non définie' AS localite,
+			LEAST( actionscandidats_personnes.ddaction, actionscandidats_personnes.dfaction, actionscandidats_personnes.datesignature, actionscandidats_personnes.datebilan, actionscandidats_personnes.daterecu, actionscandidats_personnes.sortiele ) AS created,
+			GREATEST( actionscandidats_personnes.ddaction, actionscandidats_personnes.dfaction, actionscandidats_personnes.datesignature, actionscandidats_personnes.datebilan, actionscandidats_personnes.daterecu, actionscandidats_personnes.sortiele ) AS modified,
+			actionscandidats_personnes.id AS actioncandidat_personne_id
+		FROM actionscandidats_personnes
+			INNER JOIN actionscandidats ON ( actionscandidats_personnes.actioncandidat_id = actionscandidats.id )
+		WHERE select_actionfp93_name_horspdi( actionscandidats.name );
+
+-- INSERT 0 4969 (?)
 SELECT add_missing_table_field( 'public', 'fichesprescriptions93', 'actioncandidat_personne_id', 'INTEGER' );
 
 INSERT INTO fichesprescriptions93 (
@@ -95,6 +241,7 @@ INSERT INTO fichesprescriptions93 (
 	actionfp93_id,
 	actionfp93,
 	prestatairefp93_id,
+	prestatairehorspdifp93_id,
 	documentbeneffp93_autre,
 	date_signature,
 	date_transmission,
@@ -157,13 +304,13 @@ SELECT
 					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '11 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré qualifiante', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '12 %' THEN (
 					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '13 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE Entreprise d insertion', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '14 %' THEN (
 					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' )
@@ -175,16 +322,16 @@ SELECT
 					select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '30 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription socio professionnelle', 'Non définie', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '31 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription socio professionnelle', 'Action du CUCS', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '32 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription socio professionnelle', 'Remise à niveau', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '33 %' THEN (
-					select_filierefp93_id( 'pdi', 'Prescription socio professionnelle', 'linguistique', 'Non définie' )
+					select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '70 %' THEN (
 					select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' )
@@ -203,7 +350,7 @@ SELECT
 					select_filierefp93_id( 'horspdi', 'Prescription professionnelle', 'Plie', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '23 %' THEN (
-					select_filierefp93_id( 'horspdi', 'Prescription professionnelle', 'Formation de Droit Commun Région, AFPA, ...)', 'Non définie' )
+					select_filierefp93_id( 'horspdi', 'Prescription professionnelle', 'Formation de Droit Commun Région, AFPA, …', 'Non définie' )
 				)
 				WHEN actionscandidats.name LIKE '40 %' THEN (
 					select_filierefp93_id( 'horspdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' )
@@ -222,45 +369,8 @@ SELECT
 		) AS filierefp93_id,
 		(
 			CASE
-				-- Prescriptions PDI
-				WHEN actionscandidats.name LIKE '10 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '11 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'formation pré qualifiante', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '12 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '13 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'SIAE Entreprise d insertion', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '14 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '15 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '16 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '30 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription socio professionnelle', 'Non définie', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '31 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription socio professionnelle', 'Action du CUCS', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '32 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription socio professionnelle', 'Remise à niveau', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '33 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription socio professionnelle', 'linguistique', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '70 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie', 'Non défini' )
-				)
-				WHEN actionscandidats.name LIKE '80 %' THEN (
-					select_actionfp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie', 'Non défini' )
+				WHEN select_actionfp93_name_pdi( actionscandidats.name ) THEN (
+					select_actionfp93_id( '93XXX' || REGEXP_REPLACE( EXTRACT( 'YEAR' FROM actionscandidats_personnes.ddaction )::TEXT, '^..(..)$', E'\\1' ) || '000' || SUBSTRING( actionscandidats.name FROM 1 FOR 2 ) )
 				)
 				-- Prescriptions hors PDI
 				ELSE NULL
@@ -269,20 +379,22 @@ SELECT
 		(
 			CASE
 				-- Prescriptions hors PDI
-				WHEN (
-					actionscandidats.name LIKE '20 %'
-					OR actionscandidats.name LIKE '21 %'
-					OR actionscandidats.name LIKE '22 %'
-					OR actionscandidats.name LIKE '23 %'
-					OR actionscandidats.name LIKE '40 %'
-					OR actionscandidats.name LIKE '50 %'
-					OR actionscandidats.name LIKE '60 %'
-					OR actionscandidats.name LIKE '90 %'
-				) THEN 'Non définie'
+				WHEN select_actionfp93_name_horspdi( actionscandidats.name ) THEN 'Non définie'
 				ELSE NULL
 			END
 		) AS actionfp93,
-		( SELECT prestatairesfps93.id FROM prestatairesfps93 WHERE prestatairesfps93.name = 'Non defini' LIMIT 1 ) AS prestatairefp93_id,
+		(
+			CASE
+				WHEN select_actionfp93_name_pdi( actionscandidats.name ) THEN ( SELECT prestatairesfps93.id FROM prestatairesfps93 WHERE prestatairesfps93.name = 'Non définie' LIMIT 1 )
+				ELSE NULL
+			END
+		) AS prestatairefp93_id,
+		(
+			CASE
+				WHEN select_actionfp93_name_horspdi( actionscandidats.name ) THEN ( SELECT prestataireshorspdifps93.id FROM prestataireshorspdifps93 WHERE prestataireshorspdifps93.actioncandidat_personne_id = actionscandidats_personnes.id LIMIT 1 )
+				ELSE NULL
+			END
+		) AS prestatairehorspdifp93_id,
 		actionscandidats_personnes.autrepiece AS documentbeneffp93_autre,
 		actionscandidats_personnes.datesignature AS date_signature,
 		actionscandidats_personnes.ddaction AS date_transmission,
@@ -304,8 +416,13 @@ SELECT
 	FROM actionscandidats_personnes
 		INNER JOIN actionscandidats ON ( actionscandidats_personnes.actioncandidat_id = actionscandidats.id );
 
+DROP FUNCTION select_prestatairefp93_id( TEXT );
+DROP FUNCTION select_thematiquefp93_id( TEXT, TEXT );
+DROP FUNCTION select_categoriefp93_id( TEXT, TEXT, TEXT );
 DROP FUNCTION select_filierefp93_id( TEXT, TEXT, TEXT, TEXT );
-DROP FUNCTION select_actionfp93_id( TEXT, TEXT, TEXT, TEXT, TEXT );
+DROP FUNCTION select_actionfp93_id( TEXT );
+DROP FUNCTION select_actionfp93_name_pdi( TEXT );
+DROP FUNCTION select_actionfp93_name_horspdi( TEXT );
 
 INSERT INTO instantanesdonneesfps93 (
 	ficheprescription93_id,
@@ -694,251 +811,17 @@ WHERE
 	fichesprescriptions93.actioncandidat_personne_id IS NOT NULL
 	AND actionscandidats_personnes.pieceallocataire IS NOT NULL;
 
+-- Les 2 requêtes ci-dessous ne doivent rien retourner
+/*SELECT * FROM fichesprescriptions93 WHERE actioncandidat_personne_id IS NULL;
+SELECT * FROM actionscandidats_personnes WHERE id NOT IN (
+	SELECT fichesprescriptions93.actioncandidat_personne_id
+		FROM fichesprescriptions93
+		WHERE fichesprescriptions93.actioncandidat_personne_id = actionscandidats_personnes.id
+);*/
 
-ALTER TABLE fichesprescriptions93 DROP COLUMN actioncandidat_personne_id;
-
-/*
-SELECT
-		historiqueetatspe.identifiantpe AS benef_identifiantpe,
-		( CASE WHEN historiqueetatspe.etat = 'inscription' THEN '1' ELSE '0' END ) AS benef_inscritpe,
-		historiqueetatspe.date
-	FROM personnes
-		LEFT OUTER JOIN informationspe ON (
-			(
-				(
-					informationspe.nir IS NOT NULL
-					AND  SUBSTRING( informationspe.nir FROM 1 FOR 13 ) = SUBSTRING( TRIM( BOTH ' ' FROM personnes.nir ) FROM 1 FOR 13 )
-					AND  informationspe.dtnai = personnes.dtnai
-				)
-				OR
-				(
-					personnes.nom IS NOT NULL
-					AND  personnes.prenom IS NOT NULL
-					AND  personnes.dtnai IS NOT NULL
-					AND  TRIM( BOTH ' ' FROM informationspe.nom ) = TRIM( BOTH ' ' FROM personnes.nom )
-					AND  TRIM( BOTH ' ' FROM informationspe.prenom ) = TRIM( BOTH ' ' FROM personnes.prenom )
-					AND  informationspe.dtnai = personnes.dtnai
-				)
-			)
-			AND informationspe.id IN (
-				SELECT derniereinformationspe.i__id FROM (
-					SELECT i.id AS i__id, h.date AS h__date
-						FROM informationspe AS i
-							INNER JOIN historiqueetatspe AS h ON (h.informationpe_id = i.id)
-						WHERE
-						(
-							(
-								(
-									(i.nir IS NOT NULL)
-									AND  (personnes.nir IS NOT NULL)
-									AND  (TRIM( BOTH ' ' FROM i.nir ) <> '')
-									AND  (TRIM( BOTH ' ' FROM personnes.nir ) <> '')
-									AND  (SUBSTRING( i.nir FROM 1 FOR 13 ) = SUBSTRING( personnes.nir FROM 1 FOR 13 ))
-									AND  (i.dtnai = personnes.dtnai)
-								)
-							)
-							OR
-							(
-								(
-									(i.nom IS NOT NULL)
-									AND  (personnes.nom IS NOT NULL)
-									AND  (i.prenom IS NOT NULL)
-									AND  (personnes.prenom IS NOT NULL)
-									AND  (TRIM( BOTH ' ' FROM i.nom ) <> '')
-									AND  (TRIM( BOTH ' ' FROM i.prenom ) <> '')
-									AND  (TRIM( BOTH ' ' FROM personnes.nom ) <> '')
-									AND  (TRIM( BOTH ' ' FROM personnes.prenom ) <> '')
-									AND  (TRIM( BOTH ' ' FROM i.nom ) = personnes.nom)
-									AND  (TRIM( BOTH ' ' FROM i.prenom ) = personnes.prenom)
-									AND  (i.dtnai = personnes.dtnai)
-								)
-							)
-						)
-						AND h.id IN (
-							SELECT dernierhistoriqueetatspe.id AS dernierhistoriqueetatspe__id
-							FROM historiqueetatspe AS dernierhistoriqueetatspe
-							WHERE
-								dernierhistoriqueetatspe.informationpe_id = i.id
-								-- Avant la date de création de la fiche de prescription
--- 								AND dernierhistoriqueetatspe.date <= fichesprescriptions93.created
-							ORDER BY dernierhistoriqueetatspe.date DESC, dernierhistoriqueetatspe.id DESC
-							LIMIT 1
-						)
-				) AS derniereinformationspe
-				ORDER BY derniereinformationspe.h__date DESC
-				LIMIT 1
-			)
-		)
-		LEFT OUTER JOIN historiqueetatspe ON (
-			historiqueetatspe.informationpe_id = informationspe.id
-			AND historiqueetatspe.id IN (
-				SELECT h.id
-					FROM historiqueetatspe AS h
-					WHERE h.informationpe_id = informationspe.id
-					ORDER BY h.date DESC
-					LIMIT 1
-			)
-		)
-	WHERE
-		-- Test
-		historiqueetatspe.identifiantpe IS NOT NULL;
-*/
-
-/*
-SELECT
-		adresses.numvoie AS benef_numvoie,
-		adresses.typevoie AS benef_typevoie,
-		adresses.nomvoie AS benef_nomvoie,
-		adresses.complideadr AS benef_complideadr,
-		adresses.compladr AS benef_compladr,
-		adresses.numcomptt AS benef_numcomptt,
-		adresses.numcomrat AS benef_numcomrat,
-		adresses.codepos AS benef_codepos,
-		adresses.locaadr AS benef_locaadr
-	FROM foyers
-		LEFT OUTER JOIN adressesfoyers ON (
-			adressesfoyers.foyer_id = foyers.id
-			AND adressesfoyers.id IN (
-				SELECT af.id
-					FROM adressesfoyers AS af
-					WHERE
-						af.foyer_id = foyers.id
-						-- Avant la date de création de la fiche de prescription
-						AND af.dtemm <= fichesprescriptions93.created
-						ORDER BY af.dtemm DESC
-					LIMIT 1
-			)
-		)
-		LEFT OUTER JOIN adresses ON ( adressesfoyers.adresse_id = adresses.id )
-	-- Test
-	LIMIT 10;
-*/
-
-/*
-	SELECT
-			(
-				CASE
-					WHEN dsps_revs.id IS NOT NULL THEN dsps_revs.nivetu
-					WHEN dsps.id IS NOT NULL THEN dsps.nivetu
-					else null
-				END
-			) AS benef_nivetu,
-			dsps.*,
-			dsps_revs.*
-		FROM personnes
-			LEFT OUTER JOIN dsps ON (
-				dsps.personne_id = personnes.id
-				AND dsps.id IN (
-					SELECT dernieresdsps.id
-						FROM dsps AS dernieresdsps
-						WHERE dernieresdsps.personne_id = personnes.id
-						ORDER BY dernieresdsps.id DESC
-						LIMIT 1
-				)
-			)
-			LEFT OUTER JOIN dsps_revs ON (
-				dsps_revs.personne_id = personnes.id
-				AND dsps_revs.id IN (
-					SELECT dernieresdsps_revs.id
-						FROM dsps_revs AS dernieresdsps_revs
-						WHERE dernieresdsps_revs.personne_id = personnes.id
-						ORDER BY dernieresdsps_revs.modified DESC
-						LIMIT 1
-				)
-			)
-		WHERE
-			personnes.id IN (
-				SELECT fichesprescriptions93.personne_id
-					FROM fichesprescriptions93
-					WHERE fichesprescriptions93.personne_id = personnes.id
-			)
-		LIMIT 1
-*/
-
--- benef_etatdosrsa, --historiquesdroits
--- benef_toppersdrodevorsa, --historiquesdroits
-/*
-	SELECT
-			(
-				CASE
-					WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.etatdosrsa
-					ELSE situationsdossiersrsa.etatdosrsa
-				END
-			) AS benef_etatdosrsa,
-			(
-				CASE
-					WHEN historiquesdroits.id IS NOT NULL THEN historiquesdroits.toppersdrodevorsa
-					ELSE calculsdroitsrsa.toppersdrodevorsa::TEXT
-				END
-			) AS benef_toppersdrodevorsa,
-			historiquesdroits.*,
-			fichesprescriptions93.created
-		FROM personnes
-			INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
-			INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
-			INNER JOIN fichesprescriptions93 ON ( fichesprescriptions93.personne_id = personnes.id )
-			LEFT OUTER JOIN situationsdossiersrsa ON ( situationsdossiersrsa.dossier_id = dossiers.id )
-			LEFT OUTER JOIN calculsdroitsrsa ON ( calculsdroitsrsa.personne_id = personnes.id )
-			LEFT OUTER JOIN historiquesdroits ON (
-				historiquesdroits.personne_id = personnes.id
-				AND historiquesdroits.id IN (
-					SELECT derniershistoriquesdroits.id
-						FROM historiquesdroits AS derniershistoriquesdroits
-						WHERE
-							derniershistoriquesdroits.personne_id = personnes.id
-							-- Avant la date de création de la fiche de prescription
-							AND derniershistoriquesdroits.created <= fichesprescriptions93.created
-						ORDER BY derniershistoriquesdroits.modified DESC
-						LIMIT 1
-				)
-			)
-*/
-
-/*
-	SELECT
-			(
-				CASE
-					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_socle
-					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END )
-				END
-			) AS benef_natpf_socle,
-			(
-				CASE
-					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_majore
-					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END )
-				END
-			) AS benef_natpf_majore,
-			(
-				CASE
-					WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.natpf_activite
-					ELSE ( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END )
-				END
-			) AS benef_natpf_activite,
-			situationsallocataires.*,
-			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSD', 'RSI', 'RSU', 'RSB', 'RSJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_socle,
-			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RSI', 'RCI') ) THEN '1' ELSE '0' END ) AS benef_natpf_majore,
-			( CASE WHEN EXISTS( SELECT detailscalculsdroitsrsa.id FROM detailscalculsdroitsrsa WHERE detailscalculsdroitsrsa.detaildroitrsa_id = detailsdroitsrsa.id AND detailscalculsdroitsrsa.natpf IN ('RCD', 'RCI', 'RCU', 'RCB', 'RCJ') ) THEN '1' ELSE '0' END ) AS benef_natpf_activite,
-			fichesprescriptions93.created
-		FROM personnes
-			INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
-			INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
-			INNER JOIN fichesprescriptions93 ON ( fichesprescriptions93.personne_id = personnes.id )
-			LEFT OUTER JOIN detailsdroitsrsa ON ( dossiers.id = detailsdroitsrsa.dossier_id )
-			LEFT OUTER JOIN situationsallocataires ON (
-				situationsallocataires.personne_id = personnes.id
-				AND situationsallocataires.id IN (
-					SELECT dernierssituationsallocataires.id
-						FROM situationsallocataires AS dernierssituationsallocataires
-						WHERE
-							dernierssituationsallocataires.personne_id = personnes.id
-							-- Avant la date de création de la fiche de prescription
-							AND dernierssituationsallocataires.modified <= fichesprescriptions93.created
-						ORDER BY dernierssituationsallocataires.modified DESC
-						LIMIT 1
-				)
-			)
-*/
-
+ -- FIXME: décommenter
+-- ALTER TABLE fichesprescriptions93 DROP COLUMN actioncandidat_personne_id;
+-- ALTER TABLE prestataireshorspdifps93 DROP COLUMN actioncandidat_personne_id;
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

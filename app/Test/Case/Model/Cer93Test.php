@@ -205,7 +205,7 @@
 					'isemploitrouv' => 'O',
 					'dureecdd' => '1',
 					'sujetpcd' => 'a:1:{s:10:"Sujetcer93";a:2:{i:0;a:5:{s:4:"name";s:7:"Sujet 1";s:7:"isautre";s:1:"0";s:7:"created";N;s:8:"modified";N;s:15:"Cer93Sujetcer93";a:9:{s:13:"sujetcer93_id";i:1;s:17:"soussujetcer93_id";i:1;s:26:"valeurparsoussujetcer93_id";N;s:16:"commentaireautre";N;s:7:"created";s:19:"2012-10-01 15:36:00";s:8:"modified";s:19:"2012-10-01 15:36:00";s:11:"autrevaleur";s:0:"";s:14:"autresoussujet";s:0:"";s:14:"Soussujetcer93";a:1:{s:4:"name";s:12:"Sous-sujet 1";}}}i:1;a:5:{s:4:"name";s:7:"Sujet 3";s:7:"isautre";s:1:"1";s:7:"created";N;s:8:"modified";N;s:15:"Cer93Sujetcer93";a:9:{s:13:"sujetcer93_id";i:3;s:17:"soussujetcer93_id";N;s:26:"valeurparsoussujetcer93_id";N;s:16:"commentaireautre";s:17:"Commentaire autre";s:7:"created";s:19:"2012-10-01 15:36:00";s:8:"modified";s:19:"2012-10-01 15:36:00";s:11:"autrevaleur";s:0:"";s:14:"autresoussujet";s:0:"";s:14:"Soussujetcer93";a:1:{s:4:"name";N;}}}}}',
-					'natlog' => NULL,
+					'natlog' => '0907'
 				),
 				'Compofoyercer93' =>
 				array(
