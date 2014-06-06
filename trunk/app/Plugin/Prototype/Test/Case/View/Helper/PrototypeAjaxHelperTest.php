@@ -130,12 +130,12 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-var ajax_parameters = { \'url\': \'/ajax_action\', \'prefix\': \'\', \'fields\': [ \'Ficheprescription93Numconvention\', \'Ficheprescription93Typethematiquefp93Id\' ] };
-$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters ); } );
-Event.observe( $( \'Ficheprescription93Typethematiquefp93Id\' ), \'change\', function(event) { ajax_action( event, ajax_parameters ); } );
-var ajax_onload_parameters =  Object.clone( ajax_parameters );
-				ajax_onload_parameters[\'values\'] = { \'Ficheprescription93Numconvention\': \'\', \'Ficheprescription93Typethematiquefp93Id\': \'\' };
-				document.observe( \'dom:loaded\', function(event) { ajax_action( event, ajax_onload_parameters ); } );
+var ajax_parameters_c868a794f44ff6606b8f3198d62136b3 = { \'url\': \'/ajax_action\', \'prefix\': \'\', \'fields\': [ \'Ficheprescription93Numconvention\', \'Ficheprescription93Typethematiquefp93Id\' ] };
+$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters_c868a794f44ff6606b8f3198d62136b3 ); } );
+Event.observe( $( \'Ficheprescription93Typethematiquefp93Id\' ), \'change\', function(event) { ajax_action( event, ajax_parameters_c868a794f44ff6606b8f3198d62136b3 ); } );
+var ajax_onload_parameters_c868a794f44ff6606b8f3198d62136b3 =  Object.clone( ajax_parameters_c868a794f44ff6606b8f3198d62136b3 );
+				ajax_onload_parameters_c868a794f44ff6606b8f3198d62136b3[\'values\'] = { \'Ficheprescription93Numconvention\': \'\', \'Ficheprescription93Typethematiquefp93Id\': \'\' };
+				document.observe( \'dom:loaded\', function(event) { ajax_action( event, ajax_onload_parameters_c868a794f44ff6606b8f3198d62136b3 ); } );
 
 //]]>
 </script>';
