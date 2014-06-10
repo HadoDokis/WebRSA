@@ -101,6 +101,15 @@ msgstr "Autres (1)"
 msgid "/Tableauxsuivispdvs93/tableau1b4/:heading"
 msgstr "4 - Prescriptions vers les acteurs sociaux, culturels et de sante"
 
+msgid "/Tableauxsuivispdvs93/tableau1b4new/:heading"
+msgstr "4 - Prescriptions vers les acteurs sociaux, culturels et de sante"
+
+msgid "Tableau1b4.libelle"
+msgstr "Thématiques"
+
+msgid "Tableau1b4.structure"
+msgstr "Catégorie"
+
 # ------------------------------------------------------------------------------
 
 msgid "Tableau1b4.acteur"
