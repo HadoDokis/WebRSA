@@ -29,6 +29,22 @@
 		 */
 		public $recursive = -1;
 
+		public $displayField = 'name';
+
+		/**
+		 * Champs virtuels impressionfin1 et impressionfin2 permettant de savoir
+		 * si un courrier de "fin de sanction 1" ou "fin de sanction 2" peut être
+		 * imprimé.
+		 *
+		 * @var array
+		 */
+		public $virtualFields = array(
+			'name' => array(
+				'type'      => 'string',
+				'postgres'  => '( "%s"."adresse" || \', \' || "%s"."codepos" || \' \' || "%s"."localite" )'
+			)
+		);
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *
@@ -83,6 +99,25 @@
 				'fields' => null,
 				'order' => null,
 				'counterCache' => null
+			),
+		);
+
+		/**
+		 * Associations "Has many".
+		 *
+		 * @var array
+		 */
+		public $hasMany = array(
+			'Ficheprescription93' => array(
+				'className' => 'Ficheprescription93',
+				'foreignKey' => 'adresseprestatairefp93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
 			),
 		);
 	}

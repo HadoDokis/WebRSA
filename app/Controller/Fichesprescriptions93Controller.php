@@ -31,6 +31,7 @@
 		public $components = array(
 			'Allocataires',
 			'DossiersMenus',
+			'Gedooo.Gedooo',
 			'InsertionsAllocataires',
 			'Jetons2', // FIXME: à cause de DossiersMenus
 			'Search.Filtresdefaut' => array( 'search' ),
@@ -73,6 +74,7 @@
 		 */
 		public $crudMap = array(
 			'ajax_action' => 'read',
+			'ajax_duree_pdi' => 'read',
 			'ajax_prescripteur' => 'read',
 			'ajax_prestataire' => 'read',
 			'ajax_prestataire_horspdi' => 'read',
@@ -86,7 +88,7 @@
 		);
 
 		/**
-		 * Au nioveau des droits, on traitera les actions Ajax comme l'index.
+		 * Au niveau des droits, on traitera les actions Ajax comme l'index.
 		 *
 		 * @var array
 		 */
@@ -95,6 +97,67 @@
 			'ajax_action' => 'Fichesprescriptions93:index',
 			'ajax_prestataire' => 'Fichesprescriptions93:index',
 			'ajax_prestataire_horspdi' => 'Fichesprescriptions93:index',
+		);
+
+		/**
+		 * Le json "vide" utilisé dans la méthode ajax_prestataire_horspdi().
+		 *
+		 * @var array
+		 */
+		public $jsonAjaxPrestataireHorspdi = array(
+			'success' => true,
+			'fields' => array(
+				'Prestatairehorspdifp93.name' => array(
+					'id' => 'Prestatairehorspdifp93Name',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null,
+					'options' => array()
+				),
+				'Ficheprescription93.selection_adresse_prestataire' => array(
+					'id' => 'Ficheprescription93SelectionAdressePrestataire',
+					'value' => null,
+					'type' => 'select',
+					'prefix' => null,
+					'options' => array()
+				),
+				'Prestatairehorspdifp93.adresse' => array(
+					'id' => 'Prestatairehorspdifp93Adresse',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+				'Prestatairehorspdifp93.codepos' => array(
+					'id' => 'Prestatairehorspdifp93Codepos',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+				'Prestatairehorspdifp93.localite' => array(
+					'id' => 'Prestatairehorspdifp93Localite',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+				'Prestatairehorspdifp93.tel' => array(
+					'id' => 'Prestatairehorspdifp93Tel',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+				'Prestatairehorspdifp93.fax' => array(
+					'id' => 'Prestatairehorspdifp93Fax',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+				'Prestatairehorspdifp93.email' => array(
+					'id' => 'Prestatairehorspdifp93Email',
+					'value' => null,
+					'type' => 'text',
+					'prefix' => null
+				),
+			)
 		);
 
 		/**
@@ -145,20 +208,19 @@
 		}
 
 		/**
-		 * Ajax permettant de récupérer les coordonnées du prescripteur ou de sa
-		 * structure.
+		 * Ajax permettant de récupérer les coordonnées du prestataire PDI.
 		 */
 		public function ajax_prestataire() {
-			$prestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.prestatairefp93_id' );
+			$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.adresseprestatairefp93_id' );
 
 			$result = array();
-			if( !empty( $prestatairefp93_id ) ) {
+			if( !empty( $adresseprestatairefp93_id ) ) {
 				$query = array(
 					'fields' => $this->Ficheprescription93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->fields(),
 					'contain' => false,
 					'joins' => array(),
 					'conditions' => array(
-						'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id,
+						'Adresseprestatairefp93.id' => $adresseprestatairefp93_id,
 					)
 				);
 
@@ -170,81 +232,197 @@
 		}
 
 		/**
-		 * @fixme quand c'est vide, tout remettre à blanc
-		 * @fixme quand on revoit la page et qu'il y avait des erreurs, on perd la liste des adresses
+		 * Ajax permettant de récupérer la durée d'une action PDI.
 		 */
-		public function ajax_prestataire_horspdi() {
-			$prestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.selection_prestataire' );
-			$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.selection_adresse_prestataire' );
+		public function ajax_duree_pdi() {
+			$typethematiquefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.typethematiquefp93_id' );
+			$actionfp93_id = Hash::get( $this->request->data, 'Ficheprescription93.actionfp93_id' );
 
-			// Initialisation du json retourné
-			$json = array(
-				'success' => true,
-				'fields' => array(
-					'Prestatairehorspdifp93.name' => array(
-						'id' => domId( 'Prestatairehorspdifp93.name' ),
-						'value' => null,
-						'type' => 'text'
-					),
-					'Ficheprescription93.selection_adresse_prestataire' => array(
-						'id' => domId( 'Ficheprescription93.selection_adresse_prestataire' ),
-						'value' => null,
-						'type' => 'select',
-						'options' => array()
-					)
+			$result = array();
+			if( !empty( $typethematiquefp93_id ) ) {
+				if( ( $typethematiquefp93_id === 'pdi' ) && !empty( $actionfp93_id ) ) {
+					$query = array(
+						'fields' => array( 'Actionfp93.duree' ),
+						'conditions' => array(
+							'Actionfp93.id' => $actionfp93_id,
+						)
+					);
+
+					$result = $this->Ficheprescription93->Actionfp93->find( 'first', $query );
+					$result = array( 'Ficheprescription93' => array( 'duree_action' => Hash::get( $result, 'Actionfp93.duree' ) ) );
+				}
+				else if( $typethematiquefp93_id === 'horspdi' ) {
+					$result = false;
+				}
+			}
+
+			$this->request->data = $result;
+
+			$this->layout = 'ajax';
+		}
+
+		/**
+		 * Retourne la liste des options du select permettant de choisir l'adresse
+		 * d'un prestataire hors PDI.
+		 *
+		 * @param integer $prestatairefp93_id
+		 * @return array
+		 */
+		protected function _ajax_options_adresses_prestataire_horspdi( $prestatairefp93_id ) {
+			$query = array(
+				'conditions' => array(
+					'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id
 				)
 			);
+			$results = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'all', $query );
+
+			$adresses = array();
+			foreach( (array)Hash::extract( $results, '{n}.Adresseprestatairefp93' ) as $adresse ) {
+				$adresses[] = array(
+					'id' => $adresse['id'],
+					'name' => "{$adresse['adresse']}, {$adresse['codepos']} {$adresse['localite']}"
+				);
+			}
+
+			return $adresses;
+		}
+
+		/**
+		 *
+	     */
+		public function ajax_prestataire_horspdi() {
+			$json = $this->jsonAjaxPrestataireHorspdi;
 
 			$adressePaths = array( 'adresse', 'codepos', 'localite', 'tel', 'fax', 'email'	);
-			foreach( $adressePaths as $adressePath ) {
-				$adressePath = "Prestatairehorspdifp93.{$adressePath}";
-				$json['fields'][$adressePath] = array(
-					'id' => domId( $adressePath ),
-					'value' => null,
-					'type' => 'text'
-				);
-			}
 
-			// Sélection de l'adresse d'un prestataire, remplissage des champs du prestataire hors PDI
-			if( !empty( $adresseprestatairefp93_id ) ) {
-				$query = array(
-					'conditions' => array(
-						'Adresseprestatairefp93.id' => $adresseprestatairefp93_id
-					)
-				);
-				$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+			$event = Hash::get( $this->request->data, 'Event.type' );
 
-				foreach( $adressePaths as $adressePath ) {
-					$fromPath = "Adresseprestatairefp93.{$adressePath}";
-					$toPath = "Prestatairehorspdifp93.{$adressePath}";
-					$json['fields'][$toPath]['value'] = Hash::get( $result, $fromPath );
+			if( $event === 'dataavailable' ) {
+				// On remet les valeurs qui ont été renvoyées par le formulaire
+				foreach( array_keys( $json['fields'] ) as $path ) {
+					$json['fields'][$path]['value'] = Hash::get( $this->request->data, $path );
+				}
+
+				// Si on avait une adresse / un prestataire sélectionné -> on re-remplit la liste
+				$prestatairefp93_id = null;
+				if( !empty( $json['fields']['Ficheprescription93.selection_adresse_prestataire']['value'] ) ) {
+					$query = array(
+						'fields' => array( 'Adresseprestatairefp93.prestatairefp93_id' ),
+						'conditions' => array(
+							'Adresseprestatairefp93.id' => $json['fields']['Ficheprescription93.selection_adresse_prestataire']['value']
+						)
+					);
+					$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+					$prestatairefp93_id = Hash::get( $result, 'Adresseprestatairefp93.prestatairefp93_id' );
+				}
+				else if( !empty( $json['fields']['Prestatairehorspdifp93.name']['value'] ) ) {
+					$query = array(
+						'fields' => array( 'Prestatairefp93.id' ),
+						'conditions' => array(
+							'NOACCENTS_UPPER( Prestatairefp93.name )' => noaccents_upper( $json['fields']['Prestatairehorspdifp93.name']['value'] )
+						)
+					);
+					$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
+					$prestatairefp93_id = Hash::get( $result, 'Prestatairefp93.id' );
+				}
+
+				if( !empty( $prestatairefp93_id ) ) {
+					$adresses = $this->_ajax_options_adresses_prestataire_horspdi( $prestatairefp93_id );
+					$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $adresses;
 				}
 			}
-
-			// Lorsque l'on connaît le prestataire, on remplit son nom et la liste des adresses
-			if( !empty( $prestatairefp93_id ) ) {
-				$query = array(
-					'conditions' => array(
-						'Prestatairefp93.id' => $prestatairefp93_id
-					),
-					'contain' => array(
-						'Adresseprestatairefp93'
-					)
-				);
-				$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
-
-				// Nom du prestataire
-				$json['fields']['Prestatairehorspdifp93.name']['value'] = Hash::get( $result, 'Prestatairefp93.name' );
-
-				// Recherche de la liste des adresses liées à ce prestataire
-				$adresses = array();
-				foreach( (array)Hash::get( $result, 'Adresseprestatairefp93' ) as $adresse ) {
-					$adresses[] = array(
-						'id' => $adresse['id'],
-						'name' => "{$adresse['adresse']}, {$adresse['codepos']} {$adresse['localite']}"
+			// On a commencé à taper le nom du prestataire hors PDI
+			else if( $event === 'keyup' ) {
+				$prestatairehorspdifp93Name = Hash::get( $this->request->data, 'Prestatairehorspdifp93.name' );
+				if( !empty( $prestatairehorspdifp93Name ) ) {
+					$query = array(
+						'fields' => array(
+							'Prestatairefp93.id',
+							'Prestatairefp93.name'
+						),
+						'conditions' => array(
+							'NOACCENTS_UPPER( Prestatairefp93.name ) LIKE' => noaccents_upper( $prestatairehorspdifp93Name ).'%'
+						)
+					);
+					$results = $this->Ficheprescription93->Prestatairefp93->find( 'all', $query );
+					$json = array(
+						'success' => true,
+						'fields' => array(
+							'Prestatairehorspdifp93.name' => array(
+								'id' => 'Prestatairehorspdifp93Name',
+								'value' => $prestatairehorspdifp93Name,
+								'type' => 'ajax_select',
+								'prefix' => null,
+								'options' => Hash::extract( $results, '{n}.Prestatairefp93' )
+							)
+						)
 					);
 				}
-				$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $adresses;
+			}
+			// On a sélectionné un prestataire hors PDI dans la liste Ajax
+			else if( $event === 'click' ) {
+				$field = Hash::get( $this->request->data, 'name' );
+				$field = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $field ) );
+
+				if( $field === 'Prestatairehorspdifp93.name' ) {
+					$prestatairefp93_id = Hash::get( $this->request->data, 'value' );
+					$query = array(
+						'conditions' => array(
+							'Prestatairefp93.id' => $prestatairefp93_id
+						),
+						'contain' => array(
+							'Adresseprestatairefp93'
+						)
+					);
+					$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
+					$json['fields']['Prestatairehorspdifp93.name']['value'] = Hash::get( $result, 'Prestatairefp93.name' );
+
+					$adresses = $this->_ajax_options_adresses_prestataire_horspdi( $prestatairefp93_id );
+					$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $adresses;
+
+					// Si on n'a qu'une seule adresse, on préremplit tout
+					if( count( $adresses ) === 1 ) {
+						$json['fields']['Ficheprescription93.selection_adresse_prestataire']['value'] = $result['Adresseprestatairefp93'][0]['id'];
+
+						foreach( $adressePaths as $adressePath ) {
+							$fromPath = "Adresseprestatairefp93.0.{$adressePath}";
+							$toPath = "Prestatairehorspdifp93.{$adressePath}";
+							$json['fields'][$toPath]['value'] = Hash::get( $result, $fromPath );
+						}
+					}
+				}
+			}
+			// On a sélectionné une adresse de prestataire dans la liste
+			else if( $event === 'change' ) {
+				$field = Hash::get( $this->request->data, 'Target.name' );
+				$field = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $field ) );
+
+				if( $field === 'Ficheprescription93.selection_adresse_prestataire' ) {
+					unset( $json['fields']['Prestatairehorspdifp93.name'] );
+
+					$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.selection_adresse_prestataire' );
+
+					if( !empty( $adresseprestatairefp93_id ) ) {
+						$query = array(
+							'conditions' => array(
+								'Adresseprestatairefp93.id' => $adresseprestatairefp93_id
+							)
+						);
+						$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+						$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $this->_ajax_options_adresses_prestataire_horspdi( Hash::get( $result, 'Adresseprestatairefp93.prestatairefp93_id' ) );
+						$json['fields']['Ficheprescription93.selection_adresse_prestataire']['value'] = $adresseprestatairefp93_id;
+					}
+					else {
+						$result = array();
+						unset( $json['fields']['Ficheprescription93.selection_adresse_prestataire'] );
+					}
+
+					foreach( $adressePaths as $adressePath ) {
+						$fromPath = "Adresseprestatairefp93.{$adressePath}";
+						$toPath = "Prestatairehorspdifp93.{$adressePath}";
+						$json['fields'][$toPath]['value'] = Hash::get( $result, $fromPath );
+					}
+				}
 			}
 
 			$this->set( compact( 'json' ) );
@@ -439,8 +617,18 @@
 			$options['Ficheprescription93']['structurereferente_id'] = $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) );
 			$options['Ficheprescription93']['referent_id'] = $this->InsertionsAllocataires->referents( array( 'prefix' => true ) );
 
-			// Liste des prestataires pour permettre le pré-remplissage de l'adresse hors PDI
-			$options['Ficheprescription93']['selection_prestataire'] = $this->Ficheprescription93->Prestatairefp93->find( 'list' );
+			// On complète les options de l'adresse du prestataire PDI s'il y a lieu
+			if( $this->action === 'edit' ) {
+				$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.adresseprestatairefp93_id' );
+				if( !empty( $adresseprestatairefp93_id ) ) {
+					$query = array(
+						'conditions' => array(
+							'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $this->request->data, 'Ficheprescription93.prestatairefp93_id' )
+						)
+					);
+					$options['Ficheprescription93']['adresseprestatairefp93_id'] = $this->Ficheprescription93->Adresseprestatairefp93->find( 'list', $query );
+				}
+			}
 
 			$urlmenu = "/fichesprescriptions93/index/{$personne_id}";
 
@@ -482,7 +670,7 @@
 				'Thematiquefp93.name',
 				'Categoriefp93.name',
 				'Filierefp93.name',
-				'Prestatairefp93.name',
+				'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Prestatairehorspdifp93"."name" ELSE "Prestatairefp93"."name" END ) AS "Prestatairefp93__name"',
 				'( CASE WHEN "Thematiquefp93"."type" = \'horspdi\' THEN "Ficheprescription93"."actionfp93" ELSE "Actionfp93"."name" END ) AS "Actionfp93__name"',
 				'Ficheprescription93.dd_action',
 				'Ficheprescription93.df_action',
@@ -532,7 +720,7 @@
 			$pdf = $this->Ficheprescription93->getDefaultPdf( $ficheprescription93_id, $this->Session->read( 'Auth.User.id' ) );
 
 			if( !empty( $pdf ) ) {
-				$this->Gedooo->sendPdfContentToClient( $pdf, "contratinsertion_{$ficheprescription93_id}_nouveau.pdf" );
+				$this->Gedooo->sendPdfContentToClient( $pdf, "fichesprescriptions93_{$ficheprescription93_id}.pdf" );
 			}
 			else {
 				$this->Session->setFlash( 'Impossible de générer la fiche de prescription.', 'default', array( 'class' => 'error' ) );
