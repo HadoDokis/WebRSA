@@ -49,7 +49,7 @@ msgid "Search.Actionfp93.actif"
 msgstr "Statut"
 
 msgid "Search.Actionfp93.numconvention"
-msgstr "Numéro de convention"
+msgstr "Numéro de convention ou code action d'attente"
 
 # ==============================================================================
 # Résultats de la recherche
