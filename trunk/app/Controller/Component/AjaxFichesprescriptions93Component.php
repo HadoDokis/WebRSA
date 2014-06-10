@@ -87,22 +87,21 @@
 				$fields['Ficheprescription93.numconvention']['value'] = null;
 			}
 
+			// Si on change l'action, on de doit pas modifier l'adresse du prestataire hors PDI
+			if( $data['Target']['path'] === 'Ficheprescription93.actionfp93_id' ) {
+				unset( $fields['Ficheprescription93.adresseprestatairefp93_id'] );
+			}
+
 			$conditionsActionfp93 = array();
 			$typethematiquefp93_id = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
 			$action = Hash::get( $data, 'Ficheprescription93.action' );
-			// TODO: SSI PDI ET formulaire add_edit
+			// SSI PDI ET formulaire add_edit
 			if( $typethematiquefp93_id === 'pdi' ) {
 				if( $action === 'add' ) {
 					$conditionsActionfp93 = array(
 						'Actionfp93.actif' => '1'
 					);
 				}
-				/*else if( $action === 'edit' ) {
-					$conditionsActionfp93 = array(
-						'Actionfp93.actif' => '1'
-					);
-				}
-				$this->log( var_export( $data, true ), LOG_DEBUG );*/
 			}
 
 			if( !empty( $value ) ) {
@@ -185,8 +184,8 @@
 				}
 
 				// On sélectionne le prestataire
-				// TODO
 				if( $current == $invertedPaths['Ficheprescription93.prestatairefp93_id'] ) {
+					// Liste des actions liées au prestataire
 					$query = array(
 						'conditions' => array(
 							'Actionfp93.filierefp93_id' => Hash::get( $data, 'Ficheprescription93.filierefp93_id' ),
@@ -199,6 +198,20 @@
 					}
 
 					$fields['Ficheprescription93.actionfp93_id']['options'] = $this->ajaxOptions( 'Actionfp93', $query );
+
+					// Liste des adresses du prestataire
+					$query = array(
+						'conditions' => array(
+							'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' ),
+						)
+					);
+
+					$fields['Ficheprescription93.adresseprestatairefp93_id']['options'] = $this->ajaxOptions( 'Adresseprestatairefp93', $query );
+
+					// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne
+					if( count( $fields['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
+						$fields['Ficheprescription93.adresseprestatairefp93_id']['value'] = $fields['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
+					}
 				}
 
 				// On sélectionne l'action
@@ -219,7 +232,13 @@
 
 					$fields['Ficheprescription93.numconvention']['value'] = Hash::get( $result, 'Actionfp93.numconvention' );
 					$fields['Ficheprescription93.prestatairefp93_id']['value'] = Hash::get( $result, 'Actionfp93.prestatairefp93_id' );
-					$fields['Ficheprescription93.duree_action']['value'] = Hash::get( $result, 'Actionfp93.prestatairefp93_id' );
+					$fields['Ficheprescription93.duree_action']['value'] = Hash::get( $result, 'Actionfp93.duree' );
+					// unset( $fields['Ficheprescription93.adresseprestatairefp93_id'] );
+				}
+
+				// Si on sélectionne l'adresse d'un prestaire PDI, il ne faut rien faire
+				if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
+					$fields = array();
 				}
 			}
 
@@ -279,7 +298,43 @@
 
 					$elmt['options'] = $this->ajaxOptions( 'Prestatairefp93', $query );
 				}
-				else if( $path !== 'Ficheprescription93.numconvention' ) { // TODO: la convention n'est pas gérée
+				else if( $path == 'Ficheprescription93.adresseprestatairefp93_id' ) {
+					$query = array(
+						'conditions' => array(
+							'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' )
+						)
+					);
+
+					$elmt['options'] = $this->ajaxOptions( 'Adresseprestatairefp93', $query );
+				}
+				else if( $path == 'Ficheprescription93.actionfp93_id' ) {
+					$Actionfp93 = ClassRegistry::init( 'Actionfp93' );
+
+					$sqAnnee = $Actionfp93->sq(
+						array(
+							'alias' => 'actionsfps93',
+							'fields' => array( 'actionsfps93.annee' ),
+							'conditions' => array(
+								'actionsfps93.id' => Hash::get( $data, 'Ficheprescription93.actionfp93_id' )
+							)
+						)
+					);
+
+					$query = array(
+						'joins' => array(
+							$Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+							$Actionfp93->join( 'Prestatairefp93', array( 'type' => 'INNER' ) )
+						),
+						'conditions' => array(
+							'Actionfp93.filierefp93_id' => Hash::get( $data, 'Ficheprescription93.filierefp93_id' ),
+							'Actionfp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' ),
+							"Actionfp93.annee IN ( {$sqAnnee} )",
+						)
+					);
+
+					$elmt['options'] = $this->ajaxOptions( 'Actionfp93', $query );
+				}
+				else if( $path !== 'Ficheprescription93.numconvention' ) {
 					$parentPath = $fieldKeys[$pathOffset-1];
 					$parentField = $this->Ficheprescription93->correspondances[$parentPath];
 

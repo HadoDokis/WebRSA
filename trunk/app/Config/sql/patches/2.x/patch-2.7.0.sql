@@ -485,6 +485,7 @@ CREATE TABLE fichesprescriptions93 (
     actionfp93					VARCHAR(250) DEFAULT NULL,
 	-- Prestataire PDI ou Hors PDI
 	prestatairefp93_id			INTEGER DEFAULT NULL REFERENCES prestatairesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	adresseprestatairefp93_id	INTEGER DEFAULT NULL REFERENCES adressesprestatairesfps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	prestatairehorspdifp93_id	INTEGER DEFAULT NULL REFERENCES prestataireshorspdifps93(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	rdvprestataire_adresse		TEXT DEFAULT NULL,
 	dd_action					DATE DEFAULT NULL,
@@ -535,6 +536,7 @@ CREATE INDEX fichesprescriptions93_filierefp93_id_idx ON fichesprescriptions93( 
 CREATE INDEX fichesprescriptions93_actionfp93_id_idx ON fichesprescriptions93( actionfp93_id );
 CREATE INDEX fichesprescriptions93_actionfp93_idx ON fichesprescriptions93( actionfp93 );
 CREATE INDEX fichesprescriptions93_prestatairefp93_id_idx ON fichesprescriptions93( prestatairefp93_id );
+CREATE INDEX fichesprescriptions93_adresseprestatairefp93_id_idx ON fichesprescriptions93( adresseprestatairefp93_id );
 CREATE UNIQUE INDEX fichesprescriptions93_prestatairehorspdifp93_id_idx ON fichesprescriptions93( prestatairehorspdifp93_id );
 
 ALTER TABLE fichesprescriptions93 ADD CONSTRAINT fichesprescriptions93_statut_in_list_chk CHECK ( cakephp_validate_in_list( statut, ARRAY['01renseignee', '02signee', '03transmise_partenaire', '04effectivite_renseignee', '05suivi_renseigne', '99annulee'] ) );

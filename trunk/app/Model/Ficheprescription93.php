@@ -42,6 +42,7 @@
 			'Ficheprescription93.prestatairefp93_id' => 'Prestatairefp93.id',
 			'Ficheprescription93.actionfp93_id' => 'Actionfp93.id',
 			'Ficheprescription93.numconvention' => 'Ficheprescription93.numconvention',
+			'Ficheprescription93.adresseprestatairefp93_id' => 'Ficheprescription93.adresseprestatairefp93_id'
 		);
 
 		/**
@@ -90,6 +91,15 @@
 			'Actionfp93' => array(
 				'className' => 'Actionfp93',
 				'foreignKey' => 'actionfp93_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Adresseprestatairefp93' => array(
+				'className' => 'Adresseprestatairefp93',
+				'foreignKey' => 'adresseprestatairefp93_id',
 				'conditions' => null,
 				'type' => 'LEFT OUTER',
 				'fields' => null,
@@ -923,115 +933,6 @@
 			);
 			$success = $this->Personne->Dsp->updateDerniereDsp( $personne_id, $dspData ) && $success;
 
-			/*
-			// Ce bloc est déprécié par l'appel à la méthode Dsp::xxx(), voir ci-dessus.
-			// Début "mise à jour des Dsp"
-			$nivetu = Hash::get( $data, 'Instantanedonneesfp93.benef_nivetu' );
-			$query = array(
-				'fields' => array(
-					'Dsp.id',
-					'Dsp.nivetu',
-					'DspRev.id',
-					'DspRev.nivetu',
-				),
-				'contain' => false,
-				'joins' => array(
-					$this->Personne->join(
-						'Dsp',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
-							)
-						)
-					),
-					$this->Personne->join(
-						'DspRev',
-						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
-							)
-						)
-					),
-				),
-				'conditions' => array(
-					'Personne.id' => $personne_id
-				)
-			);
-			$oldRecord = $this->Personne->find( 'first', $query );
-
-			$newRecord = array();
-			$newModelName = null;
-
-			if( !empty( $oldRecord['DspRev']['id'] ) ) {
-				if( $oldRecord['DspRev']['nivetu'] !== $nivetu ) {
-					$oldModelName = 'DspRev';
-					$newModelName = 'DspRev';
-					$linkedSuffix = '';
-				}
-			}
-			// Pas de DspRev mais une Dsp
-			else if( !empty( $oldRecord['Dsp']['id'] ) ) {
-				if( $oldRecord['Dsp']['nivetu'] !== $nivetu ) {
-					$oldModelName = 'Dsp';
-					$newModelName = 'DspRev';
-					$linkedSuffix = 'Rev';
-				}
-			}
-			else if( !empty( $nivetu ) ) {
-				$oldModelName = 'Dsp';
-				$newModelName = 'Dsp';
-				$linkedSuffix = '';
-			}
-
-			if( $newModelName !== null ) {
-				// Début
-				$removePaths = array(
-					"{$oldModelName}.id",
-					"{$oldModelName}.created",
-					"{$oldModelName}.modified",
-				);
-				$replacements = array( 'Dsp' => 'DspRev' );
-
-				$query = array(
-					'contain' => array(),
-					'conditions' => array(
-						"{$oldModelName}.id" => $oldRecord[$oldModelName]['id']
-					)
-				);
-				foreach( $this->Personne->{$oldModelName}->hasMany as $alias => $params ) {
-					if( strstr( $alias, 'Detail' ) !== false ) {
-						$query['contain'][] = $alias;
-
-						$removePaths[] = "{$alias}.{n}.id";
-						$removePaths[] = "{$alias}.{n}.{$params['foreignKey']}";
-
-						$replacements[$alias] = "{$alias}{$linkedSuffix}";
-					}
-				}
-				$newRecord = $this->Personne->{$oldModelName}->find( 'first', $query );
-
-				foreach( $removePaths as $removePath ) {
-					$newRecord = Hash::remove( $newRecord, $removePath );
-				}
-
-				$newRecord = array_words_replace( $newRecord, $replacements );
-				$newRecord[$newModelName]['personne_id'] = $personne_id;
-				$newRecord[$newModelName]['dsp_id'] = Hash::get( $oldRecord, 'Dsp.id' );
-				$newRecord[$newModelName]['nivetu'] = $nivetu;
-
-				$success = $this->saveResultAsBool(
-					$this->Personne->{$newModelName}->saveAll(
-						$newRecord,
-						array( 'atomic' => false, 'deep' => true )
-					)
-				) && $success;
-			}
-			// Fin "mise à jour des Dsp"
-			// Fin
-			*/
-
 			// Instantané données
 			$data['Instantanedonneesfp93']['ficheprescription93_id'] = $this->id;
 			$this->Instantanedonneesfp93->create( $data );
@@ -1118,22 +1019,38 @@
 					'fields' => Hash::merge(
 						$this->fields(),
 						$this->Actionfp93->fields(),
-						$this->Instantanedonneesfp93->fields(),
-						$this->Referent->fields(),
+						$this->Adresseprestatairefp93->fields(),
 						$this->Filierefp93->fields(),
-						$this->Actionfp93->Prestatairefp93->fields(),
+						$this->Instantanedonneesfp93->fields(),
+						$this->Motifnonintegrationfp93->fields(),
+						$this->Motifnonreceptionfp93->fields(),
+						$this->Motifnonretenuefp93->fields(),
+						$this->Motifnonsouhaitfp93->fields(),
+						$this->Personne->fields(),
+						$this->Referent->fields(),
+						$this->Prestatairefp93->fields(),
+						$this->Prestatairehorspdifp93->fields(),
 						$this->Filierefp93->Categoriefp93->fields(),
-						$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
+						$this->Filierefp93->Categoriefp93->Thematiquefp93->fields(),
+						$this->Referent->Structurereferente->fields()
 					),
 					'contain' => false,
 					'joins' => array(
 						$this->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
 						$this->join( 'Instantanedonneesfp93', array( 'type' => 'INNER' ) ),
+						$this->join( 'Motifnonintegrationfp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Motifnonreceptionfp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Motifnonretenuefp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Motifnonsouhaitfp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+						$this->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Prestatairehorspdifp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
-						$this->Actionfp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+						$this->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
 					),
 					'conditions' => array(
 						"{$this->alias}.id" => $ficheprescription93_id
@@ -1162,7 +1079,34 @@
 				$data = Hash::merge( $data, $user );
 			}
 
-			return $data;
+			$return = array(
+				$data,
+				'documentbeneffp93' => array(),
+				'modtransmfp93' => array()
+			);
+
+			// Lecture des données HABTM
+			foreach( array( 'Documentbeneffp93', 'Modtransmfp93' ) as $habtmModelName ) {
+				$with = $this->hasAndBelongsToMany[$habtmModelName]['with'];
+
+				$query = array(
+					'fields' => array(
+						"{$habtmModelName}.{$this->{$habtmModelName}->primaryKey}",
+						"{$habtmModelName}.{$this->{$habtmModelName}->displayField}"
+					),
+					'joins' => array(
+						$this->{$habtmModelName}->join( $with, array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						"{$with}.ficheprescription93_id" => Hash::get( $data, 'Ficheprescription93.id' )
+					)
+				);
+
+				$key = Inflector::underscore( $habtmModelName );
+				$return[$key] = $this->{$habtmModelName}->find( 'all', $query );
+			}
+
+			return $return;
 		}
 
 		/**

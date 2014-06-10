@@ -163,18 +163,17 @@
 				'Ficheprescription93.prestatairefp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.actionfp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.adresseprestatairefp93_id' => array( 'empty' => true ),
 			),
 			array(
 				'options' => $options,
 			)
 		)
-		// FIXME: suivant la valeur de typethematiquefp93_id
 		.$this->Default3->subform(
 			array(
-				'Ficheprescription93.selection_prestataire' => array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Ficheprescription93.selection_prestataire' ), 'empty' => true ),
+				'Prestatairehorspdifp93.name',
 				'Ficheprescription93.selection_adresse_prestataire' => array( 'type' => 'select', 'options' => array(), 'empty' => true ),
 				'Prestatairehorspdifp93.id',
-				'Prestatairehorspdifp93.name',
 				'Prestatairehorspdifp93.adresse',
 				'Prestatairehorspdifp93.codepos',
 				'Prestatairehorspdifp93.localite',
@@ -186,7 +185,6 @@
 				'options' => $options,
 			)
 		)
-		// FIXME: suivant la valeur de typethematiquefp93_id
 		.$this->Html->tag( 'div', ' ', array( 'id' => 'CoordonneesPrestataire' ) )
 		.$this->Default3->subform(
 			array(
@@ -195,6 +193,19 @@
 				'Ficheprescription93.statut' => array( 'type' => 'hidden' ),
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
+			),
+			array(
+				'options' => $options,
+			)
+		)
+		.$this->Html->tag(
+			'div',
+			$this->Form->input( 'Ficheprescription93.duree_action', array( 'type' => 'hidden', 'id' => false ) )
+			.$this->Default3->DefaultForm->fieldValue( 'Ficheprescription93.duree_action' ),
+			array( 'id' => 'DureeActionPdi' )
+		)
+		.$this->Default3->subform(
+			array(
 				'Ficheprescription93.duree_action',
 				'Documentbeneffp93.Documentbeneffp93' => array( 'multiple' => 'checkbox' ),
 				'Ficheprescription93.documentbeneffp93_autre',
@@ -288,6 +299,8 @@
 	echo $this->Default3->DefaultForm->end();
 ?>
 <?php
+	// Début du javascript
+
 	// Catalogue PDI
 	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.typethematiquefp93_id',
@@ -303,6 +316,7 @@
 			'Prestatairehorspdifp93.tel',
 			'Prestatairehorspdifp93.fax',
 			'Prestatairehorspdifp93.email',
+			'Ficheprescription93.duree_action'
 		),
 		array( null, '', 'pdi' ),
 		true,
@@ -316,6 +330,7 @@
 			'Ficheprescription93.numconvention',
 			'Ficheprescription93.prestatairefp93_id',
 			'Ficheprescription93.actionfp93_id',
+			'Ficheprescription93.adresseprestatairefp93_id'
 		),
 		array( 'horspdi' ),
 		true,
@@ -457,6 +472,7 @@
 			'Ficheprescription93.actionfp93_id',
 			'Ficheprescription93.action',
 			'Ficheprescription93.id',
+			'Ficheprescription93.adresseprestatairefp93_id'
 		),
 		array(
 			'url' => array( 'action' => 'ajax_action' ),
@@ -466,8 +482,15 @@
 
 	echo $this->Ajax2->observe(
 		array(
-			'Ficheprescription93.selection_prestataire',
+			'Prestatairehorspdifp93.name' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.selection_adresse_prestataire',
+			'Prestatairehorspdifp93.id',
+			'Prestatairehorspdifp93.adresse',
+			'Prestatairehorspdifp93.codepos',
+			'Prestatairehorspdifp93.localite',
+			'Prestatairehorspdifp93.tel' => array( 'maxlength' => 14 ),
+			'Prestatairehorspdifp93.fax' => array( 'maxlength' => 14 ),
+			'Prestatairehorspdifp93.email'
 		),
 		array(
 			'url' => array( 'action' => 'ajax_prestataire_horspdi' ),
@@ -475,12 +498,20 @@
 		)
 	);
 
-	// FIXME: ne fonctionne pas au chargement de la page
 	echo $this->Ajax2->updateDivOnFieldsChange(
 		'CoordonneesPrestataire',
 		array( 'action' => 'ajax_prestataire' ),
 		array(
-			'Ficheprescription93.prestatairefp93_id',
+			'Ficheprescription93.adresseprestatairefp93_id'
+		)
+	);
+
+	echo $this->Ajax2->updateDivOnFieldsChange(
+		'DureeActionPdi',
+		array( 'action' => 'ajax_duree_pdi' ),
+		array(
+			'Ficheprescription93.typethematiquefp93_id',
+			'Ficheprescription93.actionfp93_id',
 		)
 	);
 

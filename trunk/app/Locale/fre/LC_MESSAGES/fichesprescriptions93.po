@@ -332,6 +332,9 @@ msgstr "Filière"
 msgid "Ficheprescription93.prestatairefp93_id"
 msgstr "Nom du prestataire"
 
+msgid "Ficheprescription93.adresseprestatairefp93_id"
+msgstr "Adresse du prestataire"
+
 msgid "Ficheprescription93.prestatairefp93"
 msgstr "Nom du prestataire"
 
