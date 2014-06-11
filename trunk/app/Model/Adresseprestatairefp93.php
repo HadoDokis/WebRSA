@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Adresseprestatairefp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Adresseprestatairefp93 extends AppModel
+	class Adresseprestatairefp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.
@@ -120,5 +121,19 @@
 				'finderQuery' => null
 			),
 		);
+
+		/**
+		 * Retourne les options à utiliser dans le formulaire d'ajout / de
+		 * modification de la partie paramétrage.
+		 *
+		 * @return array
+		 */
+		public function getParametrageOptions() {
+			$options = $this->enums();
+
+			$options[$this->alias]['prestatairefp93_id'] = $this->Prestatairefp93->find( 'list' );
+
+			return $options;
+		}
 	}
 ?>

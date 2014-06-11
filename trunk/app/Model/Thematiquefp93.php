@@ -5,13 +5,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Thematiquefp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Thematiquefp93 extends AppModel
+	class Thematiquefp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.
@@ -91,6 +92,60 @@
 			$sql = $this->Categoriefp93->sq( array_words_replace( $query, $replacements ) );
 
 			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+		}
+
+		/**
+		 * Retourne la liste des champs à utiliser dans le formulaire d'ajout / de
+		 * modification de la partie paramétrage.
+		 *
+		 * @return array
+		 */
+		public function getParametrageFields() {
+			$fields = array(
+				"{$this->alias}.id" => array(),
+				"{$this->alias}.type" => array( 'empty' => true ),
+				"{$this->alias}.name" => array(),
+			);
+
+			return $fields;
+		}
+
+		/**
+		 * Retourne les données à utiliser dans le formulaire de modification de
+		 * la partie paramétrage.
+		 *
+		 * @param integer $id
+		 * @return array
+		 */
+		public function getParametrageFormData( $id ) {
+			$query = array(
+				'fields' => array(
+					"{$this->alias}.{$this->primaryKey}",
+					"{$this->alias}.type",
+					"{$this->alias}.{$this->displayField}"
+				),
+				'conditions' => array(
+					"{$this->alias}.{$this->primaryKey}" => $id
+				)
+			);
+
+			return $this->find( 'first', $query );
+		}
+
+		/**
+		 * Retourne les options à utiliser dans le formulaire d'ajout / de
+		 * modification de la partie paramétrage.
+		 *
+		 * @return array
+		 */
+		public function getParametrageOptions() {
+			$options = array(
+				$this->alias => array(
+					'type' => $this->enum( 'type' )
+				)
+			);
+
+			return $options;
 		}
 	}
 ?>

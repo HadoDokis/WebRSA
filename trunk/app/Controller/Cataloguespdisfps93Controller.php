@@ -214,8 +214,7 @@
 
 			if( !empty( $this->request->data ) ) {
 				$Model->begin();
-				$Model->create( $this->request->data );
-				if( $Model->save() ) {
+				if( $Model->saveParametrage( $this->request->data ) ) {
 					$Model->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
@@ -238,46 +237,18 @@
 				}
 			}
 			else if( $this->action == 'edit' ) {
-				$this->request->data = $Model->find(
-					'first',
-					array(
-						'conditions' => array( "{$Model->alias}.{$Model->primaryKey}" => $id )
-					)
-				);
+				$this->request->data = $Model->getParametrageFormData( $id );
+
 				if( empty( $this->request->data ) ) {
 					throw new Error404Exception();
 				}
 			}
 
-			// Début factorisation pour formulaire
-			$fields = array_keys( $Model->schema() );
-			array_remove( $fields, 'created' );
-			array_remove( $fields, 'modified' );
-			foreach( $fields as $i => $field ) {
-				$fields[$i] = "{$Model->alias}.{$field}";
-			}
+			$fields = $Model->getParametrageFields();
+			$options = $Model->getParametrageOptions();
+			$dependantFields = $Model->getParametrageDependantFields();
 
-			$fields = Hash::normalize( $fields );
-
-			$options = $Model->enums();
-
-			// Début factorisation pour formulaire
-			if( !empty( $Model->belongsTo ) ) {
-				foreach( $Model->belongsTo as $alias => $params ) {
-					$OtherModel = $Model->{$alias};
-					$options[$Model->alias][$params['foreignKey']] = $OtherModel->find( 'list' );
-				}
-			}
-
-			foreach( $options as $modelName => $modelOptions ) {
-				foreach( array_keys( $modelOptions ) as $fieldName ) {
-					$fields["{$modelName}.{$fieldName}"] = array( 'empty' => true );
-				}
-			}
-
-			// Fin factorisation pour formulaire
-
-			$this->set( compact( 'options', 'fields', 'modelName' ) );
+			$this->set( compact( 'options', 'fields', 'modelName', 'dependantFields' ) );
 			$this->render( 'add_edit' );
 		}
 

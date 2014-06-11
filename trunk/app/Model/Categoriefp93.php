@@ -5,13 +5,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Categoriefp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Categoriefp93 extends AppModel
+	class Categoriefp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.
@@ -35,7 +36,26 @@
 		public $actsAs = array(
 			'Cataloguepdifp93',
 			'Postgres.PostgresAutovalidate',
-			'Validation2.Validation2Formattable',
+			'Validation2.Validation2Formattable'
+		);
+
+		/**
+		 * Ajout des règles de validation des champs virtuels du formulaire de
+		 * paramétrage.
+		 *
+		 * @var array
+		 */
+		public $validate = array(
+			'typethematiquefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
+			'thematiquefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
 		);
 
 		/**
@@ -102,6 +122,101 @@
 			$sql = $this->Filierefp93->sq( array_words_replace( $query, $replacements ) );
 
 			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+		}
+
+		/**
+		 * Tentative de sauvegarde d'un élément du catalogue à partir de la
+		 * partie paramétrage.
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveParametrage( array $data ) {
+			$this->create( $data );
+			return $this->save();
+		}
+
+		/**
+		 * Retourne la liste des champs à utiliser dans le formulaire d'ajout / de
+		 * modification de la partie paramétrage.
+		 *
+		 * @return array
+		 */
+		public function getParametrageFields() {
+			$fields = array(
+				"{$this->alias}.id" => array(),
+				"{$this->alias}.typethematiquefp93_id" => array( 'empty' => true ),
+				"{$this->alias}.thematiquefp93_id" => array( 'empty' => true ),
+				"{$this->alias}.name" => array(),
+			);
+
+			return $fields;
+		}
+
+		/**
+		 * Retourne les données à utiliser dans le formulaire de modification de
+		 * la partie paramétrage.
+		 *
+		 * @param integer $id
+		 * @return array
+		 */
+		public function getParametrageFormData( $id ) {
+			$query = array(
+				'fields' => array(
+					"Thematiquefp93.type",
+					"{$this->alias}.{$this->primaryKey}",
+					"{$this->alias}.{$this->displayField}",
+					"{$this->alias}.thematiquefp93_id",
+				),
+				'joins' => array(
+					$this->join( 'Thematiquefp93', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					"{$this->alias}.{$this->primaryKey}" => $id
+				)
+			);
+
+			$result = $this->find( 'first', $query );
+
+			if( !empty( $result ) ) {
+				$typethematiquefp93_id = Hash::get( $result, "Thematiquefp93.type" );
+
+				$result = array(
+					$this->alias => array(
+						$this->primaryKey => Hash::get( $result, "{$this->alias}.{$this->primaryKey}" ),
+						'typethematiquefp93_id' => $typethematiquefp93_id,
+						'thematiquefp93_id' => $typethematiquefp93_id.'_'.Hash::get( $result, "{$this->alias}.thematiquefp93_id" ),
+						$this->displayField => Hash::get( $result, "{$this->alias}.{$this->displayField}" ),
+					)
+				);
+			}
+
+			return $result;
+		}
+
+		/**
+		 * Retourne les options à utiliser dans le formulaire d'ajout / de
+		 * modification de la partie paramétrage.
+		 *
+		 * @return array
+		 */
+		public function getParametrageOptions() {
+			$options = array(
+				$this->alias => array(
+					'typethematiquefp93_id' => $this->Thematiquefp93->enum( 'type' )
+				)
+			);
+
+			$query = array(
+				'fields' => array(
+					'( "Thematiquefp93"."type" || \'_\' || "Thematiquefp93"."id" ) AS "Thematiquefp93__id"',
+					'Thematiquefp93.name',
+				)
+			);
+			$results = $this->Thematiquefp93->find( 'all', $query );
+			$options[$this->alias]['thematiquefp93_id'] = Hash::combine( $results, '{n}.Thematiquefp93.id', '{n}.Thematiquefp93.name' );
+
+			return $options;
 		}
 	}
 ?>
