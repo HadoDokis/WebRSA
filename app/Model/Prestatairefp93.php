@@ -5,13 +5,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Prestatairefp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Prestatairefp93 extends AppModel
+	class Prestatairefp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.

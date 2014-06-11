@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Modtransmfp93 contient les modalités de transmission de la fiche
@@ -14,7 +15,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Modtransmfp93 extends AppModel
+	class Modtransmfp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.

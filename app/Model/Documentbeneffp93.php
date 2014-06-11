@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Documentbeneffp93 contient les intitulés des documents dont le
@@ -14,7 +15,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Documentbeneffp93 extends AppModel
+	class Documentbeneffp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.

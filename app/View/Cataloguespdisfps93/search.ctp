@@ -70,10 +70,10 @@
 				'Actionfp93.name',
 				'Actionfp93.actif',
 				"/Cataloguespdisfps93/edit/{$modelName}/#{$modelName}.id#" => array(
-					'disabled' => !$this->Permissions->check( 'Cataloguespdisfps93', 'edit' )
+					'disabled' => "( '#{$modelName}.id#' == '' || !'".$this->Permissions->check( 'Cataloguespdisfps93', 'edit' )."' )",
 				),
 				"/Cataloguespdisfps93/delete/{$modelName}/#{$modelName}.id#" => array(
-					'disabled' => "( '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguespdisfps93', 'delete' )."' )",
+					'disabled' => "( '#{$modelName}.id#' == '' ||  '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguespdisfps93', 'delete' )."' )",
 					'confirm' => true
 				),
 			),

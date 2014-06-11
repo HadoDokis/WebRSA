@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'AbstractElementCataloguefp93', 'Model/Abstractclass' );
 
 	/**
 	 * La classe Motifnonintegrationfp93 ...
 	 *
 	 * @package app.Model
 	 */
-	class Motifnonintegrationfp93 extends AppModel
+	class Motifnonintegrationfp93 extends AbstractElementCataloguefp93
 	{
 		/**
 		 * Nom du modèle.

@@ -161,6 +161,12 @@ msgstr "Réellement supprimer la thématique « #Thematiquefp93.name# » ?"
 msgid "/Cataloguespdisfps93/index/Categoriefp93/:heading"
 msgstr "Catégories d'action"
 
+msgid "Categoriefp93.typethematiquefp93_id"
+msgstr "Type de prescription"
+
+msgid "Categoriefp93.thematiquefp93_id"
+msgstr "Thématique"
+
 msgid "Categoriefp93.name"
 msgstr "Catégorie d'action"
 
@@ -193,6 +199,12 @@ msgstr "Réellement supprimer la catégorie « #Categoriefp93.name# » ?"
 msgid "/Cataloguespdisfps93/index/Filierefp93/:heading"
 msgstr "Filières"
 
+msgid "Filierefp93.typethematiquefp93_id"
+msgstr "Type"
+
+msgid "Filierefp93.thematiquefp93_id"
+msgstr "Thématique"
+
 msgid "Filierefp93.categoriefp93_id"
 msgstr "Catégorie d'action"
 
@@ -221,6 +233,15 @@ msgid "/Cataloguespdisfps93/delete/Filierefp93/#Filierefp93.id# ?"
 msgstr "Réellement supprimer la filière « #Filierefp93.name# » ?"
 
 # ------------------------------------------------------------------------------
+
+msgid "Actionfp93.typethematiquefp93_id"
+msgstr "Type"
+
+msgid "Actionfp93.thematiquefp93_id"
+msgstr "Thématique"
+
+msgid "Actionfp93.categoriefp93_id"
+msgstr "Catégorie"
 
 msgid "Actionfp93.filierefp93_id"
 msgstr "Filière"
