@@ -12,7 +12,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Thematiquefp93 extends AbstractElementCataloguefp93
+	class Thematiquefp93 extends AbstractElementCataloguefp93 implements IElementWithDescendantCataloguefp93
 	{
 		/**
 		 * Nom du modèle.
@@ -64,24 +64,31 @@
 
 		/**
 		 * Retourne une condition qui est en fait une sous-requête, avec les
-		 * jointures nécessaires pour atteindre le modèle Actionfp93, et comprenant
-		 * les conditions passées en paramètre.
+		 * jointures nécessaires pour atteindre soit le modèle Filierefp93 (en
+		 * cas d'action hors pdi), soit le modèle Actionfp93 (en cas d'action PDI).
 		 *
-		 * @param array $conditions Les conditions à appliquer sur le modèle Actionfp93
+		 * Cela permet de s'assurer d'une part qu'il n'y aura pas d'enregistrement
+		 * orphelin dans les listes déroulantes, et d'autre part d'ajouter des conditions.
+		 *
+		 * @param string Le type d'action ("pdi" ou "hors pdi")
+		 * @param array $conditions Les conditions supplémentaires à appliquer
 		 * @return string
 		 */
-		public function getActionfp93Condition( array $conditions ) {
+		public function getDependantListCondition( $type, array $conditions ) {
 			$conditions[] = "Categoriefp93.thematiquefp93_id = {$this->alias}.{$this->primaryKey}";
 
 			$query = array(
 				'alias' => 'Categoriefp93',
 				'fields' => array( 'Categoriefp93.thematiquefp93_id' ),
 				'joins' => array(
-					$this->Categoriefp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-					$this->Categoriefp93->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
+					$this->Categoriefp93->join( 'Filierefp93', array( 'type' => 'INNER' ) )
 				),
 				'conditions' => $conditions
 			);
+
+			if( $type === 'pdi' ) {
+				$query['joins'][] = $this->Categoriefp93->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) );
+			}
 
 			$replacements = array(
 				'Categoriefp93' => 'categoriesfps93',
@@ -90,8 +97,9 @@
 			);
 
 			$sql = $this->Categoriefp93->sq( array_words_replace( $query, $replacements ) );
+			$condition = "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
 
-			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+			return $condition;
 		}
 
 		/**
@@ -130,22 +138,6 @@
 			);
 
 			return $this->find( 'first', $query );
-		}
-
-		/**
-		 * Retourne les options à utiliser dans le formulaire d'ajout / de
-		 * modification de la partie paramétrage.
-		 *
-		 * @return array
-		 */
-		public function getParametrageOptions() {
-			$options = array(
-				$this->alias => array(
-					'type' => $this->enum( 'type' )
-				)
-			);
-
-			return $options;
 		}
 	}
 ?>

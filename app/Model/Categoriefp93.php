@@ -12,7 +12,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Categoriefp93 extends AbstractElementCataloguefp93
+	class Categoriefp93 extends AbstractElementCataloguefp93 implements IElementWithDescendantCataloguefp93
 	{
 		/**
 		 * Nom du modèle.
@@ -96,23 +96,29 @@
 
 		/**
 		 * Retourne une condition qui est en fait une sous-requête, avec les
-		 * jointures nécessaires pour atteindre le modèle Actionfp93, et comprenant
-		 * les conditions passées en paramètre.
+		 * jointures nécessaires pour atteindre soit le modèle Filierefp93 (en
+		 * cas d'action hors pdi), soit le modèle Actionfp93 (en cas d'action PDI).
 		 *
-		 * @param array $conditions Les conditions à appliquer sur le modèle Actionfp93
+		 * Cela permet de s'assurer d'une part qu'il n'y aura pas d'enregistrement
+		 * orphelin dans les listes déroulantes, et d'autre part d'ajouter des conditions.
+		 *
+		 * @param string Le type d'action ("pdi" ou "hors pdi")
+		 * @param array $conditions Les conditions supplémentaires à appliquer
 		 * @return string
 		 */
-		public function getActionfp93Condition( array $conditions ) {
+		public function getDependantListCondition( $type, array $conditions ) {
 			$conditions[] = "Filierefp93.categoriefp93_id = {$this->alias}.{$this->primaryKey}";
 
 			$query = array(
 				'alias' => 'Filierefp93',
 				'fields' => array( 'Filierefp93.categoriefp93_id' ),
-				'joins' => array(
-					$this->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) ),
-				),
+				'joins' => array(),
 				'conditions' => $conditions
 			);
+
+			if( $type === 'pdi' ) {
+				$query['joins'][] = $this->Filierefp93->join( 'Actionfp93', array( 'type' => 'INNER' ) );
+			}
 
 			$replacements = array(
 				'Filierefp93' => 'filieresfps93',
@@ -120,8 +126,9 @@
 			);
 
 			$sql = $this->Filierefp93->sq( array_words_replace( $query, $replacements ) );
+			$condition = "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
 
-			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+			return $condition;
 		}
 
 		/**
@@ -198,21 +205,33 @@
 		 * Retourne les options à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *
+		 * @param boolean Permet de s'assurer que l'on possède au moins un
+		 *	enregistrement au niveau inférieur.
 		 * @return array
 		 */
-		public function getParametrageOptions() {
+		public function getParametrageOptions( $hasDescendant = false ) {
+			$options = $this->Thematiquefp93->getParametrageOptions( true );
 			$options = array(
 				$this->alias => array(
-					'typethematiquefp93_id' => $this->Thematiquefp93->enum( 'type' )
+					'typethematiquefp93_id' => (array)Hash::get( $options, 'Thematiquefp93.type' )
 				)
 			);
 
+			// Liste des thématiques
 			$query = array(
 				'fields' => array(
 					'( "Thematiquefp93"."type" || \'_\' || "Thematiquefp93"."id" ) AS "Thematiquefp93__id"',
 					'Thematiquefp93.name',
-				)
+				),
+				'conditions' => array()
 			);
+
+			// ... et qui possède au moins un descendant ?
+			if( $hasDescendant ) {
+				$this->Thematiquefp93->Behaviors->attach( 'LinkedRecords' );
+				$query['conditions'][] = $this->Thematiquefp93->linkedRecordVirtualField( $this->alias );
+			}
+
 			$results = $this->Thematiquefp93->find( 'all', $query );
 			$options[$this->alias]['thematiquefp93_id'] = Hash::combine( $results, '{n}.Thematiquefp93.id', '{n}.Thematiquefp93.name' );
 

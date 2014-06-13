@@ -132,13 +132,21 @@
 
 		/**
 		 * Retourne une condition qui est en fait une sous-requête, avec les
-		 * jointures nécessaires pour atteindre le modèle Actionfp93, et comprenant
-		 * les conditions passées en paramètre.
+		 * jointures nécessaires pour atteindre soit le modèle Filierefp93 (en
+		 * cas d'action hors pdi), soit le modèle Actionfp93 (en cas d'action PDI).
 		 *
-		 * @param array $conditions Les conditions à appliquer sur le modèle Actionfp93
+		 * Cela permet de s'assurer d'une part qu'il n'y aura pas d'enregistrement
+		 * orphelin dans les listes déroulantes, et d'autre part d'ajouter des conditions.
+		 *
+		 * @param string Le type d'action ("pdi" ou "hors pdi")
+		 * @param array $conditions Les conditions supplémentaires à appliquer
 		 * @return string
 		 */
-		public function getActionfp93Condition( array $conditions ) {
+		public function getDependantListCondition( $type, array $conditions ) {
+			if( $type === 'horspdi' ) {
+				return '1 = 1';
+			}
+$this->log( var_export( $conditions, true ), LOG_DEBUG );
 			$conditions[] = "Actionfp93.prestatairefp93_id = {$this->alias}.{$this->primaryKey}";
 
 			$query = array(
@@ -152,8 +160,9 @@
 			);
 
 			$sql = $this->Actionfp93->sq( array_words_replace( $query, $replacements ) );
+			$condition = "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
 
-			return "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
+			return $condition;
 		}
 	}
 ?>

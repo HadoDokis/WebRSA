@@ -47,9 +47,11 @@
 		 * Retourne les options à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *
+		 * @param boolean Permet de s'assurer que l'on possède au moins un
+		 *	enregistrement au niveau inférieur.
 		 * @return array
 		 */
-		public function getParametrageOptions();
+		public function getParametrageOptions( $hasDescendant = false );
 
 		/**
 		 * Retourne la liste des champs dépendants à utiliser dans le formulaire
@@ -126,9 +128,11 @@
 		 * Retourne les options à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *
+		 * @param boolean Permet de s'assurer que l'on possède au moins un
+		 *	enregistrement au niveau inférieur.
 		 * @return array
 		 */
-		public function getParametrageOptions() {
+		public function getParametrageOptions( $hasDescendant = false ) {
 			return $this->enums();
 		}
 
@@ -155,5 +159,28 @@
 
 			return $return;
 		}
+	}
+
+	/**
+	 * Interface pour les classes d'éléments du catalogue des fiches de prescription
+	 * qui génèrent des listes dépendants entre elles (CG 93).
+	 *
+	 * @package app.Model.Abstractclass
+	 */
+	interface IElementWithDescendantCataloguefp93
+	{
+		/**
+		 * Retourne une condition qui est en fait une sous-requête, avec les
+		 * jointures nécessaires pour atteindre soit le modèle Filierefp93 (en
+		 * cas d'action hors pdi), soit le modèle Actionfp93 (en cas d'action PDI).
+		 *
+		 * Cela permet de s'assurer d'une part qu'il n'y aura pas d'enregistrement
+		 * orphelin dans les listes déroulantes, et d'autre part d'ajouter des conditions.
+		 *
+		 * @param string Le type d'action ("pdi" ou "hors pdi")
+		 * @param array $conditions Les conditions supplémentaires à appliquer
+		 * @return string
+		 */
+		public function getDependantListCondition( $type, array $conditions );
 	}
 ?>
