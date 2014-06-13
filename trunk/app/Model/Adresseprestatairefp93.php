@@ -126,9 +126,11 @@
 		 * Retourne les options à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *
+		 * @param boolean Permet de s'assurer que l'on possède au moins un
+		 *	enregistrement au niveau inférieur.
 		 * @return array
 		 */
-		public function getParametrageOptions() {
+		public function getParametrageOptions( $hasDescendant = false ) {
 			$options = $this->enums();
 
 			$options[$this->alias]['prestatairefp93_id'] = $this->Prestatairefp93->find( 'list' );

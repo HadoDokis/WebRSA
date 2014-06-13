@@ -113,9 +113,10 @@
 						)
 					);
 
-					if( !empty( $conditionsActionfp93 ) ) {
-						$query['conditions'][] = ClassRegistry::init( 'Thematiquefp93' )->getActionfp93Condition( $conditionsActionfp93 );
-					}
+					$query['conditions'][] = ClassRegistry::init( 'Thematiquefp93' )->getDependantListCondition(
+						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
+						$conditionsActionfp93
+					);
 
 					$fields['Ficheprescription93.thematiquefp93_id']['options'] = $this->ajaxOptions( 'Thematiquefp93', $query );
 				}
@@ -128,9 +129,10 @@
 						)
 					);
 
-					if( !empty( $conditionsActionfp93 ) ) {
-						$query['conditions'][] = ClassRegistry::init( 'Categoriefp93' )->getActionfp93Condition( $conditionsActionfp93 );
-					}
+					$query['conditions'][] = ClassRegistry::init( 'Categoriefp93' )->getDependantListCondition(
+						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
+						$conditionsActionfp93
+					);
 
 					$fields['Ficheprescription93.categoriefp93_id']['options'] = $this->ajaxOptions( 'Categoriefp93', $query );
 				}
@@ -143,9 +145,10 @@
 						)
 					);
 
-					if( !empty( $conditionsActionfp93 ) ) {
-						$query['conditions'][] = ClassRegistry::init( 'Filierefp93' )->getActionfp93Condition( $conditionsActionfp93 );
-					}
+					$query['conditions'][] = ClassRegistry::init( 'Filierefp93' )->getDependantListCondition(
+						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
+						$conditionsActionfp93
+					);
 
 					$fields['Ficheprescription93.filierefp93_id']['options'] = $this->ajaxOptions( 'Filierefp93', $query );
 				}
@@ -176,9 +179,10 @@
 						)
 					);
 
-					if( !empty( $conditionsActionfp93 ) ) {
-						$query['conditions'][] = ClassRegistry::init( 'Prestatairefp93' )->getActionfp93Condition( $conditionsActionfp93 );
-					}
+					$query['conditions'][] = ClassRegistry::init( 'Prestatairefp93' )->getDependantListCondition(
+						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
+						$conditionsActionfp93
+					);
 
 					$fields['Ficheprescription93.prestatairefp93_id']['options'] = $this->ajaxOptions( 'Prestatairefp93', $query );
 				}
@@ -447,7 +451,7 @@
 			$data = $this->unprefixAjaxRequest( $data );
 			$path = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['name'] ) );
 
-			if( $path === 'Ficheprescription93.numconvention' ) {
+			if( in_array( $path, array( 'Ficheprescription93.numconvention', 'Search.Ficheprescription93.numconvention' ) ) ) {
 				$Actionfp93 = ClassRegistry::init( 'Actionfp93' );
 
 				$query = array(
