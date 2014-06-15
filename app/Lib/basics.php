@@ -1090,4 +1090,28 @@
 
 		return $return;
 	}
+
+	/**
+	 * Retourne les chemins des clés de l'array pasé en paramètre jusqu'au niveau
+	 * maximum.
+	 *
+	 * @param array $hash
+	 * @param integer $max
+	 * @param integer $current
+	 * @return array
+	 */
+	function hash_keys( array $hash, $max = 2, $current = 1 ) {
+		$result = array( );
+
+		foreach( array_keys( $hash ) as $key ) {
+			if( ( $current < $max ) && is_array( $hash[$key] ) ) {
+				$result[$key] = Hash::normalize( hash_keys( $hash[$key], $max, $current + 1 ) );
+			}
+			else {
+				$result[$key] = array( );
+			}
+		}
+
+		return array_keys( Hash::flatten( $result ) );
+	}
 ?>
