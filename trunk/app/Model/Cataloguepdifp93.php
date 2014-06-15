@@ -174,6 +174,8 @@
 		 * Retourne les options nécessaires au formulaire de recherche, aux
 		 * impressions, ...
 		 *
+		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+		 *
 		 * @param array $params
 		 * @return array
 		 */

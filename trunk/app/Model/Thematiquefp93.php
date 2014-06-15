@@ -110,34 +110,12 @@
 		 */
 		public function getParametrageFields() {
 			$fields = array(
-				"{$this->alias}.id" => array(),
+				"{$this->alias}.{$this->primaryKey}" => array(),
 				"{$this->alias}.type" => array( 'empty' => true ),
-				"{$this->alias}.name" => array(),
+				"{$this->alias}.{$this->displayField}" => array(),
 			);
 
 			return $fields;
-		}
-
-		/**
-		 * Retourne les données à utiliser dans le formulaire de modification de
-		 * la partie paramétrage.
-		 *
-		 * @param integer $id
-		 * @return array
-		 */
-		public function getParametrageFormData( $id ) {
-			$query = array(
-				'fields' => array(
-					"{$this->alias}.{$this->primaryKey}",
-					"{$this->alias}.type",
-					"{$this->alias}.{$this->displayField}"
-				),
-				'conditions' => array(
-					"{$this->alias}.{$this->primaryKey}" => $id
-				)
-			);
-
-			return $this->find( 'first', $query );
 		}
 	}
 ?>

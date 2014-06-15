@@ -79,7 +79,7 @@
 		 */
 		public function saveParametrage( array $data ) {
 			$this->create( $data );
-			return $this->save();
+			return ( $this->save() !== false );
 		}
 
 		/**
@@ -117,6 +117,7 @@
 		 */
 		public function getParametrageFormData( $id ) {
 			$query = array(
+				'fields' => array_keys( $this->getParametrageFields() ),
 				'conditions' => array(
 					"{$this->alias}.{$this->primaryKey}" => $id
 				)

@@ -72,6 +72,22 @@
 		}
 
 		/**
+		 * Test de la méthode Categoriefp93::saveParametrage()
+		 */
+		public function testSaveParametrage() {
+			$data = array(
+				'Categoriefp93' => array(
+					'id' => '',
+					'typethematiquefp93_id' => 'pdi',
+					'thematiquefp93_id' => 'pdi_1',
+					'name' => 'Catégorie de test supplémentaire',
+				)
+			);
+			$result = $this->Categoriefp93->saveParametrage( $data );
+			$this->assertTrue( $result );
+		}
+
+		/**
 		 * Test de la méthode Categoriefp93::getParametrageFields()
 		 */
 		public function testGetParametrageFields() {
@@ -84,8 +100,7 @@
 				'Categoriefp93.thematiquefp93_id' => array(
 					'empty' => true,
 				),
-				'Categoriefp93.name' => array(
-				),
+				'Categoriefp93.name' => array(),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -102,6 +117,18 @@
 					'thematiquefp93_id' => 'pdi_1',
 					'name' => 'Catégorie de test',
 				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Categoriefp93::getParametrageDependantFields()
+		 */
+		public function testGetParametrageDependantFields() {
+			// 1. sans descendant
+			$result = $this->Categoriefp93->getParametrageDependantFields();
+			$expected = array(
+				'Categoriefp93.typethematiquefp93_id' => 'Categoriefp93.thematiquefp93_id',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

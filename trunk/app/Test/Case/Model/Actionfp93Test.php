@@ -53,6 +53,28 @@
 		}
 
 		/**
+		 * Test de la méthode Actionfp93::saveParametrage()
+		 */
+		public function testSaveParametrage() {
+			$data = array(
+				'Actionfp93' => array(
+					'id' => '',
+					'typethematiquefp93_id' => 'pdi',
+					'thematiquefp93_id' => 'pdi_1',
+					'categoriefp93_id' => '1_1',
+					'filierefp93_id' => '1_1',
+					'prestatairefp93_id' => '1',
+					'annee' => 2014,
+					'actif' => '1',
+					'numconvention' => '93TEST14000000',
+					'name' => 'Action de test supplémentaire',
+				)
+			);
+			$result = $this->Actionfp93->saveParametrage( $data );
+			$this->assertTrue( $result );
+		}
+
+		/**
 		 * Test de la méthode Actionfp93::getParametrageFields()
 		 */
 		public function testGetParametrageFields() {
