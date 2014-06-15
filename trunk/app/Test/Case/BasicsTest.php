@@ -747,5 +747,30 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la fonction hash_keys()
+		 */
+		public function testHashKeys() {
+			$data = array(
+				'Foo' => array(
+					'Bar' => array(
+						'Baz' => 1
+					)
+				),
+				'Bar' => array(
+					'Baz' => 1
+				),
+				'Baz' => 1
+			);
+
+			$result = hash_keys( $data );
+			$expected = array(
+				'Foo.Bar',
+				'Bar.Baz',
+				'Baz',
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>
