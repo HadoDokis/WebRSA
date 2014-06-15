@@ -141,18 +141,6 @@
 		}
 
 		/**
-		 * Tentative de sauvegarde d'un élément du catalogue à partir de la
-		 * partie paramétrage.
-		 *
-		 * @param array $data
-		 * @return boolean
-		 */
-		public function saveParametrage( array $data ) {
-			$this->create( $data );
-			return $this->save();
-		}
-
-		/**
 		 * Retourne la liste des champs à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *

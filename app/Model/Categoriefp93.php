@@ -132,18 +132,6 @@
 		}
 
 		/**
-		 * Tentative de sauvegarde d'un élément du catalogue à partir de la
-		 * partie paramétrage.
-		 *
-		 * @param array $data
-		 * @return boolean
-		 */
-		public function saveParametrage( array $data ) {
-			$this->create( $data );
-			return $this->save();
-		}
-
-		/**
 		 * Retourne la liste des champs à utiliser dans le formulaire d'ajout / de
 		 * modification de la partie paramétrage.
 		 *
@@ -151,10 +139,10 @@
 		 */
 		public function getParametrageFields() {
 			$fields = array(
-				"{$this->alias}.id" => array(),
+				"{$this->alias}.{$this->primaryKey}" => array(),
 				"{$this->alias}.typethematiquefp93_id" => array( 'empty' => true ),
 				"{$this->alias}.thematiquefp93_id" => array( 'empty' => true ),
-				"{$this->alias}.name" => array(),
+				"{$this->alias}.{$this->displayField}" => array(),
 			);
 
 			return $fields;

@@ -72,6 +72,23 @@
 		}
 
 		/**
+		 * Test de la méthode Categoriefp93::saveParametrage()
+		 */
+		public function testSaveParametrage() {
+			$data = array(
+				'Filierefp93' => array(
+					'id' => '',
+					'typethematiquefp93_id' => 'pdi',
+					'thematiquefp93_id' => 'pdi_1',
+					'categoriefp93_id' => '1_1',
+					'name' => 'Filière de test supplémentaire',
+				)
+			);
+			$result = $this->Filierefp93->saveParametrage( $data );
+			$this->assertTrue( $result );
+		}
+
+		/**
 		 * Test de la méthode Filierefp93::getParametrageFields()
 		 */
 		public function testGetParametrageFields() {

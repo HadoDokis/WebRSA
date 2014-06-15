@@ -60,6 +60,22 @@
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
+
+		/**
+		 * Test de la méthode Actionfp93::saveParametrage()
+		 */
+		public function testSaveParametrage() {
+			$data = array(
+				'Thematiquefp93' => array(
+					'id' => '',
+					'type' => 'pdi',
+					'name' => 'Thématique de test supplémentaire',
+				)
+			);
+			$result = $this->Thematiquefp93->saveParametrage( $data );
+			$this->assertTrue( $result );
+		}
+
 		/**
 		 * Test de la méthode Thematiquefp93::getParametrageFields()
 		 */
