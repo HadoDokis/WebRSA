@@ -61,7 +61,7 @@
 			'Categoriefp93',
 			'Filierefp93',
 			'Actionfp93',
-			'Prestatairefp93',
+			'Prestatairefp93'
 		);
 
 		public $virtualFieldsActionfp93Tree = array(
@@ -70,7 +70,7 @@
 			'Ficheprescription93.categoriefp93_id' => 'Categoriefp93.id',
 			'Ficheprescription93.filierefp93_id' => 'Filierefp93.id',
 			'Ficheprescription93.prestatairefp93_id' => 'Prestatairefp93.id',
-			'Ficheprescription93.actionfp93_id' => 'Actionfp93.id',
+			'Ficheprescription93.actionfp93_id' => 'Actionfp93.id'
 		);
 
 		/**
@@ -85,7 +85,7 @@
 				'Categoriefp93' => 'LEFT OUTER',
 				'Filierefp93' => 'LEFT OUTER',
 				'Actionfp93' => 'LEFT OUTER',
-				'Prestatairefp93' => 'LEFT OUTER',
+				'Prestatairefp93' => 'LEFT OUTER'
 			);
 
 			$cacheKey = Inflector::underscore( $Thematiquefp93->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -102,13 +102,13 @@
 						'Actionfp93.id',
 						'Actionfp93.annee',
 						'Actionfp93.name',
-						'Actionfp93.actif',
+						'Actionfp93.actif'
 					),
 					'joins' => array(
 						$Thematiquefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) ),
 						$Thematiquefp93->Categoriefp93->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) ),
 						$Thematiquefp93->Categoriefp93->Filierefp93->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) ),
-						$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) ),
+						$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) )
 					),
 					'conditions' => array(),
 					'order' => array(
@@ -118,7 +118,7 @@
 						'Prestatairefp93.name',
 						'Actionfp93.annee',
 						'Actionfp93.name',
-						'Actionfp93.actif',
+						'Actionfp93.actif'
 					)
 				);
 
@@ -142,7 +142,7 @@
 			$paths = array(
 				'Thematiquefp93.type',
 				'Actionfp93.annee',
-				'Actionfp93.actif',
+				'Actionfp93.actif'
 			);
 			foreach( $paths as $path ) {
 				$value = trim( Hash::get( $search, $path ) );
@@ -158,7 +158,7 @@
 				'Categoriefp93.name',
 				'Prestatairefp93.name',
 				'Actionfp93.name',
-				'Actionfp93.numconvention',
+				'Actionfp93.numconvention'
 			);
 			foreach( $paths as $path ) {
 				$value = trim( Hash::get( $search, $path ) );

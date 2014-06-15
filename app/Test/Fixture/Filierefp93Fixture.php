@@ -31,7 +31,12 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'categoriefp93_id' => 1,
+				'name' => 'Filière de test',
+				'created' => null,
+				'modified' => null
+			)
 		);
-
 	}
 ?>

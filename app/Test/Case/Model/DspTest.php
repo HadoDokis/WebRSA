@@ -75,6 +75,8 @@
 		/**
 		 * Test de la méthode Dsp::updateDerniereDsp() avec une nouvelle version
 		 * des DspRev.
+		 *
+		 * @medium
 		 */
 		public function testUpdateDerniereDspNouvelleDspRev() {
 			$data = array(
@@ -94,6 +96,8 @@
 
 		/**
 		 * Test de la méthode Dsp::updateDerniereDsp() avec la création d'une DspRev.
+		 *
+		 * @medium
 		 */
 		public function testUpdateDerniereDspCreationDspRev() {
 			$data = array(
@@ -113,6 +117,8 @@
 
 		/**
 		 * Test de la méthode Dsp::updateDerniereDsp() avec la création d'une Dsp.
+		 *
+		 * @medium
 		 */
 		public function testUpdateDerniereDspCreationDsp() {
 			$data = array(

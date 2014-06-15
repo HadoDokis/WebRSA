@@ -32,6 +32,16 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'ficheprescription93_id' => 1,
+				'referent_fonction' => 'Référent',
+				'structure_name' => '« Projet de Ville RSA d\'Aubervilliers»',
+				'structure_num_voie' => '117',
+				'structure_type_voie' => 'R',
+				'structure_nom_voie' => 'Andre Karman',
+				'structure_code_postal' => '93300',
+				'structure_ville' => 'Aubervilliers'
+			)
 		);
 
 	}

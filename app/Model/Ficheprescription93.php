@@ -258,13 +258,6 @@
 					'allowEmpty' => false
 				)
 			),
-			/*'thematiquefp93' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
-				)
-			),*/
 			'categoriefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -272,13 +265,6 @@
 					'allowEmpty' => false
 				)
 			),
-			/*'categoriefp93' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
-				)
-			),*/
 			'filierefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' ),
@@ -286,13 +272,6 @@
 					'allowEmpty' => false
 				)
 			),
-			/*'filierefp93' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmpty' ),
-					'message' => null,
-					'allowEmpty' => false
-				)
-			),*/
 			'prestatairefp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'prestatairehorspdifp93_id', true, array( NULL, '' ) ),
@@ -305,12 +284,6 @@
 					'message' => null
 				)
 			),
-			/*'prestatairefp93' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
-					'message' => null
-				)
-			),*/
 			'actionfp93_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'pdi' ) ),
@@ -323,42 +296,6 @@
 					'message' => null
 				)
 			),
-			/*'prestatairefp93_adresse' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
-					'message' => null
-				)
-			),
-			'prestatairefp93_codepos' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
-					'message' => null
-				)
-			),
-			'prestatairefp93_localite' => array(
-				'notEmpty' => array(
-					'rule' => array( 'notEmptyIf', 'typethematiquefp93_id', true, array( 'horspdi' ) ),
-					'message' => null
-				)
-			),
-			'prestatairefp93_tel' => array(
-				'phoneFr' => array(
-					'rule' => array( 'phoneFr' ),
-					'allowEmpty' => true,
-				),
-			),
-			'prestatairefp93_fax' => array(
-				'phoneFr' => array(
-					'rule' => array( 'phoneFr' ),
-					'allowEmpty' => true,
-				),
-			),
-			'prestatairefp93_email' => array(
-				'email' => array(
-					'rule' => array( 'email' ),
-					'allowEmpty' => true,
-				),
-			),*/
 			// Fin champs virtuels pour le formulaire d'ajout / modification
 			'objet' => array(
 				'notEmpty' => array(
@@ -400,7 +337,7 @@
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
 				'Detaildroitrsa' => 'LEFT OUTER',
-				'Prestation' => 'LEFT OUTER',
+				'Prestation' => 'LEFT OUTER'
 			);
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
@@ -473,7 +410,7 @@
 						$correspondance = $this->correspondances[$path];
 					}
 					else {
-						$correspondance = $path;
+						$correspondance = $path; // @todo pas utilisé ?
 					}
 					$query['conditions'][$correspondance] = $value;
 				}
@@ -488,7 +425,7 @@
 				}
 			}
 
-			// 3. La même sans ne prendre que le suffixe
+			// 3. Recherche par valeur exacte.
 			$paths = array(
 				'Ficheprescription93.statut',
 				'Ficheprescription93.benef_retour_presente',
@@ -537,14 +474,19 @@
 		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
 		 * aux impressions, ...
 		 *
+		 * Les options pdf nécessitent les options de l'allocataire.
+		 *
 		 * @todo actif
 		 *
-		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false )
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
 			$options = array();
-			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false );
+			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false );
+
+			// Les options pdf nécessitent les options de l'allocataire
+			$params['allocataire'] = ( $params['allocataire'] || $params['pdf'] );
 
 			$motifsNames = array( 'Motifnonreceptionfp93', 'Motifnonretenuefp93', 'Motifnonsouhaitfp93', 'Motifnonintegrationfp93', 'Documentbeneffp93' );
 
@@ -593,6 +535,25 @@
 					);
 					$options['Autre'][$this->alias][$foreignKey] = $this->{$motifName}->find( 'list', $query );
 				}
+			}
+
+			if( Hash::get( $params, 'pdf' ) ) {
+				$options = Hash::merge(
+					$options,
+					array(
+						'Instantanedonnees93' => array(
+							'benef_typevoie' => $options['Adresse']['typevoie'],
+							'benef_qual' => $options['Personne']['qual'],
+							'structure_type_voie' => $options['Adresse']['typevoie'],
+						),
+						'Referent' => array(
+							'qual' => $options['Personne']['qual']
+						),
+						'Type' => array(
+							'voie' => $options['Adresse']['typevoie']
+						)
+					)
+				);
 			}
 
 			return $options;
@@ -1129,28 +1090,10 @@
 		 * @param integer $user_id Id de l'utilisateur connecté
 		 * @return string
 		 */
-		public function getDefaultPdf( $ficheprescription93_id, $user_id = null ) {
-			$data = $this->getDataForPdf( $ficheprescription93_id, $user_id );
+		public function getDefaultPdf( $id, $user_id = null ) {
+			$data = $this->getDataForPdf( $id, $user_id );
 			$modeleodt = $this->modeleOdt( $data );
-			$options = $this->options( array( 'allocataire' => true ) );
-
-			// TODO: un paramètre à options()
-			$options = Hash::merge(
-				$options,
-				array(
-					'Instantanedonnees93' => array(
-						'benef_typevoie' => $options['Adresse']['typevoie'],
-						'benef_qual' => $options['Personne']['qual'],
-						'structure_type_voie' => $options['Adresse']['typevoie'],
-					),
-					'Referent' => array(
-						'qual' => $options['Personne']['qual']
-					),
-					'Type' => array(
-						'voie' => $options['Adresse']['typevoie']
-					)
-				)
-			);
+			$options = $this->options( array( 'pdf' => true ) );
 
 			return $this->ged( $data, $modeleodt, true, $options );
 		}

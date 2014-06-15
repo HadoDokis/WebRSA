@@ -32,6 +32,12 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'type' => 'pdi',
+				'name' => 'Thématique de test',
+				'created' => null,
+				'modified' => null
+			)
 		);
 
 	}

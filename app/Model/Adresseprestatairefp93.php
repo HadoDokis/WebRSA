@@ -131,9 +131,17 @@
 		 * @return array
 		 */
 		public function getParametrageOptions( $hasDescendant = false ) {
-			$options = $this->enums();
+			$options = parent::getParametrageOptions( $hasDescendant );
 
-			$options[$this->alias]['prestatairefp93_id'] = $this->Prestatairefp93->find( 'list' );
+			// Liste des prestataires
+			$query = array( 'conditions' => array() );
+
+			// ... et qui possède au moins un descendant ?
+			if( $hasDescendant ) {
+				$this->Prestatairefp93->Behaviors->attach( 'LinkedRecords' );
+				$query['conditions'][] = $this->Prestatairefp93->linkedRecordVirtualField( $this->alias );
+			}
+			$options[$this->alias]['prestatairefp93_id'] = $this->Prestatairefp93->find( 'list', $query );
 
 			return $options;
 		}
