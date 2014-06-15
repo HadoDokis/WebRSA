@@ -5,6 +5,10 @@
         <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
         <attr name="template" boolvalue="true"/>
     </fileobject>
+    <fileobject name="CakePHP Component Test Case.php">
+        <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+        <attr name="template" boolvalue="true"/>
+    </fileobject>
 	<fileobject name="CakePHP Fixture.php">
 		<attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
 		<attr name="template" boolvalue="true"/>
