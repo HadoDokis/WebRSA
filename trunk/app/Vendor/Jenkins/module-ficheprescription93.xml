@@ -34,7 +34,7 @@
 	<property name="includes.po" value="**/**Ficheprescription93**.po,**/**Fichesprescriptions93**.po,**/**fp93**.po,**/**fps93**.po" />
 	<property name="filelist.excludepcre" value="/^((?!Ficheprescription93|Fichesprescriptions93|fp93|fps93).)*$/" />
 	-->
-	<property name="words" value="ficheprescription93 fichesprescriptions93 fp93 fps93" />
+	<property name="words" value="ficheprescription93 fichesprescriptions93 fp93 fps93 Ficheprescription93 Fichesprescriptions93" />
 	<!--<property name="words" value="cer93 contratinsertion cers93 contratsinserion" />-->
 	<!--<property name="words" value="apre etatliquidatif apres etatsliquidatifs" />-->
 
@@ -173,14 +173,15 @@
 
 	<!--<target name="phpcb" depends="init,clean,lint">-->
 	<!-- - -debugExcludes -->
-	<target name="phpcb">
+	<!-- - -excludePCRE '/(\/(app\/(Doc|Plugin|Test|tmp|Vendor|webroot|index\.php)|lib)\/)/'-->
+	<target name="phpcb" depends="init,clean">
 		<exec executable="phpcb"
 			dir="${dir.cakephp.app}"
 			failonerror="false">
 			<arg line="--log ${dir.ant.logs}
 				--source ${dir.cakephp.app}
-				--excludePCRE ${filelist.excludepcre}
-				--excludePCRE /(\/(app\/(Doc|Plugin|Test|tmp|Vendor|webroot|index\.php)|lib)\/)/
+				--excludePCRE '${filelist.excludepcre}'
+				--excludePCRE '/app\/(Test|tmp)\//'
 				--output ${dir.ant.build}/php-code-browser
 				--crapThreshold=10
 			." />

@@ -12,6 +12,7 @@
 			<file>../../../Controller/Cataloguespdisfps93Controller.php</file>
 			<file>../../../Controller/Component/AjaxFichesprescriptions93Component.php</file>
 			<file>../../../Controller/Fichesprescriptions93Controller.php</file>
+			<file>../../../Model/Abstractclass/AbstractElementCataloguefp93.php</file>
 			<file>../../../Model/Actionfp93.php</file>
 			<file>../../../Model/Adresseprestatairefp93.php</file>
 			<file>../../../Model/Behavior/Cataloguepdifp93Behavior.php</file>
@@ -29,6 +30,7 @@
 			<file>../../../Model/Motifnonretenuefp93.php</file>
 			<file>../../../Model/Motifnonsouhaitfp93.php</file>
 			<file>../../../Model/Prestatairefp93.php</file>
+			<file>../../../Model/Prestatairehorspdifp93.php</file>
 			<file>../../../Model/Thematiquefp93.php</file>
 			<exclude>
 				<directory>../../../Config</directory>

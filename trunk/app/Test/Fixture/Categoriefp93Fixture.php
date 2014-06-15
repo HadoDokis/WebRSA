@@ -31,6 +31,12 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'thematiquefp93_id' => 1,
+				'name' => 'Catégorie de test',
+				'created' => null,
+				'modified' => null
+			)
 		);
 
 	}

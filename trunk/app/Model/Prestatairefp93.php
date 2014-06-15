@@ -84,6 +84,8 @@
 		 *
 		 * @fixme surcharge... dela méthode du AppModel
 		 *
+		 * @deprecated
+		 *
 		 * @param string $prefixKeyField
 		 * @param string $suffixKeyField
 		 * @param string $displayField
@@ -146,7 +148,7 @@
 			if( $type === 'horspdi' ) {
 				return '1 = 1';
 			}
-$this->log( var_export( $conditions, true ), LOG_DEBUG );
+
 			$conditions[] = "Actionfp93.prestatairefp93_id = {$this->alias}.{$this->primaryKey}";
 
 			$query = array(

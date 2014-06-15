@@ -96,7 +96,7 @@
 		 * @param array $conditions
 		 * @return integer
 		 */
-		public function createOrUpdate( Model $Model, array $conditions ) {
+		/*public function createOrUpdate( Model $Model, array $conditions ) {
 			$conditions = Hash::flatten( $Model->doFormatting( Hash::expand( $conditions ) ) );
 			// Remplacement des espaces multiples par un espace simple
 			foreach( $conditions as $key => $value ) {
@@ -141,7 +141,7 @@
 			else {
 				return Hash::get( $record, $primaryKeyField );
 			}
-		}
+		}*/
 
 		/**
 		 * Recherche de l'enregistrement sinon insertion, avec complément de
