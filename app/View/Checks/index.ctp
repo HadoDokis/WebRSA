@@ -92,6 +92,10 @@
 						<h4 class="title">Clés primaires dans le webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_primary_key'] );?>
 					</div>
+					<div id="webrsa_configure_regexps">
+						<h4 class="title">Expressions rationnelles dans le webrsa.inc</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure_regexps'] );?>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -171,6 +175,10 @@
 	}
 ?>
 <script type="text/javascript">
+	// On tronque la longueur des titres à 25 caractères avant de faire les onglets.
+	$$( 'h2, h3, h4, h5, h6' ).each( function( title ) { truncateWithEllipsis( title, 25 ); } );
+
+	// Création des onglets à partir des titres.
 	makeTabbed( 'tabbedWrapper', 2 );
 	makeTabbed( 'tabbedWrapperSoftware', 3 );
 	makeTabbed( 'tabbedWrapperWebrsa', 4 );

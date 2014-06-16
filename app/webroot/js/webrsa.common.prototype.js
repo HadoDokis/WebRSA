@@ -880,9 +880,14 @@ function makeTabbed( wrapperId, titleLevel ) {
 	$$( '#' + wrapperId + ' h' + titleLevel + '.title' ).each( function( title ) {
 		var parent = title.up();
 		var classNames = $( title ).readAttribute( 'class' ).replace( /title/, 'tab' );
-		var li = new Element( 'li', { 'class' : classNames } ).update(
-			new Element( 'a', { href: '#' + parent.id } ).update( title.innerHTML )
-		);
+		var link = new Element( 'a', { href: '#' + parent.id } ).update( title.innerHTML );
+
+		var titleAttr = $( title ).readAttribute( 'title' );
+		if( titleAttr !== null && titleAttr !== '' ) {
+			$( link ).writeAttribute( 'title', titleAttr );
+		}
+
+		var li = new Element( 'li', { 'class' : classNames } ).update( link );
 		ul.appendChild( li );
 		parent.addClassName( 'tab' );
 		title.addClassName( 'tab hidden' );
@@ -1896,4 +1901,26 @@ function ajax_action(event, parameters) {
 			}
 		}
 	);
+}
+
+/**
+ * Permet de tronquer la longueur du texte d'un élément à la valeur demandée avec
+ * ajout de l'ellipse à la fin et mise en attribut title de l'élément du texte
+ * complet lorsque le texte dans la balise doit être tronqué.
+ *
+ * @param string|Element tag
+ * @param integer maxLength
+ * @param string ellipsis
+ * @returns void
+ */
+function truncateWithEllipsis( tag, maxLength, ellipsis ) {
+	maxLength = typeof(maxLength) != 'undefined' ? maxLength : 100;
+	ellipsis = typeof(ellipsis) != 'undefined' ? ellipsis : '...';
+
+	var oldTitle = $(tag).innerHTML;
+	if( oldTitle.length > maxLength ) {
+		var newTitle = oldTitle.substr( 0, maxLength - ellipsis.length ) + ellipsis;
+		$(tag).update( newTitle );
+		$(tag).writeAttribute( 'title', oldTitle );
+	}
 }

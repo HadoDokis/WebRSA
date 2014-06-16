@@ -968,6 +968,8 @@
 		/**
 		 * Récupération des informations pour l'impression.
 		 *
+		 * @see Configure::write( 'Ficheprescription93.regexpNumconventionFictif', '...' );
+		 *
 		 * @param integer $ficheprescription93_id
 		 * @param integer $user_id
 		 * @return array
@@ -1021,6 +1023,12 @@
 
 			if( empty( $data ) ) {
 				throw new NotFoundException();
+			}
+
+			// Si le numéro de convention est fictif, ne pas le faire apparaître à l'impression
+			$regexp = Configure::read( 'Ficheprescription93.regexpNumconventionFictif' );
+			if( !empty( $regexp ) && isset( $data['Actionfp93']['numconvention'] ) && preg_test( $regexp ) && preg_match( $regexp, Hash::get( $data, 'Actionfp93.numconvention' ) ) ) {
+				$data['Actionfp93']['numconvention'] = null;
 			}
 
 			if( !empty( $user_id ) ) {
