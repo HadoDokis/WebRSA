@@ -772,5 +772,22 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la fonction preg_test().
+		 */
+		public function testPregTest() {
+			// 1. La chaîne vide n'est pas une expression régulière correcte
+			$result = preg_test( '' );
+			$this->assertFalse( $result );
+
+			// 2. Expression correcte
+			$result = preg_test( '/Foo/i' );
+			$this->assertTrue( $result );
+
+			// 3. Expression incorrecte
+			$result = preg_test( '/[Foo/i' );
+			$this->assertFalse( $result );
+		}
 	}
 ?>

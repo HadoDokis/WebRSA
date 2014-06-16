@@ -330,6 +330,7 @@
 				'Tableausuivipdv93.Tableau1b6.statutrdv_id_prevu_honore' => 'isarray',
 				'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' => 'isarray',
 				'Cataloguepdifp93.urls' => 'isarray',
+				'Ficheprescription93.regexpNumconventionFictif' => 'string',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -819,6 +820,55 @@
 						( CASE WHEN {$sqlAgeSuccess} THEN NULL ELSE '{$message}' END ) AS message;";
 			$result = $Dbo->query( $sql );
 			return $result[0][0];
+		}
+
+		/**
+		 * Retourne la liste de toutes les clés contenant des expressions rationnelles
+		 * configurées dans le webrsa.inc, par CG.
+		 */
+		public function allConfigureRegexps() {
+			$return = array();
+
+			$departement = Configure::read( 'Cg.departement' );
+			if( $departement == 93 ) {
+				$return[] = 'Ficheprescription93.regexpNumconventionFictif';
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Vérifie les expressions rationnelles configurées dans le fichier
+		 * webrsa.inc.
+		 */
+		public function allConfigureRegexpsErrors() {
+			$return = array();
+			$paths = $this->allConfigureRegexps();
+
+			foreach( $paths as $path ) {
+				$pattern = Configure::read( $path );
+
+				if( preg_test( $pattern ) ) {
+					$check = array(
+						'success' => true,
+						'message' => null
+					);
+				}
+				else {
+					$check = array(
+						'success' => false,
+						'message' => sprintf(
+							'L\'expression rationnelle «%s» définie par la clé «%s» dans le webrsa.inc est incorrecte.',
+							$pattern,
+							$path
+						)
+					);
+				}
+
+				$return[$path] = $check;
+			}
+
+			return $return;
 		}
 	}
 ?>

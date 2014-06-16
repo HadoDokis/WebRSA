@@ -1114,4 +1114,14 @@
 
 		return array_keys( Hash::flatten( $result ) );
 	}
+
+	/**
+	 * Permet de savoir si un patron d'expression régulière est valide.
+	 *
+	 * @param string $pattern
+	 * @return boolean
+	 */
+	function preg_test( $pattern ) {
+		return ( @preg_match( $pattern, '' ) !== false );
+	}
 ?>

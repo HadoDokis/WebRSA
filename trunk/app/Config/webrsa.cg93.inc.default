@@ -1292,4 +1292,13 @@
 	 * @default null
 	 */
 	Configure::write( 'AncienAllocataire.enabled', false );
+
+	/**
+	 * L'expression régulière qui permet de définir que le n° de convention d'une
+	 * action PDI est fictif, afin qu'il n'apparaisse pas à l'impression.
+	 *
+	 * @var string
+	 * @default null
+	 */
+	Configure::write( 'Ficheprescription93.regexpNumconventionFictif', '/^nf/i' );
 ?>
