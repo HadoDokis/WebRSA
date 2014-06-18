@@ -17,6 +17,8 @@
 	<tbody>
 		<?php
 			foreach( $personnes as $personne ) {
+				$typeorient_id = Hash::get( $personne, 'Orientstruct.typeorient_id' );
+
 				echo $this->Xhtml->tableCells(
 					array(
 						h( $personne['Personne']['nom'] ),
@@ -34,7 +36,7 @@
 						$this->Xhtml->printLink(
 							'Imprimer la notification',
 							array( 'controller' => 'orientsstructs', 'action' => 'impression', Hash::get( $personne, 'Orientstruct.id' ) ),
-							$this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) && !empty( Hash::get( $personne, 'Orientstruct.typeorient_id' ) )
+							$this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) && !empty( $typeorient_id )
 						),
 					),
 					array( 'class' => 'odd' ),
