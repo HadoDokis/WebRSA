@@ -90,5 +90,34 @@
 			),
 		);
 
+		/**
+		 * Création de la séquence dossiers_numdemrsatemp_seq.
+		 *
+		 * @param Object $Db
+		 * @return boolean
+		 */
+		public function create( $Db ) {
+			$return = parent::create( $Db );
+
+			$sql = 'CREATE SEQUENCE dossiers_numdemrsatemp_seq START 1;';
+			$return = ( $Db->query( $sql ) !== false );
+
+			return $return;
+		}
+
+		/**
+		 * Suppression de la séquence dossiers_numdemrsatemp_seq.
+		 *
+		 * @param Object $Db
+		 * @return boolean
+		 */
+		public function drop( $Db ) {
+			$return = parent::drop( $Db );
+
+			$sql = 'DROP SEQUENCE IF EXISTS dossiers_numdemrsatemp_seq;';
+			$return = ( $Db->query( $sql ) !== false );
+
+			return $return;
+		}
 	}
 ?>

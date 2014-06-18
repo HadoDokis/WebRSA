@@ -50,7 +50,6 @@
 			$out = $this->getMock( 'ConsoleOutput', array( ), array( ), '', false );
 			$in = $this->getMock( 'ConsoleInput', array( ), array( ), '', false );
 
-//			$this->Shell = new ImportcsvCataloguespdisfps93Shell( $out, $out, $in );
 			$this->Shell = $this->getMock(
 				'ImportcsvCataloguespdisfps93Shell',
 				array( 'out', 'err', '_stop' ),

@@ -117,16 +117,16 @@
 					'order' => 'Orientstruct.date_propo DESC',
 						)
 				);
-				$personnesFoyer[$index]['Orientstruct'] = $orient['Orientstruct'];
+				$personnesFoyer[$index]['Orientstruct'] = (array)Hash::get( $orient, 'Orientstruct' );
 
 				///Structures référentes
 				$struct = $this->Structurereferente->find(
 						'first', array(
-					'conditions' => array( 'Structurereferente.id' => $personnesFoyer[$index]['Orientstruct']['structurereferente_id'] ),
+					'conditions' => array( 'Structurereferente.id' => Hash::get( $personnesFoyer, "{$index}.Orientstruct.structurereferente_id" ) ),
 					'recursive' => -1
 						)
 				);
-				$personnesFoyer[$index]['Structurereferente'] = $struct['Structurereferente'];
+				$personnesFoyer[$index]['Structurereferente'] = (array)Hash::get( $struct, 'Structurereferente' );
 
 				$details[$role] = $personnesFoyer[$index];
 			}
@@ -228,26 +228,30 @@
 							}
 
 							// Orientation
-							$tOrientstruct = Set::extract( $this->request->data, 'Orientstruct.'.$key );
-							if( !empty( $tOrientstruct ) ) {
-								$tOrientstruct = Hash::filter( (array)$tOrientstruct );
-							}
+							$statut_orient = Hash::get( $this->request->data, "Orientstruct.{$key}.statut_orient" );
+							// Si le statut d'orientation n'est pas renseigné, on ne cherche pas à ajouter une orientation
+							if( !in_array( $statut_orient, array( null, '' ), true ) ) {
+								$tOrientstruct = Set::extract( $this->request->data, 'Orientstruct.'.$key );
+								if( !empty( $tOrientstruct ) ) {
+									$tOrientstruct = Hash::filter( (array)$tOrientstruct );
+								}
 
-							if( !empty( $tOrientstruct ) ) {
-								$this->Orientstruct->create();
-								$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
-								$this->request->data['Orientstruct'][$key]['valid_cg'] = true;
-								$this->request->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
-								$this->request->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
-								$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
-								$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
-							}
-							else {
-								$this->Orientstruct->create();
-								$this->Orientstruct->validate = array( );
-								$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
-								$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
-								$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
+								if( !empty( $tOrientstruct ) ) {
+									$this->Orientstruct->create();
+									$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
+									$this->request->data['Orientstruct'][$key]['valid_cg'] = true;
+									$this->request->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
+									$this->request->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
+									$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
+									$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
+								}
+								else {
+									$this->Orientstruct->create();
+									$this->Orientstruct->validate = array( );
+									$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
+									$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
+									$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
+								}
 							}
 						}
 					}
@@ -255,7 +259,7 @@
 					if( $saved ) {
 						$this->Dossier->commit();
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
+						return $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $this->Dossier->id ) );
 					}
 					else {
 						$this->Dossier->rollback();
@@ -309,7 +313,7 @@
 					'order' => 'Orientstruct.date_propo DESC'
 				)
 			);
-			$personne = Set::merge( $personne, array( 'Orientstruct' => array( $orientstruct['Orientstruct'] ) ) );
+			$personne = Set::merge( $personne, array( 'Orientstruct' => (array)Hash::get( $orientstruct, 'Orientstruct' ) ) );
 
 			$dossier_id = $personne['Foyer']['dossier_id'];
 			$dossimple = $this->Dossier->find(
@@ -332,22 +336,30 @@
 			$this->set( 'numdossierrsa', $dossimple['Dossier']['numdemrsa'] );
 			$this->set( 'datdemdossrsa', $dossimple['Dossier']['dtdemrsa'] );
 			$this->set( 'matricule', $dossimple['Dossier']['matricule'] );
-			$this->set( 'orient_id', $personne['Orientstruct'][0]['typeorient_id'] );
-			$this->set( 'structure_id', $personne['Orientstruct'][0]['structurereferente_id'] );
-			$this->set( 'structureorientante_id', $personne['Orientstruct'][0]['structureorientante_id'] );
+			$this->set( 'orient_id', Hash::get( $orientstruct, 'Orientstruct.0.typeorient_id' ) );
+			$this->set( 'structure_id', Hash::get( $orientstruct, 'Orientstruct.0.structurereferente_id' ) );
+			$this->set( 'structureorientante_id', Hash::get( $orientstruct, 'Orientstruct.0.structureorientante_id' ) );
 
 			$this->_setOptions();
 			if( !empty( $this->request->data ) ) {
-				if( isset( $personne['Orientstruct'][0]['id'] ) ) {
-					$this->request->data['Orientstruct'][0]['id'] = $personne['Orientstruct'][0]['id'];
+
+				$statut_orient = Hash::get( $this->request->data, "Orientstruct.0.statut_orient" );
+				// Si le statut d'orientation n'est pas renseigné, on ne cherche pas à ajouter une orientation
+				if( !in_array( $statut_orient, array( null, '' ), true ) ) {
+					if( isset( $personne['Orientstruct'][0]['id'] ) ) {
+						$this->request->data['Orientstruct'][0]['id'] = $personne['Orientstruct'][0]['id'];
+					}
+
+					$this->request->data['Orientstruct'][0]['user_id'] = $this->Session->read( 'Auth.User.id' );
+
+					if( $this->Personne->saveAll( $this->request->data, array( 'validate' => 'only' ) ) && isset( $this->request->data['Orientstruct'][0]['typeorient_id'] ) && isset( $this->request->data['Orientstruct'][0]['structurereferente_id'] ) ) {
+						$this->request->data['Orientstruct'][0]['statut_orient'] = 'Orienté';
+						$this->request->data['Orientstruct'][0]['date_propo'] = strftime( '%Y-%m-%d', time() ); // FIXME
+						$this->request->data['Orientstruct'][0]['date_valid'] = strftime( '%Y-%m-%d', time() ); // FIXME
+					}
 				}
-
-				$this->request->data['Orientstruct'][0]['user_id'] = $this->Session->read( 'Auth.User.id' );
-
-				if( $this->Personne->saveAll( $this->request->data, array( 'validate' => 'only' ) ) && isset( $this->request->data['Orientstruct'][0]['typeorient_id'] ) && isset( $this->request->data['Orientstruct'][0]['structurereferente_id'] ) ) {
-					$this->request->data['Orientstruct'][0]['statut_orient'] = 'Orienté';
-					$this->request->data['Orientstruct'][0]['date_propo'] = strftime( '%Y-%m-%d', time() ); // FIXME
-					$this->request->data['Orientstruct'][0]['date_valid'] = strftime( '%Y-%m-%d', time() ); // FIXME
+				else {
+					unset( $this->request->data['Orientstruct'] );
 				}
 
 				$this->Dossier->begin();
@@ -357,7 +369,7 @@
 					$this->Dossier->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-					$this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $dossier_id ) );
+					return $this->redirect( array( 'controller' => 'dossierssimplifies', 'action' => 'view', $dossier_id ) );
 				}
 				else {
 					$this->Dossier->rollback();
