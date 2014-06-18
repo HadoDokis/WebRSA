@@ -22,8 +22,8 @@
 						h( $personne['Personne']['nom'] ),
 						h( $personne['Personne']['prenom'] ),
 						h( $this->Locale->date( 'Date::short', $details['Dossier']['dtdemrsa'] ) ),
-						h( $this->Locale->date( 'Date::short', $personne['Orientstruct']['date_valid'] ) ),
-						h( $personne['Orientstruct']['statut_orient'] ),
+						h( $this->Locale->date( 'Date::short', Hash::get( $personne, 'Orientstruct.date_valid' ) ) ),
+						h( Hash::get( $personne, 'Orientstruct.statut_orient' ) ),
 						h( Set::enum( Set::classicExtract( $personne, 'Structurereferente.typeorient_id' ), $typeorient ) ) ,
 						h( Set::classicExtract( $personne, 'Structurereferente.lib_struc' )  ),
 						$this->Xhtml->editLink(
@@ -33,8 +33,8 @@
 						),
 						$this->Xhtml->printLink(
 							'Imprimer la notification',
-							array( 'controller' => 'orientsstructs', 'action' => 'impression', $personne['Orientstruct']['id'] ),
-							$this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) && !empty( $personne['Orientstruct']['typeorient_id'] )
+							array( 'controller' => 'orientsstructs', 'action' => 'impression', Hash::get( $personne, 'Orientstruct.id' ) ),
+							$this->Permissions->checkDossier( 'orientsstructs', 'impression', $dossierMenu ) && !empty( Hash::get( $personne, 'Orientstruct.typeorient_id' ) )
 						),
 					),
 					array( 'class' => 'odd' ),
