@@ -26,6 +26,8 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'app.Adresse',
+			'app.Adressefoyer',
 			'app.Calculdroitrsa',
 			'app.Decisionnonorientationproep58',
 			'app.Decisionpropoorientsocialecov58',
@@ -35,12 +37,15 @@
 			'app.Foyer',
 			'app.Nonoriente66',
 			'app.Orientstruct',
+			'app.Pdf',
 			'app.Personne',
+			'app.PersonneReferent',
 			'app.Prestation',
 			'app.Referent',
 			'app.Situationdossierrsa',
 			'app.Typeorient',
 			'app.Structurereferente',
+			'app.User',
 		);
 
 		/**
@@ -176,6 +181,16 @@
 		 */
 		public function setUp() {
 			Configure::write( 'Cg.departement', 66 );
+
+			$this->controller = $this->generate(
+				'Dossierssimplifies',
+				array(
+					'models' => array(
+						// Pour bien faire, il faudrait faire un mock de Pdf ou de StoredPdfBehavior
+						'Orientstruct' => array( 'ged' )
+					)
+				)
+			);
 
 			parent::setUp();
 		}
