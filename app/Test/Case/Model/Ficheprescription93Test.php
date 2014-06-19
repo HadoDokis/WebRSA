@@ -415,7 +415,7 @@
 					'modified' => NULL,
 					'actioncandidat_personne_id' => NULL,
 					'structurereferente_id' => 1,
-					'numconvention' => '93XXX1400001',
+					'numconvention' => '93XXX1300001',
 					'categoriefp93_id' => 1,
 					'thematiquefp93_id' => 1,
 					'typethematiquefp93_id' => 'pdi',
@@ -487,7 +487,7 @@
 					'structurereferente_id' => 1,
 				),
 				'Actionfp93' => array(
-					'numconvention' => '93XXX1400001',
+					'numconvention' => '93XXX1300001',
 					'filierefp93_id' => 1,
 					'prestatairefp93_id' => 1,
 				),
