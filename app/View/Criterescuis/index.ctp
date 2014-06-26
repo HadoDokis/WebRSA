@@ -139,7 +139,7 @@
 								</tr>
 								<tr>
 									<th>Commune de l\'allocataire</th>
-									<td>'. $criterecui['Adresse']['locaadr'].'</td>
+									<td>'. $criterecui['Adresse']['nomcom'].'</td>
 								</tr>
 								<tr>
 									<th>Date de naissance</th>
@@ -147,7 +147,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$criterecui['Adresse']['numcomptt'].'</td>
+									<td>'.$criterecui['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>

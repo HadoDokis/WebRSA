@@ -30,8 +30,8 @@
         }
         echo '</fieldset>';
     }
-    
-    
+
+
 
     if( ( $cui['Cui']['positioncui66'] == 'annule' ) ){
         echo $this->Xhtml->tag('div', $this->Xhtml->tag('strong', 'Raison de l\'annulation'));
@@ -107,7 +107,7 @@ $depSplit = substr( $codepos, '0', 2 );
 				<br />
 				<strong>Adresse : </strong><br />
 					<?php
-						echo Hash::get( $personne, 'Adresse.numvoie' ).' '.Hash::get( $options['typevoie'], Hash::get( $personne, 'Adresse.typevoie' ) ).' '.Hash::get( $personne, 'Adresse.nomvoie' ).'<br /> '.Hash::get( $personne, 'Adresse.compladr' ).'<br /> '.Hash::get( $personne, 'Adresse.codepos' ).' '.Hash::get( $personne, 'Adresse.locaadr' );
+						echo Hash::get( $personne, 'Adresse.numvoie' ).' '.Hash::get( $personne, 'Adresse.libtypevoie' ).' '.Hash::get( $personne, 'Adresse.nomvoie' ).'<br /> '.Hash::get( $personne, 'Adresse.compladr' ).'<br /> '.Hash::get( $personne, 'Adresse.codepos' ).' '.Hash::get( $personne, 'Adresse.nomcom' );
 					?>
 				<br />
 				<!-- Si on n'autorise pas la diffusion de l'email, on n'affiche rien -->
@@ -191,13 +191,13 @@ $depSplit = substr( $codepos, '0', 2 );
 			echo $this->Xform->fieldValue( 'Cui.niveauformation', Set::enum( Hash::get( $cui, 'Cui.niveauformation' ), $options['Cui']['niveauformation']  ) );
 			echo $this->Xform->fieldValue( 'Cui.dureesansemploi', Set::enum( Hash::get( $cui, 'Cui.dureesansemploi' ), $options['Cui']['dureesansemploi']  ) );
 			echo $this->Xform->fieldValue( 'Cui.isinscritpe', Set::enum( Hash::get( $cui, 'Cui.isinscritpe' ), $options['Cui']['isinscritpe']  ) );
-			
+
 			echo $this->Xform->fieldValue( 'Cui.identifiantpe', $cui['Cui']['identifiantpe'] );
-			
+
 			if( $cui['Cui']['isinscritpe'] == '1' ) {
 				echo $this->Xform->fieldValue( 'Cui.dureeinscritpe', Set::enum( Hash::get( $cui, 'Cui.dureeinscritpe' ), $options['Cui']['dureeinscritpe']  ) );
 			}
-			
+
 			echo $this->Xform->fieldValue( 'Cui.isbeneficiaire', Set::enum( Hash::get( $cui, 'Cui.isbeneficiaire' ), $options['Cui']['isbeneficiaire']  ) );
 			echo $this->Xform->fieldValue( 'Cui.rsadeptmaj', Set::enum( Hash::get( $cui, 'Cui.rsadeptmaj' ), $options['Cui']['rsadeptmaj']  ) );
 			if( $cui['Cui']['rsadeptmaj'] == '1' ) {
@@ -218,13 +218,13 @@ $depSplit = substr( $codepos, '0', 2 );
 		if( $cui['Cui']['typecontrat'] == 'CDD' ) {
 			echo $this->Xform->fieldValue( 'Cui.datefincontrat', date_short( $cui['Cui']['datefincontrat'] ) );
 		}
-		
+
 		echo $this->Xform->fieldValue( 'Cui.secteuremploipropose_id', Set::enum( Hash::get( $cui, 'Cui.secteuremploipropose_id' ), $secteursactivites  ) );
 		echo $this->Xform->fieldValue( 'Cui.metieremploipropose_id', Set::enum( Hash::get( $cui, 'Cui.secteuremploipropose_id' ).'_'.Hash::get( $cui, 'Cui.metieremploipropose_id' ), $options['Coderomemetierdsp66'] ) );
 		echo $this->Xform->fieldValue( 'Cui.salairebrut', $cui['Cui']['salairebrut'] );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.dureehebdosalarieheure', $cui['Cui']['dureehebdosalarieheure'].' H '.$cui['Cui']['dureehebdosalarieminute'] );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.modulation', Set::enum( Hash::get( $cui, 'Cui.modulation' ), $options['Cui']['modulation']  ) );
 	?>
 </fieldset>
@@ -289,7 +289,7 @@ $depSplit = substr( $codepos, '0', 2 );
 					echo $this->Xform->fieldValue( 'Cui.evaluation', Set::enum( Hash::get( $cui, 'Cui.evaluation' ), $options['Cui']['evaluation']  ) );
 					echo $this->Xform->fieldValue( 'Cui.aiderechemploi', Set::enum( Hash::get( $cui, 'Cui.aiderechemploi' ), $options['Cui']['aiderechemploi']  ) );
 					echo $this->Xform->fieldValue( 'Cui.autre', Hash::get( $cui, 'Cui.autre' ) );
-					
+
 				?>
 			</td>
 			<td class="cui5 noborder">
@@ -325,21 +325,21 @@ $depSplit = substr( $codepos, '0', 2 );
 		echo $this->Xform->fieldValue( 'Cui.datefinprisecharge', date_short( Hash::get( $cui, 'Cui.datefinprisecharge' ) ) );
 
 		echo $this->Xform->fieldValue( 'Cui.dureehebdoretenueheure', $cui['Cui']['dureehebdoretenueheure'].' H '.$cui['Cui']['dureehebdoretenueminute'] );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.opspeciale', Hash::get( $cui, 'Cui.opspeciale' ) );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.tauxfixe', Hash::get( $cui, 'Cui.tauxfixe' ) );
 
 		echo $this->Xhtml->tag( 'hr /');
 
 		echo $this->Xhtml->tag( 'p','Dans le cas d\'un contrat prescrit par le Conseil Général ou pour son compte (sur la base d\'une convention d\'objectifs et de moyens)', array( 'class' => 'aere' ) );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.tauxprisencharge', Hash::get( $cui, 'Cui.tauxprisencharge' ) );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.financementexclusif', Set::enum( Hash::get( $cui, 'Cui.financementexclusif' ), $options['Cui']['financementexclusif']  ) );
-		
+
 		echo $this->Xform->fieldValue( 'Cui.tauxfinancementexclusif', Hash::get( $cui, 'Cui.tauxfinancementexclusif' ) );
-		
+
 		if( Configure::read( 'nom_form_cui_cg' ) == 'cg93' ){
 			echo $this->Xform->fieldValue( 'Cui.orgapayeur', Set::enum( Hash::get( $cui, 'Cui.orgapayeur' ), $options['Cui']['orgapayeur']  ) );
 			echo $this->Xform->fieldValue( 'Cui.organisme', Hash::get( $cui, 'Cui.organisme' ) );
