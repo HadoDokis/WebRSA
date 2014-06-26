@@ -322,9 +322,9 @@
 						'Adresse' => array(
 							'fields' => array(
 								'Adresse.numvoie',
-								'Adresse.typevoie',
+								'Adresse.libtypevoie',
 								'Adresse.nomvoie',
-								'Adresse.locaadr',
+								'Adresse.nomcom',
 							)
 						)
 					)

@@ -445,8 +445,7 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->Decisioncontratcomplexeep93->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options']['type']['voie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -477,7 +476,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Contratinsertion.num_contrat',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.duree_engag',

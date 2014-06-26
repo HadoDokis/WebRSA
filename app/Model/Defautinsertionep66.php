@@ -1100,9 +1100,6 @@
 					'Personne' => array(
 						'qual' => $Option->qual()
 					),
-					'Adresse' => array(
-						'typevoie' => $Option->typevoie()
-					),
 					'type' => array(
 						'voie' => $Option->typevoie()
 					)
@@ -1259,7 +1256,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Dossierep.created',
 					'Dossierep.themeep',
 					'Passagecommissionep.id',
@@ -1412,8 +1409,7 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options']['type']['voie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -1488,8 +1484,8 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.numcomptt',
-					'Adresse.locaadr'
+					'Adresse.numcom',
+					'Adresse.nomcom'
 				),
 				'conditions' => $conditions,
 				'joins' => array(

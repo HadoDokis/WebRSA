@@ -540,9 +540,8 @@
 			$elements = $this->Etatliquidatif->pdf( $id, $etatliquidatif['Etatliquidatif']['typeapre'], true );
 
 			$qual = $this->Option->qual();
-			$typevoie = $this->Option->typevoie();
 
-			$this->set( compact( 'elements', 'etatliquidatif', 'qual', 'typevoie' ) );
+			$this->set( compact( 'elements', 'etatliquidatif', 'qual' ) );
 
 			Configure::write( 'debug', 0 );
 		}

@@ -1053,7 +1053,7 @@
 					'',
 					'Orientstruct.date_valid',
 					'( CASE WHEN "Historiqueetatpe"."etat" IN ( NULL, \'cessation\' ) THEN \'Non\' ELSE \'Oui\' END ) AS "Historiqueetatpe__inscritpe"',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 				),
 				'joins' => array(
 					array(
@@ -1182,7 +1182,7 @@
 				'conditions' => $conditions,
 				'order' => array(
 					'Dossierep.themeep DESC',
-					'Adresse.locaadr ASC'
+					'Adresse.nomcom ASC'
 				)
 			);
 
@@ -1425,7 +1425,7 @@
 				$queryData = array(
 					'fields' => array(
 						'Dossierep.themeep',
-						'Adresse.locaadr',
+						'Adresse.nomcom',
 						'COUNT("Dossierep"."id") AS "nombre"',
 					),
 					'joins' => array(
@@ -1483,10 +1483,10 @@
 					),
 					'group' => array(
 						'Dossierep.themeep',
-						'Adresse.locaadr'
+						'Adresse.nomcom'
 					),
 					'order' => array(
-						'Adresse.locaadr ASC'
+						'Adresse.nomcom ASC'
 					)
 				);
 			}
@@ -1566,7 +1566,7 @@
 			if ( Configure::read( 'Cg.departement' ) == 93 || Configure::read( 'Cg.departement' ) == 58 ) {
 				$dossiersParCommune = array();
 				foreach( $dossierseps as $dossierep ) {
-					$commune = $dossierep['Adresse']['locaadr'];
+					$commune = $dossierep['Adresse']['nomcom'];
 					if( !isset( $dossiersParCommune[$commune] ) ) {
 						$dossiersParCommune[$commune] = array();
 					}
@@ -1721,8 +1721,8 @@
 					'Personne.dtinscpoleemploi',
 					'Personne.numfixe',
 					'Personne.numport',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
+					'Adresse.nomcom',
+					'Adresse.numcom',
 					'Adresse.codepos',
 
 				),
@@ -1850,11 +1850,11 @@
 					'Dossier.matricule',
 					'Foyer.sitfam',
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.compladr',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
+					'Adresse.nomcom',
+					'Adresse.numcom',
 					'Adresse.codepos',
 
 				),
@@ -1919,7 +1919,6 @@
 
 			$options['Foyer']['sitfam'] = $modeleOption->sitfam();
 			$options['Personne']['qual'] = $modeleOption->qual();
-			$options['Adresse']['typevoie'] = $modeleOption->typevoie();
 
 			$dataFiche['Dossierep']['anonymiser'] = ( $anonymiser ? 1 : 0 );
 

@@ -306,8 +306,6 @@
 			//Données Personne
 			$periodeimmersion['Personne']['qual'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Personne.qual' ), $qual );
 			$periodeimmersion['Personne']['dtnai'] = $LocaleHelper->date( 'Date::short', Set::classicExtract( $periodeimmersion, 'Personne.dtnai' ) );
-
-			$periodeimmersion['Adresse']['typevoie'] = Set::enum( Set::classicExtract( $periodeimmersion, 'Adresse.typevoie' ), $typevoie );
 		}
 
 		/**

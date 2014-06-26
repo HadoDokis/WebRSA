@@ -538,19 +538,20 @@
 			}
 
 			if( Hash::get( $params, 'pdf' ) ) {
+				$Option = ClassRegistry::init( 'Option' );
+
 				$options = Hash::merge(
 					$options,
 					array(
 						'Instantanedonnees93' => array(
-							'benef_typevoie' => $options['Adresse']['typevoie'],
 							'benef_qual' => $options['Personne']['qual'],
-							'structure_type_voie' => $options['Adresse']['typevoie'],
+							'structure_type_voie' => $Option->typevoie(),
 						),
 						'Referent' => array(
 							'qual' => $options['Personne']['qual']
 						),
 						'Type' => array(
-							'voie' => $options['Adresse']['typevoie']
+							'voie' => $Option->typevoie()
 						)
 					)
 				);
@@ -664,7 +665,7 @@
 			// Formattage de l'adresse
 			$return['Instantanedonneesfp93']['benef_adresse'] =
 				$return['Instantanedonneesfp93']['benef_numvoie']
-				.' '.value( ClassRegistry::init( 'Option' )->typevoie(), $return['Instantanedonneesfp93']['benef_typevoie'] )
+				.' '.value( ClassRegistry::init( 'Option' )->typevoie(), $return['Instantanedonneesfp93']['benef_libtypevoie'] )
 				.' '.$return['Instantanedonneesfp93']['benef_nomvoie']
 				.( !empty( $return['Instantanedonneesfp93']['benef_complideadr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_complideadr'] : '' )
 				.( !empty( $return['Instantanedonneesfp93']['benef_compladr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_compladr'] : '' );

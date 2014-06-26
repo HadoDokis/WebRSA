@@ -441,14 +441,13 @@ INSERT INTO instantanesdonneesfps93 (
 	benef_prenom,
 	benef_dtnai,
 	benef_numvoie,
-	benef_typevoie,
+	benef_libtypevoie,
 	benef_nomvoie,
 	benef_complideadr,
 	benef_compladr,
-	benef_numcomptt,
-	benef_numcomrat,
+	benef_numcom,
 	benef_codepos,
-	benef_locaadr,
+	benef_nomcom,
 	benef_tel_fixe,
 	benef_tel_port,
 	benef_email,
@@ -491,10 +490,10 @@ SELECT
 		) AS benef_numvoie,
 		(
 			CASE
-				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.typevoie
-				ELSE adresses.typevoie
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.libtypevoie
+				ELSE adresses.libtypevoie
 			END
-		) AS benef_typevoie,
+		) AS benef_libtypevoie,
 		(
 			CASE
 				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.nomvoie
@@ -515,16 +514,10 @@ SELECT
 		) AS benef_compladr,
 		(
 			CASE
-				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numcomptt
-				ELSE adresses.numcomptt
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numcom
+				ELSE adresses.numcom
 			END
-		) AS benef_numcomptt,
-		(
-			CASE
-				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.numcomrat
-				ELSE adresses.numcomrat
-			END
-		) AS benef_numcomrat,
+		) AS benef_numcom,
 		(
 			CASE
 				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.codepos
@@ -533,10 +526,10 @@ SELECT
 		) AS benef_codepos,
 		(
 			CASE
-				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.locaadr
-				ELSE adresses.locaadr
+				WHEN situationsallocataires.id IS NOT NULL THEN situationsallocataires.nomcom
+				ELSE adresses.nomcom
 			END
-		) AS benef_locaadr,
+		) AS benef_nomcom,
 		personnes.numfixe,
 		personnes.numport,
 		personnes.email,

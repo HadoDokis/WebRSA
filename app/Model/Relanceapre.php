@@ -214,9 +214,6 @@
 						'Personne' => array(
 							'qual' => $Option->qual(),
 						),
-						'Adresse' => array(
-							'typevoie' => $Option->typevoie(),
-						),
 						'Prestation' => array(
 							'rolepers' => $Option->rolepers(),
 						),

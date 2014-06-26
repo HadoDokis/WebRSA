@@ -67,7 +67,7 @@
 				$this->Xhtml->tag( 'td', $this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ) ),
 				$this->Xhtml->tag( 'td', Set::classicExtract( $apre, 'Personne.nom' ) ),
 				$this->Xhtml->tag( 'td', Set::classicExtract( $apre, 'Personne.prenom' ) ),
-				$this->Xhtml->tag( 'td', Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+				$this->Xhtml->tag( 'td', Set::classicExtract( $apre, 'Adresse.nomcom' ) ),
 				$this->Xhtml->tag( 'td', $this->Locale->money( $montanttotal ), array( 'class' => 'number' ) ),
 			$this->Xhtml->tag( 'td', $this->Xform->input( "Apre.{$i}.id", array( 'type' => 'hidden', 'value' => $apre_id ) ).$this->Xform->input( "Apre.{$i}.personne_id", array( 'type' => 'hidden', 'value' => $personne_id ) ).$this->Xform->input( "Apre.{$i}.nbpaiementsouhait", array( 'label' => false, 'type' => 'select', 'options' => $nbpaiementsouhait, 'empty' => true, 'disabled' => ( $nbpaiementeff > 0 ) ) ) ),
 

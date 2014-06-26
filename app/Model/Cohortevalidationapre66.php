@@ -61,8 +61,8 @@
 			/// Critères
 			$numeroapre = Set::extract( $criteresapres, 'Search.Apre66.numeroapre' );
 			$referent = Set::extract( $criteresapres, 'Search.Apre66.referent_id' );
-			$locaadr = Set::extract( $criteresapres, 'Search.Adresse.locaadr' );
-			$numcomptt = Set::extract( $criteresapres, 'Search.Adresse.numcomptt' );
+			$nomcom = Set::extract( $criteresapres, 'Search.Adresse.nomcom' );
+			$numcom = Set::extract( $criteresapres, 'Search.Adresse.numcom' );
 			$numdemrsa = Set::extract( $criteresapres, 'Search.Dossier.numdemrsa' );
 			$matricule = Set::extract( $criteresapres, 'Search.Dossier.matricule' );
 			$themeapre66_id = Set::extract( $criteresapres, 'Search.Aideapre66.themeapre66_id' );
@@ -85,13 +85,13 @@
 			}
 
 			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
+			if( !empty( $nomcom ) ) {
+				$conditions[] = 'Adresse.nomcom ILIKE \'%'.Sanitize::clean( $nomcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Référent lié à l'APRE
@@ -162,10 +162,10 @@
 					'Personne.dtnai',
 					'Personne.nir',
 					'Personne.nomcomnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.codepos',
 					'Adressefoyer.rgadr',
-					'Adresse.numcomptt',
+					'Adresse.numcom',
 					'Typeaideapre66.name',
 					'Themeapre66.name',
 					$Apre66->Personne->Referent->sqVirtualField( 'nom_complet' ),

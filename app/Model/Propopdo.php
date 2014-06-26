@@ -516,9 +516,6 @@
 
 			// Options pour les traductions
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Foyer' => array(
 					'sitfam' => $Option->sitfam()
 				),

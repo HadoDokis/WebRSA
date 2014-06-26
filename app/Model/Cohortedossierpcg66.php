@@ -105,7 +105,7 @@
 				$conditions[] = 'Dossierpcg66.user_id IN ( \'' . implode('\', \'', $gestionnaire) . '\' )';
 			}
 
-        
+
             // Filtre sur l'état du dossier PCG
             $etatdossierpcg = Set::extract( $criteresdossierspcgs66, 'Search.Dossierpcg66.etatdossierpcg' );
 			if( isset( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) && !empty( $criteresdossierspcgs66['Search']['Dossierpcg66']['etatdossierpcg'] ) ) {
@@ -116,7 +116,7 @@
 			if( !empty( $poledossierpcg66_id ) ) {
 				$conditions[] = 'Dossierpcg66.poledossierpcg66_id IN ( \'' . implode('\', \'', $poledossierpcg66_id) . '\' )';
 			}
-                        
+
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
@@ -242,10 +242,10 @@
 					'Personne.nir',
 					'Personne.qual',
 					'Personne.nomcomnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.codepos',
 					'Adressefoyer.rgadr',
-					'Adresse.numcomptt',
+					'Adresse.numcom',
 					'Decisiondossierpcg66.id',
 					'Decisiondossierpcg66.datetransmissionop',
 				),

@@ -71,7 +71,7 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-			'locaadr' => array(
+			'nomcom' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )
 				)
@@ -679,14 +679,7 @@
 			$data = Set::merge( $data, $dataCaf );
 
 			// 1. Récupération de l'adresse complète afin de remplir le champ adresse du CER93
-			$Option = ClassRegistry::init( 'Option' );
-			$options =  array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				)
-			);
-			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
-			$adresseComplete = trim( $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'] );
+			$adresseComplete = trim( $dataCaf['Adresse']['numvoie'].' '.$dataCaf['Adresse']['libtypevoie'].' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'] );
 
 			// 2. Transposition des données
 			//Bloc 2 : Etat civil
@@ -702,7 +695,7 @@
 			$data['Cer93']['dtnai'] = $dataCaf['Personne']['dtnai'];
 			$data['Cer93']['adresse'] = $adresseComplete;
 			$data['Cer93']['codepos'] = $dataCaf['Adresse']['codepos'];
-			$data['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
+			$data['Cer93']['nomcom'] = $dataCaf['Adresse']['nomcom'];
 			$data['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
 			$data['Cer93']['dtdemrsa'] = $dataCaf['Dossier']['dtdemrsa'];
 
@@ -819,294 +812,6 @@
 
 			return $data;
 		}
-
-
-		/**
-		 * Prépare les données du formulaire de saisie du CER du CG 93 à partir
-		 * des données CAF et des CERs précédents, pour un allocataire donné.
-		 *
-		 * @param integer $personneId L'id technique de l'allocataire
-		 * @param integer $contratinsertion_id L'id technique du CER que l'on souhaite éventuellement modifier
-		 * @param integer $user_id L'id technique de l'utilisateur qui réalise la saisie du formulaire
-		 * @return array
-		 */
-		/*public function prepareFormData( $personneId, $contratinsertion_id, $user_id  ) {
-			// Donnée de la CAF stockée en base
-			$Informationpe = ClassRegistry::init( 'Informationpe' );
-			$dataCaf = $this->Contratinsertion->Personne->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->Contratinsertion->Personne->fields(),
-						$this->Contratinsertion->Personne->Prestation->fields(),
-						$this->Contratinsertion->Personne->Dsp->fields(),
-						$this->Contratinsertion->Personne->DspRev->fields(),
-						$this->Contratinsertion->Personne->Foyer->fields(),
-						$this->Contratinsertion->Personne->Foyer->Adressefoyer->Adresse->fields(),
-						$this->Contratinsertion->Personne->Foyer->Dossier->fields(),
-						array(
-//							$this->Contratinsertion->vfRgCiMax( '"Personne"."id"' ),
-							'Historiqueetatpe.identifiantpe',
-							'Historiqueetatpe.etat'
-						)
-					),
-					'joins' => array(
-						$Informationpe->joinPersonneInformationpe( 'Personne', 'Informationpe', 'LEFT OUTER' ),
-						$Informationpe->join( 'Historiqueetatpe', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Contratinsertion->Personne->join( 'Dsp', array( 'type' => 'LEFT OUTER' )),
-						$this->Contratinsertion->Personne->join( 'DspRev', array( 'type' => 'LEFT OUTER' )),
-						$this->Contratinsertion->Personne->join( 'Foyer', array( 'type' => 'INNER' )),
-						$this->Contratinsertion->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER'  )),
-						$this->Contratinsertion->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Contratinsertion->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Contratinsertion->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-					),
-					'conditions' => array(
-						'Personne.id' => $personneId,
-						array(
-							'OR' => array(
-								'Adressefoyer.id IS NULL',
-								'Adressefoyer.id IN ( '.$this->Contratinsertion->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Dsp.id IS NULL',
-								'Dsp.id IN ( '.$this->Contratinsertion->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'DspRev.id IS NULL',
-								'DspRev.id IN ( '.$this->Contratinsertion->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Informationpe.id IS NULL',
-								'Informationpe.id IN( '.$Informationpe->sqDerniere( 'Personne' ).' )'
-							)
-						),
-						array(
-							'OR' => array(
-								'Historiqueetatpe.id IS NULL',
-								'Historiqueetatpe.id IN( '.$Informationpe->Historiqueetatpe->sqDernier( 'Informationpe' ).' )'
-							)
-						)
-					),
-					'contain' => false
-				)
-			);
-
-			// On copie les DspsRevs si elles existent à la place des DSPs (on garde l'information la plus récente)
-			if( !empty( $dataCaf['DspRev']['id'] ) ) {
-				$dataCaf['Dsp'] = $dataCaf['DspRev'];
-				unset( $dataCaf['DspRev'], $dataCaf['Dsp']['id'], $dataCaf['Dsp']['dsp_id'] );
-			}
-
-			//Récupération de l'adresse complète afin de remplir le champ adresse du CER93
-			$Option = ClassRegistry::init( 'Option' );
-			$options =  array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				)
-			);
-			$typevoie = Set::enum( $dataCaf['Adresse']['typevoie'], $options['Adresse']['typevoie'] );
-			$adresseComplete = trim( $dataCaf['Adresse']['numvoie'].' '.$typevoie.' '.$dataCaf['Adresse']['nomvoie']."\n".$dataCaf['Adresse']['compladr'].' '.$dataCaf['Adresse']['complideadr'] );
-
-			// Transposition des données
-			//Bloc 2 : Etat civil
-			$dataCaf['Cer93']['matricule'] = $dataCaf['Dossier']['matricule'];
-			$dataCaf['Cer93']['numdemrsa'] = $dataCaf['Dossier']['numdemrsa'];
-			$dataCaf['Cer93']['rolepers'] = $dataCaf['Prestation']['rolepers'];
-			$dataCaf['Cer93']['dtdemrsa'] = $dataCaf['Dossier']['dtdemrsa'];
-			$dataCaf['Cer93']['identifiantpe'] = $dataCaf['Historiqueetatpe']['identifiantpe'];
-			$dataCaf['Cer93']['qual'] = $dataCaf['Personne']['qual'];
-			$dataCaf['Cer93']['nom'] = $dataCaf['Personne']['nom'];
-			$dataCaf['Cer93']['nomnai'] = $dataCaf['Personne']['nomnai'];
-			$dataCaf['Cer93']['prenom'] = $dataCaf['Personne']['prenom'];
-			$dataCaf['Cer93']['dtnai'] = $dataCaf['Personne']['dtnai'];
-			$dataCaf['Cer93']['adresse'] = $adresseComplete;
-			$dataCaf['Cer93']['codepos'] = $dataCaf['Adresse']['codepos'];
-			$dataCaf['Cer93']['locaadr'] = $dataCaf['Adresse']['locaadr'];
-			$dataCaf['Cer93']['sitfam'] = $dataCaf['Foyer']['sitfam'];
-			$dataCaf['Cer93']['natlog'] = $dataCaf['Dsp']['natlog'];
-
-			// Bloc 3
-			$dataCaf['Cer93']['inscritpe'] = ( ( !empty( $dataCaf['Historiqueetatpe']['etat'] ) && ( $dataCaf['Historiqueetatpe']['etat'] == 'inscription' ) ) ? true : null );
-
-			// Bloc 2 : Composition du foyer
-			// Récupération des informations de composition du foyer de l'allocataire
-			$composfoyerscers93 = $this->Contratinsertion->Personne->find(
-				'all',
-				array(
-					'fields' => array(
-						'"Personne"."qual" AS "Compofoyercer93__qual"',
-						'"Personne"."nom" AS "Compofoyercer93__nom"',
-						'"Personne"."prenom" AS "Compofoyercer93__prenom"',
-						'"Personne"."dtnai" AS "Compofoyercer93__dtnai"',
-						'"Prestation"."rolepers" AS "Compofoyercer93__rolepers"'
-					),
-					'conditions' => array( 'Personne.foyer_id' => $dataCaf['Foyer']['id'] ),
-					'contain' => array(
-						'Prestation'
-					)
-				)
-			);
-			$composfoyerscers93 = array( 'Compofoyercer93' => Set::classicExtract( $composfoyerscers93, '{n}.Compofoyercer93' ) );
-			$dataCaf = Set::merge( $dataCaf, $composfoyerscers93 );
-
-			//Donnée du CER actuel
-			$dataActuelCer= array();
-			if( !empty( $contratinsertion_id )) {
-				$dataActuelCer = $this->Contratinsertion->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Contratinsertion.id' => $contratinsertion_id,
-						),
-						'contain' => array(
-							'Cer93'
-						)
-					)
-				);
-
-				// Bloc 4 : Diplômes
-				// Récupération des informations de diplômes de l'allocataire
-				$diplomescers93 = $this->Diplomecer93->find(
-					'all',
-					array(
-						'fields' => array(
-							'Diplomecer93.id',
-							'Diplomecer93.cer93_id',
-							'Diplomecer93.name',
-							'Diplomecer93.annee'
-						),
-						'conditions' => array( 'Diplomecer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
-						'order' => array( 'Diplomecer93.annee DESC' ),
-						'contain' => false
-					)
-				);
-				$diplomescers93 = array( 'Diplomecer93' => Set::classicExtract( $diplomescers93, '{n}.Diplomecer93' ) );
-				$dataActuelCer = Set::merge( $dataActuelCer, $diplomescers93 );
-
-				// Bloc 4 : Formation et expériece
-				// Récupération des informations de diplômes de l'allocataire
-				$expsproscers93 = $this->Expprocer93->find(
-					'all',
-					array(
-						'fields' => array(
-							'Expprocer93.id',
-							'Expprocer93.cer93_id',
-							'Expprocer93.metierexerce_id',
-							'Expprocer93.secteuracti_id',
-							'Expprocer93.anneedeb',
-							'Expprocer93.duree',
-						),
-						'conditions' => array( 'Expprocer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
-						'order' => array( 'Expprocer93.anneedeb DESC' ),
-						'contain' => false
-					)
-				);
-				$expsproscers93 = array( 'Expprocer93' => Set::classicExtract( $expsproscers93, '{n}.Expprocer93' ) );
-				$dataActuelCer = Set::merge( $dataActuelCer, $expsproscers93 );
-
-				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
-				$sujetscers93 = $this->Cer93Sujetcer93->find(
-					'all',
-					array(
-						'conditions' => array( 'Cer93Sujetcer93.cer93_id' => $dataActuelCer['Cer93']['id'] ),
-						'contain' => false
-					)
-				);
-				$dataActuelCer = Set::merge( $dataActuelCer, array( 'Sujetcer93' => array( 'Sujetcer93' => Set::classicExtract( $sujetscers93, '{n}.Cer93Sujetcer93' ) ) ) );
-			}
-
-			//Donnée du précédent CER validé
-			$dataPcdCer = $this->Contratinsertion->find(
-				'first',
-				array(
-					'fields' => array(
-						'Cer93.incoherencesetatcivil',
-//						'Cer93.inscritpe', // FIXME
-						'Cer93.cmu',
-						'Cer93.cmuc',
-//						'Cer93.nivetu', // FIXME
-						'Cer93.autresexps',
-						'Cer93.isemploitrouv',
-						'Cer93.secteuracti_id',
-						'Cer93.metierexerce_id',
-						'Cer93.dureehebdo',
-						'Cer93.naturecontrat_id',
-						'Cer93.dureecdd',
-					),
-					'conditions' => array(
-						'Contratinsertion.personne_id' => $personneId,
-//						'OR' => array(
-//							'Contratinsertion.id IS NULL',
-							'Contratinsertion.id IN ( '.$this->Contratinsertion->sqDernierContrat( 'Contratinsertion.personne_id', true ).' )'
-//						)
-					),
-					'contain' => array(
-						'Cer93'
-					)
-				)
-			);
-
-			// FIXME
-			//Cer93.sujetscerpcd
-			//Cer93.prevupcd
-			//Diplomecer93.0.id
-			//Diplomecer93.0.cer93_id
-			//Diplomecer93.0.name
-			//Diplomecer93.0.annee
-			//Expprocer93.0.id
-			//Expprocer93.0.cer93_id
-			//Expprocer93.0.metierexerce_id
-			//Expprocer93.0.secteuracti_id
-			//Expprocer93.0.anneedeb
-			//Expprocer93.0.duree
-			$formData = Set::merge( Set::merge( $dataCaf, $dataPcdCer ), $dataActuelCer );
-
-			$formData['Cer93']['nivetu'] = $formData['Dsp']['nivetu'];
-
-			//Données de l'utilsiateur connecté
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => array(
-						'Structurereferente'
-					)
-				)
-			);
-			$formData['Cer93']['user_id'] = $user_id;
-			$formData['Cer93']['nomutilisateur'] = $user['User']['nom_complet'];
-			$formData['Cer93']['structureutilisateur'] = $user['Structurereferente']['lib_struc'];;
-
-			// Dans le cas d'un ajout, il faut supprimer les id et les clés étrangères des
-			// enregistrements que l'on "copie".
-			if( empty( $contratinsertion_id ) ) {
-				$keys = array(
-					'Contratinsertion.id',
-					'Cer93.id',
-					'Cer93.contratinsertion_id',
-					'Compofoyercer93.{n}.id',
-					'Compofoyercer93.{n}.cer93_id',
-					'Diplomecer93.{n}.id',
-					'Diplomecer93.{n}.cer93_id',
-					'Expprocer93.{n}.id',
-					'Expprocer93.{n}.cer93_id'
-				);
-				foreach( $keys as $key ) {
-					$formData = Hash::remove( $formData, $key );
-				}
-			}
-
-			return $formData;
-		}*/
 
 		/**
 		 * Retourne le chemin relatif du modèle de document à utiliser pour
@@ -1415,9 +1120,6 @@
 					'Personne' => array(
 						'qual' => $Option->qual()
 					),
-					'Adresse' => array(
-						'typevoie' => $Option->typevoie()
-					),
 					'Cer93' => array(
 						'dureecdd' => $Option->duree_cdd()
 					)
@@ -1539,9 +1241,6 @@
 				),
 				'Personne' => array(
 					'qual' => ClassRegistry::init( 'Option' )->qual()
-				),
-				'Adresse' => array(
-					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 				),
 				'Serviceinstructeur' => array(
 					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()

@@ -319,7 +319,6 @@
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
-				'typevoie' => $this->Option->typevoie(),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
 			$options = Set::merge(
@@ -833,7 +832,6 @@
 				'toppersdrodevorsa' => $this->Option->toppersdrodevorsa( true ),
 				'rolepers' => $this->Option->rolepers(),
 				'formeci' => $this->Option->forme_ci(),
-				'typevoie' => $this->Option->typevoie(),
 				'gestionnaire' => ClassRegistry::init( 'User' )->find( 'list', array( 'fields' => array( 'User.nom_complet' ) ) )
 			);
 			$options = Set::merge(

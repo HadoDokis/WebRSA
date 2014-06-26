@@ -618,9 +618,6 @@
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Permanence' => array(
 					'typevoie' => $Option->typevoie()
 				),

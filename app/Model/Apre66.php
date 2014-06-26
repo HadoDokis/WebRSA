@@ -296,9 +296,6 @@
 			// Options pour les traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),
@@ -437,10 +434,10 @@
 				$apre['Fraisdeplacement66']['lieuresidence'] = implode(
 						' ', array(
 					Set::extract( $apre, 'Adresse.numvoie' ),
-					Set::enum( Set::classicExtract( $apre, 'Adresse.typevoie' ), $typesvoies ),
+					Set::extract( $apre, 'Adresse.libtypevoie' ),
 					Set::extract( $apre, 'Adresse.nomvoie' ),
 					Set::extract( $apre, 'Adresse.codepos' ),
-					Set::extract( $apre, 'Adresse.locaadr' )
+					Set::extract( $apre, 'Adresse.nomcom' )
 						)
 				);
 			}
@@ -494,9 +491,6 @@
 			$Option = ClassRegistry::init( 'Option' );
 
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),

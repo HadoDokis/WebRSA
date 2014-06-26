@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Cohortecomiteapre.
 	 *
@@ -84,7 +84,7 @@
 					'"Personne"."prenom"',
 					'"Personne"."dtnai"',
 					'"Personne"."nir"',
-					'"Adresse"."locaadr"',
+					'"Adresse"."nomcom"',
 					'"Adresse"."codepos"',
 					'"Apre"."id"',
 					'"Apre"."datedemandeapre"',

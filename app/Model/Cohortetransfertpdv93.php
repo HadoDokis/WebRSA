@@ -88,10 +88,10 @@
 				$conditions = array_merge(
 					$conditions,
 					array(
-						'Adresse.numcomptt LIKE' => Configure::read( 'Cg.departement' ).'%',
+						'Adresse.numcom LIKE' => Configure::read( 'Cg.departement' ).'%',
 						"Adressefoyer.dtemm > Orientstruct.date_valid",
 						'Structurereferente.filtre_zone_geo' => true,
-						"Adresse.numcomptt NOT IN ( {$sqZonesgeographiquesStructuresreferentes} )",
+						"Adresse.numcom NOT IN ( {$sqZonesgeographiquesStructuresreferentes} )",
 					)
 				);
 			}
@@ -344,14 +344,14 @@
 
 					$structurereferente_dst_id = null;
 
-					if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcomptt']] ) ) {
-						if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']] ) ) {
+					if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcom']] ) ) {
+						if( isset( $structuresParZonesGeographiques[$result['Adresse']['numcom']][$result['Orientstruct']['typeorient_id']] ) ) {
 							$selectables = array();
-							$structures = $structuresParZonesGeographiques[$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']];
+							$structures = $structuresParZonesGeographiques[$result['Adresse']['numcom']][$result['Orientstruct']['typeorient_id']];
 
 							if( !empty( $structures ) ) {
 								foreach( array_keys( $structures ) as $key ) {
-									if( preg_match( "/^{$result['Adresse']['numcomptt']}_/", $key ) ) {
+									if( preg_match( "/^{$result['Adresse']['numcom']}_/", $key ) ) {
 										$selectables[] = $key;
 									}
 								}

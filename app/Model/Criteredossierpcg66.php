@@ -155,7 +155,7 @@ class Criteredossierpcg66 extends AppModel {
         $conditions = $this->conditionsDetailcalculdroitrsa($conditions, $params);
 
         $conditions = $this->conditionsDates($conditions, $params, 'Dossierpcg66.dateaffectation');
-        
+
         /// Critères
         $originepdo = Set::extract($params, 'Dossierpcg66.originepdo_id');
         $gestionnaire = Set::extract($params, 'Dossierpcg66.user_id');
@@ -361,9 +361,9 @@ class Criteredossierpcg66 extends AppModel {
                 'Personne.nir',
                 'Personne.qual',
                 'Personne.nomcomnai',
-                'Adresse.locaadr',
+                'Adresse.nomcom',
                 'Adresse.codepos',
-                'Adresse.numcomptt',
+                'Adresse.numcom',
                 'Situationdossierrsa.etatdosrsa',
                 $Dossierpcg66->sqVirtualField('nbpropositions'),
                 ClassRegistry::init('Fichiermodule')->sqNbFichiersLies(ClassRegistry::init('Foyer'), 'nb_fichiers_lies'),
@@ -636,9 +636,9 @@ class Criteredossierpcg66 extends AppModel {
                 'Personne.nir',
                 'Personne.qual',
                 'Personne.nomcomnai',
-                'Adresse.locaadr',
+                'Adresse.nomcom',
                 'Adresse.codepos',
-                'Adresse.numcomptt',
+                'Adresse.numcom',
                 'Situationdossierrsa.etatdosrsa',
                 $Dossierpcg66->sqVirtualField('nbpropositions'),
                 $Dossierpcg66->Personnepcg66->sqVirtualField('nbtraitements'),

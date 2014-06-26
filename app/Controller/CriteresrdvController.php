@@ -57,7 +57,6 @@
 
 			$this->set( 'natpf', $this->Option->natpf() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 
             if( Configure::read( 'Rendezvous.useThematique' ) ) {
@@ -121,7 +120,7 @@
 		 * @return void
 		 */
 		public function exportcsv() {
-		
+
 			// On conditionne l'affichage des RDVs selon la structure référente liée au RDV
 			// Si la structure de l'utilisateur connecté est différente de celle du RDV, on ne l'affiche pas.
 			$conditionStructure = array();
@@ -131,7 +130,7 @@
 					$conditionStructure = array( 'Rendezvous.structurereferente_id' => $structurereferente_id );
 				}
 			}
-			
+
 			$datas = Hash::expand( $this->request->params['named'], '__' );
 			$querydata = $this->Critererdv->search(
 				(array)$this->Session->read( 'Auth.Zonegeographique' ),

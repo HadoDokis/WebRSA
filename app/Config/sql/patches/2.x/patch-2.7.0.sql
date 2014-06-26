@@ -729,6 +729,40 @@ ALTER TABLE dossierspcgs66 ADD CONSTRAINT dossierspcgs66_etatdossierpcg_in_list_
 DROP INDEX IF EXISTS personnes_nom_complet_court_idx;
 CREATE INDEX personnes_nom_complet_court_idx ON personnes( ( COALESCE( nom, '' ) || ' ' || COALESCE( prenom, '' ) ) );
 
+-------------------------------------------------------------------------------------
+-- 20140625: modifications de la table instantanesdonneesfps93 suite à la mise en place des nouvelles adresses CAF
+-------------------------------------------------------------------------------------
+
+-- Racine > InfoDemandeRSA > DonneesAdministratives > Adresse > AdresseDetailleeFrance
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_compladr TYPE VARCHAR(38);
+
+-- La colonne typevoie est remplacée par benef_libtypevoie
+UPDATE instantanesdonneesfps93 SET benef_typevoie = NULL WHERE TRIM( BOTH ' ' FROM benef_typevoie ) = '';
+SELECT add_missing_table_field( 'public', 'instantanesdonneesfps93', 'benef_libtypevoie', 'VARCHAR(30)' );
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_libtypevoie SET DEFAULT NULL;
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_typevoie SET DEFAULT NULL;
+
+-- La colonne benef_nomvoie passe à 32 caractères
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_nomvoie TYPE VARCHAR(32);
+
+-- La colonne benef_numcomrat est remplacée par benef_numcom (CHAR5)
+SELECT add_missing_table_field( 'public', 'instantanesdonneesfps93', 'benef_numcom', 'CHAR(5)' );
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_numcom SET DEFAULT NULL;
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_numcomrat SET DEFAULT NULL;
+
+-- La colonne benef_numcomptt est supprimée
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_numcomptt SET DEFAULT NULL;
+
+-- La colonne benef_locaadr est remplacée par benef_nomcom (VARCHAR32)
+SELECT add_missing_table_field( 'public', 'instantanesdonneesfps93', 'benef_nomcom', 'VARCHAR(32)' );
+ALTER TABLE instantanesdonneesfps93 ALTER COLUMN benef_locaadr SET DEFAULT NULL;
+
+-- FIXME: commenter ?
+SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_typevoie' );
+SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_numcomrat' );
+SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_numcomptt' );
+SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_locaadr' );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

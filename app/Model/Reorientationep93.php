@@ -668,8 +668,7 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->Decisionreorientationep93->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options']['type']['voie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}

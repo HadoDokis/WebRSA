@@ -375,13 +375,12 @@
 					'Personne.dtnai',
 					'Personne.idassedic',
 					'Personne.nomcomnai',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.numcom',
+					'Adresse.nomcom',
 					'Situationdossierrsa.etatdosrsa',
 					'Prestation.rolepers',
 					'Personne.sexe',
@@ -489,7 +488,7 @@
 					'fields' => array(
 						'Adressefoyer.rgadr',
 						'Adressefoyer.dtemm',
-						'"Adresse"."numcomptt" AS "Adressefoyer__codeinsee"',
+						'"Adresse"."numcom" AS "Adressefoyer__codeinsee"',
 					),
 					'conditions' => array(
 						'Adressefoyer.foyer_id' => $dossier['Foyer']['id']

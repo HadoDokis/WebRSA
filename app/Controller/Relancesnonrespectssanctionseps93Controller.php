@@ -73,7 +73,7 @@
 			}
 
 			$options = array(
-				'Adresse' => array( 'numcomptt' => $listeCodesInseeLocalites ),
+				'Adresse' => array( 'numcom' => $listeCodesInseeLocalites ),
 				'Serviceinstructeur' => array( 'id' => $this->Orientstruct->Serviceinstructeur->find( 'list' ) )
 			);
 			$options = Set::merge(

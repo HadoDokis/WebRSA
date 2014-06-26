@@ -156,9 +156,6 @@
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Apre' => array(
 					'natureaide' => $Option->natureAidesApres()
 				),
@@ -258,9 +255,6 @@
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Apre' => array(
 					'natureaide' => $Option->natureAidesApres()
 				),

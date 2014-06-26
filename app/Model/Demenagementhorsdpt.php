@@ -99,11 +99,11 @@
 				}
 
 				$departement = Configure::read( 'Cg.departement' );
-				$query['conditions']['Adresse.numcomptt NOT LIKE'] = "{$departement}%";
+				$query['conditions']['Adresse.numcom NOT LIKE'] = "{$departement}%";
 				$query['conditions'][] = array(
 					'OR' => array(
-						'Adresse2.numcomptt LIKE' => "{$departement}%",
-						'Adresse3.numcomptt LIKE' => "{$departement}%",
+						'Adresse2.numcom LIKE' => "{$departement}%",
+						'Adresse3.numcom LIKE' => "{$departement}%",
 					)
 				);
 
@@ -214,8 +214,7 @@
 				array(
 					'Adresse2' => array(
 						'pays' => $Option->pays(),
-						'typeres' => $Option->typeres(),
-						'typevoie' => $Option->typevoie(),
+						'typeres' => $Option->typeres()
 					),
 					'Adressefoyer2' => array(
 						'rgadr' => $Option->rgadr(),
@@ -223,8 +222,7 @@
 					),
 					'Adresse3' => array(
 						'pays' => $Option->pays(),
-						'typeres' => $Option->typeres(),
-						'typevoie' => $Option->typevoie(),
+						'typeres' => $Option->typeres()
 					),
 					'Adressefoyer3' => array(
 						'rgadr' => $Option->rgadr(),

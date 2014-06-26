@@ -60,8 +60,8 @@
 			$action = Set::extract( $criteresfichescandidature, 'Actioncandidat.id' );
 			$correspondant = Set::extract( $criteresfichescandidature, 'Actioncandidat.referent_id' );
 			$prescripteur = Set::extract( $criteresfichescandidature, 'ActioncandidatPersonne.referent_id' );
-			$locaadr = Set::extract( $criteresfichescandidature, 'Adresse.locaadr' );
-			$numcomptt = Set::extract( $criteresfichescandidature, 'Adresse.numcomptt' );
+			$nomcom = Set::extract( $criteresfichescandidature, 'Adresse.nomcom' );
+			$numcom = Set::extract( $criteresfichescandidature, 'Adresse.numcom' );
 			$numdemrsa = Set::extract( $criteresfichescandidature, 'Dossier.numdemrsa' );
 			$codepartenaire = Set::extract( $criteresfichescandidature, 'Partenaire.codepartenaire' );
 			$matricule = Set::extract( $criteresfichescandidature, 'Dossier.matricule' );
@@ -76,14 +76,14 @@
 			}
 
 			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
+			if( !empty( $nomcom ) ) {
+				$conditions[] = 'Adresse.nomcom ILIKE \'%'.Sanitize::clean( $nomcom, array( 'encode' => false ) ).'%\'';
 			}
 
 
 			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			// Nom de l'action
@@ -248,10 +248,10 @@
 					'Referent.qual',
 					'Referent.nom',
 					'Referent.prenom',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.codepos',
 					'Adressefoyer.rgadr',
-					'Adresse.numcomptt'
+					'Adresse.numcom'
 				),
 				'joins' => $joins,
 				'contain' => false,

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Gestionanomaliebdd.
 	 *
@@ -446,8 +446,8 @@
 					$Dossier->Situationdossierrsa->fields(),
 					$this->vfsInformationsFoyer( $Dossier->Foyer, $sqPersonnesEnDoublons ),
 					array(
-						'Adresse.locaadr',
-						'Adresse.numcomptt',
+						'Adresse.nomcom',
+						'Adresse.numcom',
 					),
 					(array)$sqLockedDossiers
 				),

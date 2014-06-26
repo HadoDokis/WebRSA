@@ -176,7 +176,7 @@
 				}
 				else {
 					$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-					$querydata['conditions'][] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
+					$querydata['conditions'][] = '( Adresse.numcom IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
 				}
 			}
 

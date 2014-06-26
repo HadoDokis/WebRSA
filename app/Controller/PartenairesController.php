@@ -42,9 +42,6 @@
 			$options = array(
 				'Personne' => array(
 					'qual' => ClassRegistry::init( 'Option' )->qual()
-				),
-				'Adresse' => array(
-					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 				)
 			);
 

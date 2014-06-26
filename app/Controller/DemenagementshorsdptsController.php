@@ -86,16 +86,16 @@
 				'Dossier.matricule',
 				'Personne.nom_complet',
 				'Adressefoyer.dtemm',
-				'Adresse.numcomptt',
-				'Adresse.locaadr',
+				'Adresse.numcom',
+				'Adresse.nomcom',
 				$this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' ),
 				'Adressefoyer2.dtemm',
-				'Adresse2.numcomptt',
-				'Adresse2.locaadr',
+				'Adresse2.numcom',
+				'Adresse2.nomcom',
 				str_replace( 'Adresse', 'Adresse2', $this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' ) ),
 				'Adressefoyer3.dtemm',
-				'Adresse3.numcomptt',
-				'Adresse3.locaadr',
+				'Adresse3.numcom',
+				'Adresse3.nomcom',
 				str_replace( 'Adresse', 'Adresse3', $this->Personne->Foyer->Adressefoyer->Adresse->sqVirtualField( 'localite' ) ),
 			);
 
@@ -113,12 +113,12 @@
 					'OR' => array(
 						// L'allocataire a quitté le CG en rang 01 et l'adresse de rang 2 ...
 						array(
-							'Adresse2.numcomptt LIKE' => "{$departement}%",
+							'Adresse2.numcom LIKE' => "{$departement}%",
 							"CAST( DATE_PART( 'year', \"Adressefoyer\".\"dtemm\" ) + 1 || '-03-31' AS DATE ) >= NOW()",
 						),
 						// L'allocataire a quitté l'adresse de rang 3 ...
 						array(
-							'Adresse3.numcomptt LIKE' => "{$departement}%",
+							'Adresse3.numcom LIKE' => "{$departement}%",
 							"CAST( DATE_PART( 'year', \"Adressefoyer2\".\"dtemm\" ) + 1 || '-03-31' AS DATE ) >= NOW()",
 						),
 					)

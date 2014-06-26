@@ -198,8 +198,8 @@
 		/**
 		 * Retourne une groupe de filtres par adresse contenant les champs:
 		 *	- Adresse.nomvoie
-		 *	- Adresse.locaadr
-		 *	- Adresse.numcomptt
+		 *	- Adresse.nomcom
+		 *	- Adresse.numcom
 		 *	- Canton.canton
 		 *	- Sitecov58.name
 		 *
@@ -211,8 +211,8 @@
 			$params['prefix'] = ( !empty( $params['prefix'] ) ? "{$params['prefix']}." : null );
 
 			$content = $this->_input( "{$params['prefix']}Adresse.nomvoie", $params, array( 'type' => 'text' ) );
-			$content .= $this->_input( "{$params['prefix']}Adresse.locaadr", $params, array( 'type' => 'text' ) );
-			$content .= $this->_input( "{$params['prefix']}Adresse.numcomptt", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcomptt' ), 'empty' => true ) );
+			$content .= $this->_input( "{$params['prefix']}Adresse.nomcom", $params, array( 'type' => 'text' ) );
+			$content .= $this->_input( "{$params['prefix']}Adresse.numcom", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Adresse.numcom' ), 'empty' => true ) );
 
 			if( Configure::read( 'CG.cantons' ) ) {
 				$content .= $this->_input( "{$params['prefix']}Canton.canton", $params, array( 'type' => 'select', 'options' => (array)Hash::get( $params, 'options.Canton.canton' ), 'empty' => true ) );

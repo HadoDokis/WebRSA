@@ -186,12 +186,12 @@
 					'Personne.prenom',
 					'Personne.qual',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.numvoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.codepos',
 				),
 				'joins' => array(
@@ -395,7 +395,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Dossier.numdemrsa',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 			);
 
 			/// Création du champ virtuel montant total pour connaître les montants attribués à une APRE complémentaire
@@ -438,7 +438,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Dossier.numdemrsa',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 			);
 
 			/**
@@ -615,13 +615,13 @@
 					'Paiementfoyer.titurib',
 					'Paiementfoyer.nomprenomtiturib', // FIXME ?
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
 					'Adresse.compladr',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Paiementfoyer.etaban',
 					'Paiementfoyer.guiban',
 					'Paiementfoyer.numcomptban',
@@ -862,12 +862,12 @@
 					'Personne.prenom',
 					'Personne.qual',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.numvoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.codepos',
 				);
 
@@ -907,12 +907,12 @@
 					'Personne.prenom',
 					'Personne.qual',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.numvoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.codepos',
 				);
 
@@ -943,7 +943,7 @@
 					$this->Apre->sqApreNomaide().' AS "Apre__nomaide"',
 					'Personne.nom',
 					'Personne.prenom',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'ApreEtatliquidatif.montantattribue',
 					'Etatliquidatif.id',
 					'Etatliquidatif.typeapre',

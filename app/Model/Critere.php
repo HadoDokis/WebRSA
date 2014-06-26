@@ -33,8 +33,8 @@
 			$conditions = array();
 
 			/// Critères
-			$locaadr = Set::extract( $criteres, 'Adresse.locaadr' );
-			$numcomptt = Set::extract( $criteres, 'Adresse.numcomptt' );
+			$nomcom = Set::extract( $criteres, 'Adresse.nomcom' );
+			$numcom = Set::extract( $criteres, 'Adresse.numcom' );
 			$natpf = Set::extract( $criteres, 'Detaildroitrsa.natpf' );
 			$nir = Set::extract( $criteres, 'Personne.nir' );
 			$statut_orient = Set::extract( $criteres, 'Orientstruct.statut_orient' );
@@ -243,10 +243,10 @@
 					'"Adresse"."nomvoie"',
 					'"Adresse"."complideadr"',
 					'"Adresse"."compladr"',
-					'"Adresse"."typevoie"',
+					'"Adresse"."libtypevoie"',
 					'"Adresse"."codepos"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."numcomptt"',
+					'"Adresse"."nomcom"',
+					'"Adresse"."numcom"',
 					'"Modecontact"."numtel"',
 					'"Serviceinstructeur"."id"',
 					'"Serviceinstructeur"."lib_service"',

@@ -425,7 +425,7 @@
 				'Personne.dtnai',
 				'Dossier.id',
 				'Dossier.matricule',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Orientstruct.typeorient_id',
 				$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->sqVirtualField( 'enerreur' )
 			);
@@ -569,8 +569,8 @@
 				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom' ) ) ) {
 					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
 				}
-				else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
-					$conditions[] = array( 'Adresse.numcomptt' => $condition );
+				else if( $field == 'Adresse.numcom' && !empty( $condition ) ) {
+					$conditions[] = array( 'Adresse.numcom' => $condition );
 				}
 				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
 					$joins[] = array(
@@ -956,8 +956,8 @@
 				if( in_array( $field, array( 'Personne.nom', 'Personne.prenom', 'Personne.nomnai' ) ) ) {
 					$conditions["UPPER({$field}) LIKE"] = $this->wildcard( strtoupper( replace_accents( $condition ) ) );
 				}
-				else if( $field == 'Adresse.numcomptt' && !empty( $condition ) ) {
-					$conditions['Adresse.numcomptt'] = $condition;
+				else if( $field == 'Adresse.numcom' && !empty( $condition ) ) {
+					$conditions['Adresse.numcom'] = $condition;
 				}
 				else if( $field == 'Serviceinstructeur.id' && !empty( $condition ) ) {
 					$conditions['Serviceinstructeur.id'] = $condition;
@@ -1122,7 +1122,7 @@
 			$queryData = array(
 				'fields' => array(
 					'Dossier.matricule',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					$this->Nonrespectsanctionep93->Orientstruct->Personne->Foyer->sqVirtualField( 'enerreur' ),
 					'Personne.id',
 					'Personne.nom',
@@ -1576,7 +1576,6 @@
 
 			// Traduction des autres "enums"
 			$data['Nonrespectsanctionep93']['Personne']['qual'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['qual'], $qual );
-			$data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'] = Set::enum( $data['Nonrespectsanctionep93']['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie'], $typevoie );
 
 			// On va chercher la dernière orientation de l'allocataire pour l'ajouter aux données
 			$sqDerniere = $this->Nonrespectsanctionep93->Orientstruct->sqDerniere( 'Orientstruct.personne_id' );

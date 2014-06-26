@@ -654,15 +654,14 @@
 			$queryData = array(
 				'fields' => array(
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
 					'Adresse.lieudist',
-					'Adresse.numcomrat',
-					'Adresse.numcomptt',
+					'Adresse.numcom',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.pays',
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
@@ -683,12 +682,7 @@
 			$data = $this->find( 'first', $queryData );
 
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
-// 			$data['Dossierpcg66']['serviceinstructeur_id'] = Set::classicExtract( $services, $data['Dossierpcg66']['serviceinstructeur_id'] );
 
-
-// debug($data);
-// die();
 			return $this->ged(
 				$data,
 				"PCG66/fichecalcul.odt",
@@ -744,15 +738,14 @@
 					$this->Personnepcg66->Personne->Bilanparcours66->fields(),
 					array(
 						'Adresse.numvoie',
-						'Adresse.typevoie',
+						'Adresse.libtypevoie',
 						'Adresse.nomvoie',
 						'Adresse.complideadr',
 						'Adresse.compladr',
 						'Adresse.lieudist',
-						'Adresse.numcomrat',
-						'Adresse.numcomptt',
+						'Adresse.numcom',
 						'Adresse.codepos',
-						'Adresse.locaadr',
+						'Adresse.nomcom',
 						'Adresse.pays',
 						'Dossier.numdemrsa',
 						'Dossier.dtdemrsa',
@@ -806,7 +799,6 @@
 
 			$options = array(
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
-				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 			$options = Set::merge( $options, $this->enums() );

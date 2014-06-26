@@ -292,8 +292,8 @@
 
 			/// Critères
 			$oridemrsa = Set::extract( $criteres, 'Filtre.oridemrsa' );
-			$locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
-			$numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
+			$nomcom = Set::extract( $criteres, 'Filtre.nomcom' );
+			$numcom = Set::extract( $criteres, 'Filtre.numcom' );
 			$codepos = Set::extract( $criteres, 'Filtre.codepos' );
 			$dtdemrsa = Set::extract( $criteres, 'Filtre.dtdemrsa' );
 			$date_impression = Set::extract( $criteres, 'Filtre.date_impression' );
@@ -350,12 +350,12 @@
 			}
 
 			// Localité adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
+			if( !empty( $nomcom ) ) {
+				$conditions[] = 'Adresse.nomcom ILIKE \'%'.Sanitize::clean( $nomcom, array( 'encode' => false ) ).'%\'';
 			}
 			// Commune au sens INSEE
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt = \''.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'\'';
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom = \''.Sanitize::clean( $numcom, array( 'encode' => false ) ).'\'';
 			}
 			// Code postal adresse
 			if( !empty( $codepos ) ) {
@@ -472,10 +472,10 @@
 				'Personne.dtnai',
 				'Foyer.dossier_id',
 				'Dsp.id',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Adresse.codepos',
 				'Adresse.canton',
-				'Adresse.numcomptt',
+				'Adresse.numcom',
 				'Situationdossierrsa.dtclorsa',
 				'Situationdossierrsa.moticlorsa',
 				'Suiviinstruction.typeserins',

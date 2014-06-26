@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Indu.
 	 *
@@ -73,7 +73,7 @@
 					'"Personne"."qual"',
 					'"Personne"."nomcomnai"',
 					'"Situationdossierrsa"."etatdosrsa"',
-					'"Adresse"."locaadr"',
+					'"Adresse"."nomcom"',
 					'"Adresse"."codepos"',
 				),
 				'recursive' => -1,

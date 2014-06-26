@@ -287,7 +287,7 @@
 					'Personne.nir',
 					'Dossier.numdemrsa',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Contratinsertion.df_ci',
 					$this->Orientstruct->Personne->Contratinsertion->sqVirtualField( 'nbjours', true )
 				),
@@ -670,7 +670,8 @@
 				$datas['querydata']['joins'][] = $this->Orientstruct->join( 'Structurereferente' );
 
 				// Traductions
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$Option = ClassRegistry::init( 'Option' );
+				$datas['options']['type']['voie'] = $Option->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -734,8 +735,7 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options']['type']['voie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -774,7 +774,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Orientstruct.date_valid',
