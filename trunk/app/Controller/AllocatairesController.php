@@ -119,7 +119,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Prestation.rolepers',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 				);
 
 				$query = $this->Allocataires->completeSearchQuery( $query );
@@ -148,7 +148,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Prestation.rolepers',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 			);
 
 			$query = $this->Allocataires->completeSearchQuery( $query );

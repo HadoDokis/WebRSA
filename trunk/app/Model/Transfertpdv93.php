@@ -215,9 +215,6 @@
 
 			$options =  Set::merge(
 				array(
-					'Adresse' => array(
-						'typevoie' => $typevoie
-					),
 					'NvStructurereferente' => array(
 						'type_voie' => $typevoie
 					),

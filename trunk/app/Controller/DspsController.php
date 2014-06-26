@@ -158,7 +158,6 @@
 			$options = $this->Dsp->filterOptions( $cg, $options );
 // 			debug( $options );
 			$this->set( 'options', $options );
-			$this->set( 'typevoie', ClassRegistry::init( 'Option' )->typevoie() );
 			$this->set( 'cg', $cg );
 
 			return $return;
@@ -1022,7 +1021,6 @@
 
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
 
-			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'qual', $this->Option->qual() );
 
 			$this->layout = '';

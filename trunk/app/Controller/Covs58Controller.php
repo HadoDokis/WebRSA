@@ -103,7 +103,7 @@
 				}
 			}
 			$this->set( 'duree_engag', $this->Option->duree_engag_cg58() );
-			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'typevoie', 'sitescovs58', 'referentsorientants' ));
+			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'sitescovs58', 'referentsorientants' ));
 
 		}
 

@@ -112,7 +112,7 @@
 				);
 				if( !empty( $zonesgeographiques ) ) {
 					foreach( $zonesgeographiques as $zonegeographique ) {
-							$conditionsAdresses['OR'][] = "Adresse.numcomptt ILIKE '%".Sanitize::paranoid( $zonegeographique )."%'";
+							$conditionsAdresses['OR'][] = "Adresse.numcom ILIKE '%".Sanitize::paranoid( $zonegeographique )."%'";
 					}
 				}
 			}

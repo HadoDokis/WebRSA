@@ -2312,14 +2312,9 @@
 
 		/**
 		 * Enums pour les champs
-		 *	- adresses.typevoie
-		 *	- cantons.typevoie
 		 *	- membreseps.typevoie
-		 *	- orientations.typevoie
-		 *	- parcours.typevoie
 		 *	- partenaires.typevoie
 		 *	- permanences.typevoie
-		 *	- situationsallocataires.typevoie
 		 *	- tiersprestatairesapres.typevoie
 		 *	- users.typevoie
 		 *

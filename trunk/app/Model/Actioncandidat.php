@@ -275,28 +275,6 @@
 
 		public function listePourFicheCandidature( $codelocalite, $isactif, $hasFiche = array() ) {
 			$conditions = array();
-            /*if( Configure::read( 'Cg.departement') != 66 ) {
-                $conditions[] = 'Actioncandidat.id IN (
-                        '.$this->ActioncandidatZonegeographique->sq(
-                            array(
-                                'alias' => 'actionscandidats_zonesgeographiques',
-                                'fields' => array( 'actionscandidats_zonesgeographiques.actioncandidat_id' ),
-                                'conditions' => array(
-                                    'actionscandidats_zonesgeographiques.zonegeographique_id IN ('.ClassRegistry::init( 'Canton' )->sq(
-                                        array(
-                                            'alias' => 'cantons',
-                                            'fields' => array( 'cantons.zonegeographique_id' ),
-                                            'conditions' => array(
-                                                'cantons.numcomptt' => $codelocalite
-                                            ),
-                                            'contain' => false
-                                        )
-                                    ).' )'
-                                )
-                            )
-                        ).'
-                    )';
-            }*/
 
             $actionscandidats = $this->find(
 				'list',
@@ -364,7 +342,7 @@
 			foreach( $tmp as $key => $value ) {
 				$results[$value['Partenaire']['id'].'_'.$value['Actioncandidat']['id']] = $value['Actioncandidat']['name'];
 			}
-            
+
 			return $results;
 		}
 
@@ -420,13 +398,13 @@
 			$success = $this->_regenerateCache();
 			return $success;
 		}
-        
-        
+
+
         public function search( $criteres ) {
-            
+
             /// Conditions de base
 			$conditions = array();
-            
+
             $hasFiche = Hash::get( $criteres, 'Actioncandidat.hasfichecandidature' );
             $isactive = Hash::get( $criteres, 'Actioncandidat.actif' );
 
@@ -441,16 +419,16 @@
 			if( isset( $hasFiche ) && $hasFiche != '' ) {
                 $conditions[] = 'Actioncandidat.hasfichecandidature = \''.$hasFiche.'\'';
 			}
-            
+
             // Critère sur le fait ou non d'être active
             if( isset( $isactive ) && !empty( $isactive ) ){
 				$conditions[] = 'Actioncandidat.actif = \''.Sanitize::clean( $isactive, array( 'encode' => false )  ).'\'';
 			}
-            
+
             $conditions = $this->conditionsDates( $conditions, $criteres, 'Actioncandidat.ddaction' );
             $conditions = $this->conditionsDates( $conditions, $criteres, 'Actioncandidat.dfaction' );
-            
-            
+
+
              $querydata = array(
                 'joins' => array(
                     $this->join( 'Contactpartenaire', array( 'type' => 'LEFT OUTER' ) ),

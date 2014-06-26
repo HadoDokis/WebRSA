@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe CantonsController.
 	 *
@@ -24,11 +24,11 @@
 			'recursive' => -1,
 			'order' => array( 'canton ASC' )
 		);
-		
+
 		public $components = array(
 			'Search.SearchPrg' => array( 'actions' => array( 'index' ) )
 		);
-		
+
 		public $commeDroit = array(
 			'add' => 'Cantons:edit'
 		);
@@ -37,10 +37,10 @@
 		 * 	FIXME: docs
 		 */
 		protected function _setOptions() {
-		
 			$this->set( 'zonesgeographiques', $this->Canton->Zonegeographique->find( 'list' ) );
 			$this->set( 'typesvoies', $this->Option->typevoie() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
+			$this->set( 'libtypevoie', ClassRegistry::init( 'Adresse' )->enum( 'libtypevoie' ) );
 		}
 
 		/**
@@ -51,24 +51,7 @@
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'controller' => 'parametrages', 'action' => 'index' ) );
 			}
-/*
-			$this->paginate = array(
-				'fields' => array(
-					'Canton.id',
-					'Canton.typevoie',
-					'Canton.nomvoie',
-					'Canton.locaadr',
-					'Canton.codepos',
-					'Canton.numcomptt',
-					'Canton.canton',
-					'Canton.zonegeographique_id',
-					'Zonegeographique.libelle',
-				)
-			);
-			$cantons = $this->paginate( $this->modelClass );
-			$this->set( compact( 'cantons' ) );*/
-			
-			
+
 			if( !empty( $this->request->data ) ) {
 				$queryData = $this->Canton->search( $this->request->data );
 				$queryData['limit'] = 20;

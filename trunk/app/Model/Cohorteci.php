@@ -109,8 +109,6 @@
 			$datevalidation_ci = Set::extract( $criteresci, 'Contratinsertion.datevalidation_ci' );
 			$dd_ci = Set::extract( $criteresci, 'Contratinsertion.dd_ci' );
 			$df_ci = Set::extract( $criteresci, 'Contratinsertion.df_ci' );
-			$locaadr = Set::extract( $criteresci, 'Contratinsertion.locaadr' );
-			$numcomptt = Set::extract( $criteresci, 'Contratinsertion.numcomptt' );
 			$nir = Set::extract( $criteresci, 'Contratinsertion.nir' );
 			$natpf = Set::extract( $criteresci, 'Contratinsertion.natpf' );
 			$personne_suivi = Set::extract( $criteresci, 'Contratinsertion.pers_charg_suivi' );

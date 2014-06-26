@@ -160,7 +160,6 @@
 				'cantons' => $this->Gestionzonesgeos->listeCantons(),
 				'etatdosrsa' => $this->Option->etatdosrsa(),
 				'moticlorsa' => $this->Option->moticlorsa(),
-				'typevoie' => $this->Option->typevoie(),
 				'rolepers' => $this->Option->rolepers(),
 				'exists' => array( '1' => 'Oui', '0' => 'Non' ),
 				'mesCodesInsee' => $this->Gestionzonesgeos->listeCodesInsee(),
@@ -219,7 +218,6 @@
 			// Options
 			$options = array(
 				'etatdosrsa' => $this->Option->etatdosrsa(),
-				'typevoie' => $this->Option->typevoie(),
 				'rolepers' => $this->Option->rolepers(),
 				'referents' => $this->PersonneReferent->Referent->referentsListe( $structurereferente_id ),
 			);

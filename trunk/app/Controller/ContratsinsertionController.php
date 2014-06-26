@@ -102,7 +102,6 @@ class ContratsinsertionController extends AppController {
             $this->set('duree_engag_cg93', $this->Option->duree_engag_cg93());
             $this->set('duree_engag_cg58', $this->Option->duree_engag_cg58());
 
-            $this->set('typevoie', $this->Option->typevoie());
             $this->set('fonction_pers', $this->Option->fonction_pers());
             $this->set('nivetus', $this->Contratinsertion->Personne->Dsp->enum('nivetu'));
             $this->set('nivdipmaxobt', $this->Contratinsertion->Personne->Dsp->enum('nivdipmaxobt'));

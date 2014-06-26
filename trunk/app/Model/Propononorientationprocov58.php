@@ -153,7 +153,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Typeorient.lib_type_orient',
 					'Structurereferente.lib_struc',
 					'Orientstruct.date_valid',

@@ -853,10 +853,10 @@
 								'Adresse' => array(
 									'fields' => array(
 										'numvoie',
-										'typevoie',
+										'libtypevoie',
 										'nomvoie',
 										'codepos',
-										'locaadr'
+										'nomcom'
 									)
 								)
 							),

@@ -61,7 +61,7 @@
 				'contain' => false,
 				'conditions' => array(
 					// Déménagement hors du département
-					'Adresse.numcomptt NOT LIKE' => Configure::read( 'Cg.departement' ).'%',
+					'Adresse.numcom NOT LIKE' => Configure::read( 'Cg.departement' ).'%',
 					'Adressefoyer.rgadr' => '01',
 					"Adressefoyer.id IN ( {$sqDerniereRgadr01} )",
 					"Personne.id IN ( {$sq} )",

@@ -61,7 +61,6 @@
 		protected function _setOptions() {
 			$options = $this->{$this->modelClass}->enums();
 
-			$options = Hash::insert( $options, 'Adresse.typevoie', $this->Option->typevoie() );
 			$options = Hash::insert( $options, 'Personne.qual', $this->Option->qual() );
 			$options = Hash::insert( $options, 'Contratinsertion.decision_ci', $this->Option->decision_ci() );
 			$options = Hash::merge( $options, $this->ActioncandidatPersonne->Personne->Dsp->enums() );
@@ -81,7 +80,7 @@
 			$this->set( 'rolepers', $this->Option->rolepers() );
 			$this->set( 'typeserins', $this->Option->typeserins() );
 			$this->set( 'typeservice', $this->ActioncandidatPersonne->Personne->Orientstruct->Serviceinstructeur->find( 'first' ) );
-			$this->set( compact( 'options', 'typevoie' ) );
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
@@ -710,7 +709,6 @@
 				$options = array();
 
 				$this->loadModel( 'Option' );
-				$options['Adresse'] = array( 'typevoie' => $this->Option->typevoie() );
                 $options['Personne'] = array( 'qual' => $this->Option->qual() );
                 $options['Contratinsertion'] = array( 'decision_ci' => $this->Option->decision_ci() );
                 $options['Prestation'] = array( 'rolepers' => $this->Option->rolepers() );

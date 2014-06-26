@@ -30,21 +30,21 @@
 			$CantonModel = ClassRegistry::init( 'Canton' );
 
 			/// Critères sur l'adresse - nom de commune
-            foreach( array( 'locaadr', 'nomvoie' ) as $filtre ) {
+            foreach( array( 'nomcom', 'nomvoie' ) as $filtre ) {
                 if( isset( $search['Adresse'][$filtre] ) && !empty( $search['Adresse'][$filtre] ) ) {
-    // 				$conditions[] = "Adresse.locaadr ILIKE '%".Sanitize::clean( $search['Adresse']['locaadr'], array( 'encode' => false ) )."%'";
+    // 				$conditions[] = "Adresse.nomcom ILIKE '%".Sanitize::clean( $search['Adresse']['nomcom'], array( 'encode' => false ) )."%'";
                     $conditions[] = "Adresse.$filtre ILIKE '".$model->wildcard( Sanitize::clean( $search['Adresse'][$filtre], array( 'encode' => false ) ) )."'";
                 }
             }
 
 			/// Critères sur l'adresse - code insee
-			if( isset( $search['Adresse']['numcomptt'] ) && !empty( $search['Adresse']['numcomptt'] ) ) {
-				$numcomptt = Sanitize::clean( trim( $search['Adresse']['numcomptt'] ), array( 'encode' => false ) );
-				if( strlen( $numcomptt ) == 5 ) {
-					$conditions[] = "Adresse.numcomptt = '{$numcomptt}'";
+			if( isset( $search['Adresse']['numcom'] ) && !empty( $search['Adresse']['numcom'] ) ) {
+				$numcom = Sanitize::clean( trim( $search['Adresse']['numcom'] ), array( 'encode' => false ) );
+				if( strlen( $numcom ) == 5 ) {
+					$conditions[] = "Adresse.numcom = '{$numcom}'";
 				}
 				else {
-					$conditions[] = "Adresse.numcomptt ILIKE '%{$numcomptt}%'";
+					$conditions[] = "Adresse.numcom ILIKE '%{$numcom}%'";
 				}
 			}
 
@@ -82,7 +82,7 @@
 						)
 					);
 
-					$conditions[] = "Adresse.numcomptt IN ( {$sq} )";
+					$conditions[] = "Adresse.numcom IN ( {$sq} )";
 				}
 			}
 
@@ -94,7 +94,7 @@
 				}
 				else {
 					$mesCodesInsee = ( !empty( $mesCodesInsee ) ? $mesCodesInsee : array( null ) );
-					$conditions[] = '( Adresse.numcomptt IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
+					$conditions[] = '( Adresse.numcom IN ( \''.implode( '\', \'', $mesCodesInsee ).'\' ) )';
 				}
 			}
 

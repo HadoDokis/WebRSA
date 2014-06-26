@@ -1577,7 +1577,7 @@
 			$zonesgeographiques = Hash::extract( $zonesgeographiques, '{n}.Zonegeographique.codeinsee' );
 
 			if( !empty( $zonesgeographiques ) ) {
-				$querydata['conditions'][] = array( 'Adresse.numcomptt' => $zonesgeographiques );
+				$querydata['conditions'][] = array( 'Adresse.numcom' => $zonesgeographiques );
 			}
 
 			return $querydata;

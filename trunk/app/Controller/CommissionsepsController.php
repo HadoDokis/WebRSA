@@ -218,7 +218,6 @@
 			$this->set( compact( 'typesorients' ) );
 			$this->set( compact( 'structuresreferentes' ) );
 			$this->set( compact( 'referents' ) );
-			$this->set( 'typevoie', $this->Option->typevoie() );
 		}
 
 		/**

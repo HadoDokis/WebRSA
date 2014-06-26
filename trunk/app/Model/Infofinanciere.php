@@ -91,8 +91,8 @@
 			/// Critères
 			$mois = Set::extract( $criteres, 'Filtre.moismoucompta' );
 			$types = Set::extract( $criteres, 'Filtre.type_allocation' );
-			$locaadr = Set::extract( $criteres, 'Filtre.locaadr' );
-			$numcomptt = Set::extract( $criteres, 'Filtre.numcomptt' );
+			$nomcom = Set::extract( $criteres, 'Filtre.nomcom' );
+			$numcom = Set::extract( $criteres, 'Filtre.numcom' );
 
 			/// Mois du mouvement comptable
 			if( !empty( $mois ) && dateComplete( $criteres, 'Filtre.moismoucompta' ) ) {
@@ -113,13 +113,13 @@
 			}
 
 			/// Par adresse
-			if( !empty( $locaadr ) ) {
-				$conditions[] = 'Adresse.locaadr ILIKE \'%'.Sanitize::clean( $locaadr, array( 'encode' => false ) ).'%\'';
+			if( !empty( $nomcom ) ) {
+				$conditions[] = 'Adresse.nomcom ILIKE \'%'.Sanitize::clean( $nomcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			/// Par code postal
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			$conditions[] = $this->conditionsZonesGeographiques( $filtre_zone_geo, $mesCodesInsee );
@@ -154,8 +154,8 @@
 					'"Personne"."qual"',
 					'"Personne"."nomcomnai"',
 					'"Situationdossierrsa"."etatdosrsa"',
-					'"Adresse"."locaadr"',
-					'"Adresse"."numcomptt"',
+					'"Adresse"."nomcom"',
+					'"Adresse"."numcom"',
 				),
 				'recursive' => -1,
 				'joins' => array(

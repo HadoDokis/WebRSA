@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe ActionscandidatsPartenairesController.
 	 *
@@ -39,7 +39,7 @@
 				$options = Hash::insert( $options, "{$this->modelClass}.{$field}", $this->{$this->modelClass}->{$linkedModel}->find( 'list' ) );
 			}
 
-			$this->set( compact( 'options', 'typevoie' ) );
+			$this->set( compact( 'options' ) );
 
 			return $return;
 		}

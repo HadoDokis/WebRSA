@@ -154,9 +154,6 @@
 				$datas['options'] = Hash::merge(
 					$datas['options'],
 					array(
-						'Adresse' => array(
-							'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
-						),
 						'Personne' => array(
 							'qual' => ClassRegistry::init( 'Option' )->qual()
 						)

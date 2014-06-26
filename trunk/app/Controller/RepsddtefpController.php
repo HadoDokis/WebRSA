@@ -61,12 +61,12 @@
 			if( !empty( $this->request->data ) ) {
 				$annee = Set::classicExtract( $this->request->data, 'Repddtefp.annee' );
 				$semestre = Set::classicExtract( $this->request->data, 'Repddtefp.semestre' );
-				$numcomptt = Set::classicExtract( $this->request->data, 'Repddtefp.numcomptt' );
+				$numcom = Set::classicExtract( $this->request->data, 'Repddtefp.numcom' );
 
-				$listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $numcomptt );
-				$listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $numcomptt );
+				$listeSexe = $this->Repddtefp->listeSexe( $annee, $semestre, $numcom );
+				$listeAge = $this->Repddtefp->listeAge( $annee, $semestre, $numcom );
 
-				$this->set( compact( 'listeSexe', 'listeAge', 'numcomptt' ) );
+				$this->set( compact( 'listeSexe', 'listeAge', 'numcom' ) );
 			}
 
 			if( Configure::read( 'Zonesegeographiques.CodesInsee' ) ) {

@@ -176,9 +176,6 @@
 			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),

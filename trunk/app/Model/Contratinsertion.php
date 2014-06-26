@@ -1047,12 +1047,12 @@
 					'Personne.numport',
 					'Personne.email',
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.compladr',
 					'Adresse.complideadr',
-					'Adresse.locaadr',
-					'Adresse.numcomptt',
+					'Adresse.nomcom',
+					'Adresse.numcom',
 					'Adresse.codepos'
 						)
 				),
@@ -1076,7 +1076,6 @@
 			$options = array(
 				'Referent' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
-				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 			$options = Set::merge( $options, $this->enums() );
@@ -1149,12 +1148,12 @@
 						'Personne.numport',
 						'Personne.email',
 						'Adresse.numvoie',
-						'Adresse.typevoie',
+						'Adresse.libtypevoie',
 						'Adresse.nomvoie',
 						'Adresse.compladr',
 						'Adresse.complideadr',
-						'Adresse.locaadr',
-						'Adresse.numcomptt',
+						'Adresse.nomcom',
+						'Adresse.numcom',
 						'Adresse.codepos',
 						'Propodecisioncer66.isvalidcer',
 						'Propodecisioncer66.motifficheliaison',
@@ -1182,7 +1181,6 @@
 				'Referent' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
 				'duree' => array( 'engag' => ClassRegistry::init( 'Option' )->duree_engag_cg66() ),
-				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 
@@ -1575,9 +1573,6 @@
 							'Personne' => array(
 								'qual' => $Option->qual(),
 							),
-							'Adresse' => array(
-								'typevoie' => $Option->typevoie(),
-							),
 							'Prestation' => array(
 								'rolepers' => $Option->rolepers(),
 							),
@@ -1648,9 +1643,6 @@
 
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),
@@ -1711,9 +1703,6 @@
 			$contratinsertion = $this->getDataForPdf( $id, $user_id );
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),

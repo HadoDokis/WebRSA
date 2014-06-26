@@ -113,7 +113,7 @@
 					'Personne.prenom',
 					'Personne.dtnai',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Structurereferente.lib_struc',
 					'Passagecov58.id',
 					'Passagecov58.etatdossiercov',

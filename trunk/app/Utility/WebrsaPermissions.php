@@ -103,7 +103,7 @@
 							'contain' => false,
 							'conditions' => array(
 								'Zonegeographique.codeinsee' => $mesZonesGeographiques,
-								'Canton.numcomptt' => $codeinsee,
+								'Canton.numcom' => $codeinsee,
 							)
 						)
 					);

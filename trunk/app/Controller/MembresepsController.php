@@ -46,31 +46,6 @@
 				$this->paginate = $queryData;
 				$membreseps = $this->paginate( 'Membreep' );
 
-/*
-				$this->paginate = array(
-					'fields' => array(
-						'Membreep.id',
-						'Fonctionmembreep.name',
-						'Membreep.qual',
-						'Membreep.nom',
-						'Membreep.prenom',
-						'Membreep.numvoie',
-						'Membreep.typevoie',
-						'Membreep.nomvoie',
-						'Membreep.compladr',
-						'Membreep.codepostal',
-						'Membreep.ville',
-						'Membreep.organisme',
-						'Membreep.tel',
-						'Membreep.mail'
-					),
-					'contain' => array(
-						'Fonctionmembreep'
-					),
-					'limit' => 10
-				);
-				$membreseps = $this->paginate( $this->Membreep );*/
-
 				$typesvoies = ClassRegistry::init( 'Option' )->typevoie();
 				foreach( $membreseps as $key => $membreep) {
 					$typevoie = Set::enum( Set::classicExtract( $membreep, 'Membreep.typevoie' ), $typesvoies );

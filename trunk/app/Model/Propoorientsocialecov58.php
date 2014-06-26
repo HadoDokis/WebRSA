@@ -140,7 +140,7 @@
 					'Personne.dtnai',
 					'Personne.prenom',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 // 					'Structurereferente.lib_struc',
 					'Passagecov58.id',
 					'Passagecov58.cov58_id',
@@ -636,7 +636,6 @@
 
 			$options = array(
 				'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
-				'Adresse' => array( 'typevoie' => ClassRegistry::init( 'Option' )->typevoie() ),
 				'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
 			);
 			$options = Set::merge( $options, $this->Dossiercov58->enums() );

@@ -400,15 +400,14 @@ class Decisiondossierpcg66 extends AppModel {
         $queryData = array(
             'fields' => array(
                 'Adresse.numvoie',
-                'Adresse.typevoie',
+                'Adresse.libtypevoie',
                 'Adresse.nomvoie',
                 'Adresse.complideadr',
                 'Adresse.compladr',
                 'Adresse.lieudist',
-                'Adresse.numcomrat',
-                'Adresse.numcomptt',
+                'Adresse.numcom',
                 'Adresse.codepos',
-                'Adresse.locaadr',
+                'Adresse.nomcom',
                 'Adresse.pays',
                 'Dossier.numdemrsa',
                 'Dossier.dtdemrsa',
@@ -450,7 +449,6 @@ class Decisiondossierpcg66 extends AppModel {
 
 
         $data['Personne']['qual'] = Set::enum(Hash::get($data, 'Personne.qual'), $qual);
-        $data['Adresse']['typevoie'] = Set::enum($data['Adresse']['typevoie'], $typevoie);
         $data['Dossierpcg66']['serviceinstructeur_id'] = Set::enum(Hash::get($data, 'Dossierpcg66.serviceinstructeur_id'), $services);
 
         $sections = array();

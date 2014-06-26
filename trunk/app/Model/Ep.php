@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Ep.
 	 *
@@ -149,7 +149,7 @@
 
 		public function beforeValidate( $options = array() ) {
 			$return = parent::beforeValidate( $options );
-			
+
 			$primaryKey = Set::classicExtract( $this->data, "{$this->alias}.{$this->primaryKey}" );
 			$identifiant = Set::classicExtract( $this->data, "{$this->alias}.identifiant" );
 
@@ -166,7 +166,7 @@
 		*
 		* @param string $champ Le nom du champ contenant la valeur de la clé primaire de l'EP
 		* @param boolean $filtre_zone_geo Doit-on restreindre par zone géographique ?
-		* @param array $zonesgeographiques Un tableau associatif (id => numcomptt) des zones géographiques accessibles
+		* @param array $zonesgeographiques Un tableau associatif (id => numcom) des zones géographiques accessibles
 		* @return array Des conditions pour un queryData CakePHP
 		*/
 

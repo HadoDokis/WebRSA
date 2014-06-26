@@ -57,7 +57,6 @@
 			$this->set( 'type_allocation', $this->Option->type_allocation() );
 			$this->set( 'dif', $this->Option->dif() );
 			$this->set( 'rolepers', $this->Option->rolepers() );
-            $this->set( 'typevoie', $this->Option->typevoie() );
             $this->set( 'qual', $this->Option->qual() );
 		}
 

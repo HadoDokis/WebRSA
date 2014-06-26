@@ -182,14 +182,14 @@
 					'Personne.qual',
 					'Personne.nomcomnai',
 					'Adresse.numvoie',
-                    'Adresse.typevoie',
+                    'Adresse.libtypevoie',
                     'Adresse.nomvoie',
                     'Adresse.complideadr',
                     'Adresse.compladr',
 					'Adresse.codepos',
-                    'Adresse.locaadr',
+                    'Adresse.nomcom',
 					'Adressefoyer.rgadr',
-					'Adresse.numcomptt'
+					'Adresse.numcom'
 				),
 				'joins' => $joins,
 				'contain' => false,

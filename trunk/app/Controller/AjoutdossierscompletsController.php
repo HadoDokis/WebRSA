@@ -27,6 +27,10 @@
 				'qual' => ClassRegistry::init( 'Option' )->qual(),
 				'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 			);
+			$options = Hash::merge(
+				$options,
+				$this->Adresse->enums()
+			);
 			$this->set( compact( 'options', 'services' ) );
 		}
 
@@ -44,7 +48,7 @@
             // Si le formulaire est renvoyé
             if( !empty( $this->request->data ) ) {
 				$data = $this->request->data;
-				
+
 				// Validation
 				$this->Personne->set( $this->request->data['Personne'] );
 				unset( $this->Personne->validate['dtnai'] );
@@ -59,7 +63,7 @@
 
 				$this->Dossier->set( $this->request->data['Dossier'] );
 				$valid = $this->Dossier->validates() && $valid;
-				
+
 				if( $valid ){
 					// Début de la transaction
 					$this->Dossier->begin();
@@ -104,12 +108,12 @@
 							);
 							$saved = $this->Adresse->save( $dataAdresse ) && $saved;
 						}
-						
+
 						// Adresse foyer
 						$data['Adressefoyer']['foyer_id'] = $this->Foyer->id;
 						$data['Adressefoyer']['adresse_id'] = $this->Adresse->id;
 						$saved = $this->Adressefoyer->save( $data['Adressefoyer'] ) && $saved;
-						
+
 						// Personne
 						$dataPersonne = array(
 							'Personne' => $data['Personne']
@@ -117,7 +121,7 @@
 						$dataPersonne['Personne']['foyer_id'] = $this->Foyer->id;
 						$this->Personne->create( $dataPersonne );
 						$saved = $this->Personne->save() && $saved;
-						
+
 						// Prestation
 						$dataPrestation = array(
 							'Prestation' => $data['Prestation']

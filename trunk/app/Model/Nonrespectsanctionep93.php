@@ -416,7 +416,7 @@
 					'Personne.dtnai',
 					'Personne.nir',
 					$this->Dossierep->Personne->Foyer->sqVirtualField( 'enerreur', true ),
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Orientstruct.date_valid',
 					'Typeorient.lib_type_orient',
 					'Contratinsertion.present',
@@ -805,8 +805,7 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->Decisionnonrespectsanctionep93->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
-				$datas['options']['type']['voie'] = $datas['options']['Adresse']['typevoie'];
+				$datas['options']['type']['voie'] = ClassRegistry::init( 'Option' )->typevoie();
 				$datas['options'] = Hash::merge( $datas['options'], $this->Contratinsertion->Cer93->enums() );
 
 				Cache::write( $cacheKey, $datas );
@@ -967,7 +966,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Personne.dtnai',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					"{$this->alias}.origine",
 					"{$this->alias}.rgpassage",
 					'Passagecommissionep.id',

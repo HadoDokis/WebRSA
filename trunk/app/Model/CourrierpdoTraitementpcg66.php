@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe CourrierpdoTraitementpcg66.
 	 *
@@ -146,15 +146,14 @@
 			$queryData = array(
 				'fields' => array(
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
 					'Adresse.lieudist',
-					'Adresse.numcomrat',
-					'Adresse.numcomptt',
+					'Adresse.numcom',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.pays',
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
@@ -181,7 +180,6 @@
 			$data = $this->find( 'first', $queryData );
 
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 
 			return $data;
 		}

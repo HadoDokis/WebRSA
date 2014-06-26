@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpropopdo.
 	 *
@@ -69,8 +69,8 @@
 				'order' => ''
 			)
 		);
-        
- 
+
+
 
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
@@ -262,15 +262,14 @@
 			$queryData = array(
 				'fields' => array(
 					'Adresse.numvoie',
-					'Adresse.typevoie',
+					'Adresse.libtypevoie',
 					'Adresse.nomvoie',
 					'Adresse.complideadr',
 					'Adresse.compladr',
 					'Adresse.lieudist',
-					'Adresse.numcomrat',
-					'Adresse.numcomptt',
+					'Adresse.numcom',
 					'Adresse.codepos',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.pays',
 					'Dossier.numdemrsa',
 					'Dossier.dtdemrsa',
@@ -308,7 +307,6 @@
 			$data = $this->find( 'first', $queryData );
 
 			$data['Personne']['qual'] = Set::enum( $data['Personne']['qual'], $qual );
-			$data['Adresse']['typevoie'] = Set::enum( $data['Adresse']['typevoie'], $typevoie );
 			$data['Propopdo']['serviceinstructeur_id'] = Set::enum( $data['Propopdo']['serviceinstructeur_id'], $services );
 			$data['Decisionpropopdo']['validationdecision'] = $data['Decisionpropopdo']['validationdecision'] ? 'Oui' : 'Non';
 

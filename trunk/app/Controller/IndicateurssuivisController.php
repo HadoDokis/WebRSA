@@ -69,7 +69,6 @@
 			$this->set( 'mesCodesInsee', $this->Gestionzonesgeos->listeCodesInsee() );
 			$this->set( 'structs', $this->Structurereferente->list1Options( array( 'orientation' => 'O' ) ) );
 			$this->set( 'referents', $this->Referent->referentsListe() );
-			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( 'options', (array)Hash::get( $this->Dossierep->enums(), 'Dossierep' ) );
 			$this->set( 'etatpe', (array)Hash::get( $this->Informationpe->Historiqueetatpe->enums(), 'Historiqueetatpe' ) );
 		}

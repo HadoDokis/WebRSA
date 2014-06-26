@@ -145,7 +145,7 @@
 				'Foyer' => array( 'sitfam' => $this->Option->sitfam() ),
 // 				'Prestation' => array( 'rolepers' => $this->Option->rolepers() ),
 				'Situationdossierrsa' => array( 'etatdosrsa' => $this->Option->etatdosrsa() ),
-				'Adresse' => array( 'numcomptt' => $this->Gestionzonesgeos->listeCodesInsee() ),
+				'Adresse' => array( 'numcom' => $this->Gestionzonesgeos->listeCodesInsee() ),
 				'Gestionanomaliebdd' => array(
 					'methode' => $methodes,
 					'enerreur' => array( '1' => 'Oui', '0' => 'Non' ),

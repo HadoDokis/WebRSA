@@ -46,7 +46,7 @@
 					'message' => 'Champ obligatoire'
 				),
 			),
-			'locaadr' => array(
+			'nomcom' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
@@ -59,7 +59,7 @@
 					'allowEmpty' => true
 				)
 			),
-			'numcomptt' => array(
+			'numcom' => array(
 				array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
@@ -116,27 +116,27 @@
 			$_conditions = array();
 			foreach( $cantons as $canton ) {
 				$_condition = array();
-				// INFO: les couples numcomptt / codepos de la table adresses ne correspondent
+				// INFO: les couples numcom / codepos de la table adresses ne correspondent
 				// pas toujours aux couples de la table cantons.
-				if( !empty( $canton['Canton']['numcomptt'] ) && !empty( $canton['Canton']['codepos'] ) ) {
+				if( !empty( $canton['Canton']['numcom'] ) && !empty( $canton['Canton']['codepos'] ) ) {
 					$_condition['OR'] = array(
-						 'Adresse.numcomptt' => $canton['Canton']['numcomptt'],
+						 'Adresse.numcom' => $canton['Canton']['numcom'],
 						 'Adresse.codepos' => $canton['Canton']['codepos']
 					);
 				}
 				else {
-					if( !empty( $canton['Canton']['numcomptt'] ) ) {
-						$_condition['Adresse.numcomptt'] = $canton['Canton']['numcomptt'];
+					if( !empty( $canton['Canton']['numcom'] ) ) {
+						$_condition['Adresse.numcom'] = $canton['Canton']['numcom'];
 					}
 					if( !empty( $canton['Canton']['codepos'] ) ) {
 						$_condition['Adresse.codepos'] = $canton['Canton']['codepos'];
 					}
 				}
-				if( !empty( $canton['Canton']['locaadr'] ) ) {
-					$_condition['Adresse.locaadr ILIKE'] = $canton['Canton']['locaadr'];
+				if( !empty( $canton['Canton']['nomcom'] ) ) {
+					$_condition['Adresse.nomcom ILIKE'] = $canton['Canton']['nomcom'];
 				}
-				if( !empty( $canton['Canton']['typevoie'] ) ) {
-					$_condition['Adresse.typevoie ILIKE'] = $canton['Canton']['typevoie'];
+				if( !empty( $canton['Canton']['libtypevoie'] ) ) {
+					$_condition['Adresse.libtypevoie ILIKE'] = $canton['Canton']['libtypevoie'];
 				}
 				if( !empty( $canton['Canton']['nomvoie'] ) ) {
                     $_condition['Adresse.nomvoie ILIKE'] = '%'.$canton['Canton']['nomvoie'].'%';
@@ -166,27 +166,27 @@
 			$_conditions = array();
 			foreach( $cantons as $canton ) {
 				$_condition = array();
-				// INFO: les couples numcomptt / codepos de la table adresses ne correspondent
+				// INFO: les couples numcom / codepos de la table adresses ne correspondent
 				// pas toujours aux couples de la table cantons.
-				if( !empty( $canton['Canton']['numcomptt'] ) && !empty( $canton['Canton']['codepos'] ) ) {
+				if( !empty( $canton['Canton']['numcom'] ) && !empty( $canton['Canton']['codepos'] ) ) {
 					$_condition['OR'] = array(
-						 'Adresse.numcomptt' => $canton['Canton']['numcomptt'],
+						 'Adresse.numcom' => $canton['Canton']['numcom'],
 						 'Adresse.codepos' => $canton['Canton']['codepos']
 					);
 				}
 				else {
-					if( !empty( $canton['Canton']['numcomptt'] ) ) {
-						$_condition['Adresse.numcomptt'] = $canton['Canton']['numcomptt'];
+					if( !empty( $canton['Canton']['numcom'] ) ) {
+						$_condition['Adresse.numcom'] = $canton['Canton']['numcom'];
 					}
 					if( !empty( $canton['Canton']['codepos'] ) ) {
 						$_condition['Adresse.codepos'] = $canton['Canton']['codepos'];
 					}
 				}
-				if( !empty( $canton['Canton']['locaadr'] ) ) {
-					$_condition['Adresse.locaadr ILIKE'] = $canton['Canton']['locaadr'];
+				if( !empty( $canton['Canton']['nomcom'] ) ) {
+					$_condition['Adresse.nomcom ILIKE'] = $canton['Canton']['nomcom'];
 				}
-				if( !empty( $canton['Canton']['typevoie'] ) ) {
-					$_condition['Adresse.typevoie ILIKE'] = $canton['Canton']['typevoie'];
+				if( !empty( $canton['Canton']['libtypevoie'] ) ) {
+					$_condition['Adresse.libtypevoie ILIKE'] = $canton['Canton']['libtypevoie'];
 				}
 				if( !empty( $canton['Canton']['nomvoie'] ) ) {
 					$_condition['Adresse.nomvoie ILIKE'] = $canton['Canton']['nomvoie'];
@@ -211,13 +211,13 @@
 					array(
 						'OR' => array(
 							'OR' => array(
-								"Canton.numcomptt IS NULL",
-								"TRIM( BOTH ' ' FROM Canton.numcomptt ) = ''",
+								"Canton.numcom IS NULL",
+								"TRIM( BOTH ' ' FROM Canton.numcom ) = ''",
 								"Canton.codepos IS NULL",
 								"TRIM( BOTH ' ' FROM Canton.codepos ) = ''",
 							),
 							array(
-								"Canton.numcomptt = Adresse.numcomptt",
+								"Canton.numcom = Adresse.numcom",
 								"Canton.codepos = Adresse.codepos",
 							)
 						),
@@ -226,10 +226,10 @@
 						array(
 							'OR' => array(
 								array(
-									"Canton.numcomptt IS NULL",
-									"TRIM( BOTH ' ' FROM Canton.numcomptt ) = ''",
+									"Canton.numcom IS NULL",
+									"TRIM( BOTH ' ' FROM Canton.numcom ) = ''",
 								),
-								"Canton.numcomptt = Adresse.numcomptt",
+								"Canton.numcom = Adresse.numcom",
 							)
 						),
 						array(
@@ -247,19 +247,19 @@
 				array(
 					'OR' => array(
 						'OR' => array(
-							'Canton.locaadr IS NULL',
-							"TRIM( BOTH ' ' FROM Canton.locaadr ) = ''",
+							'Canton.nomcom IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.nomcom ) = ''",
 						),
-						'Adresse.locaadr ILIKE Canton.locaadr'
+						'Adresse.nomcom ILIKE Canton.nomcom'
 					)
 				),
 				array(
 					'OR' => array(
 						'OR' => array(
-							'Canton.typevoie IS NULL',
-							"TRIM( BOTH ' ' FROM Canton.typevoie ) = ''",
+							'Canton.libtypevoie IS NULL',
+							"TRIM( BOTH ' ' FROM Canton.libtypevoie ) = ''",
 						),
-						'Adresse.typevoie ILIKE Canton.typevoie'
+						'Adresse.libtypevoie ILIKE Canton.libtypevoie'
 					)
 				),
 				array(
@@ -282,7 +282,7 @@
 					'recursive' => -1,
 					'order' => array(
 						'cantons.nomvoie DESC',
-						'cantons.typevoie DESC',
+						'cantons.libtypevoie DESC',
 					),
 					'limit' => 1
 				)
@@ -306,7 +306,7 @@
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 
-			foreach( array( 'nomvoie', 'locaadr', 'canton' ) as $field ) {
+			foreach( array( 'nomvoie', 'nomcom', 'canton' ) as $field ) {
 				if( !empty( $this->data[$this->name][$field] ) ) {
 					$this->data[$this->name][$field] = strtoupper( replace_accents( $this->data[$this->name][$field] ) );
 				}
@@ -325,7 +325,7 @@
 
 			// Critères sur une personne du foyer - nom, prénom, nom de jeune fille -> FIXME: seulement demandeur pour l'instant
 			$filtersCantons = array();
-			foreach( array( 'canton', 'locaadr', 'codepos', 'numcomptt' ) as $critereCanton ) {
+			foreach( array( 'canton', 'nomcom', 'codepos', 'numcom' ) as $critereCanton ) {
 				if( isset( $criteres['Canton'][$critereCanton] ) && !empty( $criteres['Canton'][$critereCanton] ) ) {
 					$conditions[] = 'Canton.'.$critereCanton.' ILIKE \''.$this->wildcard( $criteres['Canton'][$critereCanton] ).'\'';
 				}
@@ -351,6 +351,20 @@
 			);
 
 			return $query;
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour les valeurs du champ libtypevoie.
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			$Adresse = ClassRegistry::init( 'Adresse' );
+			$enums[$this->alias]['libtypevoie'] = array_combine( $Adresse->libtypevoie, $Adresse->libtypevoie );
+
+			return $enums;
 		}
 	}
 ?>

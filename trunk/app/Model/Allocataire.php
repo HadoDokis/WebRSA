@@ -147,8 +147,7 @@
 			$options = array(
 				'Adresse' => array(
 					'pays' => $Option->pays(),
-					'typeres' => $Option->typeres(),
-					'typevoie' => $Option->typevoie(),
+					'typeres' => $Option->typeres()
 				),
 				'Adressefoyer' => array(
 					'rgadr' => $Option->rgadr(),

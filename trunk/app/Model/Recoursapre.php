@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Recoursapre.
 	 *
@@ -107,7 +107,7 @@
 					'"Personne"."prenom"',
 					'"Personne"."dtnai"',
 					'"Personne"."nir"',
-					'"Adresse"."locaadr"',
+					'"Adresse"."nomcom"',
 					'"Adresse"."codepos"',
 					'"Apre"."id"',
 					'"Apre"."datedemandeapre"',
@@ -274,9 +274,6 @@
 				array(
 					'Personne' => array(
 						'qual' => $Option->qual(),
-					),
-					'Adresse' => array(
-						'typevoie' => $Option->typevoie(),
 					),
 					'Prestation' => array(
 						'rolepers' => $Option->rolepers(),

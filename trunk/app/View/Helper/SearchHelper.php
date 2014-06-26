@@ -132,8 +132,8 @@
 		}
 
 		/**
-		 * Retourne un fieldset de recherche par adresse contenant les champs suivants: Adresse.locaadr, Adresse.numcomptt
-		 * et Canton.canton (si on utilise les cantons).
+		 * Retourne un fieldset de recherche par adresse contenant les champs suivants:
+		 * Adresse.nomcom, Adresse.numcom et Canton.canton (si on utilise les cantons).
 		 *
 		 * @param array $mesCodesInsee La liste des codes INSEE pour remplir le menu déroulant
 		 * @param array $cantons La liste des cantons pour remplir le menu déroulant
@@ -144,8 +144,8 @@
 		public function blocAdresse( $mesCodesInsee, $cantons, $prefix = null, $fieldset = true ) {
 			$prefix = ( !empty( $prefix ) ? "{$prefix}." : null );
             $content = $this->Xform->input( "{$prefix}Adresse.nomvoie", array( 'label' => 'Nom de voie de l\'allocataire ', 'type' => 'text' ) );
-			$content .= $this->Xform->input( "{$prefix}Adresse.locaadr", array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
-			$content .= $this->Xform->input( "{$prefix}Adresse.numcomptt", array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );
+			$content .= $this->Xform->input( "{$prefix}Adresse.nomcom", array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );
+			$content .= $this->Xform->input( "{$prefix}Adresse.numcom", array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );
 			if( Configure::read( 'CG.cantons' ) ) {
 				$content .= $this->Xform->input( "{$prefix}Canton.canton", array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 			}

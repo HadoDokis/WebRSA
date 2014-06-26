@@ -347,9 +347,6 @@
 			$Personne = ClassRegistry::init( 'Personne' );
 
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				)
@@ -452,9 +449,6 @@
 			// Traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				)

@@ -1474,9 +1474,6 @@
 				array(
 					'Personne' => array(
 						'qual' => $Option->qual()
-					),
-					'Adresse' => array(
-						'typevoie' => $Option->typevoie()
 					)
 				),
 				$this->enums(),
@@ -1815,9 +1812,6 @@
 				),
 				'Personne' => array(
 					'qual' => ClassRegistry::init( 'Option' )->qual()
-				),
-				'Adresse' => array(
-					'typevoie' => ClassRegistry::init( 'Option' )->typevoie()
 				),
 				'Serviceinstructeur' => array(
 					'typeserins' => ClassRegistry::init( 'Option' )->typeserins()

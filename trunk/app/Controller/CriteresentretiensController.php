@@ -33,7 +33,6 @@
 // 			$this->set( 'structs', $this->Entretien->Structurereferente->listOptions() );
 			$this->set( 'structs', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referents', $this->Entretien->Referent->listOptions() );
-            $this->set( 'typevoie', $this->Option->typevoie() );
 		}
 
 		/**

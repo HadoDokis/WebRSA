@@ -134,7 +134,7 @@
 		public function options() {
 			$options = ClassRegistry::init( 'Allocataire' )->options();
 
-			$options['Adresse']['numcomptt'] = $this->Gestionzonesgeos->listeCodesInsee();
+			$options['Adresse']['numcom'] = $this->Gestionzonesgeos->listeCodesInsee();
 			$options['Canton']['canton'] = $this->Gestionzonesgeos->listeCantons();
 			$options['Sitecov58']['id'] = $this->Gestionzonesgeos->listeSitescovs58();
 

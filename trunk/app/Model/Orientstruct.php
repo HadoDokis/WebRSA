@@ -612,9 +612,6 @@
 				if( isset( $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'] ) ){
 					$orientstruct['Adresse'] = $orientstruct['Personne']['Foyer']['Adressefoyer'][0]['Adresse'];
 					unset( $orientstruct['Personne']['Foyer'] );
-					if( Configure::read( 'Cg.departement' ) != 66 ) {
-						$orientstruct['Adresse']['typevoie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Adresse.typevoie' ) );
-					}
 				}
 
 				if( Configure::read( 'Cg.departement' ) != 66 ) {
@@ -1015,9 +1012,6 @@
 			// Options pour les traductions
 			$Option = ClassRegistry::init( 'Option' );
 			$options = array(
-				'Adresse' => array(
-					'typevoie' => $Option->typevoie()
-				),
 				'Personne' => array(
 					'qual' => $Option->qual()
 				),
@@ -1358,9 +1352,6 @@
 				array(
 					'Personne' => array(
 						'qual' => $Option->qual(),
-					),
-					'Adresse' => array(
-						'typevoie' => $Option->typevoie(),
 					),
 					'Prestation' => array(
 						'rolepers' => $Option->rolepers(),

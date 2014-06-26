@@ -303,10 +303,10 @@
 			$options['Referent']['qual'] = $options['Personne']['qual'];
 			$options['Dataperssuivi']['qualsuivi'] = $options['Personne']['qual'];
 
-			$options['Adresse'] = array( 'typevoie' => $Option->typevoie() );
-			$options['type']['voie'] = $options['Adresse']['typevoie'];
-			$options['Structurereferente']['type_voie'] = $options['Adresse']['typevoie'];
-			$options['Tiersprestataireapre']['typevoie'] = $options['Adresse']['typevoie'];
+			$typevoie = $Option->typevoie();
+			$options['type']['voie'] = $typevoie;
+			$options['Structurereferente']['type_voie'] = $typevoie;
+			$options['Tiersprestataireapre']['typevoie'] = $typevoie;
 
 			return $this->Apre->ged( $apre, $modeleodt, false, $options );
 		}

@@ -172,7 +172,7 @@
 					'Personne.nir',
 					'Dossier.matricule',
 					'Serviceinstructeur.lib_service',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'"Situationdossierrsa"."etatdosrsa"',
 					'Structurereferente.lib_struc',
 					'Typeorient.lib_type_orient'
@@ -809,7 +809,6 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -842,7 +841,7 @@
 					'Personne.dtnai',
 					'Dossier.matricule',
 					'Structurereferente.lib_struc',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Dossierep.created',
 					'Dossierep.themeep',
 					$this->alias.'.origine',

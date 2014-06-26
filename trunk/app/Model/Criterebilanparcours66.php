@@ -194,9 +194,9 @@
 					'Dossier.matricule',
 					'Dossier.numdemrsa',
 					'Dossierep.themeep',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Adresse.codepos',
-					'Adresse.numcomptt'
+					'Adresse.numcom'
 				),
 				'joins' => $joins,
 				'order' => array( '"Bilanparcours66"."datebilan" ASC' ),

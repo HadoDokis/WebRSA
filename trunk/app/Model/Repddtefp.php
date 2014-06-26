@@ -57,7 +57,7 @@
 		*
 		*/
 
-		protected function _nbrPersonnesInstruitesParSexe( $annee, $semestre, $sexe, $numcomptt ) {
+		protected function _nbrPersonnesInstruitesParSexe( $annee, $semestre, $sexe, $numcom ) {
 			$sql = 'SELECT ( CASE WHEN ( EXTRACT( DAY FROM apres.datedemandeapre ) <= 15 ) THEN 1 ELSE 2 END ) AS quinzaine, EXTRACT(MONTH FROM apres.datedemandeapre) AS mois, EXTRACT(YEAR FROM apres.datedemandeapre) AS annee, COUNT(apres.*) AS indicateur
 						FROM apres
 							INNER JOIN personnes ON personnes.id = apres.personne_id
@@ -66,7 +66,7 @@
 							INNER JOIN adresses ON adressesfoyers.adresse_id = adresses.id
 						WHERE '.$this->_conditionsTemporelles( $annee, $semestre ).'
 							AND personnes.sexe = \''.$sexe.'\'
-							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'
+							AND adresses.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'
 						GROUP BY annee, mois, quinzaine
 						ORDER BY annee, mois, quinzaine;';
 
@@ -78,7 +78,7 @@
 		*
 		*/
 
-		protected function _nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, $ageMin, $ageMax, $numcomptt ) {
+		protected function _nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, $ageMin, $ageMax, $numcom ) {
 			$sql = 'SELECT ( CASE WHEN ( EXTRACT( DAY FROM apres.datedemandeapre ) <= 15 ) THEN 1 ELSE 2 END ) AS quinzaine, EXTRACT(MONTH FROM apres.datedemandeapre) AS mois, EXTRACT(YEAR FROM apres.datedemandeapre) AS annee, COUNT(apres.*) AS indicateur
 						FROM apres
 							INNER JOIN personnes ON personnes.id = apres.personne_id
@@ -87,7 +87,7 @@
 							INNER JOIN adresses ON adressesfoyers.adresse_id = adresses.id
 						WHERE '.$this->_conditionsTemporelles( $annee, $semestre ).'
 							AND ( EXTRACT ( YEAR FROM AGE( personnes.dtnai ) ) ) BETWEEN '.$ageMin.' AND '.$ageMax.'
-							AND adresses.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'
+							AND adresses.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'
 						GROUP BY annee, mois, quinzaine
 						ORDER BY annee, mois, quinzaine;';
 
@@ -99,9 +99,9 @@
 		*
 		*/
 
-		public function listeSexe( $annee, $semestre, $numcomptt ) {
-			$results['nbrHommesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 1, $numcomptt );
-			$results['nbrFemmesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 2, $numcomptt );
+		public function listeSexe( $annee, $semestre, $numcom ) {
+			$results['nbrHommesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 1, $numcom );
+			$results['nbrFemmesInstruits'] = $this->_nbrPersonnesInstruitesParSexe( $annee, $semestre, 2, $numcom );
 			return $results;
 		}
 
@@ -109,13 +109,13 @@
 		*
 		*/
 
-		public function listeAge( $annee, $semestre, $numcomptt ) {
-			$results['nbr0_24Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 0, 24, $numcomptt );
-			$results['nbr25_34Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 25, 34, $numcomptt );
-			$results['nbr35_44Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 35, 44, $numcomptt );
-			$results['nbr45_54Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 45, 54, $numcomptt );
-			$results['nbr55_59Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 55, 59, $numcomptt );
-			$results['nbr60_200Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 60, 200, $numcomptt );
+		public function listeAge( $annee, $semestre, $numcom ) {
+			$results['nbr0_24Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 0, 24, $numcom );
+			$results['nbr25_34Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 25, 34, $numcom );
+			$results['nbr35_44Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 35, 44, $numcom );
+			$results['nbr45_54Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 45, 54, $numcom );
+			$results['nbr55_59Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 55, 59, $numcom );
+			$results['nbr60_200Instruits'] = $this->_nbrPersonnesInstruitesParTrancheDAge( $annee, $semestre, 60, 200, $numcom );
 			return $results;
 		}
 
@@ -186,11 +186,11 @@
 				)'
 			);
 
-			$numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
+			$numcom = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcom' );
 
 			/// Localité adresse
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			$queryData = array(
@@ -341,9 +341,9 @@
 			);
 
 			/// Localité adresse
-			$numcomptt = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcomptt' );
-			if( !empty( $numcomptt ) ) {
-				$conditions[] = 'Adresse.numcomptt ILIKE \'%'.Sanitize::clean( $numcomptt, array( 'encode' => false ) ).'%\'';
+			$numcom = Set::classicExtract( $criteresrepddtefp, 'Repddtefp.numcom' );
+			if( !empty( $numcom ) ) {
+				$conditions[] = 'Adresse.numcom ILIKE \'%'.Sanitize::clean( $numcom, array( 'encode' => false ) ).'%\'';
 			}
 
 			$joins = array(
@@ -389,9 +389,9 @@
 				'"Personne"."dtnai"',
 				'"Personne"."sexe"',
 				'"Personne"."nir"',
-				'"Adresse"."locaadr"',
+				'"Adresse"."nomcom"',
 				'"Adresse"."codepos"',
-				'"Adresse"."numcomptt"',
+				'"Adresse"."numcom"',
 				$this->_apreMontantAidesVersees( $criteresrepddtefp ).' AS "Apre__montantaides"'
 			);
 

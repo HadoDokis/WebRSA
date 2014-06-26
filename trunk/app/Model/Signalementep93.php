@@ -423,7 +423,6 @@
 				// Traductions
 				$datas['options'] = $this->Dossierep->Passagecommissionep->{$modeleDecisions}->enums();
 				$datas['options']['Personne']['qual'] = ClassRegistry::init( 'Option' )->qual();
-				$datas['options']['Adresse']['typevoie'] = ClassRegistry::init( 'Option' )->typevoie();
 
 				Cache::write( $cacheKey, $datas );
 			}
@@ -487,7 +486,7 @@
 					'Personne.nom',
 					'Personne.prenom',
 					'Dossier.numdemrsa',
-					'Adresse.locaadr',
+					'Adresse.nomcom',
 					'Contratinsertion.num_contrat',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.duree_engag',
