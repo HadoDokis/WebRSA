@@ -460,7 +460,7 @@ $depSplit = substr( $codepos, '0', 2 );
 				<br />
 				<strong>Adresse : </strong><br />
 					<?php
-						echo Set::extract( $dataCaf, 'Adresse.numvoie' ).' '.Set::extract( $options['typevoie'], Set::extract( $dataCaf, 'Adresse.typevoie' ) ).' '.Set::extract( $dataCaf, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.compladr' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.codepos' ).' '.Set::extract( $dataCaf, 'Adresse.locaadr' );
+						echo Set::extract( $dataCaf, 'Adresse.numvoie' ).' '.Set::extract( $dataCaf, 'Adresse.libtypevoie' ).' '.Set::extract( $dataCaf, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.compladr' ).'<br /> '.Set::extract( $dataCaf, 'Adresse.codepos' ).' '.Set::extract( $dataCaf, 'Adresse.nomcom' );
 					?>
 				<br />
 				<!-- Si on n'autorise pas la diffusion de l'email, on n'affiche rien -->
