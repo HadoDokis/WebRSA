@@ -91,25 +91,25 @@
 		 */
 		public function testSearch() {
 			Configure::write( 'Cg.departement', 93 );
-			$search = array( 'Adresse' => array( 'numcomptt' => '93000' ) );
+			$search = array( 'Adresse' => array( 'numcom' => '93000' ) );
 			$query = $this->Demenagementhorsdpt->search( $search );
 			$result = (array)Hash::get( $query, 'conditions' );
 
 			$expected = array(
-				'Adresse.numcomptt NOT LIKE' => '93%',
+				'Adresse.numcom NOT LIKE' => '93%',
 				array(
 					'OR' => array(
-						'Adresse2.numcomptt LIKE' => '93%',
-						'Adresse3.numcomptt LIKE' => '93%'
+						'Adresse2.numcom LIKE' => '93%',
+						'Adresse3.numcom LIKE' => '93%'
 					)
 				),
 				array(
 					'OR' => array(
 						array(
-							'Adresse2.numcomptt = \'93000\''
+							'Adresse2.numcom = \'93000\''
 						),
 						array(
-							'Adresse3.numcomptt = \'93000\''
+							'Adresse3.numcom = \'93000\''
 						)
 					)
 				)
@@ -132,12 +132,10 @@
 			$expected = array(
 				'Adresse2.pays',
 				'Adresse2.typeres',
-				'Adresse2.typevoie',
 				'Adressefoyer2.rgadr',
 				'Adressefoyer2.typeadr',
 				'Adresse3.pays',
 				'Adresse3.typeres',
-				'Adresse3.typevoie',
 				'Adressefoyer3.rgadr',
 				'Adressefoyer3.typeadr',
 			);

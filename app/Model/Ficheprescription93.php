@@ -665,7 +665,7 @@
 			// Formattage de l'adresse
 			$return['Instantanedonneesfp93']['benef_adresse'] =
 				$return['Instantanedonneesfp93']['benef_numvoie']
-				.' '.value( ClassRegistry::init( 'Option' )->typevoie(), $return['Instantanedonneesfp93']['benef_libtypevoie'] )
+				.' '.$return['Instantanedonneesfp93']['benef_libtypevoie']
 				.' '.$return['Instantanedonneesfp93']['benef_nomvoie']
 				.( !empty( $return['Instantanedonneesfp93']['benef_complideadr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_complideadr'] : '' )
 				.( !empty( $return['Instantanedonneesfp93']['benef_compladr'] ) ? "\n".$return['Instantanedonneesfp93']['benef_compladr'] : '' );

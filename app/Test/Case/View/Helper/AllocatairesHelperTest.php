@@ -241,7 +241,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			$params = array(
 				'options' => array(
 					'Adresse' => array(
-						'numcomptt' => array( '58000' => 'Nevers' )
+						'numcom' => array( '58000' => 'Nevers' )
 					),
 					'Canton' => array(
 						'canton' => array( 'LA CHARITE SUR LOIRE' => 'LA CHARITE SUR LOIRE' )
@@ -256,7 +256,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnCheckbox(
 			// 1. Sans le fieldset
 			$result = $this->Allocataires->blocAdresse( $params );
 
-			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire</label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseLocaadr">Commune de l\'allocataire</label><input name="data[Search][Adresse][locaadr]" type="text" id="SearchAdresseLocaadr"/></div><div class="input select required"><label for="SearchAdresseNumcomptt">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcomptt]" id="SearchAdresseNumcomptt">
+			$expected = '<div class="input text required"><label for="SearchAdresseNomvoie">Nom de voie de l\'allocataire</label><input name="data[Search][Adresse][nomvoie]" type="text" id="SearchAdresseNomvoie"/></div><div class="input text required"><label for="SearchAdresseNomcom">Commune de l\'allocataire</label><input name="data[Search][Adresse][nomcom]" type="text" id="SearchAdresseNomcom"/></div><div class="input select"><label for="SearchAdresseNumcom">Numéro de commune au sens INSEE</label><select name="data[Search][Adresse][numcom]" id="SearchAdresseNumcom">
 <option value=""></option>
 <option value="58000">Nevers</option>
 </select></div><div class="input select required"><label for="SearchCantonCanton">Canton</label><select name="data[Search][Canton][canton]" id="SearchCantonCanton">
