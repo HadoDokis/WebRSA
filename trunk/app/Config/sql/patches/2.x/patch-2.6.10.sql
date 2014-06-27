@@ -401,6 +401,15 @@ UPDATE situationsallocataires SET nomcom = locaadr;
 ALTER TABLE situationsallocataires ALTER COLUMN locaadr SET DEFAULT NULL;
 
 -- *****************************************************************************
+-- Report de ces modifications dans la table cers93
+-- *****************************************************************************
+
+-- La colonne locaadr est remplacée par nomcom (VARCHAR32)
+SELECT add_missing_table_field( 'public', 'cers93', 'nomcom', 'VARCHAR(32)' );
+UPDATE cers93 SET nomcom = locaadr;
+ALTER TABLE cers93 ALTER COLUMN locaadr SET DEFAULT NULL;
+
+-- *****************************************************************************
 -- Nettoyage de la table de correspondance des (libellés de) types de voies
 -- *****************************************************************************
 
@@ -429,6 +438,8 @@ SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 't
 SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'numcomrat' );
 SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'numcomptt' );
 SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'locaadr' );
+
+SELECT alter_table_drop_column_if_exists( 'public', 'cers93', 'locaadr' );
 
 -- *****************************************************************************
 COMMIT;

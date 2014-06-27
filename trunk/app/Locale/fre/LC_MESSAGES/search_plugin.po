@@ -105,10 +105,10 @@ msgstr "Au (inclus)"
 msgid "Search.Adresse.nomvoie"
 msgstr "Nom de voie de l'allocataire"
 
-msgid "Search.Adresse.locaadr"
+msgid "Search.Adresse.nomcom"
 msgstr "Commune de l'allocataire"
 
-msgid "Search.Adresse.numcomptt"
+msgid "Search.Adresse.numcom"
 msgstr "Numéro de commune au sens INSEE"
 
 msgid "Search.Canton.canton"

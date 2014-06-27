@@ -113,12 +113,12 @@
 					'nomnai' => 'BUFFIN',
 					'prenom' => 'CHRISTIAN',
 					'dtnai' => '1979-01-24',
-					'adresse' => '66 Avenue DE LA REPUBLIQUE',
+					'adresse' => '66 AVENUE DE LA REPUBLIQUE',
 					'codepos' => '93300',
-					'locaadr' => 'AUBERVILLIERS',
 					'sitfam' => 'CEL',
 					'inscritpe' => true,
 					'natlog' => '0909',
+					'nomcom' => 'AUBERVILLIERS',
 				),
 				'Compofoyercer93' =>
 				array(
@@ -188,9 +188,8 @@
 					'nomnai' => 'DUPUIS',
 					'prenom' => 'JEANNE',
 					'dtnai' => '1956-12-05',
-					'adresse' => '120 Rue DU MARECHAL BROUILLON',
+					'adresse' => '120 RUE DU MARECHAL BROUILLON',
 					'codepos' => '93230',
-					'locaadr' => 'ROMAINVILLE',
 					'sitfam' => 'MAR',
 					'inscritpe' => NULL,
 					'prevupcd' => '',
@@ -205,7 +204,8 @@
 					'isemploitrouv' => 'O',
 					'dureecdd' => '1',
 					'sujetpcd' => 'a:1:{s:10:"Sujetcer93";a:2:{i:0;a:5:{s:4:"name";s:7:"Sujet 1";s:7:"isautre";s:1:"0";s:7:"created";N;s:8:"modified";N;s:15:"Cer93Sujetcer93";a:9:{s:13:"sujetcer93_id";i:1;s:17:"soussujetcer93_id";i:1;s:26:"valeurparsoussujetcer93_id";N;s:16:"commentaireautre";N;s:7:"created";s:19:"2012-10-01 15:36:00";s:8:"modified";s:19:"2012-10-01 15:36:00";s:11:"autrevaleur";s:0:"";s:14:"autresoussujet";s:0:"";s:14:"Soussujetcer93";a:1:{s:4:"name";s:12:"Sous-sujet 1";}}}i:1;a:5:{s:4:"name";s:7:"Sujet 3";s:7:"isautre";s:1:"1";s:7:"created";N;s:8:"modified";N;s:15:"Cer93Sujetcer93";a:9:{s:13:"sujetcer93_id";i:3;s:17:"soussujetcer93_id";N;s:26:"valeurparsoussujetcer93_id";N;s:16:"commentaireautre";s:17:"Commentaire autre";s:7:"created";s:19:"2012-10-01 15:36:00";s:8:"modified";s:19:"2012-10-01 15:36:00";s:11:"autrevaleur";s:0:"";s:14:"autresoussujet";s:0:"";s:14:"Soussujetcer93";a:1:{s:4:"name";N;}}}}}',
-					'natlog' => '0907'
+					'natlog' => '0907',
+					'nomcom' => 'ROMAINVILLE',
 				),
 				'Compofoyercer93' =>
 				array(
@@ -380,9 +380,8 @@
 					'nomnai' => 'BUFFIN',
 					'prenom' => 'CHRISTIAN',
 					'dtnai' => '1979-01-24',
-					'adresse' => '66 Avenue DE LA REPUBLIQUE',
+					'adresse' => '66 AVENUE DE LA REPUBLIQUE',
 					'codepos' => '93300',
-					'locaadr' => 'AUBERVILLIERS',
 					'sitfam' => 'CEL',
 					'natlog' => '0909',
 					'incoherencesetatcivil' => 'Aucune incohérence',
@@ -417,6 +416,7 @@
 					'sujetpcd' => '',
 					'dateimpressiondecision' => NULL,
 					'observationdecision' => '',
+					'nomcom' => 'AUBERVILLIERS',
 				),
 				'Compofoyercer93' =>
 				array(
@@ -510,6 +510,9 @@
 				}
 			}
 
+			// Dans la base du 66, il existe un champ en plus ?
+			unset( $result['Contratinsertion']['niv_etude'] );
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 
@@ -562,7 +565,7 @@
 					'dtnai' => '1979-01-24',
 					'adresse' => '66 AVENUE DE LA REPUBLIQUE',
 					'codepos' => '93300',
-					'locaadr' => 'AUBERVILLIERS',
+					'nomcom' => 'AUBERVILLIERS',
 					'sitfam' => 'CEL',
 					'natlog' => '',
 					'incoherencesetatcivil' => 'Incohérence',
@@ -670,7 +673,6 @@
 					'dtnai' => '1979-01-24',
 					'adresse' => '66 AVENUE DE LA REPUBLIQUE',
 					'codepos' => '93300',
-					'locaadr' => 'AUBERVILLIERS',
 					'sitfam' => 'CEL',
 					'natlog' => NULL,
 					'incoherencesetatcivil' => 'Incohérence',
@@ -705,6 +707,7 @@
 					'sujetpcd' => '',
 					'dateimpressiondecision' => NULL,
 					'observationdecision' => '',
+					'nomcom' => 'AUBERVILLIERS',
 				),
 				'Contratinsertion' =>
 				array(
@@ -860,6 +863,9 @@
 					$result = Hash::remove( $result, $path );
 				}
 			}
+
+			// Dans la base du 66, il existe un champ en plus ?
+			unset( $result['Contratinsertion']['niv_etude'] );
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

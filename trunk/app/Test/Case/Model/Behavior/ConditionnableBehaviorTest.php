@@ -72,9 +72,9 @@
 		public function testConditionsAdresseFiltreVide() {
 			$search = array(
 				'Adresse' => array(
-					'locaadr' => null,
+					'nomcom' => null,
 					'nomvoie' => null,
-					'numcomptt' => null,
+					'numcom' => null,
 				),
 				'Canton' => array(
 					'canton' => null
@@ -92,9 +92,9 @@
 			// 1. Sans les cantons activés
 			$search = array(
 				'Adresse' => array(
-					'locaadr' => '*AUBERVILLIERS*',
+					'nomcom' => '*AUBERVILLIERS*',
 					'nomvoie' => '*Commune de Paris*',
-					'numcomptt' => 93001,
+					'numcom' => 93001,
 				),
 				'Canton' => array(
 					'canton' => 'Canton 1'
@@ -102,18 +102,18 @@
 			);
 			$result = $this->Canton->conditionsAdresse( array(), $search );
 			$expected = array(
-				'Adresse.locaadr ILIKE \'%AUBERVILLIERS%\'',
+				'Adresse.nomcom ILIKE \'%AUBERVILLIERS%\'',
 				'Adresse.nomvoie ILIKE \'%Commune de Paris%\'',
-				'Adresse.numcomptt = \'93001\'',
+				'Adresse.numcom = \'93001\'',
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
-			// 2. Sans les cantons , avec un numcomptt sur 4 caractères
+			// 2. Sans les cantons , avec un numcom sur 4 caractères
 			$search = array(
 				'Adresse' => array(
-					'locaadr' => '*AUBERVILLIERS*',
+					'nomcom' => '*AUBERVILLIERS*',
 					'nomvoie' => '*Commune de Paris*',
-					'numcomptt' => 9300,
+					'numcom' => 9300,
 				),
 				'Canton' => array(
 					'canton' => 'Canton 1'
@@ -121,9 +121,9 @@
 			);
 			$result = $this->Canton->conditionsAdresse( array(), $search );
 			$expected = array (
-				'Adresse.locaadr ILIKE \'%AUBERVILLIERS%\'',
+				'Adresse.nomcom ILIKE \'%AUBERVILLIERS%\'',
 				'Adresse.nomvoie ILIKE \'%Commune de Paris%\'',
-				'Adresse.numcomptt ILIKE \'%9300%\'',
+				'Adresse.numcom ILIKE \'%9300%\'',
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
@@ -131,9 +131,9 @@
 			Configure::write( 'CG.cantons', true );
 			$search = array(
 				'Adresse' => array(
-					'locaadr' => '*AUBERVILLIERS*',
+					'nomcom' => '*AUBERVILLIERS*',
 					'nomvoie' => '*Commune de Paris*',
-					'numcomptt' => 93001,
+					'numcom' => 93001,
 				),
 				'Canton' => array(
 					'canton' => 'Canton 1'
@@ -141,24 +141,24 @@
 			);
 			$result = $this->Canton->conditionsAdresse( array(), $search );
 			$expected = array(
-				'Adresse.locaadr ILIKE \'%AUBERVILLIERS%\'',
+				'Adresse.nomcom ILIKE \'%AUBERVILLIERS%\'',
 				'Adresse.nomvoie ILIKE \'%Commune de Paris%\'',
-				'Adresse.numcomptt = \'93001\'',
+				'Adresse.numcom = \'93001\'',
 				array(
 					'or' => array(
 						array(
 							'OR' => array(
-								'Adresse.numcomptt' => '93001',
+								'Adresse.numcom' => '93001',
 								'Adresse.codepos' => '93300',
 							),
-							'Adresse.locaadr ILIKE' => 'AUBERVILLIERS',
+							'Adresse.nomcom ILIKE' => 'AUBERVILLIERS',
 						),
 						array(
 							'OR' => array(
-								'Adresse.numcomptt' => '93008',
+								'Adresse.numcom' => '93008',
 								'Adresse.codepos' => '93000',
 							),
-							'Adresse.locaadr ILIKE' => 'BOBIGNY',
+							'Adresse.nomcom ILIKE' => 'BOBIGNY',
 						),
 					),
 				),
@@ -178,7 +178,7 @@
 				true,
 				array()
 			);
-			$expected = array( '( Adresse.numcomptt IN ( \'\' ) )' );
+			$expected = array( '( Adresse.numcom IN ( \'\' ) )' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 2. Restriction avec 2 zones sélectionnées
@@ -188,7 +188,7 @@
 				true,
 				array( '93008', '93010' )
 			);
-			$expected = array( '( Adresse.numcomptt IN ( \'93008\', \'93010\' ) )' );
+			$expected = array( '( Adresse.numcom IN ( \'93008\', \'93010\' ) )' );
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 
 			// 3. Restriction avec 2 zones sélectionnées et les cantons activés
@@ -204,17 +204,17 @@
 					'OR' => array(
 						array(
 							'OR' => array(
-								'Adresse.numcomptt' => '93001',
+								'Adresse.numcom' => '93001',
 								'Adresse.codepos' => '93300',
 							),
-							'Adresse.locaadr ILIKE' => 'AUBERVILLIERS',
+							'Adresse.nomcom ILIKE' => 'AUBERVILLIERS',
 						),
 						array(
 							'OR' => array(
-								'Adresse.numcomptt' => '93008',
+								'Adresse.numcom' => '93008',
 								'Adresse.codepos' => '93000',
 							),
-							'Adresse.locaadr ILIKE' => 'BOBIGNY',
+							'Adresse.nomcom ILIKE' => 'BOBIGNY',
 						),
 					),
 				),
