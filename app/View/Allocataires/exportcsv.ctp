@@ -10,7 +10,7 @@
 			__d( 'search_plugin', 'Personne.nom' ),
 			__d( 'search_plugin', 'Personne.prenom' ),
 			__d( 'search_plugin', 'Prestation.rolepers' ),
-			__d( 'search_plugin', 'Adresse.locaadr' ),
+			__d( 'search_plugin', 'Adresse.nomcom' ),
         )
     );
 
@@ -23,7 +23,7 @@
 			Hash::get( $result, 'Personne.nom' ),
 			Hash::get( $result, 'Personne.prenom' ),
 			value( $options['Prestation']['rolepers'], Hash::get( $result, 'Prestation.rolepers' ) ),
-			Hash::get( $result, 'Adresse.locaadr' ),
+			Hash::get( $result, 'Adresse.nomcom' ),
 		);
 		$this->Csv->addRow($row);
 	}

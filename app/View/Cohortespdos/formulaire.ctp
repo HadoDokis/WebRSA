@@ -25,11 +25,11 @@
 		<?php echo $this->Form->create( 'Cohortepdo', array() );?>
 		<?php
 			echo '<div>';
-			echo $this->Form->input( 'Cohortepdo.numcomptt', array( 'type' => 'hidden', 'id' => 'CohortepdoNumcomptt2' ) );
+			echo $this->Form->input( 'Cohortepdo.numcom', array( 'type' => 'hidden', 'id' => 'CohortepdoNumcomptt2' ) );
 			echo $this->Form->input( 'Cohortepdo.matricule', array( 'type' => 'hidden', 'id' => 'CohortepdoMatricule2' ) );
 			echo $this->Form->input( 'Cohortepdo.nom', array( 'type' => 'hidden', 'id' => 'CohortepdoNom2' ) );
 			echo $this->Form->input( 'Cohortepdo.prenom', array( 'type' => 'hidden', 'id' => 'CohortepdoPrenom2' ) );
-			echo $this->Form->input( 'Cohortepdo.locaadr', array( 'type' => 'hidden', 'id' => 'CohortepdoLocaadr2' ) );
+			echo $this->Form->input( 'Cohortepdo.nomcom', array( 'type' => 'hidden', 'id' => 'CohortepdoLocaadr2' ) );
 			echo $this->Form->input( 'Cohortepdo.user_id', array( 'type' => 'hidden', 'id' => 'CohortepdoUserId2' ) );
 			echo '</div>';
 		?>
@@ -93,7 +93,7 @@
 						array(
 							h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
 							h( date_short( $pdo['Dossier']['dtdemrsa'] ) ),
-							h( Set::classicExtract( $pdo, 'Adresse.locaadr' ) ),
+							h( Set::classicExtract( $pdo, 'Adresse.nomcom' ) ),
 
 							$this->Form->input( 'Propopdo.'.$index.'.dossier_id', array( 'label' => false, 'div' => false, 'value' => $pdo['Dossier']['id'], 'type' => 'hidden' ) ).
 							$this->Form->input( 'Propopdo.'.$index.'.personne_id', array( 'label' => false, 'div' => false, 'value' => $personne_id, 'type' => 'hidden' ) ).

@@ -39,7 +39,7 @@
 	echo $this->Form->input( 'Repddtefp.quinzaine', array( 'label' => 'Quinzaine', 'type' => 'select', 'options' => $quinzaine, 'empty' => true   ) );
 	echo $this->Form->input( 'Repddtefp.statutapre', array( 'label' => 'Statut de l\'APRE', 'type' => 'select', 'options' => $options['statutapre'], 'empty' => true   ) );
 
-	echo $this->Form->input( 'Repddtefp.numcomptt', array( 'label' => __d( 'apre', 'Repddtefp.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
+	echo $this->Form->input( 'Repddtefp.numcom', array( 'label' => __d( 'apre', 'Repddtefp.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
 
 	echo $this->Form->submit( 'Calculer' );
 	echo $this->Form->end();
@@ -150,7 +150,7 @@
 							h( Set::enum( Set::classicExtract( $apre, 'Personne.qual' ), $qual ).' '.Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom' ) ),
 							h( Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ) ),
 							h( $age ),
-							h( Set::classicExtract( $apre, 'Adresse.locaadr' ) ),
+							h( Set::classicExtract( $apre, 'Adresse.nomcom' ) ),
 							h( $this->Locale->money( Set::classicExtract( $apre, 'Apre.mtforfait' ) + Set::classicExtract( $apre, 'Apre.montantaides' ) ) ),
 							( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
 							h( Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ) ),

@@ -42,7 +42,7 @@
 
 		$row = array(
 			$gestionsanctionep58['Personne']['qual'].' '.$gestionsanctionep58['Personne']['nom'].' '.$gestionsanctionep58['Personne']['prenom'],
-			Set::classicExtract(  $gestionsanctionep58, 'Adresse.numvoie' ).' '.value(  $typevoie, Set::classicExtract( $gestionsanctionep58, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $gestionsanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionsanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionsanctionep58, 'Adresse.locaadr' ),
+			Set::classicExtract(  $gestionsanctionep58, 'Adresse.numvoie' ).' '.Set::classicExtract( $gestionsanctionep58, 'Adresse.libtypevoie' ).' '.Set::classicExtract(  $gestionsanctionep58, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $gestionsanctionep58, 'Adresse.codepos' ).' '.Set::classicExtract(  $gestionsanctionep58, 'Adresse.nomcom' ),
 			$gestionsanctionep58['Ep']['identifiant'],
 			$gestionsanctionep58['Commissionep']['identifiant'],
 			date_short( $gestionsanctionep58['Commissionep']['dateseance'] ),

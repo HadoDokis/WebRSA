@@ -6,7 +6,7 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Dossierep.created',
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),
 			'Passagecommissionep.chosen' => array( 'input' => 'checkbox' ),

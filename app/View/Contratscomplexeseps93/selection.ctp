@@ -7,7 +7,7 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
-			'Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+			'Personne.Foyer.Adressefoyer.0.Adresse.nomcom',
 			'Structurereferente.lib_struc',
 			'Contratinsertion.dd_ci',
 			'Contratinsertion.df_ci',

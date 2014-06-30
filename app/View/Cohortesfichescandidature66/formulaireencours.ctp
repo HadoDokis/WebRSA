@@ -59,7 +59,7 @@
 					$array1 = array(
 						h( $ficheenattente['Dossier']['numdemrsa'] ),
 						h( $ficheenattente['Personne']['qual'].' '.$ficheenattente['Personne']['nom'].' '.$ficheenattente['Personne']['prenom'] ),
-						h( $ficheenattente['Adresse']['locaadr'] ),
+						h( $ficheenattente['Adresse']['nomcom'] ),
 						h( $ficheenattente['Actioncandidat']['name'] ),
 						h( $ficheenattente['Partenaire']['libstruc'] ),
 						h( $ficheenattente['Referent']['qual'].' '.$ficheenattente['Referent']['nom'].' '.$ficheenattente['Referent']['prenom'] ),

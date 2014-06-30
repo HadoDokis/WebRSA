@@ -137,7 +137,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.h( $criterepdo['Adresse']['numcomptt'] ).'</td>
+									<td>'.h( $criterepdo['Adresse']['numcom'] ).'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>

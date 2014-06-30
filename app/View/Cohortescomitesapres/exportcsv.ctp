@@ -9,7 +9,7 @@
 			Set::classicExtract( $decisioncomite, 'Dossier.numdemrsa' ),
 			Set::classicExtract( $decisioncomite, 'Dossier.matricule' ),
 			Set::classicExtract( $decisioncomite, 'Personne.qual' ).' '.Set::classicExtract( $decisioncomite, 'Personne.nom' ).' '.Set::classicExtract( $decisioncomite, 'Personne.prenom' ) ,
-			Set::classicExtract( $decisioncomite, 'Adresse.locaadr' ),
+			Set::classicExtract( $decisioncomite, 'Adresse.nomcom' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $decisioncomite, 'Apre.datedemandeapre' ) ),
 			Set::enum( Set::classicExtract( $decisioncomite, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $decisioncomite, 'Comiteapre.datecomite' ) ),

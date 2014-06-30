@@ -29,7 +29,7 @@
 			Set::classicExtract( $dossierep, 'Dossier.matricule' ),
 			Set::classicExtract( $dossierep, 'Personne.id' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $dossierep, 'Personne.dtnai' ) ),
-			Set::classicExtract( $dossierep, 'Adresse.locaadr' ),
+			Set::classicExtract( $dossierep, 'Adresse.nomcom' ),
 			Set::classicExtract( $dossierep, 'Structureorientante.lib_struc' ),
 			Set::classicExtract( $dossierep, 'Structurereferente.lib_struc' ),
 			$this->Locale->date( 'Datetime::short', Set::classicExtract( $dossierep, 'Dossierep.created') ),

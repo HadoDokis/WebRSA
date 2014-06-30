@@ -3,7 +3,7 @@
 		' ',
 		array(
 			$adresse['Adresse']['numvoie'],
-			$typevoie[$adresse['Adresse']['typevoie']],
+			$adresse['Adresse']['libtypevoie'],
 			$adresse['Adresse']['nomvoie']
 		)
 	);
@@ -49,8 +49,8 @@
 				<td><?php echo $adresse['Adresse']['numvoie'];?></td>
 			</tr>
 			<tr class="odd">
-				<th><?php echo __d( 'adresse', 'Adresse.typevoie' );?></th>
-				<td><?php echo isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null;?></td>
+				<th><?php echo __d( 'adresse', 'Adresse.libtypevoie' );?></th>
+				<td><?php echo $adresse['Adresse']['libtypevoie'];?></td>
 			</tr>
 			<tr class="even">
 				<th><?php echo __d( 'adresse', 'Adresse.nomvoie' );?></th>
@@ -69,26 +69,22 @@
 				<td><?php echo $adresse['Adresse']['lieudist'];?></td>
 			</tr>
 			<tr class="even">
-				<th><?php echo __d( 'adresse', 'Adresse.numcomrat' );?></th>
-				<td><?php echo $adresse['Adresse']['numcomrat'];?></td>
+				<th><?php echo __d( 'adresse', 'Adresse.numcom' );?></th>
+				<td><?php echo $adresse['Adresse']['numcom'];?></td>
 			</tr>
 			<tr class="odd">
-				<th><?php echo __d( 'adresse', 'Adresse.numcomptt' );?></th>
-				<td><?php echo $adresse['Adresse']['numcomptt'];?></td>
-			</tr>
-			<tr class="even">
 				<th><?php echo __d( 'adresse', 'Adresse.codepos' );?></th>
 				<td><?php echo $adresse['Adresse']['codepos'];?></td>
 			</tr>
-			<tr class="odd">
-				<th><?php echo __d( 'adresse', 'Adresse.locaadr' );?></th>
-				<td><?php echo $adresse['Adresse']['locaadr'];?></td>
-			</tr>
 			<tr class="even">
+				<th><?php echo __d( 'adresse', 'Adresse.nomcom' );?></th>
+				<td><?php echo $adresse['Adresse']['nomcom'];?></td>
+			</tr>
+			<tr class="odd">
 				<th><?php echo __d( 'adresse', 'Adresse.pays' );?></th>
 				<td><?php echo $pays[$adresse['Adresse']['pays']];?></td>
 			</tr>
-			<tr class="odd">
+			<tr class="even">
 				<th><?php echo __d( 'adresse', 'Adresse.canton' );?></th>
 				<td><?php echo $adresse['Adresse']['canton'];?></td>
 			</tr>

@@ -289,12 +289,12 @@
 							<tr class="odd">
 								<th><?php echo __( 'adresse' );?></th>
 								<td colspan="2">
-									<?php echo $details['Adresse']['numvoie'].' '.( isset( $typevoie[$details['Adresse']['typevoie']] ) ? $typevoie[$details['Adresse']['typevoie']] : null ).' '. $details['Adresse']['nomvoie'];?>
+									<?php echo $details['Adresse']['numvoie'].' '.$details['Adresse']['libtypevoie'].' '. $details['Adresse']['nomvoie'];?>
 								</td>
 							</tr>
 							<tr class="even">
-								<th><?php echo __d( 'adresse', 'Adresse.locaadr' );?></th>
-								<td colspan="2"><?php echo ( isset( $details['Adresse']['locaadr'] ) ? $details['Adresse']['locaadr'] : null );?></td>
+								<th><?php echo __d( 'adresse', 'Adresse.nomcom' );?></th>
+								<td colspan="2"><?php echo ( isset( $details['Adresse']['nomcom'] ) ? $details['Adresse']['nomcom'] : null );?></td>
 							</tr>
 							<tr class="odd">
 								<th>Soumis à droits et devoirs</th>

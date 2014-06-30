@@ -32,7 +32,7 @@
 	<fieldset>
 		<legend>Recherche PDO</legend>
 		<?php echo $this->Form->input( 'Cohortepdo.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-		<?php echo $this->Form->input( 'Cohortepdo.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+		<?php echo $this->Form->input( 'Cohortepdo.numcom', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Cohortepdo.typepdo_id', array( 'label' => __d( 'propopdo', 'Propopdo.typepdo' ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Cohortepdo.decisionpdo_id', array( 'label' => __d( 'propopdo', 'Propopdo.decisionpdo' ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Cohortepdo.datedecisionpdo', array( 'label' => __d( 'propopdo', 'Propopdo.datedecisionpdo' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear'=>date('Y'), 'minYear'=>date('Y')-80, 'empty' => true ) );?>

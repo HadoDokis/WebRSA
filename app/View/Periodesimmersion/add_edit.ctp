@@ -82,7 +82,7 @@
 				<br />
 				<strong>Adresse : </strong><br />
 					<?php
-						echo Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $options['typevoie'], Set::extract( $personne, 'Adresse.typevoie' ) ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $personne, 'Adresse.compladr' ).'<br /> '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.locaadr' );
+						echo Set::extract( $personne, 'Adresse.numvoie' ).' '.Set::extract( $personne, 'Adresse.libtypevoie' ).' '.Set::extract( $personne, 'Adresse.nomvoie' ).'<br /> '.Set::extract( $personne, 'Adresse.compladr' ).'<br /> '.Set::extract( $personne, 'Adresse.codepos' ).' '.Set::extract( $personne, 'Adresse.nomcom' );
 					?>
 				<br />
 				<!-- Si on n'autorise pas la diffusion de l'email, on n'affiche rien -->

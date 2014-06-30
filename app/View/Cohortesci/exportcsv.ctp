@@ -24,7 +24,7 @@
 		$row = array(
 			Set::classicExtract( $contrat, 'Dossier.numdemrsa' ),
 			Set::classicExtract( $contrat, 'Personne.nom' ).' '.Set::classicExtract( $contrat, 'Personne.prenom'),
-			Set::classicExtract( $contrat, 'Adresse.locaadr' ),
+			Set::classicExtract( $contrat, 'Adresse.nomcom' ),
 			value( $referents, Set::classicExtract( $contrat, 'PersonneReferent.referent_id' ) ),
 			value( $struct, Set::classicExtract( $contrat, 'Contratinsertion.structurereferente_id' ) ),
 			Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),

@@ -18,7 +18,7 @@
 			$this->Xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' ),
 			$this->Xpaginator->sort( 'Nom bénéficiaire', 'Personne.nom' ),
 			$this->Xpaginator->sort( 'Prénom bénéficiaire', 'Personne.prenom' ),
-			$this->Xpaginator->sort( 'Adresse', 'Adresse.locaadr' ),
+			$this->Xpaginator->sort( 'Adresse', 'Adresse.nomcom' ),
 			$this->Xpaginator->sort( 'Montant attribué par le comité', 'Apre.montantaverser' ),
 			'Nb paiement souhaité',
 			'Nb paiement effectué',

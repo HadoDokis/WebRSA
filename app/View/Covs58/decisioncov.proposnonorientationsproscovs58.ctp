@@ -3,7 +3,7 @@
 
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nir' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nom' ) );
-	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.locaadr' ) );
+	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.nomcom' ) );
 	echo $this->Xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.datedemande' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.proporeferent' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.decisioncov' ) );
@@ -37,7 +37,7 @@
 			array(
 				$dossiercov['Personne']['nir'],
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
+				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['libtypevoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$this->Locale->date( __( 'Locale->date' ), $dossiercov[$theme]['datedemande'] ),
 				implode( ' - ', Hash::filter( (array)array( $dossiercov['Propononorientationprocov58']['Orientstruct']['Typeorient']['lib_type_orient'], $dossiercov['Propononorientationprocov58']['Orientstruct']['Structurereferente']['lib_struc'], $referent ) ) ),
 

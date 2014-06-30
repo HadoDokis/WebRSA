@@ -37,10 +37,10 @@
 				echo $this->Default2->subform(
 					array(
 						'Canton.canton',
-						'Canton.locaadr',
+						'Canton.nomcom',
 						'Canton.zonegeographique_id' => array( 'options' => $zonesgeographiques ),
 						'Canton.codepos',
-						'Canton.numcomptt'
+						'Canton.numcom'
 					)
 				);
 			?>
@@ -53,17 +53,17 @@
 
 <?php echo $this->Xform->end();?>
 <?php
-	
+
 	if( isset( $cantons ) ) {
 		if( !empty( $cantons ) ) {
 			$headers = array(
 				$this->Xpaginator->sort( 'Canton', 'Canton.canton' ),
 				$this->Xpaginator->sort( 'Zone géographique', 'Zonegeographique.libelle' ),
-				$this->Xpaginator->sort( 'Type de voie', 'Canton.typevoie' ),
+				$this->Xpaginator->sort( 'Type de voie', 'Canton.libtypevoie' ),
 				$this->Xpaginator->sort( 'Nom de voie', 'Canton.nomvoie' ),
-				$this->Xpaginator->sort( 'Localité', 'Canton.locaadr' ),
+				$this->Xpaginator->sort( 'Localité', 'Canton.nomcom' ),
 				$this->Xpaginator->sort( 'Code postal', 'Canton.codepos' ),
-				$this->Xpaginator->sort( 'Code INSEE', 'Canton.numcomptt' )
+				$this->Xpaginator->sort( 'Code INSEE', 'Canton.numcom' )
 			);
 			$thead = $this->Xhtml->tag( 'thead', $this->Xhtml->tableHeaders( $headers ) );
 			$thead = str_replace( '</th></tr>', '</th><th colspan="2">Actions</th></tr>', $thead );
@@ -73,11 +73,11 @@
 				$rows[] = array(
 					h( Set::extract( $canton, 'Canton.canton' ) ),
 					h( Set::extract( $canton, 'Zonegeographique.libelle' ) ),
-					h( isset( $typevoie[Set::extract( $canton, 'Canton.typevoie' )] ) ? $typevoie[Set::extract( $canton, 'Canton.typevoie' )] : Set::extract( $canton, 'Canton.typevoie' ) ),
+					h( Set::extract( $canton, 'Canton.libtypevoie' ) ),
 					h( Set::extract( $canton, 'Canton.nomvoie' ) ),
-					h( Set::extract( $canton, 'Canton.locaadr' ) ),
+					h( Set::extract( $canton, 'Canton.nomcom' ) ),
 					h( Set::extract( $canton, 'Canton.codepos' ) ),
-					h( Set::extract( $canton, 'Canton.numcomptt' ) ),
+					h( Set::extract( $canton, 'Canton.numcom' ) ),
 					$this->Xhtml->editLink( 'Modifier le canton', array( 'action' => 'edit', Set::extract( $canton, 'Canton.id' ) ), $this->Permissions->check( 'cantons', 'edit' ) ),
 					$this->Xhtml->deleteLink( 'Supprimer le canton', array( 'action' => 'delete', Set::extract( $canton, 'Canton.id' ) ), $this->Permissions->check( 'cantons', 'delete' ) )
 				);
@@ -93,7 +93,7 @@
 		}
 	}
 	echo $this->Xform->end();
-	
+
 	echo $this->Default->button(
 		'back',
 		array(

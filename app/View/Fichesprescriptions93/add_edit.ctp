@@ -77,7 +77,7 @@
 					'type' => 'text',
 					'hidden' => true,
 				),
-				'Instantanedonneesfp93.benef_locaadr' => array(
+				'Instantanedonneesfp93.benef_nomcom' => array(
 					'view' => true,
 					'type' => 'text',
 					'hidden' => true,

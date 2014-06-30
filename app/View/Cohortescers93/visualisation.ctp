@@ -109,7 +109,7 @@
 						</tr>
 						<tr>
 							<th>Adresse</th>
-							<td>'.$cer93['Adresse']['numvoie'].' '.Set::enum( $cer93['Adresse']['typevoie'], $options['typevoie'] ).' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['locaadr'].'</td>
+							<td>'.$cer93['Adresse']['numvoie'].' '.$cer93['Adresse']['libtypevoie'].' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['nomcom'].'</td>
 						</tr>
 					</tbody>
 				</table>';
@@ -147,7 +147,7 @@
 
 				echo $this->Html->tableCells(
 					array(
-						$cer93['Adresse']['locaadr'],
+						$cer93['Adresse']['nomcom'],
 						$this->Xhtml->link( $cer93['Cer93']['nonorientepdv'], array( 'controller' => 'orientsstructs', 'action' => 'index', $cer93['Contratinsertion']['personne_id'] ), array( 'class' => 'external' ) ),
 						$cer93['Personne']['nom_complet_court'],
 						$cer93['Structurereferente']['lib_struc'],

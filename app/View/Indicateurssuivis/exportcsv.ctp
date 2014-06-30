@@ -21,7 +21,7 @@
 	) );
 
 	foreach( $indicateurs as $indicateur ) {
-		$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $indicateur, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
+		$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::classicExtract( $indicateur, 'Adresse.libtypevoie' ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.nomcom' );
 
 		$conjoint = $indicateur['Personne']['qualcjt'].' '.$indicateur['Personne']['nomcjt'].' '.$indicateur['Personne']['prenomcjt'];
 

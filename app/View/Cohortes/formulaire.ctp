@@ -163,7 +163,7 @@
 
 
 						$tableCells = array(
-							h( $personne['Adresse']['locaadr'] ),
+							h( $personne['Adresse']['nomcom'] ),
 							h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
 							h( $personne['Dsp']['id'] ? 'Oui' : 'Non' ),
 							h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
@@ -174,7 +174,7 @@
 							/* FIXME -> id unset ? */
 							$this->Form->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Orientstruct']['id'] ) ).
 							$this->Form->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Foyer']['dossier_id'] ) ).
-							$this->Form->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Adresse']['numcomptt'] ) ).
+							$this->Form->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Adresse']['numcom'] ) ).
 							$this->Form->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $personne['Personne']['id'] ) ),
 							$this->Form->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient, 'value' => ( !empty( $typeorient_id ) ? $typeorient_id : $personne['Orientstruct']['propo_algo'] ), 'empty' => true ) ),
 							$this->Form->input( 'Orientstruct.'.$index.'.structurereferente_id', array( 'label' => false, 'type' => 'select', 'options' => $structuresReferentes, 'empty' => true, 'value' => ( !empty( $structurereferente_id ) ? $structurereferente_id : $personne['Orientstruct']['structurereferente_id'] ) ) ),

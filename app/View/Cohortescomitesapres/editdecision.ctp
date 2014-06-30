@@ -61,7 +61,7 @@
 						array(
 							h( Set::classicExtract( $apre, 'Dossier.numdemrsa') ),
 							h( Set::classicExtract( $apre, 'Personne.qual').' '.Set::classicExtract( $apre, 'Personne.nom').' '.Set::classicExtract( $apre, 'Personne.prenom') ),
-							h( Set::classicExtract( $apre, 'Adresse.locaadr') ),
+							h( Set::classicExtract( $apre, 'Adresse.nomcom') ),
 							h( $this->Locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
 
 							$this->Xform->enum( 'ApreComiteapre.decisioncomite', array( 'label' => false, 'type' => 'select', 'options' => $options['decisioncomite'], 'selected' => Set::classicExtract( $aprecomiteapre, 'ApreComiteapre.decisioncomite' ) ) ).

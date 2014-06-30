@@ -23,7 +23,7 @@ msgstr ""
 msgid "Adresse.numvoie"
 msgstr "Numéro de voie"
 
-msgid "Adresse.typevoie"
+msgid "Adresse.libtypevoie"
 msgstr "Type de voie"
 
 msgid "Adresse.nomvoie"
@@ -32,7 +32,7 @@ msgstr "Nom de voie"
 msgid "Adresse.codepos"
 msgstr "Code postal"
 
-msgid "Adresse.locaadr"
+msgid "Adresse.nomcom"
 msgstr "Nom de commune"
 
 msgid "Adresse.localite"
@@ -47,14 +47,8 @@ msgstr "Complément d'adresse"
 msgid "Adresse.lieudist"
 msgstr "Lieu de distribution"
 
-msgid "Adresse.numcomrat"
-msgstr "Numéro de commune"
-
-msgid "Adresse.numcomptt"
+msgid "Adresse.numcom"
 msgstr "Numéro de commune sens INSEE"
-
-# msgid "locaadr"
-# msgstr "Localité adresse"
 
 msgid "Adresse.pays"
 msgstr "Code Pays"

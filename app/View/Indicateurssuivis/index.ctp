@@ -33,8 +33,8 @@
 	?>
 	<fieldset>
 		<legend>Recherche par Adresse</legend>
-		<?php echo $this->Form->input( 'Adresse.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
-		<?php echo $this->Form->input( 'Adresse.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+		<?php echo $this->Form->input( 'Adresse.nomcom', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+		<?php echo $this->Form->input( 'Adresse.numcom', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 		<?php //echo $this->Form->input( 'Adresse.codepos', array( 'label' => 'Code postal ', 'type' => 'text' ) );?>
 		<?php
 			if( Configure::read( 'CG.cantons' ) ) {
@@ -112,7 +112,7 @@
 			<tbody>
 				<?php foreach( $indicateurs as $index => $indicateur ):?>
 					<?php
-						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $indicateur, 'Adresse.typevoie' ), $typevoie ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.locaadr' );
+						$adresse = Set::classicExtract( $indicateur, 'Adresse.numvoie' ).' '.Set::classicExtract( $indicateur, 'Adresse.libtypevoie' ).' '.Set::classicExtract( $indicateur, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $indicateur, 'Adresse.codepos' ).' '.Set::classicExtract( $indicateur, 'Adresse.nomcom' );
 
 						echo $this->Xhtml->tableCells(
 							array(

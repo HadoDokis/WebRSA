@@ -25,7 +25,7 @@
 			Set::classicExtract( $orientstruct, 'Personne.nom'),
 			Set::classicExtract( $orientstruct, 'Personne.prenom'),
 			date_short( Set::classicExtract( $orientstruct, 'Personne.dtnai' ) ),
-			Set::classicExtract( $orientstruct, 'Adresse.locaadr' ),
+			Set::classicExtract( $orientstruct, 'Adresse.nomcom' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $orientstruct, 'Orientstruct.date_valid' ) ),
 			Set::classicExtract( $orientstruct, 'Contratinsertion.nbjours'),
 			Set::classicExtract( $orientstruct, 'Typeorient.lib_type_orient'),

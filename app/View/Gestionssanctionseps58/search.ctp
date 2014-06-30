@@ -92,8 +92,8 @@
 					'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir', true ), 'type' => 'text', 'maxlength' => 15 ),
 					'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule', true ), 'type' => 'text', 'maxlength' => 15 ),
 					'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa', true ), 'type' => 'text', 'maxlength' => 15 ),
-					'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr', true ), 'type' => 'text' ),
-					'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+					'Search.Adresse.nomcom' => array( 'label' => __d( 'adresse', 'Adresse.nomcom', true ), 'type' => 'text' ),
+					'Search.Adresse.numcom' => array( 'label' => __d( 'adresse', 'Adresse.numcom', true ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
 				),
 				array(
 					'options' => $options

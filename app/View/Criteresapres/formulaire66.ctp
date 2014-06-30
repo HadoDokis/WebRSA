@@ -141,7 +141,7 @@
                     <th><?php echo $this->Xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Date de demande APRE', 'Aideapre66.datedemande' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Référent/Prescripteur', 'Referent.nom' );?></th>
@@ -170,7 +170,7 @@
                                 </tr>
                                 <tr>
                                     <th>Code INSEE</th>
-                                    <td>'.$apre['Adresse']['numcomptt'].'</td>
+                                    <td>'.$apre['Adresse']['numcom'].'</td>
                                 </tr>
                                 <tr>
                                     <th>NIR</th>
@@ -194,7 +194,7 @@
                                 h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
                                 h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-                                h( $apre['Adresse']['locaadr'] ),
+                                h( $apre['Adresse']['nomcom'] ),
                                 h( $this->Locale->date( 'Date::short', Set::extract( $apre, 'Aideapre66.datedemande' ) ) ),
                                 h( $apre['Structurereferente']['lib_struc']),
                                 h( $apre['Referent']['nom'].' '.$apre['Referent']['prenom'] ),

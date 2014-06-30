@@ -43,7 +43,7 @@ msgstr "Date de naissance du demandeur"
 msgid "Adresse.numvoie"
 msgstr "Numéro de voie"
 
-msgid "Adresse.typevoie"
+msgid "Adresse.libtypevoie"
 msgstr "Type de voie"
 
 msgid "Adresse.nomvoie"
@@ -58,7 +58,7 @@ msgstr "Complément d'adresse"
 msgid "Adresse.codepos"
 msgstr "Code postal"
 
-msgid "Adresse.locaadr"
+msgid "Adresse.nomcom"
 msgstr "Nom de commune"
 
 msgid "Conjoint.nom_complet"

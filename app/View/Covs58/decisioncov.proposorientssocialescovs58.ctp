@@ -4,7 +4,7 @@
 
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nir' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nom' ) );
-	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.locaadr' ) );
+	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.nomcom' ) );
 	echo $this->Xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.created' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.decisioncov' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.choixcov' ), array( 'colspan' => 3 ) );
@@ -30,7 +30,7 @@
 			array(
 				$dossiercov['Personne']['nir'],
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
+				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['libtypevoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$this->Locale->date( __( 'Locale->date' ), $dossiercov[$theme]['created'] ),
 				array(
 					$this->Form->input( "Decisionpropoorientsocialecov58.{$i}.decisioncov", array( 'type' => 'select', 'label' => false, 'empty' => true, 'options' => @$options['Decisionpropoorientsocialecov58']['decisioncov'] ) ),

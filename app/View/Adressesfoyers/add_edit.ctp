@@ -11,7 +11,7 @@
 			' ',
 			array(
 				$this->request->data['Adresse']['numvoie'],
-				$typevoie[$this->request->data['Adresse']['typevoie']],
+				$this->request->data['Adresse']['libtypevoie'],
 				$this->request->data['Adresse']['nomvoie'] )
 		);
 
@@ -36,15 +36,14 @@
 	echo '<div>'.$this->Form->input( 'Adressefoyer.foyer_id', array( 'type' => 'hidden', 'value' => $foyer_id ) ).'</div>';
 
 	echo $this->Form->input( 'Adresse.numvoie', array( 'label' =>   __d( 'adresse', 'Adresse.numvoie' ) ) );
-	echo $this->Form->input( 'Adresse.typevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.typevoie' ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );
+	echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.libtypevoie' ) ), 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ) );
 	echo $this->Form->input( 'Adresse.nomvoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomvoie' ) ) ) );
 	echo $this->Form->input( 'Adresse.complideadr', array( 'label' =>  __d( 'adresse', 'Adresse.complideadr' ) ) );
 	echo $this->Form->input( 'Adresse.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr' ) ) );
 	echo $this->Form->input( 'Adresse.lieudist', array( 'label' =>  __d( 'adresse', 'Adresse.lieudist' ) ) );
-	echo $this->Form->input( 'Adresse.numcomrat', array( 'label' =>  __d( 'adresse', 'Adresse.numcomrat' ) ) );
-	echo $this->Form->input( 'Adresse.numcomptt', array( 'label' =>  required( __d( 'adresse', 'Adresse.numcomptt' ) ) ) );
+	echo $this->Form->input( 'Adresse.numcom', array( 'label' =>  __d( 'adresse', 'Adresse.numcom' ) ) );
 	echo $this->Form->input( 'Adresse.codepos', array( 'label' =>  required( __d( 'adresse', 'Adresse.codepos' ) ) ) );
-	echo $this->Form->input( 'Adresse.locaadr', array( 'label' =>  required( __d( 'adresse', 'Adresse.locaadr' ) ) ) );
+	echo $this->Form->input( 'Adresse.nomcom', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomcom' ) ) ) );
 	echo $this->Form->input( 'Adresse.pays', array( 'label' =>  required( __d( 'adresse', 'Adresse.pays' ) ), 'type' => 'select', 'options' => $pays, 'empty' => true ) );
 	echo $this->Form->input( 'Adresse.canton', array( 'label' =>  __d( 'adresse', 'Adresse.canton' ) ) );
 

@@ -51,8 +51,8 @@
 			Set::enum( Hash::get( $bilanparcours66, 'Bilanparcours66.positionbilan' ), $options['positionbilan'] ),
 			$motif,
 			$isSaisine,
-			$bilanparcours66['Adresse']['numcomptt'],
-			$bilanparcours66['Adresse']['locaadr'],
+			$bilanparcours66['Adresse']['numcom'],
+			$bilanparcours66['Adresse']['nomcom'],
 			Hash::get( $bilanparcours66, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $bilanparcours66, 'Referentparcours.nom_complet' ),
 		);

@@ -76,7 +76,7 @@
 			array(
 				'Dossier.matricule',
 				'Personne.nom_complet',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Ficheprescription93.statut',
 				'Actionfp93.name',
 				'Dossier.locked' => array( 'type' => 'boolean' ),

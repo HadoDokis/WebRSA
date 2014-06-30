@@ -50,7 +50,7 @@
 			</tr>
 			<tr>
 				<td class="mediumSize noborder">
-					<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $bilanparcours66, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $bilanparcours66, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $bilanparcours66, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $bilanparcours66, 'Adresse.codepos' ).' '.Set::classicExtract( $bilanparcours66, 'Adresse.locaadr' );?>
+					<strong>Adresse : </strong><br /><?php echo Set::classicExtract( $bilanparcours66, 'Adresse.numvoie' ).' '.Set::classicExtract( $bilanparcours66, 'Adresse.libtypevoie' ).' '.Set::classicExtract( $bilanparcours66, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $bilanparcours66, 'Adresse.codepos' ).' '.Set::classicExtract( $bilanparcours66, 'Adresse.nomcom' );?>
 				</td>
 			</tr>
 		</table>

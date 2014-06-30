@@ -90,7 +90,7 @@
 			<tbody>
 				<?php foreach( $results as $index => $result ):?>
 					<?php
-						$adresse = Set::classicExtract( $result, 'Adresse.numvoie' ).' '.Set::enum( Set::classicExtract( $result, 'Adresse.typevoie' ), $options['Adresse']['typevoie'] ).' '.Set::classicExtract( $result, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $result, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $result, 'Adresse.codepos' ).' '.Set::classicExtract( $result, 'Adresse.locaadr' );
+						$adresse = Set::classicExtract( $result, 'Adresse.numvoie' ).' '.Set::classicExtract( $result, 'Adresse.libtypevoie' ).' '.Set::classicExtract( $result, 'Adresse.nomvoie' ).'<br /> '.Set::classicExtract( $result, 'Adresse.compladr' ).'<br /> '.Set::classicExtract( $result, 'Adresse.codepos' ).' '.Set::classicExtract( $result, 'Adresse.nomcom' );
 
 						echo $this->Xhtml->tableCells(
 							array(

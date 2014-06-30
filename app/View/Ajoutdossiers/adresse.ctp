@@ -10,15 +10,14 @@
 
 	<?php echo $this->Form->input( 'Adressefoyer.rgadr', array( 'type' => 'hidden', 'value' => '01' ) );?>
 	<?php echo $this->Form->input( 'Adresse.numvoie', array( 'label' =>   __d( 'adresse', 'Adresse.numvoie', true ) ) );?>
-	<?php echo $this->Form->input( 'Adresse.typevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.typevoie', true ) ), 'type' => 'select', 'options' => $typevoie, 'empty' => true ) );?>
+	<?php echo $this->Form->input( 'Adresse.libtypevoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.libtypevoie', true ) ), 'type' => 'select', 'options' => $libtypevoie, 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Adresse.nomvoie', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomvoie', true ) ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.complideadr', array( 'label' =>  __d( 'adresse', 'Adresse.complideadr', true ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.compladr', array( 'label' =>  __d( 'adresse', 'Adresse.compladr', true ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.lieudist', array( 'label' =>  __d( 'adresse', 'Adresse.lieudist', true ) ) );?>
-	<?php echo $this->Form->input( 'Adresse.numcomrat', array( 'label' =>  __d( 'adresse', 'Adresse.numcomrat', true ) ) );?>
-	<?php echo $this->Form->input( 'Adresse.numcomptt', array( 'label' =>  required( __d( 'adresse', 'Adresse.numcomptt', true ) ) ) );?>
+	<?php echo $this->Form->input( 'Adresse.numcom', array( 'label' =>  __d( 'adresse', 'Adresse.numcom', true ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.codepos', array( 'label' =>  required( __d( 'adresse', 'Adresse.codepos', true ) ) ) );?>
-	<?php echo $this->Form->input( 'Adresse.locaadr', array( 'label' =>  required( __d( 'adresse', 'Adresse.locaadr', true ) ) ) );?>
+	<?php echo $this->Form->input( 'Adresse.nomcom', array( 'label' =>  required( __d( 'adresse', 'Adresse.nomcom', true ) ) ) );?>
 	<?php echo $this->Form->input( 'Adresse.pays', array( 'label' =>  required( __d( 'adresse', 'Adresse.pays', true ) ), 'type' => 'select', 'options' => $pays, 'empty' => true ) );?>
 	<?php echo $this->Form->input( 'Adresse.canton', array( 'label' =>  __d( 'adresse', 'Adresse.canton', true ) ) );?>
 	<?php echo $this->Form->input( 'Adressefoyer.dtemm', array( 'label' =>  __d( 'adressefoyer', 'Adressefoyer.dtemm', true ), 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => ( date( 'Y' ) - 100 ), 'empty' => true ) );?>

@@ -147,7 +147,7 @@
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Rendezvous.structurereferente_id' );?></th>
 					<th>Référent</th>
 					<th><?php echo $this->Xpaginator->sort( 'Objet du RDV', 'Rendezvous.typerdv_id' );?></th>
@@ -186,7 +186,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$rdv['Adresse']['numcomptt'].'</td>
+									<td>'.$rdv['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>
@@ -210,7 +210,7 @@
 						echo $this->Xhtml->tableCells(
 							array(
 								h( $rdv['Personne']['nom'].' '.$rdv['Personne']['prenom'] ),
-								h( Set::extract( $rdv, 'Adresse.locaadr' ) ),
+								h( Set::extract( $rdv, 'Adresse.nomcom' ) ),
 								h( Set::extract( $rdv, 'Structurereferente.lib_struc' ) ),
 								h( Set::classicExtract( $rdv, 'Referent.qual' ).' '.Set::classicExtract( $rdv, 'Referent.nom' ).' '.Set::classicExtract( $rdv, 'Referent.prenom' ) ),
 								h( Set::enum( Set::extract( $rdv, 'Rendezvous.typerdv_id' ), $typerdv ) ),

@@ -178,7 +178,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.h( $criteretraitementpcg66['Adresse']['numcomptt'] ).'</td>
+									<td>'.h( $criteretraitementpcg66['Adresse']['numcom'] ).'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>

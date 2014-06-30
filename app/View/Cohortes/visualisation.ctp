@@ -46,7 +46,7 @@
 		<table class="tooltips">
 			<thead>
 				<tr>
-					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom, prenom', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date demande', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Présence DSP', 'Dsp.id' );?></th>
@@ -121,7 +121,7 @@
 						</table>';
 
 						$cells = array(
-							h( $personne['Adresse']['locaadr'] ),
+							h( $personne['Adresse']['nomcom'] ),
 							h( $personne['Personne']['nom'].' '.$personne['Personne']['prenom'] ),
 							h( date_short( $personne['Dossier']['dtdemrsa'] ) ),
 							h( !empty( $personne['Dsp']['id'] ) ? 'Oui' : 'Non' ),

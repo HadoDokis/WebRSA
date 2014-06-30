@@ -38,7 +38,7 @@ msgstr "Raison sociale de l'organisme décidant de l'orientation"
 msgid "Parcours.numvoie"
 msgstr "Numéro de voie de l'organisme décidant de l'orientation"
 
-msgid "Parcours.typevoie"
+msgid "Parcours.libtypevoie"
 msgstr "Type de voie de l'organisme décidant de l'orientation"
 
 msgid "Parcours.nomvoie"
@@ -56,7 +56,7 @@ msgstr "Lieu de distribution de l'organisme décidant de l'orientation"
 msgid "Parcours.codepos"
 msgstr "Code postal de l'organisme décidant de l'orientation"
 
-msgid "Parcours.locaadr"
+msgid "Parcours.nomcom"
 msgstr "Localité adresse de l'organisme décidant de l'orientation"
 
 msgid "Parcours.numtelorgdeciorie"
@@ -160,7 +160,7 @@ msgstr "Raison sociale de l'organisme d'orientation"
 msgid "Orientation.numvoie"
 msgstr "Numéro de voie de l'organisme d'orientation"
 
-msgid "Orientation.typevoie"
+msgid "Orientation.libtypevoie"
 msgstr "Type de voie de l'organisme d'orientation"
 
 msgid "Orientation.nomvoie"
@@ -178,7 +178,7 @@ msgstr "Lieu de distribution de l'organisme d'orientation"
 msgid "Orientation.codepos"
 msgstr "Code postal de l'organisme d'orientation"
 
-msgid "Orientation.locaadr"
+msgid "Orientation.nomcom"
 msgstr "Localité adresse de l'organisme d'orientation"
 
 msgid "Orientation.numtelorgorie"

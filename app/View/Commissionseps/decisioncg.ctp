@@ -62,7 +62,7 @@
 							'Dossierep.Personne.nom',
 							'Dossierep.Personne.prenom',
 							'Dossierep.Personne.dtnai',
-							'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.locaadr',
+							'Dossierep.Personne.Foyer.Adressefoyer.0.Adresse.nomcom',
 							'Dossierep.created',
 							'Dossierep.themeep',
 							'Passagecommissionep.etatdossierep',

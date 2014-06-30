@@ -9,7 +9,7 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Dossier.matricule' => array( 'label' => 'N° allocataire' ),
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Dossierep.created',
 			'Cov58.datecommission' => array( 'label' => 'Proposition validée en COV le' ),
 			'Structurereferente.lib_struc' => array( 'label' => 'Structure référente' ),

@@ -152,11 +152,11 @@
 					<tbody>
 						<tr>
 							<th>Code INSEE</th>
-							<td>'.$actioncandidat_personne['Adresse']['numcomptt'].'</td>
+							<td>'.$actioncandidat_personne['Adresse']['numcom'].'</td>
 						</tr>
 						<tr>
 							<th>Localité</th>
-							<td>'.$actioncandidat_personne['Adresse']['locaadr'].'</td>
+							<td>'.$actioncandidat_personne['Adresse']['nomcom'].'</td>
 						</tr>
 						<tr>
 							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>

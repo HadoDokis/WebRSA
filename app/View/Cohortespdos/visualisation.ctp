@@ -32,7 +32,7 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF/MSA', 'Dossier.matricule' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Ville', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de la demande RSA', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Gestionnaire', 'Propopdo.user_id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Commentaire', 'Propopdo.commentairepdo' );?></th>
@@ -66,7 +66,7 @@
 						array(
 							h( $pdo['Personne']['nom'].' '.$pdo['Personne']['prenom'] ),
 							h( Set::extract( $pdo, 'Dossier.matricule' ) ),
-							h( Set::extract( $pdo, 'Adresse.locaadr' ) ),
+							h( Set::extract( $pdo, 'Adresse.nomcom' ) ),
 							h( date_short( Set::extract( $pdo, 'Dossier.dtdemrsa' ) ) ),
 							h( Set::enum( Set::classicExtract( $pdo, 'Propopdo.user_id' ), $gestionnaire ) ),
 							h( Set::classicExtract( $pdo, 'Propopdo.commentairepdo' ) ),

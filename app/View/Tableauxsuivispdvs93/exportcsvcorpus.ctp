@@ -15,7 +15,7 @@
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sexe' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.rolepers' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.codepos' ),
-			__d( 'questionnairesd1pdvs93', 'Situationallocataire.locaadr' ),
+			__d( 'questionnairesd1pdvs93', 'Situationallocataire.nomcom' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.sitfam' ),
 			__d( 'questionnairesd1pdvs93', 'Situationallocataire.matricule' ),
 			// Détails du suivi, D1
@@ -52,7 +52,7 @@
 				value( $options['Situationallocataire']['sexe'], Hash::get( $result, 'Situationallocataire.sexe' ) ),
 				value( $options['Situationallocataire']['rolepers'], Hash::get( $result, 'Situationallocataire.rolepers' ) ),
 				Hash::get( $result, 'Situationallocataire.codepos' ),
-				Hash::get( $result, 'Situationallocataire.locaadr' ),
+				Hash::get( $result, 'Situationallocataire.nomcom' ),
 				value( $options['Situationallocataire']['sitfam'], Hash::get( $result, 'Situationallocataire.sitfam' ) ),
 				'='.Hash::get( $result, 'Situationallocataire.matricule' ),
 				// Détails du suivi, D1

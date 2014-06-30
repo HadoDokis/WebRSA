@@ -8,7 +8,7 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Nonrespectsanctionep93.origine',
 			'Nonrespectsanctionep93.rgpassage',
 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),

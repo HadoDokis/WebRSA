@@ -51,13 +51,13 @@
 					</tr>
 					<tr>
 						<th>Adresse</th>
-						<td>'.$cer93['Adresse']['numvoie'].' '.Set::enum( $cer93['Adresse']['typevoie'], $options['typevoie'] ).' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['locaadr'].'</td>
+						<td>'.$cer93['Adresse']['numvoie'].' '.$cer93['Adresse']['libtypevoie'].' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['nomcom'].'</td>
 					</tr>
 				</tbody>
 			</table>';
 
 		$cells = array(
-			$cer93['Adresse']['locaadr'],
+			$cer93['Adresse']['nomcom'],
 			$cer93['Personne']['nom_complet_court'],
 			date_short( $cer93['Orientstruct']['date_valid'] ),
 			date_short( $cer93['PersonneReferent']['dddesignation'] ),

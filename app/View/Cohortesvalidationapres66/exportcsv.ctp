@@ -21,7 +21,7 @@
 		$row = array(
 			Set::classicExtract( $apre, 'Apre66.numeroapre' ),
 			Set::classicExtract( $apre, 'Personne.nom_complet' ),
-			Set::classicExtract( $apre, 'Adresse.locaadr' ),
+			Set::classicExtract( $apre, 'Adresse.nomcom' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Aideapre66.datedemande' ) ),
 			Set::enum( Set::classicExtract( $apre, 'Apre66.etatdossierapre' ), $options['etatdossierapre'] ),
 			Set::enum( Set::classicExtract( $apre, 'Aideapre66.decisionapre' ), $optionsaideapre66['decisionapre'] ),

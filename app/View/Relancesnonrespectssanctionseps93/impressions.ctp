@@ -34,7 +34,7 @@
 				'Personne.nomnai',
 				'Personne.prenom' => array( 'required' => false ),
 				'Personne.nir',
-				'Adresse.numcomptt' => array( 'required' => false ),
+				'Adresse.numcom' => array( 'required' => false ),
 				'Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93' ),
 			),
 			array(
@@ -90,7 +90,7 @@
 					<th><?php echo $this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom / prénom bénéficiaire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( __d( 'personne', 'Personne.nir' ), 'Personne.nir' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Ville', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Ville', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( __d( 'foyer', 'Foyer.enerreur' ), 'Foyer.enerreur' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Présence contrat ?', 'Contratinsertion.id' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de fin du dernier contrat', 'Contratinsertion.df_ci' );?></th>
@@ -134,7 +134,7 @@
 								h( $relance['Dossier']['matricule'] ),
 								h( "{$relance['Personne']['nom']} {$relance['Personne']['prenom']}" ),
 								h( $relance['Personne']['nir'] ),
-								h( $relance['Adresse']['locaadr'] ),
+								h( $relance['Adresse']['nomcom'] ),
 								array( h( @$relance['Foyer']['enerreur'] ), array( 'class' => 'foyer_enerreur '.( empty( $relance['Foyer']['enerreur'] ) ? 'empty' : null ) ) ),
 								h( empty( $relance['Contratinsertion']['id'] ) ? 'Non' : 'Oui' ),
 								$this->Locale->date( 'Locale->date', $relance['Contratinsertion']['df_ci'] ),

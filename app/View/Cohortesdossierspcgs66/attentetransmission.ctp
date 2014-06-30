@@ -51,8 +51,8 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
             'Search.Personne.nir' => array('label' => __d('personne', 'Personne.nir')),
             'Search.Dossier.matricule' => array('label' => __d('dossier', 'Dossier.matricule')),
             'Search.Dossier.numdemrsa' => array('label' => __d('dossier', 'Dossier.numdemrsa')),
-            'Search.Adresse.locaadr' => array('label' => __d('adresse', 'Adresse.locaadr')),
-            'Search.Adresse.numcomptt' => array('label' => __d('adresse', 'Adresse.numcomptt'), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true)
+            'Search.Adresse.nomcom' => array('label' => __d('adresse', 'Adresse.nomcom')),
+            'Search.Adresse.numcom' => array('label' => __d('adresse', 'Adresse.numcom'), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true)
                 ), array(
             'options' => $options
                 )
@@ -146,7 +146,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
             $array1 = array(
                 h($dossierpcg66atransmettre['Dossier']['numdemrsa']),
                 h($dossierpcg66atransmettre['Personne']['nom'] . ' ' . $dossierpcg66atransmettre['Personne']['prenom']),
-                h($dossierpcg66atransmettre['Adresse']['locaadr']),
+                h($dossierpcg66atransmettre['Adresse']['nomcom']),
                 h(date_short($dossierpcg66atransmettre['Dossierpcg66']['datereceptionpdo'])),
                 h($dossierpcg66atransmettre['Typepdo']['libelle']),
                 h($dossierpcg66atransmettre['Originepdo']['libelle']),

@@ -41,7 +41,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Prestation.rolepers',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Dossier.locked' => array( 'type' => 'boolean' ),
 				'/Personnes/view/#Personne.id#',
 			),

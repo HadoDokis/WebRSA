@@ -91,7 +91,7 @@
 					' ',
 					array(
 						Set::classicExtract( $element, 'Adresse.numvoie' ),
-						mb_convert_case( Set::enum( Set::classicExtract( $element, 'Adresse.typevoie' ), $typevoie ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
+						mb_convert_case( Set::classicExtract( $element, 'Adresse.libtypevoie' ), MB_CASE_UPPER, Configure::read( 'App.encoding' ) ),
 						Set::classicExtract( $element, 'Adresse.nomvoie' ),
 						Set::classicExtract( $element, 'Adresse.complideadr' ),
 						Set::classicExtract( $element, 'Adresse.compladr' ),
@@ -118,7 +118,7 @@
 				<td><?php echo $element['Paiementfoyer']['nomprenomtiturib'];?></td>
 				<td><?php echo $adresse;?></td>
 				<td><?php echo $element['Adresse']['codepos'];?></td>
-				<td><?php echo $element['Adresse']['locaadr'];?></td>
+				<td><?php echo $element['Adresse']['nomcom'];?></td>
 				<?php if( $destinataireAllocataire ):?>
 					<td>Allocataire</td>
 					<td><?php echo $element['Paiementfoyer']['etaban'];?></td>

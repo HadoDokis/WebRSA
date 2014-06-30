@@ -18,7 +18,7 @@
 // 		echo $this->Form->input( 'Dernierdossierallocataire.dossier_id', array( 'type' => 'hidden' ) );
 // 		echo $this->Form->input( 'Dernierdossierallocataire.personne_id', array( 'type' => 'hidden' ) );
 
-		
+
 		// Données de la personne
 		echo '<fieldset><legend>Données de la personne</legend>';
 			echo $this->Default2->subform(
@@ -43,11 +43,11 @@
 			echo $this->Default2->subform(
 				array(
 					 'Adresse.numvoie',
-					 'Adresse.typevoie' => array( 'required' => true, 'type' => 'select', 'options' => $options['typevoie'], 'empty' => true ),
+					 'Adresse.libtypevoie' => array( 'required' => true, 'type' => 'select', 'options' => $options['Adresse']['libtypevoie'], 'empty' => true ),
 					 'Adresse.nomvoie'  => array( 'required' => true ),
 					 'Adresse.complideadr',
 					 'Adresse.codepos' => array( 'required' => true),
-					 'Adresse.locaadr' => array( 'required' => true ),
+					 'Adresse.nomcom' => array( 'required' => true ),
 					 'Adresse.canton'
 				)
 			);
@@ -64,7 +64,7 @@
 				)
 			);
 		echo '</fieldset>';
-	echo '</fieldset>'; 
+	echo '</fieldset>';
 	echo $this->Xform->end( 'Save' );
 ?>
 <script type="text/javascript">
@@ -75,18 +75,18 @@
 		],
 		true
 	);
-	
+
 	// On masque les champs adresses si la case est cochée
 	observeDisableFieldsOnCheckbox(
 		'AdressePresence',
 		[
 			'AdresseNumvoie',
-			'AdresseTypevoie',
+			'AdresseLibtypevoie',
 			'AdresseNomvoie',
 			'AdresseCompladr',
 			'AdresseComplideadr',
 			'AdresseCodepos',
-			'AdresseLocaadr',
+			'AdresseNomcom',
 			'AdresseCanton'
 		],
 		false

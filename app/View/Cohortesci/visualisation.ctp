@@ -38,7 +38,7 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de début contrat', 'Contratinsertion.dd_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de fin contrat', 'Contratinsertion.df_ci' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Décision', 'Contratinsertion.decision_ci' );?></th>
@@ -82,7 +82,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.h( $contrat['Adresse']['numcomptt'] ).'</td>
+									<td>'.h( $contrat['Adresse']['numcom'] ).'</td>
 								</tr>
 								<tr>
 									<th>Rôle</th>
@@ -107,7 +107,7 @@
 						$array1 = array(
 							h( $contrat['Dossier']['numdemrsa'] ),
 							h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
-							h( $contrat['Adresse']['locaadr'] ),
+							h( $contrat['Adresse']['nomcom'] ),
 							h( date_short( $contrat['Contratinsertion']['dd_ci'] ) ),
 							h( date_short( $contrat['Contratinsertion']['df_ci'] ) ),
 							h( $decision_ci[$contrat['Contratinsertion']['decision_ci']].' '.date_short( $contrat['Contratinsertion']['datedecision'] ) ),

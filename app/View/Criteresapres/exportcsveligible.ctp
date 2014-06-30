@@ -29,7 +29,7 @@
 		$row = array(
 			Set::classicExtract( $apre, 'Dossier.numdemrsa' ),
 			Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom'),
-			Set::classicExtract( $apre, 'Adresse.locaadr' ),
+			Set::classicExtract( $apre, 'Adresse.nomcom' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $apre, 'Apre.datedemandeapre' ) ),
 			Set::enum( Set::classicExtract( $apre, 'Apre.eligibiliteapre' ), $options['eligibiliteapre'] ),
 			Set::enum( Set::classicExtract( $apre, 'Apre.etatdossierapre' ), $options['etatdossierapre'] ),

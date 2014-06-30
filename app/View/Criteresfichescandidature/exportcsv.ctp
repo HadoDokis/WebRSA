@@ -41,8 +41,8 @@
 			Set::enum( Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.positionfiche' ), $options['positionfiche'] ),
 			$this->Locale->date( 'Date::short', Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.sortiele' ) ),
 			Set::enum( Hash::get( $actioncandidat_personne, 'ActioncandidatPersonne.motifsortie_id' ), $motifssortie ),
-			$actioncandidat_personne['Adresse']['numcomptt'],
-			$actioncandidat_personne['Adresse']['locaadr'],
+			$actioncandidat_personne['Adresse']['numcom'],
+			$actioncandidat_personne['Adresse']['nomcom'],
 			Hash::get( $actioncandidat_personne, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $actioncandidat_personne, 'Referentparcours.nom_complet' ),
 		);

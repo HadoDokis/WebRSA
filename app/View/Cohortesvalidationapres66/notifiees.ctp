@@ -48,8 +48,8 @@
                         'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ) ),
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ) ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+						'Search.Adresse.nomcom' => array( 'label' => __d( 'adresse', 'Adresse.nomcom' ) ),
+						'Search.Adresse.numcom' => array( 'label' => __d( 'adresse', 'Adresse.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -143,7 +143,7 @@
                             </tr>
                             <tr>
                                 <th>Commune</th>
-                                <td>'.h( $validationapre['Adresse']['locaadr'] ).'</td>
+                                <td>'.h( $validationapre['Adresse']['nomcom'] ).'</td>
                             </tr>
 							<tr>
 								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>

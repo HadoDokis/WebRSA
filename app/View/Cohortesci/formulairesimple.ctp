@@ -26,8 +26,8 @@
 			echo $this->Form->input( 'Filtre.date_saisi_ci', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCi2' ) );
 			echo $this->Form->input( 'Filtre.date_saisi_ci_from', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCiFrom2' ) );
 			echo $this->Form->input( 'Filtre.date_saisi_ci_to', array( 'type' => 'hidden', 'id' => 'FiltreDateSaisiCiTo2' ) );
-			echo $this->Form->input( 'Filtre.locaadr', array( 'type' => 'hidden', 'id' => 'FiltreLocaadr2' ) );
-			echo $this->Form->input( 'Filtre.numcomptt', array( 'type' => 'hidden', 'id' => 'FiltreNumcomptt2' ) );
+			echo $this->Form->input( 'Filtre.nomcom', array( 'type' => 'hidden', 'id' => 'FiltreLocaadr2' ) );
+			echo $this->Form->input( 'Filtre.numcom', array( 'type' => 'hidden', 'id' => 'FiltreNumcomptt2' ) );
 			echo $this->Form->input( 'Filtre.pers_charg_suivi', array( 'type' => 'hidden', 'id' => 'FiltrePersChargSuivi2' ) );
 			echo $this->Form->input( 'Filtre.decision_ci', array( 'type' => 'hidden', 'id' => 'FiltreDecisionCi2' ) );
 			echo $this->Form->input( 'Filtre.datedecision', array( 'type' => 'hidden', 'id' => 'FiltreDatedecision2' )  );
@@ -73,7 +73,7 @@
 							</tr>
 							<tr>
 								<th>Code INSEE</th>
-								<td>'.h( $contrat['Adresse']['numcomptt'] ).'</td>
+								<td>'.h( $contrat['Adresse']['numcom'] ).'</td>
 							</tr>
 							<tr>
 								<th>Position</th>
@@ -94,7 +94,7 @@
 						$array1 = array(
 							h( $contrat['Dossier']['numdemrsa'] ),
 							h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
-							h( $contrat['Adresse']['locaadr'] ),
+							h( $contrat['Adresse']['nomcom'] ),
 							h( date_short( $contrat['Contratinsertion']['dd_ci'] ) ),
 							h( date_short( $contrat['Contratinsertion']['df_ci'] ) ),
 						);

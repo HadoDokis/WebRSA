@@ -32,8 +32,8 @@
 						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'maxlength' => 15 ),
 						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ), 'maxlength' => 15 ),
 						'Search.Historiqueetatpe.identifiantpe' => array( 'label' => __d( 'historiqueetatpe', 'Historiqueetatpe.identifiantpe' ), 'maxlength' => 11 ),
-						'Search.Adresse.locaadr' => array( 'label' => 'Commune de l\'allocataire ' ),
-						'Search.Adresse.numcomptt' => array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+						'Search.Adresse.nomcom' => array( 'label' => 'Commune de l\'allocataire ' ),
+						'Search.Adresse.numcom' => array( 'label' => 'Numéro de commune au sens INSEE ', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
 					)
 				);
 			?>
@@ -61,7 +61,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Personne.dtnai',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Orientstruct.date_valid',
 				'Typeorient.lib_type_orient',
 				'Historiqueetatpe.date',

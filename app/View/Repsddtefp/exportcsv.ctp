@@ -19,7 +19,7 @@
 			Set::classicExtract( $apre, 'Personne.nom' ).' '.Set::classicExtract( $apre, 'Personne.prenom'),
 			Set::enum( Set::classicExtract( $apre, 'Personne.sexe' ), $sexe ),
 			$age,
-			Set::classicExtract( $apre, 'Adresse.locaadr' ),
+			Set::classicExtract( $apre, 'Adresse.nomcom' ),
 			$this->Locale->money( Set::classicExtract( $apre, 'Apre.mtforfait' ) + Set::classicExtract( $apre, 'Apre.montantaides' ) ),
 
 			Set::enum( Set::classicExtract( $apre, 'Apre.activitebeneficiaire' ), $options['activitebeneficiaire'] ),
