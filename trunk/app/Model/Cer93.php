@@ -1048,13 +1048,13 @@
 			if( !empty($sujetspcds) ) {
 				$sujetspcds = unserialize( $sujetspcds );
 				foreach( $sujetspcds['Sujetcer93'] as $i => $sujetcer93pcd ) {
-					$sujetscerspcds93[$i]['Soussujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93']['Soussujetcer93'];
+					$sujetscerspcds93[$i]['Soussujetcerpcd93'] = (array)Hash::get( $sujetcer93pcd, 'Cer93Sujetcer93.Soussujetcer93' );
 					unset( $sujetcer93pcd['Cer93Sujetcer93']['Soussujetcer93'] );
 
-					$sujetscerspcds93[$i]['Valeurparsoussujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93']['Valeurparsoussujetcer93'];
+					$sujetscerspcds93[$i]['Valeurparsoussujetcerpcd93'] = (array)Hash::get( $sujetcer93pcd, 'Cer93Sujetcer93.Valeurparsoussujetcer93' );
 					unset( $sujetcer93pcd['Cer93Sujetcer93']['Valeurparsoussujetcer93'] );
 
-					$sujetscerspcds93[$i]['Cerpcd93Sujetcerpcd93'] = $sujetcer93pcd['Cer93Sujetcer93'];
+					$sujetscerspcds93[$i]['Cerpcd93Sujetcerpcd93'] = (array)Hash::get( $sujetcer93pcd, 'Cer93Sujetcer93' );
 					unset( $sujetcer93pcd['Cer93Sujetcer93'] );
 
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
@@ -1089,8 +1089,6 @@
                 $data['Cer93']['userpremierelecture_numtel'] = Hash::get( $histopremierelecture, 'User.numtel' );
             }
 
-//debug( $data );
-//die();
 			return array(
 				$data,
 				'compofoyer' => $composfoyerscers93,
