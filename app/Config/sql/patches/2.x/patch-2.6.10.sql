@@ -15,19 +15,11 @@ BEGIN;
 -- CREATE DATABASE cg58_20140306_v270 TEMPLATE cg58_20140306_v2610 ENCODING 'UTF8' OWNER webrsa;
 -- /usr/lib/postgresql/8.4/bin/psql -U webrsa -W -d cg58_20140306_v270
 -- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
--- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
-
--- DROP DATABASE IF EXISTS cg66_20140429_v270;
--- CREATE DATABASE cg66_20140429_v270 TEMPLATE cg66_20140429_v2610 ENCODING 'UTF8' OWNER webrsa;
--- /usr/lib/postgresql/8.4/bin/psql -U webrsa -W -d cg66_20140429_v270
--- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
--- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
 
 -- DROP DATABASE IF EXISTS cg66_20140627_v270;
 -- CREATE DATABASE cg66_20140627_v270 TEMPLATE cg66_20140627_v2610 ENCODING 'UTF8' OWNER webrsa;
 -- /usr/lib/postgresql/8.4/bin/psql -U webrsa -W -d cg66_20140627_v270
 -- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
--- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
 
 -- DROP DATABASE IF EXISTS cg93_20140514_v270;
 -- CREATE DATABASE cg93_20140514_v270 TEMPLATE cg93_20140514_v2610 ENCODING 'UTF8' OWNER webrsa;
@@ -35,8 +27,6 @@ BEGIN;
 -- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
 -- \i app/Config/sql/patches/2.x/patch-2.7.0-datas-cg93.sql
 -- \i app/Config/sql/patches/2.x/patch-2.7.0-transfert_data-cg93.sql
--- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
--- sudo -u www-data lib/Cake/Console/cake -app app ImportcsvCataloguespdisfps93 "/home/cbuffin/Bureau/WebRSA/2014/2.7.0/Fiche de prescription 93/20140602/20140527_Catalogue_PDI_modele_corrige.csv"
 
 -- *****************************************************************************
 
