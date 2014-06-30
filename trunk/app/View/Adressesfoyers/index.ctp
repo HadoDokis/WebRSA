@@ -26,7 +26,7 @@
 		<tbody>
 			<?php foreach( $adresses as $index => $adresse ):?>
 				<?php
-					$title = implode( ' ', array( $adresse['Adresse']['numvoie'], $adresse['Adresse']['typevoie'], $adresse['Adresse']['nomvoie'] ) );
+					$title = implode( ' ', array( $adresse['Adresse']['numvoie'], $adresse['Adresse']['libtypevoie'], $adresse['Adresse']['nomvoie'] ) );
 
 					$innerTable = '<table id="innerTable'.$index.'" class="innerTable">
 						<tbody>
@@ -47,8 +47,8 @@
 					echo $this->Xhtml->tableCells(
 						array(
 							h( !empty( $adresse['Adressefoyer']['rgadr'] ) ? $rgadr[$adresse['Adressefoyer']['rgadr']] : null ),
-							h( implode( ' ', array( $adresse['Adresse']['numvoie'], isset( $typevoie[$adresse['Adresse']['typevoie']] ) ? $typevoie[$adresse['Adresse']['typevoie']] : null, $adresse['Adresse']['nomvoie'] ) ) ),
-							h( implode( ' ', array( $adresse['Adresse']['codepos'], $adresse['Adresse']['locaadr'] ) ) ),
+							h( implode( ' ', array( $adresse['Adresse']['numvoie'], $adresse['Adresse']['libtypevoie'], $adresse['Adresse']['nomvoie'] ) ) ),
+							h( implode( ' ', array( $adresse['Adresse']['codepos'], $adresse['Adresse']['nomcom'] ) ) ),
 							$this->Xhtml->viewLink(
 								'Voir l\'adresse « '.$title.' »',
 								array( 'controller' => 'adressesfoyers', 'action' => 'view', $adresse['Adressefoyer']['id'] ),

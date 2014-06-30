@@ -115,7 +115,7 @@
 							'Personne.nom',
 							'Personne.prenom',
 							'Personne.dtnai',
-							'Adresse.locaadr',
+							'Adresse.nomcom',
 							'Passagecov58.etatdossiercov'/* => array( 'value' => $options['Passagecov58']['etatdossiercov'] )*/
 						),
 						array(

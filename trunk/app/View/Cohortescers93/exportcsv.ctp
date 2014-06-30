@@ -21,7 +21,7 @@
 
 		foreach( $cers93 as $cer93 ) {
 			$row = array(
-				$cer93['Adresse']['locaadr'],
+				$cer93['Adresse']['nomcom'],
 				date_short( $cer93['Dossier']['dtdemrsa'] ),
 				$cer93['Personne']['nom_complet_court'],
 				date_short( $cer93['Personne']['dtnai'] ),
@@ -69,7 +69,7 @@
 			}
 
 			$row = array(
-				$cer93['Adresse']['locaadr'],
+				$cer93['Adresse']['nomcom'],
 				$cer93['Personne']['nom_complet_court'],
 				$cer93['Structurereferente']['lib_struc'],
 				$cer93['Referent']['nom_complet'],

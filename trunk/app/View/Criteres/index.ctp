@@ -148,7 +148,7 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Numéro dossier', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'ouverture droits', 'Dossier.dtdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' );?></th>
 					<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
@@ -194,7 +194,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$orient['Adresse']['numcomptt'].'</td>
+									<td>'.$orient['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>
@@ -224,7 +224,7 @@
 							</tbody>
 						</table>';
 
-                        $adresseCanton = $orient['Adresse']['locaadr']."- \n".$orient['Canton']['canton'];
+                        $adresseCanton = $orient['Adresse']['nomcom']."- \n".$orient['Canton']['canton'];
 
 
 						$cells = array(

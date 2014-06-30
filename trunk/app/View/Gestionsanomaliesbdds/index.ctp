@@ -57,8 +57,8 @@
 	// Filtre sur l'adresse actuelle
 	echo '<fieldset id="SearchFiltreAdresse"><legend>Filtrer sur l\'adresse actuelle</legend>'.$this->Default2->subform(
 		array(
-			'Adresse.locaadr' => array( 'domain' => 'gestionanomaliebdd' ),
-			'Adresse.numcomptt' => array( 'domain' => 'gestionanomaliebdd' ),//FIXME: ne fonctionne pas au 66
+			'Adresse.nomcom' => array( 'domain' => 'gestionanomaliebdd' ),
+			'Adresse.numcom' => array( 'domain' => 'gestionanomaliebdd' ),//FIXME: ne fonctionne pas au 66
 		),
 		array(
 			'options' => $options,
@@ -115,7 +115,7 @@
 					.'<th>'.$this->Xpaginator2->sort( __d( 'foyer', 'Foyer.sitfam' ), 'Foyer.sitfam' ).'</th>'
 					.'<th>'.$this->Xpaginator2->sort( __d( 'gestionanomaliebdd', 'Foyer.ddsitfam' ), 'Foyer.ddsitfam' ).'</th>'
 					.'<th>'.$this->Xpaginator2->sort( __d( 'situationdossierrsa', 'Situationdossierrsa.etatdosrsa' ), 'Situationdossierrsa.etatdosrsa' ).'</th>'
-					.'<th>'.$this->Xpaginator2->sort( __d( 'adresse', 'Adresse.locaadr' ), 'Adresse.locaadr' ).'</th>'
+					.'<th>'.$this->Xpaginator2->sort( __d( 'adresse', 'Adresse.nomcom' ), 'Adresse.nomcom' ).'</th>'
 					.'<th class="action noprint" colspan="3">Problèmes détectés</th>'
 					.'<th class="action noprint">Verrouillé ?</th>'
 					.'<th class="action noprint" colspan="2">Actions</th>'
@@ -168,7 +168,7 @@
 						h( @$options['Foyer']['sitfam'][Set::classicExtract( $result, 'Foyer.sitfam' )] ),
 						$this->Type2->format( $result, 'Foyer.ddsitfam' ),
 						h( @$options['Situationdossierrsa']['etatdosrsa'][Set::classicExtract( $result, 'Situationdossierrsa.etatdosrsa' )] ),
-						h( Set::classicExtract( $result, 'Adresse.locaadr' ) ),
+						h( Set::classicExtract( $result, 'Adresse.nomcom' ) ),
 						array( $this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $result, false ), array( 'class' => 'icon' ) ),
 						array( $this->Gestionanomaliebdd->foyerPersonnesSansPrestation( $result, false ), array( 'class' => 'icon' ) ),
 						array( $this->Gestionanomaliebdd->foyerErreursDoublonsPersonnes( $result, false ), array( 'class' => 'icon' ) ),

@@ -40,7 +40,7 @@
 			$this->set( 'zonesgeographiques', $this->Canton->Zonegeographique->find( 'list' ) );
 			$this->set( 'typesvoies', $this->Option->typevoie() );
 			$this->set( 'typevoie', $this->Option->typevoie() );
-			$this->set( 'libtypevoie', ClassRegistry::init( 'Adresse' )->enum( 'libtypevoie' ) );
+			$this->set( 'libtypesvoies', ClassRegistry::init( 'Adresse' )->enum( 'libtypevoie' ) );
 		}
 
 		/**

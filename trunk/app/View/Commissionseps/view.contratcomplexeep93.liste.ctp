@@ -24,7 +24,7 @@
 			$dossiers[$theme],
 			array(
 				'Dossier.numdemrsa' => array( 'type' => 'text' ),
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Contratinsertion.num_contrat',
 				'Contratinsertion.dd_ci',
 				'Contratinsertion.duree_engag',

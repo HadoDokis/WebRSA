@@ -68,7 +68,7 @@
 			'Personne.nom',
 			'Personne.prenom',
 			'Personne.dtnai',
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Typeorient.lib_type_orient' => array( 'type' => 'text' ),
 			'Structurereferente.lib_struc' => array( 'type' => 'text' ),
 			'Structureorientante.lib_struc' => array( 'type' => 'text' ),

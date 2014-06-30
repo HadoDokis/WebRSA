@@ -12,7 +12,7 @@
 					<th><?php echo __( 'Numéro dossier' );?></th>
 					<th><?php echo __( 'Allocataire' );?></th>
 					<th><?php echo __( 'numtel' );?></th>
-					<th><?php echo __d( 'adresse', 'Adresse.locaadr' );?></th>
+					<th><?php echo __d( 'adresse', 'Adresse.nomcom' );?></th>
 					<th><?php echo __( 'Date d\'ouverture droits' );?></th>
 					<th><?php echo __( 'Date d\'orientation' );?></th>
 					<th><?php echo __( 'Structure référente' );?></th>
@@ -22,7 +22,7 @@
 						<td><?php echo $orient['Dossier']['numdemrsa'];?></td>
 						<td><?php echo $orient['Personne']['qual'].' '.$orient['Personne']['nom'].' '.$orient['Personne']['prenom'];?></td>
 						<td><?php echo $orient['ModeContact']['numtel'];?></td>
-						<td><?php echo $orient['Adresse']['locaadr'];?></td>
+						<td><?php echo $orient['Adresse']['nomcom'];?></td>
 						<td><?php echo date_short( $orient['Dossier']['dtdemrsa'] );?></td>
 						<td><?php echo date_short( $orient['Orientstruct']['date_propo'] );?></td>
 						<td><?php echo isset( $sr[$orient['Orientstruct']['structurereferente_id']] ) ? $sr[$orient['Orientstruct']['structurereferente_id']] : null;?></td>

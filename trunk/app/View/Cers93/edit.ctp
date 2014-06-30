@@ -149,7 +149,7 @@
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $this->request->data, 'Cer93.dtnai' ) );?>
                 <br />
                 <strong>Adresse : </strong>
-				<br /><?php echo nl2br( Set::classicExtract( $this->request->data, 'Cer93.adresse' ) ).'<br />'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.locaadr' );?>
+				<br /><?php echo nl2br( Set::classicExtract( $this->request->data, 'Cer93.adresse' ) ).'<br />'.Set::classicExtract( $this->request->data, 'Cer93.codepos' ).' '.Set::classicExtract( $this->request->data, 'Cer93.nomcom' );?>
             </td>
             <td class="mediumSize noborder">
                 <!-- <strong>N° Service instructeur : </strong>
@@ -244,7 +244,7 @@
 			'Cer93.dtnai' => array( 'type' => 'hidden' ),
 			'Cer93.adresse' => array( 'type' => 'hidden' ),
 			'Cer93.codepos' => array( 'type' => 'hidden' ),
-			'Cer93.locaadr' => array( 'type' => 'hidden' ),
+			'Cer93.nomcom' => array( 'type' => 'hidden' ),
 			'Cer93.sitfam' => array( 'type' => 'hidden' ),
 			'Cer93.natlog' => array( 'type' => 'hidden' ),
 			'Cer93.prevupcd' => array( 'type' => 'hidden' ),

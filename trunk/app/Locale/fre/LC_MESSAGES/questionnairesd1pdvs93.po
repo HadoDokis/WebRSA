@@ -142,7 +142,7 @@ msgstr "Motif statut Pôle Emploi"
 msgid "Situationallocataire.numvoie"
 msgstr "Numéro de voie"
 
-msgid "Situationallocataire.typevoie"
+msgid "Situationallocataire.libtypevoie"
 msgstr "Type de voie"
 
 msgid "Situationallocataire.nomvoie"
@@ -154,16 +154,13 @@ msgstr "Complément identification adresse"
 msgid "Situationallocataire.compladr"
 msgstr "Complément d'adresse"
 
-msgid "Situationallocataire.numcomptt"
+msgid "Situationallocataire.numcom"
 msgstr "Numéro de commune sens INSEE"
-
-msgid "Situationallocataire.numcomrat"
-msgstr "Numéro de commune"
 
 msgid "Situationallocataire.codepos"
 msgstr "Code postal"
 
-msgid "Situationallocataire.locaadr"
+msgid "Situationallocataire.nomcom"
 msgstr "Nom de commune"
 
 msgid "Situationallocataire.matricule"

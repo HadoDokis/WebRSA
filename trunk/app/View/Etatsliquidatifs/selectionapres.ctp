@@ -50,7 +50,7 @@
 				Set::classicExtract( $apre, 'Apre.nbenf12' ),
 				Set::classicExtract( $apre, 'Personne.nom' ),
 				Set::classicExtract( $apre, 'Personne.prenom' ),
-				Set::classicExtract( $apre, 'Adresse.locaadr' ),
+				Set::classicExtract( $apre, 'Adresse.nomcom' ),
 				$this->Xform->checkbox( "Apre.Apre.$i", array( 'value' => $apre_id, 'checked' => ( in_array( $apre_id, $this->request->data['Apre']['Apre'] ) ), 'class' => 'checkbox' ) )
 			);
 		}

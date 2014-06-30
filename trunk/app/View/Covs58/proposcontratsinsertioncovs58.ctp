@@ -3,7 +3,7 @@
 
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nir' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nom' ) );
-	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.locaadr' ) );
+	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.nomcom' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'referent', 'Referent.nom_complet' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'dossiercov58', 'Dossiercov58.decisioncov' ) );
 	echo $this->Xhtml->tag( 'th', __d( Inflector::underscore(Inflector::classify($theme)), $theme.'.datevalidation' ) );
@@ -18,7 +18,7 @@
 			array(
 				$dossiercov['Personne']['nir'],
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['locaadr'] ) ),
+				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['libtypevoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomcom'] ) ),
 				implode( ' ', array( $dossiercov['Propocontratinsertioncov58']['Referent']['qual'], $dossiercov['Propocontratinsertioncov58']['Referent']['nom'], $dossiercov['Propocontratinsertioncov58']['Referent']['prenom'] ) ),
 				$this->Form->input( "{$theme}.{$i}.decisioncov", array( 'type' => 'select', 'options' => $decisionscovs, 'label' => false, 'empty' => true ) ),
 				$this->Form->input( "{$theme}.{$i}.datevalidation", array( 'type' => 'date', 'selected' => $cov58['Cov58']['datecommission'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),

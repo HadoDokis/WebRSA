@@ -16,11 +16,11 @@
 
 	echo $this->Form->input( 'Canton.canton', array( 'label' => required( 'Nom du canton' ) ) );
 	echo $this->Form->input( 'Canton.zonegeographique_id', array( 'label' => required( 'Zone géographique associée' ), 'empty' => true ) );
-	echo $this->Form->input( 'Canton.typevoie', array( 'label' => 'Type de voie', 'type' => 'select', 'options' => $typesvoies, 'empty' => '' ) );
+	echo $this->Form->input( 'Canton.libtypevoie', array( 'label' => 'Type de voie', 'type' => 'select', 'options' => $libtypesvoies, 'empty' => '' ) );
 	echo $this->Form->input( 'Canton.nomvoie', array( 'label' => 'Nom de voie' ) );
-	echo $this->Form->input( 'Canton.locaadr', array( 'label' => required( 'Localité' ) ) );
+	echo $this->Form->input( 'Canton.nomcom', array( 'label' => required( 'Localité' ) ) );
 	echo $this->Form->input( 'Canton.codepos', array( 'label' => 'Code postal' ) );
-	echo $this->Form->input( 'Canton.numcomptt', array( 'label' => required( 'Numéro de commune au sens INSEE' ) ) );
+	echo $this->Form->input( 'Canton.numcom', array( 'label' => required( 'Numéro de commune au sens INSEE' ) ) );
 
 	echo '<div class="submit">';
 		echo $this->Xform->submit( 'Enregistrer', array( 'div' => false ) );

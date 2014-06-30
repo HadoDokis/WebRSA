@@ -42,7 +42,7 @@
 			$nbmoispardefaut = array();
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				echo $this->Form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
-				echo $this->Form->input( 'Adresse.locaadr', array( 'label' => 'Commune', 'type' => 'text' ) );
+				echo $this->Form->input( 'Adresse.nomcom', array( 'label' => 'Commune', 'type' => 'text' ) );
 				echo $this->Form->input( 'Filtre.structurereferente_id', array( 'label' => 'Structure référente', 'type' => 'select', 'options' => $structs, 'empty' => true ) );
 				echo $this->Form->input( 'Filtre.referent_id', array( 'label' => 'Référent', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
 

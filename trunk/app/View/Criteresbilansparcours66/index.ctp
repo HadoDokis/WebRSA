@@ -114,11 +114,11 @@
 					<tbody>
 						<tr>
 							<th>Code INSEE</th>
-							<td>'.$bilanparcour66['Adresse']['numcomptt'].'</td>
+							<td>'.$bilanparcour66['Adresse']['numcom'].'</td>
 						</tr>
 						<tr>
 							<th>Localité</th>
-							<td>'.$bilanparcour66['Adresse']['locaadr'].'</td>
+							<td>'.$bilanparcour66['Adresse']['nomcom'].'</td>
 						</tr>
 						<tr>
 							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>

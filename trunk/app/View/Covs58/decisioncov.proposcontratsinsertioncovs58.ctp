@@ -2,7 +2,7 @@
 	echo '<table><thead><tr>';
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nir' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'personne', 'Personne.nom' ) );
-	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.locaadr' ) );
+	echo $this->Xhtml->tag( 'th', __d( 'adresse', 'Adresse.nomcom' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'referent', 'Referent.nom_complet' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.dd_ci' ) );
 	echo $this->Xhtml->tag( 'th', __d( 'propocontratinsertioncov58', 'Propocontratinsertioncov58.duree_engag' ) );
@@ -27,7 +27,7 @@
 			array(
 				$dossiercov['Personne']['nir'],
 				implode( ' ', array( $dossiercov['Personne']['qual'], $dossiercov['Personne']['nom'], $dossiercov['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['locaadr'] ) ),
+				implode( ' ', array( $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['libtypevoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['codepos'], $dossiercov['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomcom'] ) ),
 				implode( ' ', array( @$dossiercov['Propocontratinsertioncov58']['Referent']['qual'], @$dossiercov['Propocontratinsertioncov58']['Referent']['nom'], @$dossiercov['Propocontratinsertioncov58']['Referent']['prenom'] ) ),
 
 

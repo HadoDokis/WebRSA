@@ -98,7 +98,7 @@
 							$dataAdresse = array(
 								'Adresse' => array(
 									'numvoie'	=> '25',
-									'typevoie'	=> 'R',
+									'libtypevoie'	=> 'RUE',
 									'nomvoie'	=> 'petite la monnaie',
 									'codepos'	=> '66000',
 									'locaadr'	=> 'PERPIGNAN CEDEX',

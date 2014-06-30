@@ -69,8 +69,8 @@
 						'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ) ),
 						'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
 						'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ) ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ),
+						'Search.Adresse.nomcom' => array( 'label' => __d( 'adresse', 'Adresse.nomcom' ) ),
+						'Search.Adresse.numcom' => array( 'label' => __d( 'adresse', 'Adresse.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ),
 						'Search.Nonoriente66.user_id' => array( 'label' => 'Utilisateur ayant réalisé l\'orientation', 'type' => 'select', 'options' => $users, 'empty' => true )
 					),
                     array(
@@ -147,7 +147,7 @@
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( $etatdosrsa[$cohortenonoriente66['Situationdossierrsa']['etatdosrsa']] ),
-						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						h( $cohortenonoriente66['Adresse']['nomcom'] ),
 						h( $cohortenonoriente66['Typeorient']['lib_type_orient'].' - '.$cohortenonoriente66['Structurereferente']['lib_struc'] ),
 						$this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$this->Xhtml->viewLink(

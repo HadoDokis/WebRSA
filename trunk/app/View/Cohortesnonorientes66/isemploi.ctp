@@ -70,8 +70,8 @@
                         'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ) ),
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ) ),
-						'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
-						'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+						'Search.Adresse.nomcom' => array( 'label' => __d( 'adresse', 'Adresse.nomcom' ) ),
+						'Search.Adresse.numcom' => array( 'label' => __d( 'adresse', 'Adresse.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -150,14 +150,14 @@
 						h( date_short( $cohortenonoriente66['Dossier']['dtdemrsa'] ) ),
 						h( $cohortenonoriente66['Personne']['nom'].' '.$cohortenonoriente66['Personne']['prenom'] ),
 						h( Set::classicExtract( $etatdosrsa, Set::classicExtract( $cohortenonoriente66, 'Situationdossierrsa.etatdosrsa' ) ) ),
-						h( $cohortenonoriente66['Adresse']['locaadr'] ),
+						h( $cohortenonoriente66['Adresse']['nomcom'] ),
 						$this->Gestionanomaliebdd->foyerErreursPrestationsAllocataires( $cohortenonoriente66, false ),
 						$this->Xform->input( 'Orientstruct.'.$index.'.atraiter', array( 'label' => false, 'legend' => false, 'type' => 'checkbox', 'class' => 'atraiter' ) ),
 						$this->Xform->input( 'Orientstruct.'.$index.'.typeorient_id', array( 'label' => false, 'type' => 'select', 'options' => $typesOrient/*, 'empty' => true*/ ) ).
 						$this->Xform->input( 'Orientstruct.'.$index.'.origine', array( 'label' => false, 'type' => 'hidden', 'value' => 'cohorte' ) ).
 						$this->Xform->input( 'Orientstruct.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Orientstruct']['id'] ) ).
 						$this->Xform->input( 'Orientstruct.'.$index.'.dossier_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Foyer']['dossier_id'] ) ).
-						$this->Xform->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Adresse']['numcomptt'] ) ).
+						$this->Xform->input( 'Orientstruct.'.$index.'.codeinsee', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Adresse']['numcom'] ) ).
 						$this->Xform->input( 'Orientstruct.'.$index.'.personne_id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Personne']['id'] ) ).
 						$this->Xform->input( 'Orientstruct.'.$index.'.statut_orient', array( 'label' => false, 'type' => 'hidden', 'value' => 'Orienté' ) ).
 						$this->Xform->input( 'Nonoriente66.'.$index.'.id', array( 'label' => false, 'type' => 'hidden', 'value' => $cohortenonoriente66['Nonoriente66']['id'] ) ).

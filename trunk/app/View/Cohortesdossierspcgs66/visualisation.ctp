@@ -51,8 +51,8 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                 'Search.Personne.nir' => array('label' => __d('personne', 'Personne.nir')),
                 'Search.Dossier.matricule' => array('label' => __d('dossier', 'Dossier.matricule')),
                 'Search.Dossier.numdemrsa' => array('label' => __d('dossier', 'Dossier.numdemrsa')),
-                'Search.Adresse.locaadr' => array('label' => __d('adresse', 'Adresse.locaadr')),
-                'Search.Adresse.numcomptt' => array('label' => __d('adresse', 'Adresse.numcomptt'), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true)
+                'Search.Adresse.nomcom' => array('label' => __d('adresse', 'Adresse.nomcom')),
+                'Search.Adresse.numcom' => array('label' => __d('adresse', 'Adresse.numcom'), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true)
             ),
             array(
                 'options' => $options
@@ -149,7 +149,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
                     array(
                 h($dossierpcg66affecte['Dossier']['numdemrsa']),
                 h($dossierpcg66affecte['Personne']['nom'] . ' ' . $dossierpcg66affecte['Personne']['prenom']),
-                h($dossierpcg66affecte['Adresse']['locaadr']),
+                h($dossierpcg66affecte['Adresse']['nomcom']),
                 h(date_short($dossierpcg66affecte['Dossierpcg66']['datereceptionpdo'])),
                 h($dossierpcg66affecte['Typepdo']['libelle']),
                 h($dossierpcg66affecte['Originepdo']['libelle']),

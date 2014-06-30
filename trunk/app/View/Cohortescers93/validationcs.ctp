@@ -91,7 +91,7 @@
 						</tr>
 						<tr>
 							<th>Adresse</th>
-							<td>'.$cer93['Adresse']['numvoie'].' '.Set::enum( $cer93['Adresse']['typevoie'], $options['typevoie'] ).' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['locaadr'].'</td>
+							<td>'.$cer93['Adresse']['numvoie'].' '.$cer93['Adresse']['libtypevoie'].' '.$cer93['Adresse']['nomvoie'].' '.$cer93['Adresse']['codepos'].' '.$cer93['Adresse']['nomcom'].'</td>
 						</tr>
 					</tbody>
 				</table>';
@@ -105,7 +105,7 @@
 					$this->Xhtml->link( $cer93['Dossier']['numdemrsa'], array( 'controller' => 'dossiers', 'action' => 'view', $cer93['Dossier']['id'] ), array( 'class' => 'external' ) ),// ALAQTASH
 					$cer93['Personne']['nom_complet_court'],
 					$cer93['Dossier']['matricule'],
-					$cer93['Adresse']['locaadr'],
+					$cer93['Adresse']['nomcom'],
 					date_short( $cer93['Contratinsertion']['created'] ),
 					date_short( $cer93['Contratinsertion']['dd_ci'] ),
 					$this->Xhtml->boolean( $cer93['NvTransfertpdv93']['encoursvalidation'] ),

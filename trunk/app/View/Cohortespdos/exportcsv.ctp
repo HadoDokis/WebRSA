@@ -25,7 +25,7 @@
 			$this->Locale->date( 'Date::short', Set::classicExtract( $pdo, 'Dossier.dtdemrsa' ) ),
 			Set::classicExtract( $pdo, 'Personne.nom' ).' '.Set::classicExtract( $pdo, 'Personne.prenom'),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $pdo, 'Personne.dtnai' ) ),
-			Set::classicExtract( $pdo, 'Adresse.locaadr' ),
+			Set::classicExtract( $pdo, 'Adresse.nomcom' ),
 			Set::enum( Set::classicExtract( $pdo, 'Propopdo.typepdo_id' ), $typepdo ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $pdo, 'Propopdo.datedecisionpdo' ) ),
 			Set::enum( Set::classicExtract( $pdo, 'Propopdo.decisionpdo_id' ), $decisionpdo ),

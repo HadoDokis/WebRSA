@@ -62,7 +62,7 @@
                 <strong>Date de naissance : </strong><?php echo date_short( Set::classicExtract( $contratinsertion, 'Cer93.dtnai' ) );?>
                 <br />
                 <strong>Adresse : </strong>
-				<br /><?php echo nl2br( Set::classicExtract( $contratinsertion, 'Cer93.adresse' ) ).'<br \>'.Set::classicExtract( $contratinsertion, 'Cer93.codepos' ).' '.Set::classicExtract( $contratinsertion, 'Cer93.locaadr' );?>
+				<br /><?php echo nl2br( Set::classicExtract( $contratinsertion, 'Cer93.adresse' ) ).'<br \>'.Set::classicExtract( $contratinsertion, 'Cer93.codepos' ).' '.Set::classicExtract( $contratinsertion, 'Cer93.nomcom' );?>
             </td>
             <td class="mediumSize noborder">
                 <strong>N° Service instructeur : </strong>

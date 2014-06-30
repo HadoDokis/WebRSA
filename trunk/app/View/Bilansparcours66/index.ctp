@@ -10,7 +10,7 @@
 				'Bilanparcours66.created' => array( 'type' => 'date' ),
 				// Personne
 				'Personne.nom_complet' => array( 'type' => 'text' ),
-				'Orientstruct.Personne.Foyer.Adressefoyer.0.Adresse.locaadr' => array( 'type' => 'text' ),
+				'Orientstruct.Personne.Foyer.Adressefoyer.0.Adresse.nomcom' => array( 'type' => 'text' ),
 				// Orientation
 				'Orientstruct.date_valid',
 				'Orientstruct.Typeorient.lib_type_orient',

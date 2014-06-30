@@ -12,7 +12,7 @@
 
 	echo $this->Form->input( 'Repddtefp.annee', array( 'label' => 'Année', 'type' => 'select', 'options' => array_range( date( 'Y' ), 2008 ), 'empty' => true ) );
 	echo $this->Form->input( 'Repddtefp.semestre', array( 'label' => 'Semestre', 'type' => 'select', 'options' => array_range( 1, 2 ) ) );
-	echo $this->Form->input( 'Repddtefp.numcomptt', array( 'label' => __d( 'apre', 'Repddtefp.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
+	echo $this->Form->input( 'Repddtefp.numcom', array( 'label' => __d( 'apre', 'Repddtefp.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee,  'empty' => true ) );
 
 	echo $this->Form->submit( 'Calculer' );
 	echo $this->Form->end();
@@ -26,7 +26,7 @@
 	if( !empty( $this->request->data ) && isset( $listeSexe ) && isset( $listeAge ) ) {
 		$annee = Set::extract( $this->request->data, 'Repddtefp.annee' );
 		$semestre = Set::extract( $this->request->data, 'Repddtefp.semestre' );
-		$ville = Set::extract( $this->request->data, 'Repddtefp.numcomptt' );
+		$ville = Set::extract( $this->request->data, 'Repddtefp.numcom' );
 
 		//**************************************************************************
 

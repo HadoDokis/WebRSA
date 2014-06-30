@@ -70,7 +70,7 @@
 			<?php echo $this->Xform->enum( 'Filtre.activitebeneficiaire', array(  'label' => 'Activité du bénéficiaire', 'options' => $options['activitebeneficiaire'] ) );?>
 			<?php echo $this->Xform->enum( 'Filtre.natureaidesapres', array(  'label' => 'Nature de l\'aide', 'options' => $natureAidesApres, 'empty' => true ) );?>
 
-			<?php echo $this->Xform->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+			<?php echo $this->Xform->input( 'Filtre.numcom', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 			<?php
 				if( Configure::read( 'CG.cantons' ) ) {
 					echo $this->Xform->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
@@ -91,7 +91,7 @@
 			</fieldset>
 
 			<?php echo $this->Xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => $options['etatdossierapre'] ) );?>
-			<?php echo $this->Xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+			<?php echo $this->Xform->input( 'Filtre.nomcom', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
 	</fieldset>
 
 	<?php echo $this->Search->paginationNombretotal(); ?>
@@ -116,7 +116,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Montant', 'Apre.mtforfait' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nb enfant - 12', 'Apre.nbenf12' );?></th>
@@ -142,7 +142,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$apre['Adresse']['numcomptt'].'</td>
+									<td>'.$apre['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>
@@ -164,7 +164,7 @@
 								h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
 								h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
 								h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-								h( $apre['Adresse']['locaadr'] ),
+								h( $apre['Adresse']['nomcom'] ),
 								h( $this->Locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
 								h( $this->Locale->number( Set::classicExtract( $apre, 'Apre.mtforfait' ) ) ),
 								h( $this->Locale->number( Set::classicExtract( $apre, 'Apre.nbenf12' ) ) ),

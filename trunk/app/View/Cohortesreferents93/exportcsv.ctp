@@ -33,7 +33,7 @@
 
 	foreach( $personnes_referents as $personne_referent ) {
 		$row = array(
-			$personne_referent['Adresse']['locaadr'],
+			$personne_referent['Adresse']['nomcom'],
 			date_short( $personne_referent['Dossier']['dtdemrsa'] ),
 			date_short( $personne_referent['Orientstruct']['date_valid'] ),
 			date_short( $personne_referent['Personne']['dtnai'] ),
@@ -56,7 +56,7 @@
 			Set::enum( $personne_referent['Prestation']['rolepers'], $options['rolepers'] ),
 			Set::classicExtract( $options['etatdosrsa'], $personne_referent['Situationdossierrsa']['etatdosrsa'] ),
 			$this->Xhtml->boolean( $personne_referent['Dsp']['exists'], false ),
-			$personne_referent['Adresse']['numvoie'].' '.Set::enum( $personne_referent['Adresse']['typevoie'], $options['typevoie'] ).' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['locaadr'],
+			$personne_referent['Adresse']['numvoie'].' '.$personne_referent['Adresse']['libtypevoie'].' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['nomcom'],
 			$this->Xhtml->boolean( $personne_referent['Contratinsertion']['interne'], false ),
 		);
 		$this->Csv->addRow( $row );

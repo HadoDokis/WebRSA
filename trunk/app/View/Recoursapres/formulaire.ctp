@@ -32,7 +32,7 @@
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date demande APRE', 'Apre.datedemandeapre' );?></th>
 					<th>Décision comité examen</th>
 					<th><?php echo $this->Xpaginator->sort( 'Date décision comité', 'Comiteapre.datecomite' );?></th>
@@ -78,7 +78,7 @@
 						array(
 							h( Set::classicExtract( $recours, 'Apre.numeroapre') ),
 							h( Set::classicExtract( $recours, 'Personne.qual').' '.Set::classicExtract( $recours, 'Personne.nom').' '.Set::classicExtract( $recours, 'Personne.prenom') ),
-							h( Set::classicExtract( $recours, 'Adresse.locaadr') ),
+							h( Set::classicExtract( $recours, 'Adresse.nomcom') ),
 							h( $this->Locale->date( 'Date::short', Set::extract( $recours, 'Apre.datedemandeapre' ) ) ),
 							h( Set::enum( Set::classicExtract( $recours, 'ApreComiteapre.decisioncomite'), $options['decisioncomite'] ) ),
 							h( $this->Locale->date( 'Date::short', Set::extract( $recours, 'Comiteapre.datecomite' ) ) ),

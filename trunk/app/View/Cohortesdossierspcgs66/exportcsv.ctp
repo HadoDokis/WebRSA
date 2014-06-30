@@ -21,7 +21,7 @@
 		$row = array(
 			$dossierpcg66['Dossier']['numdemrsa'],
 			$dossierpcg66['Personne']['nom'].' '.$dossierpcg66['Personne']['prenom'],
-			$dossierpcg66['Adresse']['locaadr'],
+			$dossierpcg66['Adresse']['nomcom'],
 			date_short( $dossierpcg66['Dossierpcg66']['datereceptionpdo'] ),
 			$dossierpcg66['Typepdo']['libelle'],
 			$dossierpcg66['Originepdo']['libelle'],

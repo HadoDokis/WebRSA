@@ -35,7 +35,7 @@ echo '<table id="Decisionreorientationep93" class="tooltips"><thead>
 		echo $this->Xhtml->tableCells(
 			array(
 				implode( ' ', array( $dossierep['Personne']['qual'], $dossierep['Personne']['nom'], $dossierep['Personne']['prenom'] ) ),
-				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], isset( $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] ) ? $typevoie[$dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['typevoie']] : null, $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
+				implode( ' ', array( $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['numvoie'], $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['libtypevoie'], $dossierep['Personne']['Foyer']['Adressefoyer'][0]['Adresse']['nomvoie'] ) ),
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Personne']['dtnai'] ),
 				$this->Locale->date( __( 'Locale->date' ), $dossierep['Dossierep']['created'] ),
 				$dossierep['Reorientationep93']['Motifreorientep93']['name'],

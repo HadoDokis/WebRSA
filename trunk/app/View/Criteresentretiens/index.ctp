@@ -87,7 +87,7 @@
             <tr>
                 <th><?php echo $this->Xpaginator->sort( 'Date de l\'entretien', 'Entretien.dateentretien' );?></th>
                 <th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
                 <th><?php echo $this->Xpaginator->sort( 'Structure référente', 'Structurereferente.lib_struc' );?></th>
                 <th><?php echo $this->Xpaginator->sort( 'Référent', 'Referent.nom' );?></th>
                 <th><?php echo $this->Xpaginator->sort( 'Type d\'entretien', 'Entretien.typeentretien' );?></th>
@@ -119,7 +119,7 @@
                             </tr>
                             <tr>
                                 <th>Code INSEE</th>
-                                <td>'.h( $entretien['Adresse']['numcomptt'] ).'</td>
+                                <td>'.h( $entretien['Adresse']['numcom'] ).'</td>
                             </tr>
 							<tr>
 								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
@@ -137,7 +137,7 @@
                             array(
                                 h( date_short(  $entretien['Entretien']['dateentretien'] ) ),
                                 h( $entretien['Personne']['qual'].' '.$entretien['Personne']['nom'].' '.$entretien['Personne']['prenom'] ),
-                                h( $entretien['Adresse']['locaadr'] ),
+                                h( $entretien['Adresse']['nomcom'] ),
                                 h( $entretien['Structurereferente']['lib_struc'] ),
                                 h( $entretien['Referent']['qual'].' '.$entretien['Referent']['nom'].' '.$entretien['Referent']['prenom'] ),
                                 h( Set::enum( $entretien['Entretien']['typeentretien'], $options['typeentretien'] ) ),

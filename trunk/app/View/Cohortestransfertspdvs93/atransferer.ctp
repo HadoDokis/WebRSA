@@ -70,14 +70,14 @@
 					array(
 						$hidden.h( $result['Dossier']['numdemrsa'] ),
 						h( $result['Dossier']['matricule'] ),
-						h( "{$result['Adresse']['codepos']} {$result['Adresse']['locaadr']}" ),
+						h( "{$result['Adresse']['codepos']} {$result['Adresse']['nomcom']}" ),
 						h( "{$options['qual'][$result['Personne']['qual']]} {$result['Personne']['nom']} {$result['Personne']['prenom']}" ),
 						$options['rolepers'][$result['Prestation']['rolepers']],
 						Set::enum( $result['Cer93']['positioncer'], $options['Cer93']['positioncer'] ),
 						$result['Structurereferente']['lib_struc'],
 						$this->Form->input( "Transfertpdv93.{$index}.action", array( 'type' => 'radio', 'options' => $options['action'], 'fieldset' => false, 'legend' => false ) ),
 //						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
-						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Adresse']['numcomptt']][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
+						$this->Form->input( "Transfertpdv93.{$index}.structurereferente_dst_id", array( 'type' => 'select', 'empty' => true, 'options' => $options['structuresreferentes'][$result['Adresse']['numcom']][$result['Orientstruct']['typeorient_id']], 'label' => false, 'div' => false ) ),
 						$this->Xhtml->viewLink(
 							'Voir',
 							array( 'controller' => 'cers93', 'action' => 'index', $result['Personne']['id'] ),

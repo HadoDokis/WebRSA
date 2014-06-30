@@ -560,7 +560,7 @@ msgstr "Total"
 msgid "Repddtefp.nbrTotalAgesInstruits"
 msgstr "Total"
 
-msgid "Repddtefp.numcomptt"
+msgid "Repddtefp.numcom"
 msgstr "Ville du bénéficiaire"
 
 msgid "Repddtefp.nbr0_24Instruits"

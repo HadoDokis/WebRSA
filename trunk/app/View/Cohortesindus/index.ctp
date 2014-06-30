@@ -110,7 +110,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.h( $indu['Adresse']['numcomptt'] ).'</td>
+									<td>'.h( $indu['Adresse']['numcom'] ).'</td>
 								</tr>
 								<tr>
 									<th>Rôle</th>

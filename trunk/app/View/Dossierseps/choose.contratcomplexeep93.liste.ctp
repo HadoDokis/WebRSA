@@ -8,7 +8,7 @@
 		$dossiers[$theme],
 		array(
 			'Dossier.numdemrsa',
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',

@@ -106,7 +106,7 @@ msgstr "Rôle de l'allocataire"
 msgid "Personne.nom_complet"
 msgstr "Allocataire"
 
-msgid "Adresse.locaadr"
+msgid "Adresse.nomcom"
 msgstr "Commune"
 
 msgid "Actionfp93.name"
@@ -237,7 +237,7 @@ msgstr "Adresse"
 msgid "Instantanedonneesfp93.benef_codepos"
 msgstr "Code postal"
 
-msgid "Instantanedonneesfp93.benef_locaadr"
+msgid "Instantanedonneesfp93.benef_nomcom"
 msgstr "Ville"
 
 msgid "Instantanedonneesfp93.benef_tel_fixe"

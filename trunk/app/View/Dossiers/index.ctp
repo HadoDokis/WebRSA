@@ -152,7 +152,7 @@
 					<?php if( Configure::read( 'Cg.departement' ) == 66 ):?>
 						<th>Adresse de l'allocataire</th>
 					<?php else:?>
-						<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+						<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<?php endif;?>
 
 					<th class="action noprint">Actions</th>
@@ -185,7 +185,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$dossier['Adresse']['numcomptt'].'</td>
+									<td>'.$dossier['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>Rôle</th>
@@ -217,7 +217,7 @@
 										implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
 									)
 								),
-								h( Set::extract(  $dossier, 'Adresse.locaadr' ) ),
+								h( Set::extract(  $dossier, 'Adresse.nomcom' ) ),
 							);
 						}
 						else {
@@ -234,7 +234,7 @@
 										implode( ' ', array( $dossier['Personne']['prenom'], $dossier['Personne']['prenom2'], $dossier['Personne']['prenom3'] ) )
 									)
 								),
-								nl2br( h( Set::classicExtract(  $dossier, 'Adresse.numvoie' ).' '.value(  $typevoie, Set::classicExtract( $dossier, 'Adresse.typevoie' ) ).' '.Set::classicExtract(  $dossier, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $dossier, 'Adresse.codepos' ).' '.Set::classicExtract(  $dossier, 'Adresse.locaadr' ) ) )
+								nl2br( h( Set::classicExtract(  $dossier, 'Adresse.numvoie' ).' '.Set::classicExtract( $dossier, 'Adresse.libtypevoie' ).' '.Set::classicExtract(  $dossier, 'Adresse.nomvoie' )."\n".Set::classicExtract(  $dossier, 'Adresse.codepos' ).' '.Set::classicExtract(  $dossier, 'Adresse.nomcom' ) ) )
 							);
 						}
 

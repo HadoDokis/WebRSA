@@ -39,7 +39,7 @@ msgstr "Prénom"
 msgid "Situationdossierrsa.etatdosrsa"
 msgstr "Etat du droit"
 
-msgid "Adresse.locaadr"
+msgid "Adresse.nomcom"
 msgstr "Commune"
 
 msgid "Dossier.locked"
@@ -63,7 +63,7 @@ msgstr "Prénom"
 msgid "Situationdossierrsa2.etatdosrsa"
 msgstr "Etat du droit"
 
-msgid "Adresse2.locaadr"
+msgid "Adresse2.nomcom"
 msgstr "Commune"
 
 msgid "Dossier2.locked"

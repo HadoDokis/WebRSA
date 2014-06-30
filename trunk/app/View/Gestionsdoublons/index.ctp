@@ -61,7 +61,7 @@
 				'Demandeur.nom',
 				'Demandeur.prenom',
 				'Situationdossierrsa.etatdosrsa',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Dossier.locked' => array( 'type' => 'boolean' ),
 				'Dossier2.numdemrsa',
 				'Dossier2.dtdemrsa' => array( 'type' => 'date' ),
@@ -69,7 +69,7 @@
 				'Demandeur2.nom',
 				'Demandeur2.prenom',
 				'Situationdossierrsa2.etatdosrsa',
-				'Adresse2.locaadr',
+				'Adresse2.nomcom',
 				'Dossier2.locked' => array( 'type' => 'boolean' ),
 				'/Personnes/index/#Foyer.id#' => array(
 					'disabled' => '( !\''.$this->Permissions->check( 'Personnes', 'index' ).'\' )',

@@ -51,9 +51,9 @@
 				echo $this->Form->input( 'Canton.canton', array( 'label' => 'Canton', 'type' => 'select', 'options' => $cantons, 'empty' => true ) );
 			}
 		?>
-		<?php echo $this->Form->input( 'Filtre.locaadr', array( 'label' => __d( 'adresse', 'Adresse.locaadr' ), 'type' => 'text' ) );?>
-		<!-- <?php echo $this->Form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
-		<?php echo $this->Form->input( 'Filtre.numcomptt', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
+		<?php echo $this->Form->input( 'Filtre.nomcom', array( 'label' => __d( 'adresse', 'Adresse.nomcom' ), 'type' => 'text' ) );?>
+		<!-- <?php echo $this->Form->input( 'Filtre.numcom', array( 'label' => 'Numéro de commune au sens INSEE' ) );?> -->
+		<?php echo $this->Form->input( 'Filtre.numcom', array( 'label' => 'Numéro de commune au sens INSEE', 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Filtre.codepos', array( 'label' => __d( 'adresse', 'Adresse.codepos' ), 'type' => 'text', 'maxlength' => 5 ) );?>
 	</fieldset>
 

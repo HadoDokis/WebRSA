@@ -40,7 +40,7 @@
 			Set::classicExtract( $nonoriente66, 'Personne.prenom' ),
 			date_short( Set::classicExtract( $nonoriente66, 'Personne.dtnai' ) ),
 			$nonoriente66['Foyer']['nbenfants'],
-			Set::classicExtract( $nonoriente66, 'Adresse.locaadr' ),
+			Set::classicExtract( $nonoriente66, 'Adresse.nomcom' ),
 			Set::classicExtract( $nonoriente66, 'Canton.canton' ),
 			$structureLieeAdresse, // MSP
 			date_short( Set::classicExtract( $nonoriente66, 'Dossier.dtdemrsa' ) ),

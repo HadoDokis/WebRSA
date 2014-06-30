@@ -54,10 +54,10 @@ msgstr "Situation familiale"
 msgid "Foyer.ddsitfam"
 msgstr "Date de début de situation familiale"
 
-msgid "Adresse.locaadr"
+msgid "Adresse.nomcom"
 msgstr "Commune"
 
-msgid "Adresse.numcomptt"
+msgid "Adresse.numcom"
 msgstr "Numéro de commune au sens INSEE"
 
 msgid "Situationdossierrsa.etatdosrsa"

@@ -7,7 +7,7 @@
 		$row = array(
 			Set::classicExtract( $recoursapre, 'Apre.numeroapre' ),
 			Set::classicExtract( $recoursapre, 'Personne.qual' ).' '.Set::classicExtract( $recoursapre, 'Personne.nom' ).' '.Set::classicExtract( $recoursapre, 'Personne.prenom' ),
-			Set::classicExtract( $recoursapre, 'Adresse.locaadr' ),
+			Set::classicExtract( $recoursapre, 'Adresse.nomcom' ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $recoursapre, 'Apre.datedemandeapre' ) ),
 			Set::enum( Set::classicExtract( $recoursapre, 'ApreComiteapre.decisioncomite' ), $options['decisioncomite'] ),
 			$this->Locale->date( 'Date::short', Set::classicExtract( $recoursapre, 'Comiteapre.datecomite' ) ),

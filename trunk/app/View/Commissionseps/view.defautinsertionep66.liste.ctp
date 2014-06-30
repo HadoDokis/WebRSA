@@ -30,7 +30,7 @@
 				'Personne.nom',
 				'Personne.prenom',
 				'Personne.dtnai',
-				'Adresse.locaadr',
+				'Adresse.nomcom',
 				'Dossierep.created',
 				'Dossierep.themeep',
 				'Passagecommissionep.etatdossierep',

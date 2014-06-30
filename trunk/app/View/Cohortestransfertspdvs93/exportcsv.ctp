@@ -20,7 +20,7 @@
 		$row = array(
 			h( $result['Dossier']['numdemrsa'] ),
 			h( $result['Dossier']['matricule'] ),
-			h( "{$result['Adresse']['codepos']} {$result['Adresse']['locaadr']}" ),
+			h( "{$result['Adresse']['codepos']} {$result['Adresse']['nomcom']}" ),
 			h( "{$options['qual'][$result['Personne']['qual']]} {$result['Personne']['nom']} {$result['Personne']['prenom']}" ),
 			$options['rolepers'][$result['Prestation']['rolepers']],
 			$this->Locale->date( __( 'Date::short' ), $result['Transfertpdv93']['created'] ),

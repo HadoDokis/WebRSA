@@ -10,7 +10,7 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'N° allocataire',
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Dossierep.created',
 			'Proposition validée en COV le',
 			'Structure référente',
@@ -28,7 +28,7 @@
 				$this->Type2->format( $dossier, 'Personne.prenom', array() ),
 				$this->Type2->format( $dossier, 'Personne.dtnai', array() ),
 				$this->Type2->format( $dossier, 'Dossier.matricule', array() ),
-				$this->Type2->format( $dossier, 'Adresse.locaadr', array() ),
+				$this->Type2->format( $dossier, 'Adresse.nomcom', array() ),
 				$this->Type2->format( $dossier, 'StatutrdvTyperdv.motifpassageep', array() ),
 				$this->Type2->format( $dossier, 'Dossierep.created', array() ),
 				$this->Type2->format( $dossier, 'Structurereferente.lib_struc', array() )

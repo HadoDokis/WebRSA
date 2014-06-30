@@ -42,8 +42,8 @@
 	);
 
 	$fields = array(
-		'Search.Adresse.locaadr' => array(  'label' => __d( 'adresse', 'Adresse.locaadr' ), 'required' => false ),
-		'Search.Adresse.numcomptt' => array( 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true, 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'required' => false )
+		'Search.Adresse.nomcom' => array(  'label' => __d( 'adresse', 'Adresse.nomcom' ), 'required' => false ),
+		'Search.Adresse.numcom' => array( 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true, 'label' => __d( 'adresse', 'Adresse.numcom' ), 'required' => false )
 	);
 	if( Configure::read( 'CG.cantons' ) ) {
 		$fields['Search.Canton.canton'] = array( 'type' => 'select', 'options' => $cantons, 'empty' => true, 'label' => 'Canton', 'required' => false );
@@ -91,8 +91,8 @@
 					echo '<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Nom', 'Personne.nom' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Prénom', 'Personne.prenom' ).'</th>';
-					echo '<th>'.$this->Xpaginator->sort( 'Code Postal', 'Adresse.numcomptt' ).'</th>';
-					echo '<th>'.$this->Xpaginator->sort( 'Commune', 'Adresse.locaadr' ).'</th>';
+					echo '<th>'.$this->Xpaginator->sort( 'Code Postal', 'Adresse.numcom' ).'</th>';
+					echo '<th>'.$this->Xpaginator->sort( 'Commune', 'Adresse.nomcom' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Date de création du dossier d\'EP', 'Dossierep.created' ).'</th>';
 					echo '<th>Action</th>';
 					echo '<th class="innerTableHeader noprint">Informations complémentaires</th>';
@@ -131,11 +131,11 @@
 						);
 						echo $this->Xhtml->tag(
 							'td',
-							$result['Adresse']['numcomptt']
+							$result['Adresse']['numcom']
 						);
 						echo $this->Xhtml->tag(
 							'td',
-							$result['Adresse']['locaadr']
+							$result['Adresse']['nomcom']
 						);
 						echo $this->Xhtml->tag(
 							'td',

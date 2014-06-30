@@ -23,6 +23,12 @@ BEGIN;
 -- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
 -- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
 
+-- DROP DATABASE IF EXISTS cg66_20140627_v270;
+-- CREATE DATABASE cg66_20140627_v270 TEMPLATE cg66_20140627_v2610 ENCODING 'UTF8' OWNER webrsa;
+-- /usr/lib/postgresql/8.4/bin/psql -U webrsa -W -d cg66_20140627_v270
+-- \i app/Config/sql/patches/2.x/patch-2.7.0.sql
+-- sudo -u www-data lib/Cake/Console/cake -app app PermissionsDeveloppement
+
 -- DROP DATABASE IF EXISTS cg93_20140514_v270;
 -- CREATE DATABASE cg93_20140514_v270 TEMPLATE cg93_20140514_v2610 ENCODING 'UTF8' OWNER webrsa;
 -- /usr/lib/postgresql/8.4/bin/psql -U webrsa -W -d cg93_20140514_v270

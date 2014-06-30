@@ -57,8 +57,8 @@
                         'Search.Personne.nir' => array( 'label' => __d( 'personne', 'Personne.nir' ) ),
                         'Search.Dossier.matricule' => array( 'label' => __d( 'dossier', 'Dossier.matricule' ) ),
                         'Search.Dossier.numdemrsa' => array( 'label' => __d( 'dossier', 'Dossier.numdemrsa' ) ),
-                        'Search.Adresse.locaadr' => array( 'label' => __d( 'adresse', 'Adresse.locaadr' ) ),
-                        'Search.Adresse.numcomptt' => array( 'label' => __d( 'adresse', 'Adresse.numcomptt' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
+                        'Search.Adresse.nomcom' => array( 'label' => __d( 'adresse', 'Adresse.nomcom' ) ),
+                        'Search.Adresse.numcom' => array( 'label' => __d( 'adresse', 'Adresse.numcom' ), 'type' => 'select', 'options' => $mesCodesInsee, 'empty' => true )
                     ),
                     array(
                         'options' => $options
@@ -133,7 +133,7 @@
                     $array1 = array(
                         h( $affectationdossierpcg66['Dossier']['numdemrsa'] ),
                         h( $affectationdossierpcg66['Personne']['nom'].' '.$affectationdossierpcg66['Personne']['prenom'] ),
-                        h( $affectationdossierpcg66['Adresse']['locaadr'] ),
+                        h( $affectationdossierpcg66['Adresse']['nomcom'] ),
                         h( date_short( $affectationdossierpcg66['Dossierpcg66']['datereceptionpdo'] ) ),
                         h( $affectationdossierpcg66['Typepdo']['libelle'] ),
                         h( $affectationdossierpcg66['Originepdo']['libelle'] ),

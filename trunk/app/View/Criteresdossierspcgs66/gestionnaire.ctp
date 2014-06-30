@@ -221,7 +221,7 @@ echo '<ul class="actionMenu"><li>' . $this->Xhtml->link(
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>' . h($criteredossierpcg66['Adresse']['numcomptt']) . '</td>
+									<td>' . h($criteredossierpcg66['Adresse']['numcom']) . '</td>
 								</tr>
 								<tr>
 									<th>NIR</th>

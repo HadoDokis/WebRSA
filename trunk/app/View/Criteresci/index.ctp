@@ -184,7 +184,7 @@
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Référent lié', 'Referent.nom_complet' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
 					<?php if( Configure::read( 'Cg.departement') == 93 ):?>
@@ -241,7 +241,7 @@
 								</tr>
 								<tr>
 									<th>Code INSEE</th>
-									<td>'.$contrat['Adresse']['numcomptt'].'</td>
+									<td>'.$contrat['Adresse']['numcom'].'</td>
 								</tr>
 								<tr>
 									<th>NIR</th>
@@ -270,7 +270,7 @@
                             echo $this->Xhtml->tableCells(
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
-                                    h( $contrat['Adresse']['locaadr'] ),
+                                    h( $contrat['Adresse']['nomcom'] ),
                                     h( @$contrat['Referent']['nom_complet'] ),
                                     h( $contrat['Dossier']['matricule'] ),
                                     h( $this->Locale->date( 'Date::short', Set::extract( $contrat, 'Contratinsertion.date_saisi_ci' ) ) ),
@@ -305,7 +305,7 @@
 							echo $this->Xhtml->tableCells(
                                 array(
                                     h( $contrat['Personne']['nom'].' '.$contrat['Personne']['prenom'] ),
-                                    h( $contrat['Adresse']['locaadr'] ),
+                                    h( $contrat['Adresse']['nomcom'] ),
                                     h( @$contrat['Referent']['nom_complet'] ),
                                     h( $contrat['Dossier']['matricule'] ),
 									h( empty( $lib_type_orient ) ? 'Non orienté' : $lib_type_orient ),

@@ -34,7 +34,7 @@
 				'Search.Personne.nomnai' => array(  'label' => __d( 'personne', 'Personne.nomnai' ) ),
 				'Search.Personne.prenom' => array(  'label' => __d( 'personne', 'Personne.prenom' ), 'required' => false ),
 				'Search.Personne.nir' => array(  'label' => __d( 'personne', 'Personne.nir' ) ),
-				'Search.Adresse.numcomptt' => array( 'required' => false, 'label' => __d( 'adresse', 'Adresse.numcomptt' ) ),
+				'Search.Adresse.numcom' => array( 'required' => false, 'label' => __d( 'adresse', 'Adresse.numcom' ) ),
 				'Search.Serviceinstructeur.id' => array( 'domain' => 'relancenonrespectsanctionep93', 'label' => __d( 'relancenonrespectsanctionep93', 'Serviceinstructeur.id' ) ),
 			),
 			array(
@@ -105,7 +105,7 @@
 					<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>
-					<th>'.$this->Xpaginator->sort( 'Nom de commune', 'Adresse.locaadr' ).'</th>
+					<th>'.$this->Xpaginator->sort( 'Nom de commune', 'Adresse.nomcom' ).'</th>
 					<th>'.$this->Xpaginator->sort( __d( 'foyer', 'Foyer.enerreur' ), 'Foyer.enerreur' ).'</th>
 					'.( ( $this->request->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$this->Xpaginator->sort( 'Date d\'orientation', 'Orientstruct.date_valid' ).'</th>' : '' ).'
 					'.( ( $this->request->data['Search']['Relance']['contrat'] == 0 ) ? '<th>'.$this->Xpaginator->sort( 'Date de notification d\'orientation', 'Orientstruct.date_impression' ).'</th>' : '' ).'
@@ -144,7 +144,7 @@
 					h( @$result['Dossier']['matricule'] ),
 					h( @$result['Personne']['nom'].' '.@$result['Personne']['prenom'] ),
 					h( @$result['Personne']['nir'] ),
-					h( @$result['Adresse']['locaadr'] ),
+					h( @$result['Adresse']['nomcom'] ),
 					array( h( @$result['Foyer']['enerreur'] ), array( 'class' => 'foyer_enerreur '.( empty( $result['Foyer']['enerreur'] ) ? 'empty' : null ) ) ),
 				);
 

@@ -34,7 +34,7 @@
 			h( $relance['Dossier']['matricule'] ),
 			h( "{$relance['Personne']['nom']} {$relance['Personne']['prenom']}" ),
 			h( $relance['Personne']['nir'] ),
-			h( $relance['Adresse']['locaadr'] ),
+			h( $relance['Adresse']['nomcom'] ),
 			h( $relance['Foyer']['enerreur'] ),
 			h( empty( $relance['Contratinsertion']['id'] ) ? 'Non' : 'Oui' ),
 			$this->Locale->date( 'Locale->date', $relance['Contratinsertion']['df_ci'] ),

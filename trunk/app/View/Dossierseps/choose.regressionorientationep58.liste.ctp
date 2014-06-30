@@ -8,7 +8,7 @@
 			'Personne.prenom',
 			'Personne.dtnai',
 			'Dossier.matricule' => array( 'label' => 'N° allocataire' ),
-			'Adresse.locaadr',
+			'Adresse.nomcom',
 			'Dossierep.created',
 			'Structurereferente.lib_struc' => array( 'label' => 'Structure référente' ),
 // 			'Foyer.enerreur' => array( 'type' => 'string', 'class' => 'foyer_enerreur' ),

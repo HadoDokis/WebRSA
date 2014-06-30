@@ -111,7 +111,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
             </fieldset>
 
             <?php echo $this->Xform->enum( 'Filtre.etatdossierapre', array(  'label' => 'Etat du dossier APRE', 'options' => $options['etatdossierapre'] ) );?>
-            <?php echo $this->Xform->input( 'Filtre.locaadr', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
+            <?php echo $this->Xform->input( 'Filtre.nomcom', array( 'label' => 'Commune de l\'allocataire ', 'type' => 'text' ) );?>
     </fieldset>
 
 	<?php
@@ -147,7 +147,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                     <th><?php echo $this->Xpaginator->sort( 'N° Dossier RSA', 'Dossier.numdemrsa' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'N° demande APRE', 'Apre.numeroapre' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-                    <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.locaadr' );?></th>
+                    <th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
                     <th><?php echo $this->Xpaginator->sort( 'Date de demande APRE', 'Apre.datedemandeapre' );?></th>
                     <th>Nature de l'aide</th>
                     <th><?php echo $this->Xpaginator->sort( 'Type de demande APRE', 'Apre.typedemandeapre' );?></th>
@@ -174,7 +174,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                 </tr>
                                 <tr>
                                     <th>Code INSEE</th>
-                                    <td>'.$apre['Adresse']['numcomptt'].'</td>
+                                    <td>'.$apre['Adresse']['numcom'].'</td>
                                 </tr>
                                 <tr>
                                     <th>NIR</th>
@@ -204,7 +204,7 @@ $pagination = $this->Xpaginator->paginationBlock( 'Apre', $this->passedArgs );
                                 h( Set::classicExtract( $apre, 'Dossier.numdemrsa' ) ),
                                 h( Set::classicExtract( $apre, 'Apre.numeroapre' ) ),
                                 h( $apre['Personne']['nom'].' '.$apre['Personne']['prenom'] ),
-                                h( $apre['Adresse']['locaadr'] ),
+                                h( $apre['Adresse']['nomcom'] ),
                                 h( $this->Locale->date( 'Date::short', Set::extract( $apre, 'Apre.datedemandeapre' ) ) ),
                                 ( empty( $aidesApre ) ? null :'<ul><li>'.implode( '</li><li>', $aidesApre ).'</li></ul>' ),
                                 h( Set::enum( Set::classicExtract( $apre, 'Apre.typedemandeapre' ), $options['typedemandeapre'] ) ),

@@ -155,7 +155,7 @@
 							</tr>
 							<tr>
 								<th>Adresse</th>
-								<td>'.$personne_referent['Adresse']['numvoie'].' '.Set::enum( $personne_referent['Adresse']['typevoie'], $options['typevoie'] ).' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['locaadr'].'</td>
+								<td>'.$personne_referent['Adresse']['numvoie'].' '.$personne_referent['Adresse']['libtypevoie'].' '.$personne_referent['Adresse']['nomvoie'].' '.$personne_referent['Adresse']['codepos'].' '.$personne_referent['Adresse']['nomcom'].'</td>
 							</tr>
 							<tr>
 								<th>CER signé dans la structure</th>
@@ -170,7 +170,7 @@
 
 				echo $this->Html->tableCells(
 					array(
-						$personne_referent['Adresse']['locaadr'],
+						$personne_referent['Adresse']['nomcom'],
 						date_short( $personne_referent['Dossier']['dtdemrsa'] ),
 						date_short( $personne_referent['Orientstruct']['date_valid'] ),
 						date_short( $personne_referent['Personne']['dtnai'] ),
