@@ -1333,68 +1333,219 @@
 				$conditionmaj = "AND dsps_revs.id IS NOT NULL AND EXTRACT( 'YEAR' FROM dsps_revs.modified ) = '{$annee}'";
 			}
 
-			$sql = "SELECT
-						\"difficultes_exprimees\",
-						COUNT(*)
-					FROM (
-						SELECT DISTINCT
-						CASE
-							-- dsps : si pas de DSP CG, on prend la DSP CAF
-							WHEN dsps_revs.id IS NULL AND detailsdifsocs.difsoc IN ('0402','0403')	THEN 'sante'
-							WHEN dsps_revs.id IS NULL AND detailsdiflogs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009') THEN 'logement'
-							WHEN dsps_revs.id IS NULL AND detailsaccosocfams.nataccosocfam = '0412' THEN 'familiales'
-							WHEN dsps_revs.id IS NULL AND detailsdifdisps.difdisp IN ('0502', '0503', '0504')  THEN 'modes_gardes'
-							WHEN dsps_revs.id IS NULL AND detailsdifsocs.difsoc = '0406'		THEN 'surendettement'
-							WHEN dsps_revs.id IS NULL AND detailsdifsocs.difsoc = '0405'		THEN 'administratives'
-							WHEN dsps_revs.id IS NULL AND detailsdifsocs.difsoc = '0404'		THEN 'linguistiques'
-							WHEN dsps_revs.id IS NULL AND dsps.nivetu IN ('1206','1207')		THEN 'qualification_professionnelle'
-							WHEN dsps_revs.id IS NULL AND dsps.topengdemarechemploi ='0'		THEN 'acces_emploi'
-							WHEN dsps_revs.id IS NULL AND detailsaccosocindis.nataccosocindi = '0420' THEN 'autres'
-							--dsps_revs : si DSP CG, on la prend
-							WHEN dsps_revs.id IS NOT NULL AND detailsdifsocs_revs.difsoc IN ('0402','0403')	THEN 'sante'
-							WHEN dsps_revs.id IS NOT NULL AND detailsdiflogs_revs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009')	THEN 'logement'
-							WHEN dsps_revs.id IS NOT NULL AND detailsaccosocfams_revs.nataccosocfam = '0412' THEN 'familiales'
-							WHEN dsps_revs.id IS NOT NULL AND detailsdifdisps_revs.difdisp IN ('0502', '0503', '0504')  THEN 'modes_gardes'
-							WHEN dsps_revs.id IS NOT NULL AND detailsdifsocs_revs.difsoc = '0406'		THEN 'surendettement'
-							WHEN dsps_revs.id IS NOT NULL AND detailsdifsocs_revs.difsoc = '0405'		THEN 'administratives'
-							WHEN dsps_revs.id IS NOT NULL AND detailsdifsocs_revs.difsoc = '0404'		THEN 'linguistiques'
-							WHEN dsps_revs.id IS NOT NULL AND dsps_revs.nivetu IN ('1206','1207')		THEN 'qualification_professionnelle'
-							WHEN dsps_revs.id IS NOT NULL AND dsps_revs.topengdemarechemploi ='0'		THEN 'acces_emploi'
-							WHEN dsps_revs.id IS NOT NULL AND detailsaccosocindis_revs.nataccosocindi = '0420' THEN 'autres'
-						END AS \"difficultes_exprimees\",
-						-- liste ids
-						dsps.id AS dsp, dsps_revs.id AS dsp_rev
-					FROM dsps
-						INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
-						LEFT OUTER JOIN detailsdifsocs ON (dsps.id = detailsdifsocs.dsp_id)
-						LEFT OUTER JOIN detailsdiflogs ON (dsps.id = detailsdiflogs.dsp_id)
-						LEFT OUTER JOIN detailsaccosocfams ON (dsps.id = detailsaccosocfams.dsp_id)
-						LEFT OUTER JOIN detailsdifdisps ON (dsps.id = detailsdifdisps.dsp_id)
-						LEFT OUTER JOIN detailsnatmobs ON (dsps.id = detailsnatmobs.dsp_id)
-						LEFT OUTER JOIN detailsaccosocindis ON (dsps.id = detailsaccosocindis.dsp_id)
-						LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id
-							AND (dsps_revs.personne_id, dsps_revs.id) IN (
-								SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
-						LEFT OUTER JOIN detailsdifsocs_revs ON (dsps_revs.id = detailsdifsocs_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsdiflogs_revs ON (dsps_revs.id = detailsdiflogs_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsaccosocfams_revs ON (dsps_revs.id = detailsaccosocfams_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsdifdisps_revs ON (dsps_revs.id = detailsdifdisps_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsnatmobs_revs ON (dsps_revs.id = detailsnatmobs_revs.dsp_rev_id)
-						LEFT OUTER JOIN detailsaccosocindis_revs ON (dsps_revs.id = detailsaccosocindis_revs.dsp_rev_id)
-					WHERE
-						-- Dont le type de RDV est individuel
-						rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
-						-- avec un RDV honoré durant l'année N
-						AND EXTRACT('YEAR' FROM daterdv) = '{$annee}'
-						AND ".$this->_conditionStatutRdv()."
-						-- pour la structure referente X (éventuellement)
-						{$conditionpdv}
-						{$conditionmaj}
-						-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-						AND ".$this->_conditionStructurereferenteIsPdv()."
-					ORDER BY \"difficultes_exprimees\",dsps.id, dsps_revs.id
-				) AS liste
-				GROUP BY \"difficultes_exprimees\";";
+			$sql = "SELECT \"difficultes_exprimees\", COUNT(*) FROM (
+	(
+		SELECT 'sante'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN detailsdifsocs sante ON (dsps.id = sante.dsp_id AND sante.difsoc IN ('0402','0403') )
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdifsocs_revs sante_revs ON (dsps_revs.id = sante_revs.dsp_rev_id AND sante_revs.difsoc IN ('0402','0403') )
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND sante.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND sante_revs.difsoc IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+
+	)  UNION
+	(
+		SELECT 'logement'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdiflogs ON (dsps.id = detailsdiflogs.dsp_id AND detailsdiflogs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009'))
+			LEFT OUTER JOIN detailsdiflogs_revs ON (dsps_revs.id = detailsdiflogs_revs.dsp_rev_id AND detailsdiflogs_revs.diflog IN ('1004', '1005', '1006', '1007', '1008', '1009'))
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND detailsdiflogs.diflog IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsdiflogs_revs.diflog IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'familiales'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsaccosocfams ON (dsps.id = detailsaccosocfams.dsp_id AND detailsaccosocfams.nataccosocfam='0412')
+			LEFT OUTER JOIN detailsaccosocfams_revs ON (dsps_revs.id = detailsaccosocfams_revs.dsp_rev_id AND detailsaccosocfams_revs.nataccosocfam='0412')
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND detailsaccosocfams.nataccosocfam IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsaccosocfams_revs.nataccosocfam IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'modes_gardes'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdifdisps ON (dsps.id = detailsdifdisps.dsp_id AND detailsdifdisps.difdisp IN ('0502', '0503', '0504'))
+			LEFT OUTER JOIN detailsdifdisps_revs ON (dsps_revs.id = detailsdifdisps_revs.dsp_rev_id AND detailsdifdisps_revs.difdisp IN ('0502', '0503', '0504'))
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND detailsdifdisps.difdisp IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND detailsdifdisps_revs.difdisp IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'surendettement'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdifsocs surendettement ON (dsps.id = surendettement.dsp_id AND surendettement.difsoc='0406')
+			LEFT OUTER JOIN detailsdifsocs_revs surendettement_revs ON (dsps_revs.id = surendettement_revs.dsp_rev_id AND surendettement_revs.difsoc='0406')
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND surendettement.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND surendettement_revs.difsoc IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'administratives'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdifsocs administratives ON (dsps.id = administratives.dsp_id AND administratives.difsoc='0405')
+			LEFT OUTER JOIN detailsdifsocs_revs administratives_revs ON (dsps_revs.id = administratives_revs.dsp_rev_id AND administratives_revs.difsoc='0405')
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND administratives.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND administratives_revs.difsoc IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'linguistiques'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsdifsocs linguistiques ON (dsps.id = linguistiques.dsp_id AND linguistiques.difsoc='0404')
+			LEFT OUTER JOIN detailsdifsocs_revs linguistiques_revs ON (dsps_revs.id = linguistiques_revs.dsp_rev_id AND linguistiques_revs.difsoc='0404')
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND linguistiques.difsoc IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND linguistiques_revs.difsoc IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+				-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'qualification_professionnelle'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN dsps nivetu ON (dsps.id=nivetu.id AND nivetu.nivetu IN ('1206','1207'))
+			LEFT OUTER JOIN dsps_revs nivetu_revs ON (dsps_revs.id=nivetu_revs.id AND nivetu_revs.nivetu IN ('1206','1207'))
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND nivetu.nivetu IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND nivetu_revs.nivetu IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'acces_emploi'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN dsps topengdemarechemploi ON (dsps.id=topengdemarechemploi.id AND topengdemarechemploi.topengdemarechemploi='0')
+			LEFT OUTER JOIN dsps_revs topengdemarechemploi_revs ON (dsps_revs.id=topengdemarechemploi_revs.id AND topengdemarechemploi_revs.topengdemarechemploi='0')
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND topengdemarechemploi.topengdemarechemploi IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND topengdemarechemploi_revs.topengdemarechemploi IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	) UNION
+	(
+		SELECT 'autres'::text AS \"difficultes_exprimees\",
+		-- liste ids
+		dsps.id AS dsp, dsps_revs.id AS dsp_rev
+		FROM personnes INNER JOIN dsps on (personnes.id=dsps.personne_id)
+			INNER JOIN rendezvous ON (dsps.personne_id = rendezvous.personne_id)
+			LEFT OUTER JOIN dsps_revs ON (dsps.personne_id = dsps_revs.personne_id AND (dsps_revs.personne_id, dsps_revs.id) IN ( SELECT personne_id, MAX(dsps_revs.id) FROM dsps_revs GROUP BY personne_id))
+			LEFT OUTER JOIN detailsaccosocindis ON (dsps.id = detailsaccosocindis.dsp_id AND detailsaccosocindis.nataccosocindi='0420' )
+			LEFT OUTER JOIN detailsaccosocindis_revs ON (dsps_revs.id = detailsaccosocindis_revs.dsp_rev_id AND detailsaccosocindis_revs.nataccosocindi='0420' )
+		WHERE 	-- si pas de DSP MAJ on prend la DSP CAF
+			((dsps_revs.id IS NULL AND detailsaccosocindis.nataccosocindi IS NOT NULL) OR (dsps_revs.id IS NOT NULL AND  detailsaccosocindis_revs.nataccosocindi IS NOT NULL))
+			AND -- Dont le type de RDV est individuel
+			rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+			-- avec un RDV honore durant l'annee N
+			AND EXTRACT('YEAR' FROM daterdv) = '{$annee}' AND ".$this->_conditionStatutRdv()."
+			-- pour la structure referente X (eventuellement)
+			{$conditionpdv}
+			{$conditionmaj}
+			-- De plus, on restreint les structures referentes a celles qui apparaissent dans le select
+			AND ".$this->_conditionStructurereferenteIsPdv()."
+	)
+)  as liste_difficultes group by \"difficultes_exprimees\"; ";
 
 			$results = $Dsp->query( $sql );
 			$results = Hash::combine( $results, '{n}.0.difficultes_exprimees', '{n}.0.count' );
