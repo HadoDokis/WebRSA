@@ -35,11 +35,23 @@
 			'index' => 'read',
 			'tableau1b3' => 'read',
 			'tableau1b4' => 'read',
+			'tableau1b4new' => 'read',
 			'tableau1b5' => 'read',
+			'tableau1b5new' => 'read',
 			'tableau1b6' => 'read',
 			'tableaud1' => 'read',
 			'tableaud2' => 'read',
 			'view' => 'read',
+		);
+
+		/**
+		 * Pour les tests des nouveaux tableaux, on donne les mêmes droits que pour les anciens
+		 *
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'tableau1b4new' => 'Tableauxsuivispdvs93:tableau1b4',
+			'tableau1b5new' => 'Tableauxsuivispdvs93:tableau1b5'
 		);
 
 		/**
@@ -55,7 +67,9 @@
 					'tableaud2',
 					'tableau1b3',
 					'tableau1b4',
+					'tableau1b4new',
 					'tableau1b5',
+					'tableau1b5new',
 					'tableau1b6',
 				)
 			),
@@ -127,6 +141,7 @@
 					'structurereferente_id' => $structurereferente_id,
 					'user_id' => $this->Tableausuivipdv93->listePhotographes(),
 					'tableau' => $this->Tableausuivipdv93->tableaux,
+					'typethematiquefp93_id' => ClassRegistry::init( 'Thematiquefp93' )->enum( 'type' )
 				),
 				'problematiques' => $this->Tableausuivipdv93->problematiques(),
 				'acteurs' => $this->Tableausuivipdv93->acteurs(),
@@ -168,6 +183,8 @@
 		/**
 		 * Moteur de recherche pour le tableau 1 B4: Prescriptions vers les acteurs
 		 * sociaux, culturels et de sante
+		 *
+		 * @deprecated
 		 */
 		public function tableau1b4() {
 			$search = $this->_applyStructurereferente( $this->request->data );
@@ -178,13 +195,38 @@
 		}
 
 		/**
+		 * Moteur de recherche pour le tableau 1 B4: Prescriptions vers les acteurs
+		 * sociaux, culturels et de sante.
+		 */
+		public function tableau1b4new() {
+			$search = $this->_applyStructurereferente( $this->request->data );
+
+			if( !empty( $search ) ) {
+				$this->set( 'results', $this->Tableausuivipdv93->tableau1b4new( $search ) );
+			}
+		}
+
+		/**
 		 * Moteur de recherche pour le tableau 1 B5
+		 *
+		 * @deprecated
 		 */
 		public function tableau1b5() {
 			$search = $this->_applyStructurereferente( $this->request->data );
 
 			if( !empty( $search ) ) {
 				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5( $search ) );
+			}
+		}
+
+		/**
+		 * Moteur de recherche pour le tableau 1 B5
+		 */
+		public function tableau1b5new() {
+			$search = $this->_applyStructurereferente( $this->request->data );
+
+			if( !empty( $search ) ) {
+				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5new( $search ) );
 			}
 		}
 

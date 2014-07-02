@@ -59,12 +59,22 @@
 		)
 	);
 
+	$params_typethematiquefp93_id = array(
+		'type' => (
+			in_array( $tableau, array( 'tableau1b4new', 'tableau1b5new' ) )
+			? 'select'
+			: 'hidden'
+		),
+		'empty' => true
+	);
+
 	echo $this->Default3->form(
 		array(
 			'Search.annee' => array( 'empty' => ( $tableau == 'index' ? true : false ) ),
 			'Search.structurereferente_id' => array( 'empty' => true, 'type' => ( $userIsCg ? 'select' : 'hidden' ) ),
 			'Search.user_id' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
 			'Search.tableau' => array( 'empty' => true, 'type' => ( $tableau == 'index' ? 'select' : 'hidden' ) ),
+			'Search.typethematiquefp93_id' => $params_typethematiquefp93_id,
 			'Search.rdv_structurereferente' => $params_rdv_structurereferente,
 			'Search.dsps_maj_dans_annee' => $params_dsps_maj_dans_annee,
 			'Search.soumis_dd_dans_annee' => $params_soumis_dd_dans_annee,

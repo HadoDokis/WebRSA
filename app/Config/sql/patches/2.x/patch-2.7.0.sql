@@ -763,6 +763,13 @@ SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', '
 SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_numcomptt' );
 SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_locaadr' );
 
+-------------------------------------------------------------------------------------
+-- 20140701: FIXME: ajout des intitulés tableau1b4new et tableau1b4new dans la contrainte tableauxsuivispdvs93_name_in_list_chk
+-------------------------------------------------------------------------------------
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_name_in_list_chk' );
+ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_name_in_list_chk CHECK ( cakephp_validate_in_list( name, ARRAY['tableaud1', 'tableaud2', 'tableau1b3', 'tableau1b4', 'tableau1b4new', 'tableau1b5', 'tableau1b5new', 'tableau1b6'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
