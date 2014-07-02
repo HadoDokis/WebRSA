@@ -331,6 +331,10 @@
 				'Tableausuivipdv93.Tableau1b6.map_thematiques_themes' => 'isarray',
 				'Cataloguepdifp93.urls' => 'isarray',
 				'Ficheprescription93.regexpNumconventionFictif' => 'string',
+				'Tableausuivi93.tableau1b4.conditions' => 'isarray',
+				'Tableausuivi93.tableau1b4.categories' => 'isarray',
+				'Tableausuivi93.tableau1b5.conditions' => 'isarray',
+				'Tableausuivi93.tableau1b5.categories' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -738,6 +742,10 @@
 		public function allQuerydataFragmentsErrors() {
 			$errors = array( );
 			$modelNames = array( 'Statistiqueministerielle' );
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$modelNames[] = 'Tableausuivipdv93';
+			}
 
 			foreach( $modelNames as $modelName ) {
 				$Model = ClassRegistry::init( $modelName );

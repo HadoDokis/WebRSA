@@ -887,3 +887,8 @@ body.memos.view #pageContent table td {
 body.memos.view #pageContent table td.data {
 	width: auto;
 }
+
+/**/
+body.tableauxsuivispdvs93 table th.subtotal, body.tableauxsuivispdvs93 table td.subtotal {
+	background: #e6eef2;
+}

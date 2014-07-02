@@ -1598,6 +1598,8 @@
 		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
 		 * culturels et de sante
 		 *
+		 * @deprecated
+		 *
 		 * @param array $search
 		 * @return array
 		 */
@@ -1678,8 +1680,418 @@
 		}
 
 		/**
+		 * Filtre sur un PDV ou sur l'ensemble du CG ?
+		 * S'assure-ton qu'il existe au moins un RDV individuel ?
+		 *
+		 *
+		 * @param array $search
+		 * @param type $operand
+		 * @return string
+		 */
+		protected function _conditionsFicheprescription93Rendezvous( array $search, $operand ) {
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "AND Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// S'assure-ton qu'il existe au moins un RDV individuel ?
+			$rdv_structurereferente = Hash::get( $search, 'Search.rdv_structurereferente' );
+			if( $rdv_structurereferente ) {
+				return "{$operand} Ficheprescription93.personne_id IN (
+					SELECT DISTINCT personne_id FROM rendezvous
+					WHERE
+						-- avec un RDV honoré durant l'année N
+						EXTRACT('YEAR' FROM daterdv) = '{$annee}'
+						-- Dont le type de RDV est individuel
+						AND rendezvous.typerdv_id IN ( ".implode( ',', (array)Configure::read( 'Tableausuivipdv93.typerdv_id' ) )." )
+						AND ".$this->_conditionStatutRdv()."
+						-- dont la SR du référent de la fiche est la SR du RDV
+						AND Referent.structurereferente_id = rendezvous.structurereferente_id
+						{$conditionpdv}
+				)";
+			}
+
+			return null;
+		}
+
+		/**
+		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
+		 * culturels et de sante.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableau1b4new( array $search ) {
+			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur le type d'action
+			$conditiontype = null;
+			$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
+			if( !empty( $typethematiquefp93_id ) ) {
+				$conditiontype = "Thematiquefp93.type = '".Sanitize::clean( $typethematiquefp93_id, array( 'encode' => false ) )."'";
+			}
+
+			$conditionsrdv = $this->_conditionsFicheprescription93Rendezvous( $search, 'AND' );
+			if( $conditionsrdv !== null ) {
+				$conditionsrdv = preg_replace( '/^AND /', '', $conditionsrdv );
+			}
+
+			// Le query de base
+			$base = array(
+				'fields' => array(),
+				'joins' => array(
+					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Ficheprescription93.statut <>' => '99annulee',
+					"EXTRACT( 'YEAR' FROM Ficheprescription93.date_signature )" => $annee,
+					$this->_conditionStructurereferenteIsPdv( 'Referent.structurereferente_id' ),
+					$conditionpdv,
+					$conditionsrdv,
+					$conditiontype
+				),
+				'contain' => false
+			);
+
+			// Ajout des conditions de base définies dans le webrsa.inc
+			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b4.conditions' );
+			if( !empty( $conditions ) ) {
+				$base['conditions'][] = $conditions;
+			}
+
+			// Ajout des libellés des catégories et des thématiques
+			$Dbo = $Ficheprescription93->getDataSource();
+			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b4.categories' );
+
+			$conditionsTotal = array( 'OR' => array() );
+			$sqls = array();
+			$counter = 0;
+			foreach( $categories as $categorieName => $thematiques ) {
+				$conditionsSousTotal = array( 'OR' => array() );
+
+				foreach( $thematiques as $thematiqueName => $conditions ) {
+					$categorieName = Sanitize::clean( $categorieName, array( 'encode' => false ) );
+					$thematiqueName = Sanitize::clean( $thematiqueName, array( 'encode' => false ) );
+
+					$conditionsSousTotal['OR'][] = $conditions;
+					$conditionsTotal['OR'][] = $conditions;
+					$conditions = $Dbo->conditions( $conditions, true, false );
+
+					// 1 requête par ligne
+					$query = $base;
+					$query['fields'] = array(
+						"'{$categorieName}' AS \"categorie\"",
+						"'{$thematiqueName}' AS \"thematique\"",
+						"{$counter} AS \"counter\"",
+						'COUNT( Ficheprescription93.id ) AS "nombre"',
+						'COUNT( DISTINCT Ficheprescription93.personne_id ) AS "nombre_unique"'
+					);
+					$query['conditions'][] = $conditions;
+
+					$sqls[] = $Ficheprescription93->sq( $query );
+					$counter++;
+				}
+
+				// requête pour le sous-total
+				$query = $base;
+				$query['fields'] = array(
+					"'{$categorieName}' AS \"categorie\"",
+					"'Sous-total' AS \"thematique\"",
+					"{$counter} AS \"counter\"",
+					'COUNT( Ficheprescription93.id ) AS "nombre"',
+					'COUNT( DISTINCT Ficheprescription93.personne_id ) AS "nombre_unique"'
+				);
+				$query['conditions'][] = $conditionsSousTotal;
+
+				$sqls[] = $Ficheprescription93->sq( $query );
+				$counter++;
+			}
+			// requête pour le total
+			$query = $base;
+			$query['fields'] = array(
+				"'Total' AS \"categorie\"",
+				"NULL AS \"thematique\"",
+				"{$counter} AS \"counter\"",
+				'COUNT( Ficheprescription93.id ) AS "nombre"',
+				'COUNT( DISTINCT Ficheprescription93.personne_id ) AS "nombre_unique"'
+			);
+			$query['conditions'][] = $conditionsTotal;
+
+			$sqls[] = $Ficheprescription93->sq( $query );
+			$counter++;
+
+			// Requête complète
+			$results = $Ficheprescription93->query( '( '.implode( $sqls, ' UNION ' ).' ) ORDER BY "counter" ASC;' );
+			$results = Hash::remove( $results, '{n}.0.counter' );
+
+			return $results;
+		}
+
+		/**
+		 * Fournit la vérification des morceaux de querydata définis dans le
+		 * webrsa.inc pour les clés Tableausuivi93.tableau1b4 et
+		 * Tableausuivi93.tableau1b5.
+		 *
+		 * @return array
+		 */
+		public function querydataFragmentsErrors() {
+			$return = array();
+
+			// Tableausuivi93.tableau1b4 et Tableausuivi93.tableau1b5 (conditions et categories)
+			foreach( array( 'tableau1b4', 'tableau1b5' ) as $name ) {
+				$search = array(
+					'Search' => array(
+						'annee' => '2009',
+						'structurereferente_id' => ''
+					)
+				);
+				try {
+					$method = "{$name}new"; //FIXME: tableau1b4new, tableau1b5new
+					@$this->{$method}( $search );
+					$message = null;
+				} catch ( Exception $e ) {
+					$message = $e->getMessage();
+				}
+				$return["Tableausuivi93.{$name}"] = array(
+					'success' => is_null( $message ),
+					'message' => $message
+				);
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Requête de base pour le tableau 1B5.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableau1b5newBase( array $search ) {
+			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+
+			// Filtre sur l'année
+			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
+
+			// Filtre sur un PDV ou sur l'ensemble du CG ?
+			$conditionpdv = null;
+			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
+			if( !empty( $pdv_id ) ) {
+				$conditionpdv = "Referent.structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
+			}
+
+			// Filtre sur le type d'action
+			$conditiontype = null;
+			$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
+			if( !empty( $typethematiquefp93_id ) ) {
+				$conditiontype = "Thematiquefp93.type = '".Sanitize::clean( $typethematiquefp93_id, array( 'encode' => false ) )."'";
+			}
+
+			$conditionsrdv = $this->_conditionsFicheprescription93Rendezvous( $search, 'AND' );
+			if( $conditionsrdv !== null ) {
+				$conditionsrdv = preg_replace( '/^AND /', '', $conditionsrdv );
+			}
+
+			// Le query de base
+			$query = array(
+				'fields' => array(),
+				'joins' => array(
+					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
+				),
+				'conditions' => array(
+					'Ficheprescription93.statut <>' => '99annulee',
+					"EXTRACT( 'YEAR' FROM Ficheprescription93.date_signature )" => $annee,
+					$this->_conditionStructurereferenteIsPdv( 'Referent.structurereferente_id' ),
+					$conditionpdv,
+					$conditionsrdv,
+					$conditiontype
+				),
+				'contain' => false
+			);
+
+			// Ajout des conditions de base définies dans le webrsa.inc
+			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b5.conditions' );
+			if( !empty( $conditions ) ) {
+				$query['conditions'][] = $conditions;
+			}
+
+			return $query;
+		}
+
+		/**
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
+		 *
+		 * Partie "Tableau principal".
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableau1b5newTotaux( array $search ) {
+			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+			$query = $this->_tableau1b5newBase( $search );
+			$query['fields'] = array(
+				'COUNT( DISTINCT "Ficheprescription93"."personne_id" ) AS "distinct_personnes_prescription"',
+				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."benef_retour_presente" = \'oui\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "distinct_personnes_action"',
+				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."benef_retour_presente" IN ( \'non\', \'excuse\' ) THEN 1 ELSE 0 END ), 0 ) AS "beneficiaires_pas_deplaces"',
+				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."date_signature_partenaire" IS NULL THEN 1 ELSE 0 END ), 0 ) AS "nombre_fiches_attente"',
+			);
+
+			$results = $Ficheprescription93->find( 'all', $query );
+			return $results;
+		}
+
+		/**
+		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
+		 * et professionnel.
+		 *
+		 * Partie "Totaux" (les deux tableaux périphériques).
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableau1b5newResults( array $search ) {
+			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
+			$base = $this->_tableau1b5newBase( $search );
+
+			// Ajout des libellés des catégories et des thématiques
+			$Dbo = $Ficheprescription93->getDataSource();
+			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+
+			$vFields = array(
+				'COUNT( Ficheprescription93.id ) AS "nombre"',
+				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."benef_retour_presente" = \'oui\' AND "Ficheprescription93"."date_signature_partenaire" IS NOT NULL THEN 1 ELSE 0 END ), 0 ) AS "nombre_effectives"',
+				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."personne_souhaite_integrer" = \'0\' THEN 1 ELSE 0 END ), 0 ) AS "nombre_refus_beneficiaire"',
+				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."personne_retenue" = \'0\' THEN 1 ELSE 0 END ), 0 ) AS "nombre_refus_organisme"',
+				'COALESCE( SUM(
+					CASE
+						WHEN (
+							"Ficheprescription93"."personne_recue" = \'1\'
+							AND "Ficheprescription93"."personne_retenue" = \'1\'
+							AND "Ficheprescription93"."personne_souhaite_integrer" = \'1\'
+							AND "Ficheprescription93"."personne_a_integre" IS NULL
+							AND (
+								"Ficheprescription93"."dd_action" IS NOT NULL
+								AND "Ficheprescription93"."dd_action" > NOW()
+							)
+						) THEN 1
+						ELSE 0
+					END
+				), 0 ) AS "nombre_en_attente"',
+				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "nombre_participants"'
+			);
+
+			$conditionsTotal = array( 'OR' => array() );
+			$sqls = array();
+			$counter = 0;
+			foreach( $categories as $categorieName => $thematiques ) {
+				$conditionsSousTotal = array( 'OR' => array() );
+
+				foreach( $thematiques as $thematiqueName => $conditions ) {
+					$categorieName = Sanitize::clean( $categorieName, array( 'encode' => false ) );
+					$thematiqueName = Sanitize::clean( $thematiqueName, array( 'encode' => false ) );
+
+					$conditionsSousTotal['OR'][] = $conditions;
+					$conditionsTotal['OR'][] = $conditions;
+					$conditions = $Dbo->conditions( $conditions, true, false );
+
+					// requête par ligne
+					$query = $base;
+					$query['fields'] = array_merge(
+						array(
+							"'{$categorieName}' AS \"categorie\"",
+							"'{$thematiqueName}' AS \"thematique\"",
+							"{$counter} AS \"counter\""
+						),
+						$vFields
+					);
+					$query['conditions'][] = $conditions;
+
+					$sqls[] = $Ficheprescription93->sq( $query );
+					$counter++;
+				}
+
+				// requête pour le sous-total
+				$query = $base;
+				$query['fields'] = array_merge(
+					array(
+						"'{$categorieName}' AS \"categorie\"",
+						"'Sous-total' AS \"thematique\"",
+						"{$counter} AS \"counter\"",
+					),
+					$vFields
+				);
+				$query['conditions'][] = $conditionsSousTotal;
+
+				$sqls[] = $Ficheprescription93->sq( $query );
+				$counter++;
+			}
+			// requête pour le total
+			$query = $base;
+			$query['fields'] = array_merge(
+				array(
+					"'Total' AS \"categorie\"",
+					"NULL AS \"thematique\"",
+					"{$counter} AS \"counter\"",
+				),
+				$vFields
+			);
+			$query['conditions'][] = $conditionsTotal;
+
+			$sqls[] = $Ficheprescription93->sq( $query );
+			$counter++;
+
+			// Requête complète
+			$results = $Ficheprescription93->query( '( '.implode( $sqls, ' UNION ' ).' ) ORDER BY "counter" ASC;' );
+			$results = Hash::remove( $results, '{n}.0.counter' );
+
+			return $results;
+		}
+
+		/**
+		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
+		 * et professionnel.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function tableau1b5new( array $search ) {
+			return array(
+				'results' => $this->_tableau1b5newResults( $search ),
+				'totaux' => $this->_tableau1b5newTotaux( $search )
+			);
+		}
+
+		/**
+		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
+		 * et professionnel.
+		 *
+		 * @deprecated
 		 *
 		 * @param array $search
 		 * @return array
