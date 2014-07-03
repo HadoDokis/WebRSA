@@ -37,6 +37,19 @@
                     array( 'class' => 'odd' ),
                     array( 'class' => 'even' )
                 );
+
+                echo $this->Xhtml->tableCells(
+                    array(
+                        h( 'Pièces liées aux mails employeur' ),
+                        $this->Xhtml->viewLink(
+                            'Voir la table',
+                            array( 'controller' => 'piecesmailscuis66', 'action' => 'index' ),
+                            $this->Permissions->check( 'piecesmailscuis66', 'index' )
+                        )
+                    ),
+                    array( 'class' => 'odd' ),
+                    array( 'class' => 'even' )
+                );
 				
 				echo $this->Xhtml->tableCells(
 					array(
@@ -71,6 +84,19 @@
 							'Voir la table',
 							array( 'controller' => 'secteurscuis', 'action' => 'index' ),
 							$this->Permissions->check( 'secteurscuis', 'index' )
+						)
+					),
+					array( 'class' => 'odd' ),
+					array( 'class' => 'even' )
+				);
+
+				echo $this->Xhtml->tableCells(
+					array(
+						h( 'Modèles de mails pour les employeurs' ),
+						$this->Xhtml->viewLink(
+							'Voir la table',
+							array( 'controller' => 'textsmailscuis66', 'action' => 'index' ),
+							$this->Permissions->check( 'textsmailscuis66', 'index' )
 						)
 					),
 					array( 'class' => 'odd' ),

@@ -65,7 +65,7 @@
 			<th>Décision pour le CUI</th>
             <th>Position du CUI</th>
 			<th>Date de validation</th>
-			<th colspan="12" class="action">Actions</th>
+			<th colspan="13" class="action">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -80,6 +80,11 @@
 							</tr>
 						</tbody>
 					</table>';
+                
+                $positioncui66 = Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] );
+                if( ( ( $cui['Cui']['positioncui66'] == 'dossierrecu' ) && !empty( $cui['Cui']['datedossierrecu'] ) ) || ( ( $cui['Cui']['positioncui66'] == 'dossiereligible' ) && !empty( $cui['Cui']['datedossiereligible'] ) ) ) {
+                    $positioncui66 = $positioncui66.' le '.$this->Locale->date( 'Date::short', $cui['Cui']['datedossierrecu'] );
+                }
 
 				echo $this->Xhtml->tableCells(
 					array(
@@ -90,7 +95,7 @@
 						h( date_short( Set::classicExtract( $cui, 'Cui.datedebprisecharge' ) ) ),
 						h( date_short( Set::classicExtract( $cui, 'Cui.datefinprisecharge' ) ) ),
 						h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['Cui']['decisioncui'] ) ),
-                        h( Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] ) ),
+                        h( $positioncui66 ),
 						h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
 						$this->Default2->button(
 							'view',
@@ -107,6 +112,16 @@
 							array(
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'cuis', 'edit', $dossierMenu ) == 1 )
+									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+								)
+							)
+						),
+						$this->Default2->button(
+							'email',
+							array( 'controller' => 'cuis', 'action' => 'maillink', $cui['Cui']['id'] ),
+							array(
+								'enabled' => (
+									( $this->Permissions->checkDossier( 'cuis', 'maillink', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
 								)
 							)

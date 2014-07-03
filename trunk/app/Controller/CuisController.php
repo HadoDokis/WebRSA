@@ -538,7 +538,7 @@
 
 			if( !empty( $this->request->data ) ) {
                 $success = true;
-//debug( $this->request->data );
+
                 $data = $this->request->data;
                 $this->{$this->modelClass}->begin();
 
@@ -556,9 +556,11 @@
 						$dataCui['partenaire_id'] = $this->{$this->modelClass}->Partenaire->id;
 					}
 				}
-
-				$this->{$this->modelClass}->create( $dataCui );
+                
+				$this->{$this->modelClass}->create( $data );
 				$success = $this->{$this->modelClass}->save() && $success;
+                
+                
 
 				// Nettoyage des Periodes d'immersion
 				$keys = array_keys( $this->Cui->Accompagnementcui66->schema() );
@@ -571,7 +573,7 @@
 					$data['Accompagnementcui66'] = Set::merge( $defaults, $data['Accompagnementcui66'] );
 				}
 
-				if( !empty( $data['Cui']['isaci'] ) && ( $data['Cui']['iscae'] == '1' ) && !empty( $data['Accompagnementcui66'] ) ) {
+				if( !empty( $data['Cui']['isaci'] ) /*&& ( $data['Cui']['iscae'] == '1' ) */ && !empty( $data['Accompagnementcui66'] ) ) {
 					$Accompagnementcui66 = Hash::filter( (array)$data['Accompagnementcui66'] );
 					if( !empty( $Accompagnementcui66 ) ) {
 						$this->{$this->modelClass}->Accompagnementcui66->create( $data );
@@ -584,10 +586,21 @@
 						$success = $this->{$this->modelClass}->Accompagnementcui66->save() && $success;
 					}
 				}
-
-// debug($data);
+                
+                
 				if( $success ) {
-					$this->{$this->modelClass}->commit();
+                    if( $this->action == 'edit') {
+                        $positioncui66 = $this->Cui->calculPosition($data);
+                        $success = $this->Cui->updateAllUnBound(
+                            array( 'Cui.positioncui66' => '\''.$positioncui66.'\'' ),
+                            array(
+                                '"Cui"."personne_id"' => $personne_id,
+                                '"Cui"."id"' => $data['Cui']['id']
+                            )
+                        ) && $success;
+                    }
+                    
+					$this->{$this->modelClass}->commit(); //FIXME
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
@@ -598,17 +611,44 @@
 				}
 			}
 
+            // Mail envoyé à l'employeur ?
+            $isDossierComplet = false;
+            $isRecu = ''; //FIXME
             $dataCaf = $this->Cui->dataCafAllocataire( $personne_id );
             if( empty( $this->request->data ) ) {
 				$this->request->data = $this->Cui->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+//    debug($this->request->data);
+                if( $this->action == 'edit' && $this->request->data['Cui']['sendmailemployeur'] == '1' ) {
+                    $isDossierComplet = $this->Cui->isDossierComplet($this->request->data);
+                    $isRecu = $this->request->data['Cui']['dossierrecu'];
+                    
+                }
+                
 			}
 
+            // Liste des pièces liées au mail, paramétrées dans l'application
+            $piecesmailscuis66 = $this->Cui->Piecemailcui66->find( 'list');
+            $this->set( 'piecesmailscuis66', $piecesmailscuis66);
+            
+            // Liste des modèles de mail pour les employeurs paramétrés  dans l'application
+            $textsmailscuis66 = $this->Cui->Textmailcui66->find('list');
+            $this->set( 'textsmailscuis66', $textsmailscuis66);
+            
+
+            
 			$this->_setOptions();
 			$this->set( 'nbCui', $nbCui );
+            $this->set( 'isDossierComplet', $isDossierComplet );
+            $this->set( 'isRecu', $isRecu );
 			$this->set( 'personne_id', $personne_id );
             $this->set( 'dataCaf', $dataCaf );
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
-			$this->render( 'add_edit' );
+			if( Configure::read( 'Cg.departement') == '66') { //FIXME
+                $this->render( 'add_edit_cg66' );
+            }
+            else {
+                $this->render( 'add_edit' );
+            }
 		}
 
 
@@ -808,7 +848,7 @@
 				}
 				else {
 					$this->Cui->rollback();
-                    debug( $this->Cui->validationErrors);
+//                    debug( $this->Cui->validationErrors);
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement.', 'flash/error' );
 				}
 			}
@@ -817,5 +857,148 @@
 			}
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 		}
+        
+        
+        
+        /**
+		 * Permet d'envoyer un mail à l'employeur en lien avec le CUI
+		 *
+		 * @param integer $id
+		 */
+		public function maillink( $id = null ) {
+			$personne_id = $this->Cui->personneId( $id );
+            $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+			$sqDernierReferent = $this->Cui->Personne->PersonneReferent->sqDerniere( 'Personne.id' );
+
+            $dossier_id = $this->Cui->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+            
+            $cui = $this->Cui->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->Cui->fields(),
+                        $this->Cui->Personne->fields(),
+                        $this->Cui->Partenaire->fields(),
+                        $this->Cui->Textmailcui66->fields()
+                    ),
+                    'conditions' => array(
+                        'Cui.id' => $id
+                    ),
+                    'joins' => array(
+                        $this->Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
+                        $this->Cui->join( 'Partenaire', array( 'type' => 'INNER') ),
+                        $this->Cui->join( 'Textmailcui66', array( 'type' => 'INNER') )
+                    ),
+                    'contain' => false
+                )
+            );
+            
+            $user = $this->Cui->User->find(
+                'first',
+                 array(
+                     'conditions' => array(
+                         'User.id' => $this->Session->read( 'Auth.User.id' )
+                    ),
+                     'contain' => false
+                )
+            );
+            $cui['User'] = $user['User'];
+            $this->set( 'cui', $cui);
+
+            $this->assert( !empty( $cui ), 'error404' );
+            
+            /*********/
+            
+            // On transforme les champs de type date en format JJ/MM/AAAA
+            $schema = $this->Cui->schema();
+            foreach( $schema as $field => $params ) {
+                if( $params['type'] === 'date' ) {
+                    $value = Hash::get( $cui, "Cui.{$field}" );
+                    if( $value !== null ) {
+                        $cui = Hash::insert( $cui, "Cui.{$field}", date_short($value) );
+                    }
+                }
+            }
+
+            App::uses( 'DefaultUtility', 'Default.Utility' );
+            $mailBodySend = '';
+            if( !empty($cui['Textmailcui66']['contenu']) ) {
+                $mailBodySend = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
+            }
+            $this->set( 'mailBodySend', $mailBodySend);
+            
+            /**********/
+            
+            // Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+            
+            if( !empty( $this->request->data) ) {
+                
+                $this->Cui->begin();
+
+                if( !isset( $cui['Partenaire']['email'] ) || empty( $cui['Partenaire']['email'] ) ) {
+                    $this->Session->setFlash( "Mail non envoyé: adresse mail de l'employeur ({$cui['Partenaire']['libstruc']}) non renseignée.", 'flash/error' );
+                    $this->redirect( $this->referer() );
+                }
+
+                $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
+
+                // Envoi du mail
+                $success = true;
+                try {
+                    $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
+                    $Email = new CakeEmail( $configName );
+
+                    // Choix du destinataire suivant le niveau de debug
+                    if( Configure::read( 'debug' ) == 0 ) {
+                        $Email->to( $cui['Partenaire']['email'] );
+                    }
+                    else {
+                        $Email->to( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'to', $Email->from() ) );
+                    }
+
+                    $Email->subject( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'subject', 'Demande de CUI' ) );
+    //				$mailBody = "Bonjour,\n\n {$cui['Personne']['qual']} {$cui['Personne']['nom']} {$cui['Personne']['prenom']}, bénéficiaire du rSa socle, donc éligible au dispositif des contrats aidés peut être recruté par votre structure.";
+                    $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
+
+                    $result = $Email->send( $mailBody );
+                    $success = !empty( $result ) && $success;
+                } catch( Exception $e ) {
+                    $this->log( $e->getMessage(), LOG_ERROR );
+                    $success = false;
+                }
+                
+                if( $success ) {
+                    $success = $this->Cui->updateAllUnBound(
+                            array( 'Cui.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoimail'] ).'\'' ),
+                            array(
+                                '"Cui"."personne_id"' => $personne_id,
+                                '"Cui"."id"' => $cui['Cui']['id']
+                            )
+                        ) && $success;
+                }
+
+                if( $success ) {
+                    $this->User->commit();
+                    $this->Jetons2->release( $dossier_id );
+                    $this->Session->setFlash( 'Mail envoyé', 'flash/success' );
+                    $this->redirect( array( 'action' => 'index', $personne_id ) );
+                }
+                else {
+                    $this->User->rollback();
+                    $this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
+                }
+
+                $this->render( 'maillink' );
+                $this->set( 'urlmenu', '/cuis/index/'.$personne_id );
+    //			$this->redirect( $this->referer() );
+
+            }
+        }
 	}
 ?>

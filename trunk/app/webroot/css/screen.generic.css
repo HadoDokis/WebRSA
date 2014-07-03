@@ -1757,9 +1757,12 @@ body.fichesprescriptions93.search td.data.boolean.false {
 	color: transparent;
 }
 
-td div.input label{
+/* FIXME: mise en commentaire du bloc le temps de voir ce que cela impacte
+    CSS ajouté lors de la révision 7830 par arnauz
+*/
+/*td div.input label{
 	width: auto;
-}
+} */
 
 /* Recherche par Dossiers EPs (CG 58) */
 ul.actions li.action a.sanctionseps58.selectionnoninscrits, ul.actions li.action a.sanctionseps58.selectionradies, ul.actions li.action a.indicateurssuivis.search {

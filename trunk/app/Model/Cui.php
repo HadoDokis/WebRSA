@@ -50,18 +50,18 @@
 					'message' => 'Champ obligatoire'
 				)
 			),
-			'datedebprisecharge' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
-			'datefinprisecharge' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			)
+//			'datedebprisecharge' => array(
+//				'notEmpty' => array(
+//					'rule' => 'notEmpty',
+//					'message' => 'Champ obligatoire'
+//				)
+//			),
+//			'datefinprisecharge' => array(
+//				'notEmpty' => array(
+//					'rule' => 'notEmpty',
+//					'message' => 'Champ obligatoire'
+//				)
+//			)
 		);
 
 		public $belongsTo = array(
@@ -124,6 +124,13 @@
 			'Serviceinstructeur' => array(
 				'className' => 'Serviceinstructeur',
 				'foreignKey' => 'serviceinstructeur_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Textmailcui66' => array(
+				'className' => 'Textmailcui66',
+				'foreignKey' => 'textmailcui66_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
@@ -269,6 +276,28 @@
             )
         );
 
+        /**
+         * Associations "Has And Belongs To Many".
+         * @var array
+         */
+        public $hasAndBelongsToMany = array(
+            'Piecemailcui66' => array(
+                'className' => 'Piecemailcui66',
+                'joinTable' => 'cuis_piecesmailscuis66',
+                'foreignKey' => 'cui_id',
+                'associationForeignKey' => 'piecemailcui66_id',
+                'unique' => true,
+                'conditions' => '',
+                'fields' => '',
+                'order' => '',
+                'limit' => '',
+                'offset' => '',
+                'finderQuery' => '',
+                'deleteQuery' => '',
+                'insertQuery' => '',
+                'with' => 'CuiPiecemailcui66'
+            )
+        );
 		/**
 		*   Précondition: La personne est-elle bien en Rsa Socle ?
 		*   @default: false --> si Rsa Socle pas de msg d'erreur
@@ -404,7 +433,60 @@
 			$datenotif = Set::classicExtract( $data, 'Cui.datenotification' );
 			$id = Set::classicExtract( $data, 'Cui.id' );
 			$personne_id = Set::classicExtract( $data, 'Cui.personne_id' );
+			$sendmailemployeur = Set::classicExtract( $data, 'Cui.sendmailemployeur' );
 
+            //données du CUI en cours
+            if( !empty( $id ) ) {
+                $cui = $this->find('first', array( 'conditions' => array( 'Cui.id' => $id ), 'contain' => false ) );
+                
+                if( !empty( $cui['Cui']['positioncui66'] ) ) {
+                    if( $cui['Cui']['sendmailemployeur'] == '0' ){
+                        $positioncui66 = 'attenvoimail';
+                    }
+                    else {
+                        $positioncui66 = 'attpieces';
+                    }
+                    
+                    // Suite à l'ajout des 3 valeurs dans le formulaire mise en place
+                    // du workflow fourni
+                    $dossierrecu = Hash::get( $cui, 'Cui.dossierrecu' );
+                    $dossiereligible = Hash::get( $cui, 'Cui.dossiereligible' );
+                    $dossiercomplet = Hash::get( $cui, 'Cui.dossiercomplet' );
+                    if( $dossierrecu == '0' || ( ($dossierrecu == '1' ) && ($dossiereligible == '0') ) ) {
+                        $positioncui66 = 'decisionsanssuite';
+                    }
+                    else if( ($dossierrecu == '1' ) && (empty($dossiereligible)) && (empty($dossiercomplet ) ) ) {
+                        $positioncui66 = 'dossierrecu';
+                    }
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && empty($dossiercomplet) ) {
+                        $positioncui66 = 'dossiereligible';
+                    }
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '0') ) {
+                        $positioncui66 = 'attpieces';
+                    }
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '1') ) {
+                        $positioncui66 = 'attdecision';
+                    }
+                }
+                else {
+                    $positioncui66 = $positioncui66;
+                }
+                    
+            }
+            else {
+                if( empty($positioncui66) ){
+                    if( $sendmailemployeur == '0' ) {
+                        $positioncui66 = 'attenvoimail';
+                    }
+                    else if( $sendmailemployeur == '1' ) {
+                        $positioncui66 = 'attpieces';
+                    }
+                }
+            }
+            
+//debug($data);            
+//debug($positioncui66);            
+//die();
 			// Données dernier CUI
 			$conditions = array( 'Cui.personne_id' => $personne_id, );
 			if( !empty( $id ) ) {
@@ -421,7 +503,6 @@
 			);
 			$decisionprecedente = Set::classicExtract( $dernierCui, 'Cui.decisioncui' );
 			$positioncui66Precedent = Set::classicExtract( $dernierCui, 'Cui.positioncui66' );
-
 
 
 			if ( ( is_null( $positioncui66 ) || in_array( $positioncui66 , array( 'attdecision', 'perime' ) ) ) && !empty( $decisioncui ) ) {
@@ -814,7 +895,8 @@
 
             $querydataCui = array(
                 'contain' => array(
-                    'Partenaire'
+                    'Partenaire',
+                    'Piecemailcui66'
                 )
             );
 
@@ -864,6 +946,14 @@
                 if( !empty( $dataCuiActuel['Cui']['secteuremploipropose_id'] ) ) {
                     $dataCuiActuel['Cui']['metieremploipropose_id'] = $dataCuiActuel['Cui']['secteuremploipropose_id'].'_'.$dataCuiActuel['Cui']['metieremploipropose_id'];
                 }
+                
+                
+                // Mail envoyé à l'employeur ?
+                $isMailSend = false;
+                if( $dataCuiActuel['Cui']['sendmailemployeur'] == '1' ) {
+                    $isMailSend = true;
+                }
+//                $this->set( 'isMailSend', $isMailSend );
 
 				$data = $dataCuiActuel;
 			}
@@ -976,8 +1066,30 @@
 
 			/// Calcul du numéro du contrat d'insertion
 			$data['Cui']['nbCui'] = $this->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
+            
+            
 //    debug( $data );
             return $data;
+        }
+        
+        /**
+         * Fonction permettant de vérifier que le dossier est bien complet
+         * @param type $cui_id
+         */
+        public function isDossierComplet( $data ) {
+            $return = true;
+            $dossierrecu = Hash::get( $data, 'Cui.dossierrecu' );
+            $dossiereligible = Hash::get( $data, 'Cui.dossiereligible' );
+            $dossiercomplet = Hash::get( $data, 'Cui.dossiercomplet' );
+            
+            if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '1') ) {
+                $return = true;
+                $positioncui66 = 'attdecision';
+            }
+            else {
+                $return = false;
+            }
+            return $return;
         }
 	}
 ?>

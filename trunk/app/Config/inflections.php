@@ -386,6 +386,9 @@ $irregularPlural = array(
     'offreinsertion' => 'offresinsertion',
     'propoorientsocialecov58' => 'proposorientssocialescovs58',
     'decisionpropoorientsocialecov58' => 'decisionsproposorientssocialescovs58',
+    'piecemailcui66' => 'piecesmailscuis66',
+    'cui_piecemailcui66' => 'cuis_piecesmailscuis66',
+    'textmailcui66' => 'textsmailscuis66',
     // Workflow CER
     'cohortereferent93' => 'cohortesreferents93',
     'cer93' => 'cers93',

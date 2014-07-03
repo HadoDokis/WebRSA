@@ -693,6 +693,18 @@ msgstr "Métier d'emploi proposé"
 
 ####################
 
+msgid "ENUM::POSITIONCUI66::attenvoimail"
+msgstr "Demande en attente envoi mail employeur"
+
+msgid "ENUM::POSITIONCUI66::attpieces"
+msgstr "En attente de pièces"
+
+msgid "ENUM::POSITIONCUI66::dossierrecu"
+msgstr "Dossier reçu"
+
+msgid "ENUM::POSITIONCUI66::dossiereligible"
+msgstr "Dossier éligible"
+
 msgid "ENUM::POSITIONCUI66::attavismne"
 msgstr "En attente d'avis PRE"
 
@@ -734,6 +746,9 @@ msgstr "Non validé et notifié"
 
 msgid "ENUM::POSITIONCUI66::rupture"
 msgstr "Rupture du contrat"
+
+msgid "ENUM::POSITIONCUI66::decisionsanssuite"
+msgstr "Décision sans suite"
 
 msgid "Cuis::cancel"
 msgstr "Annuler le CUI"
@@ -908,7 +923,7 @@ msgid "Cui.dureehebdoretenueheure"
 msgstr "Durée hebdomadaire retenue pour le calcul de l'aide"
 
 msgid "Cui.isaci"
-msgstr " "
+msgstr "Type de contrat"
 
 msgid "Cui.typecui"
 msgstr "Type de formulaire"
@@ -1030,3 +1045,100 @@ msgstr "Non"
 
 msgid "ENUM::FORMATIONEXTERNE::1"
 msgstr "Oui"
+
+msgid "Cui.retourmail"
+msgstr "Retour au plus tard le"
+
+msgid "Cui.commentairemail"
+msgstr "Commentaire reporté dans le mail"
+
+msgid "Cui.piecemailcui66"
+msgstr "Choix des pièces à joindre au mail de l'employeur"
+
+msgid "Cui.postepropose"
+msgstr "Poste proposé"
+
+msgid "Cui.isperennisation"
+msgstr "Pérennisation de l'emploi ?"
+
+msgid "ENUM::ISPERENNISATION::0"
+msgstr "Non"
+
+msgid "ENUM::ISPERENNISATION::1"
+msgstr "Oui"
+
+msgid "Cui.subventionaccordee"
+msgstr "Subvention accordée à l'employeur ?"
+
+msgid "ENUM::SUBVENTIONACCORDEE::0"
+msgstr "Non"
+
+msgid "ENUM::SUBVENTIONACCORDEE::1"
+msgstr "Oui"
+
+msgid "Cui.dateentreedispositif"
+msgstr "Date d'entrée dans le dispositif"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::6"
+msgstr "-6 mois"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::1"
+msgstr "-1 an"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::2"
+msgstr "-2 ans"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::3"
+msgstr "-3 ans"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::4"
+msgstr "-4 ans"
+
+msgid "ENUM::DATEENTREEDISPOSITIF::5"
+msgstr "-5 ans"
+
+
+msgid "Cui.dossierrecu"
+msgstr "Dossier reçu ?"
+
+msgid "ENUM::DOSSIERRECU::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERRECU::1"
+msgstr "Oui"
+
+msgid "Cui.datedossierrecu"
+msgstr "Date de réception du dossier"
+
+msgid "Cui.dossiereligible"
+msgstr "Dossier éligible ?"
+
+msgid "ENUM::DOSSIERELIGIBLE::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERELIGIBLE::1"
+msgstr "Oui"
+
+msgid "Cui.datedossiereligible"
+msgstr "Date d'éligibilité du dossier"
+
+msgid "Cui.dossiercomplet"
+msgstr "Dossier complet ?"
+
+msgid "ENUM::DOSSIERCOMPLET::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERCOMPLET::1"
+msgstr "Oui"
+
+msgid "Cui.datedossiercomplet"
+msgstr "Date du dossier complet"
+
+msgid "Cui.textmailcui66_id"
+msgstr "Modèle de mail"
+
+msgid "Cui.dateenvoimail"
+msgstr "Date d'envoi du mail"
+
+msgid "Cuis::maillink"
+msgstr "Envoi du mail à l'employeur"
