@@ -3405,3 +3405,38 @@ msgstr "Modification d'un élément"
 
 msgid "Cataloguespdisfps93:delete"
 msgstr "Suppression d'un élément"
+
+
+###############################################################################
+
+msgid "Module:Piecesmailscuis66"
+msgstr "Pièces mails liées aux employeurs CUI (CG66)"
+
+msgid "Piecesmailscuis66:index"
+msgstr "Visualisation des pièces liées aux mails employeurs"
+
+msgid "Piecesmailscuis66:add"
+msgstr "Ajout d'une pièce liée aux mails employeurs"
+
+msgid "Piecesmailscuis66:edit"
+msgstr "Édition d'une pièce liée aux mails employeurs"
+
+msgid "Piecesmailscuis66:delete"
+msgstr "Suppression d'une pièce liée aux mails employeurs"
+
+###############################################################################
+
+msgid "Module:Textsmailscuis66"
+msgstr "Modèles de mails liés au CUI (CG66)"
+
+msgid "Textsmailscuis66:index"
+msgstr "Visualisation des modèles de mails liés aux CUI"
+
+msgid "Textsmailscuis66:add"
+msgstr "Ajout d'un modèle de mail lié au CUI"
+
+msgid "Textsmailscuis66:edit"
+msgstr "Édition d'un modèle de mail lié au CUI"
+
+msgid "Textsmailscuis66:delete"
+msgstr "Suppression d'un modèle de mail lié au CUI"
