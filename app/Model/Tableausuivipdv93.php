@@ -1746,6 +1746,7 @@
 				$conditiontype = "Thematiquefp93.type = '".Sanitize::clean( $typethematiquefp93_id, array( 'encode' => false ) )."'";
 			}
 
+			// Filtre sur le RDV individuel
 			$conditionsrdv = $this->_conditionsFicheprescription93Rendezvous( $search, 'AND' );
 			if( $conditionsrdv !== null ) {
 				$conditionsrdv = preg_replace( '/^AND /', '', $conditionsrdv );
@@ -1773,7 +1774,7 @@
 				'contain' => false
 			);
 
-			// Ajout des conditions de base définies dans le webrsa.inc
+			// Ajout des conditions de base définies dans le webrsa.inc pour l'ensemble du tableau
 			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b4.conditions' );
 			if( !empty( $conditions ) ) {
 				$base['conditions'][] = $conditions;
@@ -1934,7 +1935,7 @@
 				'contain' => false
 			);
 
-			// Ajout des conditions de base définies dans le webrsa.inc
+			// Ajout des conditions de base définies dans le webrsa.inc pour l'ensemble du tableau
 			$conditions = (array)Configure::read( 'Tableausuivi93.tableau1b5.conditions' );
 			if( !empty( $conditions ) ) {
 				$query['conditions'][] = $conditions;
@@ -1947,7 +1948,7 @@
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
 		 *
-		 * Partie "Tableau principal".
+		 * Partie "Tableaux périphériques".
 		 *
 		 * @param array $search
 		 * @return array
@@ -1955,10 +1956,18 @@
 		protected function _tableau1b5newTotaux( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
 			$query = $this->_tableau1b5newBase( $search );
+
+			// Ajout des conditions des différentes catégories
+			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+			$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
+
+			// Ajout des champs spécifiques à cette requête
 			$query['fields'] = array(
 				'COUNT( DISTINCT "Ficheprescription93"."personne_id" ) AS "distinct_personnes_prescription"',
 				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."benef_retour_presente" = \'oui\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "distinct_personnes_action"',
+				// H. Cadre effectivité : La personne s'est présentée=non ou s'est excusée
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."benef_retour_presente" IN ( \'non\', \'excuse\' ) THEN 1 ELSE 0 END ), 0 ) AS "beneficiaires_pas_deplaces"',
+				// I. Cadre effectivité : "Signé par le partenaire le"=vide
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."date_signature_partenaire" IS NULL THEN 1 ELSE 0 END ), 0 ) AS "nombre_fiches_attente"',
 			);
 
@@ -1984,10 +1993,15 @@
 			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
 
 			$vFields = array(
+				// A. nombre total de fiches quel que soit le statut renseigné
 				'COUNT( Ficheprescription93.id ) AS "nombre"',
+				// B. Cadre "Effectivité de la prescription": Nombre de fiches pour lesquelles l'allocataire s'est présenté ="oui" et date de signature du partenaire est renseignée
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."benef_retour_presente" = \'oui\' AND "Ficheprescription93"."date_signature_partenaire" IS NOT NULL THEN 1 ELSE 0 END ), 0 ) AS "nombre_effectives"',
+				// C. Cadre "Suivi de l'action" : "La personne souhaite intégrer l'action=non"
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."personne_souhaite_integrer" = \'0\' THEN 1 ELSE 0 END ), 0 ) AS "nombre_refus_beneficiaire"',
+				// D. Cadre "Suivi de l'action" : "La personne a été retenue par la structure=non"
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."personne_retenue" = \'0\' THEN 1 ELSE 0 END ), 0 ) AS "nombre_refus_organisme"',
+				// E. Cadre "Suivi de l'action" : La personne a été reçue en entretien=oui La personne a été retenue par la structure:oui La personne souhaite intégrer l'action:oui L'allocataire a intégré l'action= vide Avec la date du jour antérieure à la date de début de l'action si elle existe
 				'COALESCE( SUM(
 					CASE
 						WHEN (
@@ -1996,13 +2010,14 @@
 							AND "Ficheprescription93"."personne_souhaite_integrer" = \'1\'
 							AND "Ficheprescription93"."personne_a_integre" IS NULL
 							AND (
-								"Ficheprescription93"."dd_action" IS NOT NULL
-								AND "Ficheprescription93"."dd_action" > NOW()
+								"Ficheprescription93"."dd_action" IS NULL
+								OR "Ficheprescription93"."dd_action" > NOW()
 							)
 						) THEN 1
 						ELSE 0
 					END
 				), 0 ) AS "nombre_en_attente"',
+				// F. Cadre "Suivi de l'action": L'allocataire a intégré l'action=oui
 				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "nombre_participants"'
 			);
 
@@ -2203,6 +2218,8 @@
 		/**
 		 * TODO: nom de la fonction
 		 *
+		 * @deprecated
+		 *
 		 * @param array $results
 		 * @param string $sql
 		 * @param array $map
@@ -2241,6 +2258,8 @@
 		/**
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
+		 *
+		 * @deprecated
 		 *
 		 * @param array $search
 		 * @return array

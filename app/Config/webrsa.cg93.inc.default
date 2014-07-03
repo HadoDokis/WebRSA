@@ -1306,13 +1306,19 @@
 	 * Conditions de base, liste de catégories (colonne 1) et de filières (colonne
 	 * 2) du tableau de suivi d'activité 1B4 "Prescriptions vers les acteurs
 	 * sociaux, culturels et de sante".
+	 *
+	 * Les modèles suivants (et donc leurs tables associées) peuvent être utilisés
+	 * dans les conditions: Ficheprescription93, Actionfp93 (PDI), Filierefp93,
+	 * Prestatairefp93 (PDI), Referent, Categoriefp93, Thematiquefp93.
+	 *
+	 * Les lignes du tableau 1B4 apparaîtront dans l'ordre défini ci-dessous.
 	 */
 	Configure::write(
 		'Tableausuivi93.tableau1b4',
 		array(
 			// Conditions générales à prendre en compte pour filtrer les fiches à comptabiliser
 			'conditions' => array(
-				// Dont le n° de convention n'est pas un n° fictif
+				// Dont le n° de convention n'est pas un n° fictif (mais en gardant tout de même les actions Hors PDI)
 				'OR' => array(
 					'Actionfp93.id IS NULL',
 					'Actionfp93.numconvention NOT LIKE' => 'NF%',
@@ -1321,66 +1327,81 @@
 			'categories' => array(
 				// Catégories (colonne 1), Thématiques (colonne 2) et conditions à appliquer
 				'Acteur sociaux' => array(
+					// Non défini
 					'Service Social de polyvalence' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Service social spécialisé' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'CCAS' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Associations' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Autres (*)' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
 						'Categoriefp93.name IS NULL'
 					)
 				),
 				'Acteurs de la santé' => array(
+					// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 					'Accompagnement Santé' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name' => 'Accompagnement santé'
 					),
+					// Non défini
 					'Centre municipal de santé' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Centre médico-psychologique' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Centre de bilan de santé' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Maison départementale des personnes handicapées' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Centre de protection maternelle et infantile' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Centres Départementaux de dépistage et de prévention sanitaire (CDDPS)' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Médecine de ville' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
+					// Non défini
 					'Autres (*)' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
 						'Categoriefp93.name IS NULL'
 					),
 				),
 				'Culture loisirs vacances' => array(
+					// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 					'Projet loisirs vacances' => array(
 						'Thematiquefp93.name' => 'Prescription culture loisirs vacances',
 						'Categoriefp93.name' => 'Projet loisirs vacances'
@@ -1394,34 +1415,44 @@
 	 * Conditions de base, liste de catégories (colonne 1) et de filières (colonne
 	 * 2) du tableau de suivi d'activité 1B5 "Prescription sur les actions à
 	 * caractère socio-professionnel et professionnel".
+	 *
+	 * Les modèles suivants (et donc leurs tables associées) peuvent être utilisés
+	 * dans les conditions: Ficheprescription93, Actionfp93 (PDI), Filierefp93,
+	 * Prestatairefp93 (PDI), Referent, Categoriefp93, Thematiquefp93.
+	 *
+	 * Les lignes du tableau 1B5 apparaîtront dans l'ordre défini ci-dessous.
 	 */
 	Configure::write(
 		'Tableausuivi93.tableau1b5',
 		array(
 			// Conditions générales à prendre en compte pour filtrer les fiches à comptabiliser
 			'conditions' => array(
-				// Dont le n° de convention n'est pas un n° fictif
+				// Dont le n° de convention n'est pas un n° fictif (mais en gardant tout de même les actions Hors PDI)
 				'OR' => array(
 					'Actionfp93.id IS NULL',
 					'Actionfp93.numconvention NOT LIKE' => 'NF%',
-				)
+				),
 			),
 			'categories' => array(
 				// Catégories (colonne 1), Thématiques (colonne 2) et conditions à appliquer
 				'Socio - professionnelles' => array(
 					'Redynamisation' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Redynamisation'
 					),
 					'Remobilisation' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Remobilisation'
 					),
 					'Pôle linguistique' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Pole diagnostic linguistique'
 					),
 					'Actions linguistiques (tous niveaux) hors pôle diagnostique' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => array(
 							'Alphabetisation',
@@ -1432,79 +1463,102 @@
 						)
 					),
 					'Remise à niveau' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Remise a niveau'
 					),
 					'Actions du CUCS' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
 					'Autres (*)' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
 						'Categoriefp93.name IS NULL'
 					),
 				),
 				'Professionnelles' => array(
 					'Formation pré-qualifiante PDI' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
+						'Thematiquefp93.type' => 'pdi',
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => array(
+							'Formation pre qualifiante',
+							'formation pré-qualifiante'
+						)
 					),
 					'Formation qualifiante PDI' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
+						'Thematiquefp93.type' => 'pdi',
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'formation qualifiante'
 					),
 					'FDIF/APRE formation' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'FDIF/APRE'
 					),
 					'SIAE' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'SIAE / Entreprise d insertion'
 					),
 					'Plateforme AFPA force' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name IS NULL'
 					),
 					'Création d\'entreprise' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name' => 'Accompagnement à la création d\'activité
 '
 					),
 					'Formations de Droit Commun (Région, AFPA, etc…)' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Formation de Droit Commun Région, AFPA, …'
 					),
 					'PLIE' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Plie'
 					),
 					'Maison de l\'emploi ou service emploi autre que PE' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'maison de l’emploi ou SE autre que PE'
 					),
 					'C2DI' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name IS NULL'
 					),
 					'VAE' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name IS NULL'
 					),
 					'Actions du CUCS' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name' => 'Action du CUCS'
 					),
 					'Autres (*)' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
 						'Categoriefp93.name IS NULL'
 					),
 				),
 				'Pôle Emploi' => array(
 					'Prestations Pôle Emploi' => array(
+						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
 						'Thematiquefp93.name LIKE' => '%Pôle Emploi',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Prestation pôle emploi'
 					),
 					'Inscription au  Pôle Emploi' => array(
+						// Non défini
 						'Thematiquefp93.name LIKE' => '%Pôle Emploi',
 						'Categoriefp93.name IS NULL'
 					),
