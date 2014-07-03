@@ -763,6 +763,126 @@ SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', '
 SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_numcomptt' );
 SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', 'benef_locaadr' );
 
+------------------------------------------------------------------------------------------
+-- 20140627: Modification du foirmulaire du CUI: arnaud
+------------------------------------------------------------------------------------------
+
+-- Mise à NULL de la valeur par défaut de la position CUI
+ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT NULL; 
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_positioncui66_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_positioncui66_in_list_chk CHECK (cakephp_validate_in_list(positioncui66::text, ARRAY['attenvoimail'::text, 'dossierrecu'::text, 'dossiereligible'::text, 'attpieces'::text, 'attavismne'::text, 'attaviselu'::text, 'attavisreferent'::text, 'attdecision'::text, 'encours'::text, 'annule'::text, 'decisionsanssuite'::text, 'fincontrat'::text, 'attrenouv'::text, 'perime'::text, 'nonvalide'::text, 'valid'::text, 'validnotifie'::text, 'nonvalidnotifie'::text, 'rupture'::text]));
+-- ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT 'attenvoimail'::VARCHAR(10);
+-- ALTER TABLE cuis ALTER COLUMN positioncui66 SET NOT NULL;
+
+SELECT add_missing_table_field( 'public', 'cuis', 'sendmailemployeur', 'VARCHAR(1)' );
+ALTER TABLE cuis ALTER COLUMN sendmailemployeur SET DEFAULT '0'::VARCHAR(1);
+UPDATE cuis SET sendmailemployeur = '0' WHERE sendmailemployeur IS NULL;
+ALTER TABLE cuis ALTER COLUMN sendmailemployeur SET NOT NULL;
+SELECT add_missing_table_field( 'public', 'cuis', 'retourmail', 'DATE' );
+SELECT add_missing_table_field( 'public', 'cuis', 'commentairemail', 'TEXT' );
+
+
+-- 20140627!: ajout d'une table pour stocker es pièces liées aux mails employeur
+DROP TABLE IF EXISTS piecesmailscuis66 CASCADE;
+CREATE TABLE piecesmailscuis66(
+    id                          SERIAL NOT NULL PRIMARY KEY,
+    name                        VARCHAR(250) NOT NULL,
+    isactif                     VARCHAR(1) NOT NULL DEFAULT '1',
+	----------------------------------------------------------------------------
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE piecesmailscuis66 IS 'Table des différentes pièces liées aux mails employeur des CUIs (CG66)';
+
+DROP INDEX IF EXISTS piecesmailscuis66_name_idx;
+CREATE INDEX piecesmailscuis66_name_idx ON piecesmailscuis66( name );
+
+DROP INDEX IF EXISTS piecesmailscuis66_isactif_idx;
+CREATE INDEX piecesmailscuis66_isactif_idx ON piecesmailscuis66( isactif );
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'piecesmailscuis66', 'piecesmailscuis66_isactif_in_list_chk' );
+ALTER TABLE piecesmailscuis66 ADD CONSTRAINT piecesmailscuis66_isactif_in_list_chk CHECK ( cakephp_validate_in_list( isactif, ARRAY['0', '1'] ) );
+
+
+
+----------------------------------------------------------------------------------------
+-- 20130927 : Création d'une table de liaison entre
+--            les pièces liées aux mails employeur et les CUIs
+----------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS cuis_piecesmailscuis66 CASCADE;
+CREATE TABLE cuis_piecesmailscuis66(
+    id                              SERIAL NOT NULL PRIMARY KEY,
+    cui_id      INTEGER NOT NULL REFERENCES actionscandidats_personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    piecemailcui66_id       INTEGER NOT NULL REFERENCES progsfichescandidatures66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	----------------------------------------------------------------------------
+    created                     TIMESTAMP WITHOUT TIME ZONE,
+    modified                    TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE cuis_piecesmailscuis66 IS 'Table de liaison entre les pièces liées aux mails employeur et les CUIs (CG66)';
+
+DROP INDEX IF EXISTS cuis_piecesmailscuis66_cui_id_idx;
+CREATE INDEX cuis_piecesmailscuis66_cui_id_idx ON cuis_piecesmailscuis66( cui_id );
+
+DROP INDEX IF EXISTS cuis_piecesmailscuis66_piecemailcui66_id_idx;
+CREATE INDEX cuis_piecesmailscuis66_piecemailcui66_id_idx ON cuis_piecesmailscuis66( piecemailcui66_id );
+
+DROP INDEX IF EXISTS cuis_piecesmailscuis66_cui_id_piecemailcui66_id_idx;
+CREATE UNIQUE INDEX cuis_piecesmailscuis66_cui_id_piecemailcui66_id_idx ON cuis_piecesmailscuis66(cui_id,piecemailcui66_id);
+
+SELECT add_missing_table_field( 'public', 'partenaires', 'nomresponsable', 'VARCHAR(100)' );
+SELECT add_missing_table_field( 'public', 'cuis', 'postepropose', 'VARCHAR(250)' );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'isperennisation', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_isperennisation_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_isperennisation_in_list_chk CHECK ( cakephp_validate_in_list( isperennisation, ARRAY['0', '1'] ) );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'subventionaccordee', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_subventionaccordee_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_subventionaccordee_in_list_chk CHECK ( cakephp_validate_in_list( subventionaccordee, ARRAY['0', '1'] ) );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'dateentreedispositif', 'VARCHAR(10)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_dateentreedispositif_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dateentreedispositif_in_list_chk CHECK ( cakephp_validate_in_list( dateentreedispositif, ARRAY['6', '1', '2', '3', '4', '5'] ) );
+
+
+SELECT add_missing_table_field( 'public', 'cuis', 'dossierrecu', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_dossierrecu_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dossierrecu_in_list_chk CHECK ( cakephp_validate_in_list( dossierrecu, ARRAY['0', '1'] ) );
+SELECT add_missing_table_field( 'public', 'cuis', 'datedossierrecu', 'DATE' );
+
+
+SELECT add_missing_table_field( 'public', 'cuis', 'dossiereligible', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_dossiereligible_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dossiereligible_in_list_chk CHECK ( cakephp_validate_in_list( dossiereligible, ARRAY['0', '1'] ) );
+SELECT add_missing_table_field( 'public', 'cuis', 'datedossiereligible', 'DATE' );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'dossiercomplet', 'VARCHAR(1)' );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_dossiercomplet_in_list_chk' );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dossiercomplet_in_list_chk CHECK ( cakephp_validate_in_list( dossiercomplet, ARRAY['0', '1'] ) );
+SELECT add_missing_table_field( 'public', 'cuis', 'datedossiercomplet', 'DATE' );
+
+
+-- 20140630: Table permettatn de sasir des mails types pour envoi à l'employeur CUI
+DROP TABLE IF EXISTS textsmailscuis66 CASCADE;
+CREATE TABLE textsmailscuis66 (
+    id			SERIAL NOT NULL PRIMARY KEY,
+	name		VARCHAR(250) NOT NULL,
+	sujet       VARCHAR(150) NOT NULL,
+	contenu     TEXT NOT NULL,
+	actif       VARCHAR(1) NOT NULL DEFAULT '1',
+    created		TIMESTAMP WITHOUT TIME ZONE,
+    modified	TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE textsmailscuis66 IS 'Table permettant de stocker les mails types envoyés aux employeurs liés au CUI - CG66';
+
+CREATE UNIQUE INDEX textsmailscuis66_name_idx ON textsmailscuis66( name );
+
+ALTER TABLE textsmailscuis66 ADD CONSTRAINT textsmailscuis66_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+
+SELECT add_missing_table_field( 'public', 'cuis', 'textmailcui66_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_textmailcui66_id_fkey', 'textsmailscuis66', 'textmailcui66_id', false );
+SELECT add_missing_table_field( 'public', 'cuis', 'dateenvoimail', 'DATE' );
+
 -------------------------------------------------------------------------------------
 -- 20140701: FIXME: ajout des intitulés tableau1b4new et tableau1b4new dans la contrainte tableauxsuivispdvs93_name_in_list_chk
 -------------------------------------------------------------------------------------

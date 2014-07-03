@@ -18,6 +18,7 @@
 							echo $this->Xform->fieldValue( 'Contactpartenaire.numfax', Set::classicExtract( $partenaire, 'Contactpartenaire.numfax' ) );
 							
 							echo $this->Xform->fieldValue( 'Referent.nom_complet', Set::classicExtract( $partenaire, 'Referent.nom_complet' ) );
+							echo $this->Xform->fieldValue( 'Partenaire.nomresponsable', Set::classicExtract( $partenaire, 'Partenaire.nomresponsable' ) );
 
 						?>
 					</fieldset>
@@ -27,6 +28,7 @@
 						<?php
 							echo $this->Xform->fieldValue( 'Partenaire.statut', Set::enum( Set::classicExtract( $partenaire, 'Partenaire.statut' ), $options['Cui']['statutemployeur'] ) );
 							echo $this->Xform->fieldValue( 'Partenaire.secteuractivitepartenaire_id', Set::enum( Set::classicExtract( $partenaire, 'Partenaire.secteuractivitepartenaire_id' ), $secteursactivites ) );
+							echo $this->Xform->fieldValue( 'Partenaire.objet', Set::classicExtract( $partenaire, 'Partenaire.objet' ) );
 							echo $this->Xform->fieldValue( 'Partenaire.raisonsocialepartenairecui66_id', Set::enum( Set::classicExtract( $partenaire, 'Partenaire.raisonsocialepartenairecui66_id' ), $options['Cui']['raisonsocialepartenairecui66_id'] ) );
 							
 							echo $this->Xform->fieldValue( 'Partenaire.nomtiturib', Set::classicExtract( $partenaire, 'Partenaire.nomtiturib' ) );
