@@ -24,7 +24,8 @@
 			'Partenaire.numtel',
 			'Partenaire.numfax',
 			'Partenaire.email',
-			'Partenaire.codepostal' => array( 'required' => true )
+			'Partenaire.codepostal' => array( 'required' => true ),
+			'Partenaire.nomresponsable'
 		)
 	);
 	
@@ -57,6 +58,7 @@
 		echo $this->Default2->subform(
 			array(
 				'Partenaire.secteuractivitepartenaire_id' => array( 'empty' => true, 'options' => $secteursactivites ),
+				'Partenaire.objet',
 				'Partenaire.statut' => array( 'empty' => true, 'options' => $options['Partenaire']['statut'] ),
 			)
 		);
