@@ -458,10 +458,10 @@
                     else if( ($dossierrecu == '1' ) && (empty($dossiereligible)) && (empty($dossiercomplet ) ) ) {
                         $positioncui66 = 'dossierrecu';
                     }
-                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && empty($dossiercomplet) ) {
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet != '1') && ($dossiercomplet != '0') ) {
                         $positioncui66 = 'dossiereligible';
                     }
-                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '0') ) {
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet === '0') ) {
                         $positioncui66 = 'attpieces';
                     }
                     else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '1') ) {
