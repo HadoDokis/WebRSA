@@ -614,12 +614,13 @@
 		 * @return array
 		 */
 		protected function _allEmailConfigKeys66() {
-			$return = array( 'apre66_piecesmanquantes', 'fiche_candidature', 'avis_technique_cui' );
+			$return = array( 'apre66_piecesmanquantes', 'fiche_candidature', 'avis_technique_cui', 'mail_employeur_cui' );
+			
 
 			if( Configure::read( 'Password.mail_forgotten' ) ) {
 				$return[] = 'user_generation_mdp';
 			}
-
+//$return = array( );
 			return $return;
 		}
 
