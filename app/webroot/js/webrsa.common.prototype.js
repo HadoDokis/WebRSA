@@ -1787,7 +1787,7 @@ function ajax_action_on_success(response, parameters) {
 		for( path in json.fields ) {
 			var field = json.fields[path];
 
-			if( $(field).type == 'select' ) {
+			if( $(field).type === 'select' ) {
 				var select = new Element( 'select' );
 				$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
 
@@ -1801,7 +1801,7 @@ function ajax_action_on_success(response, parameters) {
 
 				$($(field).id).update( $(select).innerHTML );
 			}
-			else if( $(field).type == 'ajax_select' ) {
+			else if( $(field).type === 'ajax_select' ) {
 
 				var domIdSelect = $(field).id + 'AjaxSelect';
 				var oldAjaxSelect = $( domIdSelect );
@@ -1852,10 +1852,18 @@ function ajax_action_on_success(response, parameters) {
 				$($(field).id).value = $(field).value;
 			}
 		}
+
+		// Événements à lancer ?
+		if( typeof json.events === 'object' && json.events.length > 0 ) {
+			$(json.events).each( function ( customEvent ) {
+				Event.fire( document, customEvent );
+			} );
+		}
 	}
 }
 
 // @url http://prototypejs.org/doc/1.6.0/hash.html
+// TODO: dans la partie principale, etc...
 window.requests = new Hash();
 
 /**
@@ -1904,7 +1912,7 @@ function ajax_action(event, parameters) {
 	} );
 	var oldRequest = window.requests.get( requestKey );
 
-	if( oldRequest !== undefined ) {
+	if( typeof oldRequest !== 'undefined' ) {
 		oldRequest.transport.abort();
 		window.requests.unset( requestKey );
 	}
