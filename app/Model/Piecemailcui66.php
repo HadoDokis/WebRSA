@@ -39,7 +39,7 @@
             'Cui' => array(
                 'className' => 'Cui',
                 'joinTable' => 'cuis_piecesmailscuis66',
-                'foreignKey' => 'piecemailcui66_id_id',
+                'foreignKey' => 'piecemailcui66_id',
                 'associationForeignKey' => 'cui_id',
                 'unique' => true,
                 'conditions' => '',
