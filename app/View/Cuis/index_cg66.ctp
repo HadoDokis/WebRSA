@@ -123,6 +123,7 @@
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'cuis', 'maillink', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+									&& ( Set::classicExtract( $cui, 'Cui.sendmailemployeur' ) != '0' )
 								)
 							)
 						),
