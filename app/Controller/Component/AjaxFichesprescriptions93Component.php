@@ -104,57 +104,43 @@
 				}
 			}
 
+			$vfsFicheprescription93 = array(
+				// Type
+				'Ficheprescription93.typethematiquefp93_id' => array(
+					'real' => 'Thematiquefp93.type',
+					'modelName' => 'Thematiquefp93',
+					'next' => 'Ficheprescription93.thematiquefp93_id'
+				),
+				// Thématique
+				'Ficheprescription93.thematiquefp93_id' => array(
+					'real' => 'Categoriefp93.thematiquefp93_id',
+					'modelName' => 'Categoriefp93',
+					'next' => 'Ficheprescription93.categoriefp93_id'
+				),
+				// Catégorie
+				'Ficheprescription93.categoriefp93_id' => array(
+					'real' => 'Filierefp93.categoriefp93_id',
+					'modelName' => 'Filierefp93',
+					'next' => 'Ficheprescription93.filierefp93_id'
+				)
+			);
+
 			if( !empty( $value ) ) {
-				// On sélectionne le type
-				if( $current == $invertedPaths['Ficheprescription93.typethematiquefp93_id'] ) {
-					$query = array(
-						'conditions' => array(
-							'Thematiquefp93.type' => Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' )
-						)
-					);
+				// On sélectionne le type, la thématique ou la catégorie
+				if( in_array( $data['Target']['path'], array( 'Ficheprescription93.typethematiquefp93_id', 'Ficheprescription93.thematiquefp93_id', 'Ficheprescription93.categoriefp93_id' ) ) ) {
+					$virtual = $vfsFicheprescription93[$data['Target']['path']];
+					$query = array( 'conditions' => array( $virtual['real'] => $value ) );
 
-					$query['conditions'][] = ClassRegistry::init( 'Thematiquefp93' )->getDependantListCondition(
+					$query['conditions'][] = ClassRegistry::init( $virtual['modelName'] )->getDependantListCondition(
 						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
 						$conditionsActionfp93
 					);
 
-					$fields['Ficheprescription93.thematiquefp93_id']['options'] = $this->ajaxOptions( 'Thematiquefp93', $query );
+					$fields[$virtual['next']]['options'] = $this->ajaxOptions( $virtual['modelName'], $query );
 				}
-
-				// On sélectionne la thématique
-				if( $current == $invertedPaths['Ficheprescription93.thematiquefp93_id'] ) {
-					$query = array(
-						'conditions' => array(
-							'Categoriefp93.thematiquefp93_id' => Hash::get( $data, 'Ficheprescription93.thematiquefp93_id' )
-						)
-					);
-
-					$query['conditions'][] = ClassRegistry::init( 'Categoriefp93' )->getDependantListCondition(
-						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
-						$conditionsActionfp93
-					);
-
-					$fields['Ficheprescription93.categoriefp93_id']['options'] = $this->ajaxOptions( 'Categoriefp93', $query );
-				}
-
-				// On sélectionne la catégorie
-				if( $current == $invertedPaths['Ficheprescription93.categoriefp93_id'] ) {
-					$query = array(
-						'conditions' => array(
-							'Filierefp93.categoriefp93_id' => Hash::get( $data, 'Ficheprescription93.categoriefp93_id' )
-						)
-					);
-
-					$query['conditions'][] = ClassRegistry::init( 'Filierefp93' )->getDependantListCondition(
-						Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' ),
-						$conditionsActionfp93
-					);
-
-					$fields['Ficheprescription93.filierefp93_id']['options'] = $this->ajaxOptions( 'Filierefp93', $query );
-				}
-
 				// On sélectionne la filière
-				if( $current == $invertedPaths['Ficheprescription93.filierefp93_id'] ) {
+				else if( $current == $invertedPaths['Ficheprescription93.filierefp93_id'] ) {
+					// Liste des actions
 					$query = array(
 						'conditions' => array(
 							'Actionfp93.filierefp93_id' => Hash::get( $data, 'Ficheprescription93.filierefp93_id' )
@@ -167,6 +153,7 @@
 
 					$fields['Ficheprescription93.actionfp93_id']['options'] = $this->ajaxOptions( 'Actionfp93', $query );
 
+					// Liste des prestataires
 					$query = array(
 						'joins' => array(
 							ClassRegistry::init( 'Prestatairefp93' )->join(
@@ -186,9 +173,8 @@
 
 					$fields['Ficheprescription93.prestatairefp93_id']['options'] = $this->ajaxOptions( 'Prestatairefp93', $query );
 				}
-
 				// On sélectionne le prestataire
-				if( $current == $invertedPaths['Ficheprescription93.prestatairefp93_id'] ) {
+				else if( $current == $invertedPaths['Ficheprescription93.prestatairefp93_id'] ) {
 					// Liste des actions liées au prestataire
 					$query = array(
 						'conditions' => array(
@@ -217,9 +203,8 @@
 						$fields['Ficheprescription93.adresseprestatairefp93_id']['value'] = $fields['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
 					}
 				}
-
 				// On sélectionne l'action
-				if( $current == $invertedPaths['Ficheprescription93.actionfp93_id'] ) {
+				else if( $current == $invertedPaths['Ficheprescription93.actionfp93_id'] ) {
 					$result = ClassRegistry::init( 'Actionfp93' )->find(
 						'first',
 						array(
@@ -237,11 +222,9 @@
 					$fields['Ficheprescription93.numconvention']['value'] = Hash::get( $result, 'Actionfp93.numconvention' );
 					$fields['Ficheprescription93.prestatairefp93_id']['value'] = Hash::get( $result, 'Actionfp93.prestatairefp93_id' );
 					$fields['Ficheprescription93.duree_action']['value'] = Hash::get( $result, 'Actionfp93.duree' );
-					// unset( $fields['Ficheprescription93.adresseprestatairefp93_id'] );
 				}
-
 				// Si on sélectionne l'adresse d'un prestaire PDI, il ne faut rien faire
-				if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
+				else if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
 					$fields = array();
 				}
 			}
@@ -430,7 +413,8 @@
 
 				$fields['Ficheprescription93.numconvention'] = array(
 					'id' => "{$data['prefix']}Ficheprescription93Numconvention",
-					'value' => $value,
+					// INFO: On n'envoie pas la valeur pour ne pas perturber la saisie
+					// 'value' => $value,
 					'type' => 'ajax_select',
 					'prefix' => $data['prefix'],
 					'options' => Hash::extract( $results, '{n}.Actionfp93' )
