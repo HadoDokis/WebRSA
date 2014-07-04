@@ -72,6 +72,8 @@
 			$current = array_search( $data['Target']['path'], $paths );
 			$invertedPaths = array_flip( $paths );
 
+			$events = array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' );
+
 			$fields = array();
 			for( $i = $current + 1 ; $i < count($paths) ; $i++ ) {
 				$fields[$paths[$i]] = array(
@@ -90,6 +92,11 @@
 			// Si on change l'action, on de doit pas modifier l'adresse du prestataire hors PDI
 			if( $data['Target']['path'] === 'Ficheprescription93.actionfp93_id' ) {
 				unset( $fields['Ficheprescription93.adresseprestatairefp93_id'] );
+			}
+
+			// Si on change l'adresse du prestataire PDI, on ne doit pas modifier le n° de convention
+			if( $data['Target']['path'] === 'Ficheprescription93.adresseprestatairefp93_id' ) {
+				unset( $fields['Ficheprescription93.numconvention'] );
 			}
 
 			$conditionsActionfp93 = array();
@@ -226,13 +233,14 @@
 				// Si on sélectionne l'adresse d'un prestaire PDI, il ne faut rien faire
 				else if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
 					$fields = array();
+					$events = array( 'adresseprestatairefp93_id:changed' );
 				}
 			}
 
 			// Si on a un préfixe, on l'ajoute à ce que l'on retourne
 			$fields = $this->prefixAjaxResult( $data['prefix'], $fields );
 
-			return array( 'success' => true, 'fields' => $fields );
+			return array( 'success' => true, 'fields' => $fields, 'events' => $events );
 		}
 
 		/**
@@ -350,7 +358,7 @@
 
 			$return = $this->prefixAjaxResult( $data['prefix'], $return );
 
-			return array( 'success' => true, 'fields' => $return );
+			return array( 'success' => true, 'fields' => $return, 'events' => array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' ) );
 		}
 
 		/**
@@ -468,7 +476,11 @@
 				}
 				$result['prefix'] = $prefix;
 
-				return $this->ajaxOnLoad( $result );
+				// Ajout d'événements
+				$return = $this->ajaxOnLoad( $result );
+				$return['events'] = array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' );
+
+				return $return;
 			}
 			else {
 				$pdiField = "{$path}_id";
@@ -514,7 +526,7 @@
 						}
 					}
 
-					return array( 'success' => true, 'fields' => $fields );
+					return array( 'success' => true, 'fields' => $fields, 'events' => array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' ) );
 				}
 			}
 		}
