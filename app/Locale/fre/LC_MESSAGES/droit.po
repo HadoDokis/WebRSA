@@ -844,6 +844,9 @@ msgstr "Lier des fichiers au CUI"
 msgid "Cuis:cancel"
 msgstr "Annulation du CUI"
 
+msgid "Cuis:maillink"
+msgstr "Mail à l'employeur"
+
 ###############################################################################
 
 msgid "Module:Decisionsdossierspcgs66"

@@ -82,9 +82,21 @@
 					</table>';
                 
                 $positioncui66 = Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] );
-                if( ( ( $cui['Cui']['positioncui66'] == 'dossierrecu' ) && !empty( $cui['Cui']['datedossierrecu'] ) ) || ( ( $cui['Cui']['positioncui66'] == 'dossiereligible' ) && !empty( $cui['Cui']['datedossiereligible'] ) ) ) {
-                    $positioncui66 = $positioncui66.' le '.$this->Locale->date( 'Date::short', $cui['Cui']['datedossierrecu'] );
+                $dateDossier = '';
+                if( ( ( $cui['Cui']['positioncui66'] == 'dossierrecu' ) && !empty( $cui['Cui']['datedossierrecu'] ) ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossierrecu'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
                 }
+                else if( ( $cui['Cui']['positioncui66'] == 'dossiereligible' ) && !empty( $cui['Cui']['datedossiereligible'] ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiereligible'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
+                }
+                else if( ( $cui['Cui']['positioncui66'] == 'dossiercomplet' ) && !empty( $cui['Cui']['datedossiercomplet'] ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiercomplet'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
+                }
+
+                
 
 				echo $this->Xhtml->tableCells(
 					array(
