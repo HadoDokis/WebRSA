@@ -1847,10 +1847,16 @@ function ajax_action_on_success(response, parameters) {
 				}
 			}
 
-			$($(field).id).value = $(field).value;
+			// On ne modifie / renvoie pas systématiquement la valeur des champs
+			if( typeof $(field).value !== 'undefined' ) {
+				$($(field).id).value = $(field).value;
+			}
 		}
 	}
 }
+
+// @url http://prototypejs.org/doc/1.6.0/hash.html
+window.requests = new Hash();
 
 /**
  * Effectue un appel Ajax post "à la mode CakePHP" (grâce à la méthode cake_data())
@@ -1875,6 +1881,8 @@ function ajax_action_on_success(response, parameters) {
  *	- data[Target][name]: le name (HTML) de l'élément qui a déclenché l'événement (non rempli lorsque l'événement dataavailable)
  * }}}
  *
+ * Si la même requête (url, prefix) est déjà en cours, on l'annule.
+ *
  * @param Event event L'événement qui a déclenché l'appel à la fonction.
  * @param object parameters
  * @returns void
@@ -1890,16 +1898,32 @@ function ajax_action(event, parameters) {
 	postParams['data[Target][domId]'] = $(element).id;
 	postParams['data[Target][name]'] = $(element).name;
 
-	new Ajax.Request(
-		parameters.url,
-		{
-			method: 'post',
-			parameters: postParams,
-			onSuccess: function( response ) {
-				postParams.url = parameters.url;
-				ajax_action_on_success( response, postParams );
+	var requestKey = Object.toJSON( {
+		url: parameters.url,
+		prefix: parameters.prefix
+	} );
+	var oldRequest = window.requests.get( requestKey );
+
+	if( oldRequest !== undefined ) {
+		oldRequest.transport.abort();
+		window.requests.unset( requestKey );
+	}
+
+	window.requests.set(
+		requestKey,
+		new Ajax.Request(
+			parameters.url,
+			{
+				method: 'post',
+				parameters: postParams,
+				onSuccess: function( response ) {
+					window.requests.unset( requestKey );
+
+					postParams.url = parameters.url;
+					ajax_action_on_success( response, postParams );
+				}
 			}
-		}
+		)
 	);
 }
 

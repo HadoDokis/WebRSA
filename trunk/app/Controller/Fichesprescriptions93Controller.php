@@ -350,7 +350,8 @@
 						'fields' => array(
 							'Prestatairehorspdifp93.name' => array(
 								'id' => 'Prestatairehorspdifp93Name',
-								'value' => $prestatairehorspdifp93Name,
+								// INFO: On n'envoie pas la valeur pour ne pas perturber la saisie
+								// 'value' => $prestatairehorspdifp93Name,
 								'type' => 'ajax_select',
 								'prefix' => null,
 								'options' => Hash::extract( $results, '{n}.Prestatairefp93' )
