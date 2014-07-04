@@ -4,6 +4,10 @@ ME="$0"
 APP="`dirname "$ME"`/.."
 TMP="/tmp"
 
+now=`date +"%Y%m%d-%H%M%S"`
+ERROR_LOG="${TMP}/maj_odt_nouvelles_adresses_caf-error-${now}.log"
+echo -n "" > "$ERROR_LOG"
+
 # ==============================================================================
 
 # Fonction permettant de remplacer le contenu d'un fichier .odt par des regexeps
@@ -24,21 +28,26 @@ function sed_odt() {
 	mkdir -p "$tmp_dirname"
 	unzip "$modeleodt" -d "$tmp_dirname" >> "/dev/null" 2>&1
 
-	(
-		cd "$tmp_dirname"
+	if [ -f "$tmp_dirname/content.xml" ] ; then
+		(
+			cd "$tmp_dirname"
 
-		for sed_regex in $sed_regexes ; do
-			sed -i "$sed_regex" content.xml
-		done
+			for sed_regex in $sed_regexes ; do
+				sed -i "$sed_regex" content.xml
+			done
 
-		zip -o -r -m "../$tmp_filename" . >> "/dev/null" 2>&1
-	)
+			zip -o -r -m "../$tmp_filename" . >> "/dev/null" 2>&1
+		)
 
-	now=`date +"%Y%m%d-%H%M%S"`
-	modeleodtbak="$modeleodt.bak.$now"
-	mv "$modeleodt" "$modeleodtbak"
+		now=`date +"%Y%m%d-%H%M%S"`
+		modeleodtbak="$modeleodt.bak.$now"
+		mv "$modeleodt" "$modeleodtbak"
 
-	mv "$TMP/$tmp_filename" "$modeleodt"
+		mv "$TMP/$tmp_filename" "$modeleodt"
+	else
+		echo "	Erreur (${modeleodt})"
+		echo "${modeleodt}" >> "$ERROR_LOG"
+	fi
 
 	rmdir "$tmp_dirname"
 }
@@ -98,4 +107,19 @@ sed_regexes=( \
 
 # ==============================================================================
 
-sed_all_odt "$APP/Vendor/modelesodt" "${sed_regexes[@]}"
+ sed_all_odt "$APP/Vendor/modelesodt" "${sed_regexes[@]}"
+
+# ==============================================================================
+
+echo "================================================================================"
+
+NB_ERRORS=`wc -l "$ERROR_LOG" | sed "s/ .*$//g"`
+
+if [ $NB_ERRORS -gt 0 ] ; then
+	echo "$NB_ERRORS erreur(s) lors du traitement:"
+	cat "$ERROR_LOG"
+else
+	echo "Traitement effectué sans erreur."
+fi
+
+rm  "$ERROR_LOG"
