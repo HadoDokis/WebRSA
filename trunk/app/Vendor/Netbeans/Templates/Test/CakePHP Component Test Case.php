@@ -75,7 +75,7 @@
 			$Request = new CakeRequest( 'apples/index', false );
 			$Request->addParams(array( 'controller' => 'apples', 'action' => 'index' ) );
 
-			$this->Controller = new ${class_name(name)?replace("ComponentTest", "", "r")}TestsControllerController( $Request );
+			$this->Controller = new ${class_name(name)?replace("ComponentTest", "", "r")}TestsController( $Request );
 			$this->Controller->Components->init( $this->Controller );
 			$this->Controller->${class_name(name)?replace("ComponentTest", "", "r")}->initialize( $this->Controller );
 		}
