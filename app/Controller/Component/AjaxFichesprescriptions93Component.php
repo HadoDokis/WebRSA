@@ -72,7 +72,7 @@
 			$current = array_search( $data['Target']['path'], $paths );
 			$invertedPaths = array_flip( $paths );
 
-			$events = array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' );
+			$events = array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id' );
 
 			$fields = array();
 			for( $i = $current + 1 ; $i < count($paths) ; $i++ ) {
@@ -208,6 +208,7 @@
 					// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne
 					if( count( $fields['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
 						$fields['Ficheprescription93.adresseprestatairefp93_id']['value'] = $fields['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
+						$events[] = 'changed:Ficheprescription93.adresseprestatairefp93_id';
 					}
 				}
 				// On sélectionne l'action
@@ -233,7 +234,7 @@
 				// Si on sélectionne l'adresse d'un prestaire PDI, il ne faut rien faire
 				else if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
 					$fields = array();
-					$events = array( 'adresseprestatairefp93_id:changed' );
+					$events = array( 'changed:Ficheprescription93.adresseprestatairefp93_id' );
 				}
 			}
 
@@ -358,7 +359,7 @@
 
 			$return = $this->prefixAjaxResult( $data['prefix'], $return );
 
-			return array( 'success' => true, 'fields' => $return, 'events' => array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' ) );
+			return array( 'success' => true, 'fields' => $return, 'events' => array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id' ) );
 		}
 
 		/**
@@ -478,7 +479,10 @@
 
 				// Ajout d'événements
 				$return = $this->ajaxOnLoad( $result );
-				$return['events'] = array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' );
+				$return['events'] = array(
+					'changed:Ficheprescription93.actionfp93_id',
+					'changed:Ficheprescription93.adresseprestatairefp93_id'
+				);
 
 				return $return;
 			}
@@ -526,7 +530,7 @@
 						}
 					}
 
-					return array( 'success' => true, 'fields' => $fields, 'events' => array( 'actionfp93:selected', 'adresseprestatairefp93_id:changed' ) );
+					return array( 'success' => true, 'fields' => $fields, 'events' => array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id' ) );
 				}
 			}
 		}

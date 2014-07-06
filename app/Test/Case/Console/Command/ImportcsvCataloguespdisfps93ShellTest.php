@@ -45,6 +45,8 @@
 		 * Préparation du test.
 		 */
 		public function setUp() {
+			Configure::write( 'Cg.departement', 93 );
+
 			parent::setUp();
 
 			$out = $this->getMock( 'ConsoleOutput', array( ), array( ), '', false );

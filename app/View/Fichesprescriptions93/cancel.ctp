@@ -12,4 +12,6 @@
 			'Ficheprescription93.motif_annulation',
 		)
 	);
+
+	echo $this->Observer->disableFormOnSubmit();
 ?>

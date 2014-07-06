@@ -169,6 +169,10 @@
 								)
 							)
 						)
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -203,6 +207,10 @@
 								)
 							)
 						)
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -239,6 +247,10 @@
 								)
 							)
 						)
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -292,6 +304,10 @@
 								),
 							),
 						),
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -343,6 +359,10 @@
 								),
 							),
 						),
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -388,16 +408,21 @@
 							),
 						),
 						'Ficheprescription93.adresseprestatairefp93_id' => array(
-								'id' => 'Ficheprescription93Adresseprestatairefp93Id',
-								'value' => 1,
-								'type' => 'select',
-								'options' => array(
-									array(
-										'id' => 1,
-										'name' => 'Av. de la république, 93000 Bobigny',
-									),
+							'id' => 'Ficheprescription93Adresseprestatairefp93Id',
+							'value' => 1,
+							'type' => 'select',
+							'options' => array(
+								array(
+									'id' => 1,
+									'name' => 'Av. de la république, 93000 Bobigny',
 								),
-							)
+							),
+						)
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -441,16 +466,21 @@
 							),
 						),
 						'Ficheprescription93.adresseprestatairefp93_id' => array(
-								'id' => 'Ficheprescription93Adresseprestatairefp93Id',
-								'value' => 1,
-								'type' => 'select',
-								'options' => array(
-									array(
-										'id' => 1,
-										'name' => 'Av. de la république, 93000 Bobigny',
-									),
+							'id' => 'Ficheprescription93Adresseprestatairefp93Id',
+							'value' => 1,
+							'type' => 'select',
+							'options' => array(
+								array(
+									'id' => 1,
+									'name' => 'Av. de la république, 93000 Bobigny',
 								),
-							)
+							),
+						)
+					),
+					'events' => array(
+						'changed:Ficheprescription93.actionfp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'changed:Ficheprescription93.adresseprestatairefp93_id',
 					)
 				)
 			);
@@ -494,6 +524,10 @@
 						'value' => NULL,
 					),
 				),
+				'events' => array(
+					'changed:Ficheprescription93.actionfp93_id',
+					'changed:Ficheprescription93.adresseprestatairefp93_id',
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -518,6 +552,9 @@
 			$expected = array(
 				'success' => true,
 				'fields' => array(),
+				'events' => array(
+					'changed:Ficheprescription93.adresseprestatairefp93_id',
+				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
