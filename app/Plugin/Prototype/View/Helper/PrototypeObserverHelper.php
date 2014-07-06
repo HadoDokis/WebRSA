@@ -74,7 +74,11 @@
 		 * @param string $message Le message (optionnel) qui apparaîtra en haut du formulaire
 		 * @return string
 		 */
-		public function disableFormOnSubmit( $form, $message = null ) {
+		public function disableFormOnSubmit( $form = null, $message = null ) {
+			if( $form === null ) {
+				$form = Inflector::camelize( Inflector::singularize( $this->request->params['controller'] )."_{$this->request->params['action']}" ).'Form';
+			}
+
 			if( empty( $message ) ) {
 				$script = "observeDisableFormOnSubmit( '{$form}' );";
 			}
