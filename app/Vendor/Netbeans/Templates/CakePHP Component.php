@@ -19,13 +19,6 @@
 	class ${name} extends Component
 	{
 		/**
-		 * Contrôleur utilisant ce component.
-		 *
-		 * @var Controller
-		 */
-		public $Controller = null;
-
-		/**
 		 * Paramètres de ce component
 		 *
 		 * @var array
@@ -46,7 +39,6 @@
 		 * @link http://book.cakephp.org/2.0/en/controllers/components.html#Component::initialize
 		 */
 		public function initialize( Controller $controller ) {
-			$this->Controller = $controller;
 		}
 
 		/**
