@@ -1442,12 +1442,35 @@ function observeDisableFormOnSubmit( formId, message ) {
 	Event.observe(
 		formId,
 		'submit',
-		function() {
-			if( typeof(message) != 'undefined' && message !== null ) {
+		function( submitter ) {
+			// Si le formulaire a été envoyé via un bouton, on l'ajoute aux données envoyées
+			var pressed = submitter.explicitOriginalTarget;
+			if( typeof pressed !== 'undefined' && typeof pressed.name !== 'undefined' ) {
+				var name = 'data[' + pressed.name + ']';
+
+				// Si d'autres éléments du même nom existent, on les supprime
+				$(this).select( 'input[name="' + name + '"]' ).each( function( old ) {
+					$(old).remove();
+				} );
+
+				var hidden = new Element(
+					'input',
+					{
+						type: 'hidden',
+						name: name,
+						value: pressed.value,
+					}
+				);
+				$(this).insert( { 'top' : hidden } );
+			}
+
+			// Ajout de l'enventuel message en haut du formaulire
+			if( typeof(message) !== 'undefined' && message !== null ) {
 				var notice = new Element( 'p', { 'class': 'notice' } ).update( message );
 				$( formId ).insert( { 'top' : notice } );
 			}
 
+			// Désactivation des boutons
 			$$( '#' + formId + ' *[type=submit]', '#' + formId + ' *[type=reset]' ).each( function( submit ) {
 				$( submit ).disabled = true;
 			} );
@@ -1862,9 +1885,95 @@ function ajax_action_on_success(response, parameters) {
 	}
 }
 
-// @url http://prototypejs.org/doc/1.6.0/hash.html
-// TODO: dans la partie principale, etc...
-window.requests = new Hash();
+/**
+ * "Surcharge" de la classe Ajax.Updater pour s'assurer de n'avoir que seule la
+ * dernière requête d'updater pour une URL et un container soit prise en compte.
+ *
+ * Lorsqu'une requête précédente est trouvée, elle est annulée lors du lancement
+ * de la nouvelle requête.
+ *
+ * La liste des updaters en cours est stockée dans windows.updaters (Hash).
+ */
+Ajax.AbortableUpdater = Class.create(
+	Ajax.Updater,
+	{
+		initialize: function( $super, container, url, options ) {
+			var key = url + '#' + container;
+
+			// Création du dictionnaire associatif des updaters
+			if( typeof window.updaters === 'undefined' ) {
+				window.updaters = new Hash();
+			}
+
+			// Annulation de l'updater précédent
+			var previous = window.updaters.get( key );
+			if( typeof previous !== 'undefined' ) {
+				previous.transport.abort();
+				window.updaters.unset( key );
+			}
+
+			// "Surcharge" de la méthode onComplete des options
+			options = Object.clone(options);
+			var onComplete = options.onComplete;
+			options.onComplete = ( function( response, json) {
+				if( Object.isFunction( onComplete ) ) onComplete( response, json );
+
+				// Suppression de la référence à l'updater
+				window.updaters.unset( key );
+			} ).bind( this );
+
+			$super( container, url, options );
+
+			// Sauvegarde de la référence à l'updater
+			window.updaters.set( key, this );
+		}
+	}
+);
+
+/**
+ * "Surcharge" de la classe Ajax.Request pour s'assurer de n'avoir que seule la
+ * dernière requête pour une URL soit prise en compte.
+ *
+ * Lorsqu'une requête précédente est trouvée, elle est annulée lors du lancement
+ * de la nouvelle requête.
+ *
+ * La liste des requests en cours est stockée dans windows.requests (Hash).
+ */
+Ajax.AbortableRequest = Class.create(
+	Ajax.Request,
+	{
+		initialize: function( $super, url, options ) {
+			var key = url;
+
+			// Création du dictionnaire associatif des requests
+			if( typeof window.requests === 'undefined' ) {
+				window.requests = new Hash();
+			}
+
+			// Annulation de la request précédent
+			var previous = window.requests.get( key );
+			if( typeof previous !== 'undefined' ) {
+				previous.transport.abort();
+				window.requests.unset( key );
+			}
+
+			// "Surcharge" de la méthode onComplete des options
+			options = Object.clone(options);
+			var onComplete = options.onComplete;
+			options.onComplete = ( function( response, json) {
+				if( Object.isFunction( onComplete ) ) onComplete( response, json );
+
+				// Suppression de la référence à la request
+				window.requests.unset( key );
+			} ).bind( this );
+
+			$super( url, options );
+
+			// Sauvegarde de la référence à la request
+			window.requests.set( key, this );
+		}
+	}
+);
 
 /**
  * Effectue un appel Ajax post "à la mode CakePHP" (grâce à la méthode cake_data())
@@ -1906,32 +2015,15 @@ function ajax_action(event, parameters) {
 	postParams['data[Target][domId]'] = $(element).id;
 	postParams['data[Target][name]'] = $(element).name;
 
-	var requestKey = Object.toJSON( {
-		url: parameters.url,
-		prefix: parameters.prefix
-	} );
-	var oldRequest = window.requests.get( requestKey );
-
-	if( typeof oldRequest !== 'undefined' ) {
-		oldRequest.transport.abort();
-		window.requests.unset( requestKey );
-	}
-
-	window.requests.set(
-		requestKey,
-		new Ajax.Request(
-			parameters.url,
-			{
-				method: 'post',
-				parameters: postParams,
-				onSuccess: function( response ) {
-					window.requests.unset( requestKey );
-
-					postParams.url = parameters.url;
-					ajax_action_on_success( response, postParams );
-				}
+	new Ajax.AbortableRequest(
+		parameters.url,
+		{
+			parameters: postParams,
+			onSuccess: function( response ) {
+				postParams.url = parameters.url;
+				ajax_action_on_success( response, postParams );
 			}
-		)
+		}
 	);
 }
 

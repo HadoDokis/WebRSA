@@ -498,23 +498,6 @@
 		)
 	);
 
-	/*echo $this->Ajax2->updateDivOnFieldsChange(
-		'CoordonneesPrestataire',
-		array( 'action' => 'ajax_prestataire' ),
-		array(
-			'Ficheprescription93.adresseprestatairefp93_id'
-		)
-	);*/
-
-	/*echo $this->Ajax2->updateDivOnFieldsChange(
-		'DureeActionPdi',
-		array( 'action' => 'ajax_duree_pdi' ),
-		array(
-			'Ficheprescription93.typethematiquefp93_id',
-			'Ficheprescription93.actionfp93_id',
-		)
-	);*/
-
 	echo $this->Observer->disableFieldsOnCheckbox(
 		'Ficheprescription93.rdvprestataire_adresse_check',
 		array(
@@ -523,17 +506,16 @@
 		false,
 		true
 	);
+
+	echo $this->Observer->disableFormOnSubmit();
 ?>
 
 <script type="text/javascript">
-	Element.observe( document, 'actionfp93:selected', function() {
-		new Ajax.Updater( // TODO: pouvoir l'annuler, etc...
+	Element.observe( document, 'changed:Ficheprescription93.actionfp93_id', function() {
+		new Ajax.AbortableUpdater(
 			'DureeActionPdi',
 			'<?php echo Router::url( array( 'action' => 'ajax_duree_pdi' ) );?>',
 			{
-				method: 'post',
-				asynchronous: true,
-				evalScripts: true,
 				parameters: {
 					'data[Ficheprescription93][typethematiquefp93_id]': $F( '<?php echo $this->Html->domId( 'Ficheprescription93.typethematiquefp93_id' );?>' ),
 					'data[Ficheprescription93][actionfp93_id]': $F( '<?php echo $this->Html->domId( 'Ficheprescription93.actionfp93_id' );?>' )
@@ -542,14 +524,11 @@
 		);
 	} );
 
-	Element.observe( document, 'adresseprestatairefp93_id:changed', function() {
-		new Ajax.Updater( // TODO: pouvoir l'annuler, etc...
+	Element.observe( document, 'changed:Ficheprescription93.adresseprestatairefp93_id', function() {
+		new Ajax.AbortableUpdater(
 			'CoordonneesPrestataire',
 			'<?php echo Router::url( array( 'action' => 'ajax_prestataire' ) );?>',
 			{
-				method: 'post',
-				asynchronous: true,
-				evalScripts: true,
 				parameters: {
 					'data[Ficheprescription93][adresseprestatairefp93_id]': $F( '<?php echo $this->Html->domId( 'Ficheprescription93.adresseprestatairefp93_id' );?>' )
 				}

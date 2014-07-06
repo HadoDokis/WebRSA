@@ -14,7 +14,7 @@
 		)
 	);
 
-	echo $this->Xform->create( 'Search', array( 'id' => 'Fichesprescriptions93SearchForm' ) );
+	echo $this->Xform->create( null, array( 'id' => 'Fichesprescriptions93SearchForm' ) );
 
 	echo $this->Allocataires->blocDossier( array( 'options' => $options ) );
 	echo $this->Allocataires->blocAdresse( array( 'options' => $options ) );
