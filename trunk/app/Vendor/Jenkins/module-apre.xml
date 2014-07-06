@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="module-pcg66" default="build" basedir="./../../">
+<project name="module-apre" default="build" basedir="./../../">
 	<property name="dir.cakephp.app" value="${basedir}" />
 	<property name="dir.ant.build" value="${basedir}/tmp/build" />
 	<property name="dir.ant.artifacts" value="${dir.ant.build}/artifacts" />
@@ -8,36 +8,12 @@
 
 	<property name="dir.phpcs.ruleset" value="${dir.cakephp.app}/Vendor/Jenkins/phpcs/ruleset-module.xml" />
 	<property name="file.phpmd.ruleset" value="${dir.cakephp.app}/Vendor/Jenkins/phpmd/ruleset-module.xml" />
-	<property name="file.phpunit.config" value="${dir.cakephp.app}/Vendor/Jenkins/phpunit/config-module-pcg66.xml" />
+	<property name="file.phpunit.config" value="${dir.cakephp.app}/Vendor/Jenkins/phpunit/config-module-apre.xml" />
 
 	<property name="excludes" value="**/.*/**,**/Config/sql/**,**/Vendor/Netbeans/Templates/**,**/tmp/**" />
 
-	<!--
-		find app -name '*.php' -iregex '.*\(ficheprescription93\|fp93\|fps93\).*' | sort
-	-->
-	<!--
-	<target name="init">
-		<exec executable="bash" failonerror="on" logerror="on" outputproperty="filelist.comma" dir="${dir.cakephp.app}">
-		  <arg value="-c"/>
-		  <arg value="find . -iregex '.*\(ficheprescription93\|fichesprescriptions93\|fp93\|fps93\).*\.php$' -not -iregex '.*\/Test\/.*' | sort | paste -sd ','"/>
-		</exec>
-		<exec executable="bash" failonerror="on" logerror="on" outputproperty="filelist.space" dir="${dir.cakephp.app}">
-		  <arg value="-c"/>
-		  <arg value="find . -iregex '.*\(ficheprescription93\|fichesprescriptions93\|fp93\|fps93\).*\.php$' -not -iregex '.*\/Test\/.*' | sort | paste -sd ' '"/>
-		</exec>
-
-		<echo message="filelist.comma: ${filelist.comma}" />
-		<echo message="filelist.space: ${filelist.space}" />
-		<echo message="filelist.excludepcre: ${filelist.excludepcre}" />
-	</target>
-	<property name="includes.php" value="**/**Ficheprescription93**.php,**/**Fichesprescriptions93**.php,**/**Fichesprescriptions93**/**.ctp,**/**fp93**.php,**/**fps93**.php,**/**fps93**/**.ctp" />
-	<property name="includes.po" value="**/**Ficheprescription93**.po,**/**Fichesprescriptions93**.po,**/**fp93**.po,**/**fps93**.po" />
-	<property name="filelist.excludepcre" value="/^((?!Ficheprescription93|Fichesprescriptions93|fp93|fps93).)*$/" />
-	-->
 	<!-- INFO: les majuscules et minuscules ont de l'importance -->
-	<property name="words" value="pcgs66 pcg66 pdo Pcgs66 Pcg66 Pdo" />
-	<!--<property name="words" value="cer93 contratinsertion cers93 contratsinserion" />-->
-	<!--<property name="words" value="apre etatliquidatif apres etatsliquidatifs" />-->
+	<property name="words" value="apre Apre etatliquidatif Etatliquidatif etatsliquidatifs Etatsliquidatifs acccreaentr Acccreaentr accscreaentr Accscreaentr acqmatprof Acqmatprof acqsmatsprofs Acqsmatsprofs actprof Actprof actsprofs Actsprofs amenaglogt Amenaglogt amenagslogts Amenagslogts formpermfimo Formpermfimo formspermsfimo Formspermsfimo formqualif Formqualif formsqualifs Formsqualifs locvehicinsert Locvehicinsert locsvehicinsert Locsvehicinsert permisb Permisb" />
 
 	<target name="init">
 		<!-- TODO: les vues aussi, pour le lint et les lignes de code -->
@@ -45,6 +21,7 @@
 		  <arg value="-c"/>
 		  <arg value="echo '${words}' | sed 's/\(\w\+\)/**\/**\1**.php/g' | sed 's/ \+/,/g'"/>
 		</exec>
+
 		<exec executable="sed" inputstring="${includes.php}" outputproperty="includes.po">
 			<arg value="s/\.php/.po/g"/>
 		</exec>
@@ -126,7 +103,7 @@
 	<!-- TODO -->
 	<target name="phpunit" depends="clean,lint">
 		<exec executable="lib/Cake/Console/cake" dir="${basedir}/.." failonerror="true">
-			<arg line="test app AllPcgs66Tests
+			<arg line="test app AllApresTests
 				--verbose
 				--strict
 				--no-colors
