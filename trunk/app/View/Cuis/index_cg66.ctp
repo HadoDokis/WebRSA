@@ -57,7 +57,7 @@
 	<thead>
 		<tr>
 			<th>Type de CUI</th>
-			<th>Date du contrat</th>
+			<th>Date de la demande</th>
 			<th>Secteur</th>
 			<th>Employeur</th>
 			<th>Date de début de prise en charge</th>
@@ -65,7 +65,7 @@
 			<th>Décision pour le CUI</th>
             <th>Position du CUI</th>
 			<th>Date de validation</th>
-			<th colspan="13" class="action">Actions</th>
+			<th colspan="14" class="action">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -81,6 +81,14 @@
 						</tbody>
 					</table>';
                 
+                // Partie décision sur le CUI
+                $positioncui66 = Hash::get( $cui, 'Cui.positioncui66' );
+                $decisioncui66 = Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['Cui']['decisioncui'] );
+                if( $positioncui66 == 'attpieces' ) {
+                    $decisioncui66 = '';
+                }
+                
+                //Partie pour les dates en lien avec les positions CUI les nécessitant
                 $positioncui66 = Set::enum( Set::classicExtract( $cui, 'Cui.positioncui66' ), $options['Cui']['positioncui66'] );
                 $dateDossier = '';
                 if( ( ( $cui['Cui']['positioncui66'] == 'dossierrecu' ) && !empty( $cui['Cui']['datedossierrecu'] ) ) ) {
@@ -96,7 +104,6 @@
                     $positioncui66 = $positioncui66.' le '.$dateDossier;
                 }
 
-                
 
 				echo $this->Xhtml->tableCells(
 					array(
@@ -106,7 +113,7 @@
 						h( Set::classicExtract( $cui, 'Cui.nomemployeur' ) ),
 						h( date_short( Set::classicExtract( $cui, 'Cui.datedebprisecharge' ) ) ),
 						h( date_short( Set::classicExtract( $cui, 'Cui.datefinprisecharge' ) ) ),
-						h( Set::enum( Set::classicExtract( $cui, 'Cui.decisioncui' ), $options['Cui']['decisioncui'] ) ),
+						h( $decisioncui66 ),
                         h( $positioncui66 ),
 						h( date_short( Set::classicExtract( $cui, 'Cui.datevalidationcui' ) ) ),
 						$this->Default2->button(
@@ -125,6 +132,17 @@
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'cuis', 'edit', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+								)
+							)
+						),
+						$this->Default2->button(
+							'synthesecui66',
+							array( 'controller' => 'cuis', 'action' => 'synthesecui66', $cui['Cui']['id'] ),
+							array(
+								'enabled' => (
+									( $this->Permissions->checkDossier( 'cuis', 'synthesecui66', $dossierMenu ) == 1 )
+									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
+                                    && false // FIXME
 								)
 							)
 						),

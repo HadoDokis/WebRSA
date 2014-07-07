@@ -41,7 +41,8 @@
 			'ajaxfileupload' => 'update',
 			'download' => 'read',
 			'filelink' => 'read',
-			'fileview' => 'read'
+			'fileview' => 'read',
+            'printavis' => 'read'
 		);
 
 		/**
@@ -445,6 +446,28 @@
 			}
 
 			$this->redirect( $this->referer() );
+		}
+        
+        
+        
+		/**
+		 * Imprime l'avis technique émis sur le CUI
+		 *
+		 * @param integer $id L'id de la proposition du CUI que l'on veut imprimer
+		 * @return void
+		 */
+		public function printaviscui( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Propodecisioncui66->personneId( $id ) ) );
+
+			$pdf = $this->Propodecisioncui66->getAvistechniquecuiPdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ){
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'AvisTechnique_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier d\'avis technique.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
 		}
 	}
 ?>

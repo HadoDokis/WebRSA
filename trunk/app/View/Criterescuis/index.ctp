@@ -77,6 +77,10 @@
 			echo $this->Form->input( 'Cui.niveauformation', array( 'label' => __d( 'cui', 'Cui.niveauformation' ), 'type' => 'select', 'options' => $options['Cui']['niveauformation'], 'empty' => true ) );
 			echo $this->Form->input( 'Cui.compofamiliale', array( 'label' => __d( 'cui', 'Cui.compofamiliale' ), 'type' => 'select', 'options' => $options['Cui']['compofamiliale'], 'empty' => true ) );
             echo $this->Form->input( 'Cui.partenaire_id', array( 'label' => __d( 'cui', 'Cui.partenaire_id' ), 'options' => $employeursCui, 'empty' => true ) );
+            
+            echo $this->Form->input( 'Cui.secteuremploipropose_id', array( 'label' => __d( 'cui', 'Cui.secteuremploipropose_id' ), 'options' => $secteursactivites, 'empty' => true ) );
+            echo $this->Form->input( 'Cui.metieremploipropose_id', array( 'label' => __d( 'cui', 'Cui.metieremploipropose_id' ), 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+            echo $this->Form->input( 'Cui.postepropose', array( 'label' => __d( 'cui', 'Cui.postepropose' ) ) );
 		?>
 
         <?php echo $this->Form->input( 'Cui.datefintitresejour', array( 'label' => 'Filtrer par date de fin de titre de séjour', 'type' => 'checkbox' ) );?>
@@ -229,7 +233,9 @@
 
 		observeDisableFieldsOnValue( 'CuiSecteurcuiId', [ 'CuiIsaci' ], ['<?php echo implode( "', '", $secteur_isnonmarchand_id );?>'], false, true );
 
-	});
+        dependantSelect( 'CuiMetieremploiproposeId', 'CuiSecteuremploiproposeId' );
+            try { $( 'CuiMetieremploiproposeId' ).onchange(); } catch(id) { }
+        });
 </script>
 
 <?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

@@ -643,3 +643,9 @@ msgstr "Clôturer"
 
 msgid "Button::maillink"
 msgstr "Mail employeur"
+
+msgid "Button::printaviscui"
+msgstr "Impression avis technique"
+
+msgid "Button::synthesecui66"
+msgstr "Synthèse"
