@@ -490,8 +490,10 @@
 				);
 
 				// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne
-				if( count( $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
-					$return['fields']['Ficheprescription93.adresseprestatairefp93_id']['value'] = $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
+				if( isset( $return['fields']['Ficheprescription93.adresseprestatairefp93_id'] ) ) {
+					if( count( $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
+						$return['fields']['Ficheprescription93.adresseprestatairefp93_id']['value'] = $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
+					}
 				}
 
 				return $return;
