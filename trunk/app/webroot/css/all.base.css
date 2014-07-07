@@ -892,3 +892,7 @@ body.memos.view #pageContent table td.data {
 body.tableauxsuivispdvs93 table th.subtotal, body.tableauxsuivispdvs93 table td.subtotal {
 	background: #e6eef2;
 }
+
+body.fichesprescriptions93.edit #DureeActionPdi, body.fichesprescriptions93.add #DureeActionPdi {
+	margin-bottom: 1.5em;
+}
