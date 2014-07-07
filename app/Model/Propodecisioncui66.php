@@ -266,5 +266,48 @@
 
             return $sq;
         }
+        
+        
+        
+		/**
+		 * Retourne le PDF de l'impression de l'avis technique du CUI.
+		 *
+		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
+		 * @param integer $user_id L'id de l'utilisateur générant l'impression
+		 * @return string
+		 */
+		public function getAvistechniquecuiPdf( $id, $user_id ) {
+
+			$propodecisioncui = $this->getDataForPdf( $id, $user_id );
+
+			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Personne' => array(
+					'qual' => $Option->qual()
+				),
+				'Referent' => array(
+					'qual' => $Option->qual()
+				),
+				'Structurereferente' => array(
+					'type_voie' => $Option->typevoie()
+				),
+				'Type' => array(
+					'voie' => $Option->typevoie()
+				),
+				'type' => array(
+					'voie' => $Option->typevoie()
+				),
+			);
+
+// debug( $propodecisioncui );
+// die();
+			return $this->ged(
+				$propodecisioncui,
+				'CUI/avistechniquecui.odt',
+				false,
+				$options
+			);
+		}
 	}
 ?>

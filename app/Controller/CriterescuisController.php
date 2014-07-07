@@ -83,6 +83,28 @@
 				)
 			);
 
+            // Information salaries emploi proposé
+            $secteursactivites = $this->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
+				'list',
+				array(
+					'contain' => false,
+					'order' => array( 'Libsecactderact66Secteur.code' )
+				)
+			);
+			$this->set( 'secteursactivites', $secteursactivites );
+
+			$codesromemetiersdsps66 = $this->Cui->Personne->Dsp->Libderact66Metier->find(
+				'all',
+				array(
+					'contain' => false,
+					'order' => array( 'Libderact66Metier.code' )
+				)
+			);
+			foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
+				$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
+			}
+                    
+                    
             $this->set( compact( 'secteur_isnonmarchand_id', 'secteurscuis', 'employeursCui', 'options', 'qual' ) );
 		}
 

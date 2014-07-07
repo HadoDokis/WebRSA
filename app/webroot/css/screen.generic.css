@@ -1301,6 +1301,20 @@ td.button.notifelucui.disabled a, td.action a.notifelucui.disabled, td span.butt
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.printaviscui a, td.action a.printaviscui, td span.button.printaviscui, table.default2 td a.button.printaviscui {
+    background-image: url( ../img/icons/printer.png );
+}
+td.button.printaviscui.disabled a, td.action a.printaviscui.disabled, td span.button.printaviscui.disabled, table.default2 td a.button.printaviscui.disabled {
+    background-image: url( ../img/icons/printer_disabled.png );
+}
+
+td.button.synthesecui66 a, td.action a.synthesecui66, td span.button.synthesecui66, table.default2 td a.button.synthesecui66 {
+    background-image: url( ../img/icons/application_view_list.png );
+}
+td.button.synthesecui66.disabled a, td.action a.synthesecui66.disabled, td span.button.synthesecui66.disabled, table.default2 td a.button.synthesecui66.disabled {
+    background-image: url( ../img/icons/application_view_list_disabled.png );
+}
+
 td.button.suspension a, td.action a.suspension, td span.button.suspension, table.default2 td a.button.suspension {
     background-image: url( ../img/icons/page_red.png );
 }

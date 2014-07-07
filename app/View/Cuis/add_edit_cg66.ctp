@@ -34,6 +34,15 @@
 			true
 		);
 
+//Utilisé en cas d'adresse de l'employeur différente pour les doc administratifs
+		observeDisableFieldsetOnRadioValue(
+			'cuiform',
+			'data[Cui][isadresse2]',
+			$( 'Adressebis' ),
+			'O',
+			false,
+			true
+		);
 		/*observeDisableFieldsetOnValue(
 			'CuiTypecui',
 			$( 'aidecg' ),
@@ -440,15 +449,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		//Utilisé en cas d'adresse de l'employeur différente pour les doc administratifs
-		observeDisableFieldsetOnRadioValue(
-			'cuiform',
-			'data[Cui][isadresse2]',
-			$( 'Adressebis' ),
-			'O',
-			false,
-			true
-		);
+		
 
 		//Utilisé si le bénéficiaire bénéficie d'un rsa majoré
 		observeDisableFieldsetOnRadioValue(
@@ -1377,8 +1378,8 @@
 				<?php
 					echo $this->Default->subform(
 						array(
-							'Cui.datecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'empty' => false ),
-                            'Cui.datearrivee' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'empty' => true )
+							'Cui.datecontrat' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 20, 'maxYear' => date( 'Y' ) + 3, 'empty' => false )
+//                            'Cui.datearrivee' => array( 'dateFormat' => 'DMY', 'minYear' => date( 'Y' ) - 10, 'maxYear' => date( 'Y' ) + 3, 'empty' => true )
 						),
 						array(
 							'domain' => $domain,

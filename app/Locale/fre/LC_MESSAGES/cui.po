@@ -1097,6 +1097,9 @@ msgstr "-4 ans"
 msgid "ENUM::DATEENTREEDISPOSITIF::5"
 msgstr "-5 ans"
 
+msgid "ENUM::DATEENTREEDISPOSITIF::0"
+msgstr "+5 ans"
+
 
 msgid "Cui.dossierrecu"
 msgstr "Dossier reçu ?"

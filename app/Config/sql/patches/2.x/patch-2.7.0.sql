@@ -812,8 +812,8 @@ ALTER TABLE piecesmailscuis66 ADD CONSTRAINT piecesmailscuis66_isactif_in_list_c
 DROP TABLE IF EXISTS cuis_piecesmailscuis66 CASCADE;
 CREATE TABLE cuis_piecesmailscuis66(
     id                              SERIAL NOT NULL PRIMARY KEY,
-    cui_id      INTEGER NOT NULL REFERENCES actionscandidats_personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    piecemailcui66_id       INTEGER NOT NULL REFERENCES progsfichescandidatures66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    cui_id      INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    piecemailcui66_id       INTEGER NOT NULL REFERENCES piecesmailscuis66(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	----------------------------------------------------------------------------
     created                     TIMESTAMP WITHOUT TIME ZONE,
     modified                    TIMESTAMP WITHOUT TIME ZONE
@@ -842,7 +842,7 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_subventionaccordee_in_list_chk CHECK ( cake
 
 SELECT add_missing_table_field( 'public', 'cuis', 'dateentreedispositif', 'VARCHAR(10)' );
 SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_dateentreedispositif_in_list_chk' );
-ALTER TABLE cuis ADD CONSTRAINT cuis_dateentreedispositif_in_list_chk CHECK ( cakephp_validate_in_list( dateentreedispositif, ARRAY['6', '1', '2', '3', '4', '5'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_dateentreedispositif_in_list_chk CHECK ( cakephp_validate_in_list( dateentreedispositif, ARRAY['6', '1', '2', '3', '4', '5','0'] ) );
 
 
 SELECT add_missing_table_field( 'public', 'cuis', 'dossierrecu', 'VARCHAR(1)' );

@@ -131,6 +131,24 @@
                 $conditions[] = 'Cui.partenaire_id = \''.Sanitize::clean( $employeur_id, array( 'encode' => false ) ).'\'';
             }
 
+ 			// Sur le secteur proposé
+            $secteurproposeId = Hash::get( $criterescuis, 'Cui.secteuremploipropose_id' );
+            if( isset( $secteurproposeId ) && !empty( $secteurproposeId ) ) {
+                $conditions[] = 'Cui.secteuremploipropose_id = \''.Sanitize::clean( $secteurproposeId, array( 'encode' => false ) ).'\'';
+            }
+
+ 			// Sur le métier proposé
+            $metierproposeId = Hash::get( $criterescuis, 'Cui.metieremploipropose_id' );
+            if( isset( $metierproposeId ) && !empty( $metierproposeId ) ) {
+                $conditions[] = 'Cui.metieremploipropose_id = \''.Sanitize::clean( suffix($metierproposeId), array( 'encode' => false ) ).'\'';
+            }
+
+ 			// Sur le poste proposé
+            $postepropose = Hash::get( $criterescuis, 'Cui.postepropose' );
+            if( isset( $postepropose ) && !empty( $postepropose ) ) {
+                $conditions[] = array('Cui.postepropose ILIKE \''.$this->wildcard( $postepropose ).'\'');
+            }
+
 			$query = array(
 				'fields' => array_merge(
 					$Cui->fields(),
