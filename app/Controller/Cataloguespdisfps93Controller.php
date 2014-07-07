@@ -35,7 +35,7 @@
 					'search' => array( 'filter' => 'Search' ),
 				)
 			),
-			'Search.SearchSavedRequests',
+			'Search.SearchSavedReferer',
 		);
 
 		/**
@@ -73,12 +73,6 @@
 					array(),
 					$query['fields'],
 					!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
-				);
-
-				$this->SearchSavedRequests->write(
-					Inflector::underscore( $this->name ),
-					$this->action,
-					$this->request->params
 				);
 
 				$this->set( compact( 'results' ) );
@@ -148,7 +142,6 @@
 				$results[$i][$Model->alias]['occurences'] = ( Hash::get( $occurences, $primaryKey ) ? '1' : '0' );
 			}
 
-//			$options = $Model->enums();
 			$options = $this->Cataloguepdifp93->options();
 
 			foreach( $fields as $key => $field ) {
@@ -194,23 +187,18 @@
 				throw new Error404Exception();
 			}
 
-			$Model = ClassRegistry::init( $modelName );
+			// Sauvegarde de l'URL du referer
+			$this->SearchSavedReferer->save();
+
+			// URL par défaut vers laquelle rediriger
+			$defaultUrl = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$url = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
-
-				if( in_array( $modelName, $this->Cataloguepdifp93->modelesCatalogue ) ) {
-					$this->SearchSavedRequests->redirect(
-						Inflector::underscore( $this->name ),
-						'search',
-						$url
-					);
-				}
-				else {
-					$this->redirect( $url );
-				}
+				$this->SearchSavedReferer->redirect( $defaultUrl );
 			}
+
+			$Model = ClassRegistry::init( $modelName );
 
 			if( !empty( $this->request->data ) ) {
 				$Model->begin();
@@ -218,18 +206,7 @@
 					$Model->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-					$url = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
-
-					if( in_array( $modelName, $this->Cataloguepdifp93->modelesCatalogue ) ) {
-						$this->SearchSavedRequests->redirect(
-							Inflector::underscore( $this->name ),
-							'search',
-							$url
-						);
-					}
-					else {
-						$this->redirect( $url );
-					}
+					$this->SearchSavedReferer->redirect( $defaultUrl );
 				}
 				else {
 					$Model->rollback();
