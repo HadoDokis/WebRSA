@@ -371,6 +371,7 @@
 			$data = $this->unprefixAjaxRequest( $data );
 			$data['Target']['path'] = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['Target']['name'] ) );
 			$value = Hash::get( $data, $data['Target']['path'] );
+			$events = array();
 
 			if( $data['Target']['path'] === 'Ficheprescription93.numconvention' ) {
 				$Actionfp93 = ClassRegistry::init( 'Actionfp93' );
@@ -428,9 +429,13 @@
 					'prefix' => $data['prefix'],
 					'options' => Hash::extract( $results, '{n}.Actionfp93' )
 				);
+
+				if( trim( $value ) == '' ) {
+					$events = array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id' );
+				}
 			}
 
-			return array( 'success' => true, 'fields' => $fields );
+			return array( 'success' => true, 'fields' => $fields, 'events' => $events );
 		}
 
 		/**
@@ -483,6 +488,11 @@
 					'changed:Ficheprescription93.actionfp93_id',
 					'changed:Ficheprescription93.adresseprestatairefp93_id'
 				);
+
+				// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne
+				if( count( $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
+					$return['fields']['Ficheprescription93.adresseprestatairefp93_id']['value'] = $return['fields']['Ficheprescription93.adresseprestatairefp93_id']['options'][0]['id'];
+				}
 
 				return $return;
 			}
