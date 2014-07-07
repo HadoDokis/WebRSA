@@ -1789,105 +1789,10 @@ function cake_data(parameters) {
 	return data;
 }
 
-/**
- * La méthode de callback (par défaut) lancée par le onSuccess de l'appel
- * Ajax.Request de la fonction ajax_action.
- *
- * Attributs de l'objet parameters:
- * {{{
- *	- url (string): l'URL qui a été utilisée lors de l'appel Ajax post
- *	- data[Target][name] (string): dans le cas de l'événement click, l'attribut name du champ texte ayant servi au champ "autocomplete"
- * }}}
- *
- * @param object response
- * @param object parameters
- * @returns void
- */
-function ajax_action_on_success(response, parameters) {
-	var json = response.responseText.evalJSON(true);
-
-	if( json.success ) {
-		for( path in json.fields ) {
-			var field = json.fields[path];
-
-			if( $(field).type === 'select' ) {
-				var select = new Element( 'select' );
-				$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
-
-				var options = $(field).options;
-				if( $(options) != [] ) {
-					$(options).each( function( result ) {
-						var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
-						$(select).insert( { bottom: option } );
-					} );
-				}
-
-				$($(field).id).update( $(select).innerHTML );
-			}
-			else if( $(field).type === 'ajax_select' ) {
-
-				var domIdSelect = $(field).id + 'AjaxSelect';
-				var oldAjaxSelect = $( domIdSelect );
-				if( oldAjaxSelect ) {
-					$( oldAjaxSelect ).remove();
-				}
-
-				if( $($(field).options).length > 0 ) {
-					var ajaxSelect = new Element( 'ul' );
-
-					$($(field).options).each( function ( result ) {
-						var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
-
-						$( a ).observe( 'click', function( event ) {
-							$( domIdSelect ).remove();
-
-							var params = {
-								'data[Event][type]': 'click',
-								'data[id]': $(field).id,
-								'data[name]': parameters['data[Target][name]'],
-								'data[value]': $(result).id,
-								'data[prefix]': $(field).prefix
-							};
-
-							new Ajax.Request(
-								parameters.url,
-								{
-									method: 'post',
-									parameters: params,
-									onSuccess: function( response ) {
-										ajax_action_on_success( response, params );
-									}
-								}
-							);
-
-							return false;
-						} );
-
-						$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
-					} );
-
-					$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
-				}
-			}
-
-			// On ne modifie / renvoie pas systématiquement la valeur des champs
-			if( typeof $(field).value !== 'undefined' ) {
-				$($(field).id).value = $(field).value;
-			}
-		}
-
-		// Événements à lancer ?
-		if( typeof json.events === 'object' && json.events.length > 0 ) {
-			$(json.events).each( function ( customEvent ) {
-				Event.fire( document, customEvent );
-			} );
-		}
-	}
-}
 
 /**
  * "Surcharge" de la classe Ajax.Updater pour s'assurer de n'avoir que seule la
- * dernière requête d'updater pour une URL et un container soit prise en compte.
+ * dernière requête d'updater pour une URL soit prise en compte.
  *
  * Lorsqu'une requête précédente est trouvée, elle est annulée lors du lancement
  * de la nouvelle requête.
@@ -1898,7 +1803,7 @@ Ajax.AbortableUpdater = Class.create(
 	Ajax.Updater,
 	{
 		initialize: function( $super, container, url, options ) {
-			var key = url + '#' + container;
+			var key = url;
 
 			// Création du dictionnaire associatif des updaters
 			if( typeof window.updaters === 'undefined' ) {
@@ -1974,6 +1879,107 @@ Ajax.AbortableRequest = Class.create(
 		}
 	}
 );
+
+/**
+ * La méthode de callback (par défaut) lancée par le onSuccess de l'appel
+ * Ajax.Request de la fonction ajax_action.
+ *
+ * Attributs de l'objet parameters:
+ * {{{
+ *	- url (string): l'URL qui a été utilisée lors de l'appel Ajax post
+ *	- data[Target][name] (string): dans le cas de l'événement click, l'attribut name du champ texte ayant servi au champ "autocomplete"
+ * }}}
+ *
+ * @param object response
+ * @param object parameters
+ * @returns void
+ */
+function ajax_action_on_success(response, parameters) {
+	var json = response.responseText.evalJSON(true);
+
+	if( json.success ) {
+		for( path in json.fields ) {
+			try {
+				var field = json.fields[path];
+				// Test: $(field), $(field).type, $(field).id, $(field).value, $(field).options
+
+				if( $(field).type === 'select' ) {
+					var select = new Element( 'select' );
+					$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
+
+					var options = $(field).options;
+					if( $(options) != [] ) {
+						$(options).each( function( result ) {
+							var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
+							$(select).insert( { bottom: option } );
+						} );
+					}
+
+					$($(field).id).update( $(select).innerHTML );
+				}
+				else if( $(field).type === 'ajax_select' ) {
+
+					var domIdSelect = $(field).id + 'AjaxSelect';
+					var oldAjaxSelect = $( domIdSelect );
+					if( oldAjaxSelect ) {
+						$( oldAjaxSelect ).remove();
+					}
+
+					if( $($(field).options).length > 0 ) {
+						var ajaxSelect = new Element( 'ul' );
+
+						$($(field).options).each( function ( result ) {
+							var a = new Element( 'a', { href: '#', onclick: 'return false;' } ).update( result.name );
+
+							$( a ).observe( 'click', function( event ) {
+								$( domIdSelect ).remove();
+
+								var params = {
+									'data[Event][type]': 'click',
+									'data[id]': $(field).id,
+									'data[name]': parameters['data[Target][name]'],
+									'data[value]': $(result).id,
+									'data[prefix]': $(field).prefix
+								};
+
+								new Ajax.AbortableRequest(
+									parameters.url,
+									{
+										method: 'post',
+										parameters: params,
+										onSuccess: function( response ) {
+											ajax_action_on_success( response, params );
+										}
+									}
+								);
+
+								return false;
+							} );
+
+							$( ajaxSelect ).insert( { bottom: $( a ).wrap( 'li' ) } );
+						} );
+
+						$( $(field).id ).up( 'div' ).insert(  { after: $( ajaxSelect ).wrap( 'div', { 'id': domIdSelect, 'class': 'ajax select' } ) }  );
+					}
+				}
+
+				// On ne modifie / renvoie pas systématiquement la valeur des champs
+				if( typeof $(field).value !== 'undefined' ) {
+					$($(field).id).value = $(field).value;
+				}
+			} catch( Exception ) {
+				console.log( Exception );
+			}
+		}
+
+		// Événements à lancer ?
+		if( typeof json.events === 'object' && json.events.length > 0 ) {
+			$(json.events).each( function ( customEvent ) {
+				Event.fire( document, customEvent );
+			} );
+		}
+	}
+}
 
 /**
  * Effectue un appel Ajax post "à la mode CakePHP" (grâce à la méthode cake_data())
