@@ -3,7 +3,7 @@
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 		echo $this->Html->script( 'fileuploader.js' );
-        
+
         echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
 	}
 
@@ -75,9 +75,9 @@
 	<?php
 		echo $this->Fileuploader->create(
 			$fichiers,
-			Router::url( array( 'action' => 'ajaxfileupload' ) )
+			array( 'action' => 'ajaxfileupload' )
 		);
-		
+
 		if( !empty( $fichiersEnBase ) ) {
 			echo $this->Fileuploader->results(
 				$fichiersEnBase
@@ -111,7 +111,7 @@ document.observe( "dom:loaded", function() {
 		false,
 		true
 	);
-        
+
     dependantSelect( 'Dossierpcg66UserId', 'Dossierpcg66Poledossierpcg66Id' );
 } );
 </script>
@@ -243,7 +243,7 @@ document.observe( "dom:loaded", function() {
 
 
 
-		
+
 		echo $this->Xhtml->tag(
 			'fieldset',
 			$this->Xhtml->tag(
@@ -275,7 +275,7 @@ document.observe( "dom:loaded", function() {
 						),
 						'Decisionsdossierspcgs66::avistechnique' => array(
  							'disabled' => ( '
-                                \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\' 
+                                \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'avistechnique', $dossierMenu ). '\' != \'1\'
                                 || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
                                 || (
 									 \''.$etatdossierpcg.'\' == \'transmisop\'
@@ -284,7 +284,7 @@ document.observe( "dom:loaded", function() {
 						),
 						'Decisionsdossierspcgs66::validation' => array(
  							'disabled' => ( '
-                                 \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\' 
+                                 \''.$this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'validation', $dossierMenu ). '\' != \'1\'
                                 || ( "#Decisiondossierpcg66.etatdossierpcg#" == "annule" )
                                 || (
 									 \''.$etatdossierpcg.'\' == \'transmisop\'
@@ -328,7 +328,7 @@ document.observe( "dom:loaded", function() {
                             $this->Permissions->checkDossier( 'decisionsdossierspcgs66', 'add', $dossierMenu ) != '1'
                             || !in_array( $etatdossierpcg, array( 'attaffect', 'attinstr', 'instrencours', 'attinstrattpiece', 'attinstrdocarrive', 'decisionnonvalid', 'instr', 'arevoir' ) )
                             || empty( $personnespcgs66 )
-                            
+
 						)
 					),
 					'options' => $options,
@@ -336,7 +336,7 @@ document.observe( "dom:loaded", function() {
 				)
 			)
 		);
-		
+
 	?>
 <?php endif;?>
 
