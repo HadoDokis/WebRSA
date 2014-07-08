@@ -31,6 +31,10 @@
 		*/
 
 		public function create( $oldfiles, $ajaxurl ) {
+			if( is_array( $ajaxurl ) ) {
+				$ajaxurl = Router::url( $ajaxurl );
+			}
+
 			$tmp = "\n";
 			if( !empty( $oldfiles ) ) {
 				foreach( $oldfiles as $oldfile ) {

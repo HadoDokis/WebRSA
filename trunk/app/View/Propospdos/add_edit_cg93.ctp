@@ -90,7 +90,7 @@
 				<?php
 					echo $this->Fileuploader->create(
                         $fichiers,
-                        Router::url( array( 'action' => 'ajaxfileupload' ) )
+                        array( 'action' => 'ajaxfileupload' )
                     );
 
                     if( !empty( $fichiersEnBase ) ) {
