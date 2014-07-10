@@ -69,6 +69,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Textmailcui66' => array(
+				'className' => 'Textmailcui66',
+				'foreignKey' => 'textmailcui66_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 

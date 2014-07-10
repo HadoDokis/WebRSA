@@ -78,7 +78,10 @@
 
 			echo $this->Xform->input( 'Decisioncui66.observdecisioncui', array( 'label' => __d( 'decisioncui66', 'Decisioncui66.observdecisioncui' ), 'type' => 'textarea', 'rows' => 6)  );
 			echo $this->Xform->input( 'Decisioncui66.decisioncui', array( 'label' => __d( 'decisioncui66', 'Decisioncui66.decisioncui' ), 'type' => 'select', 'options' => $options['Decisioncui66']['decisioncui'], 'empty' => true ) );
-			echo $this->Xform->input( 'Decisioncui66.datedecisioncui', array( 'label' => required( __d( 'decisioncui66', 'Decisioncui66.datedecisioncui' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
+			
+            echo $this->Xform->input( 'Decisioncui66.textmailcui66_id', array( 'label' => __d( 'decisioncui66', 'Decisioncui66.textmailcui66_id' ), 'type' => 'select',  'empty' => true ) );
+			
+            echo $this->Xform->input( 'Decisioncui66.datedecisioncui', array( 'label' => required( __d( 'decisioncui66', 'Decisioncui66.datedecisioncui' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
 		?>
 </fieldset>
 

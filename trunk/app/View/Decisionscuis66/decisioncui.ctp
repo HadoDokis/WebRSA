@@ -47,6 +47,10 @@
 					'url' => array( 'controller' => 'decisionscuis66', 'action' => 'impression', '#Decisioncui66.id#', 'employeur' ),
 					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'impression', $dossierMenu )
 				),
+				'Decisionscuis66::envoimailemployeur' => array(
+					'label' => 'Envoi mail employeur',
+					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'envoimailemployeur', $dossierMenu )
+				),
 				'Decisionscuis66::delete' => array(
 					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'delete', $dossierMenu )
 				),

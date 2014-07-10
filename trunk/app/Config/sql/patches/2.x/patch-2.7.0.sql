@@ -890,6 +890,13 @@ SELECT add_missing_table_field( 'public', 'cuis', 'dateenvoimail', 'DATE' );
 SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_name_in_list_chk' );
 ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_name_in_list_chk CHECK ( cakephp_validate_in_list( name, ARRAY['tableaud1', 'tableaud2', 'tableau1b3', 'tableau1b4', 'tableau1b4new', 'tableau1b5', 'tableau1b5new', 'tableau1b6'] ) );
 
+
+----------------------------------------------------------------------------------------
+-- 20140710 : Liaison entre la décison du CUI et les modèles de mail type
+----------------------------------------------------------------------------------------
+SELECT add_missing_table_field( 'public', 'decisionscuis66', 'textmailcui66_id', 'INTEGER' );
+SELECT add_missing_constraint ( 'public', 'decisionscuis66', 'decisionscuis66_textmailcui66_id_fkey', 'textsmailscuis66', 'textmailcui66_id', false );
+SELECT add_missing_table_field( 'public', 'decisionscuis66', 'dateenvoimail', 'DATE' );
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

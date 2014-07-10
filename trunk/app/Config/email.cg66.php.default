@@ -220,5 +220,45 @@
 			'charset' => 'utf-8',
 			'headerCharset' => 'utf-8',
 		);
+        
+        /**
+		 * Configuration de l'envoi de mails aux employeurs pour les décisions prises 
+         * sur les CUIs CG 66.
+		 *
+		 * Les clés 'port', 'timeout', 'host', 'username', 'password', 'client'
+		 * remplacent les valeurs qui étaient contenues dans 'Email.smtpOptions'
+		 * du fichier webrsa.inc.
+		 *
+		 * Les clés 'from' et 'replyTo' remplacent les valeurs de
+		 * 'Cui.Email.from' et 'Cui.Email.replyto'
+		 * qui se trouvaient dans le fichier webrsa.inc.
+		 *
+		 * Lorsque l'application est en debug > 0, alors le mail est envoyé à
+		 * l'adresse spécifiée pour la clé 'to', ou à l'expéditeur (clé 'from').
+		 *
+		 * De même, si une clé 'subject' est spécifiée, elle sera utilisée comme
+		 * sujet du mail.
+		 *
+		 * @var array
+		 */
+		public $mail_decision_employeur_cui = array(
+			'transport' => 'Smtp',
+			'from' => 'emailcuifrom@cgxxxx.fr',
+//			'from' => 'arnaud.auzolat@adullact-projet.coop',
+			'replyTo' => 'emailcuifrom@cgxxxx.fr',
+			'to' => 'adressetest@cgxxxx.fr',
+//			'to' => 'arnaud.auzolat@adullact-projet.coop',
+			'subject' => 'Envoi suite à demande CUI',
+			'host' => 'xxxxx.cgxxxx.fr',
+//			'host' => 'localhost',
+			'port' => 25,
+			'timeout' => 30,
+			'username' => 'xxxxxxx',
+			'password' => 'xxxxxxx',
+			'client' => 'smtp_helo_hostname',
+			'log' => false,
+			'charset' => 'utf-8',
+			'headerCharset' => 'utf-8',
+		);
 	}
 ?>

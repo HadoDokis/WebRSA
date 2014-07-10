@@ -286,6 +286,12 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
+            
+            
+            // Liste des modèles de mail pour les employeurs paramétrés  dans l'application
+            $textsmailscuis66 = $this->Decisioncui66->Cui->Textmailcui66->find('list');
+            $this->set( 'textsmailscuis66', $textsmailscuis66);
+            
 
 
 			// Récupération des avis proposés sur le CUI
@@ -380,6 +386,161 @@
 				$this->redirect( $this->referer() );
 			}
 		}
+        
+         /**
+		 * Permet d'envoyer un mail à l'employeur en lien avec le CUI
+		 *
+		 * @param integer $id
+		 */
+		public function envoimailemployeur( $id = null ) {
+            $decisioncui66 = $this->Decisioncui66->find(
+                'first',
+                array(
+                    'conditions' => array(
+                        'Decisioncui66.id' => $id
+                    ),
+                    'contain' => false,
+                    'recursive' => -1
+                )
+            );
+            $this->set( 'decisioncui66', $decisioncui66 );
+
+            $cui_id = Set::classicExtract( $decisioncui66, 'Decisioncui66.cui_id' );
+            
+            $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Decisioncui66->personneId( $id ) ) ) );
+
+            $dossier_id = $this->Decisioncui66->Cui->dossierId( $id );
+			$this->Jetons2->get( $dossier_id );
+            
+            $decisioncui66 = $this->Decisioncui66->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->Decisioncui66->fields(),
+                        $this->Decisioncui66->Cui->fields(),
+                        $this->Decisioncui66->Cui->Personne->fields(),
+                        $this->Decisioncui66->Cui->Partenaire->fields(),
+                        $this->Decisioncui66->Textmailcui66->fields()
+                    ),
+                    'conditions' => array(
+                        'Decisioncui66.id' => $id
+                    ),
+                    'joins' => array(
+                        $this->Decisioncui66->join( 'Cui', array( 'type' => 'INNER' ) ),
+                        $this->Decisioncui66->Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
+                        $this->Decisioncui66->Cui->join( 'Partenaire', array( 'type' => 'INNER') ),
+                        $this->Decisioncui66->join( 'Textmailcui66', array( 'type' => 'INNER') )
+                    ),
+                    'contain' => false
+                )
+            );
+            
+            $user = $this->Decisioncui66->Cui->User->find(
+                'first',
+                 array(
+                     'conditions' => array(
+                         'User.id' => $this->Session->read( 'Auth.User.id' )
+                    ),
+                     'contain' => false
+                )
+            );
+            $decisioncui66['User'] = $user['User'];
+            $this->set( 'decisioncui66', $decisioncui66);
+
+            $this->assert( !empty( $decisioncui66 ), 'error404' );
+//debug($decisioncui66);
+//die();
+            /*********/
+            
+            // On transforme les champs de type date en format JJ/MM/AAAA
+            $schema = $this->Decisioncui66->Cui->schema();
+            foreach( $schema as $field => $params ) {
+                if( $params['type'] === 'date' ) {
+                    $value = Hash::get( $decisioncui66, "Cui.{$field}" );
+                    if( $value !== null ) {
+                        $decisioncui66 = Hash::insert( $decisioncui66, "Cui.{$field}", date_short($value) );
+                    }
+                }
+            }
+
+            App::uses( 'DefaultUtility', 'Default.Utility' );
+            $mailBodySend = '';
+            if( !empty($decisioncui66['Textmailcui66']['contenu']) ) {
+                $mailBodySend = DefaultUtility::evaluate( $decisioncui66, $decisioncui66['Textmailcui66']['contenu'] );
+            }
+            $this->set( 'mailBodySend', $mailBodySend);
+            
+            /**********/
+            
+            // Retour à la liste en cas d'annulation
+			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				$this->redirect( array( 'action' => 'decisioncui', $decisioncui66['Cui']['id'] ) );
+			}
+            
+            if( !empty( $this->request->data) ) {
+                
+                $this->Decisioncui66->Cui->begin();
+
+                if( !isset( $decisioncui66['Partenaire']['email'] ) || empty( $decisioncui66['Partenaire']['email'] ) ) {
+                    $this->Session->setFlash( "Mail non envoyé: adresse mail de l'employeur ({$decisioncui66['Partenaire']['libstruc']}) non renseignée.", 'flash/error' );
+                    $this->redirect( $this->referer() );
+                }
+
+                $mailBody = DefaultUtility::evaluate( $decisioncui66, $decisioncui66['Textmailcui66']['contenu'] );
+
+                // Envoi du mail
+                $success = true;
+                try {
+                    $configName = WebrsaEmailConfig::getName( 'mail_decision_employeur_cui' );
+                    $Email = new CakeEmail( $configName );
+
+                    // Choix du destinataire suivant le niveau de debug
+                    if( Configure::read( 'debug' ) == 0 ) {
+                        $Email->to( $decisioncui66['Partenaire']['email'] );
+                    }
+                    else {
+                        $Email->to( WebrsaEmailConfig::getValue( 'mail_decision_employeur_cui', 'to', $Email->from() ) );
+                    }
+
+                    $Email->subject( WebrsaEmailConfig::getValue( 'mail_decision_employeur_cui', 'subject', 'Demande de CUI' ) );
+    //				$mailBody = "Bonjour,\n\n {$decisioncui66['Personne']['qual']} {$decisioncui66['Personne']['nom']} {$decisioncui66['Personne']['prenom']}, bénéficiaire du rSa socle, donc éligible au dispositif des contrats aidés peut être recruté par votre structure.";
+                    $mailBody = DefaultUtility::evaluate( $decisioncui66, $decisioncui66['Textmailcui66']['contenu'] );
+
+                    $result = $Email->send( $mailBody );
+                    $success = !empty( $result ) && $success;
+                } catch( Exception $e ) {
+                    $this->log( $e->getMessage(), LOG_ERROR );
+                    $success = false;
+                }
+                
+                if( $success ) {
+                    $success = $this->Decisioncui66->updateAllUnBound(
+                            array( 'Decisioncui66.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Decisioncui66']['dateenvoimail'] ).'\'' ),
+                            array(
+                                '"Decisioncui66"."cui_id"' => $decisioncui66['Cui']['id'],
+                                '"Decisioncui66"."id"' => $id
+                            )
+                        ) && $success;
+                }
+
+                if( $success ) {
+                    $this->User->commit();
+                    $this->Jetons2->release( $dossier_id );
+                    $this->Session->setFlash( 'Mail envoyé', 'flash/success' );
+                    $this->redirect( array( 'action' => 'decisioncui', $decisioncui66['Cui']['id'] ) );
+                }
+                else {
+                    $this->User->rollback();
+                    $this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
+                }
+
+                $this->render( 'envoimailemployeur' );
+                $this->set( 'urlmenu', '/cuis/index/'.$decisioncui66['Cui']['personne_id'] );
+   
+
+            }
+        }
 
     }
 ?>
