@@ -2746,6 +2746,18 @@ msgstr "Impression de l'avis pour l'élu"
 msgid "Proposdecisionscuis66:delete"
 msgstr "Suppression d'une décision pour le CUI"
 
+msgid "Proposdecisionscuis66:ajaxfiledelete"
+msgstr "Suppression d'une décision pour le CUI"
+
+msgid "Proposdecisionscuis66:filelink"
+msgstr "Ajout d'une pièce jointe dans une décision pour le CUI"
+
+msgid "Proposdecisionscuis66:maillink"
+msgstr "Envoi du mail à l'employeur"
+
+msgid "Proposdecisionscuis66:printaviscui"
+msgstr "Impression de l'avis technique"
+
 ###############################################################################
 
 msgid "Module:Suspensionscuis66"
