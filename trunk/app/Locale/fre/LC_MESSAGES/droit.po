@@ -847,6 +847,9 @@ msgstr "Annulation du CUI"
 msgid "Cuis:maillink"
 msgstr "Mail à l'employeur"
 
+msgid "Cuis:synthesecui66"
+msgstr "Synthèse"
+
 ###############################################################################
 
 msgid "Module:Decisionsdossierspcgs66"

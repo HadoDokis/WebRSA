@@ -106,6 +106,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Coderomesecteurdsp66' => array(
+				'className' => 'Coderomesecteurdsp66',
+				'foreignKey' => 'secteuractivitepartenaire_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 		

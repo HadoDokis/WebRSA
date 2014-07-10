@@ -18,7 +18,7 @@
 			'Partenaire.libstruc' => array( 'required' => true ),
 			'Partenaire.codepartenaire',
 			'Partenaire.numvoie' => array( 'required' => true ),
-			'Partenaire.typevoie' => array( 'options' => $options['Adresse']['typevoie'], 'required' => true ),
+			'Partenaire.typevoie' => array( 'options' => $options['Partenaire']['typevoie'], 'required' => true ),
 			'Partenaire.nomvoie' => array( 'required' => true ),
 			'Partenaire.compladr',
 			'Partenaire.numtel',

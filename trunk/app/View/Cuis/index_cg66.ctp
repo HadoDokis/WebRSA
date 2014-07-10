@@ -142,7 +142,6 @@
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'cuis', 'synthesecui66', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
-                                    && false // FIXME
 								)
 							)
 						),

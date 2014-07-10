@@ -51,6 +51,7 @@
 			'indexparams' => 'read',
 			'valider' => 'update',
 			'view' => 'read',
+			'synthesecui66' => 'read',
 		);
 
 		public $aucunDroit = array( 'ajaxtaux','ajaxfileupload', 'impression', 'fileview', 'download', 'ajaxemployeur' );
@@ -1000,5 +1001,26 @@
 
             }
         }
+        
+        
+		/**
+		 * Imprime une synthèse du CUI.
+		 *
+		 * @param integer $id L'id du CUI que l'on veut imprimer
+		 * @return void
+		 */
+		public function synthesecui66( $id ) {
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $this->Cui->personneId( $id ) ) );
+
+			$pdf = $this->Cui->getSynthesecui66Pdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'synthese_cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer le courrier de contrat unique d\'engagement.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 	}
 ?>
