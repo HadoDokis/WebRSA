@@ -710,7 +710,7 @@
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
-				$this->Session->setFlash( 'Impossible de générer le courrier de contrat unique d\'engagement.', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'Impossible de générer le courrier du contrat unique d\'insertion.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}
@@ -1018,7 +1018,7 @@
 				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'synthese_cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
 			}
 			else {
-				$this->Session->setFlash( 'Impossible de générer le courrier de contrat unique d\'engagement.', 'default', array( 'class' => 'error' ) );
+				$this->Session->setFlash( 'Impossible de générer le document de synthèse du contrat unique d\'insertion.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
 		}
