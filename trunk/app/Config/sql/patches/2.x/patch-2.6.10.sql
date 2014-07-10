@@ -30,7 +30,7 @@ BEGIN;
 
 -- *****************************************************************************
 
--- FIXME: numvoie est sensé passer de 6 à 5 caractères (norme AFNOR)... mais ce n'est pas reflété par les descriptions des flux
+-- INFO: numvoie est sensé passer de 6 à 5 caractères (norme AFNOR)... mais ce n'est pas reflété par les descriptions des flux
 -- SELECT numvoie FROM adresses WHERE LENGTH(numvoie) > 5;
 
 -- *****************************************************************************
@@ -212,9 +212,9 @@ INSERT INTO correspondancestypevoie ( typevoie, libtypevoie ) VALUES
 	( 'VAL', 'VALLEE' ),
 	( 'VCHE', 'VIEUX CHEMIN' ),
 	( 'VEN', 'VENELLE' ),
-	( 'VGE', 'VIA' ),
-	( 'VIA', 'VILLA' ),
-	( 'VLA', 'VILLAGE' ),
+	( 'VGE', 'VILLAGE' ),
+	( 'VIA', 'VIA' ),
+	( 'VLA', 'VILLA' ),
 	( 'VOI', 'VOIE' ),
 	( 'VTE', 'VIEILLE ROUTE' ),
 	( 'ZA', 'ZONE D''ACTIVITE' ),
@@ -412,7 +412,7 @@ ALTER TABLE cers93 ALTER COLUMN locaadr SET DEFAULT NULL;
 DROP TABLE IF EXISTS correspondancestypevoie;
 
 -- *****************************************************************************
--- FIXME: pour tester l'application avec les colonnes supprimées
+-- Suppression des colonnes des anciens flux
 -- *****************************************************************************
 
 SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'typevoie' );
