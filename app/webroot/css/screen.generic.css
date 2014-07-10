@@ -1351,6 +1351,13 @@ td.button.notifemployeur.disabled a, td.action a.notifemployeur.disabled, td spa
     background-image: url( ../img/icons/printer_disabled.png );
 }
 
+td.button.envoimailemployeur a, td.action a.envoimailemployeur, td span.button.envoimailemployeur, table.default2 td a.button.envoimailemployeur {
+    background-image: url( ../img/icons/email.png );
+}
+td.button.envoimailemployeur.disabled a, td.action a.envoimailemployeur.disabled, td span.button.envoimailemployeur.disabled, table.default2 td a.button.envoimailemployeur.disabled {
+    background-image: url( ../img/icons/email_disabled.png );
+}
+
 td.button.validation a, td.action a.validation, td span.button.validation, table.default2 td a.button.validation {
     background-image: url( ../img/icons/tick.png );
 }

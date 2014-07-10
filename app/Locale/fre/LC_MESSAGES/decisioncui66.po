@@ -110,3 +110,12 @@ msgstr "Non"
 
 msgid "ENUM::HASPIECEJOINTE::1"
 msgstr "Oui"
+
+msgid "Decisioncui66.textmailcui66_id"
+msgstr "Modèle de mail utilisé"
+
+msgid "Decisioncui66.dateenvoimail"
+msgstr "Date d'envoi du mail"
+
+msgid "Decisionscuis66::envoimailemployeur"
+msgstr "Envoi du mail"

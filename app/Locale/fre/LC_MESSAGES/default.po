@@ -585,6 +585,9 @@ msgstr "Décision élu"
 msgid "Button::notifemployeur"
 msgstr "Notification employeur"
 
+msgid "Button::envoimailemployeur"
+msgstr "Envoi mail employeur"
+
 ################################################################################
 # Pagination
 # INFO: http://forum.cakephp-fr.org/viewtopic.php?id=878
