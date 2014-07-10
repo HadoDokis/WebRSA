@@ -33,6 +33,7 @@
 		*/
 		public $modelesOdt = array(
 			'CUI/cui.odt',
+			'CUI/synthesecui66.odt'
 		);
 
 
@@ -679,7 +680,10 @@
 						$this->Structurereferente->fields(),
 						$this->Personne->Foyer->fields(),
 						$this->Personne->Foyer->Dossier->fields(),
-						$this->Personne->Foyer->Adressefoyer->Adresse->fields()
+						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
+						$this->Partenaire->fields(),
+                        $this->Partenaire->Raisonsocialepartenairecui66->fields(),
+                        $this->Partenaire->Coderomesecteurdsp66->fields()
 					),
 					'joins' => array(
 						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
@@ -689,6 +693,9 @@
 						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Partenaire', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Partenaire->join( 'Raisonsocialepartenairecui66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Partenaire->join( 'Coderomesecteurdsp66', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'conditions' => array(
 						'Cui.id' => $id,
@@ -712,7 +719,8 @@
 			);
 			$cui = Set::merge( $cui, $user );
 
-
+//debug($cui);
+//die();
 			return $cui;
 		}
 
@@ -726,27 +734,8 @@
 		 */
 		public function getDefaultPdf( $id, $user_id ) {
 			$cui = $this->getDataForPdf( $id, $user_id );
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$Option = ClassRegistry::init( 'Option' );
-			$options = array(
-				'Personne' => array(
-					'qual' => $Option->qual()
-				),
-				'Referent' => array(
-					'qual' => $Option->qual()
-				),
-				'Structurereferente' => array(
-					'type_voie' => $Option->typevoie()
-				),
-				'Type' => array(
-					'voie' => $Option->typevoie()
-				),
-				'type' => array(
-					'voie' => $Option->typevoie()
-				),
-			);
-
-			$options = Hash::merge( $options, (array)$this->enums() );
+            
+			$options = $this->options( array('pdf' => true));
 
 			return $this->ged(
 				$cui,
@@ -1091,5 +1080,67 @@
             }
             return $return;
         }
+        
+        
+        /**
+		 * Retourne le PDF de notification du CUI.
+		 *
+		 * @see Cui::getDataForPdf
+		 *
+		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
+		 * @return string
+		 */
+		public function getSynthesecui66Pdf( $id, $user_id ) {
+			$cui = $this->getDataForPdf( $id, $user_id );
+			$options = $this->options( array('pdf' => true));
+
+			return $this->ged(
+				$cui,
+				'CUI/synthesecui66.odt',
+				false,
+				$options
+			);
+		}
+        
+        /**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param array $params <=> array( 'allocataire' => true )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			$params = $params + array( 'allocataire' => true, 'pdf' => false );
+
+			if( Hash::get( $params, 'allocataire' ) ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+
+				$options = $Allocataire->options();
+			}
+
+			$Option = ClassRegistry::init( 'Option' );
+
+			$options = Hash::merge(
+				$options,
+                $this->enums(),
+                array(
+                    'Referent' => array(
+                        'qual' => $Option->qual()
+                    ),
+                    'Structurereferente' => array(
+                        'type_voie' => $Option->typevoie()
+                    ),
+                    'Type' => array(
+                        'voie' => $Option->typevoie()
+                    ),
+                    'type' => array(
+                        'voie' => $Option->typevoie()
+                    ),
+                )
+			);
+
+			return $options;
+		}
 	}
 ?>

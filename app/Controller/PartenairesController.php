@@ -38,11 +38,15 @@
 
 		protected function _setOptions() {
 			// Options
+            $Options = ClassRegistry::init( 'Option' );
 			$options = array();
 			$options = array(
 				'Personne' => array(
-					'qual' => ClassRegistry::init( 'Option' )->qual()
-				)
+					'qual' => $Options->qual()
+				),
+                'Partenaire'=> array(
+					'typevoie' => $Options->typevoie()
+				),
 			);
 
 			$secteursactivites = $this->Partenaire->Contactpartenaire->Actioncandidat->Cui->Personne->Dsp->Libsecactderact66Secteur->find(
