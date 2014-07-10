@@ -2582,6 +2582,14 @@ msgstr "Suppression d'une décision du CUI"
 msgid "Decisionscuis66:impression"
 msgstr "Impression d'une décision du CUI"
 
+msgid "Decisionscuis66:envoimailemployeur"
+msgstr "Envoi par mail de la décision CUI à l'employeur"
+
+msgid "Decisionscuis66:ajaxfiledelete"
+msgstr "Suppression des fichiers liés"
+
+msgid "Decisionscuis66:filelink"
+msgstr "Pièces jointes"
 ###############################################################################
 
 msgid "Module:Gestionssanctionseps58"
