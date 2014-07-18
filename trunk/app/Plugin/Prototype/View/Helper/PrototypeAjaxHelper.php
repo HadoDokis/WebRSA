@@ -120,6 +120,14 @@
 		 *	- onload: si l'état des champs (dans this->request->data) doit être envoyé au chargement de la page
 		 * }}}
 		 *
+		 * Pour chacun des champs, on peut spécifier dans un array:
+		 * {{{
+		 *	- event:
+		 *		* null|change (defaut): modification de listes déroulantes
+		 *		* keyup|keydown: touches pressées ou relâchées dans un champ texte, désactive l'autocomplétion du navigateur
+		 *		* false: n'observe pas, envoie seulement la valeur au déclenchement des autres événement
+		 * }}}
+		 *
 		 * @param string|array $fields Les id (HTML) des champs à observer
 		 * @param array $params Les paramètres dont les clés sont décrites ci-dessus
 		 * @return string
@@ -151,11 +159,13 @@
 				$event = Hash::get( (array)$value, 'event' );
 				$event = ( $event === null ? 'change' : $event );
 
-				if( in_array( $event, array( 'keyup', 'keydown' ) ) ) {
-					$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );";
-				}
+				if( $event !== false ) {
+					if( in_array( $event, array( 'keyup', 'keydown' ) ) ) {
+						$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );";
+					}
 
-				$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { ajax_action( event, {$parametersName} ); } );\n";
+					$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { if( !in_array( event.keyCode, unobservedKeys ) ) { ajax_action( event, {$parametersName} ); } } );\n";
+				}
 			}
 
 			// onLoad ?
