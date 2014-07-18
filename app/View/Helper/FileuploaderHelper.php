@@ -54,8 +54,12 @@
 
 					<script type="text/javascript">
 						// <![CDATA[
-						function addAjaxUploadedFileLinks( elmt ) {
-							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Supprimer" );
+						function addAjaxUploadedFileLinks( elmt, fileName ) {
+							if( typeof fileName === \'undefined\' ) {
+								fileName = $( elmt ).innerHTML;
+							}
+
+							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + fileName } ).update( "Supprimer" );
 							Event.observe( link, \'click\', function(e){
 								Event.stop(e);
 								new Ajax.Request(
@@ -82,7 +86,7 @@
 
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 
-							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + $( elmt ).innerHTML } ).update( "Voir" );
+							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + fileName } ).update( "Voir" );
 							$( elmt ).up( \'li\' ).insert( { bottom: link } );
 						}
 
@@ -97,11 +101,31 @@
 									primaryKey: \''.@$this->request->params['pass'][0].'\'
 								},
 								onComplete: function( id, fileName, responseJSON ) {
-									$$( \'.qq-upload-file\' ).each( function( elmt ) {
-										if( elmt.innerHTML == fileName ) {
-											addAjaxUploadedFileLinks( elmt );
-										}
+									// 1°) Suppression des messages flash précédents
+									$$( \'#\' + container + \' > p.error\', \'#\' + container + \' > p.success\' ).each( function( old ) {
+										$(old).remove();
 									} );
+
+									var message = \'Erreur inattendue\';
+									var className = \'error\';
+
+									// 2°) Traitement du retour de l\'appel ajax
+									// 2° 1°) Succès
+									if( typeof responseJSON.success !== \'undefined\' && responseJSON.success === true ) {
+										// Il s\'agit toujours du dernier élément de la liste, id n\'est pas fiable lorsqu\'on supprime un élément
+										var spans = $$( \'.qq-upload-file\' );
+										addAjaxUploadedFileLinks( spans[$(spans).length-1], fileName );
+
+										message = \'Fichier &laquo; \' + fileName + \' &raquo; transmis.\';
+										className = \'success\';
+									}
+									// 2° 2°) Erreur
+									else if( typeof responseJSON.error !== \'undefined\' ) {
+										message = \'Fichier &laquo; \' + fileName + \' &raquo; non transmis: \' + responseJSON.error;
+										className = \'error\';
+									}
+
+									$( container ).insert( { top: new Element( \'p\', { \'class\': className } ).update( message ) } );
 								},
 								template: \'<div class="qq-uploader">\' +
 										\'<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>\' +
