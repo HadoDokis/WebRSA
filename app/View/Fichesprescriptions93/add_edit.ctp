@@ -484,13 +484,13 @@
 		array(
 			'Prestatairehorspdifp93.name' => array( 'event' => 'keyup' ),
 			'Ficheprescription93.selection_adresse_prestataire',
-			'Prestatairehorspdifp93.id',
-			'Prestatairehorspdifp93.adresse',
-			'Prestatairehorspdifp93.codepos',
-			'Prestatairehorspdifp93.localite',
-			'Prestatairehorspdifp93.tel' => array( 'maxlength' => 14 ),
-			'Prestatairehorspdifp93.fax' => array( 'maxlength' => 14 ),
-			'Prestatairehorspdifp93.email'
+			'Prestatairehorspdifp93.id' => array( 'event' => false ),
+			'Prestatairehorspdifp93.adresse' => array( 'event' => false ),
+			'Prestatairehorspdifp93.codepos' => array( 'event' => false ),
+			'Prestatairehorspdifp93.localite' => array( 'event' => false ),
+			'Prestatairehorspdifp93.tel' => array( 'event' => false ),
+			'Prestatairehorspdifp93.fax' => array( 'event' => false ),
+			'Prestatairehorspdifp93.email' => array( 'event' => false )
 		),
 		array(
 			'url' => array( 'action' => 'ajax_prestataire_horspdi' ),

@@ -56,7 +56,10 @@
 		 */
 		public function setUp() {
 			parent::setUp();
-			$Request = new CakeRequest();
+
+			$Request = new CakeRequest( 'apples/index', false );
+			$Request->addParams(array( 'controller' => 'apples', 'action' => 'index' ) );
+
 			$this->Controller = new Controller( $Request );
 			$this->View = new View( $this->Controller );
 			$this->Observer = new PrototypeObserverHelper( $this->View );
@@ -77,7 +80,16 @@
 		 * @medium
 		 */
 		public function testDisableFormOnSubmit() {
-			// 1. Sans message
+			// 1. Sans paramètre
+			$result = $this->Observer->disableFormOnSubmit();
+			$expected = '<script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFormOnSubmit( \'AppleIndexForm\' ); } );
+//]]>
+</script>';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// 2. Sans message
 			$result = $this->Observer->disableFormOnSubmit( 'UsersLoginForm' );
 			$expected = '<script type="text/javascript">
 //<![CDATA[
@@ -86,7 +98,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFormOnSubmit( \'Use
 </script>';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
-			// 2. Avec message
+			// 3. Avec message
 			$result = $this->Observer->disableFormOnSubmit( 'UsersLoginForm', 'Connexion en cours' );
 			$expected = '<script type="text/javascript">
 //<![CDATA[

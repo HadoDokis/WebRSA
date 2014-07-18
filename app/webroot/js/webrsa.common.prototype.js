@@ -1881,6 +1881,49 @@ Ajax.AbortableRequest = Class.create(
 );
 
 /**
+ * Valeurs de keyCode à ne pas prendre en compte pour les champs de type Ajax
+ * autocomplete.
+ *
+ * @url http://www.javascripter.net/faq/keycodes.htm
+ */
+var unobservedKeys = [
+	Event.KEY_TAB,
+	Event.KEY_RETURN,
+	Event.KEY_ESC,
+	Event.KEY_LEFT,
+	Event.KEY_UP,
+	Event.KEY_RIGHT,
+	Event.KEY_DOWN,
+	Event.KEY_HOME,
+	Event.KEY_END,
+	Event.KEY_PAGEUP,
+	Event.KEY_PAGEDOWN,
+	Event.KEY_INSERT,
+	16, // shift
+	17, // ctrl
+	18, // alt
+	19, // pause (FF)
+	20, // caps lock
+	42, //PrntScrn (FF)
+	44, //PrntScrn
+	91, // 91
+	112, // F1
+	113, // F2
+	114, // F3
+	115, // F4
+	116, // F5
+	117, // F6
+	118, // F7
+	119, // F8
+	120, // F9
+	121, // F10
+	122, // F11
+	123, // F12
+	144, // NumLock
+	145 // ScrollLock
+];
+
+/**
  * La méthode de callback (par défaut) lancée par le onSuccess de l'appel
  * Ajax.Request de la fonction ajax_action.
  *
