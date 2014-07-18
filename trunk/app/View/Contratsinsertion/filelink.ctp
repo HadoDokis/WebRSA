@@ -9,5 +9,5 @@
 ?>
 <?php
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-	echo $this->Fileuploader->element( 'Contratinsertion', $fichiers, $contratinsertion, $options['haspiecejointe'] );
+	echo $this->Fileuploader->element( 'Contratinsertion', $fichiers, $contratinsertion, $options['Contratinsertion']['haspiecejointe'] );
 ?>
