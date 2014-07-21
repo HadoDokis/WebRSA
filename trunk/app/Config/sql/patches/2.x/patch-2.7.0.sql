@@ -499,6 +499,7 @@ CREATE TABLE fichesprescriptions93 (
 	-- Bloc "Résultat de l'effectivité de la prescription"
 	date_retour					DATE DEFAULT NULL,
 	benef_retour_presente		VARCHAR(6) DEFAULT NULL,
+	date_presente_benef			DATE DEFAULT NULL,
 	retour_nom_partenaire		TEXT DEFAULT NULL,
 	date_signature_partenaire	DATE DEFAULT NULL,
 	-- Bloc "Suivi de l'action"
@@ -768,7 +769,7 @@ SELECT alter_table_drop_column_if_exists( 'public', 'instantanesdonneesfps93', '
 ------------------------------------------------------------------------------------------
 
 -- Mise à NULL de la valeur par défaut de la position CUI
-ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT NULL; 
+ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT NULL;
 SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_positioncui66_in_list_chk' );
 ALTER TABLE cuis ADD CONSTRAINT cuis_positioncui66_in_list_chk CHECK (cakephp_validate_in_list(positioncui66::text, ARRAY['attenvoimail'::text, 'dossierrecu'::text, 'dossiereligible'::text, 'attpieces'::text, 'attavismne'::text, 'attaviselu'::text, 'attavisreferent'::text, 'attdecision'::text, 'encours'::text, 'annule'::text, 'decisionsanssuite'::text, 'fincontrat'::text, 'attrenouv'::text, 'perime'::text, 'nonvalide'::text, 'valid'::text, 'validnotifie'::text, 'nonvalidnotifie'::text, 'rupture'::text]));
 -- ALTER TABLE cuis ALTER COLUMN positioncui66 SET DEFAULT 'attenvoimail'::VARCHAR(10);
