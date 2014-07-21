@@ -278,9 +278,22 @@
 
 			$adresses = array();
 			foreach( (array)Hash::extract( $results, '{n}.Adresseprestatairefp93' ) as $adresse ) {
+				$title = array();
+				$details = array(
+					'tel' => 'Tél.: %s',
+					'fax' => 'Fax.: %s',
+					'email' => 'Email: %s',
+				);
+				foreach( $details as $fieldName => $label ) {
+					if( !empty( $adresse[$fieldName] ) ) {
+						$title[] = sprintf( $label, $adresse[$fieldName] );
+					}
+				}
+
 				$adresses[] = array(
 					'id' => $adresse['id'],
-					'name' => "{$adresse['adresse']}, {$adresse['codepos']} {$adresse['localite']}"
+					'name' => "{$adresse['adresse']}, {$adresse['codepos']} {$adresse['localite']}",
+					'title' => implode( ', ', $title )
 				);
 			}
 

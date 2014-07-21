@@ -46,6 +46,26 @@
 		);
 
 		/**
+		 * Liste des champs Hors PDI
+		 *
+		 * @var array
+		 */
+		public $fieldsHorsPdi = array(
+			'Ficheprescription93.actionfp93',
+			'Ficheprescription93.selection_adresse_prestataire' => array(
+				'type' => 'select',
+				'options' => array()
+			),
+			'Prestatairehorspdifp93.name',
+			'Prestatairehorspdifp93.adresse',
+			'Prestatairehorspdifp93.codepos',
+			'Prestatairehorspdifp93.localite',
+			'Prestatairehorspdifp93.tel',
+			'Prestatairehorspdifp93.fax',
+			'Prestatairehorspdifp93.email'
+		);
+
+		/**
 		 * Behaviors utilisés par le modèle.
 		 *
 		 * @var array
@@ -848,6 +868,11 @@
 			$prestatairehorspdifp93_id = Hash::get( $data, 'Prestatairehorspdifp93.id' );
 
 			if( $typethematiquefp93_id === 'pdi' ) {
+				// Suppression des informations Hors PDI
+				foreach( array_keys( Hash::normalize( $this->fieldsHorsPdi ) ) as $path ) {
+					$data = Hash::insert( $data, $path, null );
+				}
+
 				$data = Hash::merge(
 					$data,
 					array(
@@ -868,6 +893,11 @@
 						)
 					)
 				);
+			}
+
+			// Si la case "Adresse du lieu de rendez-vous..." n'est pas cochée, on supprime l'information de l'adresse
+			if( !Hash::get( $data, 'Ficheprescription93.rdvprestataire_adresse_check' ) ) {
+				$data = Hash::insert( $data, 'Ficheprescription93.rdvprestataire_adresse', null );
 			}
 
 			if( $typethematiquefp93_id === 'pdi' && $prestatairehorspdifp93_id !== null ) {

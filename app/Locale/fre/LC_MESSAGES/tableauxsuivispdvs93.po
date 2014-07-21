@@ -50,10 +50,10 @@ msgid "Tableau1b5.distinct_personnes_action"
 msgstr "Nombre de personnes différentes ayant participé à une action"
 
 msgid "Tableau1b5.beneficiaires_pas_deplaces"
-msgstr "nbre de bénéficiaires qui ne se sont pas déplacés"
+msgstr "Nbre de fois ou un bénéficiaire ne s'est pas déplacé "
 
 msgid "Tableau1b5.nombre_fiches_attente"
-msgstr "nbre de fiches de prescription en attente d'un retour"
+msgstr "Nbre de fiches de prescription en attente d'un retour"
 
 msgid "Tableau1b5.thematique"
 msgstr "Thématique"

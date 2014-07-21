@@ -1964,11 +1964,12 @@
 			// Ajout des champs spécifiques à cette requête
 			$query['fields'] = array(
 				'COUNT( DISTINCT "Ficheprescription93"."personne_id" ) AS "distinct_personnes_prescription"',
-				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."benef_retour_presente" = \'oui\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "distinct_personnes_action"',
+				// "Suivi de l'action", on a L'allocataire a intégré l'action=oui.
+				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "distinct_personnes_action"',
 				// H. Cadre effectivité : La personne s'est présentée=non ou s'est excusée
 				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."benef_retour_presente" IN ( \'non\', \'excuse\' ) THEN 1 ELSE 0 END ), 0 ) AS "beneficiaires_pas_deplaces"',
-				// I. Cadre effectivité : "Signé par le partenaire le"=vide
-				'COALESCE( SUM( CASE WHEN "Ficheprescription93"."date_signature_partenaire" IS NULL THEN 1 ELSE 0 END ), 0 ) AS "nombre_fiches_attente"',
+				// I. Cadre effectivité : "Signé par le partenaire le"=vide et La personne s'est présentée=vide ou =oui.
+				'COALESCE( SUM( CASE WHEN ( "Ficheprescription93"."date_signature_partenaire" IS NULL ) AND ( "Ficheprescription93"."benef_retour_presente" IS NULL OR "Ficheprescription93"."benef_retour_presente" = \'oui\' ) THEN 1 ELSE 0 END ), 0 ) AS "nombre_fiches_attente"',
 			);
 
 			$results = $Ficheprescription93->find( 'all', $query );

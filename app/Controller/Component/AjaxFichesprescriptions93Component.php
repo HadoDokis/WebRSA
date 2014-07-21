@@ -56,6 +56,37 @@
 		}
 
 		/**
+		 * Dans la liste des adresses du prestataire PDI, il faut afficher tel,
+		 * fax et email dans l'attribut title.
+		 *
+		 * @param array $options
+		 * @return array
+		 */
+		protected function _formatOptionsAdressePrestataire( array $options ) {
+			foreach( $options as $i => $option ) {
+				$title = array();
+				$details = array(
+					'tel' => 'Tél.: %s',
+					'fax' => 'Fax.: %s',
+					'email' => 'Email: %s',
+				);
+				foreach( $details as $fieldName => $label ) {
+					if( !empty( $option[$fieldName] ) ) {
+						$title[] = sprintf( $label, $option[$fieldName] );
+					}
+				}
+				$option = array(
+					'id' => $option['id'],
+					'name' => $option['name'],
+					'title' => implode( ', ', $title )
+				);
+				$options[$i] = $option;
+			}
+
+			return $options;
+		}
+
+		/**
 		 * Traite l'événement Ajax d'un champ de formulaire ayant changé.
 		 *
 		 * @param array $data
@@ -198,12 +229,19 @@
 
 					// Liste des adresses du prestataire
 					$query = array(
+						'fields' => array(
+							'Adresseprestatairefp93.tel',
+							'Adresseprestatairefp93.fax',
+							'Adresseprestatairefp93.email'
+						),
 						'conditions' => array(
 							'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' ),
 						)
 					);
 
 					$fields['Ficheprescription93.adresseprestatairefp93_id']['options'] = $this->ajaxOptions( 'Adresseprestatairefp93', $query );
+
+					$fields['Ficheprescription93.adresseprestatairefp93_id']['options'] = $this->_formatOptionsAdressePrestataire( $fields['Ficheprescription93.adresseprestatairefp93_id']['options'] );
 
 					// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne
 					if( count( $fields['Ficheprescription93.adresseprestatairefp93_id']['options'] ) === 1 ) {
@@ -235,6 +273,30 @@
 				else if( $current == $invertedPaths['Ficheprescription93.adresseprestatairefp93_id'] ) {
 					$fields = array();
 					$events = array( 'changed:Ficheprescription93.adresseprestatairefp93_id' );
+				}
+
+				// Si on change le type, il faut réinitialiser les champs partenaire Hors PDI...
+				if( $data['Target']['path'] === 'Ficheprescription93.typethematiquefp93_id' ) {
+					foreach( Hash::normalize( ClassRegistry::init( 'Ficheprescription93' )->fieldsHorsPdi ) as $fieldHorsPdi => $optionsHorsPdi ) {
+						$optionsHorsPdi = (array)$optionsHorsPdi + array( 'type' => 'text' );
+
+						$fields[$fieldHorsPdi] = array(
+							'id' => Inflector::camelize( str_replace( '.', '_', $fieldHorsPdi ) ),
+							'value' => null
+						) + $optionsHorsPdi;
+					}
+
+					// ...ainsi que l'adresse de RDV
+					$paths = array(
+						'Ficheprescription93.rdvprestataire_adresse_check' => array( 'type' => 'checkbox' ),
+						'Ficheprescription93.rdvprestataire_adresse' => array( 'type' => 'text' )
+					);
+					foreach( $paths as $path => $params ) {
+						$fields[$path] = array(
+							'id' => Inflector::camelize( str_replace( '.', '_', $path ) ),
+							'value' => null,
+						) + $params;
+					}
 				}
 			}
 
@@ -296,12 +358,18 @@
 				}
 				else if( $path == 'Ficheprescription93.adresseprestatairefp93_id' ) {
 					$query = array(
+						'fields' => array(
+							'Adresseprestatairefp93.tel',
+							'Adresseprestatairefp93.fax',
+							'Adresseprestatairefp93.email'
+						),
 						'conditions' => array(
 							'Adresseprestatairefp93.prestatairefp93_id' => Hash::get( $data, 'Ficheprescription93.prestatairefp93_id' )
 						)
 					);
 
 					$elmt['options'] = $this->ajaxOptions( 'Adresseprestatairefp93', $query );
+					$elmt['options'] = $this->_formatOptionsAdressePrestataire( $elmt['options'] );
 				}
 				else if( $path == 'Ficheprescription93.actionfp93_id' ) {
 					$Actionfp93 = ClassRegistry::init( 'Actionfp93' );

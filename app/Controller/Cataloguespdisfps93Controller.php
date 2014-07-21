@@ -35,7 +35,6 @@
 					'search' => array( 'filter' => 'Search' ),
 				)
 			),
-			'Search.SearchSavedReferer',
 		);
 
 		/**
@@ -187,15 +186,10 @@
 				throw new Error404Exception();
 			}
 
-			// Sauvegarde de l'URL du referer
-			$this->SearchSavedReferer->save();
-
-			// URL par défaut vers laquelle rediriger
-			$defaultUrl = array( 'controller' => Inflector::underscore( $this->name ), 'action' => 'index', $modelName );
-
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->SearchSavedReferer->redirect( $defaultUrl );
+				$referer = Hash::get( $this->request->data, "{$modelName}.referer" );
+				$this->redirect( $referer );
 			}
 
 			$Model = ClassRegistry::init( $modelName );
@@ -206,7 +200,8 @@
 					$Model->commit();
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
-					$this->SearchSavedReferer->redirect( $defaultUrl );
+					$referer = Hash::get( $this->request->data, "{$modelName}.referer" );
+					$this->redirect( $referer );
 				}
 				else {
 					$Model->rollback();
@@ -221,7 +216,16 @@
 				}
 			}
 
+			// Sauvegarder dans le formulaire de l'adresse de laquelle on vient
+			if( !isset( $this->request->data['referer'] ) ) {
+				$this->request->data = Hash::merge(
+					(array)$this->request->data,
+					array( $modelName => array( 'referer' => $this->referer( null, true ) ) )
+				);
+			}
+
 			$fields = $Model->getParametrageFields();
+			$fields["{$modelName}.referer"] = array( 'type' => 'hidden' );
 			$options = $Model->getParametrageOptions();
 			$dependantFields = $Model->getParametrageDependantFields();
 

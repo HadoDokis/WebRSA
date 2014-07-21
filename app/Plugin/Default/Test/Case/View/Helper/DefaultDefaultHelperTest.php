@@ -10,10 +10,11 @@
 	 */
 	App::uses( 'View', 'View' );
 	App::uses( 'AppHelper', 'View/Helper' );
+	App::uses( 'CsvHelper', 'View/Helper' );
 	App::uses( 'DefaultDefaultHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
+	App::uses( 'DefaultCsvHelperTest', 'Default.Test/Case/View/Helper' );
 	App::uses( 'DefaultTableHelperTest', 'Default.Test/Case/View/Helper' );
-	require_once dirname( __FILE__ ).DS.'DefaultCsvHelperTest.php';
 
 	/**
 	 * La classe DefaultDefaultHelperTest ...
@@ -364,6 +365,7 @@
 		 * @return void
 		 */
 		public function testSubform() {
+			// 2. Test avec le label
 			$fields = array(
 				'Apple.id',
 				'Apple.color',
@@ -375,6 +377,24 @@
 			$expected = '<input type="hidden" name="data[Apple][id]" id="AppleId"/>
 						<div class="input select">
 							<label for="AppleColor">Apple.color</label>
+							<select name="data[Apple][color]" id="AppleColor">
+								<option value="red">Red</option>
+							</select>
+						</div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 2. Test sans le label
+			$fields = array(
+				'Apple.id',
+				'Apple.color' => array( 'label' => false ),
+			);
+
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subform( $fields, $params );
+			$expected = '<input type="hidden" name="data[Apple][id]" id="AppleId"/>
+						<div class="input select">
 							<select name="data[Apple][color]" id="AppleColor">
 								<option value="red">Red</option>
 							</select>

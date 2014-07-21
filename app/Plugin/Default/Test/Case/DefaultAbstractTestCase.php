@@ -2,6 +2,28 @@
 	Configure::write( 'Routing.prefixes', array( 'admin' ) );
 
 	// TODO: documentation, etc...
+	App::uses( 'CsvHelper', 'View/Helper' );
+
+	class CsvTestHelper extends CsvHelper
+	{
+		/**
+		 * Surcharge de la méthode CsvHelper::renderHeaders() afin de ne pas
+		 * envoyer le fichier en attachement.
+		 *
+		 * @param string $filename
+		 */
+		public function renderHeaders($filename = null) {
+			if (is_string($filename)) {
+				$this->setFilename($filename);
+			}
+
+			if ($this->filename === null) {
+				$this->filename = 'Data.csv';
+			}
+		}
+	}
+
+	// TODO: documentation, etc...
 	abstract class DefaultAbstractTestCase extends CakeTestCase
 	{
 		protected static function _normalizeXhtml( $xhtml ) {

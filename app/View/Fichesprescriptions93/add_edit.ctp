@@ -189,7 +189,7 @@
 		.$this->Default3->subform(
 			array(
 				'Ficheprescription93.rdvprestataire_adresse_check' => array( 'type' => 'checkbox' ),
-				'Ficheprescription93.rdvprestataire_adresse',
+				'Ficheprescription93.rdvprestataire_adresse' => array( 'label' => false ),
 				'Ficheprescription93.statut' => array( 'type' => 'hidden' ),
 				'Ficheprescription93.dd_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.df_action' => array( 'empty' => true, 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1 ),
@@ -253,8 +253,8 @@
 		.$this->Default3->subform(
 			array(
 				'Ficheprescription93.date_retour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
-				'Ficheprescription93.retour_nom_partenaire' => array( 'type' => 'text' ),
 				'Ficheprescription93.benef_retour_presente' => array( 'empty' => true ),
+				'Ficheprescription93.retour_nom_partenaire' => array( 'type' => 'text' ),
 				'Ficheprescription93.date_signature_partenaire' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 			),
 			array(
@@ -534,5 +534,12 @@
 				}
 			}
 		);
+	} );
+
+	// Suppression du contenu du champ "Adresse du lieu de rendez-vous" lorsqu'on décoche la case "Adresse du lieu de rendez-vous si différente de l'adresse rapatriée"
+	Element.observe( $( 'Ficheprescription93RdvprestataireAdresseCheck' ), 'click', function( event ) {
+		if( ( $F( 'Ficheprescription93RdvprestataireAdresseCheck' ) == null ) ) {
+			$( 'Ficheprescription93RdvprestataireAdresse' ).value = '';
+		}
 	} );
 </script>

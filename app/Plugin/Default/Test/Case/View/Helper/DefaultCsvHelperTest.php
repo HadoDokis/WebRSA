@@ -15,25 +15,6 @@
 	App::uses( 'DefaultCsvHelper', 'Default.View/Helper' );
 	App::uses( 'DefaultAbstractTestCase', 'Default.Test/Case' );
 
-	class CsvTestHelper extends CsvHelper
-	{
-		/**
-		 * Surcharge de la méthode CsvHelper::renderHeaders() afin de ne pas
-		 * envoyer le fichier en attachement.
-		 *
-		 * @param string $filename
-		 */
-		public function renderHeaders($filename = null) {
-			if (is_string($filename)) {
-				$this->setFilename($filename);
-			}
-
-			if ($this->filename === null) {
-				$this->filename = 'Data.csv';
-			}
-		}
-	}
-
 	/**
 	 * La classe DefaultCsvHelperTest ...
 	 *
