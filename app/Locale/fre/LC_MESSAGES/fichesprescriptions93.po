@@ -399,6 +399,9 @@ msgstr "Nom du partenaire qui a reçu l'allocataire"
 msgid "Ficheprescription93.benef_retour_presente"
 msgstr "La personne s'est présentée"
 
+msgid "Ficheprescription93.date_presente_benef"
+msgstr "Date à laquelle la personne s'est présentée"
+
 msgid "Ficheprescription93.date_signature_partenaire"
 msgstr "Signé par le partenaire le"
 

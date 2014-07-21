@@ -752,6 +752,11 @@
 				$data['Ficheprescription93']['personne_nonrecue_autre'] = null;
 			}
 
+			$value = Hash::get( $data, 'Ficheprescription93.benef_retour_presente' );
+			if( $value !== 'oui' ) {
+				$data['Ficheprescription93']['date_presente_benef'] = null;
+			}
+
 			$value = Hash::get( $data, 'Ficheprescription93.personne_retenue' );
 			if( $value !== '0' ) {
 				$data['Ficheprescription93']['motifnonretenuefp93_id'] = null;

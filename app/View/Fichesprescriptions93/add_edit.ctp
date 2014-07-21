@@ -254,6 +254,7 @@
 			array(
 				'Ficheprescription93.date_retour' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.benef_retour_presente' => array( 'empty' => true ),
+				'Ficheprescription93.date_presente_benef' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 				'Ficheprescription93.retour_nom_partenaire' => array( 'type' => 'text' ),
 				'Ficheprescription93.date_signature_partenaire' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
 			),
@@ -364,6 +365,20 @@
 		true
 	);
 
+	// La personne s'est présentée
+	echo $this->Observer->disableFieldsOnValue(
+		'Ficheprescription93.benef_retour_presente',
+		array(
+			'Ficheprescription93.date_presente_benef.day',
+			'Ficheprescription93.date_presente_benef.month',
+			'Ficheprescription93.date_presente_benef.year'
+		),
+		array( null, '', 'non', 'excuse' ),
+		true,
+		true
+	);
+
+	// Personne reçue
 	echo $this->Observer->disableFieldsOnValue(
 		'Ficheprescription93.motifnonreceptionfp93_id',
 		array(
