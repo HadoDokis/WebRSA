@@ -163,7 +163,7 @@ msgid "Ficheprescription93.documentbeneffp93_autre"
 msgstr "Si autre, précisez"
 
 msgid "Ficheprescription93.rdvprestataire_adresse_check"
-msgstr "Adresse du lieu de rendez-vous si différente de l'adresse rapatriée"
+msgstr "Adresse du lieu de rendez-vous si différente de l'adresse indiquée ci-dessus"
 
 msgid "Ficheprescription93.rdvprestataire_adresse"
 msgstr "Adresse du lieu de rendez-vous"

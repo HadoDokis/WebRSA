@@ -1953,7 +1953,8 @@ function ajax_action_on_success(response, parameters) {
 					var options = $(field).options;
 					if( $(options) != [] ) {
 						$(options).each( function( result ) {
-							var option = Element( 'option', { 'value': $(result).id } ).update( $(result).name );
+							var title = ( typeof $(result).title === 'undefined' ? '' : $(result).title );
+							var option = Element( 'option', { 'value': $(result).id, 'title': title } ).update( $(result).name );
 							$(select).insert( { bottom: option } );
 						} );
 					}
@@ -2008,7 +2009,18 @@ function ajax_action_on_success(response, parameters) {
 
 				// On ne modifie / renvoie pas systématiquement la valeur des champs
 				if( typeof $(field).value !== 'undefined' ) {
-					$($(field).id).value = $(field).value;
+					// Si c'est une case à cocher, voir si on doit cocher / décocher
+					if( $($(field).id).type === 'checkbox' ) {
+						var before = $($(field).id).checked;
+						var after = !( $(field).value === null || $(field).value === '' || $(field).value == '0' );
+
+						if( before !== after ) {
+							$( $($(field).id) ).simulate( 'click' );
+						}
+					}
+					else {
+						$($(field).id).value = $(field).value;
+					}
 				}
 			} catch( Exception ) {
 				console.log( Exception );
