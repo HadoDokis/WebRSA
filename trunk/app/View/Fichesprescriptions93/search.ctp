@@ -80,7 +80,12 @@
 				'Ficheprescription93.statut',
 				'Actionfp93.name',
 				'Dossier.locked' => array( 'type' => 'boolean' ),
-				'/Fichesprescriptions93/edit/#Ficheprescription93.id#',
+				"/Fichesprescriptions93/edit/#Ficheprescription93.id#" => array(
+					'disabled' => "( '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
+				),
+				"/Fichesprescriptions93/index/#Personne.id#" => array(
+					'disabled' => "( !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )"
+				),
 			),
 			array(
 				'options' => $options,
