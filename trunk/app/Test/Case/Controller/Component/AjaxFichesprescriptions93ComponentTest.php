@@ -80,44 +80,100 @@
 						'id' => 'Ficheprescription93Thematiquefp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.categoriefp93_id' => array(
 						'id' => 'Ficheprescription93Categoriefp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.filierefp93_id' => array(
 						'id' => 'Ficheprescription93Filierefp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.prestatairefp93_id' => array(
 						'id' => 'Ficheprescription93Prestatairefp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.actionfp93_id' => array(
 						'id' => 'Ficheprescription93Actionfp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.numconvention' => array(
 						'id' => 'Ficheprescription93Numconvention',
 						'value' => NULL,
 						'type' => 'text',
-						'options' => array( ),
+						'options' => array(),
 					),
 					'Ficheprescription93.adresseprestatairefp93_id' => array(
 						'id' => 'Ficheprescription93Adresseprestatairefp93Id',
 						'value' => NULL,
 						'type' => 'select',
-						'options' => array( ),
-					)
+						'options' => array(),
+					),
+					'Ficheprescription93.actionfp93' => array(
+						'id' => 'Ficheprescription93Actionfp93',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Ficheprescription93.selection_adresse_prestataire' => array(
+						'id' => 'Ficheprescription93SelectionAdressePrestataire',
+						'value' => NULL,
+						'type' => 'select',
+						'options' => array(),
+					),
+					'Prestatairehorspdifp93.name' => array(
+						'id' => 'Prestatairehorspdifp93Name',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.adresse' => array(
+						'id' => 'Prestatairehorspdifp93Adresse',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.codepos' => array(
+						'id' => 'Prestatairehorspdifp93Codepos',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.localite' => array(
+						'id' => 'Prestatairehorspdifp93Localite',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.tel' => array(
+						'id' => 'Prestatairehorspdifp93Tel',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.fax' => array(
+						'id' => 'Prestatairehorspdifp93Fax',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Prestatairehorspdifp93.email' => array(
+						'id' => 'Prestatairehorspdifp93Email',
+						'value' => NULL,
+						'type' => 'text',
+					),
+					'Ficheprescription93.rdvprestataire_adresse_check' => array(
+						'id' => 'Ficheprescription93RdvprestataireAdresseCheck',
+						'value' => NULL,
+						'type' => 'checkbox',
+					),
+					'Ficheprescription93.rdvprestataire_adresse' => array(
+						'id' => 'Ficheprescription93RdvprestataireAdresse',
+						'value' => NULL,
+						'type' => 'text',
+					),
 				)
 			)
 		);
@@ -214,7 +270,24 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -254,8 +327,25 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.categoriefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.categoriefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -311,9 +401,26 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.categoriefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.filierefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.categoriefp93_id',
+				'Ficheprescription93.filierefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -366,9 +473,26 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.categoriefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.filierefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.categoriefp93_id',
+				'Ficheprescription93.filierefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -415,6 +539,7 @@
 								array(
 									'id' => 1,
 									'name' => 'Av. de la république, 93000 Bobigny',
+									'title' => '',
 								),
 							),
 						)
@@ -426,10 +551,27 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.categoriefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.filierefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.prestatairefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.categoriefp93_id',
+				'Ficheprescription93.filierefp93_id',
+				'Ficheprescription93.prestatairefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -473,6 +615,7 @@
 								array(
 									'id' => 1,
 									'name' => 'Av. de la république, 93000 Bobigny',
+									'title' => '',
 								),
 							),
 						)
@@ -484,10 +627,27 @@
 					)
 				)
 			);
-			unset( $expected['fields']['Ficheprescription93.thematiquefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.categoriefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.filierefp93_id'] );
-			unset( $expected['fields']['Ficheprescription93.prestatairefp93_id'] );
+
+			$paths = array(
+				'Ficheprescription93.thematiquefp93_id',
+				'Ficheprescription93.categoriefp93_id',
+				'Ficheprescription93.filierefp93_id',
+				'Ficheprescription93.prestatairefp93_id',
+				'Ficheprescription93.actionfp93',
+				'Ficheprescription93.selection_adresse_prestataire',
+				'Prestatairehorspdifp93.name',
+				'Prestatairehorspdifp93.adresse',
+				'Prestatairehorspdifp93.codepos',
+				'Prestatairehorspdifp93.localite',
+				'Prestatairehorspdifp93.tel',
+				'Prestatairehorspdifp93.fax',
+				'Prestatairehorspdifp93.email',
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+			);
+			foreach( $paths as $path ) {
+				unset( $expected['fields'][$path] );
+			}
 
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 
@@ -517,11 +677,22 @@
 						'type' => 'text',
 						'options' => array( ),
 					),
+					'Ficheprescription93.adresseprestatairefp93_id' => array(
+						'id' => 'Ficheprescription93Adresseprestatairefp93Id',
+						'value' => 1,
+						'type' => 'select',
+						'options' => array(
+							array(
+								'id' => 1,
+								'name' => 'Av. de la république, 93000 Bobigny',
+								'title' => '',
+							),
+						),
+					),
 					'Ficheprescription93.prestatairefp93_id' => array(
 						'value' => 1,
-					),
-					'Ficheprescription93.duree_action' => array(
-						'value' => NULL,
+						'id' => 'Ficheprescription93Prestatairefp93Id',
+						'type' => 'select'
 					),
 				),
 				'events' => array(

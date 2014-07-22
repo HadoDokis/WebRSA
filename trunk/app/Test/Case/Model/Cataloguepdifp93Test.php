@@ -63,6 +63,7 @@
 				'Filierefp93' => 'LEFT OUTER',
 				'Actionfp93' => 'LEFT OUTER',
 				'Prestatairefp93' => 'LEFT OUTER',
+				'Adresseprestatairefp93' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

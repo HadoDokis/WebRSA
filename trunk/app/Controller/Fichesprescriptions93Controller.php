@@ -211,12 +211,12 @@
 		 * Ajax permettant de récupérer les coordonnées du prestataire PDI.
 		 */
 		public function ajax_prestataire() {
-			$adresseprestatairefp93_id = Hash::get( $this->request->data, 'Ficheprescription93.adresseprestatairefp93_id' );
+			$adresseprestatairefp93_id = suffix( Hash::get( $this->request->data, 'Ficheprescription93.adresseprestatairefp93_id' ) );
 
 			$result = array();
 			if( !empty( $adresseprestatairefp93_id ) ) {
 				$query = array(
-					'fields' => $this->Ficheprescription93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->fields(),
+					'fields' => $this->Ficheprescription93->Actionfp93->Adresseprestatairefp93->fields(),
 					'contain' => false,
 					'joins' => array(),
 					'conditions' => array(
@@ -224,7 +224,7 @@
 					)
 				);
 
-				$result = $this->Ficheprescription93->Actionfp93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+				$result = $this->Ficheprescription93->Actionfp93->Adresseprestatairefp93->find( 'first', $query );
 			}
 
 			$this->set( compact( 'result' ) );
@@ -274,7 +274,7 @@
 					'Adresseprestatairefp93.prestatairefp93_id' => $prestatairefp93_id
 				)
 			);
-			$results = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'all', $query );
+			$results = $this->Ficheprescription93->Adresseprestatairefp93->find( 'all', $query );
 
 			$adresses = array();
 			foreach( (array)Hash::extract( $results, '{n}.Adresseprestatairefp93' ) as $adresse ) {
@@ -325,7 +325,7 @@
 							'Adresseprestatairefp93.id' => $json['fields']['Ficheprescription93.selection_adresse_prestataire']['value']
 						)
 					);
-					$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+					$result = $this->Ficheprescription93->Adresseprestatairefp93->find( 'first', $query );
 					$prestatairefp93_id = Hash::get( $result, 'Adresseprestatairefp93.prestatairefp93_id' );
 				}
 				else if( !empty( $json['fields']['Prestatairehorspdifp93.name']['value'] ) ) {
@@ -335,7 +335,7 @@
 							'NOACCENTS_UPPER( Prestatairefp93.name )' => noaccents_upper( $json['fields']['Prestatairehorspdifp93.name']['value'] )
 						)
 					);
-					$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
+					$result = $this->Ficheprescription93->Adresseprestatairefp93->Prestatairefp93->find( 'first', $query );
 					$prestatairefp93_id = Hash::get( $result, 'Prestatairefp93.id' );
 				}
 
@@ -357,7 +357,7 @@
 							'NOACCENTS_UPPER( Prestatairefp93.name ) LIKE' => noaccents_upper( $prestatairehorspdifp93Name ).'%'
 						)
 					);
-					$results = $this->Ficheprescription93->Prestatairefp93->find( 'all', $query );
+					$results = $this->Ficheprescription93->Adresseprestatairefp93->Prestatairefp93->find( 'all', $query );
 					$json = array(
 						'success' => true,
 						'fields' => array(
@@ -388,7 +388,7 @@
 							'Adresseprestatairefp93'
 						)
 					);
-					$result = $this->Ficheprescription93->Prestatairefp93->find( 'first', $query );
+					$result = $this->Ficheprescription93->Adresseprestatairefp93->Prestatairefp93->find( 'first', $query );
 					$json['fields']['Prestatairehorspdifp93.name']['value'] = Hash::get( $result, 'Prestatairefp93.name' );
 
 					$adresses = $this->_ajax_options_adresses_prestataire_horspdi( $prestatairefp93_id );
@@ -422,7 +422,7 @@
 								'Adresseprestatairefp93.id' => $adresseprestatairefp93_id
 							)
 						);
-						$result = $this->Ficheprescription93->Prestatairefp93->Adresseprestatairefp93->find( 'first', $query );
+						$result = $this->Ficheprescription93->Adresseprestatairefp93->find( 'first', $query );
 						$json['fields']['Ficheprescription93.selection_adresse_prestataire']['options'] = $this->_ajax_options_adresses_prestataire_horspdi( Hash::get( $result, 'Adresseprestatairefp93.prestatairefp93_id' ) );
 						$json['fields']['Ficheprescription93.selection_adresse_prestataire']['value'] = $adresseprestatairefp93_id;
 					}
@@ -780,12 +780,19 @@
 				);
 			}
 
+			// Suppression du contrôle sur les champs non présents
+			unset( $this->Ficheprescription93->validate['prestatairehorspdifp93_id'] );
+
+			// Traitement du formulaire
 			if( !empty( $this->request->data ) ) {
 				$this->Ficheprescription93->begin();
 
 				$ficheprescription93['Ficheprescription93']['statut'] = '99annulee';
 				$ficheprescription93['Ficheprescription93']['date_annulation'] = Hash::get( $this->request->data, 'Ficheprescription93.date_annulation' );
 				$ficheprescription93['Ficheprescription93']['motif_annulation'] = Hash::get( $this->request->data, 'Ficheprescription93.motif_annulation' );
+
+				unset( $ficheprescription93['Ficheprescription93']['created'], $ficheprescription93['Ficheprescription93']['modified'] );
+
 				$this->Ficheprescription93->create( $ficheprescription93 );
 
 				if( $this->Ficheprescription93->save() ) {
@@ -794,6 +801,7 @@
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
 				else {
+					debug( $this->Ficheprescription93->validationErrors );
 					$this->Ficheprescription93->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}

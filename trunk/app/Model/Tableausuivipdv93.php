@@ -1757,9 +1757,10 @@
 				'fields' => array(),
 				'joins' => array(
 					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-					$Ficheprescription93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 				),
@@ -1918,9 +1919,10 @@
 				'fields' => array(),
 				'joins' => array(
 					$Ficheprescription93->join( 'Actionfp93', array( 'type' => 'LEFT OUTER' ) ),
+					$Ficheprescription93->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
-					$Ficheprescription93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->join( 'Referent', array( 'type' => 'INNER' ) ),
+					$Ficheprescription93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 					$Ficheprescription93->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 					$Ficheprescription93->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 				),

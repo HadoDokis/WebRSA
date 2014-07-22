@@ -61,6 +61,11 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
+			'prestatairefp93_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' )
+				)
+			),
 		);
 
 		/**
@@ -78,9 +83,9 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			'Prestatairefp93' => array(
-				'className' => 'Prestatairefp93',
-				'foreignKey' => 'prestatairefp93_id',
+			'Adresseprestatairefp93' => array(
+				'className' => 'Adresseprestatairefp93',
+				'foreignKey' => 'adresseprestatairefp93_id',
 				'conditions' => null,
 				'type' => null,
 				'fields' => null,
@@ -121,6 +126,8 @@
 				"{$this->alias}.typethematiquefp93_id" => array( 'empty' => true ),
 				"{$this->alias}.thematiquefp93_id" => array( 'empty' => true ),
 				"{$this->alias}.categoriefp93_id" => array( 'empty' => true ),
+				"{$this->alias}.filierefp93_id" => array( 'empty' => true ),
+				"{$this->alias}.prestatairefp93_id" => array( 'empty' => true )
 			);
 			$fields = $virtualFields + $fields;
 
@@ -139,16 +146,18 @@
 				'fields' => array_merge(
 					$this->fields(),
 					array(
+						'Adresseprestatairefp93.prestatairefp93_id',
 						'Filierefp93.id',
 						'Categoriefp93.id',
 						'Thematiquefp93.id',
-						'Thematiquefp93.type',
+						'Thematiquefp93.type'
 					)
 				),
 				'conditions' => array(
 					"{$this->alias}.{$this->primaryKey}" => $id
 				),
 				'joins' => array(
+					$this->join( 'Adresseprestatairefp93', array( 'type' => 'INNER' ) ),
 					$this->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
 					$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 					$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
@@ -162,6 +171,8 @@
 				$thematiquefp93_id = Hash::get( $return, 'Thematiquefp93.id' );
 				$categoriefp93_id = Hash::get( $return, 'Categoriefp93.id' );
 				$filierefp93_id = Hash::get( $return, 'Filierefp93.id' );
+				$prestatairefp93_id = Hash::get( $return, 'Adresseprestatairefp93.prestatairefp93_id' );
+				$adresseprestatairefp93_id = Hash::get( $return, 'Actionfp93.adresseprestatairefp93_id' );
 
 				$return = Hash::merge(
 					$return,
@@ -171,6 +182,8 @@
 							'thematiquefp93_id' => "{$typethematiquefp93_id}_{$thematiquefp93_id}",
 							'categoriefp93_id' => "{$thematiquefp93_id}_{$categoriefp93_id}",
 							'filierefp93_id' => "{$categoriefp93_id}_{$filierefp93_id}",
+							'prestatairefp93_id' => $prestatairefp93_id,
+							'adresseprestatairefp93_id' => "{$prestatairefp93_id}_{$adresseprestatairefp93_id}",
 						)
 					)
 				);
@@ -215,8 +228,18 @@
 					'Prestatairefp93.name',
 				)
 			);
-			$results = $this->Prestatairefp93->find( 'all', $query );
+			$results = $this->Adresseprestatairefp93->Prestatairefp93->find( 'all', $query );
 			$options[$this->alias]['prestatairefp93_id'] = Hash::combine( $results, '{n}.Prestatairefp93.id', '{n}.Prestatairefp93.name' );
+
+			// Liste des adresses des prestataires
+			$query = array(
+				'fields' => array(
+					'( "Adresseprestatairefp93"."prestatairefp93_id" || \'_\' || "Adresseprestatairefp93"."id" ) AS "Adresseprestatairefp93__id"',
+					'Adresseprestatairefp93.name',
+				)
+			);
+			$results = $this->Adresseprestatairefp93->find( 'all', $query );
+			$options[$this->alias]['adresseprestatairefp93_id'] = Hash::combine( $results, '{n}.Adresseprestatairefp93.id', '{n}.Adresseprestatairefp93.name' );
 
 			// On s'arrange pour ne pouvoir ajouter que des actions PDI
 			unset( $options[$this->alias]['typethematiquefp93_id']['horspdi'] );
@@ -235,6 +258,7 @@
 				"{$this->alias}.typethematiquefp93_id" => "{$this->alias}.thematiquefp93_id",
 				"{$this->alias}.thematiquefp93_id" => "{$this->alias}.categoriefp93_id",
 				"{$this->alias}.categoriefp93_id" => "{$this->alias}.filierefp93_id",
+				"{$this->alias}.prestatairefp93_id" => "{$this->alias}.adresseprestatairefp93_id",
 			);
 
 			return $return;

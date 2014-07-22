@@ -34,7 +34,7 @@
 		public $records = array(
 			array(
 				'filierefp93_id' => 1,
-				'prestatairefp93_id' => 1,
+				'adresseprestatairefp93_id' => 1,
 				'name' => 'Action de test',
 				'numconvention' => '93XXX1300001',
 				'annee' => 2013,
@@ -44,7 +44,7 @@
 			),
 			array(
 				'filierefp93_id' => 1,
-				'prestatairefp93_id' => 1,
+				'adresseprestatairefp93_id' => 1,
 				'name' => 'Action de test',
 				'numconvention' => '93XXX1400001',
 				'annee' => 2014,

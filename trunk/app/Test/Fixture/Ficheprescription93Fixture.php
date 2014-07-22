@@ -37,7 +37,7 @@
 				'referent_id' => 1,
 				'filierefp93_id' => 1,
 				'actionfp93_id' => 1,
-				'prestatairefp93_id' => 1,
+				'adresseprestatairefp93_id' => 1,
 				'statut' => '01renseignee'
 			)
 		);

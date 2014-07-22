@@ -23,6 +23,7 @@
 		 */
 		public $fixtures = array(
 			'app.Actionfp93',
+			'app.Adresseprestatairefp93',
 			'app.Categoriefp93',
 			'app.Filierefp93',
 			'app.Prestatairefp93',
@@ -63,7 +64,7 @@
 					'thematiquefp93_id' => 'pdi_1',
 					'categoriefp93_id' => '1_1',
 					'filierefp93_id' => '1_1',
-					'prestatairefp93_id' => '1',
+					'adresseprestatairefp93_id' => '1',
 					'annee' => 2014,
 					'actif' => '1',
 					'numconvention' => '93TEST14000000',
@@ -89,12 +90,15 @@
 				'Actionfp93.categoriefp93_id' => array(
 					'empty' => true,
 				),
-				'Actionfp93.id' => array( ),
 				'Actionfp93.filierefp93_id' => array(
 					'empty' => true,
 				),
 				'Actionfp93.prestatairefp93_id' => array(
 					'empty' => true,
+				),
+				'Actionfp93.id' => array( ),
+				'Actionfp93.adresseprestatairefp93_id' => array(
+					'empty' => true
 				),
 				'Actionfp93.name' => array( ),
 				'Actionfp93.numconvention' => array( ),
@@ -116,7 +120,7 @@
 				'Actionfp93' => array(
 					'id' => 1,
 					'filierefp93_id' => '1_1',
-					'prestatairefp93_id' => 1,
+					'adresseprestatairefp93_id' => '1_1',
 					'name' => 'Action de test',
 					'numconvention' => '93XXX1300001',
 					'annee' => 2013,
@@ -127,6 +131,10 @@
 					'typethematiquefp93_id' => 'pdi',
 					'thematiquefp93_id' => 'pdi_1',
 					'categoriefp93_id' => '1_1',
+					'prestatairefp93_id' => 1,
+				),
+				'Adresseprestatairefp93' => array(
+					'prestatairefp93_id' => 1,
 				),
 				'Filierefp93' => array(
 					'id' => 1,
@@ -170,6 +178,9 @@
 						1 => 'Association LE PRISME',
 						2 => 'Sol en Si',
 					),
+					'adresseprestatairefp93_id' => array(
+						'1_1' => 'Av. de la république, 93000 Bobigny',
+					),
 				),
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -185,6 +196,7 @@
 				'Actionfp93.typethematiquefp93_id' => 'Actionfp93.thematiquefp93_id',
 				'Actionfp93.thematiquefp93_id' => 'Actionfp93.categoriefp93_id',
 				'Actionfp93.categoriefp93_id' => 'Actionfp93.filierefp93_id',
+				'Actionfp93.prestatairefp93_id' => 'Actionfp93.adresseprestatairefp93_id',
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}

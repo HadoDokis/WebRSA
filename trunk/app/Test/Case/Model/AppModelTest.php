@@ -10,7 +10,9 @@
 		 * @var array
 		 */
 		public $fixtures = array(
-			'core.Apple'
+			'core.Apple',
+			'app.Actionfp93',
+			'app.Adresseprestatairefp93',
 		);
 
 		/**
@@ -86,49 +88,46 @@
 		}
 
 		/**
-		 * Test de la méthode AppModel::saveMany()
-		 *
-		 * @return void
+		 * Test de la méthode AppModel::beforeFind() lorsque l'on force les champs
+		 * virtuels.
 		 */
-//		public function testSaveMany() {
-//			$data = array(
-//				array(
-//					'color' => 'red'
-//				),
-//				array(
-//					'name' => 'Bintje',
-//					'color' => 'red'
-//				),
-//			);
-//			$result = $this->Apple->saveMany( $data, array( 'atomic' => false ) );
-//			$this->assertEqual( $result, false );
-//
-//			$data = array(
-//				array(
-//					'name' => 'Bintje',
-//					'color' => 'red'
-//				),
-//			);
-//			$result = $this->Apple->saveMany( $data, array( 'atomic' => false ) );
-//			$this->assertEqual( $result, true );
-//		}
+		public function testBeforefindForceVirtualFields() {
+			$this->Actionfp93 = ClassRegistry::init( 'Actionfp93' );
 
-		/**
-		 * Test de la méthode AppModel::saveAssociated()
-		 *
-		 * @return void
-		 */
-//		public function testSaveAssociated() {
-//
-//			$data = array(
-//				'Apple' => array(
-//					'name' => 'Bintje',
-//					'color' => 'red'
-//				),
-//			);
-//			$result = $this->Apple->saveAssociated( $data, array( 'atomic' => false ) );
-//			$this->assertEqual( $result, true );
-//		}
+			$query = array(
+				'fields' => array(
+					'Actionfp93.name',
+					'Adresseprestatairefp93.name'
+				),
+				'joins' => array(
+					$this->Actionfp93->join( 'Adresseprestatairefp93' )
+				),
+				'conditions' => array(
+					'Adresseprestatairefp93.name' => 'Foo'
+				)
+			);
 
+			$this->Actionfp93->forceVirtualFields = true;
+			$result = $this->Actionfp93->beforeFind( $query );
+
+			$expected = array(
+				'fields' => array(
+					'Actionfp93.name',
+					'( "Adresseprestatairefp93"."adresse" || \', \' || "Adresseprestatairefp93"."codepos" || \' \' || "Adresseprestatairefp93"."localite" ) AS  "Adresseprestatairefp93__name"'
+				),
+				'joins' => array(
+					array(
+						'table' => '"adressesprestatairesfps93"',
+						'alias' => 'Adresseprestatairefp93',
+						'type' => 'LEFT',
+						'conditions' => '"Actionfp93"."adresseprestatairefp93_id" = "Adresseprestatairefp93"."id"',
+					),
+				),
+				'conditions' => array(
+					'( "Adresseprestatairefp93"."adresse" || \', \' || "Adresseprestatairefp93"."codepos" || \' \' || "Adresseprestatairefp93"."localite" )' => 'Foo',
+				),
+			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>
