@@ -246,6 +246,9 @@ msgstr "Catégorie"
 msgid "Actionfp93.filierefp93_id"
 msgstr "Filière"
 
+msgid "Actionfp93.adresseprestatairefp93_id"
+msgstr "Adresse du prestataire"
+
 msgid "Actionfp93.prestatairefp93_id"
 msgstr "Prestataire"
 
@@ -323,6 +326,9 @@ msgstr "Réellement supprimer la modalité de transmission « #Modtransmfp93.nam
 
 msgid "/Cataloguespdisfps93/index/Adresseprestatairefp93/:heading"
 msgstr "Adresses des prestataires"
+
+msgid "Adresseprestatairefp93.name"
+msgstr "Adresse du prestataire"
 
 msgid "Adresseprestatairefp93.prestatairefp93_id"
 msgstr "Prestataire"

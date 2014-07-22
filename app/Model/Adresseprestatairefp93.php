@@ -109,6 +109,17 @@
 		 * @var array
 		 */
 		public $hasMany = array(
+			'Actionfp93' => array(
+				'className' => 'Actionfp93',
+				'foreignKey' => 'adresseprestatairefp93_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 			'Ficheprescription93' => array(
 				'className' => 'Ficheprescription93',
 				'foreignKey' => 'adresseprestatairefp93_id',

@@ -129,6 +129,7 @@
 			$query['fields'] = array_unique($query['fields']);
 
 			$fields = $query['fields'];
+			$Model->forceVirtualFields = true;
 			$this->paginate = array( $Model->alias => $query );
 
 			$results = $this->paginate( $Model, array(), $fields, false );

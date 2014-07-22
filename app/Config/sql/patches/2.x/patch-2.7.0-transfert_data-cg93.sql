@@ -26,13 +26,13 @@ INSERT INTO prestatairesfps93 ( name, created, modified ) VALUES
 	( 'Non définie', NOW(), NOW() );
 
 -- Fonction utilitaire.
-CREATE OR REPLACE FUNCTION select_prestatairefp93_id( TEXT ) RETURNS INT AS
+CREATE OR REPLACE FUNCTION select_adresseprestatairefp93_id( TEXT ) RETURNS INT AS
 $$
 	SELECT
-			prestatairesfps93.id
-		FROM prestatairesfps93
+			adressesprestatairesfps93.id
+		FROM adressesprestatairesfps93
 		WHERE
-			NOACCENTS_UPPER( prestatairesfps93.name ) = NOACCENTS_UPPER( $1 )
+			NOACCENTS_UPPER( adressesprestatairesfps93.adresse ) = NOACCENTS_UPPER( $1 )
 		LIMIT 1
 $$
 LANGUAGE 'sql';
@@ -142,49 +142,49 @@ $$
 $$
 LANGUAGE 'sql';
 
-INSERT INTO actionsfps93 ( filierefp93_id, prestatairefp93_id, name, numconvention, annee, duree, actif, created, modified ) VALUES
+INSERT INTO actionsfps93 ( filierefp93_id, adresseprestatairefp93_id, name, numconvention, annee, duree, actif, created, modified ) VALUES
 	-- 2012
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200010', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200011', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200012', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200013', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200014', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200015', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200016', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200030', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200031', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200032', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200033', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200070', 2012, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200080', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200010', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200011', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200012', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200013', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200014', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200015', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200016', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200030', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200031', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200032', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200033', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200070', 2012, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1200080', 2012, 'Non définie', '0', NOW(), NOW() ),
 	-- 2013
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300010', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300011', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300012', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300013', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300014', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300015', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300016', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300030', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300031', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300032', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300033', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300070', 2013, 'Non définie', '0', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300080', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300010', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300011', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300012', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300013', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300014', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300015', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300016', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300030', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300031', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300032', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300033', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300070', 2013, 'Non définie', '0', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1300080', 2013, 'Non définie', '0', NOW(), NOW() ),
 	-- 2014
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400010', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400011', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400012', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400013', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400014', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400015', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400016', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400030', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400031', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400032', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400033', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400070', 2014, 'Non définie', '1', NOW(), NOW() ),
-	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_prestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400080', 2014, 'Non définie', '1', NOW(), NOW() );
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400010', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation pré-qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400011', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'formation qualifiante', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400012', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'SIAE / Entreprise d insertion', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400013', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400014', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'Accompagnement à la création d''activité', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400015', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription professionnelle', 'FDIF/APRE', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400016', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Non définie', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400030', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Action du CUCS', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400031', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'Remise à niveau', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400032', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription socioprofessionnelle', 'linguistique', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400033', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription vers les acteurs de la santé', 'Accompagnement santé', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400070', 2014, 'Non définie', '1', NOW(), NOW() ),
+	( select_filierefp93_id( 'pdi', 'Prescription culture loisirs vacances', 'Projet loisirs vacances', 'Non définie' ), select_adresseprestatairefp93_id( 'Non définie' ), 'Non définie', '93XXX1400080', 2014, 'Non définie', '1', NOW(), NOW() );
 
 -- Fonction utilitaire
 CREATE OR REPLACE FUNCTION select_actionfp93_id( TEXT ) RETURNS INT AS
@@ -240,7 +240,7 @@ INSERT INTO fichesprescriptions93 (
 	filierefp93_id,
 	actionfp93_id,
 	actionfp93,
-	prestatairefp93_id,
+	adresseprestatairefp93_id,
 	prestatairehorspdifp93_id,
 	documentbeneffp93_autre,
 	date_signature,
@@ -385,10 +385,10 @@ SELECT
 		) AS actionfp93,
 		(
 			CASE
-				WHEN select_actionfp93_name_pdi( actionscandidats.name ) THEN ( SELECT prestatairesfps93.id FROM prestatairesfps93 WHERE prestatairesfps93.name = 'Non définie' LIMIT 1 )
+				WHEN select_actionfp93_name_pdi( actionscandidats.name ) THEN ( SELECT adressesprestatairesfps93.id FROM adressesprestatairesfps93 WHERE adressesprestatairesfps93.adresse = 'Non définie' LIMIT 1 )
 				ELSE NULL
 			END
-		) AS prestatairefp93_id,
+		) AS adresseprestatairefp93_id,
 		(
 			CASE
 				WHEN select_actionfp93_name_horspdi( actionscandidats.name ) THEN ( SELECT prestataireshorspdifps93.id FROM prestataireshorspdifps93 WHERE prestataireshorspdifps93.actioncandidat_personne_id = actionscandidats_personnes.id LIMIT 1 )
@@ -416,7 +416,7 @@ SELECT
 	FROM actionscandidats_personnes
 		INNER JOIN actionscandidats ON ( actionscandidats_personnes.actioncandidat_id = actionscandidats.id );
 
-DROP FUNCTION select_prestatairefp93_id( TEXT );
+DROP FUNCTION select_adresseprestatairefp93_id( TEXT );
 DROP FUNCTION select_thematiquefp93_id( TEXT, TEXT );
 DROP FUNCTION select_categoriefp93_id( TEXT, TEXT, TEXT );
 DROP FUNCTION select_filierefp93_id( TEXT, TEXT, TEXT, TEXT );

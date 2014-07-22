@@ -118,6 +118,7 @@
 				'Categoriefp93' => 'LEFT OUTER',
 				'Thematiquefp93' => 'LEFT OUTER',
 				'Prestatairehorspdifp93' => 'LEFT OUTER',
+				'Adresseprestatairefp93' => 'LEFT OUTER'
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
@@ -377,7 +378,7 @@
 					'actionfp93_id' => 1,
 					'actionfp93' => NULL,
 					'prestatairefp93_id' => 1,
-					'adresseprestatairefp93_id' => NULL,
+					'adresseprestatairefp93_id' => 1,
 					'prestatairehorspdifp93_id' => NULL,
 					'rdvprestataire_adresse' => '',
 					'dd_action' => NULL,
@@ -416,6 +417,7 @@
 					'thematiquefp93_id' => 1,
 					'typethematiquefp93_id' => 'pdi',
 					'rdvprestataire_adresse_check' => false,
+					'date_presente_benef' => null,
 				),
 				'Instantanedonneesfp93' => array(
 					'id' => 1,
@@ -484,6 +486,9 @@
 				'Actionfp93' => array(
 					'numconvention' => '93XXX1300001',
 					'filierefp93_id' => 1,
+					'adresseprestatairefp93_id' => 1
+				),
+				'Adresseprestatairefp93' => array(
 					'prestatairefp93_id' => 1,
 				),
 				'Filierefp93' => array(

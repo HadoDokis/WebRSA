@@ -117,7 +117,7 @@
 			'Actionfp93' => array(
 				'paths' => array(
 					'Actionfp93.filierefp93_id',
-					'Actionfp93.prestatairefp93_id',
+					'Actionfp93.adresseprestatairefp93_id',
 					'Actionfp93.numconvention',
 					'Actionfp93.name',
 					'Actionfp93.duree',

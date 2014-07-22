@@ -136,7 +136,8 @@
 							$replacementsFields = array();
 
 							foreach( $linkedModel->virtualFields as $fieldName => $query ) {
-								$regex = "/(?<!\.)(?<!\w)({$linkedModel->alias}\.){0,1}{$fieldName}(?!\w)/";
+								//$regex = "/(?<!\.)(?<!\w)({$linkedModel->alias}\.){0,1}{$fieldName}(?!\w)/";
+								$regex = "/(?<!\.)(?<!\w){$linkedModel->alias}\.{$fieldName}(?!\w)/";
 								$alias = "{$query} {$dbo->alias} {$dbo->startQuote}{$linkedModel->alias}__{$fieldName}{$dbo->endQuote}";
 								$replacementsFields[$regex] = $alias;
 

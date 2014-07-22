@@ -1824,13 +1824,15 @@ body.search ul.actions li.action a.search {
 /* Coordonnées du prescripteur de la fiche de prescription 93 */
 
 body.fichesprescriptions93.add #CoordonneesPrescripteur, body.fichesprescriptions93.edit #CoordonneesPrescripteur,
-body.fichesprescriptions93.add #CoordonneesPrestataire, body.fichesprescriptions93.edit #CoordonneesPrestataire {
+body.fichesprescriptions93.add #CoordonneesPrestataire, body.fichesprescriptions93.edit #CoordonneesPrestataire,
+body.cataloguespdisfps93 #CoordonneesPrestataire {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
 
 body.fichesprescriptions93.add #CoordonneesPrescripteur th, body.fichesprescriptions93.edit #CoordonneesPrescripteur th,
-body.fichesprescriptions93.add #CoordonneesPrestataire th, body.fichesprescriptions93.edit #CoordonneesPrestataire th {
+body.fichesprescriptions93.add #CoordonneesPrestataire th, body.fichesprescriptions93.edit #CoordonneesPrestataire th,
+body.cataloguespdisfps93 #CoordonneesPrestataire th{
 	width: 48%;
 	color: black;
 	background: transparent;

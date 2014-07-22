@@ -45,30 +45,8 @@
 		 * @var array
 		 */
 		public $hasMany = array(
-			'Actionfp93' => array(
-				'className' => 'Actionfp93',
-				'foreignKey' => 'prestatairefp93_id',
-				'conditions' => null,
-				'order' => null,
-				'limit' => null,
-				'offset' => null,
-				'dependent' => true,
-				'exclusive' => null,
-				'finderQuery' => null
-			),
 			'Adresseprestatairefp93' => array(
 				'className' => 'Adresseprestatairefp93',
-				'foreignKey' => 'prestatairefp93_id',
-				'conditions' => null,
-				'order' => null,
-				'limit' => null,
-				'offset' => null,
-				'dependent' => true,
-				'exclusive' => null,
-				'finderQuery' => null
-			),
-			'Ficheprescription93' => array(
-				'className' => 'Ficheprescription93',
 				'foreignKey' => 'prestatairefp93_id',
 				'conditions' => null,
 				'order' => null,
@@ -101,6 +79,7 @@
 					"{$this->alias}.name",
 				),
 				'joins' => array(
+					$this->join( 'Adresseprestatairefp93' ),
 					$this->join( 'Actionfp93' )
 				),
 				'contain' => false,
@@ -149,19 +128,23 @@
 				return '1 = 1';
 			}
 
-			$conditions[] = "Actionfp93.prestatairefp93_id = {$this->alias}.{$this->primaryKey}";
+			$conditions[] = "Actionfp93.adresseprestatairefp93_id = {$this->Adresseprestatairefp93->alias}.{$this->Adresseprestatairefp93->primaryKey}";
 
 			$query = array(
 				'alias' => 'Actionfp93',
-				'fields' => array( 'Actionfp93.prestatairefp93_id' ),
+				'fields' => array( 'Adresseprestatairefp93.prestatairefp93_id' ),
+				'joins' => array(
+					$this->join( 'Adresseprestatairefp93', array( 'type' => 'INNER' ) )
+				),
 				'conditions' => $conditions
 			);
 
 			$replacements = array(
 				'Actionfp93' => 'actionsfps93',
+				'Adresseprestatairefp93' => 'adressesprestatairesfps93'
 			);
 
-			$sql = $this->Actionfp93->sq( array_words_replace( $query, $replacements ) );
+			$sql = $this->Adresseprestatairefp93->Actionfp93->sq( array_words_replace( $query, $replacements ) );
 			$condition = "{$this->alias}.{$this->primaryKey} IN ( {$sql} )";
 
 			return $condition;

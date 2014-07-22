@@ -85,6 +85,7 @@
 				'Categoriefp93' => 'LEFT OUTER',
 				'Filierefp93' => 'LEFT OUTER',
 				'Actionfp93' => 'LEFT OUTER',
+				'Adresseprestatairefp93' => 'LEFT OUTER',
 				'Prestatairefp93' => 'LEFT OUTER'
 			);
 
@@ -98,6 +99,7 @@
 						'Thematiquefp93.name',
 						'Categoriefp93.name',
 						'Filierefp93.name',
+						'Adresseprestatairefp93.name',
 						'Prestatairefp93.name',
 						'Actionfp93.id',
 						'Actionfp93.annee',
@@ -108,13 +110,15 @@
 						$Thematiquefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) ),
 						$Thematiquefp93->Categoriefp93->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) ),
 						$Thematiquefp93->Categoriefp93->Filierefp93->join( 'Actionfp93', array( 'type' => $types['Actionfp93'] ) ),
-						$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) )
+						$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->join( 'Adresseprestatairefp93', array( 'type' => $types['Adresseprestatairefp93'] ) ),
+						$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) )
 					),
 					'conditions' => array(),
 					'order' => array(
 						'Thematiquefp93.type',
 						'Thematiquefp93.name',
 						'Filierefp93.name',
+						'Adresseprestatairefp93.name',
 						'Prestatairefp93.name',
 						'Actionfp93.annee',
 						'Actionfp93.name',
@@ -187,7 +191,8 @@
 				$Thematiquefp93->Categoriefp93->enums(),
 				$Thematiquefp93->Categoriefp93->Filierefp93->enums(),
 				$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->enums(),
-				$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Prestatairefp93->enums()
+				$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Adresseprestatairefp93->enums(),
+				$Thematiquefp93->Categoriefp93->Filierefp93->Actionfp93->Adresseprestatairefp93->Prestatairefp93->enums()
 			);
 
 			return $options;

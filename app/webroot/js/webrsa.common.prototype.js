@@ -1947,19 +1947,21 @@ function ajax_action_on_success(response, parameters) {
 				// Test: $(field), $(field).type, $(field).id, $(field).value, $(field).options
 
 				if( $(field).type === 'select' ) {
-					var select = new Element( 'select' );
-					$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
+					if( typeof $(field).options !== 'undefined' ) {
+						var select = new Element( 'select' );
+						$(select).insert( { bottom: new Element( 'option', { 'value': '' } ) } );
 
-					var options = $(field).options;
-					if( $(options) != [] ) {
-						$(options).each( function( result ) {
-							var title = ( typeof $(result).title === 'undefined' ? '' : $(result).title );
-							var option = Element( 'option', { 'value': $(result).id, 'title': title } ).update( $(result).name );
-							$(select).insert( { bottom: option } );
-						} );
+						var options = $(field).options;
+						if( $(options) != [] ) {
+							$(options).each( function( result ) {
+								var title = ( typeof $(result).title === 'undefined' ? '' : $(result).title );
+								var option = Element( 'option', { 'value': $(result).id, 'title': title } ).update( $(result).name );
+								$(select).insert( { bottom: option } );
+							} );
+						}
+
+						$($(field).id).update( $(select).innerHTML );
 					}
-
-					$($(field).id).update( $(select).innerHTML );
 				}
 				else if( $(field).type === 'ajax_select' ) {
 
@@ -1969,7 +1971,7 @@ function ajax_action_on_success(response, parameters) {
 						$( oldAjaxSelect ).remove();
 					}
 
-					if( $($(field).options).length > 0 ) {
+					if( typeof $(field).options !== 'undefined' && $($(field).options).length > 0 ) {
 						var ajaxSelect = new Element( 'ul' );
 
 						$($(field).options).each( function ( result ) {

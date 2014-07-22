@@ -180,15 +180,6 @@
 				'order' => null,
 				'counterCache' => null
 			),
-			'Prestatairefp93' => array(
-				'className' => 'Prestatairefp93',
-				'foreignKey' => 'prestatairefp93_id',
-				'conditions' => null,
-				'type' => 'LEFT OUTER',
-				'fields' => null,
-				'order' => null,
-				'counterCache' => null
-			),
 			'Prestatairehorspdifp93' => array(
 				'className' => 'Prestatairehorspdifp93',
 				'foreignKey' => 'prestatairehorspdifp93_id',
@@ -351,6 +342,7 @@
 				'Ficheprescription93' => 'LEFT OUTER',
 				'Referent' => 'LEFT OUTER',
 				'Actionfp93' => 'LEFT OUTER',
+				'Adresseprestatairefp93' => 'LEFT OUTER',
 				'Prestatairefp93' => 'LEFT OUTER',
 				'Filierefp93' => 'LEFT OUTER',
 				'Prestatairehorspdifp93' => 'LEFT OUTER',
@@ -376,7 +368,7 @@
 					$this->Referent->fields(),
 					$this->Filierefp93->fields(),
 					$this->Prestatairehorspdifp93->fields(),
-					$this->Actionfp93->Prestatairefp93->fields(),
+					$this->Actionfp93->Adresseprestatairefp93->Prestatairefp93->fields(),
 					$this->Filierefp93->Categoriefp93->fields(),
 					$this->Filierefp93->Categoriefp93->Thematiquefp93->fields()
 				);
@@ -387,7 +379,8 @@
 				$query['joins'][] = $this->join( 'Referent', array( 'type' => $types['Referent'] ) );
 				$query['joins'][] = $this->join( 'Filierefp93', array( 'type' => $types['Filierefp93'] ) );
 				$query['joins'][] = $this->join( 'Prestatairehorspdifp93', array( 'type' => $types['Prestatairehorspdifp93'] ) );
-				$query['joins'][] = $this->Actionfp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
+				$query['joins'][] = $this->Actionfp93->join( 'Adresseprestatairefp93', array( 'type' => $types['Adresseprestatairefp93'] ) );
+				$query['joins'][] = $this->Actionfp93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => $types['Prestatairefp93'] ) );
 				$query['joins'][] = $this->Filierefp93->join( 'Categoriefp93', array( 'type' => $types['Categoriefp93'] ) );
 				$query['joins'][] = $this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => $types['Thematiquefp93'] ) );
 
@@ -614,7 +607,8 @@
 							'Referent.structurereferente_id',
 							'Actionfp93.numconvention',
 							'Actionfp93.filierefp93_id',
-							'Actionfp93.prestatairefp93_id',
+							'Actionfp93.adresseprestatairefp93_id',
+							'Adresseprestatairefp93.prestatairefp93_id',
 							'Filierefp93.categoriefp93_id',
 							'Categoriefp93.thematiquefp93_id',
 							'Thematiquefp93.type',
@@ -627,7 +621,8 @@
 						$this->join( 'Prestatairehorspdifp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Referent' ),
 						$this->join( 'Filierefp93' ),
-						$this->Actionfp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Actionfp93->join( 'Adresseprestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Actionfp93->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Filierefp93->join( 'Categoriefp93' ),
 						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93' ),
 					),
@@ -674,7 +669,8 @@
 				$return[$this->alias]['numconvention'] = $data['Actionfp93']['numconvention'];
 
 				$return[$this->alias]['actionfp93_id'] = $data[$this->alias]['actionfp93_id'];
-				$return[$this->alias]['prestatairefp93_id'] = $data['Actionfp93']['prestatairefp93_id'];
+				$return[$this->alias]['adresseprestatairefp93_id'] = $data['Actionfp93']['adresseprestatairefp93_id'];
+				$return[$this->alias]['prestatairefp93_id'] = $data['Adresseprestatairefp93']['prestatairefp93_id'];
 				$return[$this->alias]['categoriefp93_id'] = $data['Filierefp93']['categoriefp93_id'];
 				$return[$this->alias]['thematiquefp93_id'] = $data['Categoriefp93']['thematiquefp93_id'];
 				$return[$this->alias]['typethematiquefp93_id'] = $data['Thematiquefp93']['type'];
@@ -894,7 +890,7 @@
 					array(
 						$this->alias => array(
 							'actionfp93_id' => null,
-							'prestatairefp93_id' => null,
+							'adresseprestatairefp93_id' => null,
 						)
 					)
 				);
@@ -1027,7 +1023,7 @@
 						$this->Motifnonsouhaitfp93->fields(),
 						$this->Personne->fields(),
 						$this->Referent->fields(),
-						$this->Prestatairefp93->fields(),
+						$this->Adresseprestatairefp93->Prestatairefp93->fields(),
 						$this->Prestatairehorspdifp93->fields(),
 						$this->Filierefp93->Categoriefp93->fields(),
 						$this->Filierefp93->Categoriefp93->Thematiquefp93->fields(),
@@ -1044,9 +1040,9 @@
 						$this->join( 'Motifnonretenuefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Motifnonsouhaitfp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Prestatairehorspdifp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Referent', array( 'type' => 'INNER' ) ),
+						$this->Adresseprestatairefp93->join( 'Prestatairefp93', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Filierefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
 						$this->Filierefp93->Categoriefp93->join( 'Thematiquefp93', array( 'type' => 'INNER' ) ),
 						$this->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
