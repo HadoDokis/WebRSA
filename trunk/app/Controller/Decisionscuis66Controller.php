@@ -541,6 +541,27 @@
 
             }
         }
+        
+        
+		/**
+		 * Imprime une attestation de compétence du CUI.
+		 *
+		 * @param integer $id L'id du CUI que l'on veut imprimer
+		 * @return void
+		 */
+		public function attestationcompetencecui66( $id ) {
+            $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Decisioncui66->personneId( $id ) ) ) );
+
+			$pdf = $this->Decisioncui66->getAttestationcompetencecui66Pdf( $id, $this->Session->read( 'Auth.User.id' ) );
+
+			if( !empty( $pdf ) ) {
+				$this->Gedooo->sendPdfContentToClient( $pdf, sprintf( 'attestation_competence_cui_%d_%d.pdf', $id, date( 'Y-m-d' ) ) );
+			}
+			else {
+				$this->Session->setFlash( 'Impossible de générer l\'attestation de compétence du contrat unique d\'insertion.', 'default', array( 'class' => 'error' ) );
+				$this->redirect( $this->referer() );
+			}
+		}
 
     }
 ?>

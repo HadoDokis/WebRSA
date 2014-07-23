@@ -648,7 +648,10 @@ msgid "Button::maillink"
 msgstr "Mail employeur"
 
 msgid "Button::printaviscui"
-msgstr "Impression avis technique"
+msgstr "Impression Fiche de synthèse"
 
 msgid "Button::synthesecui66"
 msgstr "Synthèse"
+
+msgid "Button::attestationcompetencecui66"
+msgstr "Attestation de compétence"
