@@ -33,7 +33,8 @@
 		*/
 		public $modelesOdt = array(
 			'CUI/cui.odt',
-			'CUI/synthesecui66.odt'
+			'CUI/synthesecui66.odt',
+			'CUI/attestationcompetencecui66.odt'
 		);
 
 
@@ -683,12 +684,14 @@
 						$this->Personne->Foyer->Adressefoyer->Adresse->fields(),
 						$this->Partenaire->fields(),
                         $this->Partenaire->Raisonsocialepartenairecui66->fields(),
-                        $this->Partenaire->Coderomesecteurdsp66->fields()
+                        $this->Partenaire->Coderomesecteurdsp66->fields(),
+                        $this->Decisioncui66->fields()
 					),
 					'joins' => array(
 						$this->join( 'Personne', array( 'type' => 'INNER' ) ),
 						$this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Decisioncui66', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),

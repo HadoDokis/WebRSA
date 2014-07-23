@@ -42,6 +42,9 @@ msgstr "Modifier une décision"
 msgid "Decisionscuis66::delete"
 msgstr "Supprimer une décision"
 
+msgid "Decisionscuis66::attestationcompetencecui66"
+msgstr "Imprimer l'attestation de compétence"
+
 msgid "Decisioncui66.observdecisioncui"
 msgstr "Observations sur la décision"
 

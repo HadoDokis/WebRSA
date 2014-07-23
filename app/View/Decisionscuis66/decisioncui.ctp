@@ -51,6 +51,10 @@
 					'label' => 'Envoi mail employeur',
 					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'envoimailemployeur', $dossierMenu )
 				),
+				'Decisionscuis66::attestationcompetencecui66' => array(
+					'label' => 'Attestation de compétence',
+					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'attestationcompetencecui66', $dossierMenu )
+				),
 				'Decisionscuis66::delete' => array(
 					'disabled' => !$this->Permissions->checkDossier( 'decisionscuis66', 'delete', $dossierMenu )
 				),

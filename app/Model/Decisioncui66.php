@@ -259,5 +259,67 @@
 				return null;
 			}
 		}
+        
+        /**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param array $params <=> array( 'allocataire' => true )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			$params = $params + array( 'allocataire' => true, 'pdf' => false );
+
+			if( Hash::get( $params, 'allocataire' ) ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
+
+				$options = $Allocataire->options();
+			}
+
+			$Option = ClassRegistry::init( 'Option' );
+
+			$options = Hash::merge(
+				$options,
+                $this->enums(),
+                array(
+                    'Referent' => array(
+                        'qual' => $Option->qual()
+                    ),
+                    'Structurereferente' => array(
+                        'type_voie' => $Option->typevoie()
+                    ),
+                    'Type' => array(
+                        'voie' => $Option->typevoie()
+                    ),
+                    'type' => array(
+                        'voie' => $Option->typevoie()
+                    ),
+                )
+			);
+
+			return $options;
+		}
+        
+        
+        /**
+		 * Retourne le PDF d'attestation de compétence du CUI.
+		 *
+		 * @see Decisioncui66::getDataForPdf
+		 *
+		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
+		 * @return string
+		 */
+		public function getAttestationcompetencecui66Pdf( $id, $user_id ) {
+			$decisioncui66 = $this->getDataForPdf( $id, $user_id );
+			$options = $this->options( array('pdf' => true));
+
+			return $this->ged(
+				$decisioncui66,
+				'CUI/Decisioncui66/attestationcompetencecui66.odt',
+				false,
+				$options
+			);
+		}
 	}
 ?>
