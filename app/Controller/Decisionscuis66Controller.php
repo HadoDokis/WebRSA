@@ -218,7 +218,7 @@
 
 			// Retour à la liste des CUI en cas de retour
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'decisionscuis66', 'action' => 'decisioncui', $cui_id ) );
+				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
 			}
 		}
 
@@ -475,7 +475,7 @@
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'decisioncui', $decisioncui66['Cui']['id'] ) );
+				$this->redirect( array( 'action' => 'decisioncui', $decisioncui66['Decisioncui66']['cui_id'] ) );
 			}
             
             if( !empty( $this->request->data) ) {
