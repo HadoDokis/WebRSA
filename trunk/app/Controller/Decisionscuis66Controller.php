@@ -428,8 +428,8 @@
                     'joins' => array(
                         $this->Decisioncui66->join( 'Cui', array( 'type' => 'INNER' ) ),
                         $this->Decisioncui66->Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
-                        $this->Decisioncui66->Cui->join( 'Partenaire', array( 'type' => 'LEFT OUTER') ),
-                        $this->Decisioncui66->join( 'Textmailcui66', array( 'type' => 'LEFT OUTER') )
+                        $this->Decisioncui66->Cui->join( 'Partenaire', array( 'type' => 'INNER') ),
+                        $this->Decisioncui66->join( 'Textmailcui66', array( 'type' => 'INNER') )
                     ),
                     'contain' => false
                 )
