@@ -218,7 +218,7 @@
 
 			// Retour à la liste des CUI en cas de retour
 			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->redirect( array( 'controller' => 'cuis', 'action' => 'index', $personne_id ) );
+				$this->redirect( array( 'controller' => 'decisionscuis66', 'action' => 'decisioncui', $cui_id ) );
 			}
 		}
 
