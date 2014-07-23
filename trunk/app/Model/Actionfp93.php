@@ -48,22 +48,30 @@
 		public $validate = array(
 			'typethematiquefp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' )
+					'rule' => array( 'notEmpty' ),
+					'allowEmpty' => false,
+					'required' => false
 				)
 			),
 			'thematiquefp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' )
+					'rule' => array( 'notEmpty' ),
+					'allowEmpty' => false,
+					'required' => false
 				)
 			),
 			'categoriefp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' )
+					'rule' => array( 'notEmpty' ),
+					'allowEmpty' => false,
+					'required' => false
 				)
 			),
 			'prestatairefp93_id' => array(
 				'notEmpty' => array(
-					'rule' => array( 'notEmpty' )
+					'rule' => array( 'notEmpty' ),
+					'allowEmpty' => false,
+					'required' => false
 				)
 			),
 		);

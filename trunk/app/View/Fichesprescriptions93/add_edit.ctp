@@ -537,6 +537,8 @@
 				}
 			}
 		);
+
+		cakeDateTimeSeparator( '<?php echo $this->Html->domId( 'Ficheprescription93.rdvprestataire_date' );?>' );
 	} );
 
 	Element.observe( document, 'changed:Ficheprescription93.adresseprestatairefp93_id', function() {
