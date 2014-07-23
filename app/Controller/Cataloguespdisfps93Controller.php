@@ -218,10 +218,18 @@
 			}
 
 			// Sauvegarder dans le formulaire de l'adresse de laquelle on vient
-			if( !isset( $this->request->data['referer'] ) ) {
+			if( !Hash::get( $this->request->data, "{$modelName}.referer" ) ) {
+				$referer = $this->referer( null, true );
+				$here = $this->request->here( false );
+
+				if( in_array( $referer, array( '/', $here ), true ) ) {
+					$url = array( 'controller' => $this->request->params['controller'], 'action' => 'index', $modelName );
+					$referer = Router::normalize( Router::url( $url, false ) );
+				}
+
 				$this->request->data = Hash::merge(
 					(array)$this->request->data,
-					array( $modelName => array( 'referer' => $this->referer( null, true ) ) )
+					array( $modelName => array( 'referer' => $referer ) )
 				);
 			}
 

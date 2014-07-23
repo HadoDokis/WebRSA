@@ -2111,3 +2111,25 @@ function truncateWithEllipsis( tag, maxLength, ellipsis ) {
 		$(tag).writeAttribute( 'title', oldTitle );
 	}
 }
+
+/**
+ * Permet de séparer la partie date de la partie time d'un champ datetime
+ * généré par CakePHP avec la chaîne de caractères spécifiée en paramètre.
+ *
+ * @param string id L'id de base du champ datetime. Par exemple: ModeField
+ * @param string text La chaîne servant de séparateur. Par défaut: ' à '
+ * @returns void
+ */
+function cakeDateTimeSeparator( id, text ) {
+	if( typeof text === 'undefined' ) {
+		text = ' à ';
+	}
+
+	try {
+		var hour = $( id + 'Hour' );
+		var span = new Element( 'span', {} ).update( text );
+		$( hour ).insert( { 'before' : span } );
+	} catch( Exception ) {
+		console.log( Exception );
+	}
+}
