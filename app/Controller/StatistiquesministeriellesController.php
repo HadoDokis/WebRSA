@@ -35,7 +35,16 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Search' );
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Observer' => array(
+				'className' => 'Prototype.PrototypeObserver',
+				'useBuffer' => false
+			),
+			'Search'
+		);
 
 		/**
 		 * Modèles utilisés.
@@ -62,7 +71,7 @@
 		 */
 		public function indicateurs_orientations() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursOrientations( $this->request->data );
+				$results = $this->Statistiqueministerielle->getIndicateursOrientations( $this->request->data );
 				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
@@ -72,13 +81,44 @@
 		}
 
 		/**
+		 * Moteur de recherche pour les indicateurs de motifs de réorientations.
+		 *
+		 * @return void
+		 */
+		public function indicateurs_organismes() {
+			if( !empty( $this->request->data ) ) {
+				$results = $this->Statistiqueministerielle->getIndicateursOrganismes( $this->request->data );
+
+				$this->set( compact( 'results' ) );
+			}
+
+			$this->set( 'title_for_layout', 'Indicateurs d\'organismes' );
+		}
+
+		/**
+		 * Moteur de recherche pour les indicateurs de délais.
+		 *
+		 * @return void
+		 */
+		public function indicateurs_delais() {
+			if( !empty( $this->request->data ) ) {
+				$results = $this->Statistiqueministerielle->getIndicateursDelais( $this->request->data );
+				$types_cers = $this->Statistiqueministerielle->types_cers;
+
+				$this->set( compact( 'results', 'types_cers' ) );
+			}
+
+			$this->set( 'title_for_layout', 'Indicateurs de délais' );
+		}
+
+		/**
 		 * Moteur de recherche pour les indicateurs de réorientation.
 		 *
 		 * @return void
 		 */
 		public function indicateurs_reorientations() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursReorientations( $this->request->data );
+				$results = $this->Statistiqueministerielle->getIndicateursReorientations( $this->request->data );
 				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
@@ -94,7 +134,7 @@
 		 */
 		public function indicateurs_motifs_reorientation() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursMotifsReorientation( $this->request->data );
+				$results = $this->Statistiqueministerielle->getIndicateursMotifsReorientation( $this->request->data );
 				$tranches = $this->Statistiqueministerielle->tranches;
 
 				$this->set( compact( 'results', 'tranches' ) );
@@ -104,44 +144,13 @@
 		}
 
 		/**
-		 * Moteur de recherche pour les indicateurs de motifs de réorientations.
-		 *
-		 * @return void
-		 */
-		public function indicateurs_organismes() {
-			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursOrganismes( $this->request->data );
-
-				$this->set( compact( 'results' ) );
-			}
-
-			$this->set( 'title_for_layout', 'Indicateurs d\'organismes' );
-		}
-
-		/**
-		 * Moteur de recherche pour les indicateurs de délais.
-		 *
-		 * @return void
-		 */
-		public function indicateurs_delais() {
-			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursDelais( $this->request->data );
-				$types_cers = $this->Statistiqueministerielle->types_cers;
-
-				$this->set( compact( 'results', 'types_cers' ) );
-			}
-
-			$this->set( 'title_for_layout', 'Indicateurs de délais' );
-		}
-
-		/**
 		 * Moteur de recherche pour les indicateurs de caractéristiques de contrats.
 		 *
 		 * @return void
 		 */
 		public function indicateurs_caracteristiques_contrats() {
 			if( !empty( $this->request->data ) ) {
-				$results = $this->Statistiqueministerielle->indicateursCaracteristiquesContrats( $this->request->data );
+				$results = $this->Statistiqueministerielle->getIndicateursCaracteristiquesContrats( $this->request->data );
 				$durees_cers = array_keys( $this->Statistiqueministerielle->durees_cers );
 
 				$this->set( compact( 'results', 'durees_cers' ) );

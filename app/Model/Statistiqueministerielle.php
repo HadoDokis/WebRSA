@@ -122,109 +122,55 @@
 			),
 		);
 
+		/**
+		 * Constante définissant un parcours professionnel.
+		 *
+		 * @see Statistiqueministerielle::getConditionsTypeParcours()
+		 */
+		const PARCOURS_PROFESSIONNEL = 'PARCOURS_PROFESSIONNEL';
 
 		/**
-		 * Retourne la condition permettant de s'assurer qu'un Typeorient est en
-		 * emploi, suivant le département, car ce sont différentes variables de
-		 * configuration qui sont en jeu.
+		 * Constante définissant un parcours socioprofessionnel.
 		 *
-		 * TODO: dans Typeorient
-		 * TODO: docs dépend du CG et de with_parentid
-		 *
-		 * @param string $alias
-		 * @return array
-		 * @throws InternalErrorException
+		 * @see Statistiqueministerielle::getConditionsTypeParcours()
 		 */
-		protected function _conditionsTypeorientEmploi( $alias = null ) {
-			$departement = Configure::read( 'Cg.departement' );
-			$alias = ( !is_null( $alias ) ? $alias : 'Typeorient' ); // TODO: à changer dans typeorient
-
-			if( Configure::read( 'with_parentid' ) ) {
-				$field = 'parentid';
-			}
-			else {
-				$field = 'id';
-			}
-
-			switch( $departement ) {
-				case 58:
-					$typeorientIdEmploi = Configure::read( 'Typeorient.emploi_id' );
-					break;
-				case 66:
-					$typeorientIdEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-					break;
-				case 93:
-					$typeorientIdEmploi = Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
-					break;
-				default:
-					throw new InternalErrorException( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc' );
-			}
-
-			return array(
-				"{$alias}.{$field} IS NOT NULL",
-				"{$alias}.{$field}" => $typeorientIdEmploi,
-			);
-		}
+		const PARCOURS_SOCIOPROFESSIONNEL = 'PARCOURS_SOCIOPROFESSIONNEL';
 
 		/**
-		 * Retourne la condition permettant de s'assurer qu'un Typeorient est en
-		 * social ou préprofessionnel, suivant le département, car ce sont
-		 * différentes variables de configuration qui sont en jeu.
+		 * Constante définissant un parcours social.
 		 *
-		 * TODO: dans Typeorient
-		 * TODO: docs dépend du CG et de with_parentid
-		 *
-		 * @param string $alias
-		 * @return array
-		 * @throws InternalErrorException
+		 * @see Statistiqueministerielle::getConditionsTypeParcours()
 		 */
-		protected function _conditionsTypeorientSocial( $alias = null ) {
-			$departement = Configure::read( 'Cg.departement' );
-			$alias = ( !is_null( $alias ) ? $alias : 'Typeorient' ); // TODO: à changer dans typeorient
+		const PARCOURS_SOCIAL = 'PARCOURS_SOCIAL';
 
-			if( Configure::read( 'with_parentid' ) ) {
-				$field = 'parentid';
-			}
-			else {
-				$field = 'id';
-			}
+		/**
+		 * Constante définissant un organisme SPE.
+		 *
+		 * @see Statistiqueministerielle::getConditionsTypeOrganisme()
+		 */
+		const ORGANISME_SPE = 'ORGANISME_SPE';
 
-			switch( $departement ) {
-				case 58:
-					return array(
-						"{$alias}.{$field} IS NOT NULL",
-						"{$alias}.{$field} <>" => Configure::read( 'Typeorient.emploi_id' ),
-					);
-					break;
-				case 66:
-					return array(
-						"{$alias}.{$field} IS NOT NULL",
-						"{$alias}.{$field}" => Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' )
-					);
-					break;
-				case 93:
-					return array(
-						"{$alias}.{$field} IS NOT NULL",
-						'OR' => array(
-							array( "{$alias}.{$field}" => Configure::read( 'Orientstruct.typeorientprincipale.Social' ) ),
-							array( "{$alias}.{$field}" => Configure::read( 'Orientstruct.typeorientprincipale.Socioprofessionnelle' ) ),
-						)
-					);
-					break;
-				default:
-					throw new InternalErrorException( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc' );
-			}
-		}
+		/**
+		 * Constante définissant un organisme Hors SPE.
+		 *
+		 * @see Statistiqueministerielle::getConditionsTypeOrganisme()
+		 */
+		const ORGANISME_HORS_SPE = 'ORGANISME_HORS_SPE';
+
+		/**
+		 * Constante définissant l'organisme Pôle Emploi (faisant partie du SPE)
+		 *
+		 * @see Statistiqueministerielle::getConditionsTypeOrganisme()
+		 */
+		const ORGANISME_SPE_POLE_EMPLOI = 'ORGANISME_SPE_POLE_EMPLOI';
 
 		/**
 		 * Filtre par service instructeur.
-		 * TODO: en fait (au moins au 66), il s'agirait de filtrer par un
-		 * groupement de cantons.
 		 *
 		 * @param array $search
-		 * @return string
+		 * @return array
 		 */
-		protected function _conditionServiceInstructeur( $search ) {
+		protected function _getConditionsServiceInstructeur( $search ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 
 			$serviceinstructeur_id = trim( Hash::get( $search, 'Search.serviceinstructeur' ) );
@@ -247,139 +193,10 @@
 					)
 				);
 
-				return "Dossier.id IN ( {$sq} )";
+				return array( "Dossier.id IN ( {$sq} )" );
 			}
 
-			return null;
-		}
-
-		/**
-		 * Querydata de base qui sera utilisé dans tout le module de statistiques.
-		 *
-		 * Jointures (depuis Dossier) vers Detaildroitrsa, Foyer, Situationdossierrsa,
-		 * Adressefoyer, Personne, Adresse, Prestation, Calculdroitrsa.
-		 *
-		 * Ajout des conditions venant du formulaire de recherche, pour les DEM
-		 * ou CJT, dont la date d'ouverture du dossier a été fait avant la fin de
-		 * l'année pour laquelle on fait des statistiques.
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		protected function _qdBase( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$annee = Hash::get( $search, 'Search.annee' );
-
-			$conditions = array(
-				array(
-					'OR' => array(
-						'Adressefoyer.id IS NULL',
-						'Adressefoyer.rgadr' => '01',
-					)
-				),
-				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-				'Dossier.dtdemrsa <=' => "{$annee}-12-31",
-			);
-
-			// Seulement les derniers dossiers des allocataires
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, array( 'Dossier' => array( 'dernier' => true ) ) );
-
-			// Condition sur le service instructeur
-			$conditions[] = $this->_conditionServiceInstructeur( $search );
-
-			// Conditions sur l'adresse de l'allocataire
-			$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
-
-			// Conditions à ajouter éventuellement dans le webrsa.inc: même si
-			// on s'assure que les allocataires sont soumis à DD, on ne se
-			// préoccupe pas de l'état du dossier. On peut désormais le faire via
-			// cette configuration.
-			$conditions_base = (array)Configure::read( "Statistiqueministerielle.conditions_base" );
-			if( !empty( $conditions_base ) ) {
-				$conditions = Hash::merge( $conditions_base, $conditions );
-			}
-
-			return array(
-				'joins' => array(
-					$Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
-					$Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
-					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
-				),
-				'contain' => false,
-				'conditions' => $conditions,
-			);
-		}
-
-		/**
-		 * Querydata de base qui sera utilisé par les indicateurs d'orientation.
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		protected function _qdIndicateursOrientations( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-
-			$querydata = $this->_qdBase( $search );
-
-			$querydata['conditions']['Calculdroitrsa.toppersdrodevorsa'] = '1';
-
-			$querydata['joins'][] = $Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) );
-			$querydata['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
-
-			return $querydata;
-		}
-
-		/**
-		 * Querydata de base qui sera utilisé par les indicateurs de réorientation.
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		protected function _qdIndicateursReorientations( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$annee = Hash::get( $search, 'Search.annee' );
-
-			$querydata = $this->_qdIndicateursOrientations( $search );
-
-			$querydata['joins'][] = array_words_replace(
-				$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) ),
-				array( 'Orientstruct' => 'Orientstructpcd' )
-			);
-
-			$querydata['joins'][] = array_words_replace(
-				$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
-				array( 'Orientstruct' => 'Orientstructpcd', 'Typeorient' => 'Typeorientpcd' )
-			);
-			$querydata['conditions']['Orientstruct.statut_orient'] = 'Orienté';
-			$querydata['conditions'][] = 'Orientstruct.date_valid IS NOT NULL';
-
-			$querydata['conditions'][] = "Orientstruct.date_valid BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'";
-
-			$sqOrientstructpcd = $Dossier->Foyer->Personne->Orientstruct->sq(
-				array(
-					'alias' => 'orientsstructspcds',
-					'fields' => array( 'orientsstructspcds.id' ),
-					'contain' => false,
-					'conditions' => array(
-						'orientsstructspcds.personne_id = Personne.id',
-						'orientsstructspcds.statut_orient' => 'Orienté',
-						'orientsstructspcds.date_valid IS NOT NULL',
-						'orientsstructspcds.date_valid < Orientstruct.date_valid',
-					),
-					'order' => array(
-						'orientsstructspcds.date_valid DESC'
-					),
-					'limit' => 1
-				)
-			);
-			$querydata['conditions'][] = "Orientstructpcd.id IN ( {$sqOrientstructpcd} )";
-
-			return $querydata;
+			return array();
 		}
 
 		/**
@@ -387,7 +204,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _fieldsTrancheAge( array $search ) {
+		protected function _getFieldsTrancheAge( array $search ) {
 			$annee = Hash::get( $search, 'Search.annee' );
 
 			return array(
@@ -411,7 +228,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _fieldsSitfam( array $search ) {
+		protected function _getFieldsSitfam( array $search ) {
 			$parts = array(
 				'femme' => '"Personne"."sexe" = \'2\'',
 				'homme' => '"Personne"."sexe" = \'1\'',
@@ -499,27 +316,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _fieldsNivetu( array $search ) {
-			return array(
-				'(
-					CASE
-						WHEN "Dsp"."nivetu" IN ( \'1205\', \'1206\', \'1207\' ) THEN \'Vbis et VI\'
-						WHEN "Dsp"."nivetu" IN ( \'1204\' ) THEN \'V\'
-						WHEN "Dsp"."nivetu" IN ( \'1203\' ) THEN \'IV\'
-						WHEN "Dsp"."nivetu" IN ( \'1201\', \'1202\') THEN \'III, II, I\'
-						ELSE \'NC\'
-					END
-				) AS "nivetu_range"',
-				'COUNT(DISTINCT(Personne.id)) AS "count"'
-			);
-		}
-
-		/**
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		protected function _fieldsAnciennete( array $search ) {
+		protected function _getFieldsAnciennete( array $search ) {
 			$annee = Hash::get( $search, 'Search.annee' );
 
 			return array(
@@ -538,10 +335,9 @@
 		}
 
 		/**
-		 * TODO: compléter Orientstruct::sqDerniere avec un second paramètre de conditions
-		 * TODO: bouger dans Orientstruct
+		 * Retourne une sous-requête permettant de cibler la dernière orientation
+		 * d'un allocataire pour une année donnée.
 		 *
-		 * @param type $personneIdFied
 		 * @param type $annee
 		 * @return type
 		 */
@@ -559,7 +355,7 @@
 						"orientsstructs.personne_id = {$personneIdFied}",
 						'orientsstructs.statut_orient = \'Orienté\'',
 						'orientsstructs.date_valid IS NOT NULL',
-						'orientsstructs.date_valid <=' => "{$annee}-12-31", // FIXME
+						'orientsstructs.date_valid <=' => "{$annee}-12-31",
 					),
 					'order' => array( 'orientsstructs.date_valid DESC' ),
 					'limit' => 1
@@ -568,9 +364,9 @@
 		}
 
 		/**
+		 * Retourne une sous-requête permettant de cibler la toute première
+		 * orientation d'un allocataire donné..
 		 *
-		 * @param type $personneIdFied
-		 * @param type $annee
 		 * @return string
 		 */
 		protected function _sqPremiereOrientation() {
@@ -586,7 +382,7 @@
 					'conditions' => array(
 						"orientsstructs.personne_id = {$personneIdFied}",
 						'orientsstructs.statut_orient = \'Orienté\'',
-						'orientsstructs.date_valid IS NOT NULL',
+						'orientsstructs.date_valid IS NOT NULL'
 					),
 					'order' => array( 'orientsstructs.date_valid ASC' ),
 					'limit' => 1
@@ -595,9 +391,9 @@
 		}
 
 		/**
+		 * Retourne une sous-requête permettant de cibler le premier contrat
+		 * d'insertion signé par un allocataire.
 		 *
-		 * @param type $personneIdFied
-		 * @param type $annee
 		 * @return string
 		 */
 		protected function _sqPremierContratinsertion() {
@@ -622,549 +418,324 @@
 		}
 
 		/**
+		 * Retourne les catégories de niveaux d'études renseigné dans les DspRev
+		 * (suivant la date de dernière modification et l'année demandée) ou
+		 * les Dsp.
+		 *
+		 * Utilisées dans les tableaux "1 - Orientation des personnes dans le champ
+		 * des Droits et Devoirs au 31 décembre de l'année, au sens du type de
+		 * parcours" et "4 - Nombre et profil des personnes réorientées au cours
+		 * de l'année, au sens de la loi " de la partie "Questionnaire orientation".
+		 *
+		 * @see Statistiqueministerielle::_completeQueryDspDspRev()
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _getFieldsNivetu( array $search ) {
+			return array(
+				'(
+					CASE
+						WHEN "DspRev"."nivetu" IN ( \'1205\', \'1206\', \'1207\' ) THEN \'Vbis et VI\'
+						WHEN "DspRev"."nivetu" IN ( \'1204\' ) THEN \'V\'
+						WHEN "DspRev"."nivetu" IN ( \'1203\' ) THEN \'IV\'
+						WHEN "DspRev"."nivetu" IN ( \'1201\', \'1202\') THEN \'III, II, I\'
+						WHEN "DspRev"."id" IS NULL AND "Dsp"."nivetu" IN ( \'1205\', \'1206\', \'1207\' ) THEN \'Vbis et VI\'
+						WHEN "DspRev"."id" IS NULL AND "Dsp"."nivetu" IN ( \'1204\' ) THEN \'V\'
+						WHEN "DspRev"."id" IS NULL AND "Dsp"."nivetu" IN ( \'1203\' ) THEN \'IV\'
+						WHEN "DspRev"."id" IS NULL AND "Dsp"."nivetu" IN ( \'1201\', \'1202\') THEN \'III, II, I\'
+						ELSE \'NC\'
+					END
+				) AS "nivetu_range"',
+				'COUNT(DISTINCT(Personne.id)) AS "count"'
+			);
+		}
+
+		/**
+		 * Complète le query avec les jointures nécessaires pour obtenir soit les
+		 * DspRev (d'une année donnée), soit les Dsp d'un allocataire.
+		 *
+		 * Utilisées dans les tableaux "1 - Orientation des personnes dans le champ
+		 * des Droits et Devoirs au 31 décembre de l'année, au sens du type de
+		 * parcours" et "4 - Nombre et profil des personnes réorientées au cours
+		 * de l'année, au sens de la loi " de la partie "Questionnaire orientation".
+		 *
+		 * @see Statistiqueministerielle::_getFieldsNivetu()
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _completeQueryDspDspRev( array $query, array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+
+			// On prend la dernière DspRev pour l'année en question ou la dernière Dsp
+			$sq = $Dossier->Foyer->Personne->DspRev->sq(
+				array(
+					'alias' => 'dsps_revs',
+					'fields' => array( 'dsps_revs.id' ),
+					'conditions' => array(
+						'dsps_revs.personne_id = Personne.id',
+						'dsps_revs.modified <=' => "{$annee}-12-31"
+					),
+					'contain' => false,
+					'order' => array( 'dsps_revs.modified DESC' ),
+					'limit' => 1
+				)
+			);
+			$query['joins'][] = $Dossier->Foyer->Personne->join(
+				'DspRev',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						"DspRev.id IN ( {$sq} )"
+					)
+				)
+			);
+
+			$query['joins'][] = $Dossier->Foyer->Personne->join(
+				'Dsp',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'DspRev.id IS NULL',
+						'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
+					)
+				)
+			);
+
+			return $query;
+		}
+
+		/**
+		 * Retourn les conditions permettant de s'assurer qu'un allocataire soit
+		 * dans le champ des droits et devoirs.
+		 *
+		 * @see Statistiqueministerielle.conditions_droits_et_devoirs dans le webrsa.inc
+		 *
+		 * @return array
+		 */
+		protected function _getConditionsDroitsEtDevoirs() {
+			return (array)Configure::read( 'Statistiqueministerielle.conditions_droits_et_devoirs' );
+		}
+
+		/**
+		 * Retourne la requête de base utilisée dans les différents questionnaires.
+		 *
+		 * Les modèles utilisés sont: Dossier, Detaildroitrsa, Foyer, Situationdossierrsa,
+		 * Adressefoyer, Personne, Adresse, Prestation, Calculdroitrsa.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _getBaseQuery( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+
+			$conditions = array(
+				array(
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.rgadr' => '01',
+					)
+				),
+				'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+				'Dossier.dtdemrsa <=' => "{$annee}-12-31",
+			);
+
+			// Seulement les derniers dossiers des allocataires
+			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, array( 'Dossier' => array( 'dernier' => true ) ) );
+
+			// Condition sur le service instructeur
+			$conditions[] = $this->_getConditionsServiceInstructeur( $search );
+
+			// Conditions sur l'adresse de l'allocataire
+			$conditions = $this->conditionsAdresse( $conditions, $search, false, array() );
+
+			$query = array(
+				'joins' => array(
+					$Dossier->join( 'Detaildroitrsa', array( 'type' => 'INNER' ) ),
+					$Dossier->join( 'Foyer', array( 'type' => 'INNER' ) ),
+					$Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
+					$Dossier->Foyer->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
+				),
+				'contain' => false,
+				'conditions' => $conditions,
+			);
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le query de base pour la partie "Questionnaire orientation",
+		 * "1 - Orientation des personnes dans le champ des Droits et Devoirs au
+		 * 31 décembre de l'année, au sens du type de parcours".
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _getBaseQueryIndicateursOrientations( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+
+			$query = $this->_getBaseQuery( $search );
+			$query = $this->_completeQueryDspDspRev( $query, $search );
+
+			// On ne prend en compte que la dernière orientation en cours au 31/12 de cette année-là
+			$sq = $this->_sqDerniereOrientation( $annee );
+			$query['joins'][] = $Dossier->Foyer->Personne->join(
+				'Orientstruct',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						"Orientstruct.id IN ( {$sq} )"
+					)
+				)
+			);
+			$query['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne les résultats d'un groupement particulier pour la partie
+		 * "Questionnaire orientation", "1 - Orientation des personnes dans le
+		 * champ des Droits et Devoirs au 31 décembre de l'année, au sens du
+		 * type de parcours".
 		 *
 		 * @param string $name
 		 * @param array $search
 		 * @param array $fields
 		 * @param string $group
-		 * @param array $joins
+		 * @return array
 		 */
-		protected function _rowIndicateurOrientation( $name, array $search, array $fields, $group, array $joins = array() ) {
+		protected function _getRowIndicateurOrientation( $name, array $search, array $fields, $group ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
 
-			// Allocataires soumis à droits et devoirs
-			$querydata = $this->_qdIndicateursOrientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-			$tmp = $Dossier->find( 'all', $querydata );
+			// 0. Query de base
+			$base = $this->_getBaseQueryIndicateursOrientations( $search );
+			$base['fields'] = $fields;
+			$base['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
+			$base['group'] = $group;
+			$base['order'] = $group;
+
+			// 1. Personnes dans le champ des Droits et Devoirs L262-28
+			$query = $base;
+			$tmp = $Dossier->find( 'all', $query);
 			$results[$name]['sdd'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
 
-			// Orientation à dominante professionnelle
-			$querydata = $this->_qdIndicateursOrientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-
-			// On ne s'occupe que de la dernière orientation ? ?
-			$sq = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				"Orientstruct.id IN ( {$sq} )"
-			);
-			$querydata['conditions'][] = $this->_conditionsTypeorientEmploi();
-
-			$tmp = $Dossier->find( 'all', $querydata );
+			// 2. Dont: Orientation à dominante professionnelle
+			$query = $base;
+			$query['conditions'][] = $this->getConditionsTypeParcours( self::PARCOURS_PROFESSIONNEL );
+			$tmp = $Dossier->find( 'all', $query);
 			$results[$name]['orient_pro'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
 
-			// Orientation à dominante sociale
-			$querydata = $this->_qdIndicateursOrientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
+			// 3. Dont: Orientation à dominante socioprofessionnelle
+			$query = $base;
+			$query['conditions'][] = $this->getConditionsTypeParcours( self::PARCOURS_SOCIOPROFESSIONNEL );
+			$tmp = $Dossier->find( 'all', $query);
+			$results[$name]['orient_sociopro'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
 
-			// FIXME: est-ce logique de ne s'occuper que de la dernière orientation ? ?
-			$sq = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				"Orientstruct.id IN ( {$sq} )"
-			);
-
-			$querydata['conditions'][] = $this->_conditionsTypeorientSocial();
-
-			$tmp = $Dossier->find( 'all', $querydata );
+			// 4. Dont: Orientation à dominante sociale
+			$query = $base;
+			$query['conditions'][] = $this->getConditionsTypeParcours( self::PARCOURS_SOCIAL );
+			$tmp = $Dossier->find( 'all', $query);
 			$results[$name]['orient_sociale'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
 
-			// En attente d'orientation
-			$querydata = $this->_qdIndicateursOrientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-
-			// TODO: utiliser la fonction à mettre dans orientstruct ?
-			$sq = $Dossier->Foyer->Personne->Orientstruct->sq(
-				array(
-					'alias' => 'orientsstructs',
-					'fields' => array( 'orientsstructs.id' ),
-					'contain' => false,
-					'conditions' => array(
-						'Personne.id = orientsstructs.personne_id',
-						'orientsstructs.statut_orient' => 'Orienté',
-						'orientsstructs.date_valid <=' => "{$annee}-12-31", // TODO: between ?
-					),
-				)
-			);
-			$querydata['conditions'][] = "NOT EXISTS ( {$sq} )";
-
-			$tmp = $Dossier->find( 'all', $querydata );
+			// 5. Dont: En attente d'orientation
+			$query = $base;
+			$query['conditions'][] = 'Orientstruct.id IS NULL';
+			$tmp = $Dossier->find( 'all', $query);
 			$results[$name]['attente_orient'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
 
 			return $results;
 		}
 
 		/**
+		 * Retourne les résultats de la partie "Questionnaire orientation", "1 -
+		 * Orientation des personnes dans le champ des Droits et Devoirs au 31
+		 * décembre de l'année, au sens du type de parcours".
 		 *
 		 * @param array $search
 		 * @return array
 		 */
-		public function indicateursOrientations( array $search ) {
+		public function getIndicateursOrientations( array $search ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 
 			return Hash::merge(
-				$this->_rowIndicateurOrientation(
+				$this->_getRowIndicateurOrientation(
 					'Indicateurage',
 					$search,
-					$this->_fieldsTrancheAge( $search ),
+					$this->_getFieldsTrancheAge( $search ),
 					'age_range'
 				),
-				$this->_rowIndicateurOrientation(
+				$this->_getRowIndicateurOrientation(
 					'Indicateursitfam',
 					$search,
-					$this->_fieldsSitfam( $search ),
+					$this->_getFieldsSitfam( $search ),
 					'sitfam_range'
 				),
-				$this->_rowIndicateurOrientation(
+				$this->_getRowIndicateurOrientation(
 					'Indicateurnivetu',
 					$search,
-					$this->_fieldsNivetu( $search ),
-					'nivetu_range',
-					// TODO: function
-					array(
-						$Dossier->Foyer->Personne->join(
-							'Dsp',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
-								)
-							)
-						)
-					)
+					$this->_getFieldsNivetu( $search ),
+					'nivetu_range'
 				),
-				$this->_rowIndicateurOrientation(
+				$this->_getRowIndicateurOrientation(
 					'Indicateuranciennete',
 					$search,
-					$this->_fieldsAnciennete( $search ),
+					$this->_getFieldsAnciennete( $search ),
 					'anciennete_range'
 				)
 			);
 		}
 
 		/**
-		 * TODO: $baseQuerydata
-		 *
-		 * @param string $name
-		 * @param array $search
-		 * @param array $fields
-		 * @param string $group
-		 * @param array $joins
-		 */
-		protected function _rowIndicateurReorientation( $name, array $search, array $fields, $group, array $joins = array() ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$annee = Hash::get( $search, 'Search.annee' );
-			$results = array();
-
-			// Allocataires soumis à droits et devoirs
-			$querydata = $this->_qdIndicateursReorientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-
-			// Qui ont été réorienté(e)s
-			$querydata['conditions'][] = array(
-				'OR' => array(
-					array(
-						$this->_conditionsTypeorientSocial(),
-						array_words_replace(
-							$this->_conditionsTypeorientEmploi(),
-							array( 'Typeorient' => 'Typeorientpcd' )
-						),
-					),
-					array(
-						$this->_conditionsTypeorientEmploi(),
-						array_words_replace(
-							$this->_conditionsTypeorientSocial(),
-							array( 'Typeorient' => 'Typeorientpcd' )
-						),
-					),
-				)
-			);
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-			$tmp = $Dossier->find( 'all', $querydata );
-			$results[$name]['sdd'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
-
-			// Orientation à dominante professionnelle vers orientation à dominante sociale
-			$querydata = $this->_qdIndicateursReorientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-
-			// On ne s'occupe que de la dernière orientation
-			$sq = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				"Orientstruct.id IN ( {$sq} )"
-			);
-			// TODO: factoriser
-			$querydata['conditions'][] = array(
-				array(
-					$this->_conditionsTypeorientSocial(),
-					array_words_replace(
-						$this->_conditionsTypeorientEmploi(),
-						array( 'Typeorient' => 'Typeorientpcd' )
-					),
-				)
-			);
-
-			$tmp = $Dossier->find( 'all', $querydata );
-			$results[$name]['orient_pro'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
-
-			// Orientation à dominante sociale vers orientation à dominante professionnelle
-			$querydata = $this->_qdIndicateursReorientations( $search );
-			$querydata['fields'] = $fields;
-			if( !empty( $joins ) ) {
-				foreach( $joins as $join ) {
-					$querydata['joins'][] = $join;
-				}
-			}
-			$querydata['group'] = $group;
-			$querydata['order'] = $group;
-
-			// On ne s'occupe que de la dernière orientation ? ?
-			$sq = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				"Orientstruct.id IN ( {$sq} )"
-			);
-
-			// TODO: factoriser
-			$querydata['conditions'][] = array(
-				array(
-					$this->_conditionsTypeorientEmploi(),
-					array_words_replace(
-						$this->_conditionsTypeorientSocial(),
-						array( 'Typeorient' => 'Typeorientpcd' )
-					),
-				)
-			);
-
-			$tmp = $Dossier->find( 'all', $querydata );
-			$results[$name]['orient_sociale'] = Hash::combine( $tmp, "{n}.0.{$group}", '{n}.0.count' );
-
-			return $results;
-		}
-
-		/**
-		 * @param array $search
-		 * @return type
-		 */
-		public function indicateursReorientations( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-
-			return Hash::merge(
-				$this->_rowIndicateurReorientation(
-					'Indicateurage',
-					$search,
-					$this->_fieldsTrancheAge( $search ),
-					'age_range'
-				),
-				$this->_rowIndicateurReorientation(
-					'Indicateursitfam',
-					$search,
-					$this->_fieldsSitfam( $search ),
-					'sitfam_range'
-				),
-				$this->_rowIndicateurReorientation(
-					'Indicateurnivetu',
-					$search,
-					$this->_fieldsNivetu( $search ),
-					'nivetu_range',
-					// TODO: function
-					array(
-						$Dossier->Foyer->Personne->join(
-							'Dsp',
-							array(
-								'type' => 'LEFT OUTER',
-								'conditions' => array(
-									'Dsp.id IN ( '.$Dossier->Foyer->Personne->Dsp->sqDerniereDsp().' )'
-								)
-							)
-						)
-					)
-				),
-				$this->_rowIndicateurReorientation(
-					'Indicateuranciennete',
-					$search,
-					$this->_fieldsAnciennete( $search ),
-					'anciennete_range'
-				)
-			);
-		}
-
-		/**
-		 * TODO: dans Dossierep ?
-		 *
-		 *	- au 58: nonorientationsproseps58
-		 *	- FIXME: au 66, on passe par le bilan de parcours (voir cases / radios)
-		 *	- au 93: nonorientationsproseps93
-		 *
-		 * @return string
-		 * @throws InternalErrorException
-		 */
-		protected function _modeleNonOrientationProEp() {
-			$departement = Configure::read( 'Cg.departement' );
-
-			switch( $departement ) {
-				case 58:
-					return 'Nonorientationproep58';
-					break;
-				case 66:
-					return 'Nonorientationproep66';
-					break;
-				case 93:
-					return 'Nonorientationproep93';
-					break;
-				default:
-					throw new InternalErrorException( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc' );
-			}
-		}
-
-		protected function _qdIndicateursMotifsReorientationEp( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$annee = Hash::get( $search, 'Search.annee' );
-			$modeleNonorientationproep = $this->_modeleNonOrientationProEp();
-
-			$querydata = $this->_qdBase( $search );
-
-			$querydata['conditions'] = Hash::merge(
-				$querydata['conditions'],
-				array(
-					'Dossierep.themeep' => Inflector::tableize( $modeleNonorientationproep ),
-					'Passagecommissionep.etatdossierep' => 'traite',
-					'Commissionep.etatcommissionep' => 'traite',
-					"Commissionep.dateseance BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'"
-				)
-			);
-
-			$querydata['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
-
-			$querydata['joins'][] = $Dossier->Foyer->Personne->join( 'Dossierep', array( 'type' => 'INNER' ) );
-			$querydata['joins'][] = $Dossier->Foyer->Personne->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) );
-			$querydata['joins'][] = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) );
-
-			return $querydata;
-		}
-
-		protected function _indicateursMotifsReorientationEp( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$modeleNonorientationproep = $this->_modeleNonOrientationProEp();
-			$results = array();
-
-			// Réorientations en EP
-			$querydataEp = $this->_qdIndicateursMotifsReorientationEp( $search );
-
-			$results['Indicateurep']['total'] = Hash::get( $Dossier->find( 'all', $querydataEp ), '0.0.count' );
-
-			// Passage en EP
-			$querydataPassage = $querydataEp;
-
-			$modeleDecision = Inflector::camelize( 'decision'.Inflector::underscore( $modeleNonorientationproep ) );
-			$querydataPassage['joins'][] = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( $modeleDecision, array( 'type' => 'INNER' ) );
-			$querydataPassage['joins'][] = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->join( 'Typeorient', array( 'type' => 'INNER' ) );
-
-			// Seulement la dernière décision (ep/cg)
-			$sq = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->sq(
-				array(
-					'alias' => 'decisions',
-					'fields' => array( 'decisions.id' ),
-					'contain' => false,
-					'conditions' => array(
-						'decisions.passagecommissionep_id = Passagecommissionep.id'
-					),
-					'order' => array( "{$modeleDecision}.etape ASC" ),
-					'limit' => 1
-				)
-			);
-			$querydataPassage['conditions'][] = "{$modeleDecision}.id IN ( {$sq} )";
-
-			// Passage en EP, maintien en orientation à dominante sociale
-			$querydataMaintien = $querydataPassage;
-			$querydataMaintien['conditions'][] = $this->_conditionsTypeorientSocial();
-
-			$results['Indicateurep']['maintien'] = Hash::get( $Dossier->find( 'all', $querydataMaintien ), '0.0.count' );
-
-			// Passage en EP, réorientation vers une dominante professionnelle
-			$querydataReorientation = $querydataPassage;
-			$querydataReorientation['conditions'][] = $this->_conditionsTypeorientEmploi();
-
-			$results['Indicateurep']['reorientation'] = Hash::get( $Dossier->find( 'all', $querydataReorientation ), '0.0.count' );
-
-			return $results;
-		}
-
-		public function indicateursMotifsReorientation( array $search ) {
-			$Dossier = ClassRegistry::init( 'Dossier' );
-			$annee = Hash::get( $search, 'Search.annee' );
-			$results = array();
-
-			$querydata = $this->_qdIndicateursReorientations( $search );
-			$querydata['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
-
-			// On ne s'occupe que de la dernière orientation
-			$sq = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				"Orientstruct.id IN ( {$sq} )"
-			);
-			// TODO: factoriser
-			$querydata['conditions'][] = array(
-				array(
-					$this->_conditionsTypeorientSocial(),
-					array_words_replace(
-						$this->_conditionsTypeorientEmploi(),
-						array( 'Typeorient' => 'Typeorientpcd' )
-					),
-				)
-			);
-
-			$results['Indicateursocial']['total'] = Hash::get( $Dossier->find( 'all', $querydata ), '0.0.count' );
-
-			// Total par catégorie de motifs
-			$conditionsAutre = array( 'NOT' => array() );
-			$motifs = array( 'orientation_initiale_inadaptee', 'changement_situation_allocataire' );
-			foreach( $motifs as $motif ) {
-				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_indicateurs_motifs_reorientation.{$motif}" );
-				if( !empty( $conditions ) ) {
-					$conditionsAutre['NOT'][] = $conditions;
-					$querydataMotif = $querydata;
-					$querydataMotif['conditions'][] = $conditions;
-					$results['Indicateursocial'][$motif] = Hash::get( $Dossier->find( 'all', $querydataMotif ), '0.0.count' );
-				}
-				else {
-					$results['Indicateursocial'][$motif] = null;
-				}
-			}
-
-			$querydataAutre = $querydata;
-			$querydataAutre['conditions'][] = $conditions;
-			$results['Indicateursocial']['autre'] = Hash::get( $Dossier->find( 'all', $querydataAutre ), '0.0.count' );
-
-			return Hash::merge(
-				$results,
-				$this->_indicateursMotifsReorientationEp( $search )
-			);
-		}
-
-		/**
-		 * Retourne les indicateurs d'organismes suivant les critères envoyés en
-		 * paramètre.
+		 * Retourne les résultats de la partie "Questionnaire orientation", "2 -
+		 * Organismes de prise en charge des personnes dans le champ des Droits
+		 * et Devoirs au 31 décembre de l'année, dont le référent unique a été
+		 * désigné.".
 		 *
 		 * @param array $search
 		 * @return array
 		 */
-		public function indicateursOrganismes( array $search ) {
+		public function getIndicateursOrganismes( array $search ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
 
-			$querydata = $this->_qdIndicateursOrientations( $search );
-			$querydata['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
+			// 0. Query de base
+			$base = $this->_getBaseQueryIndicateursOrientations( $search );
+			$base['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
+			$base['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
 
-			// Dont l'orientation est la dernière ou n'existe pas
-			$sqDerniereOrientation = $this->_sqDerniereOrientation( $annee );
-			$querydata['conditions'][] = array(
-				'OR' => array(
-					'Orientstruct.id IS NULL',
-					"Orientstruct.id IN ( {$sqDerniereOrientation} )"
-				)
-			);
+			// 0. Dont le référent unique a été désigné
+			$base['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
 
-			$results['Indicateurorganisme']['total'] = Hash::get( $Dossier->find( 'all', $querydata ), '0.0.count' );
+			// 1. Nombre de personnes dans le champ des Droits et Devoirs (L262-28) au 31 décembre de l'année
+			$query = $base;
+			$results['Indicateurorganisme']['total'] = Hash::get( $Dossier->find( 'all', $query ), '0.0.count' );
 
-			$querydataAttente = $querydata;
-			// TODO: utiliser la fonction à mettre dans orientstruct ?
-			$sq = $Dossier->Foyer->Personne->Orientstruct->sq(
-				array(
-					'alias' => 'orientsstructs',
-					'fields' => array( 'orientsstructs.id' ),
-					'contain' => false,
-					'conditions' => array(
-						'Personne.id = orientsstructs.personne_id',
-						'orientsstructs.statut_orient' => 'Orienté',
-						'orientsstructs.date_valid <=' => "{$annee}-12-31", // TODO: between ?
-					),
-				)
-			);
-			$querydataAttente['conditions'][] = "NOT EXISTS ( {$sq} )";
-			$results['Indicateurorganisme']['attente_orient'] = Hash::get( $Dossier->find( 'all', $querydataAttente ), '0.0.count' );
+			// 2. Nombre de personnes en attente d'orientation
+			$query = $base;
+			$query['conditions'][] = 'Orientstruct.id IS NULL';
+			$results['Indicateurorganisme']['attente_orient'] = Hash::get( $Dossier->find( 'all', $query ), '0.0.count' );
 
-			// On ne s'occupe que du dernier référent de parcours
-			$querydata['joins'][] = $Dossier->Foyer->Personne->join( 'PersonneReferent', array( 'type' => 'INNER' ) );
-			$querydata['conditions'][] = array(
-				'PersonneReferent.dddesignation <=' => "{$annee}-12-31",
-				'OR' => array(
-					'PersonneReferent.dfdesignation IS NULL',
-					'PersonneReferent.dfdesignation >=' => "{$annee}-12-31",
-				)
-			);
-			$querydata['joins'][] = $Dossier->Foyer->Personne->PersonneReferent->join( 'Referent', array( 'type' => 'INNER' ) );
-
-			$querydata['joins'][] = array_words_replace(
-					$Dossier->Foyer->Personne->PersonneReferent->Referent->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					array( 'Structurereferente' => 'Structurereferentereferent' )
-			);
-
-			$querydata['joins'][] = array_words_replace(
-					$Dossier->Foyer->Personne->PersonneReferent->Referent->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-					array( 'Structurereferente' => 'Structurereferentereferent', 'Typeorient' => 'Typeorientreferent' )
-			);
-
-			$organismes = array(
-				'pole_emploi',
-				'oppp_autre_pole_emploi',
-				'entreprise_travail_temporaire',
-				'organisme_creation_developpement_entreprise',
-				'iae',
-				'autre_professionnel',
-				'service_departement',
-				'service_departement_professionnel',
-				'service_departement_social',
-				'caf_msa',
-				'ccas_cias',
-				'autres',
-			);
-			foreach( $organismes as $organisme ) {
-				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_indicateurs_organismes.{$organisme}" );
+			// 3. Dont le référent appartient à...
+			$organismes = (array)Configure::read( 'Statistiqueministerielle.conditions_indicateurs_organismes' );
+			foreach( $organismes as $organisme => $conditions ) {
 				if( !empty( $conditions ) ) {
-					$querydataOrganisme = $querydata;
-					$querydataOrganisme['conditions'][] = $conditions;
-					$results['Indicateurorganisme'][$organisme] = Hash::get( $Dossier->find( 'all', $querydataOrganisme ), '0.0.count' );
+					$query = $base;
+					$query['conditions'][] = 'Orientstruct.id IS NOT NULL';
+					$query['conditions'][] = $conditions;
+					$results['Indicateurorganisme'][$organisme] = Hash::get( $Dossier->find( 'all', $query ), '0.0.count' );
 				}
 				else {
 					$results['Indicateurorganisme'][$organisme] = null;
@@ -1175,6 +746,9 @@
 		}
 
 		/**
+		 * Retourne les résultats concernant un type de CER particulier pour la
+		 * partie "Questionnaire orientation", "3 - Délais entre les différentes
+		 * étapes de l'orientation au cours de l'année".
 		 *
 		 * @param array $search
 		 * @param string $type_cer
@@ -1183,7 +757,7 @@
 		 * @param integer $nbMoisTranche2
 		 * @return array
 		 */
-		protected function _indicateursDelaisParTypeCer( $search, $type_cer, $querydataTypecerOriginal, $nbMoisTranche1, $nbMoisTranche2 ) {
+		protected function _getIndicateursDelaisParTypeCer( $search, $type_cer, $querydataTypecerOriginal, $nbMoisTranche1, $nbMoisTranche2 ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
@@ -1191,13 +765,18 @@
 			$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_types_cers.{$type_cer}" );
 
 			if( $type_cer == 'cer_pro_social' ) {
-				$conditions[] = $this->_conditionsTypeorientSocial( 'Typeorientcer' );
+				$conditions[] = array(
+					'OR' => array(
+						$this->getConditionsTypeParcours( self::PARCOURS_SOCIAL, 'Typeorientcer' ),
+						$this->getConditionsTypeParcours( self::PARCOURS_SOCIOPROFESSIONNEL, 'Typeorientcer' )
+					)
+				);
 			}
 			else if( $type_cer == 'cer_pro' ) {
-				$conditions = $this->_conditionsTypeorientEmploi( 'Typeorientcer' );
+				$conditions = $this->getConditionsTypeParcours( self::PARCOURS_PROFESSIONNEL, 'Typeorientcer' );
 				$conditionsPpae = (array)Configure::read( "Statistiqueministerielle.conditions_types_cers.ppae" );
 				if( !empty( $conditionsPpae ) ) {
-					$conditions[] = $conditionsPpae;
+					$conditions[] = array( 'NOT' => $conditionsPpae );
 				}
 			}
 
@@ -1208,7 +787,7 @@
 
 				// Délai moyen
 				$querydataDelaimoyen = $querydataTypecer;
-				$querydataDelaimoyen['fields'] = array( 'AVG( "Contratinsertion"."date_saisi_ci" - "Orientstruct"."date_valid" ) AS "count"' );
+				$querydataDelaimoyen['fields'] = array( 'COALESCE( AVG( "Contratinsertion"."date_saisi_ci" - "Orientstruct"."date_valid" ), 0 ) AS "count"' );
 				$results['Indicateurdelai']["{$type_cer}_delai_moyen"] = Hash::get( $Dossier->find( 'all', $querydataDelaimoyen ), '0.0.count' );
 
 				// Nombre moyen au cours de l'année
@@ -1249,68 +828,82 @@
 		}
 
 		/**
+		 * Retourne les résultats de la partie "Questionnaire orientation", "3 -
+		 * Délais entre les différentes étapes de l'orientation au cours de
+		 * l'année".
 		 *
 		 * @param array $search
 		 * @return array
 		 */
-		public function indicateursDelais( array $search ) {
+		public function getIndicateursDelais( array $search ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
 
-			$querydata = $this->_qdIndicateursOrientations( $search );
+			// 0. On est dans le champ des bénéficiaires soumis à droits et devoirs.
+			$query = $this->_getBaseQuery( $search );
+			$query['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
+
+			// 0. On ne prend en compte que la toute première orientation, si elle a lieu cette année-là
+			$sq = $this->_sqPremiereOrientation();
+			$query['joins'][] = $Dossier->Foyer->Personne->join(
+				'Orientstruct',
+				array(
+					'type' => 'INNER',
+					'conditions' => array(
+						"Orientstruct.id IN ( {$sq} )",
+						// Validation de l'orientation dans l'année
+						'Orientstruct.date_valid >=' => "{$annee}-01-01",
+						'Orientstruct.date_valid <=' => "{$annee}-12-31"
+					)
+				)
+			);
+			$query['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) );
 
 			// Délai moyen pour la première orientation
-			$querydataOrientation = $querydata;
-			$querydataOrientation['fields'] = array( 'AVG( DATE_PART( \'DAYS\', "Orientstruct"."date_valid" - DATE_TRUNC( \'MONTH\', "Dossier"."dtdemrsa" ) ) ) AS "count"' );
-
-			$sqDerniereOrientation = $this->_sqPremiereOrientation( $annee );
-			$querydataOrientation['conditions'][] = array(
-				// Dont l'orientation est la première
-				"Orientstruct.id IN ( {$sqDerniereOrientation} )",
-				// Validation de l'orientation dans l'année
-				'Orientstruct.date_valid >=' => date( "{$annee}-01-01" ),
-				'Orientstruct.date_valid <=' => date( "{$annee}-12-31" ),
-			);
-
-			$results['Indicateurdelai']['delai_moyen_orientation'] = Hash::get( $Dossier->find( 'all', $querydataOrientation ), '0.0.count' );
+			$queryOrientation = $query;
+			$queryOrientation['fields'] = array( 'AVG( DATE_PART( \'DAYS\', "Orientstruct"."date_valid" - DATE_TRUNC( \'MONTH\', "Dossier"."dtdemrsa" ) ) ) AS "count"' );
+			$results['Indicateurdelai']['delai_moyen_orientation'] = Hash::get( $Dossier->find( 'all', $queryOrientation ), '0.0.count' );
 
 			// Délai moyen pour la signature du premier CER
-			$querydataSignature = $querydata;
+			$querySignature = $query;
+			$querySignature['fields'] = array( 'AVG("Contratinsertion"."datevalidation_ci" - "Orientstruct"."date_valid") AS "count"' );
+			$sq = $this->_sqPremierContratinsertion();
+			$querySignature['joins'][] = $Dossier->Foyer->Personne->join(
+				'Contratinsertion',
+				array(
+					'type' => 'INNER',
+					'conditions' => array(
+						// Dont le CER est le premier
+						"Contratinsertion.id IN ( {$sq} )",
+						// Signature du CER dans l'année
+						'Contratinsertion.datevalidation_ci >=' => "{$annee}-01-01",
+						'Contratinsertion.datevalidation_ci <=' => "{$annee}-12-31"
+					)
+				)
+			);
+			$results['Indicateurdelai']['delai_moyen_signature'] = Hash::get( $Dossier->find( 'all', $querySignature ), '0.0.count' );
 
-			$querydataSignature['joins'][] = $Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'INNER' ) );
-
-			$sqPremierContratinsertion = $this->_sqPremierContratinsertion();
-			$querydataSignature['conditions'][] = array(
-				// Dont le CER est le premier
-				"Contratinsertion.id IN ( {$sqPremierContratinsertion} )",
-				// Signature du CER dans l'année
-				'Contratinsertion.date_saisi_ci >=' => date( "{$annee}-01-01" ),
-				'Contratinsertion.date_saisi_ci <=' => date( "{$annee}-12-31" ),
+			// Préparation du query par type de CER
+			$replacements = array( 'Structurereferente' => 'Structurereferentecer', 'Typeorient' => 'Typeorientcer' );
+			$queryTypecerOriginal = $querySignature;
+			$queryTypecerOriginal['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+				$replacements
 			);
 
-			$querydataSignature['fields'] = array( 'AVG("Contratinsertion"."datevalidation_ci" - "Orientstruct"."date_valid") AS "count"' );
-			$results['Indicateurdelai']['delai_moyen_signature'] = Hash::get( $Dossier->find( 'all', $querydataSignature ), '0.0.count' );
-
-			// Préparation du querydata par type de CER
-			$querydataTypecerOriginal = $querydataSignature;
-			$querydataTypecerOriginal['joins'][] = array_words_replace(
-					$Dossier->Foyer->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
-					array( 'Structurereferente' => 'Structurereferentecer' )
-			);
-
-			$querydataTypecerOriginal['joins'][] = array_words_replace(
-					$Dossier->Foyer->Personne->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
-					array( 'Structurereferente' => 'Structurereferentecer', 'Typeorient' => 'Typeorientcer' )
+			$queryTypecerOriginal['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+				$replacements
 			);
 
 			foreach( array_keys( $this->types_cers ) as $type_cer ) {
 				$results = Hash::merge(
 					$results,
-					$this->_indicateursDelaisParTypeCer(
+					$this->_getIndicateursDelaisParTypeCer(
 						$search,
 						$type_cer,
-						$querydataTypecerOriginal,
+						$queryTypecerOriginal,
 						$this->types_cers[$type_cer]['nbMoisTranche1'],
 						$this->types_cers[$type_cer]['nbMoisTranche2']
 					)
@@ -1321,78 +914,574 @@
 		}
 
 		/**
+		 * Retourne les conditions concernant un type d'orientation, suivant le
+		 * CG connecté. Le seul modèle utilisable est Typeorient ou un de ses alias.
+		 *
+		 * Les valeurs lues dans la configuration (webrsa.inc) sont:
+		 *	- Cg.departement: le numéro de département
+		 *	- clés primaires de la table typesorients:
+		 *		* CG 58: Typeorient.emploi_id
+		 *		* CG 66: Orientstruct.typeorientprincipale.Emploi et Orientstruct.typeorientprincipale.SOCIAL
+		 *		* CG 93: Orientstruct.typeorientprincipale.Emploi, Orientstruct.typeorientprincipale.Social et Orientstruct.typeorientprincipale.Socioprofessionnelle
+		 *
+		 * @param string $type Une des constantes PARCOURS_PROFESSIONNEL, PARCOURS_SOCIOPROFESSIONNEL ou PARCOURS_SOCIAL
+		 * @param string $alias L'alias pour le modèle Typeorient
+		 * @return array
+		 * @throws RuntimeException
+		 */
+		public function getConditionsTypeParcours( $type, $alias = 'Typeorient' ) {
+			$departement = Configure::read( 'Cg.departement' );
+
+			// Vérification du département
+			if( !in_array( $departement, array( 58, 66, 93 ) ) ) {
+				$msgstr = sprintf( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc: %s', $departement );
+				throw new RuntimeException( $msgstr );
+			}
+
+			// Choix du champ
+			if( Configure::read( 'with_parentid' ) ) {
+				$field = 'parentid';
+			}
+			else {
+				$field = 'id';
+			}
+
+			$conditions = array();
+
+			if( $type === self::PARCOURS_PROFESSIONNEL ) {
+				$configureKey = 'Statistiqueministerielle.conditions_types_parcours.professionnel';
+			}
+			else if( $type === self::PARCOURS_SOCIOPROFESSIONNEL ) {
+				$configureKey = 'Statistiqueministerielle.conditions_types_parcours.socioprofessionnel';
+			}
+			else if( $type === self::PARCOURS_SOCIAL ) {
+				$configureKey = 'Statistiqueministerielle.conditions_types_parcours.social';
+			}
+			else {
+				$msgstr = sprintf( 'Le type de parcours suivant n\'est pas défini: %s', $type );
+				throw new RuntimeException( $msgstr );
+			}
+
+			$conditions = (array)Configure::read( $configureKey );
+			$conditions = array(
+				"{$alias}.{$field} IS NOT NULL",
+				$conditions
+			);
+			// FIXME: le champ ne fonctionne pas dans les remplacements
+			// -> il faut spécifier Typeorient.parentid... dans le webrsa.inc
+			// -> On peut supprimer le choix du champ ci-dessus, il ne sert à rien
+			$replacements = array( 'Typeorient' => $alias, 'id' => $field );
+			$conditions = array_words_replace( $conditions, $replacements );
+
+			return $conditions;
+		}
+
+		/**
+		 * Retourne les conditions ...
+		 * Les modèles utilisables sont Typeorient, Structurereferente ou un de
+		 * leurs alias.
+		 *
+		 * @param string $type Une des constantes ORGANISME_SPE, ORGANISME_SPE_POLE_EMPLOI ou ORGANISME_HORS_SPE
+		 * @param string $alias L'alias pour les modèles Typeorient et Structurereferente
+		 * @return array
+		 * @throws RuntimeException
+		 */
+		public function getConditionsTypeOrganisme( $type, array $aliases = array() ) {
+			if( $type === self::ORGANISME_SPE ) {
+				$configureKey = 'Statistiqueministerielle.conditions_organismes.SPE';
+			}
+			else if( $type === self::ORGANISME_SPE_POLE_EMPLOI ) {
+				$configureKey = 'Statistiqueministerielle.conditions_organismes.SPE_PoleEmploi';
+			}
+			else if( $type === self::ORGANISME_HORS_SPE ) {
+				$configureKey = 'Statistiqueministerielle.conditions_organismes.HorsSPE';
+			}
+			else {
+				$msgstr = sprintf( 'Le type d\'organisme suivant n\'est pas défini: %s', $type );
+				throw new RuntimeException( $msgstr );
+			}
+
+			$conditions = array_words_replace(
+				(array)Configure::read( $configureKey ),
+				$aliases
+			);
+
+			return $conditions;
+		}
+
+		/**
+		 *
+		 * @param array $query
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _completeQueryReorientationsSpeHorsSpe( array $query, array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+
+			$query['joins'][] = $Dossier->Foyer->Personne->join(
+				'Orientstruct',
+				array(
+					'type' => 'INNER',
+					'conditions' => array(
+						'Orientstruct.statut_orient' => 'Orienté',
+						'Orientstruct.date_valid IS NOT NULL',
+						"Orientstruct.date_valid BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'"
+					)
+				)
+			);
+			$query['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) );
+
+			// Orientation précédente
+			$replacements = array( 'Orientstruct' => 'Orientstructpcd', 'Typeorient' => 'Typeorientpcd', 'Structurereferente' => 'Structurereferentepcd' );
+			$query['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
+				$replacements
+			);
+			$query['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+				$replacements
+			);
+			$query['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+				$replacements
+			);
+			$sq = $Dossier->Foyer->Personne->Orientstruct->sq(
+				array(
+					'alias' => 'orientsstructspcds',
+					'fields' => array( 'orientsstructspcds.id' ),
+					'contain' => false,
+					'conditions' => array(
+						'orientsstructspcds.personne_id = Personne.id',
+						'orientsstructspcds.statut_orient' => 'Orienté',
+						'orientsstructspcds.date_valid IS NOT NULL',
+						'orientsstructspcds.date_valid < Orientstruct.date_valid',
+					),
+					'order' => array(
+						'orientsstructspcds.date_valid DESC'
+					),
+					'limit' => 1
+				)
+			);
+			$query['conditions'][] = "Orientstructpcd.id IN ( {$sq} )";
+
+			// Qui ont été réorienté(e)s
+			$query['conditions'][] = array(
+				'OR' => array(
+					array(
+						$this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE ),
+						$this->getConditionsTypeOrganisme( self::ORGANISME_SPE, $replacements )
+					),
+					array(
+						$this->getConditionsTypeOrganisme( self::ORGANISME_SPE ),
+						$this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE, $replacements )
+					)
+				)
+			);
+
+			// On s'assure que ce soit la dernière réorientation de l'année
+			$replacements = array( 'Typeorient' => 'changementstypesorients', 'Structurereferente' => 'changementsstructuresreferentes' );
+			$sq = $Dossier->Foyer->Personne->Orientstruct->sq(
+				array(
+					'alias' => 'changementsorientations',
+					'fields' => array( 'changementsorientations.id' ),
+					'contain' => false,
+					'joins' => array(
+						array_words_replace(
+							$Dossier->Foyer->Personne->Orientstruct->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+							array( 'Orientstruct' => 'changementsorientations' ) + $replacements
+						),
+						array_words_replace(
+							$Dossier->Foyer->Personne->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+							array( 'Orientstruct' => 'changementsorientations' ) + $replacements
+						)
+					),
+					'conditions' => array(
+						'changementsorientations.personne_id = Personne.id',
+						'changementsorientations.statut_orient' => 'Orienté',
+						'changementsorientations.date_valid IS NOT NULL',
+						'changementsorientations.date_valid > Orientstruct.date_valid',
+						"changementsorientations.date_valid BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'",
+						'OR' => array(
+							array(
+								$this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE ),
+								$this->getConditionsTypeOrganisme( self::ORGANISME_SPE, $replacements )
+							),
+							array(
+								$this->getConditionsTypeOrganisme( self::ORGANISME_SPE ),
+								$this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE, $replacements )
+							)
+						)
+					)
+				)
+			);
+			$query['conditions'][] = "NOT EXISTS( {$sq} )";
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le query de base pour la partie "Questionnaire orientation",
+		 * "4 - Nombre et profil des personnes réorientées au cours de l'année,
+		 * au sens de la loi".
+		 *
+		 * FIXME: docs...
 		 *
 		 * @param array $search
 		 * @return array
 		 */
-		public function indicateursCaracteristiquesContrats( array $search ) {
+		protected function _getBaseQueryIndicateursReorientationsSpeHorsSpe( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+
+			$query = $this->_getBaseQuery( $search );
+			$query = $this->_completeQueryDspDspRev( $query, $search );
+			$query = $this->_completeQueryReorientationsSpeHorsSpe( $query, $search );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne les résultats d'un groupement particulier pour la partie
+		 * "Questionnaire orientation", "4 - Nombre et profil des personnes
+		 * réorientées au cours de l'année, au sens de la loi".
+		 *
+		 * @param string $name
+		 * @param array $search
+		 * @param array $fields
+		 * @param string $group
+		 * @return array
+		 */
+		protected function _getRowIndicateurReorientation( $name, array $search, array $fields, $group ) {
 			$Dossier = ClassRegistry::init( 'Dossier' );
 			$annee = Hash::get( $search, 'Search.annee' );
 			$results = array();
 
-			$querydata = $this->_qdBase( $search );
+			// 0. Personnes réorientées au cours de l'année
+ 			$base = $this->_getBaseQueryIndicateursReorientationsSpeHorsSpe( $search );
+			$query = $base;
 
-			// Partie nombres
+			$query['fields'] = $fields;
+			$query['group'] = $group;
+			$query['order'] = $group;
+			$results[$name]['reorientes'] = Hash::combine( $Dossier->find( 'all', $query ), "{n}.0.{$group}", '{n}.0.count' );
+
+			// 1. Organismes appartenant ou participant au SPE vers organismes hors SPE
+			$query = $base;
+			$query['fields'] = $fields;
+			$query['group'] = $group;
+			$query['order'] = $group;
+			$query['conditions'][] = $this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE );
+			$results[$name]['organismes_hors_spe'] = Hash::combine( $Dossier->find( 'all', $query ), "{n}.0.{$group}", '{n}.0.count' );
+
+			// 2. Organismes hors SPE vers organismes appartenant ou participant au SPE
+			$query = $base;
+			$query['fields'] = $fields;
+			$query['group'] = $group;
+			$query['order'] = $group;
+			$query['conditions'][] = $this->getConditionsTypeOrganisme( self::ORGANISME_SPE );
+			$results[$name]['organismes_spe'] = Hash::combine( $Dossier->find( 'all', $query ), "{n}.0.{$group}", '{n}.0.count' );
+
+			return $results;
+		}
+
+		/**
+		 * Retourne les résultats de la partie "Questionnaire orientation", "4 -
+		 * Nombre et profil des personnes réorientées au cours de l'année, au
+		 * sens de la loi".
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function getIndicateursReorientations( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+
+			return Hash::merge(
+				$this->_getRowIndicateurReorientation(
+					'Indicateurage',
+					$search,
+					$this->_getFieldsTrancheAge( $search ),
+					'age_range'
+				),
+				$this->_getRowIndicateurReorientation(
+					'Indicateursitfam',
+					$search,
+					$this->_getFieldsSitfam( $search ),
+					'sitfam_range'
+				),
+				$this->_getRowIndicateurReorientation(
+					'Indicateurnivetu',
+					$search,
+					$this->_getFieldsNivetu( $search ),
+					'nivetu_range'
+				),
+				$this->_getRowIndicateurReorientation(
+					'Indicateuranciennete',
+					$search,
+					$this->_getFieldsAnciennete( $search ),
+					'anciennete_range'
+				)
+			);
+		}
+
+		/**
+		 *
+		 * @return string
+		 * @throws InternalErrorException
+		 */
+		protected function _getModeleNonOrientationProEp() {
+			$departement = Configure::read( 'Cg.departement' );
+
+			switch( $departement ) {
+				case 58:
+					return 'Nonorientationproep58';
+					break;
+				case 66:
+					return 'Nonorientationproep66';
+					break;
+				case 93:
+					return 'Nonorientationproep93';
+					break;
+				default:
+					throw new InternalErrorException( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc' );
+			}
+		}
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _getQueryPassageNonOrientationProEp( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+			$modeleNonorientationproep = $this->_getModeleNonOrientationProEp();
+
+			// FIXME
+			//$query = $this->_getBaseQueryIndicateursReorientationsSpeHorsSpe( $search );
+			$query = $this->_getBaseQuery( $search );
+			$query = $this->_completeQueryDspDspRev( $query, $search );
+
+			$query['conditions'] = Hash::merge(
+				$query['conditions'],
+				array(
+					'Dossierep.themeep' => Inflector::tableize( $modeleNonorientationproep ),
+					'Passagecommissionep.etatdossierep' => array( 'traite', 'annule' ),
+					'Commissionep.etatcommissionep' => 'traite',
+					"Commissionep.dateseance BETWEEN '{$annee}-01-01' AND '{$annee}-12-31'"
+				)
+			);
+
+			$query['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
+
+			$query['joins'][] = $Dossier->Foyer->Personne->join( 'Dossierep', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Dossier->Foyer->Personne->Dossierep->join( 'Passagecommissionep', array( 'type' => 'INNER' ) );
+			$query['joins'][] = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) );
+
+			// La décision du niveau le plus important
+			$modeleDecision = Inflector::camelize( 'decision'.Inflector::underscore( $modeleNonorientationproep ) );
+			$table = Inflector::tableize( $modeleDecision );
+			$sq = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->sq(
+				array(
+					'alias' => $table,
+					'fields' => array( "{$table}.id" ),
+					'conditions' => array(
+						"{$table}.passagecommissionep_id = {$modeleDecision}.passagecommissionep_id"
+					),
+					'order' => array(
+						"( CASE WHEN {$table}.etape = 'cg' THEN 2 ELSE 1 END ) DESC"
+					),
+					'limit' => 1
+				)
+			);
+			$query['joins'][] = $Dossier->Foyer->Personne->Dossierep->Passagecommissionep->join(
+				$modeleDecision,
+				array(
+					'type' => 'INNER',
+					'conditions' => array(
+						"{$modeleDecision}.id IN ( {$sq} )"
+					)
+				)
+			);
+
+			return $query;
+		}
+
+		/**
+		 *
+		 * @url http://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006074069&idArticle=LEGIARTI000019868953&dateTexte=20140725
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _getIndicateursMotifsReorientationEp( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$modeleNonorientationproep = $this->_getModeleNonOrientationProEp();
+			$modeleDecision = Inflector::camelize( 'decision'.Inflector::underscore( $modeleNonorientationproep ) );
+			$results = array();
+
+			// 1. Passages en EP
+			$queryPassage = $this->_getQueryPassageNonOrientationProEp( $search );
+			$results['Indicateurep']['total'] = Hash::get( $Dossier->find( 'all', $queryPassage ), '0.0.count' );
+
+			// 2. Maintiens de l'orientation (SPE)
+			$queryMaintien = $this->_getQueryPassageNonOrientationProEp( $search );
+			// FIXME (?) au CG 58, c'est maintienref / reorientation, et les autres ?
+			$queryMaintien['conditions'][] = array( "{$modeleDecision}.decision" => array( 'maintienref', 'annule' ) );
+			$results['Indicateurep']['maintien'] = Hash::get( $Dossier->find( 'all', $queryMaintien ), '0.0.count' );
+
+			// 3. Réorientation vers un organisme SPE
+			$queryReorientation = $this->_getQueryPassageNonOrientationProEp( $search );
+
+			$replacements = array( 'Structurereferente' => 'Structurereferentedecision', 'Typeorient' => 'Typeorientdecision' );
+			$queryReorientation['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
+				$replacements
+			);
+			$queryReorientation['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Dossierep->Passagecommissionep->{$modeleDecision}->join( 'Typeorient', array( 'type' => 'INNER' ) ),
+				$replacements
+			);
+			$queryReorientation = $this->_completeQueryReorientationsSpeHorsSpe( $queryReorientation, $search );
+			$queryReorientation['joins'][] = $Dossier->Foyer->Personne->Dossierep->join( $modeleNonorientationproep, array( 'type' => 'INNER' ) );
+			$queryReorientation['conditions'][] = array( "{$modeleDecision}.decision" => 'reorientation' );
+			// FIXME: vérifier si on a les mêmes chiffres qu'avant au CG 58
+			//$queryReorientation['conditions'][] = "{$modeleNonorientationproep}.nvorientstruct_id = Orientstruct.id";
+			$queryReorientation['conditions'][] = "{$modeleNonorientationproep}.orientstruct_id = Orientstructpcd.id";
+			$queryReorientation['conditions'][] = $this->getConditionsTypeOrganisme( self::ORGANISME_SPE );
+
+			$results['Indicateurep']['reorientation'] = Hash::get( $Dossier->find( 'all', $queryReorientation ), '0.0.count' );
+
+			return $results;
+		}
+
+		/**
+		 * Retourne les résultats de la partie "Questionnaire orientation", "4a
+		 * - Motifs des réorientations d'un organisme appartenant ou participant
+		 * au SPE vers un organisme hors SPE au cours de l'année" et "4b - Recours
+		 * à l'article L262-31 au cours de l'année".
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function getIndicateursMotifsReorientation( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+			$results = array();
+
+			// 1. Nombre de personnes réorientées d'un organisme appartenant ou participant au SPE vers un organisme hors SPE au cours de l'année (1) :
+			$query = $this->_getBaseQueryIndicateursReorientationsSpeHorsSpe( $search );
+			$query['fields'] = array( 'COUNT(DISTINCT(Personne.id)) AS "count"' );
+			$query['conditions'][] = $this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE );
+			$results['Indicateursocial']['total'] = Hash::get( $Dossier->find( 'all', $query ), '0.0.count' );
+
+			// Total par catégorie de motifs
+			$conditionsAutre = array( 'NOT' => array() );
+			$motifs = array( 'orientation_initiale_inadaptee', 'changement_situation_allocataire' );
+			foreach( $motifs as $motif ) {
+				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_indicateurs_motifs_reorientation.{$motif}" );
+				if( !empty( $conditions ) ) {
+					$conditionsAutre['NOT'][] = $conditions;
+					$queryMotif = $query;
+					$queryMotif['conditions'][] = $conditions;
+					$results['Indicateursocial'][$motif] = Hash::get( $Dossier->find( 'all', $queryMotif ), '0.0.count' );
+				}
+				else {
+					$results['Indicateursocial'][$motif] = null;
+				}
+			}
+
+			$queryAutre = $query;
+			$queryAutre['conditions'][] = $conditions;
+			$results['Indicateursocial']['autre'] = Hash::get( $Dossier->find( 'all', $queryAutre ), '0.0.count' );
+
+			return Hash::merge(
+				$results,
+				$this->_getIndicateursMotifsReorientationEp( $search )
+			);
+		}
+
+		// ---------------------------------------------------------------------
+
+		/**
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function getIndicateursCaracteristiquesContrats( array $search ) {
+			$Dossier = ClassRegistry::init( 'Dossier' );
+			$annee = Hash::get( $search, 'Search.annee' );
+			$results = array();
+
+			$query = $this->_getBaseQuery( $search );
 
 			// En cours de validité au 31 décembre
-			$querydata['conditions']['Contratinsertion.decision_ci'] = 'V';
-			$querydata['conditions'][] = array(
+			$query['conditions']['Contratinsertion.decision_ci'] = 'V';
+			$query['conditions'][] = array(
 				'Contratinsertion.dd_ci <=' => "{$annee}-12-31",
 				'Contratinsertion.df_ci >=' => "{$annee}-12-31",
 			);
 
-			$querydata['fields'] = array( 'COUNT( "Contratinsertion"."id" ) AS "Contratinsertion__count"' );
+			$query['fields'] = array( 'COUNT( DISTINCT "Contratinsertion"."id" ) AS "Contratinsertion__count"' );
 
-			$querydata['joins'][] = $Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) );
-			$querydata['joins'][] = $Dossier->Foyer->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
-			$querydata['joins'][] = $Dossier->Foyer->Personne->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
+			$replacements = array( 'Structurereferente' => 'Structurereferentecer', 'Typeorient' => 'Typeorientcer' );
+			$query['joins'][] = $Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+				$replacements
+			);
+			$query['joins'][] = array_words_replace(
+				$Dossier->Foyer->Personne->Contratinsertion->Structurereferente->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+				$replacements
+			);
 
 			// Pour chacune des lignes
-			$categories_cers_conditionnees = array(
-				'contrat_rmi',
-				'cer_experimental',
-				'ppae'
-			);
 			$categories_cers = array(
-				'contrat_rmi' => array(),
-				'cer_experimental' => array(),
 				'cer' => array(),
-				'ppae' => array(),
-				'cer_pro' => $this->_conditionsTypeorientEmploi(),
-				'cer_social_pro' => $this->_conditionsTypeorientSocial(),
+				'ppae' => $this->getConditionsTypeOrganisme( self::ORGANISME_SPE_POLE_EMPLOI, $replacements ),
+				'cer_pro' => array(
+					$this->getConditionsTypeOrganisme( self::ORGANISME_SPE, $replacements ),
+					'NOT' => array(
+						$this->getConditionsTypeOrganisme( self::ORGANISME_SPE_POLE_EMPLOI, $replacements )
+					)
+				),
+				'cer_social_pro' => $this->getConditionsTypeOrganisme( self::ORGANISME_HORS_SPE, $replacements ),
 			);
 
 			// Pour chacune des colonnes
 			foreach( Hash::normalize( $categories_cers ) as $categorie_cer => $conditionsCategorie ) {
 				$conditions = (array)Configure::read( "Statistiqueministerielle.conditions_caracteristiques_contrats.{$categorie_cer}" );
 
-				if( !empty( $conditions ) || !in_array( $categorie_cer, $categories_cers_conditionnees ) ) {
-					$querydataTotal = $querydata;
-					$querydataTotal['conditions'] = Hash::merge(
-						$querydataTotal['conditions'],
+				if( $conditionsCategorie !== false ) {
+					// 1. Nombre total
+					$queryTotal = $query;
+					$queryTotal['conditions'] = Hash::merge(
+						$queryTotal['conditions'],
 						$conditions,
 						$conditionsCategorie
 					);
-					$results['Indicateurcaracteristique']["{$categorie_cer}_total"] = Hash::get( $Dossier->find( 'all', $querydataTotal ), '0.Contratinsertion.count' );
+					$results['Indicateurcaracteristique']["{$categorie_cer}_total"] = Hash::get( $Dossier->find( 'all', $queryTotal ), '0.Contratinsertion.count' );
 
-					$querydataChampDd = $querydata;
-					$querydataChampDd['conditions'] = Hash::merge(
-						$querydataChampDd['conditions'],
+					// 2. Nombre dont le bénéficiaire est soumis à droits et devoirs
+					$queryChampDd = $query;
+					$queryChampDd['conditions'] = Hash::merge(
+						$queryChampDd['conditions'],
 						$conditions,
 						$conditionsCategorie
 					);
-					$querydataChampDd['conditions']['Calculdroitrsa.toppersdrodevorsa'] = '1';
-					$results['Indicateurcaracteristique']["{$categorie_cer}_droitsdevoirs"] = Hash::get( $Dossier->find( 'all', $querydataChampDd ), '0.Contratinsertion.count' );
+					$queryChampDd['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
+					$results['Indicateurcaracteristique']["{$categorie_cer}_droitsdevoirs"] = Hash::get( $Dossier->find( 'all', $queryChampDd ), '0.Contratinsertion.count' );
 
-					$querydataHorsChampDd = $querydata;
-					$querydataHorsChampDd['conditions'] = Hash::merge(
-						$querydataHorsChampDd['conditions'],
+					// 3. Nombre dont le bénéficiaire n'est pas soumis à droits et devoirs
+					$queryHorsChampDd = $query;
+					$queryHorsChampDd['conditions'] = Hash::merge(
+						$queryHorsChampDd['conditions'],
 						$conditions,
 						$conditionsCategorie
 					);
-					$querydataHorsChampDd['conditions']['Calculdroitrsa.toppersdrodevorsa <>'] = '1';
-					$results['Indicateurcaracteristique']["{$categorie_cer}_horsdroitsdevoirs"] = Hash::get( $Dossier->find( 'all', $querydataHorsChampDd ), '0.Contratinsertion.count' );
-
+					$queryHorsChampDd['conditions'][] = array( 'NOT' => array( $this->_getConditionsDroitsEtDevoirs() ) );
+					$results['Indicateurcaracteristique']["{$categorie_cer}_horsdroitsdevoirs"] = Hash::get( $Dossier->find( 'all', $queryHorsChampDd ), '0.Contratinsertion.count' );
 				}
 			}
 
@@ -1400,31 +1489,26 @@
 			foreach( Hash::normalize( $categories_cers ) as $categorie_cer => $conditionsCategorie ) {
 				if( in_array( $categorie_cer, array( 'cer_pro', 'cer_social_pro' ) ) ) {
 					foreach( $this->durees_cers as $duree_cer => $conditionsDureescers ) {
-						$querydataTotal = $querydata;
-						$querydataTotal['conditions'] = Hash::merge(
-							$querydataTotal['conditions'],
+						$queryDureeCer = $query;
+						$queryDureeCer['conditions'] = Hash::merge(
+							$queryDureeCer['conditions'],
 							$conditionsCategorie,
 							$conditionsDureescers
 						);
-						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_total"] = Hash::get( $Dossier->find( 'all', $querydataTotal ), '0.Contratinsertion.count' );
 
-						$querydataChampDd = $querydata;
-						$querydataChampDd['conditions'] = Hash::merge(
-							$querydataChampDd['conditions'],
-							$conditionsCategorie,
-							$conditionsDureescers
-						);
-						$querydataChampDd['conditions']['Calculdroitrsa.toppersdrodevorsa'] = '1';
-						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_droitsdevoirs"] = Hash::get( $Dossier->find( 'all', $querydataChampDd ), '0.Contratinsertion.count' );
+						// 1. Nombre total
+						$queryTotal = $queryDureeCer;
+						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_total"] = Hash::get( $Dossier->find( 'all', $queryTotal ), '0.Contratinsertion.count' );
 
-						$querydataHorsChampDd = $querydata;
-						$querydataHorsChampDd['conditions'] = Hash::merge(
-							$querydataHorsChampDd['conditions'],
-							$conditionsCategorie,
-							$conditionsDureescers
-						);
-						$querydataHorsChampDd['conditions']['Calculdroitrsa.toppersdrodevorsa <>'] = '1';
-						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_horsdroitsdevoirs"] = Hash::get( $Dossier->find( 'all', $querydataHorsChampDd ), '0.Contratinsertion.count' );
+						// 2. Nombre dont le bénéficiaire est soumis à droits et devoirs
+						$queryChampDd = $queryDureeCer;
+						$queryChampDd['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
+						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_droitsdevoirs"] = Hash::get( $Dossier->find( 'all', $queryChampDd ), '0.Contratinsertion.count' );
+
+						// 3. Nombre dont le bénéficiaire n'est pas soumis à droits et devoirs
+						$queryHorsChampDd = $queryDureeCer;
+						$queryHorsChampDd['conditions'][] = array( 'NOT' => array( $this->_getConditionsDroitsEtDevoirs() ) );
+						$results['Indicateurcaracteristique']["{$categorie_cer}_{$duree_cer}_horsdroitsdevoirs"] = Hash::get( $Dossier->find( 'all', $queryHorsChampDd ), '0.Contratinsertion.count' );
 					}
 				}
 			}
@@ -1432,14 +1516,17 @@
 			return $results;
 		}
 
+
 		/**
 		 * Permet de tester toutes les clés de configuration du webrsa.inc pour
 		 * le module "Statistiques ministérielles":
-		 *	- Statistiqueministerielle.conditions_base
+		 *	- Statistiqueministerielle.conditions_droits_et_devoirs
+		 *	- Statistiqueministerielle.conditions_types_parcours
 		 *	- Statistiqueministerielle.conditions_indicateurs_organismes
-		 *	- Statistiqueministerielle.conditions_types_cers
-		 *	- Statistiqueministerielle.conditions_caracteristiques_contrats
+		 *	- Statistiqueministerielle.conditions_organismes
 		 *	- Statistiqueministerielle.conditions_indicateurs_motifs_reorientation
+		 *	- Statistiqueministerielle.conditions_caracteristiques_contrats
+		 *	- Statistiqueministerielle.conditions_types_cers
 		 *
 		 * Pour chacune de ces clés, on retourne un tableau contenant un clé
 		 * 'success' et une clé 'message' qui est remplie lorsqu'on a une erreur
@@ -1452,66 +1539,48 @@
 			$search = array( 'Search' => array( 'annee' => 2000 ) );
 			$return = array();
 
-			// Statistiqueministerielle.conditions_base
-			try {
-				@$Dossier->find( 'first', $this->_qdBase( $search ) );
-				$message = null;
-			} catch ( Exception $e ) {
-				$message = $e->getMessage();
-			}
-			$return['Statistiqueministerielle.conditions_base'] = array(
-				'success' => is_null( $message ),
-				'message' => $message
-			);
+			// 1. conditions_droits_et_devoirs
+			$query = $this->_getBaseQuery( $search );
+			$query['conditions'][] = $this->_getConditionsDroitsEtDevoirs();
+			$return['Statistiqueministerielle.conditions_droits_et_devoirs'] = $query;
 
+			// 2. conditions_types_parcours
+			$query = $this->getIndicateursOrientations( $search );
+			$return['Statistiqueministerielle.conditions_types_parcours'] = $query;
 
-			// Statistiqueministerielle.conditions_indicateurs_organismes
-			try {
-				@$this->indicateursOrganismes( $search );
-				$message = null;
-			} catch ( Exception $e ) {
-				$message = $e->getMessage();
-			}
-			$return['Statistiqueministerielle.conditions_indicateurs_organismes'] = array(
-				'success' => is_null( $message ),
-				'message' => $message
-			);
+			// 3. conditions_indicateurs_organismes
+			$query = $this->getIndicateursOrganismes( $search );
+			$return['Statistiqueministerielle.conditions_indicateurs_organismes'] = $query;
 
-			// Statistiqueministerielle.conditions_types_cers
-			try {
-				@$this->indicateursOrganismes( $search );
-				$message = null;
-			} catch ( Exception $e ) {
-				$message = $e->getMessage();
-			}
-			$return['Statistiqueministerielle.conditions_types_cers'] = array(
-				'success' => is_null( $message ),
-				'message' => $message
-			);
+			// 4. conditions_organismes
+			$query = $this->getIndicateursReorientations( $search );
+			$return['Statistiqueministerielle.conditions_organismes'] = $query;
 
-			// Statistiqueministerielle.conditions_caracteristiques_contrats
-			try {
-				@$this->indicateursCaracteristiquesContrats( $search );
-				$message = null;
-			} catch ( Exception $e ) {
-				$message = $e->getMessage();
-			}
-			$return['Statistiqueministerielle.conditions_caracteristiques_contrats'] = array(
-				'success' => is_null( $message ),
-				'message' => $message
-			);
+			// 5. conditions_indicateurs_motifs_reorientation
+			$query = $this->getIndicateursMotifsReorientation( $search );
+			$return['Statistiqueministerielle.conditions_indicateurs_motifs_reorientation'] = $query;
 
-			// Statistiqueministerielle.conditions_indicateurs_motifs_reorientation
-			try {
-				@$this->indicateursMotifsReorientation( $search );
-				$message = null;
-			} catch ( Exception $e ) {
-				$message = $e->getMessage();
+			// 6. conditions_caracteristiques_contrats
+			$query = $this->getIndicateursCaracteristiquesContrats( $search );
+			$return['Statistiqueministerielle.conditions_caracteristiques_contrats'] = $query;
+
+			// 7. conditions_types_cers
+			$query = $this->getIndicateursDelais( $search );
+			$return['Statistiqueministerielle.conditions_types_cers'] = $query;
+
+			// Test des différentes requêtes.
+			foreach( $return as $key => $query ) {
+				try {
+					@$Dossier->find( 'first', $query );
+					$message = null;
+				} catch ( Exception $e ) {
+					$message = $e->getMessage();
+				}
+				$return[$key] = array(
+					'success' => is_null( $message ),
+					'message' => $message
+				);
 			}
-			$return['Statistiqueministerielle.conditions_indicateurs_motifs_reorientation'] = array(
-				'success' => is_null( $message ),
-				'message' => $message
-			);
 
 			return $return;
 		}
