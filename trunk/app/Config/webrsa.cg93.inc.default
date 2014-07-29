@@ -870,207 +870,6 @@
     Configure::write( 'Cui.Numeroconvention', '066130000100' );
 
 	/**
-	 * Conditions de base pour le brouillon des statistiques ministérielles.
-	 * De base (en dur), on s'assure que l'allocataire soit soumis à droits et
-	 * devoirs. Par contre, on ne s'assure pas de l'état du dossier, hors les
-	 * allocataires soumis à droits et devoirs devraient normalement n'être que
-	 * dans des dossiers en états ouverts.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_base',
-	 * 	array(
-	 *		'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-    Configure::write(
-		'Statistiqueministerielle.conditions_base',
-		array(
-			'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' )
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs d'organismes" des statistiques
-	 * ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Structurereferente: structure référente de la dernière orientation
-	 *   - Typeorient: type d'orientation de la structure référente de la dernière orientation
-	 *   - Referent: référent du parcours
-	 *   - Structurereferentereferent: structure référente du référent du parcours
-	 *   - Typeorientreferent: type d'orientation de la structure référente du référent du parcours
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie d'organismes, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_indicateurs_organismes',
-	 * 	array(
-	 * 		// Pôle Emploi (PE)
-	 * 		'pole_emploi' => array(
-	 * 			'Structurereferentereferent.id' => 2
-	 * 		),
-	 * 		'oppp_autre_pole_emploi' => null,
-	 * 		'entreprise_travail_temporaire' => null,
-	 * 		'organisme_creation_developpement_entreprise' => null,
-	 * 		'iae' => null,
-	 * 		'autre_professionnel' => null,
-	 * 		'service_departement' => null,
-	 * 		'service_departement_professionnel' => null,
-	 * 		'service_departement_social' => null,
-	 * 		'caf_msa' => null,
-	 * 		'ccas_cias' => null,
-	 * 		'autres' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_indicateurs_organismes',
-		array(
-			// Pôle Emploi (PE)
-			'pole_emploi' => array(),
-			// Organisme public de placement professionnel autre que PE (maison de l'emploi, PLIE, mission locale, ...)
-			'oppp_autre_pole_emploi' => array(),
-			// Entreprise de travail temporaire, agence privée de placement
-			'entreprise_travail_temporaire' => array(),
-			// Organisme d'appui à la création et au développement d'entreprise
-			'organisme_creation_developpement_entreprise' => array(),
-			// Insertion par l'activité économique (IAE) (uniquement si le référent appartient à l'IAE)
-			'iae' => array(),
-			// Autre organisme de placement professionnel
-			'autre_professionnel' => array(),
-			// Service du département
-			'service_departement' => array(),
-			// Service du département, dont orientation à dominante professionnelle
-			'service_departement_professionnel' => array(),
-			// Service du département, dont orientation à dominante sociale
-			'service_departement_social' => array(),
-			// CAF, MSA
-			'caf_msa' => array(),
-			// CCAS, CIAS
-			'ccas_cias' => array(),
-			// Autres organismes d'insertion
-			'autres' => array(),
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de délais" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Contratinsertion: premier CER de l'allocataire
-	 *   - Structurereferenterecer: structure référente du premier CER de l'allocataire
-	 *   - Typeorientcer: type d'orientation de la structure référente du premier CER de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie de délais, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_types_cers',
-	 * 	array(
-	 * 		// Permet d'indiquer que la structure gère les PPPAE
-	 * 		'ppae' => array(
-	 * 			'Typeorientcer.id' => 2
-	 * 		)
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_types_cers',
-		array(
-			'ppae' => array()
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de caractéristiques des contrats" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Contratinsertion: premier CER de l'allocataire
-	 *   - Structurereferenterecer: structure référente du premier CER de l'allocataire
-	 *   - Typeorientcer: type d'orientation de la structure référente du premier CER de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour une catégorie de contrats, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_caracteristiques_contrats',
-	 * 	array(
-	 *		// Conditions permettant de cibler des contrat d'insertion RMI
-	 * 		'contrat_rmi' => null,
-	 *		// Conditions permettant de cibler des contrat RSA expérimentaux
-	 * 		'cer_experimental' => null,
-	 *		// Conditions permettant de cibler des PPAE
-	 * 		'ppae' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_caracteristiques_contrats',
-		array(
-			'contrat_rmi' => null,
-			'cer_experimental' => null,
-			'ppae' => null,
-		)
-	);
-
-	/**
-	 * Conditions pour la partie "Indicateurs de motifs de réorientations" des statistiques ministérielles.
-	 *
-	 * Les modèles disponibles dans les conditions sont:
-	 *   - Orientstruct: dernière orientation de l'allocataire
-	 *   - Typeorient: type d'orientation de la structure référente de la dernière orientation de l'allocataire
-	 *   - Orientstructpcd: orientation précédente de l'allocataire
-	 *   - Typeorientpcd: type d'orientation de la structure référente de l'orientation précédente de l'allocataire
-	 *
-	 * Lorsque aucune conditions n'est définie pour un type de réorientation, le
-	 * résultat sera 'N/A'.
-	 *
-	 * Exemple:
-	 * <pre>
-	 * Configure::write(
-	 * 	'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
-	 * 	array(
-	 *		// Conditions permettant de cibler des réorientations suite à une orientation initiale inadaptée
-	 * 		'orientation_initiale_inadaptee' => null,
-	 *		// Conditions permettant de cibler des réorientations suite à un changement de situation de la personne
-	 * 		'changement_situation_allocataire' => null,
-	 * 	)
-	 * );
-	 * </pre>
-	 *
-	 * @var array
-	 */
-	Configure::write(
-		'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation',
-		array(
-			'orientation_initiale_inadaptee' => null,
-			'changement_situation_allocataire' => null,
-		)
-	);
-
-	/**
 	 * Configuration du module "Tableaux de suivi d'activité PDV".
 	 */
 	Configure::write(
@@ -1563,6 +1362,189 @@
 						'Categoriefp93.name IS NULL'
 					),
 				),
+			)
+		)
+	);
+
+	/**
+	 * Paramétrage du module "Statistiques ministérielles"
+	 *
+	 * @param array
+	 */
+	Configure::write(
+		'Statistiqueministerielle',
+		array(
+			/**
+			 * Conditions permettant de définit les allocataires dans le champ
+			 * des droits et devoirs.
+			 *
+			 * Ces conditions seront utilisées dans les différents tableaux.
+			 *
+			 * Modèles disponibles: Dossier, Detaildroitrsa, Foyer, Situationdossierrsa,
+			 * Adressefoyer, Personne, Adresse, Prestation, Calculdroitrsa.
+			 */
+			'conditions_droits_et_devoirs' => array(
+				'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' ),
+				'Calculdroitrsa.toppersdrodevorsa' => '1'
+			),
+			/**
+			 * Catégories et conditions des différents types de parcours du CG.
+			 * Les catégories sont: professionnel, socioprofessionnel et social.
+			 *
+			 * Utilisé dans le tableau "1 - Orientation des personnes ... au sens du type de parcours..."
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient.
+			 */
+			'conditions_types_parcours' => array(
+				'professionnel' => array(
+					'Typeorient.id' => array( 3 )
+				),
+				'socioprofessionnel' => array(
+					'Typeorient.id' => array( 1 )
+				),
+				'social' => array(
+					'Typeorient.id' => array( 2 )
+				),
+			),
+			/**
+			 * Catégories (intitulés) et conditions des différents types de référents
+			 * uniques (structures référentes) pour la tableau "2 - Organismes de
+			 * prise en charge des personnes ... dont le référent unique a été désigné"
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente.
+			 */
+			'conditions_indicateurs_organismes' => array(
+				'Pôle emploi (PE) (2)' => array(
+					'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%'
+				),
+				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(
+					'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%',
+				),
+				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
+				'Organisme d\'appui à la création et au développement d\'entreprise (2)' => array(),
+				'Insertion par l\'activité économique (IAE) (uniquement si le référent appartient à l\'IAE) (2)' => array(),
+				'Autres organismes de placement professionnel (2)' => array(),
+				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
+					'NOT' => array(
+						'OR' => array(
+							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
+						)
+					)
+				),
+				'dont orientation professionnelle ou socioprofessionnelle' => array(
+					'Typeorient.id' => array( 3, 1 ),
+					'NOT' => array(
+						'OR' => array(
+							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
+						)
+					)
+				),
+				'dont orientation sociale' => array(
+					'Typeorient.id' => array( 2 ),
+					'NOT' => array(
+						'OR' => array(
+							array( 'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%maison%de%emploi%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%CAF%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%MSA%' ),
+							array( 'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%' ),
+						)
+					)
+				),
+				'Caf (2)' => array(
+					'Structurereferente.lib_struc ILIKE' => '%CAF%',
+				),
+				'Msa (2)' => array(
+					'Structurereferente.lib_struc ILIKE' => '%MSA%',
+				),
+				'CCAS, CIAS (2)' => array(
+					'Structurereferente.lib_struc ILIKE' => '%Centre%Communal%Action%Sociale%',
+				),
+				'Associations d\'insertion (2)' => array(),
+				'Autres organismes d\'insertion (2)' => array(),
+			),
+			/**
+			 * Catégories et délais permettant de différencier les types de contrats.
+			 *
+			 * Lorsqu'un contrat est signé avec Pôle Emploi, il s'agit à priori
+			 * d'un PPAE, alors qu'un CER pro n'est pas signé avec Pôle Emploi.
+			 *
+			 * Voir aussi Statistiqueministerielle.conditions_types_parcours (les conditions sont ajoutées automatiquement):
+			 *	- un CER pro est signé lors d'un type de parcours professionnel
+			 *	- un CER social ou professionnel est signé lors d'un type de parcours social ou sociprofessionnel
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): Orientstruct, Typeorient,
+			 * Contratinsertion, Structurereferentecer, Typeorientcer.
+			 */
+			'conditions_types_cers' => array(
+				'ppae' => array(
+					'Structurereferentecer.lib_struc ILIKE' => '%Pole Emploi%'
+				),
+				'cer_pro' => array(
+					'NOT' => array(
+						'Structurereferentecer.lib_struc ILIKE' => '%Pole Emploi%'
+					)
+				),
+				'cer_pro_social' => array(),
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les organismes
+			 * SPE et les organismes Hors SPE.
+			 *
+			 * Les catégories sont: SPE et HorsSPE.
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans les tableaux:
+			 *	- "4 - Nombre et profil des personnes réorientées..."
+			 *	- "4a - Motifs des réorientations..."
+			 *	- "4b - Recours à l'article L262-31"
+			 */
+			'conditions_organismes' => array(
+				'SPE' => array(
+					'Typeorient.id' => array( 3 )
+				),
+				'SPE_PoleEmploi' => array(
+					'Structurereferente.lib_struc ILIKE' => '%Pole Emploi%'
+				),
+				'HorsSPE' => array(
+					'NOT' => array(
+						'Typeorient.id' => array( 3 )
+					)
+				)
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les motifs de
+			 * réorientations. Une valeur NULL signifie que la donnée sera non
+			 * disponible (ND).
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans le tableau "4a - Motifs des réorientations...".
+			 */
+			'conditions_indicateurs_motifs_reorientation' => array(
+				array(
+					'orientation_initiale_inadaptee' => null,
+					'changement_situation_allocataire' => null
+				)
 			)
 		)
 	);

@@ -25,7 +25,7 @@ msgid "Indicateurnivetu"
 msgstr "Niveau de formation"
 
 msgid "Indicateuranciennete"
-msgstr "Ancienneté dans le dispositif, y compris anciens minima (RMI, API) (**)"
+msgstr "Ancienneté dans le dispositif, y compris anciens minima (RMI, API) (3)"
 
 # ==============================================================================
 # Tranches d'âge
@@ -129,7 +129,7 @@ msgstr "Autres organismes d'insertion"
 # ==============================================================================
 
 msgid "Indicateurdelai.ppae_delai_moyen"
-msgstr "Délai moyen pour la signature d'un PPAE (L262-34) (**)"
+msgstr "Délai moyen pour la signature d'un PPAE au cours de l'année (3)"
 
 msgid "Indicateurdelai.ppae_nombre_moyen"
 msgstr "Nombre total de ces contrats signés au cours de l'année"
@@ -138,7 +138,7 @@ msgid "Indicateurdelai.ppae_delai_1_mois"
 msgstr " - dont contrats signés dans le mois après la décision d'orientation"
 
 msgid "Indicateurdelai.ppae_delai_1_3_mois"
-msgstr " - dont contrats signés entre 1 mois et 3 mois après la décision d'orientation"
+msgstr " - dont contrats signés entre 1 mois et moins de 3 mois après la décision d'orientation"
 
 msgid "Indicateurdelai.ppae_delai_plus_3_mois"
 msgstr " - dont contrats signés plus de 3 mois après la décision d'orientation"
@@ -146,7 +146,7 @@ msgstr " - dont contrats signés plus de 3 mois après la décision d'orientatio
 # ------------------------------------------------------------------------------
 
 msgid "Indicateurdelai.cer_pro_delai_moyen"
-msgstr "Délai moyen pour la signature d'un contrat d'engagement réciproque en matière d'insertion professionnelle (L262-35)"
+msgstr "Délai moyen pour la signature d'un contrat d'engagement réciproque en matière d'insertion professionnelle au cours de l'année (4)"
 
 msgid "Indicateurdelai.cer_pro_nombre_moyen"
 msgstr "Nombre total de ces contrats signés au cours de l'année"
@@ -163,7 +163,7 @@ msgstr " - dont contrats signés plus de 3 mois après la décision d'orientatio
 # ------------------------------------------------------------------------------
 
 msgid "Indicateurdelai.cer_pro_social_delai_moyen"
-msgstr "Délai moyen pour la signature d'un contrat d'engagement réciproque en matière d'insertion sociale ou professionnelle (L262-36)"
+msgstr "Délai moyen pour la signature d'un contrat d'engagement réciproque en matière d'insertion sociale ou professionnelle au cours de l'année (5)"
 
 msgid "Indicateurdelai.cer_pro_social_nombre_moyen"
 msgstr "Nombre total de ces contrats signés au cours de l'année"
@@ -186,21 +186,21 @@ msgid "Indicateurcaracteristique.cer_experimental"
 msgstr "Nombre de personnes au RSA bénéficiant encore d'un contrat RSA expérimental au 31 décembre"
 
 msgid "Indicateurcaracteristique.cer"
-msgstr "Nombre de personnes bénéficiant d'un contrat RSA au 31 décembre"
+msgstr "Nombre de contrats RSA en cours de validité au 31 décembre (2)"
 
 msgid "Indicateurcaracteristique.ppae"
-msgstr " - dont PPAE"
+msgstr " - dont PPAE (personnes dont le référent unique appartient à Pôle emploi) (3)"
 
 msgid "Indicateurcaracteristique.cer_pro"
-msgstr " - dont contrat d'engagement réciproque en matière d'insertion professionnelle (L262-35)"
+msgstr " - dont contrat d'engagement réciproque en matière d'insertion professionnelle (personnes dont le référent unique appartient à un organisme participant au SPE autre que Pôle emploi) (4)"
 
 msgid "Indicateurcaracteristique.cer_social_pro"
-msgstr " - dont contrat d'engagement réciproque en matière d'insertion sociale ou professionnelle (L262-36)"
+msgstr " - dont contrat d'engagement réciproque en matière d'insertion sociale ou professionnelle (personnes dont le référent unique appartient à un autre organisme) (5)"
 
 # ------------------------------------------------------------------------------
 
 msgid "Indicateurcaracteristique.cer_pro_rappel"
-msgstr "Durée inscrite dans le contrat RSA d'engagement réciproque en matière d'insertion professionnelle (L262-35) - rappel"
+msgstr "Durée inscrite dans les contrats d'engagement réciproque en matière d'insertion professionnelle en cours de validité au 31 décembre (4)"
 
 msgid "Indicateurcaracteristique.cer_pro_duree_moins_6_mois"
 msgstr " - moins de 6 mois"
@@ -212,7 +212,7 @@ msgid "Indicateurcaracteristique.cer_pro_duree_plus_1_an"
 msgstr " - 1 an et plus"
 
 msgid "Indicateurcaracteristique.cer_social_pro_rappel"
-msgstr "Durée inscrite dans le contrat RSA d'engagement réciproque en matière d'insertion sociale ou professionnelle (L262-36) - rappel"
+msgstr "Durée inscrite dans les contrats d'engagement réciproque en matière d'insertion sociale ou professionnelle en cours de validité au 31 décembre (5)"
 
 msgid "Indicateurcaracteristique.cer_social_pro_duree_moins_6_mois"
 msgstr " - moins de 6 mois"

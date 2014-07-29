@@ -574,96 +574,6 @@ table#personnes tr.highlight td, table#personnes tr.even.highlight td, table.tab
 	background: #ffecbf;
 }
 
-/**
- * Brouillon des statistiques minitérielles (Statistiquesministerielles)
- */
-body.statistiquesministerielles #pageContent h2 {
-	font-weight: bold;
-	font-size: 1em;
-	margin-bottom: 0.5em;
-}
-body.statistiquesministerielles #pageContent caption {
-	caption-side: top;
-	text-align: center;
-	background: #235f7d;
-	border: 1px solid #235f7d;
-	color: white;
-	padding: 0.125em 0.25em;
-}
-body.statistiquesministerielles #pageContent table {
-	border-collapse: collapse;
-	width: 100%;
-	margin: 0;
-}
-body.statistiquesministerielles #pageContent th,
-body.statistiquesministerielles #pageContent td {
-	border: 1px solid black;
-	padding: 0.125em 0.25em;
-	background: white;
-	color: black;
-}
-body.statistiquesministerielles #pageContent th {
-	font-weight: normal;
-}
-body.statistiquesministerielles #pageContent thead tr.main th {
-	border: 0;
-}
-body.statistiquesministerielles #pageContent tbody th,
-body.statistiquesministerielles #pageContent tfoot th {
-	text-align: left;
-}
-body.statistiquesministerielles #pageContent tbody td,
-body.statistiquesministerielles #pageContent tfoot td {
-	text-align: right;
-}
-body.statistiquesministerielles #pageContent table.middle caption,
-body.statistiquesministerielles #pageContent table.middle thead tr.main,
-body.statistiquesministerielles #pageContent table.last caption,
-body.statistiquesministerielles #pageContent table.last thead tr.main { /*TODO: au milieu aussi -> position-first/... ?*/
-	display: none;
-}
-body.statistiquesministerielles #pageContent thead tr th,
-body.statistiquesministerielles #pageContent tbody tr.total th {
-	background: #235F7D;
-	color: white;
-}
-body.statistiquesministerielles #pageContent thead tr.category th {
-	text-align: left;
-}
-body.statistiquesministerielles #pageContent tfoot th,
-body.statistiquesministerielles #pageContent tfoot td {
-	background: #E6EEF2;
-}
-
-/* Largeur des colonnes: orientations */
-body.statistiquesministerielles.indicateurs_orientations #pageContent tbody th,
-body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot th {
-	width: 33.33%;
-	min-width: 33.33%;
-}
-body.statistiquesministerielles.indicateurs_orientations #pageContent tbody td,
-body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot td {
-	width: 16.67%;
-	min-width: 16.67%;
-}
-
-/* Largeur des colonnes: réorientations */
-body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody th,
-body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot th {
-	width: 40%;
-	min-width: 40%;
-}
-body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody td,
-body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot td {
-	width: 20%;
-	min-width: 20%;
-}
-
-body.statistiquesministerielles.indicateurs_motifs_reorientation #pageContent tbody tr.total th {
-	width: 80%;
-	min-width: 80%;
-}
-
 /******************************************************************************/
 
 body.questionnairesd1pdvs93.view #pageContent table {
@@ -676,21 +586,6 @@ body.questionnairesd1pdvs93.view #pageContent table td {
 
 body.questionnairesd1pdvs93.view #pageContent table td + td {
 	width: auto;
-}
-
-/******************************************************************************/
-
-body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table {
-	width: 100%;
-	margin-bottom: 1em;
-}
-
-body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody th {
-	width: 40%;
-}
-
-body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody td {
-	width: 20%;
 }
 
 /******************************************************************************/
@@ -895,4 +790,122 @@ body.tableauxsuivispdvs93 table th.subtotal, body.tableauxsuivispdvs93 table td.
 
 body.fichesprescriptions93.edit #DureeActionPdi, body.fichesprescriptions93.add #DureeActionPdi {
 	margin-bottom: 1.5em;
+}
+
+/* Nouvelle version des statistiques ministérielles (2014) */
+body.statistiquesministerielles #pageContent h2 {
+	font-weight: bold;
+	font-size: 1em;
+	margin-bottom: 0.5em;
+}
+body.statistiquesministerielles #pageContent caption {
+	caption-side: top;
+	text-align: center;
+	background: #235f7d;
+	border: 1px solid #235f7d;
+	color: white;
+	padding: 0.125em 0.25em;
+}
+body.statistiquesministerielles #pageContent table {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 0;
+}
+body.statistiquesministerielles #pageContent th,
+body.statistiquesministerielles #pageContent td {
+	border: 1px solid black;
+	padding: 0.125em 0.25em;
+	background: white;
+	color: black;
+}
+body.statistiquesministerielles #pageContent th {
+	font-weight: normal;
+}
+body.statistiquesministerielles #pageContent thead tr.main th {
+	border: 0;
+}
+body.statistiquesministerielles #pageContent tbody th,
+body.statistiquesministerielles #pageContent tfoot th {
+	text-align: left;
+}
+body.statistiquesministerielles #pageContent tbody td,
+body.statistiquesministerielles #pageContent tfoot td {
+	text-align: right;
+}
+body.statistiquesministerielles #pageContent table.middle caption,
+body.statistiquesministerielles #pageContent table.middle thead tr.main,
+body.statistiquesministerielles #pageContent table.last caption,
+body.statistiquesministerielles #pageContent table.last thead tr.main { /*TODO: au milieu aussi -> position-first/... ?*/
+	display: none;
+}
+body.statistiquesministerielles #pageContent thead tr th,
+body.statistiquesministerielles #pageContent tbody tr.total th {
+	background: #235F7D;
+	color: white;
+}
+body.statistiquesministerielles #pageContent thead tr.category th {
+	text-align: left;
+}
+body.statistiquesministerielles #pageContent tfoot th,
+body.statistiquesministerielles #pageContent tfoot td {
+	background: #E6EEF2;
+}
+
+/* Largeur des colonnes: orientations */
+body.statistiquesministerielles.indicateurs_orientations #pageContent tbody th,
+body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot th {
+	width: 33.33%;
+	min-width: 33.33%;
+}
+body.statistiquesministerielles.indicateurs_orientations #pageContent tbody td,
+body.statistiquesministerielles.indicateurs_orientations #pageContent tfoot td {
+	width: 13.13%;
+	min-width: 13.33%;
+}
+
+/* Décalage des intitulés des sous-points des indicateurs d'organismes */
+body.statistiquesministerielles.indicateurs_organismes #pageContent tr.dont_orientation_professionnelle_ou_socioprofessionnelle th,
+body.statistiquesministerielles.indicateurs_organismes #pageContent tr.dont_orientation_sociale th{
+	padding-left: 2em;
+}
+
+/* Largeur des colonnes: réorientations */
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody th,
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot th,
+body.statistiquesministerielles.indicateurs_reorientations2 #pageContent tbody th,
+body.statistiquesministerielles.indicateurs_reorientations2 #pageContent tfoot th {
+	width: 40%;
+	min-width: 40%;
+}
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tbody td,
+body.statistiquesministerielles.indicateurs_reorientations #pageContent tfoot td,
+body.statistiquesministerielles.indicateurs_reorientations2 #pageContent tbody td,
+body.statistiquesministerielles.indicateurs_reorientations2 #pageContent tfoot td {
+	width: 20%;
+	min-width: 20%;
+}
+
+body.statistiquesministerielles.indicateurs_motifs_reorientation #pageContent tbody tr.total th {
+	width: 80%;
+	min-width: 80%;
+}
+
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table,
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats2 #pageContent table {
+	width: 100%;
+	margin-bottom: 1em;
+}
+
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody th,
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats2 #pageContent table tbody th {
+	width: 40%;
+}
+
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats #pageContent table tbody td,
+body.statistiquesministerielles.indicateurs_caracteristiques_contrats2 #pageContent table tbody td {
+	width: 20%;
+}
+
+body.statistiquesministerielles ul.actions li.action a {
+	background-image: url( ../img/icons/application_form_magnify.png );
 }

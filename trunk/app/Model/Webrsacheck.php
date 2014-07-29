@@ -210,9 +210,19 @@
 				),
 				'with_parentid' => 'boolean',
 				'Utilisateurs.reconnection' => 'boolean',
-				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
-				'Statistiqueministerielle.conditions_types_cers' => 'isarray',
                 'Rendezvous.useThematique' => 'boolean',
+				'Statistiqueministerielle.conditions_droits_et_devoirs' => 'isarray',
+				'Statistiqueministerielle.conditions_types_parcours.professionnel' => 'isarray',
+				'Statistiqueministerielle.conditions_types_parcours.socioprofessionnel' => 'isarray',
+				'Statistiqueministerielle.conditions_types_parcours.social' => 'isarray',
+				'Statistiqueministerielle.conditions_indicateurs_organismes' => 'isarray',
+				'Statistiqueministerielle.conditions_types_cers.ppae' => 'isarray',
+				'Statistiqueministerielle.conditions_types_cers.cer_pro' => 'isarray',
+				'Statistiqueministerielle.conditions_types_cers.cer_pro_social' => 'isarray',
+				'Statistiqueministerielle.conditions_organismes.SPE' => 'isarray',
+				'Statistiqueministerielle.conditions_organismes.SPE_PoleEmploi' => 'isarray',
+				'Statistiqueministerielle.conditions_organismes.HorsSPE' => 'isarray',
+				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray'
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );
@@ -615,7 +625,7 @@
 		 */
 		protected function _allEmailConfigKeys66() {
 			$return = array( 'apre66_piecesmanquantes', 'fiche_candidature', 'avis_technique_cui', 'mail_employeur_cui' );
-			
+
 
 			if( Configure::read( 'Password.mail_forgotten' ) ) {
 				$return[] = 'user_generation_mdp';
