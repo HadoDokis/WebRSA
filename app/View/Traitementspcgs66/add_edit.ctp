@@ -1,42 +1,36 @@
 <?php
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( 'fileuploader.js' );
 	}
+
+	echo $this->Xhtml->tag(
+		'h1',
+		$this->pageTitle = __d( 'traitementpcg66', "Traitementspcgs66::{$this->action}" ).' '.$nompersonne
+	);
+
+	echo $this->Xform->create( 'Traitementpcg66', array( 'id' => 'traitementpcg66form' ) );
+	if( Set::check( $this->request->data, 'Traitementpcg66.id' ) ){
+		echo $this->Xform->input( 'Traitementpcg66.id', array( 'type' => 'hidden' ) );
+	}
+
+	echo $this->Default2->subform(
+		array(
+			'Traitementpcg66.personnepcg66_id' => array( 'type' => 'hidden', 'value' => $personnepcg66_id ),
+			'Traitementpcg66.personne_id' => array( 'type' => 'hidden', 'value' => $personne_id ),
+			'Traitementpcg66.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
+			'Traitementpcg66.clos' => array( 'type' => 'hidden', 'value' => 'N' ),
+			'Traitementpcg66.annule' => array( 'type' => 'hidden', 'value' => 'N' )
+		),
+		array(
+			'options' => $options
+		)
+	);
 ?>
-	<?php
-		echo $this->Xhtml->tag(
-			'h1',
-			$this->pageTitle = __d( 'traitementpcg66', "Traitementspcgs66::{$this->action}" ).' '.$nompersonne
-		);
 
-		echo $this->Xform->create( 'Traitementpcg66', array( 'id' => 'traitementpcg66form' ) );
-		if( Set::check( $this->request->data, 'Traitementpcg66.id' ) ){
-			echo $this->Xform->input( 'Traitementpcg66.id', array( 'type' => 'hidden' ) );
-		}
-
-		echo $this->Default2->subform(
-			array(
-				'Traitementpcg66.personnepcg66_id' => array( 'type' => 'hidden', 'value' => $personnepcg66_id ),
-				'Traitementpcg66.personne_id' => array( 'type' => 'hidden', 'value' => $personne_id ),
-				'Traitementpcg66.user_id' => array( 'type' => 'hidden', 'value' => $userConnected ),
-				'Traitementpcg66.clos' => array( 'type' => 'hidden', 'value' => 'N' ),
-				'Traitementpcg66.annule' => array( 'type' => 'hidden', 'value' => 'N' )
-			),
-			array(
-				'options' => $options
-			)
-		);
-	?>
-
-	<?php
-
-		// Liste des types de traitement
-		echo $this->Xform->input( 'Traitementpcg66.typetraitement', array(  'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => required( 'Type de traitement' ) ) );
-
-
-	?>
+<?php
+	// Liste des types de traitement
+	echo $this->Xform->input( 'Traitementpcg66.typetraitement', array(  'type' => 'radio', 'options' => $options['Traitementpcg66']['typetraitement'], 'legend' => required( 'Type de traitement' ) ) );
+?>
     <script type="text/javascript">
 		function showAjaxValidationErrors() {
 			<?php if( isset( $this->validationErrors['Modeletraitementpcg66'] ) ) :?>

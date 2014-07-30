@@ -18,7 +18,7 @@
 		/**
 		*
 		*/
-		public $helpers = array( 'Xhtml', 'Locale', 'Form', 'Default2', 'Permissions' );
+		public $helpers = array( 'Xhtml', 'Html', 'Locale', 'Form', 'Default2', 'Permissions' );
 
 		/**
 		* $urls = array(
@@ -35,14 +35,24 @@
 				$ajaxurl = Router::url( $ajaxurl );
 			}
 
+			if( Configure::read( 'debug' ) > 0 ) {
+				$this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+				$this->Html->css( array( 'fileuploader', 'fileuploader.webrsa' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+
+				$this->Html->script( 'fileuploader.js', array( 'inline' => false ) );
+				$this->Html->script( 'fileuploader.webrsa.js', array( 'inline' => false ) );
+			}
+
 			$tmp = "\n";
 			if( !empty( $oldfiles ) ) {
 				foreach( $oldfiles as $oldfile ) {
 					$tmp .= 'li = new Element( \'li\', {} );
 						$( li ).insert( { bottom: new Element( \'span\', { class: \'qq-upload-file\' } ).update( "'.h( $oldfile ).'" ) } );
 						$( li ).insert( { bottom: new Element( \'span\', { class: \'qq-upload-size\' } ) } );
+						$( li ).insert( { bottom: new Element( \'span\', { class: \'qq-upload-failed-text qq-upload-status-text success\' } ).update( \'Copié\' ) } );
 						$( ul ).insert( { bottom: li } );
-						addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ) );'."\n";
+
+						uploader._options.addAjaxUploadedFileLinks( $( li ).down( \'span.qq-upload-file\' ) );'."\n";
 				}
 			}
 
@@ -54,89 +64,20 @@
 
 					<script type="text/javascript">
 						// <![CDATA[
-						function addAjaxUploadedFileLinks( elmt, fileName ) {
-							if( typeof fileName === \'undefined\' ) {
-								fileName = $( elmt ).innerHTML;
-							}
-
-							var link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + fileName } ).update( "Supprimer" );
-							Event.observe( link, \'click\', function(e){
-								Event.stop(e);
-								new Ajax.Request(
-									$(Event.element(e)).getAttribute(\'href\'),
-									{
-										method: \'post\',
-										onComplete: function( transport ) {
-											try {
-												response = eval( "(" + transport.responseText + ")" );
-											} catch(err){
-												response = {};
-											}
-
-											if( response.success && response.success == true ) {
-												$( elmt ).up( \'li\' ).remove();
-											}
-											else {
-												alert( \'Erreur!\' );
-											}
-										}
-									}
-								);
-							} );
-
-							$( elmt ).up( \'li\' ).insert( { bottom: link } );
-
-							link = new Element( \'a\', { href: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ) ).'\' + \'/\' + fileName } ).update( "Voir" );
-							$( elmt ).up( \'li\' ).insert( { bottom: link } );
-						}
-
-						function createUploader( container ){
-							new qq.FileUploader( {
-								element: document.getElementById( container ),
-								action: \''.$ajaxurl.'\',
-								debug: false,
-								multiple: false,
+						document.observe( "dom:loaded", function() {
+							var uploader = new qq.WebrsaFileUploader( {
+								element: $( \'file-uploader-piecejointe\' ),
+								action: \''.Router::url( array( 'action' => 'ajaxfileupload' ) ).'\',
+								links: {
+									view: \''.Router::url( array( 'action' => 'fileview', $this->action, @$this->request->params['pass'][0] ) ).'\',
+									delete: \''.Router::url( array( 'action' => 'ajaxfiledelete', $this->action, @$this->request->params['pass'][0] ) ).'\'
+								},
 								params: {
 									action: \''.$this->action.'\',
-									primaryKey: \''.@$this->request->params['pass'][0].'\'
-								},
-								onComplete: function( id, fileName, responseJSON ) {
-									// 1°) Suppression des messages flash précédents
-									$$( \'#\' + container + \' > p.error\', \'#\' + container + \' > p.success\' ).each( function( old ) {
-										$(old).remove();
-									} );
-
-									var message = \'Erreur inattendue\';
-									var className = \'error\';
-
-									// 2°) Traitement du retour de l\'appel ajax
-									// 2° 1°) Succès
-									if( typeof responseJSON.success !== \'undefined\' && responseJSON.success === true ) {
-										// Il s\'agit toujours du dernier élément de la liste, id n\'est pas fiable lorsqu\'on supprime un élément
-										var spans = $$( \'.qq-upload-file\' );
-										addAjaxUploadedFileLinks( spans[$(spans).length-1], fileName );
-
-										message = \'Fichier &laquo; \' + fileName + \' &raquo; transmis.\';
-										className = \'success\';
-									}
-									// 2° 2°) Erreur
-									else if( typeof responseJSON.error !== \'undefined\' ) {
-										message = \'Fichier &laquo; \' + fileName + \' &raquo; non transmis: \' + responseJSON.error;
-										className = \'error\';
-									}
-
-									$( container ).insert( { top: new Element( \'p\', { \'class\': className } ).update( message ) } );
-								},
-								template: \'<div class="qq-uploader">\' +
-										\'<div class="qq-upload-drop-area"><span>Drop files here to upload</span></div>\' +
-										\'<div class="qq-upload-button">Parcourir</div>\' +
-										\'<ul class="qq-upload-list"></ul>\' +
-									\'</div>\',
+									primaryKey: \''.Hash::get( $this->request->params, 'pass.0' ).'\'
+								}
 							} );
-						}
 
-						document.observe( "dom:loaded", function() {
-							createUploader( \'file-uploader-piecejointe\' );
 							var ul = $( \'file-uploader-piecejointe\' ).down( \'ul.qq-upload-list\' );
 							'.$tmp.'
 						} );
@@ -162,7 +103,7 @@
 					).'</td>';
 					$return .= '<td>'.$this->Xhtml->link(
 						'Supprimer',
-						array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'] ),
+						array( 'controller' => 'fichiersmodules', 'action' => 'delete', $fichier['id'], $fichier['name'] ),
 						array( 'enabled' => $this->Permissions->checkDossier( 'fichiersmodules', 'delete', (array)Hash::get( $this->_View->viewVars, 'dossierMenu' ) ) ),
 						'Êtes-vous sûr de vouloir supprimer la pièce ?'
 						).'</td></tr>';
