@@ -139,11 +139,28 @@
         }
 
 		/**
+		 * Retourne le nom de l'action de la cas d'un appel ajax ou d'un appel
+		 * classique.
+		 *
+		 * @return string
+		 */
+		protected function _action() {
+			if( isset( $this->controller->request->query['action'] ) ) {
+				$action = $this->controller->request->query['action'];
+			}
+			else {
+				$action = $this->controller->request->action;
+			}
+
+			return $action;
+		}
+
+		/**
 		 * Suppression des fichiers temporaire en cas d'annulation du formulaire.
 		 *
 		 */
         public function deleteDir(){
-            $dir = $this->dirFichiersModule( $this->controller->action, $id );
+            $dir = $this->dirFichiersModule( $this->_action(), $id );
             $oFolder = new Folder( $dir, true, 0777 );
             $oFolder->delete( $dir );
         }
@@ -157,7 +174,8 @@
 		 */
         public function fichiers( $id, $enBase = true ){
             $fichiers = array();
-            if( $enBase && ( $this->controller->action == 'edit' ) ){
+
+            if( $enBase && ( $this->_action() == 'edit' ) ){
                 $fichiers = $this->_fichiersEnBase( $id );
             }
             $fichiers = Set::merge( $fichiers, $this->_fichiersSurDisque( $id ) );
@@ -174,7 +192,7 @@
         public function _fichiersSurDisque($id){
             $fichiers = array();
 
-            $dir = $this->dirFichiersModule( $this->controller->action, $id );
+            $dir = $this->dirFichiersModule( $this->_action(), $id );
             $oFolder = new Folder( $dir, true, 0777 );
             $files = $oFolder->find();
             if( !empty( $files ) ) {
@@ -227,39 +245,71 @@
 
 		/**
 		 *
+		 * @throws RuntimeException
 		 */
         public function ajaxfileupload() {
             $error = false;
 
-            $dir = $this->dirFichiersModule( $this->controller->request->query['action'], $this->controller->request->query['primaryKey'] );
+            $dir = $this->dirFichiersModule( $this->_action(), $this->controller->request->query['primaryKey'] );
             $path = $dir.DS.$this->controller->request->query['qqfile'];
+			$basename = basename( $path );
+			$contentLength = (int)$_SERVER['CONTENT_LENGTH'];
 
-            $old = umask(0);
-            @mkdir( $dir, 0777, true );
-            umask($old);
+			Configure::write( 'debug', 0 );
+			try {
+				// On annule si le nom de fichier existe déjà pour l'enregistrement
+				$existing = Hash::merge(
+					$this->_fichiersEnBase( $this->controller->request->query['primaryKey'] ),
+					$this->_fichiersSurDisque( $this->controller->request->query['primaryKey'] )
+				);
+				if( in_array( $basename, $existing ) ) {
+					$msgstr = "Un fichier du même nom existe déjà pour cet enregistrement.";
+					throw new RuntimeException( $msgstr );
+				}
 
-            $input = fopen( "php://input", "r" );
-            $temp = tmpfile();
-            $realSize = stream_copy_to_stream( $input, $temp );
-            fclose( $input );
+				// Tentative de création du répertoire temporaire
+				$Folder = new Folder( $dir, true, 0777 );
+				$folderErrors = $Folder->errors();
+				if( !empty( $folderErrors ) ) {
+					$msgstr = sprintf( 'Erreur lors de la création du répertoire: %s', implode( ', ', $folderErrors ) );
+					throw new RuntimeException( $msgstr );
+				}
 
-            if( $realSize != (int)$_SERVER["CONTENT_LENGTH"] ){
-                $error = '$realSize != (int)$_SERVER["CONTENT_LENGTH"]';
-            }
+				// Ouverture du flux d'entrée
+	            $input = fopen( 'php://input', 'r' );
+				if( $input === false ) {
+					throw new RuntimeException( 'Impossible d\'ouvrir le flux d\'entrée.' );
+				}
 
-            $target = fopen( $path, "w" );
-            fseek( $temp, 0, SEEK_SET );
-            stream_copy_to_stream( $temp, $target );
-            fclose( $target );
+				// Ouverture du fichier temporaire
+				$temp = tmpfile();
+				if( $temp === false ) {
+					throw new RuntimeException( 'Impossible de créer le fichier temporaire.' );
+				}
 
-			// Affichage d'une alerte si le nom de fichier existe déjà
-			$fichiersEnBase = $this->_fichiersEnBase( $this->controller->request->query['primaryKey'] );
-			$fileName = basename( $path );
-			if( in_array( $fileName, $fichiersEnBase ) ) {
-				$error = "Le fichier « {$fileName} » existe déjà pour cet enregistrement.\nDans l'état actuel des choses, l'enregistrement écrasera la version précédente.\n\nVous pouvez aussi supprimer le fichier temporaire (dans la partie supérieure de la page) et le renommer sur votre poste avant de l'envoyer à nouveau pour éviter de perdre des données.";
+				$realSize = stream_copy_to_stream( $input, $temp );
+				fclose( $input );
+
+				if( $realSize !== $contentLength ) {
+					throw new RuntimeException( '$realSize != (int)$_SERVER["CONTENT_LENGTH"]' );
+				}
+
+				$target = fopen( $path, 'w' );
+				if( $target === false ) {
+					throw new RuntimeException( sprintf( 'Impossible d\'ouvrir le fichier %s en écriture', $basename ) );
+				}
+
+				fseek( $temp, 0, SEEK_SET );
+				$finalSize = stream_copy_to_stream( $temp, $target );
+				fclose( $target );
+
+				if( $finalSize !== $contentLength ) {
+					throw new RuntimeException( '$finalSize != (int)$_SERVER["CONTENT_LENGTH"]' );
+				}
+			} catch( Exception $Exception ) {
+				$error = $Exception->getMessage();
 			}
 
-            Configure::write( 'debug', 0 );
             $this->controller->layout = false;
             echo htmlspecialchars( json_encode( ( empty( $error ) ? array( 'success' => true ) : array( 'error' => $error ) ) ), ENT_NOQUOTES );
             die();

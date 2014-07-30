@@ -1,15 +1,13 @@
 <?php
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+	}
+
 	if( $this->action == 'add' ) {
 		$this->pageTitle = 'Ajout d\'une PDO';
 	}
 	else {
 		$this->pageTitle = 'Édition de la PDO';
-	}
-
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->css( array( 'fileuploader' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( 'fileuploader.js' );
 	}
 ?>
 
