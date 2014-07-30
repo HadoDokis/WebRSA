@@ -82,9 +82,11 @@
 				'Dossier.locked' => array( 'type' => 'boolean' ),
 				"/Fichesprescriptions93/edit/#Ficheprescription93.id#" => array(
 					'disabled' => "( '#Ficheprescription93.id#' == '' || !'".$this->Permissions->check( 'Fichesprescriptions93', 'edit' )."' )",
+					'class' => 'external'
 				),
 				"/Fichesprescriptions93/index/#Personne.id#" => array(
-					'disabled' => "( !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )"
+					'disabled' => "( !'".$this->Permissions->check( 'Fichesprescriptions93', 'index' )."' )",
+					'class' => 'external'
 				),
 			),
 			array(
