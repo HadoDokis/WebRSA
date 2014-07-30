@@ -1398,7 +1398,8 @@ function toutChoisir( radios, valeur, simulate ) {
 function make_external_links() {
 	$$('a.external').each( function ( link ) {
 		$( link ).onclick = function() {
-			window.open( $( link ).href, 'external' ); return false;
+			window.open( $( link ).href, '_blank' );
+			return false;
 		};
 	} );
 }
@@ -1439,31 +1440,42 @@ function serializeTableRow( link ) {
 function observeDisableFormOnSubmit( formId, message ) {
 	message = typeof(message) != 'undefined' ? message : null;
 
+	var submits = $(formId).getElementsBySelector( '*[type=submit]' );
+
+	if( typeof submits !== 'undefined' ) {
+		$(submits).each( function( submit ) {
+			if( typeof $(submit).name === 'string' && $(submit).name.length > 0 ) {
+				Event.observe(
+					$(submit),
+					'click',
+					// Si le formulaire a été envoyé via un bouton, on l'ajoute aux données envoyées
+					function( event ) {
+						var name = 'data[' + $(submit).name + ']';
+
+						// Si d'autres éléments du même nom existent, on les supprime
+						$(formId).select( 'input[name="' + name + '"]' ).each( function( old ) {
+							$(old).remove();
+						} );
+
+						var hidden = new Element(
+							'input',
+							{
+								type: 'hidden',
+								name: name,
+								value: $(submit).value,
+							}
+						);
+						$(formId).insert( { 'top' : hidden } );
+					}
+				);
+			}
+		} );
+	}
+
 	Event.observe(
 		formId,
 		'submit',
 		function( submitter ) {
-			// Si le formulaire a été envoyé via un bouton, on l'ajoute aux données envoyées
-			var pressed = submitter.explicitOriginalTarget;
-			if( typeof pressed !== 'undefined' && typeof pressed.name !== 'undefined' ) {
-				var name = 'data[' + pressed.name + ']';
-
-				// Si d'autres éléments du même nom existent, on les supprime
-				$(this).select( 'input[name="' + name + '"]' ).each( function( old ) {
-					$(old).remove();
-				} );
-
-				var hidden = new Element(
-					'input',
-					{
-						type: 'hidden',
-						name: name,
-						value: pressed.value,
-					}
-				);
-				$(this).insert( { 'top' : hidden } );
-			}
-
 			// Ajout de l'enventuel message en haut du formaulire
 			if( typeof(message) !== 'undefined' && message !== null ) {
 				var notice = new Element( 'p', { 'class': 'notice' } ).update( message );
@@ -2127,7 +2139,14 @@ function cakeDateTimeSeparator( id, text ) {
 
 	try {
 		var hour = $( id + 'Hour' );
-		var span = new Element( 'span', {} ).update( text );
+		var oldDatetimeSeparators = $( hour ).up( 'div.input' ).down( 'span.datetime_separator' );
+
+		if( typeof $(oldDatetimeSeparators) !== 'undefined' ) {
+			$(oldDatetimeSeparators).each( function ( datetimeSeparator ) {
+				$(datetimeSeparator).remove();
+			} );
+		}
+		var span = new Element( 'span', { 'class': 'datetime_separator' } ).update( text );
 		$( hour ).insert( { 'before' : span } );
 	} catch( Exception ) {
 		console.log( Exception );
