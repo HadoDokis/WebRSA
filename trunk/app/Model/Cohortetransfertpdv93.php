@@ -379,10 +379,22 @@
 			$success = true;
 
 			$Orientstruct = ClassRegistry::init( 'Orientstruct' );
+
+			// Puisqu'on peut en fait être réorienté du Socioprofessionnel en Emploi, il va falloir aller chercher la bonne valeur de typeorient_id à partir de la structure désignée
+			$query = array(
+				'fields' => array( 'Structurereferente.typeorient_id' ),
+				'conditions' => array(
+					'Structurereferente.id' => suffix( $data['Transfertpdv93']['structurereferente_dst_id'] )
+				),
+				'contain' => false
+			);
+			$structurereferente = $Orientstruct->Structurereferente->find( 'first', $query );
+			$typeorient_id = Hash::get( $structurereferente, 'Structurereferente.typeorient_id' );
+
 			$orientstruct = array(
 				'Orientstruct' => array(
 					'personne_id' => $data['Transfertpdv93']['personne_id'],
-					'typeorient_id' => $data['Transfertpdv93']['typeorient_id'],
+					'typeorient_id' => $typeorient_id,
 					'structurereferente_id' => $data['Transfertpdv93']['structurereferente_dst_id'],
 					'date_valid' => date( 'Y-m-d' ),
 					'statut_orient' => 'Orienté',
@@ -401,58 +413,60 @@
 				debug( $Orientstruct->validationErrors );
 			}
 
-			if( $success && !empty( $data['Transfertpdv93']['structurereferente_dst_id'] ) ) {
-				$Transfertpdv93 = ClassRegistry::init( 'Transfertpdv93' );
-
-				$data['Transfertpdv93']['user_id'] = $orientstruct['Orientstruct']['user_id'];
-				$data['Transfertpdv93']['vx_orientstruct_id'] = $data['Transfertpdv93']['vx_orientstruct_id'];
-				$data['Transfertpdv93']['nv_orientstruct_id'] = $Orientstruct->id;
-
-				$Transfertpdv93->create( $data );
-				$success = $Transfertpdv93->save() && $success;
-				if( !empty( $Transfertpdv93->validationErrors ) ) {
-					debug( $Transfertpdv93->validationErrors );
-				}
-			}
-
-			// Maintenant que les données du transfert ont été enregistrées, on peut générer le bon PDF d'orientation
 			if( $success ) {
-				$success = $Orientstruct->generatePdf( $Orientstruct->id ) && $success;
-			}
+				if( !empty( $data['Transfertpdv93']['structurereferente_dst_id'] ) ) {
+					$Transfertpdv93 = ClassRegistry::init( 'Transfertpdv93' );
 
-			// Si on change de PDV, et que l'allocataire possède un D1 sans D2 dans l'ancien PDV, on enregistre automatiquement un D2
-			if( $data['Transfertpdv93']['vx_orientstruct_id'] !== $data['Transfertpdv93']['nv_orientstruct_id'] ) {
-				$questionnaired1pdv93_id = $Orientstruct->Personne->Questionnaired2pdv93->questionnairesd1pdv93Id( $data['Transfertpdv93']['personne_id'] );
-				if( !empty( $questionnaired1pdv93_id ) ) {
-					$success = $Orientstruct->Personne->Questionnaired2pdv93->saveAuto(
-						$data['Transfertpdv93']['personne_id'],
-						'changement_situation',
-						'modif_commune'
+					$data['Transfertpdv93']['user_id'] = $orientstruct['Orientstruct']['user_id'];
+					$data['Transfertpdv93']['vx_orientstruct_id'] = $data['Transfertpdv93']['vx_orientstruct_id'];
+					$data['Transfertpdv93']['nv_orientstruct_id'] = $Orientstruct->id;
+
+					$Transfertpdv93->create( $data );
+					$success = $Transfertpdv93->save() && $success;
+					if( !empty( $Transfertpdv93->validationErrors ) ) {
+						debug( $Transfertpdv93->validationErrors );
+					}
+				}
+
+				// Maintenant que les données du transfert ont été enregistrées, on peut générer le bon PDF d'orientation
+				if( $success ) {
+					$success = $Orientstruct->generatePdf( $Orientstruct->id ) && $success;
+				}
+
+				// Si on change de PDV, et que l'allocataire possède un D1 sans D2 dans l'ancien PDV, on enregistre automatiquement un D2
+				if( $success && $data['Transfertpdv93']['vx_orientstruct_id'] !== $data['Transfertpdv93']['nv_orientstruct_id'] ) {
+					$questionnaired1pdv93_id = $Orientstruct->Personne->Questionnaired2pdv93->questionnairesd1pdv93Id( $data['Transfertpdv93']['personne_id'] );
+					if( !empty( $questionnaired1pdv93_id ) ) {
+						$success = $Orientstruct->Personne->Questionnaired2pdv93->saveAuto(
+							$data['Transfertpdv93']['personne_id'],
+							'changement_situation',
+							'modif_commune'
+						) && $success;
+					}
+				}
+
+				// On clôture le référent actuel à la date
+				$count = $Orientstruct->Personne->PersonneReferent->find(
+					'count',
+					array(
+						'conditions' => array(
+							'PersonneReferent.personne_id' => $data['Transfertpdv93']['personne_id'],
+							'PersonneReferent.dfdesignation IS NULL'
+						)
+					)
+				);
+
+				$datedfdesignation = ( is_array( date( 'Y-m-d' ) ) ? date_cakephp_to_sql( date( 'Y-m-d' ) ) : date( 'Y-m-d' ) );
+
+				if( $count > 0 ) {
+					$success = $Orientstruct->Personne->PersonneReferent->updateAllUnBound(
+						array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
+						array(
+							'"PersonneReferent"."personne_id"' => $data['Transfertpdv93']['personne_id'],
+							'PersonneReferent.dfdesignation IS NULL'
+						)
 					) && $success;
 				}
-			}
-
-			// On clôture le référent actuel à la date
-			$count = $Orientstruct->Personne->PersonneReferent->find(
-				'count',
-				array(
-					'conditions' => array(
-						'PersonneReferent.personne_id' => $data['Transfertpdv93']['personne_id'],
-						'PersonneReferent.dfdesignation IS NULL'
-					)
-				)
-			);
-
-			$datedfdesignation = ( is_array( date( 'Y-m-d' ) ) ? date_cakephp_to_sql( date( 'Y-m-d' ) ) : date( 'Y-m-d' ) );
-
-			if( $count > 0 ) {
-				$success = $Orientstruct->Personne->PersonneReferent->updateAllUnBound(
-					array( 'PersonneReferent.dfdesignation' => '\''.$datedfdesignation.'\'' ),
-					array(
-						'"PersonneReferent"."personne_id"' => $data['Transfertpdv93']['personne_id'],
-						'PersonneReferent.dfdesignation IS NULL'
-					)
-				) && $success;
 			}
 
 			return $success;

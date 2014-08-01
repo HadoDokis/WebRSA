@@ -2,7 +2,6 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
--- SET client_min_messages = notice;
 SET escape_string_warning = off;
 SET search_path = public, pg_catalog;
 SET default_tablespace = '';
@@ -896,6 +895,51 @@ ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_name_in_lis
 SELECT add_missing_table_field( 'public', 'decisionscuis66', 'textmailcui66_id', 'INTEGER' );
 SELECT add_missing_constraint ( 'public', 'decisionscuis66', 'decisionscuis66_textmailcui66_id_fkey', 'textsmailscuis66', 'textmailcui66_id', false );
 SELECT add_missing_table_field( 'public', 'decisionscuis66', 'dateenvoimail', 'DATE' );
+
+--------------------------------------------------------------------------------
+-- 201407731: Correction des types d'orientations ne reflétant pas le stype de
+-- la structure référente des orientations.
+-- Après vérification dans les dump, il n'y a pas de souci entre les référents et
+-- leurs structures. Concernant les erreurs entre les structures et leurs types
+-- d'orientations, on a: cg58_20140724, 7; cg66_20140627, 1818; cg93_20140710: 133.
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.correction_orientsstructs_typeorient_id_structurereferente_id() RETURNS VOID AS
+$$
+	DECLARE
+		v_row record;
+		v_query text;
+	BEGIN
+		FOR v_row IN
+			SELECT
+					orientsstructs.id,
+					typesorientsstructuresreferentes.id AS typeorient_id
+				FROM orientsstructs
+					INNER JOIN typesorients AS typesorientsorientsstructs ON ( typesorientsorientsstructs.id = orientsstructs.typeorient_id )
+					INNER JOIN structuresreferentes ON ( structuresreferentes.id = orientsstructs.structurereferente_id )
+					INNER JOIN typesorients AS typesorientsstructuresreferentes ON ( typesorientsstructuresreferentes.id = structuresreferentes.typeorient_id )
+				WHERE
+					orientsstructs.statut_orient = 'Orienté'
+					AND orientsstructs.typeorient_id <> structuresreferentes.typeorient_id
+				ORDER BY date_valid ASC
+		LOOP
+			-- 1. Mise à jour de l'information dans la table orientsstructs
+			v_query := 'UPDATE orientsstructs SET typeorient_id = ' || v_row.typeorient_id || ' WHERE id = ' || v_row.id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+
+			-- 2. Suppression du PDF lié stocké dans la table pdfs
+			v_query := 'DELETE FROM pdfs WHERE modele = ''Orientstruct'' AND fk_value = ' || v_row.id || ';';
+			RAISE NOTICE  '%', v_query;
+			EXECUTE v_query;
+		END LOOP;
+	END;
+$$
+LANGUAGE plpgsql;
+
+SELECT public.correction_orientsstructs_typeorient_id_structurereferente_id();
+DROP FUNCTION public.correction_orientsstructs_typeorient_id_structurereferente_id();
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
