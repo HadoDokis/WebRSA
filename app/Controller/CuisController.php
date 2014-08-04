@@ -557,11 +557,11 @@
 						$dataCui['partenaire_id'] = $this->{$this->modelClass}->Partenaire->id;
 					}
 				}
-                
+
 				$this->{$this->modelClass}->create( $data );
 				$success = $this->{$this->modelClass}->save() && $success;
-                
-                
+
+
 
 				// Nettoyage des Periodes d'immersion
 				$keys = array_keys( $this->Cui->Accompagnementcui66->schema() );
@@ -587,8 +587,8 @@
 						$success = $this->{$this->modelClass}->Accompagnementcui66->save() && $success;
 					}
 				}
-                
-                
+
+
 				if( $success ) {
                     if( $this->action == 'edit') {
                         $positioncui66 = $this->Cui->calculPosition($data);
@@ -600,7 +600,7 @@
                             )
                         ) && $success;
                     }
-                    
+
 					$this->{$this->modelClass}->commit(); //FIXME
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -622,21 +622,21 @@
                 if( $this->action == 'edit' && $this->request->data['Cui']['sendmailemployeur'] == '1' ) {
                     $isDossierComplet = $this->Cui->isDossierComplet($this->request->data);
                     $isRecu = $this->request->data['Cui']['dossierrecu'];
-                    
+
                 }
-                
+
 			}
 
             // Liste des pièces liées au mail, paramétrées dans l'application
             $piecesmailscuis66 = $this->Cui->Piecemailcui66->find( 'list');
             $this->set( 'piecesmailscuis66', $piecesmailscuis66);
-            
+
             // Liste des modèles de mail pour les employeurs paramétrés  dans l'application
             $textsmailscuis66 = $this->Cui->Textmailcui66->find('list');
             $this->set( 'textsmailscuis66', $textsmailscuis66);
-            
 
-            
+
+
 			$this->_setOptions();
 			$this->set( 'nbCui', $nbCui );
             $this->set( 'isDossierComplet', $isDossierComplet );
@@ -858,9 +858,9 @@
 			}
 			$this->set( 'urlmenu', '/cuis/index/'.$personne_id );
 		}
-        
-        
-        
+
+
+
         /**
 		 * Permet d'envoyer un mail à l'employeur en lien avec le CUI
 		 *
@@ -874,7 +874,7 @@
 
             $dossier_id = $this->Cui->dossierId( $id );
 			$this->Jetons2->get( $dossier_id );
-            
+
             $cui = $this->Cui->find(
                 'first',
                 array(
@@ -895,7 +895,7 @@
                     'contain' => false
                 )
             );
-            
+
             $user = $this->Cui->User->find(
                 'first',
                  array(
@@ -909,9 +909,9 @@
             $this->set( 'cui', $cui);
 
             $this->assert( !empty( $cui ), 'error404' );
-            
+
             /*********/
-            
+
             // On transforme les champs de type date en format JJ/MM/AAAA
             $schema = $this->Cui->schema();
             foreach( $schema as $field => $params ) {
@@ -929,17 +929,17 @@
                 $mailBodySend = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
             }
             $this->set( 'mailBodySend', $mailBodySend);
-            
+
             /**********/
-            
+
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
-            
+
             if( !empty( $this->request->data) ) {
-                
+
                 $this->Cui->begin();
 
                 if( !isset( $cui['Partenaire']['email'] ) || empty( $cui['Partenaire']['email'] ) ) {
@@ -973,7 +973,7 @@
                     $this->log( $e->getMessage(), LOG_ERROR );
                     $success = false;
                 }
-                
+
                 if( $success ) {
                     $success = $this->Cui->updateAllUnBound(
                             array( 'Cui.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoimail'] ).'\'' ),
@@ -1001,8 +1001,8 @@
 
             }
         }
-        
-        
+
+
 		/**
 		 * Imprime une synthèse du CUI.
 		 *
