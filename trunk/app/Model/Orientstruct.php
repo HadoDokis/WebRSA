@@ -1497,6 +1497,10 @@
 				}
 			}
 
+			if( $return === false ) {
+				$this->log( Hash::get( $_SERVER, 'REQUEST_URI' ).': '.var_export( $this->data, true ), LOG_ERROR );
+			}
+
 			return $return;
 		}
 	}
