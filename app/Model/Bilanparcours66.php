@@ -9,10 +9,10 @@
 	 */
 
 	/**
-	* Bilan de parcours pour le conseil général du département 66.
-	*
-	* @package app.Model
-	*/
+	 * Bilan de parcours pour le conseil général du département 66.
+	 *
+	 * @package app.Model
+	 */
 	class Bilanparcours66 extends AppModel
 	{
 		public $name = 'Bilanparcours66';
@@ -21,8 +21,6 @@
 
 		public $actsAs = array(
 			'Allocatairelie',
-//			'Autovalidate2',
-//			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
 					'structurereferente_id',
@@ -110,75 +108,29 @@
 				)
 			),
 			'avecep_typeorientprincipale_id' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'nvtypeorient_id' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'nvstructurereferente_id' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'traitement', 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
 			'choixparcours' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'typeformulaire', true, array( 'pe' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'parcours', 'parcourspe' ) ),
 					'message' => 'Champ obligatoire',
 				)
 			),
-// 			'duree_engag' => array(
-// 				array(
-// 					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-// 					'message' => 'Champ obligatoire',
-// 				),
-// //				array(
-// //					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-// //					'message' => 'Champ obligatoire',
-// //				)
-// 			),
-//			'ddreconductoncontrat' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				)
-//			),
-//			'dfreconductoncontrat' => array(
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefsansep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				),
-//				array(
-//					'rule' => array( 'notEmptyIf', 'changementrefavecep', true, array( 'N' ) ),
-//					'message' => 'Champ obligatoire',
-//				)
-//			)
 			'examenaudition' => array(
 				array(
 					'rule' => array( 'notEmptyIf', 'proposition', true, array( 'audition' ) ),
@@ -362,9 +314,10 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param array $options
+		 * @return mixed
+		 */
 		public function beforeSave( $options = array() ) {
 			$return = parent::beforeSave( $options );
 
@@ -389,9 +342,10 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @param array $data
+		 * @return string
+		 */
 		protected function _calculPositionBilan( $data ){
 			// Si on nous donne la position du bilan, on ne la recalcule pas
 			if( isset( $data[$this->alias]['positionbilan'] ) && !empty( $data[$this->alias]['positionbilan'] ) ) {
@@ -410,10 +364,13 @@
 		}
 
 		/**
-		* Récupère une liste des ids des bilans de parcours à partir d'une liste d'ids
-		* d'entrées de passages en commissions EP.
-		*/
-
+		 * Récupère une liste des ids des bilans de parcours à partir d'une liste
+		 * d'ids d'entrées de passages en commissions EP.
+		 *
+		 * @param string $modeleThematique
+		 * @param array $passagescommissionseps_ids
+		 * @return array
+		 */
 		protected function _bilansparcours66IdsDepuisPassagescommissionsepsIds( $modeleThematique, $passagescommissionseps_ids ) {
 			return $this->{$modeleThematique}->find(
 				'list',
@@ -450,10 +407,15 @@
 		}
 
 		/**
-		* Mise à jour de la position du bilan de parcours à partir de la cohorte de
-		* décisions (niveau EP ou niveau CG) des EPs.
-		*/
-
+		 * Mise à jour de la position du bilan de parcours à partir de la cohorte de
+		 * décisions (niveau EP ou niveau CG) des EPs.
+		 *
+		 * @param string $modeleThematique
+		 * @param array $datas
+		 * @param string $niveauDecision
+		 * @param array $passagescommissionseps_ids
+		 * @return boolean
+		 */
 		public function updatePositionBilanDecisionsEp( $modeleThematique, $datas, $niveauDecision, $passagescommissionseps_ids ) {
 			$success = true;
 
@@ -517,20 +479,18 @@
 		}
 
 		/**
-		* Sauvegarde du bilan de parcours d'un allocataire.
-		*
-		* Le bilan de parcours entraîne:
-		*	- pour le thème réorientation/saisinesbilansparcourseps66
-		*		* soit un maintien de l'orientation, sans passage en EP
-		*		* soit une saisine de l'EP locale, commission parcours
-		*
-		* @param array $data Les données du bilan à sauvegarder.
-		* @return boolean True en cas de succès, false sinon.
-		* @access public
-		*/
-
+		 * Sauvegarde du bilan de parcours d'un allocataire.
+		 *
+		 * Le bilan de parcours entraîne:
+		 * 	- pour le thème réorientation/saisinesbilansparcourseps66
+		 * 		* soit un maintien de l'orientation, sans passage en EP
+		 * 		* soit une saisine de l'EP locale, commission parcours
+		 *
+		 * @param array $data Les données du bilan à sauvegarder.
+		 * @return boolean True en cas de succès, false sinon.
+		 * @access public
+		 */
 		public function sauvegardeBilan( $data ) {
-
 			if ( isset( $data['Pe']['Bilanparcours66']['id'] ) ) {
 				$id = $data['Pe']['Bilanparcours66']['id'];
 				unset( $data['Pe']['Bilanparcours66']['id'] );
@@ -546,7 +506,6 @@
 			}
 
 			$data[$this->alias]['saisineepparcours'] = ( @$data[$this->alias]['proposition'] == 'parcours' );
-// debug($data);
 
 			// Calcul et mise à jour de la position du bilan
 			$data[$this->alias]['positionbilan'] = $this->_calculPositionBilan( $this->data );
@@ -564,19 +523,18 @@
 		}
 
 		/**
-		* Sauvegarde d'un maintien de l'orientation d'un allocataire suite au bilan de parcours.
-		*
-		* Un maintien de l'orientation entraîne la création d'une nouvelle orientation,
-		* la création d'un nouveau CER. Ces nouvelles entrées sont des copies des
-		* anciennes (les dates changent).
-		*
-		* @param array $data Les données du bilan à sauvegarder.
-		* @return boolean True en cas de succès, false sinon.
-		* @access public
-		*
-		* FIXME: modification du bilan
-		*/
-
+		 * Sauvegarde d'un maintien de l'orientation d'un allocataire suite au bilan de parcours.
+		 *
+		 * Un maintien de l'orientation entraîne la création d'une nouvelle orientation,
+		 * la création d'un nouveau CER. Ces nouvelles entrées sont des copies des
+		 * anciennes (les dates changent).
+		 *
+		 * @param array $data Les données du bilan à sauvegarder.
+		 * @return boolean True en cas de succès, false sinon.
+		 * @access public
+		 *
+		 * FIXME: modification du bilan
+		 */
 		public function maintien( $data ) {
 			$data[$this->alias]['saisineepparcours'] = ( empty( $data[$this->alias]['maintienorientation'] ) ? '1' : '0' );
 			$data[$this->alias]['positionbilan'] = 'traite';
@@ -635,11 +593,6 @@
                                 )
                             );
 
-
-        // 					if( empty( $vxContratinsertion ) ) {
-        // 						$this->invalidate( 'changementref', 'Cette personne ne possède aucune contrat d\'insertion validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-        // 						return false;
-        // 					}
                             if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
                                 $this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
                                 return false;
@@ -651,6 +604,7 @@
 
                             $rgorient = $this->Orientstruct->rgorientMax( $vxOrientstruct['Orientstruct']['personne_id'] ) + 1;
                             $origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
+							$referent_id = ( $vxOrientstruct['Orientstruct']['structurereferente_id'] == $structurereferente_id ? $vxOrientstruct['Orientstruct']['referent_id'] : null );
 
                             // Sauvegarde de la nouvelle orientation
                             $orientstruct = array(
@@ -658,7 +612,7 @@
                                     'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
                                     'typeorient_id' => $typeorient_id,
                                     'structurereferente_id' => $structurereferente_id,
-                                    'referent_id' => $vxOrientstruct['Orientstruct']['referent_id'],
+                                    'referent_id' => $referent_id,
                                     'date_propo' => date( 'Y-m-d' ),
                                     'date_valid' => date( 'Y-m-d' ),
                                     'statut_orient' => 'Orienté',
@@ -719,8 +673,6 @@
                             $dureeEngagReconductionCER = value( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
                             $dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
 
-    // 						debug(var_export($dureeEngagReconductionCER, true));
-
                             // Si les champs de reconduction ne sont pas renseignés,
                             // on empêche l'enregistrement du bilan
                             if( empty( $dureeEngagReconductionCER ) ) {
@@ -738,7 +690,6 @@
                                 $contratinsertion['Contratinsertion']['cumulduree'] = $dureeEngagReconductionCER;
                             }
                             // Fin test correction FIXME
-
 
                             if( ( $nbCumulDureeCER66 + $dureeEngagReconductionCER ) > 24 && $contratinsertion['Contratinsertion']['cumulduree'] > 24 ){
                                 $this->invalidate( 'duree_engag', 'La durée du CER sélectionnée dépasse la limite des 24 mois de contractualisation autorisée pour une orientation en SOCIAL' );
@@ -771,7 +722,7 @@
                                 'personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
                                 'typeorient_id' => $typeorient_id,
                                 'structurereferente_id' => $structurereferente_id,
-                                'referent_id' => $vxOrientstruct['Orientstruct']['referent_id'],
+                                'referent_id' => null,
                                 'date_propo' => date( 'Y-m-d' ),
                                 'date_valid' => date( 'Y-m-d' ),
                                 'statut_orient' => 'Orienté',
@@ -780,9 +731,9 @@
                                 'origine' => $origine,
                             )
                         );
+
                         $this->Orientstruct->create( $orientstruct );
                         $success = $this->Orientstruct->save() && $success;
-
 
                         $data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
                         $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
@@ -810,19 +761,18 @@
 		}
 
 		/**
-		* Sauvegarde du bilan de parcours, ainsi que d'une saisine d'EP suite
-		* à ce bilan de parcours. La saisine entraîne la création d'un dossier
-		* d'EP.
-		*
-		* @param array $data Les données du bilan à sauvegarder.
-		* @return boolean True en cas de succès, false sinon.
-		* @access public
-		*
-		* TODO: comment finaliser l'orientation précédente ?
-		* TODO: pouvoir envoyer la cause d'échec (ex.: $vxContratinsertion non
-		*       trouvé avec ces critères) depuis les règles de validation.
-		*/
-
+		 * Sauvegarde du bilan de parcours, ainsi que d'une saisine d'EP suite
+		 * à ce bilan de parcours. La saisine entraîne la création d'un dossier
+		 * d'EP.
+		 *
+		 * @param array $data Les données du bilan à sauvegarder.
+		 * @return boolean True en cas de succès, false sinon.
+		 * @access public
+		 *
+		 * TODO: comment finaliser l'orientation précédente ?
+		 * TODO: pouvoir envoyer la cause d'échec (ex.: $vxContratinsertion non
+		 *       trouvé avec ces critères) depuis les règles de validation.
+		 */
 		public function saisine( $data ) {
 
 			// Saisine parcours
@@ -864,7 +814,6 @@
 							)
 						);
 
-
 						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
 						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Cui->find(
@@ -879,19 +828,12 @@
 							)
 						);
 
-
-
-
 						if( ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
 							if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
 								$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
 								return false;
 							}
 						}
-// 						if( empty( $vxContratinsertion ) && ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
-// 							$this->invalidate( 'changementref', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-// 							return false;
-// 						}
 
 						// Sauvegarde du bilan
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
@@ -910,7 +852,7 @@
 					if( isset( $data['Bilanparcours66']['changementrefavecep'] ) ) {
 						$data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefavecep'];
 					}
-// debug( $data );
+
 					$this->create( $data );
 					$success = $this->save() && $success;
 
@@ -955,7 +897,6 @@
 					if ( isset( $data['Bilanparcours66']['reorientation'] ) ) {
 						$data['Saisinebilanparcoursep66']['reorientation'] = $data['Bilanparcours66']['reorientation'];
 					}
-
 
 					$this->Saisinebilanparcoursep66->create( $data );
 					$success = $this->Saisinebilanparcoursep66->save() && $success;
@@ -1052,8 +993,6 @@
 							}
 						}
 
-
-
 						$this->create( $data );
 						$success = $this->save() && $success;
 
@@ -1077,7 +1016,6 @@
 						$success = $this->Defautinsertionep66->save() && $success;
 					}
 					else {
-
 						$vxOrientstruct = $this->Orientstruct->find(
 							'first',
 							array(
@@ -1118,12 +1056,6 @@
 								'recursive' => -1
 							)
 						);
-
-						// FIXME: erreur pas dans choixparcours
-// 						if( $data[$this->alias]['examenaudition'] != 'DOD' && empty( $vxContratinsertion ) ) {
-// 							$this->invalidate( 'examenaudition', 'Cette personne ne possède aucun CER validé dans une structure référente liée à celle de sa dernière orientation validée.' );
-// 							return false;
-// 						}
 
 						//Passage en EPL Audition pour non respect
 						if( $data[$this->alias]['examenaudition'] != 'DOD' ) {
@@ -1282,9 +1214,12 @@
 		}
 
 		/**
-		* Retourne le chemin relatif du modèle de document à utiliser pour l'enregistrement du PDF.
-		*/
-
+		 * Retourne le chemin relatif du modèle de document à utiliser pour
+		 * l'enregistrement du PDF.
+		 *
+		 * @param array $data
+		 * @return string
+		 */
 		public function modeleOdt( $data ) {
 			return "Bilanparcours/bilanparcours.odt";
 		}
@@ -1433,10 +1368,10 @@
 		}
 
 		/**
-		*
-		*
-		*/
-
+		 *
+		 * @param integer $id
+		 * @return string
+		 */
 		public function getDefaultPdf( $id ) {
 			$data = $this->getDataForPdf( $id );
 			$modeleodt = $this->modeleOdt( $data );
@@ -1453,10 +1388,6 @@
 			if( !empty( $data['Bilanparcours66']['examenauditionpe'] ) ){
 				$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
 			}
-// 			$data['Bilanparcours66']['examenaudition_value'] = $data['Bilanparcours66']['examenaudition'];
-// 			$data['Bilanparcours66']['choixparcours_value'] = $data['Bilanparcours66']['choixparcours'];
-			// Pour les données de Pôle emploi
-// 			$data['Bilanparcours66']['examenauditionpe_value'] = $data['Bilanparcours66']['examenauditionpe'];
 
             // FIXME: MAJ du champ changement de référent pour l'impression du bilan
             if( $proposition == 'aucun' ) {
@@ -1498,13 +1429,16 @@
 		}
 
 		/**
-		*	On cherche le nombre de dossiers d'EP pour une personne concernant une thématique donnée
-		*	qui :
-		*		- ne sont pas liés à un passage en EP (non lié à une commission)
-		*		OU
-		*		- sont liés à un passage en EP (lié à une commission) ET qui sont dans l'état traité ou annulé
-		*
-		*/
+		 * 	On cherche le nombre de dossiers d'EP pour une personne concernant une thématique donnée
+		 * 	qui :
+		 * 		- ne sont pas liés à un passage en EP (non lié à une commission)
+		 * 		OU
+		 * 		- sont liés à un passage en EP (lié à une commission) ET qui sont dans l'état traité ou annulé
+		 *
+		 * @param string $themeep
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
 		public function ajoutPossibleThematique66( $themeep, $personne_id ) {
 			$Dossierep = ClassRegistry::init( 'Dossierep' );
 			$count = $Dossierep->find(
@@ -1558,7 +1492,6 @@
 		 * @return array
 		 */
 		public function dataView( $bilanparcours66_id ) {
-
 			$Informationpe = ClassRegistry::init( 'Informationpe' );
 
 
@@ -1610,7 +1543,6 @@
 					'fields' => array_merge(
 						$this->fields(),
 						$this->Personne->fields(),
-// 						$this->Structurereferente->fields(),
 						$this->Referent->fields(),
 						$this->Orientstruct->fields(),
 						$this->Personne->Foyer->fields(),
@@ -1796,13 +1728,14 @@
 					'contain' => false
 				)
 			);
-// debug($data);
+
 			return $data;
 		}
 
 		/**
-		 *	Liste des options envoyées à la vue pour le Bilan de parcours 66
-		 * 	@return array
+		 * Liste des options envoyées à la vue pour le Bilan de parcours 66
+		 *
+		 * @return array
 		 */
 		public function optionsView() {
 			// Options

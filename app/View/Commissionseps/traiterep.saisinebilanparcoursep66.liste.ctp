@@ -84,7 +84,10 @@ $typeorientemploiId = $typeorientprincipale['Emploi'][0];
 					$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select' ) ),
 					( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
-				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
+				array(
+					$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select' ) ),
+					( !empty( $this->validationErrors['Decisionsaisinebilanparcoursep66'][$i]['referent_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.checkcomm", array( 'label' =>false, 'type' => 'checkbox' ) ).
 				$this->Form->input( "Decisionsaisinebilanparcoursep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,

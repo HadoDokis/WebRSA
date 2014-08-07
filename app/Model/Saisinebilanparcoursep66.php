@@ -23,6 +23,7 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
+			'Dependencies',
 			'ValidateTranslate',
 			'Formattable' => array(
 				'suffix' => array(
@@ -99,6 +100,21 @@
 			'%s/decision_reorientation.odt',
 			'%s/decision_reporte.odt',
 			'%s/decision_annule.odt',
+		);
+
+		public $validate = array(
+			'structurereferente_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
+				),
+			),
 		);
 
 		/**

@@ -477,8 +477,7 @@
 					'fax' => NULL,
 					'email' => NULL,
 					'created' => NULL,
-					'modified' => NULL,
-					'actioncandidat_personne_id' => NULL,
+					'modified' => NULL
 				),
 				'Referent' => array(
 					'structurereferente_id' => 1,
@@ -507,6 +506,18 @@
 					'Documentbeneffp93' => array( ),
 				),
 			);
+
+			$unset = array(
+				'Ficheprescription93.actioncandidat_personne_id',
+				'Prestatairehorspdifp93.actioncandidat_personne_id'
+			);
+			foreach( $unset as $path ) {
+				list( $modelName, $fieldName ) = explode( '.', $path );
+
+				unset( $result[$modelName][$fieldName] );
+				unset( $expected[$modelName][$fieldName] );
+			}
+
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 

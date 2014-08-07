@@ -21,19 +21,20 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'ValidateTranslate',
+			'Dependencies',
+			'Enumerable' => array(
+				'fields' => array(
+					'etapecov',
+					'decisioncov'
+				)
+			),
 			'Formattable' => array(
 				'suffix' => array(
 					'structurereferente_id',
 					'referent_id'
 				)
 			),
-			'Enumerable' => array(
-				'fields' => array(
-					'etapecov',
-					'decisioncov'
-				)
-			)
+			'ValidateTranslate',
 		);
 
 		public $belongsTo = array(
@@ -92,7 +93,7 @@
 		 */
 		public $validateFinalisation = array(
 			'decisioncov' => array(
-				array(
+				'notEmpty' => array(
 					'rule' => array( 'notEmpty' )
 				)
 			),
@@ -106,6 +107,16 @@
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'refuse' ) ),
 					'message' => 'Champ obligatoire',
+				),
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
 				),
 			),
 		);

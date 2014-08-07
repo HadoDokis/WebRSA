@@ -68,7 +68,10 @@ echo '<table>
 					$this->Form->input( "Decisiondefautinsertionep66.{$i}.structurereferente_id", array( 'label' => false, 'options' => $structuresreferentes, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['structurereferente_id'] ) ),
 					( !empty( $this->validationErrors['Decisiondefautinsertionep66'][$i]['structurereferente_id'] ) ? array( 'class' => 'error' ) : array() )
 				),
-				$this->Form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) ),
+				array(
+					$this->Form->input( "Decisiondefautinsertionep66.{$i}.referent_id", array( 'label' => false, 'options' => $referents, 'empty' => true, 'type' => 'select', 'value' => @$decisionsdefautsinsertionseps66[$i]['referent_id'] ) ),
+					( !empty( $this->validationErrors['Decisiondefautinsertionep66'][$i]['referent_id'] ) ? array( 'class' => 'error' ) : array() )
+				),
 				$this->Form->input( "Decisiondefautinsertionep66.{$i}.commentaire", array( 'label' =>false, 'type' => 'textarea' ) ).
 				$hiddenFields,
 				array( $this->Xhtml->link( 'Voir', array( 'controller' => 'dossiers', 'action' => 'view', $dossierep['Personne']['Foyer']['dossier_id'] ), array( 'class' => 'external' ) ), array( 'class' => 'button view' ) )
@@ -85,7 +88,7 @@ echo '<table>
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
 			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId', 'Decisiondefautinsertionep66<?php echo $i?>TypeorientId' );
 			try { $( 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' ).onchange(); } catch(id) { }
-			
+
 			dependantSelect( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId', 'Decisiondefautinsertionep66<?php echo $i?>StructurereferenteId' );
 			try { $( 'Decisiondefautinsertionep66<?php echo $i?>ReferentId' ).onchange(); } catch(id) { }
 
@@ -102,7 +105,7 @@ echo '<table>
 				],
 				false
 			);
-			
+
 			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
 				if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
 					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
@@ -111,7 +114,7 @@ echo '<table>
 					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).hide();
 				}
 			} );
-			
+
 			if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
 				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
 			}

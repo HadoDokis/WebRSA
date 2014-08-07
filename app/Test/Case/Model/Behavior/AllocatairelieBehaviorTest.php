@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses( 'AllocatairelieBehavior', 'Model/Behavior' );
+	Configure::write( 'Cg.departement', 93 );
 
 	/**
 	 * La classe AllocatairelieBehaviorTest réalise les tests unitaires de la
@@ -91,7 +92,7 @@
 		/**
 		 * Test de la méthode AllocatairelieBehavior::personneId() lorsque des
 		 * jointures ont été définies dans la configuration.
-                 * 
+                 *
                  * @medium
 		 */
 		public function testPersonneIdJoins() {
@@ -132,7 +133,7 @@
 		/**
 		 * Test de la méthode AllocatairelieBehavior::dossierId() lorsque des
 		 * jointures ont été définies dans la configuration.
-                 * 
+                 *
                  * @medium
 		 */
 		public function testDossierIdJoins() {

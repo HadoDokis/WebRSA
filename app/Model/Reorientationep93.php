@@ -23,13 +23,7 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable' => array(
-				'suffix' => array(
-					'structurereferente_id',
-					'referent_id',
-				)
-			),
+			'Dependencies',
 			'Enumerable' => array(
 				'fields' => array(
 					'accordaccueil',
@@ -37,7 +31,14 @@
 					'urgent',
 				)
 			),
-			'Gedooo.Gedooo'
+			'Formattable' => array(
+				'suffix' => array(
+					'structurereferente_id',
+					'referent_id',
+				)
+			),
+			'Gedooo.Gedooo',
+			'ValidateTranslate',
 		);
 
 		public $belongsTo = array(
@@ -112,6 +113,21 @@
 			'%s/decision_refuse.odt',
 			'%s/decision_annule.odt',
 			'%s/decision_reporte.odt',
+		);
+
+		public $validate = array(
+			'structurereferente_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
+				),
+			),
 		);
 
 		/**
@@ -331,17 +347,11 @@
 
 					if( !empty( $dernierCerId ) ) {
 						// Clôture anticipée du dernier CER
-						$this->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
+						$success = $success && $this->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
 							array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
 							array( 'Contratinsertion.id' => $dernierCerId['Contratinsertion']['id'] )
 						);
 					}
-
-					// TODO
-					/*	$this->Orientstruct->Personne->Cui->updateAllUnBound(
-						array( 'Cui.datefincontrat' => "'".date( 'Y-m-d' )."'" )
-// 						array( '"Cui"."datefincontrat" IS NULL' )
-					) ;*/
 
 					// Fin de désignation du référent de la personne
 					$this->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
