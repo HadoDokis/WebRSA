@@ -22,14 +22,7 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable' => array(
-				'suffix' => array(
-					'typeorient_id',
-					'structurereferente_id',
-					'referent_id'
-				)
-			),
+			'Dependencies',
 			'Enumerable' => array(
 				'fields' => array(
 					'etape',
@@ -38,7 +31,15 @@
 					'changementrefparcours',
 					'reorientation'
 				)
-			)
+			),
+			'Formattable' => array(
+				'suffix' => array(
+					'typeorient_id',
+					'structurereferente_id',
+					'referent_id'
+				)
+			),
+			'ValidateTranslate',
 		);
 
 		public $belongsTo = array(
@@ -100,6 +101,16 @@
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'maintien', 'reorientation' ) ),
 					'message' => 'Champ obligatoire',
+				),
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
 				),
 			),
 			'changementrefparcours' => array(

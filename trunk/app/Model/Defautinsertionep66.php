@@ -544,7 +544,8 @@
 
 				// On nettoie les enregistements ne contenant que l'underscore
 				foreach( array( 'referent_id', 'structurereferente_id' ) as $fieldName ) {
-					if( $formData['Decisiondefautinsertionep66'][$key][$fieldName] == '_' ) {
+					$fieldValue = Hash::get( $formData, "Decisiondefautinsertionep66.{$key}.{$fieldName}" );
+					if( $fieldValue === '_' ) {
 						$formData['Decisiondefautinsertionep66'][$key][$fieldName] = null;
 					}
 				}
@@ -616,63 +617,11 @@
 			foreach( $dossierseps as $i => $dossierep ) {
 				if( $niveauDecisionFinale == "decision{$etape}" ) {
 					$defautinsertionep66 = array( 'Defautinsertionep66' => $dossierep['Defautinsertionep66'] );
-// 					if( !isset( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'] ) ) {
-// 						$success = false;
-// 					}
+
 					$defautinsertionep66['Defautinsertionep66']['decision'] = @$dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['decision'];
 
 					// Si réorientation, alors passage en EP Parcours "Réorientation ou maintien d'orientation"
 					if( in_array( $defautinsertionep66['Defautinsertionep66']['decision'], $this->decisionsEplParcours ) ) {
-						$oBilanparcours66 = ClassRegistry::init( 'Bilanparcours66' );
-
-						$orientsstruct = $oBilanparcours66->Orientstruct->find(
-							'first',
-							array(
-								'fields' => array(
-									'Orientstruct.id',
-									'Orientstruct.typeorient_id',
-									'Orientstruct.structurereferente_id',
-									'Orientstruct.referent_id'
-								),
-								'conditions' => array(
-									'Orientstruct.personne_id' => $dossierep['Dossierep']['personne_id'],
-									'Orientstruct.statut_orient' => 'Orienté',
-									'Orientstruct.date_valid IS NOT NULL',
-								),
-								'order' => array( 'Orientstruct.date_valid DESC' ),
-								'contain' => false
-							)
-						);
-                        $referent_id = Hash::get( $orientsstruct, 'Orientstruct.referent_id' );
-
-						// FIXME: si on ne trouve pas l'orientation ?
-
-						// FIXME: referent_id -> champ obligatoire
-						// FIXME: si la structure ne possède pas de référent ???
-						if( empty( $orientsstruct['Orientstruct']['referent_id'] ) ) {
-							$bilanparcours66 = $oBilanparcours66->find(
-								'first',
-								array(
-									'fields' => array(
-										'Bilanparcours66.orientstruct_id',
-										'Bilanparcours66.structurereferente_id',
-										'Bilanparcours66.referent_id'
-									),
-									'conditions' => array(
-										'Bilanparcours66.id' => $dossierep['Defautinsertionep66']['bilanparcours66_id']
-									),
-									'contain' => false
-								)
-							);
-
-							if( !empty( $bilanparcours66 ) ) {
-								$referent_id = $bilanparcours66['Bilanparcours66']['referent_id'];
-							}
-						}
-						else {
-							$referent_id = $orientsstruct['Orientstruct']['referent_id'];
-						}
-
 						// En cas de demande de réorientation, l'EPL Audition va statuer et générer l'orientation
 						$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep['Dossierep']['personne_id'] ) + 1;
 						$origine = ( $rgorient > 1 ? 'reorientation' : 'cohorte' );
@@ -681,8 +630,8 @@
 							'Orientstruct' => array(
 								'personne_id' => $dossierep['Dossierep']['personne_id'],
 								'typeorient_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['typeorient_id'],
-								'structurereferente_id' => $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'],
-								'referent_id' => $referent_id,
+								'structurereferente_id' => suffix( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['structurereferente_id'] ),
+								'referent_id' => suffix( $dossierep['Dossierep']['Passagecommissionep'][0]['Decisiondefautinsertionep66'][0]['referent_id'] ),
 								'date_propo' => date( 'Y-m-d' ),
 								'date_valid' => date( 'Y-m-d' ),
 								'statut_orient' => 'Orienté',
@@ -695,15 +644,13 @@
 						$success = $this->Bilanparcours66->Orientstruct->save() && $success;
 
 						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-						$success = $this->updateAllUnBound(
+						$success = $success && $this->updateAllUnBound(
 							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
 							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-						) && $success;
-
+						);
 					}
 
 					//	Ancien emplacement de la génération du dossierpcg66
-
 					$this->create( $defautinsertionep66 );
 					$success = $this->save() && $success;
 				}

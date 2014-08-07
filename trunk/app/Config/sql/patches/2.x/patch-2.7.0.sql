@@ -901,7 +901,7 @@ SELECT add_missing_table_field( 'public', 'decisionscuis66', 'dateenvoimail', 'D
 -- la structure référente des orientations.
 -- Après vérification dans les dump, il n'y a pas de souci entre les référents et
 -- leurs structures. Concernant les erreurs entre les structures et leurs types
--- d'orientations, on a: cg58_20140724, 7; cg66_20140627, 1818; cg93_20140710: 133.
+-- d'orientations, on a: 7@cg58_20140724, 1818@cg66_20140627, 133@cg93_20140710.
 --------------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION public.correction_orientsstructs_typeorient_id_structurereferente_id() RETURNS VOID AS
@@ -939,6 +939,26 @@ LANGUAGE plpgsql;
 
 SELECT public.correction_orientsstructs_typeorient_id_structurereferente_id();
 DROP FUNCTION public.correction_orientsstructs_typeorient_id_structurereferente_id();
+
+--------------------------------------------------------------------------------
+
+/**
+* 20140805: Correction: lorsque le référent attaché à une orientation n'appartient
+* pas à la structure référente stockée dans l'orientation, on le passe à NULL.
+* 0@cg58_20140724, 813@cg66_20140627, 33@cg93_20140710
+*/
+-- TODO: supprimer les PDFs aussi, et les faire regénérer
+UPDATE orientsstructs SET referent_id = NULL WHERE id IN (
+	SELECT
+			o.id
+		FROM orientsstructs AS o
+			INNER JOIN structuresreferentes AS structuresreferenteso ON ( structuresreferenteso.id = o.structurereferente_id )
+			INNER JOIN referents ON ( referents.id = o.referent_id )
+			INNER JOIN structuresreferentes AS structuresreferentesreferents ON ( structuresreferentesreferents.id = referents.structurereferente_id )
+		WHERE
+			o.statut_orient = 'Orienté'
+			AND o.structurereferente_id <> referents.structurereferente_id
+);
 
 -- *****************************************************************************
 COMMIT;

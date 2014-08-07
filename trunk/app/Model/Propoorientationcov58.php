@@ -34,24 +34,43 @@
 		public $actsAs = array(
 			'Autovalidate2',
 			'Containable',
+			'Dependencies',
 			'Formattable' => array(
-				'suffix' => array( 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id' ),
+				'suffix' => array(
+					'typeorient_id', 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id'
+				),
 			),
 			'Gedooo.Gedooo'
 		);
 
 		public $validate = array(
-			'structurereferente_id' => array(
-				array(
-					'rule' => array( 'choixStructure', 'statut_orient' ),
-					'message' => 'Champ obligatoire'
-				)
-			),
 			'typeorient_id' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => 'Champ obligatoire'
 				)
+			),
+			'structurereferente_id' => array(
+				'choixStructure' => array(
+					'rule' => array( 'choixStructure', 'statut_orient' ),
+					'message' => 'Champ obligatoire'
+				),
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
+				),
+			),
+			'referentorientant_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referentorientant', 'Structureorientante', 'Structurereferente' ),
+					'message' => 'La référent orientant n\'appartient pas à la structure chargée de l\'évaluation',
+				),
 			),
 			'date_propo' => array(
 				'notEmpty' => array(
@@ -64,7 +83,7 @@
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
 				)
-			)
+			),
 		);
 
 		public $belongsTo = array(
@@ -560,11 +579,10 @@
 							) && $success;
 						}
 						else if( $values['decisioncov'] == 'refuse' ) {
-							$referent_id = null;
-							if( strstr( $values['referent_id'],  '_' ) !== false ) {
-								list($structurereferente_id, $referent_id) = explode('_', $values['referent_id']);
-							}
-							@list($typeorient_id, $structurereferente_id) = @explode('_', $values['structurereferente_id']);
+							$typeorient_id = suffix( $values['typeorient_id'] );
+							$structurereferente_id = suffix( $values['structurereferente_id'] );
+							$referent_id = suffix( $values['referent_id'] );
+
 							$data[$modelDecisionName][$key]['typeorient_id'] = $typeorient_id;
 							$data[$modelDecisionName][$key]['structurereferente_id'] = $structurereferente_id;
 							$data[$modelDecisionName][$key]['referent_id'] = $referent_id;

@@ -20,14 +20,14 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'ValidateTranslate',
+			'Dependencies',
 			'Formattable' => array(
 				'suffix' => array(
-					'typeorient_id',
-					'structurereferente_id'
+					'typeorient_id', 'structurereferente_id', 'referent_id', 'structureorientante_id', 'referentorientant_id'
 				)
 			),
-			'Gedooo.Gedooo'
+			'Gedooo.Gedooo',
+			'ValidateTranslate'
 		);
 
 		public $belongsTo = array(
@@ -65,7 +65,21 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			'Structureorientante' => array(
+				'className' => 'Structurereferente',
+				'foreignKey' => 'structureorientante_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Referentorientant' => array(
+				'className' => 'Referent',
+				'foreignKey' => 'referentorientant_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
 		);
 
 		/**
@@ -80,6 +94,27 @@
 			'%s/decision_reporte.odt',
 			'%s/decision_accepte.odt',
 			'%s/decision_refuse.odt',
+		);
+
+		public $validate = array(
+			'structurereferente_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
+				),
+			),
+			'referentorientant_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referentorientant', 'Structureorientante', 'Structurereferente' ),
+					'message' => 'La référent orientant n\'appartient pas à la structure chargée de l\'évaluation',
+				),
+			),
 		);
 
 		/**

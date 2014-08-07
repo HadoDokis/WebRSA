@@ -22,20 +22,21 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'ValidateTranslate',
-			'Formattable' => array(
-				'suffix' => array(
-					'structurereferente_id',
-					'referent_id'
-				)
-			),
+			'Dependencies',
 			'Enumerable' => array(
 				'fields' => array(
 					'etape',
 					'decision',
 					'decisionsup'
 				)
-			)
+			),
+			'Formattable' => array(
+				'suffix' => array(
+					'structurereferente_id',
+					'referent_id'
+				)
+			),
+			'ValidateTranslate',
 		);
 
 		public $hasOne = array(
@@ -103,12 +104,6 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-// 			'decisionsup' => array(
-// 				'notEmptyIf' => array(
-// 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
-// 					'message' => 'Champ obligatoire',
-// 				),
-// 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
@@ -119,6 +114,16 @@
 				'notEmptyIf' => array(
 					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
 					'message' => 'Champ obligatoire',
+				),
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Structurereferente', 'Typeorient' ),
+					'message' => 'La structure référente ne correspond pas au type d\'orientation',
+				),
+			),
+			'referent_id' => array(
+				'dependentForeignKeys' => array(
+					'rule' => array( 'dependentForeignKeys', 'Referent', 'Structurereferente' ),
+					'message' => 'La référent n\'appartient pas à la structure référente',
 				),
 			),
 		);

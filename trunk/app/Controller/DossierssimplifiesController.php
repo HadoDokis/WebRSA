@@ -209,6 +209,8 @@
 
 					$orientstruct_validate = $this->Orientstruct->validate;
 
+					$orientsstructsValidationErrors = array();
+
 					foreach( $this->request->data['Personne'] as $key => $pData ) {
 						if( !empty( $pData ) ) {
 							$this->Orientstruct->validate = $orientstruct_validate;
@@ -237,20 +239,25 @@
 								}
 
 								if( !empty( $tOrientstruct ) ) {
-									$this->Orientstruct->create();
 									$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
 									$this->request->data['Orientstruct'][$key]['valid_cg'] = true;
 									$this->request->data['Orientstruct'][$key]['date_propo'] = date( 'Y-m-d' );
 									$this->request->data['Orientstruct'][$key]['date_valid'] = date( 'Y-m-d' );
 									$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
-									$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
+									$this->Orientstruct->create( $this->request->data['Orientstruct'][$key] );
+									$saved = $this->Orientstruct->save() && $saved;
 								}
 								else {
-									$this->Orientstruct->create();
 									$this->Orientstruct->validate = array( );
 									$this->request->data['Orientstruct'][$key]['personne_id'] = $this->Personne->id;
 									$this->request->data['Orientstruct'][$key]['user_id'] = $this->Session->read( 'Auth.User.id' );
-									$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'][$key] ) && $saved;
+									$this->Orientstruct->create( $this->request->data['Orientstruct'][$key] );
+									$saved = $this->Orientstruct->save() && $saved;
+								}
+
+								// Si on a une erreur lors de l'enregistrement d'une orientation
+								if( empty( $this->Orientstruct->id ) ) {
+									$orientsstructsValidationErrors[$key] = $this->Orientstruct->validationErrors;
 								}
 							}
 						}
@@ -263,6 +270,8 @@
 					}
 					else {
 						$this->Dossier->rollback();
+						$this->Session->setFlash( 'Erreur(s) lors de l\'enregistrement', 'flash/error' );
+						$this->Orientstruct->validationErrors = $orientsstructsValidationErrors;
 					}
 				}
 			}

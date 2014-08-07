@@ -1,20 +1,20 @@
 <?php
 	/**
-	 * Code source de la classe OrientstructTest.
+	 * Code source de la classe DependenciesBehaviorTest.
 	 *
 	 * PHP 5.3
 	 *
-	 * @package app.Test.Case.Model
+	 * @package app.Test.Case.Model.Behavior
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
-	App::uses( 'Orientstruct', 'Model' );
+	App::uses( 'DependenciesBehavior', 'Model/Behavior' );
 
 	/**
-	 * La classe OrientstructTest réalise les tests unitaires de la classe Orientstruct.
+	 * La classe DependenciesBehaviorTest ...
 	 *
-	 * @package app.Test.Case.Model
+	 * @package app.Test.Case.Model.Behavior
 	 */
-	class OrientstructTest extends CakeTestCase
+	class DependenciesBehaviorTest extends CakeTestCase
 	{
 		/**
 		 * Fixtures utilisés.
@@ -29,19 +29,13 @@
 		);
 
 		/**
-		 * Le modèle à tester.
-		 *
-		 * @var Orientstruct
-		 */
-		public $Orientstruct = null;
-
-		/**
 		 * Préparation du test.
 		 */
 		public function setUp() {
 			parent::setUp();
 			Configure::write( 'Cg.departement', 66 );
 			$this->Orientstruct = ClassRegistry::init( 'Orientstruct' );
+			$this->Orientstruct->Behaviors->attach( 'Dependencies' );
 		}
 
 		/**

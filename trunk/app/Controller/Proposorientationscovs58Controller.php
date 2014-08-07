@@ -140,7 +140,11 @@
 						$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
 					}
 
-					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save( $regressionorientationep58 ) && $saved;
+					$this->Propoorientationcov58->Structurereferente->Regressionorientationep58->create( $regressionorientationep58 );
+					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save() && $saved;
+					if( $saved === false ) {
+						$this->Propoorientationcov58->validationErrors = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->validationErrors;
+					}
 				}
 				else {
 					if ( $this->action == 'add' ) {
