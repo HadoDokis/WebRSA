@@ -551,6 +551,23 @@
 		 }
 
 		/**
+		 * Test de la fonction time_cakephp_to_sql().
+		 */
+		 public function testTimeCakephpToSql() {
+			$result = time_cakephp_to_sql( array( 'hour' => '15', 'min' => '01' ) );
+			$expected = '15:01:00';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = time_cakephp_to_sql( array( 'hour' => '15', 'min' => '01', 'sec' => '30' ) );
+			$expected = '15:01:30';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = time_cakephp_to_sql( array( 'hour' => '15', 'min' => '01', 'sec' => '30', 'year' => '2012' ) );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
 		 * Test de la fonction full_array_diff().
 		 */
 		 public function testFullArrayDiff() {

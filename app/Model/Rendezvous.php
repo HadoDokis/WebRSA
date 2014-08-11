@@ -306,10 +306,14 @@
 		);
 
 		/**
-		* Retourne un booléen selon si un dossier d'EP doit ou non
-		* être créé pour la personne dont l'id est passé en paramètre
-		*/
+		 * Retourne un booléen selon si un dossier d'EP doit ou non
+		 * être créé pour la personne dont l'id est passé en paramètre
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
 		public function passageEp( $data ) {
+			// 1. Pour le type et le statut du RDV que l'on enregistre, doit-on créer un passage en commission ?
 			$statutrdvtyperdv = $this->Typerdv->StatutrdvTyperdv->find(
 				'first',
 				array(
@@ -321,10 +325,78 @@
 				)
 			);
 
-			if( empty( $statutrdvtyperdv ) || empty( $data['Rendezvous']['rang'] ) || ( $data['Rendezvous']['rang'] % $statutrdvtyperdv['StatutrdvTyperdv']['nbabsenceavantpassagecommission'] ) != 0 ) {
+			if( empty( $statutrdvtyperdv ) ) {
 				return false;
 			}
 
+			// 2. Existe-t'il suffisamment de rendez-vous précédents des mêmes types et statuts ?
+			$nbRdvPcd = ( $statutrdvtyperdv['StatutrdvTyperdv']['nbabsenceavantpassagecommission'] - 1 );
+
+			if( $nbRdvPcd > 0 ) {
+				$daterdv = $data['Rendezvous']['daterdv'];
+				if( is_array( $daterdv ) ) {
+					$daterdv = date_cakephp_to_sql( $daterdv );
+				}
+
+				$heurerdv = $data['Rendezvous']['heurerdv'];
+				if( is_array( $heurerdv ) ) {
+					$heurerdv = time_cakephp_to_sql( $heurerdv );
+				}
+
+				$query = array(
+					'fields' => array(
+						'Rendezvous.typerdv_id',
+						'Rendezvous.statutrdv_id'
+					),
+					'contain' => false,
+					'conditions' => array(
+						'Rendezvous.personne_id' => Hash::get( $data, 'Rendezvous.personne_id' )
+					),
+					'order' => array(
+						'Rendezvous.daterdv' => 'DESC',
+						'Rendezvous.heurerdv' => 'DESC',
+						'Rendezvous.id' => 'DESC'
+					),
+					'limit' => $nbRdvPcd
+				);
+
+				// Ici, le compteur à revoir...
+				$id = Hash::get( $data, "{$this->alias}.{$this->primaryKey}" );
+				$action = ( empty( $id ) ? 'add' : 'edit' );
+
+				if( $action === 'add' ) {
+					$query['conditions']["( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP <"] = "{$daterdv} {$heurerdv}";
+				}
+				else {
+					$query['conditions'][] = array(
+						'OR' => array(
+							"( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP <" => "{$daterdv} {$heurerdv}",
+							array(
+								"( Rendezvous.daterdv || ' ' || Rendezvous.heurerdv )::TIMESTAMP" => "{$daterdv} {$heurerdv}",
+								'Rendezvous.id <' => $id
+							)
+						)
+					);
+				}
+
+				$rdvs = $this->find( 'all', $query );
+
+				$creation = ( count($rdvs) == $nbRdvPcd );
+				foreach( $rdvs as $rdv ) {
+					if(
+						( $rdv['Rendezvous']['typerdv_id'] != $data['Rendezvous']['typerdv_id'] )
+						|| ( $rdv['Rendezvous']['statutrdv_id'] != $data['Rendezvous']['statutrdv_id'] )
+					) {
+						$creation = false;
+					}
+				}
+
+				if( !$creation ) {
+					return false;
+				}
+			}
+
+			// 3. Existe-t'il déjà un passage en commission en cours pour la même raison ?
 			if( $statutrdvtyperdv['StatutrdvTyperdv']['typecommission'] == 'ep' ) {
 				$dossiercommission = $this->Personne->Dossierep->find(
 					'first',

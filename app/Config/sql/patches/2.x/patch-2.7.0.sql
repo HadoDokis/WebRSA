@@ -940,26 +940,6 @@ LANGUAGE plpgsql;
 SELECT public.correction_orientsstructs_typeorient_id_structurereferente_id();
 DROP FUNCTION public.correction_orientsstructs_typeorient_id_structurereferente_id();
 
---------------------------------------------------------------------------------
-
-/**
-* 20140805: Correction: lorsque le référent attaché à une orientation n'appartient
-* pas à la structure référente stockée dans l'orientation, on le passe à NULL.
-* 0@cg58_20140724, 813@cg66_20140627, 33@cg93_20140710
-*/
--- TODO: supprimer les PDFs aussi, et les faire regénérer
-UPDATE orientsstructs SET referent_id = NULL WHERE id IN (
-	SELECT
-			o.id
-		FROM orientsstructs AS o
-			INNER JOIN structuresreferentes AS structuresreferenteso ON ( structuresreferenteso.id = o.structurereferente_id )
-			INNER JOIN referents ON ( referents.id = o.referent_id )
-			INNER JOIN structuresreferentes AS structuresreferentesreferents ON ( structuresreferentesreferents.id = referents.structurereferente_id )
-		WHERE
-			o.statut_orient = 'Orienté'
-			AND o.structurereferente_id <> referents.structurereferente_id
-);
-
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

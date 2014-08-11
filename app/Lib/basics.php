@@ -916,6 +916,30 @@
 	}
 
 	/**
+	 * Retourne une heure au format SQL (HH:ii:ss) à partir d'une date au format
+	 * "tableau CakePHP" (contenant les clés hour, min, et parfois sec).
+	 *
+	 * @param array $date
+	 * @return boolean|string Retourne false si le paramètre $time ne contient pas
+	 *	les clés hour, min, et parfois sec.
+	 */
+	function time_cakephp_to_sql( array $time ) {
+		$count = count( $time );
+
+		if( $count == 2 && isset( $time['hour'] ) && isset( $time['min'] ) ) {
+			$time['sec'] = '00';
+			$count = count( $time );
+		}
+
+		if( ( count( $time ) == 3 ) && isset( $time['hour'] ) && isset( $time['min'] ) && isset( $time['sec'] ) ) {
+			return "{$time['hour']}:{$time['min']}:{$time['sec']}";
+		}
+		else {
+			return false;
+		}
+	}
+
+	/**
 	 * $a1 = array( 'foo', 'bar' );
 	 * $a2 = array( 'foo', 'bar', 'baz' );
 	 * $a3 = array( 'bar', 'baz' );
@@ -1124,11 +1148,11 @@
 	function preg_test( $pattern ) {
 		return ( @preg_match( $pattern, '' ) !== false );
 	}
-    
-    
+
+
     $now   = time();
     $date2 = strtotime('2012-08-14 16:01:05');
- 
+
     function dateDiff($date1, $date2){
         $diff = abs($date1 - $date2); // abs pour avoir la valeur absolute, ainsi éviter d'avoir une différence négative
         $retour = array();
