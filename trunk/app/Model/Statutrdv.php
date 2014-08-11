@@ -85,6 +85,9 @@
 		/**
 		 * Retourne un booléen suivant si le statut du rdv passé en paramètre
 		 * peut ou non provoquer un passage en EP
+		 *
+		 * @param integer $statutrdv_id
+		 * @return boolean
 		 */
 		public function provoquePassageCommission( $statutrdv_id ) {
 			$statutrdv = $this->find(
@@ -97,7 +100,7 @@
 				)
 			);
 
-			return $statutrdv['Statutrdv']['provoquepassagecommission'];
+			return Hash::get( (array)$statutrdv, 'Statutrdv.provoquepassagecommission' );
 		}
 	}
 ?>
