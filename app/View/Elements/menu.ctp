@@ -279,8 +279,7 @@
 				'Indicateurs de motifs de réorientation' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_motifs_reorientation'  ) ),
 				'Indicateurs de caractéristiques de contrats' => array( 'url' => array( 'controller' => 'statistiquesministerielles', 'action' => 'indicateurs_caracteristiques_contrats'  ) ),
 			),
-			'Indicateurs de suivi' => array( 'url' => array( 'controller' => 'indicateurssuivis', 'action' => 'index' ) ),
-			'Indicateurs de suivi (nouveau)' => array( 'url' => array( 'controller' => 'indicateurssuivis', 'action' => 'search' ) ),
+			'Indicateurs de suivi' => array( 'url' => array( 'controller' => 'indicateurssuivis', 'action' => 'search' ) ),
 			'Tableaux de suivi d\'activité' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
 				__d( 'tableauxsuivispdvs93', '/Tableauxsuivispdvs93/index/:heading' ) => array( 'url' => array( 'controller' => 'tableauxsuivispdvs93', 'action' => 'index' ) ),
