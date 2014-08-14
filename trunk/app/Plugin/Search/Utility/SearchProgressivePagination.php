@@ -137,7 +137,7 @@
 				return 'Résultats %start% - %end% sur au moins %count% résultats.';
 			}
 
-			return 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%';
+			return __( 'Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%' );
 		}
 	}
 ?>
