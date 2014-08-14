@@ -415,15 +415,17 @@
 					'DetailfreinformRev',
 					'DetailconfortRev',
 					'Fichiermodule'
-				)
+				),
+				'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
 			);
 
 			$histos = array( );
 			if( isset( $dsp['Dsp']['id'] ) && !empty( $dsp['Dsp']['id'] ) ) {
 				$histos = $this->paginate(
-						'DspRev', array(
-					'DspRev.dsp_id' => $dsp['Dsp']['id']
-						)
+					'DspRev',
+					array(
+						'DspRev.dsp_id' => $dsp['Dsp']['id']
+					)
 				);
 			}
 
