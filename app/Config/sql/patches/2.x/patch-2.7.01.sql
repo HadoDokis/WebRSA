@@ -138,6 +138,32 @@ DELETE FROM dossierseps CASCADE WHERE id IN (
 			AND "StatutrdvTyperdv"."typecommission" = 'ep'
 );
 
+--------------------------------------------------------------------------------
+-- 20140814: Mise à jour des positions des CER (CG 66) à NULL lorsque les positions
+-- avaient été changées par le bilan de parcours de manière erronée. Les positions
+-- seront correctement recalculées lors du passage du shell Positionscer66.
+--------------------------------------------------------------------------------
+
+UPDATE contratsinsertion SET positioncer = NULL WHERE id IN (
+	SELECT
+			contratsinsertion.id
+		FROM contratsinsertion
+			INNER JOIN personnes ON ( contratsinsertion.personne_id = personnes.id )
+			INNER JOIN bilansparcours66 ON ( bilansparcours66.personne_id = personnes.id )
+		WHERE
+			contratsinsertion.positioncer = 'attvalid'
+			AND contratsinsertion.created < bilansparcours66.modified
+			AND contratsinsertion.decision_ci = 'V'
+			AND bilansparcours66.proposition <> 'aucun'
+			-- Ceux pour qui le traitement devait être fait sur le CER reconduit
+			AND NOT (
+				bilansparcours66.proposition = 'traitement'
+				AND bilansparcours66.choixsanspassageep = 'maintien'
+				AND bilansparcours66.changementref = 'N'
+				AND bilansparcours66.nvcontratinsertion_id IS NOT NULL
+			)
+);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

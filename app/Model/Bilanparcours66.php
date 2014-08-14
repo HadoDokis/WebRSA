@@ -625,7 +625,7 @@
                             $success = $this->Orientstruct->save() && $success;
                         }
                         else if( $data['Bilanparcours66']['changementrefsansep'] == 'N' ) {
-
+							// FIXME: si c'est un ajout seulement / à la création du CER seulement ?
                             $contratinsertion = $vxContratinsertion;
                             unset( $contratinsertion['Contratinsertion']['id'] );
                             $contratinsertion['Contratinsertion']['dd_ci'] = $data['Bilanparcours66']['ddreconductoncontrat'];
@@ -643,6 +643,8 @@
                             $contratinsertion['Contratinsertion']['datedecision'] = null;
                             // La date de saisie du nouveau contrat est égale à la date du jour
                             $contratinsertion['Contratinsertion']['date_saisi_ci'] = date( 'Y-m-d' );
+							// La position du contrat est "En attente de validation"
+							$contratinsertion['Contratinsertion']['positioncer'] = 'attvalid';
 
                             unset($contratinsertion['Contratinsertion']['decision_ci']);
                             unset($contratinsertion['Contratinsertion']['datevalidation_ci']);
