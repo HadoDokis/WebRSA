@@ -199,10 +199,11 @@
 
 				$subAllocataire['Accompagnement du parcours']['Offre d\'insertion'] = array(
 					'url' => '#',
-					( Configure::read( 'ActioncandidatPersonne.suffixe' ) == 'cg93' ? 'Fiche de prescription' : 'Fiche de candidature' ) => array(
-						'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] )
+					'Fiche de candidature' => array(
+						'url' => array( 'controller' => 'actionscandidats_personnes', 'action' => 'index', $personne['id'] ),
+						'disabled' => ( Configure::read( 'Cg.departement' ) != 66 )
 					),
-					'Fiche de prescription (nouveau)' => array(
+					'Fiche de prescription' => array(
 						'url' => array( 'controller' => 'fichesprescriptions93', 'action' => 'index', $personne['id'] ),
 						'disabled' => ( Configure::read( 'Cg.departement' ) != 93 )
 					)

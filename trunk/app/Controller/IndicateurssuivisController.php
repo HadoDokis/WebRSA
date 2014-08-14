@@ -74,6 +74,9 @@
 		}
 
 
+		/**
+		 * @deprecated
+		 */
 		public function index() {
 			$this->_setOptions();
 			$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
