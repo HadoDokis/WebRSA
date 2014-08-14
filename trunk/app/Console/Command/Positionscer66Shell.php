@@ -233,27 +233,13 @@
 		}
 
 		/**
-		 *
+		 * Recherche des CER dont la date de fin n'est pas encore passée, dont la
+		 * positioncer est NULL, validé et qui sont les derniers CER de chaque
+		 * allocataire.
 		 */
 		protected function _updateEncours() {
 			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::encours" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
 
-			// Combien de personnes différentes ont un CER actif, dont la positioncer est NULL et validé ?
-			$count = $this->Contratinsertion->find(
-					'first', array(
-				'fields' => array(
-					'COUNT ( DISTINCT ( "Contratinsertion"."personne_id" ) ) AS "count"'
-				),
-				'conditions' => array(
-					'Contratinsertion.df_ci >= NOW()',
-					'Contratinsertion.positioncer IS NULL',
-					'Contratinsertion.decision_ci' => 'V'
-				),
-				'contain' => false
-					)
-			);
-
-			// Recherche des CER dont la date de fin n'est pas encore passée, dont la positioncer est NULL, validé et qui se trouvent dans la liste des CER classés par date de création inverse puis par personne_id en limitant au résultat obtenu précédemment
 			$conditions = array(
 				'Contratinsertion.df_ci >= NOW()',
 				'Contratinsertion.positioncer IS NULL',
@@ -264,11 +250,17 @@
 							'fields' => array(
 								'contratsinsertions.id'
 							),
+							'contain' => false,
+							'conditions' => array(
+								'contratsinsertions.df_ci >= NOW()',
+								'contratsinsertions.positioncer IS NULL',
+								'contratsinsertions.decision_ci' => 'V',
+								'contratsinsertions.personne_id = Contratinsertion.personne_id'
+							),
 							'order' => array(
 								'contratsinsertions.created DESC',
 								'contratsinsertions.personne_id ASC'
-							),
-							'limit' => $count[0]['count']
+							)
 						)
 				).' )'
 			);

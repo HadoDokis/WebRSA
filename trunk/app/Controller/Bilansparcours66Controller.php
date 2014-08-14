@@ -695,30 +695,6 @@
 					$success = $this->Bilanparcours66->sauvegardeBilan( $this->request->data );
 				}
 
-
-				$contrat = $this->Bilanparcours66->Contratinsertion->find(
-					'first',
-					array(
-						'contain' => false,
-						'conditions' => array(
-							'Contratinsertion.personne_id' => $personne_id
-						),
-						'recursive' => -1,
-						'order' => 'Contratinsertion.date_saisi_ci DESC'
-					)
-				);
-
-				if( !empty( $contrat['Contratinsertion'] ) && isset( $this->request->data['Bilanparcours66']['proposition'] ) && $this->request->data['Bilanparcours66']['proposition'] != 'aucun' ) {
-					//Modification de la position du CER lorsque le bilan est créé et que le CER existe
-					$success = $this->{$this->modelClass}->Contratinsertion->updateAllUnBound(
-						array( 'Contratinsertion.positioncer' => '\'attvalid\'' ),
-						array(
-							'"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
-							'"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
-						)
-					) && $success;
-				}
-
 				$this->_setFlashResult( 'Save', $success );
 				if( $success ) {
 					$this->Bilanparcours66->commit();
