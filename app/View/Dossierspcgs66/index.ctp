@@ -23,8 +23,8 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
 			<th>Gestionnaire du dossier</th>
 			<th>Etat du dossier PDO</th>
 			<th>Motifs de la personne</th>
-<!-- 					<th>Dossier complet ?</th> -->
 			<th>Décision</th>
+            <th>Présence d'un bilan de parcours ?</th> 
 			<th colspan="4" class="action">Actions</th>
 		</tr>
 	</thead>
@@ -81,6 +81,7 @@ echo $this->pageTitle = 'Dossiers PCGs concernant le '.Hash::get( $rolepers, Has
 						h( $etat ),
 						$differentsStatuts,
 						h( Hash::get( $dossierpcg66, 'Decisiondossierpcg66.0.Decisionpdo.libelle' ) ),
+                        h( isset($dossierpcg66['Dossierpcg66']['bilanparcours66_id']) ? 'Bilan de parcours de : '.Hash::get( $dossierpcg66, 'Bilanparcours66.Personne.nom_complet' ) : Hash::get( $dossierpcg66, 'Bilanparcours66.Personne.nom_complet' ) ),
 						$this->Xhtml->viewLink(
 							'Voir le dossier',
 							array( 'controller' => 'dossierspcgs66', 'action' => 'view', $dossierpcg66['Dossierpcg66']['id']),
