@@ -305,7 +305,13 @@
                             'Orgtransmisdossierpcg66',
                             'Notificationdecisiondossierpcg66'
 						),
-                        'User'
+                        'User',
+                        'Bilanparcours66' => array(
+                            'fields' => array('id','personne_id'),
+                            'Personne' => array(
+                                'fields' => array('nom_complet')
+                            )
+                        )
 					),
 					'order' => array( 'Dossierpcg66.datereceptionpdo DESC', 'Dossierpcg66.id DESC' )
 				)
