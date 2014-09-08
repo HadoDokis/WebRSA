@@ -49,3 +49,11 @@ msgstr "Ajout d'une pièce"
 msgid "Piecesmailscuis66::edit"
 msgstr "Modification d'une pièce"
 
+msgid "ENUM::HASPIECEJOINTE::1"
+msgstr "Oui"
+
+msgid "ENUM::HASPIECEJOINTE::0"
+msgstr "Non"
+
+msgid "Piecemailcui66.haspiecejointe"
+msgstr "Pièce jointe"

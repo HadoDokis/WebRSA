@@ -750,6 +750,9 @@ msgstr "Rupture du contrat"
 msgid "ENUM::POSITIONCUI66::decisionsanssuite"
 msgstr "Décision sans suite"
 
+msgid "ENUM::POSITIONCUI66::traite"
+msgstr "Traité"
+
 msgid "Cuis::cancel"
 msgstr "Annuler le CUI"
 
@@ -979,8 +982,11 @@ msgstr "Refus"
 msgid "ENUM::DECISIONCUI::accord"
 msgstr "Accord"
 
-msgid "ENUM::DECISIONCUI::annule"
-msgstr "Annulé"
+msgid "ENUM::DECISIONCUI::ajourne"
+msgstr "Ajourné"
+
+msgid "ENUM::DECISIONCUI::sanssuite"
+msgstr "Décision sans suite"
 
 msgid "ENUM::DECISIONCUI::sanssuiteemployeur"
 msgstr "Sans suite employeur"
@@ -1145,3 +1151,15 @@ msgstr "Date d'envoi du mail"
 
 msgid "Cuis::maillink"
 msgstr "Envoi du mail à l'employeur"
+
+msgid "Cui.datebutoirpiece"
+msgstr "Date butoir pour transmission des pièces"
+
+msgid "Cui.textmailcui66relance_id"
+msgstr "Type de mail de relance"
+
+msgid "Cui.commentairemailrelance"
+msgstr "Commentaire du mail de relance"
+
+msgid "Cui.dateenvoirelance"
+msgstr "Date d'envoi de la relance"

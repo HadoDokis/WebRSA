@@ -136,6 +136,13 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
+			),
+			'Textmailcui66relance' => array(
+				'className' => 'Textmailcui66',
+				'foreignKey' => 'textmailcui66relance_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
 			)
 		);
 
@@ -455,15 +462,15 @@
                     $dossiereligible = Hash::get( $cui, 'Cui.dossiereligible' );
                     $dossiercomplet = Hash::get( $cui, 'Cui.dossiercomplet' );
                     if( $dossierrecu == '0' || ( ($dossierrecu == '1' ) && ($dossiereligible == '0') ) ) {
-                        $positioncui66 = 'decisionsanssuite';
+                        $positioncui66 = 'traite';
                     }
                     else if( ($dossierrecu == '1' ) && (empty($dossiereligible)) && (empty($dossiercomplet ) ) ) {
                         $positioncui66 = 'dossierrecu';
                     }
-                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet != '1') && ($dossiercomplet != '0') ) {
-                        $positioncui66 = 'dossiereligible';
-                    }
-                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet === '0') ) {
+//                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet != '1') && ($dossiercomplet != '0') ) {
+//                        $positioncui66 = 'dossiereligible';
+//                    }
+                    else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ( ($dossiercomplet === '0') || empty($dossiercomplet) ) ) {
                         $positioncui66 = 'attpieces';
                     }
                     else if( ($dossierrecu == '1' ) && ($dossiereligible == '1') && ($dossiercomplet == '1') ) {
@@ -764,12 +771,41 @@
 					'conditions' => array(
 						"cuis.personne_id = {$personneIdFied}"
 					),
-					'order' => array( 'cuis.datedebprisecharge DESC' ),
+					'order' => array( 'cuis.datedebprisecharge DESC', 'cuis.rangcui DESC' ),
 					'limit' => 1
 				)
 			);
 		}
 
+        
+        /**
+         * Fonction permettant de retourner le dernier CUI d'un allocataire
+         * @param type $personne_id
+         * @return type
+         */
+        public function dernierCui( $personne_id ) {
+            $sqDernierCui = $this->sqDernierContrat( '"Cui"."personne_id"' );
+            $dernierCui = $this->find(
+                'first',
+                array(
+                    'fields' => array_merge(
+                        $this->fields(),
+                        $this->Partenaire->fields()
+                    ),
+                    'conditions' => array(
+                        'Cui.personne_id' => $personne_id,
+                        "Cui.id IN ( {$sqDernierCui} )"
+                    ),
+                    'joins' => array(
+                        $this->join('Partenaire')
+                    ),
+                    'contain' => false,
+                    'recursive' => -1
+                )
+            );
+            return $dernierCui;
+        }
+        
         /**
 		 * Recherche des données CAF liées à l'allocataire dans le cadre du CUI.
 		 *

@@ -77,6 +77,7 @@ echo $this->Default2->view(
 
 <?php if ($this->Permissions->checkDossier('decisionsdossierspcgs66', 'edit', $dossierMenu) || $this->Permissions->checkDossier('decisionsdossierspcgs66', 'avistechnique', $dossierMenu) || $this->Permissions->checkDossier('decisionsdossierspcgs66', 'validation', $dossierMenu)): ?>
     <?php if ( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
+    <?php debug($dossierpcg66['Decisiondossierpcg66']);?>
     <h2>Décisions émises</h2>
     <table class="tooltips aere">
         <thead>

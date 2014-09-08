@@ -81,8 +81,8 @@ msgstr "Refus"
 msgid "ENUM::DECISIONCUI::accord"
 msgstr "Accord"
 
-msgid "ENUM::DECISIONCUI::annule"
-msgstr "Annulé"
+msgid "ENUM::DECISIONCUI::ajourne"
+msgstr "Ajourné"
 
 msgid "ENUM::DECISIONCUI::rupture"
 msgstr "Rupture"
@@ -101,6 +101,9 @@ msgstr "Dénonciation prescripteur"
 
 msgid "ENUM::DECISIONCUI::resilie"
 msgstr "Résilié"
+
+msgid "ENUM::DECISIONCUI::sanssuite"
+msgstr "Sans suite"
 
 msgid "Decisionscuis66::filelink"
 msgstr "Liste des fichiers liés à la Personne"

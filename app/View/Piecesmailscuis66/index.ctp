@@ -10,7 +10,8 @@
     echo $this->Default2->index(
         $piecesmailscuis66,
         array(
-            'Piecemailcui66.name'
+            'Piecemailcui66.name',
+            'Piecemailcui66.haspiecejointe' => array( 'type' => 'boolean')
         ),
         array(
             'actions' => array(
