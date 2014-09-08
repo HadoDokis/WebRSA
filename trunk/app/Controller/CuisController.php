@@ -537,7 +537,10 @@
 
 			/// Calcul du numéro du contrat d'insertion
 			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-
+            
+            // Informations du dernier CUI signé
+            $dernierCui = $this->Cui->dernierCui( $personne_id );
+            $this->set('dernierCui', $dernierCui);
 
 			if( !empty( $this->request->data ) ) {
                 $success = true;
@@ -601,6 +604,16 @@
                                 '"Cui"."id"' => $data['Cui']['id']
                             )
                         ) && $success;
+                        
+//                        if( $positioncui66 == 'traite') {
+//                            $success = $this->Cui->updateAllUnBound(
+//                                array( 'Cui.decisioncui' => '\'sanssuite\'' ),
+//                                array(
+//                                    '"Cui"."personne_id"' => $personne_id,
+//                                    '"Cui"."id"' => $data['Cui']['id']
+//                                )
+//                            ) && $success;
+//                        }
                     }
 
 					$this->{$this->modelClass}->commit(); //FIXME
@@ -637,6 +650,9 @@
             $textsmailscuis66 = $this->Cui->Textmailcui66->find('list');
             $this->set( 'textsmailscuis66', $textsmailscuis66);
 
+            // Liste des modèles de mail de relance pour les employeurs paramétrés  dans l'application
+            $textsmailscuis66relances = $this->Cui->Textmailcui66relance->find('list');
+            $this->set( 'textsmailscuis66relances', $textsmailscuis66relances);
 
 
 			$this->_setOptions();
@@ -884,7 +900,8 @@
                         $this->Cui->fields(),
                         $this->Cui->Personne->fields(),
                         $this->Cui->Partenaire->fields(),
-                        $this->Cui->Textmailcui66->fields()
+                        $this->Cui->Textmailcui66->fields(),
+                        $this->Cui->Textmailcui66relance->fields()
                     ),
                     'conditions' => array(
                         'Cui.id' => $id
@@ -892,12 +909,13 @@
                     'joins' => array(
                         $this->Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
                         $this->Cui->join( 'Partenaire', array( 'type' => 'INNER') ),
-                        $this->Cui->join( 'Textmailcui66', array( 'type' => 'INNER') )
+                        $this->Cui->join( 'Textmailcui66', array( 'type' => 'INNER') ),
+                        $this->Cui->join( 'Textmailcui66relance', array( 'type' => 'LEFT OUTER') )
                     ),
                     'contain' => false
                 )
             );
-
+//debug($cui);
             $user = $this->Cui->User->find(
                 'first',
                  array(
@@ -931,6 +949,12 @@
                 $mailBodySend = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
             }
             $this->set( 'mailBodySend', $mailBodySend);
+           
+            $mailBodyRelance = '';
+            if( !empty($cui['Textmailcui66relance']['contenu']) ) {
+                $mailBodyRelance = DefaultUtility::evaluate( $cui, $cui['Textmailcui66relance']['contenu'] );
+            }
+            $this->set( 'mailBodyRelance', $mailBodyRelance);
 
             /**********/
 
@@ -940,6 +964,39 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
+            
+            // Quelle est la liste des pièces jointes associée aux mails du CUI
+            // Liste des pièces associées au CUI
+            /*$piecesmailscuis66 = $this->Cui->CuiPiecemailcui66->find(
+                'all',
+                array(
+                    'fields' => array(
+                        'CuiPiecemailcui66.piecemailcui66_id'
+                    ),
+                    'conditions' => array(
+                        'CuiPiecemailcui66.cui_id' => $id
+                    )
+                )
+            );
+            $piecesMails = Hash::extract($piecesmailscuis66, '{n}.CuiPiecemailcui66.piecemailcui66_id');
+
+
+            // Récupération des fichiers liés selon l'(es) id(s) de(s) la pièce(s) associée(s) au CUI
+            $pieceJointes = $this->Cui->Piecemailcui66->find(
+                'all',
+                array(
+                    'conditions' => array(
+                      'Piecemailcui66.id' => $piecesMails
+                    ),
+                    'contain' => array(
+                        'Fichiermodule' => array(
+                            'fields' => array( 'name', 'id', 'document')
+                        )
+                    )
+                )
+            );*/
+            
+            
             if( !empty( $this->request->data) ) {
 
                 $this->Cui->begin();
@@ -949,58 +1006,128 @@
                     $this->redirect( $this->referer() );
                 }
 
-                $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
-
-                // Envoi du mail
-                $success = true;
-                try {
-                    $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
-                    $Email = new CakeEmail( $configName );
-
-                    // Choix du destinataire suivant le niveau de debug
-                    if( Configure::read( 'debug' ) == 0 ) {
-                        $Email->to( $cui['Partenaire']['email'] );
-                    }
-                    else {
-                        $Email->to( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'to', $Email->from() ) );
-                    }
-
-                    $Email->subject( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'subject', 'Demande de CUI' ) );
-    //				$mailBody = "Bonjour,\n\n {$cui['Personne']['qual']} {$cui['Personne']['nom']} {$cui['Personne']['prenom']}, bénéficiaire du rSa socle, donc éligible au dispositif des contrats aidés peut être recruté par votre structure.";
+                if( $cui['Cui']['sendmailemployeur'] != '1' ) { //CAs du premier mail
                     $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
 
-                    $result = $Email->send( $mailBody );
-                    $success = !empty( $result ) && $success;
-                } catch( Exception $e ) {
-                    $this->log( $e->getMessage(), LOG_ERROR );
-                    $success = false;
-                }
+                    // Envoi du mail
+                    $success = true;
+                    try {
+                        $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
+                        $Email = new CakeEmail( $configName );
 
-                if( $success ) {
-                    $success = $this->Cui->updateAllUnBound(
-                            array( 'Cui.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoimail'] ).'\'' ),
-                            array(
-                                '"Cui"."personne_id"' => $personne_id,
-                                '"Cui"."id"' => $cui['Cui']['id']
-                            )
-                        ) && $success;
-                }
+                        // Choix du destinataire suivant le niveau de debug
+                        if( Configure::read( 'debug' ) == 0 ) {
+                            $Email->to( $cui['Partenaire']['email'] );
+                        }
+                        else {
+                            $Email->to( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'to', $Email->from() ) );
+                        }
 
-                if( $success ) {
-                    $this->User->commit();
-                    $this->Jetons2->release( $dossier_id );
-                    $this->Session->setFlash( 'Mail envoyé', 'flash/success' );
-                    $this->redirect( array( 'action' => 'index', $personne_id ) );
-                }
-                else {
-                    $this->User->rollback();
-                    $this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
-                }
+                        $Email->subject( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'subject', 'Demande de CUI' ) );
+                        $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
 
-                $this->render( 'maillink' );
-                $this->set( 'urlmenu', '/cuis/index/'.$personne_id );
-    //			$this->redirect( $this->referer() );
+                        // Ajout de pièces jointes au mail envoyé
+                        /*foreach( $pieceJointes as $i => $piecejointe) {
+                            if( !empty($piecejointe['Fichiermodule']) ) {
+                                $piecejointe['Fichiermodule'][0]['file'] = $piecejointe['Fichiermodule'][0]['document'];
+                                $Email->attachments( array('data' => $piecejointe['Fichiermodule'][0] ) );
+                            }
+                        }*/
 
+                        $result = $Email->send( $mailBody );
+                        $success = !empty( $result ) && $success;
+                    } catch( Exception $e ) {
+                        $this->log( $e->getMessage(), LOG_ERROR );
+                        $success = false;
+                    }
+
+                    if( $success ) {
+                        $success = $this->Cui->updateAllUnBound(
+                                array( 'Cui.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoimail'] ).'\'' ),
+                                array(
+                                    '"Cui"."personne_id"' => $personne_id,
+                                    '"Cui"."id"' => $cui['Cui']['id']
+                                )
+                            ) && $success;
+                    }
+
+                    if( $success ) {
+                        $this->User->commit();
+                        $this->Jetons2->release( $dossier_id );
+                        $this->Session->setFlash( 'Mail envoyé', 'flash/success' );
+                        $this->redirect( array( 'action' => 'index', $personne_id ) );
+                    }
+                    else {
+                        $this->User->rollback();
+                        $this->Session->setFlash( 'Mail non envoyé', 'flash/error' );
+                    }
+
+                    $this->render( 'maillink' );
+                    $this->set( 'urlmenu', '/cuis/index/'.$personne_id );
+        //			$this->redirect( $this->referer() );
+
+                }
+                else if( isset($this->request->data['Cui']['textmailcui66relance_id'])) { //CAs de la relance
+                    // Envoi du mail de relance
+                    $mailBodyRelance = DefaultUtility::evaluate( $cui, $cui['Textmailcui66relance']['contenu'] );
+//                    debug($mailBodyRelance);
+//                    die();
+                    // Envoi du mail de relance
+                    $success = true;
+                    try {
+                        $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
+                        $Email = new CakeEmail( $configName );
+
+                        // Choix du destinataire suivant le niveau de debug
+                        if( Configure::read( 'debug' ) == 0 ) {
+                            $Email->to( $cui['Partenaire']['email'] );
+                        }
+                        else {
+                            $Email->to( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'to', $Email->from() ) );
+                        }
+
+                        $Email->subject( WebrsaEmailConfig::getValue( 'mail_employeur_cui', 'subject', 'Demande de CUI' ) );
+                        $mailBodyRelance = DefaultUtility::evaluate( $cui, $cui['Textmailcui66relance']['contenu'] );
+
+                        // Ajout de pièces jointes au mail envoyé
+                        /*foreach( $pieceJointes as $i => $piecejointe) {
+                            if( !empty($piecejointe['Fichiermodule']) ) {
+                                $piecejointe['Fichiermodule'][0]['file'] = $piecejointe['Fichiermodule'][0]['document'];
+                                $Email->attachments( array('data' => $piecejointe['Fichiermodule'][0] ) );
+                            }
+                        }*/
+
+                        $result = $Email->send( $mailBodyRelance );
+                        $success = !empty( $result ) && $success;
+                    } catch( Exception $e ) {
+                        $this->log( $e->getMessage(), LOG_ERROR );
+                        $success = false;
+                    }
+                    
+                    if( $success ) {
+                        $success = $this->Cui->updateAllUnBound(
+                                array( 'Cui.dateenvoirelance' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoirelance'] ).'\'' ),
+                                array(
+                                    '"Cui"."personne_id"' => $personne_id,
+                                    '"Cui"."id"' => $cui['Cui']['id']
+                                )
+                            ) && $success;
+                    }
+
+                    if( $success ) {
+                        $this->User->commit();
+                        $this->Jetons2->release( $dossier_id );
+                        $this->Session->setFlash( 'Mail de relance envoyé', 'flash/success' );
+                        $this->redirect( array( 'action' => 'index', $personne_id ) );
+                    }
+                    else {
+                        $this->User->rollback();
+                        $this->Session->setFlash( 'Mail de relance non envoyé', 'flash/error' );
+                    }
+
+                    $this->render( 'maillink' );
+                    $this->set( 'urlmenu', '/cuis/index/'.$personne_id );
+                }
             }
         }
 

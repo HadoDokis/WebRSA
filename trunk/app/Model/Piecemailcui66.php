@@ -53,6 +53,28 @@
                 'with' => 'CuiPiecemailcui66'
             )
         );
-
+        
+        /**
+         * Associations "Has Many".
+         * @var array
+         */
+        public $hasMany = array(
+			'Fichiermodule' => array(
+				'className' => 'Fichiermodule',
+				'foreignKey' => false,
+				'dependent' => false,
+				'conditions' => array(
+					'Fichiermodule.modele = \'Piecemailcui66\'',
+					'Fichiermodule.fk_value = {$__cakeID__$}'
+				),
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			)
+        );
 	}
 ?>

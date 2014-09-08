@@ -313,6 +313,16 @@
                 ),
                 'fields' => '',
                 'order' => ''
+            ),
+            'Piecemailcui66' => array(
+                'className' => 'Piecemailcui66',
+                'foreignKey' => false,
+                'conditions' => array(
+                    'Fichiermodule.modele = \'Piecemailcui66\'',
+                    'Fichiermodule.fk_value = {$__cakeID__$}'
+                ),
+                'fields' => '',
+                'order' => ''
             )
 		);
 

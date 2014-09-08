@@ -43,13 +43,13 @@
 			false,
 			true
 		);
-		/*observeDisableFieldsetOnValue(
-			'CuiTypecui',
-			$( 'aidecg' ),
-			['cuieav'],
+		observeDisableFieldsetOnValue(
+			'CuiDossiercomplet',
+			$( 'relanceemployeur' ),
+			['0'],
 			false,
 			true
-		);*/
+		);
 	} );
 //]]>
 </script>
@@ -201,19 +201,77 @@
 			true
 		);
 
+        observeDisableFieldsOnCheckbox(
+            'CuiNewemployeur',
+            [
+                'CuiRenouvellement'
+            ],
+            true
+        );
+
 	});
 </script>
 
+    
+<script type="text/javascript">
+	<!--//--><![CDATA[//><!--
+	function setInputValue( input, value ) {
+		input = $( input );
+//        if( ( input != undefined ) && ( $F( input ) == '' ) ) {
+		if( ( input != undefined ) ) {
+			$( input ).setValue( value );
+		}
+	}
+    document.observe("dom:loaded", function() {
+        observeDisableFieldsOnCheckbox(
+            'CuiRenouvellement',
+            [
+                'CuiNewemployeur'
+            ],
+            true
+        );
+        Event.observe( $( 'CuiRenouvellement' ), 'change', function() {
+            if( $F( 'CuiRenouvellement' ) === '1' ) {
+                setInputValue( 'CuiPartenaireId', '<?php echo str_replace( "'", "\\'", Hash::get( $dernierCui, 'Cui.partenaire_id' ) );?>' );
+            }
+            else if( $F( 'CuiRenouvellement' ) === null || $F( 'CuiRenouvellement' ) == undefined ) {
+                setInputValue( 'CuiPartenaireId', '<?php echo str_replace( "'", "\\'", null );?>' );
+            }
+            $( $('CuiPartenaireId') ).simulate( 'change' );
+        });
+    });
+	//--><!]]>
+</script> 
 <fieldset>
 	<legend>L'EMPLOYEUR</legend>
-	<?php
-		// Si aucun employeur n'a été choisi mais qu'un nouvel employeur est créé
-		$newemployeur = '0';
-		if( !empty( $this->request->data['Cui']['newemployeur'] ) ) {
-			$newemployeur = '1';
-		}
-		echo $this->Xform->input( 'Cui.newemployeur', array( 'label' => 'Nouvel employeur ?', 'type' => 'checkbox', 'checked' => $newemployeur ) );
-	?>
+    <table class="wide noborder">
+        <tr>
+            <td class="noborder mediumSize">
+                <?php
+                    // Si aucun employeur n'a été choisi mais qu'un nouvel employeur est créé
+                    $newemployeur = '0';
+                    if( !empty( $this->request->data['Cui']['newemployeur'] ) ) {
+                        $newemployeur = '1';
+                    }
+                    echo $this->Xform->input( 'Cui.newemployeur', array( 'label' => 'Nouvel employeur ?', 'type' => 'checkbox', 'checked' => $newemployeur ) );
+                ?>
+            </td>
+            <td class="noborder mediumSize">
+                <?php
+                    // Si renouvellement on précharge l'employeur précédent
+                    $renouvellement = '0';
+                    if( !empty( $this->request->data['Cui']['renouvellement'] ) ) {
+                        $renouvellement = '1';
+                    }
+                    echo $this->Xform->input( 'Cui.renouvellement', array( 'label' => 'Renouvellement ?', 'type' => 'checkbox', 'checked' => $renouvellement ) );
+
+                    
+                    
+                ?>
+            </td>
+        </tr>
+    </table>
+    
 	<fieldset id="employeur" class="noborder">
 		<?php
 			echo $this->Xform->inputs(
@@ -239,6 +297,15 @@
 
 		?>
 	</fieldset>
+<?php 
+//
+//            echo $this->Ajax->remoteFunction(
+//				array(
+//					'update' => 'CuiEmployeur',
+//					'url' => Router::url( array( 'action' => 'ajaxemployeur', $F( 'CuiPartenaireId' ), null, true) )
+//				)
+//			).';';
+        ?>
 	<fieldset id="newemployeur" class="noborder">
 		<table class="noborder">
 			<tr>
@@ -362,33 +429,6 @@
 	</fieldset>
 </fieldset>
 
-<!-- *************************************** Partie Mail Employeur **************************************** -->
-<fieldset>
-	<legend>MAIL À L'EMPLOYEUR</legend>
-	<?php
-		// Si aucun mail n'a été envoyé, on décoche sinon on coche
-		$sendmailemployeur = '0';
-		if( !empty( $this->request->data['Cui']['sendmailemployeur'] ) ) {
-			$sendmailemployeur = '1';
-		}
-		echo $this->Xform->input( 'Cui.sendmailemployeur', array( 'label' => 'Mail à l\'employeur ?', 'type' => 'checkbox', 'checked' => $sendmailemployeur ) );
-	?>
-	<fieldset id="sendmailemployeur" class="noborder">
-		<?php
-			echo $this->Xform->inputs(
-				array(
-					'fieldset' => false,
-					'legend' => false,
-					'Cui.textmailcui66_id' => array( 'label' => __d( 'cui', 'Cui.textmailcui66_id' ), 'empty' => true ),
-					'Cui.retourmail' => array( 'label' => __d( 'cui', 'Cui.retourmail' ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ),
-					'Cui.commentairemail' => array( 'label' => __d( 'cui', 'Cui.commentairemail' ), 'type' => 'textarea' ),
-					'Piecemailcui66.Piecemailcui66' => array( 'label' => __d( 'cui', 'Cui.piecemailcui66' ), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $piecesmailscuis66 )
-				)
-			);
-        ?>
-    </fieldset>
-                
-</fieldset>
 <fieldset>
     <?php
         echo $this->Observer->disableFieldsOnValue(
@@ -429,17 +469,66 @@
     ?>
     
     <?php 
+
         echo $this->Default->subform( array( 'Cui.dossierrecu'), array( 'domain' => $domain, 'options' => $options ) );
         echo $this->Default->subform( array( 'Cui.datedossierrecu' => array( 'domain' => $domain, 'dateFormat' => 'DMY', 'type' => 'date', 'empty' => false) ) );
-//        if( $isRecu ) {
-            echo $this->Default->subform( array( 'Cui.dossiereligible'), array( 'domain' => $domain, 'options' => $options ) );
-            echo $this->Default->subform( array( 'Cui.datedossiereligible' => array( 'domain' => $domain, 'dateFormat' => 'DMY', 'type' => 'date', 'empty' => false ) ) );
+        
+        echo $this->Default->subform( array( 'Cui.dossiereligible'), array( 'domain' => $domain, 'options' => $options ) );
+        echo $this->Default->subform( array( 'Cui.datedossiereligible' => array( 'domain' => $domain, 'dateFormat' => 'DMY', 'type' => 'date', 'empty' => false ) ) );
+            
 
-            echo $this->Default->subform( array( 'Cui.dossiercomplet' ), array( 'domain' => $domain, 'options' => $options ) );
-            echo $this->Default->subform( array( 'Cui.datedossiercomplet' => array( 'dateFormat' => 'DMY', 'type' => 'date', 'empty' => false ) ) );
-//        }
+        echo $this->Default->subform( array( 'Cui.dossiercomplet' ), array( 'domain' => $domain, 'options' => $options ) );
+        echo $this->Default->subform( array( 'Cui.datedossiercomplet' => array( 'dateFormat' => 'DMY', 'type' => 'date', 'empty' => false ) ) );
+
     ?>
     
+</fieldset>
+<!-- *************************************** Partie Mail Employeur **************************************** -->
+<fieldset>
+	<legend>MAIL À L'EMPLOYEUR</legend>
+	<?php
+		// Si aucun mail n'a été envoyé, on décoche sinon on coche
+		$sendmailemployeur = '0';
+		if( !empty( $this->request->data['Cui']['sendmailemployeur'] ) ) {
+			$sendmailemployeur = '1';
+		}
+		echo $this->Xform->input( 'Cui.sendmailemployeur', array( 'label' => 'Mail à l\'employeur ?', 'type' => 'checkbox', 'checked' => $sendmailemployeur ) );
+	?>
+	<fieldset id="sendmailemployeur" class="noborder">
+		<?php
+			echo $this->Xform->inputs(
+				array(
+					'fieldset' => false,
+					'legend' => false,
+					'Cui.textmailcui66_id' => array( 'label' => __d( 'cui', 'Cui.textmailcui66_id' ), 'empty' => true ),
+					'Cui.retourmail' => array( 'label' => __d( 'cui', 'Cui.retourmail' ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ),
+					'Cui.commentairemail' => array( 'label' => __d( 'cui', 'Cui.commentairemail' ), 'type' => 'textarea' ),
+					'Piecemailcui66.Piecemailcui66' => array( 'label' => __d( 'cui', 'Cui.piecemailcui66' ), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $piecesmailscuis66 )
+				)
+			);
+        ?>
+    </fieldset>
+                
+</fieldset>
+<!-- *************************************** Partie Mail Relance Employeur **************************************** -->
+<fieldset id="relanceemployeur">
+	<legend>MAIL DE RELANCE À L'EMPLOYEUR</legend>
+
+	<fieldset id="sendmailemployeur" class="noborder">
+		<?php
+			echo $this->Xform->inputs(
+				array(
+					'fieldset' => false,
+					'legend' => false,
+					'Cui.textmailcui66relance_id' => array( 'label' => __d( 'cui', 'Cui.textmailcui66relance_id' ), 'empty' => true, 'options' => $textsmailscuis66relances ),
+                    'Cui.datebutoirpiece' => array( 'label' => __d( 'cui', 'Cui.datebutoirpiece' ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true ),
+					'Cui.commentairemailrelance' => array( 'label' => __d( 'cui', 'Cui.commentairemailrelance' ), 'type' => 'textarea' ),
+//					'Piecemailcui66.Piecemailcui66' => array( 'label' => __d( 'cui', 'Cui.piecemailcui66' ), 'type' => 'select', 'multiple' => 'checkbox', 'options' => $piecesmailscuis66 )
+				)
+			);
+        ?>
+    </fieldset>
+                
 </fieldset>
 
 

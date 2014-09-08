@@ -99,12 +99,24 @@
                     $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiereligible'] );
                     $positioncui66 = $positioncui66.' le '.$dateDossier;
                 }
+                else if( ( $cui['Cui']['positioncui66'] == 'attpieces' ) && !empty( $cui['Cui']['datedossiereligible'] ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiereligible'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
+                }
                 else if( ( $cui['Cui']['positioncui66'] == 'dossiercomplet' ) && !empty( $cui['Cui']['datedossiercomplet'] ) ) {
                     $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiercomplet'] );
                     $positioncui66 = $positioncui66.' le '.$dateDossier;
                 }
+                else if( ( $cui['Cui']['positioncui66'] == 'attenvoimail' ) && !empty( $cui['Cui']['datedossiereligible'] ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossiereligible'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
+                }
+                else if( ( $cui['Cui']['positioncui66'] == 'traite' ) && !empty( $cui['Cui']['datedossierrecu'] ) ) {
+                    $dateDossier = $this->Locale->date( 'Date::short', $cui['Cui']['datedossierrecu'] );
+                    $positioncui66 = $positioncui66.' le '.$dateDossier;
+                }
 
-
+//debug( $cui);
 				echo $this->Xhtml->tableCells(
 					array(
 						h( Set::enum( Set::classicExtract( $cui, 'Cui.typecui' ), $options['Cui']['typecui'] ) ),
@@ -152,7 +164,7 @@
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'cuis', 'maillink', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
-									&& ( Set::classicExtract( $cui, 'Cui.sendmailemployeur' ) != '0' )
+//									&& ( Set::classicExtract( $cui, 'Cui.sendmailemployeur' ) != '0' )
 								)
 							)
 						),
@@ -176,7 +188,11 @@
 								'enabled' => (
 									( $this->Permissions->checkDossier( 'decisionscuis66', 'add', $dossierMenu ) == 1 )
 									&& ( Set::classicExtract( $cui, 'Cui.positioncui66' ) != 'annule' )
-									&& ( Set::classicExtract( $cui, 'Propodecisioncui66.nb_proposition' ) != '0' )
+									&& (
+                                        Set::classicExtract( $cui, 'Propodecisioncui66.nb_proposition' ) != '0'
+                                        ||
+                                        Set::classicExtract( $cui, 'Propodecisioncui66.nb_proposition' ) == '0' &&  Set::classicExtract( $cui, 'Cui.positioncui66' ) == 'traite'
+                                    )
 								)
 							)
 						),
