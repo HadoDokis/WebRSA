@@ -915,7 +915,9 @@
                     'contain' => false
                 )
             );
-//debug($cui);
+
+			$this->assert( !empty( $cui ), 'error404' );
+
             $user = $this->Cui->User->find(
                 'first',
                  array(
@@ -927,8 +929,6 @@
             );
             $cui['User'] = $user['User'];
             $this->set( 'cui', $cui);
-
-            $this->assert( !empty( $cui ), 'error404' );
 
             /*********/
 
@@ -1002,7 +1002,10 @@
 
                 if( !isset( $cui['Partenaire']['email'] ) || empty( $cui['Partenaire']['email'] ) ) {
                     $this->Session->setFlash( "Mail non envoyé: adresse mail de l'employeur ({$cui['Partenaire']['libstruc']}) non renseignée.", 'flash/error' );
-                    $this->redirect( $this->referer() );
+                }
+
+                if( ( $cui['Cui']['sendmailemployeur'] == '1' ) && !isset( $this->request->data['Cui']['textmailcui66relance_id'] ) ) {
+                    $this->Session->setFlash( "Mail non envoyé: le premier mail a été envoyé et le courrier de relance n'a pas été sélectionné.", 'flash/error' );
                 }
 
                 if( $cui['Cui']['sendmailemployeur'] != '1' ) { //CAs du premier mail
