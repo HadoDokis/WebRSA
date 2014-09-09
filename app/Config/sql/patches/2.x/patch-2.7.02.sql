@@ -21,10 +21,9 @@ ALTER TABLE cuis ADD CONSTRAINT cuis_renouvellement_in_list_chk CHECK ( cakephp_
 
 ALTER TABLE cuis ALTER COLUMN decisioncui DROP NOT NULL;
 ALTER TABLE cuis ALTER COLUMN decisioncui SET DEFAULT NULL;
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_decisioncui_in_list_chk' );
 UPDATE cuis SET decisioncui = NULL WHERE decisioncui ='enattente';
 UPDATE cuis SET decisioncui = 'sanssuite' WHERE decisioncui = 'annule';
-
-SELECT alter_table_drop_constraint_if_exists( 'public', 'cuis', 'cuis_decisioncui_in_list_chk' );
 ALTER TABLE cuis ADD CONSTRAINT cuis_decisioncui_in_list_chk CHECK ( cakephp_validate_in_list( decisioncui, ARRAY['accord','refus','ajourne','sanssuite'] ) );
 
 SELECT alter_table_drop_constraint_if_exists( 'public', 'decisionscuis66', 'decisioncui_decisioncui_in_list_chk' );
