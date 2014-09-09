@@ -945,8 +945,8 @@
 				$configName = WebrsaEmailConfig::getName( 'fiche_candidature' );
 				$Email = new CakeEmail( $configName );
 
-				// Choix du destinataire suivant le niveau de debug
-				if( Configure::read( 'debug' ) == 0 ) {
+				// Choix du destinataire suivant l'environnement
+				if( !WebrsaEmailConfig::isTestEnvironment() ) {
 					$Email->to( $actioncandidat_personne['Referent']['email'] );
 				}
 				else {
