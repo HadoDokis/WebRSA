@@ -874,4 +874,17 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet de spécifier les noms de serveurs servant d'environnement de
+	 * production afin que les mails ne soient pas envoyés à leurs destinataires
+	 * "normaux", mais à l'expéditeur du mail.
+	 *
+	 * @see WebrsaEmailConfig::isTestEnvironment()
+	 *
+	 * @param array
+	 *
+	 * @default null
+	 */
+	Configure::write( 'WebrsaEmailConfig.testEnvironments', array( 'remus.cg66.fr' ) );
 ?>

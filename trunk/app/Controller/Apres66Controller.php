@@ -905,8 +905,8 @@
 				$configName = WebrsaEmailConfig::getName( 'apre66_piecesmanquantes' );
 				$Email = new CakeEmail( $configName );
 
-				// Choix du destinataire suivant le niveau de debug
-				if( Configure::read( 'debug' ) == 0 ) {
+				// Choix du destinataire suivant suivant l'environnement
+				if( !WebrsaEmailConfig::isTestEnvironment() ) {
 					$Email->to( $apre['Referent']['email'] );
 				}
 				else {

@@ -420,8 +420,8 @@
 				$configName = WebrsaEmailConfig::getName( 'avis_technique_cui' );
 				$Email = new CakeEmail( $configName );
 
-				// Choix du destinataire suivant le niveau de debug
-				if( Configure::read( 'debug' ) == 0 ) {
+				// Choix du destinataire suivant l'environnement
+				if( !WebrsaEmailConfig::isTestEnvironment() ) {
 					$Email->to( $propodecisioncui66['Referent']['email'] );
 				}
 				else {
@@ -447,9 +447,9 @@
 
 			$this->redirect( $this->referer() );
 		}
-        
-        
-        
+
+
+
 		/**
 		 * Imprime l'avis technique émis sur le CUI
 		 *

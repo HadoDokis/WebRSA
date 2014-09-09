@@ -537,7 +537,7 @@
 
 			/// Calcul du numéro du contrat d'insertion
 			$nbCui = $this->Cui->find( 'count', array( 'conditions' => array( 'Personne.id' => $personne_id ) ) );
-            
+
             // Informations du dernier CUI signé
             $dernierCui = $this->Cui->dernierCui( $personne_id );
             $this->set('dernierCui', $dernierCui);
@@ -604,7 +604,7 @@
                                 '"Cui"."id"' => $data['Cui']['id']
                             )
                         ) && $success;
-                        
+
 //                        if( $positioncui66 == 'traite') {
 //                            $success = $this->Cui->updateAllUnBound(
 //                                array( 'Cui.decisioncui' => '\'sanssuite\'' ),
@@ -949,7 +949,7 @@
                 $mailBodySend = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
             }
             $this->set( 'mailBodySend', $mailBodySend);
-           
+
             $mailBodyRelance = '';
             if( !empty($cui['Textmailcui66relance']['contenu']) ) {
                 $mailBodyRelance = DefaultUtility::evaluate( $cui, $cui['Textmailcui66relance']['contenu'] );
@@ -964,7 +964,7 @@
 				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
-            
+
             // Quelle est la liste des pièces jointes associée aux mails du CUI
             // Liste des pièces associées au CUI
             /*$piecesmailscuis66 = $this->Cui->CuiPiecemailcui66->find(
@@ -995,8 +995,7 @@
                     )
                 )
             );*/
-            
-            
+
             if( !empty( $this->request->data) ) {
 
                 $this->Cui->begin();
@@ -1015,8 +1014,8 @@
                         $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
                         $Email = new CakeEmail( $configName );
 
-                        // Choix du destinataire suivant le niveau de debug
-                        if( Configure::read( 'debug' ) == 0 ) {
+                        // Choix du destinataire suivant suivant l'environnement
+                        if( !WebrsaEmailConfig::isTestEnvironment() ) {
                             $Email->to( $cui['Partenaire']['email'] );
                         }
                         else {
@@ -1078,8 +1077,8 @@
                         $configName = WebrsaEmailConfig::getName( 'mail_employeur_cui' );
                         $Email = new CakeEmail( $configName );
 
-                        // Choix du destinataire suivant le niveau de debug
-                        if( Configure::read( 'debug' ) == 0 ) {
+                        // Choix du destinataire suivant suivant l'environnement
+                        if( !WebrsaEmailConfig::isTestEnvironment() ) {
                             $Email->to( $cui['Partenaire']['email'] );
                         }
                         else {
@@ -1103,7 +1102,7 @@
                         $this->log( $e->getMessage(), LOG_ERROR );
                         $success = false;
                     }
-                    
+
                     if( $success ) {
                         $success = $this->Cui->updateAllUnBound(
                                 array( 'Cui.dateenvoirelance' => '\''.date_cakephp_to_sql( $this->request->data['Cui']['dateenvoirelance'] ).'\'' ),

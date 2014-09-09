@@ -884,8 +884,8 @@
 							$configName = WebrsaEmailConfig::getName( 'user_generation_mdp' );
                             $Email = new CakeEmail( $configName );
 
-							// Choix du destinataire suivant le niveau de debug
-							if( Configure::read( 'debug' ) == 0 ) {
+							// Choix du destinataire suivant l'environnement
+							if( !WebrsaEmailConfig::isTestEnvironment() ) {
 								$Email->to( $user['User']['email'] );
 							}
 							else {

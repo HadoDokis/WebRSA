@@ -222,7 +222,8 @@
 				'Statistiqueministerielle.conditions_organismes.SPE' => 'isarray',
 				'Statistiqueministerielle.conditions_organismes.SPE_PoleEmploi' => 'isarray',
 				'Statistiqueministerielle.conditions_organismes.HorsSPE' => 'isarray',
-				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray'
+				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
+				'WebrsaEmailConfig.testEnvironments' => 'isarray'
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

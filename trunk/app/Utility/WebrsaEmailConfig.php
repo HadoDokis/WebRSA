@@ -80,5 +80,27 @@
 
 			return $value;
 		}
+
+		/**
+		 * Permet de savoir si l'envoi de mail se fait en "mode test" (le
+		 * destinataire sera le même que l'expéditeur) ou en "mode production".
+		 *
+		 * Lorsque le serveur est "localhost" ou "qualif.webrsa.test.adullact.org",
+		 * la méthode retournera de toutes façons true.
+		 *
+		 * @see Configure::write( 'debug', ... )
+		 * @see Configure::write( 'WebrsaEmailConfig.testEnvironments', ... )
+		 *
+		 * @return boolean
+		 */
+		public static function isTestEnvironment() {
+			$environments = array_merge(
+				array( 'localhost', 'qualif.webrsa.test.adullact.org' ),
+				(array)Configure::read( 'WebrsaEmailConfig.testEnvironments' )
+			);
+
+			return ( Configure::read( 'debug' ) > 0 )
+				|| in_array( env( 'SERVER_NAME' ), $environments );
+		}
 	}
 ?>

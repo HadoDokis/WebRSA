@@ -22,7 +22,7 @@
         public $helpers = array( 'Default2', 'Default', 'Fileuploader', 'Cake1xLegacy.Ajax' );
 
         public $components = array( 'Jetons2', 'Default', 'Gedooo.Gedooo', 'DossiersMenus', 'Fileuploader' );
-        
+
         public $aucunDroit = array( 'ajaxtaux','ajaxfileupload', 'fileview', 'download' );
 
 		/**
@@ -59,9 +59,9 @@
 			$this->set( 'options', $options );
 		}
 
-		
-		
-		
+
+
+
 		/**
 		 * http://valums.com/ajax-upload/
 		 * http://doc.ubuntu-fr.org/modules_php
@@ -168,9 +168,9 @@
 			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'decisioncui66' ) );
 			$this->set( 'urlmenu', '/decisionscuis66/decisioncui/'.$cui_id );
 		}
-		
-		
-		
+
+
+
 		/**
 		 *
 		 * @param integer $cui_id
@@ -286,12 +286,12 @@
 			$this->set( 'personne_id', $personne_id );
 			$this->set( 'cui', $cui );
 			$this->set( 'cui_id', $cui_id );
-            
-            
+
+
             // Liste des modèles de mail pour les employeurs paramétrés  dans l'application
             $textsmailscuis66 = $this->Decisioncui66->Cui->Textmailcui66->find('list');
             $this->set( 'textsmailscuis66', $textsmailscuis66);
-            
+
 
 
 			// Récupération des avis proposés sur le CUI
@@ -333,7 +333,7 @@
                     $decisioncui66_id = $this->Decisioncui66->id;
                     $saved = $this->Decisioncui66->Cui->updatePositionFromDecisioncui66( $decisioncui66_id ) && $saved;
                 }
-                    
+
                 if( $saved ) {
                     $this->Decisioncui66->commit();
                     $this->Jetons2->release( $dossier_id );
@@ -386,7 +386,7 @@
 				$this->redirect( $this->referer() );
 			}
 		}
-        
+
          /**
 		 * Permet d'envoyer un mail à l'employeur en lien avec le CUI
 		 *
@@ -406,12 +406,12 @@
             $this->set( 'decisioncui66', $decisioncui66 );
 
             $cui_id = Set::classicExtract( $decisioncui66, 'Decisioncui66.cui_id' );
-            
+
             $this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $this->Decisioncui66->personneId( $id ) ) ) );
 
             $dossier_id = $this->Decisioncui66->Cui->dossierId( $id );
 			$this->Jetons2->get( $dossier_id );
-            
+
             $decisioncui66 = $this->Decisioncui66->find(
                 'first',
                 array(
@@ -434,7 +434,7 @@
                     'contain' => false
                 )
             );
-            
+
             $user = $this->Decisioncui66->Cui->User->find(
                 'first',
                  array(
@@ -451,7 +451,7 @@
 //debug($decisioncui66);
 //die();
             /*********/
-            
+
             // On transforme les champs de type date en format JJ/MM/AAAA
             $schema = $this->Decisioncui66->Cui->schema();
             foreach( $schema as $field => $params ) {
@@ -469,17 +469,17 @@
                 $mailBodySend = DefaultUtility::evaluate( $decisioncui66, $decisioncui66['Textmailcui66']['contenu'] );
             }
             $this->set( 'mailBodySend', $mailBodySend);
-            
+
             /**********/
-            
+
             // Retour à la liste en cas d'annulation
 			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
 				$this->Jetons2->release( $dossier_id );
 				$this->redirect( array( 'action' => 'decisioncui', $decisioncui66['Decisioncui66']['cui_id'] ) );
 			}
-            
+
             if( !empty( $this->request->data) ) {
-                
+
                 $this->Decisioncui66->Cui->begin();
 
                 if( !isset( $decisioncui66['Partenaire']['email'] ) || empty( $decisioncui66['Partenaire']['email'] ) ) {
@@ -495,8 +495,8 @@
                     $configName = WebrsaEmailConfig::getName( 'mail_decision_employeur_cui' );
                     $Email = new CakeEmail( $configName );
 
-                    // Choix du destinataire suivant le niveau de debug
-                    if( Configure::read( 'debug' ) == 0 ) {
+                    // Choix du destinataire suivant l'environnement
+                    if( !WebrsaEmailConfig::isTestEnvironment() ) {
                         $Email->to( $decisioncui66['Partenaire']['email'] );
                     }
                     else {
@@ -513,7 +513,7 @@
                     $this->log( $e->getMessage(), LOG_ERROR );
                     $success = false;
                 }
-                
+
                 if( $success ) {
                     $success = $this->Decisioncui66->updateAllUnBound(
                             array( 'Decisioncui66.dateenvoimail' => '\''.date_cakephp_to_sql( $this->request->data['Decisioncui66']['dateenvoimail'] ).'\'' ),
@@ -537,12 +537,12 @@
 
                 $this->render( 'envoimailemployeur' );
                 $this->set( 'urlmenu', '/cuis/index/'.$decisioncui66['Cui']['personne_id'] );
-   
+
 
             }
         }
-        
-        
+
+
 		/**
 		 * Imprime une attestation de compétence du CUI.
 		 *
