@@ -33,7 +33,6 @@ class Cohortesdossierspcgs66Controller extends AppController {
                 'enattenteaffectation' => array('filter' => 'Search'),
                 'affectes' => array('filter' => 'Search'),
                 'aimprimer' => array('filter' => 'Search'),
-                'attentetransmission' => array('filter' => 'Search'),
                 'atransmettre' => array('filter' => 'Search')
             )
         ),
@@ -42,7 +41,6 @@ class Cohortesdossierspcgs66Controller extends AppController {
         'InsertionsAllocataires',
         'Cohortes' => array(
             'enattenteaffectation',
-            'attentetransmission',
             'atransmettre'
         )
     );
@@ -135,13 +133,6 @@ class Cohortesdossierspcgs66Controller extends AppController {
     /**
      *
      */
-    public function attentetransmission() {
-        $this->_index('Affectationdossierpcg66::attentetransmission');
-    }
-
-    /**
-     *
-     */
     public function atransmettre() {
         $this->_index('Affectationdossierpcg66::atransmettre');
     }
@@ -185,7 +176,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
                                 array('Decisiondossierpcg66.etatop' => "'" . Hash::get($this->request->data, "Decisiondossierpcg66.{$index}.etatop") . "'"),
                                 array('Decisiondossierpcg66.id' => Hash::get($this->request->data, "Decisiondossierpcg66.{$index}.id"))
                             ) && $success;
-                                    
+
                             if( $this->action == 'atransmettre' ) {
                                 $datetransmissionop = $this->request->data['Decisiondossierpcg66'][$index]['datetransmissionop'];
                                 $date = "{$datetransmissionop['year']}-{$datetransmissionop['month']}-{$datetransmissionop['day']}";
@@ -203,7 +194,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
                             }
                         }
                     }
-                    
+
                     if ($success) {
                         $this->Dossierpcg66->commit(); //FIXME
                         $this->Session->setFlash('Enregistrement effectué.', 'flash/success');
@@ -283,7 +274,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
                         } else {
                             $this->request->data['Dossierpcg66'][$i]['poledossierpcg66_id'] = $poleActuelId;
                         }
-                        
+
 
                         // Préchargement de la liste des organismes à qui la décision est transmise
                         if (in_array($statutAffectation, array('Affectationdossierpcg66::atransmettre'))) {
@@ -301,7 +292,7 @@ class Cohortesdossierspcgs66Controller extends AppController {
                                 )
                             );
                             $this->request->data['Notificationdecisiondossierpcg66'][$i]['Notificationdecisiondossierpcg66'] = Hash::extract($listeOrgstransmisdossierspcgs66, "{n}.Decdospcg66Orgdospcg66.orgtransmisdossierpcg66_id");
-                        }                        
+                        }
                     }
                 } else {
                     $progressivePaginate = SearchProgressivePagination::enabled($this->name, $this->action);
