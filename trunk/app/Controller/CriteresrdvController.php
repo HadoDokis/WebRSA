@@ -160,6 +160,7 @@
 
 			$this->layout = '';
 			$this->_setOptions();
+			$this->set( 'typevoie', $this->Option->typevoie() );
 			$this->set( compact( 'rdvs' ) );
 		}
 	}
