@@ -43,22 +43,6 @@
 			}
 			echo "</tbody></table>";
 	?>
-			<div class='paginate'>
-				<!-- Affiche les numéros de pages -->
-				<?php
-					$this->Paginator->options(array('url' => $this->passedArgs));
-					echo $this->Paginator->numbers();
-				?>
-				<!-- Affiche les liens des pages précédentes et suivantes -->
-				<?php
-					echo $this->Paginator->prev('« Précédent ', null, null, array( 'tag' => 'span', 'class' => 'disabled'));
-					echo $this->Paginator->next(' Suivant »', null, null, array( 'tag' => 'span', 'class' => 'disabled'));
-				?>
-				<!-- Affiche X de Y, où X est la page courante et Y le nombre de pages -->
-				<?php
-					echo $this->Paginator->counter(array('format'=>'Page %page% sur %pages%'));
-				?>
-			</div>
 	<?php
 		}
 		else {

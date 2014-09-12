@@ -400,7 +400,10 @@
 			);
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
-			$this->paginate = array(
+			$query = array(
+				'conditions' => array(
+					'DspRev.personne_id' => $id
+				),
 				'contain' => array(
 					'Personne',
 					'DetaildifsocRev',
@@ -418,16 +421,7 @@
 				),
 				'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
 			);
-
-			$histos = array( );
-			if( isset( $dsp['Dsp']['id'] ) && !empty( $dsp['Dsp']['id'] ) ) {
-				$histos = $this->paginate(
-					'DspRev',
-					array(
-						'DspRev.dsp_id' => $dsp['Dsp']['id']
-					)
-				);
-			}
+			$histos = $this->DspRev->find( 'all', $query );
 
 			if( !empty( $histos ) ) {
 				$diff = array( );
