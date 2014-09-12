@@ -413,7 +413,46 @@
 				'exclusive' => '',
 				'finderQuery' => '',
 				'counterQuery' => ''
-			)
+			),
+			'Decisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => 'user_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Avistechniquedecisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => 'useravistechnique_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Propositiondecisiondossierpcg66' => array(
+				'className' => 'Decisiondossierpcg66',
+				'foreignKey' => 'userproposition_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

@@ -80,7 +80,28 @@ class Decisiondossierpcg66 extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        )
+        ),
+        'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Useravistechnique' => array(
+            'className' => 'User',
+            'foreignKey' => 'useravistechnique_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Userproposition' => array(
+            'className' => 'User',
+            'foreignKey' => 'userproposition_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
     );
     public $hasAndBelongsToMany = array(
         'Decisiontraitementpcg66' => array(

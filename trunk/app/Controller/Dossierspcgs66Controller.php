@@ -87,9 +87,9 @@
 //				)
 //			);
 
-                      
-            
-            
+
+
+
             $gestionnaires = $this->User->find(
                 'all',
                 array(
@@ -109,7 +109,7 @@
             );
             $gestionnaires = Hash::combine( $gestionnaires, '{n}.User.gestionnaire', '{n}.User.nom_complet' );
             $this->set( compact( 'gestionnaires' ) );
-            
+
             $this->set( 'gestionnaire', $this->User->find(
 					'list',
 					array(
@@ -123,7 +123,7 @@
 					)
 				)
 			);
-            
+
             $this->set(
                 'polesdossierspcgs66',
                 $this->User->Poledossierpcg66->find(
@@ -134,11 +134,11 @@
                             'Poledossierpcg66.name'
                         ),
                         'conditions' => array( 'Poledossierpcg66.isactif' => '1' ),
-                        'order' => array( 'Poledossierpcg66.name ASC' ) 
+                        'order' => array( 'Poledossierpcg66.name ASC' )
                     )
                 )
             );
-            
+
 			$options = Set::merge(
 				$this->Dossierpcg66->Decisiondossierpcg66->enums(),
 				$options
@@ -245,7 +245,7 @@
 //						if( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'] == 'transmis' ){
 						if( in_array( $decisiondossierpcg66['Decisiondossierpcg66']['etatop'], array( 'transmis', 'atransmettre' ) ) ){
 							$datetransmission = $decisiondossierpcg66['Decisiondossierpcg66']['datetransmissionop'];
-                            
+
                             // Liste des organismes auxquels on transmet le dossier
                             $listOrgs = Hash::extract( $decisiondossierpcg66, 'Notificationdecisiondossierpcg66.{n}.name' );
                             $orgs = implode( ', ',  $listOrgs );
@@ -316,7 +316,7 @@
 					'order' => array( 'Dossierpcg66.datereceptionpdo DESC', 'Dossierpcg66.id DESC' )
 				)
 			);
-            
+
 			foreach( $dossierspcgs66 as $i => $dossierpcg66 ) {
 				$listeSituationsPersonnePCG66 = $this->Dossierpcg66->Personnepcg66->find(
 					'all',
@@ -509,7 +509,7 @@
 					)
 				);
 // debug( $decisionsdossierspcgs66 );
-                            
+
 				$this->set( compact( 'decisionsdossierspcgs66' ) );
 				if ( !empty( $decisionsdossierspcgs66 ) ) {
 					$lastDecisionId = $decisionsdossierspcgs66[0]['Decisiondossierpcg66']['id'];
@@ -564,7 +564,7 @@
 						( ( $this->action == 'add' ) ? $this->Dossierpcg66->id : $id )
 					) && $saved;
 				}
-                
+
                 // Mise à jour des dossiers d'EP ayant généré un dossier PCG suite à une EP Audition
                 // Uniquement si le dossie PCG est issu d'un EP Audition, que son decisiondefautinsertionep66_id is not null
                 // et que le dossier est dans un état annulé, traité, décision validée ou transmis à un OP
@@ -588,7 +588,7 @@
                                 'all',
                                 $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->qdDossiersepsOuverts( $personnesIds)
                             );
-                            
+
                             // Si des dossiers existent encore
                             if( isset($dossierEPEnCours) && !empty( $dossierEPEnCours ) ) {
                                 // On récupère la liste des identifiants de ces dossiers d'EPs
@@ -597,7 +597,7 @@
                                 // On récupère leur passage en commission respectif
                                 $passagesParDossierseps = $this->Dossierpcg66->Personnepcg66->Personne->Dossierep->find(
                                     'all',
-                                    array( 
+                                    array(
                                         'conditions' => array(
                                             'Dossierep.id' => $dossiersEpsIds,
                                             'Dossierep.themeep' => 'defautsinsertionseps66'
@@ -643,7 +643,7 @@
 			elseif( $this->action == 'edit' ) {
 				$this->request->data = $dossierpcg66;
 			}
-			
+
 			if( $this->action == 'edit' ) {
 				$fichiersEnBase = $this->Dossierpcg66->Fichiermodule->find(
 					'all',
@@ -667,28 +667,28 @@
 				);
 				$fichiersEnBase = Set::classicExtract( $fichiersEnBase, '{n}.Fichiermodule' );
 				$this->set( 'fichiersEnBase', $fichiersEnBase );
-                
-                
+
+
                 $this->request->data['Dossierpcg66']['user_id'] = $dossierpcg66['Dossierpcg66']['poledossierpcg66_id'].'_'.$dossierpcg66['Dossierpcg66']['user_id'];
 			}
-  
-            
-            
+
+
+
 //debug($this->request->data);
 			// avistechniquemodifiable, validationmodifiable
 			$etatdossierpcg = '';
 			if( isset( $dossierpcg66 ) ) {
 				$etatdossierpcg = $dossierpcg66['Dossierpcg66']['etatdossierpcg'];
 			}
-			
+
             $gestionnairemodifiable = $personnedecisionmodifiable = false;
-            
+
             // Récupération du gestionnaire précédent et remplissage de la liste déroulante avec cette valeur par défaut
             $dossierpcg66Pcd = $this->Dossierpcg66->find(
                 'first',
                 array(
                     'conditions' => array(
-                        'Dossierpcg66.foyer_id' => $foyer_id 
+                        'Dossierpcg66.foyer_id' => $foyer_id
                     ),
                     'recursive' => -1,
                     'order' => array( 'Dossierpcg66.created DESC'),
@@ -702,7 +702,7 @@
                 $this->request->data['Dossierpcg66']['etatdossierpcg'] = 'attinstr';
                 $gestionnairemodifiable = true;
             }
-            
+
 			switch( $etatdossierpcg ) {
 				case '':
 					$gestionnairemodifiable = $gestionnairemodifiable;
@@ -750,11 +750,13 @@
 						'User',
                         'Decisiondossierpcg66' => array(
                             'order' => array( 'Decisiondossierpcg66.created DESC' ),
-//                            'conditions' => array(
-//                                'Decisiondossierpcg66.validationproposition' => 'O',
-//                                'Decisiondossierpcg66.etatop' => 'transmis'
-//                            ),
-                            'Notificationdecisiondossierpcg66'
+                            'Notificationdecisiondossierpcg66',
+							'Useravistechnique' => array(
+								'fields' => 'nom_complet'
+							),
+							'Userproposition' => array(
+								'fields' => 'nom_complet'
+							),
                         ),
                         'Poledossierpcg66',
 					)
@@ -779,14 +781,14 @@
 				$traitementsCourriersEnvoyes = $this->Dossierpcg66->listeCourriersEnvoyes( $personnesIds, $dossierpcg66 );
 			}
 			$this->set( compact( 'traitementsCourriersEnvoyes' ) );
-			
-           
+
+
             // Liste des organismes auxquels on transmet le dossier
             if( !empty( $dossierpcg66['Decisiondossierpcg66'][0]['Notificationdecisiondossierpcg66'] ) ) {
                 $listOrgs = Hash::extract( $dossierpcg66['Decisiondossierpcg66'][0], 'Notificationdecisiondossierpcg66.{n}.name' );
                 $orgs = implode( ', ',  $listOrgs );
             }
-            
+
 			$this->_setOptions();
 			$this->set( compact( 'dossierpcg66', 'orgs', 'datetransmissionop' ) );
 			$this->set( 'foyer_id', $foyer_id );
@@ -823,7 +825,7 @@
 			$this->_setFlashResult( 'Delete', $success );
 			$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'index', $foyer_id ) );
 		}
-	
+
 		/**
 		 *
 		 * @param integer $id

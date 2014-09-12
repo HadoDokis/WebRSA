@@ -77,15 +77,14 @@ echo $this->Default2->view(
 
 <?php if ($this->Permissions->checkDossier('decisionsdossierspcgs66', 'edit', $dossierMenu) || $this->Permissions->checkDossier('decisionsdossierspcgs66', 'avistechnique', $dossierMenu) || $this->Permissions->checkDossier('decisionsdossierspcgs66', 'validation', $dossierMenu)): ?>
     <?php if ( !empty( $dossierpcg66['Decisiondossierpcg66'] ) ):?>
-    <?php debug($dossierpcg66['Decisiondossierpcg66']);?>
     <h2>Décisions émises</h2>
     <table class="tooltips aere">
         <thead>
             <tr>
                 <th>Commentaire de l'avis technique</th>
                 <th>Date de l'avis technique</th>
-                <th>Commentaire du contrôle</th>
-                <th>Date du contrôle</th>
+                <th>Commentaire de la validation</th>
+                <th>Date de la validation</th>
             </tr>
         </thead>
         <tbody>
@@ -94,9 +93,9 @@ echo $this->Default2->view(
             foreach ($dossierpcg66['Decisiondossierpcg66'] as $decisiondossierpcg66) {
                 echo $this->Xhtml->tableCells(
                     array(
-                        h('"'.$decisiondossierpcg66['commentaireavistechnique'].'" émis par '.Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'userproposition_id'))),
+                        h('"'.$decisiondossierpcg66['commentaireavistechnique'].'" émis par '.Hash::get( $decisiondossierpcg66, 'Useravistechnique.nom_complet' )),
                         h(date_short($decisiondossierpcg66['dateavistechnique'] ) ),
-                        h('"'.$decisiondossierpcg66['commentairevalidation'].'" émis par '.Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'userproposition_id'))),
+                        h('"'.$decisiondossierpcg66['commentairevalidation'].'" émis par '.Hash::get( $decisiondossierpcg66, 'Userproposition.nom_complet' )),
                         h(date_short($decisiondossierpcg66['datevalidation'] ) )
                     )
                 );
