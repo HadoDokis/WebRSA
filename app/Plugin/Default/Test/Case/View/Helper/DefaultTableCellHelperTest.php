@@ -66,6 +66,7 @@
 		 * @medium
 		 */
 		public function testData() {
+			// Test simple
 			$htmlAttributes = array();
 			$result = $this->DefaultTableCell->data( 'Apple.id', $htmlAttributes );
 			$expected = array(
@@ -74,10 +75,20 @@
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 
+			// Test avec des options, dont la valeur est traduite
 			$htmlAttributes = array( 'options' => array( 'red' => 'Foo' ) );
 			$result = $this->DefaultTableCell->data( 'Apple.color', $htmlAttributes );
 			$expected = array(
 				'Foo',
+				array( 'class' => 'data string ', ),
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec des options, mais dont la valeur n'est pas traduite
+			$htmlAttributes = array( 'options' => array( 'blue' => 'Foo' ) );
+			$result = $this->DefaultTableCell->data( 'Apple.color', $htmlAttributes );
+			$expected = array(
+				'red',
 				array( 'class' => 'data string ', ),
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
