@@ -78,8 +78,10 @@
 			unset( $htmlAttributes['type'] );
 			$value = Hash::get( $this->_data, $path );
 
-			if( isset( $htmlAttributes['options'] ) && isset( $htmlAttributes['options'][$value] ) ) {
-				$value = $htmlAttributes['options'][$value];
+			if( isset( $htmlAttributes['options'] ) ) {
+				if( isset( $htmlAttributes['options'][$value] ) ) {
+					$value = $htmlAttributes['options'][$value];
+				}
 				unset( $htmlAttributes['options'] );
 			}
 
