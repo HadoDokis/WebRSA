@@ -23,6 +23,7 @@
 			'Allocatairelie',
 			'Autovalidate2',
 			'Conditionnable',
+			'DossierCommission',
 			'Enumerable' => array(
 				'fields' => array(
 					'etapedossierep',
@@ -854,6 +855,121 @@
 			$query = $this->Personne->PersonneReferent->completeQdReferentParcours( $query, $search );
 
 			return $query;
+		}
+
+		/**
+		 * Liste des thématiques d'EP conduisant à une réorientation, selon le
+		 * département configuré.
+		 *
+		 * @see dossierseps.themeep
+		 *
+		 * @todo factoriser, tout ça, @see Dossierep::completeQdReorientation()
+		 *
+		 * @return array
+		 */
+		public function getThematiquesReorientations() {
+			$thematiques = array();
+
+			foreach( $this->Personne->Orientstruct->hasMany as $alias => $params ) {
+				if(
+					( $params['foreignKey'] === 'nvorientstruct_id' )
+					&& preg_match( '/ep'.Configure::read( 'Cg.departement' ).'$/', $params['className'] )
+				) {
+					$thematiques[] = Inflector::tableize( $params['className'] );
+				}
+			}
+
+			return $thematiques;
+		}
+
+		/**
+		 * Retourne le querydata permettant d'obtenir les dossiers, personnes,
+		 * dernier passage éventuel et sa commission éventuelle.
+		 *
+		 * @return array
+		 */
+		public function getDossiersQuery() {
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Passagecommissionep->fields(),
+					$this->Personne->fields(),
+					$this->Passagecommissionep->Commissionep->fields()
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					array(
+						'OR' => array(
+							'Passagecommissionep.id IS NULL',
+							'Passagecommissionep.id IN ( '.$this->Passagecommissionep->sqDernier().' )'
+						)
+					)
+				)
+			);
+
+			return $query;
+		}
+
+		/**
+		 * Retourne la liste des dossiers de l'allocataire en cours de passage
+		 * en commission et pouvant déboucher sur une réorientation.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function getReorientationsEnCours( $personne_id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+//debug( $this->getThematiquesReorientations() );
+			if( $query === false ) {
+				$Commissionep = $this->Passagecommissionep->Commissionep;
+
+				$query = $this->getDossiersQuery();
+				$query['fields'] = array(
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Dossierep.id',
+					'Dossierep.created',
+					'Dossierep.themeep',
+					'Passagecommissionep.id',
+					'Passagecommissionep.etatdossierep',
+					'Commissionep.id',
+					'Commissionep.dateseance',
+					'Commissionep.etatcommissionep',
+				);
+
+				$query['conditions'][] = array(
+					'Dossierep.themeep' => $this->getThematiquesReorientations(),
+					array(
+						'OR' => array(
+							'Commissionep.id IS NULL',
+							'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours
+						)
+					)
+				);
+
+				$query = $this->getCompletedQueryDetailsOrientstruct( $query );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			// La condition sur la personne
+			$query['conditions'][] = array( "{$this->alias}.personne_id" => $personne_id );
+
+			// On force les champs virtuels pour la requête
+			$forceVirtualFields = $this->forceVirtualFields;
+			$this->forceVirtualFields = true;
+			$results = (array)$this->find( 'all', $query );
+			$this->forceVirtualFields = $forceVirtualFields;
+
+			return $results;
 		}
 	}
 ?>

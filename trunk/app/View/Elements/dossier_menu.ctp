@@ -144,13 +144,16 @@
 				if (Configure::read( 'nom_form_ci_cg' ) == 'cg58' ) {
 					$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
+					$subAllocataire['Droit']['Orientation (nouveau)'] = array( 'url' => array( 'controller' => 'orientsstructs2', 'action' => 'index', $personne['id'] ) );
 				}
 				else if (Configure::read( 'nom_form_ci_cg' ) == 'cg66' ) {
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
+					$subAllocataire['Droit']['Orientation (nouveau)'] = array( 'url' => array( 'controller' => 'orientsstructs2', 'action' => 'index', $personne['id'] ) );
 					$subAllocataire['Droit']['Traitements PCG'] = array( 'url' => array( 'controller' => 'traitementspcgs66', 'action' => 'index', $personne['id'] ) );
 				}
 				else {
 					$subAllocataire['Droit']['Orientation'] = array( 'url' => array( 'controller' => 'orientsstructs', 'action' => 'index', $personne['id'] ) );
+					$subAllocataire['Droit']['Orientation (nouveau)'] = array( 'url' => array( 'controller' => 'orientsstructs2', 'action' => 'index', $personne['id'] ) );
 					$subAllocataire['Droit']['Consultation dossier PDO'] = array( 'url' => array( 'controller' => 'propospdos', 'action' => 'index', $personne['id'] ) );
 				}
 

@@ -933,7 +933,7 @@
 			$departement = Configure::read( 'Cg.departement' );
 
 			// Vérification du département
-			if( !in_array( $departement, array( 58, 66, 93 ) ) ) {
+			if( !in_array( $departement, array( 58, 66, 93, 976 ) ) ) {
 				$msgstr = sprintf( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc: %s', $departement );
 				throw new RuntimeException( $msgstr );
 			}
@@ -1242,6 +1242,9 @@
 					break;
 				case 93:
 					return 'Nonorientationproep93';
+					break;
+				case 976:
+					return 'Nonorientationproep58'; // Tant qu'il n'ont pas de thématique à eux
 					break;
 				default:
 					throw new InternalErrorException( 'La configuration de Cg.departement n\'est pas correcte dans le webrsa.inc' );

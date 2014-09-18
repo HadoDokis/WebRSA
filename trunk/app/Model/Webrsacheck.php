@@ -157,7 +157,7 @@
 				),
 				'CG.cantons' => 'boolean',
 				'Cg.departement' => array(
-					array( 'rule' => 'inList', array( 58, 66, 93 ) ),
+					array( 'rule' => 'inList', array( 58, 66, 93, 976 ) ),
 				),
 				'Cohorte.dossierTmpPdfs' => 'string',
 				'Criterecer.delaiavanteecheance' => 'string',

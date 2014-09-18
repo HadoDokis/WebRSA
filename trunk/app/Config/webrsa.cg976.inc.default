@@ -1,0 +1,397 @@
+<?php
+	/**
+	 * Nouvelle façon de paramétrer la génération de documents PDF via Gedooo.
+	 *
+	 * Ci-dessous, l'ensemble des clés de configuration possibles.
+	 *
+	 * array(
+	 *	'method' => 'classic', // classic, unoconv, cloudooo
+	 *	// Ancien serveur Gedooo
+	 *	// 'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+	 *	// Nouveau serveur Gedooo
+	 *	'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
+	 *	// Pour Unoconv
+	 *	'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
+	 *	// Pour Cloudooo
+	 *	'cloudooo_host' => '192.168.2.35',
+	 *	'cloudooo_port' => '8012'
+	 * )
+	 */
+
+	// Exemple de configuration avec l'ancien Gedooo
+	/*Configure::write(
+		'Gedooo',
+		array(
+			'method' => 'classic',
+			'wsdl' => 'http://gedooo.test.adullact.org:8080/axis2/services/OfficeService?wsdl',
+		)
+	);*/
+
+	// Exemple de configuration avec le nouveau Gedooo et unoconv
+	/*Configure::write(
+		'Gedooo',
+		array(
+			'method' => 'unoconv',
+			'wsdl' => 'http://gedooo.test.adullact.org:8880/ODFgedooo/OfficeService?wsdl',
+			'unoconv_bin' => '/home/cbuffin/Bureau/1/usr/bin/unoconv',
+		)
+	);*/
+
+	// Exemple de configuration avec le nouveau Gedooo et cloudooo
+	Configure::write(
+		'Gedooo',
+		array(
+			'method' => 'cloudooo',
+			'wsdl' => 'http://192.168.2.35:8980/ODFgedooo/OfficeService?wsdl',
+			'cloudooo_host' => 'cloudooo.test.adullact.org',
+			'cloudooo_port' => '8012'
+		)
+	);
+
+	Configure::write( 'Cg.departement', 976 );
+	Configure::write( 'Utilisateurs.multilogin', false );
+	Configure::write( 'with_parentid', false );
+	Configure::write( 'CG.cantons', false );
+	Configure::write( 'Zonesegeographiques.CodesInsee', true );
+	Configure::write( 'nom_form_ci_cg', 'cg976' );
+
+	/**
+	 *   Paramètre à renseigner dans le cas d'un affichage plus large du menu du dossier
+	 *   @default: false
+	 */
+	Configure::write( 'UI.menu.large', true );
+
+	/**
+	 * Configuration pour le dialogue avec un CMS (système de gestion de contenu)
+	 * comme Alfresco, servant à stocker les PDF
+	 */
+	Configure::write(
+		'Cmis',
+		array(
+			'url' => 'http://xxxxxx/alfresco/service/api/cmis',
+			'username' => 'user',
+			'password' => 'pass',
+			'prefix' => '/Sites/Webrsa',
+		)
+	);
+
+	/**
+	 * Permet de rajouter des conditions aux conditions de recherches suivant
+	 * le paramétrage des service référent dont dépend l'utilisateur connecté.
+	 *
+	 * @default false
+	 */
+	Configure::write( 'Recherche.qdFilters.Serviceinstructeur', false );
+
+
+	/**
+	 *  Permet de définir si on peut ou non ajouter une nouvelle orientation à un dossier
+	 *   - toppersdrodevorsa     --> par défaut 1 (personne soumise à droit et devoir)
+	 *   - situationetatdosrsa   --> par défaut array( 'Z', 2, 3, 4) (dossier dans un droit ouvert et versable)
+	 *
+	 * INFO: depuis le passage en CakePHP 2.x, il faut mettre les valeurs numériques entre apostrophes.
+	 */
+	Configure::write( 'AjoutOrientationPossible.toppersdrodevorsa', array( null, '0', '1' ) ); // aucune distincton sur le soumis à droit et devoir
+	Configure::write( 'AjoutOrientationPossible.situationetatdosrsa', array( 'Z', '0', '1', '2', '3', '4', '5', '6' ) );// on prend toutes les valeurs possibles de l'état du dossier RSA
+
+	/**
+	 * Permet de spécifier si les recherches sur l'identifiant Pôle Emploi d'un
+	 * allocataire doivent se faire sur les 8 derniers chiffres de l'identifiant
+	 * (true) ou sur la totalité de celui-ci (false).
+	 *
+	 * @default false
+	 */
+	Configure::write( 'Recherche.identifiantpecourt', true );
+
+	/**
+	 * Variable contenant un array avec les id des typesorients en Emploi
+	 */
+	Configure::write( 'Typeorient.emploi_id', array( 1, 4 ) );
+
+	/**
+	 * Permet de parcourir les détails des allocataires n'ayant pas de prestation
+	 * RSA dans le menu du dossier.
+	 *
+	 * Permet également d'obtenir la liste des dossiers dans lesquels l'allocataire
+	 * ne possède plus de prestation RSA mais pour lesquels il existe des enregistrements
+	 * dans les tables métier de chacun des modules impactés.
+	 *
+	 * Permet également de voir dans la page de résumé du dossier les autres dossiers
+	 * dans lesquels se trouve l'allocataire avec des enregistrements dans les
+	 * tables métiers et pas de prestation.
+	 *
+	 * Les tables concernées sont: actionscandidats_personnes, apres, bilansparcours66,
+	 * contratsinsertion, cuis, dsps, dsps_revs, entretiens, fichesprescriptions93,
+	 * memos, orientsstructs, personnes_referents, propospdos, questionnairesd1pdvs93,
+	 * questionnairesd2pdvs93, rendezvous.
+	 *
+	 * ATTENTION: impacte les performances de l'application.
+	 *
+	 * @var boolean
+	 * @default null
+	 */
+	Configure::write( 'AncienAllocataire.enabled', true );
+
+	/**
+	 * FIXME: vérifier l'existance et les droits
+	 * FIXME: accès concurrents ?
+	 */
+	Configure::write( 'Cohorte.dossierTmpPdfs', APP.'tmp/files/pdf' );
+
+	/**
+	 * Permet de désactiver l'utilisation des jetons sur les dossiers
+	 * Si à false, on utilise les jetons sur les dossiers.
+	 * Si à true, on n'utilise pas les jetons sur les dossiers.
+	 * @default false
+	 */
+	Configure::write( 'Jetons2.disabled', false );
+
+	/**
+	 * Permet la pagination progressive, cad. qu'on ne compte pas le nombre
+	 * d'enregistrements totaux, mais que l'on regarde seulement si la
+	 * page suivante existe.
+	 *
+	 * Ce paramètre concerne toutes les paginations.
+	 *
+	 * @default: false (pagination normale)
+	 */
+	Configure::write( 'Optimisations.progressivePaginate', false );
+
+	/**
+	 * Permet de rechercher le dernier dossier d'un allocataire dans la table
+	 * derniersdossiersallocataires (il faudra mettre le shell Derniersdossiersallocataires
+	 * en tâche planifiée) afin de se passer d'une sous-requête coûteuse dans les
+	 * recherches.
+	 *
+	 * @param boolean
+	 * @default null
+	 */
+	Configure::write( 'Optimisations.useTableDernierdossierallocataire', false );
+
+    /**
+	 * Configuration de l'utilisation des thématiques de RDV du module RDV
+	 */
+	Configure::write('Rendezvous.useThematique', false );
+
+	Configure::write( 'Situationdossierrsa.etatdosrsa.ouvert', array( 'Z', '2', '3', '4' ) );
+
+	/**
+	 * 	Valeurs prises par le champ natpf pour déterminer si le dossier est en RSA Socle
+	 */
+	Configure::write( 'Detailcalculdroitrsa.natpf.socle', array( 'RSD', 'RSI', 'RSU', 'RSJ' ) );
+
+	/**
+	 * Permet à l'administrateur d'ajouter une adresse pour l'utilisateur
+	 * connecté à l'application.
+	 * Besoin pour le CG66 lors de l'impression des courriers de rendez-vous
+	 * @default false
+	 */
+	Configure::write( 'User.adresse', true );
+
+	/**
+	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
+	 * clôturée ni expirée ?
+	 *
+	 * @var boolean
+	 * @default null (false)
+	 */
+	Configure::write( 'Utilisateurs.reconnection', true );
+
+	/**
+	 * Affiche ou non l'alerte de fin de session et exécute la redirection
+	 */
+	Configure::write( 'alerteFinSession', true );
+
+	/**
+	 * Limit pour le nombre de documents à éditer dans la cohorte par orientation.
+	 */
+	Configure::write( 'nb_limit_print', 2000 );
+
+	// INFO: des valeurs par défaut en attendant de nettoyer le code qui utilise ces valeurs
+	Configure::write( 'ActioncandidatPersonne.suffixe', 'cg976' );
+
+	/**
+	 * Etats du dossier RSA pris en compte pour trouver les dossiers à fusionner
+	 * dans la gestion des doublons complexes.
+	 *
+	 * Par défaut, on cherche à fusionner les dossiers créés dans l'application
+	 * avec les dossiers envoyer par les flux CAF.
+	 *
+	 * @param array
+	 * @default array( 'Z' )
+	 */
+	Configure::write( 'Gestiondoublon.Situationdossierrsa2.etatdosrsa', array( 'Z' ) );
+
+	/**
+	 * Paramétrage du module "Statistiques ministérielles"
+	 *
+	 * @param array
+	 */
+	Configure::write(
+		'Statistiqueministerielle',
+		array(
+			/**
+			 * Conditions permettant de définit les allocataires dans le champ
+			 * des droits et devoirs.
+			 *
+			 * Ces conditions seront utilisées dans les différents tableaux.
+			 *
+			 * Modèles disponibles: Dossier, Detaildroitrsa, Foyer, Situationdossierrsa,
+			 * Adressefoyer, Personne, Adresse, Prestation, Calculdroitrsa.
+			 */
+			'conditions_droits_et_devoirs' => array(
+				'Situationdossierrsa.etatdosrsa' => array( '2', '3', '4' ),
+				'Calculdroitrsa.toppersdrodevorsa' => '1'
+			),
+			/**
+			 * Catégories et conditions des différents types de parcours du CG.
+			 * Les catégories sont: professionnel, socioprofessionnel et social.
+			 *
+			 * Utilisé dans le tableau "1 - Orientation des personnes ... au sens du type de parcours..."
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient.
+			 */
+			'conditions_types_parcours' => array(
+				'professionnel' => array(
+					'Typeorient.parentid' => array( 1 )
+				),
+				'socioprofessionnel' => array(
+					'Typeorient.parentid' => array( 4 )
+				),
+				'social' => array(
+					'Typeorient.parentid' => array( 6 )
+				),
+			),
+			/**
+			 * Catégories (intitulés) et conditions des différents types de référents
+			 * uniques (structures référentes) pour la tableau "2 - Organismes de
+			 * prise en charge des personnes ... dont le référent unique a été désigné"
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente.
+			 */
+			'conditions_indicateurs_organismes' => array(
+				'Pôle emploi (PE) (2)' => array(
+					'Typeorient.id' => 2,
+					'Structurereferente.id' => 23
+				),
+				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(),
+				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
+				'Organisme d\'appui à la création et au développement d\'entreprise (2)' => array(),
+				'Insertion par l\'activité économique (IAE) (uniquement si le référent appartient à l\'IAE) (2)' => array(),
+				'Autres organismes de placement professionnel (2)' => array(),
+				'Service du département ou de l\'agence départementale d\'insertion (ADI) (3)' => array(
+					'Typeorient.parentid' => array( 4, 6 ),
+					'NOT' => array( 'Typeorient.id' => array( 3, 8 ) )
+				),
+				'dont orientation professionnelle ou socioprofessionnelle' => array(
+					'Typeorient.parentid' => array( 4 ),
+					'NOT' => array( 'Typeorient.id' => array( 3, 8 ) )
+				),
+				'dont orientation sociale' => array(
+					'Typeorient.parentid' => array( 6 ),
+					'NOT' => array( 'Typeorient.id' => array( 3, 8 ) )
+				),
+				'Caf (2)' => array(),
+				'Msa (2)' => array(
+					'Typeorient.id' => array( 3, 8 )
+				),
+				'CCAS, CIAS (2)' => array(),
+				'Associations d\'insertion (2)' => array(),
+				'Autres organismes d\'insertion (2)' => array(),
+			),
+			/**
+			 * Catégories et délais permettant de différencier les types de contrats.
+			 *
+			 * Lorsqu'un contrat est signé avec Pôle Emploi, il s'agit à priori
+			 * d'un PPAE, alors qu'un CER pro n'est pas signé avec Pôle Emploi.
+			 *
+			 * Voir aussi Statistiqueministerielle.conditions_types_parcours (les conditions sont ajoutées automatiquement):
+			 *	- un CER pro est signé lors d'un type de parcours professionnel
+			 *	- un CER social ou professionnel est signé lors d'un type de parcours social ou sociprofessionnel
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): Orientstruct, Typeorient,
+			 * Contratinsertion, Structurereferentecer, Typeorientcer.
+			 */
+			'conditions_types_cers' => array(
+				'ppae' => array(
+					'Contratinsertion.structurereferente_id' => array( 23 )
+				),
+				'cer_pro' => array(
+					'NOT' => array(
+						'Contratinsertion.structurereferente_id' => array( 23 )
+					)
+				),
+				'cer_pro_social' => array(),
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les organismes
+			 * SPE et les organismes Hors SPE.
+			 *
+			 * Les catégories sont: SPE et HorsSPE.
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans les tableaux:
+			 *	- "4 - Nombre et profil des personnes réorientées..."
+			 *	- "4a - Motifs des réorientations..."
+			 *	- "4b - Recours à l'article L262-31"
+			 */
+			'conditions_organismes' => array(
+				'SPE' => array(
+					'Structurereferente.id' => array(
+						// Pôle Emploi
+						23,
+						// EMPLOI - MSA
+						21,
+						// 	Mission Nouveaux Emplois (MNE)
+						39
+					)
+				),
+				'SPE_PoleEmploi' => array(
+					'Structurereferente.id' => array(
+						// Pôle Emploi
+						23
+					)
+				),
+				'HorsSPE' => array(
+					// Qui ne sont pas...
+					'NOT' => array(
+						'Structurereferente.id' => array(
+							// Pôle Emploi
+							23,
+							// EMPLOI - MSA
+							21,
+							// 	Mission Nouveaux Emplois (MNE)
+							39
+						)
+					)
+				)
+			),
+			/**
+			 * Catégories et conditions permettant de différencier les motifs de
+			 * réorientations. Une valeur NULL signifie que la donnée sera non
+			 * disponible (ND).
+			 *
+			 * Modèles disponibles (en plus de ceux disponibles de base, @see
+			 * conditions_droits_et_devoirs): DspRev, Dsp, Orientstruct, Typeorient,
+			 * Structurereferente, Orientstructpcd, Typeorientpcd,
+			 * Structurereferentepcd.
+			 *
+			 * Utilisé dans le tableau "4a - Motifs des réorientations...".
+			 */
+			'conditions_indicateurs_motifs_reorientation' => array(
+				array(
+					'orientation_initiale_inadaptee' => null,
+					'changement_situation_allocataire' => null
+				)
+			)
+		)
+	);
+?>

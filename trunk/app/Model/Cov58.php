@@ -67,6 +67,18 @@
 			),
 		);
 
+		/**
+		 * Valeurs de etatcommissionep signifiant qu'une commission est "En cours".
+		 *
+		 * @var array
+		 */
+		public static $etatsEnCours = array( 'cree', 'associe', 'valide', 'decision' );
+
+		/**
+		 *
+		 * @param array $criterescov58
+		 * @return array
+		 */
 		public function search( $criterescov58 ) {
 			/// Conditions de base
 

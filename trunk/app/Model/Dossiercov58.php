@@ -21,6 +21,7 @@
 			'Allocatairelie',
 			'Autovalidate2',
 			'Containable',
+			'DossierCommission',
 			'Enumerable' => array(
 				'fields' => array(
 					'themecov58'
@@ -275,6 +276,232 @@
 			}
 
 			return $querydata;
+		}
+
+		/**
+		 * Liste des thématiques de COV conduisant à une réorientation, selon le
+		 * département configuré.
+		 *
+		 * @see dossierscovs58.themecov58
+		 *
+		 * @return array
+		 */
+		public function getThematiquesReorientations() {
+			$thematiques = array();
+
+			foreach( $this->Personne->Orientstruct->hasMany as $alias => $params ) {
+				if(
+					( $params['foreignKey'] === 'nvorientstruct_id' )
+					&& preg_match( '/cov'.Configure::read( 'Cg.departement' ).'$/', $params['className'] )
+				) {
+					$thematiques[] = Inflector::tableize( $params['className'] );
+				}
+			}
+
+			return $thematiques;
+		}
+
+		/**
+		 * Retourne le querydata permettant d'obtenir les dossiers, personnes,
+		 * dernier passage éventuel et sa commission éventuelle.
+		 *
+		 * @return array
+		 */
+		public function getDossiersQuery() {
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Passagecov58->fields(),
+					$this->Personne->fields(),
+					$this->Passagecov58->Cov58->fields()
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->join( 'Personne', array( 'type' => 'INNER' ) ),
+					$this->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) ),
+				),
+				'conditions' => array(
+					array(
+						'OR' => array(
+							'Passagecov58.id IS NULL',
+							'Passagecov58.id IN ( '.$this->Passagecov58->sqDernier().' )'
+						)
+					)
+				)
+			);
+
+			return $query;
+		}
+
+		/**
+		 * Retourne la liste des dossiers de l'allocataire en cours de passage
+		 * en commission et pouvant déboucher sur une réorientation.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function getReorientationsEnCours( $personne_id ) {
+			if( Configure::read( 'Cg.departement' ) != 58 ) {
+				return array();
+			}
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$Cov58 = $this->Passagecov58->Cov58;
+
+				$query = $this->getDossiersQuery();
+				$query['fields'] = array(
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Dossiercov58.id',
+					'Dossiercov58.created',
+					'Dossiercov58.themecov58',
+					'Passagecov58.id',
+					'Passagecov58.etatdossiercov',
+					'Cov58.id',
+					'Cov58.datecommission',
+					'Cov58.etatcov',
+				);
+
+				$query['conditions'][] = array(
+					'Dossiercov58.themecov58' => $this->getThematiquesReorientations(),
+					array(
+						'OR' => array(
+							'Cov58.id IS NULL',
+							'Cov58.etatcov' => $Cov58::$etatsEnCours,
+						)
+					)
+				);
+
+				$query = $this->getCompletedQueryDetailsOrientstruct( $query );
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			// La condition sur la personne
+			$query['conditions'][] = array( "{$this->alias}.personne_id" => $personne_id );
+
+			// On force les champs virtuels pour la requête
+			$forceVirtualFields = $this->forceVirtualFields;
+			$this->forceVirtualFields = true;
+			$results = (array)$this->find( 'all', $query );
+			$this->forceVirtualFields = $forceVirtualFields;
+
+			return $results;
+		}
+
+		/**
+		 * Complète un querydata afin d'avoir les informations sur le dossier
+		 * COV, son pasage en COV et la COV qui a mené à un Orientstruct donné.
+		 *
+		 * @param array $query
+		 * @param string $field
+		 * @return array
+		 */
+		public function getCompletedQueryOrientstruct( array $query, $field = 'Orientstruct.id' ) {
+			// 1. Jointure sur le dossier COV
+			$sql = $this->Passagecov58->sq(
+				array(
+					'fields' => array(
+						'Passagecov58.dossiercov58_id'
+					),
+					'joins' => array(
+						$this->Passagecov58->join( 'Dossiercov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Themecov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Propononorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
+					),
+					'conditions' => array(
+						'Dossiercov58.personne_id = Personne.id',
+						'Themecov58.name' => $this->getThematiquesReorientations(),
+						'Passagecov58.etatdossiercov' => 'traite',
+						'OR' => array(
+							array(
+								'Propoorientationcov58.nvorientstruct_id IS NULL',
+								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
+								'Propononorientationprocov58.nvorientstruct_id IS NOT NULL',
+								'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
+							),
+							array(
+								'Propoorientationcov58.nvorientstruct_id IS NOT NULL',
+								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
+								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
+							),
+							array(
+								'Propoorientationcov58.nvorientstruct_id IS NULL',
+								'Propoorientsocialecov58.nvorientstruct_id IS NOT NULL',
+								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Propoorientsocialecov58.nvorientstruct_id = Orientstruct.id',
+							),
+						)
+					),
+					'contain' => false,
+				)
+			);
+
+			$sql = array_words_replace(
+				array( $sql ),
+				array(
+					'Passagecov58' => 'passagescovs58',
+					'Dossiercov58' => 'dossierscovs58',
+					'Themecov58' => 'themescovs58',
+					'Propoorientationcov58' => 'proposorientationscovs58',
+					'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
+					'Propoorientsocialecov58' => 'proposorientssocialescovs58',
+					'Passagecov58__dossiercov58_id' => 'passagescovs58__dossiercov58_id',
+				)
+			);
+			$sql = $sql[0];
+
+			$query['joins'][] = $this->Personne->join(
+				'Dossiercov58',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						'OR' => array(
+							'Dossiercov58.id IS NULL',
+							array(
+								'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ),
+								"Dossiercov58.id IN ( {$sql} )"
+							)
+						)
+					)
+				)
+			);
+
+			// 2. Jointure sur le passage en COV
+			$query['joins'][] = $this->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
+
+			 $joinPassagecov58Cov58 = $this->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
+			 $joinPassagecov58Cov58['conditions'] = array(
+				$joinPassagecov58Cov58['conditions'],
+				'Cov58.etatcov' => 'finalise',
+				'DATE_trunc( \'day\', Cov58.datecommission ) = Orientstruct.date_valid'
+			);
+			$query['joins'][] = $joinPassagecov58Cov58;
+
+			// 3. Jointure sur le site COV
+			$query['joins'][] = $this->Passagecov58->Cov58->join( 'Sitecov58', array( 'type' => 'LEFT OUTER' ) );
+
+			// 4. Ajout des champs
+			$query['fields'] = Hash::merge(
+				$query['fields'],
+				array_merge(
+					$this->fields(),
+					$this->Passagecov58->fields(),
+					$this->Passagecov58->Cov58->fields(),
+					$this->Passagecov58->Cov58->Sitecov58->fields()
+				)
+			);
+
+			return $query;
 		}
 	}
 ?>

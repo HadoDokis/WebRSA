@@ -1065,6 +1065,10 @@ ul.actions li.add a, ul.actions li a.add {
 	background-image: url( ../img/icons/add.png );
 }
 
+ul.actions li.add span.disabled, ul.actions li span.add.disabled {
+	background-image: url( ../img/icons/add_disabled.png );
+}
+
 ul.actions li.action a.back {
 	background-image: url( ../img/icons/arrow_left.png );
 }
@@ -1844,4 +1848,12 @@ body.cataloguespdisfps93 #CoordonneesPrestataire th{
 	color: black;
 	background: transparent;
 	border: 0;
+}
+
+/* Orientsstructs2 */
+body.index.orientsstructs2 td.action span.impression_changement_referent.disabled {
+	background-image: url("../img/icons/printer_disabled.png");
+}
+body.index.orientsstructs2 td.action a.impression_changement_referent {
+	background-image: url("../img/icons/printer.png");
 }
