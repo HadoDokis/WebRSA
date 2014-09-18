@@ -163,7 +163,7 @@
 		 */
 		public function tableParams( array $params = array() ) {
 			return array(
-				'id' => $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ),
+				'id' => ( isset( $params['id'] ) ? $params['id'] : $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ) ),
 				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",
 				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
 				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
@@ -184,6 +184,7 @@
 			}
 
 			$tableParams = $this->tableParams( $params );
+			unset( $params['id'] );
 
 			$thead = $this->thead( $fields, $tableParams + $params );
 			$tbody = $this->tbody( $data, $fields, $tableParams + $params );
