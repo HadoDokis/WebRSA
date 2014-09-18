@@ -300,6 +300,33 @@
 							</tbody>
 						</table>';
 			$this->assertEqualsXhtml( $result, $expected );
+
+			// En ajoutant explicitement l'id de la table
+			$result = $this->DefaultTable->index( $this->data, $this->fields, $params + array( 'id' => 'TableTestApplesIndex' ) );
+			$expected = '<table id="TableTestApplesIndex" class="apples index">
+							<thead>
+								<tr>
+									<th id="TableTestApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
+									<th id="TableTestApplesIndexColumnInputdata[Apple][color]">data[Apple][color]</th>
+									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="odd">
+									<td class="data integer positive">6</td>
+									<td class="input string">
+										<div class="input text">
+											<label for="AppleColor">Color</label>
+											<input name="data[Apple][color]" maxlength="40" type="text" id="AppleColor"/>
+										</div>
+									</td>
+									<td class="action">
+										<a href="/apples/view/6" title="/Apples/view/6" class="apples view">/Apples/view</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>';
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**

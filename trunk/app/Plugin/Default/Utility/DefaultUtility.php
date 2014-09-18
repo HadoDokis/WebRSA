@@ -156,17 +156,22 @@
 
 			$domain = self::domain( $url, $htmlAttributes );
 
-			$msgid = '/'
-				.implode(
-					'.',
-					Hash::filter(
-						array(
-							Inflector::camelize( $plugin ),
-							Inflector::camelize( $controller )
+			$msgid = Hash::get( $htmlAttributes, 'msgid' );
+			unset( $htmlAttributes['msgid'] );
+
+			if( $msgid === null ) {
+				$msgid = '/'
+					.implode(
+						'.',
+						Hash::filter(
+							array(
+								Inflector::camelize( $plugin ),
+								Inflector::camelize( $controller )
+							)
 						)
 					)
-				)
-				.'/'.( !empty( $prefix ) ? "{$prefix}_" : null ).$action;
+					.'/'.( !empty( $prefix ) ? "{$prefix}_" : null ).$action;
+			}
 
 			if( isset( $htmlAttributes['title'] ) && $htmlAttributes['title'] === true ) {
 				$htmlAttributes['title'] = __d( $domain, $path );

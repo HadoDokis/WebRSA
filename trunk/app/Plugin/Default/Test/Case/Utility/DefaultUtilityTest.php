@@ -129,6 +129,20 @@
 				),
 			);
 			$this->assertEqual( $result, $expected );
+
+			// Essai en surchargeant la valeur de msgid
+			$result = DefaultUtility::linkParams( '/Users/view/#User.id#', array( 'msgid' => 'Mon msgid' ), $this->data );
+			$expected = array(
+				'Mon msgid',
+				array(
+					'plugin' => '',
+					'controller' => 'users',
+					'action' => 'view',
+					0 => '6'
+				),
+				array()
+			);
+			$this->assertEqual( $result, $expected );
 		}
 
 		/**
