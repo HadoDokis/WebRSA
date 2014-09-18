@@ -100,6 +100,7 @@ ALTER TABLE partenaires ADD CONSTRAINT partenaires_orgrecouvcotis_in_list_chk CH
 --				entrante en droits et devoirs depuis le dernier flux quotidien.
 ------------------------------------------------------------------------------------------------
 SELECT add_missing_table_field ('public', 'calculsdroitsrsa', 'toppersentdrodevorsa', 'CHAR(1)');
+ALTER TABLE calculsdroitsrsa ALTER COLUMN toppersentdrodevorsa TYPE CHAR(1) USING CAST(toppersentdrodevorsa AS CHAR(1));
 SELECT alter_table_drop_constraint_if_exists( 'public', 'calculsdroitsrsa', 'calculsdroitsrsa_toppersentdrodevorsa_in_list_chk' );
 ALTER TABLE calculsdroitsrsa ADD CONSTRAINT calculsdroitsrsa_toppersentdrodevorsa_in_list_chk CHECK ( cakephp_validate_in_list( toppersentdrodevorsa, ARRAY['0','1'] ) );
 

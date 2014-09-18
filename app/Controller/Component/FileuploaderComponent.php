@@ -444,6 +444,79 @@
         }
 
 		/**
+		 * Envoie la liste des fichiers liés à l'enregistrement à la vue.
+		 *
+		 * @param integer $id
+		 * @param array $indexUrl
+		 */
+		public function filelink( $id, array $indexUrl = array() ) {
+			$Controller = $this->_Collection->getController();
+
+			$fichiers = $this->fichiers( $id );
+
+			$record = $Controller->{$this->_colonneModele}->find(
+				'first',
+				array(
+					'fields' => array(
+						"{$this->_colonneModele}.id"
+					),
+					'conditions' => array(
+						"{$this->_colonneModele}.id" => $id
+					),
+					'contain' => array(
+						$this->_modeleStockage => array(
+							'fields' => array( 'name', 'id', 'created', 'modified' )
+						)
+					)
+				)
+			);
+
+			if( empty( $record ) ) {
+				throw new NotFoundException();
+			}
+
+			$indexUrl += array( 'action' => 'index' );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $Controller->request->data['Cancel'] ) ) {
+				//$this->Jetons2->release( $dossier_id );
+				$Controller->redirect( $indexUrl );
+			}
+			// Enregistrement
+			else if( !empty( $Controller->request->data ) ) {
+				$Controller->{$this->_colonneModele}->begin();
+
+				$saved = $Controller->{$this->_colonneModele}->updateAllUnBound(
+					array(
+						"{$this->_colonneModele}.haspiecejointe" => '\''.$Controller->request->data[$this->_colonneModele]['haspiecejointe'].'\''
+					),
+					array(
+						"{$this->_colonneModele}.id" => $id
+					)
+				);
+
+				if( $saved ) {
+					// Sauvegarde des fichiers liés
+					$dir = $this->dirFichiersModule( $Controller->action, $Controller->request->params['pass'][0] );
+					$saved = $this->saveFichiers( $dir, !Hash::get( $Controller->request->data, "{$this->_colonneModele}.haspiecejointe" ), $id ) && $saved;
+				}
+
+				if( $saved ) {
+					$Controller->{$this->_colonneModele}->commit();
+					//$this->Jetons2->release( $dossier_id );
+					$Controller->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$Controller->redirect( $indexUrl );
+				}
+				else {
+					$Controller->{$this->_colonneModele}->rollback();
+					$Controller->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+
+			$Controller->set( compact( 'fichiers', 'record' ) );
+		}
+
+		/**
 		 * @param Controller $controller Controller with components to beforeRedirect
 		 * @param string|array $url Either the string or url array that is being redirected to.
 		 * @param integer $status The status code of the redirect

@@ -13,6 +13,16 @@
 			'core.Apple',
 			'app.Actionfp93',
 			'app.Adresseprestatairefp93',
+			'app.Dossierep',
+			'app.Entretien',
+			'app.Fichiermodule',
+			'app.Nonorientationproep58',
+			'app.Passagecommissionep',
+			'app.Regressionorientationep58',
+			'app.Rendezvous',
+			'app.RendezvousThematiquerdv',
+			'app.Sanctionep58',
+			'app.Sanctionrendezvousep58',
 		);
 
 		/**
@@ -127,6 +137,45 @@
 					'( "Adresseprestatairefp93"."adresse" || \', \' || "Adresseprestatairefp93"."codepos" || \' \' || "Adresseprestatairefp93"."localite" )' => 'Foo',
 				),
 			);
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode AppModel::getSqLinkedModelsDepartement()
+		 */
+		public function testGetSqLinkedModelsDepartement() {
+			$this->Dossierep = ClassRegistry::init( 'Dossierep' );
+
+			// Test avec un département possédant des thématiques
+			Configure::write( 'Cg.departement', 58 );
+			$result = $this->Dossierep->getSqLinkedModelsDepartement();
+			$expected = '( EXISTS( SELECT "nonorientationsproseps58"."id" AS "nonorientationsproseps58__id" FROM "nonorientationsproseps58" AS "nonorientationsproseps58"   WHERE "nonorientationsproseps58"."dossierep_id" = "Dossierep"."id"    ) OR EXISTS( SELECT "regressionsorientationseps58"."id" AS "regressionsorientationseps58__id" FROM "regressionsorientationseps58" AS "regressionsorientationseps58"   WHERE "regressionsorientationseps58"."dossierep_id" = "Dossierep"."id"    ) OR EXISTS( SELECT "sanctionseps58"."id" AS "sanctionseps58__id" FROM "sanctionseps58" AS "sanctionseps58"   WHERE "sanctionseps58"."dossierep_id" = "Dossierep"."id"    ) OR EXISTS( SELECT "sanctionsrendezvouseps58"."id" AS "sanctionsrendezvouseps58__id" FROM "sanctionsrendezvouseps58" AS "sanctionsrendezvouseps58"   WHERE "sanctionsrendezvouseps58"."dossierep_id" = "Dossierep"."id"    ) OR EXISTS( SELECT "passagescommissionseps"."id" AS "passagescommissionseps__id" FROM "passagescommissionseps" AS "passagescommissionseps"   WHERE "passagescommissionseps"."dossierep_id" = "Dossierep"."id"    ) ) AS "Dossierep__linked_records"';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Test avec un département ne possédant pas de thématiques
+			Configure::write( 'Cg.departement', 976 );
+			$result = $this->Dossierep->getSqLinkedModelsDepartement();
+			$expected = '( EXISTS( SELECT "passagescommissionseps"."id" AS "passagescommissionseps__id" FROM "passagescommissionseps" AS "passagescommissionseps"   WHERE "passagescommissionseps"."dossierep_id" = "Dossierep"."id"    ) ) AS "Dossierep__linked_records"';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Test avec des hasAndBelongsToMany
+			$this->Rendezvous = ClassRegistry::init( 'Rendezvous' );
+
+			$result = $this->Rendezvous->getSqLinkedModelsDepartement();
+			$expected = '( EXISTS( SELECT "entretiens"."id" AS "entretiens__id" FROM "entretiens" AS "entretiens"   WHERE "entretiens"."rendezvous_id" = "Rendezvous"."id"    ) OR EXISTS( SELECT "fichiersmodules"."id" AS "fichiersmodules__id" FROM "fichiersmodules" AS "fichiersmodules"   WHERE "fichiersmodules"."modele" = \'Rendezvous\' AND "fichiersmodules"."fk_value" = "Rendezvous"."id"    ) OR EXISTS( SELECT "rendezvous_thematiquesrdvs"."id" AS "rendezvous_thematiquesrdvs__id" FROM "rendezvous_thematiquesrdvs" AS "rendezvous_thematiquesrdvs"   WHERE "rendezvous_thematiquesrdvs"."rendezvous_id" = "Rendezvous"."id"    ) ) AS "Rendezvous__linked_records"';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Test sans le fieldName
+			Configure::write( 'Cg.departement', 976 );
+
+			$result = $this->Dossierep->getSqLinkedModelsDepartement( null );
+			$expected = '( EXISTS( SELECT "passagescommissionseps"."id" AS "passagescommissionseps__id" FROM "passagescommissionseps" AS "passagescommissionseps"   WHERE "passagescommissionseps"."dossierep_id" = "Dossierep"."id"    ) )';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			// Test sans relation et avec un nom de champ différent
+			$this->Connection = ClassRegistry::init( 'Connection' );
+			$result = $this->Connection->getSqLinkedModelsDepartement( 'nombre' );
+			$expected = '( 1 = 0 ) AS "Connection__nombre"';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}

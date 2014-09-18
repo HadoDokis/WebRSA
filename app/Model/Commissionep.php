@@ -122,6 +122,20 @@
 			'%s/convocationep_beneficiaire.odt',
 		);
 
+		/**
+		 * Valeurs de etatcommissionep signifiant qu'une commission est "En cours".
+		 *
+		 * @var array
+		 */
+		public static $etatsEnCours = array( 'cree', 'associe', 'valide', 'presence', 'decisionep', 'traiteep', 'decisioncg' );
+
+		/**
+		 *
+		 * @param array $criteresseanceep
+		 * @param boolean $filtre_zone_geo
+		 * @param array $zonesgeographiques
+		 * @return array
+		 */
 		public function search( $criteresseanceep, $filtre_zone_geo, $zonesgeographiques ) {
 			/// Conditions de base
 

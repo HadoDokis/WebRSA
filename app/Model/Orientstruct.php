@@ -14,7 +14,7 @@
 	 * @package app.Model
 	 */
 
-	define( 'ORIENTSTRUCT_STORABLE_PDF_ACTIVE', ( Configure::read( 'Cg.departement' ) != 66 ) );
+	define( 'ORIENTSTRUCT_STORABLE_PDF_ACTIVE', !in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) );
 
 	class Orientstruct extends AppModel
 	{
@@ -84,6 +84,11 @@
 				'notEmpty' => array(
 					'rule' => 'date',
 					'message' => 'Veuillez entrer une date valide'
+				)
+			),
+			'statut_orient' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty'
 				)
 			),
 		);
@@ -521,11 +526,13 @@
 		 * @return array
 		 */
 		public function getDataForPdf( $id, $user_id = null ) {
+			$departement = Configure::read( 'Cg.departement' );
+
 			// Au CG 93, lorsqu'une orientation fait suite à un déménagement, il
 			// faut imprimer le courrier de transfert PDV
 			$isDemenagement = false;
 
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
+			if( $departement == 93 ) {
 				$demenagement = $this->find(
 					'first',
 					array(
@@ -607,8 +614,14 @@
 					$orientstruct = Set::merge( $orientstruct, $user );
 				}
 
+				$statut_orient = Hash::get( $orientstruct, "{$this->alias}.statut_orient" );
 
-				if( $orientstruct['Orientstruct']['statut_orient'] != 'Orienté' ) {
+				$printable = (
+					( $departement == 976 && ( $statut_orient == 'En attente' ) )
+					|| ( $statut_orient == 'Orienté' )
+				);
+
+				if( !$printable ) {
 					return false;
 				}
 
@@ -618,7 +631,7 @@
 					unset( $orientstruct['Personne']['Foyer'] );
 				}
 
-				if( Configure::read( 'Cg.departement' ) != 66 ) {
+				if( $departement != 66 ) {
 					$orientstruct['Structurereferente']['type_voie'] = Set::classicExtract( $typevoie, Set::classicExtract( $orientstruct, 'Structurereferente.type_voie' ) );
 					$orientstruct['Personne']['qual'] = Set::classicExtract( $qual, Set::classicExtract( $orientstruct, 'Personne.qual' ) );
 				}
@@ -894,36 +907,55 @@
 		 * @return boolean
 		 */
 		public function beforeSave( $options = array( ) ) {
+			$success = parent::beforeSave( $options );
+
+			$id = Hash::get( $this->data, "{$this->alias}.{$this->primaryKey}" );
+			$statut_orient = Hash::get( $this->data, "{$this->alias}.statut_orient" );
+
 			// Si on change le statut_orient de <> 'Orienté' en 'Orienté', alors, il faut changer le rang
-			if( isset( $this->data[$this->alias]['statut_orient'] ) && ( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) ) {
+			if( $statut_orient === 'Orienté' ) {
+				$personne_id = Hash::get( $this->data, "{$this->alias}.personne_id" );
+
 				// Change-t'on le statut ?
-				if( isset( $this->data[$this->alias]['id'] ) && !empty( $this->data[$this->alias]['id'] ) ) {
-					$tuple_pcd = $this->find( 'first', array( 'conditions' => array( "{$this->alias}.{$this->primaryKey}" => $this->data[$this->alias]['id'] ), 'contain' => false ) );
-					if( $tuple_pcd[$this->alias]['statut_orient'] != 'Orienté' ) {
-						$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
+				if( !empty( $id ) ) {
+					$query = array(
+						'conditions' => array(
+							"{$this->alias}.{$this->primaryKey}" => $id
+						),
+						'contain' => false
+					);
+					$tuple_pcd = $this->find( 'first', $query );
+					if( $tuple_pcd[$this->alias]['statut_orient'] !== 'Orienté' ) {
+						$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $personne_id ) + 1 );
 					}
 					else {
 						$this->data[$this->alias]['rgorient'] = $tuple_pcd[$this->alias]['rgorient'];
 					}
 				}
 				// Nouvelle entrée
-				else if( isset( $this->data[$this->alias]['personne_id'] ) && !empty( $this->data[$this->alias]['personne_id'] ) ) {
-					$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $this->data[$this->alias]['personne_id'] ) + 1 );
+				else if( !empty( $personne_id ) ) {
+					$this->data[$this->alias]['rgorient'] = ( $this->rgorientMax( $personne_id ) + 1 );
+				}
+
+				$origine = Hash::get( $this->data, "{$this->alias}.origine" );
+				if( ( $this->data[$this->alias]['rgorient'] > 1 ) && !in_array( $origine, array( null, 'demenagement' ), true ) ) {
+					$this->data[$this->alias]['origine'] = 'reorientation';
 				}
 			}
-
-			if( isset( $this->data[$this->alias]['statut_orient'] ) ) {
-				if( empty( $this->data[$this->alias]['statut_orient'] ) /*|| in_array( $this->data[$this->alias]['statut_orient'], array( 'Non orienté', 'En attente' ) )*/ ) {
+			// Il ne s'agit pas d'une orientation effective
+			else {
+				if( empty( $id ) ) {
 					$this->data[$this->alias]['origine'] = null;
 				}
-				else if( $this->data[$this->alias]['statut_orient'] == 'Orienté' ) {
-					if( ( $this->data[$this->alias]['rgorient'] > 1 ) && isset( $this->data[$this->alias]['origine'] ) && ( $this->data[$this->alias]['origine'] != 'demenagement' ) ) {
-						$this->data[$this->alias]['origine'] = 'reorientation';
-					}
-				}
+				$this->data[$this->alias]['rgorient'] = null;
+				$this->data[$this->alias]['date_valid'] = null;
 			}
 
-			return true;
+			if( isset( $this->data[$this->alias]['statut_orient'] ) && empty( $this->data[$this->alias]['statut_orient'] ) ) {
+				$this->data[$this->alias]['origine'] = null;
+			}
+
+			return $success;
 		}
 
 		/**
@@ -1189,6 +1221,8 @@
 		 * Retourne un querydata permettant de connaître la liste des orientations d'un allocataire, en
 		 * fonction du CG (Configure::read( 'Cg.departement' )).
 		 *
+		 * @todo renommer en getQueryIndex( $personne_id )
+		 *
 		 * @param integer $personne_id
 		 * @return array
 		 */
@@ -1426,6 +1460,308 @@
 			}
 
 			return $success;
+		}
+
+		// ---------------------------------------------------------------------
+
+		/**
+		 * Permet d'obtenir les données du formulaire d'ajout / de modification,
+		 * en fonction du bénéficiaire, parfois de l'orientation.
+		 *
+		 * @param integer $personne_id
+		 * @param integer $id
+		 * @param integer $user_id
+		 * @return array
+		 * @throws NotFoundException
+		 */
+		public function getAddEditFormData( $personne_id, $id = null, $user_id = null ) {
+			$departement = Configure::read( 'Cg.departement' );
+			$data = array();
+
+			// Modification
+			if( $id !== null ) {
+				$data = $this->find(
+					'first',
+					array(
+						'fields' => array_merge(
+							$this->fields(),
+							$this->Personne->Calculdroitrsa->fields()
+						),
+						'joins' => array(
+							$this->join( 'Personne' ),
+							$this->Personne->join( 'Calculdroitrsa' ),
+						),
+						'conditions' => array(
+							"{$this->alias}.{$this->primaryKey}" => $id
+						),
+						'contain' => false
+					)
+				);
+
+				if( empty( $data  ) ) {
+					throw new NotFoundException();
+				}
+
+				// Listes dépendantes
+				$data[$this->alias]['referent_id'] = "{$data[$this->alias]['structurereferente_id']}_{$data[$this->alias]['referent_id']}";
+				$data[$this->alias]['structurereferente_id'] = "{$data[$this->alias]['typeorient_id']}_{$data[$this->alias]['structurereferente_id']}";
+
+				if( $departement == 66 ) {
+					$data[$this->alias]['referentorientant_id'] = "{$data[$this->alias]['structureorientante_id']}_{$data[$this->alias]['referentorientant_id']}";
+				}
+			}
+			// Ajout
+			else {
+				$data = array(
+					$this->alias => array(
+						'personne_id' => $personne_id,
+						'user_id' => $user_id,
+						'origine' => 'manuelle'
+					)
+				);
+
+				// On propose la date de demande RSA comme date de demande par défaut
+				$dossier = $this->Personne->find(
+					'first',
+					array(
+						'fields' => array( 'Dossier.dtdemrsa' ),
+						'joins' => array(
+							$this->Personne->join( 'Foyer' ),
+							$this->Personne->Foyer->join( 'Dossier' ),
+						),
+						'conditions' => array(
+							'Personne.id' => $personne_id
+						),
+						'contain' => false
+					)
+				);
+				$data['Orientstruct']['date_propo'] = $dossier['Dossier']['dtdemrsa'];
+			}
+
+			// Soumission à droits et devoirs
+			$query = array(
+				'fields' => array(
+					'Calculdroitrsa.id',
+					'Calculdroitrsa.toppersdrodevorsa'
+				),
+				'conditions' => array(
+					'Calculdroitrsa.personne_id' => $personne_id
+				),
+				'contain' => false
+			);
+			$calculdroitrsa = $this->Personne->Calculdroitrsa->find( 'first', $query );
+
+			$data['Calculdroitrsa'] = array(
+				'id' => Hash::get( $calculdroitrsa, 'Calculdroitrsa.id' ),
+				'toppersdrodevorsa' => Hash::get( $calculdroitrsa, 'Calculdroitrsa.toppersdrodevorsa' ),
+				'personne_id' => $personne_id
+			);
+
+			return $data;
+		}
+
+		/**
+		 * Sauvegarde du formulaire d'ajout / de modification de l'orientation
+		 * d'un bénéficiaire.
+		 *
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveAddEditFormData( array $data, $user_id = null ) {
+			$success = true;
+			$departement = Configure::read( 'Cg.departement' );
+
+			if( !empty( $user_id ) ) {
+				$data[$this->alias]['user_id'] = $user_id;
+			}
+
+			$primaryKey = Hash::get( $data, "{$this->alias}.id" );
+			$personne_id = Hash::get( $data, "{$this->alias}.personne_id" );
+			$typeorient_id = Hash::get( $data, "{$this->alias}.typeorient_id" );
+			$referent_id = suffix( Hash::get( $data, "{$this->alias}.referent_id" ) );
+
+			$origine = Hash::get( $data, "{$this->alias}.origine" );
+			if( empty( $origine ) ) {
+				$data[$this->alias]['origine'] = 'manuelle';
+			}
+
+			if( $departement == 58 && empty( $primaryKey ) && $this->isRegression( $personne_id, $typeorient_id ) ) {
+				$theme = 'Regressionorientationep58';
+
+				$dossierep = array(
+					'Dossierep' => array(
+						'personne_id' => $personne_id,
+						'themeep' => Inflector::tableize( $theme )
+					)
+				);
+
+				$success = $this->Personne->Dossierep->save( $dossierep ) && $success;
+
+				$regressionorientationep = array(
+					$theme => Hash::merge(
+						(array)Hash::get( $data, $this->alias ),
+						array(
+							'personne_id' => $personne_id,
+							'dossierep_id' => $this->Personne->Dossierep->id,
+							'datedemande' => Hash::get( $data, "{$this->alias}.date_propo" )
+						)
+					)
+				);
+
+				$success = $this->Personne->Dossierep->{$theme}->save( $regressionorientationep ) && $success;
+			}
+			else {
+				// Orientstruct
+				$orientstruct = array( $this->alias => (array)Hash::get( $data, $this->alias ) );
+				$orientstruct['personne_id'] = $personne_id;
+				$orientstruct['valid_cg'] = true;
+				if( $departement != 66 ) {
+					$orientstruct['date_propo'] = date( 'Y-m-d' );
+					$orientstruct['date_valid'] = date( 'Y-m-d' );
+				}
+				$orientstruct['statut_orient'] = 'Orienté';
+
+				$this->create( $orientstruct );
+				$success = $this->save() && $success;
+
+				// Calculdroitrsa
+				$calculdroitsrsa = array( 'Calculdroitrsa' => (array)Hash::get( $data, 'Calculdroitrsa' ) );
+				$this->Personne->Calculdroitrsa->create( $calculdroitsrsa );
+				$success = $this->Personne->Calculdroitrsa->save() && $success;
+
+				// PersonneReferent
+				if( empty( $primaryKey ) && !empty( $referent_id ) ) {
+					$success = $this->Referent->PersonneReferent->referentParModele( $data, $this->alias, 'date_valid' ) && $success;
+				}
+			}
+
+			return $success;
+		}
+
+		/**
+		 * Retourne une sous-requête, aliasée si le paramètre $fieldName n'est
+		 * pas vide, permettant de savoir si un enregistrement est imprimable,
+		 * suivant l'état de l'orientation et le CG connecté.
+		 *
+		 * @see Configure Cg.departement
+		 *
+		 * @param string $fieldName
+		 * @return string
+		 */
+		public function getPrintableSq( $fieldName = 'printable' ) {
+			$departement = Configure::read( 'Cg.departement' );
+			if( $departement == 976 ) {
+				$sqPrintable = "\"{$this->alias}\".\"statut_orient\" IN ( 'En attente', 'Orienté' )";
+			}
+			else if( $departement == 66 ) {
+				$sqPrintable = "\"{$this->alias}\".\"statut_orient\" = 'Orienté'";
+			}
+			else {
+				$Pdf = ClassRegistry::init( 'Pdf' );
+				$sqPrintable = $Pdf->sqImprime( $this, null );
+			}
+
+			if( !empty( $fieldName ) ) {
+				$sqPrintable = "( {$sqPrintable} ) AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $sqPrintable;
+		}
+
+		/**
+		 * Retourne un querydata permettant de connaître la liste des orientations
+		 * d'un allocataire, en fonction du département.
+		 *
+		 * @see Configure::read( 'Cg.departement' )
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function getIndexQuery( $personne_id ) {
+			$cacheKey = implode( '_', array( $this->useDbConfig, $this->alias, __FUNCTION__ ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				// Il n'est possible d'imprimer une orientation que suivant certaines conditions
+				$sqPrintable = $this->getPrintableSq( 'printable' );
+
+				// Il n'est possible de supprimer une orientation que si elle n'est pas liée à d'autres enregistrements
+				$sqLinkedRecords = $this->getSqLinkedModelsDepartement( 'linked_records' );
+
+				// La requête
+				$query = array(
+					'fields' => array_merge(
+						$this->fields(),
+						$this->Personne->fields(),
+						$this->Typeorient->fields(),
+						$this->Structurereferente->fields(),
+						$this->Referent->fields(),
+						array(
+							$this->Fichiermodule->sqNbFichiersLies( $this, 'nombre' ),
+							$sqPrintable,
+							$sqLinkedRecords
+						)
+					),
+					'conditions' => array(),
+					'joins' => array(
+						$this->join( 'Personne' ),
+						$this->join( 'Typeorient' ),
+						$this->join( 'Structurereferente' ),
+						$this->join( 'Referent' ),
+					),
+					'contain' => false,
+					'order' => array(
+						'COALESCE( "Orientstruct"."rgorient", \'0\') DESC',
+						'"Orientstruct"."date_valid" DESC',
+						'"Orientstruct"."id" DESC'
+					)
+				);
+
+				// On complète le querydata suivant le CG:
+				// 1. Au CG 58, on veut savoir quelle COV a réalisé l'orientation
+				if(  Configure::read( 'Cg.departement' ) == 58 ) {
+					$query = $this->Personne->Dossiercov58->getCompletedQueryOrientstruct( $query );
+				}
+				// 2. Au CG 66, on ne peut cliquer sur certains liens que sous certaines conditions
+				else if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$Dbo = $this->getDataSource();
+					$sql = $Dbo->conditions( array( 'Typeorient.parentid' => (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) ), true, false );
+					$query['fields'][] = "( {$sql} ) AS \"{$this->alias}__notifbenefcliquable\"";
+				}
+
+				// Sauvegarde dans le cache
+				Cache::write( $cacheKey, $query );
+			}
+
+			$query['conditions']['Orientstruct.personne_id'] = $personne_id;
+
+			return $query;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$query = $this->getIndexQuery( null );
+			return !empty( $query );
+		}
+
+		/**
+		 * Permet de savoir si un allocataire est en cours de procédure de
+		 * relance pour une de ses orientations, en fonction du CG.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function enProcedureRelance( $personne_id ) {
+			return (
+				Configure::read( 'Cg.departement' ) == 93
+				&& $this->Nonrespectsanctionep93->enProcedureRelance( $personne_id )
+			);
 		}
 	}
 ?>

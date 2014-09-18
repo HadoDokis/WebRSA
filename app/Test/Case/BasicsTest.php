@@ -806,5 +806,20 @@
 			$result = preg_test( '/[Foo/i' );
 			$this->assertFalse( $result );
 		}
+
+		/**
+		 * Test de la fonction departement_uses_class().
+		 */
+		public function testDepartementUsesClass() {
+			Configure::write( 'Cg.departement', 93 );
+
+			$this->assertTrue( departement_uses_class( 'Orientstruct' ) );
+			$this->assertTrue( departement_uses_class( 'Cer93' ) );
+			$this->assertTrue( departement_uses_class( 'Orientstruct2' ) );
+
+			$this->assertFalse( departement_uses_class( 'Apre66' ) );
+			$this->assertFalse( departement_uses_class( 'Apre66' ) );
+			$this->assertFalse( departement_uses_class( 'Reorientationep976' ) );
+		}
 	}
 ?>

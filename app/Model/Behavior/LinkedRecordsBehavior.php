@@ -146,6 +146,11 @@
 
 			$subquery = $Model->{$modelName}->sq( $qdSubquery );
 
+			// Permet de remplacer les mentions à {$__cakeID__$} dans la sous-requête
+			$Dbo = $Model->getDataSource();
+			$cakeId = array_words_replace( array( "{$Dbo->startQuote}{$Model->alias}{$Dbo->endQuote}.{$Dbo->startQuote}{$Model->primaryKey}{$Dbo->endQuote}" ), $replacements );
+			$subquery = str_replace( '{$__cakeID__$}', $cakeId[0], $subquery );
+
 			return "EXISTS( {$subquery} )";
 		}
 	}

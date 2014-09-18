@@ -1171,4 +1171,19 @@
 
         return $retour;
     }
+
+	/**
+	 * Permet de savoir si un nom de classe est utilisable par le département
+	 * configuré, c'est à dire si le nom de classe se termine par le numéro du
+	 * département ou ne se termine pas par deux ou trois chiffres.
+	 *
+	 * @see Configure Cg.departement
+	 *
+	 * @param string $className
+	 * @return booelan
+	 */
+	function departement_uses_class( $className ) {
+		$departement = Configure::read( 'Cg.departement' );
+		return ( !preg_match( '/[0-9]{2,3}$/', $className ) || preg_match( '/'.$departement.'$/', $className ) );
+	}
 ?>

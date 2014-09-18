@@ -55,6 +55,8 @@
 		 *
 		 * Mise en cache dans la session de l'utilisateur.
 		 *
+		 * @todo 'optgroup' => false,
+		 *
 		 * @param type $options
 		 * @return type
 		 */
@@ -134,6 +136,7 @@
 		 * 	'conditions' => array(),
 		 * 	'optgroup' => false,
 		 *	'ids' => false,
+		 *	'list' => false,
 		 * );
 		 * </pre>
 		 *

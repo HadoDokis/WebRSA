@@ -645,5 +645,53 @@
 
 			return $results;
 		}
+
+		/**
+		 * Retourne une sous-requête permettant de savoir si des enregistrements
+		 * sont liés au modèle principal.
+		 *
+		 * Les relations hasMany, hasOne et hasAndBelongsToMany sont explorées.
+		 *
+		 * @todo Voir pour Fichiermodule (blacklist ?), mettre en cache (?)
+		 *
+		 * @param string $fieldName
+		 * @return array
+		 */
+		public function getSqLinkedModelsDepartement( $fieldName = 'linked_records' ) {
+			$departement = Configure::read( 'Cg.departement' );
+			if( !$this->Behaviors->attached( 'LinkedRecords' ) ) {
+				App::import( 'Behaviors', 'LinkedRecords' );
+				$this->Behaviors->attach( 'LinkedRecords' );
+			}
+
+			$exists = array();
+
+			// Associations hasOne et hasMany
+			foreach( $this->hasOne + $this->hasMany as $alias => $params ) {
+				if( departement_uses_class( $params['className'] ) ) {
+					$exists[$params['className']] = $this->linkedRecordVirtualField( $alias );
+				}
+			}
+
+			// Associations hasAndBelongsToMany
+			foreach( $this->hasAndBelongsToMany as $alias => $params ) {
+				if( departement_uses_class( $params['className'] ) ) {
+					$exists[$params['with']] = $this->linkedRecordVirtualField( $params['with'] );
+				}
+			}
+
+			if( !empty( $exists ) ) {
+				$return = "( ".implode( " OR ", $exists )." )";
+			}
+			else {
+				$return = "( 1 = 0 )";
+			}
+
+			if( !empty( $fieldName ) ) {
+				$return = "{$return} AS \"{$this->alias}__{$fieldName}\"";
+			}
+
+			return $return;
+		}
 	}
 ?>
