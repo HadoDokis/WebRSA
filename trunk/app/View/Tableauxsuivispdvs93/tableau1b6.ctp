@@ -9,8 +9,10 @@
 					__d( $domain, 'Tableau1b6.name' ),
 //					__d( $domain, 'Tableau1b6.theme' ),
 					__d( $domain, 'Tableau1b6.count_personnes_prevues' ),
+					__d( $domain, 'Tableau1b6.count_invitations' ),
 					__d( $domain, 'Tableau1b6.count_seances' ),
-					__d( $domain, 'Tableau1b6.count_personnes' )
+					__d( $domain, 'Tableau1b6.count_personnes' ),
+					__d( $domain, 'Tableau1b6.count_participations' )
 				)
 			)
 		);
@@ -21,8 +23,10 @@
 				array( h( Hash::get( $result, 'Tableau1b6.name' ) ), array( 'class' => 'name' ) ),
 //				array( h( Hash::get( $result, 'Tableau1b6.theme' ) ), array( 'class' => 'theme' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes_prevues" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_invitations" ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_seances" ) ), array( 'class' => 'integer number' ) ),
-				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes" ) ), array( 'class' => 'integer number' ) )
+				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_personnes" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $result, "Tableau1b6.count_participations" ) ), array( 'class' => 'integer number' ) )
 			);
 		}
 		$tbody = $this->Xhtml->tag( 'tbody', $this->Xhtml->tableCells( $cells ) );
@@ -32,8 +36,10 @@
 			array(
 				'Total',
 				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_personnes_prevues' ) ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_invitations' ) ) ), array( 'class' => 'integer number' ) ),
 				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_seances' ) ) ), array( 'class' => 'integer number' ) ),
-				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_personnes' ) ) ), array( 'class' => 'integer number' ) )
+				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_personnes' ) ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( array_sum( (array)Hash::extract( $results, '{n}.Tableau1b6.count_participations' ) ) ), array( 'class' => 'integer number' ) )
 			)
 		);
 		$tfoot = $this->Xhtml->tag( 'tfoot', $this->Xhtml->tableCells( $cells ) );
