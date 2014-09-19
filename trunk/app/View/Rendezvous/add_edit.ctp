@@ -89,15 +89,32 @@
 			// Thématiques du RDV
 			if( isset( $thematiquesrdvs ) && !empty( $thematiquesrdvs ) ) {
 				foreach( $thematiquesrdvs as $typerdv_id => $thematiques ) {
-					$input = $this->Xform->input(
-						'Thematiquerdv.Thematiquerdv',
-						array(
-							'type' => 'select',
-							'multiple' => 'checkbox',
-							'options' => $thematiques,
-							'label' => 'Thématiques'
-						)
-					);
+					if( Configure::read( 'Cg.departement' ) == 93 && $typerdv_id == Configure::read( 'Rendezvous.Typerdv.collectif_id' ) ) {
+						$input = $this->Form->input(
+							'Thematiquerdv.Thematiquerdv',
+							array(
+								'id' => "ThematiquerdvThematiquerdv{$typerdv_id}",
+								'type' => 'select',
+								'multiple' => 'radio',
+								'options' => $thematiques,
+								'label' => 'Thématique',
+								'empty' => true,
+							)
+						);
+					}
+					else {
+						$input = $this->Xform->input(
+							'Thematiquerdv.Thematiquerdv',
+							array(
+								'id' => "ThematiquerdvThematiquerdv{$typerdv_id}",
+								'type' => 'select',
+								'multiple' => 'checkbox',
+								'options' => $thematiques,
+								'label' => 'Thématiques',
+								'empty' => false,
+							)
+						);
+					}
 					echo $this->Xhtml->tag(
 						'fieldset',
 						$input,
@@ -109,7 +126,7 @@
 				}
 			}
 
-			if( Configure::read( 'Cg.departement') == 58 ){
+	if( Configure::read( 'Cg.departement') == 58 ){
 				echo $this->Form->input( 'Rendezvous.statutrdv_id', array( 'label' =>  ( __d( 'rendezvous', 'Rendezvous.statutrdv' ) ), 'type' => 'select', 'options' => $statutrdv, 'empty' => true ) );
 				echo $this->Form->input( 'Rendezvous.rang', array( 'label' =>  required( __d( 'rendezvous', 'Rendezvous.rang', true ) ), 'type' => 'text' ) );
 			}

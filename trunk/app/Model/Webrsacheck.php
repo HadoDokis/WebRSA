@@ -346,6 +346,8 @@
 				'Tableausuivi93.tableau1b4.categories' => 'isarray',
 				'Tableausuivi93.tableau1b5.conditions' => 'isarray',
 				'Tableausuivi93.tableau1b5.categories' => 'isarray',
+				'Rendezvous.Typerdv.collectif_id' => 'integer',
+				'Rendezvous.Typerdv.individuel_id' => 'integer',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -715,6 +717,8 @@
 						'modelName' => 'Thematiquerdv',
 						'array_keys' => true
 					),
+					'Rendezvous.Typerdv.collectif_id' => 'Typerdv',
+					'Rendezvous.Typerdv.individuel_id' => 'Typerdv',
 				);
 
 				if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
