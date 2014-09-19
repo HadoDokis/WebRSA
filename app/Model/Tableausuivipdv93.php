@@ -2504,7 +2504,8 @@
 			// --1-- Nbre de personnes invitées ou positionnées : honoré ou prévu
 			$sql = "SELECT
 							thematiquesrdvs.name AS \"Tableau1b6__name\",
-							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes_prevues\"
+							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes_prevues\",
+							COUNT(DISTINCT rendezvous.id) AS \"Tableau1b6__count_invitations\"
 						FROM rendezvous
 							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
 							INNER JOIN rendezvous_thematiquesrdvs ON ( rendezvous.id = rendezvous_thematiquesrdvs.rendezvous_id )
@@ -2522,7 +2523,8 @@
 			$sql = "SELECT
 							thematiquesrdvs.name AS \"Tableau1b6__name\",
 							COUNT(DISTINCT rendezvous.daterdv) AS \"Tableau1b6__count_seances\",
-							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\"
+							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\",
+							COUNT(DISTINCT rendezvous.id) AS \"Tableau1b6__count_participations\"
 						FROM rendezvous
 							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
 							INNER JOIN rendezvous_thematiquesrdvs ON ( rendezvous.id = rendezvous_thematiquesrdvs.rendezvous_id )
@@ -2542,21 +2544,23 @@
 			foreach( $results as $key => $result ) {
 				$name = $result['Tableau1b6']['name'];
 				foreach( $results1 as $result1 ) {
-					if( $result1['Tableau1b6']['name'] == $name ) {
-						$value = (int)Hash::get( $result1, 'Tableau1b6.count_personnes_prevues' );
-						if( !isset( $results[$key]['Tableau1b6']['count_personnes_prevues'] ) ) {
-							$results[$key]['Tableau1b6']['count_personnes_prevues'] = 0;
+					foreach( array( 'count_personnes_prevues', 'count_invitations' ) as $field ) {
+						if( $result1['Tableau1b6']['name'] == $name ) {
+							$value = (int) Hash::get( $result1, "Tableau1b6.{$field}" );
+							if( !isset( $results[$key]['Tableau1b6'][$field] ) ) {
+								$results[$key]['Tableau1b6'][$field] = 0;
+							}
+							$results[$key]['Tableau1b6'][$field] += $value;
 						}
-						$results[$key]['Tableau1b6']['count_personnes_prevues'] += $value;
-					}
-					else {
-						if( !isset( $results[$key]['Tableau1b6']['count_personnes_prevues'] ) ) {
-							$results[$key]['Tableau1b6']['count_personnes_prevues'] = 0;
+						else {
+							if( !isset( $results[$key]['Tableau1b6'][$field] ) ) {
+								$results[$key]['Tableau1b6'][$field] = 0;
+							}
 						}
 					}
 				}
 				foreach( $results2 as $result2 ) {
-					foreach( array( 'count_seances', 'count_personnes' ) as $field ) {
+					foreach( array( 'count_seances', 'count_personnes', 'count_participations' ) as $field ) {
 						if( $result2['Tableau1b6']['name'] == $name ) {
 							$value = (int)Hash::get( $result2, "Tableau1b6.{$field}" );
 							if( !isset( $results[$key]['Tableau1b6'][$field] ) ) {
