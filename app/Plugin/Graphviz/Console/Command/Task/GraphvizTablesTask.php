@@ -35,8 +35,15 @@
 		public function getNames() {
 			$tables = $this->Dbo->listSources();
 			sort( $tables );
-			// TODO: Ajouter un filtrage propre
-			// $tables = array( 'groups', 'users', 'users_zonesgeographiques', 'zonesgeographiques' );
+
+			$regex = Hash::get( $this->params, 'tables' );
+			if( !empty( $regex ) ) {
+				foreach( $tables as $key => $table ) {
+					if( !preg_match( $regex, $table ) ) {
+						unset( $tables[$key] );
+					}
+				}
+			}
 
 			return $tables;
 		}

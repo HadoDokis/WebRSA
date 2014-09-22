@@ -8,6 +8,17 @@
 	 * @subpackage Console.Command
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	if( !function_exists( 'preg_test' ) ) {
+		/**
+		 * Permet de savoir si un patron d'expression régulière est valide.
+		 *
+		 * @param string $pattern
+		 * @return boolean
+		 */
+		function preg_test( $pattern ) {
+			return ( @preg_match( $pattern, '' ) !== false );
+		}
+	}
 
 	/**
 	 * La classe GraphvizMpd2Shell ...
@@ -46,7 +57,7 @@
 			),
 			'tables' => array(
 				'short' => 't',
-				'help' => 'Permet de préciser, au moyen d\'une expression régulière, la liste des tables à prendre en compte.',
+				'help' => 'Permet de préciser, au moyen d\'une expression régulière, la liste des tables à prendre en compte (ex. "/(pcgs66|pdo)/").',
 				'default' => null
 			),
 			'output' => array(
@@ -60,6 +71,12 @@
 			parent::startup();
 
 			$this->params['fields'] = ( $this->params['fields'] === 'true' );
+
+			$regexp = Hash::get( $this->params, 'tables' );
+			if( !empty( $regexp ) && !preg_test( $regexp ) ) {
+				$msgstr = sprintf( "L'expression régulière \"%s\" n'est pas valide.", $regexp );
+				throw new RuntimeException( $msgstr );
+			}
 		}
 
 		/**
