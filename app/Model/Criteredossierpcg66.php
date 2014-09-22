@@ -333,7 +333,9 @@ class Criteredossierpcg66 extends AppModel {
             $conditions[] = array($Dossierpcg66->sqVirtualField('nbpropositions', false) => $nbpropo);
         }
 
-        $querydata = array(
+		$sqDernierTraitementpcg66 = $Dossierpcg66->Personnepcg66->sqLatest( 'Traitementpcg66', 'created' );
+
+		$querydata = array(
             'fields' => array(
                 'Dossierpcg66.id',
                 'Dossierpcg66.foyer_id',
@@ -369,7 +371,9 @@ class Criteredossierpcg66 extends AppModel {
                 ClassRegistry::init('Fichiermodule')->sqNbFichiersLies(ClassRegistry::init('Foyer'), 'nb_fichiers_lies'),
                 'Decisionpdo.libelle',
                 $Dossierpcg66->User->sqVirtualField('nom_complet'),
-                'Poledossierpcg66.name'
+                'Poledossierpcg66.name',
+				'Traitementpcg66.id',
+				'Traitementpcg66.datereception'
             ),
             'recursive' => -1,
             'joins' => array(
@@ -393,7 +397,19 @@ class Criteredossierpcg66 extends AppModel {
                     )
                         )
                 ),
-                $Dossierpcg66->Foyer->join('Adressefoyer', array('type' => 'LEFT OUTER')),
+                $Dossierpcg66->Personnepcg66->join(
+					'Traitementpcg66',
+					array(
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							$sqDernierTraitementpcg66,
+							'Traitementpcg66.typetraitement' => 'documentarrive',
+							'Traitementpcg66.datereception IS NOT NULL',
+							'Dossierpcg66.etatdossierpcg' => 'attinstrdocarrive',
+						)
+					)
+				),
+				$Dossierpcg66->Foyer->join('Adressefoyer', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->Foyer->Adressefoyer->join('Adresse', array('type' => 'LEFT OUTER')),
                 $Dossierpcg66->Foyer->join('Dossier', array('type' => 'INNER')),
                 $Dossierpcg66->Foyer->Dossier->join('Situationdossierrsa', array('type' => 'INNER')),

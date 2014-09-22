@@ -131,7 +131,7 @@ class Criteresdossierspcgs66Controller extends AppController {
                 );
                 $criteresdossierspcgs66[$i]['Personneconcernee'] = $personnesPcgs66;
             }
-                    
+
 
             $vflisteseparator = "\n\r-";
             $this->set(compact('criteresdossierspcgs66', 'vflisteseparator'));
@@ -180,7 +180,9 @@ class Criteresdossierspcgs66Controller extends AppController {
         $mesCodesInsee = (!empty($mesZonesGeographiques) ? $mesZonesGeographiques : array() );
 
         $querydata = $this->Criteredossierpcg66->{$searchFunction}(
-                $data, $mesCodesInsee, $mesZonesGeographiques
+			$data,
+			$mesCodesInsee,
+			$mesZonesGeographiques
         );
 
         unset($querydata['limit']);
