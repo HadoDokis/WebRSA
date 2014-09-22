@@ -149,6 +149,7 @@ echo $this->Search->paginationNombretotal('Dossierpcg66.paginationNombreTotal');
                     <th><?php echo $this->Xpaginator->sort('Gestionnaire', 'Dossierpcg66.user_id'); ?></th>
                     <th><?php echo $this->Xpaginator->sort('Nb de propositions de décisions', 'Dossierpcg66.nbpropositions'); ?></th>
                     <th><?php echo $this->Xpaginator->sort('Etat du dossier', 'Dossierpcg66.etatdossierpcg'); ?></th>
+                    <th><?php echo $this->Xpaginator->sort('Date de réception du document', 'Traitementpcg66.datereception'); ?></th>
                     <th><?php echo $this->Xpaginator->sort('Décision prise', 'Decisionpdo.libelle'); ?></th>
                     <th>Motifs de(s) la(es) personne(s)</th>
                     <th>Statuts de(s) la(es) personne(s)</th>
@@ -253,6 +254,7 @@ echo $this->Search->paginationNombretotal('Dossierpcg66.paginationNombreTotal');
                         h($infoGestionnaire),
                         h(@$criteredossierpcg66['Dossierpcg66']['nbpropositions']),
                         h(Set::enum(Set::classicExtract($criteredossierpcg66, 'Dossierpcg66.etatdossierpcg'), $options['Dossierpcg66']['etatdossierpcg']) . $datetransmission),
+						h($this->Locale->date('Locale->date', Hash::get($criteredossierpcg66, 'Traitementpcg66.datereception'))),
                         h($criteredossierpcg66['Decisionpdo']['libelle']),
                         $differentsMotifs,
                         $differentsStatuts,
