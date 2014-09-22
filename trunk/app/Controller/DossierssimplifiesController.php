@@ -46,7 +46,14 @@
 			$this->set( 'fonorg', array( 'CAF' => 'CAF', 'MSA' => 'MSA' ) );
 			$this->set( 'rolepers', array_filter_keys( $this->Option->rolepers(), array( 'DEM', 'CJT' ) ) );
 			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-			$this->set( 'statut_orient', $this->Option->statut_orient() );
+			// Statut de l'orientation. Au CG 66, on ne veut que "Orienté" ou vide.
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$statut_orient = array( 'Orienté' => 'Orienté' );
+			}
+			else {
+				$statut_orient = $this->Option->statut_orient();
+			}
+			$this->set( 'statut_orient', $statut_orient );
 			$this->set( 'options', $this->Typeorient->listOptions() );
 			$this->set( 'structsReferentes', $this->Structurereferente->list1Options() );
 			$this->set( 'refsorientants', $this->Structurereferente->Referent->listOptions() );
