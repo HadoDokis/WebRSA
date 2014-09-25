@@ -1004,9 +1004,9 @@
                     $this->Session->setFlash( "Mail non envoyé: adresse mail de l'employeur ({$cui['Partenaire']['libstruc']}) non renseignée.", 'flash/error' );
                 }
 
-                if( ( $cui['Cui']['sendmailemployeur'] == '1' ) && !isset( $this->request->data['Cui']['textmailcui66relance_id'] ) ) {
-                    $this->Session->setFlash( "Mail non envoyé: le premier mail a été envoyé et le courrier de relance n'a pas été sélectionné.", 'flash/error' );
-                }
+//                if( ( $cui['Cui']['sendmailemployeur'] == '1' ) && !isset( $this->request->data['Cui']['textmailcui66relance_id'] ) ) {
+//                    $this->Session->setFlash( "Mail non envoyé: le premier mail a été envoyé et le courrier de relance n'a pas été sélectionné.", 'flash/error' );
+//                }
 
                 if( $cui['Cui']['sendmailemployeur'] != '1' ) { //CAs du premier mail
                     $mailBody = DefaultUtility::evaluate( $cui, $cui['Textmailcui66']['contenu'] );
@@ -1069,7 +1069,7 @@
         //			$this->redirect( $this->referer() );
 
                 }
-                else if( isset($this->request->data['Cui']['textmailcui66relance_id'])) { //CAs de la relance
+                else if( isset($cui['Cui']['textmailcui66relance_id'])) { //CAs de la relance
                     // Envoi du mail de relance
                     $mailBodyRelance = DefaultUtility::evaluate( $cui, $cui['Textmailcui66relance']['contenu'] );
 //                    debug($mailBodyRelance);
