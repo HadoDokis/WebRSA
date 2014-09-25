@@ -347,5 +347,8 @@ msgstr "Périmé"
 msgid "ENUM::POSITIONCER::nonvalid"
 msgstr "Non validation"
 
+msgid "ENUM::POSITIONCER::bilanrealiseattenteeplparcours"
+msgstr "Bilan réalisé - En attente de décision de l'EPL Parcours"
+
 msgid "Contratinsertion.created"
 msgstr "Date d'envoi CER"
