@@ -523,6 +523,30 @@
 		}
 
 		/**
+		 * Recherche du dernier CER (dd_ci) pour un allocataire donné, quel que
+		 * soit son état ou sa position.
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		protected function _getDernierContratinsertion( $personne_id ) {
+			$sql = $this->Contratinsertion->sqDernierContrat( 'Contratinsertion.personne_id' );
+
+			$result = $this->Contratinsertion->find(
+				'first',
+				array(
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id,
+						"Contratinsertion.id IN ( {$sql} )"
+					),
+					'contain' => false
+				)
+			);
+
+			return $result;
+		}
+
+		/**
 		 * Sauvegarde d'un maintien de l'orientation d'un allocataire suite au bilan de parcours.
 		 *
 		 * Un maintien de l'orientation entraîne la création d'une nouvelle orientation,
@@ -541,8 +565,20 @@
 			$this->create( $data );
 			if( $success = $this->validates() ) {
 				if( $data[$this->alias]['proposition'] == 'aucun' ) {
+					// Sauvegarde du bilan de parcours
 					$this->create( $data );
 					$success = $this->save() && $success;
+
+					// S'il s'agit d'un ajout, on met à jour la position du CER
+					if( empty( Hash::get( $data, "{$this->alias}.id" ) ) ) {
+						$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
+						if( !empty( $vxContratinsertion ) ) {
+							$success = $success && $this->Contratinsertion->updateAllUnBound(
+								array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
+								array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
+							);
+						}
+					}
 				}
 				else{
 					// Recherche de l'ancienne orientation
@@ -568,17 +604,7 @@
 
                         if( $data['Bilanparcours66']['changementrefsansep'] != 'O' ) {
                             // Recherche de l'ancien contrat d'insertion
-                            $sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
-                            $vxContratinsertion = $this->Contratinsertion->find(
-                                'first',
-                                array(
-                                    'conditions' => array(
-                                        'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-                                        "Contratinsertion.id IN ( {$sqDernierCer} )"
-                                    ),
-                                    'contain' => false
-                                )
-                            );
+							$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
                             $sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
                             $vxCui = $this->Cui->find(
@@ -736,7 +762,7 @@
 
                         $this->Orientstruct->create( $orientstruct );
                         $success = $this->Orientstruct->save() && $success;
-
+$success = false;
                         $data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
                         $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
                     }
@@ -804,17 +830,7 @@
 						}
 
 						// Possède-t-on un CER
-						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
-						$vxContratinsertion = $this->Contratinsertion->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									"Contratinsertion.id IN ( {$sqDernierCer} )"
-								),
-								'contain' => false
-							)
-						);
+						$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
 						// Possède-t-on un CUI (pour rappel, un CUI vaut CER)
 						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
@@ -830,7 +846,7 @@
 							)
 						);
 
-						if( ( $data['Bilanparcours66']['changementrefavecep'] == 'N' ) ) {
+						if( Hash::get( $data, 'Bilanparcours66.changementrefavecep' ) == 'N' ) {
 							if( empty( $vxContratinsertion ) && empty( $vxCui ) ) {
 								$this->invalidate( 'changementref', 'Cette personne ne possède aucun contrat.' );
 								return false;
@@ -841,7 +857,24 @@
 						$data[$this->alias]['contratinsertion_id'] = @$vxContratinsertion['Contratinsertion']['id'];
 						$data[$this->alias]['cui_id'] = @$vxCui['Cui']['id'];
 
+						// Si c'est un ajout et que la proposition du référent est "Commission Parcours": Examen du dossier avec passage en EP Locale avec maintien de l'orientation SOCIALE
+						if( empty( Hash::get( $data, "{$this->alias}.id" ) ) ) {
+							$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
+							if( !empty( $vxContratinsertion ) ) {
+								$updatePositionCer = (
+									( Hash::get( $data, 'Bilanparcours66.proposition' ) == 'parcours' )
+									&& ( Hash::get( $data, 'Bilanparcours66.choixparcours' ) == 'maintien' )
+									&& in_array( Hash::get( $data, 'Bilanparcours66.avecep_typeorientprincipale_id' ), (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) )
+								);
 
+								if( $updatePositionCer ) {
+									$success = $success && $this->Contratinsertion->updateAllUnBound(
+										array( 'Contratinsertion.positioncer' => "'bilanrealiseattenteeplparcours'" ),
+										array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
+									);
+								}
+							}
+						}
 					}
 
 					if( isset( $data[$this->alias]['origine'] ) && $data[$this->alias]['origine'] == 'Defautinsertionep66' && !isset( $data[$this->alias]['structurereferente_id'] ) ) {
@@ -1034,17 +1067,7 @@
 							return false;
 						}
 
-						$sqDernierCer = $this->Contratinsertion->sqDernierContrat( '"Contratinsertion"."personne_id"' );
-						$vxContratinsertion = $this->Contratinsertion->find(
-							'first',
-							array(
-								'conditions' => array(
-									'Contratinsertion.personne_id' => $vxOrientstruct['Orientstruct']['personne_id'],
-									"Contratinsertion.id IN ( {$sqDernierCer} )"
-								),
-								'contain' => false
-							)
-						);
+						$vxContratinsertion = $this->_getDernierContratinsertion( $vxOrientstruct['Orientstruct']['personne_id'] );
 
 						$sqDernierCui = $this->Cui->sqDernierContrat( '"Cui"."personne_id"' );
 						$vxCui = $this->Cui->find(

@@ -188,63 +188,93 @@
 			$themeData = array();
 
 			foreach( $dossierseps as $dossierep ) {
-				if ( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'maintien' || $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['decision'] == 'reorientation' ) {
-					$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'] ) + 1;
-					$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
+				$personne_id = Hash::get( $dossierep, "{$this->alias}.Bilanparcours66.Orientstruct.personne_id" );
+				$decision = Hash::get( $dossierep, 'Passagecommissionep.0.Decisionsaisinebilanparcoursep66.0.decision' );
 
-					$orientstruct = array(
-						'Orientstruct' => array(
-							'personne_id' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
-							'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
-							'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
-							'date_propo' => date( 'Y-m-d' ),
-							'date_valid' => date( 'Y-m-d' ),
-							'statut_orient' => 'Orienté',
-							'user_id' => $user_id,
-							'rgorient' => $rgorient,
-							'origine' => $origine,
-						)
+				// Si la décision n'est pas un report
+				if( in_array( $decision, array( 'maintien', 'reorientation', 'annule' ) ) ) {
+					// 1. Si la décision n'est pas une annulation
+					if( in_array( $decision, array( 'maintien', 'reorientation' ) ) ) {
+						// Création de la nouvelle orientation
+						$rgorient = $this->Bilanparcours66->Orientstruct->rgorientMax( $personne_id ) + 1;
+						$origine = ( $rgorient > 1 ? 'reorientation' : 'manuelle' );
+
+						$orientstruct = array(
+							'Orientstruct' => array(
+								'personne_id' => $personne_id,
+								'typeorient_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['typeorient_id'],
+								'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
+								'date_propo' => date( 'Y-m-d' ),
+								'date_valid' => date( 'Y-m-d' ),
+								'statut_orient' => 'Orienté',
+								'user_id' => $user_id,
+								'rgorient' => $rgorient,
+								'origine' => $origine,
+							)
+						);
+						$this->Bilanparcours66->Orientstruct->create( $orientstruct );
+						$success = $this->Bilanparcours66->Orientstruct->save() && $success;
+
+						// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
+						$success = $success && $this->updateAllUnBound(
+							array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
+							array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
+						);
+
+						// Clôture du référent du parcours actuel
+						$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
+							array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
+							array(
+								'"PersonneReferent"."personne_id"' => $personne_id,
+								'"PersonneReferent"."dfdesignation" IS NULL'
+							)
+						);
+
+						// Création du nouveau référent du parcours s'il a été désigné
+						if( !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id'] ) ) {
+							$referent = array(
+								'PersonneReferent' => array(
+									'personne_id' => $personne_id,
+									'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id'],
+									'dddesignation' => date( 'Y-m-d' ),
+									'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
+									'user_id' => $user_id
+								)
+							);
+							$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->create( $referent );
+							$success = $this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->save() && $success;
+						}
+
+						/*if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
+							// Fin anticipée pour le CER
+							$this->Bilanparcours66->Contratinsertion->updateAllUnBound(
+								array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
+								array(
+									'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
+									'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
+								)
+							);
+						}*/
+					}
+
+					// 2. Passage de la position du CER "Bilan réalisé – En attente de décision de l'EPL Parcours" à "En attente de renouvellement"
+					$query = array(
+						'fields' => array( 'Contratinsertion.id' ),
+						'conditions' => array(
+							'Contratinsertion.id' => Hash::get( $dossierep, "{$this->alias}.Bilanparcours66.contratinsertion_id" ),
+							'Contratinsertion.positioncer' => 'bilanrealiseattenteeplparcours',
+						),
+						'contain' => false
 					);
-					$this->Bilanparcours66->Orientstruct->create( $orientstruct );
-					$success = $this->Bilanparcours66->Orientstruct->save() && $success;
+					$contratinsertion = $this->Bilanparcours66->Contratinsertion->find( 'first', $query );
 
-					// Mise à jour de l'enregistrement de la thématique avec l'id de la nouvelle orientation
-					$success = $success && $this->updateAllUnBound(
-						array( "\"{$this->alias}\".\"nvorientstruct_id\"" => $this->Bilanparcours66->Orientstruct->id ),
-						array( "\"{$this->alias}\".\"id\"" => $dossierep[$this->alias]['id'] )
-					);
-				}
-
-				if( !empty( $dossierep['Bilanparcours66']['contratinsertion_id'] ) ) {
-					$this->Bilanparcours66->Orientstruct->Personne->Contratinsertion->updateAllUnBound(
-						array( 'Contratinsertion.df_ci' => "'".date( 'Y-m-d' )."'" ),
-						array(
-							'"Contratinsertion"."personne_id"' => $dossierep['Bilanparcours66']['Orientstruct']['personne_id'],
-							'"Contratinsertion"."id"' => $dossierep['Bilanparcours66']['contratinsertion_id']
-						)
-					);
-				}
-
-				$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->updateAllUnBound(
-					array( 'PersonneReferent.dfdesignation' => "'".date( 'Y-m-d' )."'" ),
-					array(
-						'"PersonneReferent"."personne_id"' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
-						'"PersonneReferent"."dfdesignation" IS NULL'
-					)
-				);
-
-				if( !empty( $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id'] ) ) {
-					$referent = array(
-						'PersonneReferent' => array(
-							'personne_id' => $dossierep[$this->alias]['Bilanparcours66']['Orientstruct']['personne_id'],
-							'referent_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['referent_id'],
-							'dddesignation' => date( 'Y-m-d' ),
-							'structurereferente_id' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0]['structurereferente_id'],
-							'user_id' => $user_id
-						)
-					);
-					$this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->create( $referent );
-					$success = $this->Bilanparcours66->Orientstruct->Personne->PersonneReferent->save() && $success;
+					$contratinsertion_id = Hash::get( $contratinsertion, 'Contratinsertion.id' );
+					if( !empty( $contratinsertion_id ) ) {
+						$success = $success && $this->Bilanparcours66->Contratinsertion->updateAllUnBound(
+							array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
+							array( 'Contratinsertion.id' => $contratinsertion_id )
+						);
+					}
 				}
 
 				$themeData[] = array( 'Decisionsaisinebilanparcoursep66' => $dossierep['Passagecommissionep'][0]['Decisionsaisinebilanparcoursep66'][0] );

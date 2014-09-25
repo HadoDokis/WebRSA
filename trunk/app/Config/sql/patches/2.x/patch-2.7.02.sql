@@ -44,6 +44,10 @@ SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_textmailcui66relance_id_
 
 SELECT add_missing_table_field('public', 'cuis', 'commentairemailrelance', 'TEXT' );
 SELECT add_missing_table_field('public', 'cuis', 'dateenvoirelance', 'DATE' );
+
+-- 20140922: ajout d'une nouvelle position au CER
+SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','annule','fincontrat','encoursbilan','attrenouv','perime','nonvalid','perimebilanarealiser','bilanrealiseattenteeplparcours'] );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
