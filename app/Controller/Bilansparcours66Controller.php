@@ -969,8 +969,10 @@
 							)
 						)
 					);
-					$this->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
-					$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
+					if( !empty( $dossierep ) ) {
+						$this->Dossierep->Defautinsertionep66->deleteAll( array( 'Defautinsertionep66.bilanparcours66_id' => $id ) );
+						$this->Dossierep->delete( $dossierep['Defautinsertionep66']['dossierep_id'] );
+					}
 				}
 
 
