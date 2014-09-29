@@ -570,7 +570,8 @@
 					$success = $this->save() && $success;
 
 					// S'il s'agit d'un ajout, on met à jour la position du CER
-					if( empty( Hash::get( $data, "{$this->alias}.id" ) ) ) {
+					$primaryKey = Hash::get( $data, "{$this->alias}.id" );
+					if( empty( $primaryKey ) ) {
 						$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
 						if( !empty( $vxContratinsertion ) ) {
 							$success = $success && $this->Contratinsertion->updateAllUnBound(
