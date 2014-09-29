@@ -351,12 +351,15 @@
 			$touteerreur = Set::classicExtract( $params, 'Gestionanomaliebdd.touteerreur' );
 			// 0.3°) Dossiers en erreur concernant le nombre de demandeurs ou de conjoints
 			$enerreur = Set::classicExtract( $params, 'Gestionanomaliebdd.enerreur' );
+			$enerreur = ( $enerreur === '' ? null : $enerreur );
 			unset( $params['Gestionanomaliebdd']['enerreur'] );
 			// 0.4°) Dossiers possédant des personnes sans prestation
 			$sansprestation = Set::classicExtract( $params, 'Gestionanomaliebdd.sansprestation' );
+			$sansprestation = ( $sansprestation === '' ? null : $sansprestation );
 			unset( $params['Gestionanomaliebdd']['sansprestation'] );
 			// 0.5°) ) Dossiers possédant des personnes en doublons
 			$doublons = Set::classicExtract( $params, 'Gestionanomaliebdd.doublons' );
+			$doublons = ( $doublons === '' ? null : $doublons );
 			unset( $params['Gestionanomaliebdd']['doublons'] );
 			// 0.6°) Méthode de comparaison des personnes en doublons
 			$methode = Set::classicExtract( $params, 'Gestionanomaliebdd.methode' );
