@@ -415,7 +415,7 @@ DROP TABLE IF EXISTS correspondancestypevoie;
 -- Suppression des colonnes des anciens flux
 -- *****************************************************************************
 
-SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'typevoie' );
+/*SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'typevoie' );
 SELECT alter_table_drop_column_if_exists( 'public', 'parcours', 'locaadr' );
 
 SELECT alter_table_drop_column_if_exists( 'public', 'orientations', 'typevoie' );
@@ -435,7 +435,7 @@ SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'n
 SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'numcomptt' );
 SELECT alter_table_drop_column_if_exists( 'public', 'situationsallocataires', 'locaadr' );
 
-SELECT alter_table_drop_column_if_exists( 'public', 'cers93', 'locaadr' );
+SELECT alter_table_drop_column_if_exists( 'public', 'cers93', 'locaadr' );*/
 
 -- *****************************************************************************
 COMMIT;
