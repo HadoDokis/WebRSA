@@ -859,7 +859,8 @@ $success = false;
 						$data[$this->alias]['cui_id'] = @$vxCui['Cui']['id'];
 
 						// Si c'est un ajout et que la proposition du référent est "Commission Parcours": Examen du dossier avec passage en EP Locale avec maintien de l'orientation SOCIALE
-						if( empty( Hash::get( $data, "{$this->alias}.id" ) ) ) {
+						$primaryKey = Hash::get( $data, "{$this->alias}.id" );
+						if( empty( $primaryKey ) ) {
 							$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
 							if( !empty( $vxContratinsertion ) ) {
 								$updatePositionCer = (
