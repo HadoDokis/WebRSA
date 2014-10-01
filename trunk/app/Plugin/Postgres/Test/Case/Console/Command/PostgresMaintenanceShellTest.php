@@ -107,8 +107,8 @@
 						WHERE table_schema = \'public\'
 							AND column_default LIKE \'nextval(%::regclass)\'
 						ORDER BY table_name, column_name',
-				'SELECT setval(\'postgres_groups_id_seq\', max(id)) FROM postgres_groups;',
-				'SELECT setval(\'postgres_users_id_seq\', max(id)) FROM postgres_users;',
+				'SELECT setval(\'postgres_groups_id_seq\', COALESCE(MAX(id),0)+1, false) FROM postgres_groups;',
+				'SELECT setval(\'postgres_users_id_seq\', COALESCE(MAX(id),0)+1, false) FROM postgres_users;',
 				'COMMIT',
 				'VACUUM ANALYZE;',
 				"REINDEX DATABASE {$this->Shell->Dbo->config['database']};"
