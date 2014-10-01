@@ -140,7 +140,7 @@
 			foreach( $this->Dbo->query( $sql ) as $model ) {
 				$sequence = preg_replace( '/^nextval\(\'(.*)\'.*\)$/', '\1', $model['Model']['sequence'] );
 
-				$sql = "SELECT setval('{$sequence}', max({$model['Model']['column']})) FROM {$model['Model']['table']};";
+				$sql = "SELECT setval('{$sequence}', COALESCE(MAX({$model['Model']['column']}),0)+1, false) FROM {$model['Model']['table']};";
 				$success = $success && ( $this->Dbo->query( $sql ) !== false );
 			}
 
