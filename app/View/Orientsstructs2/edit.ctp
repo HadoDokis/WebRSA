@@ -50,12 +50,12 @@
 
 	$fields = array(
 		'Orientstruct.typeorient_id' => array( 'empty' => true ),
-		'Orientstruct.structurereferente_id' => array( 'empty' => true ),
-		'Orientstruct.referent_id' => array( 'empty' => true, 'required' => false ),
-		'Calculdroitrsa.toppersdrodevorsa' => array( 'empty' => 'Non défini' ),
+		'Orientstruct.structurereferente_id' => array( 'empty' => true, 'label' => 'Type de structure' ),
+		'Orientstruct.referent_id' => array( 'empty' => true, 'required' => false, 'label' => 'Nom du référent' ),
+		'Calculdroitrsa.toppersdrodevorsa' => array( 'empty' => 'Non défini', 'required' => true, 'label' => 'Personne soumise à droits et devoirs ?' ),
 		'Orientstruct.statut_orient' => ( $departement == 976 ? array( 'empty' => true ) : array(  'label' =>  false, 'type' => 'hidden', 'value' => 'Orienté' ) ),
 		'Orientstruct.date_propo' => array( 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ),
-		'Orientstruct.date_valid' => array( 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 1, 'empty' => true ),
+		'Orientstruct.date_valid' => array( 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 1, 'empty' => true, 'label' => 'Date de l\'orientation' ),
 	);
 
 	if( $departement == 66 ) {
@@ -85,6 +85,19 @@
 			'Orientstruct.structurereferente_id' => 'Orientstruct.referent_id',
 		)
 	);
+
+	if( $departement == 976 ) {
+		echo $this->Observer->disableFieldsOnValue(
+			'Orientstruct.statut_orient',
+			array(
+				'Orientstruct.date_valid.year',
+				'Orientstruct.date_valid.month',
+				'Orientstruct.date_valid.day'
+			),
+			array( 'Orienté' ),
+			false
+		);
+	}
 
 	echo $this->Observer->disableFormOnSubmit( $this->Html->domId( "Orientstruct.{$this->action}.form" ) );
 ?>

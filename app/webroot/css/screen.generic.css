@@ -1107,6 +1107,9 @@ td span.button.disabled {
 td.button.view a, td.action a.view, td.button span.link, td span.button.view, table.default2 td a.button.view {
 	background-image: url( ../img/icons/zoom.png );
 }
+td.button.view.disabled a, td.action a.view.disabled, td span.button.view.disabled, table.default2 td a.button.view.disabled, td.action span.view.disabled {
+	background-image: url( ../img/icons/zoom_disabled.png );
+}
 
 td.button.edit a, td.action a.edit, td span.button.edit, table.default2 td a.button.edit {
 	background-image: url( ../img/icons/pencil.png );

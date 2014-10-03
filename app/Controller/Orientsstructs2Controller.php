@@ -151,9 +151,10 @@
 		 * "Rang d'orientation".
 		 *
 		 * @param array $results
+		 * @param array $params
 		 * @return array
 		 */
-		protected function _getCompletedIndexResults( array $results, $ajoutPossible ) {
+		protected function _getCompletedIndexResults( array $results, array $params = array() ) {
 			$departement = Configure::read( 'Cg.departement' );
 
 			$rgsorients = Hash::extract( $results, "{n}.Orientstruct[statut_orient=Orienté].rgorient" );
@@ -164,13 +165,13 @@
 
 			foreach( array_keys( $results ) as $key ) {
 				// On ne peut modifier que l'entrée la plus récente
-				$results[$key]['Orientstruct']['edit'] = ( $key == 0 ) && $ajoutPossible;
+				$results[$key]['Orientstruct']['edit'] = ( $key == 0 ) && $params['ajout_possible'];
 
 				// On ne peut modifier que l'entrée la plus récente
 				$results[$key]['Orientstruct']['impression'] = ( $results[$key]['Orientstruct']['printable'] == 1 );
 
 				// On ne peut supprimer que l'entrée la plus récente
-				$results[$key]['Orientstruct']['delete'] = ( $key == 0 ) && ( $results[$key]['Orientstruct']['rgorient'] == $rgorientMax ) && !$results[$key]['Orientstruct']['linked_records'];
+				$results[$key]['Orientstruct']['delete'] = ( $key == 0 ) && ( $results[$key]['Orientstruct']['rgorient'] == $rgorientMax ) && !$results[$key]['Orientstruct']['linked_records'] && empty( $params['reorientationseps'] );
 
 				if( $departement == 66 ) {
 					// On ne peut modifier que la dernière orientation, celle dont le rang est le plus élevé
@@ -366,7 +367,8 @@
 				else {
 					$actions["/Orientsstructs2/add/{$params['personne_id']}"] = array(
 						'domain' => $domain,
-						'enabled' => WebrsaPermissions::check( 'orientsstructs2', 'add' )
+						'msgid' => 'Demander une réorientation',
+						'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs2', 'add', $params['dossier_menu'] )
 					);
 				}
 			}
@@ -380,7 +382,7 @@
 			else {
 				$actions["/Orientsstructs2/add/{$params['personne_id']}"] = array(
 					'domain' => $domain,
-					'msgid' => ( $departement == 93 ? 'Demander une réorientation' : 'Préconiser une orientation' ),
+					'msgid' => 'Ajouter',
 					'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs2', 'add', $params['dossier_menu'] )
 				);
 			}
@@ -394,15 +396,11 @@
 		 * @param integer $personne_id
 		 */
 		public function index( $personne_id ) {
-			// Début TODO: à mettre en commun dès qu'on a un index avec un personne_id
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Orientstruct' );
-			// Fin TODO
-
 			//------------------------------------------------------------------
-
 			$departement = Configure::read( 'Cg.departement' );
 
 			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
@@ -439,7 +437,13 @@
 			// Liste des orientations
 			$query = $this->Orientstruct->getIndexQuery( $personne_id );
 			$orientsstructs = $this->Orientstruct->find( 'all', $query );
-			$orientsstructs = $this->_getCompletedIndexResults( $orientsstructs, $ajoutPossible );
+			$orientsstructs = $this->_getCompletedIndexResults(
+				$orientsstructs,
+				array(
+					'ajout_possible' => $ajoutPossible,
+					'reorientationseps' => $reorientationseps
+				)
+			);
 
 			// Options
 			$Option = ClassRegistry::init( 'Option' );
@@ -506,15 +510,16 @@
 		 * @throws NotFoundException
 		 */
 		public function edit( $id = null ) {
-			// Début TODO: à mettre en commun dès qu'on a add/edit d'un enregistrement appartenant à un personne_id
 			$personne_id = ( $this->action === 'add' ? $id : $this->Orientstruct->personneId( $id ) );
 			$id = ( $this->action === 'add' ? null : $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
 			$this->set( compact( 'dossierMenu' ) );
-			// Fin TODO
+
+			$this->Jetons2->get( Hash::get( $dossierMenu, 'Dossier.id' ) );
 
 			// -----------------------------------------------------------------
 			$redirectUrl = array( 'action' => 'index', $personne_id );
+			$user_id = $this->Session->read( 'Auth.User.id' );
 			// -----------------------------------------------------------------
 			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
 			if( $this->action === 'add' && !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
@@ -522,12 +527,13 @@
 				$this->redirect( $redirectUrl );
 			}
 			// -----------------------------------------------------------------
-			// TODO
-			/*// Retour à l'index si on essaie de modifier une autre orientation que la dernière
-			if( $this->action === 'edit' && !empty( $orientstruct['Orientstruct']['date_valid'] ) && $orientstruct['Orientstruct']['statut_orient'] == 'Orienté' && $orientstruct['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $orientstruct['Orientstruct']['personne_id'] ) ) {
+			$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
+
+			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
+			if( $this->action === 'edit' && !empty( $originalAddEditFormData['Orientstruct']['date_valid'] ) && $originalAddEditFormData['Orientstruct']['statut_orient'] == 'Orienté' && $originalAddEditFormData['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $originalAddEditFormData['Orientstruct']['personne_id'] ) ) {
 				$this->Session->setFlash( 'Impossible de modifier une autre orientation que la plus récente.', 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
-			}*/
+				$this->redirect( $redirectUrl );
+			}
 			// -----------------------------------------------------------------
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
@@ -543,6 +549,7 @@
 				$this->Orientstruct->begin();
 				if( $this->Orientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
 					$this->Orientstruct->commit();
+					$this->Jetons2->release( Hash::get( $dossierMenu, 'Dossier.id' ) );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 					$this->redirect( $redirectUrl );
 				}
@@ -553,7 +560,7 @@
 			}
 			// Remplissage du formulaire
 			else {
-				$this->request->data = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
+				$this->request->data = $originalAddEditFormData;
 			}
 
 			// Options
