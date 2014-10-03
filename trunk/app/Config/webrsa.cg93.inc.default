@@ -1134,27 +1134,27 @@
 					// Non défini
 					'Service Social de polyvalence' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Service Social de polyvalence'
 					),
 					// Non défini
 					'Service social spécialisé' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Service social spécialisé'
 					),
 					// Non défini
 					'CCAS' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'CCAS'
 					),
 					// Non défini
 					'Associations' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Associations'
 					),
 					// Non défini
 					'Autres (*)' => array(
 						'Thematiquefp93.name' => 'Prescription sociale',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Autres (*)'
 					)
 				),
 				'Acteurs de la santé' => array(
@@ -1166,42 +1166,42 @@
 					// Non défini
 					'Centre municipal de santé' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Centre municipal de santé'
 					),
 					// Non défini
 					'Centre médico-psychologique' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Centre médico-psychologique'
 					),
 					// Non défini
 					'Centre de bilan de santé' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Centre de bilan de santé'
 					),
 					// Non défini
 					'Maison départementale des personnes handicapées' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Maison départementale des personnes handicapées'
 					),
 					// Non défini
 					'Centre de protection maternelle et infantile' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Centre de protection maternelle et infantile'
 					),
 					// Non défini
 					'Centres Départementaux de dépistage et de prévention sanitaire (CDDPS)' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Centres Départementaux de dépistage et de prévention sanitaire (CDDPS)'
 					),
 					// Non défini
 					'Médecine de ville' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Médecine de ville'
 					),
 					// Non défini
 					'Autres (*)' => array(
 						'Thematiquefp93.name' => 'Prescription vers les acteurs de la santé',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Autres (*)'
 					),
 				),
 				'Culture loisirs vacances' => array(
@@ -1279,7 +1279,7 @@
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription socio%professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Autres (*)'
 					),
 				),
 				'Professionnelles' => array(
@@ -1311,7 +1311,7 @@
 					'Plateforme AFPA force' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Plateforme AFPA force'
 					),
 					'Création d\'entreprise' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
@@ -1337,12 +1337,12 @@
 					'C2DI' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'C2DI'
 					),
 					'VAE' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'VAE'
 					),
 					'Actions du CUCS' => array(
 						// Défini, voir document "réponse demande de CB du 16 06 2014.ods"
@@ -1352,7 +1352,7 @@
 					'Autres (*)' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => 'Prescription professionnelle',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Autres (*)'
 					),
 				),
 				'Pôle Emploi' => array(
@@ -1364,7 +1364,7 @@
 					'Inscription au  Pôle Emploi' => array(
 						// Non défini
 						'Thematiquefp93.name LIKE' => '%Pôle Emploi',
-						'Categoriefp93.name IS NULL'
+						'Categoriefp93.name' => 'Inscription au  Pôle Emploi'
 					),
 				),
 			)

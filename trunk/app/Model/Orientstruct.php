@@ -81,8 +81,8 @@
 				)
 			),
 			'date_valid' => array(
-				'notEmpty' => array(
-					'rule' => 'date',
+				'notEmptyIf' => array(
+					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
 					'message' => 'Veuillez entrer une date valide'
 				)
 			),
@@ -463,7 +463,8 @@
 		public function __construct( $id = false, $table = null, $ds = null ) {
 			parent::__construct( $id, $table, $ds );
 
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
+			$departement = Configure::read( 'Cg.departement' );
+			if( $departement == 66 ) {
 				$this->validate['structureorientante_id'] = array(
 					'notEmptyIf' => array(
 						'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté' ) ),
@@ -480,6 +481,16 @@
 						'rule' => array( 'dependentForeignKeys', 'Referentorientant', 'Structureorientante', 'Structurereferente' ),
 						'message' => 'La référent n\'appartient pas à la structure référente',
 					),
+				);
+			}
+			else if( $departement == 976 ) {
+				$this->validate['typeorient_id']['notEmptyIf'] = array(
+					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté', 'En attente', '' ) ),
+					'message' => 'Champ obligatoire',
+				);
+				$this->validate['structurereferente_id']['notEmptyIf'] = array(
+					'rule' => array( 'notEmptyIf', 'statut_orient', true, array( 'Orienté', 'En attente', '' ) ),
+					'message' => 'Champ obligatoire',
 				);
 			}
 		}
@@ -1536,6 +1547,7 @@
 					)
 				);
 				$data['Orientstruct']['date_propo'] = $dossier['Dossier']['dtdemrsa'];
+				$data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
 			}
 
 			// Soumission à droits et devoirs
@@ -1613,13 +1625,22 @@
 			else {
 				// Orientstruct
 				$orientstruct = array( $this->alias => (array)Hash::get( $data, $this->alias ) );
-				$orientstruct['personne_id'] = $personne_id;
-				$orientstruct['valid_cg'] = true;
-				if( $departement != 66 ) {
-					$orientstruct['date_propo'] = date( 'Y-m-d' );
-					$orientstruct['date_valid'] = date( 'Y-m-d' );
+				$orientstruct[$this->alias]['personne_id'] = $personne_id;
+				$orientstruct[$this->alias]['valid_cg'] = true;
+
+				if( $departement == 976 ) {
+					$statut_orient = Hash::get( $orientstruct, "{$this->alias}.statut_orient" );
+
+					if( $statut_orient != 'Orienté' ) {
+						$orientstruct[$this->alias]['origine'] = null;
+						$orientstruct[$this->alias]['date_valid'] = null;
+					}
 				}
-				$orientstruct['statut_orient'] = 'Orienté';
+				else if( empty( $primaryKey ) ) {
+					$orientstruct[$this->alias]['statut_orient'] = 'Orienté';
+				}
+
+				$statut_orient = Hash::get( $orientstruct, "{$this->alias}.statut_orient" );
 
 				$this->create( $orientstruct );
 				$success = $this->save() && $success;
@@ -1630,7 +1651,7 @@
 				$success = $this->Personne->Calculdroitrsa->save() && $success;
 
 				// PersonneReferent
-				if( empty( $primaryKey ) && !empty( $referent_id ) ) {
+				if( !empty( $referent_id ) && ( $statut_orient == 'Orienté' ) ) {
 					$success = $this->Referent->PersonneReferent->referentParModele( $data, $this->alias, 'date_valid' ) && $success;
 				}
 			}

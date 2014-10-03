@@ -2,6 +2,8 @@
 	$personne_id = Hash::get( $dossierMenu, 'personne_id' );
 	$personne = Hash::get( (array)Hash::extract( $dossierMenu, "Foyer.Personne.{n}[id={$personne_id}]" ), 0 );
 
+	$departement = Configure::read( 'Cg.departement' );
+
 	$this->pageTitle = "Orientations de {$personne['qual']} {$personne['nom']} {$personne['prenom']}";
 	echo $this->Html->tag( 'h1', $this->pageTitle );
 
@@ -36,7 +38,7 @@
 				'Dossierep.created' => array( 'type' => 'date' ),
 				'Dossierep.themeep',
 				'Typeorient.lib_type_orient',
-				'Structurereferente.lib_struc',
+				'Structurereferente.lib_struc' => array( 'label' => ( $departement == 93 ? 'Type de structure' : null ) ),
 				'Orientstruct.rgorient' => array( 'type' => 'integer', 'class' => 'number' ),
 				'Passagecommissionep.etatdossierep',
 				'Commissionep.dateseance',
@@ -112,28 +114,27 @@
 
 	echo $this->Html->tag( 'h2', 'Orientations effectives' );
 
-	$departement = Configure::read( 'Cg.departement' );
 	if( $departement == 93 ) {
 		if( $this->Session->read( 'Auth.User.type' ) === 'cg' ) {
 			$fields = array(
-				'Orientstruct.date_propo',
+				'Orientstruct.date_propo' => array( 'label' => 'Date de préOrientation' ),
 				'Orientstruct.date_valid',
 				'Orientstruct.propo_algo' => array( 'type' => 'text' ),
 				'Orientstruct.origine',
-				'Typeorient.lib_type_orient',
+				'Typeorient.lib_type_orient' => array( 'label' => 'Orientation' ),
 				'Structurereferente.lib_struc',
 				'Orientstruct.rgorient' => array( 'type' => 'text' ),
-				'Fichiermodule.nombre',
+				'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 			);
 		}
 		else  {
 			$fields = array(
 				'Orientstruct.date_valid',
 				'Orientstruct.origine',
-				'Typeorient.lib_type_orient',
+				'Typeorient.lib_type_orient' => array( 'label' => 'Orientation' ),
 				'Structurereferente.lib_struc',
 				'Orientstruct.rgorient' => array( 'type' => 'text' ),
-				'Fichiermodule.nombre',
+				'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 			);
 		}
 	}
@@ -144,7 +145,7 @@
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
 			'Orientstruct.rgorient' => array( 'type' => 'text' ),
-			'Fichiermodule.nombre',
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		);
 	}
 	else if( $departement == 58 ) {
@@ -157,7 +158,7 @@
 			'Sitecov58.name',
 			'Cov58.datecommission',
 			'Cov58.observation',
-			'Fichiermodule.nombre',
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		);
 	}
 	else {
@@ -168,7 +169,7 @@
 			'Typeorient.lib_type_orient',
 			'Structurereferente.lib_struc',
 			'Orientstruct.rgorient' => array( 'type' => 'text' ),
-			'Fichiermodule.nombre',
+			'Fichiermodule.nombre' => array( 'type' => 'integer', 'class' => 'number' ),
 		);
 	}
 
@@ -220,3 +221,89 @@
 		)
 	);
 ?>
+<script type="text/javascript">
+	//<![CDATA[
+	document.observe( 'dom:loaded', function() {
+		// TODO: en faire une fonction ?
+		var removeLinks = {
+			'TableReorientationsepsIndex': {
+				// CG 58
+				'nonorientationsproseps58': {
+					'edit': false,
+					'delete': false
+				},
+				'regressionorientationep58': {
+					'edit': false,
+					'delete': true
+				},
+				// CG 66
+				'saisinesbilansparcourseps66': {
+					'edit': false,
+					'delete': false
+				},
+				// CG 93
+				'reorientationseps93': {
+					'edit': true,
+					'delete': true
+				},
+				'nonorientationsproseps93': {
+					'edit': false,
+					'delete': false
+				}
+			},
+			'TableReorientationscovsIndex': {
+				// CG 58
+				'proposorientationscovs58': {
+					'edit': true,
+					'delete': true
+				},
+				'proposorientssocialescovs58': {
+					'edit': false,
+					'delete': false
+				},
+				'proposnonorientationsproscovs58': {
+					'edit': false,
+					'delete': false
+				}
+			}
+		};
+		/**
+		 * Permet de masquer les liens inactifs en fonction du type de dossier
+		 * et de la thématique pour etre cohérent par-rapport à ce qui existait
+		 * avant.
+		 */
+		for( var tableId in removeLinks ) {
+			if( removeLinks.hasOwnProperty( tableId ) ) {
+				var table = $( tableId );
+
+				if( table ) {
+					var removed = 0;
+
+					for( var thematique in removeLinks[tableId] ) {
+						if( removeLinks[tableId].hasOwnProperty( thematique ) ) {
+							for( var linkType in removeLinks[tableId][thematique] ) {
+								if( removeLinks[tableId][thematique].hasOwnProperty( linkType ) ) {
+									if( !removeLinks[tableId][thematique][linkType] ) {
+										var link = $(table).down( 'tbody' ).down( 'span.link.disabled.' + thematique + '.' + linkType );
+										if( link ) {
+											$(link).up( 'td' ).remove();
+											removed++;
+										}
+									}
+								}
+							}
+						}
+					}
+
+					if( removed > 0 ) {
+						var thActions = $(table).down( 'thead th.actions' );
+						if( thActions ) {
+							$(thActions).writeAttribute( 'colspan', $(thActions).readAttribute( 'colspan' ) - removed );
+						}
+					}
+				}
+			}
+		}
+	} );
+	//]]>
+</script>
