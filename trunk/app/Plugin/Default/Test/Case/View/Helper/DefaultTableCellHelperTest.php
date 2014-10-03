@@ -92,6 +92,14 @@
 				array( 'class' => 'data string ', ),
 			);
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// Test avec un label spécifié, ce qui ne doit rien changer
+			$result = $this->DefaultTableCell->data( 'Apple.id', array( 'label' => 'Test label' ) );
+			$expected = array(
+				'6',
+				array( 'class' => 'data integer positive', ),
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 
 		/**

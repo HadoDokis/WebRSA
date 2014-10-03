@@ -98,7 +98,13 @@
 
 					$for = "{$tableId}Column{$modelName}".Inflector::camelize( $fieldName );
 
-					$label = __d( $domain, "{$modelName}.{$fieldName}" );
+					// Intitulé depuis la traductions ou surchargé
+					$label = Hash::get( $attributes, 'label' );
+					unset( $attributes['label'] );
+					if( empty( $label ) ) {
+						$label = __d( $domain, "{$modelName}.{$fieldName}" );
+					}
+
 					if( $sort ) {
 						$label = $this->DefaultPaginator->sort( $field, $label );
 					}
