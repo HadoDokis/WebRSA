@@ -216,6 +216,20 @@
 							</tr>
 						</thead>';
 			$this->assertEqualsXhtml( $result, $expected );
+
+			// Avec un nom de colonne qui surcharge la traduction
+			$fields = Hash::normalize( $this->fields );
+			$fields['Apple.id'] = array( 'label' => 'Test Apple.id' );
+
+			$result = $this->DefaultTable->thead( $fields, $params + array( 'sort' => false ) );
+			$expected = '<thead>
+							<tr>
+								<th id="ColumnAppleId">Test Apple.id</th>
+								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
+								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
+							</tr>
+						</thead>';
+			$this->assertEqualsXhtml( $result, $expected );
 		}
 
 		/**

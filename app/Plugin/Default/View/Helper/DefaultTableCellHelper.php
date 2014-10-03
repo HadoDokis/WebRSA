@@ -85,6 +85,8 @@
 				unset( $htmlAttributes['options'] );
 			}
 
+			unset( $htmlAttributes['label'] );
+
 			return array(
 				$this->DefaultData->format( $value, $type ),
 				Set::merge(
