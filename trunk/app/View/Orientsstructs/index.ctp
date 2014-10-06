@@ -47,19 +47,19 @@
 					'msgid' => 'Voir',
 					'title' => false,
 					'class' => 'view',
-					'disabled' => 'empty( "#Actions.view_enabled#" )'
+					'disabled' => '"#Actions.view_enabled#" != "1"'
 				),
 				'/#Actions.edit_url#' => array(
 					'msgid' => 'Modifier',
 					'title' => false,
 					'class' => 'edit',
-					'disabled' => 'empty( "#Actions.edit_enabled#" )'
+					'disabled' => '"#Actions.edit_enabled#" != "1"'
 				),
 				'/#Actions.delete_url#' => array(
 					'msgid' => 'Supprimer',
 					'title' => false,
 					'class' => 'delete',
-					'disabled' => 'empty( "#Actions.delete_enabled#" )',
+					'disabled' => '"#Actions.delete_enabled#" != "1"',
 					'confirm' => 'Confirmer la suppression du dossier d\'EP ?'
 				),
 			),
@@ -88,19 +88,19 @@
 					'msgid' => 'Voir',
 					'title' => false,
 					'class' => 'view',
-					'disabled' => 'empty( "#Actions.view_enabled#" )'
+					'disabled' => '"#Actions.view_enabled#" != "1"'
 				),
 				'/#Actions.edit_url#' => array(
 					'msgid' => 'Modifier',
 					'title' => false,
 					'class' => 'edit',
-					'disabled' => 'empty( "#Actions.edit_enabled#" )'
+					'disabled' => '"#Actions.edit_enabled#" != "1"'
 				),
 				'/#Actions.delete_url#' => array(
 					'msgid' => 'Supprimer',
 					'title' => false,
 					'class' => 'delete',
-					'disabled' => 'empty( "#Actions.delete_enabled#" )',
+					'disabled' => '"#Actions.delete_enabled#" != "1"',
 					'confirm' => 'Confirmer la suppression du dossier de COV ?'
 				),
 			),
