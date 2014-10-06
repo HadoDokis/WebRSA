@@ -51,43 +51,43 @@ msgstr "Observations de la COV"
 msgid "Fichiermodule.nombre"
 msgstr "Fichiers liés"
 
-msgid "/Orientsstructs2/edit"
+msgid "/Orientsstructs/edit"
 msgstr "Modifier"
 
-msgid "/Orientsstructs2/edit/#Orientstruct.id#"
+msgid "/Orientsstructs/edit/#Orientstruct.id#"
 msgstr "Modifier l'orientation #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
-msgid "/Orientsstructs2/delete"
+msgid "/Orientsstructs/delete"
 msgstr "Supprimer"
 
-msgid "/Orientsstructs2/delete/#Orientstruct.id#"
+msgid "/Orientsstructs/delete/#Orientstruct.id#"
 msgstr "Supprimer l'orientation #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
-msgid "/Orientsstructs2/delete/#Orientstruct.id# ?"
+msgid "/Orientsstructs/delete/#Orientstruct.id# ?"
 msgstr "Réellement supprimer l'orientation #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom# ?"
 
-msgid "/Orientsstructs2/impression"
+msgid "/Orientsstructs/impression"
 msgstr "Imprimer"
 
-msgid "/Orientsstructs2/impression/#Orientstruct.id#"
+msgid "/Orientsstructs/impression/#Orientstruct.id#"
 msgstr "Imprimer l'orientation #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
-msgid "/Orientsstructs2/impression_changement_referent"
+msgid "/Orientsstructs/impression_changement_referent"
 msgstr "Notif changement de référent"
 
-msgid "/Orientsstructs2/impression_changement_referent/#Orientstruct.id#"
+msgid "/Orientsstructs/impression_changement_referent/#Orientstruct.id#"
 msgstr "Imprimer la notification de changement de référent pour #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
-msgid "/Orientsstructs2/filelink"
+msgid "/Orientsstructs/filelink"
 msgstr "Fichiers liés"
 
-msgid "/Orientsstructs2/filelink/#Orientstruct.id#"
+msgid "/Orientsstructs/filelink/#Orientstruct.id#"
 msgstr "Fichiers liés à l'orientation #Structurereferente.lib_struc# du #Orientstruct.date_valid# de #Personne.qual# #Personne.nom# #Personne.prenom#"
 
-msgid "/Orientsstructs2/add"
+msgid "/Orientsstructs/add"
 msgstr "Ajouter"
 
-msgid "/Orientsstructs2/add/:title"
+msgid "/Orientsstructs/add/:title"
 msgstr "Ajouter une orientation"
 
 msgid "/Proposorientationscovs58/add"
