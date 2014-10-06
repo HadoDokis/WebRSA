@@ -7,23 +7,65 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses('AppController', 'Controller');
 
 	/**
-	 * La classe OrientsstructsController permet de gérer les orientations.
+	 * La classe OrientsstructsController ...
 	 *
 	 * @package app.Controller
 	 */
 	class OrientsstructsController extends AppController
 	{
+		/**
+		 * Nom du contrôleur.
+		 *
+		 * @var string
+		 */
 		public $name = 'Orientsstructs';
 
-		public $uses = array( 'Orientstruct', 'Option', 'Dossier', 'Foyer', 'Adresse', 'Adressefoyer', 'Personne', 'Typeorient', 'Structurereferente', 'Pdf', 'Referent' );
+		/**
+		 * Components utilisés.
+		 *
+		 * @var array
+		 */
+		public $components = array(
+			'DossiersMenus',
+			'Fileuploader',
+			'Gedooo.Gedooo',
+			'InsertionsAllocataires',
+			'Jetons2'
+		);
 
-		public $helpers = array( 'Default', 'Default2', 'Fileuploader' );
+		/**
+		 * Helpers utilisés.
+		 *
+		 * @var array
+		 */
+		public $helpers = array(
+			'Allocataires',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			),
+			'Fileuploader'
+		);
 
-		public $components = array( 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires' );
+		/**
+		 * Modèles utilisés.
+		 *
+		 * @var array
+		 */
+		public $uses = array( 'Orientstruct' );
 
-		public $aucunDroit = array( 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download' );
+		/**
+		 *
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'ajaxfileupload' => 'Orientsstructs:filelink',
+			'ajaxfiledelete' => 'Orientsstructs:filelink',
+			'download' => 'Orientsstructs:filelink',
+			'fileview' => 'Orientsstructs:filelink',
+		);
 
 		/**
 		 * Correspondances entre les méthodes publiques correspondant à des
@@ -33,518 +75,551 @@
 		 */
 		public $crudMap = array(
 			'add' => 'create',
+			'ajaxfileupload' => 'create',
 			'ajaxfiledelete' => 'delete',
-			'ajaxfileupload' => 'update',
+			'fileview' => 'read',
 			'delete' => 'delete',
 			'download' => 'read',
 			'edit' => 'update',
 			'filelink' => 'read',
-			'fileview' => 'read',
-			'impression' => 'read',
 			'index' => 'read',
-			'printChangementReferent' => 'read',
+			'impression' => 'read',
+			'impression_changement_referent' => 'read',
 		);
 
-		protected function _setOptions() {
-			$structuresreferentes = $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) );
-
-			$this->set( 'pays', $this->Option->pays() );
-			$this->set( 'qual', $this->Option->qual() );
-			$this->set( 'rolepers', $this->Option->rolepers() );
-			$this->set( 'toppersdrodevorsa', $this->Option->toppersdrodevorsa() );
-			$this->set( 'referents', $this->Referent->listOptions() );
-			$this->set( 'typesorients', $this->Typeorient->listOptions() );
-			$this->set( 'structs', $structuresreferentes );
-
-            $options = $this->Orientstruct->enums();
-			$this->set( compact( 'options' ) );
-
-			//Ajout des structures et référents orientants
-			$this->set( 'refsorientants', $this->Referent->listOptions() );
-			$this->set( 'structsorientantes', $structuresreferentes );
-		}
-
 		/**
-		 *
-		 */
-//		public function beforeFilter() {
-//			$return = parent::beforeFilter();
-//
-//			$this->set( 'options', $this->Orientstruct->enums() );
-//
-//			return $return;
-//		}
-
-		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
+		 * Envoi d'un fichier temporaire depuis le formualaire.
 		 */
 		public function ajaxfileupload() {
 			$this->Fileuploader->ajaxfileupload();
 		}
 
 		/**
-		 * http://valums.com/ajax-upload/
-		 * http://doc.ubuntu-fr.org/modules_php
-		 * increase post_max_size and upload_max_filesize to 10M
-		 * debug( array( ini_get( 'post_max_size' ), ini_get( 'upload_max_filesize' ) ) ); -> 10M
-		 * FIXME: traiter les valeurs de retour
+		 * Suppression d'un fichier temporaire.
 		 */
 		public function ajaxfiledelete() {
 			$this->Fileuploader->ajaxfiledelete();
 		}
 
 		/**
-		 *   Fonction permettant de visualiser les fichiers chargés dans la vue avant leur envoi sur le serveur
+		 * Visualisation d'un fichier temporaire.
+		 *
+		 * @param integer $id
 		 */
 		public function fileview( $id ) {
 			$this->Fileuploader->fileview( $id );
 		}
 
 		/**
-		 * Téléchargement des fichiers préalablement associés à un traitement donné
+		 * Visualisation d'un fichier stocké.
+		 *
+		 * @param integer $id
 		 */
-		public function download( $fichiermodule_id ) {
-			$this->assert( !empty( $fichiermodule_id ), 'error404' );
-			$this->Fileuploader->download( $fichiermodule_id );
+		public function download( $id ) {
+			$this->Fileuploader->download( $id );
 		}
 
 		/**
-		 * Fonction permettant d'accéder à la page pour lier les fichiers à l'Orientation
+		 * Liste des fichiers liés à une orientation.
+		 *
+		 * @param integer $id
 		 */
 		public function filelink( $id ) {
-			$this->assert( valid_int( $id ), 'invalidParameter' );
-
-			$fichiers = array( );
-			$orientstruct = $this->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.id' => $id
-					),
-					'contain' => array(
-						'Fichiermodule' => array(
-							'fields' => array( 'name', 'id', 'created', 'modified' )
-						)
-					)
-				)
-			);
-
-			$personne_id = $orientstruct['Orientstruct']['personne_id'];
-			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
-
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-			$this->Jetons2->get( $dossier_id );
-
-			// Retour à l'index en cas d'annulation
-			if( isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
-
-			if( !empty( $this->request->data ) ) {
-				$this->Orientstruct->begin();
-
-				$saved = $this->Orientstruct->updateAllUnBound(
-						array( 'Orientstruct.haspiecejointe' => '\''.$this->request->data['Orientstruct']['haspiecejointe'].'\'' ), array(
-					'"Orientstruct"."personne_id"' => $personne_id,
-					'"Orientstruct"."id"' => $id
-						)
-				);
-
-				if( $saved ) {
-					// Sauvegarde des fichiers liés à une PDO
-					$dir = $this->Fileuploader->dirFichiersModule( $this->action, $this->request->params['pass'][0] );
-					$saved = $this->Fileuploader->saveFichiers( $dir, !Set::classicExtract( $this->request->data, "Orientstruct.haspiecejointe" ), $id ) && $saved;
-				}
-
-				if( $saved ) {
-					$this->Orientstruct->commit();
-					$this->Jetons2->release( $dossier_id );
-					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-// 					$this->redirect( array(  'controller' => 'orientsstructs','action' => 'index', $personne_id ) );
-					$this->redirect( $this->referer() );
-				}
-				else {
-					$fichiers = $this->Fileuploader->fichiers( $id );
-					$this->Orientstruct->rollback();
-					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-				}
-			}
-
-			$this->set( compact( 'dossier_id', 'personne_id', 'fichiers', 'orientstruct' ) );
-			$this->_setOptions();
-			$this->set( 'urlmenu', '/orientsstructs/index/'.$personne_id );
-		}
-
-		/**
-		 * Liste des orientations de l'allocataire.
-		 *
-		 * @param integer $personne_id L'id technique de l'allocataire.
-		 */
-		public function index( $personne_id = null ) {
-			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
-
-			$dossier_id = $this->Orientstruct->Personne->dossierId( $personne_id );
+			// Début TODO: à mettre en commun
+			$personne_id = $this->Orientstruct->personneId( $id );
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
-			$this->set( 'dossierMenu', $dossierMenu );
+			$this->set( compact( 'dossierMenu' ) );
 
-			$this->_setEntriesAncienDossier( $personne_id, 'Orientstruct' );
+			$this->Fileuploader->filelink( $id, array( 'action' => 'index', $personne_id ) );
+			$this->set( 'urlmenu', "/orientsstructs/index/{$personne_id}" );
 
-			$querydata = $this->Orientstruct->qdIndex( $personne_id );
-			$orientstructs = $this->Orientstruct->find( 'all', $querydata );
-
-			// Ajout d'informations en fonction du CG.
-			$en_procedure_relance = false;
-			$force_edit = false;
-			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
-
-			// L'entrée la plus récente est-elle non liée à d'autres tables, et donc suppressible ?
-			$last_orientstruct_suppressible = false;
-			if( !empty( $orientstructs ) ) {
-				App::import( 'Behaviors', 'Occurences' );
-				$this->Orientstruct->Behaviors->attach( 'Occurences' );
-
-				$occurences = $this->Orientstruct->occurencesExists( array( 'Orientstruct.id' => $orientstructs[0]['Orientstruct']['id'] ), array( 'Fichiermodule', 'Nonoriente66' ) );
-				$last_orientstruct_suppressible = !$occurences[$orientstructs[0]['Orientstruct']['id']];
-
-				$last_orientstruct_suppressible = (
-					$this->Orientstruct->Personne->Dossierep->find(
-						'count',
-						$this->Orientstruct->Personne->Dossierep->qdDossiersepsOuverts( $personne_id )
-					) == 0
-				) && $last_orientstruct_suppressible;
-			}
-
-			if( Configure::read( 'Cg.departement' ) == 58 ) {
-				// Nouvelle orientation en cours de validation par la commission d'orientation et de validation ?
-				$qdEnCours = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->qdEnCours( $personne_id );
-				$propoorientationcov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientationcov58->find(
-					'first',
-					$qdEnCours
-				);
-				$this->set( 'propoorientationcov58', $propoorientationcov58 );
-				$this->set( 'optionsdossierscovs58', $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enums() );
-
-				// Réorientation en cours de validation par la commission d'orientation et de validation ?
-				$qdReorientationEnCours = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->qdReorientationEnCours( $personne_id );
-				$regressionorientaionep58 = $this->Orientstruct->Personne->Dossierep->Regressionorientationep58->find(
-					'first',
-					$qdReorientationEnCours
-				);
-
-				// Orientation sociale de fait e cours de validation par la commission d'orientation et de validation ?
-				$qdPropoorientsocialecov58EnCours = $this->Orientstruct->Personne->Dossiercov58->Propoorientsocialecov58->qdEnCours( $personne_id );
-				$propoorientsocialecov58 = $this->Orientstruct->Personne->Dossiercov58->Propoorientsocialecov58->find(
-					'first',
-					$qdPropoorientsocialecov58EnCours
-				);
-
-				// Proposition de maintien en social au CG 58
-				$query = $this->Orientstruct->Personne->Dossiercov58->Propononorientationprocov58->qdEnCours( $personne_id );
-				$propononorientationprocov58 = $this->Orientstruct->Personne->Dossiercov58->Propononorientationprocov58->find(
-					'first',
-					$query
-				);
-
-				if( $rgorient_max <= 1 ) {
-					$ajout_possible = $this->Orientstruct->Personne->Dossiercov58->ajoutPossible( $personne_id )
-						&& $this->Orientstruct->ajoutPossible( $personne_id );
-
-					$qdDossiersCov58NonFinalises = $this->Orientstruct->Personne->Dossiercov58->qdDossiersNonFinalises( $personne_id, array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ) );
-					$nbdossiersnonfinalisescovs = $this->Orientstruct->Personne->Dossiercov58->find( 'count',  $qdDossiersCov58NonFinalises );
-					$this->set( 'nbdossiersnonfinalisescovs', $nbdossiersnonfinalisescovs );
-				}
-				else {
-					$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
-				}
-
-				$this->set( compact( 'regressionorientaionep58', 'propoorientsocialecov58', 'propononorientationprocov58' ) );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enums() );
-			}
-			else if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
-			}
-			else if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$ajout_possible = $this->Orientstruct->ajoutPossible( $personne_id );
-				$force_edit = ( $rgorient_max == 0 );
-
-				$en_procedure_relance = $this->Orientstruct->Nonrespectsanctionep93->enProcedureRelance( $personne_id );
-
-				// La dernière réorientation en cours
-				$qdReorientationEnCours = $this->Orientstruct->Reorientationep93->qdReorientationEnCours( $personne_id );
-				$reorientationep93 = $this->Orientstruct->Reorientationep93->find( 'first', $qdReorientationEnCours );
-
-				$this->set( 'reorientationep93', $reorientationep93 );
-				$this->set( 'optionsdossierseps', $this->Orientstruct->Reorientationep93->Dossierep->Passagecommissionep->enums() );
-			}
-
-			$this->_setOptions();
-			$this->set( 'last_orientstruct_suppressible', $last_orientstruct_suppressible );
-			$this->set( 'orientstructs', $orientstructs );
-			$this->set( 'en_procedure_relance', $en_procedure_relance );
-			$this->set( 'personne_id', $personne_id );
-			$this->set( 'droitsouverts', $this->Dossier->Situationdossierrsa->droitsOuverts( $dossier_id ) );
-			$this->set( 'ajout_possible', $ajout_possible );
-			$this->set( 'orientstructs', $orientstructs );
-			$this->set( 'force_edit', $force_edit );
-			$this->set( 'rgorient_max', $rgorient_max );
-			$this->set( 'last_orientstruct_id', @$orientstructs[0]['Orientstruct']['id'] );
+			$options = $this->Orientstruct->enums();
+			$this->set( compact( 'options' ) );
 		}
 
 		/**
-		 * Formulaire d'ajout d'une orientation à un allocataire.
+		 * Permet de compléter le tableau de résultats généré par
+		 * Orientstruct::getIndexQuery(), pour les droits (edit, delete) et le
+		 * "Rang d'orientation".
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getCompletedIndexResults( array $results, array $params = array() ) {
+			$departement = Configure::read( 'Cg.departement' );
+
+			$rgsorients = Hash::extract( $results, "{n}.Orientstruct[statut_orient=Orienté].rgorient" );
+			$rgorientMax = 0;
+			if( !empty( $rgsorients ) ) {
+				$rgorientMax = max( $rgsorients );
+			}
+
+			foreach( array_keys( $results ) as $key ) {
+				// On ne peut modifier que l'entrée la plus récente
+				$results[$key]['Orientstruct']['edit'] = ( $key == 0 ) && $params['ajout_possible'];
+
+				// On ne peut modifier que l'entrée la plus récente
+				$results[$key]['Orientstruct']['impression'] = ( $results[$key]['Orientstruct']['printable'] == 1 );
+
+				// On ne peut supprimer que l'entrée la plus récente
+				$results[$key]['Orientstruct']['delete'] = ( $key == 0 ) && ( $results[$key]['Orientstruct']['rgorient'] == $rgorientMax ) && !$results[$key]['Orientstruct']['linked_records'] && empty( $params['reorientationseps'] );
+
+				if( $departement == 66 ) {
+					// On ne peut modifier que la dernière orientation, celle dont le rang est le plus élevé
+					$results[$key]['Orientstruct']['edit'] = ( $results[$key]['Orientstruct']['rgorient'] == $rgorientMax ) && $results[$key]['Orientstruct']['edit'];
+
+					//Peut-on imprimer la notif de changement de référent ou non, si 1ère orientation non sinon ok
+					$results[$key]['Orientstruct']['impression_changement_referent'] = ( $results[$key]['Orientstruct']['rgorient'] > 1 ) && $results[$key]['Orientstruct']['notifbenefcliquable'];
+
+					// Délai de modification orientation (10 jours par défaut)
+					$date_valid = Hash::get( $results[$key], "Orientstruct.date_valid" );
+					$periodeblock = !empty( $date_valid ) && ( time() >= ( strtotime( $date_valid ) + 3600 * Configure::read( 'Periode.modifiableorientation.nbheure' ) ) );
+					$results[$key]['Orientstruct']['edit'] = !$periodeblock && $results[$key]['Orientstruct']['edit'];
+				}
+
+				// Le "rang d'orientation"
+				if( !empty( $results[$key]['Orientstruct']['rgorient'] ) ) {
+					if( $departement == 58 ) {
+						if( !isset( $results[$key+1] ) ) {
+							$rgorient = 'Première orientation';
+						}
+						else if( $results[$key]['Orientstruct']['typeorient_id'] != $results[$key+1]['Orientstruct']['typeorient_id'] ) {
+							$rgorient = 'Réorientation';
+						}
+						else if( $results[$key]['Orientstruct']['typeorient_id'] == Configure::read( 'Typeorient.emploi_id' ) ) {
+							$rgorient = 'Maintien en emploi';
+						}
+						else {
+							$rgorient = 'Maintien en social';
+						}
+
+						$results[$key]['Orientstruct']['rgorient'] = $rgorient;
+					}
+					else {
+						$results[$key]['Orientstruct']['rgorient'] = ( $results[$key]['Orientstruct']['rgorient'] == 1 ? 'Première orientation' : 'Réorientation' );
+					}
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Complète la liste des dossiers devant passer en COV en ajoutant des
+		 * champs virtuels permettant de faire les liens dans la vue.
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getCompletedIndexResultsReorientationscovs( array $results, array $params = array() ) {
+			foreach( array_keys( $results ) as $key ) {
+				$themecov58 = $results[$key]['Dossiercov58']['themecov58'];
+
+				$results[$key]['Orientstruct']['rgorient'] = ( $params['rgorient_max'] + 1 );
+
+				// Actions
+				$results[$key]['Actions'] = array();
+
+				// view
+				$results[$key]['Actions']['view_url'] = "/Covs58/view/{$results[$key]['Cov58']['id']}#dossiers,".Inflector::singularize( $themecov58 );
+				$results[$key]['Actions']['view_enabled'] = !empty( $results[$key]['Cov58']['id'] ) && WebrsaPermissions::check( 'covs58', 'view' );
+
+				if( $themecov58 === 'proposorientationscovs58' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Proposorientationscovs58/edit/{$results[$key]['Personne']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = ( $results[$key]['Passagecov58']['etatdossiercov'] != 'associe' ) && WebrsaPermissions::checkDossier( 'proposorientationscovs58', 'add', $params['dossier_menu'] );
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Proposorientationscovs58/delete/{$results[$key]['Propoorientationcov58']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = empty( $results[$key]['Passagecov58']['id'] ) && WebrsaPermissions::checkDossier( 'proposorientationscovs58', 'delete', $params['dossier_menu'] );
+				}
+				else if( $themecov58 === 'proposorientssocialescovs58' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Proposorientssocialescovs58/edit/{$results[$key]['Propoorientsocialecov58']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Proposorientssocialescovs58/delete/{$results[$key]['Propoorientsocialecov58']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = false;
+				}
+				else if( $themecov58 === 'proposnonorientationsproscovs58' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Proposnonorientationsproscovs58/edit/{$results[$key]['Propononorientationprocov58']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Proposnonorientationsproscovs58/delete/{$results[$key]['Propononorientationprocov58']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = false;
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Complète la liste des dossiers devant passer en EP en ajoutant des
+		 * champs virtuels permettant notamment de faire les liens dans la vue.
+		 *
+		 * @param array $results
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getCompletedIndexResultsReorientationseps( array $results, array $params = array() ) {
+			foreach( array_keys( $results ) as $key ) {
+				$themeep = $results[$key]['Dossierep']['themeep'];
+
+				$results[$key]['Orientstruct']['rgorient'] = ( $params['rgorient_max'] + 1 );
+
+				// Actions
+				$results[$key]['Actions'] = array();
+
+				// view
+				$results[$key]['Actions']['view_url'] = "/Commissionseps/view/{$results[$key]['Commissionep']['id']}#dossiers,".Inflector::singularize( $themeep );
+				$results[$key]['Actions']['view_enabled'] = !empty( $results[$key]['Commissionep']['id'] ) && WebrsaPermissions::check( 'Commissionseps', 'view' );
+
+				// CG 58
+				if( $themeep === 'nonorientationsproseps58' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Nonorientationsproseps58/edit/{$results[$key]['Nonorientationproep58']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Nonorientationsproseps58/delete/{$results[$key]['Nonorientationproep58']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = false;
+				}
+				else if( $themeep === 'regressionsorientationseps58' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Regressionorientationep58/edit/{$results[$key]['Regressionorientationep58']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Regressionorientationep58/delete/{$results[$key]['Regressionorientationep58']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = empty( $results[$key]['Passagecommissionep']['id'] ) && WebrsaPermissions::checkDossier( 'regressionsorientationseps58', 'delete', $params['dossier_menu'] );
+				}
+				// CG 66
+				else if( $themeep === 'saisinesbilansparcourseps66' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Saisinesbilansparcourseps66/edit/{$results[$key]['Saisinebilanparcoursep66']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Saisinesbilansparcourseps66/delete/{$results[$key]['Saisinebilanparcoursep66']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = false;
+				}
+				// CG 93
+				else if( $themeep === 'reorientationseps93' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Reorientationseps93/edit/{$results[$key]['Reorientationep93']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = empty( $results[$key]['Passagecommissionep']['id'] ) && WebrsaPermissions::checkDossier( 'reorientationseps93', 'edit', $params['dossier_menu'] );
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Reorientationseps93/delete/{$results[$key]['Reorientationep93']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = empty( $results[$key]['Passagecommissionep']['id'] ) && WebrsaPermissions::checkDossier( 'reorientationseps93', 'delete', $params['dossier_menu'] );
+				}
+				else if( $themeep === 'nonorientationsproseps93' ) {
+					// edit
+					$results[$key]['Actions']['edit_url'] = "/Nonorientationsproseps93/edit/{$results[$key]['Nonorientationproep93']['id']}";
+					$results[$key]['Actions']['edit_enabled'] = false;
+
+					// delete
+					$results[$key]['Actions']['delete_url'] = "/Nonorientationsproseps93/delete/{$results[$key]['Nonorientationproep93']['id']}";
+					$results[$key]['Actions']['delete_enabled'] = false;
+				}
+			}
+
+			return $results;
+		}
+
+		/**
+		 * Retourne la liste des actions de l'écran d'index, en fonction du CG,
+		 * des orientations de l'allocataire et d'autres données passées en
+		 * paramètres.
+		 *
+		 * @param array $records
+		 * @param array $params
+		 * @return array
+		 */
+		protected function _getIndexActionsList( array $records, array $params = array() ) {
+			App::uses( 'DefaultUrl', 'Default.Utility' );
+			App::uses( 'DefaultUtility', 'Default.Utility' );
+
+			$departement = Configure::read( 'Cg.departement' );
+			$domain = $this->request->params['controller'];
+			$actions = array();
+
+			if( $departement == 93 ) {
+				if( $params['rgorient_max'] >= 1 ) {
+					$actions["/Reorientationseps93/add/{$records[0]['Orientstruct']['id']}"] = array(
+						'domain' => $domain,
+						'enabled' => $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'reorientationseps93', 'add', $params['dossier_menu'] )
+					);
+				}
+				else {
+					$actions["/Orientsstructs/add/{$params['personne_id']}"] = array(
+						'domain' => $domain,
+						'msgid' => 'Demander une réorientation',
+						'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs', 'add', $params['dossier_menu'] )
+					);
+				}
+			}
+			else if( $departement == 58 ) {
+				$actions["/Proposorientationscovs58/add/{$params['personne_id']}"] = array(
+					'domain' => $domain,
+					//'msgid' => 'Préconiser une orientation',
+					'enabled' => $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'proposorientationscovs58', 'add', $params['dossier_menu'] )
+				);
+			}
+			else {
+				$actions["/Orientsstructs/add/{$params['personne_id']}"] = array(
+					'domain' => $domain,
+					'msgid' => 'Ajouter',
+					'enabled' => !$params['force_edit'] && $params['ajout_possible'] && WebrsaPermissions::checkDossier( 'orientsstructs', 'add', $params['dossier_menu'] )
+				);
+			}
+
+			return $actions;
+		}
+
+		/**
+		 * Liste des orientations d'une personne.
 		 *
 		 * @param integer $personne_id
 		 */
-		public function add( $personne_id = null ) {
-			$this->assert( valid_int( $personne_id ), 'invalidParameter' );
+		public function index( $personne_id ) {
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->set( compact( 'dossierMenu' ) );
 
-			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
-			if( !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
-				$this->Session->setFlash( 'Impossible d\'ajouter une orientation pour cette personne.', 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
-			}
+			$this->_setEntriesAncienDossier( $personne_id, 'Orientstruct' );
+			//------------------------------------------------------------------
+			$departement = Configure::read( 'Cg.departement' );
 
-			$dossier_id = $this->Personne->dossierId( $personne_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
+			$rgorient_max = $this->Orientstruct->rgorientMax( $personne_id );
 
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-			// Récupération du dossier afin de précharger la date de demande RSA
-			$qd_dossier = array(
-				'conditions' => array(
-					'Dossier.id' => $dossier_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
+			// Dossiers d'EP en cours de passage et pouvant déboucher sur une réorientation
+			$reorientationseps = $this->Orientstruct->Personne->Dossierep->getReorientationsEnCours( $personne_id );
+			$reorientationseps = $this->_getCompletedIndexResultsReorientationseps(
+				$reorientationseps,
+				array(
+					'dossier_menu' => $dossierMenu,
+					'rgorient_max' => $rgorient_max
+				)
 			);
-			$dossier = $this->Orientstruct->Personne->Foyer->Dossier->find( 'first', $qd_dossier );
-			$this->set( compact( 'dossier' ) );
 
-			$this->Jetons2->get( $dossier_id );
+			// Dossiers de COV en cours de passage et pouvant déboucher sur une réorientation
+			$reorientationscovs = $this->Orientstruct->Personne->Dossiercov58->getReorientationsEnCours( $personne_id );
+			$reorientationscovs = $this->_getCompletedIndexResultsReorientationscovs(
+				$reorientationscovs,
+				array(
+					'dossier_menu' => $dossierMenu,
+					'rgorient_max' => $rgorient_max
+				)
+			);
 
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
-				$this->Jetons2->release( $dossier_id );
-				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			// Droits sur les actions
+			$ajoutPossible = $this->Orientstruct->ajoutPossible( $personne_id )
+					&& empty( $reorientationseps )
+					&& empty( $reorientationscovs );
+
+			$en_procedure_relance = $this->Orientstruct->enProcedureRelance( $personne_id );
+
+			$force_edit = ( $departement == 93 && $rgorient_max == 0 );
+
+			// Liste des orientations
+			$query = $this->Orientstruct->getIndexQuery( $personne_id );
+			$orientsstructs = $this->Orientstruct->find( 'all', $query );
+			$orientsstructs = $this->_getCompletedIndexResults(
+				$orientsstructs,
+				array(
+					'ajout_possible' => $ajoutPossible,
+					'reorientationseps' => $reorientationseps
+				)
+			);
+
+			// Options
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Commissionep' => array(
+					'etatcommissionep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->Commissionep->enum( 'etatcommissionep' )
+				),
+				'Cov58' => array(
+					'etatcov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->Cov58->enum( 'etatcov' )
+				),
+				'Dossiercov58' => array(
+					'themecov58' => $this->Orientstruct->Personne->Dossiercov58->enum( 'themecov58' )
+				),
+				'Dossierep' => array(
+					'themeep' => $this->Orientstruct->Personne->Dossierep->enum( 'themeep' )
+				),
+				'Orientstruct' => array(
+					'statut_orient' => $Option->statut_orient()
+				),
+				'Passagecommissionep' => array(
+					'etatdossierep' => $this->Orientstruct->Personne->Dossierep->Passagecommissionep->enum( 'etatdossierep' )
+				),
+				'Passagecov58' => array(
+					'etatdossiercov' => $this->Orientstruct->Personne->Dossiercov58->Passagecov58->enum( 'etatdossiercov' )
+				)
+			);
+			$options = Hash::merge( $options, $this->Orientstruct->enums() );
+
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$options['Orientstruct']['propo_algo'] = $this->InsertionsAllocataires->typesorients();
 			}
 
+			// Liste des actions accessibles
+			$actions = $this->_getIndexActionsList(
+				$orientsstructs,
+				array(
+					'dossier_menu' => $dossierMenu,
+					'personne_id' => $personne_id,
+					'ajout_possible' => $ajoutPossible,
+					'force_edit' => $force_edit,
+					'rgorient_max' => $rgorient_max,
+				)
+			);
+
+			$this->set( compact( 'orientsstructs', 'reorientationseps', 'reorientationscovs', 'ajoutPossible', 'options', 'actions', 'en_procedure_relance' ) );
+			$this->set( 'urlmenu', "/orientsstructs/index/{$personne_id}" );
+		}
+
+		/**
+		 * Formulaire d'ajout d'une orientation.
+		 *
+		 * @see OrientsstructsController::edit()
+		 */
+		public function add() {
+			$args = func_get_args();
+			call_user_func_array( array( $this, 'edit' ), $args );
+		}
+
+		/**
+		 * Formulaire de modification d'une orientation.
+		 *
+		 * @todo: permissions, voir dans la vue pour tous les CG
+		 *
+		 * @throws NotFoundException
+		 */
+		public function edit( $id = null ) {
+			$personne_id = ( $this->action === 'add' ? $id : $this->Orientstruct->personneId( $id ) );
+			$id = ( $this->action === 'add' ? null : $id );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$this->set( compact( 'dossierMenu' ) );
+
+			$this->Jetons2->get( Hash::get( $dossierMenu, 'Dossier.id' ) );
+
+			// -----------------------------------------------------------------
+			$redirectUrl = array( 'action' => 'index', $personne_id );
+			$user_id = $this->Session->read( 'Auth.User.id' );
+			// -----------------------------------------------------------------
+			// Retour à l'index s'il n'est pas possible d'ajouter une orientation
+			if( $this->action === 'add' && !$this->Orientstruct->ajoutPossible( $personne_id ) ) {
+				$this->Session->setFlash( 'Impossible d\'ajouter une orientation à cette personne.', 'flash/error' );
+				$this->redirect( $redirectUrl );
+			}
+			// -----------------------------------------------------------------
+			$originalAddEditFormData = $this->Orientstruct->getAddEditFormData( $personne_id, $id, $user_id );
+
+			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
+			if( $this->action === 'edit' && !empty( $originalAddEditFormData['Orientstruct']['date_valid'] ) && $originalAddEditFormData['Orientstruct']['statut_orient'] == 'Orienté' && $originalAddEditFormData['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $originalAddEditFormData['Orientstruct']['personne_id'] ) ) {
+				$this->Session->setFlash( 'Impossible de modifier une autre orientation que la plus récente.', 'flash/error' );
+				$this->redirect( $redirectUrl );
+			}
+			// -----------------------------------------------------------------
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( Hash::get( $dossierMenu, 'Dossier.id' ) );
+				$this->redirect( $redirectUrl );
+			}
+			// -----------------------------------------------------------------
+
+			$user_id = $this->Session->read( 'Auth.User.id' );
+
+			// Tentative de sauvegarde
 			if( !empty( $this->request->data ) ) {
-				$this->request->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
-
-				$this->Orientstruct->set( $this->request->data );
-
-				$validates = $this->Orientstruct->validates();
-
-				if( $validates ) {
-					$this->Orientstruct->begin();
-
-					$saved = true;
-
-					if( $this->Orientstruct->isRegression( $personne_id, $this->request->data['Orientstruct']['typeorient_id'] ) && Configure::read( 'Cg.departement' ) == 58 ) {
-						$theme = 'Regressionorientationep'.Configure::read( 'Cg.departement' );
-
-						$dossierep = array(
-							'Dossierep' => array(
-								'personne_id' => $personne_id,
-								'themeep' => Inflector::tableize( $theme )
-							)
-						);
-
-						$saved = $this->Orientstruct->Personne->Dossierep->save( $dossierep ) && $saved;
-
-						$regressionorientationep[$theme] = $this->request->data['Orientstruct'];
-						$regressionorientationep[$theme]['personne_id'] = $personne_id;
-						$regressionorientationep[$theme]['dossierep_id'] = $this->Orientstruct->Personne->Dossierep->id;
-
-						if( isset( $regressionorientationep[$theme]['referent_id'] ) && !empty( $regressionorientationep[$theme]['referent_id'] ) ) {
-							list( $structurereferente_id, $referent_id ) = explode( '_', $regressionorientationep[$theme]['referent_id'] );
-							$regressionorientationep[$theme]['structurereferente_id'] = $structurereferente_id;
-							$regressionorientationep[$theme]['referent_id'] = $referent_id;
-						}
-						$regressionorientationep[$theme]['datedemande'] = $regressionorientationep[$theme]['date_propo'];
-
-						$saved = $this->Orientstruct->Personne->Dossierep->{$theme}->save( $regressionorientationep ) && $saved;
-					}
-					else {
-						// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
-						$this->request->data['Calculdroitrsa']['personne_id'] = $personne_id;
-						$this->request->data['Orientstruct']['personne_id'] = $personne_id;
-						$this->request->data['Orientstruct']['valid_cg'] = true;
-						if( Configure::read( 'Cg.departement' ) != 66 ) {
-							$this->request->data['Orientstruct']['date_propo'] = date( 'Y-m-d' );
-							$this->request->data['Orientstruct']['date_valid'] = date( 'Y-m-d' );
-						}
-						$this->request->data['Orientstruct']['statut_orient'] = 'Orienté';
-
-						$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->request->data );
-						$saved = $this->Orientstruct->save( $this->request->data['Orientstruct'] ) && $saved;
-					}
-
-					if( /* Configure::read( 'Cg.departement' ) == 66 && */$saved && !empty( $this->request->data['Orientstruct']['referent_id'] ) ) {
-						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParModele( $this->request->data, 'Orientstruct', 'date_valid' ) && $saved;
-					}
-
-					if( $saved ) {
-						$this->Orientstruct->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $personne_id ) );
-					}
-					else {
-						$this->Orientstruct->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
+				$this->Orientstruct->begin();
+				if( $this->Orientstruct->saveAddEditFormData( $this->request->data, $user_id ) ) {
+					$this->Orientstruct->commit();
+					$this->Jetons2->release( Hash::get( $dossierMenu, 'Dossier.id' ) );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					$this->redirect( $redirectUrl );
 				}
 				else {
 					$this->Orientstruct->rollback();
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
+			// Remplissage du formulaire
 			else {
-				$qd_personne = array(
-					'conditions' => array(
-						'Personne.id' => $personne_id
-					),
-					'fields' => null,
-					'order' => null,
-					'contain' => array( 'Calculdroitrsa' )
-				);
-				$personne = $this->Personne->find( 'first', $qd_personne );
-
-				$this->request->data['Calculdroitrsa'] = $personne['Calculdroitrsa'];
+				$this->request->data = $originalAddEditFormData;
 			}
 
-			$this->_setOptions();
-			$this->set( 'personne_id', $personne_id );
-			$this->render( 'add_edit' );
+			// Options
+			$Option = ClassRegistry::init( 'Option' );
+			$options = array(
+				'Calculdroitrsa' => array(
+					'toppersdrodevorsa' => $Option->toppersdrodevorsa()
+				),
+				'Orientstruct' => array(
+					'typeorient_id' => $this->Orientstruct->Typeorient->listOptions(), // FIXME
+					//'typeorient_id' => $this->InsertionsAllocataires->typesorients( array( 'conditions' => array( 'Typeorient.actif' => 'O' ) ) ),
+					'structurereferente_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'conditions' => array( 'Structurereferente.orientation' => 'O', 'Structurereferente.actif' => 'O' ) ) ),
+					'referent_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
+					'statut_orient' => $Option->statut_orient(),
+					// Pour le 66
+					'structureorientante_id' => $this->InsertionsAllocataires->structuresreferentes( array( 'list' => true, 'conditions' => array( 'Structurereferente.orientation' => 'O' ) ) ),
+					'referentorientant_id' => $this->InsertionsAllocataires->referents( array( 'prefix' => true, 'conditions' => array( 'Referent.actif' => 'O' ) ) ),
+				)
+			);
+			$options = Hash::merge( $options, $this->Orientstruct->enums() );
+			$this->set( compact( 'options' ) );
+
+			// Rendu
+			$this->set( 'urlmenu', "/orientsstructs/index/{$personne_id}" );
+			$this->render( 'edit' );
 		}
 
 		/**
-		 * Formulaire de modification d'une orientation d'un allocataire.
+		 * Suppression d'une orientation et redirection vers l'index.
 		 *
-		 * @param integer $orientstruct_id
+		 * @param integer $id
 		 */
-		public function edit( $orientstruct_id = null ) {
-			$this->assert( valid_int( $orientstruct_id ), 'invalidParameter' );
-
-			$orientstruct = $this->Orientstruct->find(
-				'first',
-				array(
-					'conditions' => array(
-						'Orientstruct.id' => $orientstruct_id
-					),
-					'contain' => array(
-						'Personne' => array(
-							'Calculdroitrsa'
-						)
-					)
-				)
-			);
-			$this->assert( !empty( $orientstruct ), 'invalidParameter' );
-
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $orientstruct['Orientstruct']['personne_id'] ) ) );
-
-			// Retour à l'index si on essaie de modifier une autre orientation que la dernière
-			if( !empty( $orientstruct['Orientstruct']['date_valid'] ) && $orientstruct['Orientstruct']['statut_orient'] == 'Orienté' && $orientstruct['Orientstruct']['rgorient'] != $this->Orientstruct->rgorientMax( $orientstruct['Orientstruct']['personne_id'] ) ) {
-				$this->Session->setFlash( 'Impossible de modifier une autre orientation que la plus récente.', 'flash/error' );
-				$this->redirect( array( 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
-			}
-
-			$dossier_id = $this->Orientstruct->dossierId( $orientstruct_id );
-			$this->assert( !empty( $dossier_id ), 'invalidParameter' );
-
-			// Récupération du dossier afin de précharger la date de demande RSA
-			$qd_dossier = array(
-				'conditions' => array(
-					'Dossier.id' => $dossier_id
-				),
-				'fields' => null,
-				'order' => null,
-				'recursive' => -1
-			);
-			$dossier = $this->Orientstruct->Personne->Foyer->Dossier->find( 'first', $qd_dossier );
-
-			$this->set( compact( 'dossier' ) );
+		public function delete( $id ) {
+			$personne_id = $this->Orientstruct->personneId( $id );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
 
 			$this->Jetons2->get( $dossier_id );
 
-			// Retour à l'index en cas d'annulation
-			if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
+			$this->Orientstruct->begin();
+			if( $this->Orientstruct->delete( $id ) ) {
+				$this->Orientstruct->commit();
 				$this->Jetons2->release( $dossier_id );
-				$orientstruct_id = $this->Orientstruct->field( 'personne_id', array( 'id' => $orientstruct_id ) );
-				$this->redirect( array( 'action' => 'index', $orientstruct_id ) );
+				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
 			}
-
-			// Essai de sauvegarde
-			if( !empty( $this->request->data ) ) {
-				$this->Orientstruct->begin();
-
-				$this->request->data['Orientstruct']['user_id'] = $this->Session->read( 'Auth.User.id' );
-
-				// Correction: si la personne n'a pas encore d'entrée dans calculdroitsrsa
-				$this->request->data['Calculdroitrsa']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
-				$this->request->data['Orientstruct']['personne_id'] = $orientstruct['Orientstruct']['personne_id'];
-
-				$this->Orientstruct->set( $this->request->data );
-				$this->Orientstruct->Personne->Calculdroitrsa->set( $this->request->data );
-				$valid = $this->Orientstruct->Personne->Calculdroitrsa->validates();
-				$valid = $this->Orientstruct->validates() && $valid;
-
-				if( $valid ) {
-					$saved = true;
-					$saved = $this->Orientstruct->Personne->Calculdroitrsa->save( $this->request->data ) && $saved;
-					$saved = $this->Orientstruct->save( $this->request->data ) && $saved;
-
-					if( /* Configure::read( 'Cg.departement' ) == 66 && */ $saved && !empty( $this->request->data['Orientstruct']['referent_id'] ) ) {
-						$saved = $this->Orientstruct->Referent->PersonneReferent->referentParModele( $this->request->data, 'Orientstruct', 'date_valid' ) && $saved;
-					}
-
-					if( $saved ) {
-						$this->Orientstruct->commit();
-						$this->Jetons2->release( $dossier_id );
-						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
-						$this->redirect( array( 'controller' => 'orientsstructs', 'action' => 'index', $orientstruct['Orientstruct']['personne_id'] ) );
-					}
-					else {
-						$this->Orientstruct->rollback();
-						$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
-					}
-				}
-			}
-			// Afficage des données
 			else {
-				// Assignation au formulaire*
-				$this->request->data = Set::merge( array( 'Orientstruct' => $orientstruct['Orientstruct'] ), array( 'Calculdroitrsa' => $orientstruct['Personne']['Calculdroitrsa'] ) );
+				$this->Orientstruct->rollback();
+				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
 
-			$this->_setOptions();
-			$this->set( 'personne_id', $orientstruct['Orientstruct']['personne_id'] );
-			$this->set( 'urlmenu', '/orientsstructs/index/'.$orientstruct['Orientstruct']['personne_id'] );
-			$this->render( 'add_edit' );
+			$this->redirect( $this->referer() );
 		}
 
 		/**
-		 * Impression d'une orientation simple.
+		 * Impression d'une orientation.
 		 *
 		 * Méthode appelée depuis les vues:
 		 * 	- cohortes/orientees
 		 * 	- orientsstructs/index
 		 *
-		 * @param integer $id L'id de l'orientstruct que l'on souhaite imprimer.
-		 * @return void
+		 * @param integer $id La clé primaire de l'Orientstruct
 		 */
-		public function impression( $id = null ) {
-			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
+		public function impression( $id ) {
+			$personne_id = $this->Orientstruct->personneId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
-
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
+			if( in_array( Configure::read( 'Cg.departement' ), array( 66, 976 ) ) ) {
 				$pdf = $this->Orientstruct->getDefaultPdf( $id, $this->Session->read( 'Auth.User.id' ) );
 			}
 			else {
@@ -562,33 +637,7 @@
 		}
 
 		/**
-		 * Suppression d'orientation.
-		 *
-		 * @param integer $id
-		 */
-		public function delete( $id ) {
-			$dossier_id = $this->Orientstruct->dossierId( $id );
-			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) );
-
-			$this->Jetons2->get( $dossier_id );
-
-			$this->Orientstruct->begin();
-			if( $this->Orientstruct->delete( $id ) ) {
-				$this->Orientstruct->commit();
-				$this->Session->setFlash( 'Suppression effectuée', 'flash/success' );
-			}
-			else {
-				$this->Orientstruct->rollback();
-				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
-			}
-
-			$this->Jetons2->release( $dossier_id );
-
-			$this->redirect( $this->referer() );
-		}
-
-		/**
-		 * Impression d'une orientation simple.
+		 * Impression d'une orientation lors d'un changement de référent.
 		 *
 		 * Méthode appelée depuis les vues:
 		 * 	- cohortes/orientees
@@ -597,8 +646,9 @@
 		 * @param integer $id L'id de l'orientstruct que l'on souhaite imprimer.
 		 * @return void
 		 */
-		public function printChangementReferent( $id = null ) {
-			$this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Orientstruct->dossierId( $id ) ) );
+		public function impression_changement_referent( $id = null ) {
+			$personne_id = $this->Orientstruct->personneId( $id );
+			$this->DossiersMenus->checkDossierMenu( array( 'personne_id' => $personne_id ) );
 
 			$pdf = $this->Orientstruct->getChangementReferentOrientation( $id, $this->Session->read( 'Auth.User.id' ) );
 

@@ -48,6 +48,9 @@ SELECT add_missing_table_field('public', 'cuis', 'dateenvoirelance', 'DATE' );
 -- 20140922: ajout d'une nouvelle position au CER
 SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','annule','fincontrat','encoursbilan','attrenouv','perime','nonvalid','perimebilanarealiser','bilanrealiseattenteeplparcours'] );
 
+-- 20141006: une des actions du controller orientsstructs a changé de nom
+UPDATE acos SET alias = 'Orientsstructs:impression_changement_referent' WHERE alias = 'Orientsstructs:printChangementReferent';
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

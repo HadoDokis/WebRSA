@@ -1854,9 +1854,9 @@ body.cataloguespdisfps93 #CoordonneesPrestataire th{
 }
 
 /* Orientsstructs2 */
-body.index.orientsstructs2 td.action span.impression_changement_referent.disabled {
+body.index.orientsstructs td.action span.impression_changement_referent.disabled {
 	background-image: url("../img/icons/printer_disabled.png");
 }
-body.index.orientsstructs2 td.action a.impression_changement_referent {
+body.index.orientsstructs td.action a.impression_changement_referent {
 	background-image: url("../img/icons/printer.png");
 }
