@@ -26,6 +26,7 @@
 			'app.Adressefoyer',
 			'app.Dossier',
 			'app.Foyer',
+			'app.Nonoriente66',
 			'app.Orientstruct',
 			'app.Pdf', // FIXME: mock
 			'app.Personne',
