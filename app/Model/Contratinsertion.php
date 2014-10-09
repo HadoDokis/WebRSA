@@ -983,7 +983,7 @@
 				// 8. CER qui devraient être "Bilan réalisé - En attente de décision de l'EPL Parcours"
 				'bilanrealiseattenteeplparcours' => array(
 					$this->alias.'.decision_ci' => 'V',
-					$this->alias.'.df_ci < NOW()::DATE',
+					'( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE <= NOW()::DATE',
 					"{$conditionExistsBilanEnCoursEpLieAuCer}"
 				),
 				// 9. CER qui devraient être "Périme"
