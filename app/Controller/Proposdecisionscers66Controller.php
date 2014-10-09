@@ -130,7 +130,7 @@ class Proposdecisionscers66Controller extends AppController {
                 if ($saved) {
                     $dateDecision = date_cakephp_to_sql($this->request->data['Propodecisioncer66']['datevalidcer']);
                     $cumulduree = $this->Propodecisioncer66->Contratinsertion->limiteCumulDureeCER($personne_id);
-                    
+
                     if ($this->request->data['Propodecisioncer66']['decisionfinale'] == 'O') {
                         if ($this->request->data['Propodecisioncer66']['isvalidcer'] == 'O') {
                             $saved = $this->Propodecisioncer66->Contratinsertion->updateAllUnBound(
@@ -138,7 +138,7 @@ class Proposdecisionscers66Controller extends AppController {
                                     'Contratinsertion.decision_ci' => '\'V\'',
                                     'Contratinsertion.datevalidation_ci' => "'" . $dateDecision . "'",
                                     'Contratinsertion.datedecision' => "'" . $dateDecision . "'",
-                                    'Contratinsertion.positioncer' => '\'encours\'',
+                                    //'Contratinsertion.positioncer' => '\'encours\'',
                                     'Contratinsertion.cumulduree' => "'" . $cumulduree. "'"
                                 ),
                                 array(
@@ -152,7 +152,7 @@ class Proposdecisionscers66Controller extends AppController {
                                     'Contratinsertion.decision_ci' => '\'N\'',
                                     'Contratinsertion.datevalidation_ci' => null,
                                     'Contratinsertion.datedecision' => "'" . $dateDecision . "'",
-                                    'Contratinsertion.positioncer' => '\'nonvalid\'',
+                                    //'Contratinsertion.positioncer' => '\'nonvalid\'',
                                 ),
                                 array(
                                     'Contratinsertion.personne_id' => $personne_id,
@@ -160,6 +160,10 @@ class Proposdecisionscers66Controller extends AppController {
                                 )
                             ) && $saved;
                         }
+
+						$saved = $saved && $this->Propodecisioncer66->Contratinsertion->updatePositionsCersByConditions(
+							array( 'Contratinsertion.personne_id' => $personne_id )
+						);
                     }
                 }
 

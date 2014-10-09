@@ -14,6 +14,9 @@ BEGIN;
 -- 20140922: Suppression des entrées de la table orientsstructs qui ne sont pas "Orienté"
 DELETE FROM orientsstructs WHERE orientsstructs.statut_orient <> 'Orienté';
 
+-- 20141006: mise à jour des CER dont la position est annule mais qui n'ont pas de texte d'annulation
+UPDATE contratsinsertion SET motifannulation = '...' WHERE positioncer = 'annule' AND motifannulation IS NULL;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

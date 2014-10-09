@@ -593,6 +593,10 @@ class Dossierpcg66 extends AppModel {
                                     )
                             ) && $success;
                 }
+
+				if( !empty( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] ) ) {
+					$success = $success && $this->Contratinsertion->updatePositionsCersById( $dossierpcg66['Dossierpcg66']['contratinsertion_id'] );
+				}
             }
         }
 
@@ -770,7 +774,7 @@ class Dossierpcg66 extends AppModel {
             )
         );
 
-        // A l'enregistrement du traitement, 
+        // A l'enregistrement du traitement,
         //  le traitement est non clos
         //  le traitement n'est pas annulé
         //  le type de traitement est dossier à revoir
@@ -817,7 +821,7 @@ class Dossierpcg66 extends AppModel {
     /*
      *  Mise à jour de l'état du passage en comission EP du dossier EP pour
      * un défaut d'inssertion (issu d'une EP Audition)
-     * 
+     *
      * @param integer $decisiondefautinsertionep66_id
      * @return array
      */
@@ -912,7 +916,7 @@ class Dossierpcg66 extends AppModel {
 //            foreach( $orgsIds as $key => $value ) {
 //                if( in_array( $value, $organismesConcernes ) ){
 //                    $dossierPCGGenerable = true;
-//                    
+//
 //                    $poleOrg = $this->Decisiondossierpcg66->Decdospcg66Orgdospcg66->Orgtransmisdossierpcg66->find(
 //                        'first',
 //                        array(

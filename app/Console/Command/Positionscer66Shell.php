@@ -9,6 +9,7 @@
 	 */
 	App::uses( 'XShell', 'Console/Command' );
 	App::uses( 'Contratinsertion', 'Model' );
+	App::uses( 'File', 'Cake/Utility' );
 
 	/**
 	 * La classe Positionscer66Shell effectue la mise à jour de la position des CER qui en ont besoin :
@@ -30,19 +31,36 @@
 	{
 
 		/**
+		 * Modèles utilisés par ce Shell
 		 *
-		 * @var type
+		 * @var array
 		 */
 		public $uses = array( 'Contratinsertion' );
 
 		/**
+		 * Le modèle du contrat d'insertion
 		 *
-		 * @var type
+		 * @var AppModel
 		 */
 		public $Contratinsertion;
 
 		/**
+		 * Permet de garder la trace du nombre de CER au total ainsi que dans
+		 * chacune des positions.
 		 *
+		 * @var array
+		 */
+		public $counts = array( 'total' => null );
+
+		/**
+		 * Liste des différentes positions du CER
+		 *
+		 * @var array
+		 */
+		public $positionscer = array();
+
+		/**
+		 * Démarage du shell, vérification de l'environnement et des paramètres.
 		 */
 		public function startup() {
 			parent::startup();
@@ -51,277 +69,100 @@
 			$result = $this->Contratinsertion->checkConfigUpdateEncoursbilanCg66();
 			if( $result !== true ) {
 				$this->err( "Mauvaise configuration de Contratinsertion.Cg66.updateEncoursbilan dans le fichier webrsa.inc\n{$check}" );
-				$this->_stop( 0 );
+				$this->_stop( self::ERROR );
+			}
+
+			// Vérification des arguments
+			$valid = array_merge( array_keys( $this->Contratinsertion->enum( 'positioncer' ) ), array( 'all' ) );
+			$diff = array_diff( $this->args, $valid );
+			if( !empty( $diff ) ) {
+				$msgstr = 'Argument(s) non valide(s): %s';
+				$this->err( sprintf( $msgstr, implode( ', ', $diff ) ) );
+				$this->_stop( self::ERROR );
 			}
 		}
 
 		/**
+		 * Mise à jour et comptage des CER pour une position donnée.
 		 *
+		 * @param string $positioncer
+		 * @return boolean
 		 */
-		protected function _update( $fields, $conditions ) {
-			$sample = $this->Contratinsertion->find( 'first', array( 'conditions' => $conditions, 'contain' => false ) );
-			return (
-					empty( $sample )
-					|| $this->Contratinsertion->updateAllUnBound(
-							$fields, $conditions
-					)
-					);
+		public function updatePositionsCersByPosition( $positioncer ) {
+			$conditions = $this->Contratinsertion->getConditionsPositioncer( $positioncer );
+			$this->counts[$positioncer] = $this->Contratinsertion->find( 'count', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+
+			$msgstr = 'Mise à jour de la position "%s" pour %d contrats d\'engagement réciproque ( %.2f %% ).';
+			$this->out( sprintf( $msgstr, __d( 'contratinsertion', "ENUM::POSITIONCER::{$positioncer}" ), $this->counts[$positioncer], ( $this->counts[$positioncer] / max( $this->counts['total'], 1 ) ) * 100 ) );
+
+			return $this->Contratinsertion->updatePositionsCersByPosition( $positioncer );
 		}
 
 		/**
-		 * Le CER est périmé, sa date de fin est inférieure à la date du jour
-         * et un bilan de parcours est lié à ce CER
-		 */
-		protected function _updatePerime() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::perime" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
-
-			$conditions = array(
-				'Contratinsertion.df_ci < NOW()',
-				'OR' => array(
-// 					array(
-					'Contratinsertion.positioncer IS NULL',
-// 						'Contratinsertion.decision_ci' => 'V'
-// 					),
-					'Contratinsertion.positioncer' => array( 'encours', 'encoursbilan' ),
-                    'Contratinsertion.positioncer <>' => 'perimebilanarealiser'
-				),
-				'Contratinsertion.id IN (
-					'.$this->Contratinsertion->Bilanparcours66->sq(
-						array(
-							'fields' => array( 'bilansparcours66.contratinsertion_id' ),
-							'alias' => 'bilansparcours66',
-							'conditions' => array(
-								'bilansparcours66.contratinsertion_id = Contratinsertion.id',
-								'bilansparcours66.positionbilan <>' => 'annule'
-							)
-						)
-				).'
-				)'
-			);
-
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'perime'" ), $conditions );
-		}
-
-        /**
-		 * Le CER est périmé, sa date de fin est inférieure à la date du jour
-         * et aucun bilan de parcours n'est lié à ce CER
-		 */
-		protected function _updatePerimeBilanARealiser() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::perimebilanarealiser" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
-
-			$conditions = array(
-				'Contratinsertion.df_ci < NOW()',
-				'OR' => array(
-// 					array(
-					'Contratinsertion.positioncer IS NULL',
-// 						'Contratinsertion.decision_ci' => 'V'
-// 					),
-					'Contratinsertion.positioncer' => array( 'encours', 'encoursbilan' ),
-                    'Contratinsertion.positioncer <>' => 'perime'
-				),
-				'Contratinsertion.id NOT IN (
-					'.$this->Contratinsertion->Bilanparcours66->sq(
-						array(
-							'fields' => array( 'bilansparcours66.contratinsertion_id' ),
-							'alias' => 'bilansparcours66',
-							'conditions' => array(
-								'bilansparcours66.contratinsertion_id = Contratinsertion.id',
-								'bilansparcours66.positionbilan <>' => 'annule'
-							)
-						)
-				).'
-				)'
-			);
-
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'perimebilanarealiser'" ), $conditions );
-		}
-
-		/**
+		 * Retourne les conditions permettant de retrouver les CER dont la position
+		 * ne peut pas être calculée.
 		 *
+		 * @return array
 		 */
-		protected function _updateEncoursbilan() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::encoursbilan" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
+		public function getUndetectedRecords() {
+			// Obtention des condtions
+			$conditions = array();
+			foreach( array_keys( $this->Contratinsertion->enum( 'positioncer' ) ) as $positioncer ) {
+				$conditionsPosition = $this->Contratinsertion->getConditionsPositioncer( $positioncer );
+				$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
+			}
 
-			$conditions = array(
-				'Contratinsertion.df_ci >= NOW()',
-				'Contratinsertion.df_ci <= ( NOW() + interval \''.Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' ).'\' )',
-				'OR' => array(
-					array(
-						'Contratinsertion.positioncer IS NULL',
-						'Contratinsertion.decision_ci' => 'V'
-					),
-					'Contratinsertion.positioncer' => 'encours'
-				)
+			// Indication du nombre
+			$count = $this->Contratinsertion->find( 'count', array( 'conditions' => $conditions, 'recursive' => -1 ) );
+			$msgstr = '%d contrats d\'engagement réciproque dont la position ne peut pas être calculée ( %.2f %% )';
+			$this->out( sprintf( $msgstr, $count, ( $count / $this->counts['total'] ) * 100 ) );
+
+			// Génération de la requête SQL permettant de les trouver
+			$query = array(
+				'fields' => array( 'Contratinsertion.id' ),
+				'conditions' => $conditions,
+				'contain' => false
 			);
+			$sql = $this->Contratinsertion->sq( $query );
+			$sql = str_replace( '"Contratinsertion"."id" AS "Contratinsertion__id"', '*', $sql );
 
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'encoursbilan'" ), $conditions );
+			// Sauvegarde de la requête SQL dans le fichier
+			$filename = LOGS.$this->name.'_non_mises_a_jour_'.date( 'Ymd-His' ).'.sql';
+			$File = new File( $filename, true );
+			$File->write( $sql );
+			$File->close();
+
+			$msgstr = "<info>La requête SQL des non calculables se trouve dans</info> %s";
+			$this->out( sprintf( $msgstr, $this->shortPath( $File->pwd() ) ) );
 		}
 
 		/**
-		 *
-		 */
-		protected function _updateRadiationsCaf() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::fincontrat" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
-
-			$conditions = array(
-				'Contratinsertion.personne_id IN (
-					'.$this->Contratinsertion->Personne->sq(
-						array(
-							'fields' => array( 'personnes.id' ),
-							'alias' => 'personnes',
-							'conditions' => array(
-								'personnes.id = Contratinsertion.personne_id',
-								'situationsdossiersrsa.etatdosrsa' => array( '5', '6' )
-							),
-							'joins' => array(
-								array(
-									'table' => 'foyers',
-									'alias' => 'foyers',
-									'type' => 'INNER',
-									'foreignKey' => false,
-									'conditions' => array( 'foyers.id = personnes.foyer_id' )
-								),
-								array(
-									'table' => 'dossiers',
-									'alias' => 'dossiers',
-									'type' => 'INNER',
-									'foreignKey' => false,
-									'conditions' => array( 'dossiers.id = foyers.dossier_id' )
-								),
-								array(
-									'table' => 'situationsdossiersrsa',
-									'alias' => 'situationsdossiersrsa',
-									'type' => 'INNER',
-									'foreignKey' => false,
-									'conditions' => array( 'dossiers.id = situationsdossiersrsa.dossier_id' )
-								),
-							)
-						)
-				).'
-				)',
-				'OR' => array(
-					'Contratinsertion.positioncer IS NULL',
-					'Contratinsertion.positioncer' => array( 'encours', 'attvalid', 'encoursbilan', 'attrenouv' )
-				)
-			);
-
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'fincontrat'" ), $conditions );
-		}
-
-		/**
-		 *
-		 */
-		protected function _updateRangsContrats() {
-			$this->_wait( 'Mise à jour des rangs des contrats d\'engagement réciproque.' );
-
-			return $this->Contratinsertion->updateRangsContrats();
-		}
-
-		/**
-		 *
-		 */
-		protected function _updateAttvalid() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::attvalid" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
-
-			$conditions = array(
-				'Contratinsertion.df_ci >= NOW()',
-// 				'Contratinsertion.forme_ci' => 'C',
-				'Contratinsertion.decision_ci' => 'E'
-			);
-
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'attvalid'" ), $conditions );
-		}
-
-		/**
-		 * Recherche des CER dont la date de fin n'est pas encore passée, dont la
-		 * positioncer est NULL, validé et qui sont les derniers CER de chaque
-		 * allocataire.
-		 */
-		protected function _updateEncours() {
-			$this->_wait( 'Mise à jour de la position "'.__d( 'contratinsertion', "ENUM::POSITIONCER::encours" ).'" pour les contrats d\'engagement réciproque le nécessitant.' );
-
-			$conditions = array(
-				'Contratinsertion.df_ci >= NOW()',
-				'Contratinsertion.positioncer IS NULL',
-				'Contratinsertion.decision_ci' => 'V',
-				'Contratinsertion.id IN ( '.$this->Contratinsertion->sq(
-						array(
-							'alias' => 'contratsinsertions',
-							'fields' => array(
-								'contratsinsertions.id'
-							),
-							'contain' => false,
-							'conditions' => array(
-								'contratsinsertions.df_ci >= NOW()',
-								'contratsinsertions.positioncer IS NULL',
-								'contratsinsertions.decision_ci' => 'V',
-								'contratsinsertions.personne_id = Contratinsertion.personne_id'
-							),
-							'order' => array(
-								'contratsinsertions.created DESC',
-								'contratsinsertions.personne_id ASC'
-							)
-						)
-				).' )'
-			);
-
-			return $this->_update( array( 'Contratinsertion.positioncer' => "'encours'" ), $conditions );
-		}
-
-		/**
-		 * Mise à jour des valeurs (dans cet ordre-là):
-		 * 	"fincontrat" (radiations CAF)
-		 * 	"perime"
-		 * 	"encoursbilan"
-		 * 	"encours"
-		 * Résultats ( cg66_20110706_eps ):
-		 * 	Original:
-		 * 		encours			1259
-		 * 		attvalid		40
-		 * 		annule			19
-		 * 		NULL			6259
-		 * 	Final:
-		 * 		encours			3103
-		 * 		attvalid		28
-		 * 		annule			19
-		 * 		fincontrat		524
-		 * 		encoursbilan	850
-		 * 		perime			3032
-		 * 		NULL			21
+		 * Méthode principale.
 		 */
 		public function main() {
-			$success = true;
+			// Début de la transaction
 			$this->Contratinsertion->begin();
+			$success = true;
 
-			if( count( $this->args ) != 0 ) {
-				if( in_array( 'attvalid', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updateAttvalid() && $success;
+			$this->counts['total'] = $this->Contratinsertion->find( 'count', array( 'contain' => false ) );
+			$this->out();
+			$this->out( sprintf( "%d contrats d'engagement réciproque au total", $this->counts['total'] ) );
+			$this->out();
+			$this->hr();
+			$this->out();
+
+			foreach( $this->args as $arg ) {
+				if( $arg === 'all' ) {
+					foreach( array_keys( $this->Contratinsertion->enum( 'positioncer' ) ) as $positioncer ) {
+						$success = $success && $this->updatePositionsCersByPosition( $positioncer );
+					}
 				}
-				if( in_array( 'fincontrat', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updateRadiationsCaf() && $success;
-				}
-                if( in_array( 'perimebilanarealiser', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updatePerimeBilanARealiser() && $success;
-				}
-				if( in_array( 'perime', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updatePerime() && $success;
-				}
-				if( in_array( 'encoursbilan', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updateEncoursbilan() && $success;
-				}
-				if( in_array( 'encours', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updateEncours() && $success;
-				}
-				if( in_array( 'majrangs', $this->args ) || in_array( 'all', $this->args ) ) {
-					$success = $this->_updateRangsContrats() && $success;
+				else {
+					$success = $success && $this->updatePositionsCersByPosition( $arg );
 				}
 			}
-			else {
-				$this->out( $this->OptionParser->help() );
-				$this->_stop( 0 );
-			}
 
-
+			// Fin de la transaction
 			if( $success ) {
 				$this->Contratinsertion->commit();
 				$msg = "<success>La mise à jour des positions du CER a été effectuée avec succès.</success>";
@@ -330,44 +171,62 @@
 				$this->Contratinsertion->rollback();
 				$msg = "<error>Erreur lors de la mise à jour des positions du CER.</error>";
 			}
+
+			$this->out();
+			$this->hr();
 			$this->out( $msg );
+
+			// Résumé des opérations
+			if( $success ) {
+				$this->hr();
+				$this->out();
+
+				$counts = $this->counts;
+				$total = max( $counts['total'], 1 );
+				unset( $counts['total'] );
+				$sum = array_sum( $counts );
+
+				$msgstr = "%-60s\t%d\t%.2f %%";
+
+				foreach( $this->counts as $positioncer => $number ) {
+					if( $positioncer !== 'total' ) {
+						$this->out( sprintf( $msgstr, __d( 'contratinsertion', "ENUM::POSITIONCER::{$positioncer}" ), $number, ( $number / $total ) * 100 ) );
+					}
+				}
+
+				$this->out( sprintf( $msgstr, 'Total des CER dont la position a été mise à jour', $sum, ( $sum / $total ) * 100 ) );
+
+				$this->out();
+				$this->getUndetectedRecords();
+			}
+
+			$this->out();
+			$this->_stop( $success ? self::SUCCESS : self::ERROR );
 		}
 
 		/**
+		 * Paramétrages et aides du shell.
 		 *
-		 * @return type
+		 * @return ConsoleOptionParser
 		 */
 		public function getOptionParser() {
-			$parser = parent::getOptionParser();
-			$parser->description( 'Effectue la mise à jour de la position des CER qui en ont besoin ' );
+			$Parser = parent::getOptionParser();
+			$Parser->description( 'Effectue la mise à jour de la position des CER.' );
+
 			$arguments = array(
 				'all' => array(
-					'help' => 'Effectue toutes les actions'
-				),
-				'fincontrat' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'Fin de contrat\''
-				),
-                'perimebilanarealiser' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'Contrat Périmé, Bilan à réaliser\''
-				),
-				'perime' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'Contrat Périmé\''
-				),
-				'encoursbilan' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'En cours: Bilan à réaliser\''
-				),
-				'attvalid' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'En attente de validation\''
-				),
-				'encours' => array(
-					'help' => 'Met à jour les CER dont la position devrait être \'En cours\''
-				),
-				'majrangs' => array(
-					'help' => 'Met à jour les rangs des CERs'
+					'help' => 'Effectue la mise à jour vers toutes les positions'
 				)
 			);
-			$parser->addArguments( $arguments );
-			return $parser;
+
+			foreach( array_keys( $this->Contratinsertion->enum( 'positioncer' ) ) as $positioncer ) {
+				$arguments[$positioncer] = array(
+					'help' => sprintf( 'Met à jour les CER dont la position devrait être \'%s\'.', __d( 'contratinsertion', "ENUM::POSITIONCER::{$positioncer}" ) )
+				);
+			}
+
+			$Parser->addSubcommands( $arguments );
+			return $Parser;
 		}
 
 	}

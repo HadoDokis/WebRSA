@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Propodecisioncer66.
 	 *
@@ -25,7 +25,7 @@
 			'Formattable',
             'Pgsqlcake.PgsqlAutovalidate'
 		);
-		
+
 		public $validate = array(
 			'isvalidcer' => array(
 				'notEmpty' => array(
@@ -46,7 +46,7 @@
 				),
 			),
 		);
-		
+
 		public $belongsTo = array(
 			'Contratinsertion' => array(
 				'className' => 'Contratinsertion',
@@ -56,7 +56,7 @@
 				'order' => ''
 			)
 		);
-		
+
 		public $hasAndBelongsToMany = array(
 			'Motifcernonvalid66' => array(
 				'className' => 'Motifcernonvalid66',
@@ -75,14 +75,14 @@
 				'with' => 'Motifcernonvalid66Propodecisioncer66'
 			)
 		);
-		
-		
+
+
 		/**
 		 * BeforeSave
 		 */
 		public function beforeSave( $options = array( ) ) {
 			$return = parent::beforeSave( $options );
-		
+
 			//  MAJ de la position du cER
 			if( !empty( $this->data ) ) {
 
@@ -97,7 +97,9 @@
 						'recursive' => -1
 					)
 				);
-				
+
+				$return = $return && $this->Contratinsertion->updatePositionsCersById( $contratinsertion_id );
+
 // 				if( $contratinsertion['Contratinsertion']['positioncer'] == 'attvalidpart' ) {
 // 					$this->Contratinsertion->updateAllUnBound(
 // 						array( 'Contratinsertion.positioncer' => '\'attvalidpartpropopcg\'' ),
@@ -109,7 +111,7 @@
 			}
 			return $return;
 		}
-		
+
 		/**
 		* Sauvegarde des décisions du CER dans la table proposdecisionscers66
 		*

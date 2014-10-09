@@ -574,10 +574,13 @@
 					if( empty( $primaryKey ) ) {
 						$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
 						if( !empty( $vxContratinsertion ) ) {
-							$success = $success && $this->Contratinsertion->updateAllUnBound(
+							$success = $success && $this->Contratinsertion->updatePositionsCersByConditions(
+								array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->alias}.personne_id" ) )
+							);
+							/*$success = $success && $this->Contratinsertion->updateAllUnBound(
 								array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
 								array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
-							);
+							);*/
 						}
 					}
 				}
@@ -731,6 +734,9 @@
 							if( $success ) {
 								$success = $this->Contratinsertion->updateRangsContratsPersonne( $contratinsertion['Contratinsertion']['personne_id'] ) && $success;
 							}
+							$success = $success && $this->Contratinsertion->updatePositionsCersByConditions(
+								array( 'Contratinsertion.personne_id' => $contratinsertion['Contratinsertion']['personne_id'] )
+							);
 
                             $data[$this->alias]['contratinsertion_id'] = $vxContratinsertion['Contratinsertion']['id'];
                             $data[$this->alias]['nvcontratinsertion_id'] = $this->Contratinsertion->id;
@@ -863,7 +869,7 @@ $success = false;
 						if( empty( $primaryKey ) ) {
 							$vxContratinsertion = $this->_getDernierContratinsertion( Hash::get( $data, "{$this->alias}.personne_id" ) );
 							if( !empty( $vxContratinsertion ) ) {
-								$updatePositionCer = (
+								/*$updatePositionCer = (
 									( Hash::get( $data, 'Bilanparcours66.proposition' ) == 'parcours' )
 									&& ( Hash::get( $data, 'Bilanparcours66.choixparcours' ) == 'maintien' )
 									&& in_array( Hash::get( $data, 'Bilanparcours66.avecep_typeorientprincipale_id' ), (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) )
@@ -874,7 +880,10 @@ $success = false;
 										array( 'Contratinsertion.positioncer' => "'bilanrealiseattenteeplparcours'" ),
 										array( 'Contratinsertion.id' => Hash::get( $vxContratinsertion, 'Contratinsertion.id' ) )
 									);
-								}
+								}*/
+								$success = $success && $this->Contratinsertion->updatePositionsCersByConditions(
+									array( 'Contratinsertion.personne_id' => Hash::get( $data, "{$this->alias}.personne_id" ) )
+								);
 							}
 						}
 					}
