@@ -670,9 +670,9 @@
 			}
 
 			//  Calcul de la position du cER
-			if( Configure::read( 'Cg.departement' ) == '66' && ( $this->data['Contratinsertion']['positioncer'] != 'annule' ) ) {
+			/*if( Configure::read( 'Cg.departement' ) == '66' && ( $this->data['Contratinsertion']['positioncer'] != 'annule' ) ) {
 				$this->data[$this->alias]['positioncer'] = $this->calculPosition( $this->data );
-			}
+			}*/
 
 			return $return;
 		}
@@ -710,6 +710,8 @@
 			$return = $this->query( "UPDATE apres SET eligibiliteapre = 'N' WHERE apres.personne_id = ".$this->data[$this->name]['personne_id']." AND apres.etatdossierapre = 'INC';" ) && $return;
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$return = $return && $this->updatePositionsCersById( $this->{$this->primaryKey} );
+
 				$return = $this->_liaisonDossierpcg66( $created ) && $return;
 			}
 
@@ -815,13 +817,339 @@
 			return $success; // FIXME: à traiter
 		}
 
+		// ---------------------------------------------------------------------
+
+		/**
+		 * Retourne les positions et les conditions CakePHP/SQL dans l'ordre dans
+		 * lequel elles doivent être traitées pour récupérer la position actuelle.
+		 *
+		 * @return array
+		 */
+		protected function _getConditionsPositionsCers() {
+			$intervalBilan = Configure::read( 'Contratinsertion.Cg66.updateEncoursbilan' );
+
+			$conditionExistsCerPlusRecent = 'EXISTS (
+				SELECT *
+					FROM contratsinsertion AS nvcontratsinsertion
+					WHERE
+						nvcontratsinsertion.personne_id = '.$this->alias.'.personne_id
+						AND (
+							nvcontratsinsertion.dd_ci > '.$this->alias.'.dd_ci
+							OR (
+								nvcontratsinsertion.dd_ci = '.$this->alias.'.dd_ci
+								AND nvcontratsinsertion.id <> '.$this->alias.'.id
+							)
+						)
+						AND nvcontratsinsertion.positioncer NOT IN ( \'annule\', \'nonvalid\' )
+			)';
+
+			// Seuls certains bilans de parcours sont concernés par un CER
+			// Un CER ne concerne qu'un seul bilan de parcours
+			$conditionExistsBilanLieAuCer = 'EXISTS (
+				SELECT *
+					FROM bilansparcours66
+					WHERE
+						bilansparcours66.personne_id = '.$this->alias.'.personne_id
+						AND bilansparcours66.positionbilan <> \'annule\'
+						AND bilansparcours66.proposition NOT IN ( \'audition\' )
+						AND bilansparcours66.datebilan >= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						AND NOT EXISTS(
+							SELECT *
+								FROM contratsinsertion AS nvcontratsinsertion
+								WHERE
+									nvcontratsinsertion.personne_id = "'.$this->alias.'"."personne_id"
+									AND (
+										nvcontratsinsertion.dd_ci > '.$this->alias.'.dd_ci
+										OR (
+											nvcontratsinsertion.dd_ci = '.$this->alias.'.dd_ci
+											AND nvcontratsinsertion.id <> '.$this->alias.'.id
+										)
+									)
+									AND nvcontratsinsertion.positioncer NOT IN ( \'annule\', \'nonvalid\' )
+									AND bilansparcours66.datebilan >= ( nvcontratsinsertion.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						)
+			)';
+
+			// TODO: factoriser avec celle ci-dessus
+			// Seuls certains bilans de parcours sont concernés par un CER
+			// Un CER ne concerne qu'un seul bilan de parcours
+			$conditionExistsBilanEnCoursEpLieAuCer = 'EXISTS (
+				SELECT *
+					FROM bilansparcours66
+					WHERE
+						bilansparcours66.personne_id = '.$this->alias.'.personne_id
+						AND bilansparcours66.positionbilan <> \'annule\'
+						AND bilansparcours66.proposition NOT IN ( \'audition\' )
+						AND bilansparcours66.datebilan >= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						AND NOT EXISTS(
+							SELECT *
+								FROM contratsinsertion AS nvcontratsinsertion
+								WHERE
+									nvcontratsinsertion.personne_id = "'.$this->alias.'"."personne_id"
+									AND (
+										nvcontratsinsertion.dd_ci > '.$this->alias.'.dd_ci
+										OR (
+											nvcontratsinsertion.dd_ci = '.$this->alias.'.dd_ci
+											AND nvcontratsinsertion.id <> '.$this->alias.'.id
+										)
+									)
+									AND nvcontratsinsertion.positioncer NOT IN ( \'annule\', \'nonvalid\' )
+									AND bilansparcours66.datebilan >= ( nvcontratsinsertion.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						)
+						AND EXISTS(
+							SELECT *
+								FROM saisinesbilansparcourseps66
+									INNER JOIN dossierseps ON ( saisinesbilansparcourseps66.dossierep_id = dossierseps.id )
+								WHERE
+									saisinesbilansparcourseps66.bilanparcours66_id = bilansparcours66.id
+									AND NOT EXISTS(
+										SELECT *
+											FROM passagescommissionseps
+											WHERE
+												passagescommissionseps.dossierep_id = dossierseps.id
+												AND passagescommissionseps.etatdossierep IN ( \'annule\', \'reporte\' )
+
+									)
+						)
+			)';
+
+			$conditionsExistsReorientation = 'EXISTS(
+				SELECT *
+					FROM orientsstructs AS orientsstructspcd
+						INNER JOIN typesorients AS typesorientspcd ON ( orientsstructspcd.typeorient_id = typesorientspcd.id ),
+						orientsstructs AS orientsstructssvt
+						INNER JOIN typesorients AS typesorientssvt ON ( orientsstructssvt.typeorient_id = typesorientssvt.id )
+					WHERE
+						orientsstructspcd.statut_orient = \'Orienté\'
+						AND orientsstructspcd.personne_id = '.$this->alias.'.personne_id
+						AND orientsstructssvt.statut_orient = \'Orienté\'
+						AND orientsstructssvt.personne_id = '.$this->alias.'.personne_id
+						AND orientsstructspcd.date_valid < ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						AND orientsstructssvt.date_valid >= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
+						AND typesorientspcd.parentid <> typesorientssvt.parentid
+			)';
+
+			$return = array(
+				// 1. CER qui devraient être "Annulé"
+				'annule' => array(
+					'OR' => array(
+						$this->alias.'.positioncer' => 'annule',
+						$this->alias.'.motifannulation IS NOT NULL'
+					)
+				),
+				// 2. CER qui devraient être "Non validés"
+				'nonvalid' => array(
+					'OR' => array(
+						$this->alias.'.positioncer' => 'nonvalid',
+						$this->alias.'.decision_ci' => 'N'
+					)
+				),
+				// 3. CER qui devraient être en "Fin de contrat"
+				'fincontrat' => array(
+					$this->alias.'.decision_ci' => 'V',
+					'EXISTS (
+						SELECT *
+							FROM personnes
+								INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+								INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+								INNER JOIN situationsdossiersrsa ON ( dossiers.id = situationsdossiersrsa.dossier_id )
+							WHERE
+								personnes.id = '.$this->alias.'.personne_id
+								AND situationsdossiersrsa.etatdosrsa IN ( \'5\', \'6\' )
+					)'
+				),
+				// 4. CER qui devraient être "En attente de validation"
+				'attvalid' => array(
+					$this->alias.'.decision_ci' => 'E',
+					$this->alias.'.df_ci >= NOW()::DATE'
+				),
+				// 5. CER qui devraient être "en cours: bilan à réaliser"
+				'encoursbilan' => array(
+					$this->alias.'.decision_ci' => 'V',
+					'NOW()::DATE BETWEEN ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE AND '.$this->alias.'.df_ci',
+					"NOT {$conditionExistsBilanLieAuCer}",
+				),
+				// 6. CER qui devraient être "périmé: bilan à réaliser"
+				'perimebilanarealiser' => array(
+					$this->alias.'.decision_ci' => 'V',
+					$this->alias.'.df_ci < NOW()::DATE',
+					"NOT {$conditionExistsBilanLieAuCer}",
+				),
+				// 7. CER qui devraient être "En cours"
+				'encours' => array(
+					$this->alias.'.decision_ci' => 'V',
+					'NOW()::DATE <= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE',
+				),
+				// 8. CER qui devraient être "Bilan réalisé - En attente de décision de l'EPL Parcours"
+				'bilanrealiseattenteeplparcours' => array(
+					$this->alias.'.decision_ci' => 'V',
+					$this->alias.'.df_ci < NOW()::DATE',
+					"{$conditionExistsBilanEnCoursEpLieAuCer}"
+				),
+				// 9. CER qui devraient être "Périme"
+				'perime' => array(
+					$this->alias.'.decision_ci' => 'V',
+					$this->alias.'.df_ci < NOW()::DATE',
+					'OR' => array(
+						array(
+							$conditionExistsBilanLieAuCer,
+							$conditionExistsCerPlusRecent
+						),
+						array(
+							$conditionExistsBilanLieAuCer,
+							$conditionsExistsReorientation
+						)
+					)
+				),
+				// 10. CER qui devraient être "En attente de renouvellement"
+				'attrenouv' => array(
+					$this->alias.'.decision_ci' => 'V',
+					$this->alias.'.df_ci < NOW()::DATE',
+					'OR' => array(
+						array(
+							$conditionExistsBilanLieAuCer,
+							"NOT {$conditionExistsCerPlusRecent}"
+						),
+						array(
+							$conditionExistsBilanLieAuCer,
+							"NOT {$conditionsExistsReorientation}"
+						)
+					)
+				),
+			);
+
+			return $return;
+		}
+
+		/**
+		 * Retourne les conditions permettant de cibler les CER qui devraient être
+		 * dans une certaine position.
+		 *
+		 * @param string $positioncer
+		 * @return array
+		 */
+		public function getConditionsPositioncer( $positioncer ) {
+			$conditions = array();
+			$found = false;
+
+			foreach( $this->_getConditionsPositionsCers() as $keyPosition => $conditionsPosition ) {
+				if( !$found ) {
+					if( $keyPosition != $positioncer ) {
+						$conditions[] = array( 'NOT' => array( $conditionsPosition ) );
+					}
+					else {
+						$conditions[] = array( $conditionsPosition );
+						$found = true;
+					}
+				}
+			}
+
+			return $conditions;
+		}
+
+		/**
+		 * Retourne une CASE (PostgreSQL) pemettant de connaître la position que
+		 * devrait avoir un CER (au CG 66).
+		 *
+		 * A utiliser par exemple en tant que chmap virtuel, à partir du moment
+		 * où le modèle Contratinsertion (ou un alias) est présent dans la requête
+		 * de base.
+		 *
+		 * @return string
+		 */
+		public function getCasePositionCer() {
+			$return = '';
+			$Dbo = $this->getDataSource();
+
+			foreach( array_keys( $this->enum( 'positioncer' ) ) as $positioncer ) {
+				$conditions = $this->getConditionsPositioncer( $positioncer );
+				$conditions = $Dbo->conditions( $conditions, true, false, $this );
+				$return .= "WHEN {$conditions} THEN '{$positioncer}' ";
+			}
+
+			$return = "( CASE {$return} ELSE NULL END )";
+
+			return $return;
+		}
+
+		/**
+		 * Mise à jour des positions des CER suivant des conditions données.
+		 *
+		 * @param array $conditions
+		 * @return boolean
+		 */
+		public function updatePositionsCersByConditions( array $conditions ) {
+			$query = array( 'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 'conditions' => $conditions, 'contain' => false );
+			$sample = $this->find( 'first', $query );
+
+			return (
+				empty( $sample )
+				|| $this->updateAllUnBound(
+					array( "{$this->alias}.positioncer" => $this->getCasePositionCer().'::type_positioncer' ),
+					$conditions
+				)
+			);
+		}
+
+		/**
+		 * Mise à jour des positions des CER qui devraient se trouver dans une
+		 * position donnée.
+		 *
+		 * @param integer $personne_id
+		 * @return boolean
+		 */
+		public function updatePositionsCersByPosition( $positioncer ) {
+			$conditions = $this->getConditionsPositioncer( $positioncer );
+
+			$query = array( 'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 'conditions' => $conditions, 'contain' => false );
+			$sample = $this->find( 'first', $query );
+
+			return (
+				empty( $sample )
+				|| $this->updateAllUnBound(
+					array( "{$this->alias}.positioncer" => "'{$positioncer}'" ),
+					$conditions
+				)
+			);
+		}
+
+		/**
+		 * Permet de mettre à jour les positions des CER d'un allocataire retrouvé
+		 * grâce à la clé primaire d'un CER en particulier.
+		 *
+		 * @param integer $id La clé primaire d'un CER.
+		 * @return boolean
+		 */
+		public function updatePositionsCersById( $id ) {
+			$return = true;
+
+			$query = array(
+				'fields' => array( "{$this->alias}.personne_id" ),
+				'contain' => false,
+				'conditions' => array(
+					 "{$this->alias}.{$this->primaryKey}" => $id
+				)
+			);
+			$record = $this->find( 'first', $query );
+
+			if( !empty( $record ) ) {
+				$return = $this->updatePositionsCersByConditions(
+					array( "{$this->alias}.personne_id" => Hash::get( $record, "{$this->alias}.personne_id" ) )
+				);
+			}
+
+			return $return;
+		}
+
 		/**
 		 * Calcul de la position du CER (CG 66).
+		 *
+		 * @deprecated
 		 *
 		 * @param array $data
 		 * @return string
 		 */
-		public function calculPosition( $data ) {
+		/*public function calculPosition( $data ) {
 			$formeCi = Set::classicExtract( $data, 'Contratinsertion.forme_ci' );
 			$sitproCi = Set::classicExtract( $data, 'Contratinsertion.sitpro_ci' );
 			$decision_ci = Set::classicExtract( $data, 'Contratinsertion.decision_ci' );
@@ -855,7 +1183,7 @@
 			$positioncerPrecedent = Set::classicExtract( $dernierContrat, 'Contratinsertion.positioncer' );
 
 			//FIXME: la position a périmé ne devrait aps figurer ici
-			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid',/* 'attvalidpart', 'attvalidsimple',*/ 'perime' ) ) ) && !empty( $decision_ci ) ) {
+			if( ( is_null( $positioncer ) || in_array( $positioncer, array( 'attvalid', 'perime' ) ) ) && !empty( $decision_ci ) ) {
 
 				if( $decision_ci == 'V' ) {
 // 					if( empty( $datenotif ) ) {
@@ -886,7 +1214,7 @@
 			}
 
 			return $positioncer;
-		}
+		}*/
 
 		/**
 		 *   Liste des anciennes demandes d'ouverture de droit pour un allocataire.

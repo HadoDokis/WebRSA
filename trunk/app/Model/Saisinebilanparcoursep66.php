@@ -270,10 +270,11 @@
 
 					$contratinsertion_id = Hash::get( $contratinsertion, 'Contratinsertion.id' );
 					if( !empty( $contratinsertion_id ) ) {
-						$success = $success && $this->Bilanparcours66->Contratinsertion->updateAllUnBound(
+						$success = $success && $this->Bilanparcours66->Contratinsertion->updatePositionsCersById( $contratinsertion_id );
+						/*$success = $success && $this->Bilanparcours66->Contratinsertion->updateAllUnBound(
 							array( 'Contratinsertion.positioncer' => "'attrenouv'" ),
 							array( 'Contratinsertion.id' => $contratinsertion_id )
-						);
+						);*/
 					}
 				}
 

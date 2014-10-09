@@ -1507,16 +1507,29 @@ class ContratsinsertionController extends AppController {
             $this->redirect(array('action' => 'index', $personne_id));
         }
 
+		// Dans ce contexte-ci, la raison de l'annulation est obligatoire
+		$this->Contratinsertion->validate['motifannulation']['notEmpty'] = array(
+			'rule' => array( 'notEmpty' ),
+			'message' => 'Champ obligatoire'
+		);
+
         if (!empty($this->request->data)) {
             $this->Contratinsertion->begin();
 
+			$this->request->data['Contratinsertion']['positioncer'] = 'annule';
+
             $saved = $this->Contratinsertion->save($this->request->data);
-            $saved = $this->{$this->modelClass}->updateAllUnBound(
+
+			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+				array( 'Contratinsertion.personne_id' => $contrat['Contratinsertion']['personne_id'] )
+			);
+
+            /*$saved = $this->{$this->modelClass}->updateAllUnBound(
                             array('Contratinsertion.positioncer' => '\'annule\''), array(
                         '"Contratinsertion"."personne_id"' => $contrat['Contratinsertion']['personne_id'],
                         '"Contratinsertion"."id"' => $contrat['Contratinsertion']['id']
                             )
-                    ) && $saved;
+                    ) && $saved;*/
 
             if ($saved) {
                 $this->Contratinsertion->commit();
@@ -1525,7 +1538,7 @@ class ContratsinsertionController extends AppController {
                 $this->redirect(array('action' => 'index', $personne_id));
             } else {
                 $this->Contratinsertion->rollback();
-                $this->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/erreur');
+                $this->Session->setFlash('Erreur lors de l\'enregistrement.', 'flash/error');
             }
         } else {
             $this->request->data = $contrat;
@@ -1664,7 +1677,11 @@ class ContratsinsertionController extends AppController {
                     )
             );
 
-            if ($saved) {
+			$saved = $saved && $this->Contratinsertion->updatePositionsCersByConditions(
+				array( 'Contratinsertion.personne_id' => $personne_id )
+			);
+
+            /*if ($saved) {
                 $this->request->data['Contratinsertion']['decision_ci'] = $contratinsertion['Contratinsertion']['decision_ci'];
                 $this->request->data['Contratinsertion']['positioncer'] = $this->Contratinsertion->calculPosition($this->request->data);
 
@@ -1674,7 +1691,7 @@ class ContratsinsertionController extends AppController {
                     '"Contratinsertion"."id"' => $id
                         )
                 );
-            }
+            }*/
 
             if ($saved) {
                 $this->Contratinsertion->commit();
