@@ -35,23 +35,11 @@
 			'index' => 'read',
 			'tableau1b3' => 'read',
 			'tableau1b4' => 'read',
-			'tableau1b4new' => 'read',
 			'tableau1b5' => 'read',
-			'tableau1b5new' => 'read',
 			'tableau1b6' => 'read',
 			'tableaud1' => 'read',
 			'tableaud2' => 'read',
 			'view' => 'read',
-		);
-
-		/**
-		 * Pour les tests des nouveaux tableaux, on donne les mêmes droits que pour les anciens
-		 *
-		 * @var array
-		 */
-		public $commeDroit = array(
-			'tableau1b4new' => 'Tableauxsuivispdvs93:tableau1b4',
-			'tableau1b5new' => 'Tableauxsuivispdvs93:tableau1b5'
 		);
 
 		/**
@@ -67,9 +55,7 @@
 					'tableaud2',
 					'tableau1b3',
 					'tableau1b4',
-					'tableau1b4new',
 					'tableau1b5',
-					'tableau1b5new',
 					'tableau1b6',
 				)
 			),
@@ -182,9 +168,7 @@
 
 		/**
 		 * Moteur de recherche pour le tableau 1 B4: Prescriptions vers les acteurs
-		 * sociaux, culturels et de sante
-		 *
-		 * @deprecated
+		 * sociaux, culturels et de sante.
 		 */
 		public function tableau1b4() {
 			$search = $this->_applyStructurereferente( $this->request->data );
@@ -195,38 +179,13 @@
 		}
 
 		/**
-		 * Moteur de recherche pour le tableau 1 B4: Prescriptions vers les acteurs
-		 * sociaux, culturels et de sante.
-		 */
-		public function tableau1b4new() {
-			$search = $this->_applyStructurereferente( $this->request->data );
-
-			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b4new( $search ) );
-			}
-		}
-
-		/**
 		 * Moteur de recherche pour le tableau 1 B5
-		 *
-		 * @deprecated
 		 */
 		public function tableau1b5() {
 			$search = $this->_applyStructurereferente( $this->request->data );
 
 			if( !empty( $search ) ) {
 				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5( $search ) );
-			}
-		}
-
-		/**
-		 * Moteur de recherche pour le tableau 1 B5
-		 */
-		public function tableau1b5new() {
-			$search = $this->_applyStructurereferente( $this->request->data );
-
-			if( !empty( $search ) ) {
-				$this->set( 'results', $this->Tableausuivipdv93->tableau1b5new( $search ) );
 			}
 		}
 
@@ -485,7 +444,21 @@
 			$this->request->data = $this->_applyStructurereferente( unserialize( $tableausuivipdv93['Tableausuivipdv93']['search'] ) );
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
 			$this->set( compact( 'results', 'tableausuivipdv93', 'id' ) );
-			$this->render( $tableausuivipdv93['Tableausuivipdv93']['name'] );
+
+			// Pour les tableaux 1B4 et 1B5, il existe deux version: celle avant la version 2.7.0(1?) et celle à partir de la 2.5.1
+			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableau1b4', 'tableau1b5' ) ) ) {
+				if( version_compare( $tableausuivipdv93['Tableausuivipdv93']['version'], '2.7', '<') ) {
+					$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'].'_2.5.1';
+				}
+				else {
+					$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'];
+				}
+			}
+			else {
+				$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'];
+			}
+
+			$this->render( $viewName );
 		}
 
 		/**

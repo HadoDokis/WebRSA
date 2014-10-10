@@ -51,6 +51,16 @@ SELECT public.alter_enumtype( 'TYPE_POSITIONCER', ARRAY['encours','attvalid','an
 -- 20141006: une des actions du controller orientsstructs a changé de nom
 UPDATE acos SET alias = 'Orientsstructs:impression_changement_referent' WHERE alias = 'Orientsstructs:printChangementReferent';
 
+-------------------------------------------------------------------------------------
+-- 20141010: Suppression des intitulés tableau1b4new et tableau1b4new dans la contrainte tableauxsuivispdvs93_name_in_list_chk
+-------------------------------------------------------------------------------------
+
+UPDATE tableauxsuivispdvs93 SET name = 'tableau1b4' WHERE name = 'tableau1b4new';
+UPDATE tableauxsuivispdvs93 SET name = 'tableau1b5' WHERE name = 'tableau1b5new';
+
+SELECT alter_table_drop_constraint_if_exists( 'public', 'tableauxsuivispdvs93', 'tableauxsuivispdvs93_name_in_list_chk' );
+ALTER TABLE tableauxsuivispdvs93 ADD CONSTRAINT tableauxsuivispdvs93_name_in_list_chk CHECK ( cakephp_validate_in_list( name, ARRAY['tableaud1', 'tableaud2', 'tableau1b3', 'tableau1b4', 'tableau1b5', 'tableau1b6'] ) );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

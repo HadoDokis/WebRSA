@@ -9,108 +9,115 @@
 			array(
 				array(
 					__d( $domain, 'Tableau1b5.distinct_personnes_prescription' ),
-					array( $this->Locale->number( (int)Hash::get( $totaux, 'Tableau1b5.distinct_personnes_prescription' ) ), array( 'class' => 'number integer' ) ),
+					array( $this->Locale->number( (int)Hash::get( $totaux, '0.0.distinct_personnes_prescription' ) ), array( 'class' => 'number integer' ) ),
 				),
 				array(
 					__d( $domain, 'Tableau1b5.distinct_personnes_action' ),
-					array( $this->Locale->number( (int)Hash::get( $totaux, 'Tableau1b5.distinct_personnes_action' ) ), array( 'class' => 'number integer' ) ),
+					array( $this->Locale->number( (int)Hash::get( $totaux, '0.0.distinct_personnes_action' ) ), array( 'class' => 'number integer' ) ),
 				)
 			)
 		);
 		echo $this->Xhtml->tag( 'table', $this->Xhtml->tag( 'tbody', $rows ) );
 
-		// FIXME: depuis le contrôleur/le modèle
-		$columns = array(
-			'prescription_count',
-			'prescriptions_effectives_count',
-			'prescriptions_refus_beneficiaire_count',
-			'prescriptions_refus_organisme_count',
-			'prescriptions_en_attente_count',
-			'prescriptions_retenu_count',
-			'prescriptions_abandon_count',
-		);
-
-		$columns_grouped = array(
-			'prescriptions_refus_beneficiaire_count',
-			'prescriptions_refus_organisme_count',
-			'prescriptions_en_attente_count',
-		);
-
-		if( !empty( $results ) ) {
-			// thead
-			$rows1 = array( array( __d( $domain, 'Tableau1b5.name' ) => array( 'rowspan' => 2 ) ) );
-			$rows2 = array();
-			$group_count = 0;
-			foreach( $columns as $column ) {
-				if( !in_array( $column, $columns_grouped ) ) {
-					if( $group_count > 0 ) {
-						$rows1[] = array( __d( $domain, "Tableau1b5.raisons" ) => array( 'colspan' => $group_count ) );
-						$group_count = 0;
-						$rows1[] = array( __d( $domain, "Tableau1b5.{$column}" ) => array( 'rowspan' => 2 ) );
-					}
-					else {
-						$rows1[] = array( __d( $domain, "Tableau1b5.{$column}" ) => array( 'rowspan' => 2 ) );
-					}
-				}
-				else {
-					$group_count++;
-					$rows2[] = __d( $domain, "Tableau1b5.{$column}" );
-				}
-			}
-			$thead = $this->Xhtml->tag( 'thead', $this->Xhtml->tableHeaders( $rows1 ).$this->Xhtml->tableHeaders( $rows2 ) );
-
-			// tbody
-			$total = array();
-			$rows = array();
-			foreach( $results as $result ) {
-				$row = array( h( Hash::get( $result, 'Tableau1b5.name' ) ) );
-				foreach( $columns as $column ) {
-					if( in_array( $column, array( 'prescriptions_refus_beneficiaire_count', 'prescriptions_abandon_count' ) ) ) {
-						$value = 'N/C';
-					}
-					else {
-						$value = (int)Hash::get( $result, "Tableau1b5.{$column}" );
-						$total[$column] = (int)Hash::get( $total, $column ) + $value;
-						$this->Locale->number( $value );
-					}
-					$row[] = array( $value, array( 'class' => 'number integer' ) );
-				}
-				$rows[] = $row;
-			}
-			$tbody = $this->Xhtml->tag( 'tbody', $this->Xhtml->tableCells( $rows ) );
-
-			// thead
-			$rows = array( __d( $domain, 'Total' ) );
-			foreach( $columns as $column ) {
-				if( in_array( $column, array( 'prescriptions_refus_beneficiaire_count', 'prescriptions_abandon_count' ) ) ) {
-					$value = 'N/C';
-				}
-				else {
-					$value = $this->Locale->number( (int)Hash::get( $total, $column ) );
-				}
-				$rows[] = array( $value, array( 'class' => 'number integer' ) );
-			}
-			$tfoot = $this->Xhtml->tag( 'tfoot', $this->Xhtml->tableCells( $rows ) );
-
-			// table
-			echo $this->Xhtml->tag( 'table', $thead.$tfoot.$tbody );
-			echo $this->Xhtml->tag( 'p', '* Autres : Préciser la nature dans le bilan qualitatif, dans le cas contraire elles ne seront pas comptabilisées dans le décompte de l\'objectif de résultat.' );
-
-			$rows = $this->Xhtml->tableCells(
+		// En-tête du tableau
+		$thead = $this->Xhtml->tag(
+			'thead',
+			$this->Xhtml->tableHeaders(
 				array(
-					array(
-						__d( $domain, 'Tableau1b5.beneficiaires_pas_deplaces' ),
-						array( $this->Locale->number( (int)Hash::get( $totaux, 'Tableau1b5.beneficiaires_pas_deplaces' ) ), array( 'class' => 'number integer' ) ),
-					),
-					array(
-						__d( $domain, 'Tableau1b5.nombre_fiches_attente' ),
-						array( $this->Locale->number( (int)Hash::get( $totaux, 'Tableau1b5.nombre_fiches_attente' ) ), array( 'class' => 'number integer' ) ),
-					)
+					array( __d( $domain, 'Tableau1b5.thematique' ) => array( 'rowspan' => 2 ) ),
+					array( __d( $domain, 'Tableau1b5.categorie' ) => array( 'rowspan' => 2 ) ),
+					array( __d( $domain, 'Tableau1b5.nombre' ) => array( 'rowspan' => 2 ) ),
+					array( __d( $domain, 'Tableau1b5.nombre_effectives' ) => array( 'rowspan' => 2 ) ),
+					array( __d( $domain, 'Tableau1b5.raison_non_participation' ) => array( 'colspan' => 3 ) ),
+					array( __d( $domain, 'Tableau1b5.nombre_participants' ) => array( 'rowspan' => 2 ) ),
 				)
-			);
-			echo $this->Xhtml->tag( 'table', $this->Xhtml->tag( 'caption', 'Motifs pour lesquels la prescription n\'est pas effective' ).$this->Xhtml->tag( 'tbody', $rows ) );
+			)
+			.$this->Xhtml->tableHeaders(
+				array(
+					__d( $domain, 'Tableau1b5.nombre_refus_beneficiaire' ),
+					__d( $domain, 'Tableau1b5.nombre_refus_organisme' ),
+					__d( $domain, 'Tableau1b5.nombre_en_attente' ),
+				)
+			)
+		);
 
-			require_once( dirname( __FILE__ ).DS.'footer.ctp' );
+		// Corps du tableau
+		$rowspans = array();
+		foreach( $results as $result ) {
+			if( !isset( $rowspans[$result[0]['categorie']] ) ) {
+				$rowspans[$result[0]['categorie']] = 0;
+			}
+			$rowspans[$result[0]['categorie']]++;
 		}
+
+		$total = array();
+		$cells = array();
+		$categoriepcd = null;
+		foreach( $results as $result ) {
+			if( $result[0]['categorie'] !== 'Total' ) {
+				// TODO: sous-totaux ?
+				$cell = array();
+
+				if( $result[0]['thematique'] === 'Sous-total' ) {
+					$class = 'subtotal';
+				}
+				else {
+					$class = null;
+				}
+
+				if( $categoriepcd !== $result[0]['categorie'] ) {
+					$cell[] = array( $result[0]['categorie'], array( 'rowspan' => $rowspans[$result[0]['categorie']], 'class' => $class ) );
+				}
+
+				$cell[] = array( $result[0]['thematique'], array( 'class' => $class ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre" ) ), array( 'class' => "integer number {$class}" ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre_effectives" ) ), array( 'class' => "integer number {$class}" ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre_refus_beneficiaire" ) ), array( 'class' => "integer number {$class}" ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre_refus_organisme" ) ), array( 'class' => "integer number {$class}" ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre_en_attente" ) ), array( 'class' => "integer number {$class}" ) );
+				$cell[] = array( $this->Locale->number( (int)Hash::get( $result, "0.nombre_participants" ) ), array( 'class' => "integer number {$class}" ) );
+
+				$cells[] = $cell;
+
+				$categoriepcd = $result[0]['categorie'];
+			}
+			else {
+				$total = $result;
+			}
+		}
+		$tbody = $this->Xhtml->tag( 'tbody', $this->Xhtml->tableCells( $cells ) );
+
+		// Pied du tableau
+		$cells = array(
+			array(
+				array( 'Total', array( 'colspan' => 2 ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre_effectives" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre_refus_beneficiaire" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre_refus_organisme" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre_en_attente" ) ), array( 'class' => 'integer number' ) ),
+				array( $this->Locale->number( (int)Hash::get( $total, "0.nombre_participants" ) ), array( 'class' => 'integer number' ) ),
+			)
+		);
+		$tfoot = $this->Xhtml->tag( 'tfoot', $this->Xhtml->tableCells( $cells ) );
+
+		echo $this->Xhtml->tag( 'table', $thead.$tfoot.$tbody ,array( 'class' => 'wide' ) );
+
+		// Tableau du dessous
+		$rows = $this->Xhtml->tableCells(
+			array(
+				array(
+					__d( $domain, 'Tableau1b5.beneficiaires_pas_deplaces' ),
+					array( $this->Locale->number( (int)Hash::get( $totaux, '0.0.beneficiaires_pas_deplaces' ) ), array( 'class' => 'number integer' ) ),
+				),
+				array(
+					__d( $domain, 'Tableau1b5.nombre_fiches_attente' ),
+					array( $this->Locale->number( (int)Hash::get( $totaux, '0.0.nombre_fiches_attente' ) ), array( 'class' => 'number integer' ) ),
+				)
+			)
+		);
+		echo $this->Xhtml->tag( 'table', $this->Xhtml->tag( 'caption', 'Motifs pour lesquels la prescription n\'est pas effective' ).$this->Xhtml->tag( 'tbody', $rows ) );
+
+		require_once( dirname( __FILE__ ).DS.'footer.ctp' );
 	}
 ?>

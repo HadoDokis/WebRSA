@@ -131,9 +131,6 @@ msgstr "Autres (1)"
 msgid "/Tableauxsuivispdvs93/tableau1b4/:heading"
 msgstr "4 - Prescriptions vers les acteurs sociaux, culturels et de sante"
 
-msgid "/Tableauxsuivispdvs93/tableau1b4new/:heading"
-msgstr "4 - Prescriptions vers les acteurs sociaux, culturels et de sante (nouveau)"
-
 msgid "Tableau1b4.libelle"
 msgstr "Thématiques"
 
@@ -172,9 +169,6 @@ msgstr "c. Acteurs de la culture, des loisirs et des vacances"
 
 msgid "/Tableauxsuivispdvs93/tableau1b5/:heading"
 msgstr "5 - Prescription sur les actions à caractère socio-professionnel et professionnel"
-
-msgid "/Tableauxsuivispdvs93/tableau1b5new/:heading"
-msgstr "5 - Prescription sur les actions à caractère socio-professionnel et professionnel (nouveau)"
 
 # ------------------------------------------------------------------------------
 
