@@ -29,7 +29,10 @@
 	}
 
 	if( in_array( $this->request->params['action'], array( 'historiser', 'view' ) ) ) {
-		$tableau = $this->request->pass[0];
+		$tableau = Hash::get( $tableausuivipdv93, 'Tableausuivipdv93.name' );
+		if( empty( $tableau ) ) {
+			$tableau = $this->request->pass[0];
+		}
 	}
 	else {
 		$tableau = $this->request->params['action'];
@@ -61,7 +64,7 @@
 
 	$params_typethematiquefp93_id = array(
 		'type' => (
-			in_array( $tableau, array( 'tableau1b4new', 'tableau1b5new' ) )
+			in_array( $tableau, array( 'tableau1b4', 'tableau1b5' ) )
 			? 'select'
 			: 'hidden'
 		),

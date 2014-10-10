@@ -590,11 +590,11 @@ body.questionnairesd1pdvs93.view #pageContent table td + td {
 
 /******************************************************************************/
 
-body.tableauxsuivispdvs93.tableau1b5 #pageContent table tbody td.number, body.tableauxsuivispdvs93.tableau1b5new #pageContent table tbody td.number {
+body.tableauxsuivispdvs93.tableau1b5 #pageContent table tbody td.number, body.tableauxsuivispdvs93.tableau1b5 #pageContent table tbody td.number {
 	width: 8%;
 }
 
-body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption, body.tableauxsuivispdvs93.tableau1b5new #pageContent table caption {
+body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption, body.tableauxsuivispdvs93.tableau1b5 #pageContent table caption {
 	caption-side: top;
 }
 

@@ -1595,91 +1595,6 @@
 		}
 
 		/**
-		 * Tableau 1-B-4: prescriptions vers les acteurs sociaux,
-		 * culturels et de sante
-		 *
-		 * @deprecated
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		public function tableau1b4( array $search ) {
-			$ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
-
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			$sql = "
-				(
-					SELECT
-						CASE
-							WHEN ".$this->_conditionNumcodefamille( 'numcodefamille', 'acteurs_sociaux' )." THEN 'acteurs_sociaux'
-							WHEN ".$this->_conditionNumcodefamille( 'numcodefamille', 'acteurs_sante' )." THEN 'acteurs_sante'
-							WHEN ".$this->_conditionNumcodefamille( 'numcodefamille', 'acteurs_culture' )." THEN 'acteurs_culture'
-						END AS libelle,
-						COUNT(*) AS \"nombre\",
-						COUNT(DISTINCT personne_id) AS \"nombre_unique\"
-					FROM actionscandidats_personnes
-						INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-						INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-					WHERE
-						".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-						-- dont la date de signature est dans l'année N
-						AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-						-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-						AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-						".$this->_conditionRendezvousPdv( $search, 'AND' )."
-						{$conditionpdv}
-						-- Dont la fiche de prescription n'a pas été annulée
-						AND actionscandidats_personnes.positionfiche <> 'annule'
-					GROUP BY libelle
-				)
-				UNION
-				(
-					SELECT
-							'total' AS libelle,
-							COUNT(*) AS \"nombre\",
-							COUNT(DISTINCT personne_id) AS \"nombre_unique\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- dont la date de signature est dans l'année N
-							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-				);";
-
-			$results = array();
-
-			$tmp_results = $ActioncandidatPersonne->query( $sql );
-			if( !empty( $tmp_results ) ) {
-				foreach( $tmp_results as $tmp_result ) {
-					$tmp_result = $tmp_result[0];
-
-					$results[$tmp_result['libelle']] = array(
-						'nombre' => $tmp_result['nombre'],
-						'nombre_unique' => $tmp_result['nombre_unique']
-					);
-				}
-			}
-
-			return $results;
-		}
-
-		/**
 		 * Filtre sur un PDV ou sur l'ensemble du CG ?
 		 * S'assure-ton qu'il existe au moins un RDV individuel ?
 		 *
@@ -1726,7 +1641,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		public function tableau1b4new( array $search ) {
+		public function tableau1b4( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
 
 			// Filtre sur l'année
@@ -1868,7 +1783,7 @@
 					)
 				);
 				try {
-					$method = "{$name}new"; //FIXME: tableau1b4new, tableau1b5new
+					$method = "{$name}";
 					@$this->{$method}( $search );
 					$message = null;
 				} catch ( Exception $e ) {
@@ -1889,7 +1804,7 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _tableau1b5newBase( array $search ) {
+		protected function _tableau1b5Base( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
 
 			// Filtre sur l'année
@@ -1955,9 +1870,9 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _tableau1b5newTotaux( array $search ) {
+		protected function _tableau1b5Totaux( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
-			$query = $this->_tableau1b5newBase( $search );
+			$query = $this->_tableau1b5Base( $search );
 
 			// Ajout des conditions des différentes catégories
 			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
@@ -1987,9 +1902,9 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _tableau1b5newResults( array $search ) {
+		protected function _tableau1b5Results( array $search ) {
 			$Ficheprescription93 = ClassRegistry::init( 'Ficheprescription93' );
-			$base = $this->_tableau1b5newBase( $search );
+			$base = $this->_tableau1b5Base( $search );
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $Ficheprescription93->getDataSource();
@@ -2098,341 +2013,10 @@
 		 * @param array $search
 		 * @return array
 		 */
-		public function tableau1b5new( array $search ) {
-			return array(
-				'results' => $this->_tableau1b5newResults( $search ),
-				'totaux' => $this->_tableau1b5newTotaux( $search )
-			);
-		}
-
-		/**
-		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
-		 * et professionnel.
-		 *
-		 * @deprecated
-		 *
-		 * @param array $search
-		 * @return array
-		 */
-		protected function _tableau1b5totaux( array $search ) {
-			$ActioncandidatPersonne = ClassRegistry::init( 'ActioncandidatPersonne' );
-			$results = array();
-
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			// Requête 0: total
-			$sql = "
-				SELECT
-					(
-						SELECT COUNT(DISTINCT personne_id)
-							FROM actionscandidats_personnes
-								INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-								INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-							WHERE
-								-- dont la date de signature est dans l'année N
-								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-								-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-								".$this->_conditionRendezvousPdv( $search, 'AND' )."
-								{$conditionpdv}
-								-- Qui ne se trouvent pas dans la tableau 1B4
-								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-								-- Dont la fiche de prescription n'a pas été annulée
-								AND actionscandidats_personnes.positionfiche <> 'annule'
-
-					) AS \"Tableau1b5__distinct_personnes_prescription\",
-					(
-						SELECT COUNT(DISTINCT personne_id)
-							FROM actionscandidats_personnes
-								INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-								INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-							WHERE
-								-- dont la date de signature est dans l'année N
-								EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-								-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-								AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-								AND bilanvenu = 'VEN'
-								".$this->_conditionRendezvousPdv( $search, 'AND' )."
-								{$conditionpdv}
-								-- Qui ne se trouvent pas dans la tableau 1B4
-								AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-								-- Dont la fiche de prescription n'a pas été annulée
-								AND actionscandidats_personnes.positionfiche <> 'annule'
-
-					) AS \"Tableau1b5__distinct_personnes_action\";";
-			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
-
-
-			// Requête 5: Motifs pour lesquels la prescription n'est pas effective
-			$sql = "SELECT
-						--nbre de bénéficiaires qui ne se sont pas déplacés : retenu + non venu
-						(
-							SELECT COUNT(*)
-								FROM actionscandidats_personnes
-									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-								WHERE
-									-- dont la date de signature est dans l'année N
-									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-									-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-									AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-									".$this->_conditionRendezvousPdv( $search, 'AND' )."
-									AND bilanretenu = 'RET'
-									AND bilanvenu != 'VEN'
-									{$conditionpdv}
-									-- Qui ne se trouvent pas dans la tableau 1B4
-									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-									-- Dont la fiche de prescription n'a pas été annulée
-									AND actionscandidats_personnes.positionfiche <> 'annule'
-						) AS \"Tableau1b5__beneficiaires_pas_deplaces\",
-						--nbre de fiches de prescription en attente d'un retour : venu + dfaction IS NULL
-						(
-							SELECT COUNT(*)
-								FROM actionscandidats_personnes
-									INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-									INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-								WHERE
-									-- dont la date de signature est dans l'année N
-									EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-									-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-									AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-									".$this->_conditionRendezvousPdv( $search, 'AND' )."
-									AND bilanvenu = 'VEN'
-									AND actionscandidats_personnes.dfaction IS NULL
-									{$conditionpdv}
-									-- Qui ne se trouvent pas dans la tableau 1B4
-									AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-									-- Dont la fiche de prescription n'a pas été annulée
-									AND actionscandidats_personnes.positionfiche <> 'annule'
-						) AS \"Tableau1b5__nombre_fiches_attente\";";
-			$results = Hash::merge( $results, $ActioncandidatPersonne->query( $sql ) );
-
-			return $results[0];
-		}
-
-		/**
-		 * TODO: nom de la fonction
-		 *
-		 * @deprecated
-		 *
-		 * @param array $results
-		 * @param string $sql
-		 * @param array $map
-		 * @param string $nameKey
-		 * @param string $valueKey
-		 * @return array
-		 */
-		protected function _tableau1b5Foo( array $results, $sql, $map, $nameKey, $valueKey ) {
-			$Actioncandidat = ClassRegistry::init( array( 'class' => 'Actioncandidat', 'alias' => 'Tableau1b5' ) );
-			list( $modelName, $fieldName ) = model_field( $valueKey );
-
-			$tmpresults = $Actioncandidat->query( $sql );
-			$keysDiff = array_diff( array_keys( $map ), Hash::extract( $tmpresults, "{n}.{$nameKey}" ) );
-
-			if( !empty( $tmpresults ) ) {
-				foreach( $tmpresults as $tmpresult ) {
-					$name = Hash::get( $tmpresult, $nameKey );
-					$value = Hash::get( $tmpresult, $valueKey );
-					$index = Hash::get( $map, $name );
-
-					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", $value );
-				}
-			}
-
-			if( !empty( $keysDiff ) ) {
-				foreach( $keysDiff as $name ) {
-					$index = Hash::get( $map, $name );
-
-					$results = Hash::insert( $results, "{$index}.Tableau1b5.{$fieldName}", 0 );
-				}
-			}
-
-			return $results;
-		}
-
-		/**
-		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
-		 * et professionnel.
-		 *
-		 * @deprecated
-		 *
-		 * @param array $search
-		 * @return array
-		 */
 		public function tableau1b5( array $search ) {
-			$Actioncandidat = ClassRegistry::init( array( 'class' => 'Actioncandidat', 'alias' => 'Tableau1b5' ) );
-
-			// On obtient la liste des actions
-			$results = $Actioncandidat->find(
-				'all',
-				array(
-					'fields' => array(
-						'Tableau1b5.id',
-						'Tableau1b5.name',
-					),
-					'contain' => false,
-					'order' => array( 'Tableau1b5.name ASC' ),
-                    'conditions' => array(
-                        'NOT' => array( $this->_conditionNumcodefamille( 'Actioncandidat.numcodefamille' ) )
-                    )
-				)
-			);
-			$map = array_flip( Hash::extract( $results, '{n}.Tableau1b5.name' ) );
-
-			// Filtre sur l'année
-			$annee = Sanitize::clean( Hash::get( $search, 'Search.annee' ), array( 'encode' => false ) );
-
-			// Filtre sur un PDV ou sur l'ensemble du CG ?
-			$conditionpdv = null;
-			$pdv_id = Hash::get( $search, 'Search.structurereferente_id' );
-			if( !empty( $pdv_id ) ) {
-				$conditionpdv = "AND structurereferente_id = ".Sanitize::clean( $pdv_id, array( 'encode' => false ) );
-			}
-
-			// Requête 1: Nb de prescriptions effectuées : total des prescriptions
-			$sql = "
-					SELECT
-							actionscandidats.name AS \"Tableausuivipdv93__prescription_name\",
-							COUNT(*) AS \"Tableausuivipdv93__prescription_count\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							-- dont la date de signature est dans l'année N
-							EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Qui ne se trouvent pas dans la tableau 1B4
-							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-						GROUP BY actionscandidats.name
-						ORDER BY actionscandidats.name;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescription_count' );
-
-			// Requête 2: nombre de prescription effectives : venu
-			$sql = "SELECT
-							actionscandidats.name AS \"Tableausuivipdv93__prescription_name\",
-							COUNT(*) AS \"Tableausuivipdv93__prescriptions_effectives_count\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							bilanvenu = 'VEN'
-							-- dont la date de signature est dans l'année N
-							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Qui ne se trouvent pas dans la tableau 1B4
-							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-						GROUP BY actionscandidats.name
-						ORDER BY actionscandidats.name;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_effectives_count' );
-
-			// Requête 3: Raisons de la non participation,
-			// Requête 3.1: Refus du bénéficiaire
-			$sql = "SELECT
-						NULL AS \"Tableausuivipdv93__prescription_name\",
-						NULL AS \"Tableausuivipdv93__prescriptions_refus_beneficiaire_count\"
-					FROM actionscandidats_personnes
-					WHERE false;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_beneficiaire_count' );
-
-			// Requête 3.2: Refus de l'organisme : non retenu + non venu
-			$sql = "SELECT
-							actionscandidats.name AS \"Tableausuivipdv93__prescription_name\",
-							COUNT(*) AS \"Tableausuivipdv93__prescriptions_refus_organisme_count\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							bilanretenu != 'RET'
-							AND bilanvenu != 'VEN'
-							-- dont la date de signature est dans l'année N
-							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Qui ne se trouvent pas dans la tableau 1B4
-							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-						GROUP BY actionscandidats.name
-						ORDER BY actionscandidats.name;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_refus_organisme_count' );
-
-			// Requête 3.3: En attente : ddaction > now ?
-			$sql = "SELECT
-							actionscandidats.name AS \"Tableausuivipdv93__prescription_name\",
-							COUNT(*) AS \"Tableausuivipdv93__prescriptions_en_attente_count\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							actionscandidats_personnes.ddaction > NOW()
-							-- dont la date de signature est dans l'année N
-							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Qui ne se trouvent pas dans la tableau 1B4
-							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-						GROUP BY actionscandidats.name
-						ORDER BY actionscandidats.name;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_en_attente_count' );
-
-			// Requête 3.3: En attente : ddaction > now ?
-			$sql = "SELECT
-							actionscandidats.name AS \"Tableausuivipdv93__prescription_name\",
-							COUNT(*) AS \"Tableausuivipdv93__prescriptions_retenu_count\"
-						FROM actionscandidats_personnes
-							INNER JOIN actionscandidats ON (actionscandidats.id = actionscandidats_personnes.actioncandidat_id)
-							INNER JOIN referents ON (referents.id = actionscandidats_personnes.referent_id)
-						WHERE
-							bilanretenu = 'RET'
-							-- dont la date de signature est dans l'année N
-							AND EXTRACT( 'YEAR' FROM actionscandidats_personnes.datesignature ) = '{$annee}'
-							-- De plus, on restreint les structures référentes à celles qui apparaissent dans le select
-							AND ".$this->_conditionStructurereferenteIsPdv( 'referents.structurereferente_id' )."
-							".$this->_conditionRendezvousPdv( $search, 'AND' )."
-							{$conditionpdv}
-							-- Qui ne se trouvent pas dans la tableau 1B4
-							AND NOT ".$this->_conditionNumcodefamille( 'actionscandidats.numcodefamille' )."
-							-- Dont la fiche de prescription n'a pas été annulée
-							AND actionscandidats_personnes.positionfiche <> 'annule'
-						GROUP BY actionscandidats.name
-						ORDER BY actionscandidats.name;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_retenu_count' );
-
-			// Requête 4 : Abandon en cours d'action
-			$sql = "SELECT
-						NULL AS \"Tableausuivipdv93__prescription_name\",
-						NULL AS \"Tableausuivipdv93__prescriptions_abandon_count\"
-					FROM actionscandidats_personnes
-					WHERE false;";
-			$results = $this->_tableau1b5Foo( $results, $sql, $map, 'Tableausuivipdv93.prescription_name', 'Tableausuivipdv93.prescriptions_abandon_count' );
-
 			return array(
-				'totaux' => $this->_tableau1b5totaux( $search ),
-				'results' => $results
+				'results' => $this->_tableau1b5Results( $search ),
+				'totaux' => $this->_tableau1b5Totaux( $search )
 			);
 		}
 
