@@ -1399,9 +1399,6 @@
 			$Option = ClassRegistry::init( 'Option' );
 			$options = Set::merge(
 				array(
-					'Personne' => array(
-						'qual' => $Option->qual(),
-					),
 					'Prestation' => array(
 						'rolepers' => $Option->rolepers(),
 					),
