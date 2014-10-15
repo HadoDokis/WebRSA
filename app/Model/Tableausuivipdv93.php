@@ -229,6 +229,13 @@
 		);
 
 		/**
+		 * "Cache" mémoire des catégories du tableau 1B5.
+		 *
+		 * @var array
+		 */
+		protected $_categories1b5 = null;
+
+		/**
 		 *
 		 * @param array $search
 		 * @return array
@@ -1795,6 +1802,23 @@
 				);
 			}
 
+			// Pour chacune des catégories du tableau 1B5, on vérifie que les conditions correspondent à du paramétrage
+			$Dbo = ClassRegistry::init( 'Thematiquefp93' )->getDataSource();
+
+			$expected = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+			$found = $this->_tableau1b5Categories( array() );
+			foreach( array_keys( $expected ) as $thematique ) {
+				foreach( array_keys( $expected[$thematique] ) as $categorie ) {
+					if( !isset( $found[$thematique][$categorie] ) ) {
+						$conditions = $Dbo->conditions( $expected[$thematique][$categorie], true, false );
+						$return["Tableausuivi93.tableau1b5.categories.{$thematique}.{$categorie}"] = array(
+							'success' => false,
+							'message' => sprintf( 'Aucun paramétrage trouvé pour les conditions suivantes: %s', $conditions )
+						);
+					}
+				}
+			}
+
 			return $return;
 		}
 
@@ -1875,7 +1899,7 @@
 			$query = $this->_tableau1b5Base( $search );
 
 			// Ajout des conditions des différentes catégories
-			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+			$categories = $this->_tableau1b5Categories( $search );
 			$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
 
 			// Ajout des champs spécifiques à cette requête
@@ -1894,6 +1918,77 @@
 		}
 
 		/**
+		 * Retourne les catégories définies dans le webrsa.inc, sous la clé
+		 * "Tableausuivi93.tableau1b5.categories", si et seulement si le paramétrage
+		 * (modulo la valeur de Search.typethematiquefp93_id passé dans le paramètre
+		 * $search) permet de retrouver ces informations dans les tables
+		 * thematiquesfps93, categoriesfps93 et filieresfps93.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		protected function _tableau1b5Categories( array $search ) {
+			if( $this->_categories1b5 === null ) {
+				$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+
+				$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
+
+				$Thematiquefp93 = ClassRegistry::init( 'Thematiquefp93' );
+				$Dbo = $Thematiquefp93->getDataSource();
+
+				$base = array(
+					'fields' => array(
+						'Thematiquefp93.id'
+					),
+					'joins' => array(
+						$Thematiquefp93->join( 'Categoriefp93', array( 'type' => 'INNER' ) ),
+						$Thematiquefp93->Categoriefp93->join( 'Filierefp93', array( 'type' => 'INNER' ) ),
+					),
+					'contain' => false
+				);
+
+				$unions = array();
+
+				foreach( array_keys( $categories ) as $thematiqueName ) {
+					foreach( array_keys( $categories[$thematiqueName] ) as $categorieName ) {
+						$conditions = $categories[$thematiqueName][$categorieName];
+						$query = $base;
+
+						$query['conditions'] = $conditions;
+
+						// Ajout de condition si nécessaire
+						if( $typethematiquefp93_id !== null ) {
+							$query['conditions']['Thematiquefp93.type'] = $typethematiquefp93_id;
+						}
+
+						$sql = $Thematiquefp93->sq( $query );
+
+						$thematique = Sanitize::clean( $thematiqueName, array( 'encode' => false ) );
+						$categorie = Sanitize::clean( $categorieName, array( 'encode' => false ) );
+
+						$sql = "SELECT '{$thematique}' AS \"Tableau1b5__thematique\", '{$categorie}' AS \"Tableau1b5__categorie\", EXISTS( {$sql} ) AS \"Tableau1b5__exists\"";
+						$unions[] = $sql;
+					}
+				}
+
+				$results = $Dbo->query( implode( ' UNION ', $unions ) );
+				foreach( $results as $result ) {
+					if( empty( $result['Tableau1b5']['exists'] ) ) {
+						unset( $categories[$result['Tableau1b5']['thematique']][$result['Tableau1b5']['categorie']] );
+						if( empty( $categories[$result['Tableau1b5']['thematique']] ) ) {
+							unset( $categories[$result['Tableau1b5']['thematique']] );
+						}
+					}
+				}
+
+
+				$this->_categories1b5 = $categories;
+			}
+
+			return $this->_categories1b5;
+		}
+
+		/**
 		 * Tableau 1-B-5: prescription sur les actions à caractère socio-professionnel
 		 * et professionnel.
 		 *
@@ -1908,7 +2003,7 @@
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $Ficheprescription93->getDataSource();
-			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+			$categories = $this->_tableau1b5Categories( $search );
 
 			$vFields = array(
 				// A. nombre total de fiches quel que soit le statut renseigné
