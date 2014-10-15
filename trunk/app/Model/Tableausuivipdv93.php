@@ -229,6 +229,13 @@
 		);
 
 		/**
+		 * "Cache" mémoire des catégories du tableau 1B4.
+		 *
+		 * @var array
+		 */
+		protected $_categories1b4 = null;
+
+		/**
 		 * "Cache" mémoire des catégories du tableau 1B5.
 		 *
 		 * @var array
@@ -1705,7 +1712,7 @@
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $Ficheprescription93->getDataSource();
-			$categories = (array)Configure::read( 'Tableausuivi93.tableau1b4.categories' );
+			$categories = $this->_tableau1b41b5Categories( 'tableau1b4', $search );
 
 			$conditionsTotal = array( 'OR' => array() );
 			$sqls = array();
@@ -1750,6 +1757,7 @@
 				$sqls[] = $Ficheprescription93->sq( $query );
 				$counter++;
 			}
+
 			// requête pour le total
 			$query = $base;
 			$query['fields'] = array(
@@ -1760,6 +1768,15 @@
 				'COUNT( DISTINCT Ficheprescription93.personne_id ) AS "nombre_unique"'
 			);
 			$query['conditions'][] = $conditionsTotal;
+
+			// Ajout des conditions des différentes catégories
+			$categories = $this->_tableau1b41b5Categories( 'tableau1b4', $search );
+			if( !empty( $categories ) ) {
+				$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
+			}
+			else {
+				$query['conditions'][] = '0 = 1';
+			}
 
 			$sqls[] = $Ficheprescription93->sq( $query );
 			$counter++;
@@ -1802,19 +1819,22 @@
 				);
 			}
 
-			// Pour chacune des catégories du tableau 1B5, on vérifie que les conditions correspondent à du paramétrage
+			// Pour chacune des catégories du tableau 1B4 et 1B5, on vérifie que les conditions correspondent à du paramétrage
 			$Dbo = ClassRegistry::init( 'Thematiquefp93' )->getDataSource();
 
-			$expected = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
-			$found = $this->_tableau1b5Categories( array() );
-			foreach( array_keys( $expected ) as $thematique ) {
-				foreach( array_keys( $expected[$thematique] ) as $categorie ) {
-					if( !isset( $found[$thematique][$categorie] ) ) {
-						$conditions = $Dbo->conditions( $expected[$thematique][$categorie], true, false );
-						$return["Tableausuivi93.tableau1b5.categories.{$thematique}.{$categorie}"] = array(
-							'success' => false,
-							'message' => sprintf( 'Aucun paramétrage trouvé pour les conditions suivantes: %s', $conditions )
-						);
+			foreach( array( 'tableau1b4', 'tableau1b5' ) as $tableau ) {
+				$expected = (array)Configure::read( "Tableausuivi93.{$tableau}.categories" );
+				$found = $this->_tableau1b41b5Categories( $tableau, array() );
+
+				foreach( array_keys( $expected ) as $thematique ) {
+					foreach( array_keys( $expected[$thematique] ) as $categorie ) {
+						if( !isset( $found[$thematique][$categorie] ) ) {
+							$conditions = $Dbo->conditions( $expected[$thematique][$categorie], true, false );
+							$return["Tableausuivi93.{$tableau}.categories.{$thematique}.{$categorie}"] = array(
+								'success' => false,
+								'message' => sprintf( 'Aucun paramétrage trouvé pour les conditions suivantes: %s', $conditions )
+							);
+						}
 					}
 				}
 			}
@@ -1899,8 +1919,13 @@
 			$query = $this->_tableau1b5Base( $search );
 
 			// Ajout des conditions des différentes catégories
-			$categories = $this->_tableau1b5Categories( $search );
-			$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
+			$categories = $this->_tableau1b41b5Categories( 'tableau1b5', $search );
+			if( !empty( $categories ) ) {
+				$query['conditions'][] = array( 'OR' => Hash::extract( $categories, '{s}.{s}' ) );
+			}
+			else {
+				$query['conditions'][] = '0 = 1';
+			}
 
 			// Ajout des champs spécifiques à cette requête
 			$query['fields'] = array(
@@ -1927,9 +1952,17 @@
 		 * @param array $search
 		 * @return array
 		 */
-		protected function _tableau1b5Categories( array $search ) {
-			if( $this->_categories1b5 === null ) {
-				$categories = (array)Configure::read( 'Tableausuivi93.tableau1b5.categories' );
+		protected function _tableau1b41b5Categories( $tableau, array $search ) {
+			if( !in_array( $tableau, array( 'tableau1b4', 'tableau1b5' ) ) ) {
+				$msgstr = 'Mauvais paramètre passé pour le tableau: %s';
+				throw new RuntimeException( sprintf( $msgstr, $tableau ) );
+			}
+
+			$attribute = ( $tableau === 'tableau1b4' ? '_categories1b4' : '_categories1b5' );
+			$modelName = ( $tableau === 'tableau1b4' ? 'Tableau1b4' : 'Tableau1b5' );
+
+			if( $this->{$attribute} === null ) {
+				$categories = (array)Configure::read( "Tableausuivi93.{$tableau}.categories" );
 
 				$typethematiquefp93_id = Hash::get( $search, 'Search.typethematiquefp93_id' );
 
@@ -1966,26 +1999,26 @@
 						$thematique = Sanitize::clean( $thematiqueName, array( 'encode' => false ) );
 						$categorie = Sanitize::clean( $categorieName, array( 'encode' => false ) );
 
-						$sql = "SELECT '{$thematique}' AS \"Tableau1b5__thematique\", '{$categorie}' AS \"Tableau1b5__categorie\", EXISTS( {$sql} ) AS \"Tableau1b5__exists\"";
+						$sql = "SELECT '{$thematique}' AS \"{$modelName}__thematique\", '{$categorie}' AS \"{$modelName}__categorie\", EXISTS( {$sql} ) AS \"{$modelName}__exists\"";
 						$unions[] = $sql;
 					}
 				}
 
 				$results = $Dbo->query( implode( ' UNION ', $unions ) );
 				foreach( $results as $result ) {
-					if( empty( $result['Tableau1b5']['exists'] ) ) {
-						unset( $categories[$result['Tableau1b5']['thematique']][$result['Tableau1b5']['categorie']] );
-						if( empty( $categories[$result['Tableau1b5']['thematique']] ) ) {
-							unset( $categories[$result['Tableau1b5']['thematique']] );
+					if( empty( $result[$modelName]['exists'] ) ) {
+						unset( $categories[$result[$modelName]['thematique']][$result[$modelName]['categorie']] );
+						if( empty( $categories[$result[$modelName]['thematique']] ) ) {
+							unset( $categories[$result[$modelName]['thematique']] );
 						}
 					}
 				}
 
 
-				$this->_categories1b5 = $categories;
+				$this->{$attribute} = $categories;
 			}
 
-			return $this->_categories1b5;
+			return $this->{$attribute};
 		}
 
 		/**
@@ -2003,7 +2036,7 @@
 
 			// Ajout des libellés des catégories et des thématiques
 			$Dbo = $Ficheprescription93->getDataSource();
-			$categories = $this->_tableau1b5Categories( $search );
+			$categories = $this->_tableau1b41b5Categories( 'tableau1b5', $search );
 
 			$vFields = array(
 				// A. nombre total de fiches quel que soit le statut renseigné
