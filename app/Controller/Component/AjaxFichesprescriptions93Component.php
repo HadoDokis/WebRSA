@@ -328,34 +328,45 @@
 					$fields = array();
 					$events = array( 'changed:Ficheprescription93.adresseprestatairefp93_id' );
 				}
+			}
 
-				// Si on change le type, il faut réinitialiser les champs partenaire Hors PDI...
-				if( $data['Target']['path'] === 'Ficheprescription93.typethematiquefp93_id' ) {
-					foreach( Hash::normalize( ClassRegistry::init( 'Ficheprescription93' )->fieldsHorsPdi ) as $fieldHorsPdi => $optionsHorsPdi ) {
-						$optionsHorsPdi = (array)$optionsHorsPdi + array( 'type' => 'text' );
+			//------------------------------------------------------------------
 
-						$fields[$fieldHorsPdi] = array(
-							'id' => Inflector::camelize( str_replace( '.', '_', $fieldHorsPdi ) ),
-							'value' => null
-						) + $optionsHorsPdi;
-					}
+			// Si on change le type, il faut réinitialiser les champs partenaire Hors PDI...
+			$reinitHorsPdi = ( $data['Target']['path'] === 'Ficheprescription93.typethematiquefp93_id' )
+					// ou si on est en hors pdi et que l'on change une des listes déroulantes de l'action
+				|| ( $typethematiquefp93_id === 'horspdi' && in_array( $data['Target']['path'], array( 'Ficheprescription93.thematiquefp93_id', 'Ficheprescription93.categoriefp93_id', 'Ficheprescription93.filierefp93_id' ) ) );
+			if( $reinitHorsPdi ) {
+				foreach( Hash::normalize( ClassRegistry::init( 'Ficheprescription93' )->fieldsHorsPdi ) as $fieldHorsPdi => $optionsHorsPdi ) {
+					$optionsHorsPdi = (array)$optionsHorsPdi + array( 'type' => 'text' );
 
-					// ...ainsi que l'adresse de RDV
-					$paths = array(
-						'Ficheprescription93.rdvprestataire_adresse_check' => array( 'type' => 'checkbox' ),
-						'Ficheprescription93.rdvprestataire_adresse' => array( 'type' => 'text' )
-					);
-					foreach( $paths as $path => $params ) {
-						$fields[$path] = array(
-							'id' => Inflector::camelize( str_replace( '.', '_', $path ) ),
-							'value' => null,
-						) + $params;
-					}
+					$fields[$fieldHorsPdi] = array(
+						'id' => Inflector::camelize( str_replace( '.', '_', $fieldHorsPdi ) ),
+						'value' => null
+					) + $optionsHorsPdi;
+				}
+
+				// ...ainsi que l'adresse de RDV
+				$paths = array(
+					'Ficheprescription93.rdvprestataire_adresse_check' => array( 'type' => 'checkbox' ),
+					'Ficheprescription93.rdvprestataire_adresse' => array( 'type' => 'text' )
+				);
+				foreach( $paths as $path => $params ) {
+					$fields[$path] = array(
+						'id' => Inflector::camelize( str_replace( '.', '_', $path ) ),
+						'value' => null,
+					) + $params;
 				}
 			}
 
+			//------------------------------------------------------------------
+
 			// Si on a un préfixe, on l'ajoute à ce que l'on retourne
 			$fields = $this->prefixAjaxResult( $data['prefix'], $fields );
+
+			if( in_array( 'changed:Ficheprescription93.actionfp93_id', $events ) ) {
+				$events[] = 'reset:Ficheprescription93.actionprestataire';
+			}
 
 			return array( 'success' => true, 'fields' => $fields, 'events' => $events );
 		}
@@ -612,7 +623,8 @@
 				$return = $this->ajaxOnLoad( $result );
 				$return['events'] = array(
 					'changed:Ficheprescription93.actionfp93_id',
-					'changed:Ficheprescription93.adresseprestatairefp93_id'
+					'changed:Ficheprescription93.adresseprestatairefp93_id',
+					'reset:Ficheprescription93.actionprestataire',
 				);
 
 				// S'il n'existe qu'une adresse pour ce prestataire, on la pré-sélectionne

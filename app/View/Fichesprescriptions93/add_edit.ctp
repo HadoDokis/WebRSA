@@ -153,8 +153,6 @@
 		.$links
 		.$this->Default3->subform(
 			array(
-				'Ficheprescription93.rdvprestataire_date' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
-				'Ficheprescription93.rdvprestataire_personne' => array( 'type' => 'text' ),
 				'Ficheprescription93.numconvention' => array( 'type' => 'text' ),
 				'Ficheprescription93.typethematiquefp93_id' => array( 'empty' => true ),
 				'Ficheprescription93.thematiquefp93_id' => array( 'empty' => true ),
@@ -207,6 +205,8 @@
 		.$this->Default3->subform(
 			array(
 				'Ficheprescription93.duree_action',
+				'Ficheprescription93.rdvprestataire_date' => array( 'empty' => true, 'dateFormat' => 'DMY', 'timeFormat' => 24, 'maxYear' => date( 'Y' ) + 1 ),
+				'Ficheprescription93.rdvprestataire_personne' => array( 'type' => 'text' ),
 				'Documentbeneffp93.Documentbeneffp93' => array( 'multiple' => 'checkbox' ),
 				'Ficheprescription93.documentbeneffp93_autre',
 			),
@@ -558,5 +558,49 @@
 		if( ( $F( 'Ficheprescription93RdvprestataireAdresseCheck' ) == null ) ) {
 			$( 'Ficheprescription93RdvprestataireAdresse' ).value = '';
 		}
+	} );
+
+	function clearFicheprescription93FormField( fieldId ) {
+		try {
+			var elmt = $( fieldId );
+			//console.log( elmt );
+			if( $(elmt) ) {
+				if( $(elmt).type === 'checkbox' ) {
+					if( $(elmt).checked ) {
+						$(elmt).simulate( 'click' );
+					}
+				}
+				else {
+					$(elmt).value = '';
+				}
+			}
+		} catch( Exception ) {
+			console.log( Exception );
+		}
+	}
+
+	Element.observe( document, 'reset:Ficheprescription93.actionprestataire', function() {
+		<?php
+			$fields = array(
+				'Ficheprescription93.rdvprestataire_adresse_check',
+				'Ficheprescription93.rdvprestataire_adresse',
+				'Ficheprescription93.dd_action.day',
+				'Ficheprescription93.dd_action.month',
+				'Ficheprescription93.dd_action.year',
+				'Ficheprescription93.df_action.day',
+				'Ficheprescription93.df_action.month',
+				'Ficheprescription93.df_action.year',
+				'Ficheprescription93.duree_action',
+				'Ficheprescription93.rdvprestataire_date.day',
+				'Ficheprescription93.rdvprestataire_date.month',
+				'Ficheprescription93.rdvprestataire_date.year',
+				'Ficheprescription93.rdvprestataire_date.hour',
+				'Ficheprescription93.rdvprestataire_date.min',
+				'Ficheprescription93.rdvprestataire_personne'
+			);
+		?>
+		<?php foreach( $fields as $field ): ?>
+			clearFicheprescription93FormField( '<?php echo $this->Html->domId( $field );?>' );
+		<?php endforeach; ?>
 	} );
 </script>
