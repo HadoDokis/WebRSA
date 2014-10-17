@@ -567,7 +567,7 @@
 				);
 
 				if( trim( $value ) == '' ) {
-					$events = array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id' );
+					$events = array( 'changed:Ficheprescription93.actionfp93_id', 'changed:Ficheprescription93.adresseprestatairefp93_id', 'reset:Ficheprescription93.actionprestataire' );
 				}
 			}
 
