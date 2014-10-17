@@ -549,8 +549,7 @@
 			// champs virtuels "disabled" pour les actions...
 			if( !empty( $results ) ) {
 				foreach( $results as $i => $result ) {
-					$impression = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) >= 2 );
-					$results[$i]['/Fichesprescriptions93/impression'] = $impression;
+					$results[$i]['/Fichesprescriptions93/impression'] = true;
 
 					$edit = ( (int)substr( $result['Ficheprescription93']['statut'], 0, 2 ) != 99 );
 					$results[$i]['/Fichesprescriptions93/edit'] = $edit;
