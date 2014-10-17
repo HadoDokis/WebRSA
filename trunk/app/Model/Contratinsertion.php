@@ -1082,12 +1082,25 @@
 			$query = array( 'fields' => array( "{$this->alias}.{$this->primaryKey}" ), 'conditions' => $conditions, 'contain' => false );
 			$sample = $this->find( 'first', $query );
 
+			// INFO: il n'est pas possible d'utiliser Model::updateAllUnBound() car à ce moment-là,
+			// l'alias Contratinsertion serait supprimé du CASE, hors il est nécessaire
+			// La solution et d'écrire la requête d'UPDATE à la main.
+
+			$Dbo = $this->getDataSource();
+
+			$tableName = $Dbo->fullTableName( $this, true, true );
+			$case = $this->getCasePositionCer();
+
+			$sq = $Dbo->startQuote;
+			$eq = $Dbo->endQuote;
+
+			$conditions = $Dbo->conditions( $conditions, true, true, $this );
+
+			$sql = "UPDATE {$tableName} AS {$sq}{$this->alias}{$eq} SET {$sq}positioncer{$eq} = {$case}::type_positioncer {$conditions};";
+
 			return (
 				empty( $sample )
-				|| $this->updateAllUnBound(
-					array( "{$this->alias}.positioncer" => $this->getCasePositionCer().'::type_positioncer' ),
-					$conditions
-				)
+				|| ( $Dbo->query( $sql ) !== false )
 			);
 		}
 
