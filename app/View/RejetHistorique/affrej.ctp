@@ -36,12 +36,11 @@
 				Set::classicExtract( $rejetHistorique, 'RejetHistorique.matricule' ),
 				Set::classicExtract( $rejetHistorique, 'RejetHistorique.log' ),
 
-				$this->Html->viewLink(
-                                    'Voir le xml',
-									array( 'controller' => 'rejet_historique', 'action' => 'affxml', $fichier, $rejetHistorique['RejetHistorique']['numdemrsa'] ),
-									$this->Permissions->check( 'RejetHistorique', 'affxml' )
-                                ),
-
+				$this->Xhtml->viewLink(
+					'Voir le xml',
+					array( 'controller' => 'rejet_historique', 'action' => 'affxml', $fichier, $rejetHistorique['RejetHistorique']['numdemrsa'] ),
+					$this->Permissions->check( 'RejetHistorique', 'affxml' )
+				),
 			);
 		}
 		$tbody = $this->Html->tag( 'tbody', $this->Html->tableCells( $rows, array( 'class' => 'odd' ), array( 'class' => 'even' ) ) );

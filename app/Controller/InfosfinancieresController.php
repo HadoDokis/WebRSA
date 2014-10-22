@@ -23,6 +23,7 @@
 
 		public $components = array(
 			'DossiersMenus',
+			'Gestionzonesgeos',
 			'Jetons2',
 			'Search.SearchPrg' => array( 'actions' => array( 'indexdossier' ) )
 		);
@@ -67,7 +68,12 @@
 		 *
 		 */
 		public function indexdossier() {
-			$this->set( 'annees', $this->Infofinanciere->range() );
+			$options = array(
+				'annees' => $this->Infofinanciere->range(),
+				'numcom' => $this->Gestionzonesgeos->listeCodesInsee()
+			);
+			$this->set( compact( 'options' ) );
+
 			if( !empty( $this->request->data ) ) {
 				$mesZonesGeographiques = $this->Session->read( 'Auth.Zonegeographique' );
 				$mesCodesInsee = ( !empty( $mesZonesGeographiques ) ? $mesZonesGeographiques : array() );
@@ -114,8 +120,8 @@
             );
             $this->paginate = $querydata;
             $infosfinancieres = $this->paginate( 'Infofinanciere' );
-            
-            
+
+
 			$qd_foyer = array(
 				'conditions' => array(
 					'Foyer.dossier_id' => $dossier_id
