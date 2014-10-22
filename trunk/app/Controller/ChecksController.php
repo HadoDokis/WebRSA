@@ -88,10 +88,10 @@
 					'inis' => $this->Check->phpInis(
 						array(
 							'date.timezone',
-							 // Pour PHP >= 5.3.9, le passer à au moins 2000
+							 // Pour PHP >= 5.3.9, le passer à au moins 2500
 							'max_input_vars' => array(
 								'comparison' => array(
-									'rule' => array( 'comparison', '>=', 2000 ),
+									'rule' => array( 'comparison', '>=', 2500 ),
 									'allowEmpty' => false
 								),
 							),

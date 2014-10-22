@@ -24,10 +24,10 @@
 <?php echo $this->Form->create( 'Infosfinancieres', array( 'type' => 'post', 'action' => '/indexdossier/', 'id' => 'Search', 'class' => ( ( is_array( $this->request->data ) && !empty( $this->request->data ) ) ? 'folded' : 'unfolded' ) ) );?>
 	<fieldset>
 		<?php echo $this->Form->input( 'Filtre.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
-		<?php echo $this->Form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => $annees['maxYear'], 'minYear' => $annees['minYear'] ) );?>
+		<?php echo $this->Form->input( 'Filtre.moismoucompta', array( 'label' => 'Recherche des paiements pour le mois de ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => $options['annees']['maxYear'], 'minYear' => $options['annees']['minYear'] ) );?>
 		<?php echo $this->Form->input( 'Filtre.type_allocation', array( 'label' => 'Type d\'allocation', 'type' => 'select', 'options' => $type_allocation, 'empty' => true ) ); ?>
 		<?php echo $this->Form->input( 'Filtre.nomcom', array( 'label' => 'Commune de l\'allocataire', 'type' => 'text' ) ); ?>
-		<?php echo $this->Form->input( 'Filtre.numcom', array( 'label' => 'Code INSEE', 'type' => 'text', 'maxlength' => 5 ) ); ?>
+		<?php echo $this->Form->input( 'Filtre.numcom', array( 'label' => 'Code INSEE', 'options' => $options['numcom'], 'empty' => true ) ); ?>
 	</fieldset>
 
 	<div class="submit noprint">
