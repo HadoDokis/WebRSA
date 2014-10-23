@@ -242,7 +242,7 @@
 
 						array_push(
 							$cells,
-							h( Set::enum( $orient['Orientstruct']['typeorient_id'], $typeorient ) ),
+							h( $orient['Typeorient']['lib_type_orient'] ),
 							h( $orient['Structurereferente']['lib_struc'] ),
 							h( $orient['Orientstruct']['statut_orient'] )
 						);
