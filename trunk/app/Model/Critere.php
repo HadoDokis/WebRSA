@@ -231,6 +231,7 @@
 					'"Dossier"."numdemrsa"',
 					'"Dossier"."matricule"',
 					'"Dossier"."dtdemrsa"',
+					'Typeorient.lib_type_orient',
 					'"Structurereferente"."lib_struc"',
 					'"Personne"."id"',
 					'"Personne"."nom"',
@@ -256,7 +257,7 @@
 					'Historiqueetatpe.identifiantpe',
 					'"Prestation"."rolepers"',
                     'Canton.id',
-                    'Canton.canton'
+                    'Canton.canton',
 				),
 				'recursive' => -1,
 				'joins' => array(
