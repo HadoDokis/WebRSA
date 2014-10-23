@@ -476,8 +476,17 @@
 				)
 			);
 
-			// 2. Jointure sur le passage en COV
-			$query['joins'][] = $this->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) );
+			// 2. Jointure sur le dernier passage en COV
+			$sqDernierPassagecov58 = $this->Passagecov58->sqDernier();
+			$query['joins'][] = $this->join(
+				'Passagecov58',
+				array(
+					'type' => 'LEFT OUTER',
+					'conditions' => array(
+						"Passagecov58.id IN ( {$sqDernierPassagecov58} )"
+					)
+				)
+			);
 
 			 $joinPassagecov58Cov58 = $this->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) );
 			 $joinPassagecov58Cov58['conditions'] = array(
