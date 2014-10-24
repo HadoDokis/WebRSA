@@ -843,6 +843,17 @@
 						AND nvcontratsinsertion.positioncer NOT IN ( \'annule\', \'nonvalid\' )
 			)';
 
+			$conditionExistsAutreCerRemplacement = 'EXISTS (
+				SELECT *
+					FROM contratsinsertion AS autrecontratsinsertion
+					WHERE
+						autrecontratsinsertion.personne_id = '.$this->alias.'.personne_id
+						AND autrecontratsinsertion.id <> '.$this->alias.'.id
+						AND autrecontratsinsertion.dd_ci = '.$this->alias.'.dd_ci
+						AND autrecontratsinsertion.df_ci = '.$this->alias.'.df_ci
+						AND autrecontratsinsertion.positioncer <> \'annule\'
+			)';
+
 			// Seuls certains bilans de parcours sont concernés par un CER
 			// Un CER ne concerne qu'un seul bilan de parcours
 			$conditionExistsBilanLieAuCer = 'EXISTS (
@@ -907,11 +918,23 @@
 											FROM passagescommissionseps
 											WHERE
 												passagescommissionseps.dossierep_id = dossierseps.id
-												AND passagescommissionseps.etatdossierep IN ( \'annule\', \'reporte\' )
+												AND passagescommissionseps.etatdossierep IN ( \'traite\', \'annule\' )
+												AND passagescommissionseps.id IN (
+													SELECT "dernierspassagescommissionseps"."id" AS "dernierspassagescommissionseps__id"
+														FROM "passagescommissionseps" AS "dernierspassagescommissionseps"
+															INNER JOIN "public"."commissionseps" AS "commissionseps" ON ("dernierspassagescommissionseps"."commissionep_id" = "commissionseps"."id")
+														WHERE "dernierspassagescommissionseps"."dossierep_id" = "dossierseps"."id"
+														ORDER BY "commissionseps"."dateseance" DESC, "commissionseps"."id" DESC
+														LIMIT 1
+												)
 
 									)
 						)
 			)';
+
+			// Réorientation ?
+			$typesorientsGrandSocial = '( '.implode( ', ', (array)Configure::read( 'Orientstruct.typeorientprincipale.SOCIAL' ) ).' )';
+			$typesorientsEmploi = '( '.implode( ', ', (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' ) ).' )';
 
 			$conditionsExistsReorientation = 'EXISTS(
 				SELECT *
@@ -926,7 +949,17 @@
 						AND orientsstructssvt.personne_id = '.$this->alias.'.personne_id
 						AND orientsstructspcd.date_valid < ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
 						AND orientsstructssvt.date_valid >= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE
-						AND typesorientspcd.parentid <> typesorientssvt.parentid
+						AND (
+							(
+								typesorientspcd.parentid IN '.$typesorientsGrandSocial.'
+								AND typesorientssvt.parentid IN '.$typesorientsEmploi.'
+							)
+							OR
+							(
+								typesorientspcd.parentid IN '.$typesorientsEmploi.'
+								AND typesorientssvt.parentid IN '.$typesorientsGrandSocial.'
+							)
+						)
 			)';
 
 			$return = array(
@@ -934,7 +967,12 @@
 				'annule' => array(
 					'OR' => array(
 						$this->alias.'.positioncer' => 'annule',
-						$this->alias.'.motifannulation IS NOT NULL'
+						$this->alias.'.motifannulation IS NOT NULL',
+						array(
+							$this->alias.'.df_ci < NOW()::DATE',
+							$this->alias.'.decision_ci' => 'E',
+							$conditionExistsAutreCerRemplacement
+						)
 					)
 				),
 				// 2. CER qui devraient être "Non validés"
@@ -946,7 +984,7 @@
 				),
 				// 3. CER qui devraient être en "Fin de contrat"
 				'fincontrat' => array(
-					$this->alias.'.decision_ci' => 'V',
+					$this->alias.'.decision_ci' => array( 'E', 'V' ),
 					'EXISTS (
 						SELECT *
 							FROM personnes
@@ -963,56 +1001,59 @@
 					$this->alias.'.decision_ci' => 'E',
 					$this->alias.'.df_ci >= NOW()::DATE'
 				),
-				// 5. CER qui devraient être "en cours: bilan à réaliser"
+				// 5. CER qui devraient être "En cours : Bilan à réaliser"
 				'encoursbilan' => array(
 					$this->alias.'.decision_ci' => 'V',
 					'NOW()::DATE BETWEEN ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE AND '.$this->alias.'.df_ci',
 					"NOT {$conditionExistsBilanLieAuCer}",
 				),
-				// 6. CER qui devraient être "périmé: bilan à réaliser"
+				// 6. CER qui devraient être "Périme"
+				'perime' => array(
+					$this->alias.'.df_ci < NOW()::DATE',
+					'OR' => array(
+						array(
+							$this->alias.'.decision_ci' => 'V',
+							$conditionExistsBilanLieAuCer,
+							'OR' => array(
+								$conditionExistsCerPlusRecent,
+								$conditionsExistsReorientation
+							)
+						),
+						array(
+							$this->alias.'.decision_ci' => 'E',
+							'OR' => array(
+								$conditionExistsCerPlusRecent,
+								$conditionsExistsReorientation
+							)
+						)
+					)
+				),
+				// 7. CER qui devraient être "Périmé : bilan à réaliser"
 				'perimebilanarealiser' => array(
 					$this->alias.'.decision_ci' => 'V',
 					$this->alias.'.df_ci < NOW()::DATE',
 					"NOT {$conditionExistsBilanLieAuCer}",
 				),
-				// 7. CER qui devraient être "En cours"
+				// 8. CER qui devraient être "En cours"
 				'encours' => array(
 					$this->alias.'.decision_ci' => 'V',
 					'NOW()::DATE <= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE',
 				),
-				// 8. CER qui devraient être "Bilan réalisé - En attente de décision de l'EPL Parcours"
+				// 9. CER qui devraient être "Bilan réalisé - En attente de décision de l'EPL Parcours"
 				'bilanrealiseattenteeplparcours' => array(
 					$this->alias.'.decision_ci' => 'V',
 					'( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE <= NOW()::DATE',
 					"{$conditionExistsBilanEnCoursEpLieAuCer}"
 				),
-				// 9. CER qui devraient être "Périme"
-				'perime' => array(
-					$this->alias.'.decision_ci' => 'V',
-					$this->alias.'.df_ci < NOW()::DATE',
-					'OR' => array(
-						array(
-							$conditionExistsBilanLieAuCer,
-							$conditionExistsCerPlusRecent
-						),
-						array(
-							$conditionExistsBilanLieAuCer,
-							$conditionsExistsReorientation
-						)
-					)
-				),
 				// 10. CER qui devraient être "En attente de renouvellement"
 				'attrenouv' => array(
 					$this->alias.'.decision_ci' => 'V',
 					$this->alias.'.df_ci < NOW()::DATE',
-					'OR' => array(
-						array(
-							$conditionExistsBilanLieAuCer,
-							"NOT {$conditionExistsCerPlusRecent}"
-						),
-						array(
-							$conditionExistsBilanLieAuCer,
-							"NOT {$conditionsExistsReorientation}"
+					$conditionExistsBilanLieAuCer,
+					'NOT' => array(
+						'OR' => array(
+							$conditionExistsCerPlusRecent,
+							$conditionsExistsReorientation
 						)
 					)
 				),
