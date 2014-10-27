@@ -411,6 +411,12 @@
 			// Référent du parcours
 			$querydata = $this->Foyer->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
 
+			// Ajout de l'étape du dossier d'orientation de l'allocataire pour le CG 58
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$this->forceVirtualFields = true;
+				$querydata = $this->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $querydata, $params );
+			}
+
 			return $querydata;
 		}
 

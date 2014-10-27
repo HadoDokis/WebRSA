@@ -35,7 +35,15 @@
 		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 	);
 
-	if( Configure::read( 'Cg.departement' ) == 93 ) {
+	if( Configure::read( 'Cg.departement' ) == 58 ) {
+		$row = array_merge(
+			$row,
+			array(
+				__d( 'personne', 'Personne.etat_dossier_orientation' )
+			)
+		);
+	}
+	else if( Configure::read( 'Cg.departement' ) == 93 ) {
 		$row = array_merge(
 			$row,
 			array(
@@ -110,7 +118,15 @@
 			);
 		}
 
-		if( Configure::read( 'Cg.departement' ) == 93 ) {
+		if( Configure::read( 'Cg.departement' ) == 58 ) {
+			$row = array_merge(
+				$row,
+				array(
+					value( (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), Hash::get( $contrat, 'Personne.etat_dossier_orientation' ) )
+				)
+			);
+		}
+		else if( Configure::read( 'Cg.departement' ) == 93 ) {
 			$row = array_merge(
 				$row,
 				array(

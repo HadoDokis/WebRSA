@@ -111,9 +111,9 @@
 			if( Configure::read( 'Cg.departement' ) == 58 ){
 				echo $this->Form->input( 'Dsp.exists', array( 'label' => 'Possède une DSP ?', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 				echo $this->Form->input( 'PersonneReferent.referent_id', array( 'label' => 'Travailleur social chargé de l\'évaluation', 'type' => 'select', 'options' => $referents, 'empty' => true ) );
+				echo $this->Form->input( 'Personne.etat_dossier_orientation', array( 'label' => __d( 'personne', 'Personne.etat_dossier_orientation' ), 'type' => 'select', 'options' => $etat_dossier_orientation, 'empty' => true ) );
 			}
-
-			if( Configure::read( 'Cg.departement' ) != 93 ){
+			else if( Configure::read( 'Cg.departement' ) != 93 ){
 				echo $this->Form->input( 'Orientstruct.exists', array( 'label' => 'Possède une orientation ? ', 'type' => 'select', 'options' => $exists, 'empty' => true ) );
 			}
 
@@ -170,6 +170,10 @@
 							$activite = '<tr>
 								<th>Code activité</th>
 								<td>'.value( $act, Hash::get( $dossier, 'Activite.act' ) ).'</td>
+							</tr>
+							<tr>
+								<th>'.__d( 'personne', 'Personne.etat_dossier_orientation' ).'</th>
+								<td>'.h( value( $etat_dossier_orientation, Hash::get( $dossier, 'Personne.etat_dossier_orientation' ) ) ).'</td>
 							</tr>';
 						}
 

@@ -126,6 +126,9 @@
 				)
 			);
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$this->set( 'etat_dossier_orientation', $this->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' ) );
+			}
 		}
 
 		/**
@@ -333,59 +336,62 @@
 			$details = Set::merge( $details, array( 'Adresse' => $adresseFoyer['Adresse'] ) );
 
 			// Personnes
-			$personnesFoyer = $this->Dossier->Foyer->Personne->find(
-				'all',
-				array(
-					'fields' => array(
-						'Personne.id',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.sexe',
-						'Personne.dtnai',
-						'Personne.nir',
-						'Dsp.id',
-						'Activite.act',
-						'Dossiercaf.ddratdos',
-						'Dossiercaf.dfratdos',
-						'Calculdroitrsa.toppersdrodevorsa',
-						'Prestation.rolepers',
-						'Grossesse.ddgro',
-						'Grossesse.dfgro',
-						'Grossesse.dtdeclgro',
-						'Grossesse.natfingro'
-					),
-					'conditions' => array(
-						'Personne.foyer_id' => $details['Foyer']['id'],
-						'Prestation.natprest' => 'RSA',
-						'Prestation.rolepers' => array( 'DEM', 'CJT' ),
-						'OR' => array(
-							'Activite.id IS NULL',
-							'Activite.id IN ('
-								.$this->Dossier->Foyer->Personne->Activite->sq(
-									array(
-										'alias' => 'activites',
-										'fields' => array( 'activites.id' ),
-										'conditions' => array( 'activites.personne_id = Personne.id' ),
-										'order' => array( 'activites.ddact DESC' ),
-										'limit' => 1
-									)
+			$query = array(
+				'fields' => array(
+					'Personne.id',
+					'Personne.qual',
+					'Personne.nom',
+					'Personne.prenom',
+					'Personne.sexe',
+					'Personne.dtnai',
+					'Personne.nir',
+					'Dsp.id',
+					'Activite.act',
+					'Dossiercaf.ddratdos',
+					'Dossiercaf.dfratdos',
+					'Calculdroitrsa.toppersdrodevorsa',
+					'Prestation.rolepers',
+					'Grossesse.ddgro',
+					'Grossesse.dfgro',
+					'Grossesse.dtdeclgro',
+					'Grossesse.natfingro'
+				),
+				'conditions' => array(
+					'Personne.foyer_id' => $details['Foyer']['id'],
+					'Prestation.natprest' => 'RSA',
+					'Prestation.rolepers' => array( 'DEM', 'CJT' ),
+					'OR' => array(
+						'Activite.id IS NULL',
+						'Activite.id IN ('
+							.$this->Dossier->Foyer->Personne->Activite->sq(
+								array(
+									'alias' => 'activites',
+									'fields' => array( 'activites.id' ),
+									'conditions' => array( 'activites.personne_id = Personne.id' ),
+									'order' => array( 'activites.ddact DESC' ),
+									'limit' => 1
 								)
-							.')'
-						)
-					),
-					'joins' => array(
-						$this->Dossier->Foyer->Personne->join( 'Prestation' ),
-						$this->Dossier->Foyer->Personne->join( 'Dossiercaf' ),
-						$this->Dossier->Foyer->Personne->join( 'Dsp' ),
-						$this->Dossier->Foyer->Personne->join( 'Calculdroitrsa' ),
-						$this->Dossier->Foyer->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Dossier->Foyer->Personne->join( 'Grossesse', array( 'type' => 'LEFT OUTER' ) )
-					),
-					'contain' => false,
-					'recursive' => -1
-				)
+							)
+						.')'
+					)
+				),
+				'joins' => array(
+					$this->Dossier->Foyer->Personne->join( 'Prestation' ),
+					$this->Dossier->Foyer->Personne->join( 'Dossiercaf' ),
+					$this->Dossier->Foyer->Personne->join( 'Dsp' ),
+					$this->Dossier->Foyer->Personne->join( 'Calculdroitrsa' ),
+					$this->Dossier->Foyer->Personne->join( 'Activite', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossier->Foyer->Personne->join( 'Grossesse', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'contain' => false,
+				'recursive' => -1
 			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$query = $this->Dossier->Foyer->Personne->completeQueryVfEtapeDossierOrientation58( $query, array() );
+			}
+
+			$personnesFoyer = $this->Dossier->Foyer->Personne->find( 'all', $query );
 
 			$optionsep = $this->Dossier->Foyer->Personne->Dossierep->Passagecommissionep->enums();
 			$roles = Set::extract( '{n}.Prestation.rolepers', $personnesFoyer );
@@ -796,6 +802,13 @@
 			$this->set( 'details', $details );
 
 			$this->_setOptions();
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$options = (array)Hash::get( $this->viewVars, 'options' );
+				$options['Personne']['etat_dossier_orientation'] = $this->Dossier->Foyer->Personne->enum( 'etat_dossier_orientation' );
+				$this->set( compact( 'options' ) );
+			}
+
 			$this->set( 'optionsep', $optionsep );
 		}
 

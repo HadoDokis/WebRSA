@@ -27,6 +27,7 @@
 
 	if( Configure::read( 'Cg.departement' ) == 58 ) {
 		$row[] = 'Code activité';
+		$row[] = __d( 'personne', 'Personne.etat_dossier_orientation' );
 	}
 
 	$this->Csv->addRow( $row );
@@ -63,6 +64,7 @@
 
 		if( Configure::read( 'Cg.departement' ) == 58 ) {
 			$row[] = value( $act, Hash::get( $dossier, 'Activite.act' ) );
+			$row[] = value( $etat_dossier_orientation, Hash::get( $dossier, 'Personne.etat_dossier_orientation' ) );
 		}
 
 		$this->Csv->addRow($row);

@@ -19,7 +19,7 @@
 
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDfCi', $( 'ContratinsertionDfCiFromDay' ).up( 'fieldset' ), false );
 
-                dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
+		dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
 	});
 </script>
 
@@ -158,6 +158,9 @@
 	<fieldset>
 		<legend>Filtrer par dernière orientation</legend>
 		<?php
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				echo $this->Form->input( 'Personne.etat_dossier_orientation', array( 'label' => __d( 'personne', 'Personne.etat_dossier_orientation' ), 'type' => 'select', 'options' => (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), 'empty' => true ) );
+			}
 			echo $this->Form->input( 'Orientstruct.typeorient', array( 'label' => 'Type d\'orientation', 'type' => 'select', 'empty' => true, 'options' => $typesorients )  );
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				echo $this->Form->input( 'TypeorientAExclure.id', array( 'label' => 'Type d\'orientation à exclure', 'type' => 'select', 'multiple' => 'checkbox', 'options' => $typesorientsNiveau0 )  );
@@ -228,6 +231,13 @@
 							$positioncer = Set::enum( Set::classicExtract( $contrat, 'Contratinsertion.positioncer' ), $numcontrat['positioncer'] );
 						}
 
+						$innerTableParCg = '';
+						if( Configure::write( 'Cg.departement' ) == 58 ) {
+							$innerTableParCg .= '<tr>
+								<th>'.__d( 'personne', 'Personne.etat_dossier_orientation' ).'</th>
+								<td>'.h( value( (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), Hash::get( $contrat, 'Personne.etat_dossier_orientation' ) ) ).'</td>
+							</tr>';
+						}
 
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
@@ -263,6 +273,7 @@
 									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
 									<td>'.Hash::get( $contrat, 'Referentparcours.nom_complet' ).'</td>
 								</tr>
+								'.$innerTableParCg.'
 							</tbody>
 						</table>';
 

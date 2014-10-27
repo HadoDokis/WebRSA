@@ -82,6 +82,12 @@
 					'55_999' => '+ 55 ans'
 				)
 			);
+
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$options = (array)Hash::get( $this->viewVars, 'options' );
+				$options['Personne']['etat_dossier_orientation'] = $this->Contratinsertion->Personne->enum( 'etat_dossier_orientation' );
+				$this->set( compact( 'options' ) );
+			}
 		}
 
 
