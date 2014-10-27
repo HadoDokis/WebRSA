@@ -92,6 +92,18 @@ msgstr "N° de téléphone portable"
 msgid "Personne.email"
 msgstr "Adresse mail"
 
+msgid "Personne.etat_dossier_orientation"
+msgstr "Étape du dossier d'orientation"
+
+msgid "ENUM::ETAT_DOSSIER_ORIENTATION::oriente"
+msgstr "Orienté"
+
+msgid "ENUM::ETAT_DOSSIER_ORIENTATION::en_attente"
+msgstr "En attente"
+
+msgid "ENUM::ETAT_DOSSIER_ORIENTATION::non_oriente"
+msgstr "Non orienté"
+
 ###############################################################################
 
 msgid "Foyer.Modecontact.numtel"
@@ -101,8 +113,11 @@ msgid "Foyer.Dossier.matricule"
 msgstr "N° CAF"
 
 ###############################################################################
+
 msgid "Personnes::filelink"
 msgstr "Liste des fichiers liés à la Personne"
+
+###############################################################################
 
 msgid "Personne.haspiecejointe"
 msgstr "Ajouter une pièce jointe"

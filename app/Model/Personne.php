@@ -1405,7 +1405,189 @@
 				$success = !empty( $condition ) && $success;
 			}
 
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$vfEtapeDossierOrientation58 = $this->vfEtapeDossierOrientation58();
+				$success = !empty( $vfEtapeDossierOrientation58 ) && $success;
+			}
+
 			return $success;
+		}
+
+		/**
+		 * Valeurs possibles pour le champ virtuel etat_dossier_orientation (CG 58).
+		 *
+		 * @var array
+		 */
+		public $etat_dossier_orientation = array( 'oriente', 'en_attente', 'non_oriente' );
+
+		public function enums() {
+			$cacheKey = implode( '_', array( $this->useDbConfig, $this->alias, __FUNCTION__ ) );
+			$enums = Cache::read( $cacheKey );
+
+			if( $enums === false ) {
+				$enums = parent::enums();
+
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					$field = 'etat_dossier_orientation';
+					$domain = 'personne';
+
+					if( !isset( $enums[$this->alias][$field] ) ) {
+						$fieldNameUpper = strtoupper( $field );
+
+						$list = array();
+
+						foreach( $this->{$field} as $value ) {
+							$list[$value] = __d( $domain, "ENUM::{$fieldNameUpper}::{$value}" );
+						}
+
+						$enums[$this->alias][$field] = $list;
+					}
+				}
+
+				Cache::write( $cacheKey, $enums );
+			}
+
+			return $enums;
+		}
+
+
+		/**
+		 * Étape du dossier d'orientation de l'allocataire, du point de vue du CG 58:
+		 *	- Orienté: l'allocataire possède une orientation effective
+		 *	- En attente: l'allocataire ne possède pas d'orientation effective,
+		 *		mais possède un dossier de  COV ou d'EP pouvant entraîner une orientation.
+		 *	- Non orienté: l'allocataire ne possède pas d'orientation effective et
+		 *		ne possède pas de dossier de COV ou d'EP pouvant entraîner une orientation.
+		 *
+		 * INFO: les tables des sous-requêtes sont aliasées et en minuscules (sinon,
+		 * ça pose un problème pour les conditions).
+		 *
+		 * @param string $personneId L'alias du champ Personne.id (défaut avec l'alias du modèle)
+		 * @return string
+		 */
+		public function vfEtapeDossierOrientation58( $personneId = null ) {
+			$personneId = ( $personneId !== null ? $personneId : "{$this->alias}.{$this->primaryKey}" );
+			$cacheKey = implode( '_', array( $this->useDbConfig, $this->alias, __FUNCTION__, $personneId ) );
+			$return = Cache::read( $cacheKey );
+
+			if( $return === false ) {
+				// 1. Orientation effective ?
+				$query = array(
+					'fields' => array(
+						'Orientstruct.id'
+					),
+					'contain' => false,
+					'conditions' => array(
+						"Orientstruct.personne_id = {$personneId}",
+						'Orientstruct.statut_orient' => 'Orienté'
+					),
+					'limit' => 1
+				);
+
+				$existsOrientsstruct = $this->Orientstruct->sq( $query );
+				$existsOrientsstruct = array_words_replace(
+					array( $existsOrientsstruct ),
+					array(
+						'Orientstruct' => 'orientsstructseffectives'
+					)
+				);
+				$existsOrientsstruct = "EXISTS( {$existsOrientsstruct[0]} )";
+
+				// 2. Passage en EP pouvant conduire à une réorientation ?
+				$Commissionep = $this->Dossierep->Passagecommissionep->Commissionep;
+
+				$query = array(
+					'fields' => array(
+						'Passagecommissionep.id'
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Dossierep->join( 'Passagecommissionep', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(
+						"Dossierep.personne_id = {$personneId}",
+						'Dossierep.themeep' => $this->Dossierep->getThematiquesReorientations(),
+						'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours
+					),
+					'limit' => 1
+				);
+
+				$existsPassagecommissionep = $this->Dossierep->sq( $query );
+				$existsPassagecommissionep = array_words_replace(
+					array( $existsPassagecommissionep ),
+					array(
+						'Dossierep' => 'dossiersepsorients',
+						'Passagecommissionep' => 'passagescommissionsepsorients',
+						'Commissionep' => 'commissionsepsorients',
+					)
+				);
+				$existsPassagecommissionep = "EXISTS( {$existsPassagecommissionep[0]} )";
+
+				// 3. Passage en COV pouvant conduire à une réorientation ?
+				$Cov58 = $this->Dossiercov58->Passagecov58->Cov58;
+
+				$query = array(
+					'fields' => array(
+						'Passagecov58.id'
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Dossiercov58->join( 'Passagecov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Dossiercov58->Passagecov58->join( 'Cov58', array( 'type' => 'LEFT OUTER' ) )
+					),
+					'conditions' => array(
+						"Dossiercov58.personne_id = {$personneId}",
+						'Dossiercov58.themecov58' => $this->Dossiercov58->getThematiquesReorientations(),
+						'Cov58.etatcov' => $Cov58::$etatsEnCours
+					),
+					'limit' => 1
+				);
+
+				$existsPassagecov58 = $this->Dossiercov58->sq( $query );
+				$existsPassagecov58 = array_words_replace(
+					array( $existsPassagecov58 ),
+					array(
+						'Dossiercov58' => 'dossierscovs58orients',
+						'Passagecov58' => 'passagescovs58orients',
+						'Cov58' => 'covs58orients',
+					)
+				);
+				$existsPassagecov58 = "EXISTS( {$existsPassagecov58[0]} )";
+
+				$return = '( CASE
+						WHEN ( '.$existsOrientsstruct.' ) THEN \'oriente\'
+						WHEN ( '.$existsPassagecommissionep.' OR '.$existsPassagecov58.' ) THEN \'en_attente\'
+						ELSE \'non_oriente\'
+					END )';
+
+				Cache::write( $cacheKey, $return );
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Permet de compléter un querydata avec le champ virtuel Personne.etat_dossier_orientation
+		 * et d'ajouter une condition concernant ce champ s'il existe une valeur
+		 * non nulle dans les filtres envoyés par le moteur de recherche. (CG 58)
+		 *
+		 * @param array $query Le querydata à compléter.
+		 * @param array $search Les filtres envoyés par le moteur de recherche.
+		 * @return array
+		 */
+		public function completeQueryVfEtapeDossierOrientation58( array $query, array $search ) {
+			$field = 'Personne.etat_dossier_orientation';
+
+			$this->virtualFields['etat_dossier_orientation'] = $this->vfEtapeDossierOrientation58();
+			$query['fields'][] = $field;
+
+			$etat_dossier_orientation = Hash::get( $search, $field );
+			if( !empty( $etat_dossier_orientation ) ) {
+				$query['conditions'][$field] = $etat_dossier_orientation;
+			}
+
+			return $query;
 		}
 	}
 ?>

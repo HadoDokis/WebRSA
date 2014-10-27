@@ -197,6 +197,13 @@
 						echo thead( 10 );
 					?>
 						<tbody>
+							<?php if( Configure::read( 'Cg.departement' ) == 58 ):?>
+								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+									<th><?php echo __d( 'personne', 'Personne.etat_dossier_orientation' ) ?></th>
+									<td><?php echo value( $options['Personne']['etat_dossier_orientation'], Hash::get( $details, 'DEM.Personne.etat_dossier_orientation' ) );?></td>
+									<td><?php echo value( $options['Personne']['etat_dossier_orientation'], Hash::get( $details, 'CJT.Personne.etat_dossier_orientation' ) );?></td>
+								</tr>
+							<?php endif;?>
 							<?php if( Configure::read( 'Cg.departement' ) == 93 ):?>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th><?php echo __d( 'orientstruct', 'Orientstruct.origine' ) ?></th>
@@ -238,11 +245,13 @@
 								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
 								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.date_valid' ) );?></td>
 							</tr>
-							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
-								<th>Statut de l'orientation</th>
-								<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
-								<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
-							</tr>
+							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
+								<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
+									<th>Statut de l'orientation</th>
+									<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
+									<td><?php echo Set::classicExtract( $details, 'CJT.Orientstruct.derniere.Orientstruct.statut_orient' );?></td>
+								</tr>
+							<?php endif;?>
 							<tr class="<?php echo ( ( $rowCnt++ ) % 2 ? 'even' : 'odd' )?>">
 								<th>Rang de l'orientation</th>
 								<td><?php echo Set::classicExtract( $details, 'DEM.Orientstruct.derniere.Orientstruct.rgorient' );?></td>
