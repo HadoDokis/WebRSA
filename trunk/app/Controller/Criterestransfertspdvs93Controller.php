@@ -72,13 +72,7 @@
 				$type = $this->Session->read( 'Auth.User.type' );
 
 				if( stristr( $type, 'externe_' ) !== false ) {
-					if( $type === 'externe_ci' ) {
-						$structurereferente_id = $this->Session->read( 'Auth.Referent.structurereferente_id' );
-					}
-					else {
-						$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
-					}
-
+					$structurereferente_id = $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) );
 					$query['conditions'][] = array( 'VxStructurereferente.id' => $structurereferente_id );
 				}
 			}
