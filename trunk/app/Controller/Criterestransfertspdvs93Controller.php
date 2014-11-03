@@ -60,6 +60,33 @@
 		public $uses = array( 'Criteretransfertpdv93', 'Dossier', 'Option' );
 
 		/**
+		 * Permet de limiter les résultats de la recherche à ceux dont la nouvelle
+		 * orientation est dans la structure référente de l'utilisateur connecté
+		 * lorsque celui-ci est un externe (CG 93).
+		 *
+		 * @param array $query
+		 * @return array
+		 */
+		protected function _completeSearchQuery( $query ) {
+			if( Configure::read( 'Cg.departement' ) == 93 ) {
+				$type = $this->Session->read( 'Auth.User.type' );
+
+				if( stristr( $type, 'externe_' ) !== false ) {
+					if( $type === 'externe_ci' ) {
+						$structurereferente_id = $this->Session->read( 'Auth.Referent.structurereferente_id' );
+					}
+					else {
+						$structurereferente_id = $this->Session->read( 'Auth.User.structurereferente_id' );
+					}
+
+					$query['conditions'][] = array( 'VxStructurereferente.id' => $structurereferente_id );
+				}
+			}
+
+			return $query;
+		}
+
+		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
 		 * @return void
@@ -74,6 +101,8 @@
 						null
 					)
 				);
+
+				$querydata['Dossier'] = $this->_completeSearchQuery( $querydata['Dossier'] );
 
 				$this->paginate = $querydata;
 				$results = $this->paginate(
