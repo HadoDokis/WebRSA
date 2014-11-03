@@ -98,6 +98,14 @@ $irregularPlural = array(
     'codefamilleromev3' => 'codesfamillesromev3',
     'codemetierromev3' => 'codesmetiersromev3',
     'codeappellationromev3' => 'codesappellationsromev3',
+	// Début codes ROME V3, nouvelle version
+	'familleromev3' => 'famillesromesv3',
+	'domaineromev3' => 'domainesromesv3',
+	'metierromev3' => 'metiersromesv3',
+	'appellationromev3' => 'appellationsromesv3',
+	'correspondanceromev2v3' => 'correspondancesromesv2v3',
+	'catalogueromev3' => 'cataloguesromesv3',
+	// Fin codes ROME V3, nouvelle version
     'cohorteci' => 'cohortesci',
     'cohortecomiteapre' => 'cohortescomitesapres',
     'cohorteindu' => 'cohortesindus',

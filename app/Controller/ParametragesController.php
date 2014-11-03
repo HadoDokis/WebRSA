@@ -50,7 +50,11 @@
 					? array( 'controller' => 'cers93', 'action' => 'indexparams' )
 					: null
 				,
-                                'Codes ROME V3' => array( 'controller' => 'codesromev3', 'action' => 'index' ),
+				'Codes ROME V3' => array( 'controller' => 'codesromev3', 'action' => 'index' ),
+				__d( 'parametrages', '/Parametrages/cataloguesromesv3/:heading' ) => ( in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) )
+					? array( 'controller' => 'parametrages', 'action' => 'cataloguesromesv3' )
+					: null
+				,
 				'CUIs' => array( 'controller' => 'cuis', 'action' => 'indexparams' ),
 				'DSPs' => array( 'controller' => 'gestionsdsps', 'action' => 'index' ),
 				'Équipes pluridisciplinaires' => array( 'controller' => 'gestionseps', 'action' => 'index' ),
@@ -121,7 +125,22 @@
 			}
 
 			$this->set( compact( 'links' ) );
-			$this->render( 'modulefse93' );
+			$this->render( 'modulefse93' ); // TODO: une vue plus générique
+		}
+
+		public function cataloguesromesv3() {
+			$links = array(
+				// TODO
+				//__d( 'cataloguesromesv3', '/Cataloguesromesv3/search/:heading' ) => array( 'controller' => 'cataloguesromesv3', 'action' => 'search' ),
+			);
+			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+			foreach( $Catalogueromev3->modelesParametrages as $modelName ) {
+				$tableName = Inflector::tableize( $modelName );
+				$links[__d( 'cataloguesromesv3', "/Cataloguesromesv3/{$tableName}/:heading" )] = array( 'controller' => 'cataloguesromesv3', 'action' => $tableName );
+			}
+
+			$this->set( compact( 'links' ) );
+			$this->render( 'modulefse93' ); // TODO: une vue plus générique
 		}
 	}
 

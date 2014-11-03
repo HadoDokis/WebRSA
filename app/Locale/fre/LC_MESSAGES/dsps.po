@@ -1,0 +1,67 @@
+# Traductions de dsps.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+# Codes ROME V3
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Dernière activité
+# ------------------------------------------------------------------------------
+msgid "Dsp.deract"
+msgstr "Dernière activité"
+
+msgid "Dsp.deractfamilleromev3_id"
+msgstr "Code famille de la dernière activité"
+
+msgid "Dsp.deractdomaineromev3_id"
+msgstr "Code domaine de la dernière activité"
+
+msgid "Dsp.deractmetierromev3_id"
+msgstr "Code métier de la dernière activité"
+
+msgid "Dsp.deractappellationromev3_id"
+msgstr "Appellation de la dernière activité"
+
+# ------------------------------------------------------------------------------
+# Dernière activité dominante
+# ------------------------------------------------------------------------------
+msgid "Dsp.deractdomi"
+msgstr "Dernière activité dominante"
+
+msgid "Dsp.deractdomifamilleromev3_id"
+msgstr "Code famille de la dernière activité"
+
+msgid "Dsp.deractdomidomaineromev3_id"
+msgstr "Code domaine de la dernière activité"
+
+msgid "Dsp.deractdomimetierromev3_id"
+msgstr "Code métier de la dernière activité"
+
+msgid "Dsp.deractdomiappellationromev3_id"
+msgstr "Appellation de la dernière activité"
+
+# ------------------------------------------------------------------------------
+# Emploi recherché
+# ------------------------------------------------------------------------------
+msgid "Dsp.actrech"
+msgstr "Emploi recherché"
+
+msgid "Dsp.actrechfamilleromev3_id"
+msgstr "Code famille de l'emploi recherché"
+
+msgid "Dsp.actrechdomaineromev3_id"
+msgstr "Code domaine de l'emploi recherché"
+
+msgid "Dsp.actrechmetierromev3_id"
+msgstr "Code métier de l'emploi recherché"
+
+msgid "Dsp.actrechappellationromev3_id"
+msgstr "Appellation de l'emploi recherché"
