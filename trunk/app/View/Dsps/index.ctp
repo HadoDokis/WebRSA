@@ -52,7 +52,33 @@
 			<?php
 				echo $this->Form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Dsp']['nivetu'], 'empty' => true ) );
 				echo $this->Form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Dsp']['hispro'], 'empty' => true ) );
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
+				if( in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ) {
+					echo $this->Romev3->fieldset(
+						array(
+							'modelName' => 'Dsp',
+							'prefix' => 'deract',
+							'options' => $options
+						)
+					);
+
+					echo $this->Romev3->fieldset(
+						array(
+							'modelName' => 'Dsp',
+							'prefix' => 'deractdomi',
+							'options' => $options
+						)
+					);
+
+					echo $this->Romev3->fieldset(
+						array(
+							'modelName' => 'Dsp',
+							'prefix' => 'actrech',
+							'options' => $options
+						)
+					);
+
+					// INFO: codes ROME v2
+					// TODO: les textes libres à garder
 					echo '<fieldset><legend>Dernière activité dominante</legend>';
 						echo $this->Form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
 						echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Si le secteur est non présent dans la liste, précisez " ) );

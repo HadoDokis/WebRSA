@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Coderomemetierdsp66.
 	 *
@@ -24,6 +24,17 @@
 		);
 
 		public $hasMany = array(
+			'Correspondanceromev2v3' => array(
+				'className' => 'Correspondanceromev2v3',
+				'foreignKey' => 'coderomemetierdsp66_id',
+				'conditions' => null,
+				'order' => null,
+				'limit' => null,
+				'offset' => null,
+				'dependent' => true,
+				'exclusive' => null,
+				'finderQuery' => null
+			),
 			'Libactdomi66MetierDsp' => array(
 				'className' => 'Dsp',
 				'foreignKey' => 'libactdomi66_metier_id',

@@ -25,7 +25,22 @@
 				)
 			),
 			'Formattable' => array(
-				'suffix' => array( 'libderact66_metier_id', 'libactdomi66_metier_id', 'libemploirech66_metier_id' )
+				'suffix' => array(
+					'libderact66_metier_id',
+					'libactdomi66_metier_id',
+					'libemploirech66_metier_id',
+					// Début ROME V3
+					'deractdomaineromev3_id',
+					'deractmetierromev3_id',
+					'deractappellationromev3_id',
+					'deractdomidomaineromev3_id',
+					'deractdomimetierromev3_id',
+					'deractdomiappellationromev3_id',
+					'actrechdomaineromev3_id',
+					'actrechmetierromev3_id',
+					'actrechappellationromev3_id'
+					// Fin ROME V3
+				)
 			)
 		);
 
@@ -85,7 +100,96 @@
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
-			)
+			),
+			// Début ROME V3
+			// 1. Dernière activité
+			'Deractfamilleromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractfamilleromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractdomaineromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractdomaineromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractmetierromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractmetierromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractappellationromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractappellationromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			// 2. Dernière activité dominante
+			'Deractdomifamilleromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractdomifamilleromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractdomidomaineromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractdomidomaineromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractdomimetierromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractdomimetierromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Deractdomiappellationromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'deractdomiappellationromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			// 3. Activité recherchée
+			'Actrechfamilleromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'actrechfamilleromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Actrechdomaineromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'actrechdomaineromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Actrechmetierromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'actrechmetierromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			'Actrechappellationromev3' => array( // TODO: dans l'autre sens
+				'className' => 'Familleromev3',
+				'foreignKey' => 'actrechappellationromev3_id',
+				'conditions' => '',
+				'fields' => '',
+				'order' => ''
+			),
+			// Fin ROME V3
 		);
 
 		public $hasMany = array(

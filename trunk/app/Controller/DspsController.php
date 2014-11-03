@@ -17,9 +17,9 @@
 	{
 		public $name = 'Dsps';
 
-		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv' );
+		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv', 'Romev3' );
 
-		public $uses = array( 'Dsp', 'DspRev', 'Option' );
+		public $uses = array( 'Dsp', 'DspRev', 'Option', 'Familleromev3' );
 
 		public $components = array(
 			'Jetons2',
@@ -935,6 +935,14 @@
 				$dsp['Dsp']['libderact66_metier_id'] = $dsp['Dsp']['libsecactderact66_secteur_id'].'_'.$dsp['Dsp']['libderact66_metier_id'];
 				$dsp['Dsp']['libactdomi66_metier_id'] = $dsp['Dsp']['libsecactdomi66_secteur_id'].'_'.$dsp['Dsp']['libactdomi66_metier_id'];
 				$dsp['Dsp']['libemploirech66_metier_id'] = $dsp['Dsp']['libsecactrech66_secteur_id'].'_'.$dsp['Dsp']['libemploirech66_metier_id'];
+
+				// Début ROME V3
+				foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
+					$dsp['Dsp']["{$prefix}appellationromev3_id"] = $dsp['Dsp']["{$prefix}metierromev3_id"].'_'.$dsp['Dsp']["{$prefix}appellationromev3_id"];
+					$dsp['Dsp']["{$prefix}metierromev3_id"] = $dsp['Dsp']["{$prefix}domaineromev3_id"].'_'.$dsp['Dsp']["{$prefix}metierromev3_id"];
+					$dsp['Dsp']["{$prefix}domaineromev3_id"] = $dsp['Dsp']["{$prefix}familleromev3_id"].'_'.$dsp['Dsp']["{$prefix}domaineromev3_id"];
+				}
+				// Fin ROME V3
 				$this->request->data = $dsp;
 			}
 
@@ -942,6 +950,22 @@
 			$this->set( 'dsp', $dsp );
 			$this->set( 'personne_id', $dsp['Dsp']['personne_id'] );
 			$this->set( 'urlmenu', ( $this->action === 'edit' ? "/dsps/edit/{$dsp['Dsp']['personne_id']}" : "/dsps/histo/{$dsp['Dsp']['personne_id']}" ) );
+
+			// Options
+			// Début ROME V3
+			$options = (array)Hash::get( $this->viewVars, 'options' );
+			// TODO: dans le modèle + optimiser, copy/paste
+			foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
+				$tmp = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->options();
+				$options['Dsp']["{$prefix}familleromev3_id"] = Hash::get( $tmp, "Domaineromev3.familleromev3_id" );
+				$options['Dsp']["{$prefix}domaineromev3_id"] = Hash::get( $tmp, "Metierromev3.domaineromev3_id" );
+				$options['Dsp']["{$prefix}metierromev3_id"] = Hash::get( $tmp, "Appellationromev3.metierromev3_id" );
+				$options['Dsp']["{$prefix}appellationromev3_id"] = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->foo();
+			}
+			//debug( $options );
+			$this->set( compact( 'options' ) );
+			// Fin ROME V3
+
 			$this->render( '_add_edit' );
 		}
 
@@ -986,6 +1010,17 @@
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+
+			$options = (array)Hash::get( $this->viewVars, 'options' );
+			// TODO: dans le modèle + optimiser, copy/paste
+			foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
+				$tmp = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->options();
+				$options['Dsp']["{$prefix}familleromev3_id"] = Hash::get( $tmp, "Domaineromev3.familleromev3_id" );
+				$options['Dsp']["{$prefix}domaineromev3_id"] = Hash::get( $tmp, "Metierromev3.domaineromev3_id" );
+				$options['Dsp']["{$prefix}metierromev3_id"] = Hash::get( $tmp, "Appellationromev3.metierromev3_id" );
+				$options['Dsp']["{$prefix}appellationromev3_id"] = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->foo();
+			}
+			$this->set( compact( 'options' ) );
 		}
 
 		/**

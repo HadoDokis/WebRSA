@@ -1580,6 +1580,12 @@ msgstr "Paramétrage"
 msgid "Parametrages:index"
 msgstr "Accès aux paramétrages"
 
+msgid "Parametrages:fichesprescriptions93"
+msgstr "Accès au paramétrage des fiches de prescription (CG 93)"
+
+msgid "Parametrages:cataloguesromesv3"
+msgstr "Accès au paramétrage du catalogue ROME V3"
+
 ###############################################################################
 
 msgid "Module:Parametresfinanciers"
@@ -3466,3 +3472,19 @@ msgstr "Édition d'un modèle de mail lié au CUI"
 
 msgid "Textsmailscuis66:delete"
 msgstr "Suppression d'un modèle de mail lié au CUI"
+
+#===============================================================================
+# Paramétrage catalogue ROME V3
+#===============================================================================
+
+msgid "Module:Cataloguesromesv3"
+msgstr "Paramétrage du catalogue ROME V3 (nouveau)"
+
+msgid "Cataloguesromesv3:index"
+msgstr "Visualisation des éléments du catalogue"
+
+msgid "Cataloguesromesv3:edit"
+msgstr "Ajout / modification d'un élément du catalogue"
+
+msgid "Cataloguesromesv3:delete"
+msgstr "Suppression d'un élément du catalogue"
