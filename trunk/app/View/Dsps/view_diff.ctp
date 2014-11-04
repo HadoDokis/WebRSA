@@ -147,6 +147,18 @@
 			$liste = array( 'DspRev.hispro', 'DspRev.libsecactderact', 'DspRev.libderact', 'DspRev.cessderact', 'DspRev.topdomideract', 'DspRev.libactdomi', 'DspRev.libsecactdomi', 'DspRev.duractdomi', 'DspRev.inscdememploi', 'DspRev.topisogrorechemploi', 'DspRev.accoemploi', 'DspRev.libcooraccoemploi', 'DspRev.topprojpro', 'DspRev.libemploirech', 'DspRev.libsecactrech', 'DspRev.topcreareprientre', 'DspRev.concoformqualiemploi');
 		}
 
+		if( Configure::read( 'Romev3.enabled' ) ) { // TODO: attention, les libellés sont au début, le reste à la fin
+			foreach( $prefixes as $prefix ) {
+				foreach( $suffixes as $suffix ) {
+					$alias = Inflector::classify( "{$prefix}{$suffix}romev3" );
+					if( $suffix !== 'appellation' ) {
+						$liste[] = "{$alias}.code";
+					}
+					$liste[] = "{$alias}.name";
+				}
+			}
+		}
+
 		echo affiche('<h2>Situation professionnelle</h2>', $diff, $dsprevact, $dsprevold, $liste, $options);
 
 		if ($cg=='cg58')

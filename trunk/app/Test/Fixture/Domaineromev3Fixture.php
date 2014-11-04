@@ -32,6 +32,11 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'familleromev3_id' => 1,
+				'code' => '11',
+				'name' => 'Engins agricoles et forestiers'
+			)
 		);
 
 	}

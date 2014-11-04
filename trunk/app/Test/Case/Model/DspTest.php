@@ -47,6 +47,15 @@
 			'app.DetailprojproRev',
 			'app.DetailfreinformRev',
 			'app.DetailconfortRev',
+			'app.Familleromev3',
+			'app.Domaineromev3',
+			'app.Metierromev3',
+			'app.Appellationromev3',
+			'app.Foyer',
+			'app.Dossier',
+			'app.Adressefoyer',
+			'app.Adresse',
+			'app.Prestation',
 		);
 
 		/**
@@ -134,6 +143,51 @@
 			// On s'assure qu'il n'y a qu'une création de Dsp
 			$this->assertEqual( $this->Dsp->id, 3, var_export( $this->Dsp->id, true ) );
 			$this->assertEqual( $this->Dsp->DspRev->id, false, var_export( $this->Dsp->DspRev->id, true ) );
+		}
+
+		/**
+		 * Test de la méthode Dsp::searchQuery().
+		 */
+		public function testSearchQuery() {
+			$result = $this->Dsp->searchQuery();
+			$result = Hash::combine( $result, 'joins.{n}.alias', 'joins.{n}.type' );
+
+			$expected = array(
+				'Foyer' => 'INNER',
+				'Dossier' => 'INNER',
+				'Prestation' => 'INNER',
+				'Adressefoyer' => 'INNER',
+				'Adresse' => 'INNER',
+				'Situationdossierrsa' => 'INNER',
+				'DspRev' => 'LEFT OUTER',
+				'Dsp' => 'LEFT OUTER',
+				'Deractfamilleromev3' => 'LEFT OUTER',
+				'Deractfamilleromev3Rev' => 'LEFT OUTER',
+				'Deractdomaineromev3' => 'LEFT OUTER',
+				'Deractdomaineromev3Rev' => 'LEFT OUTER',
+				'Deractmetierromev3' => 'LEFT OUTER',
+				'Deractmetierromev3Rev' => 'LEFT OUTER',
+				'Deractappellationromev3' => 'LEFT OUTER',
+				'Deractappellationromev3Rev' => 'LEFT OUTER',
+				'Deractdomifamilleromev3' => 'LEFT OUTER',
+				'Deractdomifamilleromev3Rev' => 'LEFT OUTER',
+				'Deractdomidomaineromev3' => 'LEFT OUTER',
+				'Deractdomidomaineromev3Rev' => 'LEFT OUTER',
+				'Deractdomimetierromev3' => 'LEFT OUTER',
+				'Deractdomimetierromev3Rev' => 'LEFT OUTER',
+				'Deractdomiappellationromev3' => 'LEFT OUTER',
+				'Deractdomiappellationromev3Rev' => 'LEFT OUTER',
+				'Actrechfamilleromev3' => 'LEFT OUTER',
+				'Actrechfamilleromev3Rev' => 'LEFT OUTER',
+				'Actrechdomaineromev3' => 'LEFT OUTER',
+				'Actrechdomaineromev3Rev' => 'LEFT OUTER',
+				'Actrechmetierromev3' => 'LEFT OUTER',
+				'Actrechmetierromev3Rev' => 'LEFT OUTER',
+				'Actrechappellationromev3' => 'LEFT OUTER',
+				'Actrechappellationromev3Rev' => 'LEFT OUTER'
+			);
+
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>

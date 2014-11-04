@@ -111,21 +111,21 @@
 				'order' => ''
 			),
 			'Deractdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'deractdomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'deractmetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'deractappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',
@@ -140,21 +140,21 @@
 				'order' => ''
 			),
 			'Deractdomidomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'deractdomidomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractdomimetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'deractdomimetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractdomiappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'deractdomiappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',
@@ -169,21 +169,21 @@
 				'order' => ''
 			),
 			'Actrechdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'actrechdomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Actrechmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'actrechmetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Actrechappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'actrechappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',

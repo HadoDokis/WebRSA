@@ -914,3 +914,6 @@ body.statistiquesministerielles ul.actions li.action a {
 body.cataloguesromesv3 ul.actions li.action a.cataloguesromesv3.index {
 	background-image: url( ../img/icons/application_form_magnify.png );
 }
+body.dsps.index .innerTable {
+    min-width: 40em;
+}

@@ -52,7 +52,7 @@
 			<?php
 				echo $this->Form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Dsp']['nivetu'], 'empty' => true ) );
 				echo $this->Form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Dsp']['hispro'], 'empty' => true ) );
-				if( in_array( Configure::read( 'Cg.departement' ), array( 66, 93 ) ) ) {
+				if( Configure::read( 'Romev3.enabled' ) ) {
 					echo $this->Romev3->fieldset(
 						array(
 							'modelName' => 'Dsp',
@@ -148,6 +148,7 @@
 					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+					<!-- TODO: ROME v3 -->
 					<?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
 						<th>Code secteur activité</th>
 						<th>Code métier</th>
@@ -171,6 +172,13 @@
 						<th>Obstacles à la recherche d'emploi</th>
 					<?php endif; ?>
 
+					<?php if( Configure::read( 'Romev3.enabled' ) ):?>
+						<th>Domaine dernière activité dominante</th>
+						<th>Métier activité dominante</th>
+						<th>Domaine activité recherchée</th>
+						<th>Métier activité recherchée</th>
+					<?php endif; ?>
+
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
@@ -180,43 +188,58 @@
 					<?php
 						$title = $dsp['Dossier']['numdemrsa'];
 
+						$innerRows = '<tr>
+							<th>Date de naissance</th>
+							<td>'.date_short( $dsp['Personne']['dtnai'] ).'</td>
+						</tr>
+						<tr>
+							<th>Code INSEE</th>
+							<td>'.$dsp['Adresse']['numcom'].'</td>
+						</tr>
+						<tr>
+							<th>NIR</th>
+							<td>'.$dsp['Personne']['nir'].'</td>
+						</tr>
+						<tr>
+							<th>État du dossier</th>
+							<td>'.$etatdosrsa[$dsp['Situationdossierrsa']['etatdosrsa']].'</td>
+						</tr>
+						<tr>
+							<th>Niveau étude</th>
+							<td>'.Set::enum( $dsp['Donnees']['nivetu'], $options['Dsp']['nivetu'] ).'</td>
+						</tr>
+						<tr>
+							<th>Passé pofessionnel</th>
+							<td>'.Set::enum( $dsp['Donnees']['hispro'], $options['Dsp']['hispro'] ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
+							<td>'.Hash::get( $dsp, 'Structurereferenteparcours.lib_struc' ).'</td>
+						</tr>
+						<tr>
+							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
+							<td>'.Hash::get( $dsp, 'Referentparcours.nom_complet' ).'</td>
+						</tr>';
+
+						// Codes ROME V3
+						if( Configure::read( 'Romev3.enabled' ) ) {
+							foreach( $prefixes as $prefix ) {
+								foreach( $suffixes as $suffix ) {
+									$modelName = Inflector::classify( "{$prefix}{$suffix}romev3" );
+									$innerRows .= '<tr>
+										<th>'.__d( 'dsps', "Dsp.{$prefix}{$suffix}romev3_id" ).'</th>
+										<td>'.h( Hash::get( $dsp, "{$modelName}.name" ) ).'</td>
+									</tr>';
+								}
+							}
+						}
+
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
-								<tr>
-									<th>Date de naissance</th>
-									<td>'.date_short( $dsp['Personne']['dtnai'] ).'</td>
-								</tr>
-								<tr>
-									<th>Code INSEE</th>
-									<td>'.$dsp['Adresse']['numcom'].'</td>
-								</tr>
-								<tr>
-									<th>NIR</th>
-									<td>'.$dsp['Personne']['nir'].'</td>
-								</tr>
-								<tr>
-									<th>État du dossier</th>
-									<td>'.$etatdosrsa[$dsp['Situationdossierrsa']['etatdosrsa']].'</td>
-								</tr>
-								<tr>
-									<th>Niveau étude</th>
-									<td>'.Set::enum( $dsp['Donnees']['nivetu'], $options['Dsp']['nivetu'] ).'</td>
-								</tr>
-								<tr>
-									<th>Passé pofessionnel</th>
-									<td>'.Set::enum( $dsp['Donnees']['hispro'], $options['Dsp']['hispro'] ).'</td>
-								</tr>
-								<tr>
-									<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
-									<td>'.Hash::get( $dsp, 'Structurereferenteparcours.lib_struc' ).'</td>
-								</tr>
-								<tr>
-									<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
-									<td>'.Hash::get( $dsp, 'Referentparcours.nom_complet' ).'</td>
-								</tr>
+								'.$innerRows.'
 							</tbody>
 						</table>';
-// debug($dsp);
+
 						$libderact = '';
 						$libsecactderact = '';
 
@@ -307,6 +330,14 @@
 								}
 							}
 
+							// Code ROME V3
+							if( Configure::read( 'Romev3.enabled' ) ) {
+								$arrayData[] = h( $dsp['Deractdomidomaineromev3']['name'] );
+								$arrayData[] = h( $dsp['Deractdomimetierromev3']['name'] );
+								$arrayData[] = h( $dsp['Actrechdomaineromev3']['name'] );
+								$arrayData[] = h( $dsp['Actrechmetierromev3']['name'] );
+							}
+
 							$arrayData = array_merge(
 								$arrayData,
 								array(
@@ -348,7 +379,6 @@
 	<?php else:?>
 		<p>Vos critères n'ont retourné aucun dossier.</p>
 	<?php endif?>
-
 <?php endif?>
 
 <?php echo $this->Search->observeDisableFormOnSubmit( 'Search' ); ?>

@@ -295,7 +295,7 @@
 		 * @return array|false
 		 */
 		protected function _processCorrespondanceromev2v3( array $row, array $data, $metierromev3, $appellationromev3 ) {
-			$record = false;
+			$record = true;
 
 			if( !empty( $metierromev3 ) && !empty( $appellationromev3 ) ) {
 				$code = Hash::get( $data, 'Coderomemetierdsp66.code' );
@@ -388,13 +388,17 @@
 		}
 
 		/**
-		 * Surcharge de la méthode startup pour vérifier que le département soit
-		 * uniquement le 93 et démarrage de la barre de progression.
+		 * Surcharge de la méthode startup pour vérifier que le département ait
+		 * configuré l'utilisation des codes ROME V3 dans le webrsa.inc et démarrage
+		 * de la barre de progression.
 		 */
 		public function startup() {
 			parent::startup();
 
-			$this->checkDepartement( array( 66, 93 ) );
+			if( !Configure::read( 'Romev3.enabled' ) ) {
+				$msgstr = 'Ce shell est utilisé pour les codes ROME V3, pour l\'utiliser, merci de passer la valeur de "Romev3.enabled" à true dans le fichier app/Config/webrsa.inc';
+				$this->error( $msgstr );
+			}
 
 			$this->XProgressBar->start( $this->_Csv->count() );
 		}

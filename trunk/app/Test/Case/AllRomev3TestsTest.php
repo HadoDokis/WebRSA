@@ -42,7 +42,7 @@
 		 */
 		public static function suite() {
 			$Suite = new CakeTestSuite( 'Suite de tests unitaires du module "ROME V3"' );
-			$filters = array( 'romev3' );
+			$filters = array( 'romev3', 'romesv3' );
 			self::addTestDirectoryRecursiveFilter( $Suite, TESTS.DS.'Case'.DS, $filters );
 			return $Suite;
 		}

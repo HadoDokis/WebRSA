@@ -32,6 +32,10 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'metierromev3_id' => 1,
+				'name' => 'Conducteur / Conductrice d\'engins d\'exploitation agricole'
+			)
 		);
 
 	}

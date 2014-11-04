@@ -32,6 +32,10 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'code' => 'A',
+				'name' => 'AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX'
+			)
 		);
 
 	}
