@@ -817,3 +817,79 @@ msgstr "Non"
 
 msgid "ENUM::SUIVIMEDICAL::O"
 msgstr "Oui"
+
+# ==============================================================================
+# Codes ROME V3
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Dernière activité
+# ------------------------------------------------------------------------------
+msgid "Deractfamilleromev3.code"
+msgstr "Code famille de la dernière activité"
+
+msgid "Deractfamilleromev3.name"
+msgstr "Libellé famille de la dernière activité"
+
+msgid "Deractdomaineromev3.code"
+msgstr "Code domaine de la dernière activité"
+
+msgid "Deractdomaineromev3.name"
+msgstr "Libellé domaine de la dernière activité"
+
+msgid "Deractmetierromev3.code"
+msgstr "Code métier de la dernière activité"
+
+msgid "Deractmetierromev3.name"
+msgstr "Libellé métier de la dernière activité"
+
+msgid "Deractappellationromev3.name"
+msgstr "Appellation de la dernière activité"
+
+# ------------------------------------------------------------------------------
+# Dernière activité dominante
+# ------------------------------------------------------------------------------
+msgid "Deractdomifamilleromev3.code"
+msgstr "Code famille de la dernière activité dominante"
+
+msgid "Deractdomifamilleromev3.name"
+msgstr "Libellé famille de la dernière activité dominante"
+
+msgid "Deractdomidomaineromev3.code"
+msgstr "Code domaine de la dernière activité dominante"
+
+msgid "Deractdomidomaineromev3.name"
+msgstr "Libellé domaine de la dernière activité dominante"
+
+msgid "Deractdomimetierromev3.code"
+msgstr "Code métier de la dernière activité dominante"
+
+msgid "Deractdomimetierromev3.name"
+msgstr "Libellé métier de la dernière activité dominante"
+
+msgid "Deractdomiappellationromev3.name"
+msgstr "Appellation de la dernière activité dominante"
+
+# ------------------------------------------------------------------------------
+# Emploi recherché
+# ------------------------------------------------------------------------------
+msgid "Actrechfamilleromev3.code"
+msgstr "Code famille de l'emploi recherché"
+
+msgid "Actrechfamilleromev3.name"
+msgstr "Libellé famille de l'emploi recherché"
+
+msgid "Actrechdomaineromev3.code"
+msgstr "Code domaine de l'emploi recherché"
+
+msgid "Actrechdomaineromev3.name"
+msgstr "Libellé domaine de l'emploi recherché"
+
+msgid "Actrechmetierromev3.code"
+msgstr "Code métier de l'emploi recherché"
+
+msgid "Actrechmetierromev3.name"
+msgstr "Libellé métier de l'emploi recherché"
+
+msgid "Actrechappellationromev3.name"
+msgstr "Appellation de l'emploi recherché"

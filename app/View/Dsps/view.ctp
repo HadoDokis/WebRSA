@@ -15,6 +15,70 @@
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 		echo $this->element( 'ancien_dossier' );
 
+		// Pavé "Situation professionnelle"
+		// ---------------------------------------------------------------------
+		// TODO: dans le helper
+		function romev3_fields( $type, $suffixes ) {
+			$libs = array(
+				'deract' => array( 'libderact', 'libsecactderact' ),
+				'deractdomi' => array( 'libactdomi', 'libsecactdomi' ),
+				'actrech' => array( 'libemploirech', 'libsecactrech' )
+			);
+			$return = array();
+
+			// TODO: CG 66
+
+			// Idée: en 1 seul bloc ?
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				foreach( $suffixes as $suffix ) {
+					$alias = Inflector::classify( "{$type}{$suffix}romev3" );
+					$fieldName = "{$alias}.name";
+					$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ) );
+				}
+			}
+
+			foreach( $libs[$type] as $lib ) {
+				$fieldName = "Dsp.{$lib}";
+				$return[$fieldName] = __d( 'dsp', $fieldName );
+			}
+
+			return $return;
+		}
+
+		// TODO: pavé "Situation professionnelle", à vérifier, à bouger
+		$fields = array_merge(
+			Hash::normalize(
+				array(
+					'Dsp.hispro',
+				)
+			),
+			// Dernière activité
+			romev3_fields( 'deract', $suffixes ),
+			Hash::normalize(
+				array(
+					'Dsp.cessderact',
+					'Dsp.topdomideract',
+				)
+			),
+			// Dernière activité dominante
+			romev3_fields( 'deractdomi', $suffixes ),
+			Hash::normalize(
+				array(
+					'Dsp.duractdomi',
+					'Dsp.inscdememploi',
+					'Dsp.topisogrorechemploi',
+					'Dsp.accoemploi',
+					'Dsp.libcooraccoemploi',
+					'Dsp.topprojpro',
+				)
+			),
+			// Emploi recherché
+			romev3_fields( 'actrech', $suffixes )
+		);
+		echo $this->Default->view( $dsp, $fields, array( 'options' => $options ) );
+
+		// ---------------------------------------------------------------------
+
 		echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform' ) );
 
 		function result( $data, $path, $type, $options = array() ) {
@@ -326,6 +390,8 @@
 // 				}
 
 		}
+
+		debug( $dsp );
 	?>
 </div>
 <?php if( $this->action == 'view_revs' ):?>

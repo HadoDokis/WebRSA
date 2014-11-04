@@ -394,4 +394,15 @@
 			)
 		)
 	);
+
+	/**
+	 * Permet d'utiliser le module ROME V3:
+	 *	- pour tous les départements:
+	 *		* shell: ImportCsvCodesRomeV3Shell
+	 *		* menu: Administration > Paramétrages > Codes ROME V3 (en fonction des habilitations)
+	 *		* menu: Recherches > Par DSP
+	 *		* menu du dossier RSA: DEM ou CJT > Droit > DSP d'origine
+	 *		* menu du dossier RSA: DEM ou CJT > Droit > MAJ DSP
+	 */
+	Configure::write( 'Romev3.enabled', false );
 ?>

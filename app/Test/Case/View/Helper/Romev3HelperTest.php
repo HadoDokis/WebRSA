@@ -70,6 +70,8 @@
 
 		/**
 		 * Test de la méthode Romev3Helper::fieldset()
+		 *
+		 * @medium
 		 */
 		public function testFieldset() {
 			$this->Controller->request->addParams(

@@ -9,7 +9,6 @@
 	define( 'ANNOBTNIVDIPMAX_MIN_YEAR', ( date( 'Y' ) - 100 ) );
 	define( 'ANNOBTNIVDIPMAX_MAX_YEAR', date( 'Y' ) );
 	define( 'ANNOBTNIVDIPMAX_MESSAGE', 'Veuillez entrer une année comprise entre '.ANNOBTNIVDIPMAX_MIN_YEAR.' et '.ANNOBTNIVDIPMAX_MAX_YEAR.' .' );
-
 	/**
 	 * La classe Dsp ...
 	 *
@@ -17,15 +16,14 @@
 	 */
 	class Dsp extends AppModel
 	{
+
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
 		public $name = 'Dsp';
-
 		protected $_modules = array( 'caf' );
-
 		public $belongsTo = array(
 			'Personne' => array(
 				'className' => 'Personne',
@@ -86,21 +84,21 @@
 				'order' => ''
 			),
 			'Deractdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'deractdomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'deractmetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'deractappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',
@@ -115,21 +113,21 @@
 				'order' => ''
 			),
 			'Deractdomidomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'deractdomidomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractdomimetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'deractdomimetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Deractdomiappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'deractdomiappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',
@@ -144,29 +142,28 @@
 				'order' => ''
 			),
 			'Actrechdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Domaineromev3',
 				'foreignKey' => 'actrechdomaineromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Actrechmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Metierromev3',
 				'foreignKey' => 'actrechmetierromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
 			'Actrechappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
+				'className' => 'Appellationromev3',
 				'foreignKey' => 'actrechappellationromev3_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''
 			),
-			// Fin ROME V3
+				// Fin ROME V3
 		);
-
 		public $hasMany = array(
 			'Detaildifsoc' => array(
 				'className' => 'Detaildifsoc',
@@ -325,7 +322,6 @@
 				'counterQuery' => ''
 			),
 		);
-
 		public $validate = array(
 			'annobtnivdipmax' => array(
 				'rule' => array( 'inclusiveRange', ANNOBTNIVDIPMAX_MIN_YEAR, ANNOBTNIVDIPMAX_MAX_YEAR ),
@@ -369,10 +365,10 @@
 						'values' => array( '2104', '2105', '2106', '2107' )
 					),
 					'inscdememploi' => array(
-						'values' => array( '4301', '4302', '4303', '4304'  )
+						'values' => array( '4301', '4302', '4303', '4304' )
 					),
 					'accoemploi' => array(
-						'values' => array( '1801', '1802', '1803'  )
+						'values' => array( '1801', '1802', '1803' )
 					),
 					'natlog' => array(
 						'values' => array( '0901', '0902', '0903', '0904', '0905', '0906', '0907', '0908', '0909', '0910', '0911', '0912', '0913' )
@@ -398,7 +394,7 @@
 					'soutdemarsoc' => array( 'type' => 'nov', 'domain' => 'default' ),
 					'concoformqualiemploi' => array( 'type' => 'nos', 'domain' => 'default' ),
 					'drorsarmianta2' => array( 'type' => 'nos', 'domain' => 'default' ),
-					'statutoccupation' => array( 'values' => array('proprietaire', 'locataire') ),
+					'statutoccupation' => array( 'values' => array( 'proprietaire', 'locataire' ) ),
 					'suivimedical'
 				)
 			),
@@ -417,7 +413,7 @@
 					'actrechdomaineromev3_id',
 					'actrechmetierromev3_id',
 					'actrechappellationromev3_id'
-					// Fin ROME V3
+				// Fin ROME V3
 				)
 			)
 		);
@@ -429,14 +425,21 @@
 		 */
 		public $prefixesRomev3 = array( 'deract', 'deractdomi', 'actrech' );
 
+		/**
+		 * Suffixes des champs liés au catalogue ROME v3.
+		 *
+		 * @var array
+		 */
+		public $suffixesRomev3 = array( 'famille', 'domaine', 'metier', 'appellation' );
+
 		/*
-		* FIXME: le Hash::remove est plus propre, non ?
-		*/
+		 * FIXME: le Hash::remove est plus propre, non ?
+		 */
 
 		public function filterOptions( $cg, $options ) {
 			if( $cg == 'cg58' ) {
 				$valuesDeleted = array( '0502', '0503', '0504' );
-				foreach( $valuesDeleted as $valueDeleted ){
+				foreach( $valuesDeleted as $valueDeleted ) {
 					unset( $options['Detaildifdisp']['difdisp'][$valueDeleted] );
 				}
 				return $options;
@@ -452,22 +455,201 @@
 		}
 
 		/**
-		* Permet de récupérer les dernières DSP d'une personne, en attendant l'index unique sur personne_id
-		*/
-
+		 * Permet de récupérer les dernières DSP d'une personne, en attendant l'index unique sur personne_id
+		 */
 		public function sqDerniereDsp( $personneIdFied = 'Personne.id' ) {
 			return $this->sq(
-				array(
-					'alias' => 'dsps',
-					'fields' => array( 'dsps.id' ),
-					'conditions' => array(
-						"dsps.personne_id = {$personneIdFied}"
-					),
-					'contain' => false,
-					'order' => array( 'dsps.id DESC' ),
-					'limit' => 1
+							array(
+								'alias' => 'dsps',
+								'fields' => array( 'dsps.id' ),
+								'conditions' => array(
+									"dsps.personne_id = {$personneIdFied}"
+								),
+								'contain' => false,
+								'order' => array( 'dsps.id DESC' ),
+								'limit' => 1
+							)
+			);
+		}
+
+		/**
+		 * Retourne un array de conditions permettant de s'assurer cibler à la fois
+		 * le modèle Dsp et le modèle DspRev.
+		 *
+		 * @param array $condition
+		 * @return array
+		 */
+		protected function _searchConditionDspDspRev( array $condition ) {
+			$return = array(
+				'OR' => array(
+					$condition,
+					array_words_replace( $condition, array( 'Dsp' => 'DspRev' ) )
 				)
 			);
+
+			return $return;
+		}
+
+		/**
+		 * Retourne une condition permettant d'obtenir un champ dans un modèle
+		 * principal (si la Dsp existe) ou un modèle secondaire (si la DspRev
+		 * existe).
+		 *
+		 * @param string $fieldName Nom du champ
+		 * @param string $modelNamePrimary Nom du modèle principal
+		 * @param string $modelNameSecondary Nom du modèle secondaire
+		 * @param string $modelNameResult Nom du modèle de résultat
+		 * @return string
+		 */
+		protected function _searchCaseFieldDspDspRev( $fieldName, $modelNamePrimary, $modelNameSecondary, $modelNameResult = 'Donnees' ) {
+			return "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN \"{$modelNamePrimary}\".\"{$fieldName}\" ELSE \"{$modelNameSecondary}\".\"{$fieldName}\" END ) AS \"{$modelNameResult}__{$fieldName}\"";
+		}
+
+		/**
+		 *
+		 * @see Allocataire::searchQuery()
+		 *
+		 * @param array $types
+		 * @return array
+		 */
+		public function searchQuery( array $types = array() ) { // TODO: cache
+			// TODO: types -> $types['Prestation']
+			/*$types += array(
+				'Ficheprescription93' => 'LEFT OUTER'
+			);*/
+
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = array(
+					'fields' => array(
+						'"DspRev"."id"',
+						// TODO: $this->_searchCaseFieldDspDspRev()
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact" ELSE "DspRev"."libderact" END ) AS "Donnees__libderact"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact" ELSE "DspRev"."libsecactderact" END ) AS "Donnees__libsecactderact"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact66_metier_id" ELSE "DspRev"."libderact66_metier_id" END ) AS "Donnees__libderact66_metier_id"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact66_secteur_id" ELSE "DspRev"."libsecactderact66_secteur_id" END ) AS "Donnees__libsecactderact66_secteur_id"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi" ELSE "DspRev"."libsecactdomi" END ) AS "Donnees__libsecactdomi"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi" ELSE "DspRev"."libactdomi" END ) AS "Donnees__libactdomi"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi66_metier_id" ELSE "DspRev"."libactdomi66_metier_id" END ) AS "Donnees__libactdomi66_metier_id"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi66_secteur_id" ELSE "DspRev"."libsecactdomi66_secteur_id" END ) AS "Donnees__libsecactdomi66_secteur_id"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."nivetu" ELSE "DspRev"."nivetu" END ) AS "Donnees__nivetu"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."hispro" ELSE "DspRev"."hispro" END ) AS "Donnees__hispro"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech" ELSE "DspRev"."libsecactrech" END ) AS "Donnees__libsecactrech"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech" ELSE "DspRev"."libemploirech" END ) AS "Donnees__libemploirech"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech66_secteur_id" ELSE "DspRev"."libsecactrech66_secteur_id" END ) AS "Donnees__libsecactrech66_secteur_id"',
+						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech66_metier_id" ELSE "DspRev"."libemploirech66_metier_id" END ) AS "Donnees__libemploirech66_metier_id"',
+						'Dossier.id',
+						'Dossier.numdemrsa',
+						'Dossier.dtdemrsa',
+						'Dossier.matricule',
+						'Personne.id',
+						'Personne.nir',
+						'Personne.qual',
+						'Personne.nom',
+						'Personne.prenom',
+						'Personne.dtnai',
+						'Adresse.numvoie',
+						'Adresse.libtypevoie',
+						'Adresse.nomvoie',
+						'Adresse.compladr',
+						'Adresse.complideadr',
+						'Adresse.codepos',
+						'Adresse.nomcom',
+						'Adresse.numcom',
+						'Situationdossierrsa.etatdosrsa',
+						'Personne.foyer_id',
+					),
+					'joins' => array(
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->join(
+							'Prestation',
+							array(
+								'type' => 'INNER',
+								'conditions' => array(
+									'Prestation.rolepers' => array( 'DEM', 'CJT' )
+								)
+							)
+						),
+						$this->Personne->Foyer->join(
+							'Adressefoyer',
+							array(
+								'type' => 'INNER',
+								'conditions' => array(
+									'Adressefoyer.id IN( '.$this->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
+								)
+							)
+						),
+						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
+						$this->Personne->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+						array(
+							'table' => 'dsps_revs',
+							'alias' => 'DspRev',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'DspRev.personne_id = Personne.id',
+								'DspRev.id IN ( '.$this->DspRev->sqDerniere( 'Personne.id' ).' )'
+							)
+						),
+						array(
+							'table' => 'dsps',
+							'alias' => 'Dsp',
+							'type' => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'Dsp.personne_id = Personne.id',
+								'Dsp.personne_id NOT IN ( '.$this->Personne->DspRev->sq(
+										array(
+											'alias' => 'tmp_dsps_revs2',
+											'fields' => array(
+												'tmp_dsps_revs2.personne_id'
+											),
+											'conditions' => array(
+												'tmp_dsps_revs2.personne_id = Dsp.personne_id'
+											)
+										)
+								).' )'
+							)
+						)
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						'OR' => array(
+							'Dsp.id IS NOT NULL',
+							'DspRev.id IS NOT NULL'
+						)
+					)
+				);
+
+				// Champs et jointures ROME V3
+				if( Configure::read( 'Romev3.enabled' ) ) {
+					foreach( $this->prefixesRomev3 as $prefix ) {
+						foreach( $this->suffixesRomev3 as $suffix ) {
+							$modelAlias = Inflector::camelize( "{$prefix}{$suffix}romev3" );
+							$modelAliasRev = "{$modelAlias}Rev";
+
+							// Ajout du champ
+							$modelAliasDonnees = $modelAlias;
+							$query['fields'][] = $this->_searchCaseFieldDspDspRev( 'name', $modelAlias, $modelAliasRev, $modelAliasDonnees );
+
+							// Ajout des jointures
+							$modelAlias = Inflector::camelize( "{$prefix}{$suffix}romev3" );
+							$query['joins'][] = $this->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) );
+							$query['joins'][] = array_words_replace(
+									$this->DspRev->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) ),
+									array( $modelAlias => "{$modelAlias}Rev" )
+							);
+						}
+					}
+				}
+
+				Configure::write( $cacheKey, $query );
+			}
+
+			return $query;
 		}
 
 		/**
@@ -476,30 +658,25 @@
 		 * @return array
 		 */
 		public function search( array $params ) {
-			$conditions[] = array(
-				'OR' => array(
-					'Dsp.id IS NOT NULL',
-					'DspRev.id IS NOT NULL'
-				)
-			);
+			$querydata = $this->searchQuery();
 
-			$conditions = $this->conditionsAdresse( $conditions, $params );
-
-			$conditions = $this->conditionsPersonneFoyerDossier( $conditions, $params );
-
-			$conditions = $this->conditionsDernierDossierAllocataire( $conditions, $params );
+			// TODO: début de searchConditions()
+			$querydata['conditions'] = $this->conditionsAdresse( $querydata['conditions'], $params );
+			$querydata['conditions'] = $this->conditionsPersonneFoyerDossier( $querydata['conditions'], $params );
+			$querydata['conditions'] = $this->conditionsDernierDossierAllocataire( $querydata['conditions'], $params );
 
 			// Secteur d'activité et code métier, texte libre
 			foreach( array( 'libsecactderact', 'libderact', 'libsecactdomi', 'libactdomi', 'libsecactrech', 'libemploirech' ) as $fieldName ) {
 				if( !empty( $params['Dsp'][$fieldName] ) ) {
-					$conditions[]['OR'] = array(
-						array(
-							"Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
-						),
-						array(
-							"DspRev.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
-						)
-					);
+					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] ) ) );
+					/* $querydata['conditions'][]['OR'] = array(
+					  array(
+					  "Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
+					  ),
+					  array(
+					  "DspRev.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
+					  )
+					  ); */
 				}
 			}
 
@@ -507,150 +684,21 @@
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$champs = array_merge( $champs, array( 'libderact66_metier_id', 'libsecactderact66_secteur_id', 'libsecactdomi66_secteur_id', 'libactdomi66_metier_id', 'libsecactrech66_secteur_id', 'libemploirech66_metier_id' ) );
 			}
-
 			foreach( $champs as $fieldName ) {
 				if( !empty( $params['Dsp'][$fieldName] ) ) {
-					$conditions[]['OR'] = array(
-						array(
-							"Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
-						),
-						array(
-							"DspRev.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
-						)
-					);
+					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] ) ) );
+					/* $querydata['conditions'][]['OR'] = array(
+					  array(
+					  "Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
+					  ),
+					  array(
+					  "DspRev.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
+					  )
+					  ); */
 				}
 			}
 
-			$querydata = array(
-				'fields' => array(
-					'"DspRev"."id"',
-					//
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact" ELSE "DspRev"."libderact" END ) AS "Donnees__libderact"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact" ELSE "DspRev"."libsecactderact" END ) AS "Donnees__libsecactderact"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact66_metier_id" ELSE "DspRev"."libderact66_metier_id" END ) AS "Donnees__libderact66_metier_id"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact66_secteur_id" ELSE "DspRev"."libsecactderact66_secteur_id"
-					END ) AS "Donnees__libsecactderact66_secteur_id"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi" ELSE "DspRev"."libsecactdomi" END ) AS "Donnees__libsecactdomi"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi" ELSE "DspRev"."libactdomi" END ) AS "Donnees__libactdomi"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi66_metier_id" ELSE "DspRev"."libactdomi66_metier_id" END ) AS "Donnees__libactdomi66_metier_id"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi66_secteur_id" ELSE "DspRev"."libsecactdomi66_secteur_id" END ) AS "Donnees__libsecactdomi66_secteur_id"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."nivetu" ELSE "DspRev"."nivetu" END ) AS "Donnees__nivetu"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."hispro" ELSE "DspRev"."hispro" END ) AS "Donnees__hispro"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech" ELSE "DspRev"."libsecactrech" END ) AS "Donnees__libsecactrech"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech" ELSE "DspRev"."libemploirech" END ) AS "Donnees__libemploirech"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech66_secteur_id" ELSE "DspRev"."libsecactrech66_secteur_id" END ) AS "Donnees__libsecactrech66_secteur_id"',
-					'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech66_metier_id" ELSE "DspRev"."libemploirech66_metier_id" END ) AS "Donnees__libemploirech66_metier_id"',
-					'Dossier.id',
-					'Dossier.numdemrsa',
-					'Dossier.dtdemrsa',
-					'Dossier.matricule',
-					'Personne.id',
-					'Personne.nir',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Adresse.numvoie',
-					'Adresse.libtypevoie',
-					'Adresse.nomvoie',
-					'Adresse.compladr',
-					'Adresse.complideadr',
-					'Adresse.codepos',
-					'Adresse.nomcom',
-					'Adresse.numcom',
-					'Situationdossierrsa.etatdosrsa',
-					'Personne.foyer_id',
-				),
-				'joins' => array(
-// 					array(
-// 						'table'      => 'personnes',
-// 						'alias'      => 'Personne',
-// 						'type'       => 'INNER',
-// 						'foreignKey' => false,
-// 						'conditions' => array( 'Dsp.personne_id = Personne.id' )
-// 					),
-					array(
-						'table'      => 'foyers',
-						'alias'      => 'Foyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Personne.foyer_id' )
-					),
-					array(
-						'table'      => 'dossiers',
-						'alias'      => 'Dossier',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Dossier.id = Foyer.dossier_id' )
-					),
-					array(
-						'table'      => 'prestations',
-						'alias'      => 'Prestation',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Personne.id = Prestation.personne_id',
-							'( Prestation.rolepers = \'DEM\' OR Prestation.rolepers = \'CJT\' )',
-							'Prestation.natprest = \'RSA\''
-						)
-					),
-					array(
-						'table'      => 'adressesfoyers',
-						'alias'      => 'Adressefoyer',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Foyer.id = Adressefoyer.foyer_id', 'Adressefoyer.rgadr = \'01\'' ) //FIXME sqDerniereRgadr01( 'Foyer.id' )
-					),
-					array(
-						'table'      => 'adresses',
-						'alias'      => 'Adresse',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Adresse.id = Adressefoyer.adresse_id' )
-					),
-					array(
-						'table'      => 'situationsdossiersrsa',
-						'alias'      => 'Situationdossierrsa',
-						'type'       => 'INNER',
-						'foreignKey' => false,
-						'conditions' => array( 'Situationdossierrsa.dossier_id = Dossier.id' )
-					),
-					//FIXME
-					array(
-						'table'      => 'dsps_revs',
-						'alias'      => 'DspRev',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'DspRev.personne_id = Personne.id',
-							'DspRev.id IN ( '.$this->DspRev->sqDerniere( 'Personne.id' ).' )'
-						)
-					),
-					array(
-						'table'      => 'dsps',
-						'alias'      => 'Dsp',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array(
-							'Dsp.personne_id = Personne.id',
-							'Dsp.personne_id NOT IN ( '.$this->Personne->DspRev->sq(
-								array(
-									'alias' => 'tmp_dsps_revs2',
-									'fields' => array(
-										'tmp_dsps_revs2.personne_id'
-									),
-									'conditions' => array(
-										'tmp_dsps_revs2.personne_id = Dsp.personne_id'
-									)
-								)
-							).' )'
-						)
-					)
-				),
-				'recursive' => -1,
-// 				'limit' => 10,
-				'conditions' => $conditions
-			);
+			// ----------------------------------------------------------------
 
 			// Référent du parcours
 			$querydata = $this->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
@@ -687,7 +735,7 @@
 				}
 
 				$virtualField = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN {$fields['Dsp']} ELSE {$fields['DspRev']} END ) AS \"Donnees__{$linkedFieldName}\"";
-				$querydata['fields'][] = $virtualField;
+				$querydata['fields'][] = $virtualField; // INFO: à ajouter dans le query de base (?)
 
 				// Conditions
 				$value = Hash::get( $params, $link );
@@ -697,30 +745,30 @@
 					// Dsp
 					$tableName = Inflector::tableize( $linkedModelName );
 					$sqDsp = $this->{$linkedModelName}->sq(
-						array(
-							'alias' => $tableName,
-							'fields' => array( "{$tableName}.id" ),
-							'conditions' => array(
-								"{$tableName}.dsp_id = Dsp.id",
-								"{$tableName}.{$linkedFieldName}" => $value,
-							),
-							'contain' => false,
-						)
+							array(
+								'alias' => $tableName,
+								'fields' => array( "{$tableName}.id" ),
+								'conditions' => array(
+									"{$tableName}.dsp_id = Dsp.id",
+									"{$tableName}.{$linkedFieldName}" => $value,
+								),
+								'contain' => false,
+							)
 					);
 
 					// DspRev
 					$tableName = Inflector::tableize( $linkedModelName ).'_revs';
 					$linkedModelName = "{$linkedModelName}Rev";
 					$sqDspRev = $this->DspRev->{$linkedModelName}->sq(
-						array(
-							'alias' => $tableName,
-							'fields' => array( "{$tableName}.id" ),
-							'conditions' => array(
-								"{$tableName}.dsp_rev_id = DspRev.id",
-								"{$tableName}.{$linkedFieldName}" => $value,
-							),
-							'contain' => false,
-						)
+							array(
+								'alias' => $tableName,
+								'fields' => array( "{$tableName}.id" ),
+								'conditions' => array(
+									"{$tableName}.dsp_rev_id = DspRev.id",
+									"{$tableName}.{$linkedFieldName}" => $value,
+								),
+								'contain' => false,
+							)
 					);
 
 					$querydata['conditions'][] = array(
@@ -732,28 +780,24 @@
 				}
 			}
 
-			// -----------------------------------------------------------------
 			// Filtres concernant le catalogue ROME V3
-			// -----------------------------------------------------------------
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$conditionsDspRomeV3 = array();
 
-			$conditionsDspRomeV3 = array();
-			foreach( $this->prefixesRomev3 as $prefix ) {
-				foreach( array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' ) as $fieldName ) {
-					$field = "{$this->alias}.{$prefix}{$fieldName}";
-					$value = suffix( Hash::get( $params, $field ) );
-					if( !empty( $value ) ) {
-						$conditionsDspRomeV3[$field] = $value;
+				foreach( $this->prefixesRomev3 as $prefix ) {
+					foreach( $this->suffixesRomev3 as $suffix ) {
+						$field = "{$this->alias}.{$prefix}{$suffix}romev3_id";
+						$value = suffix( Hash::get( $params, $field ) );
+						if( !empty( $value ) ) {
+							$conditionsDspRomeV3[$field] = $value;
+						}
 					}
 				}
-			}
-			$conditionsDspRevRomeV3 = array_words_replace( $conditionsDspRomeV3, array( 'Dsp' => 'DspRev' ) );
 
-			$querydata['conditions'][] = array(
-				'OR' => array(
-					$conditionsDspRomeV3,
-					$conditionsDspRevRomeV3
-				)
-			);
+				if( !empty( $conditionsDspRomeV3 ) ) {
+					$querydata['conditions'][] = $this->_searchConditionDspDspRev( $conditionsDspRomeV3 );
+				}
+			}
 
 			// -----------------------------------------------------------------
 
@@ -789,20 +833,20 @@
 					$this->Personne->join(
 						'Dsp',
 						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
-							)
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'Dsp.id IN ( '.$this->Personne->Dsp->sqDerniereDsp( 'Personne.id' ).' )'
 						)
+							)
 					),
 					$this->Personne->join(
 						'DspRev',
 						array(
-							'type' => 'LEFT OUTER',
-							'conditions' => array(
-								'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
-							)
+						'type' => 'LEFT OUTER',
+						'conditions' => array(
+							'DspRev.id IN ( '.$this->Personne->DspRev->sqDerniere( 'Personne.id' ).' )'
 						)
+							)
 					),
 				),
 				'conditions' => array(
@@ -906,14 +950,119 @@
 				}
 
 				$success = $this->saveResultAsBool(
-					$this->Personne->{$newModelName}->saveAll(
+								$this->Personne->{$newModelName}->saveAll(
 						$newRecord,
 						array( 'atomic' => false, 'deep' => true )
-					)
-				) && $success;
+								)
+						) && $success;
 			}
 
 			return $success;
+		}
+
+		/**
+		 * @todo params
+		 *
+		 * @param array $params
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $params ) );
+			$return = Cache::read( $cacheKey );
+
+			if( $return === false ) {
+				$return = $this->enums();
+				$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+
+				$selects = $Catalogueromev3->dependantSelects();
+
+				foreach( $this->prefixesRomev3 as $prefix ) {
+					foreach( array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' ) as $field ) {
+						$return[$this->alias]["{$prefix}{$field}"] = $selects['Catalogueromev3'][$field];
+					}
+				}
+
+				Cache::write( $cacheKey, $return );
+				ModelCache::write( $cacheKey, $Catalogueromev3->modelesParametrages );
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$success = true;
+
+			$results = $this->searchQuery();
+			$success = $success && !empty( $results );
+
+			$results = $this->getRomev3Contains();
+			$success = $success && !empty( $results );
+
+			$results = $this->options();
+			$success = $success && !empty( $results );
+
+			return $success;
+		}
+
+		/**
+		 * Retourne une partie de l'array des contain avec les name (+ code) des
+		 * réponses ROME V3.
+		 *
+		 * @return array
+		 */
+		public function getRomev3Contains() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$return = Cache::read( $cacheKey );
+
+			if( $return === false ) {
+				$return = array();
+
+				$parents = array(
+					'famille' => array(),
+					'domaine' => array( 'famille' ),
+					'metier' => array( 'famille', 'domaine' ),
+					'appellation' => array( 'famille', 'domaine', 'metier' )
+				);
+
+				foreach( $this->prefixesRomev3 as $prefix ) {
+					foreach( $this->suffixesRomev3 as $suffix ) {
+						$alias = Inflector::classify( "{$prefix}{$suffix}romev3" );
+
+						$fields = array();
+						if( $suffix !== 'appellation' ) {
+							$codes = array();
+
+							if( $suffix !== 'famille' ) {
+								foreach( $parents[$suffix] as $parent ) {
+									$parentAlias = Inflector::classify( $prefix )."{$parent}romev3";
+									$codes[] = "\"{$parentAlias}\".\"code\"";
+								}
+							}
+							$codes[] = "\"{$alias}\".\"code\"";
+							$codes = implode( " || ", $codes );
+
+							$fields[] = "( {$codes} || ' - ' || \"{$alias}\".\"name\" ) AS \"{$alias}__name\""; // TODO: fullname en champ virtuel
+						}
+						else {
+							$fields[] = "{$alias}.name";
+						}
+
+
+						$return[$alias] = array( 'fields' => $fields );
+					}
+				}
+
+				Cache::write( $cacheKey, $return );
+			}
+
+			return $return;
 		}
 	}
 ?>

@@ -39,6 +39,14 @@
 		);
 	}
 
+	if( Configure::read( 'Romev3.enabled' ) ) {
+		foreach( $prefixes as $prefix ) {
+			foreach( $suffixes as $suffix ) {
+				$row[] = __d( 'dsps', "Dsp.{$prefix}{$suffix}romev3_id" );
+			}
+		}
+	}
+
 	$this->Csv->addRow( $row );
 
 	foreach( $dsps as $dsp ) {
@@ -91,6 +99,15 @@
 					}
 
 					$row[] = ( !empty( $cell ) ? '- '.implode( "\n- ", $cell ) : '' );
+				}
+			}
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				foreach( $prefixes as $prefix ) {
+					foreach( $suffixes as $suffix ) {
+						$modelName = Inflector::classify( "{$prefix}{$suffix}romev3" );
+						$row[] = Hash::get( $dsp, "{$modelName}.name" );
+					}
 				}
 			}
 

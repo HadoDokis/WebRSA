@@ -152,7 +152,7 @@ Plan:
 <fieldset>
 	<legend>Situation professionnelle</legend>
 	<?php
-		if ( Configure::read( 'Cg.departement' ) == 66 ) { // FIXME: 66 et 93
+		if( Configure::read( 'Romev3.enabled' ) ) {
 			echo $this->Default->subform(
 				array(
 					'Dsp.hispro'
@@ -165,7 +165,7 @@ Plan:
 			// Codes ROME V3 dernière activité
 			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'deract', 'options' => $options ) );
 
-			// Codes ROME V2 dernière activité + intitulés dernière activité
+			// Codes ROME V2 dernière activité (FIXME) + intitulés dernière activité
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactderact66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
@@ -191,7 +191,7 @@ Plan:
 			// Codes ROME V3 dernière activité dominante
 			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'deractdomi', 'options' => $options ) );
 
-			// Codes ROME V2 dernière activité dominante + intitulés dernière activité dominante
+			// Codes ROME V2 dernière activité dominante (FIXME) + intitulés dernière activité dominante
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactdomi66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
@@ -245,12 +245,12 @@ Plan:
 			echo $this->Dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
 		}
 
-		if ( Configure::read( 'Cg.departement' ) == 66 ) { // FIXME: 66 et 93
+		if ( Configure::read( 'Romev3.enabled' ) ) {
 
 			// Codes ROME V3 dernière activité dominante
 			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'actrech', 'options' => $options ) );
 
-			// Codes ROME V2 dernière activité dominante + intitulés dernière activité dominante
+			// Codes ROME V2 dernière activité dominante (FIXME) + intitulés dernière activité dominante
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactrech66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),

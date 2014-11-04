@@ -37,16 +37,16 @@ msgid "Dsp.deractdomi"
 msgstr "Dernière activité dominante"
 
 msgid "Dsp.deractdomifamilleromev3_id"
-msgstr "Code famille de la dernière activité"
+msgstr "Code famille de la dernière activité dominante"
 
 msgid "Dsp.deractdomidomaineromev3_id"
-msgstr "Code domaine de la dernière activité"
+msgstr "Code domaine de la dernière activité dominante"
 
 msgid "Dsp.deractdomimetierromev3_id"
-msgstr "Code métier de la dernière activité"
+msgstr "Code métier de la dernière activité dominante"
 
 msgid "Dsp.deractdomiappellationromev3_id"
-msgstr "Appellation de la dernière activité"
+msgstr "Appellation de la dernière activité dominante"
 
 # ------------------------------------------------------------------------------
 # Emploi recherché

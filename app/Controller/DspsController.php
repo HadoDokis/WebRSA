@@ -17,9 +17,21 @@
 	{
 		public $name = 'Dsps';
 
-		public $helpers = array( 'Xform', 'Xhtml', 'Dsphm', 'Default2', 'Fileuploader', 'Search', 'Csv', 'Romev3' );
+		public $helpers = array(
+			'Xform',
+			'Xhtml',
+			'Dsphm',
+			'Default2',
+			'Fileuploader',
+			'Search',
+			'Csv',
+			'Romev3',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			)
+		);
 
-		public $uses = array( 'Dsp', 'DspRev', 'Option', 'Familleromev3' );
+		public $uses = array( 'Dsp', 'DspRev', 'Option', 'Familleromev3', 'Catalogueromev3' );
 
 		public $components = array(
 			'Jetons2',
@@ -530,47 +542,50 @@
 		 *
 		 */
 		public function view_revs( $id = null ) {
-			$dsprevs = $this->DspRev->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'DspRev.id' => $id
-                    ),
-                    'contain' => array(
-                        'Personne',
-                        'Libderact66Metier',
-                        'Libsecactderact66Secteur',
-                        'Libactdomi66Metier',
-                        'Libsecactdomi66Secteur',
-                        'Libemploirech66Metier',
-                        'Libsecactrech66Secteur',
-                        'DetaildifsocRev',
-                        'DetailaccosocfamRev',
-                        'DetailaccosocindiRev',
-                        'DetaildifdispRev',
-                        'DetailnatmobRev',
-                        'DetaildiflogRev',
-                        'DetailmoytransRev',
-                        'DetaildifsocproRev',
-                        'DetailprojproRev',
-                        'DetailfreinformRev',
-                        'DetailconfortRev',
-                        'Fichiermodule'
-                    )
-                )
+			$query = array(
+				'conditions' => array(
+					'DspRev.id' => $id
+				),
+				'contain' => array(
+					'Personne',
+					'Libderact66Metier',
+					'Libsecactderact66Secteur',
+					'Libactdomi66Metier',
+					'Libsecactdomi66Secteur',
+					'Libemploirech66Metier',
+					'Libsecactrech66Secteur',
+					'DetaildifsocRev',
+					'DetailaccosocfamRev',
+					'DetailaccosocindiRev',
+					'DetaildifdispRev',
+					'DetailnatmobRev',
+					'DetaildiflogRev',
+					'DetailmoytransRev',
+					'DetaildifsocproRev',
+					'DetailprojproRev',
+					'DetailfreinformRev',
+					'DetailconfortRev',
+					'Fichiermodule'
+				)
 			);
 
-            $personne = Set::classicExtract( $dsprevs, 'Personne.nom_complet' );
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$query['contain'] = Hash::merge( $query['contain'], $this->Dsp->getRomev3Contains() );
+			}
+
+			$dsprevs = $this->DspRev->find( 'first', $query );
+
+            $personne = Hash::get( $dsprevs, 'Personne.nom_complet' );
             $this->set( compact( 'personne' ) );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['DspRev']['personne_id'] ) ) );
-
-			$this->_setEntriesAncienDossier( $dsprevs['DspRev']['personne_id'], 'DspRev' );
 
 			// Retour à la liste en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$this->redirect( array( 'action' => 'histo', $dsprevs['DspRev']['personne_id'] ) );
 			}
+
+			$this->_setEntriesAncienDossier( $dsprevs['DspRev']['personne_id'], 'DspRev' );
 
 			$dsp = array( );
 			// Suppression du suffixe Rev pour utiliser la même vue que les Dsp
@@ -587,6 +602,13 @@
 			$personne = $dsprevs; // Pour récupérer les informations de la personne
 			$this->set( 'personne', $personne );
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsprevs['DspRev']['personne_id'] );
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$prefixes = $this->Dsp->prefixesRomev3;
+				$suffixes = $this->Dsp->suffixesRomev3;
+				$this->set( compact( 'prefixes', 'suffixes' ) );
+			}
+
 			$this->render( 'view' );
 		}
 
@@ -594,73 +616,58 @@
 		 *
 		 */
 		public function view_diff( $id = null ) {
-
-			$dsprevact = $this->DspRev->find(
-				'first',
-				array(
-					'conditions' => array(
-						'DspRev.id' => $id
-					),
-					'contain' => array(
-						'Personne',
-						'Libderact66Metier',
-						'Libsecactderact66Secteur',
-						'Libactdomi66Metier',
-						'Libsecactdomi66Secteur',
-						'Libemploirech66Metier',
-						'Libsecactrech66Secteur',
-						'DetaildifsocRev',
-						'DetailaccosocfamRev',
-						'DetailaccosocindiRev',
-						'DetaildifdispRev',
-						'DetailnatmobRev',
-						'DetaildiflogRev',
-						'DetailmoytransRev',
-						'DetaildifsocproRev',
-						'DetailprojproRev',
-						'DetailfreinformRev',
-						'DetailconfortRev',
-						'Fichiermodule'
-					)
+			$base = array(
+				'contain' => array(
+					'Personne',
+					'Libderact66Metier',
+					'Libsecactderact66Secteur',
+					'Libactdomi66Metier',
+					'Libsecactdomi66Secteur',
+					'Libemploirech66Metier',
+					'Libsecactrech66Secteur',
+					'DetaildifsocRev',
+					'DetailaccosocfamRev',
+					'DetailaccosocindiRev',
+					'DetaildifdispRev',
+					'DetailnatmobRev',
+					'DetaildiflogRev',
+					'DetailmoytransRev',
+					'DetaildifsocproRev',
+					'DetailprojproRev',
+					'DetailfreinformRev',
+					'DetailconfortRev',
+					'Fichiermodule'
 				)
 			);
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$base['contain'] = Hash::merge( $base['contain'], $this->Dsp->getRomev3Contains() );
+			}
+
+			// -----------------------------------------------------------------
+
+			$query = $base;
+			$query['conditions'] = array( 'DspRev.id' => $id );
+
+			$dsprevact = $this->DspRev->find( 'first', $query );
 			$this->assert( !empty( $dsprevact ), 'invalidParameter' );
 
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevact['Personne']['id'] ) ) );
 
-			$dsprevold = $this->DspRev->find(
-                'first',
-                array(
-                    'conditions' => array(
-                        'DspRev.personne_id' => $dsprevact['DspRev']['personne_id'],
-                        'DspRev.created <=' => $dsprevact['DspRev']['created'],
-                        'DspRev.id <' => $dsprevact['DspRev']['id']
-                    ),
-                    'contain' => array(
-                        'Personne',
-                        'Libderact66Metier',
-                        'Libsecactderact66Secteur',
-                        'Libactdomi66Metier',
-                        'Libsecactdomi66Secteur',
-                        'Libemploirech66Metier',
-                        'Libsecactrech66Secteur',
-                        'DetaildifsocRev',
-                        'DetailaccosocfamRev',
-                        'DetailaccosocindiRev',
-                        'DetaildifdispRev',
-                        'DetailnatmobRev',
-                        'DetaildiflogRev',
-                        'DetailmoytransRev',
-                        'DetaildifsocproRev',
-                        'DetailprojproRev',
-                        'DetailfreinformRev',
-                        'DetailconfortRev',
-                        'Fichiermodule'
-                    ),
-                    'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
-                )
+			// -----------------------------------------------------------------
+
+			$query = $base;
+			$query['conditions'] = array(
+				'DspRev.personne_id' => $dsprevact['DspRev']['personne_id'],
+				'DspRev.created <=' => $dsprevact['DspRev']['created'],
+				'DspRev.id <' => $dsprevact['DspRev']['id']
 			);
+			$query['order'] = array( 'DspRev.created DESC', 'DspRev.id DESC' );
+
+			$dsprevold = $this->DspRev->find( 'first', $query );
 			$this->assert( !empty( $dsprevold ), 'invalidParameter' );
+
+			// -----------------------------------------------------------------
 
 			// Suppression des champs de clés primaires et étrangères des résultats des Dsps actuelles
 			foreach( $dsprevact as $Model => $values ) {
@@ -681,6 +688,23 @@
 					}
 				}
 			}
+
+			// -----------------------------------------------------------------
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				foreach( $this->Dsp->prefixesRomev3 as $prefix ) {
+					foreach( $this->Dsp->suffixesRomev3 as $suffix ) {
+						$built = "{$prefix}{$suffix}romev3";
+						$field = "{$built}_id";
+						$modelAlias = Inflector::classify( $built );
+
+						$dsprevold = Hash::remove( $dsprevold, "DspRev.{$field}" );
+						$dsprevact = Hash::remove( $dsprevact, "DspRev.{$field}" );
+					}
+				}
+			}
+
+			// -----------------------------------------------------------------
 
 			foreach( $dsprevact as $Model => $values ) {
 				$diff[$Model] = Set::diff( $dsprevact[$Model], $dsprevold[$Model] );
@@ -713,6 +737,12 @@
 			$this->set( 'dsprevact', $dsprevact );
 			$this->set( 'dsprevold', $dsprevold );
 			$this->set( 'diff', $diff );
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$prefixes = $this->Dsp->prefixesRomev3;
+				$suffixes = $this->Dsp->suffixesRomev3;
+				$this->set( compact( 'prefixes', 'suffixes' ) );
+			}
 
 			$this->set( 'personne_id', Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
 			$this->set( 'urlmenu', '/dsps/histo/'.Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
@@ -952,19 +982,11 @@
 			$this->set( 'urlmenu', ( $this->action === 'edit' ? "/dsps/edit/{$dsp['Dsp']['personne_id']}" : "/dsps/histo/{$dsp['Dsp']['personne_id']}" ) );
 
 			// Options
-			// Début ROME V3
-			$options = (array)Hash::get( $this->viewVars, 'options' );
-			// TODO: dans le modèle + optimiser, copy/paste
-			foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
-				$tmp = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->options();
-				$options['Dsp']["{$prefix}familleromev3_id"] = Hash::get( $tmp, "Domaineromev3.familleromev3_id" );
-				$options['Dsp']["{$prefix}domaineromev3_id"] = Hash::get( $tmp, "Metierromev3.domaineromev3_id" );
-				$options['Dsp']["{$prefix}metierromev3_id"] = Hash::get( $tmp, "Appellationromev3.metierromev3_id" );
-				$options['Dsp']["{$prefix}appellationromev3_id"] = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->foo();
-			}
-			//debug( $options );
+			$options = Hash::merge(
+				(array)Hash::get( $this->viewVars, 'options' ),
+				$this->Dsp->options()
+			);
 			$this->set( compact( 'options' ) );
-			// Fin ROME V3
 
 			$this->render( '_add_edit' );
 		}
@@ -1011,16 +1033,13 @@
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
-			$options = (array)Hash::get( $this->viewVars, 'options' );
-			// TODO: dans le modèle + optimiser, copy/paste
-			foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
-				$tmp = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->options();
-				$options['Dsp']["{$prefix}familleromev3_id"] = Hash::get( $tmp, "Domaineromev3.familleromev3_id" );
-				$options['Dsp']["{$prefix}domaineromev3_id"] = Hash::get( $tmp, "Metierromev3.domaineromev3_id" );
-				$options['Dsp']["{$prefix}metierromev3_id"] = Hash::get( $tmp, "Appellationromev3.metierromev3_id" );
-				$options['Dsp']["{$prefix}appellationromev3_id"] = $this->Dsp->Deractfamilleromev3->Domaineromev3->Metierromev3->Appellationromev3->foo();
-			}
-			$this->set( compact( 'options' ) );
+			$options = Hash::merge(
+				(array)Hash::get( $this->viewVars, 'options' ),
+				$this->Dsp->options()
+			);
+			$prefixes = $this->Dsp->prefixesRomev3;
+			$suffixes = $this->Dsp->suffixesRomev3;
+			$this->set( compact( 'options', 'prefixes', 'suffixes' ) );
 		}
 
 		/**
@@ -1052,10 +1071,12 @@
 
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
 
-			$this->set( 'qual', $this->Option->qual() );
+			$qual = $this->Option->qual();
+			$prefixes = $this->Dsp->prefixesRomev3;
+			$suffixes = $this->Dsp->suffixesRomev3;
 
+			$this->set( compact( 'dsps', 'qual', 'prefixes', 'suffixes' ) );
 			$this->layout = '';
-			$this->set( compact( 'dsps' ) );
 		}
 
 		/**

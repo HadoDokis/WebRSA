@@ -32,6 +32,11 @@
 		 * @var array
 		 */
 		public $records = array(
+			array(
+				'domaineromev3_id' => 1,
+				'code' => '01',
+				'name' => 'Conduite d\'engins d\'exploitation agricole et forestière'
+			)
 		);
 
 	}
