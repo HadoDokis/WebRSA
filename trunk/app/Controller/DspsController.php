@@ -984,7 +984,7 @@
 			// Options
 			$options = Hash::merge(
 				(array)Hash::get( $this->viewVars, 'options' ),
-				$this->Dsp->options()
+				$this->Dsp->options( array( 'autre' => false ) )
 			);
 			$this->set( compact( 'options' ) );
 
@@ -1035,7 +1035,7 @@
 
 			$options = Hash::merge(
 				(array)Hash::get( $this->viewVars, 'options' ),
-				$this->Dsp->options()
+				$this->Dsp->options( array( 'autre' => false ) )
 			);
 			$prefixes = $this->Dsp->prefixesRomev3;
 			$suffixes = $this->Dsp->suffixesRomev3;

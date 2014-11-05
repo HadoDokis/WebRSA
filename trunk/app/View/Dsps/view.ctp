@@ -15,14 +15,13 @@
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 		echo $this->element( 'ancien_dossier' );
 
-		// Pavé "Situation professionnelle"
 		// ---------------------------------------------------------------------
 		// TODO: dans le helper
 		function romev3_fields( $type, $suffixes ) {
 			$libs = array(
-				'deract' => array( 'libderact', 'libsecactderact' ),
-				'deractdomi' => array( 'libactdomi', 'libsecactdomi' ),
-				'actrech' => array( 'libemploirech', 'libsecactrech' )
+				'deract' => array( 'libsecactderact', 'libderact' ),
+				'deractdomi' => array( 'libsecactdomi', 'libactdomi' ),
+				'actrech' => array( 'libsecactrech', 'libemploirech' )
 			);
 			$return = array();
 
@@ -38,44 +37,43 @@
 			}
 
 			foreach( $libs[$type] as $lib ) {
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					// Dernière activité
+					if( $lib === 'libsecactderact' ) {
+						$fieldName = 'Libsecactderact66Secteur.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+					else if( $lib === 'libderact' ) {
+						$fieldName = 'Libderact66Metier.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+					// Dernière activité dominante
+					else if( $lib === 'libsecactdomi' ) {
+						$fieldName = 'Libsecactdomi66Secteur.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+					else if( $lib === 'libactdomi' ) {
+						$fieldName = 'Libactdomi66Metier.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+					// Activité recherchée
+					else if( $lib === 'libsecactrech' ) {
+						$fieldName = 'Libsecactrech66Secteur.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+					else if( $lib === 'libemploirech' ) {
+						$fieldName = 'Libemploirech66Metier.intitule';
+						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
+					}
+				}
+
 				$fieldName = "Dsp.{$lib}";
-				$return[$fieldName] = __d( 'dsp', $fieldName );
+				$label = ( Configure::read( 'Cg.departement' ) == 66 ? 'Complément d\'information' : __d( 'dsp', $fieldName ) );
+				$return[$fieldName] = array( 'label' => $label );
 			}
 
 			return $return;
 		}
-
-		// TODO: pavé "Situation professionnelle", à vérifier, à bouger
-		$fields = array_merge(
-			Hash::normalize(
-				array(
-					'Dsp.hispro',
-				)
-			),
-			// Dernière activité
-			romev3_fields( 'deract', $suffixes ),
-			Hash::normalize(
-				array(
-					'Dsp.cessderact',
-					'Dsp.topdomideract',
-				)
-			),
-			// Dernière activité dominante
-			romev3_fields( 'deractdomi', $suffixes ),
-			Hash::normalize(
-				array(
-					'Dsp.duractdomi',
-					'Dsp.inscdememploi',
-					'Dsp.topisogrorechemploi',
-					'Dsp.accoemploi',
-					'Dsp.libcooraccoemploi',
-					'Dsp.topprojpro',
-				)
-			),
-			// Emploi recherché
-			romev3_fields( 'actrech', $suffixes )
-		);
-		echo $this->Default->view( $dsp, $fields, array( 'options' => $options ) );
 
 		// ---------------------------------------------------------------------
 
@@ -90,7 +88,7 @@
 			}
 			return $result;
 		}
-// debug( $dsp);
+
 		if( empty( $dsp['Dsp']['id'] ) ) {
 			echo '<p class="notice">Cette personne ne possède pas encore de données socio-professionnelles.</p>';
 
@@ -219,93 +217,51 @@
 
 			// Situation professionnelle
 			echo $this->Xhtml->tag( 'h2', 'Situation professionnelle' );
-			if ( Configure::read( 'Cg.departement' ) == 66 ) {
-				echo $this->Default->view(
-					$dsp,
+			$fields = array_merge(
+				Hash::normalize(
 					array(
 						'Dsp.hispro',
-						'Libsecactderact66Secteur.intitule' => array( 'type' => 'text' ),
-						'Dsp.libsecactderact' => array( 'label' => 'Complément d\'information' ),
-						'Libderact66Metier.intitule' => array('type' => ('text')),
-						'Dsp.libderact' => array( 'label' => 'Complément d\'information' ),
+					)
+				),
+				// Dernière activité
+				romev3_fields( 'deract', $suffixes ),
+				Hash::normalize(
+					array(
 						'Dsp.cessderact',
 						'Dsp.topdomideract',
-						'Libsecactdomi66Secteur.intitule' => array( 'type' => 'text' ),
-						'Dsp.libsecactdomi' => array( 'label' => 'Complément d\'information' ),
-						'Libactdomi66Metier.intitule' => array( 'type' => 'text' ),
-						'Dsp.libactdomi' => array( 'label' => 'Complément d\'information' ),
+					)
+				),
+				// Dernière activité dominante
+				romev3_fields( 'deractdomi', $suffixes ),
+				Hash::normalize(
+					array(
 						'Dsp.duractdomi',
 						'Dsp.inscdememploi',
 						'Dsp.topisogrorechemploi',
 						'Dsp.accoemploi',
 						'Dsp.libcooraccoemploi',
-						'Dsp.topprojpro'
-					),
-					array(
-						'options' => $options,
-						'domain' => 'dsp'
+						'Dsp.topprojpro',
 					)
-				);
-			}
-			else {
-				echo $this->Default->view(
-					$dsp,
-					array(
-						'Dsp.hispro',
-						'Dsp.libderact',
-						'Dsp.libsecactderact',
-						'Dsp.cessderact',
-						'Dsp.topdomideract',
-						'Dsp.libactdomi',
-						'Dsp.libsecactdomi',
-						'Dsp.duractdomi',
-						'Dsp.inscdememploi',
-						'Dsp.topisogrorechemploi',
-						'Dsp.accoemploi',
-						'Dsp.libcooraccoemploi',
-						'Dsp.topprojpro'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
+				)
+			);
+			echo $this->Default->view( $dsp, $fields, array( 'options' => $options ) );
 
+			// FIXME: à ajouter pour le 58
 			if ($cg=='cg58') {
 				echo $this->Dsphm->details( $dsp, 'Detailprojpro', 'projpro', 'libautrprojpro', $options['Detailprojpro']['projpro'] );
 			}
 
-			if ( Configure::read( 'Cg.departement' ) == 66 ) {
-				echo $this->Default->view(
-					$dsp,
+			$fields = array_merge(
+				// Emploi recherché
+				romev3_fields( 'actrech', $suffixes ),
+				Hash::normalize(
 					array(
-						'Libsecactrech66Secteur.intitule' => array( 'type' => 'text' ),
-						'Dsp.libsecactrech' => array( 'label' => 'Complément d\'information' ),
-						'Libemploirech66Metier.intitule' => array( 'type' => 'text' ),
-						'Dsp.libemploirech' => array( 'label' => 'Complément d\'information' ),
 						'Dsp.topcreareprientre',
 						'Dsp.concoformqualiemploi'
-					),
-					array(
-						'options' => $options,
-						'domain' => 'dsp'
 					)
-				);
-			}
-			else {
-				echo $this->Default->view(
-					$dsp,
-					array(
-						'Dsp.libemploirech',
-						'Dsp.libsecactrech',
-						'Dsp.topcreareprientre',
-						'Dsp.concoformqualiemploi'
-					),
-					array(
-						'options' => $options
-					)
-				);
-			}
+				)
+			);
+			echo $this->Default->view( $dsp, $fields, array( 'options' => $options ) );
 
 			if ($cg=='cg58') {
 				echo $this->Default->view(
@@ -381,17 +337,7 @@
 			// DifficulteLogement - DetailDifficulteLogement
 
 			echo $this->Dsphm->details( $dsp, 'Detaildiflog', 'diflog', 'libautrdiflog', $options['Detaildiflog']['diflog'] );
-
-// 				foreach( $dsp['Detaildiflog'] as $key => $libautr ){
-// 					if( $libautr['diflog'] == '1009' ){
-// 						echo  $this->Xhtml->tag( 'div', 'Autres situations particulières' );
-// 						echo  $libautr['libautrdiflog'];
-// 					}
-// 				}
-
 		}
-
-		debug( $dsp );
 	?>
 </div>
 <?php if( $this->action == 'view_revs' ):?>

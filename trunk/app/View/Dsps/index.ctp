@@ -281,11 +281,11 @@
 									h( @$options['Coderomemetierdsp66'][$key2] ),
 									h( $dsp['Donnees']['libsecactrech'] ),
 									h( $dsp['Donnees']['libemploirech'] ),
-									array(
-										$viewLink,
-										array( 'class' => 'noprint' )
-									),
-									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+//									array(
+//										$viewLink,
+//										array( 'class' => 'noprint' )
+//									),
+//									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 								)
 							);
 						}
@@ -330,7 +330,7 @@
 								}
 							}
 
-							// Code ROME V3
+							/*// Code ROME V3
 							if( Configure::read( 'Romev3.enabled' ) ) {
 								$arrayData[] = h( $dsp['Deractdomidomaineromev3']['name'] );
 								$arrayData[] = h( $dsp['Deractdomimetierromev3']['name'] );
@@ -347,8 +347,27 @@
 									),
 									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 								)
-							);
+							);*/
 						}
+
+						// Code ROME V3
+						if( Configure::read( 'Romev3.enabled' ) ) {
+							$arrayData[] = h( $dsp['Deractdomidomaineromev3']['name'] );
+							$arrayData[] = h( $dsp['Deractdomimetierromev3']['name'] );
+							$arrayData[] = h( $dsp['Actrechdomaineromev3']['name'] );
+							$arrayData[] = h( $dsp['Actrechmetierromev3']['name'] );
+						}
+
+						$arrayData = array_merge(
+							$arrayData,
+							array(
+								array(
+									$viewLink,
+									array( 'class' => 'noprint' )
+								),
+								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
+							)
+						);
 
 						echo $this->Xhtml->tableCells(
 							$arrayData,

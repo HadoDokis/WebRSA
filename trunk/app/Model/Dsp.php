@@ -961,24 +961,32 @@
 		}
 
 		/**
-		 * @todo params
 		 *
 		 * @param array $params
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
+			$params = $params + array( 'find' => true, 'autre' => true );
+
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $params ) );
 			$return = Cache::read( $cacheKey );
 
 			if( $return === false ) {
-				$return = $this->enums();
-				$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+				$return = array();
 
-				$selects = $Catalogueromev3->dependantSelects();
+				if( $params['autre'] ) {
+					$return = $this->enums();
+				}
 
-				foreach( $this->prefixesRomev3 as $prefix ) {
-					foreach( array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' ) as $field ) {
-						$return[$this->alias]["{$prefix}{$field}"] = $selects['Catalogueromev3'][$field];
+				if( $params['find'] ) {
+					$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+
+					$selects = $Catalogueromev3->dependantSelects();
+
+					foreach( $this->prefixesRomev3 as $prefix ) {
+						foreach( array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' ) as $field ) {
+							$return[$this->alias]["{$prefix}{$field}"] = $selects['Catalogueromev3'][$field];
+						}
 					}
 				}
 
