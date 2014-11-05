@@ -188,23 +188,6 @@
 			return $options;
 		}
 
-		// TODO
-		public function foo() {
-			$query = array(
-				'fields' => array(
-					"( \"{$this->alias}\".\"metierromev3_id\" || '_' || \"{$this->alias}\".\"id\" ) AS \"{$this->alias}__id\"",
-					"\"{$this->alias}\".\"name\""
-				),
-				'order' => array( "\"{$this->alias}\".\"name\" ASC" )
-			);
-
-			$results = $this->find( 'all', $query );
-			$results = Hash::combine( $results, "{n}.{$this->alias}.id", "{n}.{$this->alias}.name" );
-
-			return $results;
-		}
-
-
 		/**
 		 * Retourne les données à utiliser dans le formulaire de modification de
 		 * la partie paramétrage.
