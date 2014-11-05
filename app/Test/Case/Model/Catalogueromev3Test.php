@@ -74,5 +74,14 @@
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
 		}
+
+		/**
+		 * Test de la méthode Catalogueromev3::prechargement()
+		 */
+		public function testPrechargement() {
+			$result = $this->Catalogueromev3->prechargement();
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>
