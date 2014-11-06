@@ -77,24 +77,24 @@
 						)
 					);
 
-					// INFO: codes ROME v2
-					// TODO: les textes libres à garder
-					echo '<fieldset><legend>Dernière activité dominante</legend>';
-						echo $this->Form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
-						echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Si le secteur est non présent dans la liste, précisez " ) );
+					if( Configure::read( 'Cg.departement' ) == 66 ) {
+						// TODO: les textes libres à garder
+						echo '<fieldset><legend>Dernière activité dominante</legend>';
+							echo $this->Form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
+							echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Si le secteur est non présent dans la liste, précisez " ) );
 
-						echo $this->Form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
-						echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => "Si le métier est non présent dans la liste, précisez " ) );
-					echo '</fieldset>';
+							echo $this->Form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+							echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => "Si le métier est non présent dans la liste, précisez " ) );
+						echo '</fieldset>';
 
-					echo '<fieldset><legend>Emploi recherché</legend>';
-						echo $this->Form->input('Dsp.libsecactrech66_secteur_id' , array('label' => "Quel est le secteur d'activité recherché ? ",  'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
-						echo $this->Form->input( 'Dsp.libsecactrech', array( 'label' => "Si le secteur recherché est non présent dans la liste, précisez " ) );
+						echo '<fieldset><legend>Emploi recherché</legend>';
+							echo $this->Form->input('Dsp.libsecactrech66_secteur_id' , array('label' => "Quel est le secteur d'activité recherché ? ",  'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
+							echo $this->Form->input( 'Dsp.libsecactrech', array( 'label' => "Si le secteur recherché est non présent dans la liste, précisez " ) );
 
-						echo $this->Form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
-						echo $this->Form->input( 'Dsp.libemploirech', array( 'label' => "Si le métier recherché est non présent dans la liste, précisez " ) );
-					echo '</fieldset>';
-
+							echo $this->Form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+							echo $this->Form->input( 'Dsp.libemploirech', array( 'label' => "Si le métier recherché est non présent dans la liste, précisez " ) );
+						echo '</fieldset>';
+					}
 				}
 				else {
 					echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ?" ) );
