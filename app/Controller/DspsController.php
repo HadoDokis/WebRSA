@@ -379,6 +379,12 @@
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set( 'rev', $rev );
+
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$prefixes = $this->Dsp->prefixesRomev3;
+				$suffixes = $this->Dsp->suffixesRomev3;
+				$this->set( compact( 'prefixes', 'suffixes' ) );
+			}
 		}
 
 		/**

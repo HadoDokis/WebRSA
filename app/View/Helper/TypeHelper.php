@@ -59,11 +59,25 @@
 			list( $modelName, $fieldName ) = model_field( $path );
 
 			if( empty( $this->_typeInfos["{$modelName}.{$fieldName}"] ) ) {
-				$model = ClassRegistry::init( $modelName );
-				if( !isset( $model->Behaviors->Typeable ) ) {
-					$model->Behaviors->attach( 'Typeable' );
+				try {
+					$model = ClassRegistry::init( $modelName );
+
+					if( !$model->Behaviors->attached( 'Typeable' ) ) {
+						$model->Behaviors->attach( 'Typeable' );
+					}
+					$typeInfos = $model->getTypeInfos( $fieldName );
+
+				} catch( Exception $e ) {
+					$typeInfos = array(
+						'type' => 'text',
+						'null' => true,
+						'default' => '',
+						'length' => null
+					);
+					$this->log( sprintf( '%s:%d %s', $e->getFile(), $e->getCode(), $e->getMessage() ), LOG_DEBUG );
 				}
-				$this->_typeInfos = Hash::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $model->getTypeInfos( $fieldName ) );
+
+				$this->_typeInfos = Hash::insert( $this->_typeInfos, "{$modelName}.{$fieldName}", $typeInfos );
 			}
 
 			if( !Set::check( $this->_typeInfos, "{$modelName}.{$fieldName}" ) ) {
