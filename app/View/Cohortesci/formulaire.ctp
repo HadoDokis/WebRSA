@@ -92,7 +92,7 @@
 							</tr>
 							<tr>
 								<th>État du dossier</th>
-								<td>'.h( $etatdosrsa[$contrat['Situationdossierrsa']['etatdosrsa']] ).'</td>
+								<td>'.h( value( $etatdosrsa, $contrat['Situationdossierrsa']['etatdosrsa'] ) ).'</td>
 							</tr>
 							<tr>
 								<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
