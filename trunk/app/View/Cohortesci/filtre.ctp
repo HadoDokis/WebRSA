@@ -16,7 +16,7 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-		observeDisableFieldsOnValue( 'ContratinsertionDecisionCi', [ 'ContratinsertionDatevalidationCiDay', 'ContratinsertionDatevalidationCiMonth', 'ContratinsertionDatevalidationCiYear' ], 'V', false );
+		observeDisableFieldsOnValue( 'SearchContratinsertionDecisionCi', [ 'SearchContratinsertionDatevalidationCiDay', 'SearchContratinsertionDatevalidationCiMonth', 'SearchContratinsertionDatevalidationCiYear' ], 'V', false );
 	});
 </script>
 
@@ -34,44 +34,44 @@
 	}
 ?>
 
-<?php echo $this->Form->create( 'Contratinsertion', array( 'id' => 'Contratinsertion', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
+<?php echo $this->Form->create( 'Search', array( 'id' => 'Contratinsertion', 'class' => ( !empty( $this->request->data ) ? 'folded' : 'unfolded' ) ) );?>
 	<?php
-		echo $this->Search->blocAllocataire();
-		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons );
+		echo $this->Search->blocAllocataire( array(), array(), 'Search' );
+		echo $this->Search->blocAdresse( $mesCodesInsee, $cantons, 'Search' );
 	?>
 	<fieldset>
 		<legend>Recherche par dossier</legend>
 		<?php
-			echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
-			echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			echo $this->Form->input( 'Search.Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
+			echo $this->Form->input( 'Search.Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
 
-			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
-			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
-			echo $this->Search->etatdosrsa($etatdosrsa);
+			$valueDossierDernier = isset( $this->request->data['Search']['Dossier']['dernier'] ) ? $this->request->data['Search']['Dossier']['dernier'] : true;
+			echo $this->Form->input( 'Search.Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
+			echo $this->Search->etatdosrsa($etatdosrsa, 'Search.Situationdossierrsa.etatdosrsa');
 		?>
 	</fieldset>
 	<fieldset>
 		<legend>Recherche de CER</legend>
-	
+
         <?php
-            echo $this->Search->date( 'Contratinsertion.created', 'Date de saisie du contrat' );
+            echo $this->Search->date( 'Search.Contratinsertion.created', 'Date de saisie du contrat' );
         ?>
 
-			<?php echo $this->Form->input( 'Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
-			<?php echo $this->Form->input( 'Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
-			<?php echo $this->Ajax->observeField( 'ContratinsertionStructurereferenteId', array( 'update' => 'ContratinsertionReferentId', 'url' => array( 'action' => 'ajaxreferent' ) ) );?>
+			<?php echo $this->Form->input( 'Search.Contratinsertion.structurereferente_id', array( 'label' => __d( 'rendezvous', 'Rendezvous.lib_struct' ), 'type' => 'select', 'options' => $struct, 'empty' => true ) ); ?>
+			<?php echo $this->Form->input( 'Search.Contratinsertion.referent_id', array( 'label' => __( 'Nom du référent' ), 'type' => 'select', 'options' => $referents, 'empty' => true ) ); ?>
+			<?php echo $this->Ajax->observeField( 'SearchContratinsertionStructurereferenteId', array( 'update' => 'SearchContratinsertionReferentId', 'url' => array( 'action' => 'ajaxreferent' ) ) );?>
 			<?php
 				if( $this->action == 'valides' ) {
-					echo $this->Form->input( 'Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
-					echo $this->Form->input( 'Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );
+					echo $this->Form->input( 'Search.Contratinsertion.decision_ci', array( 'label' => 'Statut du contrat', 'type' => 'select', 'options' => $decision_ci, 'empty' => true ) );
+					echo $this->Form->input( 'Search.Contratinsertion.datevalidation_ci', array( 'label' => '', 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );
 				}
 			?>
 			<?php
 				if( Configure::read( 'Cg.departement' ) != 66 ){
-					echo $this->Form->input( 'Contratinsertion.forme_ci', array( 'div' => false, 'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'default' => $complexeparticulier ) );
+					echo $this->Form->input( 'Search.Contratinsertion.forme_ci', array( 'div' => false, 'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat', 'default' => $complexeparticulier ) );
 				}
 				else if( $this->action == 'valides' && Configure::read( 'Cg.departement' ) == 66 ){
-					echo $this->Form->input( 'Contratinsertion.forme_ci', array( 'div' => false, 'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat' ) );
+					echo $this->Form->input( 'Search.Contratinsertion.forme_ci', array( 'div' => false, 'type' => 'radio', 'options' => $forme_ci, 'legend' => 'Forme du contrat' ) );
 				}
 			?>
 
@@ -79,9 +79,9 @@
 
 	<?php
 //		echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Contratinsertion' );
-        echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours );
-		echo $this->Search->paginationNombretotal( 'Contratinsertion.nombre_total' );
-		echo $this->Search->observeDisableFormOnSubmit( 'Contratinsertion' );
+        echo $this->Search->referentParcours( $structuresreferentesparcours, $referentsparcours, 'Search' );
+		echo $this->Search->paginationNombretotal( 'Search.Contratinsertion.nombre_total' );
+		echo $this->Search->observeDisableFormOnSubmit( 'Search' );
 	?>
 
 	<div class="submit noprint">

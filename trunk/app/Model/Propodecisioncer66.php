@@ -122,6 +122,8 @@
 
 		public function sauvegardeCohorteCer( $data ) {
 			$propodecisioncer66 = array();
+			$saved = true;
+
 			if( !empty( $data ) ) {
 				foreach( $data as $value ){
 					if( isset( $value['decision_ci'] ) ){
@@ -134,7 +136,7 @@
 								)
 							);
 							$this->create( $propodecisioncer66 );
-							$saved = $this->save();
+							$saved = $this->save() && $saved;
 						}
 						else if( $value['decision_ci'] == 'N' ) {
 							$propodecisioncer66 = array(
@@ -145,7 +147,7 @@
 								)
 							);
 							$this->create( $propodecisioncer66 );
-							$saved = $this->save();
+							$saved = $this->save() && $saved;
 						}
 					}
 				}

@@ -28,9 +28,9 @@
 			'Search.SearchPrg' => array(
 				'actions' => array(
 					'valides',
-					'nouveaux' => array( 'filter' => 'Contratinsertion' ),
-					'nouveauxsimple' => array( 'filter' => 'Contratinsertion' ),
-					'nouveauxparticulier' => array( 'filter' => 'Contratinsertion' )
+					'nouveaux' => array( 'filter' => 'Search' ),
+					'nouveauxsimple' => array( 'filter' => 'Search' ),
+					'nouveauxparticulier' => array( 'filter' => 'Search' )
 				)
 			),
 			'Gestionzonesgeos',
@@ -232,7 +232,7 @@
 				if( in_array( $statutValidation, array( 'Decisionci::nouveaux', 'Decisionci::nouveauxsimple', 'Decisionci::nouveauxparticulier', 'Decisionci::valides' ) ) && !empty( $this->request->data ) ) {
 					$querydata = $this->Cohorteci->search(
 						$statutValidation,
-						$this->request->data,
+						$this->request->data['Search'],
 						( $statutValidation != 'Decisionci::valides' ? $this->Dossier->Situationdossierrsa->etatOuvert() : array() )
 					);
 
@@ -241,7 +241,7 @@
 					$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
 
 					$this->paginate = $querydata;
-					$progressivePaginate = !Hash::get( $this->request->data, 'Contratinsertion.nombre_total' );
+					$progressivePaginate = !Hash::get( $this->request->data, 'Search.Contratinsertion.nombre_total' );
 					$cohorteci = $this->paginate( $this->Dossier->Foyer->Personne->Contratinsertion, array(), array(), $progressivePaginate );
 
 					foreach( $cohorteci as $key => $value ) {
@@ -307,7 +307,7 @@
 		public function exportcsv() {
 			$querydata = $this->Cohorteci->search(
 				'Decisionci::valides',
-				Hash::expand( $this->request->params['named'], '__' ),
+				Hash::get( Hash::expand( $this->request->params['named'], '__' ), 'Search' ),
 				array()
 			);
 
