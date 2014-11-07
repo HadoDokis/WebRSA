@@ -489,3 +489,4 @@ Plan:
 		});
 	<?php endif;?>
 </script>
+<?php echo $this->Observer->disableFormOnSubmit( 'dspform' );?>
