@@ -496,52 +496,66 @@
 		}
 
 		/**
+		 * Permet d'ajouter une nouvelle version des DspRev à partir d'une copie
+		 * plus ancienne.
 		 *
+		 * @param integer $id L'id de l'entrée des DspRev qu'il faut copier.
+		 * @throws NotFoundException
 		 */
 		public function revertTo( $id = null ) {
-			$dossier_id = $this->DspRev->dossierId( $id );
-
-			$this->Jetons2->get( $dossier_id );
-
-			$qd_dsprevs = array(
+			$query = array(
 				'conditions' => array(
 					'DspRev.id' => $id
+				),
+				'contain' => array_merge(
+					array_keys( $this->DspRev->hasMany ),
+					array_keys( $this->DspRev->hasOne )
 				)
 			);
-			$dsprevs = $this->DspRev->find( 'first', $qd_dsprevs );
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $dsprevs['Dsp']['personne_id'] ) ) );
 
-			$this->DspRev->begin();
+			$record = $this->DspRev->find( 'first', $query );
 
-			$this->DspRev->id = $id;
-			$success = $this->DspRev->saveField( 'modified', date( 'Y-m-d' ) );
-
-			if( $success ) {
-				$this->DspRev->commit();
-			}
-			else {
-				$this->DspRev->rollback();
+			if( empty( $record ) ) {
+				throw new NotFoundException();
 			}
 
-			$this->Jetons2->release( $dossier_id );
+			$personne_id = Hash::get( $record, 'DspRev.personne_id' );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
 
-			$qd = array(
-				'conditions' => array(
-					'Dsp.personne_id' => $dsprevs['DspRev']['personne_id']
-				)
-			);
-			$this->request->data = $this->Dsp->find( 'first', $qd );
-			$dsp_id = $this->request->data['Dsp']['id'];
+			// INFO: on obtient un jeton qui sera traité dans la méthode edit()
+			$this->Jetons2->get( $dossier_id );
 
-			foreach( $dsprevs as $dsprev => $values ) {
-				$this->request->data[preg_replace( '/Rev$/', '', $dsprev )] = $dsprevs[$dsprev];
+			// Nettoyage des champs
+			$fieldNames = array( 'id', 'created', 'modified' );
+			foreach( $fieldNames as $fieldName ) {
+				unset( $record['DspRev'][$fieldName] );
+			}
+			foreach( array_keys( $this->DspRev->hasMany ) as $alias ) {
+				foreach( array_keys( $record[$alias] ) as $key ) {
+					foreach( array_merge( $fieldNames, array( 'dsp_rev_id' ) ) as $fieldName ) {
+						unset( $record[$alias][$key][$fieldName] );
+					}
+				}
 			}
 
-			$this->request->data['Dsp']['id'] = $dsp_id;
-			$this->request->data = Hash::remove( $this->request->data, 'Dsp.created' );
-			$this->request->data = Hash::remove( $this->request->data, 'Dsp.modified' );
+			// Remplacement des alias XxxRev en Xxx
+			foreach( $record as $alias => $values ) {
+				$newAlias = preg_replace( '/Rev$/', '', $alias );
+				if( $alias !== $newAlias ) {
+					$record[$newAlias] = $record[$alias];
+					unset( $record[$alias] );
+				}
+			}
 
-			$this->edit( $dsprevs['DspRev']['personne_id'], $id );
+			$record['Dsp']['id'] = $record['Dsp']['dsp_id'];
+			unset( $record['Dsp']['dsp_id'] );
+
+			// INFO: on ne copie pas Fichiermodule
+			unset( $record['Fichiermodule'] );
+
+			$this->request->data = $record;
+			$this->edit( $personne_id, $id );
 		}
 
 		/**
