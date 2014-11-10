@@ -151,12 +151,45 @@
 				'Contratinsertion.df_ci',
 				'Contratinsertion.lieu_saisi_ci' => array( 'type' => 'text' ),
 				'Contratinsertion.date_saisi_ci',
-			)/*,
-			array( 'id' => 'vueContrat' )*/
+			)
 		);
-// 			debug($contratinsertion);
 	}
-// debug($contratinsertion);
+	else if( Configure::read( 'Cg.departement' ) == 976 ) {
+		$options = Hash::merge(
+			$options,
+			array(
+				'Contratinsertion' => array(
+					'decision_ci' => $this->viewVars['decision_ci'],
+					'duree_engag' => $this->viewVars['duree_engag_cg976'],
+				)
+			)
+		);
+
+		echo $this->Default3->view(
+			$contratinsertion,
+			array(
+				'Personne.nom_complet',
+				'Typeorient.lib_type_orient',
+				'Structurereferente.lib_struc',
+				'Referent.nom_complet',
+				'Contratinsertion.rg_ci',
+				'Contratinsertion.nature_projet',
+				'Contratinsertion.observ_ci',
+				'Contratinsertion.observ_benef',
+				'Contratinsertion.duree_engag' => array( 'type' => 'text' ),
+				'Contratinsertion.dd_ci',
+				'Contratinsertion.df_ci',
+				'Contratinsertion.lieu_saisi_ci',
+				'Contratinsertion.date_saisi_ci',
+				// Motifs de refus ?
+				'Contratinsertion.decision_ci',
+				'Contratinsertion.datedecision',
+			),
+			array(
+				'options' => $options
+			)
+		);
+	}
 ?>
 <div class="submit">
 	<?php echo $this->Xform->submit( 'Retour', array( 'name' => 'Cancel', 'div' => false ) ); ?>

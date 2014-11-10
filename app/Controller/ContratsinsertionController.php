@@ -15,16 +15,30 @@
  *
  * @package app.Controller
  */
-class ContratsinsertionController extends AppController {
+class ContratsinsertionController extends AppController
+{
 
     public $name = 'Contratsinsertion';
+
     public $uses = array('Contratinsertion', 'Option');
-    public $helpers = array('Default2', 'Cake1xLegacy.Ajax', 'Fileuploader', 'Widget');
+
+    public $helpers = array(
+		'Cake1xLegacy.Ajax',
+		'Default2',
+		'Default3' => array(
+			'className' => 'Default.DefaultDefault'
+		),
+		'Fileuploader',
+		'Widget',
+	);
+
     public $components = array('RequestHandler', 'Gedooo.Gedooo', 'Fileuploader', 'Jetons2', 'DossiersMenus', 'InsertionsAllocataires');
+
     public $commeDroit = array(
         'view' => 'Contratsinsertion:index',
         'add' => 'Contratsinsertion:edit'
     );
+
     public $aucunDroit = array('ajax', 'ajaxaction', 'ajaxref', 'ajaxstruct', 'ajaxraisonci', 'notificationsop', 'ajaxfileupload', 'ajaxfiledelete', 'fileview', 'download');
 
     /**
@@ -67,8 +81,11 @@ class ContratsinsertionController extends AppController {
     protected function _setOptions() {
         $options = $this->Contratinsertion->enums();
 
+		$this->set('duree_engag', $this->Option->duree_engag());
+
         if (in_array($this->action, array('index', 'add', 'edit', 'view', 'valider', 'validersimple', 'validerparticulier'))) {
             $this->set('duree_engag_cg66', $this->Option->duree_engag_cg66());
+            $this->set('duree_engag_cg976', $this->Option->duree_engag_cg976());
             $options = array_merge($options, $this->Contratinsertion->Propodecisioncer66->enums());
             $this->set('decision_ci', $this->Option->decision_ci());
             $forme_ci = array();
@@ -1738,5 +1755,4 @@ class ContratsinsertionController extends AppController {
     }
 
 }
-
 ?>

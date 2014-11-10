@@ -505,6 +505,20 @@
 		}
 
 		/**
+		 * Enums pour le champ contratsinsertion.duree_engag du CG 976
+		 *
+		 * @return array
+		 */
+		public function duree_engag_cg976() {
+			return array(
+				'1' => '3 mois',
+				'2' => '6 mois',
+				'3' => '9 mois',
+				'4' => '12 mois'
+			);
+		}
+
+		/**
 		 * Enums pour le champ contratsinsertion.duree_cdd
 		 *
 		 * @return array
