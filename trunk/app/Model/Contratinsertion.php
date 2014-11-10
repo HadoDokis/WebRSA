@@ -55,7 +55,8 @@
 					'%s/ficheliaisoncerSimplemsp.odt',
 					'%s/tacitereconduction66.odt'
 				),
-				93 => '%s/contratinsertion.odt'
+				93 => '%s/contratinsertion.odt',
+				976 => '%s/contratinsertioncg976.odt'
 			),
 			'StorablePdf' => array(
 				'afterSave' => 'deleteAll'
@@ -1636,6 +1637,9 @@
 					return 'Contratinsertion/contratinsertionold.odt';
 				}
 			}
+			else if( $cgDepartement == 976 ) {
+				return 'Contratinsertion/contratinsertioncg976.odt';
+			}
 
 			return 'Contratinsertion/contratinsertion.odt';
 		}
@@ -2235,6 +2239,12 @@
                         )
 					)
 				);
+			}
+			else if( Configure::read( 'Cg.departement' ) == 976 ) {
+				$querydata['fields'][] = 'Typeorient.lib_type_orient';
+				$querydata['fields'][] = 'Structurereferente.lib_struc';
+				$querydata['joins'][] = $this->join( 'Structurereferente', array( 'type' => 'INNER' ) );
+				$querydata['joins'][] = $this->Structurereferente->join( 'Typeorient', array( 'type' => 'INNER' ) );
 			}
 
 			return $querydata;

@@ -1,0 +1,99 @@
+# Traductions de contratsinsertion.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "/Contratsinsertion/index/:heading"
+msgstr "Contrats d'insertion de #Personne.qual# #Personne.nom# #Personne.prenom#"
+
+msgid "/Contratsinsertion/add/:heading"
+msgstr "Ajout d'un contrat d'insertion pour #Personne.qual# #Personne.nom# #Personne.prenom#"
+
+msgid "/Contratsinsertion/edit/:heading"
+msgstr "Modification d'un contrat d'insertion de #Personne.qual# #Personne.nom# #Personne.prenom#"
+
+msgid "/Contratsinsertion/add"
+msgstr "Ajouter"
+
+msgid "/Contratsinsertion/view"
+msgstr "Voir"
+
+msgid "/Contratsinsertion/edit"
+msgstr "Modifier"
+
+msgid "/Contratsinsertion/valider"
+msgstr "Décision"
+
+msgid "/Contratsinsertion/impression"
+msgstr "Impression"
+
+msgid "/Contratsinsertion/cancel"
+msgstr "Annuler"
+
+msgid "/Contratsinsertion/delete"
+msgstr "Supprimer"
+
+msgid "/Contratsinsertion/delete/#Contratinsertion.id# ?"
+msgstr "Confirmez-vous la suppression du CER ?"
+
+msgid "/Contratsinsertion/filelink"
+msgstr "Fichiers liés"
+
+# ------------------------------------------------------------------------------
+
+msgid "Contratinsertion.date_saisi_ci"
+msgstr "Date de saisie"
+
+msgid "Typeorient.lib_type_orient"
+msgstr "Type de structure"
+
+msgid "Structurereferente.lib_struc"
+msgstr "Structure référente"
+
+msgid "Contratinsertion.dd_ci"
+msgstr "Date de début de contrat"
+
+msgid "Contratinsertion.df_ci"
+msgstr "Date de fin de contrat"
+
+msgid "Contratinsertion.duree_engag"
+msgstr "Durée du contrat"
+
+msgid "Contratinsertion.decision_ci"
+msgstr "Décision"
+
+msgid "Contratinsertion.datedecision"
+msgstr "Date décision"
+
+msgid "Fichiermodule.nb_fichiers_lies"
+msgstr "Fichiers liés"
+
+# ------------------------------------------------------------------------------
+
+msgid "Contratinsertion.structurereferente_id"
+msgstr "Structure référente"
+
+msgid "Contratinsertion.referent_id"
+msgstr "Référent chargé du suivi"
+
+msgid "Contratinsertion.nature_projet"
+msgstr "Nature du projet"
+
+msgid "Contratinsertion.observ_ci"
+msgstr "Conclusion de l'entretien"
+
+msgid "Contratinsertion.observ_benef"
+msgstr "Remarques du bénéficiaire"
+
+msgid "Contratinsertion.lieu_saisi_ci"
+msgstr "Lieu de saisie"
+
+msgid "Personne.nom_complet"
+msgstr "Nom de l'allocataire"
