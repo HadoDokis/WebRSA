@@ -963,6 +963,23 @@
 						)
 			)';
 
+			// Renouvellement par tacite reconduction
+			$sql = $this->Personne->sq(
+				array(
+					'alias' => 'personnes',
+					'fields' => array( 'personnes.dtnai' ),
+					'contain' => false,
+					'conditions' => array( "personnes.id = {$this->alias}.personne_id" ),
+					'limit' => 1
+				)
+			);
+
+			$taciteReconduction = '(
+				"'.$this->alias.'"."num_contrat" = \'REN\'
+				AND EXTRACT( YEAR FROM AGE( "'.$this->alias.'"."dd_ci", ( '.$sql.' ) ) ) >= 55
+				AND "'.$this->alias.'"."datetacitereconduction" IS NOT NULL
+			)';
+
 			$return = array(
 				// 1. CER qui devraient être "Annulé"
 				'annule' => array(
@@ -1007,6 +1024,7 @@
 					$this->alias.'.decision_ci' => 'V',
 					'NOW()::DATE BETWEEN ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE AND '.$this->alias.'.df_ci',
 					"NOT {$conditionExistsBilanLieAuCer}",
+					"NOT {$taciteReconduction}"
 				),
 				// 6. CER qui devraient être "Périme"
 				'perime' => array(
@@ -1026,6 +1044,10 @@
 								$conditionExistsCerPlusRecent,
 								$conditionsExistsReorientation
 							)
+						),
+						array(
+							$this->alias.'.decision_ci' => array( 'V', 'E' ),
+							$taciteReconduction
 						)
 					)
 				),
@@ -1034,11 +1056,18 @@
 					$this->alias.'.decision_ci' => 'V',
 					$this->alias.'.df_ci < NOW()::DATE',
 					"NOT {$conditionExistsBilanLieAuCer}",
+					"NOT {$taciteReconduction}"
 				),
 				// 8. CER qui devraient être "En cours"
 				'encours' => array(
 					$this->alias.'.decision_ci' => 'V',
-					'NOW()::DATE <= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE',
+					'OR' => array(
+						'NOW()::DATE <= ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE',
+						array(
+							'NOW()::DATE BETWEEN ( '.$this->alias.'.df_ci - INTERVAL \''.$intervalBilan.'\' )::DATE AND '.$this->alias.'.df_ci',
+							$taciteReconduction
+						)
+					)
 				),
 				// 9. CER qui devraient être "Bilan réalisé - En attente de décision de l'EPL Parcours"
 				'bilanrealiseattenteeplparcours' => array(
