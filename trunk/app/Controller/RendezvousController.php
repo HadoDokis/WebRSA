@@ -294,7 +294,7 @@
 
             // variable permettant de savoir si on peut ou non ajouter un nouveau RDV
             $ajoutPossible = true;
-            if( Configure::read( 'Cg.departement' ) == 66 ) {
+            if( Configure::read( 'Cg.departement' ) == 66 && isset( $statutrdv_id ) ) {
                 if( in_array( $statutrdv_id, (array) Configure::read( 'Rendezvous.Ajoutpossible.statutrdv_id' ) ) ) {
                     $ajoutPossible = false;
                 }
