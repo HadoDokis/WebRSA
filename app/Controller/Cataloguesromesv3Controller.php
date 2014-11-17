@@ -29,6 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'Ajax',
 			'Search.Filtresdefaut' => array( 'famillesromesv3', 'domainesromesv3', 'metiersromesv3', 'appellationsromesv3' ),
 			'Search.SearchPrg' => array(
 				'actions' => array(
@@ -47,6 +48,10 @@
 		 */
 		public $helpers = array(
 			'Allocataires',
+			'Ajax2' => array(
+				'className' => 'Prototype.PrototypeAjax',
+				'useBuffer' => false
+			),
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			),
@@ -60,6 +65,11 @@
 		 */
 		public $uses = array( 'Catalogueromev3', 'Familleromev3', 'Domaineromev3', 'Metierromev3', 'Appellationromev3' );
 
+		/**
+		 * Correspondances des droits.
+		 *
+		 * @var array
+		 */
 		public $commeDroit = array(
 			'famillesromesv3' => 'Cataloguesromesv3:index',
 			'domainesromesv3' => 'Cataloguesromesv3:index',
@@ -67,6 +77,125 @@
 			'appellationsromesv3' => 'Cataloguesromesv3:index',
 			'add' => 'Cataloguesromesv3:edit'
 		);
+
+		/**
+		 * Méthodes ne nécessitant aucun droit.
+		 *
+		 * @var array
+		 */
+		public $aucunDroit = array(
+			'ajax_appellation'
+		);
+
+
+		/**
+		 *
+		 */
+		public function ajax_appellation() {
+			$data = $this->Ajax->unprefixAjaxRequest( $this->request->data );
+			$json = array( 'success' => true, 'fields' => array() );
+
+			$type = Hash::get( $data, 'Event.type' );
+
+			$path = Hash::get( $data, 'Target.name' );
+			$path = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $path ) );
+
+			// 1. Ajax::ajaxOnKeyup()
+			if( $type === 'keyup' ) {
+				// Partie du nom du champ
+				list( $modelName, $fieldName ) = model_field( preg_replace( '/romev3$/', '', $path ) );
+
+				$value = Hash::get( $data, $path );
+
+				$query = array(
+					'fields' => array(
+						'Appellationromev3.id',
+						'Appellationromev3.name'
+					),
+					'conditions' => array(
+						'NOACCENTS_UPPER( "Appellationromev3"."name" ) LIKE' => '%'.noaccents_upper( $value ).'%',
+					),
+					'order' => array(
+						'Appellationromev3.name ASC'
+					)
+				);
+
+				if( trim( $value ) == '' ) {
+					$query['conditions'] = '1 = 2';
+				}
+
+				$results = $this->Appellationromev3->find( 'all', $query );
+
+				$json['fields'][$path] = array(
+					'id' => $data['Target']['domId'],
+					'type' => 'ajax_select',
+					'prefix' => $data['prefix'],
+					'options' => Hash::extract( $results, '{n}.Appellationromev3' )
+				);
+			}
+			// 2. Ajax::ajaxClick()
+			else {
+				$target = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['name'] ) );
+				list( $modelName, $fieldName ) = model_field( preg_replace( '/romev3$/', '', $target ) );
+
+				$query = array(
+					'fields' => array(
+						'Domaineromev3.familleromev3_id',
+						'Domaineromev3.id',
+						'Metierromev3.id',
+						'Appellationromev3.id',
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Appellationromev3->join( 'Metierromev3', array( 'type' => 'INNER' ) ),
+						$this->Appellationromev3->Metierromev3->join( 'Domaineromev3', array( 'type' => 'INNER' ) ),
+					),
+					'conditions' => array(
+						'Appellationromev3.id' => $data['value']
+					)
+				);
+
+				$result = $this->Appellationromev3->find( 'first', $query );
+
+				$json['fields'] = array(
+					"{$modelName}.{$fieldName}" => array(
+						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}romev3" ),
+						'value' => '', // FIXME
+						'type' => 'text'
+					),
+					"{$modelName}.{$fieldName}familleromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}familleromev3_id" ),
+						'value' => $result['Domaineromev3']['familleromev3_id'],
+						'type' => 'select',
+						'simulate' => true
+					),
+					"{$modelName}.{$fieldName}domaineromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}domaineromev3_id" ),
+						'value' => "{$result['Domaineromev3']['familleromev3_id']}_{$result['Domaineromev3']['id']}",
+						'type' => 'select',
+						'simulate' => true
+					),
+					"{$modelName}.{$fieldName}metierromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}metierromev3_id" ),
+						'value' => "{$result['Domaineromev3']['id']}_{$result['Metierromev3']['id']}",
+						'type' => 'select',
+						'simulate' => true
+					),
+					"{$modelName}.{$fieldName}appellationromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}appellationromev3_id" ),
+						'value' => "{$result['Metierromev3']['id']}_{$result['Appellationromev3']['id']}",
+						'type' => 'select',
+						'simulate' => true
+					)
+				);
+			}
+
+			$json['fields'] = $this->Ajax->prefixAjaxResult( $data['prefix'], $json['fields'] );
+
+			$this->set( compact( 'json' ) );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
+		}
 
 		/**
 		 * Liste des codes familles ROME V3.
