@@ -2034,6 +2034,10 @@ function ajax_action_on_success(response, parameters) {
 					}
 					else {
 						$($(field).id).value = $(field).value;
+
+						if( $(field).simulate === true ) {
+							$($(field).id).simulate( 'change' );
+						}
 					}
 				}
 			} catch( Exception ) {

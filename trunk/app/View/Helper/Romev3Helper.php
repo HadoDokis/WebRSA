@@ -21,6 +21,10 @@
 		 * @var array
 		 */
 		public $helpers = array(
+			'Ajax2' => array(
+				'className' => 'Prototype.PrototypeAjax',
+				'useBuffer' => false
+			),
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault',
 				'useBuffer' => false
@@ -44,10 +48,12 @@
 				'prefix' => null,
 				'suffix' => null,
 				'id' => null,
-				'fieldset' => true
+				'fieldset' => true,
+				'url' => array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' )
 			);
 
 			$fieldsetPath = implode( '.', Hash::filter( array( $params['modelName'], $params['prefix'], $params['suffix'] ) ) );
+			$ajaxFieldPath = "{$params['modelName']}.{$params['prefix']}romev3{$params['suffix']}";
 
 			if( $params['id'] === null ) {
 				$params['id'] = $this->domId( $fieldsetPath );
@@ -55,6 +61,7 @@
 
 			$return = $this->Default3->subform(
 				array(
+					$ajaxFieldPath => array( 'type' => 'text' ),
 					"{$params['modelName']}.{$params['prefix']}familleromev3{$params['suffix']}_id" => array( "options" => $params['options'][$params['modelName']]["{$params['prefix']}familleromev3{$params['suffix']}_id"], 'empty' => true ),
 					"{$params['modelName']}.{$params['prefix']}domaineromev3{$params['suffix']}_id" => array( "options" => $params['options'][$params['modelName']]["{$params['prefix']}domaineromev3{$params['suffix']}_id"], 'empty' => true ),
 					"{$params['modelName']}.{$params['prefix']}metierromev3{$params['suffix']}_id" => array( "options" => $params['options'][$params['modelName']]["{$params['prefix']}metierromev3{$params['suffix']}_id"], 'empty' => true ),
@@ -70,6 +77,17 @@
 					"{$params['modelName']}.{$params['prefix']}familleromev3{$params['suffix']}_id" => "{$params['modelName']}.{$params['prefix']}domaineromev3{$params['suffix']}_id",
 					"{$params['modelName']}.{$params['prefix']}domaineromev3{$params['suffix']}_id" => "{$params['modelName']}.{$params['prefix']}metierromev3{$params['suffix']}_id",
 					"{$params['modelName']}.{$params['prefix']}metierromev3{$params['suffix']}_id" => "{$params['modelName']}.{$params['prefix']}appellationromev3{$params['suffix']}_id",
+				)
+			);
+
+			//
+			$return .= $this->Ajax2->observe(
+				array(
+					$ajaxFieldPath => array( 'event' => 'keyup' )
+				),
+				array(
+					'url' => $params['url'],
+					'onload' => false
 				)
 			);
 

@@ -118,6 +118,7 @@ COMMENT ON TABLE appellationsromesv3 IS 'Codes ROME V3 - Appellations';
 
 CREATE INDEX appellationsromesv3_metierromev3_id_idx ON appellationsromesv3 (metierromev3_id);
 CREATE UNIQUE INDEX appellationsromesv3_metierromev3_id_name_idx ON appellationsromesv3 (metierromev3_id, name);
+CREATE INDEX appellationsromesv3_metierromev3_id_name_noaccents_upper ON appellationsromesv3( NOACCENTS_UPPER( name ) );
 
 --------------------------------------------------------------------------------
 -- Correspondances ROME V2 <-> ROME V3
