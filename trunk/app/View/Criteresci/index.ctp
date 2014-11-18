@@ -232,7 +232,7 @@
 						}
 
 						$innerTableParCg = '';
-						if( Configure::write( 'Cg.departement' ) == 58 ) {
+						if( Configure::read( 'Cg.departement' ) == 58 ) {
 							$innerTableParCg .= '<tr>
 								<th>'.__d( 'personne', 'Personne.etat_dossier_orientation' ).'</th>
 								<td>'.h( value( (array)Hash::get( $options, 'Personne.etat_dossier_orientation' ), Hash::get( $contrat, 'Personne.etat_dossier_orientation' ) ) ).'</td>
