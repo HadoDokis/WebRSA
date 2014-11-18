@@ -32,6 +32,11 @@
 	Router::connect( '/pages/*', array( 'controller' => 'pages', 'action' => 'display' ) );
 
 	/**
+	 * Ajout de la route pour la réponse REST à Allo.
+	 */
+	Router::connect( '/rest/api/allo/version', array( 'controller' => 'allos', 'action' => 'version' ) );
+
+	/**
 	 * Load all plugin routes.  See the CakePlugin documentation on
 	 * how to customize the loading of plugin routes.
 	 */
