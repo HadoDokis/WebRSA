@@ -234,6 +234,7 @@
 			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' );
 			$isLogoutPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' );
 			$isForgottenpass = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/forgottenpass' );
+			$isAllo = ( strpos( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ), '/rest/api/allo/' ) === 0 );
 
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (
@@ -244,7 +245,7 @@
 			);
 			$this->set( 'useAlerteFinSession', $useAlerteFinSession );
 
-			if( !$isLoginPage && !$isLogoutPage && !$isForgottenpass ) {
+			if( !$isLoginPage && !$isLogoutPage && !$isForgottenpass && !$isAllo ) {
 				if( !$this->Session->check( 'Auth' ) || !$this->Session->check( 'Auth.User' ) ) {
 					//le forcer a se connecter
 					$this->redirect( array( 'controller' => 'users', 'action' => 'login' ) );
