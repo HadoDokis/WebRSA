@@ -2065,6 +2065,8 @@ function ajax_action_on_success(response, parameters) {
  *	- full (boolean): permet de choisir sous quel format les paramètres post seront envoyés (@see cake_data())
  *	- fields (Array): une liste d'id (HTML) de champs à envoyer
  *	- values (objet): une liste d'attributs id (HTML) / valeur à forcer pour les champs à envoyer
+ *	- delay (integer): le nombre de millisecondes de délai à utiliser avant l'envoi lorsque l'événement est de type keyup ou keydown. Par défaut: 500.
+ *	- min (integer): le nombre minimum de caractères devant être remplis lorsque l'événement est de type keyup ou keydown. Par défaut: 3.
  * }}}
  *
  * En cas de succès de Ajax.Request, la fonction de rappel ajax_action_on_success()
@@ -2083,27 +2085,77 @@ function ajax_action_on_success(response, parameters) {
  * @param object parameters
  * @returns void
  */
-function ajax_action(event, parameters) {
-	var postParams = cake_data( parameters );
+function ajax_action( event, parameters ) {
+	var keyEvents = [ 'keyup', 'keydown' ],
+		doAjaxAction = function( event, parameters ) {
+		var postParams = cake_data( parameters );
 
-	postParams['data[prefix]'] = parameters.prefix;
+		postParams['data[prefix]'] = parameters.prefix;
+		postParams['data[Event][type]'] = $(event).type;
 
-	postParams['data[Event][type]'] = $(event).type;
+		var element = $(event).element(); // Dans les cas du change et du keyup
+		postParams['data[Target][domId]'] = $(element).id;
+		postParams['data[Target][name]'] = $(element).name;
 
-	var element = $(event).element(); // Dans les cas du change et du keyup
-	postParams['data[Target][domId]'] = $(element).id;
-	postParams['data[Target][name]'] = $(element).name;
+		new Ajax.AbortableRequest(
+			parameters.url,
+			{
+				parameters: postParams,
+				onSuccess: function( response ) {
+					postParams.url = parameters.url;
+					ajax_action_on_success( response, postParams );
+					if( in_array( $(event).type, keyEvents ) && !in_array( event.keyCode, unobservedKeys ) ) {
+						element.removeClassName( 'loading' );
+						delete window.ajax_timeout_queue[event.type][element.id];
+					}
+				}
+			}
+		);
+	};
 
-	new Ajax.AbortableRequest(
-		parameters.url,
-		{
-			parameters: postParams,
-			onSuccess: function( response ) {
-				postParams.url = parameters.url;
-				ajax_action_on_success( response, postParams );
+	// Si ce n'est pas un événement de type keyup/keydown sur un champ texte
+	if( !in_array( event.type, keyEvents ) ) {
+		doAjaxAction( event, parameters );
+	}
+	// Si c'est un événement de type keyup/keydown sur un champ texte
+	else if( !in_array( event.keyCode, unobservedKeys ) ) {
+		var element = $(event).element(),
+			delay = ( parameters.delay === undefined ? 500 : parameters.delay ),
+			min = ( parameters.min === undefined ? 3 : parameters.min );
+
+		// Liste globale des timeouts
+		window.ajax_timeout_queue = ( window.ajax_timeout_queue === undefined ? {} : window.ajax_timeout_queue );
+		window.ajax_timeout_queue[event.type] = ( window.ajax_timeout_queue[event.type] === undefined ? {} : window.ajax_timeout_queue[event.type] );
+
+		// Si on a un nombre de lettres suffisant
+		if( $F(element).length >= min ) {
+			element.addClassName( 'loading' );
+
+			if( window.ajax_timeout_queue[event.type][element.id] !== undefined ) {
+				clearTimeout( window.ajax_timeout_queue[event.type][element.id] );
+				delete window.ajax_timeout_queue[event.type][element.id];
+			}
+
+			window.ajax_timeout_queue[event.type][element.id] = setTimeout(
+				function() { doAjaxAction( event, parameters ); },
+				delay
+			);
+		}
+		// Sinon, on nettoie le timeout, la classe, la liste de résultats
+		else {
+			if( window.ajax_timeout_queue[event.type][element.id] !== undefined ) {
+				clearTimeout( window.ajax_timeout_queue[event.type][element.id] );
+				delete window.ajax_timeout_queue[event.type][element.id];
+			}
+
+			element.removeClassName( 'loading' );
+
+			var oldAjaxSelect = $( $(element).id + 'AjaxSelect' );
+			if( oldAjaxSelect ) {
+				$( oldAjaxSelect ).remove();
 			}
 		}
-	);
+	}
 }
 
 /**

@@ -134,9 +134,9 @@ Event.observe( $( \'Ficheprescription93ReferentId\' ), \'change\', function() { 
 
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-var ajax_parameters_f4996e4fb30300f09983a129c7e14162 = { \'url\': \'/ajax_action\', \'prefix\': \'\', \'fields\': [ \'Ficheprescription93Numconvention\', \'Ficheprescription93Typethematiquefp93Id\', \'Prestatairehorspdifp93Adresse\' ] };
-$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function(event) { if( !in_array( event.keyCode, unobservedKeys ) ) { ajax_action( event, ajax_parameters_f4996e4fb30300f09983a129c7e14162 ); } } );
-Event.observe( $( \'Ficheprescription93Typethematiquefp93Id\' ), \'change\', function(event) { if( !in_array( event.keyCode, unobservedKeys ) ) { ajax_action( event, ajax_parameters_f4996e4fb30300f09983a129c7e14162 ); } } );
+var ajax_parameters_f4996e4fb30300f09983a129c7e14162 = { \'url\': \'/ajax_action\', \'prefix\': \'\', \'fields\': [ \'Ficheprescription93Numconvention\', \'Ficheprescription93Typethematiquefp93Id\', \'Prestatairehorspdifp93Adresse\' ], \'min\': \'3\', \'delay\': \'500\' };
+$( \'Ficheprescription93Numconvention\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Ficheprescription93Numconvention\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters_f4996e4fb30300f09983a129c7e14162 ); } );
+Event.observe( $( \'Ficheprescription93Typethematiquefp93Id\' ), \'change\', function(event) { ajax_action( event, ajax_parameters_f4996e4fb30300f09983a129c7e14162 ); } );
 var ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162 =  Object.clone( ajax_parameters_f4996e4fb30300f09983a129c7e14162 );
 				ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162[\'values\'] = { \'Ficheprescription93Numconvention\': \'\', \'Ficheprescription93Typethematiquefp93Id\': \'\', \'Prestatairehorspdifp93Adresse\': \'\' };
 				document.observe( \'dom:loaded\', function(event) { ajax_action( event, ajax_onload_parameters_f4996e4fb30300f09983a129c7e14162 ); } );

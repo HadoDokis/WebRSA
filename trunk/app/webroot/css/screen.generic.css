@@ -1860,3 +1860,7 @@ body.index.orientsstructs td.action span.impression_changement_referent.disabled
 body.index.orientsstructs td.action a.impression_changement_referent {
 	background-image: url("../img/icons/printer.png");
 }
+
+input.loading {
+	background: url("../img/loading.gif") right center no-repeat;
+}
