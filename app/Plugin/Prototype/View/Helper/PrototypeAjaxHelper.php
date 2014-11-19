@@ -118,6 +118,8 @@
 		 *	- prefix: prévient le serveur qu'un préfixe sera à prendre en compte (ex.: Search)
 		 *	- url: l'URL à appeler pour l'action ajax
 		 *	- onload: si l'état des champs (dans this->request->data) doit être envoyé au chargement de la page
+		 *	- delay: le nombre de millisecondes de délai à utiliser avant l'envoi lorsque l'événement est de type keyup ou keydown. Par défaut: 500.
+		 *	- min: le nombre minimum de caractères devant être remplis lorsque l'événement est de type keyup ou keydown. Par défaut: 3.
 		 * }}}
 		 *
 		 * Pour chacun des champs, on peut spécifier dans un array:
@@ -137,6 +139,8 @@
 				'prefix' => null,
 				'url' => Router::url(),
 				'onload' => true,
+				'min' => 3,
+				'delay' => 500
 			);
 			$params += $default;
 			$fields = Hash::normalize( (array)$fields );
@@ -150,7 +154,7 @@
 			foreach( array_keys( $fields ) as $path ) {
 				$domIds[] = $this->domId( $path );
 			}
-			$script = "var {$parametersName} = { 'url': '{$url}', 'prefix': '{$params['prefix']}', 'fields': [ '".implode( "', '", $domIds )."' ] };\n";
+			$script = "var {$parametersName} = { 'url': '{$url}', 'prefix': '{$params['prefix']}', 'fields': [ '".implode( "', '", $domIds )."' ], 'min': '{$params['min']}', 'delay': '{$params['delay']}' };\n";
 
 			// Les Event.observe()
 			foreach( $fields as $path => $value ) {
@@ -164,7 +168,7 @@
 						$script .= "\$( '{$domId}' ).writeAttribute( 'autocomplete', 'off' );";
 					}
 
-					$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { if( !in_array( event.keyCode, unobservedKeys ) ) { ajax_action( event, {$parametersName} ); } } );\n";
+					$script .= "Event.observe( \$( '{$domId}' ), '{$event}', function(event) { ajax_action( event, {$parametersName} ); } );\n";
 				}
 			}
 
