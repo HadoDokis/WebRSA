@@ -216,9 +216,7 @@
 					1 => 'Socioprofessionnelle'
 				),
 				'statut_orient' => array(
-					'Non orienté' => 'Non orienté',
 					'Orienté' => 'Orienté',
-					'En attente' => 'En attente'
 				),
 				'toppersdrodevorsa' => array(
 					'' => 'Non défini',
@@ -458,7 +456,7 @@
 							'Orientstruct' => array(
 								0 => array(
 									'statut_orient' => 'En attente',
-									'origine' => 'manuelle',
+									'origine' => null,
 									'typeorient_id' => null,
 									'structurereferente_id' => null,
 									'referent_id' => null,
@@ -627,7 +625,7 @@
 							'Orientstruct' => array(
 								0 => array(
 									'statut_orient' => 'Non orienté',
-									'origine' => 'manuelle',
+									'origine' => null,
 									'typeorient_id' => null,
 									'structurereferente_id' => null,
 									'referent_id' => null,

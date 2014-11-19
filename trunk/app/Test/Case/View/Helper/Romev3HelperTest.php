@@ -103,7 +103,7 @@
 				)
 			);
 			$result = $this->Romev3->fieldset( $params );
-			$expected = '<fieldset><legend>Dernière activité</legend><div class="input select"><label for="DspDeractfamilleromev3Id">Code famille de la dernière activité</label><select name="data[Dsp][deractfamilleromev3_id]" id="DspDeractfamilleromev3Id">
+			$expected = '<fieldset><legend>Dernière activité</legend><div class="input text"><label for="DspDeractromev3">Recherche rapide de la dernière activité</label><input name="data[Dsp][deractromev3]" type="text" id="DspDeractromev3"/></div><div class="input select"><label for="DspDeractfamilleromev3Id">Code famille de la dernière activité</label><select name="data[Dsp][deractfamilleromev3_id]" id="DspDeractfamilleromev3Id">
 <option value=""></option>
 <option value="1">A - AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX</option>
 </select></div><div class="input select"><label for="DspDeractdomaineromev3Id">Code domaine de la dernière activité</label><select name="data[Dsp][deractdomaineromev3_id]" id="DspDeractdomaineromev3Id">
@@ -121,6 +121,12 @@ document.observe( \'dom:loaded\', function() { dependantSelect( \'DspDeractdomai
 dependantSelect( \'DspDeractmetierromev3Id\', \'DspDeractdomaineromev3Id\' );
 dependantSelect( \'DspDeractappellationromev3Id\', \'DspDeractmetierromev3Id\' );
  } );
+//]]>
+</script><script type="text/javascript">
+//<![CDATA[
+var ajax_parameters_9875ab493b5ba6ec362671f915d33ef5 = { \'url\': \'/cataloguesromesv3/ajax_appellation\', \'prefix\': \'\', \'fields\': [ \'DspDeractromev3\' ], \'min\': \'3\', \'delay\': \'500\' };
+$( \'DspDeractromev3\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'DspDeractromev3\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters_9875ab493b5ba6ec362671f915d33ef5 ); } );
+
 //]]>
 </script></fieldset>';
 			$this->assertEquals( $result, $expected );

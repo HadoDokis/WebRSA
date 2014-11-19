@@ -229,6 +229,7 @@
 					'events' => array(
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -267,6 +268,7 @@
 					'events' => array(
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -324,6 +326,7 @@
 					'events' => array(
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -398,6 +401,7 @@
 					'events' => array(
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -470,6 +474,7 @@
 					'events' => array(
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -548,6 +553,7 @@
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -624,6 +630,7 @@
 						'changed:Ficheprescription93.actionfp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
 						'changed:Ficheprescription93.adresseprestatairefp93_id',
+						'reset:Ficheprescription93.actionprestataire'
 					)
 				)
 			);
@@ -698,6 +705,7 @@
 				'events' => array(
 					'changed:Ficheprescription93.actionfp93_id',
 					'changed:Ficheprescription93.adresseprestatairefp93_id',
+					'reset:Ficheprescription93.actionprestataire'
 				)
 			);
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
