@@ -645,6 +645,7 @@
 				$this->Typeorient = ClassRegistry::init( 'Typeorient' );
 
 				// FIXME: valeurs magiques
+				$intitule = null;
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					$intitule = array( 'Emploi', 'Social', 'Préprofessionnelle' );
 				}
