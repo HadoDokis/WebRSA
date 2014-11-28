@@ -19,6 +19,7 @@
 			$lignes="";
 			$valid = false;
 			foreach ($values as $value) {
+				$fieldPath = $value;
 				$expl = explode('.', $value);
 				$modelRevName = $expl[0];
 				$modelRevField = $expl[1];
@@ -47,7 +48,7 @@
 							$enMoins = Hash::filter( (array)array_diff( $oldValues, $actValues ) );
 
 							if( !empty( $enPlus ) || !empty( $enMoins ) ) {
-								$lignes.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', $path )."</td></tr>";
+								$lignes.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', str_replace( 'Rev.', '.', $fieldPath ) )."</td></tr>";
 
 								$row = '';
 								// Première cellule, le passé
@@ -100,7 +101,7 @@
 						}
 						if (empty($actValue)) $actValue = "<i>champ non renseigné</i>";
 						if (empty($oldValue)) $oldValue = "<i>champ non renseigné</i>";
-						$lignes.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', $path )."</td></tr>";
+						$lignes.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', str_replace( 'Rev.', '.', $fieldPath ) )."</td></tr>";
 						$lignes.="<tr><td>".$oldValue."</td><td>".$actValue."</td></tr>";
 					}
 					$valid = true;
@@ -147,13 +148,10 @@
 			$liste = array( 'DspRev.hispro', 'DspRev.libsecactderact', 'DspRev.libderact', 'DspRev.cessderact', 'DspRev.topdomideract', 'DspRev.libactdomi', 'DspRev.libsecactdomi', 'DspRev.duractdomi', 'DspRev.inscdememploi', 'DspRev.topisogrorechemploi', 'DspRev.accoemploi', 'DspRev.libcooraccoemploi', 'DspRev.topprojpro', 'DspRev.libemploirech', 'DspRev.libsecactrech', 'DspRev.topcreareprientre', 'DspRev.concoformqualiemploi');
 		}
 
-		if( Configure::read( 'Romev3.enabled' ) ) { // TODO: attention, les libellés sont au début, le reste à la fin
+		if( Configure::read( 'Romev3.enabled' ) ) {
 			foreach( $prefixes as $prefix ) {
 				foreach( $suffixes as $suffix ) {
-					$alias = Inflector::classify( "{$prefix}{$suffix}romev3" );
-					if( $suffix !== 'appellation' ) {
-						$liste[] = "{$alias}.code";
-					}
+					$alias = Inflector::camelize( "{$prefix}{$suffix}romev3_rev" );
 					$liste[] = "{$alias}.name";
 				}
 			}

@@ -379,16 +379,11 @@
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set( 'rev', $rev );
-
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				$prefixes = $this->Dsp->prefixesRomev3;
-				$suffixes = $this->Dsp->suffixesRomev3;
-				$this->set( compact( 'prefixes', 'suffixes' ) );
-			}
 		}
 
 		/**
-		 *
+		 * Permet de visualiser les différentes versions des DSP d'un allocataire,
+		 * ainsi que le nombre de différences entre avec la version précédente.
 		 */
 		public function histo( $id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) ) );
@@ -418,81 +413,27 @@
 			);
 			$this->assert( !empty( $dsp ), 'invalidParameter' );
 
-			$query = array(
-				'conditions' => array(
-					'DspRev.personne_id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				),
-				'order' => array( 'DspRev.created DESC', 'DspRev.id DESC' )
-			);
+			$query = $this->DspRev->getViewQuery();
+			$query['conditions'] = array( 'DspRev.personne_id' => $id );
+			$query['order'] = array( 'DspRev.created DESC', 'DspRev.id DESC' );
+
 			$histos = $this->DspRev->find( 'all', $query );
 
-			if( !empty( $histos ) ) {
-				$diff = array( );
-				for( $i = 0; $i < count( $histos ) - 1; $i++ ) {
-					$cpt = 0;
-					foreach( $histos[$i] as $Model => $values ) {
-						if( $Model != 'Fichiermodule' ) {
-							if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
-								foreach( $histos[$i][$Model] as $key1 => $value1 ) {
-									$histos[$i][$Model][$key1] = Hash::remove( $histos[$i][$Model][$key1], "id" );
-									$histos[$i][$Model][$key1] = Hash::remove( $histos[$i][$Model][$key1], "dsp_rev_id" );
-								}
-								foreach( $histos[$i + 1][$Model] as $key2 => $value2 ) {
-									$histos[$i + 1][$Model][$key2] = Hash::remove( $histos[$i + 1][$Model][$key2], "id" );
-									$histos[$i + 1][$Model][$key2] = Hash::remove( $histos[$i + 1][$Model][$key2], "dsp_rev_id" );
-								}
-							}
-							$diff[$Model] = Set::diff( $histos[$i][$Model], $histos[$i + 1][$Model] );
-							$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
-							if( isset( $diff[$Model]['created'] ) ) {
-								$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
-							}
-							if( isset( $diff[$Model]['modified'] ) ) {
-								$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
-							}
-							if( isset( $diff[$Model]['haspiecejointe'] ) ) {
-								$diff[$Model] = Hash::remove( $diff[$Model], 'haspiecejointe' );
-							}
-							if( $Model != 'DspRev' && !empty( $histos[$i][$Model] ) && !empty( $diff[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
-								foreach( $histos[$i][$Model] as $key1 => $value1 ) {
-									foreach( $histos[$i + 1][$Model] as $key2 => $value2 ) {
-										$compare = Set::diff( $value1, $value2 );
-										if( empty( $compare ) && ($key1 != $key2) ) {
-											$cpt--;
-										}
-									}
-								}
-							}
-						}
-					}
+			$count = count( $histos );
+			$prev = array();
+			for( $i = $count - 1 ; $i >= 0 ; $i-- ) {
+				$diff = 0;
 
-					foreach( $diff as $Model => $values ) {
-						$cpt+=count( $values );
-					}
-					$histos[$i] = Hash::insert( $histos[$i], 'diff', $cpt );
+				if( $i !== $count - 1 ) {
+					$delta = $this->DspRev->getDiffs( $prev, $histos[$i] );
+					$diff = count( Hash::flatten( $delta ) );
 				}
+
+				$prev = $histos[$i];
+				$histos[$i]['diff'] = $diff;
 			}
-			$histos[count( $histos ) - 1]['diff'] = 0;
-			$this->set( 'dsp', $dsp );
 
-
-			$this->set( 'histos', $histos );
-			$this->set( 'personne_id', $id );
+			$this->set( array( 'dsp' => $dsp, 'histos' => $histos, 'personne_id' => $id ) );
 		}
 
 		/**
@@ -503,13 +444,21 @@
 		 * @throws NotFoundException
 		 */
 		public function revertTo( $id = null ) {
+			$belongsToRomev3 = $this->DspRev->belongsTo;
+			foreach( $belongsToRomev3 as $alias => $params ) {
+				if( strpos( $alias, 'romev3Rev' ) === false ) {
+					unset( $belongsToRomev3[$alias] );
+				}
+			}
+
 			$query = array(
 				'conditions' => array(
 					'DspRev.id' => $id
 				),
 				'contain' => array_merge(
 					array_keys( $this->DspRev->hasMany ),
-					array_keys( $this->DspRev->hasOne )
+					array_keys( $this->DspRev->hasOne ),
+					array_keys( $belongsToRomev3 )
 				)
 			);
 
@@ -554,44 +503,25 @@
 			// INFO: on ne copie pas Fichiermodule
 			unset( $record['Fichiermodule'] );
 
+			// Enregistrements ROME V3 dans la table entreesromesv3, à copier
+			foreach( $belongsToRomev3 as $alias => $params ) {
+				$alias = preg_replace( '/Rev$/', '', $alias );
+				$record['Dsp'][$params['foreignKey']] = null;
+				foreach( $fieldNames as $fieldName ) {
+					unset( $record[$alias][$fieldName] );
+				}
+			}
+
 			$this->request->data = $record;
 			$this->edit( $personne_id, $id );
 		}
 
 		/**
-		 *
+		 * Visualisation d'une version particulière des DspRev.
 		 */
 		public function view_revs( $id = null ) {
-			$query = array(
-				'conditions' => array(
-					'DspRev.id' => $id
-				),
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				)
-			);
-
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				$query['contain'] = Hash::merge( $query['contain'], $this->Dsp->getRomev3Contains() );
-			}
+			$query = $this->DspRev->getViewQuery();
+			$query['conditions'] = array( 'DspRev.id' => $id );
 
 			$dsprevs = $this->DspRev->find( 'first', $query );
 
@@ -623,12 +553,6 @@
 			$this->set( 'personne', $personne );
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsprevs['DspRev']['personne_id'] );
 
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				$prefixes = $this->Dsp->prefixesRomev3;
-				$suffixes = $this->Dsp->suffixesRomev3;
-				$this->set( compact( 'prefixes', 'suffixes' ) );
-			}
-
 			$this->render( 'view' );
 		}
 
@@ -636,35 +560,7 @@
 		 *
 		 */
 		public function view_diff( $id = null ) {
-			$base = array(
-				'contain' => array(
-					'Personne',
-					'Libderact66Metier',
-					'Libsecactderact66Secteur',
-					'Libactdomi66Metier',
-					'Libsecactdomi66Secteur',
-					'Libemploirech66Metier',
-					'Libsecactrech66Secteur',
-					'DetaildifsocRev',
-					'DetailaccosocfamRev',
-					'DetailaccosocindiRev',
-					'DetaildifdispRev',
-					'DetailnatmobRev',
-					'DetaildiflogRev',
-					'DetailmoytransRev',
-					'DetaildifsocproRev',
-					'DetailprojproRev',
-					'DetailfreinformRev',
-					'DetailconfortRev',
-					'Fichiermodule'
-				)
-			);
-
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				$base['contain'] = Hash::merge( $base['contain'], $this->Dsp->getRomev3Contains() );
-			}
-
-			// -----------------------------------------------------------------
+			$base = $this->DspRev->getViewQuery();
 
 			$query = $base;
 			$query['conditions'] = array( 'DspRev.id' => $id );
@@ -687,71 +583,7 @@
 			$dsprevold = $this->DspRev->find( 'first', $query );
 			$this->assert( !empty( $dsprevold ), 'invalidParameter' );
 
-			// -----------------------------------------------------------------
-
-			// Suppression des champs de clés primaires et étrangères des résultats des Dsps actuelles
-			foreach( $dsprevact as $Model => $values ) {
-				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
-					foreach( $dsprevact[$Model] as $key1 => $value1 ) {
-						$dsprevact[$Model][$key1] = Hash::remove( $dsprevact[$Model][$key1], "id" );
-						$dsprevact[$Model][$key1] = Hash::remove( $dsprevact[$Model][$key1], "dsp_rev_id" );
-					}
-				}
-			}
-
-			// Suppression des champs de clés primaires et étrangères des résultats des Dsps précédentes
-			foreach( $dsprevold as $Model => $values ) {
-				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
-					foreach( $dsprevold[$Model] as $key2 => $value2 ) {
-						$dsprevold[$Model][$key2] = Hash::remove( $dsprevold[$Model][$key2], "id" );
-						$dsprevold[$Model][$key2] = Hash::remove( $dsprevold[$Model][$key2], "dsp_rev_id" );
-					}
-				}
-			}
-
-			// -----------------------------------------------------------------
-
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				foreach( $this->Dsp->prefixesRomev3 as $prefix ) {
-					foreach( $this->Dsp->suffixesRomev3 as $suffix ) {
-						$built = "{$prefix}{$suffix}romev3";
-						$field = "{$built}_id";
-						$modelAlias = Inflector::classify( $built );
-
-						$dsprevold = Hash::remove( $dsprevold, "DspRev.{$field}" );
-						$dsprevact = Hash::remove( $dsprevact, "DspRev.{$field}" );
-					}
-				}
-			}
-
-			// -----------------------------------------------------------------
-
-			foreach( $dsprevact as $Model => $values ) {
-				$diff[$Model] = Set::diff( $dsprevact[$Model], $dsprevold[$Model] );
-				$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
-				if( isset( $diff[$Model]['created'] ) )
-					$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
-				if( isset( $diff[$Model]['modified'] ) )
-					$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
-				if( $Model != 'DspRev' && !empty( $dsprevact[$Model] ) && !empty( $diff[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
-					foreach( $dsprevact[$Model] as $key1 => $value1 ) {
-						foreach( $dsprevold[$Model] as $key2 => $value2 ) {
-							$compare = Set::diff( $value1, $value2 );
-							if( empty( $compare ) && ($key1 != $key2) ) {
-								$diff[$Model] = Hash::remove( $diff[$Model], $key1 );
-							}
-						}
-					}
-				}
-				if( isset( $diff[$Model]['id'] ) )
-					$diff[$Model] = Hash::remove( $diff[$Model], 'id' );
-				if( isset( $diff[$Model]['created'] ) )
-					$diff[$Model] = Hash::remove( $diff[$Model], 'created' );
-				if( isset( $diff[$Model]['modified'] ) )
-					$diff[$Model] = Hash::remove( $diff[$Model], 'modified' );
-				if( empty( $diff[$Model] ) )
-					$diff = Hash::remove( $diff, $Model );
-			}
+			$diff = $this->DspRev->getDiffs( $dsprevold, $dsprevact );
 
 			$this->set( 'personne', $this->findPersonne( Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) ) );
 			$this->set( 'dsprevact', $dsprevact );
@@ -833,32 +665,36 @@
 				}
 				else {
 					$dsprevs = $this->DspRev->find(
-							'first', array(
-						'conditions' => array(
-							'DspRev.id' => $version_id
-						),
-						'contain' => array(
-							'Personne',
-							'Libderact66Metier',
-							'Libsecactderact66Secteur',
-							'Libactdomi66Metier',
-							'Libsecactdomi66Secteur',
-							'Libemploirech66Metier',
-							'Libsecactrech66Secteur',
-							'DetaildifsocRev',
-							'DetailaccosocfamRev',
-							'DetailaccosocindiRev',
-							'DetaildifdispRev',
-							'DetailnatmobRev',
-							'DetaildiflogRev',
-							'DetailmoytransRev',
-							'DetaildifsocproRev',
-							'DetailprojproRev',
-							'DetailfreinformRev',
-							'DetailconfortRev',
-							'Fichiermodule'
-						)
+						'first',
+						array(
+							'conditions' => array(
+								'DspRev.id' => $version_id
+							),
+							'contain' => array(
+								'Personne',
+								'Libderact66Metier',
+								'Libsecactderact66Secteur',
+								'Libactdomi66Metier',
+								'Libsecactdomi66Secteur',
+								'Libemploirech66Metier',
+								'Libsecactrech66Secteur',
+								'DetaildifsocRev',
+								'DetailaccosocfamRev',
+								'DetailaccosocindiRev',
+								'DetaildifdispRev',
+								'DetailnatmobRev',
+								'DetaildiflogRev',
+								'DetailmoytransRev',
+								'DetaildifsocproRev',
+								'DetailprojproRev',
+								'DetailfreinformRev',
+								'DetailconfortRev',
+								'Fichiermodule',
+								'Deractromev3Rev',
+								'Deractdomiromev3Rev',
+								'Actrechromev3Rev'
 							)
+						)
 					);
 					$dsp_id = $dsprevs['DspRev']['dsp_id'];
 					foreach( $dsprevs as $key => $value ) {
@@ -955,7 +791,10 @@
 					foreach( $this->request->data as $Model => $values ) {
 						$data2[$Model."Rev"] = $this->request->data[$Model];
 
-						if( $Model != 'Dsp' && $Model != 'Personne' ) {
+						if( in_array( $Model, array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) ) ) {
+							$data2 = Hash::remove( $data2, $Model."Rev.id" );
+						}
+						else if( !in_array( $Model, array( 'Dsp', 'Personne' ) ) ) {
 							foreach( $data2[$Model."Rev"] as $key => $value ) {
 								if( isset( $data2[$Model."Rev"][$key]['dsp_id'] ) )
 									$data2[$Model."Rev"][$key]['dsp_rev_id'] = $data2[$Model."Rev"][$key]['dsp_id'];
@@ -987,10 +826,10 @@
 				$dsp['Dsp']['libemploirech66_metier_id'] = $dsp['Dsp']['libsecactrech66_secteur_id'].'_'.$dsp['Dsp']['libemploirech66_metier_id'];
 
 				// Début ROME V3
-				foreach( array( 'deract', 'deractdomi', 'actrech' ) as $prefix ) {
-					$dsp['Dsp']["{$prefix}appellationromev3_id"] = $dsp['Dsp']["{$prefix}metierromev3_id"].'_'.$dsp['Dsp']["{$prefix}appellationromev3_id"];
-					$dsp['Dsp']["{$prefix}metierromev3_id"] = $dsp['Dsp']["{$prefix}domaineromev3_id"].'_'.$dsp['Dsp']["{$prefix}metierromev3_id"];
-					$dsp['Dsp']["{$prefix}domaineromev3_id"] = $dsp['Dsp']["{$prefix}familleromev3_id"].'_'.$dsp['Dsp']["{$prefix}domaineromev3_id"];
+				foreach( array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
+					$dsp[$alias]['appellationromev3_id'] = "{$dsp[$alias]['metierromev3_id']}_{$dsp[$alias]['appellationromev3_id']}";
+					$dsp[$alias]['metierromev3_id'] = "{$dsp[$alias]['domaineromev3_id']}_{$dsp[$alias]['metierromev3_id']}";
+					$dsp[$alias]['domaineromev3_id'] = "{$dsp[$alias]['familleromev3_id']}_{$dsp[$alias]['domaineromev3_id']}";
 				}
 				// Fin ROME V3
 				$this->request->data = $dsp;
@@ -1057,8 +896,7 @@
 				(array)Hash::get( $this->viewVars, 'options' ),
 				$this->Dsp->options( array( 'autre' => false ) )
 			);
-			$prefixes = $this->Dsp->prefixesRomev3;
-			$suffixes = $this->Dsp->suffixesRomev3;
+
 			$this->set( compact( 'options', 'prefixes', 'suffixes' ) );
 		}
 
@@ -1092,10 +930,10 @@
 			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
 
 			$qual = $this->Option->qual();
-			$prefixes = $this->Dsp->prefixesRomev3;
-			$suffixes = $this->Dsp->suffixesRomev3;
+			$romev3Aliases = $this->Dsp->romev3LinkedModels;
+			$romev3Fields = $this->Dsp->romev3Fields;
 
-			$this->set( compact( 'dsps', 'qual', 'prefixes', 'suffixes' ) );
+			$this->set( compact( 'dsps', 'qual', 'romev3Aliases', 'romev3Fields' ) );
 			$this->layout = '';
 		}
 

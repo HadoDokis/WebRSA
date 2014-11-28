@@ -75,94 +75,34 @@
 				'order' => ''
 			),
 			// Début ROME V3
-			// 1. Dernière activité
-			'Deractfamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'deractfamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Deractromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'deractromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
-			'Deractdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'deractdomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Deractdomiromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'deractdomiromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
-			'Deractmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'deractmetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Actrechromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'actrechromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
-			'Deractappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'deractappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			// 2. Dernière activité dominante
-			'Deractdomifamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'deractdomifamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomidomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'deractdomidomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomimetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'deractdomimetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomiappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'deractdomiappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			// 3. Activité recherchée
-			'Actrechfamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'actrechfamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'actrechdomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'actrechmetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'actrechappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-				// Fin ROME V3
+			// Fin ROME V3
 		);
 		public $hasMany = array(
 			'Detaildifsoc' => array(
@@ -403,23 +343,14 @@
 					'libderact66_metier_id',
 					'libactdomi66_metier_id',
 					'libemploirech66_metier_id',
-					// Début ROME V3
-					'deractdomaineromev3_id',
-					'deractmetierromev3_id',
-					'deractappellationromev3_id',
-					'deractdomidomaineromev3_id',
-					'deractdomimetierromev3_id',
-					'deractdomiappellationromev3_id',
-					'actrechdomaineromev3_id',
-					'actrechmetierromev3_id',
-					'actrechappellationromev3_id'
-				// Fin ROME V3
 				)
 			)
 		);
 
 		/**
 		 * Préfixes des champs liés au catalogue ROME v3.
+		 *
+		 * @deprecated
 		 *
 		 * @var array
 		 */
@@ -428,9 +359,25 @@
 		/**
 		 * Suffixes des champs liés au catalogue ROME v3.
 		 *
+		 * @deprecated
+		 *
 		 * @var array
 		 */
 		public $suffixesRomev3 = array( 'famille', 'domaine', 'metier', 'appellation' );
+
+		/**
+		 * Liste des alias vers Entreeromev3
+		 *
+		 * @var array
+		 */
+		public $romev3LinkedModels = array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' );
+
+		/**
+		 * Liste des champs intéressants de Entreeromev3
+		 *
+		 * @var array
+		 */
+		public $romev3Fields = array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' );
 
 		/*
 		 * FIXME: le Hash::remove est plus propre, non ?
@@ -477,13 +424,14 @@
 		 * le modèle Dsp et le modèle DspRev.
 		 *
 		 * @param array $condition
+		 * @param array $aliases
 		 * @return array
 		 */
-		protected function _searchConditionDspDspRev( array $condition ) {
+		protected function _searchConditionDspDspRev( array $condition, array $aliases = array( 'Dsp' => 'DspRev' ) ) {
 			$return = array(
 				'OR' => array(
 					$condition,
-					array_words_replace( $condition, array( 'Dsp' => 'DspRev' ) )
+					array_words_replace( $condition, $aliases )
 				)
 			);
 
@@ -626,21 +574,26 @@
 
 				// Champs et jointures ROME V3
 				if( Configure::read( 'Romev3.enabled' ) ) {
-					foreach( $this->prefixesRomev3 as $prefix ) {
-						foreach( $this->suffixesRomev3 as $suffix ) {
-							$modelAlias = Inflector::camelize( "{$prefix}{$suffix}romev3" );
-							$modelAliasRev = "{$modelAlias}Rev";
+					foreach( $this->romev3LinkedModels as $modelAlias ) {
+						$modelAliasRev = "{$modelAlias}Rev";
+						$modelAliasDonnees = $modelAlias;
 
-							// Ajout du champ
-							$modelAliasDonnees = $modelAlias;
-							$query['fields'][] = $this->_searchCaseFieldDspDspRev( 'name', $modelAlias, $modelAliasRev, $modelAliasDonnees );
+						// Ajout des jointures
+						$query['joins'][] = $this->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) );
+						$query['joins'][] = $this->DspRev->join( $modelAliasRev, array( 'type' => 'LEFT OUTER' ) );
 
-							// Ajout des jointures
-							$modelAlias = Inflector::camelize( "{$prefix}{$suffix}romev3" );
-							$query['joins'][] = $this->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) );
+						foreach( array( 'Familleromev3', 'Domaineromev3', 'Metierromev3', 'Appellationromev3' ) as $alias ) {
+							$modelAliasDonnees = "{$modelAlias}__".Inflector::underscore( $alias );
+							$query['fields'][] = $this->_searchCaseFieldDspDspRev( 'name', "{$modelAlias}__{$alias}", "{$modelAliasRev}__{$alias}", $modelAliasDonnees );
+
 							$query['joins'][] = array_words_replace(
-									$this->DspRev->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) ),
-									array( $modelAlias => "{$modelAlias}Rev" )
+									$this->{$modelAlias}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
+									array( $alias => "{$modelAlias}__{$alias}" )
+							);
+
+							$query['joins'][] = array_words_replace(
+									$this->DspRev->{$modelAliasRev}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
+									array( $alias => "{$modelAliasRev}__{$alias}" )
 							);
 						}
 					}
@@ -669,32 +622,16 @@
 			foreach( array( 'libsecactderact', 'libderact', 'libsecactdomi', 'libactdomi', 'libsecactrech', 'libemploirech' ) as $fieldName ) {
 				if( !empty( $params['Dsp'][$fieldName] ) ) {
 					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] ) ) );
-					/* $querydata['conditions'][]['OR'] = array(
-					  array(
-					  "Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
-					  ),
-					  array(
-					  "DspRev.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] )
-					  )
-					  ); */
 				}
 			}
 
 			$champs = array( 'nivetu', 'hispro' );
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$champs = array_merge( $champs, array( 'libderact66_metier_id', 'libsecactderact66_secteur_id', 'libsecactdomi66_secteur_id', 'libactdomi66_metier_id', 'libsecactrech66_secteur_id', 'libemploirech66_metier_id' ) );
+				$champs = array_merge( $champs, array( 'libsecactderact66_secteur_id', 'libderact66_metier_id', 'libsecactdomi66_secteur_id', 'libactdomi66_metier_id', 'libsecactrech66_secteur_id', 'libemploirech66_metier_id' ) );
 			}
 			foreach( $champs as $fieldName ) {
 				if( !empty( $params['Dsp'][$fieldName] ) ) {
 					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] ) ) );
-					/* $querydata['conditions'][]['OR'] = array(
-					  array(
-					  "Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
-					  ),
-					  array(
-					  "DspRev.{$fieldName}" => suffix( $params['Dsp'][$fieldName] )
-					  )
-					  ); */
 				}
 			}
 
@@ -783,10 +720,12 @@
 			// Filtres concernant le catalogue ROME V3
 			if( Configure::read( 'Romev3.enabled' ) ) {
 				$conditionsDspRomeV3 = array();
+				$aliases = array();
 
-				foreach( $this->prefixesRomev3 as $prefix ) {
-					foreach( $this->suffixesRomev3 as $suffix ) {
-						$field = "{$this->alias}.{$prefix}{$suffix}romev3_id";
+				foreach( $this->romev3LinkedModels as $alias ) {
+					$aliases[$alias] = "{$alias}Rev";
+					foreach( $this->romev3Fields as $fieldName ) {
+						$field = "{$alias}.{$fieldName}";
 						$value = suffix( Hash::get( $params, $field ) );
 						if( !empty( $value ) ) {
 							$conditionsDspRomeV3[$field] = $value;
@@ -795,7 +734,7 @@
 				}
 
 				if( !empty( $conditionsDspRomeV3 ) ) {
-					$querydata['conditions'][] = $this->_searchConditionDspDspRev( $conditionsDspRomeV3 );
+					$querydata['conditions'][] = $this->_searchConditionDspDspRev( $conditionsDspRomeV3, $aliases );
 				}
 			}
 
@@ -984,10 +923,18 @@
 					$selects = $Catalogueromev3->dependantSelects();
 
 					foreach( $this->prefixesRomev3 as $prefix ) {
-						foreach( array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' ) as $field ) {
+						foreach( $this->romev3Fields as $field ) {
 							$return[$this->alias]["{$prefix}{$field}"] = $selects['Catalogueromev3'][$field];
 						}
 					}
+				}
+
+				// @todo: n'est-ce pas ce que l'on fait au-dessus ?
+				foreach( $this->romev3LinkedModels as $alias ) {
+					$return = Hash::merge(
+						$return,
+						$this->{$alias}->options()
+					);
 				}
 
 				Cache::write( $cacheKey, $return );
@@ -1010,67 +957,10 @@
 			$results = $this->searchQuery();
 			$success = $success && !empty( $results );
 
-			$results = $this->getRomev3Contains();
-			$success = $success && !empty( $results );
-
 			$results = $this->options();
 			$success = $success && !empty( $results );
 
 			return $success;
-		}
-
-		/**
-		 * Retourne une partie de l'array des contain avec les name (+ code) des
-		 * réponses ROME V3.
-		 *
-		 * @return array
-		 */
-		public function getRomev3Contains() {
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
-			$return = Cache::read( $cacheKey );
-
-			if( $return === false ) {
-				$return = array();
-
-				$parents = array(
-					'famille' => array(),
-					'domaine' => array( 'famille' ),
-					'metier' => array( 'famille', 'domaine' ),
-					'appellation' => array( 'famille', 'domaine', 'metier' )
-				);
-
-				foreach( $this->prefixesRomev3 as $prefix ) {
-					foreach( $this->suffixesRomev3 as $suffix ) {
-						$alias = Inflector::classify( "{$prefix}{$suffix}romev3" );
-
-						$fields = array();
-						if( $suffix !== 'appellation' ) {
-							$codes = array();
-
-							if( $suffix !== 'famille' ) {
-								foreach( $parents[$suffix] as $parent ) {
-									$parentAlias = Inflector::classify( $prefix )."{$parent}romev3";
-									$codes[] = "\"{$parentAlias}\".\"code\"";
-								}
-							}
-							$codes[] = "\"{$alias}\".\"code\"";
-							$codes = implode( " || ", $codes );
-
-							$fields[] = "( {$codes} || ' - ' || \"{$alias}\".\"name\" ) AS \"{$alias}__name\""; // TODO: fullname en champ virtuel
-						}
-						else {
-							$fields[] = "{$alias}.name";
-						}
-
-
-						$return[$alias] = array( 'fields' => $fields );
-					}
-				}
-
-				Cache::write( $cacheKey, $return );
-			}
-
-			return $return;
 		}
 	}
 ?>

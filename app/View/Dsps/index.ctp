@@ -52,55 +52,38 @@
 			<?php
 				echo $this->Form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Dsp']['nivetu'], 'empty' => true ) );
 				echo $this->Form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Dsp']['hispro'], 'empty' => true ) );
-				if( Configure::read( 'Romev3.enabled' ) ) {
-					echo $this->Romev3->fieldset(
-						array(
-							'modelName' => 'Dsp',
-							'prefix' => 'deract',
-							'options' => $options
-						)
-					);
 
-					echo $this->Romev3->fieldset(
-						array(
-							'modelName' => 'Dsp',
-							'prefix' => 'deractdomi',
-							'options' => $options
-						)
-					);
+				echo $this->Romev3->fieldset( 'Deractromev3', array( 'options' => $options ) );
+				echo $this->Form->input( 'Dsp.libsecactderact', array( 'label' => __d( 'dsp', 'Dsp.libsecactderact' ) ) );
+				echo $this->Form->input( 'Dsp.libderact', array( 'label' => __d( 'dsp', 'Dsp.libderact' ) ) );
 
-					echo $this->Romev3->fieldset(
-						array(
-							'modelName' => 'Dsp',
-							'prefix' => 'actrech',
-							'options' => $options
-						)
-					);
-
-					if( Configure::read( 'Cg.departement' ) == 66 ) {
-						// TODO: les textes libres à garder
-						echo '<fieldset><legend>Dernière activité dominante</legend>';
-							echo $this->Form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
-							echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Si le secteur est non présent dans la liste, précisez " ) );
-
-							echo $this->Form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
-							echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => "Si le métier est non présent dans la liste, précisez " ) );
-						echo '</fieldset>';
-
-						echo '<fieldset><legend>Emploi recherché</legend>';
-							echo $this->Form->input('Dsp.libsecactrech66_secteur_id' , array('label' => "Quel est le secteur d'activité recherché ? ",  'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
-							echo $this->Form->input( 'Dsp.libsecactrech', array( 'label' => "Si le secteur recherché est non présent dans la liste, précisez " ) );
-
-							echo $this->Form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
-							echo $this->Form->input( 'Dsp.libemploirech', array( 'label' => "Si le métier recherché est non présent dans la liste, précisez " ) );
-						echo '</fieldset>';
-					}
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo '<fieldset><legend>Dernière activité (ROME V2)</legend>';
+						echo $this->Form->input( 'Dsp.libsecactderact66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
+						echo $this->Form->input( 'Dsp.libderact66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+					echo '</fieldset>';
 				}
-				else {
-					echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ?" ) );
-					echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? " ) );
-					echo $this->Form->input( 'Dsp.libsecactrech', array( 'label' => "Quel est le secteur d'activité recherché ?" ) );
-					echo $this->Form->input( 'Dsp.libemploirech', array( 'label' => "Quel est l'emploi recherché ? " ) );
+
+				echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
+				echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => __d( 'dsp', 'Dsp.libsecactdomi' ) ) );
+				echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => __d( 'dsp', 'Dsp.libactdomi' ) ) );
+
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo '<fieldset><legend>Dernière activité dominante (ROME V2)</legend>';
+						echo $this->Form->input( 'Dsp.libsecactdomi66_secteur_id' , array( 'label' => "Dans quel secteur d'activité avez-vous exercé votre activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
+						echo $this->Form->input( 'Dsp.libactdomi66_metier_id' , array( 'label' => "Précisez quelle a été l'activité professionnelle dominante ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+					echo '</fieldset>';
+				}
+
+				echo $this->Romev3->fieldset( 'Actrechromev3', array( 'options' => $options ) );
+				echo $this->Form->input( 'Dsp.libsecactrech', array( 'label' => __d( 'dsp', 'Dsp.libsecactrech' ) ) );
+				echo $this->Form->input( 'Dsp.libemploirech', array( 'label' => __d( 'dsp', 'Dsp.libemploirech' ) ) );
+
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					echo '<fieldset><legend>Emploi recherché (ROME V2)</legend>';
+						echo $this->Form->input('Dsp.libsecactrech66_secteur_id' , array('label' => "Quel est le secteur d'activité recherché ? ",  'type' => 'select', 'options' => $options['Coderomesecteurdsp66'], 'empty' => true ) );
+						echo $this->Form->input( 'Dsp.libemploirech66_metier_id' , array( 'label' => "Quel est l'emploi recherché ? ", 'type' => 'select', 'options' => $options['Coderomemetierdsp66'], 'empty' => true ) );
+					echo '</fieldset>';
 				}
 			?>
 		</fieldset>
@@ -120,8 +103,8 @@
 <script type="text/javascript">
 <?php if ( Configure::read( 'Cg.departement' ) == 66 ):?>
 	document.observe("dom:loaded", function() {
-// 		dependantSelect( 'DspLibderact66MetierId', 'DspLibsecactderact66SecteurId' );
-// 		try { $( 'DspLibderact66MetierId' ).onchange(); } catch(id) { }
+ 		dependantSelect( 'DspLibderact66MetierId', 'DspLibsecactderact66SecteurId' );
+ 		try { $( 'DspLibderact66MetierId' ).onchange(); } catch(id) { }
 
 		dependantSelect( 'DspLibactdomi66MetierId', 'DspLibsecactdomi66SecteurId' );
 		try { $( 'DspLibactdomi66MetierId' ).onchange(); } catch(id) { }
@@ -150,8 +133,8 @@
 					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
 					<!-- TODO: ROME v3 -->
 					<?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
-						<th>Code secteur activité</th>
-						<th>Code métier</th>
+						<th>Code secteur activité dominante</th>
+						<th>Code métier activité dominante</th>
 						<th>Secteur dernière activité dominante</th>
 						<th>Dernière activité dominante</th>
 
@@ -223,12 +206,12 @@
 
 						// Codes ROME V3
 						if( Configure::read( 'Romev3.enabled' ) ) {
-							foreach( $prefixes as $prefix ) {
-								foreach( $suffixes as $suffix ) {
-									$modelName = Inflector::classify( "{$prefix}{$suffix}romev3" );
+							foreach( array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
+								foreach( array( 'familleromev3', 'domaineromev3', 'metierromev3', 'appellationromev3' ) as $fieldName ) {
+									$path = "{$alias}.{$fieldName}";
 									$innerRows .= '<tr>
-										<th>'.__d( 'dsps', "Dsp.{$prefix}{$suffix}romev3_id" ).'</th>
-										<td>'.h( Hash::get( $dsp, "{$modelName}.name" ) ).'</td>
+										<th>'.__d( 'dsps', $path ).'</th>
+										<td>'.h( Hash::get( $dsp, $path ) ).'</td>
 									</tr>';
 								}
 							}
@@ -329,33 +312,16 @@
 									);
 								}
 							}
-
-							/*// Code ROME V3
-							if( Configure::read( 'Romev3.enabled' ) ) {
-								$arrayData[] = h( $dsp['Deractdomidomaineromev3']['name'] );
-								$arrayData[] = h( $dsp['Deractdomimetierromev3']['name'] );
-								$arrayData[] = h( $dsp['Actrechdomaineromev3']['name'] );
-								$arrayData[] = h( $dsp['Actrechmetierromev3']['name'] );
-							}
-
-							$arrayData = array_merge(
-								$arrayData,
-								array(
-									array(
-										$viewLink,
-										array( 'class' => 'noprint' )
-									),
-									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-								)
-							);*/
 						}
 
 						// Code ROME V3
 						if( Configure::read( 'Romev3.enabled' ) ) {
-							$arrayData[] = h( $dsp['Deractdomidomaineromev3']['name'] );
-							$arrayData[] = h( $dsp['Deractdomimetierromev3']['name'] );
-							$arrayData[] = h( $dsp['Actrechdomaineromev3']['name'] );
-							$arrayData[] = h( $dsp['Actrechmetierromev3']['name'] );
+							// Code ROME V3
+							foreach( array( 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
+								foreach( array( 'domaineromev3', 'metierromev3' ) as $fieldName ) {
+									$arrayData[] = h( $dsp[$alias][$fieldName] );
+								}
+							}
 						}
 
 						$arrayData = array_merge(

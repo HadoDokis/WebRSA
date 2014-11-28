@@ -105,6 +105,7 @@ $irregularPlural = array(
 	'appellationromev3' => 'appellationsromesv3',
 	'correspondanceromev2v3' => 'correspondancesromesv2v3',
 	'catalogueromev3' => 'cataloguesromesv3',
+	'entreeromev3' => 'entreesromesv3',
 	// Fin codes ROME V3, nouvelle version
     'cohorteci' => 'cohortesci',
     'cohortecomiteapre' => 'cohortescomitesapres',

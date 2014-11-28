@@ -69,11 +69,13 @@
 		}
 
 		/**
-		 * Test de la méthode Romev3Helper::fieldset()
+		 * Test de la méthode Romev3Helper::fieldset() lorsque Romev3.enabled
+		 * vaut false.
 		 *
 		 * @medium
 		 */
-		public function testFieldset() {
+		public function testFieldsetDisabled() {
+			Configure::write( 'Romev3.enabled', false );
 			$this->Controller->request->addParams(
 				array(
 					'controller' => 'dsps',
@@ -86,50 +88,160 @@
 			$params = array(
 				'prefix' => 'deract',
 				'options' => array(
-					'Dsp' => array(
-						'deractfamilleromev3_id' => array(
+					'Deractromev3' => array(
+						'familleromev3_id' => array(
 							'1' => 'A - AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX'
 						),
-						'deractdomaineromev3_id' => array(
+						'domaineromev3_id' => array(
 							'1_1' => 'A11 - Engins agricoles et forestiers'
 						),
-						'deractmetierromev3_id' => array(
+						'metierromev3_id' => array(
 							'1_1' => 'A1101 - Conduite d\'engins d\'exploitation agricole et forestière'
 						),
-						'deractappellationromev3_id' => array(
+						'appellationromev3_id' => array(
 							'1_1' => 'Conducteur / Conductrice d\'engins de débardage'
 						)
 					)
 				)
 			);
-			$result = $this->Romev3->fieldset( $params );
-			$expected = '<fieldset><legend>Dernière activité</legend><div class="input text"><label for="DspDeractromev3">Recherche rapide de la dernière activité</label><input name="data[Dsp][deractromev3]" type="text" id="DspDeractromev3"/></div><div class="input select"><label for="DspDeractfamilleromev3Id">Code famille de la dernière activité</label><select name="data[Dsp][deractfamilleromev3_id]" id="DspDeractfamilleromev3Id">
+
+			$result = $this->Romev3->fieldset( 'Deractromev3', $params );
+			$expected = '';
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Romev3Helper::fieldset() lorsque Romev3.enabled
+		 * vaut true.
+		 *
+		 * @medium
+		 */
+		public function testFieldsetEnabled() {
+			Configure::write( 'Romev3.enabled', true );
+			$this->Controller->request->addParams(
+				array(
+					'controller' => 'dsps',
+					'action' => 'add',
+					'pass' => array(),
+					'named' => array()
+				)
+			);
+
+			$params = array(
+				'prefix' => 'deract',
+				'options' => array(
+					'Deractromev3' => array(
+						'familleromev3_id' => array(
+							'1' => 'A - AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX'
+						),
+						'domaineromev3_id' => array(
+							'1_1' => 'A11 - Engins agricoles et forestiers'
+						),
+						'metierromev3_id' => array(
+							'1_1' => 'A1101 - Conduite d\'engins d\'exploitation agricole et forestière'
+						),
+						'appellationromev3_id' => array(
+							'1_1' => 'Conducteur / Conductrice d\'engins de débardage'
+						)
+					)
+				)
+			);
+
+			$result = $this->Romev3->fieldset( 'Deractromev3', $params );
+			$expected = '<fieldset><legend>Dernière activité</legend><div class="input text"><label for="Deractromev3Romev3">Recherche rapide de la dernière activité</label><input name="data[Deractromev3][romev3]" type="text" id="Deractromev3Romev3"/></div><input type="hidden" name="data[Deractromev3][id]" id="Deractromev3Id"/><div class="input select"><label for="Deractromev3Familleromev3Id">Code famille de la dernière activité</label><select name="data[Deractromev3][familleromev3_id]" id="Deractromev3Familleromev3Id">
 <option value=""></option>
 <option value="1">A - AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX</option>
-</select></div><div class="input select"><label for="DspDeractdomaineromev3Id">Code domaine de la dernière activité</label><select name="data[Dsp][deractdomaineromev3_id]" id="DspDeractdomaineromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Domaineromev3Id">Code domaine de la dernière activité</label><select name="data[Deractromev3][domaineromev3_id]" id="Deractromev3Domaineromev3Id">
 <option value=""></option>
 <option value="1_1">A11 - Engins agricoles et forestiers</option>
-</select></div><div class="input select"><label for="DspDeractmetierromev3Id">Code métier de la dernière activité</label><select name="data[Dsp][deractmetierromev3_id]" id="DspDeractmetierromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Metierromev3Id">Code métier de la dernière activité</label><select name="data[Deractromev3][metierromev3_id]" id="Deractromev3Metierromev3Id">
 <option value=""></option>
 <option value="1_1">A1101 - Conduite d&#039;engins d&#039;exploitation agricole et forestière</option>
-</select></div><div class="input select"><label for="DspDeractappellationromev3Id">Appellation de la dernière activité</label><select name="data[Dsp][deractappellationromev3_id]" id="DspDeractappellationromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Appellationromev3Id">Appellation de la dernière activité</label><select name="data[Deractromev3][appellationromev3_id]" id="Deractromev3Appellationromev3Id">
 <option value=""></option>
 <option value="1_1">Conducteur / Conductrice d&#039;engins de débardage</option>
 </select></div><script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { dependantSelect( \'DspDeractdomaineromev3Id\', \'DspDeractfamilleromev3Id\' );
-dependantSelect( \'DspDeractmetierromev3Id\', \'DspDeractdomaineromev3Id\' );
-dependantSelect( \'DspDeractappellationromev3Id\', \'DspDeractmetierromev3Id\' );
+document.observe( \'dom:loaded\', function() { dependantSelect( \'Deractromev3Domaineromev3Id\', \'Deractromev3Familleromev3Id\' );
+dependantSelect( \'Deractromev3Metierromev3Id\', \'Deractromev3Domaineromev3Id\' );
+dependantSelect( \'Deractromev3Appellationromev3Id\', \'Deractromev3Metierromev3Id\' );
  } );
 //]]>
 </script><script type="text/javascript">
 //<![CDATA[
-var ajax_parameters_9875ab493b5ba6ec362671f915d33ef5 = { \'url\': \'/cataloguesromesv3/ajax_appellation\', \'prefix\': \'\', \'fields\': [ \'DspDeractromev3\' ], \'min\': \'3\', \'delay\': \'500\' };
-$( \'DspDeractromev3\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'DspDeractromev3\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters_9875ab493b5ba6ec362671f915d33ef5 ); } );
+var ajax_parameters_7bb6e4326590a907d44a8d9609ef7a41 = { \'url\': \'/cataloguesromesv3/ajax_appellation\', \'prefix\': \'\', \'fields\': [ \'Deractromev3Romev3\' ], \'min\': \'3\', \'delay\': \'500\' };
+$( \'Deractromev3Romev3\' ).writeAttribute( \'autocomplete\', \'off\' );Event.observe( $( \'Deractromev3Romev3\' ), \'keyup\', function(event) { ajax_action( event, ajax_parameters_7bb6e4326590a907d44a8d9609ef7a41 ); } );
 
 //]]>
 </script></fieldset>';
-			$this->assertEquals( $result, $expected );
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Romev3Helper::fields() lorsque Romev3.enabled
+		 * vaut false.
+		 *
+		 * @medium
+		 */
+		public function testFieldsDisabled() {
+			Configure::write( 'Romev3.enabled', false );
+
+			$this->Controller->request->addParams(
+				array(
+					'controller' => 'dsps',
+					'action' => 'add',
+					'pass' => array(),
+					'named' => array()
+				)
+			);
+
+			$result = $this->Romev3->fields( 'Deractromev3' );
+
+			$expected = array();
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode Romev3Helper::fields() lorsque Romev3.enabled
+		 * vaut true.
+		 *
+		 * @medium
+		 */
+		public function testFieldsEnabled() {
+			Configure::write( 'Romev3.enabled', true );
+
+			$this->Controller->request->addParams(
+				array(
+					'controller' => 'dsps',
+					'action' => 'add',
+					'pass' => array(),
+					'named' => array()
+				)
+			);
+
+			$result = $this->Romev3->fields( 'Deractromev3' );
+
+			$expected = array(
+				'Deractfamilleromev3.name' => array(
+					'label' => 'Libellé famille de la dernière activité',
+					'type' => 'text',
+				),
+				'Deractdomaineromev3.name' => array(
+					'label' => 'Libellé domaine de la dernière activité',
+					'type' => 'text',
+				),
+				'Deractmetierromev3.name' => array(
+					'label' => 'Libellé métier de la dernière activité',
+					'type' => 'text',
+				),
+				'Deractappellationromev3.name' => array(
+					'label' => 'Appellation de la dernière activité',
+					'type' => 'text',
+				)
+			);
+
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
 		}
 	}
 ?>
