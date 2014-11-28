@@ -50,10 +50,6 @@
 					? array( 'controller' => 'cers93', 'action' => 'indexparams' )
 					: null
 				,
-				'Codes ROME V3' => ( Configure::read( 'Romev3.enabled' ) )
-					? array( 'controller' => 'codesromev3', 'action' => 'index' )
-					:null
-				,
 				__d( 'parametrages', '/Parametrages/cataloguesromesv3/:heading' ) => ( Configure::read( 'Romev3.enabled' ) )
 					? array( 'controller' => 'parametrages', 'action' => 'cataloguesromesv3' )
 					: null

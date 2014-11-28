@@ -12,7 +12,7 @@ BEGIN;
 -- *****************************************************************************
 
 --------------------------------------------------------------------------------
--- 0. Nettoyage de la version de développement
+-- Nettoyage de la version de développement
 --------------------------------------------------------------------------------
 SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractfamilleromev3_id' );
 SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomaineromev3_id' );
@@ -49,6 +49,15 @@ SELECT alter_table_drop_column_if_exists ( 'public', 'cuis', 'emploiproposeromev
 SELECT alter_table_drop_column_if_exists ( 'public', 'periodesimmersioncuis66', 'affectationromev3_id' );
 SELECT alter_table_drop_column_if_exists ( 'public', 'personnespcgs66', 'categorieromev3_id' );
 SELECT alter_table_drop_column_if_exists ( 'public', 'expsproscers93', 'entreeromev3_id' );
+
+--------------------------------------------------------------------------------
+-- Nettoyage des anciennes tables des codes ROME V3
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS codesappellationsromev3;
+DROP TABLE IF EXISTS codesmetiersromev3;
+DROP TABLE IF EXISTS codesdomainesprosromev3;
+DROP TABLE IF EXISTS codesfamillesromev3;
 
 --------------------------------------------------------------------------------
 -- Codes familles ROME V3
