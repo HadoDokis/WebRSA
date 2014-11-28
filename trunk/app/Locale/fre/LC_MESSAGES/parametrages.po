@@ -23,4 +23,4 @@ msgid "/Parametrages/fichesprescriptions93/:heading"
 msgstr "Paramétrages du module fiche de prescription"
 
 msgid "/Parametrages/cataloguesromesv3/:heading"
-msgstr "Codes ROME V3 (nouveau)"
+msgstr "Codes ROME V3"

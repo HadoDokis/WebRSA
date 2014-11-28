@@ -92,12 +92,6 @@ $irregularPlural = array(
     'budgetapre' => 'budgetsapres',
     'calculdroitrsa' => 'calculsdroitsrsa',
     'candidature_prog66' => 'candidatures_progs66', // table de laision entre actionscandidats_personnes et progsfichescandidatures66
-    // Codes ROME V3
-    'coderomev3' => 'codesromev3',
-    'codedomaineproromev3' => 'codesdomainesprosromev3',
-    'codefamilleromev3' => 'codesfamillesromev3',
-    'codemetierromev3' => 'codesmetiersromev3',
-    'codeappellationromev3' => 'codesappellationsromev3',
 	// Début codes ROME V3, nouvelle version
 	'familleromev3' => 'famillesromesv3',
 	'domaineromev3' => 'domainesromesv3',
