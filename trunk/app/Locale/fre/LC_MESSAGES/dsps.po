@@ -15,62 +15,164 @@ msgstr ""
 # ------------------------------------------------------------------------------
 # Dernière activité
 # ------------------------------------------------------------------------------
-msgid "Dsp.deract"
+msgid "Deractromev3"
 msgstr "Dernière activité"
 
-msgid "Dsp.deractromev3"
+msgid "Deractromev3.romev3"
 msgstr "Recherche rapide de la dernière activité"
 
-msgid "Dsp.deractfamilleromev3_id"
+msgid "Deractromev3.familleromev3_id"
 msgstr "Code famille de la dernière activité"
 
-msgid "Dsp.deractdomaineromev3_id"
+msgid "Deractromev3.domaineromev3_id"
 msgstr "Code domaine de la dernière activité"
 
-msgid "Dsp.deractmetierromev3_id"
+msgid "Deractromev3.metierromev3_id"
 msgstr "Code métier de la dernière activité"
 
-msgid "Dsp.deractappellationromev3_id"
+msgid "Deractromev3.appellationromev3_id"
 msgstr "Appellation de la dernière activité"
 
 # ------------------------------------------------------------------------------
 # Dernière activité dominante
 # ------------------------------------------------------------------------------
-msgid "Dsp.deractdomi"
+msgid "Deractdomiromev3"
 msgstr "Dernière activité dominante"
 
-msgid "Dsp.deractdomiromev3"
+msgid "Deractdomiromev3.romev3"
 msgstr "Recherche rapide de la dernière activité dominante"
 
-msgid "Dsp.deractdomifamilleromev3_id"
+msgid "Deractdomiromev3.familleromev3_id"
 msgstr "Code famille de la dernière activité dominante"
 
-msgid "Dsp.deractdomidomaineromev3_id"
+msgid "Deractdomiromev3.domaineromev3_id"
 msgstr "Code domaine de la dernière activité dominante"
 
-msgid "Dsp.deractdomimetierromev3_id"
+msgid "Deractdomiromev3.metierromev3_id"
 msgstr "Code métier de la dernière activité dominante"
 
-msgid "Dsp.deractdomiappellationromev3_id"
+msgid "Deractdomiromev3.appellationromev3_id"
 msgstr "Appellation de la dernière activité dominante"
 
 # ------------------------------------------------------------------------------
 # Emploi recherché
 # ------------------------------------------------------------------------------
-msgid "Dsp.actrech"
+msgid "Actrechromev3"
 msgstr "Emploi recherché"
 
-msgid "Dsp.actrechromev3"
+msgid "Actrechromev3.romev3"
 msgstr "Recherche rapide de l'emploi recherché"
 
-msgid "Dsp.actrechfamilleromev3_id"
+msgid "Actrechromev3.familleromev3_id"
 msgstr "Code famille de l'emploi recherché"
 
-msgid "Dsp.actrechdomaineromev3_id"
+msgid "Actrechromev3.domaineromev3_id"
 msgstr "Code domaine de l'emploi recherché"
 
-msgid "Dsp.actrechmetierromev3_id"
+msgid "Actrechromev3.metierromev3_id"
 msgstr "Code métier de l'emploi recherché"
 
-msgid "Dsp.actrechappellationromev3_id"
+msgid "Actrechromev3.appellationromev3_id"
 msgstr "Appellation de l'emploi recherché"
+
+# ------------------------------------------------------------------------------
+# Export CSV
+# ------------------------------------------------------------------------------
+msgid "Deractromev3.familleromev3"
+msgstr "Famille de la dernière activité"
+
+msgid "Deractromev3.domaineromev3"
+msgstr "Domaine de la dernière activité"
+
+msgid "Deractromev3.metierromev3"
+msgstr "Métier de la dernière activité"
+
+msgid "Deractromev3.appellationromev3"
+msgstr "Appellation de la dernière activité"
+
+# ------------------------------------------------------------------------------
+
+msgid "Deractdomiromev3.familleromev3"
+msgstr "Famille de la dernière activité dominante"
+
+msgid "Deractdomiromev3.domaineromev3"
+msgstr "Domaine de la dernière activité dominante"
+
+msgid "Deractdomiromev3.metierromev3"
+msgstr "Métier de la dernière activité dominante"
+
+msgid "Deractdomiromev3.appellationromev3"
+msgstr "Appellation de la dernière activité dominante"
+
+# ------------------------------------------------------------------------------
+
+msgid "Actrechromev3.familleromev3"
+msgstr "Famille de l'emploi recherché"
+
+msgid "Actrechromev3.domaineromev3"
+msgstr "Domaine de l'emploi recherché"
+
+msgid "Actrechromev3.metierromev3"
+msgstr "Métier de l'emploi recherché"
+
+msgid "Actrechromev3.appellationromev3"
+msgstr "Appellation de l'emploi recherché"
+
+# ------------------------------------------------------------------------------
+
+msgid "Deractfamilleromev3Rev.name"
+msgstr "Libellé famille de la dernière activité"
+
+msgid "Deractdomaineromev3Rev.name"
+msgstr "Libellé domaine de la dernière activité"
+
+msgid "Deractmetierromev3Rev.name"
+msgstr "Libellé métier de la dernière activité"
+
+msgid "Deractappellationromev3Rev.name"
+msgstr "Appellation de la dernière activité"
+
+msgid "Deractdomifamilleromev3Rev.name"
+msgstr "Libellé famille de la dernière activité dominante"
+
+msgid "Deractdomidomaineromev3Rev.name"
+msgstr "Libellé domaine de la dernière activité dominante"
+
+msgid "Deractdomimetierromev3Rev.name"
+msgstr "Libellé métier de la dernière activité dominante"
+
+msgid "Deractdomiappellationromev3Rev.name"
+msgstr "Appellation de la dernière activité dominante"
+
+msgid "Actrechfamilleromev3Rev.name"
+msgstr "Libellé famille de l'activité recherchée"
+
+msgid "Actrechdomaineromev3Rev.name"
+msgstr "Libellé domaine de l'activité recherchée"
+
+msgid "Actrechmetierromev3Rev.name"
+msgstr "Libellé métier de l'activité recherchée"
+
+msgid "Actrechappellationromev3Rev.name"
+msgstr "Appellation de l'activité recherchée"
+
+# ==============================================================================
+# Codes ROME V2
+# ==============================================================================
+msgid "Libsecactderact66Secteur.name"
+msgstr "Secteur denière activité ROME V2"
+
+msgid "Libderact66Metier.name"
+msgstr "Métier denière activité ROME V2"
+
+msgid "Libsecactdomi66Secteur.name"
+msgstr "Secteur denière activité dominante ROME V2"
+
+msgid "Libactdomi66Metier.name"
+msgstr "Métier denière activité dominante ROME V2"
+
+msgid "Libsecactrech66Secteur.name"
+msgstr "Secteur emploi recherché ROME V2"
+
+msgid "Libemploirech66Metier.name"
+msgstr "Métier emploi recherché ROME V2"

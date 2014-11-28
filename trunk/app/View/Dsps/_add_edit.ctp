@@ -152,140 +152,133 @@ Plan:
 <fieldset>
 	<legend>Situation professionnelle</legend>
 	<?php
-		if( Configure::read( 'Romev3.enabled' ) ) {
-			echo $this->Default->subform(
-				array(
-					'Dsp.hispro'
-				),
-				array(
-					'options' => $options
-				)
-			);
+		echo $this->Default->subform(
+			array(
+				'Dsp.hispro'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-			// Codes ROME V3 dernière activité
-			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'deract', 'options' => $options ) );
+		// Codes ROME V3 dernière activité
+		echo $this->Romev3->fieldset( 'Deractromev3', array( 'options' => $options ) );
+		echo $this->Default->subform(
+			array(
+				'Dsp.libsecactderact',
+				'Dsp.libderact'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-			// Codes ROME V2 dernière activité (FIXME) + intitulés dernière activité
+		// Codes ROME V2 dernière activité
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo '<fieldset><legend>Dernière activité (ROME V2)</legend>';
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactderact66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libsecactderact' => array( 'label' => '' ),
 					'Dsp.libderact66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-					'Dsp.libderact' => array( 'label' => '' ),
 				),
 				array(
 					'options' => $options
 				)
 			);
+			echo '</fieldset>';
+		}
 
-			echo $this->Default->subform(
-				array(
-					'Dsp.cessderact',
-					'Dsp.topdomideract'
-				),
-				array(
-					'options' => $options
-				)
-			);
+		echo $this->Default->subform(
+			array(
+				'Dsp.cessderact',
+				'Dsp.topdomideract'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-			// Codes ROME V3 dernière activité dominante
-			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'deractdomi', 'options' => $options ) );
+		// Codes ROME V3 dernière activité dominante
+		echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
+		echo $this->Default->subform(
+			array(
+				'Dsp.libsecactdomi',
+				'Dsp.libactdomi'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-			// Codes ROME V2 dernière activité dominante (FIXME) + intitulés dernière activité dominante
+		// Codes ROME V2 dernière activité dominante
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo '<fieldset><legend>Dernière activité dominante(ROME V2)</legend>';
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactdomi66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libsecactdomi' => array( 'label' => '' ),
 					'Dsp.libactdomi66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-					'Dsp.libactdomi' => array( 'label' => '' ),
 				),
 				array(
 					'options' => $options
 				)
 			);
+			echo '</fieldset>';
+		}
 
-			echo $this->Default->subform(
-				array(
-					'Dsp.duractdomi',
-					'Dsp.inscdememploi',
-					'Dsp.topisogrorechemploi',
-					'Dsp.accoemploi',
-					'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
-					'Dsp.topprojpro'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		}
-		else {
-			echo $this->Default->subform(
-				array(
-					'Dsp.hispro',
-					'Dsp.libderact',
-					'Dsp.libsecactderact',
-					'Dsp.cessderact',
-					'Dsp.topdomideract',
-					'Dsp.libactdomi',
-					'Dsp.libsecactdomi',
-					'Dsp.duractdomi',
-					'Dsp.inscdememploi',
-					'Dsp.topisogrorechemploi',
-					'Dsp.accoemploi',
-					'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
-					'Dsp.topprojpro'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		}
+		echo $this->Default->subform(
+			array(
+				'Dsp.duractdomi',
+				'Dsp.inscdememploi',
+				'Dsp.topisogrorechemploi',
+				'Dsp.accoemploi',
+				'Dsp.libcooraccoemploi' => array( 'type' => 'textarea' ),
+				'Dsp.topprojpro'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
 		if ( $cg == 'cg58' ) {
 			echo $this->Dsphm->fieldset( 'Detailprojpro', 'projpro', 'libautrprojpro', $dsp_id, '2213', $options['Detailprojpro']['projpro'] );
 		}
 
-		if ( Configure::read( 'Romev3.enabled' ) ) {
+		// Codes ROME V3 emploi recherché
+		echo $this->Romev3->fieldset( 'Actrechromev3', array( 'options' => $options ) );
+		echo $this->Default->subform(
+			array(
+				'Dsp.libsecactrech',
+				'Dsp.libemploirech'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
-			// Codes ROME V3 dernière activité dominante
-			echo $this->Romev3->fieldset( array( 'modelName' => 'Dsp', 'prefix' => 'actrech', 'options' => $options ) );
-
-			// Codes ROME V2 dernière activité dominante (FIXME) + intitulés dernière activité dominante
+		// Codes ROME V2 dernière emploi recherché
+		if( Configure::read( 'Cg.departement' ) == 66 ) {
+			echo '<fieldset><legend>Emploi recherché (ROME V2)</legend>';
 			echo $this->Default->subform(
 				array(
 					'Dsp.libsecactrech66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libsecactrech' => array( 'label' => '' ),
 					'Dsp.libemploirech66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-					'Dsp.libemploirech' => array( 'label' => '' ),
 				),
 				array(
 					'options' => $options
 				)
 			);
+			echo '</fieldset>';
+		}
 
-			echo $this->Default->subform(
-				array(
-					'Dsp.topcreareprientre',
-					'Dsp.concoformqualiemploi'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		}
-		else {
-			echo $this->Default->subform(
-				array(
-					'Dsp.libemploirech',
-					'Dsp.libsecactrech',
-					'Dsp.topcreareprientre',
-					'Dsp.concoformqualiemploi'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		}
+		echo $this->Default->subform(
+			array(
+				'Dsp.topcreareprientre',
+				'Dsp.concoformqualiemploi'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
 		if ($cg=='cg58') {
 			echo $this->Default->subform(

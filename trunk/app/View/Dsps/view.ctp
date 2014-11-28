@@ -16,66 +16,6 @@
 		echo $this->element( 'ancien_dossier' );
 
 		// ---------------------------------------------------------------------
-		// TODO: dans le helper
-		function romev3_fields( $type, $suffixes ) {
-			$libs = array(
-				'deract' => array( 'libsecactderact', 'libderact' ),
-				'deractdomi' => array( 'libsecactdomi', 'libactdomi' ),
-				'actrech' => array( 'libsecactrech', 'libemploirech' )
-			);
-			$return = array();
-
-			// TODO: CG 66
-
-			// Idée: en 1 seul bloc ?
-			if( Configure::read( 'Romev3.enabled' ) ) {
-				foreach( $suffixes as $suffix ) {
-					$alias = Inflector::classify( "{$type}{$suffix}romev3" );
-					$fieldName = "{$alias}.name";
-					$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ) );
-				}
-			}
-
-			foreach( $libs[$type] as $lib ) {
-				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					// Dernière activité
-					if( $lib === 'libsecactderact' ) {
-						$fieldName = 'Libsecactderact66Secteur.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-					else if( $lib === 'libderact' ) {
-						$fieldName = 'Libderact66Metier.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-					// Dernière activité dominante
-					else if( $lib === 'libsecactdomi' ) {
-						$fieldName = 'Libsecactdomi66Secteur.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-					else if( $lib === 'libactdomi' ) {
-						$fieldName = 'Libactdomi66Metier.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-					// Activité recherchée
-					else if( $lib === 'libsecactrech' ) {
-						$fieldName = 'Libsecactrech66Secteur.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-					else if( $lib === 'libemploirech' ) {
-						$fieldName = 'Libemploirech66Metier.intitule';
-						$return[$fieldName] = array( 'label' => __d( 'dsp', $fieldName ), 'type' => 'text' );
-					}
-				}
-
-				$fieldName = "Dsp.{$lib}";
-				$label = ( Configure::read( 'Cg.departement' ) == 66 ? 'Complément d\'information' : __d( 'dsp', $fieldName ) );
-				$return[$fieldName] = array( 'label' => $label );
-			}
-
-			return $return;
-		}
-
-		// ---------------------------------------------------------------------
 
 		echo $this->Form->create( 'Dsp', array( 'type' => 'post', 'id' => 'dspform' ) );
 
@@ -224,7 +164,25 @@
 					)
 				),
 				// Dernière activité
-				romev3_fields( 'deract', $suffixes ),
+				$this->Romev3->fields( 'Deractromev3' ),
+				// Libellés dernière activité
+				Hash::normalize(
+					array(
+						'Dsp.libsecactderact',
+						'Dsp.libderact',
+					)
+				),
+				// Codes ROME V2
+				(
+					Configure::read( 'Cg.departement' ) == 66
+					? Hash::normalize(
+						array(
+							'Libsecactderact66Secteur.intitule' => array( 'label' => __d( 'dsps', 'Libsecactderact66Secteur.name' ), 'type' => 'text' ),
+							'Libderact66Metier.intitule' => array( 'label' => __d( 'dsps', 'Libderact66Metier.name' ), 'type' => 'text' ),
+						)
+					)
+					: array()
+				),
 				Hash::normalize(
 					array(
 						'Dsp.cessderact',
@@ -232,7 +190,24 @@
 					)
 				),
 				// Dernière activité dominante
-				romev3_fields( 'deractdomi', $suffixes ),
+				$this->Romev3->fields( 'Deractdomiromev3' ),
+				Hash::normalize(
+					array(
+						'Dsp.libsecactdomi',
+						'Dsp.libactdomi',
+					)
+				),
+				// Codes ROME V2
+				(
+					Configure::read( 'Cg.departement' ) == 66
+					? Hash::normalize(
+						array(
+							'Libsecactdomi66Secteur.intitule' => array( 'label' => __d( 'dsps', 'Libsecactdomi66Secteur.name' ), 'type' => 'text' ),
+							'Libactdomi66Metier.intitule' => array( 'label' => __d( 'dsps', 'Libactdomi66Metier.name' ), 'type' => 'text' ),
+						)
+					)
+					: array()
+				),
 				Hash::normalize(
 					array(
 						'Dsp.duractdomi',
@@ -246,14 +221,31 @@
 			);
 			echo $this->Default->view( $dsp, $fields, array( 'options' => $options ) );
 
-			// FIXME: à ajouter pour le 58
+			// INFO: à ajouter pour le 58
 			if ($cg=='cg58') {
 				echo $this->Dsphm->details( $dsp, 'Detailprojpro', 'projpro', 'libautrprojpro', $options['Detailprojpro']['projpro'] );
 			}
 
 			$fields = array_merge(
 				// Emploi recherché
-				romev3_fields( 'actrech', $suffixes ),
+				$this->Romev3->fields( 'Actrechromev3' ),
+				Hash::normalize(
+					array(
+						'Dsp.libsecactrech',
+						'Dsp.libemploirech',
+					)
+				),
+				// Codes ROME V2
+				(
+					Configure::read( 'Cg.departement' ) == 66
+					? Hash::normalize(
+						array(
+							'Libsecactrech66Secteur.intitule' => array( 'label' => __d( 'dsps', 'Libsecactrech66Secteur.name' ), 'type' => 'text' ),
+							'Libemploirech66Metier.intitule' => array( 'label' => __d( 'dsps', 'Libemploirech66Metier.name' ), 'type' => 'text' ),
+						)
+					)
+					: array()
+				),
 				Hash::normalize(
 					array(
 						'Dsp.topcreareprientre',

@@ -29,17 +29,6 @@
 					'libderact66_metier_id',
 					'libactdomi66_metier_id',
 					'libemploirech66_metier_id',
-					// Début ROME V3
-					'deractdomaineromev3_id',
-					'deractmetierromev3_id',
-					'deractappellationromev3_id',
-					'deractdomidomaineromev3_id',
-					'deractdomimetierromev3_id',
-					'deractdomiappellationromev3_id',
-					'actrechdomaineromev3_id',
-					'actrechmetierromev3_id',
-					'actrechappellationromev3_id'
-					// Fin ROME V3
 				)
 			)
 		);
@@ -102,92 +91,32 @@
 				'order' => ''
 			),
 			// Début ROME V3
-			// 1. Dernière activité
-			'Deractfamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'deractfamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Deractromev3Rev' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'deractromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
-			'Deractdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'deractdomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Deractdomiromev3Rev' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'deractdomiromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
-			'Deractmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'deractmetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'deractappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			// 2. Dernière activité dominante
-			'Deractdomifamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'deractdomifamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomidomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'deractdomidomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomimetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'deractdomimetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Deractdomiappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'deractdomiappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			// 3. Activité recherchée
-			'Actrechfamilleromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Familleromev3',
-				'foreignKey' => 'actrechfamilleromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechdomaineromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Domaineromev3',
-				'foreignKey' => 'actrechdomaineromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechmetierromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Metierromev3',
-				'foreignKey' => 'actrechmetierromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			),
-			'Actrechappellationromev3' => array( // TODO: dans l'autre sens
-				'className' => 'Appellationromev3',
-				'foreignKey' => 'actrechappellationromev3_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Actrechromev3Rev' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'actrechromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
 			),
 			// Fin ROME V3
 		);
@@ -372,6 +301,195 @@
 					'limit' => 1
 				)
 			);
+		}
+
+		/**
+		 * Retourne un querydata contenant tous les champs et les associations à
+		 * utiliser dans les pages de visualisation d'une DspRev, dans la page
+		 * d'historique des DspRev, dans la page de différences entre deux versions
+		 * des DspRev.
+		 *
+		 * @return array
+		 */
+		public function getViewQuery() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				$query = array(
+					'fields' => $this->fields(),
+					'contain' => array(
+						'Personne',
+						'DetaildifsocRev',
+						'DetailaccosocfamRev',
+						'DetailaccosocindiRev',
+						'DetaildifdispRev',
+						'DetailnatmobRev',
+						'DetaildiflogRev',
+						'DetailmoytransRev',
+						'DetaildifsocproRev',
+						'DetailprojproRev',
+						'DetailfreinformRev',
+						'DetailconfortRev',
+						'Fichiermodule'
+					),
+					'joins' => array()
+				);
+
+				foreach( array_keys( $this->belongsTo ) as $alias ) {
+					if( in_array( $alias, $query['contain'] ) ) {
+						$query['fields'] = array_merge( $query['fields'], $this->{$alias}->fields() );
+					}
+					// Codes ROME V2
+					else if( preg_match( '/66(Metier|Secteur)/', $alias ) ) {
+						$key = array_search( "{$this->alias}.{$this->belongsTo[$alias]['foreignKey']}", $query['fields'] );
+						if( $key !== -1 ) {
+							unset( $query['fields'][$key] );
+						}
+
+						$field = $this->{$alias}->getVirtualField( 'intitule' );
+						$query['fields'][] = "( {$field} ) \"{$alias}__intitule\"";
+						$query['joins'][] = $this->join( $alias, array( 'type' => 'LEFT OUTER' ) );
+					}
+				}
+
+				if( Configure::read( 'Romev3.enabled' ) ) {
+					foreach( $this->Dsp->romev3LinkedModels as $alias ) {
+						$aliasRev = "{$alias}Rev";
+						$replacements = array();
+
+						$query['joins'][] = $this->join( $aliasRev );
+
+						$fields = array(  );
+						foreach( $this->Dsp->suffixesRomev3 as $suffix ) {
+							$prefix = preg_replace( '/^(.*)romev3Rev$/', "\\1", $aliasRev );
+
+							$linked = Inflector::camelize( "{$suffix}romev3" );
+							$linkedAlias = "{$prefix}{$suffix}romev3Rev";
+							$replacements[$linked] = $linkedAlias;
+
+							$query['joins'][] = array_words_replace( $this->{$aliasRev}->join( $linked ), $replacements );
+
+							switch( $suffix ) {
+								case 'famille':
+									$fields[] = "( \"{$linkedAlias}\".\"code\" || ' - ' || \"{$linkedAlias}\".\"name\" ) AS \"{$linkedAlias}__name\"";
+									break;
+								case 'domaine':
+									$fields[] = "( \"{$prefix}familleromev3Rev\".\"code\" || \"{$linkedAlias}\".\"code\" || ' - ' || \"{$linkedAlias}\".\"name\" ) AS \"{$linkedAlias}__name\"";
+									break;
+								case 'metier':
+									$fields[] = "( \"{$prefix}familleromev3Rev\".\"code\" || \"{$prefix}domaineromev3Rev\".\"code\" || \"{$linkedAlias}\".\"code\" || ' - ' || \"{$linkedAlias}\".\"name\" ) AS \"{$linkedAlias}__name\"";
+									break;
+								case 'appellation':
+									$fields[] = "{$linkedAlias}.name";
+									break;
+							}
+						}
+						$query['fields'] = Hash::merge( $query['fields'], $fields );
+					}
+				}
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			return $query;
+		}
+
+		/**
+		 * Permet d'obtenir les différences entre deux versions des DspRev obtenues
+		 * grâce au query se trouvant dans la méthode getViewQuery().
+		 *
+		 * @param array $old
+		 * @param array $new
+		 * @return array
+		 */
+		public function getDiffs( $old, $new ) {
+			$return = array();
+
+			// Suppression des champs de clés primaires et étrangères des résultats des Dsps actuelles
+			foreach( $new as $Model => $values ) {
+				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
+					foreach( $new[$Model] as $key1 => $value1 ) {
+						if( is_array( $new[$Model][$key1] ) ) {
+							$new[$Model][$key1] = Hash::remove( $new[$Model][$key1], "id" );
+							$new[$Model][$key1] = Hash::remove( $new[$Model][$key1], "dsp_rev_id" );
+						}
+					}
+				}
+			}
+
+			// Suppression des champs de clés primaires et étrangères des résultats des Dsps précédentes
+			foreach( $old as $Model => $values ) {
+				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
+					foreach( $old[$Model] as $key2 => $value2 ) {
+						if( is_array( $new[$Model][$key2] ) ) {
+							$old[$Model][$key2] = Hash::remove( $old[$Model][$key2], "id" );
+							$old[$Model][$key2] = Hash::remove( $old[$Model][$key2], "dsp_rev_id" );
+						}
+					}
+				}
+			}
+
+			// Suppression des champs de clés primaires et étrangères des codes ROME V3 liés
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				foreach( $this->Dsp->romev3LinkedModels as $alias ) {
+					$foreignKey = Inflector::underscore( $alias ).'_id';
+					unset( $old["DspRev"][$foreignKey] );
+					unset( $new["DspRev"][$foreignKey] );
+
+					foreach( array_keys( $this->Dsp->Deractromev3->schema() ) as $fieldName ) {
+						unset( $old["{$alias}Rev"][$fieldName] );
+						unset( $new["{$alias}Rev"][$fieldName] );
+					}
+				}
+			}
+
+			// -----------------------------------------------------------------
+
+			foreach( $new as $Model => $values ) {
+				$return[$Model] = Set::diff( $new[$Model], $old[$Model] );
+				$return[$Model] = Hash::remove( $return[$Model], 'id' );
+				if( isset( $return[$Model]['created'] ) )
+					$return[$Model] = Hash::remove( $return[$Model], 'created' );
+				if( isset( $return[$Model]['modified'] ) )
+					$return[$Model] = Hash::remove( $return[$Model], 'modified' );
+				if( $Model != 'DspRev' && !empty( $new[$Model] ) && !empty( $return[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
+					foreach( $new[$Model] as $key1 => $value1 ) {
+						foreach( $old[$Model] as $key2 => $value2 ) {
+							$compare = Set::diff( $value1, $value2 );
+							if( empty( $compare ) && ($key1 != $key2) ) {
+								$return[$Model] = Hash::remove( $return[$Model], $key1 );
+							}
+						}
+					}
+				}
+				if( isset( $return[$Model]['id'] ) )
+					$return[$Model] = Hash::remove( $return[$Model], 'id' );
+				if( isset( $return[$Model]['created'] ) )
+					$return[$Model] = Hash::remove( $return[$Model], 'created' );
+				if( isset( $return[$Model]['modified'] ) )
+					$return[$Model] = Hash::remove( $return[$Model], 'modified' );
+				if( empty( $return[$Model] ) )
+					$return = Hash::remove( $return, $Model );
+			}
+
+			return $return;
+		}
+
+		/**
+		 * Exécute les différentes méthods du modèle permettant la mise en cache.
+		 * Utilisé au préchargement de l'application (/prechargements/index).
+		 *
+		 * @return boolean true en cas de succès, false en cas d'erreur,
+		 * 	null pour les méthodes qui ne font rien.
+		 */
+		public function prechargement() {
+			$success = true;
+
+			$results = $this->getViewQuery();
+			$success = $success && !empty( $results );
+
+			return $success;
 		}
 	}
 ?>

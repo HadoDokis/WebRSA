@@ -10,46 +10,45 @@ SET default_with_oids = false;
 -- *****************************************************************************
 BEGIN;
 -- *****************************************************************************
--- TODO: créer les bases de données en v280
--- grep -lri "romev3" app | grep -v "\.svn" => on en a un peu partout
-/*
-	FIXME: unicité sur les codes (et les clés étrangères) dans:
-		ROME V2:
-			- codesromesecteursdsps66 -> Non (code + name)
-			- codesromemetiersdsps66 -> Non (code + name)
-		ROME V3:
-			- codesfamillesromev3 -> Non
-			- codesdomainesprosromev3 -> Non
-			- codesmetiersromev3 -> Non
-			- codesappellationsromev3 -> Non
 
-		=> A-t'on des soucis actuellement ?
-			SELECT code, COUNT(*) FROM codesromesecteursdsps66 GROUP BY code HAVING COUNT(*) > 1; -> OK
-			SELECT coderomesecteurdsp66_id, code, COUNT(*) FROM codesromemetiersdsps66 GROUP BY coderomesecteurdsp66_id, code HAVING COUNT(*) > 1; -> KO 4/12121
-
-		=> TODO: mettre ces indexes uniques sur les nouvelles et corriger le souci! (+ revoir le nom des tables + inflections)
-			- codesfamillesromev3		-> famillesromesv3 / familleromev3
-			- codesdomainesprosromev3	-> domainesromesv3 / domaineromev3
-			- codesmetiersromev3		-> metiersromesv3 / metierromev3
-			- codesappellationsromev3	-> appellationsromesv3 / appellationromev3
-										-> correspondancesromesv2v3 / correspondanceromev2v3
-*/
-
--- TODO: nettoyage de l'ancien code
--- grep -lri "\(coderomev3\|codesromev3\|codedomaineproromev3\|codesdomainesprosromev3\|codefamilleromev3\|codesfamillesromev3\|codemetierromev3\|codesmetiersromev3\|codeappellationromev3\|codesappellationsromev3\)" app | grep -v "\.svn"
--- Suppression des anciennes tables ROME V3
-/*DROP TABLE IF EXISTS codesfamillesromev3;
-DROP TABLE IF EXISTS codesdomainesprosromev3;
-DROP TABLE IF EXISTS codesmetiersromev3;
-DROP TABLE IF EXISTS codesappellationsromev3;*/
-
-/*
--- FIXME: gentiment, ça casse tous
-TRUNCATE famillesromesv3 CASCADE;
-TRUNCATE domainesromesv3 CASCADE;
-TRUNCATE metiersromesv3 CASCADE;
-TRUNCATE appellationsromesv3 CASCADE;
-*/
+--------------------------------------------------------------------------------
+-- 0. Nettoyage de la version de développement
+--------------------------------------------------------------------------------
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractfamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractmetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomifamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomidomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomimetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomiappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'actrechfamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'actrechdomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'actrechmetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'actrechappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractfamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractmetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomifamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomidomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomimetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomiappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'actrechfamilleromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'actrechdomaineromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'actrechmetierromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'actrechappellationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'deractdomiromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps', 'actrechromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'deractdomiromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'dsps_revs', 'actrechromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'partenaires', 'entreeromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'cuis', 'emploiproposeromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'periodesimmersioncuis66', 'affectationromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'personnespcgs66', 'categorieromev3_id' );
+SELECT alter_table_drop_column_if_exists ( 'public', 'expsproscers93', 'entreeromev3_id' );
 
 --------------------------------------------------------------------------------
 -- Codes familles ROME V3
@@ -133,178 +132,127 @@ CREATE TABLE correspondancesromesv2v3 (
 );
 COMMENT ON TABLE correspondancesromesv2v3 IS 'Codes ROME V3 - Correspondances entre les codes ROME V2 et V3';
 
--- TODO: mettre des indexes
--- codesromesecteursdsps66 (3 chiffres, ex. 111), codesromemetiersdsps66.coderomesecteurdsp66_id (5 chiffres, ex. 11111)
-
 --------------------------------------------------------------------------------
--- Inclusion des codes ROME V3 dans les DSP
+-- Table entreesromesv3
 --------------------------------------------------------------------------------
 
--- 1. Dernière activité
--- libsecactderact66_secteur_id
--- libderact66_metier_id
--- 1.1 Famille dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractfamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractfamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractfamilleromev3_id_fkey', 'famillesromesv3', 'deractfamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractfamilleromev3_id_idx;
-CREATE INDEX dsps_deractfamilleromev3_id_idx ON dsps(deractfamilleromev3_id);
--- 1.2 Domaine dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractdomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomaineromev3_id_fkey', 'domainesromesv3', 'deractdomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractdomaineromev3_id_idx;
-CREATE INDEX dsps_deractdomaineromev3_id_idx ON dsps(deractdomaineromev3_id);
--- 1.3 Métier dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractmetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractmetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractmetierromev3_id_fkey', 'metiersromesv3', 'deractmetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractmetierromev3_id_idx;
-CREATE INDEX dsps_deractmetierromev3_id_idx ON dsps(deractmetierromev3_id);
--- 1.4 Appellation dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractappellationromev3_id_fkey', 'appellationsromesv3', 'deractappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractappellationromev3_id_idx;
-CREATE INDEX dsps_deractappellationromev3_id_idx ON dsps(deractappellationromev3_id);
+DROP TABLE IF EXISTS entreesromesv3 CASCADE;
+CREATE TABLE entreesromesv3 (
+    id						SERIAL NOT NULL PRIMARY KEY,
+	familleromev3_id		INTEGER NOT NULL REFERENCES famillesromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	domaineromev3_id		INTEGER DEFAULT NULL REFERENCES domainesromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	metierromev3_id			INTEGER DEFAULT NULL REFERENCES metiersromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	appellationromev3_id	INTEGER DEFAULT NULL REFERENCES appellationsromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,
+    created					TIMESTAMP WITHOUT TIME ZONE,
+    modified				TIMESTAMP WITHOUT TIME ZONE
+);
+COMMENT ON TABLE entreesromesv3 IS 'Codes ROME V3 - liste des 4 niveaux liés à un enregistrement';
 
--- Dernière activité dominante
--- libsecactdomi66_secteur_id
--- libactdomi66_metier_id
--- 1.1 Famille dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomifamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractdomifamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomifamilleromev3_id_fkey', 'famillesromesv3', 'deractdomifamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractdomifamilleromev3_id_idx;
-CREATE INDEX dsps_deractdomifamilleromev3_id_idx ON dsps(deractdomifamilleromev3_id);
--- 1.2 Domaine dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomidomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractdomidomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomidomaineromev3_id_fkey', 'domainesromesv3', 'deractdomidomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractdomidomaineromev3_id_idx;
-CREATE INDEX dsps_deractdomidomaineromev3_id_idx ON dsps(deractdomidomaineromev3_id);
--- 1.3 Métier dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomimetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractdomimetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomimetierromev3_id_fkey', 'metiersromesv3', 'deractdomimetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractdomimetierromev3_id_idx;
-CREATE INDEX dsps_deractdomimetierromev3_id_idx ON dsps(deractdomimetierromev3_id);
--- 1.4 Appellation dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomiappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN deractdomiappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomiappellationromev3_id_fkey', 'appellationsromesv3', 'deractdomiappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_deractdomiappellationromev3_id_idx;
-CREATE INDEX dsps_deractdomiappellationromev3_id_idx ON dsps(deractdomiappellationromev3_id);
+DROP INDEX IF EXISTS entreesromesv3_familleromev3_id_idx;
+CREATE INDEX entreesromesv3_familleromev3_id_idx ON entreesromesv3(familleromev3_id);
 
--- Emploi recherché
--- libsecactrech66_secteur_id
--- libemploirech66_metier_id
--- 1.1 Famille emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps', 'actrechfamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN actrechfamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_actrechfamilleromev3_id_fkey', 'famillesromesv3', 'actrechfamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_actrechfamilleromev3_id_idx;
-CREATE INDEX dsps_actrechfamilleromev3_id_idx ON dsps(actrechfamilleromev3_id);
--- 1.2 Domaine emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps', 'actrechdomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN actrechdomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_actrechdomaineromev3_id_fkey', 'domainesromesv3', 'actrechdomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_actrechdomaineromev3_id_idx;
-CREATE INDEX dsps_actrechdomaineromev3_id_idx ON dsps(actrechdomaineromev3_id);
--- 1.3 Métier emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps', 'actrechmetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN actrechmetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_actrechmetierromev3_id_fkey', 'metiersromesv3', 'actrechmetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_actrechmetierromev3_id_idx;
-CREATE INDEX dsps_actrechmetierromev3_id_idx ON dsps(actrechmetierromev3_id);
--- 1.4 Appellation emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps', 'actrechappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps ALTER COLUMN actrechappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_actrechappellationromev3_id_fkey', 'appellationsromesv3', 'actrechappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_actrechappellationromev3_id_idx;
-CREATE INDEX dsps_actrechappellationromev3_id_idx ON dsps(actrechappellationromev3_id);
+DROP INDEX IF EXISTS entreesromesv3_domaineromev3_id_idx;
+CREATE INDEX entreesromesv3_domaineromev3_id_idx ON entreesromesv3(domaineromev3_id);
+
+DROP INDEX IF EXISTS entreesromesv3_metierromev3_id_idx;
+CREATE INDEX entreesromesv3_metierromev3_id_idx ON entreesromesv3(metierromev3_id);
+
+DROP INDEX IF EXISTS entreesromesv3_appellationromev3_id_idx;
+CREATE INDEX entreesromesv3_appellationromev3_id_idx ON entreesromesv3(appellationromev3_id);
+
+ALTER TABLE entreesromesv3 ADD CONSTRAINT entreesromesv3_appellationromev3_id_metierromev3_id_not_null_chk
+	CHECK( appellationromev3_id IS NULL OR metierromev3_id IS NOT NULL );
+
+ALTER TABLE entreesromesv3 ADD CONSTRAINT entreesromesv3_metierromev3_id_domaineromev3_id_not_null_chk
+	CHECK( metierromev3_id IS NULL OR domaineromev3_id IS NOT NULL );
+
+ALTER TABLE entreesromesv3 ADD CONSTRAINT entreesromesv3_domaineromev3_id_familleromev3_id_not_null_chk
+	CHECK( domaineromev3_id IS NULL OR familleromev3_id IS NOT NULL );
 
 --------------------------------------------------------------------------------
--- Inclusion des codes ROME V3 dans les DSP CG
+-- 1. Ajout dans les DSP
+--------------------------------------------------------------------------------
+-- 1.1 Dernière activité
+SELECT add_missing_table_field ( 'public', 'dsps', 'deractromev3_id', 'INTEGER' );
+ALTER TABLE dsps ALTER COLUMN deractromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractromev3_id_fkey', 'entreesromesv3', 'deractromev3_id', false );
+DROP INDEX IF EXISTS dsps_deractromev3_id_idx;
+CREATE UNIQUE INDEX dsps_deractromev3_id_idx ON dsps(deractromev3_id);
+
+-- 1.2 Dernière activité dominante
+SELECT add_missing_table_field ( 'public', 'dsps', 'deractdomiromev3_id', 'INTEGER' );
+ALTER TABLE dsps ALTER COLUMN deractdomiromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_deractdomiromev3_id_fkey', 'entreesromesv3', 'deractdomiromev3_id', false );
+DROP INDEX IF EXISTS dsps_deractdomiromev3_id_idx;
+CREATE UNIQUE INDEX dsps_deractdomiromev3_id_idx ON dsps(deractdomiromev3_id);
+
+-- 1.3 Emploi recherché
+SELECT add_missing_table_field ( 'public', 'dsps', 'actrechromev3_id', 'INTEGER' );
+ALTER TABLE dsps ALTER COLUMN actrechromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps', 'dsps_actrechromev3_id_fkey', 'entreesromesv3', 'actrechromev3_id', false );
+DROP INDEX IF EXISTS dsps_actrechromev3_id_idx;
+CREATE UNIQUE INDEX dsps_actrechromev3_id_idx ON dsps(actrechromev3_id);
+
+--------------------------------------------------------------------------------
+-- 2. Ajout dans les DSP CG
+--------------------------------------------------------------------------------
+-- 1.1 Dernière activité
+SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractromev3_id', 'INTEGER' );
+ALTER TABLE dsps_revs ALTER COLUMN deractromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractromev3_id_fkey', 'entreesromesv3', 'deractromev3_id', false );
+DROP INDEX IF EXISTS dsps_revs_deractromev3_id_idx;
+CREATE UNIQUE INDEX dsps_revs_deractromev3_id_idx ON dsps_revs(deractromev3_id);
+
+-- 1.2 Dernière activité dominante
+SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomiromev3_id', 'INTEGER' );
+ALTER TABLE dsps_revs ALTER COLUMN deractdomiromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomiromev3_id_fkey', 'entreesromesv3', 'deractdomiromev3_id', false );
+DROP INDEX IF EXISTS dsps_revs_deractdomiromev3_id_idx;
+CREATE UNIQUE INDEX dsps_revs_deractdomiromev3_id_idx ON dsps_revs(deractdomiromev3_id);
+
+-- 1.3 Emploi recherché
+SELECT add_missing_table_field ( 'public', 'dsps_revs', 'actrechromev3_id', 'INTEGER' );
+ALTER TABLE dsps_revs ALTER COLUMN actrechromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_actrechromev3_id_fkey', 'entreesromesv3', 'actrechromev3_id', false );
+DROP INDEX IF EXISTS dsps_revs_actrechromev3_id_idx;
+CREATE UNIQUE INDEX dsps_revs_actrechromev3_id_idx ON dsps_revs(actrechromev3_id);
+
+/*--------------------------------------------------------------------------------
+-- 1. CG 66
+--------------------------------------------------------------------------------
+SELECT add_missing_table_field ( 'public', 'partenaires', 'entreeromev3_id', 'INTEGER' );
+ALTER TABLE partenaires ALTER COLUMN entreeromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'partenaires', 'partenaires_entreeromev3_id_fkey', 'entreesromesv3', 'entreeromev3_id', false );
+DROP INDEX IF EXISTS partenaires_entreeromev3_id_idx;
+CREATE UNIQUE INDEX partenaires_entreeromev3_id_idx ON partenaires(entreeromev3_id);
+
+SELECT add_missing_table_field ( 'public', 'cuis', 'emploiproposeromev3_id', 'INTEGER' );
+ALTER TABLE cuis ALTER COLUMN emploiproposeromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'cuis', 'cuis_emploiproposeromev3_id_fkey', 'entreesromesv3', 'emploiproposeromev3_id', false );
+DROP INDEX IF EXISTS cuis_emploiproposeromev3_id_idx;
+CREATE UNIQUE INDEX cuis_emploiproposeromev3_id_idx ON cuis(emploiproposeromev3_id);
+
+SELECT add_missing_table_field ( 'public', 'periodesimmersioncuis66', 'affectationromev3_id', 'INTEGER' );
+ALTER TABLE  periodesimmersioncuis66 ALTER COLUMN affectationromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'periodesimmersioncuis66', ' periodesimmersioncuis66_affectationromev3_id_fkey', 'entreesromesv3', 'affectationromev3_id', false );
+DROP INDEX IF EXISTS  periodesimmersioncuis66_affectationromev3_id_idx;
+CREATE UNIQUE INDEX  periodesimmersioncuis66_affectationromev3_id_idx ON  periodesimmersioncuis66(affectationromev3_id);
+
+SELECT add_missing_table_field ( 'public', 'personnespcgs66', 'categorieromev3_id', 'INTEGER' );
+ALTER TABLE  personnespcgs66 ALTER COLUMN categorieromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'personnespcgs66', ' personnespcgs66_categorieromev3_id_fkey', 'entreesromesv3', 'categorieromev3_id', false );
+DROP INDEX IF EXISTS  personnespcgs66_categorieromev3_id_idx;
+CREATE UNIQUE INDEX  personnespcgs66_categorieromev3_id_idx ON  personnespcgs66(categorieromev3_id);
+
+--------------------------------------------------------------------------------
+-- 2. CG 93, Tableau "Expériences professionnelles significatives" du CER
 --------------------------------------------------------------------------------
 
--- 1. Dernière activité
--- 1.1 Famille dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractfamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractfamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractfamilleromev3_id_fkey', 'famillesromesv3', 'deractfamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractfamilleromev3_id_idx;
-CREATE INDEX dsps_revs_deractfamilleromev3_id_idx ON dsps_revs(deractfamilleromev3_id);
--- 1.2 Domaine dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractdomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomaineromev3_id_fkey', 'domainesromesv3', 'deractdomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractdomaineromev3_id_idx;
-CREATE INDEX dsps_revs_deractdomaineromev3_id_idx ON dsps_revs(deractdomaineromev3_id);
--- 1.3 Métier dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractmetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractmetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractmetierromev3_id_fkey', 'metiersromesv3', 'deractmetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractmetierromev3_id_idx;
-CREATE INDEX dsps_revs_deractmetierromev3_id_idx ON dsps_revs(deractmetierromev3_id);
--- 1.4 Appellation dernière activité
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractappellationromev3_id_fkey', 'appellationsromesv3', 'deractappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractappellationromev3_id_idx;
-CREATE INDEX dsps_revs_deractappellationromev3_id_idx ON dsps_revs(deractappellationromev3_id);
-
--- Dernière activité dominante
--- 1.1 Famille dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomifamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractdomifamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomifamilleromev3_id_fkey', 'famillesromesv3', 'deractdomifamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractdomifamilleromev3_id_idx;
-CREATE INDEX dsps_revs_deractdomifamilleromev3_id_idx ON dsps_revs(deractdomifamilleromev3_id);
--- 1.2 Domaine dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomidomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractdomidomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomidomaineromev3_id_fkey', 'domainesromesv3', 'deractdomidomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractdomidomaineromev3_id_idx;
-CREATE INDEX dsps_revs_deractdomidomaineromev3_id_idx ON dsps_revs(deractdomidomaineromev3_id);
--- 1.3 Métier dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomimetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractdomimetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomimetierromev3_id_fkey', 'metiersromesv3', 'deractdomimetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractdomimetierromev3_id_idx;
-CREATE INDEX dsps_revs_deractdomimetierromev3_id_idx ON dsps_revs(deractdomimetierromev3_id);
--- 1.4 Appellation dernière activité dominante
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'deractdomiappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN deractdomiappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_deractdomiappellationromev3_id_fkey', 'appellationsromesv3', 'deractdomiappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_deractdomiappellationromev3_id_idx;
-CREATE INDEX dsps_revs_deractdomiappellationromev3_id_idx ON dsps_revs(deractdomiappellationromev3_id);
-
--- Emploi recherché
--- 1.1 Famille emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'actrechfamilleromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN actrechfamilleromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_actrechfamilleromev3_id_fkey', 'famillesromesv3', 'actrechfamilleromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_actrechfamilleromev3_id_idx;
-CREATE INDEX dsps_revs_actrechfamilleromev3_id_idx ON dsps_revs(actrechfamilleromev3_id);
--- 1.2 Domaine emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'actrechdomaineromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN actrechdomaineromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_actrechdomaineromev3_id_fkey', 'domainesromesv3', 'actrechdomaineromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_actrechdomaineromev3_id_idx;
-CREATE INDEX dsps_revs_actrechdomaineromev3_id_idx ON dsps_revs(actrechdomaineromev3_id);
--- 1.3 Métier emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'actrechmetierromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN actrechmetierromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_actrechmetierromev3_id_fkey', 'metiersromesv3', 'actrechmetierromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_actrechmetierromev3_id_idx;
-CREATE INDEX dsps_revs_actrechmetierromev3_id_idx ON dsps_revs(actrechmetierromev3_id);
--- 1.4 Appellation emploi recherché
-SELECT add_missing_table_field ( 'public', 'dsps_revs', 'actrechappellationromev3_id', 'INTEGER' );
-ALTER TABLE dsps_revs ALTER COLUMN actrechappellationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'dsps_revs', 'dsps_revs_actrechappellationromev3_id_fkey', 'appellationsromesv3', 'actrechappellationromev3_id', false );
-DROP INDEX IF EXISTS dsps_revs_actrechappellationromev3_id_idx;
-CREATE INDEX dsps_revs_actrechappellationromev3_id_idx ON dsps_revs(actrechappellationromev3_id);
+SELECT add_missing_table_field ( 'public', 'expsproscers93', 'entreeromev3_id', 'INTEGER' );
+ALTER TABLE expsproscers93 ALTER COLUMN entreeromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_entreeromev3_id_fkey', 'entreesromesv3', 'entreeromev3_id', false );
+DROP INDEX IF EXISTS expsproscers93_entreeromev3_id_idx;
+CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);*/
 
 -- *****************************************************************************
 COMMIT;
