@@ -120,7 +120,7 @@
                 'Confirmez-vous le transfert au CG du CER ?'
 			).'</li></ul>',
 			$this->Xhtml->printLink( 'Imprimer', array( 'controller' => 'cers93', 'action' => 'impression', $cer93['Contratinsertion']['id'] ), true, true ),
-			$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'cers93', 'action' => 'view', $cer93['Contratinsertion']['id'] ), true, true ),
+			$this->Xhtml->viewLink( 'Voir', array( 'controller' => 'histoschoixcers93', 'action' => 'attdecisioncg', $cer93['Contratinsertion']['id'] ), true, true ),
 			array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 		);
 
