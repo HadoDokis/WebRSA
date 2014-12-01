@@ -50,7 +50,7 @@
 
 	Configure::write( 'Cg.departement', 976 );
 	Configure::write( 'Utilisateurs.multilogin', false );
-	Configure::write( 'with_parentid', false );
+	Configure::write( 'with_parentid', true );
 	Configure::write( 'CG.cantons', false );
 	Configure::write( 'Zonesegeographiques.CodesInsee', true );
 	Configure::write( 'nom_form_ci_cg', 'cg976' );
@@ -106,7 +106,7 @@
 	/**
 	 * Variable contenant un array avec les id des typesorients en Emploi
 	 */
-	Configure::write( 'Typeorient.emploi_id', array( 1, 4 ) );
+	Configure::write( 'Typeorient.emploi_id', array( 6 ) );
 
 	/**
 	 * Permet de parcourir les détails des allocataires n'ayant pas de prestation
@@ -257,10 +257,10 @@
 					'Typeorient.parentid' => array( 1 )
 				),
 				'socioprofessionnel' => array(
-					'Typeorient.parentid' => array( 4 )
+					'Typeorient.parentid' => array( 2 )
 				),
 				'social' => array(
-					'Typeorient.parentid' => array( 6 )
+					'Typeorient.parentid' => array( 3 )
 				),
 			),
 			/**
@@ -274,8 +274,8 @@
 			 */
 			'conditions_indicateurs_organismes' => array(
 				'Pôle emploi (PE) (2)' => array(
-					'Typeorient.id' => 2,
-					'Structurereferente.id' => 23
+					'Typeorient.id' => 5,
+					'Structurereferente.id' => 2
 				),
 				'Organisme public de placement professionnel autre que PE (maison de l\'emploi, PLIE, mission locale,...) (2)' => array(),
 				'Entreprise de travail temporaire, agence privée de placement (2)' => array(),
