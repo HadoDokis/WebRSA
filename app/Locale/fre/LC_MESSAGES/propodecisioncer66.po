@@ -41,16 +41,16 @@ msgid "Proposdecisionscers66::propositionparticulier"
 msgstr "Décision du CER Particulier"
 
 msgid "Propodecisioncer66.nonvalidationparticulier"
-msgstr "Reprise de droit ou radiation ?"
+msgstr "Courriers CER Particuliers non validés"
 
 msgid "ENUM::NONVALIDATIONPARTICULIER::reprise"
-msgstr "Reprise de droit"
+msgstr "Reprise de droit, CER Particulier non validé"
 
 msgid "ENUM::NONVALIDATIONPARTICULIER::radiation"
-msgstr "Radiation"
+msgstr "Rejet de la demande de rSa, CER Particulier non validé"
 
 msgid "ENUM::NONVALIDATIONPARTICULIER::etudiant"
-msgstr "Refus ou radiation (étudiant)"
+msgstr "CER Particulier non validé"
 
 msgid "Propodecisioncer66.decisionfinale"
 msgstr "Décision finale"
