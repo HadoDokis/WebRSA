@@ -234,7 +234,7 @@
 			$isLoginPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/login' );
 			$isLogoutPage = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/logout' );
 			$isForgottenpass = ( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ) == '/users/forgottenpass' );
-			$isAllo = ( strpos( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ), '/rest/api/allo/' ) === 0 );
+			$isAllo = ( strpos( substr( $_SERVER['REQUEST_URI'], strlen( $this->request->base ) ), '/api/rest/allo/' ) === 0 );
 
 			// Utilise-t'on l'alerte de fin de session ?
 			$useAlerteFinSession = (
