@@ -105,6 +105,10 @@
 					'rule' => 'isUnique',
 					'message' => 'Valeur déjà utilisée'
 				),
+				array(
+					'rule' => array( 'maxLength', 75 ),
+					'message' => 'Maximum 75 caractères'
+				),
 			),
 			'modele_notif' => array(
 				array(
