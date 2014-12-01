@@ -34,7 +34,7 @@
 	/**
 	 * Ajout de la route pour la réponse REST à Allo.
 	 */
-	Router::connect( '/rest/api/allo/version', array( 'controller' => 'allos', 'action' => 'version' ) );
+	Router::connect( '/api/rest/allo/version', array( 'controller' => 'allos', 'action' => 'version' ) );
 
 	/**
 	 * Load all plugin routes.  See the CakePlugin documentation on
