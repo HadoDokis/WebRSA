@@ -52,10 +52,10 @@
 		 * @var array
 		 */
 		public $refsClients = array(
-			58 => 'CG NIEVRE (58)',
-			66 => 'CG PYRENEES-ORIENTALES (66)',
-			93 => 'CG SEINE-SAINT-DENIS (93)',
-			976 => 'CG MAYOTTE (976)'
+			58 => 'CG58_58194',
+			66 => 'CG66_66136',
+			93 => 'CG93_93008',
+			976 => 'CG976_97611'
 		);
 
 		/**
