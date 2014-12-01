@@ -389,6 +389,9 @@
 						$querydata['conditions'][] = $condition;
 					}
 
+					$model->forceVirtualFields = true;
+					$querydata = $model->beforeFind( $querydata );
+
 					$error = $this->_queryDataError( $model, $querydata );
 
 					if( !empty( $error ) ) {
