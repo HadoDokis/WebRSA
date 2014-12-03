@@ -226,10 +226,13 @@
 
 		/**
 		 * Pagination sur les <éléments> de la table.
+		 *
+		 * @param string $modelName
+		 * @throws NotFoundException
 		 */
 		public function index( $modelName ) {
 			if( !in_array( $modelName, $this->Catalogueromev3->modelesParametrages ) ) {
-				throw new Error404Exception();
+				throw new NotFoundException();
 			}
 
 			$tableName = Inflector::tableize( $modelName );
@@ -293,17 +296,17 @@
 		 *
 		 * @param string $modelName
 		 * @param integer $id
-		 * @throws Error404Exception
+		 * @throws NotFoundException
 		 */
 		protected function _add_edit( $modelName, $id = null ) {
 			if( !in_array( $modelName, $this->Catalogueromev3->modelesParametrages ) ) {
-				throw new Error404Exception();
+				throw new NotFoundException();
 			}
 
 			// Retour à l'index en cas d'annulation
 			if( isset( $this->request->data['Cancel'] ) ) {
 				$referer = Hash::get( $this->request->data, "{$modelName}.referer" );
-				$this->redirect( $referer );
+				return $this->redirect( $referer );
 			}
 
 			$Model = ClassRegistry::init( $modelName );
@@ -315,7 +318,7 @@
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 
 					$referer = Hash::get( $this->request->data, "{$modelName}.referer" );
-					$this->redirect( $referer );
+					return $this->redirect( $referer );
 				}
 				else {
 					$Model->rollback();
@@ -326,7 +329,7 @@
 				$this->request->data = $Model->getParametrageFormData( $id );
 
 				if( empty( $this->request->data ) ) {
-					throw new Error404Exception();
+					throw new NotFoundException();
 				}
 			}
 
@@ -360,12 +363,12 @@
 		 *
 		 * @param string $modelName
 		 * @param integer $id
-		 * @throws Error404Exception
-		 * @throws Error500Exception
+		 * @throws NotFoundException
+		 * @throws InternalErrorException
 		 */
 		public function delete( $modelName, $id ) {
 			if( !in_array( $modelName, $this->Catalogueromev3->modelesParametrages ) ) {
-				throw new Error404Exception();
+				throw new NotFoundException();
 			}
 
 			$Model = ClassRegistry::init( $modelName );
@@ -373,7 +376,7 @@
 			$Model->Behaviors->attach( 'Occurences' );
 			$occurences = $Model->occurencesExists();
 			if( Hash::get( $occurences, $id ) ) {
-				throw new Error500Exception( null );
+				throw new InternalErrorException( null );
 			}
 
 			$Model->begin();
@@ -386,7 +389,7 @@
 				$this->Session->setFlash( 'Erreur lors de la suppression', 'flash/error' );
 			}
 
-			$this->redirect( $this->referer() );
+			return $this->redirect( $this->referer() );
 		}
 	}
 ?>
