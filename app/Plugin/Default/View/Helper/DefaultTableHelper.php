@@ -168,12 +168,19 @@
 		 * @return array
 		 */
 		public function tableParams( array $params = array() ) {
-			return array(
+			$result = array(
 				'id' => ( isset( $params['id'] ) ? $params['id'] : $this->domId( "Table.{$this->request->params['controller']}.{$this->request->params['action']}" ) ),
 				'class' => "{$this->request->params['controller']} {$this->request->params['action']}",
 				'domain' => ( isset( $params['domain'] ) ? $params['domain'] : Inflector::underscore( $this->request->params['controller'] ) ),
 				'sort' => ( isset( $params['sort'] ) ? $params['sort'] : true )
 			);
+
+			$class = Hash::get( $params, 'class' );
+			if( !empty( $class ) ) {
+				$result = $this->addClass( $result, $class );
+			}
+
+			return $result;
 		}
 
 		/**
@@ -225,13 +232,25 @@
 					$attributes['options'] = $params['options'][$modelName][$fieldName];
 				}
 
+				if( isset( $attributes['domain'] ) && !empty( $attributes['domain'] ) ) {
+					$specificDomain = $attributes['domain'];
+				}
+				else {
+					$specificDomain = $domain;
+				}
+
 				$trs[] = array(
-					__d( $domain, $path ), // INFO: pas possible me mettre un th de cette manière, avec tableCells
+					__d( $specificDomain, $path ), // INFO: pas possible me mettre un th de cette manière, avec tableCells
 					$this->DefaultTableCell->auto( $path, (array)$attributes ),
 				);
 			}
 
-			return $this->DefaultHtml->tag( 'tbody', $this->DefaultHtml->tableCells( $trs, array( 'class' => 'odd' ), array( 'class' => 'even' ), false, false ) );
+			// INFO: en fait, on peut remplacer par des th -> options
+			$tableCells = $this->DefaultHtml->tableCells( $trs, array( 'class' => 'odd' ), array( 'class' => 'even' ), false, false );
+			if( Hash::get( $params, 'th' ) ) {
+				$tableCells = preg_replace( '/<tr([^>]*)><td([^>]*)>([^><]*)<\/td([^>]*)>/', '<tr\1><th\2>\3</th\4>', $tableCells );
+			}
+			return $this->DefaultHtml->tag( 'tbody', $tableCells );
 		}
 
 		/**
