@@ -278,6 +278,37 @@
 		}
 
 		/**
+		 * Test de la méthode DefaultTable::tableParams()
+		 */
+		public function testTableParams() {
+			// 1. Valeurs par défaut
+			$result = $this->DefaultTable->tableParams();
+			$expected = array(
+				'id' => 'TableApplesIndex',
+				'class' => 'apples index',
+				'domain' => 'apples',
+				'sort' => true
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			// 2. Surcharge des valeurs
+			$params = array(
+				'id' => 'TableMyApplesIndex',
+				'class' => 'my_apples',
+				'domain' => 'my_apples',
+				'sort' => false
+			);
+			$result = $this->DefaultTable->tableParams( $params );
+			$expected = array(
+				'id' => 'TableMyApplesIndex',
+				'class' => 'apples index my_apples',
+				'domain' => 'my_apples',
+				'sort' => false
+			);
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la méthode DefaultTableHelper::index()
 		 *
 		 * @return void
@@ -400,6 +431,37 @@
 							</tr>
 							<tr class="even">
 								<td>Apple.color</td>
+								<td class="data string ">Foo</td>
+							</tr>
+						</tbody>';
+			$this->assertEqualsXhtml( $result, $expected );
+		}
+
+		/**
+		 * Test de la méthode DefaultTableHelper::detailsTbody() avec des th
+		 *
+		 * @return void
+		 */
+		public function testDetailsTbodyTh() {
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+			);
+			$params = array( 'th' => true );
+
+			$result = $this->DefaultTable->detailsTbody( array(), $this->fields, $params );
+			$expected = null;
+			$this->assertEquals( $result, $expected, var_export( $result, true ) );
+
+			$params['options'] = array( 'Apple' => array( 'color' => array( 'red' => 'Foo' ) ) );
+			$result = $this->DefaultTable->detailsTbody( $this->data[0], $fields, $params );
+			$expected = '<tbody>
+							<tr class="odd">
+								<th>Apple.id</th>
+								<td class="data integer positive">6</td>
+							</tr>
+							<tr class="even">
+								<th>Apple.color</th>
 								<td class="data string ">Foo</td>
 							</tr>
 						</tbody>';
