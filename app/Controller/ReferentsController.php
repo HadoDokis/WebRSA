@@ -62,6 +62,10 @@
 
 			}
 			$this->_setOptions();
+
+			App::import( 'Behaviors', 'Occurences' );
+			$this->Referent->Behaviors->attach( 'Occurences' );
+			$this->set( 'occurences', $this->Referent->occurencesExists() );
 		}
 
 		/**

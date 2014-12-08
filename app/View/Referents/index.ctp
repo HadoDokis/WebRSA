@@ -87,6 +87,7 @@
 			<?php foreach( $referents as $referent ):?>
 				<?php
 					$cloturable = ( empty( $referent['Referent']['datecloture'] ) || ( $referent['PersonneReferent']['nb_referents_lies'] > 0 ) );
+					$occurenceExists = Set::enum( $referent['Referent']['id'], $occurences );
 
 					echo $this->Xhtml->tableCells(
 						array(
@@ -104,17 +105,15 @@
 								$referent['Referent']['id'] ),
 								array( 'enabled' => ( $cloturable && $this->Permissions->check( 'referents', 'cloturer' ) ) )
 							),
-							$this->Default2->button(
-								'edit',
-								array( 'controller' => 'referents', 'action' => 'edit',
-								$referent['Referent']['id'] ),
-								array( 'enabled' => ( $this->Permissions->check( 'referents', 'edit' ) ) )
+							$this->Xhtml->editLink(
+								'Modifier le référent',
+								array( 'controller' => 'referents', 'action' => 'edit', $referent['Referent']['id'] ),
+								$this->Permissions->check( 'referents', 'edit' )
 							),
-							$this->Default2->button(
-								'delete',
-								array( 'controller' => 'referents', 'action' => 'delete',
-								$referent['Referent']['id'] ),
-								array( 'enabled' => ( $this->Permissions->check( 'referents', 'delete' ) ) )
+							$this->Xhtml->deleteLink(
+								'Supprimer le référent',
+								array( 'controller' => 'referents', 'action' => 'delete', $referent['Referent']['id'] ),
+								( $this->Permissions->check( 'referents', 'delete' ) && !$occurenceExists )
 							)
 						),
 						array( 'class' => 'odd' ),
