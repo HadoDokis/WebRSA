@@ -413,7 +413,7 @@
 		 */
 		public function testDetailsTbody() {
 			$fields = array(
-				'Apple.id',
+				'Apple.id' => array( 'label' => 'Id' ),
 				'Apple.color',
 			);
 			$params = array();
@@ -426,7 +426,7 @@
 			$result = $this->DefaultTable->detailsTbody( $this->data[0], $fields, $params );
 			$expected = '<tbody>
 							<tr class="odd">
-								<td>Apple.id</td>
+								<td>Id</td>
 								<td class="data integer positive">6</td>
 							</tr>
 							<tr class="even">
