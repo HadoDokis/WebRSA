@@ -1577,4 +1577,93 @@
 	 *		* menu du dossier RSA: DEM ou CJT > Droit > MAJ DSP
 	 */
 	Configure::write( 'Romev3.enabled', true );
+
+	/**
+	 * Liste des champs devant apparaître dans les résultats de la recherche par DSP:
+	 *	- Dsps.index.fields contient les champs de chaque ligne du tableau de résultats
+	 *	- Dsps.index.innerTable contient les champs de l'infobulle de chaque ligne du tableau de résultats
+	 *	- Dsps.exportcsv contient les champs de chaque ligne du tableau à télécharger au format CSV
+	 *
+	 * Voir l'onglet "Environnement logiciel" > "WebRSA" > "Champs spécifiés dans
+	 * le webrsa.inc" de la vérification de l'application.
+	 */
+	Configure::write( 'Dsps', array(
+		'index' => array(
+			'fields' => array(
+				'Personne.nom_complet_court',
+				'Adresse.nomcom',
+				'Dossier.matricule',
+				'Donnees.libsecactdomi',
+				'Donnees.libactdomi',
+				'Donnees.libsecactrech',
+				'Donnees.libemploirech',
+				'Donnees.difsoc',
+				'Donnees.nataccosocindi',
+				'Donnees.difdisp',
+				'Deractdomiromev3.domaineromev3',
+				'Deractdomiromev3.metierromev3',
+				'Actrechromev3.domaineromev3',
+				'Actrechromev3.metierromev3'
+			),
+			'innerTable' => array(
+				'Personne.dtnai',
+				'Adresse.numcom',
+				'Personne.nir',
+				'Situationdossierrsa.etatdosrsa',
+				'Donnees.nivetu',
+				'Donnees.hispro',
+				'Structurereferenteparcours.lib_struc',
+				'Referentparcours.nom_complet',
+				'Deractromev3.familleromev3',
+				'Deractromev3.domaineromev3',
+				'Deractromev3.metierromev3',
+				'Deractromev3.appellationromev3',
+				'Deractdomiromev3.familleromev3',
+				'Deractdomiromev3.domaineromev3',
+				'Deractdomiromev3.metierromev3',
+				'Deractdomiromev3.appellationromev3',
+				'Actrechromev3.familleromev3',
+				'Actrechromev3.domaineromev3',
+				'Actrechromev3.metierromev3',
+				'Actrechromev3.appellationromev3'
+			)
+		),
+		'exportcsv' => array(
+			'Dossier.numdemrsa',
+			'Dossier.matricule',
+			'Situationdossierrsa.etatdosrsa',
+			'Personne.qual',
+			'Personne.nom',
+			'Personne.prenom',
+			'Dossier.matricule' ,
+			'Adresse.numvoie',
+			'Adresse.libtypevoie',
+			'Adresse.nomvoie',
+			'Adresse.complideadr',
+			'Adresse.compladr',
+			'Adresse.codepos',
+			'Adresse.nomcom',
+			'Donnees.libsecactdomi',
+			'Donnees.libactdomi',
+			'Donnees.libsecactrech',
+			'Donnees.libemploirech',
+			'Structurereferenteparcours.lib_struc',
+			'Referentparcours.nom_complet',
+			'Donnees.difsoc',
+			'Donnees.nataccosocindi',
+			'Donnees.difdisp',
+			'Deractromev3.familleromev3',
+			'Deractromev3.domaineromev3',
+			'Deractromev3.metierromev3',
+			'Deractromev3.appellationromev3',
+			'Deractdomiromev3.familleromev3',
+			'Deractdomiromev3.domaineromev3',
+			'Deractdomiromev3.metierromev3',
+			'Deractdomiromev3.appellationromev3',
+			'Actrechromev3.familleromev3',
+			'Actrechromev3.domaineromev3',
+			'Actrechromev3.metierromev3',
+			'Actrechromev3.appellationromev3'
+		)
+	) );
 ?>

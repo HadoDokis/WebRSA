@@ -12,8 +12,78 @@
 
 <div class="tab_histo_dsp">
 	<?php
+		function affiche( $titre, $diff, $act, $old, $paths, $options ) {
+			$result = '';
 
-		function affiche( $titre, $diff, $act, $old, $values, $options ) {
+			foreach( $paths as $path ) {
+				list( $model, $field ) = model_field( $path );
+				if( isset( $diff[$model] ) ) {
+					$modelOptions = preg_replace( '/Rev$/', '', $model );
+
+					$actValues = Set::extract( "/{$model}/{$field}", $act );
+					$oldValues = Set::extract( "/{$model}/{$field}", $old );
+
+					$enPlus = Hash::filter( (array) array_diff( $actValues, $oldValues ) );
+					$enMoins = Hash::filter( (array) array_diff( $oldValues, $actValues ) );
+
+					if( !empty( $enPlus ) || !empty( $enMoins ) ) {
+						$result.="<tr><td style='text-align:center' colspan='2'>".__d( 'dsp', str_replace( 'Rev.', '.', $path ) )."</td></tr>";
+
+						$row = '';
+						// Première cellule, le passé
+						if( empty( $oldValues ) ) {
+							$row .= '<td><i>champ non renseigné</i></td>';
+						}
+						else {
+							$row .= '<td><ul>';
+							foreach( $oldValues as $oldValue ) {
+								$class = '';
+								if( !empty( $enMoins ) ) {
+									if( in_array( $oldValue, $enMoins ) ) {
+										$class = 'class="enmoins"';
+									}
+								}
+								if( isset( $options[$modelOptions][$field][$oldValue] ) ) {
+									$oldValue = $options[$modelOptions][$field][$oldValue];
+								}
+								$row .= '<li '.$class.'>'.$oldValue.'</li>';
+							}
+							$row .= '</ul></td>';
+						}
+
+						// Première cellule, le présent
+						if( empty( $actValues ) ) {
+							$row .= '<td><i>champ non renseigné</i></td>';
+						}
+						else {
+							$row .= '<td><ul>';
+							foreach( $actValues as $actValue ) {
+								$class = '';
+								if( !empty( $enPlus ) ) {
+									if( in_array( $actValue, $enPlus ) ) {
+										$class = 'class="enplus"';
+									}
+								}
+								if( isset( $options[$modelOptions][$field][$actValue] ) ) {
+									$actValue = $options[$modelOptions][$field][$actValue];
+								}
+								$row .= '<li '.$class.'>'.$actValue.'</li>';
+							}
+							$row .= '</ul></td>';
+						}
+						$result .= "<tr>{$row}</tr>";
+					}
+				}
+			}
+
+			if( !empty( $result ) ) {
+				$result = "<tr><th colspan='2'>{$titre}</th></tr>{$result}";
+			}
+
+			return $result;
+		}
+
+		/*function affiche2( $titre, $diff, $act, $old, $values, $options ) {
 // if( $values == array( 'DetaildifsocRev.difsoc' ) ) {
 // }
 			$lignes="";
@@ -111,7 +181,7 @@
 				return "<tr><th colspan='2'>".$titre."</th></tr>".$lignes;
 			}
 			else return "";
-		}
+		}*/
 
 		echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 
@@ -178,5 +248,9 @@
 		echo affiche('<h3>Détails difficultés logement</h3>', $diff, $dsprevact, $dsprevold, array( 'DetaildiflogRev.diflog'), $options);
 
 		echo "</table>";
+
+		echo $this->DefaultDefault->actions(
+			$this->Default3->DefaultAction->back()
+		);
 	?>
 </div>

@@ -203,6 +203,10 @@
 			)
 		);
 
+		/**
+		 *
+		 * @return array
+		 */
 		public function options() {
 			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 			$options = $Catalogueromev3->dependantSelects();

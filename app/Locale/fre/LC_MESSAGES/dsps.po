@@ -176,3 +176,124 @@ msgstr "Secteur emploi recherché ROME V2"
 
 msgid "Libemploirech66Metier.name"
 msgstr "Métier emploi recherché ROME V2"
+
+# ==============================================================================
+# Moteur de recherche par DSPs
+# ==============================================================================
+
+msgid "Personne.nom_complet_court"
+msgstr "Nom de l'allocataire"
+
+msgid "Adresse.nomcom"
+msgstr "Commune de l'allocataire"
+
+msgid "Dossier.matricule"
+msgstr "N° CAF"
+
+msgid "Donnees.libsecactdomi"
+msgstr "Secteur dernière activité dominante"
+
+msgid "Donnees.libactdomi"
+msgstr "Dernière activité dominante"
+
+msgid "Donnees.libsecactrech"
+msgstr "Secteur activité recherchée"
+
+msgid "Donnees.libemploirech"
+msgstr "Activité recherchée"
+
+msgid "Donnees.difsoc"
+msgstr "Difficultés sociales"
+
+msgid "Donnees.nataccosocindi"
+msgstr "Domaine d'accompagnement individuel"
+
+msgid "Donnees.difdisp"
+msgstr "Obstacles à la recherche d'emploi"
+
+msgid "Personne.dtnai"
+msgstr "Date de naissance"
+
+msgid "Adresse.numcom"
+msgstr "Code INSEE"
+
+msgid "Personne.nir"
+msgstr "NIR"
+
+msgid "Situationdossierrsa.etatdosrsa"
+msgstr "État du dossier"
+
+msgid "Donnees.nivetu"
+msgstr "Niveau d'études"
+
+msgid "Donnees.hispro"
+msgstr "Passé professionnel"
+
+msgid "Structurereferenteparcours.lib_struc"
+msgstr "Structure du parcours"
+
+msgid "Referentparcours.nom_complet"
+msgstr "Référent du parcours"
+
+msgid "Personne.qual"
+msgstr "Qualité"
+
+msgid "Personne.nom"
+msgstr "Nom"
+
+msgid "Personne.prenom"
+msgstr "Prénom"
+
+msgid "Adresse.numvoie"
+msgstr "Numéro de voie"
+
+msgid "Adresse.libtypevoie"
+msgstr "Type de voie"
+
+msgid "Adresse.nomvoie"
+msgstr "Nom de voie"
+
+msgid "Adresse.complideadr"
+msgstr "Complément adresse 1"
+
+msgid "Adresse.compladr"
+msgstr "Complément adresse 2"
+
+msgid "Adresse.codepos"
+msgstr "Code postal"
+
+msgid "Canton.canton"
+msgstr "Canton"
+
+msgid "Calculdroitrsa.toppersdrodevorsa"
+msgstr "Personne soumise à droits et devoirs ?"
+
+msgid "Foyer.sitfam"
+msgstr "Situation familiale"
+
+msgid "Foyer.nbenfants"
+msgstr "Nombre d'enfants"
+
+msgid "Personne.numfixe"
+msgstr "N° de téléphone fixe"
+
+msgid "Personne.numport"
+msgstr "N° de téléphone portable"
+
+msgid "Donnees.toppermicondub"
+msgstr "Permis de conduire cat. B ?"
+
+msgid "Donnees.topmoyloco"
+msgstr "Disposez-vous d'un moyen de transport collectif ou individuel ?"
+
+msgid "Donnees.nivdipmaxobt"
+msgstr "Diplôme le plus élévé ?"
+
+msgid "Donnees.topengdemarechemploi"
+msgstr "Etes vous en mesure d'engager rapidement une démarche recherche emploi ?"
+
+msgid "Donnees.libautrqualipro"
+msgstr "Précisez qualifications ou certificats  professionnels"
+
+msgid "Donnees.nb_fichiers_lies"
+msgstr "Nbre. de fichiers liés"

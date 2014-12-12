@@ -115,7 +115,14 @@
 		 * Test de la méthode Cataloguesromesv3Controller::metiersromesv3()
 		 */
 		public function testMetiersromesv3() {
-			$this->testAction( '/cataloguesromesv3/metiersromesv3' );
+			$data = array(
+				'Search' => array(
+					'Familleromev3' => array(
+						'code' => null
+					)
+				)
+			);
+			$this->testAction( '/cataloguesromesv3/metiersromesv3', array( 'data' => $data, 'method' => 'post') );
 
 			// 1. Vérification de la variable $results
 			$result = Hash::get( $this->controller->viewVars, 'results' );

@@ -236,37 +236,38 @@
 			}
 
 			$tableName = Inflector::tableize( $modelName );
-
 			$search = (array)Hash::get( $this->request->data, 'Search' );
-
-			$query = $this->{$modelName}->search( $search );
-			$this->paginate = array(
-				$modelName => $query + array(
-					'limit' => 10
-				)
-			);
-
 			$fields = $this->{$modelName}->searchResultFields;
-
-			$results = $this->paginate(
-				$modelName,
-				array(),
-				$fields,
-				false // FIXME
-				//!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
-			);
-
-			// A-t'on des enregistrements liés ?
-			$this->{$modelName}->Behaviors->attach( 'Occurences' );
-			$occurences = $this->{$modelName}->occurencesExists();
-			foreach( $results as $i => $result ) {
-				$primaryKey = Hash::get( $result, "{$modelName}.{$this->{$modelName}->primaryKey}" );
-				$results[$i][$modelName]['occurences'] = ( Hash::get( $occurences, $primaryKey ) ? '1' : '0' );
-			}
-
 			$options = $this->{$modelName}->options();
 
-			$this->set( compact( 'results', 'options', 'fields', 'modelName', 'tableName' ) );
+			if( !empty( $search ) ) {
+				$query = $this->{$modelName}->search( $search );
+				$this->paginate = array(
+					$modelName => $query + array(
+						'limit' => 10
+					)
+				);
+
+				$results = $this->paginate(
+					$modelName,
+					array(),
+					$fields,
+					false // FIXME
+					//!Hash::get( $this->request->data, 'Search.Pagination.nombre_total' )
+				);
+
+				// A-t'on des enregistrements liés ?
+				$this->{$modelName}->Behaviors->attach( 'Occurences' );
+				$occurences = $this->{$modelName}->occurencesExists();
+				foreach( $results as $i => $result ) {
+					$primaryKey = Hash::get( $result, "{$modelName}.{$this->{$modelName}->primaryKey}" );
+					$results[$i][$modelName]['occurences'] = ( Hash::get( $occurences, $primaryKey ) ? '1' : '0' );
+				}
+
+				$this->set( compact( 'results' ) );
+			}
+
+			$this->set( compact( 'options', 'fields', 'modelName', 'tableName' ) );
 			$this->render( 'index' );
 		}
 
