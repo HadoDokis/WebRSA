@@ -225,6 +225,8 @@
 			$domain = Hash::get( $params, 'domain' );
 
 			foreach( $fields as $path => $attributes ) {
+				$attributes = (array)$attributes;
+
 				// INFO: la mise en cache n'a pas de sens ici
 				list( $modelName, $fieldName ) = model_field( $path );
 
@@ -239,9 +241,15 @@
 					$specificDomain = $domain;
 				}
 
+				$label = Hash::get( $attributes, 'label' );
+				unset( $attributes['label'] );
+				if( empty( $label ) ) {
+					$label = __d( $specificDomain, $path );
+				}
+
 				$trs[] = array(
-					__d( $specificDomain, $path ), // INFO: pas possible me mettre un th de cette manière, avec tableCells
-					$this->DefaultTableCell->auto( $path, (array)$attributes ),
+					$label, // INFO: pas possible me mettre un th de cette manière, avec tableCells
+					$this->DefaultTableCell->auto( $path, $attributes ),
 				);
 			}
 
