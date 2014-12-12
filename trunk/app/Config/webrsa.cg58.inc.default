@@ -42,9 +42,9 @@
 		'Gedooo',
 		array(
 			'method' => 'cloudooo',
-			'wsdl' => 'http://192.168.2.35:8980/ODFgedooo/OfficeService?wsdl',
-			'cloudooo_host' => 'cloudooo.test.adullact.org',
-			'cloudooo_port' => '8012'
+			'wsdl' => 'http://127.0.0.1:8080/ODFgedooo/OfficeService?wsdl',
+			'cloudooo_host' => '172.31.76.12',
+			'cloudooo_port' => '8011'
 		)
 	);
 
@@ -59,7 +59,7 @@
 	Configure::write( 'Utilisateurs.multilogin', true );
 	Configure::write( 'with_parentid', false ); // true = cg66
 	Configure::write( 'nom_form_ci_cg', 'cg58' );
-	Configure::write( 'CG.cantons', true ); // false = cg93, true = cg66
+	Configure::write( 'CG.cantons', false ); // false = cg93, true = cg66
 	Configure::write( 'Zonesegeographiques.CodesInsee', true );
 	//Configure::write( 'Etatliquidatif.limit', 1000 ); // INFO: commenter pour ne pas avoir de limite
 
@@ -627,7 +627,7 @@
 	 * @var boolean
 	 * @default null
 	 */
-	Configure::write( 'AncienAllocataire.enabled', false );
+	Configure::write( 'AncienAllocataire.enabled', true );
 
 	/**
 	 * Intervalle entre la date de la commission pour une des thématiques de
