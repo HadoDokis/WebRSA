@@ -831,7 +831,7 @@
 				// 8. Si on utilise les cantons, on ajoute une jointure
 				if( Configure::read( 'CG.cantons' ) ) {
 					$Canton = ClassRegistry::init( 'Canton' );
-					$query['fields'][] = 'Canton.canton';
+					$query['fields']['Canton.canton'] = 'Canton.canton';
 					$query['joins'][] = $Canton->joinAdresse();
 				}
 
