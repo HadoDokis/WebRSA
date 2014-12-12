@@ -364,16 +364,8 @@ Plan:
 				'options' => $options
 			)
 		);
-	?>
 
-	<?php
-		// DifficulteLogement - DetailDifficulteLogement
-// 			if ( $cg == 'cg58' ) {
-// 				echo $this->Dsphm->fieldset( 'Detaildiflog', 'diflog', null, $dsp_id, null, $options['Detaildiflog']['diflog'] );
-// 			}
-// 			else {
 		echo $this->Dsphm->fieldset( 'Detaildiflog', 'diflog', 'libautrdiflog', $dsp_id, '1009', $options['Detaildiflog']['diflog'] );
-// 			}
 	?>
 </fieldset>
 
@@ -386,11 +378,14 @@ Plan:
 <script type="text/javascript">
 	observeDisableFieldsOnValue( 'DspTopdrorsarmiant', [ 'DspDrorsarmianta2' ], '1', false );
 	observeDisableFieldsOnValue( 'DspAccosocfam', [ 'DspLibcooraccosocfam' ], 'O', false );
+	Event.observe( $( 'DspLibcooraccosocfam' ), 'keypress', function(event) { textareaMakeItCount('DspLibcooraccosocfam', 250, true ); } );
 	observeDisableFieldsOnValue( 'DspAccosocindi', [ 'DspLibcooraccosocindi' ], 'O', false );
+	Event.observe( $( 'DspLibcooraccosocindi' ), 'keypress', function(event) { textareaMakeItCount('DspLibcooraccosocindi', 250, true ); } );
 	observeDisableFieldsOnValue( 'DspTopqualipro', [ 'DspLibautrqualipro' ], '1', false );
 	observeDisableFieldsOnValue( 'DspTopcompeextrapro', [ 'DspLibcompeextrapro' ], '1', false );
 	observeDisableFieldsOnValue( 'DspHispro', [ 'DspLibderact', 'DspLibsecactderact', 'DspCessderact', 'DspTopdomideract', 'DspLibactdomi', 'DspLibsecactdomi', 'DspDuractdomi' ], '1904', true );
 	observeDisableFieldsOnValue( 'DspAccoemploi', [ 'DspLibcooraccoemploi' ], [ '1802', '1803' ], false );
+	Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) { textareaMakeItCount('DspLibcooraccoemploi', 100, true ); } );
 	observeDisableFieldsOnValue( 'DspTopautrpermicondu', [ 'DspLibautrpermicondu' ], '1', false );
 	// FIXME: pas de niveau = pas de diplôme ?
 	observeDisableFieldsOnValue( 'DspNivetu', [ 'DspNivdipmaxobt', 'DspAnnobtnivdipmax' ], [ '', '1207' ], true );
@@ -399,19 +394,51 @@ Plan:
 
 	observeDisableFieldsOnValue( 'DspTopprojpro', [ 'Detailprojpro0Projpro', 'Detailprojpro1Projpro', 'Detailprojpro2Projpro', 'Detailprojpro3Projpro', 'Detailprojpro4Projpro', 'Detailprojpro5Projpro', 'Detailprojpro6Projpro', 'Detailprojpro7Projpro', 'Detailprojpro8Projpro', 'Detailprojpro9Projpro', 'Detailprojpro10Projpro', 'Detailprojpro11Projpro', 'Detailprojpro12Projpro' ], '1', false );
 
-	observeDisableFieldsOnCheckbox( 'Detailnatmob0Natmob', [ 'Detailnatmob1Natmob', 'Detailnatmob2Natmob', 'Detailnatmob3Natmob' ], true );
-	observeDisableFieldsOnCheckbox( 'Detaildifsoc0Difsoc', [ 'Detaildifsoc1Difsoc', 'Detaildifsoc2Difsoc', 'Detaildifsoc3Difsoc', 'Detaildifsoc4Difsoc', 'Detaildifsoc5Difsoc', 'Detaildifsoc6Difsoc', 'Detaildifsoc6Libautrdifsoc' ], true );
-	observeDisableFieldsOnCheckbox( 'Detaildiflog0Diflog', [ 'Detaildiflog1Diflog', 'Detaildiflog2Diflog', 'Detaildiflog3Diflog', 'Detaildiflog4Diflog', 'Detaildiflog5Diflog', 'Detaildiflog6Diflog', 'Detaildiflog7Diflog', 'Detaildiflog8Diflog', 'Detaildiflog8Libautrdiflog' ], true );
-	observeDisableFieldsOnCheckbox( 'Detaildiflog0Diflog', [ 'Detaildiflog8Libautrdiflog' ], true );
+	//**************************************************************************
+	<?php
+		$cacheKey = implode( '__', array( Inflector::classify( $this->request->params['controller'] ), str_replace( '.ctp', '', basename( __FILE__ ) ) ) );
+		$js = Cache::read( $cacheKey );
 
-	// Champs textarea ayant une longueur maximale de 250 caractères.
-	Event.observe( $( 'DspLibcooraccosocfam' ), 'keypress', function(event) {
-		textareaMakeItCount('DspLibcooraccosocfam', 250, true );
-	} );
+		if( $js === false ) {
+			$js = '';
 
-	Event.observe( $( 'DspLibcooraccosocindi' ), 'keypress', function(event) {
-		textareaMakeItCount('DspLibcooraccosocindi', 250, true );
-	} );
+			foreach( $checkboxes as $modelName => $params ) {
+				if( $valuesNone[$modelName] !== null ) {
+					$domIdText = null;
+					$checkboxNone = null;
+					$dependantIds = array();
+					$values = isset( $options[$modelName][$params['name']] ) ? array_keys( $options[$modelName][$params['name']] ) : array();
+
+					foreach( $values as $key => $value ) {
+						$domId = $this->Html->domId( "{$modelName}.{$key}.{$params['name']}" );
+						if( $value == $valuesNone[$modelName] ) {
+							$checkboxNone = $domId;
+						}
+						else {
+							$dependantIds[] = $domId;
+							// TODO: checkbox "Autre", voir Dsphm::fieldset() pour simplifier
+							$domIdText = $this->Html->domId( "{$modelName}.{$key}.{$params['text']}" );
+						}
+					}
+
+					if( $params['text'] ) {
+						$dependantIds[] = $domIdText;
+					}
+
+					// TODO: pour chacun des champs "Autre", ajouter le comptage
+					$js .= 'observeDisableFieldsOnCheckbox( "'.$checkboxNone.'", '.json_encode( $dependantIds ).', true );'."\n";
+					if( $params['text'] ) {
+						$js .= 'Event.observe( $( "'.$domIdText.'" ), "keypress", function(event) { textareaMakeItCount( "'.$domIdText.'", 100, true ); } );'."\n";
+					}
+				}
+			}
+
+			Cache::write( $cacheKey, $js );
+		}
+
+		echo $js;
+	?>
+	//**************************************************************************
 
 	// Champs textarea ayant une longueur maximale de 100 caractères.
 	Event.observe( $( 'Detailaccosocfam3Libautraccosocfam' ), 'keypress', function(event) {
@@ -422,17 +449,6 @@ Plan:
 		textareaMakeItCount('Detailaccosocindi4Libautraccosocindi', 100, true );
 	} );
 
-	Event.observe( $( 'Detaildifsoc6Libautrdifsoc' ), 'keypress', function(event) {
-		textareaMakeItCount('Detaildifsoc6Libautrdifsoc', 100, true );
-	} );
-
-	Event.observe( $( 'DspLibcooraccoemploi' ), 'keypress', function(event) {
-		textareaMakeItCount('DspLibcooraccoemploi', 100, true );
-	} );
-
-	Event.observe( $( 'Detaildiflog8Libautrdiflog' ), 'keypress', function(event) {
-		textareaMakeItCount('Detaildiflog8Libautrdiflog', 100, true );
-	} );
 	<?php if( $cg == 'cg58' ):?>
 		// Champs textarea ayant une longueur maximale de 100 caractères.
 		Event.observe( $( 'Detailmoytrans7Libautrmoytrans' ), 'keypress', function(event) {
@@ -461,15 +477,10 @@ Plan:
 		else {
 			$( 'DspSuivimedicalN' ).up(1).hide();
 		}
-
-		observeDisableFieldsOnCheckbox( 'Detaildifdisp0Difdisp', [ 'Detaildifdisp1Difdisp', 'Detaildifdisp2Difdisp', 'Detaildifdisp3Difdisp', 'Detaildifdisp4Difdisp', 'Detaildifdisp5Difdisp', 'Detaildifdisp6Difdisp', 'Detaildifdisp7Difdisp', 'Detaildifdisp8Difdisp', 'Detaildifdisp9Difdisp', 'Detaildifdisp10Difdisp' ], true );
-	<?php else:?>
-
-
-		observeDisableFieldsOnCheckbox( 'Detaildifdisp0Difdisp', [ 'Detaildifdisp1Difdisp', 'Detaildifdisp2Difdisp', 'Detaildifdisp3Difdisp', 'Detaildifdisp4Difdisp', 'Detaildifdisp5Difdisp' ], true );
 	<?php endif;?>
 
 	<?php if ( Configure::read( 'Cg.departement' ) == 66 ):?>
+		// Codes ROME V2
 		document.observe("dom:loaded", function() {
 			dependantSelect( 'DspLibderact66MetierId', 'DspLibsecactderact66SecteurId' );
 			try { $( 'DspLibderact66MetierId' ).onchange(); } catch(id) { }

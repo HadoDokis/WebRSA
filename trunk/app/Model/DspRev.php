@@ -422,7 +422,7 @@
 			foreach( $old as $Model => $values ) {
 				if( $Model != 'DspRev' && preg_match( '/Rev$/', $Model ) ) {
 					foreach( $old[$Model] as $key2 => $value2 ) {
-						if( is_array( $new[$Model][$key2] ) ) {
+						if( is_array( $old[$Model][$key2] ) ) {
 							$old[$Model][$key2] = Hash::remove( $old[$Model][$key2], "id" );
 							$old[$Model][$key2] = Hash::remove( $old[$Model][$key2], "dsp_rev_id" );
 						}
@@ -448,11 +448,10 @@
 
 			foreach( $new as $Model => $values ) {
 				$return[$Model] = Set::diff( $new[$Model], $old[$Model] );
-				$return[$Model] = Hash::remove( $return[$Model], 'id' );
-				if( isset( $return[$Model]['created'] ) )
-					$return[$Model] = Hash::remove( $return[$Model], 'created' );
-				if( isset( $return[$Model]['modified'] ) )
-					$return[$Model] = Hash::remove( $return[$Model], 'modified' );
+				unset( $return[$Model]['id'] );
+				unset( $return[$Model]['created'] );
+				unset( $return[$Model]['modified'] );
+
 				if( $Model != 'DspRev' && !empty( $new[$Model] ) && !empty( $return[$Model] ) && preg_match( '/Rev$/', $Model ) ) {
 					foreach( $new[$Model] as $key1 => $value1 ) {
 						foreach( $old[$Model] as $key2 => $value2 ) {
@@ -463,14 +462,25 @@
 						}
 					}
 				}
-				if( isset( $return[$Model]['id'] ) )
-					$return[$Model] = Hash::remove( $return[$Model], 'id' );
-				if( isset( $return[$Model]['created'] ) )
-					$return[$Model] = Hash::remove( $return[$Model], 'created' );
-				if( isset( $return[$Model]['modified'] ) )
-					$return[$Model] = Hash::remove( $return[$Model], 'modified' );
-				if( empty( $return[$Model] ) )
+
+				if( empty( $return[$Model] ) ) {
 					$return = Hash::remove( $return, $Model );
+				}
+			}
+
+			// Suppression des fausses différences trouvées au niveau des libellés vides
+			foreach( $this->Dsp->getCheckboxes() as $alias => $params ) {
+				if( $params['text'] !== false ) {
+					$alias = "{$alias}Rev";
+					$path = "{$alias}.{n}.{$params['text']}";
+
+					if( Hash::extract( $return, $path ) === array( null ) ) {
+						$return = Hash::remove( $return, $path );
+					}
+				}
+				if( empty( $return[$Model] ) ) {
+					$return = Hash::remove( $return, $Model );
+				}
 			}
 
 			return $return;

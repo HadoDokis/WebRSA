@@ -895,5 +895,21 @@
 
 			return $return;
 		}
+
+		/**
+		 * ...
+		 */
+		public function allCheckParametrage() {
+			$errors = array( );
+			$modelNames = array( 'Dsp' );
+
+			foreach( $modelNames as $modelName ) {
+				$Model = ClassRegistry::init( $modelName );
+
+				$errors = Hash::merge( $errors, $Model->checkParametrage() );
+			}
+
+			return $errors;
+		}
 	}
 ?>

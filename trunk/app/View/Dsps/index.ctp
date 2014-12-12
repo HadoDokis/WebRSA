@@ -50,8 +50,8 @@
 		<fieldset>
 			<legend>Situation professionnelle</legend>
 			<?php
-				echo $this->Form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Dsp']['nivetu'], 'empty' => true ) );
-				echo $this->Form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Dsp']['hispro'], 'empty' => true ) );
+				echo $this->Form->input( 'Dsp.nivetu', array( 'label' => "Quelle est votre niveau d'étude ? ", 'type' => 'select', 'options' => $options['Donnees']['nivetu'], 'empty' => true ) );
+				echo $this->Form->input( 'Dsp.hispro', array( 'label' => "Passé professionnel ", 'type' => 'select', 'options' => $options['Donnees']['hispro'], 'empty' => true ) );
 
 				echo $this->Romev3->fieldset( 'Deractromev3', array( 'options' => $options ) );
 				echo $this->Form->input( 'Dsp.libsecactderact', array( 'label' => __d( 'dsp', 'Dsp.libsecactderact' ) ) );
@@ -115,52 +115,43 @@
 <?php endif;?>
 </script>
 
-
-
 <!-- Résultats -->
 <?php if( isset( $dsps ) ):?>
 
 	<h2 class="noprint">Résultats de la recherche</h2>
 
 	<?php if( is_array( $dsps ) && count( $dsps ) > 0  ):?>
+		<?php
+			$fields = Hash::normalize( (array)Configure::read( 'Dsps.index.fields' ) );
+
+			$virtualFields = array();
+			foreach( $checkboxesVirtualFields as $checkboxVirtualField ) {
+				list( $model, $field ) = model_field( $checkboxVirtualField );
+				$virtualFields[] = "Donnees.{$field}";
+			}
+
+			// On recherche le type de chacun des champs
+			foreach( $fields as $fieldName => $params ) {
+				$params = (array)$params;
+				if( !isset( $params['type'] ) ) {
+					$fields[$fieldName]['type'] = $this->Default3->DefaultTable->DefaultTableCell->DefaultData->type( $fieldName );
+				}
+			}
+		?>
 
 		<?php echo $pagination;?>
 		<table id="searchResults" class="tooltips">
 			<thead>
 				<tr>
-					<th><?php echo $this->Xpaginator->sort( 'Nom de l\'allocataire', 'Personne.nom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'Commune de l\'allocataire', 'Adresse.nomcom' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
-					<!-- TODO: ROME v3 -->
-					<?php if( Configure::read( 'Cg.departement' ) == 66 ): ?>
-						<th>Code secteur activité dominante</th>
-						<th>Code métier activité dominante</th>
-						<th>Secteur dernière activité dominante</th>
-						<th>Dernière activité dominante</th>
-
-						<th>Code secteur recherché</th>
-						<th>Code métier recherché</th>
-						<th>Secteur activité recherché</th>
-						<th>Activité recherchée</th>
-					<?php else: ?>
-						<th>Secteur dernière activité dominante</th>
-						<th>Dernière activité dominante</th>
-						<th>Secteur activité recherché</th>
-						<th>Activité recherchée</th>
-					<?php endif; ?>
-
-					<?php if( Configure::read( 'Cg.departement' ) == 93 ): ?>
-						<th>Difficultés sociales</th>
-						<th>Domaine d'accompagnement individuel</th>
-						<th>Obstacles à la recherche d'emploi</th>
-					<?php endif; ?>
-
-					<?php if( Configure::read( 'Romev3.enabled' ) ):?>
-						<th>Domaine dernière activité dominante</th>
-						<th>Métier activité dominante</th>
-						<th>Domaine activité recherchée</th>
-						<th>Métier activité recherchée</th>
-					<?php endif; ?>
+					<?php foreach( $fields as $fieldName => $params ):?>
+						<?php list( $model, $field ) = model_field( $fieldName );?>
+						<?php if( in_array( $model, $sortableModels ) ): ?>
+							<?php $label = isset( $params['label'] ) ? $params['label'] : __d( 'dsps', $fieldName ); ?>
+							<th><?php echo $this->Xpaginator->sort( $label, $fieldName );?></th>
+						<?php else: ?>
+							<th><?php echo h( __d( 'dsps', $fieldName ) );?></th>
+						<?php endif; ?>
+					<?php endforeach;?>
 
 					<th class="action noprint">Actions</th>
 					<th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -171,61 +162,37 @@
 					<?php
 						$title = $dsp['Dossier']['numdemrsa'];
 
-						$innerRows = '<tr>
-							<th>Date de naissance</th>
-							<td>'.date_short( $dsp['Personne']['dtnai'] ).'</td>
-						</tr>
-						<tr>
-							<th>Code INSEE</th>
-							<td>'.$dsp['Adresse']['numcom'].'</td>
-						</tr>
-						<tr>
-							<th>NIR</th>
-							<td>'.$dsp['Personne']['nir'].'</td>
-						</tr>
-						<tr>
-							<th>État du dossier</th>
-							<td>'.$etatdosrsa[$dsp['Situationdossierrsa']['etatdosrsa']].'</td>
-						</tr>
-						<tr>
-							<th>Niveau étude</th>
-							<td>'.Set::enum( $dsp['Donnees']['nivetu'], $options['Dsp']['nivetu'] ).'</td>
-						</tr>
-						<tr>
-							<th>Passé pofessionnel</th>
-							<td>'.Set::enum( $dsp['Donnees']['hispro'], $options['Dsp']['hispro'] ).'</td>
-						</tr>
-						<tr>
-							<th>'.__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ).'</th>
-							<td>'.Hash::get( $dsp, 'Structurereferenteparcours.lib_struc' ).'</td>
-						</tr>
-						<tr>
-							<th>'.__d( 'search_plugin', 'Referentparcours.nom_complet' ).'</th>
-							<td>'.Hash::get( $dsp, 'Referentparcours.nom_complet' ).'</td>
-						</tr>';
+						// "Traduction" des champs virtuels des cases à cocher pour obtenir des listes
+						// TODO: à faire pour l'infobulle
+						foreach( $checkboxesVirtualFields as $path ) {
+							list( $modelName, $fieldName ) = model_field( $path );
 
-						// Codes ROME V3
-						if( Configure::read( 'Romev3.enabled' ) ) {
-							foreach( array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
-								foreach( array( 'familleromev3', 'domaineromev3', 'metierromev3', 'appellationromev3' ) as $fieldName ) {
-									$path = "{$alias}.{$fieldName}";
-									$innerRows .= '<tr>
-										<th>'.__d( 'dsps', $path ).'</th>
-										<td>'.h( Hash::get( $dsp, $path ) ).'</td>
-									</tr>';
+							if( Hash::check( $dsp, "Donnees.{$fieldName}" ) ) {
+								$values = vfListeToArray( Hash::get( $dsp, "Donnees.{$fieldName}" ) );
+
+								$cell = '';
+								if( !empty( $values ) ) {
+									$cell .= '<ul>';
+									foreach( $values as $value ) {
+										$cell .= '<li>- '.h( value( $options[$modelName][$fieldName], $value ) ).'</li>';
+									}
+									$cell .= '</ul>';
 								}
+								$dsp = Hash::insert( $dsp, "Donnees.{$fieldName}", $cell );
 							}
 						}
 
-						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
-							<tbody>
-								'.$innerRows.'
-							</tbody>
-						</table>';
-
-						$libderact = '';
-						$libsecactderact = '';
-
+						// Infobulle
+						$innerTable = $this->Default3->view(
+							$dsp,
+							(array)Configure::read( 'Dsps.index.innerTable' ),
+							array(
+								'class' => 'innerTable',
+								'id' => "innerTablesearchResults{$index}",
+								'options' => $options,
+								'th' => true
+							)
+						);
 
 						if( !empty( $dsp['DspRev']['id'] ) ) {
 							$viewLink = $this->Xhtml->viewLink(
@@ -242,103 +209,36 @@
 							);
 						}
 
+						$row = array();
 
+						// Choix de la valeur suivant le type du champ
+						foreach( $fields as $fieldName => $params ) {
+							$value = Hash::get( $dsp, $fieldName );
 
-						$arrayData = array(
-							h( $dsp['Personne']['nom'].' '.$dsp['Personne']['prenom'] ),
-							h( $dsp['Adresse']['nomcom'] ),
-							h( $dsp['Dossier']['matricule'] )
-						);
-
-						if( Configure::read( 'Cg.departement' ) == 66 ) {
-							$key = $dsp['Donnees']['libsecactdomi66_secteur_id'] . '_' . $dsp['Donnees']['libactdomi66_metier_id'];
-							$key2 = $dsp['Donnees']['libsecactrech66_secteur_id'] . '_' . $dsp['Donnees']['libemploirech66_metier_id'];
-							$arrayData = array_merge(
-								$arrayData,
-								array(
-									h( Set::enum( $dsp['Donnees']['libsecactdomi66_secteur_id'], $options['Coderomesecteurdsp66'] ) ),
-									h( @$options['Coderomemetierdsp66'][$key] ),
-									h( $dsp['Donnees']['libsecactdomi'] ),
-									h( $dsp['Donnees']['libactdomi'] ),
-									h( Set::enum( $dsp['Donnees']['libsecactrech66_secteur_id'], $options['Coderomesecteurdsp66'] ) ),
-									h( @$options['Coderomemetierdsp66'][$key2] ),
-									h( $dsp['Donnees']['libsecactrech'] ),
-									h( $dsp['Donnees']['libemploirech'] ),
-//									array(
-//										$viewLink,
-//										array( 'class' => 'noprint' )
-//									),
-//									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
-								)
-							);
-						}
-
-						if( Configure::read( 'Cg.departement' ) != 66 ) {
-							$arrayData = array_merge(
-								$arrayData,
-								array(
-									h( $dsp['Donnees']['libsecactdomi'] ),
-									h( $dsp['Donnees']['libactdomi'] ),
-									h( $dsp['Donnees']['libsecactrech'] ),
-									h( $dsp['Donnees']['libemploirech'] ),
-								)
-							);
-
-							if( Configure::read( 'Cg.departement' ) == 93 ) {
-								$links = array(
-									'Detaildifsoc.difsoc',
-									'Detailaccosocindi.nataccosocindi',
-									'Detaildifdisp.difdisp',
-								);
-
-								foreach( $links as $link ) {
-									list( $modelName, $fieldName ) = model_field( $link );
-
-									$cell = '';
-									$values = vfListeToArray( $dsp['Donnees'][$fieldName] );
-									if( !empty( $values ) ) {
-										$cell .= '<ul>';
-										foreach( $values as $value ) {
-											$cell .= '<li>- '.h( value( $options[$modelName][$fieldName], $value ) ).'</li>';
-										}
-										$cell .= '</ul>';
-									}
-
-									$arrayData = array_merge(
-										$arrayData,
-										array(
-											$cell
-										)
-									);
-								}
+							if( $params['type'] === 'date' ) {
+								$value = date_short( $value );
 							}
-						}
-
-						// Code ROME V3
-						if( Configure::read( 'Romev3.enabled' ) ) {
-							// Code ROME V3
-							foreach( array( 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
-								foreach( array( 'domaineromev3', 'metierromev3' ) as $fieldName ) {
-									$arrayData[] = h( $dsp[$alias][$fieldName] );
-								}
+							else if( Hash::check( $options, $fieldName ) ) {
+								$value = h( value( Hash::get( $options, $fieldName ), $value ) );
 							}
+							else if( !in_array( $fieldName, $virtualFields ) ) {
+								$value = h( $value );
+							}
+							$row[] = $value;
 						}
 
-						$arrayData = array_merge(
-							$arrayData,
+						$row = array_merge(
+							$row,
 							array(
-								array(
-									$viewLink,
-									array( 'class' => 'noprint' )
-								),
+								array( $viewLink, array( 'class' => 'noprint' ) ),
 								array( $innerTable, array( 'class' => 'innerTableCell noprint' ) ),
 							)
 						);
 
 						echo $this->Xhtml->tableCells(
-							$arrayData,
-							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
+							$row,
+							array( 'class' => 'odd', 'id' => "innerTableTrigger{$index}" ),
+							array( 'class' => 'even', 'id' => "innerTableTrigger{$index}" )
 						);
 					?>
 				<?php endforeach;?>

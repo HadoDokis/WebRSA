@@ -45,6 +45,8 @@
 		/**
 		 * Retourne des listes d'options dépendantes pour le catalogue ROME V3.
 		 *
+		 * @todo Voir les méthodes options de ces différents modèles
+		 *
 		 * @return array
 		 */
 		public function dependantSelects() {

@@ -307,9 +307,9 @@
 			$query['joins'][] = array_words_replace( $this->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 			$query['joins'][] = array_words_replace( $this->Referent->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ), $replacement );
 
-			$query['fields'][] = 'PersonneReferent.referent_id';
-			$query['fields'][] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
-			$query['fields'][] = 'Structurereferenteparcours.lib_struc';
+			$query['fields']['PersonneReferent.referent_id'] = 'PersonneReferent.referent_id';
+			$query['fields']['Referentparcours.nom_complet'] = str_replace( 'Referent', 'Referentparcours', $this->Referent->sqVirtualField( 'nom_complet' ) );
+			$query['fields']['Structurereferenteparcours.lib_struc'] = 'Structurereferenteparcours.lib_struc';
 
 			return $query;
 		}

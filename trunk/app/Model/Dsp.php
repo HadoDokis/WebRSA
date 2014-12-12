@@ -32,6 +32,7 @@
 				'fields' => '',
 				'order' => ''
 			),
+			// Début ROME V2
 			'Libderact66Metier' => array(
 				'className' => 'Coderomemetierdsp66',
 				'foreignKey' => 'libderact66_metier_id',
@@ -74,6 +75,7 @@
 				'fields' => '',
 				'order' => ''
 			),
+			// Fin ROME V2
 			// Début ROME V3
 			'Deractromev3' => array(
 				'className' => 'Entreeromev3',
@@ -379,21 +381,147 @@
 		 */
 		public $romev3Fields = array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' );
 
-		/*
-		 * FIXME: le Hash::remove est plus propre, non ?
+		/**
+		 * Liste des modèles liés contenant des valeurs de cases à cocher ainsi
+		 * qu'un éventuel champ "autre", pour tous les CG, ainsi que des modèles
+		 * liés à un CG en particulier.
+		 *
+		 * @var array
 		 */
+		public $checkboxes = array(
+			// Tous CG
+			'all' => array(
+				// Rencontrez vous des difficultés sociales ?
+			   'Detaildifsoc' => array(
+				   'name' => 'difsoc',
+				   'text' => 'libautrdifsoc'
+			   ),
+			   // Dans quel domaine accompagnement familial ?
+			   'Detailaccosocfam' => array(
+				   'name' => 'nataccosocfam',
+				   'text' => 'libautraccosocfam'
+			   ),
+			   // Dans quel domaine accompagnement individuel ?
+			   'Detailaccosocindi' => array(
+				   'name' => 'nataccosocindi',
+				   'text' => 'libautraccosocindi'
+			   ),
+			   // Parmi les propositions suivantes certaines constituent elles des obstacles à une recherche d'emploi ?
+			   'Detaildifdisp' => array(
+				   'name' => 'difdisp',
+				   'text' => false
+			   ),
+			   // Etes-vous mobile ?
+			   'Detailnatmob' => array(
+				   'name' => 'natmob',
+				   'text' => false
+			   ),
+			   // Difficultés logement ?
+			   'Detaildiflog' => array(
+				   'name' => 'diflog',
+				   'text' => 'libautrdiflog'
+			   )
+			),
+			// CG 58
+			58 => array(
+				// Quel moyen de transport ?
+				'Detailmoytrans' => array(
+					'name' => 'moytrans',
+					'text' => 'libautrmoytrans'
+				),
+				// Quelles sont les difficultés sociales décelées par le professionnel ?
+				'Detaildifsocpro' => array(
+					'name' => 'difsocpro',
+					'text' => 'libautrdifsocpro'
+				),
+				// Quelles sont les difficultés sociales décelées par le professionnel ?
+				'Detailprojpro' => array(
+					'name' => 'projpro',
+					'text' => 'libautrprojpro'
+				),
+				// Frein(s) à la formation :
+				'Detailfreinform' => array(
+					'name' => 'freinform',
+					'text' => false
+				),
+				// Confort :
+				'Detailconfort' => array(
+					'name' => 'confort',
+					'text' => false
+				)
+			)
+		);
 
-		public function filterOptions( $cg, $options ) {
-			if( $cg == 'cg58' ) {
-				$valuesDeleted = array( '0502', '0503', '0504' );
-				foreach( $valuesDeleted as $valueDeleted ) {
-					unset( $options['Detaildifdisp']['difdisp'][$valueDeleted] );
-				}
-				return $options;
+		/**
+		 * Contient la liste des valeurs "Aucun(e)", pour l'ensemble des CG et
+		 * pour chaque CG en particulier des modèles liés par cases à cocher.
+		 * Si cette valeur n'existe pas, alors est vaudra null.
+		 *
+		 * @todo Grouper avec $checkboxes.
+		 *
+		 * @var array
+		 */
+		public $checkboxesValuesNone = array(
+			// Tous CG
+			'all' => array(
+				'Detaildifsoc' => '0401',
+				'Detailaccosocfam' => null,
+				'Detailaccosocindi' => null,
+				'Detaildifdisp' => '0501',
+				'Detailnatmob' => '2504',
+				'Detaildiflog' => '1001'
+			),
+			// CG 58
+			58 => array(
+				'Detailmoytrans' => null,
+				'Detaildifsocpro' => null,
+				'Detailprojpro' => null,
+				'Detailfreinform' => null,
+				'Detailconfort' => null
+			)
+		);
+
+		/**
+		 * Liste des modèles liés contenant des cases à cocher et utilisés dans
+		 * le formulaire de recherche.
+		 *
+		 * @var array
+		 */
+		public $searchCheckboxes = array(
+			'Detaildifsoc',
+			'Detailaccosocindi',
+			'Detaildifdisp',
+		);
+
+		/**
+		 * Liste des alias codes ROME V2 (CG 66).
+		 *
+		 * @var array
+		 */
+		public $modelesRomeV2 = array(
+			'Libsecactderact66Secteur',
+			'Libderact66Metier',
+			'Libsecactdomi66Secteur',
+			'Libactdomi66Metier',
+			'Libsecactrech66Secteur',
+			'Libemploirech66Metier'
+		);
+
+		/**
+		 * Filtre les options disponibles en fonction du CG.
+		 * Utilisé pour limiter certaines valeurs au CG 58 et aux autres CG.
+		 *
+		 * @param array $options
+		 * @return array
+		 */
+		public function getFilteredOptions( $options ) {
+			if( Configure::read( 'Cg.departement' ) == 58 ) {
+				$values = array( '0502', '0503', '0504' );
+			}
+			else {
+				$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
 			}
 
-			// Detaildifdisp.difdisp
-			$values = array( '0507', '0508', '0509', '0510', '0511', '0512', '0513', '0514' );
 			foreach( $values as $value ) {
 				unset( $options['Detaildifdisp']['difdisp'][$value] );
 			}
@@ -402,21 +530,25 @@
 		}
 
 		/**
-		 * Permet de récupérer les dernières DSP d'une personne, en attendant l'index unique sur personne_id
+		 * Permet de récupérer les dernières DSP d'une personne, en attendant
+		 * l'index unique sur personne_id.
+		 *
+		 * @param string $personneIdFied
+		 * @return string
 		 */
 		public function sqDerniereDsp( $personneIdFied = 'Personne.id' ) {
-			return $this->sq(
-							array(
-								'alias' => 'dsps',
-								'fields' => array( 'dsps.id' ),
-								'conditions' => array(
-									"dsps.personne_id = {$personneIdFied}"
-								),
-								'contain' => false,
-								'order' => array( 'dsps.id DESC' ),
-								'limit' => 1
-							)
+			$query = array(
+				'alias' => 'dsps',
+				'fields' => array( 'dsps.id' ),
+				'conditions' => array(
+					"dsps.personne_id = {$personneIdFied}"
+				),
+				'contain' => false,
+				'order' => array( 'dsps.id DESC' ),
+				'limit' => 1
 			);
+
+			return $this->sq( $query );
 		}
 
 		/**
@@ -454,62 +586,109 @@
 		}
 
 		/**
+		 * Retourne la liste des valeurs "Aucun(e)" pour chacun des modèles liés
+		 * par cases à cocher, suivant le CG connecté.
+		 *
+		 * @return array
+		 */
+		public function getCheckboxesValuesNone() {
+			return Hash::merge(
+				(array)Hash::get( $this->checkboxesValuesNone, 'all' ),
+				(array)Hash::get( $this->checkboxesValuesNone, Configure::read( 'Cg.departement' ) )
+			);
+		}
+
+		/**
+		 * Retourne les modèles liés par cases à cocher ainsi que pour chacun
+		 * d'eux, les champs intitulé et libellé autre, suivant le CG connecté.
+		 *
+		 * @return array
+		 */
+		public function getCheckboxes() {
+			return Hash::merge(
+				(array)Hash::get( $this->checkboxes, 'all' ),
+				(array)Hash::get( $this->checkboxes, Configure::read( 'Cg.departement' ) )
+			);
+		}
+
+		/**
+		 * Retourne les champs virtuels des modèles liés par cases à cocher.
+		 *
+		 * @see getCheckboxes()
+		 * @return array
+		 */
+		public function getCheckboxesVirtualFields() {
+			$checkboxes = $this->getCheckboxes();
+			$return = array();
+
+			foreach( $checkboxes as $modelName => $params ) {
+				$return[] = "{$modelName}.{$params['name']}";
+			}
+
+			return $return;
+		}
+
+		/**
 		 *
 		 * @see Allocataire::searchQuery()
 		 *
-		 * @param array $types
 		 * @return array
 		 */
-		public function searchQuery( array $types = array() ) { // TODO: cache
-			// TODO: types -> $types['Prestation']
-			/*$types += array(
-				'Ficheprescription93' => 'LEFT OUTER'
-			);*/
-
-			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $types ) );
+		public function searchQuery() {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$query = Cache::read( $cacheKey );
 
 			if( $query === false ) {
+				// 1. Récupération des différents champs des modèles; si le modèle est Dsp, il sera aliasé par Donnees.
+				$Models = array(
+					$this->Personne,
+					$this->Personne->Calculdroitrsa,
+					$this->Personne->Foyer,
+					$this->Personne->Foyer->Dossier,
+					$this->Personne->Foyer->Dossier->Situationdossierrsa,
+					$this->Personne->Prestation,
+					$this->Personne->Foyer->Adressefoyer,
+					$this->Personne->Foyer->Adressefoyer->Adresse,
+					$this
+				);
+				$fields = array( 'Dsp.id', 'DspRev.id', 'Personne.id', 'Dossier.numdemrsa' );
+				foreach( $Models as $Model ) {
+					foreach( array_keys( $Model->schema() ) as $fieldName ) {
+						$unwanted = ( $fieldName === 'id' || strpos( $fieldName, '_id' ) === strlen( $fieldName ) - 3 );
+						if( !$unwanted ) { // if Dsp/DspRev
+							if( $Model->alias !== 'Dsp' ) {
+								$fields["{$Model->alias}.{$fieldName}"] = "{$Model->alias}.{$fieldName}";
+							}
+							else {
+								$fields["Donnees.{$fieldName}"] = $this->_searchCaseFieldDspDspRev( $fieldName, $Model->alias, "{$Model->alias}Rev" );
+							}
+						}
+					}
+					foreach( array_keys( (array)$Model->virtualFields ) as $fieldName ) {
+						if( $Model->alias !== 'Dsp' ) {
+							$fields["{$Model->alias}.{$fieldName}"] = "{$Model->alias}.{$fieldName}";
+						}
+						else {
+							$fields["Donnees.{$fieldName}"] = $this->_searchCaseFieldDspDspRev( $fieldName, $Model->alias, "{$Model->alias}Rev" );
+						}
+					}
+				}
+
+				// 2. Ajout d'autres champs virtuels
+				// 2.1. Nombre d'enfants du foyer
+				$fields['Foyer.nbenfants'] = '( '.$this->Personne->Foyer->vfNbEnfants().' ) AS "Foyer__nbenfants"';
+
+				// 2.2 Nombre de fichiers liés
+				$Fichiermodule = ClassRegistry::init( 'Fichiermodule' );
+				$sqlDsp = $Fichiermodule->sqNbFichiersLies( $this );
+				$sqlDspRev = str_replace( '"Dsp"', '"DspRev"', $sqlDsp );
+				$fields['Donnees.nb_fichiers_lies'] = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN ( {$sqlDsp} ) ELSE ( {$sqlDspRev} ) END ) AS \"Donnees__nb_fichiers_lies\"";
+
+				// 3. Query
 				$query = array(
-					'fields' => array(
-						'"DspRev"."id"',
-						// TODO: $this->_searchCaseFieldDspDspRev()
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact" ELSE "DspRev"."libderact" END ) AS "Donnees__libderact"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact" ELSE "DspRev"."libsecactderact" END ) AS "Donnees__libsecactderact"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libderact66_metier_id" ELSE "DspRev"."libderact66_metier_id" END ) AS "Donnees__libderact66_metier_id"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactderact66_secteur_id" ELSE "DspRev"."libsecactderact66_secteur_id" END ) AS "Donnees__libsecactderact66_secteur_id"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi" ELSE "DspRev"."libsecactdomi" END ) AS "Donnees__libsecactdomi"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi" ELSE "DspRev"."libactdomi" END ) AS "Donnees__libactdomi"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libactdomi66_metier_id" ELSE "DspRev"."libactdomi66_metier_id" END ) AS "Donnees__libactdomi66_metier_id"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactdomi66_secteur_id" ELSE "DspRev"."libsecactdomi66_secteur_id" END ) AS "Donnees__libsecactdomi66_secteur_id"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."nivetu" ELSE "DspRev"."nivetu" END ) AS "Donnees__nivetu"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."hispro" ELSE "DspRev"."hispro" END ) AS "Donnees__hispro"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech" ELSE "DspRev"."libsecactrech" END ) AS "Donnees__libsecactrech"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech" ELSE "DspRev"."libemploirech" END ) AS "Donnees__libemploirech"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libsecactrech66_secteur_id" ELSE "DspRev"."libsecactrech66_secteur_id" END ) AS "Donnees__libsecactrech66_secteur_id"',
-						'( CASE WHEN "Dsp"."id" IS NOT NULL THEN "Dsp"."libemploirech66_metier_id" ELSE "DspRev"."libemploirech66_metier_id" END ) AS "Donnees__libemploirech66_metier_id"',
-						'Dossier.id',
-						'Dossier.numdemrsa',
-						'Dossier.dtdemrsa',
-						'Dossier.matricule',
-						'Personne.id',
-						'Personne.nir',
-						'Personne.qual',
-						'Personne.nom',
-						'Personne.prenom',
-						'Personne.dtnai',
-						'Adresse.numvoie',
-						'Adresse.libtypevoie',
-						'Adresse.nomvoie',
-						'Adresse.compladr',
-						'Adresse.complideadr',
-						'Adresse.codepos',
-						'Adresse.nomcom',
-						'Adresse.numcom',
-						'Situationdossierrsa.etatdosrsa',
-						'Personne.foyer_id',
-					),
+					'fields' => $fields,
 					'joins' => array(
+						$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 						$this->Personne->join(
@@ -572,8 +751,27 @@
 					)
 				);
 
-				// Champs et jointures ROME V3
+				// 4. Champs et jointures ROME V2 (CG 66)
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					foreach( $this->modelesRomeV2 as $alias ) {
+						foreach( array_keys( $this->{$alias}->schema() ) as $fieldName ) {
+							$unwanted = ( $fieldName === 'id' || strpos( $fieldName, '_id' ) === strlen( $fieldName ) - 3 );
+							if( !$unwanted ) {
+								$query['fields']["{$alias}.{$fieldName}"] = $this->_searchCaseFieldDspDspRev( $fieldName, $alias, "{$alias}Rev", $alias );
+							}
+						}
+
+						$query['joins'][] = $this->join( $alias, array( 'type' => 'LEFT OUTER' ) );
+						$query['joins'][] = array_words_replace(
+							$this->DspRev->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
+							array( $alias => "{$alias}Rev" )
+						);
+					}
+				}
+
+				// 5. Champs et jointures ROME V3
 				if( Configure::read( 'Romev3.enabled' ) ) {
+					$aliases = array_keys( ClassRegistry::init( 'Entreeromev3' )->belongsTo );
 					foreach( $this->romev3LinkedModels as $modelAlias ) {
 						$modelAliasRev = "{$modelAlias}Rev";
 						$modelAliasDonnees = $modelAlias;
@@ -582,46 +780,84 @@
 						$query['joins'][] = $this->join( $modelAlias, array( 'type' => 'LEFT OUTER' ) );
 						$query['joins'][] = $this->DspRev->join( $modelAliasRev, array( 'type' => 'LEFT OUTER' ) );
 
-						foreach( array( 'Familleromev3', 'Domaineromev3', 'Metierromev3', 'Appellationromev3' ) as $alias ) {
+						foreach( $aliases as $alias ) {
 							$modelAliasDonnees = "{$modelAlias}__".Inflector::underscore( $alias );
-							$query['fields'][] = $this->_searchCaseFieldDspDspRev( 'name', "{$modelAlias}__{$alias}", "{$modelAliasRev}__{$alias}", $modelAliasDonnees );
+							$query['fields'][str_replace( '__', '.', $modelAliasDonnees )] = $this->_searchCaseFieldDspDspRev( 'name', "{$modelAlias}__{$alias}", "{$modelAliasRev}__{$alias}", $modelAliasDonnees );
 
 							$query['joins'][] = array_words_replace(
-									$this->{$modelAlias}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
-									array( $alias => "{$modelAlias}__{$alias}" )
+								$this->{$modelAlias}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
+								array( $alias => "{$modelAlias}__{$alias}" )
 							);
 
 							$query['joins'][] = array_words_replace(
-									$this->DspRev->{$modelAliasRev}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
-									array( $alias => "{$modelAliasRev}__{$alias}" )
+								$this->DspRev->{$modelAliasRev}->join( $alias, array( 'type' => 'LEFT OUTER' ) ),
+								array( $alias => "{$modelAliasRev}__{$alias}" )
 							);
 						}
 					}
 				}
 
-				Configure::write( $cacheKey, $query );
+				// 6. Référent du parcours
+				$query = $this->Personne->PersonneReferent->completeSearchQueryReferentParcours( $query );
+
+				// 7. Champs virtuels modèles liés cases à cocher
+				foreach( $this->getCheckboxes() as $linkedModelName => $params ) {
+					$linkedFieldName = $params['name'];
+
+					$fields = array();
+					foreach( array( 'Dsp', 'DspRev' ) as $modelName ) {
+						if( $modelName == 'DspRev' ) {
+							$linkedModelName = "{$linkedModelName}Rev";
+						}
+
+						$foreignKey = Inflector::underscore( $modelName ).'_id';
+
+						// Champ virtuel
+						$qdVirtualField = array(
+							'fields' => array( "{$linkedModelName}.{$linkedFieldName}" ),
+							'conditions' => array(
+								"{$linkedModelName}.{$foreignKey} = {$modelName}.id"
+							),
+							'contain' => false
+						);
+
+						$fields[$modelName] = $this->Personne->{$modelName}->{$linkedModelName}->vfListe( $qdVirtualField );
+					}
+
+					$virtualField = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN {$fields['Dsp']} ELSE {$fields['DspRev']} END ) AS \"Donnees__{$linkedFieldName}\"";
+					$query['fields']["Donnees.{$linkedFieldName}"] = $virtualField; // INFO: à ajouter dans le query de base (?)
+				}
+
+				// 8. Si on utilise les cantons, on ajoute une jointure
+				if( Configure::read( 'CG.cantons' ) ) {
+					$Canton = ClassRegistry::init( 'Canton' );
+					$query['fields'][] = 'Canton.canton';
+					$query['joins'][] = $Canton->joinAdresse();
+				}
+
+				Cache::write( $cacheKey, $query );
 			}
 
 			return $query;
 		}
 
 		/**
+		 * Complète les conditions du querydata avec le contenu des filtres de
+		 * recherche.
 		 *
-		 * @param array $params
+		 * @param array $query
+		 * @param array $search
 		 * @return array
 		 */
-		public function search( array $params ) {
-			$querydata = $this->searchQuery();
-
-			// TODO: début de searchConditions()
-			$querydata['conditions'] = $this->conditionsAdresse( $querydata['conditions'], $params );
-			$querydata['conditions'] = $this->conditionsPersonneFoyerDossier( $querydata['conditions'], $params );
-			$querydata['conditions'] = $this->conditionsDernierDossierAllocataire( $querydata['conditions'], $params );
+		public function searchConditions( array $query, array $search ) {
+			$query['conditions'] = $this->conditionsAdresse( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsPersonneFoyerDossier( $query['conditions'], $search );
+			$query['conditions'] = $this->conditionsDernierDossierAllocataire( $query['conditions'], $search );
 
 			// Secteur d'activité et code métier, texte libre
 			foreach( array( 'libsecactderact', 'libderact', 'libsecactdomi', 'libactdomi', 'libsecactrech', 'libemploirech' ) as $fieldName ) {
-				if( !empty( $params['Dsp'][$fieldName] ) ) {
-					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => $this->wildcard( $params['Dsp'][$fieldName] ) ) );
+				if( !empty( $search['Dsp'][$fieldName] ) ) {
+					$query['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName} ILIKE" => $this->wildcard( $search['Dsp'][$fieldName] ) ) );
 				}
 			}
 
@@ -630,55 +866,20 @@
 				$champs = array_merge( $champs, array( 'libsecactderact66_secteur_id', 'libderact66_metier_id', 'libsecactdomi66_secteur_id', 'libactdomi66_metier_id', 'libsecactrech66_secteur_id', 'libemploirech66_metier_id' ) );
 			}
 			foreach( $champs as $fieldName ) {
-				if( !empty( $params['Dsp'][$fieldName] ) ) {
-					$querydata['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName}" => suffix( $params['Dsp'][$fieldName] ) ) );
+				if( !empty( $search['Dsp'][$fieldName] ) ) {
+					$query['conditions'][] = $this->_searchConditionDspDspRev( array( "Dsp.{$fieldName}" => suffix( $search['Dsp'][$fieldName] ) ) );
 				}
 			}
 
-			// ----------------------------------------------------------------
-
 			// Référent du parcours
-			$querydata = $this->Personne->PersonneReferent->completeQdReferentParcours( $querydata, $params );
+			$query = $this->Personne->PersonneReferent->completeSearchConditionsReferentParcours( $query, $search );
 
-			// ----------------------------------------------------------------
+			// Conditions modèles liés cases à cocher
+			foreach( $this->searchCheckboxes as $linkedModelName ) {
+				$linkedFieldName = $this->checkboxes['all'][$linkedModelName]['name'];
+				$value = Hash::get( $search, "{$linkedModelName}.{$linkedFieldName}" );
 
-			$links = array(
-				'Detaildifsoc.difsoc',
-				'Detailaccosocindi.nataccosocindi',
-				'Detaildifdisp.difdisp',
-			);
-
-			foreach( $links as $link ) {
-				list( $linkedModelName, $linkedFieldName ) = model_field( $link );
-				$fields = array();
-
-				foreach( array( 'Dsp', 'DspRev' ) as $modelName ) {
-					if( $modelName == 'DspRev' ) {
-						$linkedModelName = "{$linkedModelName}Rev";
-					}
-
-					$foreignKey = Inflector::underscore( $modelName ).'_id';
-
-					// Champ virtuel
-					$qdVirtualField = array(
-						'fields' => array( "{$linkedModelName}.{$linkedFieldName}" ),
-						'conditions' => array(
-							"{$linkedModelName}.{$foreignKey} = {$modelName}.id"
-						),
-						'contain' => false
-					);
-
-					$fields[$modelName] = $this->Personne->{$modelName}->{$linkedModelName}->vfListe( $qdVirtualField );
-				}
-
-				$virtualField = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN {$fields['Dsp']} ELSE {$fields['DspRev']} END ) AS \"Donnees__{$linkedFieldName}\"";
-				$querydata['fields'][] = $virtualField; // INFO: à ajouter dans le query de base (?)
-
-				// Conditions
-				$value = Hash::get( $params, $link );
 				if( !empty( $value ) ) {
-					list( $linkedModelName, $linkedFieldName ) = model_field( $link );
-
 					// Dsp
 					$tableName = Inflector::tableize( $linkedModelName );
 					$sqDsp = $this->{$linkedModelName}->sq(
@@ -708,7 +909,7 @@
 							)
 					);
 
-					$querydata['conditions'][] = array(
+					$query['conditions'][] = array(
 						'OR' => array(
 							"EXISTS( {$sqDsp} )",
 							"EXISTS( {$sqDspRev} )",
@@ -726,7 +927,7 @@
 					$aliases[$alias] = "{$alias}Rev";
 					foreach( $this->romev3Fields as $fieldName ) {
 						$field = "{$alias}.{$fieldName}";
-						$value = suffix( Hash::get( $params, $field ) );
+						$value = suffix( Hash::get( $search, $field ) );
 						if( !empty( $value ) ) {
 							$conditionsDspRomeV3[$field] = $value;
 						}
@@ -734,13 +935,43 @@
 				}
 
 				if( !empty( $conditionsDspRomeV3 ) ) {
-					$querydata['conditions'][] = $this->_searchConditionDspDspRev( $conditionsDspRomeV3, $aliases );
+					$query['conditions'][] = $this->_searchConditionDspDspRev( $conditionsDspRomeV3, $aliases );
 				}
 			}
 
-			// -----------------------------------------------------------------
+			return $query;
+		}
 
-			return $querydata;
+		/**
+		 * Moteur de recherche par Dsp, export des champs disponibles lorsque l'on
+		 * est en debug > 0.
+		 *
+		 * @param array $search
+		 * @return array
+		 */
+		public function search( array $search ) {
+			$query = $this->searchQuery();
+			$query = $this->searchConditions( $query, $search );
+
+			return $query;
+		}
+
+		/**
+		 * Vérification que les champs spécifiés dans le paramétrage par les clés
+		 * Dsps.index.fields, Dsps.index.innerTable et Dsps.exportcsv dans le
+		 * webrsa.inc existent bien dans la requête de recherche renvoyée par
+		 * la méthode search().
+		 *
+		 * @return array
+		 */
+		public function checkParametrage() {
+			$keys = array( 'Dsps.index.fields', 'Dsps.index.innerTable', 'Dsps.exportcsv' );
+			$query = $this->search( array() );
+
+			App::uses( 'ConfigurableQueryFields', 'Utility' );
+			$return = ConfigurableQueryFields::getErrors( $keys, $query );
+
+			return $return;
 		}
 
 		/**
@@ -900,45 +1131,99 @@
 		}
 
 		/**
+		 * Retourne les options à utiliser dans le moteur de recherche, le
+		 * formulaire d'ajout / de modification, etc.. suivant le CG connecté.
+		 *
+		 * Il est possible d'aliaser le modèle Dsp.
+		 *
+		 * $params par défaut: array(
+		 *	 'find' => true,
+		 *	 'allocataire' => false,
+		 *	 'alias' => 'Dsp'
+		 * )
 		 *
 		 * @param array $params
 		 * @return array
 		 */
 		public function options( array $params = array() ) {
-			$params = $params + array( 'find' => true, 'autre' => true );
+			$params = $params + array( 'find' => true, 'allocataire' => false, 'alias' => 'Dsp' );
 
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $params ) );
 			$return = Cache::read( $cacheKey );
 
 			if( $return === false ) {
-				$return = array();
+				$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 
-				if( $params['autre'] ) {
-					$return = $this->enums();
+				$return = $this->enums();
+				foreach( array_keys( $this->getCheckboxes() ) as $modelDetail ) {
+					$return = Hash::merge( $return, $this->{$modelDetail}->enums() );
 				}
 
-				if( $params['find'] ) {
-					$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
-
-					$selects = $Catalogueromev3->dependantSelects();
-
-					foreach( $this->prefixesRomev3 as $prefix ) {
-						foreach( $this->romev3Fields as $field ) {
-							$return[$this->alias]["{$prefix}{$field}"] = $selects['Catalogueromev3'][$field];
-						}
-					}
-				}
-
-				// @todo: n'est-ce pas ce que l'on fait au-dessus ?
-				foreach( $this->romev3LinkedModels as $alias ) {
+				if( $params['allocataire'] ) {
 					$return = Hash::merge(
 						$return,
-						$this->{$alias}->options()
+						ClassRegistry::init( 'Allocataire' )->options()
 					);
 				}
 
+				if( $params['find'] ) {
+					foreach( $this->romev3LinkedModels as $alias ) {
+						$return = Hash::merge(
+							$return,
+							$this->{$alias}->options()
+						);
+					}
+				}
+
+				// Codes ROME V2
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					// Coderomesecteurdsp66
+					$query = array(
+						'fields' => array(
+							'Libsecactderact66Secteur.id',
+							'Libsecactderact66Secteur.intitule'
+						),
+						'contain' => false,
+						'order' => array( 'Libsecactderact66Secteur.code' )
+					);
+					$results = $this->Libsecactderact66Secteur->find( 'all', $query );
+					$results = array( $this->Libsecactderact66Secteur->name => (array)Hash::combine( $results, '{n}.Libsecactderact66Secteur.id', '{n}.Libsecactderact66Secteur.intitule' ) );
+					$return = Hash::merge( $return, $results );
+
+					// Coderomemetierdsp66
+					$query = array(
+						'fields' => array(
+							'( "Libderact66Metier"."coderomesecteurdsp66_id" || \'_\' || "Libderact66Metier"."id" ) AS "Libderact66Metier__id"',
+							'Libderact66Metier.intitule'
+						),
+						'contain' => false,
+						'order' => array( 'Libderact66Metier.code' )
+					);
+					$results = $this->Libderact66Metier->find( 'all', $query );
+					$results = array( $this->Libderact66Metier->name => (array)Hash::combine( $results, '{n}.Libderact66Metier.id', '{n}.Libderact66Metier.intitule' ) );
+					$return = Hash::merge( $return, $results );
+				}
+
+				$return = $this->getFilteredOptions( $return );
+
+				if( $params['alias'] !== 'Dsp' ) {
+					$return[$params['alias']] = $return['Dsp'];
+					unset( $return['Dsp'] );
+				}
+
 				Cache::write( $cacheKey, $return );
-				ModelCache::write( $cacheKey, $Catalogueromev3->modelesParametrages );
+
+				$models = $Catalogueromev3->modelesParametrages;
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$models = array_merge(
+						$models,
+						array(
+							$this->Libderact66Metier->name,
+							$this->Libsecactderact66Secteur->name
+						)
+					);
+				}
+				ModelCache::write( $cacheKey, $models );
 			}
 
 			return $return;
@@ -948,14 +1233,22 @@
 		 * Exécute les différentes méthods du modèle permettant la mise en cache.
 		 * Utilisé au préchargement de l'application (/prechargements/index).
 		 *
+		 * Export de la liste des champs disponibles pour le moteur de recherche
+		 * dans le fichier app/tmp/Dsp__searchQuery__cgXX.csv.
+		 *
 		 * @return boolean true en cas de succès, false en cas d'erreur,
 		 * 	null pour les méthodes qui ne font rien.
 		 */
 		public function prechargement() {
 			$success = true;
 
-			$results = $this->searchQuery();
-			$success = $success && !empty( $results );
+			$query = $this->searchQuery();
+			$success = $success && !empty( $query );
+
+			// Export des champs disponibles
+			App::uses( 'ConfigurableQueryFields', 'Utility' );
+			$fileName = TMP.DS.'logs'.DS.__CLASS__.'__searchQuery__cg'.Configure::read( 'Cg.departement' ).'.csv';
+			ConfigurableQueryFields::exportQueryFields( $query, 'dsps', $fileName );
 
 			$results = $this->options();
 			$success = $success && !empty( $results );

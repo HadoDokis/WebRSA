@@ -96,6 +96,10 @@
 						<h4 class="title">Expressions rationnelles dans le webrsa.inc</h4>
 						<?php echo $this->Checks->table( $results['Webrsa']['configure_regexps'] );?>
 					</div>
+					<div id="webrsa_configure_fields">
+						<h4 class="title">Champs spécifiés dans le webrsa.inc</h4>
+						<?php echo $this->Checks->table( $results['Webrsa']['configure_fields'] );?>
+					</div>
 				</div>
 			</div>
 		</div>

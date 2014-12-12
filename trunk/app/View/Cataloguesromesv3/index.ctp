@@ -100,28 +100,30 @@
 	echo $this->Allocataires->blocScript( array( 'id' => 'Catalogueromev3IndexForm' ) );
 	// Fin du formulaire de recherche
 
-	$fields["/Cataloguesromesv3/edit/{$modelName}/#{$modelName}.id#"] = array(
-		'disabled' => !$this->Permissions->check( 'Cataloguesromesv3', 'edit' )
-	);
-	$fields["/Cataloguesromesv3/delete/{$modelName}/#{$modelName}.id#"] = array(
-		'disabled' => "( '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguesromesv3', 'delete' )."' )",
-		'confirm' => true
-	);
+	if( isset( $results ) ) {
+		$fields["/Cataloguesromesv3/edit/{$modelName}/#{$modelName}.id#"] = array(
+			'disabled' => !$this->Permissions->check( 'Cataloguesromesv3', 'edit' )
+		);
+		$fields["/Cataloguesromesv3/delete/{$modelName}/#{$modelName}.id#"] = array(
+			'disabled' => "( '#{$modelName}.occurences#' != '0' ) || ( !'".$this->Permissions->check( 'Cataloguesromesv3', 'delete' )."' )",
+			'confirm' => true
+		);
 
-	$this->Default3->DefaultPaginator->options(
-		array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
-	);
+		$this->Default3->DefaultPaginator->options(
+			array( 'url' => Hash::flatten( (array)$this->request->data, '__' ) )
+		);
 
-	App::uses( 'SearchProgressivePagination', 'Search.Utility' );
+		App::uses( 'SearchProgressivePagination', 'Search.Utility' );
 
-	echo $this->Default3->index(
-		$results,
-		$fields,
-		array(
-			'options' => $options,
-			'format' => __( SearchProgressivePagination::format() )
-		)
-	);
+		echo $this->Default3->index(
+			$results,
+			$fields,
+			array(
+				'options' => $options,
+				'format' => __( SearchProgressivePagination::format() )
+			)
+		);
+	}
 
 	echo $this->Default3->actions(
 		array(

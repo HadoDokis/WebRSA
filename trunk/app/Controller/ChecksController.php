@@ -246,6 +246,7 @@
 					'sqRechercheErrors' => $this->Webrsacheck->allSqRechercheErrors(),
 					'configure_primary_key' => $this->_configurePrimaryKeys(),
 					'configure_regexps' => $this->Webrsacheck->allConfigureRegexpsErrors(),
+					'configure_fields' => $this->Webrsacheck->allCheckParametrage(),
 				)
 			);
 		}

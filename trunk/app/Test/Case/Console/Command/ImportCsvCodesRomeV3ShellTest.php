@@ -46,6 +46,7 @@
 		 */
 		public function setUp() {
 			Configure::write( 'Cg.departement', 66 );
+			Configure::write( 'Romev3.enabled', true );
 
 			parent::setUp();
 

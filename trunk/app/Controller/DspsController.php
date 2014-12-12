@@ -49,50 +49,6 @@
 			'limit' => 10,
 			'order' => array( 'DspRev.created' => 'desc', 'DspRev.id' => 'desc' )
 		);
-		public $specialHasMany = array(
-			'Detaildifsoc' => 'difsoc',
-			'Detailaccosocfam' => 'nataccosocfam',
-			'Detailaccosocindi' => 'nataccosocindi',
-			'Detaildifdisp' => 'difdisp',
-			'Detailnatmob' => 'natmob',
-			'Detaildiflog' => 'diflog'
-		);
-		public $specialHasMany58 = array(
-			'Detaildifsoc' => 'difsoc',
-			'Detailaccosocfam' => 'nataccosocfam',
-			'Detailaccosocindi' => 'nataccosocindi',
-			'Detaildifdisp' => 'difdisp',
-			'Detailnatmob' => 'natmob',
-			'Detaildiflog' => 'diflog',
-			'Detailmoytrans' => 'moytrans',
-			'Detaildifsocpro' => 'difsocpro',
-			'Detailprojpro' => 'projpro',
-			'Detailfreinform' => 'freinform',
-			'Detailconfort' => 'confort'
-		);
-		// FIXME: dans les modèles ?
-		public $valuesNone = array(
-			'Detaildifsoc' => '0401',
-			'Detailaccosocfam' => null,
-			'Detailaccosocindi' => null,
-			'Detaildifdisp' => '0501',
-			'Detailnatmob' => '2504',
-			'Detaildiflog' => '1001'
-		);
-		// FIXME: dans les modèles ?
-		public $valuesNone58 = array(
-			'Detaildifsoc' => '0401',
-			'Detailaccosocfam' => null,
-			'Detailaccosocindi' => null,
-			'Detaildifdisp' => '0501',
-			'Detailnatmob' => '2504',
-			'Detaildiflog' => '1001',
-			'Detailmoytrans' => null,
-			'Detaildifsocpro' => null,
-			'Detailprojpro' => null,
-			'Detailfreinform' => null,
-			'Detailfconfort' => null
-		);
 
 		public $commeDroit = array(
 			'findPersonne' => 'Dsps:view'
@@ -124,53 +80,43 @@
 			'view_revs' => 'read',
 		);
 
+		public $wildcardKeys = array(
+			'Personne.nom',
+			'Personne.prenom',
+			'Personne.nir',
+			'Dossier.matricule',
+			'Dsp.libsecactdomi',
+			'Dsp.libactdomi',
+			'Dsp.libsecactrech',
+			'Dsp.libemploirech',
+			'Dsp.libsecactderact',
+			'Dsp.libderact'
+		);
+
+		/**
+		 * Liste des alias pouvant être triés dans la recherche par Dsps.
+		 *
+		 * @var array
+		 */
+		public $sortableModels = array(
+			'Personne',
+			'Foyer',
+			'Dossier',
+			'Prestation',
+			'Adressefoyer',
+			'Adresse',
+			'Situationdossierrsa',
+			'PersonneReferent',
+			'Structurereferenteparcours'
+		);
+
 		/**
 		 *
 		 */
 		public function beforeFilter() {
 			$return = parent::beforeFilter();
 
-			$cg = Configure::read( 'nom_form_ci_cg' );
-
-			if( $cg == 'cg58' ) {
-				$this->valuesNone = $this->valuesNone58;
-				$this->specialHasMany = $this->specialHasMany58;
-			}
-
-			$options = $this->Dsp->enums();
-
-			foreach( array_keys( $this->specialHasMany ) as $model ) {
-				$options = Set::merge( $options, $this->Dsp->{$model}->enums() );
-			}
-
-			$options['Coderomesecteurdsp66'] = array( );
-			$options['Coderomemetierdsp66'] = array( );
-			if( Configure::read( 'Cg.departement' ) == 66 ) {
-				$options['Coderomesecteurdsp66'] = $this->Dsp->Libsecactderact66Secteur->find(
-						'list', array(
-					'contain' => false,
-					'order' => array( 'Libsecactderact66Secteur.code' )
-						)
-				);
-// 				foreach( $codesromesecteursdsps66 as $coderomesecteurdsp66 ) {
-// 					$options['Coderomesecteurdsp66'][$coderomesecteurdsp66['Libsecactderact66Secteur']['id']] = $coderomesecteurdsp66['Libsecactderact66Secteur']['code'].'. '.$coderomesecteurdsp66['Libsecactderact66Secteur']['name'];
-// 				}
-
-				$codesromemetiersdsps66 = $this->Dsp->Libderact66Metier->find(
-						'all', array(
-					'contain' => false,
-					'order' => array( 'Libderact66Metier.code' )
-						)
-				);
-				foreach( $codesromemetiersdsps66 as $coderomemetierdsp66 ) {
-					$options['Coderomemetierdsp66'][$coderomemetierdsp66['Libderact66Metier']['coderomesecteurdsp66_id'].'_'.$coderomemetierdsp66['Libderact66Metier']['id']] = $coderomemetierdsp66['Libderact66Metier']['code'].'. '.$coderomemetierdsp66['Libderact66Metier']['name'];
-				}
-			}
-
-			$options = $this->Dsp->filterOptions( $cg, $options );
-// 			debug( $options );
-			$this->set( 'options', $options );
-			$this->set( 'cg', $cg );
+			$this->set( 'cg', Configure::read( 'nom_form_ci_cg' ) ); // FIXME
 
 			return $return;
 		}
@@ -379,6 +325,7 @@
 			}
 			$this->set( 'dsp', $dsp );
 			$this->set( 'rev', $rev );
+			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
 		}
 
 		/**
@@ -552,6 +499,7 @@
 			$personne = $dsprevs; // Pour récupérer les informations de la personne
 			$this->set( 'personne', $personne );
 			$this->set( 'urlmenu', '/dsps/histo/'.$dsprevs['DspRev']['personne_id'] );
+			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
 
 			$this->render( 'view' );
 		}
@@ -598,6 +546,7 @@
 
 			$this->set( 'personne_id', Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
 			$this->set( 'urlmenu', '/dsps/histo/'.Set::classicExtract( $dsprevact, 'DspRev.personne_id' ) );
+			$this->set( 'options', $this->Dsp->options( array( 'find' => false ) ) );
 		}
 
 		/**
@@ -743,12 +692,15 @@
 
 				// Modèles liés, début hasMany spéciaux
 				$deleteConditions = array( );
-				foreach( $this->specialHasMany as $model => $checkbox ) {
+				$valuesNone = $this->Dsp->getCheckboxesValuesNone();
+
+				foreach( $this->Dsp->getCheckboxesVirtualFields() as $fieldName ) {
+					list( $model, $checkbox ) = model_field( $fieldName );
 					$values = Set::classicExtract( $this->request->data, "{$model}" );
 
-					if( isset( $this->valuesNone[$model] ) ) {
-						$tmpValues = Set::extract( $values, "/{$this->specialHasMany['Detaildifsoc']}" );
-						$cKey = array_search( $this->valuesNone[$model], $tmpValues );
+					if( isset( $valuesNone[$model] ) && $valuesNone[$model] !== null ) {
+						$tmpValues = Set::extract( $values, "/{$checkbox}" );
+						$cKey = array_search( $valuesNone[$model], $tmpValues );
 						$tmpValues = $values;
 						if( $cKey !== false ) {
 							unset( $tmpValues[$cKey] );// FIXME
@@ -841,49 +793,43 @@
 			$this->set( 'urlmenu', ( $this->action === 'edit' ? "/dsps/edit/{$dsp['Dsp']['personne_id']}" : "/dsps/histo/{$dsp['Dsp']['personne_id']}" ) );
 
 			// Options
-			$options = Hash::merge(
-				(array)Hash::get( $this->viewVars, 'options' ),
-				$this->Dsp->options( array( 'autre' => false ) )
-			);
+			$options = $this->Dsp->options();
 			$this->set( compact( 'options' ) );
+
+			// Valeurs spéciales "Aucun(e)"
+			$valuesNone = $this->Dsp->getCheckboxesValuesNone();
+			$checkboxes = $this->Dsp->getCheckboxes();
+			$this->set( compact( 'checkboxes', 'valuesNone' ) );
 
 			$this->render( '_add_edit' );
 		}
 
 		/**
-		 * Recherche par DSPs
+		 * Moteur de recherche par DSPs.
 		 */
 		public function index() {
 			$params = $this->request->data;
 			if( !empty( $params ) ) {
-				$wildcardKeys = array(
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.nir',
-					'Dossier.matricule',
-					'Dsp.libsecactdomi',
-					'Dsp.libactdomi',
-					'Dsp.libsecactrech',
-					'Dsp.libemploirech',
-					'Dsp.libsecactderact',
-					'Dsp.libderact'
+				$query = $this->Dsp->search(
+					$this->_wildcardKeys( $this->request->data, $this->wildcardKeys )
 				);
 
-				$paginate = $this->Dsp->search(
-					$this->_wildcardKeys( $this->request->data, $wildcardKeys )
-				);
+				$query = $this->Gestionzonesgeos->qdConditions( $query );
+				$query['conditions'][] = WebrsaPermissions::conditionsDossier();
+				$query = $this->_qdAddFilters( $query );
 
-				$paginate = $this->Gestionzonesgeos->qdConditions( $paginate );
-				$paginate['conditions'][] = WebrsaPermissions::conditionsDossier();
-				$paginate = $this->_qdAddFilters( $paginate );
+				$query['limit'] = 10;
 
-				$paginate['limit'] = 10;
+				App::uses( 'ConfigurableQueryFields', 'Utility' );
+				$query = ConfigurableQueryFields::getFieldsByKeys( array( 'Dsps.index.fields', 'Dsps.index.innerTable' ), $query );
 
-				$this->paginate = $paginate;
+				$this->Dsp->Personne->forceVirtualFields = true;
+				$this->paginate = $query;
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
-				$dsps = $this->paginate( 'Personne', array(), array(), $progressivePaginate );
+				$dsps = $this->paginate( $this->Dsp->Personne, array(), array(), $progressivePaginate );
 
-				$this->set( 'dsps', $dsps );
+				$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
+				$this->set( compact( 'dsps', 'checkboxesVirtualFields' ) );
 			}
 
 			$this->Gestionzonesgeos->setCantonsIfConfigured();
@@ -892,11 +838,9 @@
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
 
-			$options = Hash::merge(
-				(array)Hash::get( $this->viewVars, 'options' ),
-				$this->Dsp->options( array( 'autre' => false ) )
-			);
+			$options = $this->Dsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
 
+			$this->set( 'sortableModels', $this->sortableModels );
 			$this->set( compact( 'options', 'prefixes', 'suffixes' ) );
 		}
 
@@ -904,36 +848,30 @@
 		 * Export du tableau en CSV
 		 */
 		public function exportcsv() {
-			$wildcardKeys = array(
-				'Personne.nom',
-				'Personne.prenom',
-				'Personne.nir',
-				'Dossier.matricule',
-				'Dsp.libsecactdomi',
-				'Dsp.libactdomi',
-				'Dsp.libsecactrech',
-				'Dsp.libemploirech',
-				'Dsp.libsecactderact',
-				'Dsp.libderact'
+			$query = $this->Dsp->search(
+				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $this->wildcardKeys )
 			);
 
-			$querydata = $this->Dsp->search(
-				$this->_wildcardKeys( Hash::expand( $this->request->params['named'], '__' ), $wildcardKeys )
-			);
+			$query = $this->Gestionzonesgeos->qdConditions( $query );
+			$query['conditions'][] = WebrsaPermissions::conditionsDossier();
+			$query = $this->_qdAddFilters( $query );
+			unset( $query['limit'] );
 
-			$querydata = $this->Gestionzonesgeos->qdConditions( $querydata );
-			$querydata['conditions'][] = WebrsaPermissions::conditionsDossier();
-			$querydata = $this->_qdAddFilters( $querydata );
+			App::uses( 'ConfigurableQueryFields', 'Utility' );
+			$query = ConfigurableQueryFields::getFieldsByKeys( 'Dsps.exportcsv', $query );
 
-			unset( $querydata['limit'] );
-
-			$dsps = $this->Dsp->Personne->find( 'all', $querydata );
+			$this->Dsp->Personne->forceVirtualFields = true;
+			$dsps = $this->Dsp->Personne->find( 'all', $query );
 
 			$qual = $this->Option->qual();
 			$romev3Aliases = $this->Dsp->romev3LinkedModels;
 			$romev3Fields = $this->Dsp->romev3Fields;
 
-			$this->set( compact( 'dsps', 'qual', 'romev3Aliases', 'romev3Fields' ) );
+			$options = $this->Dsp->options( array( 'alias' => 'Donnees', 'allocataire' => true ) );
+			$this->set( compact( 'options' ) );
+
+			$checkboxesVirtualFields = $this->Dsp->getCheckboxesVirtualFields();
+			$this->set( compact( 'dsps', 'qual', 'romev3Aliases', 'romev3Fields', 'options', 'checkboxesVirtualFields' ) );
 			$this->layout = '';
 		}
 
