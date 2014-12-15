@@ -18,7 +18,7 @@ App::uses('Sanitize', 'Utility');
 class Criteresdossierspcgs66Controller extends AppController {
 
     public $uses = array('Criteredossierpcg66', 'Dossierpcg66', 'Option', 'Canton');
-    public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search');
+    public $helpers = array('Default', 'Default2', 'Locale', 'Csv', 'Search', 'Romev3');
     public $components = array('Gestionzonesgeos', 'InsertionsAllocataires', 'Search.SearchPrg' => array('actions' => array('dossier', 'gestionnaire')), 'Jetons2');
 
     /**
@@ -151,6 +151,17 @@ class Criteresdossierspcgs66Controller extends AppController {
         $this->set('structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes(array('optgroup' => true, 'conditions' => array('orientation' => 'O'))));
         $this->set('referentsparcours', $this->InsertionsAllocataires->referents(array('prefix' => true)));
 
+		// Ajout des options ROME V3
+		if( $this->action === 'dossier' ) {
+			$options = (array)Hash::get( $this->viewVars, 'options' );
+			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+			$options = Hash::merge(
+				$options,
+				array( 'Categorieromev3' => (array)Hash::get( $Catalogueromev3->dependantSelects(), 'Catalogueromev3' ) )
+			);
+			$this->set( compact( 'options' ) );
+		}
+
         $this->render($this->action);
     }
 
@@ -190,30 +201,30 @@ class Criteresdossierspcgs66Controller extends AppController {
 
         $results = $this->Dossierpcg66->find('all', $querydata);
         foreach( $results as $i => $critere ) {
-                $personnesPcgs66 = $this->Dossierpcg66->Personnepcg66->find(
-                    'all',
-                    array(
-                        'fields' => array(
-                            $this->Dossierpcg66->Personnepcg66->Personne->sqVirtualField( 'nom_complet' )
-                        ),
-                        'conditions' => array(
-                            'Personnepcg66.dossierpcg66_id' => $critere['Dossierpcg66']['id']
-                        ),
-                        'contain' => array(
-                            'Personne'
-                        )
-                    )
-                );
-                $results[$i]['Personneconcernee'] = $personnesPcgs66;
-            }
+			$personnesPcgs66 = $this->Dossierpcg66->Personnepcg66->find(
+				'all',
+				array(
+					'fields' => array(
+						$this->Dossierpcg66->Personnepcg66->Personne->sqVirtualField( 'nom_complet' )
+					),
+					'conditions' => array(
+						'Personnepcg66.dossierpcg66_id' => $critere['Dossierpcg66']['id']
+					),
+					'contain' => array(
+						'Personne'
+					)
+				)
+			);
+			$results[$i]['Personneconcernee'] = $personnesPcgs66;
+		}
 
-        $this->_setOptions();
+		$this->_setOptions();
 
         $this->layout = '';
 
         $vflisteseparator = "\n\r-";
-        $this->set(compact('results', 'vflisteseparator'));
-    }
+        $this->set( compact( 'results', 'vflisteseparator', 'searchFunction' ) );
+	}
 
 }
 

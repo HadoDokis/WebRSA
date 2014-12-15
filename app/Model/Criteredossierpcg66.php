@@ -429,6 +429,38 @@ class Criteredossierpcg66 extends AppModel {
 
         $querydata = $this->_completeQuery($querydata, $params);
 
+		// Champs et jointures ROME V2
+		$querydata['fields'] = Hash::merge( $querydata['fields'], $Dossierpcg66->Personnepcg66->Categoriesecteurromev2->fields() );
+		$querydata['joins'][] = $Dossierpcg66->Personnepcg66->join( 'Categoriesecteurromev2', array( 'type' => 'LEFT OUTER' ) );
+
+		$querydata['fields'] = Hash::merge( $querydata['fields'], $Dossierpcg66->Personnepcg66->Categoriemetierromev2->fields() );
+		$querydata['joins'][] = $Dossierpcg66->Personnepcg66->join( 'Categoriemetierromev2', array( 'type' => 'LEFT OUTER' ) );
+
+		// Champs et jointures ROME V3
+		if( Configure::read( 'Romev3.enabled' ) ) {
+			$aliases = array_keys( $Dossierpcg66->Personnepcg66->Categorieromev3->belongsTo );
+
+			$querydata['joins'][] = $Dossierpcg66->Personnepcg66->join( 'Categorieromev3', array( 'type' => 'LEFT OUTER' ) );
+
+			foreach( $aliases as $alias ) {
+				$querydata['fields'][] = "{$alias}.name";
+				$querydata['joins'][] = $Dossierpcg66->Personnepcg66->Categorieromev3->join( $alias, array( 'type' => 'LEFT OUTER' ) );
+			}
+		}
+
+		// Conditions ROME V3
+		if( Configure::read( 'Romev3.enabled' ) ) {
+			$foreignKeys = Hash::extract( $Dossierpcg66->Personnepcg66->Categorieromev3->belongsTo, '{s}.foreignKey' );
+			$filters = (array)Hash::get( $params, 'Categorieromev3' );
+
+			foreach( $foreignKeys as $foreignKey ) {
+				$value = suffix( Hash::get( $filters, $foreignKey ) );
+				if( !empty( $value ) ) {
+					$querydata['conditions'][] = array( "Categorieromev3.{$foreignKey}" => $value );
+				}
+			}
+		}
+
         return $querydata;
     }
 

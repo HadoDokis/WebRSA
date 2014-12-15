@@ -19,7 +19,7 @@
 
 		public $uses = array( 'Personnepcg66', 'Option', 'Dossierpcg66' );
 
-		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader' );
+		public $helpers = array( 'Locale', 'Xform', 'Default2', 'Fileuploader', 'Romev3' );
 
 		public $components = array( 'Fileuploader', 'Jetons2', 'Default', 'DossiersMenus' );
 
@@ -104,9 +104,18 @@
 		protected function _add_edit( $id = null ) {
 			$this->assert( valid_int( $id ), 'invalidParameter' );
 
+			if( $this->action == 'add' ) {
+				$dossier_id = $this->Dossierpcg66->dossierId( $id );
+			}
+			else {
+				$dossier_id = $this->Dossierpcg66->Personnepcg66->dossierId( $id );
+			}
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $dossier_id ) );
+			$this->set( compact( 'dossierMenu' ) );
+
 			$personnes = array( );
 			$premierAjout = false;
-            
+
             // Retour à la liste en cas d'annulation
             if( !empty( $this->request->data ) && isset( $this->request->data['Cancel'] ) ) {
                 if( $this->action == 'edit' ) {
@@ -119,7 +128,7 @@
 			if( $this->action == 'add' ) {
 				$dossierpcg66_id = $id;
 
-				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) ) );
+				//$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $id ) ) ) );
 
 				$dossierpcg66 = $this->Dossierpcg66->find(
 						'first', array(
@@ -253,20 +262,22 @@
 			else if( $this->action == 'edit' ) {
 				$personnepcg66_id = $id;
 				$personnepcg66 = $this->Personnepcg66->find(
-						'first', array(
-					'conditions' => array(
-						'Personnepcg66.id' => $personnepcg66_id
-					),
-					'contain' => array(
-						'Statutpdo',
-						'Situationpdo'
-					)
+					'first',
+					array(
+						'conditions' => array(
+							'Personnepcg66.id' => $personnepcg66_id
+						),
+						'contain' => array(
+							'Categorieromev3',
+							'Statutpdo',
+							'Situationpdo'
 						)
+					)
 				);
 				$this->assert( !empty( $personnepcg66 ), 'invalidParameter' );
 				$dossierpcg66_id = Set::classicExtract( $personnepcg66, 'Personnepcg66.dossierpcg66_id' );
 
-				$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $dossierpcg66_id ) ) ) );
+				//$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'id' => $this->Dossierpcg66->dossierId( $dossierpcg66_id ) ) ) );
 
 				$qd_dossierpcg66 = array(
 					'conditions' => array(
@@ -328,13 +339,41 @@
 
 			if( !empty( $this->request->data ) ) {
 				$this->Personnepcg66->begin();
+				$success = true;
 
+				$categorieromev3 = array( 'Categorieromev3' => $this->request->data['Categorieromev3'] );
 				$personnepcg66 = $this->request->data['Personnepcg66'];
 				$situationspdos = $this->request->data['Situationpdo'];
 				$statutspdos = $this->request->data['Statutpdo'];
 
+				// Catégorie ROME V3
+				$clean = Hash::filter( Hash::flatten( $categorieromev3 ) );
+				if( !empty( $clean ) ) {
+					// Si on n'a que l'id, alors on supprime l'enregistrement
+					// FIXME: il faudrait mettre à NULL avant pour ne pas avoir de problème de clé étrangère ?
+					// @see /home/cbuffin/Bureau/WebRSA/2014/2.8.0/En cours/CG 66 - Codes ROME v3/20141212/personnespcgs66_romev3.txt
+					if( count( $clean ) === 1 && isset( $clean['Categorieromev3.id'] ) ) {
+						$success = $this->Personnepcg66->Categorieromev3->delete( $clean['Categorieromev3.id'] ) && $success;
+						$personnepcg66['categorieromev3_id'] = null;
+					}
+					// Sinon, on a un enregistrement "normal"
+					else {
+						$empty = Hash::normalize( Hash::extract( (array)$this->Personnepcg66->Categorieromev3->belongsTo, '{s}.foreignKey' ) );
+
+						$categorieromev3['Categorieromev3'] = $categorieromev3['Categorieromev3']
+								+ $empty;
+
+						$this->Personnepcg66->Categorieromev3->create( $categorieromev3 );
+						$success = $this->Personnepcg66->Categorieromev3->save() && $success;
+						$personnepcg66['categorieromev3_id'] = $this->Personnepcg66->Categorieromev3->id;
+					}
+				}
+				else {
+					$personnepcg66['categorieromev3_id'] = null;
+				}
+
 				$this->Personnepcg66->create( $personnepcg66 );
-				$success = $this->Personnepcg66->save();
+				$success = $this->Personnepcg66->save() && $success;
 
 				if( empty( $this->request->data['Situationpdo']['Situationpdo'] ) ) {
 					$success = false;
@@ -398,7 +437,7 @@
 					}
 
 					if( $success ) {
-						$this->Personnepcg66->commit();
+						 $this->Personnepcg66->commit();
 						$this->Jetons2->release( $dossier_id );
 						$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
 						$this->redirect( array( 'controller' => 'dossierspcgs66', 'action' => 'edit', $dossierpcg66_id ) );
@@ -411,10 +450,11 @@
 			}
 			else {
 				if( $this->action == 'edit' || $premierAjout ) {
+					$personnepcg66 = $this->Personnepcg66->Categorieromev3->prepareFormDataAddEdit( $personnepcg66 );
 					$this->request->data = $personnepcg66;
 				}
 			}
-            
+
             // Récupération d ela dernière personne enregistrée pour le dernier dossier PCG présent dans le foyer
             $dossierpcg66Pcd = $this->Personnepcg66->Dossierpcg66->find(
                 'first',
@@ -443,7 +483,7 @@
                     $this->request->data['Personnepcg66']['personne_id'] = $dossierpcg66Pcd['Personnepcg66'][0]['personne_id'];
                     $this->request->data['Personnepcg66']['categoriegeneral'] = $dossierpcg66Pcd['Personnepcg66'][0]['categoriegeneral'];
                     $this->request->data['Personnepcg66']['categoriedetail'] = $dossierpcg66Pcd['Personnepcg66'][0]['categoriegeneral'].'_'.$dossierpcg66Pcd['Personnepcg66'][0]['categoriedetail'];
-                    
+
                     foreach( array( 'Situationpdo', 'Statutpdo' ) as $value ) {
                         foreach( $dossierpcg66Pcd['Personnepcg66'] as $i => $info ) {
                             $this->request->data[$value][$value] = Hash::extract( $info, "$value.{n}.id" );
@@ -456,6 +496,16 @@
 
 			$this->set( compact( 'foyer_id', 'dossier_id', 'dossierpcg66_id', 'personnepcg66_id' ) );
 			$this->set( 'urlmenu', '/dossierspcgs66/index/'.$foyer_id );
+
+			// Options
+			$options = Hash::get( $this->viewVars, 'options' );
+			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
+			$selects = $Catalogueromev3->dependantSelects();
+			$options = Hash::merge(
+				$options,
+				array( 'Categorieromev3' => (array)Hash::get( $selects, 'Catalogueromev3' ) )
+			);
+			$this->set( compact( 'options' ) );
 
 			$this->render( 'add_edit' );
 		}

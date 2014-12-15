@@ -61,6 +61,37 @@
 				'fields' => '',
 				'order' => ''
 			),
+			// Début ROME V3
+			'Categorieromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'categorieromev3_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			// Fin ROME V3
+			// Début ROME V2
+			'Categoriesecteurromev2' => array(
+				'className' => 'Coderomesecteurdsp66',
+				'foreignKey' => 'categoriegeneral',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Categoriemetierromev2' => array(
+				'className' => 'Coderomemetierdsp66',
+				'foreignKey' => 'categoriedetail',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			// Fin ROME V2
 			'Personne' => array(
 				'className' => 'Personne',
 				'foreignKey' => 'personne_id',

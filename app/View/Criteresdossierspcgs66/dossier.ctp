@@ -122,6 +122,7 @@ echo $this->Search->blocAdresse($mesCodesInsee, $cantons);
     <?php echo $this->Xform->input('Decisiondossierpcg66.nbproposition', array('label' => 'Nombre de propositions de décision')); ?>
 </fieldset>
 <?php
+echo $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options ) );
 echo $this->Search->referentParcours($structuresreferentesparcours, $referentsparcours);
 echo $this->Search->paginationNombretotal('Dossierpcg66.paginationNombreTotal');
 ?>

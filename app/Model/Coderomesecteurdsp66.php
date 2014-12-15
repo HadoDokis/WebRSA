@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Coderomesecteurdsp66.
 	 *
@@ -118,6 +118,19 @@
             'Partenaire' => array(
 				'className' => 'Partenaire',
 				'foreignKey' => 'secteuractivitepartenaire_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+            'Personnepcg66' => array(
+				'className' => 'Personnepcg66',
+				'foreignKey' => 'categoriegeneral',
 				'dependent' => false,
 				'conditions' => '',
 				'fields' => '',

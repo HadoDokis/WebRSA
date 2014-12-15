@@ -2,25 +2,30 @@
 
 $this->Csv->preserveLeadingZerosInExcel = true;
 
-if ($this->request->params['pass'][0] == 'searchDossier') {
+if ($searchFunction == 'searchDossier') {
     $this->Csv->addRow(
-            array(
-                __d('dossier', 'Dossier.numdemrsa'),
-                'Nom de la personne concernée',
-                'Origine de la PDO',
-                'Type de dossier',
-                'Date de création de la DO',
-                'Pôle / Gestionnaire',
-                'Décision',
-                'Nb de propositions de décisions',
-                'État du dossier',
-				'Date de réception du document',
-                'Motif(s) de la personne',
-                'Statut(s) de la personne',
-                'Nb de fichiers dans la corbeille',
-                __d('search_plugin', 'Structurereferenteparcours.lib_struc'),
-                __d('search_plugin', 'Referentparcours.nom_complet'),
-            )
+		array(
+			__d('dossier', 'Dossier.numdemrsa'),
+			'Nom de la personne concernée',
+			'Origine de la PDO',
+			'Type de dossier',
+			'Date de création de la DO',
+			'Pôle / Gestionnaire',
+			'Décision',
+			'Nb de propositions de décisions',
+			'État du dossier',
+			'Date de réception du document',
+			'Motif(s) de la personne',
+			'Statut(s) de la personne',
+			'Nb de fichiers dans la corbeille',
+			__d('search_plugin', 'Structurereferenteparcours.lib_struc'),
+			__d('search_plugin', 'Referentparcours.nom_complet'),
+			'Code famille de l\'emploi recherché',
+			'Code domaine de l\'emploi recherché',
+			'Code métier de l\'emploi recherché',
+			'Appellation de l\'emploi recherché (rome V3)',
+			'Métiers (détaillé) (rome v2)'
+		)
     );
 } else {
     $this->Csv->addRow(
@@ -82,7 +87,7 @@ foreach ($results as $i => $result) {
         $personnesConcernees = '';
     }
 
-    if ($this->request->params['pass'][0] == 'searchDossier') {
+    if ($searchFunction == 'searchDossier') {
         $row = array(
             h(Hash::get($result, 'Dossier.numdemrsa')),
             $personnesConcernees,
@@ -99,6 +104,11 @@ foreach ($results as $i => $result) {
             h($result['Fichiermodule']['nb_fichiers_lies']),
             Hash::get($result, 'Structurereferenteparcours.lib_struc'),
             Hash::get($result, 'Referentparcours.nom_complet'),
+            Hash::get($result, 'Familleromev3.name'),
+            Hash::get($result, 'Domaineromev3.name'),
+            Hash::get($result, 'Metierromev3.name'),
+            Hash::get($result, 'Appellationromev3.name'),
+            implode( ' - ', array( Hash::get( $result, 'Categoriemetierromev2.code' ), Hash::get( $result, 'Categoriemetierromev2.name' ) ) )
         );
     } else {
         $row = array(

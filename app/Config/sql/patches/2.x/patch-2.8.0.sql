@@ -246,13 +246,13 @@ ALTER TABLE  periodesimmersioncuis66 ALTER COLUMN affectationromev3_id SET DEFAU
 SELECT add_missing_constraint ( 'public', 'periodesimmersioncuis66', ' periodesimmersioncuis66_affectationromev3_id_fkey', 'entreesromesv3', 'affectationromev3_id', false );
 DROP INDEX IF EXISTS  periodesimmersioncuis66_affectationromev3_id_idx;
 CREATE UNIQUE INDEX  periodesimmersioncuis66_affectationromev3_id_idx ON  periodesimmersioncuis66(affectationromev3_id);
-
+*/
 SELECT add_missing_table_field ( 'public', 'personnespcgs66', 'categorieromev3_id', 'INTEGER' );
 ALTER TABLE  personnespcgs66 ALTER COLUMN categorieromev3_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'personnespcgs66', ' personnespcgs66_categorieromev3_id_fkey', 'entreesromesv3', 'categorieromev3_id', false );
 DROP INDEX IF EXISTS  personnespcgs66_categorieromev3_id_idx;
 CREATE UNIQUE INDEX  personnespcgs66_categorieromev3_id_idx ON  personnespcgs66(categorieromev3_id);
-
+/*
 --------------------------------------------------------------------------------
 -- 2. CG 93, Tableau "Expériences professionnelles significatives" du CER
 --------------------------------------------------------------------------------
@@ -262,6 +262,21 @@ ALTER TABLE expsproscers93 ALTER COLUMN entreeromev3_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_entreeromev3_id_fkey', 'entreesromesv3', 'entreeromev3_id', false );
 DROP INDEX IF EXISTS expsproscers93_entreeromev3_id_idx;
 CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);*/
+
+--------------------------------------------------------------------------------
+-- 20141215: CG 66, matérialisation des liaisons entre personnespcgs66 et les
+-- codes ROME V2
+--------------------------------------------------------------------------------
+
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral DROP DEFAULT;
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral TYPE INTEGER USING CAST(categoriegeneral AS INTEGER);
+ALTER TABLE personnespcgs66 ADD CONSTRAINT personnespcgs66_categoriegeneral_fk FOREIGN KEY (categoriegeneral) REFERENCES codesromesecteursdsps66(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral SET DEFAULT NULL;
+
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail DROP DEFAULT;
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail TYPE INTEGER USING CAST(categoriedetail AS INTEGER);
+ALTER TABLE personnespcgs66 ADD CONSTRAINT personnespcgs66_categoriedetail_fk FOREIGN KEY (categoriedetail) REFERENCES codesromemetiersdsps66(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail SET DEFAULT NULL;
 
 -- *****************************************************************************
 COMMIT;
