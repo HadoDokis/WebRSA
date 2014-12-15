@@ -90,6 +90,8 @@
 		)
 	);
 
+	echo $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options ) );
+
 	echo "<div class='submit'>";
 		echo $this->Form->submit( 'Enregistrer', array( 'div'=>false ) );
 		echo $this->Form->submit( 'Retour', array( 'name' => 'Cancel', 'div'=>false ) );

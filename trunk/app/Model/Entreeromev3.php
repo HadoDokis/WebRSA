@@ -52,7 +52,7 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'Dspderactdomi' => array(
 				'className' => 'Dsp',
@@ -60,7 +60,7 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'Dspactrech' => array(
 				'className' => 'Dsp',
@@ -68,7 +68,7 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'DspRevderact' => array(
 				'className' => 'DspRev',
@@ -76,7 +76,7 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'DspRevderactdomi' => array(
 				'className' => 'DspRev',
@@ -84,7 +84,7 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'DspRevactrech' => array(
 				'className' => 'DspRev',
@@ -92,23 +92,23 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
-			'Partenaire' => array(
+			/*'Partenaire' => array(
 				'className' => 'Partenaire',
 				'foreignKey' => 'entreeromev3_id',
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
-			/*'Cui' => array(
+			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'emploiproposeromev3_id',
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
 			'Periodeimmersioncui66' => array(
 				'className' => 'Periodeimmersioncui66',
@@ -116,23 +116,23 @@
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
-			),
+				'dependent' => false
+			),*/
 			'Personnepcg66' => array(
 				'className' => 'Personnepcg66',
 				'foreignKey' => 'categorieromev3_id',
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			),
-			'Expprocer93' => array(
+			/*'Expprocer93' => array(
 				'className' => 'Expprocer93',
 				'foreignKey' => 'entreeromev3_id',
 				'conditions' => null,
 				'fields' => null,
 				'order' => null,
-				'dependent' => true
+				'dependent' => false
 			)*/
 		);
 
@@ -211,6 +211,21 @@
 			$Catalogueromev3 = ClassRegistry::init( 'Catalogueromev3' );
 			$options = $Catalogueromev3->dependantSelects();
 			return array( $this->alias => $options['Catalogueromev3'] );
+		}
+
+		/**
+		 * Modifie les données passées en paramètre pour que les valeurs correspondent
+		 * aux valeurs des listes déroulantes (avec le préfixe de l'id du parent).
+		 *
+		 * @param array $record
+		 * @return array
+		 */
+		public function prepareFormDataAddEdit( array $record ) {
+			$record[$this->alias]['appellationromev3_id'] = "{$record[$this->alias]['metierromev3_id']}_{$record[$this->alias]['appellationromev3_id']}";
+			$record[$this->alias]['metierromev3_id'] = "{$record[$this->alias]['domaineromev3_id']}_{$record[$this->alias]['metierromev3_id']}";
+			$record[$this->alias]['domaineromev3_id'] = "{$record[$this->alias]['familleromev3_id']}_{$record[$this->alias]['domaineromev3_id']}";
+
+			return $record;
 		}
 	}
 ?>

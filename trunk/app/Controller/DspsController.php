@@ -779,9 +779,7 @@
 
 				// Début ROME V3
 				foreach( array( 'Deractromev3', 'Deractdomiromev3', 'Actrechromev3' ) as $alias ) {
-					$dsp[$alias]['appellationromev3_id'] = "{$dsp[$alias]['metierromev3_id']}_{$dsp[$alias]['appellationromev3_id']}";
-					$dsp[$alias]['metierromev3_id'] = "{$dsp[$alias]['domaineromev3_id']}_{$dsp[$alias]['metierromev3_id']}";
-					$dsp[$alias]['domaineromev3_id'] = "{$dsp[$alias]['familleromev3_id']}_{$dsp[$alias]['domaineromev3_id']}";
+					$dsp = $this->Dsp->{$alias}->prepareFormDataAddEdit( $dsp );
 				}
 				// Fin ROME V3
 				$this->request->data = $dsp;
