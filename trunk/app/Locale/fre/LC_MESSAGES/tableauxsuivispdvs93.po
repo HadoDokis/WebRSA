@@ -80,6 +80,9 @@ msgid "Tableau1b5.nombre_en_attente"
 msgstr "En attente"
 
 msgid "Tableau1b5.nombre_participants"
+msgstr "Nb de participants à une action"
+
+msgid "Tableau1b5.nombre_participations"
 msgstr "Nb de participations à une action"
 
 # ------------------------------------------------------------------------------

@@ -2064,7 +2064,7 @@
 					END
 				), 0 ) AS "nombre_en_attente"',
 				// F. Cadre "Suivi de l'action": L'allocataire a intégré l'action=oui
-				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN "Ficheprescription93"."personne_id" ELSE NULL END ) ) AS "nombre_participants"'
+				'COUNT( DISTINCT ( CASE WHEN "Ficheprescription93"."personne_a_integre" = \'1\' THEN "Ficheprescription93"."id" ELSE NULL END ) ) AS "nombre_participations"'
 			);
 
 			$conditionsTotal = array( 'OR' => array() );
