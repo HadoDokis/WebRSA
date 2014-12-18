@@ -445,17 +445,21 @@
 			$results = unserialize( $tableausuivipdv93['Tableausuivipdv93']['results'] );
 			$this->set( compact( 'results', 'tableausuivipdv93', 'id' ) );
 
-			// Pour les tableaux 1B4 et 1B5, il existe deux version: celle avant la version 2.7.0(1?) et celle à partir de la 2.5.1
-			if( in_array( $tableausuivipdv93['Tableausuivipdv93']['name'], array( 'tableau1b4', 'tableau1b5' ) ) ) {
-				if( version_compare( $tableausuivipdv93['Tableausuivipdv93']['version'], '2.7', '<') ) {
-					$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'].'_2.5.1';
+			// Pour les tableaux 1B4 et 1B5, il existe plusieurs versions
+			$name = $tableausuivipdv93['Tableausuivipdv93']['name'];
+			$version = $tableausuivipdv93['Tableausuivipdv93']['version'];
+			// Par défaut, le nom de la vue est le nom du tableau
+			$viewName = $name;
+
+			if( in_array( $name, array( 'tableau1b4', 'tableau1b5' ) ) ) {
+				// Entre la version 2.5.1 et la version 2.7.0
+				if( version_compare( $version, '2.7', '<') ) {
+					$viewName = $name.'_2.5.1';
 				}
-				else {
-					$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'];
+				// Pour la tableau 1B5, entre la version 2.7.0 et la version 2.7.06
+				else if( $name === 'tableau1b5' && version_compare( $version, '2.7.06', '<') ) {
+					$viewName = $name.'_2.7.0';
 				}
-			}
-			else {
-				$viewName = $tableausuivipdv93['Tableausuivipdv93']['name'];
 			}
 
 			$this->render( $viewName );
