@@ -41,6 +41,8 @@
 </script>
 
 <?php
+	echo $this->Xform->getExtraValidationErrorMessages();
+
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion' ) );
