@@ -769,7 +769,7 @@
 
                         $this->Orientstruct->create( $orientstruct );
                         $success = $this->Orientstruct->save() && $success;
-$success = false;
+
                         $data['Bilanparcours66']['typeorientprincipale_id'] = $data['Bilanparcours66']['sansep_typeorientprincipale_id'];
                         $data['Bilanparcours66']['changementref'] = $data['Bilanparcours66']['changementrefsansep'];
                     }
