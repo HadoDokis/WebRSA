@@ -172,7 +172,7 @@
 				$options['type'],
 				$options['empty']
 			);
-			
+
 			if( isset( $options['tag'] ) && $options['tag'] === false ) {
 				return $text;
 			}
@@ -468,6 +468,42 @@
 			$currentValue = Set::classicExtract( $this->request->data, $path );
 			$checked = ( ( ( $value == $currentValue ) ) ? 'checked="checked"' : '' );
 			return "<label><input type=\"radio\" name=\"{$name}\" value=\"{$value}\" {$checked} />{$label}</label>";
+		}
+
+		/**
+		 * Retourne un div avec une liste non ordonnée d'erreurs de validation
+		 * concernant des modèles qui ne se trouvent pas dans les données renvoyées
+		 * par le formulaire et qui ne se trouvent pas dans la liste des modèles
+		 * supplémentaires passée en paramètre.
+		 *
+		 * @param array $extra Les alias des modèles supplémentaires pour lesquels
+		 *	cette méthode ne doit pas retourner les erreurs.
+		 * @return string
+		 */
+		public function getExtraValidationErrorMessages( array $extra = array() ) {
+			$return = null;
+
+			if( !empty( $this->request->data ) ) {
+				$errors = $this->validationErrors;
+				$used = array_merge( array_keys( $this->request->data ), $extra );
+
+				foreach( $used as $alias ) {
+					unset( $errors[$alias] );
+				}
+
+				$errors = Hash::extract( Hash::filter( $errors ), '{s}.{s}.{n}' );
+
+				if( !empty( $errors ) ) {
+					$lis = array();
+					foreach( $errors as $error ) {
+						$lis[] = $this->Html->tag( 'li', $error );
+					}
+					$ul = $this->Html->tag( 'ul', implode( '', $lis ) );
+					$return = $this->Html->tag( 'div', $ul, array( 'class' => 'error_message' ) );
+				}
+			}
+
+			return $return;
 		}
 	}
 ?>

@@ -800,7 +800,7 @@
 	 * @var integer
 	 * @default null
 	 */
-	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', 5 );
+	Configure::write( 'Contratinsertion.RdvAuto.thematiquerdv_id', 10 );
 
 	/**
 	 * Permet-on à l'utilisateur de se reconnecter alors que sa session n'est pas
