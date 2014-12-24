@@ -598,7 +598,7 @@ class ContratsinsertionController extends AppController
 
             $this->set(compact('sanctionseps58', 'contratsenep', 'soumisADroitEtDevoir', 'propocontratinsertioncov58'));
 
-            $this->set('erreursCandidatePassage', $this->Contratinsertion->Sanctionep58->Dossierep->erreursCandidatePassage($personne_id));
+            $this->set('erreursCandidatePassage', $this->Contratinsertion->Sanctionep58->Dossierep->getErreursCandidatePassage($personne_id));
             $this->set('optionsdossierscovs58', array_merge($this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Passagecov58->enums(), $this->Contratinsertion->Personne->Orientstruct->Personne->Dossiercov58->Propocontratinsertioncov58->enums()));
             $this->set('optionsdossierseps', $this->Contratinsertion->Sanctionep58->Dossierep->Passagecommissionep->enums());
         } else if (Configure::read('Cg.departement') == 66) {
@@ -665,7 +665,7 @@ class ContratsinsertionController extends AppController
 
             $this->set(compact('signalementseps93', 'contratscomplexeseps93', 'contratsenep'));
 
-            $this->set('erreursCandidatePassage', $this->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage($personne_id));
+            $this->set('erreursCandidatePassage', $this->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage($personne_id));
             $this->set('optionsdossierseps', $this->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums());
         }
 

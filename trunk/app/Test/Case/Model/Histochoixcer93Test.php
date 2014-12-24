@@ -481,6 +481,7 @@
 						'Cer93.user_id',
 						'Cer93.positioncer',
 						'Cer93.formeci',
+						'Cer93.observationdecision',
 						'Histochoixcer93.id',
 						'Histochoixcer93.cer93_id',
 						'Histochoixcer93.user_id',
@@ -506,16 +507,15 @@
 			);
 
 			$expected = array(
-				'Cer93' =>
-				array(
+				'Cer93' => array(
 					'id' => 2,
 					'contratinsertion_id' => 2,
 					'user_id' => 1,
 					'positioncer' => '99valide',
 					'formeci' => 'S',
+					'observationdecision' => null
 				),
-				'Histochoixcer93' =>
-				array(
+				'Histochoixcer93' => array(
 					'id' => 1,
 					'cer93_id' => 2,
 					'user_id' => 6,
@@ -523,8 +523,7 @@
 					'decisioncs' => 'valide',
 					'datechoix' => '2012-10-25',
 				),
-				'Contratinsertion' =>
-				array(
+				'Contratinsertion' => array(
 					'id' => 2,
 					'personne_id' => 1,
 					'decision_ci' => 'V',

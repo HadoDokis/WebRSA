@@ -638,6 +638,9 @@ msgstr "Valider CS"
 msgid "Button::aviscadre"
 msgstr "Valider cadre"
 
+msgid "Button::edit_apres_signature"
+msgstr "Modifier"
+
 msgid "Button::manifestation"
 msgstr "Manifestations"
 

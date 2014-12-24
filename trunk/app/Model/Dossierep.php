@@ -366,62 +366,34 @@
 		* @return array
 		* @access public
 		*/
+		public function getErreursCandidatePassage( $personne_id ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
+			$query = Cache::read( $cacheKey );
 
-		public function erreursCandidatePassage( $personne_id ) {
-			$result = $this->Personne->find(
-				'first',
-				array(
+			if( $query === false ) {
+				$query = array(
 					'fields' => array(
 						'Situationdossierrsa.etatdosrsa',
 						'Prestation.rolepers',
 						'Calculdroitrsa.toppersdrodevorsa'
 					),
 					'joins' => array(
-						array(
-							'table'      => 'foyers',
-							'alias'      => 'Foyer',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Foyer.id = Personne.foyer_id'
-							)
-						),
-						array(
-							'table'      => 'situationsdossiersrsa',
-							'alias'      => 'Situationdossierrsa',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Foyer.dossier_id = Situationdossierrsa.dossier_id',
-							)
-						),
-						array(
-							'table'      => 'prestations',
-							'alias'      => 'Prestation',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Personne.id = Prestation.personne_id',
-								'Prestation.natprest' => 'RSA',
-							)
-						),
-						array(
-							'table'      => 'calculsdroitsrsa',
-							'alias'      => 'Calculdroitrsa',
-							'type'       => 'INNER',
-							'foreignKey' => false,
-							'conditions' => array(
-								'Personne.id = Calculdroitrsa.personne_id'
-							)
-						),
+						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Prestation', array( 'type' => 'INNER' ) ),
+						$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) )
 					),
-					'conditions' => array(
-						'Personne.id' => $personne_id,
-					),
-					'contain' => false
-				)
-			);
-			$result = Hash::flatten( $result );
+					'contain' => false,
+					'conditions' => array()
+				);
+
+				Cache::write( $cacheKey, $query );
+			}
+
+			$query['conditions']['Personne.id'] = $personne_id;
+
+			$result = Hash::flatten( (array)$this->Personne->find( 'first', $query ) );
 
 			$errors = array();
 			if( empty( $result ) ) {

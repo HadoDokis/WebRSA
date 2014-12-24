@@ -100,6 +100,9 @@
 <?php endif;?>
 
 <?php
+	$conditionEdit = str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'edit', $dossierMenu ), $disabledLinks['Cers93::edit'] );
+	$conditionEditApresSignature = str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'edit_apres_signature', $dossierMenu ), $disabledLinks['Cers93::edit_apres_signature'] );
+
 	echo $this->Default2->index(
 		$cers93,
 		array(
@@ -117,7 +120,14 @@
 				'Cers93::view' => array( 'url' => array( 'action' => 'view', '#Contratinsertion.id#' ) ),
 				'Cers93::edit' => array(
 					'url' => array( 'action' => 'edit', '#Contratinsertion.id#' ),
-					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'edit', $dossierMenu ), $disabledLinks['Cers93::edit'] )
+					'disabled' => $conditionEdit,
+					'condition' => "!( {$conditionEdit} )"
+				),
+				'Cers93::edit_apres_signature' => array(
+					'url' => array( 'action' => 'edit_apres_signature', '#Contratinsertion.id#' ),
+					'disabled' => $conditionEditApresSignature,
+					'condition' => $conditionEdit,
+					'class' => 'edit'
 				),
 				'Cers93::signature' => array(
 					'url' => array( 'action' => 'signature', '#Contratinsertion.id#' ),
@@ -154,6 +164,10 @@
 				'Cers93::delete' => array(
 					'url' => array( 'action' => 'delete', '#Contratinsertion.id#' ),
 					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'delete', $dossierMenu ), $disabledLinks['Cers93::delete'] )
+				),
+				'Cers93::cancel' => array(
+					'url' => array( 'action' => 'cancel', '#Contratinsertion.id#' ),
+					'disabled' => str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'cancel', $dossierMenu ), $disabledLinks['Cers93::cancel'] )
 				),
 				'Signalementseps::add' => array(
 					'label' => 'Signalement',

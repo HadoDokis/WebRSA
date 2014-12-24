@@ -193,6 +193,19 @@
 		);
 
 		public $hasMany = array(
+			'Annulateurcer93' => array(
+				'className' => 'Cer93',
+				'foreignKey' => 'annulateur_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Connection' => array(
 				'className' => 'Connection',
 				'foreignKey' => 'user_id',

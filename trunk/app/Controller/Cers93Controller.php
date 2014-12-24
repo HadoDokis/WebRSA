@@ -60,8 +60,10 @@
 			'add' => 'create',
 			'ajaxref' => 'read',
 			'ajaxstruct' => 'read',
+			'cancel' => 'update',
 			'delete' => 'delete',
 			'edit' => 'update',
+			'edit_apres_signature' => 'update',
 			'impression' => 'read',
 			'impressionDecision' => 'read',
 			'index' => 'read',
@@ -265,8 +267,7 @@
 			$contratscomplexeseps93 = $this->Cer93->Contratinsertion->Contratcomplexeep93->Dossierep->find( 'all', $qdContratscomplexeseps93 );
 
 			// L'allocataire peut-il passer en EP ?
-			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->erreursCandidatePassage( $personne_id );
-
+			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
 
 			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
 			$IsRejet = false;
@@ -281,10 +282,29 @@
 				$results[$i]['Cer93']['rejetcpdv'] = $IsRejet;
 			}
 
+			// TODO: en faire une méthode pour pouvoir l'utiliser dans les autres méthodes
 			// Logique d'activation / désactiviation des liens dans la vue
+
+			// Permissions concernant les différentes action liées à un CER
+			$user_type = $this->Session->read( 'Auth.User.type' );
+
+			$positionscers = array();
+			foreach( (array)Hash::extract( $results, '{n}.Cer93.positioncer' ) as $positioncer ) {
+				if( strpos( $positioncer, '99' ) === false ) {
+					$positionscers[] = $positioncer;
+				}
+			}
+
 			$disabledLinks = array(
-				'Cers93::add' => empty( $results ) || in_array( $results[0]['Cer93']['positioncer'], array( '99rejetecpdv', '99rejete', '99valide' ) ), //On bloque l'ajout tant que le CER n'est pas validé ou  rejeté
+				'Cers93::add' => empty( $positionscers ), //On bloque l'ajout tant qu'il existe un CER non validé, rejeté ou annulé
 				'Cers93::edit' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Cers93::edit_apres_signature' => '!(
+					(
+						( \'externe_cpdv\' === \''.$user_type.'\' && in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) )
+						|| ( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) )
+					)
+					&& ( \'%permission%\' == \'1\' )
+				)',
 				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
 				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
@@ -309,6 +329,7 @@
 				&& ( \'%permission%\' == \'1\' ) )',
 				'Cers93::impression' => '!( \'%permission%\' == \'1\' )' ,
 				'Cers93::delete' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Cers93::cancel' => '!( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
 				'Cers93::impressionDecision' => '!( in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) && ( \'#Cer93.rejetcpdv#\' != true ) && ( \'%permission%\' == \'1\' ) )'
 			);
 
@@ -560,6 +581,105 @@
 		}
 
 		/**
+		 * Permet la modification d'un CER après sa signature.
+		 *
+		 * @param integer $id L'id dans la table contratsinsertion
+		 * @throws NotFoundException
+		 */
+		public function edit_apres_signature( $id ) {
+			$query = array(
+				'fields' => array(
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Contratinsertion.dd_ci',
+					'Contratinsertion.df_ci',
+					'Cer93.id',
+					'Cer93.duree',
+					'Cer93.positioncer'
+				),
+				'joins' => array(
+					$this->Cer93->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Contratinsertion.id' => $id
+				)
+			);
+			$contratinsertion = $this->Cer93->Contratinsertion->find( 'first', $query );
+
+			if( empty( $contratinsertion ) ) {
+				throw new NotFoundException();
+			}
+
+			// Vérification des droits de l'utilisateur
+			$personne_id = Hash::get( $contratinsertion, 'Contratinsertion.personne_id' );
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
+
+			// On vérifie que l'action puisse être exécutée
+			$user_type = $this->Session->read( 'Auth.User.type' );
+			$positioncer = Hash::get( $contratinsertion, 'Cer93.positioncer' );
+
+			$block = !(
+				( 'externe_cpdv' === $user_type && in_array( $positioncer, array( '01signe', '02attdecisioncpdv' ) ) )
+				|| ( 'cg' === $user_type && !in_array( $positioncer, array( '00enregistre' ) ) )
+			);
+
+			if( $block === true ) {
+				$msgid = 'Impossible de modifier le CER %d après signature (position: %s) pour l\'utilisateur %s (type: %s)';
+				$msgstr = sprintf( $msgid, $id, $positioncer, $this->Session->read( 'Auth.User.username' ), $user_type );
+				throw new RuntimeException( $msgstr );
+			}
+
+			// Début du traitement
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				return $this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Cer93->Contratinsertion->begin();
+
+				$success = $this->Cer93->Contratinsertion->saveAll( $this->request->data, array( 'atomic' => false, 'validate' => 'only' ) )
+					&& $this->Cer93->Contratinsertion->updateAllUnbound(
+						array(
+							'Contratinsertion.dd_ci' => "'".date_cakephp_to_sql( Hash::get( $this->request->data, 'Contratinsertion.dd_ci' ) )."'",
+							'Contratinsertion.df_ci' => "'".date_cakephp_to_sql( Hash::get( $this->request->data, 'Contratinsertion.df_ci' ) )."'"
+						),
+						array( 'Contratinsertion.id' => Hash::get( $contratinsertion, 'Contratinsertion.id' ) )
+					)
+					&& $this->Cer93->updateAllUnbound(
+						array( 'Cer93.duree' => Hash::get( $this->request->data, 'Cer93.duree' ) ),
+						array( 'Cer93.id' => Hash::get( $contratinsertion, 'Cer93.id' ) )
+					)
+					&&  $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $personne_id );
+
+				if( $success ) {
+					$this->Cer93->Contratinsertion->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					return $this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Cer93->Contratinsertion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				$this->request->data = $contratinsertion;
+			}
+
+			$contratinsertion = $this->Cer93->dataView( $id );
+			$options = $this->Cer93->optionsView();
+			$urlmenu = "/cers93/index/{$personne_id}";
+
+			$this->set( compact( 'dossierMenu', 'options', 'urlmenu', 'contratinsertion' ) );
+		}
+
+		/**
 		 * Fonction permettant de saisir la date de signature du CER.
 		 * Le statut du CER est également mis à jour à la valeur "signé"
 		 *
@@ -704,6 +824,114 @@
 				$this->Session->setFlash( 'Impossible de générer le courrier.', 'default', array( 'class' => 'error' ) );
 				$this->redirect( $this->referer() );
 			}
+		}
+
+		/**
+		 * Permet d'annuler un CER.
+		 *
+		 * @param integer $id L'id dans la table contratsinsertion
+		 * @throws NotFoundException
+		 */
+		public function cancel( $id ) {
+			// TODO: cers93: date_annulation, user_annulation_id, etape_supplementaire ,(, motifannulation ?)
+			// TODO: validation annulation
+			$query = array(
+				'fields' => array(
+					'Contratinsertion.id',
+					'Contratinsertion.personne_id',
+					'Contratinsertion.motifannulation',
+					'Cer93.id',
+					'Cer93.date_annulation',
+					'Cer93.annulateur_id'
+				),
+				'joins' => array(
+					$this->Cer93->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' ) )
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Contratinsertion.id' => $id
+				)
+			);
+			$contratinsertion = $this->Cer93->Contratinsertion->find( 'first', $query );
+
+			if( empty( $contratinsertion ) ) {
+				throw new NotFoundException();
+			}
+
+			$personne_id = Hash::get( $contratinsertion, 'Contratinsertion.personne_id' );
+
+			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
+
+			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
+			$this->Jetons2->get( $dossier_id );
+
+			// Retour à l'index en cas d'annulation
+			if( isset( $this->request->data['Cancel'] ) ) {
+				$this->Jetons2->release( $dossier_id );
+				return $this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
+			if( !empty( $this->request->data ) ) {
+				$this->Cer93->Contratinsertion->begin();
+
+				// Modification des règles de validation
+				$this->Cer93->validate['date_annulation'] = array(
+					'notEmpty' => array(
+						'rule' => array( 'notEmpty' )
+					),
+					'date' => array(
+						'rule' => array( 'date' )
+					)
+				);
+				$this->Cer93->Contratinsertion->validate['motifannulation']['notEmpty'] = array(
+					'rule' => array( 'notEmpty' )
+				);
+
+				$success = $this->Cer93->Contratinsertion->saveAll( $this->request->data, array( 'atomic' => false, 'validate' => 'only' ) )
+					&& $this->Cer93->Contratinsertion->updateAllUnbound(
+						array(
+							'Contratinsertion.rg_ci' => null,
+							'Contratinsertion.decision_ci' => "'A'",
+							'Contratinsertion.datevalidation_ci' => null,
+							'Contratinsertion.motifannulation' => "'".Hash::get( $this->request->data, 'Contratinsertion.motifannulation' )."'"
+						),
+						array( 'Contratinsertion.id' => Hash::get( $contratinsertion, 'Contratinsertion.id' ) )
+					)
+					&& $this->Cer93->updateAllUnbound(
+						array(
+							'Cer93.positioncer' => "'99annule'",
+							'Cer93.date_annulation' => "'".date_cakephp_to_sql( Hash::get( $this->request->data, 'Cer93.date_annulation' ) )."'",
+							'Cer93.annulateur_id' => $this->Session->read( 'Auth.User.id' )
+						),
+						array( 'Cer93.id' => Hash::get( $contratinsertion, 'Cer93.id' ) )
+					)
+					&& $this->Cer93->Contratinsertion->updateRangsContratsPersonne( $personne_id );
+
+				if( $success ) {
+					$this->Cer93->Contratinsertion->commit();
+					$this->Jetons2->release( $dossier_id );
+					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+					return $this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
+				else {
+					$this->Cer93->Contratinsertion->rollback();
+					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+				}
+			}
+			else {
+				// Préparation des données pour le formulaire
+				if( Hash::get( $contratinsertion, 'Cer93.date_annulation' ) === null ) {
+					$contratinsertion['Cer93']['date_annulation'] = date( 'Y-m-d' );
+				}
+				// Affectation des données au formulaire
+				$this->request->data = $contratinsertion;
+			}
+
+			$contratinsertion = $this->Cer93->dataView( $id );
+			$options = $this->Cer93->optionsView();
+			$urlmenu = "/cers93/index/{$personne_id}";
+
+			$this->set( compact( 'dossierMenu', 'options', 'urlmenu', 'contratinsertion' ) );
 		}
 	}
 ?>

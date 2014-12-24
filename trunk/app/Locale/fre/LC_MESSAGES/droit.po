@@ -2820,6 +2820,9 @@ msgstr "Ajout d'un CER"
 msgid "Cers93:edit"
 msgstr "Modification d'un CER"
 
+msgid "Cers93:edit_apres_signature"
+msgstr "Modification d'un CER après signature"
+
 msgid "Cers93:signature"
 msgstr "Signature d'un CER"
 
