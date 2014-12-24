@@ -547,15 +547,17 @@
 						SET rg_ci = NULL".(!empty( $condition ) ? " WHERE {$condition}" : "" ).";";
 			$success = ( $this->query( $sql ) !== false );
 
+			$cg = Configure::read( 'Cg.departement' );
+
 			$sql = "UPDATE contratsinsertion
 						SET rg_ci = (
 							SELECT ( COUNT(contratsinsertionpcd.id) + 1 )
 								FROM contratsinsertion AS contratsinsertionpcd
 								WHERE contratsinsertionpcd.personne_id = contratsinsertion.personne_id
 									AND contratsinsertionpcd.id <> contratsinsertion.id
-									AND contratsinsertionpcd.decision_ci = 'V'
+									".( $cg == 93 ? "AND contratsinsertionpcd.decision_ci IN ( 'E', 'V' )" : "AND contratsinsertionpcd.decision_ci = 'V'" )."
 									AND contratsinsertionpcd.dd_ci IS NOT NULL
-									AND contratsinsertionpcd.datevalidation_ci IS NOT NULL
+									".( $cg == 93 ? "" : "AND contratsinsertionpcd.datevalidation_ci IS NOT NULL" )."
 									AND (
 										contratsinsertionpcd.dd_ci < contratsinsertion.dd_ci
 										OR (
@@ -568,20 +570,15 @@
 											AND contratsinsertionpcd.id < contratsinsertion.id
 										)
 									)
-									AND (
-										contratsinsertion.positioncer IS NULL
-										OR contratsinsertion.positioncer <> 'annule'
-									)
+									".( $cg == 93 ? "" : "AND ( contratsinsertionpcd.positioncer IS NULL OR contratsinsertionpcd.positioncer <> 'annule' )" )."
 						)
 						WHERE
 							contratsinsertion.dd_ci IS NOT NULL
-							AND contratsinsertion.datevalidation_ci IS NOT NULL
+							".( $cg == 93 ? "" : "AND contratsinsertion.datevalidation_ci IS NOT NULL" )."
 							".(!empty( $condition ) ? " AND {$condition}" : "" )."
-							AND contratsinsertion.decision_ci = 'V'
-							AND (
-								contratsinsertion.positioncer IS NULL
-								OR contratsinsertion.positioncer <> 'annule'
-							);";
+							".( $cg == 93 ? "AND contratsinsertion.decision_ci IN ( 'E', 'V' )" : "AND contratsinsertion.decision_ci = 'V'" )."
+							".( $cg == 93 ? "" : "AND ( contratsinsertion.positioncer IS NULL OR contratsinsertion.positioncer <> 'annule' )" )."
+							;";
 
 			$success = ( $this->query( $sql ) !== false ) && $success;
 

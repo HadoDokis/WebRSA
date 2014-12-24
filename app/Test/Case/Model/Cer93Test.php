@@ -297,8 +297,7 @@
 			);
 
 			$expected = array(
-				'Contratinsertion' =>
-				array(
+				'Contratinsertion' => array(
 					'id' => 2,
 					'personne_id' => 1,
 					'structurereferente_id' => 1,
@@ -368,8 +367,7 @@
 					'datetacitereconduction' => null,
 					'cumulduree' => null,
 				),
-				'Cer93' =>
-				array(
+				'Cer93' => array(
 					'id' => 2,
 					'contratinsertion_id' => 2,
 					'user_id' => 1,
@@ -417,11 +415,11 @@
 					'dateimpressiondecision' => NULL,
 					'observationdecision' => '',
 					'nomcom' => 'AUBERVILLIERS',
+					'date_annulation' => null,
+					'annulateur_id' => null
 				),
-				'Compofoyercer93' =>
-				array(
-					0 =>
-					array(
+				'Compofoyercer93' => array(
+					0 => array(
 						'qual' => 'MR',
 						'nom' => 'BUFFIN',
 						'prenom' => 'CHRISTIAN',
@@ -429,18 +427,15 @@
 						'rolepers' => 'DEM',
 					),
 				),
-				'Diplomecer93' =>
-				array(
-					0 =>
-					array(
+				'Diplomecer93' => array(
+					0 => array(
 						'id' => 4,
 						'cer93_id' => 2,
 						'name' => 'Diplôme d\'informatique',
 						'annee' => 2005,
 						'isetranger' => '0',
 					),
-					1 =>
-					array(
+					1 => array(
 						'id' => 3,
 						'cer93_id' => 2,
 						'name' => 'BAC',
@@ -448,10 +443,8 @@
 						'isetranger' => '0',
 					),
 				),
-				'Expprocer93' =>
-				array(
-					0 =>
-					array(
+				'Expprocer93' => array(
+					0 => array(
 						'id' => 3,
 						'cer93_id' => 2,
 						'metierexerce_id' => 2,
@@ -461,8 +454,7 @@
 						'nbduree' => NULL,
 						'typeduree' => '',
 					),
-					1 =>
-					array(
+					1 => array(
 						'id' => 4,
 						'cer93_id' => 2,
 						'metierexerce_id' => 1,
@@ -473,12 +465,9 @@
 						'typeduree' => '',
 					),
 				),
-				'Sujetcer93' =>
-				array(
-					'Sujetcer93' =>
-					array(
-						0 =>
-						array(
+				'Sujetcer93' => array(
+					'Sujetcer93' => array(
+						0 => array(
 							'id' => 3,
 							'cer93_id' => 2,
 							'sujetcer93_id' => 2,
@@ -488,8 +477,7 @@
 							'autrevaleur' => '',
 							'autresoussujet' => '',
 						),
-						1 =>
-						array(
+						1 => array(
 							'id' => 4,
 							'cer93_id' => 2,
 							'sujetcer93_id' => 3,
@@ -659,8 +647,7 @@
 			);
 
 			$expected = array(
-				'Cer93' =>
-				array(
+				'Cer93' => array(
 					'id' => 3,
 					'contratinsertion_id' => 3,
 					'user_id' => 1,
@@ -708,9 +695,10 @@
 					'dateimpressiondecision' => NULL,
 					'observationdecision' => '',
 					'nomcom' => 'AUBERVILLIERS',
+					'date_annulation' => null,
+					'annulateur_id' => null
 				),
-				'Contratinsertion' =>
-				array(
+				'Contratinsertion' => array(
 					'id' => 3,
 					'personne_id' => 1,
 					'structurereferente_id' => 1,
@@ -780,10 +768,8 @@
 					'datetacitereconduction' => null,
 					'cumulduree' => null,
 				),
-				'Compofoyercer93' =>
-				array(
-					0 =>
-					array(
+				'Compofoyercer93' => array(
+					0 => array(
 						'id' => 3,
 						'cer93_id' => 3,
 						'rolepers' => 'DEM',
@@ -793,10 +779,8 @@
 						'dtnai' => '1979-01-24',
 					),
 				),
-				'Diplomecer93' =>
-				array(
-					0 =>
-					array(
+				'Diplomecer93' => array(
+					0 => array(
 						'id' => 5,
 						'cer93_id' => 3,
 						'name' => 'Diplôme d\'informatique',
@@ -804,10 +788,8 @@
 						'isetranger' => '0',
 					),
 				),
-				'Expprocer93' =>
-				array(
-					0 =>
-					array(
+				'Expprocer93' => array(
+					0 => array(
 						'id' => 5,
 						'cer93_id' => 3,
 						'metierexerce_id' => 1,
@@ -818,15 +800,12 @@
 						'typeduree' => '',
 					),
 				),
-				'Sujetcer93' =>
-				array(
-					0 =>
-					array(
+				'Sujetcer93' => array(
+					0 => array(
 						'id' => 1,
 						'name' => 'Sujet 1',
 						'isautre' => '0',
-						'Cer93Sujetcer93' =>
-						array(
+						'Cer93Sujetcer93' => array(
 							'id' => 5,
 							'cer93_id' => 3,
 							'sujetcer93_id' => 1,
@@ -837,13 +816,11 @@
 							'autresoussujet' => '',
 						),
 					),
-					1 =>
-					array(
+					1 => array(
 						'id' => 2,
 						'name' => 'Sujet 2',
 						'isautre' => '0',
-						'Cer93Sujetcer93' =>
-						array(
+						'Cer93Sujetcer93' => array(
 							'id' => 6,
 							'cer93_id' => 3,
 							'sujetcer93_id' => 2,

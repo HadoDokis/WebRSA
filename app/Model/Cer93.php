@@ -146,6 +146,15 @@
 		 * @var array
 		 */
 		public $belongsTo = array(
+			'Annulateur' => array(
+				'className' => 'User',
+				'foreignKey' => 'annulateur_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Contratinsertion' => array(
 				'className' => 'Contratinsertion',
 				'foreignKey' => 'contratinsertion_id',

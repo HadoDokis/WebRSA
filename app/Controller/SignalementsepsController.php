@@ -140,7 +140,7 @@
 			$personne_id = $contratinsertion['Contratinsertion']['personne_id'];
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
-			$erreursCandidatePassage = $this->{$this->modelClass}->Dossierep->erreursCandidatePassage( $personne_id );
+			$erreursCandidatePassage = $this->{$this->modelClass}->Dossierep->getErreursCandidatePassage( $personne_id );
 
 			$dureeTolerance = Configure::read( $this->modelClass.'.dureeTolerance' );
 

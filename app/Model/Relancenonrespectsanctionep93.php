@@ -1198,7 +1198,7 @@
 		* @access public
 		*/
 		public function erreursPossibiliteAjout( $personne_id ) {
-			$erreurs = $this->Nonrespectsanctionep93->Dossierep->erreursCandidatePassage( $personne_id );
+			$erreurs = $this->Nonrespectsanctionep93->Dossierep->getErreursCandidatePassage( $personne_id );
 
 			if( empty( $erreurs ) ) {
 				// 0.1°) Il n'existe pas de dossier d'EP en cours pour la thématique "Demande de suspension"

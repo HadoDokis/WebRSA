@@ -243,13 +243,13 @@ CREATE UNIQUE INDEX cuis_emploiproposeromev3_id_idx ON cuis(emploiproposeromev3_
 
 SELECT add_missing_table_field ( 'public', 'periodesimmersioncuis66', 'affectationromev3_id', 'INTEGER' );
 ALTER TABLE  periodesimmersioncuis66 ALTER COLUMN affectationromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'periodesimmersioncuis66', ' periodesimmersioncuis66_affectationromev3_id_fkey', 'entreesromesv3', 'affectationromev3_id', false );
+SELECT add_missing_constraint ( 'public', 'periodesimmersioncuis66', 'periodesimmersioncuis66_affectationromev3_id_fkey', 'entreesromesv3', 'affectationromev3_id', false );
 DROP INDEX IF EXISTS  periodesimmersioncuis66_affectationromev3_id_idx;
 CREATE UNIQUE INDEX  periodesimmersioncuis66_affectationromev3_id_idx ON  periodesimmersioncuis66(affectationromev3_id);
 */
 SELECT add_missing_table_field ( 'public', 'personnespcgs66', 'categorieromev3_id', 'INTEGER' );
 ALTER TABLE  personnespcgs66 ALTER COLUMN categorieromev3_id SET DEFAULT NULL;
-SELECT add_missing_constraint ( 'public', 'personnespcgs66', ' personnespcgs66_categorieromev3_id_fkey', 'entreesromesv3', 'categorieromev3_id', false );
+SELECT add_missing_constraint ( 'public', 'personnespcgs66', 'personnespcgs66_categorieromev3_id_fkey', 'entreesromesv3', 'categorieromev3_id', false );
 DROP INDEX IF EXISTS  personnespcgs66_categorieromev3_id_idx;
 CREATE UNIQUE INDEX  personnespcgs66_categorieromev3_id_idx ON  personnespcgs66(categorieromev3_id);
 /*
@@ -277,6 +277,29 @@ ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail DROP DEFAULT;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail TYPE INTEGER USING CAST(categoriedetail AS INTEGER);
 ALTER TABLE personnespcgs66 ADD CONSTRAINT personnespcgs66_categoriedetail_fk FOREIGN KEY (categoriedetail) REFERENCES codesromemetiersdsps66(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail SET DEFAULT NULL;
+
+--------------------------------------------------------------------------------
+-- 20141222: CG 93, ajout de colonnes concernant l'annulation de CER
+--------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ( 'public', 'cers93', 'date_annulation', 'DATE' );
+ALTER TABLE  cers93 ALTER COLUMN date_annulation SET DEFAULT NULL;
+
+SELECT add_missing_table_field ( 'public', 'cers93', 'annulateur_id', 'INTEGER' );
+ALTER TABLE cers93 ALTER COLUMN annulateur_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_annulateur_id_fkey', 'users', 'annulateur_id', false );
+DROP INDEX IF EXISTS  cers93_annulateur_id_idx;
+CREATE INDEX cers93_annulateur_id_idx ON cers93(annulateur_id);
+
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_in_list_chk' );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( positioncer, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '99rejetecpdv', '04premierelecture', '05secondelecture', '07attavisep', '99rejete', '99valide', '99annule'] ) );
+
+-- FIXME: observationdecision n'est pas NULL dans certains cas lorsque l'on annule...mais il est à priori vide
+UPDATE cers93 SET observationdecision = NULL WHERE observationdecision IS NOT NULL AND ( TRIM( BOTH ' ' FROM observationdecision ) = '' );
+
+-- FIXME: ajouter ou 99annule... (très permissif)
+-- SELECT alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_observationdecision_chk' );
+-- ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHECK (observationdecision IS NULL OR positioncer IN( '99valide', '99rejete' ) );
 
 -- *****************************************************************************
 COMMIT;
