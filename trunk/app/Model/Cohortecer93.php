@@ -383,7 +383,14 @@
 					$Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 					$Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
 					$Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					$Personne->Foyer->Adressefoyer->join( 'NvTransfertpdv93', array( 'type' => 'LEFT OUTER' ) ),
+					$Personne->Foyer->Adressefoyer->join(
+						'NvTransfertpdv93', array(
+							'type' => 'LEFT OUTER',
+							'conditions' => array(
+								'NvTransfertpdv93.nv_orientstruct_id = Orientstruct.id'
+							)
+						)
+					),
 					$Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
 				),
 				'conditions' => $conditions,
