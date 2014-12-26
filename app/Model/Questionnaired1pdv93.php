@@ -324,7 +324,9 @@
 			);
 			foreach( $modelNames as $modelName ) {
 				foreach( $data[$modelName] as $field => $value ) {
-					$formData['Situationallocataire'][$field] = $value;
+					if( $field !== 'id' ) {
+						$formData['Situationallocataire'][$field] = $value;
+					}
 				}
 			}
 			$formData['Situationallocataire']['identifiantpe'] = $data['Historiqueetatpe']['identifiantpe'];
