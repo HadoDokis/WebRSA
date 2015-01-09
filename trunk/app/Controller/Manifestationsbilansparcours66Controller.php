@@ -295,7 +295,7 @@
 				}
 			}
 
-			if( empty( $this->request->data ) ) {
+			if( empty( $this->request->data ) && $this->action === 'edit' ) {
 				$this->request->data = $this->Manifestationbilanparcours66->find(
 					'first',
 					array(
