@@ -1,4 +1,4 @@
-<?php    
+<?php
     /**
      * Code source de la classe TauxcgscuisController.
      *
@@ -49,7 +49,7 @@
 				$this->Tauxcgcui->enums()
 			);
 			$this->set( compact( 'options' ) );
-			
+
 			// Affichage des valeurs non marchnades si le secteur choisi est de type non marchand
 			$valeursSecteurcui = $this->Tauxcgcui->Secteurcui->find(
 				'all',
@@ -65,8 +65,7 @@
 
 			$queryData = array(
 				'Tauxcgcui' => array(
-					'fields' => $this->Tauxcgcui->fields(),
-					'order' => array( 'Tauxcgcui.name ASC' )
+					'fields' => $this->Tauxcgcui->fields()
 				)
 			);
 			$this->_setOptions();
