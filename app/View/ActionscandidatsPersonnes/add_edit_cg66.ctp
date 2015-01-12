@@ -110,6 +110,8 @@
 				<br />
 				<strong>N° CAF/MSA : </strong><?php echo Set::classicExtract( $personne, 'Dossier.matricule' );?>
 				<br />
+				<strong>Date d'ouverture du droit : </strong><?php echo date_short( Hash::get( $personne, 'Dossier.dtdemrsa' ) );?>
+				<br />
 				<?php
 					if( Hash::get( $personne, 'Historiqueetatpe.etat' ) == 'inscription' ) {
 						$inscritPe = 'Oui';
