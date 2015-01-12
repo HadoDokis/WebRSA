@@ -103,8 +103,8 @@
 					$daterdv_from = Set::check( $this->request->data, 'Critererdv.daterdv_from' ) ? Set::extract( $this->request->data, 'Critererdv.daterdv_from' ) : strtotime( '-1 week' );
 					$daterdv_to = Set::check( $this->request->data, 'Critererdv.daterdv_to' ) ? Set::extract( $this->request->data, 'Critererdv.daterdv_to' ) : strtotime( 'now' );
 				?>
-				<?php echo $this->Form->input( 'Critererdv.daterdv_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'selected' => $daterdv_from ) );?>
-				<?php echo $this->Form->input( 'Critererdv.daterdv_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ), 'minYear' => date( 'Y' ) - 120, 'maxYear' => date( 'Y' ) + 5,  'selected' => $daterdv_to ) );?>
+				<?php echo $this->Form->input( 'Critererdv.daterdv_from', array( 'label' => 'Du (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' )+1, 'minYear' => 2009, 'selected' => $daterdv_from ) );?>
+        		<?php echo $this->Form->input( 'Critererdv.daterdv_to', array( 'label' => 'Au (inclus)', 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date( 'Y' ) + 1, 'selected' => $daterdv_to ) );?>
 			</fieldset>
 	</fieldset>
 
