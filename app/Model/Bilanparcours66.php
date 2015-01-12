@@ -1802,5 +1802,29 @@
 			return $options;
 
 		}
+		
+		/**
+		 * Permet d'obtenir le nombre de manifestations liées aux bilans d'une personne.
+		 * 
+		 * @param integer $personne_id
+		 * @return integer
+		 */
+		public function getManifestationsCount( $personne_id ){
+			$count = $this->find(
+				'count', 
+				array(
+					'conditions' => array( 
+						'Bilanparcours66.personne_id' => $personne_id,
+						'Bilanparcours66.proposition' => 'audition'
+					), 
+					'joins' => array(
+						$this->join('Manifestationbilanparcours66', array('type' => 'INNER'))
+					),
+					'contain' => false
+				) 
+			);
+
+			return $count;
+		}
 	}
 ?>
