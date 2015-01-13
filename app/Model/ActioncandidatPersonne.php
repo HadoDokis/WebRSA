@@ -214,6 +214,28 @@
 			)
 		);
 
+		/**
+		 * __construct($id = false, $table = null, $ds = null)
+		 * 
+		 * Rend la saisie d'un Nom du programme obligatoire si Actions Région : formation est selectionné
+		 * 
+		 * @param array $id
+		 * @param unknown_type $table
+		 * @param unknown_type $ds
+		 */
+		public function __construct($id = false, $table = null, $ds = null){
+            parent::__construct($id, $table, $ds);
+
+            // Rend la saisie d'un Nom du programme obligatoire si Actions Région : formation est selectionné
+            if( Configure::read( 'Cg.departement' ) == 66 ) {
+                $this->validate['progfichecandidature66_id'] = array(
+                    'notEmptyIf' => array(
+                        'rule' => array( 'notEmptyIf', 'actioncandidat_id', true, (array)Configure::read('ActioncandidatPersonne.Actioncandidat.typeregionId') ),
+                        'message' => 'Champ obligatoire'
+                    )
+                );
+            }
+        }
 
 		/**
 		*   BeforeSave
