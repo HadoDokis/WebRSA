@@ -597,6 +597,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Situationallocataire' => array(
+				'className' => 'Situationallocataire',
+				'foreignKey' => 'personne_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 		public $hasAndBelongsToMany = array(
 			'Actioncandidat' => array(
