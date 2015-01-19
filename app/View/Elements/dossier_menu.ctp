@@ -162,7 +162,7 @@
 				);
 
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
-					$subAllocataire['Accompagnement du parcours']["Bilan du parcours ({$personne['Bilanparcours66']['nb_manifestations']})"] = array( 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] ) );
+					$subAllocataire['Accompagnement du parcours']['Bilan du parcours'] = array( 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'index', $personne['id'] ) );
 				}
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {

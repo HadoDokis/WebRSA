@@ -1809,22 +1809,28 @@
 		 * @param integer $personne_id
 		 * @return integer
 		 */
-		public function getManifestationsCount( $personne_id ){
-			$count = $this->find(
-				'count', 
+		public function sqNbManifestations( $fieldId = 'Bilanparcours66.id', $fieldName = null, $modelAlias = null ){
+			$alias = Inflector::tableize( $this->Manifestationbilanparcours66->alias );
+
+			$modelAlias = ( is_null( $modelAlias ) ? $this->alias : $modelAlias );
+
+			$sq = $this->Manifestationbilanparcours66->sq(
 				array(
-					'conditions' => array( 
-						'Bilanparcours66.personne_id' => $personne_id,
-						'Bilanparcours66.proposition' => 'audition'
-					), 
-					'joins' => array(
-						$this->join('Manifestationbilanparcours66', array('type' => 'INNER'))
+					'fields' => array(
+						"COUNT( {$alias}.id )"
 					),
-					'contain' => false
-				) 
+					'alias' => $alias,
+					'conditions' => array(
+						"{$alias}.bilanparcours66_id = $fieldId"
+					)
+				)
 			);
 
-			return $count;
+			if( !is_null( $fieldName ) ) {
+				$sq = "( {$sq} ) AS \"{$modelAlias}__{$fieldName}\"";
+			}
+
+			return $sq;
 		}
 	}
 ?>

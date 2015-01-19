@@ -51,7 +51,8 @@
 		/**
 		 *
 		 */
-		protected function _setOptions( $options = array() ) {
+		protected function _setOptions( $options = array(), $params = array() ) {
+			$params += array( 'find' => true );
 
 			$options = Hash::merge( $options, $this->Bilanparcours66->enums() );
 			$typevoie = $this->Option->typevoie();
@@ -61,38 +62,44 @@
 
 			$options = Hash::insert( $options, 'typevoie', $typevoie );
 
-			$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
-// 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
-			$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptions();
-			$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
-			$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+			if( $params['find'] === true ) {
+				$options[$this->modelClass]['structurereferente_id'] = $this->{$this->modelClass}->Structurereferente->listOptions();
+	// 			$options[$this->modelClass]['referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+				$options[$this->modelClass]['referent_id'] = $this->Bilanparcours66->Referent->listOptions();
+				$options[$this->modelClass]['nvsansep_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+				$options[$this->modelClass]['nvparcours_referent_id'] = $this->{$this->modelClass}->Referent->find( 'list' );
+			}
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
 
 			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
 
-			$typesorients = $this->Typeorient->find('list');
-			$this->set(compact('typesorients'));
-			$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
-			$this->set(compact('structuresreferentes'));
-			$autresstructuresreferentes = $this->{$this->modelClass}->Structurereferente->listOptions();
-			$this->set(compact('autresstructuresreferentes'));
+			if( $params['find'] === true ) {
+				$typesorients = $this->Typeorient->find('list');
+				$this->set(compact('typesorients'));
+				$structuresreferentes = $this->Bilanparcours66->Structurereferente->find('list');
+				$this->set(compact('structuresreferentes'));
+				$autresstructuresreferentes = $this->{$this->modelClass}->Structurereferente->listOptions();
+				$this->set(compact('autresstructuresreferentes'));
+			}
 
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->enums() );
 			$options = Set::merge( $options, $this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->enums() );
 
 			$options = Set::merge( $options, $this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->enums() );
 
-			$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
-			$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
-			$options['Bilanparcours66']['orientationpro_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['Emploi'] );
-
-			$options['Bilanparcours66']['nvtypeorient_id'] = $this->Typeorient->listOptionsUnderParent();
-			$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
-			$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
-			$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
-
-			$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
+			if( $params['find'] === true ) {
+				$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
+				$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
+				$options['Bilanparcours66']['orientationpro_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['Emploi'] );
+	
+				$options['Bilanparcours66']['nvtypeorient_id'] = $this->Typeorient->listOptionsUnderParent();
+				$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
+				$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
+				$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
+	
+				$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
+			}
 
 			$this->set( compact( 'options' ) );
 		}
@@ -243,6 +250,200 @@
 				$this->set( 'referent', $referent );
 			}
 			$this->render( 'ajaxstruc', 'ajax' );
+		}
+		
+			/**
+		 *
+		 * @param integer $personne_id
+		 */
+		public function test( $personne_id = null ) {
+			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
+
+			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
+
+			//$temp=array(111212,75994,110472,15391,46371,47728,128369,54232,46452,40434,155068,31292);
+
+			$cacheKey = Inflector::underscore( $this->Bilanparcours66->useDbConfig ).'_Bilanparcours66_'.Inflector::underscore( __METHOD__ );
+			$query = Cache::read( $cacheKey );
+
+			if( $query === false ) {
+				// Jointure spéciale sur Dossierep suivant la thématique
+				$joinSaisinebilanparcoursep66 = $this->Bilanparcours66->Saisinebilanparcoursep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+				$joinDefautinsertionep66 = $this->Bilanparcours66->Defautinsertionep66->join( 'Dossierep', array( 'type' => 'LEFT OUTER' ) );
+
+				$joinDossierep = $joinSaisinebilanparcoursep66;
+				$joinDossierep['conditions'] = array(
+					'OR' => array(
+						$joinSaisinebilanparcoursep66['conditions'],
+						$joinDefautinsertionep66['conditions']
+					)
+				);
+
+				$query = array(
+					'fields' => array(
+						'Bilanparcours66.id',
+						'Bilanparcours66.datebilan',
+						'Bilanparcours66.positionbilan',
+						'Bilanparcours66.proposition',
+						'Bilanparcours66.examenaudition',
+						'Bilanparcours66.examenauditionpe',
+						'Bilanparcours66.motifannulation',
+						'Bilanparcours66.choixparcours',
+						'Serviceinstructeur.lib_service',
+						'Structurereferente.lib_struc',
+						'Propotypeorient.lib_type_orient',
+						'Propostructurereferente.lib_struc',
+						'Avissaisinebilanparcoursep66.decision',
+						'Avistypeorient.lib_type_orient',
+						'Avisstructurereferente.lib_struc',
+						'Decisionsaisinebilanparcoursep66.decision',
+						'Decisiontypeorient.lib_type_orient',
+						'Decisionstructurereferente.lib_struc',
+						'Decisionsaisinebilanparcoursep66.structurereferente_id',
+						// -----------------------------------------------------
+						'Avisdefautinsertionep66.id',
+						'Avisdefautinsertionep66.decision',
+						'Avisdefautinsertionep66.decisionsup',
+						'Decisiondefautinsertionep66.id',
+						'Decisiondefautinsertionep66.decision',
+						'Decisiondefautinsertionep66.decisionsup',
+						'Dossierpcg66.etatdossierpcg',
+						'Decisionpdo.libelle',
+						'Defautinsertionep66.dateimpressionconvoc',
+				
+						$this->Bilanparcours66->Referent->sqVirtualField( 'nom_complet' ),
+						$this->Bilanparcours66->Fichiermodule->sqNbFichiersLies( $this->Bilanparcours66, 'nb_fichiers' ),
+						$this->Bilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
+					),
+					'joins' => array(
+						$this->Bilanparcours66->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Serviceinstructeur', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Saisinebilanparcoursep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Defautinsertionep66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->join( 'Dossierpcg66', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Bilanparcours66->Dossierpcg66->join(
+							'Decisiondossierpcg66',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisiondossierpcg66.id IN ( ' .$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->sqDernier( 'Dossierpcg66.id' ). ' )'
+								)
+							)
+						),
+						$this->Bilanparcours66->Dossierpcg66->Decisiondossierpcg66->join( 'Decisionpdo', array( 'type' => 'LEFT OUTER' ) ),
+
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->join(
+								'Typeorient',
+								array(
+									'type' => 'LEFT OUTER'
+								)
+							),
+							array( 'Typeorient' => 'Propotypeorient' )
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->join(
+								'Structurereferente',
+								array(
+									'type' => 'LEFT OUTER'
+								)
+							),
+							array( 'Structurereferente' => 'Propostructurereferente' )
+						),
+						
+						$joinDossierep,
+						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->join( 
+							'Passagecommissionep', 
+							array( 
+								'type' => 'LEFT OUTER',
+								'conditions' => array( 'Passagecommissionep.id IN (' . $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier() . ')' )
+							) 
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
+								'Decisionsaisinebilanparcoursep66',
+								array(
+									'type' => 'LEFT OUTER',
+									'conditions' => array(
+										'Decisionsaisinebilanparcoursep66.etape' => 'ep'
+									)
+								)
+							),
+							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66' )
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
+								'Typeorient',
+								array( 'type' => 'LEFT OUTER' )
+							),
+							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66', 'Typeorient' => 'Avistypeorient' )
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
+								'Structurereferente',
+								array( 'type' => 'LEFT OUTER' )
+							),
+							array( 'Decisionsaisinebilanparcoursep66' => 'Avissaisinebilanparcoursep66', 'Structurereferente' => 'Avisstructurereferente' )
+						),
+						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
+							'Decisionsaisinebilanparcoursep66',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisionsaisinebilanparcoursep66.etape' => 'cg'
+								)
+							)
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
+								'Typeorient',
+								array( 'type' => 'LEFT OUTER' )
+							),
+							array( 'Typeorient' => 'Decisiontypeorient' )
+						),
+						array_words_replace(
+							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->Decisionsaisinebilanparcoursep66->join(
+								'Structurereferente',
+								array( 'type' => 'LEFT OUTER' )
+							),
+							array( 'Structurereferente' => 'Decisionstructurereferente' )
+						),
+						//$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join( 'Decisiondefautinsertionep66', array( 'type' => 'LEFT OUTER' ) ), // Nécéssite Passagecommissionep.id
+						array_words_replace(
+							$this->Bilanparcours66->Defautinsertionep66->Dossierep->Passagecommissionep->join(
+								'Decisiondefautinsertionep66',
+								array(
+									'type' => 'LEFT OUTER',
+									'conditions' => array(
+										'Decisiondefautinsertionep66.etape' => 'ep'
+									)
+								)
+							),
+							array( 'Decisiondefautinsertionep66' => 'Avisdefautinsertionep66' )
+						),
+						$this->Bilanparcours66->Defautinsertionep66->Dossierep->Passagecommissionep->join(
+							'Decisiondefautinsertionep66',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Decisiondefautinsertionep66.etape' => 'cg'
+								)
+							)
+						),
+					),
+					'conditions' => array(),
+					'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
+				);
+				Cache::write( $cacheKey, $query );
+			}
+			
+			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
+			
+			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $query );
+			
+			$this->_setOptions( array(), array( 'find' => false ) );
+			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}
 
 		/**
