@@ -557,15 +557,6 @@
 			}
 
 			$personnes = $this->Foyer->Personne->find( 'all', $query );
-			
-			// Ajout d'informations pour le CG 66
-			if( Configure::read( 'Cg.departement' ) == 66){
-				foreach( $personnes as $key => $personne ) {
-					if( in_array( Hash::get( $personne, 'Prestation.rolepers' ), array( '', 'DEM', 'CJT' ) ) ) {
-						$personnes[$key]['Bilanparcours66']['nb_manifestations'] = $this->Foyer->Personne->Bilanparcours66->getManifestationsCount( $personne['Personne']['id'] );
-					}
-				}
-			}
 
 			// Reformattage pour la vue
 			$dossier['Foyer']['Personne'] = Hash::extract( $personnes, '{n}.Personne' );
