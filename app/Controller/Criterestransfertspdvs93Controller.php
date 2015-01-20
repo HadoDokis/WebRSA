@@ -60,9 +60,10 @@
 		public $uses = array( 'Criteretransfertpdv93', 'Dossier', 'Option' );
 
 		/**
-		 * Permet de limiter les résultats de la recherche à ceux dont la nouvelle
-		 * orientation est dans la structure référente de l'utilisateur connecté
-		 * lorsque celui-ci est un externe (CG 93).
+		 * Permet de limiter les résultats de la recherche à ceux dont l'adresse
+		 * de rang 02 uniquement est sur une des zones géographiques couverte par
+		 * la structure référente de l'utilisateur connecté lorsque celui-ci est
+		 * un externe (CG 93).
 		 *
 		 * @param array $query
 		 * @return array
@@ -72,8 +73,7 @@
 				$type = $this->Session->read( 'Auth.User.type' );
 
 				if( stristr( $type, 'externe_' ) !== false ) {
-					$structurereferente_id = $this->InsertionsAllocataires->structuresreferentes( array( 'ids' => true ) );
-					$query['conditions'][] = array( 'VxStructurereferente.id' => $structurereferente_id );
+					$query['conditions']['Adressefoyer.rgadr'] = '02';
 				}
 			}
 
