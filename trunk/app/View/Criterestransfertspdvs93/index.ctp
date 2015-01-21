@@ -59,9 +59,9 @@
 					'Adresse précédente',
 					'Allocataire',
 					__d( 'prestation', 'Prestation.rolepers' ),
-					'Date de transfert',
-					'Structure référente source',
-					'Structure référente cible',
+					__d( 'criterestransfertspdvs93', 'Transfertpdv93.created' ), //'Date de transfert',
+					__d( 'criterestransfertspdvs93', 'VxStructurereferente.lib_struc' ), //'Structure référente source',
+					__d( 'criterestransfertspdvs93', 'NvStructurereferente.lib_struc' ), //'Structure référente cible',
 					'Actions',
 					array( 'Informations complémentaires' => array( 'class' => 'innerTableHeader noprint' ) )
 				)
@@ -111,3 +111,14 @@
 		}
 	}
 ?>
+<?php if( isset( $results ) ):?>
+<ul class="actionMenu">
+	<li><?php
+		echo $this->Xhtml->exportLink(
+			'Télécharger le tableau',
+			array( 'action' => 'exportcsv' ) + Hash::flatten( $this->request->data, '__' ),
+			( $this->Permissions->check( $this->request->params['controller'], 'exportcsv' ) && count( $results ) > 0 )
+		);
+	?></li>
+</ul>
+<?php endif;?>
