@@ -3031,6 +3031,9 @@ msgstr "Recherche par allocataires sortants, intra-département (CG 93)"
 msgid "Criterestransfertspdvs93:index"
 msgstr "Moteur de recherche des allocataires sortants, intra-département"
 
+msgid "Criterestransfertspdvs93:exportcsv"
+msgstr "Export CSV des résultats du moteur de recherche des allocataires sortants, intra-département"
+
 ###############################################################################
 
 msgid "Module:Demenagementshorsdpts"

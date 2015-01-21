@@ -29,6 +29,7 @@
 		 * @var array
 		 */
 		public $components = array(
+			'Allocataires',
 			'Search.Filtresdefaut' => array(
 				'index',
 			),
@@ -50,7 +51,11 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array();
+		public $helpers = array(
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			)
+		);
 
 		/**
 		 * Modèles utilisés.
@@ -123,6 +128,44 @@
 
 			$this->set( 'structuresreferentesparcours', $this->InsertionsAllocataires->structuresreferentes( array( 'optgroup' => true ) ) );
 			$this->set( 'referentsparcours', $this->InsertionsAllocataires->referents( array( 'prefix' => true ) ) );
+		}
+
+		/**
+		 * Export CSV des résultats de la recherche.
+		 */
+		public function exportcsv() {
+			$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+			$query = $this->Criteretransfertpdv93->search(
+				(array)$this->Session->read( 'Auth.Zonegeographique' ),
+				$this->Session->read( 'Auth.User.filtre_zone_geo' ),
+				$search,
+				null
+			);
+			$query = $this->_completeSearchQuery( $query );
+
+			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
+			unset( $query['limit'] );
+
+			$results = $this->Dossier->find( 'all', $query );
+			$options = $this->Allocataires->options();
+
+			$this->set( compact( 'results', 'options' ) );
+			$this->layout = null;
+
+			/*$search = (array)Hash::get( (array)Hash::expand( $this->request->params['named'], '__' ), 'Search' );
+			$query = $this->Demenagementhorsdpt->search( $search );
+			$query = $this->_completeQuery( $query );
+			$query = $this->Components->load( 'Search.SearchPaginator' )->setPaginationOrder( $query );
+			unset( $query['limit'] );
+
+			$results = $this->Personne->find( 'all', $query );
+			$options = Hash::merge(
+				$this->Allocataires->options(),
+				$this->Demenagementhorsdpt->options( array( 'allocataire' => false ) )
+			);
+
+			$this->set( compact( 'results', 'options' ) );
+			$this->layout = null;*/
 		}
 	}
 ?>
