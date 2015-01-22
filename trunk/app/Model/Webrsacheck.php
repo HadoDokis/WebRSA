@@ -299,7 +299,8 @@
                 'Rendezvous.Ajoutpossible.statutrdv_id' => 'integer',
                 'Generationdossierpcg.Orgtransmisdossierpcg66.id' => 'isarray',
 				'Nonorganismeagree.Structurereferente.id' => 'isarray',
-                'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray'
+                'ActioncandidatPersonne.Actioncandidat.typeregionPoursuitecgId' => 'isarray',
+                'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' => 'string',
 			);
 		}
 

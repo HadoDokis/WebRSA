@@ -976,4 +976,13 @@
 			'Donnees.nb_fichiers_lies', // Nb Fichiers Liés des dsp
 		)
 	) );
+        
+	/**
+	 * Lorsque un CER est complexe, il ne sera clôt que si il dépasse la 
+         * date de cloture + la valeur de cette variable
+	 *
+	 * Voir le document app/docs/Documentation administrateurs.odt, partie
+	 * "Intervalles PostgreSQL"
+	 */
+	Configure::write( 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe', '3 months' );
 ?>
