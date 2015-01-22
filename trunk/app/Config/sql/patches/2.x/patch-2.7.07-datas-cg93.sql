@@ -11,6 +11,15 @@ SET default_with_oids = false;
 BEGIN;
 -- *****************************************************************************
 
+-- Ajout de données manquantes à un dossier d'EP:
+INSERT INTO nonrespectssanctionseps93 ( dossierep_id, contratinsertion_id, origine, rgpassage, sortienvcontrat, active, created, modified )
+	VALUES ( 3634, 40970, 'contratinsertion', 1, '0', '1', '2014-03-04 14:47:27', '2014-03-04 14:47:27' );
+
+INSERT INTO relancesnonrespectssanctionseps93 ( nonrespectsanctionep93_id, numrelance, dateimpression, daterelance, user_id )
+	VALUES
+	( ( SELECT id FROM nonrespectssanctionseps93 WHERE dossierep_id = 3634 LIMIT 1 ), 1, '2013-09-13', '2013-09-13', 27 ),
+	( ( SELECT id FROM nonrespectssanctionseps93 WHERE dossierep_id = 3634 LIMIT 1 ), 2, '2013-10-11', '2013-10-11', 27 );
+
 -- Suppression des dossiers d'EP pour lesquels il n'existe plus d'entrée dans la
 -- table de la thématique. Corrige le ticket #7623.
 DELETE FROM dossierseps WHERE id IN (
@@ -48,8 +57,8 @@ DELETE FROM dossierseps WHERE id IN (
 					AND NOT EXISTS( SELECT id FROM sanctionsrendezvouseps58 WHERE sanctionsrendezvouseps58.dossierep_id = dossierseps.id )
 				)
 			)
-			-- Et qui ne sont pas encore attachés à une commission d'EP ou dont la commission n'a pas encore pris de décision ou dont le dernier passage en commission est un report ou une annulation
-			AND NOT EXISTS( SELECT * FROM passagescommissionseps WHERE passagescommissionseps.dossierep_id = dossierseps.id AND etatdossierep IN ( 'decisionep', 'decisioncg', 'traite' ) )
+			-- Et qui ne sont pas encore attachés à une commission d'EP
+			AND NOT EXISTS( SELECT * FROM passagescommissionseps WHERE passagescommissionseps.dossierep_id = dossierseps.id )
 );
 
 -- *****************************************************************************
