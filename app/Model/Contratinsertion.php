@@ -1000,6 +1000,26 @@
 				// 3. CER qui devraient être en "Fin de contrat"
 				'fincontrat' => array(
 					$this->alias.'.decision_ci' => array( 'E', 'V' ),
+                                        'OR' => array(
+                                            $this->alias.'.forme_ci' => 'S', // Contrat simple
+                                            array( // OR
+                                                $this->alias.'.forme_ci' => 'C', // ( Contrat complexe AND
+                                                // Date de début de contrat > Date de cloture des droits + x mois )
+                                                "{$this->alias}.dd_ci > ( 
+                                                    (
+                                                        SELECT situationsdossiersrsa.dtclorsa
+                                                                FROM personnes
+                                                                        INNER JOIN foyers ON ( personnes.foyer_id = foyers.id )
+                                                                        INNER JOIN dossiers ON ( foyers.dossier_id = dossiers.id )
+                                                                        INNER JOIN situationsdossiersrsa ON ( dossiers.id = situationsdossiersrsa.dossier_id )
+                                                                WHERE
+                                                                        personnes.id = {$this->alias}.personne_id
+                                                                LIMIT 1
+                                                    )
+                                                    + INTERVAL '".Configure::read( 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe' )."'
+                                                )::DATE"
+                                            )
+                                        ),
 					'EXISTS (
 						SELECT *
 							FROM personnes
@@ -1394,6 +1414,7 @@
 
 			if( Configure::read( 'Cg.departement' ) == 66 ) {
 				$keys[] = 'Contratinsertion.Cg66.updateEncoursbilan';
+				$keys[] = 'Contratinsertion.Cg66.toleranceDroitClosCerComplexe';
 			}
 
 			return $this->_checkPostgresqlIntervals( $keys );
