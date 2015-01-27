@@ -153,7 +153,7 @@
 					array_words_replace( $Dossier->Foyer->join( 'Adressefoyer', array( 'type' => 'INNER' ) ), array( 'Adressefoyer' => 'VxAdressefoyer' ) ),
 					$Dossier->Foyer->join( 'Personne', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-					array_words_replace( $Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ), array( 'Adresse' => 'VxAdresse' ) ),
+					array_words_replace( $Dossier->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ), array( 'Adressefoyer' => 'VxAdressefoyer', 'Adresse' => 'VxAdresse' ) ),
 					$Dossier->Foyer->Personne->join( 'Calculdroitrsa', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->join( 'Orientstruct', array( 'type' => 'INNER' ) ),
 					$Dossier->Foyer->Personne->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) ),
