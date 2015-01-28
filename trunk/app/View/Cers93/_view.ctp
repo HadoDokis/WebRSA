@@ -366,4 +366,3 @@
 		echo $this->Xform->fieldValue( 'Contratinsertion.date_saisi_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci') ) );
 	?>
 </fieldset>
-<?php debug( $contratinsertion );?>
