@@ -52,7 +52,7 @@
 			array(
 				'Dossierpcg66.etatdossierpcg' => array( 'type' => 'hidden' ),
 				'Dossierpcg66.typepdo_id' => array( 'label' => ( __d( 'dossierpcg66', 'Dossierpcg66.typepdo_id' ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
-				'Dossierpcg66.datereceptionpdo' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.datereceptionpdo' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+				'Dossierpcg66.datereceptionpdo' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.datereceptionpdo' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+1, 'minYear'=> 2009, 'empty' => false ),
 				'Dossierpcg66.originepdo_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.originepdo_id' ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Dossierpcg66.orgpayeur' => array( 'label' =>  __d( 'dossierpcg66', 'Dossierpcg66.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
 				'Dossierpcg66.serviceinstructeur_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.serviceinstructeur_id' ) ), 'type' => 'select', 'options' => $serviceinstructeur, 'empty' => true )
@@ -120,7 +120,7 @@ document.observe( "dom:loaded", function() {
 				array(
                     'Dossierpcg66.poledossierpcg66_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.poledossierpcg66_id' ) ), 'type' => 'select', 'options' => $polesdossierspcgs66, 'empty' => true ),
 					'Dossierpcg66.user_id' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.user_id' ) ), 'type' => 'select', 'options' => $gestionnaires ),
-					'Dossierpcg66.dateaffectation' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.dateaffectation' ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true, 'maxYear' => date( 'Y' ) + 2 ),
+					'Dossierpcg66.dateaffectation' => array( 'label' =>  ( __d( 'dossierpcg66', 'Dossierpcg66.dateaffectation' ) ), 'type' => 'date', 'dateFormat' => 'DMY', 'empty' => true, 'maxYear' => date( 'Y' ) + 1, 'minYear'=> 2009 ),
 				),
 				array(
 					'domain' => $domain,
