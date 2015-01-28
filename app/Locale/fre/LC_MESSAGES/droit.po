@@ -2838,6 +2838,9 @@ msgstr "Suppression d'un CER"
 msgid "Cers93:impressionDecision"
 msgstr "Impression de la décision d'un CER"
 
+msgid "Cers93:cancel"
+msgstr "Annuler le CER"
+
 ###############################################################################
 
 msgid "Module:Cohortescers93"

@@ -294,12 +294,10 @@ CREATE INDEX cers93_annulateur_id_idx ON cers93(annulateur_id);
 SELECT public.alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_in_list_chk' );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_in_list_chk CHECK ( cakephp_validate_in_list( positioncer, ARRAY['00enregistre', '01signe', '02attdecisioncpdv', '03attdecisioncg', '99rejetecpdv', '04premierelecture', '05secondelecture', '07attavisep', '99rejete', '99valide', '99annule'] ) );
 
--- FIXME: observationdecision n'est pas NULL dans certains cas lorsque l'on annule...mais il est à priori vide
 UPDATE cers93 SET observationdecision = NULL WHERE observationdecision IS NOT NULL AND ( TRIM( BOTH ' ' FROM observationdecision ) = '' );
 
--- FIXME: ajouter ou 99annule... (très permissif)
--- SELECT alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_observationdecision_chk' );
--- ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHECK (observationdecision IS NULL OR positioncer IN( '99valide', '99rejete' ) );
+SELECT alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_observationdecision_chk' );
+ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHECK (observationdecision IS NULL OR positioncer IN( '99valide', '99rejete', '99annule' ) );
 
 -- *****************************************************************************
 COMMIT;
