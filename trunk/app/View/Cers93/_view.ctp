@@ -44,6 +44,27 @@
         </tr>
     </table>
 </fieldset>
+<?php if( $contratinsertion['Contratinsertion']['decision_ci'] === 'A' ):?>
+	<fieldset>
+		<legend>CER annulé</legend>
+		<table class="wide noborder cers93">
+			<tr>
+				<td class="wide noborder">
+					<strong>Utilisateur ayant annulé : </strong><?php echo h( $contratinsertion['Cer93']['Annulateur']['nom_complet'] ); ?>
+				</td>
+				<td class="wide noborder">
+					<strong>Date d'annulation : </strong><?php echo date_short( $contratinsertion['Cer93']['date_annulation'] ); ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="wide noborder" colspan="2">
+					<strong>Raison de l'annulation : </strong><br/>
+					<?php echo nl2br( h( $contratinsertion['Contratinsertion']['motifannulation'] ) ); ?>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+<?php endif;?>
 <fieldset>
 	<legend>État civil</legend>
 	 <table class="wide noborder">
@@ -345,3 +366,4 @@
 		echo $this->Xform->fieldValue( 'Contratinsertion.date_saisi_ci', date_short( Set::classicExtract( $contratinsertion, 'Contratinsertion.date_saisi_ci') ) );
 	?>
 </fieldset>
+<?php debug( $contratinsertion );?>

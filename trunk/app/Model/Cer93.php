@@ -1154,6 +1154,9 @@
 					),
 					'contain' => array(
 						'Cer93' => array(
+							'Annulateur' => array(
+								'fields' => array( 'nom_complet' )
+							),
 							'Compofoyercer93',
 							'Diplomecer93',
 							'Expprocer93',
