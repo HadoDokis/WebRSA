@@ -379,9 +379,11 @@
 				}
 
 				$this->Dossier->begin();
-				$saved = $this->Personne->saveAll( $this->request->data, array( 'atomic' => false ) );
+				$this->Dossier->id = $dossier_id;
+				$savePersonne = $this->Personne->saveAll( $this->request->data, array( 'atomic' => false ) );				
+				$saveDossier = $this->Dossier->saveField( 'dtdemrsa', $this->request->data['Dossier']['dtdemrsa'], true );
 
-				if( $saved ) {
+				if( $savePersonne && $saveDossier ) {
 					$this->Dossier->commit();
 					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
@@ -393,6 +395,7 @@
 			}
 			else {
 				$this->request->data = $personne;
+				$this->request->data['Dossier']['dtdemrsa'] = $dossimple['Dossier']['dtdemrsa'];
 			}
 			$this->_setOptions();
 			$this->set( 'personne', $personne );
