@@ -299,6 +299,12 @@ UPDATE cers93 SET observationdecision = NULL WHERE observationdecision IS NOT NU
 SELECT alter_table_drop_constraint_if_exists( 'public', 'cers93', 'cers93_positioncer_observationdecision_chk' );
 ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHECK (observationdecision IS NULL OR positioncer IN( '99valide', '99rejete', '99annule' ) );
 
+--------------------------------------------------------------------------------
+-- 20150129: CG 66, ajout d'une valeur d'enum pour les decisions EP
+--------------------------------------------------------------------------------
+
+SELECT alter_enumtype('TYPE_DECISIONDEFAUTINSERTIONEP66', ARRAY['suspensionnonrespect', 'suspensiondefaut', 'maintien', 'maintienorientsoc', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte']);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

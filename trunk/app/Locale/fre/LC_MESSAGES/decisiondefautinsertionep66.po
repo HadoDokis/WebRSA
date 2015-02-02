@@ -28,6 +28,9 @@ msgstr "Suspension suite à non respect du contrat"
 msgid "ENUM::DECISION::maintien"
 msgstr "Maintien du versement de l'allocation"
 
+msgid "ENUM::DECISION::maintienorientsoc"
+msgstr "Maintien de l'orientation sociale"
+
 msgid "ENUM::DECISION::reorientationprofverssoc"
 msgstr "Réorientation du PROFESSIONNEL vers le SOCIAL"
 

@@ -99,7 +99,8 @@
 		 */
 		public $decisionsEplParcours = array(
 			'reorientationsocversprof',
-			'reorientationprofverssoc'
+			'reorientationprofverssoc',
+			'maintienorientsoc'
 		);
 
 		/**
