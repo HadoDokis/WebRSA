@@ -252,11 +252,11 @@
 			$this->render( 'ajaxstruc', 'ajax' );
 		}
 		
-			/**
+		/**
 		 *
 		 * @param integer $personne_id
 		 */
-		public function test( $personne_id = null ) {
+		public function index( $personne_id = null ) {
 			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
@@ -443,122 +443,6 @@
 			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $query );
 			
 			$this->_setOptions( array(), array( 'find' => false ) );
-			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
-		}
-
-		/**
-		 *
-		 * @param integer $personne_id
-		 */
-		public function index( $personne_id = null ) {
-			$this->set( 'dossierMenu', $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) ) );
-
-// 			$conditions = array( 'Orientstruct.date_valid IS NOT NULL', 'Orientstruct.structurereferente_id IS NOT NULL' );
-// 			if( !empty( $personne_id ) ) {
-// 				$conditions['Orientstruct.personne_id'] =  $personne_id;
-// 			}
-/*
-			$nborientstruct = $this->Bilanparcours66->Orientstruct->find(
-				'count',
-				array(
-					'conditions' => $conditions
-				)
-			);*/
-
-			$this->_setEntriesAncienDossier( $personne_id, 'Bilanparcours66' );
-
-			$querydata = array(
-				'contain' => array(
-					'Personne' => array(
-						'fields' => array( 'qual', 'nom', 'prenom' ),
-						'Foyer' => array(
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01',
-									'Adressefoyer.typeadr' => 'D'
-								),
-								'Adresse'
-							)
-						)
-					),
-					'Structurereferente',
-					'Serviceinstructeur',
-					'Referent' => array(
-						'Structurereferente'
-					),
-					'Orientstruct' => array(
-						'Typeorient',
-						'Structurereferente'
-					),
-					'Contratinsertion' => array(
-						'Structurereferente' => array(
-							'Typeorient',
-						),
-					),
-					'Saisinebilanparcoursep66' => array(
-						'Dossierep' => array(
-							'Passagecommissionep' => array(
-								'fields' => array(
-									'etatdossierep'
-								),
-								'Decisionsaisinebilanparcoursep66' => array(
-									'order' => 'Decisionsaisinebilanparcoursep66.created ASC'
-								)
-							)
-						)
-					),
-                    'Dossierpcg66' => array(
-                        'Decisiondossierpcg66' => array(
-                            'order' => array( 'Decisiondossierpcg66.created DESC' ),
-                            'Decisionpdo'
-                        )
-                    ),
-					'Defautinsertionep66' => array(
-						'Dossierep' => array(
-							'Passagecommissionep' => array(
-								'fields' => array(
-									'etatdossierep'
-								),
-								'Decisiondefautinsertionep66' => array(
-                                    'order' => 'Decisiondefautinsertionep66.created ASC'
-                                )
-							)
-						)
-					),
-					'Fichiermodule'
-				),
-				'conditions' => array(
-					'Bilanparcours66.personne_id' => $personne_id
-				),
-				'order' => array( 'Bilanparcours66.datebilan DESC', 'Bilanparcours66.id DESC' )
-			);
-
-			$this->set( 'options', $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->enums() );
-
-			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $querydata );
-
-			// INFO: containable ne permet pas de passer dans les virtualFields maison
-			foreach( $bilansparcours66 as $key => $bilanparcours66 ) {
-				$bilansparcours66[$key]['Referent']['nom_complet'] = implode(
-					' ',
-					array(
-						$bilansparcours66[$key]['Referent']['qual'],
-						$bilansparcours66[$key]['Referent']['nom'],
-						$bilansparcours66[$key]['Referent']['prenom']
-					)
-				);
-
-				$bilansparcours66[$key]['Personne']['nom_complet'] = implode(
-					' ',
-					array(
-						@$bilansparcours66[$key]['Orientstruct']['Personne']['qual'],
-						@$bilansparcours66[$key]['Orientstruct']['Personne']['nom'],
-						@$bilansparcours66[$key]['Orientstruct']['Personne']['prenom']
-					)
-				);
-
-			}
-			$this->_setOptions();
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}
 
