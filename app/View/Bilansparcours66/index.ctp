@@ -1,373 +1,253 @@
 <?php $personne_id = Set::classicExtract( $this->request->params, 'pass.0' ); ?>
+<?php
+	if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ){
+		$this->pageTitle = 'Bilan de parcours de la personne';
+	}
+	else {
+		$this->pageTitle = 'Fiche de saisine de la personne';
+	}
+?>
+<h1><?php echo $this->pageTitle;?></h1>
 
-<?php if( empty( $personne_id ) ):?>
-	<h1> <?php echo $this->pageTitle = 'Écran de synthèse des bilans de parcours'; ?> </h1>
 	<?php
-		unset( $options['Bilanparcours66']['saisineepparcours'] );
-		echo $this->Default2->index(
-			$bilansparcours66,
-			array(
-				'Bilanparcours66.created' => array( 'type' => 'date' ),
-				// Personne
-				'Personne.nom_complet' => array( 'type' => 'text' ),
-				'Orientstruct.Personne.Foyer.Adressefoyer.0.Adresse.nomcom' => array( 'type' => 'text' ),
-				// Orientation
-				'Orientstruct.date_valid',
-				'Orientstruct.Typeorient.lib_type_orient',
-				'Orientstruct.Structurereferente.lib_struc',
-				// Contrat d'insertion
-				'Contratinsertion.date_saisi_ci',
-				'Contratinsertion.Structurereferente.Typeorient.lib_type_orient',
-				'Contratinsertion.Structurereferente.lib_struc',
-				'Bilanparcours66.saisineepparcours' => array( 'type' => 'boolean' ),
-				'Saisinebilanparcoursep66.Dossierep.etapedossierep'
-			),
-			array(
-				'actions' => array(
-					'Bilansparcours66::view' => array( 'label' => 'Voir', 'url' => array( 'controller' => 'bilansparcours66', 'action' => 'index', '#Orientstruct.personne_id#' ) )
-				),
-				'groupColumns' => array(
-					'Orientation' => array( 1, 2, 3 ),
-					'Contrat d\'insertion' => array( 4, 5, 6 ),
-					'Équipe pluridisciplinaire' => array( 7, 8 ),
-				),
-				'paginate' => 'Bilanparcours66',
-				'options' => $options
-			)
-		);
-	?>
-<?php else:?>
-	<?php
-		if( Configure::read( 'nom_form_bilan_cg' ) == 'cg66' ){
-			$this->pageTitle = 'Bilan de parcours de la personne';
+		echo $this->element( 'ancien_dossier' );
+
+		echo "<ul class='actions'><li class='add'>";
+			echo $this->Default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
+		echo "</li></ul>";
+
+		if( empty( $bilansparcours66 ) ){
+			echo '<p class="notice">Aucun bilan de parcours présent pour cette personne.</p>';
 		}
-		else {
-			$this->pageTitle = 'Fiche de saisine de la personne';
-		}
+		else{
+			echo '<table class="tooltips default2"  id="searchResults"><thead><tr>';
+				echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.datebilan' )."</th>";
+				echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.positionbilan' )."</th>";
+				echo "<th>MSP</th>";
+				echo "<th>".__d( 'structurereferente', 'Structurereferente.lib_struc' )."</th>";
+				echo "<th>Nom du référent</th>";
+				echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.proposition' )."</th>";
+				echo "<th>Motif de la saisine</th>";
+				echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.propref' )."</th>";
+				echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep' )."</th>";
+				echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg' )."</th>";
+				echo "<th colspan='7'>Actions</th>";
+				echo "</tr></thead><tbody>";
 
-	?>
-	<h1><?php echo $this->pageTitle;?></h1>
-
-		<?php
-			echo $this->element( 'ancien_dossier' );
-
-			echo "<ul class='actions'><li class='add'>";
-				echo $this->Default2->button('add', array('controller'=>'bilansparcours66', 'action'=>'add', $personne_id));
-			echo "</li></ul>";
-
-			if( empty( $bilansparcours66 ) ){
-				echo '<p class="notice">Aucun bilan de parcours présent pour cette personne.</p>';
-			}
-			else{
-
-// 					$pagination = $this->Xpaginator->paginationBlock( 'Bilanparcours66', $this->passedArgs );
-// 					echo $pagination;
-
-				echo '<table class="tooltips default2"  id="searchResults"><thead><tr>';
-					echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.datebilan' )."</th>";
-					echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.positionbilan' )."</th>";
-					echo "<th>MSP</th>";
-					echo "<th>".__d( 'structurereferente', 'Structurereferente.lib_struc' )."</th>";
-					echo "<th>Nom du référent</th>";
-					echo "<th>".__d( 'bilanparcours66', 'Bilanparcours66.proposition' )."</th>";
-					echo "<th>Motif de la saisine</th>";
-					echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.propref' )."</th>";
-					echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.avisep' )."</th>";
-					echo "<th colspan='2'>".__d( 'saisinebilanparcoursep66', 'Saisinebilanparcoursep66.decisioncg' )."</th>";
-					echo "<th colspan='7'>Actions</th>";
-					echo "</tr></thead><tbody>";
-
-				foreach($bilansparcours66 as $index => $bilanparcours66) {
-
-					$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
-							<tbody>
-								<tr>
-									<th>Raison annulation</th>
-									<td>'.$bilanparcours66['Bilanparcours66']['motifannulation'].'</td>
-								</tr>
-							</tbody>
-						</table>';
- //debug( $bilanparcours66 );
-					$nbFichiersLies = 0;
-					$nbFichiersLies = ( isset( $bilanparcours66['Fichiermodule'] ) ? count( $bilanparcours66['Fichiermodule'] ) : 0 );
-
-					$positionbilan = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.positionbilan' );
-					$block = true;
-					if( $positionbilan == 'annule' ){
-						$block = false;
+			foreach($bilansparcours66 as $key => $bilanparcours66) {
+				
+				// Infobulle
+				$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
+						<tbody>
+							<tr>
+								<th>Raison annulation</th>
+								<td>'.$bilanparcours66['Bilanparcours66']['motifannulation'].'</td>
+							</tr>
+						</tbody>
+					</table>';
+				
+				echo "<tr>\n";
+				
+				// Date du bilan de parcours, Position du bilan ...
+				$data = array(
+					date_short( $bilanparcours66['Bilanparcours66']['datebilan'] ),
+					value( $options['Bilanparcours66']['positionbilan'], $bilanparcours66['Bilanparcours66']['positionbilan'] ),
+					$bilanparcours66['Serviceinstructeur']['lib_service'], // MSP
+					$bilanparcours66['Structurereferente']['lib_struc'], // Type de structure
+					$bilanparcours66['Referent']['nom_complet'], // Nom du référent
+				); 
+				
+				// Type de commission
+				$data[5] = $bilanparcours66['Bilanparcours66']['proposition'] ? value( $options['Bilanparcours66']['proposition'], $bilanparcours66['Bilanparcours66']['proposition'] ) : '&nbsp;';
+				
+				// Motif de la saisine
+				$data[6] = 
+					( $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) ? 
+						value( $options['Bilanparcours66']['examenauditionpe'], $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) : 
+					(( $bilanparcours66['Bilanparcours66']['examenaudition'] ) ? 
+						value( $options['Bilanparcours66']['examenaudition'], $bilanparcours66['Bilanparcours66']['examenaudition'] ) :
+					(( $bilanparcours66['Bilanparcours66']['choixparcours'] ) ? 
+						value( $options['Bilanparcours66']['choixparcours'], $bilanparcours66['Bilanparcours66']['choixparcours'] ) :
+					'&nbsp;'));		
+				
+				// Proposition du referent	
+				$data[7] = ( $bilanparcours66['Propotypeorient']['lib_type_orient'] ) ?
+					array( $bilanparcours66['Propotypeorient']['lib_type_orient'], $bilanparcours66['Propostructurereferente']['lib_struc'] ) :
+					'&nbsp;'
+				;
+				
+				// Avis de l'EP
+				if ( $bilanparcours66['Avisdefautinsertionep66']['decision'] ){
+					$avis = '';
+					
+					if ($bilanparcours66['Avisdefautinsertionep66']['decisionsup']){
+						$avis = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Avisdefautinsertionep66']['decisionsup'] ) . ' - ';
 					}
-
-					// Activation du bouton Manifestaitons uniquement si ep audition
-					$epparcours = true;
-					$proposition = Set::classicExtract( $bilanparcours66, 'Bilanparcours66.proposition' );
-					$datecourrierconvoc = Set::classicExtract( $bilanparcours66, 'Defautinsertionep66.dateimpressionconvoc' );
-					if( in_array( $proposition, array( 'audition', 'auditionpe' ) ) && !empty( $datecourrierconvoc ) ){
-						$epparcours = false;
-					}
-
-					echo "<tr class=\"dynamic\" id=\"innerTableTrigger{$index}\">";
-						echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.datebilan', array( 'type' => 'date', 'tag' => 'td', 'options' => $options ) );
-						echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.positionbilan', array(  'tag' => 'td', 'options' => $options ) );
-						echo $this->Type2->format( $bilanparcours66, 'Serviceinstructeur.lib_service', array( 'tag' => 'td', 'options' => $options ) );
-						echo $this->Type2->format( $bilanparcours66, 'Structurereferente.lib_struc', array( 'tag' => 'td', 'options' => $options ) );
-						echo $this->Type2->format( $bilanparcours66, 'Referent.nom_complet', array( 'type' => 'text', 'tag' => 'td', 'options' => $options ) );
-						echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.proposition', array( 'tag' => 'td', 'options' => $options ) );
-
-						if ( $bilanparcours66['Bilanparcours66']['proposition'] == 'audition' && !empty( $bilanparcours66['Bilanparcours66']['examenaudition'] ) ) {
-							echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.examenaudition', array( 'tag' => 'td', 'options' => $options ) );
-						}
-						elseif ( $bilanparcours66['Bilanparcours66']['proposition'] == 'auditionpe' && !empty( $bilanparcours66['Bilanparcours66']['examenauditionpe'] ) ) {
-							echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.examenauditionpe', array( 'tag' => 'td', 'options' => $options ) );
-						}
-						elseif ( $bilanparcours66['Bilanparcours66']['proposition'] == 'parcours' ) {
-// 								$bilanparcours66['Bilanparcours66']['choixparcours'] = 'maintien';
-							echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
-						}
-						else {
-							echo $this->Type2->format( $bilanparcours66, 'Bilanparcours66.choixparcours', array( 'tag' => 'td', 'options' => $options ) );
-						}
-
-						// FIXME: en cas de plusieurs passages ?
-						$thematique = array_values( Hash::filter( (array)Set::classicExtract( $bilanparcours66, '{s}.Dossierep.themeep' ) ) );
-						$thematique = @$thematique[0];
-
-						if( $thematique == 'saisinesbilansparcourseps66' ) {
-							// Proposition du référent
-							echo $this->Xhtml->tag(
-								'td',
-								( !empty( $bilanparcours66['Saisinebilanparcoursep66']['typeorient_id'] ) ) ? Set::enum( Set::classicExtract( $bilanparcours66, 'Saisinebilanparcoursep66.typeorient_id' ), $typesorients ) : null
-							);
-							echo $this->Xhtml->tag(
-								'td',
-								( !empty( $bilanparcours66['Saisinebilanparcoursep66']['structurereferente_id'] ) ) ? Set::enum( Set::classicExtract( $bilanparcours66, 'Saisinebilanparcoursep66.structurereferente_id' ), $structuresreferentes ) : null
-							);
-
-							// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
-							$iDernierpassage = count( $bilanparcours66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'] ) - 1;
-							foreach( array( 0, 1 ) as $niveauDecision ) {
-								if( !isset( $bilanparcours66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision] ) ) {
-									echo '<td colspan="2"></td>';
-								}
-								else {
-									$decision = $bilanparcours66['Saisinebilanparcoursep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisionsaisinebilanparcoursep66'][$niveauDecision];
-
-									if( in_array( $decision['decision'], array( 'maintien', 'annule', 'reporte' ) ) ) {
-										echo $this->Xhtml->tag(
-											'td',
-											__d( 'decisionsaisinebilanparcoursep66', 'ENUM::DECISION::'.$decision['decision'], true ),
-											array(
-												'colspan' => 2
-											)
-										);
-									}
-									else { // reorientation
-										echo $this->Xhtml->tag(
-											'td',
-											Set::enum( $decision['typeorient_id'], $typesorients )
-										);
-										echo $this->Xhtml->tag(
-											'td',
-											Set::enum( $decision['structurereferente_id'], $structuresreferentes )
-										);
-									}
-								}
-							}
-						}
-						else if( $thematique == 'defautsinsertionseps66' ) {
-							// Proposition du référent
-							echo '<td colspan="2"></td>';
-
-							// Avis de l'EP, décision du CG - FIXME: passage 0 ? voir le tri
-							$iDernierpassage = count( $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'] ) - 1;
-							foreach( array( 0, 1 ) as $niveauDecision ) {
-
-								if( !isset( $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision] ) ) {
-                                    if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
-                                        echo $this->Xhtml->tag(
-                                            'td',
-                                            'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'],
-                                            array(
-                                                'colspan' => 2
-                                            )
-                                        );
-                                    }
-                                    else {
-									    echo '<td colspan="2"></td>';
-                                    }
-								}
-								else {
-									$decision = $bilanparcours66['Defautinsertionep66']['Dossierep']['Passagecommissionep'][$iDernierpassage]['Decisiondefautinsertionep66'][$niveauDecision];
-
-									if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'ep' ) {
-
-										if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && empty( $decision['decisionsup'] ) ) {
-											echo $this->Xhtml->tag(
-												'td',
-												__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
-												array(
-													'colspan' => 2
-												)
-											);
-										}
-										else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && !empty( $decision['decisionsup'] ) ) {
-											echo $this->Xhtml->tag(
-												'td',
-												__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decisionsup'] ).' - <br />'.__d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ),
-												array(
-													'colspan' => 2
-												)
-											);
-										}
-
-									}
-									else if( isset( $decision['decision'] ) && !empty( $decision['decision'] ) && $decision['etape'] == 'cg' ) {
-										if( in_array( $decision['decision'], array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ) ) {
-											if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
-                                                $decisionAffichee = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] ).' <br /><br />'.'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'];
-                                            }
-                                            else {
-                                                $decisionAffichee = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::'.$decision['decision'] );
-                                            }
-											echo $this->Xhtml->tag(
-												'td',
-												$decisionAffichee,
-												array(
-													'colspan' => 2
-												)
-											);
-										}
-										else {
-											//TODO: récupérer les décisions émises par le dossier PCG
-                                            if( !empty( $bilanparcours66['Dossierpcg66'] ) && $bilanparcours66['Dossierpcg66'][0]['etatdossierpcg'] == 'transmisop' ) {
-                                                echo $this->Xhtml->tag(
-                                                    'td',
-                                                    'CGA : '.$bilanparcours66['Dossierpcg66'][0]['Decisiondossierpcg66'][0]['Decisionpdo']['libelle'],
-                                                    array(
-                                                        'colspan' => 2
-                                                    )
-                                                );
-                                            }
-                                            else {
-                                                echo '<td colspan="2"></td>';
-                                            }
-										}
-									}
-									else { // reorientationprofverssoc, reorientationsocversprof
-										echo $this->Xhtml->tag(
-											'td',
-											Set::enum( $decision['typeorient_id'], $typesorients )
-										);
-										echo $this->Xhtml->tag(
-											'td',
-											Set::enum( $decision['structurereferente_id'], $structuresreferentes )
-										);
-									}
-								}
-							}
-						}
-						else { // Sans passage en EP
-							echo '<td colspan="2"></td>'; // Proposition du référent
-							echo '<td colspan="2"></td>'; // Avis de l'EP
-    						echo '<td colspan="2"></td>'; // Décision du CG
-						}
-
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'view',
-								array( 'controller' => 'bilansparcours66', 'action' => 'view',
-								Set::classicExtract( $bilanparcours66, 'Bilanparcours66.id' ) ),
-								array(
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'bilansparcours66', 'view', $dossierMenu ) == 1 )
-										&& $block
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'edit',
-								array( 'controller' => 'bilansparcours66', 'action' => 'edit',
-								Set::classicExtract( $bilanparcours66, 'Bilanparcours66.id' ) ),
-								array(
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'bilansparcours66', 'edit', $dossierMenu ) == 1 )
-										&& $block
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'print',
-								array( 'controller' => 'bilansparcours66', 'action' => 'impression',
-								Set::classicExtract( $bilanparcours66, 'Bilanparcours66.id' ) ),
-								array(
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'bilansparcours66', 'impression', $dossierMenu ) == 1 )
-										&& $block
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'manifestation',
-								array( 'controller' => 'manifestationsbilansparcours66', 'action' => 'index',
-								$bilanparcours66['Bilanparcours66']['id'] ),
-								array(
-									'label' => 'Manifestations',
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'manifestationsbilansparcours66', 'index', $dossierMenu ) == 1 )
-										&& $block
-										&& !$epparcours
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'cancel',
-								array( 'controller' => 'bilansparcours66', 'action' => 'cancel',
-								Set::classicExtract( $bilanparcours66, 'Bilanparcours66.id' ) ),
-								array(
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'bilansparcours66', 'cancel', $dossierMenu ) == 1 )
-										&& $block
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$this->Default2->button(
-								'filelink',
-								array( 'controller' => 'bilansparcours66', 'action' => 'filelink',
-								Set::classicExtract( $bilanparcours66, 'Bilanparcours66.id' ) ),
-								array(
-									'enabled' => (
-										( $this->Permissions->checkDossier( 'bilansparcours66', 'filelink', $dossierMenu ) == 1 )
-									)
-								)
-							)
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							'('.$nbFichiersLies.')'
-						);
-						echo $this->Xhtml->tag(
-							'td',
-							$innerTable,
-							array( 'class' => 'innerTableCell noprint' )
-						);
-					echo "</tr>";
+					
+					$avis .= __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Avisdefautinsertionep66']['decision'] );
+					$data[8] = $avis;
 				}
-				echo "</tbody></table>";
+				elseif ( in_array( $bilanparcours66['Avissaisinebilanparcoursep66']['decision'], array( 'maintien', 'annule', 'reporte' ) ) ){
+					$data[8] = value($options['Decisionsaisinebilanparcoursep66']['decision'], $bilanparcours66['Avissaisinebilanparcoursep66']['decision']);
+				}
+				elseif ( $bilanparcours66['Avistypeorient']['lib_type_orient'] ){
+					$data[8] = array( $bilanparcours66['Avistypeorient']['lib_type_orient'], $bilanparcours66['Avisstructurereferente']['lib_struc'] );
+				}
+				else{
+					$data[8] = '&nbsp;';
+				}
+				
+				
+				// Decision du CG
+				if ($bilanparcours66['Decisiondefautinsertionep66']['decision']){
+					$avis = __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decision'] );
+					
+					if ($bilanparcours66['Decisiondefautinsertionep66']['decisionsup']){
+						$avis .= __d( 'decisiondefautinsertionep66', 'ENUM::DECISION::' . $bilanparcours66['Decisiondefautinsertionep66']['decisionsup'] ) . ' - ';
+					}
+					
+					if ($bilanparcours66['Decisionpdo']['libelle']){
+						$avis .= '<br /><br />CGA : ' . $bilanparcours66['Decisionpdo']['libelle'];
+					}
+					
+					$data[9] = $avis;
+				}
+				elseif ( in_array( $bilanparcours66['Decisionsaisinebilanparcoursep66']['decision'], array( 'maintien', 'annule', 'reporte' ) ) ){
+					$data[9] = value($options['Decisionsaisinebilanparcoursep66']['decision'], $bilanparcours66['Decisionsaisinebilanparcoursep66']['decision']);
+				}
+				elseif ( $bilanparcours66['Decisiontypeorient']['lib_type_orient'] ){
+					$data[9] = array( $bilanparcours66['Decisiontypeorient']['lib_type_orient'], $bilanparcours66['Decisionstructurereferente']['lib_struc'] );
+				}
+				else{
+					$data[9] = '&nbsp;';
+				}
+				
+				$block = !( $bilanparcours66['Bilanparcours66']['positionbilan'] == 'annule' );
+				$epparcours = !( in_array( $bilanparcours66['Bilanparcours66']['proposition'], array( 'audition', 'auditionpe' ) ) && !empty( $bilanparcours66['Defautinsertionep66']['dateimpressionconvoc'] ) );
+
+				foreach($data as $key => $val){
+					if ( is_array($val) ){
+						echo '<td>' . $val[0] . '</td>' . '<td>' . $val[1] . '</td>';
+					}
+					else{
+						$colspan = '';
+						
+						if ($key >= 7){
+							$colspan = ' colspan="2"';
+						}
+						
+						if (!$val) $val = '&nbsp;';
+						
+						echo '<td' . $colspan . '>'.$val.'</td>';
+					}
+				}
+				
+				echo $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'view',
+						array( 'controller' => 'bilansparcours66', 'action' => 'view',
+						$bilanparcours66['Bilanparcours66']['id']),
+						array(
+							'enabled' => (
+								( $this->Permissions->checkDossier( 'bilansparcours66', 'view', $dossierMenu ) == 1 )
+								&& $block
+							)
+						)
+					)
+				);
+				echo $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'edit',
+						array( 'controller' => 'bilansparcours66', 'action' => 'edit',
+						$bilanparcours66['Bilanparcours66']['id']),
+						array(
+							'enabled' => (
+								( $this->Permissions->checkDossier( 'bilansparcours66', 'edit', $dossierMenu ) == 1 )
+								&& $block
+							)
+						)
+					)
+				);
+				echo $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'print',
+						array( 'controller' => 'bilansparcours66', 'action' => 'impression',
+						$bilanparcours66['Bilanparcours66']['id']),
+						array(
+							'enabled' => (
+								( $this->Permissions->checkDossier( 'bilansparcours66', 'impression', $dossierMenu ) == 1 )
+								&& $block
+							)
+						)
+					)
+				);
+				
+				$enabled = (( $this->Permissions->checkDossier( 'manifestationsbilansparcours66', 'index', $dossierMenu ) == 1 )
+								&& $block
+								&& !$epparcours
+				);
+				
+				$manif = $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'manifestation',
+						array( 'controller' => 'manifestationsbilansparcours66', 'action' => 'index',
+						$bilanparcours66['Bilanparcours66']['id'] ),
+						array(
+							'label' => 'Manifestations',
+							'enabled' => $enabled
+						)
+					)
+				);
+				
+				// Ajout du nombre de manifestations
+				$cutPos = ( $enabled ) ? strpos($manif, '</a>') : strpos($manif, '</span>');
+				
+				echo substr($manif, 0, $cutPos) . '&nbsp;(' . $bilanparcours66['Bilanparcours66']['nb_manifestations'] . ')' . substr($manif, $cutPos);
+				
+				echo $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'cancel',
+						array( 'controller' => 'bilansparcours66', 'action' => 'cancel',
+						$bilanparcours66['Bilanparcours66']['id']),
+						array(
+							'enabled' => (
+								( $this->Permissions->checkDossier( 'bilansparcours66', 'cancel', $dossierMenu ) == 1 )
+								&& $block
+							)
+						)
+					)
+				);
+				echo $this->Xhtml->tag(
+					'td',
+					$this->Default2->button(
+						'filelink',
+						array( 'controller' => 'bilansparcours66', 'action' => 'filelink',
+						$bilanparcours66['Bilanparcours66']['id']),
+						array(
+							'enabled' => (
+								( $this->Permissions->checkDossier( 'bilansparcours66', 'filelink', $dossierMenu ) == 1 )
+							)
+						)
+					)
+				);
+				echo $this->Xhtml->tag(
+					'td',
+					'('.$bilanparcours66['Fichiermodule']['nb_fichiers'].')'
+				);
+				echo $this->Xhtml->tag(
+					'td',
+					$innerTable,
+					array( 'class' => 'innerTableCell noprint' )
+				);
+				
+				echo "</tr>\n";
+					
 			}
-		?>
-<?php endif;?>
+			echo "</tbody></table>";
+		}
+	?>
