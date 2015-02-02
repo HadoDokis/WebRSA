@@ -8,6 +8,7 @@
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
 	App::uses('AppController', 'Controller');
+	App::uses( 'Departement', 'Utility' );
 
 	/**
 	 * La classe OrientsstructsController ...
@@ -195,6 +196,9 @@
 						}
 
 						$results[$key]['Orientstruct']['rgorient'] = $rgorient;
+					}
+					elseif ( $departement == 66 ){
+						$results[$key]['Orientstruct']['rgorient'] = Departement::getTypeorientName($results, $key);
 					}
 					else {
 						$results[$key]['Orientstruct']['rgorient'] = ( $results[$key]['Orientstruct']['rgorient'] == 1 ? 'Première orientation' : 'Réorientation' );

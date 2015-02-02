@@ -144,13 +144,14 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				],
 				[
 					'reorientationprofverssoc',
-					'reorientationsocversprof'
+					'reorientationsocversprof',
+					'maintienorientsoc'
 				],
 				false
 			);
 
 			$( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ).observe( 'change', function() {
-				if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
+				if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'maintienorientsoc' ) {
 					$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
 				}
 				else {
@@ -158,7 +159,7 @@ echo '<table id="Decisiondefautinsertionep66" class="tooltips">
 				}
 			} );
 
-			if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' ) {
+			if ( $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationprofverssoc' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'reorientationsocversprof' || $F( 'Decisiondefautinsertionep66<?php echo $i;?>Decision' ) == 'maintienorientsoc' ) {
 				$( 'Decisiondefautinsertionep66<?php echo $i;?>Decisionsup' ).show();
 			}
 			else {

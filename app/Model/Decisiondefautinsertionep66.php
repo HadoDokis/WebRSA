@@ -106,13 +106,13 @@
 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof', 'maintienorientsoc' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof' ) ),
+					'rule' => array( 'notEmptyIf', 'decision', true, array( 'reorientationprofverssoc', 'reorientationsocversprof', 'maintienorientsoc' ) ),
 					'message' => 'Champ obligatoire',
 				),
 				'dependentForeignKeys' => array(
