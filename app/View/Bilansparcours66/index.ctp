@@ -35,6 +35,22 @@
 				echo "</tr></thead><tbody>";
 
 			foreach($bilansparcours66 as $key => $bilanparcours66) {
+				$positionBilan = value( $options['Bilanparcours66']['positionbilan'], $bilanparcours66['Bilanparcours66']['positionbilan'] );
+				
+				// On choisit le commentaire selon si c'est une saisine ou defautinsertion
+				$commentaire = 
+					!empty( $bilanparcours66['Decisionsaisinebilanparcoursep66']['commentaire'] ) ? 
+					$bilanparcours66['Decisionsaisinebilanparcoursep66']['commentaire'] :
+					$bilanparcours66['Decisiondefautinsertionep66']['commentaire']
+				;
+				
+				// On affiche le commentaire dans l'infobulle que si la positionbilan est à Annulé
+				$commentairePositionBilan = 
+					( in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne' ) ) ) ?
+					'</tr><tr>
+					<th>Commentaire&nbsp;annulation&nbsp;EP</th>
+					<td>'.$commentaire.'</td>' : ''
+				;
 				
 				// Infobulle
 				$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
@@ -42,6 +58,7 @@
 							<tr>
 								<th>Raison annulation</th>
 								<td>'.$bilanparcours66['Bilanparcours66']['motifannulation'].'</td>
+							'.$commentairePositionBilan.'
 							</tr>
 						</tbody>
 					</table>';
@@ -51,7 +68,7 @@
 				// Date du bilan de parcours, Position du bilan ...
 				$data = array(
 					date_short( $bilanparcours66['Bilanparcours66']['datebilan'] ),
-					value( $options['Bilanparcours66']['positionbilan'], $bilanparcours66['Bilanparcours66']['positionbilan'] ),
+					$positionBilan,
 					$bilanparcours66['Serviceinstructeur']['lib_service'], // MSP
 					$bilanparcours66['Structurereferente']['lib_struc'], // Type de structure
 					$bilanparcours66['Referent']['nom_complet'], // Nom du référent
