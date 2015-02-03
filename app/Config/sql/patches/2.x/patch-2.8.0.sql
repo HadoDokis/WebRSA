@@ -252,16 +252,36 @@ ALTER TABLE  personnespcgs66 ALTER COLUMN categorieromev3_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'personnespcgs66', 'personnespcgs66_categorieromev3_id_fkey', 'entreesromesv3', 'categorieromev3_id', false );
 DROP INDEX IF EXISTS  personnespcgs66_categorieromev3_id_idx;
 CREATE UNIQUE INDEX  personnespcgs66_categorieromev3_id_idx ON  personnespcgs66(categorieromev3_id);
-/*
+
 --------------------------------------------------------------------------------
 -- 2. CG 93, Tableau "Expériences professionnelles significatives" du CER
 --------------------------------------------------------------------------------
 
-SELECT add_missing_table_field ( 'public', 'expsproscers93', 'entreeromev3_id', 'INTEGER' );
+/*SELECT add_missing_table_field ( 'public', 'expsproscers93', 'entreeromev3_id', 'INTEGER' );
 ALTER TABLE expsproscers93 ALTER COLUMN entreeromev3_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_entreeromev3_id_fkey', 'entreesromesv3', 'entreeromev3_id', false );
 DROP INDEX IF EXISTS expsproscers93_entreeromev3_id_idx;
 CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);*/
+
+--------------------------------------------------------------------------------
+-- 3. CG 93, Partie "Avez-vous trouvé un emploi ?" > "Si oui, veuillez préciser " du CER
+--------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ( 'public', 'cers93', 'emptrouvromev3_id', 'INTEGER' );
+ALTER TABLE cers93 ALTER COLUMN emptrouvromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_emptrouvromev3_id_fkey', 'entreesromesv3', 'emptrouvromev3_id', false );
+DROP INDEX IF EXISTS cers93_emptrouvromev3_id_idx;
+CREATE UNIQUE INDEX cers93_emptrouvromev3_id_idx ON cers93(emptrouvromev3_id);
+
+--------------------------------------------------------------------------------
+-- 4. CG 93, Partie "Votre contrat porte sur" > logiquement lorsque l'on sélectionne "L'Emploi" du CER
+--------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ( 'public', 'cers93', 'sujetromev3_id', 'INTEGER' );
+ALTER TABLE cers93 ALTER COLUMN sujetromev3_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'cers93', 'cers93_sujetromev3_id_fkey', 'entreesromesv3', 'sujetromev3_id', false );
+DROP INDEX IF EXISTS cers93_sujetromev3_id_idx;
+CREATE UNIQUE INDEX cers93_sujetromev3_id_idx ON cers93(sujetromev3_id);
 
 --------------------------------------------------------------------------------
 -- 20141215: CG 66, matérialisation des liaisons entre personnespcgs66 et les
@@ -270,11 +290,13 @@ CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreer
 
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral DROP DEFAULT;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral TYPE INTEGER USING CAST(categoriegeneral AS INTEGER);
+SELECT alter_table_drop_constraint_if_exists( 'public', 'personnespcgs66', 'personnespcgs66_categoriegeneral_fk' );
 ALTER TABLE personnespcgs66 ADD CONSTRAINT personnespcgs66_categoriegeneral_fk FOREIGN KEY (categoriegeneral) REFERENCES codesromesecteursdsps66(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriegeneral SET DEFAULT NULL;
 
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail DROP DEFAULT;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail TYPE INTEGER USING CAST(categoriedetail AS INTEGER);
+SELECT alter_table_drop_constraint_if_exists( 'public', 'personnespcgs66', 'personnespcgs66_categoriedetail_fk' );
 ALTER TABLE personnespcgs66 ADD CONSTRAINT personnespcgs66_categoriedetail_fk FOREIGN KEY (categoriedetail) REFERENCES codesromemetiersdsps66(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE personnespcgs66 ALTER COLUMN categoriedetail SET DEFAULT NULL;
 

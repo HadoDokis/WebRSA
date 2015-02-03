@@ -46,6 +46,24 @@
 		 * @var array
 		 */
 		public $hasOne = array(
+			'Emptrouvcer93' => array(
+				'className' => 'Cer93',
+				'foreignKey' => 'emptrouvromev3_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Sujetcer93' => array(
+				'className' => 'Cer93',
+				'foreignKey' => 'sujetromev3_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Dspderact' => array(
 				'className' => 'Dsp',
 				'foreignKey' => 'deractromev3_id',
@@ -94,6 +112,15 @@
 				'order' => null,
 				'dependent' => false
 			),
+			'Expprocer93' => array(
+				'className' => 'Expprocer93',
+				'foreignKey' => 'entreeromev3_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			/*'Partenaire' => array(
 				'className' => 'Partenaire',
 				'foreignKey' => 'entreeromev3_id',
@@ -125,15 +152,7 @@
 				'fields' => null,
 				'order' => null,
 				'dependent' => false
-			),
-			/*'Expprocer93' => array(
-				'className' => 'Expprocer93',
-				'foreignKey' => 'entreeromev3_id',
-				'conditions' => null,
-				'fields' => null,
-				'order' => null,
-				'dependent' => false
-			)*/
+			)
 		);
 
 		/**
@@ -204,6 +223,13 @@
 		);
 
 		/**
+		 * Liste des champs intéressants de Entreeromev3
+		 *
+		 * @var array
+		 */
+		public $romev3Fields = array( 'familleromev3_id', 'domaineromev3_id', 'metierromev3_id', 'appellationromev3_id' );
+
+		/**
 		 *
 		 * @return array
 		 */
@@ -221,9 +247,11 @@
 		 * @return array
 		 */
 		public function prepareFormDataAddEdit( array $record ) {
-			$record[$this->alias]['appellationromev3_id'] = "{$record[$this->alias]['metierromev3_id']}_{$record[$this->alias]['appellationromev3_id']}";
-			$record[$this->alias]['metierromev3_id'] = "{$record[$this->alias]['domaineromev3_id']}_{$record[$this->alias]['metierromev3_id']}";
-			$record[$this->alias]['domaineromev3_id'] = "{$record[$this->alias]['familleromev3_id']}_{$record[$this->alias]['domaineromev3_id']}";
+			if( !empty( $record[$this->alias] ) ) {
+				$record[$this->alias]['appellationromev3_id'] = "{$record[$this->alias]['metierromev3_id']}_{$record[$this->alias]['appellationromev3_id']}";
+				$record[$this->alias]['metierromev3_id'] = "{$record[$this->alias]['domaineromev3_id']}_{$record[$this->alias]['metierromev3_id']}";
+				$record[$this->alias]['domaineromev3_id'] = "{$record[$this->alias]['familleromev3_id']}_{$record[$this->alias]['domaineromev3_id']}";
+			}
 
 			return $record;
 		}

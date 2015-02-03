@@ -56,6 +56,15 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'Entreeromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'entreeromev3_id',
+				'conditions' => null,
+				'type' => null,
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Metierexerce' => array(
 				'className' => 'Metierexerce',
 				'foreignKey' => 'metierexerce_id',

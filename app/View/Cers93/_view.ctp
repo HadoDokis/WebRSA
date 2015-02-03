@@ -238,8 +238,24 @@
 		echo $this->Xform->fieldValue( 'Cer93.autresexps', Set::classicExtract( $contratinsertion, 'Cer93.autresexps'), true, 'textarea', true );
 		echo $this->Xform->fieldValue( 'Cer93.isemploitrouv', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.isemploitrouv'), $options['Cer93']['isemploitrouv'] ) );
 		if( $contratinsertion['Cer93']['isemploitrouv'] == 'O' ) {
-			echo $this->Xform->fieldValue( 'Cer93.secteuracti_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.secteuracti_id'), $options['Expprocer93']['secteuracti_id'] ) );
-			echo $this->Xform->fieldValue( 'Cer93.metierexerce_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.metierexerce_id'), $options['Expprocer93']['metierexerce_id'] ) );
+			// Emploi trouvé, ROME v.3
+			echo $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', 'Emploi trouvé (ROME v.3)' )
+				.$this->Xform->fieldValue( 'Emptrouvromev3.familleromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Familleromev3.name' ), 'cers93' )
+				.$this->Xform->fieldValue( 'Emptrouvromev3.domaineromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Domaineromev3.name' ), 'cers93' )
+				.$this->Xform->fieldValue( 'Emptrouvromev3.metierromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Metierromev3.name' ), 'cers93' )
+				.$this->Xform->fieldValue( 'Emptrouvromev3.appellationromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Appellationromev3.name' ), 'cers93' )
+			);
+
+			// Emploi trouvé, INSEE
+			echo $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', 'Emploi trouvé (INSEE)' )
+				.$this->Xform->fieldValue( 'Cer93.secteuracti_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.secteuracti_id'), $options['Expprocer93']['secteuracti_id'] ) )
+				.$this->Xform->fieldValue( 'Cer93.metierexerce_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.metierexerce_id'), $options['Expprocer93']['metierexerce_id'] ) )
+			);
+
 			echo $this->Xform->fieldValue( 'Cer93.dureehebdo', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.dureehebdo'), $options['dureehebdo'] ) );
 			echo $this->Xform->fieldValue( 'Cer93.naturecontrat_id', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.naturecontrat_id'), $options['Naturecontrat']['naturecontrat_id'] ) );
 
@@ -265,8 +281,8 @@
 			<tbody>
 				<?php
 					// Le précédent CER portait sur (liste des cases à cocher)
-					$sujetscers93 = unserialize( $contratinsertion['Cer93']['sujetpcd'] );
-					foreach( $sujetscers93['Sujetcer93']  as $index => $sujetcer93 ) {
+					$sujetpcd = unserialize( $contratinsertion['Cer93']['sujetpcd'] );
+					foreach( $sujetpcd['Sujetcer93']  as $index => $sujetcer93 ) {
 						echo $this->Html->tableCells(
 							array(
 								h( $sujetcer93['name'] ),
@@ -284,6 +300,12 @@
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
 	<?php
+		// Sujet précédent, complément d'informations ROME v.3
+		$sujetromev3 = (array)Hash::get( $sujetpcd, 'Sujetromev3' );
+		if( !empty( $sujetromev3 ) ) {
+			echo $this->Romev3->fieldsetView( 'Sujetromev3', $sujetpcd, array( 'legend' => 'Le précédent contrat portait sur l\'emploi (ROME v.3)' ) );
+		}
+
 		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $contratinsertion, 'Cer93.prevupcd' ), true, 'textarea', true );
 		echo $this->Xform->fieldValue( 'Cer93.bilancerpcd', Set::classicExtract( $contratinsertion, 'Cer93.bilancerpcd'), true, 'textarea', true );
 	?>
@@ -337,6 +359,13 @@
 				?>
 			</tbody>
 		</table>
+		<?php
+			// Emploi trouvé, ROME v.3
+			$sujetromev3 = (array)Hash::get( $contratinsertion['Cer93'], 'Sujetromev3' );
+			if( !empty( $sujetromev3 ) ) {
+				echo $this->Romev3->fieldsetView( 'Sujetromev3', $contratinsertion['Cer93'] );
+			}
+		?>
 	<?php else:?>
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>

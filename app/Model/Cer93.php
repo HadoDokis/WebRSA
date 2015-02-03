@@ -81,7 +81,7 @@
 					'rule' => array( 'notEmpty' )
 				)
 			),
-			'secteuracti_id' => array(
+			/*'secteuracti_id' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
 					'message' => 'Champ obligatoire',
@@ -92,7 +92,7 @@
 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
 					'message' => 'Champ obligatoire',
 				)
-			),
+			),*/
 			'dureehebdo' => array(
 				'notEmpty' => array(
 					'rule' => array( 'notEmptyIf', 'isemploitrouv', true, array( 'O' ) ),
@@ -164,6 +164,15 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'Emptrouvromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'emptrouvromev3_id',
+				'conditions' => null,
+				'type' => 'INNER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Metierexerce' => array(
 				'className' => 'Metierexerce',
 				'foreignKey' => 'metierexerce_id',
@@ -185,6 +194,15 @@
 			'Naturecontrat' => array(
 				'className' => 'Naturecontrat',
 				'foreignKey' => 'naturecontrat_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
+			'Sujetromev3' => array(
+				'className' => 'Entreeromev3',
+				'foreignKey' => 'sujetromev3_id',
 				'conditions' => null,
 				'type' => 'LEFT OUTER',
 				'fields' => null,
@@ -324,6 +342,11 @@
 				foreach( $fields as $field ) {
 					$data['Cer93'][$field] = null;
 				}
+
+				// Suppression de l'entrée de l'emploi trouvé, s'i y a lieu
+				$emptrouvromev3_id = Hash::get( $data, 'Cer93.emptrouvromev3_id' );
+				$success = $success && $this->Emptrouvromev3->delete( $emptrouvromev3_id );
+				$data['Cer93']['emptrouvromev3_id'] = null;
 			}
 
 			if( !isset( $data['Cer93']['dureecdd'] ) ){
@@ -336,6 +359,28 @@
 				$fields = array( 'datepointparcours' );
 				foreach( $fields as $field ) {
 					$data['Cer93'][$field] = null;
+				}
+			}
+
+			// ...
+			$activationPath = Configure::read( 'Cer93.Sujetcer93.Romev3.path' );
+			$activationValues = (array)Configure::read( 'Cer93.Sujetcer93.Romev3.values' );
+
+			$activationSujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' === $activationPath );
+			$activationSoussujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id' === $activationPath );
+
+			$values = Hash::filter( (array)Hash::extract( $data, $activationPath ) );
+			$intersect = array_intersect( $values, $activationValues );
+
+			if( !empty( $activationPath ) && !empty( $activationValues ) ) {
+				// Pas obligatoire
+				if( !$intersect ) {
+					$sujetromev3_id = Hash::get( $data, 'Sujetromev3.id' );
+					if( !empty( $sujetromev3_id ) ) {
+						$success = $success && $this->Sujetromev3->delete( $sujetromev3_id );
+						$data['Cer93']['sujetromev3_id'] = null;
+					}
+					unset( $data['Sujetromev3'] );
 				}
 			}
 
@@ -354,14 +399,40 @@
 				$this->saveAssociated( $data, array( 'validate' => 'first', 'atomic' => false, 'deep' => true ) )
 			) && $success;
 
+			if( !empty( $activationPath ) && !empty( $activationValues ) ) {
+				// Champs obligatoires
+				if( $intersect ) {
+					// Ajout de l'erreur "Champ obligatoire" pour tous les champs
+					foreach( $this->Sujetromev3->romev3Fields as $fieldName ) {
+						if( empty( $data['Sujetromev3'][$fieldName] ) ) {
+							$success = false;
+							$this->Sujetromev3->invalidate( $fieldName, 'Champ obligatoire' );
+						}
+					}
+
+					$this->Sujetromev3->validationErrors = dedupe_validation_errors( $this->Sujetromev3->validationErrors );
+				}
+			}
+
+			// Validation "Avez-vous trouvé un emploi" > "Si oui, veuillez préciser :" > "Emploi trouvé"
+			if( $data['Cer93']['isemploitrouv'] === 'O' ) {
+				// Ajout de l'erreur "Champ obligatoire" pour tous les champs
+				foreach( $this->Emptrouvromev3->romev3Fields as $fieldName ) {
+					if( empty( $data['Emptrouvromev3'][$fieldName] ) ) {
+						$success = false;
+						$this->Emptrouvromev3->invalidate( $fieldName, 'Champ obligatoire' );
+					}
+				}
+
+				$this->Emptrouvromev3->validationErrors = dedupe_validation_errors( $this->Emptrouvromev3->validationErrors );
+			}
+
 			if( $success ) {
 				$tmp = array( 'Sujetcer93' => array( 'Sujetcer93' => $tmp ) );
 				$tmp['Cer93']['id'] = $this->id;
 				$success = $this->saveResultAsBool(
 				$this->saveAll( $tmp, array( 'validate' => 'first', 'atomic' => false, 'deep' => false ) )
 				) && $success;
-				/*$this->create( $tmp );
-				$success = $this->create() && $success;*/
 			}
 
 
@@ -565,6 +636,13 @@
 							'order' => array( 'Expprocer93.anneedeb DESC' )
 						),
 						'Sujetcer93',
+						'Emptrouvromev3',
+						'Sujetromev3' => array(
+							'Familleromev3',
+							'Domaineromev3',
+							'Metierromev3',
+							'Appellationromev3'
+						)
 					),
 				)
 			);
@@ -615,11 +693,15 @@
 					unset( $data['Cer93'][$modelName] );
 				}
 
-				// Bloc 6 : Liste des sujets sur lesquels le CEr porte
-				$data['Sujetcer93'] = array( 'Sujetcer93' => Set::classicExtract( $data, 'Sujetcer93.{n}.Cer93Sujetcer93' ) );
+				// Partie "Avez-vous trouvé un emploi ?" > "Si oui, veuillez préciser :"
+				$data = Hash::merge(
+					$data,
+					$this->Emptrouvromev3->prepareFormDataAddEdit( array( 'Emptrouvromev3' => $dataCerActuel['Cer93']['Emptrouvromev3'] ) ),
+					$this->Sujetromev3->prepareFormDataAddEdit( array( 'Sujetromev3' => $dataCerActuel['Cer93']['Sujetromev3'] ) )
+				);
 
-				// FIXME: il faut en faire quelque chose de $dataCerActuel
-//				$this->log( var_export( $data, true ), LOG_DEBUG );
+				// Bloc 6 : Liste des sujets sur lesquels le CER porte
+				$data['Sujetcer93'] = array( 'Sujetcer93' => Set::classicExtract( $data, 'Sujetcer93.{n}.Cer93Sujetcer93' ) );
 			}
 			// Sinon, on construit un nouvel enregistrement vide, on y met les
 			// données CAF et ancien CER.
@@ -786,7 +868,7 @@
 									// Valeur par sous sujet
 									$valeursparSousSujets = $this->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->find( 'list', array( 'conditions' => array( 'Valeurparsoussujetcer93.id' => $valeursparSousSujetsIds ) ) );
 
-									//Valeur par sous s sujet
+									//Valeur par sous sujet
 									if( isset( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) && !empty( $values['Cer93Sujetcer93']['valeurparsoussujetcer93_id'] ) ) {
 										$data['Sujetcer93'][$key]['Cer93Sujetcer93']['Valeurparsoussujetcer93'] = array( 'name' => $valeursparSousSujets[$values['Cer93Sujetcer93']['valeurparsoussujetcer93_id']] );
 									}
@@ -797,9 +879,23 @@
 							}
 						}
 
-						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'] ) );
+						// Informations complémentaires
+						$sujetromev3 = (array)Hash::get( $dataDernierCerValide, 'Cer93.Sujetromev3' );
+
+						$data['Cer93']['sujetpcd'] = serialize( array( 'Sujetcer93' => $data['Sujetcer93'], 'Sujetromev3' => $sujetromev3 ) );
 						$data['Sujetcer93'] = array();
 					}
+
+					// Copie des enregistrements liés aux codes ROME v.3
+					foreach( array( 'Emptrouvromev3' ) as $modelName ) {
+						if( !empty( $dataDernierCerValide[$this->alias][$modelName] ) ) {
+							$data[$modelName] = $dataDernierCerValide[$this->alias][$modelName];
+
+							unset( $data[$modelName]['id'], $data[$modelName]['created'], $data[$modelName]['modified'] );
+							$data = $this->{$modelName}->prepareFormDataAddEdit( $data );
+						}
+					}
+
 					// Cas où on a un dernier CER validé
 					$data['Contratinsertion']['rg_ci'] = ( $dataDernierCerValide['Contratinsertion']['rg_ci'] ) + 1;
 				}
@@ -831,6 +927,68 @@
 		 */
 		public function modeleOdt( $data ) {
 			return "Contratinsertion/contratinsertion.odt";
+		}
+
+		/**
+		 * Retourne le querydata complété par les champs et les jointures concernant
+		 * l'emploi trouvé (ROME v.3).
+		 *
+		 * @param array $query Le querydata à compléter
+		 * @param string Le préfixe de l'alias avec Entreeromev3 qui sera utilisé
+		 *	comme suffixe pour les enregistrements qui en dépendent (ex.: "emptrouv"
+		 *	concerne l'alias "Emptrouvromev3" et créera des alias "Familleemptrouv",
+		 *	...)
+		 * @param string $type Le type de jointure (par défaut: LEFT OUTER)
+		 * @return array
+		 */
+		public function getCompletedRomev3Joins( array $query, $word, $type = 'LEFT OUTER' ) {
+			// $word = 'emptrouv'; // TODO: paramètre + rendre générique dans le modèle Entreeromev3
+			$suffix = Inflector::underscore( $word );
+			$alias = Inflector::classify( "{$word}romev3" );
+
+			$replacements = array(
+				"Familleromev3" => "Famille{$suffix}",
+				"Domaineromev3" => "Domaine{$suffix}",
+				"Metierromev3" => "Metier{$suffix}",
+				"Appellationromev3" => "Appellation{$suffix}"
+			);
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array(
+					"Famille{$suffix}.code",
+					"Famille{$suffix}.name",
+					"( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" ) AS \"Domaine{$suffix}__code\"",
+					"Domaine{$suffix}.name",
+					"( \"Famille{$suffix}\".\"code\" || \"Domaine{$suffix}\".\"code\" || \"Metier{$suffix}\".\"code\" ) AS \"Metier{$suffix}__code\"",
+					"Metier{$suffix}.name",
+					"Appellation{$suffix}.name"
+				)
+			);
+
+			$query['joins'][] = $this->join( $alias, array( 'type' => $type ) );
+
+			$query['joins'][] = array_words_replace(
+				$this->{$alias}->join( 'Familleromev3', array( 'type' => $type ) ),
+				$replacements
+			);
+
+			$query['joins'][] = array_words_replace(
+				$this->{$alias}->join( 'Domaineromev3', array( 'type' => $type ) ),
+				$replacements
+			);
+
+			$query['joins'][] = array_words_replace(
+				$this->{$alias}->join( 'Metierromev3', array( 'type' => $type ) ),
+				$replacements
+			);
+
+			$query['joins'][] = array_words_replace(
+				$this->{$alias}->join( 'Appellationromev3', array( 'type' => $type ) ),
+				$replacements
+			);
+
+			return $query;
 		}
 
 		/**
@@ -943,6 +1101,12 @@
 				),
 				'contain' => false
 			);
+
+			// Codes ROME V.3, emploi trouvé
+			$queryData = $this->getCompletedRomev3Joins( $queryData, 'emptrouv' );
+
+			// Codes ROME V.3, votre contrat porte sur l'emploi
+			$queryData = $this->getCompletedRomev3Joins( $queryData, 'sujet' );
 
 			// On copie les DspsRevs si elles existent à la place des DSPs (on garde l'information la plus récente)
 			if( !empty( $data['DspRev']['id'] ) ) {
@@ -1068,8 +1232,24 @@
 
 					$sujetscerspcds93[$i]['Sujetcerpcd93'] = $sujetcer93pcd;
 				}
-			}
 
+				// Sujet précédent, ROME v.3
+				$sujetromev3 = (array)Hash::get( $sujetspcds, 'Sujetromev3' );
+				if( !empty( $sujetromev3 ) ) {
+					$aliases = array(
+						'Familleromev3' => 'famille',
+						'Domaineromev3' => 'domaine',
+						'Metierromev3' => 'metier'
+					);
+					$data['Sujetromev3pcd'] = array();
+					$code = '';
+					foreach( $aliases as $alias => $fieldName ) {
+						$code = $code.Hash::get( $sujetromev3, "{$alias}.code" );
+						$data['Sujetromev3pcd'][$fieldName] = implode( ' - ', Hash::filter( array( $code, Hash::get( $sujetromev3, "{$alias}.name" ) ) ) );
+					}
+					$data['Sujetromev3pcd']['appellation'] = Hash::get( $sujetromev3, 'Appellationromev3.name' );
+				}
+			}
 
             // Récupération du nom de l'utilsiateur ayant émis la première lecture
 			$histopremierelecture = $this->Histochoixcer93->find(
@@ -1167,7 +1347,19 @@
 								'order' => array( 'Histochoixcer93.etape ASC' ),
 								'Commentairenormecer93'
 							),
-							'Sujetcer93'
+							'Sujetcer93',
+							'Emptrouvromev3' => array(
+								'Familleromev3',
+								'Domaineromev3',
+								'Metierromev3',
+								'Appellationromev3',
+							),
+							'Sujetromev3' => array(
+								'Familleromev3',
+								'Domaineromev3',
+								'Metierromev3',
+								'Appellationromev3',
+							)
 						),
 						'Structurereferente' => array(
 							'Typeorient'

@@ -96,9 +96,11 @@
 				echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
+					echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ) ) );
+
 					echo $this->Html->tag(
 						'fieldset',
-						$this->Html->tag( 'legend', 'Filtrer par expérience professionnelle significative' )
+						$this->Html->tag( 'legend', 'Filtrer par emploi trouvé (codes INSEE)' )
 						.$this->Form->input( 'Expprocer93.metierexerce_id', array( 'label' => 'Métier exercé', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true ) )
 						.$this->Form->input( 'Expprocer93.secteuracti_id', array( 'label' => 'Secteur d\'activité', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true ) )
 					);
