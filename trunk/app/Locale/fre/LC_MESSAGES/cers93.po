@@ -1,0 +1,51 @@
+# Traductions de cers93.po
+# @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+# ==============================================================================
+
+msgid "Emptrouvromev3"
+msgstr "Emploi trouvé (ROME v.3)"
+
+msgid "Emptrouvromev3.romev3"
+msgstr "Recherche rapide de l'emploi trouvé"
+
+msgid "Emptrouvromev3.familleromev3_id"
+msgstr "Code famille de l'emploi trouvé"
+
+msgid "Emptrouvromev3.domaineromev3_id"
+msgstr "Code domaine de l'emploi trouvé"
+
+msgid "Emptrouvromev3.metierromev3_id"
+msgstr "Code métier de l'emploi trouvé"
+
+msgid "Emptrouvromev3.appellationromev3_id"
+msgstr "Appellation de l'emploi trouvé"
+
+# ------------------------------------------------------------------------------
+
+msgid "Sujetromev3"
+msgstr "Votre contrat porte sur l'emploi (ROME v.3)"
+
+msgid "Sujetromev3.romev3"
+msgstr "Recherche rapide"
+
+msgid "Sujetromev3.familleromev3_id"
+msgstr "Code famille"
+
+msgid "Sujetromev3.domaineromev3_id"
+msgstr "Code domaine"
+
+msgid "Sujetromev3.metierromev3_id"
+msgstr "Code métier"
+
+msgid "Sujetromev3.appellationromev3_id"
+msgstr "Appellation"
+
+# ------------------------------------------------------------------------------

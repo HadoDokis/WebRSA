@@ -50,6 +50,11 @@
 				// Expériences professionnelles significatives
 				__d( 'metierexerce', 'Metierexerce.name' ),
 				__d( 'secteuracti', 'Secteuracti.name' ),
+				// Emploi trouvé (ROME v.3)
+				__d( 'cers93', 'Emptrouvromev3.familleromev3_id' ),
+				__d( 'cers93', 'Emptrouvromev3.domaineromev3_id' ),
+				__d( 'cers93', 'Emptrouvromev3.metierromev3_id' ),
+				__d( 'cers93', 'Emptrouvromev3.appellationromev3_id' ),
 				// Votre contrat porte sur
 				__d( 'sujetcer93', 'Sujetcer93.name' ),
 				'Autre, précisez',
@@ -133,6 +138,11 @@
 					// Expériences professionnelles significatives
 					Hash::get( $contrat, 'Metierexerce.name' ),
 					Hash::get( $contrat, 'Secteuracti.name' ),
+					// Emploi trouvé (ROME v.3)
+					Hash::get( $contrat, 'Familleemptrouv.name' ),
+					Hash::get( $contrat, 'Domaineemptrouv.name' ),
+					Hash::get( $contrat, 'Metieremptrouv.name' ),
+					Hash::get( $contrat, 'Appellationemptrouv.name' ),
 					// Votre contrat porte sur
 					Hash::get( $contrat, 'Sujetcer93.name' ),
 					Hash::get( $contrat, 'Cer93Sujetcer93.commentaireautre' ),

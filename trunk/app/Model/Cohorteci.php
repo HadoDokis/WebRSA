@@ -479,6 +479,18 @@
 					);
 					$querydata['conditions'][] = "Cer93Sujetcer93.id IN ( {$sql} )";
 				}
+
+				// Recherche par CER, codes ROME V.3, emploi trouvé
+				if( $statutValidation === null && Configure::read( 'Romev3.enabled' ) ) {
+					$querydata = $this->Contratinsertion->Cer93->getCompletedRomev3Joins( $querydata, 'emptrouv' );
+					foreach( $this->Contratinsertion->Cer93->Emptrouvromev3->romev3Fields as $fieldName ) {
+						$path = "Emptrouvromev3.{$fieldName}";
+						$value = suffix( Hash::get( $criteresci, $path ) );
+						if( !empty( $value ) ) {
+							$querydata['conditions'][$path] = $value;
+						}
+					}
+				}
 			}
 
 			// Doit-on exclure un type d'orientation ?

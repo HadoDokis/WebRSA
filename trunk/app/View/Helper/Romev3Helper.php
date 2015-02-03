@@ -32,7 +32,8 @@
 			'Observer' => array(
 				'className' => 'Prototype.PrototypeObserver',
 				'useBuffer' => false
-			)
+			),
+			'Xform'
 		);
 
 		/**
@@ -107,7 +108,10 @@
 					$return = $this->Default3->DefaultHtml->tag(
 						'fieldset',
 						$this->Default3->DefaultHtml->tag( 'legend', __d( $params['domain'], $fieldsetPath ) )
-						.$return
+						.$return,
+						array(
+							'id' => $this->domId( "{$fieldsetPath}.Fieldset.id" )
+						)
 					);
 				}
 			}
@@ -141,6 +145,55 @@
 			}
 
 			return $fields;
+		}
+
+		/**
+		 * Retourne un filedset de visualisation, équivalent de la méthode
+		 * Romev3Helper::fieldset().
+		 *
+		 * @param string $modelName
+		 * @param array $data
+		 * @param array $params
+		 * @return string
+		 */
+		public function fieldsetView( $modelName, array $data, array $params = array() ) {
+			$params += array(
+				'domain' => $this->request->params['controller'],
+				'options' => array(),
+				'id' => null,
+				'fieldset' => true,
+				'legend' => null
+			);
+
+			$return = '';
+			$code = '';
+			$params['legend'] = ( $params['legend'] === null ? __d( $params['domain'], $modelName ) : $params['legend'] );
+
+			// Famille
+			$code .= Hash::get( $data, "{$modelName}.Familleromev3.code" );
+			$return .= $this->Xform->fieldValue( "{$modelName}.familleromev3_id", $code.' - '.Hash::get( $data, "{$modelName}.Familleromev3.name" ), $params['domain'] );
+
+			// Domaine
+			$code .= Hash::get( $data, "{$modelName}.Domaineromev3.code" );
+			$return .= $this->Xform->fieldValue( "{$modelName}.domaineromev3_id", $code.' - '.Hash::get( $data, "{$modelName}.Domaineromev3.name" ), $params['domain'] );
+
+			// Métier
+			$code .= Hash::get( $data, "{$modelName}.Metierromev3.code" );
+			$return .= $this->Xform->fieldValue( "{$modelName}.metierromev3_id", $code.' - '.Hash::get( $data, "{$modelName}.Metierromev3.name" ), $params['domain'] );
+
+			// Appellation
+			$return .= $this->Xform->fieldValue( "{$modelName}.appellationromev3_id", Hash::get( $data, "{$modelName}.Appellationromev3.name" ), $params['domain'] );
+
+			if( Hash::get( $params, 'fieldset' ) ) {
+				$return = $this->Default3->DefaultHtml->tag(
+					'fieldset',
+					$this->Default3->DefaultHtml->tag( 'legend', $params['legend'] )
+					.$return,
+					array( 'id' => $params['id'] )
+				);
+			}
+
+			return $return;
 		}
 	}
 ?>

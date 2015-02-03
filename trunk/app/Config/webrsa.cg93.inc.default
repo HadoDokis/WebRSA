@@ -1666,4 +1666,25 @@
 			'Actrechromev3.appellationromev3'
 		)
 	) );
+
+	/**
+	 * Permet de spécifier quelles sont les valeurs des cases à cocher de la partie
+	 * "Votre contrat porte sur" devant faire apparaître le bloc "Votre contrat
+	 * porte sur l'emploi (ROME v.3)".
+	 *
+	 * Chemins possibles:
+	 *	- Sujetcer93.Sujetcer93.{n}.sujetcer93_id
+	 *	- Sujetcer93.Sujetcer93.{n}.soussujetcer93_id
+	 *
+	 * Exemple, avec les données du 22/12/2014:
+	 *	- Sujetcer93.Sujetcer93.{n}.sujetcer93_id, 1, "L'Emploi"
+	 *	- Sujetcer93.Sujetcer93.{n}.soussujetcer93_id, 1, "Aide ou suivi pour la recherche d'emploi"
+	 */
+	Configure::write(
+		'Cer93.Sujetcer93.Romev3',
+		array(
+			'path' => 'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id',
+			'values' => array( 1 )
+		)
+	);
 ?>

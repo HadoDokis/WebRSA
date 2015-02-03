@@ -356,25 +356,52 @@
 				'fieldset' => false,
 				'legend' => false,
 				'Cer93.autresexps' => array( 'domain' => 'cer93', 'type' => 'textarea' ),
-				'Cer93.isemploitrouv' => array( 'legend' => required( __d( 'cer93', 'Cer93.isemploitrouv' ) ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['isemploitrouv'] )
+				'Cer93.isemploitrouv' => array( 'legend' => required( __d( 'cer93', 'Cer93.isemploitrouv' ) ), 'domain' => 'cer93', 'type' => 'radio', 'options' => $options['Cer93']['isemploitrouv'] ),
+				// Ajout d'un champ caché pour pouvoir supprimer Emptrouvromev3.id lorsque le fieldset est fermé
+				'Cer93.emptrouvromev3_id' => array( 'type' => 'hidden', 'value' => Hash::get( $this->request->data, 'Emptrouv.id' ) )
 			)
 		);
 	?>
 	<fieldset id="emploitrouv" class="noborder">
-	<?php
-		echo $this->Xform->inputs(
-			array(
-				'fieldset' => true,
-				'legend' => 'Si oui, veuillez préciser :',
-				'Cer93.secteuracti_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true, 'required' => true ),
-				'Cer93.metierexerce_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true, 'required' => true ),
-				'Cer93.dureehebdo' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['dureehebdo'], 'empty' => true, 'required' => true ),
-				'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true, 'required' => true )
-			)
-		);
+		<fieldset>
+			<legend>Si oui, veuillez préciser :</legend>
+			<?php
+				echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ) ) );
 
-		echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'], 'required' => true ) );
-	?>
+				echo $this->Html->tag(
+					'fieldset',
+					$this->Html->tag( 'legend', 'Emploi trouvé (codes INSEE)' )
+					.$this->Default3->subform(
+						array(
+							'Cer93.secteuracti_id' => array(
+								'view' => true,
+								'type' => 'text',
+								'hidden' => true,
+								'options' => (array)$options['Expprocer93']['secteuracti_id']
+							),
+							'Cer93.metierexerce_id' => array(
+								'view' => true,
+								'type' => 'text',
+								'hidden' => true,
+								'options' => (array)$options['Expprocer93']['metierexerce_id']
+							),
+						),
+						array( 'domain' => 'cer93' )
+					)
+				);
+
+				echo $this->Xform->inputs(
+					array(
+						'fieldset' => false,
+						'legend' => false,
+						'Cer93.dureehebdo' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['dureehebdo'], 'empty' => true, 'required' => true ),
+						'Cer93.naturecontrat_id' => array( 'domain' => 'cer93', 'type' => 'select', 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true, 'required' => true )
+					)
+				);
+
+				echo $this->Xform->input( 'Cer93.dureecdd', array( 'domain' => 'cer93', 'type' => 'select', 'empty' => true, 'options' => $options['dureecdd'], 'required' => true ) );
+			?>
+		</fieldset>
 	</fieldset>
 	<script type="text/javascript">
 		document.observe( "dom:loaded", function() {
@@ -421,9 +448,9 @@
 			<tbody>
 				<?php
 					// Le précédent CER portait sur (liste des cases à cocher)
-					$sujetscers93 = unserialize( $this->request->data['Cer93']['sujetpcd'] );
+					$sujetpcd = unserialize( $this->request->data['Cer93']['sujetpcd'] );
 
-					foreach( $sujetscers93['Sujetcer93']  as $index => $sujetcer93 ) {
+					foreach( $sujetpcd['Sujetcer93']  as $index => $sujetcer93 ) {
 						$soussujet = '';
 						$commentairesoussujet = '';
 						$valeurparsoussujet = '';
@@ -462,6 +489,12 @@
 	<?php endif;?>
 
 	<?php
+		// Sujet précédent, complément d'informations ROME v.3
+		$sujetromev3 = (array)Hash::get( $sujetpcd, 'Sujetromev3' );
+		if( !empty( $sujetromev3 ) ) {
+			echo $this->Romev3->fieldsetView( 'Sujetromev3', $sujetpcd, array( 'legend' => 'Le précédent contrat portait sur l\'emploi (ROME v.3)' ) );
+		}
+
 		//Il a été prévu (champ prevu du bloc 6)
 		echo $this->Xform->fieldValue( 'Cer93.prevupcd', Set::classicExtract( $this->request->data, 'Cer93.prevupcd' ), true, 'textarea' );
 
@@ -499,6 +532,14 @@
 		echo $this->Xform->input( "Sujetcer93.Sujetcer93", array( 'type' => 'hidden', 'value' => '' ) );
 		$i = 0;
 
+		// Activation / désactivation de la partie "Votre contrat porte sur l'emploi (ROME v.3)" en fonciton des réponses à "Votre contrat porte sur"
+		$activationPath = Configure::read( 'Cer93.Sujetcer93.Romev3.path' );
+		$activationValues = (array)Configure::read( 'Cer93.Sujetcer93.Romev3.values' );
+
+		$activationSujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' === $activationPath );
+		$activationSoussujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id' === $activationPath );
+		$activationIds = array();
+
 		echo '<ul class="liste_sujets">';
 		foreach( $options['Sujetcer93']['sujetcer93_id'] as $idSujet => $nameSujet ) {
 			$array_key = array_search( $idSujet, $selectedSujetcer93 );
@@ -507,7 +548,6 @@
 			$commentaireautre = null;
 
 			$valeurparsoussujetcer93_id = null;
-// debug( $this->request->data['Sujetcer93']['Sujetcer93'] );
 			if( $checked ) {
 				if( isset( $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'] ) ) {
 					$soussujetcer93_id = $this->request->data['Sujetcer93']['Sujetcer93'][$array_key]['soussujetcer93_id'];
@@ -522,13 +562,26 @@
 				}
 			}
 
-			echo '<li>'; // Niveau 1
-			echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
+			// Niveau 1
+			echo '<li>';
+
+			$domPath = "Sujetcer93.Sujetcer93.{$idSujet}.sujetcer93_id";
+			if( $activationSujetcer93 && in_array( $idSujet, $activationValues ) ) {
+				$activationIds[] = $this->Html->domId( $domPath );
+			}
+
+			echo $this->Xform->input( $domPath, array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][sujetcer93_id]", 'label' => $nameSujet, 'type' => 'checkbox', 'value' => $idSujet, 'hiddenField' => false, 'checked' => $checked ) );
 
 			// Niveau 2
 			if( !empty( $soussujetscers93[$idSujet] ) ) {
 				echo '<ul><li>'; // Niveau 2
-				echo $this->Xform->input( "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id", array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
+
+				$domPath = "Sujetcer93.Sujetcer93.{$idSujet}.soussujetcer93_id";
+				if( $activationSoussujetcer93 && in_array( $idSujet, $activationValues ) ) {
+					$activationIds[] = $this->Html->domId( $domPath );
+				}
+
+				echo $this->Xform->input( $domPath, array( 'name' => "data[Sujetcer93][Sujetcer93][{$i}][soussujetcer93_id]", 'label' => false, 'type' => 'select', 'options' => $soussujetscers93[$idSujet], 'empty' => true, 'value' => $soussujetcer93_id ) );
 
 				$interSoussujet = array_intersect( array_keys( $soussujetscers93[$idSujet] ), $autresoussujet_isautre_id );
 				if( !empty( $interSoussujet ) ) {
@@ -570,6 +623,28 @@
 		echo '</ul>';
 		echo '</fieldset>';
 		echo '</div>';
+
+		// Activation / désactivation de la partie "Votre contrat porte sur l'emploi (ROME v.3)" en fonciton des réponses à "Votre contrat porte sur"
+		echo $this->Xform->input( 'Sujetromev3.id', array( 'type' => 'hidden', 'id' => false ) ); // TODO: Cer93.sujetromev3_._id
+
+		if( !empty( $activationPath ) && !empty( $activationValues ) ) {
+			// FIXME: dans la vue
+			echo $this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ) ) );
+
+			// 1. Si le chemin est Sujetcer93.Sujetcer93.{n}.sujetcer93_id, alors c'est un select
+			if( $activationPath === 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' ) {
+				foreach( $activationIds as $master ) {
+					echo $this->Observer->disableFieldsetOnCheckbox( $master, 'Sujetromev3FieldsetId', false, true );
+				}
+			}
+
+			// 2. Si le chemin est Sujetcer93.Sujetcer93.{n}.soussujetcer93_id, alors ce sont des cases à cocher
+			if( $activationPath === 'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id' ) {
+				foreach( $activationIds as $master ) {
+					echo $this->Observer->disableFieldsetOnValue( $master, 'Sujetromev3FieldsetId', $activationValues, false, true );
+				}
+			}
+		}
 	?>
 </fieldset>
 <!-- Javascript pour les sujetscers93 -->
@@ -695,6 +770,7 @@
 	);
 
 	echo $this->Xform->end();
+	echo $this->Observer->disableFormOnSubmit( 'contratinsertion' );
 ?>
 
 <script type="text/javascript">

@@ -18,9 +18,9 @@
 	{
 		public $name = 'Criteresci';
 
-		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa' );
+		public $uses = array( 'Cohorteci', 'Action', 'Contratinsertion', 'Option', 'Referent', 'Situationdossierrsa', 'Catalogueromev3' );
 
-		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search' );
+		public $helpers = array( 'Csv', 'Cake1xLegacy.Ajax', 'Search', 'Romev3' );
 
 		public $components = array(
 			'Gestionzonesgeos',
@@ -173,7 +173,8 @@
 				$options = Hash::merge(
 					$options,
 					$this->Contratinsertion->Cer93->enums(),
-					$this->Contratinsertion->Cer93->options( array( 'autre' => true, 'find' => true ) )
+					$this->Contratinsertion->Cer93->options( array( 'autre' => true, 'find' => true ) ),
+					$this->Catalogueromev3->dependantSelects()
 				);
 				$options['Expprocer93']['metierexerce_id'] = $this->Contratinsertion->Cer93->Expprocer93->Metierexerce->find( 'list' );
 				$options['Expprocer93']['secteuracti_id'] = $this->Contratinsertion->Cer93->Expprocer93->Secteuracti->find( 'list' );

@@ -1809,11 +1809,11 @@ body.indicateurssuivis.search td.action a.dossiers.view {
 }
 
 /* Fiche de prescription 93, partie Ajax */
-body.fichesprescriptions93 div.ajax.select, body.dsps div.ajax.select, body.personnespcgs66 div.ajax.select, body.criteresdossierspcgs66 div.ajax.select {
+body.fichesprescriptions93 div.ajax.select, body.dsps div.ajax.select, body.personnespcgs66 div.ajax.select, body.criteresdossierspcgs66 div.ajax.select, body.cers93 div.ajax.select, body.criteresci div.ajax.select {
 	position: relative;
 }
 
-body.fichesprescriptions93 div.ajax.select ul, body.dsps div.ajax.select ul, body.personnespcgs66 div.ajax.select ul, body.criteresdossierspcgs66 div.ajax.select ul {
+body.fichesprescriptions93 div.ajax.select ul, body.dsps div.ajax.select ul, body.personnespcgs66 div.ajax.select ul, body.criteresdossierspcgs66 div.ajax.select ul, body.cers93 div.ajax.select ul, body.criteresci div.ajax.select ul {
 	background: white;
 	position: absolute;
 	width: 48%;
@@ -1825,7 +1825,7 @@ body.fichesprescriptions93 div.ajax.select ul, body.dsps div.ajax.select ul, bod
 	overflow-y: scroll;
 }
 
-body.fichesprescriptions93 div.ajax.select ul li, body.dsps div.ajax.select ul li, body.personnespcgs66 div.ajax.select ul li, body.criteresdossierspcgs66 div.ajax.select ul li {
+body.fichesprescriptions93 div.ajax.select ul li, body.dsps div.ajax.select ul li, body.personnespcgs66 div.ajax.select ul li, body.criteresdossierspcgs66 div.ajax.select ul li, body.cers93 div.ajax.select ul li, body.criteresci div.ajax.select ul li {
 	padding: 0.125em 0.25em;
 	margin: 0;
 	border-bottom: 1px solid silver;

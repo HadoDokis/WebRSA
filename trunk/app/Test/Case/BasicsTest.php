@@ -821,5 +821,45 @@
 			$this->assertFalse( departement_uses_class( 'Apre66' ) );
 			$this->assertFalse( departement_uses_class( 'Reorientationep976' ) );
 		}
+
+		/**
+		 * Test de la fonction dedupe_validation_errors().
+		 */
+		public function testDedupeValidationErrors() {
+			$data = array(
+				'familleromev3_id' => array(
+					'Champ obligatoire',
+					'Champ obligatoire'
+				),
+				'domaineromev3_id' => array(
+					'Champ obligatoire'
+				),
+				'metierromev3_id' => array(
+					'Champ obligatoire'
+				),
+				'appellationromev3_id' => array(
+					'Champ obligatoire'
+				)
+			);
+
+			$result = dedupe_validation_errors( $data );
+
+			$expected = array(
+				'familleromev3_id' => array(
+					'Champ obligatoire'
+				),
+				'domaineromev3_id' => array(
+					'Champ obligatoire'
+				),
+				'metierromev3_id' => array(
+					'Champ obligatoire'
+				),
+				'appellationromev3_id' => array(
+					'Champ obligatoire'
+				)
+			);
+
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
 	}
 ?>

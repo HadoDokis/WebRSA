@@ -34,14 +34,22 @@
 		 *
 		 * @var array
 		 */
-		public $helpers = array( 'Cake1xLegacy.Ajax', 'Locale', 'Webrsa' );
+		public $helpers = array(
+			'Cake1xLegacy.Ajax',
+			'Locale',
+			'Webrsa',
+			'Romev3',
+			'Default3' => array(
+				'className' => 'Default.DefaultDefault'
+			)
+		);
 
 		/**
 		 * Modèles utilisés.
 		 *
 		 * @var array
 		 */
-		public $uses = array( 'Cer93' );
+		public $uses = array( 'Cer93', 'Catalogueromev3' );
 
 		/**
 		 * Actions non soumises aux droits.
@@ -566,13 +574,14 @@
 				'dureehebdo' => array_range( '0', '39' ),
 				'dureecdd' => ClassRegistry::init( 'Option' )->duree_cdd()
 			);
+
 			$options = Set::merge(
 				$this->Cer93->Contratinsertion->Personne->Dsp->enums(),
 				$this->Cer93->enums(),
 				$this->Cer93->Expprocer93->enums(),
-				$options
+				$options,
+				$this->Catalogueromev3->dependantSelects()
 			);
-
 
 			$this->set( 'personne_id', $personne_id );
 			$this->set( compact( 'options' ) );
@@ -833,8 +842,6 @@
 		 * @throws NotFoundException
 		 */
 		public function cancel( $id ) {
-			// TODO: cers93: date_annulation, user_annulation_id, etape_supplementaire ,(, motifannulation ?)
-			// TODO: validation annulation
 			$query = array(
 				'fields' => array(
 					'Contratinsertion.id',

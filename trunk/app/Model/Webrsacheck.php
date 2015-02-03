@@ -363,6 +363,23 @@
 				);
 			}
 
+			if( Configure::read( 'Romev3.enabled' ) ) {
+				$return = Hash::merge(
+					$return,
+					array(
+						'Cer93.Sujetcer93.Romev3.path' =>  array(
+							array( 'rule' => 'inList', array(
+								'Sujetcer93.Sujetcer93.{n}.sujetcer93_id',
+								'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id'
+							) ),
+						),
+						'Cer93.Sujetcer93.Romev3.values' => 'isarray'
+					)
+				);
+			}
+
+			// Cer93.Sujetcer93.Romev3
+
 			return $return;
 		}
 
@@ -730,6 +747,16 @@
 							'Contratinsertion.RdvAuto.typerdv_id' => 'Typerdv',
 							'Contratinsertion.RdvAuto.statutrdv_id' => 'Statutrdv',
 							'Contratinsertion.RdvAuto.thematiquerdv_id' => 'Thematiquerdv',
+						)
+					);
+				}
+
+				if( Configure::read( 'Romev3.enabled' ) ) {
+					$modelName = Configure::read( 'Cer93.Sujetcer93.Romev3.path' ) === 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' ? 'Sujetcer93' : 'Soussujetcer93';
+					$return = Hash::merge(
+						$return,
+						array(
+							'Cer93.Sujetcer93.Romev3.values' => $modelName
 						)
 					);
 				}

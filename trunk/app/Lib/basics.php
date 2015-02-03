@@ -1186,4 +1186,28 @@
 		$departement = Configure::read( 'Cg.departement' );
 		return ( !preg_match( '/[0-9]{2,3}$/', $className ) || preg_match( '/'.$departement.'$/', $className ) );
 	}
+
+	/**
+	 * Permet de dédoublonner les messages d'erreurs des règles de validation pour
+	 * chacun des champs.
+	 *
+	 * @param array $validationErrors
+	 * @return array
+	 */
+	function dedupe_validation_errors( array $validationErrors ) {
+		foreach( $validationErrors as $fieldName => $errors ) {
+			$found = array();
+
+			foreach( $errors as $key => $error ) {
+				if( !in_array( $error, $found ) ) {
+					$found[] = $error;
+				}
+				else {
+					unset( $validationErrors[$fieldName][$key] );
+				}
+			}
+		}
+
+		return $validationErrors;
+	}
 ?>
