@@ -165,3 +165,50 @@ msgstr "Référent du parcours"
 
 msgid "Pagination.nombre_total"
 msgstr "Obtenir le nombre total de résultats (plus lent)"
+
+# ------------------------------------------------------------------------------
+# "Recherches" > "Par dossiers COV" > "Demandes de maintien dans le social"
+# ------------------------------------------------------------------------------
+
+msgid "Filtre.Dossier.numdemrsa"
+msgstr "Numéro de dossier RSA"
+
+msgid "Filtre.Dossier.matricule"
+msgstr "Numéro CAF"
+
+# ------------------------------------------------------------------------------
+
+msgid "Filtre.Adresse.nomvoie"
+msgstr "Nom de voie de l'allocataire"
+
+msgid "Filtre.Adresse.nomcom"
+msgstr "Commune de l'allocataire"
+
+msgid "Filtre.Adresse.numcom"
+msgstr "Numéro de commune au sens INSEE"
+
+msgid "Filtre.Canton.canton"
+msgstr "Canton"
+
+msgid "Filtre.Sitecov58.id"
+msgstr "Site COV"
+
+# ------------------------------------------------------------------------------
+
+msgid "Filtre.Personne.dtnai"
+msgstr "Date de naissance"
+
+msgid "Filtre.Personne.nom"
+msgstr "Nom"
+
+msgid "Filtre.Personne.nomnai"
+msgstr "Nom de jeune fille"
+
+msgid "Filtre.Personne.prenom"
+msgstr "Prénom"
+
+msgid "Filtre.Personne.nir"
+msgstr "NIR"
+
+msgid "Filtre.Personne.sexe"
+msgstr "Sexe"
