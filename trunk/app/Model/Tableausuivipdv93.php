@@ -2234,8 +2234,8 @@
 
 			$sql = "SELECT
 							thematiquesrdvs.name AS \"Tableau1b6__name\",
-							COUNT(DISTINCT rendezvous.daterdv) AS \"Tableau1b6__count_seances\",
-							COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\",
+							COUNT(DISTINCT rendezvous.daterdv||' '||rendezvous.heurerdv) AS \"Tableau1b6__count_seances\",
+                                                        COUNT(DISTINCT rendezvous.personne_id) AS \"Tableau1b6__count_personnes\",
 							COUNT(DISTINCT rendezvous.id) AS \"Tableau1b6__count_participations\"
 						FROM rendezvous
 							INNER JOIN typesrdv ON ( typesrdv.id = rendezvous.typerdv_id )
