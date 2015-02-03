@@ -329,6 +329,30 @@
 				$this->{$hasManyModel}->unsetValidationRule( 'cer93_id', 'notEmpty' );
 
 				if( isset( $data['Cer93']['id'] ) && !empty( $data['Cer93']['id'] ) ) {
+					$expsproscers93 = array();
+					if( $hasManyModel === 'Expprocer93' ) {
+						$query = array(
+							'fields' => array(
+								'Expprocer93.id',
+								'Expprocer93.entreeromev3_id'
+							),
+							'conditions' => array(
+								'Expprocer93.cer93_id' => $data['Cer93']['id']
+							),
+							'contain' => false
+						);
+
+						$entreesromesv3_ids = $this->Expprocer93->find( 'list', $query );
+
+						if( !empty( $entreesromesv3_ids ) ) {
+							$success = $this->Expprocer93->Entreeromev3->deleteAll(
+								array( 'Entreeromev3.id' => $entreesromesv3_ids ),
+								false,
+								false
+							) && $success;
+						}
+					}
+
 					$success = $this->{$hasManyModel}->deleteAll(
 						array( "{$hasManyModel}.cer93_id" => $data['Cer93']['id'] )
 					) && $success;
@@ -345,7 +369,9 @@
 
 				// Suppression de l'entrée de l'emploi trouvé, s'i y a lieu
 				$emptrouvromev3_id = Hash::get( $data, 'Cer93.emptrouvromev3_id' );
-				$success = $success && $this->Emptrouvromev3->delete( $emptrouvromev3_id );
+				if( !empty( $emptrouvromev3_id ) ) {
+					$success = $success && $this->Emptrouvromev3->delete( $emptrouvromev3_id );
+				}
 				$data['Cer93']['emptrouvromev3_id'] = null;
 			}
 
@@ -411,6 +437,23 @@
 					}
 
 					$this->Sujetromev3->validationErrors = dedupe_validation_errors( $this->Sujetromev3->validationErrors );
+				}
+			}
+
+			// Validation des entrées ROME v.3 dans les expériences professionnelles
+			if( isset( $data['Expprocer93'] ) && !empty( $data['Expprocer93'] ) ) {
+				foreach( $data['Expprocer93'] as $key => $expprocer93 ) {
+					// Ajout de l'erreur "Champ obligatoire" pour tous les champs
+					foreach( $this->Expprocer93->Entreeromev3->romev3Fields as $fieldName ) {
+						if( empty( $expprocer93['Entreeromev3'][$fieldName] ) ) {
+							$success = false;
+							$this->Expprocer93->validationErrors[$key]['Entreeromev3'][$fieldName][] = 'Champ obligatoire';
+						}
+					}
+
+					if( !empty( $this->Expprocer93->validationErrors[$key]['Entreeromev3'] ) ) {
+						$this->Expprocer93->validationErrors[$key]['Entreeromev3'] = dedupe_validation_errors( $this->Expprocer93->validationErrors[$key]['Entreeromev3'] );
+					}
 				}
 			}
 
@@ -633,6 +676,7 @@
 							'order' => array( 'Diplomecer93.annee DESC' )
 						),
 						'Expprocer93' => array(
+							'Entreeromev3',
 							'order' => array( 'Expprocer93.anneedeb DESC' )
 						),
 						'Sujetcer93',
@@ -691,6 +735,12 @@
 				foreach( $modelsToCopy as $modelName ) {
 					$data[$modelName] = $dataCerActuel['Cer93'][$modelName];
 					unset( $data['Cer93'][$modelName] );
+					// FIXME: vérifier lors de la copie de entrées ROME v3
+				}
+
+				// Partie "Expériences professionnelles", préfixes
+				foreach( $data['Expprocer93'] as $key => $expprocer93 ) {
+					$data['Expprocer93'][$key] = $this->Expprocer93->Entreeromev3->prepareFormDataAddEdit( $expprocer93 );
 				}
 
 				// Partie "Avez-vous trouvé un emploi ?" > "Si oui, veuillez préciser :"
@@ -845,6 +895,7 @@
 										$data[$modelName][$key]['Cer93Sujetcer93']['id'],
 										$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id']
 									);
+									// FIXME: id de l'entrée ROME v3
 								}
 							}
 						}
@@ -1192,12 +1243,25 @@
 						'Expprocer93.typeduree',
 						'Metierexerce.name',
 						'Secteuracti.name',
+						'Familleromev3.code',
+						'Familleromev3.name',
+						'( "Familleromev3"."code" || "Domaineromev3"."code" ) AS "Domaineromev3__code"',
+						'Domaineromev3.name',
+						'( "Familleromev3"."code" || "Domaineromev3"."code" || "Metierromev3"."code" ) AS "Metierromev3__code"',
+						'Metierromev3.name',
+						'Appellationromev3.name'
 					),
 					'conditions' => array( 'Expprocer93.cer93_id' => $data['Cer93']['id'] ),
 					'order' => array( 'Expprocer93.anneedeb DESC' ),
-					'contain' => array(
-						'Metierexerce',
-						'Secteuracti'
+					'contain' => false,
+					'joins' => array(
+						$this->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->Entreeromev3->join( 'Familleromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->Entreeromev3->join( 'Domaineromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->Entreeromev3->join( 'Metierromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->Entreeromev3->join( 'Appellationromev3', array( 'type' => 'LEFT OUTER' ) ),
 					)
 				)
 			);
@@ -1339,7 +1403,14 @@
 							),
 							'Compofoyercer93',
 							'Diplomecer93',
-							'Expprocer93',
+							'Expprocer93' => array(
+								'Entreeromev3' => array(
+									'Familleromev3',
+									'Domaineromev3',
+									'Metierromev3',
+									'Appellationromev3'
+								)
+							),
 							'Histochoixcer93' => array(
 								'User' => array(
 									'fields' => array( 'nom_complet' )

@@ -257,11 +257,11 @@ CREATE UNIQUE INDEX  personnespcgs66_categorieromev3_id_idx ON  personnespcgs66(
 -- 2. CG 93, Tableau "Expériences professionnelles significatives" du CER
 --------------------------------------------------------------------------------
 
-/*SELECT add_missing_table_field ( 'public', 'expsproscers93', 'entreeromev3_id', 'INTEGER' );
+SELECT add_missing_table_field ( 'public', 'expsproscers93', 'entreeromev3_id', 'INTEGER' );
 ALTER TABLE expsproscers93 ALTER COLUMN entreeromev3_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_entreeromev3_id_fkey', 'entreesromesv3', 'entreeromev3_id', false );
 DROP INDEX IF EXISTS expsproscers93_entreeromev3_id_idx;
-CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);*/
+CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);
 
 --------------------------------------------------------------------------------
 -- 3. CG 93, Partie "Avez-vous trouvé un emploi ?" > "Si oui, veuillez préciser " du CER
