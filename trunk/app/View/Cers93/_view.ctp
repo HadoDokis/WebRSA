@@ -203,8 +203,13 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Métier exercé</th>
-							<th>Secteur d'activité</th>
+							<th>Domaine ROME v.3</th>
+							<th>Famille ROME v.3</th>
+							<th>Métier ROME v.3</th>
+							<th>Appellation ROME v.3</th>
+
+							<th>Métier exercé (INSEE)</th>
+							<th>Secteur d'activité (INSEE)</th>
 							<th>Année de début</th>
 							<th>Durée</th>
 						</tr>
@@ -215,10 +220,14 @@
 								foreach( $contratinsertion['Cer93']['Expprocer93'] as $index => $expprocer93 ) {
 									echo $this->Html->tableCells(
 										array(
+											h( Hash::get( $expprocer93, 'Entreeromev3.Familleromev3.name' ) ),
+											h( Hash::get( $expprocer93, 'Entreeromev3.Domaineromev3.name' ) ),
+											h( Hash::get( $expprocer93, 'Entreeromev3.Metierromev3.name' ) ),
+											h( Hash::get( $expprocer93, 'Entreeromev3.Appellationromev3.name' ) ),
 											h( Set::enum( $expprocer93['metierexerce_id'], $options['Expprocer93']['metierexerce_id'] ) ),
 											h( Set::enum( $expprocer93['secteuracti_id'], $options['Expprocer93']['secteuracti_id'] ) ),
 											h( $expprocer93['anneedeb'] ),
-											h( $expprocer93['duree'] ),
+											h( "{$expprocer93['nbduree']} {$expprocer93['typeduree']}" ),
 										),
 										array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 										array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
