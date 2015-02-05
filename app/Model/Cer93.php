@@ -724,9 +724,9 @@
 					throw new NotFoundException();
 				}
 
-				// Il faut que l'enregistrement à modifier soit en attente
-				if( $dataCerActuel['Contratinsertion']['decision_ci'] != 'E' ) {
-					throw new InternalErrorException( "Tentative de modification d'un enregistrement déjà traité \"{$contratinsertion_id}\"" );
+				// Il faut que l'enregistrement à modifier soit enregistré
+				if( $dataCerActuel['Cer93']['positioncer'] !== '00enregistre' ) {
+					throw new InternalErrorException( 'Impossible de modifier un CER déjà traité ou en cours de traitement' );
 				}
 
 				$data = $dataCerActuel;
@@ -756,6 +756,25 @@
 			// Sinon, on construit un nouvel enregistrement vide, on y met les
 			// données CAF et ancien CER.
 			else {
+				// En cas d'ajout, aucun autre CER ne peut avoir une positioncer autre que finale (99xxxx)
+				$query = array(
+					'fields' => array(
+						'Contratinsertion.id'
+					),
+					'conditions' => array(
+						'Contratinsertion.personne_id' => $personne_id,
+						'NOT' => array( 'Cer93.positioncer LIKE' => '99%' )
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->join( 'Contratinsertion', array( 'type' => 'LEFT OUTER' ) )
+					)
+				);
+				$cerNon99 = $this->find( 'first', $query );
+				if( !empty( $cerNon99 ) ) {
+					throw new InternalErrorException( 'Impossible d\'ajouter un CER à cet allocataire car un autre CER est en cours de traitement' );
+				}
+
 				// Création d'un "enregistrement type" vide.
 				$data = array(
 					'Contratinsertion' => array(

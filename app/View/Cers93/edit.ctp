@@ -45,7 +45,7 @@
 
 	echo $this->Html->tag( 'h1', $title_for_layout );
 
-	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion' ) );
+	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'contratinsertion' ), 'id' => 'contratinsertion', 'novalidate' => 'novalidate' ) );
 
 	echo $this->Xform->inputs(
 		array(
@@ -377,7 +377,7 @@
 		<fieldset>
 			<legend>Si oui, veuillez préciser :</legend>
 			<?php
-				echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ) ) );
+				echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ), 'required' => true ) );
 
 				echo $this->Html->tag(
 					'fieldset',
@@ -880,13 +880,15 @@
 </script>
 
 <?php
-	foreach( array_keys( $this->request->data['Expprocer93'] ) as $index ) {
-		echo $this->Observer->dependantSelect(
-			array(
-				"Expprocer93.{$index}.Entreeromev3.familleromev3_id" => "Expprocer93.{$index}.Entreeromev3.domaineromev3_id",
-				"Expprocer93.{$index}.Entreeromev3.domaineromev3_id" => "Expprocer93.{$index}.Entreeromev3.metierromev3_id",
-				"Expprocer93.{$index}.Entreeromev3.metierromev3_id" => "Expprocer93.{$index}.Entreeromev3.appellationromev3_id",
-			)
-		);
+	if( !empty( $this->request->data['Expprocer93'] ) ) {
+		foreach( array_keys( $this->request->data['Expprocer93'] ) as $index ) {
+			echo $this->Observer->dependantSelect(
+				array(
+					"Expprocer93.{$index}.Entreeromev3.familleromev3_id" => "Expprocer93.{$index}.Entreeromev3.domaineromev3_id",
+					"Expprocer93.{$index}.Entreeromev3.domaineromev3_id" => "Expprocer93.{$index}.Entreeromev3.metierromev3_id",
+					"Expprocer93.{$index}.Entreeromev3.metierromev3_id" => "Expprocer93.{$index}.Entreeromev3.appellationromev3_id",
+				)
+			);
+		}
 	}
 ?>

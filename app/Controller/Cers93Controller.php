@@ -294,6 +294,7 @@
 			// Logique d'activation / désactiviation des liens dans la vue
 
 			// Permissions concernant les différentes action liées à un CER
+			// @see Cers93Controller::index()
 			$user_type = $this->Session->read( 'Auth.User.type' );
 
 			$positionscers = array();
@@ -412,7 +413,13 @@
 			}
 
 			if( empty( $this->request->data ) ) {
-				$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+				try {
+					$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
+				}
+				catch( Exception $e ) {
+					$this->Session->setFlash( $e->getMessage(), 'flash/error' );
+					$this->redirect( array( 'action' => 'index', $personne_id ) );
+				}
 			}
 
 			$naturescontrats = $this->Cer93->Naturecontrat->find(
