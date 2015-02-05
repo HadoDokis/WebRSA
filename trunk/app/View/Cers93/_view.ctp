@@ -276,6 +276,7 @@
 	<!-- Fin bloc 4 -->
 </fieldset>
 <!-- Bloc 5 : Bilan du précédent contrat -->
+<?php $sujetpcd = array();?>
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
 	<h4>Le précédent contrat portait sur </h4>
 		<?php if( !empty( $contratinsertion['Cer93']['sujetpcd'] ) ):?>

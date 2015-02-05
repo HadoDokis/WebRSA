@@ -912,11 +912,25 @@
 										$data[$modelName][$key]['id'],
 										$data[$modelName][$key]['cer93_id'],
 										$data[$modelName][$key]['Cer93Sujetcer93']['id'],
-										$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id']
+										$data[$modelName][$key]['Cer93Sujetcer93']['cer93_id'],
+										$data[$modelName][$key]['created'],
+										$data[$modelName][$key]['modified']
 									);
-									// FIXME: id de l'entrée ROME v3
 								}
 							}
+						}
+					}
+
+					if( !empty( $data['Expprocer93'] ) ) {
+						foreach( $data['Expprocer93'] as $key => $expprocer93 ) {
+							unset(
+								$expprocer93['id'],
+								$expprocer93['entreeromev3_id'],
+								$expprocer93['Entreeromev3']['id'],
+								$expprocer93['Entreeromev3']['created'],
+								$expprocer93['Entreeromev3']['modified']
+							);
+							$data['Expprocer93'][$key] = $this->Expprocer93->Entreeromev3->prepareFormDataAddEdit( $expprocer93 );
 						}
 					}
 
