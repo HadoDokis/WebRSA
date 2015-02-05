@@ -8,9 +8,9 @@
 	}
 ?>
 <script type="text/javascript">
-	document.observe("dom:loaded", function() {
+	document.observe( "dom:loaded", function() {
 		dependantSelect( 'ContratinsertionReferentId', 'ContratinsertionStructurereferenteId' );
-	});
+	} );
 </script>
 <script type="text/javascript">
 	document.observe( "dom:loaded", function() {
@@ -281,7 +281,7 @@
 	<fieldset>
 		<legend>Diplômes (scolaires, universitaires et/ou professionnels)</legend>
 		<ul class="actionMenu">
-			<li><a href="#" onclick="addDynamicTrInputs( 'Diplomecer93', gabaritDiplomecer93 ); return false;">Ajouter</a></li>
+			<li><a href="#" onclick="try { addDynamicTrInputs( 'Diplomecer93', gabaritDiplomecer93 ); } catch (e) { console.log( e ); } return false;">Ajouter</a></li>
 		</ul>
 		<table id="Diplomecer93">
 			<thead>
@@ -316,7 +316,7 @@
 	<fieldset>
 		<legend>Expériences professionnelles significatives</legend>
 		<ul class="actionMenu">
-			<li><a href="#" onclick="addDynamicTrInputs( 'Expprocer93', gabaritExpprocer93 ); return false;">Ajouter</a></li>
+			<li><a href="#" onclick="try { addDynamicTrInputs( 'Expprocer93', gabaritExpprocer93 ); } catch (e) { console.log( e ); } return false;">Ajouter</a></li>
 		</ul>
 		<table id="Expprocer93">
 			<thead>
@@ -639,7 +639,6 @@
 		echo $this->Xform->input( 'Sujetromev3.id', array( 'type' => 'hidden', 'id' => false ) ); // TODO: Cer93.sujetromev3_._id
 
 		if( !empty( $activationPath ) && !empty( $activationValues ) ) {
-			// FIXME: dans la vue
 			echo $this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ) ) );
 
 			// 1. Si le chemin est Sujetcer93.Sujetcer93.{n}.sujetcer93_id, alors c'est un select
@@ -835,9 +834,6 @@
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.typeduree', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true ) );
 			echo cers93_html_cleanup( $fields );
-		/*?></td><td><?php
-			$fields = $this->Xform->input( 'Expprocer93.%line%.duree', array( 'type' => 'text', 'label' => false ) );
-			echo cers93_html_cleanup( $fields );*/
 		?></td><td><a href="#" onclick="deleteDynamicTrInputs( \'Expprocer93\', %line% );return false;">Supprimer</a></td></tr>';
 	//--><!]]>
 </script>
@@ -856,16 +852,17 @@
 				line = gabarit.replace( regexp, index );
 			$$( '#' + tableId + ' tbody' )[0].insert( { 'top': line } );
 
-			// TODO: ajouter les dependantSelect pour la nouvelle ligne
-			dependantSelect( 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Familleromev3Id'.replace( regexp, index ) );
-			dependantSelect( 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ) );
-			dependantSelect( 'Expprocer93%line%Entreeromev3Appellationromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ) );
+			// Uniquement pour le tableau "Expériences professionnelles significatives"
+			if( tableId === 'Expprocer93' ) {
+				dependantSelect( 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Familleromev3Id'.replace( regexp, index ) );
+				dependantSelect( 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ) );
+				dependantSelect( 'Expprocer93%line%Entreeromev3Appellationromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ) );
+			}
 		}
 
 		function deleteDynamicTrInputs( tableId, index ) {
 			var lineNr = -1;
 			$$( '#' + tableId + ' tbody tr > td:nth-child(1) > input:nth-child(1)' ).each( function( input, l ) {
-				console.log( l );
 				var i = parseInt( input.name.replace( new RegExp( '^.*\\]\\[([0-9]+)\\]\\[.*$', 'gi' ), '$1' ) );
 				if( i == index ) {
 					lineNr = l;
