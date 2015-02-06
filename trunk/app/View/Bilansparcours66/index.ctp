@@ -44,22 +44,29 @@
 					$bilanparcours66['Decisiondefautinsertionep66']['commentaire']
 				;
 				
+				$decisionCg = $bilanparcours66['Avisdefautinsertionep66']['decision'] ? $bilanparcours66['Avisdefautinsertionep66']['decision'] : $bilanparcours66['Decisionsaisinebilanparcoursep66']['decision'];
+				
+				$commentaireAnnulation = ( 
+					in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne' ) ) ) && empty($decisionCg) ?
+						'<tr>
+							<th>Raison&nbsp;annulation&nbsp;du&nbsp;bilan</th>
+							<td>'.$bilanparcours66['Bilanparcours66']['motifannulation'].'</td>
+						</tr>' : ''
+				;
+				
 				// On affiche le commentaire dans l'infobulle que si la positionbilan est à Annulé
 				$commentairePositionBilan = 
-					( in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne' ) ) ) ?
-					'</tr><tr>
-					<th>Commentaire&nbsp;annulation&nbsp;EP</th>
-					<td>'.$commentaire.'</td>' : ''
+					( in_array( $bilanparcours66['Bilanparcours66']['positionbilan'], array( 'annule', 'ajourne' ) ) && $decisionCg ) ?
+					'<tr>
+						<th>Commentaire&nbsp;' . (($bilanparcours66['Bilanparcours66']['positionbilan'] == 'annule') ? 'annulation' : 'report') . '&nbsp;EP</th>
+						<td>'.$commentaire.'</td>
+					</tr>' : ''
 				;
 				
 				// Infobulle
 				$innerTable = '<table id="innerTablesearchResults'.$key.'" class="innerTable">
 						<tbody>
-							<tr>
-								<th>Raison annulation</th>
-								<td>'.$bilanparcours66['Bilanparcours66']['motifannulation'].'</td>
-							'.$commentairePositionBilan.'
-							</tr>
+							'.$commentaireAnnulation.$commentairePositionBilan.'
 						</tbody>
 					</table>';
 				
@@ -142,6 +149,7 @@
 				$block = !( $bilanparcours66['Bilanparcours66']['positionbilan'] == 'annule' );
 				$epparcours = !( in_array( $bilanparcours66['Bilanparcours66']['proposition'], array( 'audition', 'auditionpe' ) ) && !empty( $bilanparcours66['Defautinsertionep66']['dateimpressionconvoc'] ) );
 
+				// Moteur de rendu du tableau
 				foreach($data as $key => $val){
 					if ( is_array($val) ){
 						echo '<td>' . $val[0] . '</td>' . '<td>' . $val[1] . '</td>';
@@ -234,7 +242,8 @@
 						array(
 							'enabled' => (
 								( $this->Permissions->checkDossier( 'bilansparcours66', 'cancel', $dossierMenu ) == 1 )
-								&& $block
+								&& $block 
+								&& !in_array($bilanparcours66['Bilanparcours66']['positionbilan'], array('traite', 'ajourne', 'annule'))
 							)
 						)
 					)
