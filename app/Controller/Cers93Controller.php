@@ -7,6 +7,7 @@
 	 * @package app.Controller
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	App::uses( 'DefaultUtility', 'Default.Utility' );
 
 	/**
 	 * La classe Cers93Controller permet la gestion des CER du CG 93 (hors workflow).
@@ -209,6 +210,154 @@
 		}
 
 		/**
+		 * Retourne les permissions concernant les différentes action liées à un
+		 * CER pour la logique d'activation / désactiviation des liens dans la
+		 * vue et de vérification de l'accès aux actions dans le contrôleur (
+		 * en-dehors de la gestion des droits "classique").
+		 *
+		 * Les champs suivants de l'enregistrement seront utilisés pour le calcul
+		 * des permissions:
+		 *	- Contratinsertion.decision_ci
+		 *	- Contratinsertion.dd_ci
+		 *	- Contratinsertion.df_ci
+		 *	- Cer93.positioncer
+		 *
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		protected function _getDisabledLinksMasks( $personne_id ) {
+			// 1°) L'allocataire possède-t'il un dossier d'EP en cours
+			$qdSignalementseps93 = $this->_qdThematiqueEp( 'Signalementep93', $personne_id );
+			$qdContratscomplexeseps93 = $this->_qdThematiqueEp( 'Contratcomplexeep93', $personne_id );
+
+			$qdSignalementseps93['fields'] = $qdContratscomplexeseps93['fields'] = array( 'Dossierep.id' );
+			$sqlSignalementseps93 = $this->Cer93->Contratinsertion->Personne->Dossierep->sq( $qdSignalementseps93 );
+			$sqlContratscomplexeseps93 = $this->Cer93->Contratinsertion->Personne->Dossierep->sq( $qdContratscomplexeseps93 );
+
+			// 2°) L'allocataire possède-t-il un CER en cours de traitement ?
+			$query = array(
+				'fields' => array(
+					'Contratinsertion.id'
+				),
+				'contain' => false,
+				'joins' => array(
+					$this->Cer93->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
+				),
+				'conditions' => array(
+					'Contratinsertion.personne_id' => $personne_id,
+					'Cer93.positioncer NOT LIKE' => '99%'
+				)
+			);
+			$sqlCerEntraitement = $this->Cer93->sq( $query );
+
+			// 3. L'allocataire peut-il passer en EP ?
+			$passageEpPossible = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
+
+			// Obtention des informations
+			$sql = "SELECT
+						( CASE WHEN EXISTS( {$sqlSignalementseps93} UNION {$sqlContratscomplexeseps93} ) THEN '1' ELSE '0' END )  AS \"dossierep_encours\",
+						( CASE WHEN EXISTS( {$sqlCerEntraitement} ) THEN '1' ELSE '0' END ) AS \"cer93_encours_traitement\"";
+
+			$data = (array)$this->Cer93->getDataSource()->query( $sql );
+
+			$user_type = $this->Session->read( 'Auth.User.type' );
+
+			// -----------------------------------------------------------------
+			// Variables de remplacement: %permission%, données de l'enregistrement #Xxxx.yyyy#
+			// -----------------------------------------------------------------
+			$disabledLinks = array(
+				//On bloque l'ajout tant qu'il existe un CER non validé, rejeté ou annulé
+				'Cers93::add' => '!(
+					( \''.$data[0][0]['cer93_encours_traitement'].'\' == \'0\' )
+					&& ( \'%permission%\' == \'1\' )
+				)',
+				'Cers93::edit' => '!(
+					in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) )
+					&& ( \'%permission%\' == \'1\' )
+				)',
+				'Cers93::edit_apres_signature' => '!(
+					(
+						( \'externe_cpdv\' === \''.$user_type.'\' && in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) )
+						|| ( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'99annule\' ) ) )
+					)
+					&& ( \'%permission%\' == \'1\' )
+				)',
+				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
+				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::secondelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Histoschoixcers93::aviscadre' => '!( in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Signalementseps::add' => '!(
+					(
+						// Contrat validé
+						\'#Contratinsertion.decision_ci#\' == \'V\'
+						// En cours, avec une durée de tolérance
+						&& (
+							( strtotime( \'#Contratinsertion.dd_ci#\' ) <= time() )
+							&& ( strtotime( \'#Contratinsertion.df_ci#\' ) + ( Configure::read( \'Signalementep93.dureeTolerance\' ) * 24 * 60 * 60 ) >= time() )
+						)
+						// Aucun contrat de la personne n\'est en cours de passage en EP actuellement
+						&& ( \''.$data[0][0]['dossierep_encours'].'\' == \'0\' )
+						//
+						&& ( \''.count( $passageEpPossible ).'\' == \'0\' )
+					)
+					&& ( \'%permission%\' == \'1\' )
+				)',
+				'Cers93::impression' => '!( \'%permission%\' == \'1\' )' ,
+				'Cers93::delete' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
+				'Cers93::cancel' => '!(
+					\'cg\' === \''.$user_type.'\'
+					&& !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\', \'07attavisep\', \'99annule\' ) )
+					&& ( \'%permission%\' == \'1\' )
+				)',
+				'Cers93::impressionDecision' => '!( in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) && ( \'%permission%\' == \'1\' ) )'
+			);
+
+			return $disabledLinks;
+		}
+
+		/**
+		 * Retourne l'impossibilité au niveau logique métier d'effectuer une action
+		 * donnée pour un allocataire et éventuellement un CER.
+		 *
+		 * @param integer $personne_id
+		 * @param integer $contratinsertion_id
+		 * @return boolean
+		 */
+		protected function _isDisabledAction( $personne_id, $contratinsertion_id = null ) {
+			$disabledLinks = $this->_getDisabledLinksMasks( $personne_id );
+			$php = str_replace( '%permission%', '1', $disabledLinks["{$this->name}::{$this->action}"] );
+
+			if( !empty( $contratinsertion_id ) ) {
+				$query = array(
+					'fields' => array(
+						'Contratinsertion.decision_ci',
+						'Contratinsertion.dd_ci',
+						'Contratinsertion.df_ci',
+						'Cer93.positioncer'
+					),
+					'conditions' => array(
+						'Contratinsertion.id' => $contratinsertion_id
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Cer93->join( 'Contratinsertion', array( 'type' => 'INNER' ) )
+					),
+				);
+
+				$record = $this->Cer93->find( 'first', $query );
+				$php = DefaultUtility::evaluate( $record, $php );
+			}
+
+			try {
+				return eval( "return {$php};" );
+			} catch( Exception $e ) {
+				return true;
+			}
+		}
+
+		/**
 		 * Pagination sur les <élément>s de la table.
 		 *
 		 * @param integer $personne_id L'id technique de l'allocataire auquel le CER est attaché.
@@ -277,71 +426,6 @@
 			// L'allocataire peut-il passer en EP ?
 			$erreursCandidatePassage = $this->Cer93->Contratinsertion->Signalementep93->Dossierep->getErreursCandidatePassage( $personne_id );
 
-			// Si c'est un rejet responsable (CPDV), on n'imprime pas la décision
-			$IsRejet = false;
-			foreach( $results as $i => $result ) {
-				$NbHistos = count( $result['Cer93']['Histochoixcer93'] );
-				if( !empty( $NbHistos ) ) {
-					$dernierHisto = $result['Cer93']['Histochoixcer93'][$NbHistos-1];
-					if( $dernierHisto['isrejet'] == '1' ){
-						$IsRejet = true;
-					}
-				}
-				$results[$i]['Cer93']['rejetcpdv'] = $IsRejet;
-			}
-
-			// TODO: en faire une méthode pour pouvoir l'utiliser dans les autres méthodes
-			// Logique d'activation / désactiviation des liens dans la vue
-
-			// Permissions concernant les différentes action liées à un CER
-			// @see Cers93Controller::index()
-			$user_type = $this->Session->read( 'Auth.User.type' );
-
-			$positionscers = array();
-			foreach( (array)Hash::extract( $results, '{n}.Cer93.positioncer' ) as $positioncer ) {
-				if( strpos( $positioncer, '99' ) === false ) {
-					$positionscers[] = $positioncer;
-				}
-			}
-
-			$disabledLinks = array(
-				'Cers93::add' => empty( $positionscers ), //On bloque l'ajout tant qu'il existe un CER non validé, rejeté ou annulé
-				'Cers93::edit' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Cers93::edit_apres_signature' => '!(
-					(
-						( \'externe_cpdv\' === \''.$user_type.'\' && in_array( \'#Cer93.positioncer#\', array( \'01signe\', \'02attdecisioncpdv\' ) ) )
-						|| ( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) )
-					)
-					&& ( \'%permission%\' == \'1\' )
-				)',
-				'Cers93::signature' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )' ,
-				'Histoschoixcers93::attdecisioncpdv' => '!( in_array( \'#Cer93.positioncer#\', array( \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::attdecisioncg' => '!( in_array( \'#Cer93.positioncer#\', array( \'02attdecisioncpdv\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				// Début FIXME: SSI l'utilisateur est CG
-				'Histoschoixcers93::premierelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'03attdecisioncg\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::secondelecture' => '!( in_array( \'#Cer93.positioncer#\', array( \'04premierelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Histoschoixcers93::aviscadre' => '!( in_array( \'#Cer93.positioncer#\', array( \'05secondelecture\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				// Fin FIXME: SSI l'utilisateur est CG
-				'Signalementseps::add' => '!( (
-					// Contrat validé
-					\'#Contratinsertion.decision_ci#\' == \'V\'
-					// En cours, avec une durée de tolérance
-					&& (
-						( strtotime( \'#Contratinsertion.dd_ci#\' ) <= time() )
-						&& ( strtotime( \'#Contratinsertion.df_ci#\' ) + ( Configure::read( \'Signalementep93.dureeTolerance\' ) * 24 * 60 * 60 ) >= time() )
-					)
-					// Aucun contrat de la personne n\'est en cours de passage en EP actuellement
-					&& ( \''.( count( $signalementseps93 ) + count( $contratscomplexeseps93 ) ).'\' == \'0\' )
-					//
-					&& ( \''.count( $erreursCandidatePassage ).'\' == \'0\' )
-				)
-				&& ( \'%permission%\' == \'1\' ) )',
-				'Cers93::impression' => '!( \'%permission%\' == \'1\' )' ,
-				'Cers93::delete' => '!( in_array( \'#Cer93.positioncer#\', array( \'00enregistre\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Cers93::cancel' => '!( \'cg\' === \''.$user_type.'\' && !in_array( \'#Cer93.positioncer#\', array( \'00enregistre\', \'01signe\' ) ) && ( \'%permission%\' == \'1\' ) )',
-				'Cers93::impressionDecision' => '!( in_array( \'#Cer93.positioncer#\', array( \'99rejete\', \'99valide\' ) ) && ( \'#Cer93.rejetcpdv#\' != true ) && ( \'%permission%\' == \'1\' ) )'
-			);
-
 			$this->set( 'erreursCandidatePassage', $erreursCandidatePassage );
 			$this->set( 'signalementseps93', $signalementseps93 );
 			$this->set( 'contratscomplexeseps93', $contratscomplexeseps93 );
@@ -349,7 +433,7 @@
 			$this->set( 'optionsdossierseps', $this->Cer93->Contratinsertion->Signalementep93->Dossierep->Passagecommissionep->enums() );
 			$this->set( 'cers93', $results );
 			$this->set( 'personne_id', $personne_id );
-			$this->set( 'disabledLinks', $disabledLinks );
+			$this->set( 'disabledLinks', $this->_getDisabledLinksMasks( $personne_id ) );
 		}
 
 		/**
@@ -417,6 +501,7 @@
 					$this->request->data = $this->Cer93->prepareFormDataAddEdit( $personne_id, ( ( $this->action == 'add' ) ? null : $id ), $this->Session->read( 'Auth.User.id' ) );
 				}
 				catch( Exception $e ) {
+					$this->Jetons2->release( $dossier_id );
 					$this->Session->setFlash( $e->getMessage(), 'flash/error' );
 					$this->redirect( array( 'action' => 'index', $personne_id ) );
 				}
@@ -633,18 +718,10 @@
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
 
 			// On vérifie que l'action puisse être exécutée
-			$user_type = $this->Session->read( 'Auth.User.type' );
-			$positioncer = Hash::get( $contratinsertion, 'Cer93.positioncer' );
-
-			$block = !(
-				( 'externe_cpdv' === $user_type && in_array( $positioncer, array( '01signe', '02attdecisioncpdv' ) ) )
-				|| ( 'cg' === $user_type && !in_array( $positioncer, array( '00enregistre' ) ) )
-			);
-
-			if( $block === true ) {
-				$msgid = 'Impossible de modifier le CER %d après signature (position: %s) pour l\'utilisateur %s (type: %s)';
-				$msgstr = sprintf( $msgid, $id, $positioncer, $this->Session->read( 'Auth.User.username' ), $user_type );
-				throw new RuntimeException( $msgstr );
+			if( $this->_isDisabledAction( $personne_id, $id ) ) {
+				$msgid = 'Impossible de modifier un CER après signature';
+				$this->Session->setFlash( $msgid, 'flash/error' );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
 			}
 
 			// Début du traitement
@@ -799,8 +876,16 @@
 		 * @param integer $id
 		 */
 		public function delete( $id ) {
+			$personne_id = $this->Cer93->Contratinsertion->personneId( $id );
 			$dossier_id = $this->Cer93->Contratinsertion->dossierId( $id );
 			$this->DossiersMenus->checkDossierMenu( array( 'id' => $dossier_id ) );
+
+			// On vérifie que l'action puisse être exécutée
+			if( $this->_isDisabledAction( $personne_id, $id ) ) {
+				$msgid = 'Impossible de supprimer le CER';
+				$this->Session->setFlash( $msgid, 'flash/error' );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
 
 			$this->Jetons2->get( $dossier_id );
 
@@ -873,10 +958,16 @@
 			}
 
 			$personne_id = Hash::get( $contratinsertion, 'Contratinsertion.personne_id' );
-
 			$dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $personne_id ) );
-
 			$dossier_id = Hash::get( $dossierMenu, 'Dossier.id' );
+
+			// On vérifie que l'action puisse être exécutée
+			if( $this->_isDisabledAction( $personne_id, $id ) ) {
+				$msgid = 'Impossible d\'annuler le CER';
+				$this->Session->setFlash( $msgid, 'flash/error' );
+				$this->redirect( array( 'action' => 'index', $personne_id ) );
+			}
+
 			$this->Jetons2->get( $dossier_id );
 
 			// Retour à l'index en cas d'annulation

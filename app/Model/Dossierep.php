@@ -353,19 +353,21 @@
 		}
 
 		/**
-		* Retourne un array de chaînes de caractères indiquant pourquoi on ne
-		* peut pas créer de dossier d'EP pour la personne.
-		*
-		* Les valeurs possibles sont:
-		* 	- Personne.id: la personne n'existe pas en base ou n'a pas de prestation RSA
-		* 	- Situationdossierrsa.etatdosrsa: le dossier ne se trouve pas dans un état ouvert
-		* 	- Prestation.rolepers: la personne n'est ni demandeur ni conjoint RSA
-		* 	- Calculdroitrsa.toppersdrodevorsa: la personne n'est pas soumise à droits et devoirs
-		*
-		* @param integer $personne_id L'id technique de la personne
-		* @return array
-		* @access public
-		*/
+		 * Retourne un array de chaînes de caractères indiquant pourquoi on ne
+		 * peut pas créer de dossier d'EP pour la personne.
+		 *
+		 * Les valeurs possibles sont:
+		 * 	- Personne.id: la personne n'existe pas en base ou n'a pas de prestation RSA
+		 * 	- Situationdossierrsa.etatdosrsa: le dossier ne se trouve pas dans un état ouvert
+		 * 	- Prestation.rolepers: la personne n'est ni demandeur ni conjoint RSA
+		 * 	- Calculdroitrsa.toppersdrodevorsa: la personne n'est pas soumise à droits et devoirs
+		 *
+		 * @todo La refaire avec une méthode renvoyant un query
+		 *
+		 * @param integer $personne_id L'id technique de la personne
+		 * @return array
+		 * @access public
+		 */
 		public function getErreursCandidatePassage( $personne_id ) {
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$query = Cache::read( $cacheKey );
