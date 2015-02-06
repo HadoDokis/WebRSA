@@ -78,7 +78,7 @@
 					'action' => 'add',
 					$personne_id
 				),
-				$disabledLinks['Cers93::add'] && $this->Permissions->checkDossier( 'cers93', 'add', $dossierMenu )
+				!eval( 'return '.str_replace( '%permission%', $this->Permissions->checkDossier( 'cers93', 'signature', $dossierMenu ), $disabledLinks['Cers93::add'] ).';' )
 			);
 		?>
 	</li>
