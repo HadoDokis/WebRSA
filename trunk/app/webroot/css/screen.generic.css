@@ -1825,6 +1825,12 @@ body.fichesprescriptions93 div.ajax.select ul, body.dsps div.ajax.select ul, bod
 	overflow-y: scroll;
 }
 
+body.cers93 table#Expprocer93 div.ajax.select ul {
+	width: auto;
+	min-width: 25em;
+	left: 0;
+}
+
 body.fichesprescriptions93 div.ajax.select ul li, body.dsps div.ajax.select ul li, body.personnespcgs66 div.ajax.select ul li, body.criteresdossierspcgs66 div.ajax.select ul li, body.cers93 div.ajax.select ul li, body.criteresci div.ajax.select ul li {
 	padding: 0.125em 0.25em;
 	margin: 0;

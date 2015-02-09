@@ -19,19 +19,19 @@ msgid "Deractromev3"
 msgstr "Dernière activité"
 
 msgid "Deractromev3.romev3"
-msgstr "Recherche rapide de la dernière activité"
+msgstr "Recherche rapide"
 
 msgid "Deractromev3.familleromev3_id"
-msgstr "Code famille de la dernière activité"
+msgstr "Code famille"
 
 msgid "Deractromev3.domaineromev3_id"
-msgstr "Code domaine de la dernière activité"
+msgstr "Code domaine"
 
 msgid "Deractromev3.metierromev3_id"
-msgstr "Code métier de la dernière activité"
+msgstr "Code métier"
 
 msgid "Deractromev3.appellationromev3_id"
-msgstr "Appellation de la dernière activité"
+msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------
 # Dernière activité dominante
@@ -40,19 +40,19 @@ msgid "Deractdomiromev3"
 msgstr "Dernière activité dominante"
 
 msgid "Deractdomiromev3.romev3"
-msgstr "Recherche rapide de la dernière activité dominante"
+msgstr "Recherche rapide"
 
 msgid "Deractdomiromev3.familleromev3_id"
-msgstr "Code famille de la dernière activité dominante"
+msgstr "Code famille"
 
 msgid "Deractdomiromev3.domaineromev3_id"
-msgstr "Code domaine de la dernière activité dominante"
+msgstr "Code domaine"
 
 msgid "Deractdomiromev3.metierromev3_id"
-msgstr "Code métier de la dernière activité dominante"
+msgstr "Code métier"
 
 msgid "Deractdomiromev3.appellationromev3_id"
-msgstr "Appellation de la dernière activité dominante"
+msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------
 # Emploi recherché
@@ -61,100 +61,100 @@ msgid "Actrechromev3"
 msgstr "Emploi recherché"
 
 msgid "Actrechromev3.romev3"
-msgstr "Recherche rapide de l'emploi recherché"
+msgstr "Recherche rapide"
 
 msgid "Actrechromev3.familleromev3_id"
-msgstr "Code famille de l'emploi recherché"
+msgstr "Code famille"
 
 msgid "Actrechromev3.domaineromev3_id"
-msgstr "Code domaine de l'emploi recherché"
+msgstr "Code domaine"
 
 msgid "Actrechromev3.metierromev3_id"
-msgstr "Code métier de l'emploi recherché"
+msgstr "Code métier"
 
 msgid "Actrechromev3.appellationromev3_id"
-msgstr "Appellation de l'emploi recherché"
+msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------
 # Export CSV
 # ------------------------------------------------------------------------------
 msgid "Deractromev3.familleromev3"
-msgstr "Famille de la dernière activité"
+msgstr "Code famille de la dernière activité"
 
 msgid "Deractromev3.domaineromev3"
-msgstr "Domaine de la dernière activité"
+msgstr "Code domaine de la dernière activité"
 
 msgid "Deractromev3.metierromev3"
-msgstr "Métier de la dernière activité"
+msgstr "Code métier de la dernière activité"
 
 msgid "Deractromev3.appellationromev3"
-msgstr "Appellation de la dernière activité"
+msgstr "Appellation métier de la dernière activité"
 
 # ------------------------------------------------------------------------------
 
 msgid "Deractdomiromev3.familleromev3"
-msgstr "Famille de la dernière activité dominante"
+msgstr "Code famille de la dernière activité dominante"
 
 msgid "Deractdomiromev3.domaineromev3"
-msgstr "Domaine de la dernière activité dominante"
+msgstr "Code domaine de la dernière activité dominante"
 
 msgid "Deractdomiromev3.metierromev3"
-msgstr "Métier de la dernière activité dominante"
+msgstr "Code métier de la dernière activité dominante"
 
 msgid "Deractdomiromev3.appellationromev3"
-msgstr "Appellation de la dernière activité dominante"
+msgstr "Appellation métier de la dernière activité dominante"
 
 # ------------------------------------------------------------------------------
 
 msgid "Actrechromev3.familleromev3"
-msgstr "Famille de l'emploi recherché"
+msgstr "Code famille de l'emploi recherché"
 
 msgid "Actrechromev3.domaineromev3"
-msgstr "Domaine de l'emploi recherché"
+msgstr "Code domaine de l'emploi recherché"
 
 msgid "Actrechromev3.metierromev3"
-msgstr "Métier de l'emploi recherché"
+msgstr "Code métier de l'emploi recherché"
 
 msgid "Actrechromev3.appellationromev3"
-msgstr "Appellation de l'emploi recherché"
+msgstr "Appellation métier de l'emploi recherché"
 
 # ------------------------------------------------------------------------------
 
 msgid "Deractfamilleromev3Rev.name"
-msgstr "Libellé famille de la dernière activité"
+msgstr "Code famille de la dernière activité"
 
 msgid "Deractdomaineromev3Rev.name"
-msgstr "Libellé domaine de la dernière activité"
+msgstr "Code domaine de la dernière activité"
 
 msgid "Deractmetierromev3Rev.name"
-msgstr "Libellé métier de la dernière activité"
+msgstr "Code métier de la dernière activité"
 
 msgid "Deractappellationromev3Rev.name"
-msgstr "Appellation de la dernière activité"
+msgstr "Appellation métier de la dernière activité"
 
 msgid "Deractdomifamilleromev3Rev.name"
-msgstr "Libellé famille de la dernière activité dominante"
+msgstr "Code famille de la dernière activité dominante"
 
 msgid "Deractdomidomaineromev3Rev.name"
-msgstr "Libellé domaine de la dernière activité dominante"
+msgstr "Code domaine de la dernière activité dominante"
 
 msgid "Deractdomimetierromev3Rev.name"
-msgstr "Libellé métier de la dernière activité dominante"
+msgstr "Code métier de la dernière activité dominante"
 
 msgid "Deractdomiappellationromev3Rev.name"
-msgstr "Appellation de la dernière activité dominante"
+msgstr "Appellation métier de la dernière activité dominante"
 
 msgid "Actrechfamilleromev3Rev.name"
-msgstr "Libellé famille de l'activité recherchée"
+msgstr "Code famille de l'activité recherchée"
 
 msgid "Actrechdomaineromev3Rev.name"
-msgstr "Libellé domaine de l'activité recherchée"
+msgstr "Code domaine de l'activité recherchée"
 
 msgid "Actrechmetierromev3Rev.name"
-msgstr "Libellé métier de l'activité recherchée"
+msgstr "Code métier de l'activité recherchée"
 
 msgid "Actrechappellationromev3Rev.name"
-msgstr "Appellation de l'activité recherchée"
+msgstr "Appellation métier de l'activité recherchée"
 
 # ==============================================================================
 # Codes ROME V2

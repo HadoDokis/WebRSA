@@ -896,7 +896,8 @@
 					$data['Cer93']['prevupcd'] = $dataDernierCerValide['Cer93']['prevu'];
 
 					// Copie des champs du CER précédent
-					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps', 'secteuracti_id', 'metierexerce_id', 'dureehebdo', 'naturecontrat_id', 'isemploitrouv', 'dureecdd' );
+					$data['Cer93']['isemploitrouv'] = 'N';
+					$cer93FieldsToCopy = array( 'incoherencesetatcivil', 'cmu', 'cmuc', 'nivetu', 'autresexps' );
 					foreach( $cer93FieldsToCopy as $field ) {
 						$data['Cer93'][$field] = $dataDernierCerValide['Cer93'][$field];
 					}
@@ -971,14 +972,14 @@
 					}
 
 					// Copie des enregistrements liés aux codes ROME v.3
-					foreach( array( 'Emptrouvromev3' ) as $modelName ) {
+					/*foreach( array( 'Emptrouvromev3' ) as $modelName ) {
 						if( !empty( $dataDernierCerValide[$this->alias][$modelName] ) ) {
 							$data[$modelName] = $dataDernierCerValide[$this->alias][$modelName];
 
 							unset( $data[$modelName]['id'], $data[$modelName]['created'], $data[$modelName]['modified'] );
 							$data = $this->{$modelName}->prepareFormDataAddEdit( $data );
 						}
-					}
+					}*/
 
 					// Cas où on a un dernier CER validé
 					$data['Contratinsertion']['rg_ci'] = ( $dataDernierCerValide['Contratinsertion']['rg_ci'] ) + 1;

@@ -318,41 +318,54 @@
 		<ul class="actionMenu">
 			<li><a href="#" onclick="try { addDynamicTrInputs( 'Expprocer93', gabaritExpprocer93 ); } catch (e) { console.log( e ); } return false;">Ajouter</a></li>
 		</ul>
-		<table id="Expprocer93">
+		<table id="Expprocer93" class="tooltips">
 			<thead>
 				<tr>
-					<th>Domaine ROME v.3</th>
-					<th>Famille ROME v.3</th>
-					<th>Métier ROME v.3</th>
-					<th>Appellation ROME v.3</th>
-
-					<th>Métier exercé (INSEE)</th>
-					<th>Secteur d'activité (INSEE)</th>
+					<th>Recherche rapide</th>
+					<th>Code domaine</th>
+					<th>Code famille</th>
+					<th>Code métier</th>
+					<th>Appellation métier</th>
 					<th>Année de début</th>
 					<th colspan="2">Durée</th>
 					<th>Action</th>
+					<th class="innerTableHeader noprint">Informations complémentaires</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
 					if( !empty( $this->request->data['Expprocer93'] ) ) {
 						foreach( $this->request->data['Expprocer93'] as $index => $expprocer93 ) {
+							$innerTable = '<table id="innerTableExpprocer93'.$index.'" class="innerTable">
+								<tbody>
+									<tr>
+										<th>'.__d( 'cer93', 'Cer93.metierexerce_id' ).'</th>
+										<td>'.value( $options['Expprocer93']['metierexerce_id'], Hash::get( $this->request->data, "Expprocer93.{$index}.metierexerce_id" ) ).'</td>
+									</tr>
+									<tr>
+										<th>'.__d( 'cer93', 'Cer93.secteuracti_id' ).'</th>
+										<td>'.value( $options['Expprocer93']['secteuracti_id'], Hash::get( $this->request->data, "Expprocer93.{$index}.secteuracti_id" ) ).'</td>
+									</tr>
+								</tbody>
+							</table>';
+
 							echo $this->Html->tableCells(
 								array(
 									$this->Xform->input( "Expprocer93.{$index}.id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Expprocer93.{$index}.cer93_id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'hidden', 'label' => false ) )
+									.$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'hidden', 'label' => false ) )
 									.$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.id", array( 'type' => 'hidden' ) )
-									.$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.familleromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['familleromev3_id'], 'empty' => true ) ),
+									.$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.romev3", array( 'type' => 'text', 'label' => false ) ),
+									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.familleromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['familleromev3_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.domaineromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['domaineromev3_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.metierromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['metierromev3_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.appellationromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['appellationromev3_id'], 'empty' => true ) ),
-									// TODO: devient de la visualisation seulement
-									$this->Xform->input( "Expprocer93.{$index}.metierexerce_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) ),
-									$this->Xform->input( "Expprocer93.{$index}.secteuracti_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.nbduree", array( 'type' => 'text', 'label' => false ) ),
 									$this->Xform->input( "Expprocer93.{$index}.typeduree", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true, 'domain' => 'cer93' ) ),
 									$this->Html->link( 'Supprimer', '#', array( 'onclick' => "deleteDynamicTrInputs( 'Expprocer93', {$index} );return false;" ) ),
+									array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 								)
 							);
 						}
@@ -438,6 +451,7 @@
 	<!-- Fin bloc 4 -->
 </fieldset>
 <!--  Bloc 5 -->
+<?php $sujetpcd = array();?>
 <?php if( $this->request->data['Contratinsertion']['rg_ci'] <= 1 ): ?>
 	<p class="notice">Ce CER est le premier.</p>
 <?php else: ?>
@@ -807,7 +821,10 @@
 				.$this->Xform->input( 'Expprocer93.%line%.cer93_id', array( 'type' => 'hidden', 'label' => false ) )
 				// ROME v.3
 				.$this->Xform->input( 'Expprocer93.%line%.Entreeromev3.id', array( 'type' => 'hidden', 'label' => false ) )
-				.$this->Xform->input( 'Expprocer93.%line%.Entreeromev3.familleromev3_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['familleromev3_id'], 'empty' => true ) );
+				.$this->Xform->input( "Expprocer93.%line%.Entreeromev3.romev3", array( 'type' => 'text', 'label' => false ) );
+			echo cers93_html_cleanup( $fields );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.Entreeromev3.familleromev3_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['familleromev3_id'], 'empty' => true ) );
 			echo cers93_html_cleanup( $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.Entreeromev3.domaineromev3_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['domaineromev3_id'], 'empty' => true ) );
@@ -817,13 +834,6 @@
 			echo cers93_html_cleanup( $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.Entreeromev3.appellationromev3_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['appellationromev3_id'], 'empty' => true ) );
-			echo cers93_html_cleanup( $fields );
-		?></td><td><?php
-			// INSEE
-			$fields = $this->Xform->input( 'Expprocer93.%line%.metierexerce_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['metierexerce_id'], 'empty' => true ) );
-			echo cers93_html_cleanup( $fields );
-		?></td><td><?php
-			$fields = $this->Xform->input( 'Expprocer93.%line%.secteuracti_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['secteuracti_id'], 'empty' => true ) );
 			echo cers93_html_cleanup( $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) );
@@ -857,6 +867,14 @@
 				dependantSelect( 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Familleromev3Id'.replace( regexp, index ) );
 				dependantSelect( 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Domaineromev3Id'.replace( regexp, index ) );
 				dependantSelect( 'Expprocer93%line%Entreeromev3Appellationromev3Id'.replace( regexp, index ), 'Expprocer93%line%Entreeromev3Metierromev3Id'.replace( regexp, index ) );
+
+				// Ajout du champ permettant l'autocomplétion
+				( function() {
+					var autocompleteId = 'Expprocer93%line%Entreeromev3Romev3'.replace( regexp, index );
+						ajax_parameters = { 'url': '<?php echo Router::url( array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' ) );?>', 'prefix': '', 'fields': [ autocompleteId ], 'min': '3', 'delay': '500' };
+					$( autocompleteId ).writeAttribute( 'autocomplete', 'off' );
+					Event.observe( $( autocompleteId ), 'keyup', function(event) { ajax_action( event, ajax_parameters ); } );
+				}() );
 			}
 		}
 
@@ -879,11 +897,24 @@
 <?php
 	if( !empty( $this->request->data['Expprocer93'] ) ) {
 		foreach( array_keys( $this->request->data['Expprocer93'] ) as $index ) {
+			// Listes déroulantes liées
 			echo $this->Observer->dependantSelect(
 				array(
 					"Expprocer93.{$index}.Entreeromev3.familleromev3_id" => "Expprocer93.{$index}.Entreeromev3.domaineromev3_id",
 					"Expprocer93.{$index}.Entreeromev3.domaineromev3_id" => "Expprocer93.{$index}.Entreeromev3.metierromev3_id",
 					"Expprocer93.{$index}.Entreeromev3.metierromev3_id" => "Expprocer93.{$index}.Entreeromev3.appellationromev3_id",
+				)
+			);
+
+			// Champ recherche rapide
+			// TODO: à faire pour les lignes dynamiques aussi
+			echo $this->Ajax2->observe(
+				array(
+					"Expprocer93.{$index}.Entreeromev3.romev3" => array( 'event' => 'keyup' )
+				),
+				array(
+					'url' => array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' ),
+					'onload' => false
 				)
 			);
 		}

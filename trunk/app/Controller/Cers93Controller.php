@@ -40,6 +40,10 @@
 			'Locale',
 			'Webrsa',
 			'Romev3',
+			'Ajax2' => array(
+				'className' => 'Prototype.PrototypeAjax',
+				'useBuffer' => false
+			),
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
 			)
