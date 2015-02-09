@@ -263,6 +263,12 @@ SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_entr
 DROP INDEX IF EXISTS expsproscers93_entreeromev3_id_idx;
 CREATE UNIQUE INDEX expsproscers93_entreeromev3_id_idx ON expsproscers93(entreeromev3_id);
 
+-- Les anciennes colonnes (INSEE) doivent à présent accepter les valeurs NULL
+ALTER TABLE expsproscers93 ALTER COLUMN metierexerce_id DROP NOT NULL;
+ALTER TABLE expsproscers93 ALTER COLUMN metierexerce_id SET DEFAULT NULL;
+ALTER TABLE expsproscers93 ALTER COLUMN secteuracti_id DROP NOT NULL;
+ALTER TABLE expsproscers93 ALTER COLUMN secteuracti_id SET DEFAULT NULL;
+
 --------------------------------------------------------------------------------
 -- 3. CG 93, Partie "Avez-vous trouvé un emploi ?" > "Si oui, veuillez préciser " du CER
 --------------------------------------------------------------------------------

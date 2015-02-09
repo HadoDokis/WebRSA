@@ -11,19 +11,19 @@ msgstr ""
 # ==============================================================================
 
 msgid "Emptrouvromev3"
-msgstr "Filtrer par emploi trouvé (codes ROME v.3)"
+msgstr "Filtrer par emploi trouvé"
 
 msgid "Emptrouvromev3.romev3"
-msgstr "Recherche rapide de l'emploi trouvé"
+msgstr "Recherche rapide"
 
 msgid "Emptrouvromev3.familleromev3_id"
-msgstr "Code famille de l'emploi trouvé"
+msgstr "Code famille"
 
 msgid "Emptrouvromev3.domaineromev3_id"
-msgstr "Code domaine de l'emploi trouvé"
+msgstr "Code domaine"
 
 msgid "Emptrouvromev3.metierromev3_id"
-msgstr "Code métier de l'emploi trouvé"
+msgstr "Code métier"
 
 msgid "Emptrouvromev3.appellationromev3_id"
-msgstr "Appellation de l'emploi trouvé"
+msgstr "Appellation métier"

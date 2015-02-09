@@ -200,34 +200,50 @@
 		<td class="noborder">
 			<h3>Expériences professionnelles significatives</h3>
 			<?php if( !empty( $contratinsertion['Cer93']['Expprocer93'] ) ):?>
-				<table>
+				<table id="Expprocer93" class="tooltips">
 					<thead>
 						<tr>
-							<th>Domaine ROME v.3</th>
-							<th>Famille ROME v.3</th>
-							<th>Métier ROME v.3</th>
-							<th>Appellation ROME v.3</th>
-
-							<th>Métier exercé (INSEE)</th>
-							<th>Secteur d'activité (INSEE)</th>
+							<th>Code domaine</th>
+							<th>Code famille</th>
+							<th>Code métier</th>
+							<th>Appellation métier</th>
 							<th>Année de début</th>
 							<th>Durée</th>
+							<th class="innerTableHeader noprint">Informations complémentaires</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 							if( !empty( $contratinsertion['Cer93']['Expprocer93'] ) ) {
 								foreach( $contratinsertion['Cer93']['Expprocer93'] as $index => $expprocer93 ) {
+									$innerTable = '<table id="innerTableExpprocer93'.$index.'" class="innerTable">
+										<tbody>
+											<tr>
+												<th>'.__d( 'cer93', 'Cer93.metierexerce_id' ).'</th>
+												<td>'.value( $options['Expprocer93']['metierexerce_id'], $expprocer93['metierexerce_id'] ).'</td>
+											</tr>
+											<tr>
+												<th>'.__d( 'cer93', 'Cer93.secteuracti_id' ).'</th>
+												<td>'.value( $options['Expprocer93']['secteuracti_id'], $expprocer93['secteuracti_id'] ).'</td>
+											</tr>
+										</tbody>
+									</table>';
+
+									$code = array(
+										'famille' => Hash::get( $expprocer93, 'Entreeromev3.Familleromev3.code' ),
+										'domaine' => Hash::get( $expprocer93, 'Entreeromev3.Domaineromev3.code' ),
+										'metier' => Hash::get( $expprocer93, 'Entreeromev3.Metierromev3.code' )
+									);
+
 									echo $this->Html->tableCells(
 										array(
-											h( Hash::get( $expprocer93, 'Entreeromev3.Familleromev3.name' ) ),
-											h( Hash::get( $expprocer93, 'Entreeromev3.Domaineromev3.name' ) ),
-											h( Hash::get( $expprocer93, 'Entreeromev3.Metierromev3.name' ) ),
+											h( implode( ' - ', array( $code['famille'], Hash::get( $expprocer93, 'Entreeromev3.Familleromev3.name' ) ) ) ),
+											h( implode( ' - ', array( "{$code['famille']}{$code['domaine']}", Hash::get( $expprocer93, 'Entreeromev3.Domaineromev3.name' ) ) ) ),
+											h( implode( ' - ', array( "{$code['famille']}{$code['domaine']}{$code['metier']}", Hash::get( $expprocer93, 'Entreeromev3.Metierromev3.name' ) ) ) ),
 											h( Hash::get( $expprocer93, 'Entreeromev3.Appellationromev3.name' ) ),
-											h( Set::enum( $expprocer93['metierexerce_id'], $options['Expprocer93']['metierexerce_id'] ) ),
-											h( Set::enum( $expprocer93['secteuracti_id'], $options['Expprocer93']['secteuracti_id'] ) ),
 											h( $expprocer93['anneedeb'] ),
 											h( "{$expprocer93['nbduree']} {$expprocer93['typeduree']}" ),
+											array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )
 										),
 										array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
 										array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
@@ -248,14 +264,7 @@
 		echo $this->Xform->fieldValue( 'Cer93.isemploitrouv', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.isemploitrouv'), $options['Cer93']['isemploitrouv'] ) );
 		if( $contratinsertion['Cer93']['isemploitrouv'] == 'O' ) {
 			// Emploi trouvé, ROME v.3
-			echo $this->Html->tag(
-				'fieldset',
-				$this->Html->tag( 'legend', 'Emploi trouvé (ROME v.3)' )
-				.$this->Xform->fieldValue( 'Emptrouvromev3.familleromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Familleromev3.name' ), 'cers93' )
-				.$this->Xform->fieldValue( 'Emptrouvromev3.domaineromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Domaineromev3.name' ), 'cers93' )
-				.$this->Xform->fieldValue( 'Emptrouvromev3.metierromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Metierromev3.name' ), 'cers93' )
-				.$this->Xform->fieldValue( 'Emptrouvromev3.appellationromev3_id', Hash::get( $contratinsertion, 'Cer93.Emptrouvromev3.Appellationromev3.name' ), 'cers93' )
-			);
+			echo $this->Romev3->fieldsetView( 'Emptrouvromev3', $contratinsertion['Cer93'], array( 'domain' => 'cers93' ) );
 
 			// Emploi trouvé, INSEE
 			echo $this->Html->tag(
@@ -373,7 +382,7 @@
 			// Emploi trouvé, ROME v.3
 			$sujetromev3 = (array)Hash::get( $contratinsertion['Cer93'], 'Sujetromev3' );
 			if( !empty( $sujetromev3 ) ) {
-				echo $this->Romev3->fieldsetView( 'Sujetromev3', $contratinsertion['Cer93'] );
+				echo $this->Romev3->fieldsetView( 'Sujetromev3', $contratinsertion['Cer93'], array( 'domain' => 'cers93' ) );
 			}
 		?>
 	<?php else:?>

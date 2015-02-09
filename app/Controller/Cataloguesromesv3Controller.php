@@ -135,8 +135,9 @@
 			// 2. Ajax::ajaxClick()
 			else {
 				$target = str_replace( '][', '.', preg_replace( '/^data\[(.*)\]$/', '\1', $data['name'] ) );
+				$targetPrefix = preg_replace( '/\.romev3$/', '', $target );
 				list( $modelName, $fieldName ) = model_field( $target );
-
+				// TODO: tester $targetPrefix si on a un préfixe
 				$query = array(
 					'fields' => array(
 						'Domaineromev3.familleromev3_id',
@@ -157,31 +158,31 @@
 				$result = $this->Appellationromev3->find( 'first', $query );
 
 				$json['fields'] = array(
-					"{$modelName}.{$fieldName}" => array(
-						'id' => domId( "{$data['prefix']}{$modelName}.{$fieldName}" ),
+					"{$targetPrefix}.{$fieldName}" => array(
+						'id' => domId( "{$data['prefix']}{$targetPrefix}.{$fieldName}" ),
 						'value' => '', // FIXME
 						'type' => 'text'
 					),
-					"{$modelName}.familleromev3_id" => array(
-						'id' => domId( "{$data['prefix']}{$modelName}.familleromev3_id" ),
+					"{$targetPrefix}.familleromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$targetPrefix}.familleromev3_id" ),
 						'value' => $result['Domaineromev3']['familleromev3_id'],
 						'type' => 'select',
 						'simulate' => true
 					),
-					"{$modelName}.domaineromev3_id" => array(
-						'id' => domId( "{$data['prefix']}{$modelName}.domaineromev3_id" ),
+					"{$targetPrefix}.domaineromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$targetPrefix}.domaineromev3_id" ),
 						'value' => "{$result['Domaineromev3']['familleromev3_id']}_{$result['Domaineromev3']['id']}",
 						'type' => 'select',
 						'simulate' => true
 					),
-					"{$modelName}.metierromev3_id" => array(
-						'id' => domId( "{$data['prefix']}{$modelName}.metierromev3_id" ),
+					"{$targetPrefix}.metierromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$targetPrefix}.metierromev3_id" ),
 						'value' => "{$result['Domaineromev3']['id']}_{$result['Metierromev3']['id']}",
 						'type' => 'select',
 						'simulate' => true
 					),
-					"{$modelName}.appellationromev3_id" => array(
-						'id' => domId( "{$data['prefix']}{$modelName}.appellationromev3_id" ),
+					"{$targetPrefix}.appellationromev3_id" => array(
+						'id' => domId( "{$data['prefix']}{$targetPrefix}.appellationromev3_id" ),
 						'value' => "{$result['Metierromev3']['id']}_{$result['Appellationromev3']['id']}",
 						'type' => 'select',
 						'simulate' => true

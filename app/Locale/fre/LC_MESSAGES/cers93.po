@@ -11,27 +11,27 @@ msgstr ""
 # ==============================================================================
 
 msgid "Emptrouvromev3"
-msgstr "Emploi trouvé (ROME v.3)"
+msgstr "Emploi trouvé"
 
 msgid "Emptrouvromev3.romev3"
-msgstr "Recherche rapide de l'emploi trouvé"
+msgstr "Recherche rapide"
 
 msgid "Emptrouvromev3.familleromev3_id"
-msgstr "Code famille de l'emploi trouvé"
+msgstr "Code famille"
 
 msgid "Emptrouvromev3.domaineromev3_id"
-msgstr "Code domaine de l'emploi trouvé"
+msgstr "Code domaine"
 
 msgid "Emptrouvromev3.metierromev3_id"
-msgstr "Code métier de l'emploi trouvé"
+msgstr "Code métier"
 
 msgid "Emptrouvromev3.appellationromev3_id"
-msgstr "Appellation de l'emploi trouvé"
+msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------
 
 msgid "Sujetromev3"
-msgstr "Votre contrat porte sur l'emploi (ROME v.3)"
+msgstr "Votre contrat porte sur l'emploi"
 
 msgid "Sujetromev3.romev3"
 msgstr "Recherche rapide"
@@ -46,6 +46,6 @@ msgid "Sujetromev3.metierromev3_id"
 msgstr "Code métier"
 
 msgid "Sujetromev3.appellationromev3_id"
-msgstr "Appellation"
+msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------

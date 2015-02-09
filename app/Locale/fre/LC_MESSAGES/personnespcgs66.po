@@ -14,16 +14,16 @@ msgid "Categorieromev3"
 msgstr "Catégorie (ROME V3)"
 
 msgid "Categorieromev3.romev3"
-msgstr "Recherche rapide de la catégorie"
+msgstr "Recherche rapide"
 
 msgid "Categorieromev3.familleromev3_id"
-msgstr "Code famille de la catégorie"
+msgstr "Code famille"
 
 msgid "Categorieromev3.domaineromev3_id"
-msgstr "Code domaine de la catégorie"
+msgstr "Code domaine"
 
 msgid "Categorieromev3.metierromev3_id"
-msgstr "Code métier de la catégorie"
+msgstr "Code métier"
 
 msgid "Categorieromev3.appellationromev3_id"
-msgstr "Appellation de la catégorie"
+msgstr "Appellation métier"
