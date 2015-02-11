@@ -11,7 +11,7 @@
 			'Situationallocataire.natpf_d1',
 			'Situationallocataire.tranche_age_view',
 			'Situationallocataire.anciennete_dispositif_view',
-			'Questionnaired1pdv93.inscritpe' => array( 'type' => 'boolean' ),
+			'Questionnaired1pdv93.inscritpe',
 			'Questionnaired1pdv93.marche_travail',
 			'Questionnaired1pdv93.vulnerable',
 			'Questionnaired1pdv93.diplomes_etrangers',
