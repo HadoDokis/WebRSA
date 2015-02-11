@@ -464,6 +464,13 @@
 						)
 					);
 
+					$typethematiquefp93_id = Hash::get( $data, 'Ficheprescription93.typethematiquefp93_id' );
+					$action = Hash::get( $data, 'Ficheprescription93.action' );
+
+					if( $typethematiquefp93_id === 'pdi' && $action === 'add' ) {
+						$query['conditions']['Actionfp93.actif'] = 1;
+					}
+
 					$elmt['options'] = $this->ajaxOptions( 'Actionfp93', $query );
 				}
 				else if( $path !== 'Ficheprescription93.numconvention' ) {
