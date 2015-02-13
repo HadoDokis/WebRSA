@@ -89,6 +89,7 @@
 					$conditions,
 					array(
 						'Adresse.numcom LIKE' => Configure::read( 'Cg.departement' ).'%',
+						'Adresse.numcom <> VxAdresse.numcom',
 						"Adressefoyer.dtemm > Orientstruct.date_valid",
 						'Structurereferente.filtre_zone_geo' => true,
 						"Adresse.numcom NOT IN ( {$sqZonesgeographiquesStructuresreferentes} )",
