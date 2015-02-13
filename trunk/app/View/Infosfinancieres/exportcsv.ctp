@@ -1,6 +1,6 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
-	$this->Csv->addRow( array( 'N° Dossier', 'N° CAF', 'Nom/prénom du bénéficiaire', 'Date de naissance du bénéficiaire', 'Type d\'allocation', 'Montant de l\'allocation', 'Date du mouvement comptable' ) );
+	$this->Csv->addRow( array( 'N° Dossier', __d( 'dossier', 'Dossier.matricule' ), 'Nom/prénom du bénéficiaire', 'Date de naissance du bénéficiaire', 'Type d\'allocation', 'Montant de l\'allocation', 'Date du mouvement comptable' ) );
 
 	foreach( $infos as $info ) {
 		$row = array(

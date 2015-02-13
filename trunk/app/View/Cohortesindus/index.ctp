@@ -30,7 +30,7 @@
 		<legend>Recherche par dossier</legend>
 		<?php
 			echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
-			echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			echo $this->Form->input( 'Dossier.matricule', array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'maxlength' => 15 ) );
 			echo $this->Search->natpf( $natpf );
 
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
@@ -97,7 +97,7 @@
 									<td>'.h( date_short( $indu['Personne']['dtnai'] ) ).'</td>
 								</tr>
 								<tr>
-									<th>Numéro CAF</th>
+									<th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
 									<td>'.h( $indu['Dossier']['matricule'] ).'</td>
 								</tr>
 								<tr>

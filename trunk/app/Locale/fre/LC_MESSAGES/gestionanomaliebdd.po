@@ -46,7 +46,7 @@ msgid "Dossier.dtdemrsa"
 msgstr "Date de demande RSA"
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Foyer.sitfam"
 msgstr "Situation familiale"

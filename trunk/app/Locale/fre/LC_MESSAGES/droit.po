@@ -3436,3 +3436,6 @@ msgstr "Ajout / modification d'un élément du catalogue"
 
 msgid "Cataloguesromesv3:delete"
 msgstr "Suppression d'un élément du catalogue"
+
+msgid "Search:search"
+msgstr "Recherche magique"

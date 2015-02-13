@@ -3,7 +3,7 @@
 
 	$this->Csv->addRow(
 		array(
-			'N° CAF',
+			__d( 'dossier', 'Dossier.matricule' ),
 			'Nom',
 			'Prénom',
 			'NIR',

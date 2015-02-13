@@ -164,7 +164,7 @@ msgid "Situationallocataire.nomcom"
 msgstr "Nom de commune"
 
 msgid "Situationallocataire.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Situationallocataire.sitfam"
 msgstr "Situation familiale"

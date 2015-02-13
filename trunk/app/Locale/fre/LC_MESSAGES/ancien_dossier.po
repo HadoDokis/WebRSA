@@ -11,7 +11,7 @@ msgstr ""
 # ==============================================================================
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Dossier.numdemrsa"
 msgstr "N° demande RSA"

@@ -69,7 +69,7 @@
 									<td>'.h( date_short( $contrat['Personne']['dtnai'] ) ).'</td>
 								</tr>
 								<tr>
-									<th>Numéro CAF</th>
+									<th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
 									<td>'.h( $contrat['Dossier']['matricule'] ).'</td>
 								</tr>
 								<tr>

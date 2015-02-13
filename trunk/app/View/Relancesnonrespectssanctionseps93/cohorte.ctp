@@ -43,7 +43,7 @@
 		)
 	);
 
-	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
+	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', __d( 'dossier', 'Dossier.matricule.fieldset' ) ).
 		$this->Default2->subform(
 			array(
 				'Search.Dossier.matricule' => array(  'label' => __d( 'dossier', 'Dossier.matricule' ) ),
@@ -102,7 +102,7 @@
 		echo '<table class="tooltips" style="width: 100%;">
 			<thead>
 				<tr>
-					<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>
+					<th>'.$this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'Nom / Prénom Allocataire', 'Personne.nom' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>
 					<th>'.$this->Xpaginator->sort( 'Nom de commune', 'Adresse.nomcom' ).'</th>

@@ -88,7 +88,7 @@
 			echo '<table id="searchResults" class="tooltips" style="width: 100%;"><thead>';
 				echo '<tr>';
 					echo '<th>'.$this->Xpaginator->sort( 'NIR', 'Personne.nir' ).'</th>';
-					echo '<th>'.$this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' ).'</th>';
+					echo '<th>'.$this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Nom', 'Personne.nom' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Prénom', 'Personne.prenom' ).'</th>';
 					echo '<th>'.$this->Xpaginator->sort( 'Code Postal', 'Adresse.numcom' ).'</th>';

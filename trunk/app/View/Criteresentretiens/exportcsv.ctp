@@ -5,7 +5,7 @@
         array(
             'Date de l\'entretien',
             'Nom/Prénom allocataire',
-            'N° CAF',
+            __d( 'dossier', 'Dossier.matricule' ),
             'Numéro de voie',
             'Type de voie',
             'Nom de voie',

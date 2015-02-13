@@ -24,7 +24,13 @@ msgid "Dossier.fonorg"
 msgstr "Organisme payeur"
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
+
+msgid "Dossier.matricule.large"
+msgstr "Numéro CAF/MSA"
+
+msgid "Dossier.matricule.fieldset"
+msgstr "Recherche par dossier CAF/MSA"
 
 msgid "Dossier.numdemrsa"
 msgstr "N° demande RSA"

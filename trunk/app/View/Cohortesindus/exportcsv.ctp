@@ -4,7 +4,7 @@
 	$this->Csv->addRow(
         array(
             'N° Dossier',
-            'N° CAF',
+            __d( 'dossier', 'Dossier.matricule' ),
             'Nom/Prénom allocataire',
             'Numéro de voie',
             'Type de voie',

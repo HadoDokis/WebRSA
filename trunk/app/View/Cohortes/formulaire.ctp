@@ -116,7 +116,7 @@
 									<td>'.h( date_short( $personne['Personne']['dtnai'] ) ).'</td>
 								</tr>
 								<tr>
-									<th>Numéro CAF</th>
+									<th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
 									<td>'.h( $personne['Dossier']['matricule'] ).'</td>
 								</tr>
 								<tr>

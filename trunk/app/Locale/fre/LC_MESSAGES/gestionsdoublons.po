@@ -28,7 +28,7 @@ msgid "Dossier.dtdemrsa"
 msgstr "Date de demande"
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Demandeur.nom"
 msgstr "Nom"
@@ -52,7 +52,7 @@ msgid "Dossier2.dtdemrsa"
 msgstr "Date de demande"
 
 msgid "Dossier2.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Demandeur2.nom"
 msgstr "Nom"

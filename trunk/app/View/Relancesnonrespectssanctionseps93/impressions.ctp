@@ -43,7 +43,7 @@
 		)
 	);
 
-	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', 'Recherche par dossier CAF' ).
+	echo $this->Xhtml->tag( 'fieldset', $this->Xhtml->tag( 'legend', __d( 'dossier', 'Dossier.matricule.fieldset' ) ).
 		$this->Default2->subform(
 			array(
 				'Dossier.matricule',

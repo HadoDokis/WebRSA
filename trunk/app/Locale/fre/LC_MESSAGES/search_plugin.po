@@ -77,7 +77,7 @@ msgid "Search.Dossier.numdemrsa"
 msgstr "Numéro de dossier RSA"
 
 msgid "Search.Dossier.matricule"
-msgstr "Numéro CAF"
+msgstr "Numéro CAF/MSA"
 
 msgid "Search.Dossier.dernier"
 msgstr "Uniquement la dernière demande RSA pour un même allocataire"

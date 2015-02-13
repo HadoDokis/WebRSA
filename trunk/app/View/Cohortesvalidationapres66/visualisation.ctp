@@ -131,7 +131,7 @@
                                 <td>'.h( date_short( $validationapre['Personne']['dtnai'] ) ).'</td>
                             </tr>
                             <tr>
-                                <th>Numéro CAF</th>
+                                <th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
                                 <td>'.h( $validationapre['Dossier']['matricule'] ).'</td>
                             </tr>
                             <tr>

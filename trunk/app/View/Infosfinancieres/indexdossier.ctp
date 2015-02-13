@@ -51,7 +51,7 @@
 			<thead>
 				<tr>
 					<th><?php echo $this->Xpaginator->sort( 'N° Dossier', 'Dossier.numdemrsa' );?></th>
-					<th><?php echo $this->Xpaginator->sort( 'N° CAF', 'Dossier.matricule' );?></th>
+					<th><?php echo $this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule' ), 'Dossier.matricule' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Nom/prénom du bénéficiaire', 'Personne.nom' );?></th>
 					<th><?php echo $this->Xpaginator->sort( 'Date de naissance du bénéficiaire', 'Personne.dtnai' );?></th>
 					<th>Type d'allocation</th>

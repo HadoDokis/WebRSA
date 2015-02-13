@@ -25,7 +25,7 @@ msgid "Search.Dossier.numdemrsa"
 msgstr "Numéro de dossier RSA"
 
 msgid "Search.Dossier.matricule"
-msgstr "Numéro CAF"
+msgstr "Numéro CAF/MSA"
 
 msgid "Search.Personne"
 msgstr "Recherche par allocataire"

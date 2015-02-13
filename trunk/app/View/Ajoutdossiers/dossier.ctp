@@ -9,7 +9,7 @@
 	<h2>Étape 4: Dossier RSA</h2>
 	<?php echo $this->Form->input( 'Dossier.numdemrsatemp', array( 'label' => 'Génération automatique d\'un N° de demande RSA temporaire', 'type' => 'checkbox' ) );?>
 	<?php echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => required( 'Numéro de dossier' ) ) );?>
-	<?php echo $this->Form->input( 'Dossier.matricule', array( 'label' => required( 'N° CAF' ) ) );?>
+	<?php echo $this->Form->input( 'Dossier.matricule', array( 'label' => required( __d( 'dossier', 'Dossier.matricule' ) ) ) );?>
 	<?php echo $this->Form->input( 'Dossier.fonorg', array( 'label' => required( 'Organisme gérant le dossier' ), 'type' => 'select', 'options' => $fonorg ) );?>
 	<?php echo $this->Form->input( 'Dossier.dtdemrsa', array( 'label' => required( 'Date de demande' ), 'type' => 'date', 'dateFormat' => 'DMY', 'maxYear' => date( 'Y' ) + 1, 'minYear' => date( 'Y' ) - 1 ) );?>
 
