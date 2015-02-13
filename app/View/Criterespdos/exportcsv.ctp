@@ -5,7 +5,7 @@
         array(
             'N° Dossier',
             'Nom/Prénom allocataire',
-            'N° CAF',
+            __d( 'dossier', 'Dossier.matricule' ),
             'Numéro de voie',
             'Type de voie',
             'Nom de voie',

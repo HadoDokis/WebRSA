@@ -63,7 +63,7 @@
 		<legend>Recherche par dossier</legend>
 		<?php echo $this->Form->input( 'Dossier.recherche', array( 'label' => false, 'type' => 'hidden', 'value' => true ) );?>
 		<?php echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );?>
-		<?php echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );?>
+		<?php echo $this->Form->input( 'Dossier.matricule', array( 'label' => __d( 'dossier', 'Dossier.matricule.large' ), 'maxlength' => 15 ) );?>
 		<?php echo $this->Form->input( 'Detailcalculdroitrsa.natpf', array( 'label' => 'Nature de la prestation', 'type' => 'select', 'options' => $natpf, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $toppersdrodevorsa, 'empty' => true ) );?>
 		<?php echo $this->Form->input( 'Dossier.anciennete_dispositif', array( 'label' => 'Ancienneté dans le dispositif', 'type' => 'select', 'options' => $anciennete_dispositif, 'empty' => true ) );?>
@@ -180,7 +180,7 @@
 						$innerTable = '<table id="innerTablesearchResults'.$index.'" class="innerTable">
 							<tbody>
 								<tr>
-									<th>Numéro CAF</th>
+									<th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
 									<td>'.$dossier['Dossier']['matricule'].'</td>
 								</tr>
 								<tr>

@@ -18,7 +18,7 @@
 			'N° de dossier',
 			'Date ouverture de droit',
 			'Date de naissance',
-			'N° CAF',
+			__d( 'dossier', 'Dossier.matricule' ),
 			'NIR',
 			'Code postal',
 			'Date de fin de droit',

@@ -18,7 +18,7 @@
 		'Commune',
 		'Type d\'orientation',
 		'Identifiant Pôle Emploi',
-		'N° CAF',
+		__d( 'dossier', 'Dossier.matricule' ),
 		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
 		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 		'Sexe',

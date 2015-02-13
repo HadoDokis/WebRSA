@@ -92,7 +92,7 @@ msgstr "Date du bilan final renseignée"
 # ------------------------------------------------------------------------------
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Dossier.numdemrsa"
 msgstr "N° de dossier"
@@ -256,7 +256,7 @@ msgid "Instantanedonneesfp93.benef_natpf_3mois"
 msgstr "Statut du RSA 3 mois avant la création de la fiche"
 
 msgid "Instantanedonneesfp93.benef_matricule"
-msgstr "Numéro CAF"
+msgstr "Numéro CAF/MSA"
 
 msgid "Instantanedonneesfp93.benef_inscritpe"
 msgstr "Inscrit au Pôle Emploi"

@@ -59,7 +59,7 @@
 		<table id="searchResults">
 			<thead>
 				<tr>
-					<th rowspan="2"><?php echo $this->Xpaginator->sort( 'Numéro CAF/MSA', 'Dossier.matricule' );?></th>
+					<th rowspan="2"><?php echo $this->Xpaginator->sort( __d( 'dossier', 'Dossier.matricule.large' ), 'Dossier.matricule' );?></th>
 					<th colspan="2">Demandeur</th>
 					<th rowspan="2">Adresse</th>
 					<th>Nom / Prénom du Conjoint</th>

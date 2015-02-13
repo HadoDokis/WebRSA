@@ -405,7 +405,7 @@
 						<tbody>
 							<?php if( Configure::read( 'Cg.departement' ) != 58 ):?>
 								<tr class="even">
-									<th>Numéro CAF / MSA</th>
+									<th><?php echo __d( 'dossier', 'Dossier.matricule.large' ); ?></th>
 									<td><?php echo Set::extract( 'Dossier.matricule', $details );;?></td>
 								</tr>
 							<?php endif;?>

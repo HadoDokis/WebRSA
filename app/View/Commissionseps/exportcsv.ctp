@@ -6,7 +6,7 @@
 			'Civilité',
 			'Nom',
 			'Prénom',
-			'N° CAF',
+			__d( 'dossier', 'Dossier.matricule' ),
 			'Personne',
 			'Date de naissance',
 			'Commune',

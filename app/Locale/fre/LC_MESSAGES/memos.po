@@ -17,10 +17,10 @@ msgid "Personne.nom_complet"
 msgstr "Nom et prénom de l'allocataire"
 
 msgid "Personne.qual"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Memo.name"
 msgstr "Contenu"

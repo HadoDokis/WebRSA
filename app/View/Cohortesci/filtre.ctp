@@ -43,7 +43,7 @@
 		<legend>Recherche par dossier</legend>
 		<?php
 			echo $this->Form->input( 'Search.Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
-			echo $this->Form->input( 'Search.Dossier.matricule', array( 'label' => 'N° CAF', 'maxlength' => 15 ) );
+			echo $this->Form->input( 'Search.Dossier.matricule', array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'maxlength' => 15 ) );
 
 			$valueDossierDernier = isset( $this->request->data['Search']['Dossier']['dernier'] ) ? $this->request->data['Search']['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Search.Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );

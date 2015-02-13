@@ -5,7 +5,7 @@
 		array(
 			'Date du bilan de parcours',
 			'Nom de la personne',
-			'N° CAF',
+			__d( 'dossier', 'Dossier.matricule' ),
 			'Type de structure',
 			'Nom du prescripteur',
 			'Type de commission',

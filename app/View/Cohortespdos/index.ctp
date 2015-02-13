@@ -75,7 +75,7 @@
 									<td>'.h( date_short( $pdo['Personne']['dtnai'] ) ).'</td>
 								</tr>
 								<tr>
-									<th>Numéro CAF</th>
+									<th>' . __d( 'dossier', 'Dossier.matricule.large' ) . '</th>
 									<td>'.h( $pdo['Dossier']['matricule'] ).'</td>
 								</tr>
 								<tr>

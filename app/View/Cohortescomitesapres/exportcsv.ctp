@@ -1,7 +1,7 @@
 <?php
 	$this->Csv->preserveLeadingZerosInExcel = true;
 
-	$this->Csv->addRow( array( 'N° dossier RSA', 'N° CAF', 'Nom/Prénom allocataire', 'Commune de l\'allocataire',  'Date demande APRE', 'Décision du comité', 'Date de décision', 'Montant attribué', 'Observations' ) );
+	$this->Csv->addRow( array( 'N° dossier RSA', __d( 'dossier', 'Dossier.matricule' ), 'Nom/Prénom allocataire', 'Commune de l\'allocataire',  'Date demande APRE', 'Décision du comité', 'Date de décision', 'Montant attribué', 'Observations' ) );
 
 	foreach( $decisionscomites as $decisioncomite ) {
 

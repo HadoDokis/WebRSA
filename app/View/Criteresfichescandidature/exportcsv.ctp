@@ -5,7 +5,7 @@
         array(
             'Date de signature de la fiche',
             'Nom de la personne',
-            'N° CAF',
+            __d( 'dossier', 'Dossier.matricule' ),
             'Nom du prescripteur',
             'Action engagée',
             'Nom de la formation',

@@ -22,7 +22,7 @@ msgstr "Visibilité formulaire"
 # ==============================================================================
 
 msgid "Dossier.matricule"
-msgstr "N° CAF"
+msgstr "N° CAF/MSA"
 
 msgid "Personne.nom_complet"
 msgstr "Allocataire"

@@ -54,7 +54,7 @@
 		<legend>Recherche par dossier</legend>
         <?php
 			echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de dossier RSA' ) );
-			echo $this->Form->input( 'Dossier.matricule', array( 'label' => 'Numéro CAF', 'maxlength' => 15 ) );
+			echo $this->Form->input( 'Dossier.matricule', array( 'label' => __d( 'dossier', 'Dossier.matricule.large' ), 'maxlength' => 15 ) );
 
 			echo $this->Search->etatdosrsa($etatdosrsa);
 
