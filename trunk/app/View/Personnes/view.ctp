@@ -24,17 +24,31 @@
 
 <h1><?php echo 'Visualisation d\'une personne « '.$title.' »';?></h1>
 
-<ul class="actionMenu">
-	<?php
-		if( $this->Permissions->check( 'personnes', 'edit' ) ) {
-			echo '<li>'.$this->Xhtml->editLink(
-				'Éditer la personne « '.$title.' »',
-				array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
-				$this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu )
-			).' </li>';
-		}
-
-	?>
+<ul class="actions">
+<?php
+    if( $this->Permissions->check( 'personnes', 'edit' ) ) {
+        echo '<li class="action">'.$this->Xhtml->link(
+            'Modifier',
+            array( 'controller' => 'personnes', 'action' => 'edit', $personne['Personne']['id'] ),
+            array(
+                'title' => 'Éditer la personne « '.$title.' »',
+                'enabled' => $this->Permissions->checkDossier( 'personnes', 'edit', $dossierMenu ),
+                'class' => 'personnes edit'
+            )
+        ).' </li>';
+    }
+    if( $this->Permissions->check( 'personnes', 'coordonnees' ) ) {
+        echo '<li class="action">'.$this->Xhtml->link(
+            'Modifier les coordonnées',
+            array( 'controller' => 'personnes', 'action' => 'coordonnees', $personne['Personne']['id'] ),
+            array(
+                'title' => 'Modifier les coordonnées de « '.$title.' »',
+                'enabled' => $this->Permissions->checkDossier( 'personnes', 'coordonnees', $dossierMenu ),
+                'class' => 'personnes coordonnees'
+            )
+        ).' </li>';
+    }
+?>
 </ul>
 
 <div id="fichePers">

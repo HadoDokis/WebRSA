@@ -353,6 +353,25 @@
 								<td><?php echo h( Set::extract( 'DEM.Personne.nir', $details ) );?></td>
 								<td><?php echo h( Set::extract( 'CJT.Personne.nir', $details ) );?></td>
 							</tr>
+                                                        <tr class="even">
+                                                                <th colspan="3" class="center">Coordonnées</th>
+
+                                                        </tr>
+                                                        <tr class="odd">
+                                                                <th><?php echo __d( 'personne', 'Personne.numfixe' );?></th>
+                                                                <td><?php echo Set::extract( 'DEM.Personne.numfixe', $details );?></td>
+                                                                <td><?php echo Set::extract( 'CJT.Personne.numfixe', $details );?></td>
+                                                        </tr>
+                                                        <tr class="even">
+                                                                <th><?php echo __d( 'personne', 'Personne.numport' );?></th>
+                                                                <td><?php echo Set::extract( 'DEM.Personne.numport', $details );?></td>
+                                                                <td><?php echo Set::extract( 'CJT.Personne.numport', $details );?></td>
+                                                        </tr>
+                                                        <tr class="odd">
+                                                                <th><?php echo __d( 'personne', 'Personne.email' );?></th>
+                                                                <td><?php echo Set::extract( 'DEM.Personne.email', $details );?></td>
+                                                                <td><?php echo Set::extract( 'CJT.Personne.email', $details );?></td>
+                                                        </tr>
 						</tbody>
 					</table>
 				</td>
