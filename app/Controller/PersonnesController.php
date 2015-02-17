@@ -46,6 +46,7 @@
 			'fileview' => 'read',
 			'index' => 'read',
 			'view' => 'read',
+                        'coordonnees' => 'update',
 		);
 
 		/**
@@ -436,7 +437,7 @@
 					$this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
 				}
 			}
-			// Afficage des données
+			// Affichage des données
 			else {
 				$personne = $this->Personne->find(
 					'first',
@@ -465,5 +466,56 @@
 			$this->_setOptions();
 			$this->render( 'add_edit' );
 		}
+                
+                /**
+                 * Éditer les coordonnées spécifique d'une personne.
+                 * 
+                 * @param integer $id L'id de la personne
+                 * @throws NotFoundException
+                 */
+		public function coordonnees( $id = null ) {
+                    $query = array(
+                        'conditions' => array( 'Personne.id' => $id ),
+                        'contain' => false
+                    );
+                    $personne = $this->Personne->find('first',$query);
+                                     
+                    if (empty($personne)) {
+                        throw new NotFoundException();
+                    }
+
+                    $dossierMenu = $this->DossiersMenus->getAndCheckDossierMenu( array( 'personne_id' => $id ) );                  
+                    $this->Jetons2->get( $dossierMenu['Dossier']['id'] );
+                    $redirectUrl = array( 'controller' => 'personnes', 'action' => 'view', $id );
+
+                    // Retour à la liste en cas d'annulation
+                    if( isset( $this->request->data['Cancel'] ) ) {
+                        $this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+                        $this->redirect( $redirectUrl );
+                    }
+
+                    if( $this->request->is('post') || $this->request->is('put') ) {
+                        $this->Personne->begin();
+
+                        $data = Hash::merge( $personne, $this->request->data );
+                        $this->Personne->create( $data );
+                        if ( $this->Personne->save() ) {   
+                            $this->Personne->commit();
+                            $this->Jetons2->release( $dossierMenu['Dossier']['id'] );
+                            $this->Session->setFlash( 'Enregistrement effectué', 'flash/success' );
+                            return $this->redirect( $redirectUrl );
+			}
+			else {
+                            $this->Personne->rollback();
+                            $this->Session->setFlash( 'Erreur lors de l\'enregistrement', 'flash/error' );
+			}
+                    }
+                    else {
+                        $this->request->data = $personne;
+                    }
+  
+                    $urlmenu = "/personnes/view/{$id}";
+                    $this->set( compact( 'personne', 'dossierMenu', 'urlmenu' ) );
+		} 
 	}
 ?>

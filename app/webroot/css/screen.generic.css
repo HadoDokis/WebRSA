@@ -1069,6 +1069,14 @@ ul.actions li.add span.disabled, ul.actions li span.add.disabled {
 	background-image: url( ../img/icons/add_disabled.png );
 }
 
+ul.actions li.edit a, ul.actions li a.edit, ul.actions li a.personnes.coordonnees {
+	background-image: url( ../img/icons/pencil.png );
+}
+
+ul.actions li.edit span.disabled, ul.actions li span.edit.disabled, ul.actions li.action span.personnes.coordonnees.disabled {
+	background-image: url( ../img/icons/pencil_disabled.png );
+}
+
 ul.actions li.action a.back {
 	background-image: url( ../img/icons/arrow_left.png );
 }
