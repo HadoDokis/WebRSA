@@ -289,7 +289,9 @@
 				<?php
 					if( Configure::read( 'debug' ) > 0 ) {
 						echo '( CG '.Configure::read( 'Cg.departement' );
-						echo ', BDD '.ClassRegistry::init( 'User' )->getDataSource()->config['database']." )\n";
+						echo ', BDD '.ClassRegistry::init( 'User' )->getDataSource()->config['database'];
+						echo ', '.$this->Html->link( 'requêtes SQL', '#', array( 'onclick' => '$( "sqldump" ).toggle();return false;' ) );
+						echo " )\n";
 					}
 					echo sprintf(
 						"Page construite en %s secondes. %s / %s. %s modèles",
@@ -304,8 +306,9 @@
 		</div>
 		<?php
 			echo $this->fetch( 'scriptBottom' );
+
 			if( Configure::read( 'debug' ) > 0 ) {
-				echo '<input type="button" value="Afficher requetes SQL" onclick="sqldump = document.getElementById(\'sqldump\'); if(sqldump.style.display==\'block\'){ sqldump.style.display = \'none\'; this.value = \'Afficher requetes SQL\' } else{ sqldump.style.display = \'block\'; this.value = \'Cacher requetes SQL\';}" /><div id="sqldump" style="display:none">' . $this->element( 'sql_dump' ) . '</div>';
+				echo $this->Html->tag( 'div', $this->element( 'sql_dump' ), array( 'id' => 'sqldump', 'style' => 'display: none' ) );
 			}
 		?>
 	</body>
