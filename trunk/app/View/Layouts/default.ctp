@@ -153,108 +153,108 @@
 				}
 			?>
 			<div id="pageContent">
-				<?php 
+				<?php
 				if( $this->Session->check( 'Auth.User.username' ) && $this->Permissions->check('search', 'search') ) {
-					
+
 					// Vérifi les permissions pour chaque moteurs de recherches et les met dans la liste déroulante
-					$selectRecherche['dossiers_index'] = 
+					$selectRecherche['dossiers_index'] =
 							$this->Permissions->check('dossiers', 'index') ? 'Automatique' : null;
-					
-					$selectRecherche['criteres_index'] = 
+
+					$selectRecherche['criteres_index'] =
 							$this->Permissions->check('criteres', 'index') ? 'Orientation' : null;
-					
-					$selectRecherche['criteresapres_all'] = 
-							( Configure::read( 'Cg.departement' ) == 66 ) && 
+
+					$selectRecherche['criteresapres_all'] =
+							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criteresapres', 'all') ? 'APREs' : null;
-					
-					$selectRecherche['criteresci_index'] = 
+
+					$selectRecherche['criteresci_index'] =
 							$this->Permissions->check('criteresci', 'index') ? 'CER' : null;
-					
-					$selectRecherche['criterescuis_index'] = 
+
+					$selectRecherche['criterescuis_index'] =
 							$this->Permissions->check('criterescuis', 'index') ? 'CUI' : null;
-					
-					$selectRecherche['criteresentretiens_index'] = 
+
+					$selectRecherche['criteresentretiens_index'] =
 							$this->Permissions->check('criteresentretiens', 'index') ? 'Entretiens' : null;
-					
-					$selectRecherche['criteresfichesscandidature_index'] = 
-							( Configure::read( 'Cg.departement' ) == 66 ) && 
+
+					$selectRecherche['criteresfichesscandidature_index'] =
+							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criteresfichescandidature', 'index') ? 'Fiches de Candidature' : null;
-					
-					$selectRecherche['cohortesindus_index'] = 
+
+					$selectRecherche['cohortesindus_index'] =
 							$this->Permissions->check('cohortesindus', 'index') ? 'Indus' : null;
-					
-					$selectRecherche['dsps_index'] = 
+
+					$selectRecherche['dsps_index'] =
 							$this->Permissions->check('dsps', 'index') ? 'DSPs' : null;
-					
-					$selectRecherche['criteresrdv_index'] = 
+
+					$selectRecherche['criteresrdv_index'] =
 							$this->Permissions->check('criteresrdv', 'index') ? 'Rendez-vous' : null;
-					
-					$selectRecherche['criteresdossierspcgs66_dossier'] = 
+
+					$selectRecherche['criteresdossierspcgs66_dossier'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criteresdossierspcgs66', 'dossier') ? 'Dossiers PCGs' : null;
-					
-					$selectRecherche['criterestraitementspcgs66_index'] = 
+
+					$selectRecherche['criterestraitementspcgs66_index'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criterestraitementspcgs66', 'index') ? 'Traitement PCGs' : null;
-					
-					$selectRecherche['criteresdossierspcgs66_gestionnaire'] = 
+
+					$selectRecherche['criteresdossierspcgs66_gestionnaire'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criteresdossierspcgs66', 'gestionnaire') ? 'Gestionnaire PCGs' : null;
-					
-					$selectRecherche['criterespdos_nouvelles'] = 
+
+					$selectRecherche['criterespdos_nouvelles'] =
 							( Configure::read( 'Cg.departement' ) != 66 ) &&
 							$this->Permissions->check('criterespdos', 'nouvelles') ? 'Nouvelles PDOs' : null;
-					
-					$selectRecherche['criterespdos_index'] = 
+
+					$selectRecherche['criterespdos_index'] =
 							( Configure::read( 'Cg.departement' ) != 66 ) &&
 							$this->Permissions->check('criterespdos', 'nouvelles') ? 'Liste des PDOs' : null;
-					
-					$selectRecherche['criteresdossierscovs58_index'] = 
+
+					$selectRecherche['criteresdossierscovs58_index'] =
 							( Configure::read( 'Cg.departement' ) == 58 ) &&
 							$this->Permissions->check('criteresdossierscovs58', 'index') ? 'Dossiers COV' : null;
-					
-					$selectRecherche['sanctionseps58_selectionradies'] = 
+
+					$selectRecherche['sanctionseps58_selectionradies'] =
 							( Configure::read( 'Cg.departement' ) == 58 ) &&
 							$this->Permissions->check('sanctionseps58', 'selectionradies') ? 'Radiation Pôle Emploi' : null;
-					
-					$selectRecherche['sanctionseps58_selectionnoninscrits'] = 
+
+					$selectRecherche['sanctionseps58_selectionnoninscrits'] =
 							( Configure::read( 'Cg.departement' ) == 58 ) &&
 							$this->Permissions->check('sanctionseps58', 'selectionnoninscrits') ? 'Non inscription Pôle Emploi' : null;
-					
-					$selectRecherche['criteresbilanparcours66_index'] = 
+
+					$selectRecherche['criteresbilanparcours66_index'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('criteresbilansparcours66', 'index') ? 'Bilan de parcours' : null;
-					
-					$selectRecherche['defautsinsertionseps66_selectionnoninscrits'] = 
+
+					$selectRecherche['defautsinsertionseps66_selectionnoninscrits'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('defautsinsertionseps66', 'selectionnoninscrits') ? 'Non inscrit Pôle emploi' : null;
-					
-					$selectRecherche['defautsinsertionseps66_selectionradies'] = 
+
+					$selectRecherche['defautsinsertionseps66_selectionradies'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('defautsinsertionseps66', 'selectionradies') ? 'Radié Pôle emploi' : null;
-					
-					$selectRecherche['nonorientationsproseps_index'] = 
+
+					$selectRecherche['nonorientationsproseps_index'] =
 							( Configure::read( 'Cg.departement' ) == 66 ) &&
 							$this->Permissions->check('nonorientationsproseps', 'index') ? 'Demande maintien social' : null;
-					
-					$selectRecherche['criterestransfertspdvs93_index'] = 
+
+					$selectRecherche['criterestransfertspdvs93_index'] =
 							( Configure::read( 'Cg.departement' ) == 93 ) &&
 							$this->Permissions->check('criterestransfertspdvs93', 'index') ? 'Allocataires sortants Intra-département' : null;
 
-					$selectRecherche['demenagementshorsdpts_search'] = 
+					$selectRecherche['demenagementshorsdpts_search'] =
 							( Configure::read( 'Cg.departement' ) == 93 ) &&
 							$this->Permissions->check('demenagementshorsdpts', 'index') ? 'Allocataires sortants Hors département' : null;
-					
-					$selectRecherche['fichesprescriptions93_search'] = 
+
+					$selectRecherche['fichesprescriptions93_search'] =
 							( Configure::read( 'Cg.departement' ) == 93 ) &&
 							$this->Permissions->check('fichesprescriptions93', 'search') ? 'Fiches de prescription' : null;
 
-					$selectRecherche['commissionseps_recherche'] = 
+					$selectRecherche['commissionseps_recherche'] =
 							$this->Permissions->check('commissionseps', 'recherche') ? 'Commission EP' : null;
 					?>
 				<form id="magic_search" action="<?php echo $this->Html->url(array("controller" => "Search", "action" => "search")); ?>" method="post">
 					<select name="moteur_de_recherche" alt="Moteur de recherche" title="Moteur de recherche">
-					<?php 
+					<?php
 						foreach ( $selectRecherche as $key => $value ){
 							if ($value){
 								$selected = ( $this->Session->read('engine') == $key ) ? ' selected' : '';
@@ -265,7 +265,7 @@
 					</select>
 					<input type="text" name="search" id="search" value="<?php echo ($this->Session->read('search') != null)?$this->Session->read('search'):''; ?>" title="Recherche (vide:), Rechercher par (nom:), par (adresse:), par numéro (caf:), par numéro de (dossier:),par (nir:), par intitulé Commission (ep:), par (adresse:) allocataire" alt="Rechercher par (nom:), par (adresse:), par numéro (caf:), par numéro de (dossier:),par (nir:), par intitulé Commission (ep:), par (adresse:) allocataire" /><input type="submit" value="" alt="Rechercher" title="Rechercher" />
 				</form>
-				<?php 
+				<?php
 				}
 					if ($this->Session->check( 'Message.flash' ) ) {
 						echo $this->Session->flash();
@@ -304,7 +304,9 @@
 		</div>
 		<?php
 			echo $this->fetch( 'scriptBottom' );
-			echo '<input type="button" value="Afficher requetes SQL" onclick="sqldump = document.getElementById(\'sqldump\'); if(sqldump.style.display==\'block\'){ sqldump.style.display = \'none\'; this.value = \'Afficher requetes SQL\' } else{ sqldump.style.display = \'block\'; this.value = \'Cacher requetes SQL\';}" /><div id="sqldump" style="display:none">' . $this->element( 'sql_dump' ) . '</div>';
+			if( Configure::read( 'debug' ) > 0 ) {
+				echo '<input type="button" value="Afficher requetes SQL" onclick="sqldump = document.getElementById(\'sqldump\'); if(sqldump.style.display==\'block\'){ sqldump.style.display = \'none\'; this.value = \'Afficher requetes SQL\' } else{ sqldump.style.display = \'block\'; this.value = \'Cacher requetes SQL\';}" /><div id="sqldump" style="display:none">' . $this->element( 'sql_dump' ) . '</div>';
+			}
 		?>
 	</body>
 </html>
