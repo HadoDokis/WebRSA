@@ -34,7 +34,7 @@
 			'fieldset',
 			$this->Default->subform(
 				array(
-					'Traitementpdo.datereception' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpdo.datereception' => array( 'required' => true, 'empty' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 )
 				),
 				array(
 					'options' => $options
@@ -52,7 +52,7 @@
 			'fieldset',
 			$this->Default->subform(
 				array(
-					'Traitementpdo.datedepart' => array( 'required' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpdo.datedepart' => array( 'required' => true, 'maxYear' => date('Y') + 2, 'minYear' => 2009 )
 				),
 				array(
 					'options' => $options
@@ -249,7 +249,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 5,
+							'minYear' => 2009,
 							'maxYear' => date('Y')
 						)
 					)
@@ -278,7 +278,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 5,
+							'minYear' => 2009,
 							'maxYear' => date('Y')
 						)
 					)
@@ -295,7 +295,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 5,
+							'minYear' => 2009,
 							'maxYear' => date('Y') + 1
 						)
 					)
@@ -723,7 +723,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 5,
+							'minYear' => 2009,
 							'maxYear' => date('Y')
 						)
 					),
@@ -757,7 +757,7 @@
 							'type'=>'date',
 							'empty'=>true,
 							'dateFormat' => 'DMY',
-							'minYear' => date('Y') - 2,
+							'minYear' => 2009,
 							'maxYear' => date('Y') + 2
 						)
 					),
@@ -837,7 +837,7 @@
 			$this->Default->subform(
 				array(
 					'Traitementpdo.dureedepart' => array( 'required' => true ),
-					'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => date('Y' ) -2 )
+					'Traitementpdo.dateecheance' => array( 'required' => true, 'empty' => true, 'maxYear' => date('Y') + 2, 'minYear' => 2009 )
 				),
 				array(
 					'options' => $options

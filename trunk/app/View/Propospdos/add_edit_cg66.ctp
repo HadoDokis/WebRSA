@@ -84,7 +84,7 @@
 		echo $this->Default->subform(
 			array(
 				'Propopdo.typepdo_id' => array( 'label' => ( __d( 'propopdo', 'Propopdo.typepdo_id' ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ),
-				'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception du dossier' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+				'Propopdo.datereceptionpdo' => array( 'label' =>  ( __( 'Date de réception du dossier' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009, 'empty' => false ),
 				'Propopdo.originepdo_id' => array( 'label' =>  ( __( 'Origine' ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ),
 				'Propopdo.orgpayeur' => array( 'label' =>  __d( 'propopdo', 'Propopdo.orgpayeur' ), 'type' => 'select', 'options' => $orgpayeur, 'empty' => true ),
 				'Propopdo.serviceinstructeur_id' => array( 'label' =>  ( __d( 'propopdo', 'Propopdo.serviceinstructeur_id' ) ), 'type' => 'select', 'options' => $serviceinstructeur, 'empty' => true )
@@ -190,8 +190,8 @@ document.observe( "dom:loaded", function() {
 				$traitementspdos,
 				array(
 					'Descriptionpdo.name',
-					'Traitementpdo.datereception',
-					'Traitementpdo.datedepart',
+					'Traitementpdo.datereception' => array( 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009 ),
+					'Traitementpdo.datedepart' => array( 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009 ),
 					'Traitementtypepdo.name',
 					'Traitementpdo.hascourrier' => array( 'label' => 'Courrier ?', 'type' => 'boolean' ),
 					'Traitementpdo.hasrevenu' => array( 'label' => 'Fiche de calcul ?', 'type' => 'boolean' ),
@@ -228,12 +228,12 @@ document.observe( "dom:loaded", function() {
 			$this->Default2->index(
 				$decisionspropospdos,
 				array(
-					'Decisionpropopdo.datedecisionpdo',
+					'Decisionpropopdo.datedecisionpdo' => array( 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009 ),
 					'Decisionpdo.libelle',
 					'Decisionpropopdo.avistechnique' => array( 'type' => 'boolean' ),
-					'Decisionpropopdo.dateavistechnique',
+					'Decisionpropopdo.dateavistechnique' => array( 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009 ),
 					'Decisionpropopdo.validationdecision' => array( 'type' => 'boolean' ),
-					'Decisionpropopdo.datevalidationdecision',
+					'Decisionpropopdo.datevalidationdecision' => array( 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009 ),
 				),
 				array(
 					'actions' => array(

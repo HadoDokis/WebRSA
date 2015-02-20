@@ -37,13 +37,13 @@
 		<?php
 			echo $this->Xform->input( 'Propopdo.structurereferente_id', array( 'label' =>  $this->Xform->required( __( 'Structure gérant la PDO' ) ), 'type' => 'select', 'options' => $structs, 'empty' => true ) );
 			echo $this->Xform->input( 'Propopdo.typepdo_id', array( 'label' =>  $this->Xform->required( __d( 'propopdo', 'Propopdo.typepdo_id' ) ), 'type' => 'select', 'options' => $typepdo, 'empty' => true ) );
-			echo $this->Xform->input( 'Propopdo.datereceptionpdo', array( 'label' =>  ( __( 'Date de réception de la PDO' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+			echo $this->Xform->input( 'Propopdo.datereceptionpdo', array( 'label' =>  ( __( 'Date de réception de la PDO' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009, 'empty' => true ) );
 			echo $this->Xform->input( 'Propopdo.originepdo_id', array( 'label' =>  $this->Xform->required( __( 'Origine' ) ), 'type' => 'select', 'options' => $originepdo, 'empty' => true ) );
 			echo $this->Xform->input( 'Propopdo.decision', array( 'type' => 'hidden', 'value' => '1' ) ).$this->Xform->input( 'Decisionpropopdo.decisionpdo_id', array( 'label' =>  $this->Xform->required( __( 'Décision du Conseil Général' ) ), 'type' => 'select', 'options' => $decisionpdo, 'empty' => true ) );
 			echo $this->Xform->input( 'Propopdo.motifpdo', array( 'label' =>  ( __( 'Motif de la décision' ) ), 'type' => 'select', 'options' => $motifpdo, 'empty' => true ) );
 			echo $this->Xform->input( 'Propopdo.iscomplet', array( 'label' =>  __( 'Etat du dossier' ),  'type' => 'radio', 'options' => $options['iscomplet'] ) );
 
-			echo $this->Xform->input( 'Decisionpropopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+			echo $this->Xform->input( 'Decisionpropopdo.datedecisionpdo', array( 'label' =>  ( __( 'Date de décision CG' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009, 'empty' => true ) );
 
 			echo $this->Xform->input( 'Decisionpropopdo.commentairepdo', array( 'label' =>  'Observations', 'type' => 'textarea', 'empty' => true ) );
 
