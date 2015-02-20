@@ -362,7 +362,7 @@
 				return array(
 					'E' => 'En attente de décision',
 					'V' => 'Validation à compter du',
-					'A' => 'Ajournement',
+					'A' => 'Annulé',
 					'R' => 'Rejet'
 				);
 			}
