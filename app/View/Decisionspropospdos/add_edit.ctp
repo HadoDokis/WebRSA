@@ -25,7 +25,7 @@
 			<?php
 				echo $this->Default2->subform(
 					array(
-						'Decisionpropopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => false ),
+						'Decisionpropopdo.datedecisionpdo' => array( 'label' =>  ( __( 'Date de décision de la PDO' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>2009, 'empty' => false ),
 						'Decisionpropopdo.decisionpdo_id' => array( 'label' =>  ( __( 'Décision du Conseil Général' ) ), 'type' => 'select', 'options' => $decisionpdo, 'required' => true, 'empty' => true )
 					),
 					array(
@@ -58,7 +58,7 @@
 						'Decisionpropopdo.decisionreponseep' => array( 'type' => 'radio', 'separator' => '<br />',  'options' => $options['decisionreponseep'] ),
 						'Decisionpropopdo.accordepaudition' => array( 'type' => 'radio', 'options' => $options['accordepaudition'] ),
 						'Decisionpropopdo.commentairereponseep',
-						'Decisionpropopdo.datereponseep' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => true )
+						'Decisionpropopdo.datereponseep' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => 2009, 'empty' => true )
 					),
 					array(
 						'options' => $options
@@ -86,7 +86,7 @@
 					echo $this->Default2->subform(
 					array(
 						'Decisionpropopdo.commentaireavistechnique',
-						'Decisionpropopdo.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+						'Decisionpropopdo.dateavistechnique' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => 2009, 'empty' => false )
 					),
 					array(
 						'options' => $options
@@ -112,7 +112,7 @@
 					echo $this->Default2->subform(
 					array(
 						'Decisionpropopdo.commentairedecision',
-						'Decisionpropopdo.datevalidationdecision' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => date('Y')-1, 'empty' => false )
+						'Decisionpropopdo.datevalidationdecision' => array( 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y')+5, 'minYear' => 2009, 'empty' => false )
 					),
 					array(
 						'options' => $options
