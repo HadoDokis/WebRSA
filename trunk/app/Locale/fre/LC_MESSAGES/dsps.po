@@ -156,6 +156,23 @@ msgstr "Code métier de l'activité recherchée"
 msgid "Actrechappellationromev3Rev.name"
 msgstr "Appellation métier de l'activité recherchée"
 
+# ------------------------------------------------------------------------------
+
+msgid "Dossier.numdemrsa"
+msgstr "N° demande RSA"
+
+msgid "Memo.name"
+msgstr "Dernier mémo"
+
+msgid "Personne.age"
+msgstr "Âge"
+
+msgid "Modecontact.numtel"
+msgstr "N° de téléphone"
+
+msgid "Detaildroitrsa.natpf"
+msgstr "Nature de la prestation"
+
 # ==============================================================================
 # Codes ROME V2
 # ==============================================================================
@@ -201,6 +218,12 @@ msgstr "Secteur activité recherchée"
 
 msgid "Donnees.libemploirech"
 msgstr "Activité recherchée"
+
+msgid "Donnees.libsecactderact"
+msgstr "Secteur dernière activité"
+
+msgid "Donnees.libderact"
+msgstr "Dernière activité"
 
 msgid "Donnees.difsoc"
 msgstr "Difficultés sociales"

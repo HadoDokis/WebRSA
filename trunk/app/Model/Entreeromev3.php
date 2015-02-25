@@ -255,5 +255,37 @@
 
 			return $record;
 		}
+
+		// TODO: nom de la fonction + utiliser dans Cer93::getCompletedRomev3Joins()
+		public function getCompletedRomev3Joins( array $query, $type = 'LEFT OUTER', array $aliases = array() ) {
+			$fields = array(
+				"Familleromev3.code",
+				"Familleromev3.name",
+				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" ) AS \"Domaineromev3__code\"",
+				"Domaineromev3.name",
+				"( \"Familleromev3\".\"code\" || \"Domaineromev3\".\"code\" || \"Metierromev3\".\"code\" ) AS \"Metierromev3__code\"",
+				"Metierromev3.name",
+				"Appellationromev3.name"
+			);
+
+			$joins = array(
+				$this->join( 'Familleromev3', array( 'type' => $type ) ),
+				$this->join( 'Domaineromev3', array( 'type' => $type ) ),
+				$this->join( 'Metierromev3', array( 'type' => $type ) ),
+				$this->join( 'Appellationromev3', array( 'type' => $type ) )
+			);
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array_words_replace( $fields, $aliases )
+			);
+
+			$query['joins'] = array_merge(
+				$query['joins'],
+				array_words_replace( $joins, $aliases )
+			);
+
+			return $query;
+		}
 	}
 ?>

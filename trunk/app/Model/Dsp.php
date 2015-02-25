@@ -646,9 +646,11 @@
 					$this->Personne->Foyer,
 					$this->Personne->Foyer->Dossier,
 					$this->Personne->Foyer->Dossier->Situationdossierrsa,
+					$this->Personne->Memo,
 					$this->Personne->Prestation,
 					$this->Personne->Foyer->Adressefoyer,
 					$this->Personne->Foyer->Adressefoyer->Adresse,
+					$this->Personne->Foyer->Modecontact,
 					$this
 				);
 				$fields = array( 'Dsp.id', 'DspRev.id', 'Personne.id', 'Dossier.numdemrsa' );
@@ -684,6 +686,20 @@
 				$sqlDspRev = str_replace( '"Dsp"', '"DspRev"', $sqlDsp );
 				$fields['Donnees.nb_fichiers_lies'] = "( CASE WHEN \"Dsp\".\"id\" IS NOT NULL THEN ( {$sqlDsp} ) ELSE ( {$sqlDspRev} ) END ) AS \"Donnees__nb_fichiers_lies\"";
 
+				// 2.3 Nature de la prestation
+				$qdVirtualField = array(
+					'fields' => array( "Detailcalculdroitrsa.natpf" ),
+					'conditions' => array(
+						'Detaildroitrsa.dossier_id = Dossier.id'
+					),
+					'contain' => false,
+					'joins' => array(
+						$this->Personne->Foyer->Dossier->Detaildroitrsa->join( 'Detailcalculdroitrsa', array( 'type' => 'INNER' ) )
+					)
+				);
+				$virtualField = '( '.$this->Personne->Foyer->Dossier->vfListe( $qdVirtualField ).' ) AS "Detaildroitrsa__natpf"';
+				$fields['Detaildroitrsa.natpf'] = $virtualField;
+
 				// 3. Query
 				$query = array(
 					'fields' => $fields,
@@ -691,6 +707,15 @@
 						$this->Personne->join( 'Calculdroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
+						$this->Personne->join(
+							'Memo',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Memo.id IN ( '.$this->Personne->Memo->sqDernier().' )'
+								)
+							)
+						),
 						$this->Personne->join(
 							'Prestation',
 							array(
@@ -710,7 +735,8 @@
 							)
 						),
 						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'INNER' ) ),
-						$this->Personne->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'INNER' ) ),
+						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 						array(
 							'table' => 'dsps_revs',
 							'alias' => 'DspRev',
@@ -739,6 +765,15 @@
 											)
 										)
 								).' )'
+							)
+						),
+						$this->Personne->Foyer->join(
+							'Modecontact',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Modecontact.id IN ( '.$this->Personne->Foyer->Modecontact->sqDerniere( 'Foyer.id', array( 'Modecontact.autorutitel' => 'A' ) ).' )',
+								)
 							)
 						)
 					),

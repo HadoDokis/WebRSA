@@ -31,6 +31,9 @@
 			echo $this->Form->input( 'Dossier.numdemrsa', array( 'label' => 'Numéro de demande RSA' ) );
 			echo $this->Form->input( 'Dossier.matricule', array( 'label' => __d( 'dossier', 'Dossier.matricule' ), 'maxlength' => 15 ) );
 
+			echo $this->Form->input( 'Calculdroitrsa.toppersdrodevorsa', array( 'label' => 'Soumis à Droit et Devoir', 'type' => 'select', 'options' => $options['Calculdroitrsa']['toppersdrodevorsa'], 'empty' => true ) );
+			echo $this->Search->natpf( $options['Detailcalculdroitrsa']['natpf'] );
+
 			$valueDossierDernier = isset( $this->request->data['Dossier']['dernier'] ) ? $this->request->data['Dossier']['dernier'] : true;
 			echo $this->Form->input( 'Dossier.dernier', array( 'label' => 'Uniquement la dernière demande RSA pour un même allocataire', 'type' => 'checkbox', 'checked' => $valueDossierDernier ) );
 			echo $this->Search->etatdosrsa($etatdosrsa);
@@ -64,9 +67,11 @@
 					echo '</fieldset>';
 				}
 
-				echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
-				echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => __d( 'dsp', 'Dsp.libsecactdomi' ) ) );
-				echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => __d( 'dsp', 'Dsp.libactdomi' ) ) );
+				if( Configure::read( 'Cg.departement' ) != 93 ) {
+					echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
+					echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => __d( 'dsp', 'Dsp.libsecactdomi' ) ) );
+					echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => __d( 'dsp', 'Dsp.libactdomi' ) ) );
+				}
 
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					echo '<fieldset><legend>Dernière activité dominante (ROME V2)</legend>';
@@ -142,6 +147,12 @@
 		<?php echo $pagination;?>
 		<table id="searchResults" class="tooltips">
 			<thead>
+				<?php
+					$headers = (array)Configure::read( 'Dsps.index.header' );
+					if( !empty( $headers ) ) {
+						echo $this->Html->tableHeaders( $headers );
+					}
+				?>
 				<tr>
 					<?php foreach( $fields as $fieldName => $params ):?>
 						<?php list( $model, $field ) = model_field( $fieldName );?>

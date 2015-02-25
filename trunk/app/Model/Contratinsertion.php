@@ -1005,7 +1005,7 @@
                                             array( // OR
                                                 $this->alias.'.forme_ci' => 'C', // ( Contrat complexe AND
                                                 // Date de début de contrat > Date de cloture des droits + x mois )
-                                                "{$this->alias}.dd_ci > ( 
+                                                "{$this->alias}.dd_ci > (
                                                     (
                                                         SELECT situationsdossiersrsa.dtclorsa
                                                                 FROM personnes
@@ -1737,7 +1737,15 @@
 						$this->Personne->join( 'Prestation', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Personne->Foyer->join( 'Modecontact', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Personne->Foyer->join(
+							'Modecontact',
+							array(
+								'type' => 'LEFT OUTER',
+								'conditions' => array(
+									'Modecontact.id IN ( '.$this->Personne->Foyer->Modecontact->sqDerniere( 'Foyer.id', array( 'Modecontact.autorutitel' => 'A' ) ).' )',
+								)
+							)
+						),
 						$this->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->Dossier->join( 'Detaildroitrsa', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Personne->Foyer->Dossier->join( 'Situationdossierrsa', array( 'type' => 'LEFT OUTER' ) ),

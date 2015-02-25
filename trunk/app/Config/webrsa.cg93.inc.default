@@ -1590,20 +1590,34 @@
 	Configure::write( 'Dsps', array(
 		'index' => array(
 			'fields' => array(
+				// Nom de l'allocataire
 				'Personne.nom_complet_court',
+				// Commune de l'allocataire
 				'Adresse.nomcom',
+				// N° CAF
 				'Dossier.matricule',
-				'Donnees.libsecactdomi',
-				'Donnees.libactdomi',
-				'Donnees.libsecactrech',
-				'Donnees.libemploirech',
+				// Difficultés sociales
 				'Donnees.difsoc',
+				// Domaine d'accompagnement individuel
 				'Donnees.nataccosocindi',
+				// Obstacles à la recherche d'emploi
 				'Donnees.difdisp',
-				'Deractdomiromev3.domaineromev3',
-				'Deractdomiromev3.metierromev3',
+				// domaine de la dernière activité
+				'Deractromev3.domaineromev3',
+				// métier de la dernière activité
+				'Deractromev3.metierromev3',
+				// domaine de l'emploi recherché
 				'Actrechromev3.domaineromev3',
-				'Actrechromev3.metierromev3'
+				// métier de l'emploi recherché
+				'Actrechromev3.metierromev3',
+				// Secteur dernière activité
+				'Donnees.libsecactderact',
+				// Dernière activité
+				'Donnees.libderact',
+				// Secteur activité recherchée
+				'Donnees.libsecactrech',
+				// Activité recherchée
+				'Donnees.libemploirech'
 			),
 			'innerTable' => array(
 				'Personne.dtnai',
@@ -1615,17 +1629,17 @@
 				'Structurereferenteparcours.lib_struc',
 				'Referentparcours.nom_complet',
 				'Deractromev3.familleromev3',
-				'Deractromev3.domaineromev3',
-				'Deractromev3.metierromev3',
 				'Deractromev3.appellationromev3',
-				'Deractdomiromev3.familleromev3',
-				'Deractdomiromev3.domaineromev3',
-				'Deractdomiromev3.metierromev3',
-				'Deractdomiromev3.appellationromev3',
 				'Actrechromev3.familleromev3',
-				'Actrechromev3.domaineromev3',
-				'Actrechromev3.metierromev3',
 				'Actrechromev3.appellationromev3'
+			),
+			'header' => array(
+				array( 'Dossier' => array( 'colspan' => 3 ) ),
+				array( 'Accompagnement et difficultés' => array( 'colspan' => 3 ) ),
+				array( 'Code ROME' => array( 'colspan' => 4 ) ),
+				array( 'Hors code ROME' => array( 'colspan' => 4 ) ),
+				array( ' ' => array( 'class' => 'action noprint' ) ),
+				array( ' ' => array( 'style' => 'display: none' ) ),
 			)
 		),
 		'exportcsv' => array(
@@ -1635,7 +1649,13 @@
 			'Personne.qual',
 			'Personne.nom',
 			'Personne.prenom',
-			'Dossier.matricule' ,
+			'Dossier.matricule',
+			'Detaildroitrsa.natpf',
+			'Calculdroitrsa.toppersdrodevorsa',
+			'Memo.name',
+			'Personne.numfixe',
+			'Modecontact.numtel',
+			'Personne.age',
 			'Adresse.numvoie',
 			'Adresse.libtypevoie',
 			'Adresse.nomvoie',
@@ -1643,8 +1663,6 @@
 			'Adresse.compladr',
 			'Adresse.codepos',
 			'Adresse.nomcom',
-			'Donnees.libsecactdomi',
-			'Donnees.libactdomi',
 			'Donnees.libsecactrech',
 			'Donnees.libemploirech',
 			'Structurereferenteparcours.lib_struc',
@@ -1656,10 +1674,6 @@
 			'Deractromev3.domaineromev3',
 			'Deractromev3.metierromev3',
 			'Deractromev3.appellationromev3',
-			'Deractdomiromev3.familleromev3',
-			'Deractdomiromev3.domaineromev3',
-			'Deractdomiromev3.metierromev3',
-			'Deractdomiromev3.appellationromev3',
 			'Actrechromev3.familleromev3',
 			'Actrechromev3.domaineromev3',
 			'Actrechromev3.metierromev3',

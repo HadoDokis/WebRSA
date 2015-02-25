@@ -80,19 +80,36 @@
 		}
 
 		/**
+		 * Retourne une sous-requête permettant d'obtenir le "dernier" mode de
+		 * contact du foyer (le dernier par-rapport à la valeur de la colonne id).
 		 *
+		 * @param string $field Le champ de la requête principale représentant l'id du foyer
+		 * @param array $conditions Conditions supplémentaires pour la jointure
+		 *	(l'alias du modèle sera aliasé avec le nom de la table qui est l'alias
+		 *	de la sous-requête).
+		 * @return type
 		 */
-		public function sqDerniere( $field ) {
+		public function sqDerniere( $field, array $conditions = array() ) {
 			$dbo = $this->getDataSource( $this->useDbConfig );
-			$table = $dbo->fullTableName( $this, false, false );
-			return "
-				SELECT {$table}.id
-					FROM {$table}
-					WHERE
-						{$table}.foyer_id = ".$field."
-					ORDER BY {$table}.foyer_id DESC
-					LIMIT 1
-			";
+			$tableName = $dbo->fullTableName( $this, false, false );
+
+			$conditions = Hash::merge(
+				array( "{$tableName}.foyer_id = {$field}" ),
+				array_words_replace( $conditions, array( $this->alias => $tableName ) )
+			);
+
+			$sql = $this->sq(
+				array(
+					'alias' => $tableName,
+					'fields' => array( "{$tableName}.id" ),
+					'conditions' => $conditions,
+					'contain' => false,
+					'order' => array( "{$tableName}.id DESC" ),
+					'limit' => 1
+				)
+			);
+
+			return $sql;
 		}
 
 	}

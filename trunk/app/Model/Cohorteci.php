@@ -343,6 +343,7 @@
                     $this->Contratinsertion->Personne->fields(),
                     $this->Contratinsertion->Personne->Prestation->fields(),
                     $this->Contratinsertion->Referent->fields(),
+					$this->Contratinsertion->Structurereferente->fields(),
                     $this->Contratinsertion->Personne->Foyer->fields(),
                     $this->Contratinsertion->Personne->Foyer->Dossier->fields(),
                     $this->Contratinsertion->Personne->Foyer->Dossier->Situationdossierrsa->fields(),
@@ -391,50 +392,114 @@
 				'conditions' => $conditions
 			);
 
-                        if( Configure::read( 'CG.cantons' )  ) {
-                            $querydata['fields'][] = 'Canton.canton';
-                            $querydata['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();
-                        }
+			if( Configure::read( 'CG.cantons' )  ) {
+				$querydata['fields'][] = 'Canton.canton';
+				$querydata['joins'][] = ClassRegistry::init( 'Canton' )->joinAdresse();
+			}
 
 			// Référent du parcours
 			$querydata = $this->Contratinsertion->Personne->PersonneReferent->completeQdReferentParcours( $querydata, ( isset( $criteresci['Contratinsertion']['PersonneReferent'] ) ? $criteresci['Contratinsertion'] : $criteresci ) );
 
-			if( Configure::read( 'Cg.departement' ) == 93 ) {
-				// Filtres par expériences professionnelles significatives: métier exercé et secteur d'activité
-				// On veut les valeurs SSI elles ont été sélectionnées par le filtre
-				$metierexerce_id = Hash::get( $criteresci, 'Expprocer93.metierexerce_id' );
-				$secteuracti_id = Hash::get( $criteresci, 'Expprocer93.secteuracti_id' );
+			if( empty( $statutValidation ) && Configure::read( 'Cg.departement' ) == 93 ) {
+				// 1. Filtre par expérience professionnelle significative: on veut les valeurs SSI elles ont été sélectionnées par le filtre
+				$expprocer93 = Hash::filter( (array)Hash::get( $criteresci, 'Expprocer93' ) );
+				if( !empty( $expprocer93 ) ) {
+					$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Expprocer93', array( 'type' => 'LEFT OUTER' ) );
 
-				if( !empty( $metierexerce_id ) || !empty( $secteuracti_id ) ) {
-					$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Expprocer93', array( 'type' => 'INNER' ) );
-					$querydata['fields'][] = 'Metierexerce.name';
-					$querydata['joins'][] = $this->Contratinsertion->Cer93->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) );
-					$querydata['fields'][] = 'Secteuracti.name';
-					$querydata['joins'][] = $this->Contratinsertion->Cer93->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) );
-
-					$conditions = array( 'expsproscers93.cer93_id = Cer93.id' );
-
-					if( !empty( $metierexerce_id ) ) {
-						$conditions['expsproscers93.metierexerce_id'] = $metierexerce_id;
-					}
-					if( !empty( $secteuracti_id ) ) {
-						$conditions['expsproscers93.secteuracti_id'] = $secteuracti_id;
+					// Partie filtre
+					$conditions = array(
+						'Expprocer93.cer93_id = Cer93.id'
+					);
+					foreach( $expprocer93 as $fieldName => $value ) {
+						$value = suffix( $value );
+						if( !empty( $value ) ) {
+							if( in_array( $fieldName, array( 'metierexerce_id', 'secteuracti_id' ) ) ) {
+								$conditions["Expprocer93.{$fieldName}"] = $value;
+							}
+							else {
+								$conditions["Entreeromev3.{$fieldName}"] = $value;
+							}
+						}
 					}
 
 					// On veut éviter d'avoir des doublons de lignes de résultats
+					$querySq = array(
+						'alias' => 'Expprocer93',
+						'fields' => array( 'Expprocer93.id' ),
+						'contain' => false,
+						'conditions' => $conditions,
+						'joins' => array(
+							$this->Contratinsertion->Cer93->Expprocer93->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
+						),
+						'limit' => 1
+					);
 					$sql = $this->Contratinsertion->Cer93->Expprocer93->sq(
-						array(
-							'alias' => 'expsproscers93',
-							'fields' => array( 'expsproscers93.id' ),
-							'contain' => false,
-							'conditions' => $conditions,
-							'limit' => 1
+						array_words_replace(
+							$querySq,
+							array( 'Expprocer93' => 'expsproscers93', 'Entreeromev3'  => 'entreesromesv3' )
 						)
 					);
 					$querydata['conditions'][] = "Expprocer93.id IN ( {$sql} )";
+
+					// Ajout des champs et des jointures (aliasées) dans la requête principale
+					$suffix = 'exppro';
+					$aliases = array(
+						// INSEE
+						'Metierexerce' => "Metierexerce{$suffix}",
+						'Secteuracti' => "Secteuracti{$suffix}",
+						// ROME v.3
+						'Entreeromev3' => "Entree{$suffix}",
+						'Familleromev3' => "Famille{$suffix}",
+						'Domaineromev3' => "Domaine{$suffix}",
+						'Metierromev3' => "Metier{$suffix}",
+						'Appellationromev3' => "Appellation{$suffix}"
+					);
+					$querydata['joins'][] = array_words_replace(
+						$this->Contratinsertion->Cer93->Expprocer93->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$aliases
+					);
+					$querydata = $this->Contratinsertion->Cer93->Expprocer93->Entreeromev3->getCompletedRomev3Joins( $querydata, 'LEFT OUTER', $aliases );
+
+					// Ajout des champs et des jointures INSEE
+					$querydata['fields'][] = "Metierexerce{$suffix}.name";
+					$querydata['joins'][] = array_words_replace(
+						$this->Contratinsertion->Cer93->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) ),
+						$aliases
+					);
+
+					$querydata['fields'][] = "Secteuracti{$suffix}.name";
+					$querydata['joins'][] = array_words_replace(
+						$this->Contratinsertion->Cer93->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) ),
+						$aliases
+					);
 				}
 
-				// Filtrer par "Votre contrat porte sur"
+				// 2. Filtre par emploi trouvé
+				// 2.1 Codes ROME v.3
+				$querydata = $this->Contratinsertion->Cer93->getCompletedRomev3Joins( $querydata, 'emptrouv' );
+				foreach( $this->Contratinsertion->Cer93->Emptrouvromev3->romev3Fields as $fieldName ) {
+					$path = "Emptrouvromev3.{$fieldName}";
+					$value = suffix( Hash::get( $criteresci, $path ) );
+					if( !empty( $value ) ) {
+						$querydata['conditions'][$path] = $value;
+					}
+				}
+
+				// 2.2 Codes INSEE -> TODO: aliaser Metiertrouve ?
+				$querydata['fields'][] = 'Metierexerce.name';
+				$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) );
+				$querydata['fields'][] = 'Secteuracti.name';
+				$querydata['joins'][] = $this->Contratinsertion->Cer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) );
+
+				foreach( array( 'metierexerce_id', 'secteuracti_id' ) as $fieldName ) {
+					$path = "Cer93.{$fieldName}";
+					$value = suffix( Hash::get( $criteresci, $path ) );
+					if( !empty( $value ) ) {
+						$querydata['conditions'][$path] = $value;
+					}
+				}
+
+				// 3. Filtre par "Votre contrat porte sur"
 				// On veut les valeurs SSI elles ont été sélectionnées par le filtre
 				$sujetcer93_id = Hash::get( $criteresci, 'Cer93Sujetcer93.sujetcer93_id' );
 				$soussujetcer93_id = suffix( Hash::get( $criteresci, 'Cer93Sujetcer93.soussujetcer93_id' ) );
@@ -480,15 +545,13 @@
 					$querydata['conditions'][] = "Cer93Sujetcer93.id IN ( {$sql} )";
 				}
 
-				// Recherche par CER, codes ROME V.3, emploi trouvé
-				if( $statutValidation === null && Configure::read( 'Romev3.enabled' ) ) {
-					$querydata = $this->Contratinsertion->Cer93->getCompletedRomev3Joins( $querydata, 'emptrouv' );
-					foreach( $this->Contratinsertion->Cer93->Emptrouvromev3->romev3Fields as $fieldName ) {
-						$path = "Emptrouvromev3.{$fieldName}";
-						$value = suffix( Hash::get( $criteresci, $path ) );
-						if( !empty( $value ) ) {
-							$querydata['conditions'][$path] = $value;
-						}
+				// Votre contrat porte sur l'emploi
+				$querydata = $this->Contratinsertion->Cer93->getCompletedRomev3Joins( $querydata, 'sujet' );
+				foreach( $this->Contratinsertion->Cer93->Sujetromev3->romev3Fields as $fieldName ) {
+					$path = "Sujetromev3.{$fieldName}";
+					$value = suffix( Hash::get( $criteresci, $path ) );
+					if( !empty( $value ) ) {
+						$querydata['conditions'][$path] = $value;
 					}
 				}
 			}

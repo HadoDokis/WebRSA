@@ -264,31 +264,29 @@ function treeMenuExpandsAll( absoluteBaseUrl ) {
 function mkTooltipTables() {
 	var tips = new Array();
 	$$( 'table.tooltips' ).each( function( table ) {
-		var actionPositions = new Array();
-//         var iPosition = 0;
-		var trs = $( table ).getElementsBySelector( 'thead tr' );
+		var actionPositions = new Array(),
+			realPosition = 0,
+			headRows = $( table ).getElementsBySelector( 'thead tr' ),
+			loop = 0;
 
-		var headRow = undefined;
-		if( trs.length > 1 ) {
-			headRow = trs[0];
-		}
-		else { // FIXME
-			headRow = trs[0];
-		}
+		$( headRows ).each( function( headRow ) {
+			loop++;
+			$( headRow ).getElementsBySelector( 'th' ).each( function ( th ) {
+				if( loop === headRows.length ) {
+					var colspan = ( $( th ).readAttribute( 'colspan' ) != undefined ) ? $( th ).readAttribute( 'colspan' ) : 1;
 
-		var realPosition = 0;
-		$( headRow ).getElementsBySelector( 'th' ).each( function ( th ) {
-			var colspan = ( $( th ).readAttribute( 'colspan' ) != undefined ) ? $( th ).readAttribute( 'colspan' ) : 1;
-			if( $( th ).hasClassName( 'action' ) ) {
-				for( var k = 0 ; k < colspan ; k++ ) {
-					actionPositions.push( realPosition + k );
+					if( $( th ).hasClassName( 'action' ) ) {
+						for( var k = 0 ; k < colspan ; k++ ) {
+							actionPositions.push( realPosition + k );
+						}
+					}
+					realPosition = ( parseInt( realPosition ) + parseInt( colspan ) );
 				}
-			}
-			if( $( th ).hasClassName( 'innerTableHeader' ) ) {
-				$( th ).addClassName( 'dynamic' );
-			}
-//             iPosition++;
-			realPosition = ( parseInt( realPosition ) + parseInt( colspan ) );
+
+				if( $( th ).hasClassName( 'innerTableHeader' ) ) {
+					$( th ).addClassName( 'dynamic' );
+				}
+			} );
 		} );
 
 		var iPosition = 0;

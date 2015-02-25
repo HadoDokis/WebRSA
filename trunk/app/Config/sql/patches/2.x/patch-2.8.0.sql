@@ -333,6 +333,15 @@ ALTER TABLE cers93 ADD CONSTRAINT cers93_positioncer_observationdecision_chk CHE
 
 SELECT alter_enumtype('TYPE_DECISIONDEFAUTINSERTIONEP66', ARRAY['suspensionnonrespect', 'suspensiondefaut', 'maintien', 'maintienorientsoc', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte']);
 
+--------------------------------------------------------------------------------
+-- 20150223: CG 93, ajout de la colonne "Nature du contrat" dans les "Expériences
+-- professionnelles significatives"
+--------------------------------------------------------------------------------
+
+SELECT add_missing_table_field ( 'public', 'expsproscers93', 'naturecontrat_id', 'INTEGER' );
+ALTER TABLE expsproscers93 ALTER COLUMN naturecontrat_id SET DEFAULT NULL;
+SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_naturecontrat_id_fkey', 'naturescontrats', 'naturecontrat_id', false );
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
