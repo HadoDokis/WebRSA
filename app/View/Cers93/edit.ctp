@@ -326,6 +326,7 @@
 					<th>Code famille</th>
 					<th>Code métier</th>
 					<th>Appellation métier</th>
+					<th>Nature du contrat</th>
 					<th>Année de début</th>
 					<th colspan="2">Durée</th>
 					<th>Action</th>
@@ -361,6 +362,7 @@
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.domaineromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['domaineromev3_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.metierromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['metierromev3_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.Entreeromev3.appellationromev3_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['appellationromev3_id'], 'empty' => true ) ),
+									$this->Xform->input( "Expprocer93.{$index}.naturecontrat_id", array( 'type' => 'select', 'label' => false, 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.anneedeb", array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) ),
 									$this->Xform->input( "Expprocer93.{$index}.nbduree", array( 'type' => 'text', 'label' => false ) ),
 									$this->Xform->input( "Expprocer93.{$index}.typeduree", array( 'type' => 'select', 'label' => false, 'options' => $options['Expprocer93']['typeduree'], 'empty' => true, 'domain' => 'cer93' ) ),
@@ -392,27 +394,42 @@
 			<?php
 				echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ), 'required' => true ) );
 
-				echo $this->Html->tag(
-					'fieldset',
-					$this->Html->tag( 'legend', 'Emploi trouvé (codes INSEE)' )
-					.$this->Default3->subform(
+				$secteuracti_id = Hash::get( $this->request->data, 'Cer93.secteuracti_id' );
+				$metierexerce_id = Hash::get( $this->request->data, 'Cer93.metierexerce_id' );
+
+				if( !empty( $secteuracti_id ) || !empty( $metierexerce_id ) ) {
+					echo $this->Html->tag(
+						'fieldset',
+						$this->Html->tag( 'legend', 'Emploi trouvé (codes INSEE)' )
+						.$this->Default3->subform(
+							array(
+								'Cer93.secteuracti_id' => array(
+									'view' => true,
+									'type' => 'text',
+									'hidden' => true,
+									'options' => (array)$options['Expprocer93']['secteuracti_id']
+								),
+								'Cer93.metierexerce_id' => array(
+									'view' => true,
+									'type' => 'text',
+									'hidden' => true,
+									'options' => (array)$options['Expprocer93']['metierexerce_id']
+								),
+							),
+							array( 'domain' => 'cer93' )
+						)
+					);
+				}
+				else {
+					echo $this->Xform->inputs(
 						array(
-							'Cer93.secteuracti_id' => array(
-								'view' => true,
-								'type' => 'text',
-								'hidden' => true,
-								'options' => (array)$options['Expprocer93']['secteuracti_id']
-							),
-							'Cer93.metierexerce_id' => array(
-								'view' => true,
-								'type' => 'text',
-								'hidden' => true,
-								'options' => (array)$options['Expprocer93']['metierexerce_id']
-							),
-						),
-						array( 'domain' => 'cer93' )
-					)
-				);
+							'fieldset' => false,
+							'legend' => false,
+							'Cer93.secteuracti_id' => array( 'type' => 'hidden' ),
+							'Cer93.metierexerce_id' => array( 'type' => 'hidden' )
+						)
+					);
+				}
 
 				echo $this->Xform->inputs(
 					array(
@@ -834,6 +851,9 @@
 			echo cers93_html_cleanup( $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.Entreeromev3.appellationromev3_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Catalogueromev3']['appellationromev3_id'], 'empty' => true ) );
+			echo cers93_html_cleanup( $fields );
+		?></td><td><?php
+			$fields = $this->Xform->input( 'Expprocer93.%line%.naturecontrat_id', array( 'type' => 'select', 'label' => false, 'options' => $options['Naturecontrat']['naturecontrat_id'], 'empty' => true ) );
 			echo cers93_html_cleanup( $fields );
 		?></td><td><?php
 			$fields = $this->Xform->input( 'Expprocer93.%line%.anneedeb', array( 'type' => 'select', 'label' => false, 'options' => array_range( date( 'Y' ), 1960 ), 'empty' => true ) );

@@ -1028,6 +1028,7 @@
 		 */
 		public function getCompletedRomev3Joins( array $query, $word, $type = 'LEFT OUTER' ) {
 			// $word = 'emptrouv'; // TODO: paramètre + rendre générique dans le modèle Entreeromev3
+			// @see Entreeromev3::getCompletedRomev3Joins()
 			$suffix = Inflector::underscore( $word );
 			$alias = Inflector::classify( "{$word}romev3" );
 
@@ -1277,6 +1278,7 @@
 						'Expprocer93.typeduree',
 						'Metierexerce.name',
 						'Secteuracti.name',
+						'Naturecontrat.name',
 						'Familleromev3.code',
 						'Familleromev3.name',
 						'( "Familleromev3"."code" || "Domaineromev3"."code" ) AS "Domaineromev3__code"',
@@ -1292,6 +1294,7 @@
 						$this->Expprocer93->join( 'Metierexerce', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Expprocer93->join( 'Secteuracti', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Expprocer93->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
+						$this->Expprocer93->join( 'Naturecontrat', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Expprocer93->Entreeromev3->join( 'Familleromev3', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Expprocer93->Entreeromev3->join( 'Domaineromev3', array( 'type' => 'LEFT OUTER' ) ),
 						$this->Expprocer93->Entreeromev3->join( 'Metierromev3', array( 'type' => 'LEFT OUTER' ) ),

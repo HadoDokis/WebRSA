@@ -224,7 +224,11 @@
 				'Statistiqueministerielle.conditions_organismes.HorsSPE' => 'isarray',
 				'Statistiqueministerielle.conditions_indicateurs_motifs_reorientation' => 'isarray',
 				'WebrsaEmailConfig.testEnvironments' => 'isarray',
-				'Romev3.enabled' => 'boolean'
+				'Romev3.enabled' => 'boolean',
+				'Dsps.index.fields' => 'isarray',
+				'Dsps.index.innerTable' => 'isarray',
+				'Dsps.index.header' => 'isarray',
+				'Dsps.exportcsv' => 'isarray'
 			);
 
 			$tmp = Configure::read( 'Rendezvous.thematiqueAnnuelleParStructurereferente' );

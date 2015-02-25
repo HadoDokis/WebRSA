@@ -30,7 +30,6 @@
 		'Durée',
 		'Date fin contrat',
 		'Décision et date validation',
-		'Action prévue',
 		__d( 'search_plugin', 'Structurereferenteparcours.lib_struc' ),
 		__d( 'search_plugin', 'Referentparcours.nom_complet' ),
 	);
@@ -47,21 +46,37 @@
 		$row = array_merge(
 			$row,
 			array(
-				// Expériences professionnelles significatives
-				__d( 'metierexerce', 'Metierexerce.name' ),
-				__d( 'secteuracti', 'Secteuracti.name' ),
-				// Emploi trouvé (ROME v.3)
-				__d( 'cers93', 'Emptrouvromev3.familleromev3_id' ),
-				__d( 'cers93', 'Emptrouvromev3.domaineromev3_id' ),
-				__d( 'cers93', 'Emptrouvromev3.metierromev3_id' ),
-				__d( 'cers93', 'Emptrouvromev3.appellationromev3_id' ),
-				// Votre contrat porte sur
+				// 1. Expériences professionnelles significatives
+				// 1.1 Codes INSEE
+				__d( 'criteresci', 'Secteuractiexppro.name' ),
+				__d( 'criteresci', 'Metierexerceexppro.name' ),
+				// 1.2 Codes ROME v.3
+				__d( 'criteresci', 'Familleexppro.name' ),
+				__d( 'criteresci', 'Domaineexppro.name' ),
+				__d( 'criteresci', 'Metierexppro.name' ),
+				__d( 'criteresci', 'Appellationexppro.name' ),
+				// 2. Emploi trouvé
+				// 2.1 Codes INSEE
+				__d( 'criteresci', 'Secteuracti.name' ),
+				__d( 'criteresci', 'Metierexerce.name' ),
+				// 2.2 Codes ROME v.3
+				__d( 'criteresci', 'Familleemptrouv.name' ),
+				__d( 'criteresci', 'Domaineemptrouv.name' ),
+				__d( 'criteresci', 'Metieremptrouv.name' ),
+				__d( 'criteresci', 'Appellationemptrouv.name' ),
+				// 3. Votre contrat porte sur
+				// 3.1 Sujets, ... du CER
 				__d( 'sujetcer93', 'Sujetcer93.name' ),
 				'Autre, précisez',
 				__d( 'soussujetcer93', 'Soussujetcer93.name' ),
 				'Autre, précisez',
 				__d( 'valeurparsoussujetcer93', 'Valeurparsoussujetcer93.name' ),
 				'Autre, précisez',
+				// 3.2 Codes ROME v.3
+				__d( 'criteresci', 'Famillesujet.name' ),
+				__d( 'criteresci', 'Domainesujet.name' ),
+				__d( 'criteresci', 'Metiersujet.name' ),
+				__d( 'criteresci', 'Appellationsujet.name' )
 			)
 		);
 	}
@@ -106,12 +121,15 @@
 			( empty( $lib_type_orient ) ? 'Non orienté' : $lib_type_orient ),
 			@$contrat['Referent']['nom_complet'],
 			Hash::get( $contrat, 'Structurereferente.lib_struc' ),
-			Set::enum( Hash::get( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] ),
+			(
+				( Configure::read( 'Cg.departement' ) == 93 )
+				? value( $forme_ci, Hash::get( $contrat, 'Contratinsertion.forme_ci' ) )
+				: Set::enum( Hash::get( $contrat, 'Contratinsertion.num_contrat' ), $numcontrat['num_contrat'] )
+			),
 			date_short( Hash::get( $contrat, 'Contratinsertion.dd_ci' ) ),
 			$duree,
 			date_short( Hash::get( $contrat, 'Contratinsertion.df_ci' ) ),
 			$decision,
-			Set::enum( Hash::get( $contrat, 'Contratinsertion.actions_prev' ), $action ),
 			Hash::get( $contrat, 'Structurereferenteparcours.lib_struc' ),
 			Hash::get( $contrat, 'Referentparcours.nom_complet' ),
 		);
@@ -135,21 +153,37 @@
 			$row = array_merge(
 				$row,
 				array(
-					// Expériences professionnelles significatives
-					Hash::get( $contrat, 'Metierexerce.name' ),
+					// 1. Expériences professionnelles significatives
+					// 1.1 Codes INSEE
+					Hash::get( $contrat, 'Secteuractiexppro.name' ),
+					Hash::get( $contrat, 'Metierexerceexppro.name' ),
+					// 1.2 Codes ROME v.3
+					Hash::get( $contrat, 'Familleexppro.name' ),
+					Hash::get( $contrat, 'Domaineexppro.name' ),
+					Hash::get( $contrat, 'Metierexppro.name' ),
+					Hash::get( $contrat, 'Appellationexppro.name' ),
+					// 2. Emploi trouvé
+					// 2.1 Codes INSEE
 					Hash::get( $contrat, 'Secteuracti.name' ),
-					// Emploi trouvé (ROME v.3)
+					Hash::get( $contrat, 'Metierexerce.name' ),
+					// 2.2 Codes ROME v.3
 					Hash::get( $contrat, 'Familleemptrouv.name' ),
 					Hash::get( $contrat, 'Domaineemptrouv.name' ),
 					Hash::get( $contrat, 'Metieremptrouv.name' ),
 					Hash::get( $contrat, 'Appellationemptrouv.name' ),
-					// Votre contrat porte sur
+					// 3. Votre contrat porte sur
+					// 3.1 Sujets, ... du CER
 					Hash::get( $contrat, 'Sujetcer93.name' ),
 					Hash::get( $contrat, 'Cer93Sujetcer93.commentaireautre' ),
 					Hash::get( $contrat, 'Soussujetcer93.name' ),
 					Hash::get( $contrat, 'Cer93Sujetcer93.autresoussujet' ),
 					Hash::get( $contrat, 'Valeurparsoussujetcer93.name' ),
 					Hash::get( $contrat, 'Cer93Sujetcer93.autrevaleur' ),
+					// 3.2 Codes ROME v.3
+					Hash::get( $contrat, 'Famillesujet.name' ),
+					Hash::get( $contrat, 'Domainesujet.name' ),
+					Hash::get( $contrat, 'Metiersujet.name' ),
+					Hash::get( $contrat, 'Appellationsujet.name' )
 				)
 			);
 		}

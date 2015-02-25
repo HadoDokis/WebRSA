@@ -95,5 +95,30 @@
 
 			return $sq;
 		}
+
+		/**
+		 * Retourne une sous-requête permettant de trouver l'id du dernier mémo
+		 * d'un allocataire.
+		 *
+		 * Le dernier étant entendu dans le sens de "dernière modification".
+		 *
+		 * @param string $personneIdFied
+		 * @return string
+		 */
+		public function sqDernier( $personneIdFied = 'Personne.id' ) {
+			return $this->sq(
+				array(
+					'fields' => array(
+						'memos.id'
+					),
+					'alias' => 'memos',
+					'conditions' => array(
+						"memos.personne_id = {$personneIdFied}"
+					),
+					'order' => array( 'memos.modified DESC' ),
+					'limit' => 1
+				)
+			);
+		}
 	}
 ?>

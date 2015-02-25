@@ -207,6 +207,7 @@
 							<th>Code famille</th>
 							<th>Code métier</th>
 							<th>Appellation métier</th>
+							<th>Nature du contrat</th>
 							<th>Année de début</th>
 							<th>Durée</th>
 							<th class="innerTableHeader noprint">Informations complémentaires</th>
@@ -219,12 +220,12 @@
 									$innerTable = '<table id="innerTableExpprocer93'.$index.'" class="innerTable">
 										<tbody>
 											<tr>
-												<th>'.__d( 'cer93', 'Cer93.metierexerce_id' ).'</th>
-												<td>'.value( $options['Expprocer93']['metierexerce_id'], $expprocer93['metierexerce_id'] ).'</td>
-											</tr>
-											<tr>
 												<th>'.__d( 'cer93', 'Cer93.secteuracti_id' ).'</th>
 												<td>'.value( $options['Expprocer93']['secteuracti_id'], $expprocer93['secteuracti_id'] ).'</td>
+											</tr>
+											<tr>
+												<th>'.__d( 'cer93', 'Cer93.metierexerce_id' ).'</th>
+												<td>'.value( $options['Expprocer93']['metierexerce_id'], $expprocer93['metierexerce_id'] ).'</td>
 											</tr>
 										</tbody>
 									</table>';
@@ -241,6 +242,7 @@
 											h( implode( ' - ', array( "{$code['famille']}{$code['domaine']}", Hash::get( $expprocer93, 'Entreeromev3.Domaineromev3.name' ) ) ) ),
 											h( implode( ' - ', array( "{$code['famille']}{$code['domaine']}{$code['metier']}", Hash::get( $expprocer93, 'Entreeromev3.Metierromev3.name' ) ) ) ),
 											h( Hash::get( $expprocer93, 'Entreeromev3.Appellationromev3.name' ) ),
+											h( value( $options['Naturecontrat']['naturecontrat_id'], $expprocer93['naturecontrat_id'] ) ),
 											h( $expprocer93['anneedeb'] ),
 											h( "{$expprocer93['nbduree']} {$expprocer93['typeduree']}" ),
 											array( $innerTable, array( 'class' => 'innerTableCell noprint' ) )

@@ -96,13 +96,30 @@
 				echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
-					echo $this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ) ) );
-
+					// 1. Partie "Expériences professionnelles significatives"
 					echo $this->Html->tag(
 						'fieldset',
-						$this->Html->tag( 'legend', 'Filtrer par emploi trouvé (codes INSEE)' )
-						.$this->Form->input( 'Expprocer93.metierexerce_id', array( 'label' => 'Métier exercé', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true ) )
-						.$this->Form->input( 'Expprocer93.secteuracti_id', array( 'label' => 'Secteur d\'activité', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true ) )
+						$this->Html->tag( 'legend', __d( 'criteresci', 'Expprocer93Expprocer93' ) )
+						.$this->Romev3->fieldset( 'Expprocer93', array( 'options' => array( 'Expprocer93' => $options['Catalogueromev3'] ), 'domain' => 'criteresci' ) )
+						.$this->Html->tag(
+							'fieldset',
+							$this->Html->tag( 'legend', __d( 'criteresci', 'Expprocer93Insee' ) )
+							.$this->Xform->input( 'Expprocer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'domain' => 'criteresci' ) )
+							.$this->Xform->input( 'Expprocer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'domain' => 'criteresci' ) )
+						)
+					);
+
+					// 2. Partie "Emploi trouvé"
+					echo $this->Html->tag(
+						'fieldset',
+						$this->Html->tag( 'legend', __d( 'criteresci', 'Emptrouvromev3Emptrouvromev3' ) )
+						.$this->Romev3->fieldset( 'Emptrouvromev3', array( 'options' => array( 'Emptrouvromev3' => $options['Catalogueromev3'] ), 'domain' => 'criteresci' ) )
+						.$this->Html->tag(
+							'fieldset',
+							$this->Html->tag( 'legend', __d( 'criteresci', 'Emptrouvromev3Insee' ) )
+							.$this->Xform->input( 'Cer93.secteuracti_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.secteuracti_id' ), 'empty' => true, 'domain' => 'criteresci' ) )
+							.$this->Xform->input( 'Cer93.metierexerce_id', array( 'type' => 'select', 'options' => (array)Hash::get( $options, 'Expprocer93.metierexerce_id' ), 'empty' => true, 'domain' => 'criteresci' ) )
+						)
 					);
 
 					echo $this->Html->tag(
@@ -111,6 +128,7 @@
 						.$this->Form->input( 'Cer93Sujetcer93.sujetcer93_id', array( 'label' => 'Sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.sujetcer93_id' ), 'empty' => true ) )
 						.$this->Form->input( 'Cer93Sujetcer93.soussujetcer93_id', array( 'label' => 'Sous sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.soussujetcer93_id' ), 'empty' => true ) )
 						.$this->Form->input( 'Cer93Sujetcer93.valeurparsoussujetcer93_id', array( 'label' => 'Valeur par sous sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ), 'empty' => true ) )
+						.$this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ) ) )
 					);
 				}
 

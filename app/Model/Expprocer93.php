@@ -74,6 +74,15 @@
 				'order' => null,
 				'counterCache' => null
 			),
+			'Naturecontrat' => array(
+				'className' => 'Naturecontrat',
+				'foreignKey' => 'naturecontrat_id',
+				'conditions' => null,
+				'type' => 'LEFT OUTER',
+				'fields' => null,
+				'order' => null,
+				'counterCache' => null
+			),
 			'Secteuracti' => array(
 				'className' => 'Secteuracti',
 				'foreignKey' => 'secteuracti_id',
@@ -95,6 +104,12 @@
 				'inclusiveRange' => array(
 					'rule' => array( 'inclusiveRange', 0, 1000 ),
 					'message' => 'Veuillez entrer une valeur comprise entre 0 et 1000',
+				)
+			),
+			'naturecontrat_id' => array(
+				'notEmpty' => array(
+					'rule' => array( 'notEmpty' ),
+					'message' => 'Champ obligatoire'
 				)
 			)
 		);
