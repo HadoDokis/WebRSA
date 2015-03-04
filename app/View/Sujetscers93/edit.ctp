@@ -5,19 +5,20 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
-	
+
 
 	echo $this->Html->tag( 'h1', $title_for_layout );
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'sujetcer93' ) ) );
 
-	
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => false,
 			'legend' => false,
 			'Sujetcer93.id' => array( 'type' => 'hidden' ),
 			'Sujetcer93.name' => array( 'type' => 'text' ),
-			'Sujetcer93.isautre' => array( 'type' => 'checkbox' )
+			'Sujetcer93.isautre' => array( 'type' => 'checkbox' ),
+			'Sujetcer93.actif' => array( 'type' => 'checkbox' )
 		)
 	);
 

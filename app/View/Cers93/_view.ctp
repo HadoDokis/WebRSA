@@ -126,6 +126,7 @@
 					<th>Nom</th>
 					<th>Prénom</th>
 					<th>Date de naissance</th>
+				</tr>
 			</thead>
 		<tbody>';
 		foreach( $contratinsertion['Cer93']['Compofoyercer93'] as $index => $compofoyercer93 ){
@@ -290,33 +291,11 @@
 <?php $sujetpcd = array();?>
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
 	<h4>Le précédent contrat portait sur </h4>
-		<?php if( !empty( $contratinsertion['Cer93']['sujetpcd'] ) ):?>
-		<table class="aere">
-			<thead>
-				<tr>
-					<th>Sujet du CER</th>
-					<th>Sous sujet</th>
-					<th>Si autre, commentaire</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					// Le précédent CER portait sur (liste des cases à cocher)
-					$sujetpcd = unserialize( $contratinsertion['Cer93']['sujetpcd'] );
-					foreach( $sujetpcd['Sujetcer93']  as $index => $sujetcer93 ) {
-						echo $this->Html->tableCells(
-							array(
-								h( $sujetcer93['name'] ),
-								h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ) ),
-								h( Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' ) )
-							),
-							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-						);
-					}
-				?>
-			</tbody>
-		</table>
+	<?php if( !empty( $contratinsertion['Cer93']['sujetpcd'] ) ):?>
+		<?php
+			$sujetpcd = unserialize( $contratinsertion['Cer93']['sujetpcd'] );
+			echo $this->Cer93->sujetspcds2( $sujetpcd );
+		?>
 	<?php else:?>
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
@@ -337,50 +316,8 @@
 	<?php echo $this->Xform->fieldValue( 'Cer93.prevu', Set::classicExtract( $contratinsertion, 'Cer93.prevu'), true, 'textarea', true );?>
 	<h3>Votre contrat porte sur </h3>
 	<?php if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ):?>
-		<table>
-			<thead>
-				<tr>
-					<th>Sujet du CER</th>
-					<th>Sous sujet</th>
-					<th>Valeur de sous sujet</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					if( !empty( $contratinsertion['Cer93']['Sujetcer93'] ) ) {
-
-						foreach( $contratinsertion['Cer93']['Sujetcer93'] as $index => $sujetcer93 ) {
-
-                            $sujet = $sujetcer93['name'];
-                            if( !empty( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] ) ){
-                                $sujet = $sujetcer93['name'].' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.commentaireautre' );
-                            }
-
-                            $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' );
-                            if( !empty( $sujetcer93['Cer93Sujetcer93']['autresoussujet'] ) ){
-                                $soussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Soussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autresoussujet' );
-                            }
-
-                            $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' );
-                            if( !empty( $sujetcer93['Cer93Sujetcer93']['autrevaleur'] ) ){
-                                $valeursoussujet = Hash::get( $sujetcer93, 'Cer93Sujetcer93.Valeurparsoussujetcer93.name' ).' : '.Hash::get( $sujetcer93, 'Cer93Sujetcer93.autrevaleur' );
-                            }
-
-							echo $this->Html->tableCells(
-								array(
-									h( $sujet ),
-									h( $soussujet ),
-									h( $valeursoussujet )
-								),
-								array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-								array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-							);
-						}
-					}
-				?>
-			</tbody>
-		</table>
 		<?php
+			echo $this->Cer93->sujetspcds2( $contratinsertion['Cer93'] );
 			// Emploi trouvé, ROME v.3
 			$sujetromev3 = (array)Hash::get( $contratinsertion['Cer93'], 'Sujetromev3' );
 			if( !empty( $sujetromev3 ) ) {

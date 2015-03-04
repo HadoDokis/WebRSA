@@ -49,3 +49,21 @@ msgid "Sujetromev3.appellationromev3_id"
 msgstr "Appellation métier"
 
 # ------------------------------------------------------------------------------
+
+msgid "Sujetcer93.name"
+msgstr "Thématique du contrat"
+
+msgid "Cer93Sujetcer93.commentaireautre"
+msgstr "Si autre, commentaire"
+
+msgid "Soussujetcer93.name"
+msgstr "Sous-thématique"
+
+msgid "Cer93Sujetcer93.autresoussujet"
+msgstr "Si autre sous-thématique, commentaire"
+
+msgid "Valeurparsoussujetcer93.name"
+msgstr "Valeurs par sous-thématique"
+
+msgid "Cer93Sujetcer93.autrevaleur"
+msgstr "Si autre valeur par sous-thématique, commentaire"

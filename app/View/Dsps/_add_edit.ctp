@@ -201,16 +201,16 @@ Plan:
 		// Codes ROME V3 dernière activité dominante
 		if( Configure::read( 'Cg.departement' ) != 93 ) {
 			echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
-			echo $this->Default->subform(
-				array(
-					'Dsp.libsecactdomi',
-					'Dsp.libactdomi'
-				),
-				array(
-					'options' => $options
-				)
-			);
 		}
+		echo $this->Default->subform(
+			array(
+				'Dsp.libsecactdomi',
+				'Dsp.libactdomi'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
 		// Codes ROME V2 dernière activité dominante
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
@@ -227,16 +227,14 @@ Plan:
 			echo '</fieldset>';
 		}
 
-		if( Configure::read( 'Cg.departement' ) != 93 ) {
-			echo $this->Default->subform(
-				array(
-					'Dsp.duractdomi'
-				),
-				array(
-					'options' => $options
-				)
-			);
-		}
+		echo $this->Default->subform(
+			array(
+				'Dsp.duractdomi'
+			),
+			array(
+				'options' => $options
+			)
+		);
 
 		echo $this->Default->subform(
 			array(

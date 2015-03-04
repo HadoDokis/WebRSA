@@ -1878,3 +1878,13 @@ body.index.orientsstructs td.action a.impression_changement_referent {
 input.loading {
 	background: url("../img/loading.gif") right center no-repeat;
 }
+
+body.cers93 fieldset#FormationEtExperience div.input.select label,
+body.cers93 fieldset#FormationEtExperience div.input.text label,
+body.cers93 fieldset#FormationEtExperience div.input.text span.label {
+    width: 13em;
+}
+
+body.cers93 fieldset#FormationEtExperience div.ajax.select ul {
+	left: 13em;
+}

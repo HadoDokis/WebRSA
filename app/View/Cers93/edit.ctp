@@ -214,6 +214,7 @@
 					<th>Nom</th>
 					<th>Prénom</th>
 					<th>Date de naissance</th>
+				</tr>
 			</thead>
 		<tbody>';
 		foreach( $this->request->data['Compofoyercer93'] as $index => $compofoyercer93 ){
@@ -271,7 +272,7 @@
 
 
 ?>
-<fieldset>
+<fieldset id="FormationEtExperience">
 	<legend>Formation et expérience</legend>
 	<?php
 		// bloc 4 : Formation et expérience
@@ -475,61 +476,14 @@
 <fieldset id="bilanpcd"><legend>Bilan du contrat précédent</legend>
 
 	<h4>Le précédent contrat portait sur </h4>
-		<?php if( !empty( $this->request->data['Cer93']['sujetpcd'] ) ):?>
-		<table class="aere">
-			<thead>
-				<tr>
-					<th>Thématique du contrat</th>
-					<th>Si autre, commentaire</th>
-					<th>Sous-thématique</th>
-					<th>Si autre sous-thématique, commentaire</th>
-					<th>Valeurs par sous-thématique</th>
-					<th>Si autre valeur par sous-thématique, commentaire</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					// Le précédent CER portait sur (liste des cases à cocher)
-					$sujetpcd = unserialize( $this->request->data['Cer93']['sujetpcd'] );
-
-					foreach( $sujetpcd['Sujetcer93']  as $index => $sujetcer93 ) {
-						$soussujet = '';
-						$commentairesoussujet = '';
-						$valeurparsoussujet = '';
-						$commentairevaleurparsoussujet = '';
-						if( isset( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93'] ) && !empty( $sujetcer93['Cer93Sujetcer93']['Soussujetcer93'] ) ) {
-							$soussujet = $sujetcer93['Cer93Sujetcer93']['Soussujetcer93']['name'];
-							if( !empty( $sujetcer93['Cer93Sujetcer93']['autresoussujet'] ) ) {
-								$commentairesoussujet = $sujetcer93['Cer93Sujetcer93']['autresoussujet'];
-							}
-						}
-						if( isset( $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93'] ) && !empty( $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93'] ) ) {
-							$valeurparsoussujet = $sujetcer93['Cer93Sujetcer93']['Valeurparsoussujetcer93']['name'];
-							if( !empty( $sujetcer93['Cer93Sujetcer93']['autrevaleur'] ) ) {
-								$commentairevaleurparsoussujet = $sujetcer93['Cer93Sujetcer93']['autrevaleur'];
-							}
-						}
-
-						echo $this->Html->tableCells(
-							array(
-								h( $sujetcer93['name'] ),
-								h( $sujetcer93['Cer93Sujetcer93']['commentaireautre'] ),
-								h( $soussujet ),
-								h( $commentairesoussujet ),
-								h( $valeurparsoussujet ),
-								h( $commentairevaleurparsoussujet )
-							),
-							array( 'class' => 'odd', 'id' => 'innerTableTrigger'.$index ),
-							array( 'class' => 'even', 'id' => 'innerTableTrigger'.$index )
-						);
-					}
-				?>
-			</tbody>
-		</table>
+	<?php if( !empty( $this->request->data['Cer93']['sujetpcd'] ) ):?>
+		<?php
+			$sujetpcd = unserialize( $this->request->data['Cer93']['sujetpcd'] );
+			echo $this->Cer93->sujetspcds2( $sujetpcd );
+		?>
 	<?php else:?>
 		<p class="notice">Aucune information renseignée</p>
 	<?php endif;?>
-
 	<?php
 		// Sujet précédent, complément d'informations ROME v.3
 		$sujetromev3 = (array)Hash::get( $sujetpcd, 'Sujetromev3' );
@@ -663,6 +617,13 @@
 			$i++;
 		}
 		echo '</ul>';
+		if( !empty( $sujetscers93enregistres ) ) {
+			echo $this->Html->tag(
+				'fieldset',
+				$this->Html->tag( 'legend', 'Valeurs précédemment sélectionnées mais désacivées' )
+				.$this->Cer93->sujets2( $sujetscers93enregistres, array( 'hidden' => true ) )
+			);
+		}
 		echo '</fieldset>';
 		echo '</div>';
 
@@ -670,7 +631,7 @@
 		echo $this->Xform->input( 'Sujetromev3.id', array( 'type' => 'hidden', 'id' => false ) ); // TODO: Cer93.sujetromev3_._id
 
 		if( !empty( $activationPath ) && !empty( $activationValues ) ) {
-			echo $this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ) ) );
+			echo $this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ), 'required' => true ) );
 
 			// 1. Si le chemin est Sujetcer93.Sujetcer93.{n}.sujetcer93_id, alors c'est un select
 			if( $activationPath === 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' ) {

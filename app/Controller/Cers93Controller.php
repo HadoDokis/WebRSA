@@ -46,7 +46,8 @@
 			),
 			'Default3' => array(
 				'className' => 'Default.DefaultDefault'
-			)
+			),
+			'Cer93'
 		);
 
 		/**
@@ -522,7 +523,7 @@
 			$this->set( 'naturecontratDuree', $naturecontratDuree );
 
 			// =================================================================
-
+			// TODO: on peut certainement combiner avec la liste ci-dessous
 			$listeSujets = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
@@ -530,6 +531,9 @@
 						'Soussujetcer93' => array(
 							'order' => array( 'Soussujetcer93.sujetcer93_id ASC', 'Soussujetcer93.name ASC' ),
 							'Valeurparsoussujetcer93' => array(
+								'conditions' => array(
+									'Valeurparsoussujetcer93.actif' => '1'
+								),
 								'order' => array( 'Valeurparsoussujetcer93.isautre DESC', 'Valeurparsoussujetcer93.name ASC' )
 							)
 						)
@@ -537,7 +541,7 @@
 					'order' => array( 'Sujetcer93.isautre DESC', 'Sujetcer93.name ASC' )
 				)
 			);
-
+//debug( $listeSujets );
 			$sujets_ids_valeurs_autres = array();
 			$sujets_ids_soussujets_autres = array();
 			foreach( $listeSujets as $sujetcer93 ) {
@@ -561,10 +565,15 @@
 			$this->set( compact( 'sujets_ids_valeurs_autres', 'sujets_ids_soussujets_autres' ) );
 
 			// -----------------------------------------------------------------
+			// TODO: à mettre dans les options, et dans une méthode
+			// -----------------------------------------------------------------
 
 			$sujetscers93 = $this->Cer93->Sujetcer93->find(
 				'all',
 				array(
+					'conditions' => array(
+						'Sujetcer93.actif' => '1'
+					),
 					'order' => array( 'Sujetcer93.isautre DESC', 'Sujetcer93.name ASC' )
 				)
 			);
@@ -576,6 +585,13 @@
 						'Soussujetcer93.id',
 						'Soussujetcer93.name',
 						'Soussujetcer93.sujetcer93_id',
+					),
+					'joins' => array(
+						$this->Cer93->Sujetcer93->Soussujetcer93->join( 'Sujetcer93', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Sujetcer93.actif' => '1',
+						'Soussujetcer93.actif' => '1'
 					),
 					'order' => array( 'Soussujetcer93.sujetcer93_id ASC', 'Soussujetcer93.name ASC' )
 				)
@@ -592,7 +608,13 @@
 						'Soussujetcer93.sujetcer93_id',
 					),
 					'joins' => array(
-						$this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->join( 'Soussujetcer93', array( 'type' => 'INNER' ) )
+						$this->Cer93->Sujetcer93->Soussujetcer93->Valeurparsoussujetcer93->join( 'Soussujetcer93', array( 'type' => 'INNER' ) ),
+						$this->Cer93->Sujetcer93->Soussujetcer93->join( 'Sujetcer93', array( 'type' => 'INNER' ) )
+					),
+					'conditions' => array(
+						'Sujetcer93.actif' => '1',
+						'Soussujetcer93.actif' => '1',
+						'Valeurparsoussujetcer93.actif' => '1'
 					),
 					'order' => array( 'Valeurparsoussujetcer93.soussujetcer93_id ASC', 'Valeurparsoussujetcer93.name ASC' )
 				)
@@ -630,6 +652,34 @@
 			$autresoussujet_isautre_id = Hash::extract( $valeursSoussujet, '{n}.Soussujetcer93[isautre=1].id' );
 // 			$autresoussujet_isautre_id = Hash::format( $autresoussujet_isautre_id, array( '{n}.sujetcer93_id', '{n}.id' ), '%%d' );
 			$this->set( 'autresoussujet_isautre_id', $autresoussujet_isautre_id );
+
+			// =================================================================
+			// Quelles sont les valeurs de valeurparsoussujetcer93_id présentes
+			// dans l'ancien formulaire et plus présentes dans les listes actuelles ?
+			$query = array(
+				'fields' => array_merge(
+					$this->Cer93->Cer93Sujetcer93->fields(),
+					$this->Cer93->Cer93Sujetcer93->Sujetcer93->fields(),
+					$this->Cer93->Cer93Sujetcer93->Soussujetcer93->fields(),
+					$this->Cer93->Cer93Sujetcer93->Valeurparsoussujetcer93->fields()
+				),
+				'joins' => array(
+					$this->Cer93->Cer93Sujetcer93->join( 'Valeurparsoussujetcer93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Cer93->Cer93Sujetcer93->join( 'Soussujetcer93', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Cer93->Cer93Sujetcer93->join( 'Sujetcer93', array( 'type' => 'LEFT OUTER' ) )
+				),
+				'contain' => false,
+				'conditions' => array(
+					'Cer93Sujetcer93.cer93_id' => Hash::get( $this->request->data, 'Cer93.id' ),
+					'OR' => array(
+						'Sujetcer93.actif' => '0',
+						'Soussujetcer93.actif' => '0',
+						'Valeurparsoussujetcer93.actif' => '0'
+					)
+				)
+			);
+			$sujetscers93enregistres = $this->Cer93->Cer93Sujetcer93->find( 'all', $query );
+			$this->set( compact( 'sujetscers93enregistres' ) );
 
 			// =================================================================
 

@@ -48,6 +48,15 @@
 			}
 		}
 
+		// Traduction des natures de prestation
+		$natpf = vfListeToArray( Hash::get( $dsp, 'Detaildroitrsa.natpf' ) );
+		if( !empty( $natpf ) ) {
+			foreach( $natpf as $index => $value ) {
+				$natpf[$index] = value( $options['Detailcalculdroitrsa']['natpf'], $value );
+			}
+			$dsp = Hash::insert( $dsp, 'Detaildroitrsa.natpf', implode( ', ', $natpf ) );
+		}
+
 		// Extraction d'une ligne de données
 		$row = array();
 		foreach( $fields as $fieldName => $params ) {

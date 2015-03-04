@@ -47,3 +47,6 @@ msgstr "Sous-sujet lié ?"
 
 msgid "Valeurparsoussujetcer93.isautre"
 msgstr "Champ de type texte ?"
+
+msgid "Valeurparsoussujetcer93.actif"
+msgstr "Actif ?"

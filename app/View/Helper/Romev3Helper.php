@@ -61,6 +61,8 @@
 				'url' => array( 'controller' => 'cataloguesromesv3', 'action' => 'ajax_appellation' ),
 				'required' => false
 			);
+			$params = $this->addClass( $params, 'romev3' );
+
 			$return = '';
 
 			if( Configure::read( 'Romev3.enabled' ) ) {
@@ -110,7 +112,8 @@
 						$this->Default3->DefaultHtml->tag( 'legend', __d( $params['domain'], $fieldsetPath ) )
 						.$return,
 						array(
-							'id' => $this->domId( "{$fieldsetPath}.Fieldset.id" )
+							'id' => $this->domId( "{$fieldsetPath}.Fieldset.id" ),
+							'class' => $params['class']
 						)
 					);
 				}
