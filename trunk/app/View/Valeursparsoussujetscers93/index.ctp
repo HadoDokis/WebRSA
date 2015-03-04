@@ -9,7 +9,8 @@
 	$fields = array(
 		'Soussujetcer93.name',
 		'Valeurparsoussujetcer93.name',
-		'Valeurparsoussujetcer93.isautre' => array( 'type' => 'boolean')
+		'Valeurparsoussujetcer93.isautre' => array( 'type' => 'boolean'),
+		'Valeurparsoussujetcer93.actif' => array( 'type' => 'boolean')
 	);
 	echo $this->Default2->index(
 		$valeursparsoussujetscers93,

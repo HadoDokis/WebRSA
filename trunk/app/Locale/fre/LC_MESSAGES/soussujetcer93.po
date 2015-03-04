@@ -44,3 +44,6 @@ msgstr "Confirmer la suppression ?"
 
 msgid "Soussujetcer93.isautre"
 msgstr "Champ de type texte ?"
+
+msgid "Soussujetcer93.actif"
+msgstr "Actif ?"

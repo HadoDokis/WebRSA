@@ -69,9 +69,10 @@
 
 				if( Configure::read( 'Cg.departement' ) != 93 ) {
 					echo $this->Romev3->fieldset( 'Deractdomiromev3', array( 'options' => $options ) );
-					echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => __d( 'dsp', 'Dsp.libsecactdomi' ) ) );
-					echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => __d( 'dsp', 'Dsp.libactdomi' ) ) );
 				}
+
+				echo $this->Form->input( 'Dsp.libsecactdomi', array( 'label' => __d( 'dsp', 'Dsp.libsecactdomi' ) ) );
+				echo $this->Form->input( 'Dsp.libactdomi', array( 'label' => __d( 'dsp', 'Dsp.libactdomi' ) ) );
 
 				if( Configure::read( 'Cg.departement' ) == 66 ) {
 					echo '<fieldset><legend>Dernière activité dominante (ROME V2)</legend>';

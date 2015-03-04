@@ -342,6 +342,41 @@ SELECT add_missing_table_field ( 'public', 'expsproscers93', 'naturecontrat_id',
 ALTER TABLE expsproscers93 ALTER COLUMN naturecontrat_id SET DEFAULT NULL;
 SELECT add_missing_constraint ( 'public', 'expsproscers93', 'expsproscers93_naturecontrat_id_fkey', 'naturescontrats', 'naturecontrat_id', false );
 
+--------------------------------------------------------------------------------
+-- 20150302: CG 93, ajout de la possibilité d'activer ou de désactiver les sujets,
+-- ... du CER
+--------------------------------------------------------------------------------
+
+-- Pour sujetscers93
+SELECT add_missing_table_field ( 'public', 'sujetscers93', 'actif', 'CHAR(1)' );
+ALTER TABLE sujetscers93 ALTER COLUMN actif SET DEFAULT '1';
+UPDATE sujetscers93 SET actif = '1' WHERE actif IS NULL;
+ALTER TABLE sujetscers93 ALTER COLUMN actif SET NOT NULL;
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'sujetscers93', 'sujetscers93_actif_in_list_chk' );
+ALTER TABLE sujetscers93 ADD CONSTRAINT sujetscers93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+DROP INDEX IF EXISTS sujetscers93_actif_idx;
+CREATE INDEX sujetscers93_actif_idx ON sujetscers93(actif);
+
+-- Pour soussujetscers93
+SELECT add_missing_table_field ( 'public', 'soussujetscers93', 'actif', 'CHAR(1)' );
+ALTER TABLE soussujetscers93 ALTER COLUMN actif SET DEFAULT '1';
+UPDATE soussujetscers93 SET actif = '1' WHERE actif IS NULL;
+ALTER TABLE soussujetscers93 ALTER COLUMN actif SET NOT NULL;
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'soussujetscers93', 'soussujetscers93_actif_in_list_chk' );
+ALTER TABLE soussujetscers93 ADD CONSTRAINT soussujetscers93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+DROP INDEX IF EXISTS soussujetscers93_actif_idx;
+CREATE INDEX soussujetscers93_actif_idx ON soussujetscers93(actif);
+
+-- Pour valeursparsoussujetscers93
+SELECT add_missing_table_field ( 'public', 'valeursparsoussujetscers93', 'actif', 'CHAR(1)' );
+ALTER TABLE valeursparsoussujetscers93 ALTER COLUMN actif SET DEFAULT '1';
+UPDATE valeursparsoussujetscers93 SET actif = '1' WHERE actif IS NULL;
+ALTER TABLE valeursparsoussujetscers93 ALTER COLUMN actif SET NOT NULL;
+SELECT public.alter_table_drop_constraint_if_exists( 'public', 'valeursparsoussujetscers93', 'valeursparsoussujetscers93_actif_in_list_chk' );
+ALTER TABLE valeursparsoussujetscers93 ADD CONSTRAINT valeursparsoussujetscers93_actif_in_list_chk CHECK ( cakephp_validate_in_list( actif, ARRAY['0','1'] ) );
+DROP INDEX IF EXISTS valeursparsoussujetscers93_actif_idx;
+CREATE INDEX valeursparsoussujetscers93_actif_idx ON valeursparsoussujetscers93(actif);
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

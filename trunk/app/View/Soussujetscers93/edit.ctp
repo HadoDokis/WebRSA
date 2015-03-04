@@ -5,12 +5,12 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
-	
+
 
 	echo $this->Html->tag( 'h1', $title_for_layout );
 	echo $this->Xform->create( null, array( 'inputDefaults' => array( 'domain' => 'soussujetcer93' ) ) );
 
-	
+
 	echo $this->Xform->inputs(
 		array(
 			'fieldset' => false,
@@ -18,7 +18,8 @@
 			'Soussujetcer93.id' => array( 'type' => 'hidden' ),
 			'Soussujetcer93.name' => array( 'type' => 'text' ),
 			'Soussujetcer93.sujetcer93_id' => array( 'type' => 'select', 'options' => $options['Soussujetcer93']['sujetcer93_id'], 'empty' => true ),
-			'Soussujetcer93.isautre' => array( 'type' => 'checkbox' )
+			'Soussujetcer93.isautre' => array( 'type' => 'checkbox' ),
+			'Soussujetcer93.actif' => array( 'type' => 'checkbox' )
 		)
 	);
 
