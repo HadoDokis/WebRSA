@@ -158,7 +158,7 @@
 		echo $this->Xform->fieldValue( 'Cer93.cmuc', Set::enum( Set::classicExtract( $contratinsertion, 'Cer93.cmuc' ), $options['Cer93']['cmuc'] ) );
 	?>
 </fieldset>
-<fieldset>
+<fieldset id="FormationEtExpérience">
 	<legend>Formation et expérience</legend>
 	<?php
 		echo $this->Xform->fieldValue( 'Cer93.nivetu', value( $options['Cer93']['nivetu'], Hash::get( $contratinsertion, 'Cer93.nivetu' ) ) );
