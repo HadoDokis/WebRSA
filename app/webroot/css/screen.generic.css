@@ -1893,3 +1893,7 @@ body.cers93 fieldset#FormationEtExperience div.input.text span.label {
 body.cers93 fieldset#FormationEtExperience div.ajax.select ul {
 	left: 13em;
 }
+
+body.cers93.view #FormationEtExpérience h3 {
+	font-size: 1em;
+}
