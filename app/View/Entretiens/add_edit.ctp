@@ -97,7 +97,7 @@
 					)
 				);
 				echo $this->Xform->input( 'Entretien.arevoirle', array( 'label' => 'A revoir le ', 'type' => 'date', 'dateFormat' => 'MY', 'maxYear' => date('Y')+2, 'minYear' => date('Y')-2, 'empty' => true ) );?>
-			<?php if( Configure::read( 'Cg.departement' ) != 66):?>
+			<?php if( Configure::read( 'Cg.departement' ) != 66 && Configure::read( 'Cg.departement' ) != 93 ):?>
 			<?php
 				echo $this->Xform->input( 'Entretien.rendezvousprevu', array( 'label' => 'Rendez-vous prévu', 'type' => 'checkbox' ) );
 			?>
