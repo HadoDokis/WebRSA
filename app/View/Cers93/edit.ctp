@@ -323,8 +323,8 @@
 			<thead>
 				<tr>
 					<th>Recherche rapide</th>
-					<th>Code domaine</th>
 					<th>Code famille</th>
+					<th>Code domaine</th>
 					<th>Code métier</th>
 					<th>Appellation métier</th>
 					<th>Nature du contrat</th>
