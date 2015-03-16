@@ -1531,5 +1531,41 @@
 			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
 		}
 
+		
+		/**
+		 * Vérifi si une personne est en attente d'une décision EP
+		 * @param integer $personne_id
+		 * @return array
+		 */
+		public function hasDossierepEnCours( $personne_id ){
+			$query = array(
+				'fields' => array_merge(
+					$this->Dossierep->Passagecommissionep->fields(),
+					$this->Dossierep->Passagecommissionep->Dossierep->fields(),
+					$this->Dossierep->Passagecommissionep->Commissionep->fields(),
+					$this->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->fields()
+				),
+				'joins' => array(
+					$this->Dossierep->Passagecommissionep->join( 'Dossierep', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Passagecommissionep->join( 'Commissionep', array( 'type' => 'INNER' ) ),
+					$this->Dossierep->Passagecommissionep->join(
+						'Decisiondefautinsertionep66',
+						array(
+							'type' => 'INNER',
+							'conditions' => array(
+								'Decisiondefautinsertionep66.etape' => 'ep',
+								'Decisiondefautinsertionep66.decision' => $this->decisionsEplParcours
+							)
+						)
+					),
+				),
+				'conditions' => array(
+					'Dossierep.personne_id' => $personne_id,
+					'Commissionep.etatcommissionep' => array( 'traiteep', 'decisioncg' ),
+				)
+			);
+			
+			return !empty($this->Dossierep->Passagecommissionep->find('all', $query));
+		}
 	}
 ?>
