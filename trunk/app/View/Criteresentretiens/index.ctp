@@ -54,10 +54,25 @@
 				array(
 					'Entretien.arevoirle' => array( 'label' => __d( 'entretien', 'Entretien.arevoirle' ), 'type' => 'date', 'dateFormat' => 'MY', 'empty' => true, 'minYear' => date( 'Y' ) - 2, 'maxYear' => date( 'Y' ) + 2 ),
 					'Entretien.structurereferente_id' => array( 'label' => __d( 'entretien', 'Entretien.structurereferente_id' ), 'empty' => true, 'options' => $structs ),
-					'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id' ), 'empty' => true, 'options' => $referents  )
+					'Entretien.referent_id' => array( 'label' => __d( 'entretien', 'Entretien.referent_id' ), 'empty' => true, 'options' => $referents  ),
+					'Entretien.dateentretien' => array( 'type' => 'checkbox' )
 				),
 				array(
 					'options' => $options
+				)
+			);
+
+			echo $this->Html->tag(
+					'fieldset',
+					$this->Html->tag( 'legend', __d( 'entretien', 'Entretien.dateentretien_checkbox' ) )
+					.$this->Default2->subform(
+					array(
+						'Entretien.dateentretien_from' => array( 'label' => __d( 'entretien', 'Entretien.dateentretien_from' ), 'empty' => true, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date('Y')+1 ),
+						'Entretien.dateentretien_to' => array( 'label' => __d( 'entretien', 'Entretien.dateentretien_to' ), 'empty' => true, 'type' => 'date', 'dateFormat' => 'DMY', 'minYear' => 2009, 'maxYear' => date('Y')+1 ),
+					),
+					array(
+						'options' => $options
+					)
 				)
 			);
 		?>
@@ -74,6 +89,12 @@
     </div>
 
 <?php echo $this->Xform->end();?>
+
+<script type="text/javascript">
+	document.observe("dom:loaded", function() {
+		observeDisableFieldsetOnCheckbox( 'EntretienDateentretien', $( 'EntretienDateentretienFromDay' ).up( 'fieldset' ), false );
+	});
+</script>
 
 <?php if( isset( $entretiens ) ):?>
     <?php if( empty( $entretiens ) ):?>

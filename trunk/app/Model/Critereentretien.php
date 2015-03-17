@@ -68,8 +68,9 @@
 			if ( isset($criteresentretiens['Entretien']['referent_id']) && !empty($criteresentretiens['Entretien']['referent_id']) ) {
 				$conditions[] = array('Entretien.referent_id'=>$criteresentretiens['Entretien']['referent_id']);
 			}
-
-
+			
+			$conditions = $this->conditionsDates( $conditions, $criteresentretiens, 'Entretien.dateentretien' );
+			
 			/// Requête
 			$this->Dossier = ClassRegistry::init( 'Dossier' );
 
