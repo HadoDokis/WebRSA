@@ -1531,7 +1531,7 @@
 			return $this->Dossierep->find( 'count', array( 'conditions' => $conditions ) );
 		}
 
-		
+
 		/**
 		 * Vérifi si une personne est en attente d'une décision EP
 		 * @param integer $personne_id
@@ -1564,8 +1564,9 @@
 					'Commissionep.etatcommissionep' => array( 'traiteep', 'decisioncg' ),
 				)
 			);
-			
-			return !empty($this->Dossierep->Passagecommissionep->find('all', $query));
+
+			$result = $this->Dossierep->Passagecommissionep->find( 'all', $query );
+			return !empty( $result );
 		}
 	}
 ?>
