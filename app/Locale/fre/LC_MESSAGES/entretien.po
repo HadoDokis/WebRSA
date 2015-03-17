@@ -115,3 +115,12 @@ msgstr "Oui"
 
 msgid "ENUM::HASPIECEJOINTE::0"
 msgstr "Non"
+
+msgid "Entretien.dateentretien_checkbox"
+msgstr "Filtrer par date d'entretien"
+
+msgid "Entretien.dateentretien_from"
+msgstr "Du (inclus)"
+
+msgid "Entretien.dateentretien_to"
+msgstr "Au (inclus)"
