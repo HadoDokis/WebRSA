@@ -16,7 +16,7 @@ msgstr ""
 # Dernière activité
 # ------------------------------------------------------------------------------
 msgid "Deractromev3"
-msgstr "Dernière activité"
+msgstr "Dernière activité (ROME V3)"
 
 msgid "Deractromev3.romev3"
 msgstr "Recherche rapide"
@@ -37,7 +37,7 @@ msgstr "Appellation métier"
 # Dernière activité dominante
 # ------------------------------------------------------------------------------
 msgid "Deractdomiromev3"
-msgstr "Dernière activité dominante"
+msgstr "Dernière activité dominante (ROME V3)"
 
 msgid "Deractdomiromev3.romev3"
 msgstr "Recherche rapide"
@@ -193,6 +193,9 @@ msgstr "Secteur emploi recherché ROME V2"
 
 msgid "Libemploirech66Metier.name"
 msgstr "Métier emploi recherché ROME V2"
+
+msgid "Libpersonnespcgs66.categoriegeneral"
+msgstr "Catégories (ROME V2)"
 
 # ==============================================================================
 # Moteur de recherche par DSPs

@@ -176,15 +176,39 @@ Plan:
 		// Codes ROME V2 dernière activité
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset><legend>Dernière activité (ROME V2)</legend>';
-			echo $this->Default->subform(
-				array(
-					'Dsp.libsecactderact66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libderact66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-				),
-				array(
-					'options' => $options
+			
+			echo $this->Xform->input( 
+					'Dsp.libsecactderact66_secteur_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libsecactderact66_secteur_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libsecactderact66_secteur_id', 
+					value( 
+						$options['Coderomesecteurdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libsecactderact66_secteur_id' ) 
+					) 
 				)
-			);
+			;
+			
+			echo $this->Xform->input( 
+					'Dsp.libderact66_metier_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libderact66_metier_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libderact66_metier_id', 
+					value( 
+						$options['Coderomemetierdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libderact66_metier_id' ) 
+					) 
+				)
+			;
+			
 			echo '</fieldset>';
 		}
 
@@ -215,15 +239,39 @@ Plan:
 		// Codes ROME V2 dernière activité dominante
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset><legend>Dernière activité dominante(ROME V2)</legend>';
-			echo $this->Default->subform(
-				array(
-					'Dsp.libsecactdomi66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libactdomi66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-				),
-				array(
-					'options' => $options
+			
+			echo $this->Xform->input( 
+					'Dsp.libsecactdomi66_secteur_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libsecactdomi66_secteur_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libsecactdomi66_secteur_id', 
+					value( 
+						$options['Coderomesecteurdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libsecactdomi66_secteur_id' ) 
+					) 
 				)
-			);
+			;
+			
+			echo $this->Xform->input( 
+					'Dsp.libactdomi66_metier_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libactdomi66_metier_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libactdomi66_metier_id', 
+					value( 
+						$options['Coderomemetierdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libactdomi66_metier_id' ) 
+					) 
+				)
+			;
+		
 			echo '</fieldset>';
 		}
 
@@ -268,15 +316,39 @@ Plan:
 		// Codes ROME V2 dernière emploi recherché
 		if( Configure::read( 'Cg.departement' ) == 66 ) {
 			echo '<fieldset><legend>Emploi recherché (ROME V2)</legend>';
-			echo $this->Default->subform(
-				array(
-					'Dsp.libsecactrech66_secteur_id' => array( 'type' => 'select', 'options' => $options['Coderomesecteurdsp66'] ),
-					'Dsp.libemploirech66_metier_id' => array( 'type' => 'select', 'options' => $options['Coderomemetierdsp66'] ),
-				),
-				array(
-					'options' => $options
+			
+			echo $this->Xform->input( 
+					'Dsp.libsecactrech66_secteur_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libsecactrech66_secteur_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libsecactrech66_secteur_id', 
+					value( 
+						$options['Coderomesecteurdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libsecactrech66_secteur_id' ) 
+					) 
 				)
-			);
+			;
+			
+			echo $this->Xform->input( 
+					'Dsp.libemploirech66_metier_id', 
+					array( 
+						'type' => 'hidden', 
+						'value' => Hash::get( $this->request->data, 'Dsp.libemploirech66_metier_id' ) 
+					) 
+				) .
+				$this->Xform->fieldValue( 
+					'Dsp.libemploirech66_metier_id', 
+					value( 
+						$options['Coderomemetierdsp66'], 
+						Hash::get( $this->request->data, 'Dsp.libemploirech66_metier_id' ) 
+					) 
+				)
+			;
+			
 			echo '</fieldset>';
 		}
 

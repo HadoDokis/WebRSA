@@ -79,16 +79,45 @@
 	if( $this->action == 'edit' ){
 		$selected = preg_replace( '/^[^_]+_/', '', $this->request->data['Personnepcg66']['categoriegeneral'] ).'_'.$this->request->data['Personnepcg66']['categoriedetail'];
 	}
-
-	echo $this->Default->subform(
-		array(
-			'Personnepcg66.categoriegeneral' => array( 'label' => __d( 'personnepcg66', 'Personnepcg66.categoriegeneral' ), 'type' => 'select', 'empty' => true, 'options' => $options['Coderomesecteurdsp66'] ),
-			'Personnepcg66.categoriedetail' => array( 'label' => __d( 'personnepcg66', 'Personnepcg66.categoriedetail' ), 'type' => 'select', 'empty' => true, 'options' => $options['Coderomemetierdsp66'], 'selected' => $selected )
-		),
-		array(
-			'options' => $options
+?>
+<fieldset>
+	<legend><?php echo __d( 'dsps', 'Libpersonnespcgs66.categoriegeneral' ); ?></legend>
+<?php
+	echo $this->Xform->input( 
+			'Personnepcg66.categoriegeneral', 
+			array( 
+				'type' => 'hidden', 
+				'value' => Hash::get( $this->request->data, 'Personnepcg66.categoriegeneral' ) 
+			) 
+		) .
+		$this->Xform->fieldValue( 
+			'Personnepcg66.categoriegeneral', 
+			value( 
+				$options['Coderomesecteurdsp66'], 
+				Hash::get( $this->request->data, 'Personnepcg66.categoriegeneral' ) 
+			) 
 		)
-	);
+	;
+
+	echo $this->Xform->input( 
+			'Personnepcg66.categoriedetail', 
+			array( 
+				'type' => 'hidden', 
+				'value' => Hash::get( $this->request->data, 'Personnepcg66.categoriedetail' ) 
+			) 
+		) .
+		$this->Xform->fieldValue( 
+			'Personnepcg66.categoriedetail', 
+			value( 
+				$options['Coderomemetierdsp66'], 
+				Hash::get( $this->request->data, 'Personnepcg66.categoriegeneral' )
+				. '_'
+				. Hash::get( $this->request->data, 'Personnepcg66.categoriedetail' ) 
+			) 
+		)
+	;
+	
+	echo '</fieldset>';
 
 	echo $this->Romev3->fieldset( 'Categorieromev3', array( 'options' => $options ) );
 
