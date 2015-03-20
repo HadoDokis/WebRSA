@@ -18,7 +18,7 @@
 	{
 		public $name = 'Rendezvous';
 
-		public $uses = array( 'Rendezvous', 'Option', 'Defautinsertionep66' );
+		public $uses = array( 'Rendezvous', 'Option' );
 
 		public $helpers = array( 'Locale', 'Csv', 'Cake1xLegacy.Ajax', 'Xform', 'Default2', 'Fileuploader' );
 
@@ -220,6 +220,16 @@
 			$this->assert( ( $nbrPersonnes == 1 ), 'invalidParameter' );
 
 			$this->_setEntriesAncienDossier( $personne_id, 'Rendezvous' );
+			
+			// Ajoute une alerte en cas EPL en cours
+			if( Configure::read( 'Cg.departement' ) == 66 ) {
+				$query = $this->Rendezvous->Personne->Dossierep->qdDossiersepsOuverts( $personne_id );
+				$query['fields'] = array( 'Dossierep.id' );
+				$result = $this->Rendezvous->Personne->Dossierep->find( 'first', $query );
+				if( !empty( $result ) ) {
+					$this->Session->setFlash( 'Attention, une décision EPL est en cours.', 'flash/error' );
+				}
+			}
 
 			// Jointure un peu spéciale
 			$joinStatutrdvTyperdv = array(
@@ -654,11 +664,6 @@
 						$this->request->data['Rendezvous']['referent_id'] = $this->request->data['Rendezvous']['structurereferente_id'].'_'.$personneReferent['PersonneReferent']['referent_id'];
 					}
 				}
-			}
-			
-			// Ajoute une alerte en cas EPL en cours
-			if( Configure::read( 'Cg.departement' ) == 66 && $this->action === 'add' && $this->Defautinsertionep66->hasDossierepEnCours( $personne_id ) ) {
-				$this->Session->setFlash( 'Attention, une décision EPL est en cours.', 'flash/error' );
 			}
 
 			$struct_id = Set::classicExtract( $this->request->data, "{$this->modelClass}.structurereferente_id" );
