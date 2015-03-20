@@ -1535,7 +1535,7 @@
 		/**
 		 * Vérifi si une personne est en attente d'une décision EP
 		 * @param integer $personne_id
-		 * @return array
+		 * @return Boolean
 		 */
 		public function hasDossierepEnCours( $personne_id ){
 			$query = array(
