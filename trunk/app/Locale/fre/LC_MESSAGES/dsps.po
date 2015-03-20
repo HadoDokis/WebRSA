@@ -58,7 +58,7 @@ msgstr "Appellation métier"
 # Emploi recherché
 # ------------------------------------------------------------------------------
 msgid "Actrechromev3"
-msgstr "Emploi recherché"
+msgstr "Emploi recherché (ROME V3)"
 
 msgid "Actrechromev3.romev3"
 msgstr "Recherche rapide"
@@ -195,7 +195,7 @@ msgid "Libemploirech66Metier.name"
 msgstr "Métier emploi recherché ROME V2"
 
 msgid "Libpersonnespcgs66.categoriegeneral"
-msgstr "Catégories (ROME V2)"
+msgstr "Catégorie (ROME V2)"
 
 # ==============================================================================
 # Moteur de recherche par DSPs
