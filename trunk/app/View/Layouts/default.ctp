@@ -290,7 +290,7 @@
 					if( Configure::read( 'debug' ) > 0 ) {
 						echo '( CG '.Configure::read( 'Cg.departement' );
 						echo ', BDD '.ClassRegistry::init( 'User' )->getDataSource()->config['database'];
-						echo ', '.$this->Html->link( 'requêtes SQL', '#', array( 'onclick' => '$( "sqldump" ).toggle();return false;' ) );
+						echo ', '.$this->Html->link( 'requêtes SQL', '#', array( 'onclick' => '$( "sqldump" ).toggle();return false;', 'id' => 'SqlDumpToggler' ) );
 						echo " )\n";
 					}
 					echo sprintf(
@@ -311,5 +311,12 @@
 				echo $this->Html->tag( 'div', $this->element( 'sql_dump' ), array( 'id' => 'sqldump', 'style' => 'display: none' ) );
 			}
 		?>
+		<?php if( Configure::read( 'debug' ) > 0 ): ?>
+		<script type="text/javascript">
+			//<![CDATA[
+			$( 'SqlDumpToggler' ).innerHTML = getCakeQueriesCount() + ' ' + $( 'SqlDumpToggler' ).innerHTML;
+			//]]>
+		</script>
+		<?php endif; ?>
 	</body>
 </html>
