@@ -2206,3 +2206,19 @@ function cakeDateTimeSeparator( id, text ) {
 		console.log( Exception );
 	}
 }
+
+/**
+ * Permet de récupérer le nombre de requêtes SQL se trouvant dans la table de
+ * classe cake-sql-log générée par CakePHP lorsque debug > 0.
+ *
+ * @returns {Number}
+ */
+function getCakeQueriesCount() {
+	var count = 0;
+
+	$$( 'table.cake-sql-log' ).each( function( table ) {
+		count += table.rows.length - 1;
+	} );
+
+	return count;
+}
