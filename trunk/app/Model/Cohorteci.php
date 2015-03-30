@@ -208,7 +208,7 @@
 			}
 
 			// Contratinsertionr par durée du CER
-			$duree_engag = Hash::get( $criteresci, 'Contratinsertion.duree_engag' );
+			$duree_engag = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', Hash::get( $criteresci, 'Contratinsertion.duree_engag' ) );
 			if( !empty( $duree_engag ) ) {
 				if( Configure::read( 'Cg.departement' ) != 93 ) {
 					$conditions['Contratinsertion.duree_engag'] = $duree_engag;

@@ -32,15 +32,15 @@
 
 
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.dd_ci", array( 'type' => 'date', 'selected' => $dossiercov['Propocontratinsertioncov58']['dd_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.dd_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['dd_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 ) ),
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['dd_ci'] ) ? 'error' : '' ) )
 				),
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.duree_engag", array( 'type' => 'select', 'selected' => $dossiercov['Propocontratinsertioncov58']['duree_engag'], 'label' => false, 'empty' => true, 'options' => @$duree_engag ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.duree_engag", array( 'type' => 'text', 'default' => $dossiercov['Propocontratinsertioncov58']['duree_engag'], 'label' => false ) ),
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['duree_engag'] ) ? 'error' : '' ) )
 				),
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.df_ci", array( 'type' => 'date', 'selected' => $dossiercov['Propocontratinsertioncov58']['df_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.df_ci", array( 'type' => 'date', 'default' => $dossiercov['Propocontratinsertioncov58']['df_ci'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 ) ),
 					array( 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['df_ci'] ) ? 'error' : '' ) )
 				),
 
@@ -49,7 +49,7 @@
 					array( 'id' => "Decisionpropocontratinsertioncov58{$i}DecisionColumn", 'class' => ( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['decisioncov'] ) ? 'error' : '' ) )
 				),
 				array(
-					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.datevalidation", array( 'type' => 'date', 'selected' => $cov58['Cov58']['datecommission'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 ) ),
+					$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.datevalidation", array( 'type' => 'date', 'default' => $cov58['Cov58']['datecommission'], 'dateFormat' => 'DMY', 'label' => false, 'maxYear' => date('Y') + 2, 'minYear' => 2009 ) ),
 					( !empty( $this->validationErrors['Decisionpropocontratinsertioncov58'][$i]['datevalidation'] ) ? array( 'class' => 'error' ) : array() )
 				),
 				$this->Form->input( "Decisionpropocontratinsertioncov58.{$i}.commentaire", array( 'label' => false, 'type' => 'textarea' ) ).
@@ -80,34 +80,14 @@
 <script type="text/javascript">
 	function checkDatesToRefresh( i ) {
 		if( ( $F( 'Decisionpropocontratinsertioncov58' + i + 'DdCiMonth' ) ) && ( $F( 'Decisionpropocontratinsertioncov58' + i + 'DdCiYear' ) ) && ( $F( 'Decisionpropocontratinsertioncov58' + i + 'DureeEngag' ) ) ) {
-			var correspondances = new Array();
-			<?php
-				foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-			setDateIntervalCer( 'Decisionpropocontratinsertioncov58' + i + 'DdCi', 'Decisionpropocontratinsertioncov58' + i + 'DfCi', correspondances[$F( 'Decisionpropocontratinsertioncov58' + i + 'DureeEngag' )], false );
+			setDateIntervalCer( 'Decisionpropocontratinsertioncov58' + i + 'DdCi', 'Decisionpropocontratinsertioncov58' + i + 'DfCi', $F( 'Decisionpropocontratinsertioncov58' + i + 'DureeEngag' ), false );
 		}
 	}
 
 	document.observe( "dom:loaded", function() {
-// 		for( var i = 0 ; i < <?php echo count( $dossiers[$theme]['liste'] );?> ; i++ ) {
-//
-// 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DdCiDay' ), 'change', function() {
-// 				checkDatesToRefresh( i );
-// 			} );
-// 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DdCiMonth' ), 'change', function() {
-// 				checkDatesToRefresh( i );
-// 			} );
-// 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DdCiYear' ), 'change', function() {
-// 				checkDatesToRefresh( i );
-// 			} );
-//
-// 			Event.observe( $( 'Decisionpropocontratinsertioncov58' + i + 'DureeEngag' ), 'change', function() {
-// // alert(i);
-// 				checkDatesToRefresh( i );
-// 			} );
-// 		}
-
 		<?php for( $i = 0 ; $i < count( $dossiers[$theme]['liste'] ) ; $i++ ):?>
+			new MaskedInput( '#Decisionpropocontratinsertioncov58<?php echo $i;?>DureeEngag', '9?9' );
+
 			Event.observe( $( 'Decisionpropocontratinsertioncov58<?php echo $i;?>DdCiDay' ), 'change', function() {
 				checkDatesToRefresh( <?php echo $i;?> );
 			} );
@@ -123,5 +103,4 @@
 			} );
 		<?php endfor;?>
 	} );
-
 </script>

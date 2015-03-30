@@ -75,9 +75,6 @@
 				$this->set( 'duree_hebdo_emp', $this->Option->duree_hebdo_emp() );
 				$this->set( 'nat_cont_trav', $this->Option->nat_cont_trav() );
 				$this->set( 'duree_cdd', $this->Option->duree_cdd() );
-				$this->set( 'duree_engag_cg66', $this->Option->duree_engag_cg66() );
-				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
-				$this->set( 'duree_engag_cg58', $this->Option->duree_engag_cg58() );
 
 				$this->set( 'typevoie', $this->Option->typevoie() );
 				$this->set( 'fonction_pers', $this->Option->fonction_pers() );

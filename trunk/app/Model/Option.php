@@ -463,12 +463,12 @@
 		 */
 		public function duree_engag_cg58() {
 			return array(
-				'1' => '3 mois',
-				'2' => '6 mois',
-				'3' => '9 mois',
-				'4' => '12 mois',
-				'5' => '18 mois',
-				'6' => '24 mois'
+				'3' => '3 mois',
+				'6' => '6 mois',
+				'9' => '9 mois',
+				'12' => '12 mois',
+				'18' => '18 mois',
+				'24' => '24 mois'
 			);
 		}
 
@@ -481,10 +481,10 @@
 		 */
 		public function duree_engag_cg66() {
 			return array(
-				'1' => '3 mois',
-				'2' => '6 mois',
-				'3' => '9 mois',
-				'4' => '12 mois'
+				'3' => '3 mois',
+				'6' => '6 mois',
+				'9' => '9 mois',
+				'12' => '12 mois'
 			);
 		}
 
@@ -495,12 +495,12 @@
 		 */
 		public function duree_engag_cg93() {
 			return array(
-				'1' => '3 mois',
-				'2' => '6 mois',
-				'3' => '9 mois',
-				'4' => '12 mois',
-				'5' => '18 mois',
-				'6' => '24 mois'
+				'3' => '3 mois',
+				'6' => '6 mois',
+				'9' => '9 mois',
+				'12' => '12 mois',
+				'18' => '18 mois',
+				'24' => '24 mois'
 			);
 		}
 
@@ -511,10 +511,10 @@
 		 */
 		public function duree_engag_cg976() {
 			return array(
-				'1' => '3 mois',
-				'2' => '6 mois',
-				'3' => '9 mois',
-				'4' => '12 mois'
+				'3' => '3 mois',
+				'6' => '6 mois',
+				'9' => '9 mois',
+				'12' => '12 mois'
 			);
 		}
 

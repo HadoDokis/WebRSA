@@ -8,7 +8,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'prototype.maskedinput.js' ) );
 	}
 ?>
 
@@ -21,17 +21,13 @@
 <script type="text/javascript">
 	function checkDatesToRefresh() {
 		if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
-			var correspondances = new Array();
-
-			<?php
-				$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
-				foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-			setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+			setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', $F( 'ContratinsertionDureeEngag' ), false );
 		}
 	}
 
 	document.observe( "dom:loaded", function() {
+		new MaskedInput( '#ContratinsertionDureeEngag', '9?9' );
+
 		Event.observe( $( 'ContratinsertionDdCiDay' ), 'change', function() {
 			checkDatesToRefresh();
 		} );
@@ -45,7 +41,7 @@
 		Event.observe( $( 'ContratinsertionDureeEngag' ), 'change', function() {
 			checkDatesToRefresh();
 		} );
-	});
+	} );
 
 </script>
 <script type="text/javascript">
@@ -148,7 +144,7 @@
 	</table>
 
 	<?php echo $this->Xform->input( 'Contratinsertion.dd_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.dd_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10 , 'empty' => false ) );?>
-	<?php echo $this->Xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag' ), 'type' => 'select', 'options' => $duree_engag_cg58, 'empty' => true ) );?>
+	<?php echo $this->Xform->input( 'Contratinsertion.duree_engag', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.duree_engag' ), 'type' => 'text' ) );?>
 	<?php echo $this->Xform->input( 'Contratinsertion.df_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.df_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-10, 'empty' => true ) ) ;?>
 
 </fieldset>

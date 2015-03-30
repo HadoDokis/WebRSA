@@ -102,7 +102,6 @@
 					$options = Set::merge( $options, $this->Cov58->Passagecov58->{$modeleDecision}->enums() );
 				}
 			}
-			$this->set( 'duree_engag', $this->Option->duree_engag_cg58() );
 			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'sitescovs58', 'referentsorientants' ));
 
 		}

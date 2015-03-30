@@ -664,16 +664,17 @@ function setDateInterval2( masterPrefix, slavePrefix, nMonths, firstDay ) {
 }
 
 function setDateIntervalCer( masterPrefix, slavePrefix, nMonths, firstDay ) {
+	// -------------------------------------------------------------------------
 	// Initialisation
 	var d = new Date();
 	d.setYear( $F( masterPrefix + 'Year' ) );
-
 	d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
-	d.setMonth( d.getMonth() + nMonths );
-
 	d.setDate( $F( masterPrefix + 'Day' ) );
+	// -------------------------------------------------------------------------
+	// Calcul de la nouvelle date: nombre de mois en plus, 1 jour en moins
+	d.setMonth( d.getMonth() + parseInt( nMonths, 10 ) );
 	d.setDate( d.getDate() - 1 );
-
+	// -------------------------------------------------------------------------
 	// Assignation
 	var day = d.getDate();
 	$( slavePrefix + 'Year' ).value = d.getFullYear();

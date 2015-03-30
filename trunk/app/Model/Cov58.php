@@ -470,9 +470,7 @@
 			$themesTraites = array();
 
 			foreach( $themes as $theme ) {
-// 				if( in_array( $themecov58['Themecov58']['name'], array( 'decisionep', 'decisioncg' ) ) ) {
-					$themesTraites[$theme] = $themecov58['Themecov58'][$theme];
-// 				}
+				$themesTraites[$theme] = Hash::get( $themecov58, "Themecov58.{$theme}" );
 			}
 
 			return $themesTraites;
