@@ -101,6 +101,28 @@
 		}
 
 		/**
+		 * Surcharge de la méthode beforeValidate pour nettoyer la valeur de
+		 * duree_engag qui peut être suivie d'un '_' au CG 58 lorsque le formulaire
+		 * est renvoyé en appuyant sur entrée alors que l'on se trouve dans le
+		 * l'input de ce champ.
+		 *
+		 * @see Contratinsertion::beforeValidate()
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeValidate( $options = array() ) {
+			$result = parent::beforeValidate( $options );
+
+			$path = "{$this->alias}.duree_engag";
+			$value = Hash::get( $this->data, $path );
+			$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
+			$this->data = Hash::insert( $this->data, $path, $value );
+
+			return $result;
+		}
+
+		/**
 		* Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV
 		*/
 		public function qdListeDossier( $cov58_id = null ) {
@@ -578,43 +600,6 @@
 
 			return $success;
 		}
-
-
-		/**
-		*
-		*/
-
-// 		public function qdProcesVerbal() {
-// 			return array(
-// 				'fields' => array(
-// 					'Propocontratinsertioncov58.id',
-// 					'Propocontratinsertioncov58.dossiercov58_id',
-// 					'Propocontratinsertioncov58.structurereferente_id',
-// 					'Propocontratinsertioncov58.referent_id',
-// 					'Propocontratinsertioncov58.datedemande',
-// 					'Propocontratinsertioncov58.num_contrat',
-// 					'Propocontratinsertioncov58.dd_ci',
-// 					'Propocontratinsertioncov58.duree_engag',
-// 					'Propocontratinsertioncov58.df_ci',
-// 					'Propocontratinsertioncov58.forme_ci',
-// 					'Propocontratinsertioncov58.avisraison_ci',
-// 					'Propocontratinsertioncov58.rg_ci',
-// 					'Propocontratinsertioncov58.datevalidation',
-// 					'Propocontratinsertioncov58.commentaire',
-// 					'Propocontratinsertioncov58.decisioncov'
-// 				),
-// 				'joins' => array(
-// 					array(
-// 						'table'      => 'proposcontratsinsertioncovs58',
-// 						'alias'      => 'Propocontratinsertioncov58',
-// 						'type'       => 'LEFT OUTER',
-// 						'foreignKey' => false,
-// 						'conditions' => array( 'Propocontratinsertioncov58.dossiercov58_id = Dossiercov58.id' ),
-// 					)
-// 				)
-// 			);
-// 		}
-
 
 		/**
 		*

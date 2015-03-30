@@ -150,7 +150,7 @@
 						$numcontrat = 'Avenant';
 					}
 					else {
-						$numcontrat = h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  $options['num_contrat'] ) );
+						$numcontrat = h( Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.num_contrat' ),  (array)Hash::get( $options, 'num_contrat' ) ) );
 					}
 
 

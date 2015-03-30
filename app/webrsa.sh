@@ -223,6 +223,7 @@ function __minify() {
 	"$JSDIR/webrsa.common.prototype.js" \
 	"$JSDIR/prototype.event.simulate.js" \
 	"$JSDIR/dependantselect.js" \
+	"$JSDIR/prototype.maskedinput.js" \
 	"$JSDIR/fileuploader.js" \
 	"$JSDIR/fileuploader.webrsa.js" \
 	"$JSDIR/droits.js" > "$JSFILE"

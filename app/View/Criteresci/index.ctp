@@ -3,7 +3,7 @@
 
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'prototype.maskedinput.js' ) );
 	}
 ?>
 <h1><?php
@@ -13,6 +13,10 @@
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
+		<?php if( Configure::read( 'Cg.departement' ) == 58 ): ?>
+			new MaskedInput( '#ContratinsertionDureeEngag', '9?9' );
+		<?php endif;?>
+
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionCreated', $( 'ContratinsertionCreatedFromDay' ).up( 'fieldset' ), false );
 
 		observeDisableFieldsetOnCheckbox( 'ContratinsertionDdCi', $( 'ContratinsertionDdCiFromDay' ).up( 'fieldset' ), false );
@@ -93,7 +97,12 @@
 					echo $this->Form->input( 'Contratinsertion.positioncer', array( 'label' => 'Position du contrat', 'type' => 'select', 'options' => $numcontrat['positioncer'], 'empty' => true ) );
 				}
 
-				echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
+				if( Configure::read( 'Cg.departement' ) == 58 ) {
+					echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'text' ) );
+				}
+				else {
+					echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => 'Filtrer par durée du CER', 'type' => 'select', 'empty' => true, 'options' => $duree_engag ) );
+				}
 
 				if( Configure::read( 'Cg.departement' ) == 93 ) {
 					// 1. Partie "Expériences professionnelles significatives"
@@ -327,11 +336,9 @@
 							$lib_type_orient = Hash::get( $contrat, 'Typeorient.lib_type_orient' );
 							$duree = Hash::get( $contrat, 'Cer93.duree' );
 							if( empty( $duree ) ) {
-								$duree = Set::enum( $contrat['Contratinsertion']['duree_engag'], $duree_engag );
+								$duree = $contrat['Contratinsertion']['duree_engag'];
 							}
-							else {
-								$duree = "{$duree} mois";
-							}
+							$duree = "{$duree} mois";
 
 							echo $this->Xhtml->tableCells(
                                 array(

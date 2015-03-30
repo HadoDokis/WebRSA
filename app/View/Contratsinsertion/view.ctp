@@ -17,7 +17,7 @@
 			$num = Set::enum( $contratinsertion['Contratinsertion']['num_contrat'], $options['num_contrat'] );
 		}
 	}
-	$duree = Set::enum( $contratinsertion['Contratinsertion']['duree_engag'], $$duree_engag );
+	$duree = "{$contratinsertion['Contratinsertion']['duree_engag']} mois";
 	$forme = Set::enum( $contratinsertion['Contratinsertion']['forme_ci'], $forme_ci );
 	$decision_ci = Set::enum( $contratinsertion['Contratinsertion']['decision_ci'], $decision_ci );
 

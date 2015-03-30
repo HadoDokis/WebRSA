@@ -89,11 +89,9 @@
 
 		$duree = Hash::get( $contrat, 'Cer93.duree' );
 		if( empty( $duree ) ) {
-			$duree = Set::enum( Hash::get( $contrat, 'Contratinsertion.duree_engag' ), $duree_engag );
+			$duree = Hash::get( $contrat, 'Contratinsertion.duree_engag' );
 		}
-		else {
-			$duree = "{$duree} mois";
-		}
+		$duree = "{$duree} mois";
 
 		if( Configure::read( 'Cg.departement' ) == 93 ) {
 			$decision = Hash::get( $options['Cer93']['positioncer'], Hash::get( $contrat, 'Cer93.positioncer' ) )

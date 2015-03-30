@@ -2,7 +2,7 @@
 	$this->pageTitle = 'COV du '.date('d-m-Y à h:i', strtotime($cov58['Cov58']['datecommission']));
 
 	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js', 'prototype.maskedinput.js' ) );
 	}
 ?>
 

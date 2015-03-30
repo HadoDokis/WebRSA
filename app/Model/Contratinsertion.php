@@ -601,6 +601,28 @@
 		}
 
 		/**
+		 * Surcharge de la méthode beforeValidate pour nettoyer la valeur de
+		 * duree_engag qui peut être suivie d'un '_' au CG 58 lorsque le formulaire
+		 * est renvoyé en appuyant sur entrée alors que l'on se trouve dans le
+		 * l'input de ce champ.
+		 *
+		 * @see Propocontratinsertioncov58::beforeValidate()
+		 *
+		 * @param array $options
+		 * @return boolean
+		 */
+		public function beforeValidate( $options = array() ) {
+			$result = parent::beforeValidate( $options );
+
+			$path = "{$this->alias}.duree_engag";
+			$value = Hash::get( $this->data, $path );
+			$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
+			$this->data = Hash::insert( $this->data, $path, $value );
+
+			return $result;
+		}
+
+		/**
 		 * BeforeSave
 		 */
 		public function beforeSave( $options = array( ) ) {
@@ -1791,13 +1813,20 @@
 			);
 
 			// Recherche, traduction et ajout de champs virtuels concernant Autreavissuspension et Autreavisradiation
+			$duree_engag = Hash::get( $contratinsertion, "{$this->alias}.duree_engag" );
+			if( !empty( $duree_engag ) ) {
+				$contratinsertion[$this->alias]['duree_engag'] = "{$duree_engag} mois";
+			}
+
 			$Option = ClassRegistry::init( 'Option' );
 			$options = Set::merge(
-							array(
-						'Contratinsertion' => array(
-							'decision_ci' => $Option->decision_ci(),
-						)
-							), $this->Autreavisradiation->enums(), $this->Autreavissuspension->enums()
+				array(
+					'Contratinsertion' => array(
+						'decision_ci' => $Option->decision_ci(),
+					)
+				),
+				$this->Autreavisradiation->enums(),
+				$this->Autreavissuspension->enums()
 			);
 
 			$autresModeles = array( 'Autreavissuspension', 'Autreavisradiation' );
@@ -1984,53 +2013,52 @@
 			}
 			else {
 				$Option = ClassRegistry::init( 'Option' );
-				$options = Set::merge(
-								array(
-							'Contratinsertion' => array(
-								'sect_acti_emp' => $Option->sect_acti_emp(),
-								'emp_occupe' => $Option->emp_occupe(),
-								'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
-								'nat_cont_trav' => $Option->nat_cont_trav(),
-								'typeocclog' => $Option->typeocclog(),
-							),
-							'avisraison' => array(
-								'ci' => $Option->avisraison_ci()
-							),
-							'duree' => array(
-								'cdd' => $Option->duree_cdd()
-							),
-							'decision' => array(
-								'ci' => $Option->decision_ci()
-							),
-							'raison' => array(
-								'ci' => $Option->raison_ci()
-							),
-							'duree' => array(
-								'engag' => $Option->duree_engag()
-							),
-							'forme' => array(
-								'ci' => array( 'S' => 'Simple', 'C' => 'Complexe' )
-							),
-							'Personne' => array(
-								'qual' => $Option->qual(),
-							),
-							'Prestation' => array(
-								'rolepers' => $Option->rolepers(),
-							),
-							'Foyer' => array(
-								'sitfam' => $Option->sitfam(),
-								'typeocclog' => $Option->typeocclog(),
-							),
-							'Type' => array(
-								'voie' => $Option->typevoie(),
-							),
-							'type' => array(
-								'voie' => $Option->typevoie()
-							),
-							'Detaildroitrsa' => array(
-								'oridemrsa' => $Option->oridemrsa(),
-							),
-								), $this->enums(), $this->Personne->Dsp->enums()
+				$options = Hash::merge(
+					array(
+						'Contratinsertion' => array(
+							'sect_acti_emp' => $Option->sect_acti_emp(),
+							'emp_occupe' => $Option->emp_occupe(),
+							'duree_hebdo_emp' => $Option->duree_hebdo_emp(),
+							'nat_cont_trav' => $Option->nat_cont_trav(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'avisraison' => array(
+							'ci' => $Option->avisraison_ci()
+						),
+						'duree' => array(
+							'cdd' => $Option->duree_cdd()
+						),
+						'decision' => array(
+							'ci' => $Option->decision_ci()
+						),
+						'raison' => array(
+							'ci' => $Option->raison_ci()
+						),
+						'forme' => array(
+							'ci' => array( 'S' => 'Simple', 'C' => 'Complexe' )
+						),
+						'Personne' => array(
+							'qual' => $Option->qual(),
+						),
+						'Prestation' => array(
+							'rolepers' => $Option->rolepers(),
+						),
+						'Foyer' => array(
+							'sitfam' => $Option->sitfam(),
+							'typeocclog' => $Option->typeocclog(),
+						),
+						'Type' => array(
+							'voie' => $Option->typevoie(),
+						),
+						'type' => array(
+							'voie' => $Option->typevoie()
+						),
+						'Detaildroitrsa' => array(
+							'oridemrsa' => $Option->oridemrsa(),
+						),
+					),
+					$this->enums(),
+					$this->Personne->Dsp->enums()
 				);
 
 				$contratinsertion = $this->getDataForPdf( $id, $user_id );
