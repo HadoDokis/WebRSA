@@ -28,7 +28,23 @@
 		 * @var array
 		 */
 		public $fixtures = array(
+			'core.Apple',
+			'core.DataTest'
 		);
+
+		/**
+		 * Modèle Apple
+		 *
+		 * @var Model
+		 */
+		public $Apple = null;
+
+		/**
+		 * Modèle DataTest
+		 *
+		 * @var Model
+		 */
+		public $DataTest = null;
 
 		/**
 		 * Préparation du test.
@@ -37,6 +53,9 @@
 		 */
 		public function setUp() {
 			parent::setUp();
+			$this->DataTest = ClassRegistry::init( 'DataTest' );
+			$this->Apple = ClassRegistry::init( 'Apple' );
+
 			$controller = null;
 			$this->View = new View( $controller );
 			$this->DefaultForm = new DefaultFormHelper( $this->View );
@@ -65,7 +84,7 @@
 		 */
 		public function tearDown() {
 			parent::tearDown();
-			unset( $this->View, $this->DefaultForm );
+			unset( $this->View, $this->DefaultForm, $this->DataTest, $this->Apple );
 		}
 
 		/**
@@ -125,23 +144,27 @@
 		 */
 		public function testInput() {
 			$result = $this->DefaultForm->input( 'Apple.id' );
-			$expected = '<div class="input text"><label for="AppleId">Id</label><input name="data[Apple][id]" type="text" value="666" id="AppleId"/></div>';
+			$expected = '<input type="hidden" name="data[Apple][id]" value="666" id="AppleId"/>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$result = $this->DefaultForm->input( 'Apple.id', array( 'required' => true ) );
-			$expected = '<div class="input text"><label for="AppleId"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][id]" required="1" type="text" value="666" id="AppleId"/></div>';
+			$result = $this->DefaultForm->input( 'Apple.category', array( 'required' => true ) );
+			$expected = '<div class="input text"><label for="AppleCategory"><abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][category]" required="1" type="text" value="red" id="AppleCategory"/></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$result = $this->DefaultForm->input( 'Apple.id', array( 'label' => 'Foo <', 'escape' => false ) );
-			$expected = '<div class="input text"><label for="AppleId">Foo <</label><input name="data[Apple][id]" type="text" value="666" id="AppleId"/></div>';
+			$result = $this->DefaultForm->input( 'Apple.category', array( 'label' => 'Foo <', 'escape' => false ) );
+			$expected = '<div class="input text"><label for="AppleCategory">Foo <</label><input name="data[Apple][category]" type="text" value="red" id="AppleCategory"/></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$result = $this->DefaultForm->input( 'Apple.id', array( 'required' => true, 'label' => 'Foo <' ) );
-			$expected = '<div class="input text"><label for="AppleId">Foo &lt; <abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][id]" required="1" type="text" value="666" id="AppleId"/></div>';
+			$result = $this->DefaultForm->input( 'Apple.category', array( 'required' => true, 'label' => 'Foo <' ) );
+			$expected = '<div class="input text"><label for="AppleCategory">Foo &lt; <abbr class="required" title="'.__( 'Validate::notEmpty' ).'">*</abbr></label><input name="data[Apple][category]" required="1" type="text" value="red" id="AppleCategory"/></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 
-			$result = $this->DefaultForm->input( 'Apple.id', array( 'view' => true ) );
-			$expected = '<div class="input value"><span class="label">Id</span><span class="input">666</span></div>';
+			$result = $this->DefaultForm->input( 'Apple.category', array( 'view' => true ) );
+			$expected = '<div class="input value"><span class="label">Category</span><span class="input">red</span></div>';
+			$this->assertEqualsXhtml( $result, $expected );
+
+			$result = $this->DefaultForm->input( 'DataTest.count' );
+			$expected = '<div class="input text"><label for="DataTestCount">Count</label><input name="data[DataTest][count]" type="text" id="DataTestCount"/></div>';
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
