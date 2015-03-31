@@ -30,6 +30,18 @@
 		);
 
 		/**
+		 * "Surcharge" des types de champs utilisés pour les nombres entiers et
+		 * à virgule flottante afin que les champs "text" soient utilisés à la
+		 * place des champs "number".
+		 *
+		 * @var array
+		 */
+		public $map = array(
+			'float' => 'text',
+			'integer' => 'text'
+		);
+
+		/**
 		 * Retourne une liste de boutons de formulaire, dans le div submit, à
 		 * la mode CakePHP.
 		 *
