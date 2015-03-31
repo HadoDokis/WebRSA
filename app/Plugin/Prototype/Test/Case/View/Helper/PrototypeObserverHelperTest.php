@@ -197,7 +197,7 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsOnValue( \'Fi
 			);
 			$expected = '<script type="text/javascript">
 //<![CDATA[
-document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', SpecificitesFichesprescriptions93, [ undefined, \'1\' ], true, true ); } );
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', \'SpecificitesFichesprescriptions93\', [ undefined, \'1\' ], true, true ); } );
 //]]>
 </script>';
 			$this->assertEqual( $result, $expected, var_export( $result, true ) );
@@ -243,7 +243,7 @@ observeDisableFieldsetOnCheckbox( \'SearchUserBirthday\', \'SearchUserBirthdayRa
 dependantSelect( \'SearchUserCountry\', \'SearchUserContinent\' );
 dependantSelect( \'SearchUserRegion\', \'SearchUserCountry\' );
 
-observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', SpecificitesFichesprescriptions93, [ \'1\' ], true, true );
+observeDisableFieldsetOnValue( \'SearchFicheprescription93Exists\', \'SpecificitesFichesprescriptions93\', [ \'1\' ], true, true );
 } );
 //]]>
 </script>';

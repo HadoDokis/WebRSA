@@ -228,7 +228,7 @@
 
 			$hide = ( $hide ? 'true' : 'false' );
 
-			$script = "observeDisableFieldsetOnValue( '{$master}', {$slave}, {$values}, {$condition}, {$hide} );";
+			$script = "observeDisableFieldsetOnValue( '{$master}', '{$slave}', {$values}, {$condition}, {$hide} );";
 			return $this->render( $script );
 		}
 
