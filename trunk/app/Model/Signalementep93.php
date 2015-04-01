@@ -489,6 +489,7 @@
 					'Adresse.nomcom',
 					'Contratinsertion.num_contrat',
 					'Contratinsertion.dd_ci',
+					'Cer93.duree',
 					'Contratinsertion.duree_engag',
 					'Contratinsertion.df_ci',
 					'Contratinsertion.structurereferente_id',
@@ -532,6 +533,7 @@
 						'Contratinsertion.id = '.$this->alias.'.contratinsertion_id'
 					)
 				),
+				$this->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' ) ),
 				array(
 					'alias' => 'Structurereferente',
 					'table' => 'structuresreferentes',

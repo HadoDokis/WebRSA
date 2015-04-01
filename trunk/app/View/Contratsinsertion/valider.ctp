@@ -23,7 +23,7 @@
 				$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 				$ddci = date_short( $contratinsertion['Contratinsertion']['dd_ci'] );
 				$dfci = date_short( $contratinsertion['Contratinsertion']['df_ci'] );
-				$duree = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 );
+				$duree = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag );
 				$referent = $contratinsertion['Referent']['nom_complet'];
 				$propodecision = Set::enum( $contratinsertion['Propodecisioncer66']['isvalidcer'], $options['Propodecisioncer66']['isvalidcer'] );
 				$datevalidcer = date_short( $contratinsertion['Propodecisioncer66']['datevalidcer'] );

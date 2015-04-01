@@ -206,17 +206,7 @@
 			}
 
 			/// Critères sur une personne du foyer - date de naissance
-			if( isset( $search['Personne']['dtnai'] ) && !empty( $search['Personne']['dtnai'] ) ) {
-				if( valid_int( $search['Personne']['dtnai']['year'] ) ) {
-					$conditions[] = 'EXTRACT(YEAR FROM Personne.dtnai) = '.$search['Personne']['dtnai']['year'];
-				}
-				if( valid_int( $search['Personne']['dtnai']['month'] ) ) {
-					$conditions[] = 'EXTRACT(MONTH FROM Personne.dtnai) = '.$search['Personne']['dtnai']['month'];
-				}
-				if( valid_int( $search['Personne']['dtnai']['day'] ) ) {
-					$conditions[] = 'EXTRACT(DAY FROM Personne.dtnai) = '.$search['Personne']['dtnai']['day'];
-				}
-			}
+			$conditions = $this->conditionsDate( $model, $conditions, $search, 'Personne.dtnai' );
 
 			// Voir si une sous-requête ne serait pas plus simple
 			if( isset( $search['Personne']['trancheage'] ) ) {
@@ -500,13 +490,59 @@
 				foreach( $paths as $path ) {
 					list( $modelName, $fieldName ) = model_field( $path );
 					if( isset( $search[$modelName][$fieldName] ) && $search[$modelName][$fieldName] ) {
-						$from = $search[$modelName]["{$fieldName}_from"];
-						$to = $search[$modelName]["{$fieldName}_to"];
+						$from = Hash::get( $search, "{$modelName}.{$fieldName}_from" );
+						$to = Hash::get( $search, "{$modelName}.{$fieldName}_to" );
 
-						$from = $from['year'].'-'.$from['month'].'-'.$from['day'];
-						$to = $to['year'].'-'.$to['month'].'-'.$to['day'];
+						if( valid_date( $from ) && valid_date( $to ) ) {
+							$from = $from['year'].'-'.$from['month'].'-'.$from['day'];
+							$to = $to['year'].'-'.$to['month'].'-'.$to['day'];
 
-						$conditions[] = "DATE( {$modelName}.{$fieldName} ) BETWEEN '{$from}' AND '{$to}'";
+							$conditions[] = "DATE( {$modelName}.{$fieldName} ) BETWEEN '{$from}' AND '{$to}'";
+						}
+					}
+				}
+			}
+
+			return $conditions;
+		}
+
+		/**
+		 * Ajoute des conditions sur des dates. Pour chacun des $paths, on
+		 * extrait le nom du modèle et le nom du champ.
+		 *
+		 * Exemple:
+		 * <pre>$this->conditionsDate(
+		 *	$model,
+		 *	array(),
+		 *	array(
+		 *		'Orientstruct' => array(
+		 *			'date_valid' => array(
+		 *				'year' => '2012',
+		 *				'month' => '03',
+		 *				'day' => '01'
+		 *			)
+		 *		)
+		 *	),
+		 *	'Orientstruct.date_valid'
+		 * );</pre>
+		 * retournera
+		 * <pre>array( '"Orientstruct"."date_valid" = \'2012-03-01\'' )</pre>
+		 *
+		 * @param Model $model Le modèle auquel ce behavior est attaché
+		 * @param array $conditions Les conditions déjà existantes
+		 * @param array $search Les critères renvoyés par le formulaire de recherche
+		 * @param mixed $paths Le chemin (ou les chemins) sur lesquels on cherche à appliquer ces filtres.
+		 * @return array
+		 */
+		public function conditionsDate( Model $model, $conditions, $search, $paths ) {
+			$paths = (array)$paths;
+
+			if( !empty( $paths ) ) {
+				foreach( $paths as $path ) {
+					list( $modelName, $fieldName ) = model_field( $path );
+					if( isset( $search[$modelName][$fieldName] ) && valid_date( $search[$modelName][$fieldName] ) ) {
+						$value = "{$search[$modelName][$fieldName]['year']}-{$search[$modelName][$fieldName]['month']}-{$search[$modelName][$fieldName]['day']}";
+						$conditions[] = "DATE( {$modelName}.{$fieldName} ) = '{$value}'";
 					}
 				}
 			}

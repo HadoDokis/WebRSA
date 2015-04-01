@@ -480,6 +480,7 @@
 					'Contratinsertion.num_contrat',
 					'Contratinsertion.dd_ci',
 					'Contratinsertion.duree_engag',
+					'Cer93.duree',
 					'Contratinsertion.df_ci',
 					'Contratinsertion.structurereferente_id',
 					'Contratinsertion.nature_projet',
@@ -521,6 +522,7 @@
 						'Contratinsertion.id = '.$this->alias.'.contratinsertion_id'
 					)
 				),
+				$this->Contratinsertion->join( 'Cer93', array( 'type' => 'INNER' ) ),
 				array(
 					'alias' => 'Structurereferente',
 					'table' => 'structuresreferentes',

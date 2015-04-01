@@ -615,9 +615,11 @@
 			$result = parent::beforeValidate( $options );
 
 			$path = "{$this->alias}.duree_engag";
-			$value = Hash::get( $this->data, $path );
-			$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
-			$this->data = Hash::insert( $this->data, $path, $value );
+			if( Hash::check( $this->data, $path ) ) {
+				$value = Hash::get( $this->data, $path );
+				$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
+				$this->data = Hash::insert( $this->data, $path, $value );
+			}
 
 			return $result;
 		}
@@ -2342,16 +2344,6 @@
          * @return integer
          */
         public function limiteCumulDureeCER( $personne_id ){
-            $Option = ClassRegistry::init( 'Option' );
-            $durees = $Option->duree_engag();
-            $case = array();
-            foreach( $durees as $key => $value ) {
-                $value = str_replace( ' mois', '', $value );
-                $case[] = "WHEN duree_engag = {$key} THEN {$value}";
-            }
-            $case = implode( ' ', $case );
-            $case = "CASE {$case} ELSE 0 END";
-
             if( Configure::read( 'Cg.departement' ) == 66 ) {
                     $emploi = (array)Configure::read( 'Orientstruct.typeorientprincipale.Emploi' );
             }
@@ -2360,7 +2352,7 @@
             }
             $emploi = '('.implode( ',', $emploi ).')';
 
-            $sql = "SELECT SUM( {$case} ) AS \"sum\"
+            $sql = "SELECT SUM( contratsinsertion.duree_engag ) AS \"sum\"
                     FROM contratsinsertion
                     WHERE
                         decision_ci = 'V'

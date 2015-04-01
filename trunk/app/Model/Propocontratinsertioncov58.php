@@ -115,9 +115,11 @@
 			$result = parent::beforeValidate( $options );
 
 			$path = "{$this->alias}.duree_engag";
-			$value = Hash::get( $this->data, $path );
-			$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
-			$this->data = Hash::insert( $this->data, $path, $value );
+			if( Hash::check( $this->data, $path ) ) {
+				$value = Hash::get( $this->data, $path );
+				$value = preg_replace( '/^[^0-9]*([0-9]+)[^0-9]*$/', '\1', $value );
+				$this->data = Hash::insert( $this->data, $path, $value );
+			}
 
 			return $result;
 		}

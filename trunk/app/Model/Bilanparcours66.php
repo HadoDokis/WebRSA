@@ -700,10 +700,7 @@
 
                             // Calcul de la limite de cumul de durée de CER à l'enregistrement du bilan
                             $nbCumulDureeCER66 = $this->Contratinsertion->limiteCumulDureeCER( $data['Bilanparcours66']['personne_id'] );
-                            $Option = ClassRegistry::init( 'Option' );
-                            $durees = $Option->duree_engag();
-                            $dureeEngagReconductionCER = value( $durees, $contratinsertion['Contratinsertion']['duree_engag'] );
-                            $dureeEngagReconductionCER = str_replace( ' mois', '', $dureeEngagReconductionCER );
+							$dureeEngagReconductionCER = $contratinsertion['Contratinsertion']['duree_engag'];
 
                             // Si les champs de reconduction ne sont pas renseignés,
                             // on empêche l'enregistrement du bilan
@@ -1802,10 +1799,10 @@
 			return $options;
 
 		}
-		
+
 		/**
 		 * Permet d'obtenir le nombre de manifestations liées aux bilans d'une personne.
-		 * 
+		 *
 		 * @param integer $personne_id
 		 * @return integer
 		 */

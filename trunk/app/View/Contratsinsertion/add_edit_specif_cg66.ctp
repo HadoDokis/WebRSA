@@ -60,13 +60,7 @@ document.observe("dom:loaded", function() {
 <script type="text/javascript">
 function checkDatesToRefresh() {
 	if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
-		var correspondances = new Array();
-		// FIXME: voir pour les array associatives
-		<?php
-			$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
-			foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-		setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
+		setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', $F( 'ContratinsertionDureeEngag' ), false );
 		//INFO: setDateInterval2 permet de conserver le jour lors du choix de la durée
 		//      setDateInterval affiche le dernier jour du mois lors du choix de la durée
 		//      setDateIntervalCer affiche pour la date de fin le "jour du début - 1".
@@ -395,7 +389,7 @@ document.observe( "dom:loaded", function() {
 												);
 											}
 											else{
-												echo 'Date de suspension : '.$this->Form->input( 'Contratinsertion.datesuspensionparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+												echo 'Date de suspension : '.$this->Form->input( 'Contratinsertion.datesuspensionparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 1, 'minYear' => 2009, 'empty' => true ) );
 											}
 										?>
 									</td>
@@ -442,7 +436,7 @@ document.observe( "dom:loaded", function() {
 												);
 											}
 											else{
-												echo 'Date de radiation'.$this->Form->input( 'Contratinsertion.dateradiationparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true ) );
+												echo 'Date de radiation'.$this->Form->input( 'Contratinsertion.dateradiationparticulier', array( 'label' => false, 'type' => 'date' , 'dateFormat' => 'DMY', 'maxYear' => date('Y') + 1, 'minYear' => 2009, 'empty' => true ) );
 											}
 										?>
 									</td>
@@ -636,15 +630,15 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 	<tr>
 		<td colspan="2" class="noborder center">
 			<em>Le présent contrat est conclu pour une durée de <?php echo REQUIRED_MARK;?></em>
-			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => false, 'div' => false, 'type' => 'select', 'options' => $duree_engag_cg66, 'empty' => true )  ); ?>
+			<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => false, 'div' => false, 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="mediumSize noborder">
-			<strong>Du <?php echo REQUIRED_MARK;?></strong><?php echo $this->Form->input( 'Contratinsertion.dd_ci', array( 'label' => false, 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 , 'empty' => true)  );?>
+			<strong>Du <?php echo REQUIRED_MARK;?></strong><?php echo $this->Form->input( 'Contratinsertion.dd_ci', array( 'label' => false, 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y') + 1, 'minYear' => 2009 , 'empty' => true)  );?>
 		</td>
 		<td class="mediumSize noborder">
-			<strong>Au <?php echo REQUIRED_MARK;?></strong><?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => false, 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1 , 'empty' => true ) ) ;?>
+			<strong>Au <?php echo REQUIRED_MARK;?></strong><?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => false, 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y') + 1, 'minYear' => 2009 , 'empty' => true ) ) ;?>
 		</td>
 	</tr>
 </table>
@@ -675,7 +669,7 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 </table>
 <br />
 	<?php echo $this->Form->input( 'Contratinsertion.lieu_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.lieu_saisi_ci' ).REQUIRED_MARK, 'type' => 'text', 'maxlength' => 50 )  ); ?><br />
-	<?php echo $this->Form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+5, 'minYear'=>date('Y')-1, 'empty' => true )  ); ?>
+	<?php echo $this->Form->input( 'Contratinsertion.date_saisi_ci', array( 'label' => __d( 'contratinsertion', 'Contratinsertion.date_saisi_ci' ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear' => date('Y') + 1, 'minYear' => 2009, 'empty' => true )  ); ?>
 
 </fieldset>
 <script type="text/javascript">

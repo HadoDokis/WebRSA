@@ -72,7 +72,7 @@
 
 			$this->set( 'rsaSocle', $this->Option->natpf() );
 
-			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag_cg66();
+			$options['Bilanparcours66']['duree_engag'] = $this->Option->duree_engag();
 
 			if( $params['find'] === true ) {
 				$typesorients = $this->Typeorient->find('list');
@@ -92,12 +92,12 @@
 				$typeorientprincipale = Configure::read( 'Orientstruct.typeorientprincipale' );
 				$options['Bilanparcours66']['typeorientprincipale_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['SOCIAL'] );
 				$options['Bilanparcours66']['orientationpro_id'] = $this->Typeorient->listRadiosOptionsPrincipales( $typeorientprincipale['Emploi'] );
-	
+
 				$options['Bilanparcours66']['nvtypeorient_id'] = $this->Typeorient->listOptionsUnderParent();
 				$options['Bilanparcours66']['nvstructurereferente_id'] = $this->Bilanparcours66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 				$options['Saisinebilanparcoursep66']['typeorient_id'] = $options['Bilanparcours66']['nvtypeorient_id'];
 				$options['Saisinebilanparcoursep66']['structurereferente_id'] = $options['Bilanparcours66']['nvstructurereferente_id'];
-	
+
 				$options[$this->modelClass]['serviceinstructeur_id'] = $this->{$this->modelClass}->Serviceinstructeur->listOptions( array( 'Serviceinstructeur.typeserins <>' => 'C' ) ); // Liste des services instructeurs en lien avec un Service Social
 			}
 
@@ -251,7 +251,7 @@
 			}
 			$this->render( 'ajaxstruc', 'ajax' );
 		}
-		
+
 		/**
 		 *
 		 * @param integer $personne_id
@@ -312,7 +312,7 @@
 						'Dossierpcg66.etatdossierpcg',
 						'Decisionpdo.libelle',
 						'Defautinsertionep66.dateimpressionconvoc',
-				
+
 						$this->Bilanparcours66->Referent->sqVirtualField( 'nom_complet' ),
 						$this->Bilanparcours66->Fichiermodule->sqNbFichiersLies( $this->Bilanparcours66, 'nb_fichiers' ),
 						$this->Bilanparcours66->sqNbManifestations( 'Bilanparcours66.id', 'nb_manifestations' )
@@ -353,14 +353,14 @@
 							),
 							array( 'Structurereferente' => 'Propostructurereferente' )
 						),
-						
+
 						$joinDossierep,
-						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->join( 
-							'Passagecommissionep', 
-							array( 
+						$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->join(
+							'Passagecommissionep',
+							array(
 								'type' => 'LEFT OUTER',
 								'conditions' => array( 'Passagecommissionep.id IN (' . $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier() . ')' )
-							) 
+							)
 						),
 						array_words_replace(
 							$this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->join(
@@ -439,11 +439,11 @@
 				);
 				Cache::write( $cacheKey, $query );
 			}
-			
+
 			$query['conditions']['Bilanparcours66.personne_id'] = $personne_id;
-			
+
 			$bilansparcours66 = $this->Bilanparcours66->find( 'all', $query );
-			
+
 			$this->_setOptions( array(), array( 'find' => false ) );
 			$this->set( compact( 'bilansparcours66', 'nborientstruct', 'struct' )  );
 		}

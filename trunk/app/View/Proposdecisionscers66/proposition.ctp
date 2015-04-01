@@ -22,7 +22,7 @@
 		$formeci = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.forme_ci' ), $forme_ci );
 		$ddci = date_short( $contratinsertion['Contratinsertion']['dd_ci'] );
 		$dfci = date_short( $contratinsertion['Contratinsertion']['df_ci'] );
-		$duree = Set::enum( Set::classicExtract( $contratinsertion, 'Contratinsertion.duree_engag' ), $duree_engag_cg66 );
+		$duree = value( $duree_engag, Hash::get( $contratinsertion, 'Contratinsertion.duree_engag' ) );
 		$referent = $contratinsertion['Referent']['nom_complet'];
 
 		echo $this->Xform->fieldValue( 'Contratinsertion.forme_ci', $formeci );

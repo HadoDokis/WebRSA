@@ -95,7 +95,7 @@
 		 * passage en commission d'une commission d'ep donnée.
 		 *
 		 * Set les variables $themeEmpty, $dossiers, $themesChoose, $countDossiers,
-		 * $duree_engag_cg93, $options, $dossierseps, $commissionep, $commissionep_id dans la vue.
+		 * $options, $dossierseps, $commissionep, $commissionep_id dans la vue.
 		 *
 		 * @param array $commissionep L'enregistrement de la commission d'EP
 		 * @param boolean $paginate Soit on pagine (pour le choose), soit on find tout, pour l'export CSV
@@ -331,15 +331,21 @@
 			$this->set( compact( 'countDossiers' ) );
 
 			if ( Configure::read( 'Cg.departement' ) == 93 ) {
-				$options = Set::merge(
+				$options = Hash::merge(
 					$options,
-					$this->Dossierep->Nonrespectsanctionep93->enums()
+					$this->Dossierep->Nonrespectsanctionep93->enums(),
+					$this->Dossierep->Signalementep93->Contratinsertion->enums(),
+					array(
+						'Contratinsertion' => array(
+							'duree_engag' => $this->Option->duree_engag()
+						)
+					),
+					array(
+						'Cer93' => array(
+							'duree' => $this->Option->duree_engag()
+						)
+					)
 				);
-				$options = Set::merge(
-					$options,
-					$this->Dossierep->Signalementep93->Contratinsertion->enums()
-				);
-				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 			}
 
 			if( Configure::read( 'Cg.departement' ) == 58 ){

@@ -165,6 +165,23 @@
 		}
 
 		/**
+		 * Test de la fonction valid_date().
+		 */
+		public function testValidDate() {
+			$result = valid_date( array( 'day' => '30', 'month' => '01', 'year' => '2009' ) );
+			$expected = true;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = valid_date( array( 'day' => '30', 'month' => '', 'year' => '2009' ) );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = valid_int( null );
+			$expected = false;
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
 		 * Test de la fonction date_short().
 		 */
 		public function testDateShort() {

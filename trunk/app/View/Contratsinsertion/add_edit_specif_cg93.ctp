@@ -48,17 +48,7 @@ document.observe("dom:loaded", function() {
 <script type="text/javascript">
 function checkDatesToRefresh() {
 	if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( $F( 'ContratinsertionDureeEngag' ) ) ) {
-		var correspondances = new Array();
-		// FIXME: voir pour les array associatives
-		 //$duree_engag_cg66
-		<?php
-			$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
-			foreach( $$duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-		setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[$F( 'ContratinsertionDureeEngag' )], false );
-		//INFO: setDateInterval2 permet de conserver le jour lors du choix de la durée
-		//      setDateInterval affiche le dernier jour du mois lors du choix de la durée
-		//      setDateIntervalCer affiche pour la date de fin le "jour du début - 1".
+		setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', $F( 'ContratinsertionDureeEngag' ), false );
 	}
 }
 
@@ -556,7 +546,7 @@ Event.observe( $( 'ContratinsertionStructurereferenteId' ), 'change', function( 
 <fieldset>
 <legend> CONTRATS D'INSERTION </legend>
 	<?php echo $this->Form->input( 'Contratinsertion.dd_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.dd_ci' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true)  );?>
-	<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.duree_engag' ) ), 'type' => 'select', 'options' => $duree_engag_cg93, 'empty' => true )  ); ?>
+	<?php echo $this->Form->input( 'Contratinsertion.duree_engag', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.duree_engag' ) ), 'type' => 'select', 'options' => $duree_engag, 'empty' => true )  ); ?>
 	<?php echo $this->Form->input( 'Contratinsertion.df_ci', array( 'label' => required( __d( 'contratinsertion', 'Contratinsertion.df_ci' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+10, 'minYear'=>date('Y')-10 , 'empty' => true ) ) ;?>
 </fieldset>
 
@@ -634,7 +624,6 @@ document.observe( "dom:loaded", function() {
 		}
 	} );
 
-	//observeDisableFieldsOnBoolean( 'ContratinsertionActionsPrev', [ 'ContratinsertionObstaRenc' ], '1', false );
 	observeDisableFieldsOnRadioValue(
 		'testform',
 		'data[Contratinsertion][actions_prev]',

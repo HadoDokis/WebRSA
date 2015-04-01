@@ -177,7 +177,7 @@
             // Partie EP Audition
             if( !empty( $bilanparcours66['Decisiondefautinsertionep66ep']['id'] ) ) {
                 echo '<fieldset><legend><strong>AVIS DE L\'EP Locale Commission Audition du '.date('d/m/Y', strtotime($bilanparcours66['Commissionep']['dateseance'])).'</strong></legend>';
-                
+
                 echo $this->Xhtml->tag(
                     'p',
                     '<strong>Avis :</strong>'
@@ -191,7 +191,7 @@
                         )
                     );
                 }
-                
+
                 $avisEPTypeorient = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['typeorient_id'], $typesorients );
                 $avisEPStructure = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['structurereferente_id'], $structuresreferentes );
                 $avisEPReferent = Set::enum( $bilanparcours66['Decisiondefautinsertionep66ep']['referent_id'], $options['Bilanparcours66']['nvsansep_referent_id'] );
@@ -335,11 +335,11 @@
                 // Partie Avis EP Parcours
                 if( !empty( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['id'] ) ) {
                     $avisep = $bilanparcours66['Decisionsaisinebilanparcoursep66ep'];
-                    
+
                     $avisEPParcoursTypeorient = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['typeorient_id'], $typesorients );
                     $avisEPParcoursStructure = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['structurereferente_id'], $structuresreferentes );
                     $avisEPParcoursReferent = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['referent_id'], $options['Bilanparcours66']['nvsansep_referent_id'] );
-                                
+
                     if ( isset( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['id'] ) && !empty( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['id'] ) ) {
                         echo '<fieldset><legend><strong>AVIS DE L\'EP Locale Commission Parcours du '.date('d/m/Y', strtotime($bilanparcours66['Commissionep']['dateseance'])).'</strong></legend>';
                             if ( $avisep['decision'] == 'reorientation' ) {
@@ -347,7 +347,7 @@
                                     'p',
                                     '<strong>Avis : </strong>Réorientation'
                                 );
-                    
+
                             }
                             elseif ( $avisep['decision'] == 'maintien' ) {
                                 echo $this->Xhtml->tag(
@@ -374,7 +374,7 @@
                                 'p',
                                 '<strong>Nom du prescripteur : </strong>'.$avisEPParcoursReferent
                             );
-                            
+
                             echo $this->Xhtml->tag(
                                 'p',
                                 "Argumentaire précis (avis motivé) de l'EP Locale :",
@@ -405,7 +405,7 @@
                         $decisionEPParcoursTypeorient = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['typeorient_id'], $typesorients );
                         $decisionEPParcoursStructure = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['structurereferente_id'], $structuresreferentes );
                         $decisionEPParcoursReferent = Set::enum( $bilanparcours66['Decisionsaisinebilanparcoursep66ep']['referent_id'], $options['Bilanparcours66']['nvsansep_referent_id'] );
-                                
+
                         echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale Commission Parcours du '.date('d/m/Y', strtotime($bilanparcours66['Commissionep']['dateseance'])).'</strong></legend>';
                             if ( $decisioncg['decision'] == 'reorientation' ) {
                                 echo $this->Xhtml->tag(
@@ -423,13 +423,13 @@
                                     'p',
                                     '<strong>Avis : </strong>Maintien de l\'orientation SOCIALE '
                                 );
-                                
-                                
+
+
                                 echo $this->Xhtml->tag(
                                     'p',
                                     $options['Decisionsaisinebilanparcoursep66']['changementrefparcours'][$decisioncg['changementrefparcours']]
                                 );
-                                
+
                                 $accord = ( $avisep['decision'] == $decisioncg['decision'] ) ? 'Oui' : 'Non';
                                 echo $this->Xhtml->tag(
                                     'p',
@@ -499,7 +499,7 @@
                             'p',
                             $bilanparcours66['Decisiondossierpcg66']['commentairetechnicien']
                         );
-   
+
                         $datevalidation = date_short( $bilanparcours66['Decisiondossierpcg66']['datevalidation'] );
                         echo $this->Xform->fieldValue( 'Decisiondossierpcg66.datevalidation', $datevalidation );
                     echo '</fieldset>';

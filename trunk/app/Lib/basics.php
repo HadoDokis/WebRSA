@@ -220,6 +220,20 @@
 	function valid_int( $value ) {
 		return !(!is_numeric( $value ) || !( (int) $value == $value ) );
 	}
+	/**
+	 * Vérifie que la valeur passée en paramètre corresponde bien à un array de
+	 * date au format CakePHP (clés year, month, day uniquement, non vides).
+	 *
+	 * @param array $value
+	 * @return boolean
+	 */
+	function valid_date( $value ) {
+		return is_array( $value )
+			&& count( $value ) === 3
+			&& isset( $value['year'] ) && !empty( $value['year'] ) && valid_int( $value['year'] )
+			&& isset( $value['month'] ) && !empty( $value['month'] ) && valid_int( $value['month'] )
+			&& isset( $value['day'] ) && !empty( $value['day'] ) && valid_int( $value['day'] );
+	}
 
 	/**
 	 * Retourne une date au format jj/mm/aaaa à partir d'une date au format SQL
@@ -907,7 +921,7 @@
 	 *	uniquement les clés year, month et day.
 	 */
 	function date_cakephp_to_sql( array $date ) {
-		if( ( count( $date ) == 3 ) && isset( $date['year'] ) && isset( $date['month'] ) && isset( $date['day'] ) ) {
+		if( valid_date( $date ) ) {
 			return "{$date['year']}-{$date['month']}-{$date['day']}";
 		}
 		else {
