@@ -44,8 +44,8 @@ class Proposdecisionscers66Controller extends AppController {
         $this->set('forme_ci', $forme_ci);
 
         $this->set('qual', $this->Option->qual());
-        $this->set('duree_engag_cg66', $this->Option->duree_engag_cg66());
-        $options = array_merge(
+        $this->set( 'duree_engag', $this->Option->duree_engag() );
+		$options = array_merge(
                 $this->Propodecisioncer66->Contratinsertion->enums(), $options
         );
 

@@ -197,13 +197,21 @@
 				$options['Saisinebilanparcoursep66']['structurereferente_id'] = $this->Commissionep->Passagecommissionep->Dossierep->Passagecommissionep->Decisiondefautinsertionep66->Structurereferente->list1Options( array( 'orientation' => 'O' ) );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 93 ) {
-				$options = Set::merge(
-								$options, $this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums()
+				$options = Hash::merge(
+					$options,
+					$this->Commissionep->Passagecommissionep->Dossierep->Nonrespectsanctionep93->enums(),
+					$this->Commissionep->Passagecommissionep->Dossierep->Signalementep93->Contratinsertion->enums(),
+					array(
+						'Contratinsertion' => array(
+							'duree_engag' => $this->Option->duree_engag()
+						)
+					),
+					array(
+						'Cer93' => array(
+							'duree' => $this->Option->duree_engag()
+						)
+					)
 				);
-				$options = Set::merge(
-								$options, $this->Commissionep->Passagecommissionep->Dossierep->Signalementep93->Contratinsertion->enums()
-				);
-				$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
 			}
 			else if( Configure::read( 'Cg.departement' ) == 58 ) {
 				$this->set( 'listesanctionseps58', $this->Commissionep->Passagecommissionep->Decisionsanctionep58->Listesanctionep58->find( 'list' ) );

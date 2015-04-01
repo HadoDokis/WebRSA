@@ -58,7 +58,7 @@
 			$this->set( 'decision_ci', $this->Option->decision_ci() );
 			$struct = $this->Dossier->Foyer->Personne->Contratinsertion->Structurereferente->find( 'list', array( 'fields' => array( 'id', 'lib_struc' ) ) );
 			$this->set( 'struct', $struct );
-			$this->set( 'duree_engag_cg93', $this->Option->duree_engag_cg93() );
+			$this->set( 'duree_engag', $this->Option->duree_engag() );
 
 			$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
 

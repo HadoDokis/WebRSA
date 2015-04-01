@@ -4,7 +4,6 @@
 	echo $this->Xhtml->tag( 'h1', $this->pageTitle );
 	echo $this->Form->create( 'Contratsinsertionview', array( 'type' => 'post', 'id' => 'contratform' ) );
 
-	$duree_engag = 'duree_engag_'.Configure::read( 'nom_form_ci_cg' );
 	if ( isset( $contratinsertion['Contratinsertion']['avenant_id'] ) && !empty( $contratinsertion['Contratinsertion']['avenant_id'] ) ) {
 		$num = 'Avenant';
 	}
@@ -160,7 +159,7 @@
 			array(
 				'Contratinsertion' => array(
 					'decision_ci' => $this->viewVars['decision_ci'],
-					'duree_engag' => $this->viewVars['duree_engag_cg976'],
+					'duree_engag' => $this->viewVars['duree_engag'],
 				)
 			)
 		);

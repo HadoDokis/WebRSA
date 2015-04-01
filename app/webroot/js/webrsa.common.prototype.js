@@ -561,7 +561,7 @@ function observeDisableFieldsetOnCheckbox( cbId, fieldsetId, condition, toggleVi
 }
 
 //*****************************************************************************
-
+// @deprecated
 function disableFieldsOnBoolean( field, fieldsIds, value, condition ) {
 	var disabled = !( ( $F( field ) == value ) == condition );
 	fieldsIds.each( function ( fieldId ) {
@@ -584,7 +584,7 @@ function disableFieldsOnBoolean( field, fieldsIds, value, condition ) {
 }
 
 //-----------------------------------------------------------------------------
-
+// @deprecated
 function observeDisableFieldsOnBoolean( prefix, fieldsIds, value, condition ) {
 	if( value == '1' ) {
 		var otherValue = '0';
@@ -667,9 +667,9 @@ function setDateIntervalCer( masterPrefix, slavePrefix, nMonths, firstDay ) {
 	// -------------------------------------------------------------------------
 	// Initialisation
 	var d = new Date();
-	d.setYear( $F( masterPrefix + 'Year' ) );
-	d.setMonth( $F( masterPrefix + 'Month' ) - 1 );
-	d.setDate( $F( masterPrefix + 'Day' ) );
+	d.setYear( parseInt( $F( masterPrefix + 'Year' ), 10 ) );
+	d.setMonth( parseInt( $F( masterPrefix + 'Month' ), 10 ) - 1 );
+	d.setDate( parseInt( $F( masterPrefix + 'Day' ), 10 ) );
 	// -------------------------------------------------------------------------
 	// Calcul de la nouvelle date: nombre de mois en plus, 1 jour en moins
 	d.setMonth( d.getMonth() + parseInt( nMonths, 10 ) );

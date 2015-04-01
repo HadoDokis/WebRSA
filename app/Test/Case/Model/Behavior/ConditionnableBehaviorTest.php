@@ -757,6 +757,55 @@
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
 		}
 
+		/**
+		 * Test de la méthode ConditionnableBehavior::conditionsDate().
+		 */
+		public function testConditionsDate() {
+			// 1. Date correcte
+			$search = array(
+				'Personne' => array(
+					'dtnai' => array(
+						'year' => '1979',
+						'month' => '01',
+						'day' => '24'
+					),
+				)
+			);
+
+			$result = $this->Canton->conditionsDate(
+				array(),
+				$search,
+				array(
+					'Personne.dtnai'
+				)
+			);
+			$expected = array (
+				'DATE( Personne.dtnai ) = \'1979-01-24\'',
+			);
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+
+			// 2. Date incomplète
+			$search = array(
+				'Personne' => array(
+					'dtnai' => array(
+						'year' => '1979',
+						'month' => '01',
+						'day' => ''
+					),
+				)
+			);
+
+			$result = $this->Canton->conditionsDate(
+				array(),
+				$search,
+				array(
+					'Personne.dtnai'
+				)
+			);
+			$expected = array ();
+			$this->assertEquals( $expected, $result, var_export( $result, true ) );
+		}
+
 
 		/**
 		 * Test de la méthode ConditionnableBehavior::conditionsPersonneFoyerDossier().

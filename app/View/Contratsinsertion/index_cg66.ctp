@@ -75,7 +75,7 @@
 									</tr>
                                     <tr>
 										<th>Durée du CER</th>
-										<td>'.value( $duree_engag_cg66, $contratinsertion['Contratinsertion']['duree_engag'] ).'</td>
+										<td>'.value( $duree_engag, $contratinsertion['Contratinsertion']['duree_engag'] ).'</td>
 									</tr>
 								</tbody>
 							</table>';

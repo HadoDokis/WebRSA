@@ -117,29 +117,19 @@
 			$referent_id = Set::extract( $criteresci, 'Contratinsertion.referent_id' );
 			$matricule = Set::extract( $criteresci, 'Contratinsertion.matricule' );
 			$positioncer = Set::extract( $criteresci, 'Contratinsertion.positioncer' );
-//			$referentParcours = Set::extract( $criteresci, 'PersonneReferent.id' );
-//			$structureParcours = Set::extract( $criteresci, 'Structurereferente.id' );
-
-
-			/// Critères sur la date de saisie du CER - champ created
-//			foreach( array( 'created' ) as $timestampDate ) {
-//				if( isset( $criteresci['Contratinsertion'][$timestampDate] ) && !empty( $criteresci['Contratinsertion'][$timestampDate] ) ) {
-//					$valid_from = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) );
-//                    $valid_to = ( valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'] ) && valid_int( $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) );
-//                    if( $valid_from && $valid_to ) {
-//						$conditions[] = 'DATE ( Contratinsertion.created ) <= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_from"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_from"]['day'] ) ).'\' AND DATE( Contratinsertion.created ) >= \''.implode( '-', array( $criteresci['Contratinsertion']["{$timestampDate}_to"]['year'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['month'], $criteresci['Contratinsertion']["{$timestampDate}_to"]['day'] ) ).'\'';
-//
-//					}
-//                }
-//			}
 
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.created' );
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.dd_ci' );
             $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.df_ci' );
-            $conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.datevalidation_ci' );
 
-
-
+			// Plage de dates pour la date de validation lors d'une recherche
+			if( $statutValidation === null ) {
+				$conditions = $this->conditionsDates( $conditions, $criteresci, 'Contratinsertion.datevalidation_ci' );
+			}
+			// Sinon, la date de validation est unique (et normalement présente uniquement sur la cohorte de CER validés)
+			else {
+				$conditions = $this->conditionsDate( $conditions, $criteresci, 'Contratinsertion.datevalidation_ci' );
+			}
 
 			// Trouver le dernier contrat d'insertion pour chacune des personnes du jeu de résultats
 			if( isset( $criteresci['Contratinsertion']['dernier'] ) && $criteresci['Contratinsertion']['dernier'] ) {

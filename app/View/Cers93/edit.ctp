@@ -99,14 +99,7 @@
 <script type="text/javascript">
     function checkDatesToRefresh() {
         if( ( $F( 'ContratinsertionDdCiMonth' ) ) && ( $F( 'ContratinsertionDdCiYear' ) ) && ( radioValue( 'contratinsertion', 'data[Cer93][duree]' ) !== undefined ) ) {
-            var correspondances = new Array();
-            <?php
-
-                $duree_engag = $options['Cer93']['duree'];
-                foreach( $duree_engag as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
-            setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', correspondances[radioValue( 'contratinsertion', 'data[Cer93][duree]' )], false );
-
+            setDateIntervalCer( 'ContratinsertionDdCi', 'ContratinsertionDfCi', radioValue( 'contratinsertion', 'data[Cer93][duree]' ), false );
         }
     }
 

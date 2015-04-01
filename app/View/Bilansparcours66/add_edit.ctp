@@ -244,7 +244,7 @@
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
 
-       
+
 	} );
 </script>
 	<?php
@@ -402,8 +402,8 @@
 					?>
 				</fieldset>
 			</fieldset>
-            
-            
+
+
             <fieldset id="cgReorientationEmploi">
                 <legend>Réorientation vers PE</legend>
                 <?php
@@ -430,8 +430,8 @@
                             $defaultvaluestructurereferente_id = $defaultvaluetypeorient_id = null;
                         }
                     }
-                    
-                    
+
+
                     echo "<div id='cgReorientationPESansEpChangementRef' class='aere'>";
 						echo $this->Xform->input( 'Bilanparcours66.changementrefsansep', array( 'type' => 'hidden', 'value' => 'O' ) );
 
@@ -454,7 +454,7 @@
                     echo "</div>";
                 ?>
             </fieldset>
-            
+
 		</fieldset>
 	</fieldset>
 	<fieldset>
@@ -1124,9 +1124,9 @@ if ( $this->action == 'edit' && isset( $passagecommissionep['Decisiondefautinser
 			'style' => 'text-align: center; font-size: 14px; font-weight:bold;'
 		)
 	);
-    
+
 	$decisioncg = $passagecommissionep['Decisiondefautinsertionep66'][1];
-    
+
 	echo '<fieldset><legend><strong>Suite à l\'avis de l\'EP Locale "Commission Audition"</strong></legend>';
 		if ( $decisioncg['decision'] == 'reorientationprofverssoc' ) {
 			echo $this->Xhtml->tag(
@@ -1305,7 +1305,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 <script type="text/javascript">
 	document.observe("dom:loaded", function() {
-     
+
         observeDisableFieldsetOnRadioValue(
 			'Bilan',
 			'data[Bilanparcours66][typeformulaire]',
@@ -1345,7 +1345,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 				true
 			);
 		} );
-            
+
       observeDisableFieldsetOnRadioValue(
             'Bilan',
             'data[Bilanparcours66][choixsanspassageep]',
@@ -1363,7 +1363,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
             false,
             true
         );
-        
+
 		observeDisableFieldsetOnCheckbox(
 			'Bilanparcours66Bilanparcoursinsertion',
 			'BilanparcoursinsertionCheckbox',
@@ -1398,7 +1398,7 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 		disableAndHideFormPart( 'cgContratReconduitSansEp' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpChangementRef' );
 		disableAndHideFormPart( 'cgMaintienOrientSansEpMemeRef' );
-		
+
 
 		<?php foreach( $options['Bilanparcours66']['typeorientprincipale_id'] as $key => $value ) { ?>
 			dependantSelect( 'Bilanparcours66NvstructurereferenteIdSansEp<?php echo $key ?>', 'Bilanparcours66NvtypeorientIdSansEp<?php echo $key ?>' );
@@ -1596,14 +1596,10 @@ elseif ( $this->action == 'edit' && !empty( $dossierpcg66['Decisiondossierpcg66'
 
 	function checkDatesToRefresh( prefixe, suffixe ) {
 		if( ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Month' ) ) && ( $F( prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe+'Year' ) ) && ( $F( prefixe+'Bilanparcours66DureeEngag'+suffixe ) ) ) {
-			var correspondances = new Array();
-			<?php
-				foreach( $options['Bilanparcours66']['duree_engag'] as $index => $duree ):?>correspondances[<?php echo $index;?>] = <?php echo str_replace( ' mois', '' ,$duree );?>;<?php endforeach;?>
-
 			setDateIntervalCer(
 				prefixe+'Bilanparcours66Ddreconductoncontrat'+suffixe,
 				prefixe+'Bilanparcours66Dfreconductoncontrat'+suffixe,
-				correspondances[$F( prefixe+'Bilanparcours66DureeEngag'+suffixe )],
+				$F( prefixe+'Bilanparcours66DureeEngag'+suffixe ),
 				false
 			);
 		}
