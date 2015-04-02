@@ -917,3 +917,22 @@ body.cataloguesromesv3 ul.actions li.action a.cataloguesromesv3.index {
 body.dsps.index .innerTable {
     min-width: 40em;
 }
+
+/* Moteur de recherche magique */
+
+form#magic_search{
+	position: absolute;
+	top: 125px;
+	right: 15px;
+}
+
+form#magic_search>input#search{
+	width: 300px;
+}
+
+form#magic_search>input[type=submit]{
+	background: url( ../img/icons/magnifier.png ) no-repeat center center;
+	background-size: 20px 20px;
+	width: 35px;
+	height: 25px;
+}

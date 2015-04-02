@@ -500,5 +500,49 @@
 				)
 			);
         }
+		
+		/**
+		 * Permet de savoir s'il existe un CJT au sein du foyer.
+		 *
+		 * @param string $foyerIdFied
+		 * @return string
+		 */
+		public function sqNombreBeneficiaires( $foyerIdFied = 'Foyer.id' ) {
+			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ ).'_'.sha1( serialize( $foyerIdFied ) );
+			$result = Cache::read( $cacheKey );
+
+			if( $result === false ) {
+				$query = array(
+					'fields' => array(
+						'COUNT(*)',
+					),
+					'conditions' => array(
+						'Prestation.rolepers' => array( 'DEM', 'CJT' )
+					),
+					'joins' => array(
+						$this->join( 'Personne', array( 'type' => 'INNER' )),
+						$this->Personne->join( 'Prestation', array( 'type' => 'INNER' ))
+					),
+					'contain' => false,
+					'limit' => 1
+				);
+
+				$query = array_words_replace(
+					$query,
+					array(
+						'Foyer' => 'foyers',
+						'Personne' => 'personnes',
+						'Prestation' => 'prestations'
+					)
+				);
+
+				$query['alias'] = 'foyers';
+				$query['conditions'][] = "personnes.foyer_id = {$foyerIdFied}";
+				$result = $this->sq( $query );
+				Cache::write( $cacheKey, $result );
+			}
+			
+			return $result;
+		}
 	}
 ?>

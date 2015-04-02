@@ -101,5 +101,11 @@
 				'order' => ''
 			)
 		);
+		
+		public $validate = array(
+			'dateentretien' => array(
+				'rule' => 'date'
+			),
+		);
 	}
 ?>

@@ -103,11 +103,7 @@
 		public function disableFieldsOnCheckbox( $master, $slaves, $condition = false, $hide = false ) {
 			$master = $this->domId( $master );
 
-			$slaves = (array)$slaves;
-			foreach( $slaves as $i => $slave ) {
-				$slaves[$i] = $this->domId( $slave );
-			}
-			$slaves = "[ '".implode( "', '", $slaves )."' ]";
+			$slaves = $this->_toJsSlaves( $slaves );
 
 			$condition = ( $condition ? 'true' : 'false' );
 			$hide = ( $hide ? 'true' : 'false' );
@@ -172,23 +168,9 @@
 		public function disableFieldsOnValue( $master, $slaves, $values, $condition, $hide = false ) {
 			$master = $this->domId( $master );
 
-			$slaves = (array)$slaves;
-			foreach( $slaves as $i => $slave ) {
-				$slaves[$i] = $this->domId( $slave );
-			}
-			$slaves = "[ '".implode( "', '", $slaves )."' ]";
-
-			$values = (array)$values;
-			foreach( $values as $i => $value ) {
-				if( $value === null ) {
-					$value = 'undefined';
-				}
-				else {
-					$value = "'{$value}'";
-				}
-				$values[$i] = $value;
-			}
-			$values = "[ ".implode( ", ", $values )." ]";
+			$slaves = $this->_toJsSlaves( $slaves );
+			
+			$values = $this->_toJsValues( $values );
 
 			$condition = ( $condition ? 'true' : 'false' );
 
@@ -212,23 +194,66 @@
 		public function disableFieldsetOnValue( $master, $slave, $values, $condition, $hide = false ) {
 			$master = $this->domId( $master );
 
-			$values = (array)$values;
-			foreach( $values as $i => $value ) {
-				if( $value === null ) {
-					$value = 'undefined';
-				}
-				else {
-					$value = "'{$value}'";
-				}
-				$values[$i] = $value;
-			}
-			$values = "[ ".implode( ", ", $values )." ]";
+			$values = $this->_toJsValues( $values );
 
 			$condition = ( $condition ? 'true' : 'false' );
 
 			$hide = ( $hide ? 'true' : 'false' );
 
 			$script = "observeDisableFieldsetOnValue( '{$master}', '{$slave}', {$values}, {$condition}, {$hide} );";
+			return $this->render( $script );
+		}
+		
+		/**
+		 * Permet de désactiver et éventuellement de masquer un fieldset suivant
+		 * la valeur d'un champ maître.
+		 *
+		 * @param string $formId Identifiant du formulaire qui contient le bouton radio
+		 * @param string $master Le chemin CakePHP du champ maître
+		 * @param string $slave Le chemin CakePHP du fieldset
+		 * @param mixed $values Les valeurs à prendre en compte pour le champ maître
+		 * @param boolean $condition true pour désactiver lorsque le champ maître a une des valeurs, false sinon
+		 * @param boolean $hide true pour en plus cacher le fieldset lorsqu'il est désactivé
+		 * @return string
+		 */
+		public function disableFieldsetOnRadioValue( $formId, $master, $slave, $values, $condition, $hide = false ) {
+			$master = $this->_toName( $master );
+
+			$values = $this->_toJsValues( $values );
+
+			$condition = ( $condition ? 'true' : 'false' );
+
+			$hide = ( $hide ? 'true' : 'false' );
+
+			$script = "observeDisableFieldsetOnRadioValue( '{$formId}', '{$master}', '{$slave}', {$values}, {$condition}, {$hide} );";
+			return $this->render( $script );
+		}
+		
+		/**
+		 * Permet de désactiver et éventuellement de masquer un ensemble de champs
+		 * suivant la valeur d'un champ maître.
+		 *
+		 * @param string $formId Identifiant du formulaire qui contient le bouton radio
+		 * @param string $master Le chemin CakePHP du champ maître
+		 * @param string|array $slaves Les chemins CakePHP des champs à désactiver
+		 * @param mixed $values Les valeurs à prendre en compte pour le champ maître
+		 * @param boolean $condition true pour désactiver lorsque le champ maître a une des valeurs, false sinon
+		 * @param boolean $hide true pour en plus cacher les champs esclaves lorsqu'ils sont désactivés
+		 * @return string
+		 */
+		public function disableFieldsOnRadioValue( $formId, $master, $slaves, $values, $condition, $hide = false ){
+			$master = $this->_toName( $master );
+			
+			$slaves = $this->_toJsSlaves( $slaves );
+
+			$values = $this->_toJsValues( $values );
+
+			$condition = ( $condition ? 'true' : 'false' );
+
+			$hide = ( $hide ? 'true' : 'false' );
+
+			$script = "observeDisableFieldsOnRadioValue( '{$formId}', '{$master}', {$slaves}, {$values}, {$condition}, {$hide} );";
+			
 			return $this->render( $script );
 		}
 
@@ -260,6 +285,55 @@
 			if( $this->useBuffer ) {
 				$this->Html->scriptBlock( "document.observe( 'dom:loaded', function() {{$this->script}\n} );", array( 'block' => $this->block ) );
 			}
+		}
+
+		/**
+		 * Retourne le name d'un input (data[User][id]) à partir de son chemin (User.id).
+		 * 
+		 * @param string $path
+		 * @return string
+		 */
+		protected function _toName( $path ) {
+			return 'data['.implode( '][', explode( '.', $path ) ).']';
+		}
+		
+		/**
+		 * Transforme un array|string php en array javascript
+		 * Donne l'attribu undefined aux élements null
+		 * 
+		 * @param Mixed $array Contenu de l'array cible sous forme String ou Array php
+		 * @return String
+		 */
+		protected function _toJsValues( $array ){
+			$values = (array)$array;
+			
+			foreach( $values as $i => $value ) {
+				if( $value === null ) {
+					$value = 'undefined';
+				}
+				else {
+					$value = "'{$value}'";
+				}
+				$values[$i] = $value;
+			}
+			return "[ ".implode( ", ", $values )." ]";
+		}
+		
+		/**
+		 * Transforme un array|string php en array javascript
+		 * Appel la fonction $this->domId() sur chaques elements avant transformation
+		 * 
+		 * @param Mixed $slaves Contenu de l'array cible sous forme String ou Array php
+		 * @return String
+		 */
+		protected function _toJsSlaves( $slaves ){
+			$values = (array)$slaves;
+			
+			foreach( $values as $i => $slave ) {
+				$values[$i] = $this->domId( $slave );
+			}
+			
+			return "[ '".implode( "', '", $values )."' ]";
 		}
 	}
 ?>

@@ -33,5 +33,26 @@
 			)
 		);
 
+		/**
+		 * Permet de récupérer le dernier titre de séjour d'une personne, en
+		 * fonction de la date de début de titre de séjour.
+		 *
+		 * @param string $personneIdFied
+		 * @return string
+		 */
+		public function sqDernier( $personneIdFied = 'Personne.id' ) {
+			$query = array(
+				'alias' => 'titressejour',
+				'fields' => array( 'titressejour.id' ),
+				'conditions' => array(
+					"titressejour.personne_id = {$personneIdFied}"
+				),
+				'contain' => false,
+				'order' => array( 'titressejour.ddtitsej DESC' ),
+				'limit' => 1
+			);
+
+			return $this->sq( $query );
+		}
 	}
 ?>
