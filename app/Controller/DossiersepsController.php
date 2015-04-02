@@ -338,9 +338,7 @@
 					array(
 						'Contratinsertion' => array(
 							'duree_engag' => $this->Option->duree_engag()
-						)
-					),
-					array(
+						),
 						'Cer93' => array(
 							'duree' => $this->Option->duree_engag()
 						)
