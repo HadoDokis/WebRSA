@@ -197,7 +197,7 @@ function __minify() {
 	# CSS
 	CSSFILE="$CSSDIR/webrsa.tmp.css"
 	echo "@media all {" > "$CSSFILE"
-	cat "$CSSDIR/all.reset.css" "$CSSDIR/all.base.css" "$CSSDIR/all.form.css" "$CSSDIR/fileuploader.css" "$CSSDIR/fileuploader.webrsa.css" >> "$CSSFILE"
+	cat "$CSSDIR/all.reset.css" "$CSSDIR/all.base.css" "$CSSDIR/bootstrap.custom.css" "$CSSDIR/all.form.css" "$CSSDIR/fileuploader.css" "$CSSDIR/fileuploader.webrsa.css" >> "$CSSFILE"
 	echo "}" >> "$CSSFILE"
 
 	echo "@media screen,presentation {" >> "$CSSFILE"
@@ -224,6 +224,9 @@ function __minify() {
 	"$JSDIR/prototype.event.simulate.js" \
 	"$JSDIR/dependantselect.js" \
 	"$JSDIR/prototype.maskedinput.js" \
+	"$JSDIR/webrsa.validaterules.js" \
+	"$JSDIR/webrsa.validateforms.js" \
+	"$JSDIR/webrsa.additional.js" \
 	"$JSDIR/fileuploader.js" \
 	"$JSDIR/fileuploader.webrsa.js" \
 	"$JSDIR/droits.js" > "$JSFILE"

@@ -9,6 +9,7 @@
 	 */
 	define( 'DATE_DECISION_FACULTATIVE', Configure::read( 'Cg.departement' ) != 66 );
 	define( 'REFERENT_FACULTATIF', Configure::read( 'Cg.departement' ) != 66 );
+	define( 'STORABLE_PDF_ACTIVE', Configure::read( 'Cg.departement' ) != 66 );
 
 	/**
 	 * La classe Contratinsertion permet de gérer les CER de manière individuelle.
@@ -59,6 +60,7 @@
 				976 => '%s/contratinsertioncg976.odt'
 			),
 			'StorablePdf' => array(
+				'active' => STORABLE_PDF_ACTIVE,
 				'afterSave' => 'deleteAll'
 			)
 		);

@@ -204,6 +204,52 @@ document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnValue( \'
 		}
 
 		/**
+		 * Test de la méthode PrototypeObserverHelper::disableFieldsetOnRadioValue()
+		 */
+		public function testDisableFieldsetOnRadioValue() {
+			$result = $this->Observer->disableFieldsetOnRadioValue(
+				'MonFormulaire',
+				'Search.Ficheprescription93.exists',
+				'SpecificitesFichesprescriptions93',
+				array( null, '1' ),
+				true,
+				true
+			);
+			
+			$expected = '<script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsetOnRadioValue( \'MonFormulaire\', \'data[Search][Ficheprescription93][exists]\', \'SpecificitesFichesprescriptions93\', [ undefined, \'1\' ], true, true ); } );
+//]]>
+</script>';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		/**
+		 * Test de la méthode PrototypeObserverHelper::disableFieldsOnRadioValue()
+		 */
+		public function testDisableFieldsOnRadioValue() {
+			$result = $this->Observer->disableFieldsOnRadioValue(
+				'MonFormulaire',
+				'Ficheprescription93.personne_a_integre',
+				array(
+					'Ficheprescription93.personne_date_integration.day',
+					'Ficheprescription93.personne_date_integration.month',
+					'Ficheprescription93.personne_date_integration.year',
+				),
+				array( null, '', '0' ),
+				true
+			);
+
+			$expected = '<script type="text/javascript">
+//<![CDATA[
+document.observe( \'dom:loaded\', function() { observeDisableFieldsOnRadioValue( \'MonFormulaire\', \'data[Ficheprescription93][personne_a_integre]\', [ \'Ficheprescription93PersonneDateIntegrationDay\', \'Ficheprescription93PersonneDateIntegrationMonth\', \'Ficheprescription93PersonneDateIntegrationYear\' ], [ undefined, \'\', \'0\' ], true, false ); } );
+//]]>
+</script>';
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		}
+
+		
+		/**
 		 * Test de différentes méthodes avec utilisation du buffer pour alimenter
 		 * scriptBottom.
 		 */
