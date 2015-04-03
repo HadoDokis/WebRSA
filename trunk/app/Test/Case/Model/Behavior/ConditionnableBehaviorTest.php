@@ -398,9 +398,7 @@
 				'UPPER(Personne.prenom) LIKE \'CHRISTIAN\'',
 				'UPPER(Personne.nomnai) LIKE \'BUFFIN\'',
 				'Personne.sexe' => '1',
-				'EXTRACT(YEAR FROM Personne.dtnai) = 1979',
-				'EXTRACT(MONTH FROM Personne.dtnai) = 01',
-				'EXTRACT(DAY FROM Personne.dtnai) = 24',
+				'DATE( Personne.dtnai ) = \'1979-01-24\'',
 				'( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN 30 AND 35'
 			);
 			$this->assertEquals( $expected, $result, var_export( $result, true ) );
@@ -921,9 +919,7 @@
 				'UPPER(Personne.prenom) LIKE \'CHRISTIAN\'',
 				'UPPER(Personne.nomnai) LIKE \'BUFFIN\'',
 				'Personne.sexe' => '1',
-				'EXTRACT(YEAR FROM Personne.dtnai) = 1979',
-				'EXTRACT(MONTH FROM Personne.dtnai) = 01',
-				'EXTRACT(DAY FROM Personne.dtnai) = 24',
+				'DATE( Personne.dtnai ) = \'1979-01-24\'',
 				'( EXTRACT ( YEAR FROM AGE( Personne.dtnai ) ) ) BETWEEN 30 AND 35',
 				'Foyer.sitfam' => 'CEL',
 				'Foyer.ddsitfam' => '2010-11-04',

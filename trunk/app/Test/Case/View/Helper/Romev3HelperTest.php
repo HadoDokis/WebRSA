@@ -148,16 +148,16 @@
 			);
 
 			$result = $this->Romev3->fieldset( 'Deractromev3', $params );
-			$expected = '<fieldset><legend>Dernière activité</legend><div class="input text"><label for="Deractromev3Romev3">Recherche rapide de la dernière activité</label><input name="data[Deractromev3][romev3]" type="text" id="Deractromev3Romev3"/></div><input type="hidden" name="data[Deractromev3][id]" id="Deractromev3Id"/><div class="input select"><label for="Deractromev3Familleromev3Id">Code famille de la dernière activité</label><select name="data[Deractromev3][familleromev3_id]" id="Deractromev3Familleromev3Id">
+			$expected = '<fieldset id="Deractromev3FieldsetId" class="romev3"><legend>Dernière activité (ROME V3)</legend><div class="input text"><label for="Deractromev3Romev3">Recherche rapide</label><input name="data[Deractromev3][romev3]" type="text" id="Deractromev3Romev3"/></div><input type="hidden" name="data[Deractromev3][id]" id="Deractromev3Id"/><div class="input select"><label for="Deractromev3Familleromev3Id">Code famille</label><select name="data[Deractromev3][familleromev3_id]" id="Deractromev3Familleromev3Id">
 <option value=""></option>
 <option value="1">A - AGRICULTURE ET PÊCHE, ESPACES NATURELS ET ESPACES VERTS, SOINS AUX ANIMAUX</option>
-</select></div><div class="input select"><label for="Deractromev3Domaineromev3Id">Code domaine de la dernière activité</label><select name="data[Deractromev3][domaineromev3_id]" id="Deractromev3Domaineromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Domaineromev3Id">Code domaine</label><select name="data[Deractromev3][domaineromev3_id]" id="Deractromev3Domaineromev3Id">
 <option value=""></option>
 <option value="1_1">A11 - Engins agricoles et forestiers</option>
-</select></div><div class="input select"><label for="Deractromev3Metierromev3Id">Code métier de la dernière activité</label><select name="data[Deractromev3][metierromev3_id]" id="Deractromev3Metierromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Metierromev3Id">Code métier</label><select name="data[Deractromev3][metierromev3_id]" id="Deractromev3Metierromev3Id">
 <option value=""></option>
 <option value="1_1">A1101 - Conduite d&#039;engins d&#039;exploitation agricole et forestière</option>
-</select></div><div class="input select"><label for="Deractromev3Appellationromev3Id">Appellation de la dernière activité</label><select name="data[Deractromev3][appellationromev3_id]" id="Deractromev3Appellationromev3Id">
+</select></div><div class="input select"><label for="Deractromev3Appellationromev3Id">Appellation métier</label><select name="data[Deractromev3][appellationromev3_id]" id="Deractromev3Appellationromev3Id">
 <option value=""></option>
 <option value="1_1">Conducteur / Conductrice d&#039;engins de débardage</option>
 </select></div><script type="text/javascript">
@@ -224,21 +224,21 @@ $( \'Deractromev3Romev3\' ).writeAttribute( \'autocomplete\', \'off\' );Event.ob
 
 			$expected = array(
 				'Deractfamilleromev3.name' => array(
-					'label' => 'Libellé famille de la dernière activité',
+					'label' => 'Code famille de la dernière activité',
 					'type' => 'text',
 				),
 				'Deractdomaineromev3.name' => array(
-					'label' => 'Libellé domaine de la dernière activité',
+					'label' => 'Code domaine de la dernière activité',
 					'type' => 'text',
 				),
 				'Deractmetierromev3.name' => array(
-					'label' => 'Libellé métier de la dernière activité',
+					'label' => 'Code métier de la dernière activité',
 					'type' => 'text',
 				),
 				'Deractappellationromev3.name' => array(
-					'label' => 'Appellation de la dernière activité',
+					'label' => 'Appellation métier de la dernière activité',
 					'type' => 'text',
-				)
+				),
 			);
 
 			$this->assertEquals( $result, $expected, var_export( $result, true ) );
