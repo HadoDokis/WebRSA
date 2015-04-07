@@ -287,8 +287,8 @@ class Criteredossierpcg66 extends AppModel {
 
         // Décision sur la PDP
         if (!empty($decisionpdo_id)) {
-            $conditions[] = 'Decisiondossierpcg66.decisionpdo_id = \'' . Sanitize::clean($decisionpdo_id, array('encode' => false)) . '\'';
-        }
+            $conditions['Decisiondossierpcg66.decisionpdo_id'] = $decisionpdo_id;
+		}
 
 
         /// Critères sur les dates de décisions PCG - date de validation et date de transmission à l'op
