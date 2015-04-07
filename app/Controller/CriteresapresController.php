@@ -105,57 +105,59 @@
 				$progressivePaginate = !Hash::get( $this->request->data, 'Pagination.nombre_total' );
 				$apres = $this->paginate( 'Apre', array(), array(), $progressivePaginate );
 
-				///
-				unset( $queryData['fields'] );
-				$queryData['recursive'] = -1;
+				if( Configure::read( 'Cg.departement' ) == 93 ){
+					///
+					unset( $queryData['fields'] );
+					$queryData['recursive'] = -1;
 
-				$joins = array(
-					array(
-						'table'      => 'apres_comitesapres',
-						'alias'      => 'ApreComiteapre',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
-					),
-					array(
-						'table'      => 'comitesapres',
-						'alias'      => 'Comiteapre',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
+					$joins = array(
+						array(
+							'table'      => 'apres_comitesapres',
+							'alias'      => 'ApreComiteapre',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array( 'ApreComiteapre.apre_id = Apre.id' )
+						),
+						array(
+							'table'      => 'comitesapres',
+							'alias'      => 'Comiteapre',
+							'type'       => 'LEFT OUTER',
+							'foreignKey' => false,
+							'conditions' => array(
+								'ApreComiteapre.comiteapre_id = Comiteapre.id'
+							)
+						),
+					);
+
+					$queryData['joins'] = array_merge( $queryData['joins'], $joins );
+	
+					///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
+					$attenteDecision = array(
 						'conditions' => array(
-							'ApreComiteapre.comiteapre_id = Comiteapre.id'
+							'ApreComiteapre.apre_id IS NOT NULL',
+							'ApreComiteapre.decisioncomite IS NULL'
 						)
-					),
-				);
-
-				$queryData['joins'] = array_merge( $queryData['joins'], $joins );
-
-				///Nb d'APREs appartenant à un comité et dont la décision a été/va être prise
-				$attenteDecision = array(
-					'conditions' => array(
-						'ApreComiteapre.apre_id IS NOT NULL',
-						'ApreComiteapre.decisioncomite IS NULL'
-					)
-				);
-				$attenteDecisionsApres = $this->Apre->find(
-					'count',
-					Set::merge( $queryData, $attenteDecision )
-				);
-
-				///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
-				$attenteTraitement = array(
-					'conditions' => array(
-						'ApreComiteapre.apre_id IS NULL'
-					)
-				);
-				$attenteTraitementApres = $this->Apre->find(
-					'count',
-					Set::merge( $queryData, $attenteTraitement )
-				);
+					);
+					$attenteDecisionsApres = $this->Apre->find(
+						'count',
+						Set::merge( $queryData, $attenteDecision )
+					);
+						
+					///Nb d'APREs en attente de traitement(n'appartenant à aucun comité et n'ayant aucune décision de prise)
+					$attenteTraitement = array(
+						'conditions' => array(
+							'ApreComiteapre.apre_id IS NULL'
+						)
+					);
+					$attenteTraitementApres = $this->Apre->find(
+						'count',
+						Set::merge( $queryData, $attenteTraitement )
+					);
 
 
-				$this->set( 'attenteDecisionsApres', $attenteDecisionsApres );
-				$this->set( 'attenteTraitementApres', $attenteTraitementApres );
+					$this->set( 'attenteDecisionsApres', $attenteDecisionsApres );
+					$this->set( 'attenteTraitementApres', $attenteTraitementApres );
+				}
 
 				$this->set( 'apres', $apres );
 			}
