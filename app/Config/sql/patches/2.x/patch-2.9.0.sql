@@ -38,12 +38,39 @@ $$
 $$
 LANGUAGE plpgsql;
 
+DO LANGUAGE plpgsql $$ DECLARE
+BEGIN
+
+IF NOT EXISTS( select tablename from pg_tables where tablename = 'version' )
+THEN
+
 SELECT public.update_duree_engag_integer( 'bilansparcours66' );
 SELECT public.update_duree_engag_integer( 'contratsinsertion' );
 SELECT public.update_duree_engag_integer( 'proposcontratsinsertioncovs58' );
 SELECT public.update_duree_engag_integer( 'decisionsproposcontratsinsertioncovs58' );
 
+END IF;
+END $$;
+
 DROP FUNCTION public.update_duree_engag_integer( p_table TEXT );
+
+-- *****************************************************************************
+-- Version
+-- *****************************************************************************
+
+DROP TABLE IF EXISTS version;
+CREATE TABLE version
+(
+	webrsa VARCHAR(255)
+);
+INSERT INTO version(webrsa) VALUES ('2.9.0');
+
+--------------------------------------------------------------------------------
+-- 20150407: CG 66, ajout d'une valeur d'enum pour les decisions EP
+--------------------------------------------------------------------------------
+
+SELECT alter_enumtype('TYPE_DECISIONDEFAUTINSERTIONEP66', ARRAY['suspensionnonrespect', 'suspensiondefaut', 'suspensionsanction', 'maintien', 'maintienorientsoc', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte']);
+
 
 -- *****************************************************************************
 COMMIT;
