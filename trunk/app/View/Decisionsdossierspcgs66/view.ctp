@@ -8,6 +8,8 @@ echo $this->Xhtml->tag('h1', $this->pageTitle);
 ?>
 
 <?php
+	$orgsValues = is_array($orgs) ? array_values($orgs) : null;
+	$orgs = isset($orgsValues[1]) ? $orgsValues[1] : '';
 
     echo $this->Default2->view(
         $decisiondossierpcg66,
@@ -24,7 +26,7 @@ echo $this->Xhtml->tag('h1', $this->pageTitle);
             'Decisiondossierpcg66.userproposition_id' => array('type' => 'text', 'value' => Hash::get($gestionnaire, Hash::get($decisiondossierpcg66, 'Decisiondossierpcg66.userproposition_id'))),
             'Decisiondossierpcg66.datevalidation',
             'Dossierpcg66.etatdossierpcg',
-            'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => implode( ' ,', $orgs)),
+            'Notificationdecisiondossierpcg66.name' => array('label' => 'Transmission à', 'value' => $orgs),
             'Decisiondossierpcg66.datetransmissionop'
         ),
         array(
