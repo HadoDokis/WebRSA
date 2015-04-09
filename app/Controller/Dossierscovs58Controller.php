@@ -30,7 +30,10 @@
 		protected function _setOptions() {
 			$themescovs58 = $this->Dossiercov58->Themecov58->find('list');
 
-			$options = $this->Dossiercov58->Passagecov58->Cov58->enums();
+			$options = Hash::merge(
+				$this->Dossiercov58->Passagecov58->Cov58->enums(),
+				$this->Dossiercov58->enums()
+			);
 
 			$this->set(compact('options'));
 		}

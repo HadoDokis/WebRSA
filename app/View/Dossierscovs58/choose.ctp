@@ -30,14 +30,17 @@
 				);
 
 				foreach( $themesChoose as $theme ){
-					$class = Inflector::singularize( $theme );
-					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58',  'ENUM::THEMECOV::'.Inflector::tableize( $theme ) )."</h3>";
-					require_once( "choose.{$class}.liste.ctp" );
-					if( !empty( $dossiers[$theme]) ) {
-						echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocher( '#{$theme} input[type=checkbox]' );" ) );
-						echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocher( '#{$theme} input[type=checkbox]' );" ) );
+					// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
+					if( !in_array( Inflector::pluralize( $theme ), $options['Dossiercov58']['vx_themecov58'] ) || !empty( $dossiers[$theme] ) ) {
+						$class = Inflector::singularize( $theme );
+						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58',  'ENUM::THEMECOV::'.Inflector::tableize( $theme ) )."</h3>";
+						require_once( "choose.{$class}.liste.ctp" );
+						if( !empty( $dossiers[$theme]) ) {
+							echo $this->Form->button( 'Tout cocher', array( 'onclick' => "return toutCocher( '#{$theme} input[type=checkbox]' );" ) );
+							echo $this->Form->button( 'Tout décocher', array( 'onclick' => "return toutDecocher( '#{$theme} input[type=checkbox]' );" ) );
+						}
+						echo "</div>";
 					}
-					echo "</div>";
 				}
 			}
 		?>

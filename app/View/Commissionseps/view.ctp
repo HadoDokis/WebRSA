@@ -311,7 +311,10 @@
 					);
 
 					foreach( $themes as $theme ) {
-						require_once( "view.{$theme}.liste.ctp" );
+						// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
+						if( !in_array( Inflector::tableize( $theme ), $options['Dossierep']['vx_themeep'] ) || !empty( $dossiers[$theme] ) ) {
+							require_once( "view.{$theme}.liste.ctp" );
+						}
 					}
 
 					if( in_array( Configure::read( 'Cg.departement' ), array( 58, 93 ) ) ) {

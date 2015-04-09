@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Passagecov58.
 	 *
@@ -72,6 +72,19 @@
 		);
 
 		public $hasMany = array(
+			'Decisionnonorientationprocov58' => array(
+				'className' => 'Decisionnonorientationprocov58',
+				'foreignKey' => 'passagecov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 			'Decisionpropoorientsocialecov58' => array(
 				'className' => 'Decisionpropoorientsocialecov58',
 				'foreignKey' => 'passagecov58_id',

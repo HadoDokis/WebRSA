@@ -76,8 +76,12 @@
 		protected function _setOptions() {
 			$themescovs58 = $this->Cov58->Passagecov58->Dossiercov58->Themecov58->find('list');
 
-			$options = $this->Cov58->enums();
-			$options = array_merge( $options, $this->Cov58->Passagecov58->enums() );
+			$options = Hash::merge(
+				$this->Cov58->enums(),
+				$this->Cov58->Passagecov58->enums(),
+				$this->Cov58->Passagecov58->Dossiercov58->enums()
+			);
+
 			$typevoie = $this->Option->typevoie();
 // 			$options = array_merge($options, $this->Cov58->Passagecov58->Dossiercov58->enums());
 			$typesorients = $this->Cov58->Passagecov58->Dossiercov58->Propoorientationcov58->Structurereferente->Typeorient->listOptions();
@@ -89,18 +93,13 @@
 
 			$decisionscovs = array( 'accepte' => 'Accepté', 'refus' => 'Refusé', 'ajourne' => 'Ajourné' );
 			$this->set(compact('decisionscovs'));
-// debug( $this->Cov58->Passagecov58->Dossiercov58->Themecov58->themes() );
+
 			foreach( $this->Cov58->Passagecov58->Dossiercov58->Themecov58->themes() as $theme ) {
-// debug($theme);
-				$model = Inflector::classify( $theme );
-				if( in_array( 'Enumerable', $this->Cov58->Passagecov58->Dossiercov58->{$model}->Behaviors->attached() ) ) {
-					$options = Set::merge( $options, $this->Cov58->Passagecov58->Dossiercov58->{$model}->enums() );
-				}
+ 				$model = Inflector::classify( $theme );
+				$options = Set::merge( $options, $this->Cov58->Passagecov58->Dossiercov58->{$model}->enums() );
 
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
-				if( in_array( 'Enumerable', $this->Cov58->Passagecov58->{$modeleDecision}->Behaviors->attached() ) ) {
-					$options = Set::merge( $options, $this->Cov58->Passagecov58->{$modeleDecision}->enums() );
-				}
+				$options = Set::merge( $options, $this->Cov58->Passagecov58->{$modeleDecision}->enums() );
 			}
 			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'sitescovs58', 'referentsorientants' ));
 

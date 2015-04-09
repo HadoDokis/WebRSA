@@ -300,6 +300,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Decisionnonorientationprocov58' => array(
+				'className' => 'Decisionnonorientationprocov58',
+				'foreignKey' => 'referent_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

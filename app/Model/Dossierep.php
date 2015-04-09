@@ -262,10 +262,25 @@
 		);*/
 
 		/**
-		* Retourne la liste des thèmes traités par le CG suivant la valeur
-		* de la configuration Cg.departement
-		*/
+		 * Liste des thématiques d'EP qui disparaissent.
+		 *
+		 * Permettra de ne pas afficher d'onglet pour cette thématique (choix des
+		 * dossiers, liste des dossiers d'une commission, prise de décisions, ...)
+		 * si celle-ci ne contient aucun dossier.
+		 *
+		 * @var array
+		 */
+		public $anciennesThematiques = array(
+			'nonorientationsproseps58',
+			'regressionsorientationseps58'
+		);
 
+		/**
+		 * Retourne la liste des thèmes traités par le CG suivant la valeur
+		 * de la configuration Cg.departement
+		 *
+		 * @return array
+		 */
 		public function themesCg() {
 			$return = array();
 			$enums = $this->enums();
@@ -899,7 +914,7 @@
 		public function getReorientationsEnCours( $personne_id ) {
 			$cacheKey = Inflector::underscore( $this->useDbConfig ).'_'.Inflector::underscore( $this->alias ).'_'.Inflector::underscore( __FUNCTION__ );
 			$query = Cache::read( $cacheKey );
-//debug( $this->getThematiquesReorientations() );
+
 			if( $query === false ) {
 				$Commissionep = $this->Passagecommissionep->Commissionep;
 
@@ -924,7 +939,12 @@
 					array(
 						'OR' => array(
 							'Commissionep.id IS NULL',
-							'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours
+							'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecommissionep.etatdossierep' => array( 'traite', 'annule' )
+								)
+							)
 						)
 					)
 				);
@@ -944,6 +964,22 @@
 			$this->forceVirtualFields = $forceVirtualFields;
 
 			return $results;
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour ajouter les anciennes thématiques
+		 * à la liste des options.
+		 *
+		 * @see $anciennesThematiques
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			$enums[$this->alias]['vx_themeep'] = $this->anciennesThematiques;
+
+			return $enums;
 		}
 	}
 ?>

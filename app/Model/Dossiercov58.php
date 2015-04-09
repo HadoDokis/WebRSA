@@ -99,6 +99,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Nonorientationprocov58' => array(
+				'className' => 'Nonorientationprocov58',
+				'foreignKey' => 'dossiercov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 
@@ -117,6 +130,18 @@
 				'counterQuery' => ''
 			)
 		);
+
+		/**
+		 * Liste des thématiques de COV qui disparaissent.
+		 *
+		 * Permettra de ne pas afficher d'onglet pour cette thématique (choix des
+		 * dossiers, liste des dossiers d'une commission, prise de décisions, ...)
+		 * si celle-ci ne contient aucun dossier.
+		 *
+		 * @var array
+		 */
+		public $anciennesThematiques = array( 'proposnonorientationsproscovs58' );
+
 		/**
 		* FIXME -> aucun dossier en cours, pour certains thèmes:
 		*		- CG 93
@@ -374,6 +399,11 @@
 						'OR' => array(
 							'Cov58.id IS NULL',
 							'Cov58.etatcov' => $Cov58::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecov58.etatdossiercov' => array( 'traite', 'annule' )
+								)
+							)
 						)
 					)
 				);
@@ -416,6 +446,7 @@
 						$this->join( 'Propononorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Nonorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'conditions' => array(
 						'Dossiercov58.personne_id = Personne.id',
@@ -426,19 +457,29 @@
 								'Propoorientationcov58.nvorientstruct_id IS NULL',
 								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NOT NULL',
+								'Nonorientationprocov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
 							),
 							array(
 								'Propoorientationcov58.nvorientstruct_id IS NOT NULL',
 								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Nonorientationprocov58.nvorientstruct_id IS NULL',
 								'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
 							),
 							array(
 								'Propoorientationcov58.nvorientstruct_id IS NULL',
 								'Propoorientsocialecov58.nvorientstruct_id IS NOT NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Nonorientationprocov58.nvorientstruct_id IS NULL',
 								'Propoorientsocialecov58.nvorientstruct_id = Orientstruct.id',
+							),
+							array(
+								'Propoorientationcov58.nvorientstruct_id IS NULL',
+								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
+								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Nonorientationprocov58.nvorientstruct_id IS NOT NULL',
+								'Nonorientationprocov58.nvorientstruct_id = Orientstruct.id',
 							),
 						)
 					),
@@ -455,6 +496,7 @@
 					'Propoorientationcov58' => 'proposorientationscovs58',
 					'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
 					'Propoorientsocialecov58' => 'proposorientssocialescovs58',
+					'Nonorientationprocov58' => 'nonorientationsproscovs58',
 					'Passagecov58__dossiercov58_id' => 'passagescovs58__dossiercov58_id',
 				)
 			);
@@ -468,7 +510,7 @@
 						'OR' => array(
 							'Dossiercov58.id IS NULL',
 							array(
-								'Dossiercov58.themecov58' => array( 'proposorientationscovs58', 'proposnonorientationsproscovs58', 'proposorientssocialescovs58' ),
+								'Dossiercov58.themecov58' => $this->getThematiquesReorientations(),
 								"Dossiercov58.id IN ( {$sql} )"
 							)
 						)
@@ -511,6 +553,22 @@
 			);
 
 			return $query;
+		}
+
+		/**
+		 * Surcharge de la méthode enums pour ajouter les anciennes thématiques
+		 * à la liste des options.
+		 *
+		 * @see $anciennesThematiques
+		 *
+		 * @return array
+		 */
+		public function enums() {
+			$enums = parent::enums();
+
+			$enums[$this->alias]['vx_themecov58'] = $this->anciennesThematiques;
+
+			return $enums;
 		}
 	}
 ?>

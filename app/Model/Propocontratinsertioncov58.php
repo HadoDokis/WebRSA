@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( ABSTRACTMODELS.'AbstractThematiquecov58.php' );
 
 	/**
 	 * La classe Propocontratinsertioncov58 ...
 	 *
 	 * @package app.Model
 	 */
-	class Propocontratinsertioncov58 extends AppModel
+	class Propocontratinsertioncov58 extends AbstractThematiquecov58
 	{
 		public $name = 'Propocontratinsertioncov58';
 
@@ -125,178 +126,49 @@
 		}
 
 		/**
-		* Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV
-		*/
+		 * Fonction retournant un querydata qui va permettre de retrouver des
+		 * dossiers de COV à sélectionner pour passer dans une commission donnée.
+		 *
+		 * @param integer $cov58_id
+		 * @return array
+		 */
 		public function qdListeDossier( $cov58_id = null ) {
-			$return = array(
-				'fields' => array(
-					'Dossiercov58.id',
-					'Personne.id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Dossier.numdemrsa',
-					'Adresse.nomcom',
-					'Structurereferente.lib_struc',
-					'Passagecov58.id',
-					'Passagecov58.etatdossiercov',
-					'Passagecov58.cov58_id'
-				)
-			);
+			$return = parent::qdListeDossier( $cov58_id );
 
-			if( !empty( $cov58_id ) ) {
-				$join = array(
-					'alias' => 'Dossiercov58',
-					'table' => 'dossierscovs58',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
-			else {
-				$join = array(
-					'alias' => $this->alias,
-					'table' => Inflector::tableize( $this->alias ),
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
+			// Ajout de la structure référente du CER
+			$return['fields'][] = 'Structurereferente.lib_struc';
+			$return['joins'][] = $this->join( 'Structurereferente', array( 'type' => 'INNER' ) );
 
-			$return['joins'] = array(
-				$join,
-				array(
-					'alias' => 'Structurereferente',
-					'table' => 'structuresreferentes',
-					'type' => 'INNER',
-					'conditions' => array(
-						"Structurereferente.id = {$this->alias}.structurereferente_id"
-					)
-				),
-				array(
-					'alias' => 'Personne',
-					'table' => 'personnes',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.personne_id = Personne.id'
-					)
-				),
-				array(
-					'alias' => 'Foyer',
-					'table' => 'foyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Personne.foyer_id = Foyer.id'
-					)
-				),
-				array(
-					'alias' => 'Dossier',
-					'table' => 'dossiers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Foyer.dossier_id = Dossier.id'
-					)
-				),
-				array(
-					'alias' => 'Adressefoyer',
-					'table' => 'adressesfoyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.foyer_id = Foyer.id',
-						'Adressefoyer.rgadr' => '01'
-					)
-				),
-				array(
-					'alias' => 'Adresse',
-					'table' => 'adresses',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.adresse_id = Adresse.id'
-					)
-				),
-				array(
-					'alias' => 'Passagecov58',
-					'table' => 'passagescovs58',
-					'type' => 'LEFT OUTER',
-					'conditions' => Set::merge(
-						array( 'Passagecov58.dossiercov58_id = Dossiercov58.id' ),
-						empty( $cov58_id ) ? array() : array(
-							'OR' => array(
-								'Passagecov58.cov58_id IS NULL',
-								'Passagecov58.cov58_id' => $cov58_id
-							)
-						)
-					)
-				)
-			);
 			return $return;
 		}
 
-
-
-
-
+		/**
+		 * Retourne le querydata utilisé dans la partie décisions d'une COV.
+		 *
+		 * Surchargé afin d'ajouter le modèle de la thématique et le modèle de
+		 * décision dans le contain.
+		 *
+		 * @param integer $cov58_id
+		 * @return array
+		 */
 		public function qdDossiersParListe( $cov58_id ) {
-			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossiercov58->Passagecov58->Cov58->themesTraites( $cov58_id );
-			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			$result = parent::qdDossiersParListe( $cov58_id );
+			$modeleDecision = 'Decision'.Inflector::underscore( $this->alias );
 
-			return array(
-				'conditions' => array(
-					'Dossiercov58.themecov58' => Inflector::tableize( $this->alias ),
-					'Dossiercov58.id IN ( '.
-						$this->Dossiercov58->Passagecov58->sq(
-							array(
-								'fields' => array(
-									'passagescovs58.dossiercov58_id'
-								),
-								'alias' => 'passagescovs58',
-								'conditions' => array(
-									'passagescovs58.cov58_id' => $cov58_id
-								)
-							)
-						)
-					.' )'
-				),
-				'contain' => array(
-					'Personne' => array(
-						'Foyer' => array(
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01'
-								),
-								'Adresse'
-							)
-						)
-					),
-					$this->alias => array(
-						'Structurereferente',
-						'Referent'
-					),
-					'Passagecov58' => array(
-						'conditions' => array(
-							'Passagecov58.cov58_id' => $cov58_id
-						),
-						'Decision'.Inflector::underscore( $this->alias )/* => array(
-							'Typeorient',
-							'order' => array( 'etapecov DESC' )
-						)*/
-					)
-				)
+			$result['contain'][$this->alias] = array(
+				'Structurereferente',
+				'Referent'
 			);
+
+			$result['contain']['Passagecov58'][$modeleDecision] = null;
+
+			return $result;
 		}
 
-
-
-
-
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getFields() {
 			return array(
 				$this->alias.'.id',
@@ -309,9 +181,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getJoins() {
 			return array(
 				array(
@@ -656,41 +528,6 @@
 							"{$modeleDecisions}.etapecov" => 'finalise'
 						),
 					),
-				)
-			);
-		}
-
-		/**
-		*
-		*/
-
-		public function qdOrdreDuJour() {
-			return array(
-				'fields' => array(
-					"{$this->alias}.id",
-					"{$this->alias}.dossiercov58_id",
-					"{$this->alias}.structurereferente_id",
-					"{$this->alias}.referent_id",
-					"{$this->alias}.datedemande",
-					"{$this->alias}.num_contrat",
-					"{$this->alias}.dd_ci",
-					"{$this->alias}.duree_engag",
-					"{$this->alias}.df_ci",
-					"{$this->alias}.forme_ci",
-					"{$this->alias}.avisraison_ci",
-					"{$this->alias}.rg_ci",
-					"{$this->alias}.datevalidation",
-					"{$this->alias}.commentaire",
-					"{$this->alias}.decisioncov"
-				),
-				"joins" => array(
-					array(
-						"table"      => "proposcontratsinsertioncovs58",
-						"alias"      => $this->alias,
-						"type"       => "LEFT OUTER",
-						"foreignKey" => false,
-						"conditions" => array( "{$this->alias}.dossiercov58_id = Dossiercov58.id" ),
-					)
 				)
 			);
 		}

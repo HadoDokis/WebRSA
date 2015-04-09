@@ -32,15 +32,18 @@
 		}
 
 		foreach( array_keys( $dossiers ) as $theme ) {
-			$file = sprintf( 'decisioncg.%s.liste.ctp', Inflector::underscore( $theme ) );
-			echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ) ).'</h2>';
-			if( !empty( $dossiers[$theme]['liste'] ) ) {
-				require_once( $file );
+			// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
+			if( !in_array( Inflector::tableize( $theme ), $options['Dossierep']['vx_themeep'] ) || !empty( $dossiers[$theme]['liste'] ) ) {
+				$file = sprintf( 'decisioncg.%s.liste.ctp', Inflector::underscore( $theme ) );
+				echo '<div id="'.$theme.'"><h2 class="title">'.__d( 'dossierep', 'ENUM::THEMEEP::'.Inflector::tableize( $theme ) ).'</h2>';
+				if( !empty( $dossiers[$theme]['liste'] ) ) {
+					require_once( $file );
+				}
+				else {
+					echo '<p class="notice">Aucun dossier n\'a été traité pour cette thématique.</p>';
+				}
+				echo '</div>';
 			}
-			else {
-				echo '<p class="notice">Aucun dossier n\'a été traité pour cette thématique.</p>';
-			}
-			echo '</div>';
 		}
 
 		if( Configure::read( 'Cg.departement' )  == 93 ) {

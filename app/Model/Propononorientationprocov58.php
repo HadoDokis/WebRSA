@@ -7,13 +7,14 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( ABSTRACTMODELS.'AbstractThematiquecov58.php' );
 
 	/**
 	 * La classe Propononorientationprocov58 ...
 	 *
 	 * @package app.Model
 	 */
-	class Propononorientationprocov58 extends AppModel
+	class Propononorientationprocov58 extends AbstractThematiquecov58
 	{
 		public $name = 'Propononorientationprocov58';
 
@@ -149,200 +150,39 @@
 		}
 
 		/**
-		* Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV
-		*/
-		public function qdListeDossier( $cov58_id = null ) {
-			$return = array(
-				'fields' => array(
-					'Dossiercov58.id',
-					'Dossiercov58.created',
-					'Dossiercov58.themecov58_id',
-					'Dossier.numdemrsa',
-					'Dossier.matricule',
-					'Personne.id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.prenom',
-					'Personne.dtnai',
-					'Adresse.nomcom',
-					'Typeorient.lib_type_orient',
-					'Structurereferente.lib_struc',
-					'Orientstruct.date_valid',
-					'Passagecov58.id',
-					'Passagecov58.cov58_id',
-					'Passagecov58.etatdossiercov'
-				)
-			);
-
-			if( !empty( $cov58_id ) ) {
-				$join = array(
-					'alias' => 'Dossiercov58',
-					'table' => 'dossierscovs58',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
-			else {
-				$join = array(
-					'alias' => $this->alias,
-					'table' => Inflector::tableize( $this->alias ),
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
-
-			$return['joins'] = array(
-				$join,
-				array(
-					'alias' => 'Orientstruct',
-					'table' => 'orientsstructs',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Orientstruct.id = '.$this->alias.'.orientstruct_id'
-					)
-				),
-				array(
-					'alias' => 'Structurereferente',
-					'table' => 'structuresreferentes',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Structurereferente.id = Orientstruct.structurereferente_id'
-					)
-				),
-				array(
-					'alias' => 'Typeorient',
-					'table' => 'typesorients',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Typeorient.id = Orientstruct.typeorient_id'
-					)
-				),
-				array(
-					'alias' => 'Personne',
-					'table' => 'personnes',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.personne_id = Personne.id'
-					)
-				),
-				array(
-					'alias' => 'Foyer',
-					'table' => 'foyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Personne.foyer_id = Foyer.id'
-					)
-				),
-				array(
-					'alias' => 'Dossier',
-					'table' => 'dossiers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Foyer.dossier_id = Dossier.id'
-					)
-				),
-				array(
-					'alias' => 'Adressefoyer',
-					'table' => 'adressesfoyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.foyer_id = Foyer.id',
-						'Adressefoyer.rgadr' => '01'
-					)
-				),
-				array(
-					'alias' => 'Adresse',
-					'table' => 'adresses',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.adresse_id = Adresse.id'
-					)
-				),
-				array(
-					'alias' => 'Passagecov58',
-					'table' => 'passagescovs58',
-					'type' => 'LEFT OUTER',
-					'conditions' => Set::merge(
-						array( 'Passagecov58.dossiercov58_id = Dossiercov58.id' ),
-						empty( $cov58_id ) ? array() : array(
-							'OR' => array(
-								'Passagecov58.cov58_id IS NULL',
-								'Passagecov58.cov58_id' => $cov58_id
-							)
-						)
-					)
-				)
-			);
-			return $return;
-		}
-
-
-
-
+		 * Retourne le querydata utilisé dans la partie décisions d'une COV.
+		 *
+		 * Surchargé afin d'ajouter le modèle de la thématique et le modèle de
+		 * décision dans le contain.
+		 *
+		 * @param integer $cov58_id
+		 * @return array
+		 */
 		public function qdDossiersParListe( $cov58_id ) {
-			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossiercov58->Passagecov58->Cov58->themesTraites( $cov58_id );
-			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			$result = parent::qdDossiersParListe( $cov58_id );
+			$modeleDecision = 'Decision'.Inflector::underscore( $this->alias );
 
-			return array(
-				'conditions' => array(
-					'Dossiercov58.themecov58' => Inflector::tableize( $this->alias ),
-					'Dossiercov58.id IN ( '.
-						$this->Dossiercov58->Passagecov58->sq(
-							array(
-								'fields' => array(
-									'passagescovs58.dossiercov58_id'
-								),
-								'alias' => 'passagescovs58',
-								'conditions' => array(
-									'passagescovs58.cov58_id' => $cov58_id
-								)
-							)
-						)
-					.' )'
-				),
-				'contain' => array(
-					'Personne' => array(
-						'Foyer' => array(
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01'
-								),
-								'Adresse'
-							)
-						)
-					),
-					$this->alias => array(
-						'Orientstruct' => array(
-							'Typeorient',
-							'Structurereferente',
-							'Referent'
-						)
-					),
-					'Passagecov58' => array(
-						'conditions' => array(
-							'Passagecov58.cov58_id' => $cov58_id
-						),
-						'Decision'.Inflector::underscore( $this->alias ) => array(
-							'Typeorient',
-							'Structurereferente',
-							'order' => array( 'etapecov DESC' )
-						)
-					)
+			$result['contain'][$this->alias] = array(
+				'Orientstruct' => array(
+					'Typeorient',
+					'Structurereferente',
+					'Referent'
 				)
 			);
+
+			$result['contain']['Passagecov58'][$modeleDecision] = array(
+				'Typeorient',
+				'Structurereferente',
+				'order' => array( 'etapecov DESC' )
+			);
+
+			return $result;
 		}
-
-
 
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getFields() {
 			return array(
 				$this->alias.'.id',
@@ -356,9 +196,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getJoins() {
 			return array(
 				array(
@@ -594,7 +434,7 @@
 			$modele = 'Propononorientationprocov58';
 			$modeleDecisions = 'Decisionpropononorientationprocov58';
 
-			return array(
+			$result = array(
 				'fields' => array(
 					"{$modele}.id",
 					"{$modele}.dossiercov58_id",
@@ -636,52 +476,33 @@
 					),
 				)
 			);
+
+			return $result;
 		}
 
 		/**
-		*
-		*/
-
+		 * Retourne une partie de querydata propre à la thématique et nécessaire
+		 * à l'imprssion de l'odre du jour.
+		 *
+		 * @return array
+		 */
 		public function qdOrdreDuJour() {
-			return array(
-				'fields' => array(
-					'Propononorientationprocov58.id',
-					'Propononorientationprocov58.dossiercov58_id',
-					'Propononorientationprocov58.typeorient_id',
-					'Propononorientationprocov58.structurereferente_id',
-					'Propononorientationprocov58.orientstruct_id',
-					'Propononorientationprocov58.datedemande',
-					'Propononorientationprocov58.rgorient',
-					'Propononorientationprocov58.commentaire',
-					'Propononorientationprocov58.datevalidation',
-					'Propononorientationprocov58.commentaire',
-					'Propononorientationprocov58typeorient.lib_type_orient',
-					'Propononorientationprocov58structurereferente.lib_struc',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'proposnonorientationsproscovs58',
-						'alias'      => 'Propononorientationprocov58',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propononorientationprocov58.dossiercov58_id = Dossiercov58.id' ),
-					),
-					array(
-						'table'      => 'typesorients',
-						'alias'      => 'Propononorientationprocov58typeorient',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propononorientationprocov58.typeorient_id = Propononorientationprocov58typeorient.id' ),
-					),
-					array(
-						'table'      => 'structuresreferentes',
-						'alias'      => 'Propononorientationprocov58structurereferente',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propononorientationprocov58.structurereferente_id = Propononorientationprocov58structurereferente.id' ),
-					)
+			$result = parent::qdOrdreDuJour();
+
+			$result['fields'][] = 'Typeorient.lib_type_orient';
+			$result['fields'][] = 'Structurereferente.lib_struc';
+			$result['joins'][] = $this->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
+			$result['joins'][] = $this->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+
+			$result = array_words_replace(
+				$result,
+				array(
+					'Typeorient' => "{$this->alias}typeorient",
+					'Structurereferente' => "{$this->alias}structurereferente"
 				)
 			);
+
+			return $result;
 		}
 
 		/**

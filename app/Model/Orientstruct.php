@@ -383,6 +383,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Nonorientationprocov58' => array(
+				'className' => 'Nonorientationprocov58',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Nonorientationprocov58nv' => array(
+				'className' => 'Nonorientationprocov58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

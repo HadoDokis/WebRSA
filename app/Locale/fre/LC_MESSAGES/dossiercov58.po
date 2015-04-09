@@ -99,3 +99,12 @@ msgstr "Proposition de maintien dans le social"
 
 msgid "ENUM::THEMECOV58::proposorientssocialescovs58"
 msgstr "Proposition d'orientation sociale de fait"
+
+msgid "ENUM::THEMECOV58::nonorientationsproscovs58"
+msgstr "Maintien dans le social"
+
+msgid "ENUM::THEMECOV::nonorientationprocov58"
+msgstr "Maintien dans le social"
+
+msgid "ENUM::THEMECOV::nonorientationsproscovs58"
+msgstr "Maintien dans le social"
