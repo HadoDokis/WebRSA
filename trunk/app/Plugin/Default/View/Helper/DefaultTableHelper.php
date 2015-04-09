@@ -87,7 +87,7 @@
 					$for = "{$tableId}ColumnActions";
 				}
 				else if( $this->_isInputField( $field ) ) {
-					$for = "{$tableId}ColumnInput{$field}";
+					$for = "{$tableId}ColumnInput".Inflector::camelize( preg_replace( '/(\[|\])+/', '_', $field ) );
 					$theadTr[] = array(
 						__d( $domain, $field ) => array( 'id' => $for )
 					);

@@ -210,7 +210,8 @@
 		 * @return array
 		 */
 		public static function toArray( $path ) {
-			$tokens = explode( '/', $path );
+			$tokens = explode( '/', $path ) + array( null, null, null );
+
 			list( $plugin, $controller ) = pluginSplit( $tokens[1] );
 
 			if( strpos( $tokens[2], '#' ) !== false ) {
@@ -221,7 +222,7 @@
 			}
 
 			$url = array(
-				'plugin' => Inflector::underscore( $plugin ),
+				'plugin' => ( empty( $plugin ) ? null : Inflector::underscore( $plugin ) ),
 				'controller' => Inflector::underscore( $controller ),
 				'action' => Inflector::underscore( $tokens[2] ),
 			) + array_slice( $tokens, 3 );

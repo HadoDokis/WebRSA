@@ -200,7 +200,7 @@
 			$expected = '<thead>
 							<tr>
 								<th id="ColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
-								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
+								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
@@ -211,7 +211,7 @@
 			$expected = '<thead>
 							<tr>
 								<th id="ColumnAppleId">Apple.id</th>
-								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
+								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
@@ -225,7 +225,7 @@
 			$expected = '<thead>
 							<tr>
 								<th id="ColumnAppleId">Test Apple.id</th>
-								<th id="ColumnInputdata[Apple][color]">data[Apple][color]</th>
+								<th id="ColumnInputDataAppleColor">data[Apple][color]</th>
 								<th colspan="1" class="actions" id="ColumnActions">Actions</th>
 							</tr>
 						</thead>';
@@ -325,7 +325,7 @@
 							<thead>
 								<tr>
 									<th id="TableApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
-									<th id="TableApplesIndexColumnInputdata[Apple][color]">data[Apple][color]</th>
+									<th id="TableApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
@@ -352,7 +352,7 @@
 							<thead>
 								<tr>
 									<th id="TableTestApplesIndexColumnAppleId"><a href="/index/page:1/sort:Apple.id/direction:asc">Apple.id</a></th>
-									<th id="TableTestApplesIndexColumnInputdata[Apple][color]">data[Apple][color]</th>
+									<th id="TableTestApplesIndexColumnInputDataAppleColor">data[Apple][color]</th>
 									<th colspan="1" class="actions" id="TableTestApplesIndexColumnActions">Actions</th>
 								</tr>
 							</thead>
@@ -371,6 +371,7 @@
 								</tr>
 							</tbody>
 						</table>';
+debug( self::_normalizeXhtml( $expected ) );
 			$this->assertEqualsXhtml( $result, $expected );
 		}
 
