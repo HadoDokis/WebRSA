@@ -129,6 +129,7 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),
 				'url' => array( 'controller' => 'criteresdossierscovs58', 'action' => 'index'  ),
 				'Demande de maintien dans le social' => array( 'url' => array( 'controller' => 'nonorientationsproseps', 'action' => 'index' ) ),
+				__d( 'nonorientationsproscovs58', '/Nonorientationsproscovs58/cohorte/:heading' ) => array( 'url' => array( 'controller' => 'nonorientationsproscovs58', 'action' => 'cohorte' ) ),
 			),
 			'Par Dossiers EP' => array(
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 58 ),

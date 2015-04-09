@@ -12,17 +12,20 @@
 	<?php
 		echo $this->Form->create( null, array() );
 		foreach( array_keys( $dossiers ) as $theme ) {
-			$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );
-			$errorClass = ( !empty( $this->validationErrors[$modeleDecision] ) ? 'error' : '' );
+			// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
+			if( !in_array( Inflector::tableize( $theme ), $options['Dossiercov58']['vx_themecov58'] ) || !empty( $dossiers[$theme]['liste'] ) ) {
+				$modeleDecision = Inflector::classify( 'Decision'.Inflector::underscore( $theme ) );
+				$errorClass = ( !empty( $this->validationErrors[$modeleDecision] ) ? 'error' : '' );
 
-			echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
-			if( !empty( $dossiers[$theme]['liste'] ) ) {
-				require_once( 'decisioncov.'.Inflector::tableize( $theme ).'.ctp' );
+				echo '<div id="'.$theme.'" class="'.$errorClass.'"><h2 class="title '.$errorClass.'">'.__d( 'dossiercov58', 'ENUM::THEMECOV::'.Inflector::tableize( $theme ) ).'</h2>';
+				if( !empty( $dossiers[$theme]['liste'] ) ) {
+					require_once( 'decisioncov.'.Inflector::tableize( $theme ).'.ctp' );
+				}
+				else {
+					echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';
+				}
+				echo '</div>';
 			}
-			else {
-				echo '<p class="notice">Aucun dossier à traiter pour cette thématique.</p>';
-			}
-			echo '</div>';
 		}
 
 		echo $this->Form->submit( 'Enregistrer' );

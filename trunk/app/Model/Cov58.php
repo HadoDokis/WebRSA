@@ -27,11 +27,7 @@
 					'structurereferente_id'
 				)
 			),
-			'Enumerable' => array(
-				'fields' => array(
-					'etatcov'
-				)
-			),
+			'Enumerable',
 			'Gedooo.Gedooo',
 			'ModelesodtConditionnables' => array(
 				58 => array(
@@ -607,9 +603,7 @@
 				$model = Inflector::classify( $theme );
 				$themeClassNames[] = $model;
 
-				if( in_array( 'Enumerable', $this->Passagecov58->Dossiercov58->{$model}->Behaviors->attached() ) ) {
-					$options = Set::merge( $options, $this->Passagecov58->Dossiercov58->{$model}->enums() );
-				}
+				$options = Set::merge( $options, $this->Passagecov58->Dossiercov58->{$model}->enums() );
 
 				$qdModele = $this->Passagecov58->Dossiercov58->{$model}->qdProcesVerbal();
 				foreach( array( 'fields', 'joins' ) as $key ) {
@@ -625,7 +619,6 @@
 				$mergedJoins = array();
 
 				foreach( $queryData['joins'] as $join ) {
-
 					$join['conditions'] = (array)$join['conditions'];
 					if( !isset( $joinIndices[$join['alias']] ) ) {
 						$joins[] = $join;
@@ -649,9 +642,11 @@
 
 				if( !empty( $mergedJoins ) ) {
 					foreach( $mergedJoins as $indice ) {
-						$join = $joins[$indice];
-						unset( $joins[$indice] );
-						$joins[] = $join;
+						if( isset( $joins[$indice] ) ) {
+							$join = $joins[$indice];
+							unset( $joins[$indice] );
+							$joins[] = $join;
+						}
 					}
 				}
 

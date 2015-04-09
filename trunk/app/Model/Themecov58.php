@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Themecov58.
 	 *
@@ -21,14 +21,7 @@
 
 		public $actsAs = array(
 			'Autovalidate2',
-			'Enumerable' => array(
-				'fields' => array(
-					'propoorientationcov58',
-					'propocontratinsertioncov58',
-					'propononorientationprocov58',
-					'propoorientsocialecov58',
-				)
-			)
+			'Enumerable'
 		);
 
 		public $hasMany = array(

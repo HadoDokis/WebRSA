@@ -249,7 +249,7 @@
 		 */
 		protected function _allConfigureKeys58() {
 			$return = array(
-				'Nonorientationproep58.delaiCreationContrat' => 'integer',
+				'Nonorientationprocov58.delaiCreationContrat' => 'integer',
 				'Sanctionep58.nonrespectcer.dureeTolerance' => 'integer',
 				'Selectionradies.conditions' => 'isarray',
 				'Typeorient.emploi_id' => 'integer',

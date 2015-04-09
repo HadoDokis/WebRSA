@@ -32,6 +32,8 @@ msgstr "Ajourné"
 msgid "ENUM::PROPOORIENTATIONCOV58::finalise"
 msgstr "Finalisé"
 
+# ------------------------------------------------------------------------------
+
 msgid "ENUM::PROPOCONTRATINSERTIONCOV58::cree"
 msgstr "Créé"
 
@@ -43,6 +45,8 @@ msgstr "Ajourné"
 
 msgid "ENUM::PROPOCONTRATINSERTIONCOV58::finalise"
 msgstr "Finalisé"
+
+# ------------------------------------------------------------------------------
 
 msgid "ENUM::PROPONONORIENTATIONPROCOV58::cree"
 msgstr "Créé"
@@ -56,6 +60,8 @@ msgstr "Ajourné"
 msgid "ENUM::PROPONONORIENTATIONPROCOV58::finalise"
 msgstr "Finalisé"
 
+# ------------------------------------------------------------------------------
+
 msgid "ENUM::PROPOORIENTSOCIALECOV58::cree"
 msgstr "Créé"
 
@@ -66,4 +72,18 @@ msgid "ENUM::PROPOORIENTSOCIALECOV58::ajourne"
 msgstr "Ajourné"
 
 msgid "ENUM::PROPOORIENTSOCIALECOV58::finalise"
+msgstr "Finalisé"
+
+# ------------------------------------------------------------------------------
+
+msgid "ENUM::NONORIENTATIONPROCOV58::cree"
+msgstr "Créé"
+
+msgid "ENUM::NONORIENTATIONPROCOV58::traitement"
+msgstr "En cours de traitement"
+
+msgid "ENUM::NONORIENTATIONPROCOV58::ajourne"
+msgstr "Ajourné"
+
+msgid "ENUM::NONORIENTATIONPROCOV58::finalise"
 msgstr "Finalisé"

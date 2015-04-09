@@ -7,6 +7,7 @@
 	 * @package app.Model
 	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 	 */
+	require_once( ABSTRACTMODELS.'AbstractThematiquecov58.php' );
 
 	/**
 	 * La classe Propoorientsocialecov58 est la classe qui gère la thématique de COV "Orientation sociale de
@@ -14,7 +15,7 @@
 	 *
 	 * @package app.Model
 	 */
-	class Propoorientsocialecov58 extends AppModel
+	class Propoorientsocialecov58 extends AbstractThematiquecov58
 	{
 		public $name = 'Propoorientsocialecov58';
 
@@ -67,9 +68,9 @@
 		);
 
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getFields() {
 			/*return array(
 				$this->alias.'.id',
@@ -83,9 +84,9 @@
 		}
 
 		/**
-		*
-		*/
-
+		 *
+		 * @deprecated
+		 */
 		public function getJoins() {
 			/*return array(
 				array(
@@ -123,178 +124,29 @@
 			);*/
 		}
 
-
-
 		/**
-		 * Fonction retournant un querydata qui va permettre de retrouver des dossiers de COV
+		 * Retourne le querydata utilisé dans la partie décisions d'une COV.
 		 *
-		 * FIXME: dans la classe abstraite car on dirait que toutes les thématiques de COV utilisent la même méthode
-		 */
-		public function qdListeDossier( $cov58_id = null ) {
-			$return = array(
-				'fields' => array(
-					'Dossiercov58.id',
-					'Personne.id',
-					'Personne.qual',
-					'Personne.nom',
-					'Personne.dtnai',
-					'Personne.prenom',
-					'Dossier.numdemrsa',
-					'Adresse.nomcom',
-// 					'Structurereferente.lib_struc',
-					'Passagecov58.id',
-					'Passagecov58.cov58_id',
-					'Passagecov58.etatdossiercov'
-				)
-			);
-
-			if( !empty( $cov58_id ) ) {
-				$join = array(
-					'alias' => 'Dossiercov58',
-					'table' => 'dossierscovs58',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
-			else {
-				$join = array(
-					'alias' => $this->alias,
-					'table' => Inflector::tableize( $this->alias ),
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.id = '.$this->alias.'.dossiercov58_id'
-					)
-				);
-			}
-
-			$return['joins'] = array(
-				$join,
-				array(
-					'alias' => 'Themecov58',
-					'table' => 'themescovs58',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.themecov58_id = Themecov58.id'
-					)
-				),
-				array(
-					'alias' => 'Personne',
-					'table' => 'personnes',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Dossiercov58.personne_id = Personne.id'
-					)
-				),
-				array(
-					'alias' => 'Foyer',
-					'table' => 'foyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Personne.foyer_id = Foyer.id'
-					)
-				),
-				array(
-					'alias' => 'Dossier',
-					'table' => 'dossiers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Foyer.dossier_id = Dossier.id'
-					)
-				),
-				array(
-					'alias' => 'Adressefoyer',
-					'table' => 'adressesfoyers',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.foyer_id = Foyer.id',
-						'Adressefoyer.rgadr' => '01'
-					)
-				),
-				array(
-					'alias' => 'Adresse',
-					'table' => 'adresses',
-					'type' => 'INNER',
-					'conditions' => array(
-						'Adressefoyer.adresse_id = Adresse.id'
-					)
-				),
-				array(
-					'alias' => 'Passagecov58',
-					'table' => 'passagescovs58',
-					'type' => 'LEFT OUTER',
-					'conditions' => Set::merge(
-						array( 'Passagecov58.dossiercov58_id = Dossiercov58.id' ),
-						empty( $cov58_id ) ? array() : array(
-							'OR' => array(
-								'Passagecov58.cov58_id IS NULL',
-								'Passagecov58.cov58_id' => $cov58_id
-							)
-						)
-					)
-				)
-			);
-
-			return $return;
-		}
-
-		/**
+		 * Surchargé afin d'ajouter le modèle de la thématique et le modèle de
+		 * décision dans le contain.
 		 *
-		 * @param type $cov58_id
-		 * @return type
+		 * @param integer $cov58_id
+		 * @return array
 		 */
 		public function qdDossiersParListe( $cov58_id ) {
-			// Doit-on prendre une décision à ce niveau ?
-			$themes = $this->Dossiercov58->Passagecov58->Cov58->themesTraites( $cov58_id );
-			$niveauFinal = $themes[Inflector::underscore($this->alias)];
+			$result = parent::qdDossiersParListe( $cov58_id );
+			$modeleDecision = 'Decision'.Inflector::underscore( $this->alias );
 
-			return array(
-				'conditions' => array(
-					'Dossiercov58.themecov58' => Inflector::tableize( $this->alias ),
-					'Dossiercov58.id IN ( '.
-						$this->Dossiercov58->Passagecov58->sq(
-							array(
-								'fields' => array(
-									'passagescovs58.dossiercov58_id'
-								),
-								'alias' => 'passagescovs58',
-								'conditions' => array(
-									'passagescovs58.cov58_id' => $cov58_id
-								)
-							)
-						)
-					.' )'
-				),
-				'contain' => array(
-					'Personne' => array(
-						'Foyer' => array(
-							'Adressefoyer' => array(
-								'conditions' => array(
-									'Adressefoyer.rgadr' => '01'
-								),
-								'Adresse'
-							)
-						)
-					),
-					$this->alias,
-					'Passagecov58' => array(
-						'conditions' => array(
-							'Passagecov58.cov58_id' => $cov58_id
-						),
-						'Decision'.Inflector::underscore( $this->alias ) => array(
-							'Typeorient',
-							'Structurereferente',
-							'order' => array( 'etapecov DESC' )
-						)
-					)
-				)
+			$result['contain'][$this->alias] = null;
+
+			$result['contain']['Passagecov58'][$modeleDecision] = array(
+				'Typeorient',
+				'Structurereferente',
+				'order' => array( 'etapecov DESC' )
 			);
+
+			return $result;
 		}
-
-
-
-
 
 		/**
 		 * FIXME -> aucun dossier en cours, pour certains thèmes:
@@ -558,30 +410,6 @@
 					)
 				),
 				'contain' => false
-			);
-		}
-
-		/**
-		 * FIXME: orientation actuelle ?
-		 */
-		public function qdOrdreDuJour() {
-			return array(
-				'fields' => array(
-					'Propoorientsocialecov58.id',
-					'Propoorientsocialecov58.dossiercov58_id',
-					'Propoorientsocialecov58.created',
-					'Propoorientsocialecov58.commentaire',
-					'Propoorientsocialecov58.user_id',
-				),
-				'joins' => array(
-					array(
-						'table'      => 'proposorientssocialescovs58',
-						'alias'      => 'Propoorientsocialecov58',
-						'type'       => 'LEFT OUTER',
-						'foreignKey' => false,
-						'conditions' => array( 'Propoorientsocialecov58.dossiercov58_id = Dossiercov58.id' ),
-					),
-				),
 			);
 		}
 

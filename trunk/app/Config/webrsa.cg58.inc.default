@@ -243,6 +243,8 @@
 	/**
 	 * Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
 	 * le thème "non orientation professionelle"
+	 *
+	 * @deprecated
 	 */
 	Configure::write( 'Nonorientationproep58.delaiCreationContrat', 60 );
 
@@ -901,4 +903,29 @@
 			'Referentparcours.nom_complet', // Référent du parcours
 		)
 	) );
+
+	/**
+	 * Durée du délai (en jours) accordé pour la création d'un nouveau contrat pour
+	 * les dossiers de COV "non orientation professionelle"
+	 */
+	Configure::write( 'Nonorientationprocov58.delaiCreationContrat', 60 );
+
+	/**
+	 * Valeurs par défaut des filtres pour le moteur de recherche "Recherches" >
+	 * "Par dossiers COV" > "Demande de maintien dans le social (nouveau)"
+	 */
+	Configure::write(
+		'Filtresdefaut.Nonorientationsproscovs58_cohorte',
+		array(
+			'Search' => array(
+				'Contratinsertion' => array(
+					'df_ci_from' => strtotime( '-1 week' ),
+					'df_ci_to' => strtotime( 'now' )
+				),
+				'Pagination' => array(
+					'nombre_total' => 0
+				)
+			)
+		)
+	);
 ?>

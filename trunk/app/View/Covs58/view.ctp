@@ -95,45 +95,48 @@
 				$covTraitee = ( $cov58['Cov58']['etatcov'] == 'finalise' );
 
 				foreach( $themes as $theme ) {
-					if( $theme == 'propoorientationcov58' ){
-						$controller = 'orientsstructs';
-					}
-					else if( $theme == 'propocontratinsertioncov58' ){
-						$controller = 'contratsinsertion';
-					}
-					else if( $theme == 'propononorientationprocov58' ){
-						$controller = 'orientsstructs';
-					}
-					$class = Inflector::classify( $theme );
+					// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
+					if( !in_array( Inflector::pluralize( $theme ), $options['Dossiercov58']['vx_themecov58'] ) || !empty( $dossiers[$theme] ) ) {
+						if( $theme == 'propoorientationcov58' ){
+							$controller = 'orientsstructs';
+						}
+						else if( $theme == 'propocontratinsertioncov58' ){
+							$controller = 'contratsinsertion';
+						}
+						else if( $theme == 'propononorientationprocov58' ){
+							$controller = 'orientsstructs';
+						}
+						$class = Inflector::classify( $theme );
 
-					echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme )."</h3>";
+						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme )."</h3>";
 
-					echo $this->Default2->index(
-						$dossiers[$theme],
-						array(
-							'Personne.qual',
-							'Personne.nom',
-							'Personne.prenom',
-							'Personne.dtnai',
-							'Adresse.nomcom',
-							'Passagecov58.etatdossiercov'/* => array( 'value' => $options['Passagecov58']['etatdossiercov'] )*/
-						),
-						array(
-							'actions' => array(
-								'Dossierscovs58::view' => array(
-									'label' => 'Voir',
-									'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' )
-								),
-								'Dossierscovs58::impressiondecision' => array(
-									'label' => 'Imprimer la décision',
-									'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ),
-									'disabled' => '( "#Passagecov58.etatdossiercov#" != "traite" ) || ( "'.$theme.'" == "propocontratinsertioncov58" )'
-								)
+						echo $this->Default2->index(
+							$dossiers[$theme],
+							array(
+								'Personne.qual',
+								'Personne.nom',
+								'Personne.prenom',
+								'Personne.dtnai',
+								'Adresse.nomcom',
+								'Passagecov58.etatdossiercov'/* => array( 'value' => $options['Passagecov58']['etatdossiercov'] )*/
 							),
-							'options' => $options
-						)
-					);
-					echo "</div>";
+							array(
+								'actions' => array(
+									'Dossierscovs58::view' => array(
+										'label' => 'Voir',
+										'url' => array( 'controller' => $controller, 'action' => 'index', '#Personne.id#' )
+									),
+									'Dossierscovs58::impressiondecision' => array(
+										'label' => 'Imprimer la décision',
+										'url' => array( 'controller' => 'covs58', 'action' => 'impressiondecision', '#Passagecov58.id#' ),
+										'disabled' => '( "#Passagecov58.etatdossiercov#" != "traite" ) || ( "'.$theme.'" == "propocontratinsertioncov58" )'
+									)
+								),
+								'options' => $options
+							)
+						);
+						echo "</div>";
+					}
 				}
 			?>
 		</div>

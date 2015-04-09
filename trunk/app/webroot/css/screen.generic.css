@@ -1897,3 +1897,14 @@ body.cers93 fieldset#FormationEtExperience div.ajax.select ul {
 body.cers93.view #FormationEtExpérience h3 {
 	font-size: 1em;
 }
+
+/* Demandes de maintien dans le social (nouveau), CG 58 */
+body.nonorientationsproscovs58 ul.actions li.action a.cohorte {
+	background-image: url("../img/icons/application_form_magnify.png");
+}
+
+body.nonorientationsproscovs58 table td.hidden,
+body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColumnInputDataCohorteOrientstructPersonneId,
+body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColumnInputDataCohorteDossierId {
+	display: none;
+}
