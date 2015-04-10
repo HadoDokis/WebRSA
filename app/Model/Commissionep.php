@@ -382,10 +382,14 @@
 		public function finaliser( $commissionep_id, $data, $niveauDecision, $user_id ) {
 			$themesTraites = $this->themesTraites( $commissionep_id );
 
+			// Sauvegarde des règles de validation (pour les inList)
+			$validates = array();
+
 			// Première partie: revalidation "spéciale" des décisions
 			foreach( $themesTraites as $themeTraite => $niveauDecisionTheme ) {
 				$modeleDecision = Inflector::classify( "decision{$themeTraite}" );
 				if( isset( $this->Passagecommissionep->{$modeleDecision}->validateFinalisation ) ) {
+					$validates[$modeleDecision] = $this->Passagecommissionep->{$modeleDecision}->validate;
 					// TODO: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
 					$this->Passagecommissionep->{$modeleDecision}->validate = $this->Passagecommissionep->{$modeleDecision}->validateFinalisation;
 				}
@@ -618,6 +622,11 @@
 						$success = $this->Passagecommissionep->Dossierep->{$model}->generateDossierpcg( $commissionep_id, $dateseanceCommission, $niveauDecision ) && $success;
 					}
 				}
+			}
+debug( $validates );
+			// Restauration des règles de validation
+			foreach( $validates as $alias => $validate ) {
+				$this->Passagecommissionep->{$modeleDecision}->validate = $validates[$modeleDecision];
 			}
 
 			return $success;

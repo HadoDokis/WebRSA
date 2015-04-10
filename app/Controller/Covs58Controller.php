@@ -96,13 +96,15 @@
 
 			foreach( $this->Cov58->Passagecov58->Dossiercov58->Themecov58->themes() as $theme ) {
  				$model = Inflector::classify( $theme );
-				$options = Set::merge( $options, $this->Cov58->Passagecov58->Dossiercov58->{$model}->enums() );
-
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
-				$options = Set::merge( $options, $this->Cov58->Passagecov58->{$modeleDecision}->enums() );
+
+				$options = Hash::merge(
+					$options,
+					$this->Cov58->Passagecov58->Dossiercov58->{$model}->enums(),
+					$this->Cov58->Passagecov58->{$modeleDecision}->enums()
+				);
 			}
 			$this->set(compact('options', 'typesorients', 'structuresreferentes', 'referents', 'sitescovs58', 'referentsorientants' ));
-
 		}
 
 		/**

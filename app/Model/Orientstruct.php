@@ -409,6 +409,32 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Regressionorientationcov58' => array(
+				'className' => 'Regressionorientationcov58',
+				'foreignKey' => 'orientstruct_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
+			'Regressionorientationcov58nv' => array(
+				'className' => 'Regressionorientationcov58',
+				'foreignKey' => 'nvorientstruct_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

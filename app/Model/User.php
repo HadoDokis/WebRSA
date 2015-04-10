@@ -479,6 +479,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Regressionorientationcov58' => array(
+				'className' => 'Regressionorientationcov58',
+				'foreignKey' => 'user_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 		public $hasAndBelongsToMany = array(

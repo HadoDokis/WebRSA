@@ -112,6 +112,19 @@
 				'finderQuery' => '',
 				'counterQuery' => ''
 			),
+			'Regressionorientationcov58' => array(
+				'className' => 'Regressionorientationcov58',
+				'foreignKey' => 'dossiercov58_id',
+				'dependent' => true,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
+			),
 		);
 
 

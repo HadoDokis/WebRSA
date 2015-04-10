@@ -1,4 +1,4 @@
-# Traductions de decisionnonorientationprocov58.po
+# Traductions de decisionregressionorientationcov58.po
 # @license: CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
 #
 msgid ""
@@ -24,11 +24,11 @@ msgstr "Finalisé"
 
 # ------------------------------------------------------------------------------
 
-msgid "ENUM::DECISIONCOV::reorientation"
-msgstr "Réorientation"
+msgid "ENUM::DECISIONCOV::accepte"
+msgstr "Accepté"
 
-msgid "ENUM::DECISIONCOV::maintienref"
-msgstr "Maintien dans le social"
+msgid "ENUM::DECISIONCOV::refuse"
+msgstr "Maintien référent actuel"
 
 msgid "ENUM::DECISIONCOV::annule"
 msgstr "Annulé"
@@ -38,5 +38,5 @@ msgstr "Reporté"
 
 # ------------------------------------------------------------------------------
 
-msgid "Decisionnonorientationprocov58.commentaire"
+msgid "Decisionregressionorientationcov58.commentaire"
 msgstr "Observations"
