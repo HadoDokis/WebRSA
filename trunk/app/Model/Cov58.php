@@ -163,11 +163,15 @@
 			$champsAGarder = array( 'id', 'etapecov', 'passagecov58_id', 'created', 'modified' );
 			$champsAGarderPourNonDecision = Set::merge( $champsAGarder, array( 'decisioncov', 'commentaire' ) );
 
+			// Sauvegarde des règles de validation (pour les inList)
+			$validates = array();
+
 			foreach( $this->themesTraites( $cov58_id ) as $theme => $decision ) {
 				$model = Inflector::classify( $theme );
 				$modeleDecision = Inflector::classify( "decision{$theme}" );
 
 				if( isset( $this->Passagecov58->{$modeleDecision}->validateFinalisation ) ) {
+					$validates[$modeleDecision] = $this->Passagecov58->{$modeleDecision}->validate;
 					// TODO: pas possible de faire un merge avec les règles déduites par Autovalidate2 ?
 					$this->Passagecov58->{$modeleDecision}->validate = $this->Passagecov58->{$modeleDecision}->validateFinalisation;
 				}
@@ -191,10 +195,14 @@
 							$data[$modeleDecision][$i] = Set::merge( $champsANull, $decision );
 						}
 					}
-// debug( $data );
-// die();
+
 					$success = $this->Passagecov58->Dossiercov58->{$model}->saveDecisions( $data ) && $success;
 				}
+			}
+
+			// Restauration des règles de validation
+			foreach( $validates as $alias => $validate ) {
+				$this->Passagecov58->{$alias}->validate = $validates[$alias];
 			}
 
 			///FIXME : calculer si tous les dossiers ont bien une décision avant de changer l'état ?

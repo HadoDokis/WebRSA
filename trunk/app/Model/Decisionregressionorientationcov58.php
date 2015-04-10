@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Decisionnonorientationprocov58.
+	 * Code source de la classe Decisionregressionorientationcov58.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,18 +9,18 @@
 	 */
 
 	/**
-	 * La classe Decisionnonorientationprocov58 ...
+	 * La classe Decisionregressionorientationcov58 ...
 	 *
 	 * @package app.Model
 	 */
-	class Decisionnonorientationprocov58 extends AppModel
+	class Decisionregressionorientationcov58 extends AppModel
 	{
 		/**
 		 * Nom du modèle.
 		 *
 		 * @var string
 		 */
-		public $name = 'Decisionnonorientationprocov58';
+		public $name = 'Decisionregressionorientationcov58';
 
 		/**
 		 * Récursivité par défaut du modèle.
@@ -96,13 +96,13 @@
 			),
 			'typeorient_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'maintienref', 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'accepte', 'refuse' ) ),
 					'message' => 'Champ obligatoire',
 				),
 			),
 			'structurereferente_id' => array(
 				'notEmptyIf' => array(
-					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'maintienref', 'reorientation' ) ),
+					'rule' => array( 'notEmptyIf', 'decisioncov', true, array( 'accepte', 'refuse' ) ),
 					'message' => 'Champ obligatoire',
 				),
 				'dependentForeignKeys' => array(

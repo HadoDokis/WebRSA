@@ -108,3 +108,12 @@ msgstr "Maintien dans le social"
 
 msgid "ENUM::THEMECOV::nonorientationsproscovs58"
 msgstr "Maintien dans le social"
+
+msgid "ENUM::THEMECOV58::regressionsorientationscovs58"
+msgstr "Orientation du professionnel vers le social"
+
+msgid "ENUM::THEMECOV::regressionsorientationscovs58"
+msgstr "Orientation du professionnel vers le social"
+
+msgid "ENUM::THEMECOV::regressionorientationcov58"
+msgstr "Orientation du professionnel vers le social"

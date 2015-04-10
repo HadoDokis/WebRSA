@@ -121,29 +121,53 @@
 
 				$this->request->data['Propoorientationcov58']['rgorient'] = $this->Propoorientationcov58->Dossiercov58->Personne->Orientstruct->rgorientMax( $personne_id );
 
+				// Si c'est une régression, on envoie en COV
 				if ( $this->Propoorientationcov58->Structurereferente->Orientstruct->isRegression( $personne_id, $this->request->data['Propoorientationcov58']['typeorient_id'] ) ) {
-					$dossierep = array(
-						'Dossierep' => array(
+					$query = array(
+						'fields' => array( 'Themecov58.id' ),
+						'contain' => false,
+						'conditions' => array( 'Themecov58.name' => 'regressionsorientationscovs58' )
+					);
+					$themecov58 = $this->Propoorientationcov58->Dossiercov58->Themecov58->find( 'first', $query );
+
+					$query = array(
+						'fields' => array( 'Orientstruct.id' ),
+						'contain' => false,
+						'conditions' => array(
+							'Orientstruct.personne_id' => $personne_id,
+							'Orientstruct.statut_orient' => 'Orienté'
+						),
+						'order' => array( 'Orientstruct.date_valid DESC' )
+					);
+					$orientstruct = $this->Propoorientationcov58->Structurereferente->Orientstruct->find( 'first', $query );
+
+					$dossiercov58 = array(
+						'Dossiercov58' => array(
 							'personne_id' => $personne_id,
-							'themeep' => 'regressionsorientationseps58',
+							'themecov58_id' => Hash::get( $themecov58, 'Themecov58.id' ),
+							'themecov58' => 'regressionsorientationscovs58',
 						)
 					);
-					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->Dossierep->save( $dossierep ) && $saved;
 
-					$regressionorientationep58['Regressionorientationep58'] = $this->request->data['Propoorientationcov58'];
-					$regressionorientationep58['Regressionorientationep58']['personne_id'] = $personne_id;
-					$regressionorientationep58['Regressionorientationep58']['dossierep_id'] = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->Dossierep->id;
+					$this->Propoorientationcov58->Dossiercov58->create( $dossiercov58 );
+					$saved = $this->Propoorientationcov58->Dossiercov58->save() && $saved;
 
-					if ( isset( $regressionorientationep58['Regressionorientationep58']['referent_id'] ) && !empty( $regressionorientationep58['Regressionorientationep58']['referent_id'] ) ) {
-						list( $structurereferente_id, $referent_id) = explode( '_', $regressionorientationep58['Regressionorientationep58']['referent_id'] );
-						$regressionorientationep58['Regressionorientationep58']['structurereferente_id'] = $structurereferente_id;
-						$regressionorientationep58['Regressionorientationep58']['referent_id'] = $referent_id;
-					}
+					$regressionorientationcov58 = array(
+						'Regressionorientationcov58' => array(
+							'dossiercov58_id' => $this->Propoorientationcov58->Dossiercov58->id,
+							'orientstruct_id' => Hash::get( $orientstruct, 'Orientstruct.id' ),
+							'typeorient_id' => Hash::get( $this->request->data, 'Propoorientationcov58.typeorient_id' ),
+							'structurereferente_id' => suffix( Hash::get( $this->request->data, 'Propoorientationcov58.structurereferente_id' ) ),
+							'referent_id' => suffix( Hash::get( $this->request->data, 'Propoorientationcov58.referent_id' ) ),
+							'datedemande' => Hash::get( $this->request->data, 'Propoorientationcov58.datedemande' ),
+							'user_id' => Hash::get( $this->request->data, 'Propoorientationcov58.user_id' )
+						)
+					);
 
-					$this->Propoorientationcov58->Structurereferente->Regressionorientationep58->create( $regressionorientationep58 );
-					$saved = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->save() && $saved;
+					$this->Propoorientationcov58->Dossiercov58->Regressionorientationcov58->create( $regressionorientationcov58 );
+					$saved = $this->Propoorientationcov58->Dossiercov58->Regressionorientationcov58->save() && $saved;
 					if( $saved === false ) {
-						$this->Propoorientationcov58->validationErrors = $this->Propoorientationcov58->Structurereferente->Regressionorientationep58->validationErrors;
+						$this->Propoorientationcov58->validationErrors = $this->Propoorientationcov58->Dossiercov58->Regressionorientationcov58->validationErrors;
 					}
 				}
 				else {
