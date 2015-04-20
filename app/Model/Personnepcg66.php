@@ -38,21 +38,6 @@
 			),
 		);
 
-		public $validate = array(
-			'categoriegeneral' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			),
-			'categoriedetail' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => 'Champ obligatoire'
-				)
-			)
-		);
-
 		public $belongsTo = array(
 			'Dossierpcg66' => array(
 				'className' => 'Dossierpcg66',

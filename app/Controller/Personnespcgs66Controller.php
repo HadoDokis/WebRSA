@@ -476,13 +476,11 @@
                 )
             );
 
-            if( !empty( $dossierpcg66Pcd ) && $this->action == 'add' ) {
+           if( !empty( $dossierpcg66Pcd ) && $this->action == 'add' ) {
                 // Données permettant de pré-remplir le formulaire d'ajout d'e la DERNIERE personne'une personne
                 // suivant la DERNIERE perosnne saisie préalablement
                 if( !empty( $dossierpcg66Pcd['Personnepcg66'] ) ){
                     $this->request->data['Personnepcg66']['personne_id'] = $dossierpcg66Pcd['Personnepcg66'][0]['personne_id'];
-                    $this->request->data['Personnepcg66']['categoriegeneral'] = $dossierpcg66Pcd['Personnepcg66'][0]['categoriegeneral'];
-                    $this->request->data['Personnepcg66']['categoriedetail'] = $dossierpcg66Pcd['Personnepcg66'][0]['categoriegeneral'].'_'.$dossierpcg66Pcd['Personnepcg66'][0]['categoriedetail'];
 
                     foreach( array( 'Situationpdo', 'Statutpdo' ) as $value ) {
                         foreach( $dossierpcg66Pcd['Personnepcg66'] as $i => $info ) {

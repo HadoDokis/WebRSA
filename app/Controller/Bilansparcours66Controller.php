@@ -359,7 +359,10 @@
 							'Passagecommissionep',
 							array(
 								'type' => 'LEFT OUTER',
-								'conditions' => array( 'Passagecommissionep.id IN (' . $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier() . ')' )
+								'conditions' => array(
+									'Passagecommissionep.id IN (' . $this->Bilanparcours66->Saisinebilanparcoursep66->Dossierep->Passagecommissionep->sqDernier() . ')',
+									'Passagecommissionep.etatdossierep' => array( 'traite', 'annule', 'reporte' )
+								)
 							)
 						),
 						array_words_replace(
