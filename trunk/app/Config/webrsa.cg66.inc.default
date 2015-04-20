@@ -42,9 +42,9 @@
 		'Gedooo',
 		array(
 			'method' => 'cloudooo',
-			'wsdl' => 'http://192.168.2.35:8980/ODFgedooo/OfficeService?wsdl',
+			'wsdl' => 'http://192.168.2.35:8880/ODFgedooo-0.8.05/OfficeService?wsdl',
 			'cloudooo_host' => 'cloudooo.test.adullact.org',
-			'cloudooo_port' => '8012'
+			'cloudooo_port' => '8011'
 		)
 	);
 
@@ -976,9 +976,9 @@
 			'Donnees.nb_fichiers_lies', // Nb Fichiers Liés des dsp
 		)
 	) );
-        
+
 	/**
-	 * Lorsque un CER est complexe, il ne sera clôt que si il dépasse la 
+	 * Lorsque un CER est complexe, il ne sera clôt que si il dépasse la
          * date de cloture + la valeur de cette variable
 	 *
 	 * Voir le document app/docs/Documentation administrateurs.odt, partie

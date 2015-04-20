@@ -42,9 +42,9 @@
 		'Gedooo',
 		array(
 			'method' => 'cloudooo',
-			'wsdl' => 'http://192.168.2.35:8980/ODFgedooo/OfficeService?wsdl',
+			'wsdl' => 'http://192.168.2.35:8880/ODFgedooo-0.8.05/OfficeService?wsdl',
 			'cloudooo_host' => 'cloudooo.test.adullact.org',
-			'cloudooo_port' => '8012'
+			'cloudooo_port' => '8011'
 		)
 	);
 
