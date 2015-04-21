@@ -170,6 +170,86 @@ INSERT INTO version(webrsa) VALUES ('2.9.0');
 
 SELECT alter_enumtype('TYPE_DECISIONDEFAUTINSERTIONEP66', ARRAY['suspensionnonrespect', 'suspensiondefaut', 'suspensionsanction', 'maintien', 'maintienorientsoc', 'reorientationprofverssoc', 'reorientationsocversprof', 'annule', 'reporte']);
 
+--------------------------------------------------------------------------------
+-- 20150420: ajout de la règle de validation "comparison"
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION cakephp_validate_comparison( p_check1 float,p_operator text,p_check2 float ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN p_check1 IS NULL
+			OR(
+				p_operator IS NOT NULL
+				AND p_check2 IS NOT NULL
+				AND (
+					( p_operator IN ( '>', 'is greater' ) AND p_check1 > p_check2 )
+					OR ( p_operator IN ( '>=', 'greater or equal' ) AND p_check1 >= p_check2 )
+					OR ( p_operator IN ( '==', 'equal to' ) AND p_check1 = p_check2 )
+					OR ( p_operator IN ( '!=', 'not equal' ) AND p_check1 <> p_check2 )
+					OR ( p_operator IN ( '<', 'is less' ) AND p_check1 < p_check2 )
+					OR ( p_operator IN ( '<=', 'less or equal' ) AND p_check1 <= p_check2 )
+				)
+			);
+	END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_comparison( p_check1 float,p_operator text,p_check2 float ) IS
+	'@see http://api.cakephp.org/2.2/class-Validation.html#_comparison';
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION cakephp_validate_compare_dates( p_check1 TIMESTAMP, p_check2 TIMESTAMP, p_comparator text ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN ( p_check1 IS NULL OR p_check2 IS NULL )
+			OR(
+				p_comparator IS NOT NULL
+				AND p_check2 IS NOT NULL
+				AND (
+					( p_comparator IN ( '>', 'is greater' ) AND p_check1 > p_check2 )
+					OR ( p_comparator IN ( '>=', 'greater or equal' ) AND p_check1 >= p_check2 )
+					OR ( p_comparator IN ( '==', 'equal to' ) AND p_check1 = p_check2 )
+					OR ( p_comparator IN ( '<', 'is less' ) AND p_check1 < p_check2 )
+					OR ( p_comparator IN ( '<=', 'less or equal' ) AND p_check1 <= p_check2 )
+				)
+			);
+	END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_compare_dates( p_check1 TIMESTAMP, p_check2 TIMESTAMP, p_comparator text ) IS
+	'@see Validation2.Validation2RulesComparisonBehavior::compareDates()';
+
+--------------------------------------------------------------------------------
+-- 20150420: CG 58 (et autres CG); la durée du CER doit être un nombre entier
+-- positif et la date de fin doit être strictement supérieure à la date de début
+--------------------------------------------------------------------------------
+
+ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_duree_engag_comparison_chk CHECK ( cakephp_validate_comparison( duree_engag, '>', 0 ) );
+ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_dd_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( dd_ci, df_ci, '<' ) );
+ALTER TABLE proposcontratsinsertioncovs58 ADD CONSTRAINT proposcontratsinsertioncovs58_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
+
+ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_duree_engag_comparison_chk CHECK ( cakephp_validate_comparison( duree_engag, '>', 0 ) );
+ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_dd_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( dd_ci, df_ci, '<' ) );
+ALTER TABLE decisionsproposcontratsinsertioncovs58 ADD CONSTRAINT decisionsproposcontratsinsertioncovs58_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
+
+/*
+FIXME: SELECT * FROM contratsinsertion WHERE dd_ci > df_ci;
+CG 58
+	-> 1@cg58_20150402_orig
+CG 66
+	-> 1@cg66_20140923_orig
+	-> 1@cg66_20150318_orig
+CG 93
+	-> 9@cg93_20150211_orig
+CG 976
+	-> 0@cg976_20141127_orig
+	-> 0@cg976_20141215_orig
+*/
+-- ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_duree_engag_comparison_chk CHECK ( cakephp_validate_comparison( duree_engag, '>', 0 ) );
+-- ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_dd_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( dd_ci, df_ci, '<' ) );
+-- ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
 
 -- *****************************************************************************
 COMMIT;

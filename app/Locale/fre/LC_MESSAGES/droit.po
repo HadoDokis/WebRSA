@@ -3440,5 +3440,18 @@ msgstr "Ajout / modification d'un élément du catalogue"
 msgid "Cataloguesromesv3:delete"
 msgstr "Suppression d'un élément du catalogue"
 
+###############################################################################
+
 msgid "Search:search"
 msgstr "Recherche magique"
+
+###############################################################################
+
+msgid "Module:Nonorientationsproscovs58"
+msgstr "Module de demandes de maintien dans le social (COV, nouveau)"
+
+msgid "Nonorientationsproscovs58:cohorte"
+msgstr "Recherche de demandes de maintien dans le social (COV, nouveau)"
+
+msgid "Nonorientationsproscovs58:exportcsv"
+msgstr "Export CSV des résultats de la recherche de demandes de maintien dans le social (COV, nouveau)"

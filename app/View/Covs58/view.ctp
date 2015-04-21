@@ -97,15 +97,11 @@
 				foreach( $themes as $theme ) {
 					// S'il s'agit d'une ancienne thématique pour laquelle il n'existe pas de dossier, on n'affiche pas l'onglet
 					if( !in_array( Inflector::pluralize( $theme ), $options['Dossiercov58']['vx_themecov58'] ) || !empty( $dossiers[$theme] ) ) {
-						if( $theme == 'propoorientationcov58' ){
-							$controller = 'orientsstructs';
-						}
-						else if( $theme == 'propocontratinsertioncov58' ){
+						$controller = 'orientsstructs';
+						if( $theme == 'propocontratinsertioncov58' ){
 							$controller = 'contratsinsertion';
 						}
-						else if( $theme == 'propononorientationprocov58' ){
-							$controller = 'orientsstructs';
-						}
+
 						$class = Inflector::classify( $theme );
 
 						echo "<div id=\"$theme\"><h3 class=\"title\">".__d( 'dossiercov58', 'ENUM::THEMECOV::'.$theme )."</h3>";

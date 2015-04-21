@@ -21,21 +21,24 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate2',
 			'Containable',
-			'Enumerable' => array(
-				'fields' => array(
-					'num_contrat' => array( 'type' => 'num_contrat', 'domain' => 'propocontratinsertioncov58' )
-				)
-			),
+			'Enumerable',
 			'Formattable' => array(
 				'suffix' => array( 'structurereferente_id', 'referent_id' ),
-			)
+			),
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable'
 		);
 
+		/**
+		 * Règles de validation à appliquer en plus de celles déduites de la
+		 * base de données.
+		 *
+		 * @var array
+		 */
 		public $validate = array(
 			'structurereferente_id' => array(
-				array(
+				'choixStructure' => array(
 					'rule' => array( 'choixStructure', 'statut_orient' ),
 					'message' => 'Champ obligatoire'
 				)
