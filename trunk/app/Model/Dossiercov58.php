@@ -460,6 +460,7 @@
 						$this->join( 'Propoorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Propoorientsocialecov58', array( 'type' => 'LEFT OUTER' ) ),
 						$this->join( 'Nonorientationprocov58', array( 'type' => 'LEFT OUTER' ) ),
+						$this->join( 'Regressionorientationcov58', array( 'type' => 'LEFT OUTER' ) ),
 					),
 					'conditions' => array(
 						'Dossiercov58.personne_id = Personne.id',
@@ -471,6 +472,7 @@
 								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NOT NULL',
 								'Nonorientationprocov58.nvorientstruct_id IS NULL',
+								'Regressionorientationcov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id = Orientstruct.id',
 							),
 							array(
@@ -478,6 +480,7 @@
 								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NULL',
 								'Nonorientationprocov58.nvorientstruct_id IS NULL',
+								'Regressionorientationcov58.nvorientstruct_id IS NULL',
 								'Propoorientationcov58.nvorientstruct_id = Orientstruct.id',
 							),
 							array(
@@ -485,14 +488,24 @@
 								'Propoorientsocialecov58.nvorientstruct_id IS NOT NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NULL',
 								'Nonorientationprocov58.nvorientstruct_id IS NULL',
+								'Regressionorientationcov58.nvorientstruct_id IS NULL',
 								'Propoorientsocialecov58.nvorientstruct_id = Orientstruct.id',
 							),
 							array(
 								'Propoorientationcov58.nvorientstruct_id IS NULL',
 								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
 								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Regressionorientationcov58.nvorientstruct_id IS NULL',
 								'Nonorientationprocov58.nvorientstruct_id IS NOT NULL',
 								'Nonorientationprocov58.nvorientstruct_id = Orientstruct.id',
+							),
+							array(
+								'Propoorientationcov58.nvorientstruct_id IS NULL',
+								'Propoorientsocialecov58.nvorientstruct_id IS NULL',
+								'Propononorientationprocov58.nvorientstruct_id IS NULL',
+								'Nonorientationprocov58.nvorientstruct_id IS NULL',
+								'Regressionorientationcov58.nvorientstruct_id IS NOT NULL',
+								'Regressionorientationcov58.nvorientstruct_id = Orientstruct.id',
 							),
 						)
 					),
@@ -510,6 +523,7 @@
 					'Propononorientationprocov58' => 'proposnonorientationsproscovs58',
 					'Propoorientsocialecov58' => 'proposorientssocialescovs58',
 					'Nonorientationprocov58' => 'nonorientationsproscovs58',
+					'Regressionorientationcov58' => 'regressionsorientationscovs58',
 					'Passagecov58__dossiercov58_id' => 'passagescovs58__dossiercov58_id',
 				)
 			);

@@ -1,4 +1,4 @@
-<?php	
+<?php
 	/**
 	 * Code source de la classe Decisionpropocontratinsertioncov58.
 	 *
@@ -20,20 +20,15 @@
 		public $recursive = -1;
 
 		public $actsAs = array(
-			'Autovalidate2',
-			'ValidateTranslate',
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
 			'Formattable' => array(
 				'suffix' => array(
 					'structurereferente_id',
 					'referent_id'
 				)
 			),
-			'Enumerable' => array(
-				'fields' => array(
-					'etapecov',
-					'decisioncov'
-				)
-			)
+			'Enumerable'
 		);
 
 		public $belongsTo = array(
@@ -45,23 +40,5 @@
 				'order' => ''
 			)
 		);
-
-		// TODO: lorsqu'on pourra reporter les dossiers,
-		// il faudra soit faire soit un report, soit les validations ci-dessous
-		// FIXME: dans ce cas, il faudra permettre au champ decision de prendre la valeur NULL
-
-		/**
-		* Les règles de validation qui seront utilisées lors de la validation
-		* en COV des décisions de la thématique
-		*/
-
-		public $validateFinalisation = array(
-			'decisioncov' => array(
-				array(
-					'rule' => array( 'notEmpty' )
-				)
-			)
-		);
-
 	}
 ?>
