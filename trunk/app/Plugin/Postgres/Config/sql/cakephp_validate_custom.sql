@@ -37,6 +37,43 @@ SELECT
 	AND ( cakephp_validate_inclusive_range( 10, 0, 10 ) = true )
 	AS passed_tests_cakephp_validate_inclusive_range;
 
+-- -----------------------------------------------------------------------------
+-- compareDates
+-- -----------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION cakephp_validate_compare_dates( p_check1 TIMESTAMP, p_check2 TIMESTAMP, p_comparator text ) RETURNS boolean AS
+$$
+	BEGIN
+		RETURN ( p_check1 IS NULL OR p_check2 IS NULL )
+			OR(
+				p_comparator IS NOT NULL
+				AND p_check2 IS NOT NULL
+				AND (
+					( p_comparator IN ( '>', 'is greater' ) AND p_check1 > p_check2 )
+					OR ( p_comparator IN ( '>=', 'greater or equal' ) AND p_check1 >= p_check2 )
+					OR ( p_comparator IN ( '==', 'equal to' ) AND p_check1 = p_check2 )
+					OR ( p_comparator IN ( '<', 'is less' ) AND p_check1 < p_check2 )
+					OR ( p_comparator IN ( '<=', 'less or equal' ) AND p_check1 <= p_check2 )
+				)
+			);
+	END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_compare_dates( p_check1 TIMESTAMP, p_check2 TIMESTAMP, p_comparator text ) IS
+	'@see Validation2.Validation2RulesComparisonBehavior::compareDates()';
+
+-- -----------------------------------------------------------------------------
+
+SELECT
+	( cakephp_validate_compare_dates( NULL, NULL, NULL ) = true )
+	AND ( cakephp_validate_compare_dates( '2012-01-01', '2012-01-02', '<' ) = true )
+	AND ( cakephp_validate_compare_dates( '2012-01-01', '2012-01-02', '*' ) = false )
+	AND ( cakephp_validate_compare_dates( '2012-01-01', '2012-01-02', '>' ) = false )
+	AND ( cakephp_validate_compare_dates( '2012-01-02', '2012-01-01', '<=' ) = false )
+	AND ( cakephp_validate_compare_dates( '2012-01-01', '2012-01-01', '==' ) = true )
+	AS passed_tests_cakephp_validate_compare_dates;
+
 -- *****************************************************************************
 COMMIT;
 -- *****************************************************************************
