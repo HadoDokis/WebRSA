@@ -50,6 +50,9 @@ a:active,
 a:hover {
   outline: 0;
 }
+a:visited {
+	color: #737AD7;
+}
 abbr[title] {
   border-bottom: 1px dotted;
 }
@@ -1211,11 +1214,6 @@ p {
   font-weight: 300;
   line-height: 1.4;
 }
-@media (min-width: 768px) {
-  .lead {
-    font-size: 21px;
-  }
-}
 small,
 .small {
   font-size: 85%;
@@ -1351,20 +1349,6 @@ dt {
 }
 dd {
   margin-left: 0;
-}
-@media (min-width: 768px) {
-  .dl-horizontal dt {
-    float: left;
-    width: 160px;
-    overflow: hidden;
-    clear: left;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .dl-horizontal dd {
-    margin-left: 180px;
-  }
 }
 abbr[title],
 abbr[data-original-title] {
