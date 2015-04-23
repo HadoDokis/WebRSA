@@ -201,7 +201,7 @@ msgid "Validate::checkDateOnceAYear"
 msgstr "Il existe déjà un enregistrement pour cette année"
 
 msgid "Validate::compareDates"
-msgstr "Veuillez entrer une valeur %2\$s %1\$s"
+msgstr "Veuillez entrer une valeur %2$s %1$s"
 
 ###############################################################################
 # Forms/Index

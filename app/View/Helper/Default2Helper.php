@@ -560,7 +560,11 @@
 			).$pagination;
 
 			if( $cohorte == true ) {
-				$return = $this->Xform->create( null, array( 'url' => Set::merge( array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'] ), $this->request->params['pass'], $this->request->params['named'] ) ) ).$return;
+				$options = array( 'url' => Set::merge( array( 'controller' => $this->request->params['controller'], 'action' => $this->request->params['action'] ), $this->request->params['pass'], $this->request->params['named'] ) );
+				if( isset( $cohorteParams['cohorteFormId'] ) ) {
+					$options['id'] = $cohorteParams['cohorteFormId'];
+				}
+				$return = $this->Xform->create( null, $options ).$return;
 			}
 
 			/// Hidden -> TODO $this->request->data

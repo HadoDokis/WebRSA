@@ -12,9 +12,6 @@
 	/**
 	 * La classe Nonorientationprocov58 ...
 	 *
-	 * @todo -> voir les autres thématiques (Propononorientationprocov58) pour
-	 * les méthodes manquantes...
-	 *
 	 * @package app.Model
 	 */
 	class Nonorientationprocov58 extends AbstractThematiquecov58
@@ -41,7 +38,7 @@
 		public $actsAs = array(
 			'Conditionnable',
 			'Dependencies',
-			// 'Gedooo.Gedooo',
+			'Gedooo.Gedooo',
 			'Postgres.PostgresAutovalidate',
 			'Validation2.Validation2Formattable',
 		);
@@ -50,16 +47,13 @@
 		 * Chemin relatif pour les modèles de documents .odt utilisés lors des
 		 * impressions. Utiliser %s pour remplacer par l'alias.
 		 *
-		 * @fixme
+		 * @var array
 		 */
 		public $modelesOdt = array(
-			// Convocation EP
-			'Commissionep/convocationep_beneficiaire.odt',
-			// Décision EP (décision CG)
-			'%s/decision_reorientation.odt',
-			'%s/decision_maintienref.odt',
-			'%s/decision_annule.odt',
-			'%s/decision_reporte.odt',
+			'Cov58/%s_decision_reorientation.odt',
+			'Cov58/%s_decision_maintienref.odt',
+//			'Cov58/%s_decision_annule.odt',
+//			'Cov58/%s_decision_reporte.odt',
 		);
 
 		/**
@@ -233,11 +227,11 @@
 							)
 						) && $success;
 					}
-					else{
-						//Sauvegarde des décisions
-						$this->Dossiercov58->Passagecov58->{$modelDecisionName}->create( array( $modelDecisionName => $data[$modelDecisionName][$key] ) );
-						$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->save() && $success;
-					}
+
+					// Sauvegarde des décisions
+					// FIXME: ben non, c'est en bas
+//					$this->Dossiercov58->Passagecov58->{$modelDecisionName}->create( array( $modelDecisionName => $data[$modelDecisionName][$key] ) );
+//					$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->save() && $success;
 
 					// Modification etat du dossier passé dans la COV
 					if( in_array( $values['decisioncov'], array( 'reorientation', 'maintienref' ) ) ) {
@@ -259,9 +253,9 @@
 						);
 					}
 				}
-			}
 
-			$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false, 'validate' => 'only' ) ) && $success;
+				$success = $this->Dossiercov58->Passagecov58->{$modelDecisionName}->saveAll( Set::extract( $data, '/'.$modelDecisionName ), array( 'atomic' => false ) ) && $success;
+			}
 
 			return $success;
 		}
@@ -278,27 +272,36 @@
 		 */
 		public function qdProcesVerbal() {
 			$modeleDecision = 'Decision'.Inflector::underscore( $this->alias );
-			$result = parent::qdProcesVerbal();
+			$query = parent::qdProcesVerbal();
 
-			$result['fields'] = array_merge(
-				$result['fields'],
-				$this->Dossiercov58->Passagecov58->{$modeleDecision}->Typeorient->fields(),
-				$this->Dossiercov58->Passagecov58->{$modeleDecision}->Structurereferente->fields(),
-				$this->Dossiercov58->Passagecov58->{$modeleDecision}->Referent->fields()
+			$query['fields'] = array_merge(
+				$query['fields'],
+				$this->Nvorientstruct->fields(),
+				$this->Nvorientstruct->Typeorient->fields(),
+				$this->Nvorientstruct->Structurereferente->fields(),
+				$this->Nvorientstruct->Referent->fields()
 			);
 
-			$result['joins'][] = $this->Dossiercov58->Passagecov58->{$modeleDecision}->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
-			$result['joins'][] = $this->Dossiercov58->Passagecov58->{$modeleDecision}->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
-			$result['joins'][] = $this->Dossiercov58->Passagecov58->{$modeleDecision}->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->join( 'Nvorientstruct', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Nvorientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Nvorientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Nvorientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
 
-			return $result;
+			$query = array_words_replace(
+				$query,
+				array(
+					'Typeorient' => 'Nvtypeorient',
+					'Structurereferente' => 'Nvstructurereferente',
+					'Referent' => 'Nvreferent'
+				)
+			);
+
+			return $query;
 		}
 
 		/**
 		 * Retourne le querydata de base à utiliser dans le moteur de recherche
 		 * de la cohorte.
-		 *
-		 * @fixme et qui ne possède aucun autre dossier d'EP ou de COV susceptible de déboucher sur une réorientation
 		 *
 		 * @return array
 		 */
@@ -310,8 +313,151 @@
 				$modelName = $this->alias;
 				$modelTable = Inflector::tableize( $modelName );
 
+				$ancienneTableCov = 'proposnonorientationsproscovs58';
+				$ancienneTableEp = 'nonorientationsproseps58';
+
 				$delaiCreationContrat = Configure::read( "{$this->alias}.delaiCreationContrat" );
 				$typesorientEmploiId = Configure::read( 'Typeorient.emploi_id' );
+
+				// Sous-requête pour qu'il n'existe pas actuellement de dossier de COV pouvant déboucher sur une réorientation
+				$Cov58 = $this->Dossiercov58->Passagecov58->Cov58;
+				$queryDossierscovs58ReorientationsEnCours = $this->Dossiercov58->getDossiersQuery();
+				$queryDossierscovs58ReorientationsEnCours['fields'] = array( 'Dossiercov58.id' );
+				$queryDossierscovs58ReorientationsEnCours['conditions'][] = array(
+					'Dossiercov58.personne_id = Personne.id',
+					'Dossiercov58.themecov58' => $this->Dossiercov58->getThematiquesReorientations(),
+					array(
+						'OR' => array(
+							'Cov58.id IS NULL',
+							'Cov58.etatcov' => $Cov58::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecov58.etatdossiercov' => array( 'traite', 'annule' )
+								)
+							)
+						)
+					)
+				);
+				$queryDossierscovs58ReorientationsEnCours = array_words_replace(
+					$queryDossierscovs58ReorientationsEnCours,
+					array(
+						'Cov58' => 'covs58',
+						'Dossiercov58' => 'dossierscovs58',
+						'Passagecov58' => 'passagescovs58'
+					)
+				);
+				$alias = $this->Dossiercov58->alias;
+				$this->Dossiercov58->alias = 'dossierscovs58';
+				$sqDossierscovs58ReorientationsEnCours = $this->Dossiercov58->sq( $queryDossierscovs58ReorientationsEnCours );
+				$this->Dossiercov58->alias = $alias;
+
+				// TODO: Sous-requête pour qu'il n'existe pas actuellement de dossier d'EP pouvant déboucher sur une réorientation
+				$Commissionep = $this->Dossiercov58->Personne->Dossierep->Passagecommissionep->Commissionep;
+				$queryDossiersepsReorientationsEnCours = $this->Dossiercov58->Personne->Dossierep->getDossiersQuery();
+				$queryDossiersepsReorientationsEnCours['fields'] = array( 'Dossierep.id' );
+				$queryDossiersepsReorientationsEnCours['conditions'][] = array(
+					'Dossierep.personne_id = Personne.id',
+					'Dossierep.themeep' => $this->Dossiercov58->Personne->Dossierep->getThematiquesReorientations(),
+					array(
+						'OR' => array(
+							'Commissionep.id IS NULL',
+							'Commissionep.etatcommissionep' => $Commissionep::$etatsEnCours,
+							array(
+								'NOT' => array(
+									'Passagecommissionep.etatdossierep' => array( 'traite', 'annule' )
+								)
+							)
+						)
+					)
+				);
+				$queryDossiersepsReorientationsEnCours = array_words_replace(
+					$queryDossiersepsReorientationsEnCours,
+					array(
+						'Commissionep' => 'commissionseps',
+						'Dossierep' => 'dossierseps',
+						'Passagecommissionep' => 'passagescommissionseps'
+					)
+				);
+				$alias = $this->Dossiercov58->Personne->Dossierep->alias;
+				$this->Dossiercov58->Personne->Dossierep->alias = 'dossierseps';
+				$sqDossiersepsReorientationsEnCours = $this->Dossiercov58->Personne->Dossierep->sq( $queryDossiersepsReorientationsEnCours );
+				$this->Dossiercov58->Personne->Dossierep->alias = $alias;
+
+				// On souhaite n'afficher que les orientations en social ne possédant encore pas de dossier COV
+				// 1°) On a un dossier COV en cours de passage (<> finalisé (accepté/refusé), <> reporté) // {cree,traitement,ajourne,finalise}
+				// 2°) Si COV accepte -> on a un dossier en EP -> OK (voir plus haut)
+				// 3°) Si COV refuse -> il doit réapparaître
+				// 4°) ATTENTION: accepté/refusé -> nouvelle orientation
+				$sqOrientstructEnCoursCov = 'Orientstruct.id NOT IN (
+					SELECT "%s"."orientstruct_id"
+						FROM "%s"
+							INNER JOIN "dossierscovs58" ON ( "dossierscovs58"."id" = "%s"."dossiercov58_id" )
+						WHERE "dossierscovs58"."id" NOT IN (
+							SELECT "passagescovs58"."dossiercov58_id"
+							FROM  passagescovs58
+							WHERE "passagescovs58"."etatdossiercov" = \'traite\'
+						)
+						AND "dossierscovs58"."themecov58" = \'%s\'
+						AND "%s"."orientstruct_id" = "Orientstruct"."id"
+					)';
+
+				$sqOrientstructEnCoursEp = 'Orientstruct.id NOT IN (
+					SELECT "%s"."orientstruct_id"
+						FROM "%s"
+							INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "%s"."dossierep_id" )
+						WHERE "dossierseps"."id" NOT IN (
+							SELECT "passagescommissionseps"."dossierep_id"
+							FROM  passagescommissionseps
+							WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+						)
+						AND "dossierseps"."themeep" = \'%s\'
+						AND "%s"."orientstruct_id" = "Orientstruct"."id"
+					)';
+
+				$sqOrientstructDelaiPassageCov = 'Orientstruct.id NOT IN (
+					SELECT %s.orientstruct_id
+						FROM %s
+							INNER JOIN dossierscovs58 ON (
+								%s.dossiercov58_id = dossierscovs58.id
+							)
+						WHERE
+							%s.orientstruct_id = Orientstruct.id
+							AND dossierscovs58.id IN (
+								SELECT "passagescovs58"."dossiercov58_id"
+								FROM passagescovs58
+								WHERE "passagescovs58"."etatdossiercov" = \'traite\'
+							)
+							AND ( DATE( NOW() ) - (
+								SELECT CAST( decisions%s.modified AS DATE )
+									FROM decisions%s
+										INNER JOIN passagescovs58 ON ( decisions%s.passagecov58_id = passagescovs58.id )
+										INNER JOIN dossierscovs58 ON ( passagescovs58.dossiercov58_id = dossierscovs58.id )
+									ORDER BY modified DESC
+									LIMIT 1
+							) ) <= '.$delaiCreationContrat.'
+					)';
+
+				$sqOrientstructDelaiPassageEp = 'Orientstruct.id NOT IN (
+					SELECT "%s"."orientstruct_id"
+						FROM "%s"
+							INNER JOIN "dossierseps" ON ( "dossierseps"."id" = "%s"."dossierep_id" )
+						WHERE
+							"dossierseps"."id" NOT IN (
+								SELECT "passagescommissionseps"."dossierep_id"
+								FROM  passagescommissionseps
+								WHERE "passagescommissionseps"."etatdossierep" = \'traite\'
+							)
+							AND ( DATE( NOW() ) - (
+								SELECT CAST( decisions%s.modified AS DATE )
+									FROM decisions%s
+										INNER JOIN passagescommissionseps ON ( decisions%s.passagecommissionep_id = passagescommissionseps.id )
+										INNER JOIN dossierseps ON ( passagescommissionseps.dossierep_id = dossierseps.id )
+									ORDER BY modified DESC
+									LIMIT 1
+							) ) <= '.$delaiCreationContrat.'
+							AND "dossierseps"."themeep" = \'%s\'
+							AND "%s"."orientstruct_id" = "Orientstruct"."id"
+					)';
 
 				$query = array(
 					'fields' => array(
@@ -373,62 +519,21 @@
 								LIMIT 1
 						)',
 						// La personne ne doit pas être en cours de passage en COV pour cette thématique
-						// FIXME: traite / reporte...
-						'Orientstruct.id NOT IN (
-							SELECT "'.$modelTable.'"."orientstruct_id"
-							FROM "'.$modelTable.'"
-								INNER JOIN "dossierscovs58" ON ( "dossierscovs58"."id" = "'.$modelTable.'"."dossiercov58_id" )
-							WHERE "dossierscovs58"."id" NOT IN (
-								SELECT "passagescovs58"."dossiercov58_id"
-								FROM  passagescovs58
-								WHERE "passagescovs58"."etatdossiercov" = \'traite\'
-							)
-							AND "dossierscovs58"."themecov58" = \''.$modelTable.'\'
-							AND "'.$modelTable.'"."orientstruct_id" = "Orientstruct"."id"
-						)',
+						str_replace( '%s', $modelTable, $sqOrientstructEnCoursCov ),
+						// La personne ne doit pas être en cours de passage en COV pour l'ancienne thématique
+						str_replace( '%s', $ancienneTableCov, $sqOrientstructEnCoursCov ),
+						// La personne ne doit pas être en cours de passage en EP pour l'ancienne thématique
+						str_replace( '%s', $ancienneTableEp, $sqOrientstructEnCoursEp ),
 						// On peut repasser pour cette thématique si le passage lié à cette orientation est plus vieux que
 						// le délai que l'on laisse pour créer le CER
-						'Orientstruct.id NOT IN (
-							SELECT '.Inflector::tableize( $this->alias ).'.orientstruct_id
-								FROM '.Inflector::tableize( $this->alias ).'
-									INNER JOIN dossierscovs58 ON (
-										'.Inflector::tableize( $this->alias ).'.dossiercov58_id = dossierscovs58.id
-									)
-								WHERE
-									'.Inflector::tableize( $this->alias ).'.orientstruct_id = Orientstruct.id
-									AND dossierscovs58.id IN (
-										SELECT "passagescovs58"."dossiercov58_id"
-										FROM passagescovs58
-										WHERE "passagescovs58"."etatdossiercov" = \'traite\'
-									)
-									AND ( DATE( NOW() ) - (
-										SELECT CAST( decisions'.Inflector::tableize( $this->alias ).'.modified AS DATE )
-											FROM decisions'.Inflector::tableize( $this->alias ).'
-												INNER JOIN passagescovs58 ON ( decisions'.Inflector::tableize( $this->alias ).'.passagecov58_id = passagescovs58.id )
-												INNER JOIN dossierscovs58 ON ( passagescovs58.dossiercov58_id = dossierscovs58.id )
-											ORDER BY modified DESC
-											LIMIT 1
-									) ) <= '.$delaiCreationContrat.'
-						)',
-						// On souhaite n'afficher que les orientations en social ne possédant encore pas de dossier COV
-						// 1°) On a un dossier COV en cours de passage (<> finalisé (accepté/refusé), <> reporté) // {cree,traitement,ajourne,finalise}
-						// 2°) Si COV accepte -> on a un dossier en EP -> OK (voir plus haut)
-						// 3°) Si COV refuse -> il doit réapparaître
-						// 4°) ATTENTION: accepté/refusé -> nouvelle orientation
-						'Orientstruct.id NOT IN (
-							SELECT "nonorientationsproscovs58"."orientstruct_id"
-								FROM nonorientationsproscovs58
-									INNER JOIN "dossierscovs58"
-										ON ( "dossierscovs58"."id" = "nonorientationsproscovs58"."dossiercov58_id" )
-								WHERE
-									"dossierscovs58"."id" NOT IN (
-										SELECT "passagescovs58"."dossiercov58_id"
-										FROM passagescovs58
-										WHERE "passagescovs58"."etatdossiercov" = \'traite\'
-									)
-									AND "dossierscovs58"."themecov58" = \'nonorientationsproscovs58\'
-									AND "nonorientationsproscovs58"."orientstruct_id" = Orientstruct.id
-						)'
+						str_replace( '%s', $modelTable, $sqOrientstructDelaiPassageCov ),
+						// Même chose pour l'ancienne thématique COV
+						str_replace( '%s', $ancienneTableCov, $sqOrientstructDelaiPassageCov ),
+						// Même chose pour l'ancienne thématique EP
+						str_replace( '%s', $ancienneTableEp, $sqOrientstructDelaiPassageEp ),
+						// Pour lequel il n'existe ni de dossier COV ni de dossier d'EP pouvant déboucher sur une réorientation
+						"NOT EXISTS( {$sqDossierscovs58ReorientationsEnCours} )",
+						"NOT EXISTS( {$sqDossiersepsReorientationsEnCours} )"
 					),
 					'joins' => array(
 						$this->Orientstruct->join( 'Structurereferente', array( 'type' => 'INNER' ) ),
@@ -561,6 +666,123 @@
 			}
 
 			return $success;
+		}
+
+		/**
+		 * Retourne une partie de querydata propre à la thématique et nécessaire
+		 * à l'impression de l'ordre du jour.
+		 *
+		 * @return array
+		 */
+		public function qdOrdreDuJour() {
+			$query = parent::qdOrdreDuJour();
+
+			$query['fields'] = array_merge(
+				$query['fields'],
+				array(
+					'Orientstruct.date_valid',
+					'Orientstruct.rgorient',
+					'Typeorient.lib_type_orient',
+					'Structurereferente.lib_struc',
+					$this->Orientstruct->Referent->sqVirtualField( 'nom_complet', false )." AS \"{$this->alias}Referent__nom_complet\""
+				)
+			);
+			$query['joins'][] = $this->join( 'Orientstruct', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Orientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Orientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) );
+			$query['joins'][] = $this->Orientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) );
+
+			return $query;
+		}
+
+		/**
+		 * Retourne le PDF de décision pour la thématique.
+		 *
+		 * @param integer $passagecov58_id
+		 * @return string
+		 * @throws NotFoundException
+		 */
+		public function getPdfDecision( $passagecov58_id ) {
+			$query = array(
+				'fields' => array_merge(
+					$this->Dossiercov58->Passagecov58->fields(),
+					$this->Dossiercov58->Passagecov58->Dossiercov58->fields(),
+					$this->Dossiercov58->Passagecov58->Decisionnonorientationprocov58->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->Typeorient->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->Structurereferente->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->Referent->fields(),
+					$this->Dossiercov58->Personne->fields(),
+					$this->Dossiercov58->Personne->Foyer->fields(),
+					$this->Dossiercov58->Personne->Foyer->Dossier->fields(),
+					$this->Dossiercov58->Personne->Foyer->Adressefoyer->fields(),
+					$this->Dossiercov58->Personne->Foyer->Adressefoyer->Adresse->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->User->fields(),
+					$this->Dossiercov58->Nonorientationprocov58->User->Serviceinstructeur->fields(),
+					$this->Dossiercov58->Passagecov58->Cov58->fields(),
+					$this->Dossiercov58->Passagecov58->Cov58->Sitecov58->fields()
+				),
+				'conditions' => array(
+					'Passagecov58.id' => $passagecov58_id,
+					'OR' => array(
+						'Adressefoyer.id IS NULL',
+						'Adressefoyer.id IN ('.ClassRegistry::init( 'Adressefoyer' )->sqDerniereRgadr01( 'Adressefoyer.foyer_id' ).')'
+					)
+				),
+				'joins' => array(
+					$this->Dossiercov58->Passagecov58->join( 'Dossiercov58' ),
+					$this->Dossiercov58->Passagecov58->join( 'Decisionnonorientationprocov58' ),
+					$this->Dossiercov58->join( 'Nonorientationprocov58' ),
+					$this->Dossiercov58->Nonorientationprocov58->join( 'Nvorientstruct', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->join( 'Typeorient', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->Nonorientationprocov58->Nvorientstruct->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->join( 'Personne' ),
+					$this->Dossiercov58->Personne->join( 'Foyer' ),
+					$this->Dossiercov58->Personne->Foyer->join( 'Dossier' ),
+					$this->Dossiercov58->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Dossiercov58->Personne->Foyer->Adressefoyer->join( 'Adresse' ),
+					$this->Dossiercov58->Nonorientationprocov58->join( 'User' ),
+					$this->Dossiercov58->Nonorientationprocov58->User->join( 'Serviceinstructeur' ),
+					$this->Dossiercov58->Passagecov58->join( 'Cov58' ),
+					$this->Dossiercov58->Passagecov58->Cov58->join( 'Sitecov58' )
+				),
+				'recursive' => -1
+			);
+
+			$query = array_words_replace(
+				$query,
+				array(
+					'Typeorient' => 'Nvtypeorient',
+					'Structurereferente' => 'Nvstructurereferente',
+					'Referent' => 'Nvreferent'
+				)
+			);
+
+			$data = $this->Dossiercov58->Passagecov58->find( 'first', $query );
+			if( empty( $data ) ) {
+				throw new NotFoundException();
+			}
+
+			$options = Hash::merge(
+				array(
+					'Personne' => array( 'qual' => ClassRegistry::init( 'Option' )->qual() ),
+					'type' => array( 'voie' => ClassRegistry::init( 'Option' )->typevoie() )
+				),
+				$this->enums(),
+				$this->Dossiercov58->enums(),
+				$this->Dossiercov58->Passagecov58->Decisionnonorientationprocov58->enums()
+			);
+
+			$fileName = sprintf( 'Cov58/%s_decision_%s.odt', $this->alias, $data['Decisionnonorientationprocov58']['decisioncov'] );
+
+			return $this->ged(
+				$data,
+				$fileName,
+				false,
+				$options
+			);
 		}
 	}
 ?>
