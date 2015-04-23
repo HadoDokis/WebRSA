@@ -1,4 +1,6 @@
 <?php
+	$cohorteFormId = Inflector::camelize( "{$theme}FormId" );
+
 	echo $this->Default2->index(
 		$dossiers[$theme],
 		array(
@@ -25,6 +27,9 @@
 			),
 			'cohortehidden' => array_merge( array( 'Choose.theme' => array( 'value' => $theme ), ), $dossiersIds ),
 			'trClass' => $trClass,
+			'cohorteFormId' => $cohorteFormId
 		)
 	);
+
+	echo $this->Observer->disableFormOnSubmit( $cohorteFormId );
 ?>

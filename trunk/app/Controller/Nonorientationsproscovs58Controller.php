@@ -60,6 +60,16 @@
 		public $uses = array( 'Nonorientationprocov58' );
 
 		/**
+		 * Les droits sont les mêmes que ceux de l'ancienne cohorte.
+		 *
+		 * @var array
+		 */
+		public $commeDroit = array(
+			'cohorte' => 'Nonorientationsproseps:index',
+			'exportcsv' => 'Nonorientationsproseps:exportcsv'
+		);
+
+		/**
 		 * Recherche des bénéficiaires pour lesquels il est possible de créer un
 		 * dossier de COV pour la thématique.
 		 */

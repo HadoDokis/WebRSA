@@ -95,7 +95,7 @@
 
 		/**
 		 * Retourne une partie de querydata propre à la thématique et nécessaire
-		 * à l'imprssion de l'odre du jour.
+		 * à l'impression de l'ordre du jour.
 		 *
 		 * @return array
 		 */
@@ -200,7 +200,7 @@
 			return $result;
 		}
 
-		// @deprecated ?
+		// deprecated ?
 //		public abstract function getPdfDecision( $passagecov58_id );
 
 		/**

@@ -5,8 +5,6 @@
 			$cov58['Cov58']['name'],
 			$this->Locale->date( 'Locale->datetime', $cov58['Cov58']['datecommission'] )
 		);
-
-// 		echo $this->Form->create('Covs58', array( 'type' => 'post' ) );
 	?>
 </h1>
 <br />
