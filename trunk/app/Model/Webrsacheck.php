@@ -227,7 +227,9 @@
 				'Romev3.enabled' => 'boolean',
 				'Dsps.index.fields' => 'isarray',
 				'Dsps.index.innerTable' => 'isarray',
-				'Dsps.index.header' => 'isarray',
+				'Dsps.index.header' => array(
+					array( 'rule' => 'isarray', 'allowEmpty' => true )
+				),
 				'Dsps.exportcsv' => 'isarray'
 			);
 
