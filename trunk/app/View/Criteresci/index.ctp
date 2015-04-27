@@ -139,6 +139,37 @@
 						.$this->Form->input( 'Cer93Sujetcer93.valeurparsoussujetcer93_id', array( 'label' => 'Valeur par sous sujet du CER', 'type' => 'select', 'options' => (array)Hash::get( $options, 'Cer93Sujetcer93.valeurparsoussujetcer93_id' ), 'empty' => true ) )
 						.$this->Romev3->fieldset( 'Sujetromev3', array( 'options' => array( 'Sujetromev3' => $options['Catalogueromev3'] ) ) )
 					);
+
+					// Activation / désactivation de la partie "Votre contrat porte sur l'emploi (ROME v.3)" en fonciton des réponses à "Votre contrat porte sur"
+					$activationPath = Configure::read( 'Cer93.Sujetcer93.Romev3.path' );
+					$activationValues = (array)Configure::read( 'Cer93.Sujetcer93.Romev3.values' );
+
+					$activationSujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.sujetcer93_id' === $activationPath );
+					$activationSoussujetcer93 = ( 'Sujetcer93.Sujetcer93.{n}.soussujetcer93_id' === $activationPath );
+					$activationIds = array();
+
+					if( $activationSujetcer93 ) {
+						$master = 'Cer93Sujetcer93.sujetcer93_id';
+						$activationIds = $activationValues;
+					}
+					else if( $activationSoussujetcer93 ) {
+						$master = 'Cer93Sujetcer93.soussujetcer93_id';
+						foreach( array_keys( $options['Cer93Sujetcer93']['soussujetcer93_id'] ) as $soussujetcer93_id ) {
+							if( in_array( suffix( $soussujetcer93_id ), $activationValues ) ) {
+								$activationIds[] = $soussujetcer93_id;
+							}
+						}
+					}
+
+					if( $activationSujetcer93 || $activationSoussujetcer93 ) {
+						echo $this->Observer->disableFieldsetOnValue(
+							$master,
+							'Sujetromev3FieldsetId',
+							$activationIds,
+							false,
+							true
+						);
+					}
 				}
 
                 echo $this->Search->date( 'Contratinsertion.datevalidation_ci', 'Date de validation du contrat' );
