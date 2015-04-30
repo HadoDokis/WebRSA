@@ -259,49 +259,16 @@ CG 976
 -- On détruit les contraintes de Foreign Key pour éviter les problêmes
 --------------------------------------------------------------------------------
 
-ALTER TABLE IF EXISTS accompagnementscuis66 DROP CONSTRAINT IF EXISTS accompagnementscuis66_cui66_id_fkey;
-ALTER TABLE IF EXISTS accompagnementscuis66 DROP CONSTRAINT IF EXISTS accompagnementscuis66_immersioncui_id_fkey;
-ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_adressecui_id_fkey;
-ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_partenairecui_id_fkey;
-ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_personne_id_fkey1;
-ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_personnecui_id_fkey;
-ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_user_id_fkey;
-ALTER TABLE IF EXISTS decisionscuis66 DROP CONSTRAINT IF EXISTS decisionscuis66_cui66_id_fkey;
+ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_cui66_id_fkey;
+ALTER TABLE accompagnementscuis66 DROP CONSTRAINT accompagnementscuis66_immersioncui_id_fkey;
+ALTER TABLE cuis DROP CONSTRAINT cuis_adressecui_id_fkey;
+ALTER TABLE cuis DROP CONSTRAINT cuis_partenairecui_id_fkey;
+ALTER TABLE cuis DROP CONSTRAINT cuis_personne_id_fkey1;
+ALTER TABLE cuis DROP CONSTRAINT cuis_personnecui_id_fkey;
+ALTER TABLE cuis DROP CONSTRAINT cuis_user_id_fkey;
+ALTER TABLE decisionscuis66 DROP CONSTRAINT decisionscuis66_cui66_id_fkey;
 
 
---------------------------------------------------------------------------------
--- On renomme les anciennes tables du CUI
---------------------------------------------------------------------------------
-
-DO LANGUAGE plpgsql $$ DECLARE
-BEGIN
-
-IF EXISTS( select tablename from pg_tables where tablename = 'cui_bak' )
-THEN RAISE NOTICE 'La table cui_bak existe déja';
-ELSE ALTER TABLE IF EXISTS cuis RENAME TO cui_bak ;
-END IF;
-
-IF EXISTS( select tablename from pg_tables where tablename = 'rupturescuis66_bak' )
-THEN RAISE NOTICE 'La table rupturescuis66_bak existe déja';
-ELSE ALTER TABLE IF EXISTS rupturescuis66 RENAME TO rupturescuis66_bak ;
-END IF;
-
-IF EXISTS( select tablename from pg_tables where tablename = 'suspensionscuis66_bak' )
-THEN RAISE NOTICE 'La table suspensionscuis66_bak existe déja';
-ELSE ALTER TABLE IF EXISTS suspensionscuis66 RENAME TO suspensionscuis66_bak ;
-END IF;
-
-IF EXISTS( select tablename from pg_tables where tablename = 'accompagnementscuis66_bak' )
-THEN RAISE NOTICE 'La table accompagnementscuis66_bak existe déja';
-ELSE ALTER TABLE IF EXISTS accompagnementscuis66 RENAME TO accompagnementscuis66_bak ;
-END IF;
-
-IF EXISTS( select tablename from pg_tables where tablename = 'decisionscuis66_bak' )
-THEN RAISE NOTICE 'La table decisionscuis66_bak existe déja';
-ELSE ALTER TABLE IF EXISTS decisionscuis66 RENAME TO decisionscuis66_bak ;
-END IF;
-
-END $$;
 
 --------------------------------------------------------------------------------
 -- Règle de validation inList pour des SMALLINT
