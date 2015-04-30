@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Suspensioncui66.
+	 * Fichier source de la classe Suspensioncui66.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,111 +9,103 @@
 	 */
 
 	/**
-	 * La classe Suspensioncui66 ...
+	 * La classe Suspensioncui66 est la classe contenant les avis techniques du CUI pour le CG 66.
 	 *
 	 * @package app.Model
 	 */
 	class Suspensioncui66 extends AppModel
 	{
 		public $name = 'Suspensioncui66';
-
+		
 		public $recursive = -1;
-
-		public $actsAs = array(
-			'Containable',
-			'Enumerable',
-			'Formattable',
-            'Pgsqlcake.PgsqlAutovalidate'
-		);
-
-		public $belongsTo = array(
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'cui_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+		
+        public $belongsTo = array(
+			'Cui66' => array(
+				'className' => 'Cui66',
+				'foreignKey' => 'cui66_id',
+				'dependent' => true,
 			),
-			'User' => array(
-				'className' => 'User',
-				'foreignKey' => 'cui_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
-		);
-        
-        /**
-         * Associations "Has Many".
-         * @var array
-         */
-        public $hasMany = array(
-			'Fichiermodule' => array(
-				'className' => 'Fichiermodule',
-				'foreignKey' => false,
-				'dependent' => false,
-				'conditions' => array(
-					'Fichiermodule.modele = \'Suspensioncui66\'',
-					'Fichiermodule.fk_value = {$__cakeID__$}'
-				),
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			)
         );
-
-        /**
-         * * Associations "Has And Belongs To Many".
-         * @var array
-         */
-        public $hasAndBelongsToMany = array(
-            'Motifsuspensioncui66' => array(
-                'className' => 'Motifsuspensioncui66',
-                'joinTable' => 'motifssuspensioncuis66_suspensionscuis66',
-                'foreignKey' => 'suspensioncui66_id',
-                'associationForeignKey' => 'motifsuspensioncui66_id',
-                'unique' => true,
-                'conditions' => '',
-                'fields' => '',
-                'order' => '',
-                'limit' => '',
-                'offset' => '',
-                'finderQuery' => '',
-                'deleteQuery' => '',
-                'insertQuery' => '',
-                'with' => 'Motifsuspensioncui66Suspensioncui66'
-            )
-        );
+		
 		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
+		 * Behaviors utilisés par le modèle.
 		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
+		 * @var array
 		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "Cui.personne_id" ),
-				'joins' => array(
-					$this->join( 'Cui', array( 'type' => 'INNER' ) )
-				),
+		public $actsAs = array(
+			'Formattable',
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
+		);
+		
+		/**
+		 * 
+		 * @param integer $cui66_id
+		 * @param integer $id
+		 * @return array
+		 * @fixme Envoyer une exception si on ne trouve pas l'enregistrement
+		 */
+		public function prepareAddEditFormData( $cui66_id, $id = null ) {
+			// Ajout
+			if( empty( $id ) ) {
+				$result = array(
+					'Suspensioncui66' => array(
+						'cui66_id' => $cui66_id,
+					)
+				);
+			}
+			// Mise à jour
+			else {
+				$query = $this->queryView($id);
+				$result = $this->find( 'first', $query );
+			}
+
+			return $result;
+		}
+		
+		public function queryView( $id ) {
+			$query = array(
 				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
+					'Suspensioncui66.id' => $id,
+				)
 			);
 
-			$result = $this->find( 'first', $querydata );
+			return $query;
+		}
+		
+		/**
+		 * 
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveAddEditFormData( array $data, $user_id = null ) {
+			$data['Suspensioncui66']['user_id'] = $user_id;
+			
+			$this->create($data);
+			$success = $this->save();
+			
+			return $success;
+		}
+				
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			
+			$optionSuspension = $this->enums();
+			$optionSuspension['Suspensioncui66']['motif'] = ClassRegistry::init( 'Motifsuspensioncui66' )->find( 'list' );
 
-			if( !empty( $result ) ) {
-				return $result['Cui']['personne_id'];
-			}
-			else {
-				return null;
-			}
+			$options = Hash::merge(
+				$options,
+				$optionSuspension
+			);
+			
+			return $options;
 		}
 	}
 ?>

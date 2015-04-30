@@ -80,6 +80,7 @@ var Validation = {
 		var i;
 		if ( typeof toString(value) === 'string' && Array.isArray( array ) ){
 			for(i=0; i<array.length; i++){
+				array[i] = array[i] === null ? '' : array[i];
 				if ( (sameType && value === array[i]) || (!sameType && Validation.similarTo( value, array[i] )) ){
 					return true;
 				}
@@ -379,7 +380,7 @@ var Validation = {
 			return false;
 		}
 		
-		if ( Validation.inList( targetValue, valeurs ) === condition ){
+		if ( Validation.inList( targetValue, valeurs, false ) === condition ){
 			return Validation.notEmpty( value );
 		}		
 		return true;

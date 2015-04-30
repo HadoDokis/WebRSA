@@ -1,0 +1,187 @@
+<?php
+	/**
+	 * Fichier source de la classe Emailcui.
+	 *
+	 * PHP 5.3
+	 *
+	 * @package app.Model
+	 * @license CeCiLL V2 (http://www.cecill.info/licences/Licence_CeCILL_V2-fr.html)
+	 */
+
+	/**
+	 * La classe Emailcui est la classe contenant les e-mails du CUI.
+	 *
+	 * @package app.Model
+	 */
+	class Emailcui extends AppModel
+	{
+		public $name = 'Emailcui';
+		
+		public $recursive = -1;
+		
+		public $belongsTo = array(
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'cui_id',
+				'dependent' => true,
+			),
+		);
+		
+		/**
+		 * Behaviors utilisés par le modèle.
+		 *
+		 * @var array
+		 */
+		public $actsAs = array(
+			'Formattable',
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
+		);
+		
+		public $validate = array(
+			'emailredacteur' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'allowEmpty' => true,
+				)
+			),
+			'emailemployeur' => array(
+				'email' => array(
+					'rule' => array( 'email' ),
+					'allowEmpty' => false,
+				)
+			),
+			'titre' => array(
+				array(
+					'rule' => array('notEmpty'),
+				),
+			),
+			'message' => array(
+				array(
+					'rule' => array('notEmpty'),
+				),
+			),
+		);
+		
+		/**
+		 * 
+		 * @param integer $cui_id
+		 * @param integer $id
+		 * @return array
+		 */
+		public function prepareFormDataAddEdit( $personne_id, $cui_id, $email_id = null ) {
+			// Ajout
+			if( empty( $email_id ) ) {
+				$query = array(
+					'fields' => array(
+						'Adressecui.email',
+						'Cui66.id',
+						'Partenairecui.id',
+						'Partenairecui66.id',
+						'Adressecui.id',
+					),
+					'recursive' => -1,
+					'conditions' => array(
+						'Cui.id' => $cui_id,
+						'Cui.personne_id' => $personne_id
+					),
+					'joins' => array(
+						$this->Cui->join( 'Partenairecui', array( 'type' => 'INNER' ) ),
+						$this->Cui->join( 'Cui66', array( 'type' => 'INNER' ) ),
+						$this->Cui->Partenairecui->join( 'Adressecui', array( 'type' => 'INNER' ) ),
+						$this->Cui->Partenairecui->join( 'Partenairecui66', array( 'type' => 'INNER' ) ),
+					)
+				);
+				$record = $this->Cui->find( 'first', $query );
+
+				if ( empty($record) ){
+					throw new NotFoundException();
+				}
+				
+				$result = array(
+					'Emailcui' => array(
+						'cui_id' => $cui_id,
+						'cui66_id' => $record['Cui66']['id'],
+						'partenairecui_id' => $record['Partenairecui']['id'],
+						'partenairecui66_id' => $record['Partenairecui66']['id'],
+						'Adressecui_id' => $record['Adressecui']['id'],
+						'personne_id' => $personne_id,
+						'emailemployeur' => $record['Adressecui']['email'],
+					),
+				);
+			}
+			// Mise à jour
+			else {
+				$query = $this->queryView($email_id);
+				$result = $this->find( 'first', $query );
+				$result['Emailcui']['pj'] = explode( '_', $result['Emailcui']['pj'] );
+			}
+			
+			return $result;
+		}
+		
+		public function queryView( $email_id ){
+			$query = array( 
+				'conditions' => array(
+					'Emailcui.id' => $email_id,
+				) 
+			);
+			
+			return $query;
+		}
+		
+		/**
+		 * 
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveAddEdit( array $data, $user_id = null ) {
+			$data['Emailcui']['user_id'] = $user_id;
+			$data['Emailcui']['pj'] = implode( '_', $data['Emailcui']['pj'] );
+			
+			$this->create($data);
+			$success = $this->save($data);
+						
+			return $success;
+		}
+		
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
+		 * @return array
+		 */
+		public function options( array $params = array() ) {
+			$options = array();
+			
+			// Fichiers liés
+			$query = array(
+				'fields' => array(
+					'Piecemailcui66.id',
+					'Piecemailcui66.name'
+				),
+				'recursive' => -1,
+				'conditions' => array(
+					'Piecemailcui66.isactif' => '1',
+					'Piecemailcui66.haspiecejointe' => '1'
+				),
+				'depend' => false
+			);
+			$files = ClassRegistry::init( 'Piecemailcui66' )->find( 'all', $query );
+			foreach( $files as $file ){
+				$options['Piecemailcui66'][$file['Piecemailcui66']['id']] = $file['Piecemailcui66']['name'];
+			}
+			
+			// Modeles d'e-mail parametrable
+			$options['Emailcui']['textmailcui66_id'] = ClassRegistry::init( 'Textmailcui66' )->find( 'list' );
+
+			$options = Hash::merge(
+				$options,
+				$this->enums()
+			);
+
+			return $options;
+		}
+	}
+?>

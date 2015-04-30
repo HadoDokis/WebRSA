@@ -152,7 +152,15 @@
 				'fields' => null,
 				'order' => null,
 				'dependent' => false
-			)
+			),
+			'Cui' => array(
+				'className' => 'Cui',
+				'foreignKey' => 'entreeromev3_id',
+				'conditions' => null,
+				'fields' => null,
+				'order' => null,
+				'dependent' => false
+			),
 		);
 
 		/**

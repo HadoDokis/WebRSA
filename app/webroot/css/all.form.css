@@ -364,3 +364,25 @@ input[type=text],input[type=number],input[type=email],input[type=date],input[typ
 	word-spacing: 0px;
 	writing-mode: lr-tb;
 }
+
+.Cui66AddEdit div.input.select, div.input.text, div.input.date, div.input.value{
+	min-height: 21px;
+}
+
+.Cui66AddEdit span.label{
+	min-height: 17px;
+	padding: 4px 0;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.Cui66AddEdit span.input{
+	min-height: 17px;
+	padding: 4px 0;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.Cui66AddEdit div.input.value.date{
+	margin: 0;
+}

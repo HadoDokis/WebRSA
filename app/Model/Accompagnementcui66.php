@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Code source de la classe Accompagnementcui66.
+	 * Fichier source de la classe Accompagnementcui66.
 	 *
 	 * PHP 5.3
 	 *
@@ -9,228 +9,161 @@
 	 */
 
 	/**
-	 * La classe Accompagnementcui66 ...
+	 * La classe Accompagnementcui66 est la classe contenant les accompagnements du CUI pour le CG 66.
 	 *
 	 * @package app.Model
 	 */
 	class Accompagnementcui66 extends AppModel
 	{
 		public $name = 'Accompagnementcui66';
-
+		
 		public $recursive = -1;
-
-		public $actsAs = array(
-			'Pgsqlcake.PgsqlAutovalidate',
-			'Containable',
-			'Formattable' => array(
-				'suffix' => array( 'structurereferente_id', 'referent_id', 'prestataire_id', 'metieraffectation_id' ),
-			),
-			'Gedooo.Gedooo'
-		);
-
+				
 		public $belongsTo = array(
-			'Cui' => array(
-				'className' => 'Cui',
-				'foreignKey' => 'cui_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
+			'Cui66' => array(
+				'className' => 'Cui66',
+				'foreignKey' => 'cui66_id',
+				'dependent' => true,
 			),
-			'User' => array(
-				'className' => 'User',
-				'foreignKey' => 'user_id',
-				'conditions' => '',
-				'fields' => '',
-				'order' => ''
-			)
-		);
-
-		public $hasMany = array(
-			'Fichiermodule' => array(
-				'className' => 'Fichiermodule',
-				'foreignKey' => false,
-				'dependent' => false,
-				'conditions' => array(
-					'Fichiermodule.modele = \'Accompagnementcui66\'',
-					'Fichiermodule.fk_value = {$__cakeID__$}'
-				),
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-            'Bilancui66' => array(
-				'className' => 'Bilancui66',
-				'foreignKey' => 'accompagnementcui66_id',
-				'dependent' => false,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-            'Formationcui66' => array(
-				'className' => 'Formationcui66',
-				'foreignKey' => 'accompagnementcui66_id',
-				'dependent' => false,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
-			),
-            'Periodeimmersioncui66' => array(
-				'className' => 'Periodeimmersioncui66',
-				'foreignKey' => 'accompagnementcui66_id',
-				'dependent' => false,
-				'conditions' => '',
-				'fields' => '',
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'exclusive' => '',
-				'finderQuery' => '',
-				'counterQuery' => ''
+			'Immersioncui66' => array(
+				'className' => 'Immersioncui66',
+				'foreignKey' => 'immersioncui66_id',
+				'dependent' => true,
 			),
 		);
-
-
-
+		
 		/**
-		* Chemin relatif pour les modèles de documents .odt utilisés lors des
-		* impressions. Utiliser %s pour remplacer par l'alias.
-		*/
-		public $modelesOdt = array(
-			'CUI/periodeimmersion.odt',
-		);
-
-		/**
+		 * Behaviors utilisés par le modèle.
 		 *
+		 * @var array
+		 */
+		public $actsAs = array(
+			'Formattable',
+			'Postgres.PostgresAutovalidate',
+			'Validation2.Validation2Formattable',
+		);
+		
+		/**
+		 * 
+		 * @param integer $cui66_id
 		 * @param integer $id
-		 * @param integer $user_id
+		 * @return array
+		 * @fixme Envoyer une exception si on ne trouve pas l'enregistrement
+		 */
+		public function prepareAddEditFormData( $cui66_id, $id = null ) {
+			// Ajout
+			if( empty( $id ) ) {
+				$result = array(
+					'Accompagnementcui66' => array(
+						'cui66_id' => $cui66_id,
+					)
+				);
+			}
+			// Mise à jour
+			else {
+				$query = $this->queryView( $id, false );
+				$result = $this->find( 'first', $query );
+				$result = $this->Immersioncui66->Entreeromev3->prepareFormDataAddEdit( $result );
+			}
+
+			return $result;
+		}
+
+		// TODO: doc
+		public function queryView( $id, $joinEntreeromev3 = true ) {
+			$query = array(
+				'fields' => array_merge(
+					$this->fields(),
+					$this->Immersioncui66->fields(),
+					$this->Immersioncui66->Entreeromev3->fields()
+				),
+				'conditions' => array(
+					'Accompagnementcui66.id' => $id
+				),
+				'joins' => array(
+					$this->join( 'Immersioncui66', array( 'type' => 'LEFT OUTER' ) ),
+					$this->Immersioncui66->join( 'Entreeromev3', array( 'type' => 'LEFT OUTER' ) ),
+				)
+			);
+			
+			if( $joinEntreeromev3 ) {
+				$query = $this->Immersioncui66->Entreeromev3->getCompletedRomev3Joins( $query );
+			}
+
+			return $query;
+		}
+		
+		/**
+		 * 
+		 * @param array $data
+		 * @return boolean
+		 */
+		public function saveAddEditFormData( array $data, $user_id = null ) {
+			$data['Accompagnementcui66']['user_id'] = $user_id;
+			$success = true;
+			
+			// Si le genre d'accompagnement est immersion
+			if ( isset($data['Immersioncui66']) && $data['Accompagnementcui66']['genre'] === 'immersion' ){$data['Immersioncui66']['user_id'] = $user_id;//FIXME
+				unset( $this->Immersioncui66->Entreeromev3->validate['familleromev3_id']['notEmpty'] );
+				// Si un code famille (rome v3) est vide, on ne sauvegarde pas le code rome
+				if ( !isset($data['Entreeromev3']['familleromev3_id']) || $data['Entreeromev3']['familleromev3_id'] === '' ){ 
+					$data['Immersioncui66']['entreeromev3_id'] = null;
+
+					// Si le code rome avait un id, on supprime l'entreeromev3 correspondant
+					if ( isset($data['Entreeromev3']['id']) && $data['Entreeromev3']['id'] !== '' ){
+						$this->Immersioncui66->Entreeromev3->id = $data['Entreeromev3']['id'];
+						$success = $this->Immersioncui66->Entreeromev3->delete() && $success;
+					}
+				}
+				// Dans le cas contraire, on enregistre le tout
+				else{
+					$this->Immersioncui66->Entreeromev3->create($data);
+					$success = $this->Immersioncui66->Entreeromev3->save() && $success;
+					$data['Immersioncui66']['entreeromev3_id'] = $this->Immersioncui66->Entreeromev3->id;
+				}
+				
+				$this->Immersioncui66->create($data);
+				$success = $this->Immersioncui66->save() && $success;
+				$data['Accompagnementcui66']['immersioncui66_id'] = $this->Immersioncui66->id;
+			}
+			
+			$this->create($data);
+			$success = $this->save() && $success;
+			
+			return $success;
+		}
+		
+		/**
+		 * Retourne les options nécessaires au formulaire de recherche, au formulaire,
+		 * aux impressions, ...
+		 *
+		 * @param array $params <=> array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false )
 		 * @return array
 		 */
-		public function getDataForPdf( $id, $user_id ) {
-			$accompagnementcui66 = $this->find(
-				'first',
-				array(
-					'fields' => array_merge(
-						$this->fields(),
-						$this->Cui->fields(),
-						$this->Cui->Personne->fields(),
-						$this->Cui->Referent->fields(),
-						$this->Cui->Structurereferente->fields(),
-						$this->Cui->Personne->Foyer->fields(),
-						$this->Cui->Personne->Foyer->Dossier->fields(),
-						$this->Cui->Personne->Foyer->Adressefoyer->Adresse->fields()
-					),
-					'joins' => array(
-						$this->join( 'Cui', array( 'type' => 'INNER' ) ),
-						$this->Cui->join( 'Personne', array( 'type' => 'INNER' ) ),
-						$this->Cui->join( 'Referent', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cui->join( 'Structurereferente', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cui->Personne->join( 'Foyer', array( 'type' => 'INNER' ) ),
-						$this->Cui->Personne->Foyer->join( 'Adressefoyer', array( 'type' => 'LEFT OUTER' ) ),
-						$this->Cui->Personne->Foyer->join( 'Dossier', array( 'type' => 'INNER' ) ),
-						$this->Cui->Personne->Foyer->Adressefoyer->join( 'Adresse', array( 'type' => 'LEFT OUTER' ) ),
-					),
-					'conditions' => array(
-						'Accompagnementcui66.id' => $id,
-						'OR' => array(
-							'Adressefoyer.id IS NULL',
-							'Adressefoyer.id IN ( '.$this->Cui->Personne->Foyer->Adressefoyer->sqDerniereRgadr01( 'Foyer.id' ).' )'
-						)
-					),
-					'contain' => false
-				)
-			);
+		public function options( array $params = array() ) {
+			$options = array();
+			$params = $params + array( 'allocataire' => true, 'find' => false, 'autre' => false, 'pdf' => false );
 
-			$user = $this->User->find(
-				'first',
-				array(
-					'conditions' => array(
-						'User.id' => $user_id
-					),
-					'contain' => false
-				)
-			);
-			$accompagnementcui66 = Set::merge( $accompagnementcui66, $user );
+			if( Hash::get( $params, 'allocataire' ) ) {
+				$Allocataire = ClassRegistry::init( 'Allocataire' );
 
-			return $accompagnementcui66;
-		}
-
-		/**
-		 * Retourne le PDF de notification du CUI.
-		 *
-		 * @param integer $id L'id du CUI pour lequel on veut générer l'impression
-		 * @return string
-		 */
-		public function getDefaultPdf( $id, $user_id ) {
-
-			$accompagnementcui66 = $this->getDataForPdf( $id, $user_id );
-			///Traduction pour les données de la Personne/Contact/Partenaire/Référent
-			$Option = ClassRegistry::init( 'Option' );
-			$options = array(
-				'Personne' => array(
-					'qual' => $Option->qual()
-				),
-				'Referent' => array(
-					'qual' => $Option->qual()
-				),
-				'Structurereferente' => array(
-					'type_voie' => $Option->typevoie()
-				),
-				'Type' => array(
-					'voie' => $Option->typevoie()
-				),
-				'type' => array(
-					'voie' => $Option->typevoie()
-				),
-			);
-
-			return $this->ged(
-				$accompagnementcui66,
-				'CUI/periodeimmersion.odt',
-				false,
-				$options
-			);
-		}
-
-		/**
-		 * Retourne l'id de la personne à laquelle est lié un enregistrement.
-		 *
-		 * @param integer $id L'id de l'enregistrement
-		 * @return integer
-		 */
-		public function personneId( $id ) {
-			$querydata = array(
-				'fields' => array( "Cui.personne_id" ),
-				'joins' => array(
-					$this->join( 'Cui', array( 'type' => 'INNER' ) )
-				),
-				'conditions' => array(
-					"{$this->alias}.id" => $id
-				),
-				'recursive' => -1
-			);
-
-			$result = $this->find( 'first', $querydata );
-
-			if( !empty( $result ) ) {
-				return $result['Cui']['personne_id'];
+				$options = $Allocataire->options();
 			}
-			else {
-				return null;
+			
+			if( $params['find'] ) {
+				$options = Hash::merge(
+					$options,
+					$this->Cui66->Cui->Entreeromev3->options()
+				);
 			}
+
+			$options = Hash::merge(
+				$options,
+				$this->enums(),
+				$this->Immersioncui66->enums()
+			);
+
+			return $options;
 		}
 	}
 ?>

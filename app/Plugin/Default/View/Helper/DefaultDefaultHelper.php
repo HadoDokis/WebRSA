@@ -301,6 +301,28 @@
 
 			return $this->DefaultForm->inputs( $inputs );
 		}
+		
+		/**
+		 * Retourne un pseudo-formulaire de view.
+		 * 
+		 * @param array $fields
+		 * @param array $params
+		 * @return string
+		 */
+		public function subformView( array $fields, array $params = array() ) {
+			$params += array(
+				'view' => true
+			);
+
+			$fields = Hash::normalize( $fields );
+			foreach( $fields as $field => $fieldParams ) {
+				if( !isset( $fieldParams['view'] ) ) {
+					$fields[$field]['view'] = $params['view'];
+				}
+			}
+			
+			return $this->subform($fields, $params);
+		}
 
 		/**
 		 * Effectue l'export CSV des données.

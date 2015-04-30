@@ -1126,6 +1126,13 @@ td.button.edit.disabled a, td.action a.edit.disabled, td span.button.edit.disabl
 	background-image: url( ../img/icons/pencil_disabled.png );
 }
 
+td.button.email_send a, td.action a.email_send, td span.button.email_send, table.default2 td a.button.email_send {
+	background-image: url( ../img/icons/email_go.png );
+}
+td.button.email_send.disabled a, td.action a.email_send.disabled, td span.button.email_send.disabled, table.default2 td a.button.email_send.disabled, td.action span.email_send.disabled {
+	background-image: url( ../img/icons/email_disabled.png );
+}
+
 td.button.clore a, td.action a.clore, td span.button.clore, table.default2 td a.button.clore {
 	background-image: url( ../img/icons/page_white_link.png );
 }

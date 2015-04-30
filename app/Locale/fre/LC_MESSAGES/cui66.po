@@ -1,0 +1,135 @@
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-25 23:57+0100\n"
+"PO-Revision-Date: 2009-01-26 09:34+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+###############################################################################
+# Contrat Unique d'Insertion
+###############################################################################
+
+msgid "Cuis66::index"
+msgstr "Contrat Unique d'Insertion"
+
+###############################################################################
+# Type de formulaire
+###############################################################################
+
+msgid "ENUM::TYPEFORMULAIRE::CUI"
+msgstr "CUI"
+
+msgid "ENUM::TYPEFORMULAIRE::CUIAvenir"
+msgstr "CUI Emploi d'Avenir"
+
+###############################################################################
+# Type de contrat
+###############################################################################
+
+msgid "ENUM::TYPECONTRAT::ACI"
+msgstr "CAE ACI"
+
+msgid "ENUM::TYPECONTRAT::Hors"
+msgstr "Hors ACI"
+
+msgid "ENUM::TYPECONTRAT::CIE"
+msgstr "CIE"
+
+msgid "ENUM::TYPECONTRAT::EAV"
+msgstr "EAV"
+
+msgid "ENUM::TYPECONTRAT::CCDI"
+msgstr "CCDI"
+
+###############################################################################
+# DOSSIER RECU/ELIGIBLE/COMPLET
+###############################################################################
+
+msgid "ENUM::DOSSIERRECU::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERRECU::1"
+msgstr "Oui"
+
+msgid "ENUM::DOSSIERELIGIBLE::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERELIGIBLE::1"
+msgstr "Oui"
+
+msgid "ENUM::DOSSIERCOMPLET::0"
+msgstr "Non"
+
+msgid "ENUM::DOSSIERCOMPLET::1"
+msgstr "Oui"
+
+###############################################################################
+# Zone couverte
+###############################################################################
+
+msgid "ENUM::ZONECOUVERTE::ZUS"
+msgstr "ZUS - Zone Urbaine Sensible"
+
+msgid "ENUM::ZONECOUVERTE::ZRR"
+msgstr "ZRR - Zone de Revitalisation Rurale"
+
+###############################################################################
+# Etat / Position Cui
+###############################################################################
+
+msgid "ENUM::ETATDOSSIERCUI66::attentepiece"
+msgstr "En attente de pièces (Verification éligibilité)"
+
+msgid "ENUM::ETATDOSSIERCUI66::dossierrecu"
+msgstr "En attente de pièces (Dossier non complet)"
+
+msgid "ENUM::ETATDOSSIERCUI66::dossiereligible"
+msgstr "En attente de pièces (Dossier non reçu)"
+
+msgid "ENUM::ETATDOSSIERCUI66::attentemail"
+msgstr "En attente d'envoi de l'e-mail pour l'employeur"
+
+msgid "ENUM::ETATDOSSIERCUI66::formulairecomplet"
+msgstr "En attente d'informations complémentaires"
+
+msgid "ENUM::ETATDOSSIERCUI66::attenteavis"
+msgstr "En attente d'avis techniques"
+
+msgid "ENUM::ETATDOSSIERCUI66::attentedecision"
+msgstr "En attente de décision"
+
+msgid "ENUM::ETATDOSSIERCUI66::attentenotification"
+msgstr "En attente de notification"
+
+msgid "ENUM::ETATDOSSIERCUI66::encours"
+msgstr "En cours"
+
+msgid "ENUM::ETATDOSSIERCUI66::perime"
+msgstr "Fin de contrat"
+
+msgid "ENUM::ETATDOSSIERCUI66::rupturecontrat"
+msgstr "Rupture du CUI depuis le %s"
+
+msgid "ENUM::ETATDOSSIERCUI66::contratsuspendu"
+msgstr "Suspendu jusqu'au %s"
+
+msgid "ENUM::ETATDOSSIERCUI66::decisionsanssuite"
+msgstr "Traité (Décision sans suite)"
+
+msgid "ENUM::ETATDOSSIERCUI66::nonvalide"
+msgstr "nonvalide"
+
+msgid "ENUM::ETATDOSSIERCUI66::annule"
+msgstr "Annulé"

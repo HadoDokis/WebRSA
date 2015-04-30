@@ -1,37 +1,36 @@
 <?php
-$this->pageTitle = __d( 'suspensioncui66', "Suspensioncui66::{$this->action}" );
+	echo $this->FormValidator->generateJavascript();
+	echo $this->Default3->titleForLayout();
 
-if( Configure::read( 'debug' ) > 0 ) {
-    echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-}
-?>
-<?php
-echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
+	}
+		
+	echo $this->Default3->DefaultForm->create( null, array( 'novalidate' => 'novalidate', 'id' => 'Suspensioncui66AddEditForm', 'class' => 'Cui66AddEdit' ) );
 
-    <fieldset>
-        <legend></legend>
-        <?php
-            echo $this->Xform->create( 'Suspensioncui66', array( 'id' => 'suspensioncui66form' ) );
-            if( Set::check( $this->request->data, 'Suspensioncui66.id' ) ){
-                echo $this->Xform->input( 'Suspensioncui66.id', array( 'type' => 'hidden' ) );
-            }
+/***********************************************************************************
+ * Formulaire Suspension
+/***********************************************************************************/
+	
+	echo '<fieldset><legend>' . __d('suspensionscuis66', 'Suspensioncui66.formulaire') . '</legend>'
+		. $this->Default3->subform(
+			array(
+				'Suspensioncui66.id' => array( 'type' => 'hidden' ),
+				'Suspensioncui66.cui66_id' => array( 'type' => 'hidden' ),
+				'Suspensioncui66.observation',
+				'Suspensioncui66.duree',
+				'Suspensioncui66.datedebut' => array( 'dateFormat' => 'DMY' ),
+				'Suspensioncui66.datefin' => array( 'dateFormat' => 'DMY' ),
+				'Suspensioncui66.motif' => array( 'type' => 'select' ),
+				
+			) ,
+			array( 'options' => $options )
+		)
+		. '</fieldset>'
+	;
 
-            echo $this->Form->input( 'Suspensioncui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
-            echo $this->Xform->input( 'Suspensioncui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
-
-            echo $this->Xform->input( 'Suspensioncui66.observation', array( 'label' => __d( 'suspensioncui66', 'Suspensioncui66.observation' ), 'type' => 'textarea' )  );
-            echo $this->Xform->input( 'Suspensioncui66.datedebut', array( 'label' => required( __d( 'suspensioncui66', 'Suspensioncui66.datedebut' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
-            echo $this->Xform->input( 'Suspensioncui66.datefin', array( 'label' => required( __d( 'suspensioncui66', 'Suspensioncui66.datefin' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
-
-            echo $this->Xform->input( 'Motifsuspensioncui66.Motifsuspensioncui66', array( 'type' => 'select', 'label' => 'Motifs de suspension', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listeMotifssuspensioncuis66 ) );
-
-            echo $this->Xform->input( 'Suspensioncui66.formatjournee', array( 'label' => __d( 'suspensioncui66', 'Suspensioncui66.formatjournee' ), 'type' => 'select', 'options' => $options['Suspensioncui66']['formatjournee'], 'empty' => true ) );
-        ?>
-    </fieldset>
-
-    <div class="submit">
-        <?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-    </div>
-<?php echo $this->Form->end();?>
+	echo $this->Default3->DefaultForm->buttons( array( 'Save', 'Cancel' ) );
+	echo $this->Default3->DefaultForm->end();
+	echo $this->Observer->disableFormOnSubmit( 'Suspensioncui66AddEditForm' );
+	

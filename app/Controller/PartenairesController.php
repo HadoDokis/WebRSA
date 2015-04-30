@@ -26,7 +26,8 @@
 
 		public $commeDroit = array(
 			'view' => 'Partenaires:index',
-			'add' => 'Partenaires:edit'
+			'add' => 'Partenaires:edit',
+			'ajax_coordonnees' => 'Partenaires:edit',
 		);
 
 
@@ -174,5 +175,30 @@
 			$this->Default->view( $id );
 		}
 
+		/**
+		 * Permet de récupérer les informations d'un partenaire sous forme de JSON
+		 * 
+		 * @param Number $id
+		 */
+		public function ajax_coordonnees( $id ){
+			$fields = $this->Partenaire->fields();
+			$fields[] = 'Raisonsocialepartenairecui66.name';
+			$query = array(
+				'fields' => $fields,
+				'recursive' => -1,
+				'joins' => array(
+					$this->Partenaire->join( 'Raisonsocialepartenairecui66' )
+				),
+				'conditions' => array( 'Partenaire.id' => $id )
+			);
+			
+			$json = $this->Partenaire->find('first', $query);
+			$json['Partenaire']['raisonsociale'] = $json['Raisonsocialepartenairecui66']['name'];
+			unset($json['Raisonsocialepartenairecui66']);
+
+			$this->set( compact( 'json' ) );
+			$this->layout = 'ajax';
+			$this->render( '/Elements/json' );
+		}
 	}
 ?>

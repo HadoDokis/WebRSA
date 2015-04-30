@@ -512,15 +512,20 @@ class ContratsinsertionController extends AppController
                 $conditionsTypeorient = array('Typeorient.parentid' => $typeOrientPrincipaleEmploiId);
 
                 $cuiEncours = $this->Contratinsertion->Personne->Cui->find(
-                        'first', array(
-                    'conditions' => array(
-                        'Cui.personne_id' => $personne_id,
-                        'Cui.datefinprisecharge >=' => date('Y-m-d'),
-                        'Cui.positioncui66' => array('attavismne', 'attaviselu', 'attavisreferent', 'attdecision', 'encours', 'valid', 'validnotifie')
-                    ),
-                    'contain' => false,
-                    'recursive' => -1
-                        )
+					'first', 
+					array(
+						'conditions' => array(
+							'Cui.personne_id' => $personne_id,
+							'NOT' => array(
+								'Cui66.etatdossiercui66' => array( 'perime', 'rupturecontrat', 'decisionsanssuite', 'nonvalide', 'annule' )
+							)
+						),
+						'contain' => false,
+						'joins' => array(
+							$this->Contratinsertion->Personne->Cui->join( 'Cui66' )
+						),
+						'recursive' => -1
+					)
                 );
                 $this->set(compact('cuiEncours'));
             } else {

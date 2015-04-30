@@ -19,20 +19,11 @@ msgstr ""
 
 ###############################################################################
 
-msgid "Rupturecui66::edit"
-msgstr "Définir la rupture"
+msgid "ENUM::DUREE::matin"
+msgstr "Matin"
 
-msgid "Rupturescuis66::edit"
-msgstr "Modification de l'organisme"
+msgid "ENUM::DUREE::apresmidi"
+msgstr "Après-midi"
 
-msgid "Rupturecui66.name"
-msgstr "Nom de l'organisme"
-
-msgid "Rupturecui66.observation"
-msgstr "Observations"
-
-msgid "Rupturecui66.daterupturecui"
-msgstr "Date de la rupture"
-
-msgid "Rupturecui66.dateenregistrementrupture"
-msgstr "Date d'enregistrement de la rupture"
+msgid "ENUM::DUREE::journee"
+msgstr "Journée"
