@@ -182,8 +182,10 @@
 				$subAllocataire['Accompagnement du parcours']['Contrats'] = array(
 					'url' => '#',
 					'CER' => array( 'url' => array( 'controller' => $contratcontroller, 'action' => 'index', $personne['id'] ) ),
-					'CUI' => array( 'url' => array( 'controller' => 'cuis', 'action' => 'index', $personne['id'] ) ),
 				);
+				if ( Configure::read( 'Cg.departement' ) == 66 ){
+					$subAllocataire['Accompagnement du parcours']['Contrats']['CUI'] = array( 'url' => array( 'controller' => 'cuis66', 'action' => 'index', $personne['id'] ) );
+				}
 				$subAllocataire['Accompagnement du parcours']['Actualisation suivi'] = array(
 					'url' => '#',
 					'Entretiens' => array( 'url' => array( 'controller' => 'entretiens', 'action' => 'index', $personne['id'] ) ),

@@ -478,7 +478,7 @@
 							</tr>
 						</tbody>
 					</table>
-				</td>
+				</td><?php if( Configure::read( 'Cg.departement' ) == 66 ) { ?>
 				<td>
 					<h2>Contrat Unique d'Insertion</h2>
 					<table>
@@ -486,32 +486,32 @@
 						<tbody>
 							<tr class="odd">
 								<th>Date de début</th>
-								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Cui.datedebprisecharge' ) );?></td>
-								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Cui.datedebprisecharge' ) );?></td>
+								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Cui.effetpriseencharge' ) );?></td>
+								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Cui.effetpriseencharge' ) );?></td>
 							</tr>
 							<tr class="even">
 								<th>Date de fin</th>
-								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Cui.datefinprisecharge' ) );?></td>
-								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Cui.datefinprisecharge' ) );?></td>
+								<td><?php echo date_short( Set::classicExtract( $details, 'DEM.Cui.finpriseencharge' ) );?></td>
+								<td><?php echo date_short( Set::classicExtract( $details, 'CJT.Cui.finpriseencharge' ) );?></td>
 							</tr>
 							<tr class="odd">
 								<th>Type de CUI</th>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.secteur' ), $enumcui['Cui']['secteur'] );?></td>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.secteur' ), $enumcui['Cui']['secteur'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui66.typeformulaire' ), $enumcui['Cui66']['typeformulaire'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui66.typeformulaire' ), $enumcui['Cui66']['typeformulaire'] );?></td>
 							</tr>
 							<tr class="even">
 								<th>Décision</th>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.decisioncui' ), $enumcui['Cui']['decisioncui'] );?></td>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.decisioncui' ), $enumcui['Cui']['decisioncui'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Decisioncui66.decision' ), $enumcui['Decisioncui66']['decision'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Decisioncui66.decision' ), $enumcui['Decisioncui66']['decision'] );?></td>
 							</tr>
 							<tr class="odd">
 								<th>Etat du dossier</th>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui.positioncui66' ), $enumcui['Cui']['positioncui66'] );?></td>
-								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui.positioncui66' ), $enumcui['Cui']['positioncui66'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'DEM.Cui66.etatdossiercui66' ), $enumcui['Cui66']['etatdossiercui66'] );?></td>
+								<td><?php echo Set::enum( Set::classicExtract( $details, 'CJT.Cui66.etatdossiercui66' ), $enumcui['Cui66']['etatdossiercui66'] );?></td>
 							</tr>
 						</tbody>
 					</table>
-				</td>
+				</td><?php } ?>
 			</tr>
 			<tr>
 				<td>

@@ -92,13 +92,56 @@ function zeroFillDate( dateString ){
 	return dateString.replace( /^(\d)\-/, '0$1-' ).replace( /\-(\d)\-/, '-0$1-' ).replace( /\-(\d)$/, '-0$1' );
 }
 
+/**
+ * Vérifi si un array contien une valeur
+ * @param {String|Number} value
+ * @param {Array} array
+ * @returns {Boolean}
+ */
+function inArray( needle, haystack ){
+	'use strict';
+	var key;
+	if ( needle === null || typeof toString(needle) !== 'string' || !Array.isArray( haystack ) ){
+		return false;
+	}
+	for (key in haystack){
+		if ( haystack.hasOwnProperty(key) && haystack[key] === needle ) { return true; }
+	}
+	return false;
+}
+
+/**
+ * Cast d'un array
+ * @param {Mixed} values
+ * @returns {Array}
+ */
+function castArray( values ){
+	'use strict';
+	return typeof values !== 'object' ? [values] : values;
+}
+
+/**
+ * Permet d'obtenir un identifiant façon cake à partir d'un Model.nomdechamp
+ * @param {String} modelField
+ * @returns {String}
+ */
+function fieldId( modelField ){
+	'use strict';
+	var i, result = '', x, exploded = modelField.split(/[\._]/);
+	for(i=0; i<exploded.length; i++){
+		x = exploded[i];
+		result += x.charAt(0).toUpperCase() + x.substring(1).toLowerCase();
+	}
+	return result;
+}
+
 /*************************************************************************
  * Execution systématique												 *
  *************************************************************************/
 
 document.observe( "dom:loaded", function(){
 	'use strict';
-	
+
 	// Rend les boutons radio décochable si ils portent la class uncheckable
 	$$('input[type="radio"].uncheckable').each(function( radio ){
 		radio.state = radio.checked;

@@ -1,36 +1,34 @@
 <?php
-$this->pageTitle = __d( 'rupturecui66', "Rupturecui66::{$this->action}" );
+	echo $this->FormValidator->generateJavascript();
+	echo $this->Default3->titleForLayout();
 
-if( Configure::read( 'debug' ) > 0 ) {
-    echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-}
-?>
-<?php
-    echo $this->Xhtml->tag( 'h1', $this->pageTitle );
-?>
+	if( Configure::read( 'debug' ) > 0 ) {
+		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
+		echo $this->Html->script( array( 'prototype.event.simulate.js', 'dependantselect.js' ), array( 'inline' => false ) );
+	}
+		
+	echo $this->Default3->DefaultForm->create( null, array( 'novalidate' => 'novalidate', 'id' => 'Rupturecui66AddEditForm', 'class' => 'Cui66AddEdit' ) );
 
-    <fieldset>
-        <legend></legend>
-        <?php
-        echo $this->Xform->create( 'Rupturecui66', array( 'id' => 'rupturecui66form' ) );
-        if( Set::check( $this->request->data, 'Rupturecui66.id' ) ){
-            echo $this->Xform->input( 'Rupturecui66.id', array( 'type' => 'hidden' ) );
-        }
+/***********************************************************************************
+ * Formulaire Rupture
+/***********************************************************************************/
+	
+	echo '<fieldset><legend>' . __d('suspensionscuis66', 'Rupturecui66.formulaire') . '</legend>'
+		. $this->Default3->subform(
+			array(
+				'Rupturecui66.id' => array( 'type' => 'hidden' ),
+				'Rupturecui66.cui66_id' => array( 'type' => 'hidden' ),
+				'Rupturecui66.observation',
+				'Rupturecui66.daterupture' => array( 'dateFormat' => 'DMY' ),
+				'Rupturecui66.motif' => array( 'type' => 'select' ),
+				'Rupturecui66.dateenregistrement' => array( 'view' => true, 'hidden' => true, 'type' => 'date' )
+			) ,
+			array( 'options' => $options )
+		)
+		. '</fieldset>'
+	;
 
-        echo $this->Form->input( 'Rupturecui66.cui_id', array( 'type' => 'hidden', 'value' => $cui_id ) );
-        echo $this->Xform->input( 'Rupturecui66.user_id', array( 'type' => 'hidden', 'value' => $userConnected ) );
-
-        echo $this->Xform->input( 'Rupturecui66.daterupturecui', array( 'label' => required( __d( 'rupturecui66', 'Rupturecui66.daterupturecui' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
-        echo $this->Xform->input( 'Rupturecui66.observation', array( 'label' => __d( 'rupturecui66', 'Rupturecui66.observation' ), 'type' => 'textarea' )  );
-        echo $this->Xform->input( 'Rupturecui66.dateenregistrementrupture', array( 'label' => required( __d( 'rupturecui66', 'Rupturecui66.dateenregistrementrupture' ) ), 'type' => 'date', 'dateFormat'=>'DMY', 'maxYear'=>date('Y')+2, 'minYear'=>date('Y')-2 , 'empty' => true)  );
-
-
-        echo $this->Xform->input( 'Motifrupturecui66.Motifrupturecui66', array( 'type' => 'select', 'label' => 'Motifs de rupture', 'multiple' => 'checkbox', 'empty' => false, 'options' => $listeMotifsrupturescuis66 ) );
-        ?>
-    </fieldset>
-
-    <div class="submit">
-        <?php echo $this->Form->submit( 'Enregistrer', array( 'div' => false ) );?>
-        <?php echo $this->Form->submit('Annuler', array( 'name' => 'Cancel', 'div' => false ) );?>
-    </div>
-<?php echo $this->Form->end();?>
+	echo $this->Default3->DefaultForm->buttons( array( 'Save', 'Cancel' ) );
+	echo $this->Default3->DefaultForm->end();
+	echo $this->Observer->disableFormOnSubmit( 'Rupturecui66AddEditForm' );
+	

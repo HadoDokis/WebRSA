@@ -402,6 +402,39 @@
 
 			$this->assertEqualsXhtml( $result, $expected );
 		}
+		
+		/**
+		 * Test de la méthode DefaultDefaultHelper::subformView(()
+		 *
+		 * @return void
+		 */
+		public function testSubformView() {
+			// 2. Test avec le label
+			$fields = array(
+				'Apple.id',
+				'Apple.color',
+			);
+
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subformView( $fields, $params );
+			$expected = '<div class="input value"><span class="label">Apple.id</span><span class="input"></span></div><div class="input value"><span class="label">Apple.color</span><span class="input"></span></div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+
+			// 2. Test sans le label
+			$fields = array(
+				'Apple.id',
+				'Apple.color' => array( 'label' => false ),
+			);
+
+			$params = array( 'options' => array( 'Apple' => array( 'color' => array( 'red' => 'Red' ) ) ) );
+
+			$result = $this->DefaultDefault->subformView( $fields, $params );
+			$expected = '<div class="input value"><span class="label">Apple.id</span><span class="input"></span></div><div class="input value"><span class="label"></span><span class="input"></span></div>';
+
+			$this->assertEqualsXhtml( $result, $expected );
+		}
 
 		/**
 		 * Test de la méthode DefaultCsvHelper::render()

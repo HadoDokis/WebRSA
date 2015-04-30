@@ -1,69 +1,65 @@
 <?php
-	$this->pageTitle = 'Accompagnement';
+	echo $this->Default3->titleForLayout();
 
-	if( Configure::read( 'debug' ) > 0 ) {
-		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
-	}
-?>
-<?php
-	echo $this->Xhtml->tag(
-		'h1',
-		$this->pageTitle = __d( 'accompagnementcui66', "Accompagnementscuis66::{$this->action}" )
-	);
-?>
-<ul class="actionMenu">
-	<li><?php
-			echo $this->Xhtml->addLink(
-				'Ajouter un accompagnement',
-				array( 'controller'=> 'accompagnementscuis66', 'action'=>'add', $cui_id ),
-				$this->Permissions->checkDossier( 'accompagnementscuis66', 'add', $dossierMenu )
-			);
-		?>
-	</li>
-</ul>
-<?php
+	echo $this->element( 'ancien_dossier' );
 
-	echo $this->Default2->index(
-		$accompagnementscuis66,
+	echo $this->Default3->actions(
 		array(
-			'Accompagnementcui66.typeaccompagnementcui66',
-			'Accompagnementcui66.datedebut' => array( 'type' => 'date' ),
-			'Accompagnementcui66.datefin' => array( 'type' => 'date' ),
-			'Accompagnementcui66.nomentaccueil' => array( 'type' => 'text' ),
-			'Accompagnementcui66.datesignature' => array( 'type' => 'date' ),
-			'Fichiermodule.nb_fichiers_lies' => array( 'label' => 'Nb de fichiers liés', 'type' => 'text' )
-		),
-		array(
-			'actions' => array(
-				'Accompagnementscuis66::edit' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'accompagnementscuis66', 'edit', $dossierMenu )
-				),
-				'Accompagnementscuis66::impression' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'accompagnementscuis66', 'impression', $dossierMenu )
-				),
-				'Accompagnementscuis66::delete' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'accompagnementscuis66', 'delete', $dossierMenu )
-				),
-				'Accompagnementscuis66::filelink' => array(
-					'disabled' => !$this->Permissions->checkDossier( 'accompagnementscuis66', 'filelink', $dossierMenu )
-				)
+			"/Accompagnementscuis66/add/{$cui_id}" => array(
+				'disabled' => !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'add', $dossierMenu ),
+				'class' => 'add'
 			),
-			'options' => $options
 		)
 	);
-?>
-<div>
-<?php
-	echo $this->Default->button(
+
+	// A-t'on des messages à afficher à l'utilisateur ?
+	if( !empty( $messages ) ) {
+		foreach( $messages as $message => $class ) {
+			echo $this->Html->tag( 'p', __d( $this->request->params['controller'], $message ), array( 'class' => "message {$class}" ) );
+		}
+	}
+	
+	$perm['view'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'view', $dossierMenu ) ? 'true' : 'false';
+	$perm['edit'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'edit', $dossierMenu ) ? 'true' : 'false';
+	$perm['delete'] = !$this->Permissions->checkDossier( 'Accompagnementscuis66', 'delete', $dossierMenu ) ? 'true' : 'false';
+
+	echo $this->Default3->index(
+		$results,
+		array(
+			'Accompagnementcui66.genre',
+			'Accompagnementcui66.organismesuivi',
+			'Accompagnementcui66.datededebut',
+			'Accompagnementcui66.datedefin',
+			'/Accompagnementscuis66/view/#Accompagnementcui66.id#/' => array(
+				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/view'),
+				'disabled' => $perm['view']
+			),
+			'/Accompagnementscuis66/edit/#Accompagnementcui66.id#/' => array(
+				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/edit'),
+				'class' => 'edit',
+				'disabled' => $perm['edit']
+			),
+			'/Accompagnementscuis66/delete/#Accompagnementcui66.id#/' => array(
+				'title' => __d('accompagnementscuis66', '/Accompagnementscuis66/delete'),
+				'class' => 'edit',
+				'disabled' => $perm['delete']
+			),
+		),
+		array(
+			'options' => $options,
+			'paginate' => false,
+		)
+	);
+	
+	echo '<br />' . $this->Default->button(
 		'back',
 		array(
-			'controller' => 'cuis',
+			'controller' => 'cuis66',
 			'action'     => 'index',
 			$personne_id
 		),
 		array(
-			'id' => 'Back'
+			'id' => 'Back',
+			'class' => 'aere'
 		)
-	);  
-?>
-</div>
+	);

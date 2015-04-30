@@ -16,7 +16,7 @@ var editableList = {};
 
 // Lié au debug, mettre impérativement à false en production !
 var debugMode = false;
-var verbose = true;
+var verbose = false;
 var ultraVerbose = false;
 
 /**
@@ -345,6 +345,16 @@ function getRadioValue( targets ){
 	return '';
 }
 
+function isTelephone( editable ){
+	'use strict';
+	for (var key in rules[editable.index].rules ){
+		if ( rules[editable.index].rules.hasOwnProperty( key ) && rules[editable.index].rules[key].name === 'phoneFr' ){
+			return true;
+		}
+	}
+	return false;
+}
+
 /**
  * Renvoi la valeur réelle d'un editable
  * Cherche les élements du même model et même field
@@ -367,7 +377,7 @@ function getValue( editable ){
 	
 	switch ( cas ){
 		case 'date': valeur = thisDate; break;
-		case 'normal': valeur = String( editable.value ); break;
+		case 'normal': valeur = isTelephone( editable ) ? String( editable.value ).replace(/[^\d]/g, '') : String( editable.value ); break;
 		case 'radio': valeur = getRadioValue( targets ); break;
 		default: debug( '/!\\ BUG /!\\ valeur non trouvé dans ' + editable.name ); return null;
 	}
@@ -456,7 +466,7 @@ function getRulesParams( editable, i ){
 	}
 
 	// Cas particulier : notEmptyIf
-	if ( ruleName === 'notEmptyIf' ){
+	if ( ruleName === 'notEmptyIf' || ruleName === 'notNullIf' ){
 		modelName = getModelName( name );
 		targetName = 'data[' + modelName + '][' + params[0] + ']';
 		target = $$('[name="' + targetName + '"]')[0];
@@ -727,7 +737,7 @@ function initEditables( editables ){
 		if ( name === undefined || name === '' ){
 			continue;
 		}
-		
+				
 		// Pour chaque editable, on lui attribu des regles de validations (voir getRules() )
 		editable = {name: name, id: editables[i].id, rules: getRules(name)};
 		
@@ -810,6 +820,15 @@ function init(){
 	
 	// Editable fait référence à tout ce qui est modifiable par l'utilisateur (input, select et textarea)
 	editables = $$('form input, form select, form textarea');
+	
+	// Empeche les boutons annuler de bloquer le formulaire
+	$$('input[type="submit"][name="Cancel"], input[type="submit"][name="Annuler"]').each(function( cancelButton ){
+		cancelButton.onclick = function(){
+			var form = cancelButton.up('form');
+			form.insert('<input type="hidden" name="' + cancelButton.name + '" value="' + cancelButton.value + '"');
+			setTimeout(function(){ form.submit(); }, 20);
+		};
+	});
 	
 	initEditables( editables );
 	

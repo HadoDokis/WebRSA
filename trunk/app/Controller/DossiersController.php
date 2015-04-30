@@ -89,7 +89,11 @@
 			// à intégrer à la fonction view pour ne pas avoir d'énormes variables
 			if( $this->action == 'view' ) {
 				$this->set( 'numcontrat', (array)Hash::get( $this->Dossier->Foyer->Personne->Contratinsertion->enums(), 'Contratinsertion' ) );
-				$this->set( 'enumcui', $this->Dossier->Foyer->Personne->Cui->enums() );
+				$this->set( 'enumcui', array_merge( 
+					$this->Dossier->Foyer->Personne->Cui->enums(),
+					$this->Dossier->Foyer->Personne->Cui->Cui66->enums(),
+					$this->Dossier->Foyer->Personne->Cui->Cui66->Decisioncui66->enums()
+				));
 				$this->set( 'etatpe', (array)Hash::get( $this->Informationpe->Historiqueetatpe->enums(), 'Historiqueetatpe' ) );
 				$this->set( 'relance', (array)Hash::get( $this->Dossier->Foyer->Personne->Orientstruct->Nonrespectsanctionep93->enums(), 'Nonrespectsanctionep93' ) );
 				$this->set( 'dossierep', (array)Hash::get( $this->Dossier->Foyer->Personne->Dossierep->enums(), 'Dossierep' ) );
@@ -437,18 +441,32 @@
 				);
 				$personnesFoyer[$index]['Contratinsertion'] = ( !empty( $tContratinsertion ) ? $tContratinsertion['Contratinsertion'] : array() );
 
-				$tCui = $this->Dossier->Foyer->Personne->Cui->find(
-					'first',
-					array(
-						'fields' => array_merge(
-							$this->Dossier->Foyer->Personne->Cui->fields()
-						),
-						'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
-						'contain' => false,
-						'order' => array( 'Cui.datecontrat DESC' )
-					)
-				);
-				$personnesFoyer[$index]['Cui'] = ( !empty( $tCui ) ? $tCui['Cui'] : array() );
+				if( Configure::read( 'Cg.departement' ) == 66 ) {
+					$tCui = $this->Dossier->Foyer->Personne->Cui->find(
+						'first',
+						array(
+							'fields' => array_merge(
+								$this->Dossier->Foyer->Personne->Cui->fields(),
+								$this->Dossier->Foyer->Personne->Cui->Cui66->fields(),
+								$this->Dossier->Foyer->Personne->Cui->Cui66->Decisioncui66->fields()
+							),
+							'conditions' => array( 'Cui.personne_id' => $personnesFoyer[$index]['Personne']['id'] ),
+							'joins' => array( 
+								$this->Dossier->Foyer->Personne->Cui->join( 'Cui66' ),
+								$this->Dossier->Foyer->Personne->Cui->Cui66->join( 'Decisioncui66' ),
+							),
+							'contain' => false,
+							'order' => array( 
+								'Cui.faitle DESC',
+								'Cui.created DESC'
+							)
+						)
+					);
+				}
+				else{
+					$tCui = array();
+				}
+				$personnesFoyer[$index] = ( !empty( $tCui ) ? array_merge( $personnesFoyer[$index], $tCui ) : $personnesFoyer[$index] );
 
 				// Dernière orientation
 				$tOrientstruct = $this->Dossier->Foyer->Personne->Orientstruct->find(

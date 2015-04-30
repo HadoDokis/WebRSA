@@ -18,65 +18,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
 ###############################################################################
-msgid "Suspensionscuis66::index"
-msgstr "Suspension du CUI"
 
-msgid "Suspensioncui66::add"
-msgstr "Ajout d'une suspension"
+msgid "ENUM::DUREE::matin"
+msgstr "Matin"
 
-msgid "Suspensioncui66::edit"
-msgstr "Modification d'une suspension"
-
-msgid "Suspensioncui66::index::empty"
-msgstr "Aucune suspension présente pour ce CUI"
-
-msgid "Suspensionscuis66::delete::confirm"
-msgstr "Etes-vous sûr de vouloir supprimer la suspension ?"
-
-msgid "Suspensionscuis66::add"
-msgstr "Ajouter une suspension"
-
-msgid "Suspensionscuis66::edit"
-msgstr "Modifier une suspension"
-
-msgid "Suspensionscuis66::delete"
-msgstr "Supprimer une suspension"
-
-msgid "Suspensioncui66.observation"
-msgstr "Observations"
-
-msgid "Suspensioncui66.datedebut"
-msgstr "Date de début de la suspension"
-
-msgid "Suspensioncui66.datefin"
-msgstr "Date de fin de la suspension"
-
-msgid "Suspensioncui66.formatjournee"
-msgstr "Format de journée"
-
-msgid "ENUM::FORMATJOURNEE::matin"
-msgstr "Matinée"
-
-msgid "ENUM::FORMATJOURNEE::apresmidi"
+msgid "ENUM::DUREE::apresmidi"
 msgstr "Après-midi"
 
-msgid "ENUM::FORMATJOURNEE::journee"
+msgid "ENUM::DUREE::journee"
 msgstr "Journée"
-
-msgid "Suspensionscuis66::filelink"
-msgstr "Liste des fichiers liés au CUI"
-
-msgid "Suspensioncui66.haspiecejointe"
-msgstr "Ajouter une pièce jointe"
-
-msgid "ENUM::HASPIECEJOINTE::0"
-msgstr "Non"
-
-msgid "ENUM::HASPIECEJOINTE::1"
-msgstr "Oui"
-
-msgid "ENUM::TYPESUSPENSIONCUI66::absence"
-msgstr "Absence"
-
-msgid "ENUM::TYPESUSPENSIONCUI66::arret"
-msgstr "Arrêt"

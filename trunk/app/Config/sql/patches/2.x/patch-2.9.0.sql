@@ -252,5 +252,640 @@ CG 976
 -- ALTER TABLE contratsinsertion ADD CONSTRAINT contratsinsertion_df_ci_compare_dates_chk CHECK ( cakephp_validate_compare_dates( df_ci, dd_ci, '>' ) );
 
 -- *****************************************************************************
+-- CUI (CG 66)
+-- *****************************************************************************
+
+--------------------------------------------------------------------------------
+-- On détruit les contraintes de Foreign Key pour éviter les problêmes
+--------------------------------------------------------------------------------
+
+ALTER TABLE IF EXISTS accompagnementscuis66 DROP CONSTRAINT IF EXISTS accompagnementscuis66_cui66_id_fkey;
+ALTER TABLE IF EXISTS accompagnementscuis66 DROP CONSTRAINT IF EXISTS accompagnementscuis66_immersioncui_id_fkey;
+ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_adressecui_id_fkey;
+ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_partenairecui_id_fkey;
+ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_personne_id_fkey1;
+ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_personnecui_id_fkey;
+ALTER TABLE IF EXISTS cuis DROP CONSTRAINT IF EXISTS cuis_user_id_fkey;
+ALTER TABLE IF EXISTS decisionscuis66 DROP CONSTRAINT IF EXISTS decisionscuis66_cui66_id_fkey;
+
+
+--------------------------------------------------------------------------------
+-- On renomme les anciennes tables du CUI
+--------------------------------------------------------------------------------
+
+DO LANGUAGE plpgsql $$ DECLARE
+BEGIN
+
+IF EXISTS( select tablename from pg_tables where tablename = 'cui_bak' )
+THEN RAISE NOTICE 'La table cui_bak existe déja';
+ELSE ALTER TABLE IF EXISTS cuis RENAME TO cui_bak ;
+END IF;
+
+IF EXISTS( select tablename from pg_tables where tablename = 'rupturescuis66_bak' )
+THEN RAISE NOTICE 'La table rupturescuis66_bak existe déja';
+ELSE ALTER TABLE IF EXISTS rupturescuis66 RENAME TO rupturescuis66_bak ;
+END IF;
+
+IF EXISTS( select tablename from pg_tables where tablename = 'suspensionscuis66_bak' )
+THEN RAISE NOTICE 'La table suspensionscuis66_bak existe déja';
+ELSE ALTER TABLE IF EXISTS suspensionscuis66 RENAME TO suspensionscuis66_bak ;
+END IF;
+
+IF EXISTS( select tablename from pg_tables where tablename = 'accompagnementscuis66_bak' )
+THEN RAISE NOTICE 'La table accompagnementscuis66_bak existe déja';
+ELSE ALTER TABLE IF EXISTS accompagnementscuis66 RENAME TO accompagnementscuis66_bak ;
+END IF;
+
+IF EXISTS( select tablename from pg_tables where tablename = 'decisionscuis66_bak' )
+THEN RAISE NOTICE 'La table decisionscuis66_bak existe déja';
+ELSE ALTER TABLE IF EXISTS decisionscuis66 RENAME TO decisionscuis66_bak ;
+END IF;
+
+END $$;
+
+--------------------------------------------------------------------------------
+-- Règle de validation inList pour des SMALLINT
+--------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION cakephp_validate_in_list( smallint, smallint[] ) RETURNS boolean AS
+$$
+	-- SELECT $1 IS NULL OR ( ARRAY[CAST($1 AS TEXT)] <@ CAST($2 AS TEXT[]) );
+	SELECT cakephp_validate_in_list( CAST($1 AS TEXT), CAST($2 AS TEXT[]) );
+$$
+LANGUAGE 'sql' IMMUTABLE;
+
+COMMENT ON FUNCTION cakephp_validate_in_list( smallint, smallint[] ) IS
+	'@see http://api.cakephp.org/class/validation#method-ValidationinList';
+
+--------------------------------------------------------------------------------
+-- On supprime avant de recreer CUI
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS historiquepositionscuis66,
+emailscuis,
+rupturescuis66,
+suspensionscuis66,
+accompagnementscuis66,
+immersionscuis66,
+decisionscuis66,
+propositionscuis66,
+cuis66,
+cuis,
+partenairescuis66,
+personnescuis,
+partenairescuis,
+adressescuis;
+
+--------------------------------------------------------------------------------
+-- On Creer la table adressescuis (CERFA)
+--------------------------------------------------------------------------------
+
+CREATE TABLE adressescuis
+(
+  id SERIAL NOT NULL PRIMARY KEY,
+  numvoie VARCHAR(6),
+  typevoie VARCHAR(50),
+  nomvoie VARCHAR(32),
+  complement VARCHAR(255),
+  codepostal CHAR(5),
+  commune VARCHAR(100),
+  numtel VARCHAR(10),
+  email VARCHAR(100),
+  numfax VARCHAR(10),
+  canton VARCHAR(50),
+  numvoie2 VARCHAR(6),
+  typevoie2 VARCHAR(50),
+  nomvoie2 VARCHAR(32),
+  complement2 VARCHAR(255),
+  codepostal2 CHAR(5),
+  commune2 VARCHAR(100),
+  numtel2 VARCHAR(10),
+  email2 VARCHAR(100),
+  numfax2 VARCHAR(10),
+  canton2 VARCHAR(50)
+);
+COMMENT ON TABLE adressescuis IS 'Adresses des personnes et des partenaires';
+
+CREATE INDEX adressescuis_commune_idx ON adressescuis(commune);
+
+--------------------------------------------------------------------------------
+-- On Creer la table partenairescuis (CERFA)
+--------------------------------------------------------------------------------
+
+CREATE TABLE partenairescuis
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	raisonsociale VARCHAR(255) NOT NULL,
+	enseigne VARCHAR(255),
+	adressecui_id INTEGER REFERENCES adressescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	siret VARCHAR(14),
+	naf VARCHAR(5),
+	statut INTEGER,
+	effectif INTEGER,
+	organismerecouvrement VARCHAR(6),
+	assurancechomage SMALLINT,
+	ajourversement SMALLINT
+);
+COMMENT ON TABLE partenairescuis IS 'Entreprise/mairie/association partenaire du CUI';
+
+CREATE INDEX partenairescuis_raisonsociale_idx ON partenairescuis(raisonsociale);
+
+-- Booleans CHAR(1)
+ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_assurancechomage_in_list_chk CHECK ( cakephp_validate_in_list( assurancechomage, ARRAY[0,1] ) );
+ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_ajourversement_in_list_chk CHECK ( cakephp_validate_in_list( ajourversement, ARRAY[0,1] ) );
+
+-- Enums VARCHAR(6)
+ALTER TABLE partenairescuis ADD CONSTRAINT cuis_partenaires_organismerecouvrement_in_list_chk CHECK ( cakephp_validate_in_list( organismerecouvrement, ARRAY['URS','MSA','AUT'] ) );
+
+--------------------------------------------------------------------------------
+-- On Creer la table personnescuis (CERFA)
+--------------------------------------------------------------------------------
+
+--CREATE TABLE personnescuis
+--(
+--  id SERIAL NOT NULL PRIMARY KEY,
+--  civilite VARCHAR(3),
+--  nomfamille VARCHAR(50),
+--  nomusage VARCHAR(50),
+--  prenom1 VARCHAR(50),
+--  prenom2 VARCHAR(50),
+--  prenom3 VARCHAR(50),
+--  adressecui_id INTEGER REFERENCES adressescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+--  numeroide INTEGER,
+--  datenaissance DATE,
+--  villenaissance VARCHAR(100),
+--  nir CHAR(15),
+--  nationalite VARCHAR(7),
+--  numallocataire INTEGER,
+--  organismepayeur VARCHAR(7)
+--);
+--COMMENT ON TABLE personnescuis IS 'Lié au CERFA CUI';
+
+--CREATE INDEX personnescuis_nomusage_idx ON personnescuis(nomusage);
+--CREATE INDEX personnescuis_nir_idx ON personnescuis(nir);
+--CREATE INDEX personnescuis_numallocataire_idx ON personnescuis(numallocataire);
+
+--------------------------------------------------------------------------------
+-- On Creer la table partenairescuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE partenairescuis66
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	partenairecui_id INTEGER REFERENCES partenairescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	codepartenaire VARCHAR(100),		-- Employeur
+	objet VARCHAR(100),					-- Employeur
+	nomtitulairerib VARCHAR(100),		-- Employeur
+	codebanque INTEGER,					-- Employeur
+	codeguichet INTEGER,				-- Employeur
+	numerocompte VARCHAR(100),			-- Employeur
+	etablissementbancaire VARCHAR(100),	-- Employeur
+	clerib INTEGER,						-- Employeur
+	nblits INTEGER,						-- Employeur
+	nbcontratsaideshorscg INTEGER,		-- Employeur
+	nbcontratsaidescg INTEGER			-- Employeur
+);
+CREATE INDEX partenairescuis66_partenairecui_id_idx ON partenairescuis66(partenairecui_id);
+
+--------------------------------------------------------------------------------
+-- On Creer la table cuis (CERFA)
+--------------------------------------------------------------------------------
+
+DROP INDEX IF EXISTS cui_personne_id_idx;
+
+CREATE TABLE cuis
+(
+	id							SERIAL NOT NULL PRIMARY KEY,
+	personne_id					INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	partenaire_id				INTEGER REFERENCES partenaires(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	partenairecui_id			INTEGER REFERENCES partenairescuis(id) ON DELETE SET NULL ON UPDATE CASCADE,
+--	personnecui_id				INTEGER REFERENCES personnescuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	secteurmarchand				SMALLINT NOT NULL,
+	numconventionindividuelle	INTEGER,			-- Cadre reserve au prescripteur
+	numconventionobjectif		INTEGER,			-- Cadre reserve au prescripteur
+	datedepot					DATE,				-- Cadre reserve au prescripteur
+	prescripteur				INTEGER,			-- Cadre reserve au prescripteur
+	embaucheinsertion			SMALLINT,
+	numannexefinanciere			INTEGER,			-- Employeur
+	niveauformation				VARCHAR(2),			-- Situation du salarié
+	inscritpoleemploi			VARCHAR(10),		-- Situation du salarié
+	sansemploi					VARCHAR(10),		-- Situation du salarié
+	beneficiairede				VARCHAR(10),		-- Situation du salarié
+	majorationrsa				SMALLINT,
+	rsadepuis					VARCHAR(10),		-- Situation du salarié
+	travailleurhandicape		SMALLINT,
+	typecontrat					VARCHAR(10),		-- Contrat de travail
+	dateembauche				DATE,				-- Contrat de travail
+	findecontrat				DATE,				-- Contrat de travail
+	entreeromev3_id				INTEGER REFERENCES entreesromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,			-- Contrat de travail
+	salairebrut					INTEGER,			-- Contrat de travail
+	dureehebdo					INTEGER,			-- Contrat de travail
+	modulation					SMALLINT,
+	dureecollectivehebdo		INTEGER,			-- Contrat de travail
+	nomtuteur					VARCHAR(100),		-- Action d'accompagnement formation
+	fonctiontuteur				VARCHAR(100),		-- Action d'accompagnement formation
+	organismedesuivi			VARCHAR(100),		-- Action d'accompagnement formation
+	nomreferent					VARCHAR(100),		-- Action d'accompagnement formation
+	actionaccompagnement		SMALLINT,
+	remobilisationemploi		SMALLINT,			-- Actions d'accompagnement pro
+	aidepriseposte				SMALLINT,			-- Actions d'accompagnement pro
+	elaborationprojet			SMALLINT,			-- Actions d'accompagnement pro
+	evaluationcompetences		SMALLINT,			-- Actions d'accompagnement pro
+	aiderechercheemploi			SMALLINT,			-- Actions d'accompagnement pro
+	autre						SMALLINT,			-- Actions d'accompagnement pro
+	autrecommentaire			VARCHAR(100),		-- Actions d'accompagnement pro
+	adaptationauposte			SMALLINT,			-- Action de formation
+	remiseaniveau				SMALLINT,			-- Action de formation
+	prequalification			SMALLINT,			-- Action de formation
+	acquisitioncompetences		SMALLINT,			-- Action de formation
+	formationqualifiante		SMALLINT,			-- Action de formation
+	formation					VARCHAR(7),			-- Action de formation
+	periodeprofessionnalisation SMALLINT,
+	niveauqualif				VARCHAR(2),			-- Action de formation
+	validationacquis			SMALLINT,
+	periodeimmersion			SMALLINT,
+	effetpriseencharge			DATE,				-- Decision de prise en charge
+	finpriseencharge			DATE,				-- Decision de prise en charge
+	decisionpriseencharge		DATE,				-- Decision de prise en charge
+	dureehebdoretenu			INTEGER,			-- Decision de prise en charge
+	operationspeciale			INTEGER,			-- Decision de prise en charge
+	tauxfixeregion				SMALLINT,			-- Decision de prise en charge
+	priseenchargeeffectif		SMALLINT,			-- Decision de prise en charge
+	exclusifcg					SMALLINT,
+	tauxcg						SMALLINT,			-- Decision de prise en charge
+	organismepayeur				VARCHAR(5),			-- Decision de prise en charge
+	intituleautreorganisme		VARCHAR(100),		-- Decision de prise en charge
+	adressautreorganisme		VARCHAR(100),		-- Decision de prise en charge
+	faitle						DATE,				-- Dates
+	signaturele					DATE,				-- Dates
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+COMMENT ON TABLE cuis IS 'CERFA CUI';
+COMMENT ON COLUMN cuis.secteurmarchand IS 'Cadre reserve au prescripteur';
+COMMENT ON COLUMN cuis.numconventionindividuelle IS 'Cadre reserve au prescripteur';
+COMMENT ON COLUMN cuis.numconventionobjectif IS 'Cadre reserve au prescripteur';
+COMMENT ON COLUMN cuis.datedepot IS 'Cadre reserve au prescripteur';
+COMMENT ON COLUMN cuis.prescripteur IS 'Cadre reserve au prescripteur';
+COMMENT ON COLUMN cuis.embaucheinsertion IS 'Employeur';
+COMMENT ON COLUMN cuis.numannexefinanciere IS 'Employeur';
+COMMENT ON COLUMN cuis.niveauformation IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.inscritpoleemploi IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.sansemploi IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.beneficiairede IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.majorationrsa IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.rsadepuis IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.travailleurhandicape IS 'Situation du salarié';
+COMMENT ON COLUMN cuis.typecontrat IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.dateembauche IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.findecontrat IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.entreeromev3_id IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.salairebrut IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.dureehebdo IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.modulation IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.dureecollectivehebdo IS 'Contrat de travail';
+COMMENT ON COLUMN cuis.nomtuteur IS 'Action d''accompagnement formation';
+COMMENT ON COLUMN cuis.fonctiontuteur IS 'Action d''accompagnement formation';
+COMMENT ON COLUMN cuis.organismedesuivi IS 'Action d''accompagnement formation';
+COMMENT ON COLUMN cuis.nomreferent IS 'Action d''accompagnement formation';
+COMMENT ON COLUMN cuis.actionaccompagnement IS 'Action d''accompagnement formation';
+COMMENT ON COLUMN cuis.remobilisationemploi IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.aidepriseposte IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.elaborationprojet IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.evaluationcompetences IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.aiderechercheemploi IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.autre IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.autrecommentaire IS 'Actions d''accompagnement pro';
+COMMENT ON COLUMN cuis.adaptationauposte IS 'Action de formation';
+COMMENT ON COLUMN cuis.remiseaniveau IS 'Action de formation';
+COMMENT ON COLUMN cuis.prequalification IS 'Action de formation';
+COMMENT ON COLUMN cuis.acquisitioncompetences IS 'Action de formation';
+COMMENT ON COLUMN cuis.formationqualifiante IS 'Action de formation';
+COMMENT ON COLUMN cuis.formation IS 'Action de formation';
+COMMENT ON COLUMN cuis.periodeprofessionnalisation IS 'Action de formation';
+COMMENT ON COLUMN cuis.niveauqualif IS 'Action de formation';
+COMMENT ON COLUMN cuis.validationacquis IS 'Action de formation';
+COMMENT ON COLUMN cuis.periodeimmersion IS 'CAE';
+COMMENT ON COLUMN cuis.effetpriseencharge IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.finpriseencharge IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.decisionpriseencharge IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.dureehebdoretenu IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.operationspeciale IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.tauxfixeregion IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.priseenchargeeffectif IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.exclusifcg IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.tauxcg IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.organismepayeur IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.intituleautreorganisme IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.adressautreorganisme IS 'Decision de prise en charge';
+COMMENT ON COLUMN cuis.created IS 'Dates';
+COMMENT ON COLUMN cuis.signaturele IS 'Dates';
+COMMENT ON COLUMN cuis.modified IS 'Modifié le...';
+COMMENT ON COLUMN cuis.nbpj IS 'Nombre de Pieces Jointes';
+COMMENT ON COLUMN cuis.user_id IS 'Modifié par...';
+
+CREATE INDEX cui_personne_id_idx ON cuis(personne_id);
+CREATE INDEX cui_personne_partenaire_id_idx ON cuis(partenaire_id);
+CREATE INDEX cui_personne_personne_id_idx ON cuis(personne_id);
+
+-- Booleans SMALLINT(1)
+ALTER TABLE cuis ADD CONSTRAINT cuis_secteurmarchand_in_list_chk CHECK ( cakephp_validate_in_list( secteurmarchand, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_embaucheinsertion_in_list_chk CHECK ( cakephp_validate_in_list( embaucheinsertion, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_majorationrsa_in_list_chk CHECK ( cakephp_validate_in_list( majorationrsa, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_travailleurhandicape_in_list_chk CHECK ( cakephp_validate_in_list( travailleurhandicape, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_modulation_in_list_chk CHECK ( cakephp_validate_in_list( modulation, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_actionaccompagnement_in_list_chk CHECK ( cakephp_validate_in_list( actionaccompagnement, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_periodeprofessionnalisation_in_list_chk CHECK ( cakephp_validate_in_list( periodeprofessionnalisation, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_validationacquis_in_list_chk CHECK ( cakephp_validate_in_list( validationacquis, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_periodeimmersion_in_list_chk CHECK ( cakephp_validate_in_list( periodeimmersion, ARRAY[0,1] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_exclusifcg_in_list_chk CHECK ( cakephp_validate_in_list( exclusifcg, ARRAY[0,1] ) );
+
+-- Enums VARCHAR(10)
+ALTER TABLE cuis ADD CONSTRAINT cuis_inscritpoleemploi_in_list_chk CHECK ( cakephp_validate_in_list( inscritpoleemploi, ARRAY['0_5','6_11','12_23','24_999'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_sansemploi_in_list_chk CHECK ( cakephp_validate_in_list( sansemploi, ARRAY['0_5','6_11','12_23','24_999'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_beneficiairede_in_list_chk CHECK ( cakephp_validate_in_list( beneficiairede, ARRAY['ASS','AAH','ATA','RSA'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_rsadepuis_in_list_chk CHECK ( cakephp_validate_in_list( rsadepuis, ARRAY['0_5','6_11','12_23','24_999'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_typecontrat_in_list_chk CHECK ( cakephp_validate_in_list( typecontrat, ARRAY['CDI','CDD'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_formation_in_list_chk CHECK ( cakephp_validate_in_list( formation, ARRAY['interne','externe'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_organismepayeur_in_list_chk CHECK ( cakephp_validate_in_list( organismepayeur, ARRAY['CG','CAF','MSA','ASP','AUTRE'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_niveauformation_in_list_chk CHECK ( cakephp_validate_in_list( niveauformation, ARRAY['00','10','20','30','40','41','50','51','60','70'] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_niveauqualif_in_list_chk CHECK ( cakephp_validate_in_list( niveauqualif, ARRAY['00','10','20','30','40','41','50','51','60','70'] ) );
+
+-- Enums Accompagnement/Formation
+ALTER TABLE cuis ADD CONSTRAINT cuis_remobilisationemploi_in_list_chk CHECK ( cakephp_validate_in_list( remobilisationemploi, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_aidepriseposte_in_list_chk CHECK ( cakephp_validate_in_list( aidepriseposte, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_elaborationprojet_in_list_chk CHECK ( cakephp_validate_in_list( elaborationprojet, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_evaluationcompetences_in_list_chk CHECK ( cakephp_validate_in_list( evaluationcompetences, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_aiderechercheemploi_in_list_chk CHECK ( cakephp_validate_in_list( aiderechercheemploi, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_autre_in_list_chk CHECK ( cakephp_validate_in_list( autre, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_adaptationauposte_in_list_chk CHECK ( cakephp_validate_in_list( adaptationauposte, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_remiseaniveau_in_list_chk CHECK ( cakephp_validate_in_list( remiseaniveau, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_prequalification_in_list_chk CHECK ( cakephp_validate_in_list( prequalification, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_acquisitioncompetences_in_list_chk CHECK ( cakephp_validate_in_list( acquisitioncompetences, ARRAY[1,2,3] ) );
+ALTER TABLE cuis ADD CONSTRAINT cuis_formationqualifiante_in_list_chk CHECK ( cakephp_validate_in_list( formationqualifiante, ARRAY[1,2,3] ) );
+
+--------------------------------------------------------------------------------
+-- On Creer la table cuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS cuis66;
+CREATE TABLE cuis66
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	cui_id INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	typeformulaire VARCHAR(10) NOT NULL,-- CUI, CUI - Emploi avenir
+	typecontrat VARCHAR(8) NOT NULL,	-- ACI, Hors ACI, CIE, EAV
+	codecdiae VARCHAR(100),				-- CDIAE
+	dossierrecu SMALLINT,				-- etat dossier
+	datereception DATE,					-- etat dossier
+	dossiereligible SMALLINT,			-- etat dossier
+	dateeligibilite DATE,				-- etat dossier
+	dossiercomplet SMALLINT,			-- etat dossier
+	datecomplet DATE,					-- etat dossier
+	commentairedossier TEXT,			-- etat dossier
+	zonecouverte VARCHAR(3),			-- le salarié
+	datefinsejour DATE,					-- le salarié
+	encouple SMALLINT,					-- le salarié
+	avecenfant SMALLINT,				-- le salarié
+	inscritpoleemploi SMALLINT,			-- le salarié
+	dateinscriptionpoleemploi DATE,		-- le salarié
+	numdemandeuremploi VARCHAR(100),	-- le salarié
+	secteuremploi INTEGER,				-- contrat de travail
+	postepropose VARCHAR(100),			-- contrat de travail
+	perenisation SMALLINT,				-- contrat de travail
+	dureepriseencharge INTEGER,			-- Prise en charge
+	aidecomplementaire VARCHAR(100),	-- Prise en charge
+	operationspeciale VARCHAR(100),		-- Prise en charge
+	subventionemployeur SMALLINT,		-- Prise en charge
+	demandeenregistree DATE,				-- Date
+	dateenvoimail DATE,					-- Date
+	etatdossiercui66 VARCHAR(20),		-- Hors formulaire
+	notifie SMALLINT NOT NULL DEFAULT 0,-- Hors formulaire
+	raisonannulation TEXT				-- Hors formulaire
+);
+COMMENT ON TABLE cuis66 IS 'CUI CG66';
+COMMENT ON COLUMN cuis66.typeformulaire IS 'CUI, CUI - Emploi avenir';
+COMMENT ON COLUMN cuis66.typecontrat IS 'ACI, Hors ACI, CIE, EAV';
+COMMENT ON COLUMN cuis66.codecdiae IS 'CDIAE';
+COMMENT ON COLUMN cuis66.dossierrecu IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.datereception IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.dossiereligible IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.dateeligibilite IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.dossiercomplet IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.datecomplet IS 'Etat dossier';
+COMMENT ON COLUMN cuis66.zonecouverte IS 'Allocataire';
+COMMENT ON COLUMN cuis66.datefinsejour IS 'Allocataire';
+COMMENT ON COLUMN cuis66.encouple IS 'Allocataire';
+COMMENT ON COLUMN cuis66.avecenfant IS 'Allocataire';
+COMMENT ON COLUMN cuis66.inscritpoleemploi IS 'Allocataire';
+COMMENT ON COLUMN cuis66.dateinscriptionpoleemploi IS 'Allocataire';
+COMMENT ON COLUMN cuis66.numdemandeuremploi IS 'Allocataire';
+COMMENT ON COLUMN cuis66.secteuremploi IS 'Contrat de travail';
+COMMENT ON COLUMN cuis66.postepropose IS 'Contrat de travail';
+COMMENT ON COLUMN cuis66.perenisation IS 'Contrat de travail';
+COMMENT ON COLUMN cuis66.dureepriseencharge IS 'Prise en charge';
+COMMENT ON COLUMN cuis66.aidecomplementaire IS 'Prise en charge';
+COMMENT ON COLUMN cuis66.operationspeciale IS 'Prise en charge';
+COMMENT ON COLUMN cuis66.subventionemployeur IS 'Prise en charge';
+COMMENT ON COLUMN cuis66.demandeenregistree IS 'Date';
+COMMENT ON COLUMN cuis66.dateenvoimail IS 'Date';
+COMMENT ON COLUMN cuis66.etatdossiercui66 IS 'Hors formulaire';
+
+CREATE INDEX cuis66_etatdossiercui66_idx ON cuis66(etatdossiercui66);
+CREATE INDEX cuis66_typecontrat_idx ON cuis66(typecontrat);
+CREATE INDEX cuis66_cui_id_idx ON cuis66(cui_id);
+
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typeformulaire_in_list_chk CHECK ( cakephp_validate_in_list( typeformulaire, ARRAY['CUI','CUIAvenir'] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_typecontrat_in_list_chk CHECK ( cakephp_validate_in_list( typecontrat, ARRAY['ACI','Hors','CIE','EAV','CCDI'] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_zonecouverte_in_list_chk CHECK ( cakephp_validate_in_list( zonecouverte, ARRAY['ZUS','ZRR'] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_etatdossiercui66_in_list_chk CHECK ( cakephp_validate_in_list( etatdossiercui66, ARRAY['attentepiece','dossierrecu','dossiereligible','attentemail','formulairecomplet','attenteavis','attentedecision','attentenotification','encours','perime','rupturecontrat','contratsuspendu','decisionsanssuite','nonvalide','annule'] ) );
+
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossierrecu_in_list_chk CHECK ( cakephp_validate_in_list( dossierrecu, ARRAY[0,1] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossiereligible_in_list_chk CHECK ( cakephp_validate_in_list( dossiereligible, ARRAY[0,1] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_dossiercomplet_in_list_chk CHECK ( cakephp_validate_in_list( dossiercomplet, ARRAY[0,1] ) );
+ALTER TABLE cuis66 ADD CONSTRAINT cuis66_notifie_in_list_chk CHECK ( cakephp_validate_in_list( notifie, ARRAY[0,1] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table propositionscuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE propositionscuis66
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	cui66_id INTEGER NOT NULL REFERENCES cuis66(id),
+	donneuravis VARCHAR(8) NOT NULL,
+	dateproposition DATE NOT NULL,
+	observation TEXT,
+	avis VARCHAR(15) NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX propositionscuis66_id_idx ON propositionscuis66(cui66_id);
+
+ALTER TABLE propositionscuis66 ADD CONSTRAINT cuis_propositions66_donneuravis_in_list_chk CHECK ( cakephp_validate_in_list( donneuravis, ARRAY['PRE','referent','elu'] ) );
+ALTER TABLE propositionscuis66 ADD CONSTRAINT cuis_propositions66_avis_in_list_chk CHECK ( cakephp_validate_in_list( avis, ARRAY['attentedecision','accord','refus','avisreserve'] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table decisionscuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE decisionscuis66
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	cui66_id INTEGER NOT NULL REFERENCES cuis66(id),
+	decision VARCHAR(9) NOT NULL,
+	datedecision TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+	observation TEXT,
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX decisionscuis66_cui66_id_idx ON decisionscuis66(cui66_id);
+
+ALTER TABLE decisionscuis66 ADD CONSTRAINT cuis_decisions66_decision_in_list_chk CHECK ( cakephp_validate_in_list( decision, ARRAY['accord','refus','ajourne','sanssuite'] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table immersionscuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE immersionscuis66
+(
+	id SERIAL					NOT NULL PRIMARY KEY,
+	nomentreprise				VARCHAR(50) NOT NULL,
+	numvoie						VARCHAR(50),
+	typevoie					VARCHAR(50),
+	nomvoie						VARCHAR(50),
+	complementadresse			VARCHAR(50),
+	codepostal					VARCHAR(50),
+	commune						VARCHAR(50),
+	activiteprincipale			VARCHAR(50),
+	entreeromev3_id				INTEGER REFERENCES entreesromesv3(id) ON DELETE SET NULL ON UPDATE CASCADE,
+	objectifprincipal			VARCHAR(20)
+);
+CREATE INDEX immersionscuis66_nomentreprise_idx ON immersionscuis66(nomentreprise);
+
+ALTER TABLE immersionscuis66 ADD CONSTRAINT cuis_accompagnement_immersions66_objectifprincipal_in_list_chk CHECK ( cakephp_validate_in_list( objectifprincipal, ARRAY['aquisitioncompetence','projetpro','decouvertemetier','demarcherecrutement'] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table accompagnementscuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE accompagnementscuis66
+(
+	id SERIAL NOT NULL PRIMARY KEY,
+	cui66_id INTEGER NOT NULL REFERENCES cuis66(id),
+	genre VARCHAR(9) NOT NULL,
+	immersioncui66_id INTEGER REFERENCES immersionscuis66(id),
+	organismesuivi VARCHAR(50),			-- Formation / bilan
+	nomredacteur VARCHAR(50),			-- Formation / bilan
+	observation TEXT,					-- Formation / bilan
+	datededebut DATE NOT NULL,
+	datedefin DATE NOT NULL,
+	datedesignature DATE NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX accompagnementscuis66_cui66_id_idx ON accompagnementscuis66(cui66_id);
+
+ALTER TABLE accompagnementscuis66 ADD CONSTRAINT cuis_accompagnements66_genre_in_list_chk CHECK ( cakephp_validate_in_list( genre, ARRAY['immersion','formation','bilan'] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table suspensionscuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE suspensionscuis66
+(
+	id SERIAL					NOT NULL PRIMARY KEY,
+	cui66_id					INTEGER NOT NULL REFERENCES cuis66(id),
+	observation					TEXT,
+	duree						VARCHAR(9),
+	datedebut					DATE NOT NULL,
+	datefin						DATE NOT NULL,
+	motif						INTEGER NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX suspensionscuis66_cui66_id_idx ON suspensionscuis66(cui66_id);
+
+ALTER TABLE suspensionscuis66 ADD CONSTRAINT cuis_suspensions66_duree_in_list_chk CHECK ( cakephp_validate_in_list( duree, ARRAY['matin','apresmidi','journee'] ) );
+
+
+--------------------------------------------------------------------------------
+-- On Creer la table rupturescuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE rupturescuis66
+(
+	id SERIAL					NOT NULL PRIMARY KEY,
+	cui66_id					INTEGER NOT NULL REFERENCES cuis66(id),
+	observation					TEXT,
+	daterupture					DATE NOT NULL,
+	dateenregistrement			DATE NOT NULL,
+	motif						INTEGER NOT NULL,
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX rupturescuis66_cui66_id_idx ON rupturescuis66(cui66_id);
+
+--------------------------------------------------------------------------------
+-- On Creer la table rupturescuis66 (CG 66)
+--------------------------------------------------------------------------------
+
+-- Présence de fausses foreign key pour faciliter la récupération des données pour les mails
+CREATE TABLE emailscuis
+(
+	id							SERIAL NOT NULL PRIMARY KEY,
+	cui_id						INTEGER NOT NULL REFERENCES cuis(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	personne_id					INTEGER NOT NULL REFERENCES personnes(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	textmailcui66_id			INTEGER,
+	cui66_id					INTEGER,
+	partenairecui_id			INTEGER,
+	partenairecui66_id			INTEGER,
+	adressecui_id				INTEGER,
+	emailredacteur				VARCHAR(50),
+	emailemployeur				VARCHAR(50) NOT NULL,
+	titre						VARCHAR(50) NOT NULL,
+	pj							VARCHAR(50),
+	message						TEXT NOT NULL,
+	insertiondate				DATE,
+	commentaire					TEXT,
+	dateenvoi					TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	created						TIMESTAMP WITHOUT TIME ZONE, -- Créé le...
+	modified					TIMESTAMP WITHOUT TIME ZONE, -- Modifié le...	
+	user_id						INTEGER NOT NULL REFERENCES users(id),	-- Modifié par...
+	nbpj						SMALLINT NOT NULL DEFAULT 0 -- Nombre de Pieces Jointes
+);
+CREATE INDEX emailscuis_cui_id_idx ON emailscuis(cui_id);
+CREATE INDEX emailscuis_personne_id_idx ON emailscuis(personne_id);
+
+--------------------------------------------------------------------------------
+-- Historique des changements de positions du Cui (CG 66)
+--------------------------------------------------------------------------------
+
+CREATE TABLE historiquepositionscuis66
+(
+	id							SERIAL NOT NULL PRIMARY KEY,
+	cui66_id					INTEGER NOT NULL REFERENCES cuis66(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	etatdossiercui66			VARCHAR(20),
+	created						TIMESTAMP WITHOUT TIME ZONE -- Créé le...
+);
+CREATE INDEX historiquepositionscuis66_cui66_id_idx ON historiquepositionscuis66(cui66_id);
+
+-- *****************************************************************************
 COMMIT;
 -- *****************************************************************************

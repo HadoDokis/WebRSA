@@ -343,7 +343,8 @@
 						'conditions' => array( "{$model}.apre_id = Apre.id" )
 					);
 
-					$subQueries[] = "( SELECT COUNT(tiersprestatairesapres.id) FROM tiersprestatairesapres WHERE tiersprestatairesapres.aidesliees = '$model' AND tiersprestatairesapres.id = $tiers AND $model.tiersprestataireapre_id = tiersprestatairesapres.id ) > 0";
+					//$subQueries[] = "( SELECT COUNT(tiersprestatairesapres.id) FROM tiersprestatairesapres WHERE tiersprestatairesapres.aidesliees = '$model' AND tiersprestatairesapres.id = $tiers AND $model.tiersprestataireapre_id = tiersprestatairesapres.id ) > 0";
+					$subQueries[] = "EXISTS( SELECT tiersprestatairesapres.id FROM tiersprestatairesapres WHERE tiersprestatairesapres.aidesliees = '$model' AND tiersprestatairesapres.id = $tiers AND $model.tiersprestataireapre_id = tiersprestatairesapres.id )";
 				}
 
 				$query['conditions'][] = array( 'or' => $subQueries );
