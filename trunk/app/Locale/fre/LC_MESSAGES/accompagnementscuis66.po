@@ -46,9 +46,6 @@ msgstr "Modifier"
 msgid "/Accompagnementscuis66/delete"
 msgstr "Supprimer"
 
-msgid "/Accompagnementscuis66/delete"
-msgstr "Supprimer"
-
 msgid "Accompagnementcui66.formulaire"
 msgstr "Accompagnement"
 

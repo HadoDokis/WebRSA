@@ -954,6 +954,26 @@
 	}
 
 	/**
+	 * Retourne une date au format CakePHP (un array avec les clés year, month
+	 * et day) à partir d'une date au format SQL (yyyy-mm-dd)
+	 *
+	 * @param string $date
+	 * @return array
+	 */
+	function date_sql_to_cakephp( $date ) {
+		$result = array( 'year' => null, 'month' => null, 'day' => null );
+
+		$tokens = explode( '-', $date );
+		if( count( $tokens ) === 3 ) {
+			$result['year'] = $tokens[0];
+			$result['month'] = $tokens[1];
+			$result['day'] = $tokens[2];
+		}
+
+		return $result;
+	}
+
+	/**
 	 * $a1 = array( 'foo', 'bar' );
 	 * $a2 = array( 'foo', 'bar', 'baz' );
 	 * $a3 = array( 'bar', 'baz' );

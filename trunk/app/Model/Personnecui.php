@@ -16,9 +16,9 @@
 	class Personnecui extends AppModel
 	{
 		public $name = 'Personnecui';
-		
+
 		public $recursive = -1;
-		
+
 //        public $belongsTo = array(
 //			'Adressecui' => array(
 //				'className' => 'Adressecui',
@@ -26,16 +26,15 @@
 //				'dependent' => true,
 //			),
 //        );
-		
-		public $hasOne = array(
+
+		/*public $hasOne = array(
 			'Cui' => array(
 				'className' => 'Cui',
 				'foreignKey' => 'personnecui_id',
 				'dependent' => true,
 			)
-			
-		);
-		
+		);*/
+
 		/**
 		 * Behaviors utilisés par le modèle.
 		 *

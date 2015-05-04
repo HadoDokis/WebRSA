@@ -493,6 +493,14 @@
 						$from = Hash::get( $search, "{$modelName}.{$fieldName}_from" );
 						$to = Hash::get( $search, "{$modelName}.{$fieldName}_to" );
 
+						if( is_string( $from ) && !empty( $from ) ) {
+							$from = date_sql_to_cakephp( $from );
+						}
+
+						if( is_string( $to ) && !empty( $to ) ) {
+							$to = date_sql_to_cakephp( $to );
+						}
+
 						if( valid_date( $from ) && valid_date( $to ) ) {
 							$from = $from['year'].'-'.$from['month'].'-'.$from['day'];
 							$to = $to['year'].'-'.$to['month'].'-'.$to['day'];
@@ -540,9 +548,18 @@
 			if( !empty( $paths ) ) {
 				foreach( $paths as $path ) {
 					list( $modelName, $fieldName ) = model_field( $path );
-					if( isset( $search[$modelName][$fieldName] ) && valid_date( $search[$modelName][$fieldName] ) ) {
-						$value = "{$search[$modelName][$fieldName]['year']}-{$search[$modelName][$fieldName]['month']}-{$search[$modelName][$fieldName]['day']}";
-						$conditions[] = "DATE( {$modelName}.{$fieldName} ) = '{$value}'";
+					if( isset( $search[$modelName][$fieldName] ) ) {
+						if( is_string( $search[$modelName][$fieldName] ) && !empty( $search[$modelName][$fieldName] ) ) {
+							$value = date_sql_to_cakephp( $search[$modelName][$fieldName] );
+						}
+						else {
+							$value = $search[$modelName][$fieldName];
+						}
+
+						if( valid_date( $value ) ) {
+							$value = date_cakephp_to_sql( $value );
+							$conditions[] = "DATE( {$modelName}.{$fieldName} ) = '{$value}'";
+						}
 					}
 				}
 			}

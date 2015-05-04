@@ -3,13 +3,9 @@
 	if( Configure::read( 'debug' ) > 0 ) {
 		echo $this->Html->css( array( 'all.form' ), 'stylesheet', array( 'media' => 'all', 'inline' => false ) );
 	}
-?>
 
-<noscript>
-	<p class="error">Cette fonctionnalité nécessite l'utilisation de javascript, mais javascript n'est pas activé dans votre navigateur.</p>
-</noscript>
+	echo $this->element( 'required_javascript' );
 
-<?php
 	if( is_array( $this->request->data ) ) {
 		echo '<ul class="actionMenu"><li>'.$this->Xhtml->link(
 			$this->Xhtml->image(

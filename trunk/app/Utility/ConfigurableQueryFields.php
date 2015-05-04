@@ -90,5 +90,27 @@
 			file_put_contents( $fileName, implode( "\n", $rows ) );
 			umask( $mask );
 		}
+
+		/**
+		 * Retourne la liste des champs (normaux et virtuels) des modèles envoyés
+		 * en paramètres, formattés pour être utilisés par getFieldsByKeys().
+		 *
+		 * @param array $modelNames Les modèles desquels obtenir les champs
+		 */
+		public static function getModelsFields( array $Models ) {
+			$result = array();
+
+			foreach( $Models as $Model ) {
+				foreach( array_keys( $Model->schema() ) as $fieldName ) {
+					$result["{$Model->alias}.{$fieldName}"] = "{$Model->alias}.{$fieldName}";
+				}
+
+				foreach( array_keys( (array)$Model->virtualFields ) as $fieldName ) {
+					$result["{$Model->alias}.{$fieldName}"] = "{$Model->alias}.{$fieldName}";
+				}
+			}
+
+			return $result;
+		}
 	}
 ?>

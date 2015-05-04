@@ -390,6 +390,11 @@ $irregularPlural = array(
 	'immersioncui66' => 'immersionscuis66',
 	'decisioncui66' => 'decisionscuis66',
 	'rupturecui66' => 'rupturescuis66',
+	'bilancui66' => 'bilanscuis66',
+	'formationcui66' => 'formationscuis66',
+	'periodeimmersioncui66' => 'periodesimmersioncuis66',
+	'periodeimmersioncui66' => 'periodesimmersioncuis66',
+	'propodecisioncui66' => 'proposdecisionscuis66',
 	'emailcui' => 'emailscuis',
 	'piecemailcui66' => 'piecesmailscuis66',
 	'textmailcui66' => 'textsmailscuis66',
@@ -459,6 +464,7 @@ $irregularPlural = array(
 	'documentbeneffp93_ficheprescription93' => 'documentsbenefsfps93_fichesprescriptions93',
 	'demenagementhorsdpt' => 'demenagementshorsdpts',
 	'prestatairehorspdifp93' => 'prestataireshorspdifps93',
+	'cohorterendezvous' => 'cohortesrendezvous',
 );
 
 /**

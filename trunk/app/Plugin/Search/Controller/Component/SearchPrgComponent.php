@@ -92,6 +92,10 @@
 			return (
 				empty( $Controller->request->params['form'] )
 				&& in_array( $Controller->action, array_keys( $this->settings ) )
+				// FIXME: à paramétrer, false par défaut
+				// TODO: tests unitaires
+				&& ( !isset( $this->settings[$Controller->action]['ajax'] ) || ( $this->settings[$Controller->action]['ajax'] == $Controller->request->is( 'ajax' ) ) )
+//				&& !$Controller->request->is( 'ajax' )
 			);
 		}
 

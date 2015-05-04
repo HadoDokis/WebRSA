@@ -1915,3 +1915,15 @@ body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColum
 body.nonorientationsproscovs58 table #TableNonorientationsproscovs58CohorteColumnInputDataCohorteDossierId {
 	display: none;
 }
+
+/* Cohorte de rendez-vous, CG 93 */
+body.cohortesrendezvous ul.actions li.action a.cohorte {
+	background-image: url("../img/icons/application_form_magnify.png");
+}
+
+body.cohortesrendezvous table td.hidden,
+body.cohortesrendezvous table #TableCohortesrendezvousCohorteColumnInputDataCohorteRendezvousId,
+body.cohortesrendezvous table #TableCohortesrendezvousCohorteColumnInputDataCohorteRendezvousPersonneId,
+body.cohortesrendezvous table #TableCohortesrendezvousCohorteColumnInputDataCohorteDossierId {
+	display: none;
+}

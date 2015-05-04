@@ -94,6 +94,10 @@
 				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
                 'url' => array( 'controller' => 'cohortesd2pdvs93', 'action' => 'index' )
 			),
+            __d( 'cohortesrendezvous', '/Cohortesrendezvous/cohorte/:heading' ) => array(
+				'disabled' => ( Configure::read( 'Cg.departement' ) != 93 ),
+                'url' => array( 'controller' => 'cohortesrendezvous', 'action' => 'cohorte' )
+			),
 		),
 		'Recherches' => array(
 			'Par dossier / allocataire' => array( 'url' => array( 'controller' => 'dossiers', 'action' => 'index' ) ),

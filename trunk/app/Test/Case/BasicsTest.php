@@ -585,6 +585,19 @@
 		 }
 
 		/**
+		 * Test de la fonction date_cakephp_to_sql().
+		 */
+		 public function testDateSqlToCakephp() {
+			$result = date_sql_to_cakephp( '1979-01-24' );
+			$expected = array( 'year' => '1979', 'month' => '01', 'day' => '24' );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+
+			$result = date_sql_to_cakephp( '1979-01' );
+			$expected = array( 'year' => null, 'month' => null, 'day' => null );
+			$this->assertEqual( $result, $expected, var_export( $result, true ) );
+		 }
+
+		/**
 		 * Test de la fonction full_array_diff().
 		 */
 		 public function testFullArrayDiff() {

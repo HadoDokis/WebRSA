@@ -356,6 +356,8 @@
 				'Tableausuivi93.tableau1b5.categories' => 'isarray',
 				'Rendezvous.Typerdv.collectif_id' => 'integer',
 				'Rendezvous.Typerdv.individuel_id' => 'integer',
+				'Cohortesrendezvous.cohorte.fields' => 'isarray',
+				'Cohortesrendezvous.exportcsv' => 'isarray',
 			);
 
 			if( Configure::read( 'Contratinsertion.RdvAuto.active' ) ) {
@@ -935,7 +937,7 @@
 		 */
 		public function allCheckParametrage() {
 			$errors = array( );
-			$modelNames = array( 'Dsp' );
+			$modelNames = array( 'Dsp', 'Cohorterendezvous' );
 
 			foreach( $modelNames as $modelName ) {
 				$Model = ClassRegistry::init( $modelName );
